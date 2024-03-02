@@ -19,6 +19,12 @@ export type Graph = {
 
   getVertice: (currency: Currency) => Vertice | undefined
   getEdge: (pool: Pool, vertA: Vertice, vertB: Vertice) => Edge | undefined
+  hasValidRouteToVerticeWithinHops: (
+    vertice: Vertice,
+    target: Vertice,
+    hops: number,
+    visitedVertices?: Set<Vertice>,
+  ) => boolean
   applySwap: (params: {
     route: Pick<Route, 'pools' | 'path'> & {
       inputAmount?: CurrencyAmount<Currency>

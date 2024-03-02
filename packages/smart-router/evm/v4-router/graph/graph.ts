@@ -2,6 +2,7 @@ import { Currency, CurrencyAmount, TradeType, Fraction } from '@pancakeswap/sdk'
 import { Address } from 'viem'
 import invariant from 'tiny-invariant'
 import { formatFraction } from '@pancakeswap/utils/formatFractions'
+import memoize from 'lodash/memoize.js'
 
 import { Pool } from '../../v3-router/types'
 import { createPoolQuoteGetter } from '../../v3-router/providers'
@@ -91,11 +92,35 @@ export function createGraph({ pools, graph }: GraphParams): Graph {
     return edge
   }
 
+  const hasValidRouteToVerticeWithinHops = memoize(
+    (vertice: Vertice, target: Vertice, hops: number, visitedVertices?: Set<Vertice>): boolean => {
+      if (vertice === target) {
+        return true
+      }
+      if (hops <= 0) {
+        return false
+      }
+      const visited = visitedVertices || new Set<Vertice>()
+      visited.add(vertice)
+      for (const edge of vertice.edges) {
+        const nextVertice = getNeighbour(edge, vertice)
+        if (nextVertice && !visited.has(nextVertice)) {
+          if (hasValidRouteToVerticeWithinHops(nextVertice, target, hops - 1, visited)) {
+            return true
+          }
+        }
+      }
+      return false
+    },
+    (v1, v2, hops) => `${v1.currency.chainId}-${v1.currency.wrapped.address}-${v2.currency.wrapped.address}-${hops}`,
+  )
+
   return {
     vertices: Array.from(verticeMap.values()),
     edges: Array.from(edgeMap.values()),
     getVertice,
     getEdge,
+    hasValidRouteToVerticeWithinHops,
     applySwap: async ({ isExactIn, route }) => {
       const getPoolQuote = createPoolQuoteGetter(isExactIn)
       function* loopPools() {
@@ -364,10 +389,7 @@ export async function findBestTrade({
       }
       nextVertList.splice(index, 1)
 
-      if (getHops(vert) >= maxHops) {
-        continue
-      }
-
+      const currentHop = getHops(vert)
       for (const e of vert.edges) {
         const prevBestSource = getBestSource(vert)
 
@@ -378,6 +400,10 @@ export async function findBestTrade({
 
         const v2 = vert === e.vertice0 ? e.vertice1 : e.vertice0
         if (processedVert.has(v2)) continue
+
+        if (!graph.hasValidRouteToVerticeWithinHops(v2, finish, maxHops - currentHop - 1)) {
+          continue
+        }
 
         try {
           const bestAmount = getBestAmount(vert)
@@ -401,7 +427,7 @@ export async function findBestTrade({
           const bestSource = getBestSource(v2)
           const v2BestQuote = getBestQuote(v2)
           // console.log(
-          //   `Vertice ${v2.currency.symbol}, prev best quote ${v2BestQuote?.toExact()}, new quote from`,
+          //   `[GetQuote]: Vertice ${v2.currency.symbol}, prev best quote ${v2BestQuote?.toExact()}, new quote from`,
           //   e.pool,
           //   `: ${newQuote.toExact()}`,
           // )
@@ -409,7 +435,7 @@ export async function findBestTrade({
           if (!bestSource) nextVertList.push(v2)
           if (!bestSource || !v2BestQuote || isQuoteBetter(newQuote, v2BestQuote)) {
             bestResult.set(v2, {
-              hops: getHops(vert) + 1,
+              hops: currentHop + 1,
               gasSpent,
               bestAmount: quote,
               bestSource: e,
@@ -417,6 +443,11 @@ export async function findBestTrade({
             })
           }
         } catch (_err) {
+          // console.error(
+          //   `[GetQuote]: Failed to get quote from ${vert.currency.symbol} to ${v2.currency.symbol}`,
+          //   e.pool,
+          //   _err,
+          // )
           // console.error(_err)
           continue
         }
