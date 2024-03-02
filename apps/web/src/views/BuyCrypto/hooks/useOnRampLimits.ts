@@ -40,7 +40,7 @@ export const useOnRampLimit = <selectData = GetOnRampLimitReturnType>(
   const { fiatCurrency, cryptoCurrency, network, ...query } = parameters
 
   const enabled = Boolean(fiatCurrency && cryptoCurrency && network)
-
+  console.log(enabled, fiatCurrency, cryptoCurrency, network)
   return useQuery({
     ...query,
     queryKey: getOnRampLimitQueryKey([
@@ -62,6 +62,7 @@ export const useOnRampLimit = <selectData = GetOnRampLimitReturnType>(
         fiatCurrency,
         network,
       })
+      console.log(providerLimits)
       return providerLimits
     },
     ...query,

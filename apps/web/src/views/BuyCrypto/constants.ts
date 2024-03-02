@@ -36,7 +36,7 @@ export enum ONRAMP_PROVIDERS {
 }
 
 export enum FeeTypes {
-  TotalFees = 'Est. Total Fees',
+  TotalFees = 'Total Fees',
   NetworkingFees = 'Networking Fees',
   ProviderFees = 'Provider Fees',
 }

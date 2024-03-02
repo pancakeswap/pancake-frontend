@@ -30,7 +30,7 @@ const DropDownContainer = styled.div<{ error: boolean }>`
   }
 `
 
-const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
+const OptionSelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0px;
   border-left: ${({ theme }) => `1px solid ${theme.colors.inputSecondary}`};
   display: flex;
@@ -73,7 +73,7 @@ const ButtonAsset = ({
   )
 }
 
-interface CurrencySelectProps extends CurrencySearchModalProps, BoxProps {
+interface BuyCryptoSelectorProps extends CurrencySearchModalProps, BoxProps {
   id: 'onramp-fiat' | 'onramp-crypto'
   currencyLoading: boolean
   value: string
@@ -88,7 +88,7 @@ interface CurrencySelectProps extends CurrencySearchModalProps, BoxProps {
   bottomElement?: ReactNode
 }
 
-export const CurrencySelect = ({
+export const BuyCryptoSelector = ({
   onCurrencySelect,
   onUserInput,
   onInputBlur,
@@ -101,7 +101,7 @@ export const CurrencySelect = ({
   value,
   bottomElement,
   ...props
-}: CurrencySelectProps) => {
+}: BuyCryptoSelectorProps) => {
   const tokensToShow = id === 'onramp-fiat' ? Object.values(fiatCurrencyMap) : onRampCurrencies
   const networkDisplay = getNetworkDisplay(selectedCurrency?.chainId)
 
@@ -137,7 +137,7 @@ export const CurrencySelect = ({
         ) : (
           <Text>{networkDisplay}</Text>
         )}
-        <CurrencySelectButton
+        <OptionSelectButton
           className="open-currency-select-button"
           selected={!!selectedCurrency}
           onClick={onPresentCurrencyModal}
@@ -150,7 +150,7 @@ export const CurrencySelect = ({
             </Flex>
           )}
           {selectedCurrency && <ArrowDropDownIcon />}
-        </CurrencySelectButton>
+        </OptionSelectButton>
       </DropDownContainer>
       <Flex justifyContent="space-between" pt="6px" width="100%" alignItems="center">
         {bottomElement}

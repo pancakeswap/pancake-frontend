@@ -1,9 +1,9 @@
-import { FC } from 'react'
 import { AppHeader } from 'components/App'
+import { FC } from 'react'
 
 export const FormHeader: FC<{
   title: string
-  subTitle: string
+  subTitle?: string
   shouldCenter?: boolean
   backTo?: any
 }> = ({ title, subTitle, shouldCenter = false, backTo }) => {

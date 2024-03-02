@@ -11,7 +11,6 @@ import { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useS
 import { FixedSizeList } from 'react-window'
 import { safeGetAddress } from 'utils'
 import { isAddress } from 'viem'
-import { useAllTokens } from '../../hooks/Tokens'
 import Row from '../Layout/Row'
 import OnRampCurrencyList from './OnRampCurrencyList'
 import { getSwapSound } from './swapSound'
@@ -21,7 +20,13 @@ interface CurrencySearchProps {
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
   height?: number
-  tokensToShow?: Token[]
+  tokensToShow?: (
+    | Currency
+    | {
+        symbol: string
+        name: string
+      }
+  )[]
   mode?: string
   onRampFlow?: boolean
   activeChain: ChainId | undefined
@@ -42,8 +47,6 @@ function OnRampCurrencySearch({
   // refs for fixed size lists
   const fixedList = useRef<FixedSizeList>()
   const debouncedQuery = useDebounce(searchQuery, 200)
-
-  const allTokens = useAllTokens()
   const native = useNativeCurrency()
 
   const { t } = useTranslation()
@@ -51,9 +54,10 @@ function OnRampCurrencySearch({
   const [audioPlay] = useAudioPlay()
 
   const filteredTokens: Token[] = useMemo(() => {
+    if (!tokensToShow) return []
     const filterToken = createFilterToken(debouncedQuery, (address) => isAddress(address))
-    return Object.values(tokensToShow || allTokens).filter(filterToken)
-  }, [tokensToShow, allTokens, debouncedQuery])
+    return Object.values(tokensToShow).filter(filterToken as unknown as any)
+  }, [tokensToShow, debouncedQuery])
 
   const filteredSortedTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
 

@@ -1,18 +1,32 @@
+/* eslint-disable import/no-absolute-path */
+/* eslint-disable global-require */
+import { Skeleton } from '@pancakeswap/uikit'
 import Image from 'next/image'
-import { useTheme } from 'styled-components'
-import { ProviderIcon } from 'views/BuyCrypto/Icons'
+import { HtmlHTMLAttributes } from 'react'
 import { ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
-import MercuryoAltSvg from '../../../../../public/images/on-ramp-providers/mercuryo_new_logo_black.png'
-import MercuryoAltSvgLight from '../../../../../public/images/on-ramp-providers/mercuryo_new_logo_white.png'
 
-const OnRampProviderLogo = ({ provider }: { provider: keyof typeof ONRAMP_PROVIDERS }) => {
-  const theme = useTheme()
+const PROVIDER_ICONS = {
+  [ONRAMP_PROVIDERS.MoonPay]: require('/public/images/on-ramp-providers/moonpay.svg'),
+  [ONRAMP_PROVIDERS.Mercuryo]: require('/public/images/on-ramp-providers/mercuryo.svg'),
+  [ONRAMP_PROVIDERS.Transak]: require('/public/images/on-ramp-providers/transak.svg'),
+} satisfies Record<keyof typeof ONRAMP_PROVIDERS, any>
+
+const OnRampProviderLogo = ({
+  provider,
+  size = 35,
+  loading = false,
+}: {
+  provider: keyof typeof ONRAMP_PROVIDERS | undefined
+  size?: number
+  loading?: boolean
+  styles?: HtmlHTMLAttributes<any>
+}) => {
   return (
     <>
-      {provider === ONRAMP_PROVIDERS.Mercuryo ? (
-        <Image src={theme.isDark ? MercuryoAltSvgLight : MercuryoAltSvg} alt="#" width={80} />
+      {loading || !provider ? (
+        <Skeleton isDark width={size} height={size} borderRadius="50%" marginTop="7px" />
       ) : (
-        <ProviderIcon provider={provider} width="80px" isDisabled={false} />
+        <Image alt={`${provider}-logo`} src={PROVIDER_ICONS[provider]} width={size} height={size} />
       )}
     </>
   )

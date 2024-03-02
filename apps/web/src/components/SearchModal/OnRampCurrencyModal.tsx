@@ -109,9 +109,9 @@ export default function OnRampCurrencySearchModal({
 
   const newTokens = useMemo(() => {
     if (!tokensToShow || !isArray(tokensToShow)) return []
-    if (!activeChain && tokensToShow) return tokensToShow
-    return tokensToShow?.filter((token) => activeChain! === token.chainId)
-  }, [activeChain, tokensToShow])
+    if ((!activeChain && tokensToShow) || mode === 'onramp-fiat') return tokensToShow
+    return tokensToShow?.filter((token) => activeChain! === (token as Currency).chainId)
+  }, [activeChain, tokensToShow, mode])
 
   const { isMobile } = useMatchBreakpoints()
   const wrapperRef = useRef<HTMLDivElement>(null)

@@ -76,10 +76,10 @@ export const ModalHeader = styled.div<{ background?: string }>`
 `
 
 interface FiatOnRampProps {
-  provider: keyof typeof ONRAMP_PROVIDERS
-  inputCurrency: string
-  outputCurrency: string
-  amount: string
+  provider: keyof typeof ONRAMP_PROVIDERS | undefined
+  inputCurrency: string | undefined
+  outputCurrency: string | undefined
+  amount: string | undefined
   setModalView: Dispatch<SetStateAction<CryptoFormView>>
 }
 
@@ -170,7 +170,7 @@ export const FiatOnRampModalButton = ({
   }, [disabled, provider, t])
 
   return (
-    <AutoColumn gap="md">
+    <AutoColumn width="100%">
       <CommitButton onClick={toggleFiatOnRampModal} disabled={disabled} isLoading={disabled} mb="10px" mt="16px">
         {buttonText}
       </CommitButton>
@@ -215,15 +215,15 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
       let result = ''
       if (provider === ONRAMP_PROVIDERS.MoonPay) {
         result = await fetchMoonPaySignedUrl(
-          inputCurrency,
-          outputCurrency,
-          amount,
+          inputCurrency!,
+          outputCurrency!,
+          amount!,
           theme.isDark,
           account.address,
           chainId,
         )
       } else if (provider === ONRAMP_PROVIDERS.Transak) {
-        result = await fetchTransakSignedUrl(inputCurrency, outputCurrency, amount, account.address, chainId)
+        result = await fetchTransakSignedUrl(inputCurrency!, outputCurrency!, amount!, account.address, chainId)
       }
       setSignedIframeUrl(result)
     } catch (e: any) {
@@ -258,8 +258,8 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
           widgetId: MERCURYO_WIDGET_ID,
-          fiatCurrency: outputCurrency.toUpperCase(),
-          currency: inputCurrency.toUpperCase(),
+          fiatCurrency: outputCurrency?.toUpperCase(),
+          currency: inputCurrency?.toUpperCase(),
           fiatAmount: amount,
           fixAmount: true,
           fixFiatAmount: true,
@@ -307,7 +307,7 @@ export const FiatOnRampModal = memo<InjectedModalProps & FiatOnRampProps>(functi
             </ErrorText>
           </Flex>
         ) : (
-          <ProviderIFrame provider={provider} loading={loading} signedIframeUrl={signedIframeUrl} />
+          <ProviderIFrame provider={provider!} loading={loading} signedIframeUrl={signedIframeUrl} />
         )}
       </ModalWrapper>
       <Script
