@@ -2822,7 +2822,7 @@
   "Pancakeswap profile is needed for IFO public sale eligibility.": "Πρέπει να έχετε προφίλ Pancakeswap για να έχετε δικαίωμα συμμετοχής στη δημόσια πώληση IFO.",
   "Create your Pancake Profile on %chain%": "Δημιουργήστε το προφίλ σας Pancake στο %chain%",
   "Switch chain to create profile": "Αλλάξτε αλυσίδα για να δημιουργήσετε προφίλ",
-  "Bridge iCAKE": "Bridge iCAKE",
+  "Bridge iCAKE": "Γεφύρωση iCAKE",
   "Switch Network to Bridge": "Εναλλαγή δικτύου σε γέφυρα",
   "Your iCAKE on %chainName%": "Το iCAKE σας στο %chainName%",
   "From %sourceChainName% to %ifoChainName%": "Από %sourceChainName% σε %ifoChainName%",
