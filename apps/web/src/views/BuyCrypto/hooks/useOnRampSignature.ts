@@ -58,7 +58,7 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
       }
 
       const { provider, cryptoCurrency, fiatCurrency, amount } = quote
-      const network = chainId === 0 ? 0 : combinedNetworkIdMap[ONRAMP_PROVIDERS[provider]][chainId]
+      const network = (chainId as any) === 0 ? 0 : combinedNetworkIdMap[ONRAMP_PROVIDERS[provider]][chainId]
       const moonpayCryptoCurrency = `${cryptoCurrency.toLowerCase()}${network}`
 
       const response = await fetch(
