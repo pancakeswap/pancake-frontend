@@ -178,13 +178,13 @@ export const isNativeBtc = (currencyId: string | undefined) => {
   return Boolean(currencyId === 'BTC-bitcoin')
 }
 
-export const getOnrampCurrencyChainId = (currencyId: string | undefined): ChainId | 0 | undefined => {
+export const getOnrampCurrencyChainId = (currencyId: string | undefined): any => {
   if (!currencyId) return undefined
   const currencyNetwork = extractOnRampCurrencyChainId(currencyId)
   return currencyNetwork === NATIVE_BTC.chainId ? 0 : Number(currencyNetwork)
 }
 
-export const formatOnrampCurrencyChainId = (chainId: ChainId | 'bitcoin' | undefined): ChainId | 0 | undefined => {
+export const formatOnrampCurrencyChainId = (chainId: any): any => {
   if (!chainId) return undefined
   return chainId === NATIVE_BTC.chainId ? 0 : chainId
 }
