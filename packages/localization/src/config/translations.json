@@ -2487,7 +2487,6 @@
   "Buy crypto with fiat.": "Buy crypto with fiat.",
   "No quote for this token pair at the moment.": "No quote for this token pair at the moment.",
   "Price quote from provider is currently unavailable. Please try again or try a different amount": "Price quote from provider is currently unavailable. Please try again or try a different amount",
-  "Proceed to get live aggregated quotes from a variety of different fiat onramp providers.": "Proceed to get live aggregated quotes from a variety of different fiat onramp providers.",
   "Different providers will support different currencies and payment methods in your region. Please refer to our": "Different providers will support different currencies and payment methods in your region. Please refer to our",
   "partners documentation": "partners documentation",
   "for more info.": "for more info.",
@@ -3212,5 +3211,6 @@
   "cookie policy": "cookie policy",
   "Choose a provider": "Choose a provider",
   "Minimum {{fiatCurrency}} {{minAmount}}": "Minimum {{fiatCurrency}} {{minAmount}}",
-  "Maximum {{fiatCurrency}} {{maxAmount}}": "Maximum {{fiatCurrency}} {{maxAmount}}"
+  "Maximum {{fiatCurrency}} {{maxAmount}}": "Maximum {{fiatCurrency}} {{maxAmount}}",
+  "Buy Crypto here.": "Buy Crypto here."
 }
