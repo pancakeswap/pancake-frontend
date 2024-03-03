@@ -17,7 +17,7 @@ import {
 } from '@pancakeswap/uikit'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
 import { useOnRampCurrency } from 'hooks/Tokens'
-import { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useBuyCryptoActionHandlers, useBuyCryptoState } from 'state/buyCrypto/hooks'
 import { Field } from 'state/swap/actions'
 import { useTheme } from 'styled-components'
@@ -30,7 +30,7 @@ import { PopOverScreenContainer } from '../components/PopOverScreen/PopOverScree
 import { ProviderGroupItem } from '../components/ProviderSelector/ProviderGroupItem'
 import { ProviderSelector } from '../components/ProviderSelector/ProviderSelector'
 import { TransactionFeeDetails } from '../components/TransactionFeeDetails/TransactionFeeDetails'
-import { NATIVE_BTC, fiatCurrencyMap, getChainCurrencyWarningMessages } from '../constants'
+import { NATIVE_BTC, fiatCurrencyMap, getChainCurrencyWarningMessages, isNativeBtc } from '../constants'
 import { useBtcAddressValidator } from '../hooks/useBitcoinAddressValidtor'
 import { useLimitsAndInputError } from '../hooks/useOnRampInputError'
 import { useOnRampQuotes } from '../hooks/useOnRampQuotes'
@@ -71,8 +71,9 @@ export function BuyCryptoForm() {
   const [selectedQuote, setSelectedQuote] = useState<OnRampProviderQuote | undefined>(undefined)
   const { onFieldAInput: handleTypeOutput, onCurrencySelection } = useBuyCryptoActionHandlers()
 
+  const isBtc = isNativeBtc(inputCurrencyId)
   let inputCurrency = useOnRampCurrency(inputCurrencyId)
-  inputCurrency = inputCurrencyId === `BTC-bitcoin` ? NATIVE_BTC : inputCurrency
+  inputCurrency = isBtc ? NATIVE_BTC : inputCurrency
 
   const outputCurrency: FiatCurrency = useMemo(() => {
     if (!outputCurrencyId) return fiatCurrencyMap.USD
@@ -105,11 +106,7 @@ export function BuyCryptoForm() {
     fiatCurrency: outputCurrency?.symbol,
     network: inputCurrency?.chainId,
     fiatAmount: typedValue || defaultAmt,
-    enabled: Boolean(
-      !inputError &&
-        typedValue !== '0' &&
-        (inputCurrency?.chainId === 'bitcoin' ? searchQuery !== '' || searchQuery !== '0' : true),
-    ),
+    enabled: Boolean(!inputError && typedValue !== '0' && (isBtc ? searchQuery !== '' : true)),
   })
 
   // manage focus on modal show
@@ -124,18 +121,6 @@ export function BuyCryptoForm() {
     const checksummedInput = safeGetAddress(input)
     setSearchQuery(checksummedInput || input)
   }, [])
-
-  const handleEnter = useCallback(
-    (e: KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter') {
-        const s = debouncedQuery.toLowerCase().trim()
-        if (s === 'btc') {
-          onCurrencySelection(Field.INPUT, 'native')
-        }
-      }
-    },
-    [debouncedQuery, onCurrencySelection],
-  )
 
   const resetBuyCryptoState = useCallback(() => {
     setSearchQuery('')
@@ -177,12 +162,12 @@ export function BuyCryptoForm() {
             id="onramp-fiat"
             onCurrencySelect={onCurrencySelection}
             selectedCurrency={outputCurrency as Currency}
-            currencyLoading={Boolean(!inputCurrency)}
             topElement={
               <Text pl="8px" fontSize="14px" color="textSubtle">
                 {t('I want to spend')}
               </Text>
             }
+            currencyLoading={Boolean(!inputCurrency)}
             value={typedValue || defaultAmt}
             onUserInput={handleTypeOutput}
             loading={Boolean(fetching || isFetching || !quotes)}
@@ -197,11 +182,11 @@ export function BuyCryptoForm() {
                 {t('I want to buy')}
               </Text>
             }
-            currencyLoading={!inputCurrency}
+            currencyLoading={Boolean(!inputCurrency)}
             bottomElement={<Box pb="12px" />}
             value=""
           />
-          {inputCurrency?.chainId === 'bitcoin' && (
+          {isBtc && (
             <Box pb="16px">
               <Text pl="8px" fontSize="14px" color={validAddress?.result ? 'success' : 'textSubtle'}>
                 {t('verify your btc address')}
@@ -216,7 +201,6 @@ export function BuyCryptoForm() {
                   value={searchQuery}
                   ref={inputRef as RefObject<HTMLInputElement>}
                   onChange={handleInput}
-                  onKeyDown={handleEnter}
                   color="primary"
                   isSuccess={Boolean(validAddress?.result)}
                   isWarning={Boolean(searchQuery !== '' && !validAddress?.result)}
@@ -225,7 +209,7 @@ export function BuyCryptoForm() {
             </Box>
           )}
 
-          {((inputCurrency?.chainId === 'bitcoin' && validAddress?.result) || inputCurrency?.chainId !== 'bitcoin') && (
+          {((isBtc && validAddress?.result) || !isBtc) && (
             <ProviderSelector
               id="provider-select"
               onQuoteSelect={setShowProvidersPopOver}
@@ -256,7 +240,7 @@ export function BuyCryptoForm() {
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={inputCurrencyId}
             selectedQuote={selectedQuote}
-            disabled={isError || Boolean(inputCurrency?.chainId === 'bitcoin' && !validAddress?.result)}
+            disabled={isError || Boolean(isBtc && !validAddress?.result)}
             loading={!quotes || isFetching}
             input={searchQuery}
             resetBuyCryptoState={resetBuyCryptoState}

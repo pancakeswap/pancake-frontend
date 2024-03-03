@@ -18,6 +18,7 @@ import { MutableRefObject, memo, useCallback, useMemo } from 'react'
 import { useTheme } from 'styled-components'
 import { v4 } from 'uuid'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
+import { getOnrampCurrencyChainId, isNativeBtc } from 'views/BuyCrypto/constants'
 import { useOnRampSignature } from 'views/BuyCrypto/hooks/useOnRampSignature'
 import { StyledBackArrowContainer } from 'views/BuyCrypto/styles'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
@@ -32,11 +33,6 @@ interface FiatOnRampProps {
   resetBuyCryptoState: () => void
 }
 
-function extractBeforeDashX(str) {
-  const parts = str.split('-')
-  return parts[1]
-}
-
 export const FiatOnRampModalButton = ({
   selectedQuote,
   cryptoCurrency,
@@ -47,15 +43,17 @@ export const FiatOnRampModalButton = ({
   btcAddress,
   resetBuyCryptoState,
 }: FiatOnRampProps & { disabled: boolean; loading: boolean; input: string; btcAddress: string }) => {
-  const { t } = useTranslation()
   const { address: account } = useAccount()
+  const { t } = useTranslation()
+
+  const isBtc = isNativeBtc(cryptoCurrency)
   const {
     data: sigData,
     isLoading,
     isError,
     refetch,
   } = useOnRampSignature({
-    chainId: cryptoCurrency === 'BTC-bitcoin' ? 'bitcoin' : Number(extractBeforeDashX(cryptoCurrency)),
+    chainId: getOnrampCurrencyChainId(cryptoCurrency),
     quote: selectedQuote!,
     externalTransactionId: externalTxIdRef.current!,
     btcAddress,
@@ -94,16 +92,16 @@ export const FiatOnRampModalButton = ({
         </>
       )
     }
-    if (cryptoCurrency === 'BTC-bitcoin' && input === '') return t('Verify your address to continue')
-    if (cryptoCurrency === 'BTC-bitcoin' && disabled) return t('Invalid BTC address')
+    if (isBtc && input === '') return t('Verify your address to continue')
+    if (isBtc && disabled) return t('Invalid BTC address')
     return t(`Buy %amount% %currency% with %provider%`, {
       provider: selectedQuote?.provider,
       amount: selectedQuote?.quote.toFixed(3),
       currency: selectedQuote?.cryptoCurrency,
     })
-  }, [loading, isLoading, selectedQuote, t, cryptoCurrency, disabled, input])
+  }, [loading, isLoading, selectedQuote, t, isBtc, disabled, input])
 
-  if (cryptoCurrency !== 'BTC-bitcoin' && !account)
+  if (isBtc && !account)
     return (
       <AutoColumn width="100%">
         <ConnectWalletButton height="50px" />

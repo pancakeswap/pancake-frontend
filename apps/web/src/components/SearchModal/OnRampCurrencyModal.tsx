@@ -52,7 +52,7 @@ const StyledModalBody = styled(ModalBody)`
   }
 `
 
-const FilterdNetworkWrapper = styled(Box)<{ showFilterNetworks: boolean }>`
+const NetworksWrapper = styled(Box)<{ showFilterNetworks: boolean }>`
   position: absolute;
   width: 100%;
   background: white;
@@ -87,6 +87,78 @@ export interface CurrencySearchModalProps extends InjectedModalProps {
   mode: string
 }
 
+interface NetworksPopOverProps {
+  showFilterNetworks: boolean
+  onClick: () => void
+  setActiveChain: (c: ChainId | undefined) => void
+  activeChain: ChainId | undefined
+}
+
+const SearchModalNetworkPopOver = ({
+  showFilterNetworks,
+  onClick,
+  setActiveChain,
+  activeChain,
+}: NetworksPopOverProps) => {
+  const { t } = useTranslation()
+  return (
+    <>
+      <NetworkFilterOverlay showFilterNetworks={showFilterNetworks} onClick={onClick} />
+      <NetworksWrapper showFilterNetworks={showFilterNetworks}>
+        <ModalHeader>
+          <ModalTitle>
+            <Heading>{t('Token by network')}</Heading>
+          </ModalTitle>
+          <ModalCloseButton onDismiss={onClick} />
+        </ModalHeader>
+        <StyledModalBody>
+          <>
+            {chains
+              .filter((chain) => {
+                if ('testnet' in chain && chain.testnet) return false
+                if (chain.id === 56) return true
+                return true
+              })
+              .map((chain, index: number) => {
+                const isActive = activeChain === chain.id || (activeChain === undefined && index === 0)
+                const rowText = index === 0 ? t('All Networks') : chainNameConverter(chain.name)
+                const allNetworks = index === 0
+
+                return (
+                  <MenuItem
+                    key={chain.id}
+                    style={{ justifyContent: 'space-between', marginLeft: '-16px' }}
+                    onClick={() => {
+                      setActiveChain(allNetworks ? undefined : chain.id)
+                      onClick()
+                    }}
+                  >
+                    <Box display="flex">
+                      {allNetworks ? (
+                        <Image alt="pcs-logo-network-filter" src="/logo.png" width={24} height={24} />
+                      ) : (
+                        <ChainLogo chainId={chain.id} />
+                      )}
+                      <Text color={isActive ? 'text' : 'textSubtle'} bold={isActive} pl="12px">
+                        {rowText}
+                      </Text>
+                    </Box>
+
+                    {isActive && (
+                      <Box>
+                        <Dot style={{ height: '8px', width: '8px' }} show color="success" className="dot" />
+                      </Box>
+                    )}
+                  </MenuItem>
+                )
+              })}
+          </>
+        </StyledModalBody>
+      </NetworksWrapper>
+    </>
+  )
+}
+
 export default function OnRampCurrencySearchModal({
   onDismiss = () => null,
   onCurrencySelect,
@@ -119,7 +191,7 @@ export default function OnRampCurrencySearchModal({
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState<number | undefined>(undefined)
 
-  const filternetworksOnClick = useCallback(() => {
+  const filterNetworksOnClick = useCallback(() => {
     setShowFilternetworks((f) => !f)
   }, [setShowFilternetworks])
 
@@ -144,61 +216,12 @@ export default function OnRampCurrencySearchModal({
       }}
       ref={wrapperRef}
     >
-      <NetworkFilterOverlay showFilterNetworks={showFilternetworks} onClick={filternetworksOnClick} />
-      <FilterdNetworkWrapper showFilterNetworks={showFilternetworks}>
-        <ModalHeader>
-          <ModalTitle>
-            <Heading>{t('Token by network')}</Heading>
-          </ModalTitle>
-          <ModalCloseButton onDismiss={filternetworksOnClick} />
-        </ModalHeader>
-        <StyledModalBody>
-          <>
-            {chains
-              .filter((chain) => {
-                if ('testnet' in chain && chain.testnet) {
-                  return false
-                }
-                if (chain.id === 56) return true
-                return true
-              })
-              .map((chain, index: number) => {
-                const isActive = activeChain === chain.id || (activeChain === undefined && index === 0)
-                const rowText = index === 0 ? t('All Networks') : chainNameConverter(chain.name)
-                const allNetworks = index === 0
-
-                return (
-                  <MenuItem
-                    key={chain.id}
-                    style={{ justifyContent: 'space-between', marginLeft: '-16px' }}
-                    onClick={() => {
-                      setActiveChain(allNetworks ? undefined : chain.id)
-                      filternetworksOnClick()
-                    }}
-                  >
-                    <Box display="flex">
-                      {allNetworks ? (
-                        <Image alt="pcs-logo-network-filter" src="/logo.png" width={24} height={24} />
-                      ) : (
-                        <ChainLogo chainId={chain.id} />
-                      )}
-                      <Text color={isActive ? 'text' : 'textSubtle'} bold={isActive} pl="12px">
-                        {rowText}
-                      </Text>
-                    </Box>
-
-                    {isActive && (
-                      <Box>
-                        <Dot style={{ height: '8px', width: '8px' }} show color="success" className="dot" />
-                      </Box>
-                    )}
-                  </MenuItem>
-                )
-              })}
-          </>
-        </StyledModalBody>
-      </FilterdNetworkWrapper>
-
+      <SearchModalNetworkPopOver
+        onClick={filterNetworksOnClick}
+        activeChain={activeChain}
+        setActiveChain={setActiveChain}
+        showFilterNetworks={showFilternetworks}
+      />
       <ModalHeader>
         <ModalTitle margin="12px">
           <Heading>{t('Select a Token to Purchase')}</Heading>
@@ -217,7 +240,7 @@ export default function OnRampCurrencySearchModal({
         />
         {mode !== 'onramp-fiat' && (
           <Footer>
-            <Button scale="sm" variant="text" onClick={filternetworksOnClick} className="filter-networks-button">
+            <Button scale="sm" variant="text" onClick={filterNetworksOnClick} className="filter-networks-button">
               {t('Select Tokens by network')}
             </Button>
           </Footer>

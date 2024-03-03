@@ -1,6 +1,9 @@
 /* eslint-disable import/no-absolute-path */
 /* eslint-disable global-require */
-import { Skeleton } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/swap-sdk-core'
+import { Box, Skeleton, TokenImageWithBadge } from '@pancakeswap/uikit'
+import { FiatLogo } from 'components/Logo/CurrencyLogo'
+import { getImageUrlFromToken } from 'components/TokenImage'
 import Image from 'next/image'
 import { HtmlHTMLAttributes } from 'react'
 import { ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
@@ -31,5 +34,25 @@ const OnRampProviderLogo = ({
     </>
   )
 }
+
+export const EvmLogo = ({ mode, currency, size = 24 }: { mode: string; currency: Token; size?: number }) => {
+  return (
+    <>
+      {mode === 'onramp-fiat' ? (
+        <FiatLogo currency={currency} size={`${size - 3}px`} />
+      ) : (
+        <Box width={`${size}px`} height={`${size}px`}>
+          <TokenImageWithBadge
+            width={size}
+            height={size}
+            primarySrc={getImageUrlFromToken(currency)}
+            chainId={currency.chainId}
+          />
+        </Box>
+      )}
+    </>
+  )
+}
+export const BtcLogo = () => <Image src="/images/btc.svg" alt="bitcoin-logo" width={24} height={24} />
 
 export default OnRampProviderLogo

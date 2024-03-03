@@ -33,16 +33,6 @@ const mapWithoutUrls = (tokenMap?: TokenAddressMap<ChainId>, chainId?: number) =
   }, {})
 }
 
-const mapWithoutUrlsBySymbol = (tokenMap?: TokenAddressMap<ChainId>, chainId?: number) => {
-  if (!tokenMap || !chainId) return {}
-  const x = Object.keys(tokenMap[chainId] || {}).reduce<{ [symbol: string]: ERC20Token }>((newMap, symbol) => {
-    newMap[symbol] = tokenMap[chainId][symbol].token
-
-    return newMap
-  }, {})
-  return x
-}
-
 const mapAllWithoutUrlsBySymbol = (tokenMap?: TokenAddressMap<ChainId>) => {
   if (!tokenMap) return {}
   const tokenNetworks = Object.values(tokenMap)

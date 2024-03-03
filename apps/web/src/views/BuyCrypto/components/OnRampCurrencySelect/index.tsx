@@ -1,45 +1,26 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Token } from '@pancakeswap/sdk'
-import { ArrowDropDownIcon, Box, BoxProps, Button, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
+import { ArrowDropDownIcon, Box, BoxProps, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { NumericalInput } from '@pancakeswap/widgets-internal'
-import { BtcLogo, EvmLogo } from 'components/SearchModal/OnRampCurrencyList'
 import OnRampCurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/OnRampCurrencyModal'
 import { ReactNode } from 'react'
-import { styled } from 'styled-components'
 import { NATIVE_BTC, fiatCurrencyMap, getNetworkDisplay, onRampCurrencies } from 'views/BuyCrypto/constants'
+import { DropDownContainer, OptionSelectButton } from 'views/BuyCrypto/styles'
+import { BtcLogo, EvmLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
 
-const DropDownContainer = styled.div<{ error: boolean }>`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 16px;
-  box-shadow: ${({ theme, error }) => (error ? theme.shadows.danger : theme.shadows.inset)};
-  border: 1px solid ${({ theme, error }) => (error ? theme.colors.failure : theme.colors.inputSecondary)};
-  border-radius: 16px;
-  background: ${({ theme }) => theme.colors.input};
-  cursor: pointer;
-  position: relative;
-  min-width: 136px;
-  user-select: none;
-  z-index: 20;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    min-width: 168px;
-  }
-`
-
-const OptionSelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
-  padding: 0px;
-  border-left: ${({ theme }) => `1px solid ${theme.colors.inputSecondary}`};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 130px;
-  padding-left: 16px;
-  padding-right: 8px;
-  border-radius: 0px;
-`
+interface BuyCryptoSelectorProps extends Omit<CurrencySearchModalProps, 'mode'>, BoxProps {
+  id: 'onramp-fiat' | 'onramp-crypto'
+  value: string
+  onUserInput?: (value: string) => void
+  disableCurrencySelect?: boolean
+  error?: boolean
+  errorText?: string
+  onInputBlur?: () => void
+  disabled?: boolean
+  loading?: boolean
+  topElement?: ReactNode
+  bottomElement?: ReactNode
+}
 
 const ButtonAsset = ({
   id,

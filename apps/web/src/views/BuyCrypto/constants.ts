@@ -169,6 +169,25 @@ export const combinedNetworkIdMap: {
   [ONRAMP_PROVIDERS.Mercuryo]: chainIdToMercuryoNetworkId,
   [ONRAMP_PROVIDERS.Transak]: chainIdToTransakNetworkId,
 }
+const extractOnRampCurrencyChainId = (currencyId: string) => {
+  const parts = currencyId.split('-')
+  return parts[1]
+}
+
+export const isNativeBtc = (currencyId: string | undefined) => {
+  return Boolean(currencyId === 'BTC-bitcoin')
+}
+
+export const getOnrampCurrencyChainId = (currencyId: string | undefined): ChainId | 0 | undefined => {
+  if (!currencyId) return undefined
+  const currencyNetwork = extractOnRampCurrencyChainId(currencyId)
+  return currencyNetwork === NATIVE_BTC.chainId ? 0 : Number(currencyNetwork)
+}
+
+export const formatOnrampCurrencyChainId = (chainId: ChainId | 'bitcoin' | undefined): ChainId | 0 | undefined => {
+  if (!chainId) return undefined
+  return chainId === NATIVE_BTC.chainId ? 0 : chainId
+}
 
 export const getChainCurrencyWarningMessages = (
   t: (key: TranslationKey, data?: ContextData) => string,

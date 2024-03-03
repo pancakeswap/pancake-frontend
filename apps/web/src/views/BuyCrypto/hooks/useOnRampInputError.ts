@@ -3,6 +3,7 @@ import type { Currency } from '@pancakeswap/sdk'
 import ceil from 'lodash/ceil'
 import { useMemo } from 'react'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
+import { formatOnrampCurrencyChainId } from '../constants'
 import { useOnRampLimit } from './useOnRampLimits'
 
 function formatNumber(number: number, precision?: number): string {
@@ -35,7 +36,7 @@ export const useLimitsAndInputError = ({
   const { data: limitsData } = useOnRampLimit({
     fiatCurrency: fiatCurrency?.symbol,
     cryptoCurrency: cryptoCurrency?.symbol,
-    network: cryptoCurrency?.chainId === 'bitcoin' ? 0 : cryptoCurrency?.chainId,
+    network: formatOnrampCurrencyChainId(cryptoCurrency?.chainId),
   })
 
   const baseCurrency = limitsData?.baseCurrency

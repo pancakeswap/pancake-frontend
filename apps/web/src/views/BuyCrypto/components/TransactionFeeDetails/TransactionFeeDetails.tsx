@@ -27,6 +27,7 @@ export const TransactionFeeDetails = ({ selectedQuote }: TransactionFeeDetailsPr
     const elRef = contentRef.current
     if (elRef) setElementHeight(elRef.scrollHeight)
   }, [contentRef.current?.scrollHeight])
+
   return (
     <StyledFeesContainer width="100%" onClick={handleExpandClick}>
       <Flex paddingLeft="8px" justifyContent="space-between" opacity={0.5}>

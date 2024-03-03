@@ -1,4 +1,4 @@
-import { Box, Flex, InputProps } from '@pancakeswap/uikit'
+import { Box, Button, Flex, InputProps } from '@pancakeswap/uikit'
 import { scales } from '@pancakeswap/uikit/components/PancakeToggle/types'
 import { AppBody } from 'components/App'
 import { DefaultTheme, styled } from 'styled-components'
@@ -119,9 +119,39 @@ export const ModalHeader = styled.div<{ background?: string }>`
   }
 `
 
-/**
- * Priority: Warning --> Success
- */
+export const DropDownContainer = styled.div<{ error: boolean }>`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px;
+  box-shadow: ${({ theme, error }) => (error ? theme.shadows.danger : theme.shadows.inset)};
+  border: 1px solid ${({ theme, error }) => (error ? theme.colors.failure : theme.colors.inputSecondary)};
+  border-radius: 16px;
+  background: ${({ theme }) => theme.colors.input};
+  cursor: pointer;
+  position: relative;
+  min-width: 136px;
+  user-select: none;
+  z-index: 20;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    min-width: 168px;
+  }
+`
+
+export const OptionSelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
+  padding: 0px;
+  border-left: ${({ theme }) => `1px solid ${theme.colors.inputSecondary}`};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 130px;
+  padding-left: 16px;
+  padding-right: 8px;
+  border-radius: 0px;
+`
+
 const getBoxShadow = ({ isSuccess = false, isWarning = false, theme }: StyledInputProps) => {
   if (isWarning) {
     return theme.shadows.warning

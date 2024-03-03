@@ -1,5 +1,6 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
+import { formatOnrampCurrencyChainId } from '../constants'
 import {
   createQueryKey,
   Evaluate,
@@ -28,7 +29,7 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
   parameters: UseOnRampQuotesParameters<selectData>,
 ) => {
   const { fiatAmount, enabled, cryptoCurrency, fiatCurrency, network, ...query } = parameters
-  console.log(network)
+
   return useQuery({
     ...query,
     queryKey: getOnRampQuotesQueryKey([
@@ -52,7 +53,7 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         cryptoCurrency,
         fiatAmount,
         fiatCurrency,
-        network: network === 'bitcoin' ? 0 : network,
+        network: formatOnrampCurrencyChainId(network),
       })
       const sortedFilteredQuotes = providerQuotes.sort((a, b) => b.quote - a.quote)
 

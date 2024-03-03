@@ -2,6 +2,7 @@ import type { UseQueryResult } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import qs from 'qs'
+import { formatOnrampCurrencyChainId } from '../constants'
 import { createQueryKey, Evaluate, OnRampLimitsPayload, UseQueryParameters } from '../types'
 
 type CurrencyLimits = {
@@ -40,7 +41,6 @@ export const useOnRampLimit = <selectData = GetOnRampLimitReturnType>(
   const { fiatCurrency, cryptoCurrency, network, ...query } = parameters
 
   const enabled = Boolean(fiatCurrency && cryptoCurrency && network)
-  console.log(enabled, fiatCurrency, cryptoCurrency, network)
   return useQuery({
     ...query,
     queryKey: getOnRampLimitQueryKey([
@@ -60,9 +60,8 @@ export const useOnRampLimit = <selectData = GetOnRampLimitReturnType>(
       const providerLimits = await fetchProviderLimits({
         cryptoCurrency,
         fiatCurrency,
-        network,
+        network: formatOnrampCurrencyChainId(network),
       })
-      console.log(providerLimits)
       return providerLimits
     },
     ...query,
