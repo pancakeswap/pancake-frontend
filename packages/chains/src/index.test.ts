@@ -20,6 +20,8 @@ test('exports', () => {
       "getV3Subgraphs",
       "getV2Subgraphs",
       "getBlocksSubgraphs",
+      "mainnetChainIds",
+      "ChainNamesExtended"
     ]
   `)
 })
