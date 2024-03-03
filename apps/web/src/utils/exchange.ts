@@ -33,7 +33,7 @@ export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippag
 
 export function useRouterContract() {
   const { chainId } = useActiveChainId()
-  return useContract(V2_ROUTER_ADDRESS[chainId], pancakeRouter02ABI)
+  return useContract(chainId && V2_ROUTER_ADDRESS[chainId], pancakeRouter02ABI)
 }
 
 // computes price breakdown for the trade

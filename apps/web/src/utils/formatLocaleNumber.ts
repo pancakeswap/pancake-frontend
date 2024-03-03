@@ -2,7 +2,7 @@ import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
 
 interface FormatLocaleNumberArgs {
   number: CurrencyAmount<Currency> | Price<Currency, Currency> | number
-  locale: string | null | undefined
+  locale: string | undefined
   options?: Intl.NumberFormatOptions
   sigFigs?: number
   fixedDecimals?: number

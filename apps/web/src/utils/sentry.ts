@@ -55,7 +55,7 @@ export const logError = (error: Error | unknown) => {
     if (error instanceof Error) {
       captureException(error)
     } else {
-      captureException(assignError(error), error)
+      captureException(assignError(error))
     }
   }
   console.error(error)

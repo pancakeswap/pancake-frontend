@@ -1,36 +1,36 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { Pair, Percent } from '@pancakeswap/sdk'
 import {
   AutoColumn,
-  Button,
-  Text,
   Box,
   BunnyKnownPlaceholder,
+  Button,
   DynamicSection,
-  Message,
   Flex,
+  LinkExternal,
+  Message,
   MessageText,
   ScanLink,
-  LinkExternal,
+  Text,
 } from '@pancakeswap/uikit'
-import { ChainLinkSupportChains } from 'state/info/constant'
 import { useIsExpertMode } from '@pancakeswap/utils/user'
-import { useTranslation } from '@pancakeswap/localization'
 import { ReactNode, useCallback, useMemo } from 'react'
-import { Percent, Pair } from '@pancakeswap/sdk'
+import { ChainLinkSupportChains } from 'state/info/constant'
 
 import { CommitButton } from 'components/CommitButton'
-import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import { Field } from 'state/mint/actions'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { Bound } from 'config/constants/types'
-import { LP2ChildrenProps } from 'views/AddLiquidity'
-import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
+import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { CommonBasesType } from 'components/SearchModal/types'
-import { getBlockExploreLink } from 'utils'
+import { Bound } from 'config/constants/types'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { Field } from 'state/mint/actions'
+import { getBlockExploreLink } from 'utils'
+import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
+import { LP2ChildrenProps } from 'views/AddLiquidity'
 
-import ApproveLiquidityTokens from 'views/AddLiquidityV3/components/ApproveLiquidityTokens'
 import { InfoBox } from '@pancakeswap/widgets-internal'
+import ApproveLiquidityTokens from 'views/AddLiquidityV3/components/ApproveLiquidityTokens'
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 import RangeSelector from './V3FormView/components/RangeSelector'
 
@@ -67,7 +67,7 @@ export default function V2FormView({
   const { t } = useTranslation()
   const expertMode = useIsExpertMode()
   const pairExplorerLink = useMemo(
-    () => pair && getBlockExploreLink(Pair.getAddress(pair.token0, pair.token1), 'address', chainId),
+    () => (pair && getBlockExploreLink(Pair.getAddress(pair.token0, pair.token1), 'address', chainId)) || undefined,
     [pair, chainId],
   )
 
@@ -114,7 +114,7 @@ export default function V2FormView({
                 {t('Learn more how to fix')}
               </LinkExternal>
               <ScanLink
-                useBscCoinFallback={ChainLinkSupportChains.includes(chainId)}
+                useBscCoinFallback={chainId ? ChainLinkSupportChains.includes(chainId) : undefined}
                 href={pairExplorerLink}
                 mt="0.25rem"
               >
