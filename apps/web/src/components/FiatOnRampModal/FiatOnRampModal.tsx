@@ -5,7 +5,6 @@ import {
   Flex,
   Heading,
   InjectedModalProps,
-  LoadingDot,
   ModalHeader,
   ModalTitle,
   ModalWrapper,
@@ -14,64 +13,23 @@ import {
 } from '@pancakeswap/uikit'
 
 import { CommitButton } from 'components/CommitButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { MutableRefObject, memo, useCallback, useMemo } from 'react'
 import { useTheme } from 'styled-components'
 import { v4 } from 'uuid'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
-import { ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
 import { useOnRampSignature } from 'views/BuyCrypto/hooks/useOnRampSignature'
-import { IFrameWrapper, StyledBackArrowContainer, StyledIframe } from 'views/BuyCrypto/styles'
+import { StyledBackArrowContainer } from 'views/BuyCrypto/styles'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import { ErrorText } from 'views/Swap/components/styleds'
+import { useAccount } from 'wagmi'
+import { ProviderIFrame } from './ProviderIframe'
 
 interface FiatOnRampProps {
   selectedQuote: OnRampProviderQuote | undefined
   cryptoCurrency: string | undefined
   externalTxIdRef: MutableRefObject<string | undefined>
-}
-
-interface IProviderIFrameProps {
-  provider: keyof typeof ONRAMP_PROVIDERS
-  loading: boolean
-  signedIframeUrl: string
-}
-
-const LoadingBuffer = ({ loading }: { loading: boolean }) => {
-  if (!loading) return <></>
-  return (
-    <IFrameWrapper justifyContent="center" alignItems="center" style={{ zIndex: 100 }}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <LoadingDot />
-        <CircleLoader />
-      </div>
-    </IFrameWrapper>
-  )
-}
-
-const ProviderIFrame = ({ provider, loading, signedIframeUrl }: IProviderIFrameProps) => {
-  const theme = useTheme()
-  const providerIframeId = `${ONRAMP_PROVIDERS[provider].toLowerCase()}_iframe`
-
-  if (provider === ONRAMP_PROVIDERS.MoonPay || provider === ONRAMP_PROVIDERS.Transak) {
-    return (
-      <>
-        <LoadingBuffer loading={loading} />
-        <StyledIframe
-          id={providerIframeId}
-          src={signedIframeUrl}
-          title="fiat-onramp-iframe"
-          isDark={theme.isDark}
-          allow="camera;microphone;fullscreen;payment"
-        />
-      </>
-    )
-  }
-  return (
-    <>
-      <LoadingBuffer loading={loading} />
-      <IFrameWrapper id="mercuryo-widget" />;
-    </>
-  )
+  resetBuyCryptoState: () => void
 }
 
 function extractBeforeDashX(str) {
@@ -84,16 +42,23 @@ export const FiatOnRampModalButton = ({
   cryptoCurrency,
   externalTxIdRef,
   disabled,
-}: FiatOnRampProps & { disabled: boolean }) => {
+  loading,
+  input,
+  btcAddress,
+  resetBuyCryptoState,
+}: FiatOnRampProps & { disabled: boolean; loading: boolean; input: string; btcAddress: string }) => {
   const { t } = useTranslation()
+  const { address: account } = useAccount()
   const {
     data: sigData,
     isLoading,
     isError,
+    refetch,
   } = useOnRampSignature({
-    chainId: Number(extractBeforeDashX(cryptoCurrency)),
+    chainId: cryptoCurrency === 'BTC-bitcoin' ? 'bitcoin' : Number(extractBeforeDashX(cryptoCurrency)),
     quote: selectedQuote!,
     externalTransactionId: externalTxIdRef.current!,
+    btcAddress,
   })
 
   const [onPresentConfirmModal] = useModal(
@@ -102,6 +67,7 @@ export const FiatOnRampModalButton = ({
       iframeUrl={sigData?.signature}
       loading={isLoading}
       error={isError}
+      resetBuyCryptoState={resetBuyCryptoState}
     />,
   )
   const toggleFiatOnRampModal = useCallback(
@@ -110,12 +76,13 @@ export const FiatOnRampModalButton = ({
       onPresentConfirmModal()
       // eslint-disable-next-line no-param-reassign
       externalTxIdRef.current = v4()
+      refetch()
     },
-    [onPresentConfirmModal, externalTxIdRef],
+    [onPresentConfirmModal, externalTxIdRef, refetch],
   )
 
   const buttonText = useMemo(() => {
-    if (disabled || !selectedQuote) {
+    if (loading || isLoading || !selectedQuote) {
       return (
         <>
           <Flex alignItems="center">
@@ -127,12 +94,30 @@ export const FiatOnRampModalButton = ({
         </>
       )
     }
-    return t(`Buy with %provider%`, { provider: selectedQuote?.provider })
-  }, [disabled, selectedQuote, t])
+    if (cryptoCurrency === 'BTC-bitcoin' && input === '') return t('Verify your address to continue')
+    if (cryptoCurrency === 'BTC-bitcoin' && disabled) return t('Invalid BTC address')
+    return t(`Buy %amount% %currency% with %provider%`, {
+      provider: selectedQuote?.provider,
+      amount: selectedQuote?.quote.toFixed(3),
+      currency: selectedQuote?.cryptoCurrency,
+    })
+  }, [loading, isLoading, selectedQuote, t, cryptoCurrency, disabled, input])
+
+  if (cryptoCurrency !== 'BTC-bitcoin' && !account)
+    return (
+      <AutoColumn width="100%">
+        <ConnectWalletButton height="50px" />
+      </AutoColumn>
+    )
 
   return (
     <AutoColumn width="100%">
-      <CommitButton onClick={toggleFiatOnRampModal} disabled={disabled} isLoading={disabled} height="52px">
+      <CommitButton
+        onClick={toggleFiatOnRampModal}
+        disabled={disabled || isError}
+        isLoading={isLoading || loading}
+        height="56px"
+      >
         {buttonText}
       </CommitButton>
     </AutoColumn>
@@ -146,11 +131,14 @@ export const FiatOnRampModal = memo<
       loading: boolean
       error: boolean
     }
->(function ConfirmSwapModalComp({ onDismiss, selectedQuote, iframeUrl, error, loading }) {
+>(function ConfirmSwapModalComp({ onDismiss, selectedQuote, iframeUrl, error, loading, resetBuyCryptoState }) {
   const { t } = useTranslation()
 
   const theme = useTheme()
-  const handleDismiss = useCallback(() => onDismiss?.(), [onDismiss])
+  const handleDismiss = useCallback(() => {
+    resetBuyCryptoState?.()
+    onDismiss?.()
+  }, [onDismiss, resetBuyCryptoState])
 
   return (
     <>

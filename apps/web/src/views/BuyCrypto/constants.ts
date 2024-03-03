@@ -265,8 +265,10 @@ export const onRampCurrencies: Currency[] = [
   baseTokens.usdc,
 ]
 
-const NATIVE_BTC: Partial<Omit<Currency, 'chainId'>> = {
-  name: 'Bitcoin',
+export type Btc_Extension = Currency & any
+
+export const NATIVE_BTC: Btc_Extension = {
+  name: 'Native Bitcoin',
   symbol: 'BTC',
   chainId: 'bitcoin',
   isNative: true,

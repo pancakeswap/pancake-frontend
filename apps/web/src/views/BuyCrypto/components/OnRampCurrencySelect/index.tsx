@@ -1,12 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
+import { Currency, Token } from '@pancakeswap/sdk'
 import { ArrowDropDownIcon, Box, BoxProps, Button, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
-import { CurrencyLogo, NumericalInput } from '@pancakeswap/widgets-internal'
-import { FiatLogo } from 'components/Logo/CurrencyLogo'
+import { NumericalInput } from '@pancakeswap/widgets-internal'
+import { BtcLogo, EvmLogo } from 'components/SearchModal/OnRampCurrencyList'
 import OnRampCurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/OnRampCurrencyModal'
 import { ReactNode } from 'react'
 import { styled } from 'styled-components'
-import { fiatCurrencyMap, getNetworkDisplay, onRampCurrencies } from 'views/BuyCrypto/constants'
+import { NATIVE_BTC, fiatCurrencyMap, getNetworkDisplay, onRampCurrencies } from 'views/BuyCrypto/constants'
 
 const DropDownContainer = styled.div<{ error: boolean }>`
   width: 100%;
@@ -51,15 +51,12 @@ const ButtonAsset = ({
   currencyLoading: boolean
 }) => {
   const { t } = useTranslation()
+  const isBtcNative = selectedCurrency.chainId === NATIVE_BTC.chainId
   return (
     <Flex>
-      {id === 'onramp-fiat' ? (
-        <FiatLogo currency={selectedCurrency} size="24px" style={{ marginRight: '8px' }} />
-      ) : (
-        <CurrencyLogo currency={selectedCurrency} size="24px" style={{ marginRight: '8px' }} />
-      )}
+      {isBtcNative ? <BtcLogo /> : <EvmLogo mode={id} currency={selectedCurrency as Token} size={26} />}
       {currencyLoading ? null : (
-        <Text id="pair" bold>
+        <Text id="pair" bold marginLeft="8px">
           {(selectedCurrency && selectedCurrency.symbol && selectedCurrency.symbol.length > 10
             ? `${selectedCurrency.symbol.slice(0, 4)}...${selectedCurrency.symbol.slice(
                 selectedCurrency.symbol.length - 5,
@@ -101,8 +98,12 @@ export const BuyCryptoSelector = ({
   bottomElement,
   ...props
 }: BuyCryptoSelectorProps) => {
+  const { t } = useTranslation()
   const tokensToShow = id === 'onramp-fiat' ? Object.values(fiatCurrencyMap) : onRampCurrencies
-  const networkDisplay = getNetworkDisplay(selectedCurrency?.chainId)
+  const isBtcNative = selectedCurrency && selectedCurrency.chainId === NATIVE_BTC.chainId
+  const btcNetworkDisplayName = t('Bitcoin Network')
+
+  const networkDisplay = isBtcNative ? btcNetworkDisplayName : getNetworkDisplay(selectedCurrency?.chainId)
 
   const [onPresentCurrencyModal] = useModal(
     <OnRampCurrencySearchModal

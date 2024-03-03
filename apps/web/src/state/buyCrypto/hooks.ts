@@ -2,6 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { Currency } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom, useAtomValue } from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
 import ceil from 'lodash/ceil'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
@@ -11,6 +12,12 @@ import { useAccount } from 'wagmi'
 import { Field, replaceBuyCryptoState, selectCurrency, typeInput } from './actions'
 
 const allowTwoDecimalRegex = RegExp(`^\\d+(\\.\\d{0,2})?$`)
+
+const useEnableBtcPurchases = atomWithStorage<boolean>('pcs:enable-buy-btc-native', false)
+
+export function useAllowBtcPurchases() {
+  return useAtom(useEnableBtcPurchases)
+}
 
 export function useBuyCryptoState() {
   return useAtomValue(buyCryptoReducerAtom)

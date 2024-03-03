@@ -24,7 +24,7 @@ export type GetOnRampLimitReturnType = LimitQuote
 export type GetOnRampLimitParameters = {
   fiatCurrency: string | undefined
   cryptoCurrency: string | undefined
-  network: number | undefined
+  network: number | undefined | 'bitcoin'
 }
 
 export type UseOnRampLimitParameters<selectData = GetOnRampLimitReturnType> = Evaluate<

@@ -2,13 +2,13 @@ import { ChainId } from '@pancakeswap/chains'
 import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
+import { bscTokens } from '@pancakeswap/tokens'
 import {
   AutoColumn,
   AutoRow,
   Box,
   Column,
   Flex,
-  Input,
   Message,
   RefreshIcon,
   Row,
@@ -30,9 +30,11 @@ import { PopOverScreenContainer } from '../components/PopOverScreen/PopOverScree
 import { ProviderGroupItem } from '../components/ProviderSelector/ProviderGroupItem'
 import { ProviderSelector } from '../components/ProviderSelector/ProviderSelector'
 import { TransactionFeeDetails } from '../components/TransactionFeeDetails/TransactionFeeDetails'
-import { fiatCurrencyMap, getChainCurrencyWarningMessages } from '../constants'
+import { NATIVE_BTC, fiatCurrencyMap, getChainCurrencyWarningMessages } from '../constants'
+import { useBtcAddressValidator } from '../hooks/useBitcoinAddressValidtor'
 import { useLimitsAndInputError } from '../hooks/useOnRampInputError'
 import { useOnRampQuotes } from '../hooks/useOnRampQuotes'
+import InputExtended from '../styles'
 import { FormContainer } from './FormContainer'
 import { FormHeader } from './FormHeader'
 
@@ -69,7 +71,9 @@ export function BuyCryptoForm() {
   const [selectedQuote, setSelectedQuote] = useState<OnRampProviderQuote | undefined>(undefined)
   const { onFieldAInput: handleTypeOutput, onCurrencySelection } = useBuyCryptoActionHandlers()
 
-  const inputCurrency = useOnRampCurrency(inputCurrencyId)
+  let inputCurrency = useOnRampCurrency(inputCurrencyId)
+  inputCurrency = inputCurrencyId === `BTC-bitcoin` ? NATIVE_BTC : inputCurrency
+
   const outputCurrency: FiatCurrency = useMemo(() => {
     if (!outputCurrencyId) return fiatCurrencyMap.USD
     return fiatCurrencyMap[outputCurrencyId]
@@ -82,6 +86,16 @@ export function BuyCryptoForm() {
   })
 
   const {
+    data: validAddress,
+    isFetching: fetching,
+    isError: error,
+  } = useBtcAddressValidator({
+    address: searchQuery,
+    network: 'mainnet',
+    currency: inputCurrency,
+  })
+
+  const {
     data: quotes,
     isFetching,
     isError,
@@ -91,7 +105,11 @@ export function BuyCryptoForm() {
     fiatCurrency: outputCurrency?.symbol,
     network: inputCurrency?.chainId,
     fiatAmount: typedValue || defaultAmt,
-    enabled: Boolean(!inputError && typedValue !== '0'),
+    enabled: Boolean(
+      !inputError &&
+        typedValue !== '0' &&
+        (inputCurrency?.chainId === 'bitcoin' ? searchQuery !== '' || searchQuery !== '0' : true),
+    ),
   })
 
   // manage focus on modal show
@@ -118,6 +136,13 @@ export function BuyCryptoForm() {
     },
     [debouncedQuery, onCurrencySelection],
   )
+
+  const resetBuyCryptoState = useCallback(() => {
+    setSearchQuery('')
+    onCurrencySelection(Field.INPUT, bscTokens.bnb)
+    setSelectedQuote(undefined)
+    handleTypeOutput('300')
+  }, [onCurrencySelection, setSelectedQuote, setSearchQuery, handleTypeOutput])
 
   useEffect(() => {
     if (!quotes) return
@@ -160,8 +185,8 @@ export function BuyCryptoForm() {
             }
             value={typedValue || defaultAmt}
             onUserInput={handleTypeOutput}
-            loading={isFetching || !quotes}
-            error={isError || Boolean(inputError)}
+            loading={Boolean(fetching || isFetching || !quotes)}
+            error={Boolean(error || isError || inputError)}
           />
           <BuyCryptoSelector
             id="onramp-crypto"
@@ -176,34 +201,48 @@ export function BuyCryptoForm() {
             bottomElement={<Box pb="12px" />}
             value=""
           />
-          <Row>
-            <Input
-              id="token-search-input"
-              placeholder={t('paste your BTC address here')}
-              scale="lg"
-              autoComplete="off"
-              value={searchQuery}
-              ref={inputRef as RefObject<HTMLInputElement>}
-              onChange={handleInput}
-              onKeyDown={handleEnter}
+          {inputCurrency?.chainId === 'bitcoin' && (
+            <Box pb="16px">
+              <Text pl="8px" fontSize="14px" color={validAddress?.result ? 'success' : 'textSubtle'}>
+                {t('verify your btc address')}
+              </Text>
+              <Row height="64px" pt="8px">
+                <InputExtended
+                  height="60px"
+                  id="token-search-input"
+                  placeholder={t('paste your BTC address here')}
+                  scale="lg"
+                  autoComplete="off"
+                  value={searchQuery}
+                  ref={inputRef as RefObject<HTMLInputElement>}
+                  onChange={handleInput}
+                  onKeyDown={handleEnter}
+                  color="primary"
+                  isSuccess={Boolean(validAddress?.result)}
+                  isWarning={Boolean(searchQuery !== '' && !validAddress?.result)}
+                />
+              </Row>
+            </Box>
+          )}
+
+          {((inputCurrency?.chainId === 'bitcoin' && validAddress?.result) || inputCurrency?.chainId !== 'bitcoin') && (
+            <ProviderSelector
+              id="provider-select"
+              onQuoteSelect={setShowProvidersPopOver}
+              selectedQuote={selectedQuote ?? bestQuoteRef.current}
+              topElement={
+                <AutoRow justifyContent="space-between">
+                  <Text fontSize="14px" pl="8px" color="textSubtle">
+                    {t('total fees: $%fees%', { fees: selectedQuote?.providerFee })}
+                  </Text>
+                </AutoRow>
+              }
+              bottomElement={<TransactionFeeDetails selectedQuote={selectedQuote} />}
+              quoteLoading={isFetching || !quotes}
+              quotes={quotes}
+              error={isError || Boolean(inputError)}
             />
-          </Row>
-          <ProviderSelector
-            id="provider-select"
-            onQuoteSelect={setShowProvidersPopOver}
-            selectedQuote={selectedQuote ?? bestQuoteRef.current}
-            topElement={
-              <AutoRow justifyContent="space-between">
-                <Text fontSize="14px" pl="8px" color="textSubtle">
-                  {t('total fees: $%fees%', { fees: selectedQuote?.providerFee })}
-                </Text>
-              </AutoRow>
-            }
-            bottomElement={<TransactionFeeDetails selectedQuote={selectedQuote} />}
-            quoteLoading={isFetching || !quotes}
-            quotes={quotes}
-            error={isError || Boolean(inputError)}
-          />
+          )}
         </Box>
         {[ChainId.BASE, ChainId.LINEA].includes(chainId) ? (
           <Message variant="warning" padding="16px">
@@ -217,7 +256,11 @@ export function BuyCryptoForm() {
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={inputCurrencyId}
             selectedQuote={selectedQuote}
-            disabled={!quotes || isFetching || isError}
+            disabled={isError || Boolean(inputCurrency?.chainId === 'bitcoin' && !validAddress?.result)}
+            loading={!quotes || isFetching}
+            input={searchQuery}
+            resetBuyCryptoState={resetBuyCryptoState}
+            btcAddress={debouncedQuery}
           />
           <Text color="textSubtle" fontSize="14px" px="4px">
             {t('By continuing you agree to our')}{' '}

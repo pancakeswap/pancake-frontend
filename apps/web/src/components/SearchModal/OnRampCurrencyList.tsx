@@ -1,13 +1,24 @@
 import { ChainNamesExtended } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Token } from '@pancakeswap/sdk'
-import { ArrowForwardIcon, Box, Column, Text, TokenImageWithBadge } from '@pancakeswap/uikit'
+import {
+  ArrowForwardIcon,
+  Box,
+  Column,
+  Flex,
+  QuestionHelper,
+  Text,
+  Toggle,
+  TokenImageWithBadge,
+} from '@pancakeswap/uikit'
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { getImageUrlFromToken } from 'components/TokenImage'
-import { useAllNativeCurrencies } from 'hooks/Tokens'
+import Image from 'next/image'
 import { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
+import { useAllowBtcPurchases } from 'state/buyCrypto/hooks'
 import { styled } from 'styled-components'
-import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
+import { NATIVE_BTC, fiatCurrencyMap } from 'views/BuyCrypto/constants'
 import { RowBetween, RowFixed } from '../Layout/Row'
 
 function currencyKey(currency: Currency): string {
@@ -28,6 +39,25 @@ const MenuItem = styled(RowBetween)<{ disabled: boolean; selected: boolean }>`
   opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
 `
 
+export const EvmLogo = ({ mode, currency, size = 24 }: { mode: string; currency: Token; size?: number }) => {
+  return (
+    <>
+      {mode === 'onramp-fiat' ? (
+        <FiatLogo currency={currency} size={`${size - 3}px`} />
+      ) : (
+        <Box width={`${size}px`} height={`${size}px`}>
+          <TokenImageWithBadge
+            width={size}
+            height={size}
+            primarySrc={getImageUrlFromToken(currency)}
+            chainId={currency.chainId}
+          />
+        </Box>
+      )}
+    </>
+  )
+}
+export const BtcLogo = () => <Image src="/images/btc.svg" alt="bitcoin-logo" width={24} height={24} />
 function OnRampCurrencyRow({
   currency,
   onSelect,
@@ -43,39 +73,54 @@ function OnRampCurrencyRow({
   style: CSSProperties
   mode: string
 }) {
+  const [allowBuyBtc, setAllowBuyBtc] = useAllowBtcPurchases()
+  const { t } = useTranslation()
   const key = currencyKey(currency)
-
+  const isBtcNative = currency.chainId === NATIVE_BTC.chainId
+  const btcNetworkDisplayName = t('Bitcoin Network')
+  const isFiat = Boolean(mode === 'onramp-fiat')
   return (
-    <MenuItem
-      style={style}
-      className={`token-item-${key}`}
-      onClick={() => (isSelected ? null : onSelect())}
-      disabled={isSelected}
-      selected={otherSelected}
-    >
-      {mode === 'onramp-fiat' ? (
-        <FiatLogo currency={currency} size="24px" />
-      ) : (
-        <Box width="28px" height="28px">
-          <TokenImageWithBadge
-            width={28}
-            height={28}
-            primarySrc={getImageUrlFromToken(currency as Token)}
-            chainId={currency.chainId}
-          />
-        </Box>
-      )}
+    <>
+      <Flex justifyContent="flex-end" width="100%" marginTop="15px" paddingRight="20px">
+        {isBtcNative && (
+          <>
+            <QuestionHelper
+              text={t(
+                'Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.',
+              )}
+              placement="top"
+              size="16px"
+              mr="8px"
+            />
+            <Toggle
+              id="toggle-allow-btc-button"
+              scale="sm"
+              checked={allowBuyBtc}
+              onChange={() => setAllowBuyBtc((v) => !v)}
+            />
+          </>
+        )}
+      </Flex>
 
-      <Column>
-        <Text bold>{currency?.symbol}</Text>
-        <Text color="textSubtle" small ellipsis maxWidth="200px">
-          {ChainNamesExtended[currency.chainId]}
-        </Text>
-      </Column>
-      <RowFixed style={{ justifySelf: 'flex-end' }}>
-        <ArrowForwardIcon />
-      </RowFixed>
-    </MenuItem>
+      <MenuItem
+        style={style}
+        className={`token-item-${key}`}
+        onClick={() => (isSelected ? null : onSelect())}
+        disabled={!allowBuyBtc && isBtcNative ? true : isSelected}
+        selected={otherSelected}
+        // zIndex={-}
+      >
+        {isBtcNative ? <BtcLogo /> : <EvmLogo mode={mode} currency={currency as Token} size={28} />}
+        <Column>
+          <Text bold>{currency?.symbol}</Text>
+          <Text color="textSubtle" small ellipsis maxWidth="200px">
+            {isFiat ? currency.name : isBtcNative ? btcNetworkDisplayName : ChainNamesExtended[currency.chainId]}
+          </Text>
+        </Column>
+
+        <RowFixed style={{ justifySelf: 'flex-end' }}>{!isBtcNative && <ArrowForwardIcon />}</RowFixed>
+      </MenuItem>
+    </>
   )
 }
 
@@ -96,10 +141,7 @@ export default function OnRampCurrencyList({
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   mode: string
 }) {
-  const nativeCurrencies = useAllNativeCurrencies()
-  console.log(nativeCurrencies)
   const itemData = useMemo(() => [...currencies], [currencies])
-  console.log(itemData)
   const Row = useCallback(
     ({ data, index, style }) => {
       const currency: Currency = data[index]
@@ -109,7 +151,10 @@ export default function OnRampCurrencyList({
       // with class methods
       let isSelected = false
       let otherSelected = false
-      if (!isFiat && mode !== 'onramp-output') {
+      if ((selectedCurrency?.chainId as any) === 'bitcoin' || (otherCurrency?.chainId as any) === 'bitcoin') {
+        isSelected = Boolean(selectedCurrency && currency && selectedCurrency.chainId === currency.chainId)
+        otherSelected = Boolean(otherCurrency && currency && otherCurrency.chainId === currency.chainId)
+      } else if (!isFiat && mode !== 'onramp-output') {
         isSelected = Boolean(selectedCurrency && currency && selectedCurrency.equals(currency))
         otherSelected = Boolean(otherCurrency && currency && otherCurrency.equals(currency))
       } else {
@@ -133,13 +178,14 @@ export default function OnRampCurrencyList({
 
   const itemKey = useCallback((index: number, data: any) => `${currencyKey(data[index])}-${index}`, [])
 
+  const finalList = mode === 'onramp-crypto' ? [NATIVE_BTC, ...itemData] : itemData
   return (
     <FixedSizeList
       height={height}
       ref={fixedListRef as any}
       width="100%"
-      itemData={itemData}
-      itemCount={itemData.length}
+      itemData={finalList}
+      itemCount={finalList.length}
       itemSize={56}
       itemKey={itemKey}
     >

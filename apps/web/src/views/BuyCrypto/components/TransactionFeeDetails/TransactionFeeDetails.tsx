@@ -30,10 +30,10 @@ export const TransactionFeeDetails = ({ selectedQuote }: TransactionFeeDetailsPr
   return (
     <StyledFeesContainer width="100%" onClick={handleExpandClick}>
       <Flex paddingLeft="8px" justifyContent="space-between" opacity={0.5}>
-        <Text pt="6px" pb="6px" fontSize="14px" color="text3">
-          {t('Transaction details')}
+        <Text pt="8px" pb="4px" fontSize="14px" color="text3">
+          {t('Show transaction details')}
         </Text>
-        <ArrowDropDownIcon />
+        <ArrowDropDownIcon scale="lg" />
       </Flex>
       <StyledNotificationWrapper ref={containerRef} show={show}>
         <Description ref={contentRef} show={show} elementHeight={elementHeight}>

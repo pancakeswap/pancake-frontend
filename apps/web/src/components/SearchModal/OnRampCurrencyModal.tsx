@@ -200,10 +200,9 @@ export default function OnRampCurrencySearchModal({
       </FilterdNetworkWrapper>
 
       <ModalHeader>
-        <ModalTitle>
+        <ModalTitle margin="12px">
           <Heading>{t('Select a Token to Purchase')}</Heading>
         </ModalTitle>
-        <ModalCloseButton onDismiss={onDismiss} />
       </ModalHeader>
       <StyledModalBody>
         <OnRampCurrencySearch

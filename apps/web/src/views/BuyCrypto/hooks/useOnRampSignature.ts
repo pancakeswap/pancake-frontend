@@ -31,10 +31,12 @@ export type UseOnRampSignatureParameters<selectData = GetOnRampSignatureReturnTy
 >
 
 export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
-  parameters: Omit<UseOnRampSignatureParameters<selectData>, 'walletAddress' | 'redirectUrl'>,
+  parameters: Omit<UseOnRampSignatureParameters<selectData>, 'walletAddress' | 'redirectUrl'> & { btcAddress?: string },
 ): UseOnRampSignatureReturnType<selectData> => {
-  const { address: walletAddress } = useAccount()
-  const { quote, externalTransactionId, chainId, ...query } = parameters
+  const { address } = useAccount()
+  const { quote, externalTransactionId, chainId, btcAddress, ...query } = parameters
+
+  const walletAddress = chainId === 'bitcoin' ? btcAddress : address
 
   return useQuery({
     ...query,
@@ -56,7 +58,7 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
       }
 
       const { provider, cryptoCurrency, fiatCurrency, amount } = quote
-      const network = combinedNetworkIdMap[ONRAMP_PROVIDERS[provider]][chainId]
+      const network = chainId === 'bitcoin' ? 0 : combinedNetworkIdMap[ONRAMP_PROVIDERS[provider]][chainId]
       const moonpayCryptoCurrency = `${cryptoCurrency.toLowerCase()}${network}`
 
       const response = await fetch(

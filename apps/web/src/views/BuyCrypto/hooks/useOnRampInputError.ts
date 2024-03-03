@@ -35,7 +35,7 @@ export const useLimitsAndInputError = ({
   const { data: limitsData } = useOnRampLimit({
     fiatCurrency: fiatCurrency?.symbol,
     cryptoCurrency: cryptoCurrency?.symbol,
-    network: cryptoCurrency?.chainId,
+    network: cryptoCurrency?.chainId === 'bitcoin' ? 0 : cryptoCurrency?.chainId,
   })
 
   const baseCurrency = limitsData?.baseCurrency

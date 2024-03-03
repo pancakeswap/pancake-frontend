@@ -1,7 +1,11 @@
-import { Box, Flex } from '@pancakeswap/uikit'
+import { Box, Flex, InputProps } from '@pancakeswap/uikit'
+import { scales } from '@pancakeswap/uikit/components/PancakeToggle/types'
 import { AppBody } from 'components/App'
-import { styled } from 'styled-components'
+import { DefaultTheme, styled } from 'styled-components'
 
+interface StyledInputProps extends InputProps {
+  theme: DefaultTheme
+}
 export const StyledAppBody = styled(AppBody)`
   max-width: 375px;
 `
@@ -114,3 +118,66 @@ export const ModalHeader = styled.div<{ background?: string }>`
     background: ${({ background }) => background || 'transparent'};
   }
 `
+
+/**
+ * Priority: Warning --> Success
+ */
+const getBoxShadow = ({ isSuccess = false, isWarning = false, theme }: StyledInputProps) => {
+  if (isWarning) {
+    return theme.shadows.warning
+  }
+
+  if (isSuccess) {
+    return theme.shadows.success
+  }
+
+  return theme.shadows.inset
+}
+
+const InputExtended = styled('input').withConfig({
+  shouldForwardProp: (props) => !['scale', 'isSuccess', 'isWarning'].includes(props),
+})<InputProps & { height: string }>`
+  background-color: ${({ theme }) => theme.colors.input};
+  border-radius: 16px;
+  box-shadow: ${getBoxShadow};
+  color: ${({ theme }) => theme.colors.text};
+  display: block;
+  font-size: 16px;
+  height: ${({ height }) => height};
+  outline: 0;
+  padding: 0 16px;
+  width: 100%;
+  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.textSubtle};
+  }
+
+  &:disabled {
+    background-color: ${({ theme }) => theme.colors.backgroundDisabled};
+    box-shadow: none;
+    color: ${({ theme }) => theme.colors.textDisabled};
+    cursor: not-allowed;
+  }
+
+  &:focus:not(:disabled) {
+    box-shadow: ${({ theme, isWarning, isSuccess }) => {
+      if (isWarning) {
+        return theme.shadows.warning
+      }
+
+      if (isSuccess) {
+        return theme.shadows.success
+      }
+      return theme.shadows.focus
+    }};
+  }
+`
+
+InputExtended.defaultProps = {
+  scale: scales.MD,
+  isSuccess: false,
+  isWarning: false,
+}
+
+export default InputExtended
