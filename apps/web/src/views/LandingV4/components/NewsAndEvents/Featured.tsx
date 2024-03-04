@@ -1,7 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, HotIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { BlogCard } from 'views/LandingV4/components/NewsAndEvents/BlogCard'
+import { useLatestV4Articles } from 'views/LandingV4/hooks/useAllArticle'
 
 const FeaturedBlog = styled(Flex)`
   flex-wrap: wrap;
@@ -27,6 +29,9 @@ const FeaturedBlog = styled(Flex)`
 export const Featured = () => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
+  const { articlesData, isFetching } = useLatestV4Articles()
+
+  const latestThreeArticle = useMemo(() => articlesData?.data?.slice(0, 3) ?? [], [articlesData.data])
 
   return (
     <Box>
@@ -37,9 +42,16 @@ export const Featured = () => {
         </Text>
       </Flex>
       <FeaturedBlog>
-        <BlogCard isSpecialLayout />
-        <BlogCard />
-        <BlogCard />
+        {!isFetching &&
+          latestThreeArticle.map((article, index) => (
+            <BlogCard
+              key={article.id}
+              isSpecialLayout={index === 0}
+              article={article}
+              imgUrl={article.imgUrl}
+              imgHeight={['200px', '200px', '200px', '200px', '330px']}
+            />
+          ))}
       </FeaturedBlog>
     </Box>
   )
