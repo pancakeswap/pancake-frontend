@@ -7,5 +7,5 @@ export const useSpeedQuote = () => {
   const [speedQuoteEnabled, setSpeedQuote] = useSpeedQuoteState()
   const enabled = Boolean(speedQuoteEnabled ?? featureEnabled)
 
-  return [enabled, setSpeedQuote]
+  return [enabled, setSpeedQuote] as const
 }
