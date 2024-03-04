@@ -4,7 +4,7 @@ import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useState } from 'react'
 import { escapeRegExp } from 'utils'
 
-import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
+import { useUserTransactionTTL } from 'hooks/useTransactionDeadline'
 
 enum SlippageError {
   InvalidInput = 'InvalidInput',
@@ -21,7 +21,7 @@ const THREE_DAYS_IN_SECONDS = 60 * 60 * 24 * 3
 
 const SlippageTabs = () => {
   const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippage()
-  const [ttl, setTtl] = useTransactionDeadline()
+  const [ttl, setTTL] = useUserTransactionTTL()
   const [slippageInput, setSlippageInput] = useState('')
   const [deadlineInput, setDeadlineInput] = useState('')
 
@@ -71,7 +71,7 @@ const SlippageTabs = () => {
     try {
       const valueAsInt: number = Number.parseInt(value) * 60
       if (!Number.isNaN(valueAsInt) && valueAsInt > 60 && valueAsInt < THREE_DAYS_IN_SECONDS) {
-        setTtl(valueAsInt)
+        setTTL(valueAsInt)
       } else {
         deadlineError = DeadlineError.InvalidInput
       }
@@ -181,9 +181,6 @@ const SlippageTabs = () => {
               inputMode="numeric"
               pattern="^[0-9]+$"
               isWarning={!!deadlineError}
-              onBlur={() => {
-                parseCustomDeadline((Number(ttl) / 60).toString())
-              }}
               placeholder={(Number(ttl) / 60).toString()}
               value={deadlineInput}
               onChange={(event) => {
