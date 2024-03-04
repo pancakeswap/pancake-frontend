@@ -1,6 +1,13 @@
-import { ResponseArticleType, ResponseArticleDataType, ResponseCategoriesType, Categories } from '../types'
+import {
+  ArticleDataType,
+  ArticleType,
+  Categories,
+  ResponseArticleDataType,
+  ResponseArticleType,
+  ResponseCategoriesType,
+} from '../types'
+import { transformArticle } from '../utils/transformArticle'
 import { fetchAPI } from './api'
-import { transformArticle, ArticleType, ArticleDataType } from '../utils/transformArticle'
 
 interface GetArticleProps {
   url: string

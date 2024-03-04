@@ -1,3 +1,4 @@
+import { ArticleDataType } from '@pancakeswap/blog'
 import { useTranslation } from '@pancakeswap/localization'
 import { AllBlogIcon, Box, Flex, FlexGap, OptionProps, Select, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useMemo, useState } from 'react'
@@ -5,30 +6,35 @@ import { styled } from 'styled-components'
 import { GradientBox } from 'views/LandingV4/components/GradientBox'
 import { BlogCard } from 'views/LandingV4/components/NewsAndEvents/BlogCard'
 import { ViewMoreButton } from 'views/LandingV4/components/ViewMoreButton'
-import { useTotalGradientBox } from 'views/LandingV4/hooks/totalGradientBox'
+import { MIN_DISPLAY, useTotalGradientBox } from 'views/LandingV4/hooks/totalGradientBox'
+import { useV4Articles, useV4NewsArticle } from 'views/LandingV4/hooks/useAllArticle'
 
 const AllBlogContainer = styled(FlexGap)`
   gap: 24px;
   flex-wrap: wrap;
   margin: 24px 0;
 
+  > a,
   > div {
     width: 100%;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    > a,
     > div {
       width: calc(50% - 12px);
     }
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
+    > a,
     > div {
       width: calc(33.33% - 16px);
     }
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
+    > a,
     > div {
       width: calc(25% - 18px);
     }
@@ -43,36 +49,67 @@ const SelectStyled = styled(Select)`
   }
 `
 
+enum SortOption {
+  ALL_BLOG = 0,
+  OFFICIAL = 1,
+  THIRD_PARTY = 2,
+}
+
 export const AllBlog = () => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
-  const [sortOption, setSortOption] = useState(0)
-  const fakeData = [1, 2, 3, 4]
+  const [sortOption, setSortOption] = useState(SortOption.ALL_BLOG)
   const [isClickedMoreButton, setIsClickedMoreButton] = useState(false)
+
+  const { articlesData: v4Articles } = useV4Articles()
+  const { articlesData: v4NewsData } = useV4NewsArticle()
 
   const options = useMemo(() => {
     return [
       {
         label: t('All Sources'),
-        value: 0,
+        value: SortOption.ALL_BLOG,
       },
       {
         label: t('Official'),
-        value: 1,
+        value: SortOption.OFFICIAL,
       },
       {
         label: t('Third Party'),
-        value: 2,
+        value: SortOption.THIRD_PARTY,
       },
-    ].filter((i) => i.value !== sortOption)
-  }, [t, sortOption])
+    ]
+  }, [t])
 
   const handleSort = (option: OptionProps) => {
     setSortOption(option.value)
   }
 
+  const allBlogData = useMemo(() => {
+    let data: ArticleDataType[] = []
+    const officialBlog = v4Articles.data.slice(3, v4Articles.data.length)
+
+    if (sortOption === SortOption.OFFICIAL) {
+      data = [...officialBlog]
+    }
+
+    if (sortOption === SortOption.THIRD_PARTY) {
+      data = [...v4NewsData.data]
+    }
+
+    if (sortOption === SortOption.ALL_BLOG) {
+      data = [...officialBlog, ...v4NewsData.data]
+    }
+
+    return data.sort((a, b) => new Date(b?.publishedAt).getTime() - new Date(a?.publishedAt).getTime())
+  }, [sortOption, v4Articles.data, v4NewsData.data])
+
+  const filterData = useMemo(() => {
+    return isClickedMoreButton ? allBlogData : allBlogData.slice(0, 4)
+  }, [allBlogData, isClickedMoreButton])
+
   // Calculate need how many gradient box
-  const totalGradientBox = useTotalGradientBox({ isClickedMoreButton, dataLength: fakeData.length })
+  const totalGradientBox = useTotalGradientBox({ isClickedMoreButton, dataLength: filterData.length })
 
   return (
     <Box mt="16px">
@@ -88,19 +125,28 @@ export const AllBlog = () => {
           <SelectStyled
             options={options}
             placeHolderText={t('All Sources')}
-            onOptionChange={(option: OptionProps) => handleSort(option.value)}
+            onOptionChange={(option: OptionProps) => handleSort(option)}
           />
         </Flex>
       </Flex>
       <AllBlogContainer>
-        {fakeData.map((i) => (
-          <BlogCard key={i} isAllBlog imgHeight={['160px']} />
+        {filterData.map((article) => (
+          <BlogCard
+            key={article.id}
+            isAllBlog
+            article={article}
+            imgUrl={article.imgUrl}
+            slug={article.slug}
+            imgHeight={['160px']}
+          />
         ))}
         {totalGradientBox?.map((i) => (
           <GradientBox key={i} />
         ))}
       </AllBlogContainer>
-      <ViewMoreButton />
+      {!isClickedMoreButton && allBlogData.length >= MIN_DISPLAY && (
+        <ViewMoreButton onClick={() => setIsClickedMoreButton(true)} />
+      )}
     </Box>
   )
 }
