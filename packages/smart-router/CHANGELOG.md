@@ -1,5 +1,22 @@
 # @pancakeswap/smart-router
 
+## 5.0.0
+
+### Major Changes
+
+- 610a24a: Introduce v4 router with faster quoting speed
+
+### Patch Changes
+
+- Updated dependencies [610a24a]
+  - @pancakeswap/multicall@3.5.0
+  - @pancakeswap/sdk@5.8.0
+  - @pancakeswap/swap-sdk-core@1.1.0
+  - @pancakeswap/v3-sdk@3.7.12
+  - @pancakeswap/gauges@1.1.1
+  - @pancakeswap/tokens@0.6.7
+  - @pancakeswap/token-lists@0.0.11
+
 ## 4.14.10
 
 ### Patch Changes

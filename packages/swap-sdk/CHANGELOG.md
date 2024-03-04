@@ -1,5 +1,16 @@
 # @pancakeswap/sdk
 
+## 5.8.0
+
+### Minor Changes
+
+- 610a24a: Introduce v4 router with faster quoting speed
+
+### Patch Changes
+
+- Updated dependencies [610a24a]
+  - @pancakeswap/swap-sdk-core@1.1.0
+
 ## 5.7.7
 
 ### Patch Changes
