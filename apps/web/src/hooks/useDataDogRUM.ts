@@ -73,7 +73,7 @@ export function useFeatureFlagEvaluations(evaluations?: FeatureFlagEvaluation[])
   }, [ready, evaluations])
 }
 
-export function useFeatureFlagEvaluation(flagName: string, value?: boolean | string | number) {
+export function useFeatureFlagEvaluation(flagName: string, value?: boolean | string | number | bigint) {
   const ready = useDataDogRUMReady()
 
   useEffect(() => {

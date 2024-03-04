@@ -25,7 +25,7 @@ import { NonfungiblePositionManager, MasterChefV3 } from '@pancakeswap/v3-sdk'
 import { AppBody, AppHeader } from 'components/App'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
-import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useDerivedV3BurnInfo } from 'hooks/v3/useDerivedV3BurnInfo'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
@@ -119,14 +119,14 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
   const [percentForSlider, onPercentSelectForSlider] = useDebouncedChangeHandler(percent, onPercentSelect)
 
   const handleChangePercent = useCallback(
-    (value) => onPercentSelectForSlider(Math.ceil(value)),
+    (value: any) => onPercentSelectForSlider(Math.ceil(value)),
     [onPercentSelectForSlider],
   )
 
   const [allowedSlippage] = useUserSlippage() // custom from users
   // const allowedSlippage = useUserSlippageToleranceWithDefault(DEFAULT_REMOVE_V3_LIQUIDITY_SLIPPAGE_TOLERANCE) // custom from users
 
-  const deadline = useTransactionDeadline() // custom from users settings
+  const [deadline] = useTransactionDeadline() // custom from users settings
   const [attemptingTxn, setAttemptingTxn] = useState(false)
   const [txnHash, setTxnHash] = useState<string | undefined>()
   const [errorMessage, setErrorMessage] = useState<string | undefined>()

@@ -6,7 +6,7 @@ import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 
 import { useIsExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
 import { FeeAmount, MasterChefV3, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
-import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
@@ -123,7 +123,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const isValid = !errorMessage && !invalidRange
 
   // txn values
-  const deadline = useTransactionDeadline() // custom from users settings
+  const [deadline] = useTransactionDeadline() // custom from users settings
   // get formatted amounts
   const formattedAmounts = useMemo(
     () => ({
