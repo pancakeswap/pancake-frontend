@@ -62,7 +62,7 @@ export const formatLocalisedCompactNumber = (number: number, isShort?: boolean):
   const codeFromStorage = getLanguageCodeFromLS()
 
   const isClient = typeof window === 'object'
-  const isSupported = window?.Intl
+  const isSupported = isClient && window?.Intl
 
   // For clients do not support Intl, just return number
   if (isClient && !isSupported) {
