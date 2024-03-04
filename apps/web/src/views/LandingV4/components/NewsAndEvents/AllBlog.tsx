@@ -57,7 +57,7 @@ export const AllBlog = () => {
         value: 0,
       },
       {
-        label: t('Official Blog'),
+        label: t('Official'),
         value: 1,
       },
       {

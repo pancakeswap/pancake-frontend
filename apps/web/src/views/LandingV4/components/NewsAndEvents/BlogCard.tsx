@@ -1,4 +1,5 @@
 import { ArticleDataType } from '@pancakeswap/blog'
+import { useTranslation } from '@pancakeswap/localization'
 import { Box, BoxProps, Card, Flex, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { HeightProps } from 'styled-system'
@@ -38,6 +39,7 @@ export const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
   imgHeight,
   ...props
 }) => {
+  const { t } = useTranslation()
   return (
     <StyledBlogCard {...props}>
       <Card>
@@ -47,15 +49,10 @@ export const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
         >
           <Box
             overflow="hidden"
-            width={isSpecialLayout ? ['100%', '100%', '100%', '100%', '130%'] : ['100%']}
+            width={isSpecialLayout ? ['100%', '100%', '100%', '100%', '180%'] : ['100%']}
             height={isSpecialLayout ? ['200px', '200px', '200px', '200px', '400px'] : imgHeight ?? '200px'}
           >
-            {/* <StyledBackgroundImage style={{ backgroundImage: `url(${imgUrl})` }} /> */}
-            <StyledBackgroundImage
-              style={{
-                backgroundImage: `url('https://img.freepik.com/free-vector/gradient-geometric-modern-background-design_826849-4176.jpg?w=1800&t=st=1708491776~exp=1708492376~hmac=1a36ca65d7f91ebdf21c9052f666b6624283a18b69c9caf5219749cc20889899')`,
-              }}
-            />
+            <StyledBackgroundImage style={{ backgroundImage: `url(${imgUrl})` }} />
           </Box>
           <Flex
             flexDirection="column"
@@ -69,8 +66,7 @@ export const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
               fontSize={isAllBlog ? ['20px'] : ['20px', '20px', '24px']}
               lineHeight={isAllBlog ? ['24px'] : ['24px', '24px', '28px']}
             >
-              {/* {article?.title} */}
-              Unexpected meteor shower lights up the night sky, creating a stunning celestial spectacle
+              {article?.title}
             </StyledLineClamp>
             <StyledLineClamp
               line={2}
@@ -81,17 +77,14 @@ export const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
               fontSize={['12px', '12px', '14px']}
               lineHeight={['20px', '20px', '18px']}
             >
-              {/* {article?.desc} */}
-              Prepare for an extraordinary celestial display as a surprise meteor shower transforms the night sky into a
-              breathtaking cosmic masterpiece
+              {article?.description}
             </StyledLineClamp>
             <Flex mt="auto" flexDirection={isAllBlog ? ['column'] : ['column', 'row']}>
               <Text mr="auto" bold fontSize={['12px', '12px', '14px']} color="textSubtle">
-                From: Platform Name
+                {t('From: %platform%', { platform: article?.newsOutBoundLink ? t('Third Party') : t('Official') })}
               </Text>
               <Text bold fontSize={['12px', '12px', '14px']} color="textSubtle">
-                {/* {article?.createAt} */}
-                2012-12-23
+                {article?.createAt}
               </Text>
             </Flex>
           </Flex>
