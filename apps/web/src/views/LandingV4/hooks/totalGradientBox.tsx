@@ -6,6 +6,8 @@ interface UseTotalGradientBoxProps {
   dataLength: number
 }
 
+export const MIN_DISPLAY = 4
+
 export const useTotalGradientBox = ({ isClickedMoreButton, dataLength }: UseTotalGradientBoxProps) => {
   const { isXs, isSm, isMd, isLg, isXl, isXxl } = useMatchBreakpoints()
 
@@ -16,7 +18,7 @@ export const useTotalGradientBox = ({ isClickedMoreButton, dataLength }: UseTota
     if (isMd) displayNumber = 2
     if (isXs || isSm) displayNumber = 1
 
-    if (isClickedMoreButton) {
+    if (isClickedMoreButton || dataLength < MIN_DISPLAY) {
       return []
     }
 

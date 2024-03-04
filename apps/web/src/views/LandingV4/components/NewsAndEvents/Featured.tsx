@@ -3,24 +3,26 @@ import { Box, Flex, HotIcon, Text, useMatchBreakpoints } from '@pancakeswap/uiki
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { BlogCard } from 'views/LandingV4/components/NewsAndEvents/BlogCard'
-import { useLatestV4Articles } from 'views/LandingV4/hooks/useAllArticle'
+import { useV4Articles } from 'views/LandingV4/hooks/useAllArticle'
 
 const FeaturedBlog = styled(Flex)`
   flex-wrap: wrap;
   justify-content: space-between;
+  align-self: stretch;
 
-  > div {
+> a, >div {
+    display: -webkit-inline-box !important;
     width: 100%;
     margin-bottom: 24px;
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    > div {
+    > a, >div {
       width: calc(50% - 12px);
       margin-bottom: 24px;
     }
 
-    >div: first-child {
+    >a: first-child, >div: first-child, {
       width: 100%;
     }
   }
@@ -29,7 +31,7 @@ const FeaturedBlog = styled(Flex)`
 export const Featured = () => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
-  const { articlesData, isFetching } = useLatestV4Articles()
+  const { articlesData, isFetching } = useV4Articles()
 
   const latestThreeArticle = useMemo(() => articlesData?.data?.slice(0, 3) ?? [], [articlesData.data])
 
@@ -49,6 +51,7 @@ export const Featured = () => {
               isSpecialLayout={index === 0}
               article={article}
               imgUrl={article.imgUrl}
+              slug={article.slug}
               imgHeight={['200px', '200px', '200px', '200px', '330px']}
             />
           ))}

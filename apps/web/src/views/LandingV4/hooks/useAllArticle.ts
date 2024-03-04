@@ -1,7 +1,9 @@
 import { AllArticleType, getArticle } from '@pancakeswap/blog'
 import { useQuery } from '@tanstack/react-query'
 
-export const useLatestV4Articles = (): AllArticleType => {
+const LIMIT = 10
+
+export const useV4Articles = (): AllArticleType => {
   const { data: articlesData, isPending } = useQuery({
     queryKey: ['/latest-v4-articles'],
 
@@ -11,13 +13,22 @@ export const useLatestV4Articles = (): AllArticleType => {
         urlParamsObject: {
           populate: 'categories,image',
           sort: 'createAt:desc',
-          pagination: { limit: 50 },
+          pagination: { limit: LIMIT },
           filters: {
-            categories: {
-              name: {
-                $eq: 'Product', // V4
+            $and: [
+              {
+                newsOutBoundLink: {
+                  $null: true,
+                },
               },
-            },
+              {
+                categories: {
+                  name: {
+                    $eq: 'Product', // V4
+                  },
+                },
+              },
+            ],
           },
         },
       }),
@@ -40,34 +51,52 @@ export const useLatestV4Articles = (): AllArticleType => {
   }
 }
 
-// export const useLatestArticle = (): AllArticleType => {
-//   const { data: articlesData, isPending } = useQuery({
-//     queryKey: ['/latestArticle'],
+export const useV4NewsArticle = (): AllArticleType => {
+  const { data: articlesData, isPending } = useQuery({
+    queryKey: ['/v4-news'],
 
-//     queryFn: () =>
-//       getArticle({
-//         url: '/articles',
-//         urlParamsObject: {
-//           populate: 'categories,image',
-//           sort: 'createAt:desc',
-//           pagination: { limit: 1 },
-//         },
-//       }),
+    queryFn: () =>
+      getArticle({
+        url: '/articles',
+        urlParamsObject: {
+          populate: 'categories,image',
+          sort: 'createAt:desc',
+          filters: {
+            $and: [
+              {
+                categories: {
+                  name: {
+                    $eq: 'News',
+                  },
+                },
+              },
+              {
+                categories: {
+                  name: {
+                    $eq: 'V4',
+                  },
+                },
+              },
+            ],
+          },
+          pagination: { limit: LIMIT },
+        },
+      }),
 
-//     refetchOnReconnect: false,
-//     refetchOnWindowFocus: false,
-//   })
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
-//   return {
-//     isFetching: isPending,
-//     articlesData: articlesData ?? {
-//       data: [],
-//       pagination: {
-//         page: 0,
-//         pageSize: 0,
-//         pageCount: 0,
-//         total: 0,
-//       },
-//     },
-//   }
-// }
+  return {
+    isFetching: isPending,
+    articlesData: articlesData ?? {
+      data: [],
+      pagination: {
+        page: 0,
+        pageSize: 0,
+        pageCount: 0,
+        total: 0,
+      },
+    },
+  }
+}
