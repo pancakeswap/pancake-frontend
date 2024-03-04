@@ -18,7 +18,11 @@ export type CallByGasLimitParams = AbortControl &
     dropUnexecutedCalls?: boolean
 
     // Retry for failed calls with greater gas limit
-    retryFailedCallsWithGreaterLimit?: boolean
+    retryFailedCallsWithGreaterLimit?:
+      | {
+          gasLimitMultiplier: number
+        }
+      | undefined
   }
 
 export async function multicallByGasLimit(
@@ -50,7 +54,7 @@ export async function multicallByGasLimit(
     return callResult
   }
 
-  const retryGasLimitMultiplier = 10n
+  const { gasLimitMultiplier: retryGasLimitMultiplier } = retryFailedCallsWithGreaterLimit
   async function retryFailedCalls(result: CallResult) {
     if (result.results.every((r) => r.success)) {
       return result
@@ -70,7 +74,7 @@ export async function multicallByGasLimit(
       )
       return result
     }
-    callsToRetry = callsToRetry.map((c) => ({ ...c, gasLimit: BigInt(c.gasLimit) * retryGasLimitMultiplier }))
+    callsToRetry = callsToRetry.map((c) => ({ ...c, gasLimit: BigInt(c.gasLimit) * BigInt(retryGasLimitMultiplier) }))
     const retryResult = await callByChunks(splitCallsIntoChunks(callsToRetry, gasLimit), {
       gasBuffer,
       client,

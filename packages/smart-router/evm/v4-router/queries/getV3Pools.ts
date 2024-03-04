@@ -9,6 +9,7 @@ import { getV3PoolsWithoutTicksOnChain } from '../../v3-router/providers'
 import { tickLensAbi } from '../../abis/ITickLens'
 import { V3_TICK_LENS_ADDRESSES } from '../../constants'
 import { getPairCombinations } from '../../v3-router/functions'
+import { getV3PoolFetchConfig } from '../constants'
 
 type WithMulticallGasLimit = {
   gasLimit?: BigintIsh
@@ -83,6 +84,7 @@ async function fillPoolsWithTicks({ pools, clientProvider, gasLimit }: FillPools
   if (!client || !tickLensAddress) {
     throw new Error('Fill pools with ticks failed. No valid public client or tick lens found.')
   }
+  const { gasLimit: gasLimitPerCall, retryGasMultiplier } = getV3PoolFetchConfig(chainId)
   const bitmapIndexes = pools
     .map(({ tick, fee }, i) => buildBitmapIndexList<{ poolIndex: number }>({ currentTick: tick, fee, poolIndex: i }))
     .reduce<{ bitmapIndex: number; poolIndex: number }[]>((acc, cur) => [...acc, ...cur], [])
@@ -94,13 +96,15 @@ async function fillPoolsWithTicks({ pools, clientProvider, gasLimit }: FillPools
         args: [pools[poolIndex].address, bitmapIndex],
         functionName: 'getPopulatedTicksInWord',
       }),
-      gasLimit: 300000n,
+      gasLimit: gasLimitPerCall,
     })),
     {
       chainId,
       client,
       gasLimit,
-      retryFailedCallsWithGreaterLimit: true,
+      retryFailedCallsWithGreaterLimit: {
+        gasLimitMultiplier: retryGasMultiplier,
+      },
     },
   )
   const poolsWithTicks = pools.map((p) => ({ ...p }))

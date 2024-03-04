@@ -7,6 +7,7 @@ import { useMemo } from 'react'
 import { POOLS_FAST_REVALIDATE, POOLS_SLOW_REVALIDATE } from 'config/pools'
 import { v3Clients } from 'utils/graphql'
 import { createViemPublicClientGetter, getViemClients } from 'utils/viem'
+import { tracker } from 'utils/datadog'
 
 import { getPoolTicks } from './v3/useAllV3TicksQuery'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
@@ -150,11 +151,19 @@ export function useV3PoolsWithTicksOnChain(
     queryFn: async ({ signal }) => {
       const clientProvider = createViemPublicClientGetter({ transportSignal: signal })
       try {
+        const startTime = performance.now()
+        const label = `[V3_POOLS_WITH_TICKS_ON_CHAIN] chain ${currencyA?.chainId} ${currencyA?.symbol} - ${currencyB?.symbol}. (multicall gas limit: ${gasLimit})`
         const res = await V4Router.getV3CandidatePools({
           currencyA,
           currencyB,
           clientProvider,
           gasLimit,
+        })
+        const duration = Math.floor(performance.now() - startTime)
+        tracker.log(`[PERF] ${label} duration:${duration}ms`, {
+          chainId: currencyA?.chainId,
+          label: key,
+          duration,
         })
         return res
       } catch (e) {
