@@ -9,12 +9,12 @@ import {
 } from '@pancakeswap/uikit'
 import { useMessages } from '@web3inbox/widget-react'
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
-import { useAppDispatch } from 'state'
 import { setHasUnread } from 'state/notifications/actions'
 import { useHasUnreadNotifications } from 'state/notifications/hooks'
 import useSendPushNotification from 'views/Notifications/hooks/sendPushNotification'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
 import { PAGE_VIEW } from 'views/Notifications/types'
+import { useNotificationsState } from 'state/notifications/reducer'
 
 interface InotificationBellProps {
   unread: boolean
@@ -40,7 +40,7 @@ const NotificationMenu: React.FC<
   }
 > = ({ children, isMenuOpen, setIsMenuOpen, viewIndex, subscriptionId, account }) => {
   const hasUnread = useHasUnreadNotifications(subscriptionId)
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useNotificationsState()
   const { messages: notifications } = useMessages(account)
   const { requestNotificationPermission } = useSendPushNotification()
 

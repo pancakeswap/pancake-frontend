@@ -20,12 +20,12 @@ import {
 import { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useMessages, useSubscription } from '@web3inbox/widget-react'
 import React, { useCallback, useMemo, useState } from 'react'
-import { useAppDispatch } from 'state'
 import { addArchivedNotification, setHasUnread, setImportantAlerts } from 'state/notifications/actions'
 import { useAllNotifications, useImportantNotificationsOnly } from 'state/notifications/hooks'
 import { styled } from 'styled-components'
 import { NotificationFilterTypes } from 'views/Notifications/constants'
 import { NotificationContainerStyled } from 'views/Notifications/styles'
+import { useNotificationsState } from 'state/notifications/reducer'
 import { NotificationHeader } from '../components/NotificationHeader/NotificationHeader'
 import NotificationItem from '../components/NotificationItem/NotificationItem'
 import { SubsctiptionType } from '../types'
@@ -86,7 +86,7 @@ const NotificationView = ({
   const [notificationType, setNotificationType] = useState<string>('All')
   const [isClosing, setIsClosing] = useState<boolean>(false)
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Latest)
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useNotificationsState()
   const { isMobile } = useMatchBreakpoints()
   const mobileHeight = window?.innerHeight
 

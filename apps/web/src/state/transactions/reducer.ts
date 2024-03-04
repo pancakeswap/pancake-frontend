@@ -3,6 +3,7 @@ import { Order } from '@gelatonetwork/limit-orders-lib'
 import { createReducer } from '@reduxjs/toolkit'
 import { confirmOrderCancellation, confirmOrderSubmission, saveOrder } from 'utils/localStorageOrders'
 import { Hash } from 'viem'
+import { atomWithStorage, createJSONStorage, useReducerAtom } from 'jotai/utils'
 import { resetUserState } from '../global/actions'
 import {
   FarmTransactionStatus,
@@ -42,7 +43,7 @@ export interface TransactionState {
 
 export const initialState: TransactionState = {}
 
-export default createReducer(initialState, (builder) =>
+export const transactionReducer = createReducer(initialState, (builder) =>
   builder
     .addCase(
       addTransaction,
@@ -121,3 +122,11 @@ export default createReducer(initialState, (builder) =>
       }
     }),
 )
+
+const storage = createJSONStorage<TransactionState>(() => localStorage)
+
+const transactionsAtom = atomWithStorage('pcs:transactions', initialState, storage)
+
+export function useTransactionState() {
+  return useReducerAtom(transactionsAtom, transactionReducer)
+}

@@ -1,4 +1,5 @@
 import { useLayoutEffect, useState } from 'react'
+import { useIsomorphicEffect } from '@pancakeswap/uikit'
 
 export function checkIsIOS() {
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
@@ -12,7 +13,7 @@ export function checkIsIOS() {
 
 export const useIsIOS = () => {
   const [isIOS, setIsIOS] = useState(false)
-  useLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     if (checkIsIOS()) {
       setIsIOS(true)
     }

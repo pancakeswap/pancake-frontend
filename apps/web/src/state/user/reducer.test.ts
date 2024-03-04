@@ -1,12 +1,12 @@
 import { createStore, Store } from 'redux'
 import { updateVersion } from '../global/actions'
-import reducer, { initialState, UserState } from './reducer'
+import { userReducer, initialState, UserState } from './reducer'
 
 describe('swap reducer', () => {
   let store: Store<UserState>
 
   beforeEach(() => {
-    store = createStore(reducer, initialState)
+    store = createStore(userReducer, initialState)
   })
 
   describe('updateVersion', () => {

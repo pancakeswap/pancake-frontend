@@ -1,4 +1,5 @@
-import { useLayoutEffect, useCallback, useRef } from 'react'
+import { useCallback, useRef } from 'react'
+import { useIsomorphicEffect } from '@pancakeswap/uikit'
 
 export const useDrawSequenceImages = (
   imagePath: string,
@@ -37,7 +38,7 @@ export const useDrawSequenceImages = (
     [canvasRef, imageCount, onplayEnd, loop, intervalRef],
   )
 
-  useLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     for (let i = 0; i < imageCount; i++) {
       const image = new Image()
       image.src = `${imagePath}/${i}.png`

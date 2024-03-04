@@ -1,12 +1,12 @@
 import { ModalV2 } from '@pancakeswap/uikit'
-import { useAppDispatch } from 'state'
 import { toggleFarmTransactionModal } from 'state/global/actions'
 import { useFarmHarvestTransaction } from 'state/global/hooks'
+import { useTransactionState } from 'state/transactions/reducer'
 import FarmTransactionModal from './FarmTransactionModal'
 
 const TransactionsDetailModal = () => {
   const { showModal } = useFarmHarvestTransaction()
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useTransactionState()
 
   const closeModal = () => {
     dispatch(toggleFarmTransactionModal({ showModal: false }))

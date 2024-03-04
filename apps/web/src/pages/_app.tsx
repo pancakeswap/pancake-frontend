@@ -20,13 +20,13 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Script from 'next/script'
 import { Fragment } from 'react'
-import { PersistGate } from 'redux-persist/integration/react'
 
 import { useDataDogRUM } from 'hooks/useDataDogRUM'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
 import { useInitGlobalWorker } from 'hooks/useWorker'
-import { persistor, useStore } from 'state'
+import { useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
+import UpdateUserState from 'components/UpdateUserState'
 import { Blocklist, Updaters } from '..'
 import { SEO } from '../../next-seo.config'
 import Providers from '../Providers'
@@ -98,10 +98,10 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
           <ResetCSS />
           <GlobalStyle />
           <GlobalCheckClaimStatus excludeLocations={[]} />
-          <PersistGate loading={null} persistor={persistor}>
+          <UpdateUserState>
             <Updaters />
             <App {...props} />
-          </PersistGate>
+          </UpdateUserState>
         </Blocklist>
       </Providers>
       <Script

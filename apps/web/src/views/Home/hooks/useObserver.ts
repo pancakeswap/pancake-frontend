@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react'
+import { useIsomorphicEffect } from '@pancakeswap/uikit'
 
 function addObserverOnce(el: HTMLElement, callback: () => void) {
   // We are creating a new IntersectionObserver instance
@@ -35,7 +35,7 @@ function addObserver(el: HTMLElement, callback: () => void, leaveCallBack: () =>
 }
 
 export const useObserverOnce = (element: React.RefObject<HTMLDivElement>, callback: () => void) => {
-  useLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     if (element.current) addObserverOnce(element.current, callback)
   }, [element, callback])
 }
@@ -45,7 +45,7 @@ export const useObserver = (
   callback: () => void,
   leaveCallBack: () => void,
 ) => {
-  useLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     if (element.current) addObserver(element.current, callback, leaveCallBack)
   }, [element, callback, leaveCallBack])
 }
