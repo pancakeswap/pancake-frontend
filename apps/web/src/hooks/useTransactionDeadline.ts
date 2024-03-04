@@ -14,9 +14,9 @@ export default function useTransactionDeadline(): bigint | undefined {
   const ttl = useSelector<AppState, number>((state) => state.user.userDeadline)
   const blockTimestamp = useCurrentBlockTimestamp()
   return useMemo(() => {
+    if (blockTimestamp && ttl) return blockTimestamp + BigInt(ttl)
     if (blockTimestamp && chainId && L2_CHAIN_IDS.includes(chainId))
       return blockTimestamp + BigInt(L2_DEADLINE_FROM_NOW)
-    if (blockTimestamp && ttl) return blockTimestamp + BigInt(ttl)
     return undefined
   }, [blockTimestamp, ttl, chainId])
 }
