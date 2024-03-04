@@ -1,4 +1,10 @@
-import { useAudioPlay, useExpertMode, useUserSingleHopOnly, useUserSlippage } from '@pancakeswap/utils/user'
+import {
+  useAudioPlay,
+  useExpertMode,
+  useUserSingleHopOnly,
+  useUserSlippage,
+  useSpeedQuote,
+} from '@pancakeswap/utils/user'
 
 import { useFeatureFlagEvaluation } from 'hooks/useDataDogRUM'
 import useTheme from 'hooks/useTheme'
@@ -47,15 +53,17 @@ export function useGlobalSettingsEvaluation() {
   const [split] = useUserSplitRouteEnable()
   const [isMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const [singleHopOnly] = useUserSingleHopOnly()
+  const [speedQuote] = useSpeedQuote()
   useFeatureFlagEvaluation('global-settings-routing-stableswap', isStableSwapByDefault)
   useFeatureFlagEvaluation('global-settings-routing-v2', v2Enable)
   useFeatureFlagEvaluation('global-settings-routing-v3', v3Enable)
   useFeatureFlagEvaluation('global-settings-routing-split', split)
   useFeatureFlagEvaluation('global-settings-routing-mm', isMMLinkedPoolByDefault)
   useFeatureFlagEvaluation('global-settings-routing-single-hop', singleHopOnly)
+  useFeatureFlagEvaluation('global-settings-speed-quote', speedQuote)
 
   const [userSlippageTolerance] = useUserSlippage()
   const [ttl] = useTransactionDeadline()
   useFeatureFlagEvaluation('tx-settings-slippage', userSlippageTolerance)
-  useFeatureFlagEvaluation('tx-settings-ttl', ttl === undefined ? ttl : Number(ttl))
+  useFeatureFlagEvaluation('tx-settings-ttl', ttl)
 }
