@@ -1,5 +1,16 @@
 # @pancakeswap/multicall
 
+## 3.5.0
+
+### Minor Changes
+
+- 610a24a: Introduce v4 router with faster quoting speed
+
+### Patch Changes
+
+- Updated dependencies [610a24a]
+  - @pancakeswap/sdk@5.8.0
+
 ## 3.4.2
 
 ### Patch Changes
