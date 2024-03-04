@@ -80,3 +80,40 @@ export function getSwapInput({ amount, ...rest }: GetSwapOutputParams) {
 export function getSwapInputWithtouFee(params: Omit<GetSwapOutputParams, 'fee'>) {
   return getSwapInput({ ...params, fee: new Percent(0) })
 }
+
+function createQuoteGetter(isExactIn: boolean) {
+  const getSwapQuote = isExactIn ? getSwapOutput : getSwapInput
+  const applySwap = (
+    balances: CurrencyAmount<Currency>[],
+    amount: CurrencyAmount<Currency>,
+    quote: CurrencyAmount<Currency>,
+  ): CurrencyAmount<Currency>[] =>
+    balances.map((b) => {
+      if (b.currency.equals(amount.currency)) {
+        return isExactIn ? b.add(amount) : b.subtract(amount)
+      }
+      if (b.currency.equals(quote.currency)) {
+        return isExactIn ? b.subtract(quote) : b.add(quote)
+      }
+      return b
+    })
+
+  return function getQuote(
+    params: GetSwapOutputParams,
+  ): [CurrencyAmount<Currency>, Pick<GetSwapOutputParams, 'balances' | 'fee' | 'amplifier'>] {
+    const { balances, amplifier, fee, amount } = params
+    const quote = getSwapQuote(params)
+    return [
+      quote,
+      {
+        balances: applySwap(balances, amount, quote),
+        amplifier,
+        fee,
+      },
+    ]
+  }
+}
+
+export const getQuoteExactIn = createQuoteGetter(true)
+
+export const getQuoteExactOut = createQuoteGetter(false)

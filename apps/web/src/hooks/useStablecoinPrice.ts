@@ -56,7 +56,7 @@ export function useStablecoinPrice(
     maxSplits: 0,
     enabled: Boolean(!isLoading && !priceFromApi && shouldEnabled),
     autoRevalidate: false,
-    type: 'api',
+    type: 'quoter',
   })
 
   const price = useMemo(() => {

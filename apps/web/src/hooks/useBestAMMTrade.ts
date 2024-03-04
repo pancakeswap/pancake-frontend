@@ -7,9 +7,10 @@ import {
   QuoteProvider,
   SmartRouter,
   SmartRouterTrade,
+  V4Router,
 } from '@pancakeswap/smart-router/evm'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react'
 
 import { QUOTING_API } from 'config/constants/endpoints'
@@ -25,11 +26,20 @@ import {
   CommonPoolsParams,
   PoolsWithState,
   useCommonPoolsLite,
+  useCommonPoolsOnChain,
   useCommonPools as useCommonPoolsWithTicks,
 } from './useCommonPools'
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
 import { useGlobalWorker } from './useWorker'
+import { useSpeedQuote } from './useSpeedQuote'
+
+export class NoValidRouteError extends Error {
+  constructor(message?: string) {
+    super(message)
+    this.name = 'NoValidRouteError'
+  }
+}
 
 SmartRouter.logger.enable('error,log')
 
@@ -69,6 +79,7 @@ interface useBestAMMTradeOptions extends Options {
 
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
   const { amount, baseCurrency, currency, autoRevalidate, enabled = true } = params
+  const [speedQuoteEnabled] = useSpeedQuote()
   const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
 
   const isQuoterEnabled = useMemo(
@@ -94,11 +105,28 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const quoterAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled
 
-  const bestTradeFromQuoterWorker = useBestAMMTradeFromQuoterWorker({
+  const bestTradeFromOffchainQuoter = useBestAMMTradeFromOffchainQuoter({
     ...params,
-    enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled),
+    enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled && speedQuoteEnabled),
     autoRevalidate: quoterAutoRevalidate,
   })
+
+  const noValidRouteFromOffchainQuoter =
+    Boolean(amount) &&
+    !bestTradeFromOffchainQuoter.trade &&
+    !bestTradeFromOffchainQuoter.isLoading &&
+    bestTradeFromOffchainQuoter.error instanceof NoValidRouteError
+
+  const shouldFallbackQuoterOnChain = !speedQuoteEnabled || noValidRouteFromOffchainQuoter
+  const bestTradeFromOnChainQuoter = useBestAMMTradeFromQuoterWorker({
+    ...params,
+    enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled && shouldFallbackQuoterOnChain),
+    autoRevalidate: quoterAutoRevalidate,
+  })
+
+  const bestTradeFromQuoterWorker = shouldFallbackQuoterOnChain
+    ? bestTradeFromOnChainQuoter
+    : bestTradeFromOffchainQuoter
 
   return useMemo(
     () => (isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoterWorker),
@@ -137,6 +165,7 @@ function bestTradeHookFactory({
     const { gasPrice } = useFeeDataWithGasPrice()
     const gasLimit = useMulticallGasLimit(currency?.chainId)
     const currenciesUpdated = usePropsChanged(baseCurrency, currency)
+    const queryClient = useQueryClient()
 
     const keepPreviousDataRef = useRef<boolean>(true)
 
@@ -146,7 +175,7 @@ function bestTradeHookFactory({
 
     const blockNumber = useCurrentBlock()
     const {
-      refresh,
+      refresh: refreshPools,
       pools: candidatePools,
       loading,
       syncing,
@@ -183,6 +212,7 @@ function bestTradeHookFactory({
       fetchStatus,
       isPlaceholderData,
       error,
+      refetch,
     } = useQuery({
       queryKey: [
         key,
@@ -272,6 +302,15 @@ function bestTradeHookFactory({
     const isValidating = fetchStatus === 'fetching'
     const isLoading = status === 'pending' || isPlaceholderData
 
+    const refresh = useCallback(async () => {
+      await refreshPools()
+      await queryClient.invalidateQueries({
+        queryKey: [key],
+        refetchType: 'none',
+      })
+      refetch()
+    }, [refreshPools, queryClient, refetch])
+
     return {
       refresh,
       trade,
@@ -305,6 +344,66 @@ export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   createQuoteProvider,
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
+})
+
+type V4GetBestTradeParams = Parameters<typeof SmartRouter.getBestTrade>
+type V4GetBestTradeReturnType = Omit<Exclude<Awaited<ReturnType<typeof V4Router.getBestTrade>>, undefined>, 'graph'>
+
+function createUseWorkerGetBestTradeOffchain() {
+  return function useWorkerGetBestTradeOffchain(): (
+    ...args: V4GetBestTradeParams
+  ) => Promise<V4GetBestTradeReturnType | null> {
+    const worker = useGlobalWorker()
+
+    return useCallback(
+      async (
+        amount,
+        currency,
+        tradeType,
+        { maxHops, allowedPoolTypes, gasPriceWei, signal, poolProvider, maxSplits },
+      ) => {
+        if (!worker) {
+          throw new Error('Quote worker not initialized')
+        }
+        const candidatePools = await poolProvider.getCandidatePools({
+          currencyA: amount.currency,
+          currencyB: currency,
+          protocols: allowedPoolTypes,
+        })
+        try {
+          const result = await worker.getBestTradeOffchain({
+            chainId: currency.chainId,
+            currency: SmartRouter.Transformer.serializeCurrency(currency),
+            tradeType,
+            amount: {
+              currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
+              value: amount.quotient.toString(),
+            },
+            gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
+            maxHops,
+            maxSplits,
+            candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
+            signal,
+          })
+          if (!result) {
+            throw new NoValidRouteError()
+          }
+          return V4Router.Transformer.parseTrade(currency.chainId, result) ?? null
+        } catch (e) {
+          console.error(e)
+          throw new NoValidRouteError()
+        }
+      },
+      [worker],
+    )
+  }
+}
+
+export const useBestAMMTradeFromOffchainQuoter = bestTradeHookFactory({
+  key: 'useBestAMMTradeFromOffchainQuoter',
+  useCommonPools: useCommonPoolsOnChain,
+  createQuoteProvider,
+  useGetBestTrade: createUseWorkerGetBestTradeOffchain(),
 })
 
 export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({

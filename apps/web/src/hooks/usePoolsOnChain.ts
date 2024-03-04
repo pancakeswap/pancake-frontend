@@ -78,7 +78,7 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
       refetchOnWindowFocus: false,
     })
 
-    const { refetch, data, isLoading, isFetching: isValidating } = poolState
+    const { refetch, data, isLoading, isFetching: isValidating, dataUpdatedAt } = poolState
     useEffect(() => {
       // Revalidate pools if block number increases
       if (
@@ -99,6 +99,7 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
       syncing: isValidating,
       blockNumber: data?.blockNumber,
       key: data?.key,
+      dataUpdatedAt,
     }
   }
 }

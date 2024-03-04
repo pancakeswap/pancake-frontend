@@ -17,8 +17,8 @@ interface UseConfirmModalStateProps {
   isExpertMode: boolean
   currentAllowance?: CurrencyAmount<Currency>
   onConfirm: () => Promise<void>
-  approveCallback: () => Promise<SendTransactionResult>
-  revokeCallback: () => Promise<SendTransactionResult>
+  approveCallback: () => Promise<SendTransactionResult | undefined>
+  revokeCallback: () => Promise<SendTransactionResult | undefined>
 }
 
 function isInApprovalPhase(confirmModalState: ConfirmModalState) {
@@ -122,7 +122,7 @@ export const useConfirmModalState = ({
   }, [generateRequiredSteps, performStep])
 
   const checkHashIsReceipted = useCallback(
-    async (hash) => {
+    async (hash: `0x${string}`) => {
       const receipt: any = await waitForTransaction({ hash, chainId })
       if (receipt.status === 'success') {
         performStep(ConfirmModalState.COMPLETED)
@@ -170,7 +170,7 @@ export const useConfirmModalState = ({
 
   useEffect(() => {
     if (txHash && confirmModalState === ConfirmModalState.PENDING_CONFIRMATION && approval === ApprovalState.APPROVED) {
-      checkHashIsReceipted(txHash)
+      checkHashIsReceipted(txHash as `0x${string}`)
     }
   }, [approval, txHash, confirmModalState, checkHashIsReceipted, performStep])
 

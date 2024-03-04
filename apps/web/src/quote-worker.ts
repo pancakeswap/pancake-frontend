@@ -1,6 +1,6 @@
 import 'utils/workerPolyfill'
 
-import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { SmartRouter, V4Router } from '@pancakeswap/smart-router/evm'
 import { Call } from 'state/multicall/actions'
 import { fetchChunk } from 'state/multicall/fetchChunk'
 import { getLogger } from 'utils/datadog'
@@ -72,7 +72,15 @@ export type WorkerMultiChunkEvent = [
   },
 ]
 
-export type WorkerEvent = WorkerGetBestTradeEvent | WorkerMultiChunkEvent | AbortEvent
+export type WorkerGetBestTradeOffchainEvent = [
+  id: number,
+  message: {
+    cmd: 'getBestTradeOffchain'
+    params: V4Router.APISchema.RouterPostParams
+  },
+]
+
+export type WorkerEvent = WorkerGetBestTradeEvent | WorkerMultiChunkEvent | AbortEvent | WorkerGetBestTradeOffchainEvent
 
 // Manage the abort actions for each message
 const messageAbortControllers = new Map<number, AbortController>()
@@ -186,6 +194,59 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
           {
             success: true,
             result: res && serializeTrade(res),
+          },
+        ])
+      })
+      .catch((err) => {
+        postMessage([
+          id,
+          {
+            success: false,
+            error: err.message,
+          },
+        ])
+      })
+      .finally(cleanupAbortController)
+  }
+
+  if (message.cmd === 'getBestTradeOffchain') {
+    const parsed = V4Router.APISchema.zRouterPostParams.safeParse(message.params)
+    if (parsed.success === false) {
+      postMessage([
+        id,
+        {
+          success: false,
+          error: parsed.error.message,
+        },
+      ])
+      cleanupAbortController()
+      return
+    }
+
+    const { amount, chainId, currency, tradeType, gasPriceWei, maxHops, candidatePools, maxSplits } = parsed.data
+    const onChainProvider = createViemPublicClientGetter({ transportSignal: abortController.signal })
+    const currencyAAmount = parseCurrencyAmount(chainId, amount)
+    const currencyB = parseCurrency(chainId, currency)
+    // FIXME: typing issue
+    const pools = candidatePools.map((pool) => parsePool(chainId, pool as any))
+
+    const gasPrice = gasPriceWei
+      ? BigInt(gasPriceWei)
+      : async () => BigInt((await onChainProvider({ chainId }).getGasPrice()).toString())
+
+    V4Router.getBestTrade(currencyAAmount, currencyB, tradeType, {
+      gasPriceWei: gasPrice,
+      maxHops,
+      maxSplits,
+      candidatePools: pools,
+      signal: abortController.signal,
+    })
+      .then((res) => {
+        postMessage([
+          id,
+          {
+            success: true,
+            result: res && V4Router.Transformer.serializeTrade(res),
           },
         ])
       })

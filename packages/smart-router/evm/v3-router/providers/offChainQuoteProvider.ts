@@ -51,11 +51,11 @@ export function createOffChainQuoteProvider(): QuoteProvider {
           let quoteSuccess = true
           for (const [pool, i] of each(pools)) {
             if (isV2Pool(pool)) {
-              quote = getV2Quote(pool, quote)
+              ;[quote] = getV2Quote(pool, quote)
               continue
             }
             if (isStablePool(pool)) {
-              quote = getStableQuote(pool, quote)
+              ;[quote] = getStableQuote(pool, quote)
               continue
             }
             if (isV3Pool(pool)) {
@@ -105,27 +105,30 @@ export function createOffChainQuoteProvider(): QuoteProvider {
 }
 
 function createGetV2Quote(isExactIn = true) {
-  return function getV2Quote(
-    { reserve0, reserve1 }: V2Pool,
-    amount: CurrencyAmount<Currency>,
-  ): CurrencyAmount<Currency> {
+  return function getV2Quote(p: V2Pool, amount: CurrencyAmount<Currency>): [CurrencyAmount<Currency>, V2Pool] {
+    const { reserve0, reserve1 } = p
     const pair = new Pair(reserve0.wrapped, reserve1.wrapped)
-    const [quote] = isExactIn ? pair.getOutputAmount(amount.wrapped) : pair.getInputAmount(amount.wrapped)
-    return quote
+    const [quote, newPair] = isExactIn ? pair.getOutputAmount(amount.wrapped) : pair.getInputAmount(amount.wrapped)
+    const newPool: V2Pool = { ...p, reserve0: newPair.reserve0, reserve1: newPair.reserve1 }
+    return [quote, newPool]
   }
 }
 
 function createGetStableQuote(isExactIn = true) {
-  const getQuote = isExactIn ? StableSwap.getSwapOutput : StableSwap.getSwapInput
-  return function getStableQuote(pool: StablePool, amount: CurrencyAmount<Currency>): CurrencyAmount<Currency> {
+  const getQuote = isExactIn ? StableSwap.getQuoteExactIn : StableSwap.getQuoteExactOut
+  return function getStableQuote(
+    pool: StablePool,
+    amount: CurrencyAmount<Currency>,
+  ): [CurrencyAmount<Currency>, StablePool] {
     const { amplifier, balances, fee } = pool
-    return getQuote({
+    const [quote, { balances: newBalances }] = getQuote({
       amount,
       balances,
       amplifier,
       outputCurrency: getOutputCurrency(pool, amount.currency),
       fee,
     })
+    return [quote, { ...pool, balances: newBalances }]
   }
 }
 
@@ -133,7 +136,7 @@ function createGetV3Quote(isExactIn = true) {
   return async function getV3Quote(
     pool: IV3Pool,
     amount: CurrencyAmount<Currency>,
-  ): Promise<{ quote: CurrencyAmount<Currency>; numOfTicksCrossed: number } | null> {
+  ): Promise<{ quote: CurrencyAmount<Currency>; numOfTicksCrossed: number; pool: IV3Pool } | null> {
     const { token0, token1, fee, sqrtRatioX96, liquidity, ticks, tick } = pool
     if (!ticks?.length) {
       return null
@@ -150,14 +153,49 @@ function createGetV3Quote(isExactIn = true) {
       }
 
       const { tickCurrent: tickAfter } = poolAfter
+      const newPool: IV3Pool = {
+        ...pool,
+        tick: tickAfter,
+        sqrtRatioX96: poolAfter.sqrtRatioX96,
+        liquidity: poolAfter.liquidity,
+      }
       const numOfTicksCrossed = TickList.countInitializedTicksCrossed(ticks, tick, tickAfter)
       return {
         quote,
         numOfTicksCrossed,
+        pool: newPool,
       }
     } catch (e) {
       // console.warn('No enough liquidity to perform swap', e)
       return null
     }
+  }
+}
+
+export type PoolQuote = {
+  pool: Pool
+  quote: CurrencyAmount<Currency>
+  poolAfter: Pool
+}
+
+export function createPoolQuoteGetter(isExactIn = true) {
+  const getV2Quote = createGetV2Quote(isExactIn)
+  const getStableQuote = createGetStableQuote(isExactIn)
+  const getV3Quote = createGetV3Quote(isExactIn)
+
+  return async function getPoolQuote(pool: Pool, amount: CurrencyAmount<Currency>): Promise<PoolQuote | undefined> {
+    if (isV2Pool(pool)) {
+      const [quote, newPool] = getV2Quote(pool, amount)
+      return { quote, pool, poolAfter: newPool }
+    }
+    if (isV3Pool(pool)) {
+      const quote = await getV3Quote(pool, amount)
+      return quote ? { quote: quote.quote, pool, poolAfter: quote.pool } : undefined
+    }
+    if (isStablePool(pool)) {
+      const [quote, newPool] = getStableQuote(pool, amount)
+      return { quote, pool, poolAfter: newPool }
+    }
+    return undefined
   }
 }

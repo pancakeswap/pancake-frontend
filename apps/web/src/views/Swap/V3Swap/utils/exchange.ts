@@ -1,14 +1,24 @@
-import { Currency, CurrencyAmount, TradeType, Percent, ONE_HUNDRED_PERCENT, Token, Price, ZERO } from '@pancakeswap/sdk'
+import {
+  Currency,
+  CurrencyAmount,
+  TradeType,
+  Percent,
+  ONE_HUNDRED_PERCENT,
+  Token,
+  Price,
+  ZERO,
+  Fraction,
+} from '@pancakeswap/sdk'
 import { SmartRouterTrade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { formatPrice } from '@pancakeswap/utils/formatFractions'
+import { formatPrice, parseNumberToFraction } from '@pancakeswap/utils/formatFractions'
 
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE } from 'config/constants/exchange'
 import { Field } from 'state/swap/actions'
 import { basisPointsToPercent } from 'utils/exchange'
 
 export type SlippageAdjustedAmounts = {
-  [field in Field]?: CurrencyAmount<Currency>
+  [field in Field]?: CurrencyAmount<Currency> | null
 }
 
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
@@ -56,7 +66,9 @@ export function computeTradePriceBreakdown(trade?: SmartRouterTrade<TradeType> |
       }, ONE_HUNDRED_PERCENT),
     )
     // Not accurate since for stable swap, the lp fee is deducted on the output side
-    feePercent = feePercent.add(routeFeePercent.multiply(new Percent(percent, 100)))
+    feePercent = feePercent.add(
+      routeFeePercent.multiply(Percent.toPercent(parseNumberToFraction(percent / 100) || new Fraction(0))),
+    )
 
     const midPrice = SmartRouter.getMidPrice(route)
     outputAmountWithoutPriceImpact = outputAmountWithoutPriceImpact.add(

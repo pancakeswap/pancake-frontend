@@ -3,15 +3,15 @@ import { ChainId } from '@pancakeswap/chains'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { Address } from 'viem'
 import { z } from 'zod'
-import { PoolType } from './types'
+
+import { PoolType } from '../v3-router/types'
 
 const zChainId = z.nativeEnum(ChainId)
 const zFee = z.nativeEnum(FeeAmount)
 const zTradeType = z.nativeEnum(TradeType)
-const zPoolType = z.nativeEnum(PoolType)
-const zPoolTypes = z.array(zPoolType)
 const zAddress = z.custom<Address>((val) => /^0x[a-fA-F0-9]{40}$/.test(val as string))
 const zBigNumber = z.string().regex(/^[0-9]+$/)
+const zSignedBigInt = z.string().regex(/^-?[0-9]+$/)
 const zCurrency = z
   .object({
     address: zAddress,
@@ -19,12 +19,19 @@ const zCurrency = z
     symbol: z.string(),
   })
   .required()
-const zCurrencyAmount = z
+const zTick = z
   .object({
-    currency: zCurrency.required(),
-    value: zBigNumber,
+    index: z.number(),
+    liquidityGross: zSignedBigInt,
+    liquidityNet: zSignedBigInt,
   })
   .required()
+const zCurrencyAmountBase = z.object({
+  currency: zCurrency.required(),
+  value: zBigNumber,
+})
+const zCurrencyAmountOptional = zCurrencyAmountBase.optional()
+const zCurrencyAmount = zCurrencyAmountBase.required()
 
 const zV2Pool = z
   .object({
@@ -45,8 +52,22 @@ const zV3Pool = z
     address: zAddress,
     token0ProtocolFee: z.string(),
     token1ProtocolFee: z.string(),
+    reserve0: zCurrencyAmountOptional,
+    reserve1: zCurrencyAmountOptional,
+    ticks: z.array(zTick).optional(),
   })
-  .required()
+  .required({
+    type: true,
+    token0: true,
+    token1: true,
+    fee: true,
+    liquidity: true,
+    sqrtRatioX96: true,
+    tick: true,
+    address: true,
+    token0ProtocolFee: true,
+    token1ProtocolFee: true,
+  })
 const zStablePool = z
   .object({
     type: z.literal(PoolType.STABLE),
@@ -56,27 +77,7 @@ const zStablePool = z
   })
   .required()
 
-export const zPools = z.array(z.union([zV2Pool, zV3Pool, zStablePool]))
-
-export const zRouterGetParams = z
-  .object({
-    chainId: zChainId,
-    tradeType: zTradeType,
-    amount: zCurrencyAmount,
-    currency: zCurrency,
-    gasPriceWei: zBigNumber.optional(),
-    maxHops: z.number().optional(),
-    maxSplits: z.number().optional(),
-    blockNumber: zBigNumber.optional(),
-    poolTypes: zPoolTypes.optional(),
-  })
-  .required({
-    chainId: true,
-    tradeType: true,
-    amount: true,
-    currency: true,
-    candidatePools: true,
-  })
+export const zPools = z.array(z.union([zV3Pool, zV2Pool, zStablePool]))
 
 export const zRouterPostParams = z
   .object({
@@ -88,11 +89,6 @@ export const zRouterPostParams = z
     gasPriceWei: zBigNumber.optional(),
     maxHops: z.number().optional(),
     maxSplits: z.number().optional(),
-    blockNumber: zBigNumber.optional(),
-    poolTypes: zPoolTypes.optional(),
-    onChainQuoterGasLimit: zBigNumber.optional(),
-    nativeCurrencyUsdPrice: z.number().optional(),
-    quoteCurrencyUsdPrice: z.number().optional(),
   })
   .required({
     chainId: true,
@@ -103,5 +99,4 @@ export const zRouterPostParams = z
   })
 
 export type RouterPostParams = z.infer<typeof zRouterPostParams>
-export type RouterGetParams = z.infer<typeof zRouterGetParams>
 export type SerializedPools = z.infer<typeof zPools>

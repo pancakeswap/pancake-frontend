@@ -29,6 +29,7 @@ test('exports', () => {
       "ADDRESS_THIS",
       "MIXED_ROUTE_QUOTER_ADDRESSES",
       "V3_QUOTER_ADDRESSES",
+      "V3_TICK_LENS_ADDRESSES",
       "getStableSwapPools",
       "isStableSwapSupported",
       "StableSwap",
@@ -37,6 +38,7 @@ test('exports', () => {
       "Transformer",
       "PoolType",
       "RouteType",
+      "V4Router",
     ]
   `)
 })
@@ -44,6 +46,8 @@ test('exports', () => {
 test('StableSwap exports', () => {
   expect(Object.keys(exportedNameSpaces.StableSwap)).toMatchInlineSnapshot(`
     [
+      "getQuoteExactIn",
+      "getQuoteExactOut",
       "getSwapInput",
       "getSwapInputWithtouFee",
       "getSwapOutput",
@@ -86,6 +90,7 @@ test('SmartRouter exports', () => {
       "createPoolProvider",
       "createQuoteProvider",
       "createOffChainQuoteProvider",
+      "createPoolQuoteGetter",
       "PancakeMulticallProvider",
       "createCommonTokenPriceProvider",
       "getTokenUsdPricesBySubgraph",

@@ -15,3 +15,4 @@ export * from './fetcher'
 export * from '@pancakeswap/swap-sdk-core'
 
 export * from './abis/IPancakePair'
+export * from './abis/ERC20'
