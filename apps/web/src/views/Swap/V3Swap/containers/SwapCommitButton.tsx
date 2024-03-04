@@ -129,10 +129,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     error: swapCallbackError,
     reason: revertReason,
   } = useSwapCallback({
-    // FIXME: should use tradeToConfirm for non expert mode
-    // Currently wallchain calls uses useEffect to update the state so there will be a mismatch
-    // Need to do further refactor
-    trade,
+    trade: isExpertMode ? trade : tradeToConfirm,
     deadline,
     onWallchainDrop,
     wallchainMasterInput,
