@@ -33,6 +33,55 @@ const GlobalStyle = createGlobalStyle`
     position: relative;
     z-index: 2;
   }
+
+
+.sensei__table {
+  overflow-x: auto;;
+  width: 100%;
+  border-collapse: collapse;
+}
+.sensei__table-header {
+  height: 24px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  flex-direction: row;
+}
+.sensei__table-header-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.sensei__table-body {
+  display: flex;
+  flex-direction: column;
+}
+.sensei__table-body-tr {
+  height: 48px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.sensei__table-body-tr-hover {
+  padding-left: 32px;
+  padding-right: 32px;
+  border-radius: 8px;
+}
+.sensei__table-body-tr-hover:hover {
+  background-color: #1C1C1E;;
+}
+.sensei__table-body-td {
+  color: #fff;
+  height: 48px;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-shrink: 0;
+}
 `
 
 export default GlobalStyle
