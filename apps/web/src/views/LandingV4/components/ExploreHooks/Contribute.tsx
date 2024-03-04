@@ -6,8 +6,9 @@ import { styled } from 'styled-components'
 const ImageUI = styled(Flex)`
   display: none;
   flex: 4;
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
+  background-position: center right;
+  background-repeat: no-repeat;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     display: flex;
@@ -62,7 +63,7 @@ export const Contribute = () => {
         </Flex>
         <ImageUI
           style={{
-            backgroundImage: `url(https://img.freepik.com/free-vector/gradient-geometric-modern-background-design_826849-4176.jpg?w=1800&t=st=1708491776~exp=1708492376~hmac=1a36ca65d7f91ebdf21c9052f666b6624283a18b69c9caf5219749cc20889899)`,
+            backgroundImage: `url('/images/v4-landing/contribute.png')`,
           }}
         />
       </Flex>

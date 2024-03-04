@@ -1,6 +1,6 @@
-import { Box } from '@pancakeswap/uikit'
+import { Box, useIsomorphicEffect } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { Banner } from 'views/LandingV4/components/Banner'
 import { ExploreHooks } from 'views/LandingV4/components/ExploreHooks'
 import { Features } from 'views/LandingV4/components/Features'
@@ -12,11 +12,11 @@ export const LandingV4 = () => {
   const { asPath } = useRouter()
   const wrapperEl = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
+  useIsomorphicEffect(() => {
     const hash = asPath.split('#')[1]
 
     if (hash) {
-      wrapperEl.current?.scrollIntoView()
+      wrapperEl.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
     }
   }, [asPath])
 
