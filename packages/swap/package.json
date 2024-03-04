@@ -1,0 +1,69 @@
+{
+  "name": "@pancakeswap/swap",
+  "license": "MIT",
+  "version": "0.0.1",
+  "description": "Swap widget",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pancakeswap/pancake-frontend.git",
+    "directory": "packages/swap"
+  },
+  "keywords": [
+    "pancakeswap",
+    "bsc"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest --run",
+    "prepublishOnly": "pnpm run build",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "dependencies": {
+    "@pancakeswap/localization": "workspace:*",
+    "@pancakeswap/uikit": "workspace:*",
+    "@pancakeswap/wagmi": "workspace:*",
+    "@pancakeswap/chains": "workspace:*",
+    "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/utils": "workspace:*",
+    "@pancakeswap/hooks": "workspace:*",
+    "@pancakeswap/smart-router": "workspace:*",
+    "@pancakeswap/widgets-internal": "workspace:*",
+    "@pancakeswap/tokens": "workspace:*",
+    "@pancakeswap/swap-sdk-core": "workspace:*",
+    "@pancakeswap/multicall": "workspace:*",
+    "@pancakeswap/token-lists": "workspace:*",
+    "@pancakeswap/v3-sdk": "workspace:*",
+    "@binance/w3w-utils": "1.1.4",
+    "@binance/w3w-wagmi-connector": "1.1.4",
+    "@cyberlab/cyber-app-sdk": "2.4.4",
+    "bignumber.js": "^9.0.0",
+    "@reduxjs/toolkit": "^1.9.1",
+    "@tanstack/react-query": "^5.18.0",
+    "dayjs": "^1.11.10",
+    "graphql-request": "5.0.0",
+    "jotai": "^2.4.3",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-redux": "^8.0.5",
+    "react-device-detect": "^2.1.2",
+    "redux-persist": "^6.0.0",
+    "styled-components": "6.0.7",
+    "viem": "1.19.11",
+    "wagmi": "1.4.7"
+  },
+  "devDependencies": {
+    "@types/big.js": "^4.0.5",
+    "tsup": "^6.7.0",
+    "@types/lodash": "^4.14.178",
+    "@types/react": "^18.2.21"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": true
+  }
+}

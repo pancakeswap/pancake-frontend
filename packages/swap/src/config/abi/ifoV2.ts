@@ -1,0 +1,519 @@
+export const ifoV2ABI = [
+  {
+    inputs: [
+      {
+        internalType: 'contract IBEP20',
+        name: '_lpToken',
+        type: 'address',
+      },
+      {
+        internalType: 'contract IBEP20',
+        name: '_offeringToken',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_pancakeProfileAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_startBlock',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_endBlock',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: '_adminAddress',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint8',
+        name: 'pid',
+        type: 'uint8',
+      },
+    ],
+    name: 'Deposit',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'offeringAmount',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'excessAmount',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint8',
+        name: 'pid',
+        type: 'uint8',
+      },
+    ],
+    name: 'Harvest',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'campaignId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'numberPoints',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'thresholdPoints',
+        type: 'uint256',
+      },
+    ],
+    name: 'PointParametersSet',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'offeringAmountPool',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'raisingAmountPool',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint8',
+        name: 'pid',
+        type: 'uint8',
+      },
+    ],
+    name: 'PoolParametersSet',
+    type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'adminAddress',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'campaignId',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint8',
+        name: '_pid',
+        type: 'uint8',
+      },
+    ],
+    name: 'depositPool',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'endBlock',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_lpAmount',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_offerAmount',
+        type: 'uint256',
+      },
+    ],
+    name: 'finalWithdraw',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint8',
+        name: '_pid',
+        type: 'uint8',
+      },
+    ],
+    name: 'harvestPool',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'lpToken',
+    outputs: [
+      {
+        internalType: 'contract IBEP20',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'numberPoints',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'numberPools',
+    outputs: [
+      {
+        internalType: 'uint8',
+        name: '',
+        type: 'uint8',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'offeringToken',
+    outputs: [
+      {
+        internalType: 'contract IBEP20',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'pancakeProfile',
+    outputs: [
+      {
+        internalType: 'contract PancakeProfile',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_offeringAmountPool',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_raisingAmountPool',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_limitPerUserInLP',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bool',
+        name: '_hasTax',
+        type: 'bool',
+      },
+      {
+        internalType: 'uint8',
+        name: '_pid',
+        type: 'uint8',
+      },
+    ],
+    name: 'setPool',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'startBlock',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'thresholdPoints',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_campaignId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_numberPoints',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_thresholdPoints',
+        type: 'uint256',
+      },
+    ],
+    name: 'updatePointParameters',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_pid',
+        type: 'uint256',
+      },
+    ],
+    name: 'viewPoolInformation',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_pid',
+        type: 'uint256',
+      },
+    ],
+    name: 'viewPoolTaxRateOverflow',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
+      },
+      {
+        internalType: 'uint8[]',
+        name: '_pids',
+        type: 'uint8[]',
+      },
+    ],
+    name: 'viewUserAllocationPools',
+    outputs: [
+      {
+        internalType: 'uint256[]',
+        name: '',
+        type: 'uint256[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
+      },
+      {
+        internalType: 'uint8[]',
+        name: '_pids',
+        type: 'uint8[]',
+      },
+    ],
+    name: 'viewUserInfo',
+    outputs: [
+      {
+        internalType: 'uint256[]',
+        name: '',
+        type: 'uint256[]',
+      },
+      {
+        internalType: 'bool[]',
+        name: '',
+        type: 'bool[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
+      },
+      {
+        internalType: 'uint8[]',
+        name: '_pids',
+        type: 'uint8[]',
+      },
+    ],
+    name: 'viewUserOfferingAndRefundingAmountsForPools',
+    outputs: [
+      {
+        internalType: 'uint256[3][]',
+        name: '',
+        type: 'uint256[3][]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+] as const

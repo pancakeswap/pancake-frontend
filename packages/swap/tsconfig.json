@@ -1,0 +1,23 @@
+{
+  "extends": "@pancakeswap/tsconfig/base",
+  "include": ["src"],
+  "exclude": ["./dist/**"],
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "es2020",
+    "module": "esnext",
+    "importHelpers": true,
+    "declaration": true,
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist"
+  }
+}
