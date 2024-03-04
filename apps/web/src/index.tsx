@@ -1,7 +1,9 @@
-import { ReactNode, useMemo } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { Grid, Link, Modal, ModalV2, Text } from '@pancakeswap/uikit'
+import { useQuery } from '@tanstack/react-query'
+import { WALLET_API } from 'config/constants/endpoints'
 import { UpdatePositionsReminder } from 'views/Farms/components/UpdatePositionsReminder'
 import { useAccount } from 'wagmi'
-import { BLOCKED_ADDRESSES } from './config/constants'
 import ListsUpdater from './state/lists/updater'
 import MulticallUpdater from './state/multicall/updater'
 import TransactionUpdater from './state/transactions/updater'
@@ -20,11 +22,56 @@ export function Updaters() {
   )
 }
 
-export function Blocklist({ children }: { children: ReactNode }) {
-  const { address: account } = useAccount()
-  const blocked: boolean = useMemo(() => Boolean(account && BLOCKED_ADDRESSES.indexOf(account) !== -1), [account])
+export function Blocklist() {
+  const { address } = useAccount()
+  const { t } = useTranslation()
+
+  const { data } = useQuery({
+    queryKey: ['blocklist', address],
+    enabled: Boolean(address),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+
+    queryFn: async ({ signal }) => {
+      const result = await fetch(`${WALLET_API}/v0/screen/address/${address}`, {
+        signal,
+      })
+        .then((res) => res.json() as Promise<{ result: boolean }>)
+        .catch(() => ({ result: true }))
+      return result.result
+    },
+  })
+
+  const blocked = data === false
+
   if (blocked) {
-    return <div>Blocked address</div>
+    return (
+      <ModalV2 isOpen closeOnOverlayClick={false} disableOutsidePointerEvents>
+        <Modal title={t('Blocked address')} hideCloseButton>
+          <Grid style={{ gap: '16px' }} maxWidth={['100%', null, '400px']}>
+            <Text style={{ wordBreak: 'break-word' }}>{address}</Text>
+            <Text>
+              {t('We have detected that this address is associated with a Prohibited Activity')}{' '}
+              <Link
+                style={{ display: 'inline-block' }}
+                href="https://pancakeswap.finance/terms-of-service"
+                target="_blank"
+              >
+                {t('Learn more')}
+              </Link>
+            </Text>
+            <Text>
+              {t('If you believe that your address has been misclassified, please email')}{' '}
+              <Link style={{ display: 'inline-block' }} href="mailto:info@pancakeswap.com">
+                info@pancakeswap.com
+              </Link>
+            </Text>
+          </Grid>
+        </Modal>
+      </ModalV2>
+    )
   }
-  return <>{children}</>
+
+  return null
 }

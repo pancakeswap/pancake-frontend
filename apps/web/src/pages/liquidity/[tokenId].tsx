@@ -1,6 +1,6 @@
-import { Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { isActiveV3Farm } from '@pancakeswap/farms'
+import { Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
 import {
   AtomBox,
   AutoColumn,
@@ -12,18 +12,18 @@ import {
   ExpandableLabel,
   Flex,
   Heading,
+  Message,
   NotFound,
   PreTitle,
   RowBetween,
+  ScanLink,
   Spinner,
   SyncAltIcon,
   Tag,
   Text,
   Toggle,
-  Message,
   useMatchBreakpoints,
   useModal,
-  ScanLink,
 } from '@pancakeswap/uikit'
 
 import { ConfirmationModalContent, NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
@@ -31,23 +31,30 @@ import { ConfirmationModalContent, NextLinkFromReactRouter } from '@pancakeswap/
 import { MasterChefV3, NonfungiblePositionManager, Pool, Position, isPoolTickInRange } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
+import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useFarm } from 'hooks/useFarm'
 import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
-import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePool } from 'hooks/v3/usePools'
 import { NextSeo } from 'next-seo'
 // import { usePositionTokenURI } from 'hooks/v3/usePositionTokenURI'
 import { Trans, useTranslation } from '@pancakeswap/localization'
+import { useQuery } from '@tanstack/react-query'
 import { LightGreyCard } from 'components/Card'
 import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
+import { MerklSection } from 'components/Merkl/MerklSection'
+import { MerklTag } from 'components/Merkl/MerklTag'
 import { RangePriceSection } from 'components/RangePriceSection'
 import { RangeTag } from 'components/RangeTag'
+import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { Bound } from 'config/constants/types'
+import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useMerklInfo } from 'hooks/useMerkl'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { PoolState } from 'hooks/v3/types'
 import { useV3PositionFees } from 'hooks/v3/useV3PositionFees'
@@ -55,8 +62,10 @@ import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { memo, ReactNode, useCallback, useMemo, useState } from 'react'
+import { ReactNode, memo, useCallback, useMemo, useState } from 'react'
+import { ChainLinkSupportChains } from 'state/info/constant'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { useIsTransactionPending, useTransactionAdder } from 'state/transactions/hooks'
 import { styled } from 'styled-components'
@@ -64,25 +73,16 @@ import { calculateGasMargin, getBlockExploreLink } from 'utils'
 import currencyId from 'utils/currencyId'
 import { formatCurrencyAmount, formatPrice } from 'utils/formatCurrencyAmount'
 import { v3Clients } from 'utils/graphql'
+import { isUserRejected } from 'utils/sentry'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
+import { getViemClients } from 'utils/viem'
 import { CHAIN_IDS } from 'utils/wagmi'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { hexToBigInt } from 'viem'
 import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
 import { useSendTransaction, useWalletClient } from 'wagmi'
-import dayjs from 'dayjs'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { hexToBigInt } from 'viem'
-import { getViemClients } from 'utils/viem'
-import { ChainLinkSupportChains } from 'state/info/constant'
-import { MerklSection } from 'components/Merkl/MerklSection'
-import { MerklTag } from 'components/Merkl/MerklTag'
-import { useMerklInfo } from 'hooks/useMerkl'
-import Link from 'next/link'
-import { isUserRejected } from 'utils/sentry'
-import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import { useQuery } from '@tanstack/react-query'
-import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -844,6 +844,7 @@ export default function PoolPage() {
 }
 
 PoolPage.chains = CHAIN_IDS
+PoolPage.screen = true
 
 type PositionTX = {
   id: string
