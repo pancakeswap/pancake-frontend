@@ -25,7 +25,6 @@ import {
 import {
   useAudioPlay,
   useExpertMode,
-  useSpeedQuote,
   useUserExpertModeAcknowledgement,
   useUserSingleHopOnly,
 } from '@pancakeswap/utils/user'
@@ -41,7 +40,7 @@ import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'st
 import { useUserShowTestnet } from 'state/user/hooks/useUserShowTestnet'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
-import { useSpeedQuoteEnabled } from 'hooks/useSpeedQuoteEnabled'
+import { useSpeedQuote } from 'hooks/useSpeedQuote'
 import {
   useOnlyOneAMMSourceEnabled,
   useRoutingSettingChanged,
@@ -107,8 +106,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgement()
   const [expertMode, setExpertMode] = useExpertMode()
   const [audioPlay, setAudioMode] = useAudioPlay()
-  const speedQuote = useSpeedQuoteEnabled()
-  const [, setSpeedQuote] = useSpeedQuote()
+  const [speedQuote, setSpeedQuote] = useSpeedQuote()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
   const [showTestnet, setShowTestnet] = useUserShowTestnet()

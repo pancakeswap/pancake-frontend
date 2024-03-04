@@ -32,7 +32,7 @@ import {
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
 import { useGlobalWorker } from './useWorker'
-import { useSpeedQuoteEnabled } from './useSpeedQuoteEnabled'
+import { useSpeedQuote } from './useSpeedQuote'
 
 export class NoValidRouteError extends Error {
   constructor(message?: string) {
@@ -79,7 +79,7 @@ interface useBestAMMTradeOptions extends Options {
 
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
   const { amount, baseCurrency, currency, autoRevalidate, enabled = true } = params
-  const speedQuoteEnabled = useSpeedQuoteEnabled()
+  const [speedQuoteEnabled] = useSpeedQuote()
   const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
 
   const isQuoterEnabled = useMemo(
