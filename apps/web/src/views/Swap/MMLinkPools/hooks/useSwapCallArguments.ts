@@ -1,6 +1,6 @@
 import { SwapParameters, TradeType } from '@pancakeswap/sdk'
 import { toHex } from '@pancakeswap/v3-sdk'
-import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useMemo } from 'react'
 import invariant from 'tiny-invariant'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -28,9 +28,9 @@ export function useSwapCallArguments(
   const { account, chainId } = useAccountActiveChain()
 
   const recipient = recipientAddress ?? account
-  const deadline = useTransactionDeadline()
+  const [deadline] = useTransactionDeadline()
   const contract = useMMSwapContract()
-  const mmSigner = MM_SIGNER?.[chainId]?.[rfq?.mmId] ?? ''
+  const mmSigner = (chainId && rfq?.mmId && MM_SIGNER?.[chainId]?.[rfq.mmId]) ?? ''
 
   return useMemo(() => {
     if (!trade || !recipient || !account || !chainId || !deadline || !mmSigner || !rfq) return []
@@ -38,7 +38,7 @@ export function useSwapCallArguments(
     if (!contract) {
       return []
     }
-    const swapMethods = []
+    const swapMethods: any[] = []
 
     swapMethods.push(swapCallParameters(mmSigner, trade, rfq, recipient))
 
@@ -83,6 +83,6 @@ function swapCallParameters(
     methodName,
     // @ts-ignore
     args,
-    value: value ? toHex(value) : undefined,
+    value: value ? toHex(value) : '0x',
   }
 }

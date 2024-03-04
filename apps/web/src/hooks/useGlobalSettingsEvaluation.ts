@@ -3,12 +3,7 @@ import { useAudioPlay, useExpertMode, useUserSingleHopOnly, useUserSlippage } fr
 import { useFeatureFlagEvaluation } from 'hooks/useDataDogRUM'
 import useTheme from 'hooks/useTheme'
 import { useWebNotifications } from 'hooks/useWebNotifications'
-import {
-  useGasPriceManager,
-  useSubgraphHealthIndicatorManager,
-  useUserTransactionTTL,
-  useUserUsernameVisibility,
-} from 'state/user/hooks'
+import { useGasPriceManager, useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
 import { useUserChart } from 'state/user/hooks/useUserChart'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
@@ -19,6 +14,7 @@ import {
   useUserV3SwapEnable,
 } from 'state/user/smartRouter'
 import { useIsSwapHotTokenDisplayFlag } from './useSwapHotTokenDisplay'
+import { useTransactionDeadline } from './useTransactionDeadline'
 
 export function useGlobalSettingsEvaluation() {
   const [gasPrice] = useGasPriceManager()
@@ -59,7 +55,7 @@ export function useGlobalSettingsEvaluation() {
   useFeatureFlagEvaluation('global-settings-routing-single-hop', singleHopOnly)
 
   const [userSlippageTolerance] = useUserSlippage()
-  const [ttl] = useUserTransactionTTL()
+  const [ttl] = useTransactionDeadline()
   useFeatureFlagEvaluation('tx-settings-slippage', userSlippageTolerance)
-  useFeatureFlagEvaluation('tx-settings-ttl', ttl)
+  useFeatureFlagEvaluation('tx-settings-ttl', ttl === undefined ? ttl : Number(ttl))
 }

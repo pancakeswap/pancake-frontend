@@ -28,7 +28,7 @@ import { calculateGasMargin } from 'utils'
 import { calculateSlippageAmount, useRouterContract } from 'utils/exchange'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
-import useTransactionDeadline from '../../hooks/useTransactionDeadline'
+import { useTransactionDeadline } from '../../hooks/useTransactionDeadline'
 import ConfirmAddLiquidityModal from './components/ConfirmAddLiquidityModal'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 
@@ -132,7 +132,7 @@ export default function AddLiquidity({
   })
 
   // txn values
-  const deadline = useTransactionDeadline() // custom from users settings
+  const [deadline] = useTransactionDeadline() // custom from users settings
   const [allowedSlippage] = useUserSlippage() // custom from users
 
   // get the max amounts user can add

@@ -60,7 +60,7 @@ import { formatAmount } from '../../utils/formatInfoNumbers'
 import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
 import Dots from '../../components/Loader/Dots'
 import StyledInternalLink from '../../components/Links'
-import useTransactionDeadline from '../../hooks/useTransactionDeadline'
+import { useTransactionDeadline } from '../../hooks/useTransactionDeadline'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { CurrencyLogo } from '../../components/Logo'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
@@ -112,7 +112,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   })
 
   // txn values
-  const deadline = useTransactionDeadline()
+  const [deadline] = useTransactionDeadline()
   const [allowedSlippage] = useUserSlippage()
 
   const formattedAmounts = {
