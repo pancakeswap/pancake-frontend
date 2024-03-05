@@ -1,13 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BaseAssets } from '@pancakeswap/position-managers'
-import { Currency, Price, Percent } from '@pancakeswap/sdk'
-import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { Currency, Percent, Price } from '@pancakeswap/sdk'
 import { Box, RowBetween, Text } from '@pancakeswap/uikit'
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import { styled } from 'styled-components'
 import { SpaceProps } from 'styled-system'
 import { useTotalStakedInUsd } from 'views/PositionManagers/hooks/useTotalStakedInUsd'
-import BigNumber from 'bignumber.js'
 
 const InfoText = styled(Text).attrs({
   fontSize: '0.875em',
@@ -34,9 +32,9 @@ export interface VaultInfoProps extends SpaceProps {
   poolToken1Amount?: bigint
   token0PriceUSD?: number
   token1PriceUSD?: number
-  rewardPerSecond: string
   earningToken: Currency
   isInCakeRewardDateRange: boolean
+  tokenPerSecond?: number
 }
 
 export const VaultInfo = memo(function VaultInfo({
@@ -49,17 +47,13 @@ export const VaultInfo = memo(function VaultInfo({
   isSingleDepositToken,
   allowDepositToken0,
   allowDepositToken1,
-  rewardPerSecond,
+  tokenPerSecond = 0,
   earningToken,
   managerFee,
   isInCakeRewardDateRange,
   ...props
 }: VaultInfoProps) {
   const { t } = useTranslation()
-
-  const tokenPerSecond = useMemo(() => {
-    return getBalanceAmount(new BigNumber(rewardPerSecond), earningToken.decimals).toNumber()
-  }, [rewardPerSecond, earningToken])
 
   const totalStakedInUsd = useTotalStakedInUsd({
     currencyA,

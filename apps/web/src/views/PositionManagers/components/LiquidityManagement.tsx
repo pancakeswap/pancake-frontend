@@ -1,21 +1,46 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BaseAssets, MANAGER } from '@pancakeswap/position-managers'
 import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
-import { Button } from '@pancakeswap/uikit'
+
+import { AtomBox, Button, Flex, RowBetween } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { Address } from 'viem'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { styled, useTheme } from 'styled-components'
+import { StatusView } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusView'
+import { useBoostStatusPM } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { useAccount } from 'wagmi'
 import { AprDataInfo } from '../hooks'
 import { AddLiquidity } from './AddLiquidity'
-import { CardSection } from './CardSection'
-import { InnerCard } from './InnerCard'
 import { RemoveLiquidity } from './RemoveLiquidity'
 import { RewardAssets } from './RewardAssets'
 import { StakedAssets } from './StakedAssets'
+
+export const ActionContainer = styled(Flex)`
+  width: 100%;
+  border: 1px solid ${({ theme }) => theme.colors.input};
+  border-radius: 16px;
+  flex-grow: 1;
+  flex-basis: 0;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  padding: 16px;
+  gap: 24px;
+`
+export const Title = styled.div`
+  color: ${({ theme }) => theme.colors.textSubtle};
+  font-feature-settings: 'liga' off;
+  font-family: Kanit;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 14.4px */
+  letter-spacing: 0.36px;
+  text-transform: uppercase;
+`
 
 interface Props {
   id: string | number
@@ -66,6 +91,7 @@ interface Props {
   aprTimeWindow?: number
   bCakeWrapper?: Address
   minDepositUSD?: number
+  boosterMultiplier?: number
 }
 
 export const LiquidityManagement = memo(function LiquidityManagement({
@@ -107,7 +133,9 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   aprTimeWindow,
   bCakeWrapper,
   minDepositUSD,
+  boosterMultiplier,
 }: Props) {
+  const { colors } = useTheme()
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
   const [removeLiquidityModalOpen, setRemoveLiquidityModalOpen] = useState(false)
@@ -127,13 +155,15 @@ export const LiquidityManagement = memo(function LiquidityManagement({
     token0Balance: relevantTokenBalances[0],
     token1Balance: relevantTokenBalances[1],
   }
-
+  const dividerBorderStyle = useMemo(() => `1px solid ${colors.input}`, [colors.input])
   const isSingleDepositToken0 = isSingleDepositToken && allowDepositToken0
+
+  const { status } = useBoostStatusPM(Boolean(bCakeWrapper), boosterMultiplier, refetch)
   return (
     <>
       {hasStaked ? (
-        <>
-          <InnerCard>
+        <AtomBox mt="16px">
+          <ActionContainer bg="background" flexDirection="column">
             <StakedAssets
               currencyA={currencyA}
               currencyB={currencyB}
@@ -147,24 +177,74 @@ export const LiquidityManagement = memo(function LiquidityManagement({
               isSingleDepositToken={isSingleDepositToken}
               isSingleDepositToken0={isSingleDepositToken0}
             />
-          </InnerCard>
-          <RewardAssets
-            contractAddress={contractAddress}
-            bCakeWrapper={bCakeWrapper}
-            pendingReward={pendingReward}
-            earningToken={earningToken}
-            isInCakeRewardDateRange={isInCakeRewardDateRange}
-            refetch={refetch}
-          />
-        </>
-      ) : !account ? (
-        <ConnectWalletButton mt="24px" width="100%" />
+            <AtomBox
+              width={{
+                xs: '100%',
+                md: 'auto',
+              }}
+              style={{ borderLeft: dividerBorderStyle, borderTop: dividerBorderStyle }}
+            />
+            {/* if (!isInCakeRewardDateRange && earningsBalance <= 0) return null  */}
+            <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
+              <RewardAssets
+                contractAddress={contractAddress}
+                bCakeWrapper={bCakeWrapper}
+                pendingReward={pendingReward}
+                earningToken={earningToken}
+                isInCakeRewardDateRange={isInCakeRewardDateRange}
+                refetch={refetch}
+              />
+            </RowBetween>
+            {Boolean(bCakeWrapper) && (
+              <>
+                <AtomBox
+                  width={{
+                    xs: '100%',
+                    md: 'auto',
+                  }}
+                  style={{ borderLeft: dividerBorderStyle, borderTop: dividerBorderStyle }}
+                />
+                <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
+                  <StatusView
+                    status={status}
+                    isFarmStaking
+                    boostedMultiplier={boosterMultiplier}
+                    maxBoostMultiplier={3}
+                  />
+                </RowBetween>
+              </>
+            )}
+          </ActionContainer>
+        </AtomBox>
       ) : (
-        <CardSection title={t('Start earning')}>
-          <Button variant="primary" width="100%" onClick={showAddLiquidityModal}>
-            {t('Add Liquidity')}
-          </Button>
-        </CardSection>
+        <AtomBox mt="16px">
+          <ActionContainer bg="background" flexDirection="column">
+            <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
+              <Title>start earning</Title>
+              {!account ? (
+                <ConnectWalletButton mt="4px" width="100%" />
+              ) : (
+                <Button variant="primary" width="100%" onClick={showAddLiquidityModal}>
+                  {t('Add Liquidity')}
+                </Button>
+              )}
+            </RowBetween>
+            {Boolean(bCakeWrapper) && (
+              <>
+                <AtomBox
+                  width={{
+                    xs: '100%',
+                    md: 'auto',
+                  }}
+                  style={{ borderLeft: dividerBorderStyle, borderTop: dividerBorderStyle }}
+                />
+                <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
+                  <StatusView status={status} maxBoostMultiplier={3} />
+                </RowBetween>
+              </>
+            )}
+          </ActionContainer>
+        </AtomBox>
       )}
       <AddLiquidity
         id={id}

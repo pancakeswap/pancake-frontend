@@ -16,13 +16,19 @@ const BoosterTooltip = () => {
   )
 }
 
+const BOOSTER_STATUS_TEXT = {
+  [BoostStatus.farmCanBoostButNot]: 'READY',
+  [BoostStatus.Boosted]: 'Active',
+}
+
 export const StatusView: React.FC<{
   status: BoostStatus
   boostedMultiplier?: number
   expectMultiplier?: number
   isFarmStaking?: boolean
   shouldUpdate?: boolean
-}> = ({ status, boostedMultiplier, isFarmStaking, shouldUpdate, expectMultiplier }) => {
+  maxBoostMultiplier?: number
+}> = ({ status, boostedMultiplier, isFarmStaking, shouldUpdate, expectMultiplier, maxBoostMultiplier }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { address: account } = useAccount()
@@ -45,7 +51,10 @@ export const StatusView: React.FC<{
   return (
     <Box>
       <Text color="textSubtle" bold fontSize={12} lineHeight="120%" textTransform="uppercase">
-        {t('Yield Booster')}
+        {t('Yield Booster')}{' '}
+        <Text color="secondary" bold display="inline-block" fontSize={12} lineHeight="120%" textTransform="uppercase">
+          {t(BOOSTER_STATUS_TEXT[status])}
+        </Text>
       </Text>
       <Flex alignItems="center">
         {shouldUpdate ? (
@@ -81,7 +90,7 @@ export const StatusView: React.FC<{
               ? `${expectMultiplier?.toLocaleString('en-US', {
                   maximumFractionDigits: 3,
                 })}x`
-              : t('Up to %boostMultiplier%x', { boostMultiplier: 2 })}
+              : t('Up to %boostMultiplier%x', { boostMultiplier: maxBoostMultiplier ?? 2 })}
           </Text>
         )}
         <Flex ref={targetRef}>

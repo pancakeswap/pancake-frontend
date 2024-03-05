@@ -9,7 +9,6 @@ import { usePositionManagerBCakeWrapperContract, usePositionManagerWrapperContra
 import { useCallback, useMemo } from 'react'
 import { Address } from 'viem'
 import { useEarningTokenPriceInfo } from '../hooks'
-import { InnerCard } from './InnerCard'
 
 interface RewardAssetsProps {
   contractAddress: Address
@@ -75,40 +74,31 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
     t,
     earningToken.symbol,
   ])
-  if (!isInCakeRewardDateRange && earningsBalance <= 0) return null
+
   return (
-    <InnerCard>
-      <Flex>
-        <Box>
-          <Flex>
-            <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
-              {earningToken.symbol}
-            </Text>
-            <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-              {t('Earned')}
-            </Text>
-          </Flex>
-          <Balance lineHeight="1" bold fontSize="20px" decimals={3} value={earningsBalance} />
-          <Balance
-            prefix="~$"
-            decimals={2}
-            fontSize="12px"
-            display="inline"
-            color="textSubtle"
-            value={earningUsdValue}
-          />
-        </Box>
-        <Button
-          ml="auto"
-          width="100px"
-          variant="secondary"
-          style={{ alignSelf: 'center' }}
-          disabled={isDisabled}
-          onClick={onClickHarvest}
-        >
-          {t('Harvest')}
-        </Button>
-      </Flex>
-    </InnerCard>
+    <Flex width="100%">
+      <Box>
+        <Flex>
+          <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
+            {earningToken.symbol}
+          </Text>
+          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+            {t('Earned')}
+          </Text>
+        </Flex>
+        <Balance lineHeight="1" bold fontSize="20px" decimals={3} value={earningsBalance} />
+        <Balance prefix="~$" decimals={2} fontSize="12px" display="inline" color="textSubtle" value={earningUsdValue} />
+      </Box>
+      <Button
+        ml="auto"
+        width="100px"
+        variant="secondary"
+        style={{ alignSelf: 'center' }}
+        disabled={isDisabled}
+        onClick={onClickHarvest}
+      >
+        {t('Harvest')}
+      </Button>
+    </Flex>
   )
 }

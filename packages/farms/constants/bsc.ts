@@ -1148,12 +1148,16 @@ const farms: SerializedFarmConfig[] = [
    * These 3 farms (PID 0, 2, 3) should always be at the top of the file.
    */
   {
-    pid: 0,
-    v1pid: 0,
-    lpSymbol: 'CAKE',
-    lpAddress: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
-    token: bscTokens.syrup,
-    quoteToken: bscTokens.wbnb,
+    pid: 163,
+    lpSymbol: 'lisUSD-USDT LP',
+    lpAddress: '0xB2Aa63f363196caba3154D4187949283F085a488',
+    token: bscTokens.hay,
+    quoteToken: bscTokens.usdt,
+    stableSwapAddress: '0xb1Da7D2C257c5700612BdE35C8d7187dc80d79f1',
+    infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
+    stableLpFee: 0.0002,
+    stableLpFeeRateOfTotalFee: 0.5,
+    bCakeWrapper: '0x1c9a562Ab4c1e45cB4C08712d18220d7cF7BA5e8',
   },
   {
     pid: 2,
@@ -1163,7 +1167,17 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.cake,
     quoteToken: bscTokens.wbnb,
     boosted: true,
+    bCakeWrapper: '0x2EE84B24192648127d019A0974B21D8e004b9cDF',
   },
+  {
+    pid: 0,
+    v1pid: 0,
+    lpSymbol: 'CAKE',
+    lpAddress: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+    token: bscTokens.syrup,
+    quoteToken: bscTokens.wbnb,
+  },
+
   {
     pid: 39,
     v1pid: 389,
@@ -1284,17 +1298,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.axlusdc,
     quoteToken: bscTokens.usdt,
     stableSwapAddress: '0x6D8fba276ec6F1EDa2344DA48565AdbCA7e4FFa5',
-    infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
-    stableLpFee: 0.0002,
-    stableLpFeeRateOfTotalFee: 0.5,
-  },
-  {
-    pid: 163,
-    lpSymbol: 'lisUSD-USDT LP',
-    lpAddress: '0xB2Aa63f363196caba3154D4187949283F085a488',
-    token: bscTokens.hay,
-    quoteToken: bscTokens.usdt,
-    stableSwapAddress: '0xb1Da7D2C257c5700612BdE35C8d7187dc80d79f1',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,

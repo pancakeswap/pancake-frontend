@@ -127,6 +127,7 @@ export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   stableLpFee?: number
   stableLpFeeRateOfTotalFee?: number
   lpTokenStakedAmount?: string
+  bCakeWrapper?: Address
 }
 
 export interface AprMap {
