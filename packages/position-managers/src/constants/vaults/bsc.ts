@@ -20,7 +20,6 @@ export const vaults: VaultConfig[] = [
     isSingleDepositToken: true,
     allowDepositToken0: true,
     allowDepositToken1: false,
-    priceFromV3FarmPid: 5,
     managerInfoUrl: 'https://www.bril.finance/',
     strategyInfoUrl: 'https://docs.bril.finance/yield-iq/overview',
     learnMoreAboutUrl: 'https://docs.bril.finance/bril-finance/introduction',

@@ -153,6 +153,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
     return getBalanceAmount(new BigNumber(rewardPerSecond), earningToken.decimals).toNumber()
   }, [rewardPerSecond, earningToken])
 
+  const isBooster = Boolean(bCakeWrapper)
   return (
     <StyledCard>
       <CardTitle
@@ -164,6 +165,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
         autoCompound={autoCompound}
         isSingleDepositToken={isSingleDepositToken}
         allowDepositToken1={allowDepositToken1}
+        isBooster={isBooster}
       />
       <CardBody>
         <YieldInfo
@@ -181,6 +183,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           aprTimeWindow={aprDataInfo.timeWindow}
           rewardToken={earningToken}
           rewardPerSec={tokenPerSecond}
+          isBooster={isBooster}
+          boosterMultiplier={boosterMultiplier}
         />
         <ManagerInfo
           mt="1.5em"

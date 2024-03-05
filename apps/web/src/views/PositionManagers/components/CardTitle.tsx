@@ -1,8 +1,9 @@
 import { Currency } from '@pancakeswap/sdk'
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { memo, useMemo } from 'react'
 
+import BoostedTag from 'views/Farms/components/YieldBooster/components/BoostedTag'
 import { CardHeader } from './CardLayout'
 import { FarmTag, FeeTag, SingleTokenTag } from './Tags'
 import { TokenPairLogos } from './TokenPairLogos'
@@ -16,6 +17,7 @@ interface Props {
   allowDepositToken1: boolean
   autoFarm?: boolean
   autoCompound?: boolean
+  isBooster?: boolean
 }
 
 export const CardTitle = memo(function CardTitle({
@@ -27,6 +29,7 @@ export const CardTitle = memo(function CardTitle({
   autoFarm,
   autoCompound,
   allowDepositToken1,
+  isBooster,
 }: Props) {
   const isTokenDisplayReverse = useMemo(
     () => isSingleDepositToken && allowDepositToken1,
@@ -47,7 +50,9 @@ export const CardTitle = memo(function CardTitle({
 
   return (
     <CardHeader>
-      <TokenPairLogos currencyA={displayCurrencyA} currencyB={displayCurrencyB} autoMark={autoCompound} />
+      <Box style={{ flexShrink: 0 }}>
+        <TokenPairLogos currencyA={displayCurrencyA} currencyB={displayCurrencyB} autoMark={autoCompound} />
+      </Box>
       <Flex flexDirection="column" justifyContent="flex-start">
         <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
           <Text fontSize="1.3em" bold style={{ whiteSpace: 'nowrap' }}>
@@ -57,10 +62,11 @@ export const CardTitle = memo(function CardTitle({
             {vaultName}
           </Text>
         </Flex>
-        <Flex flexDirection="row" justifyContent="flex-end" mt="0.25em">
+        <Flex flexDirection="row" justifyContent="flex-end" mt="0.25em" style={{ gap: '0.5em' }} flexWrap="wrap">
           <FeeTag feeAmount={feeTier} />
-          {autoFarm && <FarmTag ml="0.5em" />}
-          {isSingleDepositToken && <SingleTokenTag ml="0.5em" />}
+          {autoFarm && <FarmTag />}
+          {isSingleDepositToken && <SingleTokenTag />}
+          {isBooster && <BoostedTag />}
         </Flex>
       </Flex>
     </CardHeader>
