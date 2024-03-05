@@ -11,7 +11,7 @@ import { computeTradePriceBreakdown } from '../utils/exchange'
 interface Options {
   mmTrade?: SmartRouterTrade<TradeType> | null
   allowedSlippage: number
-  chainId: ChainId
+  chainId?: ChainId
   mmSwapInputError: string
 }
 
@@ -33,7 +33,7 @@ export interface MMTradeInfo {
 
 export function useMMTradeInfo({ mmTrade, chainId, mmSwapInputError }: Options): MMTradeInfo | null {
   return useMemo(() => {
-    if (!mmTrade) {
+    if (!mmTrade || !chainId) {
       return null
     }
     return {

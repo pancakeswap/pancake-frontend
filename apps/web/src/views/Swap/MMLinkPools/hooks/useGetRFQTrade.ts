@@ -1,6 +1,6 @@
 import { useDebounce } from '@pancakeswap/hooks'
-import { Currency } from '@pancakeswap/sdk'
 import { useQuery } from '@tanstack/react-query'
+import { UnsafeCurrency } from 'config/constants/types'
 import { MutableRefObject, useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useAccount } from 'wagmi'
@@ -51,8 +51,8 @@ export const useGetRFQId = (
 export const useGetRFQTrade = (
   rfqId: string,
   independentField: Field,
-  inputCurrency: Currency | undefined,
-  outputCurrency: Currency | undefined,
+  inputCurrency: UnsafeCurrency,
+  outputCurrency: UnsafeCurrency,
   isMMBetter: boolean,
   refreshRFQ: () => void,
   isRFQLive: MutableRefObject<boolean> | null | undefined,

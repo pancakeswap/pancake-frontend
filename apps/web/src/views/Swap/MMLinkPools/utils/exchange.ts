@@ -1,14 +1,15 @@
 import { Currency, CurrencyAmount, Fraction, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
 
-import { parseUnits } from 'viem'
-import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { RouteType, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { mmLinkedPoolABI } from 'config/abi/mmLinkedPool'
+import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
+import { UnsafeCurrency } from 'config/constants/types'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useContract } from 'hooks/useContract'
 import toNumber from 'lodash/toNumber'
-import { Address } from 'wagmi'
 import { Field } from 'state/swap/actions'
-import { RouteType, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { parseUnits } from 'viem'
+import { Address } from 'wagmi'
 import { MM_STABLE_TOKENS_WHITE_LIST, MM_SWAP_CONTRACT_ADDRESS, NATIVE_CURRENCY_ADDRESS } from '../constants'
 import { OrderBookRequest } from '../types'
 
@@ -90,8 +91,8 @@ export const tryParseUnit = (typedValue?: `${number}`, decimals?: number) => {
 
 export const parseMMParameter = (
   chainId?: number,
-  inputCurrency?: Currency,
-  outputCurrency?: Currency,
+  inputCurrency?: UnsafeCurrency,
+  outputCurrency?: UnsafeCurrency,
   independentField?: Field,
   typedValue?: `${number}`,
   account?: Address,
