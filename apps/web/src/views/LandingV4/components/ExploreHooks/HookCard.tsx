@@ -40,7 +40,7 @@ export const HookCard: React.FC<React.PropsWithChildren<HookCardProps>> = ({ hoo
               ellipsis
               line={showMore ? 100 : 3}
               color="textSubtle"
-              m={['8px 0 20px 0']}
+              m={['8px 0']}
               fontSize={['12px']}
               lineHeight={['18px']}
             >
@@ -48,7 +48,8 @@ export const HookCard: React.FC<React.PropsWithChildren<HookCardProps>> = ({ hoo
             </StyledLineClamp>
             {!showMore && (
               <Button
-                mb="12px"
+                width="fit-content"
+                pl="0"
                 scale="xs"
                 variant="text"
                 onClick={(e) => {
@@ -59,7 +60,7 @@ export const HookCard: React.FC<React.PropsWithChildren<HookCardProps>> = ({ hoo
                 {t('Show More')}
               </Button>
             )}
-            <FlexGap gap="6px" flexWrap="wrap">
+            <FlexGap mt="20px" gap="6px" flexWrap="wrap">
               {hook.tags.map((tag) => (
                 <Tag key={tag} outline variant="secondary" scale="sm">
                   {t(tag)}
