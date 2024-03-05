@@ -27,6 +27,7 @@ export const deserializeFarm = (
     stableSwapAddress,
     stableLpFee,
     stableLpFeeRateOfTotalFee,
+    bCakeWrapperAddress,
   } = farm
 
   const auctionHostingStartDate = !isUndefinedOrNull(auctionHostingStartSeconds)
@@ -46,6 +47,7 @@ export const deserializeFarm = (
     )
 
   return {
+    bCakeWrapperAddress,
     lpAddress,
     lpSymbol,
     pid,

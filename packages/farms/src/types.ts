@@ -127,7 +127,7 @@ export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   stableLpFee?: number
   stableLpFeeRateOfTotalFee?: number
   lpTokenStakedAmount?: string
-  bCakeWrapper?: Address
+  bCakeWrapperAddress?: Address
 }
 
 export interface AprMap {
@@ -206,6 +206,7 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   poolWeight?: BigNumber
   userData?: DeserializedFarmUserData
   boosted?: boolean
+  bCakeWrapperAddress?: Address
   isStable?: boolean
   stableSwapAddress?: string
   stableLpFee?: number

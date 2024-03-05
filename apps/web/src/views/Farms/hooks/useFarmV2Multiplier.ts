@@ -28,5 +28,13 @@ export function useFarmV2Multiplier() {
       },
       [regularCakePerBlock],
     ),
+    getNumberFarmCakePerSecond: useCallback(
+      (poolWeight?: BigNumber) => {
+        const farmCakePerSecondNum =
+          poolWeight && regularCakePerBlock ? poolWeight.times(regularCakePerBlock).dividedBy(BSC_BLOCK_TIME) : BIG_ZERO
+        return farmCakePerSecondNum.toNumber()
+      },
+      [regularCakePerBlock],
+    ),
   }
 }
