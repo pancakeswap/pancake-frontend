@@ -19,54 +19,56 @@ export const Contribute = () => {
   const { t } = useTranslation()
 
   return (
-    <Card>
-      <Flex>
-        <Flex
-          flex={6}
-          flexDirection="column"
-          padding={['24px', '24px', '24px', '24px', '40px']}
-          alignItems={['center', 'center', 'center', 'center', 'flex-start']}
-        >
-          <Box>
-            <LibraryIcon color="secondary" width={24} height={24} />
-          </Box>
-          <Text
-            bold
-            mt={['24px']}
-            fontSize={['24px', '24px', '24px', '28px']}
-            lineHeight={['28px', '28px', '28px', '28px', '32px']}
-            textAlign={['center', 'center', 'center', 'center', 'left']}
+    <Box mt="40px">
+      <Card>
+        <Flex>
+          <Flex
+            flex={6}
+            flexDirection="column"
+            padding={['24px', '24px', '24px', '24px', '40px']}
+            alignItems={['center', 'center', 'center', 'center', 'flex-start']}
           >
-            {t('Contribute to PancakeSwap v4')}
-          </Text>
-          <Text lineHeight="24px" textAlign={['center', 'center', 'center', 'center', 'left']} m={['16px 0 32px 0']}>
-            {t(`Build Hooks with us and participate in PancakeSwap's One Million USD Developer Program`)}
-          </Text>
-          <Flex flexDirection={['column', 'column', 'row']} margin={['auto', 'auto', 'auto', '0']}>
-            <NextLinkFromReactRouter target="_blank" to="https://forms.gle/tZNXcQbfvgj1XAJq5">
-              <Button display="flex" margin="auto">
-                <Text bold fontSize={['12px', '16px']} mr="4px">
-                  {t('Submit Your Hook')}
-                </Text>
-                <OpenNewIcon />
-              </Button>
-            </NextLinkFromReactRouter>
-            <NextLinkFromReactRouter target="_blank" to="https://forms.gle/tZNXcQbfvgj1XAJq5">
-              <Button variant="secondary" display="flex" m={['8px auto 0 auto', '8px auto 0 auto', '0 0 0 8px']}>
-                <Text color="primary" bold fontSize={['12px', '16px']} mr="4px">
-                  {t('Developer Program')}
-                </Text>
-                <OpenNewIcon color="primary" />
-              </Button>
-            </NextLinkFromReactRouter>
+            <Box>
+              <LibraryIcon color="secondary" width={24} height={24} />
+            </Box>
+            <Text
+              bold
+              mt={['24px']}
+              fontSize={['24px', '24px', '24px', '28px']}
+              lineHeight={['28px', '28px', '28px', '28px', '32px']}
+              textAlign={['center', 'center', 'center', 'center', 'left']}
+            >
+              {t('Contribute to PancakeSwap v4')}
+            </Text>
+            <Text lineHeight="24px" textAlign={['center', 'center', 'center', 'center', 'left']} m={['16px 0 32px 0']}>
+              {t(`Build Hooks with us and participate in PancakeSwap's One Million USD Developer Program`)}
+            </Text>
+            <Flex flexDirection={['column', 'column', 'row']} margin={['auto', 'auto', 'auto', '0']}>
+              <NextLinkFromReactRouter target="_blank" to="https://forms.gle/tZNXcQbfvgj1XAJq5">
+                <Button display="flex" margin="auto">
+                  <Text bold fontSize={['12px', '16px']} mr="4px">
+                    {t('Submit Your Hook')}
+                  </Text>
+                  <OpenNewIcon />
+                </Button>
+              </NextLinkFromReactRouter>
+              <NextLinkFromReactRouter target="_blank" to="https://forms.gle/tZNXcQbfvgj1XAJq5">
+                <Button variant="secondary" display="flex" m={['8px auto 0 auto', '8px auto 0 auto', '0 0 0 8px']}>
+                  <Text color="primary" bold fontSize={['12px', '16px']} mr="4px">
+                    {t('Developer Program')}
+                  </Text>
+                  <OpenNewIcon color="primary" />
+                </Button>
+              </NextLinkFromReactRouter>
+            </Flex>
           </Flex>
+          <ImageUI
+            style={{
+              backgroundImage: `url('/images/v4-landing/contribute.png')`,
+            }}
+          />
         </Flex>
-        <ImageUI
-          style={{
-            backgroundImage: `url('/images/v4-landing/contribute.png')`,
-          }}
-        />
-      </Flex>
-    </Card>
+      </Card>
+    </Box>
   )
 }
