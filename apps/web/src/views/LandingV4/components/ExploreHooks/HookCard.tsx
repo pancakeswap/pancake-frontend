@@ -1,10 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BoxProps, Card, Flex, FlexGap, Link, Tag, Text } from '@pancakeswap/uikit'
+import { BoxProps, Button, Card, Flex, FlexGap, Link, Tag, Text } from '@pancakeswap/uikit'
+import { useState } from 'react'
 import { styled } from 'styled-components'
 import { HooksType } from 'views/LandingV4/config/types'
 
 const StyledBlogCard = styled(Link)`
-  cursor: pointer;
+  display: flex;
+  align-self: flex-start;
   &:hover {
     text-decoration: initial;
   }
@@ -23,6 +25,8 @@ interface HookCardProps extends BoxProps {
 
 export const HookCard: React.FC<React.PropsWithChildren<HookCardProps>> = ({ hook, ...props }) => {
   const { t } = useTranslation()
+  const [showMore, setShowMore] = useState(false)
+
   return (
     <StyledBlogCard {...props} external href={hook.githubLink}>
       <Card>
@@ -34,7 +38,7 @@ export const HookCard: React.FC<React.PropsWithChildren<HookCardProps>> = ({ hoo
             <StyledLineClamp
               bold
               ellipsis
-              line={3}
+              line={showMore ? 100 : 3}
               color="textSubtle"
               m={['8px 0 20px 0']}
               fontSize={['12px']}
@@ -42,6 +46,19 @@ export const HookCard: React.FC<React.PropsWithChildren<HookCardProps>> = ({ hoo
             >
               {hook.desc}
             </StyledLineClamp>
+            {!showMore && (
+              <Button
+                mb="12px"
+                scale="xs"
+                variant="text"
+                onClick={(e) => {
+                  e.preventDefault()
+                  setShowMore(true)
+                }}
+              >
+                {t('Show More')}
+              </Button>
+            )}
             <FlexGap gap="6px" flexWrap="wrap">
               {hook.tags.map((tag) => (
                 <Tag key={tag} outline variant="secondary" scale="sm">
