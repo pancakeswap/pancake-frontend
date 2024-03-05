@@ -178,7 +178,7 @@ export const AllHooks = () => {
         </Flex>
         <Flex ml="auto">
           <Flex>
-            {outsideTags.map((tag) => (
+            {outsideTags?.map((tag) => (
               <Box key={tag.value} mr="8px" onClick={() => onClickTag(tag.value, false)}>
                 <TagStyled
                   variant="textSubtle"
