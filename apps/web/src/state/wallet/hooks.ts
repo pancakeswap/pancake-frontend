@@ -57,7 +57,7 @@ export function useTokenBalancesWithLoadingIndicator(
   tokens?: (Token | undefined)[],
 ): [{ [tokenAddress: string]: CurrencyAmount<Token> | undefined }, boolean] {
   const validatedTokens: Token[] = useMemo(
-    () => tokens?.filter((t?: Token): t is Token => t && isAddress(t.address)) ?? [],
+    () => tokens?.filter((t?: Token): t is Token => isAddress(t?.address || '')) ?? [],
     [tokens],
   )
 
@@ -116,7 +116,7 @@ export function useCurrencyBalances(
   currencies?: (Currency | undefined | null)[],
 ): (CurrencyAmount<Currency> | undefined)[] {
   const tokens = useMemo(
-    () => currencies?.filter((currency): currency is Token => currency?.isToken) ?? [],
+    () => currencies?.filter((currency): currency is Token => Boolean(currency?.isToken)) ?? [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [...(currencies ?? [])],
   )

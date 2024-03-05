@@ -1,27 +1,27 @@
-import { AutoRow, Button, Card, CardBody, Flex, Text, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { AutoRow, Box, Button, Card, CardBody, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { AppHeader } from 'components/App'
 import { useMemo } from 'react'
 
 import { useRouter } from 'next/router'
+import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
+import { styled } from 'styled-components'
 import { CHAIN_IDS } from 'utils/wagmi'
 import Page from 'views/Page'
-import { styled } from 'styled-components'
-import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
 
+import { useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount } from '@pancakeswap/sdk'
 import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
-import { useSingleCallResult } from 'state/multicall/hooks'
 import { usePoolTokenPercentage, useTotalUSDValue } from 'components/PositionCard'
-import { useAccount } from 'wagmi'
-import { useTokenBalance } from 'state/wallet/hooks'
-import { useGetRemovedTokenAmountsNoContext } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
-import useTotalSupply from 'hooks/useTotalSupply'
-import currencyId from 'utils/currencyId'
-import { useTranslation } from '@pancakeswap/localization'
-import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { useInfoStableSwapContract } from 'hooks/useContract'
+import useTotalSupply from 'hooks/useTotalSupply'
+import { useSingleCallResult } from 'state/multicall/hooks'
+import { useTokenBalance } from 'state/wallet/hooks'
+import currencyId from 'utils/currencyId'
+import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
+import { useGetRemovedTokenAmountsNoContext } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
+import { useAccount } from 'wagmi'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -50,6 +50,7 @@ export default function StablePoolPage() {
   const { result } = useSingleCallResult({
     contract: stableSwapInfoContract,
     functionName: 'balances',
+    // @ts-ignore
     args: useMemo(() => [selectedLp?.stableSwapAddress] as const, [selectedLp?.stableSwapAddress]),
   })
 

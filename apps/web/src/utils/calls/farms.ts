@@ -1,14 +1,17 @@
 import BigNumber from 'bignumber.js'
-import { DEFAULT_TOKEN_DECIMAL, DEFAULT_GAS_LIMIT } from 'config'
-import { getNonBscVaultContractFee, MessageTypes } from 'views/Farms/hooks/getNonBscVaultFee'
-import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
+import { DEFAULT_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from 'config'
 import { getMasterChefContract, getNonBscVaultContract } from 'utils/contractHelpers'
+import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
+import { MessageTypes, getNonBscVaultContractFee } from 'views/Farms/hooks/getNonBscVaultFee'
 
 type MasterChefContract = ReturnType<typeof getMasterChefContract>
 
 export const stakeFarm = async (masterChefContract: MasterChefContract, pid, amount, gasPrice, gasLimit?: bigint) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   logGTMClickStakeFarmEvent()
+
+  if (!masterChefContract.account) return undefined
+
   return masterChefContract.write.deposit([pid, BigInt(value)], {
     gas: gasLimit || DEFAULT_GAS_LIMIT,
     gasPrice,
@@ -20,6 +23,8 @@ export const stakeFarm = async (masterChefContract: MasterChefContract, pid, amo
 export const unstakeFarm = async (masterChefContract: MasterChefContract, pid, amount, gasPrice, gasLimit?: bigint) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
 
+  if (!masterChefContract.account) return undefined
+
   return masterChefContract.write.withdraw([pid, BigInt(value)], {
     gas: gasLimit || DEFAULT_GAS_LIMIT,
     gasPrice,
@@ -29,6 +34,8 @@ export const unstakeFarm = async (masterChefContract: MasterChefContract, pid, a
 }
 
 export const harvestFarm = async (masterChefContract: MasterChefContract, pid, gasPrice, gasLimit?: bigint) => {
+  if (!masterChefContract.account) return undefined
+
   return masterChefContract.write.deposit([pid, 0n], {
     gas: gasLimit || DEFAULT_GAS_LIMIT,
     gasPrice,
@@ -46,6 +53,8 @@ export const nonBscStakeFarm = async (
   oraclePrice,
   chainId,
 ) => {
+  if (!contract.account) return undefined
+
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   const totalFee = await getNonBscVaultContractFee({
     pid,
@@ -74,6 +83,8 @@ export const nonBscUnstakeFarm = async (
   oraclePrice,
   chainId,
 ) => {
+  if (!contract.account) return undefined
+
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   const totalFee = await getNonBscVaultContractFee({
     pid,

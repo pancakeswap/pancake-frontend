@@ -1,11 +1,11 @@
-import { Text, Card, Flex, Tag, SyncAltIcon } from '@pancakeswap/uikit'
-import NextLink from 'next/link'
-import { styled } from 'styled-components'
-import { useMemo } from 'react'
+import { Card, Flex, SyncAltIcon, Tag, Text } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/v3-sdk'
+import NextLink from 'next/link'
+import { useMemo } from 'react'
+import { styled } from 'styled-components'
 
+import { Currency, Percent } from '@pancakeswap/sdk'
 import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
-import { Percent, Currency } from '@pancakeswap/sdk'
 import { MerklRewardsTag } from 'components/Merkl/MerklTag'
 
 const TagCell = styled(Flex)`
@@ -20,8 +20,8 @@ const TagCell = styled(Flex)`
 
 interface LiquidityCardRowProps {
   link?: string
-  currency0: Currency
-  currency1: Currency
+  currency0?: Currency
+  currency1?: Currency
   pairText: string | React.ReactElement
   feeAmount?: number
   hasMerkl?: boolean
@@ -45,7 +45,7 @@ export const LiquidityCardRow = ({
 }: LiquidityCardRowProps) => {
   const poolAddress = useMemo(
     () =>
-      currency0 && currency0 && feeAmount ? Pool.getAddress(currency0.wrapped, currency1.wrapped, feeAmount) : null,
+      currency0 && currency1 && feeAmount ? Pool.getAddress(currency0.wrapped, currency1.wrapped, feeAmount) : null,
     [currency0, currency1, feeAmount],
   )
 

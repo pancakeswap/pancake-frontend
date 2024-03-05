@@ -1,8 +1,11 @@
 const getLocalStorageItemKeys = (prefix: string) => {
-  const result = []
+  const result: string[] = []
+
   for (let i = 0; i < localStorage.length; i++) {
-    if (localStorage.key(i).startsWith(prefix)) {
-      result.push(localStorage.key(i))
+    const key = localStorage.key(i)
+
+    if (key?.startsWith(prefix)) {
+      result.push(key)
     }
   }
   return result

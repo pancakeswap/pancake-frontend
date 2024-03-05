@@ -46,7 +46,7 @@ export interface AddStableChildrenProps {
   pairState: PairState
   poolTokenPercentage?: Percent
   price: Price<Currency, Currency> | null
-  executionSlippage?: Percent | null
+  executionSlippage?: Percent
   loading: boolean
   infoLoading?: boolean
   allowedSlippage: number
@@ -138,7 +138,7 @@ export default function AddStableLiquidity({
   )
   const executionSlippage = useMemo(() => {
     if (!liquidityMinted || !expectedOutputWithoutFee) {
-      return null
+      return undefined
     }
     return ONE_HUNDRED_PERCENT.subtract(new Percent(liquidityMinted.quotient, expectedOutputWithoutFee.quotient))
   }, [liquidityMinted, expectedOutputWithoutFee])

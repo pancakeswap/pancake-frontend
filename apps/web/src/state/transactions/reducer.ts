@@ -24,7 +24,7 @@ export interface TransactionDetails {
   type?: TransactionType
   order?: Order
   summary?: string
-  translatableSummary?: { text: string; data?: Record<string, string | number> }
+  translatableSummary?: { text: string; data?: Record<string, string | number | undefined> }
   claim?: { recipient: string }
   receipt?: SerializableTransactionReceipt
   lastCheckedBlockNumber?: number
