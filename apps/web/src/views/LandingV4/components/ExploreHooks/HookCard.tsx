@@ -1,18 +1,13 @@
-import { Box, BoxProps, Card, Flex, FlexGap, HooksIcon, Tag, Text } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { BoxProps, Card, Flex, FlexGap, Link, Tag, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
+import { HooksType } from 'views/LandingV4/config/types'
 
-const IconContainer = styled(Box)`
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: solid 4px rgba(118, 69, 217, 0.2);
-
-  display: flex;
-  justify-content: center;
-`
-
-const StyledBlogCard = styled(Box)`
+const StyledBlogCard = styled(Link)`
   cursor: pointer;
+  &:hover {
+    text-decoration: initial;
+  }
 `
 
 const StyledLineClamp = styled(Text)<{ line?: number }>`
@@ -22,19 +17,19 @@ const StyledLineClamp = styled(Text)<{ line?: number }>`
   -webkit-box-orient: vertical;
 `
 
-interface HookCardProps extends BoxProps {}
+interface HookCardProps extends BoxProps {
+  hook: HooksType
+}
 
-export const HookCard: React.FC<React.PropsWithChildren<HookCardProps>> = ({ ...props }) => {
+export const HookCard: React.FC<React.PropsWithChildren<HookCardProps>> = ({ hook, ...props }) => {
+  const { t } = useTranslation()
   return (
-    <StyledBlogCard {...props}>
+    <StyledBlogCard {...props} external href={hook.githubLink}>
       <Card>
         <Flex padding={['15px', '15px', '20px']} width="100%" flexDirection={['column']}>
-          <IconContainer mb="20px">
-            <HooksIcon width={48} height={48} color="secondary" />
-          </IconContainer>
           <Flex flexDirection="column">
             <StyledLineClamp ellipsis line={2} bold fontSize={['20px']} lineHeight={['24px']}>
-              Hook Name
+              {hook.title}
             </StyledLineClamp>
             <StyledLineClamp
               bold
@@ -45,28 +40,18 @@ export const HookCard: React.FC<React.PropsWithChildren<HookCardProps>> = ({ ...
               fontSize={['12px']}
               lineHeight={['18px']}
             >
-              Prepare for an extraordinary celestial display as a surprise meteor shower transforms the night sky into a
-              breathtaking cosmic masterpiece
+              {hook.desc}
             </StyledLineClamp>
             <FlexGap gap="6px" flexWrap="wrap">
-              {[1, 2, 3, 4].map((i) => (
-                <Tag
-                  key={i}
-                  outline
-                  variant="secondary"
-                  scale="sm"
-                  endIcon={<HooksIcon width={12} height={12} color="secondary" />}
-                >
-                  Category name
+              {hook.tags.map((tag) => (
+                <Tag key={tag} outline variant="secondary" scale="sm">
+                  {t(tag)}
                 </Tag>
               ))}
             </FlexGap>
             <Flex mt="20px" flexDirection={['column', 'row']}>
-              <Text mr="auto" bold fontSize={['12px']} color="textSubtle">
-                From: GIthub Nickname
-              </Text>
               <Text bold fontSize={['12px']} color="textSubtle">
-                2012-12-23
+                {`${t('Published on:')} ${hook.createDate}`}
               </Text>
             </Flex>
           </Flex>

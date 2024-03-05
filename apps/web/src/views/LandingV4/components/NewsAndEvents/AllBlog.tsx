@@ -104,9 +104,10 @@ export const AllBlog = () => {
     return data.sort((a, b) => new Date(b?.publishedAt).getTime() - new Date(a?.publishedAt).getTime())
   }, [sortOption, v4Articles.data, v4NewsData.data])
 
-  const filterData = useMemo(() => {
-    return isClickedMoreButton ? allBlogData : allBlogData.slice(0, 4)
-  }, [allBlogData, isClickedMoreButton])
+  const filterData = useMemo(
+    () => (isClickedMoreButton ? allBlogData : allBlogData.slice(0, MIN_DISPLAY)),
+    [allBlogData, isClickedMoreButton],
+  )
 
   // Calculate need how many gradient box
   const totalGradientBox = useTotalGradientBox({ isClickedMoreButton, dataLength: filterData.length })
@@ -144,7 +145,7 @@ export const AllBlog = () => {
           <GradientBox key={i} />
         ))}
       </AllBlogContainer>
-      {!isClickedMoreButton && allBlogData.length >= MIN_DISPLAY && (
+      {!isClickedMoreButton && allBlogData.length > MIN_DISPLAY && (
         <ViewMoreButton onClick={() => setIsClickedMoreButton(true)} />
       )}
     </Box>
