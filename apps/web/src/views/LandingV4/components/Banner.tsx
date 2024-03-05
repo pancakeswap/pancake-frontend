@@ -188,7 +188,7 @@ export const Banner = () => {
               height="100%"
               disablePictureInPicture
               src="https://www.mobox.io/download/Pancake_Protectors_Video.mp4"
-              poster="https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/5.png"
+              poster="/images/v4-landing/video-image.jpg"
               controlsList="nodownload noplaybackrate noremoteplayback"
             />
           </Box>
