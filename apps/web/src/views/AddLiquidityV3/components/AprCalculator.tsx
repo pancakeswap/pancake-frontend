@@ -90,7 +90,7 @@ export function AprCalculator({
   const router = useRouter()
   const poolAddress = useMemo(() => (pool ? Pool.getAddress(pool.token0, pool.token1, pool.fee) : undefined), [pool])
 
-  const prices = usePairTokensPrice(poolAddress, priceSpan, baseCurrency?.chainId)
+  const prices = usePairTokensPrice(poolAddress, priceSpan, baseCurrency?.chainId, isOpen)
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
   const volume24H = usePoolAvgTradingVolume({
     address: poolAddress,
