@@ -1,10 +1,10 @@
-export { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from './farms'
+export { fetchBCakeWrapperUserDataAsync, fetchFarmUserDataAsync, fetchFarmsPublicDataAsync } from './farms'
 export {
-  fetchPoolsPublicDataAsync,
-  fetchPoolsUserDataAsync,
+  fetchCakeVaultFees,
   fetchCakeVaultPublicData,
   fetchCakeVaultUserData,
-  fetchCakeVaultFees,
+  fetchPoolsPublicDataAsync,
+  fetchPoolsUserDataAsync,
   updateUserAllowance,
   updateUserBalance,
   updateUserPendingReward,

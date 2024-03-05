@@ -19,6 +19,8 @@ import { Address } from 'wagmi'
 import { resetUserState } from '../global/actions'
 import {
   fetchFarmUserAllowances,
+  fetchFarmUserBCakeWrapperEarnings,
+  fetchFarmUserBCakeWrapperStakedBalances,
   fetchFarmUserEarnings,
   fetchFarmUserStakedBalances,
   fetchFarmUserTokenBalances,
@@ -49,6 +51,7 @@ const initialState: SerializedFarmsState = {
   chainId: undefined,
   loadArchivedFarmsData: false,
   userDataLoaded: false,
+  bCakeUserDataLoaded: false,
   totalRegularAllocPoint: '0',
   loadingKeys: {},
 }
@@ -124,6 +127,14 @@ interface FarmUserDataResponse {
   }
 }
 
+interface BCakeUserDataResponse {
+  pid: number
+  allowance: string
+  tokenBalance: string
+  stakedBalance: string
+  earnings: string
+}
+
 async function getBoostedFarmsStakeValue(farms, account, chainId, proxyAddress) {
   const [
     userFarmAllowances,
@@ -139,7 +150,7 @@ async function getBoostedFarmsStakeValue(farms, account, chainId, proxyAddress) 
     fetchFarmUserStakedBalances(account, farms, chainId),
     fetchFarmUserEarnings(account, farms, chainId),
     // Proxy call
-    fetchFarmUserAllowances(account, farms, chainId, proxyAddress),
+    fetchFarmUserAllowances(account, farms, chainId),
     fetchFarmUserStakedBalances(proxyAddress, farms, chainId),
     fetchFarmUserEarnings(proxyAddress, farms, chainId),
   ])
@@ -162,6 +173,27 @@ async function getBoostedFarmsStakeValue(farms, account, chainId, proxyAddress) 
   })
 
   return farmAllowances
+}
+
+async function getBCakeWrapperFarmsStakeValue(farms, account, chainId) {
+  const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
+    fetchFarmUserAllowances(account, farms, chainId),
+    fetchFarmUserTokenBalances(account, farms, chainId),
+    fetchFarmUserBCakeWrapperStakedBalances(account, farms, chainId),
+    fetchFarmUserBCakeWrapperEarnings(account, farms, chainId),
+  ])
+
+  const normalFarmAllowances = userFarmAllowances.map((_, index) => {
+    return {
+      pid: farms[index].pid,
+      allowance: userFarmAllowances[index],
+      tokenBalance: userFarmTokenBalances[index],
+      stakedBalance: userStakedBalances[index],
+      earnings: userFarmEarnings[index],
+    }
+  })
+
+  return normalFarmAllowances
 }
 
 async function getNormalFarmsStakeValue(farms, account, chainId) {
@@ -229,6 +261,42 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
   },
 )
 
+export const fetchBCakeWrapperUserDataAsync = createAsyncThunk<
+  BCakeUserDataResponse[],
+  { account: Address; pids: number[]; bCakeWrapperAddress?: Address; chainId: number },
+  {
+    state: AppState
+  }
+>(
+  'farms/fetchBCakeWrapperUserData',
+  async ({ account, chainId, pids }, { dispatch, getState }) => {
+    const state = getState()
+    if (state.farms.chainId !== chainId) {
+      await dispatch(fetchInitialFarmsData({ chainId }))
+    }
+    const poolLength = state.farms.poolLength ?? (await fetchMasterChefFarmPoolLength(ChainId.BSC))
+    const farmsConfig = await getFarmConfig(chainId)
+    const farmsCanFetch =
+      farmsConfig?.filter((farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid) ?? []
+    if (farmsCanFetch?.length) {
+      const normalAllowances = await getBCakeWrapperFarmsStakeValue(farmsCanFetch, account, chainId)
+      return normalAllowances
+    }
+
+    return getBCakeWrapperFarmsStakeValue(farmsCanFetch, account, chainId)
+  },
+  {
+    condition: (arg, { getState }) => {
+      const { farms } = getState()
+      if (farms.loadingKeys[stringify({ type: fetchFarmUserDataAsync.typePrefix, arg })]) {
+        console.debug('farms with BCakeWrapper user action is fetching, skipping here')
+        return false
+      }
+      return true
+    },
+  },
+)
+
 type UnknownAsyncThunkFulfilledOrPendingAction =
   | UnknownAsyncThunkFulfilledAction
   | UnknownAsyncThunkPendingAction
@@ -260,9 +328,16 @@ export const farmsSlice = createSlice({
             stakedBalance: '0',
             earnings: '0',
           },
+          bCakeUserData: {
+            allowance: '0',
+            tokenBalance: '0',
+            stakedBalance: '0',
+            earnings: '0',
+          },
         }
       })
       state.userDataLoaded = false
+      state.bCakeUserDataLoaded = false
     })
     // Init farm data
     builder.addCase(fetchInitialFarmsData.fulfilled, (state, action) => {
@@ -297,18 +372,45 @@ export const farmsSlice = createSlice({
       })
       state.userDataLoaded = true
     })
-
-    builder.addMatcher(isAnyOf(fetchFarmUserDataAsync.pending, fetchFarmsPublicDataAsync.pending), (state, action) => {
-      state.loadingKeys[serializeLoadingKey(action, 'pending')] = true
+    // Update farms with BCakeWrapper user data
+    builder.addCase(fetchBCakeWrapperUserDataAsync.fulfilled, (state, action) => {
+      const userDataMap = keyBy(action.payload, 'pid')
+      state.data = state.data.map((farm) => {
+        const userDataEl = userDataMap[farm.pid]
+        if (userDataEl) {
+          return { ...farm, bCakeUserData: userDataEl }
+        }
+        return farm
+      })
+      state.bCakeUserDataLoaded = true
     })
+
     builder.addMatcher(
-      isAnyOf(fetchFarmUserDataAsync.fulfilled, fetchFarmsPublicDataAsync.fulfilled),
+      isAnyOf(
+        fetchFarmUserDataAsync.pending,
+        fetchFarmsPublicDataAsync.pending,
+        fetchBCakeWrapperUserDataAsync.pending,
+      ),
+      (state, action) => {
+        state.loadingKeys[serializeLoadingKey(action, 'pending')] = true
+      },
+    )
+    builder.addMatcher(
+      isAnyOf(
+        fetchFarmUserDataAsync.fulfilled,
+        fetchFarmsPublicDataAsync.fulfilled,
+        fetchBCakeWrapperUserDataAsync.fulfilled,
+      ),
       (state, action) => {
         state.loadingKeys[serializeLoadingKey(action, 'fulfilled')] = false
       },
     )
     builder.addMatcher(
-      isAnyOf(fetchFarmsPublicDataAsync.rejected, fetchFarmUserDataAsync.rejected),
+      isAnyOf(
+        fetchFarmsPublicDataAsync.rejected,
+        fetchFarmUserDataAsync.rejected,
+        fetchBCakeWrapperUserDataAsync.rejected,
+      ),
       (state, action) => {
         state.loadingKeys[serializeLoadingKey(action, 'rejected')] = false
       },
