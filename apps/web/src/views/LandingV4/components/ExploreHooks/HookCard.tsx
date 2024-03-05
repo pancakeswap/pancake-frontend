@@ -1,4 +1,4 @@
-import { Box, BoxProps, Card, Flex, HooksIcon, Text } from '@pancakeswap/uikit'
+import { Box, BoxProps, Card, Flex, FlexGap, HooksIcon, Tag, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 
 const IconContainer = styled(Box)`
@@ -48,7 +48,20 @@ export const HookCard: React.FC<React.PropsWithChildren<HookCardProps>> = ({ ...
               Prepare for an extraordinary celestial display as a surprise meteor shower transforms the night sky into a
               breathtaking cosmic masterpiece
             </StyledLineClamp>
-            <Flex mt="auto" flexDirection={['column', 'row']}>
+            <FlexGap gap="6px" flexWrap="wrap">
+              {[1, 2, 3, 4].map((i) => (
+                <Tag
+                  key={i}
+                  outline
+                  variant="secondary"
+                  scale="sm"
+                  endIcon={<HooksIcon width={12} height={12} color="secondary" />}
+                >
+                  Category name
+                </Tag>
+              ))}
+            </FlexGap>
+            <Flex mt="20px" flexDirection={['column', 'row']}>
               <Text mr="auto" bold fontSize={['12px']} color="textSubtle">
                 From: GIthub Nickname
               </Text>

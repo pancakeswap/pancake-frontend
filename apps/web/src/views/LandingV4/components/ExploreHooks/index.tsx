@@ -20,7 +20,7 @@ export const ExploreHooks = () => {
   const { t } = useTranslation()
 
   return (
-    <ExploreHooksContainer id="#hooks">
+    <ExploreHooksContainer id="hooks">
       <Flex justifyContent="center" mb="40px">
         <Text
           bold

@@ -92,7 +92,7 @@ export const StartBuilding = () => {
         `}
       </style>
       <PageSection
-        id="#building"
+        id="building"
         index={2}
         hasCurvedDivider={false}
         background={theme.colors.gradientBubblegum}

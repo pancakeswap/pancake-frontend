@@ -253,7 +253,7 @@ export const Features = () => {
   }, [mouseEntered, remainingTimer, step])
 
   return (
-    <FeaturesContainer id="#features">
+    <FeaturesContainer id="features">
       <Text
         bold
         mb="40px"

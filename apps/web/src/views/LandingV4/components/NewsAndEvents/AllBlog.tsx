@@ -1,58 +1,45 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AllBlogIcon, Box, Flex, OptionProps, Select, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { AllBlogIcon, Box, Flex, FlexGap, OptionProps, Select, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
+import { GradientBox } from 'views/LandingV4/components/GradientBox'
 import { BlogCard } from 'views/LandingV4/components/NewsAndEvents/BlogCard'
 import { ViewMoreButton } from 'views/LandingV4/components/ViewMoreButton'
+import { useTotalGradientBox } from 'views/LandingV4/hooks/totalGradientBox'
 
-const AllBlogContainer = styled(Flex)`
+const AllBlogContainer = styled(FlexGap)`
+  gap: 24px;
   flex-wrap: wrap;
-  margin-top: 24px;
+  margin: 24px 0;
 
   > div {
     width: 100%;
-    margin-bottom: 24px;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     > div {
       width: calc(50% - 12px);
-      margin-right: 24px;
-    }
-
-    > div:nth-child(2n + 0) {
-      margin-right: 0;
     }
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
     > div {
       width: calc(33.33% - 16px);
-      margin-right: 24px;
-    }
-
-    > div:nth-child(2n + 0) {
-      margin-right: 24px;
-    }
-
-    > div:nth-child(3n + 0) {
-      margin-right: 0;
     }
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
     > div {
       width: calc(25% - 18px);
-      margin-right: 24px;
     }
+  }
+`
 
-    > div:nth-child(3n + 0) {
-      margin-right: 24px;
-    }
+const SelectStyled = styled(Select)`
+  min-width: 132px;
 
-    > div:nth-child(4n + 0) {
-      margin-right: 0;
-    }
+  > div {
+    background-color: ${({ theme }) => theme.colors.backgroundAlt};
   }
 `
 
@@ -60,6 +47,8 @@ export const AllBlog = () => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
   const [sortOption, setSortOption] = useState(0)
+  const fakeData = [1, 2, 3, 4]
+  const [isClickedMoreButton, setIsClickedMoreButton] = useState(false)
 
   const options = useMemo(() => {
     return [
@@ -82,6 +71,9 @@ export const AllBlog = () => {
     setSortOption(option.value)
   }
 
+  // Calculate need how many gradient box
+  const totalGradientBox = useTotalGradientBox({ isClickedMoreButton, dataLength: fakeData.length })
+
   return (
     <Box mt="16px">
       <Flex>
@@ -93,8 +85,7 @@ export const AllBlog = () => {
           <Text width="100%" style={{ alignSelf: 'center' }} mr="8px">
             {t('News from:')}
           </Text>
-          <Select
-            style={{ background: 'black' }}
+          <SelectStyled
             options={options}
             placeHolderText={t('All Sources')}
             onOptionChange={(option: OptionProps) => handleSort(option.value)}
@@ -102,10 +93,12 @@ export const AllBlog = () => {
         </Flex>
       </Flex>
       <AllBlogContainer>
-        <BlogCard isAllBlog imgHeight={['160px']} />
-        <BlogCard isAllBlog imgHeight={['160px']} />
-        <BlogCard isAllBlog imgHeight={['160px']} />
-        <BlogCard isAllBlog imgHeight={['160px']} />
+        {fakeData.map((i) => (
+          <BlogCard key={i} isAllBlog imgHeight={['160px']} />
+        ))}
+        {totalGradientBox?.map((i) => (
+          <GradientBox key={i} />
+        ))}
       </AllBlogContainer>
       <ViewMoreButton />
     </Box>
