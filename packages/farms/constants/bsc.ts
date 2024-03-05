@@ -43,7 +43,9 @@ const v3TopFixedLps: FarmConfigV3[] = [
   },
 ]
 
-export const farmsV3 = defineFarmV3Configs([
+export const farmsV3 = []
+// TODO: add v3 back after test is done
+export const farmsV3Default = defineFarmV3Configs([
   ...v3TopFixedLps,
   // new lps should follow after the top fixed lps
   // latest first
