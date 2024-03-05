@@ -5,6 +5,7 @@ import { Currency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
 
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { GELATO_NATIVE } from 'config/constants'
+import { UnsafeCurrency } from 'config/constants/types'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import {
@@ -193,7 +194,7 @@ export function useOnRampToken(currencyId?: string): Currency | undefined {
   }, [token, chainId, currencyId])
 }
 
-export function useCurrency(currencyId: string | undefined): Currency | ERC20Token | null | undefined {
+export function useCurrency(currencyId: string | undefined): UnsafeCurrency {
   const native: NativeCurrency = useNativeCurrency()
   const isNative =
     currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE

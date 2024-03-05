@@ -1,13 +1,13 @@
 import { useDebounce } from '@pancakeswap/hooks'
-import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
-import { LegacyTradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
+import { Currency, ERC20Token, Trade, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { LegacyTradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import { useExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
 import { useCurrency } from 'hooks/Tokens'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useRouter } from 'next/router'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
-import { useRouter } from 'next/router'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { MMOrderBookTrade, MMRfqTrade } from '../types'
 import { useGetRFQId, useGetRFQTrade } from './useGetRFQTrade'
 import { useIsTradeWithMMBetter } from './useIsMMTradeBetter'
@@ -30,14 +30,14 @@ export function useDerivedBestTradeWithMM<T extends TradeType>(bestTrade?: Smart
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
 
-  return useDerivedSwapInfoWithMM(independentField, typedValue, inputCurrency, outputCurrency, null, bestTrade)
+  return useDerivedSwapInfoWithMM(independentField, typedValue, inputCurrency, outputCurrency, undefined, bestTrade)
 }
 
 export function useDerivedSwapInfoWithMM(
   independentField: Field,
   typedValue: string,
-  inputCurrency: Currency | undefined,
-  outputCurrency: Currency | undefined,
+  inputCurrency: Currency | ERC20Token | null | undefined,
+  outputCurrency: Currency | ERC20Token | null | undefined,
   v2Trade?: Trade<Currency, Currency, TradeType>,
   tradeWithStableSwap?: LegacyTradeWithStableSwap<Currency, Currency, TradeType> | SmartRouterTrade<TradeType>,
 ): {

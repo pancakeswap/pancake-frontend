@@ -1,9 +1,10 @@
-import { Currency, CurrencyAmount, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { Currency, CurrencyAmount, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 
+import { SlippageAdjustedAmounts } from 'views/Swap/V3Swap/utils/exchange'
 import { MM_SWAP_CONTRACT_ADDRESS } from '../constants'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 
@@ -21,7 +22,7 @@ export interface MMTradeInfo {
   route: {
     path: Currency[]
   }
-  slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
+  slippageAdjustedAmounts: SlippageAdjustedAmounts
   executionPrice: Price<Currency, Currency>
   routerAddress: string
   priceImpactWithoutFee?: Percent
