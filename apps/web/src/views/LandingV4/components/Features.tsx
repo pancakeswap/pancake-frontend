@@ -144,7 +144,7 @@ const FeaturesConfig = [
         Hooks!
       </Trans>
     ),
-    imgUrl: '/images/v4-landing/features-1.png',
+    imgUrl: '/images/v4-landing/feature-1.png',
   },
   {
     id: 1,
@@ -157,7 +157,7 @@ const FeaturesConfig = [
         PancakeSwap v4&apos architecture ensures future-proof deployment of sophisticated AMM logic.
       </Trans>
     ),
-    imgUrl: '/images/v4-landing/features-2.png',
+    imgUrl: '/images/v4-landing/feature-2.png',
   },
   {
     id: 2,
@@ -170,7 +170,7 @@ const FeaturesConfig = [
         for token movement between contracts.
       </Trans>
     ),
-    imgUrl: '/images/v4-landing/features-3.png',
+    imgUrl: '/images/v4-landing/feature-3.png',
   },
   {
     id: 3,
@@ -182,7 +182,7 @@ const FeaturesConfig = [
         resulting in significant gas savings.
       </Trans>
     ),
-    imgUrl: '/images/v4-landing/features-4.png',
+    imgUrl: '/images/v4-landing/feature-4.png',
   },
   {
     id: 4,
@@ -195,7 +195,7 @@ const FeaturesConfig = [
         accounting system.
       </Trans>
     ),
-    imgUrl: '/images/v4-landing/features-5.png',
+    imgUrl: '/images/v4-landing/feature-5.png',
   },
 ]
 
