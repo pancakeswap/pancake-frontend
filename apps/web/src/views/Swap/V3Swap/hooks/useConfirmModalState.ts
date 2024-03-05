@@ -242,7 +242,11 @@ const useConfirmActions = (
           const result = await swap()
           if (result?.hash) {
             setTxHash(result.hash)
-            await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
+
+            await publicClient({ chainId }).waitForTransactionReceipt({
+              hash: result.hash,
+              confirmations: chainId === mainnet.id ? 2 : 1,
+            })
           }
           setConfirmState(ConfirmModalState.COMPLETED)
         } catch (error: any) {
