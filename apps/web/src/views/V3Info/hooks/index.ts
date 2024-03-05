@@ -122,6 +122,7 @@ export const usePairPriceChartTokenData = (
   address?: string,
   duration?: 'day' | 'week' | 'month' | 'year',
   targetChainId?: ChainId,
+  enabled = true,
 ): { data: PriceChartEntry[] | undefined; maxPrice?: number; minPrice?: number; averagePrice?: number } => {
   const chainName = useChainNameByQuery()
   const chainId = targetChainId || multiChainId[chainName]
@@ -148,7 +149,7 @@ export const usePairPriceChartTokenData = (
       )
     },
 
-    enabled: Boolean(chainId && !!address),
+    enabled: Boolean(enabled && chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(
