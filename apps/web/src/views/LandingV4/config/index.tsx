@@ -81,8 +81,8 @@ export const HooksConfig: HooksType[] = [
         limit price.
       </Trans>
     ),
-    tags: [TagType.ORACLE, TagType.BIN_POOL, TagType.TRADERS],
-    tagsValue: [TagValue.ORACLE, TagValue.BIN_POOL, TagValue.TRADERS],
+    tags: [TagType.ORDER_TYPES, TagType.BIN_POOL, TagType.TRADERS],
+    tagsValue: [TagValue.ORDER_TYPES, TagValue.BIN_POOL, TagValue.TRADERS],
     createDate: '15/03/2024',
     githubLink: 'https://github.com/pancakeswap/pancake-v4-hooks/tree/main/src/pool-bin/limit-order',
   },
