@@ -340,6 +340,7 @@ export default function V3FormView({
       onFieldAInput('')
     }
     setTxHash('')
+    setTxnErrorMessage(undefined)
   }, [onFieldAInput, txHash])
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
