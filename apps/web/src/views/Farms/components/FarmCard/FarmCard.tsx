@@ -15,6 +15,7 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
+import { RewardPerDay } from 'views/PositionManagers/components/RewardPerDay'
 import ApyButton from './ApyButton'
 import CardActionsContainer from './CardActionsContainer'
 import CardHeading from './CardHeading'
@@ -64,9 +65,11 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const { chainId } = useActiveChainId()
   const [showExpandableSection, setShowExpandableSection] = useState(false)
 
-  const { totalMultipliers, getFarmCakePerSecond } = useFarmV2Multiplier()
+  const { totalMultipliers, getFarmCakePerSecond, getNumberFarmCakePerSecond } = useFarmV2Multiplier()
 
   const farmCakePerSecond = getFarmCakePerSecond(farm.poolWeight)
+  const numberFarmCakePerSecond = getNumberFarmCakePerSecond(farm.poolWeight)
+  if (farm.pid === 163 || farm.pid === 2) console.log(farm, '888')
 
   const liquidity =
     farm?.liquidity && originalLiquidity?.gt(0) ? farm.liquidity.plus(originalLiquidity) : farm.liquidity
@@ -105,6 +108,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   }, [])
 
   const addLiquidityModal = useModalV2()
+  const isBooster = Boolean(farm.bCakeWrapperAddress)
 
   return (
     <StyledCard isActive={isPromotedFarm}>
@@ -121,6 +125,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           pid={farm.pid}
           farmCakePerSecond={farmCakePerSecond}
           totalMultipliers={totalMultipliers}
+          isBooster={isBooster}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
@@ -172,6 +177,10 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>
           <Text>{earnLabel}</Text>
+        </Flex>
+        <Flex justifyContent="space-between">
+          <Text>{t('Reward/Day')}:</Text>
+          <RewardPerDay rewardPerSec={Number(numberFarmCakePerSecond)} />
         </Flex>
         <CardActionsContainer
           farm={farm}

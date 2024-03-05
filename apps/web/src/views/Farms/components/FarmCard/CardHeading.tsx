@@ -24,7 +24,7 @@ type ExpandableSectionProps = {
   totalMultipliers?: string
   merklLink?: string
   hasBothFarmAndMerkl?: boolean
-  isBoosted?: boolean
+  isBooster?: boolean
 }
 
 const Wrapper = styled(Flex)`
@@ -50,7 +50,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   totalMultipliers,
   merklLink,
   hasBothFarmAndMerkl,
-  isBoosted,
+  isBooster,
 }) => {
   const isReady = multiplier !== undefined
   const multiplierTooltipContent = FarmMultiplierInfo({
@@ -99,7 +99,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
           ) : (
             <Skeleton ml="4px" width={42} height={28} />
           )}
-          {isReady && isBoosted && <BoostedTag mr="-4px" />}
+          {isReady && isBooster && <BoostedTag mr="-4px" />}
         </AutoRow>
       </Flex>
     </Wrapper>
