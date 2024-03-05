@@ -3016,7 +3016,7 @@
   "Cast your vote before 00:00 UTC, %date% on this day to include them into the current epoch.": "Breng je stem uit voor 00:00 UTC op %date% om ze te laten opnemen in het huidige tijdvak.",
   "Extend your lock to cast votes.": "Verleng je vergrendeling om stemmen uit te brengen.",
   "Your positions are unlocking soon. Therefore, you have no veCAKE balance at the end of the current voting epoch while votes are being tallied. ": "Je posities worden binnenkort ontgrendeld. Daarom heb je geen veCAKE-saldo aan het einde van het huidige stemtijdvak terwijl de stemmen worden geteld. ",
-  "unlocking": "ontgrendelen",
+  "unlocking": "ontgrendeling",
   "You have no locked CAKE.": "Je hebt geen vergrendelde CAKE.",
   "To cast your vote, lock your CAKE for 3 weeks or more.": "Vergrendel je CAKE voor minstens 3 weken om een stem uit te brengen.",
   "This gauge has hit its voting cap. It can continue to receive votes, however, the vote numbers and allocation % will not increase until other gauges gain more votes.": "Deze meter heeft de stemlimiet bereikt. De meter kan stemmen blijven ontvangen, maar het aantal stemmen en het toewijzingspercentage zullen niet toenemen totdat andere meters meer stemmen krijgen.",
