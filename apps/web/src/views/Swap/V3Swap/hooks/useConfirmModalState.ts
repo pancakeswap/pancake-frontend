@@ -234,7 +234,7 @@ const useConfirmActions = (
         }
 
         if (swapError) {
-          setErrorMessage(swapError)
+          showError(swapError)
           return
         }
 
