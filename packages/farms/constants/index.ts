@@ -1,5 +1,5 @@
 import { ChainId, getChainName } from '@pancakeswap/chains'
-import { isStableFarm, SerializedFarmConfig, supportedChainIdV2 } from '..'
+import { SerializedFarmConfig, SerializedFarmPublicData, isStableFarm, supportedChainIdV2 } from '..'
 
 let logged = false
 
@@ -8,8 +8,8 @@ export const getFarmConfig = async (chainId?: ChainId) => {
     const chainName = getChainName(chainId)
     try {
       return (await import(`/${chainName}.ts`)).default.filter(
-        (f: SerializedFarmConfig) => f.pid !== null,
-      ) as SerializedFarmConfig[]
+        (f: SerializedFarmPublicData) => f.pid !== null,
+      ) as SerializedFarmPublicData[]
     } catch (error) {
       if (!logged) {
         console.error('Cannot get farm config', error, chainId, chainName)

@@ -1,6 +1,6 @@
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
-import { DeserializedFarmUserData, SerializedFarm } from '../types'
+import { DeserializedBCakeWrapperUserData, DeserializedFarmUserData, SerializedFarm } from '../types'
 
 export const deserializeFarmUserData = (farm?: SerializedFarm): DeserializedFarmUserData => {
   return {
@@ -14,5 +14,14 @@ export const deserializeFarmUserData = (farm?: SerializedFarm): DeserializedFarm
       stakedBalance: farm?.userData?.proxy ? new BigNumber(farm?.userData?.proxy.stakedBalance) : BIG_ZERO,
       earnings: farm?.userData?.proxy ? new BigNumber(farm?.userData?.proxy.earnings) : BIG_ZERO,
     },
+  }
+}
+
+export const deserializeFarmBCakeUserData = (farm?: SerializedFarm): DeserializedBCakeWrapperUserData => {
+  return {
+    allowance: farm?.bCakeUserData ? new BigNumber(farm.bCakeUserData.allowance) : BIG_ZERO,
+    tokenBalance: farm?.bCakeUserData ? new BigNumber(farm.bCakeUserData.tokenBalance) : BIG_ZERO,
+    stakedBalance: farm?.bCakeUserData ? new BigNumber(farm.bCakeUserData.stakedBalance) : BIG_ZERO,
+    earnings: farm?.bCakeUserData ? new BigNumber(farm.bCakeUserData.earnings) : BIG_ZERO,
   }
 }
