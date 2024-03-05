@@ -35,7 +35,7 @@ export const NewsAndEvents = () => {
         `}
       </style>
       <PageSection
-        id="#events"
+        id="events"
         index={2}
         hasCurvedDivider={false}
         background={theme.colors.gradientBubblegum}

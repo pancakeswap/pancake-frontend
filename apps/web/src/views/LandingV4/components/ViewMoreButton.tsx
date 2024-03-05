@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
+import { GradientBox } from 'views/LandingV4/components/GradientBox'
 
 const Container = styled(Flex)`
   position: relative;
@@ -59,15 +60,6 @@ const Container = styled(Flex)`
       margin-right: 0;
     }
   }
-`
-
-const GradientBox = styled(Box)`
-  border-radius: 24px 24px 0 0;
-  height: 120px;
-  background: ${({ theme }) =>
-    `linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, ${
-      theme.isDark ? 'rgba(32, 28, 41, 0.5) 100%)' : 'rgba(255, 255, 255, 0.8) 100%)'
-    }`};
 `
 
 interface ViewMoreButtonProps {

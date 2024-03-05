@@ -91,6 +91,7 @@ export interface SelectProps extends BoxProps {
   options: OptionProps[];
   onOptionChange?: (option: OptionProps) => void;
   placeHolderText?: string;
+  customPlaceHolderText?: string;
   defaultOptionIndex?: number;
 }
 
@@ -105,6 +106,7 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
   onOptionChange,
   defaultOptionIndex = 0,
   placeHolderText,
+  customPlaceHolderText,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -159,7 +161,8 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
           />
         )}
         <Text color={!optionSelected && placeHolderText ? "text" : undefined}>
-          {!optionSelected && placeHolderText ? placeHolderText : options[selectedOptionIndex]?.label}
+          {customPlaceHolderText ||
+            (!optionSelected && placeHolderText ? placeHolderText : options[selectedOptionIndex]?.label)}
         </Text>
       </DropDownHeader>
       <ArrowDropDownIcon color="text" onClick={toggling} />
