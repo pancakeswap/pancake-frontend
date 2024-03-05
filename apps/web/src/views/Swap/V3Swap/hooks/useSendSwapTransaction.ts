@@ -222,6 +222,7 @@ export default function useSendSwapTransaction(
                   output: trade.outputAmount.currency,
                   address: call.address,
                   value: call.value,
+                  type,
                   cause: error instanceof TransactionExecutionError ? error.cause : undefined,
                 },
                 error,
