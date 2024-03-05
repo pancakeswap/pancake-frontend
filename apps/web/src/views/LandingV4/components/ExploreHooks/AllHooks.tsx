@@ -93,7 +93,7 @@ export const AllHooks = () => {
 
   const outsideTags = useMemo(() => {
     const spliceData = selectorConfig?.slice(0, showTagAmountNumber)
-    return spliceData ?? 0
+    return spliceData ?? []
   }, [selectorConfig, showTagAmountNumber])
 
   const options = useMemo(() => {
