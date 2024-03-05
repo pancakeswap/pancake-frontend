@@ -17,7 +17,7 @@ interface Props {
   trade?: SmartRouterTrade<TradeType> | null
 }
 
-export function MMTradeDetail({ loaded, mmTrade }: { loaded: boolean; mmTrade?: MMTradeInfo }) {
+export function MMTradeDetail({ loaded, mmTrade }: { loaded: boolean; mmTrade?: MMTradeInfo | null }) {
   const lastTrade = useLastTruthy(mmTrade?.trade)
 
   return (

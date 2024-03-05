@@ -100,9 +100,9 @@ export interface MMOrderBookTrade {
 
 export interface MMRfqTrade {
   rfq: RFQResponse['message'] | null | undefined
-  trade: SmartRouterTrade<TradeType>
-  refreshRFQ: () => void
-  quoteExpiry: number
+  trade: SmartRouterTrade<TradeType> | null
+  refreshRFQ: (() => void) | null
+  quoteExpiry: number | null
   isLoading: boolean
   error?: Error
   rfqId?: string
