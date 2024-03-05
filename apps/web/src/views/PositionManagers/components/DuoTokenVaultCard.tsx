@@ -1,7 +1,9 @@
 import { MANAGER, Strategy } from '@pancakeswap/position-managers'
 import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
 import { Card, CardBody } from '@pancakeswap/uikit'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import BigNumber from 'bignumber.js'
 import { PropsWithChildren, ReactNode, memo, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { Address } from 'viem'
@@ -79,6 +81,7 @@ interface Props {
   aprTimeWindow?: number
   bCakeWrapper?: Address
   minDepositUSD?: number
+  boosterMultiplier?: number
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -124,6 +127,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   lpTokenDecimals,
   bCakeWrapper,
   minDepositUSD,
+  boosterMultiplier,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -145,6 +149,9 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   const vaultName = useMemo(() => getVaultName(idByManager, name), [name, idByManager])
   const staked0Amount = stakedToken0Amount ? CurrencyAmount.fromRawAmount(currencyA, stakedToken0Amount) : undefined
   const staked1Amount = stakedToken1Amount ? CurrencyAmount.fromRawAmount(currencyB, stakedToken1Amount) : undefined
+  const tokenPerSecond = useMemo(() => {
+    return getBalanceAmount(new BigNumber(rewardPerSecond), earningToken.decimals).toNumber()
+  }, [rewardPerSecond, earningToken])
 
   return (
     <StyledCard>
@@ -173,6 +180,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           lpTokenDecimals={lpTokenDecimals}
           aprTimeWindow={aprDataInfo.timeWindow}
           rewardToken={earningToken}
+          rewardPerSec={tokenPerSecond}
         />
         <ManagerInfo
           mt="1.5em"
@@ -182,6 +190,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           allowTokenName={`${allowDepositToken0 ? currencyA.symbol : ''}${allowDepositToken1 ? currencyB.symbol : ''}`}
         />
         <LiquidityManagement
+          boosterMultiplier={boosterMultiplier}
           manager={manager}
           currencyA={currencyA}
           currencyB={currencyB}
@@ -232,7 +241,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
             allowDepositToken0={allowDepositToken0}
             allowDepositToken1={allowDepositToken1}
             isSingleDepositToken={isSingleDepositToken}
-            rewardPerSecond={rewardPerSecond}
+            tokenPerSecond={tokenPerSecond}
             earningToken={earningToken}
             isInCakeRewardDateRange={apr.isInCakeRewardDateRange}
           />

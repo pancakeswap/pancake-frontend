@@ -19,6 +19,7 @@ import NextLink from 'next/link'
 import { styled, useTheme } from 'styled-components'
 import { useAccount } from 'wagmi'
 import boosterCardImage from '../../../../images/boosterCardImage.png'
+import boosterCardImagePM from '../../../../images/boosterCardImagePM.png'
 import { useBCakeBoostLimitAndLockInfo } from '../../hooks/bCakeV3/useBCakeV3Info'
 
 export const CardWrapper = styled.div`
@@ -84,7 +85,7 @@ export const useBCakeTooltipContent = () => {
   return tooltipContent
 }
 
-export const BCakeBoosterCard = () => {
+export const BCakeBoosterCard: React.FC<{ variants?: 'farm' | 'pm' }> = ({ variants = 'farm' }) => {
   const { t } = useTranslation()
   const theme = useTheme()
   const { isMobile } = useMatchBreakpoints()
@@ -97,8 +98,14 @@ export const BCakeBoosterCard = () => {
   })
   return (
     <CardWrapper>
-      <ImageWrapper>
-        <Image src={boosterCardImage} alt="boosterCardImage" width={99} height={191} placeholder="blur" />
+      <ImageWrapper style={{ left: variants === 'pm' ? -185 : -70 }}>
+        <Image
+          src={variants === 'pm' ? boosterCardImagePM : boosterCardImage}
+          alt="booster-card-image"
+          width={variants === 'pm' ? 259 : 99}
+          height={variants === 'pm' ? 226 : 191}
+          placeholder="blur"
+        />
       </ImageWrapper>
       <Card p="0px" style={{ zIndex: 1 }}>
         <StyledCardBody style={{ padding: '15px 24px' }}>

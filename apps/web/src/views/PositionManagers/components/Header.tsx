@@ -1,7 +1,7 @@
-import { memo } from 'react'
-import { PageHeader, Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import Image from 'next/image'
+import { Flex, Heading, PageHeader, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { memo } from 'react'
+import { BCakeBoosterCard } from 'views/Farms/components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 
 export const Header = memo(function Header() {
   const { t } = useTranslation()
@@ -23,9 +23,7 @@ export const Header = memo(function Header() {
             {t('Automate your PancakeSwap V3 liquidity')}
           </Heading>
         </Flex>
-        {isDesktop && (
-          <Image alt="bunny" width={205} height={205} src="/images/position-manager/position-manager-bunny.png" />
-        )}
+        {isDesktop && <BCakeBoosterCard variants="pm" />}
       </Flex>
     </PageHeader>
   )
