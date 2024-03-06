@@ -6,7 +6,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useERC20 } from 'hooks/useContract'
 import { useAppDispatch } from 'state'
-import { fetchFarmUserDataAsync } from 'state/farms'
+import { fetchBCakeWrapperUserDataAsync, fetchFarmUserDataAsync } from 'state/farms'
 
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -16,7 +16,7 @@ import { useCakePrice } from 'hooks/useCakePrice'
 import { useCallback } from 'react'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
 import { SendTransactionResult } from 'wagmi/actions'
-import useHarvestFarm from '../../../hooks/useHarvestFarm'
+import useHarvestFarm, { useBCakeHarvestFarm } from '../../../hooks/useHarvestFarm'
 import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
 
 const { FarmTableHarvestAction } = FarmWidget.FarmTable
@@ -39,6 +39,8 @@ export const ProxyHarvestActionContainer = ({ children, ...props }) => {
 
 export const HarvestActionContainer = ({ children, ...props }) => {
   const { onReward } = useHarvestFarm(props.pid)
+  const { onReward: onRewardBCake } = useBCakeHarvestFarm(props.bCakeWrapperAddress ?? '0x')
+  const isBooster = Boolean(props.bCakeWrapperAddress)
   const { account, chainId } = useAccountActiveChain()
   const dispatch = useAppDispatch()
 
@@ -47,8 +49,17 @@ export const HarvestActionContainer = ({ children, ...props }) => {
       dispatch(fetchFarmUserDataAsync({ account, pids: [props.pid], chainId }))
     }
   }, [account, dispatch, chainId, props.pid])
+  const onBCakeDone = useCallback(() => {
+    if (account && chainId) {
+      dispatch(fetchBCakeWrapperUserDataAsync({ account, pids: [props.pid], chainId }))
+    }
+  }, [account, dispatch, chainId, props.pid])
 
-  return children({ ...props, onDone, onReward })
+  return children({
+    ...props,
+    onDone: isBooster ? onBCakeDone : onDone,
+    onReward: isBooster ? onRewardBCake : onReward,
+  })
 }
 
 export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
