@@ -15,12 +15,12 @@ import {
   FormMain,
   MMTradeDetail,
   PricingAndSlippage,
-  SwapCommitButton,
+  SwapCommitButtonV2,
   TradeDetails,
 } from './containers'
 import { MMCommitButton } from './containers/MMCommitButton'
-import { MMCommitButtonV1 } from './containers/MMCommitButtonV1'
-import { SwapCommitButtonV1 } from './containers/SwapCommitButtonV1'
+import { MMCommitButtonV2 } from './containers/MMCommitButtonV2'
+import { SwapCommitButton } from './containers/SwapCommitButton'
 import { useSwapBestTrade } from './hooks'
 import { useCheckInsufficientError } from './hooks/useCheckSufficient'
 
@@ -52,15 +52,15 @@ export function V3SwapForm() {
   const commitButton = useMemo(() => {
     if (featureEnabled) {
       return mm?.isMMBetter ? (
-        <MMCommitButton {...mm} />
+        <MMCommitButtonV2 {...mm} />
       ) : (
-        <SwapCommitButton trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
+        <SwapCommitButtonV2 trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
       )
     }
     return mm?.isMMBetter ? (
-      <MMCommitButtonV1 {...mm} />
+      <MMCommitButton {...mm} />
     ) : (
-      <SwapCommitButtonV1 trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
+      <SwapCommitButton trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
     )
   }, [error, featureEnabled, mm, trade, tradeLoaded])
 

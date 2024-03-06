@@ -19,7 +19,7 @@ import { useWalletClient } from 'wagmi'
 import Bottleneck from 'bottleneck'
 import { WALLCHAIN_ENABLED, WallchainKeys, WallchainTokens } from 'config/wallchain'
 import { Address, Hex } from 'viem'
-import { useSwapCallArguments } from './useSwapCallArguments'
+import { useSwapCallArgumentsV2 } from './useSwapCallArgumentsV2'
 
 interface SwapCall {
   address: Address
@@ -136,7 +136,7 @@ export function useWallchainApi(
 
   const sdk = useWallchainSDK()
 
-  const swapCalls = useSwapCallArguments(trade, allowedSlippage, account, undefined, deadline, feeOptions)
+  const swapCalls = useSwapCallArgumentsV2(trade, allowedSlippage, account, undefined, deadline, feeOptions)
 
   useEffect(() => {
     if (!sdk || !walletClient || !trade || !account || useUniversalRouter) {
