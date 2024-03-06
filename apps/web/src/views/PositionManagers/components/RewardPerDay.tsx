@@ -1,18 +1,22 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Svg, SvgProps, Tag } from '@pancakeswap/uikit'
+import { Svg, SvgProps, Tag, TagProps } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { memo, useMemo } from 'react'
 import {} from 'styled-components'
 
-export const RewardPerDay: React.FC<{ rewardPerSec: number }> = memo(({ rewardPerSec }) => {
+export const RewardPerDay: React.FC<{ rewardPerSec: number } & TagProps> = memo(({ rewardPerSec, ...props }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const cakePerDay = useMemo(() => {
     return rewardPerSec * 60 * 60 * 24
   }, [rewardPerSec])
   return (
-    <Tag startIcon={<CakeOutlineIcon />} variant="secondary">
-      {cakePerDay.toFixed(2)} {t('CAKE')}
+    <Tag
+      startIcon={<CakeOutlineIcon color={theme.colors.secondary} width={props.scale === 'sm' ? 13 : undefined} />}
+      variant="secondary"
+      {...props}
+    >
+      {cakePerDay.toFixed(2)} {t('CAKE')}{' '}
     </Tag>
   )
 })
