@@ -53,7 +53,7 @@ export const tokens = {
     "32px": "32px",
     small: "4px",
     default: "16px",
-    card: "24px",
+    card: "8px",
     circle: "50%",
   },
   fontSizes: {

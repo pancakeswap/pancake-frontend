@@ -135,15 +135,6 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
     />,
   )
 
-  const percentAmount = useMemo(
-    () => ({
-      25: maxAmount ? maxAmount.multiply(new Percent(25, 100)).toExact() : undefined,
-      50: maxAmount ? maxAmount.multiply(new Percent(50, 100)).toExact() : undefined,
-      75: maxAmount ? maxAmount.multiply(new Percent(75, 100)).toExact() : undefined,
-    }),
-    [maxAmount],
-  )
-
   const handleUserInput = useCallback(
     (val: string) => {
       onUserInput(val)
@@ -169,138 +160,104 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
       onInputBlur={onInputBlur}
       onUserInput={handleUserInput}
       loading={inputLoading}
+      selector={
+        <>
+          <button type="button" className="bg-black rounded-full px-2 py-1" onClick={onCurrencySelectClick}>
+            <Flex alignItems="center" justifyContent="space-between">
+              {pair ? (
+                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
+              ) : currency ? (
+                id === 'onramp-input' ? (
+                  <FiatLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                ) : (
+                  <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                )
+              ) : currencyLoading ? (
+                <Skeleton width="24px" height="24px" variant="circle" />
+              ) : null}
+              {currencyLoading ? null : pair ? (
+                <Text id="pair" bold>
+                  {pair?.token0.symbol}:{pair?.token1.symbol}
+                </Text>
+              ) : (
+                <Text id="pair" bold>
+                  {(currency && currency.symbol && currency.symbol.length > 10
+                    ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
+                        currency.symbol.length - 5,
+                        currency.symbol.length,
+                      )}`
+                    : currency?.symbol) || t('Select a currency')}
+                </Text>
+              )}
+              {!currencyLoading && !disableCurrencySelect && <ArrowDropDownIcon />}
+            </Flex>
+          </button>
+        </>
+      }
       top={
         <>
           {title}
-          <Flex alignItems="center">
-            {beforeButton}
-            <CurrencySelectButton
-              className="open-currency-select-button"
-              data-dd-action-name="Select currency"
-              selected={!!currency}
-              onClick={onCurrencySelectClick}
-            >
-              <Flex alignItems="center" justifyContent="space-between">
-                {pair ? (
-                  <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
-                ) : currency ? (
-                  id === 'onramp-input' ? (
-                    <FiatLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
-                  ) : (
-                    <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
-                  )
-                ) : currencyLoading ? (
-                  <Skeleton width="24px" height="24px" variant="circle" />
-                ) : null}
-                {currencyLoading ? null : pair ? (
-                  <Text id="pair" bold>
-                    {pair?.token0.symbol}:{pair?.token1.symbol}
-                  </Text>
-                ) : (
-                  <Text id="pair" bold>
-                    {(currency && currency.symbol && currency.symbol.length > 10
-                      ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
-                          currency.symbol.length - 5,
-                          currency.symbol.length,
-                        )}`
-                      : currency?.symbol) || t('Select a currency')}
-                  </Text>
-                )}
-                {!currencyLoading && !disableCurrencySelect && <ArrowDropDownIcon />}
-              </Flex>
-            </CurrencySelectButton>
-            {token && tokenAddress ? (
-              <Flex style={{ gap: '4px' }} ml="4px" alignItems="center">
-                <CopyButton
-                  data-dd-action-name="Copy token address"
-                  width="16px"
-                  buttonColor="textSubtle"
-                  text={tokenAddress}
-                  tooltipMessage={t('Token address copied')}
-                />
-                <AddToWalletButton
-                  data-dd-action-name="Add to wallet"
-                  variant="text"
-                  p="0"
-                  height="auto"
-                  width="fit-content"
-                  tokenAddress={tokenAddress}
-                  tokenSymbol={token.symbol}
-                  tokenDecimals={token.decimals}
-                  tokenLogo={token instanceof WrappedTokenInfo ? token.logoURI : undefined}
-                />
-              </Flex>
-            ) : null}
-            {token && tokenAddress && token.equals(zksyncTokens.meow) ? (
-              <LinkExternal
-                ml="4px"
-                data-dd-action-name="Token campaign"
-                style={{ textDecoration: 'none' }}
-                showExternalIcon={false}
-                href="https://blog.pancakeswap.finance/articles/airdrop-carnival-trade-and-add-lp-to-win-9-billion-zeek-coin-meow-airdrop-on-zk-sync-pancake-swap-1?utm_source=swappage&utm_medium=button&utm_campaign=meow&utm_id=meow"
-              >
-                🎁
-              </LinkExternal>
-            ) : null}
-          </Flex>
-          {account && !hideBalanceComp && (
-            <Text
-              data-dd-action-name="Token balance"
-              onClick={!disabled ? onMax : undefined}
-              color="textSubtle"
-              fontSize="12px"
-              ellipsis
-              title={!hideBalance && !!currency ? t('Balance: %balance%', { balance: balance ?? t('Loading') }) : ' -'}
-              style={{ display: 'inline', cursor: 'pointer' }}
-            >
-              {!hideBalance && !!currency
-                ? (balance?.replace('.', '')?.length || 0) > 12
-                  ? balance
-                  : t('Balance: %balance%', { balance: balance ?? t('Loading') })
-                : ' -'}
-            </Text>
-          )}
+          <Flex alignItems="center">{beforeButton}</Flex>
         </>
       }
       bottom={
-        <>
-          {!!showUSDPrice && (
-            <Flex ml="1rem">
-              <Flex maxWidth="200px">
-                {inputLoading ? (
-                  <Loading width="14px" height="14px" />
-                ) : showUSDPrice && Number.isFinite(amountInDollar) ? (
-                  <Text fontSize="12px" color="textSubtle" ellipsis>
-                    {`~${amountInDollar ? formatNumber(amountInDollar) : 0} USD`}
-                  </Text>
-                ) : (
-                  <Box height="18px" />
-                )}
-              </Flex>
-            </Flex>
-          )}
-          <InputRow selected={disableCurrencySelect}>
-            {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
-              <Flex alignItems="right" justifyContent="right">
-                {maxAmount?.greaterThan(0) && showMaxButton && (
-                  <Button
-                    data-dd-action-name="Balance percent max"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      e.preventDefault()
-                      onMax?.()
-                    }}
-                    scale="xs"
-                    variant={isAtPercentMax ? 'primary' : 'secondary'}
-                    style={{ textTransform: 'uppercase' }}
-                  >
-                    {t('Max')}
-                  </Button>
-                )}
-              </Flex>
+        <div className="mt-2">
+          <div className="flex items-center">
+            {!!showUSDPrice && (
+              <div>
+                <Flex maxWidth="200px">
+                  {inputLoading ? (
+                    <Loading width="14px" height="14px" />
+                  ) : showUSDPrice && Number.isFinite(amountInDollar) ? (
+                    <Text fontSize="12px" color="textSubtle" ellipsis>
+                      {`~${amountInDollar ? formatNumber(amountInDollar) : 0} USD`}
+                    </Text>
+                  ) : (
+                    <Box height="18px" />
+                  )}
+                </Flex>
+              </div>
             )}
-          </InputRow>
-        </>
+            <div className="ml-auto flex items-center gap-2">
+              {account && !hideBalanceComp && (
+                <Text
+                  data-dd-action-name="Token balance"
+                  onClick={!disabled ? onMax : undefined}
+                  color="textSubtle"
+                  fontSize="12px"
+                  ellipsis
+                  title={
+                    !hideBalance && !!currency ? t('Balance: %balance%', { balance: balance ?? t('Loading') }) : ' -'
+                  }
+                  style={{ display: 'inline', cursor: 'pointer' }}
+                >
+                  {!hideBalance && !!currency
+                    ? (balance?.replace('.', '')?.length || 0) > 12
+                      ? balance
+                      : t('Balance: %balance%', { balance: balance ?? t('Loading') })
+                    : ' -'}
+                </Text>
+              )}
+              {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
+                <>
+                  {maxAmount?.greaterThan(0) && showMaxButton && (
+                    <button
+                      type="button"
+                      className="text-primary hover:opacity-80 text-xs"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        e.preventDefault()
+                        onMax?.()
+                      }}
+                    >
+                      {t('Max')}
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
       }
     />
   )

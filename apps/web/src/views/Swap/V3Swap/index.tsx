@@ -36,8 +36,6 @@ export function V3SwapForm() {
   const tradeLoaded = !isLoading
   const price = useMemo(() => trade && SmartRouter.getExecutionPrice(trade), [trade])
 
-  const insufficientFundCurrency = useCheckInsufficientError(trade)
-
   return (
     <>
       <FormHeader onRefresh={throttledHandleRefresh} refreshDisabled={!tradeLoaded || syncing || !isStale} />

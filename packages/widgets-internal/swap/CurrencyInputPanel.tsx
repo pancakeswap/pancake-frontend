@@ -8,6 +8,7 @@ interface CurrencyInputPanelProps extends Omit<NumericalInputProps, "onBlur"> {
   top?: React.ReactNode;
   bottom?: React.ReactNode;
   showBridgeWarning?: boolean;
+  selector?: React.ReactNode;
 }
 export function CurrencyInputPanel({
   value,
@@ -15,6 +16,7 @@ export function CurrencyInputPanel({
   onInputBlur,
   top,
   bottom,
+  selector,
   id,
   disabled,
   error,
@@ -41,16 +43,7 @@ export function CurrencyInputPanel({
             error: Boolean(error),
           })}
         >
-          <AtomBox
-            display="flex"
-            flexDirection="row"
-            flexWrap="nowrap"
-            color="text"
-            fontSize="12px"
-            lineHeight="16px"
-            px="16px"
-            pt="12px"
-          >
+          <AtomBox display="flex" flexDirection="row" flexWrap="nowrap" color="text" fontSize="12px" lineHeight="16px">
             <NumericalInput
               align="left"
               error={Boolean(error)}
@@ -63,6 +56,7 @@ export function CurrencyInputPanel({
                 onUserInput(val);
               }}
             />
+            {selector}
           </AtomBox>
           {bottom}
         </AtomBox>

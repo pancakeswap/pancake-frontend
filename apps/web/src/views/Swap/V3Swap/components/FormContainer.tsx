@@ -5,8 +5,8 @@ import { Wrapper } from '../../components/styleds'
 
 export const FormContainer = memo(function FormContainer({ children }: PropsWithChildren) {
   return (
-    <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
-      <Column gap="sm">{children}</Column>
+    <Wrapper id="swap-page" style={{ minHeight: '300px' }}>
+      <Column gap="0px">{children}</Column>
     </Wrapper>
   )
 })

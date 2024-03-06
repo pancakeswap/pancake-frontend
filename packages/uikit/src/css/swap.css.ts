@@ -72,11 +72,13 @@ export const inputContainerVariants = recipe({
       borderRadius: "8px",
       backgroundColor: "input",
       border: "1",
+      borderColor: "textDisabled",
+      padding: "16px",
     }),
     style({
       selectors: {
         "&:focus-within": {
-          borderColor: vars.colors.text99,
+          borderColor: vars.colors.textSubtle,
         },
       },
     }),

@@ -127,7 +127,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         otherCurrency={outputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
       />
-      <RiskCheck currency={inputCurrency} />
+      {/* <RiskCheck currency={inputCurrency} /> */}
       <FlipButton />
       <CurrencyInputPanel
         id="swap-currency-output"
@@ -144,7 +144,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         otherCurrency={outputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
       />
-      <RiskCheck currency={outputCurrency} />
+      {/* <RiskCheck currency={outputCurrency} /> */}
       <Recipient />
       {pricingAndSlippage}
       {swapCommitButton}
