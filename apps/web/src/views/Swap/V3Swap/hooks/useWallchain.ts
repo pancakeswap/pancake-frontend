@@ -37,6 +37,7 @@ const limiter = new Bottleneck({
   maxConcurrent: 1, // only allow one request at a time
   minTime: 250, // add 250ms of spacing between requests
   highWater: 1, // only queue 1 request at a time, newer request will drop older
+  rejectOnDrop: false,
 })
 
 const addresses = {
