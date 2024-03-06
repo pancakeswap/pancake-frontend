@@ -175,7 +175,7 @@ export const Features = () => {
       }
 
       timer.current = setInterval(() => {
-        const timeInSecond = remainingTimer - 160
+        const timeInSecond = remainingTimer - 80
         const newRemainingTimer = timeInSecond > 0 ? timeInSecond : DISPLAY_TIMER
         setRemainingTimer(newRemainingTimer)
 

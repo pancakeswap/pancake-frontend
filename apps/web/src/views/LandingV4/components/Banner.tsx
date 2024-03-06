@@ -176,8 +176,7 @@ export const Banner = () => {
             </NextLinkFromReactRouter>
           </Flex>
           <Box
-            height={['337px']}
-            padding={['16px', '16px', '16px', '0px']}
+            height="auto"
             width={['100%', '100%', '100%', '600px']}
             m={[
               '40px auto auto auto',
