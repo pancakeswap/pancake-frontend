@@ -159,13 +159,14 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     apr={farm.apr}
                     displayApr={displayApr ?? undefined}
                     lpRewardsApr={farm.lpRewardsApr}
-                    strikethrough={false}
+                    isBooster={isBooster}
                     useTooltipText
                     boosted={false}
                     stableSwapAddress={stableSwapAddress}
                     stableLpFee={stableLpFee}
                     farmCakePerSecond={farmCakePerSecond}
                     totalMultipliers={totalMultipliers}
+                    boosterMultiplier={3}
                   />
                 </>
               ) : (
