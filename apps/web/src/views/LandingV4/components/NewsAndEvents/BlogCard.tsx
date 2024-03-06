@@ -1,6 +1,6 @@
 import { ArticleDataType } from '@pancakeswap/blog'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, BoxProps, Card, Flex, Link, Text } from '@pancakeswap/uikit'
+import { Box, BoxProps, Card, Flex, Link, OpenNewIcon, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { HeightProps } from 'styled-system'
 
@@ -12,10 +12,37 @@ const StyledBackgroundImage = styled(Box)`
   transition: 0.5s;
 `
 
+const CircleOpenNew = styled(Flex)`
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  z-index: 1;
+  justify-content: center;
+  transform: translateY(20px);
+  opacity: 0;
+  border: ${({ theme }) => `solid 2px ${theme.colors.cardBorder}`};
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
+`
+
 const StyledBlogCard = styled(Link)`
   display: flex;
+
   &:hover {
     text-decoration: initial;
+
+    .title {
+      transition: 0.8s;
+      color: ${({ theme }) => theme.colors.primary};
+    }
+
+    .circle-open {
+      opacity: 1;
+      transition: 1s;
+      transform: translateY(0);
+    }
   }
 `
 
@@ -58,12 +85,16 @@ export const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
           flexDirection={isSpecialLayout ? ['column', 'column', 'column', 'column', 'row-reverse'] : ['column']}
         >
           <Box
+            position="relative"
             overflow="hidden"
             width={isSpecialLayout ? ['100%', '100%', '100%', '100%', '180%'] : ['100%']}
             minHeight={isSpecialLayout ? ['200px', '200px', '200px', '200px', '400px'] : imgHeight ?? '200px'}
             height={isSpecialLayout ? ['200px', '200px', '200px', '200px', '400px'] : imgHeight ?? '200px'}
           >
             <StyledBackgroundImage style={{ backgroundImage: `url(${imgUrl})` }} />
+            <CircleOpenNew className="circle-open">
+              <OpenNewIcon width={20} height={20} color="primary" />
+            </CircleOpenNew>
           </Box>
           <Flex
             flexDirection="column"
@@ -71,6 +102,7 @@ export const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
             height={isSpecialLayout ? ['100%', '100%', '100%', '100%', '400px'] : '100%'}
           >
             <StyledLineClamp
+              className="title"
               ellipsis
               line={2}
               bold
