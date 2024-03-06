@@ -2,6 +2,13 @@ import { useTranslation } from '@pancakeswap/localization'
 import { SubMenuItems } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
+import { styled } from 'styled-components'
+
+const SubMenuItemsStyled = styled(SubMenuItems)`
+  > div > div ::after {
+    display: none;
+  }
+`
 
 export const SubMenu: React.FC<React.PropsWithChildren> = () => {
   const { asPath } = useRouter()
@@ -21,5 +28,5 @@ export const SubMenu: React.FC<React.PropsWithChildren> = () => {
     return subMenuItems.find((subMenuItem) => subMenuItem.href === asPath)?.href
   }, [subMenuItems, asPath])
 
-  return <SubMenuItems items={subMenuItems} activeItem={activeSubItem} />
+  return <SubMenuItemsStyled items={subMenuItems} activeItem={activeSubItem} />
 }

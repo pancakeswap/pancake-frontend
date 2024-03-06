@@ -56,7 +56,7 @@ const StepsContainer = styled(Flex)`
   flex-wrap: wrap;
   justify-content: space-between;
 
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.sm} {
     width: 528px;
   }
 

@@ -31,7 +31,7 @@ const ListStyled = styled(Flex)<{ $isPicked?: boolean }>`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     width: 264px;
-    border-radius: 24px;
+    border-radius: 50px;
     margin: 0 0 8px 0;
     padding: 8px;
   }
@@ -47,7 +47,11 @@ const DetailStyled = styled(Box)`
   top: 0;
   width: 100%;
   margin: 40px auto auto auto;
-  min-height: 500px;
+  min-height: 425px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    min-height: 500px;
+  }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin: 0px;
