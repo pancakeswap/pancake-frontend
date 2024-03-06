@@ -1,8 +1,12 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Image, LinkExternal, PageSection, Text } from '@pancakeswap/uikit'
+import { Box, Flex, LinkExternal, PageSection, Text } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
 import { InnerWedgeWrapper, OuterWedgeWrapper, WedgeBottomRight, WedgeTopLeft } from 'views/Home/components/WedgeSvgs'
+import { Step1Icon } from './Icons/Step1Icon'
+import { Step2Icon } from './Icons/Step2Icon'
+import { Step3Icon } from './Icons/Step3Icon'
+import { Step4Icon } from './Icons/Step4Icon'
 
 const HeaderTitle = styled(Box)`
   width: 100%;
@@ -68,22 +72,22 @@ const StepsContainer = styled(Flex)`
 const BuildingConfig = [
   {
     title: <Trans>Read the White Paper</Trans>,
-    iconUrl: '/images/v4-landing/step1.png',
+    icon: <Step1Icon width={40} height={48} color="primary" />,
     imageUrl: '/images/v4-landing/building-1.png',
   },
   {
     title: <Trans>Get the Tools</Trans>,
-    iconUrl: '/images/v4-landing/step2.png',
+    icon: <Step2Icon width={40} height={48} color="primary" />,
     imageUrl: '/images/v4-landing/building-2.png',
   },
   {
     title: <Trans>Join the Community</Trans>,
-    iconUrl: '/images/v4-landing/step3.png',
+    icon: <Step3Icon width={40} height={48} color="primary" />,
     imageUrl: '/images/v4-landing/building-3.png',
   },
   {
     title: <Trans>Start Building</Trans>,
-    iconUrl: '/images/v4-landing/step4.png',
+    icon: <Step4Icon width={40} height={48} color="primary" />,
     imageUrl: '/images/v4-landing/building-4.png',
   },
 ]
@@ -139,9 +143,9 @@ export const StartBuilding = () => {
           </HeaderTitle>
           <StepsContainer>
             {BuildingConfig.map((build) => (
-              <Flex flexDirection="column" alignItems="center" key={build.iconUrl}>
+              <Flex flexDirection="column" alignItems="center" key={build.imageUrl}>
                 <StepImage style={{ backgroundImage: `url(${build.imageUrl})` }} />
-                <Image width={34} height={40} src={build.iconUrl} />
+                {build.icon}
                 <LinkExternal
                   external
                   m={[

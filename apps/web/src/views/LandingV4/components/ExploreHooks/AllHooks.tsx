@@ -69,13 +69,12 @@ const TagStyled = styled(Tag)<{ $picked: boolean; $hideIconMobileMargin?: boolea
   cursor: pointer;
   border: solid 1px;
   font-weight: 500;
-  color: ${({ theme, $picked }) => ($picked ? (theme.isDark ? 'black' : 'white') : theme.colors.text)};
-  background-color: ${({ theme, $picked }) =>
-    $picked ? theme.colors.textSubtle : theme.isDark ? theme.colors.backgroundAlt : 'white'};
+  color: ${({ theme, $picked }) => ($picked ? 'white' : theme.colors.text)};
+  background-color: ${({ theme, $picked }) => ($picked ? theme.colors.primary : theme.colors.backgroundAlt)};
   border-color: ${({ theme, $picked }) => ($picked ? 'transparent' : theme.colors.cardBorder)};
 
   > svg {
-    fill: ${({ theme, $picked }) => ($picked ? (theme.isDark ? 'black' : 'white') : theme.colors.text)};
+    fill: ${({ theme, $picked }) => ($picked ? 'white' : theme.colors.text)};
     margin-left: ${({ $hideIconMobileMargin }) => ($hideIconMobileMargin ? '0' : '0.5em')};
   }
 `
@@ -157,17 +156,12 @@ export const AllHooks = () => {
       <Flex>
         <Flex>
           <Box ml="8px" onClick={() => onClickTag(TagValue.FEATURED, false)}>
-            <TagStyled
-              variant="textSubtle"
-              $picked={pickedOption === TagValue.FEATURED}
-              endIcon={<StarFillIcon width={14} height={14} />}
-            >
+            <TagStyled $picked={pickedOption === TagValue.FEATURED} endIcon={<StarFillIcon width={14} height={14} />}>
               {t('Featured')}
             </TagStyled>
           </Box>
           <Box ml="8px" onClick={() => onClickTag(TagValue.ALL, false)}>
             <TagStyled
-              variant="textSubtle"
               $picked={pickedOption === TagValue.ALL}
               $hideIconMobileMargin={isMobile}
               endIcon={<AllBlogIcon width={20} height={20} />}
@@ -181,7 +175,6 @@ export const AllHooks = () => {
             {outsideTags?.map((tag) => (
               <Box key={tag.value} mr="8px" onClick={() => onClickTag(tag.value, false)}>
                 <TagStyled
-                  variant="textSubtle"
                   $picked={tag.value === pickedOption}
                   // endIcon={<HotIcon width={20} height={20} />}
                 >
