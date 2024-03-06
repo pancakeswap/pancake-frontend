@@ -14,7 +14,7 @@ import { MMSwapCall } from './useSwapCallArguments'
 import { useSwapCallback } from './useSwapCallback'
 
 const useConfirmActions = (
-  trade: SmartRouterTrade<TradeType>,
+  trade: SmartRouterTrade<TradeType> | undefined,
   swapCalls: MMSwapCall[],
   recipient: Address | null,
   amountToApprove: CurrencyAmount<Token> | undefined,
@@ -177,7 +177,7 @@ const useCreateConfirmSteps = (
 }
 
 export const useMMConfirmModalState = (
-  trade: SmartRouterTrade<TradeType>,
+  trade: SmartRouterTrade<TradeType> | undefined,
   swapCalls: MMSwapCall[],
   recipient: Address | null,
   amountToApprove: CurrencyAmount<Token> | undefined,

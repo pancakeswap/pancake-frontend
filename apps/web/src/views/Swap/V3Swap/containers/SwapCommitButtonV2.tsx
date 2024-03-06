@@ -155,7 +155,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
 
   const { callToAction, confirmState, txHash, confirmActions, errorMessage, resetState } = useConfirmModalStateV2(
-    trade,
+    isExpertMode ? trade : tradeToConfirm,
     amountToApprove?.currency.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
     getUniversalRouterAddress(chainId),
   )
