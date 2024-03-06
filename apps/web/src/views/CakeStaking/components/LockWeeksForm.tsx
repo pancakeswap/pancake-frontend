@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AutoRow, BalanceInput, BalanceInputProps, Box, Button, FlexGap, Image, Text } from '@pancakeswap/uikit'
 import { MAX_VECAKE_LOCK_WEEKS } from 'config/constants/veCake'
 import { useAtom, useAtomValue } from 'jotai'
-import { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { cakeLockWeeksAtom } from 'state/vecake/atoms'
 import styled from 'styled-components'
 import { useWriteIncreaseLockWeeksCallback } from '../hooks/useContractWrite'
@@ -39,6 +39,12 @@ const ButtonBlocked = styled(Button)`
   white-space: nowrap;
 `
 
+const LockImageElement = React.memo(() => (
+  <Box width={40} mr={12}>
+    <Image src="/images/cake-staking/lock.png" height={37} width={34} />
+  </Box>
+))
+
 const WeekInput: React.FC<{
   value: BalanceInputProps['value']
   onUserInput: BalanceInputProps['onUserInput']
@@ -71,16 +77,12 @@ const WeekInput: React.FC<{
     [onInput],
   )
 
-  const appendComponent = (
-    <Box width={40} mr={12}>
-      <Image src="/images/cake-staking/lock.png" height={37} width={34} />
-    </Box>
-  )
   return (
     <>
       <BalanceInput
         width="100%"
         mb="8px"
+        placeholder="0"
         inputProps={{
           style: { textAlign: 'left', marginTop: '1px', marginBottom: '1px' },
           disabled,
@@ -88,7 +90,7 @@ const WeekInput: React.FC<{
           pattern: '^[0-9]*$',
         }}
         value={value}
-        appendComponent={appendComponent}
+        appendComponent={<LockImageElement />}
         onUserInput={onInput}
         unit={t('Weeks')}
       />
