@@ -3029,4 +3029,28 @@ export const bscTokens = {
     'BinaryX',
     'https://www.binaryx.pro/?cmc',
   ),
+  pxETH: new ERC20Token(
+    ChainId.BSC,
+    '0x300d2c875C6fb8Ce4bf5480B4d34b7c9ea8a33A4',
+    18,
+    'pxETH',
+    'Pirex Ether OFT',
+    'https://dineroismoney.com/',
+  ),
+  fet: new ERC20Token(
+    ChainId.BSC,
+    '0x031b41e504677879370e9DBcF937283A8691Fa7f',
+    18,
+    'FET',
+    'FetchToken',
+    'https://fetch.ai/',
+  ),
+  ezETH: new ERC20Token(
+    ChainId.BSC,
+    '0x2416092f143378750bb29b79eD961ab195CcEea5',
+    18,
+    'ezETH',
+    'Renzo Restaked ETH',
+    'https://www.renzoprotocol.com/',
+  ),
 }
