@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BoxProps, Button, Card, Flex, FlexGap, Link, Tag, Text } from '@pancakeswap/uikit'
+import { BoxProps, Button, Card, Flex, FlexGap, Link, OpenNewIcon, Tag, Text } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useSelectorConfig } from 'views/LandingV4/config/filterOptions'
@@ -8,8 +8,24 @@ import { HooksType } from 'views/LandingV4/config/types'
 const StyledBlogCard = styled(Link)`
   display: flex;
   align-self: flex-start;
+
   &:hover {
     text-decoration: initial;
+
+    .title {
+      > div,
+      svg {
+        transition: 0.8s;
+      }
+
+      > div {
+        color: ${({ theme }) => theme.colors.primary};
+      }
+
+      > svg {
+        opacity: 1;
+      }
+    }
   }
 `
 
@@ -41,9 +57,12 @@ export const HookCard: React.FC<React.PropsWithChildren<HookCardProps>> = ({ hoo
       <Card>
         <Flex padding={['15px', '15px', '20px']} width="100%" flexDirection={['column']}>
           <Flex flexDirection="column">
-            <StyledLineClamp ellipsis line={2} bold fontSize={['20px']} lineHeight={['24px']}>
-              {hook.title}
-            </StyledLineClamp>
+            <Flex className="title">
+              <StyledLineClamp ellipsis line={2} bold fontSize={['20px']} lineHeight={['24px']}>
+                {hook.title}
+              </StyledLineClamp>
+              <OpenNewIcon width={24} height={24} opacity="0" marginLeft="4px" color="primary" />
+            </Flex>
             <StyledLineClamp
               bold
               ellipsis

@@ -52,13 +52,19 @@ const AllHooksContainer = styled(FlexGap)`
   }
 `
 
-const SelectStyled = styled(Select)`
+const SelectStyled = styled(Select)<{ $pickedByOption: boolean }>`
   min-width: 150px;
+  max-width: 170px;
   height: 36px;
 
   > div {
     height: 36px;
     background-color: ${({ theme }) => theme.colors.backgroundAlt};
+  }
+
+  > div:first-child {
+    background-color: ${({ theme, $pickedByOption }) =>
+      $pickedByOption ? theme.colors.primary : theme.colors.backgroundAlt};
   }
 `
 
@@ -74,8 +80,11 @@ const TagStyled = styled(Tag)<{ $picked: boolean; $hideIconMobileMargin?: boolea
   border-color: ${({ theme, $picked }) => ($picked ? 'transparent' : theme.colors.cardBorder)};
 
   > svg {
+    width: 20px;
+    height: 20px;
     fill: ${({ theme, $picked }) => ($picked ? 'white' : theme.colors.text)};
-    margin-left: ${({ $hideIconMobileMargin }) => ($hideIconMobileMargin ? '0' : '0.5em')};
+
+    ${({ $hideIconMobileMargin }) => $hideIconMobileMargin && 'margin-left: 0;'};
   }
 `
 
@@ -136,7 +145,7 @@ export const AllHooks = () => {
 
   // data
   const allData = useMemo((): HooksType[] => {
-    if (pickedOption === TagValue.ALL) {
+    if (pickedOption === TagValue.FEATURED || pickedOption === TagValue.ALL) {
       return HooksConfig
     }
 
@@ -153,9 +162,9 @@ export const AllHooks = () => {
 
   return (
     <Box>
-      <Flex>
+      <Flex flexDirection={['column', 'row']}>
         <Flex>
-          <Box ml="8px" onClick={() => onClickTag(TagValue.FEATURED, false)}>
+          <Box onClick={() => onClickTag(TagValue.FEATURED, false)}>
             <TagStyled $picked={pickedOption === TagValue.FEATURED} endIcon={<StarFillIcon width={14} height={14} />}>
               {t('Featured')}
             </TagStyled>
@@ -170,13 +179,15 @@ export const AllHooks = () => {
             </TagStyled>
           </Box>
         </Flex>
-        <Flex ml="auto">
+        <Flex m={['10px 0 0 0', 'auto 0 auto auto']}>
           <Flex>
             {outsideTags?.map((tag) => {
-              // const icon = selectorConfig.find((i) => i.value === tag.value)?.icon ?? null
+              const icon = selectorConfig.find((i) => i.value === tag.value)?.icon ?? null
               return (
                 <Box key={tag.value} mr="8px" onClick={() => onClickTag(tag.value, false)}>
-                  <TagStyled $picked={tag.value === pickedOption}>{tag.label}</TagStyled>
+                  <TagStyled $picked={tag.value === pickedOption} startIcon={icon}>
+                    {tag.label}
+                  </TagStyled>
                 </Box>
               )
             })}
@@ -186,6 +197,7 @@ export const AllHooks = () => {
             key={tokenSelectedIndex}
             defaultOptionIndex={tokenSelectedIndex}
             customPlaceHolderText={customPlaceHolderText}
+            $pickedByOption={pickedByOption}
             onOptionChange={(option: OptionProps) => onClickTag(option.value, true)}
           />
         </Flex>
