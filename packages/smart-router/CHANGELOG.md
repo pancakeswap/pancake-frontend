@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 5.0.1
+
+### Patch Changes
+
+- ad51fb7: Add usage example for v4 router
+
 ## 5.0.0
 
 ### Major Changes
