@@ -1,15 +1,15 @@
-import { useMasterchef, useNonBscVault } from 'hooks/useContract'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useMasterchef, useNonBscVault, useV2SSBCakeWrapperContract } from 'hooks/useContract'
 import { useCallback } from 'react'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
-import { nonBscStakeFarm, stakeFarm } from 'utils/calls'
+import { bCakeStakeFarm, nonBscStakeFarm, stakeFarm } from 'utils/calls'
 import { useOraclePrice } from 'views/Farms/hooks/useFetchOraclePrice'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 const useStakeFarms = (pid: number, vaultPid?: number) => {
   const { account, chainId } = useAccountActiveChain()
   const { gasPrice } = useFeeDataWithGasPrice()
 
-  const oraclePrice = useOraclePrice(chainId)
+  const oraclePrice = useOraclePrice(chainId ?? 0)
   const masterChefContract = useMasterchef()
   const nonBscVaultContract = useNonBscVault()
 
@@ -28,6 +28,21 @@ const useStakeFarms = (pid: number, vaultPid?: number) => {
   )
 
   return { onStake: vaultPid ? handleStakeNonBsc : handleStake }
+}
+
+export const useBCakeStakeFarms = (bCakeWrapperAddress) => {
+  const { gasPrice } = useFeeDataWithGasPrice()
+
+  const V2SSBCakeContract = useV2SSBCakeWrapperContract(bCakeWrapperAddress)
+
+  const handleStake = useCallback(
+    async (amount: string) => {
+      return bCakeStakeFarm(V2SSBCakeContract, amount, gasPrice)
+    },
+    [V2SSBCakeContract, gasPrice],
+  )
+
+  return { onStake: handleStake }
 }
 
 export default useStakeFarms

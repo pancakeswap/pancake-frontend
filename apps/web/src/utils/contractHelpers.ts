@@ -94,6 +94,7 @@ import { tradingCompetitionFanTokenABI } from 'config/abi/tradingCompetitionFanT
 import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
 import { tradingCompetitionMoboxABI } from 'config/abi/tradingCompetitionMobox'
 import { tradingRewardABI } from 'config/abi/tradingReward'
+import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { v3MigratorABI } from 'config/abi/v3Migrator'
 import { vCakeABI } from 'config/abi/vCake'
@@ -290,6 +291,15 @@ export const getPositionManagerBCakeWrapperContract = (address: Address, signer?
   })
 }
 
+export const getV2SSBCakeWrapperContract = (address: Address, signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: v2BCakeWrapperABI,
+    address,
+    signer,
+    chainId,
+  })
+}
+
 export const getPositionManagerAdapterContract = (address: `0x${string}`, signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: positionManagerAdapterABI,
@@ -395,6 +405,7 @@ export const getMasterChefContract = (signer?: WalletClient, chainId?: number) =
     signer,
   })
 }
+
 export const getMasterChefV3Contract = (signer?: WalletClient, chainId?: number) => {
   const mcv3Address = getMasterChefV3Address(chainId)
   return mcv3Address

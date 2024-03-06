@@ -56,6 +56,7 @@ import {
   getTradingRewardContract,
   getTradingRewardTopTradesContract,
   getUnsContract,
+  getV2SSBCakeWrapperContract,
   getV3AirdropContract,
   getV3MigratorContract,
   getVCakeContract,
@@ -357,6 +358,12 @@ export function usePositionManagerBCakeWrapperContract(address: Address) {
     () => getPositionManagerBCakeWrapperContract(address, signer ?? undefined, chainId),
     [signer, chainId, address],
   )
+}
+
+export function useV2SSBCakeWrapperContract(address: Address) {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getV2SSBCakeWrapperContract(address, signer ?? undefined, chainId), [signer, chainId, address])
 }
 
 export function usePositionManagerAdepterContract(address: Address) {

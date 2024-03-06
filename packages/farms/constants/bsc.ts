@@ -1157,7 +1157,7 @@ const farms: SerializedFarmConfig[] = [
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
-    bCakeWrapperAddress: '0x1c9a562Ab4c1e45cB4C08712d18220d7cF7BA5e8',
+    bCakeWrapperAddress: '0x2EE84B24192648127d019A0974B21D8e004b9cDF',
   },
   {
     pid: 2,
@@ -1167,7 +1167,7 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.cake,
     quoteToken: bscTokens.wbnb,
     boosted: true,
-    bCakeWrapperAddress: '0x2EE84B24192648127d019A0974B21D8e004b9cDF',
+    bCakeWrapperAddress: '0x1c9a562Ab4c1e45cB4C08712d18220d7cF7BA5e8',
   },
   {
     pid: 0,

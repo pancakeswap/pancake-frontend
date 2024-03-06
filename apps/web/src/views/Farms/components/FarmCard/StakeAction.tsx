@@ -62,6 +62,8 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   tokenAmountTotal,
   quoteTokenAmountTotal,
   userData,
+  bCakeUserData,
+  bCakeWrapperAddress,
   lpRewardsApr,
   onStake,
   onUnstake,
@@ -74,7 +76,8 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const addTransaction = useTransactionAdder()
   const { account, chainId } = useAccountActiveChain()
   const native = useNativeCurrency()
-  const { tokenBalance, stakedBalance, allowance } = userData || {}
+  const isBooster = Boolean(bCakeWrapperAddress)
+  const { tokenBalance, stakedBalance, allowance } = (isBooster ? bCakeUserData : userData) || {}
   const cakePrice = useCakePrice()
   const router = useRouter()
   const { toastSuccess } = useToast()
@@ -313,7 +316,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   }
 
   // TODO: Move this out to prevent unnecessary re-rendered
-  if (!isApproved) {
+  if (!isApproved && stakedBalance?.eq(0)) {
     return (
       <Button mt="8px" width="100%" disabled={pendingTx || isBloctoETH} onClick={handleApprove}>
         {t('Enable Contract')}
