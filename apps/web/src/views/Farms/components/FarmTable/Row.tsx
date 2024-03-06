@@ -107,6 +107,7 @@ const FarmMobileCell = styled.td`
 `
 
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
+  if (props.farm.pid === 2) console.log(props, 'props')
   const { initialActivity, userDataReady, farm, multiplier } = props
   const hasSetInitialValue = useRef(false)
   const hasStakedAmount = farm.isStaking || false

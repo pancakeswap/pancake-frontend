@@ -319,6 +319,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   isLastFarm,
   alignLinksToRight = true,
 }) => {
+  const bCakeProps = { bCakeWrapperAddress: details.bCakeWrapperAddress }
   const { chainId } = useActiveChainId()
   const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
 
@@ -424,7 +425,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
             {(props) => <HarvestAction {...props} />}
           </ProxyHarvestActionContainer>
         ) : (
-          <HarvestActionContainer {...farm} userDataReady={userDataReady}>
+          <HarvestActionContainer {...farm} {...bCakeProps} userDataReady={userDataReady}>
             {(props) => <HarvestAction {...props} />}
           </HarvestActionContainer>
         )}
@@ -433,7 +434,13 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
             {(props) => <StakedAction {...props} />}
           </ProxyStakedContainer>
         ) : (
-          <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
+          <StakedContainer
+            {...farm}
+            {...bCakeProps}
+            userDataReady={userDataReady}
+            lpLabel={lpLabel}
+            displayApr={apr.value}
+          >
             {(props) => <StakedAction {...props} />}
           </StakedContainer>
         )}
