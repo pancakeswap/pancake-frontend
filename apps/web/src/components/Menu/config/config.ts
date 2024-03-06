@@ -197,6 +197,7 @@ const config: (
       icon: NftIcon,
       fillIcon: NftFillIcon,
       image: '/images/decorations/nft.png',
+      showOnMobile: false,
       items: [],
     },
     {
@@ -246,6 +247,11 @@ const config: (
           label: t('Docs'),
           href: 'https://docs.pancakeswap.finance',
           type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+        {
+          label: t('V4'),
+          href: '/introducing-v4',
+          isMobileOnly: true,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
