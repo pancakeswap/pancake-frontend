@@ -74,7 +74,6 @@ export const useApr = ({
     const cakeRewardUsd = getBalanceAmount(new BigNumber(farmRewardAmount ?? 0), 18).times(rewardUsdPrice ?? 0)
 
     const totalAvgStakedInUsd = totalToken0Usd.plus(totalToken1Usd).plus(cakeRewardUsd)
-    if (currencyB.symbol === 'ordi') console.log({ avgToken0Amount, avgToken1Amount, token0PriceUSD, token1PriceUSD })
     return totalAvgStakedInUsd.times(ONE_YEAR).div(totalStakedInUsd).times(100)
   }, [
     avgToken0Amount,

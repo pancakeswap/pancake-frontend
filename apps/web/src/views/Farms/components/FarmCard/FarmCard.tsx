@@ -69,7 +69,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
 
   const farmCakePerSecond = getFarmCakePerSecond(farm.poolWeight)
   const numberFarmCakePerSecond = getNumberFarmCakePerSecond(farm.poolWeight)
-  if (farm.pid === 163 || farm.pid === 2) console.log(farm, '888')
+  // if (farm.pid === 163 || farm.pid === 2) console.log(farm, '888')
 
   const liquidity =
     farm?.liquidity && originalLiquidity?.gt(0) ? farm.liquidity.plus(originalLiquidity) : farm.liquidity
