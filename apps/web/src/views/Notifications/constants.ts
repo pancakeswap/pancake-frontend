@@ -65,7 +65,7 @@ export const PancakeNotifications: {
   newLpNotification: (t): pushNotification => {
     return {
       title: t('New LP Position Added'),
-      body: t('New LP position successfully added. you will be notified on important updates.'),
+      body: t('New LP position successfully added. You will be notified on important updates.'),
       icon: `https://pancakeswap.finance/logo.png`,
       url: 'https://pancakeswap.finance',
       type: SubsctiptionType.Liquidity,
