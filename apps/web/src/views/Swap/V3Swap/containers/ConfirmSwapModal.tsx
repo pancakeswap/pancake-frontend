@@ -9,9 +9,9 @@ import { Box, BscScanIcon, Flex, InjectedModalProps, Link } from '@pancakeswap/u
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import {
-  ApproveModalContent,
-  SwapPendingModalContent,
-  SwapTransactionReceiptModalContent,
+  ApproveModalContentV1,
+  SwapPendingModalContentV1,
+  SwapTransactionReceiptModalContentV1,
 } from '@pancakeswap/widgets-internal'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
@@ -23,7 +23,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
-import { ConfirmModalState, PendingConfirmModalState } from '../types'
+import { ConfirmModalStateV1, PendingConfirmModalStateV1 } from '../types'
 
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
 import { SwapTransactionErrorContent } from '../../components/SwapTransactionErrorContent'
@@ -42,9 +42,9 @@ interface ConfirmSwapModalProps {
   approval: ApprovalState
   swapErrorMessage?: string | boolean
   showApproveFlow: boolean
-  confirmModalState: ConfirmModalState
+  confirmModalState: ConfirmModalStateV1
   startSwapFlow: () => void
-  pendingModalSteps: PendingConfirmModalState[]
+  pendingModalSteps: PendingConfirmModalStateV1[]
   currentAllowance?: CurrencyAmount<Currency>
   onAcceptChanges: () => void
   customOnDismiss?: () => void
@@ -91,17 +91,17 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     const amountA = formatAmount(trade?.inputAmount, 6) ?? ''
     const amountB = formatAmount(trade?.outputAmount, 6) ?? ''
 
-    if (confirmModalState === ConfirmModalState.RESETTING_APPROVAL) {
-      return <ApproveModalContent title={t('Reset Approval on USDT')} isMM={isMM} isBonus={isBonus} />
+    if (confirmModalState === ConfirmModalStateV1.RESETTING_APPROVAL) {
+      return <ApproveModalContentV1 title={t('Reset Approval on USDT')} isMM={isMM} isBonus={isBonus} />
     }
 
     if (
       showApproveFlow &&
-      (confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
-        confirmModalState === ConfirmModalState.APPROVE_PENDING)
+      (confirmModalState === ConfirmModalStateV1.APPROVING_TOKEN ||
+        confirmModalState === ConfirmModalStateV1.APPROVE_PENDING)
     ) {
       return (
-        <ApproveModalContent
+        <ApproveModalContentV1
           title={t('Enable spending %symbol%', { symbol: `${trade?.inputAmount?.currency?.symbol}` })}
           isMM={isMM}
           isBonus={isBonus}
@@ -123,7 +123,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
 
     if (attemptingTxn) {
       return (
-        <SwapPendingModalContent
+        <SwapPendingModalContentV1
           title={t('Confirm Swap')}
           currencyA={currencyA}
           currencyB={currencyB}
@@ -133,9 +133,9 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
       )
     }
 
-    if (confirmModalState === ConfirmModalState.PENDING_CONFIRMATION) {
+    if (confirmModalState === ConfirmModalStateV1.PENDING_CONFIRMATION) {
       return (
-        <SwapPendingModalContent
+        <SwapPendingModalContentV1
           showIcon
           title={t('Transaction Submitted')}
           currencyA={currencyA}
@@ -156,13 +156,13 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
             tokenDecimals={token?.decimals}
             tokenLogo={token instanceof WrappedTokenInfo ? token?.logoURI : undefined}
           />
-        </SwapPendingModalContent>
+        </SwapPendingModalContentV1>
       )
     }
 
-    if (confirmModalState === ConfirmModalState.COMPLETED && txHash) {
+    if (confirmModalState === ConfirmModalStateV1.COMPLETED && txHash) {
       return (
-        <SwapTransactionReceiptModalContent>
+        <SwapTransactionReceiptModalContentV1>
           {chainId && (
             <Link external small href={getBlockExploreLink(txHash, 'transaction', chainId)}>
               {t('View on %site%', { site: getBlockExploreName(chainId) })}: {truncateHash(txHash, 8, 0)}
@@ -182,7 +182,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
             tokenDecimals={token?.decimals}
             tokenLogo={token instanceof WrappedTokenInfo ? token?.logoURI : undefined}
           />
-        </SwapTransactionReceiptModalContent>
+        </SwapTransactionReceiptModalContentV1>
       )
     }
 
@@ -224,9 +224,9 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
 
   const isShowingLoadingAnimation = useMemo(
     () =>
-      confirmModalState === ConfirmModalState.RESETTING_APPROVAL ||
-      confirmModalState === ConfirmModalState.APPROVING_TOKEN ||
-      confirmModalState === ConfirmModalState.APPROVE_PENDING ||
+      confirmModalState === ConfirmModalStateV1.RESETTING_APPROVAL ||
+      confirmModalState === ConfirmModalStateV1.APPROVING_TOKEN ||
+      confirmModalState === ConfirmModalStateV1.APPROVE_PENDING ||
       attemptingTxn,
     [confirmModalState, attemptingTxn],
   )
@@ -237,7 +237,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     <ConfirmSwapModalContainer
       minHeight="415px"
       width={['100%', '100%', '100%', '367px']}
-      hideTitleAndBackground={confirmModalState !== ConfirmModalState.REVIEWING}
+      hideTitleAndBackground={confirmModalState !== ConfirmModalStateV1.REVIEWING || Boolean(swapErrorMessage)}
       headerPadding={isShowingLoadingAnimation ? '12px 24px 0px 24px !important' : '12px 24px'}
       bodyPadding={isShowingLoadingAnimation ? '0 24px 24px 24px' : '24px'}
       bodyTop={isShowingLoadingAnimation ? '-15px' : '0'}

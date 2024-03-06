@@ -31,9 +31,9 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { warningSeverity } from 'utils/exchange'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalState'
 import { useAccount } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapCallback, useSwapInputError } from '../hooks'
+import { useConfirmModalState } from '../hooks/useConfirmModalState'
 import { TransactionRejectedError } from '../hooks/useSendSwapTransaction'
 import { useWallchainApi } from '../hooks/useWallchain'
 import { computeTradePriceBreakdown } from '../utils/exchange'
@@ -177,6 +177,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
           setSwapState((s) => ({
             ...s,
             txHash: undefined,
+            swapErrorMessage: t('Transaction rejected'),
             attemptingTxn: false,
           }))
           // throw reject error to reset the flow

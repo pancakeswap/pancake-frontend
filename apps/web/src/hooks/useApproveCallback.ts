@@ -51,6 +51,10 @@ export function useApproveCallback(
   const [isPendingError, setIsPendingError] = useState<boolean>(false)
 
   useEffect(() => {
+    console.info('debug update pending', {
+      pendingApproval,
+      pending,
+    })
     if (pendingApproval) {
       setPending(true)
     } else if (pending) {
@@ -80,6 +84,9 @@ export function useApproveCallback(
 
   const approve = useCallback(
     async (overrideAmountApprove?: bigint): Promise<SendTransactionResult | undefined> => {
+      console.info('debug approve', {
+        approvalState: ApprovalState[approvalState],
+      })
       if (approvalState !== ApprovalState.NOT_APPROVED && isUndefinedOrNull(overrideAmountApprove)) {
         toastError(t('Error'), t('Approve was called unnecessarily'))
         console.error('approve was called unnecessarily')
@@ -143,18 +150,11 @@ export function useApproveCallback(
         })
 
       if (!estimatedGas) return undefined
-
-      return callWithGasPrice(
-        tokenContract,
-        'approve' as const,
-        [
-          spender as Address,
-          overrideAmountApprove ?? (useExact ? amountToApprove?.quotient ?? targetAmount ?? MaxUint256 : MaxUint256),
-        ],
-        {
-          gas: calculateGasMargin(estimatedGas),
-        },
-      )
+      const finalAmount =
+        overrideAmountApprove ?? (useExact ? amountToApprove?.quotient ?? targetAmount ?? MaxUint256 : MaxUint256)
+      return callWithGasPrice(tokenContract, 'approve' as const, [spender as Address, finalAmount], {
+        gas: calculateGasMargin(estimatedGas),
+      })
         .then((response) => {
           if (addToTransaction && token) {
             addTransaction(response, {
@@ -163,7 +163,7 @@ export function useApproveCallback(
                 text: 'Approve %symbol%',
                 data: { symbol: overrideAmountApprove?.toString() ?? amountToApprove?.currency?.symbol },
               },
-              approval: { tokenAddress: token.address, spender },
+              approval: { tokenAddress: token.address, spender, amount: finalAmount.toString() },
               type: 'approve',
             })
           }

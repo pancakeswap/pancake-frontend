@@ -14,11 +14,11 @@ import { basisPointsToPercent } from 'utils/exchange'
 import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import { viemClients } from 'utils/viem'
-import { Address, Hex, TransactionExecutionError, hexToBigInt } from 'viem'
+import { Address, Hex, TransactionExecutionError, UserRejectedRequestError, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 
+import { viemClientsPublicNodes } from 'hooks/usePublicNodeWaitForTransaction'
 import { logger } from 'utils/datadog'
 import { isZero } from '../utils/isZero'
 
@@ -54,11 +54,12 @@ export default function useSendSwapTransaction(
   chainId?: number,
   trade?: SmartRouterTrade<TradeType> | null, // trade to execute, required
   swapCalls: SwapCall[] | WallchainSwapCall[] = [],
+  type: 'V3SmartSwap' | 'UniversalRouter' = 'V3SmartSwap',
 ): { callback: null | (() => Promise<SendTransactionResult>) } {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
   const { sendTransactionAsync } = useSendTransaction()
-  const publicClient = viemClients[chainId as ChainId]
+  const publicClient = viemClientsPublicNodes[chainId as ChainId]
   const [allowedSlippage] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const { recipient } = useSwapState()
   const recipientAddress = recipient === null ? account : recipient
@@ -136,7 +137,7 @@ export default function useSendSwapTransaction(
         } else {
           call.gas =
             'gasEstimate' in bestCallOption && bestCallOption.gasEstimate
-              ? calculateGasMargin(bestCallOption.gasEstimate)
+              ? calculateGasMargin(bestCallOption.gasEstimate, 2000n)
               : undefined
         }
 
@@ -202,7 +203,7 @@ export default function useSendSwapTransaction(
               outputAmount,
               input: trade.inputAmount.currency,
               output: trade.outputAmount.currency,
-              type: 'V3SmartSwap',
+              type,
             })
             logTx({ account, chainId, hash: response.hash })
             return response
@@ -221,6 +222,7 @@ export default function useSendSwapTransaction(
                   output: trade.outputAmount.currency,
                   address: call.address,
                   value: call.value,
+                  type,
                   cause: error instanceof TransactionExecutionError ? error.cause : undefined,
                 },
                 error,
@@ -243,5 +245,14 @@ export default function useSendSwapTransaction(
     recipientAddress,
     recipient,
     addTransaction,
+    type,
   ])
+}
+
+export const userRejectedError = (error: unknown): boolean => {
+  return (
+    error instanceof UserRejectedRequestError ||
+    error instanceof TransactionRejectedError ||
+    (typeof error !== 'string' && isUserRejected(error))
+  )
 }

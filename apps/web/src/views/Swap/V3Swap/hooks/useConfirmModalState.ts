@@ -2,10 +2,11 @@ import { ChainId } from '@pancakeswap/chains'
 import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { ethereumTokens } from '@pancakeswap/tokens'
 import { ApprovalState } from 'hooks/useApproveCallback'
-import { useCallback, useEffect, useState } from 'react'
-import { ConfirmModalState, PendingConfirmModalState } from 'views/Swap/V3Swap/types'
-import { SendTransactionResult } from 'wagmi/actions'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
+import { useCallback, useEffect, useState } from 'react'
+import { Hex } from 'viem'
+import { ConfirmModalStateV1, PendingConfirmModalStateV1 } from 'views/Swap/V3Swap/types'
+import { SendTransactionResult } from 'wagmi/actions'
 import { TransactionRejectedError } from './useSendSwapTransaction'
 
 interface UseConfirmModalStateProps {
@@ -21,9 +22,10 @@ interface UseConfirmModalStateProps {
   revokeCallback: () => Promise<SendTransactionResult | undefined>
 }
 
-function isInApprovalPhase(confirmModalState: ConfirmModalState) {
+function isInApprovalPhase(confirmModalState: ConfirmModalStateV1) {
   return (
-    confirmModalState === ConfirmModalState.APPROVING_TOKEN || confirmModalState === ConfirmModalState.APPROVE_PENDING
+    confirmModalState === ConfirmModalStateV1.APPROVING_TOKEN ||
+    confirmModalState === ConfirmModalStateV1.APPROVE_PENDING
   )
 }
 export const useConfirmModalState = ({
@@ -38,13 +40,13 @@ export const useConfirmModalState = ({
   revokeCallback,
 }: UseConfirmModalStateProps) => {
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
-  const [confirmModalState, setConfirmModalState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
-  const [pendingModalSteps, setPendingModalSteps] = useState<PendingConfirmModalState[]>([])
+  const [confirmModalState, setConfirmModalState] = useState<ConfirmModalStateV1>(ConfirmModalStateV1.REVIEWING)
+  const [pendingModalSteps, setPendingModalSteps] = useState<PendingConfirmModalStateV1[]>([])
   const [previouslyPending, setPreviouslyPending] = useState<boolean>(false)
   const [resettingApproval, setResettingApproval] = useState<boolean>(false)
 
   const generateRequiredSteps = useCallback(() => {
-    const steps: PendingConfirmModalState[] = []
+    const steps: PendingConfirmModalStateV1[] = []
 
     // Any existing USDT allowance needs to be reset before we can approve the new amount (mainnet only).
     // See the `approve` function here: https://etherscan.io/address/0xdAC17F958D2ee523a2206206994597C13D831ec7#code
@@ -55,47 +57,47 @@ export const useConfirmModalState = ({
       approvalToken.chainId === ethereumTokens.usdt.chainId &&
       approvalToken.wrapped.address.toLowerCase() === ethereumTokens.usdt.address.toLowerCase()
     ) {
-      steps.push(ConfirmModalState.RESETTING_APPROVAL)
+      steps.push(ConfirmModalStateV1.RESETTING_APPROVAL)
     }
 
     if (approval === ApprovalState.NOT_APPROVED) {
       setPreviouslyPending(false)
-      steps.push(ConfirmModalState.APPROVING_TOKEN, ConfirmModalState.APPROVE_PENDING)
+      steps.push(ConfirmModalStateV1.APPROVING_TOKEN, ConfirmModalStateV1.APPROVE_PENDING)
     }
 
-    steps.push(ConfirmModalState.PENDING_CONFIRMATION)
+    steps.push(ConfirmModalStateV1.PENDING_CONFIRMATION)
     return steps
   }, [approval, approvalToken, currentAllowance])
 
   const onCancel = useCallback(() => {
-    setConfirmModalState(ConfirmModalState.REVIEWING)
+    setConfirmModalState(ConfirmModalStateV1.REVIEWING)
     setPreviouslyPending(false)
   }, [])
 
   const resetSwapFlow = useCallback(() => {
-    setConfirmModalState(ConfirmModalState.REVIEWING)
+    setConfirmModalState(ConfirmModalStateV1.REVIEWING)
     setPendingModalSteps([])
     setPreviouslyPending(false)
     setResettingApproval(false)
   }, [])
 
   const performStep = useCallback(
-    async (step: ConfirmModalState) => {
+    async (step: ConfirmModalStateV1) => {
       switch (step) {
-        case ConfirmModalState.RESETTING_APPROVAL:
-          setConfirmModalState(ConfirmModalState.RESETTING_APPROVAL)
+        case ConfirmModalStateV1.RESETTING_APPROVAL:
+          setConfirmModalState(ConfirmModalStateV1.RESETTING_APPROVAL)
           revokeCallback()
             .then(() => setResettingApproval(true))
             .catch(() => onCancel())
           break
-        case ConfirmModalState.APPROVING_TOKEN:
-          setConfirmModalState(ConfirmModalState.APPROVING_TOKEN)
+        case ConfirmModalStateV1.APPROVING_TOKEN:
+          setConfirmModalState(ConfirmModalStateV1.APPROVING_TOKEN)
           approveCallback()
-            .then(() => setConfirmModalState(ConfirmModalState.APPROVE_PENDING))
+            .then(() => setConfirmModalState(ConfirmModalStateV1.APPROVE_PENDING))
             .catch(() => onCancel())
           break
-        case ConfirmModalState.PENDING_CONFIRMATION:
-          setConfirmModalState(ConfirmModalState.PENDING_CONFIRMATION)
+        case ConfirmModalStateV1.PENDING_CONFIRMATION:
+          setConfirmModalState(ConfirmModalStateV1.PENDING_CONFIRMATION)
           try {
             await onConfirm()
           } catch (error) {
@@ -104,11 +106,11 @@ export const useConfirmModalState = ({
             }
           }
           break
-        case ConfirmModalState.COMPLETED:
-          setConfirmModalState(ConfirmModalState.COMPLETED)
+        case ConfirmModalStateV1.COMPLETED:
+          setConfirmModalState(ConfirmModalStateV1.COMPLETED)
           break
         default:
-          setConfirmModalState(ConfirmModalState.REVIEWING)
+          setConfirmModalState(ConfirmModalStateV1.REVIEWING)
           break
       }
     },
@@ -125,7 +127,7 @@ export const useConfirmModalState = ({
     async (hash: `0x${string}`) => {
       const receipt: any = await waitForTransaction({ hash, chainId })
       if (receipt.status === 'success') {
-        performStep(ConfirmModalState.COMPLETED)
+        performStep(ConfirmModalStateV1.COMPLETED)
       }
     },
     [performStep, waitForTransaction, chainId],
@@ -139,7 +141,7 @@ export const useConfirmModalState = ({
   }, [approval, resettingApproval, performStep, startSwapFlow])
 
   useEffect(() => {
-    if (approval === ApprovalState.PENDING && confirmModalState === ConfirmModalState.APPROVE_PENDING) {
+    if (approval === ApprovalState.PENDING && confirmModalState === ConfirmModalStateV1.APPROVE_PENDING) {
       setPreviouslyPending(true)
     }
   }, [approval, confirmModalState])
@@ -149,7 +151,7 @@ export const useConfirmModalState = ({
     if (
       previouslyPending &&
       approval === ApprovalState.NOT_APPROVED &&
-      confirmModalState === ConfirmModalState.APPROVE_PENDING
+      confirmModalState === ConfirmModalStateV1.APPROVE_PENDING
     ) {
       onCancel()
     }
@@ -157,20 +159,24 @@ export const useConfirmModalState = ({
 
   // Submit Approve, get error when submit approve.
   useEffect(() => {
-    if (isPendingError && confirmModalState === ConfirmModalState.APPROVE_PENDING) {
+    if (isPendingError && confirmModalState === ConfirmModalStateV1.APPROVE_PENDING) {
       onCancel()
     }
   }, [isPendingError, confirmModalState, previouslyPending, onCancel])
 
   useEffect(() => {
     if (isInApprovalPhase(confirmModalState) && approval === ApprovalState.APPROVED) {
-      performStep(ConfirmModalState.PENDING_CONFIRMATION)
+      performStep(ConfirmModalStateV1.PENDING_CONFIRMATION)
     }
   }, [approval, confirmModalState, performStep])
 
   useEffect(() => {
-    if (txHash && confirmModalState === ConfirmModalState.PENDING_CONFIRMATION && approval === ApprovalState.APPROVED) {
-      checkHashIsReceipted(txHash as `0x${string}`)
+    if (
+      txHash &&
+      confirmModalState === ConfirmModalStateV1.PENDING_CONFIRMATION &&
+      approval === ApprovalState.APPROVED
+    ) {
+      checkHashIsReceipted(txHash as Hex)
     }
   }, [approval, txHash, confirmModalState, checkHashIsReceipted, performStep])
 

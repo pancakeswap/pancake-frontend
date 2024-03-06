@@ -4,17 +4,17 @@ import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
+import { MMSlippageTolerance } from 'views/Swap/MMLinkPools/components/MMSlippageTolerance'
 import {
   computeSlippageAdjustedAmounts as mmComputeSlippageAdjustedAmountsWithSmartRouter,
   computeTradePriceBreakdown as mmComputeTradePriceBreakdownWithSmartRouter,
 } from 'views/Swap/MMLinkPools/utils/exchange'
-import { MMSlippageTolerance } from 'views/Swap/MMLinkPools/components/MMSlippageTolerance'
-import { SwapModalFooter } from './SwapModalFooter'
+import SwapModalHeader from '../../components/SwapModalHeader'
 import {
   computeSlippageAdjustedAmounts as computeSlippageAdjustedAmountsWithSmartRouter,
   computeTradePriceBreakdown as computeTradePriceBreakdownWithSmartRouter,
 } from '../utils/exchange'
-import SwapModalHeader from '../../components/SwapModalHeader'
+import { SwapModalFooter } from './SwapModalFooter'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it

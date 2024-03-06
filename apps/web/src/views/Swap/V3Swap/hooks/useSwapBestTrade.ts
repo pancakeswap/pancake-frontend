@@ -4,7 +4,7 @@ import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
 
 import { useCurrency } from 'hooks/Tokens'
 import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
-import { useDeferredValue } from 'react'
+import { useDeferredValue, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import {
@@ -38,6 +38,10 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
   const [v2Swap] = useUserV2SwapEnable()
   const [v3Swap] = useUserV3SwapEnable()
   const [stableSwap] = useUserStableSwapEnable()
+  // stable swap only support exact in
+  const stableSwapEnable = useMemo(() => {
+    return stableSwap && isExactIn
+  }, [stableSwap, isExactIn])
 
   const { isLoading, trade, refresh, syncing, isStale, error } = useBestAMMTrade({
     amount,
@@ -48,7 +52,7 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
     maxSplits: split ? undefined : 0,
     v2Swap,
     v3Swap,
-    stableSwap,
+    stableSwap: stableSwapEnable,
     type: 'auto',
     trackPerf: true,
   })

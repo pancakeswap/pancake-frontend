@@ -16,13 +16,13 @@
   "types": "dist/index.d.ts",
   "module": "dist/index.mjs",
   "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
-    "@pancakeswap/chains": "workspace:*",
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21",
     "viem": "1.19.11",
-    "wagmi": "1.4.7"
+    "wagmi": "1.4.13"
   },
   "devDependencies": {
     "@pancakeswap/tsconfig": "workspace:*",

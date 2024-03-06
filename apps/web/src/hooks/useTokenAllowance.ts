@@ -1,11 +1,11 @@
-import { Token, CurrencyAmount } from '@pancakeswap/sdk'
-import { erc20ABI } from 'wagmi'
+import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
+import { erc20ABI } from 'wagmi'
 
-import { useQuery } from '@tanstack/react-query'
+import { QueryObserverResult, useQuery } from '@tanstack/react-query'
+import { FAST_INTERVAL } from 'config/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { publicClient } from 'utils/wagmi'
-import { FAST_INTERVAL } from 'config/constants'
 
 function useTokenAllowance(
   token?: Token,
@@ -13,7 +13,7 @@ function useTokenAllowance(
   spender?: string,
 ): {
   allowance: CurrencyAmount<Token> | undefined
-  refetch: () => Promise<any>
+  refetch: () => Promise<QueryObserverResult<bigint>>
 } {
   const { chainId } = useActiveChainId()
 

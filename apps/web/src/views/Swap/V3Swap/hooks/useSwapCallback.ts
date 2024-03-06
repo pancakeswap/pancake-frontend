@@ -13,12 +13,11 @@ import { basisPointsToPercent } from 'utils/exchange'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { SendTransactionResult } from 'wagmi/actions'
 import useSendSwapTransaction from './useSendSwapTransaction'
-import { useSwapCallArguments } from './useSwapCallArguments'
 
-// import { useWallchainSwapCallArguments } from './useWallchain'
+import { useSwapCallArguments } from './useSwapCallArguments'
 import type { TWallchainMasterInput } from './useWallchain'
 
-export enum SwapCallbackState {
+enum SwapCallbackState {
   INVALID,
   LOADING,
   VALID,
@@ -75,7 +74,7 @@ UseSwapCallbackArgs): UseSwapCallbackReturns {
   //   wallchainMasterInput,
   // )
 
-  const { callback } = useSendSwapTransaction(account, chainId, trade, swapCalls)
+  const { callback } = useSendSwapTransaction(account, chainId, trade, swapCalls, 'V3SmartSwap')
 
   return useMemo(() => {
     if (!trade || !account || !chainId || !callback) {

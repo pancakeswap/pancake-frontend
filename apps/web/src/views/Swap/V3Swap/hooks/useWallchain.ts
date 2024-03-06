@@ -19,7 +19,7 @@ import { useWalletClient } from 'wagmi'
 import Bottleneck from 'bottleneck'
 import { WALLCHAIN_ENABLED, WallchainKeys, WallchainTokens } from 'config/wallchain'
 import { Address, Hex } from 'viem'
-import { useSwapCallArguments } from './useSwapCallArguments'
+import { useSwapCallArgumentsV2 } from './useSwapCallArgumentsV2'
 
 interface SwapCall {
   address: Address
@@ -132,13 +132,14 @@ export function useWallchainApi(
   const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const allowedSlippage = useMemo(() => basisPointsToPercent(allowedSlippageRaw), [allowedSlippageRaw])
   const [lastUpdate, setLastUpdate] = useState(0)
+  const useUniversalRouter = true
 
   const sdk = useWallchainSDK()
 
-  const swapCalls = useSwapCallArguments(trade, allowedSlippage, account, deadline, feeOptions)
+  const swapCalls = useSwapCallArgumentsV2(trade, allowedSlippage, account, undefined, deadline, feeOptions)
 
   useEffect(() => {
-    if (!sdk || !walletClient || !trade || !account) {
+    if (!sdk || !walletClient || !trade || !account || useUniversalRouter) {
       setStatus('not-found')
       return
     }
@@ -187,7 +188,7 @@ export function useWallchainSwapCallArguments(
   previousSwapCalls: { address: `0x${string}`; calldata: `0x${string}`; value: `0x${string}` }[] | undefined | null,
   account: string | undefined | null,
   onWallchainDrop: () => void,
-  masterInput?: [TMEVFoundResponse['searcherRequest'], string],
+  masterInput?: [TMEVFoundResponse['searcherRequest'], string | undefined],
 ): SwapCall[] | WallchainSwapCall[] {
   const [swapCalls, setSwapCalls] = useState<SwapCall[] | WallchainSwapCall[]>([])
   const { data: walletClient } = useWalletClient()

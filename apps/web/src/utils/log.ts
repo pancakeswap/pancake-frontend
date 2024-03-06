@@ -23,7 +23,7 @@ export const logSwap = ({
   chainId: number
   account: `0x${string}`
   hash: `0x${string}`
-  type: 'V2Swap' | 'SmartSwap' | 'StableSwap' | 'MarketMakerSwap' | 'V3SmartSwap'
+  type: 'V2Swap' | 'SmartSwap' | 'StableSwap' | 'MarketMakerSwap' | 'V3SmartSwap' | 'UniversalRouter'
 }) => {
   try {
     logger.info(type, {

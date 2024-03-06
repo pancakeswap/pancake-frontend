@@ -117,7 +117,7 @@ export default function Swap() {
               />
             }
             isOpen={isChartDisplayed}
-            setIsOpen={setIsChartDisplayed}
+            setIsOpen={(isOpen) => setIsChartDisplayed?.(isOpen)}
           />
         )}
         {isDesktop && isSwapHotTokenDisplay && isHotTokenSupported && (
