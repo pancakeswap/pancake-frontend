@@ -158,6 +158,8 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   tokenAmountTotal,
   quoteTokenAmountTotal,
   userData,
+  bCakeUserData,
+  bCakeWrapperAddress,
   lpRewardsApr,
   onDone,
   onStake,
@@ -167,17 +169,19 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 }) => {
   const dispatch = useAppDispatch()
   const native = useNativeCurrency()
+
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
   const { boosterState } = useContext(YieldBoosterStateContext)
   const { isFirstTime, refresh: refreshFirstTime } = useFirstTimeCrossFarming(vaultPid)
   const { t } = useTranslation()
+  const isBooster = Boolean(bCakeWrapperAddress)
   const { toastSuccess } = useToast()
   const addTransaction = useTransactionAdder()
   const isBloctoETH = useIsBloctoETH()
   const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
   const { account, chainId } = useAccountActiveChain()
 
-  const { tokenBalance, stakedBalance, allowance } = userData || {}
+  const { tokenBalance, stakedBalance, allowance } = (isBooster ? bCakeUserData : userData) || {}
 
   const router = useRouter()
   const cakePrice = useCakePrice()
