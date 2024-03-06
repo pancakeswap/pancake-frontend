@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 5.0.2
+
+### Patch Changes
+
+- 9db696b: Doc revision: correct the import path from smart router package
+
 ## 5.0.1
 
 ### Patch Changes
