@@ -321,12 +321,7 @@ const LimitOrders = () => {
   const isAccessTokenSupported = chainId && ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId)
 
   return (
-    <Page
-      removePadding={isChartExpanded}
-      hideFooterOnDesktop={isSideFooter}
-      noMinHeight
-      helpUrl={LIMIT_ORDERS_DOCS_URL}
-    >
+    <Page removePadding={isChartExpanded} noMinHeight>
       <ClaimWarning />
       <Flex
         width="100%"
