@@ -172,16 +172,14 @@ export const AllHooks = () => {
         </Flex>
         <Flex ml="auto">
           <Flex>
-            {outsideTags?.map((tag) => (
-              <Box key={tag.value} mr="8px" onClick={() => onClickTag(tag.value, false)}>
-                <TagStyled
-                  $picked={tag.value === pickedOption}
-                  // endIcon={<HotIcon width={20} height={20} />}
-                >
-                  {tag.label}
-                </TagStyled>
-              </Box>
-            ))}
+            {outsideTags?.map((tag) => {
+              // const icon = selectorConfig.find((i) => i.value === tag.value)?.icon ?? null
+              return (
+                <Box key={tag.value} mr="8px" onClick={() => onClickTag(tag.value, false)}>
+                  <TagStyled $picked={tag.value === pickedOption}>{tag.label}</TagStyled>
+                </Box>
+              )
+            })}
           </Flex>
           <SelectStyled
             options={options}
