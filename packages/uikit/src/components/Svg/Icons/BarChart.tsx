@@ -2,7 +2,7 @@ import React from "react";
 import Svg from "../Svg";
 import { SvgProps } from "../types";
 
-export const BarChartIcon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
+const Icon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (
     <Svg viewBox="0 0 16 16" {...props}>
       <g clipPath="url(#clip0_316_14299)">
@@ -16,3 +16,5 @@ export const BarChartIcon: React.FC<React.PropsWithChildren<SvgProps>> = (props)
     </Svg>
   );
 };
+
+export default Icon;

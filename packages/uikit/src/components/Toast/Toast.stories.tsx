@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from "react";
-import { useToast } from "../../contexts";
+import { ToastsProvider, useToast } from "../../contexts";
 import { Button } from "../Button";
 import { FlexGap } from "../Layouts";
 import { Toast } from "./Toast";
@@ -36,6 +36,10 @@ function HookedToast() {
 
 export const Default: Story = {
   render: () => {
-    return <HookedToast />;
+    return (
+      <ToastsProvider>
+        <HookedToast />
+      </ToastsProvider>
+    );
   },
 };
