@@ -1,20 +1,20 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { SmartRouterTrade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
-import { BackForwardIcon, Button, QuestionHelper, Text, Link, AutoColumn, Dots, Flex } from '@pancakeswap/uikit'
+import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { AutoColumn, BackForwardIcon, Button, Dots, Flex, Link, QuestionHelper, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
-import { useState, memo, useMemo } from 'react'
+import { CurrencyLogo } from 'components/Logo'
+import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
+import { memo, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { styled } from 'styled-components'
-import { CurrencyLogo } from 'components/Logo'
 import { warningSeverity } from 'utils/exchange'
-import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { formatExecutionPrice as mmFormatExecutionPrice } from 'views/Swap/MMLinkPools/utils/exchange'
 
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
-import { formatExecutionPrice } from '../utils/exchange'
+import { SlippageAdjustedAmounts, formatExecutionPrice } from '../utils/exchange'
 
 const SwapModalFooterContainer = styled(AutoColumn)`
   margin-top: 24px;
@@ -46,7 +46,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   inputAmount: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>
   priceImpact?: Percent
-  slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
+  slippageAdjustedAmounts: SlippageAdjustedAmounts | undefined | null
   isEnoughInputBalance?: boolean
   swapErrorMessage?: string | undefined
   disabledConfirm: boolean
@@ -114,8 +114,8 @@ export const SwapModalFooter = memo(function SwapModalFooter({
           <RowFixed>
             <Text fontSize="14px">
               {tradeType === TradeType.EXACT_INPUT
-                ? formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 4) ?? '-'
-                : formatAmount(slippageAdjustedAmounts[Field.INPUT], 4) ?? '-'}
+                ? formatAmount(slippageAdjustedAmounts?.[Field.OUTPUT], 4) ?? '-'
+                : formatAmount(slippageAdjustedAmounts?.[Field.INPUT], 4) ?? '-'}
             </Text>
             <Text fontSize="14px" marginLeft="4px">
               {tradeType === TradeType.EXACT_INPUT ? outputAmount.currency.symbol : inputAmount.currency.symbol}
