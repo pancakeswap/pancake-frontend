@@ -1,22 +1,9 @@
-import { Trans, useTranslation } from '@pancakeswap/localization'
-import {
-  ArrowForwardIcon,
-  Box,
-  Button,
-  CalculateIcon,
-  DonateIcon,
-  Flex,
-  HooksIcon,
-  Image,
-  OpenNewIcon,
-  PoolTypeIcon,
-  SingletonIcon,
-  Text,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { ArrowForwardIcon, Box, Button, Flex, Image, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
+import { useFeaturesConfig } from 'views/LandingV4/hooks/useFeaturesConfig'
 
 import 'swiper/css'
 import 'swiper/css/autoplay'
@@ -42,10 +29,15 @@ const ListStyled = styled(Flex)<{ $isPicked?: boolean }>`
   border: solid 1px;
   border-color: ${({ theme, $isPicked }) => ($isPicked ? `${theme.colors.cardBorder}` : 'transparent')};
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 340px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 264px;
     border-radius: 24px;
     margin: 0 0 8px 0;
+    padding: 8px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 340px;
     padding: 16px 12px 16px 20px;
   }
 `
@@ -58,16 +50,14 @@ const DetailStyled = styled(Box)`
   min-height: 500px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    width: 528px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    top: -80px;
-    margin: 40px 0px auto 40px;
+    margin: 0px;
+    min-height: 300px;
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
+    top: -80px;
     width: 600px;
+    min-height: 550px;
   }
 `
 
@@ -111,7 +101,26 @@ const CountdownContainer = styled.div<{ $percentage: number }>`
     transform: translate(-50%, -50%);
   }
 
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: 28px;
+    width: 28px;
+
+    >svg: first-child {
+      height: 28px;
+      width: 28px;
+    }
+
+    > circle {
+      stroke-dasharray: 93px;
+    }
+
+    > circle:nth-child(2) {
+      stroke: ${({ theme }) => theme.colors.primaryBright};
+      stroke-dashoffset: ${({ $percentage }) => `${113 * $percentage}px`};
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
     height: 32px;
     width: 32px;
 
@@ -131,86 +140,19 @@ const CountdownContainer = styled.div<{ $percentage: number }>`
   }
 `
 
-const FeaturesConfig = [
-  {
-    id: 0,
-    title: <Trans>Hooks</Trans>,
-    icon: <HooksIcon color="secondary" width={24} height={24} />,
-    subTitle: (
-      <Trans>
-        Unlock unparalleled customization with Hooks, enhancing liquidity pool functionality through smart contracts.
-        Tailor your liquidity pools precisely, defining Hook contracts for key actions like initialize, swap, modify,
-        position, and donate. Enable dynamic fees, on-chain limit orders, custom oracles, and more with PancakeSwap&apos
-        Hooks!
-      </Trans>
-    ),
-    imgUrl: '/images/v4-landing/feature-1.png',
-  },
-  {
-    id: 1,
-    title: <Trans>Customized Pool Types</Trans>,
-    icon: <PoolTypeIcon color="secondary" width={24} height={24} />,
-    subTitle: (
-      <Trans>
-        Explore a modular and sustainable design for AMMs, supporting multiple pool types and AMM logic through Hooks
-        and gas optimization. Launching with CLAMM pools featuring Hooks and the first-ever liquidity book AMM,
-        PancakeSwap v4&apos architecture ensures future-proof deployment of sophisticated AMM logic.
-      </Trans>
-    ),
-    imgUrl: '/images/v4-landing/feature-2.png',
-  },
-  {
-    id: 2,
-    title: <Trans>Singleton</Trans>,
-    icon: <SingletonIcon color="secondary" width={24} height={24} />,
-    subTitle: (
-      <Trans>
-        Introducing Singleton for unparalleled trading efficiency and gas savings. Singleton consolidates all pools,
-        cutting gas costs by 99% for deploying new pools. Multi-hop transactions are streamlined, eliminating the need
-        for token movement between contracts.
-      </Trans>
-    ),
-    imgUrl: '/images/v4-landing/feature-3.png',
-  },
-  {
-    id: 3,
-    title: <Trans>Flash Accounting</Trans>,
-    icon: <CalculateIcon color="secondary" width={24} height={24} />,
-    subTitle: (
-      <Trans>
-        Flash Accounting optimizes gas usage by computing net balances for transactions and settling them collectively,
-        resulting in significant gas savings.
-      </Trans>
-    ),
-    imgUrl: '/images/v4-landing/feature-4.png',
-  },
-  {
-    id: 4,
-    title: <Trans>Donate</Trans>,
-    icon: <DonateIcon color="secondary" width={24} height={24} />,
-    subTitle: (
-      <Trans>
-        Empower your liquidity pool with the innovative Donate method. It enables direct payments to in-range LPs in one
-        or both pool tokens. Donate ensures seamless and efficient transactions by leveraging the pool&apos fee
-        accounting system.
-      </Trans>
-    ),
-    imgUrl: '/images/v4-landing/feature-5.png',
-  },
-]
-
 const DISPLAY_TIMER = 10000
 
 export const Features = () => {
   const { t } = useTranslation()
-  const { isSm, isXs, isMd } = useMatchBreakpoints()
+  const { isLg, isMd, isXl, isXxl } = useMatchBreakpoints()
   const [percentage, setPerCentage] = useState(0)
   const [step, setStep] = useState(0)
   const timer = useRef<NodeJS.Timeout | null>(null)
   const [mouseEntered, setMouseEntered] = useState(false)
   const [remainingTimer, setRemainingTimer] = useState(DISPLAY_TIMER)
+  const FeaturesConfig = useFeaturesConfig()
 
-  const isBigDevice = useMemo(() => !isXs && !isSm && !isMd, [isXs, isSm, isMd])
+  const isBigDevice = useMemo(() => isMd || isLg || isXl || isXxl, [isLg, isMd, isXl, isXxl])
 
   const handleStepClick = (stepIndex: number) => {
     setStep(stepIndex)
@@ -250,31 +192,44 @@ export const Features = () => {
         clearInterval(timer.current)
       }
     }
-  }, [mouseEntered, remainingTimer, step])
+  }, [FeaturesConfig.length, mouseEntered, remainingTimer, step])
 
   return (
     <FeaturesContainer id="features">
       <Text
         bold
         mb="40px"
-        fontSize={['28px', '36px', '36px', '40px']}
-        lineHeight={['32px', '36px', '36px', '40px']}
-        textAlign={['center', 'center', 'center', 'left']}
+        fontSize={['28px', '36px', '36px', '36px', '40px']}
+        lineHeight={['32px', '36px', '36px', '36px', '40px']}
+        textAlign={['center', 'center', 'center', 'center', 'left']}
       >
         {t('Features')}
       </Text>
-      <Flex width="100%" flexDirection={['column', 'column', 'column', 'row']} justifyContent={['space-between']}>
-        <Flex flexDirection={['row', 'row', 'row', 'column']} m={['auto', 'auto', 'auto', '0 auto 0 0']}>
-          {FeaturesConfig.map((config) => {
+
+      <Box width={528} height={297} display={['none', 'none', 'block', 'block', 'none']} m="auto auto 40px auto">
+        <Image width={528} height={297} src={FeaturesConfig[step].imgUrl} alt="img" />
+      </Box>
+
+      <Flex width="100%" flexDirection={['column', 'column', 'row']} justifyContent={['space-between']}>
+        <Flex
+          flexDirection={['row', 'row', 'column']}
+          m={['auto', 'auto', '0 25px 0 0', '0 25px 0 0', '0 40px 0 0', '0 auto 0 0']}
+        >
+          {FeaturesConfig?.map((config) => {
             const isPicked = step === config.id
             return (
               <div key={config.id}>
                 <ListStyled $isPicked={isPicked} onClick={() => handleStepClick(config.id)}>
-                  <Box display={['none', 'none', 'none', 'flex']}>
+                  <Box display={['none', 'none', 'flex']}>
                     <Flex alignSelf="center" opacity={isPicked ? 1 : 0.6}>
                       {config.icon}
                     </Flex>
-                    <Text color={isPicked ? 'text' : 'textSubtle'} ml="16px" fontSize={20} bold>
+                    <Text
+                      bold
+                      color={isPicked ? 'text' : 'textSubtle'}
+                      ml={['8px', '8px', '8px', '8px', '16px']}
+                      fontSize={['16px', '16px', '16px', '16px', '20px']}
+                    >
                       {config?.title}
                     </Text>
                   </Box>
@@ -284,8 +239,16 @@ export const Features = () => {
                         {isPicked && (
                           <>
                             <svg>
-                              <circle r="15" cx="16" cy="16" />
-                              <circle r="15" cx="16" cy="16" />
+                              <circle
+                                r={isMd || isLg ? '13' : '15'}
+                                cx={isMd || isLg ? '14' : '16'}
+                                cy={isMd || isLg ? '14' : '16'}
+                              />
+                              <circle
+                                r={isMd || isLg ? '13' : '15'}
+                                cx={isMd || isLg ? '14' : '16'}
+                                cy={isMd || isLg ? '14' : '16'}
+                              />
                             </svg>
                             <ArrowForwardIcon color="primary" />
                           </>
@@ -313,28 +276,35 @@ export const Features = () => {
               </div>
             )
           })}
-          {isBigDevice && (
+          <Box display={['none', 'none', 'none', 'none', 'block']}>
             <NextLinkFromReactRouter target="_blank" to="https://forms.gle/tZNXcQbfvgj1XAJq5">
-              <Button width="fit-content" mt="70px">
-                <Text bold mr="4px">
+              <Button width="fit-content" mt={['32px', '32px', '32px', '32px', '32px', '56px']}>
+                <Text color="white" bold mr="4px">
                   {t('Read more')}
                 </Text>
-                <OpenNewIcon />
+                <OpenNewIcon color="white" />
               </Button>
             </NextLinkFromReactRouter>
-          )}
+          </Box>
         </Flex>
         <DetailStyled onMouseEnter={() => setMouseEntered(true)} onMouseLeave={() => setMouseEntered(false)}>
-          <Image width={600} height={337} src={FeaturesConfig[step].imgUrl} alt="img" />
+          {!(isMd || isLg) && (
+            <Box mb="40px">
+              <Image width={600} height={337} src={FeaturesConfig[step].imgUrl} alt="img" />
+            </Box>
+          )}
           <Text
             bold
-            m={['40px 0 16px 0']}
-            fontSize={['20px', '20px', '20px', '28px']}
-            lineHeight={['24px', '24px', '24px', '32px']}
+            m={['0px 0 16px 0']}
+            fontSize={['20px', '20px', '20px', '20px', '28px']}
+            lineHeight={['24px', '24px', '24px', '24px', '32px']}
           >
             {FeaturesConfig[step].title}
           </Text>
-          <Text lineHeight={['20px', '20px', '20px', '24px']} fontSize={['14px', '14px', '14px', '16px']}>
+          <Text
+            lineHeight={['20px', '20px', '20px', '20px', '24px']}
+            fontSize={['14px', '14px', '14px', '14px', '16px']}
+          >
             {FeaturesConfig[step].subTitle}
           </Text>
         </DetailStyled>
