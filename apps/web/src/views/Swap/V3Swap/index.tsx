@@ -55,8 +55,6 @@ export function V3SwapForm() {
         }
       />
 
-      <BuyCryptoLink currency={insufficientFundCurrency} />
-
       {mm.isMMBetter ? (
         <MMTradeDetail loaded={!mm.mmOrderBookTrade.isLoading} mmTrade={mm.mmTradeInfo} />
       ) : (

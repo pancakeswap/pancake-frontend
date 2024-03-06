@@ -13,6 +13,7 @@ import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useWebNotifications } from 'hooks/useWebNotifications'
 import { useRouter } from 'next/router'
 import { Suspense, lazy, useMemo } from 'react'
+import NextLink from 'next/link'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
 import UserMenu from './UserMenu'
@@ -26,7 +27,6 @@ const LinkComponent = (linkProps) => {
 }
 
 const Menu = (props) => {
-  const { enabled } = useWebNotifications()
   const { chainId } = useActiveChainId()
   const { isDark, setTheme } = useTheme()
   const cakePrice = useCakePrice()
@@ -39,7 +39,6 @@ const Menu = (props) => {
     false,
     'usCitizenConfirmModal',
   )
-  const [showPhishingWarningBanner] = usePhishingBanner()
 
   const menuItems = useMenuItems(onUSCitizenModalPresent)
 
@@ -60,26 +59,31 @@ const Menu = (props) => {
         linkComponent={LinkComponent}
         rightSide={
           <>
+            <div className="flex mr-8 gap-8">
+              <NextLink className={`menu-item ${pathname === '/swap' ? 'active' : ''}`} href="/swap">
+                Swap
+              </NextLink>
+              <NextLink className={`menu-item ${pathname === '/liquidity' ? 'active' : ''}`} href="/liquidity">
+                Liquidity
+              </NextLink>
+              <NextLink className={`menu-item ${pathname === '/nfts/list' ? 'active' : ''}`} href="/nfts/list">
+                NFTs
+              </NextLink>
+            </div>
             <GlobalSettings mode={SettingsMode.GLOBAL} />
-            {enabled && (
-              <Suspense fallback={null}>
-                <Notifications />
-              </Suspense>
-            )}
-            <NetworkSwitcher />
             <UserMenu />
           </>
         }
         chainId={chainId}
-        banner={showPhishingWarningBanner && typeof window !== 'undefined' && <PhishingWarningBanner />}
+        banner={undefined}
         isDark={isDark}
         toggleTheme={toggleTheme}
         currentLang={currentLanguage.code}
         langs={languageList}
         setLang={setLanguage}
         cakePriceUsd={cakePrice.eq(BIG_ZERO) ? undefined : cakePrice}
-        links={menuItems}
-        subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
+        links={[]}
+        subLinks={[]}
         footerLinks={getFooterLinks}
         activeItem={activeMenuItem?.href}
         activeSubItem={activeSubMenuItem?.href}

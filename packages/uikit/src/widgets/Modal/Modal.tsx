@@ -64,11 +64,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
   const theme = useTheme();
   return (
     <ModalWrapper minWidth={minWidth} onDismiss={onDismiss} hideCloseButton={hideCloseButton} {...props}>
-      <ModalHeader
-        background={getThemeValue(theme, `colors.${headerBackground}`, headerBackground)}
-        p={headerPadding}
-        headerBorderColor={headerBorderColor}
-      >
+      <ModalHeader p={headerPadding} headerBorderColor={headerBorderColor}>
         <ModalTitle>
           {onBack && <ModalBackButton onBack={onBack} />}
           <Heading>{title}</Heading>

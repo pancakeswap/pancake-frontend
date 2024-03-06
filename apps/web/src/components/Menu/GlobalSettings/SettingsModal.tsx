@@ -248,7 +248,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
         {mode === SettingsMode.SWAP_LIQUIDITY && (
           <>
             <Flex pt="3px" flexDirection="column">
-              <PreTitle>{t('Swaps & Liquidity')}</PreTitle>
               <Flex justifyContent="space-between" alignItems="center" mb="24px">
                 {chainId === ChainId.BSC && <GasSettings />}
               </Flex>
@@ -350,108 +349,6 @@ function RoutingSettings() {
         gap="16px"
       >
         <AtomBox>
-          <PreTitle mb="24px">{t('Liquidity source')}</PreTitle>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>PancakeSwap V3</Text>
-              <QuestionHelper
-                text={
-                  <Flex>
-                    <Text mr="5px">
-                      {t(
-                        'V3 offers concentrated liquidity to provide deeper liquidity for traders with the same amount of capital, offering lower slippage and more flexible trading fee tiers.',
-                      )}
-                    </Text>
-                  </Flex>
-                }
-                placement="top"
-                ml="4px"
-              />
-            </Flex>
-            <Toggle
-              disabled={v3Enable && onlyOneAMMSourceEnabled}
-              scale="md"
-              checked={v3Enable}
-              onChange={() => setV3Enable((s) => !s)}
-            />
-          </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>PancakeSwap V2</Text>
-              <QuestionHelper
-                text={
-                  <Flex flexDirection="column">
-                    <Text mr="5px">
-                      {t('The previous V2 exchange is where a number of iconic, popular assets are traded.')}
-                    </Text>
-                    <Text mr="5px" mt="1em">
-                      {t('Recommend leaving this on to ensure backward compatibility.')}
-                    </Text>
-                  </Flex>
-                }
-                placement="top"
-                ml="4px"
-              />
-            </Flex>
-            <Toggle
-              disabled={v2Enable && onlyOneAMMSourceEnabled}
-              scale="md"
-              checked={v2Enable}
-              onChange={() => setV2Enable((s) => !s)}
-            />
-          </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>PancakeSwap {t('StableSwap')}</Text>
-              <QuestionHelper
-                text={
-                  <Flex flexDirection="column">
-                    <Text mr="5px">
-                      {t(
-                        'StableSwap provides higher efficiency for stable or pegged assets and lower fees for trades.',
-                      )}
-                    </Text>
-                  </Flex>
-                }
-                placement="top"
-                ml="4px"
-              />
-            </Flex>
-            <PancakeToggle
-              disabled={isStableSwapByDefault && onlyOneAMMSourceEnabled}
-              id="stable-swap-toggle"
-              scale="md"
-              checked={isStableSwapByDefault}
-              onChange={() => {
-                setIsStableSwapByDefault((s) => !s)
-              }}
-            />
-          </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>{`PancakeSwap ${t('MM Linked Pool')}`}</Text>
-              <QuestionHelper
-                text={
-                  <Flex flexDirection="column">
-                    <Text mr="5px">{t('Trade through the market makers if they provide better deal')}</Text>
-                    <Text mr="5px" mt="1em">
-                      {t(
-                        'If a trade is going through market makers, it will no longer route through any traditional AMM DEX pools.',
-                      )}
-                    </Text>
-                  </Flex>
-                }
-                placement="top"
-                ml="4px"
-              />
-            </Flex>
-            <Toggle
-              id="toggle-disable-mm-button"
-              checked={isMMLinkedPoolByDefault}
-              onChange={(e) => setIsMMLinkedPoolByDefault(e.target.checked)}
-              scale="md"
-            />
-          </Flex>
           {onlyOneAMMSourceEnabled && (
             <Message variant="warning">
               <MessageText>

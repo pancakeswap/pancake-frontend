@@ -21,7 +21,6 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
-
 import { useDataDogRUM } from 'hooks/useDataDogRUM'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
 import { useInitGlobalWorker } from 'hooks/useWorker'
@@ -32,6 +31,7 @@ import { SEO } from '../../next-seo.config'
 import Providers from '../Providers'
 import Menu from '../components/Menu'
 import GlobalStyle from '../style/Global'
+import '../global.css'
 
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
 
@@ -157,11 +157,18 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   return (
     <ProductionErrorBoundary>
-      <ShowMenu>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ShowMenu>
+      <div
+        style={{
+          backgroundImage: 'url(/images/swap-bg.png)',
+          backgroundSize: '100%',
+        }}
+      >
+        <ShowMenu>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ShowMenu>
+      </div>
       <EasterEgg iterations={2} />
       <ToastListener />
       <FixedSubgraphHealthIndicator />

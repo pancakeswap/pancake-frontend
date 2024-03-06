@@ -1,8 +1,0 @@
-{
-  "extends": "@pancakeswap/tsconfig/nextjs.json",
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "compilerOptions": {
-    "baseUrl": "."
-  },
-  "exclude": ["node_modules"]
-}

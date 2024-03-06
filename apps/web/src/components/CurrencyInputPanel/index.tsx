@@ -265,7 +265,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
       bottom={
         <>
           {!!showUSDPrice && (
-            <Flex justifyContent="flex-end" mr="1rem">
+            <Flex ml="1rem">
               <Flex maxWidth="200px">
                 {inputLoading ? (
                   <Loading width="14px" height="14px" />
@@ -282,30 +282,6 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
           <InputRow selected={disableCurrencySelect}>
             {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
               <Flex alignItems="right" justifyContent="right">
-                {maxAmount?.greaterThan(0) &&
-                  showQuickInputButton &&
-                  onPercentInput &&
-                  [25, 50, 75].map((percent) => {
-                    const isAtCurrentPercent =
-                      (maxAmount && value !== '0' && value === percentAmount[percent]) ||
-                      (lpPercent && lpPercent === percent.toString())
-
-                    return (
-                      <Button
-                        key={`btn_quickCurrency${percent}`}
-                        data-dd-action-name={`Balance percent ${percent}`}
-                        onClick={() => {
-                          onPercentInput(percent)
-                        }}
-                        scale="xs"
-                        mr="5px"
-                        variant={isAtCurrentPercent ? 'primary' : 'secondary'}
-                        style={{ textTransform: 'uppercase' }}
-                      >
-                        {percent}%
-                      </Button>
-                    )
-                  })}
                 {maxAmount?.greaterThan(0) && showMaxButton && (
                   <Button
                     data-dd-action-name="Balance percent max"

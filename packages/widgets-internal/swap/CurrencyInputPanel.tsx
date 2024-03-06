@@ -52,6 +52,7 @@ export function CurrencyInputPanel({
             pt="12px"
           >
             <NumericalInput
+              align="left"
               error={Boolean(error)}
               disabled={disabled}
               loading={loading}

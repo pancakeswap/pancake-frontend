@@ -1,1 +1,0 @@
-export const FARM_DEFAULT_DECIMALS = 8

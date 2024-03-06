@@ -1,5 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, PageSection, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
 import MultipleBanner from './components/Banners/MultipleBanner'
@@ -29,10 +31,15 @@ const StyledHeroSection = styled(PageSection)`
 `
 
 const Home: React.FC<React.PropsWithChildren> = () => {
+  const router = useRouter()
   const { theme } = useTheme()
   const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px', padding: '0px 16px' }
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
+
+  useEffect(() => {
+    router.push('/swap')
+  }, [router])
 
   return (
     <Box style={{ width: isMobile ? '100vw' : 'calc(100vw - 8px)', overflow: 'hidden', boxSizing: 'border-box' }}>

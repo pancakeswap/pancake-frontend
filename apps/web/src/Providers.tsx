@@ -28,7 +28,7 @@ const Providers: React.FC<
       <HydrationBoundary state={dehydratedState}>
         <WagmiConfig config={wagmiConfig}>
           <Provider store={store}>
-            <NextThemeProvider>
+            <NextThemeProvider defaultTheme="dark">
               <LanguageProvider>
                 <StyledUIKitProvider>
                   <HistoryManagerProvider>

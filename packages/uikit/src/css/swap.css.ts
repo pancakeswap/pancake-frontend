@@ -13,7 +13,7 @@ export const inputVariants = recipe({
     border: "none",
     flex: "1 1 auto",
     backgroundColor: "transparent",
-    fontSize: 16,
+    fontSize: 24,
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
@@ -69,13 +69,14 @@ export type InputVariants = RecipeVariants<typeof inputVariants>;
 export const inputContainerVariants = recipe({
   base: style([
     atoms({
-      borderRadius: "default",
+      borderRadius: "8px",
       backgroundColor: "input",
+      border: "1",
     }),
     style({
       selectors: {
         "&:focus-within": {
-          boxShadow: vars.shadows.focus,
+          borderColor: vars.colors.text99,
         },
       },
     }),
@@ -109,7 +110,6 @@ export const pageVariants = recipe({
       alignItems: "center",
       width: "100%",
       height: "100%",
-      background: "gradientBubblegum",
       padding: "16px",
       paddingBottom: "0px",
     }),

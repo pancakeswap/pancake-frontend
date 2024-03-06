@@ -39,9 +39,9 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
 
   return (
     <>
-      <Button onClick={handleClick} {...props}>
+      <button className="btn-primary" onClick={handleClick} {...props} type="button">
         {children || <Trans>Connect Wallet</Trans>}
-      </Button>
+      </button>
       <style jsx global>{`
         w3m-modal {
           position: relative;

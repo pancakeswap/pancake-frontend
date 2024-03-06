@@ -30,9 +30,8 @@ const StyledNav = styled.nav`
   align-items: center;
   width: 100%;
   height: ${MENU_HEIGHT}px;
-  background-color: ${({ theme }) => theme.nav.background};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   transform: translate3d(0, 0, 0);
+  background: transparent;
 
   padding-left: 16px;
   padding-right: 16px;
@@ -154,19 +153,6 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
                 </AtomBox>
               </Flex>
               <Flex alignItems="center" height="100%">
-                <AtomBox mr="12px" display={{ xs: "none", lg: "block" }}>
-                  <CakePrice chainId={chainId} showSkeleton={false} cakePriceUsd={cakePriceUsd} />
-                </AtomBox>
-                <Box mt="4px">
-                  <LangSelector
-                    currentLang={currentLang}
-                    langs={langs}
-                    setLang={setLang}
-                    buttonScale="xs"
-                    color="textSubtle"
-                    hideLanguage
-                  />
-                </Box>
                 {rightSide}
               </Flex>
             </StyledNav>
@@ -196,19 +182,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
           </BodyWrapper>
         </Wrapper>
       </AtomBox>
-      <Footer
-        chainId={chainId}
-        items={footerLinks}
-        isDark={isDark}
-        toggleTheme={toggleTheme}
-        langs={langs}
-        setLang={setLang}
-        currentLang={currentLang}
-        cakePriceUsd={cakePriceUsd}
-        buyCakeLabel={buyCakeLabel}
-        buyCakeLink={buyCakeLink}
-        mb={[`${MOBILE_MENU_HEIGHT}px`, null, "0px"]}
-      />
+
       <AtomBox display={{ xs: "block", md: "none" }}>
         <BottomNav items={links} activeItem={activeItem} activeSubItem={activeSubItem} />
       </AtomBox>

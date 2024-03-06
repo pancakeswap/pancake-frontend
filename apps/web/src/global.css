@@ -1,3 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-[#181818];
+}
+
+.btn-primary {
+  @apply bg-primary py-3 rounded-lg text-black text-lg w-full;
+  @apply disabled:opacity-40;
+}
+
+.menu-item {
+  @apply text-gray-500;
+}
+
+.menu-item.active {
+  @apply text-white;
+}
+
 .sensei__table {
   overflow-x: auto;
   width: 100%;
