@@ -27,7 +27,32 @@ export const fetchFarmUserAllowances = async (
         abi: erc20ABI,
         address: lpContractAddress,
         functionName: 'allowance',
-        args: [account, farm?.bCakeWrapperAddress ?? masterChefAddress] as const,
+        args: [account, masterChefAddress] as const,
+      } as const
+    }),
+    allowFailure: false,
+  })
+
+  const parsedLpAllowances = lpAllowances.map((lpBalance) => {
+    return new BigNumber(lpBalance.toString()).toJSON()
+  })
+
+  return parsedLpAllowances
+}
+
+export const fetchFarmBCakeWrapperUserAllowances = async (
+  account: Address,
+  farmsToFetch: SerializedFarmPublicData[],
+  chainId: number,
+) => {
+  const lpAllowances = await publicClient({ chainId }).multicall({
+    contracts: farmsToFetch.map((farm) => {
+      const lpContractAddress = farm.lpAddress
+      return {
+        abi: erc20ABI,
+        address: lpContractAddress,
+        functionName: 'allowance',
+        args: [account, farm?.bCakeWrapperAddress ?? '0x'] as const,
       } as const
     }),
     allowFailure: false,

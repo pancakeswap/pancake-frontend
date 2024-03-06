@@ -18,6 +18,7 @@ import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitPr
 import { Address } from 'wagmi'
 import { resetUserState } from '../global/actions'
 import {
+  fetchFarmBCakeWrapperUserAllowances,
   fetchFarmUserAllowances,
   fetchFarmUserBCakeWrapperEarnings,
   fetchFarmUserBCakeWrapperStakedBalances,
@@ -177,7 +178,7 @@ async function getBoostedFarmsStakeValue(farms, account, chainId, proxyAddress) 
 
 async function getBCakeWrapperFarmsStakeValue(farms, account, chainId) {
   const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
-    fetchFarmUserAllowances(account, farms, chainId),
+    fetchFarmBCakeWrapperUserAllowances(account, farms, chainId),
     fetchFarmUserTokenBalances(account, farms, chainId),
     fetchFarmUserBCakeWrapperStakedBalances(account, farms, chainId),
     fetchFarmUserBCakeWrapperEarnings(account, farms, chainId),

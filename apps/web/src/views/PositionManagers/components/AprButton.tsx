@@ -74,8 +74,8 @@ export const AprButton = memo(function YieldInfo({
     [totalSupplyAmounts, precision, totalStakedInUsd],
   )
 
-  const cakeAPR = useMemo(() => parseFloat(apr?.cakeYieldApr ?? 0), [apr])
-  const lpAPR = useMemo(() => parseFloat(apr?.lpApr ?? 0), [apr])
+  const cakeAPR = useMemo(() => parseFloat(apr?.cakeYieldApr ?? '0'), [apr])
+  const lpAPR = useMemo(() => parseFloat(apr?.lpApr ?? '0'), [apr])
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
