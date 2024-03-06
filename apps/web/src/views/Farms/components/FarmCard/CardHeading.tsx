@@ -92,10 +92,12 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
           {isReady && version === 3 && <V3FeeTag feeAmount={feeAmount} />}
           {isReady && isCommunityFarm && <FarmAuctionTag mr="-4px" />}
           {isReady ? (
-            <Flex ref={targetRef}>
-              <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
-              {tooltipVisible && tooltip}
-            </Flex>
+            version !== 2 ? (
+              <Flex ref={targetRef}>
+                <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
+                {tooltipVisible && tooltip}
+              </Flex>
+            ) : null
           ) : (
             <Skeleton ml="4px" width={42} height={28} />
           )}

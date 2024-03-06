@@ -1,8 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { RoiCalculatorModal, Text, TooltipText, useModal, useTooltip } from '@pancakeswap/uikit'
+import { Flex, RocketIcon, RoiCalculatorModal, Text, TooltipText, useModal, useTooltip } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
-import _toNumber from 'lodash/toNumber'
 import { MouseEvent } from 'react'
 
 import { useFarmUser } from 'state/farms/hooks'
@@ -10,6 +9,7 @@ import { useFarmUser } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useAccount } from 'wagmi'
 
+export const USER_ESTIMATED_MULTIPLIER = 3
 export interface ApyButtonProps {
   variant: 'text' | 'text-and-button'
   pid: number
@@ -24,7 +24,6 @@ export interface ApyButtonProps {
   addLiquidityUrl?: string
   useTooltipText?: boolean
   hideButton?: boolean
-  boosted?: boolean
   stableSwapAddress?: string
   stableLpFee?: number
   farmCakePerSecond?: string
@@ -47,7 +46,6 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   addLiquidityUrl,
   useTooltipText,
   hideButton,
-  boosted,
   stableSwapAddress,
   stableLpFee,
   farmCakePerSecond,
@@ -64,9 +62,9 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
     ? proxy.stakedBalance.plus(proxy.tokenBalance)
     : BIG_ZERO
 
-  const boostMultiplierDisplay = boosterMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
+      key={pid}
       account={account}
       pid={pid}
       linkLabel={t('Add %symbol%', { symbol: lpLabel })}
@@ -75,9 +73,9 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       stakingTokenSymbol={lpSymbol}
       stakingTokenPrice={lpTokenPrice.toNumber()}
       earningTokenPrice={cakePrice?.toNumber() ?? 0}
-      apr={boosterMultiplier ? apr * boosterMultiplier : apr}
+      apr={isBooster ? apr * boosterMultiplier + lpRewardsApr : apr + lpRewardsApr}
       multiplier={multiplier}
-      displayApr={boosterMultiplier ? (_toNumber(displayApr) - apr + apr * boosterMultiplier).toFixed(2) : displayApr}
+      displayApr={isBooster ? (apr * boosterMultiplier + lpRewardsApr).toFixed(2) : displayApr}
       linkHref={addLiquidityUrl}
       lpRewardsApr={lpRewardsApr}
       isFarm
@@ -96,61 +94,76 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
     onPresentApyModal()
   }
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+  const aprTooltip = useTooltip(
     <>
       <Text>
-        {t('Combined APR')}:{' '}
-        <Text style={{ display: 'inline-block' }} color={isBooster ? 'secondary' : 'text'} bold>
-          {isBooster ? `${(apr * boosterMultiplier + lpRewardsApr).toFixed(2)}%` : `${displayApr}%`}
-        </Text>
+        {t('Combined APR')}: <b>{isBooster ? (boosterMultiplier * apr + lpRewardsApr).toFixed(2) : displayApr}%</b>
       </Text>
       <ul>
         <li>
           {t('Farm APR')}:{' '}
-          <Text style={{ display: 'inline-block' }} color={isBooster ? 'secondary' : 'normal'} bold>
-            {isBooster ? `${(apr * boosterMultiplier).toFixed(2)}%` : `${apr.toFixed(2)}%`}
-          </Text>
+          <b>
+            {isBooster && <>{(boosterMultiplier * apr).toFixed(2)}% </>}
+            <Text
+              display="inline-block"
+              style={{ textDecoration: isBooster ? 'line-through' : 'none', fontWeight: 800 }}
+            >
+              {apr.toFixed(2)}%
+            </Text>
+          </b>
         </li>
         <li>
-          {t('LP Fee APR')}:{' '}
-          <Text style={{ display: 'inline-block' }} color={isBooster ? 'secondary' : 'normal'} bold>
-            {lpRewardsApr === 0 ? '-' : lpRewardsApr}%
-          </Text>
+          {t('LP Fee APR')}: <b>{lpRewardsApr.toFixed(2)}%</b>
         </li>
       </ul>
+      <br />
+      <Text>
+        {t('Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.')}
+      </Text>
       {isBooster && (
-        <Text>
-          {t('Available Boosted')}:{' '}
-          <Text color="secondary" style={{ display: 'inline-block' }}>
-            {t('Up to %boostMultiplier%x', { boostMultiplier: boostMultiplierDisplay })}
-          </Text>
+        <Text mt="15px">
+          {t('bCAKE only boosts Farm APR. Actual boost multiplier is subject to farm and pool conditions.')}
         </Text>
       )}
-      {isBooster && <Text color="secondary">{t('Boost only applies to base APR (CAKE yield)')}</Text>}
+      <Text mt="15px">{t('APRs for individual positions may vary depending on the configs.')}</Text>
     </>,
-    {
-      placement: 'top',
-    },
   )
 
   return (
-    <FarmWidget.FarmApyButton
-      variant={variant}
-      hideButton={hideButton}
-      strikethrough={isBooster}
-      handleClickButton={handleClickButton}
-    >
-      {useTooltipText ? (
-        <>
-          <TooltipText ref={targetRef} decorationColor="secondary">
-            {displayApr}%
-          </TooltipText>
-          {tooltipVisible && tooltip}
-        </>
-      ) : (
-        <>{displayApr}%</>
-      )}
-    </FarmWidget.FarmApyButton>
+    <>
+      <FarmWidget.FarmApyButton
+        variant={variant}
+        hideButton={hideButton}
+        strikethrough={false}
+        handleClickButton={handleClickButton}
+      >
+        {useTooltipText ? (
+          <>
+            <TooltipText ref={aprTooltip.targetRef} decorationColor="secondary">
+              <Flex ml="4px" mr="5px" style={{ gap: 5 }}>
+                {isBooster && (
+                  <>
+                    <RocketIcon color="success" />
+                    <Text bold color="success" fontSize={16}>
+                      <>
+                        <Text bold color="success" fontSize={14} display="inline-block" mr="3px">
+                          {t('Up to')}
+                        </Text>
+                        {`${isBooster ? (boosterMultiplier * apr + lpRewardsApr).toFixed(2) : displayApr}%`}
+                      </>
+                    </Text>
+                  </>
+                )}
+                <Text style={{ textDecoration: isBooster ? 'line-through' : 'none' }}>{displayApr}%</Text>
+              </Flex>
+            </TooltipText>
+          </>
+        ) : (
+          <>{displayApr}%</>
+        )}
+      </FarmWidget.FarmApyButton>
+      {aprTooltip.tooltipVisible && aprTooltip.tooltip}
+    </>
   )
 }
 
