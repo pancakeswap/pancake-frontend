@@ -7,6 +7,7 @@ import { createElement, useCallback, useEffect, useMemo, useRef, useState } from
 import { styled } from 'styled-components'
 
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
+import { RewardPerDay } from 'views/PositionManagers/components/RewardPerDay'
 import { FarmV3ApyButton } from '../FarmCard/V3/FarmV3ApyButton'
 import { useUserBoostedPoolsTokenId } from '../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { useIsSomePositionBoosted } from '../YieldBooster/hooks/bCakeV3/useIsSomePositionBoosted'
@@ -30,6 +31,7 @@ export type V2RowProps = {
   liquidity: FarmWidget.FarmTableLiquidityProps
   apr: AprProps
   details: V2Farm
+  rewardPerDay: Record<string, any>
 }
 
 export type CommunityRowProps = Omit<V2RowProps, 'type'> & {
@@ -111,6 +113,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
   const { t } = useTranslation()
+  // if (props.farm.pid === 163 || props.farm.pid === 2) console.log(props, '888')
 
   const { tokenIds } = useUserBoostedPoolsTokenId()
   const { isBoosted } = useIsSomePositionBoosted(props.type === 'v3' ? props?.details?.stakedPositions : [], tokenIds)
@@ -161,6 +164,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                           <V2Tag scale="sm" />
                         )
                       ) : null}
+                      {props.type === 'v2' && props?.details?.bCakeWrapperAddress ? <BoostedTag scale="sm" /> : null}
                       {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
                       {isBoosted ? <BoostedTag scale="sm" /> : null}
                     </CellInner>
@@ -180,6 +184,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     </CellInner>
                   </td>
                 )
+
               case 'apr':
                 if (props.type === 'v3') {
                   return (
@@ -204,24 +209,31 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                           boosted={false}
                           farmCakePerSecond={multiplier.farmCakePerSecond}
                           totalMultipliers={multiplier.totalMultipliers}
+                          boosterMultiplier={3}
+                          isBooster={Boolean(props?.details?.bCakeWrapperAddress)}
                         />
-                        {/* {props?.details?.boosted && userDataReady ? (
-                          <BoostedApr
-                            lpRewardsApr={props?.apr?.lpRewardsApr}
-                            apr={props?.apr?.originalValue}
-                            pid={props.farm?.pid}
-                            lpTotalSupply={props.details?.lpTotalSupply}
-                            userBalanceInFarm={
-                              stakedBalance.plus(tokenBalance).gt(0)
-                                ? stakedBalance.plus(tokenBalance)
-                                : proxy.stakedBalance.plus(proxy.tokenBalance)
-                            }
-                          />
-                        ) : null} */}
                       </CellLayout>
                     </CellInner>
                   </td>
                 )
+              case 'rewardPerDay':
+                if (farm.version === 2) {
+                  return (
+                    <td key={key}>
+                      <CellInner>
+                        <CellLayout label={t('Reward Per Day')}>
+                          <RewardPerDay
+                            rewardPerSec={props.farm.rewardCakePerSecond ?? 0}
+                            scale="sm"
+                            style={{ marginTop: 5 }}
+                          />
+                        </CellLayout>
+                      </CellInner>
+                    </td>
+                  )
+                }
+                return null
+
               default:
                 if (cells[key]) {
                   return (

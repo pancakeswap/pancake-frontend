@@ -139,7 +139,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       >
         {useTooltipText ? (
           <>
-            <TooltipText ref={aprTooltip.targetRef} decorationColor="secondary">
+            <TooltipText ref={aprTooltip.targetRef} decorationColor="secondary" style={{ whiteSpace: 'nowrap' }}>
               <Flex ml="4px" mr="5px" style={{ gap: 5 }}>
                 {isBooster && (
                   <>
