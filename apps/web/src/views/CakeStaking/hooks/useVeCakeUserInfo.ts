@@ -136,7 +136,7 @@ export const useCakeLockStatus = (): {
   const proxyCakeLockedAmount = useMemo(() => {
     if (!cakePoolLocked) return 0n
 
-    return userInfo!.cakeAmount ?? 0n
+    return userInfo?.cakeAmount ?? 0n
   }, [userInfo, cakePoolLocked])
 
   const cakeLockedAmount = useMemo(() => {
