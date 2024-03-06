@@ -85,7 +85,7 @@ $ pnpm add viem@1 graphql-request@5.0.0 @pancakeswap/sdk @pancakeswap/tokens
 ```typescript
 import { createPublicClient, http } from 'viem'
 import { GraphQLClient } from 'graphql-request'
-import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { SmartRouter } from '@pancakeswap/smart-router'
 
 const publicClient = createPublicClient({
   chain: mainnet,
@@ -107,7 +107,7 @@ const quoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: () => p
 
 ```typescript
 import { Native } from '@pancakeswap/sdk'
-import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { SmartRouter } from '@pancakeswap/smart-router'
 import { bscTokens } from '@pancakeswap/tokens'
 
 const swapFrom = Native.onChain(chainId)
@@ -152,7 +152,7 @@ const trade = await SmartRouter.getBestTrade(amount, swapTo, TradeType.EXACT_INP
 
 ```typescript
 import { ChainId } from '@pancakeswap/chains'
-import { SmartRouter, SMART_ROUTER_ADDRESSES, SwapRouter } from '@pancakeswap/smart-router/evm'
+import { SmartRouter, SMART_ROUTER_ADDRESSES, SwapRouter } from '@pancakeswap/smart-router'
 import { hexToBigInt } from 'viem'
 
 const routerAddress = SMART_ROUTER_ADDRESSES[ChainId.BSC]
