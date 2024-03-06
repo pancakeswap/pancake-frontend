@@ -53,10 +53,11 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   boosterMultiplier = 1,
 }) => {
   const { t } = useTranslation()
-  const { pid, token, quoteToken, vaultPid, lpSymbol, lpAddress, bCakeWrapperAddress } = farm
-  const { earnings } = farm.userData || {}
+  const { pid, token, quoteToken, vaultPid, lpSymbol, bCakeWrapperAddress, bCakeUserData } = farm
+
   const isReady = farm.multiplier !== undefined
   const isBooster = Boolean(bCakeWrapperAddress)
+  const { earnings } = (isBooster ? farm.bCakeUserData : farm.userData) || {}
   const { status } = useBoostStatusPM(isBooster, boosterMultiplier)
   const { colors } = useTheme()
   const dividerBorderStyle = useMemo(() => `1px solid ${colors.input}`, [colors.input])
@@ -108,6 +109,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
                 quoteToken={quoteToken}
                 lpSymbol={lpSymbol}
                 bCakeWrapperAddress={bCakeWrapperAddress}
+                bCakeUserData={bCakeUserData}
               >
                 {(props) => <HarvestAction {...props} />}
               </HarvestActionContainer>
