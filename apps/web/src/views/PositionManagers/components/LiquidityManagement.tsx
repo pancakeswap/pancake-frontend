@@ -89,6 +89,7 @@ interface Props {
   learnMoreAboutUrl?: string
   lpTokenDecimals?: number
   aprTimeWindow?: number
+  isBooster?: boolean
   bCakeWrapper?: Address
   minDepositUSD?: number
   boosterMultiplier?: number
@@ -134,6 +135,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   bCakeWrapper,
   minDepositUSD,
   boosterMultiplier,
+  isBooster,
 }: Props) {
   const { colors } = useTheme()
   const { t } = useTranslation()
@@ -283,6 +285,8 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         aprTimeWindow={aprTimeWindow}
         bCakeWrapper={bCakeWrapper}
         minDepositUSD={minDepositUSD}
+        boosterMultiplier={boosterMultiplier}
+        isBooster={isBooster}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

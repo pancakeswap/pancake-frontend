@@ -146,6 +146,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     avgToken1Amount: aprDataInfo?.info?.token1 ?? 0,
     rewardEndTime: info.endTimestamp,
     rewardStartTime: info.startTimestamp,
+    farmRewardAmount: aprDataInfo?.info?.rewardAmount ?? 0,
   })
 
   const staked0Amount = info?.userToken0Amounts
