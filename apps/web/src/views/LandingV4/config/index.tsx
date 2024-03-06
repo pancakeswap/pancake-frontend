@@ -10,8 +10,8 @@ export const HooksConfig: HooksType[] = [
         pools, similar to v2 pools. This hook eases liquidity position management for the LPs.
       </Trans>
     ),
-    tags: [TagType.MISCELLANEOUS, TagType.CL_POOL, TagType.LPs],
-    tagsValue: [TagValue.MISCELLANEOUS, TagValue.CL_POOL, TagValue.LPs],
+    tags: [TagType.MISCELLANEOUS, TagType.CLAMM, TagType.LPs],
+    tagsValue: [TagValue.MISCELLANEOUS, TagValue.CLAMM, TagValue.LPs],
     createDate: '15/03/2024',
     githubLink: 'https://github.com/pancakeswap/pancake-v4-hooks/tree/main/src/pool-cl/full-range',
   },
@@ -23,8 +23,8 @@ export const HooksConfig: HooksType[] = [
         geometric mean rather than arithmetic mean. This approach makes it more resilient to temporary price spikes.
       </Trans>
     ),
-    tags: [TagType.ORACLE, TagType.CL_POOL],
-    tagsValue: [TagValue.ORACLE, TagValue.CL_POOL],
+    tags: [TagType.ORACLE, TagType.CLAMM],
+    tagsValue: [TagValue.ORACLE, TagValue.CLAMM],
     createDate: '15/03/2024',
     githubLink: 'https://github.com/pancakeswap/pancake-v4-hooks/tree/main/src/pool-cl/geomean-oracle',
   },
@@ -38,8 +38,8 @@ export const HooksConfig: HooksType[] = [
         limit price.
       </Trans>
     ),
-    tags: [TagType.ORDER_TYPES, TagType.CL_POOL, TagType.TRADERS],
-    tagsValue: [TagValue.ORDER_TYPES, TagValue.CL_POOL, TagValue.TRADERS],
+    tags: [TagType.ORDER_TYPES, TagType.CLAMM, TagType.TRADERS],
+    tagsValue: [TagValue.ORDER_TYPES, TagValue.CLAMM, TagValue.TRADERS],
     createDate: '15/03/2024',
     githubLink: 'https://github.com/pancakeswap/pancake-v4-hooks/tree/main/src/pool-cl/limit-order',
   },
@@ -51,8 +51,8 @@ export const HooksConfig: HooksType[] = [
         period of time. This helps them to improve the average price of execution by reducing the overall price impact.
       </Trans>
     ),
-    tags: [TagType.ORDER_TYPES, TagType.CL_POOL],
-    tagsValue: [TagValue.ORDER_TYPES, TagValue.CL_POOL],
+    tags: [TagType.ORDER_TYPES, TagType.CLAMM],
+    tagsValue: [TagValue.ORDER_TYPES, TagValue.CLAMM],
     createDate: '15/03/2024',
     githubLink: 'https://github.com/pancakeswap/pancake-v4-hooks/tree/main/src/pool-cl/twamm',
   },
@@ -65,8 +65,8 @@ export const HooksConfig: HooksType[] = [
         geometric mean rather than arithmetic mean. This approach makes it more resilient to temporary price spikes.
       </Trans>
     ),
-    tags: [TagType.ORACLE, TagType.BIN_POOL],
-    tagsValue: [TagValue.ORACLE, TagValue.BIN_POOL],
+    tags: [TagType.ORACLE, TagType.LBAMM],
+    tagsValue: [TagValue.ORACLE, TagValue.LBAMM],
     createDate: '15/03/2024',
     githubLink: 'https://github.com/pancakeswap/pancake-v4-hooks/tree/main/src/pool-bin/geomean-oracle',
   },
@@ -81,8 +81,8 @@ export const HooksConfig: HooksType[] = [
         limit price.
       </Trans>
     ),
-    tags: [TagType.ORDER_TYPES, TagType.BIN_POOL, TagType.TRADERS],
-    tagsValue: [TagValue.ORDER_TYPES, TagValue.BIN_POOL, TagValue.TRADERS],
+    tags: [TagType.ORDER_TYPES, TagType.LBAMM, TagType.TRADERS],
+    tagsValue: [TagValue.ORDER_TYPES, TagValue.LBAMM, TagValue.TRADERS],
     createDate: '15/03/2024',
     githubLink: 'https://github.com/pancakeswap/pancake-v4-hooks/tree/main/src/pool-bin/limit-order',
   },
