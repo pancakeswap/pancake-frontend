@@ -5,8 +5,8 @@ export enum TagType {
   ORDER_TYPES = 'Order Types',
 
   // Pool
-  CL_POOL = 'CLPool',
-  BIN_POOL = 'BinPool',
+  CLAMM = 'CLAMM',
+  LBAMM = 'LBAMM',
 
   // Benefit
   LPs = 'LPs',
@@ -20,8 +20,8 @@ export enum TagValue {
   MISCELLANEOUS = 2,
   ORACLE = 3,
   ORDER_TYPES = 4,
-  CL_POOL = 5,
-  BIN_POOL = 6,
+  CLAMM = 5,
+  LBAMM = 6,
   LPs = 7,
   TRADERS = 8,
 }

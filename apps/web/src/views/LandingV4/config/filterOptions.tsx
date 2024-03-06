@@ -40,13 +40,13 @@ export const useSelectorConfig = (): SelectorConfigProps[] => {
         icon: <HooksIcon width={12} height={12} />,
       },
       {
-        label: t(TagType.CL_POOL),
-        value: TagValue.CL_POOL,
+        label: t(TagType.CLAMM),
+        value: TagValue.CLAMM,
         icon: <ClammIcon width={12} height={12} />,
       },
       {
-        label: t(TagType.BIN_POOL),
-        value: TagValue.BIN_POOL,
+        label: t(TagType.LBAMM),
+        value: TagValue.LBAMM,
         icon: <LbammIcon width={12} height={12} />,
       },
       {
