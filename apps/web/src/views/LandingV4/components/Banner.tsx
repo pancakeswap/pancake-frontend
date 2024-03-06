@@ -12,7 +12,7 @@ const StyledBannerSection = styled(PageSection)`
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    padding: 128px 16px;
+    padding: 96px 16px;
   }
 
   ${({ theme }) => theme.mediaQueries.xxl} {
@@ -84,22 +84,30 @@ export const Banner = () => {
             <SlideSvgLight className="slide-svg-light" width="100%" />
           </InnerWrapper>
         </BgWrapper>
-        <Flex flexDirection={['column', 'column', 'column', 'column', 'column', 'column', 'row']}>
+        <Flex padding={['0 16px']} flexDirection={['column', 'column', 'column', 'column', 'row']}>
           <Flex
-            m={['22px 0 0 0 0', '22px 0 0 0 0', '22px 0 0 0 0', '22px 0 0 0 0', '0 0 0 48px']}
+            m={['22px 0 0 0 0', '22px 0 0 0 0', '22px 0 0 0 0', '0 40px 0 0', '0 48px 0 0']}
             maxWidth={['560px']}
             alignSelf="center"
             flexDirection="column"
           >
-            <Box m={['16px auto', '16px auto', '16px auto', '16px auto', '16px auto', '16px auto', '24px 0']}>
+            <Box
+              m={[
+                'auto auto 16px auto',
+                'auto auto 16px auto',
+                'auto auto 16px auto',
+                'auto auto 16px auto',
+                '0 0 24px 0',
+              ]}
+            >
               <Tag variant="secondary">{t('PancakeSwap v4')}</Tag>
             </Box>
             <Box>
-              <Flex justifyContent={['center', 'center', 'center', 'center', 'center', 'center', 'left']}>
+              <Flex justifyContent={['center', 'center', 'center', 'center', 'left']}>
                 <Text
                   bold
-                  fontSize={['40px', '40px', '40px', '40px', '48px']}
-                  lineHeight={['40px', '40px', '40px', '40px', '48px']}
+                  fontSize={['40px', '40px', '40px', '40px', '48px', '48px', '64px']}
+                  lineHeight={['40px', '40px', '40px', '40px', '48px', '48px', '64px']}
                   as="span"
                 >
                   {t('Your')}
@@ -109,26 +117,26 @@ export const Banner = () => {
                   as="span"
                   m="0 4px"
                   color="secondary"
-                  fontSize={['40px', '40px', '40px', '40px', '48px']}
-                  lineHeight={['40px', '40px', '40px', '40px', '48px']}
+                  fontSize={['40px', '40px', '40px', '40px', '48px', '48px', '64px']}
+                  lineHeight={['40px', '40px', '40px', '40px', '48px', '48px', '64px']}
                 >
                   {t('DEX')}
                 </Text>
                 <Text
                   bold
                   as="span"
-                  fontSize={['40px', '40px', '40px', '40px', '48px']}
-                  lineHeight={['40px', '40px', '40px', '40px', '48px']}
+                  fontSize={['40px', '40px', '40px', '40px', '48px', '48px', '64px']}
+                  lineHeight={['40px', '40px', '40px', '40px', '48px', '48px', '64px']}
                 >
                   ,
                 </Text>
               </Flex>
-              <Flex justifyContent={['center', 'center', 'center', 'center', 'center', 'center', 'left']}>
+              <Flex justifyContent={['center', 'center', 'center', 'center', 'left']}>
                 <Text
                   bold
                   as="span"
-                  fontSize={['40px', '40px', '40px', '40px', '48px']}
-                  lineHeight={['40px', '40px', '40px', '40px', '48px']}
+                  fontSize={['40px', '40px', '40px', '40px', '48px', '48px', '64px']}
+                  lineHeight={['40px', '40px', '40px', '40px', '48px', '48px', '64px']}
                 >
                   {t('Your')}
                 </Text>
@@ -137,8 +145,8 @@ export const Banner = () => {
                   ml="4px"
                   as="span"
                   color="secondary"
-                  fontSize={['40px', '40px', '40px', '40px', '48px']}
-                  lineHeight={['40px', '40px', '40px', '40px', '48px']}
+                  fontSize={['40px', '40px', '40px', '40px', '48px', '48px', '64px']}
+                  lineHeight={['40px', '40px', '40px', '40px', '48px', '48px', '64px']}
                 >
                   {t('Innovation')}
                 </Text>
@@ -146,11 +154,12 @@ export const Banner = () => {
             </Box>
             <Text
               bold
+              width={['100%', '100%', '100%', '100%', '100%', '348px', '100%']}
               fontSize={['20px']}
               lineHeight="110%"
               color="textSubtle"
               m={['16px 0', '16px 0', '16px 0', '16px 0', '24px 0']}
-              textAlign={['center', 'center', 'center', 'center', 'center', 'center', 'left']}
+              textAlign={['center', 'center', 'center', 'center', 'left']}
             >
               {t('Empower, Build and Innovate with PancakeSwap v4')}
             </Text>
@@ -158,11 +167,11 @@ export const Banner = () => {
               target="_blank"
               to="https://blog.pancakeswap.finance/articles/celebrating-traverse-claim-your-exclusive-nfts"
             >
-              <Button display="flex" margin={['auto', 'auto', 'auto', 'auto', 'auto', 'auto', '0']}>
-                <Text bold fontSize={['12px', '16px']} mr="4px">
+              <Button display="flex" margin={['auto', 'auto', 'auto', 'auto', '0']}>
+                <Text color="white" bold fontSize={['12px', '16px']} mr="4px">
                   {t('Read Whitepaper')}
                 </Text>
-                <OpenNewIcon />
+                <OpenNewIcon color="white" />
               </Button>
             </NextLinkFromReactRouter>
           </Flex>
@@ -171,8 +180,6 @@ export const Banner = () => {
             padding={['16px', '16px', '16px', '0px']}
             width={['100%', '100%', '100%', '600px']}
             m={[
-              '40px auto auto auto',
-              '40px auto auto auto',
               '40px auto auto auto',
               '40px auto auto auto',
               '40px auto auto auto',

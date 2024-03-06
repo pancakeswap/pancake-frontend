@@ -14,6 +14,10 @@ const HeaderTitle = styled(Box)`
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
+    width: 528px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
     width: 100%;
   }
 `
@@ -28,10 +32,15 @@ const StepImage = styled(Box)`
 
   ${({ theme }) => theme.mediaQueries.md} {
     width: 252px;
+    height: 201px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 204px;
     height: 154px;
   }
 
-  @media screen and (min-width: 1440px) {
+  ${({ theme }) => theme.mediaQueries.xxl} {
     width: 282px;
     height: 188px;
   }
@@ -47,7 +56,11 @@ const StepsContainer = styled(Flex)`
     width: 528px;
   }
 
-  @media screen and (min-width: 1440px) {
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 818px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
     width: 1200px;
   }
 `

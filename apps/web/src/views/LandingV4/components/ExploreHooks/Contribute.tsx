@@ -46,10 +46,10 @@ export const Contribute = () => {
             <Flex flexDirection={['column', 'column', 'row']} margin={['auto', 'auto', 'auto', '0']}>
               <NextLinkFromReactRouter target="_blank" to="https://forms.gle/tZNXcQbfvgj1XAJq5">
                 <Button display="flex" margin="auto">
-                  <Text bold fontSize={['12px', '16px']} mr="4px">
+                  <Text color="white" bold fontSize={['12px', '16px']} mr="4px">
                     {t('Submit Your Hook')}
                   </Text>
-                  <OpenNewIcon />
+                  <OpenNewIcon color="white" />
                 </Button>
               </NextLinkFromReactRouter>
               <NextLinkFromReactRouter target="_blank" to="https://forms.gle/tZNXcQbfvgj1XAJq5">
