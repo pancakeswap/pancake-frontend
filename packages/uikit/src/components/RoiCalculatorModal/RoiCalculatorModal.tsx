@@ -122,7 +122,6 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
 }) => {
   const { t } = useTranslation();
   const balanceInputRef = useRef<HTMLInputElement | null>(null);
-
   const {
     state,
     setPrincipalFromUSDValue,

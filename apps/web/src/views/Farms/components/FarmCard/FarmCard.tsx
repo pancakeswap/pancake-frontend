@@ -161,7 +161,6 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     lpRewardsApr={farm.lpRewardsApr}
                     isBooster={isBooster}
                     useTooltipText
-                    boosted={false}
                     stableSwapAddress={stableSwapAddress}
                     stableLpFee={stableLpFee}
                     farmCakePerSecond={farmCakePerSecond}
