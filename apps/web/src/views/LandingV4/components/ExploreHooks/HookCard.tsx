@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { BoxProps, Button, Card, Flex, FlexGap, Link, Tag, Text } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { styled } from 'styled-components'
+import { useSelectorConfig } from 'views/LandingV4/config/filterOptions'
 import { HooksType } from 'views/LandingV4/config/types'
 
 const StyledBlogCard = styled(Link)`
@@ -19,6 +20,13 @@ const StyledLineClamp = styled(Text)<{ line?: number }>`
   -webkit-box-orient: vertical;
 `
 
+const StyledTag = styled(Tag)`
+  > svg {
+    margin-right: 4px;
+    fill: ${({ theme }) => theme.colors.secondary};
+  }
+`
+
 interface HookCardProps extends BoxProps {
   hook: HooksType
 }
@@ -26,6 +34,7 @@ interface HookCardProps extends BoxProps {
 export const HookCard: React.FC<React.PropsWithChildren<HookCardProps>> = ({ hook, ...props }) => {
   const { t } = useTranslation()
   const [showMore, setShowMore] = useState(false)
+  const selectorConfig = useSelectorConfig()
 
   return (
     <StyledBlogCard {...props} external href={hook.githubLink}>
@@ -61,11 +70,14 @@ export const HookCard: React.FC<React.PropsWithChildren<HookCardProps>> = ({ hoo
               </Button>
             )}
             <FlexGap mt="20px" gap="6px" flexWrap="wrap">
-              {hook.tags.map((tag) => (
-                <Tag key={tag} outline variant="secondary" scale="sm">
-                  {t(tag)}
-                </Tag>
-              ))}
+              {hook.tags.map((tag, index) => {
+                const icon = selectorConfig.find((i) => i.value === hook.tagsValue[index])?.icon ?? null
+                return (
+                  <StyledTag key={tag} outline variant="secondary" scale="sm" startIcon={icon}>
+                    {t(tag)}
+                  </StyledTag>
+                )
+              })}
             </FlexGap>
             <Flex mt="20px" flexDirection={['column', 'row']}>
               <Text bold fontSize={['12px']} color="textSubtle">
