@@ -37,7 +37,7 @@ export const Featured = () => {
 
   return (
     <Box>
-      <Flex>
+      <Flex mb="24px">
         <HotIcon width={isDesktop ? 32 : 28} height={isDesktop ? 32 : 28} color="secondary" />
         <Text ml="8px" bold fontSize={['24px', '24px', '24px', '36px']}>
           {t('Featured')}
