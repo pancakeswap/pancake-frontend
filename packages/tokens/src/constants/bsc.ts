@@ -3053,4 +3053,12 @@ export const bscTokens = {
     'Renzo Restaked ETH',
     'https://www.renzoprotocol.com/',
   ),
+  trump: new ERC20Token(
+    ChainId.BSC,
+    '0x4eA98c1999575aaadfb38237Dd015c5E773F75a2',
+    9,
+    'TRUMP',
+    'MAGA',
+    'https://magamemecoin.com/',
+  ),
 }
