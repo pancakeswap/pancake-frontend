@@ -21,7 +21,7 @@ export type ExperimentalFeatureConfigs = FeatureRollOutConfig[]
 export const EXPERIMENTAL_FEATURE_CONFIGS: ExperimentalFeatureConfigs = [
   {
     feature: EXPERIMENTAL_FEATURES.WebNotifications,
-    percentage: 0.5,
+    percentage: 1.0,
     whitelist: [],
   },
   {
