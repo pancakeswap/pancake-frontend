@@ -65,6 +65,19 @@ const DetailStyled = styled(Box)`
   }
 `
 
+const AnimationContainer = styled(Box)<{ $showAnimation?: boolean }>`
+  animation: ${({ $showAnimation }) => ($showAnimation ? `fadeIn 2s linear;` : 'none')};
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`
+
 const CountdownContainer = styled.div<{ $percentage: number }>`
   position: relative;
   margin-left: auto;
@@ -153,6 +166,7 @@ export const Features = () => {
   const [step, setStep] = useState(0)
   const timer = useRef<NodeJS.Timeout | null>(null)
   const [mouseEntered, setMouseEntered] = useState(false)
+  const [showAnimation, setShowAnimation] = useState(true)
   const [remainingTimer, setRemainingTimer] = useState(DISPLAY_TIMER)
   const FeaturesConfig = useFeaturesConfig()
 
@@ -171,6 +185,10 @@ export const Features = () => {
 
       // Clear previous interval
       if (timer.current) {
+        if (showAnimation) {
+          setTimeout(() => setShowAnimation(false), 2000)
+        }
+
         clearInterval(timer.current)
       }
 
@@ -185,6 +203,7 @@ export const Features = () => {
         if (newPercentage >= 1) {
           const nextStepIndex = step === FeaturesConfig.length - 1 ? 0 : step + 1
           setStep(nextStepIndex)
+          setShowAnimation(true)
         }
       }, 50)
     }
@@ -196,7 +215,7 @@ export const Features = () => {
         clearInterval(timer.current)
       }
     }
-  }, [FeaturesConfig.length, mouseEntered, remainingTimer, step])
+  }, [FeaturesConfig.length, mouseEntered, remainingTimer, showAnimation, step])
 
   return (
     <FeaturesContainer id="features">
@@ -210,9 +229,11 @@ export const Features = () => {
         {t('Features')}
       </Text>
 
-      <Box width={528} height={297} display={['none', 'none', 'block', 'block', 'none']} m="auto auto 40px auto">
-        <Image width={528} height={297} src={FeaturesConfig[step].imgUrl} alt="img" />
-      </Box>
+      <AnimationContainer $showAnimation={showAnimation}>
+        <Box width={528} height={297} display={['none', 'none', 'block', 'block', 'none']} m="auto auto 40px auto">
+          <Image width={528} height={297} src={FeaturesConfig[step].imgUrl} alt="img" />
+        </Box>
+      </AnimationContainer>
 
       <Flex width="100%" flexDirection={['column', 'column', 'row']} justifyContent={['space-between']}>
         <Flex
@@ -293,27 +314,33 @@ export const Features = () => {
             </NextLinkFromReactRouter>
           </Box>
         </Flex>
-        <DetailStyled onMouseEnter={() => setMouseEntered(true)} onMouseLeave={() => setMouseEntered(false)}>
-          {!(isMd || isLg) && (
-            <Box mb="40px">
-              <Image width={600} height={337} src={FeaturesConfig[step].imgUrl} alt="img" />
-            </Box>
-          )}
-          <Text
-            bold
-            m={['0px 0 16px 0']}
-            fontSize={['20px', '20px', '20px', '20px', '28px']}
-            lineHeight={['24px', '24px', '24px', '24px', '32px']}
-          >
-            {FeaturesConfig[step].title}
-          </Text>
-          <Text
-            lineHeight={['20px', '20px', '20px', '20px', '24px']}
-            fontSize={['14px', '14px', '14px', '14px', '16px']}
-          >
-            {FeaturesConfig[step].subTitle}
-          </Text>
-        </DetailStyled>
+        <AnimationContainer
+          $showAnimation={showAnimation}
+          onMouseEnter={() => setMouseEntered(true)}
+          onMouseLeave={() => setMouseEntered(false)}
+        >
+          <DetailStyled>
+            {!(isMd || isLg) && (
+              <Box mb="40px">
+                <Image width={600} height={337} src={FeaturesConfig[step].imgUrl} alt="img" />
+              </Box>
+            )}
+            <Text
+              bold
+              m={['0px 0 16px 0']}
+              fontSize={['20px', '20px', '20px', '20px', '28px']}
+              lineHeight={['24px', '24px', '24px', '24px', '32px']}
+            >
+              {FeaturesConfig[step].title}
+            </Text>
+            <Text
+              lineHeight={['20px', '20px', '20px', '20px', '24px']}
+              fontSize={['14px', '14px', '14px', '14px', '16px']}
+            >
+              {FeaturesConfig[step].subTitle}
+            </Text>
+          </DetailStyled>
+        </AnimationContainer>
       </Flex>
     </FeaturesContainer>
   )
