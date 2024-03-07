@@ -2651,7 +2651,6 @@
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "Khi đặt cọc trên zkSync Era, việc hủy cọc cho CAKE của bạn ngay sau khi đặt cọc có thể dẫn đến việc không nhận được phần thưởng nào.",
   "%chainId% supports limited fiat currencies. USD are not supported": "%chainId% chỉ hỗ trợ một số loại tiền pháp định giới hạn. USD không được hỗ trợ",
   "Proceed in your wallet": "Tiếp tục trong ví của bạn",
-  "Enable spending %symbol%": "Cho phép chi tiêu %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "Nếu ví yêu cầu bạn điền số token mà bạn muốn phê duyệt, bạn có thể điền một số lớn hơn hoặc bằng số token mà bạn đang hoán đổi.",
   "Why": "Vì sao",
   "approving": "phê duyệt",
@@ -3046,7 +3045,6 @@
   "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "Để nhận các phần thưởng Trang trại, hãy tiếp tục gieo thanh khoản trên PancakeSwap và đặt cọc token LP của bạn vào Trang trại.",
   "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "Để nhận các phần thưởng Merkl, hãy tiếp tục gieo thanh khoản trên PancakeSwap, nhưng KHÔNG đặt cọc token LP của bạn vào Trang trại. Nhận phần thưởng của bạn trực tiếp trên ",
   "An active veCAKE staking position is required for activating farm yield boosters.": "Bạn cần một vị thế đặt cọc veCAKE đang hoạt động để kích hoạt tăng cường lợi nhuận cho trang trại.",
-  "Go to CAKE Staking": "Vào Đặt cọc CAKE",
   "Yield booster active": "Tăng cường lợi nhuận đang hoạt động",
   "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.": "Tăng cường số vị thế không giới hạn trên tất cả các Trang trại V3. Tăng cường sẽ được áp dụng khi đặt cọc. Hãy khóa thêm CAKE hoặc gia hạn thời gian khóa của bạn để nhận mức tăng cường cao hơn.",
   "Go to Lock": "Vào Khóa",
@@ -3147,7 +3145,7 @@
   "If you believe that your address has been misclassified, please email": "If you believe that your address has been misclassified, please email",
   "Note (20 characters)": "Lưu ý (20 ký tự)",
   "New LP Position Added": "Vị thế LP mới đã được bổ sung",
-  "New LP position successfully added. you will be notified on important updates.": "Vị thế LP mới đã được bổ sung thành công. Bạn sẽ được thông báo về các cập nhật quan trọng.",
+  "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
   "Notifications Enabled": "Thông báo được bật",
   "You can now opt-in to pancakeswap web notifications": "Giờ đây bạn có thể đăng ký nhận thông báo qua web của PancakeSwap",
   "Error Enabling Notifications": "Lỗi khi bật thông báo",
@@ -3197,5 +3195,11 @@
   "Preview of your veCAKE⌛ at snapshot time:": "Preview of your veCAKE⌛ at snapshot time:",
   "Snapshot at / Campaign Ends:": "Snapshot at / Campaign Ends:",
   "Increase your veCAKE to continue earning": "Increase your veCAKE to continue earning",
-  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning."
+  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.",
+  "Permit %symbol%": "Permit %symbol%",
+  "Enable spending %symbol%": "Cho phép chi tiêu %symbol%",
+  "Reset approval on USDT.": "Reset approval on USDT.",
+  "Go to CAKE Staking": "Vào Đặt cọc CAKE",
+  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
+  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again."
 }
