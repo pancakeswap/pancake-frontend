@@ -10,7 +10,7 @@ import useAllArticle from 'hooks/useAllArticle'
 import useLanguage from 'hooks/useLanguage'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-import { isMobile } from 'react-device-detect'
+import { isDesktop } from 'react-device-detect'
 import { styled } from 'styled-components'
 import { LS_KEY, getLanguageCodeFromLS } from 'utils/getLanguageCodeFromLS'
 
@@ -138,7 +138,7 @@ const AllArticle = () => {
         {t('All articles')}
       </Text>
       <Flex p={['0', '0', '0', '0', '0', '0', '0 16px']}>
-        {!isMobile && (
+        {isDesktop && (
           <StyledTagContainer>
             <CategoriesSelector
               selected={selectedCategories}
@@ -176,7 +176,7 @@ const AllArticle = () => {
               </InputGroup>
             </Box>
           </Flex>
-          {isMobile && (
+          {!isDesktop && (
             <StyledMobileTagContainer>
               <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
                 {t('Filter by')}
