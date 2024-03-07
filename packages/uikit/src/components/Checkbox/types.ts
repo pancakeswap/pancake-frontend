@@ -1,4 +1,5 @@
 export const scales = {
+  XS: "xs",
   SM: "sm",
   MD: "md",
 } as const;
