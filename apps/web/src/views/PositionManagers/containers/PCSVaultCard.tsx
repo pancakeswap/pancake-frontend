@@ -4,6 +4,7 @@ import { CurrencyAmount } from '@pancakeswap/sdk'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { usePositionManagerAdepterContract } from 'hooks/useContract'
+import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { memo, useEffect, useMemo } from 'react'
 import { DuoTokenVaultCard } from '../components'
 import {
@@ -14,7 +15,6 @@ import {
   useEarningTokenPriceInfo,
   usePCSVault,
   usePositionInfo,
-  useTokenPriceFromSubgraph,
   useTotalAssetInUsd,
   useTotalStakedInUsd,
 } from '../hooks'
@@ -77,24 +77,17 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     staleTime: 6000,
     gcTime: 6000,
   }).data
-  const priceFromSubgraph = useTokenPriceFromSubgraph(
-    priceFromV3FarmPid ? undefined : currencyA.isToken ? currencyA.address.toLowerCase() : undefined,
-    priceFromV3FarmPid ? undefined : currencyB.isToken ? currencyB.address.toLowerCase() : undefined,
-  )
 
   const info = usePositionInfo(address, adapterAddress ?? '0x')
 
+  const { data: token0USDPrice } = useCurrencyUsdPrice(currencyA)
+  const { data: token1USDPrice } = useCurrencyUsdPrice(currencyB)
   const tokensPriceUSD = useMemo(() => {
-    const farm = farmsV3.find((d) => d.pid === priceFromV3FarmPid)
-    if (!farm) return priceFromSubgraph
-    const isToken0And1Reversed =
-      farm.token.address.toLowerCase() === (currencyB.isToken ? currencyB.address.toLowerCase() : '')
     return {
-      token0: Number(isToken0And1Reversed ? farm.quoteTokenPriceBusd : farm.tokenPriceBusd),
-      token1: Number(isToken0And1Reversed ? farm.tokenPriceBusd : farm.quoteTokenPriceBusd),
+      token0: token0USDPrice ?? 0,
+      token1: token1USDPrice ?? 0,
     }
-  }, [farmsV3, priceFromV3FarmPid, priceFromSubgraph, currencyB])
-
+  }, [token0USDPrice, token1USDPrice])
   const managerInfo = useMemo(
     () => ({
       id: manager.id,
