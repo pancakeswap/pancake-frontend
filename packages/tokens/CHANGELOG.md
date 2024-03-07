@@ -1,5 +1,11 @@
 # @pancakeswap/tokens
 
+## 0.6.8
+
+### Patch Changes
+
+- 928b9a8: Bump version only
+
 ## 0.6.7
 
 ### Patch Changes
