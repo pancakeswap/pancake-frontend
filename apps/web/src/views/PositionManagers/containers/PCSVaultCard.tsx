@@ -29,7 +29,6 @@ interface Props {
 
 export const ThirdPartyVaultCard = memo(function PCSVaultCard({
   config,
-  farmsV3,
   aprDataList,
   updatePositionMangerDetailsData,
 }: Props) {
@@ -50,7 +49,6 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     isSingleDepositToken,
     allowDepositToken0,
     allowDepositToken1,
-    priceFromV3FarmPid,
     managerInfoUrl,
     strategyInfoUrl,
     projectVaultUrl,
