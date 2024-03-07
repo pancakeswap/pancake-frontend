@@ -18,8 +18,8 @@ import { Address, Hex, TransactionExecutionError, UserRejectedRequestError, hexT
 import { useSendTransaction } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 
-import { viemClientsPublicNodes } from 'hooks/usePublicNodeWaitForTransaction'
 import { logger } from 'utils/datadog'
+import { viemClients } from 'utils/viem'
 import { isZero } from '../utils/isZero'
 
 interface SwapCall {
@@ -59,7 +59,7 @@ export default function useSendSwapTransaction(
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
   const { sendTransactionAsync } = useSendTransaction()
-  const publicClient = viemClientsPublicNodes[chainId as ChainId]
+  const publicClient = viemClients[chainId as ChainId]
   const [allowedSlippage] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const { recipient } = useSwapState()
   const recipientAddress = recipient === null ? account : recipient
@@ -89,7 +89,6 @@ export default function useSendSwapTransaction(
                     data: calldata,
                     value: hexToBigInt(value),
                   }
-
             return publicClient
               .estimateGas(tx)
               .then((gasEstimate) => {
