@@ -34,6 +34,8 @@ const ListStyled = styled(Flex)<{ $isPicked?: boolean }>`
     border-radius: 50px;
     margin: 0 0 8px 0;
     padding: 8px;
+    border-bottom: ${({ theme, $isPicked }) =>
+      $isPicked ? `solid 2px ${theme.colors.cardBorder}` : 'solid 2px transparent'};
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -314,11 +316,7 @@ export const Features = () => {
             </NextLinkFromReactRouter>
           </Box>
         </Flex>
-        <AnimationContainer
-          $showAnimation={showAnimation}
-          onMouseEnter={() => setMouseEntered(true)}
-          onMouseLeave={() => setMouseEntered(false)}
-        >
+        <AnimationContainer $showAnimation={showAnimation}>
           <DetailStyled>
             {!(isMd || isLg) && (
               <Box mb="40px">

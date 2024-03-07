@@ -65,6 +65,14 @@ const SelectStyled = styled(Select)<{ $pickedByOption: boolean }>`
   > div:first-child {
     background-color: ${({ theme, $pickedByOption }) =>
       $pickedByOption ? theme.colors.primary : theme.colors.backgroundAlt};
+
+    > div {
+      color: ${({ theme, $pickedByOption }) => ($pickedByOption ? theme.colors.white : theme.colors.text)};
+    }
+  }
+
+  svg {
+    fill: ${({ theme, $pickedByOption }) => ($pickedByOption ? theme.colors.white : theme.colors.text)};
   }
 `
 
@@ -165,7 +173,10 @@ export const AllHooks = () => {
       <Flex flexDirection={['column', 'row']}>
         <Flex>
           <Box onClick={() => onClickTag(TagValue.FEATURED, false)}>
-            <TagStyled $picked={pickedOption === TagValue.FEATURED} endIcon={<StarFillIcon width={14} height={14} />}>
+            <TagStyled
+              $picked={pickedOption === TagValue.FEATURED}
+              startIcon={<StarFillIcon style={{ width: '18px' }} width={18} height={18} />}
+            >
               {t('Featured')}
             </TagStyled>
           </Box>
@@ -173,7 +184,7 @@ export const AllHooks = () => {
             <TagStyled
               $picked={pickedOption === TagValue.ALL}
               $hideIconMobileMargin={isMobile}
-              endIcon={<AllBlogIcon width={20} height={20} />}
+              startIcon={<AllBlogIcon width={16} height={16} />}
             >
               {isMobile ? null : t('All Hooks')}
             </TagStyled>

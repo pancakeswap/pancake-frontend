@@ -148,6 +148,7 @@ export const StartBuilding = () => {
                 {build.icon}
                 <LinkExternal
                   external
+                  bold
                   m={[
                     '8px 0 24px 0',
                     '8px 0 24px 0',
