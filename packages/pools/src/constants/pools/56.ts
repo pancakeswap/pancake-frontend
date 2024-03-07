@@ -14,6 +14,15 @@ export const livePools: SerializedPool[] = [
     isFinished: false,
   },
   {
+    sousId: 373,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens.aitech,
+    contractAddress: '0xa09F3F97CF36C35465A9117e4F70758Dcd905F91',
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.1157',
+    version: 3,
+  },
+  {
     sousId: 372,
     stakingToken: bscTokens.cake,
     earningToken: bscTokens.xrgb,

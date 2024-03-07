@@ -48,6 +48,48 @@ export const farmsV3 = defineFarmV3Configs([
   // new lps should follow after the top fixed lps
   // latest first
   {
+    pid: 153,
+    lpAddress: '0xf9Adc7F9E10eAA8AfD6A3Ea2b419d9497fa192c3',
+    token0: bscTokens.eth,
+    token1: bscTokens.pxETH,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 152,
+    lpAddress: '0xb5Bf551Df2C078890809Ad295c91ec5aBC23e620',
+    token0: bscTokens.eth,
+    token1: bscTokens.ezETH,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 151,
+    lpAddress: '0x505D091fd01b3D4340827A3737c950f030CdD9A7',
+    token0: bscTokens.fil,
+    token1: bscTokens.wbnb,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 150,
+    lpAddress: '0x032AB93B734BEf57D98552EB56839F0995D4FB28',
+    token0: bscTokens.trump,
+    token1: bscTokens.wbnb,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 149,
+    lpAddress: '0xf2688Fb5B81049DFB7703aDa5e770543770612C4',
+    token0: bscTokens.usdc,
+    token1: bscTokens.wbnb,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 148,
+    lpAddress: '0x81A9b5F18179cE2bf8f001b8a634Db80771F1824',
+    token0: bscTokens.usdc,
+    token1: bscTokens.wbnb,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
     pid: 147,
     lpAddress: '0x2cBfA271CcE515FEd6e49b406Df4A77ec952a952',
     token0: bscTokens.fet,

@@ -72,4 +72,12 @@ export const zksyncTokens = {
     'Wrapped Ether Native Bridge',
     'https://ethereum.org/',
   ),
+  grai: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x5FC44E95eaa48F9eB84Be17bd3aC66B6A82Af709',
+    18,
+    'GRAI',
+    'Gravita Debt Token',
+    'https://www.gravitaprotocol.com/',
+  ),
 }
