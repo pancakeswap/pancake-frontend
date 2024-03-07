@@ -9,20 +9,26 @@ const StyledBlogCard = styled(Link)`
   display: flex;
   align-self: flex-start;
 
+  .title {
+    > div {
+      transition: 0.8s;
+    }
+
+    svg {
+      animation-delay: 0.8s;
+      transition: 1s;
+    }
+  }
+
   &:hover {
     text-decoration: initial;
 
     .title {
-      > div,
-      svg {
-        transition: 0.8s;
-      }
-
       > div {
         color: ${({ theme }) => theme.colors.primary};
       }
 
-      > svg {
+      svg {
         opacity: 1;
       }
     }

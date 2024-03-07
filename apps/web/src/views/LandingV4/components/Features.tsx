@@ -218,6 +218,8 @@ export const Features = () => {
         <Flex
           flexDirection={['row', 'row', 'column']}
           m={['auto', 'auto', '0 25px 0 0', '0 25px 0 0', '0 40px 0 0', '0 auto 0 0']}
+          onMouseEnter={() => setMouseEntered(true)}
+          onMouseLeave={() => setMouseEntered(false)}
         >
           {FeaturesConfig?.map((config) => {
             const isPicked = step === config.id
