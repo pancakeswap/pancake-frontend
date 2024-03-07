@@ -16,6 +16,8 @@ it("renders correctly", () => {
       display: inline-block;
       height: 32px;
       width: 32px;
+      min-height: 32px;
+      min-width: 32px;
       vertical-align: middle;
       transition: background-color 0.2s ease-in-out;
       border: 0;
