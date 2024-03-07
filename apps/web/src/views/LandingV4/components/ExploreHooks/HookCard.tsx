@@ -11,12 +11,12 @@ const StyledBlogCard = styled(Link)`
 
   .title {
     > div {
-      transition: 0.8s;
+      transition: 0.3s;
     }
 
     svg {
-      animation-delay: 0.8s;
-      transition: 1s;
+      animation-delay: 0.3s;
+      transition: 0.3s;
     }
   }
 
