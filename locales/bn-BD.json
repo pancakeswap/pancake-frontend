@@ -2651,7 +2651,6 @@
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "zkSync Era-এ স্টেক করার সময় স্টেক করার কিছুক্ষণ পরেই আপনার CAKE আনস্টেক করলে কোনো পুরস্কার অর্জিত হবে না।",
   "%chainId% supports limited fiat currencies. USD are not supported": "%chainId% সীমিত সংখ্যক বিহিত মুদ্রা সমর্থন করে। USD সমর্থিত নয়",
   "Proceed in your wallet": "আপনার ওয়ালেটে এগিয়ে যান",
-  "Enable spending %symbol%": "%symbol% খরচ করা সক্রিয় করুন",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "আপনি অনুমোদন করতে চান এমন টোকেনের সংখ্যা ওয়ালেটে লিখতে চাইলে আপনি যে পরিমাণ টোকেন সোয়াপ করছেন তার চেয়ে বেশি বা সমান সংখ্যা লিখতে পারেন।",
   "Why": "কেন",
   "approving": " অনুমোদন করা হচ্ছে",
@@ -3046,7 +3045,6 @@
   "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.",
   "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ",
   "An active veCAKE staking position is required for activating farm yield boosters.": "An active veCAKE staking position is required for activating farm yield boosters.",
-  "Go to CAKE Staking": "Go to CAKE Staking",
   "Yield booster active": "Yield booster active",
   "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.": "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.",
   "Go to Lock": "Go to Lock",
@@ -3147,7 +3145,7 @@
   "If you believe that your address has been misclassified, please email": "If you believe that your address has been misclassified, please email",
   "Note (20 characters)": "Note (20 characters)",
   "New LP Position Added": "New LP Position Added",
-  "New LP position successfully added. you will be notified on important updates.": "New LP position successfully added. you will be notified on important updates.",
+  "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
   "Notifications Enabled": "Notifications Enabled",
   "You can now opt-in to pancakeswap web notifications": "You can now opt-in to pancakeswap web notifications",
   "Error Enabling Notifications": "Error Enabling Notifications",
@@ -3197,5 +3195,11 @@
   "Preview of your veCAKE⌛ at snapshot time:": "স্ন্যাপশটের সময় আপনার veCAKE⌛ এর পূর্বরূপ:",
   "Snapshot at / Campaign Ends:": "-এ স্ন্যাপশট / প্রচারণার সমাপ্তি:",
   "Increase your veCAKE to continue earning": "উপার্জন চালিয়ে যেতে আপনার veCAKE বাড়ান",
-  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "আপনার CAKE স্টেকিং অবস্থানের মেয়াদ শেষ হয়ে গেছে। আপনার অবস্থান আনলক করুন এবং উপার্জন শুরু করতে নতুন সেট আপ করুন৷"
+  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "আপনার CAKE স্টেকিং অবস্থানের মেয়াদ শেষ হয়ে গেছে। আপনার অবস্থান আনলক করুন এবং উপার্জন শুরু করতে নতুন সেট আপ করুন৷",
+  "Permit %symbol%": "Permit %symbol%",
+  "Enable spending %symbol%": "%symbol% খরচ করা সক্রিয় করুন",
+  "Reset approval on USDT.": "Reset approval on USDT.",
+  "Go to CAKE Staking": "Go to CAKE Staking",
+  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
+  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again."
 }
