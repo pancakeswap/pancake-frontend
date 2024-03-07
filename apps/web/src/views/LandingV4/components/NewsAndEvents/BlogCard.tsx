@@ -1,6 +1,7 @@
 import { ArticleDataType } from '@pancakeswap/blog'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, BoxProps, Card, Flex, Link, OpenNewIcon, Text } from '@pancakeswap/uikit'
+import { useState } from 'react'
 import { styled } from 'styled-components'
 import { HeightProps } from 'styled-system'
 
@@ -12,7 +13,7 @@ const StyledBackgroundImage = styled(Box)`
   transition: 0.5s;
 `
 
-const CircleOpenNew = styled(Flex)`
+const CircleOpenNew = styled(Flex)<{ $isHover: boolean }>`
   position: absolute;
   top: 12px;
   right: 12px;
@@ -25,6 +26,19 @@ const CircleOpenNew = styled(Flex)`
   opacity: 0;
   border: ${({ theme }) => `solid 2px ${theme.colors.cardBorder}`};
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
+
+  ${({ $isHover }) =>
+    $isHover
+      ? `
+        opacity: 1;
+        transition: 0.3s;
+        transform: translateY(0);
+      `
+      : `
+        opacity: 0;
+        transition: 0.3s;
+        transform: translateY(20);
+      `};
 `
 
 const StyledBlogCard = styled(Link)`
@@ -34,14 +48,8 @@ const StyledBlogCard = styled(Link)`
     text-decoration: initial;
 
     .title {
-      transition: 0.8s;
+      transition: 0.3s;
       color: ${({ theme }) => theme.colors.primary};
-    }
-
-    .circle-open {
-      opacity: 1;
-      transition: 1s;
-      transform: translateY(0);
     }
   }
 `
@@ -72,11 +80,15 @@ export const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
   ...props
 }) => {
   const { t } = useTranslation()
+  const [isHover, setIsHover] = useState(false)
+
   return (
     <StyledBlogCard
       {...props}
       external
       href={article?.newsOutBoundLink || `https://blog.pancakeswap.finance/articles/${slug}`}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
       <Card>
         <Flex
@@ -92,7 +104,7 @@ export const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
             height={isSpecialLayout ? ['200px', '200px', '200px', '200px', '360px'] : imgHeight ?? '200px'}
           >
             <StyledBackgroundImage style={{ backgroundImage: `url(${imgUrl})` }} />
-            <CircleOpenNew className="circle-open">
+            <CircleOpenNew $isHover={isHover}>
               <OpenNewIcon width={20} height={20} color="primary" />
             </CircleOpenNew>
           </Box>
