@@ -151,12 +151,12 @@ const AllArticle = () => {
         <Flex width={['100%', '100%', '100%', '100%', '100%', '100%', '907px']} flexDirection="column">
           <Flex
             mb={['18px', '18px', '18px', '24px']}
-            flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
+            flexDirection={['column-reverse', 'column-reverse', 'column-reverse']}
             alignItems={['flexStart', 'flexStart', 'flexStart', 'center']}
             p={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
           >
             {languageItems.length > 0 && (
-              <Flex flexDirection={['column', 'row']}>
+              <Flex flexDirection={['column']}>
                 <Box width="100%">
                   <ArticleSortSelect
                     title={t('Languages')}
