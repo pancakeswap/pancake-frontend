@@ -138,7 +138,7 @@ const AllArticle = () => {
         {t('All articles')}
       </Text>
       <Flex p={['0', '0', '0', '0', '0', '0', '0 16px']}>
-        {(isDesktop || isTablet) && (
+        {isDesktop && (
           <StyledTagContainer>
             <CategoriesSelector
               selected={selectedCategories}
@@ -176,7 +176,7 @@ const AllArticle = () => {
               </InputGroup>
             </Box>
           </Flex>
-          {isMobile && (
+          {(isMobile || isTablet) && (
             <StyledMobileTagContainer>
               <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
                 {t('Filter by')}
