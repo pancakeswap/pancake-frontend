@@ -51,10 +51,6 @@ export function useApproveCallback(
   const [isPendingError, setIsPendingError] = useState<boolean>(false)
 
   useEffect(() => {
-    console.info('debug update pending', {
-      pendingApproval,
-      pending,
-    })
     if (pendingApproval) {
       setPending(true)
     } else if (pending) {
@@ -84,9 +80,6 @@ export function useApproveCallback(
 
   const approve = useCallback(
     async (overrideAmountApprove?: bigint): Promise<SendTransactionResult | undefined> => {
-      console.info('debug approve', {
-        approvalState: ApprovalState[approvalState],
-      })
       if (approvalState !== ApprovalState.NOT_APPROVED && isUndefinedOrNull(overrideAmountApprove)) {
         toastError(t('Error'), t('Approve was called unnecessarily'))
         console.error('approve was called unnecessarily')
