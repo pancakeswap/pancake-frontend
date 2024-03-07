@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/prediction",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "sideEffects": false,
   "private": true,
   "scripts": {
