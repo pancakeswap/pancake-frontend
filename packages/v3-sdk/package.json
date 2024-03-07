@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "3.7.12",
+  "version": "3.7.13",
   "description": "⚒️ An SDK for building applications on top of Pancakeswap V3",
   "files": [
     "dist"

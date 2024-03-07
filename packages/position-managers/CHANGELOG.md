@@ -1,5 +1,12 @@
 # @pancakeswap/position-managers
 
+## 0.1.15
+
+### Patch Changes
+
+- Updated dependencies [acc454d]
+  - @pancakeswap/v3-sdk@3.7.13
+
 ## 0.1.14
 
 ### Patch Changes
