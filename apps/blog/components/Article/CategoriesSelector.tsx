@@ -19,7 +19,7 @@ const CategoriesSelector = ({ selected, categoriesData, childMargin, setSelected
   }, [categoriesData, t])
 
   return (
-    <Flex flexDirection={['row', 'row', 'row', 'row', 'row', 'row', 'column']}>
+    <Flex flexDirection={['row', 'row', 'row', 'row', 'row', 'column', 'column']}>
       {allCategories?.map((category) => (
         <Button
           key={category.id}
