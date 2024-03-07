@@ -2651,7 +2651,6 @@
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "zkSync Era पर स्टेक करते हुए स्टेकिंग के तुरंत बाद अपने CAKE को अनस्टेक करने का परिणाम कोई पुरस्कार न जीतने में हो सकता है।",
   "%chainId% supports limited fiat currencies. USD are not supported": "%chainId% सीमित फ़िएट करेंसी का समर्थन करता है। USD समर्थित नहीं है",
   "Proceed in your wallet": "आपके वॉलेट में आगे बढ़ें",
-  "Enable spending %symbol%": "%symbol% खर्च करना सक्षम करें",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "यदि वॉलेट आपके लिए टोकन की वह संख्या दर्ज करना आवश्यक करता है जिन्हें आप मंज़ूरी देना चाहते हैं, तो आप ऐसी संख्या दर्ज कर सकते थे जो आपके द्वारा स्वैप किए जा रहे टोकन की राशि से बड़ी या उसके बराबर हो।",
   "Why": "क्यों",
   "approving": "मंज़ूरी दी जा रही है",
@@ -3046,7 +3045,6 @@
   "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "फार्म पुरस्कार जीतने के लिए PancakeSwap पर सीडिंग लिक्विडिटी जारी रखें और फार्म में अपने LP टोकन को स्टेक करें।",
   "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "Merkl पुरस्कार जीतने के लिए PancakeSwap में लिक्विडिटी सीडिंग जारी रखें लेकिन फार्म में अपना LP टोकन स्टेक न करें। अपने पुरस्कार सीधे यहां क्लेम करें ",
   "An active veCAKE staking position is required for activating farm yield boosters.": "फ़ार्म यील्ड बूस्टर एक्टिवेट करने के लिए एक सक्रिय veCAKE स्टेकिंग पोजीशन आवश्यक है।",
-  "Go to CAKE Staking": "CAKE स्टेकिंग पर जाएं",
   "Yield booster active": "यील्ड बूस्टर सक्रिय",
   "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.": "सभी V3 फार्म पर पोजीशन की असीमित संख्या बूस्ट करें। बूस्ट स्टेकिंग करते समय लागू किया जाएगा। अधिक CAKE लॉक करें या ज्यादा बूस्ट पाने के लिए अपना लॉक विस्तारित करें।",
   "Go to Lock": "लॉक पर जाएं",
@@ -3147,7 +3145,7 @@
   "If you believe that your address has been misclassified, please email": "If you believe that your address has been misclassified, please email",
   "Note (20 characters)": "नोट (20 कैरेक्टर)",
   "New LP Position Added": "नई LP पोजीशन जोड़ी गई",
-  "New LP position successfully added. you will be notified on important updates.": "नई LP पोजीशन सफलतापूर्वक जोड़ी गई। आपको महत्वपूर्ण अपडेट पर सूचित किया जाएगा।",
+  "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
   "Notifications Enabled": "नोटिफ़िकेशन सक्षम किया गया",
   "You can now opt-in to pancakeswap web notifications": "अब आप Pancakeswap वेब नोटिफ़िकेशन को ऑप्ट-इन कर सकते हैं",
   "Error Enabling Notifications": "नोटिफ़िकेशन सक्षम करने में त्रुटि",
@@ -3197,5 +3195,11 @@
   "Preview of your veCAKE⌛ at snapshot time:": "Preview of your veCAKE⌛ at snapshot time:",
   "Snapshot at / Campaign Ends:": "Snapshot at / Campaign Ends:",
   "Increase your veCAKE to continue earning": "Increase your veCAKE to continue earning",
-  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning."
+  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.",
+  "Permit %symbol%": "Permit %symbol%",
+  "Enable spending %symbol%": "%symbol% खर्च करना सक्षम करें",
+  "Reset approval on USDT.": "Reset approval on USDT.",
+  "Go to CAKE Staking": "CAKE स्टेकिंग पर जाएं",
+  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
+  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again."
 }
