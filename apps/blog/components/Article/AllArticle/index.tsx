@@ -1,6 +1,15 @@
 import { Categories } from '@pancakeswap/blog'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, InputGroup, PaginationButton, SearchIcon, SearchInput, Text } from '@pancakeswap/uikit'
+import {
+  Box,
+  Flex,
+  InputGroup,
+  PaginationButton,
+  SearchIcon,
+  SearchInput,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { useQuery } from '@tanstack/react-query'
 import ArticleSortSelect from 'components/Article/ArticleSortSelect'
 import CardArticle from 'components/Article/CardArticle'
@@ -10,7 +19,6 @@ import useAllArticle from 'hooks/useAllArticle'
 import useLanguage from 'hooks/useLanguage'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-import { isDesktop, isMobile, isTablet } from 'react-device-detect'
 import { styled } from 'styled-components'
 import { LS_KEY, getLanguageCodeFromLS } from 'utils/getLanguageCodeFromLS'
 
@@ -58,6 +66,7 @@ const StyledCard = styled(Flex)`
 
 const AllArticle = () => {
   const { t } = useTranslation()
+  const { isDesktop, isMobile, isTablet } = useMatchBreakpoints()
   const router = useRouter()
   const [query, setQuery] = useState('')
   const articlesWrapperEl = useRef<HTMLDivElement>(null)
