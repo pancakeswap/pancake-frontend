@@ -16,7 +16,6 @@
     "@pancakeswap/localization": "workspace:^",
     "@pancakeswap/uikit": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "@pancakeswap/wagmi": "workspace:^",
     "@vanilla-extract/next-plugin": "^2.3.0",
     "@wagmi/core": "^0.10.11",
     "@wormhole-foundation/wormhole-connect": "0.1.7",
@@ -30,7 +29,7 @@
     "styled-components": "6.0.7",
     "styled-jsx": "^5.1.2",
     "viem": "1.19.11",
-    "wagmi": "1.4.7"
+    "wagmi": "1.4.13"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "13.4.2",
