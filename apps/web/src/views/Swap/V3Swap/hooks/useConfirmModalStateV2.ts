@@ -1,11 +1,9 @@
 import { usePreviousValue } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { BSC_BLOCK_TIME } from '@pancakeswap/pools'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@pancakeswap/swap-sdk-core'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { ConfirmModalState, confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
-import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
 import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from 'config/constants/exchange'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePermit2 } from 'hooks/usePermit2'
@@ -88,8 +86,9 @@ const useConfirmActions = (
         const result = await revoke()
         if (result?.hash && chainId) {
           setTxHash(result.hash)
-          // sync to same with updater /apps/web/src/state/transactions/updater.tsx#L101
-          await wait((AVERAGE_CHAIN_BLOCK_TIMES[chainId] ?? BSC_BLOCK_TIME) * 1000 + 2000)
+          if (chainId === mainnet.id) {
+            await wait(1200)
+          }
           await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
         }
 
@@ -164,8 +163,11 @@ const useConfirmActions = (
             setTxHash(result.hash)
             await publicClient({ chainId }).waitForTransactionReceipt({
               hash: result.hash,
-              confirmations: chainId === mainnet.id ? 2 : 1,
+              // confirmations: chainId === mainnet.id ? 2 : 1,
             })
+            if (chainId === mainnet.id) {
+              await wait(1200)
+            }
           }
           let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
           // check if user really approved the amount trade needs
@@ -245,8 +247,11 @@ const useConfirmActions = (
 
             await publicClient({ chainId }).waitForTransactionReceipt({
               hash: result.hash,
-              confirmations: chainId === mainnet.id ? 2 : 1,
+              // confirmations: chainId === mainnet.id ? 2 : 1,
             })
+            if (chainId === mainnet.id) {
+              await wait(1200)
+            }
           }
           setConfirmState(ConfirmModalState.COMPLETED)
         } catch (error: any) {
