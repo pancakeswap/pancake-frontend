@@ -1,5 +1,15 @@
 # @pancakeswap/smart-router
 
+## 5.0.3
+
+### Patch Changes
+
+- acc454d: Remove binance extension wallet connector @pancakeswap/wagmi
+  release new pkg @pancakeswap/universal-router-sdk & @pancakeswap/permit2-sdk
+- Updated dependencies [acc454d]
+  - @pancakeswap/v3-sdk@3.7.13
+  - @pancakeswap/gauges@1.1.2
+
 ## 5.0.2
 
 ### Patch Changes
