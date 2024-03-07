@@ -88,8 +88,8 @@ export const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
             position="relative"
             overflow="hidden"
             width={isSpecialLayout ? ['100%', '100%', '100%', '100%', '180%'] : ['100%']}
-            minHeight={isSpecialLayout ? ['200px', '200px', '200px', '200px', '400px'] : imgHeight ?? '200px'}
-            height={isSpecialLayout ? ['200px', '200px', '200px', '200px', '400px'] : imgHeight ?? '200px'}
+            minHeight={isSpecialLayout ? ['200px', '200px', '200px', '200px', '360px'] : imgHeight ?? '200px'}
+            height={isSpecialLayout ? ['200px', '200px', '200px', '200px', '360px'] : imgHeight ?? '200px'}
           >
             <StyledBackgroundImage style={{ backgroundImage: `url(${imgUrl})` }} />
             <CircleOpenNew className="circle-open">
@@ -99,7 +99,7 @@ export const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
           <Flex
             flexDirection="column"
             padding={['15px', '15px', '20px']}
-            height={isSpecialLayout ? ['100%', '100%', '100%', '100%', '400px'] : '100%'}
+            height={isSpecialLayout ? ['100%', '100%', '100%', '100%', '360px'] : '100%'}
           >
             <StyledLineClamp
               className="title"
