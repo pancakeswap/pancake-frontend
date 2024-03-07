@@ -1,31 +1,30 @@
-import { createReducer } from '@reduxjs/toolkit'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
+import { createReducer } from '@reduxjs/toolkit'
 import omitBy from 'lodash/omitBy'
-import { DEFAULT_DEADLINE_FROM_NOW } from '../../config/constants'
 import { updateVersion } from '../global/actions'
+import { GAS_PRICE_GWEI } from '../types'
 import {
+  FarmStakedOnly,
+  SerializedPair,
+  ViewMode,
   addSerializedPair,
   addSerializedToken,
   addWatchlistPool,
   addWatchlistToken,
-  FarmStakedOnly,
   removeSerializedPair,
   removeSerializedToken,
-  SerializedPair,
+  setSubgraphHealthIndicatorDisplayed,
   updateGasPrice,
   updateUserFarmStakedOnly,
   updateUserFarmsViewMode,
+  updateUserLimitOrderAcceptedWarning,
   updateUserPoolStakedOnly,
   updateUserPoolsViewMode,
-  ViewMode,
   updateUserPredictionAcceptedRisk,
-  updateUserPredictionChartDisclaimerShow,
   updateUserPredictionChainlinkChartDisclaimerShow,
+  updateUserPredictionChartDisclaimerShow,
   updateUserUsernameVisibility,
-  setSubgraphHealthIndicatorDisplayed,
-  updateUserLimitOrderAcceptedWarning,
 } from './actions'
-import { GAS_PRICE_GWEI } from '../types'
 
 const currentTimestamp = () => Date.now()
 
