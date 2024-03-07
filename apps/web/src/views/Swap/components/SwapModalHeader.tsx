@@ -1,14 +1,15 @@
-import { ReactElement, useMemo } from 'react'
-import { TradeType, CurrencyAmount, Currency, Percent } from '@pancakeswap/sdk'
-import { Button, Text, ErrorIcon, ArrowDownIcon, AutoColumn } from '@pancakeswap/uikit'
-import { Field } from 'state/swap/actions'
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
+import { ArrowDownIcon, AutoColumn, Button, ErrorIcon, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
-import { warningSeverity, basisPointsToPercent } from 'utils/exchange'
-import { CurrencyLogo } from 'components/Logo'
-import { RowBetween, RowFixed } from 'components/Layout/Row'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { TruncatedText, SwapShowAcceptChanges } from './styleds'
+import { RowBetween, RowFixed } from 'components/Layout/Row'
+import { CurrencyLogo } from 'components/Logo'
+import { ReactElement, useMemo } from 'react'
+import { Field } from 'state/swap/actions'
+import { basisPointsToPercent, warningSeverity } from 'utils/exchange'
+import { SlippageAdjustedAmounts } from '../V3Swap/utils/exchange'
+import { SwapShowAcceptChanges, TruncatedText } from './styleds'
 
 export default function SwapModalHeader({
   inputAmount,
@@ -31,7 +32,7 @@ export default function SwapModalHeader({
   }
   tradeType: TradeType
   priceImpactWithoutFee?: Percent
-  slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
+  slippageAdjustedAmounts: SlippageAdjustedAmounts | undefined | null
   isEnoughInputBalance?: boolean
   recipient?: string
   showAcceptChanges: boolean
@@ -51,8 +52,8 @@ export default function SwapModalHeader({
 
   const amount =
     tradeType === TradeType.EXACT_INPUT
-      ? formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 6)
-      : formatAmount(slippageAdjustedAmounts[Field.INPUT], 6)
+      ? formatAmount(slippageAdjustedAmounts?.[Field.OUTPUT], 6)
+      : formatAmount(slippageAdjustedAmounts?.[Field.INPUT], 6)
   const symbol = tradeType === TradeType.EXACT_INPUT ? outputAmount.currency.symbol : inputAmount.currency.symbol
 
   const tradeInfoText = useMemo(() => {
