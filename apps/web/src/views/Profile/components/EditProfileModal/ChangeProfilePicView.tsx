@@ -14,7 +14,7 @@ import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
 import SelectionCard from 'views/ProfileCreation/SelectionCard'
 import { Address, useAccount, useWalletClient } from 'wagmi'
-import { useNftsForAddress } from '../../../Nft/market/hooks/useNftsForAddress'
+import { useNftsForAddress } from 'views/Nft/market/hooks/useNftsForAddress'
 
 interface ChangeProfilePicPageProps extends InjectedModalProps {
   onSuccess?: () => void
@@ -62,7 +62,7 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
         return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
       },
       onConfirm: () => {
-        if (!selectedNft?.collectionAddress || selectedNft?.tokenId) return undefined
+        if (!selectedNft?.collectionAddress || !selectedNft?.tokenId) return undefined
 
         if (!profile?.isActive) {
           return callWithGasPrice(profileContract, 'reactivateProfile', [
