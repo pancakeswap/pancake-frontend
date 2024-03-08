@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
-import { getLPOutputWithoutFee, getSwapOutputWithoutFee } from '@pancakeswap/stable-swap'
+import { getLPOutputWithoutFee, getSwapOutputWithoutFee } from '@pancakeswap/stable-swap-sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useContext, useMemo } from 'react'
 

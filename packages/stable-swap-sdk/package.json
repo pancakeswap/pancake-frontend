@@ -1,11 +1,11 @@
 {
-  "name": "@pancakeswap/stable-swap",
+  "name": "@pancakeswap/stable-swap-sdk",
   "version": "0.0.1",
   "description": "SDK for pancakeswap stable swap",
   "repository": {
     "type": "git",
     "url": "https://github.com/pancakeswap/pancake-frontend.git",
-    "directory": "packages/stable-swap"
+    "directory": "packages/stable-swap-sdk"
   },
   "type": "module",
   "main": "dist/index.cjs",

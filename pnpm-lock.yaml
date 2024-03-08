@@ -715,9 +715,9 @@ importers:
       '@pancakeswap/smart-router':
         specifier: workspace:*
         version: link:../../packages/smart-router
-      '@pancakeswap/stable-swap':
+      '@pancakeswap/stable-swap-sdk':
         specifier: workspace:*
-        version: link:../../packages/stable-swap
+        version: link:../../packages/stable-swap-sdk
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../../packages/swap-sdk-core
@@ -1564,9 +1564,9 @@ importers:
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
-      '@pancakeswap/stable-swap':
+      '@pancakeswap/stable-swap-sdk':
         specifier: workspace:*
-        version: link:../stable-swap
+        version: link:../stable-swap-sdk
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
@@ -1632,7 +1632,7 @@ importers:
         specifier: ^6.7.0
         version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
 
-  packages/stable-swap:
+  packages/stable-swap-sdk:
     dependencies:
       '@pancakeswap/chains':
         specifier: workspace:*
@@ -2066,9 +2066,9 @@ importers:
         specifier: 1.19.11
         version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
     devDependencies:
-      '@pancakeswap/stable-swap':
+      '@pancakeswap/stable-swap-sdk':
         specifier: workspace:*
-        version: link:../stable-swap
+        version: link:../stable-swap-sdk
       '@pancakeswap/tokens':
         specifier: workspace:*
         version: link:../tokens

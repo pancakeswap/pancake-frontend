@@ -1,7 +1,7 @@
 import { CurrencyAmount } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { getStableSwapPools, STABLE_SUPPORTED_CHAIN_IDS } from '@pancakeswap/stable-swap'
+import { getStableSwapPools, STABLE_SUPPORTED_CHAIN_IDS } from '@pancakeswap/stable-swap-sdk'
 import fromPairs_ from 'lodash/fromPairs.js'
 
 import { StableSwapPair } from './types'

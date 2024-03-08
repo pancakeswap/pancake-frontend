@@ -27,7 +27,7 @@
     "@pancakeswap/gauges": "workspace:*",
     "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
-    "@pancakeswap/stable-swap": "workspace:*",
+    "@pancakeswap/stable-swap-sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
