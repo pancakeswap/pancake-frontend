@@ -2651,7 +2651,6 @@
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "När du placerar ut din CAKE på zkSync Era kort efter placeringen kan det leda till att ingen belöning erhålls.",
   "%chainId% supports limited fiat currencies. USD are not supported": "%chainId% stöder begränsade fiatvalutor. USD stöds inte",
   "Proceed in your wallet": "Fortsätt i din plånbok",
-  "Enable spending %symbol%": "Aktivera utgifter %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "Om plånboken kräver att du anger hur många tokens du vill godkänna, kan du ange ett antal som är större än eller lika med det antal tokens du växlar till dig.",
   "Why": "Varför",
   "approving": "godkänna",
@@ -3046,7 +3045,6 @@
   "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "För att få Farm-belöningar fortsätter du att sprida likviditet på PancakeSwap och satsar din LP-token på Farmen.",
   "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "För att tjäna Merkl-belöningar, fortsätt att så likviditet på PancakeSwap men satsa INTE din LP-token på farmen. Hämta dina belöningar direkt på ",
   "An active veCAKE staking position is required for activating farm yield boosters.": "Det krävs en aktiv veCAKE-insatsposition för att aktivera avkastningsförbättringar i farmer.",
-  "Go to CAKE Staking": "Gå till CAKE-satsning",
   "Yield booster active": "Avkastningsförbättring aktiv",
   "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.": "Förbättrar obegränsat antal positioner på alla V3-farmar. Boost kommer att tillämpas vid insats. Lås mer CAKE eller förläng ditt lås för att få en högre boost.",
   "Go to Lock": "Gå till lås",
@@ -3147,7 +3145,7 @@
   "If you believe that your address has been misclassified, please email": "Om du anser att din adress har blivit felklassificerad, skicka ett e-postmeddelande till",
   "Note (20 characters)": "Anteckning (20 tecken)",
   "New LP Position Added": "Ny LP-position tillagd",
-  "New LP position successfully added. you will be notified on important updates.": "Ny LP-position har lagts till. Du kommer att meddelas om viktiga uppdateringar.",
+  "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
   "Notifications Enabled": "Notiser aktiverade",
   "You can now opt-in to pancakeswap web notifications": "Du kan nu välja att få webbnotiser från pancakeswap",
   "Error Enabling Notifications": "Fel vid aktivering av notiser",
@@ -3197,5 +3195,11 @@
   "Preview of your veCAKE⌛ at snapshot time:": "Förhandsgranska din veCAKE⌛ vid tiden för ögonblicksbilden:",
   "Snapshot at / Campaign Ends:": "Ögonblicksbild vid / Kampanjen avslutas:",
   "Increase your veCAKE to continue earning": "Öka din veCAKE för att fortsätta tjäna pengar",
-  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Din CAKE-position har löpt ut. Lås upp din position och skapa en ny för att börja tjäna pengar."
+  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Din CAKE-position har löpt ut. Lås upp din position och skapa en ny för att börja tjäna pengar.",
+  "Permit %symbol%": "Permit %symbol%",
+  "Enable spending %symbol%": "Aktivera utgifter %symbol%",
+  "Reset approval on USDT.": "Reset approval on USDT.",
+  "Go to CAKE Staking": "Gå till CAKE-satsning",
+  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
+  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again."
 }

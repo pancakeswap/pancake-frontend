@@ -2651,7 +2651,6 @@
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "نحن نقوم بالرهن على zkSync Era، إلغاء رهن CAKE الخاص بك بعد فترة قصيرة من الرهن قد يؤدي إلى عدم ربح أي مكافآت.",
   "%chainId% supports limited fiat currencies. USD are not supported": "%chainId% يدعم عملات ورقية محدودة. لا يتم دعم الدولار الأمريكي",
   "Proceed in your wallet": "العائد في المحفظة",
-  "Enable spending %symbol%": "تمكين إنفاق %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "إذا كانت المحفظة تتطلب منك إدخال عدد الرموز المميزة التي تريد اعتمادها، فيمكنك إدخال عدد أكبر من أو يساوي مقدار الرموز المميزة التي تقوم بمبادلتها.",
   "Why": "لماذا",
   "approving": "جارٍ الاعتماد",
@@ -3046,7 +3045,6 @@
   "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "لربح مكافآت المزرعة، استمر في بذر السيولة على PancakeSwap ورهن رموز LP المميزة في المزرعة.",
   "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "لربح مكافآت Merkl، استمر في بذر السيولة على PancakeSwap لكن لا ترهن رمز LP المميز الخاص بك في المزرعة. اطلب المكافآت مباشرة على ",
   "An active veCAKE staking position is required for activating farm yield boosters.": "مطلوب مركز رهان veCAKE نشط لتنسيط معززات عوائد المزرعة.",
-  "Go to CAKE Staking": "انتقل إلى رهن CAKE",
   "Yield booster active": "معزز العائد نشط",
   "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.": "تعزيز عدد غير محدود من المراكز على جميع مزارع الإصدار الثالث V3. سيتم تطبيق التعزيز عند الرهن. قم بتجميد المزيد من CAKE أو قم بتمديد التجميد لاستلام تعزيز أعلى.",
   "Go to Lock": "انتقل إلى التجميد",
@@ -3147,7 +3145,7 @@
   "If you believe that your address has been misclassified, please email": "إذا كنت تعتقد أنه تم تصنيف عنوانك عن طريق الخطأ، فيرجى إرسال بريد إلكتروني إلى",
   "Note (20 characters)": "ملاحظة (20 حرفًا)",
   "New LP Position Added": "تمت إضافة مركز LP جديد",
-  "New LP position successfully added. you will be notified on important updates.": "تمت إضافة مركز LP جديد. سوف يتم إخطارك بالتحديثات المهمة.",
+  "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
   "Notifications Enabled": "تمكين الإخطارات",
   "You can now opt-in to pancakeswap web notifications": "يمكنك الآن الاشتراك في إخطارات الويب لـ pancakeswap",
   "Error Enabling Notifications": "خطأ في تمكين الإشعارات",
@@ -3197,5 +3195,11 @@
   "Preview of your veCAKE⌛ at snapshot time:": "معاينة veCAKE⌛ في وقت اللقطة:",
   "Snapshot at / Campaign Ends:": "اللقطة في / انتهاء الحملة:",
   "Increase your veCAKE to continue earning": "زيادة veCAKE لمتابعة الربح",
-  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "انتهت صلاحية مركز رهن CAKE الخاصة بك. قم بفك تجميد مركزك وقم بإعداد مركز جديد لبدء الربح."
+  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "انتهت صلاحية مركز رهن CAKE الخاصة بك. قم بفك تجميد مركزك وقم بإعداد مركز جديد لبدء الربح.",
+  "Permit %symbol%": "Permit %symbol%",
+  "Enable spending %symbol%": "تمكين إنفاق %symbol%",
+  "Reset approval on USDT.": "Reset approval on USDT.",
+  "Go to CAKE Staking": "انتقل إلى رهن CAKE",
+  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
+  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again."
 }

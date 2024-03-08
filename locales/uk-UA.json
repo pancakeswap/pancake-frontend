@@ -2651,7 +2651,6 @@
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "Якщо ви виведете CAKE зі стейкінгу на zkSync Era відразу після стейкінгу, це може призвести до втрати ваших винагород.",
   "%chainId% supports limited fiat currencies. USD are not supported": "%chainId% підтримує обмежену кількість фіатних валют. USD не підтримуються",
   "Proceed in your wallet": "Продовжити в гаманці",
-  "Enable spending %symbol%": "Активуйте можливість витрачати %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "Якщо гаманець вимагає ввести кількість токенів, яку ви хочете підтвердити, уведіть число, що більше або дорівнює кількості токенів, які ви обмінюєте.",
   "Why": "Навіщо",
   "approving": "схвалювати",
@@ -3046,7 +3045,6 @@
   "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "Щоб заробити винагороди на фермі, продовжуйте ділитися ліквідністю на PancakeSwap і вкладайте свої токени пулу ліквідності у фармінг.",
   "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "Щоб заробити винагороди Merkl, продовжуйте ділитися ліквідністю на PancakeSwap, але НЕ вкладайте свої токени пулу ліквідності у фармінг. Отримуйте свої винагороди безпосередньо на ",
   "An active veCAKE staking position is required for activating farm yield boosters.": "Щоб активувати бустери виторгу ферм, необхідна активна позиція стейкінгу veCAKE.",
-  "Go to CAKE Staking": "Перейти до стейкінгу CAKE",
   "Yield booster active": "Бустер виторгу активний",
   "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.": "Збільште дохід за необмеженою кількістю позицій на всіх фермах V3. Буст застосовуватиметься під час стейкінгу. Заблокуйте більше CAKE або подовжте блокування, щоб отримати вищий буст.",
   "Go to Lock": "Перейти до блокування",
@@ -3147,7 +3145,7 @@
   "If you believe that your address has been misclassified, please email": "Якщо ви вважаєте, що адреса була неправильно класифікована, напишіть нам",
   "Note (20 characters)": "Примітка (20 символів)",
   "New LP Position Added": "Додана нова позиція пулу ліквідності",
-  "New LP position successfully added. you will be notified on important updates.": "Нова позиція пулу ліквідності успішно додана. Ви отримуватимете сповіщення про важливі оновлення.",
+  "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
   "Notifications Enabled": "Сповіщення увімкнені",
   "You can now opt-in to pancakeswap web notifications": "Тепер ви можете підписатися на вебсповіщення pancakeswap",
   "Error Enabling Notifications": "Помилка під час активації сповіщень",
@@ -3197,5 +3195,11 @@
   "Preview of your veCAKE⌛ at snapshot time:": "Попередній перегляд veCAKE⌛на момент снепшоту:",
   "Snapshot at / Campaign Ends:": "Час снепшоту / кампанія закінчується:",
   "Increase your veCAKE to continue earning": "Підвищте кількість veCAKE, щоб продовжити заробляти",
-  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Термін дії вашої позиції стейкінгу CAKE закінчився. Розблокуйте свою позицію та створіть нову, щоб почати заробляти."
+  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Термін дії вашої позиції стейкінгу CAKE закінчився. Розблокуйте свою позицію та створіть нову, щоб почати заробляти.",
+  "Permit %symbol%": "Permit %symbol%",
+  "Enable spending %symbol%": "Активуйте можливість витрачати %symbol%",
+  "Reset approval on USDT.": "Reset approval on USDT.",
+  "Go to CAKE Staking": "Перейти до стейкінгу CAKE",
+  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
+  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again."
 }

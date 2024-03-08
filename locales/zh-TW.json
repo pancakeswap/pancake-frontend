@@ -2651,7 +2651,6 @@
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "在 zkSync Era 上進行質押時，如果在質押 CAKE 不久後又將其取消質押，可能會導致無法賺取獎勵。",
   "%chainId% supports limited fiat currencies. USD are not supported": "%chainId% 所支援的法定貨幣有限。不支援美元",
   "Proceed in your wallet": "在錢包中確認",
-  "Enable spending %symbol%": "授權支出 %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "如果錢包要求您輸入要批准的代幣數量，您可以輸入一個數字，該數字應大於或等於您要交換的代幣金額。",
   "Why": "為什麼需要",
   "approving": "授權",
@@ -3046,7 +3045,6 @@
   "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "要賺取農場獎勵，請繼續在 PancakeSwap 上播種流動性並在農場中質押您的 LP 代幣。",
   "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "如要獲得 Markl 獎勵，您需要一直持有在 PancakeSwap 上的流動性。注意不要將您的 LP 代幣質押進農場。請在這裡直接領取您的獎勵：",
   "An active veCAKE staking position is required for activating farm yield boosters.": "需要一個有效的 veCAKE 質押倉位才能啟動農場收益助推器。",
-  "Go to CAKE Staking": "前往 CAKE Staking",
   "Yield booster active": "收益助推器啟動",
   "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.": "助推功能，可使用在無限制數量的 V3 農場質押部位以及 V3 農場上。質押時助推功能會啟動。鎖倉更多 CAKE 或延長鎖倉期限以提升助推乘數。",
   "Go to Lock": "我要鎖倉",
@@ -3147,7 +3145,7 @@
   "If you believe that your address has been misclassified, please email": "If you believe that your address has been misclassified, please email",
   "Note (20 characters)": "備註 (20 個字元)",
   "New LP Position Added": "新的 LP 部位已新增",
-  "New LP position successfully added. you will be notified on important updates.": "新的 LP 倉位已成功添加。如有重要動態，我們會通知您。",
+  "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
   "Notifications Enabled": "通知已啟用",
   "You can now opt-in to pancakeswap web notifications": "您現在可以選擇接收 PancakeSwap 網路通知",
   "Error Enabling Notifications": "啟用通知時發生錯誤",
@@ -3197,5 +3195,11 @@
   "Preview of your veCAKE⌛ at snapshot time:": "Preview of your veCAKE⌛ at snapshot time:",
   "Snapshot at / Campaign Ends:": "Snapshot at / Campaign Ends:",
   "Increase your veCAKE to continue earning": "Increase your veCAKE to continue earning",
-  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning."
+  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.",
+  "Permit %symbol%": "Permit %symbol%",
+  "Enable spending %symbol%": "授權支出 %symbol%",
+  "Reset approval on USDT.": "Reset approval on USDT.",
+  "Go to CAKE Staking": "前往 CAKE Staking",
+  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
+  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again."
 }

@@ -2651,7 +2651,6 @@
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "Lorsque vous placez des fonds en staking sur zkSync Era, l'interruption du staking de vos CAKE peu de temps après le début du staking pourrait entraîner l'absence de récompense.",
   "%chainId% supports limited fiat currencies. USD are not supported": "%chainId% prend en charge quelques devises fiduciaires. L'USD n'est pas pris en charge",
   "Proceed in your wallet": "Continuer dans votre portefeuille",
-  "Enable spending %symbol%": "Activer la dépense de %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "Si le portefeuille vous oblige à saisir le nombre de jetons que vous souhaitez approuver, vous pouvez saisir un nombre supérieur ou égal au nombre de jetons que vous échangez.",
   "Why": "Pourquoi",
   "approving": "approuver",
@@ -3046,7 +3045,6 @@
   "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "Pour gagner des récompenses de farming, continuez à placer des liquidités sur PancakeSwap et placez vos jetons LP dans la ferme.",
   "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "Pour gagner des récompenses Merkl, continuez à apporter des liquidités sur PancakeSwap, mais NE PLACEZ PAS vos jetons LP dans la ferme. Réclamez vos récompenses directement sur ",
   "An active veCAKE staking position is required for activating farm yield boosters.": "Une position de staking de veCAKE active est nécessaire pour activer les amplificateurs de rendement du yield farming.",
-  "Go to CAKE Staking": "Accéder au staking de CAKE",
   "Yield booster active": "Amplificateur de rendement actif",
   "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.": "Augmentez le nombre illimité de positions sur toutes les fermes V3. Le boost sera appliqué lors du staking Verrouillez plus de CAKE ou prolongez votre verrouillage pour recevoir un boost plus élevé.",
   "Go to Lock": "Accéder au verrouillage",
@@ -3147,7 +3145,7 @@
   "If you believe that your address has been misclassified, please email": "If you believe that your address has been misclassified, please email",
   "Note (20 characters)": "Note (20 caractères)",
   "New LP Position Added": "Ajout d'une nouvelle position LP",
-  "New LP position successfully added. you will be notified on important updates.": "Ajout d'une nouvelle position LP réussie. Vous serez informé(e) des mises à jour importantes.",
+  "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
   "Notifications Enabled": "Notifications activées",
   "You can now opt-in to pancakeswap web notifications": "Vous pouvez maintenant vous abonner aux notifications Web pancakeswap",
   "Error Enabling Notifications": "Erreur lors de l'activation des notifications",
@@ -3197,5 +3195,11 @@
   "Preview of your veCAKE⌛ at snapshot time:": "Preview of your veCAKE⌛ at snapshot time:",
   "Snapshot at / Campaign Ends:": "Snapshot at / Campaign Ends:",
   "Increase your veCAKE to continue earning": "Increase your veCAKE to continue earning",
-  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning."
+  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.",
+  "Permit %symbol%": "Permit %symbol%",
+  "Enable spending %symbol%": "Activer la dépense de %symbol%",
+  "Reset approval on USDT.": "Reset approval on USDT.",
+  "Go to CAKE Staking": "Accéder au staking de CAKE",
+  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
+  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again."
 }

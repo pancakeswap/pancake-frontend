@@ -2651,7 +2651,6 @@
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "zkSync Era에서 스테이킹하는 경우, 스테이킹 직후에 CAKE를 언스테이킹하면 리워드를 받을 수 없습니다.",
   "%chainId% supports limited fiat currencies. USD are not supported": "%chainId%은(는) 제한된 명목 화폐를 지원합니다. USD는 지원되지 않습니다",
   "Proceed in your wallet": "내 지갑으로 진행하기",
-  "Enable spending %symbol%": "%symbol% 사용 활성화",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "승인하려는 토큰 수를 입력하도록 지갑에서 요구하는 경우, 스왑하려는 토큰 금액보다 크거나 같은 숫자를 입력할 수 있습니다.",
   "Why": "이것을",
   "approving": "승인하는",
@@ -3046,7 +3045,6 @@
   "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "팜 리워드를 받으려면 PancakeSwap에 유동성을 계속 시드하고 팜에서 LP 토큰을 스테이킹하세요.",
   "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "Merkl 리워드를 받으려면 PancakeSwap에서 유동성을 계속 시드하세요. 하지만 팜에 LP 토큰을 스테이킹하지 마세요. 다음에서 리워드를 직접 클레임하세요: ",
   "An active veCAKE staking position is required for activating farm yield boosters.": "팜 일드 부스터를 활성화하려면 활성 veCAKE 스테이킹 포지션이 필요합니다.",
-  "Go to CAKE Staking": "CAKE 스테이킹으로 이동",
   "Yield booster active": "일드 부스터 활성 상태",
   "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.": "모든 V3 팜에서 포지션을 무제한으로 부스팅하세요. 스테이킹할 때 부스트가 적용됩니다. 더 많은 CAKE를 잠그거나 잠금을 연장하여 더 높은 부스트를 받으세요.",
   "Go to Lock": "잠금으로 이동",
@@ -3147,7 +3145,7 @@
   "If you believe that your address has been misclassified, please email": "If you believe that your address has been misclassified, please email",
   "Note (20 characters)": "메모(20자)",
   "New LP Position Added": "새로운 LP 포지션 추가됨",
-  "New LP position successfully added. you will be notified on important updates.": "새로운 LP 포지션이 추가되었습니다. 중요 업데이트에 대한 알림이 전송됩니다.",
+  "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
   "Notifications Enabled": "알림 활성화됨",
   "You can now opt-in to pancakeswap web notifications": "이제 pancakeswap 웹 알림을 옵트인할 수 있습니다",
   "Error Enabling Notifications": "알림 활성화 오류",
@@ -3197,5 +3195,11 @@
   "Preview of your veCAKE⌛ at snapshot time:": "Preview of your veCAKE⌛ at snapshot time:",
   "Snapshot at / Campaign Ends:": "Snapshot at / Campaign Ends:",
   "Increase your veCAKE to continue earning": "Increase your veCAKE to continue earning",
-  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning."
+  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.",
+  "Permit %symbol%": "Permit %symbol%",
+  "Enable spending %symbol%": "%symbol% 사용 활성화",
+  "Reset approval on USDT.": "Reset approval on USDT.",
+  "Go to CAKE Staking": "CAKE 스테이킹으로 이동",
+  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
+  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again."
 }

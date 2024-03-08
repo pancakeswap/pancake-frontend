@@ -2651,7 +2651,6 @@
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "zkSync Eraவில் ஸ்டேக்கிங் செய்யும்போது, ஸ்டேக்கிங் செய்த சிறிது நேரத்திலேயே உங்கள் CAKE-ஐ அன்ஸ்டேக் செய்தால், ரிவார்டுகள் எதுவும் கிடைக்காது.",
   "%chainId% supports limited fiat currencies. USD are not supported": "%chainId% வரையறுக்கப்பட்ட ஃபியட் கரண்சிகளை ஆதரிக்கிறது. USD ஆதரிக்கப்படவில்லை",
   "Proceed in your wallet": "உங்கள் வாலெட்டில் தொடரவும்",
-  "Enable spending %symbol%": "%symbol% செலவழிப்பை இயக்கு",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "வாலெட்டில் நீங்கள் அங்கீகரிக்க விரும்பும் டோக்கன்களின் எண்ணிக்கையை உள்ளிட வேண்டியிருந்தால், நீங்கள் ஸ்வாப் செய்யும் டோக்கன்களின் அளவைவிட அதிகமான அல்லது அதற்குச் சமமான எண்ணை உள்ளிடலாம்.",
   "Why": "ஏன்",
   "approving": "அங்கீகரிப்பது",
@@ -3046,7 +3045,6 @@
   "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "ஃபார்ம் வெகுமதிகளைப் பெற, PancakeSwapல் லிக்விடிட்டி உள்ளிடுவதைத் தொடரவும் மற்றும் ஃபார்மில் உங்கள் LP டோக்கனை ஸ்டேக் செய்யவும்.",
   "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "Merkl வெகுமதிகளைப் பெற, PancakeSwapல் லிக்விடிட்டியை உள்ளிடுவதைத் தொடரவும், ஆனால் உங்கள் LP டோக்கனை ஃபார்மில் ஸ்டேக் செய்ய வேண்டாம். உங்கள் வெகுமதிகளை இதில் நேரடியாகப் பெறுங்கள் ",
   "An active veCAKE staking position is required for activating farm yield boosters.": "ஃபார்ம் மகசூல் பூஸ்டர்களைச் செயல்படுத்துவதற்கு செயலில் உள்ள veCAKE ஸ்டேக்கிங் நிலை அவசியம்.",
-  "Go to CAKE Staking": "CAKE ஸ்டேக்கிங்கிற்குச் செல்க",
   "Yield booster active": "மகசூல் பூஸ்டர் செயலில் உள்ளது",
   "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.": "அனைத்து V3 ஃபார்ம்களிலும் வரம்பற்ற நிலைகளை பூஸ்ட் செய்யவும். ஸ்டேக்கிங்கின்போது பூஸ்ட் பயன்படுத்தப்படும். அதிக மேம்படுத்தலைப் பெற, அதிக CAKE-ஐப் பூட்டவும் அல்லது உங்கள் பூட்டை நீட்டிக்கவும்.",
   "Go to Lock": "பூட்டுக்குச் செல்",
@@ -3147,7 +3145,7 @@
   "If you believe that your address has been misclassified, please email": "உங்கள் முகவரி தவறாக வகைப்படுத்தப்பட்டுள்ளதாக நீங்கள் நம்பினால், தயவுசெய்து மின்னஞ்சல் அனுப்புங்கள்",
   "Note (20 characters)": "குறிப்பு (20 எழுத்துகள்)",
   "New LP Position Added": "புதிய LP நிலை சேர்க்கப்பட்டது",
-  "New LP position successfully added. you will be notified on important updates.": "புதிய LP நிலை வெற்றிகரமாகச் சேர்க்கப்பட்டது. முக்கியமான புதுப்பிப்புகள் குறித்து உங்களுக்கு அறிவிக்கப்படும்.",
+  "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
   "Notifications Enabled": "அறிவிப்புகள் இயக்கப்பட்டன",
   "You can now opt-in to pancakeswap web notifications": "நீங்கள் இப்போது pancakeswap இணைய அறிவிப்புகளுக்கு ஒப்புதல் அளிக்கலாம்",
   "Error Enabling Notifications": "அறிவிப்புகளை இயக்குவதில் பிழை",
@@ -3197,5 +3195,11 @@
   "Preview of your veCAKE⌛ at snapshot time:": "ஸ்னாப்ஷாட் நேரத்தில் உங்கள் veCAKE⌛ -இன் முன்னோட்டம்:",
   "Snapshot at / Campaign Ends:": "ஸ்னாப்ஷாட் / பிரச்சாரம் முடிவது:",
   "Increase your veCAKE to continue earning": "தொடர்ந்து சம்பாதிக்க உங்கள் veCAKE-ஐ அதிகரிக்கவும்",
-  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "உங்கள் CAKE ஸ்டேக்கிங் நிலை காலாவதியானது. சம்பாதிக்கத் தொடங்க உங்கள் நிலையைத் திறந்து புதியதை அமைக்கவும்."
+  "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "உங்கள் CAKE ஸ்டேக்கிங் நிலை காலாவதியானது. சம்பாதிக்கத் தொடங்க உங்கள் நிலையைத் திறந்து புதியதை அமைக்கவும்.",
+  "Permit %symbol%": "Permit %symbol%",
+  "Enable spending %symbol%": "%symbol% செலவழிப்பை இயக்கு",
+  "Reset approval on USDT.": "Reset approval on USDT.",
+  "Go to CAKE Staking": "CAKE ஸ்டேக்கிங்கிற்குச் செல்க",
+  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
+  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again."
 }
