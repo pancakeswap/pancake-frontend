@@ -35,7 +35,9 @@ export function useApproveCallback(
 ): {
   approvalState: ApprovalState
   approveCallback: () => Promise<SendTransactionResult | undefined>
+  approveNoCheck: () => Promise<SendTransactionResult | undefined>
   revokeCallback: () => Promise<SendTransactionResult | undefined>
+  revokeNoCheck: () => Promise<SendTransactionResult | undefined>
   currentAllowance: CurrencyAmount<Currency> | undefined
   isPendingError: boolean
 } {
@@ -79,8 +81,14 @@ export function useApproveCallback(
   const addTransaction = useTransactionAdder()
 
   const approve = useCallback(
-    async (overrideAmountApprove?: bigint): Promise<SendTransactionResult | undefined> => {
-      if (approvalState !== ApprovalState.NOT_APPROVED && isUndefinedOrNull(overrideAmountApprove)) {
+    async (
+      overrideAmountApprove?: bigint,
+      alreadyApproved = approvalState !== ApprovalState.NOT_APPROVED,
+    ): Promise<SendTransactionResult | undefined> => {
+      console.info('debug approve', {
+        approvalState: ApprovalState[approvalState],
+      })
+      if (alreadyApproved && isUndefinedOrNull(overrideAmountApprove)) {
         toastError(t('Error'), t('Approve was called unnecessarily'))
         console.error('approve was called unnecessarily')
         setIsPendingError(true)
@@ -187,6 +195,13 @@ export function useApproveCallback(
     ],
   )
 
+  const approveNoCheck = useCallback(
+    async (overrideAmountApprove?: bigint) => {
+      return approve(overrideAmountApprove, false)
+    },
+    [approve],
+  )
+
   const approveCallback = useCallback(() => {
     return approve()
   }, [approve])
@@ -195,7 +210,19 @@ export function useApproveCallback(
     return approve(0n)
   }, [approve])
 
-  return { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError }
+  const revokeNoCheck = useCallback(() => {
+    return approveNoCheck(0n)
+  }, [approveNoCheck])
+
+  return {
+    approvalState,
+    approveCallback,
+    approveNoCheck,
+    revokeCallback,
+    revokeNoCheck,
+    currentAllowance,
+    isPendingError,
+  }
 }
 
 export function useApproveCallbackFromAmount({

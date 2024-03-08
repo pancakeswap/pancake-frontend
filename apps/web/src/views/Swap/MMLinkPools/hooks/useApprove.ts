@@ -63,7 +63,7 @@ export const useApprove = (
   spender: Address | undefined,
 ): UseApproveReturnType => {
   const { requireApprove, requireRevoke, allowance, refetch } = useApproveRequires(amount, spender)
-  const { revokeCallback, approveCallback } = useApproveCallback(amount, spender)
+  const { revokeNoCheck, approveNoCheck } = useApproveCallback(amount, spender)
 
   const [isRevoking, setIsRevoking] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
@@ -71,7 +71,7 @@ export const useApprove = (
   const approve = async () => {
     setIsApproving(true)
     try {
-      const result = await approveCallback()
+      const result = await approveNoCheck()
       setIsApproving(false)
       return result
     } catch (error) {
@@ -83,7 +83,7 @@ export const useApprove = (
   const revoke = async () => {
     setIsRevoking(true)
     try {
-      const result = await revokeCallback()
+      const result = await revokeNoCheck()
       setIsRevoking(false)
       return result
     } catch (error) {
