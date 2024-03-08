@@ -1,19 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { WalletModalV2 } from '@pancakeswap/ui-wallets'
-import { Button, ButtonProps } from '@pancakeswap/uikit'
-import { createWallets, getDocLink } from 'config/wallet'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import useAuth from 'hooks/useAuth'
+import { ButtonProps } from '@pancakeswap/uikit'
 // @ts-ignore
 // eslint-disable-next-line import/extensions
 import { useActiveHandle } from 'hooks/useEagerConnect.bmp.ts'
-
-import { ChainId } from '@pancakeswap/chains'
-import { useMemo, useState } from 'react'
-import { logGTMWalletConnectEvent } from 'utils/customGTMEventTracking'
-import { useConnect } from 'wagmi'
 import { cn } from 'utils/tailwind'
-import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 import Trans from './Trans'
 
 const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {

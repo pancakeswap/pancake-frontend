@@ -7,7 +7,6 @@ import { NetworkModal } from 'components/NetworkModal'
 import { FixedSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator/FixedSubgraphHealthIndicator'
 import TransactionsDetailModal from 'components/TransactionDetailModal'
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
-import useEagerConnect from 'hooks/useEagerConnect'
 import useEagerConnectMP from 'hooks/useEagerConnect.bmp'
 import useLockedEndNotification from 'hooks/useLockedEndNotification'
 import useSentryUser from 'hooks/useSentryUser'
@@ -46,7 +45,6 @@ function GlobalHooks() {
   useDataDogRUM()
   useLoadExperimentalFeatures()
   usePollBlockNumber()
-  useEagerConnect()
   useUserAgent()
   useAccountEventListener()
   useSentryUser()
