@@ -16,7 +16,7 @@ export const RewardPerDay: React.FC<{ rewardPerSec: number } & TagProps> = memo(
       variant="secondary"
       {...props}
     >
-      {cakePerDay.toFixed(2)} {t('CAKE')}{' '}
+      {cakePerDay === 0 ? '0.00' : cakePerDay.toFixed(2)} {t('CAKE')}{' '}
     </Tag>
   )
 })

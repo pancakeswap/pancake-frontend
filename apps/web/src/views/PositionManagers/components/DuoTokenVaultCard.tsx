@@ -1,5 +1,5 @@
 import { MANAGER, Strategy } from '@pancakeswap/position-managers'
-import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { Card, CardBody } from '@pancakeswap/uikit'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -145,7 +145,6 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
     rewardStartTime,
   })
 
-  const price = new Price(currencyA, currencyB, 100000n, 100000n)
   const vaultName = useMemo(() => getVaultName(idByManager, name), [name, idByManager])
   const staked0Amount = stakedToken0Amount ? CurrencyAmount.fromRawAmount(currencyA, stakedToken0Amount) : undefined
   const staked1Amount = stakedToken1Amount ? CurrencyAmount.fromRawAmount(currencyB, stakedToken1Amount) : undefined
@@ -201,7 +200,6 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           id={id}
           totalAssetsInUsd={totalAssetsInUsd}
           earningToken={earningToken}
-          price={price}
           vaultName={vaultName}
           feeTier={feeTier}
           ratio={ratio}
