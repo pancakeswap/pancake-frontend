@@ -1,9 +1,10 @@
 import { usePreviousValue } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/swap-sdk-core'
 import { ConfirmModalState } from '@pancakeswap/widgets-internal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { publicClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
 import { Address, Hex } from 'viem'
@@ -13,6 +14,24 @@ import { useApprove, useApproveRequires } from './useApprove'
 import { MMSwapCall } from './useSwapCallArguments'
 import { useSwapCallback } from './useSwapCallback'
 
+const useCreateConfirmSteps = (amountToApprove: CurrencyAmount<Token> | undefined, spender: Address | undefined) => {
+  const { requireApprove, requireRevoke } = useApproveRequires(amountToApprove, spender)
+
+  console.debug('debug mm requires', { requireApprove, requireRevoke })
+
+  return useCallback(() => {
+    const steps: ConfirmModalState[] = []
+    if (requireRevoke) {
+      steps.push(ConfirmModalState.RESETTING_APPROVAL)
+    }
+    if (requireApprove) {
+      steps.push(ConfirmModalState.APPROVING_TOKEN)
+    }
+    steps.push(ConfirmModalState.PENDING_CONFIRMATION)
+    return steps
+  }, [requireApprove, requireRevoke])
+}
+
 const useConfirmActions = (
   trade: SmartRouterTrade<TradeType> | undefined,
   swapCalls: MMSwapCall[],
@@ -20,8 +39,9 @@ const useConfirmActions = (
   amountToApprove: CurrencyAmount<Token> | undefined,
   spender: Address | undefined,
 ) => {
+  const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const { revoke, approve, allowance, refetch } = useApprove(amountToApprove, spender)
+  const { revoke, approve, refetch } = useApprove(amountToApprove, spender)
   const { callback: swap, error: swapCallbackError } = useSwapCallback(trade, recipient, swapCalls)
 
   const [confirmState, setConfirmState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
@@ -34,32 +54,50 @@ const useConfirmActions = (
     setErrorMessage(undefined)
   }, [])
 
+  const showError = useCallback((error: string) => {
+    setErrorMessage(error)
+    setTxHash(undefined)
+  }, [])
+
   const revokeStep = useMemo(() => {
     const action = async (nextState?: ConfirmModalState) => {
       setTxHash(undefined)
       setConfirmState(ConfirmModalState.RESETTING_APPROVAL)
       try {
         const result = await revoke()
-        if (result?.hash) {
+        if (result?.hash && chainId) {
           setTxHash(result.hash)
           await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
         }
 
-        // check if user really reset the approval to 0
-        const { data } = await refetch()
-        const newAllowance = CurrencyAmount.fromRawAmount(amountToApprove?.currency as Currency, data ?? 0n)
+        let newAllowanceRaw: bigint = 0n
+
+        try {
+          // check if user really reset the approval to 0
+          const { data } = await refetch()
+          newAllowanceRaw = data ?? 0n
+        } catch (error) {
+          // assume the approval reset is successful, if we can't check the allowance
+          console.error('check allowance after revoke failed: ', error)
+        }
+
+        const newAllowance = CurrencyAmount.fromRawAmount(amountToApprove?.currency as Currency, newAllowanceRaw ?? 0n)
         if (!newAllowance.equalTo(0)) {
           throw new UserUnexpectedTxError({
             expectedData: 0,
-            actualData: allowance?.toExact(),
+            actualData: newAllowanceRaw?.toString(),
           })
         }
 
         setConfirmState(nextState ?? ConfirmModalState.APPROVING_TOKEN)
       } catch (error) {
         console.error('revoke error', error)
-        if (userRejectedError(error) || error instanceof UserUnexpectedTxError) {
-          resetState()
+        if (userRejectedError(error)) {
+          showError(t('Transaction rejected'))
+        } else if (error instanceof UserUnexpectedTxError) {
+          showError(t('Revert transaction filled, but Approval not reset to 0. Please try again.'))
+        } else {
+          showError(typeof error === 'string' ? error : (error as any)?.message)
         }
       }
     }
@@ -68,7 +106,7 @@ const useConfirmActions = (
       action,
       showIndicator: true,
     }
-  }, [allowance, amountToApprove?.currency, chainId, refetch, resetState, revoke])
+  }, [amountToApprove?.currency, chainId, refetch, revoke, showError, t])
 
   const approveStep = useMemo(() => {
     const action = async (nextState?: ConfirmModalState) => {
@@ -81,20 +119,34 @@ const useConfirmActions = (
           await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
         }
         // check if user really approved the amount trade needs
-        const { data } = await refetch()
-        const newAllowance = CurrencyAmount.fromRawAmount(amountToApprove?.currency as Currency, data ?? 0n)
+        let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
+        // check if user really approved the amount trade needs
+        try {
+          const { data } = await refetch()
+          newAllowanceRaw = data ?? 0n
+        } catch (error) {
+          // assume the approval is successful, if we can't check the allowance
+          console.error('check allowance after approve failed: ', error)
+        }
+        const newAllowance = CurrencyAmount.fromRawAmount(amountToApprove?.currency as Currency, newAllowanceRaw ?? 0n)
         if (amountToApprove && newAllowance && newAllowance.lessThan(amountToApprove)) {
           throw new UserUnexpectedTxError({
             expectedData: amountToApprove.toExact(),
-            actualData: allowance?.toExact(),
+            actualData: newAllowanceRaw.toString(),
           })
         }
 
         setConfirmState(nextState ?? ConfirmModalState.PENDING_CONFIRMATION)
       } catch (error) {
         console.error('approve error', error)
-        if (userRejectedError(error) || error instanceof UserUnexpectedTxError) {
-          resetState()
+        if (userRejectedError(error)) {
+          showError(t('Transaction rejected'))
+        } else if (error instanceof UserUnexpectedTxError) {
+          showError(
+            t('Approve transaction filled, but Approval still not enough to fill current trade. Please try again.'),
+          )
+        } else {
+          showError(typeof error === 'string' ? error : (error as any)?.message)
         }
       }
     }
@@ -103,7 +155,7 @@ const useConfirmActions = (
       action,
       showIndicator: true,
     }
-  }, [allowance, amountToApprove, approve, chainId, refetch, resetState])
+  }, [amountToApprove, approve, chainId, refetch, showError, t])
 
   const swapStep = useMemo(() => {
     const action = async () => {
@@ -156,28 +208,6 @@ const useConfirmActions = (
   }
 }
 
-const useCreateConfirmSteps = (
-  amountToApprove: CurrencyAmount<Token> | undefined,
-  spender: Address | undefined,
-  actions: Record<ConfirmModalState, ConfirmAction>,
-) => {
-  const { requireApprove, requireRevoke } = useApproveRequires(amountToApprove, spender)
-
-  console.debug('debug mm requires', { requireApprove, requireRevoke })
-
-  return useCallback(() => {
-    const steps: ConfirmAction[] = []
-    if (requireRevoke) {
-      steps.push(actions[ConfirmModalState.RESETTING_APPROVAL])
-    }
-    if (requireApprove) {
-      steps.push(actions[ConfirmModalState.APPROVING_TOKEN])
-    }
-    steps.push(actions[ConfirmModalState.PENDING_CONFIRMATION])
-    return steps
-  }, [actions, requireApprove, requireRevoke])
-}
-
 export const useMMConfirmModalState = (
   trade: SmartRouterTrade<TradeType> | undefined,
   swapCalls: MMSwapCall[],
@@ -193,42 +223,58 @@ export const useMMConfirmModalState = (
     spender,
   )
   const preConfirmState = usePreviousValue(confirmState)
-  const confirmSteps = useRef<ConfirmAction[]>()
+  const [confirmSteps, setConfirmSteps] = useState<ConfirmModalState[]>()
 
-  const createSteps = useCreateConfirmSteps(amountToApprove, spender, actions)
+  const createSteps = useCreateConfirmSteps(amountToApprove, spender)
+  const confirmActions = useMemo(() => {
+    return confirmSteps?.map((step) => actions[step])
+  }, [confirmSteps, actions])
 
   const performStep = useCallback(
-    async (nextStep?: ConfirmModalState) => {
-      if (!confirmSteps.current) {
+    async ({
+      nextStep,
+      stepActions,
+      state,
+    }: {
+      nextStep?: ConfirmModalState
+      stepActions: ConfirmAction[]
+      state: ConfirmModalState
+    }) => {
+      if (!stepActions) {
         return
       }
 
-      const steps = confirmSteps.current
-      const step = steps.find((s) => s.step === confirmState) ?? steps[0]
+      const step = stepActions.find((s) => s.step === state) ?? stepActions[0]
 
       await step.action(nextStep)
     },
-    [confirmState],
+    [],
   )
-
   const callToAction = useCallback(() => {
     const steps = createSteps()
-    confirmSteps.current = steps
-    const nextStep = steps[1] ? steps[1].step : undefined
+    setConfirmSteps(steps)
+    const stepActions = steps.map((step) => actions[step])
+    const nextStep = steps[1] ?? undefined
 
-    performStep(nextStep)
-  }, [createSteps, performStep])
+    performStep({
+      nextStep,
+      stepActions,
+      state: steps[0],
+    })
+  }, [actions, createSteps, performStep])
 
   // auto perform the next step
   useEffect(() => {
     if (
       preConfirmState !== confirmState &&
       preConfirmState !== ConfirmModalState.REVIEWING &&
-      confirmSteps.current?.some((step) => step.step === confirmState)
+      confirmActions?.some((step) => step.step === confirmState)
     ) {
-      performStep(confirmState)
+      const nextStep = confirmActions.findIndex((step) => step.step === confirmState)
+      const nextStepState = confirmActions[nextStep + 1]?.step ?? ConfirmModalState.PENDING_CONFIRMATION
+      performStep({ nextStep: nextStepState, stepActions: confirmActions, state: confirmState })
     }
-  }, [confirmState, performStep, preConfirmState])
+  }, [confirmActions, confirmState, performStep, preConfirmState])
 
   return {
     callToAction,
@@ -236,6 +282,6 @@ export const useMMConfirmModalState = (
     confirmState,
     resetState,
     txHash,
-    confirmSteps: confirmSteps.current,
+    confirmActions,
   }
 }

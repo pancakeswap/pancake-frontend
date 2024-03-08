@@ -76,8 +76,8 @@ SwapCommitButtonPropsType) {
     return mmTradeInfo?.routerAddress as Address | undefined
   }, [mmTradeInfo])
   const swapCalls = useSwapCallArguments(rfqTrade.trade, rfqTrade.rfq ?? undefined, recipient ?? undefined)
-  const { resetState, txHash, confirmState, confirmSteps, callToAction, errorMessage } = useMMConfirmModalState(
-    (isExpertMode ? rfqTrade.trade : tradeToConfirm) ?? undefined,
+  const { resetState, txHash, confirmState, confirmActions, callToAction, errorMessage } = useMMConfirmModalState(
+    isExpertMode ? rfqTrade.trade : tradeToConfirm,
     swapCalls,
     (recipient as Address) ?? null,
     amountToApprove?.currency.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
@@ -116,7 +116,7 @@ SwapCommitButtonPropsType) {
       originalTrade={tradeToConfirm}
       txHash={txHash}
       confirmModalState={confirmState}
-      pendingModalSteps={confirmSteps ?? []}
+      pendingModalSteps={confirmActions ?? []}
       onConfirm={callToAction}
       currencyBalances={currencyBalances}
       isRFQReady={Boolean(rfqTrade.rfq) && !rfqTrade.isLoading}
