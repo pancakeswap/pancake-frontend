@@ -31,7 +31,7 @@ const StyledArticleContainer = styled(Box)`
     margin: 80px auto;
   }
 
-  ${({ theme }) => theme.mediaQueries.xl || theme.mediaQueries.xxl} {
+  @media screen and (min-width: 1440px) {
     width: 1160px;
   }
 `
@@ -157,7 +157,7 @@ const AllArticle = () => {
             />
           </StyledTagContainer>
         )}
-        <Flex width={['100%', '100%', '100%', '100%', '100%', '100%', '907px']} flexDirection="column">
+        <Flex width={['100%', '100%', '100%', '100%', '100%', '907px', '907px']} flexDirection="column">
           <Flex
             mb={['18px', '18px', '18px', '24px']}
             flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
