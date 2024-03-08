@@ -123,7 +123,8 @@ export function useApproveCallback(
             account: tokenContract.account,
           },
         )
-        .catch(() => {
+        .catch((err) => {
+          console.error('estimate gas failure', err)
           // general fallback for tokens who restrict approval amounts
           useExact = true
           return tokenContract.estimateGas

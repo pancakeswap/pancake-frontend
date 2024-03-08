@@ -1,5 +1,5 @@
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
-import { bscTestnetTokens, bscTokens } from '@pancakeswap/tokens'
+import { bscTestnetTokens, ethereumTokens, goerliTestnetTokens } from '@pancakeswap/tokens'
 import { QueryObserverResult } from '@tanstack/react-query'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useApproveCallback } from 'hooks/useApproveCallback'
@@ -28,14 +28,20 @@ export const useApproveRequires = (amount: CurrencyAmount<Token> | undefined, sp
 
   const requireRevoke = useMemo((): boolean => {
     const isMainnetUSDT =
-      amount?.currency?.chainId === bscTokens.usdt.chainId &&
-      isAddressEqual(amount?.currency.address, bscTokens.usdt.address)
+      amount?.currency?.chainId === ethereumTokens.usdt.chainId &&
+      isAddressEqual(amount.currency.address, ethereumTokens.usdt.address)
 
     const isBSCTestNetBUSD =
       amount?.currency?.chainId === bscTestnetTokens.busd.chainId &&
-      isAddressEqual(amount?.currency.address, bscTestnetTokens.busd.address)
+      isAddressEqual(amount.currency.address, bscTestnetTokens.busd.address)
 
-    if (!isMainnetUSDT || isBSCTestNetBUSD) return false
+    const isGoerliUSDC =
+      amount?.currency?.chainId === goerliTestnetTokens.usdc.chainId &&
+      isAddressEqual(amount.currency.address, goerliTestnetTokens.usdc.address)
+
+    if (!isMainnetUSDT && !isBSCTestNetBUSD && !isGoerliUSDC) return false
+
+    console.info('debug requireRevoke', { amount: amount.quotient, allowance: allowance?.quotient })
 
     return !!allowance && allowance.greaterThan(0) && allowance.lessThan(amount)
   }, [allowance, amount])

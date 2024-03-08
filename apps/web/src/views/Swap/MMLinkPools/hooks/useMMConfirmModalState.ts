@@ -163,6 +163,8 @@ const useCreateConfirmSteps = (
 ) => {
   const { requireApprove, requireRevoke } = useApproveRequires(amountToApprove, spender)
 
+  console.debug('debug mm requires', { requireApprove, requireRevoke })
+
   return useCallback(() => {
     const steps: ConfirmAction[] = []
     if (requireRevoke) {
