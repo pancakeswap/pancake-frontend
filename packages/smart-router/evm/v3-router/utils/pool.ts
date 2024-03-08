@@ -1,10 +1,10 @@
 import { Currency, Pair, Price } from '@pancakeswap/sdk'
 import { Pool as SDKV3Pool, computePoolAddress } from '@pancakeswap/v3-sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { getSwapOutput } from '@pancakeswap/stable-swap'
 import memoize from 'lodash/memoize.js'
 import { Address } from 'viem'
 
-import * as StableSwap from '../../stableSwap'
 import { Pool, PoolType, StablePool, V2Pool, V3Pool } from '../types'
 
 export function isV2Pool(pool: Pool): pool is V2Pool {
@@ -109,7 +109,7 @@ export function getTokenPrice(pool: Pool, base: Currency, quote: Currency): Pric
     if (!baseIn) {
       throw new Error(`Cannot parse amount for ${base.symbol}`)
     }
-    const quoteOut = StableSwap.getSwapOutput({
+    const quoteOut = getSwapOutput({
       amplifier,
       balances,
       fee,

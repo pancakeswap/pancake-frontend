@@ -1,5 +1,6 @@
 import type { SerializedWrappedToken } from '@pancakeswap/token-lists'
-import { Address } from 'viem'
+
+type Address = `0x${string}`
 
 export interface BasePool {
   lpSymbol: string

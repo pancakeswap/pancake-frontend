@@ -1,5 +1,6 @@
 import { Currency, CurrencyAmount, Pair, ZERO } from '@pancakeswap/sdk'
 import { Pool as V3Pool, TickList } from '@pancakeswap/v3-sdk'
+import { getQuoteExactIn, getQuoteExactOut } from '@pancakeswap/stable-swap'
 import {
   Pool as IPool,
   Pool,
@@ -11,7 +12,6 @@ import {
   V2Pool,
   V3Pool as IV3Pool,
 } from '../types'
-import * as StableSwap from '../../stableSwap'
 import { getOutputCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
 
 export function createOffChainQuoteProvider(): QuoteProvider {
@@ -115,7 +115,7 @@ function createGetV2Quote(isExactIn = true) {
 }
 
 function createGetStableQuote(isExactIn = true) {
-  const getQuote = isExactIn ? StableSwap.getQuoteExactIn : StableSwap.getQuoteExactOut
+  const getQuote = isExactIn ? getQuoteExactIn : getQuoteExactOut
   return function getStableQuote(
     pool: StablePool,
     amount: CurrencyAmount<Currency>,

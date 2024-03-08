@@ -1,8 +1,9 @@
-import { BigintIsh, CurrencyAmount, Currency, Percent, ZERO, ONE_HUNDRED_PERCENT } from '@pancakeswap/sdk'
+import { BigintIsh, CurrencyAmount, Currency, Percent, ZERO } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
 
 import { getY } from './amm'
 import { getRawAmount, parseAmount } from './utils'
+import { ONE_HUNDRED_PERCENT } from '../constants'
 
 export interface GetSwapOutputParams {
   amplifier: BigintIsh

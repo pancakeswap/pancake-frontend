@@ -58,6 +58,7 @@
     "@pancakeswap/prediction": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
+    "@pancakeswap/stable-swap": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",

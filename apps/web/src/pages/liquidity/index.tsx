@@ -1,6 +1,6 @@
 import { PositionDetails } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
-import { isStableSwapSupported } from '@pancakeswap/smart-router/evm'
+import { isStableSwapSupported } from '@pancakeswap/stable-swap'
 import {
   AddIcon,
   Button,

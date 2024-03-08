@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 
-import { StableSwapPool } from './types'
+import { StableSwapPool } from '../../types'
 import { pools as bscPools } from './bsc'
 import { pools as arbPools } from './arb'
 import { pools as bscTestnetPools } from './bscTestnet'
