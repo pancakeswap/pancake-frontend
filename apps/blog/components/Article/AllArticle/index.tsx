@@ -66,7 +66,7 @@ const StyledCard = styled(Flex)`
 
 const AllArticle = () => {
   const { t } = useTranslation()
-  const { isDesktop, isMobile, isTablet } = useMatchBreakpoints()
+  const { isDesktop, isMobile, isTablet, isMD } = useMatchBreakpoints()
   const router = useRouter()
   const [query, setQuery] = useState('')
   const articlesWrapperEl = useRef<HTMLDivElement>(null)
@@ -185,7 +185,7 @@ const AllArticle = () => {
               </InputGroup>
             </Box>
           </Flex>
-          {(isMobile || isTablet) && (
+          {(isMobile || isTablet || isMD) && (
             <StyledMobileTagContainer>
               <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
                 {t('Filter by')}
