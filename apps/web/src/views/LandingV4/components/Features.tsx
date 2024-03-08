@@ -241,13 +241,15 @@ export const Features = () => {
         <Flex
           flexDirection={['row', 'row', 'column']}
           m={['auto', 'auto', '0 25px 0 0', '0 25px 0 0', '0 40px 0 0', '0 auto 0 0']}
-          onMouseEnter={() => setMouseEntered(true)}
-          onMouseLeave={() => setMouseEntered(false)}
         >
           {FeaturesConfig?.map((config) => {
             const isPicked = step === config.id
             return (
-              <div key={config.id}>
+              <div
+                key={config.id}
+                onMouseEnter={() => isPicked && setMouseEntered(true)}
+                onMouseLeave={() => isPicked && setMouseEntered(false)}
+              >
                 <ListStyled $isPicked={isPicked} onClick={() => handleStepClick(config.id)}>
                   <Box display={['none', 'none', 'flex']}>
                     <Flex alignSelf="center" opacity={isPicked ? 1 : 0.6}>
@@ -316,7 +318,11 @@ export const Features = () => {
             </NextLinkFromReactRouter>
           </Box>
         </Flex>
-        <AnimationContainer $showAnimation={showAnimation}>
+        <AnimationContainer
+          $showAnimation={showAnimation}
+          onMouseEnter={() => setMouseEntered(true)}
+          onMouseLeave={() => setMouseEntered(false)}
+        >
           <DetailStyled>
             {!(isMd || isLg) && (
               <Box mb="40px">
