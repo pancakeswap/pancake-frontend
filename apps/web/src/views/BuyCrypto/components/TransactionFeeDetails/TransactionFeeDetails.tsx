@@ -32,7 +32,7 @@ export const TransactionFeeDetails = ({
   independentField,
   inputError,
 }: TransactionFeeDetailsProps) => {
-  const [elementHeight, setElementHeight] = useState<number>(50)
+  const [elementHeight, setElementHeight] = useState<number>(51)
   const [show, setShow] = useState<boolean>(false)
   const theme = useTheme()
   const containerRef = useRef(null)
