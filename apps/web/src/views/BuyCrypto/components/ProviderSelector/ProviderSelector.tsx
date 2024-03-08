@@ -22,7 +22,7 @@ const DropDownContainer = styled.div<{ error: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 12px;
+  padding: 12px 16px;
   box-shadow: ${({ theme, error }) => (error ? theme.shadows.danger : theme.shadows.inset)};
   border: 1px solid ${({ theme, error }) => (error ? theme.colors.failure : theme.colors.inputSecondary)};
   border-radius: 16px;
@@ -114,9 +114,6 @@ export const ProviderSelector = ({
 
   return (
     <Box width="100%" {...props}>
-      <Flex justifyContent="space-between" py="4px" width="100%" alignItems="center">
-        {topElement}
-      </Flex>
       <DropDownContainer error={error as any}>
         <OptionSelectButton
           width="100%"
@@ -162,9 +159,6 @@ export const ProviderSelector = ({
           </Flex>
         </OptionSelectButton>
       </DropDownContainer>
-      <Flex justifyContent="space-between" width="100%" alignItems="center">
-        {bottomElement}
-      </Flex>
     </Box>
   )
 }

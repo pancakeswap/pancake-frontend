@@ -24,6 +24,7 @@ import { styled } from 'styled-components'
 import { chainNameConverter } from 'utils/chainNameConverter'
 import { chains } from 'utils/wagmi'
 import { OnRampChainId as ChainId } from 'views/BuyCrypto/constants'
+import { FiatCurrency } from 'views/BuyCrypto/types'
 import { Dot } from 'views/Notifications/styles'
 import OnRampCurrencySearch from './OnRampCurrencySearch'
 
@@ -76,9 +77,9 @@ const NetworkFilterOverlay = styled(Box)<{ showFilterNetworks: boolean }>`
 `
 
 export interface CurrencySearchModalProps extends InjectedModalProps {
-  selectedCurrency?: Currency | null
+  selectedCurrency?: Currency | FiatCurrency | null
   onCurrencySelect: (field: Field, newCurrency: Currency) => void
-  otherSelectedCurrency?: Currency | null
+  otherSelectedCurrency?: Currency | FiatCurrency | null
   tokensToShow?:
     | {
         symbol: string

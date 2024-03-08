@@ -6,7 +6,7 @@ import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { OnRampChainId } from '../constants'
 import { useOnRampLimit } from './useOnRampLimits'
 
-function formatNumber(number: number, precision?: number): string {
+export function formatNumber(number: number, precision?: number): string {
   if (number >= 10000) {
     const formattedNumber: string = Math.ceil(number / 1000).toString()
     return `${formattedNumber}K`
@@ -14,76 +14,69 @@ function formatNumber(number: number, precision?: number): string {
   return number.toFixed(precision ?? 0)
 }
 
-function calculateDefaultAmount(minAmount: number | undefined, currencyCode: string | undefined): number {
+function calculateDefaultAmount(
+  minAmount: number | undefined,
+  currencyCode: string | undefined,
+  isFiatFlow: boolean,
+): number {
   if (!minAmount || !currencyCode) return 0
-  return ceil(minAmount * 5)
+  return !isFiatFlow ? ceil(minAmount * 5) : Number((minAmount * 5).toFixed(3))
 }
 
 export const useLimitsAndInputError = ({
   typedValue,
   cryptoCurrency,
   fiatCurrency,
+  isFiatFlow,
 }: {
   typedValue: string
   cryptoCurrency: Currency
   fiatCurrency: any
+  isFiatFlow: boolean
 }) => {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
 
-  const {
-    data: limitsData,
-    isError,
-    error,
-  } = useOnRampLimit({
+  const { data: limitsData } = useOnRampLimit({
     fiatCurrency: fiatCurrency?.symbol as string,
     cryptoCurrency: cryptoCurrency?.symbol,
     network: cryptoCurrency?.chainId as OnRampChainId,
   })
-  console.log(cryptoCurrency?.symbol, error)
 
-  const baseCurrency = limitsData?.baseCurrency
-  const quoteCurrency = limitsData?.quoteCurrency
+  const baseCurrency = !isFiatFlow ? limitsData?.baseCurrency : limitsData?.quoteCurrency
+  const quoteCurrency = !isFiatFlow ? limitsData?.quoteCurrency : limitsData?.baseCurrency
 
   const defaultAmt = useMemo(
-    () => calculateDefaultAmount(baseCurrency?.minBuyAmount, baseCurrency?.code).toString(),
-    [baseCurrency],
+    () => calculateDefaultAmount(baseCurrency?.minBuyAmount, baseCurrency?.code, isFiatFlow).toString(),
+    [baseCurrency, isFiatFlow],
   )
-
-  const commonAmounts = useMemo(() => {
-    return [0.33, 0.5, 1.5].map((multiplier) => {
-      const commonAmount = calculateDefaultAmount(baseCurrency?.minBuyAmount, baseCurrency?.code) * multiplier
-
-      return formatNumber(commonAmount)
-    })
-  }, [baseCurrency])
 
   const inputError = useMemo(() => {
     if (!baseCurrency || !quoteCurrency) return
 
-    if (Number(typedValue) < baseCurrency.minBuyAmount || typedValue === '') {
+    if (Number(typedValue) < baseCurrency.minBuyAmount) {
       // eslint-disable-next-line consistent-return
-      return t('The minimum purchasable amount is %minAmount% %fiatCurrency% / %minCryptoAmount% %cryptoCurrency%', {
+      return t('The min amount is %minAmount% %fiatCurrency% / %minCryptoAmount% %cryptoCurrency%', {
         minAmount: formatLocaleNumber({
           number: baseCurrency.minBuyAmount,
           locale,
         }),
         fiatCurrency: baseCurrency?.code.toUpperCase(),
-        cryptoCurrency: cryptoCurrency.symbol,
+        cryptoCurrency: cryptoCurrency?.symbol.toUpperCase(),
         minCryptoAmount: formatLocaleNumber({ locale, number: quoteCurrency.minBuyAmount }),
       })
     }
     if (Number(typedValue) > baseCurrency.maxBuyAmount) {
       // eslint-disable-next-line consistent-return
-      return t('The maximum purchasable amount is %maxAmount% %fiatCurrency% / %maxCryptoAmount% %cryptoCurrency%', {
+      return t('The max amount is %maxAmount% %fiatCurrency% / %maxCryptoAmount% %cryptoCurrency%', {
         maxAmount: formatLocaleNumber({
           number: baseCurrency.maxBuyAmount,
           locale,
         }),
         fiatCurrency: baseCurrency?.code.toUpperCase(),
-        cryptoCurrency: cryptoCurrency.symbol,
+        cryptoCurrency: cryptoCurrency?.symbol.toUpperCase(),
         maxCryptoAmount: formatLocaleNumber({ locale, number: quoteCurrency.maxBuyAmount }),
       })
     }
@@ -93,7 +86,6 @@ export const useLimitsAndInputError = ({
     limitsData,
     inputError,
     baseCurrency,
-    commonAmounts,
     quoteCurrency,
     defaultAmt,
   }

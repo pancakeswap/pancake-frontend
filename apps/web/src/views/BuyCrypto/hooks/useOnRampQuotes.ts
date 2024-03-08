@@ -28,7 +28,7 @@ export type UseOnRampQuotesParameters<selectData = GetOnRampQuoteReturnType> = E
 export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
   parameters: UseOnRampQuotesParameters<selectData>,
 ) => {
-  const { fiatAmount, enabled, cryptoCurrency, fiatCurrency, network, ...query } = parameters
+  const { fiatAmount, enabled, cryptoCurrency, fiatCurrency, network, isFiat, ...query } = parameters
 
   return useQuery({
     ...query,
@@ -38,6 +38,7 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         fiatAmount,
         fiatCurrency,
         network,
+        isFiat,
       },
     ]),
     refetchInterval: 40 * 1_000,
@@ -45,8 +46,8 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
     enabled: Boolean(cryptoCurrency && fiatAmount && fiatCurrency && getIsNetworkEnabled(network) && enabled),
     queryFn: async ({ queryKey }) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { cryptoCurrency, fiatAmount, fiatCurrency, network } = queryKey[1]
-      if (!cryptoCurrency || !fiatAmount || !fiatCurrency) {
+      const { cryptoCurrency, fiatAmount, fiatCurrency, network, isFiat } = queryKey[1]
+      if (!cryptoCurrency || !fiatAmount || !fiatCurrency || !isFiat) {
         throw new Error('Missing params')
       }
       const providerQuotes = await fetchProviderQuotes({
@@ -54,6 +55,7 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         fiatAmount,
         fiatCurrency,
         network,
+        isFiat,
       })
       const sortedFilteredQuotes = providerQuotes.sort((a, b) => b.quote - a.quote)
 

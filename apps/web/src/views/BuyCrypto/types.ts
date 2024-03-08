@@ -115,6 +115,7 @@ export type OnRampQuotesPayload = {
   cryptoCurrency: string | undefined
   fiatAmount: string | undefined
   network: OnRampChainId | undefined
+  isFiat: string
 }
 
 export type OnRampLimitsPayload = {

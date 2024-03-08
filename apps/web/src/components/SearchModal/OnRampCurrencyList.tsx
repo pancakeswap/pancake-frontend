@@ -8,6 +8,7 @@ import { useAllowBtcPurchases } from 'state/buyCrypto/hooks'
 import { styled } from 'styled-components'
 import { OnRampCurrencyLogo } from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 import { isNativeBtc } from 'views/BuyCrypto/constants'
+import { FiatCurrency } from 'views/BuyCrypto/types'
 import { RowBetween, RowFixed } from '../Layout/Row'
 
 function currencyKey(currency: Currency): string {
@@ -126,10 +127,10 @@ export default function OnRampCurrencyList({
   mode,
 }: {
   height: number | string
-  currencies: Currency[]
-  selectedCurrency?: Currency | null
+  currencies: Currency[] | FiatCurrency[]
+  selectedCurrency?: Currency | FiatCurrency | null
   onCurrencySelect: (currency: Currency) => void
-  otherCurrency?: Currency | null
+  otherCurrency?: Currency | FiatCurrency | null
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   mode: string
 }) {
@@ -144,8 +145,8 @@ export default function OnRampCurrencyList({
       let otherSelected = false
 
       if (mode !== 'onramp-fiat') {
-        isSelected = Boolean(selectedCurrency && currency && selectedCurrency.equals(currency))
-        otherSelected = Boolean(otherCurrency && currency && otherCurrency.equals(currency))
+        isSelected = Boolean(selectedCurrency && currency && (selectedCurrency as Currency).equals(currency))
+        otherSelected = Boolean(otherCurrency && currency && (otherCurrency as Currency).equals(currency))
       } else {
         isSelected = Boolean(selectedCurrency?.symbol && currency && selectedCurrency?.symbol === currency?.symbol)
         otherSelected = Boolean(otherCurrency?.symbol && currency && otherCurrency?.symbol === currency?.symbol)

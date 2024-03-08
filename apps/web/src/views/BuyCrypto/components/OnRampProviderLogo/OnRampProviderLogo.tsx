@@ -39,7 +39,9 @@ export const EvmLogo = ({ mode, currency, size = 24 }: { mode: string; currency:
   return (
     <>
       {mode === 'onramp-fiat' ? (
-        <FiatLogo currency={currency} size={`${size - 3}px`} />
+        <Box width={`${size}px`} height={`${size}px`}>
+          <FiatLogo currency={currency} size={`${size - 3}px`} />
+        </Box>
       ) : (
         <Box width={`${size}px`} height={`${size}px`}>
           <TokenImageWithBadge
@@ -53,7 +55,9 @@ export const EvmLogo = ({ mode, currency, size = 24 }: { mode: string; currency:
     </>
   )
 }
-export const BtcLogo = () => <Image src="/images/btc.svg" alt="bitcoin-logo" width={24} height={24} />
+export const BtcLogo = ({ size = 24 }: { size?: number }) => (
+  <Image src="/images/btc.svg" alt="bitcoin-logo" width={size} height={size} />
+)
 
 export const OnRampCurrencyLogo = ({ mode, currency, size = 28 }: { mode: string; currency: Token; size?: number }) => {
   const isBtc = isNativeBtc(currency)

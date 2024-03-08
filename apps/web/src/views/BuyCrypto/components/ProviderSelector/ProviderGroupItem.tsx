@@ -147,7 +147,7 @@ export const ProviderGroupItem = ({
                 lineHeight="14px"
               >
                 {t('%amount% %asset%', {
-                  amount: currentQuote?.quote.toFixed(5),
+                  amount: currentQuote?.quote?.toFixed(5),
                   asset: currentQuote?.cryptoCurrency,
                 })}
               </SkeletonText>

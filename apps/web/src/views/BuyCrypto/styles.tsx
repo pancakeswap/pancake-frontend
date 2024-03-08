@@ -7,7 +7,7 @@ interface StyledInputProps extends InputProps {
   theme: DefaultTheme
 }
 export const StyledAppBody = styled(AppBody)`
-  max-width: 375px;
+  max-width: 405px;
 `
 
 export const Wrapper = styled(Flex)`
@@ -25,7 +25,7 @@ export const StyledNotificationWrapper = styled.div<{ show: boolean }>`
   display: flex;
   position: relative;
   overflow: hidden;
-  padding: 0px 8px;
+  // padding: 0px 8px;
 
   width: 100%;
 
@@ -40,6 +40,25 @@ export const Description = styled.div<{ show: boolean; elementHeight: number }>`
   max-height: ${({ show, elementHeight }) => (show ? `${elementHeight}px` : '0px')};
 `
 export const StyledFeesContainer = styled(Box)`
+  padding: 6px 16px;
+  border-radius: 16px;
+  z-index: 10;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  position: relative;
+  border: ${({ theme }) => `1.5px dashed ${theme.colors.inputSecondary}`};
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+export const StyledFeesContainer3 = styled(Flex)`
+  padding: 2px 16px;
+  border-radius: 16px;
+  z-index: 10;
+  // background: ${({ theme }) => theme.colors.backgroundAlt};
+  background: ${({ theme }) => theme.colors.input};
+
+  border: ${({ theme }) => `1.5px dashed ${theme.colors.inputSecondary}`};
   &:hover {
     cursor: pointer;
   }
@@ -52,7 +71,7 @@ export const FilterdNetworkWrapper = styled(Flex)<{ showPopOver: boolean }>`
   display: flex;
   flex-direction: column;
   height: max-content;
-  z-index: 1000;
+  z-index: 9999;
   transition: bottom 0.3s ease-in-out;
   bottom: ${({ showPopOver }) => (!showPopOver ? '-100%' : '0%')};
   border-top-right-radius: 24px;
@@ -62,7 +81,7 @@ export const FilterdNetworkWrapper = styled(Flex)<{ showPopOver: boolean }>`
 export const NetworkFilterOverlay = styled(Flex)<{ showPopOver: boolean }>`
   position: absolute;
   width: 100%;
-  z-index: 1000;
+  z-index: 9999;
 
   background-color: #e2d2ff;
   height: 100%;
@@ -119,7 +138,7 @@ export const DropDownContainer = styled.div<{ error: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 16px;
+  padding: 12px 16px;
   box-shadow: ${({ theme, error }) => (error ? theme.shadows.danger : theme.shadows.inset)};
   border: 1px solid ${({ theme, error }) => (error ? theme.colors.failure : theme.colors.inputSecondary)};
   border-radius: 16px;
@@ -141,9 +160,9 @@ export const OptionSelectButton = styled(Button).attrs({ variant: 'text', scale:
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 130px;
-  padding-left: 16px;
-  padding-right: 8px;
+  width: 135px;
+  padding-left: 12px;
+  // padding-right: 8px;
   border-radius: 0px;
 `
 
@@ -159,6 +178,34 @@ const getBoxShadow = ({ isSuccess = false, isWarning = false, theme }: StyledInp
   return theme.shadows.inset
 }
 
+export const StyledVerticalLine = styled.div`
+  position: absolute;
+  height: calc(65%);
+  width: 2px;
+  border-left: ${({ theme }) => `2px dashed ${theme.colors.inputSecondary}`};
+  margin-top: 10px;
+  z-index: 0;
+  left: calc(50% - 5px);
+`
+export const StyledArrowHead = styled.div`
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: ${({ theme }) => `6px dashed ${theme.colors.inputSecondary}`};
+  bottom: 100%;
+  left: calc(50% - 10px);
+`
+export const StyledCircle = styled.div`
+  position: absolute;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.inputSecondary};
+  left: calc(50% - 8px);
+  top: 93%;
+`
 const InputExtended = styled('input').withConfig({
   shouldForwardProp: (props) => !['scale', 'isSuccess', 'isWarning'].includes(props),
 })<InputProps & { height: string }>`
@@ -188,7 +235,7 @@ const InputExtended = styled('input').withConfig({
   &:focus:not(:disabled) {
     box-shadow: ${({ theme, isWarning, isSuccess }) => {
       if (isWarning) {
-        return theme.shadows.warning
+        return theme.shadows.danger
       }
 
       if (isSuccess) {

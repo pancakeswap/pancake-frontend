@@ -36,7 +36,7 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
   const { quote, externalTransactionId, chainId, btcAddress, ...query } = parameters
 
   const walletAddress = chainId === 0 ? btcAddress : address
-
+  console.log(walletAddress)
   return useQuery({
     ...query,
     queryKey: getOnRampSignatureQueryKey([
@@ -67,8 +67,9 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
           fiatCurrency,
           amount,
           network,
+          walletAddress,
           isTestEnv: 'development',
-          redirectUrl: 'https://pancakeswap.finance/buy-crypto',
+          redirectUrl: '',
           externalTransactionId,
           ...rest,
         })}`,

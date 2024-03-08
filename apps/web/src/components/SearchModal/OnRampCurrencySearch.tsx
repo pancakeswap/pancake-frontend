@@ -12,14 +12,15 @@ import { FixedSizeList } from 'react-window'
 import { safeGetAddress } from 'utils'
 import { isAddress } from 'viem'
 import { OnRampChainId as ChainId } from 'views/BuyCrypto/constants'
+import { FiatCurrency } from 'views/BuyCrypto/types'
 import Row from '../Layout/Row'
 import OnRampCurrencyList from './OnRampCurrencyList'
 import { getSwapSound } from './swapSound'
 
 interface CurrencySearchProps {
-  selectedCurrency?: Currency | null
+  selectedCurrency?: Currency | FiatCurrency | null
   onCurrencySelect: (currency: Currency) => void
-  otherSelectedCurrency?: Currency | null
+  otherSelectedCurrency?: Currency | FiatCurrency | null
   height?: number
   tokensToShow?: (
     | Currency

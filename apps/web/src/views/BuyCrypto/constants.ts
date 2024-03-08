@@ -142,21 +142,44 @@ export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: FeeTypes[] } = 
 export const getNetworkDisplay = (chainId: number | undefined): string => {
   switch (chainId as OnRampChainId) {
     case OnRampChainId.ETHEREUM:
-      return 'Ethereum'
+      return 'ethereum'
     case OnRampChainId.BSC:
-      return 'BNB Chain'
+      return 'binance'
     case OnRampChainId.ZKSYNC:
       return 'zkSync Era'
     case OnRampChainId.ARBITRUM_ONE:
+      return 'arbitrum'
+    case OnRampChainId.POLYGON_ZKEVM:
+      return 'zkEvm'
+    case OnRampChainId.LINEA:
+      return 'linea'
+    case OnRampChainId.BASE:
+      return 'base'
+    case OnRampChainId.BTC:
+      return 'bitcoin'
+    default:
+      return ''
+  }
+}
+
+export const getNetworkFullName = (chainId: number | undefined): string => {
+  switch (chainId as OnRampChainId) {
+    case OnRampChainId.ETHEREUM:
+      return 'Ethereum '
+    case OnRampChainId.BSC:
+      return 'Binance Smart Chain'
+    case OnRampChainId.ZKSYNC:
+      return 'ZkSync Era'
+    case OnRampChainId.ARBITRUM_ONE:
       return 'Arbitrum One'
     case OnRampChainId.POLYGON_ZKEVM:
-      return 'Polygon zkEVM'
+      return 'Polygon ZkEvm'
     case OnRampChainId.LINEA:
-      return 'Linea'
+      return 'Linea Mainnet'
     case OnRampChainId.BASE:
       return 'Base Mainnet'
     case OnRampChainId.BTC:
-      return 'Native Bitcoin'
+      return 'Bitcoin Network'
     default:
       return ''
   }
@@ -207,10 +230,17 @@ const extractOnRampCurrencyChainId = (currencyId: string) => {
   return parts[1]
 }
 
+export const formatQuoteDecimals = (quote: number | undefined, typedValue: string | undefined) => {
+  if (!quote || !typedValue || typedValue === '') return ''
+  return quote.toFixed(5)
+}
 export const isNativeBtc = (currency: Currency | string | undefined) => {
   if (typeof currency === 'string') return Boolean(currency === 'BTC_0')
   return Boolean(currency?.chainId === 0)
 }
+
+export const getOnRampCryptoById = (id: string) => onRampCurrenciesMap[id]
+export const getOnRampFiatById = (id: string) => fiatCurrencyMap[id]
 
 export const getOnrampCurrencyChainId = (currencyId: string | undefined): any => {
   if (!currencyId) return undefined
