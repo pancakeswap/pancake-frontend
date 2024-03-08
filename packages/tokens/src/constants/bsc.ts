@@ -2978,7 +2978,7 @@ export const bscTokens = {
     18,
     'AITECH',
     'AITECH',
-    'https://www.aitech.vision/',
+    'https://www.aitech.io/',
   ),
   gtai: new ERC20Token(
     ChainId.BSC,
