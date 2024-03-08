@@ -57,7 +57,7 @@ const StyledCard = styled(Flex)`
   overflow: hidden;
   flex-direction: column;
 
-  ${({ theme }) => theme.mediaQueries.xxl} {
+  ${({ theme }) => theme.mediaQueries.xl || theme.mediaQueries.xxl} {
     border: ${({ theme }) => `1px solid ${theme.colors.cardBorder}`};
     border-bottom: ${({ theme }) => `3px solid ${theme.colors.cardBorder}`};
     border-radius: ${({ theme }) => theme.radii.card};
@@ -146,7 +146,7 @@ const AllArticle = () => {
       >
         {t('All articles')}
       </Text>
-      <Flex p={['0', '0', '0', '0', '0', '0', '0 16px']}>
+      <Flex p={['0', '0', '0', '0', '0', '0 16px', '0 16px']}>
         {isDesktop && !isXl && (
           <StyledTagContainer>
             <CategoriesSelector
@@ -162,7 +162,7 @@ const AllArticle = () => {
             mb={['18px', '18px', '18px', '24px']}
             flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
             alignItems={['flexStart', 'flexStart', 'flexStart', 'center']}
-            p={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
+            p={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0', '0']}
           >
             {languageItems.length > 0 && (
               <Flex flexDirection={['column', 'row']}>
@@ -201,7 +201,7 @@ const AllArticle = () => {
             </StyledMobileTagContainer>
           )}
           {!isFetching && articles.length === 0 ? (
-            <Text bold fontSize={20} padding={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}>
+            <Text bold fontSize={20} padding={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0', '0']}>
               {t('No results found.')}
             </Text>
           ) : (
