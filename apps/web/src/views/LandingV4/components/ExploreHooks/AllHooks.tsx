@@ -1,19 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  AllBlogIcon,
-  Box,
-  Flex,
-  FlexGap,
-  OptionProps,
-  Select,
-  StarFillIcon,
-  Tag,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { AllBlogIcon, Box, Flex, FlexGap, StarFillIcon, Tag, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { HookCard } from 'views/LandingV4/components/ExploreHooks/HookCard'
 import { GradientBox } from 'views/LandingV4/components/GradientBox'
+import MultiSelector from 'views/LandingV4/components/MultiSelector'
 import { ViewMoreButton } from 'views/LandingV4/components/ViewMoreButton'
 import { HooksConfig } from 'views/LandingV4/config'
 import { useSelectorConfig } from 'views/LandingV4/config/filterOptions'
@@ -52,27 +43,37 @@ const AllHooksContainer = styled(FlexGap)`
   }
 `
 
-const SelectStyled = styled(Select)<{ $pickedByOption: boolean }>`
+const MultiSelectorStyled = styled(MultiSelector)<{ $hasOptionsPicked: boolean }>`
+  height: 36px !important;
   min-width: 150px;
-  max-width: 170px;
-  height: 36px;
+  max-width: 180px;
 
   > div {
     height: 36px;
-    background-color: ${({ theme }) => theme.colors.backgroundAlt};
-  }
-
-  > div:first-child {
-    background-color: ${({ theme, $pickedByOption }) =>
-      $pickedByOption ? theme.colors.primary : theme.colors.backgroundAlt};
+    background-color: ${({ theme, $hasOptionsPicked }) =>
+      $hasOptionsPicked ? theme.colors.primary : theme.colors.backgroundAlt};
+    border-color: ${({ theme, $hasOptionsPicked }) =>
+      $hasOptionsPicked ? 'transparent' : theme.colors.cardBorder} !important;
 
     > div {
-      color: ${({ theme, $pickedByOption }) => ($pickedByOption ? theme.colors.white : theme.colors.text)};
+      color: ${({ theme, $hasOptionsPicked }) => ($hasOptionsPicked ? theme.colors.white : theme.colors.text)};
+    }
+  }
+
+  > div:nth-child(2) {
+    border-color: ${({ theme }) => theme.colors.cardBorder};
+    background-color: ${({ theme }) => theme.colors.backgroundAlt};
+
+    input {
+      &:checked {
+        border: 0;
+        background-color: ${({ theme }) => theme.colors.primary};
+      }
     }
   }
 
   svg {
-    fill: ${({ theme, $pickedByOption }) => ($pickedByOption ? theme.colors.white : theme.colors.text)};
+    fill: ${({ theme, $hasOptionsPicked }) => ($hasOptionsPicked ? theme.colors.white : theme.colors.text)};
   }
 `
 
@@ -92,20 +93,20 @@ const TagStyled = styled(Tag)<{ $picked: boolean; $hideIconMobileMargin?: boolea
     height: 20px;
     fill: ${({ theme, $picked }) => ($picked ? 'white' : theme.colors.text)};
 
-    ${({ $hideIconMobileMargin }) => $hideIconMobileMargin && 'margin-left: 0;'};
+    ${({ $hideIconMobileMargin }) => $hideIconMobileMargin && 'margin-right: 0;'};
   }
 `
 
 export const AllHooks = () => {
   const { t } = useTranslation()
-  const { isDesktop, isMobile } = useMatchBreakpoints()
-  const [pickedOption, setPickedOption] = useState(TagValue.ALL)
-  const [pickedByOption, setPickedByOption] = useState(false)
+  const { isXxl, isXl, isMobile } = useMatchBreakpoints()
+  const [pickedOption, setPickedOption] = useState<TagValue.FEATURED | TagValue.ALL>(TagValue.ALL)
+  const [pickMultiSelect, setPickMultiSelect] = useState<Array<number>>([])
 
   const [isClickedMoreButton, setIsClickedMoreButton] = useState(false)
   const selectorConfig = useSelectorConfig()
 
-  const showTagAmountNumber = useMemo(() => (isDesktop ? 4 : 0), [isDesktop])
+  const showTagAmountNumber = useMemo(() => (isXxl ? 3 : isXl ? 2 : 0), [isXxl, isXl])
 
   const outsideTags = useMemo(() => {
     const spliceData = selectorConfig?.slice(0, showTagAmountNumber)
@@ -113,52 +114,44 @@ export const AllHooks = () => {
   }, [selectorConfig, showTagAmountNumber])
 
   const options = useMemo(() => {
-    let sliceNumber = pickedByOption ? 1 : showTagAmountNumber
-    if (isDesktop) {
-      sliceNumber = pickedByOption ? showTagAmountNumber : showTagAmountNumber - 1
-    }
-
-    const spliceData = selectorConfig?.slice(sliceNumber, selectorConfig.length)
+    const spliceData = selectorConfig?.slice(showTagAmountNumber, selectorConfig.length)
     return spliceData
-  }, [isDesktop, pickedByOption, selectorConfig, showTagAmountNumber])
+  }, [showTagAmountNumber, selectorConfig])
 
   const customPlaceHolderText = useMemo(() => {
-    const index = options.findIndex((option) => Number(option?.value as TagValue) === pickedOption)
-    const total = pickedByOption ? options.length : options.length - 1
-
-    if (pickedByOption && index >= 0) {
-      return options[index]?.label
-    }
-
-    if (isDesktop) {
-      return `+${t('%total% categories', { total })}`
-    }
-
-    if (isMobile && index < 0) {
+    if (isMobile && pickMultiSelect.length === 0) {
       return t('More')
     }
 
-    return t('%total% categories', { total })
-  }, [options, isDesktop, pickedByOption, isMobile, t, pickedOption])
+    return t('+%total% categories', { total: options.length })
+  }, [isMobile, options.length, pickMultiSelect.length, t])
 
-  const onClickTag = (value: TagValue, byOption: boolean) => {
-    setPickedOption(value)
-    setPickedByOption(byOption)
+  const onClickTag = (id: number) => {
+    const hasPickedData = pickMultiSelect.includes(id)
+    if (hasPickedData) {
+      const newData = pickMultiSelect.filter((i) => i !== id)
+      setPickMultiSelect(newData)
+    } else {
+      const newData = [...pickMultiSelect, id]
+      setPickMultiSelect(newData)
+    }
   }
-
-  const tokenSelectedIndex = useMemo(() => {
-    const index = options.findIndex((option) => option.value === pickedOption)
-    return index >= 0 ? index + 1 : 0
-  }, [options, pickedOption])
 
   // data
   const allData = useMemo((): HooksType[] => {
-    if (pickedOption === TagValue.FEATURED || pickedOption === TagValue.ALL) {
-      return HooksConfig
-    }
+    // const pickedOptionData = pickedOption === TagValue.ALL ? HooksConfig : HooksConfig.filter((i) => i.featured) // TODO: In future we need add "featured" in config file.
+    const pickedOptionData = HooksConfig
 
-    return HooksConfig.filter((i) => i.tagsValue.includes(pickedOption))
-  }, [pickedOption])
+    const pickedTagData = pickedOptionData.filter((i) => {
+      const hasTag = i.tagsValue.filter((j) => pickMultiSelect.includes(j))
+      if (hasTag.length > 0) {
+        return i
+      }
+      return null
+    })
+
+    return pickMultiSelect.length > 0 ? pickedTagData : pickedOptionData
+  }, [pickMultiSelect])
 
   const filterData = useMemo(
     () => (isClickedMoreButton ? allData : allData.slice(0, MIN_DISPLAY)),
@@ -168,11 +161,20 @@ export const AllHooks = () => {
   // Calculate need how many gradient box
   const totalGradientBox = useTotalGradientBox({ isClickedMoreButton, dataLength: filterData.length })
 
+  const hasOptionsPicked = useMemo(() => {
+    if (pickMultiSelect.length > 0) {
+      const hasIndex = options.filter((i) => pickMultiSelect.includes(i.id))
+      return hasIndex.length > 0
+    }
+
+    return false
+  }, [options, pickMultiSelect])
+
   return (
     <Box>
       <Flex flexDirection={['column', 'row']}>
         <Flex>
-          <Box onClick={() => onClickTag(TagValue.FEATURED, false)}>
+          <Box onClick={() => setPickedOption(TagValue.FEATURED)}>
             <TagStyled
               $picked={pickedOption === TagValue.FEATURED}
               startIcon={<StarFillIcon style={{ width: '18px' }} width={18} height={18} />}
@@ -180,7 +182,7 @@ export const AllHooks = () => {
               {t('Featured')}
             </TagStyled>
           </Box>
-          <Box ml="8px" onClick={() => onClickTag(TagValue.ALL, false)}>
+          <Box ml="8px" onClick={() => setPickedOption(TagValue.ALL)}>
             <TagStyled
               $picked={pickedOption === TagValue.ALL}
               $hideIconMobileMargin={isMobile}
@@ -195,21 +197,20 @@ export const AllHooks = () => {
             {outsideTags?.map((tag) => {
               const icon = selectorConfig.find((i) => i.value === tag.value)?.icon ?? null
               return (
-                <Box key={tag.value} mr="8px" onClick={() => onClickTag(tag.value, false)}>
-                  <TagStyled $picked={tag.value === pickedOption} startIcon={icon}>
+                <Box key={tag.value} mr="8px" onClick={() => onClickTag(tag.value)}>
+                  <TagStyled $picked={pickMultiSelect.includes(tag.id)} startIcon={icon}>
                     {tag.label}
                   </TagStyled>
                 </Box>
               )
             })}
           </Flex>
-          <SelectStyled
+          <MultiSelectorStyled
             options={options}
-            key={tokenSelectedIndex}
-            defaultOptionIndex={tokenSelectedIndex}
-            customPlaceHolderText={customPlaceHolderText}
-            $pickedByOption={pickedByOption}
-            onOptionChange={(option: OptionProps) => onClickTag(option.value, true)}
+            placeHolderText={customPlaceHolderText}
+            $hasOptionsPicked={hasOptionsPicked}
+            pickMultiSelect={pickMultiSelect}
+            onOptionChange={setPickMultiSelect}
           />
         </Flex>
       </Flex>
