@@ -18,15 +18,11 @@ function filterHookFactory(filterName: string) {
 
     const setFilter = useCallback(
       (value?: string) => {
+        const trimmedValue = value?.trim()
         router.push(
-          updateQuery(
-            router.asPath,
-            value
-              ? {
-                  [filterName]: encodeURIComponent(value.trim()),
-                }
-              : {},
-          ),
+          updateQuery(router.asPath, {
+            [filterName]: trimmedValue && encodeURIComponent(trimmedValue),
+          }),
           '',
           { scroll: false },
         )
