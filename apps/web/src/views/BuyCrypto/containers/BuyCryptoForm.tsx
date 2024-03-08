@@ -9,7 +9,6 @@ import { Field } from 'state/swap/actions'
 import { useTheme } from 'styled-components'
 import { v4 } from 'uuid'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
-import { useChainId } from 'wagmi'
 import { BuyCryptoSelector } from '../components/OnRampCurrencySelect'
 import { OnRampFlipButton } from '../components/OnRampFlipButton/OnRampFlipButton'
 import { PopOverScreenContainer } from '../components/PopOverScreen/PopOverScreen'
@@ -60,7 +59,6 @@ export function BuyCryptoForm() {
   } = useBuyCryptoState()
 
   const theme = useTheme()
-  const chainId = useChainId()
   const { t } = useTranslation()
 
   const [searchQuery, setSearchQuery] = useState<string>('')
