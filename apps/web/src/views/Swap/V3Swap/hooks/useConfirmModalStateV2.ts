@@ -10,11 +10,9 @@ import { usePermit2 } from 'hooks/usePermit2'
 import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { wait } from 'state/multicall/retry'
 import { publicClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
 import { Address, Hex } from 'viem'
-import { mainnet } from 'wagmi'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
 import { useSwapCallbackV2 } from './useSwapCallbackV2'
@@ -86,9 +84,7 @@ const useConfirmActions = (
         const result = await revoke()
         if (result?.hash && chainId) {
           setTxHash(result.hash)
-          if (chainId === mainnet.id) {
-            await wait(1200)
-          }
+
           await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
         }
 
@@ -161,13 +157,7 @@ const useConfirmActions = (
           const result = await approve()
           if (result?.hash && chainId) {
             setTxHash(result.hash)
-            await publicClient({ chainId }).waitForTransactionReceipt({
-              hash: result.hash,
-              // confirmations: chainId === mainnet.id ? 2 : 1,
-            })
-            if (chainId === mainnet.id) {
-              await wait(1200)
-            }
+            await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
           }
           let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
           // check if user really approved the amount trade needs
@@ -245,13 +235,7 @@ const useConfirmActions = (
           if (result?.hash) {
             setTxHash(result.hash)
 
-            await publicClient({ chainId }).waitForTransactionReceipt({
-              hash: result.hash,
-              // confirmations: chainId === mainnet.id ? 2 : 1,
-            })
-            if (chainId === mainnet.id) {
-              await wait(1200)
-            }
+            await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
           }
           setConfirmState(ConfirmModalState.COMPLETED)
         } catch (error: any) {
