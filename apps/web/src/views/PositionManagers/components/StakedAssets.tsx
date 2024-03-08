@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import type { AtomBoxProps } from '@pancakeswap/uikit'
 import { AddIcon, Button, Flex, MinusIcon, Row, RowBetween, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
@@ -27,7 +27,6 @@ interface StakedAssetsProps {
   token1PriceUSD?: number
   isSingleDepositToken?: boolean
   isSingleDepositToken0?: boolean
-  price?: Price<Currency, Currency>
   onAdd?: () => void
   onRemove?: () => void
 }

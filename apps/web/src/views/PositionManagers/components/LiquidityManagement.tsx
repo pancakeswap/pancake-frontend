@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BaseAssets, MANAGER } from '@pancakeswap/position-managers'
-import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 
 import { AtomBox, Button, Flex, RowBetween } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -42,7 +42,7 @@ export const Title = styled.div`
   text-transform: uppercase;
 `
 
-interface Props {
+export interface LiquidityManagementProps {
   id: string | number
   manager: {
     id: MANAGER
@@ -55,7 +55,6 @@ interface Props {
   staked1Amount?: CurrencyAmount<Currency>
   vaultName: string
   feeTier: FeeAmount
-  price?: Price<Currency, Currency>
   ratio: number
   isSingleDepositToken: boolean
   allowDepositToken0: boolean
@@ -103,7 +102,6 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   earningToken,
   vaultName,
   feeTier,
-  price,
   ratio,
   isSingleDepositToken,
   allowDepositToken0,
@@ -136,7 +134,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   minDepositUSD,
   boosterMultiplier,
   isBooster,
-}: Props) {
+}: LiquidityManagementProps) {
   const { colors } = useTheme()
   const { t } = useTranslation()
   const [addLiquidityModalOpen, setAddLiquidityModalOpen] = useState(false)
@@ -171,7 +169,6 @@ export const LiquidityManagement = memo(function LiquidityManagement({
               currencyB={currencyB}
               staked0Amount={staked0Amount}
               staked1Amount={staked1Amount}
-              price={price}
               onAdd={showAddLiquidityModal}
               onRemove={showRemoveLiquidityModal}
               token0PriceUSD={token0PriceUSD}

@@ -1,12 +1,12 @@
-import { styled } from 'styled-components'
-import { Address } from 'viem'
-import { SpaceProps } from 'styled-system'
-import { PropsWithChildren, memo, useMemo } from 'react'
-import { FlexProps, Flex, ScanLink } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/chains'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
 import { MANAGER } from '@pancakeswap/position-managers'
+import { Flex, FlexProps, ScanLink } from '@pancakeswap/uikit'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { PropsWithChildren, memo, useMemo } from 'react'
+import { styled } from 'styled-components'
+import { SpaceProps } from 'styled-system'
+import { Address } from 'viem'
 
 import { getBlockExploreLink } from 'utils'
 
@@ -22,7 +22,7 @@ const LinkContainer = styled(Flex)`
   }
 `
 
-interface Props extends SpaceProps, FlexProps {
+export interface VaultLinksProps extends SpaceProps, FlexProps {
   layout?: 'row' | 'column'
   vaultAddress: Address
   managerInfoUrl: string
@@ -47,7 +47,7 @@ export const VaultLinks = memo(function VaultLinks({
   // manager,
   children,
   ...props
-}: PropsWithChildren<Props>) {
+}: PropsWithChildren<VaultLinksProps>) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
 

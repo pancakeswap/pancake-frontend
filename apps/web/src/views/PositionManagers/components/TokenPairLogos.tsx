@@ -1,6 +1,6 @@
-import { memo } from 'react'
 import { Currency } from '@pancakeswap/sdk'
 import { AutoRenewIcon, Box } from '@pancakeswap/uikit'
+import { memo } from 'react'
 import { styled } from 'styled-components'
 
 import { TokenPairImage } from 'components/TokenImage'
@@ -35,17 +35,25 @@ interface Props {
   currencyA: Currency
   currencyB: Currency
   autoMark?: boolean
+  width?: number
+  height?: number
 }
 
-export const TokenPairLogos = memo(function TokenPairLogos({ currencyA, currencyB, autoMark }: Props) {
+export const TokenPairLogos = memo(function TokenPairLogos({
+  currencyA,
+  currencyB,
+  autoMark,
+  width = 64,
+  height = 64,
+}: Props) {
   return (
     <Container>
       <TokenPairComp
         variant="inverted"
         primaryToken={currencyA.wrapped}
         secondaryToken={currencyB.wrapped}
-        width={64}
-        height={64}
+        width={width}
+        height={height}
       />
       {autoMark && <AutoMark />}
     </Container>
