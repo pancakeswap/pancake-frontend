@@ -1,5 +1,5 @@
-import { ArrowDropDownIcon, Box, Checkbox, Text } from '@pancakeswap/uikit'
-import { useCallback, useEffect, useState } from 'react'
+import { ArrowDropDownIcon, Box, Checkbox, OptionProps, Text } from '@pancakeswap/uikit'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { css, styled } from 'styled-components'
 
 const DropDownHeader = styled.div`
@@ -88,22 +88,25 @@ const ListItem = styled.li`
   }
 `
 
-export interface MultiSelectorProps {
-  placeHolderText?: string
+export interface MultiSelectorOptionsProps extends OptionProps {
+  id: number
 }
 
-const options = [
-  { id: 0, label: 'Category 1', value: 0 },
-  { id: 1, label: 'Category 2', value: 1 },
-  { id: 2, label: 'Category 3', value: 2 },
-]
+export interface MultiSelectorProps {
+  pickMultiSelect: Array<number>
+  placeHolderText?: string
+  onOptionChange: (data: Array<number>) => void
+  options: MultiSelectorOptionsProps[]
+}
 
 const MultiSelector: React.FunctionComponent<React.PropsWithChildren<MultiSelectorProps>> = ({
+  options,
+  pickMultiSelect,
+  onOptionChange,
   placeHolderText,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [pickMultiSelect, setPickMultiSelect] = useState<Array<number>>([])
 
   useEffect(() => {
     const handleClickOutside = () => setIsOpen(false)
@@ -126,23 +129,40 @@ const MultiSelector: React.FunctionComponent<React.PropsWithChildren<MultiSelect
     const hasPickedData = isCheckboxValid(id)
     if (hasPickedData) {
       const newData = pickMultiSelect.filter((i) => i !== id)
-      setPickMultiSelect(newData)
+      onOptionChange(newData)
     } else {
       const newData = [...pickMultiSelect, id]
-      setPickMultiSelect(newData)
+      onOptionChange(newData)
     }
   }
 
+  const hasOptionsPicked = useMemo(() => {
+    if (pickMultiSelect.length > 0) {
+      const hasIndex = options.filter((i) => pickMultiSelect.includes(i.id))
+      return hasIndex.length > 0
+    }
+    return false
+  }, [options, pickMultiSelect])
+
+  const headerTextDisplay = useMemo(() => {
+    const textDisplay = pickMultiSelect
+      .map((i) => options.find((j) => j.id === i)?.label)
+      .filter((i) => Boolean(i))
+      .join(', ')
+
+    return textDisplay
+  }, [options, pickMultiSelect])
+
   return (
-    <DropDownContainer maxWidth="188px" isOpen={isOpen}>
-      <DropDownHeader onClick={toggling} {...props}>
-        {pickMultiSelect.length === 0 && placeHolderText ? (
+    <DropDownContainer isOpen={isOpen} {...props}>
+      <DropDownHeader onClick={toggling}>
+        {!hasOptionsPicked && placeHolderText ? (
           <Text ellipsis color="text" pr="20px">
             {placeHolderText}
           </Text>
         ) : (
           <Text ellipsis color="text" pr="20px">
-            {pickMultiSelect.length > 0 ? pickMultiSelect.map((i) => options[i].label).join(', ') : ''}
+            {headerTextDisplay}
           </Text>
         )}
         <ArrowDropDownIcon color="text" onClick={toggling} />

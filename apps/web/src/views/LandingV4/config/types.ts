@@ -14,7 +14,6 @@ export enum TagType {
 }
 
 export enum TagValue {
-  MORE = -1,
   FEATURED = 0,
   ALL = 1,
   MISCELLANEOUS = 2,
@@ -33,4 +32,5 @@ export interface HooksType {
   githubLink: string
   tags: TagType[]
   tagsValue: TagValue[]
+  featured?: boolean
 }
