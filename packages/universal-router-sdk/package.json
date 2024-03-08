@@ -36,6 +36,7 @@
     "lint": "eslint '{src,test}/**/*.{js,jsx,ts,json}'"
   },
   "devDependencies": {
+    "@pancakeswap/stable-swap": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@types/node": "^15.12.2",
     "tslib": "^2.3.0",
