@@ -430,6 +430,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
               staked1Amount={staked1Amount}
               pendingReward={info?.pendingReward}
               aprDataInfo={aprDataInfo}
+              rewardPerSecond={info.rewardPerSecond}
               rewardEndTime={info.endTimestamp}
               rewardStartTime={info.startTimestamp}
               refetch={info?.refetchPositionInfo}
