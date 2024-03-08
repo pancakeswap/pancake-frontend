@@ -31,7 +31,7 @@ const StyledArticleContainer = styled(Box)`
     margin: 80px auto;
   }
 
-  @media screen and (min-width: 1440px) {
+  ${({ theme }) => theme.mediaQueries.xl || theme.mediaQueries.xxl} {
     width: 1160px;
   }
 `
