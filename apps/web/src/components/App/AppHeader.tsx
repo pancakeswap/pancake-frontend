@@ -1,17 +1,17 @@
-import { styled, css } from 'styled-components'
 import {
-  Text,
+  ArrowBackIcon,
+  AutoRow,
   Flex,
   Heading,
   IconButton,
-  ArrowBackIcon,
   NotificationDot,
   QuestionHelper,
-  AutoRow,
+  Text,
 } from '@pancakeswap/uikit'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import Link from 'next/link'
+import { css, styled } from 'styled-components'
 import { SettingsMode } from '../Menu/GlobalSettings/types'
 
 interface Props {
@@ -78,7 +78,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
           ))}
         <Flex pr={backTo && shouldCenter ? '48px' : ''} flexDirection="column" width="100%" marginTop="4px">
           <Flex mb="8px" alignItems="center" flexWrap="wrap" justifyContent="space-between" style={{ gap: '16px' }}>
-            <Flex flex={1} justifyContent={shouldCenter ? 'center' : ''}>
+            <Flex flex={1} alignItems="center" justifyContent={shouldCenter ? 'center' : ''}>
               {typeof title === 'string' ? <Heading as="h2">{title}</Heading> : title}
               {helper && <QuestionHelper text={helper} ml="4px" placement="top" />}
             </Flex>

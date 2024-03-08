@@ -21,17 +21,6 @@ export enum ChainId {
   SEPOLIA = 11155111,
 }
 
-export const mainnetChainIds = [
-  ChainId.ETHEREUM,
-  ChainId.BSC,
-  ChainId.ZKSYNC,
-  ChainId.OPBNB,
-  ChainId.POLYGON_ZKEVM,
-  ChainId.ARBITRUM_ONE,
-  ChainId.LINEA,
-  ChainId.BASE,
-]
-
 export const testnetChainIds = [
   ChainId.GOERLI,
   ChainId.BSC_TESTNET,

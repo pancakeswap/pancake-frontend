@@ -6,8 +6,8 @@ import { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { useAllowBtcPurchases } from 'state/buyCrypto/hooks'
 import { styled } from 'styled-components'
-import { BtcLogo, EvmLogo } from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
-import { NATIVE_BTC, fiatCurrencyMap } from 'views/BuyCrypto/constants'
+import { OnRampCurrencyLogo } from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
+import { isNativeBtc } from 'views/BuyCrypto/constants'
 import { RowBetween, RowFixed } from '../Layout/Row'
 
 function currencyKey(currency: Currency): string {
@@ -21,43 +21,38 @@ const MenuItem = styled(RowBetween)<{ disabled: boolean; selected: boolean }>`
   grid-template-columns: auto minmax(auto, 1fr) minmax(0, 72px);
   grid-gap: 8px;
   cursor: ${({ disabled }) => !disabled && 'pointer'};
-  pointer-events: ${({ disabled }) => disabled && 'none'};
+  z-index: ${({ disabled }) => (disabled ? 10 : 0)};
   &:hover {
     background-color: ${({ theme, disabled }) => !disabled && theme.colors.background};
   }
+  position: relative;
   opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
 `
 
 const NativeBTCToggle = ({
-  isBtcNative,
   allowBuyBtc,
   setAllowBuyBtc,
 }: {
-  isBtcNative: boolean
   allowBuyBtc: boolean
   setAllowBuyBtc: (v: any) => void
 }) => {
   const { t } = useTranslation()
   return (
-    <Flex justifyContent="flex-end" width="100%" marginTop="15px" paddingRight="20px">
-      {isBtcNative && (
-        <>
-          <QuestionHelper
-            text={t(
-              'Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.',
-            )}
-            placement="top"
-            size="16px"
-            mr="8px"
-          />
-          <Toggle
-            id="toggle-allow-btc-button"
-            scale="sm"
-            checked={allowBuyBtc}
-            onChange={() => setAllowBuyBtc((v) => !v)}
-          />
-        </>
-      )}
+    <Flex left="82%" top="5%" position="absolute" zIndex={999}>
+      <QuestionHelper
+        text={t(
+          'Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.',
+        )}
+        placement="top"
+        size="16px"
+        mr="8px"
+      />
+      <Toggle
+        id="toggle-allow-btc-button"
+        scale="sm"
+        checked={allowBuyBtc}
+        onChange={() => setAllowBuyBtc((v) => !v)}
+      />
     </Flex>
   )
 }
@@ -69,6 +64,8 @@ function OnRampCurrencyRow({
   otherSelected,
   style,
   mode,
+  allowBuyBtc,
+  setAllowBuyBtc,
 }: {
   currency: Currency
   onSelect: () => void
@@ -76,26 +73,28 @@ function OnRampCurrencyRow({
   otherSelected: boolean
   style: CSSProperties
   mode: string
+  allowBuyBtc: boolean
+  setAllowBuyBtc: (v: any) => void
 }) {
-  const [allowBuyBtc, setAllowBuyBtc] = useAllowBtcPurchases()
   const { t } = useTranslation()
 
   const key = currencyKey(currency)
-  const isBtcNative = currency.chainId === NATIVE_BTC.chainId
+  const isBtcNative = isNativeBtc(currency)
   const btcNetworkDisplayName = t('Bitcoin Network')
   const isFiat = Boolean(mode === 'onramp-fiat')
 
   return (
     <>
-      <NativeBTCToggle isBtcNative={isBtcNative} allowBuyBtc={allowBuyBtc} setAllowBuyBtc={setAllowBuyBtc} />
+      {isBtcNative && <NativeBTCToggle allowBuyBtc={allowBuyBtc} setAllowBuyBtc={setAllowBuyBtc} />}
+
       <MenuItem
         style={style}
         className={`token-item-${key}`}
         onClick={() => (isSelected ? null : onSelect())}
-        disabled={!allowBuyBtc && isBtcNative ? true : isSelected}
+        disabled={isSelected || (isBtcNative && !allowBuyBtc)}
         selected={otherSelected}
       >
-        {isBtcNative ? <BtcLogo /> : <EvmLogo mode={mode} currency={currency as Token} size={28} />}
+        <OnRampCurrencyLogo mode={mode} currency={currency as Token} size={28} />
         <Column>
           <Text bold>{currency?.symbol}</Text>
           <Text color="textSubtle" small ellipsis maxWidth="200px">
@@ -103,8 +102,16 @@ function OnRampCurrencyRow({
           </Text>
         </Column>
 
-        <RowFixed style={{ justifySelf: 'flex-end' }}>{!isBtcNative && <ArrowForwardIcon />}</RowFixed>
+        <RowFixed style={{ justifySelf: 'flex-end' }} zIndex={999}>
+          {!isBtcNative ? (
+            <ArrowForwardIcon />
+          ) : (
+            // <NativeBTCToggle allowBuyBtc={allowBuyBtc} setAllowBuyBtc={setAllowBuyBtc} />
+            <></>
+          )}
+        </RowFixed>
       </MenuItem>
+      {/* <NativeBTCToggle allowBuyBtc={allowBuyBtc} setAllowBuyBtc={setAllowBuyBtc} /> */}
     </>
   )
 }
@@ -126,18 +133,17 @@ export default function OnRampCurrencyList({
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   mode: string
 }) {
+  const [allowBuyBtc, setAllowBuyBtc] = useAllowBtcPurchases()
+
   const itemData = useMemo(() => [...currencies], [currencies])
   const Row = useCallback(
     ({ data, index, style }) => {
       const currency: Currency = data[index]
-      const isFiat = Boolean(Object.keys(fiatCurrencyMap).includes(currency?.symbol))
 
       let isSelected = false
       let otherSelected = false
-      if ((selectedCurrency?.chainId as any) === 'bitcoin' || (otherCurrency?.chainId as any) === 'bitcoin') {
-        isSelected = Boolean(selectedCurrency && currency && selectedCurrency.chainId === currency.chainId)
-        otherSelected = Boolean(otherCurrency && currency && otherCurrency.chainId === currency.chainId)
-      } else if (!isFiat && mode !== 'onramp-output') {
+
+      if (mode !== 'onramp-fiat') {
         isSelected = Boolean(selectedCurrency && currency && selectedCurrency.equals(currency))
         otherSelected = Boolean(otherCurrency && currency && otherCurrency.equals(currency))
       } else {
@@ -153,22 +159,23 @@ export default function OnRampCurrencyList({
           onSelect={handleSelect}
           otherSelected={otherSelected}
           mode={mode}
+          allowBuyBtc={allowBuyBtc}
+          setAllowBuyBtc={setAllowBuyBtc}
         />
       )
     },
-    [selectedCurrency, otherCurrency, onCurrencySelect, mode],
+    [selectedCurrency, otherCurrency, onCurrencySelect, mode, allowBuyBtc, setAllowBuyBtc],
   )
 
   const itemKey = useCallback((index: number, data: any) => `${currencyKey(data[index])}-${index}`, [])
 
-  const finalList = mode === 'onramp-crypto' ? [NATIVE_BTC, ...itemData] : itemData
   return (
     <FixedSizeList
       height={height}
       ref={fixedListRef as any}
       width="100%"
-      itemData={finalList}
-      itemCount={finalList.length}
+      itemData={itemData}
+      itemCount={itemData.length}
       itemSize={56}
       itemKey={itemKey}
     >

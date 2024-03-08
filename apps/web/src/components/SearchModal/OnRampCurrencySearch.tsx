@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-import { ChainId, ChainNamesExtended } from '@pancakeswap/chains'
+import { ChainNamesExtended } from '@pancakeswap/chains'
 import { useDebounce, useSortedTokensByQuery } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Token } from '@pancakeswap/sdk'
@@ -11,6 +11,7 @@ import { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useS
 import { FixedSizeList } from 'react-window'
 import { safeGetAddress } from 'utils'
 import { isAddress } from 'viem'
+import { OnRampChainId as ChainId } from 'views/BuyCrypto/constants'
 import Row from '../Layout/Row'
 import OnRampCurrencyList from './OnRampCurrencyList'
 import { getSwapSound } from './swapSound'

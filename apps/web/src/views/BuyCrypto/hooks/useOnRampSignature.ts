@@ -1,11 +1,10 @@
-import { ChainId } from '@pancakeswap/sdk'
 import type { UseQueryResult } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import qs from 'qs'
 import { useAccount } from 'wagmi'
-import { combinedNetworkIdMap, ONRAMP_PROVIDERS } from '../constants'
-import { createQueryKey, Evaluate, ExactPartial, OnRampProviderQuote, UseQueryParameters } from '../types'
+import { ONRAMP_PROVIDERS, OnRampChainId, combinedNetworkIdMap, getIsNetworkEnabled } from '../constants'
+import { Evaluate, ExactPartial, OnRampProviderQuote, UseQueryParameters, createQueryKey } from '../types'
 
 export const getOnRampSignatureQueryKey = createQueryKey<
   'fetch-provider-signature',
@@ -19,7 +18,7 @@ export type GetOnRampSignatureReturnType = { signature: string }
 export type GetOnRampSignaturePayload = {
   quote: OnRampProviderQuote
   walletAddress: string
-  chainId: ChainId | 0
+  chainId: OnRampChainId
   externalTransactionId: string
   redirectUrl: string
 }
@@ -48,17 +47,17 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
         externalTransactionId,
       },
     ]),
-    enabled: Boolean(externalTransactionId && quote && walletAddress && chainId),
+    enabled: Boolean(externalTransactionId && quote && walletAddress && getIsNetworkEnabled(chainId)),
     queryFn: async ({ queryKey }) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
       const { quote, externalTransactionId, chainId, ...rest } = queryKey[1]
 
-      if (!quote || !walletAddress || !chainId || !externalTransactionId) {
+      if (!quote || !walletAddress || !externalTransactionId || !chainId?.toString()) {
         throw new Error('Invalid parameters')
       }
 
       const { provider, cryptoCurrency, fiatCurrency, amount } = quote
-      const network = (chainId as any) === 0 ? 0 : combinedNetworkIdMap[ONRAMP_PROVIDERS[provider]][chainId]
+      const network = combinedNetworkIdMap[ONRAMP_PROVIDERS[provider]][chainId]
       const moonpayCryptoCurrency = `${cryptoCurrency.toLowerCase()}${network}`
 
       const response = await fetch(

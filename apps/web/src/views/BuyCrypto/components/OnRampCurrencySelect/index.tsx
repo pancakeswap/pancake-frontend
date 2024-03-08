@@ -4,9 +4,9 @@ import { ArrowDropDownIcon, Box, BoxProps, Flex, Skeleton, Text, useModal } from
 import { NumericalInput } from '@pancakeswap/widgets-internal'
 import OnRampCurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/OnRampCurrencyModal'
 import { ReactNode } from 'react'
-import { NATIVE_BTC, fiatCurrencyMap, getNetworkDisplay, onRampCurrencies } from 'views/BuyCrypto/constants'
+import { fiatCurrencyMap, getNetworkDisplay, onRampCurrencies } from 'views/BuyCrypto/constants'
 import { DropDownContainer, OptionSelectButton } from 'views/BuyCrypto/styles'
-import { BtcLogo, EvmLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
+import { OnRampCurrencyLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
 
 interface BuyCryptoSelectorProps extends Omit<CurrencySearchModalProps, 'mode'>, BoxProps {
   id: 'onramp-fiat' | 'onramp-crypto'
@@ -32,10 +32,9 @@ const ButtonAsset = ({
   currencyLoading: boolean
 }) => {
   const { t } = useTranslation()
-  const isBtcNative = selectedCurrency.chainId === NATIVE_BTC.chainId
   return (
     <Flex>
-      {isBtcNative ? <BtcLogo /> : <EvmLogo mode={id} currency={selectedCurrency as Token} size={26} />}
+      <OnRampCurrencyLogo mode={id} currency={selectedCurrency as Token} size={28} />
       {currencyLoading ? null : (
         <Text id="pair" bold marginLeft="8px">
           {(selectedCurrency && selectedCurrency.symbol && selectedCurrency.symbol.length > 10
@@ -79,12 +78,8 @@ export const BuyCryptoSelector = ({
   bottomElement,
   ...props
 }: BuyCryptoSelectorProps) => {
-  const { t } = useTranslation()
   const tokensToShow = id === 'onramp-fiat' ? Object.values(fiatCurrencyMap) : onRampCurrencies
-  const isBtcNative = selectedCurrency && selectedCurrency.chainId === NATIVE_BTC.chainId
-  const btcNetworkDisplayName = t('Bitcoin Network')
-
-  const networkDisplay = isBtcNative ? btcNetworkDisplayName : getNetworkDisplay(selectedCurrency?.chainId)
+  const networkDisplay = getNetworkDisplay(selectedCurrency?.chainId)
 
   const [onPresentCurrencyModal] = useModal(
     <OnRampCurrencySearchModal

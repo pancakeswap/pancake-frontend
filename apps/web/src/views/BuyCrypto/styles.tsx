@@ -25,16 +25,11 @@ export const StyledNotificationWrapper = styled.div<{ show: boolean }>`
   display: flex;
   position: relative;
   overflow: hidden;
-  padding: ${({ show }) => (show ? '16px 16px' : '0px 16px')};
+  padding: 0px 8px;
 
-  box-shadow: ${({ theme }) => theme.shadows.inset};
-  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-  border-radius: 16px;
-  background-color: ${({ theme, show }) => (show ? theme.colors.input : 'transparent')};
   width: 100%;
 
   transition: background-color 0.6s ease, padding 0.3s ease-in-out;
-  border-bottom: 1.2px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
 export const Description = styled.div<{ show: boolean; elementHeight: number }>`
@@ -56,10 +51,10 @@ export const FilterdNetworkWrapper = styled(Flex)<{ showPopOver: boolean }>`
   background: white;
   display: flex;
   flex-direction: column;
-  height: 440px;
+  height: max-content;
   z-index: 1000;
   transition: bottom 0.3s ease-in-out;
-  bottom: ${({ showPopOver }) => (!showPopOver ? '-100%' : '-15%')};
+  bottom: ${({ showPopOver }) => (!showPopOver ? '-100%' : '0%')};
   border-top-right-radius: 24px;
   border-top-left-radius: 24px;
   box-shadow: 6px 20px 12px 8px rgba(74, 74, 104, 0.1);

@@ -1,5 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
-import { Currency } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom, useAtomValue } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
@@ -8,6 +6,7 @@ import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
 import { BuyCryptoState, buyCryptoReducerAtom } from 'state/buyCrypto/reducer'
+import { OnRampChainId as ChainId, OnRampCurrency as Currency } from 'views/BuyCrypto/constants'
 import { useAccount } from 'wagmi'
 import { Field, replaceBuyCryptoState, selectCurrency, typeInput } from './actions'
 
@@ -51,7 +50,7 @@ export function useBuyCryptoActionHandlers(): {
     dispatch(
       selectCurrency({
         field,
-        currencyId: field === Field.OUTPUT ? currency.symbol : `${currency.symbol}-${currency.chainId}`,
+        currencyId: field === Field.OUTPUT ? currency.symbol : `${currency.symbol}_${currency.chainId}`,
       }),
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,7 +73,7 @@ export async function queryParametersToBuyCryptoState(
       currencyId: DEFAULT_FIAT_CURRENCY,
     },
     [Field.OUTPUT]: {
-      currencyId: 'BNB-56',
+      currencyId: 'BNB_56',
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     // UPDATE

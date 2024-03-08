@@ -162,7 +162,7 @@ export const ProviderSelector = ({
           </Flex>
         </OptionSelectButton>
       </DropDownContainer>
-      <Flex justifyContent="space-between" pt="6px" width="100%" alignItems="center">
+      <Flex justifyContent="space-between" width="100%" alignItems="center">
         {bottomElement}
       </Flex>
     </Box>

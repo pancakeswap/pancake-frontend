@@ -6,7 +6,7 @@ import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { getImageUrlFromToken } from 'components/TokenImage'
 import Image from 'next/image'
 import { HtmlHTMLAttributes } from 'react'
-import { ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
+import { ONRAMP_PROVIDERS, isNativeBtc } from 'views/BuyCrypto/constants'
 
 const PROVIDER_ICONS = {
   [ONRAMP_PROVIDERS.MoonPay]: require('/public/images/on-ramp-providers/moonpay.svg'),
@@ -54,5 +54,10 @@ export const EvmLogo = ({ mode, currency, size = 24 }: { mode: string; currency:
   )
 }
 export const BtcLogo = () => <Image src="/images/btc.svg" alt="bitcoin-logo" width={24} height={24} />
+
+export const OnRampCurrencyLogo = ({ mode, currency, size = 28 }: { mode: string; currency: Token; size?: number }) => {
+  const isBtc = isNativeBtc(currency)
+  return isBtc ? <BtcLogo /> : <EvmLogo mode={mode} currency={currency as Token} size={size} />
+}
 
 export default OnRampProviderLogo

@@ -6,8 +6,16 @@ export const FormHeader: FC<{
   subTitle?: string
   shouldCenter?: boolean
   backTo?: any
-}> = ({ title, subTitle, shouldCenter = false, backTo }) => {
+  borderHidden?: boolean
+}> = ({ title, subTitle, shouldCenter = false, backTo, borderHidden = true }) => {
   return (
-    <AppHeader backTo={backTo} title={title} subtitle={subTitle} shouldCenter={shouldCenter} borderHidden noConfig />
+    <AppHeader
+      backTo={backTo}
+      title={title}
+      subtitle={subTitle}
+      shouldCenter={shouldCenter}
+      borderHidden={borderHidden}
+      noConfig
+    />
   )
 }

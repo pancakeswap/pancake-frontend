@@ -1,7 +1,6 @@
-import { ChainId } from '@pancakeswap/chains'
 import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/swap-sdk-core'
 import { bscTokens } from '@pancakeswap/tokens'
 import {
   AutoColumn,
@@ -16,12 +15,10 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
-import { useOnRampCurrency } from 'hooks/Tokens'
 import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useBuyCryptoActionHandlers, useBuyCryptoState } from 'state/buyCrypto/hooks'
 import { Field } from 'state/swap/actions'
 import { useTheme } from 'styled-components'
-import { safeGetAddress } from 'utils'
 import { v4 } from 'uuid'
 import { FiatCurrency, OnRampProviderQuote } from 'views/BuyCrypto/types'
 import { useChainId } from 'wagmi'
@@ -30,7 +27,12 @@ import { PopOverScreenContainer } from '../components/PopOverScreen/PopOverScree
 import { ProviderGroupItem } from '../components/ProviderSelector/ProviderGroupItem'
 import { ProviderSelector } from '../components/ProviderSelector/ProviderSelector'
 import { TransactionFeeDetails } from '../components/TransactionFeeDetails/TransactionFeeDetails'
-import { NATIVE_BTC, fiatCurrencyMap, getChainCurrencyWarningMessages, isNativeBtc } from '../constants'
+import {
+  OnRampChainId as ChainId,
+  fiatCurrencyMap,
+  getChainCurrencyWarningMessages,
+  onRampCurrenciesMap,
+} from '../constants'
 import { useBtcAddressValidator } from '../hooks/useBitcoinAddressValidtor'
 import { useLimitsAndInputError } from '../hooks/useOnRampInputError'
 import { useOnRampQuotes } from '../hooks/useOnRampQuotes'
@@ -71,9 +73,13 @@ export function BuyCryptoForm() {
   const [selectedQuote, setSelectedQuote] = useState<OnRampProviderQuote | undefined>(undefined)
   const { onFieldAInput: handleTypeOutput, onCurrencySelection } = useBuyCryptoActionHandlers()
 
-  const isBtc = isNativeBtc(inputCurrencyId)
-  let inputCurrency = useOnRampCurrency(inputCurrencyId)
-  inputCurrency = isBtc ? NATIVE_BTC : inputCurrency
+  const inputCurrency: Currency = useMemo(() => {
+    if (!inputCurrencyId) return onRampCurrenciesMap.BNB_56
+    return onRampCurrenciesMap[inputCurrencyId]
+  }, [inputCurrencyId])
+
+  console.log(inputCurrencyId, inputCurrency)
+  const isBtc = Boolean(inputCurrencyId === 'BTC_0')
 
   const outputCurrency: FiatCurrency = useMemo(() => {
     if (!outputCurrencyId) return fiatCurrencyMap.USD
@@ -106,7 +112,7 @@ export function BuyCryptoForm() {
     fiatCurrency: outputCurrency?.symbol,
     network: inputCurrency?.chainId,
     fiatAmount: typedValue || defaultAmt,
-    enabled: Boolean(!inputError && typedValue !== '0' && (isBtc ? searchQuery !== '' : true)),
+    enabled: Boolean(!inputError && typedValue !== '0'),
   })
 
   // manage focus on modal show
@@ -118,8 +124,7 @@ export function BuyCryptoForm() {
 
   const handleInput = useCallback((event) => {
     const input = event.target.value
-    const checksummedInput = safeGetAddress(input)
-    setSearchQuery(checksummedInput || input)
+    setSearchQuery(input)
   }, [])
 
   const resetBuyCryptoState = useCallback(() => {
@@ -137,6 +142,11 @@ export function BuyCryptoForm() {
       setSelectedQuote(quotes[0])
     }
   }, [quotes])
+
+  useEffect(() => {
+    if (!defaultAmt) return
+    handleTypeOutput(defaultAmt)
+  }, [defaultAmt, handleTypeOutput])
 
   return (
     <AutoColumn position="relative">
@@ -168,10 +178,15 @@ export function BuyCryptoForm() {
               </Text>
             }
             currencyLoading={Boolean(!inputCurrency)}
-            value={typedValue || defaultAmt}
+            value={typedValue ?? ''}
             onUserInput={handleTypeOutput}
             loading={Boolean(fetching || isFetching || !quotes)}
             error={Boolean(error || isError || inputError)}
+            bottomElement={
+              <Text px="8px" pb="6px" fontSize="12px" color={theme.colors.failure}>
+                {inputError}
+              </Text>
+            }
           />
           <BuyCryptoSelector
             id="onramp-crypto"
@@ -209,24 +224,15 @@ export function BuyCryptoForm() {
             </Box>
           )}
 
-          {((isBtc && validAddress?.result) || !isBtc) && (
-            <ProviderSelector
-              id="provider-select"
-              onQuoteSelect={setShowProvidersPopOver}
-              selectedQuote={selectedQuote ?? bestQuoteRef.current}
-              topElement={
-                <AutoRow justifyContent="space-between">
-                  <Text fontSize="14px" pl="8px" color="textSubtle">
-                    {t('total fees: $%fees%', { fees: selectedQuote?.providerFee })}
-                  </Text>
-                </AutoRow>
-              }
-              bottomElement={<TransactionFeeDetails selectedQuote={selectedQuote} />}
-              quoteLoading={isFetching || !quotes}
-              quotes={quotes}
-              error={isError || Boolean(inputError)}
-            />
-          )}
+          <ProviderSelector
+            id="provider-select"
+            onQuoteSelect={setShowProvidersPopOver}
+            selectedQuote={selectedQuote ?? bestQuoteRef.current}
+            topElement={<Box pt="12px" />}
+            bottomElement={<TransactionFeeDetails selectedQuote={selectedQuote} />}
+            quoteLoading={isFetching || !quotes}
+            quotes={quotes}
+          />
         </Box>
         {[ChainId.BASE, ChainId.LINEA].includes(chainId) ? (
           <Message variant="warning" padding="16px">
@@ -282,24 +288,30 @@ const OnRampCurrencySelectPopOver = ({
 
   return (
     <PopOverScreenContainer showPopover={showProivdersPopOver} onClick={showProvidersOnClick}>
-      <FormHeader title={t('Choose a provider')} />
-      <Box px="16px" pb="16px">
+      <AutoRow borderBottom="1" borderColor="cardBorder" paddingX="24px" py="16px">
+        <Text fontSize="20px" fontWeight="600">
+          {t('Choose a provider')}
+        </Text>
+      </AutoRow>
+      <Box px="8px" pb="20px">
         {quotes &&
           selectedQuote &&
-          quotes.map((quote) => {
-            return (
-              <ProviderGroupItem
-                key={quote.provider}
-                id={`provider-select-${quote.provider}`}
-                onQuoteSelect={onQuoteSelect}
-                quotes={quotes}
-                selectedQuote={selectedQuote ?? quotes[0]}
-                quoteLoading={isFetching || !quotes}
-                error={isError || Boolean(inputError)}
-                currentQuote={quote}
-              />
-            )
-          })}
+          quotes
+            .filter((quote) => !quote.error)
+            .map((quote) => {
+              return (
+                <ProviderGroupItem
+                  key={quote.provider}
+                  id={`provider-select-${quote.provider}`}
+                  onQuoteSelect={onQuoteSelect}
+                  quotes={quotes}
+                  selectedQuote={selectedQuote ?? quotes[0]}
+                  quoteLoading={isFetching || !quotes}
+                  error={isError || Boolean(inputError)}
+                  currentQuote={quote}
+                />
+              )
+            })}
       </Box>
     </PopOverScreenContainer>
   )

@@ -7,7 +7,7 @@ import {
   type UseMutationResult,
   type UseQueryOptions,
 } from '@tanstack/react-query'
-import { ONRAMP_PROVIDERS } from './constants'
+import { ONRAMP_PROVIDERS, OnRampChainId } from './constants'
 
 export type Evaluate<type> = { [key in keyof type]: type[key] } & unknown
 
@@ -114,13 +114,13 @@ export type OnRampQuotesPayload = {
   fiatCurrency: string | undefined
   cryptoCurrency: string | undefined
   fiatAmount: string | undefined
-  network: ChainId | undefined | 'bitcoin'
+  network: OnRampChainId | undefined
 }
 
 export type OnRampLimitsPayload = {
   fiatCurrency: string | undefined
   cryptoCurrency: string | undefined
-  network: number | undefined
+  network: OnRampChainId | ChainId | undefined
 }
 
 export type OnRampSignaturesPayload = {

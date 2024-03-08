@@ -20,7 +20,6 @@ import uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
 import { notEmpty } from 'utils/notEmpty'
 import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
-import ONRAMP_TOKEN_LIST from '../../config/constants/tokenLists/pancake-supported-onramp-currency-list.json'
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
 import { safeGetAddress } from '../../utils'
@@ -59,15 +58,6 @@ const combineTokenMapsWithDefault = (lists: ListsState['byUrl'], urls: string[])
   if (!urls) return defaultTokenMap
   return combineMaps(combineTokenMaps(lists, urls), defaultTokenMap)
 }
-
-const combineTokenMapsWithOnRamp = () => {
-  const onRampTokens = listToTokenMap(ONRAMP_TOKEN_LIST as TokenList, 'symbol')
-  return onRampTokens
-}
-
-export const combinedCurrenciesMapFromActiveUrlsAtom = atom(() => {
-  return combineTokenMapsWithOnRamp()
-})
 
 const combineTokenMaps = (lists: ListsState['byUrl'], urls: string[]): any => {
   if (!urls) return EMPTY_LIST

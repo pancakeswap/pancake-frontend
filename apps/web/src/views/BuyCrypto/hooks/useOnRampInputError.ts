@@ -3,7 +3,7 @@ import type { Currency } from '@pancakeswap/sdk'
 import ceil from 'lodash/ceil'
 import { useMemo } from 'react'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
-import { formatOnrampCurrencyChainId } from '../constants'
+import { OnRampChainId } from '../constants'
 import { useOnRampLimit } from './useOnRampLimits'
 
 function formatNumber(number: number, precision?: number): string {
@@ -33,11 +33,16 @@ export const useLimitsAndInputError = ({
     currentLanguage: { locale },
   } = useTranslation()
 
-  const { data: limitsData } = useOnRampLimit({
-    fiatCurrency: fiatCurrency?.symbol,
+  const {
+    data: limitsData,
+    isError,
+    error,
+  } = useOnRampLimit({
+    fiatCurrency: fiatCurrency?.symbol as string,
     cryptoCurrency: cryptoCurrency?.symbol,
-    network: formatOnrampCurrencyChainId(cryptoCurrency?.chainId),
+    network: cryptoCurrency?.chainId as OnRampChainId,
   })
+  console.log(cryptoCurrency?.symbol, error)
 
   const baseCurrency = limitsData?.baseCurrency
   const quoteCurrency = limitsData?.quoteCurrency
@@ -56,31 +61,33 @@ export const useLimitsAndInputError = ({
   }, [baseCurrency])
 
   const inputError = useMemo(() => {
-    if (!typedValue || !baseCurrency || !quoteCurrency) return
+    if (!baseCurrency || !quoteCurrency) return
 
-    if (Number(typedValue) < baseCurrency.minBuyAmount) {
+    if (Number(typedValue) < baseCurrency.minBuyAmount || typedValue === '') {
       // eslint-disable-next-line consistent-return
-      return t('Minimum {{fiatCurrency}} {{minAmount}}', {
+      return t('The minimum purchasable amount is %minAmount% %fiatCurrency% / %minCryptoAmount% %cryptoCurrency%', {
         minAmount: formatLocaleNumber({
           number: baseCurrency.minBuyAmount,
           locale,
         }),
-        fiatCurrency: baseCurrency.code.toUpperCase(),
-        cryptoCurrency: quoteCurrency.code,
+        fiatCurrency: baseCurrency?.code.toUpperCase(),
+        cryptoCurrency: cryptoCurrency.symbol,
+        minCryptoAmount: formatLocaleNumber({ locale, number: quoteCurrency.minBuyAmount }),
       })
     }
     if (Number(typedValue) > baseCurrency.maxBuyAmount) {
       // eslint-disable-next-line consistent-return
-      return t('Maximum {{fiatCurrency}} {{maxAmount}}', {
+      return t('The maximum purchasable amount is %maxAmount% %fiatCurrency% / %maxCryptoAmount% %cryptoCurrency%', {
         maxAmount: formatLocaleNumber({
           number: baseCurrency.maxBuyAmount,
           locale,
         }),
-        fiatCurrency: baseCurrency.code.toUpperCase(),
-        cryptoCurrency: quoteCurrency.code,
+        fiatCurrency: baseCurrency?.code.toUpperCase(),
+        cryptoCurrency: cryptoCurrency.symbol,
+        maxCryptoAmount: formatLocaleNumber({ locale, number: quoteCurrency.maxBuyAmount }),
       })
     }
-  }, [typedValue, t, baseCurrency, quoteCurrency, locale])
+  }, [typedValue, t, baseCurrency, quoteCurrency, locale, cryptoCurrency])
 
   return {
     limitsData,

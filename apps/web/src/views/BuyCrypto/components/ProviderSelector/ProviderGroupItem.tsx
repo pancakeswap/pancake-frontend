@@ -21,11 +21,10 @@ const DropDownContainer = styled.div<{ error: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 12px;
-  box-shadow: ${({ theme, error }) => (error ? theme.shadows.danger : theme.shadows.inset)};
-  border: 1px solid ${({ theme, error }) => (error ? theme.colors.failure : theme.colors.inputSecondary)};
+  padding: 6px 12px;
+
   border-radius: 16px;
-  background: ${({ theme }) => theme.colors.input};
+
   cursor: pointer;
   position: relative;
   min-width: 136px;
@@ -113,7 +112,7 @@ export const ProviderGroupItem = ({
 
   return (
     <Box width="100%" {...props}>
-      <Flex justifyContent="space-between" py="4px" width="100%" alignItems="center">
+      <Flex justifyContent="space-between" py="12px" width="100%" alignItems="center">
         {topElement}
       </Flex>
       <DropDownContainer error={error as any}>
@@ -125,16 +124,16 @@ export const ProviderGroupItem = ({
           disabled={quoteLoading}
         >
           <Flex>
-            <OnRampProviderLogo size={32} provider={currentQuote?.provider} loading={quoteLoading} />
+            <OnRampProviderLogo size={38} provider={currentQuote?.provider} loading={quoteLoading} />
             <AutoColumn px="12px" justifyContent="flex-start" alignItems="flex-start" gap="2px">
               <SkeletonText
                 initialHeight={13}
                 initialWidth={70}
                 loading={quoteLoading}
-                fontSize="17px"
+                fontSize="19px"
                 fontWeight={600}
                 textAlign="left"
-                lineHeight="16px"
+                lineHeight="20px"
               >
                 {t('%provider%', { provider: currentQuote?.provider })}
               </SkeletonText>
@@ -142,7 +141,7 @@ export const ProviderGroupItem = ({
                 loading={quoteLoading}
                 initialHeight={13}
                 initialWidth={70}
-                fontSize="13px"
+                fontSize="15px"
                 textAlign="left"
                 color="textSubtle"
                 lineHeight="14px"

@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import {
   Box,
   Button,
@@ -23,6 +23,7 @@ import { Field } from 'state/buyCrypto/actions'
 import { styled } from 'styled-components'
 import { chainNameConverter } from 'utils/chainNameConverter'
 import { chains } from 'utils/wagmi'
+import { OnRampChainId as ChainId } from 'views/BuyCrypto/constants'
 import { Dot } from 'views/Notifications/styles'
 import OnRampCurrencySearch from './OnRampCurrencySearch'
 

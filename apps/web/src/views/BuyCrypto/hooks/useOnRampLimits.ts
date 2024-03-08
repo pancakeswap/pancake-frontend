@@ -2,7 +2,7 @@ import type { UseQueryResult } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import qs from 'qs'
-import { formatOnrampCurrencyChainId } from '../constants'
+import { getIsNetworkEnabled, OnRampChainId } from '../constants'
 import { createQueryKey, Evaluate, OnRampLimitsPayload, UseQueryParameters } from '../types'
 
 type CurrencyLimits = {
@@ -25,7 +25,7 @@ export type GetOnRampLimitReturnType = LimitQuote
 export type GetOnRampLimitParameters = {
   fiatCurrency: string | undefined
   cryptoCurrency: string | undefined
-  network: number | undefined | 'bitcoin'
+  network: OnRampChainId | undefined
 }
 
 export type UseOnRampLimitParameters<selectData = GetOnRampLimitReturnType> = Evaluate<
@@ -40,7 +40,18 @@ export const useOnRampLimit = <selectData = GetOnRampLimitReturnType>(
 ): UseOnRampLimitReturnType<selectData> => {
   const { fiatCurrency, cryptoCurrency, network, ...query } = parameters
 
-  const enabled = Boolean(fiatCurrency && cryptoCurrency && network)
+  const enabled = Boolean(fiatCurrency && cryptoCurrency && getIsNetworkEnabled(network))
+  console.log(
+    enabled,
+    'enabled',
+    getOnRampLimitQueryKey([
+      {
+        fiatCurrency,
+        cryptoCurrency,
+        network,
+      },
+    ]),
+  )
   return useQuery({
     ...query,
     queryKey: getOnRampLimitQueryKey([
@@ -54,13 +65,13 @@ export const useOnRampLimit = <selectData = GetOnRampLimitReturnType>(
       // eslint-disable-next-line @typescript-eslint/no-shadow
       const { fiatCurrency, cryptoCurrency, network } = queryKey[1]
 
-      if (!fiatCurrency || !cryptoCurrency || !network) {
+      if (!fiatCurrency || !cryptoCurrency) {
         throw new Error('Invalid parameters')
       }
       const providerLimits = await fetchProviderLimits({
         cryptoCurrency,
         fiatCurrency,
-        network: formatOnrampCurrencyChainId(network),
+        network,
       })
       return providerLimits
     },

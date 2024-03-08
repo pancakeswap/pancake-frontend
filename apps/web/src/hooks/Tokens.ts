@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { ChainId, mainnetChainIds } from '@pancakeswap/chains'
-import { ERC20Token, Native } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
+import { ERC20Token } from '@pancakeswap/sdk'
 import { Currency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
 
 import { TokenAddressMap } from '@pancakeswap/token-lists'
@@ -8,13 +8,13 @@ import { GELATO_NATIVE } from 'config/constants'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import {
-  combinedCurrenciesMapFromActiveUrlsAtom,
   combinedTokenMapFromActiveUrlsAtom,
   combinedTokenMapFromOfficialsUrlsAtom,
   useUnsupportedTokenList,
   useWarningTokenList,
 } from 'state/lists/hooks'
 import { safeGetAddress } from 'utils'
+import { onRampCurrenciesMap } from 'views/BuyCrypto/constants'
 import { useToken as useToken_ } from 'wagmi'
 import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
 import { useActiveChainId } from './useActiveChainId'
@@ -31,19 +31,6 @@ const mapWithoutUrls = (tokenMap?: TokenAddressMap<ChainId>, chainId?: number) =
 
     return newMap
   }, {})
-}
-
-const mapAllWithoutUrlsBySymbol = (tokenMap?: TokenAddressMap<ChainId>) => {
-  if (!tokenMap) return {}
-  const tokenNetworks = Object.values(tokenMap)
-  const newMap = {} as { [symbol: string]: ERC20Token }
-  tokenNetworks.forEach((network) => {
-    Object.values(network).forEach((token) => {
-      newMap[`${token.token.symbol}-${token.token.chainId}`] = token.token as ERC20Token
-    })
-  })
-
-  return newMap
 }
 
 /**
@@ -73,13 +60,6 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
         )
     )
   }, [userAddedTokens, tokenMap, chainId])
-}
-
-export function useAllOnRampTokens(): { [address: string]: Currency } {
-  const tokenMap = useAtomValue(combinedCurrenciesMapFromActiveUrlsAtom)
-  return useMemo(() => {
-    return mapAllWithoutUrlsBySymbol(tokenMap)
-  }, [tokenMap])
 }
 
 /**
@@ -184,17 +164,6 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
   }, [token, chainId, address, isLoading, data, unsupportedTokens])
 }
 
-export function useOnRampToken(currencyId?: string): Currency | undefined {
-  const tokens = useAllOnRampTokens()
-  const token = currencyId && tokens[currencyId]
-
-  return useMemo(() => {
-    if (token) return token
-    if (!currencyId) return undefined
-    return undefined
-  }, [token, currencyId])
-}
-
 export function useCurrency(currencyId: string | undefined): Currency | ERC20Token | null | undefined {
   const native: NativeCurrency = useNativeCurrency()
   const isNative =
@@ -204,21 +173,11 @@ export function useCurrency(currencyId: string | undefined): Currency | ERC20Tok
   return isNative ? native : token
 }
 
-export function useOnRampCurrency(currencyId: string | undefined): NativeCurrency | Currency | null | undefined {
-  const nativeCurrencies = useAllNativeCurrencies()
-  const token = useOnRampToken(currencyId)
+export function useOnRampCurrency(currencyId: string | undefined): Currency | undefined {
+  const token = useMemo(() => {
+    if (!currencyId) return undefined
+    return onRampCurrenciesMap[currencyId]
+  }, [currencyId])
 
-  let native: NativeCurrency | undefined
-  for (const curr of nativeCurrencies) {
-    if (`${curr.symbol}-${curr.chainId}`.toUpperCase() === currencyId?.toUpperCase()) {
-      native = curr
-      break
-    }
-  }
-
-  return native || token
-}
-
-export const useAllNativeCurrencies = (): NativeCurrency[] => {
-  return mainnetChainIds.map((chainId) => Native.onChain(chainId))
+  return token
 }

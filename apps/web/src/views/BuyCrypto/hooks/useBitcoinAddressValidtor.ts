@@ -3,7 +3,7 @@ import type { UseQueryResult } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import qs from 'qs'
-import { NATIVE_BTC } from '../constants'
+import { isNativeBtc } from '../constants'
 import { createQueryKey, Evaluate, UseQueryParameters } from '../types'
 
 export enum BtcNetwork {
@@ -34,12 +34,12 @@ export type useBtcAddressValidatorReturnType<selectData = GetBtcAddrValidationRe
 >
 
 export const useBtcAddressValidator = <selectData = GetBtcAddrValidationReturnType>(
-  parameters: useBtcAddressValidatorParameters<selectData> & { currency: Partial<Currency> | undefined | null },
+  parameters: useBtcAddressValidatorParameters<selectData> & { currency: Currency | undefined },
 ): useBtcAddressValidatorReturnType<selectData> => {
   const { address, network, currency, ...query } = parameters
 
-  const isNativeBtc = currency?.chainId === NATIVE_BTC.chainId
-  const enabled = Boolean(address && address !== '' && network && isNativeBtc)
+  const isBtc = isNativeBtc(currency)
+  const enabled = Boolean(address && address !== '' && network && isBtc)
 
   return useQuery({
     ...query,

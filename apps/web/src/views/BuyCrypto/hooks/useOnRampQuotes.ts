@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import { formatOnrampCurrencyChainId } from '../constants'
+import { getIsNetworkEnabled } from '../constants'
 import {
   createQueryKey,
   Evaluate,
@@ -42,18 +42,18 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
     ]),
     refetchInterval: 40 * 1_000,
     staleTime: 40 * 1_000,
-    enabled: Boolean(cryptoCurrency && fiatAmount && fiatCurrency && network && enabled),
+    enabled: Boolean(cryptoCurrency && fiatAmount && fiatCurrency && getIsNetworkEnabled(network) && enabled),
     queryFn: async ({ queryKey }) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
       const { cryptoCurrency, fiatAmount, fiatCurrency, network } = queryKey[1]
-      if (!cryptoCurrency || !fiatAmount || !fiatCurrency || !network) {
+      if (!cryptoCurrency || !fiatAmount || !fiatCurrency) {
         throw new Error('Missing params')
       }
       const providerQuotes = await fetchProviderQuotes({
         cryptoCurrency,
         fiatAmount,
         fiatCurrency,
-        network: formatOnrampCurrencyChainId(network),
+        network,
       })
       const sortedFilteredQuotes = providerQuotes.sort((a, b) => b.quote - a.quote)
 

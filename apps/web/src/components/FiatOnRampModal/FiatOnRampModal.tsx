@@ -47,6 +47,7 @@ export const FiatOnRampModalButton = ({
   const { t } = useTranslation()
 
   const isBtc = isNativeBtc(cryptoCurrency)
+  console.log(getOnrampCurrencyChainId(cryptoCurrency), cryptoCurrency)
   const {
     data: sigData,
     isLoading,
