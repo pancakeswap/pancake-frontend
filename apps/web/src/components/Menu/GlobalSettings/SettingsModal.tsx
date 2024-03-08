@@ -247,10 +247,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
         )}
         {mode === SettingsMode.SWAP_LIQUIDITY && (
           <>
-            <Flex pt="3px" flexDirection="column">
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                {chainId === ChainId.BSC && <GasSettings />}
-              </Flex>
+            <Flex flexDirection="column">
               <TransactionSettings />
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
@@ -268,17 +265,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                 checked={expertMode}
                 onChange={handleExpertModeToggle}
               />
-            </Flex>
-            <Flex justifyContent="space-between" alignItems="center" mb="24px">
-              <Flex alignItems="center">
-                <Text>{t('Flippy sounds')}</Text>
-                <QuestionHelper
-                  text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
-                  placement="top"
-                  ml="4px"
-                />
-              </Flex>
-              <PancakeToggle checked={audioPlay} onChange={() => setAudioMode((s) => !s)} scale="md" />
             </Flex>
             <RoutingSettingsButton />
           </>
@@ -321,11 +307,7 @@ export function RoutingSettingsButton({
 function RoutingSettings() {
   const { t } = useTranslation()
 
-  const [isStableSwapByDefault, setIsStableSwapByDefault] = useUserStableSwapEnable()
-  const [v2Enable, setV2Enable] = useUserV2SwapEnable()
-  const [v3Enable, setV3Enable] = useUserV3SwapEnable()
   const [split, setSplit] = useUserSplitRouteEnable()
-  const [isMMLinkedPoolByDefault, setIsMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
   const onlyOneAMMSourceEnabled = useOnlyOneAMMSourceEnabled()
   const [isRoutingSettingChange, reset] = useRoutingSettingChanged()
@@ -358,7 +340,6 @@ function RoutingSettings() {
           )}
         </AtomBox>
         <AtomBox>
-          <PreTitle mb="24px">{t('Routing preference')}</PreTitle>
           <AutoRow alignItems="center" mb="24px">
             <RowFixed as="label" gap="16px">
               <Checkbox

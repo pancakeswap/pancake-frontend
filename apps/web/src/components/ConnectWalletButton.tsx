@@ -12,51 +12,38 @@ import { ChainId } from '@pancakeswap/chains'
 import { useMemo, useState } from 'react'
 import { logGTMWalletConnectEvent } from 'utils/customGTMEventTracking'
 import { useConnect } from 'wagmi'
+import { cn } from 'utils/tailwind'
+import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit'
 import Trans from './Trans'
 
 const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
+  const { openConnectModal } = useConnectModal()
   const handleActive = useActiveHandle()
-  const { login } = useAuth()
   const {
     t,
     currentLanguage: { code },
   } = useTranslation()
-  const { connectAsync } = useConnect()
-  const { chainId } = useActiveChainId()
-  const [open, setOpen] = useState(false)
-
-  const docLink = useMemo(() => getDocLink(code), [code])
 
   const handleClick = () => {
     if (typeof __NEZHA_BRIDGE__ !== 'undefined' && !window.ethereum) {
       handleActive()
+      openConnectModal?.()
     } else {
-      setOpen(true)
+      // setOpen(true)
+      openConnectModal?.()
     }
   }
 
-  const wallets = useMemo(() => createWallets(chainId || ChainId.BSC, connectAsync), [chainId, connectAsync])
-
   return (
     <>
-      <button className="btn-primary" onClick={handleClick} {...props} type="button">
+      <button
+        className={cn('rounded-full', 'btn-primary', 'rounded-full')}
+        onClick={handleClick}
+        {...props}
+        type="button"
+      >
         {children || <Trans>Connect Wallet</Trans>}
       </button>
-      <style jsx global>{`
-        w3m-modal {
-          position: relative;
-          z-index: 99;
-        }
-      `}</style>
-      <WalletModalV2
-        docText={t('Learn How to Connect')}
-        docLink={docLink}
-        isOpen={open}
-        wallets={wallets}
-        login={login}
-        onDismiss={() => setOpen(false)}
-        onWalletConnectCallBack={logGTMWalletConnectEvent}
-      />
     </>
   )
 }

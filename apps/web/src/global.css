@@ -7,7 +7,7 @@ body {
 }
 
 .btn-primary {
-  @apply bg-primary py-3 rounded-lg text-black text-lg w-full;
+  @apply bg-primary py-2 rounded-lg text-black text-lg w-full px-4;
   @apply disabled:opacity-40;
 }
 
