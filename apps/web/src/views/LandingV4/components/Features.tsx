@@ -68,7 +68,7 @@ const DetailStyled = styled(Box)`
 `
 
 const AnimationContainer = styled(Box)<{ $showAnimation?: boolean }>`
-  animation: ${({ $showAnimation }) => ($showAnimation ? `fadeIn 2s linear;` : 'none')};
+  animation: ${({ $showAnimation }) => ($showAnimation ? `fadeIn 1s linear;` : 'none')};
 
   @keyframes fadeIn {
     0% {
@@ -175,8 +175,13 @@ export const Features = () => {
   const isBigDevice = useMemo(() => isMd || isLg || isXl || isXxl, [isLg, isMd, isXl, isXxl])
 
   const handleStepClick = (stepIndex: number) => {
-    setStep(stepIndex)
-    setRemainingTimer(DISPLAY_TIMER)
+    if (step !== stepIndex) {
+      setTimeout(() => {
+        setStep(stepIndex)
+        setRemainingTimer(DISPLAY_TIMER)
+        setShowAnimation(true)
+      }, 600)
+    }
   }
 
   useEffect(() => {
@@ -188,7 +193,7 @@ export const Features = () => {
       // Clear previous interval
       if (timer.current) {
         if (showAnimation) {
-          setTimeout(() => setShowAnimation(false), 2000)
+          setTimeout(() => setShowAnimation(false), 1000)
         }
 
         clearInterval(timer.current)
