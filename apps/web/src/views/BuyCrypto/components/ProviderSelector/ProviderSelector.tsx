@@ -40,7 +40,6 @@ const DropDownContainer = styled.div<{ error: boolean }>`
 
 const OptionSelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
