@@ -3215,7 +3215,6 @@
   "Esti total fees:": "Esti total fees:",
   "$%fees%": "$%fees%",
   "Show details": "Show details",
-  "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
   "Reset approval on USDT.": "Reset approval on USDT.",
   "Permit %symbol%": "Permit %symbol%",
   "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
