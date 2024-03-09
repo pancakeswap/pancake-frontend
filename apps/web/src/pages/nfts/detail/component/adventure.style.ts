@@ -37,6 +37,7 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    overflow-x: auto;
   }
   .sgt-adventure__list-item {
     height: 52px;
@@ -52,6 +53,7 @@ export const Wrapper = styled.div`
     font-size: 18px;
     font-weight: 800;
     line-height: 26px;
+    white-space: nowrap;
   }
   .sgt-adventure__bottom {
     margin-top: 16px;

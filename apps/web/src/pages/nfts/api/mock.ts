@@ -1,5 +1,5 @@
-import sgtIcon from '../assets/sgt-icon.png'
-import sgt from '../assets/sgt.png'
+import sgtIcon from '../../../../public/images/nfts2/sgt-icon.png'
+import sgt from '../../../../public/images/nfts2/sgt.png'
 
 const sgtListItem = {
   id: '1',

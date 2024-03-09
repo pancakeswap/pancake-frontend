@@ -1,6 +1,9 @@
 import { styled } from 'styled-components'
 
 export const Wrapper = styled.div`
+  .sgt-detail__wrapper div::-webkit-scrollbar {
+    display: none;
+  }
   .sgt-detail__wrapper {
     padding: 24px 24px 36px;
     height: calc(100vh - 88px);
@@ -15,7 +18,8 @@ export const Wrapper = styled.div`
     box-sizing: border-box;
     padding: 22px 16px 16px;
     width: 604px;
-    flex-shrink: 0;
+    flex-shrink: 1;
+    /* min-width: 430px; */
     box-shadow: 0px 4px 48px 0px rgba(0, 0, 0, 1);
     border: 1px solid rgba(58, 58, 60, 1);
     border-radius: 8px;
@@ -41,7 +45,7 @@ export const Wrapper = styled.div`
     box-sizing: border-box;
     padding: 16px 20px;
     background-color: #2c2c2e;
-    width: 572px;
+    /* width: 572px; */
   }
   .sgt-detail__left-trait-title-box {
     font-size: 16px;
@@ -64,16 +68,18 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     flex-wrap: wrap;
     gap: 15px;
   }
   .sgt-detail__left-trait-item {
-    width: 166px;
+    min-width: 166px;
     height: 104px;
     display: flex;
     padding-top: 12px;
     flex-direction: column;
     align-items: center;
+    flex: 1;
     gap: 4px;
     border-radius: 4px;
     background: #3a3a3c;
@@ -113,7 +119,7 @@ export const Wrapper = styled.div`
     box-sizing: border-box;
     padding: 16px 24px 16px;
     background-color: #2c2c2e;
-    width: 572px;
+    /* width: 572px; */
   }
   .sgt-detail__left-detail-title-box {
     font-size: 16px;
@@ -165,7 +171,7 @@ export const Wrapper = styled.div`
     padding: 16px;
     width: 780px;
     /* flex: 8; */
-    flex-shrink: 0;
+    flex-shrink: 1;
     box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 1);
     border: 1px solid rgba(58, 58, 60, 1);
     border-radius: 8px;

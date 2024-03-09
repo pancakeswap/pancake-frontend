@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import infoError from '../../assets/info-error.svg'
+import infoError from '../../../public/images/nfts2/info-error.svg'
 import { Wrapper } from './index.style'
 
 type IPriceInput = {

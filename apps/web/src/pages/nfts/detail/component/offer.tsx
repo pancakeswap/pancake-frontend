@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import sgtIcon from '../../assets/sgt-icon.png'
-import Button from '../../components/button'
+import sgtIcon from '../../../../../public/images/nfts2/sgt-icon.png'
+import Button from '../../../../components/Button'
 import { Wrapper } from './offer.style'
 
 export default function Offer() {

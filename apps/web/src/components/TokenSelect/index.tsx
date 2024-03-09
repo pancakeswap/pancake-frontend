@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import arrow3 from '../../assets/arrow3.png'
-import sgtIcon from '../../assets/sgt-icon.png'
+import arrow3 from '../../../public/images/nfts2/arrow3.png'
+import sgtIcon from '../../../public/images/nfts2/sgt-icon.png'
 import { Wrapper } from './index.style'
 
 export default function TokenSelect() {

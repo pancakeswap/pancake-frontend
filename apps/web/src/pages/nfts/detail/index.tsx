@@ -6,10 +6,10 @@ import Activity from './component/activity'
 import Adventure from './component/adventure'
 import Offer from './component/offer'
 
+import defaultGame from '../../../../public/images/nfts2/game.png'
+import sgtIcon from '../../../../public/images/nfts2/sgt-icon.png'
+import Tag from '../../../components/Tag/tag'
 import { getSgtDetail } from '../api/sgt'
-import defaultGame from '../assets/game.png'
-import sgtIcon from '../assets/sgt-icon.png'
-import Tag from '../components/tag/tag'
 import { Wrapper } from './index.style'
 
 export default function SGTDetail() {

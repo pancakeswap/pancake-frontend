@@ -2,8 +2,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import Image from 'next/image'
 
-import closeIcon from '../../assets/close.svg'
-import Button from '../button'
+import closeIcon from '../../../public/images/nfts2/close.svg'
+import Button from '../Button'
 import { Wrapper } from './index.style'
 
 type Props = {

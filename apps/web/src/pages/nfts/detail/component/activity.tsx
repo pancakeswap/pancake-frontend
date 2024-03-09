@@ -1,5 +1,6 @@
 import Image from 'next/image'
-import copy from '../../assets/copy.svg'
+import copy from '../../../../../public/images/nfts2/copy.svg'
+
 import { Wrapper } from './activity.style'
 
 export default function Activity() {
@@ -52,6 +53,7 @@ export default function Activity() {
       },
       tdStyle: {
         color: '#928D88',
+        whiteSpace: 'nowrap',
       },
     },
   ]

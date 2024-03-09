@@ -7,86 +7,13 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 
+import sgtIcon from '../../../../public/images/nfts2/sgt-icon.png'
+import sgt from '../../../../public/images/nfts2/sgt.png'
+import Button from '../../../components/Button'
+import Tag from '../../../components/Tag/tag'
 import { getNftList } from '../api/nft'
-import sgtIcon from '../assets/sgt-icon.png'
-import sgt from '../assets/sgt.png'
-import Button from '../components/button/index'
-import Tag from '../components/tag/tag'
 
-// import './index.style.css'
-const Wrapper = styled.div`
-  .nft-list__wrapper {
-    padding: 0px 50px;
-  }
-  .nft-list__collection {
-    box-sizing: border-box;
-    padding: 32px;
-    width: 1340px;
-    border-radius: 8px;
-    height: 144px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: #1c1c1e;
-    border: 1px solid #3a3a3c;
-  }
-  .nft-list__collection-total-box {
-    width: 360px;
-    height: 80px;
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-  }
-  .nft-list__collection-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 4px;
-    /* border: 1px solid #fff; */
-  }
-  .nft-list__collection-total {
-  }
-  .nft-list__collection-name {
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 36px;
-    color: #fff;
-  }
-  .nft-list__collection-icon-list {
-    margin-top: 16px;
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-  }
-  .nft-list__collection-icon-item {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  .nft-list__collection-table {
-    width: 900px;
-    height: 52px;
-  }
-  .nft-list__game-image {
-    box-sizing: border-box;
-    width: 56px;
-    height: 56px;
-    border-radius: 4px;
-    border: 1px solid #fff;
-  }
-  .nft-list__game-name {
-    margin-left: 16px;
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 600;
-    color: #fff;
-  }
-  .nft-list__icon {
-    margin-left: 4px;
-    width: 20px;
-    height: 20px;
-  }
-`
+import { Wrapper } from './index.style'
 
 const SortButtonWrapper = styled.div`
   .sensei__arrow-box {
@@ -466,7 +393,7 @@ export default function SGTList() {
             </div>
           </div>
         </div>
-        <div className="sensei__table" style={{ marginTop: '24px' }}>
+        <div className="sensei__table nft-list__table" style={{ marginTop: '24px' }}>
           <div className="sensei__table-header" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
             {columns.map((item, index) => {
               return (
@@ -505,6 +432,7 @@ export default function SGTList() {
                   key={item.name + item.index + Math.random()}
                   style={{
                     height: '72px',
+                    width: 'fit-content',
                   }}
                 >
                   <div style={columns[0].style} className="sensei__table-body-td">

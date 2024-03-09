@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import { useState } from 'react'
-import avatarPng from '../../assets/avatar.png'
-import Button from '../../components/button'
-import Modal from '../../components/modal'
-import PriceInput from '../../components/price-input'
+import avatarPng from '../../../../../public/images/nfts2/avatar.png'
+import Button from '../../../../components/Button'
+import Modal from '../../../../components/Modal2'
+import PriceInput from '../../../../components/PriceInput'
 
-import infoWarn from '../../assets/info-warn.svg'
-import TokenSelect from '../../components/tokenSelect'
+import infoWarn from '../../../../../public/images/nfts2/info-warn.svg'
+import TokenSelect from '../../../../components/TokenSelect'
 import { Wrapper } from './adventure.style'
 
 export default function Adventure() {
