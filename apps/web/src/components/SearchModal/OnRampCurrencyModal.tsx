@@ -129,7 +129,7 @@ const SearchModalNetworkPopOver = ({
                 return (
                   <MenuItem
                     key={chain.id}
-                    style={{ justifyContent: 'space-between', marginLeft: '-16px' }}
+                    // style={{ justifyContent: 'space-between', marginLeft: '-16px' }}
                     onClick={() => {
                       setActiveChain(allNetworks ? undefined : chain.id)
                       onClick()
