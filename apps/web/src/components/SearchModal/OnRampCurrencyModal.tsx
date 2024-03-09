@@ -53,7 +53,7 @@ const StyledModalBody = styled(ModalBody)`
     display: none;
   }
 `
-const MenuItem = styled(RowBetween)<{ selected: boolean }>`
+const NetworkItem = styled(RowBetween)<{ selected: boolean }>`
   padding: 4px 20px;
   height: 56px;
   width: 100%;
@@ -139,7 +139,7 @@ const SearchModalNetworkPopOver = ({
                 const allNetworks = index === 0
 
                 return (
-                  <MenuItem
+                  <NetworkItem
                     key={chain.id}
                     style={{ justifyContent: 'space-between' }}
                     onClick={() => {
@@ -164,7 +164,7 @@ const SearchModalNetworkPopOver = ({
                         <Dot style={{ height: '8px', width: '8px' }} show color="success" className="dot" />
                       </Box>
                     )}
-                  </MenuItem>
+                  </NetworkItem>
                 )
               })}
           </>

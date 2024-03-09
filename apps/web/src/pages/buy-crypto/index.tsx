@@ -1,7 +1,7 @@
 import BuyCrypto from 'views/BuyCrypto'
 
-const BuyCryptoPage = ({ userIp }) => {
-  return <BuyCrypto userIp={userIp} />
+const BuyCryptoPage = () => {
+  return <BuyCrypto />
 }
 
 export default BuyCryptoPage
