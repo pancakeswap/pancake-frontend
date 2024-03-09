@@ -29,15 +29,6 @@ import InputExtended, { StyledVerticalLine } from '../styles'
 import { FormContainer } from './FormContainer'
 import { FormHeader } from './FormHeader'
 
-const getOnRampFiatCurrency = (outputCurrencyId: string | undefined) => {
-  if (!outputCurrencyId) return fiatCurrencyMap.USD
-  return fiatCurrencyMap[outputCurrencyId]
-}
-const getOnRampCryptoCurrency = (outputCurrencyId: string | undefined) => {
-  if (!outputCurrencyId) return onRampCurrenciesMap.BNB_56
-  return onRampCurrenciesMap[outputCurrencyId]
-}
-
 interface OnRampCurrencySelectPopOverProps {
   quotes: OnRampProviderQuote[] | undefined
   selectedQuote: OnRampProviderQuote | undefined
