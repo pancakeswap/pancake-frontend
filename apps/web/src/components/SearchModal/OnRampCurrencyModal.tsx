@@ -11,10 +11,10 @@ import {
   ModalContainer,
   ModalHeader,
   ModalTitle,
+  RowBetween,
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import MenuItem from '@pancakeswap/uikit/components/MenuItem/MenuItem'
 import { ChainLogo } from '@pancakeswap/widgets-internal'
 import isArray from 'lodash/isArray'
 import Image from 'next/image'
@@ -52,6 +52,19 @@ const StyledModalBody = styled(ModalBody)`
   &::-webkit-scrollbar {
     display: none;
   }
+`
+const MenuItem = styled(RowBetween)<{ disabled: boolean; selected: boolean }>`
+  padding: 4px 20px;
+  height: 56px;
+  display: grid;
+  grid-template-columns: auto minmax(auto, 1fr) minmax(0, 72px);
+  grid-gap: 8px;
+  cursor: ${({ disabled }) => !disabled && 'pointer'};
+  pointer-events: ${({ disabled }) => disabled && 'none'};
+  &:hover {
+    background-color: ${({ theme, disabled }) => !disabled && theme.colors.background};
+  }
+  opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
 `
 
 const NetworksWrapper = styled(Box)<{ showFilterNetworks: boolean }>`
@@ -129,7 +142,7 @@ const SearchModalNetworkPopOver = ({
                 return (
                   <MenuItem
                     key={chain.id}
-                    // style={{ justifyContent: 'space-between', marginLeft: '-16px' }}
+                    style={{ justifyContent: 'space-between', marginLeft: '-16px' }}
                     onClick={() => {
                       setActiveChain(allNetworks ? undefined : chain.id)
                       onClick()
