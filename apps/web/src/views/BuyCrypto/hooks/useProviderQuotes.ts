@@ -5,8 +5,8 @@ import {
   ONRAMP_API_BASE_URL,
   TRANSAK_API_KEY,
 } from 'config/constants/endpoints'
-import toUpper from 'lodash/toUpper'
 import toNumber from 'lodash/toNumber'
+import toUpper from 'lodash/toUpper'
 import { ONRAMP_PROVIDERS, chainIdToMoonPayNetworkId, combinedNetworkIdMap, supportedTokenMap } from '../constants'
 import { ProviderQuote } from '../types'
 
