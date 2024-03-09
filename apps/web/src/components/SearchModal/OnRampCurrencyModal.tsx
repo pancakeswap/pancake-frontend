@@ -53,18 +53,17 @@ const StyledModalBody = styled(ModalBody)`
     display: none;
   }
 `
-const MenuItem = styled(RowBetween)<{ disabled: boolean; selected: boolean }>`
+const MenuItem = styled(RowBetween)<{ selected: boolean }>`
   padding: 4px 20px;
   height: 56px;
-  display: grid;
-  grid-template-columns: auto minmax(auto, 1fr) minmax(0, 72px);
-  grid-gap: 8px;
-  cursor: ${({ disabled }) => !disabled && 'pointer'};
-  pointer-events: ${({ disabled }) => disabled && 'none'};
+  width: 100%;
+  display: flex;
+
   &:hover {
-    background-color: ${({ theme, disabled }) => !disabled && theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.background};
+    cursor: pointer;
   }
-  opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
+  opacity: ${({ selected }) => (!selected ? 0.8 : 1)};
 `
 
 const NetworksWrapper = styled(Box)<{ showFilterNetworks: boolean }>`
@@ -142,11 +141,12 @@ const SearchModalNetworkPopOver = ({
                 return (
                   <MenuItem
                     key={chain.id}
-                    style={{ justifyContent: 'space-between', marginLeft: '-16px' }}
+                    style={{ justifyContent: 'space-between' }}
                     onClick={() => {
                       setActiveChain(allNetworks ? undefined : chain.id)
                       onClick()
                     }}
+                    selected={isActive}
                   >
                     <Box display="flex">
                       {allNetworks ? (
