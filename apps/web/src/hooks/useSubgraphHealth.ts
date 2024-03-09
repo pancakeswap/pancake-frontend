@@ -58,7 +58,9 @@ const useSubgraphHealth = (subgraphName?: string) => {
             ),
             currentBlockNumber
               ? Promise.resolve(currentBlockNumber)
-              : Number(publicClient({ chainId: ChainId.BSC }).getBlockNumber()),
+              : publicClient({ chainId: ChainId.BSC })
+                  .getBlockNumber()
+                  .then((blockNumber) => Number(blockNumber)),
           ])
 
           const isHealthy = indexingStatusForCurrentVersion?.health === 'healthy'
