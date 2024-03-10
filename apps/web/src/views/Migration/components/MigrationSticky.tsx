@@ -1,9 +1,9 @@
+import { Trans, useTranslation } from '@pancakeswap/localization'
+import { Button, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import React from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
-import { Trans, useTranslation } from '@pancakeswap/localization'
-import { Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
-import ConnectWalletButton from 'components/ConnectWalletButton'
 
 const Container = styled.div`
   position: sticky;
@@ -61,7 +61,7 @@ const TextSubTitle = styled(Text)`
 interface MigrationStickyProps {
   step: number
   handleClick: () => void
-  version: 'v2' | 'v3'
+  version: 'v2' | 'v3' | 'bCake'
 }
 
 export const TEXT = {
@@ -111,6 +111,21 @@ export const TEXT = {
         title: <Trans>Staking to V3 Farms</Trans>,
         subTitle: <Trans>Start earning CAKE by staking your liquidity positions to V3 Farms!</Trans>,
         button: <Trans>Finish</Trans>,
+      },
+    ],
+  },
+  bCake: {
+    title: <Trans>PancakeSwap bCake Migration</Trans>,
+    steps: [
+      {
+        title: <Trans>Unstaking LP tokens from the old Farms and Position Managers</Trans>,
+        subTitle: <Trans>All the earned CAKE will be harvested to your wallet upon unstake.</Trans>,
+        button: <Trans>Next Steps</Trans>,
+      },
+      {
+        title: <Trans>Restake LP tokens to the new Farms and Position Managers</Trans>,
+        subTitle: <Trans>All trading fee earnings are included in the tokens returned.</Trans>,
+        button: <Trans>Next Steps</Trans>,
       },
     ],
   },
