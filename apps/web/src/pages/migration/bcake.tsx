@@ -1,5 +1,5 @@
 import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
-import Migration from '../views/Migration/v3'
+import Migration from 'views/Migration/bCake'
 
 const MigrationPage = () => <Migration />
 
