@@ -92,8 +92,6 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     autoRevalidate: apiAutoRevalidate,
   })
 
-  console.log(bestTradeFromQuoterApi)
-
   const quoterAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled
 
   const bestTradeFromQuoterWorker = useBestAMMTradeFromQuoterWorker({
@@ -101,7 +99,6 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled),
     autoRevalidate: quoterAutoRevalidate,
   })
-  console.log(bestTradeFromQuoterWorker)
 
   return useMemo(
     () => (isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoterWorker),
