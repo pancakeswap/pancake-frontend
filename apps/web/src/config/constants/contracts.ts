@@ -1,7 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { GAUGES_ADDRESS, GAUGES_CALC_ADDRESS } from '@pancakeswap/gauges'
-import { ICAKE } from '@pancakeswap/ifos'
 import { CAKE_VAULT } from '@pancakeswap/pools'
 import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
 import { DEPLOYER_ADDRESSES, NFT_POSITION_MANAGER_ADDRESSES } from '@pancakeswap/v3-sdk'
@@ -137,7 +136,6 @@ export default {
     [ChainId.BSC]: '0x52E5D1e24A4308ef1A221C949cb2F7cbbAFEE090',
     [ChainId.BSC_TESTNET]: '0x6e4B1D7C65E86f1723720a5fE8993f0908108b64',
   },
-  iCake: ICAKE,
   bCakeFarmBooster: {
     [ChainId.BSC]: '0xE4FAa3Ef5A9708C894435B0F39c2B440936A3A52',
     [ChainId.BSC_TESTNET]: '0x',
@@ -189,6 +187,7 @@ export default {
     [ChainId.BASE_TESTNET]: '0x8Ae8592a24CD13b7E09D2763E7d6A39E3c0D6bad',
     [ChainId.SCROLL_SEPOLIA]: '0x8Ae8592a24CD13b7E09D2763E7d6A39E3c0D6bad',
     [ChainId.SEPOLIA]: '0xbC203d7f83677c7ed3F7acEc959963E7F4ECC5C2',
+    [ChainId.ENDURANCE]: '0x963D7Fdc70DAA3864DA2A3f80883898a9Ad063Fe',
   },
   quoter: V3_QUOTER_ADDRESSES,
   v3Airdrop: {

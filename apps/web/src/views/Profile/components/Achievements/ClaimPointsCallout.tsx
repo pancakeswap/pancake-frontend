@@ -6,7 +6,6 @@ import { Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakesw
 import { useProfile } from 'state/profile/hooks'
 import { Achievement } from 'state/types'
 import { useTranslation } from '@pancakeswap/localization'
-import { getClaimableIfoData } from 'utils/achievements'
 import AchievementRow from './AchievementRow'
 
 const ClaimPointsCallout: React.FC<React.PropsWithChildren<{ onSuccess?: () => void }>> = ({ onSuccess = null }) => {
@@ -16,16 +15,7 @@ const ClaimPointsCallout: React.FC<React.PropsWithChildren<{ onSuccess?: () => v
   const { profile, refresh: refreshProfile } = useProfile()
   const { address: account } = useAccount()
 
-  useEffect(() => {
-    const fetchIfoClaims = async () => {
-      const ifoData = await getClaimableIfoData(account, t)
-      setClaimableAchievement(ifoData)
-    }
-
-    if (account) {
-      fetchIfoClaims()
-    }
-  }, [account, dispatch, setClaimableAchievement, t])
+  useEffect(() => {}, [account, dispatch, setClaimableAchievement, t])
 
   const handleCollectSuccess = (achievement: Achievement) => {
     refreshProfile()

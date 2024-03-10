@@ -583,13 +583,13 @@ export default function PoolPage() {
                     <NextLinkFromReactRouter
                       to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
                     >
-                      <Button disabled={!isOwnNFT} width="100%">
+                      <Button disabled={!isOwnNFT} width="100%" scale="sm">
                         {t('Add')}
                       </Button>
                     </NextLinkFromReactRouter>
                     {!removed && (
                       <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
-                        <Button disabled={!isOwnNFT} ml="4px" variant="secondary" width="100%">
+                        <Button disabled={!isOwnNFT} ml="8px" variant="secondary" width="100%" scale="sm">
                           {t('Remove')}
                         </Button>
                       </NextLinkFromReactRouter>

@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ButtonProps } from '@pancakeswap/uikit'
+import { Button, ButtonProps } from '@pancakeswap/uikit'
 // @ts-ignore
 // eslint-disable-next-line import/extensions
 import { useActiveHandle } from 'hooks/useEagerConnect.bmp.ts'
@@ -27,14 +27,9 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
 
   return (
     <>
-      <button
-        className={cn('rounded-full', 'btn-primary', 'rounded-full')}
-        onClick={handleClick}
-        {...props}
-        type="button"
-      >
+      <Button onClick={handleClick} {...props}>
         {children || <Trans>Connect Wallet</Trans>}
-      </button>
+      </Button>
     </>
   )
 }

@@ -18,10 +18,6 @@ import { formatExecutionPrice } from '../utils/exchange'
 
 const SwapModalFooterContainer = styled(AutoColumn)`
   margin-top: 24px;
-  padding: 16px;
-  border-radius: ${({ theme }) => theme.radii.default};
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background-color: ${({ theme }) => theme.colors.background};
 `
 
 export const SwapModalFooter = memo(function SwapModalFooter({
@@ -80,7 +76,9 @@ export const SwapModalFooter = memo(function SwapModalFooter({
     <>
       <SwapModalFooterContainer>
         <RowBetween align="center" mb="8px">
-          <Text fontSize="14px">{t('Price')}</Text>
+          <Text fontSize="14px" color="textSubtle">
+            {t('Price')}
+          </Text>
           <Text
             fontSize="14px"
             style={{
@@ -100,7 +98,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
 
         <RowBetween mb="8px">
           <RowFixed>
-            <Text fontSize="14px">
+            <Text fontSize="14px" color="textSubtle">
               {tradeType === TradeType.EXACT_INPUT ? t('Minimum received') : t('Maximum sold')}
             </Text>
             <QuestionHelper
@@ -124,7 +122,9 @@ export const SwapModalFooter = memo(function SwapModalFooter({
         </RowBetween>
         <RowBetween mb="8px">
           <RowFixed>
-            <Text fontSize="14px">{t('Price Impact')}</Text>
+            <Text fontSize="14px" color="textSubtle">
+              {t('Price Impact')}
+            </Text>
             <QuestionHelper
               ml="4px"
               placement="top"
@@ -154,7 +154,9 @@ export const SwapModalFooter = memo(function SwapModalFooter({
         </RowBetween>
         <RowBetween>
           <RowFixed>
-            <Text fontSize="14px">{t('Trading Fee')}</Text>
+            <Text fontSize="14px" color="textSubtle">
+              {t('Trading Fee')}
+            </Text>
             <QuestionHelper
               ml="4px"
               placement="top"

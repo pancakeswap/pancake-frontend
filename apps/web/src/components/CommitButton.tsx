@@ -17,9 +17,7 @@ export const CommitButton = (props: ButtonProps) => {
   const setHideWrongNetwork = useSetAtom(hideWrongNetworkModalAtom)
 
   return (
-    <button
-      type="button"
-      className="btn-primary"
+    <Button
       {...props}
       onClick={(e) => {
         if (isWrongNetwork) {

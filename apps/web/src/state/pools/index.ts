@@ -1,6 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
 import { getFarmsPrices } from '@pancakeswap/farms/farmPrices'
-import { fetchPublicIfoData, fetchUserIfoCredit } from '@pancakeswap/ifos'
 import {
   fetchFlexibleSideVaultUser,
   fetchPoolsAllowance,
@@ -398,24 +397,6 @@ export const fetchCakeVaultUserData = createAsyncThunk<
   return userData
 })
 
-export const fetchIfoPublicDataAsync = createAsyncThunk<PublicIfoData, ChainId>(
-  'ifoVault/fetchIfoPublicDataAsync',
-  async (chainId) => {
-    const publicIfoData = await fetchPublicIfoData(chainId, getViemClients)
-    return publicIfoData
-  },
-)
-
-export const fetchUserIfoCreditDataAsync =
-  ({ account, chainId }: { account: Address; chainId: ChainId }) =>
-  async (dispatch) => {
-    try {
-      const credit = await fetchUserIfoCredit({ account, chainId, provider: getViemClients })
-      dispatch(setIfoUserCreditData(credit))
-    } catch (error) {
-      console.error('[Ifo Credit Action] Error fetching user Ifo credit data', error)
-    }
-  }
 export const fetchCakeFlexibleSideVaultUserData = createAsyncThunk<
   SerializedVaultUser,
   { account: Address; chainId: ChainId }
@@ -522,11 +503,6 @@ export const PoolsSlice = createSlice({
     builder.addCase(fetchCakeVaultUserData.fulfilled, (state, action: PayloadAction<SerializedLockedVaultUser>) => {
       const userData = action.payload
       state.cakeVault = { ...state.cakeVault, userData }
-    })
-    // IFO
-    builder.addCase(fetchIfoPublicDataAsync.fulfilled, (state, action: PayloadAction<PublicIfoData>) => {
-      const { ceiling } = action.payload
-      state.ifo = { ...state.ifo, ceiling }
     })
     builder.addCase(
       fetchCakeFlexibleSideVaultUserData.fulfilled,

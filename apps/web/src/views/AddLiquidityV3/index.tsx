@@ -117,7 +117,7 @@ export function UniversalAddLiquidity({
       preferredFeeAmount ||
       (feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl))
         ? parseFloat(feeAmountFromUrl)
-        : undefined)
+        : 2500)
     )
   }, [preferredFeeAmount, feeAmountFromUrl])
 

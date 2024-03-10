@@ -314,6 +314,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         disabled={Boolean(wrapInputError)}
         onClick={onWrap}
         data-dd-action-name="Swap wrap button"
+        style={{ marginTop: '16px' }}
       >
         {wrapInputError ?? (wrapType === WrapType.WRAP ? t('Wrap') : wrapType === WrapType.UNWRAP ? t('Unwrap') : null)}
       </CommitButton>

@@ -14,10 +14,7 @@ const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartR
 const router = Router()
 
 const CACHE_TIME = {
-  [ChainId.ETHEREUM]: 10,
-  [ChainId.GOERLI]: 10,
-  [ChainId.BSC]: 2,
-  [ChainId.BSC_TESTNET]: 2,
+  [ChainId.ENDURANCE]: 2,
 }
 
 const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: viemProviders })
