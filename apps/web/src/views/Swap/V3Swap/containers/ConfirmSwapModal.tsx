@@ -146,7 +146,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
           <AddToWalletButton
             mt="39px"
             height="auto"
-            variant="tertiary"
+            variant="text"
             width="fit-content"
             padding="6.5px 20px"
             marginTextBetweenLogo="6px"
@@ -172,7 +172,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
           <AddToWalletButton
             mt="39px"
             height="auto"
-            variant="tertiary"
+            variant="text"
             width="fit-content"
             padding="6.5px 20px"
             marginTextBetweenLogo="6px"

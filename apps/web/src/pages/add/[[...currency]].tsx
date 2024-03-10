@@ -16,7 +16,6 @@ const AddLiquidityPage = () => {
   const router = useRouter()
 
   // fetching farm api instead of using redux store here to avoid huge amount of actions and hooks needed
-  const { data: farmsV2Public } = useFarmV2PublicAPI()
   const { data: farmV3Public } = useFarmsV3Public()
 
   const { currencyIdA, currencyIdB, feeAmount } = useCurrencyParams()
@@ -39,19 +38,8 @@ const AddLiquidityPage = () => {
         type: SELECTOR_TYPE.V3,
         feeAmount: hasV3Farm.feeAmount,
       }
-
-    const hasV2Farm = farmsV2Public?.find(
-      (farm) =>
-        farm.multiplier !== '0X' &&
-        ((farm.token.address === currencyA.wrapped.address && farm.quoteToken.address === currencyB.wrapped.address) ||
-          (farm.token.address === currencyB.wrapped.address && farm.quoteToken.address === currencyA.wrapped.address)),
-    )
-    return hasV2Farm
-      ? isStableFarm(hasV2Farm)
-        ? { type: SELECTOR_TYPE.STABLE }
-        : { type: SELECTOR_TYPE.V2 }
-      : undefined
-  }, [farmsV2Public, farmV3Public?.farmsWithPrice, currencyA, currencyB, router])
+    return { type: SELECTOR_TYPE.V3 }
+  }, [farmV3Public?.farmsWithPrice, currencyA, currencyB, router])
 
   const handleRefresh = useCallback(() => {
     router.replace(

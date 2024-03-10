@@ -312,20 +312,6 @@ export default function PoolListPage() {
                   {t('Hide closed positions')}
                 </Text>
               </Flex>
-
-              <ButtonMenu
-                scale="sm"
-                activeIndex={selectedTypeIndex}
-                onItemClick={(index) => setSelectedTypeIndex(index)}
-                variant="subtle"
-              >
-                <ButtonMenuItem>{t('All')}</ButtonMenuItem>
-                <ButtonMenuItem>V3</ButtonMenuItem>
-                <ButtonMenuItem display={isStableSwapSupported(chainId) ? 'inline-flex' : 'none'}>
-                  {t('StableSwap')}
-                </ButtonMenuItem>
-                <ButtonMenuItem>V2</ButtonMenuItem>
-              </ButtonMenu>
             </>
           }
         />

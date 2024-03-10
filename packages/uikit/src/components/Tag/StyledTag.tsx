@@ -27,10 +27,12 @@ const getOutlineStyles = ({ outline, theme, variant: variantKey = variants.PRIMA
 export const StyledTag = styled.div.withConfig({ shouldForwardProp })<ThemedProps>`
   align-items: center;
   border-radius: 16px;
-  color: #ffffff;
+  color: #ffcc47;
   display: inline-flex;
   font-weight: 400;
   white-space: nowrap;
+  background: none !important;
+  border: none !important;
 
   & > svg {
     fill: currentColor;

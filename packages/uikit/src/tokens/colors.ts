@@ -59,10 +59,10 @@ export const lightColors = {
 export const darkColors = {
   ...baseColors,
   ...additionalColors,
-  secondary: "#A881FC",
+  secondary: "#fff",
   secondary80: "#A881FC80",
   background: "#08060B",
-  backgroundDisabled: "#3c3742",
+  backgroundDisabled: "#2c2c2c",
   backgroundAlt: "#1c1c1e",
   backgroundAlt2: "rgba(39, 38, 44, 0.7)",
   cardBorder: "#383241",

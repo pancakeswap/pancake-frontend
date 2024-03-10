@@ -43,7 +43,7 @@ export function getV3Subgraphs({ noderealApiKey }: SubgraphParams) {
     [ChainId.SEPOLIA]: null,
     [ChainId.ARBITRUM_SEPOLIA]: null,
     [ChainId.BASE_SEPOLIA]: null,
-    [ChainId.ENDURANCE]: '',
+    [ChainId.ENDURANCE]: 'https://endurance-subgraph.fusionist.io/subgraphs/name/tesseract/exchange-v3',
   } satisfies Record<ChainId, string | null>
 }
 

@@ -59,7 +59,10 @@ const Menu = (props) => {
               <NextLink className={`menu-item ${pathname === '/swap' ? 'active' : ''}`} href="/swap">
                 Swap
               </NextLink>
-              <NextLink className={`menu-item ${pathname === '/liquidity' ? 'active' : ''}`} href="/liquidity">
+              <NextLink
+                className={`menu-item ${pathname?.includes('liquidity') || pathname?.includes('add') ? 'active' : ''}`}
+                href="/liquidity"
+              >
                 Liquidity
               </NextLink>
               <NextLink className={`menu-item ${pathname?.includes('nft') ? 'active' : ''}`} href="/nfts">
