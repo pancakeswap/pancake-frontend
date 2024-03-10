@@ -1,18 +1,14 @@
 import { languageList, useTranslation } from '@pancakeswap/localization'
-import { Menu as UikitMenu, footerLinks, useModal } from '@pancakeswap/uikit'
+import { footerLinks, Menu as UikitMenu, useModal } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
-import { NetworkSwitcher } from 'components/NetworkSwitcher'
-import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
 import useTheme from 'hooks/useTheme'
 import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
-import { useWebNotifications } from 'hooks/useWebNotifications'
 import { useRouter } from 'next/router'
-import { Suspense, lazy, useMemo } from 'react'
+import { lazy, useMemo } from 'react'
 import NextLink from 'next/link'
 import GlobalSettings from './GlobalSettings'
 import { SettingsMode } from './GlobalSettings/types'
@@ -66,7 +62,7 @@ const Menu = (props) => {
               <NextLink className={`menu-item ${pathname === '/liquidity' ? 'active' : ''}`} href="/liquidity">
                 Liquidity
               </NextLink>
-              <NextLink className={`menu-item ${pathname === '/nfts/list' ? 'active' : ''}`} href="/nfts/list">
+              <NextLink className={`menu-item ${pathname?.includes('nft') ? 'active' : ''}`} href="/nfts">
                 NFTs
               </NextLink>
             </div>

@@ -6,8 +6,6 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useBCakeFarmBoosterV3Contract, useBCakeFarmBoosterVeCakeContract, useMasterchefV3 } from 'hooks/useContract'
 import _toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
-import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
-import { CakeLockStatus } from 'views/CakeStaking/types'
 import { useContractRead } from 'wagmi'
 import { PRECISION_FACTOR, getUserMultiplier } from './multiplierAPI'
 

@@ -19,7 +19,7 @@ export const CommitButton = (props: ButtonProps) => {
   return (
     <button
       type="button"
-      className="btn-primary"
+      className="btn-primary active:opacity-80"
       {...props}
       onClick={(e) => {
         if (isWrongNetwork) {

@@ -18,7 +18,6 @@ import { useTotalIFOSold } from './hooks/useTotalIFOSold'
 const CakeStaking = () => {
   const { t } = useTranslation()
   const gaugesVotingCount = useGaugesVotingCount()
-  const snapshotProposalsCount = useSnapshotProposalsCount()
   const totalCakeDistributed = useCakeDistributed()
   const [cakeRewardModalVisible, setCakeRewardModalVisible] = useState(false)
   const totalIFOSold = useTotalIFOSold()
@@ -101,20 +100,6 @@ const CakeStaking = () => {
               />
             }
             dataText="2.5x"
-          />
-          <BenefitCard
-            type="snapshotVoting"
-            headSlot={
-              <QuestionHelper
-                size="20px"
-                text={t(
-                  'Use veCAKE as your Snapshot voting power to vote on governance proposals. Including important protocol decisions, and adding new farming gauges.',
-                )}
-                placement="top"
-                ml="4px"
-              />
-            }
-            dataText={`${snapshotProposalsCount}`}
           />
           <BenefitCard
             type="ifo"

@@ -14,7 +14,7 @@ export function createViemPublicClients({ transportSignal }: CreatePublicClientP
       [cur.id]: createPublicClient({
         chain: cur,
         transport: fallback(
-          (PUBLIC_NODES[cur.id] as string[]).map((url) =>
+          (PUBLIC_NODES[cur.id] as readonly string[]).map((url) =>
             http(url, {
               timeout: 10_000,
               fetchOptions: {
@@ -28,7 +28,7 @@ export function createViemPublicClients({ transportSignal }: CreatePublicClientP
         ),
         batch: {
           multicall: {
-            batchSize: cur.id === ChainId.POLYGON_ZKEVM ? 128 : 1024 * 200,
+            batchSize: 1024 * 200,
             wait: 16,
           },
         },
