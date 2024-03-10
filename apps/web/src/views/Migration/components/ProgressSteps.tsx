@@ -29,7 +29,7 @@ const StyledStep = styled.div<{
   confirmed?: boolean
   disabled?: boolean
   canHover?: boolean
-  stepHairStyles: { left: string; width: string }
+  $stepHairStyles: { left: string; width: string }
 }>`
   position: relative;
   display: flex;
@@ -87,9 +87,9 @@ const StyledStep = styled.div<{
     margin-top: 0;
 
     &:before {
-      width: ${({ stepHairStyles }) => stepHairStyles.width};
+      width: ${({ $stepHairStyles }) => $stepHairStyles.width};
       height: 1px;
-      left: ${({ stepHairStyles }) => stepHairStyles.left};
+      left: ${({ $stepHairStyles }) => $stepHairStyles.left};
       top: 24px;
     }
   }
@@ -159,7 +159,7 @@ export const MigrationProgressSteps: React.FC<React.PropsWithChildren<ProgressAr
             <StyledStep
               // eslint-disable-next-line react/no-array-index-key
               key={index}
-              stepHairStyles={stepHairStyles}
+              $stepHairStyles={stepHairStyles}
               canHover={step.canHover}
               confirmed={step.stepId === pickedStep}
               disabled={step.stepId !== pickedStep && index + 1 > pickedStep}
