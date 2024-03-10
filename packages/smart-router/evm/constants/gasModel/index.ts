@@ -20,6 +20,7 @@ import {
   scrollSepoliaTokens,
   zkSyncTestnetTokens,
   zksyncTokens,
+  enduranceTokens,
 } from '@pancakeswap/tokens'
 
 export const usdGasTokensByChain = {
@@ -43,6 +44,7 @@ export const usdGasTokensByChain = {
   [ChainId.SEPOLIA]: [scrollSepoliaTokens.usdc],
   [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc],
   [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc],
+  [ChainId.ENDURANCE]: [enduranceTokens.aceUSD],
 } satisfies Record<ChainId, Token[]>
 
 export * from './stableSwap'
