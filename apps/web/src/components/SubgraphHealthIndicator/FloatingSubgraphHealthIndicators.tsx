@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom'
 import { GRAPH_API_PREDICTION_BNB } from '@pancakeswap/prediction'
 import { GRAPH_API_LOTTERY, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { getPortalRoot } from '@pancakeswap/uikit'
 import { SubgraphHealthIndicator, SubgraphHealthIndicatorProps } from './SubgraphHealthIndicator'
 
 interface FactoryParams {
@@ -23,7 +24,11 @@ export function subgraphHealthIndicatorFactory({ getSubgraphName }: FactoryParam
       return null
     }
 
-    return createPortal(<SubgraphHealthIndicator subgraphName={subgraphName} {...props} />, document.body)
+    const portalRoot = getPortalRoot()
+
+    return portalRoot
+      ? createPortal(<SubgraphHealthIndicator subgraphName={subgraphName} {...props} />, portalRoot)
+      : null
   }
 }
 
