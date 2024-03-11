@@ -9,6 +9,7 @@ import { ConfirmationPendingContent } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { CurrencyInput } from 'components/CurrencyInput'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { BOOSTED_FARM_V3_GAS_LIMIT } from 'config'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerBCakeWrapperContract, usePositionManagerWrapperContract } from 'hooks/useContract'
@@ -279,6 +280,7 @@ export const AddLiquidity = memo(function AddLiquidity({
               {
                 account: account ?? '0x',
                 chain,
+                gasLimit: BOOSTED_FARM_V3_GAS_LIMIT,
               },
             )
         : () =>

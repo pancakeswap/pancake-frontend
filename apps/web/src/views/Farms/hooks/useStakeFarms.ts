@@ -1,3 +1,4 @@
+import { BOOSTED_FARM_V3_GAS_LIMIT } from 'config'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMasterchef, useNonBscVault, useV2SSBCakeWrapperContract } from 'hooks/useContract'
 import { useCallback } from 'react'
@@ -37,7 +38,7 @@ export const useBCakeStakeFarms = (bCakeWrapperAddress) => {
 
   const handleStake = useCallback(
     async (amount: string) => {
-      return bCakeStakeFarm(V2SSBCakeContract, amount, gasPrice)
+      return bCakeStakeFarm(V2SSBCakeContract, amount, gasPrice, BOOSTED_FARM_V3_GAS_LIMIT)
     },
     [V2SSBCakeContract, gasPrice],
   )
