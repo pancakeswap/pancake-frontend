@@ -5,6 +5,7 @@ import {
 } from '@pancakeswap/position-managers'
 import { Percent } from '@pancakeswap/sdk'
 import { useQuery } from '@tanstack/react-query'
+import BigNumber from 'bignumber.js'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import {
   useContract,
@@ -183,7 +184,6 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
   const poolAndUserAmountsReady = (userAmounts || bCakeUserAmounts) && poolAmounts
   const bCakeDataReady = bCakeStaticData && bCakeUserAmounts
   const userLpAmounts = isBCakeWrapper ? bCakeUserAmounts?.[0] ?? BigInt(0) : userAmounts?.[0] ?? BigInt(0)
-
   return {
     pendingReward,
     poolToken0Amounts: poolAmounts?.token0Amounts ?? BigInt(0),
@@ -209,7 +209,9 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
     totalSupplyAmounts: poolAmounts?.totalSupply,
     userLpAmounts,
     boosterMultiplier:
-      bCakeDataReady && isBCakeWrapper ? Number(bCakeUserAmounts[2] / bCakeStaticData.boosterPrecision) : 0,
+      bCakeDataReady && isBCakeWrapper
+        ? Number(new BigNumber(bCakeUserAmounts?.[2].toString()).div(bCakeStaticData.boosterPrecision.toString()))
+        : 0,
     precision: poolAmounts?.precision,
     adapterAddress: staticData?.adapterAddress,
     vaultAddress: poolAmounts?.vaultAddress,
