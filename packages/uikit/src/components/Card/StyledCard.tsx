@@ -39,6 +39,7 @@ export const StyledCard = styled.div.withConfig({
   color: ${({ theme, isDisabled }) => theme.colors[isDisabled ? "textDisabled" : "text"]};
   overflow: hidden;
   position: relative;
+  border: 1px solid #363636;
 
   ${({ isActive }) =>
     isActive &&
@@ -46,8 +47,6 @@ export const StyledCard = styled.div.withConfig({
       animation: ${promotedGradient} 3s ease infinite;
       background-size: 400% 400%;
     `}
-
-  padding: 1px 1px 1px 1px;
 
   ${space}
 `;
