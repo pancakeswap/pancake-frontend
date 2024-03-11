@@ -1,12 +1,12 @@
 {
-  "short_name": "PancakeSwap",
-  "name": "PancakeSwap",
-  "description": "Farm CAKE with Pancake LP Tokens",
-  "homepage_url": "https://pancakeswap.finance",
+  "short_name": "Tesseract",
+  "name": "Tesseract",
+  "description": "Trade, earn, and own tokens on the all-in-one DEX",
+  "homepage_url": "https://tesseract.world",
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#1FC7D4",
-  "background_color": "#ffffff",
+  "theme_color": "#FFCC47",
+  "background_color": "#3e3e3e",
   "orientation": "portrait",
   "icons": [
     {
@@ -20,5 +20,5 @@
       "sizes": "256x256"
     }
   ],
-  "iconPath": "/images/cake.svg"
+  "iconPath": "/images/logo.svg"
 }
