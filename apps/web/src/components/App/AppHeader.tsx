@@ -32,7 +32,6 @@ const AppHeaderContainer = styled(Flex)<{ borderHidden?: boolean }>`
   justify-content: space-between;
   padding: 24px;
   width: 100%;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
 
   ${({ borderHidden }) =>
     borderHidden &&
@@ -42,9 +41,7 @@ const AppHeaderContainer = styled(Flex)<{ borderHidden?: boolean }>`
 `
 
 const FilterSection = styled(AutoRow)`
-  padding-top: 16px;
   margin-top: 16px;
-  border-top: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
 const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
@@ -104,11 +101,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
               </Text>
             </Flex>
           )}
-          {filter && (
-            <FilterSection justifyContent="space-between" gap="8px">
-              {filter}
-            </FilterSection>
-          )}
+          {filter && <FilterSection justifyContent="flex-end">{filter}</FilterSection>}
         </Flex>
       </Flex>
     </AppHeaderContainer>

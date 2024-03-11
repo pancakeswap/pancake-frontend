@@ -2,6 +2,11 @@
 
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import { ellipseAddress } from 'utils/address'
+import dayjs from 'dayjs'
 import Activity from './component/activity'
 import Adventure from './component/adventure'
 import Offer from './component/offer'
@@ -13,6 +18,38 @@ import { getSgtDetail } from '../api/sgt'
 import { Wrapper } from './index.style'
 
 export default function SGTDetail() {
+  const router = useRouter()
+  const { id } = router.query
+  const { data: nft } = useQuery({
+    queryKey: ['nftDetail', id],
+    queryFn: () => {
+      return fetch(`http://10.1.1.100:9000/nft/detail?nft_id=${id}`, {
+        method: 'GET',
+      }).then((r) => r.json())
+    },
+    enabled: !!id,
+  })
+  const { data: offers } = useQuery({
+    queryKey: ['nftOffers', id],
+    queryFn: () => {
+      return fetch(`http://10.1.1.100:9000/orders?chain_id=2015&nft_id=${id}&order_market_type=Offer`, {
+        method: 'GET',
+      }).then((r) => r.json())
+    },
+    enabled: !!id,
+  })
+  const { data: activitiesD } = useQuery({
+    queryKey: ['nftActivities', id],
+    queryFn: () => {
+      return fetch(`http://10.1.1.100:9000/nft/activity?page_number=1&page_size=10&nft_id=${id}`, {
+        method: 'GET',
+      }).then((r) => r.json())
+    },
+    enabled: !!id,
+  })
+  console.log(offers)
+  const activities = activitiesD?.data
+  console.log(activities)
   const [detail, setDetail] = useState()
 
   useEffect(() => {
@@ -26,7 +63,7 @@ export default function SGTDetail() {
     <Wrapper>
       <div className="sgt-detail__wrapper">
         <div className="sgt-detail__left">
-          <Image src={defaultGame} alt="game" className="sgt-detail__left-image" />
+          <img src={nft?.nft_image} alt="game" className="sgt-detail__left-image" />
           <div className="sgt-detail__left-trait-box">
             <div className="sgt-detail__left-trait-title-box">
               <div className="sgt-detail__left-trait-title">Traits</div>
@@ -63,16 +100,15 @@ export default function SGTDetail() {
             <div className="sgt-detail__left-detail-title-box">
               <div className="sgt-detail__left-detail-title">NFT Details</div>
             </div>
-            <div className="sgt-detail__left-detail-desc">
-              Anya was a subject in a secret and morally unethical experiment that aimed to create children with psychic
-              abilities. As a result, she gained telepathic abilities.Anya was a subject in a secret and morally
-              unethical experiment that aimed to create children with psychic abilities. As a result, she gained
-              telepathic abilities.
-            </div>
+            <div className="sgt-detail__left-detail-desc">{nft?.nft_description}</div>
             {[
               {
                 label: 'Contract adress',
-                value: '0xc41...',
+                value: (
+                  <Link href={nft?.collection_contract_address ?? ''}>
+                    {ellipseAddress(nft?.collection_contract_address)}
+                  </Link>
+                ),
               },
               {
                 label: 'Created',
@@ -80,15 +116,15 @@ export default function SGTDetail() {
               },
               {
                 label: 'Token ID',
-                value: '#2761',
+                value: `#${nft?.token_id}`,
               },
               {
                 label: 'Last Updated',
-                value: '2 years ago',
+                value: dayjs(nft?.last_updated).unix(),
               },
               {
                 label: 'Metadata',
-                value: 'Https://Tori.whekwwekwwekww',
+                value: nft?.metadata,
               },
             ].map((item) => {
               return (
@@ -103,7 +139,7 @@ export default function SGTDetail() {
         <div className="sgt-detail__right">
           <div>
             <div className="sgt-detail__right-block">
-              <Adventure />
+              <Adventure nft={nft} />
             </div>
             <div className="sgt-detail__right-block">
               <div className="sgt-detail__right-block-title">Offer</div>
@@ -111,7 +147,7 @@ export default function SGTDetail() {
             </div>
             <div className="sgt-detail__right-block">
               <div className="sgt-detail__right-block-title">Activity</div>
-              <Activity />
+              <Activity activities={activities} />
             </div>
           </div>
         </div>

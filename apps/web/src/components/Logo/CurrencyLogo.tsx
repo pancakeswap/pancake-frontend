@@ -1,6 +1,6 @@
 import { Currency } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { BinanceIcon, TokenLogo } from '@pancakeswap/uikit'
+import { AceIcon, BinanceIcon, TokenLogo } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { styled } from 'styled-components'
@@ -51,12 +51,7 @@ export default function CurrencyLogo({ currency, size = '24px', style }: LogoPro
   }, [currency, uriLocations])
 
   if (currency?.isNative) {
-    if (currency.chainId === ChainId.BSC) {
-      return <BinanceIcon width={size} style={style} />
-    }
-    return (
-      <StyledLogo size={size} srcs={[`${ASSET_CDN}/web/native/${currency.chainId}.png`]} width={size} style={style} />
-    )
+    return <AceIcon width={size} style={style} />
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />

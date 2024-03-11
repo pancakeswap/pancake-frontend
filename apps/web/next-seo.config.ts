@@ -3,15 +3,15 @@ import { DefaultSeoProps } from 'next-seo'
 export const SEO: DefaultSeoProps = {
   titleTemplate: '%s | Tesseract',
   defaultTitle: 'Tesseract',
-  description: 'Trade, earn, and own crypto on the all-in-one multichain DEX',
+  description: 'Trade, earn, and own token/nft on the all-in-one DEX',
   twitter: {
     cardType: 'summary_large_image',
     handle: '@Tesseract',
     site: '@Tesseract',
   },
   openGraph: {
-    title: "🥞 Tesseract - Everyone's Favorite DEX",
-    description: 'Trade, earn, and own crypto on the all-in-one multichain DEX',
-    images: [{ url: 'https://assets.tesseract.world/web/og/v2/hero.jpg' }],
+    title: "Tesseract - Everyone's Favorite DEX",
+    description: 'Trade, earn, and own token/nft on the all-in-one DEX',
+    images: [{ url: 'https://cdn.jsdelivr.net/gh/tesseract-world/assets@master/tesseract-banner.png' }],
   },
 }

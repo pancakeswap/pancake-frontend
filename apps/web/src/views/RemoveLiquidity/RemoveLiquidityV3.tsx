@@ -396,21 +396,11 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
               {liquidityValue0 && liquidityValue1 ? <RangeTag removed={removed} outOfRange={outOfRange} /> : null}
             </Flex>
           </AutoRow>
-          <Text fontSize="12px" color="secondary" bold textTransform="uppercase" mb="4px">
-            {t('Amount of Liquidity to Remove')}
-          </Text>
           <BorderCard style={{ padding: '16px' }}>
-            <Text fontSize="40px" bold mb="16px" style={{ lineHeight: 1 }}>
+            <Text fontSize="40px" bold mb="10px" style={{ lineHeight: 1 }}>
               {percentForSlider}%
             </Text>
-            <Slider
-              name="lp-amount"
-              min={0}
-              max={100}
-              value={percentForSlider}
-              onValueChanged={handleChangePercent}
-              mb="16px"
-            />
+            <Slider name="lp-amount" min={0} max={100} value={percentForSlider} onValueChanged={handleChangePercent} />
             <Flex flexWrap="wrap" justifyContent="space-evenly">
               <Button variant="tertiary" scale="sm" onClick={() => onPercentSelect(25)}>
                 25%

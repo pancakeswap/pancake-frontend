@@ -1,18 +1,10 @@
 import Image from 'next/image'
+import { ellipseAddress } from 'utils/address'
 import copy from '../../../../../public/images/nfts2/copy.svg'
 
 import { Wrapper } from './activity.style'
 
-export default function Activity() {
-  const defaultItem = {
-    id: 1,
-    type: 'List',
-    price: '15.24 ACE',
-    from: '0xa323',
-    to: '0xa323',
-    time: '10mo ago',
-  }
-  const datasetList = [defaultItem, defaultItem, defaultItem, defaultItem]
+export default function Activity({ activities }: { activities: any[] }) {
   const columns = [
     {
       name: 'All Types',
@@ -71,11 +63,11 @@ export default function Activity() {
             })}
           </div>
           <div className="sensei__table-body">
-            {datasetList.map((item, index) => {
+            {activities?.map((activity, index) => {
               return (
-                <div className="sensei__table-body-tr" key={item.price}>
+                <div className="sensei__table-body-tr" key={activity.price}>
                   <div style={{ ...columns[0].style, ...(columns[0].tdStyle || {}) }} className="sensei__table-body-td">
-                    {item.type}
+                    {activity.activity_type}
                     {/* <Image
                     className="sgt-offer__icon"
                     alt="icon"
@@ -83,11 +75,11 @@ export default function Activity() {
                   ></Image> */}
                   </div>
                   <div style={{ ...columns[1].style, ...(columns[1].tdStyle || {}) }} className="sensei__table-body-td">
-                    {item.price}
+                    {activity.price}
                   </div>
 
                   <div style={{ ...columns[2].style, ...(columns[2].tdStyle || {}) }} className="sensei__table-body-td">
-                    {item.from}
+                    {activity?.activity_type === 'Mint' ? 'Null' : ellipseAddress(activity?.from)}
                     <Image
                       src={copy}
                       alt="sgt"
@@ -97,7 +89,7 @@ export default function Activity() {
                     />
                   </div>
                   <div style={{ ...columns[3].style, ...(columns[3].tdStyle || {}) }} className="sensei__table-body-td">
-                    {item.to}
+                    {ellipseAddress(activity?.to)}
                     <Image
                       src={copy}
                       alt="sgt"
@@ -108,7 +100,7 @@ export default function Activity() {
                   </div>
 
                   <div style={{ ...columns[4].style, ...(columns[4].tdStyle || {}) }} className="sensei__table-body-td">
-                    {item.time}
+                    {activity.time}
                   </div>
                 </div>
               )

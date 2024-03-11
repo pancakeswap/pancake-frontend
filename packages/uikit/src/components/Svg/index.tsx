@@ -20,6 +20,7 @@ export { default as BackForwardIcon } from "./Icons/BackForwardIcon";
 export { BarChartIcon } from "./Icons/BarChart";
 export { BaseIcon } from "./Icons/Base";
 export { default as BinanceIcon } from "./Icons/Binance";
+export { default as AceIcon } from "./Icons/Ace";
 export { default as BinanceChainIcon } from "./Icons/BinanceChain";
 export { default as BirthdayIcon } from "./Icons/Birthday";
 export { default as BlockIcon } from "./Icons/Block";

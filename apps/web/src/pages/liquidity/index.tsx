@@ -45,9 +45,7 @@ import useStableConfig, {
   useLPTokensWithBalanceByAccount,
 } from 'views/Swap/hooks/useStableConfig'
 
-const Body = styled(CardBody)`
-  background-color: ${({ theme }) => theme.colors.dropdownDeep};
-`
+const Body = styled(CardBody)``
 
 export const StableContextProvider = (props: { pair: LPStablePair; account: string | undefined }) => {
   const stableConfig = useStableConfig({
@@ -291,7 +289,7 @@ export default function PoolListPage() {
       >
         <AppHeader
           title={t('Your Liquidity')}
-          subtitle={t('List of your liquidity positions')}
+          subtitle={t('')}
           IconSlot={
             <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
               <HistoryIcon color="textSubtle" width="24px" />

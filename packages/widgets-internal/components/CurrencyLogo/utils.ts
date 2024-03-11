@@ -18,9 +18,7 @@ const mapping: { [key: number]: string } = {
 export const getTokenLogoURL = memoize(
   (token?: Token) => {
     if (token && mapping[token.chainId]) {
-      return `https://assets-cdn.trustwallet.com/blockchains/${mapping[token.chainId]}/assets/${getAddress(
-        token.address
-      )}/logo.png`;
+      return `https://cdn.jsdelivr.net/gh/tesseract-world/assets@master/${token?.symbol?.toLocaleLowerCase()}.png`;
     }
     return null;
   },
@@ -48,6 +46,7 @@ const chainName: { [key: number]: string } = {
   [ChainId.LINEA]: "linea",
   [ChainId.BASE]: "base",
   [ChainId.OPBNB]: "opbnb",
+  [ChainId.ENDURANCE]: "endurance",
 };
 
 // TODO: move to utils or token-list
@@ -56,9 +55,7 @@ export const getTokenListBaseURL = (chainId: number) =>
 
 export const getTokenListTokenUrl = (token: Token) =>
   Object.keys(chainName).includes(String(token.chainId))
-    ? `https://tokens.pancakeswap.finance/images/${
-        token.chainId === ChainId.BSC ? "" : `${chainName[token.chainId]}/`
-      }${token.address}.png`
+    ? `https://cdn.jsdelivr.net/gh/tesseract-world/assets@master/${token?.symbol?.toLocaleLowerCase()}.png`
     : null;
 
 const commonCurrencySymbols = [
@@ -80,7 +77,7 @@ export const getCommonCurrencyUrl = memoize(
 export const getCommonCurrencyUrlBySymbol = memoize(
   (symbol?: string): string | undefined =>
     symbol && commonCurrencySymbols.includes(symbol)
-      ? `https://tokens.pancakeswap.finance/images/symbol/${symbol.toLocaleLowerCase()}.png`
+      ? `https://cdn.jsdelivr.net/gh/tesseract-world/assets@master/${symbol.toLocaleLowerCase()}.png`
       : undefined,
   (symbol?: string) => `logoUrls#symbol#${symbol}`
 );

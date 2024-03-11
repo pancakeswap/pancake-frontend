@@ -214,19 +214,6 @@ export default function FeeSelector({
               return null
             })}
           </SelectContainer>
-          {currencyA && currencyB && v2PairHasBetterTokenAmounts && handleSelectV2 && (
-            <AtomBox textAlign="center">
-              {/*
-                using state instead of replacing url to /v2 here
-                avoid pages keep in v2 when user change the tokens in selection
-              */}
-              <Button variant="text" onClick={handleSelectV2}>
-                <Text color="textSubtle" bold>
-                  {t('Add V2 Liquidity')}
-                </Text>
-              </Button>
-            </AtomBox>
-          )}
         </>
       }
     />

@@ -16,9 +16,7 @@ const mapping = {
 const getTokenLogoURL = memoize(
   (token?: Token) => {
     if (token && mapping[token.chainId] && isAddress(token.address)) {
-      return `https://assets-cdn.trustwallet.com/blockchains/${mapping[token.chainId]}/assets/${safeGetAddress(
-        token.address,
-      )}/logo.png`
+      return `https://cdn.jsdelivr.net/gh/tesseract-world/assets@master/${token?.symbol?.toLocaleLowerCase()}.png`
     }
     return null
   },

@@ -15,10 +15,9 @@ const FeeOptionContainer = styled.div<{ active: boolean }>`
   ${({ active }) =>
     active &&
     css`
-      background-image: ${({ theme }) => theme.colors.gradientBold};
+      border: 1px solid ${({ theme }) => theme.colors.primary};
     `}
   border-radius: 16px;
-  padding: 2px 2px 4px 2px;
   &:hover {
     opacity: 0.7;
   }
@@ -46,7 +45,7 @@ export function FeeOption({
   return (
     <FeeOptionContainer active={active} onClick={onClick}>
       <LightTertiaryCard active={active} padding={['4px', '4px', '8px']} height="100%">
-        <AutoColumn gap="sm" justify="flex-start" height="100%" justifyItems="center">
+        <AutoColumn justify="flex-start" height="100%" justifyItems="center">
           <Text textAlign="center">
             {FEE_AMOUNT_DETAIL[feeAmount].label}% {feeAmount === largestUsageFeeTier && '🔥'}
           </Text>

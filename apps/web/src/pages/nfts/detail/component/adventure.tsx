@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { useState } from 'react'
+import { ellipseAddress } from 'utils/address'
 import avatarPng from '../../../../../public/images/nfts2/avatar.png'
 import Button from '../../../../components/Button'
 import Modal from '../../../../components/Modal2'
@@ -9,7 +10,7 @@ import infoWarn from '../../../../../public/images/nfts2/info-warn.svg'
 import TokenSelect from '../../../../components/TokenSelect'
 import { Wrapper } from './adventure.style'
 
-export default function Adventure() {
+export default function Adventure({ nft }: { nft: any }) {
   const [showListModal, setShowListModal] = useState(false)
   const [showMakeOfferModal, setShowMakeOfferModal] = useState(false)
   const [showListConfirmModal, setShowListConfirmModal] = useState(false)
@@ -17,19 +18,15 @@ export default function Adventure() {
   const dataList = [
     {
       label: 'Current Price',
-      value: '17.18 ACE',
+      value: `${nft?.price} ACE`,
     },
     {
       label: 'Last sale',
-      value: '12.26 ACE',
+      value: `${nft?.last_sale_price} ACE`,
     },
     {
       label: 'Top Bid',
-      value: '12.26 ACE',
-    },
-    {
-      label: 'Rarity',
-      value: '8888',
+      value: `${nft?.top_bid} ACE`,
     },
     {
       label: 'Collection  Floor',
@@ -40,11 +37,11 @@ export default function Adventure() {
     <Wrapper>
       <div className="sgt-adventure__wrapper">
         <div className="sgt-adventure__user">
-          <Image src={avatarPng} alt="avatar" className="sgt-adventure__user-avatar" />
-          <div className="sgt-adventure__user-name">Cyberpunk City Adventure</div>
+          <img src={nft?.collection_avatar} alt="avatar" className="sgt-adventure__user-avatar" />
+          <div className="sgt-adventure__user-name">{nft?.collection_name}</div>
         </div>
-        <div className="sgt-adventure__title">Adventure #9801</div>
-        <div className="sgt-adventure__owner">Owner - d24c8d</div>
+        <div className="sgt-adventure__title">{nft?.nft_name}</div>
+        <div className="sgt-adventure__owner">Owner - {ellipseAddress(nft?.owner)}</div>
         <div className="sgt-adventure__list">
           {dataList.map((item, index) => {
             return (
@@ -69,6 +66,7 @@ export default function Adventure() {
               marginRight: '8px',
               width: '260px',
             }}
+            onClick={() => setShowMakeOfferModal(true)}
           >
             Make offer
           </Button>
