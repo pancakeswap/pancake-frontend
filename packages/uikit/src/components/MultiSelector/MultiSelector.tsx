@@ -1,6 +1,9 @@
-import { ArrowDropDownIcon, Box, Checkbox, OptionProps, Text } from '@pancakeswap/uikit'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { css, styled } from 'styled-components'
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { css, styled } from "styled-components";
+import { Box } from "../Box";
+import { Checkbox } from "../Checkbox";
+import { ArrowDropDownIcon } from "../Svg";
+import { Text } from "../Text";
 
 const DropDownHeader = styled.div`
   width: 100%;
@@ -13,7 +16,7 @@ const DropDownHeader = styled.div`
   border-radius: 16px;
   background: ${({ theme }) => theme.colors.input};
   transition: border-radius 0.15s;
-`
+`;
 
 const DropDownListContainer = styled.div`
   min-width: 100px;
@@ -27,7 +30,7 @@ const DropDownListContainer = styled.div`
   transform-origin: top;
   opacity: 0;
   width: 100%;
-`
+`;
 
 const DropDownContainer = styled(Box)<{ isOpen: boolean }>`
   cursor: pointer;
@@ -66,14 +69,14 @@ const DropDownContainer = styled(Box)<{ isOpen: boolean }>`
     top: 50%;
     transform: translateY(-50%);
   }
-`
+`;
 
 const DropDownList = styled.ul`
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   z-index: ${({ theme }) => theme.zIndices.dropdown};
-`
+`;
 
 const ListItem = styled.li`
   display: flex;
@@ -86,17 +89,19 @@ const ListItem = styled.li`
   input {
     margin: 0 8px 0 0;
   }
-`
+`;
 
-export interface MultiSelectorOptionsProps extends OptionProps {
-  id: number
+export interface MultiSelectorOptionsProps {
+  id: number;
+  label: string;
+  value: any;
 }
 
 export interface MultiSelectorProps {
-  pickMultiSelect: Array<number>
-  placeHolderText?: string
-  onOptionChange: (data: Array<number>) => void
-  options: MultiSelectorOptionsProps[]
+  pickMultiSelect: Array<number>;
+  placeHolderText: string;
+  onOptionChange: (data: Array<number>) => void;
+  options: MultiSelectorOptionsProps[];
 }
 
 const MultiSelector: React.FunctionComponent<React.PropsWithChildren<MultiSelectorProps>> = ({
@@ -106,52 +111,52 @@ const MultiSelector: React.FunctionComponent<React.PropsWithChildren<MultiSelect
   placeHolderText,
   ...props
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const handleClickOutside = () => setIsOpen(false)
+    const handleClickOutside = () => setIsOpen(false);
 
-    document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
-  }, [])
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
-  const isCheckboxValid = useCallback((id: number) => pickMultiSelect.includes(id), [pickMultiSelect])
+  const isCheckboxValid = useCallback((id: number) => pickMultiSelect.includes(id), [pickMultiSelect]);
 
   const toggling = (event: React.MouseEvent<HTMLDivElement>) => {
-    setIsOpen(!isOpen)
-    event.stopPropagation()
-  }
+    setIsOpen(!isOpen);
+    event.stopPropagation();
+  };
 
   const onOptionClicked = (id: number) => (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setIsOpen(false)
+    e.stopPropagation();
+    setIsOpen(false);
 
-    const hasPickedData = isCheckboxValid(id)
+    const hasPickedData = isCheckboxValid(id);
     if (hasPickedData) {
-      const newData = pickMultiSelect.filter((i) => i !== id)
-      onOptionChange(newData)
+      const newData = pickMultiSelect.filter((i) => i !== id);
+      onOptionChange(newData);
     } else {
-      const newData = [...pickMultiSelect, id]
-      onOptionChange(newData)
+      const newData = [...pickMultiSelect, id];
+      onOptionChange(newData);
     }
-  }
+  };
 
   const hasOptionsPicked = useMemo(() => {
     if (pickMultiSelect.length > 0) {
-      const hasIndex = options.filter((i) => pickMultiSelect.includes(i.id))
-      return hasIndex.length > 0
+      const hasIndex = options.filter((i) => pickMultiSelect.includes(i.id));
+      return hasIndex.length > 0;
     }
-    return false
-  }, [options, pickMultiSelect])
+    return false;
+  }, [options, pickMultiSelect]);
 
   const headerTextDisplay = useMemo(() => {
     const textDisplay = pickMultiSelect
       .map((i) => options.find((j) => j.id === i)?.label)
       .filter((i) => Boolean(i))
-      .join(', ')
+      .join(", ");
 
-    return textDisplay
-  }, [options, pickMultiSelect])
+    return textDisplay;
+  }, [options, pickMultiSelect]);
 
   return (
     <DropDownContainer isOpen={isOpen} {...props}>
@@ -171,14 +176,14 @@ const MultiSelector: React.FunctionComponent<React.PropsWithChildren<MultiSelect
         <DropDownList>
           {options.map((option) => (
             <ListItem key={option.id} onClick={onOptionClicked(option.id)}>
-              <Checkbox color="secondary" scale="xs" checked={isCheckboxValid(option.id)} />
+              <Checkbox scale="xs" color="secondary" checked={isCheckboxValid(option.id)} />
               {option.label}
             </ListItem>
           ))}
         </DropDownList>
       </DropDownListContainer>
     </DropDownContainer>
-  )
-}
+  );
+};
 
-export default MultiSelector
+export default MultiSelector;

@@ -1,10 +1,18 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AllBlogIcon, Box, Flex, FlexGap, StarFillIcon, Tag, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  AllBlogIcon,
+  Box,
+  Flex,
+  FlexGap,
+  MultiSelector,
+  StarFillIcon,
+  Tag,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { HookCard } from 'views/LandingV4/components/ExploreHooks/HookCard'
 import { GradientBox } from 'views/LandingV4/components/GradientBox'
-import MultiSelector from 'views/LandingV4/components/MultiSelector'
 import { ViewMoreButton } from 'views/LandingV4/components/ViewMoreButton'
 import { HooksConfig } from 'views/LandingV4/config'
 import { useSelectorConfig } from 'views/LandingV4/config/filterOptions'
