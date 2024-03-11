@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/universal-router-sdk",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "🛠 An SDK for building applications on top of Pancakeswap.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
