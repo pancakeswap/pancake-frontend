@@ -31,8 +31,9 @@ import {
 } from './useCommonPools'
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
-import { useGlobalWorker } from './useWorker'
 import { useSpeedQuote } from './useSpeedQuote'
+import { useTokenFee } from './useTokenFee'
+import { useGlobalWorker } from './useWorker'
 
 export class NoValidRouteError extends Error {
   constructor(message?: string) {
@@ -184,7 +185,28 @@ function bestTradeHookFactory({
       allowInconsistentBlock: true,
       enabled,
     })
-    const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
+
+    const { data: tokenInFee } = useTokenFee(baseCurrency && baseCurrency.isToken ? baseCurrency : undefined)
+    const { data: tokenOutFee } = useTokenFee(currency && currency.isToken ? currency : undefined)
+
+    const candidatePoolsWithoutV3WithFot = useMemo(() => {
+      let filterV3 = false
+      if (tokenInFee && tokenInFee.result.sellFeeBps > 0n) {
+        filterV3 = true
+      }
+      if (tokenOutFee && tokenOutFee.result.buyFeeBps > 0n) {
+        filterV3 = true
+      }
+      if (filterV3) {
+        return candidatePools?.filter((pool) => pool.type !== PoolType.V3)
+      }
+      return candidatePools
+    }, [candidatePools, tokenInFee, tokenOutFee])
+
+    const poolProvider = useMemo(
+      () => SmartRouter.createStaticPoolProvider(candidatePoolsWithoutV3WithFot),
+      [candidatePoolsWithoutV3WithFot],
+    )
     const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
     const deferQuotient = useDebounce(deferQuotientRaw, 500)
     const { data: quoteCurrencyUsdPrice } = useCurrencyUsdPrice(currency ?? undefined)
