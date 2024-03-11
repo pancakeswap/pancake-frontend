@@ -32,7 +32,7 @@ const getFeeOnTransferDetectorContract = <TPublicClient extends PublicClient>(pu
   return null
 }
 
-const AMOUNT = 100000n
+const AMOUNT = 100_000n
 
 export async function fetchTokenFeeOnTransfer<TPublicClient extends PublicClient>(
   publicClient: TPublicClient,
