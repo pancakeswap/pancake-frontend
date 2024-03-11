@@ -31,11 +31,11 @@ const WalletTransactions: React.FC<React.PropsWithChildren<WalletTransactionsPro
   return (
     <Box minHeight="120px">
       <Flex alignItems="center" justifyContent="space-between" mb="24px">
-        <Text color="secondary" fontSize="12px" textTransform="uppercase" fontWeight="bold">
+        <Text color="secondary" fontSize="12px" fontWeight="bold">
           {t('Recent Transactions')}
         </Text>
         {hasTransactions && (
-          <Button scale="sm" onClick={handleClearAll} variant="text" px="0">
+          <Button scale="xs" variant="text" px="0px" onClick={handleClearAll}>
             {t('Clear all')}
           </Button>
         )}
@@ -46,9 +46,6 @@ const WalletTransactions: React.FC<React.PropsWithChildren<WalletTransactionsPro
             const chainIdNumber = Number(chainId)
             return (
               <Box key={chainId}>
-                <Text fontSize="12px" color="textSubtle" mb="4px">
-                  {chains.find((c) => c.id === chainIdNumber)?.name ?? 'Unknown network'}
-                </Text>
                 {Object.values(transactions).map((txn) => (
                   <TransactionRow
                     key={txn.hash}

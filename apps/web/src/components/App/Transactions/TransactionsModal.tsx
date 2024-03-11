@@ -44,7 +44,7 @@ const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> =
             <>
               <AutoRow mb="1rem" style={{ justifyContent: 'space-between' }}>
                 <Text>{t('Recent Transactions')}</Text>
-                <Button variant="tertiary" scale="xs" onClick={clearAllTransactionsCallback}>
+                <Button variant="text" scale="xs" px="0px" onClick={clearAllTransactionsCallback}>
                   {t('clear all')}
                 </Button>
               </AutoRow>
@@ -59,9 +59,6 @@ const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> =
 
                 return (
                   <div key={`transactions#${chainIdNumber}`}>
-                    <Text fontSize="12px" color="textSubtle" mb="4px">
-                      {chains.find((c) => c.id === chainIdNumber)?.name ?? 'Unknown network'}
-                    </Text>
                     {renderTransactions(pending, chainIdNumber)}
                     {renderTransactions(confirmed, chainIdNumber)}
                   </div>

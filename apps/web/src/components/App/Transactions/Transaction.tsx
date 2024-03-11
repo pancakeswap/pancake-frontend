@@ -15,7 +15,6 @@ const TransactionState = styled.div<{ pending: boolean; success?: boolean }>`
   padding: 0.25rem 0rem;
   font-weight: 500;
   font-size: 0.825rem;
-  color: ${({ theme }) => theme.colors.primary};
 `
 
 const IconWrapper = styled.div<{ pending: boolean; success?: boolean }>`

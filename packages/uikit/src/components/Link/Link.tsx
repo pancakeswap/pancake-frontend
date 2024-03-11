@@ -6,7 +6,7 @@ import { LinkProps } from "./types";
 
 export const StyledLink = styled(Text)<LinkProps>`
   display: flex;
-  font-weight: 600;
+  font-weight: 400;
   align-items: center;
   width: fit-content;
   &:hover {
