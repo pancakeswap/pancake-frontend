@@ -190,18 +190,26 @@ function bestTradeHookFactory({
     const { data: tokenOutFee } = useTokenFee(currency && currency.isToken ? currency : undefined)
 
     const candidatePoolsWithoutV3WithFot = useMemo(() => {
-      let filterV3 = false
+      let pools = candidatePools
       if (tokenInFee && tokenInFee.result.sellFeeBps > 0n) {
-        filterV3 = true
+        pools = pools?.filter(
+          (pool) =>
+            !(
+              pool.type === PoolType.V3 &&
+              baseCurrency &&
+              (pool.token0.equals(baseCurrency) || pool.token1.equals(baseCurrency))
+            ),
+        )
       }
       if (tokenOutFee && tokenOutFee.result.buyFeeBps > 0n) {
-        filterV3 = true
+        pools = pools?.filter(
+          (pool) =>
+            !(pool.type === PoolType.V3 && currency && (pool.token0.equals(currency) || pool.token1.equals(currency))),
+        )
       }
-      if (filterV3) {
-        return candidatePools?.filter((pool) => pool.type !== PoolType.V3)
-      }
-      return candidatePools
-    }, [candidatePools, tokenInFee, tokenOutFee])
+
+      return pools
+    }, [candidatePools, tokenInFee, tokenOutFee, baseCurrency, currency])
 
     const poolProvider = useMemo(
       () => SmartRouter.createStaticPoolProvider(candidatePoolsWithoutV3WithFot),
