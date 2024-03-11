@@ -161,6 +161,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     tokensPriceUSD?.token0,
     tokensPriceUSD?.token1,
   )
+  if (id === 2) console.log(info?.boosterMultiplier, 'DuoTokenVaultCard')
 
   useEffect(() => {
     updatePositionMangerDetailsData(id, {
