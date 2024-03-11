@@ -12,42 +12,24 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import useAirdropModalStatus from 'components/GlobalCheckClaimStatus/hooks/useAirdropModalStatus'
 import Trans from 'components/Trans'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useAuth from 'hooks/useAuth'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import NextLink from 'next/link'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { usePendingTransactions } from 'state/transactions/hooks'
 import { useAccount } from 'wagmi'
-import ClaimYourNFT from './ClaimYourNFT'
-import ProfileUserMenuItem from './ProfileUserMenuItem'
 import WalletModal, { WalletView } from './WalletModal'
-import WalletUserMenuItem from './WalletUserMenuItem'
 
 const UserMenuItems = () => {
   const { t } = useTranslation()
   const { chainId, isWrongNetwork } = useActiveChainId()
   const { logout } = useAuth()
-  const { address: account } = useAccount()
   const { hasPendingTransactions } = usePendingTransactions()
-  const { isInitialized, isLoading, profile } = useProfile()
-  const { shouldShowModal } = useAirdropModalStatus()
 
-  const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
-  const [onPresentWrongNetworkModal] = useModal(<WalletModal initialView={WalletView.WRONG_NETWORK} />)
-  const hasProfile = isInitialized && !!profile
-
-  const onClickWalletMenu = useCallback((): void => {
-    if (isWrongNetwork) {
-      onPresentWrongNetworkModal()
-    } else {
-      onPresentWalletModal()
-    }
-  }, [isWrongNetwork, onPresentWalletModal, onPresentWrongNetworkModal])
 
   return (
     <>
