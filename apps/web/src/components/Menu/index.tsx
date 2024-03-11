@@ -69,7 +69,6 @@ const Menu = (props) => {
                 NFTs
               </NextLink>
             </div>
-            <GlobalSettings mode={SettingsMode.GLOBAL} />
             <UserMenu />
           </>
         }

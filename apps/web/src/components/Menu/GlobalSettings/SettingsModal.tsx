@@ -144,30 +144,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
           <>
             <Flex pb="24px" flexDirection="column">
               <PreTitle mb="24px">{t('Global')}</PreTitle>
-              <Flex justifyContent="space-between" mb="24px">
-                <Text>{t('Dark mode')}</Text>
-                <ThemeSwitcher isDark={isDark} toggleTheme={() => setTheme(isDark ? 'light' : 'dark')} />
-              </Flex>
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                <Flex alignItems="center">
-                  <Text>{t('Subgraph Health Indicator')}</Text>
-                  <QuestionHelper
-                    text={t(
-                      'Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed',
-                    )}
-                    placement="top"
-                    ml="4px"
-                  />
-                </Flex>
-                <Toggle
-                  id="toggle-subgraph-health-button"
-                  checked={subgraphHealth}
-                  scale="md"
-                  onChange={() => {
-                    setSubgraphHealth(!subgraphHealth)
-                  }}
-                />
-              </Flex>
               <Flex justifyContent="space-between" alignItems="center" mb="24px">
                 <Flex alignItems="center">
                   <Text>{t('Show username')}</Text>
@@ -179,35 +155,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   scale="md"
                   onChange={() => {
                     setUserUsernameVisibility(!userUsernameVisibility)
-                  }}
-                />
-              </Flex>
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                <Flex alignItems="center">
-                  <Text>{t('Allow notifications')}</Text>
-                  <QuestionHelper
-                    text={t(
-                      'Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible',
-                    )}
-                    placement="top"
-                    ml="4px"
-                  />
-                  <BetaTag>{t('BETA')}</BetaTag>
-                </Flex>
-                <Suspense fallback={null}>
-                  <WebNotiToggle enabled={enabled} />
-                </Suspense>
-              </Flex>
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                <Flex alignItems="center">
-                  <Text>{t('Show testnet')}</Text>
-                </Flex>
-                <Toggle
-                  id="toggle-show-testnet"
-                  checked={showTestnet}
-                  scale="md"
-                  onChange={() => {
-                    setShowTestnet((s) => !s)
                   }}
                 />
               </Flex>
