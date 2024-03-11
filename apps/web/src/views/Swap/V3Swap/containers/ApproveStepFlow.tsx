@@ -71,20 +71,6 @@ export const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowPr
               <Text color="primary">{t('Why resetting approval')}</Text>
             </StyledLinkExternal>
           )}
-          {confirmModalState === ConfirmModalState.APPROVING_TOKEN && (
-            <StyledLinkExternal
-              external
-              margin="16px auto auto auto"
-              href="https://docs.pancakeswap.finance/~/changes/d1gFBwxReM0gH1aeMo0G/readme/help/what-is-an-approval-transaction"
-            >
-              <Text color="primary">{t('Why')}</Text>
-              <Text m="0 2px" color="primary" style={{ borderBottom: '1px dashed' }} ref={targetRef}>
-                {t('approving')}
-              </Text>
-              {tooltipVisible && tooltip}
-              <Text color="primary">{t('this?')}</Text>
-            </StyledLinkExternal>
-          )}
         </>
       )}
     </Box>

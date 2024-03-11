@@ -8,12 +8,6 @@ interface ApproveModalContentProps {
 }
 
 export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({ title, isMM, isBonus }) => {
-  const { t } = useTranslation();
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <Text>{t("Pancakeswap AMM includes V3, V2 and stable swap.")}</Text>,
-    { placement: "top" }
-  );
-
   return (
     <Box width="100%">
       <Box mb="16px">
@@ -25,25 +19,6 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({ title,
         <Text bold textAlign="center">
           {title}
         </Text>
-        <Flex>
-          <Text fontSize="14px">{t("Swapping thru:")}</Text>
-          {isMM ? (
-            <Text ml="4px" fontSize="14px">
-              {t("Pancakeswap MM")}
-            </Text>
-          ) : isBonus ? (
-            <Text ml="4px" fontSize="14px">
-              {t("Bonus Route")}
-            </Text>
-          ) : (
-            <>
-              <TooltipText ml="4px" fontSize="14px" color="textSubtle" ref={targetRef}>
-                {t("Pancakeswap AMM")}
-              </TooltipText>
-              {tooltipVisible && tooltip}
-            </>
-          )}
-        </Flex>
       </AutoColumn>
     </Box>
   );
