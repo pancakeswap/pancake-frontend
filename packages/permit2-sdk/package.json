@@ -24,6 +24,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "test": "vitest --run",
     "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json}\"",
     "format:write": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json}\"",
     "prepublishOnly": "pnpm run build"
