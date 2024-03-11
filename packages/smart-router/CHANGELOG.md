@@ -1,5 +1,16 @@
 # @pancakeswap/smart-router
 
+## 5.1.0
+
+### Minor Changes
+
+- 3b76a26: Introduce stable swap sdk
+
+### Patch Changes
+
+- Updated dependencies [3b76a26]
+  - @pancakeswap/stable-swap-sdk@1.0.0
+
 ## 5.0.4
 
 ### Patch Changes
