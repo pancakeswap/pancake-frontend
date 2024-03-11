@@ -1,16 +1,10 @@
-import { ERC20Token } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/swap-sdk-core'
 import { ChainId } from '@pancakeswap/chains'
 import { bscTestnetTokens } from '@pancakeswap/tokens'
 
-import { StableSwapPool } from './types'
+import { StableSwapPool } from '../../types'
 
-const mockUSDT = new ERC20Token(
-  ChainId.BSC_TESTNET,
-  '0x0fB5D7c73FA349A90392f873a4FA1eCf6a3d0a96',
-  18,
-  'USDT',
-  'MOCK Token',
-)
+const mockUSDT = new Token(ChainId.BSC_TESTNET, '0x0fB5D7c73FA349A90392f873a4FA1eCf6a3d0a96', 18, 'USDT', 'MOCK Token')
 
 export const pools: StableSwapPool[] = [
   // {

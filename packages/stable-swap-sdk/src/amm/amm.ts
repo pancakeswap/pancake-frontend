@@ -1,4 +1,4 @@
-import { BigintIsh, ZERO, ONE } from '@pancakeswap/sdk'
+import { BigintIsh, ZERO, ONE } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
 
 interface Params {

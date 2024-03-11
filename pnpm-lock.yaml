@@ -715,6 +715,9 @@ importers:
       '@pancakeswap/smart-router':
         specifier: workspace:*
         version: link:../../packages/smart-router
+      '@pancakeswap/stable-swap-sdk':
+        specifier: workspace:*
+        version: link:../../packages/stable-swap-sdk
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../../packages/swap-sdk-core
@@ -771,7 +774,7 @@ importers:
         version: 0.0.25(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0)
       '@web3inbox/widget-react':
         specifier: 0.6.26
-        version: 0.6.26(@web3inbox/core@0.0.25)(esbuild@0.19.8)(react-dom@18.2.0)
+        version: 0.6.26(@web3inbox/core@0.0.25)(esbuild@0.19.12)(react-dom@18.2.0)
       '@yornaath/batshit':
         specifier: ^0.9.0
         version: 0.9.0
@@ -1561,6 +1564,9 @@ importers:
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
+      '@pancakeswap/stable-swap-sdk':
+        specifier: workspace:*
+        version: link:../stable-swap-sdk
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
@@ -1622,6 +1628,34 @@ importers:
       '@types/stats-lite':
         specifier: ^2.2.0
         version: 2.2.2
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
+
+  packages/stable-swap-sdk:
+    dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../swap-sdk-core
+      '@pancakeswap/tokens':
+        specifier: workspace:*
+        version: link:../tokens
+      tiny-invariant:
+        specifier: ^1.3.0
+        version: 1.3.1
+    devDependencies:
+      '@pancakeswap/token-lists':
+        specifier: workspace:*
+        version: link:../token-lists
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@pancakeswap/utils':
+        specifier: workspace:*
+        version: link:../utils
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
@@ -2032,6 +2066,9 @@ importers:
         specifier: 1.19.11
         version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
     devDependencies:
+      '@pancakeswap/stable-swap-sdk':
+        specifier: workspace:*
+        version: link:../stable-swap-sdk
       '@pancakeswap/tokens':
         specifier: workspace:*
         version: link:../tokens
@@ -4602,7 +4639,6 @@ packages:
     cpu: [ppc64]
     os: [aix]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-arm64@0.16.3:
@@ -4644,7 +4680,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-arm64@0.19.8:
@@ -4653,6 +4688,7 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/android-arm@0.16.3:
@@ -4694,7 +4730,6 @@ packages:
     cpu: [arm]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-arm@0.19.8:
@@ -4703,6 +4738,7 @@ packages:
     cpu: [arm]
     os: [android]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/android-x64@0.16.3:
@@ -4744,7 +4780,6 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-x64@0.19.8:
@@ -4753,6 +4788,7 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/darwin-arm64@0.16.3:
@@ -4794,7 +4830,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/darwin-arm64@0.19.8:
@@ -4803,6 +4838,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/darwin-x64@0.16.3:
@@ -4844,7 +4880,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/darwin-x64@0.19.8:
@@ -4853,6 +4888,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/freebsd-arm64@0.16.3:
@@ -4894,7 +4930,6 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/freebsd-arm64@0.19.8:
@@ -4903,6 +4938,7 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/freebsd-x64@0.16.3:
@@ -4944,7 +4980,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/freebsd-x64@0.19.8:
@@ -4953,6 +4988,7 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-arm64@0.16.3:
@@ -4994,7 +5030,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-arm64@0.19.8:
@@ -5003,6 +5038,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-arm@0.16.3:
@@ -5044,7 +5080,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-arm@0.19.8:
@@ -5053,6 +5088,7 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-ia32@0.16.3:
@@ -5094,7 +5130,6 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-ia32@0.19.8:
@@ -5103,6 +5138,7 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-loong64@0.16.3:
@@ -5144,7 +5180,6 @@ packages:
     cpu: [loong64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-loong64@0.19.8:
@@ -5153,6 +5188,7 @@ packages:
     cpu: [loong64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-mips64el@0.16.3:
@@ -5194,7 +5230,6 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-mips64el@0.19.8:
@@ -5203,6 +5238,7 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-ppc64@0.16.3:
@@ -5244,7 +5280,6 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-ppc64@0.19.8:
@@ -5253,6 +5288,7 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-riscv64@0.16.3:
@@ -5294,7 +5330,6 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-riscv64@0.19.8:
@@ -5303,6 +5338,7 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-s390x@0.16.3:
@@ -5344,7 +5380,6 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-s390x@0.19.8:
@@ -5353,6 +5388,7 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-x64@0.16.3:
@@ -5394,7 +5430,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-x64@0.19.8:
@@ -5403,6 +5438,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/netbsd-x64@0.16.3:
@@ -5444,7 +5480,6 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/netbsd-x64@0.19.8:
@@ -5453,6 +5488,7 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/openbsd-x64@0.16.3:
@@ -5494,7 +5530,6 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/openbsd-x64@0.19.8:
@@ -5503,6 +5538,7 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/sunos-x64@0.16.3:
@@ -5544,7 +5580,6 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/sunos-x64@0.19.8:
@@ -5553,6 +5588,7 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/win32-arm64@0.16.3:
@@ -5594,7 +5630,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-arm64@0.19.8:
@@ -5603,6 +5638,7 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/win32-ia32@0.16.3:
@@ -5644,7 +5680,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-ia32@0.19.8:
@@ -5653,6 +5688,7 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/win32-x64@0.16.3:
@@ -5694,7 +5730,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-x64@0.19.8:
@@ -5703,6 +5738,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@eslint-community/eslint-utils@4.4.0(eslint@8.53.0):
@@ -8426,7 +8462,7 @@ packages:
       resolve: 1.22.8
       rollup: 2.78.0
       stacktrace-parser: 0.1.10
-      webpack: 5.89.0(esbuild@0.19.8)
+      webpack: 5.89.0(esbuild@0.19.12)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -11055,7 +11091,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@8.1.1)
       loader-utils: 2.0.4
-      webpack: 5.89.0(esbuild@0.19.8)
+      webpack: 5.89.0(esbuild@0.19.12)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -12734,13 +12770,13 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@web3inbox/widget-react@0.6.26(@web3inbox/core@0.0.25)(esbuild@0.19.8)(react-dom@18.2.0):
+  /@web3inbox/widget-react@0.6.26(@web3inbox/core@0.0.25)(esbuild@0.19.12)(react-dom@18.2.0):
     resolution: {integrity: sha512-TqPfPrFQIRkpf71STWH12SkaFbZJmcKSNUpqQoiHpSIuv6rG163gNzYLfLbMM8CTZroZh8O94jSPGHumwFA8oA==}
     peerDependencies:
       '@web3inbox/core': '*'
     dependencies:
       '@web3inbox/core': 0.0.25(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0)
-      esbuild-sass-plugin: 2.16.0(esbuild@0.19.8)
+      esbuild-sass-plugin: 2.16.0(esbuild@0.19.12)
       lodash.debounce: 4.0.8
       react: 18.2.0
       react-router-dom: 6.20.0(react-dom@18.2.0)(react@18.2.0)
@@ -15693,12 +15729,12 @@ packages:
       - supports-color
     dev: true
 
-  /esbuild-sass-plugin@2.16.0(esbuild@0.19.8):
+  /esbuild-sass-plugin@2.16.0(esbuild@0.19.12):
     resolution: {integrity: sha512-mGCe9MxNYvZ+j77Q/QFO+rwUGA36mojDXkOhtVmoyz1zwYbMaNrtVrmXwwYDleS/UMKTNU3kXuiTtPiAD3K+Pw==}
     peerDependencies:
       esbuild: ^0.19.4
     dependencies:
-      esbuild: 0.19.8
+      esbuild: 0.19.12
       resolve: 1.22.8
       sass: 1.69.5
     dev: false
@@ -15849,7 +15885,6 @@ packages:
       '@esbuild/win32-arm64': 0.19.12
       '@esbuild/win32-ia32': 0.19.12
       '@esbuild/win32-x64': 0.19.12
-    dev: true
 
   /esbuild@0.19.8:
     resolution: {integrity: sha512-l7iffQpT2OrZfH2rXIp7/FkmaeZM0vxbxN9KfiCwGYuZqzMg/JdvX26R31Zxn/Pxvsrg3Y9N6XTcnknqDyyv4w==}
@@ -15879,6 +15914,7 @@ packages:
       '@esbuild/win32-arm64': 0.19.8
       '@esbuild/win32-ia32': 0.19.8
       '@esbuild/win32-x64': 0.19.8
+    dev: true
 
   /escalade@3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
@@ -23106,7 +23142,7 @@ packages:
       webpack: 5.89.0(esbuild@0.18.20)
     dev: true
 
-  /terser-webpack-plugin@5.3.9(esbuild@0.19.8)(webpack@5.89.0):
+  /terser-webpack-plugin@5.3.9(esbuild@0.19.12)(webpack@5.89.0):
     resolution: {integrity: sha512-ZuXsqE07EcggTWQjXUj+Aot/OMcD0bMKGgF63f7UxYcu5/AJF53aIpK1YoP5xR9l6s/Hy2b+t1AM0bLNPRuhwA==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
@@ -23123,12 +23159,12 @@ packages:
         optional: true
     dependencies:
       '@jridgewell/trace-mapping': 0.3.20
-      esbuild: 0.19.8
+      esbuild: 0.19.12
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.1
       terser: 5.24.0
-      webpack: 5.89.0(esbuild@0.19.8)
+      webpack: 5.89.0(esbuild@0.19.12)
     dev: false
 
   /terser@5.24.0:
@@ -24772,7 +24808,7 @@ packages:
       - uglify-js
     dev: true
 
-  /webpack@5.89.0(esbuild@0.19.8):
+  /webpack@5.89.0(esbuild@0.19.12):
     resolution: {integrity: sha512-qyfIC10pOr70V+jkmud8tMfajraGCZMBWJtrmuBymQKCrLTRejBI8STDp1MCyZu/QTdZSeacCQYpYNQVOzX5kw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
@@ -24803,7 +24839,7 @@ packages:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.9(esbuild@0.19.8)(webpack@5.89.0)
+      terser-webpack-plugin: 5.3.9(esbuild@0.19.12)(webpack@5.89.0)
       watchpack: 2.4.0
       webpack-sources: 3.2.3
     transitivePeerDependencies:
