@@ -210,6 +210,7 @@ export const AllHooks = () => {
             placeHolderText={customPlaceHolderText}
             $hasOptionsPicked={hasOptionsPicked}
             pickMultiSelect={pickMultiSelect}
+            closeDropdownWhenClickOption={false}
             onOptionChange={setPickMultiSelect}
           />
         </Flex>

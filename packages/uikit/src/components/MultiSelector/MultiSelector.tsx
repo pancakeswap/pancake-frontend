@@ -102,6 +102,7 @@ export interface MultiSelectorProps {
   placeHolderText: string;
   onOptionChange: (data: Array<number>) => void;
   options: MultiSelectorOptionsProps[];
+  closeDropdownWhenClickOption?: boolean;
 }
 
 const MultiSelector: React.FunctionComponent<React.PropsWithChildren<MultiSelectorProps>> = ({
@@ -109,6 +110,7 @@ const MultiSelector: React.FunctionComponent<React.PropsWithChildren<MultiSelect
   pickMultiSelect,
   onOptionChange,
   placeHolderText,
+  closeDropdownWhenClickOption = true,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -129,7 +131,10 @@ const MultiSelector: React.FunctionComponent<React.PropsWithChildren<MultiSelect
 
   const onOptionClicked = (id: number) => (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsOpen(false);
+
+    if (closeDropdownWhenClickOption) {
+      setIsOpen(false);
+    }
 
     const hasPickedData = isCheckboxValid(id);
     if (hasPickedData) {
