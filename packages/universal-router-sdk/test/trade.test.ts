@@ -11,7 +11,7 @@ import {
 } from '@pancakeswap/sdk'
 import { PoolType, SmartRouter, SmartRouterTrade, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import { Pool, Route as V3Route, Trade as V3Trade } from '@pancakeswap/v3-sdk'
-import { Address, WalletClient, isHex, parseEther, parseUnits, stringify } from 'viem'
+import { Address, isHex, parseEther, parseUnits, stringify } from 'viem'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { PancakeSwapUniversalRouter, ROUTER_AS_RECIPIENT } from '../src'
 import { CONTRACT_BALANCE, SENDER_AS_RECIPIENT } from '../src/constants'
@@ -48,8 +48,6 @@ describe('PancakeSwap Universal Router Trade', () => {
   const chainId = ChainId.ETHEREUM
   const liquidity = parseEther('1000')
 
-  let wallet: WalletClient
-
   let ETHER: Ether
   let USDC: ERC20Token
   let USDT: ERC20Token
@@ -59,7 +57,6 @@ describe('PancakeSwap Universal Router Trade', () => {
   let WETH_USDC_V3_LOW: Pool
   let USDC_USDT_V3_LOW: Pool
   let UNIVERSAL_ROUTER: Address
-  let PERMIT2: Address
 
   expect.addSnapshotSerializer({
     serialize(val) {
@@ -1817,8 +1814,6 @@ describe('PancakeSwap Universal Router Trade', () => {
 describe('PancakeSwap StableSwap Through Universal Router, BSC Network Only', () => {
   const chainId = ChainId.BSC
   const liquidity = parseEther('1000')
-
-  let wallet: WalletClient
 
   let ETHER: Ether
   let USDC: ERC20Token
