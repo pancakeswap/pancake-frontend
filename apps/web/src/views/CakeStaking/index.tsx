@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Grid, Heading, ModalV2, PageHeader, QuestionHelper, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
-import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import Page from 'components/Layout/Page'
 import { useCakeDistributed } from 'hooks/useCakeDistributed'
 import useTheme from 'hooks/useTheme'
@@ -12,15 +11,12 @@ import { CakeRewardsCard } from './components/CakeRewardsCard'
 import { LockCake } from './components/LockCake'
 import { PageHead } from './components/PageHead'
 import { useGaugesVotingCount } from './hooks/useGaugesVotingCount'
-import { useSnapshotProposalsCount } from './hooks/useSnapshotProposalsCount'
-import { useTotalIFOSold } from './hooks/useTotalIFOSold'
 
 const CakeStaking = () => {
   const { t } = useTranslation()
   const gaugesVotingCount = useGaugesVotingCount()
   const totalCakeDistributed = useCakeDistributed()
   const [cakeRewardModalVisible, setCakeRewardModalVisible] = useState(false)
-  const totalIFOSold = useTotalIFOSold()
   const { isDesktop, isMobile } = useMatchBreakpoints()
   const { theme } = useTheme()
 
@@ -100,20 +96,6 @@ const CakeStaking = () => {
               />
             }
             dataText="2.5x"
-          />
-          <BenefitCard
-            type="ifo"
-            headSlot={
-              <QuestionHelper
-                size="20px"
-                text={t(
-                  'Use your veCAKE as your IFO Public Sales commit credits. Aquire more veCAKE to commit more in the next PancakeSwap IFOs.',
-                )}
-                placement="top"
-                ml="4px"
-              />
-            }
-            dataText={`$${formatAmount(totalIFOSold, { notation: 'standard' })}`}
           />
           <BenefitCard type="more" />
         </Grid>

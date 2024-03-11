@@ -52,7 +52,5 @@ export function CurrencyLogo({
     }
   }
 
-  console.log(srcs);
-
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? "token"} logo`} style={style} {...props} />;
 }

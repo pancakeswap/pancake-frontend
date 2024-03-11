@@ -127,9 +127,5 @@ export const useVeCakeUserMultiplierBeforeBoosted = (tokenId?: string) => {
 }
 
 export const useBCakeBoostLimitAndLockInfo = () => {
-  const { status } = useCakeLockStatus()
-  const isLockEnd = useMemo(() => status === CakeLockStatus.Expired, [status])
-  const locked = useMemo(() => status === CakeLockStatus.Locking, [status])
-
-  return { locked, isLockEnd }
+  return { locked: null, isLockEnd: null }
 }

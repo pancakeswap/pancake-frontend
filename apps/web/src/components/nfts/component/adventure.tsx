@@ -1,13 +1,10 @@
-import Image from 'next/image'
 import { useState } from 'react'
 import { ellipseAddress } from 'utils/address'
-import avatarPng from '../../../../../public/images/nfts2/avatar.png'
-import Button from '../../../../components/Button'
-import Modal from '../../../../components/Modal2'
-import PriceInput from '../../../../components/PriceInput'
+import Button from '../../Button'
+import Modal from '../../Modal2'
+import PriceInput from '../../PriceInput'
 
-import infoWarn from '../../../../../public/images/nfts2/info-warn.svg'
-import TokenSelect from '../../../../components/TokenSelect'
+import TokenSelect from '../../TokenSelect'
 import { Wrapper } from './adventure.style'
 
 export default function Adventure({ nft }: { nft: any }) {
@@ -129,7 +126,6 @@ export default function Adventure({ nft }: { nft: any }) {
                   alignItems: 'center',
                 }}
               >
-                <Image src={infoWarn} alt="warn icon" style={{ width: '16px', marginRight: '10px' }} />
                 Cancel listing
               </div>
             }

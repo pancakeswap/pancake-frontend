@@ -36,7 +36,6 @@ import styled from 'styled-components'
 import { getRevenueSharingCakePoolAddress, getRevenueSharingVeCakeAddress } from 'utils/addressHelpers'
 import { stringify } from 'viem'
 import BenefitsTooltipsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsTooltipsText'
-import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import {
   useCakePoolEmission,
   useRevShareEmission,
@@ -271,7 +270,6 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                     title={t('Last distribution')}
                     tooltipComponent={<Text>{t('The time of the last revenue distribution and shares update.')}</Text>}
                   />
-                  <Text bold>{timeFormat(locale, lastTokenTimestamp)}</Text>
                 </Flex>
                 <Flex mt="8px" flexDirection="row" alignItems="center">
                   <BenefitsTooltipsText

@@ -2,32 +2,16 @@ import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
-import useAllTradingRewardPair, { RewardStatus, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 const useTradingRewardTokenList = () => {
   const { chainId } = useActiveChainId()
-  const { data } = useAllTradingRewardPair({
-    status: RewardStatus.ALL,
-    type: RewardType.CAKE_STAKERS,
-  })
 
   const uniqueAddressList = useMemo(() => {
     const currentTime = Date.now() / 1000
 
     // eslint-disable-next-line array-callback-return, consistent-return
-    const activeRewardCampaignId = data.campaignIds.filter((campaignId) => {
-      const incentive = data.campaignIdsIncentive.find((i) => i.campaignId === campaignId)
-      if (currentTime <= incentive.campaignClaimTime) {
-        return campaignId
-      }
-    })
 
     const activeCampaignPairs: { [key in string]: Array<string> } = {}
-    activeRewardCampaignId.forEach((campaignId) => {
-      if (data.campaignPairs[campaignId]) {
-        activeCampaignPairs[campaignId] = data.campaignPairs[campaignId][chainId]
-      }
-    })
 
     const tokenAddressArray = Object.values(activeCampaignPairs).reduce((acc, val) => {
       val?.forEach((item) => acc.add(item))
@@ -35,7 +19,7 @@ const useTradingRewardTokenList = () => {
     }, new Set())
 
     return [...tokenAddressArray]
-  }, [chainId, data])
+  }, [chainId])
 
   const tokenPairs = useMemo(() => {
     return (

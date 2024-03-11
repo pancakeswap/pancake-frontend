@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { ellipseAddress } from 'utils/address'
-import copy from '../../../../../public/images/nfts2/copy.svg'
 
+import { CopyIcon } from '@pancakeswap/uikit'
 import { Wrapper } from './activity.style'
 
 export default function Activity({ activities }: { activities: any[] }) {
@@ -12,8 +12,7 @@ export default function Activity({ activities }: { activities: any[] }) {
         width: '140px',
       },
       tdStyle: {
-        // color: "rgba(249, 143, 18, 1)",
-        // fontWeight: "700",
+        paddingLeft: '0px',
       },
     },
     {
@@ -30,11 +29,17 @@ export default function Activity({ activities }: { activities: any[] }) {
       style: {
         width: '130px',
       },
+      tdStyle: {
+        paddingLeft: '0px',
+      },
     },
     {
       name: 'To',
       style: {
         width: '130px',
+      },
+      tdStyle: {
+        paddingLeft: '0px',
       },
     },
     {
@@ -45,7 +50,6 @@ export default function Activity({ activities }: { activities: any[] }) {
       },
       tdStyle: {
         color: '#928D88',
-        whiteSpace: 'nowrap',
       },
     },
   ]
@@ -80,23 +84,11 @@ export default function Activity({ activities }: { activities: any[] }) {
 
                   <div style={{ ...columns[2].style, ...(columns[2].tdStyle || {}) }} className="sensei__table-body-td">
                     {activity?.activity_type === 'Mint' ? 'Null' : ellipseAddress(activity?.from)}
-                    <Image
-                      src={copy}
-                      alt="sgt"
-                      width={24}
-                      height={24}
-                      style={{ width: '24px', height: '24px', cursor: 'pointer' }}
-                    />
+                    <CopyIcon />
                   </div>
                   <div style={{ ...columns[3].style, ...(columns[3].tdStyle || {}) }} className="sensei__table-body-td">
                     {ellipseAddress(activity?.to)}
-                    <Image
-                      src={copy}
-                      alt="sgt"
-                      width={24}
-                      height={24}
-                      style={{ width: '24px', height: '24px', cursor: 'pointer' }}
-                    />
+                    <CopyIcon />
                   </div>
 
                   <div style={{ ...columns[4].style, ...(columns[4].tdStyle || {}) }} className="sensei__table-body-td">

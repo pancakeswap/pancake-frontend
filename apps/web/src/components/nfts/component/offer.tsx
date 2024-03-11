@@ -1,16 +1,15 @@
 import Image from 'next/image'
-import sgtIcon from '../../../../../public/images/nfts2/sgt-icon.png'
-import Button from '../../../../components/Button'
+import Button from '../../Button'
 import { Wrapper } from './offer.style'
 
 export default function Offer() {
   const defaultItem = {
     id: 1,
-    icon: sgtIcon,
+    icon: null,
     price: 15.24,
     quantity: 1,
     sgr: '+56.12',
-    sgrIcon: sgtIcon,
+    sgrIcon: null,
     from: '0xa323',
   }
   const datasetList = [defaultItem, defaultItem, defaultItem, defaultItem]

@@ -10,7 +10,6 @@ import { DeserializedLockedCakeVault, VaultKey } from 'state/types'
 import BenefitsTooltipsText from 'views/Pools/components/RevenueSharing/BenefitsModal/BenefitsTooltipsText'
 import ClaimButton from 'views/Pools/components/RevenueSharing/BenefitsModal/ClaimButton'
 import useRevenueSharingPool from 'views/Pools/hooks/useRevenueSharingPool'
-import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 
 interface RevenueSharingProps {
   onDismiss?: () => void
@@ -49,7 +48,6 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
               title={t('Last distribution')}
               tooltipComponent={<Text>{t('The time of the last revenue distribution and shares update.')}</Text>}
             />
-            <Text bold>{timeFormat(locale, lastTokenTimestamp)}</Text>
           </Flex>
 
           <Flex mt="8px" flexDirection="row" alignItems="center">
