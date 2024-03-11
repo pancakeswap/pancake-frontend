@@ -31,8 +31,9 @@ import {
 } from './useCommonPools'
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
-import { useGlobalWorker } from './useWorker'
 import { useSpeedQuote } from './useSpeedQuote'
+import { useTokenFee } from './useTokenFee'
+import { useGlobalWorker } from './useWorker'
 
 export class NoValidRouteError extends Error {
   constructor(message?: string) {
@@ -213,7 +214,36 @@ function bestTradeHookFactory({
       allowInconsistentBlock: true,
       enabled,
     })
-    const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
+
+    const { data: tokenInFee } = useTokenFee(baseCurrency && baseCurrency.isToken ? baseCurrency : undefined)
+    const { data: tokenOutFee } = useTokenFee(currency && currency.isToken ? currency : undefined)
+
+    const candidatePoolsWithoutV3WithFot = useMemo(() => {
+      let pools = candidatePools
+      if (tokenInFee && tokenInFee.result.sellFeeBps > 0n) {
+        pools = pools?.filter(
+          (pool) =>
+            !(
+              pool.type === PoolType.V3 &&
+              baseCurrency &&
+              (pool.token0.equals(baseCurrency) || pool.token1.equals(baseCurrency))
+            ),
+        )
+      }
+      if (tokenOutFee && tokenOutFee.result.buyFeeBps > 0n) {
+        pools = pools?.filter(
+          (pool) =>
+            !(pool.type === PoolType.V3 && currency && (pool.token0.equals(currency) || pool.token1.equals(currency))),
+        )
+      }
+
+      return pools
+    }, [candidatePools, tokenInFee, tokenOutFee, baseCurrency, currency])
+
+    const poolProvider = useMemo(
+      () => SmartRouter.createStaticPoolProvider(candidatePoolsWithoutV3WithFot),
+      [candidatePoolsWithoutV3WithFot],
+    )
     const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
     const deferQuotient = useDebounce(deferQuotientRaw, 500)
     const { data: quoteCurrencyUsdPrice } = useCurrencyUsdPrice(currency ?? undefined)

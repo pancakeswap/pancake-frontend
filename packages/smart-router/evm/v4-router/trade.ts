@@ -1,9 +1,9 @@
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import { formatFraction } from '@pancakeswap/utils/formatFractions'
 
+import { getPriceImpact } from '../v3-router/utils/getPriceImpact'
 import { findBestTrade } from './graph'
 import { TradeConfig, V4Trade } from './types'
-import { getPriceImpact } from '../v3-router/utils/getPriceImpact'
 
 const DEFAULT_STREAM = 10
 
@@ -57,7 +57,7 @@ export async function getBestTrade(
   tradeType: TradeType,
   { candidatePools, gasPriceWei, maxHops, maxSplits }: TradeConfig,
 ): Promise<V4Trade<TradeType> | undefined> {
-  // NOTE: there's no max split cap right now. This option is only used to contron the on/off of multiple splits
+  // NOTE: there's no max split cap right now. This option is only used to control the on/off of multiple splits
   const splitDisabled = maxSplits !== undefined && maxSplits === 0
 
   let bestTrade: V4Trade<TradeType> | undefined
