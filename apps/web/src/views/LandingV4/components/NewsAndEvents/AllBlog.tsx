@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, GroupsIcon, OptionProps, Select, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { AllBlogIcon, Box, Flex, OptionProps, Select, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { BlogCard } from 'views/LandingV4/components/NewsAndEvents/BlogCard'
@@ -85,7 +85,7 @@ export const AllBlog = () => {
   return (
     <Box mt="16px">
       <Flex>
-        <GroupsIcon width={isDesktop ? 32 : 28} height={isDesktop ? 32 : 28} color="secondary" />
+        <AllBlogIcon width={isDesktop ? 32 : 28} height={isDesktop ? 32 : 28} color="secondary" />
         <Text ml="8px" bold fontSize={['24px', '24px', '24px', '36px']}>
           {t('All')}
         </Text>
