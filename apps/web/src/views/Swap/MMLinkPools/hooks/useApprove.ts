@@ -41,8 +41,6 @@ export const useApproveRequires = (amount: CurrencyAmount<Token> | undefined, sp
 
     if (!isMainnetUSDT && !isBSCTestNetBUSD && !isGoerliUSDC) return false
 
-    console.info('debug requireRevoke', { amount: amount.quotient, allowance: allowance?.quotient })
-
     return !!allowance && allowance.greaterThan(0) && allowance.lessThan(amount)
   }, [allowance, amount])
 

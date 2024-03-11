@@ -85,9 +85,6 @@ export function useApproveCallback(
       overrideAmountApprove?: bigint,
       alreadyApproved = approvalState !== ApprovalState.NOT_APPROVED,
     ): Promise<SendTransactionResult | undefined> => {
-      console.info('debug approve', {
-        approvalState: ApprovalState[approvalState],
-      })
       if (alreadyApproved && isUndefinedOrNull(overrideAmountApprove)) {
         toastError(t('Error'), t('Approve was called unnecessarily'))
         console.error('approve was called unnecessarily')
