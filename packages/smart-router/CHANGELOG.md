@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 5.1.1
+
+### Patch Changes
+
+- e6e8751: Add fot detector
+
 ## 5.1.0
 
 ### Minor Changes
