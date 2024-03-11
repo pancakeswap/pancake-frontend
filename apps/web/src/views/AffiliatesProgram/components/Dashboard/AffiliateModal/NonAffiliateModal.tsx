@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
-import { ModalV2, Modal, Flex, Text, Checkbox, Button, Link } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import { useAtom } from 'jotai'
 import { useTranslation } from '@pancakeswap/localization'
-import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliateExist'
+import { Button, Checkbox, Flex, Link, Modal, ModalV2, Text } from '@pancakeswap/uikit'
+import { useAtom } from 'jotai'
+import { useCallback, useEffect, useState } from 'react'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
+import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliateExist'
 import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
+import { useAccount } from 'wagmi'
 
 const showNonAffiliateModalAtom = atomWithStorageWithErrorCatch('pcs::showNonAffiliateModalAtom', true)
 
@@ -19,7 +19,7 @@ const NonAffiliateModal = () => {
   const [showModal, setShowModal] = useAtom(showNonAffiliateModalAtom)
 
   useEffect(() => {
-    setIsOpen(!isAffiliateExist && !isFetching && address && showModal)
+    setIsOpen(Boolean(!isAffiliateExist && !isFetching && address && showModal))
   }, [address, isFetching, isAffiliateExist, showModal])
 
   const handleCheckbox = useCallback(() => setIsChecked((prevState) => !prevState), [])
