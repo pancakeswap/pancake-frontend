@@ -48,7 +48,7 @@ export type PermitBatchTransferFromData = {
   domain: TypedDataDomain
   types: Record<string, TypedDataParameter[]>
   values: PermitBatchTransferFrom
-  primaryType: 'PermitBatchTransferFrom' | 'PermitBatchWitnessTransferFrom'
+  primaryType: 'PermitBatchTransferFrom'
 }
 
 export type PermitBatchWitnessTransferFromData = {
