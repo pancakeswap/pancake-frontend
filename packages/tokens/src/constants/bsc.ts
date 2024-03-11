@@ -3061,4 +3061,28 @@ export const bscTokens = {
     'MAGA',
     'https://magamemecoin.com/',
   ),
+  chat: new ERC20Token(
+    ChainId.BSC,
+    '0xD69ee2e508363FEd57f89917D5ca03e715ee5519',
+    18,
+    'DECHAT',
+    'CHAT',
+    'https://www.dechat.io/home',
+  ),
+  mb4: new ERC20Token(
+    ChainId.BSC,
+    '0x4536819095a8969c94362ba130EE0bB1cda714Cb',
+    18,
+    'MB4',
+    'Matthew Box 404',
+    'https://projectmatthew.io/',
+  ),
+  mc: new ERC20Token(
+    ChainId.BSC,
+    '0xAE493a1F8bbE36BA8E687352F638d4c07C54f8d7',
+    9,
+    'MC',
+    'Matthew Coin',
+    'https://projectmatthew.io/',
+  ),
 }
