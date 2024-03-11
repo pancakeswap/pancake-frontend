@@ -49,7 +49,6 @@
     "@pancakeswap/farms": "workspace:*",
     "@pancakeswap/gauges": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
-    "@pancakeswap/ifos": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/pools": "workspace:*",

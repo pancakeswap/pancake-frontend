@@ -31,9 +31,7 @@ interface WalletModalProps extends InjectedModalProps {
 
 export const LOW_NATIVE_BALANCE = parseEther('0.002', 'wei')
 
-const ModalHeader = styled(UIKitModalHeader)`
-  background: ${({ theme }) => theme.colors.gradientBubblegum};
-`
+const ModalHeader = styled(UIKitModalHeader)``
 
 const Tabs = styled.div`
   background-color: ${({ theme }) => theme.colors.dropdown};
@@ -83,11 +81,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
           <CloseIcon width="24px" color="text" />
         </IconButton>
       </ModalHeader>
-      {view !== WalletView.WRONG_NETWORK && <TabsComponent view={view} handleClick={handleClick} />}
       <ModalBody p="24px" width="100%">
-        {view === WalletView.WALLET_INFO && (
-          <WalletInfo hasLowNativeBalance={hasLowNativeBalance} switchView={handleClick} onDismiss={onDismiss} />
-        )}
         {view === WalletView.TRANSACTIONS && !!onDismiss && <WalletTransactions onDismiss={onDismiss} />}
         {view === WalletView.WRONG_NETWORK && !!onDismiss && <WalletWrongNetwork onDismiss={onDismiss} />}
       </ModalBody>

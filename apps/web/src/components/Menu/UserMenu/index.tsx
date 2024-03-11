@@ -51,16 +51,14 @@ const UserMenuItems = () => {
 
   return (
     <>
-      <WalletUserMenuItem isWrongNetwork={isWrongNetwork} onPresentWalletModal={onClickWalletMenu} />
+      <NextLink href="/profile" passHref>
+        <UserMenuItem disabled={isWrongNetwork || chainId !== ChainId.ENDURANCE}>{t('Profile')}</UserMenuItem>
+      </NextLink>
+      <UserMenuDivider />
       <UserMenuItem as="button" disabled={isWrongNetwork} onClick={onPresentTransactionModal}>
         {t('Recent Transactions')}
         {hasPendingTransactions && <RefreshIcon spin />}
       </UserMenuItem>
-      <UserMenuDivider />
-      <NextLink href={`/profile/${account?.toLowerCase()}`} passHref>
-        <UserMenuItem disabled={isWrongNetwork || chainId !== ChainId.BSC}>{t('Your NFTs')}</UserMenuItem>
-      </NextLink>
-      {shouldShowModal && <ClaimYourNFT />}
       <UserMenuDivider />
       <UserMenuItem as="button" onClick={logout}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
