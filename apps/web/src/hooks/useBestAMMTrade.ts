@@ -77,6 +77,26 @@ interface useBestAMMTradeOptions extends Options {
   type?: 'offchain' | 'quoter' | 'auto' | 'api'
 }
 
+type QuoteResult = ReturnType<ReturnType<typeof bestTradeHookFactory>>
+
+function useBetterQuote(quoteA: QuoteResult, quoteB: QuoteResult) {
+  return useMemo(() => {
+    if (!quoteB.trade) {
+      return quoteA
+    }
+    if (!quoteA.trade && quoteB.trade) {
+      return quoteB
+    }
+    return quoteA.trade!.tradeType === TradeType.EXACT_INPUT
+      ? quoteB.trade?.outputAmount.greaterThan(quoteA.trade!.outputAmount)
+        ? quoteB
+        : quoteA
+      : quoteB.trade?.inputAmount.lessThan(quoteA.trade!.inputAmount)
+      ? quoteB
+      : quoteA
+  }, [quoteA, quoteB])
+}
+
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
   const { amount, baseCurrency, currency, autoRevalidate, enabled = true } = params
   const [speedQuoteEnabled] = useSpeedQuote()
@@ -105,11 +125,20 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const quoterAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled
 
-  const bestTradeFromOffchainQuoter = useBestAMMTradeFromOffchainQuoter({
+  const offchainQuoterEnabled = Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled && speedQuoteEnabled)
+  const bestTradeFromQuickOnChainQuote = useBestAMMTradeFromQuoterWorker({
     ...params,
-    enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled && speedQuoteEnabled),
+    maxHops: 1,
+    maxSplits: 0,
+    enabled: offchainQuoterEnabled,
     autoRevalidate: quoterAutoRevalidate,
   })
+  const bestTradeFromOffchainQuoter = useBestAMMTradeFromOffchainQuoter({
+    ...params,
+    enabled: offchainQuoterEnabled,
+    autoRevalidate: quoterAutoRevalidate,
+  })
+  const bestOffchainWithQuickOnChainQuote = useBetterQuote(bestTradeFromOffchainQuoter, bestTradeFromQuickOnChainQuote)
 
   const noValidRouteFromOffchainQuoter =
     Boolean(amount) &&
@@ -126,7 +155,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const bestTradeFromQuoterWorker = shouldFallbackQuoterOnChain
     ? bestTradeFromOnChainQuoter
-    : bestTradeFromOffchainQuoter
+    : bestOffchainWithQuickOnChainQuote
 
   return useMemo(
     () => (isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoterWorker),
