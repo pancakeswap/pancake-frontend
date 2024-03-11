@@ -132,7 +132,7 @@ export function useApproveCallback(
           },
         )
         .catch((err) => {
-          console.error('estimate gas failure', err)
+          console.info('try estimate approve max failure', err)
           // general fallback for tokens who restrict approval amounts
           useExact = true
           return tokenContract.estimateGas

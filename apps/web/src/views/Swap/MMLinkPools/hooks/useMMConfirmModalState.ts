@@ -17,8 +17,6 @@ import { useSwapCallback } from './useSwapCallback'
 const useCreateConfirmSteps = (amountToApprove: CurrencyAmount<Token> | undefined, spender: Address | undefined) => {
   const { requireApprove, requireRevoke } = useApproveRequires(amountToApprove, spender)
 
-  console.debug('debug mm requires', { requireApprove, requireRevoke })
-
   return useCallback(() => {
     const steps: ConfirmModalState[] = []
     if (requireRevoke) {
@@ -114,6 +112,7 @@ const useConfirmActions = (
       setConfirmState(ConfirmModalState.APPROVING_TOKEN)
       try {
         const result = await approve()
+
         if (result?.hash) {
           setTxHash(result.hash)
           await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
@@ -131,7 +130,7 @@ const useConfirmActions = (
         const newAllowance = CurrencyAmount.fromRawAmount(amountToApprove?.currency as Currency, newAllowanceRaw ?? 0n)
         if (amountToApprove && newAllowance && newAllowance.lessThan(amountToApprove)) {
           throw new UserUnexpectedTxError({
-            expectedData: amountToApprove.toExact(),
+            expectedData: amountToApprove.quotient.toString(),
             actualData: newAllowanceRaw.toString(),
           })
         }

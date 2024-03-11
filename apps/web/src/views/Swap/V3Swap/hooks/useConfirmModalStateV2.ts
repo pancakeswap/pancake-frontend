@@ -174,7 +174,7 @@ const useConfirmActions = (
           )
           if (amountToApprove && newAllowance && newAllowance.lessThan(amountToApprove)) {
             throw new UserUnexpectedTxError({
-              expectedData: amountToApprove.toExact(),
+              expectedData: amountToApprove.quotient.toString(),
               actualData: newAllowanceRaw.toString(),
             })
           }
