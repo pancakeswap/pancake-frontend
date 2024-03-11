@@ -3201,5 +3201,10 @@
   "Reset approval on USDT.": "Zresetuj zatwierdzenie na USDT.",
   "Go to CAKE Staking": "Przejdź do stakingu CAKE",
   "Revert transaction filled, but Approval not reset to 0. Please try again.": "Cofnięcie transakcji zostało wykonane, ale zatwierdzenie nie zostało zresetowane do 0. Spróbuj ponownie.",
+  "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Łączna liczba nagród w %symbol% ze WSZYSTKICH Twoich pozycji, które kwalifikują się do nagród Merkl.",
+  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "Aby zdobywać nagrody na Merkl, odbierz tę pozycję z farm PancakeSwap.",
+  "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "Ta kampania Merkl NIE nagradza płynności poza zakresem. Aby zdobyć nagrody, dostosuj swoją pozycję.",
+  "This liquidity position is currently earning rewards on Merkl.": "Ta pozycja płynności obecnie zdobywa nagrody na Merkl.",
+  "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Ta pozycja płynności NIE zdobędzie żadnych nagród na Merkl, ponieważ jej całkowita wartość w USD jest mniejsza niż 20 USD.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Zatwierdzenie transakcji zostało wykonane, ale zatwierdzenie wciąż nie wystarcza do zrealizowania bieżącej transakcji. Spróbuj ponownie."
 }
