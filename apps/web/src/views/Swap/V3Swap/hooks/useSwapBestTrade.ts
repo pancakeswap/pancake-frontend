@@ -1,3 +1,4 @@
+import { useDebounce } from '@pancakeswap/hooks'
 import { TradeType } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
@@ -25,13 +26,14 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
+  const deferTypedValue = useDebounce(typedValue, 500)
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const isExactIn = independentField === Field.INPUT
   const independentCurrency = isExactIn ? inputCurrency : outputCurrency
   const dependentCurrency = isExactIn ? outputCurrency : inputCurrency
   const tradeType = isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT
-  const amount = tryParseAmount(typedValue, independentCurrency ?? undefined)
+  const amount = tryParseAmount(deferTypedValue, independentCurrency ?? undefined)
 
   const [singleHopOnly] = useUserSingleHopOnly()
   const [split] = useUserSplitRouteEnable()
