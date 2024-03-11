@@ -247,9 +247,14 @@ function bestTradeHookFactory({
     const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
     const deferQuotient = useDebounce(deferQuotientRaw, 500)
     const { data: quoteCurrencyUsdPrice } = useCurrencyUsdPrice(currency ?? undefined)
-    const { data: nativeCurrencyUsdPrice } = useCurrencyUsdPrice(
-      currency?.chainId ? Native.onChain(currency.chainId) : undefined,
-    )
+    const currencyNativeChain = useMemo(() => {
+      try {
+        return Native.onChain(currency?.chainId ?? ChainId.BSC)
+      } catch (e) {
+        return Native.onChain(ChainId.BSC)
+      }
+    }, [currency])
+    const { data: nativeCurrencyUsdPrice } = useCurrencyUsdPrice(currencyNativeChain)
 
     const poolTypes = useMemo(() => {
       const types: PoolType[] = []
