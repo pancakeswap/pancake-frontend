@@ -33,7 +33,7 @@
     ]
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": "=16.15.1"
   },
   "dependencies": {
     "@binance/w3w-utils": "1.1.4",
