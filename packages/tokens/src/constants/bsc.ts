@@ -3080,7 +3080,7 @@ export const bscTokens = {
   mc: new ERC20Token(
     ChainId.BSC,
     '0xAE493a1F8bbE36BA8E687352F638d4c07C54f8d7',
-    9,
+    18,
     'MC',
     'Matthew Coin',
     'https://projectmatthew.io/',
