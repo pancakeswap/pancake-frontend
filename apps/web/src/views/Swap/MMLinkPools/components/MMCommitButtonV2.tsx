@@ -29,9 +29,7 @@ interface SwapCommitButtonPropsType {
   wrapInputError?: string
   onWrap?: () => Promise<void>
   wrapType: WrapType
-  // approval: ApprovalState
-  // allowance: Allowance
-  // approvalSubmitted: boolean
+  setLock: (lock: boolean) => void
   currencies: {
     INPUT?: Currency
     OUTPUT?: Currency
@@ -63,6 +61,7 @@ export function MMSwapCommitButtonV2({
   currencyBalances,
   recipient,
   onUserInput,
+  setLock,
 }: // isPendingError,
 SwapCommitButtonPropsType) {
   const [isExpertMode] = useExpertMode()
@@ -92,12 +91,13 @@ SwapCommitButtonPropsType) {
   }, [rfqTrade.trade, resetState])
 
   const handleConfirmDismiss = useCallback(() => {
+    setLock(false)
     resetState()
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onUserInput(Field.INPUT, '')
     }
-  }, [resetState, txHash, onUserInput])
+  }, [setLock, resetState, txHash, onUserInput])
 
   // Modals
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
@@ -109,6 +109,11 @@ SwapCommitButtonPropsType) {
     />,
   )
 
+  const onConfirm = useCallback(() => {
+    setLock(true)
+    callToAction()
+  }, [callToAction, setLock])
+
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModalV2
       isMM
@@ -117,7 +122,7 @@ SwapCommitButtonPropsType) {
       txHash={txHash}
       confirmModalState={confirmState}
       pendingModalSteps={confirmActions ?? []}
-      onConfirm={callToAction}
+      onConfirm={onConfirm}
       currencyBalances={currencyBalances}
       isRFQReady={Boolean(rfqTrade.rfq) && !rfqTrade.isLoading}
       swapErrorMessage={errorMessage || (!rfqTrade.trade ? t('Unable request a quote') : undefined)}
@@ -136,11 +141,11 @@ SwapCommitButtonPropsType) {
     resetState()
 
     if (isExpertMode) {
-      callToAction()
+      onConfirm()
     }
     onPresentConfirmModal()
     logGTMClickSwapEvent()
-  }, [rfqTrade.trade, resetState, isExpertMode, onPresentConfirmModal, callToAction])
+  }, [rfqTrade.trade, resetState, isExpertMode, onPresentConfirmModal, onConfirm])
 
   // useEffect
   useEffect(() => {

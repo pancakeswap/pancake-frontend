@@ -10,7 +10,7 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { MMSwapCommitButtonV2 } from 'views/Swap/MMLinkPools/components/MMCommitButtonV2'
 import { useAccount } from 'wagmi'
 
-function MMCommitButtonCompV2({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemainingSec, mmTradeInfo }) {
+function MMCommitButtonCompV2({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemainingSec, mmTradeInfo, setLock }) {
   const {
     typedValue,
     recipient,
@@ -41,6 +41,7 @@ function MMCommitButtonCompV2({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemai
 
   return (
     <MMSwapCommitButtonV2
+      setLock={setLock}
       mmTradeInfo={mmTradeInfo}
       showWrap={showWrap}
       swapIsUnsupported={swapIsUnsupported}

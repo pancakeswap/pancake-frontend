@@ -1,11 +1,12 @@
-import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { Box } from '@pancakeswap/uikit'
 import throttle from 'lodash/throttle'
-import { useMemo } from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
 import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
 
+import { TradeType } from '@pancakeswap/swap-sdk-core'
 import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
 import { useExperimentalFeatureEnabled } from 'hooks/useExperimentalFeatureEnabled'
 import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
@@ -25,8 +26,27 @@ import { useSwapBestTrade } from './hooks'
 import { useCheckInsufficientError } from './hooks/useCheckSufficient'
 
 export function V3SwapForm() {
+  const [lock, setLock] = useState(false)
+  const lockedAMMTrade = useRef<SmartRouterTrade<TradeType> | undefined>()
+  const lockedMMTrade = useRef<ReturnType<typeof useDerivedBestTradeWithMM>>()
   const { isLoading, trade, refresh, syncing, isStale, error } = useSwapBestTrade()
   const mm = useDerivedBestTradeWithMM(trade)
+
+  const ammCurrentTrade = useMemo(() => {
+    if (!lockedAMMTrade.current) {
+      lockedAMMTrade.current = trade
+    }
+    lockedAMMTrade.current = lock ? lockedAMMTrade.current : trade
+    return lockedAMMTrade.current
+  }, [lock, trade])
+  const mmCurrentTrade = useMemo(() => {
+    if (!lockedMMTrade.current) {
+      lockedMMTrade.current = mm
+    }
+    lockedMMTrade.current = lock ? lockedMMTrade.current : mm
+    return lockedMMTrade.current
+  }, [lock, mm])
+
   const throttledHandleRefresh = useMemo(
     () =>
       throttle(() => {
@@ -35,42 +55,40 @@ export function V3SwapForm() {
     [refresh],
   )
 
-  const finalTrade = mm.isMMBetter ? mm?.mmTradeInfo?.trade : trade
-
-  // console.debug('debug trade', {
-  //   trade,
-  //   mm,
-  //   finalTrade,
-  // })
+  const finalTrade = mmCurrentTrade.isMMBetter ? mmCurrentTrade?.mmTradeInfo?.trade : ammCurrentTrade
 
   const tradeLoaded = !isLoading
-  const price = useMemo(() => trade && SmartRouter.getExecutionPrice(trade), [trade])
+  const price = useMemo(() => ammCurrentTrade && SmartRouter.getExecutionPrice(ammCurrentTrade), [ammCurrentTrade])
 
-  const insufficientFundCurrency = useCheckInsufficientError(trade)
+  const insufficientFundCurrency = useCheckInsufficientError(ammCurrentTrade)
 
   const featureEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.UniversalRouter)
   const commitButton = useMemo(() => {
     if (featureEnabled) {
-      return mm?.isMMBetter ? (
-        <MMCommitButtonV2 {...mm} />
+      return mmCurrentTrade?.isMMBetter ? (
+        <MMCommitButtonV2 {...mmCurrentTrade} setLock={setLock} />
       ) : (
-        <SwapCommitButtonV2 trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
+        <SwapCommitButtonV2 trade={ammCurrentTrade} tradeError={error} tradeLoading={!tradeLoaded} setLock={setLock} />
       )
     }
-    return mm?.isMMBetter ? (
-      <MMCommitButton {...mm} />
+    return mmCurrentTrade?.isMMBetter ? (
+      <MMCommitButton {...mmCurrentTrade} />
     ) : (
-      <SwapCommitButton trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
+      <SwapCommitButton trade={ammCurrentTrade} tradeError={error} tradeLoading={!tradeLoaded} />
     )
-  }, [error, featureEnabled, mm, trade, tradeLoaded])
+  }, [mmCurrentTrade, featureEnabled, ammCurrentTrade, error, tradeLoaded])
 
   return (
     <>
       <FormHeader onRefresh={throttledHandleRefresh} refreshDisabled={!tradeLoaded || syncing || !isStale} />
       <FormMain
-        tradeLoading={mm.isMMBetter ? false : !tradeLoaded}
+        tradeLoading={mmCurrentTrade.isMMBetter ? false : !tradeLoaded}
         pricingAndSlippage={
-          <PricingAndSlippage priceLoading={isLoading} price={price ?? undefined} showSlippage={!mm.isMMBetter} />
+          <PricingAndSlippage
+            priceLoading={isLoading}
+            price={price ?? undefined}
+            showSlippage={!mmCurrentTrade.isMMBetter}
+          />
         }
         inputAmount={finalTrade?.inputAmount}
         outputAmount={finalTrade?.outputAmount}
@@ -79,16 +97,18 @@ export function V3SwapForm() {
 
       <BuyCryptoLink currency={insufficientFundCurrency} />
 
-      {mm.isMMBetter ? (
-        <MMTradeDetail loaded={!mm.mmOrderBookTrade.isLoading} mmTrade={mm.mmTradeInfo} />
+      {mmCurrentTrade.isMMBetter ? (
+        <MMTradeDetail loaded={!mmCurrentTrade.mmOrderBookTrade.isLoading} mmTrade={mmCurrentTrade.mmTradeInfo} />
       ) : (
-        <TradeDetails loaded={tradeLoaded} trade={trade} />
+        <TradeDetails loaded={tradeLoaded} trade={ammCurrentTrade} />
       )}
-      {(shouldShowMMLiquidityError(mm?.mmOrderBookTrade?.inputError) || mm?.mmRFQTrade?.error) && !trade && (
-        <Box mt="5px">
-          <MMLiquidityWarning />
-        </Box>
-      )}
+      {(shouldShowMMLiquidityError(mmCurrentTrade?.mmOrderBookTrade?.inputError) ||
+        mmCurrentTrade?.mmRFQTrade?.error) &&
+        !ammCurrentTrade && (
+          <Box mt="5px">
+            <MMLiquidityWarning />
+          </Box>
+        )}
     </>
   )
 }

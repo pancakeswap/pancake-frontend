@@ -38,6 +38,7 @@ interface SwapCommitButtonPropsType {
   trade?: SmartRouterTrade<TradeType>
   tradeError?: Error
   tradeLoading?: boolean
+  setLock: (lock: boolean) => void
 }
 
 const useSettingModal = (onDismiss) => {
@@ -119,6 +120,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   trade,
   tradeError,
   tradeLoading,
+  setLock,
 }: SwapCommitButtonPropsType) {
   const { address: account } = useAccount()
   const { t } = useTranslation()
@@ -162,11 +164,12 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
 
   const { onUserInput } = useSwapActionHandlers()
   const reset = useCallback(() => {
+    setLock(false)
     if (confirmState === ConfirmModalState.COMPLETED) {
       onUserInput(Field.INPUT, '')
     }
     resetState()
-  }, [confirmState, onUserInput, resetState])
+  }, [confirmState, onUserInput, resetState, setLock])
 
   const handleAcceptChanges = useCallback(() => {
     setTradeToConfirm(trade)
@@ -183,6 +186,11 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
     inputCurrency && outputCurrency && parsedIndependentFieldAmount?.greaterThan(BIG_INT_ZERO),
   )
 
+  const onConfirm = useCallback(() => {
+    setLock(true)
+    callToAction()
+  }, [callToAction, setLock])
+
   // modals
   const onSettingModalDismiss = useCallback(() => {
     setIndirectlyOpenConfirmModalState(true)
@@ -198,7 +206,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
       swapErrorMessage={errorMessage}
       currencyBalances={currencyBalances}
       onAcceptChanges={handleAcceptChanges}
-      onConfirm={callToAction}
+      onConfirm={onConfirm}
       openSettingModal={openSettingModal}
       customOnDismiss={reset}
     />,
@@ -214,12 +222,12 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
     // if expert mode turn-on, will not show preview modal
     // start swap directly
     if (isExpertMode) {
-      callToAction()
+      onConfirm()
     }
 
     openConfirmSwapModal()
     logGTMClickSwapEvent()
-  }, [callToAction, isExpertMode, openConfirmSwapModal, resetState, trade])
+  }, [isExpertMode, onConfirm, openConfirmSwapModal, resetState, trade])
 
   useEffect(() => {
     if (indirectlyOpenConfirmModalState) {
