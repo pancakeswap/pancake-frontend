@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { MANAGER } from '@pancakeswap/position-managers'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import type { AtomBoxProps } from '@pancakeswap/uikit'
 import { Box, Button, Flex, ModalV2, RowBetween, Text, useToast } from '@pancakeswap/uikit'
@@ -22,6 +23,10 @@ import { FeeTag } from './Tags'
 interface Props {
   isOpen?: boolean
   onDismiss?: () => void
+  manager: {
+    id: MANAGER
+    name: string
+  }
   vaultName: string
   feeTier: FeeAmount
   currencyA: Currency
@@ -54,6 +59,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
   contractAddress,
   refetch,
   bCakeWrapper,
+  manager,
 }: Props) {
   const { t } = useTranslation()
   const { account, chain } = useWeb3React()
@@ -66,6 +72,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
 
   const amountA = useMemo(() => staked0Amount?.multiply(percent)?.divide(100), [staked0Amount, percent])
   const amountB = useMemo(() => staked1Amount?.multiply(percent)?.divide(100), [staked1Amount, percent])
+  const slippage = '0x00000000000000000000000000000000000000000000000000b1a2bc2ec50000' // 5
 
   const withdrawThenBurn = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(
@@ -108,10 +115,13 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
 
             const avoidDecimalsProblem =
               percent === 100 ? BigInt(userInfoAmount?.[0]) : BigInt(Math.floor(withdrawAmount))
-            return wrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, '0x'], {
-              account: account ?? '0x',
-              chain,
-            })
+            return wrapperContract.write.withdrawThenBurn(
+              [avoidDecimalsProblem, manager.name === 'Teahouse Finance' ? slippage : '0x'],
+              {
+                account: account ?? '0x',
+                chain,
+              },
+            )
           },
     )
 
@@ -140,6 +150,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
     refetch,
     onDismiss,
     toastSuccess,
+    manager.name,
     t,
   ])
 

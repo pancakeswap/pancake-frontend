@@ -324,6 +324,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}
+        manager={manager}
         onDismiss={hideRemoveLiquidityModal}
         vaultName={vaultName}
         feeTier={feeTier}
