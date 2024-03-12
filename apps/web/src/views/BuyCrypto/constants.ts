@@ -330,7 +330,6 @@ export const onRampCurrencies: OnRampCurrency[] = [
   Native.onChain(OnRampChainId.POLYGON_ZKEVM),
   Native.onChain(OnRampChainId.ZKSYNC),
   Native.onChain(OnRampChainId.LINEA),
-  Native.onChain(OnRampChainId.LINEA),
   ethereumTokens.usdt,
   bscTokens.usdt,
   bscTokens.usdc,
