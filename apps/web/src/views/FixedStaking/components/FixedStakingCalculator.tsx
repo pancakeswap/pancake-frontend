@@ -1,26 +1,26 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import {
-  ModalV2,
-  useModalV2,
   Box,
-  PreTitle,
-  IconButton,
+  Button,
   CalculateIcon,
-  RoiCard,
   CalculatorMode,
   Flex,
-  Button,
+  IconButton,
+  ModalV2,
+  PreTitle,
+  RoiCard,
+  useModalV2,
 } from '@pancakeswap/uikit'
-import { CurrencyAmount, Percent, Currency } from '@pancakeswap/sdk'
+import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
 import toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
-import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
 
+import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
+import { useCurrentDay } from '../hooks/useStakedPools'
 import { FixedStakingPool } from '../type'
 import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
-import { useCurrentDay } from '../hooks/useStakedPools'
-import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 
 function FixedStakingRoiCard({
   stakeAmount,
@@ -89,7 +89,7 @@ export function FixedStakingCalculator({
 }: {
   stakingToken: Currency
   pools: FixedStakingPool[]
-  initialLockPeriod: number
+  initialLockPeriod?: number
   hideBackButton?: boolean
 }) {
   const stakedPeriods = useMemo(() => pools.map((p) => p.lockPeriod), [pools])
