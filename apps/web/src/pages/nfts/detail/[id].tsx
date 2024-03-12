@@ -1,18 +1,24 @@
 'use client'
 
-import Image from 'next/image'
-import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { ellipseAddress } from 'utils/address'
 import dayjs from 'dayjs'
 import { styled } from 'styled-components'
+import { DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
+import List from 'components/nfts/component/list'
+import { AceIcon, AutoRow, Box, Text } from '@pancakeswap/uikit'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import { getBlockExploreLink } from 'utils'
+import { multiChainId } from 'state/info/constant'
+import { ChainId } from '@pancakeswap/chains'
 import Activity from '../../../components/nfts/component/activity'
 import Adventure from '../../../components/nfts/component/adventure'
 import Offer from '../../../components/nfts/component/offer'
-import sgtIcon from '../../../../public/images/nfts2/sgt-icon.png'
 import Tag from '../../../components/Tag/tag'
+
+dayjs.extend(relativeTime)
 
 export const Wrapper = styled.div`
   .sgt-detail__wrapper div::-webkit-scrollbar {
@@ -20,7 +26,6 @@ export const Wrapper = styled.div`
   }
   .sgt-detail__wrapper {
     padding: 24px 24px 36px;
-    height: calc(100vh - 88px);
     display: flex;
     flex-direction: row;
     gap: 8px;
@@ -148,15 +153,6 @@ export const Wrapper = styled.div`
   .sgt-detail__left-detail-title {
     color: white;
   }
-  .sgt-detail__left-detail-desc {
-    margin-top: 12px;
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-    font-size: 14px;
-    line-height: 25px;
-    color: rgba(255, 255, 255, 0.72);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.48);
-  }
   .sgt-detail__left-detail-line-box {
     display: flex;
     flex-direction: row;
@@ -262,50 +258,66 @@ export const Wrapper = styled.div`
 export default function SGTDetail() {
   const router = useRouter()
   const { id } = router.query
+
   const { data: nft } = useQuery({
     queryKey: ['nftDetail', id],
     queryFn: () => {
-      return fetch(`http://10.1.1.100:9000/nft/detail?nft_id=${id}`, {
+      return fetch(`${DOCKMAN_HOST}/nft/detail?nft_id=${id}`, {
         method: 'GET',
       }).then((r) => r.json())
     },
     enabled: !!id,
   })
+
   const { data: offers } = useQuery({
     queryKey: ['nftOffers', id],
     queryFn: () => {
-      return fetch(`http://10.1.1.100:9000/orders?chain_id=2015&nft_id=${id}&order_market_type=Offer`, {
+      return fetch(`${DOCKMAN_HOST}/orders?chain_id=648&nft_id=${id}&order_market_type=Offer`, {
         method: 'GET',
       }).then((r) => r.json())
     },
     enabled: !!id,
   })
+
+  const { data: list } = useQuery({
+    queryKey: ['nftList', id],
+    queryFn: () => {
+      return fetch(`${DOCKMAN_HOST}/orders?chain_id=648&nft_id=${id}&order_market_type=List`, {
+        method: 'GET',
+      }).then((r) => r.json())
+    },
+    enabled: !!id,
+  })
+
   const { data: activitiesD } = useQuery({
     queryKey: ['nftActivities', id],
     queryFn: () => {
-      return fetch(`http://10.1.1.100:9000/nft/activity?page_number=1&page_size=10&nft_id=${id}`, {
+      return fetch(`${DOCKMAN_HOST}/nft/activity?page_number=1&page_size=10&nft_id=${id}`, {
         method: 'GET',
       }).then((r) => r.json())
     },
     enabled: !!id,
   })
-  console.log(offers)
   const activities = activitiesD?.data
-  console.log(activities)
-  const [detail, setDetail] = useState()
 
   return (
     <Wrapper>
       <div className="sgt-detail__wrapper">
         <div className="sgt-detail__left">
-          <img src={nft?.nft_image} alt="game" className="sgt-detail__left-image" />
+          <img
+            src={nft?.nft_image ? nft?.nft_image : DEFAULT_NFT_IMAGE}
+            alt="game"
+            className="sgt-detail__left-image"
+          />
           <div className="sgt-detail__left-trait-box">
             <div className="sgt-detail__left-trait-title-box">
-              <div className="sgt-detail__left-trait-title">Traits</div>
-              <div className="sgt-detail__left-trait-title-value">6</div>
+              <Text fontWeight={600} fontSize="18px">
+                Trails
+              </Text>
+              <div className="sgt-detail__left-trait-title-value">{nft?.trails?.length}</div>
             </div>
             <div className="sgt-detail__left-trait-list">
-              {[1, 2, 3, 4, 5, 6].map((item) => {
+              {nft?.trails?.map((item) => {
                 return (
                   <div key={item} className="sgt-detail__left-trait-item">
                     <div className="sgt-detail__left-trait-item-title">trait_01</div>
@@ -318,13 +330,7 @@ export default function SGTDetail() {
                     <div className="sgt-detail__left-trait-item-floor-box">
                       <div>Floor:</div>
                       <div>10.23</div>
-                      <Image
-                        src={sgtIcon}
-                        alt="icon"
-                        width={20}
-                        height={20}
-                        style={{ width: '20px', height: '20px' }}
-                      />
+                      <AceIcon />
                     </div>
                   </div>
                 )
@@ -333,21 +339,24 @@ export default function SGTDetail() {
           </div>
           <div className="sgt-detail__left-detail-box">
             <div className="sgt-detail__left-detail-title-box">
-              <div className="sgt-detail__left-detail-title">NFT Details</div>
+              <Text fontWeight={600} fontSize="18px">
+                Details
+              </Text>
             </div>
-            <div className="sgt-detail__left-detail-desc">{nft?.nft_description}</div>
+            <Text color="textSubtle">{nft?.nft_description}</Text>
+            <Box height={1} background="#444444" my={3} />
             {[
               {
-                label: 'Contract adress',
+                label: 'Contract address',
                 value: (
-                  <Link href={nft?.collection_contract_address ?? ''}>
+                  <Link href={getBlockExploreLink(nft?.collection_contract_address, 'address', ChainId.ENDURANCE)}>
                     {ellipseAddress(nft?.collection_contract_address)}
                   </Link>
                 ),
               },
               {
                 label: 'Created',
-                value: '3 months ago',
+                value: dayjs(nft?.create_at).fromNow(),
               },
               {
                 label: 'Token ID',
@@ -355,7 +364,7 @@ export default function SGTDetail() {
               },
               {
                 label: 'Last Updated',
-                value: dayjs(nft?.last_updated).unix(),
+                value: dayjs(nft?.last_updated).fromNow(),
               },
               {
                 label: 'Metadata',
@@ -363,10 +372,10 @@ export default function SGTDetail() {
               },
             ].map((item) => {
               return (
-                <div key={item.label} className="sgt-detail__left-detail-line-box">
+                <AutoRow key={item?.label} justifyContent="space-between" mb="12px">
                   <div className="sgt-detail__left-detail-line-babel">{item.label}</div>
                   <div className="sgt-detail__left-detail-line-value">{item.value}</div>
-                </div>
+                </AutoRow>
               )
             })}
           </div>
@@ -378,7 +387,11 @@ export default function SGTDetail() {
             </div>
             <div className="sgt-detail__right-block">
               <div className="sgt-detail__right-block-title">Offer</div>
-              <Offer />
+              <Offer offers={offers} nft={nft} />
+            </div>
+            <div className="sgt-detail__right-block">
+              <div className="sgt-detail__right-block-title">List</div>
+              <List list={list} />
             </div>
             <div className="sgt-detail__right-block">
               <div className="sgt-detail__right-block-title">Activity</div>

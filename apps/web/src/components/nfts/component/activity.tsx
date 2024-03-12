@@ -1,7 +1,11 @@
 import Image from 'next/image'
 import { ellipseAddress } from 'utils/address'
 
-import { CopyIcon } from '@pancakeswap/uikit'
+import { CopyIcon, Link } from '@pancakeswap/uikit'
+import dayjs from 'dayjs'
+import { getBlockExploreLink } from 'utils'
+import { ChainId } from '@pancakeswap/chains'
+import { displayBalance } from 'utils/display'
 import { Wrapper } from './activity.style'
 
 export default function Activity({ activities }: { activities: any[] }) {
@@ -9,7 +13,7 @@ export default function Activity({ activities }: { activities: any[] }) {
     {
       name: 'All Types',
       style: {
-        width: '140px',
+        width: '110px',
       },
       tdStyle: {
         paddingLeft: '0px',
@@ -18,7 +22,7 @@ export default function Activity({ activities }: { activities: any[] }) {
     {
       name: 'Price',
       style: {
-        width: '140px',
+        width: '120px',
       },
       tdStyle: {
         paddingLeft: '4px',
@@ -27,7 +31,7 @@ export default function Activity({ activities }: { activities: any[] }) {
     {
       name: 'From',
       style: {
-        width: '130px',
+        width: '140px',
       },
       tdStyle: {
         paddingLeft: '0px',
@@ -36,7 +40,7 @@ export default function Activity({ activities }: { activities: any[] }) {
     {
       name: 'To',
       style: {
-        width: '130px',
+        width: '140px',
       },
       tdStyle: {
         paddingLeft: '0px',
@@ -72,27 +76,24 @@ export default function Activity({ activities }: { activities: any[] }) {
                 <div className="sensei__table-body-tr" key={activity.price}>
                   <div style={{ ...columns[0].style, ...(columns[0].tdStyle || {}) }} className="sensei__table-body-td">
                     {activity.activity_type}
-                    {/* <Image
-                    className="sgt-offer__icon"
-                    alt="icon"
-                    src={item.icon}
-                  ></Image> */}
                   </div>
                   <div style={{ ...columns[1].style, ...(columns[1].tdStyle || {}) }} className="sensei__table-body-td">
-                    {activity.price}
+                    {displayBalance(activity.price)}
                   </div>
 
                   <div style={{ ...columns[2].style, ...(columns[2].tdStyle || {}) }} className="sensei__table-body-td">
                     {activity?.activity_type === 'Mint' ? 'Null' : ellipseAddress(activity?.from)}
-                    <CopyIcon />
                   </div>
-                  <div style={{ ...columns[3].style, ...(columns[3].tdStyle || {}) }} className="sensei__table-body-td">
-                    {ellipseAddress(activity?.to)}
-                    <CopyIcon />
-                  </div>
+                  <Link
+                    href={getBlockExploreLink(activity?.to, 'address', ChainId.ENDURANCE)}
+                    style={{ ...columns[3].style, ...(columns[3].tdStyle || {}) }}
+                    className="sensei__table-body-td"
+                  >
+                    {ellipseAddress(activity?.to, 5)}
+                  </Link>
 
                   <div style={{ ...columns[4].style, ...(columns[4].tdStyle || {}) }} className="sensei__table-body-td">
-                    {activity.time}
+                    {dayjs(activity?.time).fromNow()}
                   </div>
                 </div>
               )

@@ -1,7 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { styled } from 'styled-components'
-import { AceIcon, AutoRow, Container, Flex, Grid, Text } from '@pancakeswap/uikit'
+import { AceIcon, AutoRow, Box, Container, Flex, Grid, Text } from '@pancakeswap/uikit'
 import Link from 'next/link'
+import { DOCKMAN_HOST } from 'config/nfts'
+import { displayBalance } from 'utils/display'
 
 const CollectionCard = styled(Flex)`
   aspect-ratio: 2/1;
@@ -14,14 +16,18 @@ const CollectionCard = styled(Flex)`
 
 const CollectionMeta = styled.div`
   padding: 16px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 12px;
 `
 
 const ViewCollection = styled(Link)`
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 6px;
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
 `
 
 const CollectionSwiper = styled.div`
@@ -50,43 +56,36 @@ export default function Index() {
   const { data } = useQuery({
     queryKey: ['nftCollections'],
     queryFn: () => {
-      return fetch('http://10.1.1.100:9000/collection?page_number=1&page_size=10&sort_type=time_decrease', {
+      return fetch(`${DOCKMAN_HOST}/collection?page_number=1&page_size=10&sort_type=time_decrease`, {
         method: 'GET',
       }).then((r) => r.json())
     },
   })
 
   const collections = data?.data
-  console.log(collections)
 
   const firstCollection = collections?.[0]
   const otherCollections = collections?.slice(1)
-  console.log(otherCollections)
   return (
     <Container>
       <CollectionCard style={{ backgroundImage: `url(${firstCollection?.collection_image})` }} alignItems="end">
-        <Flex justifyContent="space-between" px="16px" py="16px" width="100%" alignItems="center">
+        <Flex justifyContent="space-between" px="20px" py="20px" width="100%" alignItems="center">
           <CollectionMeta>
             <AutoRow gap="20px">
-              <Text>
-                <Text color="text99">Floor Price</Text>
+              <Box>
+                <Text color="textSubtle">Floor Price</Text>
                 <AutoRow gap="2px">
-                  <Text color="text">{firstCollection?.collection_floor_price ?? '0.00'}</Text>
-                  <img
-                    src="https://assets.coingecko.com/coins/images/33528/standard/ACE.png?1702254943"
-                    width={16}
-                    height={12}
-                    alt="banner"
-                  />
+                  <Text color="text">{displayBalance(firstCollection?.collection_floor_price ?? 0)}</Text>
+                  <AceIcon />
                 </AutoRow>
-              </Text>
-              <div>
-                <Text color="text99">1D Volume</Text>
+              </Box>
+              <Box>
+                <Text color="textSubtle">1D Volume</Text>
                 <AutoRow gap="2px">
-                  <Text color="text">{firstCollection?.one_day_volume ?? '0.00'}</Text>
-                  <AceIcon width={16} height={16} />
+                  <Text color="text">{displayBalance(firstCollection?.one_day_volume ?? 0)}</Text>
+                  <AceIcon />
                 </AutoRow>
-              </div>
+              </Box>
             </AutoRow>
           </CollectionMeta>
           <ViewCollection href={`/nfts/list/${firstCollection?.id}`}>View Collection</ViewCollection>

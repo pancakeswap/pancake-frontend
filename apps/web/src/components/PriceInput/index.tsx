@@ -6,11 +6,12 @@ import { Wrapper } from './index.style'
 type IPriceInput = {
   label: string
   balance?: string
-  onInput: (value: string) => void
+  amount: string
+  setAmount: (value: string) => void
   errorMsg?: string
   suffix: React.ReactNode
 }
-export default function PriceInput({ label, balance, onInput, errorMsg, suffix }: IPriceInput) {
+export default function PriceInput({ label, balance, amount, setAmount, errorMsg, suffix }: IPriceInput) {
   return (
     <Wrapper>
       <div className={`price-input__wrapper ${errorMsg ? 'price-input__wrapper--error' : ''}`}>
@@ -24,7 +25,13 @@ export default function PriceInput({ label, balance, onInput, errorMsg, suffix }
           )}
         </div>
         <div className="price-input__input-box">
-          <input className="price-input__input" type="number" placeholder="" />
+          <input
+            className="price-input__input"
+            type="number"
+            placeholder=""
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
           {suffix && <div className="price-input__input-suffix">{suffix}</div>}
         </div>
         {errorMsg && (

@@ -2,8 +2,10 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
-import { Container } from '@pancakeswap/uikit'
+import { Container, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import { ellipseAddress } from 'utils/address'
+import { useAccount } from 'wagmi'
 import avatarPng from '../../../public/images/nfts2/avatar.png'
 import sgtIcon from '../../../public/images/nfts2/sgt-icon.png'
 import Button from '../../components/Button'
@@ -385,6 +387,7 @@ export const Wrapper = styled.div`
   }
 `
 export default function User() {
+  const { address } = useAccount()
   const [activeNav, setActiveNav] = useState('nft')
   const defaultItem = {
     id: 1,
@@ -516,12 +519,14 @@ export default function User() {
           <div className="user__total-box">
             <div className="user__total-msg-box">
               <Image src={avatarPng} alt="avatar" className="user__total-msg-avatar" />
-              <div className="user__total-msg-content">
-                <div className="user__total-msg-user-name">Stella</div>
-                <div className="user__total-msg-address">0xa223</div>
+              <div>
+                <Text fontSize="22px">{ellipseAddress(address)}</Text>
+                <Text fontSize="14px" color="textSubtle">
+                  {ellipseAddress(address)}
+                </Text>
               </div>
             </div>
-            <div className="user__total-data-box">
+            <div className="user__total-data-box" style={{ display: 'none' }}>
               <div className="user__total-data-item">
                 <div
                   className="user__total-data-item-label"
@@ -566,14 +571,16 @@ export default function User() {
           </div>
 
           <div className="user__graph-block" style={{ marginTop: '20px' }}>
-            <div className="user__graph-block-title">Assets Owned</div>
+            <Text fontSize="20px" fontWeight={600}>
+              Assets Owned
+            </Text>
             <div className="user-assets__nav">
               <div className={`user-assets__nav-item ${activeNav === 'nft' ? 'user-assets__nav-item--active' : ''}`}>
                 NFT
               </div>
-              <div className={`user-assets__nav-item ${activeNav === 'token' ? 'user-assets__nav-item--active' : ''}`}>
-                Token
-              </div>
+              {/* <div className={`user-assets__nav-item ${activeNav === 'token' ? 'user-assets__nav-item--active' : ''}`}> */}
+              {/*  Token */}
+              {/* </div> */}
             </div>
             <div className="sensei__table" style={{ marginTop: '12px' }}>
               <div className="sensei__table-header">
@@ -714,7 +721,9 @@ export default function User() {
             </div>
           </div>
           <div className="user__graph-block" style={{ marginTop: '20px' }}>
-            <div className="user__graph-block-title">Offers made</div>
+            <Text fontSize="20px" fontWeight={600}>
+              Offers Made
+            </Text>
             <div className="sensei__table" style={{ marginTop: '24px' }}>
               <div className="sensei__table-header">
                 {offerModeColumns.map((item, index) => {

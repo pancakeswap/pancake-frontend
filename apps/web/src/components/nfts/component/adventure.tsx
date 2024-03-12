@@ -1,40 +1,74 @@
 import { useState } from 'react'
 import { ellipseAddress } from 'utils/address'
-import Button from '../../Button'
+import { useAccount } from 'wagmi'
+import { AceIcon, AutoRow, Button, useModal } from '@pancakeswap/uikit'
+import MakeOfferModal from 'components/nfts/MakeOfferModal'
+import ListModal from 'components/nfts/ListModal'
+import { DEFAULT_COLLECTION_AVATAR } from 'config/nfts'
+import { displayBalance } from 'utils/display'
 import Modal from '../../Modal2'
-import PriceInput from '../../PriceInput'
-
-import TokenSelect from '../../TokenSelect'
 import { Wrapper } from './adventure.style'
 
 export default function Adventure({ nft }: { nft: any }) {
-  const [showListModal, setShowListModal] = useState(false)
-  const [showMakeOfferModal, setShowMakeOfferModal] = useState(false)
+  console.log(nft)
+  const [showMakeOfferModal] = useModal(
+    <MakeOfferModal collectionAddress={nft?.collection_contract_address} tokenId={nft?.token_id} />,
+  )
+  const [showListModal] = useModal(
+    <ListModal collectionAddress={nft?.collection_contract_address} tokenId={nft?.token_id} />,
+  )
+  const { address } = useAccount()
   const [showListConfirmModal, setShowListConfirmModal] = useState(false)
   const [showCancelListModal, setShowCancelListModal] = useState(false)
+  const isOwner = address?.toLocaleLowerCase() === nft?.owner
   const dataList = [
     {
       label: 'Current Price',
-      value: `${nft?.price} ACE`,
+      value: (
+        <AutoRow gap="8px">
+          {displayBalance(nft?.price)}
+          <AceIcon />
+        </AutoRow>
+      ),
     },
     {
       label: 'Last sale',
-      value: `${nft?.last_sale_price} ACE`,
+      value: (
+        <AutoRow gap="8px">
+          {displayBalance(nft?.last_sale_price)}
+          <AceIcon />
+        </AutoRow>
+      ),
     },
     {
       label: 'Top Bid',
-      value: `${nft?.top_bid} ACE`,
+      value: (
+        <AutoRow gap="8px">
+          {displayBalance(nft?.top_bid)}
+          <AceIcon />
+        </AutoRow>
+      ),
     },
     {
       label: 'Collection  Floor',
-      value: '12.26 ACE',
+      value: (
+        <AutoRow gap="8px">
+          {displayBalance(nft?.collection_floor_price)}
+          <AceIcon />
+        </AutoRow>
+      ),
     },
   ]
+
   return (
     <Wrapper>
       <div className="sgt-adventure__wrapper">
         <div className="sgt-adventure__user">
-          <img src={nft?.collection_avatar} alt="avatar" className="sgt-adventure__user-avatar" />
+          <img
+            src={nft?.collection_avatar ?? DEFAULT_COLLECTION_AVATAR}
+            alt="avatar"
+            className="sgt-adventure__user-avatar"
+          />
           <div className="sgt-adventure__user-name">{nft?.collection_name}</div>
         </div>
         <div className="sgt-adventure__title">{nft?.nft_name}</div>
@@ -57,59 +91,23 @@ export default function Adventure({ nft }: { nft: any }) {
           })}
         </div>
         <div className="sgt-adventure__bottom">
-          <Button
-            type="gray"
-            style={{
-              marginRight: '8px',
-              width: '260px',
-            }}
-            onClick={() => setShowMakeOfferModal(true)}
-          >
-            Make offer
-          </Button>
-          <Button
-            style={{
-              width: '260px',
-            }}
-          >
-            List
-          </Button>
+          <AutoRow gap="20px" justifyContent="flex-end">
+            {isOwner && (
+              <Button onClick={showListModal} width="200px">
+                List
+              </Button>
+            )}
+            {!isOwner && (
+              <Button onClick={showMakeOfferModal} width="200px">
+                Make offer
+              </Button>
+            )}
+          </AutoRow>
         </div>
 
-        {/* item不属于用户 */}
-        {showMakeOfferModal && (
-          <Modal title="Make offer" onClose={() => {}}>
-            <>
-              <PriceInput label="Offer Price" balance="12.00" onInput={() => {}} errorMsg="" suffix={<TokenSelect />} />
-            </>
-          </Modal>
-        )}
-        {/* item不属于用户-已上架 */}
         {showListConfirmModal && (
           <Modal title="🎉 You did it! " onClose={() => {}} confirmText="Share">
             You have successfully purchased item!{' '}
-          </Modal>
-        )}
-        {/* item属于用户-未来上架 */}
-        {showListModal && (
-          <Modal title="List" onClose={() => {}}>
-            <>
-              <PriceInput
-                label="Listing Price"
-                balance="12.00"
-                onInput={() => {}}
-                errorMsg=""
-                suffix={<TokenSelect />}
-              />
-              <div className="sgt-adventure__modal-fee-line">
-                <div>Service Fee</div>
-                <div>5%</div>
-              </div>
-              <div className="sgt-adventure__modal-total-box">
-                <div className="sgt-adventure__modal-total-label">Total received</div>
-                <div className="sgt-adventure__modal-total-value">0.95 ACE</div>
-              </div>
-            </>
           </Modal>
         )}
         {/* item属于用户-已上架 */}

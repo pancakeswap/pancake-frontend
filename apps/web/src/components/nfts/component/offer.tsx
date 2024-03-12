@@ -1,18 +1,14 @@
-import Image from 'next/image'
+import { AceIcon } from '@pancakeswap/uikit'
+import { displayBalance } from 'utils/display'
+import { ellipseAddress } from 'utils/address'
+import { useAccount } from 'wagmi'
 import Button from '../../Button'
 import { Wrapper } from './offer.style'
 
-export default function Offer() {
-  const defaultItem = {
-    id: 1,
-    icon: null,
-    price: 15.24,
-    quantity: 1,
-    sgr: '+56.12',
-    sgrIcon: null,
-    from: '0xa323',
-  }
-  const datasetList = [defaultItem, defaultItem, defaultItem, defaultItem]
+export default function Offer({ offers, nft }: { offers: any; nft: any }) {
+  const { address } = useAccount()
+  const isOwner = address?.toLocaleLowerCase() === nft?.owner
+
   const columns = [
     {
       name: 'Price',
@@ -61,44 +57,36 @@ export default function Offer() {
             })}
           </div>
           <div className="sensei__table-body">
-            {datasetList.map((item, index) => {
+            {offers?.map((offer, index) => {
               return (
-                <div className="sensei__table-body-tr" key={item.price}>
+                <div className="sensei__table-body-tr" key={offer?.id}>
                   <div style={{ ...columns[0].style, ...(columns[0].tdStyle || {}) }} className="sensei__table-body-td">
-                    {item.price}
-                    <Image className="sgt-offer__icon" alt="icon" src={item.icon} />
+                    {displayBalance(offer.price)}
+                    <AceIcon />
                   </div>
                   <div style={{ ...columns[1].style, ...(columns[1].tdStyle || {}) }} className="sensei__table-body-td">
-                    {item.quantity}
+                    {offer.quantity}
                   </div>
-                  {/* <div
-                  style={{ ...columns[2].style, ...(columns[2].tdStyle || {}) }}
-                  className="sensei__table-body-td"
-                >
-                  <div className="sgt-offer__tag">
-                    <div className="sgt-offer__tag-content">{item.sgr}</div>
-                    <Image
-                      className="sgt-offer__icon"
-                      alt="icon"
-                      src={item.sgrIcon}
-                    ></Image>
-                  </div>
-                </div> */}
                   <div style={{ ...columns[2].style, ...(columns[2].tdStyle || {}) }} className="sensei__table-body-td">
-                    {item.from}
+                    {ellipseAddress(offer.user_address)}
                   </div>
 
-                  <div style={{ ...columns[3].style, ...(columns[3].tdStyle || {}) }} className="sensei__table-body-td">
-                    <Button
-                      style={{
-                        width: '116px',
-                      }}
-                      type="transparent"
-                      size="sm"
+                  {isOwner && (
+                    <div
+                      style={{ ...columns[3].style, ...(columns[3].tdStyle || {}) }}
+                      className="sensei__table-body-td"
                     >
-                      Accept
-                    </Button>
-                  </div>
+                      <Button
+                        style={{
+                          width: '116px',
+                        }}
+                        type="transparent"
+                        size="sm"
+                      >
+                        Accept
+                      </Button>
+                    </div>
+                  )}
                 </div>
               )
             })}
