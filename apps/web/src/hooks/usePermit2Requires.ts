@@ -39,9 +39,9 @@ export const usePermit2Requires = (amount: CurrencyAmount<Token> | undefined, sp
   }, [allowance, amount])
 
   const requirePermit = useMemo((): boolean => {
-    return (
-      (amount && permitAmount?.lessThan(amount)) || (Boolean(expiration) && BigInt(expiration) - now < EXPIRES_BUFFER)
-    )
+    if (!amount) return false
+
+    return permitAmount?.lessThan(amount) || (Boolean(expiration) && BigInt(expiration) - now < EXPIRES_BUFFER)
   }, [amount, permitAmount, expiration, now])
 
   return {
