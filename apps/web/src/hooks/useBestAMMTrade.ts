@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
-import { Currency, CurrencyAmount, Native, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import {
   BATCH_MULTICALL_CONFIGS,
   PoolType,
@@ -22,6 +22,7 @@ import { tracker } from 'utils/datadog'
 import { createViemPublicClientGetter } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import {
   CommonPoolsParams,
   PoolsWithState,
@@ -247,9 +248,8 @@ function bestTradeHookFactory({
     const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
     const deferQuotient = useDebounce(deferQuotientRaw, 500)
     const { data: quoteCurrencyUsdPrice } = useCurrencyUsdPrice(currency ?? undefined)
-    const { data: nativeCurrencyUsdPrice } = useCurrencyUsdPrice(
-      currency?.chainId ? Native.onChain(currency.chainId) : undefined,
-    )
+    const currencyNativeChain = useNativeCurrency(currency?.chainId)
+    const { data: nativeCurrencyUsdPrice } = useCurrencyUsdPrice(currencyNativeChain)
 
     const poolTypes = useMemo(() => {
       const types: PoolType[] = []
