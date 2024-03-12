@@ -1,33 +1,33 @@
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Text,
-  Heading,
-  Card,
-  CardHeader,
-  CardBody,
-  Flex,
-  Spinner,
-  Skeleton,
-  Tag,
   Button,
+  Card,
+  CardBody,
+  CardHeader,
   CheckmarkCircleIcon,
+  Flex,
+  Heading,
+  Skeleton,
+  Spinner,
+  Tag,
+  Text,
   useModal,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { Auction, AuctionStatus, ConnectedBidder } from 'config/constants/types'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { Auction, AuctionStatus, ConnectedBidder } from 'config/constants/types'
+import { styled } from 'styled-components'
 import PlaceBidModal from '../PlaceBidModal'
+import AuctionFooter from './AuctionFooter'
 import AuctionSchedule from './AuctionSchedule'
 import CannotBidMessage from './CannotBidMessage'
-import AuctionFooter from './AuctionFooter'
 
 const AuctionDetailsCard = styled(Card)`
   flex: 1;
 `
 
 interface AuctionDetailsProps {
-  auction: Auction
-  connectedBidder: ConnectedBidder
+  auction: Auction | null
+  connectedBidder: ConnectedBidder | null
   refreshBidders: () => void
 }
 
@@ -68,11 +68,11 @@ const AuctionDetails: React.FC<React.PropsWithChildren<AuctionDetailsProps>> = (
       return <CannotBidMessage />
     }
     if (whitelistedAndReadyToBid) {
-      const { amount, position } = connectedBidder.bidderData
+      const { amount, position } = connectedBidder.bidderData ?? {}
       return (
         <>
           <Tag outline variant="success" startIcon={<CheckmarkCircleIcon />}>
-            {t('Connected as %projectName%', { projectName: connectedBidder.bidderData.tokenName })}
+            {t('Connected as %projectName%', { projectName: connectedBidder.bidderData?.tokenName })}
           </Tag>
           <Flex justifyContent="space-between" width="100%" pt="24px">
             <Text small color="textSubtle">

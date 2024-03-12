@@ -1,21 +1,21 @@
-import { useState } from 'react'
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Text,
-  Flex,
-  Box,
-  Input,
   ArrowBackIcon,
   ArrowForwardIcon,
   ArrowLastIcon,
-  IconButton,
+  Box,
   BunnyPlaceholderIcon,
+  Flex,
+  IconButton,
+  Input,
   Spinner,
+  Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import AuctionLeaderboardTable from './AuctionLeaderboard/AuctionLeaderboardTable'
+import { useState } from 'react'
+import { styled } from 'styled-components'
 import { useFarmAuction } from '../hooks/useFarmAuction'
+import AuctionLeaderboardTable from './AuctionLeaderboard/AuctionLeaderboardTable'
 
 interface AuctionHistoryProps {
   mostRecentClosedAuctionId: number

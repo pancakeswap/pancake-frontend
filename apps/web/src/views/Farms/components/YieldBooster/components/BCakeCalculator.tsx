@@ -3,25 +3,25 @@ import {
   BalanceInput,
   Box,
   Button,
+  CalculatorMode,
+  EditingCurrency,
   Flex,
   HelpIcon,
   Text,
   Toggle,
-  useTooltip,
   useRoiCalculatorReducer,
-  CalculatorMode,
-  EditingCurrency,
+  useTooltip,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import _toNumber from 'lodash/toNumber'
 import { useEffect, useMemo, useState } from 'react'
-import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { styled, useTheme } from 'styled-components'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useBCakeTooltipContent } from 'views/Farms/components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
+import { useAccount } from 'wagmi'
 import { useGetCalculatorMultiplier } from '../hooks/useGetBoostedAPR'
 import LockDurationField from './BCakeLockedDuration'
 
@@ -148,14 +148,14 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
                 $1000
               </Button>
               <Button
-                disabled={!account || isLoading || lockedAmount.eq(0)}
+                disabled={!account || isLoading || lockedAmount?.eq(0)}
                 scale="xs"
                 p="4px 16px"
                 width="128px"
                 variant="tertiary"
                 style={{ textTransform: 'uppercase' }}
                 onClick={() =>
-                  setPrincipalFromUSDValue(getBalanceNumber(lockedAmount.times(earningTokenPrice)).toFixed(2))
+                  setPrincipalFromUSDValue(getBalanceNumber(lockedAmount?.times(earningTokenPrice)).toFixed(2))
                 }
               >
                 {t('My Balance')}

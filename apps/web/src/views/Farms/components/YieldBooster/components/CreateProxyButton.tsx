@@ -23,12 +23,13 @@ const CreateProxyButton: React.FC<React.PropsWithChildren<CreateProxyButtonProps
       width="100%"
       {...props}
       onClick={async () => {
+        if (!farmBoosterProxyFactoryContract.account) return
         try {
           setIsCreateProxyLoading(true)
           const receipt = await fetchWithCatchTxError(() =>
             farmBoosterProxyFactoryContract.write.createFarmBoosterProxy({
               gas: MAX_GAS_LIMIT,
-              account: farmBoosterProxyFactoryContract.account,
+              account: farmBoosterProxyFactoryContract.account!,
               chain: farmBoosterProxyFactoryContract.chain,
             }),
           )

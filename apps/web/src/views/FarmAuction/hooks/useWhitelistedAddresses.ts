@@ -1,10 +1,10 @@
-import { useFarmAuctionContract } from 'hooks/useContract'
+import { useQuery } from '@tanstack/react-query'
+import { AUCTION_WHITELISTED_BIDDERS_TO_FETCH } from 'config'
 import { getBidderInfo } from 'config/constants/farmAuctions'
 import { FarmAuctionBidderConfig } from 'config/constants/types'
-import { AUCTION_WHITELISTED_BIDDERS_TO_FETCH } from 'config'
-import { useQuery } from '@tanstack/react-query'
+import { useFarmAuctionContract } from 'hooks/useContract'
 
-const useWhitelistedAddresses = (): FarmAuctionBidderConfig[] => {
+const useWhitelistedAddresses = (): FarmAuctionBidderConfig[] | undefined => {
   const farmAuctionContract = useFarmAuctionContract()
 
   const { data } = useQuery({

@@ -101,7 +101,7 @@ export const useIfoV7Contract = (address: Address, options?: UseContractOptions)
   return useContract(address, ifoV7ABI, options)
 }
 
-export const useERC20 = (address: Address, options?: UseContractOptions) => {
+export const useERC20 = (address?: Address, options?: UseContractOptions) => {
   return useContract(address, erc20ABI, options)
 }
 
@@ -395,7 +395,7 @@ export const useUNSContract = (address, chainId, provider) => {
   return useMemo(() => getUnsContract(address, chainId, provider), [chainId, address, provider])
 }
 
-export const useCrossFarmingProxy = (proxyContractAddress: Address) => {
+export const useCrossFarmingProxy = (proxyContractAddress?: Address) => {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(

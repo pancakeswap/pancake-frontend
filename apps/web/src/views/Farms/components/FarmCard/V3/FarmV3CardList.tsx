@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import partition_ from 'lodash/partition'
 import { AutoRenewIcon, AutoRow, Box, Button, Flex, PreTitle, Text } from '@pancakeswap/uikit'
 import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
 import { usePool } from 'hooks/v3/usePools'
-import SingleFarmV3Card from 'views/Farms/components/FarmCard/V3/SingleFarmV3Card'
-import { V3Farm } from 'views/Farms/FarmsV3'
+import partition_ from 'lodash/partition'
 import { useCallback } from 'react'
+import { V3Farm } from 'views/Farms/FarmsV3'
+import SingleFarmV3Card from 'views/Farms/components/FarmCard/V3/SingleFarmV3Card'
 import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
 
 interface FarmV3CardListProps {
@@ -50,7 +50,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
                       minWidth: '49%',
                       width: '100%',
                     }}
-                    pool={pool}
+                    pool={pool ?? undefined}
                     flex={1}
                     direction={direction}
                     positionType="unstaked"
@@ -77,7 +77,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
               <>
                 <SingleFarmV3Card
                   harvesting={harvesting}
-                  pool={pool}
+                  pool={pool ?? undefined}
                   width="100%"
                   direction={direction}
                   positionType="staked"

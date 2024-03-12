@@ -152,7 +152,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     addLiquidityUrl={addLiquidityUrl}
                     cakePrice={cakePrice}
                     apr={farm.apr}
-                    displayApr={displayApr}
+                    displayApr={displayApr ?? undefined}
                     lpRewardsApr={farm.lpRewardsApr}
                     strikethrough={false}
                     useTooltipText

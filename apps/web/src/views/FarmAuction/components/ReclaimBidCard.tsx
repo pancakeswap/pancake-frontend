@@ -1,16 +1,16 @@
-import { styled } from 'styled-components'
-import { Text, Heading, Card, CardHeader, CardBody, Flex, useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
+import { Card, CardBody, CardHeader, Flex, Heading, Text, useToast } from '@pancakeswap/uikit'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useCake, useFarmAuctionContract } from 'hooks/useContract'
+import { styled } from 'styled-components'
 import { requiresApproval } from 'utils/requiresApproval'
 import { useAccount } from 'wagmi'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
-import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
-import { ToastDescriptionWithTx } from 'components/Toast'
 import useReclaimAuctionBid from '../hooks/useReclaimAuctionBid'
 
 const StyledReclaimBidCard = styled(Card)`
@@ -32,6 +32,7 @@ const ReclaimBidCard: React.FC<React.PropsWithChildren> = () => {
 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
+      if (!account) return true
       return requiresApproval(cakeContract, account, farmAuctionContract.address)
     },
     onApprove: () => {

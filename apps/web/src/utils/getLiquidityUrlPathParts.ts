@@ -11,10 +11,12 @@ const getLiquidityUrlPathParts = ({
   chainId,
 }: {
   quoteTokenAddress?: string
-  tokenAddress: string
+  tokenAddress?: string
   feeAmount?: FeeAmount
-  chainId: number
+  chainId?: number
 }): string => {
+  if (!chainId || !tokenAddress) return ''
+
   const wNativeAddress = WNATIVE[chainId]
   const firstPart =
     !quoteTokenAddress || quoteTokenAddress === wNativeAddress?.address ? NATIVE[chainId].symbol : quoteTokenAddress

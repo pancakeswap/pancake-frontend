@@ -1,16 +1,16 @@
-import { styled } from 'styled-components'
-import dayjs from 'dayjs'
-import { Text, Flex, PocketWatchIcon, Skeleton } from '@pancakeswap/uikit'
-import { Auction, AuctionStatus } from 'config/constants/types'
-import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { useTranslation } from '@pancakeswap/localization'
+import { Flex, PocketWatchIcon, Skeleton, Text } from '@pancakeswap/uikit'
+import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import { Auction, AuctionStatus } from 'config/constants/types'
+import dayjs from 'dayjs'
+import { styled } from 'styled-components'
 
 const AuctionCountDown = styled(Flex)`
   align-items: flex-end;
   margin: 0 16px 0 16px;
 `
 
-const AuctionTimer: React.FC<React.PropsWithChildren<{ auction: Auction }>> = ({ auction }) => {
+const AuctionTimer: React.FC<React.PropsWithChildren<{ auction: Auction | null }>> = ({ auction }) => {
   const { t } = useTranslation()
   if (!auction) {
     return (
