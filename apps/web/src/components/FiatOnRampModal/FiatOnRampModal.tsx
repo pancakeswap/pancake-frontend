@@ -14,11 +14,13 @@ import {
 
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { MutableRefObject, memo, useCallback, useMemo } from 'react'
+import { MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL } from 'config/constants/endpoints'
+import Script from 'next/script'
+import { MutableRefObject, memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTheme } from 'styled-components'
 import { v4 } from 'uuid'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
-import { getOnrampCurrencyChainId, isNativeBtc } from 'views/BuyCrypto/constants'
+import { ONRAMP_PROVIDERS, OnRampChainId, getOnrampCurrencyChainId, isNativeBtc } from 'views/BuyCrypto/constants'
 import { useOnRampSignature } from 'views/BuyCrypto/hooks/useOnRampSignature'
 import { StyledBackArrowContainer } from 'views/BuyCrypto/styles'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
@@ -66,6 +68,9 @@ export const FiatOnRampModalButton = ({
       loading={isLoading}
       error={isError}
       resetBuyCryptoState={resetBuyCryptoState}
+      account={account}
+      chainId={getOnrampCurrencyChainId(cryptoCurrency)}
+      txId={externalTxIdRef.current}
     />,
   )
   const toggleFiatOnRampModal = useCallback(
@@ -128,8 +133,22 @@ export const FiatOnRampModal = memo<
       iframeUrl: string | undefined
       loading: boolean
       error: boolean
+      account: `0x${string}` | undefined
+      chainId: OnRampChainId
+      txId: string | undefined
     }
->(function ConfirmSwapModalComp({ onDismiss, selectedQuote, iframeUrl, error, loading, resetBuyCryptoState }) {
+>(function ConfirmSwapModalComp({
+  onDismiss,
+  selectedQuote,
+  iframeUrl,
+  error,
+  loading,
+  resetBuyCryptoState,
+  account,
+  chainId,
+  txId,
+}) {
+  const [scriptLoaded, setScriptOnLoad] = useState<boolean>(Boolean(window?.mercuryoWidget))
   const { t } = useTranslation()
 
   const theme = useTheme()
@@ -137,6 +156,34 @@ export const FiatOnRampModal = memo<
     resetBuyCryptoState?.()
     onDismiss?.()
   }, [onDismiss, resetBuyCryptoState])
+
+  useEffect(() => {
+    if (selectedQuote && selectedQuote.provider === ONRAMP_PROVIDERS.Mercuryo && account && iframeUrl) {
+      const sigParam = iframeUrl.match(/[?&]signature=([^&]+)/)
+      const sig = sigParam ? sigParam[1] : null
+
+      if (window?.mercuryoWidget && sig) {
+        // @ts-ignore
+        const MC_WIDGET = window?.mercuryoWidget
+        MC_WIDGET.run({
+          widgetId: MERCURYO_WIDGET_ID,
+          fiatCurrency: selectedQuote.fiatCurrency.toUpperCase(),
+          currency: selectedQuote.cryptoCurrency.toUpperCase(),
+          fiatAmount: selectedQuote.amount,
+          fixAmount: true,
+          fixFiatAmount: true,
+          fixFiatCurrency: true,
+          fixCurrency: true,
+          address: account,
+          signature: sig,
+          network: chainId,
+          merchantTransactionId: `${account}_${txId}`,
+          host: document.getElementById('mercuryo-widget'),
+          theme: theme.isDark ? 'PCS_dark' : 'PCS_light',
+        })
+      }
+    }
+  }, [selectedQuote, theme, scriptLoaded, chainId, account, iframeUrl, txId])
 
   return (
     <>
@@ -161,6 +208,12 @@ export const FiatOnRampModal = memo<
           <ProviderIFrame provider={selectedQuote?.provider} loading={loading} signedIframeUrl={iframeUrl} />
         )}
       </ModalWrapper>
+      <Script
+        src={MERCURYO_WIDGET_URL}
+        onLoad={() => {
+          setScriptOnLoad(true)
+        }}
+      />
     </>
   )
 })

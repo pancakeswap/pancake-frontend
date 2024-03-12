@@ -25,16 +25,24 @@ export const ProviderIFrame = ({ provider, loading, signedIframeUrl }: IProvider
   const theme = useTheme()
   const providerIframeId = `${ONRAMP_PROVIDERS[provider].toLowerCase()}_iframe`
 
+  if (provider === ONRAMP_PROVIDERS.MoonPay || provider === ONRAMP_PROVIDERS.Transak) {
+    return (
+      <>
+        <LoadingBuffer loading={loading} />
+        <StyledIframe
+          id={providerIframeId}
+          src={signedIframeUrl}
+          title="fiat-onramp-iframe"
+          isDark={theme.isDark}
+          allow="camera;microphone;fullscreen;payment"
+        />
+      </>
+    )
+  }
   return (
     <>
       <LoadingBuffer loading={loading} />
-      <StyledIframe
-        id={providerIframeId}
-        src={signedIframeUrl}
-        title="fiat-onramp-iframe"
-        isDark={theme.isDark}
-        allow="camera;microphone;fullscreen;payment"
-      />
+      <IFrameWrapper id="mercuryo-widget" />;
     </>
   )
 }
