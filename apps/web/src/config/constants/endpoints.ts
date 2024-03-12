@@ -9,9 +9,8 @@ export const API_NFT = 'https://nft.pancakeswap.com/api/v1'
 export const SNAPSHOT_API = `${SNAPSHOT_BASE_URL}/graphql`
 export const SNAPSHOT_HUB_API = `${SNAPSHOT_BASE_URL}/api/message`
 export const GRAPH_API_POTTERY = 'https://api.thegraph.com/subgraphs/name/pancakeswap/pottery'
-export const ONRAMP_API_BASE_URL = 'http://localhost:8083'
+export const ONRAMP_API_BASE_URL = 'https://onramp-api.pancakeswap.com'
 export const TRANSAK_API_BASE_URL = 'https://api-stg.transak.com/api/v1'
-
 export const MOONPAY_BASE_URL = 'https://api.moonpay.com'
 export const NOTIFICATION_HUB_BASE_URL = 'https://notification-hub.pancakeswap.com'
 /**
