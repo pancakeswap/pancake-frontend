@@ -180,7 +180,7 @@ export function BuyCryptoForm() {
           onCurrencySelect={onCurrencySelection}
           selectedCurrency={outputCurrency}
           currencyLoading={Boolean(!outputCurrency)}
-          value={outputValue ?? ''}
+          value={outputValue || defaultAmt}
           onUserInput={handleTypeInput}
           loading={Boolean(fetching || isFetching || !quotes)}
           error={Boolean(error || isError || Boolean(inputError && isTypingInput))}
@@ -204,7 +204,7 @@ export function BuyCryptoForm() {
         <ProviderSelector
           id="provider-select"
           onQuoteSelect={setShowProvidersPopOver}
-          selectedQuote={selectedQuote ?? bestQuoteRef.current}
+          selectedQuote={selectedQuote || bestQuoteRef.current || quotes[0]}
           quoteLoading={isFetching || !quotes}
           quotes={quotes}
         />
@@ -280,7 +280,7 @@ const OnRampCurrencySelectPopOver = ({
                   id={`provider-select-${quote.provider}`}
                   onQuoteSelect={onQuoteSelect}
                   quotes={quotes}
-                  selectedQuote={selectedQuote ?? quotes[0]}
+                  selectedQuote={selectedQuote || quotes[0]}
                   quoteLoading={isFetching || !quotes}
                   error={isError || Boolean(inputError)}
                   currentQuote={quote}

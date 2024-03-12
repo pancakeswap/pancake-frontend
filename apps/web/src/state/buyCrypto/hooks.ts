@@ -165,7 +165,7 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
 
       dispatch(
         replaceBuyCryptoState({
-          typedValue: '',
+          typedValue: '150',
           inputCurrencyId: parsed[Field.OUTPUT].currencyId,
           outputCurrencyId: parsed[Field.INPUT].currencyId,
           recipient: undefined,

@@ -19,7 +19,7 @@ function calculateDefaultAmount(
   currencyCode: string | undefined,
   isFiatFlow: boolean,
 ): number {
-  if (!minAmount || !currencyCode) return 0
+  if (!minAmount || !currencyCode) return 300
   return !isFiatFlow ? ceil(minAmount * 5) : Number((minAmount * 5).toFixed(3))
 }
 
