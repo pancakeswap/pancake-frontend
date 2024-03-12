@@ -175,6 +175,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
             variant="text"
             width="fit-content"
             padding="6.5px 20px"
+            scale="xs"
             marginTextBetweenLogo="6px"
             textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
             tokenAddress={token?.address}

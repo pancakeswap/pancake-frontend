@@ -10,8 +10,8 @@ export const endurance = defineChain({
     symbol: 'ACE',
   },
   rpcUrls: {
-    default: { http: ['https://rpc-endurance.fusionist.io'] },
-    public: { http: ['https://rpc-endurance.fusionist.io'] },
+    default: { http: ['https://endurance2-rpc-partner.archivenode.club', 'https://rpc-endurance.fusionist.io'] },
+    public: { http: ['https://endurance2-rpc-partner.archivenode.club', 'https://rpc-endurance.fusionist.io'] },
   },
   blockExplorers: {
     etherscan: { name: 'EnduranceScan', url: 'https://explorer-endurance.fusionist.io' },
