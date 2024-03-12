@@ -121,7 +121,7 @@ export function BuyCryptoForm() {
     isError: error,
   } = useBtcAddressValidator({
     address: searchQuery,
-    network: 'testnet',
+    network: 'mainnet',
     currency: cryptoCurrency,
   })
 
@@ -135,7 +135,7 @@ export function BuyCryptoForm() {
     network: cryptoCurrency?.chainId,
     fiatAmount: typedValue || defaultAmt,
     enabled: Boolean(typedValue !== ''),
-    isFiat: !isFiatFlow ? (isTypingInput ? 'true' : 'false') : isTypingOutput ? 'true' : 'false',
+    isFiat: 'true',
   })
 
   const handleInput = useCallback((event) => {
