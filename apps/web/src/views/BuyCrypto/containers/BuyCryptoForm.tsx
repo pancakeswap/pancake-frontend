@@ -120,6 +120,7 @@ export function BuyCryptoForm() {
     data: quotes,
     isFetching,
     isError,
+    refetch,
   } = useOnRampQuotes({
     cryptoCurrency: cryptoCurrency?.symbol,
     fiatCurrency: fiatCurrency?.symbol,
@@ -160,7 +161,7 @@ export function BuyCryptoForm() {
     <AutoColumn position="relative">
       <Flex justifyContent="space-between" alignItems="center">
         <FormHeader title={t('Buy Crypto')} subTitle={t('Buy crypto in just a few clicks')} />
-        <OnRampFlipButton />
+        <OnRampFlipButton refetch={refetch} />
       </Flex>
       <OnRampCurrencySelectPopOver
         quotes={quotes}
