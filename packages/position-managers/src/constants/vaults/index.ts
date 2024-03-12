@@ -33,6 +33,7 @@ export function isThirdPartyVaultConfig(config: VaultConfig): config is PCSDuoTo
     config.manager === MANAGER.BRIL ||
     config.manager === MANAGER.RANGE ||
     config.manager === MANAGER.DEFIEDGE ||
-    config.manager === MANAGER.ALPACA
+    config.manager === MANAGER.ALPACA ||
+    config.manager === MANAGER.TEAHOUSE
   )
 }
