@@ -18,7 +18,7 @@ interface PositionListItemDisplayProps {
   removed: boolean
   outOfRange: boolean
   priceUpper?: Price<Token, Token>
-  tickAtLimit?: {
+  tickAtLimit: {
     LOWER?: boolean
     UPPER?: boolean
   }
