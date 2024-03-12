@@ -204,7 +204,7 @@ export function BuyCryptoForm() {
         <ProviderSelector
           id="provider-select"
           onQuoteSelect={setShowProvidersPopOver}
-          selectedQuote={selectedQuote || bestQuoteRef.current || quotes[0]}
+          selectedQuote={selectedQuote || bestQuoteRef.current}
           quoteLoading={isFetching || !quotes}
           quotes={quotes}
         />
