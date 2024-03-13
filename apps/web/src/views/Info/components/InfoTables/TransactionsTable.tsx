@@ -180,6 +180,7 @@ const TransactionTable: React.FC<
               const [first, second] = toBeAbsList.includes(sortField)
                 ? [Math.abs(firstField as number), Math.abs(secondField as number)]
                 : [firstField, secondField]
+              if (!first || !second) return -1
               return first > second ? (sortDirection ? -1 : 1) * 1 : (sortDirection ? -1 : 1) * -1
             }
             return -1

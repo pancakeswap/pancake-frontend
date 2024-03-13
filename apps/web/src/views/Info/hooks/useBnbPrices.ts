@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { infoClient } from 'utils/graphql'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { infoClient } from 'utils/graphql'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 export interface BnbPrices {
@@ -84,7 +84,7 @@ export const useBnbPrices = (): BnbPrices | undefined => {
 
   useEffect(() => {
     const fetch = async () => {
-      const [block24, block48, blockWeek] = blocks
+      const [block24, block48, blockWeek] = blocks ?? []
       const { bnbPrices, error: fetchError } = await fetchBnbPrices(block24.number, block48.number, blockWeek.number)
       if (fetchError) {
         setError(true)
