@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, OpenNewIcon, PageSection, Tag, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { styled } from 'styled-components'
 import { SlideSvgDark, SlideSvgLight } from 'views/Home/components/SlideSvg'
 
@@ -193,8 +194,8 @@ export const Banner = () => {
               width="100%"
               height="100%"
               disablePictureInPicture
-              src="/images/v4-landing/banner-video.mp4"
-              poster="/images/v4-landing/video-image.jpg"
+              src="https://cdn.pancakeswap.com/v4/banner-video.mp4"
+              poster={`${ASSET_CDN}/web/v4-landing/video-image.jpg`}
               controlsList="nodownload noplaybackrate noremoteplayback"
             />
           </Box>

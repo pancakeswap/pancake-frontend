@@ -1,5 +1,6 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, LinkExternal, PageSection, Text } from '@pancakeswap/uikit'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
 import { InnerWedgeWrapper, OuterWedgeWrapper, WedgeBottomRight, WedgeTopLeft } from 'views/Home/components/WedgeSvgs'
@@ -73,25 +74,25 @@ const BuildingConfig = [
   {
     title: <Trans>Read the White Paper</Trans>,
     icon: <Step1Icon width={40} height={48} color="primary" />,
-    imageUrl: '/images/v4-landing/buildings-1.png',
+    imageUrl: `${ASSET_CDN}/web/v4-landing/buildings-1.png`,
     url: '',
   },
   {
     title: <Trans>Get the Tools</Trans>,
     icon: <Step2Icon width={40} height={48} color="primary" />,
-    imageUrl: '/images/v4-landing/buildings-2.png',
+    imageUrl: `${ASSET_CDN}/web/v4-landing/buildings-2.png`,
     url: '',
   },
   {
     title: <Trans>Join the Community</Trans>,
     icon: <Step3Icon width={40} height={48} color="primary" />,
-    imageUrl: '/images/v4-landing/buildings-3.png',
+    imageUrl: `${ASSET_CDN}/web/v4-landing/buildings-3.png`,
     url: 'https://discord.gg/pancakeswap?utm_source=v4 landing page&utm_medium=banner&utm_campaign=v4 landing page&utm_id=v4 landing page',
   },
   {
     title: <Trans>Start Building</Trans>,
     icon: <Step4Icon width={40} height={48} color="primary" />,
-    imageUrl: '/images/v4-landing/buildings-4.png',
+    imageUrl: `${ASSET_CDN}/web/v4-landing/buildings-4.png`,
     url: '',
   },
 ]

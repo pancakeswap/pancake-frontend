@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Card, Flex, LibraryIcon, OpenNewIcon, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { styled } from 'styled-components'
 
 const ImageUI = styled(Flex)`
@@ -64,7 +65,7 @@ export const Contribute = () => {
           </Flex>
           <ImageUI
             style={{
-              backgroundImage: `url('/images/v4-landing/contribute.png')`,
+              backgroundImage: `url('${ASSET_CDN}/web/v4-landing/contribute.png')`,
             }}
           />
         </Flex>
