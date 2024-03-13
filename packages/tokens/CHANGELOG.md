@@ -1,5 +1,11 @@
 # @pancakeswap/tokens
 
+## 0.6.9
+
+### Patch Changes
+
+- e26505f: List new pool, farm, token and gauges
+
 ## 0.6.8
 
 ### Patch Changes
