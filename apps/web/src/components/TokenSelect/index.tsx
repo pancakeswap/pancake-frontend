@@ -10,7 +10,7 @@ export default function TokenSelect() {
         <div className="token-select__selected">
           <Image src={sgtIcon} className="token-select__selected-icon" alt="icon" />
           <div className="token-select__selected-name">ACE</div>
-          <Image src={arrow3} className="token-select__selected-arrow" alt="arrow" />
+          {/* <Image src={arrow3} className="token-select__selected-arrow" alt="arrow" /> */}
         </div>
       </div>
     </Wrapper>

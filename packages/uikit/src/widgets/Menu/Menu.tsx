@@ -31,7 +31,7 @@ const StyledNav = styled.nav`
   width: 100%;
   height: ${MENU_HEIGHT}px;
   transform: translate3d(0, 0, 0);
-  background: transparent;
+  background: rgba(0, 0, 0, 0.2);
 
   padding-left: 16px;
   padding-right: 16px;

@@ -20,7 +20,7 @@ export default function PriceInput({ label, balance, amount, setAmount, errorMsg
           {balance !== undefined && (
             <div className="price-input__balance-box">
               <div className="price-input__balance-label">Balance</div>
-              <div className="price-input__balance-value">0.00</div>
+              <div className="price-input__balance-value">{balance}</div>
             </div>
           )}
         </div>

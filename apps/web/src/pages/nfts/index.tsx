@@ -4,33 +4,22 @@ import { AceIcon, AutoRow, Box, Container, Flex, Grid, Text } from '@pancakeswap
 import Link from 'next/link'
 import { DOCKMAN_HOST } from 'config/nfts'
 import { displayBalance } from 'utils/display'
+import { useEffect } from 'react'
 
 const CollectionCard = styled(Flex)`
   aspect-ratio: 2/1;
-  background-repeat: no-repeat;
-  background-size: cover;
   border-radius: 8px;
-  border: 1px solid #3a3a3a;
+  //border: 1px solid #3a3a3a;
   margin-bottom: 25px;
-`
-
-const CollectionMeta = styled.div`
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-`
-
-const ViewCollection = styled(Link)`
-  padding: 8px 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.12);
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const CollectionSwiper = styled.div`
+  &::-webkit-scrollbar {
+    display: none;
+  }
   overflow-x: scroll;
   height: 180px;
   display: flex;
@@ -39,7 +28,7 @@ const CollectionSwiper = styled.div`
 
 const CollectionSwiperItem = styled(Link)`
   width: 360px;
-  flex-grow: 1;
+  flex-grow: 0;
   flex-shrink: 0;
   border-radius: 8px;
   border: 1px solid #3a3a3a;
@@ -64,36 +53,14 @@ export default function Index() {
 
   const collections = data?.data
 
-  const firstCollection = collections?.[0]
-  const otherCollections = collections?.slice(1)
   return (
     <Container>
-      <CollectionCard style={{ backgroundImage: `url(${firstCollection?.collection_image})` }} alignItems="end">
-        <Flex justifyContent="space-between" px="20px" py="20px" width="100%" alignItems="center">
-          <CollectionMeta>
-            <AutoRow gap="20px">
-              <Box>
-                <Text color="textSubtle">Floor Price</Text>
-                <AutoRow gap="2px">
-                  <Text color="text">{displayBalance(firstCollection?.collection_floor_price ?? 0)}</Text>
-                  <AceIcon />
-                </AutoRow>
-              </Box>
-              <Box>
-                <Text color="textSubtle">1D Volume</Text>
-                <AutoRow gap="2px">
-                  <Text color="text">{displayBalance(firstCollection?.one_day_volume ?? 0)}</Text>
-                  <AceIcon />
-                </AutoRow>
-              </Box>
-            </AutoRow>
-          </CollectionMeta>
-          <ViewCollection href={`/nfts/list/${firstCollection?.id}`}>View Collection</ViewCollection>
-        </Flex>
+      <CollectionCard alignItems="end">
+        <img src="/images/tesseract-nft-banner2.png" alt="tesseract" width="100%" />
       </CollectionCard>
 
       <CollectionSwiper>
-        {otherCollections?.map((c) => (
+        {collections?.map((c) => (
           <CollectionSwiperItem
             href={`/nfts/list/${c?.id}`}
             style={{

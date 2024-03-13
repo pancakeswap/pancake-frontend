@@ -8,10 +8,9 @@ import dayjs from 'dayjs'
 import { styled } from 'styled-components'
 import { DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
 import List from 'components/nfts/component/list'
-import { AceIcon, AutoRow, Box, Text } from '@pancakeswap/uikit'
+import { AceIcon, AutoRow, Box, Container, Flex, Loading, Text } from '@pancakeswap/uikit'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { getBlockExploreLink } from 'utils'
-import { multiChainId } from 'state/info/constant'
 import { ChainId } from '@pancakeswap/chains'
 import Activity from '../../../components/nfts/component/activity'
 import Adventure from '../../../components/nfts/component/adventure'
@@ -28,7 +27,7 @@ export const Wrapper = styled.div`
     padding: 24px 24px 36px;
     display: flex;
     flex-direction: row;
-    gap: 8px;
+    gap: 16px;
     color: #fff;
   }
   .sgt-detail__left {
@@ -38,11 +37,8 @@ export const Wrapper = styled.div`
     padding: 22px 16px 16px;
     width: 604px;
     flex-shrink: 1;
-    /* min-width: 430px; */
-    box-shadow: 0px 4px 48px 0px rgba(0, 0, 0, 1);
     border: 1px solid rgba(58, 58, 60, 1);
     border-radius: 8px;
-    background-color: rgba(28, 28, 30, 1);
   }
 
   .sgt-detail__left-image-box {
@@ -269,7 +265,7 @@ export default function SGTDetail() {
     enabled: !!id,
   })
 
-  const { data: offers } = useQuery({
+  const { data: offers, refetch: refetchOffers } = useQuery({
     queryKey: ['nftOffers', id],
     queryFn: () => {
       return fetch(`${DOCKMAN_HOST}/orders?chain_id=648&nft_id=${id}&order_market_type=Offer`, {
@@ -279,7 +275,7 @@ export default function SGTDetail() {
     enabled: !!id,
   })
 
-  const { data: list } = useQuery({
+  const { data: list, refetch: refetchList } = useQuery({
     queryKey: ['nftList', id],
     queryFn: () => {
       return fetch(`${DOCKMAN_HOST}/orders?chain_id=648&nft_id=${id}&order_market_type=List`, {
@@ -289,7 +285,7 @@ export default function SGTDetail() {
     enabled: !!id,
   })
 
-  const { data: activitiesD } = useQuery({
+  const { data: activitiesD, refetch: refetchActivities } = useQuery({
     queryKey: ['nftActivities', id],
     queryFn: () => {
       return fetch(`${DOCKMAN_HOST}/nft/activity?page_number=1&page_size=10&nft_id=${id}`, {
@@ -300,106 +296,124 @@ export default function SGTDetail() {
   })
   const activities = activitiesD?.data
 
+  console.log(nft)
+  if (!nft) {
+    return (
+      <Flex alignItems="center" justifyContent="center" py="40px">
+        <Loading color="primary" width="30px" height="30px" />
+      </Flex>
+    )
+  }
+
   return (
-    <Wrapper>
-      <div className="sgt-detail__wrapper">
-        <div className="sgt-detail__left">
-          <img
-            src={nft?.nft_image ? nft?.nft_image : DEFAULT_NFT_IMAGE}
-            alt="game"
-            className="sgt-detail__left-image"
-          />
-          <div className="sgt-detail__left-trait-box">
-            <div className="sgt-detail__left-trait-title-box">
-              <Text fontWeight={600} fontSize="18px">
-                Trails
-              </Text>
-              <div className="sgt-detail__left-trait-title-value">{nft?.trails?.length}</div>
+    <Container>
+      <Wrapper>
+        <div className="sgt-detail__wrapper">
+          <div className="sgt-detail__left">
+            <img
+              src={nft?.nft_image ? nft?.nft_image : DEFAULT_NFT_IMAGE}
+              alt="game"
+              className="sgt-detail__left-image"
+            />
+            <div className="sgt-detail__left-trait-box">
+              <div className="sgt-detail__left-trait-title-box">
+                <Text fontWeight={600} fontSize="18px">
+                  Trails
+                </Text>
+                <div className="sgt-detail__left-trait-title-value">{nft?.trails?.length}</div>
+              </div>
+              <div className="sgt-detail__left-trait-list">
+                {nft?.trails?.map((item) => {
+                  return (
+                    <div key={item} className="sgt-detail__left-trait-item">
+                      <div className="sgt-detail__left-trait-item-title">trait_01</div>
+                      <div className="sgt-detail__left-trait-item-short-box">
+                        Short
+                        <Tag color="rgba(255, 204, 71, 1)" bgColor="rgba(255, 204, 71, .12)">
+                          41%
+                        </Tag>
+                      </div>
+                      <div className="sgt-detail__left-trait-item-floor-box">
+                        <div>Floor:</div>
+                        <div>10.23</div>
+                        <AceIcon />
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
             </div>
-            <div className="sgt-detail__left-trait-list">
-              {nft?.trails?.map((item) => {
+            <div className="sgt-detail__left-detail-box">
+              <div className="sgt-detail__left-detail-title-box">
+                <Text fontWeight={600} fontSize="18px">
+                  Details
+                </Text>
+              </div>
+              <Text color="textSubtle">{nft?.nft_description}</Text>
+              <Box height={1} background="#444444" my={3} />
+              {[
+                {
+                  label: 'Contract address',
+                  value: (
+                    <Link href={getBlockExploreLink(nft?.collection_contract_address, 'address', ChainId.ENDURANCE)}>
+                      {ellipseAddress(nft?.collection_contract_address)}
+                    </Link>
+                  ),
+                },
+                {
+                  label: 'Created',
+                  value: dayjs(nft?.create_at).fromNow(),
+                },
+                {
+                  label: 'Token ID',
+                  value: `#${nft?.token_id}`,
+                },
+                {
+                  label: 'Last Updated',
+                  value: dayjs(nft?.last_updated).fromNow(),
+                },
+                {
+                  label: 'Metadata',
+                  value: nft?.metadata,
+                },
+              ].map((item) => {
                 return (
-                  <div key={item} className="sgt-detail__left-trait-item">
-                    <div className="sgt-detail__left-trait-item-title">trait_01</div>
-                    <div className="sgt-detail__left-trait-item-short-box">
-                      Short
-                      <Tag color="rgba(255, 204, 71, 1)" bgColor="rgba(255, 204, 71, .12)">
-                        41%
-                      </Tag>
-                    </div>
-                    <div className="sgt-detail__left-trait-item-floor-box">
-                      <div>Floor:</div>
-                      <div>10.23</div>
-                      <AceIcon />
-                    </div>
-                  </div>
+                  <AutoRow key={item?.label} justifyContent="space-between" mb="12px">
+                    <div className="sgt-detail__left-detail-line-babel">{item.label}</div>
+                    <div className="sgt-detail__left-detail-line-value">{item.value}</div>
+                  </AutoRow>
                 )
               })}
             </div>
           </div>
-          <div className="sgt-detail__left-detail-box">
-            <div className="sgt-detail__left-detail-title-box">
-              <Text fontWeight={600} fontSize="18px">
-                Details
-              </Text>
-            </div>
-            <Text color="textSubtle">{nft?.nft_description}</Text>
-            <Box height={1} background="#444444" my={3} />
-            {[
-              {
-                label: 'Contract address',
-                value: (
-                  <Link href={getBlockExploreLink(nft?.collection_contract_address, 'address', ChainId.ENDURANCE)}>
-                    {ellipseAddress(nft?.collection_contract_address)}
-                  </Link>
-                ),
-              },
-              {
-                label: 'Created',
-                value: dayjs(nft?.create_at).fromNow(),
-              },
-              {
-                label: 'Token ID',
-                value: `#${nft?.token_id}`,
-              },
-              {
-                label: 'Last Updated',
-                value: dayjs(nft?.last_updated).fromNow(),
-              },
-              {
-                label: 'Metadata',
-                value: nft?.metadata,
-              },
-            ].map((item) => {
-              return (
-                <AutoRow key={item?.label} justifyContent="space-between" mb="12px">
-                  <div className="sgt-detail__left-detail-line-babel">{item.label}</div>
-                  <div className="sgt-detail__left-detail-line-value">{item.value}</div>
-                </AutoRow>
-              )
-            })}
-          </div>
-        </div>
-        <div className="sgt-detail__right">
-          <div>
-            <div className="sgt-detail__right-block">
-              <Adventure nft={nft} />
-            </div>
-            <div className="sgt-detail__right-block">
-              <div className="sgt-detail__right-block-title">Offer</div>
-              <Offer offers={offers} nft={nft} />
-            </div>
-            <div className="sgt-detail__right-block">
-              <div className="sgt-detail__right-block-title">List</div>
-              <List list={list} />
-            </div>
-            <div className="sgt-detail__right-block">
-              <div className="sgt-detail__right-block-title">Activity</div>
-              <Activity activities={activities} />
+          <div className="sgt-detail__right">
+            <div>
+              <div className="sgt-detail__right-block">
+                <Adventure
+                  nft={nft}
+                  refetch={() => {
+                    refetchActivities()
+                    refetchOffers()
+                    refetchList()
+                  }}
+                />
+              </div>
+              <div className="sgt-detail__right-block">
+                <div className="sgt-detail__right-block-title">Offer</div>
+                <Offer offers={offers} nft={nft} />
+              </div>
+              <div className="sgt-detail__right-block">
+                <div className="sgt-detail__right-block-title">List</div>
+                <List list={list} />
+              </div>
+              <div className="sgt-detail__right-block">
+                <div className="sgt-detail__right-block-title">Activity</div>
+                <Activity activities={activities} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </Wrapper>
+      </Wrapper>
+    </Container>
   )
 }

@@ -19,11 +19,6 @@ body {
   @apply text-white;
 }
 
-.sensei__table {
-  overflow-x: auto;
-  width: 100%;
-  border-collapse: collapse;
-}
 .sensei__table-header {
   height: 24px;
   color: rgba(255, 255, 255, 0.72);

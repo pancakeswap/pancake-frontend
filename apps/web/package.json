@@ -112,6 +112,7 @@
     "react-device-detect": "^2.1.2",
     "react-dom": "^18.2.0",
     "react-fast-marquee": "^1.6.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-redux": "^8.0.5",
     "react-transition-group": "^4.4.5",
     "react-window": "^1.8.7",

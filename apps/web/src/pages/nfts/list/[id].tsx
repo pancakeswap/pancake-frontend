@@ -6,95 +6,16 @@
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
-import { useQuery } from '@tanstack/react-query'
-import { AceIcon, AutoRow, Box, Button, Card, Container, Flex, Row, Text } from '@pancakeswap/uikit'
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { AceIcon, AutoRow, Box, Button, Card, Container, Flex, Loading, Row, Text } from '@pancakeswap/uikit'
 import { ellipseAddress } from 'utils/address'
 import { DEFAULT_COLLECTION_AVATAR, DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
 import { displayBalance } from 'utils/display'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
-export const Wrapper = styled.div`
-  .nft-list__wrapper {
-    margin-top: 24px;
-    padding: 0px 50px;
-  }
-  .nft-list__wrapper div::-webkit-scrollbar {
-    display: none;
-  }
-  .nft-list__collection {
-    box-sizing: border-box;
-    padding: 32px;
-    /* width: 1340px; */
-    border-radius: 8px;
-    height: 144px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: #1c1c1e;
-    border: 1px solid #3a3a3c;
-    overflow: hidden;
-  }
-  .nft-list__collection-total-box {
-    flex-shrink: 0;
-    width: 360px;
-    height: 80px;
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-  }
-  .nft-list__collection-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 4px;
-    /* border: 1px solid #fff; */
-  }
-  .nft-list__collection-total {
-  }
-  .nft-list__collection-name {
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 36px;
-    color: #fff;
-  }
-  .nft-list__collection-icon-list {
-    margin-top: 16px;
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-  }
-  .nft-list__collection-icon-item {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  .nft-list__collection-table {
-    flex: 1;
-    overflow-x: auto;
-    /* width: 900px; */
-    height: 52px;
-  }
-  .nft-list__table {
-    overflow-x: auto;
-  }
-  .nft-list__game-image {
-    box-sizing: border-box;
-    width: 56px;
-    height: 56px;
-    border-radius: 4px;
-    border: 1px solid #fff;
-  }
-  .nft-list__game-name {
-    margin-left: 16px;
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 600;
-    color: #fff;
-  }
-  .nft-list__icon {
-    margin-left: 4px;
-    width: 20px;
-    height: 20px;
-  }
+const NFTImage = styled.img`
+  border: 1px solid #fff;
+  border-radius: 4px;
 `
 
 const SortButtonWrapper = styled.div`
@@ -160,24 +81,34 @@ export default function SGTList() {
     enabled: !!id,
   })
 
-  const { data } = useQuery({
-    queryKey: ['nfts', id],
-    queryFn: () => {
-      return fetch(`${DOCKMAN_HOST}/nft?page_number=1&page_size=10&collection_id=${id}&sort_type=price_increase`).then(
-        (r) => r.json(),
-      )
+  const { data, fetchNextPage } = useInfiniteQuery({
+    queryKey: [`nfts_${id}`],
+    queryFn: async ({ pageParam = 0 }) => {
+      return fetch(
+        `${DOCKMAN_HOST}/nft?page_number=${pageParam + 1}&page_size=20&collection_id=${id}&sort_type=price_increase`,
+      ).then((r) => r.json())
     },
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.meta?.currentPage
+    },
+    initialPageParam: 0,
     enabled: !!id,
   })
-  const nfts = data?.data
-  console.log(nfts)
+
+  const pages = data?.pages
+  const nfts = pages?.reduce((results: any[], ci: any) => {
+    results.push(...ci.data)
+    return results
+  }, [])
+  const meta = pages?.[pages?.length - 1]?.meta
+  console.log(meta)
 
   const _columns = [
     {
       name: 'NFT',
       sortType: 'none',
       style: {
-        width: '140px',
+        width: '160px',
         justifyContent: 'flex-start',
       },
     },
@@ -185,24 +116,24 @@ export default function SGTList() {
       name: 'Rarity',
       sortType: 'none',
       style: {
-        width: '110px',
-        justifyContent: 'flex-end',
+        width: '160px',
+        justifyContent: 'center',
       },
     },
     {
       name: 'Price',
       sortType: 'none',
       style: {
-        width: '140px',
-        justifyContent: 'flex-end',
+        width: '160px',
+        justifyContent: 'center',
       },
     },
     {
       name: 'Last Sale',
       sortType: 'none',
       style: {
-        width: '140px',
-        justifyContent: 'flex-end',
+        width: '160px',
+        justifyContent: 'center',
       },
     },
 
@@ -210,8 +141,8 @@ export default function SGTList() {
       name: 'Top BID',
       sortType: 'none',
       style: {
-        width: '140px',
-        justifyContent: 'flex-end',
+        width: '160px',
+        justifyContent: 'center',
       },
     },
     {
@@ -219,7 +150,7 @@ export default function SGTList() {
       sortType: 'none',
       style: {
         width: '180px',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
       },
     },
     {
@@ -228,178 +159,192 @@ export default function SGTList() {
       style: {
         paddingLeft: '32px',
         flex: '1',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
       },
     },
   ]
 
   const [columns, setColumns] = useState(_columns)
 
+  if (!nfts || !collection) {
+    return (
+      <Flex alignItems="center" justifyContent="center" py="40px">
+        <Loading color="primary" width="30px" height="30px" />
+      </Flex>
+    )
+  }
+
   return (
-    <Container>
-      <Wrapper>
-        <div className="nft-list__wrapper">
-          <Card p="20px">
-            <Row alignItems="center">
-              <Flex mr="30px">
-                <img
-                  src={collection?.collection_avatar ?? DEFAULT_COLLECTION_AVATAR}
-                  alt="avatar"
-                  width={68}
-                  height={68}
-                />
-                <Box ml="10px" mr="30px" mt="20px">
-                  <Text fontSize="18px">{collection?.collection_name}</Text>
-                </Box>
-              </Flex>
-              <AutoRow>
-                <Box width="140px">
-                  <Text color="textSubtle" mb="2px">
-                    Floor Price
-                  </Text>
-                  <AutoRow gap="4px">
-                    <Text>0.00</Text>
-                    <AceIcon />
-                  </AutoRow>
-                </Box>
-                <Box width="140px">
-                  <Text color="textSubtle" mb="2px">
-                    Top BID
-                  </Text>
-                  <AutoRow gap="4px">
-                    <Text>0.00</Text>
-                    <AceIcon />
-                  </AutoRow>
-                </Box>
-                <Box width="140px">
-                  <Text color="textSubtle" mb="2px">
-                    Owners
-                  </Text>
-                  <Text>{collection?.collection_owners}</Text>
-                </Box>
-                <Box width="140px">
-                  <Text color="textSubtle" mb="2px">
-                    Supply
-                  </Text>
-                  <Text>{collection?.supply}</Text>
-                </Box>
-                <Box width="140px">
-                  <Text color="textSubtle" mb="2px">
-                    1D Volume
-                  </Text>
-                  <AutoRow gap="4px">
-                    <Text>0.00</Text>
-                    <AceIcon />
-                  </AutoRow>
-                </Box>
-                <Box>
-                  <Text color="textSubtle" mb="2px">
-                    3D Volume
-                  </Text>
-                  <AutoRow gap="4px">
-                    <Text>0.00</Text>
-                    <AceIcon />
-                  </AutoRow>
-                </Box>
-              </AutoRow>
-            </Row>
-          </Card>
-          <div className="sensei__table nft-list__table" style={{ marginTop: '24px' }}>
-            <div className="sensei__table-header" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
-              {columns.map((item, index) => {
-                return (
-                  <div key={item.name} style={item.style} className="sensei__table-header-item">
-                    {item.name}
-                    {index > 0 && index < columns.length - 1 && (
-                      <SortButton
-                        type={item.sortType as 'asc' | 'desc' | 'none'}
-                        onClick={() => {
-                          const newColumns = columns.map((column, i) => {
-                            if (i === index) {
-                              if (column.sortType === 'asc') {
-                                return { ...column, sortType: 'desc' }
+    <InfiniteScroll
+      dataLength={nfts?.length ?? 0}
+      hasMore={!meta?.isLastPage}
+      loader={
+        <Flex alignItems="center" justifyContent="center" py={4}>
+          <Loading />
+        </Flex>
+      }
+      next={fetchNextPage}
+      style={{ overflow: 'hidden' }}
+    >
+      <Container>
+        <Box pt="20px" pb="40px">
+          <div className="nft-list__wrapper">
+            <Card p="20px" mb="20px">
+              <Row alignItems="center">
+                <Flex mr="30px">
+                  <Box>
+                    <img
+                      src={collection?.collection_avatar ?? DEFAULT_COLLECTION_AVATAR}
+                      alt="avatar"
+                      width={120}
+                      height={120}
+                    />
+                  </Box>
+                  <Box ml="10px" mr="30px" mt="20px">
+                    <Text fontSize="18px">{collection?.collection_name}</Text>
+                  </Box>
+                </Flex>
+                <AutoRow>
+                  <Box width="140px">
+                    <Text color="textSubtle" mb="2px">
+                      Floor Price
+                    </Text>
+                    <AutoRow gap="4px">
+                      <Text>0.00</Text>
+                      <AceIcon />
+                    </AutoRow>
+                  </Box>
+                  <Box width="140px">
+                    <Text color="textSubtle" mb="2px">
+                      Top BID
+                    </Text>
+                    <AutoRow gap="4px">
+                      <Text>0.00</Text>
+                      <AceIcon />
+                    </AutoRow>
+                  </Box>
+                  <Box width="140px">
+                    <Text color="textSubtle" mb="2px">
+                      Owners
+                    </Text>
+                    <Text>{collection?.collection_owners}</Text>
+                  </Box>
+                  <Box width="140px">
+                    <Text color="textSubtle" mb="2px">
+                      Supply
+                    </Text>
+                    <Text>{collection?.supply}</Text>
+                  </Box>
+                  <Box width="140px">
+                    <Text color="textSubtle" mb="2px">
+                      1D Volume
+                    </Text>
+                    <AutoRow gap="4px">
+                      <Text>0.00</Text>
+                      <AceIcon />
+                    </AutoRow>
+                  </Box>
+                  <Box>
+                    <Text color="textSubtle" mb="2px">
+                      3D Volume
+                    </Text>
+                    <AutoRow gap="4px">
+                      <Text>0.00</Text>
+                      <AceIcon />
+                    </AutoRow>
+                  </Box>
+                </AutoRow>
+              </Row>
+            </Card>
+            <div>
+              <div className="sensei__table-header" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
+                {columns.map((item, index) => {
+                  return (
+                    <div key={item.name} style={item.style} className="sensei__table-header-item">
+                      {item.name}
+                      {index > 0 && index < columns.length - 1 && (
+                        <SortButton
+                          type={item.sortType as 'asc' | 'desc' | 'none'}
+                          onClick={() => {
+                            const newColumns = columns.map((column, i) => {
+                              if (i === index) {
+                                if (column.sortType === 'asc') {
+                                  return { ...column, sortType: 'desc' }
+                                }
+                                if (column.sortType === 'desc') {
+                                  return { ...column, sortType: 'none' }
+                                }
+                                return { ...column, sortType: 'asc' }
                               }
-                              if (column.sortType === 'desc') {
-                                return { ...column, sortType: 'none' }
-                              }
-                              return { ...column, sortType: 'asc' }
-                            }
-                            return { ...column }
-                          })
-                          setColumns(newColumns)
-                        }}
-                      />
-                    )}
-                  </div>
-                )
-              })}
-            </div>
-            <div className="sensei__table-body" style={{ marginTop: '20px', gap: '8px' }}>
-              {nfts?.map((nft) => {
-                return (
-                  <div
-                    className="sensei__table-body-tr sensei__table-body-tr-hover"
-                    key={nft?.id}
-                    style={{
-                      height: '72px',
-                    }}
-                  >
-                    <div style={columns[0].style} className="sensei__table-body-td">
-                      <img
-                        className="nft-list__game-image"
-                        width={56}
-                        height={56}
-                        src={nft?.image ?? DEFAULT_NFT_IMAGE}
-                        alt="avatar"
-                      />
-                      <div className="nft-list__game-name">#{nft?.token_id}</div>
+                              return { ...column }
+                            })
+                            setColumns(newColumns)
+                          }}
+                        />
+                      )}
                     </div>
-                    <div style={columns[1].style} className="sensei__table-body-td">
-                      {nft.rarity}
+                  )
+                })}
+              </div>
+              <div className="sensei__table-body" style={{ marginTop: '20px', gap: '8px' }}>
+                {nfts?.map((nft) => {
+                  return (
+                    <div
+                      className="sensei__table-body-tr sensei__table-body-tr-hover"
+                      key={nft?.id}
+                      style={{
+                        height: '72px',
+                      }}
+                    >
+                      <Flex flexShrink={0} alignItems="center" width="160px">
+                        <NFTImage width={60} height={60} src={nft?.image ?? DEFAULT_NFT_IMAGE} alt="avatar" />
+                        <Text ml="10px">#{nft?.token_id}</Text>
+                      </Flex>
+                      <Row justifyContent="center">{nft.rarity}</Row>
+                      <Row className="" gap="8px" justifyContent="center">
+                        {nft?.price ? (
+                          <>
+                            {nft.price}
+                            <AceIcon />
+                          </>
+                        ) : (
+                          '-'
+                        )}
+                      </Row>
+                      <Row className="" gap="8px" justifyContent="center">
+                        {nft.last_sale_price ? (
+                          <>
+                            {displayBalance(nft.last_sale_price ?? 0)}
+                            <AceIcon />
+                          </>
+                        ) : (
+                          '-'
+                        )}
+                      </Row>
+                      <Row className="" gap="8px" justifyContent="center">
+                        {nft.top_bid ? (
+                          <>
+                            {displayBalance(nft.top_bid ?? 0)}
+                            <AceIcon />
+                          </>
+                        ) : (
+                          '-'
+                        )}
+                      </Row>
+                      <Row justifyContent="flex-end">{ellipseAddress(nft.owner, 5)}</Row>
+                      <Row justifyContent="flex-end">
+                        <Button scale="sm" onClick={() => router.push(`/nfts/detail/${nft?.id}`)}>
+                          Buy
+                        </Button>
+                      </Row>
                     </div>
-                    <Row className="" gap="8px" justifyContent="flex-end">
-                      {nft?.price ? (
-                        <>
-                          {nft.price}
-                          <AceIcon />
-                        </>
-                      ) : (
-                        '-'
-                      )}
-                    </Row>
-                    <Row className="" gap="8px" justifyContent="flex-end">
-                      {nft.last_sale_price ? (
-                        <>
-                          {displayBalance(nft.last_sale_price ?? 0)}
-                          <AceIcon />
-                        </>
-                      ) : (
-                        '-'
-                      )}
-                    </Row>
-                    <Row className="" gap="8px" justifyContent="flex-end">
-                      {nft.top_bid ? (
-                        <>
-                          {displayBalance(nft.top_bid ?? 0)}
-                          <AceIcon />
-                        </>
-                      ) : (
-                        '-'
-                      )}
-                    </Row>
-                    <Row justifyContent="flex-end">{ellipseAddress(nft.owner, 5)}</Row>
-                    <Row justifyContent="flex-end">
-                      <Button scale="sm" onClick={() => router.push(`/nfts/detail/${nft?.id}`)}>
-                        Buy
-                      </Button>
-                    </Row>
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
           </div>
-        </div>
-      </Wrapper>
-    </Container>
+        </Box>
+      </Container>
+    </InfiniteScroll>
   )
 }

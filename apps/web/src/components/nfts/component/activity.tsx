@@ -1,12 +1,10 @@
-import Image from 'next/image'
 import { ellipseAddress } from 'utils/address'
 
-import { CopyIcon, Link } from '@pancakeswap/uikit'
+import { Link } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import { getBlockExploreLink } from 'utils'
 import { ChainId } from '@pancakeswap/chains'
 import { displayBalance } from 'utils/display'
-import { Wrapper } from './activity.style'
 
 export default function Activity({ activities }: { activities: any[] }) {
   const columns = [
@@ -49,8 +47,7 @@ export default function Activity({ activities }: { activities: any[] }) {
     {
       name: 'Time',
       style: {
-        // width: "140px",
-        flex: 1,
+        width: '140px',
       },
       tdStyle: {
         color: '#928D88',
@@ -58,7 +55,7 @@ export default function Activity({ activities }: { activities: any[] }) {
     },
   ]
   return (
-    <Wrapper>
+    <>
       <div className="sgt-offer__wrapper">
         <div className="sensei__table">
           <div className="sensei__table-header">
@@ -101,6 +98,6 @@ export default function Activity({ activities }: { activities: any[] }) {
           </div>
         </div>
       </div>
-    </Wrapper>
+    </>
   )
 }

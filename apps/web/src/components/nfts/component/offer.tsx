@@ -68,7 +68,7 @@ export default function Offer({ offers, nft }: { offers: any; nft: any }) {
                     {offer.quantity}
                   </div>
                   <div style={{ ...columns[2].style, ...(columns[2].tdStyle || {}) }} className="sensei__table-body-td">
-                    {ellipseAddress(offer.user_address)}
+                    {ellipseAddress(offer.from)}
                   </div>
 
                   {isOwner && (

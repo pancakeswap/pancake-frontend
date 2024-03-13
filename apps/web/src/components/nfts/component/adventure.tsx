@@ -6,16 +6,16 @@ import MakeOfferModal from 'components/nfts/MakeOfferModal'
 import ListModal from 'components/nfts/ListModal'
 import { DEFAULT_COLLECTION_AVATAR } from 'config/nfts'
 import { displayBalance } from 'utils/display'
+import Link from 'next/link'
 import Modal from '../../Modal2'
 import { Wrapper } from './adventure.style'
 
-export default function Adventure({ nft }: { nft: any }) {
-  console.log(nft)
+export default function Adventure({ nft, refetch }: { nft: any; refetch: any }) {
   const [showMakeOfferModal] = useModal(
-    <MakeOfferModal collectionAddress={nft?.collection_contract_address} tokenId={nft?.token_id} />,
+    <MakeOfferModal collectionAddress={nft?.collection_contract_address} tokenId={nft?.token_id} refetch={refetch} />,
   )
   const [showListModal] = useModal(
-    <ListModal collectionAddress={nft?.collection_contract_address} tokenId={nft?.token_id} />,
+    <ListModal collectionAddress={nft?.collection_contract_address} tokenId={nft?.token_id} refetch={refetch} />,
   )
   const { address } = useAccount()
   const [showListConfirmModal, setShowListConfirmModal] = useState(false)
@@ -63,14 +63,14 @@ export default function Adventure({ nft }: { nft: any }) {
   return (
     <Wrapper>
       <div className="sgt-adventure__wrapper">
-        <div className="sgt-adventure__user">
+        <Link href={`/nfts/list/${nft?.chain_id}-${nft?.collection_contract_address}`} className="sgt-adventure__user">
           <img
             src={nft?.collection_avatar ?? DEFAULT_COLLECTION_AVATAR}
             alt="avatar"
             className="sgt-adventure__user-avatar"
           />
           <div className="sgt-adventure__user-name">{nft?.collection_name}</div>
-        </div>
+        </Link>
         <div className="sgt-adventure__title">{nft?.nft_name}</div>
         <div className="sgt-adventure__owner">Owner - {ellipseAddress(nft?.owner)}</div>
         <div className="sgt-adventure__list">

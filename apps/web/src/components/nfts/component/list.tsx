@@ -1,4 +1,4 @@
-import { AceIcon, AutoRow, Box, Button, Text } from '@pancakeswap/uikit'
+import { AceIcon, AutoRow, Box, Button, Flex, Text, useToast } from '@pancakeswap/uikit'
 import { displayBalance } from 'utils/display'
 import { ellipseAddress } from 'utils/address'
 import { useAccount } from 'wagmi'
@@ -10,7 +10,21 @@ import { Wrapper } from './offer.style'
 export default function List({ list }: { list: any }) {
   const { address } = useAccount()
   const signer = useEthersSigner()
+  const { toastSuccess } = useToast()
 
+  const onCancel = async (orderHash: string) => {
+    if (!signer) return
+    const seaport = new Seaport(signer, {
+      overrides: { contractAddress: SEAPORT_ADDRESS },
+    })
+
+    const order = list?.find((l) => l.order_hash === orderHash)
+
+    const tx = await seaport.cancelOrders([order.order.parameters])
+    const res = await tx.transact()
+    console.log(res)
+    toastSuccess('Cancel order successfully')
+  }
   const onAccept = async (orderHash: string) => {
     if (!signer) return
     const seaport = new Seaport(signer, {
@@ -19,7 +33,7 @@ export default function List({ list }: { list: any }) {
 
     const order = list?.find((l) => l.order_hash === orderHash)
 
-    const tx = await seaport.fulfillOrder({ order: order.content })
+    const tx = await seaport.fulfillOrder({ order: order.order })
     const res = await tx.executeAllActions()
   }
 
@@ -35,9 +49,9 @@ export default function List({ list }: { list: any }) {
             </AutoRow>
           </Text>
           <div className="sensei__table-body">
-            {list?.map((l, index) => {
+            {list?.map((l) => {
               return (
-                <AutoRow key={l?.id}>
+                <Flex key={l?.id}>
                   <Box width="160px">
                     <AutoRow gap="8px">
                       {displayBalance(l.price)}
@@ -48,12 +62,18 @@ export default function List({ list }: { list: any }) {
                     <Text>{l.quantity}</Text>
                   </Box>
                   <Box width="200px">
-                    <Text>{ellipseAddress(l.user_address)}</Text>
+                    <Text>{ellipseAddress(l.from)}</Text>
                   </Box>
-                  <Button scale="sm" onClick={() => onAccept(l?.order_hash)}>
-                    Buy
-                  </Button>
-                </AutoRow>
+                  {l.from === address?.toLocaleLowerCase() ? (
+                    <Button scale="sm" onClick={() => onCancel(l?.order_hash)}>
+                      Cancel
+                    </Button>
+                  ) : (
+                    <Button scale="sm" onClick={() => onAccept(l?.order_hash)}>
+                      Buy
+                    </Button>
+                  )}
+                </Flex>
               )
             })}
           </div>

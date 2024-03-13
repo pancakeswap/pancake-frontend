@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
     flex-direction: row;
   }
   .token-select__selected {
-    padding: 0 8px;
+    padding: 0 16px 0 12px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
   .token-select__selected-icon {
     width: 20px;
     height: 20px;
-    margin-right: 8px;
+    margin-right: 4px;
   }
   .token-select__selected-name {
     font-size: 16px;

@@ -59,7 +59,7 @@ const GlobalStyle = createGlobalStyle`
   flex-direction: column;
 }
 .sensei__table-body-tr {
-  height: 48px;
+  height: 36px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -74,7 +74,7 @@ const GlobalStyle = createGlobalStyle`
 }
 .sensei__table-body-td {
   color: #fff;
-  height: 48px;
+  height: 32px;
   font-size: 16px;
   line-height: 24px;
   display: flex;
