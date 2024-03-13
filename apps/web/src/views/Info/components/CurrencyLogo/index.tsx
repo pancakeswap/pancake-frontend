@@ -33,7 +33,9 @@ export const CurrencyLogo: React.FC<
   const srcFromPCS = checkedsummedAddress
     ? `https://tokens.pancakeswap.finance/images/${imagePath}${checkedsummedAddress}.png`
     : ''
-  return <StyledLogo size={size} srcs={[srcFromPCS, src]} alt="token logo" useFilledIcon {...rest} />
+  return (
+    <StyledLogo size={size} srcs={src ? [srcFromPCS, src] : [srcFromPCS]} alt="token logo" useFilledIcon {...rest} />
+  )
 }
 
 const DoubleCurrencyWrapper = styled.div`

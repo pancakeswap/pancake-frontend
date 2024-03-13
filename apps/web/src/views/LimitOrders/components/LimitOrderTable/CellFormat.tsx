@@ -2,8 +2,8 @@ import { Box } from '@pancakeswap/uikit'
 import { ReactElement } from 'react'
 
 interface CellFormatProps {
-  firstRow: ReactElement | number | string
-  secondRow: ReactElement
+  firstRow?: ReactElement | number | string
+  secondRow?: ReactElement
 }
 
 const CellFormat: React.FC<React.PropsWithChildren<CellFormatProps>> = ({ firstRow, secondRow }) => {
