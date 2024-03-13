@@ -1,7 +1,7 @@
 ---
-'@pancakeswap/gauges': major
-'@pancakeswap/farms': major
-'@pancakeswap/pools': major
+'@pancakeswap/gauges': minor
+'@pancakeswap/farms': minor
+'@pancakeswap/pools': minor
 '@pancakeswap/tokens': minor
 ---
 
