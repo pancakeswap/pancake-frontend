@@ -12,18 +12,18 @@ const Wrapper = styled(Flex)<{ imageSize?: number }>`
   }
 
   /* Podium is about 66% of initial size on xs devices  */
-  width: ${({ imageSize }) => imageSize * 0.66 + 4}px;
-  height: ${({ imageSize }) => imageSize * 0.66 + 4}px;
+  width: ${({ imageSize }) => (imageSize !== undefined ? imageSize * 0.66 + 4 : 0)}px;
+  height: ${({ imageSize }) => (imageSize !== undefined ? imageSize * 0.66 + 4 : 0)}px;
 
   /* Podium is about 80% of initial size on sm devices  */
   ${({ theme }) => theme.mediaQueries.xs} {
-    width: ${({ imageSize }) => imageSize * 0.8 + 4}px;
-    height: ${({ imageSize }) => imageSize * 0.8 + 4}px;
+    width: ${({ imageSize }) => (imageSize !== undefined ? imageSize * 0.8 + 4 : 0)}px;
+    height: ${({ imageSize }) => (imageSize !== undefined ? imageSize * 0.8 + 4 : 0)}px;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    width: ${({ imageSize }) => imageSize + 4}px;
-    height: ${({ imageSize }) => imageSize + 4}px;
+    width: ${({ imageSize }) => (imageSize !== undefined ? imageSize + 4 : 0)}px;
+    height: ${({ imageSize }) => (imageSize !== undefined ? imageSize + 4 : 0)}px;
   }
 `
 

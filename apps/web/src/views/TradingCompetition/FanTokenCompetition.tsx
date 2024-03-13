@@ -100,7 +100,7 @@ const FanTokenCompetition = () => {
 
     const fetchUserContract = async () => {
       try {
-        const user = await tradingCompetitionContract.read.claimInformation([account])
+        const user = await tradingCompetitionContract.read.claimInformation([account || '0x'])
         const userObject = {
           isLoading: false,
           account,
@@ -114,7 +114,7 @@ const FanTokenCompetition = () => {
           userPointReward: user[7].toString(),
           canClaimNFT: user[8],
         }
-        setUserTradingInformation(userObject)
+        setUserTradingInformation(userObject as any)
       } catch (error) {
         console.error(error)
       }
@@ -227,14 +227,14 @@ const FanTokenCompetition = () => {
         </PageSection>
         <TeamRanksSection
           image={FanTokenCakerBunny}
-          team1LeaderboardInformation={team1LeaderboardInformation}
-          team2LeaderboardInformation={team2LeaderboardInformation}
-          team3LeaderboardInformation={team3LeaderboardInformation}
-          globalLeaderboardInformation={globalLeaderboardInformation}
+          team1LeaderboardInformation={team1LeaderboardInformation as any}
+          team2LeaderboardInformation={team2LeaderboardInformation as any}
+          team3LeaderboardInformation={team3LeaderboardInformation as any}
+          globalLeaderboardInformation={globalLeaderboardInformation as any}
         />
         <PrizesInfoSection prizesInfoComponent={<FanTokenPrizesInfo />} />
         <Footer
-          shouldHideCta={shouldHideCta}
+          shouldHideCta={Boolean(shouldHideCta)}
           image={FanTokenStormBunny}
           userTradingInformation={userTradingInformation}
           currentPhase={currentPhase}

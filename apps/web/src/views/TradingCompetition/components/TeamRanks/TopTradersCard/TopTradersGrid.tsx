@@ -47,12 +47,12 @@ const TopTradersGrid: React.FC<React.PropsWithChildren<{ data?: LeaderboardDataI
     <Box>
       {data ? (
         <>
-          {topFive.map((traderData) => {
+          {topFive?.map((traderData) => {
             return <GridItem key={traderData.address} traderData={traderData} teamImages={teamImages} />
           })}
           {isExpanded && (
             <ExpandedWrapper>
-              {nextTwenty.map((traderData) => {
+              {nextTwenty?.map((traderData) => {
                 return <ExpandedGridItem key={traderData.address} traderData={traderData} teamImages={teamImages} />
               })}
             </ExpandedWrapper>
