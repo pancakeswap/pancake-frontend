@@ -1,31 +1,31 @@
-import { useEffect, useState } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
-  Text,
-  Flex,
   Button,
-  Skeleton,
-  Ticket,
-  PresentWonIcon,
-  TooltipText,
+  Flex,
   InfoIcon,
-  useTooltip,
+  PresentWonIcon,
+  Skeleton,
+  Text,
+  Ticket,
+  TooltipText,
   useModal,
+  useTooltip,
 } from '@pancakeswap/uikit'
-import { styled } from 'styled-components'
-import { useAccount } from 'wagmi'
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
-import { fetchLottery } from 'state/lottery/helpers'
-import { getWinningTickets } from 'state/lottery/fetchUnclaimedUserRewards'
-import { fetchUserTicketsForOneRound } from 'state/lottery/getUserTicketsData'
-import { LotteryRound } from 'state/types'
-import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
-import WinningNumbers from '../WinningNumbers'
+import { useEffect, useState } from 'react'
+import { getWinningTickets } from 'state/lottery/fetchUnclaimedUserRewards'
+import { fetchUserTicketsForOneRound } from 'state/lottery/getUserTicketsData'
+import { fetchLottery } from 'state/lottery/helpers'
+import { LotteryRound } from 'state/types'
+import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
 import { processLotteryResponse } from '../../helpers'
-import TicketNumber from '../TicketNumber'
 import ClaimPrizesModal from '../ClaimPrizesModal'
+import TicketNumber from '../TicketNumber'
+import WinningNumbers from '../WinningNumbers'
 
 const TopBox = styled(Flex)`
   flex-direction: column;
@@ -52,19 +52,28 @@ const TicketSkeleton = () => {
   )
 }
 
-const PreviousRoundTicketsInner: React.FC<React.PropsWithChildren<{ roundId: string }>> = ({ roundId }) => {
-  const [lotteryInfo, setLotteryInfo] = useState<LotteryRound>(null)
-  const [allUserTickets, setAllUserTickets] = useState<LotteryTicket[]>(null)
-  const [userWinningTickets, setUserWinningTickets] = useState<{
-    allWinningTickets: LotteryTicket[]
-    ticketsWithUnclaimedRewards: LotteryTicket[]
-    isFetched: boolean
-    claimData: LotteryTicketClaimData
-  }>({ allWinningTickets: null, ticketsWithUnclaimedRewards: null, isFetched: false, claimData: null })
+type UserWinningTicket = {
+  allWinningTickets?: LotteryTicket[] | null
+  ticketsWithUnclaimedRewards?: LotteryTicket[] | null
+  isFetched: boolean
+  claimData: LotteryTicketClaimData | null
+}
+const PreviousRoundTicketsInner: React.FC<React.PropsWithChildren<{ roundId: string | null }>> = ({ roundId }) => {
+  const [lotteryInfo, setLotteryInfo] = useState<LotteryRound | null>(null)
+  const [allUserTickets, setAllUserTickets] = useState<LotteryTicket[] | null>(null)
+  const [userWinningTickets, setUserWinningTickets] = useState<UserWinningTicket>({
+    allWinningTickets: null,
+    ticketsWithUnclaimedRewards: null,
+    isFetched: false,
+    claimData: null,
+  })
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { address: account } = useAccount()
-  const [onPresentClaimModal] = useModal(<ClaimPrizesModal roundsToClaim={[userWinningTickets.claimData]} />, false)
+  const [onPresentClaimModal] = useModal(
+    <ClaimPrizesModal roundsToClaim={userWinningTickets.claimData ? [userWinningTickets.claimData] : []} />,
+    false,
+  )
 
   const TooltipComponent = () => (
     <>
@@ -104,6 +113,7 @@ const PreviousRoundTicketsInner: React.FC<React.PropsWithChildren<{ roundId: str
     }
 
     const fetchData = async () => {
+      if (!account || !roundId) return
       const [userTickets, lotteryData] = await Promise.all([
         fetchUserTicketsForOneRound(account, roundId),
         fetchLottery(roundId),
@@ -140,7 +150,10 @@ const PreviousRoundTicketsInner: React.FC<React.PropsWithChildren<{ roundId: str
   }, [roundId, account])
 
   const getFooter = () => {
-    if (userWinningTickets?.ticketsWithUnclaimedRewards?.length > 0) {
+    if (
+      userWinningTickets?.ticketsWithUnclaimedRewards &&
+      userWinningTickets?.ticketsWithUnclaimedRewards?.length > 0
+    ) {
       return (
         <Button onClick={onPresentClaimModal} mt="24px" width="100%">
           {t('Collect Prizes')}

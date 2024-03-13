@@ -1,11 +1,11 @@
-import { useEffect, useMemo } from 'react'
-import { useAccount } from 'wagmi'
-import { useSelector, batch } from 'react-redux'
-import { useAppDispatch } from 'state'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
+import { useEffect, useMemo } from 'react'
+import { batch, useSelector } from 'react-redux'
+import { useAppDispatch } from 'state'
+import { useAccount } from 'wagmi'
+import { fetchCurrentLottery, fetchCurrentLotteryId, fetchPublicLotteries, fetchUserTicketsAndLotteries } from '.'
 import { State } from '../types'
-import { fetchCurrentLotteryId, fetchCurrentLottery, fetchUserTicketsAndLotteries, fetchPublicLotteries } from '.'
-import { makeLotteryGraphDataByIdSelector, lotterySelector } from './selectors'
+import { lotterySelector, makeLotteryGraphDataByIdSelector } from './selectors'
 
 // Lottery
 export const useGetCurrentLotteryId = () => {
@@ -20,7 +20,7 @@ export const useGetLotteriesGraphData = () => {
   return useSelector((state: State) => state.lottery.lotteriesData)
 }
 
-export const useGetLotteryGraphDataById = (lotteryId: string) => {
+export const useGetLotteryGraphDataById = (lotteryId: string | null) => {
   const lotteryGraphDataByIdSelector = useMemo(() => makeLotteryGraphDataByIdSelector(lotteryId), [lotteryId])
   return useSelector(lotteryGraphDataByIdSelector)
 }

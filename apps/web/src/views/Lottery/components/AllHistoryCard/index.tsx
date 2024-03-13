@@ -1,15 +1,16 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
-import { styled } from 'styled-components'
-import { Card, Text, Skeleton, CardHeader, Box } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useAppDispatch } from 'state'
-import { useLottery } from 'state/lottery/hooks'
-import { fetchLottery } from 'state/lottery/helpers'
+import { Box, Card, CardHeader, Skeleton, Text } from '@pancakeswap/uikit'
 import { LotteryStatus } from 'config/constants/types'
-import RoundSwitcher from './RoundSwitcher'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useAppDispatch } from 'state'
+import { fetchLottery } from 'state/lottery/helpers'
+import { useLottery } from 'state/lottery/hooks'
+import { LotteryRound } from 'state/types'
+import { styled } from 'styled-components'
 import { getDrawnDate, processLotteryResponse } from '../../helpers'
 import PreviousRoundCardBody from '../PreviousRoundCard/Body'
 import PreviousRoundCardFooter from '../PreviousRoundCard/Footer'
+import RoundSwitcher from './RoundSwitcher'
 
 const StyledCard = styled(Card)`
   width: 100%;
@@ -36,16 +37,16 @@ const AllHistoryCard = () => {
     lotteriesData,
     currentRound: { status, isLoading },
   } = useLottery()
-  const [latestRoundId, setLatestRoundId] = useState(null)
+  const [latestRoundId, setLatestRoundId] = useState<number | null>(null)
   const [selectedRoundId, setSelectedRoundId] = useState('')
-  const [selectedLotteryNodeData, setSelectedLotteryNodeData] = useState(null)
-  const timer = useRef(null)
+  const [selectedLotteryNodeData, setSelectedLotteryNodeData] = useState<LotteryRound | null>(null)
+  const timer = useRef<NodeJS.Timer | null>(null)
 
   const numRoundsFetched = lotteriesData?.length
 
   useEffect(() => {
     if (currentLotteryId) {
-      const currentLotteryIdAsInt = currentLotteryId ? parseInt(currentLotteryId) : null
+      const currentLotteryIdAsInt = parseInt(currentLotteryId)
       const mostRecentFinishedRoundId =
         status === LotteryStatus.CLAIMABLE ? currentLotteryIdAsInt : currentLotteryIdAsInt - 1
       setLatestRoundId(mostRecentFinishedRoundId)
@@ -66,10 +67,12 @@ const AllHistoryCard = () => {
       if (selectedRoundId) {
         fetchLotteryData()
       }
-      clearInterval(timer.current)
+      if (timer.current) clearInterval(timer.current)
     }, 1000)
 
-    return () => clearInterval(timer.current)
+    return () => {
+      if (timer.current) clearInterval(timer.current)
+    }
   }, [selectedRoundId, currentLotteryId, numRoundsFetched, dispatch])
 
   const handleInputChange = useCallback(
@@ -82,7 +85,7 @@ const AllHistoryCard = () => {
         if (parseInt(value, 10) <= 0) {
           setSelectedRoundId('')
         }
-        if (parseInt(value, 10) >= latestRoundId) {
+        if (latestRoundId && parseInt(value, 10) >= latestRoundId) {
           setSelectedRoundId(latestRoundId.toString())
         }
       } else {

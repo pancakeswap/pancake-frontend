@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react'
-import { styled } from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { Flex, Skeleton, Heading, Box, Text, Balance } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { LotteryRound, LotteryRoundGraphEntity } from 'state/types'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { useGetLotteryGraphDataById } from 'state/lottery/hooks'
-import { getGraphLotteries } from 'state/lottery/getLotteriesData'
+import { Balance, Box, Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useEffect, useState } from 'react'
+import { getGraphLotteries } from 'state/lottery/getLotteriesData'
+import { useGetLotteryGraphDataById } from 'state/lottery/hooks'
+import { LotteryRound, LotteryRoundGraphEntity } from 'state/types'
+import { styled } from 'styled-components'
 import RewardBrackets from '../RewardBrackets'
 
 const NextDrawWrapper = styled(Flex)`
@@ -21,7 +21,7 @@ const NextDrawWrapper = styled(Flex)`
 `
 
 const PreviousRoundCardFooter: React.FC<
-  React.PropsWithChildren<{ lotteryNodeData: LotteryRound; lotteryId: string }>
+  React.PropsWithChildren<{ lotteryNodeData: LotteryRound | null; lotteryId: string | null }>
 > = ({ lotteryNodeData, lotteryId }) => {
   const { t } = useTranslation()
   const [fetchedLotteryGraphData, setFetchedLotteryGraphData] = useState<LotteryRoundGraphEntity>()
@@ -29,6 +29,8 @@ const PreviousRoundCardFooter: React.FC<
   const cakePriceBusd = useCakePrice()
 
   useEffect(() => {
+    if (!lotteryId) return
+
     const getGraphData = async () => {
       const fetchedGraphData = await getGraphLotteries(undefined, undefined, { id_in: [lotteryId] })
       setFetchedLotteryGraphData(fetchedGraphData[0])
@@ -44,7 +46,7 @@ const PreviousRoundCardFooter: React.FC<
     prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
   }
 
-  const getTotalUsers = (): string => {
+  const getTotalUsers = (): string | null => {
     if (!lotteryGraphDataFromState && fetchedLotteryGraphData) {
       return fetchedLotteryGraphData?.totalUsers
     }

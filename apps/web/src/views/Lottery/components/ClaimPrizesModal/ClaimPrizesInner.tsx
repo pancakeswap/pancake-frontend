@@ -1,18 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRenewIcon, Button, Flex, PresentWonIcon, Text, useToast, Balance } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
+import { AutoRenewIcon, Balance, Button, Flex, PresentWonIcon, Text, useToast } from '@pancakeswap/uikit'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
+import { useCakePrice } from 'hooks/useCakePrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useLotteryV2Contract } from 'hooks/useContract'
 import { useState } from 'react'
 import { useAppDispatch } from 'state'
-import { useCakePrice } from 'hooks/useCakePrice'
 import { fetchUserLotteries } from 'state/lottery'
 import { useLottery } from 'state/lottery/hooks'
 import { useGasPrice } from 'state/user/hooks'
 import { callWithEstimateGas } from 'utils/calls'
-import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { TransactionReceipt } from 'viem'
+import { useAccount } from 'wagmi'
 
 interface ClaimInnerProps {
   roundsToClaim: LotteryTicketClaimData[]
@@ -63,14 +64,18 @@ const ClaimInnerContainer: React.FC<React.PropsWithChildren<ClaimInnerProps>> = 
     if (roundsToClaim.length > activeClaimIndex + 1) {
       // If there are still rounds to claim, move onto the next claim
       setActiveClaimIndex(activeClaimIndex + 1)
-      dispatch(fetchUserLotteries({ account, currentLotteryId }))
+      if (account) dispatch(fetchUserLotteries({ account, currentLotteryId }))
     } else {
-      onSuccess()
+      onSuccess?.()
     }
   }
 
-  const getTicketBatches = (ticketIds: string[], brackets: number[]): { ticketIds: string[]; brackets: number[] }[] => {
-    const requests = []
+  type Ticket = {
+    ticketIds: string[]
+    brackets: Array<number | undefined>
+  }
+  const getTicketBatches = (ticketIds: string[], brackets: Array<number | undefined>): Ticket[] => {
+    const requests: Ticket[] = []
     const maxAsNumber = maxNumberTicketsPerBuyOrClaim.toNumber()
 
     for (let i = 0; i < ticketIds.length; i += maxAsNumber) {
@@ -104,7 +109,7 @@ const ClaimInnerContainer: React.FC<React.PropsWithChildren<ClaimInnerProps>> = 
     const { lotteryId, ticketIds, brackets } = claimTicketsCallData
     const ticketBatches = getTicketBatches(ticketIds, brackets)
     const transactionsToFire = ticketBatches.length
-    const receipts = []
+    const receipts: TransactionReceipt[] = []
     // eslint-disable-next-line no-restricted-syntax
     for (const ticketBatch of ticketBatches) {
       /* eslint-disable no-await-in-loop */
