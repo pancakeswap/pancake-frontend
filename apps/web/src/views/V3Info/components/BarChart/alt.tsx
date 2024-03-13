@@ -148,7 +148,7 @@ const Chart = ({
                     setLabel(formattedTimeDaily)
                   }
                 }
-                return null
+                return null as any
               }}
             />
             <Bar
