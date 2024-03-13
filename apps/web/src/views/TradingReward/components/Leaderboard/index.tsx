@@ -59,7 +59,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
 
   const sliceAllLeaderBoard = useCallback(() => {
     const slice = allLeaderBoard.slice(MAX_CAMPAIGN_PER_PAGE * (campaignPage - 1), MAX_CAMPAIGN_PER_PAGE * campaignPage)
-    setCampaignLeaderBoardList({ ...slice[0] })
+    setCampaignLeaderBoardList({ ...(slice[0] as any) })
   }, [allLeaderBoard, campaignPage])
 
   useEffect(() => {
@@ -81,7 +81,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
       if (currentLeaderBoard?.campaignId) {
         if (index === 0) {
           setCampaignPage(1)
-          setCampaignLeaderBoardList(currentLeaderBoard)
+          setCampaignLeaderBoardList(currentLeaderBoard as any)
         } else {
           setCampaignPage((prevState) => (prevState === 1 ? 2 : prevState))
           sliceAllLeaderBoard()
