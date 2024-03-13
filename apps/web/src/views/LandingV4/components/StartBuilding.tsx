@@ -72,7 +72,7 @@ const StepsContainer = styled(Flex)`
 
 const BuildingConfig = [
   {
-    title: <Trans>Read the White Paper</Trans>,
+    title: <Trans>Read the Whitepaper</Trans>,
     icon: <Step1Icon width={40} height={48} color="primary" />,
     imageUrl: `${ASSET_CDN}/web/v4-landing/buildings-1.png`,
     url: '',

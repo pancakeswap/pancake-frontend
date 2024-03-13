@@ -3208,7 +3208,7 @@
   "This liquidity position is currently earning rewards on Merkl.": "This liquidity position is currently earning rewards on Merkl.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.",
-  "V4": "V4",
+  "v4": "v4",
   "PancakeSwap v4": "PancakeSwap v4",
   "Innovation": "Innovation",
   "Empower, Build and Innovate with PancakeSwap v4": "Empower, Build and Innovate with PancakeSwap v4",
@@ -3229,7 +3229,7 @@
   "From: %platform%": "From: %platform%",
   "News And Events": "News And Events",
   "with PancakeSwap v4": "with PancakeSwap v4",
-  "Read the White Paper": "Read the White Paper",
+  "Read the Whitepaper": "Read the Whitepaper",
   "Get the Tools": "Get the Tools",
   "Join the Community": "Join the Community",
   "Introducing v4": "Introducing v4",
@@ -3245,5 +3245,10 @@
   "Customized Pool Types": "Customized Pool Types",
   "Singleton": "Singleton",
   "Flash Accounting": "Flash Accounting",
-  "Donate": "Donate"
+  "Donate": "Donate",
+  "Unlock unparalleled customization with Hooks, enhancing liquidity pool functionality through smart contracts.Tailor your liquidity pools precisely, defining Hook contracts for key actions like initialize, swap, modify,position, and donate. Enable dynamic fees, on-chain limit orders, custom oracles, and more with PancakeSwap's Hooks!": " Unlock unparalleled customization with Hooks, enhancing liquidity pool functionality through smart contracts.Tailor your liquidity pools precisely, defining Hook contracts for key actions like initialize, swap, modify,position, and donate. Enable dynamic fees, on-chain limit orders, custom oracles, and more with PancakeSwap's Hooks!",
+  "Explore a modular and sustainable design for AMMs, supporting multiple pool types and AMM logic through Hooks and gas optimization. Launching with CLAMM pools featuring Hooks and the first-ever liquidity book AMM,PancakeSwap v4's architecture ensures future-proof deployment of sophisticated AMM logic.": "Explore a modular and sustainable design for AMMs, supporting multiple pool types and AMM logic through Hooks and gas optimization. Launching with CLAMM pools featuring Hooks and the first-ever liquidity book AMM,PancakeSwap v4's architecture ensures future-proof deployment of sophisticated AMM logic.",
+  "Introducing Singleton for unparalleled trading efficiency and gas savings. Singleton consolidates all pools, cutting gas costs by 99% for deploying new pools. Multi-hop transactions are streamlined, eliminating the need for token movement between contracts.": "Introducing Singleton for unparalleled trading efficiency and gas savings. Singleton consolidates all pools, cutting gas costs by 99% for deploying new pools. Multi-hop transactions are streamlined, eliminating the need for token movement between contracts.",
+  "Flash Accounting optimizes gas usage by computing net balances for transactions and settling them collectively,resulting in significant gas savings.": "Flash Accounting optimizes gas usage by computing net balances for transactions and settling them collectively,resulting in significant gas savings.",
+  "Empower your liquidity pool with the innovative Donate method. It enables direct payments to in-range LPs in one or both pool tokens. Donate ensures seamless and efficient transactions by leveraging the pool's fee accounting system.": "Empower your liquidity pool with the innovative Donate method. It enables direct payments to in-range LPs in one or both pool tokens. Donate ensures seamless and efficient transactions by leveraging the pool's fee accounting system."
 }

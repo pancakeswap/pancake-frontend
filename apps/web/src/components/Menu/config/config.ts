@@ -192,7 +192,7 @@ const config: (
       ],
     },
     {
-      label: t('V4'),
+      label: t('v4'),
       href: '/introducing-v4',
       icon: NftIcon,
       fillIcon: NftFillIcon,
@@ -249,7 +249,7 @@ const config: (
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {
-          label: t('V4'),
+          label: t('v4'),
           href: '/introducing-v4',
           isMobileOnly: true,
         },

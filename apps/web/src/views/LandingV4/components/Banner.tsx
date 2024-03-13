@@ -123,14 +123,6 @@ export const Banner = () => {
                 >
                   {t('DEX')}
                 </Text>
-                <Text
-                  bold
-                  as="span"
-                  fontSize={['40px', '40px', '40px', '40px', '48px', '48px', '64px']}
-                  lineHeight={['40px', '40px', '40px', '40px', '48px', '48px', '64px']}
-                >
-                  ,
-                </Text>
               </Flex>
               <Flex justifyContent={['center', 'center', 'center', 'center', 'left']}>
                 <Text
