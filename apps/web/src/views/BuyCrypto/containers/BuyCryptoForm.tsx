@@ -83,6 +83,7 @@ export function BuyCryptoForm() {
   const handleTypeInput = useCallback((value: string) => onUserInput(Field.INPUT, value), [onUserInput])
   const handleTypeOutput = useCallback((value: string) => onUserInput(Field.OUTPUT, value), [onUserInput])
 
+  const isBtc = Boolean(inputCurrencyId === 'BTC_0')
   const isTypingInput = independentField === Field.INPUT
   // const isTypingOutput = independentField === Field.OUTPUT
 
@@ -96,24 +97,15 @@ export function BuyCryptoForm() {
     return isTypingInput ? formattedQuote : typedValue
   }, [typedValue, isTypingInput, selectedQuote])
 
-  const isBtc = Boolean(inputCurrencyId === 'BTC_0')
+  const btcValidationResults = useBtcAddressValidator({ address: searchQuery })
+  const { data: validAddress, isFetching: fetching, isError: error } = btcValidationResults
+
   const { inputError, defaultAmt } = useLimitsAndInputError({
     typedValue: typedValue!,
     cryptoCurrency,
     fiatCurrency,
     isFiatFlow,
   })
-
-  const {
-    data: validAddress,
-    isFetching: fetching,
-    isError: error,
-  } = useBtcAddressValidator({
-    address: searchQuery,
-    network: 'mainnet',
-    currency: cryptoCurrency,
-  })
-
   const {
     data: quotes,
     isFetching,

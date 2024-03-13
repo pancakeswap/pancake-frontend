@@ -1,10 +1,8 @@
-import { Currency } from '@pancakeswap/swap-sdk-core'
 import type { UseQueryResult } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import qs from 'qs'
-import { isNativeBtc } from '../constants'
-import { createQueryKey, Evaluate, UseQueryParameters } from '../types'
+import { Evaluate, UseQueryParameters, createQueryKey } from '../types'
 
 export enum BtcNetwork {
   mainnet = 'mainnet',
@@ -12,7 +10,10 @@ export enum BtcNetwork {
   regtest = 'regtest',
 }
 
-export const GetBtcValidationQueryKey = createQueryKey<'onramp-limits', [GetBtcValidationParameters]>('onramp-limits')
+export const GetBtcValidationQueryKey = createQueryKey<
+  'onramp-limits',
+  [GetBtcValidationParameters & { network: keyof typeof BtcNetwork | undefined }]
+>('onramp-limits')
 
 type GetBtcValidationQueryKey = ReturnType<typeof GetBtcValidationQueryKey>
 
@@ -20,7 +21,6 @@ export type GetBtcAddrValidationReturnType = { code: number; result: boolean; er
 
 export type GetBtcValidationParameters = {
   address: string | undefined
-  network: keyof typeof BtcNetwork | undefined
 }
 
 export type useBtcAddressValidatorParameters<selectData = GetBtcAddrValidationReturnType> = Evaluate<
@@ -34,12 +34,12 @@ export type useBtcAddressValidatorReturnType<selectData = GetBtcAddrValidationRe
 >
 
 export const useBtcAddressValidator = <selectData = GetBtcAddrValidationReturnType>(
-  parameters: useBtcAddressValidatorParameters<selectData> & { currency: Currency | undefined },
+  parameters: useBtcAddressValidatorParameters<selectData>,
 ): useBtcAddressValidatorReturnType<selectData> => {
-  const { address, network, currency, ...query } = parameters
+  const { address, ...query } = parameters
 
-  const isBtc = isNativeBtc(currency)
-  const enabled = Boolean(address && address !== '' && network && isBtc)
+  const enabled = Boolean(address && address !== '')
+  const network = BtcNetwork.mainnet
 
   return useQuery({
     ...query,
@@ -69,7 +69,7 @@ export const useBtcAddressValidator = <selectData = GetBtcAddrValidationReturnTy
 
 async function fetchBtcAddressValidationRes(
   payload: GetBtcValidationParameters,
-): Promise<GetBtcAddrValidationReturnType> {
+): Promise<GetBtcAddrValidationReturnType & { network: keyof typeof BtcNetwork | undefined }> {
   const response = await fetch(
     `${ONRAMP_API_BASE_URL}/validate-btc-address?${qs.stringify({
       ...payload,
