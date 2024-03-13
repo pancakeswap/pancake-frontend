@@ -380,7 +380,7 @@ export default function SGTList() {
                     <Row className="" gap="8px" justifyContent="flex-end">
                       {nft.top_bid ? (
                         <>
-                          {nft.top_bid}
+                          {displayBalance(nft.top_bid ?? 0)}
                           <AceIcon />
                         </>
                       ) : (
