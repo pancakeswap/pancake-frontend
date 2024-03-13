@@ -53,12 +53,12 @@ const MyRank: React.FC<React.PropsWithChildren<MyRankProps>> = ({ campaignId }) 
                   </Td>
                 </tr>
               ) : (
-                <DesktopResult key={rank.rank} rank={rank} />
+                <DesktopResult key={rank.rank} rank={rank as any} />
               )}
             </tbody>
           </Table>
         ) : (
-          <MobileResult rank={rank} isMyRank />
+          <MobileResult rank={rank as any} isMyRank />
         )}
       </Card>
     </Box>
