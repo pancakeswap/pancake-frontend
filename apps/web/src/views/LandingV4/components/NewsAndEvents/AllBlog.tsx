@@ -18,6 +18,7 @@ const AllBlogContainer = styled(FlexGap)`
   > a,
   > div {
     width: 100%;
+    align-self: flex-start;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {

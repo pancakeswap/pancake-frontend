@@ -25,7 +25,7 @@ export const useV4Articles = (): AllArticleType => {
               {
                 categories: {
                   name: {
-                    $eq: 'Product', // V4
+                    $eq: 'V4',
                   },
                 },
               },
