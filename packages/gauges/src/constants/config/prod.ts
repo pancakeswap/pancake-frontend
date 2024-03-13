@@ -3205,7 +3205,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 320,
-    pairName: 'VAI-USDT',
+    pairName: 'VIA-USDT',
     address: '0x0125ac49a5C06CCfd0819e6E20CCBE09bDE35140',
     chainId: ChainId.BSC,
     type: GaugeType.V3,

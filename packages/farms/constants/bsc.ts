@@ -48,20 +48,40 @@ export const farmsV3 = defineFarmV3Configs([
   // new lps should follow after the top fixed lps
   // latest first
   {
-    pid: 155,
+    pid: 158,
+    lpAddress: '0x05B77eAD38f5A016dcd26365ce57028e416175d2',
+    token0: bscTokens.usdt,
+    token1: bscTokens.mc,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 157,
     lpAddress: '0x004A335932D50f666011935677d96a366AF3eAe2',
     token0: bscTokens.mb4,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
   },
   {
-    pid: 154,
-    lpAddress: '0x05B77eAD38f5A016dcd26365ce57028e416175d2',
+    pid: 156,
+    lpAddress: '0x1Cf977828364c597a4a80779a3a5eb8fB673A845',
     token0: bscTokens.usdt,
-    token1: bscTokens.mc,
+    token1: bscTokens.chat,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 155,
+    lpAddress: '0xdD82975ab85E745c84e497FD75ba409Ec02d4739',
+    token0: bscTokens.pepe,
+    token1: bscTokens.wbnb,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 154,
+    lpAddress: '0x0125ac49a5C06CCfd0819e6E20CCBE09bDE35140',
+    token0: bscTokens.octavia,
+    token1: bscTokens.usdt,
     feeAmount: FeeAmount.MEDIUM,
   },
-
   {
     pid: 153,
     lpAddress: '0xf9Adc7F9E10eAA8AfD6A3Ea2b419d9497fa192c3',
