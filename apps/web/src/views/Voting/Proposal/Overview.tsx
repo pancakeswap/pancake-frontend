@@ -95,11 +95,15 @@ const Overview = () => {
           {!isPageLoading && !hasAccountVoted && proposal.state === ProposalState.ACTIVE && (
             <Vote proposal={proposal} onSuccess={refetch} mb="16px" />
           )}
-          <Votes votes={votes} totalVotes={votes?.length ?? proposal.votes} votesLoadingStatus={votesLoadingStatus} />
+          <Votes
+            votes={votes || []}
+            totalVotes={votes?.length ?? proposal.votes}
+            votesLoadingStatus={votesLoadingStatus}
+          />
         </Box>
         <Box position="sticky" top="60px">
           <Details proposal={proposal} />
-          <Results choices={proposal.choices} votes={votes} votesLoadingStatus={votesLoadingStatus} />
+          <Results choices={proposal.choices} votes={votes || []} votesLoadingStatus={votesLoadingStatus} />
         </Box>
       </Layout>
     </Container>

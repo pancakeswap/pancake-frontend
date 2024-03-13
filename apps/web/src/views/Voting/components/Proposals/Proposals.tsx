@@ -33,20 +33,20 @@ const Proposals = () => {
   })
 
   const handleProposalTypeChange = (newProposalType: ProposalType) => {
-    setState((prevState) => ({
+    setState((prevState: any) => ({
       ...prevState,
       proposalType: newProposalType,
     }))
   }
 
   const handleFilterChange = (newFilterState: ProposalState) => {
-    setState((prevState) => ({
+    setState((prevState: any) => ({
       ...prevState,
       filterState: newFilterState,
     }))
   }
 
-  const filteredProposals = filterProposalsByState(filterProposalsByType(data, proposalType), filterState)
+  const filteredProposals = filterProposalsByState(filterProposalsByType(data || [], proposalType), filterState)
 
   return (
     <Container py="40px">
