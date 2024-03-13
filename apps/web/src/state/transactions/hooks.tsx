@@ -261,9 +261,10 @@ export function usePendingTransactions(): {
   }
 }
 
-export function useNonBscFarmPendingTransaction(lpAddress: string): NonBscPendingData[] {
+export function useNonBscFarmPendingTransaction(lpAddress?: string): NonBscPendingData[] {
   const { nonBscFarmPendingList } = usePendingTransactions()
   return useMemo(() => {
+    if (!lpAddress) return []
     return nonBscFarmPendingList.filter((tx) => tx?.lpAddress?.toLowerCase() === lpAddress.toLowerCase())
   }, [lpAddress, nonBscFarmPendingList])
 }

@@ -116,7 +116,7 @@ export const useFarms = (): DeserializedFarmsState => {
   return useSelector(useMemo(() => farmSelector(chainId), [chainId]))
 }
 
-export const useFarmFromPid = (pid: number) => {
+export const useFarmFromPid = (pid?: number) => {
   const farmFromPid = useMemo(() => makeFarmFromPidSelector(pid), [pid])
   return useSelector(farmFromPid)
 }
