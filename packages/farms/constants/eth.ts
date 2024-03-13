@@ -64,8 +64,8 @@ export const farmsV3 = defineFarmV3Configs([
   {
     pid: 62,
     lpAddress: '0x1445F32D1A74872bA41f3D8cF4022E9996120b31',
-    token0: ethereumTokens.weth,
-    token1: ethereumTokens.usdc,
+    token0: ethereumTokens.usdc,
+    token1: ethereumTokens.weth,
     feeAmount: FeeAmount.LOWEST,
   },
   {

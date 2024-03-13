@@ -46,7 +46,7 @@ export const baseTokens = {
     'https://axelarscan.io/assets/',
   ),
   wstETH: new ERC20Token(
-    ChainId.LINEA,
+    ChainId.BASE,
     '0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452',
     18,
     'wstETH',

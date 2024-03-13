@@ -3309,8 +3309,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
     address: '0x1445F32D1A74872bA41f3D8cF4022E9996120b31',
     chainId: ChainId.ETHEREUM,
     type: GaugeType.V3,
-    token0Address: ethereumTokens.weth.address,
-    token1Address: ethereumTokens.usdc.address,
+    token0Address: ethereumTokens.usdc.address,
+    token1Address: ethereumTokens.weth.address,
     feeTier: FeeAmount.LOWEST,
   },
   {
