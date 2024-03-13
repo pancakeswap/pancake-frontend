@@ -158,7 +158,7 @@ export const Banner = () => {
             </Text>
             <NextLinkFromReactRouter
               target="_blank"
-              to="https://blog.pancakeswap.finance/articles/celebrating-traverse-claim-your-exclusive-nfts"
+              to="https://github.com/pancakeswap/pancake-v4-core/blob/main/docs/whitepaper-en.pdf?utm_source=v4%20landing%20page&utm_medium=banner&utm_campaign=v4%20landing%20page&utm_id=v4%20whitepaper"
             >
               <Button display="flex" margin={['auto', 'auto', 'auto', 'auto', '0']}>
                 <Text color="white" bold fontSize={['12px', '16px']} mr="4px">

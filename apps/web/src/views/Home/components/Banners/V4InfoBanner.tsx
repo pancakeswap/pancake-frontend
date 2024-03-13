@@ -45,7 +45,8 @@ const StyledButtonLinkAction = styled(ButtonLinkAction)`
   }
 `
 
-const whitepaperLink = ''
+const whitepaperLink =
+  'https://github.com/pancakeswap/pancake-v4-core/blob/main/docs/whitepaper-en.pdf?utm_source=v4%20landing%20page&utm_medium=banner&utm_campaign=v4%20landing%20page&utm_id=v4%20whitepaper'
 const learnMoreLink = ''
 
 export const V4InfoBanner = () => {
