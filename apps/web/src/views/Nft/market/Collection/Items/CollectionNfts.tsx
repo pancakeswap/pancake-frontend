@@ -1,13 +1,13 @@
-import { useCallback } from 'react'
-import { BunnyPlaceholderIcon, AutoRenewIcon, Button, Flex, Grid, Text } from '@pancakeswap/uikit'
-import { Collection } from 'state/nftMarket/types'
 import { useTranslation } from '@pancakeswap/localization'
-import GridPlaceholder from '../../components/GridPlaceholder'
+import { AutoRenewIcon, BunnyPlaceholderIcon, Button, Flex, Grid, Text } from '@pancakeswap/uikit'
+import { useCallback } from 'react'
+import { Collection } from 'state/nftMarket/types'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
+import GridPlaceholder from '../../components/GridPlaceholder'
 import { useCollectionNfts } from '../../hooks/useCollectionNfts'
 
 interface CollectionNftsProps {
-  collection: Collection
+  collection?: Collection
 }
 
 const CollectionNfts: React.FC<React.PropsWithChildren<CollectionNftsProps>> = ({ collection }) => {

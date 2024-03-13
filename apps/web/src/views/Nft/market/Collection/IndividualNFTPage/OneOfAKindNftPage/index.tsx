@@ -1,23 +1,23 @@
-import { useMemo } from 'react'
-import { styled } from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
-import sum from 'lodash/sum'
-import noop from 'lodash/noop'
 import Page from 'components/Layout/Page'
-import { useGetCollection } from 'state/nftMarket/hooks'
 import PageLoader from 'components/Loader/PageLoader'
-import { Address } from 'wagmi'
 import fromPairs from 'lodash/fromPairs'
-import MainNFTCard from './MainNFTCard'
-import { TwoColumnsContainer } from '../shared/styles'
-import PropertiesCard from '../shared/PropertiesCard'
-import DetailsCard from '../shared/DetailsCard'
-import useGetCollectionDistribution from '../../../hooks/useGetCollectionDistribution'
-import OwnerCard from './OwnerCard'
-import MoreFromThisCollection from '../shared/MoreFromThisCollection'
-import ActivityCard from './ActivityCard'
+import noop from 'lodash/noop'
+import sum from 'lodash/sum'
+import { useMemo } from 'react'
+import { useGetCollection } from 'state/nftMarket/hooks'
+import { styled } from 'styled-components'
+import { Address } from 'wagmi'
 import { useCompleteNft } from '../../../hooks/useCompleteNft'
+import useGetCollectionDistribution from '../../../hooks/useGetCollectionDistribution'
+import DetailsCard from '../shared/DetailsCard'
 import ManageNFTsCard from '../shared/ManageNFTsCard'
+import MoreFromThisCollection from '../shared/MoreFromThisCollection'
+import PropertiesCard from '../shared/PropertiesCard'
+import { TwoColumnsContainer } from '../shared/styles'
+import ActivityCard from './ActivityCard'
+import MainNFTCard from './MainNFTCard'
+import OwnerCard from './OwnerCard'
 
 interface IndividualNFTPageProps {
   collectionAddress: Address | undefined
@@ -44,7 +44,7 @@ const IndividualNFTPage: React.FC<React.PropsWithChildren<IndividualNFTPageProps
         Object.keys(distributionData).map((traitType) => {
           const total = sum(Object.values(distributionData[traitType]))
           const nftAttributeValue = properties.find((attribute) => attribute.traitType === traitType)?.value
-          const count = distributionData[traitType][nftAttributeValue]
+          const count = nftAttributeValue ? distributionData[traitType][nftAttributeValue] : 0
           const rarity = (count / total) * 100
           return [traitType, rarity]
         }),
@@ -66,7 +66,7 @@ const IndividualNFTPage: React.FC<React.PropsWithChildren<IndividualNFTPageProps
       <TwoColumnsContainer flexDirection={['column', 'column', 'column', 'column', 'row']}>
         <Flex flexDirection="column" width="100%">
           <ManageNFTsCard collection={collection} tokenId={tokenId} onSuccess={isOwnNft ? refetch : noop} />
-          <PropertiesCard properties={properties} rarity={attributesRarity} />
+          <PropertiesCard properties={properties ?? []} rarity={attributesRarity} />
           <DetailsCard contractAddress={collectionAddress} ipfsJson={nft?.marketData?.metadataUrl} />
         </Flex>
         <OwnerActivityContainer flexDirection="column" width="100%">

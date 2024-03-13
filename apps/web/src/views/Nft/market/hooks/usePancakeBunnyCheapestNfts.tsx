@@ -1,14 +1,14 @@
-import { useAccount } from 'wagmi'
-import { NftToken, ApiResponseCollectionTokens } from 'state/nftMarket/types'
-import {
-  getNftsMarketData,
-  getMetadataWithFallback,
-  getPancakeBunniesAttributesField,
-  combineApiAndSgResponseToNftToken,
-} from 'state/nftMarket/helpers'
-import { FAST_INTERVAL } from 'config/constants'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { useQuery } from '@tanstack/react-query'
+import { FAST_INTERVAL } from 'config/constants'
+import {
+  combineApiAndSgResponseToNftToken,
+  getMetadataWithFallback,
+  getNftsMarketData,
+  getPancakeBunniesAttributesField,
+} from 'state/nftMarket/helpers'
+import { ApiResponseCollectionTokens, NftToken } from 'state/nftMarket/types'
+import { useAccount } from 'wagmi'
 import { pancakeBunniesAddress } from '../constants'
 import { getLowestUpdatedToken } from './useGetLowestPrice'
 
@@ -40,7 +40,7 @@ const fetchCheapestBunny = async (
   return cheapestBunnyOfAccount.length > 0 ? cheapestBunnyOfAccount[0] : null
 }
 
-export const usePancakeBunnyCheapestNft = (bunnyId: string, nftMetadata: ApiResponseCollectionTokens) => {
+export const usePancakeBunnyCheapestNft = (bunnyId: string, nftMetadata: ApiResponseCollectionTokens | null) => {
   const { address: account } = useAccount()
   const { data, status, refetch } = useQuery({
     queryKey: ['cheapestBunny', bunnyId, account],
@@ -51,7 +51,7 @@ export const usePancakeBunnyCheapestNft = (bunnyId: string, nftMetadata: ApiResp
         isTradable: true,
       }
       if (!account) {
-        return fetchCheapestBunny(allCheapestBunnyClause, nftMetadata)
+        return fetchCheapestBunny(allCheapestBunnyClause, nftMetadata!)
       }
 
       const cheapestBunnyOtherSellersClause = {
@@ -60,8 +60,8 @@ export const usePancakeBunnyCheapestNft = (bunnyId: string, nftMetadata: ApiResp
         otherId: bunnyId,
         isTradable: true,
       }
-      const cheapestBunnyOtherSellers = await fetchCheapestBunny(cheapestBunnyOtherSellersClause, nftMetadata)
-      return cheapestBunnyOtherSellers ?? fetchCheapestBunny(allCheapestBunnyClause, nftMetadata)
+      const cheapestBunnyOtherSellers = await fetchCheapestBunny(cheapestBunnyOtherSellersClause, nftMetadata!)
+      return cheapestBunnyOtherSellers ?? fetchCheapestBunny(allCheapestBunnyClause, nftMetadata!)
     },
     enabled: Boolean(nftMetadata && bunnyId),
     refetchInterval: FAST_INTERVAL,

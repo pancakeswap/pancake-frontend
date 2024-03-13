@@ -1,27 +1,27 @@
-import { useCallback, useEffect, useState, useMemo } from 'react'
-import { styled } from 'styled-components'
-import chunk from 'lodash/chunk'
-import BigNumber from 'bignumber.js'
-import {
-  Flex,
-  Card,
-  Grid,
-  SellIcon,
-  Text,
-  ArrowUpIcon,
-  ArrowDownIcon,
-  Spinner,
-  useMatchBreakpoints,
-  PaginationButton,
-} from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
-import { ApiResponseCollectionTokens, NftToken } from 'state/nftMarket/types'
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  Card,
+  Flex,
+  Grid,
+  PaginationButton,
+  SellIcon,
+  Spinner,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import ForSaleTableRows from './ForSaleTableRows'
-import { StyledSortButton, TableHeading } from '../../shared/styles'
-import UpdateIndicator from './UpdateIndicator'
+import BigNumber from 'bignumber.js'
+import useTheme from 'hooks/useTheme'
+import chunk from 'lodash/chunk'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { ApiResponseCollectionTokens, NftToken } from 'state/nftMarket/types'
+import { styled } from 'styled-components'
 import { usePancakeBunnyOnSaleNfts } from '../../../../hooks/usePancakeBunnyOnSaleNfts'
+import { StyledSortButton, TableHeading } from '../../shared/styles'
+import ForSaleTableRows from './ForSaleTableRows'
+import UpdateIndicator from './UpdateIndicator'
 
 const ITEMS_PER_PAGE_DESKTOP = 10
 const ITEMS_PER_PAGE_MOBILE = 5
@@ -40,7 +40,7 @@ const StyledCard = styled(Card)<{ hasManyPages: boolean }>`
 
 interface ForSaleTableCardProps {
   bunnyId: string
-  nftMetadata: ApiResponseCollectionTokens
+  nftMetadata: ApiResponseCollectionTokens | null
   onSuccessSale: () => void
 }
 

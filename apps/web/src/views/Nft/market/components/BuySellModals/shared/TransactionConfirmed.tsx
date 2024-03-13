@@ -1,12 +1,12 @@
-import { Flex, Text, Button, ArrowUpIcon, ScanLink } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { getBlockExploreLink } from 'utils'
+import { ArrowUpIcon, Button, Flex, ScanLink, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { getBlockExploreLink } from 'utils'
 import { Divider } from './styles'
 
 interface TransactionConfirmedProps {
   txHash: string
-  onDismiss: () => void
+  onDismiss?: () => void
 }
 
 const TransactionConfirmed: React.FC<React.PropsWithChildren<TransactionConfirmedProps>> = ({ txHash, onDismiss }) => {

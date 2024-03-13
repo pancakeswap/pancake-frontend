@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import { Box, ButtonMenu, ButtonMenuItem, Flex, Grid, Text } from '@pancakeswap/uikit'
 import capitalize from 'lodash/capitalize'
-import isEmpty from 'lodash/isEmpty'
-import { useGetNftFilters, useGetNftShowOnlyOnSale } from 'state/nftMarket/hooks'
-import { NftAttribute } from 'state/nftMarket/types'
-import { useTranslation } from '@pancakeswap/localization'
-import { Item, ListTraitFilter } from 'views/Nft/market/components/Filters'
-import { useNftStorage } from 'state/nftMarket/storage'
 import groupBy from 'lodash/groupBy'
+import isEmpty from 'lodash/isEmpty'
+import { useEffect, useState } from 'react'
+import { useGetNftFilters, useGetNftShowOnlyOnSale } from 'state/nftMarket/hooks'
+import { useNftStorage } from 'state/nftMarket/storage'
+import { NftAttribute } from 'state/nftMarket/types'
+import { styled } from 'styled-components'
+import { Item, ListTraitFilter } from 'views/Nft/market/components/Filters'
 import useGetCollectionDistribution from '../../hooks/useGetCollectionDistribution'
 import ClearAllButton from './ClearAllButton'
 import SortSelect from './SortSelect'
@@ -97,7 +97,7 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ address, att
 
   const nftFilters = useGetNftFilters(address)
 
-  const attrsByType: Record<string, NftAttribute[]> = attributes ? groupBy(attributes, (attr) => attr.traitType) : null
+  const attrsByType: Record<string, NftAttribute[]> = attributes ? groupBy(attributes, (attr) => attr.traitType) : {}
   const uniqueTraitTypes = attrsByType ? Object.keys(attrsByType) : []
 
   return (
@@ -122,7 +122,7 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ address, att
           const attrs = attrsByType[traitType]
           const items: Item[] = attrs.map((attr) => ({
             label: capitalize(attr.value as string),
-            count: data && data[traitType] ? data[traitType][attr.value] : undefined,
+            count: data && data[traitType] && attr.value ? data[traitType][attr.value] : undefined,
             attr,
           }))
 

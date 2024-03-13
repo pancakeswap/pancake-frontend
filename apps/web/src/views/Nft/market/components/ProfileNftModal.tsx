@@ -1,22 +1,22 @@
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  InjectedModalProps,
-  Modal,
-  Flex,
-  Text,
   Button,
-  useModal,
+  Flex,
   Grid,
+  InjectedModalProps,
   LinkExternal,
+  Modal,
   ScanLink,
+  Text,
+  useModal,
 } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import { styled } from 'styled-components'
 import { NftToken } from 'state/nftMarket/types'
-import { useTranslation } from '@pancakeswap/localization'
+import { styled } from 'styled-components'
 import { getBscScanLinkForNft, safeGetAddress } from 'utils'
-import { HorizontalDivider, RoundedImage } from './BuySellModals/shared/styles'
 import EditProfileModal from '../../../Profile/components/EditProfileModal'
 import { nftsBaseUrl, pancakeBunniesAddress } from '../constants'
+import { HorizontalDivider, RoundedImage } from './BuySellModals/shared/styles'
 
 export const StyledModal = styled(Modal)`
   & > div:last-child {
@@ -40,7 +40,7 @@ const ProfileNftModal: React.FC<React.PropsWithChildren<ProfileNftModalProps>> =
 
   const itemPageUrlId =
     safeGetAddress(nft.collectionAddress) === safeGetAddress(pancakeBunniesAddress)
-      ? nft.attributes[0].value
+      ? nft.attributes?.[0].value
       : nft.tokenId
 
   return (
