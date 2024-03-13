@@ -75,19 +75,19 @@ const BuildingConfig = [
     title: <Trans>Read the Whitepaper</Trans>,
     icon: <Step1Icon width={40} height={48} color="primary" />,
     imageUrl: `${ASSET_CDN}/web/v4-landing/buildings-1.png`,
-    url: '',
+    url: 'https://github.com/pancakeswap/pancake-v4-core/blob/main/docs/whitepaper-en.pdf',
   },
   {
     title: <Trans>Get the Tools</Trans>,
     icon: <Step2Icon width={40} height={48} color="primary" />,
     imageUrl: `${ASSET_CDN}/web/v4-landing/buildings-2.png`,
-    url: '',
+    url: 'https://github.com/pancakeswap/pancake-v4-hooks-template',
   },
   {
     title: <Trans>Join the Community</Trans>,
     icon: <Step3Icon width={40} height={48} color="primary" />,
     imageUrl: `${ASSET_CDN}/web/v4-landing/buildings-3.png`,
-    url: 'https://discord.gg/pancakeswap?utm_source=v4 landing page&utm_medium=banner&utm_campaign=v4 landing page&utm_id=v4 landing page',
+    url: 'https://discord.com/invite/pancakeswap?utm_source=v4+landing+page&utm_medium=banner&utm_campaign=v4+landing+page&utm_id=v4+landing+page',
   },
   {
     title: <Trans>Start Building</Trans>,

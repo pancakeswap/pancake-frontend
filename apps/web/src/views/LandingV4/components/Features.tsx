@@ -313,10 +313,7 @@ export const Features = () => {
             )
           })}
           <Box display={['none', 'none', 'none', 'none', 'block']}>
-            <NextLinkFromReactRouter
-              target="_blank"
-              to="https://docs.google.com/spreadsheets/d/1flghL537aZmKWqS0AN8tdZglEmsaYwJurju1rvBpcBI/edit#gid=0"
-            >
+            <NextLinkFromReactRouter target="_blank" to="https://">
               <Button width="fit-content" mt={['32px', '32px', '32px', '32px', '32px', '56px']}>
                 <Text color="white" bold mr="4px">
                   {t('Read more')}
