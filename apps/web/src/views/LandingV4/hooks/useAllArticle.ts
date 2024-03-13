@@ -1,5 +1,6 @@
 import { AllArticleType, getArticle } from '@pancakeswap/blog'
 import { useQuery } from '@tanstack/react-query'
+import { staticThirdPartyNews } from '../config/blog/staticThirdPartyNews'
 
 const LIMIT = 10
 
@@ -24,7 +25,7 @@ export const useV4Articles = (): AllArticleType => {
               {
                 categories: {
                   name: {
-                    $eq: 'V4',
+                    $eq: 'Product', // V4
                   },
                 },
               },
@@ -55,8 +56,8 @@ export const useV4NewsArticle = (): AllArticleType => {
   const { data: articlesData, isPending } = useQuery({
     queryKey: ['/v4-news'],
 
-    queryFn: () =>
-      getArticle({
+    queryFn: async () => {
+      const response = await getArticle({
         url: '/articles',
         urlParamsObject: {
           populate: 'categories,image',
@@ -81,8 +82,13 @@ export const useV4NewsArticle = (): AllArticleType => {
           },
           pagination: { limit: LIMIT },
         },
-      }),
+      })
 
+      return {
+        ...response,
+        data: [...response.data, ...staticThirdPartyNews],
+      }
+    },
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   })
