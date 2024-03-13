@@ -24,7 +24,7 @@ const LockedBenefits = () => {
 
   const lockedApy = useMemo(() => getLockedApy(secondDuration), [getLockedApy, secondDuration])
   const boostFactor = useMemo(() => getBoostFactor(secondDuration), [getBoostFactor, secondDuration])
-  const delApy = useMemo(() => new BigNumber(lockedApy).div(boostFactor).toNumber(), [lockedApy, boostFactor])
+  const delApy = useMemo(() => new BigNumber(lockedApy || 0).div(boostFactor).toNumber(), [lockedApy, boostFactor])
 
   const iCakeTooltipComponent = () => (
     <>
@@ -89,7 +89,7 @@ const LockedBenefits = () => {
             </Flex>
             <BenefitsText
               title="iCAKE"
-              value={cakeBenefits?.iCake}
+              value={cakeBenefits?.iCake || ''}
               tooltipComponent={iCakeTooltipComponent()}
               icon={<ICakeIcon width={24} height={24} mr="8px" />}
             />
@@ -101,7 +101,7 @@ const LockedBenefits = () => {
             />
             <BenefitsText
               title="vCAKE"
-              value={cakeBenefits?.vCake?.vaultScore}
+              value={cakeBenefits?.vCake?.vaultScore || ''}
               tooltipComponent={vCakeTooltipComponent()}
               icon={<VCakeIcon width={24} height={24} mr="8px" />}
             />

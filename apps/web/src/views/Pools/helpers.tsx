@@ -59,7 +59,7 @@ export const getAprData = (pool: Pool.DeserializedPool<Token>, performanceFee: n
 }
 
 export const getCakeVaultEarnings = (
-  account: string,
+  account: string | undefined,
   cakeAtLastUserAction: BigNumber,
   userShares: BigNumber,
   pricePerFullShare: BigNumber,

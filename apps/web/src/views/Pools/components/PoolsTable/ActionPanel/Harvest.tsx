@@ -25,7 +25,10 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Pool.Deseri
 
   const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
   const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
-  const earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
+  const earningTokenDollarBalance = getBalanceNumber(
+    earnings.multipliedBy(earningTokenPrice || 0),
+    earningToken.decimals,
+  )
   const hasEarnings = earnings.gt(0)
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
@@ -85,7 +88,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Pool.Deseri
             {hasEarnings ? (
               <>
                 <Balance lineHeight="1" bold fontSize="20px" decimals={5} value={earningTokenBalance} />
-                {earningTokenPrice > 0 && (
+                {earningTokenPrice !== undefined && earningTokenPrice > 0 && (
                   <Balance
                     display="inline"
                     fontSize="12px"

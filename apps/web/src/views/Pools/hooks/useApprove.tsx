@@ -55,7 +55,7 @@ export const useApprovePool = (lpContract: ReturnType<typeof useERC20>, sousId, 
 }
 
 // Approve CAKE auto pool
-export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) => {
+export const useVaultApprove = (vaultKey: VaultKey | undefined, setLastUpdated: () => void) => {
   const vaultPoolContract = useVaultPoolContract(vaultKey)
   const { t } = useTranslation()
 
@@ -66,7 +66,7 @@ export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) 
   )
 }
 
-export const useCheckVaultApprovalStatus = (vaultKey: VaultKey) => {
+export const useCheckVaultApprovalStatus = (vaultKey?: VaultKey) => {
   const vaultPoolContract = useVaultPoolContract(vaultKey)
 
   return useCakeApprovalStatus(vaultPoolContract?.address)
