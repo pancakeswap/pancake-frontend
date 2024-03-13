@@ -53,14 +53,14 @@ const TeamRanks: React.FC<React.PropsWithChildren<TeamRanksProps>> = ({
   image,
 }) => {
   const isTeamLeaderboardDataComplete = Boolean(
-    team1LeaderboardInformation.leaderboardData &&
-      team2LeaderboardInformation.leaderboardData &&
-      team3LeaderboardInformation.leaderboardData,
+    team1LeaderboardInformation?.leaderboardData &&
+      team2LeaderboardInformation?.leaderboardData &&
+      team3LeaderboardInformation?.leaderboardData,
   )
 
   const isGlobalLeaderboardDataComplete = Boolean(isTeamLeaderboardDataComplete && globalLeaderboardInformation)
 
-  const getTeamsSortedByVolume = (arrayOfTeams) => {
+  const getTeamsSortedByVolume = (arrayOfTeams: any) => {
     return orderBy(arrayOfTeams, (team) => team.leaderboardData.volume, 'desc')
   }
 
@@ -69,16 +69,17 @@ const TeamRanks: React.FC<React.PropsWithChildren<TeamRanksProps>> = ({
       <StyledPodiumWrapper>
         <Podium
           teamsSortedByVolume={
-            isTeamLeaderboardDataComplete &&
-            getTeamsSortedByVolume([
-              team1LeaderboardInformation,
-              team2LeaderboardInformation,
-              team3LeaderboardInformation,
-            ])
+            isTeamLeaderboardDataComplete
+              ? getTeamsSortedByVolume([
+                  team1LeaderboardInformation,
+                  team2LeaderboardInformation,
+                  team3LeaderboardInformation,
+                ])
+              : undefined
           }
         />
         <BunnyImageWrapper mt="24px">
-          <Image src={image} alt="team-ranks-image" width={200} height={205} />
+          <Image src={image || ''} alt="team-ranks-image" width={200} height={205} />
         </BunnyImageWrapper>
       </StyledPodiumWrapper>
       <StyledTopTradersWrapper>

@@ -86,7 +86,7 @@ const GridItem: React.FC<
   React.PropsWithChildren<{ traderData?: LeaderboardDataItem; teamImages: React.ReactNode[] }>
 > = ({ traderData = { address: '', volume: 0, teamId: 0, rank: 0 }, teamImages }) => {
   const { address, volume, teamId, rank } = traderData
-  const { profile, isFetching } = useProfileForAddress(address)
+  const { profile, isFetching } = useProfileForAddress(address || '')
   const { domainName, avatar } = useDomainNameForAddress(address)
 
   return (
@@ -107,16 +107,18 @@ const GridItem: React.FC<
       <VolumeAddressWrapper>
         <Flex alignItems="center" justifyContent="flex-start">
           <VolumeText fontSize="12px" bold>
-            ${localiseTradingVolume(volume)}
+            ${localiseTradingVolume(volume || 0)}
           </VolumeText>
         </Flex>
         <Flex alignItems="center" justifyContent="flex-start">
           <Text color="primary" fontSize="12px">
-            {domainName || truncateHash(address)}
+            {domainName || truncateHash(address || '')}
           </Text>
         </Flex>
       </VolumeAddressWrapper>
-      <TeamImageWrapper justifyContent="flex-end">{teamImages[teamId - 1]}</TeamImageWrapper>
+      <TeamImageWrapper justifyContent="flex-end">
+        {teamId !== undefined ? teamImages[teamId - 1] : null}
+      </TeamImageWrapper>
     </Wrapper>
   )
 }

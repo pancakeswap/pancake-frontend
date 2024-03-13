@@ -100,7 +100,7 @@ const EasterCompetition = () => {
     }
 
     const fetchUserContract = async () => {
-      const user = await tradingCompetitionContract.read.claimInformation([account])
+      const user = await tradingCompetitionContract.read.claimInformation([account || '0x'])
       const userObject = {
         isLoading: false,
         account,
@@ -111,7 +111,7 @@ const EasterCompetition = () => {
         userPointReward: user[4].toString(),
         canClaimNFT: user[5],
       }
-      setUserTradingInformation(userObject)
+      setUserTradingInformation(userObject as any)
     }
 
     if (chainId === ChainId.BSC) {
@@ -217,14 +217,14 @@ const EasterCompetition = () => {
       </PageSection>
       <TeamRanksSection
         image={EasterCakerBunny}
-        team1LeaderboardInformation={team1LeaderboardInformation}
-        team2LeaderboardInformation={team2LeaderboardInformation}
-        team3LeaderboardInformation={team3LeaderboardInformation}
-        globalLeaderboardInformation={globalLeaderboardInformation}
+        team1LeaderboardInformation={team1LeaderboardInformation as any}
+        team2LeaderboardInformation={team2LeaderboardInformation as any}
+        team3LeaderboardInformation={team3LeaderboardInformation as any}
+        globalLeaderboardInformation={globalLeaderboardInformation as any}
       />
       <PrizesInfoSection prizesInfoComponent={<EasterPrizesInfo />} />
       <Footer
-        shouldHideCta={shouldHideCta}
+        shouldHideCta={Boolean(shouldHideCta)}
         image={EasterStormBunny}
         userTradingInformation={userTradingInformation}
         currentPhase={currentPhase}

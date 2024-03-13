@@ -33,12 +33,16 @@ const ClaimModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { t } = useTranslation()
 
-  const { userRewardGroup, userCakeRewards, userDarRewards, userPointReward, canClaimNFT } = userTradingInformation
+  const userRewardGroup = userTradingInformation?.userRewardGroup
+  const userCakeRewards = userTradingInformation?.userCakeRewards
+  const userDarRewards = userTradingInformation?.userDarRewards
+  const userPointReward = userTradingInformation?.userPointReward
+  const canClaimNFT = userTradingInformation?.canClaimNFT
   const { cakeReward, darReward } = useModCompetitionRewards({
-    userCakeRewards,
-    userDarRewards,
+    userCakeRewards: userCakeRewards || 0,
+    userDarRewards: userDarRewards || 0,
   })
-  const achievement = getRewardGroupAchievements(modPrizes, userRewardGroup, userPointReward)
+  const achievement = getRewardGroupAchievements(modPrizes, userRewardGroup || '', userPointReward || '')
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleClaimClick = async () => {
@@ -47,8 +51,8 @@ const ClaimModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
     })
     if (receipt?.status) {
       toastSuccess(t('You have claimed your rewards!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-      onDismiss()
-      onClaimSuccess()
+      onDismiss?.()
+      onClaimSuccess?.()
     }
   }
 
@@ -61,7 +65,7 @@ const ClaimModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
         <Flex mt="16px" alignItems="center">
           {/* achievements */}
           <Image
-            src={`/images/achievements/${achievement.image}`}
+            src={`/images/achievements/${achievement?.image}`}
             alt="achievement-claim-image"
             width={25}
             height={25}

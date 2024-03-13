@@ -105,7 +105,7 @@ const MoboxCompetition = () => {
 
     const fetchUserContract = async () => {
       try {
-        const user = await tradingCompetitionContract.read.claimInformation([account])
+        const user = await tradingCompetitionContract.read.claimInformation([account || '0x'])
         const userObject = {
           isLoading: false,
           account,
@@ -243,10 +243,10 @@ const MoboxCompetition = () => {
             <Box my="64px">
               <TeamRanksWithParticipants
                 image={MoboxCakerBunny}
-                team1LeaderboardInformation={team1LeaderboardInformation}
-                team2LeaderboardInformation={team2LeaderboardInformation}
-                team3LeaderboardInformation={team3LeaderboardInformation}
-                globalLeaderboardInformation={globalLeaderboardInformation}
+                team1LeaderboardInformation={team1LeaderboardInformation as any}
+                team2LeaderboardInformation={team2LeaderboardInformation as any}
+                team3LeaderboardInformation={team3LeaderboardInformation as any}
+                globalLeaderboardInformation={globalLeaderboardInformation as any}
                 participantSubgraphAddress={TC_MOBOX_SUBGRAPH}
                 subgraphName="pancakeswap/trading-competition-v3"
               />
@@ -273,7 +273,7 @@ const MoboxCompetition = () => {
           </Box>
         </PageSection>
         <Footer
-          shouldHideCta={shouldHideCta}
+          shouldHideCta={Boolean(shouldHideCta)}
           image={StormBunny}
           userTradingInformation={userTradingInformation}
           currentPhase={currentPhase}
