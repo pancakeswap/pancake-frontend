@@ -3196,7 +3196,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 319,
     pairName: 'XRGB-ETH',
-    address: '0x9a5936bab8f9ae1D89DA5fa95C484F7aD597C8C0',
+    address: '0x7E9570FD7B4f1362aB924dfDE29096e0B484E009',
     chainId: ChainId.ETHEREUM,
     type: GaugeType.V3,
     token0Address: ethereumTokens.xrgb.address,
