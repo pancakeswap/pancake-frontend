@@ -18,7 +18,7 @@ import { FeeTypes, getNetworkFullName, providerFeeTypes } from '../../constants'
 import { BtcLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
 import BuyCryptoTooltip from '../Tooltip/Tooltip'
 
-type FeeComponents = { providerFee: number; networkFee: number }
+type FeeComponents = { providerFee: number; networkFee: number; price: number }
 interface TransactionFeeDetailsProps {
   selectedQuote: OnRampProviderQuote | undefined
   currency: Currency
@@ -41,10 +41,11 @@ export const TransactionFeeDetails = ({
 
   const handleExpandClick = useCallback(() => setShow(!show), [show])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const elRef = contentRef.current
     if (elRef) setElementHeight(elRef.scrollHeight)
-  }, [contentRef.current?.scrollHeight])
+  }, [selectedQuote])
 
   return (
     <Flex flexDirection="column">
@@ -107,10 +108,11 @@ const FeeItem = ({ feeTitle, quote }: { feeTitle: FeeTypes; quote: OnRampProvide
   const FeeEstimates: {
     [feeType: string]: <T extends FeeComponents = FeeComponents>(args: T) => number
   } = {
-    [FeeTypes.NetworkingFees]: (args) => args.networkFee,
-    [FeeTypes.ProviderFees]: (args) => args.providerFee,
-    [FeeTypes.ProviderRate]: () => quote.price,
+    [FeeTypes.NetworkingFees]: (q) => q.networkFee,
+    [FeeTypes.ProviderFees]: (q) => q.providerFee,
+    [FeeTypes.ProviderRate]: (q) => q.price,
   }
+
   const title = feeTitle === FeeTypes.ProviderRate ? `${quote.cryptoCurrency} ${feeTitle}` : feeTitle
   return (
     <RowBetween py="4px">

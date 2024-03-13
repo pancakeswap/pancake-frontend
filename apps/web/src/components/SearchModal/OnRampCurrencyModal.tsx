@@ -54,8 +54,8 @@ const StyledModalBody = styled(ModalBody)`
   }
 `
 const NetworkItem = styled(RowBetween)<{ selected: boolean }>`
-  padding: 4px 20px;
-  height: 56px;
+  padding: 0px 20px;
+  height: 48px;
   width: 100%;
   display: flex;
 
@@ -73,7 +73,7 @@ const NetworksWrapper = styled(Box)<{ showFilterNetworks: boolean }>`
   height: 100%;
   z-index: 1000;
   transition: bottom 0.3s ease-in-out;
-  bottom: ${({ showFilterNetworks }) => (!showFilterNetworks ? '-100%' : '-15%')};
+  bottom: ${({ showFilterNetworks }) => (!showFilterNetworks ? '-100%' : '-30%')};
   border-top-right-radius: 24px;
   border-top-left-radius: 24px;
   box-shadow: 6px 20px 12px 8px rgba(74, 74, 104, 0.1);
@@ -125,7 +125,7 @@ const SearchModalNetworkPopOver = ({
           </ModalTitle>
           <ModalCloseButton onDismiss={onClick} />
         </ModalHeader>
-        <StyledModalBody>
+        <StyledModalBody style={{ paddingLeft: '0px', paddingTop: '0px' }}>
           <>
             {chains
               .filter((chain) => {
@@ -161,7 +161,7 @@ const SearchModalNetworkPopOver = ({
 
                     {isActive && (
                       <Box>
-                        <Dot style={{ height: '8px', width: '8px' }} show color="success" className="dot" />
+                        <Dot style={{ height: '12px', width: '12px' }} show color="success" className="dot" />
                       </Box>
                     )}
                   </NetworkItem>

@@ -1,6 +1,5 @@
 import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { bscTokens } from '@pancakeswap/tokens'
 import { AutoColumn, AutoRow, Box, Flex, Row, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
 import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -85,7 +84,7 @@ export function BuyCryptoForm() {
   const handleTypeOutput = useCallback((value: string) => onUserInput(Field.OUTPUT, value), [onUserInput])
 
   const isTypingInput = independentField === Field.INPUT
-  const isTypingOutput = independentField === Field.OUTPUT
+  // const isTypingOutput = independentField === Field.OUTPUT
 
   const outputValue = useMemo(() => {
     const formattedQuote = formatQuoteDecimals(selectedQuote?.quote, typedValue)
@@ -136,10 +135,8 @@ export function BuyCryptoForm() {
 
   const resetBuyCryptoState = useCallback(() => {
     setSearchQuery('')
-    onCurrencySelection(Field.INPUT, bscTokens.bnb)
-    setSelectedQuote(undefined)
-    handleTypeInput('300')
-  }, [onCurrencySelection, setSelectedQuote, setSearchQuery, handleTypeInput])
+    handleTypeInput(defaultAmt)
+  }, [handleTypeInput, defaultAmt])
 
   useEffect(() => {
     if (!quotes) return

@@ -1,32 +1,10 @@
-import { ContextData, TranslationKey } from '@pancakeswap/localization'
 import { Native } from '@pancakeswap/sdk'
 import { Currency } from '@pancakeswap/swap-sdk-core'
 import { arbitrumTokens, baseTokens, bscTokens, ethereumTokens, lineaTokens } from '@pancakeswap/tokens'
 import { NativeBtc } from './utils/NativeBtc'
 
-export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB']
+export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB', 'WBTC']
 export const DEFAULT_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
-export const WHITELISTED_FIAT_CURRENCIES_BASE = ['EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'JPY', 'KRW', 'VND']
-export const WHITELISTED_FIAT_CURRENCIES_LINEA = ['EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'JPY', 'KRW', 'VND']
-
-const SUPPORTED_MERCURYO_BSC_TOKENS = ['BNB', 'BUSD']
-const SUPPORTED_MERCURYO_ETH_TOKENS = ['ETH', 'USDT', 'DAI']
-const SUPPORTED_MERCURYO_ARBITRUM_TOKENS = ['ETH', 'USDC']
-
-const SUPPORTED_MONPAY_ETH_TOKENS = ['ETH', 'USDC', 'DAI', 'USDT']
-const SUPPORTED_MOONPAY_BSC_TOKENS = ['BNB', 'BUSD']
-const SUPPORTED_MOONPAY_ARBITRUM_TOKENS = ['ETH', 'USDC']
-const SUPPORTED_MOONPAY_ZKSYNC_TOKENS = ['ETH', 'USDC', 'DAI', 'USDT']
-
-const SUPPORTED_TRANSAK_BSC_TOKENS = ['BNB', 'BUSD']
-const SUPPORTED_TRANSAK_ETH_TOKENS = ['ETH', 'USDT', 'DAI']
-const SUPPORTED_TRANSAK_ARBITRUM_TOKENS = ['ETH', 'USDC']
-const SUPPORTED_TRANSAK_LINEA_TOKENS = ['ETH', 'USDC']
-const SUPPORTED_TRANSAK_ZKSYNC_TOKENS = ['ETH']
-const SUPPORTED_TRANSAK_ZKEVM_TOKENS = ['ETH']
-const SUPPORTED_TRANSAK_BASE_TOKENS = ['ETH', 'USDC']
-
-export const CURRENT_CAMPAIGN_TIMESTAMP = 1694512859
 
 export enum OnRampChainId {
   ETHEREUM = 1,
@@ -70,66 +48,6 @@ export const getIsNetworkEnabled = (network: OnRampChainId | undefined) => {
   if (typeof network === 'undefined') return false
   if (typeof network === 'number') return true
   return false
-}
-export const supportedTokenMap: {
-  [chainId: number]: {
-    [ONRAMP_PROVIDERS.MoonPay]: string[]
-    [ONRAMP_PROVIDERS.Mercuryo]: string[]
-    [ONRAMP_PROVIDERS.Transak]: string[]
-  }
-} = {
-  [OnRampChainId.BSC]: {
-    [ONRAMP_PROVIDERS.MoonPay]: SUPPORTED_MOONPAY_BSC_TOKENS,
-    [ONRAMP_PROVIDERS.Mercuryo]: SUPPORTED_MERCURYO_BSC_TOKENS,
-    [ONRAMP_PROVIDERS.Transak]: SUPPORTED_TRANSAK_BSC_TOKENS,
-  },
-  [OnRampChainId.ETHEREUM]: {
-    [ONRAMP_PROVIDERS.MoonPay]: SUPPORTED_MONPAY_ETH_TOKENS,
-    [ONRAMP_PROVIDERS.Mercuryo]: SUPPORTED_MERCURYO_ETH_TOKENS,
-    [ONRAMP_PROVIDERS.Transak]: SUPPORTED_TRANSAK_ETH_TOKENS,
-  },
-  [OnRampChainId.ARBITRUM_ONE]: {
-    [ONRAMP_PROVIDERS.MoonPay]: SUPPORTED_MOONPAY_ARBITRUM_TOKENS,
-    [ONRAMP_PROVIDERS.Mercuryo]: SUPPORTED_MERCURYO_ARBITRUM_TOKENS,
-    [ONRAMP_PROVIDERS.Transak]: SUPPORTED_TRANSAK_ARBITRUM_TOKENS,
-  },
-  [OnRampChainId.ZKSYNC]: {
-    [ONRAMP_PROVIDERS.MoonPay]: SUPPORTED_MOONPAY_ZKSYNC_TOKENS,
-    [ONRAMP_PROVIDERS.Mercuryo]: [],
-    [ONRAMP_PROVIDERS.Transak]: SUPPORTED_TRANSAK_ZKSYNC_TOKENS,
-  },
-  [OnRampChainId.LINEA]: {
-    [ONRAMP_PROVIDERS.MoonPay]: [],
-    [ONRAMP_PROVIDERS.Mercuryo]: [],
-    [ONRAMP_PROVIDERS.Transak]: SUPPORTED_TRANSAK_LINEA_TOKENS,
-  },
-  [OnRampChainId.POLYGON_ZKEVM]: {
-    [ONRAMP_PROVIDERS.MoonPay]: [],
-    [ONRAMP_PROVIDERS.Mercuryo]: [],
-    [ONRAMP_PROVIDERS.Transak]: SUPPORTED_TRANSAK_ZKEVM_TOKENS,
-  },
-  [OnRampChainId.BASE]: {
-    [ONRAMP_PROVIDERS.MoonPay]: [],
-    [ONRAMP_PROVIDERS.Mercuryo]: [],
-    [ONRAMP_PROVIDERS.Transak]: SUPPORTED_TRANSAK_BASE_TOKENS,
-  },
-  // Add more chainId mappings as needed
-}
-
-export const whiteListedFiatCurrenciesMap: {
-  [chainId: number]: string[]
-} = {
-  [OnRampChainId.BSC]: DEFAULT_FIAT_CURRENCIES,
-  [OnRampChainId.ETHEREUM]: DEFAULT_FIAT_CURRENCIES,
-  [OnRampChainId.ARBITRUM_ONE]: DEFAULT_FIAT_CURRENCIES,
-  [OnRampChainId.ZKSYNC]: DEFAULT_FIAT_CURRENCIES,
-  [OnRampChainId.LINEA]: WHITELISTED_FIAT_CURRENCIES_LINEA,
-  [OnRampChainId.POLYGON_ZKEVM]: DEFAULT_FIAT_CURRENCIES,
-  [OnRampChainId.BASE]: WHITELISTED_FIAT_CURRENCIES_BASE,
-}
-
-export function isBuyCryptoSupported(chain: OnRampChainId) {
-  return true
 }
 
 export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: FeeTypes[] } = {
@@ -246,26 +164,6 @@ export const getOnrampCurrencyChainId = (currencyId: string | undefined): any =>
   return Number(extractOnRampCurrencyChainId(currencyId))
 }
 
-export const formatOnrampCurrencyChainId = (chainId: any): any => {
-  if (!chainId) return undefined
-  return chainId === NATIVE_BTC.chainId ? 0 : chainId
-}
-
-export const getChainCurrencyWarningMessages = (
-  t: (key: TranslationKey, data?: ContextData) => string,
-  chainId: number,
-) => {
-  const networkDisplay = getNetworkDisplay(chainId)
-  return {
-    [OnRampChainId.LINEA]: t('%chainId% supports limited fiat currencies. USD are not supported', {
-      chainId: networkDisplay,
-    }),
-    [OnRampChainId.BASE]: t('%chainId% supports limited fiat currencies. USD are not supported', {
-      chainId: networkDisplay,
-    }),
-  }
-}
-
 export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> = {
   USD: {
     name: 'United States Dollar',
@@ -362,25 +260,3 @@ export const onRampCurrenciesMap: { [tokenSymbol: string]: Currency } = {
   WBTC_1: ethereumTokens.wbtc,
   // 'USDC.e_42161': arbitrumTokens.usdce,
 }
-
-export type Btc_Extension = Currency & any
-
-export const NATIVE_BTC: Btc_Extension = {
-  name: 'Native Bitcoin',
-  symbol: 'BTC',
-  chainId: 'bitcoin',
-  isNative: true,
-  decimals: 8,
-}
-
-export const mainnetChainIds = [
-  OnRampChainId.ETHEREUM,
-  OnRampChainId.BSC,
-  OnRampChainId.ZKSYNC,
-  OnRampChainId.OPBNB,
-  OnRampChainId.POLYGON_ZKEVM,
-  OnRampChainId.ARBITRUM_ONE,
-  OnRampChainId.LINEA,
-  OnRampChainId.BASE,
-  OnRampChainId.BTC,
-]

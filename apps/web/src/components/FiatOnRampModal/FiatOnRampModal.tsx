@@ -99,14 +99,14 @@ export const FiatOnRampModalButton = ({
     }
     if (isBtc && input === '') return t('Verify your address to continue')
     if (isBtc && disabled) return t('Invalid BTC address')
-    return t(`Buy %amount% %currency% with %provider%`, {
+    return t('Buy %amount% %currency% with %provider%', {
       provider: selectedQuote?.provider,
       amount: selectedQuote?.quote.toFixed(3),
       currency: selectedQuote?.cryptoCurrency,
     })
   }, [loading, isLoading, selectedQuote, t, isBtc, disabled, input])
 
-  if (isBtc && !account)
+  if (!isBtc && !account)
     return (
       <AutoColumn width="100%">
         <ConnectWalletButton height="50px" />
