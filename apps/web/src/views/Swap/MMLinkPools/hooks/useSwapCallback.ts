@@ -74,7 +74,7 @@ export function useSwapCallback(
 const useSendMMTransaction = (
   account?: Address,
   chainId?: number,
-  trade?: SmartRouterTrade<TradeType>,
+  trade?: SmartRouterTrade<TradeType> | null,
   swapCalls: MMSwapCall[] = [],
 ): { callback: null | (() => Promise<SendTransactionResult>) } => {
   const { t } = useTranslation()
