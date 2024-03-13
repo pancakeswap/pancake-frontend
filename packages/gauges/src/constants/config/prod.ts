@@ -3266,7 +3266,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 326,
     pairName: 'WETH-USDC',
-    address: '0x1Cf977828364c597a4a80779a3a5eb8fB673A845',
+    address: '0x7fCDC35463E3770c2fB992716Cd070B63540b947',
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.V3,
     token0Address: arbitrumTokens.weth.address,
@@ -3286,7 +3286,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 328,
     pairName: 'USDT-WETH',
-    address: '0x389938CF14Be379217570D8e4619E51fBDafaa21',
+    address: '0x1947B87d35E9f1cd53CEDe1aD6F7be44C12212B8',
     chainId: ChainId.LINEA,
     type: GaugeType.V3,
     token0Address: lineaTokens.usdt.address,
