@@ -5,4 +5,4 @@
 '@pancakeswap/tokens': patch
 ---
 
-Update farms, pools, gauges, tokens
+Update Update farms, pools, gauges, tokens
