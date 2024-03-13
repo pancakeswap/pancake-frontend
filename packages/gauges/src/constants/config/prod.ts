@@ -3209,7 +3209,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     address: '0x0125ac49a5C06CCfd0819e6E20CCBE09bDE35140',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
-    token0Address: bscTokens.vai.address,
+    token0Address: bscTokens.octavia.address,
     token1Address: bscTokens.usdt.address,
     feeTier: FeeAmount.MEDIUM,
   },
