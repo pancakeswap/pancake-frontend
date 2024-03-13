@@ -1,7 +1,7 @@
-import { CurrencyAmount, Currency, ERC20Token, Native, TradeType, Percent } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { Address } from 'viem'
+import { Currency, CurrencyAmount, ERC20Token, Native, Percent, TradeType } from '@pancakeswap/sdk'
 import { ADDRESS_ZERO, Tick } from '@pancakeswap/v3-sdk'
+import { Address } from 'viem'
 import { Pool, PoolType, Route, SmartRouterTrade, StablePool, V2Pool, V3Pool } from '../types'
 import { isStablePool, isV2Pool, isV3Pool } from './pool'
 
@@ -76,7 +76,7 @@ export interface SerializedTrade
   > {
   inputAmount: SerializedCurrencyAmount
   outputAmount: SerializedCurrencyAmount
-  gasEstimate: string
+  gasEstimate?: string
   gasEstimateInUSD?: SerializedCurrencyAmount
   routes: SerializedRoute[]
 }
@@ -153,7 +153,7 @@ export function serializeTrade(trade: SmartRouterTrade<TradeType>): SerializedTr
     inputAmount: serializeCurrencyAmount(trade.inputAmount),
     outputAmount: serializeCurrencyAmount(trade.outputAmount),
     routes: trade.routes.map(serializeRoute),
-    gasEstimate: trade.gasEstimate.toString(),
+    gasEstimate: trade.gasEstimate?.toString(),
     gasEstimateInUSD: trade.gasEstimateInUSD && serializeCurrencyAmount(trade.gasEstimateInUSD),
   }
 }
@@ -224,7 +224,7 @@ export function parseTrade(chainId: ChainId, trade: SerializedTrade): SmartRoute
     inputAmount: parseCurrencyAmount(chainId, trade.inputAmount),
     outputAmount: parseCurrencyAmount(chainId, trade.outputAmount),
     routes: trade.routes.map((r) => parseRoute(chainId, r)),
-    gasEstimate: BigInt(trade.gasEstimate),
+    gasEstimate: trade.gasEstimate ? BigInt(trade.gasEstimate) : undefined,
     gasEstimateInUSD: trade.gasEstimateInUSD && parseCurrencyAmount(chainId, trade.gasEstimateInUSD),
   }
 }

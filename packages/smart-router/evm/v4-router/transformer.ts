@@ -1,5 +1,5 @@
-import { TradeType } from '@pancakeswap/swap-sdk-core'
 import { ChainId } from '@pancakeswap/chains'
+import { TradeType } from '@pancakeswap/swap-sdk-core'
 
 import {
   SerializedCurrency,
@@ -55,7 +55,7 @@ export interface SerializedV4Trade
   > {
   inputAmount: SerializedCurrencyAmount
   outputAmount: SerializedCurrencyAmount
-  gasEstimate: string
+  gasEstimate?: string
   routes: SerializedV4Route[]
   gasCostInBase: SerializedCurrencyAmount
   gasCostInQuote: SerializedCurrencyAmount
@@ -100,7 +100,7 @@ export function serializeTrade(trade: V4Trade<TradeType>): SerializedV4Trade {
     inputAmount: serializeCurrencyAmount(trade.inputAmount),
     outputAmount: serializeCurrencyAmount(trade.outputAmount),
     routes: trade.routes.map(serializeRoute),
-    gasEstimate: trade.gasEstimate.toString(),
+    gasEstimate: trade.gasEstimate?.toString(),
     gasCostInBase: serializeCurrencyAmount(trade.gasCostInBase),
     gasCostInQuote: serializeCurrencyAmount(trade.gasCostInQuote),
     inputAmountWithGasAdjusted: serializeCurrencyAmount(trade.inputAmountWithGasAdjusted),
@@ -114,7 +114,7 @@ export function parseTrade(chainId: ChainId, trade: SerializedV4Trade): Omit<V4T
     inputAmount: parseCurrencyAmount(chainId, trade.inputAmount),
     outputAmount: parseCurrencyAmount(chainId, trade.outputAmount),
     routes: trade.routes.map((r) => parseRoute(chainId, r)),
-    gasEstimate: BigInt(trade.gasEstimate),
+    gasEstimate: trade.gasEstimate ? BigInt(trade.gasEstimate) : undefined,
     gasCostInBase: parseCurrencyAmount(chainId, trade.gasCostInBase),
     gasCostInQuote: parseCurrencyAmount(chainId, trade.gasCostInQuote),
     inputAmountWithGasAdjusted: parseCurrencyAmount(chainId, trade.inputAmountWithGasAdjusted),
