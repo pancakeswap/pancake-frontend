@@ -3,6 +3,7 @@ import { Box, Flex, HotIcon, Text, useMatchBreakpoints } from '@pancakeswap/uiki
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { BlogCard } from 'views/LandingV4/components/NewsAndEvents/BlogCard'
+import { staticThirdPartyNews } from 'views/LandingV4/config/blog/staticThirdPartyNews'
 import { useV4Articles } from 'views/LandingV4/hooks/useAllArticle'
 
 const FeaturedBlog = styled(Flex)`
@@ -33,7 +34,12 @@ export const Featured = () => {
   const { isDesktop } = useMatchBreakpoints()
   const { articlesData, isFetching } = useV4Articles()
 
-  const latestThreeArticle = useMemo(() => articlesData?.data?.slice(0, 3) ?? [], [articlesData.data])
+  const latestThreeArticle = useMemo(() => {
+    const allData = [...articlesData?.data, ...staticThirdPartyNews].sort(
+      (a, b) => new Date(b?.publishedAt).getTime() - new Date(a?.publishedAt).getTime(),
+    )
+    return allData.slice(0, 3) ?? []
+  }, [articlesData.data])
 
   return (
     <Box>

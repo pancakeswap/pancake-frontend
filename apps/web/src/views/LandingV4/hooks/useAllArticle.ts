@@ -2,7 +2,7 @@ import { AllArticleType, getArticle } from '@pancakeswap/blog'
 import { useQuery } from '@tanstack/react-query'
 import { staticThirdPartyNews } from '../config/blog/staticThirdPartyNews'
 
-const LIMIT = 10
+const LIMIT = 20
 
 export const useV4Articles = (): AllArticleType => {
   const { data: articlesData, isPending } = useQuery({

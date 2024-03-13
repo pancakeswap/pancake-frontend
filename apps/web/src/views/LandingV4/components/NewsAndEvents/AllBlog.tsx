@@ -88,7 +88,7 @@ export const AllBlog = () => {
 
   const allBlogData = useMemo(() => {
     let data: ArticleDataType[] = []
-    const officialBlog = v4Articles.data.slice(3, v4Articles.data.length)
+    const officialBlog = v4Articles.data
 
     if (sortOption === SortOption.OFFICIAL) {
       data = [...officialBlog]
