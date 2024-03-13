@@ -3093,4 +3093,12 @@ export const bscTokens = {
     'Octavia',
     'https://octavia.one/',
   ),
+  grape: new ERC20Token(
+    ChainId.BSC,
+    '0x555296de6A86E72752e5C5DC091FE49713Aa145C',
+    18,
+    'GRAPE',
+    'Grape coin',
+    'https://www.joingrapes.com/',
+  ),
 }
