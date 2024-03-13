@@ -16,7 +16,7 @@ export const useGetBoostedMultiplier = (userBalanceInFarm: BigNumber, lpTokenSta
   const { constants, isLoading: isFarmConstantsLoading } = useFarmBoosterConstants()
   const bCakeMultiplier = useMemo(() => {
     const result =
-      !isLoading && !isFarmConstantsLoading
+      !isLoading && !isFarmConstantsLoading && lockedAmount && totalLockedAmount
         ? getBCakeMultiplier(
             userBalanceInFarm, // userBalanceInFarm,
             lockedAmount, // userLockAmount
@@ -24,8 +24,8 @@ export const useGetBoostedMultiplier = (userBalanceInFarm: BigNumber, lpTokenSta
             totalLockedAmount, // totalLockAmount
             lpTokenStakedAmount, // lpBalanceOfFarm
             avgLockDurationsInSeconds ? secondsToDays(avgLockDurationsInSeconds) : 280, // AverageLockDuration
-            constants.cA,
-            constants.cB,
+            constants?.cA ?? 1,
+            constants?.cB ?? 1,
           )
         : null
     return !result || result.toString() === 'NaN' ? '1.000' : result.toFixed(3)
@@ -57,7 +57,7 @@ export const useGetCalculatorMultiplier = (
   const { constants, isLoading: isFarmConstantsLoading } = useFarmBoosterConstants()
   const bCakeMultiplier = useMemo(() => {
     const result =
-      !isLoading && !isFarmConstantsLoading
+      !isLoading && !isFarmConstantsLoading && lockedAmount && totalLockedAmount
         ? getBCakeMultiplier(
             userBalanceInFarm, // userBalanceInFarm,
             lockedAmount, // userLockAmount
@@ -65,8 +65,8 @@ export const useGetCalculatorMultiplier = (
             totalLockedAmount, // totalLockAmount
             lpTokenStakedAmount, // lpBalanceOfFarm
             avgLockDurationsInSeconds ? secondsToDays(avgLockDurationsInSeconds) : 280, // AverageLockDuration,
-            constants.cA,
-            constants.cB,
+            constants?.cA ?? 1,
+            constants?.cB ?? 1,
           )
         : null
     return !result || result.toString() === 'NaN' ? '1.000' : result.toFixed(3)

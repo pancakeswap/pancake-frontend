@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react'
-import { useAccount } from 'wagmi'
 import { Auction, AuctionStatus, Bidder } from 'config/constants/types'
 import { useFarmAuctionContract } from 'hooks/useContract'
+import { useEffect, useState } from 'react'
+import { useAccount } from 'wagmi'
 import { processAuctionData, sortAuctionBidders } from '../helpers'
 
 interface WonAuction {
   auction: Auction
-  bidderData: Bidder
+  bidderData: Bidder | undefined
 }
 
-const useCongratulateAuctionWinner = (currentAuction: Auction, bidders: Bidder[]): WonAuction => {
+const useCongratulateAuctionWinner = (currentAuction: Auction, bidders: Bidder[]): WonAuction | null => {
   const [wonAuction, setWonAuction] = useState<WonAuction | null>(null)
 
   const { address: account } = useAccount()
@@ -33,7 +33,7 @@ const useCongratulateAuctionWinner = (currentAuction: Auction, bidders: Bidder[]
       const winnerAddresses = sortedBidders
         .filter((bidder) => leaderboardThreshold.lte(bidder.amount))
         .map((bidder) => bidder.account)
-      if (winnerAddresses.includes(account)) {
+      if (account && winnerAddresses.includes(account)) {
         const accountBidderData = sortedBidders.find((bidder) => bidder.account === account)
         setWonAuction({
           auction: processedAuctionData,
@@ -46,7 +46,7 @@ const useCongratulateAuctionWinner = (currentAuction: Auction, bidders: Bidder[]
       .filter((bidder) => currentAuction.leaderboardThreshold.lte(bidder.amount))
       .map((bidder) => bidder.account)
     const previousAuctionId = currentAuction.id - 1
-    if (currentAuction.status === AuctionStatus.Closed && winnerAddresses.includes(account)) {
+    if (currentAuction.status === AuctionStatus.Closed && account && winnerAddresses.includes(account)) {
       const accountBidderData = bidders.find((bidder) => bidder.account === account)
       setWonAuction({
         auction: currentAuction,

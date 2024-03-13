@@ -1,19 +1,19 @@
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Button,
-  Heading,
-  Text,
   ButtonProps,
-  HelpIcon,
   Flex,
-  TooltipText,
-  useTooltip,
+  Heading,
+  HelpIcon,
   LinkExternal,
+  Text,
+  TooltipText,
   useMatchBreakpoints,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import _isEmpty from 'lodash/isEmpty'
 import { ReactNode } from 'react'
 import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
 
 const Container = styled.div`
   margin-right: 4px;
@@ -45,7 +45,7 @@ const BoosterTooltip = () => {
 
 const ActionButton: React.FC<ActionButtonPropsType> = ({ title, description, button, ...props }) => {
   const { isMobile } = useMatchBreakpoints()
-  let btn = null
+  let btn: ReactNode | null = null
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(<BoosterTooltip />, {
     placement: 'top',

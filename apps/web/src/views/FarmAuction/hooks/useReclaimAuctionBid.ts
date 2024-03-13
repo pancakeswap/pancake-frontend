@@ -1,9 +1,9 @@
-import { useEffect, useReducer } from 'react'
-import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
+import { RECLAIM_AUCTIONS_TO_FETCH } from 'config'
 import { BidderAuction } from 'config/constants/types'
 import { useFarmAuctionContract } from 'hooks/useContract'
-import { RECLAIM_AUCTIONS_TO_FETCH } from 'config'
+import { useEffect, useReducer } from 'react'
+import { useAccount } from 'wagmi'
 import { processBidderAuctions, sortAuctionBidders } from '../helpers'
 
 interface ReclaimableAuction {
@@ -97,6 +97,7 @@ const useReclaimAuctionBid = (): [ReclaimableAuction | null, () => void] => {
   // Fetch auction data for auctions account has participated
   useEffect(() => {
     const fetchBidderAuctions = async () => {
+      if (!account) return
       try {
         dispatch({ type: 'setLoading', payload: { loading: true } })
 
@@ -123,6 +124,8 @@ const useReclaimAuctionBid = (): [ReclaimableAuction | null, () => void] => {
 
   useEffect(() => {
     const checkIfAuctionIsClaimable = async (auctionToCheck: BidderAuction) => {
+      if (!account) return
+
       dispatch({ type: 'setLoading', payload: { loading: true } })
       try {
         const isClaimable = await farmAuctionContract.read.claimable([BigInt(auctionToCheck.id), account])

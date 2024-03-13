@@ -4,7 +4,7 @@ import { FAST_INTERVAL } from 'config/constants'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import { processAuctionData, sortAuctionBidders } from '../helpers'
 
-export const useFarmAuction = (auctionId: number, watch?: boolean) => {
+export const useFarmAuction = (auctionId: number | undefined, watch?: boolean) => {
   const farmAuctionContract = useFarmAuctionContract()
 
   const {
@@ -17,6 +17,8 @@ export const useFarmAuction = (auctionId: number, watch?: boolean) => {
     queryKey: ['farmAuction', auctionId],
 
     queryFn: async () => {
+      if (!auctionId) return { auction: null, bidders: null }
+
       const auctionData = await farmAuctionContract.read.auctions([BigInt(auctionId)])
       const processedAuction = await processAuctionData(auctionId, {
         status: auctionData[0],
@@ -34,7 +36,7 @@ export const useFarmAuction = (auctionId: number, watch?: boolean) => {
       return { auction: processedAuction, bidders: sortAuctionBidders(currentAuctionBidders, processedAuction) }
     },
 
-    enabled: Boolean(Number.isFinite(auctionId) && auctionId > 0),
+    enabled: Boolean(auctionId && Number.isFinite(auctionId) && auctionId > 0),
     refetchInterval: watch ? FAST_INTERVAL : false,
   })
 

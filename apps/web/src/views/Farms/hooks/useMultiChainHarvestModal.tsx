@@ -1,8 +1,8 @@
-import Cookie from 'js-cookie'
 import { Token } from '@pancakeswap/swap-sdk-core'
-import { useEffect, useState } from 'react'
 import { useModal } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import Cookie from 'js-cookie'
+import { useEffect, useState } from 'react'
 import MultiChainHarvestModal from '../components/MultiChainHarvestModal'
 
 const useMultiChainHarvestModal = () => {
@@ -13,7 +13,7 @@ const useMultiChainHarvestModal = () => {
     lpSymbol: string
     earningsBigNumber: BigNumber
     earningsBusd: number
-  }>(null)
+  }>()
 
   const [onPresentNonBscHarvestModal] = useModal(
     harvestModalParams ? (
