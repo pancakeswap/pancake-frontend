@@ -35,7 +35,7 @@ const RenewDuration = ({ setCheckedState, checkedState }) => {
         </Message>
       )}
       <Flex alignItems="center">
-        <Checkbox checked={checkedState} onChange={() => setCheckedState((prev) => !prev)} scale="sm" />
+        <Checkbox checked={checkedState} onChange={() => setCheckedState((prev: any) => !prev)} scale="sm" />
         <Text ml="8px" color="text">
           {t('Renew and extend your lock to keep similar benefits.')}
         </Text>
@@ -100,8 +100,8 @@ const AddAmountModal: React.FC<React.PropsWithChildren<AddAmountModalProps>> = (
     [totalLockedAmountBN, stakingTokenPrice, stakingToken.decimals],
   )
 
-  const remainingDuration = dayjs(convertTimeToMilliseconds(lockEndTime)).diff(dayjs(), 'seconds')
-  const passedDuration = dayjs().diff(dayjs(convertTimeToMilliseconds(lockStartTime)), 'seconds')
+  const remainingDuration = dayjs(convertTimeToMilliseconds(lockEndTime || '')).diff(dayjs(), 'seconds')
+  const passedDuration = dayjs().diff(dayjs(convertTimeToMilliseconds(lockStartTime || '')), 'seconds')
 
   // if you locked for 1 week, then add cake without renew the extension, it's possible that remainingDuration + passedDuration less than 1 week.
   const atLeastOneWeekNewDuration = Math.max(ONE_WEEK_DEFAULT + MIN_DURATION_BUFFER, remainingDuration + passedDuration)
@@ -119,7 +119,7 @@ const AddAmountModal: React.FC<React.PropsWithChildren<AddAmountModalProps>> = (
         isValidDuration
         openCalculator={_noop}
         duration={remainingDuration}
-        newDuration={checkedState ? atLeastOneWeekNewDuration : null}
+        newDuration={checkedState ? atLeastOneWeekNewDuration : undefined}
         lockedAmount={currentLockedAmountAsBalance.toNumber()}
         newLockedAmount={totalLockedAmount}
         usdValueStaked={usdValueNewStaked}

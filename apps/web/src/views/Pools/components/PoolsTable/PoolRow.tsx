@@ -86,19 +86,20 @@ const PoolRow: React.FC<React.PropsWithChildren<{ sousId: number; account: strin
   const { isLg, isXl, isXxl, isDesktop } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const { pool } = usePool(sousId)
-  const { stakingToken, totalStaked } = pool
+  const stakingToken = pool?.stakingToken
+  const totalStaked = pool?.totalStaked
 
   const totalStakedBalance = useMemo(() => {
-    return getBalanceNumber(totalStaked, stakingToken.decimals)
-  }, [stakingToken.decimals, totalStaked])
+    return getBalanceNumber(totalStaked, stakingToken?.decimals)
+  }, [stakingToken?.decimals, totalStaked])
 
   const getNow = useCallback(() => Date.now(), [])
 
-  return (
+  return pool ? (
     <Pool.ExpandRow initialActivity={initialActivity} panel={<ActionPanel account={account} pool={pool} expanded />}>
       <NameCell pool={pool} />
       <EarningsCell pool={pool} account={account} />
-      {isLargerScreen && (
+      {isLargerScreen && stakingToken && (
         <TotalStakedCell
           stakingToken={stakingToken}
           totalStaked={totalStaked}
@@ -108,7 +109,7 @@ const PoolRow: React.FC<React.PropsWithChildren<{ sousId: number; account: strin
       <AprCell pool={pool} />
       {isDesktop && <Pool.EndsInCell pool={pool} getNow={getNow} />}
     </Pool.ExpandRow>
-  )
+  ) : null
 }
 
 export default memo(PoolRow)

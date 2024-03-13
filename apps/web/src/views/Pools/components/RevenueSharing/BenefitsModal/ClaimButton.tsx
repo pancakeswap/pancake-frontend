@@ -26,7 +26,10 @@ const ClaimButton: React.FunctionComponent<React.PropsWithChildren<ClaimButtonPr
 
   const handleClaim = useCallback(async () => {
     try {
-      const receipt = await fetchWithCatchTxError(() => contract.write.claim([account], { account, chainId }))
+      if (!account || !chainId) {
+        return
+      }
+      const receipt = await fetchWithCatchTxError(() => contract.write.claim([account], { account, chainId } as any))
 
       if (receipt?.status) {
         toastSuccess(

@@ -1,4 +1,5 @@
 import { Flex, Text } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { Pool } from '@pancakeswap/widgets-internal'
 
 import { useTranslation } from '@pancakeswap/localization'
@@ -17,18 +18,18 @@ const RecentCakeProfitCountdownRow = ({ pool }: { pool: Pool.DeserializedPool<To
   const cakePriceBusd = useCakePrice()
   const { hasAutoEarnings, autoCakeToDisplay } = getCakeVaultEarnings(
     account,
-    userData.cakeAtLastUserAction,
-    userData.userShares,
-    pricePerFullShare,
+    userData?.cakeAtLastUserAction || BIG_ZERO,
+    userData?.userShares || BIG_ZERO,
+    pricePerFullShare || BIG_ZERO,
     cakePriceBusd.toNumber(),
     pool.vaultKey === VaultKey.CakeVault
       ? (userData as DeserializedLockedVaultUser).currentPerformanceFee.plus(
           (userData as DeserializedLockedVaultUser).currentOverdueFee,
         )
-      : null,
+      : undefined,
   )
 
-  if (!(userData.userShares.gt(0) && account)) {
+  if (!(userData?.userShares.gt(0) && account)) {
     return null
   }
 

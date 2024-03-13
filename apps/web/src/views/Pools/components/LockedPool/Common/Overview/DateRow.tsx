@@ -7,7 +7,7 @@ dayjs.extend(advancedFormat)
 
 interface PropsType {
   title: React.ReactNode
-  value: Date
+  value?: Date
   color: string
 }
 
