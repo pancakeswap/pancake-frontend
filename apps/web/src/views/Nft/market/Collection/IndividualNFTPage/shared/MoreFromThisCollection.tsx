@@ -1,18 +1,18 @@
-import { useState, useMemo, ReactNode } from 'react'
+import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, IconButton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useQuery } from '@tanstack/react-query'
+import Trans from 'components/Trans'
 import shuffle from 'lodash/shuffle'
+import { ReactNode, useMemo, useState } from 'react'
+import { getMarketDataForTokenIds, getNftsFromCollectionApi } from 'state/nftMarket/helpers'
+import { NftToken } from 'state/nftMarket/types'
 import { styled } from 'styled-components'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
 import type SwiperCore from 'swiper'
-import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import 'swiper/css'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import { safeGetAddress } from 'utils'
 import { Address } from 'wagmi'
-import { getNftsFromCollectionApi, getMarketDataForTokenIds } from 'state/nftMarket/helpers'
-import Trans from 'components/Trans'
-import { useQuery } from '@tanstack/react-query'
-import { NftToken } from 'state/nftMarket/types'
-import { pancakeBunniesAddress } from '../../../constants'
 import { CollectibleLinkCard } from '../../../components/CollectibleCard'
+import { pancakeBunniesAddress } from '../../../constants'
 import useAllPancakeBunnyNfts from '../../../hooks/useAllPancakeBunnyNfts'
 
 const INITIAL_SLIDE = 4
@@ -35,7 +35,7 @@ const StyledSwiper = styled.div`
 `
 
 interface MoreFromThisCollectionProps {
-  collectionAddress: string
+  collectionAddress?: string
   currentTokenName?: string
   title?: ReactNode
 }
@@ -57,7 +57,7 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
     queryKey: ['nft', 'moreFromCollection', checkSummedCollectionAddress],
     queryFn: async () => {
       try {
-        const nfts = await getNftsFromCollectionApi(collectionAddress, 100, 1)
+        const nfts = await getNftsFromCollectionApi(collectionAddress!, 100, 1)
 
         if (!nfts?.data) {
           return []
@@ -66,7 +66,7 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
         const tokenIds = Object.values(nfts.data)
           .map((nft) => nft.tokenId)
           .filter(Boolean) as string[]
-        const nftsMarket = await getMarketDataForTokenIds(collectionAddress, tokenIds)
+        const nftsMarket = await getMarketDataForTokenIds(collectionAddress!, tokenIds)
 
         return tokenIds.map((id) => {
           const apiMetadata = nfts.data[id]

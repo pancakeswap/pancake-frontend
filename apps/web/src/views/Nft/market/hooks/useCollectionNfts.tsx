@@ -1,6 +1,9 @@
-import { useEffect, useState, useRef, useMemo } from 'react'
-import { ApiResponseCollectionTokens, NftAttribute, NftToken, Collection } from 'state/nftMarket/types'
-import { useGetNftFilters, useGetNftOrdering, useGetNftShowOnlyOnSale, useGetCollection } from 'state/nftMarket/hooks'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import fromPairs from 'lodash/fromPairs'
+import isEmpty from 'lodash/isEmpty'
+import uniqBy from 'lodash/uniqBy'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   fetchNftsFiltered,
   getMarketDataForTokenIds,
@@ -8,11 +11,8 @@ import {
   getNftsFromCollectionApi,
   getNftsMarketData,
 } from 'state/nftMarket/helpers'
-import isEmpty from 'lodash/isEmpty'
-import uniqBy from 'lodash/uniqBy'
-import fromPairs from 'lodash/fromPairs'
-import { useInfiniteQuery } from '@tanstack/react-query'
-import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
+import { useGetCollection, useGetNftFilters, useGetNftOrdering, useGetNftShowOnlyOnSale } from 'state/nftMarket/hooks'
+import { ApiResponseCollectionTokens, Collection, NftAttribute, NftToken } from 'state/nftMarket/types'
 import { REQUEST_SIZE } from '../Collection/config'
 
 interface ItemListingSettings {
@@ -180,7 +180,7 @@ const fetchAllNfts = async (
   return { nfts: [], fallbackMode, fallbackPage }
 }
 
-export const useCollectionNfts = (collectionAddress: string) => {
+export const useCollectionNfts = (collectionAddress?: string) => {
   const fetchedNfts = useRef<NftToken[]>([])
   const fallbackMode = useRef(false)
   const fallbackModePage = useRef(0)

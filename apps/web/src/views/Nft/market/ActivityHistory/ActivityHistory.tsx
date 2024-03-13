@@ -1,22 +1,22 @@
-import { useEffect, useState } from 'react'
-import { safeGetAddress } from 'utils'
-import { useAppDispatch } from 'state'
-import { Box, Button, Flex, Table, Text, Th, useMatchBreakpoints, PaginationButton } from '@pancakeswap/uikit'
-import { getCollectionActivity } from 'state/nftMarket/helpers'
+import { useLastUpdated } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Button, Flex, PaginationButton, Table, Text, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
 import TableLoader from 'components/TableLoader'
-import { Activity, Collection, NftToken } from 'state/nftMarket/types'
-import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
-import { useLastUpdated } from '@pancakeswap/hooks'
-import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
 import { useBNBPrice } from 'hooks/useBNBPrice'
+import useTheme from 'hooks/useTheme'
+import { useEffect, useState } from 'react'
+import { useAppDispatch } from 'state'
+import { getCollectionActivity } from 'state/nftMarket/helpers'
+import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
+import { Activity, Collection, NftToken } from 'state/nftMarket/types'
+import { safeGetAddress } from 'utils'
 import { isAddress } from 'viem'
+import ActivityRow from '../components/Activity/ActivityRow'
 import NoNftsImage from '../components/Activity/NoNftsImage'
 import ActivityFilters from './ActivityFilters'
-import ActivityRow from '../components/Activity/ActivityRow'
-import { sortActivity } from './utils/sortActivity'
 import { fetchActivityNftMetadata } from './utils/fetchActivityNftMetadata'
+import { sortActivity } from './utils/sortActivity'
 
 const MAX_PER_PAGE = 8
 
@@ -187,12 +187,12 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
                   activitiesSlice.map((activity) => {
                     const nftMeta = nftMetadata.find(
                       (metaNft) =>
-                        metaNft.tokenId === activity.nft.tokenId &&
+                        metaNft.tokenId === activity.nft?.tokenId &&
                         safeGetAddress(metaNft.collectionAddress) === safeGetAddress(activity.nft?.collection.id),
                     )
                     return (
                       <ActivityRow
-                        key={`${activity.marketEvent}#${activity.nft.tokenId}#${activity.timestamp}#${activity.tx}`}
+                        key={`${activity.marketEvent}#${activity.nft?.tokenId}#${activity.timestamp}#${activity.tx}`}
                         activity={activity}
                         nft={nftMeta}
                         bnbBusdPrice={bnbBusdPrice}

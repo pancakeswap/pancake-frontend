@@ -1,14 +1,14 @@
-import { Box, CardBody, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { safeGetAddress } from 'utils'
+import { Box, CardBody, Flex, Text } from '@pancakeswap/uikit'
 import { useBNBPrice } from 'hooks/useBNBPrice'
+import { safeGetAddress } from 'utils'
+import { pancakeBunniesAddress } from '../../constants'
+import { useGetLowestPriceFromNft } from '../../hooks/useGetLowestPrice'
+import NFTMedia from '../NFTMedia'
+import LocationTag from './LocationTag'
 import PreviewImage from './PreviewImage'
 import { CostLabel, LowestPriceMetaRow, MetaRow } from './styles'
-import LocationTag from './LocationTag'
 import { CollectibleCardProps } from './types'
-import { useGetLowestPriceFromNft } from '../../hooks/useGetLowestPrice'
-import { pancakeBunniesAddress } from '../../constants'
-import NFTMedia from '../NFTMedia'
 
 const CollectibleCardBody: React.FC<React.PropsWithChildren<CollectibleCardProps>> = ({
   nft,
@@ -38,7 +38,7 @@ const CollectibleCardBody: React.FC<React.PropsWithChildren<CollectibleCardProps
       </Text>
       <Box borderTop="1px solid" borderTopColor="cardBorder" pt="8px">
         {isPancakeBunny && (
-          <LowestPriceMetaRow lowestPrice={lowestPrice} isFetching={isFetching} bnbBusdPrice={bnbBusdPrice} />
+          <LowestPriceMetaRow lowestPrice={lowestPrice ?? 0} isFetching={isFetching} bnbBusdPrice={bnbBusdPrice} />
         )}
         {currentAskPrice && (
           <MetaRow title={isUserNft ? t('Your price') : t('Asking price')}>

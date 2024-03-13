@@ -1,16 +1,16 @@
-import { safeGetAddress } from 'utils'
-import { useAtom } from 'jotai'
-import { TFetchStatus } from 'config/constants/types'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { useQuery } from '@tanstack/react-query'
+import { TFetchStatus } from 'config/constants/types'
+import { useAtom } from 'jotai'
 import isEmpty from 'lodash/isEmpty'
-import { useContractReads, erc721ABI } from 'wagmi'
 import shuffle from 'lodash/shuffle'
+import { safeGetAddress } from 'utils'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { erc721ABI, useContractReads } from 'wagmi'
 
 import fromPairs from 'lodash/fromPairs'
-import { ApiCollections, NftToken, Collection, NftAttribute, MarketEvent } from './types'
+import { nftMarketActivityFiltersAtom, nftMarketFiltersAtom, tryVideoNftMediaAtom } from './atoms'
 import { getCollection, getCollections } from './helpers'
-import { nftMarketActivityFiltersAtom, tryVideoNftMediaAtom, nftMarketFiltersAtom } from './atoms'
+import { ApiCollections, Collection, MarketEvent, NftAttribute, NftToken } from './types'
 
 const DEFAULT_NFT_ORDERING = { field: 'currentAskPrice', direction: 'asc' as 'asc' | 'desc' }
 const DEFAULT_NFT_ACTIVITY_FILTER = { typeFilters: [], collectionFilters: [] }
@@ -86,18 +86,21 @@ export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
   return { data: approvedTokenIds }
 }
 
-export const useGetNftFilters = (collectionAddress: string): Readonly<Record<string, NftAttribute>> => {
+export const useGetNftFilters = (collectionAddress?: string): Readonly<Record<string, NftAttribute>> => {
   const [nftMarketFilters] = useAtom(nftMarketFiltersAtom)
+  if (!collectionAddress) return EMPTY_OBJECT
   return nftMarketFilters[collectionAddress]?.activeFilters ?? EMPTY_OBJECT
 }
 
-export const useGetNftOrdering = (collectionAddress: string) => {
+export const useGetNftOrdering = (collectionAddress?: string) => {
   const [nftMarketFilters] = useAtom(nftMarketFiltersAtom)
+  if (!collectionAddress) return DEFAULT_NFT_ORDERING
   return nftMarketFilters[collectionAddress]?.ordering ?? DEFAULT_NFT_ORDERING
 }
 
-export const useGetNftShowOnlyOnSale = (collectionAddress: string) => {
+export const useGetNftShowOnlyOnSale = (collectionAddress?: string) => {
   const [nftMarketFilters] = useAtom(nftMarketFiltersAtom)
+  if (!collectionAddress) return true
   return nftMarketFilters[collectionAddress]?.showOnlyOnSale ?? true
 }
 

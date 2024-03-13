@@ -1,10 +1,10 @@
-import { Flex, Grid, Text, Button, BinanceIcon, LinkExternal, useModal, ScanLink } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
+import { BinanceIcon, Button, Flex, Grid, LinkExternal, ScanLink, Text, useModal } from '@pancakeswap/uikit'
 import { NftToken } from 'state/nftMarket/types'
-import { getBscScanLinkForNft, safeGetAddress } from 'utils'
-import EditProfileModal from 'views/Profile/components/EditProfileModal'
 import { useProfile } from 'state/profile/hooks'
+import { getBscScanLinkForNft, safeGetAddress } from 'utils'
+import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
+import EditProfileModal from 'views/Profile/components/EditProfileModal'
 import { Divider, HorizontalDivider, RoundedImage } from '../shared/styles'
 
 interface SellStageProps {
@@ -27,7 +27,7 @@ const SellStage: React.FC<React.PropsWithChildren<SellStageProps>> = ({
   const { hasProfile } = useProfile()
   const itemPageUrlId =
     safeGetAddress(nftToSell.collectionAddress) === safeGetAddress(pancakeBunniesAddress)
-      ? nftToSell.attributes[0].value
+      ? nftToSell.attributes?.[0].value
       : nftToSell.tokenId
 
   const [onEditProfileModal] = useModal(<EditProfileModal onSuccess={onSuccessEditProfile} />, false)

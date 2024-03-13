@@ -1,11 +1,11 @@
 import { Grid } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
-import useAllPancakeBunnyNfts from '../../hooks/useAllPancakeBunnyNfts'
 import GridPlaceholder from '../../components/GridPlaceholder'
+import useAllPancakeBunnyNfts from '../../hooks/useAllPancakeBunnyNfts'
 
 interface CollectionNftsProps {
-  address: string
+  address?: string
   sortBy?: string
 }
 
@@ -16,7 +16,7 @@ const PancakeBunniesCollectionNfts: React.FC<React.PropsWithChildren<CollectionN
   const allPancakeBunnyNfts = useAllPancakeBunnyNfts(address)
 
   const sortedNfts = allPancakeBunnyNfts
-    ? orderBy(allPancakeBunnyNfts, (nft) => (nft.meta[sortBy] ? Number(nft?.meta[sortBy]) : 0), [
+    ? orderBy(allPancakeBunnyNfts, (nft) => (nft.meta?.[sortBy] ? Number(nft?.meta?.[sortBy]) : 0), [
         sortBy === 'currentAskPrice' ? 'asc' : 'desc',
       ])
     : []

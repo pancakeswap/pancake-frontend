@@ -1,7 +1,7 @@
-import { ReactNode } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
 import { Box, Grid, GridProps, Heading, Message, MessageText } from '@pancakeswap/uikit'
 import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
-import { useTranslation } from '@pancakeswap/localization'
+import { ReactNode } from 'react'
 
 interface MarketPageTitleProps extends GridProps {
   title: string
@@ -29,7 +29,7 @@ const MarketPageTitle: React.FC<React.PropsWithChildren<MarketPageTitleProps>> =
         <Heading as="h1" scale="xl" color="secondary" mb="16px" data-test="collection-detail-page-title">
           {title}
         </Heading>
-        {DELIST_COLLECTIONS[address] ? (
+        {address && DELIST_COLLECTIONS[address] ? (
           <Message variant="danger">
             <MessageText>{t('This collection has been inactived for a while. Trade at your own risk.')}</MessageText>
           </Message>

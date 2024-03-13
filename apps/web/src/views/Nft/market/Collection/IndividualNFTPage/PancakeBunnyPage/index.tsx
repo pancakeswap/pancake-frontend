@@ -1,20 +1,20 @@
-import { useState, useEffect } from 'react'
 import { Flex } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { useGetCollection } from 'state/nftMarket/hooks'
-import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
-import { NftToken, ApiResponseCollectionTokens } from 'state/nftMarket/types'
 import PageLoader from 'components/Loader/PageLoader'
+import { useEffect, useState } from 'react'
+import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
+import { useGetCollection } from 'state/nftMarket/hooks'
+import { ApiResponseCollectionTokens, NftToken } from 'state/nftMarket/types'
 import { useGetCollectionDistributionPB } from 'views/Nft/market/hooks/useGetCollectionDistribution'
-import MainPancakeBunnyCard from './MainPancakeBunnyCard'
-import PropertiesCard from '../shared/PropertiesCard'
-import DetailsCard from '../shared/DetailsCard'
-import MoreFromThisCollection from '../shared/MoreFromThisCollection'
-import ForSaleTableCard from './ForSaleTableCard'
 import { pancakeBunniesAddress } from '../../../constants'
-import { TwoColumnsContainer } from '../shared/styles'
 import { usePancakeBunnyCheapestNft } from '../../../hooks/usePancakeBunnyCheapestNfts'
+import DetailsCard from '../shared/DetailsCard'
 import ManageNftsCard from '../shared/ManageNFTsCard'
+import MoreFromThisCollection from '../shared/MoreFromThisCollection'
+import PropertiesCard from '../shared/PropertiesCard'
+import { TwoColumnsContainer } from '../shared/styles'
+import ForSaleTableCard from './ForSaleTableCard'
+import MainPancakeBunnyCard from './MainPancakeBunnyCard'
 
 interface IndividualPancakeBunnyPageProps {
   bunnyId: string
@@ -35,8 +35,8 @@ const IndividualPancakeBunnyPageBase: React.FC<React.PropsWithChildren<Individua
 }) => {
   const collection = useGetCollection(pancakeBunniesAddress)
   const totalBunnyCount = Number(collection?.totalSupply)
-  const [nothingForSaleBunny, setNothingForSaleBunny] = useState<NftToken>(null)
-  const [nftMetadata, setNftMetadata] = useState<ApiResponseCollectionTokens>(null)
+  const [nothingForSaleBunny, setNothingForSaleBunny] = useState<NftToken | null>(null)
+  const [nftMetadata, setNftMetadata] = useState<ApiResponseCollectionTokens | null>(null)
   const {
     data: cheapestBunny,
     isFetched: isFetchedCheapestBunny,
@@ -60,6 +60,7 @@ const IndividualPancakeBunnyPageBase: React.FC<React.PropsWithChildren<Individua
 
   useEffect(() => {
     const fetchBasicBunnyData = async () => {
+      if (!nftMetadata || !nftMetadata.data) return
       setNothingForSaleBunny({
         // In this case tokenId doesn't matter, this token can't be bought
         tokenId: nftMetadata.data[bunnyId].name,
@@ -113,23 +114,25 @@ const IndividualPancakeBunnyPageBase: React.FC<React.PropsWithChildren<Individua
   return (
     <Page>
       <MainPancakeBunnyCard
-        cheapestNft={cheapestBunny}
-        nothingForSaleBunny={nothingForSaleBunny}
+        cheapestNft={cheapestBunny ?? undefined}
+        nothingForSaleBunny={nothingForSaleBunny ?? undefined}
         onSuccessSale={refreshCheapestNft}
       />
       <TwoColumnsContainer flexDirection={['column', 'column', 'column', 'row']}>
         <Flex flexDirection="column" width="100%">
-          <ManageNftsCard
-            collection={collection}
-            tokenId={bunnyId}
-            lowestPrice={cheapestBunny?.marketData?.currentAskPrice}
-          />
-          <PropertiesCard properties={properties} rarity={propertyRarity} />
+          {collection ? (
+            <ManageNftsCard
+              collection={collection}
+              tokenId={bunnyId}
+              lowestPrice={cheapestBunny?.marketData?.currentAskPrice}
+            />
+          ) : null}
+          <PropertiesCard properties={properties ?? []} rarity={propertyRarity} />
           <DetailsCard
             contractAddress={pancakeBunniesAddress}
             ipfsJson={cheapestBunny?.marketData?.metadataUrl}
-            rarity={propertyRarity?.bunnyId}
-            count={getBunnyIdCount()}
+            rarity={propertyRarity?.bunnyId ?? 0}
+            count={getBunnyIdCount() ?? 0}
           />
         </Flex>
         <ForSaleTableCard bunnyId={bunnyId} nftMetadata={nftMetadata} onSuccessSale={refreshCheapestNft} />

@@ -96,7 +96,7 @@ export interface NftActivityFilter {
 
 export interface TokenIdWithCollectionAddress {
   collectionAddress: Address
-  tokenId: string
+  tokenId?: string
   nftLocation?: NftLocation
 }
 

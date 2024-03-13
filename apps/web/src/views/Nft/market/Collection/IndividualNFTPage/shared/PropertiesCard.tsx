@@ -1,11 +1,11 @@
-import { Box, Flex, Text, NftIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, NftIcon, Text } from '@pancakeswap/uikit'
 import { NftAttribute } from 'state/nftMarket/types'
 import ExpandableCard from './ExpandableCard'
 
 interface PropertiesCardProps {
   properties: NftAttribute[]
-  rarity: { [key: string]: number }
+  rarity: { [key: string]: number | null }
 }
 
 // Map of known traits to human-readable text
@@ -13,7 +13,7 @@ const KNOWN_TRAITS_TEXT = {
   bunnyId: 'Bunny ID',
 }
 
-const SingleProperty: React.FC<React.PropsWithChildren<{ title: string; value: string | number; rarity: number }>> = ({
+const SingleProperty: React.FC<React.PropsWithChildren<{ title: string; value?: string | number; rarity: number }>> = ({
   title,
   value,
   rarity,
@@ -46,7 +46,7 @@ const PropertiesCard: React.FC<React.PropsWithChildren<PropertiesCardProps>> = (
           key={property.traitType}
           title={property.traitType}
           value={property.value}
-          rarity={rarity[property.traitType]}
+          rarity={rarity[property.traitType] ?? 0}
         />
       ))}
     </Box>

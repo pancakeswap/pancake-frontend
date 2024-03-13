@@ -1,20 +1,20 @@
-import { Activity, NftToken, TokenIdWithCollectionAddress } from 'state/nftMarket/types'
-import { getNftsFromCollectionApi, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
-import uniqBy from 'lodash/uniqBy'
 import partition from 'lodash/partition'
-import { Address } from 'wagmi'
+import uniqBy from 'lodash/uniqBy'
+import { getNftsFromCollectionApi, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
+import { Activity, ApiSingleTokenData, NftToken, TokenIdWithCollectionAddress } from 'state/nftMarket/types'
 import { safeGetAddress } from 'utils'
+import { Address } from 'wagmi'
 import { pancakeBunniesAddress } from '../../constants'
 
 export const fetchActivityNftMetadata = async (activities: Activity[]): Promise<NftToken[]> => {
   const [pbCollections, nonPBCollections] = partition(
     activities,
-    (activity) => safeGetAddress(activity.nft.collection.id) === safeGetAddress(pancakeBunniesAddress),
+    (activity) => safeGetAddress(activity.nft?.collection.id) === safeGetAddress(pancakeBunniesAddress),
   )
 
   const activityNftTokenIds = uniqBy(
     nonPBCollections.map((activity): TokenIdWithCollectionAddress => {
-      return { tokenId: activity.nft.tokenId, collectionAddress: activity.nft.collection.id as Address }
+      return { tokenId: activity.nft?.tokenId, collectionAddress: activity.nft?.collection.id as Address }
     }),
     (tokenWithCollectionAddress) =>
       `${tokenWithCollectionAddress.tokenId}#${tokenWithCollectionAddress.collectionAddress}`,
@@ -27,14 +27,19 @@ export const fetchActivityNftMetadata = async (activities: Activity[]): Promise<
 
   const pbNfts = bunniesMetadata
     ? pbCollections.map((activity) => {
-        const { name: collectionName } = bunniesMetadata.data[activity.nft.otherId].collection
-        return {
-          ...bunniesMetadata.data[activity.nft.otherId],
-          tokenId: activity.nft.tokenId,
-          attributes: [{ traitType: 'bunnyId', value: activity.nft.otherId }],
-          collectionAddress: activity.nft.collection.id,
-          collectionName,
+        let collectionName = ''
+        let data: ApiSingleTokenData = {} as ApiSingleTokenData
+        if (activity.nft?.otherId) {
+          collectionName = bunniesMetadata.data[activity.nft.otherId]?.collection.name
+          data = bunniesMetadata.data[activity.nft.otherId]
         }
+        return {
+          ...data,
+          tokenId: activity.nft?.tokenId,
+          attributes: [{ traitType: 'bunnyId', value: activity.nft?.otherId }],
+          collectionAddress: activity.nft?.collection.id,
+          collectionName,
+        } as unknown as NftToken
       })
     : []
 
