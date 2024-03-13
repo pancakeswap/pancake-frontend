@@ -205,7 +205,7 @@ export default function useSendSwapTransaction(
               : undefined
         }
 
-        let sendTxResult: Promise<SendTransactionResult> = Promise.reject()
+        let sendTxResult: Promise<SendTransactionResult> | undefined
 
         // zkSync paymaster
         if (chainId === zkSync.id && trade.outputAmount.currency.isToken) {
@@ -216,7 +216,7 @@ export default function useSendSwapTransaction(
             },
             body: stringify({
               feeTokenAddress: trade.outputAmount.currency.address,
-              gasLimit: call.gas,
+              gasLimit: call.gas ? call.gas / 2n : undefined,
               txData: {
                 from: account,
                 to: call.address,
@@ -268,12 +268,11 @@ export default function useSendSwapTransaction(
               } as any)
 
               console.debug('debug serializedTransaction', serializedTransaction)
-              const p = await walletClient.sendRawTransaction({ serializedTransaction }).then((hash) => {
+              sendTxResult = walletClient.sendRawTransaction({ serializedTransaction }).then((hash) => {
                 return {
                   hash,
                 } as SendTransactionResult
               })
-              sendTxResult = Promise.resolve(p)
             }
           }
         } else {
@@ -288,7 +287,8 @@ export default function useSendSwapTransaction(
         }
 
         return sendTxResult
-          .then((response) => {
+          ?.then((response) => {
+            console.debug('debug Swap successful', response)
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
             const pct = basisPointsToPercent(allowedSlippage)
@@ -348,7 +348,7 @@ export default function useSendSwapTransaction(
             return response
           })
           .catch((error) => {
-            console.error('Swap failed', error)
+            console.error('debug Swap failed', error)
             // if the user rejected the tx, pass this along
             if (isUserRejected(error)) {
               throw new TransactionRejectedError(t('Transaction rejected'))
