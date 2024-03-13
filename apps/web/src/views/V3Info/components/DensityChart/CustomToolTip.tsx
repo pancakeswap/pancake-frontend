@@ -20,7 +20,7 @@ const TooltipWrapper = styled(LightCard)`
 
 interface CustomToolTipProps {
   chartProps: any
-  poolData: PoolData
+  poolData?: PoolData
   currentPrice: number | undefined
 }
 

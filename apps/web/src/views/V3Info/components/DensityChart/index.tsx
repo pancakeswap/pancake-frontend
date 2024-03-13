@@ -72,7 +72,7 @@ const initialState = {
 
 export default function DensityChart({ address }: DensityChartProps) {
   // poolData
-  const poolData: PoolData = usePoolData(address)
+  const poolData: PoolData | undefined = usePoolData(address)
   const formattedAddress0 = safeGetAddress(poolData?.token0?.address)
   const formattedAddress1 = safeGetAddress(poolData?.token1?.address)
   const feeTier = poolData?.feeTier
