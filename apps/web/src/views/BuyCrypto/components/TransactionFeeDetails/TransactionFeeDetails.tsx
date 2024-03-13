@@ -67,9 +67,11 @@ export const TransactionFeeDetails = ({
               {t('Esti total fees:')}
             </Text>
 
-            <Text fontWeight="600" fontSize="14px" px="2px">
-              {t('$%fees%', { fees: selectedQuote?.providerFee })}
-            </Text>
+            {selectedQuote && (
+              <Text fontWeight="600" fontSize="14px" px="2px">
+                {t('$%fees%', { fees: (selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2) })}
+              </Text>
+            )}
             <BuyCryptoTooltip
               opacity={0.7}
               iconSize="17px"

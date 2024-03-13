@@ -339,7 +339,7 @@ export const onRampCurrencies: OnRampCurrency[] = [
   baseTokens.usdc,
   ethereumTokens.dai,
   ethereumTokens.wbtc,
-  arbitrumTokens.usdce,
+  // arbitrumTokens.usdce,
 ]
 
 export const onRampCurrenciesMap: { [tokenSymbol: string]: Currency } = {
@@ -360,7 +360,7 @@ export const onRampCurrenciesMap: { [tokenSymbol: string]: Currency } = {
   USDC_8453: baseTokens.usdc,
   DAI_1: ethereumTokens.dai,
   WBTC_1: ethereumTokens.wbtc,
-  USDCE_42161: arbitrumTokens.usdce,
+  // 'USDC.e_42161': arbitrumTokens.usdce,
 }
 
 export type Btc_Extension = Currency & any

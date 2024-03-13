@@ -68,7 +68,7 @@ export const FiatOnRampModalButton = ({
       loading={isLoading}
       error={isError}
       resetBuyCryptoState={resetBuyCryptoState}
-      account={account}
+      account={isBtc ? btcAddress : account}
       chainId={getOnrampCurrencyChainId(cryptoCurrency)}
       txId={externalTxIdRef.current}
     />,
@@ -133,7 +133,7 @@ export const FiatOnRampModal = memo<
       iframeUrl: string | undefined
       loading: boolean
       error: boolean
-      account: `0x${string}` | undefined
+      account: `0x${string}` | string | undefined
       chainId: OnRampChainId
       txId: string | undefined
     }

@@ -98,7 +98,6 @@ export function BuyCryptoForm() {
   }, [typedValue, isTypingInput, selectedQuote])
 
   const isBtc = Boolean(inputCurrencyId === 'BTC_0')
-
   const { inputError, defaultAmt } = useLimitsAndInputError({
     typedValue: typedValue!,
     cryptoCurrency,
@@ -139,8 +138,8 @@ export function BuyCryptoForm() {
     setSearchQuery('')
     onCurrencySelection(Field.INPUT, bscTokens.bnb)
     setSelectedQuote(undefined)
-    handleTypeOutput('300')
-  }, [onCurrencySelection, setSelectedQuote, setSearchQuery, handleTypeOutput])
+    handleTypeInput('300')
+  }, [onCurrencySelection, setSelectedQuote, setSearchQuery, handleTypeInput])
 
   useEffect(() => {
     if (!quotes) return
