@@ -68,8 +68,8 @@ export const useBtcAddressValidator = <selectData = GetBtcAddrValidationReturnTy
 }
 
 async function fetchBtcAddressValidationRes(
-  payload: GetBtcValidationParameters,
-): Promise<GetBtcAddrValidationReturnType & { network: keyof typeof BtcNetwork | undefined }> {
+  payload: GetBtcValidationParameters & { network: keyof typeof BtcNetwork | undefined },
+): Promise<GetBtcAddrValidationReturnType> {
   const response = await fetch(
     `${ONRAMP_API_BASE_URL}/validate-btc-address?${qs.stringify({
       ...payload,
