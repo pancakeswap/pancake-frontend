@@ -143,18 +143,11 @@ export function useApproveCallback(
         })
 
       if (!estimatedGas) return undefined
-
-      return callWithGasPrice(
-        tokenContract,
-        'approve' as const,
-        [
-          spender as Address,
-          overrideAmountApprove ?? (useExact ? amountToApprove?.quotient ?? targetAmount ?? MaxUint256 : MaxUint256),
-        ],
-        {
-          gas: calculateGasMargin(estimatedGas),
-        },
-      )
+      const finalAmount =
+        overrideAmountApprove ?? (useExact ? amountToApprove?.quotient ?? targetAmount ?? MaxUint256 : MaxUint256)
+      return callWithGasPrice(tokenContract, 'approve' as const, [spender as Address, finalAmount], {
+        gas: calculateGasMargin(estimatedGas),
+      })
         .then((response) => {
           if (addToTransaction && token) {
             addTransaction(response, {
@@ -163,7 +156,7 @@ export function useApproveCallback(
                 text: 'Approve %symbol%',
                 data: { symbol: overrideAmountApprove?.toString() ?? amountToApprove?.currency?.symbol },
               },
-              approval: { tokenAddress: token.address, spender },
+              approval: { tokenAddress: token.address, spender, amount: finalAmount.toString() },
               type: 'approve',
             })
           }

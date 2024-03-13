@@ -205,12 +205,12 @@ export const BellIconContainer = styled(Flex)`
     position: absolute;
     bottom: 45%;
     left: 40%;
-    width: 19px;
+    width: 21px;
     font-size: 16px;
-    height: 19px;
+    height: 21px;
     border: 2px solid ${({ theme }) => theme.colors.backgroundAlt};
     border-radius: 50%;
-    background: ${({ theme }) => theme.colors.failure};
+    background: ${({ theme }) => theme.colors.success};
     display: flex;
     align-items: center;
     justify-content: center;

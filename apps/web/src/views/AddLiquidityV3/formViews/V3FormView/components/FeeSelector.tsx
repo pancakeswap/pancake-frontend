@@ -113,14 +113,16 @@ export default function FeeSelector({
     }
 
     if (largestUsageFeeTierTvl) {
-      if (!Array.isArray(largestUsageFeeTierTvl) || !(largestUsageFeeTierTvl[0] && !largestUsageFeeTier[1])) {
+      if (!Array.isArray(largestUsageFeeTierTvl) || !(largestUsageFeeTierTvl[0] && !largestUsageFeeTier?.[1])) {
         return true
       }
 
-      const v3Amount0 = tryParseAmount(String(largestUsageFeeTierTvl[0]), pair.token0)
-      const v3Amount1 = tryParseAmount(String(largestUsageFeeTierTvl[1]), pair.token1)
+      const v3Amount0 = tryParseAmount(String(largestUsageFeeTierTvl[0]), pair?.token0)
+      const v3Amount1 = tryParseAmount(String(largestUsageFeeTierTvl[1]), pair?.token1)
 
-      return (v3Amount0 && pair.reserve0.greaterThan(v3Amount0)) || (v3Amount1 && pair.reserve1.greaterThan(v3Amount1))
+      return (
+        (v3Amount0 && pair?.reserve0.greaterThan(v3Amount0)) || (v3Amount1 && pair?.reserve1.greaterThan(v3Amount1))
+      )
     }
     return true
   }, [
@@ -197,7 +199,7 @@ export default function FeeSelector({
           <SelectContainer>
             {FEE_TIERS.map((_feeAmount) => {
               const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
-              if (supportedChains.includes(chainId)) {
+              if (chainId && supportedChains.includes(chainId)) {
                 return (
                   <FeeOption
                     isLoading={isPending}

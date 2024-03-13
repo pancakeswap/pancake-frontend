@@ -18,7 +18,7 @@ export const useProfileForAddress = (
   isLoading: boolean
   isFetching: boolean
   isValidating: boolean
-  refresh: () => Promise<QueryObserverResult<GetProfileResponse>>
+  refresh: () => Promise<QueryObserverResult<GetProfileResponse | null>>
 } => {
   const { data, status, refetch, isFetching } = useQuery({
     queryKey: [address, 'profile'],
@@ -65,7 +65,7 @@ export const useProfile = (): {
   hasActiveProfile: boolean
   isInitialized: boolean
   isLoading: boolean
-  refresh: () => Promise<QueryObserverResult<GetProfileResponse | undefined>>
+  refresh: () => Promise<QueryObserverResult<GetProfileResponse | undefined | null>>
 } => {
   const { address: account } = useAccount()
   const { data, status, refetch } = useQuery({

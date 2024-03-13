@@ -2,7 +2,7 @@ import React from "react";
 import Svg from "../Svg";
 import { SvgProps } from "../types";
 
-export const FavoriteBorderIcon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
+const Icon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (
     <Svg viewBox="0 0 16 16" {...props}>
       <g clipPath="url(#clip0_316_14296)">
@@ -16,3 +16,5 @@ export const FavoriteBorderIcon: React.FC<React.PropsWithChildren<SvgProps>> = (
     </Svg>
   );
 };
+
+export default Icon;

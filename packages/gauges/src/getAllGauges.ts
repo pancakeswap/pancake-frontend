@@ -2,7 +2,7 @@ import { PublicClient } from 'viem'
 import { CONFIG_PROD } from './constants/config/prod'
 import { CONFIG_TESTNET } from './constants/config/testnet'
 import { fetchAllGauges } from './fetchAllGauges'
-import { filterKilledGauges } from './fetchAllKilledGauges'
+import { fetchAllKilledGauges } from './fetchAllKilledGauges'
 import { fetchAllGaugesVoting } from './fetchGaugeVoting'
 import { Gauge, GaugeConfig, GaugeInfoConfig } from './types'
 
@@ -12,6 +12,7 @@ export type getAllGaugesOptions = {
   bothCap?: boolean
   // include killed gauges if true
   killed?: boolean
+  blockNumber?: bigint
 }
 
 export const getAllGauges = async (
@@ -23,13 +24,17 @@ export const getAllGauges = async (
     killed: false,
   },
 ): Promise<Gauge[]> => {
-  const { testnet, inCap, bothCap, killed } = options
+  const { testnet, inCap, bothCap, killed, blockNumber } = options
   const presets = testnet ? CONFIG_TESTNET : CONFIG_PROD
 
-  const allGaugeInfos = await fetchAllGauges(client)
+  const allGaugeInfos = await fetchAllGauges(client, {
+    blockNumber,
+  })
   let allActiveGaugeInfos = allGaugeInfos
 
-  if (!killed) allActiveGaugeInfos = await filterKilledGauges(client, allGaugeInfos)
+  allActiveGaugeInfos = await fetchAllKilledGauges(client, allGaugeInfos, { blockNumber })
+
+  if (!killed) allActiveGaugeInfos = allGaugeInfos.filter((gauge) => !gauge.killed)
 
   const allGaugeInfoConfigs = allActiveGaugeInfos.reduce((prev, gauge) => {
     const filters = presets.filter((p) => p.address === gauge.pairAddress && Number(p.chainId) === gauge.chainId)
@@ -52,12 +57,12 @@ export const getAllGauges = async (
   }, [] as GaugeInfoConfig[])
 
   if (!bothCap) {
-    const allGaugesVoting = await fetchAllGaugesVoting(client, allGaugeInfoConfigs, inCap)
+    const allGaugesVoting = await fetchAllGaugesVoting(client, allGaugeInfoConfigs, inCap, options)
     return allGaugesVoting
   }
 
-  const inCapVoting = await fetchAllGaugesVoting(client, allGaugeInfoConfigs, true)
-  const notInCapVoting = await fetchAllGaugesVoting(client, allGaugeInfoConfigs, false)
+  const inCapVoting = await fetchAllGaugesVoting(client, allGaugeInfoConfigs, true, options)
+  const notInCapVoting = await fetchAllGaugesVoting(client, allGaugeInfoConfigs, false, options)
 
   return inCapVoting.reduce((prev, inCapGauge) => {
     const notInCapGauge = notInCapVoting.find((p) => p.hash === inCapGauge.hash)

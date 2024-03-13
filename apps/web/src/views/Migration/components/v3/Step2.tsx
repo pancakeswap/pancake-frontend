@@ -1,10 +1,11 @@
 /* eslint-disable react/jsx-pascal-case */
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox, Button, Card, Dots, Flex, Modal, ModalV2, Tag, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import { PositionCardProps, withLPValues, withStableLPValues } from 'components/PositionCard'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { PairState, useV2Pairs } from 'hooks/usePairs'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
@@ -17,11 +18,10 @@ import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import atomWithStorage from 'utils/atomWithStorageWithErrorCatch'
 import currencyId from 'utils/currencyId'
 import RemoveLiquidity from 'views/RemoveLiquidity'
+import RemoveLiquidityV2FormProvider from 'views/RemoveLiquidity/RemoveLiquidityV2FormProvider'
 import RemoveStableLiquidity from 'views/RemoveLiquidity/RemoveStableLiquidity'
 import useStableConfig, { StableConfigContext, useLPTokensWithBalanceByAccount } from 'views/Swap/hooks/useStableConfig'
 import { useAccount } from 'wagmi'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import RemoveLiquidityV2FormProvider from 'views/RemoveLiquidity/RemoveLiquidityV2FormProvider'
 
 export const STABLE_LP_TO_MIGRATE = [
   '0x36842F8fb99D55477C0Da638aF5ceb6bBf86aA98', // USDT-BUSD
@@ -76,7 +76,7 @@ export function Step2() {
   const allV2PairsWithLiquidity = v2Pairs
     ?.filter(([pairState, pair]) => pairState === PairState.EXISTS && Boolean(pair))
     .filter(([, pair]) =>
-      activeV3Farms.find((farm) => pair.token0.equals(farm.token0) && pair.token1.equals(farm.token1)),
+      activeV3Farms.find((farm) => pair?.token0.equals(farm.token0) && pair.token1.equals(farm.token1)),
     )
     .map(([, pair]) => pair)
 
@@ -106,7 +106,7 @@ export function Step2() {
         ) : (
           <RemoveLiquidityV2FormProvider>
             {allV2PairsWithLiquidity?.map((pair) => (
-              <LpCard key={pair.liquidityToken.address} pair={pair} />
+              <LpCard key={pair?.liquidityToken.address} pair={pair} />
             ))}
             {stablePairs?.map((pair) => (
               <StableLpCard key={pair.liquidityToken.address} pair={pair} />

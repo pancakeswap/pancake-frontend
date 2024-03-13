@@ -1,17 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ModalV2, useModalV2, Flex, Box, PreTitle, MessageText, Message, Button } from '@pancakeswap/uikit'
-import { ReactNode, useMemo } from 'react'
-import Divider from 'components/Divider'
 import { Token } from '@pancakeswap/sdk'
+import { Box, Button, Flex, Message, MessageText, ModalV2, PreTitle, useModalV2 } from '@pancakeswap/uikit'
+import Divider from 'components/Divider'
 import dayjs from 'dayjs'
+import { ReactNode, useMemo } from 'react'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useCurrentDay } from '../hooks/useStakedPools'
 import { FixedStakingPool, StakedPosition } from '../type'
+import { FixedStakingCalculator } from './FixedStakingCalculator'
 import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
-import { FixedStakingCalculator } from './FixedStakingCalculator'
-import { useCurrentDay } from '../hooks/useStakedPools'
 import WithdrawalMessage from './WithdrawalMessage'
 
 export function FixedStakingModal({
@@ -25,7 +25,7 @@ export function FixedStakingModal({
   stakingToken: Token
   pools: FixedStakingPool[]
   children: (openModal: () => void, hideStakeButton: boolean) => ReactNode
-  initialLockPeriod: number
+  initialLockPeriod?: number
   stakedPositions: StakedPosition[]
   setSelectedPeriodIndex?: (value: number | null) => void
 }) {

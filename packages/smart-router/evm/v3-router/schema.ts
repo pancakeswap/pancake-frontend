@@ -28,14 +28,14 @@ const zCurrencyAmount = z
 
 const zV2Pool = z
   .object({
-    type: zPoolType,
+    type: z.literal(PoolType.V2),
     reserve0: zCurrencyAmount,
     reserve1: zCurrencyAmount,
   })
   .required()
 const zV3Pool = z
   .object({
-    type: zPoolType,
+    type: z.literal(PoolType.V3),
     token0: zCurrency,
     token1: zCurrency,
     fee: zFee,
@@ -49,7 +49,7 @@ const zV3Pool = z
   .required()
 const zStablePool = z
   .object({
-    type: zPoolType,
+    type: z.literal(PoolType.STABLE),
     balances: z.array(zCurrencyAmount),
     amplifier: zBigNumber,
     fee: z.string(),

@@ -182,7 +182,7 @@ export async function fetchSearchResults(
           if ((key === 'token0' || key === 'token1') && !isAddress) {
             return (
               t[key].name.match(new RegExp(escapeRegExp(value), 'i')) ||
-              t[key].symbol.toLocaleLowerCase().match(new RegExp(escapeRegExp(value.toLocaleLowerCase()), 'i'))
+              t[key].symbol.toLowerCase().match(new RegExp(escapeRegExp(value.toLocaleLowerCase()), 'i'))
             )
           }
           return false

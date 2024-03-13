@@ -26,8 +26,8 @@ const CongratulationsCard: React.FC<React.PropsWithChildren<{ currentAuction: Au
     return null
   }
 
-  const { auction, bidderData } = wonAuction
-  const { amount, position } = bidderData
+  const { auction, bidderData } = wonAuction ?? {}
+  const { amount, position } = bidderData ?? {}
   return (
     <StyledReclaimBidCard mb={['24px', null, null, '0']}>
       <CardHeader>

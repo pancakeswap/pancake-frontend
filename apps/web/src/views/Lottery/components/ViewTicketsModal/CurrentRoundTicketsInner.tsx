@@ -1,11 +1,11 @@
-import { styled } from 'styled-components'
-import { Flex, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { LotteryStatus } from 'config/constants/types'
-import { useLottery } from 'state/lottery/hooks'
 import useTheme from 'hooks/useTheme'
-import TicketNumber from '../TicketNumber'
+import { useLottery } from 'state/lottery/hooks'
+import { styled } from 'styled-components'
 import BuyTicketsButton from '../BuyTicketsButton'
+import TicketNumber from '../TicketNumber'
 
 const ScrollBox = styled(Box)`
   max-height: 300px;
@@ -32,7 +32,7 @@ const CurrentRoundTicketsInner = () => {
           {t('Your tickets')}
         </Text>
         <ScrollBox>
-          {userTickets.tickets.map((ticket, index) => {
+          {userTickets?.tickets?.map((ticket, index) => {
             return (
               <TicketNumber
                 key={ticket.id}

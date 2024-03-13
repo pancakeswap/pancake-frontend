@@ -75,9 +75,9 @@ const Countdown: React.FC<
   const { t } = useTranslation()
   const finishMs = currentPhase.ends
   const currentMs = Date.now()
-  const secondsUntilNextEvent = (finishMs - currentMs) / 1000
+  const secondsUntilNextEvent = finishMs !== null && finishMs !== undefined ? (finishMs - currentMs) / 1000 : undefined
 
-  const { minutes, hours, days } = getTimePeriods(secondsUntilNextEvent)
+  const { minutes, hours, days } = getTimePeriods(secondsUntilNextEvent || 0)
 
   const renderTimer = () => {
     if (hasCompetitionEnded) {
@@ -123,7 +123,7 @@ const Countdown: React.FC<
         {!secondsUntilNextEvent ? (
           <Skeleton height={42} width={190} />
         ) : (
-          <ProgressStepper steps={CompetitionSteps} activeStepIndex={currentPhase.step.index} />
+          <ProgressStepper steps={CompetitionSteps} activeStepIndex={currentPhase.step?.index} />
         )}
       </Flex>
     </Wrapper>

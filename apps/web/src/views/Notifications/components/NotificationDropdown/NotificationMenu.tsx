@@ -12,10 +12,11 @@ interface InotificationBellProps {
 }
 
 const NotificationBell = ({ unread, toggleMenu }: InotificationBellProps) => {
+  const unreadDisplay = unread >= 9 ? '9+' : `${unread}`
   return (
     <BellIconContainer onClick={toggleMenu}>
       <BellIcon height={24} width={24} color="textSubtle" />
-      {unread > 0 ? <div className="notification-badge">{unread}</div> : null}
+      {unread > 0 ? <div className="notification-badge">{unreadDisplay}</div> : null}
     </BellIconContainer>
   )
 }

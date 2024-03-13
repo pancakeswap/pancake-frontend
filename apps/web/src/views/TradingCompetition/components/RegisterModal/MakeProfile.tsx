@@ -10,8 +10,8 @@ const MakeProfile: React.FC<React.PropsWithChildren<CompetitionProps>> = ({ onDi
   const router = useRouter()
 
   const handleClick = () => {
-    router.push(`/profile/${account.toLowerCase()}`)
-    onDismiss()
+    router.push(`/profile/${account?.toLowerCase()}`)
+    onDismiss?.()
   }
 
   return (

@@ -19,29 +19,30 @@ const AddCakeButton: React.FC<React.PropsWithChildren<AddButtonPropsType>> = ({
   customLockAmount,
   ...props
 }) => {
-  const {
-    pool: { userDataLoaded },
-  } = usePool(0)
+  const { pool } = usePool(0)
+  const userDataLoaded = pool?.userDataLoaded
 
   const { t } = useTranslation()
 
   const [openAddAmountModal] = useModal(
-    <AddAmountModal
-      currentLockedAmount={currentLockedAmount}
-      currentBalance={currentBalance}
-      stakingToken={stakingToken}
-      lockStartTime={lockStartTime}
-      lockEndTime={lockEndTime}
-      stakingTokenBalance={stakingTokenBalance}
-      stakingTokenPrice={stakingTokenPrice}
-      customLockAmount={customLockAmount}
-    />,
+    stakingToken ? (
+      <AddAmountModal
+        currentLockedAmount={currentLockedAmount}
+        currentBalance={currentBalance}
+        stakingToken={stakingToken}
+        lockStartTime={lockStartTime}
+        lockEndTime={lockEndTime}
+        stakingTokenBalance={stakingTokenBalance}
+        stakingTokenPrice={stakingTokenPrice}
+        customLockAmount={customLockAmount}
+      />
+    ) : null,
     true,
     true,
     'AddAmountModal',
   )
 
-  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
+  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken?.symbol || ''} />)
 
   const handleClicked = useCallback(() => {
     return currentBalance.gt(0) ? openAddAmountModal() : onPresentTokenRequired()

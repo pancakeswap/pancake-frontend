@@ -25,7 +25,7 @@ import { Bound } from 'config/constants/types'
 import { useToken } from 'hooks/Tokens'
 import { usePairContract, useV3MigratorContract } from 'hooks/useContract'
 import useTokenBalance from 'hooks/useTokenBalance'
-import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { tryParsePrice } from 'hooks/v3/utils'
@@ -249,7 +249,7 @@ function V2PairMigrate({
   }, [isError, isPending, largestUsageFeeTier])
 
   // txn values
-  const deadline = useTransactionDeadline() // custom from users settings
+  const [deadline] = useTransactionDeadline() // custom from users settings
 
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks

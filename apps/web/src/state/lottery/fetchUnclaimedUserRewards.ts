@@ -1,14 +1,15 @@
-import BigNumber from 'bignumber.js'
-import { LotteryStatus, LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
-import { LotteryUserGraphEntity, LotteryRoundGraphEntity } from 'state/types'
-import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import BigNumber from 'bignumber.js'
 import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { NUM_ROUNDS_TO_CHECK_FOR_REWARDS } from 'config/constants/lottery'
+import { LotteryStatus, LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
+import { LotteryRoundGraphEntity, LotteryUserGraphEntity } from 'state/types'
 import { getLotteryV2Address } from 'utils/addressHelpers'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { fetchUserTicketsForMultipleRounds } from './getUserTicketsData'
+import { notEmpty } from 'utils/notEmpty'
+import { publicClient } from 'utils/wagmi'
 import { MAX_LOTTERIES_REQUEST_SIZE } from './getLotteriesData'
+import { fetchUserTicketsForMultipleRounds } from './getUserTicketsData'
 
 interface RoundDataAndUserTickets {
   roundId: string
@@ -27,18 +28,18 @@ const fetchCakeRewardsForTickets = async (
       abi: lotteryV2ABI,
       functionName: 'viewRewardsForTicketId',
       address: lotteryAddress,
-      args: [BigInt(roundId), BigInt(id), rewardBracket],
+      args: [BigInt(roundId || 0), BigInt(id), rewardBracket],
     } as const
   })
 
   try {
     const client = publicClient({ chainId: ChainId.BSC })
-    const cakeRewards = await client.multicall({
+    const cakeRewards = (await client.multicall({
       contracts: calls,
       allowFailure: false,
-    })
+    })) as bigint[]
 
-    const cakeTotal = cakeRewards.reduce((accum: BigNumber, cakeReward: bigint) => {
+    const cakeTotal = cakeRewards.reduce<BigNumber>((accum: BigNumber, cakeReward: bigint) => {
       return accum.plus(new BigNumber(cakeReward.toString()))
     }, BIG_ZERO)
 
@@ -48,7 +49,7 @@ const fetchCakeRewardsForTickets = async (
     return { ticketsWithUnclaimedRewards, cakeTotal }
   } catch (error) {
     console.error(error)
-    return { ticketsWithUnclaimedRewards: null, cakeTotal: null }
+    return { ticketsWithUnclaimedRewards: [], cakeTotal: BIG_ZERO }
   }
 }
 
@@ -57,7 +58,7 @@ const getRewardBracketByNumber = (ticketNumber: string, finalNumber: string): nu
   // i.e. '1123456' should be evaluated as '6543211'
   const ticketNumAsArray = ticketNumber.split('').reverse()
   const winningNumsAsArray = finalNumber.split('').reverse()
-  const matchingNumbers = []
+  const matchingNumbers: string[] = []
 
   // The number at index 6 in all tickets is 1 and will always match, so finish at index 5
   for (let index = 0; index < winningNumsAsArray.length - 1; index++) {
@@ -74,7 +75,7 @@ const getRewardBracketByNumber = (ticketNumber: string, finalNumber: string): nu
 
 export const getWinningTickets = async (
   roundDataAndUserTickets: RoundDataAndUserTickets,
-): Promise<LotteryTicketClaimData> => {
+): Promise<LotteryTicketClaimData | null> => {
   const { roundId, userTickets, finalNumber } = roundDataAndUserTickets
 
   const ticketsWithRewardBrackets = userTickets.map((ticket) => {
@@ -103,7 +104,7 @@ export const getWinningTickets = async (
   }
 
   if (allWinningTickets.length > 0) {
-    return { ticketsWithUnclaimedRewards: null, allWinningTickets, cakeTotal: null, roundId }
+    return { ticketsWithUnclaimedRewards: [], allWinningTickets, cakeTotal: BIG_ZERO, roundId }
   }
 
   return null
@@ -111,7 +112,7 @@ export const getWinningTickets = async (
 
 const getWinningNumbersForRound = (targetRoundId: string, lotteriesData: LotteryRoundGraphEntity[]) => {
   const targetRound = lotteriesData.find((pastLottery) => pastLottery.id === targetRoundId)
-  return targetRound?.finalNumber
+  return targetRound?.finalNumber || ''
 }
 
 const fetchUnclaimedUserRewards = async (
@@ -171,9 +172,9 @@ const fetchUnclaimedUserRewards = async (
     )
 
     // Filter to only rounds with unclaimed tickets
-    const roundsWithUnclaimedWinningTickets = roundsWithWinningTickets.filter(
-      (winningTicketData) => winningTicketData.ticketsWithUnclaimedRewards,
-    )
+    const roundsWithUnclaimedWinningTickets = roundsWithWinningTickets
+      .filter((winningTicketData) => winningTicketData?.ticketsWithUnclaimedRewards)
+      .filter(notEmpty)
 
     return roundsWithUnclaimedWinningTickets
   }

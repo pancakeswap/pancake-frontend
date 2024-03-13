@@ -21,7 +21,7 @@ import {
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
@@ -31,9 +31,9 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { warningSeverity } from 'utils/exchange'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalState'
 import { useAccount } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapCallback, useSwapInputError } from '../hooks'
+import { useConfirmModalState } from '../hooks/useConfirmModalState'
 import { TransactionRejectedError } from '../hooks/useSendSwapTransaction'
 import { useWallchainApi } from '../hooks/useWallchain'
 import { computeTradePriceBreakdown } from '../utils/exchange'
@@ -75,7 +75,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const [isRoutingSettingChange, resetRoutingSetting] = useRoutingSettingChanged()
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
 
-  const deadline = useTransactionDeadline()
+  const [deadline] = useTransactionDeadline()
   const [statusWallchain, approvalAddressForWallchain, wallchainMasterInput] = useWallchainApi(trade, deadline)
   const [wallchainSecondaryStatus, setWallchainSecondaryStatus] = useState<'found' | 'not-found'>('not-found')
   const routerAddress =
@@ -94,7 +94,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
 
   // check whether the user has approved the router on the input token
   const { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError } = useApproveCallback(
-    amountToApprove,
+    amountToApprove ?? undefined,
     routerAddress,
   )
   const { priceImpactWithoutFee } = useMemo(
@@ -112,17 +112,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     setApprovalSubmitted(false)
   }, [setApprovalSubmitted])
 
-  const {
-    callback: swapCallback,
-    error: swapCallbackError,
-    reason: revertReason,
-  } = useSwapCallback({
-    trade,
-    deadline,
-    onWallchainDrop,
-    wallchainMasterInput,
-  })
-
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: SmartRouterTrade<TradeType> | undefined
     attemptingTxn: boolean
@@ -133,6 +122,17 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     attemptingTxn: false,
     swapErrorMessage: undefined,
     txHash: undefined,
+  })
+
+  const {
+    callback: swapCallback,
+    error: swapCallbackError,
+    reason: revertReason,
+  } = useSwapCallback({
+    trade: isExpertMode ? trade : tradeToConfirm,
+    deadline,
+    onWallchainDrop,
+    wallchainMasterInput,
   })
 
   // Handlers
@@ -177,6 +177,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
           setSwapState((s) => ({
             ...s,
             txHash: undefined,
+            swapErrorMessage: t('Transaction rejected'),
             attemptingTxn: false,
           }))
           // throw reject error to reset the flow
@@ -371,9 +372,12 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       <CommitButton
         id="swap-button"
         width="100%"
-        variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
+        variant={isValid && priceImpactSeverity > 2 ? 'danger' : 'primary'}
         disabled={
-          !isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || statusWallchain === 'pending'
+          !isValid ||
+          (priceImpactSeverity > 3 && !isExpertMode) ||
+          Boolean(isExpertMode && swapCallbackError) ||
+          statusWallchain === 'pending'
         }
         onClick={onSwapHandler}
         data-dd-action-name="Swap commit button"

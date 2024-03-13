@@ -19,7 +19,8 @@ export interface V2PoolsResult {
   loading: boolean
   syncing: boolean
   blockNumber?: number
-  refresh: () => void
+  refresh: () => Promise<unknown>
+  dataUpdatedAt?: number
 }
 
 export function useV2CandidatePools(
@@ -77,7 +78,7 @@ export function useV2CandidatePools(
     retry: 3,
   })
 
-  const { refetch, data, isLoading, isFetching } = result
+  const { refetch, data, isLoading, isFetching, dataUpdatedAt } = result
 
   return {
     pools: data?.pools ?? null,
@@ -85,5 +86,6 @@ export function useV2CandidatePools(
     syncing: isFetching,
     blockNumber: data?.blockNumber,
     refresh: refetch,
+    dataUpdatedAt,
   }
 }

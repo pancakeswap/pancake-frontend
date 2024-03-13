@@ -1,12 +1,12 @@
-import { useEffect, useRef } from 'react'
-import { Flex, Grid, Box, Text, Button, BinanceIcon, ErrorIcon, useTooltip, Skeleton } from '@pancakeswap/uikit'
-import { escapeRegExp } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
-import { NftToken } from 'state/nftMarket/types'
-import { useGetCollection } from 'state/nftMarket/hooks'
+import { BinanceIcon, Box, Button, ErrorIcon, Flex, Grid, Skeleton, Text, useTooltip } from '@pancakeswap/uikit'
 import { useBNBPrice } from 'hooks/useBNBPrice'
+import { useEffect, useRef } from 'react'
+import { useGetCollection } from 'state/nftMarket/hooks'
+import { NftToken } from 'state/nftMarket/types'
+import { escapeRegExp } from 'utils'
 import { Divider } from '../shared/styles'
-import { GreyedOutContainer, BnbAmountCell, RightAlignedInput, FeeAmountCell } from './styles'
+import { BnbAmountCell, FeeAmountCell, GreyedOutContainer, RightAlignedInput } from './styles'
 
 interface SetPriceStageProps {
   nftToSell: NftToken
@@ -35,8 +35,8 @@ const SetPriceStage: React.FC<React.PropsWithChildren<SetPriceStageProps>> = ({
   continueToNextStage,
 }) => {
   const { t } = useTranslation()
-  const inputRef = useRef<HTMLInputElement>()
-  const adjustedPriceIsTheSame = variant === 'adjust' && parseFloat(currentPrice) === parseFloat(price)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const adjustedPriceIsTheSame = variant === 'adjust' && currentPrice && parseFloat(currentPrice) === parseFloat(price)
   const priceIsValid = !price || Number.isNaN(parseFloat(price)) || parseFloat(price) <= 0
 
   const { creatorFee = '', tradingFee = '' } = useGetCollection(nftToSell.collectionAddress) || {}

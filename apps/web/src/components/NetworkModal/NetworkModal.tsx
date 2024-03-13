@@ -1,12 +1,12 @@
-import { ModalV2 } from '@pancakeswap/uikit'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { CHAIN_IDS } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
-import { useMemo } from 'react'
-import { atom, useAtom } from 'jotai'
+import { ModalV2 } from '@pancakeswap/uikit'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { atom, useAtom } from 'jotai'
 import dynamic from 'next/dynamic'
+import { useMemo } from 'react'
 import { viemClients } from 'utils/viem'
+import { CHAIN_IDS } from 'utils/wagmi'
 
 export const hideWrongNetworkModalAtom = atom(false)
 
@@ -31,7 +31,7 @@ export const NetworkModal = ({ pageSupportedChains = SUPPORT_ONLY_BSC }: { pageS
   }, [pageSupportedChains])
 
   const isPageNotSupported = useMemo(
-    () => Boolean(pageSupportedChains.length) && (!chainId || !pageSupportedChains.includes(chainId)),
+    () => Boolean(pageSupportedChains.length) && chainId && !pageSupportedChains.includes(chainId),
     [chainId, pageSupportedChains],
   )
   if (pageSupportedChains?.length === 0) return null // open to all chains

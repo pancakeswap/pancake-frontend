@@ -4,6 +4,48 @@ import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
 export const farmsV3 = defineFarmV3Configs([
   {
+    pid: 12,
+    lpAddress: '0x1947B87d35E9f1cd53CEDe1aD6F7be44C12212B8',
+    token0: lineaTokens.usdt,
+    token1: lineaTokens.weth,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 11,
+    lpAddress: '0xE817A59F8A030544Ff65F47536abA272F6d63059',
+    token0: lineaTokens.cake,
+    token1: lineaTokens.weth,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 10,
+    lpAddress: '0x5AFda31027C3E6A03c77a113FFC031B564AbbF05',
+    token0: lineaTokens.wbtc,
+    token1: lineaTokens.weth,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 9,
+    lpAddress: '0x586733678b9aC9Da43dD7CB83bbB41d23677Dfc3',
+    token0: lineaTokens.usdc,
+    token1: lineaTokens.weth,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 8,
+    lpAddress: '0xc014414696F332C96C471634620344143325D2C0',
+    token0: lineaTokens.usdt,
+    token1: lineaTokens.weth,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 7,
+    lpAddress: '0x90375306810C6E8B2efa8294835C78B499D7c691',
+    token0: lineaTokens.wstETH,
+    token1: lineaTokens.weth,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
     pid: 6,
     lpAddress: '0x3f63a467C54c96538bD36A7DF1b9E7C4719DcaC9',
     token0: lineaTokens.wstETH,

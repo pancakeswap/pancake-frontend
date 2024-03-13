@@ -1,9 +1,9 @@
+import { SerializedFarm } from '@pancakeswap/farms'
+import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
 import { SerializedFarmConfig } from 'config/constants/types'
-import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
-import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { SerializedFarm } from '@pancakeswap/farms'
-import { fetchMasterChefData, PoolInfo, TotalRegularAllocPoint } from './fetchMasterChefData'
+import { PoolInfo, TotalRegularAllocPoint, fetchMasterChefData } from './fetchMasterChefData'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
 
 function getLpInfo({
@@ -73,7 +73,7 @@ const fetchFarms = async (farmsToFetch: SerializedFarmConfig[], chainId: number)
     fetchMasterChefData(farmsToFetch, chainId),
   ])
 
-  return farmsToFetch.map(farmLpTransformer(farmResult, masterChefResult))
+  return farmsToFetch.map(farmLpTransformer(farmResult, masterChefResult as [PoolInfo, TotalRegularAllocPoint][]))
 }
 
 export default fetchFarms

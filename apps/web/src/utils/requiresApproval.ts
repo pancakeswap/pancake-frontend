@@ -8,6 +8,8 @@ export const requiresApproval = async (
   minimumRequired = 0n,
 ) => {
   try {
+    if (!contract) return true
+
     const response = await contract.read.allowance([account, spenderAddress])
     const hasMinimumRequired = typeof minimumRequired !== 'undefined' && minimumRequired > 0n
     if (hasMinimumRequired) {

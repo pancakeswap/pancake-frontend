@@ -1,7 +1,7 @@
-import { SendTransactionResult } from 'wagmi/actions'
 import { calculateGasMargin } from 'utils'
 import { Abi, Account, Address, CallParameters, GetFunctionArgs, InferFunctionName } from 'viem'
 import { Chain } from 'wagmi'
+import { SendTransactionResult } from 'wagmi/actions'
 
 /**
  * Estimate the gas needed to call a function, and add a 10% margin
@@ -20,7 +20,14 @@ export const estimateGas = async <
     ? GetFunctionArgs<TAbi, _FunctionName>['args']
     : never,
 >(
-  contract: { abi: TAbi; account: Account; chain: Chain; address: Address; write: any; estimateGas: any },
+  contract: {
+    abi: TAbi
+    account: Account | undefined
+    chain: Chain | undefined
+    address: Address
+    write: any
+    estimateGas: any
+  },
   methodName: _FunctionName,
   methodArgs: Args,
   overrides: Omit<CallParameters, 'chain' | 'to' | 'data'> = {},
@@ -57,7 +64,14 @@ export const callWithEstimateGas = async <
     ? GetFunctionArgs<TAbi, _FunctionName>['args']
     : never,
 >(
-  contract: { abi: TAbi; account: Account; chain: Chain; address: Address; write: any; estimateGas: any },
+  contract: {
+    abi: TAbi
+    account: Account | undefined
+    chain: Chain | undefined
+    address: Address
+    write: any
+    estimateGas: any
+  },
   methodName: InferFunctionName<TAbi, TFunctionName>,
   methodArgs: Args,
   overrides: Omit<CallParameters, 'chain' | 'to' | 'data'> = {},

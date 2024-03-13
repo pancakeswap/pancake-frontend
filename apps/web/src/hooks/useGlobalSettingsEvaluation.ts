@@ -1,14 +1,15 @@
-import { useAudioPlay, useExpertMode, useUserSingleHopOnly, useUserSlippage } from '@pancakeswap/utils/user'
+import {
+  useAudioPlay,
+  useExpertMode,
+  useUserSingleHopOnly,
+  useUserSlippage,
+  useSpeedQuote,
+} from '@pancakeswap/utils/user'
 
 import { useFeatureFlagEvaluation } from 'hooks/useDataDogRUM'
 import useTheme from 'hooks/useTheme'
 import { useWebNotifications } from 'hooks/useWebNotifications'
-import {
-  useGasPriceManager,
-  useSubgraphHealthIndicatorManager,
-  useUserTransactionTTL,
-  useUserUsernameVisibility,
-} from 'state/user/hooks'
+import { useGasPriceManager, useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
 import { useUserChart } from 'state/user/hooks/useUserChart'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
@@ -19,6 +20,7 @@ import {
   useUserV3SwapEnable,
 } from 'state/user/smartRouter'
 import { useIsSwapHotTokenDisplayFlag } from './useSwapHotTokenDisplay'
+import { useTransactionDeadline } from './useTransactionDeadline'
 
 export function useGlobalSettingsEvaluation() {
   const [gasPrice] = useGasPriceManager()
@@ -51,15 +53,17 @@ export function useGlobalSettingsEvaluation() {
   const [split] = useUserSplitRouteEnable()
   const [isMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const [singleHopOnly] = useUserSingleHopOnly()
+  const [speedQuote] = useSpeedQuote()
   useFeatureFlagEvaluation('global-settings-routing-stableswap', isStableSwapByDefault)
   useFeatureFlagEvaluation('global-settings-routing-v2', v2Enable)
   useFeatureFlagEvaluation('global-settings-routing-v3', v3Enable)
   useFeatureFlagEvaluation('global-settings-routing-split', split)
   useFeatureFlagEvaluation('global-settings-routing-mm', isMMLinkedPoolByDefault)
   useFeatureFlagEvaluation('global-settings-routing-single-hop', singleHopOnly)
+  useFeatureFlagEvaluation('global-settings-speed-quote', speedQuote)
 
   const [userSlippageTolerance] = useUserSlippage()
-  const [ttl] = useUserTransactionTTL()
+  const [ttl] = useTransactionDeadline()
   useFeatureFlagEvaluation('tx-settings-slippage', userSlippageTolerance)
   useFeatureFlagEvaluation('tx-settings-ttl', ttl)
 }

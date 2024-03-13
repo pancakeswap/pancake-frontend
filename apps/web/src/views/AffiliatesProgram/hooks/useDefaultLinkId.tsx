@@ -40,7 +40,7 @@ const useDefaultLinkId = () => {
   })
 
   return {
-    defaultLinkId,
+    defaultLinkId: defaultLinkId || '',
     refresh: refetch,
   }
 }

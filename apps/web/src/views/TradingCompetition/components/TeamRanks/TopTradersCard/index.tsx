@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import { useTranslation } from '@pancakeswap/localization'
-import { TeamRanksProps } from '../../../types'
+import { LeaderboardDataItem, TeamRanksProps } from '../../../types'
 import TopTradersGrid from './TopTradersGrid'
 
 const TopTradersCard: React.FC<React.PropsWithChildren<TeamRanksProps & { subgraphName?: string }>> = ({
@@ -27,26 +27,26 @@ const TopTradersCard: React.FC<React.PropsWithChildren<TeamRanksProps & { subgra
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState(0)
   const [isExpanded, setIsExpanded] = useState(false)
-  const [topTradersGridData, setTopTradersGridData] = useState(null)
+  const [topTradersGridData, setTopTradersGridData] = useState<LeaderboardDataItem[] | null | undefined>(null)
   const handleItemClick = (index: number) => setActiveTab(index)
   const tabs = [t('Total'), 'Storm', 'Flippers', 'Cakers']
 
   useEffect(() => {
     const getData = () => {
       if (activeTab === 0) {
-        setTopTradersGridData(globalLeaderboardInformation.data)
+        setTopTradersGridData(globalLeaderboardInformation?.data)
       }
 
       if (activeTab === 1) {
-        setTopTradersGridData(team1LeaderboardInformation.leaderboardData.data)
+        setTopTradersGridData(team1LeaderboardInformation?.leaderboardData?.data)
       }
 
       if (activeTab === 2) {
-        setTopTradersGridData(team2LeaderboardInformation.leaderboardData.data)
+        setTopTradersGridData(team2LeaderboardInformation?.leaderboardData?.data)
       }
 
       if (activeTab === 3) {
-        setTopTradersGridData(team3LeaderboardInformation.leaderboardData.data)
+        setTopTradersGridData(team3LeaderboardInformation?.leaderboardData?.data)
       }
     }
 
@@ -99,7 +99,7 @@ const TopTradersCard: React.FC<React.PropsWithChildren<TeamRanksProps & { subgra
               return <Tab key={tabText}>{tabText}</Tab>
             })}
           </TabMenu>
-          <TopTradersGrid data={topTradersGridData} isExpanded={isExpanded} />
+          <TopTradersGrid data={topTradersGridData || undefined} isExpanded={isExpanded} />
         </Box>
         <CardFooter p="0px">
           <Flex alignItems="center" justifyContent="center">

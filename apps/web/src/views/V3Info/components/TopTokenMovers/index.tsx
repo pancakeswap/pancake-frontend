@@ -79,7 +79,7 @@ const TopTokenMovers: React.FC<React.PropsWithChildren> = () => {
         })
         .slice(0, Math.min(20, Object.values(allTokens).length))
         .filter((d) => d?.exists)
-        .filter((x) => !!x && !TOKEN_HIDE?.[chainId]?.includes(x.address))
+        .filter((x) => !!x && !(chainId && TOKEN_HIDE?.[chainId]?.includes(x.address)))
     return []
   }, [allTokens, chainId])
 

@@ -148,9 +148,11 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                         as="a"
                         href={href}
                         target="_blank"
-                        onClick={() => {
-                          setIsOpen(false);
-                        }}
+                        onClick={
+                          (() => {
+                            setIsOpen(false);
+                          }) as any
+                        }
                         {...itemProps}
                       >
                         <Flex alignItems="center" justifyContent="space-between" width="100%">

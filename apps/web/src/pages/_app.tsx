@@ -93,16 +93,14 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
           // @ts-ignore
           <Component.Meta {...pageProps} />
         )}
-        <Blocklist>
-          {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
-          <ResetCSS />
-          <GlobalStyle />
-          <GlobalCheckClaimStatus excludeLocations={[]} />
-          <PersistGate loading={null} persistor={persistor}>
-            <Updaters />
-            <App {...props} />
-          </PersistGate>
-        </Blocklist>
+        {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
+        <ResetCSS />
+        <GlobalStyle />
+        <GlobalCheckClaimStatus excludeLocations={[]} />
+        <PersistGate loading={null} persistor={persistor}>
+          <Updaters />
+          <App {...props} />
+        </PersistGate>
       </Providers>
       <Script
         strategy="afterInteractive"
@@ -133,6 +131,7 @@ type NextPageWithLayout = NextPage & {
    * */
   chains?: number[]
   isShowScrollToTopButton?: true
+  screen?: true
   /**
    * Meta component for page, hacky solution for static build page to avoid `PersistGate` which blocks the page from rendering
    */
@@ -154,6 +153,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const Layout = Component.Layout || Fragment
   const ShowMenu = Component.mp ? Fragment : Menu
   const isShowScrollToTopButton = Component.isShowScrollToTopButton || true
+  const shouldScreenWallet = Component.screen || false
 
   return (
     <ProductionErrorBoundary>
@@ -168,6 +168,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       <NetworkModal pageSupportedChains={Component.chains} />
       <TransactionsDetailModal />
       {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
+      {shouldScreenWallet && <Blocklist />}
     </ProductionErrorBoundary>
   )
 }

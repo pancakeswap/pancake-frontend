@@ -3,7 +3,13 @@ import { gaugesVotingABI } from './abis'
 import { getContract } from './contract'
 import { GaugeInfo } from './types'
 
-export const filterKilledGauges = async (client: PublicClient, gauges: GaugeInfo[]): Promise<GaugeInfo[]> => {
+export const fetchAllKilledGauges = async (
+  client: PublicClient,
+  gauges: GaugeInfo[],
+  options?: {
+    blockNumber?: bigint
+  },
+): Promise<GaugeInfo[]> => {
   const contract = getContract(client)
 
   const multicalls: MulticallContracts<ContractFunctionConfig<typeof gaugesVotingABI, 'gaugeIsKilled_'>[]> = []
@@ -19,9 +25,16 @@ export const filterKilledGauges = async (client: PublicClient, gauges: GaugeInfo
   const response = (await client.multicall({
     contracts: multicalls,
     allowFailure: false,
+    ...options,
   })) as ContractFunctionResult<typeof gaugesVotingABI, 'gaugeIsKilled_'>[]
 
-  return gauges.filter((_, index) => {
-    return !response[index]
+  return gauges.map((gauge, index) => {
+    if (response[index] === true) {
+      return {
+        ...gauge,
+        killed: response[index],
+      }
+    }
+    return gauge
   })
 }

@@ -1,8 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
 import { useBCakeFarmBoosterContract } from 'hooks/useContract'
 import { Address } from 'wagmi'
-import { useQuery } from '@tanstack/react-query'
 
-export const useUserBoosterStatus = (account: Address) => {
+export const useUserBoosterStatus = (account?: Address) => {
   const farmBoosterContract = useBCakeFarmBoosterContract()
   const { data: MAX_BOOST_POOL, status: maxBoostStatus } = useQuery({
     queryKey: ['maxBoostFarm'],
@@ -17,7 +17,7 @@ export const useUserBoosterStatus = (account: Address) => {
     refetch,
   } = useQuery({
     queryKey: ['activatedBoostFarm', [account]],
-    queryFn: () => farmBoosterContract.read.activedPools([account]),
+    queryFn: () => farmBoosterContract.read.activedPools([account!]),
     enabled: Boolean(account),
   })
 

@@ -1,20 +1,20 @@
-import BigNumber from 'bignumber.js'
+import { DeserializedFarm, DeserializedFarmsState, deserializeFarm, deserializeFarmUserData } from '@pancakeswap/farms'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { createSelector } from '@reduxjs/toolkit'
-import { deserializeFarm, deserializeFarmUserData } from '@pancakeswap/farms'
+import BigNumber from 'bignumber.js'
 import { State } from '../types'
 
 const selectCakeFarm = (state: State) => state.farms.data.find((f) => f.pid === 2)
-const selectFarmByKey = (key: string, value: string | number) => (state: State) =>
+const selectFarmByKey = (key: string, value?: string | number) => (state: State) =>
   state.farms.data.find((f) => f[key] === value)
 
-export const makeFarmFromPidSelector = (pid: number) =>
-  createSelector([selectFarmByKey('pid', pid)], (farm) => deserializeFarm(farm))
+export const makeFarmFromPidSelector = (pid?: number) =>
+  createSelector([selectFarmByKey('pid', pid)], (farm) => farm && deserializeFarm(farm))
 
 export const makeBusdPriceFromPidSelector = (pid: number) =>
   createSelector([selectFarmByKey('pid', pid)], (farm) => {
-    return farm && new BigNumber(farm.tokenPriceBusd)
+    return farm && new BigNumber(farm.tokenPriceBusd || '0')
   })
 
 export const makeUserFarmFromPidSelector = (pid: number) =>
@@ -31,11 +31,11 @@ export const makeUserFarmFromPidSelector = (pid: number) =>
 
 export const priceCakeFromPidSelector = createSelector([selectCakeFarm], (cakeBnbFarm) => {
   const cakePriceBusdAsString = cakeBnbFarm?.tokenPriceBusd
-  return new BigNumber(cakePriceBusdAsString)
+  return new BigNumber(cakePriceBusdAsString || '0')
 })
 
 export const farmFromLpSymbolSelector = (lpSymbol: string) =>
-  createSelector([selectFarmByKey('lpSymbol', lpSymbol)], (farm) => deserializeFarm(farm))
+  createSelector([selectFarmByKey('lpSymbol', lpSymbol)], (farm) => farm && deserializeFarm(farm))
 
 export const makeLpTokenPriceFromLpSymbolSelector = (lpSymbol: string) =>
   createSelector([selectFarmByKey('lpSymbol', lpSymbol)], (farm) => {
@@ -45,7 +45,7 @@ export const makeLpTokenPriceFromLpSymbolSelector = (lpSymbol: string) =>
       const lpTotalSupply = farm.lpTotalSupply ? new BigNumber(farm.lpTotalSupply) : BIG_ZERO
 
       if (lpTotalSupply.gt(0) && lpTotalInQuoteToken.gt(0)) {
-        const farmTokenPriceInUsd = new BigNumber(farm.tokenPriceBusd)
+        const farmTokenPriceInUsd = new BigNumber(farm.tokenPriceBusd || '0')
         const tokenAmountTotal = farm.tokenAmountTotal ? new BigNumber(farm.tokenAmountTotal) : BIG_ZERO
         // Total value of base token in LP
         const valueOfBaseTokenInFarm = farmTokenPriceInUsd.times(tokenAmountTotal)
@@ -60,20 +60,22 @@ export const makeLpTokenPriceFromLpSymbolSelector = (lpSymbol: string) =>
     return lpTokenPrice
   })
 
-export const farmSelector = (chainId: number) =>
-  createSelector(
-    (state: State) => state.farms,
-    (farms) => {
-      const deserializedFarmsData = farms.data.map(deserializeFarm).filter((farm) => farm.token.chainId === chainId)
-      const { loadArchivedFarmsData, userDataLoaded, poolLength, regularCakePerBlock, totalRegularAllocPoint } = farms
+function mapFarm(farms, chainId): DeserializedFarmsState {
+  const deserializedFarmsData = farms.data
+    .map(deserializeFarm)
+    .filter((farm) => farm.token.chainId === chainId) as DeserializedFarm[]
+  const { loadArchivedFarmsData, userDataLoaded, poolLength, regularCakePerBlock, totalRegularAllocPoint } = farms
 
-      return {
-        loadArchivedFarmsData,
-        userDataLoaded,
-        data: deserializedFarmsData,
-        poolLength,
-        regularCakePerBlock,
-        totalRegularAllocPoint,
-      }
-    },
-  )
+  return {
+    data: deserializedFarmsData,
+    loadArchivedFarmsData: Boolean(loadArchivedFarmsData),
+    userDataLoaded: Boolean(userDataLoaded),
+    poolLength: poolLength as number,
+    regularCakePerBlock: regularCakePerBlock as number,
+    totalRegularAllocPoint: totalRegularAllocPoint as string,
+  }
+}
+
+const selectFarms = (state: State) => state.farms
+
+export const farmSelector = (chainId?: number) => createSelector([selectFarms], (farms) => mapFarm(farms, chainId))

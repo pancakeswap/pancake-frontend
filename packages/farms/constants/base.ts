@@ -4,6 +4,27 @@ import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
 export const farmsV3 = defineFarmV3Configs([
   {
+    pid: 14,
+    lpAddress: '0xBd59a718E60bd868123C6E949c9fd97185EFbDB7',
+    token0: baseTokens.weth,
+    token1: baseTokens.wstETH,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 13,
+    lpAddress: '0x03C33a2fC0D444a5B61E573f9e1A285357a694fc',
+    token0: baseTokens.cake,
+    token1: baseTokens.weth,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 12,
+    lpAddress: '0x257FCbAE4Ac6B26A02E4FC5e1a11e4174B5ce395',
+    token0: baseTokens.cbETH,
+    token1: baseTokens.weth,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
     pid: 11,
     lpAddress: '0x25DEe2707979055245A18AE6a415bb7b1435Eb06',
     token0: baseTokens.usdbc,

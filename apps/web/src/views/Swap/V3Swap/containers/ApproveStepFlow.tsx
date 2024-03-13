@@ -1,8 +1,8 @@
-import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, LinkExternal, Text, useTooltip } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
 import { styled } from 'styled-components'
-import { Flex, Text, Box, LinkExternal, useTooltip } from '@pancakeswap/uikit'
-import { ConfirmModalState, PendingConfirmModalState } from '../types'
+import { ConfirmModalStateV1, PendingConfirmModalStateV1 } from '../types'
 
 const StyledLinkExternal = styled(LinkExternal)`
   &:hover {
@@ -26,8 +26,8 @@ const Step = styled('div')<{ active: boolean; width: string }>`
 `
 
 interface ApproveStepFlowProps {
-  confirmModalState: ConfirmModalState
-  pendingModalSteps: PendingConfirmModalState[]
+  confirmModalState: ConfirmModalStateV1
+  pendingModalSteps: PendingConfirmModalStateV1[]
 }
 
 export const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> = ({
@@ -56,13 +56,13 @@ export const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowPr
         <>
           <StepsContainer>
             {pendingModalSteps.length !== 3 && (
-              <Step active={confirmModalState === ConfirmModalState.RESETTING_APPROVAL} width={stepWidth} />
+              <Step active={confirmModalState === ConfirmModalStateV1.RESETTING_APPROVAL} width={stepWidth} />
             )}
-            <Step active={confirmModalState === ConfirmModalState.APPROVING_TOKEN} width={stepWidth} />
-            <Step active={confirmModalState === ConfirmModalState.APPROVE_PENDING} width={stepWidth} />
-            <Step active={confirmModalState === ConfirmModalState.PENDING_CONFIRMATION} width={stepWidth} />
+            <Step active={confirmModalState === ConfirmModalStateV1.APPROVING_TOKEN} width={stepWidth} />
+            <Step active={confirmModalState === ConfirmModalStateV1.APPROVE_PENDING} width={stepWidth} />
+            <Step active={confirmModalState === ConfirmModalStateV1.PENDING_CONFIRMATION} width={stepWidth} />
           </StepsContainer>
-          {confirmModalState === ConfirmModalState.RESETTING_APPROVAL && (
+          {confirmModalState === ConfirmModalStateV1.RESETTING_APPROVAL && (
             <StyledLinkExternal
               external
               margin="16px auto auto auto"
@@ -71,7 +71,7 @@ export const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowPr
               <Text color="primary">{t('Why resetting approval')}</Text>
             </StyledLinkExternal>
           )}
-          {confirmModalState === ConfirmModalState.APPROVING_TOKEN && (
+          {confirmModalState === ConfirmModalStateV1.APPROVING_TOKEN && (
             <StyledLinkExternal
               external
               margin="16px auto auto auto"

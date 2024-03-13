@@ -43,7 +43,7 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification, typ
         const isQualification = new BigNumber(i.totalTradingFee).gt(new BigNumber(qualification.minAmountUSD).div(1e18))
         const totalFee = isQualification ? i.totalTradingFee.toFixed(8) : i.totalTradingFee.toString()
         const value = parseEther(totalFee as `${number}`)
-        const originHash = keccak256(keccak256(encodePacked(['address', 'uint256'], [account, value])))
+        const originHash = keccak256(keccak256(encodePacked(['address', 'uint256'], [account || '0x', value])))
 
         const response = await fetch(
           `${TRADING_REWARD_API}/hash/campaignId/${i.campaignId}/originHash/${originHash}/type/${type}`,
@@ -55,7 +55,7 @@ export const useClaimAllReward = ({ campaignIds, unclaimData, qualification, typ
 
     const receipt = await fetchWithCatchTxError(() =>
       contract.write.claimRewardMulti([claimCampaignIds, merkleProofs, tradingFee], {
-        account: contract.account,
+        account: contract.account || '0x',
         chain: contract.chain,
       }),
     )

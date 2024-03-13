@@ -1,10 +1,10 @@
 import { ethereumTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { getAddress } from 'viem'
-import { SerializedFarmConfig } from '..'
+import { FarmConfigV3, SerializedFarmConfig } from '..'
 import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
-export const farmsV3 = defineFarmV3Configs([
+const v3TopFixedLps: FarmConfigV3[] = [
   {
     pid: 1,
     lpAddress: '0x1ac1A8FEaAEa1900C4166dEeed0C11cC10669D36',
@@ -47,7 +47,41 @@ export const farmsV3 = defineFarmV3Configs([
     token1: ethereumTokens.usdc,
     feeAmount: FeeAmount.MEDIUM,
   },
+]
+
+export const farmsV3 = defineFarmV3Configs([
   // Keep those farms on top
+  ...v3TopFixedLps,
+  // new lps should follow after the top fixed lps
+  // latest first
+  {
+    pid: 63,
+    lpAddress: '0xaCDb27b266142223e1e676841C1E809255Fc6d07',
+    token0: ethereumTokens.weth,
+    token1: ethereumTokens.usdt,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 62,
+    lpAddress: '0x1445F32D1A74872bA41f3D8cF4022E9996120b31',
+    token0: ethereumTokens.usdc,
+    token1: ethereumTokens.weth,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 61,
+    lpAddress: '0x350d6d813Be7B64681f91F16A98Ef360Bd42b66b',
+    token0: ethereumTokens.mstETH,
+    token1: ethereumTokens.wstETH,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 60,
+    lpAddress: '0x6177811663A60Ac211566bE5873c5Ed441D9E948',
+    token0: ethereumTokens.mswETH,
+    token1: ethereumTokens.swETH,
+    feeAmount: FeeAmount.LOWEST,
+  },
   {
     pid: 59,
     lpAddress: '0x7E9570FD7B4f1362aB924dfDE29096e0B484E009',

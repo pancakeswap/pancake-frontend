@@ -11,6 +11,12 @@ import { RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 import { CampaignIdInfoDetail, CampaignIdInfoResponse } from 'views/TradingReward/hooks/useCampaignIdInfo'
 import { useAccount } from 'wagmi'
 
+interface RankListResponse {
+  data: {
+    estimateReward: string
+  }
+}
+
 interface UserCampaignInfoResponse {
   id: string
   isActive: boolean
@@ -69,6 +75,16 @@ const useAllUserCampaignInfo = ({ campaignIds, type }: UseAllUserCampaignInfoPro
             const userCampaignInfo: CampaignIdInfoResponse = userCampaignInfoResult.data
             const userInfoQualification: UserCampaignInfoResponse = userInfoQualificationResult.data
 
+            let newCakeStakersTotalEstimateRewardUSD = 0
+            if (type === RewardType.CAKE_STAKERS) {
+              const response = await fetch(
+                `${TRADING_REWARD_API}/campaign/userEstimate/campaignId/${campaignId}/address/${account}/type/${RewardType.CAKE_STAKERS}`,
+              )
+              const result: RankListResponse = await response.json()
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              newCakeStakersTotalEstimateRewardUSD = new BigNumber(result.data.estimateReward).toNumber()
+            }
+
             const totalVolume = userCampaignInfo.tradingFeeArr
               .map((i) => i.volume)
               .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
@@ -103,7 +119,7 @@ const useAllUserCampaignInfo = ({ campaignIds, type }: UseAllUserCampaignInfoPro
               abi: tradingRewardABI,
               address: tradingRewardAddress,
               functionName: 'userClaimedIncentives',
-              args: [campaignId, account],
+              args: [campaignId, account ?? '0x'],
             })
 
             const canClaimResult = await bscClient.multicall({
@@ -113,7 +129,7 @@ const useAllUserCampaignInfo = ({ campaignIds, type }: UseAllUserCampaignInfoPro
             const totalCanClaimData = canClaimResult
               ? canClaimResult
                   .map((canClaim) => (canClaim.result ? canClaim.result : 0n))
-                  .reduce((a, b) => a + b, 0n)
+                  .reduce((a, b) => BigInt(Number(a) + Number(b)), 0n)
                   .toString() ?? '0'
               : '0'
 
@@ -122,7 +138,8 @@ const useAllUserCampaignInfo = ({ campaignIds, type }: UseAllUserCampaignInfoPro
               ...userInfoQualification,
               campaignId,
               totalVolume,
-              totalEstimateRewardUSD,
+              totalEstimateRewardUSD:
+                type === RewardType.CAKE_STAKERS ? newCakeStakersTotalEstimateRewardUSD : totalEstimateRewardUSD,
               totalTradingFee,
               canClaim: totalCanClaimData,
               userClaimedIncentives,

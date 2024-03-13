@@ -4,11 +4,12 @@ import { ReactElement, useMemo } from 'react'
 import CompetitionBanner from '../CompetitionBanner'
 import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import GameBanner from '../GameBanner'
+import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
 import NewIFOBanner from '../NewIFOBanner'
 import PerpetualBanner from '../PerpetualBanner'
+import { TopTraderBanner } from '../TopTraderBanner'
 import UserBanner from '../UserBanner'
 import VeCakeBanner from '../VeCakeBanner'
-import { TopTraderBanner } from '../TopTraderBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
@@ -40,21 +41,25 @@ export const useMultipleBannerConfig = () => {
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
       {
-        shouldRender: true,
-        banner: <TopTraderBanner />,
-      },
-      {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
       },
       { shouldRender: isRenderIFOBanner || Boolean(countdown), banner: <NewIFOBanner /> },
+      {
+        shouldRender: true,
+        banner: <NemesisDownfallBanner />,
+      },
+      {
+        shouldRender: true,
+        banner: <TopTraderBanner />,
+      },
+    ]
+
+    const SHUFFLE_BANNERS: IBannerConfig[] = [
       { shouldRender: true, banner: <GalxeTraverseBanner /> },
       { shouldRender: true, banner: <WebNotificationBanner /> },
       { shouldRender: true, banner: <VeCakeBanner /> },
       { shouldRender: true, banner: <GameBanner /> },
-    ]
-
-    const SHUFFLE_BANNERS: IBannerConfig[] = [
       {
         shouldRender: isRenderCompetitionBanner,
         banner: <CompetitionBanner />,

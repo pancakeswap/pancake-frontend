@@ -1,5 +1,5 @@
-import BigNumber from 'bignumber.js'
 import { createSelector } from '@reduxjs/toolkit'
+import BigNumber from 'bignumber.js'
 import { State } from '../types'
 
 const selectCurrentLotteryId = (state: State) => state.lottery.currentLotteryId
@@ -9,7 +9,7 @@ const selectUserLotteryData = (state: State) => state.lottery.userLotteryData
 const selectLotteriesData = (state: State) => state.lottery.lotteriesData
 const selectMaxNumberTicketsPerBuyOrClaim = (state: State) => state.lottery.maxNumberTicketsPerBuyOrClaim
 
-export const makeLotteryGraphDataByIdSelector = (lotteryId: string) =>
+export const makeLotteryGraphDataByIdSelector = (lotteryId: string | null) =>
   createSelector([selectLotteriesData], (lotteriesData) => lotteriesData?.find((lottery) => lottery.id === lotteryId))
 
 export const maxNumberTicketsPerBuyOrClaimSelector = createSelector(

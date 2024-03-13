@@ -1,5 +1,21 @@
 # @pancakeswap/v3-sdk
 
+## 3.7.13
+
+### Patch Changes
+
+- acc454d: Remove binance extension wallet connector @pancakeswap/wagmi
+  release new pkg @pancakeswap/universal-router-sdk & @pancakeswap/permit2-sdk
+
+## 3.7.12
+
+### Patch Changes
+
+- 610a24a: Introduce v4 router with faster quoting speed
+- Updated dependencies [610a24a]
+  - @pancakeswap/sdk@5.8.0
+  - @pancakeswap/swap-sdk-core@1.1.0
+
 ## 3.7.11
 
 ### Patch Changes

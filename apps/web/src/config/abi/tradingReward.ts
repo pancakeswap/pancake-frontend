@@ -1,7 +1,7 @@
 export const tradingRewardABI = [
   {
     inputs: [
-      { internalType: 'address', name: '_cakePoolAddress', type: 'address' },
+      { internalType: 'address', name: '_veCakeAddress', type: 'address' },
       { internalType: 'address', name: '_pancakeProfileAddress', type: 'address' },
     ],
     stateMutability: 'nonpayable',
@@ -92,11 +92,23 @@ export const tradingRewardABI = [
     name: 'RewardTokenParamsUpdated',
     type: 'event',
   },
+  {
+    anonymous: false,
+    inputs: [{ indexed: true, internalType: 'address', name: 'topTradersExternal', type: 'address' }],
+    name: 'TradingFeeClaimedRecordContractUpdated',
+    type: 'event',
+  },
   { anonymous: false, inputs: [], name: 'Unpause', type: 'event' },
   {
     anonymous: false,
     inputs: [{ indexed: false, internalType: 'address', name: 'account', type: 'address' }],
     name: 'Unpaused',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [{ indexed: false, internalType: 'uint256', name: 'ratio', type: 'uint256' }],
+    name: 'UpdateRatio',
     type: 'event',
   },
   {
@@ -120,17 +132,17 @@ export const tradingRewardABI = [
     type: 'event',
   },
   {
+    inputs: [],
+    name: 'RATION_PRECISION',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [{ internalType: 'string', name: '_campaignId', type: 'string' }],
     name: 'activateIncentive',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'cakePoolAddress',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -177,13 +189,7 @@ export const tradingRewardABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-  {
-    inputs: [],
-    name: 'cleanUpIncentiveCampaignIds',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
+  { inputs: [], name: 'cleanUpIncentiveCampaignIds', outputs: [], stateMutability: 'nonpayable', type: 'function' },
   {
     inputs: [
       { internalType: 'string', name: '_campaignId', type: 'string' },
@@ -239,6 +245,16 @@ export const tradingRewardABI = [
     type: 'function',
   },
   {
+    inputs: [
+      { internalType: 'string', name: '_campaignId', type: 'string' },
+      { internalType: 'address', name: '_sender', type: 'address' },
+    ],
+    name: 'getUserLockedAmount',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'getUserQualification',
     outputs: [
@@ -247,6 +263,13 @@ export const tradingRewardABI = [
       { internalType: 'bool', name: '', type: 'bool' },
       { internalType: 'uint256', name: '', type: 'uint256' },
     ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'string', name: '', type: 'string' }],
+    name: 'incentiveEndBlockNumber',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -280,18 +303,11 @@ export const tradingRewardABI = [
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: '_sender', type: 'address' }],
-    name: 'isEligibleLockAmount',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [
       { internalType: 'string', name: '_campaignId', type: 'string' },
       { internalType: 'address', name: '_sender', type: 'address' },
     ],
-    name: 'isEligibleLockTime',
+    name: 'isEligibleLockAmount',
     outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
@@ -357,7 +373,21 @@ export const tradingRewardABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  {
+    inputs: [],
+    name: 'ratio',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
   { inputs: [], name: 'renounceOwnership', outputs: [], stateMutability: 'nonpayable', type: 'function' },
+  {
+    inputs: [],
+    name: 'tradingFeeClaimedRecord',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
   {
     inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
     name: 'transferOwnership',
@@ -378,6 +408,13 @@ export const tradingRewardABI = [
     type: 'function',
   },
   {
+    inputs: [{ internalType: 'uint256', name: '_newRatio', type: 'uint256' }],
+    name: 'updateRatio',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [
       { internalType: 'string', name: '_campaignId', type: 'string' },
       { internalType: 'address', name: '_rewardToken', type: 'address' },
@@ -386,6 +423,13 @@ export const tradingRewardABI = [
       { internalType: 'uint256', name: '_rewardFeeRatio', type: 'uint256' },
     ],
     name: 'updateRewardTokenParams',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_tradingFeeClaimedRecord', type: 'address' }],
+    name: 'updateTradingFeeClaimedRecordContract',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -419,6 +463,13 @@ export const tradingRewardABI = [
     ],
     name: 'userClaimedRecords',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'veCakeAddress',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },

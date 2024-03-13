@@ -195,14 +195,11 @@ export class Pool {
     const zeroForOne = outputAmount.currency.equals(this.token1)
 
     const {
-      amountSpecifiedRemaining,
       amountCalculated: inputAmount,
       sqrtRatioX96,
       liquidity,
       tickCurrent,
     } = await this.swap(zeroForOne, outputAmount.quotient * NEGATIVE_ONE, sqrtPriceLimitX96)
-
-    invariant(amountSpecifiedRemaining === ZERO, 'INSUFICIENT_LIQUIDITY')
 
     const inputToken = zeroForOne ? this.token0 : this.token1
     return [

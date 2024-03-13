@@ -1,6 +1,6 @@
 import { FlexGap } from "@pancakeswap/uikit";
-import styled from "styled-components";
 import { PropsWithChildren } from "react";
+import styled from "styled-components";
 
 import { WithBackground } from "./types";
 
@@ -21,6 +21,8 @@ const Container = styled(FlexGap).attrs({
     props.$background &&
     `
     background: ${props.$background};
+    background-size: cover;
+    background-position: center;
   `}
 
   ${({ theme }) => theme.mediaQueries.xxl} {

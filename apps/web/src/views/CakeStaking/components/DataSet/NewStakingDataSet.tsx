@@ -20,9 +20,17 @@ const ValueText = styled(Text)`
   font-weight: 400;
 `
 
-export const NewStakingDataSet: React.FC<{
+interface NewStakingDataSetProps {
   cakeAmount?: number
-}> = ({ cakeAmount = 0 }) => {
+  customVeCakeCard?: JSX.Element
+  customDataRow?: JSX.Element
+}
+
+export const NewStakingDataSet: React.FC<React.PropsWithChildren<NewStakingDataSetProps>> = ({
+  cakeAmount = 0,
+  customVeCakeCard,
+  customDataRow,
+}) => {
   const { t } = useTranslation()
   const { cakeLockWeeks } = useLockCakeData()
   const unlockTimestamp = useTargetUnlockTime(Number(cakeLockWeeks) * WEEK)
@@ -49,8 +57,9 @@ export const NewStakingDataSet: React.FC<{
         {t('lock overview')}
       </Text>
       <Box padding={['16px 0', '16px 0', 12]}>
-        <MyVeCakeCard type="row" value={veCake} />
+        {customVeCakeCard ?? <MyVeCakeCard type="row" value={veCake} />}
         <AutoRow px={['0px', '0px', '16px']} py={['16px', '16px', '12px']} gap="8px">
+          {customDataRow}
           <DataRow
             label={
               <Text fontSize={14} color="textSubtle" textTransform="uppercase">

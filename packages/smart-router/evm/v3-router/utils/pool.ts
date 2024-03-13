@@ -1,10 +1,10 @@
 import { Currency, Pair, Price } from '@pancakeswap/sdk'
 import { Pool as SDKV3Pool, computePoolAddress } from '@pancakeswap/v3-sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { getSwapOutput } from '@pancakeswap/stable-swap-sdk'
 import memoize from 'lodash/memoize.js'
 import { Address } from 'viem'
 
-import * as StableSwap from '../../stableSwap'
 import { Pool, PoolType, StablePool, V2Pool, V3Pool } from '../types'
 
 export function isV2Pool(pool: Pool): pool is V2Pool {
@@ -85,7 +85,8 @@ export const getPoolAddress = memoize(
     const [token0, token1] = isV2Pool(pool)
       ? [pool.reserve0.currency.wrapped, pool.reserve1.currency.wrapped]
       : [pool.token0.wrapped, pool.token1.wrapped]
-    return `${pool.type}_${token0.chainId}_${token0.address}_${token1.address}`
+    const fee = isV3Pool(pool) ? pool.fee : 'V2_FEE'
+    return `${pool.type}_${token0.chainId}_${token0.address}_${token1.address}_${fee}`
   },
 )
 
@@ -108,7 +109,7 @@ export function getTokenPrice(pool: Pool, base: Currency, quote: Currency): Pric
     if (!baseIn) {
       throw new Error(`Cannot parse amount for ${base.symbol}`)
     }
-    const quoteOut = StableSwap.getSwapOutput({
+    const quoteOut = getSwapOutput({
       amplifier,
       balances,
       fee,

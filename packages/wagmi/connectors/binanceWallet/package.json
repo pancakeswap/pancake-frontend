@@ -1,5 +1,0 @@
-{
-  "main": "../../dist/connectors/binanceWallet.js",
-  "module": "../../dist/connectors/binanceWallet.mjs",
-  "types": "../../dist/connectors/binanceWallet.d.ts"
-}

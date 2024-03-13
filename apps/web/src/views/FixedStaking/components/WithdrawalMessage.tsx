@@ -18,7 +18,7 @@ export default function WithdrawalMessage({ lockPeriod }: { lockPeriod: number }
       />
       <Text fontSize="14px" color="textSubtle">
         {t(
-          'Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount if unstaked before locked period is up. ',
+          'Funds will not be available for withdrawal for the first %days% days, and subsequently an early withdrawal fee will be applied if amount is unstaked before locked period is up. ',
           { days: floor(lockPeriod / 3) },
         )}
         <Link

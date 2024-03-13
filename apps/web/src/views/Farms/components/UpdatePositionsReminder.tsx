@@ -5,7 +5,7 @@ import { MasterChefV3, Multicall } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useMasterchefV3 } from 'hooks/useContract'
-import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { useMemo, useState } from 'react'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
@@ -143,7 +143,7 @@ export function UpdatePositionsReminder_() {
   const { loading: txLoading, fetchWithCatchTxError } = useCatchTxError()
 
   const masterChefV3Address = useMasterchefV3()?.address
-  const deadline = useTransactionDeadline() // custom from users settings
+  const [deadline] = useTransactionDeadline() // custom from users settings
 
   const [triggerOnce, setTriggerOnce] = useState(false)
 
@@ -163,7 +163,7 @@ export function UpdatePositionsReminder_() {
                 liquidity: 1n,
                 amount0Min: 0n,
                 amount1Min: 0n,
-                deadline,
+                deadline: deadline ?? 0n,
               },
             ],
           }),
@@ -171,7 +171,7 @@ export function UpdatePositionsReminder_() {
       }
       calldata.push(
         MasterChefV3.encodeHarvest({
-          to: account,
+          to: account || '0x',
           tokenId: userInfo.tokenId.toString(),
         }),
       )

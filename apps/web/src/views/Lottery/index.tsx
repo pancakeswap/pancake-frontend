@@ -8,7 +8,6 @@ import { useFetchLottery, useLottery } from 'state/lottery/hooks'
 import { styled } from 'styled-components'
 import AllHistoryCard from './components/AllHistoryCard'
 import CheckPrizesSection from './components/CheckPrizesSection'
-import { CnyBanner } from './components/CnyBanner/CnyBanner'
 import Countdown from './components/Countdown'
 import Hero from './components/Hero'
 import HistoryTabMenu from './components/HistoryTabMenu'
@@ -20,10 +19,10 @@ import useShowMoreUserHistory from './hooks/useShowMoreUserRounds'
 import useStatusTransitions from './hooks/useStatusTransitions'
 import {
   CHECK_PRIZES_BG,
-  CNY_TITLE_BG,
   FINISHED_ROUNDS_BG,
   FINISHED_ROUNDS_BG_DARK,
   GET_TICKETS_BG,
+  TITLE_BG,
 } from './pageSectionStyles'
 
 const LotteryPage = styled.div`
@@ -46,8 +45,7 @@ const Lottery = () => {
   return (
     <>
       <LotteryPage>
-        <CnyBanner />
-        <PageSection background={CNY_TITLE_BG} index={1} hasCurvedDivider={false}>
+        <PageSection background={TITLE_BG} index={1} hasCurvedDivider={false}>
           <Hero />
         </PageSection>
         <PageSection

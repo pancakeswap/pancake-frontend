@@ -105,7 +105,13 @@ export const RouteDisplay = memo(function RouteDisplay({ route }: RouteDisplayPr
             isV3Pool ? ` (${v3FeeToPercent(pool.fee).toSignificant(6)}%)` : ''
           }`
           return (
-            <PairNode pair={p} key={key} text={text} className={isV3Pool && 'highlight'} tooltipText={tooltipText} />
+            <PairNode
+              pair={p}
+              key={key}
+              text={text}
+              className={isV3Pool ? 'highlight' : ''}
+              tooltipText={tooltipText}
+            />
           )
         })
       : null
@@ -121,7 +127,7 @@ export const RouteDisplay = memo(function RouteDisplay({ route }: RouteDisplayPr
           ref={targetRef}
         >
           <CurrencyLogo size="100%" currency={inputCurrency} />
-          <RouterTypeText fontWeight="bold">{route.percent}%</RouterTypeText>
+          <RouterTypeText fontWeight="bold">{Math.round(route.percent)}%</RouterTypeText>
         </CurrencyLogoWrapper>
         {tooltipVisible && tooltip}
         {pairNodes}

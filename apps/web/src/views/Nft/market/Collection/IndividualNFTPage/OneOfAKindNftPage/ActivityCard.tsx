@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react'
-import { Flex, Card, Text, Table, Th, useMatchBreakpoints, PaginationButton } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
-import { Activity, NftToken } from 'state/nftMarket/types'
+import { Card, Flex, PaginationButton, Table, Text, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useBNBPrice } from 'hooks/useBNBPrice'
-import { useAppDispatch } from '../../../../../../state'
-import NoNftsImage from '../../../components/Activity/NoNftsImage'
+import useTheme from 'hooks/useTheme'
+import { useEffect, useState } from 'react'
+import { Activity, NftToken } from 'state/nftMarket/types'
 import TableLoader from '../../../../../../components/TableLoader'
+import { useAppDispatch } from '../../../../../../state'
 import { getTokenActivity } from '../../../../../../state/nftMarket/helpers'
 import { sortActivity } from '../../../ActivityHistory/utils/sortActivity'
 import ActivityRow from '../../../components/Activity/ActivityRow'
+import NoNftsImage from '../../../components/Activity/NoNftsImage'
 
 interface ActivityCardProps {
   nft: NftToken
@@ -104,7 +104,7 @@ const ActivityCard: React.FC<React.PropsWithChildren<ActivityCardProps>> = ({ nf
                 activitiesSlice.map((activity) => {
                   return (
                     <ActivityRow
-                      key={`${activity.nft.tokenId}${activity.timestamp}`}
+                      key={`${activity.nft?.tokenId}${activity.timestamp}`}
                       activity={activity}
                       nft={nft}
                       bnbBusdPrice={bnbBusdPrice}

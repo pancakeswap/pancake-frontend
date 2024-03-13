@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/prediction",
-  "version": "0.0.12",
+  "version": "1.0.2",
   "sideEffects": false,
   "private": true,
   "scripts": {
@@ -12,10 +12,10 @@
   },
   "dependencies": {
     "@pancakeswap/chains": "workspace:*",
-    "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/pools": "workspace:*",
+    "@pancakeswap/tokens": "workspace:*",
     "viem": "1.19.11",
-    "wagmi": "1.4.7"
+    "wagmi": "1.4.13"
   },
   "devDependencies": {
     "@pancakeswap/sdk": "workspace:*",

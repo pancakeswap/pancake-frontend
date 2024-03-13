@@ -18,20 +18,16 @@ export const NotificationFilterTypes: OptionProps[] = [
     value: 'All',
   },
   {
-    label: 'Lottery',
-    value: SubsctiptionType.Lottery,
-  },
-  {
-    label: 'Prediction',
-    value: SubsctiptionType.Prediction,
-  },
-  {
     label: 'Liquidity',
     value: SubsctiptionType.Liquidity,
   },
   {
-    label: 'Farm',
-    value: SubsctiptionType.Farms,
+    label: 'Alerts',
+    value: SubsctiptionType.Alerts,
+  },
+  {
+    label: 'Prediction',
+    value: SubsctiptionType.Prediction,
   },
   {
     label: 'Prices',
@@ -42,16 +38,16 @@ export const NotificationFilterTypes: OptionProps[] = [
     value: SubsctiptionType.Promotional,
   },
   {
-    label: 'Alerts',
-    value: SubsctiptionType.Alerts,
+    label: 'Lottery',
+    value: SubsctiptionType.Lottery,
+  },
+  {
+    label: 'Farm',
+    value: SubsctiptionType.Farms,
   },
   {
     label: 'Rewards',
     value: SubsctiptionType.TradingReward,
-  },
-  {
-    label: 'Archived',
-    value: 'Archived',
   },
 ]
 
@@ -65,7 +61,7 @@ export const PancakeNotifications: {
   newLpNotification: (t): pushNotification => {
     return {
       title: t('New LP Position Added'),
-      body: t('New LP position successfully added. you will be notified on important updates.'),
+      body: t('New LP position successfully added. You will be notified on important updates.'),
       icon: `https://pancakeswap.finance/logo.png`,
       url: 'https://pancakeswap.finance',
       type: SubsctiptionType.Liquidity,

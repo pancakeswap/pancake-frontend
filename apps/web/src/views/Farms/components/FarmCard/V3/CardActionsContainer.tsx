@@ -45,7 +45,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ 
       ) : (
         <NoPosition
           inactive={inactive}
-          account={account}
+          account={account!}
           hasNoPosition={hasNoPosition}
           onAddLiquidityClick={addLiquidityModal.onOpen}
           connectWalletButton={<ConnectWalletButton mt="8px" width="100%" />}

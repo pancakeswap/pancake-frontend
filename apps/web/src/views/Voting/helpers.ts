@@ -242,7 +242,7 @@ export const calculateVoteResults = (votes: Vote[]): { [key: string]: Vote[] } =
 export const getTotalFromVotes = (votes: Vote[]) => {
   if (votes) {
     return votes.reduce((accum, vote) => {
-      let power = parseFloat(vote.metadata?.votingPower)
+      let power = parseFloat(vote.metadata?.votingPower || '0')
 
       if (!power) {
         power = 0
@@ -263,7 +263,7 @@ export async function getVotingPowerByCakeStrategy(voters: string[], blockNumber
   const result = fromPairs(
     voters.map((voter) => {
       const defaultTotal = strategyResponse.reduce(
-        (total, scoreList) => total + (scoreList[voter] ? scoreList[voter] : 0),
+        (total: any, scoreList: any) => total + (scoreList[voter] ? scoreList[voter] : 0),
         0,
       )
 

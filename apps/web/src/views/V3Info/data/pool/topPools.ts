@@ -34,16 +34,18 @@ export async function fetchTopPoolAddresses(
       fetchPolicy: 'cache-first',
     })
 
-    const formattedData = data
-      ? data.pools
-          .map((p) => {
-            if (POOL_HIDE?.[chainId]?.includes(p.id.toLocaleLowerCase())) {
-              return undefined
-            }
-            return p.id
-          })
-          .filter((pool) => !isUndefinedOrNull(pool))
-      : undefined
+    const formattedData = (
+      data
+        ? data.pools
+            .map((p) => {
+              if (POOL_HIDE?.[chainId]?.includes(p.id.toLowerCase())) {
+                return undefined
+              }
+              return p.id
+            })
+            .filter((pool) => !isUndefinedOrNull(pool))
+        : undefined
+    ) as string[] | undefined
 
     return {
       error: false,

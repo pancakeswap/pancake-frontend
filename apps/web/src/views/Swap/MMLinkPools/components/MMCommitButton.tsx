@@ -14,9 +14,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
+import { ConfirmSwapModal } from 'views/Swap/V3Swap/containers/ConfirmSwapModal'
 import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalState'
 import { SendTransactionResult } from 'wagmi/actions'
-import { ConfirmSwapModal } from '../../V3Swap/containers/ConfirmSwapModal'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
 import { MMRfqTrade } from '../types'
@@ -25,14 +25,14 @@ const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
 interface SwapCommitButtonPropsType {
   swapIsUnsupported: boolean
-  account: string
+  account: string | undefined
   showWrap: boolean
-  wrapInputError: string
-  onWrap: () => Promise<void>
+  wrapInputError: string | undefined
+  onWrap?: () => Promise<void>
   wrapType: WrapType
   approval: ApprovalState
-  approveCallback: () => Promise<SendTransactionResult>
-  revokeCallback: () => Promise<SendTransactionResult>
+  approveCallback: () => Promise<SendTransactionResult | undefined>
+  revokeCallback: () => Promise<SendTransactionResult | undefined>
   approvalSubmitted: boolean
   currencies: {
     INPUT?: Currency
@@ -45,11 +45,11 @@ interface SwapCommitButtonPropsType {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
   }
-  recipient: string
+  recipient: string | null
   onUserInput: (field: Field, typedValue: string) => void
   mmQuoteExpiryRemainingSec?: number | null
   isPendingError: boolean
-  currentAllowance: CurrencyAmount<Currency>
+  currentAllowance: CurrencyAmount<Currency> | undefined
 }
 
 export function MMSwapCommitButton({
@@ -106,10 +106,12 @@ export function MMSwapCommitButton({
     }
     setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
     return swapCallback()
-      .then((hash) => {
-        setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
+      .then((result) => {
+        setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: result.hash })
       })
       .catch((error) => {
+        console.error('handleSwap error', error)
+
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,

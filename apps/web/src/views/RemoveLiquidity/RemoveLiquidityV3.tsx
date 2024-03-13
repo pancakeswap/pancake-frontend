@@ -25,7 +25,7 @@ import { NonfungiblePositionManager, MasterChefV3 } from '@pancakeswap/v3-sdk'
 import { AppBody, AppHeader } from 'components/App'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
-import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useDerivedV3BurnInfo } from 'hooks/v3/useDerivedV3BurnInfo'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
@@ -46,7 +46,7 @@ import { hexToBigInt } from 'viem'
 
 import { RangeTag } from 'components/RangeTag'
 import Divider from 'components/Divider'
-import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
+import { formatRawAmount } from 'utils/formatCurrencyAmount'
 import { basisPointsToPercent } from 'utils/exchange'
 import { getViemClients } from 'utils/viem'
 import { calculateGasMargin } from 'utils'
@@ -80,10 +80,7 @@ export default function RemoveLiquidityV3() {
 }
 
 function Remove({ tokenId }: { tokenId?: bigint }) {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
 
   // flag for receiving WNATIVE
   const [receiveWNATIVE, setReceiveWNATIVE] = useState(false)
@@ -122,14 +119,14 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
   const [percentForSlider, onPercentSelectForSlider] = useDebouncedChangeHandler(percent, onPercentSelect)
 
   const handleChangePercent = useCallback(
-    (value) => onPercentSelectForSlider(Math.ceil(value)),
+    (value: any) => onPercentSelectForSlider(Math.ceil(value)),
     [onPercentSelectForSlider],
   )
 
   const [allowedSlippage] = useUserSlippage() // custom from users
   // const allowedSlippage = useUserSlippageToleranceWithDefault(DEFAULT_REMOVE_V3_LIQUIDITY_SLIPPAGE_TOLERANCE) // custom from users
 
-  const deadline = useTransactionDeadline() // custom from users settings
+  const [deadline] = useTransactionDeadline() // custom from users settings
   const [attemptingTxn, setAttemptingTxn] = useState(false)
   const [txnHash, setTxnHash] = useState<string | undefined>()
   const [errorMessage, setErrorMessage] = useState<string | undefined>()
@@ -445,7 +442,9 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{formatCurrencyAmount(liquidityValue0, 4, locale)}</Text>
+                  <Text small>
+                    <FormattedCurrencyAmount currencyAmount={liquidityValue0} />
+                  </Text>
                 </Flex>
               </Flex>
               <Flex justifyContent="flex-end" mb="8px">
@@ -463,7 +462,9 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{formatCurrencyAmount(liquidityValue1, 4, locale)}</Text>
+                  <Text small>
+                    <FormattedCurrencyAmount currencyAmount={liquidityValue1} />
+                  </Text>
                 </Flex>
               </Flex>
               <Flex justifyContent="flex-end" mb="8px">
@@ -482,7 +483,9 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{formatCurrencyAmount(feeValue0, 4, locale)}</Text>
+                  <Text small>
+                    <FormattedCurrencyAmount currencyAmount={feeValue0} />
+                  </Text>
                 </Flex>
               </Flex>
               <Flex justifyContent="flex-end" mb="8px">
@@ -500,7 +503,9 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{formatCurrencyAmount(feeValue1, 4, locale)}</Text>
+                  <Text small>
+                    <FormattedCurrencyAmount currencyAmount={feeValue1} />
+                  </Text>
                 </Flex>
               </Flex>
               <Flex justifyContent="flex-end" mb="8px">

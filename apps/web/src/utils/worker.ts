@@ -1,4 +1,6 @@
-import type { WorkerGetBestTradeEvent, WorkerMultiChunkEvent } from 'quote-worker'
+import { V4Router } from '@pancakeswap/smart-router'
+
+import type { WorkerGetBestTradeEvent, WorkerGetBestTradeOffchainEvent, WorkerMultiChunkEvent } from 'quote-worker'
 import type { FetchChunkResult } from 'state/multicall/fetchChunk'
 
 import { createWorkerScriptLoader } from './workerScriptLoader'
@@ -66,6 +68,33 @@ class WorkerProxy {
     return this.postMessage(
       {
         cmd: 'getBestTrade',
+        params: restParams,
+      },
+      eventId,
+    )
+  }
+
+  public getBestTradeOffchain = async (
+    params: WorkerGetBestTradeOffchainEvent[1]['params'] & {
+      signal?: AbortSignal
+    },
+  ) => {
+    const { signal, ...restParams } = params
+    const eventId = this.nextId
+    signal?.addEventListener('abort', async () => {
+      try {
+        await this.postMessage({
+          cmd: 'abort',
+          params: eventId,
+        })
+      } catch (e) {
+        console.error('[Worker GetBestTrade]: Abort Error:', e)
+      }
+    })
+
+    return this.postMessage<V4Router.Transformer.SerializedV4Trade>(
+      {
+        cmd: 'getBestTradeOffchain',
         params: restParams,
       },
       eventId,

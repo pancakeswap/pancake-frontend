@@ -4,7 +4,7 @@ import { BIPS_BASE } from 'config/constants/exchange'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
 import { useRouterContract } from 'utils/exchange'
-import useTransactionDeadline from './useTransactionDeadline'
+import { useTransactionDeadline } from './useTransactionDeadline'
 
 export interface SwapCall {
   contract: ReturnType<typeof useRouterContract>
@@ -25,7 +25,7 @@ export function useSwapCallArguments(
   const { account, chainId } = useAccountActiveChain()
 
   const recipient = recipientAddress === null ? account : recipientAddress
-  const deadline = useTransactionDeadline()
+  const [deadline] = useTransactionDeadline()
   const contract = useRouterContract()
 
   return useMemo(() => {

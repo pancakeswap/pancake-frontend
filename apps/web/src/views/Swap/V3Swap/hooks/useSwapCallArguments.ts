@@ -3,7 +3,6 @@ import { Percent, TradeType } from '@pancakeswap/sdk'
 import { SMART_ROUTER_ADDRESSES, SmartRouterTrade, SwapRouter } from '@pancakeswap/smart-router/evm'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
-import { safeGetAddress } from 'utils'
 
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 
@@ -32,13 +31,13 @@ export function useSwapCallArguments(
   feeOptions: FeeOptions | undefined,
 ): SwapCall[] {
   const { account, chainId } = useAccountActiveChain()
-  const recipientENSAddress = useGetENSAddressByName(recipientAddressOrName)
+  const recipientENSAddress = useGetENSAddressByName(recipientAddressOrName ?? undefined)
   const recipient = (
     recipientAddressOrName === null || recipientAddressOrName === undefined
       ? account
       : isAddress(recipientAddressOrName)
       ? recipientAddressOrName
-      : isAddress(recipientENSAddress)
+      : isAddress(recipientENSAddress ?? '')
       ? recipientENSAddress
       : null
   ) as Address | null

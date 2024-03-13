@@ -1,7 +1,7 @@
+import { BOOST_WEIGHT, DURATION_FACTOR, MAX_LOCK_DURATION, UNLOCK_FREE_DURATION } from '@pancakeswap/pools'
 import BigNumber from 'bignumber.js'
-import { UNLOCK_FREE_DURATION, BOOST_WEIGHT, DURATION_FACTOR, MAX_LOCK_DURATION } from '@pancakeswap/pools'
 import dayjs from 'dayjs'
-import { vi, describe, it } from 'vitest'
+import { describe, it, vi } from 'vitest'
 import { VaultPosition, getVaultPosition } from './cakePool'
 import { getCakeVaultV2Contract } from './contractHelpers'
 
@@ -21,7 +21,7 @@ describe.concurrent('cakePool', () => {
   it.each([
     // None
     [{}, VaultPosition.None],
-    [{ userShares: null }, VaultPosition.None],
+    [{ userShares: undefined }, VaultPosition.None],
     [{ userShares: undefined, lockEndTime: '0', locked: true }, VaultPosition.None],
     [{ userShares: new BigNumber('0') }, VaultPosition.None],
     // Flexible

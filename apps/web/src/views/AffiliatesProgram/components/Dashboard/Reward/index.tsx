@@ -1,14 +1,14 @@
-import { useState, useMemo } from 'react'
-import { Card, Flex, Box, Message, MessageText } from '@pancakeswap/uikit'
-import { LightGreyCard } from 'components/Card'
-import { styled } from 'styled-components'
-import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
-import TabMenu, { MenuType } from 'views/AffiliatesProgram/components/Dashboard/Reward/TabMenu'
-import LatestReward from 'views/AffiliatesProgram/components/Dashboard/Reward/LatestReward'
+import { Box, Card, Flex, Message, MessageText } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
+import { LightGreyCard } from 'components/Card'
+import { useMemo, useState } from 'react'
+import { styled } from 'styled-components'
 import HistoricalReward from 'views/AffiliatesProgram/components/Dashboard/Reward/HistoricalReward'
-import useUserClaimList from 'views/AffiliatesProgram/hooks/useUserClaimList'
+import LatestReward from 'views/AffiliatesProgram/components/Dashboard/Reward/LatestReward'
+import TabMenu, { MenuType } from 'views/AffiliatesProgram/components/Dashboard/Reward/TabMenu'
 import useAffiliateClaimList from 'views/AffiliatesProgram/hooks/useAffiliateClaimList'
+import useUserClaimList from 'views/AffiliatesProgram/hooks/useUserClaimList'
 
 const CardContainer = styled(Flex)`
   flex-direction: column;

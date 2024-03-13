@@ -22,6 +22,7 @@ export interface RewardBreakdownPair {
   rewardEarned: number
   yourTradingFee: string
   feeAmount: number
+  preCap: number
 }
 
 export interface RewardBreakdownDetail {
@@ -73,6 +74,7 @@ const useRewardBreakdown = ({
                 rewardEarned: userData?.estimateRewardUSD ?? 0,
                 yourTradingFee: userData?.tradingFee ?? '0',
                 feeAmount: pairInfo?.feeAmount ?? 0,
+                preCap: userData?.preCap ?? 0,
               }
             })
 

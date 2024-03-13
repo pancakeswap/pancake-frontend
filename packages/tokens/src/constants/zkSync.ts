@@ -56,4 +56,28 @@ export const zksyncTokens = {
     'Zeek Coin',
     'https://zeekcoin.com/',
   ),
+  dai: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x4B9eb6c0b6ea15176BBF62841C6B2A8a398cb656',
+    18,
+    'DAI',
+    'Dai Stablecoin',
+    'https://makerdao.com/en/',
+  ),
+  wethe: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0xf00DAD97284D0c6F06dc4Db3c32454D4292c6813',
+    18,
+    'WETH.e',
+    'Wrapped Ether Native Bridge',
+    'https://ethereum.org/',
+  ),
+  grai: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x5FC44E95eaa48F9eB84Be17bd3aC66B6A82Af709',
+    18,
+    'GRAI',
+    'Gravita Debt Token',
+    'https://www.gravitaprotocol.com/',
+  ),
 }

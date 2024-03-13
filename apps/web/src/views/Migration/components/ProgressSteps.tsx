@@ -1,6 +1,6 @@
+import { Box, BoxProps, Text } from '@pancakeswap/uikit'
 import React, { ReactNode } from 'react'
 import { styled } from 'styled-components'
-import { Box, BoxProps, Text } from '@pancakeswap/uikit'
 
 const Circle = styled.div`
   display: flex;
@@ -163,7 +163,7 @@ export const MigrationProgressSteps: React.FC<React.PropsWithChildren<ProgressAr
               canHover={step.canHover}
               confirmed={step.stepId === pickedStep}
               disabled={step.stepId !== pickedStep && index + 1 > pickedStep}
-              onClick={() => onClick(step.stepId)}
+              onClick={() => onClick?.(step.stepId)}
             >
               <Circle>{index + 1}</Circle>
               <StepText bold maxWidth={['none', null, null, 200]}>

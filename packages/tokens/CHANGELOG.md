@@ -1,5 +1,25 @@
 # @pancakeswap/tokens
 
+## 0.6.9
+
+### Patch Changes
+
+- e26505f: List new pool, farm, token and gauges
+
+## 0.6.8
+
+### Patch Changes
+
+- 928b9a8: Bump version only
+
+## 0.6.7
+
+### Patch Changes
+
+- Updated dependencies [610a24a]
+  - @pancakeswap/sdk@5.8.0
+  - @pancakeswap/token-lists@0.0.11
+
 ## 0.6.6
 
 ### Patch Changes

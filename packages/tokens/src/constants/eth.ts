@@ -433,4 +433,20 @@ export const ethereumTokens = {
     'XRGB',
     'https://xrgb.xyz/',
   ),
+  mswETH: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x32bd822d615A3658A68b6fDD30c2fcb2C996D678',
+    18,
+    'mswETH',
+    'mswETH',
+    'https://www.eigenlayer.magpiexyz.io/restake',
+  ),
+  mstETH: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x49446A0874197839D15395B908328a74ccc96Bc0',
+    18,
+    'mstETH',
+    'mstETH',
+    'https://www.eigenlayer.magpiexyz.io/restake',
+  ),
 }

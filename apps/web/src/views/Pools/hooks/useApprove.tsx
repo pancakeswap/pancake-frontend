@@ -14,7 +14,7 @@ import useCakeApprovalStatus from 'hooks/useCakeApprovalStatus'
 import useCakeApprove from 'hooks/useCakeApprove'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
-export const useApprovePool = (lpContract: ReturnType<typeof useERC20>, sousId, earningTokenSymbol) => {
+export const useApprovePool = (lpContract: ReturnType<typeof useERC20>, sousId: any, earningTokenSymbol: any) => {
   const { toastSuccess } = useToast()
   const { chainId } = useActiveChainId()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
@@ -35,7 +35,9 @@ export const useApprovePool = (lpContract: ReturnType<typeof useERC20>, sousId, 
           {t('You can now stake in the %symbol% pool!', { symbol: earningTokenSymbol })}
         </ToastDescriptionWithTx>,
       )
-      dispatch(updateUserAllowance({ sousId, account, chainId }))
+      if (account && chainId) {
+        dispatch(updateUserAllowance({ sousId, account, chainId }))
+      }
     }
   }, [
     chainId,
@@ -55,7 +57,7 @@ export const useApprovePool = (lpContract: ReturnType<typeof useERC20>, sousId, 
 }
 
 // Approve CAKE auto pool
-export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) => {
+export const useVaultApprove = (vaultKey: VaultKey | undefined, setLastUpdated: () => void) => {
   const vaultPoolContract = useVaultPoolContract(vaultKey)
   const { t } = useTranslation()
 
@@ -66,7 +68,7 @@ export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) 
   )
 }
 
-export const useCheckVaultApprovalStatus = (vaultKey: VaultKey) => {
+export const useCheckVaultApprovalStatus = (vaultKey?: VaultKey) => {
   const vaultPoolContract = useVaultPoolContract(vaultKey)
 
   return useCakeApprovalStatus(vaultPoolContract?.address)

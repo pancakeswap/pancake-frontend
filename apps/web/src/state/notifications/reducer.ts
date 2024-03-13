@@ -16,7 +16,7 @@ export interface NotificationState {
 
 export const initialState: NotificationState = {
   notifications: {},
-  allowNotifications: undefined,
+  allowNotifications: true,
 }
 
 export default createReducer(initialState, (builder) =>

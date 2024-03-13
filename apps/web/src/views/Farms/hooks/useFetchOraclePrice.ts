@@ -12,13 +12,13 @@ const getOracleAddress = (chainId: number): Address | null => {
   }
 }
 
-export const useOraclePrice = (chainId: number) => {
-  const tokenAddress = getOracleAddress(chainId)
-  const chainlinkOracleContract = getChainlinkOracleContract(tokenAddress, null, ChainId.BSC)
+export const useOraclePrice = (chainId?: number) => {
+  const tokenAddress = chainId ? getOracleAddress(chainId) : undefined
+  const chainlinkOracleContract = tokenAddress ? getChainlinkOracleContract(tokenAddress, undefined, ChainId.BSC) : null
   const { data: price } = useContractRead({
-    abi: chainlinkOracleContract.abi,
+    abi: chainlinkOracleContract?.abi,
     chainId: ChainId.BSC,
-    address: tokenAddress,
+    address: tokenAddress ?? undefined,
     functionName: 'latestAnswer',
     watch: true,
   })

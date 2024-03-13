@@ -1,5 +1,41 @@
 # @pancakeswap/gauges
 
+## 1.1.4
+
+### Patch Changes
+
+- e26505f: List new pool, farm, token and gauges
+- Updated dependencies [e26505f]
+  - @pancakeswap/tokens@0.6.9
+
+## 1.1.3
+
+### Patch Changes
+
+- Updated dependencies [928b9a8]
+  - @pancakeswap/tokens@0.6.8
+
+## 1.1.2
+
+### Patch Changes
+
+- Updated dependencies [acc454d]
+  - @pancakeswap/v3-sdk@3.7.13
+
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies [610a24a]
+  - @pancakeswap/v3-sdk@3.7.12
+  - @pancakeswap/tokens@0.6.7
+
+## 1.1.0
+
+### Minor Changes
+
+- 9886d06: Allow fetch gagues with block number
+
 ## 1.0.5
 
 ### Patch Changes

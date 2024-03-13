@@ -39,7 +39,7 @@ export function TransactionSubmittedContent({
   hash,
   currencyToAdd,
 }: {
-  onDismiss: () => void
+  onDismiss?: () => void
   hash: string | undefined
   chainId?: ChainId
   currencyToAdd?: Currency | undefined | null

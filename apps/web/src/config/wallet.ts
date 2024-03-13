@@ -3,7 +3,6 @@ import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
 import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
 import type { ExtendEthereum } from 'global'
-import { isFirefox } from 'react-device-detect'
 import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
 import { ASSET_CDN } from './constants/endpoints'
 
@@ -12,11 +11,11 @@ export enum ConnectorNames {
   Injected = 'injected',
   WalletConnect = 'walletConnect',
   WalletConnectV1 = 'walletConnectLegacy',
-  BSC = 'bsc',
+  // BSC = 'bsc',
   BinanceW3W = 'BinanceW3W',
   Blocto = 'blocto',
   WalletLink = 'coinbaseWallet',
-  Ledger = 'ledger',
+  // Ledger = 'ledger',
   TrustWallet = 'trustWallet',
   CyberWallet = 'cyberwallet',
 }
@@ -87,23 +86,23 @@ const walletsConfig = ({
         return undefined
       },
     },
-    {
-      id: 'binance',
-      title: 'Binance Wallet',
-      icon: `${ASSET_CDN}/web/wallets/binance.png`,
-      get installed() {
-        return typeof window !== 'undefined' && Boolean(window.BinanceChain)
-      },
-      connectorId: ConnectorNames.BSC,
-      guide: {
-        desktop: 'https://www.bnbchain.org/en/binance-wallet',
-      },
-      downloadLink: {
-        desktop: isFirefox
-          ? 'https://addons.mozilla.org/en-US/firefox/addon/binance-chain/?src=search'
-          : 'https://chrome.google.com/webstore/detail/binance-wallet/fhbohimaelbohpjbbldcngcnapndodjp',
-      },
-    },
+    // {
+    //   id: 'binance',
+    //   title: 'Binance Wallet',
+    //   icon: `${ASSET_CDN}/web/wallets/binance.png`,
+    //   get installed() {
+    //     return typeof window !== 'undefined' && Boolean(window.BinanceChain)
+    //   },
+    //   connectorId: ConnectorNames.BSC,
+    //   guide: {
+    //     desktop: 'https://www.bnbchain.org/en/binance-wallet',
+    //   },
+    //   downloadLink: {
+    //     desktop: isFirefox
+    //       ? 'https://addons.mozilla.org/en-US/firefox/addon/binance-chain/?src=search'
+    //       : 'https://chrome.google.com/webstore/detail/binance-wallet/fhbohimaelbohpjbbldcngcnapndodjp',
+    //   },
+    // },
     {
       id: 'coinbase',
       title: 'Coinbase Wallet',
@@ -236,12 +235,12 @@ const walletsConfig = ({
         desktop: 'https://docs.cyber.co/sdk/cyber-account#supported-chains',
       },
     },
-    {
-      id: 'ledger',
-      title: 'Ledger',
-      icon: `${ASSET_CDN}/web/wallets/ledger.png`,
-      connectorId: ConnectorNames.Ledger,
-    },
+    // {
+    //   id: 'ledger',
+    //   title: 'Ledger',
+    //   icon: `${ASSET_CDN}/web/wallets/ledger.png`,
+    //   connectorId: ConnectorNames.Ledger,
+    // },
   ]
 }
 

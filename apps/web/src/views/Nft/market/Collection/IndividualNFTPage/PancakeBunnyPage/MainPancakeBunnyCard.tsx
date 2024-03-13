@@ -1,19 +1,19 @@
-import { useAccount } from 'wagmi'
-import { Flex, Box, Card, CardBody, Text, Button, BinanceIcon, Skeleton, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { BinanceIcon, Box, Button, Card, CardBody, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import { NftToken } from 'state/nftMarket/types'
-import NFTMedia from 'views/Nft/market/components/NFTMedia'
-import { safeGetAddress } from 'utils'
 import { useBNBPrice } from 'hooks/useBNBPrice'
+import { NftToken } from 'state/nftMarket/types'
+import { safeGetAddress } from 'utils'
+import NFTMedia from 'views/Nft/market/components/NFTMedia'
+import { useAccount } from 'wagmi'
 import BuyModal from '../../../components/BuySellModals/BuyModal'
 import SellModal from '../../../components/BuySellModals/SellModal'
 import { nftsBaseUrl } from '../../../constants'
-import { Container, CollectionLink } from '../shared/styles'
+import { CollectionLink, Container } from '../shared/styles'
 
 interface MainPancakeBunnyCardProps {
-  cheapestNft: NftToken
-  nothingForSaleBunny: NftToken
+  cheapestNft?: NftToken
+  nothingForSaleBunny?: NftToken
   onSuccessSale: () => void
 }
 
@@ -32,7 +32,7 @@ const MainPancakeBunnyCard: React.FC<React.PropsWithChildren<MainPancakeBunnyCar
     ? safeGetAddress(cheapestNft?.marketData?.currentSeller) === safeGetAddress(account)
     : false
 
-  const priceInUsd = bnbBusdPrice.multipliedBy(parseFloat(nftToDisplay?.marketData?.currentAskPrice)).toNumber()
+  const priceInUsd = bnbBusdPrice.multipliedBy(parseFloat(nftToDisplay?.marketData?.currentAskPrice ?? '0')).toNumber()
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nftToDisplay} />)
   const [onPresentAdjustPriceModal] = useModal(
     <SellModal variant="edit" nftToSell={cheapestNft} onSuccessSale={onSuccessSale} />,
@@ -59,13 +59,13 @@ const MainPancakeBunnyCard: React.FC<React.PropsWithChildren<MainPancakeBunnyCar
         <Container flexDirection={['column-reverse', null, 'row']}>
           <Flex flex="2">
             <Box>
-              <CollectionLink to={`${nftsBaseUrl}/collections/${nftToDisplay.collectionAddress}`}>
+              <CollectionLink to={`${nftsBaseUrl}/collections/${nftToDisplay?.collectionAddress}`}>
                 {nftToDisplay?.collectionName}
               </CollectionLink>
               <Text fontSize="40px" bold mt="12px">
-                {nftToDisplay.name}
+                {nftToDisplay?.name}
               </Text>
-              <Text mt={['16px', '16px', '48px']}>{t(nftToDisplay.description)}</Text>
+              <Text mt={['16px', '16px', '48px']}>{nftToDisplay?.description && t(nftToDisplay?.description)}</Text>
               {cheapestNft && (
                 <>
                   <Text color="textSubtle" mt={['16px', '16px', '48px']}>
@@ -74,7 +74,7 @@ const MainPancakeBunnyCard: React.FC<React.PropsWithChildren<MainPancakeBunnyCar
                   <Flex alignItems="center" mt="8px">
                     <BinanceIcon width={18} height={18} mr="4px" />
                     <Text fontSize="24px" bold mr="4px">
-                      {formatNumber(parseFloat(nftToDisplay?.marketData?.currentAskPrice), 0, 5)}
+                      {formatNumber(parseFloat(nftToDisplay?.marketData?.currentAskPrice ?? '0'), 0, 5)}
                     </Text>
                     {bnbBusdPrice ? (
                       <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(undefined, {
@@ -91,7 +91,7 @@ const MainPancakeBunnyCard: React.FC<React.PropsWithChildren<MainPancakeBunnyCar
             </Box>
           </Flex>
           <Flex flex="2" justifyContent={['center', null, 'flex-end']} alignItems="center" maxWidth={440}>
-            <NFTMedia key={nftToDisplay.name} nft={nftToDisplay} width={440} height={440} />
+            <NFTMedia key={nftToDisplay?.name} nft={nftToDisplay} width={440} height={440} />
           </Flex>
         </Container>
       </CardBody>

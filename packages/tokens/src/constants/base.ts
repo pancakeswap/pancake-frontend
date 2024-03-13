@@ -45,4 +45,12 @@ export const baseTokens = {
     'Axelar Wrapped USDC',
     'https://axelarscan.io/assets/',
   ),
+  wstETH: new ERC20Token(
+    ChainId.BASE,
+    '0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452',
+    18,
+    'wstETH',
+    'Wrapped liquid staked Ether 2.0',
+    'https://lido.fi/',
+  ),
 }

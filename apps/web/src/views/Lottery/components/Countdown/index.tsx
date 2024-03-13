@@ -1,7 +1,7 @@
 import { Flex, Heading, Skeleton } from '@pancakeswap/uikit'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-import Timer from './Timer'
 import useNextEventCountdown from '../../hooks/useNextEventCountdown'
+import Timer from './Timer'
 
 interface CountdownProps {
   nextEventTime: number
@@ -15,7 +15,7 @@ const Countdown: React.FC<React.PropsWithChildren<CountdownProps>> = ({
   postCountdownText,
 }) => {
   const secondsRemaining = useNextEventCountdown(nextEventTime)
-  const { days, hours, minutes } = getTimePeriods(secondsRemaining)
+  const { days, hours, minutes } = getTimePeriods(secondsRemaining ?? 0)
 
   return (
     <>

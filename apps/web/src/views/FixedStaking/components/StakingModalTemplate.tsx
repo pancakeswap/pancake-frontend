@@ -1,46 +1,46 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import {
-  Button,
-  Modal,
-  Flex,
-  Text,
   BalanceInput,
-  Slider,
   Box,
-  PreTitle,
-  useToast,
+  Button,
+  Flex,
   Link,
-  Toggle,
   Message,
   MessageText,
+  Modal,
+  PreTitle,
+  Slider,
+  Text,
+  Toggle,
+  useToast,
 } from '@pancakeswap/uikit'
-import { getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
+import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
-import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
-import { Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react'
 import Divider from 'components/Divider'
-import { useFixedStakingContract } from 'hooks/useContract'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { CurrencyAmount, Percent, Currency } from '@pancakeswap/sdk'
-import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
-import toNumber from 'lodash/toNumber'
 import { CurrencyLogo } from 'components/Logo'
-import first from 'lodash/first'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import dayjs from 'dayjs'
-import usePrevious from 'views/V3Info/hooks/usePrevious'
-import { styled } from 'styled-components'
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useFixedStakingContract } from 'hooks/useContract'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
+import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
+import first from 'lodash/first'
+import toNumber from 'lodash/toNumber'
+import { Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react'
+import { styled } from 'styled-components'
+import usePrevious from 'views/V3Info/hooks/usePrevious'
 
+import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
+import useIsBoost from '../hooks/useIsBoost'
 import { FixedStakingPool, StakedPosition } from '../type'
 import { DisclaimerCheckBox } from './DisclaimerCheckBox'
-import { useFixedStakeAPR } from '../hooks/useFixedStakeAPR'
-import { StakeConfirmModal } from './StakeConfirmModal'
 import { ModalTitle } from './ModalTitle'
-import useIsBoost from '../hooks/useIsBoost'
+import { StakeConfirmModal } from './StakeConfirmModal'
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
@@ -78,7 +78,7 @@ export function StakingModalTemplate({
   stakingToken: Currency
   pools: FixedStakingPool[]
   stakedPositions?: StakedPosition[]
-  initialLockPeriod: number
+  initialLockPeriod?: number
   stakedPeriods: number[]
   head?: () => ReactNode
   body: ReactNode | ((params: BodyParam) => ReactNode)
@@ -200,7 +200,7 @@ export function StakingModalTemplate({
       const methodArgs = [selectedPool?.poolIndex, rawAmount.toString()]
 
       return callWithGasPrice(fixedStakingContract, 'deposit', methodArgs, {
-        value: enableNative ? rawAmount.toString() : 0n,
+        value: enableNative ? BigInt(rawAmount.toString()) : 0n,
       })
     })
 

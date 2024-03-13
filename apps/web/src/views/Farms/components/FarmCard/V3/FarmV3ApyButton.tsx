@@ -64,7 +64,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
   const roiModal = useModalV2()
 
   const [priceTimeWindow, setPriceTimeWindow] = useState(0)
-  const prices = usePairTokensPrice(lpAddress, priceTimeWindow, baseCurrency?.chainId)
+  const prices = usePairTokensPrice(lpAddress, priceTimeWindow, baseCurrency?.chainId, roiModal.isOpen)
 
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
 

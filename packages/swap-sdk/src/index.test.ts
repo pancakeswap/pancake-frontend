@@ -59,6 +59,7 @@ test('exports', () => {
       "sqrt",
       "validateVMTypeInstance",
       "pancakePairV2ABI",
+      "erc20ABI",
     ]
   `)
 })

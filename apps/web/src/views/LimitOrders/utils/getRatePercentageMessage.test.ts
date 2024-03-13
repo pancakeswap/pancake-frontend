@@ -19,7 +19,7 @@ const ELEVEN_BUSD_PER_CAKE = new Price(CAKE, BUSD, EIGHTEEN_DECIMALS, ELEVEN)
 const SEVEN_HUNDRED_BUSD_PER_CAKE = new Price(CAKE, BUSD, EIGHTEEN_DECIMALS, SEVEN_HUNDRED)
 
 const mockT = (key: string, data?: { percentage?: string }) => {
-  return key.includes('%percentage%') ? key.replace('%percentage%', data.percentage) : key
+  return key.includes('%percentage%') && data?.percentage ? key.replace('%percentage%', data.percentage) : key
 }
 
 describe('limitOrders/utils/getRatePercentageMessage', () => {

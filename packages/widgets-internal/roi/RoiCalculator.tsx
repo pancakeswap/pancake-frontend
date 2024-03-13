@@ -40,6 +40,16 @@ export interface RoiCalculatorPositionInfo {
   fullRange?: boolean;
 }
 
+export interface PriceCalculator {
+  pairPriceData: {
+    time: Date;
+    value: number;
+  }[];
+  maxPrice?: number;
+  minPrice?: number;
+  averagePrice?: number;
+}
+
 export type RoiCalculatorProps = {
   sqrtRatioX96?: bigint;
   liquidity?: bigint;
@@ -50,15 +60,7 @@ export type RoiCalculatorProps = {
   balanceB?: CurrencyAmount<Currency>;
   feeAmount?: FeeAmount;
   protocolFee?: Percent;
-  prices?: {
-    pairPriceData: {
-      time: Date;
-      value: number;
-    }[];
-    maxPrice?: number;
-    minPrice?: number;
-    averagePrice?: number;
-  };
+  prices?: PriceCalculator;
   ticks?: TickData[];
   price?: Price<Token, Token>;
   priceLower?: Price<Token, Token>;

@@ -36,7 +36,7 @@ const getGaugesByChain = memoize(
 )
 
 function isTokenInCommonBases(token?: Token) {
-  return Boolean(token && BASES_TO_CHECK_TRADES_AGAINST[token.chainId as ChainId].find((t) => t.equals(token)))
+  return Boolean(token && BASES_TO_CHECK_TRADES_AGAINST[token.chainId as ChainId]?.find((t) => t.equals(token)))
 }
 
 const getTokenBasesFromGauges = memoize(

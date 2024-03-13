@@ -4,6 +4,62 @@ import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
 export const farmsV3 = defineFarmV3Configs([
   {
+    pid: 22,
+    lpAddress: '0xA9e8fb4462A4140a2cec9E4fcdFa592AA6B786Ed',
+    token0: zksyncTokens.usdc,
+    token1: zksyncTokens.grai,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 21,
+    lpAddress: '0x6c94C8651063C1aA67f9C15284235a3D13cD383C',
+    token0: zksyncTokens.usdc,
+    token1: zksyncTokens.grai,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 20,
+    lpAddress: '0x424594bD8B08E3F0c0e282B11Cc5817ae4eC47bf',
+    token0: zksyncTokens.weth,
+    token1: zksyncTokens.wethe,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 19,
+    lpAddress: '0x9aFFdEe9004892624BFFebeB8EDBa4C980Fe6aCF',
+    token0: zksyncTokens.weth,
+    token1: zksyncTokens.wbtc,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 18,
+    lpAddress: '0x8126D76CE6d80C93E2E03c9E39a676Aea542c01D',
+    token0: zksyncTokens.usdt,
+    token1: zksyncTokens.weth,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 17,
+    lpAddress: '0x374D5C205742AEbE2D9fe9B9741EFA7E12082234',
+    token0: zksyncTokens.usdc,
+    token1: zksyncTokens.dai,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 16,
+    lpAddress: '0x3846400eEe47B29B5A6742620a29128A24921659',
+    token0: zksyncTokens.usdt,
+    token1: zksyncTokens.dai,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 15,
+    lpAddress: '0xB3348f622e2d0F9053E08DA178445B80016c18Fb',
+    token0: zksyncTokens.reth,
+    token1: zksyncTokens.wstETH,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
     pid: 14,
     lpAddress: '0x16B3Bbd346eB864eD28B99cf89dDe59aD31A034F',
     token0: zksyncTokens.usdc,

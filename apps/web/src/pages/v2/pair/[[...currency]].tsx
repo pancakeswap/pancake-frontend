@@ -8,21 +8,21 @@ import { styled } from 'styled-components'
 import { CHAIN_IDS } from 'utils/wagmi'
 import Page from 'views/Page'
 
+import { getFarmConfig } from '@pancakeswap/farms/constants'
+import { useTranslation } from '@pancakeswap/localization'
+import { useQuery } from '@tanstack/react-query'
 import { LightGreyCard } from 'components/Card'
 import { usePoolTokenPercentage, useTokensDeposited, useTotalUSDValue } from 'components/PositionCard'
 import { useCurrency } from 'hooks/Tokens'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useMasterchef } from 'hooks/useContract'
 import { useV2Pair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { useRouter } from 'next/router'
-import { useTokenBalance } from 'state/wallet/hooks'
-import { useAccount } from 'wagmi'
-import { useTranslation } from '@pancakeswap/localization'
 import { useLPApr } from 'state/swap/useLPApr'
+import { useTokenBalance } from 'state/wallet/hooks'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useMasterchef } from 'hooks/useContract'
-import { useQuery } from '@tanstack/react-query'
+import { useAccount } from 'wagmi'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -208,3 +208,4 @@ export default function PoolV2Page() {
 }
 
 PoolV2Page.chains = CHAIN_IDS
+PoolV2Page.screen = true

@@ -18,7 +18,7 @@ interface CurrentPeriodProps {
   campaignStart: number
   campaignClaimTime: number
   rewardInfo: { [key in string]: RewardInfo }
-  currentUserCampaignInfo: UserCampaignInfoDetail
+  currentUserCampaignInfo: UserCampaignInfoDetail | undefined
 }
 
 const TOP_RANK = 100
@@ -42,14 +42,14 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
     currentLanguage: { locale },
   } = useTranslation()
   const cakePriceBusd = useCakePrice()
-  const { data: rank } = useUserTradeRank({ campaignId: currentUserCampaignInfo?.campaignId })
+  const { data: rank } = useUserTradeRank({ campaignId: currentUserCampaignInfo?.campaignId ?? '' })
 
   const currentDate = Date.now() / 1000
   const timeRemaining = campaignClaimTime - currentDate
   const timeUntil = getTimePeriods(timeRemaining)
 
   const currentRewardInfo = useMemo(
-    () => rewardInfo?.[currentUserCampaignInfo?.campaignId],
+    () => rewardInfo?.[currentUserCampaignInfo?.campaignId ?? ''],
     [rewardInfo, currentUserCampaignInfo],
   )
 
@@ -83,7 +83,7 @@ const CurrentPeriod: React.FC<React.PropsWithChildren<CurrentPeriodProps>> = ({
   return (
     <Box width={['100%', '100%', '100%', '48.5%']} mb={['24px', '24px', '24px', '0']}>
       <Card style={{ width: '100%' }}>
-        <Box padding={['24px']}>
+        <Box padding={['16px', '16px', '16px', '24px']}>
           <Text bold textAlign="right" mb="24px">
             {t('Current Period')}
           </Text>

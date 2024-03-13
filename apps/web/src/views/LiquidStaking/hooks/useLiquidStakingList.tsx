@@ -19,12 +19,14 @@ export const useLiquidStakingList = (): UseLiquidStakingList => {
 
     queryFn: async () => {
       try {
-        return fetchLiquidStaking(chainId)
+        return fetchLiquidStaking(chainId!)
       } catch (error) {
         console.error('Cannot get liquid staking list', error, chainId)
         return []
       }
     },
+
+    enabled: Boolean(chainId),
 
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

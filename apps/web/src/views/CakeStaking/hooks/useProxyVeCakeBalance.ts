@@ -10,9 +10,11 @@ import { useVeCakeUserInfo } from './useVeCakeUserInfo'
 export const useProxyVeCakeBalance = () => {
   const { chainId } = useActiveChainId()
   const { data: userInfo } = useVeCakeUserInfo()
+
   const hasProxy = useMemo(() => {
     return userInfo && userInfo?.cakePoolProxy && !isAddressEqual(userInfo!.cakePoolProxy, zeroAddress)
   }, [userInfo])
+
   const { status, refetch, data } = useContractRead({
     chainId,
     address: getVeCakeAddress(chainId),

@@ -1,4 +1,4 @@
-import { Price, ERC20Token, Percent } from '@pancakeswap/sdk'
+import { ERC20Token, Percent, Price } from '@pancakeswap/sdk'
 import getRatePercentageDifference from './getRatePercentageDifference'
 
 const CAKE = new ERC20Token(56, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'PancakeSwap Token')
@@ -17,19 +17,22 @@ describe('limitOrders/utils/getRatePercentageDifference', () => {
       const price = new Price(CAKE, BUSD, EIGHTEEN_DECIMALS, FIFTEEN) // 15 BUSD per 1 CAKE
       const rate = getRatePercentageDifference(marketPrice, price)
       const expectedRate = new Percent(50, 100)
-      expect(expectedRate.equalTo(rate)).toBe(true)
+      expect(rate).toBeDefined()
+      expect(expectedRate.equalTo(rate!)).toBe(true)
     })
     it('returns correct negative percentage', () => {
       const price = new Price(CAKE, BUSD, EIGHTEEN_DECIMALS, FIVE) // 5 BUSD per 1 CAKE
       const rate = getRatePercentageDifference(marketPrice, price)
       const expectedRate = new Percent(-50, 100)
-      expect(expectedRate.equalTo(rate)).toBe(true)
+      expect(rate).toBeDefined()
+      expect(expectedRate.equalTo(rate!)).toBe(true)
     })
     it('returns correct equal percentage', () => {
       const price = new Price(CAKE, BUSD, EIGHTEEN_DECIMALS, TEN) // 50 BUSD per 1 CAKE
       const rate = getRatePercentageDifference(marketPrice, price)
       const expectedRate = new Percent(0, 100)
-      expect(expectedRate.equalTo(rate)).toBe(true)
+      expect(rate).toBeDefined()
+      expect(expectedRate.equalTo(rate!)).toBe(true)
     })
   })
   describe('18 decimal token and 8 decimal token', () => {
@@ -38,19 +41,22 @@ describe('limitOrders/utils/getRatePercentageDifference', () => {
       const price = new Price(DOGE, BUSD, EIGHTEEN_DECIMALS, FIFTEEN) // 15 BUSD per 1 DOGE
       const rate = getRatePercentageDifference(marketPrice, price)
       const expectedRate = new Percent(50, 100)
-      expect(expectedRate.equalTo(rate)).toBe(true)
+      expect(rate).toBeDefined()
+      expect(expectedRate.equalTo(rate!)).toBe(true)
     })
     it('returns correct negative percentage', () => {
       const price = new Price(DOGE, BUSD, EIGHTEEN_DECIMALS, FIVE) // 5 BUSD per 1 DOGE
       const rate = getRatePercentageDifference(marketPrice, price)
       const expectedRate = new Percent(-50, 100)
-      expect(expectedRate.equalTo(rate)).toBe(true)
+      expect(rate).toBeDefined()
+      expect(expectedRate.equalTo(rate!)).toBe(true)
     })
     it('returns correct equal percentage', () => {
       const price = new Price(DOGE, BUSD, EIGHTEEN_DECIMALS, TEN) // 50 BUSD per 1 DOGE
       const rate = getRatePercentageDifference(marketPrice, price)
       const expectedRate = new Percent(0, 100)
-      expect(expectedRate.equalTo(rate)).toBe(true)
+      expect(rate).toBeDefined()
+      expect(expectedRate.equalTo(rate!)).toBe(true)
     })
   })
   describe('gracefully handles undefined arguments', () => {

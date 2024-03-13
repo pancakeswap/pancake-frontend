@@ -1,62 +1,45 @@
 import { Flex } from '@pancakeswap/uikit'
-import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 import CurrentPeriod from 'views/TradingReward/components/YourTradingReward/CurrentPeriod'
 import TotalPeriod from 'views/TradingReward/components/YourTradingReward/TotalPeriod'
-import { DeserializedLockedVaultUser } from 'state/types'
-import { Incentives, RewardInfo, Qualification, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { Incentives, Qualification, RewardInfo, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
+import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCampaignInfo'
 
 interface RewardPeriodProps {
   campaignIds: Array<string>
-  campaignStart: number
-  campaignClaimTime: number
-  incentives: Incentives
-  userData: DeserializedLockedVaultUser
+  incentives: Incentives | undefined
   rewardInfo: { [key in string]: RewardInfo }
   totalAvailableClaimData: UserCampaignInfoDetail[]
-  currentUserCampaignInfo: UserCampaignInfoDetail
+  currentUserCampaignInfo: UserCampaignInfoDetail | undefined
   isQualified: boolean
-  isLockPosition: boolean
-  isValidLockDuration: boolean
-  thresholdLockTime: number
+  thresholdLockAmount: number
   qualification: Qualification
   campaignIdsIncentive: Incentives[]
 }
 
 const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
   campaignIds,
-  campaignStart,
-  campaignClaimTime,
-  userData,
   incentives,
   currentUserCampaignInfo,
   rewardInfo,
   totalAvailableClaimData,
   isQualified,
-  isLockPosition,
-  isValidLockDuration,
-  thresholdLockTime,
+  thresholdLockAmount,
   qualification,
   campaignIdsIncentive,
 }) => {
   return (
     <Flex
-      padding="0 16px"
       width={['100%', '100%', '100%', '100%', '900px']}
       margin={['32px auto 61px auto']}
       justifyContent="space-between"
       flexDirection={['column', 'column', 'column', 'row']}
     >
       <CurrentPeriod
-        userData={userData}
         incentives={incentives}
         rewardInfo={rewardInfo}
-        campaignStart={campaignStart}
-        campaignClaimTime={campaignClaimTime}
         currentUserCampaignInfo={currentUserCampaignInfo}
         isQualified={isQualified}
-        isLockPosition={isLockPosition}
-        isValidLockDuration={isValidLockDuration}
-        thresholdLockTime={thresholdLockTime}
+        thresholdLockAmount={thresholdLockAmount}
         totalAvailableClaimData={totalAvailableClaimData}
       />
       <TotalPeriod

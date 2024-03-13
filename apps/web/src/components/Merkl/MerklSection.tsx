@@ -14,11 +14,15 @@ import {
 import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { LightGreyCard } from 'components/Card'
 
+import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import useMerkl from '../../hooks/useMerkl'
 
-function TextWaning({ tokenAmount }) {
+function TextWarning({ tokenAmount }: { tokenAmount: CurrencyAmount<Currency> }) {
+  const { t } = useTranslation()
   const { tooltip, tooltipVisible, targetRef } = useTooltip(
-    `Combined number of rewards in ${tokenAmount.currency.symbol} from ALL your positions which are eligible for Merkl rewards.`,
+    t('Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.', {
+      symbol: tokenAmount.currency.symbol,
+    }),
     {
       placement: 'top',
       trigger: 'hover',
@@ -96,7 +100,7 @@ export function MerklSection({
               </Text>
             </Flex>
             <Flex justifyContent="center">
-              <TextWaning tokenAmount={tokenAmount} />
+              <TextWarning tokenAmount={tokenAmount} />
             </Flex>
           </AutoRow>
         ))}
@@ -105,7 +109,7 @@ export function MerklSection({
       {isStakedInMCv3 ? (
         <Message variant="warning">
           <MessageText color="textSubtle">
-            To earn rewards on Merkl, unstake this position from PancakeSwap Farms.
+            {t('To earn rewards on Merkl, unstake this position from PancakeSwap Farms.')}
             <br />
             {learnMoreComp}
           </MessageText>
@@ -113,7 +117,7 @@ export function MerklSection({
       ) : outRange ? (
         <Message variant="warning">
           <MessageText color="textSubtle">
-            This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.
+            {t('This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.')}
             <br />
             {learnMoreComp}
           </MessageText>
@@ -122,9 +126,11 @@ export function MerklSection({
         <Message variant={notEnoughLiquidity ? 'warning' : 'primary'}>
           <MessageText color={notEnoughLiquidity ? 'textSubtle' : ''}>
             {notEnoughLiquidity
-              ? 'This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.'
-              : 'This liquidity position is currently earning rewards on Merkl.'}{' '}
-            Check details{' '}
+              ? t(
+                  'This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.',
+                )
+              : t('This liquidity position is currently earning rewards on Merkl.')}{' '}
+            {t('Details')}{' '}
             <Link
               fontSize="md"
               external

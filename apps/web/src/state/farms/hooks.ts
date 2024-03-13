@@ -1,9 +1,4 @@
-import {
-  DeserializedFarm,
-  DeserializedFarmsState,
-  DeserializedFarmUserData,
-  supportedChainIdV2,
-} from '@pancakeswap/farms'
+import { DeserializedFarmsState, DeserializedFarmUserData, supportedChainIdV2 } from '@pancakeswap/farms'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
@@ -99,7 +94,10 @@ export const usePollFarmsWithUserData = () => {
     queryKey: name,
 
     queryFn: async () => {
+      if (!account || !chainId) return
+
       const farmsConfig = await getFarmConfig(chainId)
+
       if (!farmsConfig) return
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       const params = proxyCreated ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
@@ -118,7 +116,7 @@ export const useFarms = (): DeserializedFarmsState => {
   return useSelector(useMemo(() => farmSelector(chainId), [chainId]))
 }
 
-export const useFarmFromPid = (pid: number): DeserializedFarm => {
+export const useFarmFromPid = (pid?: number) => {
   const farmFromPid = useMemo(() => makeFarmFromPidSelector(pid), [pid])
   return useSelector(farmFromPid)
 }

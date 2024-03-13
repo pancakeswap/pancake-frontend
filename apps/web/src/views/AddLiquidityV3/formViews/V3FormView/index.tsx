@@ -29,7 +29,7 @@ import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 import { useIsExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
 import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
@@ -216,7 +216,7 @@ export default function V3FormView({
   const onAddLiquidityCallback = useV3FormAddLiquidityCallback()
 
   // txn values
-  const deadline = useTransactionDeadline() // custom from users settings
+  const [deadline] = useTransactionDeadline() // custom from users settings
   const [txHash, setTxHash] = useState<string>('')
   // get formatted amounts
   const formattedAmounts = {
@@ -340,6 +340,7 @@ export default function V3FormView({
       onFieldAInput('')
     }
     setTxHash('')
+    setTxnErrorMessage(undefined)
   }, [onFieldAInput, txHash])
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
@@ -627,7 +628,10 @@ export default function V3FormView({
                       {invertPrice ? price.invert().toSignificant(6) : price.toSignificant(6)}
                     </Text>
                     <Text color="text2" fontSize={12}>
-                      {quoteCurrency?.symbol} per {baseCurrency.symbol}
+                      {t('%assetA% per %assetB%', {
+                        assetA: quoteCurrency?.symbol ?? '',
+                        assetB: baseCurrency.symbol ?? '',
+                      })}
                     </Text>
                   </AutoRow>
                 )}

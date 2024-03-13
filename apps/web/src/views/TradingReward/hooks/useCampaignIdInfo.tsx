@@ -11,6 +11,7 @@ export interface CampaignVolume {
   tradingFee: string
   maxCap: number
   chainId: ChainId
+  preCap: number
 }
 
 export interface CampaignIdInfoResponse {

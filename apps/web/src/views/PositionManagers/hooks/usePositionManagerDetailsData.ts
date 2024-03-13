@@ -1,10 +1,12 @@
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 export interface PositionManagerDetailsData {
   apr: number
   earned: number
   totalStaked: number
   isUserStaked: boolean
+  startTime: number
+  endTime: number
 }
 
 export const usePositionManagerDetailsData = () => {

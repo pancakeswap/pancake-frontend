@@ -143,7 +143,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
   const { boosterState } = useContext(YieldBoosterStateContext)
   const { isFirstTime, refresh: refreshFirstTime } = useFirstTimeCrossFarming(vaultPid)
-  const { lpTokenStakedAmount } = useFarmFromPid(pid)
+  const { lpTokenStakedAmount } = useFarmFromPid(pid) ?? {}
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const addTransaction = useTransactionAdder()

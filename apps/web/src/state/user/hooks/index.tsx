@@ -26,7 +26,6 @@ import {
   removeSerializedToken,
   setSubgraphHealthIndicatorDisplayed,
   updateGasPrice,
-  updateUserDeadline,
   updateUserFarmStakedOnly,
   updateUserFarmsViewMode,
   updateUserLimitOrderAcceptedWarning,
@@ -231,22 +230,6 @@ export function useUserUsernameVisibility(): [boolean, (usernameVisibility: bool
   return [userUsernameVisibility, setUserUsernameVisibility]
 }
 
-export function useUserTransactionTTL(): [number, (slippage: number) => void] {
-  const dispatch = useAppDispatch()
-  const userDeadline = useSelector<AppState, AppState['user']['userDeadline']>((state) => {
-    return state.user.userDeadline
-  })
-
-  const setUserDeadline = useCallback(
-    (deadline: number) => {
-      dispatch(updateUserDeadline({ userDeadline: deadline }))
-    },
-    [dispatch],
-  )
-
-  return [userDeadline, setUserDeadline]
-}
-
 export function useAddUserToken(): (token: ERC20Token) => void {
   const dispatch = useAppDispatch()
   return useCallback(
@@ -409,7 +392,7 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
               // loop through all bases on the current chain
               (BASES_TO_TRACK_LIQUIDITY_FOR[chainId] ?? [])
                 // to construct pairs of the given token with each base
-                .map((base) => {
+                .map((base: any) => {
                   const baseAddress = safeGetAddress(base.address)
 
                   if (baseAddress && baseAddress === tokenAddress) {
@@ -417,7 +400,7 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
                   }
                   return [base, token]
                 })
-                .filter((p): p is [ERC20Token, ERC20Token] => p !== null)
+                .filter((p: any): p is [ERC20Token, ERC20Token] => p !== null)
             )
           })
         : [],

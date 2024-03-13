@@ -73,7 +73,7 @@ const Decorations = styled(Box)`
 }`
 
 interface CurrentRewardPoolProps {
-  incentives: Incentives
+  incentives: Incentives | undefined
   campaignInfoData: CampaignIdInfoDetail
 }
 
@@ -90,7 +90,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
   const [remainingSeconds, setRemainingSeconds] = useState(0)
 
   const updateRemainingSeconds = useCallback(() => {
-    setRemainingSeconds(campaignClaimTime - Date.now() / 1000)
+    setRemainingSeconds(Number(campaignClaimTime) - Date.now() / 1000)
   }, [campaignClaimTime])
 
   // Update every minute
@@ -105,7 +105,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
         <Flex justifyContent="space-between" mb="10px">
           <TextComponent text={t('Starts')} />
           <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
-            {t('On %date%', { date: timeFormat(locale, incentives?.campaignStart) })}
+            {t('On %date%', { date: timeFormat(locale, incentives?.campaignStart ?? 0) })}
           </Text>
         </Flex>
         <Flex justifyContent="space-between" mb="10px">
@@ -120,7 +120,7 @@ const CurrentRewardPool: React.FC<React.PropsWithChildren<CurrentRewardPoolProps
             </Text>
           ) : (
             <Text bold color="white" fontSize={['14px', '14px', '14px', '20px']}>
-              {timeFormat(locale, incentives?.campaignClaimTime)}
+              {timeFormat(locale, incentives?.campaignClaimTime ?? 0)}
             </Text>
           )}
         </Flex>

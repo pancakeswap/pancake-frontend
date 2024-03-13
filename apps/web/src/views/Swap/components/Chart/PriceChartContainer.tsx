@@ -5,9 +5,9 @@ import BnbWbnbNotice from './BnbWbnbNotice'
 import PriceChart from './PriceChart'
 
 type PriceChartContainerProps = {
-  inputCurrencyId: string
+  inputCurrencyId: string | undefined
   inputCurrency?: Currency
-  outputCurrencyId: string
+  outputCurrencyId: string | undefined
   outputCurrency?: Currency
   isChartExpanded: boolean
   setIsChartExpanded: React.Dispatch<React.SetStateAction<boolean>> | null
@@ -29,8 +29,8 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
   isFullWidthContainer = false,
   currentSwapPrice,
 }) => {
-  const token0Address = inputCurrency?.wrapped.address?.toLocaleLowerCase()
-  const token1Address = outputCurrency?.wrapped.address?.toLocaleLowerCase()
+  const token0Address = inputCurrency?.wrapped.address?.toLowerCase()
+  const token1Address = outputCurrency?.wrapped.address?.toLowerCase()
   const [isPairReversed, setIsPairReversed] = useState(false)
   const togglePairReversed = useCallback(() => setIsPairReversed((prePairReversed) => !prePairReversed), [])
 

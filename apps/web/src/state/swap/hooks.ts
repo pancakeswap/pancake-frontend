@@ -72,7 +72,7 @@ export function useSingleTokenSwapInfo(
     v2Swap: true,
     v3Swap: true,
     stableSwap: true,
-    type: 'api',
+    type: 'quoter',
     autoRevalidate: false,
     enabled,
   })

@@ -38,9 +38,11 @@ export const CollectModalContainer = ({
           {t('Your %symbol% earnings have been sent to your wallet!', { symbol: earningTokenSymbol })}
         </ToastDescriptionWithTx>,
       )
-      dispatch(updateUserStakedBalance({ sousId, account, chainId }))
-      dispatch(updateUserPendingReward({ sousId, account, chainId }))
-      dispatch(updateUserBalance({ sousId, account, chainId }))
+      if (account && chainId) {
+        dispatch(updateUserStakedBalance({ sousId, account, chainId }))
+        dispatch(updateUserPendingReward({ sousId, account, chainId }))
+        dispatch(updateUserBalance({ sousId, account, chainId }))
+      }
       onDismiss?.()
     }
   }, [

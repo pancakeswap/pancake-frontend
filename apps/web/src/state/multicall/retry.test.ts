@@ -1,5 +1,5 @@
-import { vi, describe, it } from 'vitest'
-import { retry, RetryableError } from './retry'
+import { describe, it, vi } from 'vitest'
+import { RetryableError, retry } from './retry'
 
 describe.concurrent('retry', () => {
   beforeEach(() => {
@@ -58,7 +58,7 @@ describe.concurrent('retry', () => {
   }
 
   it('waits random amount of time between min and max', async () => {
-    const promises = []
+    const promises: Promise<void>[] = []
     for (let i = 0; i < 10; i++) {
       promises.push(
         checkTime(

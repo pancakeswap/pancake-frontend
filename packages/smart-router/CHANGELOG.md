@@ -1,5 +1,91 @@
 # @pancakeswap/smart-router
 
+## 5.1.3
+
+### Patch Changes
+
+- Updated dependencies [e26505f]
+  - @pancakeswap/gauges@1.1.4
+  - @pancakeswap/tokens@0.6.9
+  - @pancakeswap/stable-swap-sdk@1.0.1
+
+## 5.1.2
+
+### Patch Changes
+
+- 526586d: Add fot detector addresses
+
+## 5.1.1
+
+### Patch Changes
+
+- e6e8751: Add fot detector
+
+## 5.1.0
+
+### Minor Changes
+
+- 3b76a26: Introduce stable swap sdk
+
+### Patch Changes
+
+- Updated dependencies [3b76a26]
+  - @pancakeswap/stable-swap-sdk@1.0.0
+
+## 5.0.4
+
+### Patch Changes
+
+- Updated dependencies [928b9a8]
+  - @pancakeswap/tokens@0.6.8
+  - @pancakeswap/gauges@1.1.3
+
+## 5.0.3
+
+### Patch Changes
+
+- acc454d: Remove binance extension wallet connector @pancakeswap/wagmi
+  release new pkg @pancakeswap/universal-router-sdk & @pancakeswap/permit2-sdk
+- Updated dependencies [acc454d]
+  - @pancakeswap/v3-sdk@3.7.13
+  - @pancakeswap/gauges@1.1.2
+
+## 5.0.2
+
+### Patch Changes
+
+- 9db696b: Doc revision: correct the import path from smart router package
+
+## 5.0.1
+
+### Patch Changes
+
+- ad51fb7: Add usage example for v4 router
+
+## 5.0.0
+
+### Major Changes
+
+- 610a24a: Introduce v4 router with faster quoting speed
+
+### Patch Changes
+
+- Updated dependencies [610a24a]
+  - @pancakeswap/multicall@3.5.0
+  - @pancakeswap/sdk@5.8.0
+  - @pancakeswap/swap-sdk-core@1.1.0
+  - @pancakeswap/v3-sdk@3.7.12
+  - @pancakeswap/gauges@1.1.1
+  - @pancakeswap/tokens@0.6.7
+  - @pancakeswap/token-lists@0.0.11
+
+## 4.14.10
+
+### Patch Changes
+
+- Updated dependencies [9886d06]
+  - @pancakeswap/gauges@1.1.0
+
 ## 4.14.9
 
 ### Patch Changes
