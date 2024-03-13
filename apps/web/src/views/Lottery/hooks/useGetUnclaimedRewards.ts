@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react'
-import { useAccount } from 'wagmi'
-import { useGetLotteriesGraphData, useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
+import { FetchStatus, LotteryTicketClaimData, TFetchStatus } from 'config/constants/types'
+import { useEffect, useState } from 'react'
 import fetchUnclaimedUserRewards from 'state/lottery/fetchUnclaimedUserRewards'
-import { FetchStatus, TFetchStatus } from 'config/constants/types'
+import { useGetLotteriesGraphData, useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
+import { useAccount } from 'wagmi'
 
 const useGetUnclaimedRewards = () => {
   const { address: account } = useAccount()
   const { isTransitioning, currentLotteryId } = useLottery()
   const userLotteryData = useGetUserLotteriesGraphData()
   const lotteriesData = useGetLotteriesGraphData()
-  const [unclaimedRewards, setUnclaimedRewards] = useState([])
+  const [unclaimedRewards, setUnclaimedRewards] = useState<LotteryTicketClaimData[]>([])
   const [fetchStatus, setFetchStatus] = useState<TFetchStatus>(FetchStatus.Idle)
 
   useEffect(() => {
@@ -18,11 +18,12 @@ const useGetUnclaimedRewards = () => {
   }, [account, isTransitioning])
 
   const fetchAllRewards = async () => {
+    if (!account) return
     setFetchStatus(FetchStatus.Fetching)
     const unclaimedRewardsResponse = await fetchUnclaimedUserRewards(
       account,
       userLotteryData,
-      lotteriesData,
+      lotteriesData ?? [],
       currentLotteryId,
     )
     setUnclaimedRewards(unclaimedRewardsResponse)

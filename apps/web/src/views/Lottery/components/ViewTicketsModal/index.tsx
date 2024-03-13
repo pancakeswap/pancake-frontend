@@ -1,11 +1,11 @@
-import { styled } from 'styled-components'
-import { Modal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Modal } from '@pancakeswap/uikit'
 import { LotteryStatus } from 'config/constants/types'
-import { useLottery } from 'state/lottery/hooks'
 import useTheme from 'hooks/useTheme'
-import PreviousRoundTicketsInner from './PreviousRoundTicketsInner'
+import { useLottery } from 'state/lottery/hooks'
+import { styled } from 'styled-components'
 import CurrentRoundTicketsInner from './CurrentRoundTicketsInner'
+import PreviousRoundTicketsInner from './PreviousRoundTicketsInner'
 
 const StyledModal = styled(Modal)`
   ${({ theme }) => theme.mediaQueries.md} {
@@ -14,7 +14,7 @@ const StyledModal = styled(Modal)`
 `
 
 interface ViewTicketsModalProps {
-  roundId: string
+  roundId: string | null
   roundStatus?: LotteryStatus
   onDismiss?: () => void
 }

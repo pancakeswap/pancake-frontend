@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
-import { Flex, ExpandableLabel, CardFooter } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { CardFooter, ExpandableLabel, Flex } from '@pancakeswap/uikit'
+import { useEffect, useState } from 'react'
 import { LotteryRound } from 'state/types'
 import FooterExpanded from './FooterExpanded'
 
 interface PreviousRoundCardFooterProps {
-  lotteryNodeData: LotteryRound
-  lotteryId: string
+  lotteryNodeData: LotteryRound | null
+  lotteryId: string | null
 }
 
 const PreviousRoundCardFooter: React.FC<React.PropsWithChildren<PreviousRoundCardFooterProps>> = ({

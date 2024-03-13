@@ -13,26 +13,26 @@ import {
   useToast,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
+import { BIG_ONE_HUNDRED, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { FetchStatus } from 'config/constants/types'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
+import { useCakePrice } from 'hooks/useCakePrice'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useLotteryV2Contract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state'
-import { useCakePrice } from 'hooks/useCakePrice'
 import { fetchUserTicketsAndLotteries } from 'state/lottery'
 import { useLottery } from 'state/lottery/hooks'
-import { parseEther } from 'viem'
 import { styled } from 'styled-components'
-import { BIG_ZERO, BIG_ONE_HUNDRED } from '@pancakeswap/utils/bigNumber'
-import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { parseEther } from 'viem'
+import { useAccount } from 'wagmi'
 import EditNumbersModal from './EditNumbersModal'
 import NumTicketsToBuyButton from './NumTicketsToBuyButton'
 import { useTicketsReducer } from './useTicketsReducer'
@@ -66,12 +66,9 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
   const {
     maxNumberTicketsPerBuyOrClaim,
     currentLotteryId,
-    currentRound: {
-      priceTicketInCake,
-      discountDivisor,
-      userTickets: { tickets: userCurrentTickets },
-    },
+    currentRound: { priceTicketInCake, discountDivisor, userTickets },
   } = useLottery()
+  const { tickets: userCurrentTickets = [] } = userTickets ?? {}
   const { callWithGasPrice } = useCallWithGasPrice()
   const [ticketsToBuy, setTicketsToBuy] = useState('')
   const [discountValue, setDiscountValue] = useState('')
@@ -253,7 +250,9 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
     },
     onSuccess: async ({ receipt }) => {
       onDismiss?.()
-      dispatch(fetchUserTicketsAndLotteries({ account, currentLotteryId }))
+      if (account) {
+        dispatch(fetchUserTicketsAndLotteries({ account, currentLotteryId }))
+      }
       toastSuccess(t('Lottery tickets purchased!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
     },
   })
@@ -349,7 +348,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
       {account && !hasFetchedBalance ? (
         <Skeleton width="100%" height={20} mt="8px" mb="24px" />
       ) : (
-        <ShortcutButtonsWrapper isVisible={account && hasFetchedBalance && oneHundredPercentOfBalance >= 1}>
+        <ShortcutButtonsWrapper isVisible={Boolean(account && hasFetchedBalance && oneHundredPercentOfBalance >= 1)}>
           {tenPercentOfBalance >= 1 && (
             <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(tenPercentOfBalance)}>
               {hasFetchedBalance ? tenPercentOfBalance : ``}

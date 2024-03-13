@@ -1,30 +1,30 @@
-import { useState } from 'react'
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
+  Balance,
+  Box,
+  Button,
   Card,
-  CardHeader,
   CardBody,
+  CardFooter,
+  CardHeader,
+  ExpandableLabel,
   Flex,
   Heading,
-  Text,
   Skeleton,
-  Button,
+  Text,
   useModal,
-  Box,
-  CardFooter,
-  ExpandableLabel,
-  Balance,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import { LotteryStatus } from 'config/constants/types'
-import { useTranslation } from '@pancakeswap/localization'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { useLottery } from 'state/lottery/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import ViewTicketsModal from './ViewTicketsModal'
-import BuyTicketsButton from './BuyTicketsButton'
+import { LotteryStatus } from 'config/constants/types'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useState } from 'react'
+import { useLottery } from 'state/lottery/hooks'
+import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
 import { dateTimeOptions } from '../helpers'
+import BuyTicketsButton from './BuyTicketsButton'
 import RewardBrackets from './RewardBrackets'
+import ViewTicketsModal from './ViewTicketsModal'
 
 const Grid = styled.div`
   display: grid;
@@ -167,7 +167,7 @@ const NextDrawCard = () => {
                 {account && (
                   <Flex justifyContent={['center', null, null, 'flex-start']}>
                     <Text display="inline">{youHaveText} </Text>
-                    {!userTickets.isLoading ? (
+                    {!userTickets?.isLoading ? (
                       <Balance value={userTicketCount} decimals={0} display="inline" bold mx="4px" />
                     ) : (
                       <Skeleton mx="4px" height={20} width={40} />
@@ -175,7 +175,7 @@ const NextDrawCard = () => {
                     <Text display="inline"> {ticketsThisRoundText}</Text>
                   </Flex>
                 )}
-                {!userTickets.isLoading && userTicketCount > 0 && (
+                {!userTickets?.isLoading && userTicketCount > 0 && (
                   <Button
                     onClick={onPresentViewTicketsModal}
                     height="auto"
