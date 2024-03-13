@@ -1,9 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
-import { Modal, ModalV2, QuestionHelper, SearchIcon, Text, Flex, Link, AutoColumn } from '@pancakeswap/uikit'
+import { AutoColumn, Flex, Link, Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
-import { useState, memo } from 'react'
+import { memo, useState } from 'react'
 
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
@@ -26,8 +26,8 @@ export const TradeSummary = memo(function TradeSummary({
   outputAmount?: CurrencyAmount<Currency>
   tradeType?: TradeType
   slippageAdjustedAmounts: {
-    INPUT?: CurrencyAmount<Currency>
-    OUTPUT?: CurrencyAmount<Currency>
+    INPUT?: CurrencyAmount<Currency> | null
+    OUTPUT?: CurrencyAmount<Currency> | null
   }
   priceImpactWithoutFee?: Percent
   realizedLPFee?: CurrencyAmount<Currency>
@@ -184,7 +184,7 @@ export const AdvancedSwapDetails = memo(function AdvancedSwapDetails({
             inputAmount={inputAmount}
             outputAmount={outputAmount}
             tradeType={tradeType}
-            slippageAdjustedAmounts={slippageAdjustedAmounts}
+            slippageAdjustedAmounts={slippageAdjustedAmounts ?? {}}
             priceImpactWithoutFee={priceImpactWithoutFee}
             realizedLPFee={realizedLPFee}
             hasStablePair={hasStablePair}

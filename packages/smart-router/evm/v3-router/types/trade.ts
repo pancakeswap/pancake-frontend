@@ -1,9 +1,9 @@
 import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
 
-import { Route } from './route'
-import { PoolProvider, QuoteProvider } from './providers'
 import { PoolType } from './pool'
+import { PoolProvider, QuoteProvider } from './providers'
+import { Route } from './route'
 
 export interface SmartRouterTrade<TTradeType extends TradeType> {
   tradeType: TTradeType
@@ -13,7 +13,7 @@ export interface SmartRouterTrade<TTradeType extends TradeType> {
   // From routes we know how many splits and what percentage does each split take
   routes: Route[]
 
-  gasEstimate: bigint
+  gasEstimate?: bigint
   gasEstimateInUSD?: CurrencyAmount<Currency>
   blockNumber?: number
 }

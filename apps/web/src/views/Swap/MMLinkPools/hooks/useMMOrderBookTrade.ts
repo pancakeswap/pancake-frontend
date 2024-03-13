@@ -63,7 +63,7 @@ export const useOrderBookQuote = (
   rfqRequest: OrderBookRequest | null,
   rfqUserInputPath: MutableRefObject<string>,
   isRFQLive: MutableRefObject<boolean>,
-): { data: OrderBookResponse; isLoading: boolean } => {
+): { data: OrderBookResponse | undefined; isLoading: boolean } => {
   const [isMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const inputPath = `${request?.networkId}/${request?.makerSideToken}/${request?.takerSideToken}/${request?.makerSideTokenAmount}/${request?.takerSideTokenAmount}`
   const rfqInputPath = `${rfqRequest?.networkId}/${rfqRequest?.makerSideToken}/${rfqRequest?.takerSideToken}/${rfqRequest?.makerSideTokenAmount}/${rfqRequest?.takerSideTokenAmount}`

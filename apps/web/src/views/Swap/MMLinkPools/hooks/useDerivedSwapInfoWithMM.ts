@@ -1,13 +1,13 @@
 import { useDebounce } from '@pancakeswap/hooks'
 import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
-import { LegacyTradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { LegacyTradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import { useExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
 import { useCurrency } from 'hooks/Tokens'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useRouter } from 'next/router'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
-import { useRouter } from 'next/router'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { MMOrderBookTrade, MMRfqTrade } from '../types'
 import { useGetRFQId, useGetRFQTrade } from './useGetRFQTrade'
 import { useIsTradeWithMMBetter } from './useIsMMTradeBetter'
@@ -27,10 +27,10 @@ export function useDerivedBestTradeWithMM<T extends TradeType>(bestTrade?: Smart
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
-  const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
+  const inputCurrency = useCurrency(inputCurrencyId) ?? undefined
+  const outputCurrency = useCurrency(outputCurrencyId) ?? undefined
 
-  return useDerivedSwapInfoWithMM(independentField, typedValue, inputCurrency, outputCurrency, null, bestTrade)
+  return useDerivedSwapInfoWithMM(independentField, typedValue, inputCurrency, outputCurrency, undefined, bestTrade)
 }
 
 export function useDerivedSwapInfoWithMM(
@@ -41,11 +41,11 @@ export function useDerivedSwapInfoWithMM(
   v2Trade?: Trade<Currency, Currency, TradeType>,
   tradeWithStableSwap?: LegacyTradeWithStableSwap<Currency, Currency, TradeType> | SmartRouterTrade<TradeType>,
 ): {
-  mmTradeInfo: MMTradeInfo
+  mmTradeInfo: MMTradeInfo | null
   isMMBetter: boolean
-  mmQuoteExpiryRemainingSec: number
-  mmOrderBookTrade: MMOrderBookTrade
-  mmRFQTrade: MMRfqTrade
+  mmQuoteExpiryRemainingSec: number | null
+  mmOrderBookTrade: MMOrderBookTrade | null
+  mmRFQTrade: MMRfqTrade | null
 } {
   const [isExpertMode] = useExpertMode()
   const isMMDev = useMMDevMode()
@@ -63,7 +63,7 @@ export function useDerivedSwapInfoWithMM(
   })
 
   const { refreshRFQ, rfqId } = useGetRFQId(
-    (!mmOrderBookTrade?.inputError || isMMDev) && mmOrderBookTrade?.mmParam,
+    !mmOrderBookTrade?.inputError || isMMDev ? mmOrderBookTrade?.mmParam ?? null : null,
     isMMOrderBookTradeBetter,
     mmOrderBookTrade?.rfqUserInputPath,
     mmOrderBookTrade?.isRFQLive,
@@ -90,7 +90,7 @@ export function useDerivedSwapInfoWithMM(
   const mmTradeInfo = useMMTradeInfo({
     mmTrade: mmRFQTrade?.trade || mmOrderBookTrade?.trade,
     allowedSlippage,
-    chainId,
+    chainId: chainId!,
     mmSwapInputError: mmOrderBookTrade?.inputError,
   })
 

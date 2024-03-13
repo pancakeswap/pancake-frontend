@@ -13,7 +13,7 @@ export const useGetRFQId = (
   isMMBetter: boolean,
   rfqUserInputPath: MutableRefObject<string> | null | undefined,
   isRFQLive: MutableRefObject<boolean> | null | undefined,
-): { rfqId: string; refreshRFQ: () => void; rfqUserInputCache: string; isLoading: boolean } => {
+): { rfqId: string; refreshRFQ: () => void; rfqUserInputCache: string | undefined; isLoading: boolean } => {
   const { address: account } = useAccount()
 
   if (rfqUserInputPath)
@@ -60,13 +60,15 @@ export const useGetRFQTrade = (
   const deferredRfqId = useDeferredValue(rfqId)
   const deferredIsMMBetter = useDebounce(isMMBetter, 300)
   const enabled = Boolean(deferredIsMMBetter && deferredRfqId)
-  const [{ error, data, isLoading }, setRfqState] = useState<{ error: unknown; data: RFQResponse; isLoading: boolean }>(
-    {
-      error: null,
-      data: null,
-      isLoading: false,
-    },
-  )
+  const [{ error, data, isLoading }, setRfqState] = useState<{
+    error: unknown
+    data: RFQResponse | null
+    isLoading: boolean
+  }>({
+    error: null,
+    data: null,
+    isLoading: false,
+  })
   const {
     error: errorResponse,
     data: dataResponse,
@@ -97,7 +99,7 @@ export const useGetRFQTrade = (
       const { data: prevData } = prevState
       return {
         error: errorResponse,
-        data: !prevState ? dataResponse : isLoadingResponse ? prevData : dataResponse,
+        data: (!prevState ? dataResponse : isLoadingResponse ? prevData : dataResponse) ?? null,
         isLoading: isLoadingResponse,
       }
     })
@@ -111,7 +113,7 @@ export const useGetRFQTrade = (
         rfq: null,
         trade: null,
         quoteExpiry: null,
-        refreshRFQ: null,
+        refreshRFQ: undefined,
         error,
         rfqId,
         isLoading: enabled && isLoading,
@@ -142,7 +144,7 @@ export const useGetRFQTrade = (
       trade: null,
       quoteExpiry: null,
       isLoading: enabled && isLoading,
-      refreshRFQ: null,
+      refreshRFQ: undefined,
     }
   }, [
     data?.message,

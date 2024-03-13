@@ -1,8 +1,8 @@
-import { Currency, CurrencyAmount, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { Currency, CurrencyAmount, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 
 import { MM_SWAP_CONTRACT_ADDRESS } from '../constants'
 import { computeTradePriceBreakdown } from '../utils/exchange'
@@ -11,7 +11,7 @@ interface Options {
   mmTrade?: SmartRouterTrade<TradeType> | null
   allowedSlippage: number
   chainId: ChainId
-  mmSwapInputError: string
+  mmSwapInputError?: string
 }
 
 export interface MMTradeInfo {

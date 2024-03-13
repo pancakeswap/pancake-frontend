@@ -1,5 +1,5 @@
-import { Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Flex, Text } from '@pancakeswap/uikit'
 
 interface NoChartAvailableProps {
   token0Address: string
@@ -22,7 +22,7 @@ const NoChartAvailable: React.FC<React.PropsWithChildren<NoChartAvailableProps>>
           mb={['8px', '8px', '0px']}
           color="textSubtle"
           small
-          style={isMobile && { wordSpacing: '100vw' }}
+          style={isMobile ? { wordSpacing: '100vw' } : undefined}
         >
           Token0: {token0Address ?? 'null'}
         </Text>
@@ -31,7 +31,7 @@ const NoChartAvailable: React.FC<React.PropsWithChildren<NoChartAvailableProps>>
           mb={['8px', '8px', '0px']}
           color="textSubtle"
           small
-          style={isMobile && { wordSpacing: '100vw' }}
+          style={isMobile ? { wordSpacing: '100vw' } : undefined}
         >
           Token1: {token1Address ?? 'null'}
         </Text>
