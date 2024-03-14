@@ -56,7 +56,7 @@ export default function Offer({ offers, nft }: { offers: any; nft: any }) {
               )
             })}
           </div>
-          <Box height="160px">
+          <Box maxHeight="160px">
             <Column gap="12px">
               {offers?.map((offer, index) => {
                 return (

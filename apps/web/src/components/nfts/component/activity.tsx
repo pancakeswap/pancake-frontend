@@ -67,7 +67,7 @@ export default function Activity({ activities }: { activities: any[] }) {
               )
             })}
           </div>
-          <Box height="160px">
+          <Box maxHeight="160px">
             <Column gap="12px">
               {activities?.map((activity, index) => {
                 return (

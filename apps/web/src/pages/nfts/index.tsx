@@ -7,13 +7,14 @@ import { displayBalance } from 'utils/display'
 import { useEffect } from 'react'
 
 const CollectionCard = styled(Flex)`
-  aspect-ratio: 2/1;
   border-radius: 8px;
   //border: 1px solid #3a3a3a;
-  margin-bottom: 25px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 40px #000;
 `
 
 const CollectionSwiper = styled.div`
@@ -27,7 +28,7 @@ const CollectionSwiper = styled.div`
 `
 
 const CollectionSwiperItem = styled(Link)`
-  width: 360px;
+  width: 340px;
   flex-grow: 0;
   flex-shrink: 0;
   border-radius: 8px;

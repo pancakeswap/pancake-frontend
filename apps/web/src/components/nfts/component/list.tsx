@@ -1,13 +1,15 @@
-import { AceIcon, AutoRow, Box, Button, Column, Flex, Text, useToast } from '@pancakeswap/uikit'
+import { AceIcon, AutoRow, Box, Button, Column, Flex, Loading, Text, useToast } from '@pancakeswap/uikit'
 import { displayBalance } from 'utils/display'
 import { ellipseAddress } from 'utils/address'
 import { useAccount } from 'wagmi'
 import { useEthersSigner } from 'utils/ethers'
 import { Seaport } from '@opensea/seaport-js'
-import { SEAPORT_ADDRESS } from 'config/nfts'
+import { DOCKMAN_HOST, SEAPORT_ADDRESS } from 'config/nfts'
+import { useState } from 'react'
 import { Wrapper } from './offer.style'
 
-export default function List({ list }: { list: any }) {
+export default function List({ list, refetch }: { list: any; refetch: any }) {
+  const [loading, setLoading] = useState(false)
   const { address } = useAccount()
   const signer = useEthersSigner()
   const { toastSuccess } = useToast()
@@ -26,14 +28,26 @@ export default function List({ list }: { list: any }) {
   }
   const onAccept = async (orderHash: string) => {
     if (!signer) return
-    const seaport = new Seaport(signer, {
-      overrides: { contractAddress: SEAPORT_ADDRESS },
-    })
+    setLoading(true)
+    try {
+      const seaport = new Seaport(signer, {
+        overrides: { contractAddress: SEAPORT_ADDRESS },
+      })
 
-    const order = list?.find((l) => l.order_hash === orderHash)
+      const order = list?.find((l) => l.order_hash === orderHash)
 
-    const tx = await seaport.fulfillOrder({ order: order.order })
-    const res = await tx.executeAllActions()
+      const tx = await seaport.fulfillOrder({ order: order.order })
+      const res = await tx.executeAllActions()
+
+      const orderRes = await fetch(`${DOCKMAN_HOST}/orders/status?order_hash=${orderHash}`).then((r) => r.json())
+
+      console.log(orderRes)
+      refetch?.()
+    } catch (e: any) {
+      console.error(e.toString())
+    }
+
+    setLoading(false)
   }
 
   return (
@@ -47,7 +61,7 @@ export default function List({ list }: { list: any }) {
               <Box>From</Box>
             </AutoRow>
           </Text>
-          <Box height="160px">
+          <Box maxHeight="160px">
             <Column gap="12px">
               {list?.map((l) => {
                 return (
@@ -65,11 +79,13 @@ export default function List({ list }: { list: any }) {
                       <Text>{ellipseAddress(l.from)}</Text>
                     </Box>
                     {l.from === address?.toLocaleLowerCase() ? (
-                      <Button scale="sm" onClick={() => onCancel(l?.order_hash)}>
+                      <Button scale="sm" onClick={() => onCancel(l?.order_hash)} isLoading={loading}>
+                        {loading && <Loading />}
                         Cancel
                       </Button>
                     ) : (
-                      <Button scale="sm" onClick={() => onAccept(l?.order_hash)}>
+                      <Button scale="sm" onClick={() => onAccept(l?.order_hash)} isLoading={loading}>
+                        {loading && <Loading />}
                         Buy
                       </Button>
                     )}

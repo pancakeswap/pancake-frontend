@@ -415,7 +415,16 @@ export default function SGTDetail() {
                 <Text fontWeight={600} fontSize="18px" mb="10px">
                   List
                 </Text>
-                <List list={list} />
+                <List
+                  list={list}
+                  refetch={() => {
+                    setTimeout(() => {
+                      refetchActivities()
+                      refetchOffers()
+                      refetchList()
+                    }, 1500)
+                  }}
+                />
               </MetaBlock>
               <MetaBlock>
                 <Text fontWeight={600} fontSize="18px" mb="10px">
