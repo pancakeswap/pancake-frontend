@@ -226,6 +226,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
       bCakeWrapper={bCakeWrapperAddress}
       minDepositUSD={minDepositUSD}
       boosterMultiplier={info?.boosterMultiplier}
+      boosterContractAddress={info?.boosterContractAddress}
     >
       {id}
     </DuoTokenVaultCard>

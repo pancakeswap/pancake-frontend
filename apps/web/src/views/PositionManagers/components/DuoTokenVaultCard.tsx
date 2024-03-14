@@ -82,6 +82,7 @@ interface Props {
   bCakeWrapper?: Address
   minDepositUSD?: number
   boosterMultiplier?: number
+  boosterContractAddress?: Address
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -128,6 +129,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   bCakeWrapper,
   minDepositUSD,
   boosterMultiplier,
+  boosterContractAddress,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -231,6 +233,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           bCakeWrapper={bCakeWrapper}
           minDepositUSD={minDepositUSD}
           isBooster={isBooster}
+          boosterContractAddress={boosterContractAddress}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo

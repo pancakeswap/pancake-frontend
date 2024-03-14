@@ -56,6 +56,7 @@ export const ActionPanel: React.FC<
   bCakeWrapper,
   minDepositUSD,
   isBooster,
+  boosterContractAddress,
 }) => {
   const { colors } = useTheme()
   return (
@@ -137,6 +138,7 @@ export const ActionPanel: React.FC<
             bCakeWrapper={bCakeWrapper}
             minDepositUSD={minDepositUSD}
             isBooster={isBooster}
+            boosterContractAddress={boosterContractAddress}
           />
         </TableActionCard>
       </Flex>
