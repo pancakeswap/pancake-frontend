@@ -75,25 +75,25 @@ const BuildingConfig = [
     title: <Trans>Read the Whitepaper</Trans>,
     icon: <Step1Icon width={40} height={48} color="primary" />,
     imageUrl: `${ASSET_CDN}/web/v4-landing/buildings-1.png`,
-    url: 'https://github.com/pancakeswap/pancake-v4-core/blob/main/docs/whitepaper-en.pdf?utm_source=v4%20landing%20page&utm_medium=banner&utm_campaign=v4%20landing%20page&utm_id=v4%20whitepaper',
+    url: 'https://github.com/pancakeswap/pancake-v4-core/blob/main/docs/whitepaper-en.pdf?utm_source=v4landingpage&utm_medium=banner&utm_campaign=v4landingpage&utm_id=v4whitepaper',
   },
   {
     title: <Trans>Get the Tools</Trans>,
     icon: <Step2Icon width={40} height={48} color="primary" />,
     imageUrl: `${ASSET_CDN}/web/v4-landing/buildings-2.png`,
-    url: 'https://github.com/pancakeswap/pancake-v4-hooks-template?utm_source=v4%20landing%20page&utm_medium=banner&utm_campaign=v4%20landing%20page&utm_id=v4%20hooks%20template',
+    url: 'https://github.com/pancakeswap/pancake-v4-hooks-template?utm_source=v4landingpage&utm_medium=banner&utm_campaign=v4landingpage&utm_id=v4hookstemplate',
   },
   {
     title: <Trans>Join the Community</Trans>,
     icon: <Step3Icon width={40} height={48} color="primary" />,
     imageUrl: `${ASSET_CDN}/web/v4-landing/buildings-3.png`,
-    url: 'https://discord.com/invite/pancakeswap?utm_source=v4+landing+page&utm_medium=banner&utm_campaign=v4+landing+page&utm_id=v4+landing+page',
+    url: 'https://discord.gg/pancakeswap?utm_source=v4landingpage&utm_medium=banner&utm_campaign=v4landingpage&utm_id=v4landingpage',
   },
   {
     title: <Trans>Start Building</Trans>,
     icon: <Step4Icon width={40} height={48} color="primary" />,
     imageUrl: `${ASSET_CDN}/web/v4-landing/buildings-4.png`,
-    url: 'https://developer.pancakeswap.finance/?utm_source=v4%20landing%20page&utm_medium=banner&utm_campaign=v4%20landing%20page&utm_id=v4%20landing%20page',
+    url: 'https://developer.pancakeswap.finance/?utm_source=v4landingpage&utm_medium=banner&utm_campaign=v4landingpage&utm_id=v4landingpage',
   },
 ]
 
