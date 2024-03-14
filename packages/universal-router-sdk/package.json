@@ -29,7 +29,6 @@
     "dev": "tsup --watch",
     "coverage": "vitest run --coverage",
     "test": "vitest --run",
-    "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "format:check": "prettier --check --loglevel error \"{src,test}/**/*.{js,jsx,ts,tsx,json}\"",
     "format:write": "prettier --write \"{src,test}/**/*.{js,jsx,ts,tsx,json}\"",
