@@ -9,8 +9,10 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { Address } from 'viem'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import NextLink from 'next/link'
 import { styled, useTheme } from 'styled-components'
 import { StatusView } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusView'
+import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { useBoostStatusPM } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { useAccount } from 'wagmi'
 import { AprDataInfo, useWrapperBooster } from '../hooks'
@@ -168,6 +170,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
     bCakeWrapper,
   )
   const { isTxLoading, onStake, onUpdate } = useOnStake(contractAddress ?? '0x', bCakeWrapper ?? '0x')
+  const { locked } = useBCakeBoostLimitAndLockInfo()
 
   return (
     <>
@@ -214,7 +217,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                   style={{ borderLeft: dividerBorderStyle, borderTop: dividerBorderStyle }}
                 />
                 <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
-                  <Flex width="100%" justifyContent="space-between">
+                  <Flex width="100%" justifyContent="space-between" alignItems="center">
                     <StatusView
                       status={status}
                       isFarmStaking
@@ -257,7 +260,16 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                   style={{ borderLeft: dividerBorderStyle, borderTop: dividerBorderStyle }}
                 />
                 <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
-                  <StatusView status={status} maxBoostMultiplier={3} />
+                  <Flex width="100%" justifyContent="space-between" alignItems="center">
+                    <StatusView status={status} maxBoostMultiplier={3} />
+                    {!locked && (
+                      <NextLink href="/cake-staking" passHref>
+                        <Button width="100%" style={{ whiteSpace: 'nowrap' }}>
+                          {t('Go to Lock')}
+                        </Button>
+                      </NextLink>
+                    )}
+                  </Flex>
                 </RowBetween>
               </>
             )}
