@@ -1,15 +1,17 @@
-import { Price, TradeType, ZERO } from '@pancakeswap/sdk'
+import { Currency, Price, TradeType, ZERO } from '@pancakeswap/sdk'
 
 import { SmartRouterTrade } from '../types'
 
-export function getExecutionPrice(trade: SmartRouterTrade<TradeType> | null | undefined) {
+export function getExecutionPrice(
+  trade: SmartRouterTrade<TradeType> | undefined | null,
+): Price<Currency, Currency> | undefined {
   if (!trade) {
-    return null
+    return undefined
   }
 
   const { inputAmount, outputAmount } = trade
   if (inputAmount.quotient === ZERO || outputAmount.quotient === ZERO) {
-    return null
+    return undefined
   }
   return new Price(inputAmount.currency, outputAmount.currency, inputAmount.quotient, outputAmount.quotient)
 }

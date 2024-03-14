@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
@@ -90,11 +89,13 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
     [onCurrencySelection, warningSwapHandler],
   )
   const handleInputSelect = useCallback(
-    (newCurrency: Currency) => handleCurrencySelect(newCurrency, Field.INPUT, inputCurrencyId, outputCurrencyId),
+    (newCurrency: Currency) =>
+      handleCurrencySelect(newCurrency, Field.INPUT, inputCurrencyId || '', outputCurrencyId || ''),
     [handleCurrencySelect, inputCurrencyId, outputCurrencyId],
   )
   const handleOutputSelect = useCallback(
-    (newCurrency: Currency) => handleCurrencySelect(newCurrency, Field.OUTPUT, inputCurrencyId, outputCurrencyId),
+    (newCurrency: Currency) =>
+      handleCurrencySelect(newCurrency, Field.OUTPUT, inputCurrencyId || '', outputCurrencyId || ''),
     [handleCurrencySelect, inputCurrencyId, outputCurrencyId],
   )
 

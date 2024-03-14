@@ -18,12 +18,13 @@ const FeeSummary: React.FC<React.PropsWithChildren<FeeSummaryProps>> = ({
   vaultKey,
 }) => {
   const { t } = useTranslation()
-  const {
-    fees: { withdrawalFee, withdrawalFeePeriod },
-    userData: { lastDepositedTime },
-  } = useVaultPoolByKey(vaultKey)
-  const feeAsDecimal = withdrawalFee / 100
-  const feeInCake = (parseFloat(stakeAmount) * (feeAsDecimal / 100)).toFixed(4)
+  const { fees, userData } = useVaultPoolByKey(vaultKey)
+  const lastDepositedTime = userData?.lastDepositedTime
+  const withdrawalFee = fees?.withdrawalFee
+  const withdrawalFeePeriod = fees?.withdrawalFeePeriod
+
+  const feeAsDecimal = withdrawalFee ? withdrawalFee / 100 : undefined
+  const feeInCake = (parseFloat(stakeAmount) * ((feeAsDecimal || 0) / 100)).toFixed(4)
   const withdrawalDayPeriod = withdrawalFeePeriod ? secondsToDay(withdrawalFeePeriod) : '-'
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>

@@ -79,5 +79,5 @@ export function useSwapInputError(
     inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
   }
 
-  return inputError
+  return inputError || ''
 }

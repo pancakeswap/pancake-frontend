@@ -174,7 +174,7 @@ export const useTradingCompetitionContractMoD = () => {
 }
 
 export const useVaultPoolContract = <T extends VaultKey>(
-  vaultKey: T,
+  vaultKey?: T,
 ):
   | (T extends VaultKey.CakeVault
       ? ReturnType<typeof getCakeVaultV2Contract>

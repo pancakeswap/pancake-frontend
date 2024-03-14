@@ -134,7 +134,7 @@ export const BenefitCard: React.FC<{
                   {info.subTitle}
                 </Text>
                 <Text fontSize="16px" bold lineHeight="120%">
-                  {dataText}
+                  {dataText ?? '-'}
                 </Text>
               </Flex>
             ) : null}

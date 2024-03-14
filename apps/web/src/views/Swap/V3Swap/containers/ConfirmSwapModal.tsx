@@ -34,8 +34,8 @@ import { ApproveStepFlow } from './ApproveStepFlow'
 interface ConfirmSwapModalProps {
   isMM?: boolean
   isRFQReady?: boolean
-  trade?: SmartRouterTrade<TradeType>
-  originalTrade?: SmartRouterTrade<TradeType>
+  trade?: SmartRouterTrade<TradeType> | null
+  originalTrade?: SmartRouterTrade<TradeType> | null
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   attemptingTxn: boolean
   txHash?: string

@@ -1,5 +1,13 @@
 # @pancakeswap/farms
 
+## 1.0.46
+
+### Patch Changes
+
+- d7586b8: Update farms, pools, gauges, tokens
+- Updated dependencies [d7586b8]
+  - @pancakeswap/tokens@0.6.10
+
 ## 1.0.45
 
 ### Patch Changes

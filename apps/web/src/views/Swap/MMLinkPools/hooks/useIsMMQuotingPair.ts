@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
-import { Currency } from '@pancakeswap/sdk'
 import { PANCAKE_BSC_MM, PANCAKE_ETH_MM } from 'config/constants/lists'
+import { UnsafeCurrency } from 'config/constants/types'
 import { ConnectorNames } from 'config/wallet'
 import { ExtendEthereum } from 'global'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -31,10 +31,7 @@ export const useTokenList = (url?: string): Record<string, string> => {
   return whiteList
 }
 
-export const useIsMMQuotingPair = (
-  inputCurrency: Currency | undefined,
-  outputCurrency: Currency | undefined,
-): boolean => {
+export const useIsMMQuotingPair = (inputCurrency: UnsafeCurrency, outputCurrency: UnsafeCurrency): boolean => {
   const { chainId } = useActiveChainId()
   const list = useTokenList(chainId ? QUOTING_WHITE_LIST[chainId] : undefined)
   const isMMSupportChain = useIsMMSupportChain()

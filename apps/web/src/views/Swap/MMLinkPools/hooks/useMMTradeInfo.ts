@@ -4,14 +4,15 @@ import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 
+import { SlippageAdjustedAmounts } from 'views/Swap/V3Swap/utils/exchange'
 import { MM_SWAP_CONTRACT_ADDRESS } from '../constants'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 
 interface Options {
   mmTrade?: SmartRouterTrade<TradeType> | null
   allowedSlippage: number
-  chainId: ChainId
-  mmSwapInputError?: string
+  chainId?: ChainId
+  mmSwapInputError: string
 }
 
 export interface MMTradeInfo {
@@ -21,7 +22,7 @@ export interface MMTradeInfo {
   route: {
     path: Currency[]
   }
-  slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
+  slippageAdjustedAmounts: SlippageAdjustedAmounts
   executionPrice: Price<Currency, Currency>
   routerAddress: string
   priceImpactWithoutFee?: Percent
@@ -32,7 +33,7 @@ export interface MMTradeInfo {
 
 export function useMMTradeInfo({ mmTrade, chainId, mmSwapInputError }: Options): MMTradeInfo | null {
   return useMemo(() => {
-    if (!mmTrade) {
+    if (!mmTrade || !chainId) {
       return null
     }
     return {

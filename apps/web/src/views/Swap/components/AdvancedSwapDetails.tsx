@@ -8,6 +8,7 @@ import { memo, useState } from 'react'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
 import { Field } from 'state/swap/actions'
+import { SlippageAdjustedAmounts } from '../V3Swap/utils/exchange'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { RouterViewer } from './RouterViewer'
 import SwapRoute from './SwapRoute'
@@ -25,12 +26,9 @@ export const TradeSummary = memo(function TradeSummary({
   inputAmount?: CurrencyAmount<Currency>
   outputAmount?: CurrencyAmount<Currency>
   tradeType?: TradeType
-  slippageAdjustedAmounts: {
-    INPUT?: CurrencyAmount<Currency> | null
-    OUTPUT?: CurrencyAmount<Currency> | null
-  }
-  priceImpactWithoutFee?: Percent
-  realizedLPFee?: CurrencyAmount<Currency>
+  slippageAdjustedAmounts: SlippageAdjustedAmounts
+  priceImpactWithoutFee?: Percent | null
+  realizedLPFee?: CurrencyAmount<Currency> | null
   isMM?: boolean
 }) {
   const { t } = useTranslation()
@@ -150,11 +148,8 @@ export interface AdvancedSwapDetailsProps {
   pairs?: Pair[]
   path?: Currency[]
   priceImpactWithoutFee?: Percent
-  realizedLPFee?: CurrencyAmount<Currency>
-  slippageAdjustedAmounts?: {
-    INPUT?: CurrencyAmount<Currency>
-    OUTPUT?: CurrencyAmount<Currency>
-  }
+  realizedLPFee?: CurrencyAmount<Currency> | null
+  slippageAdjustedAmounts: SlippageAdjustedAmounts
   inputAmount?: CurrencyAmount<Currency>
   outputAmount?: CurrencyAmount<Currency>
   tradeType?: TradeType
@@ -205,7 +200,7 @@ export const AdvancedSwapDetails = memo(function AdvancedSwapDetails({
                     placement="top"
                   />
                 </span>
-                <SwapRoute path={path} />
+                {path ? <SwapRoute path={path} /> : null}
                 <SearchIcon style={{ cursor: 'pointer' }} onClick={() => setIsModalOpen(true)} />
                 <ModalV2 closeOnOverlayClick isOpen={isModalOpen} onDismiss={() => setIsModalOpen(false)}>
                   <Modal

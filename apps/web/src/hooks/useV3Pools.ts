@@ -5,12 +5,12 @@ import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
 import { POOLS_FAST_REVALIDATE, POOLS_SLOW_REVALIDATE } from 'config/pools'
+import { tracker } from 'utils/datadog'
 import { v3Clients } from 'utils/graphql'
 import { createViemPublicClientGetter, getViemClients } from 'utils/viem'
-import { tracker } from 'utils/datadog'
 
-import { getPoolTicks } from './v3/useAllV3TicksQuery'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
+import { getPoolTicks } from './v3/useAllV3TicksQuery'
 
 export interface V3PoolsHookParams {
   // Used for caching

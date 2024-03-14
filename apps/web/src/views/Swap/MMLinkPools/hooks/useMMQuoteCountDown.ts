@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { SAFE_MM_QUOTE_EXPIRY_SEC } from '../constants'
 
-export const useMMQuoteCountDown = (quoteExpiry: number | null, refreshRFQ?: () => void) => {
+export const useMMQuoteCountDown = (quoteExpiry: number | null, refreshRFQ?: (() => void) | null) => {
   const reFetched = useRef<boolean>(false)
 
   const [remainingSec, setRemainingSec] = useState<number | null>(null)

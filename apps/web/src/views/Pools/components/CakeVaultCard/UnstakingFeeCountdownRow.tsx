@@ -6,14 +6,17 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { secondsToDay } from 'utils/timeHelper'
 import { VaultKey } from 'state/types'
 import dayjs from 'dayjs'
+import BN from 'bignumber.js'
 import duration from 'dayjs/plugin/duration'
 import WithdrawalFeeTimer from './WithdrawalFeeTimer'
+
+const ZERO = new BN(0)
 
 dayjs.extend(duration)
 
 interface UnstakingFeeCountdownRowProps {
   isTableVariant?: boolean
-  vaultKey: VaultKey
+  vaultKey?: VaultKey
 }
 
 const UnstakingFeeCountdownRow: React.FC<React.PropsWithChildren<UnstakingFeeCountdownRowProps>> = ({
@@ -22,12 +25,13 @@ const UnstakingFeeCountdownRow: React.FC<React.PropsWithChildren<UnstakingFeeCou
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const {
-    userData: { lastDepositedTime, userShares },
-    fees: { withdrawalFee, withdrawalFeePeriod },
-  } = useVaultPoolByKey(vaultKey)
+  const { userData, fees } = useVaultPoolByKey(vaultKey)
+  const lastDepositedTime = userData?.lastDepositedTime
+  const userShares = userData?.userShares
+  const withdrawalFee = fees?.withdrawalFee
+  const withdrawalFeePeriod = fees?.withdrawalFeePeriod
 
-  const feeAsDecimal = withdrawalFee / 100 || '-'
+  const feeAsDecimal = withdrawalFee !== undefined ? withdrawalFee / 100 : '-'
   const withdrawalDayPeriod = withdrawalFeePeriod ? secondsToDay(withdrawalFeePeriod) : '-'
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
@@ -47,13 +51,13 @@ const UnstakingFeeCountdownRow: React.FC<React.PropsWithChildren<UnstakingFeeCou
   )
 
   const { secondsRemaining, hasUnstakingFee } = useWithdrawalFeeTimer(
-    parseInt(lastDepositedTime, 10),
-    userShares,
+    parseInt(lastDepositedTime || '0', 10),
+    userShares || ZERO,
     withdrawalFeePeriod,
   )
 
   // The user has made a deposit, but has no fee
-  const noFeeToPay = lastDepositedTime && !hasUnstakingFee && userShares.gt(0)
+  const noFeeToPay = lastDepositedTime && !hasUnstakingFee && userShares?.gt(0)
 
   // Show the timer if a user is connected, has deposited, and has an unstaking fee
   const shouldShowTimer = account && lastDepositedTime && hasUnstakingFee
@@ -80,7 +84,7 @@ const UnstakingFeeCountdownRow: React.FC<React.PropsWithChildren<UnstakingFeeCou
       <TooltipText ref={targetRef} small textTransform="lowercase">
         {noFeeToPay ? '0' : feeAsDecimal}% {getRowText()}
       </TooltipText>
-      {shouldShowTimer && <WithdrawalFeeTimer secondsRemaining={secondsRemaining} />}
+      {shouldShowTimer && <WithdrawalFeeTimer secondsRemaining={secondsRemaining ?? 0} />}
     </Flex>
   )
 }

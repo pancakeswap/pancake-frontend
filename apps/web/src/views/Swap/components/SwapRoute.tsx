@@ -8,7 +8,7 @@ export default memo(function SwapRoute({ path }: { path?: Currency[] }) {
     <Flex flexWrap="wrap" width="100%" justifyContent="flex-end" alignItems="center">
       {path?.map((token, i) => {
         const isLastItem: boolean = i === path.length - 1
-        const currency = token.isToken ? unwrappedToken(token) : token
+        const currency = (token.isToken && unwrappedToken(token)) || token
         return (
           // There might be same token appear more than once
           // eslint-disable-next-line react/no-array-index-key

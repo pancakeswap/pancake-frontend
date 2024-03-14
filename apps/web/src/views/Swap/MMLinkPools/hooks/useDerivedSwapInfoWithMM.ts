@@ -3,6 +3,7 @@ import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { LegacyTradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import { useExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
+import { UnsafeCurrency } from 'config/constants/types'
 import { useCurrency } from 'hooks/Tokens'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useRouter } from 'next/router'
@@ -36,15 +37,15 @@ export function useDerivedBestTradeWithMM<T extends TradeType>(bestTrade?: Smart
 export function useDerivedSwapInfoWithMM(
   independentField: Field,
   typedValue: string,
-  inputCurrency: Currency | undefined,
-  outputCurrency: Currency | undefined,
+  inputCurrency: UnsafeCurrency,
+  outputCurrency: UnsafeCurrency,
   v2Trade?: Trade<Currency, Currency, TradeType>,
   tradeWithStableSwap?: LegacyTradeWithStableSwap<Currency, Currency, TradeType> | SmartRouterTrade<TradeType>,
 ): {
   mmTradeInfo: MMTradeInfo | null
   isMMBetter: boolean
   mmQuoteExpiryRemainingSec: number | null
-  mmOrderBookTrade: MMOrderBookTrade | null
+  mmOrderBookTrade: MMOrderBookTrade
   mmRFQTrade: MMRfqTrade | null
 } {
   const [isExpertMode] = useExpertMode()
@@ -58,15 +59,15 @@ export function useDerivedSwapInfoWithMM(
     independentField,
     trade: tradeWithStableSwap,
     v2Trade,
-    tradeWithMM: mmOrderBookTrade?.trade,
+    tradeWithMM: mmOrderBookTrade.trade,
     isExpertMode,
   })
 
   const { refreshRFQ, rfqId } = useGetRFQId(
-    !mmOrderBookTrade?.inputError || isMMDev ? mmOrderBookTrade?.mmParam ?? null : null,
+    ((!mmOrderBookTrade.inputError || isMMDev) && mmOrderBookTrade.mmParam) || null,
     isMMOrderBookTradeBetter,
-    mmOrderBookTrade?.rfqUserInputPath,
-    mmOrderBookTrade?.isRFQLive,
+    mmOrderBookTrade.rfqUserInputPath,
+    mmOrderBookTrade.isRFQLive,
   )
 
   const mmRFQTrade = useGetRFQTrade(
@@ -76,7 +77,7 @@ export function useDerivedSwapInfoWithMM(
     outputCurrency,
     isMMOrderBookTradeBetter,
     refreshRFQ,
-    mmOrderBookTrade?.isRFQLive,
+    mmOrderBookTrade.isRFQLive,
   )
 
   const isMMBetter = useIsTradeWithMMBetter({
@@ -88,10 +89,10 @@ export function useDerivedSwapInfoWithMM(
   })
 
   const mmTradeInfo = useMMTradeInfo({
-    mmTrade: mmRFQTrade?.trade || mmOrderBookTrade?.trade,
+    mmTrade: mmRFQTrade?.trade || mmOrderBookTrade.trade,
     allowedSlippage,
-    chainId: chainId!,
-    mmSwapInputError: mmOrderBookTrade?.inputError,
+    chainId,
+    mmSwapInputError: mmOrderBookTrade.inputError || '',
   })
 
   const mmQuoteExpiryRemainingSec = useMMQuoteCountDown(

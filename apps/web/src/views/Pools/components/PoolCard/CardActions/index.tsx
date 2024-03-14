@@ -54,7 +54,7 @@ const CardActions: React.FC<React.PropsWithChildren<CardActionsProps>> = ({ pool
             earningTokenSymbol={earningToken.symbol}
             earningTokenDecimals={earningToken.decimals}
             sousId={sousId}
-            earningTokenPrice={earningTokenPrice}
+            earningTokenPrice={earningTokenPrice || 0}
             isBnbPool={isBnbPool}
             isLoading={isLoading}
           />

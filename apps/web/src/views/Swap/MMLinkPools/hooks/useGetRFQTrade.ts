@@ -1,6 +1,6 @@
 import { useDebounce } from '@pancakeswap/hooks'
-import { Currency } from '@pancakeswap/sdk'
 import { useQuery } from '@tanstack/react-query'
+import { UnsafeCurrency } from 'config/constants/types'
 import { MutableRefObject, useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useAccount } from 'wagmi'
@@ -43,7 +43,7 @@ export const useGetRFQId = (
   return {
     rfqId: data?.message?.rfqId ?? '',
     refreshRFQ: refetch,
-    rfqUserInputCache: rfqUserInputPath?.current,
+    rfqUserInputCache: rfqUserInputPath?.current || '',
     isLoading: enabled && isPending,
   }
 }
@@ -51,8 +51,8 @@ export const useGetRFQId = (
 export const useGetRFQTrade = (
   rfqId: string,
   independentField: Field,
-  inputCurrency: Currency | undefined,
-  outputCurrency: Currency | undefined,
+  inputCurrency: UnsafeCurrency,
+  outputCurrency: UnsafeCurrency,
   isMMBetter: boolean,
   refreshRFQ: () => void,
   isRFQLive: MutableRefObject<boolean> | null | undefined,
@@ -61,8 +61,8 @@ export const useGetRFQTrade = (
   const deferredIsMMBetter = useDebounce(isMMBetter, 300)
   const enabled = Boolean(deferredIsMMBetter && deferredRfqId)
   const [{ error, data, isLoading }, setRfqState] = useState<{
-    error: unknown
-    data: RFQResponse | null
+    error: Error | null
+    data: RFQResponse | null | undefined
     isLoading: boolean
   }>({
     error: null,
@@ -113,7 +113,7 @@ export const useGetRFQTrade = (
         rfq: null,
         trade: null,
         quoteExpiry: null,
-        refreshRFQ: undefined,
+        refreshRFQ: null,
         error,
         rfqId,
         isLoading: enabled && isLoading,
@@ -144,7 +144,7 @@ export const useGetRFQTrade = (
       trade: null,
       quoteExpiry: null,
       isLoading: enabled && isLoading,
-      refreshRFQ: undefined,
+      refreshRFQ: null,
     }
   }, [
     data?.message,

@@ -35,15 +35,15 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   const usdValueStaked = useMemo(
     () =>
       getBalanceNumber(
-        getDecimalAmount(new BigNumber(currentLockedAmount), stakingToken.decimals).multipliedBy(stakingTokenPrice),
-        stakingToken.decimals,
+        getDecimalAmount(new BigNumber(currentLockedAmount), stakingToken?.decimals).multipliedBy(stakingTokenPrice),
+        stakingToken?.decimals,
       ),
-    [currentLockedAmount, stakingTokenPrice, stakingToken.decimals],
+    [currentLockedAmount, stakingTokenPrice, stakingToken?.decimals],
   )
 
   const validator = useCallback(
     ({ duration }) => {
-      const isValidAmount = currentLockedAmount && currentLockedAmount > 0
+      const isValidAmount = Boolean(currentLockedAmount && currentLockedAmount > 0)
       const totalDuration = currentDurationLeft + duration
 
       const isValidDuration = duration > 0 && totalDuration > 0 && totalDuration <= MAX_LOCK_DURATION
@@ -62,10 +62,10 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
       finalDuration: duration,
       finalLockedAmount:
         currentDuration && currentDuration + duration > MAX_LOCK_DURATION
-          ? getBalanceAmount(ENABLE_EXTEND_LOCK_AMOUNT, stakingToken.decimals).toNumber()
+          ? getBalanceAmount(ENABLE_EXTEND_LOCK_AMOUNT, stakingToken?.decimals).toNumber()
           : 0,
     }),
-    [stakingToken.decimals, currentDuration],
+    [stakingToken?.decimals, currentDuration],
   )
 
   const customOverview = useCallback(
@@ -110,26 +110,28 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
       >
         <Box mb="16px">
           <StaticAmount
-            stakingAddress={stakingToken.address}
-            stakingSymbol={stakingToken.symbol}
+            stakingAddress={stakingToken?.address || ''}
+            stakingSymbol={stakingToken?.symbol || ''}
             lockedAmount={currentLockedAmount}
             usdValueStaked={usdValueStaked}
           />
         </Box>
-        <LockedBodyModal
-          stakingToken={stakingToken}
-          stakingTokenPrice={stakingTokenPrice}
-          currentBalance={currentBalance}
-          currentDuration={currentDuration}
-          currentDurationLeft={currentDurationLeft}
-          onDismiss={onDismiss}
-          lockedAmount={new BigNumber(currentLockedAmount)}
-          validator={validator}
-          prepConfirmArg={prepConfirmArg}
-          customOverview={customOverview}
-          isRenew={isRenew}
-          customLockWeekInSeconds={customLockWeekInSeconds}
-        />
+        {stakingToken ? (
+          <LockedBodyModal
+            stakingToken={stakingToken}
+            stakingTokenPrice={stakingTokenPrice}
+            currentBalance={currentBalance}
+            currentDuration={currentDuration}
+            currentDurationLeft={currentDurationLeft}
+            onDismiss={onDismiss}
+            lockedAmount={new BigNumber(currentLockedAmount)}
+            validator={validator}
+            prepConfirmArg={prepConfirmArg}
+            customOverview={customOverview}
+            isRenew={isRenew}
+            customLockWeekInSeconds={customLockWeekInSeconds}
+          />
+        ) : null}
       </Modal>
     </RoiCalculatorModalProvider>
   )

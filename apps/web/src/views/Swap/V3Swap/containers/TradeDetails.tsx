@@ -17,13 +17,13 @@ interface Props {
   trade?: SmartRouterTrade<TradeType> | null
 }
 
-export function MMTradeDetail({ loaded, mmTrade }: { loaded: boolean; mmTrade?: MMTradeInfo }) {
+export function MMTradeDetail({ loaded, mmTrade }: { loaded: boolean; mmTrade?: MMTradeInfo | null }) {
   const lastTrade = useLastTruthy(mmTrade?.trade)
 
   return (
     <AdvancedDetailsFooter show={loaded}>
       <AutoColumn gap="0px">
-        {lastTrade && (
+        {lastTrade && mmTrade && (
           <AdvancedSwapDetails
             pairs={[]}
             path={lastTrade?.routes[0].path}
@@ -50,7 +50,7 @@ export const TradeDetails = memo(function TradeDetails({ loaded, trade }: Props)
     [trade],
   )
 
-  if (isWrapping || !loaded || !trade) {
+  if (isWrapping || !loaded || !trade || !slippageAdjustedAmounts) {
     return null
   }
 
