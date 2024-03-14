@@ -5,14 +5,16 @@ import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@pancakeswa
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { ConfirmModalState, confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
 import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from 'config/constants/exchange'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePermit2 } from 'hooks/usePermit2'
 import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { publicClient } from 'utils/client'
+import { publicDelicateClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
 import { Address, Hex } from 'viem'
+import { erc20ABI } from 'wagmi'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
 import { useSwapCallbackV2 } from './useSwapCallbackV2'
@@ -21,6 +23,23 @@ export type ConfirmAction = {
   step: ConfirmModalState
   action: (nextStep?: ConfirmModalState) => Promise<void>
   showIndicator: boolean
+}
+
+const getTokenAllowance = ({
+  chainId,
+  address,
+  inputs,
+}: {
+  chainId: number
+  address: Address
+  inputs: [`0x${string}`, `0x${string}`]
+}) => {
+  return publicDelicateClient({ chainId }).readContract({
+    abi: erc20ABI,
+    address,
+    functionName: 'allowance',
+    args: inputs,
+  })
 }
 
 const useCreateConfirmSteps = (amountToApprove: CurrencyAmount<Token> | undefined, spender: Address | undefined) => {
@@ -52,6 +71,16 @@ const useConfirmActions = (
   const { chainId } = useActiveChainId()
   const [deadline] = useTransactionDeadline()
   const { revoke, permit, approve, refetch } = usePermit2(amountToApprove, spender)
+  const { account } = useAccountActiveChain()
+  const getAllowanceArgs = useMemo(() => {
+    if (!chainId) return undefined
+    const inputs = [account, spender] as [`0x${string}`, `0x${string}`]
+    return {
+      chainId,
+      address: amountToApprove?.currency.address as Address,
+      inputs,
+    }
+  }, [chainId, amountToApprove?.currency.address, spender, account])
   const [permit2Signature, setPermit2Signature] = useState<Permit2Signature | undefined>(undefined)
   const { callback: swap, error: swapError } = useSwapCallbackV2({
     trade,
@@ -85,15 +114,18 @@ const useConfirmActions = (
         if (result?.hash && chainId) {
           setTxHash(result.hash)
 
-          await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
+          await publicDelicateClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
         }
 
         let newAllowanceRaw: bigint = 0n
 
         try {
           // check if user really reset the approval to 0
-          const { data } = await refetch()
-          newAllowanceRaw = data ?? 0n
+          // const { data } = await refetch()
+          if (getAllowanceArgs) {
+            const data = await getTokenAllowance(getAllowanceArgs)
+            newAllowanceRaw = data ?? 0n
+          }
         } catch (error) {
           // assume the approval reset is successful, if we can't check the allowance
           console.error('check allowance after revoke failed: ', error)
@@ -124,7 +156,7 @@ const useConfirmActions = (
       action,
       showIndicator: true,
     }
-  }, [amountToApprove?.currency, chainId, refetch, revoke, showError, t])
+  }, [amountToApprove?.currency, chainId, getAllowanceArgs, revoke, showError, t])
 
   const permitStep = useMemo(() => {
     return {
@@ -157,13 +189,17 @@ const useConfirmActions = (
           const result = await approve()
           if (result?.hash && chainId) {
             setTxHash(result.hash)
-            await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
+            await publicDelicateClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
           }
           let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
           // check if user really approved the amount trade needs
           try {
-            const { data } = await refetch()
-            newAllowanceRaw = data ?? 0n
+            // const { data } = await refetch()
+
+            if (getAllowanceArgs) {
+              const data = await getTokenAllowance(getAllowanceArgs)
+              newAllowanceRaw = data ?? 0n
+            }
           } catch (error) {
             // assume the approval is successful, if we can't check the allowance
             console.error('check allowance after approve failed: ', error)
@@ -235,7 +271,7 @@ const useConfirmActions = (
           if (result?.hash) {
             setTxHash(result.hash)
 
-            await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
+            await publicDelicateClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
           }
           setConfirmState(ConfirmModalState.COMPLETED)
         } catch (error: any) {
