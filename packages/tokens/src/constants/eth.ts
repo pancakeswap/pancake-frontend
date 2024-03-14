@@ -329,7 +329,7 @@ export const ethereumTokens = {
     'Stake DAO Token',
     'https://www.stakedao.org/',
   ),
-  agEUR: new ERC20Token(
+  eura: new ERC20Token(
     ChainId.ETHEREUM,
     '0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8',
     18,

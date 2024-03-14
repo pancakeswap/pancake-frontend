@@ -50,7 +50,9 @@ describe.concurrent(
           ],
           allowFailure: false,
         })
-
+        if (token.symbol.toLowerCase() === 'ageur' || token.symbol.toLowerCase() === 'ageur') {
+          console.log(token, symbol)
+        }
         const isWhitelisted = whitelist.includes(key.toLowerCase())
         if (!isWhitelisted) expect(key.toLowerCase()).toBe(token.symbol.toLowerCase())
         if (!isWhitelisted) expect(token.symbol.toLowerCase()).toBe(symbol.toLowerCase())
