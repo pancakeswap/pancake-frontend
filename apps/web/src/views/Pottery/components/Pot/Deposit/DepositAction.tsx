@@ -1,20 +1,20 @@
-import { styled } from 'styled-components'
-import { useState, useMemo } from 'react'
-import { Flex, Box, Button, Text, HelpIcon, useTooltip, LogoRoundIcon, Skeleton, InputProps } from '@pancakeswap/uikit'
+import { Box, Button, Flex, HelpIcon, InputProps, LogoRoundIcon, Skeleton, Text, useTooltip } from '@pancakeswap/uikit'
 import { NumericalInput } from '@pancakeswap/widgets-internal'
+import { useMemo, useState } from 'react'
+import { styled } from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
-import BigNumber from 'bignumber.js'
-import { usePotteryData, useLatestVaultAddress } from 'state/pottery/hook'
 import { CAKE } from '@pancakeswap/tokens'
-import useTokenBalance from 'hooks/useTokenBalance'
-import { getFullDisplayBalance, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { PotteryDepositStatus } from 'state/types'
-import { useUserEnoughCakeValidator } from 'views/Pools/components/LockedPool/hooks/useUserEnoughCakeValidator'
+import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import EnableButton from './EnableButton'
+import useTokenBalance from 'hooks/useTokenBalance'
+import { useLatestVaultAddress, usePotteryData } from 'state/pottery/hook'
+import { PotteryDepositStatus } from 'state/types'
+import { useUserEnoughCakeValidator } from 'views/Pools/components/LockedPool/hooks/useUserEnoughCakeValidator'
 import DepositButton from './DepositButton'
+import EnableButton from './EnableButton'
 
 const InputPanel = styled.div`
   display: flex;
@@ -46,7 +46,7 @@ const DepositAction: React.FC<React.PropsWithChildren<DepositActionProps>> = ({ 
   const maxTotalDepositToNumber = getBalanceNumber(publicData.maxTotalDeposit)
   const remainingCakeCanStake = new BigNumber(maxTotalDepositToNumber).minus(totalValueLockedValue).toString()
 
-  const { balance: userCake } = useTokenBalance(CAKE[chainId]?.address)
+  const { balance: userCake } = useTokenBalance(chainId ? CAKE[chainId]?.address : undefined)
   const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
   const { userNotEnoughCake, notEnoughErrorMessage } = useUserEnoughCakeValidator(depositAmount, userCake)
 
@@ -94,7 +94,7 @@ const DepositAction: React.FC<React.PropsWithChildren<DepositActionProps>> = ({ 
     )
   }
 
-  if (userData.allowance.isLessThanOrEqualTo(0)) {
+  if (userData.allowance.isLessThanOrEqualTo(0) && lastVaultAddress) {
     return <EnableButton potteryVaultAddress={lastVaultAddress} />
   }
 
@@ -160,14 +160,14 @@ const DepositAction: React.FC<React.PropsWithChildren<DepositActionProps>> = ({ 
         <Button disabled mt="10px" width="100%">
           {notEnoughErrorMessage}
         </Button>
-      ) : (
+      ) : lastVaultAddress ? (
         <DepositButton
           status={publicData.getStatus}
           depositAmount={depositAmount}
           potteryVaultAddress={lastVaultAddress}
           setDepositAmount={setDepositAmount}
         />
-      )}
+      ) : null}
     </Box>
   )
 }

@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react'
-import { styled } from 'styled-components'
-import { Card, Text, Skeleton, CardHeader, Flex, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { useAppDispatch } from 'state'
-import { setFinishedRoundInfoFetched, fetchPotteryRoundData } from 'state/pottery/index'
-import { usePotteryData } from 'state/pottery/hook'
-import RoundSwitcher from 'views/Lottery/components/AllHistoryCard/RoundSwitcher'
 import { useDebounce } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { BunnyPlaceholderIcon, Card, CardHeader, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { useEffect, useState } from 'react'
+import { useAppDispatch } from 'state'
+import { usePotteryData } from 'state/pottery/hook'
+import { fetchPotteryRoundData, setFinishedRoundInfoFetched } from 'state/pottery/index'
+import { styled } from 'styled-components'
+import RoundSwitcher from 'views/Lottery/components/AllHistoryCard/RoundSwitcher'
 import { getDrawnDate } from 'views/Lottery/helpers'
 import PreviousRoundCardBody from './PreviousRoundCardBody'
 
@@ -41,16 +41,17 @@ const AllHistoryCard = () => {
   const { publicData, finishedRoundInfo } = usePotteryData()
   const currentPotteryId = publicData.latestRoundId
 
-  const [latestRoundId, setLatestRoundId] = useState(null)
-  const [selectedRoundId, setSelectedRoundId] = useState('')
+  const [latestRoundId, setLatestRoundId] = useState<number | null>(null)
+  const [selectedRoundId, setSelectedRoundId] = useState<string | undefined>('')
   const debouncedSelectedRoundId = useDebounce(selectedRoundId, 1000)
 
   useEffect(() => {
     if (currentPotteryId) {
       const currentPotteryIdAsInt = currentPotteryId ? parseInt(currentPotteryId) : null
-      const mostRecentFinishedRoundId = currentPotteryIdAsInt >= 0 ? currentPotteryIdAsInt + 1 : ''
+      const mostRecentFinishedRoundId =
+        currentPotteryIdAsInt && currentPotteryIdAsInt >= 0 ? currentPotteryIdAsInt + 1 : null
       setLatestRoundId(mostRecentFinishedRoundId)
-      setSelectedRoundId(mostRecentFinishedRoundId.toString())
+      setSelectedRoundId(mostRecentFinishedRoundId?.toString())
     }
   }, [currentPotteryId])
 
@@ -72,7 +73,7 @@ const AllHistoryCard = () => {
       if (parseInt(value, 10) <= 0) {
         setSelectedRoundId('')
       }
-      if (parseInt(value, 10) >= latestRoundId) {
+      if (latestRoundId && parseInt(value, 10) >= latestRoundId) {
         setSelectedRoundId(latestRoundId.toString())
       }
     } else {

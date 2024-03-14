@@ -1,32 +1,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { Flex } from '@pancakeswap/uikit'
-import { Address } from 'wagmi'
 import { ContextApi } from '@pancakeswap/localization'
+import { Flex } from '@pancakeswap/uikit'
 import { DefaultTheme } from 'styled-components'
+import { Address } from 'wagmi'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
-import BuyTicketsButtons from '../Buttons/BuyTickets'
-import MintButton from '../Buttons/Mint'
-import EndEventButtons from '../Buttons/EndEvent'
 import ActivateProfileButton from '../Buttons/ActivateProfile'
-import { getCurrentButton } from './utils'
+import BuyTicketsButtons from '../Buttons/BuyTickets'
+import EndEventButtons from '../Buttons/EndEvent'
+import MintButton from '../Buttons/Mint'
 import { ButtonsEnum } from './types'
+import { getCurrentButton } from './utils'
 
 export type CtaButtonsProps = {
   t: ContextApi['t']
-  account: Address
+  account?: Address
   saleStatus: SaleStatusEnum
   userStatus: UserStatusEnum
   theme: DefaultTheme
   canClaimForGen0: boolean
-  maxPerAddress: number
-  maxPerTransaction: number
-  numberTicketsOfUser: number
-  numberTicketsForGen0: number
-  numberTicketsUsedForGen0: number
-  maxSupply: number
-  totalSupplyMinted: number
-  numberTokensOfUser: number
+  maxPerAddress?: number
+  maxPerTransaction?: number
+  numberTicketsOfUser?: number
+  numberTicketsForGen0?: number
+  numberTicketsUsedForGen0?: number
+  maxSupply?: number
+  totalSupplyMinted?: number
+  numberTokensOfUser?: number
   startTimestamp: number
   cakeBalance: bigint
   pricePerTicket: bigint
@@ -40,15 +40,15 @@ const CtaButtons: React.FC<React.PropsWithChildren<CtaButtonsProps>> = ({
   userStatus,
   theme,
   canClaimForGen0,
-  maxPerAddress,
-  maxPerTransaction,
-  numberTicketsOfUser,
-  numberTicketsForGen0,
-  numberTicketsUsedForGen0,
-  numberTokensOfUser,
+  maxPerAddress = 0,
+  maxPerTransaction = 0,
+  numberTicketsOfUser = 0,
+  numberTicketsForGen0 = 0,
+  numberTicketsUsedForGen0 = 0,
+  numberTokensOfUser = 0,
   startTimestamp,
-  maxSupply,
-  totalSupplyMinted,
+  maxSupply = 0,
+  totalSupplyMinted = 0,
   cakeBalance,
   pricePerTicket,
   ticketsOfUser,

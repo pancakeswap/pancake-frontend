@@ -1,14 +1,14 @@
-import { Box, lightColors, Progress, Text } from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
+import { Box, lightColors, Progress, Text } from '@pancakeswap/uikit'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 
 type PreEventProps = {
   t: ContextApi['t']
-  saleStatus: SaleStatusEnum
+  saleStatus?: SaleStatusEnum
   userStatus: UserStatusEnum
-  totalTicketsDistributed: number
-  maxSupply: number
-  totalSupplyMinted: number
+  totalTicketsDistributed?: number
+  maxSupply?: number
+  totalSupplyMinted?: number
 }
 
 const saleProgressTextMapping = (t: ContextApi['t'], saleStatus: SaleStatusEnum, remaining: string, total: string) => {
@@ -37,11 +37,11 @@ const saleProgressTextMapping = (t: ContextApi['t'], saleStatus: SaleStatusEnum,
 const SaleProgress: React.FC<React.PropsWithChildren<PreEventProps>> = ({
   t,
   saleStatus,
-  totalTicketsDistributed,
-  totalSupplyMinted,
-  maxSupply,
+  totalTicketsDistributed = 0,
+  totalSupplyMinted = 0,
+  maxSupply = 0,
 }) => {
-  const displaySaleProgress = saleStatus > SaleStatusEnum.Premint
+  const displaySaleProgress = saleStatus && saleStatus > SaleStatusEnum.Premint
   const isClaimingPhase = saleStatus === SaleStatusEnum.Claim
   const supplyRemaining = maxSupply - totalTicketsDistributed
   const remainingTickets = isClaimingPhase ? totalSupplyMinted : supplyRemaining
