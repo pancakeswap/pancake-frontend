@@ -2495,8 +2495,8 @@ export const bscTokens = {
     ChainId.BSC,
     '0x12f31B73D812C6Bb0d735a218c086d44D5fe5f89',
     18,
-    'agEUR',
-    'agEUR',
+    'EURA',
+    'EURA',
     'https://app.angle.money/#/',
   ),
   caps: new ERC20Token(

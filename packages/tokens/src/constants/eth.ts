@@ -333,8 +333,8 @@ export const ethereumTokens = {
     ChainId.ETHEREUM,
     '0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8',
     18,
-    'agEUR',
-    'agEUR',
+    'EURA',
+    'EURA',
     'https://angle.money/',
   ),
   insp: new ERC20Token(
