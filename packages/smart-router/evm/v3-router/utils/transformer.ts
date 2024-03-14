@@ -153,7 +153,7 @@ export function serializeTrade(trade: SmartRouterTrade<TradeType>): SerializedTr
     inputAmount: serializeCurrencyAmount(trade.inputAmount),
     outputAmount: serializeCurrencyAmount(trade.outputAmount),
     routes: trade.routes.map(serializeRoute),
-    gasEstimate: trade.gasEstimate?.toString(),
+    gasEstimate: trade.gasEstimate.toString(),
     gasEstimateInUSD: trade.gasEstimateInUSD && serializeCurrencyAmount(trade.gasEstimateInUSD),
   }
 }

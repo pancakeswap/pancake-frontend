@@ -100,7 +100,7 @@ export function serializeTrade(trade: V4Trade<TradeType>): SerializedV4Trade {
     inputAmount: serializeCurrencyAmount(trade.inputAmount),
     outputAmount: serializeCurrencyAmount(trade.outputAmount),
     routes: trade.routes.map(serializeRoute),
-    gasEstimate: trade.gasEstimate?.toString(),
+    gasEstimate: trade.gasEstimate.toString(),
     gasCostInBase: serializeCurrencyAmount(trade.gasCostInBase),
     gasCostInQuote: serializeCurrencyAmount(trade.gasCostInQuote),
     inputAmountWithGasAdjusted: serializeCurrencyAmount(trade.inputAmountWithGasAdjusted),
