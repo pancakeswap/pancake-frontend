@@ -224,7 +224,7 @@ export function parseTrade(chainId: ChainId, trade: SerializedTrade): SmartRoute
     inputAmount: parseCurrencyAmount(chainId, trade.inputAmount),
     outputAmount: parseCurrencyAmount(chainId, trade.outputAmount),
     routes: trade.routes.map((r) => parseRoute(chainId, r)),
-    gasEstimate: trade.gasEstimate ? BigInt(trade.gasEstimate) : undefined,
+    gasEstimate: trade.gasEstimate ? BigInt(trade.gasEstimate) : 0n,
     gasEstimateInUSD: trade.gasEstimateInUSD && parseCurrencyAmount(chainId, trade.gasEstimateInUSD),
   }
 }

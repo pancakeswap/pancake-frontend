@@ -13,7 +13,7 @@ export interface SmartRouterTrade<TTradeType extends TradeType> {
   // From routes we know how many splits and what percentage does each split take
   routes: Route[]
 
-  gasEstimate?: bigint
+  gasEstimate: bigint
   gasEstimateInUSD?: CurrencyAmount<Currency>
   blockNumber?: number
 }
