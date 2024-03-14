@@ -161,8 +161,8 @@ export const RoundResultBox: React.FC<React.PropsWithChildren<RoundResultBoxProp
 }
 
 interface RoundPriceProps {
-  lockPrice: bigint
-  closePrice: bigint
+  lockPrice: bigint | null
+  closePrice: bigint | null
 }
 
 export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({ lockPrice, closePrice }) => {

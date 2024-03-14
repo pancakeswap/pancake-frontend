@@ -1,6 +1,6 @@
-import { ArrowBackIcon, ArrowForwardIcon, Flex, IconButton, BunnyCardsIcon } from '@pancakeswap/uikit'
-import { styled } from 'styled-components'
+import { ArrowBackIcon, ArrowForwardIcon, BunnyCardsIcon, Flex, IconButton } from '@pancakeswap/uikit'
 import { useGetSortedRoundsCurrentEpoch } from 'state/predictions/hooks'
+import { styled } from 'styled-components'
 import useSwiper from '../hooks/useSwiper'
 
 const StyledPrevNextNav = styled(Flex)`
@@ -42,8 +42,10 @@ const PrevNextNav = () => {
 
   const handleSlideToLive = () => {
     if (swiper) {
-      const currentEpochIndex = rounds.findIndex((round) => round.epoch === currentEpoch)
-      swiper.slideTo(currentEpochIndex - 1)
+      const currentEpochIndex = rounds?.findIndex((round) => round.epoch === currentEpoch)
+      if (currentEpochIndex !== undefined && currentEpochIndex !== null) {
+        swiper.slideTo(currentEpochIndex - 1)
+      }
     }
   }
 

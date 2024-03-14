@@ -1,6 +1,6 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { BoxProps, Text } from '@pancakeswap/uikit'
 import { NodeRound } from 'state/types'
-import { useTranslation } from '@pancakeswap/localization'
 import { getRoundPosition } from '../../helpers'
 import { LockPriceRow, PrizePoolRow, RoundPrice, RoundResultBox } from './styles'
 
@@ -20,7 +20,7 @@ const RoundResult: React.FC<React.PropsWithChildren<RoundResultProps>> = ({
   const { t } = useTranslation()
 
   return (
-    <RoundResultBox betPosition={betPosition} {...props}>
+    <RoundResultBox betPosition={betPosition ?? undefined} {...props}>
       <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
         {t('Closed Price')}
       </Text>
@@ -31,7 +31,7 @@ const RoundResult: React.FC<React.PropsWithChildren<RoundResultProps>> = ({
       ) : (
         <RoundPrice lockPrice={lockPrice} closePrice={closePrice} />
       )}
-      {lockPrice && <LockPriceRow lockPrice={lockPrice} />}
+      {lockPrice ? <LockPriceRow lockPrice={lockPrice} /> : null}
       <PrizePoolRow totalAmount={totalAmount} />
       {children}
     </RoundResultBox>
