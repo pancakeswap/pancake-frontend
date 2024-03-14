@@ -3198,7 +3198,7 @@
   "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.",
   "Permit %symbol%": "Permit %symbol%",
   "Enable spending %symbol%": "授權支出 %symbol%",
-  "Reset approval on USDT.": "Reset approval on USDT.",
+  "Reset approval on USDT.": "重設 USDT 的授權",
   "Go to CAKE Staking": "前往 CAKE Staking",
   "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.",
