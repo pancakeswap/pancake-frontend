@@ -12,6 +12,7 @@ import { ellipseAddress } from 'utils/address'
 import { DEFAULT_COLLECTION_AVATAR, DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
 import { displayBalance } from 'utils/display'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import Link from 'next/link'
 
 const NFTImage = styled.img`
   border: 1px solid #fff;
@@ -294,7 +295,8 @@ export default function SGTList() {
               <div className="sensei__table-body" style={{ marginTop: '20px', gap: '8px' }}>
                 {nfts?.map((nft: any) => {
                   return (
-                    <Box
+                    <Link
+                      href={`/nfts/detail/${nft?.id}`}
                       className="sensei__table-body-tr sensei__table-body-tr-hover"
                       key={nft?.id}
                       style={{
@@ -349,7 +351,7 @@ export default function SGTList() {
                           Trade
                         </Button>
                       </Row>
-                    </Box>
+                    </Link>
                   )
                 })}
               </div>
