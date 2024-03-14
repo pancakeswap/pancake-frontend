@@ -20,7 +20,7 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
-import { useDataDogRUM } from 'hooks/useDataDogRUM'
+import { useRouter } from 'next/router'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
 import { useInitGlobalWorker } from 'hooks/useWorker'
 import { persistor, useStore } from 'state'
@@ -141,6 +141,8 @@ type AppPropsWithLayout = AppProps & {
 const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? SentryErrorBoundary : Fragment
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+  const router = useRouter()
+
   if (Component.pure) {
     return <Component {...pageProps} />
   }
@@ -149,13 +151,11 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const Layout = Component.Layout || Fragment
   const ShowMenu = Component.mp ? Fragment : Menu
   const isShowScrollToTopButton = Component.isShowScrollToTopButton || true
-
   return (
     <ProductionErrorBoundary>
       <div
         style={{
-          backgroundImage: 'url(/images/swap-bg.png)',
-          backgroundSize: '100%',
+          background: `${router.pathname.includes('nfts') ? '#121212' : 'url(/images/swap-bg.png) center / 100%'}`,
         }}
       >
         <ShowMenu>
