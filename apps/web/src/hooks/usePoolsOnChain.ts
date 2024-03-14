@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
 import { BigintIsh, Currency } from '@pancakeswap/sdk'
-import { OnChainProvider, Pool, SmartRouter } from '@pancakeswap/smart-router/evm'
+import { OnChainProvider, Pool, SmartRouter } from '@pancakeswap/smart-router'
 
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useMemo, useRef } from 'react'

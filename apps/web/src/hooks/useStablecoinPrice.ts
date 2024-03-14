@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Currency, CurrencyAmount, Price, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { CAKE, STABLE_COIN } from '@pancakeswap/tokens'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import { useCakePrice } from 'hooks/useCakePrice'

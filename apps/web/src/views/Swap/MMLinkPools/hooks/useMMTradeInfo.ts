@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Currency, CurrencyAmount, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 

@@ -1,5 +1,5 @@
 import { Currency, Trade, TradeType, ZERO } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'

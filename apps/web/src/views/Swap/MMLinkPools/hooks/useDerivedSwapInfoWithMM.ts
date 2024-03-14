@@ -1,6 +1,6 @@
 import { useDebounce } from '@pancakeswap/hooks'
 import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { LegacyTradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import { useExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
 import { UnsafeCurrency } from 'config/constants/types'

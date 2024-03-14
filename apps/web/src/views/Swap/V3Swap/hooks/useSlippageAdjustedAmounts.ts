@@ -1,5 +1,5 @@
 import { TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useMemo } from 'react'
 import { computeSlippageAdjustedAmounts } from '../utils/exchange'

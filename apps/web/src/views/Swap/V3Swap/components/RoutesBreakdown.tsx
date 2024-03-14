@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Route } from '@pancakeswap/smart-router/evm'
+import { Route } from '@pancakeswap/smart-router'
 import { Box, IconButton, QuestionHelper, SearchIcon, Text, useModalV2 } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { memo } from 'react'

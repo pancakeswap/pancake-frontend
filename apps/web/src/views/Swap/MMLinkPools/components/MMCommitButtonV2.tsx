@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { Button, useModal } from '@pancakeswap/uikit'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import { CommitButton } from 'components/CommitButton'

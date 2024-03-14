@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { MutableRefObject } from 'react'
 import { Field } from 'state/swap/actions'
 import { nativeEnum as zNativeEnum, number as zNumber, object as zObject, string as zString } from 'zod'

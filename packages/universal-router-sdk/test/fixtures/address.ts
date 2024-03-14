@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { getPermit2Address } from '@pancakeswap/permit2-sdk'
 import { CurrencyAmount, ERC20Token, Pair, Percent } from '@pancakeswap/sdk'
-import { PoolType, SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
+import { PoolType, SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router'
 import {
   DEPLOYER_ADDRESSES,
   FeeAmount,
