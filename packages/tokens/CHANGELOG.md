@@ -1,5 +1,11 @@
 # @pancakeswap/tokens
 
+## 0.6.10
+
+### Patch Changes
+
+- d7586b8: Update farms, pools, gauges, tokens
+
 ## 0.6.9
 
 ### Patch Changes

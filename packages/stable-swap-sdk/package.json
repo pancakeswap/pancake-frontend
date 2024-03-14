@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/stable-swap-sdk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "SDK for pancakeswap stable swap",
   "repository": {
     "type": "git",
