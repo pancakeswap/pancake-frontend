@@ -22,13 +22,15 @@ export const UserMenuItem = styled.button<UserMenuItemProps>`
   padding-left: 16px;
   padding-right: 16px;
   width: 100%;
+  transition: all 0.3s;
 
   &:is(button) {
     cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   }
 
   &:hover:not(:disabled) {
-    background-color: ${({ theme }) => theme.colors.tertiary};
+    // background-color: ${({ theme }) => theme.colors.tertiary};
+    color: #fff;
   }
 
   &:active:not(:disabled) {
