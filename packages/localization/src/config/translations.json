@@ -2633,7 +2633,7 @@
   "zkSync Era": "zkSync Era",
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to",
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.",
-  "%chainId% supports limited fiat currencies. USD are not supported": "%chainId% supports limited fiat currencies. USD are not supported",
+
   "Proceed in your wallet": "Proceed in your wallet",
   "Enable spending %symbol%": "Enable spending %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.",
@@ -3213,7 +3213,6 @@
   "If you believe that your address has been misclassified, please email": "If you believe that your address has been misclassified, please email",
   "on %network%": "on %network%",
   "Est total fees: $%fees%": "Est total fees: $%fees%",
-  "$%fees%": "$%fees%",
   "Show details": "Show details",
   "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
   "Reset approval on USDT.": "Reset approval on USDT.",
@@ -3221,5 +3220,7 @@
   "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.",
   "Amount too low": "Amount too low",
-  "Amount too high": "Amount too high"
+  "Amount too high": "Amount too high",
+  "Why can't I see my bitcoin purchase": "Why can't I see my bitcoin purchase",
+  "Transfers through the Bitcoin network may take longer due to network congestion. Please check your BTC address again after a few hours.": "Transfers through the Bitcoin network may take longer due to network congestion. Please check your BTC address again after a few hours."
 }
