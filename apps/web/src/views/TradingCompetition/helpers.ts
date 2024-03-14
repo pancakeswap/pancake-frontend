@@ -1,13 +1,13 @@
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { easterPrizes, PrizesConfig } from 'config/constants/trading-competition/prizes'
-import BigNumber from 'bignumber.js'
-import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { bscTokens } from '@pancakeswap/tokens'
-import { multiplyPriceByAmount } from 'utils/prices'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { easterPrizes, PrizesConfig } from 'config/constants/trading-competition/prizes'
 import { useCakePrice } from 'hooks/useCakePrice'
+import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
+import { multiplyPriceByAmount } from 'utils/prices'
 
-export const localiseTradingVolume = (value: number, decimals = 0) => {
-  return value.toLocaleString('en-US', { maximumFractionDigits: decimals })
+export const localiseTradingVolume = (value?: number, decimals = 0) => {
+  return value?.toLocaleString('en-US', { maximumFractionDigits: decimals })
 }
 
 export const useCompetitionCakeRewards = (userCakeReward: string | number) => {
@@ -65,12 +65,12 @@ export const useMoboxCompetitionRewards = ({
   userCakeRewards,
   userMoboxRewards,
 }: {
-  userCakeRewards: string | number
-  userMoboxRewards: string | number
+  userCakeRewards?: string | number
+  userMoboxRewards?: string | number
 }) => {
   const moboxPriceBUSD = useStablecoinPrice(bscTokens.mbox)
-  const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
-  const moboxAsBigNumber = new BigNumber(userMoboxRewards as string)
+  const cakeAsBigNumber = userCakeRewards ? new BigNumber(userCakeRewards) : new BigNumber(0)
+  const moboxAsBigNumber = userMoboxRewards ? new BigNumber(userMoboxRewards) : new BigNumber(0)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
   const moboxBalance = getBalanceNumber(moboxAsBigNumber)
   const cakePriceBusd = useCakePrice()
@@ -91,12 +91,12 @@ export const useModCompetitionRewards = ({
   userCakeRewards,
   userDarRewards,
 }: {
-  userCakeRewards: string | number
-  userDarRewards: string | number
+  userCakeRewards?: string | number
+  userDarRewards?: string | number
 }) => {
   const darPriceBUSD = useStablecoinPrice(bscTokens.dar)
-  const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
-  const darAsBigNumber = new BigNumber(userDarRewards as string)
+  const cakeAsBigNumber = userCakeRewards ? new BigNumber(userCakeRewards) : new BigNumber(0)
+  const darAsBigNumber = userDarRewards ? new BigNumber(userDarRewards) : new BigNumber(0)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
   const darBalance = getBalanceNumber(darAsBigNumber, bscTokens.dar.decimals)
   const cakePriceBusd = useCakePrice()
@@ -126,7 +126,11 @@ export const getEasterRewardGroupAchievements = (userRewardGroup: string, teamRa
 }
 
 // given we have userPointReward and userRewardGroup, we can find the specific reward because no Rank has same two values.
-export const getRewardGroupAchievements = (prizes: PrizesConfig, userRewardGroup: string, userPointReward: string) => {
+export const getRewardGroupAchievements = (
+  prizes: PrizesConfig,
+  userRewardGroup?: string,
+  userPointReward?: string,
+) => {
   const prize = Object.values(prizes)
     .flat()
     .find((rank) => rank.achievements.points === Number(userPointReward) && rank.group === userRewardGroup)

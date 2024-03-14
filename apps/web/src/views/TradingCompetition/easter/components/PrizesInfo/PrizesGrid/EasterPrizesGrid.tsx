@@ -1,24 +1,24 @@
-import { useState } from 'react'
-import { Tiers, Rank, easterPrizes } from 'config/constants/trading-competition/prizes'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   BlockIcon,
   Box,
   CheckmarkCircleIcon,
+  CrownIcon,
   Flex,
   MedalBronzeIcon,
   MedalGoldIcon,
   MedalPurpleIcon,
   MedalSilverIcon,
   MedalTealIcon,
-  CrownIcon,
   Tab,
   TabMenu,
-  Text,
   TeamPlayerIcon,
+  Text,
   TrophyGoldIcon,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { Td, BoldTd, StyledPrizeTable } from '../../../../components/StyledPrizeTable'
+import { Rank, Tiers, easterPrizes } from 'config/constants/trading-competition/prizes'
+import { useState } from 'react'
+import { BoldTd, StyledPrizeTable, Td } from '../../../../components/StyledPrizeTable'
 
 const COLOR_GOLD = '#FFBF33'
 const COLOR_SILVER = '#C1C1C1'
@@ -118,8 +118,8 @@ const EasterPrizesGrid = () => {
                   </BoldTd>
                   <Td>
                     <Flex alignItems="center" flexWrap="wrap" justifyContent="center" width="100%">
-                      {champion > 0 && <CrownIcon mr={[0, '4px']} />}
-                      {teamPlayer > 0 && <TeamPlayerIcon mr={[0, '4px']} />}
+                      {champion && champion > 0 && <CrownIcon mr={[0, '4px']} />}
+                      {teamPlayer && teamPlayer > 0 && <TeamPlayerIcon mr={[0, '4px']} />}
                       <TrophyGoldIcon mr={[0, '4px']} />
                       <Text fontSize="12px" color="textSubtle">
                         {`+${getTotalAchievementPoints(row.achievements).toLocaleString(undefined, {
