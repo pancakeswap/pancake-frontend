@@ -1,6 +1,6 @@
 import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
-import { createContext, useMemo } from 'react'
+import { createContext, useContext, useMemo } from 'react'
 
 import { infoStableSwapABI } from 'config/abi/infoStableSwap'
 import { stableLPABI } from 'config/abi/stableLP'
@@ -89,6 +89,14 @@ export const StableConfigContext = createContext<{
   stableSwapLPContract: ReturnType<typeof useStableSwapLPContract>
   stableSwapConfig?: StableSwapConfig
 } | null>(null)
+
+export const useStableConfigContext = () => {
+  const context = useContext(StableConfigContext)
+  if (!context) {
+    throw new Error('useStableConfigContext must be used within a StableConfigProvider')
+  }
+  return context
+}
 
 export default function useStableConfig({
   tokenA,
