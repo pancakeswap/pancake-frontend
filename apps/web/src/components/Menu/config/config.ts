@@ -193,7 +193,7 @@ const config: (
     },
     {
       label: t('v4'),
-      href: '/introducing-v4',
+      href: '/v4',
       icon: NftIcon,
       fillIcon: NftFillIcon,
       image: '/images/decorations/nft.png',
@@ -250,7 +250,7 @@ const config: (
         },
         {
           label: t('v4'),
-          href: '/introducing-v4',
+          href: '/v4',
           isMobileOnly: true,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
