@@ -304,7 +304,12 @@ export default function SGTList() {
                       }}
                     >
                       <Flex flexShrink={0} alignItems="center" width="160px">
-                        <NFTImage width={60} height={60} src={nft?.nft_image ?? DEFAULT_NFT_IMAGE} alt="avatar" />
+                        <NFTImage
+                          width={60}
+                          height={60}
+                          src={nft?.nft_image ? nft?.nft_image : DEFAULT_NFT_IMAGE}
+                          alt="avatar"
+                        />
                         <Text ml="10px">#{nft?.token_id}</Text>
                       </Flex>
                       <Row justifyContent="center">{nft.rarity}</Row>
