@@ -124,7 +124,7 @@ export const pageVariants = recipe({
         paddingBottom: "0px",
       },
       lg: {
-        padding: "32px",
+        padding: "90px 32px 32px",
         paddingBottom: "0px",
       },
     }),
