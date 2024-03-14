@@ -1,13 +1,12 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query'
+import { UseQueryResult, useQuery } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import { getIsNetworkEnabled } from '../constants'
 import {
-  createQueryKey,
   Evaluate,
   ExactPartial,
   OnRampProviderQuote,
   OnRampQuotesPayload,
   UseQueryParameters,
+  createQueryKey,
 } from '../types'
 
 const getOnRampQuotesQueryKey = createQueryKey<'fetch-onramp-quotes', [ExactPartial<OnRampQuotesPayload>]>(
@@ -43,7 +42,7 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
     ]),
     refetchInterval: 40 * 1_000,
     staleTime: 40 * 1_000,
-    enabled: Boolean(cryptoCurrency && fiatAmount && fiatCurrency && getIsNetworkEnabled(network) && enabled),
+    enabled: Boolean(enabled),
     queryFn: async ({ queryKey }) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
       const { cryptoCurrency, fiatAmount, fiatCurrency, network, isFiat } = queryKey[1]

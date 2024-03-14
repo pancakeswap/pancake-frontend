@@ -102,7 +102,7 @@ export const ProviderGroupItem = ({
 }: ProviderGroupItemProps) => {
   const { t } = useTranslation()
   const isBestQuote = Boolean(quotes?.[0] === currentQuote && !quoteLoading)
-  const differenceFromBest = percentageDifference(selectedQuote?.quote, currentQuote?.quote)
+  const differenceFromBest = percentageDifference(quotes?.[0]?.quote, currentQuote?.quote)
 
   const quoteText = useMemo(() => {
     if (isBestQuote) return t('Best price')

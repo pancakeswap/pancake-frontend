@@ -12,8 +12,9 @@ import {
   SkeletonText,
   Text,
 } from '@pancakeswap/uikit'
-import { ReactNode, useMemo } from 'react'
+import { useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
+import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
@@ -57,8 +58,6 @@ interface ProviderSelectorProps extends BoxProps {
   errorText?: string
   disabled?: boolean
   loading?: boolean
-  topElement?: ReactNode
-  bottomElement?: ReactNode
 }
 
 type BadgeProps = { isBestQuote: boolean; text: string; loading: boolean }
@@ -95,15 +94,13 @@ export const ProviderSelector = ({
   onQuoteSelect,
   selectedQuote,
   quoteLoading,
-  topElement,
   error,
   quotes,
-  bottomElement,
   ...props
 }: ProviderSelectorProps) => {
   const { t } = useTranslation()
   const isBestQuote = Boolean(selectedQuote === quotes?.[0] && !quoteLoading)
-  const differenceFromBest = percentageDifference(selectedQuote?.quote, quotes?.[0]?.quote)
+  const differenceFromBest = percentageDifference(quotes?.[0]?.quote, selectedQuote?.quote)
 
   const quoteText = useMemo(() => {
     if (isBestQuote) return t('Best price')
@@ -139,15 +136,17 @@ export const ProviderSelector = ({
                 loading={quoteLoading}
                 initialHeight={13}
                 initialWidth={70}
-                fontSize="14px"
+                fontSize="12px"
                 textAlign="left"
                 color="textSubtle"
                 lineHeight="14px"
               >
-                {t('%amount% %asset%', {
-                  amount: selectedQuote?.quote.toFixed(5),
-                  asset: selectedQuote?.cryptoCurrency,
-                })}
+                {selectedQuote &&
+                  t('1 %asset% = %prefix%%amount%', {
+                    amount: selectedQuote.price.toFixed(2),
+                    asset: selectedQuote.cryptoCurrency,
+                    prefix: fiatCurrencyMap[selectedQuote.fiatCurrency].symbol,
+                  })}
               </SkeletonText>
             </AutoColumn>
           </Flex>

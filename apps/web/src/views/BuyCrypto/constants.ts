@@ -201,18 +201,6 @@ export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> =
     name: 'South Korean Won',
     symbol: 'KRW',
   },
-  TWD: {
-    name: 'New Taiwan Dollar',
-    symbol: 'TWD',
-  },
-  IDR: {
-    name: 'Indonesian Rupiah',
-    symbol: 'IDR',
-  },
-  SGD: {
-    name: 'Singapore Dollar',
-    symbol: 'SGD',
-  },
   VND: {
     name: 'Vietnamese Dong',
     symbol: 'VND',
@@ -228,6 +216,7 @@ export const onRampCurrencies: OnRampCurrency[] = [
   Native.onChain(OnRampChainId.POLYGON_ZKEVM),
   Native.onChain(OnRampChainId.ZKSYNC),
   Native.onChain(OnRampChainId.LINEA),
+  Native.onChain(OnRampChainId.BASE),
   ethereumTokens.usdt,
   bscTokens.usdt,
   bscTokens.usdc,
@@ -248,6 +237,7 @@ export const onRampCurrenciesMap: { [tokenSymbol: string]: Currency } = {
   ETH_1101: Native.onChain(OnRampChainId.POLYGON_ZKEVM),
   ETH_324: Native.onChain(OnRampChainId.ZKSYNC),
   ETH_59144: Native.onChain(OnRampChainId.LINEA),
+  ETH_8453: Native.onChain(OnRampChainId.BASE),
   // Add more entries for other currencies as needed
   USDT_1: ethereumTokens.usdt,
   USDT_56: bscTokens.usdt,

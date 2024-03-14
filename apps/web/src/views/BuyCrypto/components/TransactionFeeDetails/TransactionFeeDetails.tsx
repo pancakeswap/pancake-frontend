@@ -64,13 +64,11 @@ export const TransactionFeeDetails = ({
         <StyledArrowHead />
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
-            <Text color="textSubtle" fontSize="14px">
-              {t('Esti total fees:')}
-            </Text>
-
             {selectedQuote && (
               <Text fontWeight="600" fontSize="14px" px="2px">
-                {t('$%fees%', { fees: (selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2) })}
+                {t('Est total fees: $%fees%', {
+                  fees: (selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2),
+                })}
               </Text>
             )}
             <BuyCryptoTooltip

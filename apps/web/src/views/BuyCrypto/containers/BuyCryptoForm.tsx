@@ -100,7 +100,7 @@ export function BuyCryptoForm() {
   const btcValidationResults = useBtcAddressValidator({ address: searchQuery })
   const { data: validAddress, isFetching: fetching, isError: error } = btcValidationResults
 
-  const { inputError, defaultAmt } = useLimitsAndInputError({
+  const { inputError, defaultAmt, amountError } = useLimitsAndInputError({
     typedValue: typedValue!,
     cryptoCurrency,
     fiatCurrency,
@@ -116,7 +116,7 @@ export function BuyCryptoForm() {
     fiatCurrency: fiatCurrency?.symbol,
     network: cryptoCurrency?.chainId,
     fiatAmount: typedValue || defaultAmt,
-    enabled: Boolean(typedValue !== ''),
+    enabled: Boolean(!inputError),
     isFiat: 'true',
   })
 
@@ -169,7 +169,7 @@ export function BuyCryptoForm() {
           onCurrencySelect={onCurrencySelection}
           selectedCurrency={outputCurrency}
           currencyLoading={Boolean(!outputCurrency)}
-          value={outputValue || defaultAmt}
+          value={outputValue || ''}
           onUserInput={handleTypeInput}
           loading={Boolean(fetching || isFetching || !quotes)}
           error={Boolean(error || isError || Boolean(inputError && isTypingInput))}
@@ -194,7 +194,7 @@ export function BuyCryptoForm() {
           id="provider-select"
           onQuoteSelect={setShowProvidersPopOver}
           selectedQuote={selectedQuote || bestQuoteRef.current}
-          quoteLoading={isFetching || !quotes}
+          quoteLoading={Boolean(isFetching || inputError || !quotes)}
           quotes={quotes}
         />
 
@@ -215,6 +215,7 @@ export function BuyCryptoForm() {
             input={searchQuery}
             resetBuyCryptoState={resetBuyCryptoState}
             btcAddress={debouncedQuery}
+            errorText={amountError}
           />
           <Text color="textSubtle" fontSize="14px" px="4px" textAlign="center">
             {t('By continuing you agree to our')}{' '}

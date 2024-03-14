@@ -44,7 +44,14 @@ export const FiatOnRampModalButton = ({
   input,
   btcAddress,
   resetBuyCryptoState,
-}: FiatOnRampProps & { disabled: boolean; loading: boolean; input: string; btcAddress: string }) => {
+  errorText,
+}: FiatOnRampProps & {
+  disabled: boolean
+  loading: boolean
+  input: string
+  btcAddress: string
+  errorText: string | undefined
+}) => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
 
@@ -85,26 +92,15 @@ export const FiatOnRampModalButton = ({
   )
 
   const buttonText = useMemo(() => {
-    if (loading || isLoading || !selectedQuote) {
-      return (
-        <>
-          <Flex alignItems="center">
-            <Text px="4px" fontWeight="bold" color="white">
-              {t('Fetching Quotes')}
-            </Text>
-            <CircleLoader stroke="white" />
-          </Flex>
-        </>
-      )
-    }
+    const provider = selectedQuote?.provider
+
+    if (errorText) return errorText
     if (isBtc && input === '') return t('Verify your address to continue')
     if (isBtc && disabled) return t('Invalid BTC address')
-    return t('Buy %amount% %currency% with %provider%', {
-      provider: selectedQuote?.provider,
-      amount: selectedQuote?.quote.toFixed(3),
-      currency: selectedQuote?.cryptoCurrency,
-    })
-  }, [loading, isLoading, selectedQuote, t, isBtc, disabled, input])
+    if (loading || isLoading) return t('Fetching Quotes')
+
+    return t('Buy with %provider%', { provider })
+  }, [loading, isLoading, selectedQuote, t, isBtc, disabled, input, errorText])
 
   if (!isBtc && !account)
     return (
@@ -117,11 +113,16 @@ export const FiatOnRampModalButton = ({
     <AutoColumn width="100%">
       <CommitButton
         onClick={toggleFiatOnRampModal}
-        disabled={disabled || isError}
+        disabled={Boolean(disabled || isError || errorText)}
         isLoading={isLoading || loading}
         height="56px"
       >
-        {buttonText}
+        <Flex alignItems="center">
+          <Text px="4px" fontWeight="bold" color="white">
+            {buttonText}
+          </Text>
+          {isLoading || (loading && !errorText && <CircleLoader stroke="white" />)}
+        </Flex>
       </CommitButton>
     </AutoColumn>
   )

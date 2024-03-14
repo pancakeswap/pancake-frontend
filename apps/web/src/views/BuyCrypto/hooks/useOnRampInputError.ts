@@ -54,7 +54,7 @@ export const useLimitsAndInputError = ({
   )
 
   const inputError = useMemo(() => {
-    if (!baseCurrency || !quoteCurrency) return
+    if (!baseCurrency || !quoteCurrency || !cryptoCurrency) return
 
     if (Number(typedValue) < baseCurrency.minBuyAmount) {
       // eslint-disable-next-line consistent-return
@@ -63,8 +63,8 @@ export const useLimitsAndInputError = ({
           number: baseCurrency.minBuyAmount,
           locale,
         }),
-        fiatCurrency: baseCurrency?.code.toUpperCase(),
-        cryptoCurrency: cryptoCurrency?.symbol.toUpperCase(),
+        fiatCurrency: baseCurrency.code.toUpperCase(),
+        cryptoCurrency: cryptoCurrency.symbol.toUpperCase(),
         minCryptoAmount: formatLocaleNumber({ locale, number: quoteCurrency.minBuyAmount }),
       })
     }
@@ -75,12 +75,25 @@ export const useLimitsAndInputError = ({
           number: baseCurrency.maxBuyAmount,
           locale,
         }),
-        fiatCurrency: baseCurrency?.code.toUpperCase(),
-        cryptoCurrency: cryptoCurrency?.symbol.toUpperCase(),
+        fiatCurrency: baseCurrency.code.toUpperCase(),
+        cryptoCurrency: cryptoCurrency.symbol.toUpperCase(),
         maxCryptoAmount: formatLocaleNumber({ locale, number: quoteCurrency.maxBuyAmount }),
       })
     }
   }, [typedValue, t, baseCurrency, quoteCurrency, locale, cryptoCurrency])
+
+  const amountError = useMemo(() => {
+    if (!baseCurrency) return
+
+    if (Number(typedValue) < baseCurrency.minBuyAmount) {
+      // eslint-disable-next-line consistent-return
+      return t('Amount too low')
+    }
+    if (Number(typedValue) > baseCurrency.maxBuyAmount) {
+      // eslint-disable-next-line consistent-return
+      return t('Amount too high')
+    }
+  }, [typedValue, t, baseCurrency])
 
   return {
     limitsData,
@@ -88,5 +101,6 @@ export const useLimitsAndInputError = ({
     baseCurrency,
     quoteCurrency,
     defaultAmt,
+    amountError,
   }
 }
