@@ -1,15 +1,15 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { useToast } from '@pancakeswap/uikit'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import BigNumber from 'bignumber.js'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { usePotterytVaultContract } from 'hooks/useContract'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
-import { useTranslation } from '@pancakeswap/localization'
-import BigNumber from 'bignumber.js'
-import { useToast } from '@pancakeswap/uikit'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { usePotterytVaultContract } from 'hooks/useContract'
-import { Address } from 'wagmi'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
-import { DEFAULT_TOKEN_DECIMAL } from 'config'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { Address } from 'wagmi'
 
 export const useDepositPottery = (amount: string, potteryVaultAddress: Address) => {
   const { t } = useTranslation()
@@ -21,11 +21,13 @@ export const useDepositPottery = (amount: string, potteryVaultAddress: Address) 
 
   const handleDeposit = useCallback(async () => {
     const amountDeposit = new BigNumber(amount).multipliedBy(DEFAULT_TOKEN_DECIMAL).toString()
-    const receipt = await fetchWithCatchTxError(() =>
-      contract.write.deposit([BigInt(amountDeposit), account], {
-        account,
-        chain,
-      }),
+    const receipt = await fetchWithCatchTxError(async () =>
+      account
+        ? contract.write.deposit([BigInt(amountDeposit), account], {
+            account,
+            chain,
+          })
+        : undefined,
     )
 
     if (receipt?.status) {
@@ -35,7 +37,7 @@ export const useDepositPottery = (amount: string, potteryVaultAddress: Address) 
           {t('Your funds have been staked in the pool')}
         </ToastDescriptionWithTx>,
       )
-      dispatch(fetchPotteryUserDataAsync(account))
+      if (account) dispatch(fetchPotteryUserDataAsync(account))
     }
   }, [amount, fetchWithCatchTxError, contract.write, account, chain, toastSuccess, t, dispatch])
 

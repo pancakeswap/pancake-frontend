@@ -1,12 +1,12 @@
-import { useCallback } from 'react'
-import { useAppDispatch } from 'state'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { usePotterytDrawContract } from 'hooks/useContract'
-import { fetchPotteryUserDataAsync } from 'state/pottery'
 import { useWeb3React } from '@pancakeswap/wagmi'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { usePotterytDrawContract } from 'hooks/useContract'
+import { useCallback } from 'react'
+import { useAppDispatch } from 'state'
+import { fetchPotteryUserDataAsync } from 'state/pottery'
 
 export const useClaimPottery = () => {
   const { t } = useTranslation()
@@ -17,11 +17,13 @@ export const useClaimPottery = () => {
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
   const handleClaim = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() =>
-      contract.write.claimReward({
-        account,
-        chain,
-      }),
+    const receipt = await fetchWithCatchTxError(async () =>
+      account
+        ? contract.write.claimReward({
+            account,
+            chain,
+          })
+        : undefined,
     )
 
     if (receipt?.status) {
@@ -31,7 +33,10 @@ export const useClaimPottery = () => {
           {t('You have successfully claimed your rewards.')}
         </ToastDescriptionWithTx>,
       )
-      dispatch(fetchPotteryUserDataAsync(account))
+
+      if (account) {
+        dispatch(fetchPotteryUserDataAsync(account))
+      }
     }
   }, [fetchWithCatchTxError, contract.write, account, chain, toastSuccess, t, dispatch])
 

@@ -28,7 +28,7 @@ const StyledIconButton = styled(IconButton)`
 interface RoundSwitcherProps {
   isLoading?: boolean
   selectedRoundId: string
-  mostRecentRound: number | null
+  mostRecentRound?: number
   handleInputChange: (event: any) => void
   handleArrowButtonPress: (targetRound: number) => void
 }
@@ -78,7 +78,7 @@ const RoundSwitcher: React.FC<React.PropsWithChildren<RoundSwitcherProps>> = ({
           <ArrowBackIcon />
         </StyledIconButton>
         <StyledIconButton
-          disabled={mostRecentRound !== null && selectedRoundIdAsInt >= mostRecentRound}
+          disabled={mostRecentRound !== undefined && selectedRoundIdAsInt >= mostRecentRound}
           onClick={() => handleArrowButtonPress(selectedRoundIdAsInt + 1)}
           variant="text"
           scale="sm"
@@ -87,8 +87,8 @@ const RoundSwitcher: React.FC<React.PropsWithChildren<RoundSwitcherProps>> = ({
           <ArrowForwardIcon />
         </StyledIconButton>
         <StyledIconButton
-          disabled={mostRecentRound !== null && selectedRoundIdAsInt >= mostRecentRound}
-          onClick={() => mostRecentRound !== null && handleArrowButtonPress(mostRecentRound)}
+          disabled={mostRecentRound !== undefined && selectedRoundIdAsInt >= mostRecentRound}
+          onClick={() => mostRecentRound !== undefined && handleArrowButtonPress(mostRecentRound)}
           variant="text"
           scale="sm"
         >
