@@ -15,6 +15,20 @@ const CollectionCard = styled(Flex)`
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 40px #000;
+  border: 1px solid #383838;
+
+  position: relative;
+
+  img {
+    border-radius: 12px;
+  }
+`
+
+const CollectionCardContent = styled.div`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 50px;
 `
 
 const CollectionSwiper = styled.div`
@@ -58,7 +72,34 @@ export default function Index() {
     <Box pb={60}>
       <Container>
         <CollectionCard alignItems="end">
-          <img src="/images/tesseract-nft-banner2.png" alt="tesseract" width="100%" />
+          <img src="/images/tesseract-banner.gif" alt="tesseract" width="100%" />
+          <CollectionCardContent>
+            <Text fontSize="30px">Trade more & Earn more</Text>
+            <Text fontSize="20px" fontWeight={300} color="textSubtle" mt="20px">
+              Join early
+            </Text>
+            <Text fontSize="20px" fontWeight={300} color="textSubtle">
+              Shape the Tesseract Genesis NFT launch
+            </Text>
+            <Text fontSize="20px" fontWeight={300} color="textSubtle">
+              Unlock potential rewards!
+            </Text>
+            <Box
+              mt="20px"
+              borderRadius="8px"
+              background="#383838"
+              width="160px"
+              display="flex"
+              height="40px"
+              color="#898989"
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              COMING SOON...
+            </Box>
+          </CollectionCardContent>
         </CollectionCard>
 
         <CollectionSwiper>
