@@ -12,7 +12,6 @@ import { PAGE_VIEW } from './types'
 import { disableGlobalScroll, enableGlobalScroll } from './utils/toggleEnableScroll'
 
 interface INotificationWidget {
-  account: string
   isRegistered: boolean
 }
 
@@ -31,10 +30,10 @@ const Notifications = () => {
   const isReady = Boolean(client)
 
   if (!isReady || !account) return null
-  return <NotificationsWidget account={account} isRegistered={isRegistered} />
+  return <NotificationsWidget isRegistered={isRegistered} />
 }
 
-const NotificationsWidget = memo(({ account, isRegistered }: INotificationWidget) => {
+const NotificationsWidget = memo(({ isRegistered }: INotificationWidget) => {
   const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
 
   const { data: subscription } = useSubscription()
@@ -60,7 +59,7 @@ const NotificationsWidget = memo(({ account, isRegistered }: INotificationWidget
     <NotificationMenu viewIndex={viewIndex} subscriptionId={subscription?.topic}>
       <Box tabIndex={-1} onMouseEnter={disableGlobalScroll} onMouseLeave={enableGlobalScroll}>
         <ViewContainer $viewIndex={viewIndex}>
-          <OnBoardingView isReady={isSubscribed} account={account} isRegistered={isRegistered} />
+          <OnBoardingView isReady={isSubscribed} isRegistered={isRegistered} />
 
           <NotificationView toggleSettings={toggleSettings} subscription={subscription} />
 

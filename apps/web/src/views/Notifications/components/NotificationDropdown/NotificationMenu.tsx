@@ -54,7 +54,7 @@ const NotificationMenu: React.FC<{
       <Flex alignItems="center" justifyContent="center" tabIndex={-1}>
         <NotificationBell unread={hasUnread} toggleMenu={toggleMenu} />
         <ModalV2 isOpen={isMenuOpen} onDismiss={toggleMenu} closeOnOverlayClick>
-          <ModalWrapper onDismiss={toggleMenu} height="100vh" minWidth="320px">
+          <ModalWrapper onDismiss={toggleMenu} minWidth="320px" height="90vh">
             {children}
           </ModalWrapper>
         </ModalV2>
