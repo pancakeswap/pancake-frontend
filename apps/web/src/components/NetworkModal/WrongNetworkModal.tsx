@@ -28,9 +28,6 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
         <Text>
           {t('You are under %network% now, please switch the network to continue.', { network: chain?.name ?? '' })}
         </Text>
-        <div style={{ textAlign: 'center' }}>
-          <Image width={184} height={140} src="/images/decorations/3d-pan-bunny.png" alt="check your network" />
-        </div>
         <Message variant="warning" icon={false} p="8px 12px">
           <MessageText>
             <FlexGap gap="12px">
