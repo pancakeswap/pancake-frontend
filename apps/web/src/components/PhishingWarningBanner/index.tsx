@@ -1,8 +1,15 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Box, CloseIcon, Flex, IconButton, Link, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { CloseIcon, Flex, IconButton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
+import 'swiper/css'
+import 'swiper/css/effect-fade'
+import { Autoplay, EffectFade } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import type { Swiper as SwiperClass } from 'swiper/types'
+import { Countdown } from './Countdown'
+import { Step1 } from './Step1'
+import { Step2 } from './Step2'
 
 const Container = styled(Flex)`
   overflow: hidden;
@@ -57,108 +64,59 @@ const SpeechBubble = styled(Flex)`
   }
 `
 
-const CountdownContainer = styled.div<{ $percentage: number }>`
-  position: relative;
-  margin-left: auto;
-  height: 20px;
-  width: 20px;
-
-  >svg: first-child {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 20px;
-    height: 20px;
-    transform: rotateY(-180deg) rotateZ(-90deg);
-    stroke-width: 2px;
-    > circle {
-      fill: none;
-      stroke-width: 2px;
-      stroke-linecap: round;
-      stroke-dasharray: 120px;
-    }
-    > circle:first-child {
-      stroke-dashoffset: 0px;
-      stroke: ${({ theme }) => theme.colors.cardBorder};
-    }
-    > circle:nth-child(2) {
-      stroke: ${({ theme }) => theme.colors.primaryBright};
-      stroke-dashoffset: ${({ $percentage }) => `${105 * $percentage}px`};
-    }
-  }
-
-  > svg:nth-child(2) {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.75);
-  }
-`
-
-const domain = 'https://pancakeswap.finance'
+const DELAY_TIME = 2000
 
 const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
-  const { t } = useTranslation()
   const [, hideBanner] = usePhishingBanner()
   const { isMobile, isMd } = useMatchBreakpoints()
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(0)
+  const [percentage, setPerCentage] = useState(0)
 
-  const warningTextAsParts = useMemo(() => {
-    const warningText = t("please make sure you're visiting %domain% - check the URL carefully.", { domain })
-    return warningText.split(/(https:\/\/pancakeswap.finance)/g)
-  }, [t])
+  const configList = useMemo(() => {
+    return [<Step1 />, <Step2 />]
+  }, [])
 
-  const warningTextComponent = (
-    <Box>
-      <Text as="span" color="warning" small bold textTransform="uppercase">
-        {t('Phishing warning: ')}
-      </Text>
-      {warningTextAsParts.map((text, i) => (
-        <Text
-          // eslint-disable-next-line react/no-array-index-key
-          key={i}
-          small
-          as="span"
-          bold={text === domain}
-          color={text === domain ? '#FFFFFF' : '#BDC2C4'}
-        >
-          {text}
-        </Text>
-      ))}
-    </Box>
+  const onAutoplayTimeLeft = (s, time, progress) => {
+    setPerCentage(1 - progress)
+  }
+
+  const handleRealIndexChange = useCallback(
+    (swiperInstance: SwiperClass) => {
+      if (step !== swiperInstance.realIndex) {
+        setTimeout(() => setStep(swiperInstance.realIndex), DELAY_TIME - 1000)
+      }
+    },
+    [step],
   )
 
-  const step1Component = (
-    <Box mr={['6px']}>
-      <Text bold small as="span" color="#FFFFFF">
-        {t('In the event of any')}
-      </Text>
-      <Text bold small as="span" color="#FCC631">
-        {t('token distribution:')}
-      </Text>
-      <Text bold small as="span" color="#FFFFFF">
-        {t('We will distribute')}
-      </Text>
-      <Text bold small as="span" color="#FCC631">
-        100%
-      </Text>
-      <Text bold small as="span" color="#FFFFFF">
-        {t('of the proceeds to the CAKE community.')}
-      </Text>
-      <Text bold small as="span" color="#FCC631">
-        {t('CAKE community.')}
-      </Text>
-      <Link display="inline !important" small external href="https://docs.pancakeswap.finance/token-distribution">
-        {t('Learn More')}
-      </Link>
-    </Box>
+  const SwiperComponent = (
+    <Swiper
+      loop
+      observer
+      speed={5000}
+      effect="fade"
+      slidesPerView={1}
+      modules={[Autoplay, EffectFade]}
+      fadeEffect={{ crossFade: true }}
+      autoplay={{ delay: DELAY_TIME, pauseOnMouseEnter: true, disableOnInteraction: false }}
+      onAutoplayTimeLeft={onAutoplayTimeLeft}
+      onRealIndexChange={handleRealIndexChange}
+    >
+      {configList.map((config, index) => {
+        const childKey = `Banner${index}`
+        return <SwiperSlide key={childKey}>{config}</SwiperSlide>
+      })}
+    </Swiper>
   )
 
   return (
     <Container className="warning-banner">
       {isMobile || isMd ? (
         <>
-          <Box>{warningTextComponent}</Box>
+          <Flex alignItems="center">
+            {SwiperComponent}
+            <Countdown percentage={percentage} />
+          </Flex>
           <IconButton onClick={hideBanner} variant="text">
             <CloseIcon color="#FFFFFF" />
           </IconButton>
@@ -166,17 +124,14 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
       ) : (
         <>
           <InnerContainer>
-            <img src="/images/decorations/phishing-warning-bunny-2.png" alt="phishing-warning" width="92px" />
+            <img
+              width="92px"
+              alt="phishing-warning"
+              src={`/images/decorations/phishing-warning-bunny-${step + 1}.png`}
+            />
             <SpeechBubble>
-              {/* {warningTextComponent} */}
-              {step1Component}
-              <CountdownContainer $percentage={50}>
-                <svg>
-                  <circle r="9" cx="10" cy="10" />
-                  <circle r="9" cx="10" cy="10" />
-                </svg>
-                <ArrowForwardIcon color="primary" />
-              </CountdownContainer>
+              {SwiperComponent}
+              <Countdown percentage={percentage} />
             </SpeechBubble>
           </InnerContainer>
           <IconButton onClick={hideBanner} variant="text">
