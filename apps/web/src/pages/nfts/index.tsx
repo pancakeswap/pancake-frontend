@@ -54,24 +54,26 @@ export default function Index() {
   const collections = data?.data
 
   return (
-    <Container>
-      <CollectionCard alignItems="end">
-        <img src="/images/tesseract-nft-banner2.png" alt="tesseract" width="100%" />
-      </CollectionCard>
+    <Box pb={60}>
+      <Container>
+        <CollectionCard alignItems="end">
+          <img src="/images/tesseract-nft-banner2.png" alt="tesseract" width="100%" />
+        </CollectionCard>
 
-      <CollectionSwiper>
-        {collections?.map((c) => (
-          <CollectionSwiperItem
-            href={`/nfts/list/${c?.id}`}
-            style={{
-              backgroundImage: `url(${c?.collection_image})`,
-            }}
-            key={c?.id}
-          >
-            {c?.collection_name}
-          </CollectionSwiperItem>
-        ))}
-      </CollectionSwiper>
-    </Container>
+        <CollectionSwiper>
+          {collections?.map((c) => (
+            <CollectionSwiperItem
+              href={`/nfts/list/${c?.id}`}
+              style={{
+                backgroundImage: `url(${c?.collection_image})`,
+              }}
+              key={c?.id}
+            >
+              {c?.collection_name}
+            </CollectionSwiperItem>
+          ))}
+        </CollectionSwiper>
+      </Container>
+    </Box>
   )
 }

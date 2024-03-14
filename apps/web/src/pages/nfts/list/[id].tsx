@@ -84,9 +84,15 @@ export default function SGTList() {
   const { data, fetchNextPage } = useInfiniteQuery({
     queryKey: [`nfts_${id}`],
     queryFn: async ({ pageParam = 0 }) => {
-      return fetch(
+      const res = await fetch(
         `${DOCKMAN_HOST}/nft?page_number=${pageParam + 1}&page_size=20&collection_id=${id}&sort_type=price_increase`,
       ).then((r) => r.json())
+
+      if (res?.statusCode === 500) {
+        throw new Error(res?.message)
+      }
+
+      return res
     },
     getNextPageParam: (lastPage, pages) => {
       return lastPage.meta?.currentPage
@@ -101,7 +107,6 @@ export default function SGTList() {
     return results
   }, [])
   const meta = pages?.[pages?.length - 1]?.meta
-  console.log(meta)
 
   const _columns = [
     {
@@ -287,17 +292,19 @@ export default function SGTList() {
                 })}
               </div>
               <div className="sensei__table-body" style={{ marginTop: '20px', gap: '8px' }}>
-                {nfts?.map((nft) => {
+                {nfts?.map((nft: any) => {
                   return (
-                    <div
+                    <Box
                       className="sensei__table-body-tr sensei__table-body-tr-hover"
                       key={nft?.id}
                       style={{
                         height: '72px',
+                        filter:
+                          nft?.owner === '0x0000000000000000000000000000000000000000' ? 'brightness(0.8)' : 'none',
                       }}
                     >
                       <Flex flexShrink={0} alignItems="center" width="160px">
-                        <NFTImage width={60} height={60} src={nft?.image ?? DEFAULT_NFT_IMAGE} alt="avatar" />
+                        <NFTImage width={60} height={60} src={nft?.nft_image ?? DEFAULT_NFT_IMAGE} alt="avatar" />
                         <Text ml="10px">#{nft?.token_id}</Text>
                       </Flex>
                       <Row justifyContent="center">{nft.rarity}</Row>
@@ -334,10 +341,10 @@ export default function SGTList() {
                       <Row justifyContent="flex-end">{ellipseAddress(nft.owner, 5)}</Row>
                       <Row justifyContent="flex-end">
                         <Button scale="sm" onClick={() => router.push(`/nfts/detail/${nft?.id}`)}>
-                          Buy
+                          Trade
                         </Button>
                       </Row>
-                    </div>
+                    </Box>
                   )
                 })}
               </div>

@@ -1,4 +1,4 @@
-import { AceIcon, AutoRow, Box, Button, Flex, Text, useToast } from '@pancakeswap/uikit'
+import { AceIcon, AutoRow, Box, Button, Column, Flex, Text, useToast } from '@pancakeswap/uikit'
 import { displayBalance } from 'utils/display'
 import { ellipseAddress } from 'utils/address'
 import { useAccount } from 'wagmi'
@@ -22,7 +22,6 @@ export default function List({ list }: { list: any }) {
 
     const tx = await seaport.cancelOrders([order.order.parameters])
     const res = await tx.transact()
-    console.log(res)
     toastSuccess('Cancel order successfully')
   }
   const onAccept = async (orderHash: string) => {
@@ -48,35 +47,37 @@ export default function List({ list }: { list: any }) {
               <Box>From</Box>
             </AutoRow>
           </Text>
-          <div className="sensei__table-body">
-            {list?.map((l) => {
-              return (
-                <Flex key={l?.id}>
-                  <Box width="160px">
-                    <AutoRow gap="8px">
-                      {displayBalance(l.price)}
-                      <AceIcon />
-                    </AutoRow>
-                  </Box>
-                  <Box width="160px">
-                    <Text>{l.quantity}</Text>
-                  </Box>
-                  <Box width="200px">
-                    <Text>{ellipseAddress(l.from)}</Text>
-                  </Box>
-                  {l.from === address?.toLocaleLowerCase() ? (
-                    <Button scale="sm" onClick={() => onCancel(l?.order_hash)}>
-                      Cancel
-                    </Button>
-                  ) : (
-                    <Button scale="sm" onClick={() => onAccept(l?.order_hash)}>
-                      Buy
-                    </Button>
-                  )}
-                </Flex>
-              )
-            })}
-          </div>
+          <Box height="160px">
+            <Column gap="12px">
+              {list?.map((l) => {
+                return (
+                  <Flex key={l?.id}>
+                    <Box width="160px">
+                      <AutoRow gap="8px">
+                        {displayBalance(l.price)}
+                        <AceIcon />
+                      </AutoRow>
+                    </Box>
+                    <Box width="160px">
+                      <Text>{l.quantity}</Text>
+                    </Box>
+                    <Box width="200px">
+                      <Text>{ellipseAddress(l.from)}</Text>
+                    </Box>
+                    {l.from === address?.toLocaleLowerCase() ? (
+                      <Button scale="sm" onClick={() => onCancel(l?.order_hash)}>
+                        Cancel
+                      </Button>
+                    ) : (
+                      <Button scale="sm" onClick={() => onAccept(l?.order_hash)}>
+                        Buy
+                      </Button>
+                    )}
+                  </Flex>
+                )
+              })}
+            </Column>
+          </Box>
         </div>
       </div>
     </Wrapper>

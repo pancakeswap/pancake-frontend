@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 import { styled } from 'styled-components'
 import { DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
 import List from 'components/nfts/component/list'
-import { AceIcon, AutoRow, Box, Container, Flex, Loading, Text } from '@pancakeswap/uikit'
+import { AceIcon, AutoRow, Box, Card, Column, Container, Flex, Loading, Text } from '@pancakeswap/uikit'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { getBlockExploreLink } from 'utils'
 import { ChainId } from '@pancakeswap/chains'
@@ -18,6 +18,12 @@ import Offer from '../../../components/nfts/component/offer'
 import Tag from '../../../components/Tag/tag'
 
 dayjs.extend(relativeTime)
+
+const MetaBlock = styled.div`
+  border-radius: 8px;
+  background: #2c2c2c;
+  padding: 16px 20px;
+`
 
 export const Wrapper = styled.div`
   .sgt-detail__wrapper div::-webkit-scrollbar {
@@ -318,25 +324,20 @@ export default function SGTDetail() {
             <div className="sgt-detail__left-trait-box">
               <div className="sgt-detail__left-trait-title-box">
                 <Text fontWeight={600} fontSize="18px">
-                  Trails
+                  Traits
                 </Text>
                 <div className="sgt-detail__left-trait-title-value">{nft?.trails?.length}</div>
               </div>
               <div className="sgt-detail__left-trait-list">
-                {nft?.trails?.map((item) => {
+                {nft?.traits?.map((trait) => {
                   return (
-                    <div key={item} className="sgt-detail__left-trait-item">
-                      <div className="sgt-detail__left-trait-item-title">trait_01</div>
+                    <div key={trait?.trait_type} className="sgt-detail__left-trait-item">
+                      <div className="sgt-detail__left-trait-item-title">{trait?.trait_type}</div>
                       <div className="sgt-detail__left-trait-item-short-box">
-                        Short
+                        {trait?.value}
                         <Tag color="rgba(255, 204, 71, 1)" bgColor="rgba(255, 204, 71, .12)">
-                          41%
+                          {Math.floor((100 * trait?.numerator) / trait?.denominator)}%
                         </Tag>
-                      </div>
-                      <div className="sgt-detail__left-trait-item-floor-box">
-                        <div>Floor:</div>
-                        <div>10.23</div>
-                        <AceIcon />
                       </div>
                     </div>
                   )
@@ -374,7 +375,11 @@ export default function SGTDetail() {
                 },
                 {
                   label: 'Metadata',
-                  value: nft?.metadata,
+                  value: (
+                    <Link href={nft?.metadata} target="_blank">
+                      {ellipseAddress(nft?.metadata, 10)}
+                    </Link>
+                  ),
                 },
               ].map((item) => {
                 return (
@@ -387,30 +392,38 @@ export default function SGTDetail() {
             </div>
           </div>
           <div className="sgt-detail__right">
-            <div>
-              <div className="sgt-detail__right-block">
+            <Column gap="20px">
+              <MetaBlock>
                 <Adventure
                   nft={nft}
                   refetch={() => {
-                    refetchActivities()
-                    refetchOffers()
-                    refetchList()
+                    setTimeout(() => {
+                      refetchActivities()
+                      refetchOffers()
+                      refetchList()
+                    }, 1500)
                   }}
                 />
-              </div>
-              <div className="sgt-detail__right-block">
-                <div className="sgt-detail__right-block-title">Offer</div>
+              </MetaBlock>
+              <MetaBlock>
+                <Text fontWeight={600} fontSize="18px" mb="10px">
+                  Offer
+                </Text>
                 <Offer offers={offers} nft={nft} />
-              </div>
-              <div className="sgt-detail__right-block">
-                <div className="sgt-detail__right-block-title">List</div>
+              </MetaBlock>
+              <MetaBlock>
+                <Text fontWeight={600} fontSize="18px" mb="10px">
+                  List
+                </Text>
                 <List list={list} />
-              </div>
-              <div className="sgt-detail__right-block">
-                <div className="sgt-detail__right-block-title">Activity</div>
+              </MetaBlock>
+              <MetaBlock>
+                <Text fontWeight={600} fontSize="18px" mb="10px">
+                  Activity
+                </Text>
                 <Activity activities={activities} />
-              </div>
-            </div>
+              </MetaBlock>
+            </Column>
           </div>
         </div>
       </Wrapper>

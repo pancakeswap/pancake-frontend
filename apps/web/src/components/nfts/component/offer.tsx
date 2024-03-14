@@ -1,4 +1,4 @@
-import { AceIcon } from '@pancakeswap/uikit'
+import { AceIcon, Box, Column } from '@pancakeswap/uikit'
 import { displayBalance } from 'utils/display'
 import { ellipseAddress } from 'utils/address'
 import { useAccount } from 'wagmi'
@@ -56,41 +56,52 @@ export default function Offer({ offers, nft }: { offers: any; nft: any }) {
               )
             })}
           </div>
-          <div className="sensei__table-body">
-            {offers?.map((offer, index) => {
-              return (
-                <div className="sensei__table-body-tr" key={offer?.id}>
-                  <div style={{ ...columns[0].style, ...(columns[0].tdStyle || {}) }} className="sensei__table-body-td">
-                    {displayBalance(offer.price)}
-                    <AceIcon />
-                  </div>
-                  <div style={{ ...columns[1].style, ...(columns[1].tdStyle || {}) }} className="sensei__table-body-td">
-                    {offer.quantity}
-                  </div>
-                  <div style={{ ...columns[2].style, ...(columns[2].tdStyle || {}) }} className="sensei__table-body-td">
-                    {ellipseAddress(offer.from)}
-                  </div>
-
-                  {isOwner && (
+          <Box height="160px">
+            <Column gap="12px">
+              {offers?.map((offer, index) => {
+                return (
+                  <div className="sensei__table-body-tr" key={offer?.id}>
                     <div
-                      style={{ ...columns[3].style, ...(columns[3].tdStyle || {}) }}
+                      style={{ ...columns[0].style, ...(columns[0].tdStyle || {}) }}
                       className="sensei__table-body-td"
                     >
-                      <Button
-                        style={{
-                          width: '116px',
-                        }}
-                        type="transparent"
-                        size="sm"
-                      >
-                        Accept
-                      </Button>
+                      {displayBalance(offer.price)}
+                      <AceIcon />
                     </div>
-                  )}
-                </div>
-              )
-            })}
-          </div>
+                    <div
+                      style={{ ...columns[1].style, ...(columns[1].tdStyle || {}) }}
+                      className="sensei__table-body-td"
+                    >
+                      {offer.quantity}
+                    </div>
+                    <div
+                      style={{ ...columns[2].style, ...(columns[2].tdStyle || {}) }}
+                      className="sensei__table-body-td"
+                    >
+                      {ellipseAddress(offer.from)}
+                    </div>
+
+                    {isOwner && (
+                      <div
+                        style={{ ...columns[3].style, ...(columns[3].tdStyle || {}) }}
+                        className="sensei__table-body-td"
+                      >
+                        <Button
+                          style={{
+                            width: '116px',
+                          }}
+                          type="transparent"
+                          size="sm"
+                        >
+                          Accept
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </Column>
+          </Box>
         </div>
       </div>
     </Wrapper>
