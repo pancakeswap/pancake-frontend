@@ -34,8 +34,8 @@ function tradeMeaningfullyDiffers(tradeA: SmartRouterTrade<TradeType>, tradeB: S
 interface TransactionConfirmSwapContentProps {
   isMM?: boolean
   isRFQReady?: boolean
-  trade: SmartRouterTrade<TradeType> | undefined
-  originalTrade: SmartRouterTrade<TradeType> | undefined
+  trade: SmartRouterTrade<TradeType> | undefined | null
+  originalTrade: SmartRouterTrade<TradeType> | undefined | null
   onAcceptChanges: () => void
   allowedSlippage: number
   onConfirm: () => void

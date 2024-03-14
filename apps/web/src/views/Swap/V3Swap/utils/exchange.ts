@@ -1,17 +1,17 @@
 import {
   Currency,
   CurrencyAmount,
-  TradeType,
-  Percent,
-  ONE_HUNDRED_PERCENT,
-  Token,
-  Price,
-  ZERO,
   Fraction,
+  ONE_HUNDRED_PERCENT,
+  Percent,
+  Price,
+  Token,
+  TradeType,
+  ZERO,
 } from '@pancakeswap/sdk'
-import { SmartRouterTrade, SmartRouter } from '@pancakeswap/smart-router/evm'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { formatPrice, parseNumberToFraction } from '@pancakeswap/utils/formatFractions'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE } from 'config/constants/exchange'
 import { Field } from 'state/swap/actions'

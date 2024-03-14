@@ -10,6 +10,7 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 
 import { safeGetAddress } from 'utils'
 
+import { UnsafeCurrency } from 'config/constants/types'
 import { useAccount } from 'wagmi'
 import { getMMOrderBook } from '../apis'
 import { MMOrderBookTrade, OrderBookRequest, OrderBookResponse } from '../types'
@@ -63,7 +64,7 @@ export const useOrderBookQuote = (
   rfqRequest: OrderBookRequest | null,
   rfqUserInputPath: MutableRefObject<string>,
   isRFQLive: MutableRefObject<boolean>,
-): { data: OrderBookResponse; isLoading: boolean } => {
+): { data?: OrderBookResponse; isLoading: boolean } => {
   const [isMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const inputPath = `${request?.networkId}/${request?.makerSideToken}/${request?.takerSideToken}/${request?.makerSideTokenAmount}/${request?.takerSideTokenAmount}`
   const rfqInputPath = `${rfqRequest?.networkId}/${rfqRequest?.makerSideToken}/${rfqRequest?.takerSideToken}/${rfqRequest?.makerSideTokenAmount}/${rfqRequest?.takerSideTokenAmount}`
@@ -88,9 +89,9 @@ export const useOrderBookQuote = (
 export const useMMTrade = (
   independentField: Field,
   typedValue: string,
-  inputCurrency: Currency | undefined,
-  outputCurrency: Currency | undefined,
-): MMOrderBookTrade | null => {
+  inputCurrency: UnsafeCurrency,
+  outputCurrency: UnsafeCurrency,
+): MMOrderBookTrade => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const rfqUserInputPath = useRef<string>('')
@@ -192,7 +193,7 @@ export const useMMTrade = (
     return result
   }, [account, amountIn, balanceIn, bestTradeWithMM, currencies, mmQuote?.message?.error, parsedAmount, t, to])
 
-  return useMemo(() => {
+  return useMemo<MMOrderBookTrade>(() => {
     return {
       trade: bestTradeWithMM,
       parsedAmount,

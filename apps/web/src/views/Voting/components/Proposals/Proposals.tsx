@@ -1,16 +1,16 @@
-import { Box, Breadcrumbs, Card, Flex, Heading, Text } from '@pancakeswap/uikit'
-import Link from 'next/link'
 import { useTranslation } from '@pancakeswap/localization'
-import Container from 'components/Layout/Container'
+import { Box, Breadcrumbs, Card, Flex, Heading, Text } from '@pancakeswap/uikit'
 import { useQuery } from '@tanstack/react-query'
+import Container from 'components/Layout/Container'
+import { useSessionStorage } from 'hooks/useSessionStorage'
+import Link from 'next/link'
 import { ProposalState, ProposalType } from 'state/types'
 import { getProposals } from 'state/voting/helpers'
-import { useSessionStorage } from 'hooks/useSessionStorage'
 import { filterProposalsByState, filterProposalsByType } from '../../helpers'
+import Filters from './Filters'
+import ProposalRow from './ProposalRow'
 import ProposalsLoading from './ProposalsLoading'
 import TabMenu from './TabMenu'
-import ProposalRow from './ProposalRow'
-import Filters from './Filters'
 
 interface State {
   proposalType: ProposalType

@@ -88,7 +88,7 @@ export function MMSwapCommitButton({
     swapCalls,
   )
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm?: SmartRouterTrade<TradeType>
+    tradeToConfirm?: SmartRouterTrade<TradeType> | null
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined
