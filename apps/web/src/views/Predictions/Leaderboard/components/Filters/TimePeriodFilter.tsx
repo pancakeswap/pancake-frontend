@@ -1,8 +1,9 @@
-import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { setLeaderboardFilter } from 'state/predictions'
 import { useGetLeaderboardFilters } from 'state/predictions/hooks'
+import { LeaderboardFilterTimePeriod } from 'state/types'
 
 const TimePeriodFilter = () => {
   const { t } = useTranslation()
@@ -18,7 +19,7 @@ const TimePeriodFilter = () => {
   const activeIndex = timePeriodOptions.findIndex(({ value }) => value === timePeriod)
 
   const handleSetTimePeriod = (newIndex: number) => {
-    dispatch(setLeaderboardFilter({ timePeriod: timePeriodOptions[newIndex].value }))
+    dispatch(setLeaderboardFilter({ timePeriod: timePeriodOptions[newIndex].value as LeaderboardFilterTimePeriod }))
   }
 
   return (
