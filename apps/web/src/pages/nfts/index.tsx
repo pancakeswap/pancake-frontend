@@ -1,10 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { styled } from 'styled-components'
-import { AceIcon, AutoRow, Box, Container, Flex, Grid, Text } from '@pancakeswap/uikit'
+import { Box, Container, Flex, Text } from '@pancakeswap/uikit'
 import Link from 'next/link'
 import { DOCKMAN_HOST } from 'config/nfts'
-import { displayBalance } from 'utils/display'
-import { useEffect } from 'react'
 
 const CollectionCard = styled(Flex)`
   border-radius: 8px;

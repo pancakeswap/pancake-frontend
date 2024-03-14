@@ -59,8 +59,9 @@ const ItemLink = styled(Link)`
   height: 72px;
   padding: 0 30px;
   border-radius: 8px;
+
   &:hover {
-    background: #232323;
+    background: #212121;
   }
 `
 
@@ -338,7 +339,13 @@ export default function SGTList() {
                         <Box width="120px" style={{ textAlign: 'center', flexShrink: 0 }}>
                           {nft.rarity}
                         </Box>
-                        <Flex justifyContent="center" flexShrink={0} width="150px">
+                        <Flex
+                          alignItems="center"
+                          justifyContent="center"
+                          flexShrink={0}
+                          width="150px"
+                          style={{ gap: '4px' }}
+                        >
                           {nft?.price ? (
                             <>
                               {nft.price}
@@ -348,7 +355,13 @@ export default function SGTList() {
                             '-'
                           )}
                         </Flex>
-                        <Flex justifyContent="center" width="150px" flexShrink={0}>
+                        <Flex
+                          alignItems="center"
+                          justifyContent="center"
+                          width="150px"
+                          flexShrink={0}
+                          style={{ gap: '4px' }}
+                        >
                           {nft.last_sale_price ? (
                             <>
                               {displayBalance(nft.last_sale_price ?? 0)}
@@ -358,7 +371,13 @@ export default function SGTList() {
                             '-'
                           )}
                         </Flex>
-                        <Flex justifyContent="center" width="150px" flexShrink={0}>
+                        <Flex
+                          justifyContent="center"
+                          alignItems="center"
+                          width="150px"
+                          flexShrink={0}
+                          style={{ gap: '4px' }}
+                        >
                           {nft.top_bid ? (
                             <>
                               {displayBalance(nft.top_bid ?? 0)}
