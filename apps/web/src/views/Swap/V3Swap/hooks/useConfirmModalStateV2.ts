@@ -1,5 +1,6 @@
 import { usePreviousValue } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
+import { getPermit2Address } from '@pancakeswap/permit2-sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@pancakeswap/swap-sdk-core'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
@@ -34,7 +35,9 @@ const getTokenAllowance = ({
   address: Address
   inputs: [`0x${string}`, `0x${string}`]
 }) => {
-  return publicDelicateClient({ chainId }).readContract({
+  const client = publicDelicateClient({ chainId })
+
+  return client.readContract({
     abi: erc20ABI,
     address,
     functionName: 'allowance',
@@ -74,13 +77,13 @@ const useConfirmActions = (
   const { account } = useAccountActiveChain()
   const getAllowanceArgs = useMemo(() => {
     if (!chainId) return undefined
-    const inputs = [account, spender] as [`0x${string}`, `0x${string}`]
+    const inputs = [account, getPermit2Address(chainId)] as [`0x${string}`, `0x${string}`]
     return {
       chainId,
       address: amountToApprove?.currency.address as Address,
       inputs,
     }
-  }, [chainId, amountToApprove?.currency.address, spender, account])
+  }, [chainId, amountToApprove?.currency.address, account])
   const [permit2Signature, setPermit2Signature] = useState<Permit2Signature | undefined>(undefined)
   const { callback: swap, error: swapError } = useSwapCallbackV2({
     trade,
@@ -231,7 +234,7 @@ const useConfirmActions = (
       },
       showIndicator: true,
     }
-  }, [amountToApprove, approve, chainId, refetch, showError, t])
+  }, [amountToApprove, approve, chainId, getAllowanceArgs, showError, t])
 
   const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const swapPreflightCheck = useCallback(() => {
