@@ -219,12 +219,11 @@ export default function SGTList() {
             <Card p="20px" mb="20px">
               <Row alignItems="center">
                 <Flex mr="30px">
-                  <Box>
+                  <Box width="80px" ml="5px">
                     <img
                       src={collection?.collection_avatar ?? DEFAULT_COLLECTION_AVATAR}
                       alt="avatar"
-                      width={120}
-                      height={120}
+                      style={{ width: '80px', height: '80px' }}
                     />
                   </Box>
                   <Box ml="10px" mr="30px" mt="20px">
