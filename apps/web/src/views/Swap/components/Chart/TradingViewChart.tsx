@@ -1,10 +1,10 @@
-import { Box, BunnyPlaceholderIcon, Flex, Text } from '@pancakeswap/uikit'
-import TradingView, { useTradingViewEvent } from 'components/TradingView'
-import { useTranslation } from '@pancakeswap/localization'
 import { useDebounce } from '@pancakeswap/hooks'
-import { useCallback, useEffect, useMemo, useState, memo } from 'react'
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, BunnyPlaceholderIcon, Flex, Text } from '@pancakeswap/uikit'
 import { BarChartLoader } from 'components/ChartLoaders'
+import TradingView, { useTradingViewEvent } from 'components/TradingView'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { styled } from 'styled-components'
 
 interface TradingViewChartProps {
   outputSymbol: string
@@ -73,9 +73,9 @@ const TradingViewChart = ({ outputSymbol, inputSymbol, isDark, onTwChartSymbol }
 
   useEffect(() => {
     if (!(isLoading || debouncedLoading) && !hasNoData && symbol) {
-      onTwChartSymbol(symbol)
+      onTwChartSymbol?.(symbol)
     } else {
-      onTwChartSymbol('')
+      onTwChartSymbol?.('')
     }
   }, [debouncedLoading, hasNoData, isLoading, onTwChartSymbol, symbol])
 

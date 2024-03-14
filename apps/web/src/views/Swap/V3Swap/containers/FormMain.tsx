@@ -67,7 +67,12 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
   }, [maxAmountInput, onUserInput])
 
   const handleCurrencySelect = useCallback(
-    (newCurrency: Currency, field: Field, currentInputCurrencyId: string, currentOutputCurrencyId: string) => {
+    (
+      newCurrency: Currency,
+      field: Field,
+      currentInputCurrencyId: string | undefined,
+      currentOutputCurrencyId: string | undefined,
+    ) => {
       onCurrencySelection(field, newCurrency)
 
       warningSwapHandler(newCurrency)
@@ -127,7 +132,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         otherCurrency={outputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
       />
-      <RiskCheck currency={inputCurrency} />
+      <RiskCheck currency={inputCurrency ?? undefined} />
       <FlipButton />
       <CurrencyInputPanel
         id="swap-currency-output"
@@ -144,7 +149,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         otherCurrency={outputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
       />
-      <RiskCheck currency={outputCurrency} />
+      <RiskCheck currency={outputCurrency ?? undefined} />
       <Recipient />
       {pricingAndSlippage}
       {swapCommitButton}

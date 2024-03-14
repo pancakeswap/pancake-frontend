@@ -28,7 +28,7 @@ export function MMTradeDetail({ loaded, mmTrade }: { loaded: boolean; mmTrade?: 
             pairs={[]}
             path={lastTrade?.routes[0].path}
             slippageAdjustedAmounts={mmTrade?.slippageAdjustedAmounts}
-            realizedLPFee={mmTrade?.realizedLPFee}
+            realizedLPFee={mmTrade?.realizedLPFee ?? undefined}
             inputAmount={mmTrade?.inputAmount}
             outputAmount={mmTrade?.outputAmount}
             tradeType={mmTrade?.tradeType}
@@ -42,7 +42,7 @@ export function MMTradeDetail({ loaded, mmTrade }: { loaded: boolean; mmTrade?: 
 }
 
 export const TradeDetails = memo(function TradeDetails({ loaded, trade }: Props) {
-  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
+  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade ?? undefined)
   const isWrapping = useIsWrapping()
   const { priceImpactWithoutFee, lpFeeAmount } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const hasStablePool = useMemo(
@@ -64,8 +64,8 @@ export const TradeDetails = memo(function TradeDetails({ loaded, trade }: Props)
           inputAmount={inputAmount}
           outputAmount={outputAmount}
           tradeType={tradeType}
-          priceImpactWithoutFee={priceImpactWithoutFee}
-          realizedLPFee={lpFeeAmount}
+          priceImpactWithoutFee={priceImpactWithoutFee ?? undefined}
+          realizedLPFee={lpFeeAmount ?? undefined}
           hasStablePair={hasStablePool}
         />
         <RoutesBreakdown routes={routes} />

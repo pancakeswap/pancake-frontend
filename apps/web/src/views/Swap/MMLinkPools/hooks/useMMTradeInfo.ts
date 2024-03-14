@@ -27,7 +27,7 @@ export interface MMTradeInfo {
   routerAddress: string
   priceImpactWithoutFee?: Percent
   realizedLPFee?: CurrencyAmount<Currency> | null
-  inputError: string
+  inputError: string | undefined
   trade: SmartRouterTrade<TradeType>
 }
 

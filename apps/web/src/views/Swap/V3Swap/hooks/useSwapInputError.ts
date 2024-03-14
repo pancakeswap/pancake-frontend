@@ -35,13 +35,13 @@ const BAD_RECIPIENT_ADDRESSES: string[] = [
 export function useSwapInputError(
   trade: SmartRouterTrade<TradeType> | null | undefined,
   currencyBalances: Balances,
-): string {
+): string | undefined {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { independentField, typedValue } = useSwapState()
   const inputCurrency = currencyBalances[Field.INPUT]?.currency
   const outputCurrency = currencyBalances[Field.OUTPUT]?.currency
-  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
+  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade ?? undefined)
 
   const to: string | null = account || null
 

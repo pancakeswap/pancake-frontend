@@ -28,8 +28,8 @@ export function useDerivedBestTradeWithMM<T extends TradeType>(bestTrade?: Smart
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
-  const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
+  const inputCurrency = useCurrency(inputCurrencyId) ?? undefined
+  const outputCurrency = useCurrency(outputCurrencyId) ?? undefined
 
   return useDerivedSwapInfoWithMM(independentField, typedValue, inputCurrency, outputCurrency, undefined, bestTrade)
 }

@@ -13,7 +13,7 @@ export const useGetRFQId = (
   isMMBetter: boolean,
   rfqUserInputPath: MutableRefObject<string> | null | undefined,
   isRFQLive: MutableRefObject<boolean> | null | undefined,
-): { rfqId: string; refreshRFQ: () => void; rfqUserInputCache: string; isLoading: boolean } => {
+): { rfqId: string; refreshRFQ: () => void; rfqUserInputCache: string | undefined; isLoading: boolean } => {
   const { address: account } = useAccount()
 
   if (rfqUserInputPath)
@@ -99,7 +99,7 @@ export const useGetRFQTrade = (
       const { data: prevData } = prevState
       return {
         error: errorResponse,
-        data: !prevState ? dataResponse : isLoadingResponse ? prevData : dataResponse,
+        data: (!prevState ? dataResponse : isLoadingResponse ? prevData : dataResponse) ?? null,
         isLoading: isLoadingResponse,
       }
     })

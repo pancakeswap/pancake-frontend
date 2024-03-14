@@ -1,10 +1,10 @@
-import { styled } from 'styled-components'
-import { ModalBody, ModalContainer, Message, ModalHeader, Box, Heading } from '@pancakeswap/uikit'
-import useTheme from 'hooks/useTheme'
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import { ChainId } from '@pancakeswap/chains'
+import { Box, Heading, Message, ModalBody, ModalContainer, ModalHeader } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import useTheme from 'hooks/useTheme'
+import { styled } from 'styled-components'
 import ETH_WARNING_LIST from './1'
 import BSC_WARNING_LIST from './56'
 import Acknowledgement from './Acknowledgement'
@@ -33,7 +33,7 @@ const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>>
     [ChainId.BSC]: BSC_WARNING_LIST,
   }
 
-  const SWAP_WARNING = TOKEN_WARNINGS?.[chainId]?.[swapCurrency.address]
+  const SWAP_WARNING = chainId ? TOKEN_WARNINGS?.[chainId]?.[swapCurrency.address] : undefined
 
   return (
     <StyledModalContainer minWidth="280px">

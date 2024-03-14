@@ -1,10 +1,10 @@
-import { Box, ButtonMenu, ButtonMenuItem, Flex, Text, SwapLineChart } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useState, memo, useMemo } from 'react'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, SwapLineChart, Text } from '@pancakeswap/uikit'
+import { memo, useMemo, useState } from 'react'
 import { useFetchPairPricesV3 } from 'state/swap/hooks'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
-import NoChartAvailable from './NoChartAvailable'
 import PairPriceDisplay from '../../../../components/PairPriceDisplay'
+import NoChartAvailable from './NoChartAvailable'
 import { getTimeWindowChange } from './utils'
 
 const BasicChart = ({
@@ -93,7 +93,7 @@ const BasicChart = ({
       >
         <Flex flexDirection="column" pt="12px">
           <PairPriceDisplay
-            value={pairPrices?.length > 0 && valueToDisplay}
+            value={pairPrices?.length > 0 ? valueToDisplay : undefined}
             inputSymbol={inputCurrency?.symbol}
             outputSymbol={outputCurrency?.symbol}
           >
