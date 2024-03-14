@@ -1,5 +1,6 @@
 import Image from 'next/image'
 
+import { NumericalInput } from '@pancakeswap/widgets-internal'
 import infoError from '../../../public/images/nfts2/info-error.svg'
 import { Wrapper } from './index.style'
 
@@ -25,12 +26,18 @@ export default function PriceInput({ label, balance, amount, setAmount, errorMsg
           )}
         </div>
         <div className="price-input__input-box">
-          <input
+          <NumericalInput
+            align="left"
             className="price-input__input"
             type="number"
             placeholder=""
+            inputMode="decimal"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            style={{ width: '260px' }}
+            pattern="^[0-9]*[.,]?[0-9]*$"
+            onUserInput={(val) => {
+              setAmount(val)
+            }}
           />
           {suffix && <div className="price-input__input-suffix">{suffix}</div>}
         </div>
