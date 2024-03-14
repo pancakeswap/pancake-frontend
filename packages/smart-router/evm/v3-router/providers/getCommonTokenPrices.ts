@@ -105,7 +105,7 @@ const createGetTokenPriceFromLlmaWithCache = ({
 
   return async ({ addresses, chainId }) => {
     if (!chainId || !getLlamaChainName(chainId)) {
-      throw new Error(`Invalid chain id ${chainId}`)
+      return []
     }
     const [cachedResults, addressesToFetch] = addresses.reduce<[TokenUsdPrice[], string[]]>(
       ([cachedAddrs, newAddrs], address) => {
