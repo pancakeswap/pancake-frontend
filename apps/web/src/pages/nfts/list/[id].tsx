@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useRouter } from 'next/router'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
-import { AceIcon, AutoRow, Box, Button, Card, Container, Flex, Loading, Row, Text } from '@pancakeswap/uikit'
+import { AceIcon, AutoRow, Box, Button, Card, Column, Container, Flex, Loading, Row, Text } from '@pancakeswap/uikit'
 import { ellipseAddress } from 'utils/address'
 import { DEFAULT_COLLECTION_AVATAR, DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
 import { displayBalance } from 'utils/display'
@@ -52,6 +52,25 @@ const SortButtonWrapper = styled.div`
     border-color: rgba(255, 255, 255, 0.95);
   }
 `
+
+const ItemLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  height: 72px;
+  padding: 0 30px;
+  border-radius: 8px;
+  &:hover {
+    background: #232323;
+  }
+`
+
+const ItemsWrapper = styled.div`
+  width: 100%;
+  overflow-x: scroll;
+  display: flex;
+  justify-content: center;
+`
+
 type ISortButton = {
   type: 'asc' | 'desc' | 'none'
   onClick: () => void
@@ -114,7 +133,7 @@ export default function SGTList() {
       name: 'NFT',
       sortType: 'none',
       style: {
-        width: '160px',
+        width: '180px',
         justifyContent: 'flex-start',
       },
     },
@@ -122,7 +141,7 @@ export default function SGTList() {
       name: 'Rarity',
       sortType: 'none',
       style: {
-        width: '160px',
+        width: '120px',
         justifyContent: 'center',
       },
     },
@@ -130,7 +149,7 @@ export default function SGTList() {
       name: 'Price',
       sortType: 'none',
       style: {
-        width: '160px',
+        width: '150px',
         justifyContent: 'center',
       },
     },
@@ -138,7 +157,7 @@ export default function SGTList() {
       name: 'Last Sale',
       sortType: 'none',
       style: {
-        width: '160px',
+        width: '150px',
         justifyContent: 'center',
       },
     },
@@ -147,7 +166,7 @@ export default function SGTList() {
       name: 'Top BID',
       sortType: 'none',
       style: {
-        width: '160px',
+        width: '150px',
         justifyContent: 'center',
       },
     },
@@ -179,6 +198,8 @@ export default function SGTList() {
       </Flex>
     )
   }
+
+  console.log(nfts)
 
   return (
     <InfiniteScroll
@@ -262,100 +283,106 @@ export default function SGTList() {
                 </AutoRow>
               </Row>
             </Card>
-            <div>
-              <div className="sensei__table-header" style={{ paddingLeft: '32px', paddingRight: '32px' }}>
-                {columns.map((item, index) => {
-                  return (
-                    <div key={item.name} style={item.style} className="sensei__table-header-item">
-                      {item.name}
-                      {index > 0 && index < columns.length - 1 && (
-                        <SortButton
-                          type={item.sortType as 'asc' | 'desc' | 'none'}
-                          onClick={() => {
-                            const newColumns = columns.map((column, i) => {
-                              if (i === index) {
-                                if (column.sortType === 'asc') {
-                                  return { ...column, sortType: 'desc' }
+            <ItemsWrapper>
+              <Column alignItems="center">
+                <div className="sensei__table-header" style={{ width: '100%', padding: '0 30px' }}>
+                  {columns.map((item, index) => {
+                    return (
+                      <div key={item.name} style={item.style} className="sensei__table-header-item">
+                        {item.name}
+                        {index > 0 && index < columns.length - 1 && (
+                          <SortButton
+                            type={item.sortType as 'asc' | 'desc' | 'none'}
+                            onClick={() => {
+                              const newColumns = columns.map((column, i) => {
+                                if (i === index) {
+                                  if (column.sortType === 'asc') {
+                                    return { ...column, sortType: 'desc' }
+                                  }
+                                  if (column.sortType === 'desc') {
+                                    return { ...column, sortType: 'none' }
+                                  }
+                                  return { ...column, sortType: 'asc' }
                                 }
-                                if (column.sortType === 'desc') {
-                                  return { ...column, sortType: 'none' }
-                                }
-                                return { ...column, sortType: 'asc' }
-                              }
-                              return { ...column }
-                            })
-                            setColumns(newColumns)
-                          }}
-                        />
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-              <div className="sensei__table-body" style={{ marginTop: '20px', gap: '8px' }}>
-                {nfts?.map((nft: any) => {
-                  return (
-                    <Link
-                      href={`/nfts/detail/${nft?.id}`}
-                      className="sensei__table-body-tr sensei__table-body-tr-hover"
-                      key={nft?.id}
-                      style={{
-                        height: '72px',
-                        filter:
-                          nft?.owner === '0x0000000000000000000000000000000000000000' ? 'brightness(0.8)' : 'none',
-                      }}
-                    >
-                      <Flex flexShrink={0} alignItems="center" width="160px">
-                        <NFTImage
-                          width={60}
-                          height={60}
-                          src={nft?.nft_image ? nft?.nft_image : DEFAULT_NFT_IMAGE}
-                          alt="avatar"
-                        />
-                        <Text ml="10px">#{nft?.token_id}</Text>
-                      </Flex>
-                      <Row justifyContent="center">{nft.rarity}</Row>
-                      <Row className="" gap="8px" justifyContent="center">
-                        {nft?.price ? (
-                          <>
-                            {nft.price}
-                            <AceIcon />
-                          </>
-                        ) : (
-                          '-'
+                                return { ...column }
+                              })
+                              setColumns(newColumns)
+                            }}
+                          />
                         )}
-                      </Row>
-                      <Row className="" gap="8px" justifyContent="center">
-                        {nft.last_sale_price ? (
-                          <>
-                            {displayBalance(nft.last_sale_price ?? 0)}
-                            <AceIcon />
-                          </>
-                        ) : (
-                          '-'
-                        )}
-                      </Row>
-                      <Row className="" gap="8px" justifyContent="center">
-                        {nft.top_bid ? (
-                          <>
-                            {displayBalance(nft.top_bid ?? 0)}
-                            <AceIcon />
-                          </>
-                        ) : (
-                          '-'
-                        )}
-                      </Row>
-                      <Row justifyContent="flex-end">{ellipseAddress(nft.owner, 5)}</Row>
-                      <Row justifyContent="flex-end">
-                        <Button scale="sm" onClick={() => router.push(`/nfts/detail/${nft?.id}`)}>
-                          Trade
-                        </Button>
-                      </Row>
-                    </Link>
-                  )
-                })}
-              </div>
-            </div>
+                      </div>
+                    )
+                  })}
+                </div>
+                <Column style={{ marginTop: '20px', gap: '8px', width: '100%' }}>
+                  {nfts?.map((nft: any) => {
+                    return (
+                      <ItemLink
+                        href={`/nfts/detail/${nft?.id}`}
+                        key={nft?.id}
+                        style={{
+                          filter:
+                            nft?.owner === '0x0000000000000000000000000000000000000000' ? 'brightness(0.8)' : 'none',
+                        }}
+                      >
+                        <Flex flexShrink={0} alignItems="center" width="180px">
+                          <NFTImage
+                            width={60}
+                            height={60}
+                            src={nft?.nft_image ? nft?.nft_image : DEFAULT_NFT_IMAGE}
+                            alt="avatar"
+                          />
+                          <Text fontSize="13px" ml="10px">
+                            {nft?.nft_name}
+                          </Text>
+                        </Flex>
+                        <Box width="120px" style={{ textAlign: 'center', flexShrink: 0 }}>
+                          {nft.rarity}
+                        </Box>
+                        <Flex justifyContent="center" flexShrink={0} width="150px">
+                          {nft?.price ? (
+                            <>
+                              {nft.price}
+                              <AceIcon />
+                            </>
+                          ) : (
+                            '-'
+                          )}
+                        </Flex>
+                        <Flex justifyContent="center" width="150px" flexShrink={0}>
+                          {nft.last_sale_price ? (
+                            <>
+                              {displayBalance(nft.last_sale_price ?? 0)}
+                              <AceIcon />
+                            </>
+                          ) : (
+                            '-'
+                          )}
+                        </Flex>
+                        <Flex justifyContent="center" width="150px" flexShrink={0}>
+                          {nft.top_bid ? (
+                            <>
+                              {displayBalance(nft.top_bid ?? 0)}
+                              <AceIcon />
+                            </>
+                          ) : (
+                            '-'
+                          )}
+                        </Flex>
+                        <Flex justifyContent="center" width="180px" flexShrink={0}>
+                          {ellipseAddress(nft.owner, 5)}
+                        </Flex>
+                        <Row justifyContent="flex-end">
+                          <Button scale="sm" onClick={() => router.push(`/nfts/detail/${nft?.id}`)}>
+                            Trade
+                          </Button>
+                        </Row>
+                      </ItemLink>
+                    )
+                  })}
+                </Column>
+              </Column>
+            </ItemsWrapper>
           </div>
         </Box>
       </Container>
