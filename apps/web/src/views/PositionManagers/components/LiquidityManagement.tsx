@@ -214,7 +214,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                   style={{ borderLeft: dividerBorderStyle, borderTop: dividerBorderStyle }}
                 />
                 <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
-                  <Flex style={{ gap: 5 }}>
+                  <Flex width="100%" justifyContent="space-between">
                     <StatusView
                       status={status}
                       isFarmStaking
@@ -223,7 +223,11 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                       shouldUpdate={shouldUpdate}
                       expectMultiplier={veCakeUserMultiplierBeforeBoosted}
                     />
-                    <Button onClick={() => onUpdate(refetch)}>{t('Update')}</Button>
+                    {shouldUpdate && (
+                      <Button ml="5px" onClick={() => onUpdate(refetch)}>
+                        {t('Update')}
+                      </Button>
+                    )}
                   </Flex>
                 </RowBetween>
               </>
