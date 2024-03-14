@@ -1,16 +1,15 @@
-import { useContext } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAccount } from 'wagmi'
-import NoWalletConnected from './WalletNotConnected'
-import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 import Mint from './Mint'
 import ProfilePicture from './ProfilePicture'
 import TeamSelection from './TeamSelection'
 import UserName from './UserName'
+import NoWalletConnected from './WalletNotConnected'
+import useProfileCreation from './contexts/hook'
 
 const Steps = () => {
   const { t } = useTranslation()
-  const { isInitialized, currentStep } = useContext(ProfileCreationContext)
+  const { isInitialized, currentStep } = useProfileCreation()
   const { address: account } = useAccount()
 
   if (!account) {

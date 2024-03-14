@@ -1,8 +1,7 @@
-import { useContext } from 'react'
+import { TranslateFunction, useTranslation } from '@pancakeswap/localization'
+import { Breadcrumbs, Button, Heading, Link, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
-import { Breadcrumbs, Heading, Text, Link, Button } from '@pancakeswap/uikit'
-import { useTranslation, TranslateFunction } from '@pancakeswap/localization'
-import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
+import useProfileCreation from './contexts/hook'
 
 const Wrapper = styled.div`
   border-bottom: 2px solid ${({ theme }) => theme.colors.textSubtle};
@@ -20,7 +19,7 @@ const steps = (t: TranslateFunction) => [
 
 const Header: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const { currentStep } = useContext(ProfileCreationContext)
+  const { currentStep } = useProfileCreation()
 
   return (
     <Wrapper>

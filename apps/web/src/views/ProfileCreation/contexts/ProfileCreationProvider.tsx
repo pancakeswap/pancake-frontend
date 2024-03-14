@@ -1,8 +1,8 @@
 import { createContext, useEffect, useMemo, useReducer } from 'react'
-import { Address, useAccount } from 'wagmi'
 import { getBunnyFactoryContract } from 'utils/contractHelpers'
-import { MINT_COST, REGISTER_COST, ALLOWANCE_MULTIPLIER } from '../config'
-import { Actions, State, ContextType } from './types'
+import { Address, useAccount } from 'wagmi'
+import { ALLOWANCE_MULTIPLIER, MINT_COST, REGISTER_COST } from '../config'
+import { Actions, ContextType, State } from './types'
 
 const totalCost = MINT_COST + REGISTER_COST
 const allowance = totalCost * ALLOWANCE_MULTIPLIER
@@ -10,10 +10,10 @@ const allowance = totalCost * ALLOWANCE_MULTIPLIER
 const initialState: State = {
   isInitialized: false,
   currentStep: 0,
-  teamId: null,
+  teamId: undefined,
   selectedNft: {
-    collectionAddress: null,
-    tokenId: null,
+    collectionAddress: undefined,
+    tokenId: undefined,
   },
   userName: '',
   minimumCakeRequired: totalCost,
@@ -49,14 +49,14 @@ const reducer = (state: State, action: Actions): State => {
     case 'set_username':
       return {
         ...state,
-        userName: action.userName,
+        userName: action.userName!,
       }
     default:
       return state
   }
 }
 
-export const ProfileCreationContext = createContext<ContextType>(null)
+export const ProfileCreationContext = createContext<ContextType | null>(null)
 
 const ProfileCreationProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -67,6 +67,7 @@ const ProfileCreationProvider: React.FC<React.PropsWithChildren> = ({ children }
     let isSubscribed = true
 
     const fetchData = async () => {
+      if (!account) return
       const bunnyFactoryContract = getBunnyFactoryContract()
       const canMint = await bunnyFactoryContract.read.canMint([account])
       dispatch({ type: 'initialize', step: canMint ? 0 : 1 })

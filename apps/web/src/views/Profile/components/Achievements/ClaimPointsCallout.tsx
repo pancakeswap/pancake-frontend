@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
-import sumBy from 'lodash/sumBy'
-import { useAppDispatch } from 'state'
-import { useAccount } from 'wagmi'
+import { useTranslation } from '@pancakeswap/localization'
 import { Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakeswap/uikit'
+import sumBy from 'lodash/sumBy'
+import { useEffect, useState } from 'react'
+import { useAppDispatch } from 'state'
 import { useProfile } from 'state/profile/hooks'
 import { Achievement } from 'state/types'
-import { useTranslation } from '@pancakeswap/localization'
 import { getClaimableIfoData } from 'utils/achievements'
+import { useAccount } from 'wagmi'
 import AchievementRow from './AchievementRow'
 
 const ClaimPointsCallout: React.FC<React.PropsWithChildren<{ onSuccess?: () => void }>> = ({ onSuccess = null }) => {
@@ -18,7 +18,7 @@ const ClaimPointsCallout: React.FC<React.PropsWithChildren<{ onSuccess?: () => v
 
   useEffect(() => {
     const fetchIfoClaims = async () => {
-      const ifoData = await getClaimableIfoData(account, t)
+      const ifoData = await getClaimableIfoData(account!, t)
       setClaimableAchievement(ifoData)
     }
 

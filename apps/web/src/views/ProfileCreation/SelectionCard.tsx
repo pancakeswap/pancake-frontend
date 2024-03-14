@@ -1,9 +1,9 @@
-import { styled } from 'styled-components'
 import { Card, Radio } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
 
 interface SelectionCardProps {
   name: string
-  value: string | number
+  value?: string | number
   isChecked?: boolean
   onChange: (val: any) => void
   image: string
@@ -46,7 +46,7 @@ const SelectionCard: React.FC<React.PropsWithChildren<SelectionCardProps>> = ({
   isChecked = false,
   image,
   onChange,
-  disabled,
+  disabled = false,
   children,
   ...props
 }) => {
