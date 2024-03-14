@@ -1,5 +1,12 @@
 # @pancakeswap/smart-router
 
+## 5.1.5
+
+### Patch Changes
+
+- ab7f9fb: Slient price api error when testnet or chain is not supported
+- d807074: Remove smart router evm sub path
+
 ## 5.1.4
 
 ### Patch Changes
