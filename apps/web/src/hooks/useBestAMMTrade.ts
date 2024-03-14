@@ -26,9 +26,9 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import {
   CommonPoolsParams,
   PoolsWithState,
+  useCommonPools as useCommonPoolsWithTicks,
   useCommonPoolsLite,
   useCommonPoolsOnChain,
-  useCommonPools as useCommonPoolsWithTicks,
 } from './useCommonPools'
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
@@ -137,7 +137,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   })
   const bestTradeFromOffchainQuoter = useBestAMMTradeFromOffchainQuoter({
     ...params,
-    enabled: offchainQuoterEnabled,
+    enabled: Boolean(offchainQuoterEnabled && params.tradeType !== TradeType.EXACT_OUTPUT),
     autoRevalidate: quoterAutoRevalidate,
   })
   const bestOffchainWithQuickOnChainQuote = useBetterQuote(bestTradeFromOffchainQuoter, bestTradeFromQuickOnChainQuote)
