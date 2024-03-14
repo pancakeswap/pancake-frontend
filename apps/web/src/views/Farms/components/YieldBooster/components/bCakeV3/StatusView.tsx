@@ -53,7 +53,7 @@ export const StatusView: React.FC<{
       <Text color="textSubtle" bold fontSize={12} lineHeight="120%" textTransform="uppercase">
         {t('Yield Booster')}{' '}
         <Text color="secondary" bold display="inline-block" fontSize={12} lineHeight="120%" textTransform="uppercase">
-          {t(BOOSTER_STATUS_TEXT[status])}
+          {locked && t(BOOSTER_STATUS_TEXT[status])}
         </Text>
       </Text>
       <Flex alignItems="center">
