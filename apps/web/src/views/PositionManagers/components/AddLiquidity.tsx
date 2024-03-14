@@ -1,18 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { MANAGER } from '@pancakeswap/position-managers'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
-import { Button, Flex, LinkExternal, ModalV2, RowBetween, Text, useToast } from '@pancakeswap/uikit'
+import { Button, Flex, LinkExternal, ModalV2, RowBetween, Text } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { ConfirmationPendingContent } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { CurrencyInput } from 'components/CurrencyInput'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { BOOSTED_FARM_V3_GAS_LIMIT } from 'config'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { usePositionManagerBCakeWrapperContract, usePositionManagerWrapperContract } from 'hooks/useContract'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
@@ -77,6 +72,14 @@ interface Props {
   minDepositUSD?: number
   boosterMultiplier?: number
   isBooster?: boolean
+  onStake: (
+    amountA: CurrencyAmount<Currency>,
+    amountB: CurrencyAmount<Currency>,
+    allowDepositToken0: boolean,
+    allowDepositToken1: boolean,
+    onDone?: () => void,
+  ) => void
+  isTxLoading: boolean
 }
 
 const StyledCurrencyInput = styled(CurrencyInput)`
@@ -121,6 +124,8 @@ export const AddLiquidity = memo(function AddLiquidity({
   minDepositUSD,
   isBooster,
   boosterMultiplier,
+  onStake,
+  isTxLoading,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -128,7 +133,6 @@ export const AddLiquidity = memo(function AddLiquidity({
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const { account, chain } = useWeb3React()
   const tokenPairName = useMemo(() => `${currencyA.symbol}-${currencyB.symbol}`, [currencyA, currencyB])
 
   const onInputChange = useCallback(
@@ -260,67 +264,10 @@ export const AddLiquidity = memo(function AddLiquidity({
     userCurrencyBalances?.token1Balance,
     userTotalDepositUSD,
   ])
-  const bCakeWrapperAddress = bCakeWrapper ?? '0x'
-  const positionManagerWrapperContract = usePositionManagerWrapperContract(contractAddress)
-  const positionManagerBCakeWrapperContract = usePositionManagerBCakeWrapperContract(bCakeWrapperAddress)
-  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const { toastSuccess } = useToast()
 
-  const mintThenDeposit = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(
-      bCakeWrapper
-        ? () =>
-            positionManagerBCakeWrapperContract.write.mintThenDeposit(
-              [
-                allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
-                allowDepositToken1 ? amountB?.numerator ?? 0n : 0n,
-                false,
-                '0x',
-              ],
-              {
-                account: account ?? '0x',
-                chain,
-                gasLimit: BOOSTED_FARM_V3_GAS_LIMIT,
-              },
-            )
-        : () =>
-            positionManagerWrapperContract.write.mintThenDeposit(
-              [
-                allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
-                allowDepositToken1 ? amountB?.numerator ?? 0n : 0n,
-                '0x',
-              ],
-              {
-                account: account ?? '0x',
-                chain,
-              },
-            ),
-    )
-
-    if (receipt?.status) {
-      toastSuccess(
-        `${t('Staked')}!`,
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('Your funds have been staked in position manager.')}
-        </ToastDescriptionWithTx>,
-      )
-      onDone()
-    }
-  }, [
-    fetchWithCatchTxError,
-    bCakeWrapper,
-    positionManagerBCakeWrapperContract.write,
-    allowDepositToken0,
-    amountA?.numerator,
-    allowDepositToken1,
-    amountB?.numerator,
-    account,
-    chain,
-    positionManagerWrapperContract.write,
-    toastSuccess,
-    t,
-    onDone,
-  ])
+  const mintThenDeposit = useCallback(() => {
+    onStake?.(amountA, amountB, allowDepositToken0, allowDepositToken1, onDone)
+  }, [allowDepositToken0, allowDepositToken1, amountA, amountB, onDone, onStake])
 
   const translationData = useMemo(
     () =>
@@ -350,8 +297,8 @@ export const AddLiquidity = memo(function AddLiquidity({
 
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
-      <StyledModal title={pendingTx ? t('Pending Confirm') : t('Add Liquidity')}>
-        {pendingTx ? (
+      <StyledModal title={isTxLoading ? t('Pending Confirm') : t('Add Liquidity')}>
+        {isTxLoading ? (
           <ConfirmationPendingContent pendingText={pendingText} />
         ) : (
           <>
@@ -438,7 +385,7 @@ export const AddLiquidity = memo(function AddLiquidity({
                 contractAddress={contractAddress}
                 disabled={disabled}
                 onAddLiquidity={mintThenDeposit}
-                isLoading={pendingTx}
+                isLoading={isTxLoading}
                 learnMoreAboutUrl={learnMoreAboutUrl}
                 bCakeWrapper={bCakeWrapper}
               />

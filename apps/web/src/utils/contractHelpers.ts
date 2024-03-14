@@ -57,6 +57,7 @@ import { stableSwapNativeHelperABI } from 'config/abi/stableSwapNativeHelper'
 import { ChainId } from '@pancakeswap/chains'
 import { bCakeFarmBoosterV3ABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmBoosterV3'
 import { bCakeFarmBoosterVeCakeABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmBoosterVeCake'
+import { bCakeFarmWrapperBoosterVeCakeABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmWrapperBoosterVeCake'
 import { calcGaugesVotingABI, gaugesVotingABI } from '@pancakeswap/gauges'
 import { getIfoCreditAddressContract as getIfoCreditAddressContract_ } from '@pancakeswap/ifos'
 import { cakeFlexibleSideVaultV2ABI, cakeVaultV2ABI } from '@pancakeswap/pools'
@@ -268,6 +269,15 @@ export const getBCakeFarmBoosterVeCakeContract = (signer?: WalletClient, chainId
   return getContract({
     abi: bCakeFarmBoosterVeCakeABI,
     address: getBCakeFarmBoosterVeCakeAddress(chainId),
+    signer,
+    chainId,
+  })
+}
+
+export const getBCakeFarmWrapperBoosterVeCakeContract = (address: Address, signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: bCakeFarmWrapperBoosterVeCakeABI,
+    address,
     signer,
     chainId,
   })

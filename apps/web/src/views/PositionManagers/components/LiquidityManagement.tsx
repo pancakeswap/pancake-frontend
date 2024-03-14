@@ -13,7 +13,8 @@ import { styled, useTheme } from 'styled-components'
 import { StatusView } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusView'
 import { useBoostStatusPM } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { useAccount } from 'wagmi'
-import { AprDataInfo } from '../hooks'
+import { AprDataInfo, useWrapperBooster } from '../hooks'
+import { useOnStake } from '../hooks/useOnStake'
 import { AddLiquidity } from './AddLiquidity'
 import { RemoveLiquidity } from './RemoveLiquidity'
 import { RewardAssets } from './RewardAssets'
@@ -92,6 +93,7 @@ export interface LiquidityManagementProps {
   bCakeWrapper?: Address
   minDepositUSD?: number
   boosterMultiplier?: number
+  boosterContractAddress?: Address
 }
 
 export const LiquidityManagement = memo(function LiquidityManagement({
@@ -134,6 +136,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   minDepositUSD,
   boosterMultiplier,
   isBooster,
+  boosterContractAddress,
 }: LiquidityManagementProps) {
   const { colors } = useTheme()
   const { t } = useTranslation()
@@ -159,6 +162,13 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   const isSingleDepositToken0 = isSingleDepositToken && allowDepositToken0
 
   const { status } = useBoostStatusPM(Boolean(bCakeWrapper), boosterMultiplier, refetch)
+  const { shouldUpdate, veCakeUserMultiplierBeforeBoosted } = useWrapperBooster(
+    boosterContractAddress ?? '0x',
+    boosterMultiplier ?? 1,
+    bCakeWrapper,
+  )
+  const { isTxLoading, onStake, onUpdate } = useOnStake(contractAddress ?? '0x', bCakeWrapper ?? '0x')
+
   return (
     <>
       {hasStaked ? (
@@ -204,12 +214,17 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                   style={{ borderLeft: dividerBorderStyle, borderTop: dividerBorderStyle }}
                 />
                 <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
-                  <StatusView
-                    status={status}
-                    isFarmStaking
-                    boostedMultiplier={boosterMultiplier}
-                    maxBoostMultiplier={3}
-                  />
+                  <Flex style={{ gap: 5 }}>
+                    <StatusView
+                      status={status}
+                      isFarmStaking
+                      boostedMultiplier={boosterMultiplier}
+                      maxBoostMultiplier={3}
+                      shouldUpdate={shouldUpdate}
+                      expectMultiplier={veCakeUserMultiplierBeforeBoosted}
+                    />
+                    <Button onClick={() => onUpdate(refetch)}>{t('Update')}</Button>
+                  </Flex>
                 </RowBetween>
               </>
             )}
@@ -284,6 +299,8 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         minDepositUSD={minDepositUSD}
         boosterMultiplier={boosterMultiplier}
         isBooster={isBooster}
+        onStake={onStake}
+        isTxLoading={isTxLoading}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

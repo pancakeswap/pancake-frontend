@@ -218,7 +218,7 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
     managerFeePercentage: poolAmounts?.managerFeePercentage,
     managerAddress: poolAmounts?.managerAddress,
     lpTokenDecimals,
-    boostContractAddress: bCakeStaticData?.boostContractAddress,
+    boosterContractAddress: bCakeStaticData?.boostContractAddress,
   }
 }
 

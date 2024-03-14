@@ -15,6 +15,7 @@ import {
   getBCakeFarmBoosterProxyFactoryContract,
   getBCakeFarmBoosterV3Contract,
   getBCakeFarmBoosterVeCakeContract,
+  getBCakeFarmWrapperBoosterVeCakeContract,
   getBCakeProxyContract,
   getBunnyFactoryContract,
   getCakeFlexibleSideVaultV2Contract,
@@ -340,6 +341,15 @@ export function useBCakeFarmBoosterVeCakeContract() {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(() => getBCakeFarmBoosterVeCakeContract(signer ?? undefined, chainId), [signer, chainId])
+}
+
+export function useBCakeFarmWrapperBoosterVeCakeContract(address: Address) {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(
+    () => getBCakeFarmWrapperBoosterVeCakeContract(address, signer ?? undefined, chainId),
+    [signer, chainId, address],
+  )
 }
 
 export function usePositionManagerWrapperContract(address: Address) {

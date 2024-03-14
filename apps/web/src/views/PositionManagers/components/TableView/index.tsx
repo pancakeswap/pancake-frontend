@@ -444,6 +444,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
               bCakeWrapper={bCakeWrapperAddress}
               minDepositUSD={minDepositUSD}
               isBooster={isBooster}
+              boosterContractAddress={info?.boosterContractAddress}
             />
           </td>
         </tr>
