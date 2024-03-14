@@ -45,7 +45,10 @@ export const Contribute = () => {
               {t(`Build Hooks with us and participate in PancakeSwap's 500k USD Developer Program`)}
             </Text>
             <Flex flexDirection={['column', 'column', 'row']} margin={['auto', 'auto', 'auto', '0']}>
-              <NextLinkFromReactRouter target="_blank" to="https://forms.gle/tZNXcQbfvgj1XAJq5">
+              <NextLinkFromReactRouter
+                target="_blank"
+                to="https://pancakeswapforms.fillout.com/PancakeSwap_Hooks_Submission"
+              >
                 <Button display="flex" margin="auto">
                   <Text color="white" bold fontSize={['12px', '16px']} mr="4px">
                     {t('Submit Your Hook')}

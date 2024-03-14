@@ -1,9 +1,9 @@
-import { ArticleDataType } from '@pancakeswap/blog'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, BoxProps, Card, Flex, Link, OpenNewIcon, Text } from '@pancakeswap/uikit'
+import { Box, BoxProps, CalenderIcon, Card, Flex, Link, LocationIcon, OpenNewIcon, Text } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { HeightProps } from 'styled-system'
+import { V4ArticleDataType } from 'views/LandingV4/config/types'
 
 const StyledBackgroundImage = styled(Box)`
   height: 100%;
@@ -65,7 +65,7 @@ interface BlogCardProps extends BoxProps {
   isAllBlog?: boolean
   isSpecialLayout?: boolean
   imgUrl?: string
-  article?: ArticleDataType
+  article?: V4ArticleDataType
   slug?: string
   imgHeight?: HeightProps['height']
 }
@@ -134,16 +134,33 @@ export const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
             >
               {article?.description}
             </StyledLineClamp>
-            <Flex mt="auto" flexDirection={isAllBlog ? ['column'] : ['column', 'row']}>
-              <Text mr="auto" bold fontSize={['12px', '12px', '14px']} color="textSubtle">
-                {t('From: %platform%', {
-                  platform: article?.newsOutBoundLink ? article?.newsFromPlatform : t('Official'),
-                })}
-              </Text>
-              <Text bold fontSize={['12px', '12px', '14px']} color="textSubtle">
-                {article?.createAt}
-              </Text>
-            </Flex>
+            {article?.eventStartToEndTime || article?.location ? (
+              <Flex mt="auto" flexDirection="column">
+                <Flex>
+                  <CalenderIcon width={20} height={20} />
+                  <Text ml="8px" fontSize={14} bold>
+                    {article?.eventStartToEndTime}
+                  </Text>
+                </Flex>
+                <Flex mt="8px">
+                  <LocationIcon width={20} height={20} />
+                  <Text ml="8px" fontSize={14} bold>
+                    {article?.location}
+                  </Text>
+                </Flex>
+              </Flex>
+            ) : (
+              <Flex mt="auto" flexDirection={isAllBlog ? ['column'] : ['column', 'row']}>
+                <Text mr="auto" bold fontSize={['12px', '12px', '14px']} color="textSubtle">
+                  {t('From: %platform%', {
+                    platform: article?.newsOutBoundLink ? article?.newsFromPlatform : t('Official'),
+                  })}
+                </Text>
+                <Text bold fontSize={['12px', '12px', '14px']} color="textSubtle">
+                  {article?.createAt}
+                </Text>
+              </Flex>
+            )}
           </Flex>
         </Flex>
       </Card>

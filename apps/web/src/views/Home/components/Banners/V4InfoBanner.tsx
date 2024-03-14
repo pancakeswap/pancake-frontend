@@ -13,14 +13,12 @@ import {
   LinkExternalAction,
   PancakeSwapBadge,
 } from '@pancakeswap/widgets-internal'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
 
-// const floatingAsset = `${ASSET_CDN}/web/banners/v4-info/floating-item.png`
-// const bgDesktop = `${ASSET_CDN}/web/banners/v4-info/bg-desktop.png`
-// const bgMobile = `${ASSET_CDN}/web/banners/v4-info/bg-mobile.png`
-const floatingAsset = `/images/v4-info/floating-item.png`
-const bgDesktop = `/images/v4-info/bg-desktop.png`
-const bgMobile = `/images/v4-info/bg-mobile.png`
+const floatingAsset = `${ASSET_CDN}/web/banners/v4-info/floating-item.png`
+const bgDesktop = `${ASSET_CDN}/web/banners/v4-info/bg-desktop.png`
+const bgMobile = `${ASSET_CDN}/web/banners/v4-info/bg-mobile.png`
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,

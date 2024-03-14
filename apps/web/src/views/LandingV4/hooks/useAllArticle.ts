@@ -1,5 +1,6 @@
-import { AllArticleType, getArticle } from '@pancakeswap/blog'
+import { getArticle } from '@pancakeswap/blog'
 import { useQuery } from '@tanstack/react-query'
+import { AllArticleType } from 'views/LandingV4/config/types'
 import { staticThirdPartyNews } from '../config/blog/staticThirdPartyNews'
 
 const LIMIT = 20

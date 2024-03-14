@@ -1,3 +1,5 @@
+import { ArticleDataType, PaginationType } from '@pancakeswap/blog'
+
 export enum TagType {
   // Category
   MISCELLANEOUS = 'Miscellaneous',
@@ -33,4 +35,19 @@ export interface HooksType {
   tags: TagType[]
   tagsValue: TagValue[]
   featured?: boolean
+}
+
+export interface V4ArticleDataType extends ArticleDataType {
+  location?: string
+  eventStartToEndTime?: string
+}
+
+export interface V4ArticleType {
+  data: V4ArticleDataType[]
+  pagination: PaginationType
+}
+
+export interface AllArticleType {
+  isFetching: boolean
+  articlesData: V4ArticleType
 }

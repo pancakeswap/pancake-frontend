@@ -1,6 +1,7 @@
-import { ArticleDataType } from '@pancakeswap/blog'
+import { ASSET_CDN } from 'config/constants/endpoints'
+import { V4ArticleDataType } from 'views/LandingV4/config/types'
 
-export const staticThirdPartyNews: ArticleDataType[] = [
+export const staticThirdPartyNews: V4ArticleDataType[] = [
   {
     id: -1,
     title: 'ETHGlobal London',
@@ -10,11 +11,13 @@ export const staticThirdPartyNews: ArticleDataType[] = [
     categories: [],
     content: '',
     gamesCategories: [],
-    imgUrl: 'https://sgp1.digitaloceanspaces.com/strapi.space/3b228c3da3c6542324d37cfc2f1c3b3e.jpeg',
+    imgUrl: `${ASSET_CDN}/web/v4-landing/ethglobal-thumbnail.jpeg`,
     locale: 'en',
     newsFromPlatform: 'ETHGlobal',
     newsOutBoundLink: 'https://ethglobal.com/events/london2024/prizes/pancakeswap',
     publishedAt: '2024-03-15T08:18:42.595Z',
     slug: 'eth-global-london',
+    location: 'London, UK',
+    eventStartToEndTime: '15 Mar 2024 - 17 Mar 2024',
   },
 ]

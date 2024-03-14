@@ -1,4 +1,3 @@
-import { ArticleDataType } from '@pancakeswap/blog'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, FlexGap, OptionProps, Select, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useMemo, useState } from 'react'
@@ -7,6 +6,7 @@ import { GradientBox } from 'views/LandingV4/components/GradientBox'
 import { AllBlogIcon } from 'views/LandingV4/components/Icons/AllBlogIcon'
 import { BlogCard } from 'views/LandingV4/components/NewsAndEvents/BlogCard'
 import { ViewMoreButton } from 'views/LandingV4/components/ViewMoreButton'
+import { V4ArticleDataType } from 'views/LandingV4/config/types'
 import { MIN_DISPLAY, useTotalGradientBox } from 'views/LandingV4/hooks/totalGradientBox'
 import { useV4Articles, useV4NewsArticle } from 'views/LandingV4/hooks/useAllArticle'
 
@@ -88,7 +88,7 @@ export const AllBlog = () => {
   }
 
   const allBlogData = useMemo(() => {
-    let data: ArticleDataType[] = []
+    let data: V4ArticleDataType[] = []
     const officialBlog = v4Articles.data
 
     if (sortOption === SortOption.OFFICIAL) {
