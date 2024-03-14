@@ -141,7 +141,7 @@ export const farmsV3 = defineFarmV3Configs([
   {
     pid: 51,
     lpAddress: '0x6Fab6CEdf26f9bF03448Fe835B674be1CFf0E8BB',
-    token0: ethereumTokens.agEUR,
+    token0: ethereumTokens.eura,
     token1: ethereumTokens.usdc,
     feeAmount: FeeAmount.LOW,
   },

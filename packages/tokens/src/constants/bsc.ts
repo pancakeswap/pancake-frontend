@@ -2491,12 +2491,12 @@ export const bscTokens = {
     'Stader (Wormhole)',
     'https://www.staderlabs.com/',
   ),
-  ageur: new ERC20Token(
+  eura: new ERC20Token(
     ChainId.BSC,
     '0x12f31B73D812C6Bb0d735a218c086d44D5fe5f89',
     18,
-    'agEUR',
-    'agEUR',
+    'EURA',
+    'EURA (previously agEUR)',
     'https://app.angle.money/#/',
   ),
   caps: new ERC20Token(
