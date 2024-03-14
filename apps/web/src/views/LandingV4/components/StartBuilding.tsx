@@ -93,7 +93,7 @@ const BuildingConfig = [
     title: <Trans>Start Building</Trans>,
     icon: <Step4Icon width={40} height={48} color="primary" />,
     imageUrl: `${ASSET_CDN}/web/v4-landing/buildings-4.png`,
-    url: 'https://pancakeswap.finance/?utm_source=v4%20landing%20page&utm_medium=banner&utm_campaign=v4%20landing%20page&utm_id=v4%20landing%20page',
+    url: 'https://developer.pancakeswap.finance/?utm_source=v4%20landing%20page&utm_medium=banner&utm_campaign=v4%20landing%20page&utm_id=v4%20landing%20page',
   },
 ]
 
