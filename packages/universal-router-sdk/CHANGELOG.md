@@ -1,5 +1,14 @@
 # @pancakeswap/universal-router-sdk
 
+## 1.0.9
+
+### Patch Changes
+
+- d807074: Remove smart router evm sub path
+- Updated dependencies [ab7f9fb]
+- Updated dependencies [d807074]
+  - @pancakeswap/smart-router@5.1.5
+
 ## 1.0.8
 
 ### Patch Changes
