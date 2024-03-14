@@ -76,7 +76,7 @@ export interface SerializedTrade
   > {
   inputAmount: SerializedCurrencyAmount
   outputAmount: SerializedCurrencyAmount
-  gasEstimate?: string
+  gasEstimate: string
   gasEstimateInUSD?: SerializedCurrencyAmount
   routes: SerializedRoute[]
 }

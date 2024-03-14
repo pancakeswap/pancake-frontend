@@ -55,7 +55,7 @@ export interface SerializedV4Trade
   > {
   inputAmount: SerializedCurrencyAmount
   outputAmount: SerializedCurrencyAmount
-  gasEstimate?: string
+  gasEstimate: string
   routes: SerializedV4Route[]
   gasCostInBase: SerializedCurrencyAmount
   gasCostInQuote: SerializedCurrencyAmount
