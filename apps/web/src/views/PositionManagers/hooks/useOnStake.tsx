@@ -82,13 +82,13 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress: Addres
       const receipt = await fetchWithCatchTxError(
         bCakeWrapperAddress
           ? () =>
-              positionManagerBCakeWrapperContract.write.mintThenDeposit([0n, 0n, false, '0x'], {
+              positionManagerBCakeWrapperContract.write.deposit([0n, false], {
                 account: account ?? '0x',
                 chain,
                 gasLimit: BOOSTED_FARM_V3_GAS_LIMIT,
               })
           : () =>
-              positionManagerWrapperContract.write.mintThenDeposit([0n, 0n, '0x'], {
+              positionManagerWrapperContract.write.deposit([0n], {
                 account: account ?? '0x',
                 chain,
               }),
