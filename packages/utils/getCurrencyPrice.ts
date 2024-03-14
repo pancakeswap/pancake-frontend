@@ -1,6 +1,6 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, isTestnetChainId } from '@pancakeswap/chains'
 
-const PRICE_API = 'https://alpha.wallet-api.pancakeswap.com/v1/prices/list/'
+const PRICE_API = 'https://wallet-api.pancakeswap.com/v1/prices/list/'
 
 const zeroAddress = '0x0000000000000000000000000000000000000000' as const
 
@@ -49,7 +49,7 @@ function getRequestUrl(params?: CurrencyParams | CurrencyParams[]): string | und
     return undefined
   }
   const infoList = Array.isArray(params) ? params : [params]
-  const key = getCurrencyListKey(infoList)
+  const key = getCurrencyListKey(infoList.filter((c) => !isTestnetChainId(c.chainId)))
   if (!key) {
     return undefined
   }
@@ -58,7 +58,11 @@ function getRequestUrl(params?: CurrencyParams | CurrencyParams[]): string | und
 }
 
 export async function getCurrencyUsdPrice(currencyParams?: CurrencyParams) {
-  const prices = await getCurrencyListUsdPrice(currencyParams && [currencyParams])
+  if (!currencyParams || isTestnetChainId(currencyParams.chainId)) {
+    return 0
+  }
+
+  const prices = await getCurrencyListUsdPrice([currencyParams])
   const key = getCurrencyKey(currencyParams)
   return (key && prices[key]) ?? 0
 }
