@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/smart-router",
-  "version": "5.0.4",
+  "version": "5.1.5",
   "description": "A SDK for getting best routes from AMM",
   "repository": {
     "type": "git",
@@ -16,7 +16,6 @@
     "dev": "tsup --watch",
     "test": "vitest --run",
     "update:snapshot": "vitest -u",
-    "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "files": [
@@ -27,6 +26,7 @@
     "@pancakeswap/gauges": "workspace:*",
     "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/stable-swap-sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",

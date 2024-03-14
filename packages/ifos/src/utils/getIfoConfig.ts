@@ -60,7 +60,7 @@ export async function getInActiveIfos(chainId?: ChainId): Promise<Ifo[]> {
 export async function getTotalIFOSold(chainId?: ChainId): Promise<number> {
   const ifos = await getIfoConfig(chainId)
   const unwrap = (usd: string) => {
-    return Number(usd.replace('/$/', '').replace('/,/g', ''))
+    return Number(usd.replace(/[$,]/g, ''))
   }
   return ifos.reduce((acc, current) => {
     if (current.poolBasic?.raiseAmount) {

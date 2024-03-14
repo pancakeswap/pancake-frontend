@@ -162,9 +162,7 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
                     <FixedStakingModal
                       setSelectedPeriodIndex={setSelectedPeriodIndex}
                       key={selectedPeriodIndex}
-                      initialLockPeriod={
-                        selectedPeriodIndex !== null ? pool.pools[selectedPeriodIndex].lockPeriod : undefined
-                      }
+                      initialLockPeriod={selectedPool?.lockPeriod}
                       pools={pool.pools}
                       stakingToken={pool.token}
                       stakedPositions={stakedPositions}

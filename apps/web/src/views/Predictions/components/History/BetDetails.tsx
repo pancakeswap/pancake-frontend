@@ -1,9 +1,9 @@
-import { styled } from 'styled-components'
-import { Bet } from 'state/types'
 import { useTranslation } from '@pancakeswap/localization'
-import { getBlockExploreLink } from 'utils'
-import { Flex, Text, Link, Heading } from '@pancakeswap/uikit'
+import { Flex, Heading, Link, Text } from '@pancakeswap/uikit'
 import { Result } from 'state/predictions/helpers'
+import { Bet } from 'state/types'
+import { styled } from 'styled-components'
+import { getBlockExploreLink } from 'utils'
 import { PayoutRow, RoundResultHistory } from '../RoundResult'
 import BetResult from './BetResult'
 import { getMultiplier } from './helpers'
@@ -21,7 +21,7 @@ const StyledBetDetails = styled.div`
 
 const BetDetails: React.FC<React.PropsWithChildren<BetDetailsProps>> = ({ bet, result }) => {
   const { t } = useTranslation()
-  const { totalAmount, bullAmount, bearAmount } = bet.round
+  const { totalAmount = 0, bullAmount = 0, bearAmount = 0 } = bet.round ?? {}
   const bullMultiplier = getMultiplier(totalAmount, bullAmount)
   const bearMultiplier = getMultiplier(totalAmount, bearAmount)
 
@@ -36,11 +36,13 @@ const BetDetails: React.FC<React.PropsWithChildren<BetDetailsProps>> = ({ bet, r
       )}
       {result !== Result.LIVE && <BetResult bet={bet} result={result} />}
       <Heading mb="8px">{t('Round History')}</Heading>
-      <RoundResultHistory round={bet.round} mb="24px">
-        <PayoutRow positionLabel={t('Up')} multiplier={bullMultiplier} amount={bullAmount} />
-        <PayoutRow positionLabel={t('Down')} multiplier={bearMultiplier} amount={bearAmount} />
-      </RoundResultHistory>
-      {bet.round.lockBlock && (
+      {bet.round ? (
+        <RoundResultHistory round={bet.round} mb="24px">
+          <PayoutRow positionLabel={t('Up')} multiplier={bullMultiplier} amount={bullAmount} />
+          <PayoutRow positionLabel={t('Down')} multiplier={bearMultiplier} amount={bearAmount} />
+        </RoundResultHistory>
+      ) : null}
+      {bet.round?.lockBlock && (
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
           <Text>{t('Opening Block')}</Text>
           <Link href={getBlockExploreLink(bet.round.lockBlock, 'block')} external>
@@ -48,7 +50,7 @@ const BetDetails: React.FC<React.PropsWithChildren<BetDetailsProps>> = ({ bet, r
           </Link>
         </Flex>
       )}
-      {bet.round.closeBlock && (
+      {bet.round?.closeBlock && (
         <Flex alignItems="center" justifyContent="space-between">
           <Text>{t('Closing Block')}</Text>
           <Link href={getBlockExploreLink(bet.round.closeBlock, 'block')} external>

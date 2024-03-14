@@ -1,28 +1,26 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useCallback, useMemo, ReactNode } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
-import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
+import { ReactNode, useCallback, useMemo } from 'react'
 
-import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import { useDefaultsFromURLSearch, useSwapState } from 'state/swap/hooks'
-import { Field } from 'state/swap/actions'
-import { useCurrency } from 'hooks/Tokens'
 import { CommonBasesType } from 'components/SearchModal/types'
+import { useCurrency } from 'hooks/Tokens'
+import { Field } from 'state/swap/actions'
+import { useDefaultsFromURLSearch, useSwapState } from 'state/swap/hooks'
+import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useCurrencyBalances } from 'state/wallet/hooks'
-import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { currencyId } from 'utils/currencyId'
+import { maxAmountSpend } from 'utils/maxAmountSpend'
 
 import { useAccount } from 'wagmi'
-import { FormContainer } from '../components'
 import useWarningImport from '../../hooks/useWarningImport'
-import { RiskCheck } from './RiskCheck'
+import { FormContainer } from '../components'
 import { useIsWrapping } from '../hooks'
 import { FlipButton } from './FlipButton'
 import { Recipient } from './Recipient'
+import { RiskCheck } from './RiskCheck'
 
 interface Props {
   inputAmount?: CurrencyAmount<Currency>
@@ -69,7 +67,12 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
   }, [maxAmountInput, onUserInput])
 
   const handleCurrencySelect = useCallback(
-    (newCurrency: Currency, field: Field, currentInputCurrencyId: string, currentOutputCurrencyId: string) => {
+    (
+      newCurrency: Currency,
+      field: Field,
+      currentInputCurrencyId: string | undefined,
+      currentOutputCurrencyId: string | undefined,
+    ) => {
       onCurrencySelection(field, newCurrency)
 
       warningSwapHandler(newCurrency)
@@ -86,11 +89,13 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
     [onCurrencySelection, warningSwapHandler],
   )
   const handleInputSelect = useCallback(
-    (newCurrency: Currency) => handleCurrencySelect(newCurrency, Field.INPUT, inputCurrencyId, outputCurrencyId),
+    (newCurrency: Currency) =>
+      handleCurrencySelect(newCurrency, Field.INPUT, inputCurrencyId || '', outputCurrencyId || ''),
     [handleCurrencySelect, inputCurrencyId, outputCurrencyId],
   )
   const handleOutputSelect = useCallback(
-    (newCurrency: Currency) => handleCurrencySelect(newCurrency, Field.OUTPUT, inputCurrencyId, outputCurrencyId),
+    (newCurrency: Currency) =>
+      handleCurrencySelect(newCurrency, Field.OUTPUT, inputCurrencyId || '', outputCurrencyId || ''),
     [handleCurrencySelect, inputCurrencyId, outputCurrencyId],
   )
 
@@ -127,7 +132,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         otherCurrency={outputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
       />
-      <RiskCheck currency={inputCurrency} />
+      <RiskCheck currency={inputCurrency ?? undefined} />
       <FlipButton />
       <CurrencyInputPanel
         id="swap-currency-output"
@@ -144,7 +149,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         otherCurrency={outputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
       />
-      <RiskCheck currency={outputCurrency} />
+      <RiskCheck currency={outputCurrency ?? undefined} />
       <Recipient />
       {pricingAndSlippage}
       {swapCommitButton}

@@ -51,7 +51,7 @@ export const getAprData = (pool: Pool.DeserializedPool<Token>, performanceFee: n
     ? vaultPoolConfig[vaultKey].autoCompoundFrequency
     : MANUAL_POOL_AUTO_COMPOUND_FREQUENCY
 
-  if (vaultKey) {
+  if (vaultKey && apr !== undefined) {
     const autoApr = getApy(apr, autoCompoundFrequency, 365, performanceFee) * 100
     return { apr: autoApr, autoCompoundFrequency }
   }
@@ -59,7 +59,7 @@ export const getAprData = (pool: Pool.DeserializedPool<Token>, performanceFee: n
 }
 
 export const getCakeVaultEarnings = (
-  account: string,
+  account: string | undefined,
   cakeAtLastUserAction: BigNumber,
   userShares: BigNumber,
   pricePerFullShare: BigNumber,
@@ -81,8 +81,8 @@ export const getPoolBlockInfo = memoize(
     const { startTimestamp, endTimestamp, isFinished } = pool
     const shouldShowBlockCountdown = Boolean(!isFinished && startTimestamp && endTimestamp)
     const now = Math.floor(Date.now() / 1000)
-    const timeUntilStart = Math.max(startTimestamp - now, 0)
-    const timeRemaining = Math.max(endTimestamp - now, 0)
+    const timeUntilStart = Math.max((startTimestamp || 0) - now, 0)
+    const timeRemaining = Math.max((endTimestamp || 0) - now, 0)
     const hasPoolStarted = timeUntilStart <= 0 && timeRemaining > 0
     const timeToDisplay = hasPoolStarted ? timeRemaining : timeUntilStart
     return { shouldShowBlockCountdown, timeUntilStart, timeRemaining, hasPoolStarted, timeToDisplay, currentBlock }

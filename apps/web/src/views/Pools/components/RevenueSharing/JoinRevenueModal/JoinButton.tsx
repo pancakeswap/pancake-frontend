@@ -1,10 +1,10 @@
-import { useCallback } from 'react'
-import { Button, useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { useVCakeContract } from 'hooks/useContract'
+import { Button, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useVCakeContract } from 'hooks/useContract'
+import { useCallback } from 'react'
 
 interface JoinButtonProps {
   refresh?: () => void
@@ -20,7 +20,7 @@ const JoinButton: React.FunctionComponent<React.PropsWithChildren<JoinButtonProp
 
   const handleJoinButton = useCallback(async () => {
     try {
-      const receipt = await fetchWithCatchTxError(() => vCakeContract.write.syncFromCakePool([]))
+      const receipt = await fetchWithCatchTxError(() => vCakeContract.write.syncFromCakePool([] as any))
 
       if (receipt?.status) {
         toastSuccess(

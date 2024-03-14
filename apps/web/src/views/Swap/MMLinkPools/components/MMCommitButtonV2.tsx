@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { Button, useModal } from '@pancakeswap/uikit'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import { CommitButton } from 'components/CommitButton'
@@ -77,7 +77,7 @@ SwapCommitButtonPropsType) {
   }, [mmTradeInfo])
   const swapCalls = useSwapCallArguments(rfqTrade.trade, rfqTrade.rfq ?? undefined, recipient ?? undefined)
   const { resetState, txHash, confirmState, confirmSteps, callToAction, errorMessage } = useMMConfirmModalState(
-    isExpertMode ? rfqTrade.trade : tradeToConfirm,
+    (isExpertMode ? rfqTrade.trade : tradeToConfirm) ?? undefined,
     swapCalls,
     (recipient as Address) ?? null,
     amountToApprove?.currency.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
@@ -87,7 +87,7 @@ SwapCommitButtonPropsType) {
   // Handlers
 
   const handleAcceptChanges = useCallback(() => {
-    setTradeToConfirm(rfqTrade.trade)
+    setTradeToConfirm(rfqTrade.trade ?? undefined)
     resetState()
   }, [rfqTrade.trade, resetState])
 
@@ -112,7 +112,7 @@ SwapCommitButtonPropsType) {
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModalV2
       isMM
-      trade={rfqTrade.trade} // show the info while refresh RFQ
+      trade={rfqTrade.trade ?? undefined} // show the info while refresh RFQ
       originalTrade={tradeToConfirm}
       txHash={txHash}
       confirmModalState={confirmState}
@@ -132,7 +132,7 @@ SwapCommitButtonPropsType) {
   // End Modals
 
   const onSwapHandler = useCallback(() => {
-    setTradeToConfirm(rfqTrade.trade)
+    setTradeToConfirm(rfqTrade.trade ?? undefined)
     resetState()
 
     if (isExpertMode) {

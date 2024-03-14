@@ -81,7 +81,7 @@ const GridItem: React.FC<
   }>
 > = ({ traderData = { address: '', volume: 0, teamId: 0, rank: 0 }, teamImages }) => {
   const { address, volume, teamId, rank } = traderData
-  const { profile, isFetching: isProfileFetching } = useProfileForAddress(address)
+  const { profile, isFetching: isProfileFetching } = useProfileForAddress(address || '')
   const { domainName, avatar } = useDomainNameForAddress(address)
 
   return (
@@ -90,7 +90,7 @@ const GridItem: React.FC<
         <Heading color="secondary">#{rank}</Heading>
       </Flex>
       <Flex alignItems="center" justifyContent="flex-start">
-        <Text bold>${localiseTradingVolume(volume)}</Text>
+        <Text bold>${localiseTradingVolume(volume || 0)}</Text>
       </Flex>
       <Flex alignItems="center" justifyContent="flex-start">
         <SkeletonV2
@@ -107,9 +107,11 @@ const GridItem: React.FC<
             mr={['4px', null, '12px']}
           />
         </SkeletonV2>
-        <Text color="primary">{domainName || truncateHash(address)}</Text>
+        <Text color="primary">{domainName || truncateHash(address || '')}</Text>
       </Flex>
-      <TeamImageWrapper justifyContent="flex-end">{teamImages[teamId - 1]}</TeamImageWrapper>
+      <TeamImageWrapper justifyContent="flex-end">
+        {teamId !== undefined ? teamImages[teamId - 1] : null}
+      </TeamImageWrapper>
     </Wrapper>
   )
 }

@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import type { FarmConfigBaseProps, SerializedFarmConfig } from '@pancakeswap/farms'
-import { Currency, CurrencyAmount, Percent, Price, Token, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, ERC20Token, Percent, Price, Token, Trade, TradeType } from '@pancakeswap/sdk'
 import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import BigNumber from 'bignumber.js'
 import { Address } from 'wagmi'
@@ -196,3 +196,5 @@ export enum Bound {
   LOWER = 'LOWER',
   UPPER = 'UPPER',
 }
+
+export type UnsafeCurrency = Currency | ERC20Token | null | undefined

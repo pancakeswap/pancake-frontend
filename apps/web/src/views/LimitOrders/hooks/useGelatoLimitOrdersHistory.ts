@@ -76,7 +76,7 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
 
   const startFetch = turnOn && gelatoLimitOrders && account && chainId
 
-  const { data } = useQuery({
+  const { data = [] } = useQuery({
     queryKey: OPEN_ORDERS_QUERY_KEY,
 
     queryFn: async () => {
@@ -127,7 +127,7 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
 
   const startFetch = turnOn && gelatoLimitOrders && account && chainId
 
-  const { data } = useQuery({
+  const { data = [] } = useQuery({
     queryKey: EXECUTED_CANCELLED_ORDERS_QUERY_KEY,
 
     queryFn: async () => {
@@ -179,7 +179,7 @@ const useExpiredOrders = (turnOn: boolean): Order[] => {
 
   const startFetch = turnOn && gelatoLimitOrders && account && chainId
 
-  const { data } = useQuery({
+  const { data = [] } = useQuery({
     queryKey: EXECUTED_EXPIRED_ORDERS_QUERY_KEY,
 
     queryFn: async () => {

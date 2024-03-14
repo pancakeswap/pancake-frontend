@@ -25,7 +25,8 @@ export default function useSelectedPeriod({ pool, stakedPositions }) {
     [lockedPeriods, pool.pools],
   )
 
-  const selectedPool: FixedStakingPool = pool.pools[selectedPeriodIndex]
+  const selectedPool: FixedStakingPool | undefined =
+    selectedPeriodIndex !== null ? pool.pools[selectedPeriodIndex] : undefined
 
   return {
     setSelectedPeriodIndex,

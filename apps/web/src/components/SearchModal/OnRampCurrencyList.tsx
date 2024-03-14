@@ -81,6 +81,7 @@ function OnRampCurrencyRow({
 
   const key = currencyKey(currency)
   const isBtcNative = isNativeBtc(currency)
+  const disabled = Boolean(isSelected || (isBtcNative && !allowBuyBtc))
   const btcNetworkDisplayName = t('Bitcoin Network')
   const isFiat = Boolean(mode === 'onramp-fiat')
 
@@ -91,8 +92,8 @@ function OnRampCurrencyRow({
       <MenuItem
         style={style}
         className={`token-item-${key}`}
-        onClick={() => (isSelected ? null : onSelect())}
-        disabled={isSelected || (isBtcNative && !allowBuyBtc)}
+        onClick={() => (disabled ? null : onSelect())}
+        disabled={disabled}
         selected={otherSelected}
       >
         <OnRampCurrencyLogo mode={mode} currency={currency as Token} size={28} />

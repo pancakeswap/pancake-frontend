@@ -1,30 +1,30 @@
-import { useState, useCallback } from 'react'
-import { useAccount } from 'wagmi'
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  CardHeader,
+  ArrowBackIcon,
+  Box,
   Card,
   CardBody,
-  Text,
   CardFooter,
-  ArrowBackIcon,
+  CardHeader,
   Flex,
   Heading,
   Skeleton,
-  Box,
+  Text,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { LotteryStatus } from 'config/constants/types'
-import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
-import { fetchLottery } from 'state/lottery/helpers'
-import { LotteryRound } from 'state/types'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import FinishedRoundTable from './FinishedRoundTable'
+import { LotteryStatus } from 'config/constants/types'
+import { useCallback, useState } from 'react'
+import { fetchLottery } from 'state/lottery/helpers'
+import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
+import { LotteryRound } from 'state/types'
+import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
+import { getDrawnDate, processLotteryResponse } from '../../helpers'
 import { WhiteBunny } from '../../svgs'
 import BuyTicketsButton from '../BuyTicketsButton'
 import PreviousRoundCardBody from '../PreviousRoundCard/Body'
-import { processLotteryResponse, getDrawnDate } from '../../helpers'
 import PreviousRoundCardFooter from '../PreviousRoundCard/Footer'
+import FinishedRoundTable from './FinishedRoundTable'
 
 interface YourHistoryCardProps {
   handleShowMoreClick: () => void
@@ -57,8 +57,8 @@ const YourHistoryCard: React.FC<React.PropsWithChildren<YourHistoryCardProps>> =
   } = useTranslation()
   const { address: account } = useAccount()
   const [shouldShowRoundDetail, setShouldShowRoundDetail] = useState(false)
-  const [selectedLotteryNodeData, setSelectedLotteryNodeData] = useState<LotteryRound>(null)
-  const [selectedLotteryId, setSelectedLotteryId] = useState<string>(null)
+  const [selectedLotteryNodeData, setSelectedLotteryNodeData] = useState<LotteryRound | null>(null)
+  const [selectedLotteryId, setSelectedLotteryId] = useState<string | null>(null)
 
   const {
     isTransitioning,

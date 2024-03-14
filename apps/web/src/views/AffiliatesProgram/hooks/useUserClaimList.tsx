@@ -11,7 +11,7 @@ export interface ClaimDetail {
   amountUSD: string
   amountCakeSmallUnit: string
   totalCakeSmallUnit: string
-  expiryTime: null
+  expiryTime: string | undefined
   signature: null
   process: boolean
   approveStatus: ClaimStatus

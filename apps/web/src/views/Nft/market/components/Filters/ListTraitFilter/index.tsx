@@ -1,26 +1,26 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
   Box,
   Button,
-  Text,
+  CloseIcon,
   Flex,
   IconButton,
   InlineMenu,
   Input,
   InputGroup,
   SearchIcon,
-  CloseIcon,
+  Text,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
 import orderBy from 'lodash/orderBy'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useGetNftFilters } from 'state/nftMarket/hooks'
 import { useNftStorage } from 'state/nftMarket/storage'
 import { styled } from 'styled-components'
-import { Item } from './types'
 import { FilterButton, ListOrderState, SearchWrapper } from '../ListFilter/styles'
 import { TraitItemRow } from './styles'
+import { Item } from './types'
 
 interface ListTraitFilterProps {
   title?: string
@@ -55,8 +55,8 @@ export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterPr
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [orderState, setOrderState] = useState<ListOrderState>({ orderKey: 'count', orderDir: 'asc' })
-  const wrapperRef = useRef(null)
-  const menuRef = useRef(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
   const nftFilters = useGetNftFilters(collectionAddress)
   const { orderKey, orderDir } = orderState
 
@@ -116,8 +116,8 @@ export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterPr
       if (
         wrapperRef.current &&
         menuRef.current &&
-        !menuRef.current.contains(target) &&
-        !wrapperRef.current.contains(target)
+        !menuRef.current.contains(target as Node) &&
+        !wrapperRef.current.contains(target as Node)
       ) {
         setIsOpen(false)
       }

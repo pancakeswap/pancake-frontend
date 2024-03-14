@@ -1,14 +1,14 @@
-import { Flex, Grid, Text, Button, Input, BinanceIcon, ErrorIcon } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
+import { BinanceIcon, Button, ErrorIcon, Flex, Grid, Input, Text } from '@pancakeswap/uikit'
 import { NftToken } from 'state/nftMarket/types'
 import { safeGetAddress } from 'utils'
+import { useAccount } from 'wagmi'
 import { Divider, RoundedImage } from '../shared/styles'
 import { GreyedOutContainer } from './styles'
 
 interface TransferStageProps {
   nftToSell: NftToken
-  lowestPrice: number
+  lowestPrice?: number
   transferAddress: string
   setTransferAddress: React.Dispatch<React.SetStateAction<string>>
   isInvalidTransferAddress: boolean

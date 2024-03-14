@@ -1,8 +1,8 @@
-import { Heading, Button, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Button, Heading, Text } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
 import { CompetitionProps } from 'views/TradingCompetition/types'
 import { useAccount } from 'wagmi'
-import { useRouter } from 'next/router'
 
 const ReactivateProfile: React.FC<React.PropsWithChildren<CompetitionProps>> = ({ onDismiss }) => {
   const { address: account } = useAccount()
@@ -10,8 +10,8 @@ const ReactivateProfile: React.FC<React.PropsWithChildren<CompetitionProps>> = (
   const router = useRouter()
 
   const handleClick = () => {
-    router.push(`/profile/${account.toLowerCase()}`)
-    onDismiss()
+    router.push(`/profile/${account?.toLowerCase()}`)
+    onDismiss?.()
   }
 
   return (

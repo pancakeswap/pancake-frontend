@@ -12,7 +12,9 @@ export type CatchTxErrorReturn = {
   fetchWithCatchTxError: (
     fn: () => Promise<SendTransactionResult | Hash | undefined>,
   ) => Promise<WaitForTransactionResult | null>
-  fetchTxResponse: (fn: () => Promise<SendTransactionResult | Hash>) => Promise<SendTransactionResult | null>
+  fetchTxResponse: (
+    fn: () => Promise<SendTransactionResult | Hash | undefined>,
+  ) => Promise<SendTransactionResult | null>
   loading: boolean
   txResponseLoading: boolean
 }
@@ -114,8 +116,8 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
   )
 
   const fetchTxResponse = useCallback(
-    async (callTx: () => Promise<SendTransactionResult | Hash>): Promise<SendTransactionResult | null> => {
-      let tx: SendTransactionResult | Hash | null = null
+    async (callTx: () => Promise<SendTransactionResult | Hash | undefined>): Promise<SendTransactionResult | null> => {
+      let tx: SendTransactionResult | Hash | null | undefined = null
 
       try {
         setTxResponseLoading(true)
@@ -126,6 +128,8 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
          * wait for useSWRMutation finished, so we could apply SWR in case manually trigger tx call
          */
         tx = await callTx()
+
+        if (!tx) return null
 
         const hash = typeof tx === 'string' ? tx : tx.hash
 

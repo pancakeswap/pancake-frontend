@@ -3145,7 +3145,7 @@
   "If you believe that your address has been misclassified, please email": "Adresinizin yanlış bir şekilde sınıflandırıldığını düşünüyorsanız lütfen şu adrese e-posta gönderin:",
   "Note (20 characters)": "Not (20 karakter)",
   "New LP Position Added": "Yeni LP Pozisyonu Eklendi",
-  "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
+  "New LP position successfully added. You will be notified on important updates.": "Yeni LP pozisyonu başarıyla eklendi. Önemli güncellemeler hakkında bilgilendirileceksiniz.",
   "Notifications Enabled": "Bildirimler Etkinleştirildi",
   "You can now opt-in to pancakeswap web notifications": "Artık pancakeswap web bildirimlerini etkinleştirebilirsiniz",
   "Error Enabling Notifications": "Bildirimler Etkinleştirilirken Hata Oluştu",
@@ -3196,10 +3196,15 @@
   "Snapshot at / Campaign Ends:": "Anlık Görüntü Zamanı / Kampanya Bitişi:",
   "Increase your veCAKE to continue earning": "Kazanmaya devam etmek için veCAKE'inizi artırın",
   "Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.": "CAKE staking pozisyonunuzun süresi doldu. Pozisyonunuzun kilidini açın ve kazanmaya başlamak için yeni bir pozisyon ayarlayın.",
-  "Permit %symbol%": "Permit %symbol%",
+  "Permit %symbol%": "%symbol% izni verin",
   "Enable spending %symbol%": "%symbol% harcamayı etkinleştirin",
-  "Reset approval on USDT.": "Reset approval on USDT.",
+  "Reset approval on USDT.": "USDT'de onayın sıfırlanması.",
   "Go to CAKE Staking": "CAKE Staking'ine git",
-  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
-  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again."
+  "Revert transaction filled, but Approval not reset to 0. Please try again.": "İşlemi geri çevirme tamamlandı ama Onay, 0’a sıfırlanmadı. Lütfen tekrar deneyin.",
+  "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Merkl ödülleri için uygun olan TÜM pozisyonlarınızdan %symbol% cinsinden toplam ödül sayısı.",
+  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "Merkl'de ödül kazanmak için PancakeSwap Farm’larında bu pozisyonu unstake edin.",
+  "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "Bu Merkl kampanyası aralık dışında kalan likiditeyi ödül olarak VERMİYOR. Ödül kazanmak için pozisyonunuzda düzenleme yapın.",
+  "This liquidity position is currently earning rewards on Merkl.": "Bu likidite pozisyonu şu anda Merkl'de ödüller kazandırıyor.",
+  "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Bu likidite pozisyonu; toplam ABD doları değeri, 20 ABD dolarından az olduğu için Merkl'de herhangi bir ödül KAZANDIRMAYACAK.",
+  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "İşlem onayı tamamlandı ancak Onay mevcut işlemi tamamlamak için hâlâ yeterli değil. Lütfen tekrar deneyin."
 }

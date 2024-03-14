@@ -1,4 +1,4 @@
-import { CAKE, USDC, USDT, STABLE_COIN } from '@pancakeswap/tokens'
+import { CAKE, STABLE_COIN, USDC, USDT } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useNativeCurrency from 'hooks/useNativeCurrency'
@@ -13,12 +13,13 @@ export function useCurrencyParams(): {
   const router = useRouter()
   const native = useNativeCurrency()
 
-  const [currencyIdA, currencyIdB, feeAmountFromUrl] = router.isReady
-    ? router.query.currency || [
-        native.symbol,
-        CAKE[chainId]?.address || STABLE_COIN[chainId]?.address || USDC[chainId]?.address || USDT[chainId]?.address,
-      ]
-    : [undefined, undefined, undefined]
+  const [currencyIdA, currencyIdB, feeAmountFromUrl] =
+    router.isReady && chainId
+      ? router.query.currency || [
+          native.symbol,
+          CAKE[chainId]?.address || STABLE_COIN[chainId]?.address || USDC[chainId]?.address || USDT[chainId]?.address,
+        ]
+      : [undefined, undefined, undefined]
 
   const feeAmount: FeeAmount | undefined =
     feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl))

@@ -2,17 +2,17 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useQuery } from '@tanstack/react-query'
 import { FAST_INTERVAL } from 'config/constants'
 import { getBidderInfo } from 'config/constants/farmAuctions'
-import { ConnectedBidder } from 'config/constants/types'
+import { Bidder, ConnectedBidder } from 'config/constants/types'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import isEqual from 'lodash/isEqual'
 import { useEffect, useState } from 'react'
 import { Address } from 'wagmi'
 import { useFarmAuction } from './useFarmAuction'
 
-export const useCurrentFarmAuction = (account: Address) => {
+export const useCurrentFarmAuction = (account?: Address) => {
   const farmAuctionContract = useFarmAuctionContract()
 
-  const { data: currentAuctionId = null } = useQuery({
+  const { data: currentAuctionId = undefined } = useQuery({
     queryKey: ['farmAuction', 'currentAuctionId'],
 
     queryFn: async () => {
@@ -33,6 +33,7 @@ export const useCurrentFarmAuction = (account: Address) => {
   useEffect(() => {
     const checkAccount = async () => {
       try {
+        if (!account) return
         const whitelistedStatus = await farmAuctionContract.read.whitelisted([account])
         setConnectedBidder({
           account,
@@ -53,6 +54,7 @@ export const useCurrentFarmAuction = (account: Address) => {
 
   // Attach bidder data to connectedBidder object
   useEffect(() => {
+    if (!account) return
     const getBidderData = () => {
       if (bidders && bidders.length > 0) {
         const bidderData = bidders.find((bidder) => bidder.account === account)
@@ -61,8 +63,8 @@ export const useCurrentFarmAuction = (account: Address) => {
         }
       }
       const bidderInfo = getBidderInfo(account)
-      const defaultBidderData = {
-        position: null,
+      const defaultBidderData: Bidder = {
+        position: undefined,
         samePositionAsAbove: false,
         isTopPosition: false,
         amount: BIG_ZERO,

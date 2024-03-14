@@ -17,21 +17,21 @@ export const pancakeProtectors: GameType = {
     TrendingTagType.Multiplayer,
     TrendingTagType.CakeToken,
   ],
-  headerImage: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/header.jpeg',
+  headerImage: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/header.jpeg',
   headerIconImage: {
-    desktop: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/desktop-header-icon.png',
-    mobile: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/mobile-header-icon.png',
+    desktop: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/desktop-header-icon.png',
+    mobile: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/mobile-header-icon.png',
   },
   projectLogo: {
-    lightTheme: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/project-logo-light-theme.png',
-    darkTheme: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/project-logo-dark-theme.png',
+    lightTheme: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/project-logo-light-theme.png',
+    darkTheme: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/project-logo-dark-theme.png',
   },
   projectCircleLogo: {
-    lightTheme: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/mobox-circle-logo.png',
-    darkTheme: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/mobox-circle-logo.png',
+    lightTheme: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/mobox-circle-logo.png',
+    darkTheme: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/mobox-circle-logo.png',
   },
   gameLink: {
-    playNowLink: 'https://protectors.pancakeswap.finance/',
+    playNowLink: 'https://pancakeprotectors.io/',
   },
   posters: {
     layout: PostersLayout.Vertical,
@@ -39,23 +39,23 @@ export const pancakeProtectors: GameType = {
       {
         type: PostersItemDataType.Video,
         video: 'https://www.mobox.io/download/Pancake_Protectors_Video.mp4',
-        image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/5.png',
+        image: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/5.png',
       },
       {
         type: PostersItemDataType.Image,
-        image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/1.png',
+        image: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/1.png',
       },
       {
         type: PostersItemDataType.Image,
-        image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/2.jpg',
+        image: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/2.jpg',
       },
       {
         type: PostersItemDataType.Image,
-        image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/3.png',
+        image: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/3.png',
       },
       {
         type: PostersItemDataType.Image,
-        image: 'https://protectors.pancakeswap.finance/assets/pancakeswap-game-landing/4.png',
+        image: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/4.png',
       },
     ],
   },

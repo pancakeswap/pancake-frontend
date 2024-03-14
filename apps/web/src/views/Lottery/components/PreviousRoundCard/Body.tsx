@@ -1,23 +1,23 @@
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
+  Box,
+  BunnyPlaceholderIcon,
+  Button,
   CardBody,
-  Heading,
+  CardRibbon,
   Flex,
+  Heading,
   Skeleton,
   Text,
-  Box,
-  Button,
-  useModal,
-  CardRibbon,
-  BunnyPlaceholderIcon,
   useMatchBreakpoints,
+  useModal,
 } from '@pancakeswap/uikit'
-import { LotteryRound } from 'state/types'
-import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
 import { LotteryStatus } from 'config/constants/types'
-import { useTranslation } from '@pancakeswap/localization'
-import WinningNumbers from '../WinningNumbers'
+import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
+import { LotteryRound } from 'state/types'
+import { styled } from 'styled-components'
 import ViewTicketsModal from '../ViewTicketsModal'
+import WinningNumbers from '../WinningNumbers'
 
 const StyledCardBody = styled(CardBody)`
   position: relative;
@@ -48,7 +48,7 @@ const StyledCardRibbon = styled(CardRibbon)`
 `
 
 const PreviousRoundCardBody: React.FC<
-  React.PropsWithChildren<{ lotteryNodeData: LotteryRound; lotteryId: string }>
+  React.PropsWithChildren<{ lotteryNodeData: LotteryRound | null; lotteryId: string | null }>
 > = ({ lotteryNodeData, lotteryId }) => {
   const { t } = useTranslation()
   const {

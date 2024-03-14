@@ -1,7 +1,7 @@
-import invariant from 'tiny-invariant'
 import { BigintIsh } from '@pancakeswap/sdk'
-import { Address, TypedData } from 'viem'
-import { MaxSigDeadline, MaxOrderedNonce, MaxAllowanceTransferAmount, MaxAllowanceExpiration } from './constants'
+import invariant from 'tiny-invariant'
+import { Address, Hex, TypedData, hashTypedData } from 'viem'
+import { MaxAllowanceExpiration, MaxAllowanceTransferAmount, MaxOrderedNonce, MaxSigDeadline } from './constants'
 import { permit2Domain } from './domain'
 import { TypedDataDomain } from './utils/types'
 
@@ -26,14 +26,15 @@ export interface PermitBatch {
   [key: string]: unknown
 }
 
-type TypedStructData<TValue> = {
+type TypedStructData<TTypes extends TypedData, TValue, TType> = {
   domain: TypedDataDomain
-  types: TypedData
+  types: TTypes
   values: TValue
+  primaryType: TType
 }
 
-export type PermitSingleData = TypedStructData<PermitSingle>
-export type PermitBatchData = TypedStructData<PermitBatch>
+export type PermitSingleData = TypedStructData<typeof PERMIT_TYPES, PermitSingle, 'PermitSingle'>
+export type PermitBatchData = TypedStructData<typeof PERMIT_BATCH_TYPES, PermitBatch, 'PermitBatch'>
 
 const PERMIT_DETAILS = [
   { name: 'token', type: 'address' },
@@ -73,11 +74,10 @@ export abstract class AllowanceTransfer {
 
   // return the data to be sent in a eth_signTypedData RPC call
   // for signing the given permit data
-  public static getPermitData(
-    permit: PermitSingle | PermitBatch,
-    permit2Address: Address,
-    chainId: number,
-  ): PermitSingleData | PermitBatchData {
+  public static getPermitData<
+    TPermit extends PermitSingle | PermitBatch,
+    ReturnType = TPermit extends PermitSingle ? PermitSingleData : PermitBatchData,
+  >(permit: TPermit, permit2Address: Address, chainId: number): ReturnType {
     invariant(MaxSigDeadline >= BigInt(permit.sigDeadline), 'SIG_DEADLINE_OUT_OF_RANGE')
 
     const domain = permit2Domain(permit2Address, chainId)
@@ -87,14 +87,26 @@ export abstract class AllowanceTransfer {
         domain,
         types: PERMIT_TYPES,
         values: permit,
-      }
+        primaryType: 'PermitSingle' as const,
+      } as ReturnType
     }
     permit.details.forEach(validatePermitDetails)
     return {
       domain,
       types: PERMIT_BATCH_TYPES,
       values: permit,
-    }
+      primaryType: 'PermitBatch' as const,
+    } as ReturnType
+  }
+
+  public static hash(permit: PermitSingle | PermitBatch, permit2Address: Address, chainId: number): Hex {
+    const { domain, types, values, primaryType } = AllowanceTransfer.getPermitData(permit, permit2Address, chainId)
+    return hashTypedData({
+      message: values,
+      domain,
+      types,
+      primaryType,
+    })
   }
 }
 

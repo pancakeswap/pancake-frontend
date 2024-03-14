@@ -1,5 +1,53 @@
 # @pancakeswap/smart-router
 
+## 5.1.5
+
+### Patch Changes
+
+- ab7f9fb: Slient price api error when testnet or chain is not supported
+- d807074: Remove smart router evm sub path
+
+## 5.1.4
+
+### Patch Changes
+
+- Updated dependencies [d7586b8]
+  - @pancakeswap/gauges@1.1.5
+  - @pancakeswap/tokens@0.6.10
+  - @pancakeswap/stable-swap-sdk@1.0.2
+
+## 5.1.3
+
+### Patch Changes
+
+- Updated dependencies [e26505f]
+  - @pancakeswap/gauges@1.1.4
+  - @pancakeswap/tokens@0.6.9
+  - @pancakeswap/stable-swap-sdk@1.0.1
+
+## 5.1.2
+
+### Patch Changes
+
+- 526586d: Add fot detector addresses
+
+## 5.1.1
+
+### Patch Changes
+
+- e6e8751: Add fot detector
+
+## 5.1.0
+
+### Minor Changes
+
+- 3b76a26: Introduce stable swap sdk
+
+### Patch Changes
+
+- Updated dependencies [3b76a26]
+  - @pancakeswap/stable-swap-sdk@1.0.0
+
 ## 5.0.4
 
 ### Patch Changes

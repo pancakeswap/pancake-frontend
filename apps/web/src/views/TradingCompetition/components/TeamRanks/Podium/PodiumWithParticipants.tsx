@@ -37,9 +37,9 @@ const PodiumWithParticipants: React.FC<React.PropsWithChildren<MoboxPodiumProps>
   const secondTeam = teamsSortedByVolume && teamsSortedByVolume[1]
   const thirdTeam = teamsSortedByVolume && teamsSortedByVolume[2]
 
-  const firstTeamParticipants = participants[firstTeam.teamId - 1]
-  const secondTeamParticipants = participants[secondTeam.teamId - 1]
-  const thirdTeamParticipants = participants[thirdTeam.teamId - 1]
+  const firstTeamParticipants = firstTeam?.teamId !== undefined ? participants[firstTeam.teamId - 1] : undefined
+  const secondTeamParticipants = secondTeam?.teamId !== undefined ? participants[secondTeam.teamId - 1] : undefined
+  const thirdTeamParticipants = thirdTeam?.teamId !== undefined ? participants[thirdTeam.teamId - 1] : undefined
 
   return (
     <Wrapper>
@@ -59,7 +59,9 @@ const PodiumWithParticipants: React.FC<React.PropsWithChildren<MoboxPodiumProps>
         <Flex justifyContent="space-between" mt="8px">
           <StyledVolumeFlex>
             {secondTeam ? (
-              <StyledVolumeText bold>${localiseTradingVolume(secondTeam.leaderboardData.volume)}</StyledVolumeText>
+              <StyledVolumeText bold>
+                ${localiseTradingVolume(secondTeam.leaderboardData?.volume || 0)}
+              </StyledVolumeText>
             ) : (
               <Skeleton width="77px" height="24px" />
             )}
@@ -70,7 +72,7 @@ const PodiumWithParticipants: React.FC<React.PropsWithChildren<MoboxPodiumProps>
           </StyledVolumeFlex>
           <StyledVolumeFlex>
             {firstTeam ? (
-              <StyledVolumeText bold>${localiseTradingVolume(firstTeam.leaderboardData.volume)}</StyledVolumeText>
+              <StyledVolumeText bold>${localiseTradingVolume(firstTeam.leaderboardData?.volume || 0)}</StyledVolumeText>
             ) : (
               <Skeleton width="77px" height="24px" />
             )}
@@ -81,7 +83,7 @@ const PodiumWithParticipants: React.FC<React.PropsWithChildren<MoboxPodiumProps>
           </StyledVolumeFlex>
           <StyledVolumeFlex>
             {thirdTeam ? (
-              <StyledVolumeText bold>${localiseTradingVolume(thirdTeam.leaderboardData.volume)}</StyledVolumeText>
+              <StyledVolumeText bold>${localiseTradingVolume(thirdTeam.leaderboardData?.volume || 0)}</StyledVolumeText>
             ) : (
               <Skeleton width="77px" height="24px" />
             )}

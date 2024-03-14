@@ -1,20 +1,20 @@
-import { ReactElement } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Card,
   BinanceIcon,
   Box,
   BoxProps,
   CameraIcon,
+  Card,
   Flex,
   FlexProps,
   SellIcon,
+  Skeleton,
   Text,
   WalletFilledIcon,
-  Skeleton,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { styled } from 'styled-components'
 import BigNumber from 'bignumber.js'
+import { ReactElement } from 'react'
+import { styled } from 'styled-components'
 
 export const Footer: React.FC<React.PropsWithChildren<BoxProps>> = ({ children, ...props }) => (
   <Box borderTop={[null, null, null, '1px solid']} borderColor="cardBorder" pt="8px" {...props}>

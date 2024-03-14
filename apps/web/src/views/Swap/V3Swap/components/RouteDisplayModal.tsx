@@ -1,4 +1,4 @@
-import { Route, SmartRouter } from '@pancakeswap/smart-router/evm'
+import { Route, SmartRouter } from '@pancakeswap/smart-router'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   Modal,

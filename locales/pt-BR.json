@@ -3201,5 +3201,10 @@
   "Reset approval on USDT.": "Reset approval on USDT.",
   "Go to CAKE Staking": "Vá para Stake de CAKE",
   "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
+  "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.",
+  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.",
+  "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.",
+  "This liquidity position is currently earning rewards on Merkl.": "This liquidity position is currently earning rewards on Merkl.",
+  "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again."
 }

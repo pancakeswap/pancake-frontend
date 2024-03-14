@@ -1,8 +1,8 @@
-import { AutoColumn, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { AutoColumn, Box, Text } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
-import { PoolData, DensityChartEntry } from '../../types'
+import { DensityChartEntry, PoolData } from '../../types'
 import { RowFixed } from '../Row'
 
 const Wrapper = styled.div`
@@ -23,7 +23,7 @@ interface LabelProps {
 interface CurrentPriceLabelProps {
   data: DensityChartEntry[] | undefined
   chartProps: any
-  poolData: PoolData
+  poolData?: PoolData
 }
 
 export function CurrentPriceLabel({ data, chartProps, poolData }: CurrentPriceLabelProps) {
@@ -51,12 +51,12 @@ export function CurrentPriceLabel({ data, chartProps, poolData }: CurrentPriceLa
                   }}
                 />
               </RowFixed>
-              <Text>{`1 ${poolData.token0.symbol} = ${Number(price0).toLocaleString(undefined, {
+              <Text>{`1 ${poolData?.token0.symbol} = ${Number(price0).toLocaleString(undefined, {
                 minimumSignificantDigits: 1,
-              })} ${poolData.token1.symbol}`}</Text>
-              <Text>{`1 ${poolData.token1.symbol} = ${Number(price1).toLocaleString(undefined, {
+              })} ${poolData?.token1.symbol}`}</Text>
+              <Text>{`1 ${poolData?.token1.symbol} = ${Number(price1).toLocaleString(undefined, {
                 minimumSignificantDigits: 1,
-              })} ${poolData.token0.symbol}`}</Text>
+              })} ${poolData?.token0.symbol}`}</Text>
             </AutoColumn>
           </Wrapper>
         </foreignObject>

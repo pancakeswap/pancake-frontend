@@ -5,9 +5,9 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useERC20 } from 'hooks/useContract'
 import { useAppDispatch } from 'state'
 
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useFarmFromPid, useFarmUser } from 'state/farms/hooks'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
 import { BCakeMigrateModal } from '../../BCakeMigrateModal'
 
@@ -22,7 +22,7 @@ const MigrateActionButton: React.FunctionComponent<MigrateActionButtonPropsType>
   const { account, chainId } = useAccountActiveChain()
   const { onUnstake } = useUnstakeFarms(pid)
   const { stakedBalance } = useFarmUser(pid)
-  const { lpAddress } = useFarmFromPid(pid)
+  const { lpAddress } = useFarmFromPid(pid) ?? {}
   const lpContract = useERC20(lpAddress)
   const dispatch = useAppDispatch()
 
@@ -38,7 +38,9 @@ const MigrateActionButton: React.FunctionComponent<MigrateActionButtonPropsType>
         </ToastDescriptionWithTx>,
       )
       callback()
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId }))
+      if (account && chainId) {
+        dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId }))
+      }
     }
   }
 

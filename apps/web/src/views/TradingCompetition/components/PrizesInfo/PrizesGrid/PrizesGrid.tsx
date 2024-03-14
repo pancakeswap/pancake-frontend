@@ -120,7 +120,7 @@ const PrizesGrid: React.FC<React.PropsWithChildren<PrizesGridProps>> = ({ prizes
                         height={38}
                       />
                       <Text ml="8px" fontSize="12px" color="textSubtle">
-                        {`+${row.achievements.points.toLocaleString(undefined, {
+                        {`+${row.achievements.points?.toLocaleString(undefined, {
                           minimumFractionDigits: 0,
                           maximumFractionDigits: 0,
                         })}`}

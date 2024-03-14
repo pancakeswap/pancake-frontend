@@ -1,6 +1,6 @@
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import React from 'react'
 import { styled } from 'styled-components'
-import { FarmWithStakedValue } from '@pancakeswap/farms'
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ const Container = styled.div`
 `
 export interface UnstakeProps {
   pid: number
-  vaultPid: number
+  vaultPid?: number
   farm: FarmWithStakedValue
 }
 

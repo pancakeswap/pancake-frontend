@@ -1,6 +1,6 @@
-import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { getNonBscVaultContract, getCrossFarmingSenderContract } from 'utils/contractHelpers'
+import BigNumber from 'bignumber.js'
+import { getCrossFarmingSenderContract, getNonBscVaultContract } from 'utils/contractHelpers'
 import { Address } from 'wagmi'
 
 export enum MessageTypes {
@@ -41,8 +41,8 @@ export const getNonBscVaultContractFee = async ({
   gasPrice,
 }: CalculateTotalFeeProps) => {
   try {
-    const nonBscVaultContract = getNonBscVaultContract(null, chainId)
-    const crossFarmingAddress = getCrossFarmingSenderContract(null, chainId)
+    const nonBscVaultContract = getNonBscVaultContract(undefined, chainId)
+    const crossFarmingAddress = getCrossFarmingSenderContract(undefined, chainId)
     const exchangeRate = new BigNumber(ORACLE_PRECISION).div(oraclePrice).times(ORACLE_PRECISION) // invert into BNB/ETH price
 
     const getNonce = await crossFarmingAddress.read.nonces([userAddress as Address, BigInt(pid)])

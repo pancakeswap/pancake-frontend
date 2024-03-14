@@ -1,7 +1,7 @@
-import { getNowInSeconds } from 'utils/getNowInSeconds'
-import { accurateTimer } from 'utils/accurateTimer'
-import { useCallback, useEffect, useState, useRef } from 'react'
 import { useIsWindowVisible } from '@pancakeswap/hooks'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { accurateTimer } from 'utils/accurateTimer'
+import { getNowInSeconds } from 'utils/getNowInSeconds'
 
 const getSecondsRemainingToNow = (timestamp: number) => {
   const now = getNowInSeconds()
@@ -12,7 +12,7 @@ const getSecondsRemainingToNow = (timestamp: number) => {
  * Consider this moving up to the global level
  */
 const useCountdown = (timestamp: number) => {
-  const timerCancelRef = useRef(null)
+  const timerCancelRef = useRef<(() => void) | null>(null)
   const [secondsRemaining, setSecondsRemaining] = useState(() => getSecondsRemainingToNow(timestamp))
   const [isPaused, setIsPaused] = useState(false)
   const isWindowVisible = useIsWindowVisible()

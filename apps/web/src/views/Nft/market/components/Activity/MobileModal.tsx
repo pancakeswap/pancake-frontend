@@ -1,19 +1,19 @@
-import { InjectedModalProps, Modal, Flex, Text, Button, BinanceIcon, Box, BscScanIcon } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
-import useTheme from 'hooks/useTheme'
-import { Activity, NftToken } from 'state/nftMarket/types'
-import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
+import { BinanceIcon, Box, BscScanIcon, Button, Flex, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { getBlockExploreLink } from 'utils'
+import BigNumber from 'bignumber.js'
+import { LightGreyCard } from 'components/Card'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useDomainNameForAddress } from 'hooks/useDomain'
-import ActivityEventText from './ActivityEventText'
+import useTheme from 'hooks/useTheme'
+import { Activity, NftToken } from 'state/nftMarket/types'
+import { getBlockExploreLink } from 'utils'
 import NFTMedia from '../NFTMedia'
+import ActivityEventText from './ActivityEventText'
 
 interface MobileModalProps extends InjectedModalProps {
   activity: Activity
-  nft: NftToken
+  nft?: NftToken
   bnbBusdPrice: BigNumber
   localeTimestamp: string
   isUserActivity?: boolean
@@ -30,7 +30,7 @@ const MobileModal: React.FC<React.PropsWithChildren<MobileModalProps>> = ({
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const priceAsFloat = parseFloat(activity.price)
+  const priceAsFloat = parseFloat(activity.price ?? '0')
   const priceInUsd = bnbBusdPrice.multipliedBy(priceAsFloat)
   const { domainName: otherPartySidName } = useDomainNameForAddress(activity.otherParty)
   const { domainName: sellerSidName } = useDomainNameForAddress(activity.seller)

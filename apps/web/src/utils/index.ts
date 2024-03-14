@@ -53,7 +53,8 @@ export function getBlockExploreName(chainIdOverride?: number) {
   return chain?.blockExplorers?.default.name || bsc.blockExplorers.default.name
 }
 
-export function getBscScanLinkForNft(collectionAddress: string, tokenId: string): string {
+export function getBscScanLinkForNft(collectionAddress: string | undefined, tokenId?: string): string {
+  if (!collectionAddress) return ''
   return `${bsc.blockExplorers.default.url}/token/${collectionAddress}?a=${tokenId}`
 }
 

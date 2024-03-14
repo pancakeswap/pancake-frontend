@@ -1,5 +1,5 @@
-import { ReactElement, createContext, useMemo, memo } from 'react'
 import _noop from 'lodash/noop'
+import { ReactElement, createContext, memo, useMemo } from 'react'
 import { Address } from 'wagmi'
 
 import { FarmWithStakedValue } from '@pancakeswap/farms'
@@ -33,7 +33,7 @@ const ProxyFarmContainer: React.FC<ProxyFarmContainerPropsType> = ({ children, f
   const proxyFarm = useMemo(
     () => ({
       ...farm,
-      userData: farm.userData.proxy,
+      userData: farm.userData?.proxy,
     }),
     [farm],
   )

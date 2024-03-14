@@ -6,6 +6,7 @@ import PageLoader from 'components/Loader/PageLoader'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import { ProposalState } from 'state/types'
 import { getAllVotes, getProposal } from 'state/voting/helpers'
 import { useAccount } from 'wagmi'
@@ -38,7 +39,7 @@ const Overview = () => {
 
   const {
     status: votesLoadingStatus,
-    data: votes,
+    data,
     refetch,
   } = useQuery({
     queryKey: ['voting', 'proposal', proposal, 'votes'],
@@ -53,6 +54,9 @@ const Overview = () => {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   })
+
+  const votes = useMemo(() => data || [], [data])
+
   const hasAccountVoted = account && votes && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
   const isPageLoading = votesLoadingStatus === 'pending' || proposalLoadingStatus === 'pending'
@@ -95,11 +99,15 @@ const Overview = () => {
           {!isPageLoading && !hasAccountVoted && proposal.state === ProposalState.ACTIVE && (
             <Vote proposal={proposal} onSuccess={refetch} mb="16px" />
           )}
-          <Votes votes={votes} totalVotes={votes?.length ?? proposal.votes} votesLoadingStatus={votesLoadingStatus} />
+          <Votes
+            votes={votes || []}
+            totalVotes={votes?.length ?? proposal.votes}
+            votesLoadingStatus={votesLoadingStatus}
+          />
         </Box>
         <Box position="sticky" top="60px">
           <Details proposal={proposal} />
-          <Results choices={proposal.choices} votes={votes} votesLoadingStatus={votesLoadingStatus} />
+          <Results choices={proposal.choices} votes={votes || []} votesLoadingStatus={votesLoadingStatus} />
         </Box>
       </Layout>
     </Container>

@@ -1,15 +1,15 @@
-import { Skeleton, Heading, Text } from '@pancakeswap/uikit'
-import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import ScoreHeader from '../../../components/YourScore/ScoreHeader'
+import { Heading, Skeleton, Text } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
+import { LIVE } from '../../../../../config/constants/trading-competition/phases'
 import RibbonWithImage from '../../../components/RibbonWithImage'
-import { YourScoreProps } from '../../../types'
+import ScoreCard from '../../../components/YourScore/ScoreCard'
+import ScoreHeader from '../../../components/YourScore/ScoreHeader'
+import UserRankBox from '../../../components/YourScore/UserRankBox'
+import CakersShare from '../../../pngs/mobox-cakers-share.png'
 import FlippersShare from '../../../pngs/mobox-flippers-share.png'
 import StormShare from '../../../pngs/mobox-storm-share.png'
-import CakersShare from '../../../pngs/mobox-cakers-share.png'
-import ScoreCard from '../../../components/YourScore/ScoreCard'
-import UserRankBox from '../../../components/YourScore/UserRankBox'
-import { LIVE } from '../../../../../config/constants/trading-competition/phases'
+import { YourScoreProps } from '../../../types'
 import MoboxUserPrizeGrid from './MoboxUserPrizeGrid'
 
 const Wrapper = styled.div`
@@ -55,7 +55,7 @@ const MoboxYourScore: React.FC<React.PropsWithChildren<YourScoreProps>> = ({
             title={t('Your MBOX volume rank').toUpperCase()}
             footer={t('Based on your MBOX/BNB and MBOX/BUSD trading')}
             // Add responsive mr if competition is LIVE
-            mr={currentPhase.state === LIVE ? [0, null, null, '8px'] : 0}
+            mr={currentPhase?.state === LIVE ? [0, null, null, '8px'] : 0}
           >
             {!userLeaderboardInformation ? (
               <Skeleton height="26px" width="110px" />

@@ -1,12 +1,12 @@
-import BigNumber from 'bignumber.js'
-import { Flex, Skeleton, Text, Balance } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCakePrice } from 'hooks/useCakePrice'
+import { Balance, Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { useCakePrice } from 'hooks/useCakePrice'
 
 interface RewardBracketDetailProps {
   cakeAmount: BigNumber
-  rewardBracket?: number
+  rewardBracket: number
   numberWinners?: string
   isBurn?: boolean
   isHistoricRound?: boolean
@@ -65,7 +65,7 @@ const RewardBracketDetail: React.FC<React.PropsWithChildren<RewardBracketDetailP
         )}
         {isHistoricRound && cakeAmount && (
           <>
-            {numberWinners !== '0' && (
+            {numberWinners && numberWinners !== '0' && (
               <Text fontSize="12px" color="textSubtle">
                 {getFullDisplayBalance(cakeAmount.div(parseInt(numberWinners, 10)), 18, 2)} CAKE {t('each')}
               </Text>

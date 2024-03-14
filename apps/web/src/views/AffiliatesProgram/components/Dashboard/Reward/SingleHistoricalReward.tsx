@@ -1,23 +1,23 @@
-import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
-import { useEffect, useState } from 'react'
 import { ChainId } from '@pancakeswap/chains'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { UserClaimListResponse, MAX_PER_PAGE, ClaimDetail } from 'views/AffiliatesProgram/hooks/useUserClaimList'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
-  Flex,
-  Text,
+  Button,
   Card,
+  Flex,
+  FlexProps,
   PaginationButton,
   Table,
   Td,
+  Text,
   Th,
-  FlexProps,
-  Button,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useEffect, useState } from 'react'
+import { styled } from 'styled-components'
+import { ClaimDetail, MAX_PER_PAGE, UserClaimListResponse } from 'views/AffiliatesProgram/hooks/useUserClaimList'
 
 const Dot = styled(Box)`
   width: 8px;
@@ -33,7 +33,7 @@ interface SingleHistoricalRewardProps extends FlexProps {
   isFetching: boolean
   tableFirstTitle: string
   isAffiliateClaim: boolean
-  dataList: UserClaimListResponse
+  dataList?: UserClaimListResponse
   currentPage: number
   setCurrentPage: (value: number) => void
   handleClickClaim: (isAffiliateClaim: boolean, reward: ClaimDetail) => Promise<void>
@@ -59,7 +59,7 @@ const SingleHistoricalReward: React.FC<React.PropsWithChildren<SingleHistoricalR
   const [maxPage, setMaxPages] = useState(1)
 
   useEffect(() => {
-    if (dataList?.total > 0) {
+    if (dataList && dataList?.total > 0) {
       const max = Math.ceil(dataList?.total / MAX_PER_PAGE)
       setMaxPages(max)
     }

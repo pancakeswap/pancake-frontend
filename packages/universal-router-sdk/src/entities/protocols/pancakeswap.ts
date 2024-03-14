@@ -6,7 +6,7 @@ import {
   SmartRouterTrade,
   StablePool,
   getPoolAddress,
-} from '@pancakeswap/smart-router/evm'
+} from '@pancakeswap/smart-router'
 import invariant from 'tiny-invariant'
 import { Address } from 'viem'
 

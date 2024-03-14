@@ -1,14 +1,15 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
-import { Box, Grid, Text, useMatchBreakpoints, PaginationButton, ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, ButtonMenu, ButtonMenuItem, Grid, PaginationButton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
-import { timeFormat } from 'views/TradingReward/utils/timeFormat'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { notEmpty } from 'utils/notEmpty'
 import { Incentives } from 'views/TradingReward/hooks/useAllTradingRewardPair'
-import { useRankList, MAX_PER_PAGE } from 'views/TradingReward/hooks/useRankList'
+import { MAX_PER_PAGE, useRankList } from 'views/TradingReward/hooks/useRankList'
+import { timeFormat } from 'views/TradingReward/utils/timeFormat'
 import LeaderBoardDesktopView from './DesktopView'
 import LeaderBoardMobileView from './MobileView'
-import RankingCard from './RankingCard'
 import MyRank from './MyRank'
+import RankingCard from './RankingCard'
 
 interface LeaderboardProps {
   campaignIdsIncentive: Incentives[]
@@ -42,11 +43,16 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
   const allLeaderBoard = useMemo(
     () =>
       campaignIdsIncentive
-        .map((i) => ({
-          campaignId: i.campaignId,
-          campaignStart: i.campaignStart,
-          campaignClaimTime: i.campaignClaimTime,
-        }))
+        .map((i) =>
+          i.campaignId
+            ? {
+                campaignId: i.campaignId,
+                campaignStart: i.campaignStart,
+                campaignClaimTime: i.campaignClaimTime,
+              }
+            : undefined,
+        )
+        .filter(notEmpty)
         .sort((a, b) => Number(b.campaignId) - Number(a.campaignId)),
     [campaignIdsIncentive],
   )
@@ -59,7 +65,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
 
   const sliceAllLeaderBoard = useCallback(() => {
     const slice = allLeaderBoard.slice(MAX_CAMPAIGN_PER_PAGE * (campaignPage - 1), MAX_CAMPAIGN_PER_PAGE * campaignPage)
-    setCampaignLeaderBoardList({ ...slice[0] })
+    setCampaignLeaderBoardList({ ...(slice[0] as any) })
   }, [allLeaderBoard, campaignPage])
 
   useEffect(() => {
@@ -81,7 +87,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
       if (currentLeaderBoard?.campaignId) {
         if (index === 0) {
           setCampaignPage(1)
-          setCampaignLeaderBoardList(currentLeaderBoard)
+          setCampaignLeaderBoardList(currentLeaderBoard as any)
         } else {
           setCampaignPage((prevState) => (prevState === 1 ? 2 : prevState))
           sliceAllLeaderBoard()

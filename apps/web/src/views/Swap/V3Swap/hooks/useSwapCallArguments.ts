@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Percent, TradeType } from '@pancakeswap/sdk'
-import { SMART_ROUTER_ADDRESSES, SmartRouterTrade, SwapRouter } from '@pancakeswap/smart-router/evm'
+import { SMART_ROUTER_ADDRESSES, SmartRouterTrade, SwapRouter } from '@pancakeswap/smart-router'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
 

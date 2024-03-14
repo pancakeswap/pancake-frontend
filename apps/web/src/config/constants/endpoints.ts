@@ -69,4 +69,4 @@ export const MERCURYO_WIDGET_URL =
     ? 'https://sandbox-widget.mrcr.io/embed.2.0.js'
     : 'https://widget.mercuryo.io/embed.2.0.js'
 
-export const WALLET_API = 'https://alpha.wallet-api.pancakeswap.com'
+export const WALLET_API = 'https://wallet-api.pancakeswap.com'

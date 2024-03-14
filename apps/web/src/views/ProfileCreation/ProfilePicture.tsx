@@ -6,7 +6,7 @@ import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NftLocation, NftToken } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
 import { styled } from 'styled-components'
@@ -19,7 +19,7 @@ import { useAccount, useWalletClient } from 'wagmi'
 import { useNftsForAddress } from '../Nft/market/hooks/useNftsForAddress'
 import NextStepButton from './NextStepButton'
 import SelectionCard from './SelectionCard'
-import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
+import useProfileCreation from './contexts/hook'
 
 const Link = styled(NextLinkFromReactRouter)`
   color: ${({ theme }) => theme.colors.primary};
@@ -34,7 +34,7 @@ const ProfilePicture: React.FC = () => {
   const [isApproved, setIsApproved] = useState(false)
   const [isProfileNftsLoading, setIsProfileNftsLoading] = useState(true)
   const [userProfileCreationNfts, setUserProfileCreationNfts] = useState<NftToken[] | null>(null)
-  const { selectedNft, actions } = useContext(ProfileCreationContext)
+  const { selectedNft, actions } = useProfileCreation()
 
   const { isLoading: isProfileFetching, profile } = useProfile()
   const { nfts, isLoading: isUserNftLoading } = useNftsForAddress({
@@ -96,9 +96,9 @@ const ProfilePicture: React.FC = () => {
   const handleApprove = async () => {
     if (!walletClient) return
 
-    const contract = getErc721Contract(selectedNft.collectionAddress, walletClient)
+    const contract = getErc721Contract(selectedNft.collectionAddress!, walletClient)
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), BigInt(selectedNft.tokenId)])
+      return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), BigInt(selectedNft.tokenId!)])
     })
     if (receipt?.status) {
       toastSuccess(t('Enabled'), t('Please progress to the next step.'))

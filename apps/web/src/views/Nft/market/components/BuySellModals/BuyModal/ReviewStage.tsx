@@ -10,7 +10,7 @@ import { BnbAmountCell, BorderedBox } from './styles'
 import { PaymentCurrency } from './types'
 
 interface ReviewStageProps {
-  nftToBuy: NftToken
+  nftToBuy?: NftToken
   paymentCurrency: PaymentCurrency
   setPaymentCurrency: (index: number) => void
   nftPrice: number
@@ -36,12 +36,12 @@ const ReviewStage: React.FC<React.PropsWithChildren<ReviewStageProps>> = ({
     <>
       <Flex px="24px" pt="24px" flexDirection="column">
         <Flex>
-          <RoundedImage src={nftToBuy.image.thumbnail} height={68} width={68} mr="16px" />
+          <RoundedImage src={nftToBuy?.image?.thumbnail} height={68} width={68} mr="16px" />
           <Flex flexDirection="column" justifyContent="space-evenly">
             <Text color="textSubtle" fontSize="12px">
               {nftToBuy?.collectionName}
             </Text>
-            <Text bold>{nftToBuy.name}</Text>
+            <Text bold>{nftToBuy?.name}</Text>
             <Flex alignItems="center">
               <Text fontSize="12px" color="textSubtle" p="0px" height="16px" mr="4px">
                 {t('Token ID:')}
@@ -53,9 +53,9 @@ const ReviewStage: React.FC<React.PropsWithChildren<ReviewStageProps>> = ({
                 pt="2px"
                 external
                 variant="text"
-                href={getBscScanLinkForNft(nftToBuy.collectionAddress, nftToBuy.tokenId)}
+                href={getBscScanLinkForNft(nftToBuy?.collectionAddress, nftToBuy?.tokenId)}
               >
-                {nftToBuy.tokenId}
+                {nftToBuy?.tokenId}
               </Button>
             </Flex>
           </Flex>

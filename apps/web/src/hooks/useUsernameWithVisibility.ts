@@ -1,6 +1,6 @@
 import { useUserUsernameVisibility } from 'state/user/hooks'
 
-const useGetUsernameWithVisibility = (username: string) => {
+const useGetUsernameWithVisibility = (username?: string) => {
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
 
   return {

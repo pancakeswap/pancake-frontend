@@ -1,20 +1,20 @@
-import { styled } from 'styled-components'
-import { useMemo } from 'react'
-import BigNumber from 'bignumber.js'
-import { Flex, Box, Text, Balance } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Balance, Box, Flex, Text } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import { GreyCard } from 'components/Card'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useVaultApy } from 'hooks/useVaultApy'
-import { usePotteryData, useLatestVaultAddress } from 'state/pottery/hook'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { useMemo } from 'react'
+import { useLatestVaultAddress, usePotteryData } from 'state/pottery/hook'
 import { PotteryDepositStatus } from 'state/types'
-import { calculateCakeAmount } from 'views/Pottery/helpers'
+import { styled } from 'styled-components'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
+import { calculateCakeAmount } from 'views/Pottery/helpers'
 import { useAccount } from 'wagmi'
-import YourDeposit from '../YourDeposit'
 import WinRate from '../WinRate'
+import YourDeposit from '../YourDeposit'
 import DepositAction from './DepositAction'
 
 const Container = styled(Flex)`
@@ -49,7 +49,7 @@ const Deposit: React.FC<React.PropsWithChildren> = () => {
   }, [getStatus, totalLockCake, totalLockedValue])
 
   const currentDeposit = userData.withdrawAbleData.find(
-    (data) => data.potteryVaultAddress.toLowerCase() === lastVaultAddress.toLowerCase(),
+    (data) => data.potteryVaultAddress.toLowerCase() === lastVaultAddress?.toLowerCase(),
   )
 
   const depositBalance = useMemo(() => {

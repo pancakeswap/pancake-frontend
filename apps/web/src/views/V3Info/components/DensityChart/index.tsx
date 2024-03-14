@@ -1,6 +1,6 @@
 import { CurrencyAmount, Token } from '@pancakeswap/sdk'
-import { Spinner, Flex } from '@pancakeswap/uikit'
-import { FeeAmount, Pool, TickMath, TICK_SPACINGS } from '@pancakeswap/v3-sdk'
+import { Flex, Spinner } from '@pancakeswap/uikit'
+import { FeeAmount, Pool, TICK_SPACINGS, TickMath } from '@pancakeswap/v3-sdk'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Bar, BarChart, Cell, LabelList, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { styled } from 'styled-components'
@@ -72,7 +72,7 @@ const initialState = {
 
 export default function DensityChart({ address }: DensityChartProps) {
   // poolData
-  const poolData: PoolData = usePoolData(address)
+  const poolData: PoolData | undefined = usePoolData(address)
   const formattedAddress0 = safeGetAddress(poolData?.token0?.address)
   const formattedAddress1 = safeGetAddress(poolData?.token1?.address)
   const feeTier = poolData?.feeTier
@@ -273,7 +273,9 @@ export default function DensityChart({ address }: DensityChartProps) {
               <LabelList
                 dataKey="activeLiquidity"
                 position="inside"
-                content={(props) => <CurrentPriceLabel chartProps={props} poolData={poolData} data={zoomedData} />}
+                content={(props) =>
+                  poolData ? <CurrentPriceLabel chartProps={props} poolData={poolData} data={zoomedData} /> : null
+                }
               />
             </Bar>
           </BarChart>

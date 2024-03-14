@@ -6,10 +6,10 @@ import BigNumber from 'bignumber.js'
 import { State } from '../types'
 
 const selectCakeFarm = (state: State) => state.farms.data.find((f) => f.pid === 2)
-const selectFarmByKey = (key: string, value: string | number) => (state: State) =>
+const selectFarmByKey = (key: string, value?: string | number) => (state: State) =>
   state.farms.data.find((f) => f[key] === value)
 
-export const makeFarmFromPidSelector = (pid: number) =>
+export const makeFarmFromPidSelector = (pid?: number) =>
   createSelector([selectFarmByKey('pid', pid)], (farm) => farm && deserializeFarm(farm))
 
 export const makeBusdPriceFromPidSelector = (pid: number) =>

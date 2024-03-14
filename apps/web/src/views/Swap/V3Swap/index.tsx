@@ -1,4 +1,4 @@
-import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { SmartRouter } from '@pancakeswap/smart-router'
 import { Box } from '@pancakeswap/uikit'
 import throttle from 'lodash/throttle'
 import { useMemo } from 'react'

@@ -1,5 +1,5 @@
-import { Modal, BoxProps } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { BoxProps, Modal } from '@pancakeswap/uikit'
 
 interface ConfirmSwapModalContainerProps extends BoxProps {
   hideTitleAndBackground?: boolean
@@ -28,7 +28,7 @@ const ConfirmSwapModalContainer: React.FC<React.PropsWithChildren<ConfirmSwapMod
       bodyPadding={hideTitleAndBackground && bodyPadding ? bodyPadding : '24px'}
       bodyTop={bodyTop}
       headerBackground={hideTitleAndBackground ? 'transparent' : 'gradientCardHeader'}
-      headerBorderColor={hideTitleAndBackground ? 'transparent' : null}
+      headerBorderColor={hideTitleAndBackground ? 'transparent' : undefined}
       onDismiss={handleDismiss}
     >
       {children}

@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 
 import { Field } from 'state/swap/actions'

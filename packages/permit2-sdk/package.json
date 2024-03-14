@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/permit2-sdk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An sdk for interacting with permit2.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -24,9 +24,9 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "test": "vitest --run",
     "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json}\"",
-    "format:write": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json}\"",
-    "prepublishOnly": "pnpm run build"
+    "format:write": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json}\""
   },
   "keywords": [
     "pancakeswap",

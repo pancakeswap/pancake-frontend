@@ -55,7 +55,7 @@ export default function StableFormView({
   price,
   maxAmounts,
 }: AddStableChildrenProps & {
-  stableLpFee: number
+  stableLpFee?: number
 }) {
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)

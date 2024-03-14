@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react'
-import BigNumber from 'bignumber.js'
-import { Flex, Text } from '@pancakeswap/uikit'
-import { styled } from 'styled-components'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useTranslation } from '@pancakeswap/localization'
+import { Flex, Text } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import BigNumber from 'bignumber.js'
+import { useEffect, useState } from 'react'
 import { LotteryRound } from 'state/types'
+import { styled } from 'styled-components'
 import RewardBracketDetail from './RewardBracketDetail'
 
 const Wrapper = styled(Flex)`
@@ -23,7 +23,7 @@ const RewardsInner = styled.div`
 `
 
 interface RewardMatchesProps {
-  lotteryNodeData: LotteryRound
+  lotteryNodeData: LotteryRound | null
   isHistoricRound?: boolean
 }
 
@@ -31,8 +31,8 @@ interface RewardsState {
   isLoading: boolean
   cakeToBurn: BigNumber
   rewardsLessTreasuryFee: BigNumber
-  rewardsBreakdown: string[]
-  countWinnersPerBracket: string[]
+  rewardsBreakdown: string[] | null
+  countWinnersPerBracket: string[] | null
 }
 
 const RewardBrackets: React.FC<React.PropsWithChildren<RewardMatchesProps>> = ({
@@ -74,6 +74,8 @@ const RewardBrackets: React.FC<React.PropsWithChildren<RewardMatchesProps>> = ({
   }, [lotteryNodeData])
 
   const getCakeRewards = (bracket: number) => {
+    if (!state.rewardsBreakdown) return BIG_ZERO
+
     const shareAsPercentage = new BigNumber(state.rewardsBreakdown[bracket]).div(100)
     return state.rewardsLessTreasuryFee.div(100).times(shareAsPercentage)
   }
@@ -93,8 +95,10 @@ const RewardBrackets: React.FC<React.PropsWithChildren<RewardMatchesProps>> = ({
           <RewardBracketDetail
             key={bracketIndex}
             rewardBracket={bracketIndex}
-            cakeAmount={!isLoading && getCakeRewards(bracketIndex)}
-            numberWinners={!isLoading && countWinnersPerBracket[bracketIndex]}
+            cakeAmount={!isLoading ? getCakeRewards(bracketIndex) : BIG_ZERO}
+            numberWinners={
+              !isLoading && countWinnersPerBracket !== null ? countWinnersPerBracket[bracketIndex] : undefined
+            }
             isHistoricRound={isHistoricRound}
             isLoading={isLoading}
           />

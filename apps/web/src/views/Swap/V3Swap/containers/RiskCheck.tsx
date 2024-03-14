@@ -1,13 +1,13 @@
-import { Currency } from '@pancakeswap/sdk'
-import { useContext, memo } from 'react'
 import { Box } from '@pancakeswap/uikit'
+import { memo, useContext } from 'react'
 
 import AccessRisk from 'components/AccessRisk'
 
+import { UnsafeCurrency } from 'config/constants/types'
 import { SwapFeaturesContext } from '../../SwapFeaturesContext'
 
 interface Props {
-  currency?: Currency
+  currency?: UnsafeCurrency
 }
 
 export const RiskCheck = memo(function RiskCheck({ currency }: Props) {

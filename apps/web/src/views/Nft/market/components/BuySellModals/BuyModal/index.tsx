@@ -1,10 +1,12 @@
-import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
-import { formatEther, parseUnits } from 'viem'
-import { TranslateFunction, useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
+import { TranslateFunction, useTranslation } from '@pancakeswap/localization'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { bscTokens } from '@pancakeswap/tokens'
 import { InjectedModalProps, useToast } from '@pancakeswap/uikit'
+import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useERC20, useNftMarketContract } from 'hooks/useContract'
@@ -12,10 +14,8 @@ import useTheme from 'hooks/useTheme'
 import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { useEffect, useState } from 'react'
 import { NftToken } from 'state/nftMarket/types'
-import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { requiresApproval } from 'utils/requiresApproval'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { formatEther, parseUnits } from 'viem'
 import ApproveAndConfirmStage from '../shared/ApproveAndConfirmStage'
 import ConfirmStage from '../shared/ConfirmStage'
 import TransactionConfirmed from '../shared/TransactionConfirmed'
@@ -31,7 +31,7 @@ const modalTitles = (t: TranslateFunction) => ({
 })
 
 interface BuyModalProps extends InjectedModalProps {
-  nftToBuy: NftToken
+  nftToBuy?: NftToken
 }
 
 // NFT WBNB in testnet contract is different
@@ -54,8 +54,8 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
 
   const { toastSuccess } = useToast()
 
-  const nftPriceWei = parseUnits(nftToBuy?.marketData?.currentAskPrice as `${number}`, 18)
-  const nftPrice = parseFloat(nftToBuy?.marketData?.currentAskPrice)
+  const nftPriceWei = parseUnits(nftToBuy?.marketData?.currentAskPrice ?? '0', 18)
+  const nftPrice = parseFloat(nftToBuy?.marketData?.currentAskPrice ?? '0')
 
   // BNB - returns ethers.BigNumber
   const { balance: bnbBalance, fetchStatus: bnbFetchStatus } = useGetBnbBalance()
@@ -79,6 +79,7 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
+      if (!account) return true
       return requiresApproval(wbnbContractReader, account, nftMarketContract.address)
     },
     onApprove: () => {
@@ -91,6 +92,8 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
       )
     },
     onConfirm: () => {
+      if (!nftToBuy) return undefined
+
       const payAmount = Number.isNaN(nftPrice)
         ? 0n
         : parseUnits(nftToBuy?.marketData?.currentAskPrice as `${number}`, 18)
@@ -139,7 +142,7 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
       title={modalTitles(t)[stage]}
       stage={stage}
       onDismiss={onDismiss}
-      onBack={showBackButton ? goBack : null}
+      onBack={showBackButton ? goBack : undefined}
       headerBackground={theme.colors.gradientCardHeader}
     >
       {stage === BuyingStage.REVIEW && (

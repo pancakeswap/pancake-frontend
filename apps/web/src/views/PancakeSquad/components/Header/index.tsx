@@ -1,11 +1,11 @@
-import Link from 'next/link'
-import { Box, Flex, lightColors, Spinner, Text, Timeline } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useBSCCakeBalance } from 'hooks/useTokenBalance'
+import { Box, Flex, lightColors, Spinner, Text, Timeline } from '@pancakeswap/uikit'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import useTheme from 'hooks/useTheme'
+import { useBSCCakeBalance } from 'hooks/useTokenBalance'
+import Link from 'next/link'
 import { StyledWaveContainer } from 'views/PancakeSquad/styles'
 import { UserStatusEnum } from 'views/PancakeSquad/types'
-import ConnectWalletButton from 'components/ConnectWalletButton'
 import HeaderBottomWave from '../../assets/HeaderBottomWave'
 import nftSaleConfigBuilder from '../../config'
 import CtaButtons from './CtaButtons'
@@ -126,7 +126,7 @@ const PancakeSquadHeader: React.FC<React.PropsWithChildren<PancakeSquadHeaderTyp
                         numberTokensOfUser={numberTokensOfUser}
                       />
                     )}
-                    {userInfos && (
+                    {userInfos && saleStatus && (
                       <CtaButtons
                         t={t}
                         account={account}
@@ -134,7 +134,7 @@ const PancakeSquadHeader: React.FC<React.PropsWithChildren<PancakeSquadHeaderTyp
                         userStatus={userStatus}
                         saleStatus={saleStatus}
                         numberTokensOfUser={numberTokensOfUser}
-                        canClaimForGen0={canClaimForGen0}
+                        canClaimForGen0={Boolean(canClaimForGen0)}
                         maxPerAddress={maxPerAddress}
                         maxSupply={maxSupply}
                         numberTicketsOfUser={numberTicketsOfUser}
@@ -143,9 +143,9 @@ const PancakeSquadHeader: React.FC<React.PropsWithChildren<PancakeSquadHeaderTyp
                         cakeBalance={cakeBalance}
                         maxPerTransaction={maxPerTransaction}
                         numberTicketsForGen0={numberTicketsForGen0}
-                        pricePerTicket={pricePerTicket}
-                        ticketsOfUser={ticketsOfUser}
-                        startTimestamp={startTimestamp}
+                        pricePerTicket={pricePerTicket ?? 0n}
+                        ticketsOfUser={ticketsOfUser ?? []}
+                        startTimestamp={startTimestamp ?? 0}
                       />
                     )}
                   </>

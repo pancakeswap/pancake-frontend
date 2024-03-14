@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
+import { ZERO } from '@pancakeswap/swap-sdk-core'
 import { useQuery } from '@tanstack/react-query'
 import BN from 'bignumber.js'
 import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
@@ -40,7 +41,7 @@ async function getPublicMultiplier({ farmBoosterContract }): Promise<number> {
   const MAX_BOOST_PRECISION = new BN(CA_PRECISION.toString())
     .div(new BN(cA.toString()))
     .times(PRECISION_FACTOR)
-    .minus(new BN(BOOST_PRECISION.toString()))
+    .minus(new BN(BOOST_PRECISION?.toString() ?? ZERO.toString()))
 
   const boostPercent = PRECISION_FACTOR.plus(MAX_BOOST_PRECISION).div(PRECISION_FACTOR)
 

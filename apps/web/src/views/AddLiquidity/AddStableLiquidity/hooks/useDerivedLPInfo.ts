@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, Price } from '@pancakeswap/sdk'
-import { StableSwap } from '@pancakeswap/smart-router/evm'
+import { getLPOutputWithoutFee, getSwapOutputWithoutFee } from '@pancakeswap/stable-swap-sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useContext, useMemo } from 'react'
 
@@ -58,7 +58,7 @@ export function useDerivedLPInfo(
     let lpOutputWithoutFee: CurrencyAmount<Currency> | null = null
     let price: Price<Currency, Currency> | null = null
     try {
-      lpOutputWithoutFee = StableSwap.getLPOutputWithoutFee({
+      lpOutputWithoutFee = getLPOutputWithoutFee({
         amplifier,
         balances: poolBalances,
         totalSupply: totalSupplyAmount,
@@ -68,7 +68,7 @@ export function useDerivedLPInfo(
       if (!baseAmount) {
         return emptyResult
       }
-      const quoteAmount = StableSwap.getSwapOutputWithoutFee({
+      const quoteAmount = getSwapOutputWithoutFee({
         amplifier,
         balances: poolBalances,
         amount: baseAmount,

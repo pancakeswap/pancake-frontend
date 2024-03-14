@@ -7,7 +7,6 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "prepublishOnly": "pnpm run build",
     "test": "vitest --run",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },

@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
@@ -43,7 +43,7 @@ interface SwapCallEstimate {
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade
 export function useSwapCallback(
-  trade: SmartRouterTrade<TradeType> | undefined, // trade to execute, required
+  trade: SmartRouterTrade<TradeType> | undefined | null, // trade to execute, required
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
   swapCalls: MMSwapCall[],
 ): { state: SwapCallbackState; callback: null | (() => Promise<SendTransactionResult>); error: string | null } {
@@ -74,7 +74,7 @@ export function useSwapCallback(
 const useSendMMTransaction = (
   account?: Address,
   chainId?: number,
-  trade?: SmartRouterTrade<TradeType>,
+  trade?: SmartRouterTrade<TradeType> | null,
   swapCalls: MMSwapCall[] = [],
 ): { callback: null | (() => Promise<SendTransactionResult>) } => {
   const { t } = useTranslation()

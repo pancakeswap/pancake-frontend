@@ -1,13 +1,13 @@
-import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 
 import { styled } from 'styled-components'
+import { mboxPrizes } from '../../../../../config/constants/trading-competition/prizes'
+import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
+import AchievementPoints from '../../../components/YourScore/AchievementPoints'
+import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
 import { getRewardGroupAchievements, useMoboxCompetitionRewards } from '../../../helpers'
 import { UserTradingInformation } from '../../../types'
-import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
-import { mboxPrizes } from '../../../../../config/constants/trading-competition/prizes'
-import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
-import AchievementPoints from '../../../components/YourScore/AchievementPoints'
 
 const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
@@ -18,7 +18,7 @@ const MoboxUserPrizeGrid: React.FC<React.PropsWithChildren<{ userTradingInformat
 }) => {
   const { t } = useTranslation()
   const { userRewardGroup, userCakeRewards, userMoboxRewards, userPointReward, canClaimMysteryBox, canClaimNFT } =
-    userTradingInformation
+    userTradingInformation ?? {}
   const { cakeReward, moboxReward, dollarValueOfTokensReward } = useMoboxCompetitionRewards({
     userCakeRewards,
     userMoboxRewards,

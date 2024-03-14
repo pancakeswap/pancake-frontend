@@ -1,6 +1,6 @@
-import { useMemo } from 'react'
 import { Colors, Heading, TextProps } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
+import { useMemo } from 'react'
 
 interface HeadingProps extends TextProps {
   text: string
@@ -20,7 +20,7 @@ const ColoredWordHeading: React.FC<React.PropsWithChildren<HeadingProps>> = ({
     const remaining = split.slice(1).join(' ')
     return { firstWord: first, remainingWords: remaining }
   }, [text])
-  const displayedColor = (theme.colors[firstColor] as string) ?? theme.colors.secondary
+  const displayedColor = theme.colors[firstColor ?? 'secondary'] ?? theme.colors.secondary
 
   return (
     <Heading scale="xl" mb={mb} {...props}>

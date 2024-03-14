@@ -1,4 +1,4 @@
-import { BigintIsh, CurrencyAmount, Currency, ZERO, Percent } from '@pancakeswap/sdk'
+import { BigintIsh, CurrencyAmount, Currency, ZERO, Percent } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
 
 import { getD } from './amm'

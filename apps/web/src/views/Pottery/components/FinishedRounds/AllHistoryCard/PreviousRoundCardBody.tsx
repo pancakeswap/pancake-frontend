@@ -1,15 +1,15 @@
 /* eslint-disable react/no-array-index-key */
-import { useMemo } from 'react'
-import { styled } from 'styled-components'
-import { Box, Flex, Text, CardBody, CardRibbon, Skeleton, Balance, ScanLink } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { PotteryRoundInfo } from 'state/types'
+import { Balance, Box, CardBody, CardRibbon, Flex, ScanLink, Skeleton, Text } from '@pancakeswap/uikit'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import Divider from 'components/Divider'
-import { getDrawnDate } from 'views/Lottery/helpers'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useMemo } from 'react'
+import { PotteryRoundInfo } from 'state/types'
+import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
+import { getDrawnDate } from 'views/Lottery/helpers'
 import Winner from './Winner'
 
 const StyledCardBody = styled(CardBody)`
@@ -45,7 +45,7 @@ const WinnersContainer = styled(Flex)`
 `
 
 interface PreviousRoundCardBodyProps {
-  latestRoundId: string
+  latestRoundId: number | null
   finishedRoundInfo: PotteryRoundInfo
 }
 
@@ -64,7 +64,10 @@ const PreviousRoundCardBody: React.FC<React.PropsWithChildren<PreviousRoundCardB
   const prize = getBalanceNumber(prizeAsBn)
   const prizeInBusd = new BigNumber(prize).times(cakePriceBusd).toNumber()
 
-  const isLatest = useMemo(() => new BigNumber(latestRoundId).minus(1).eq(roundId), [latestRoundId, roundId])
+  const isLatest = useMemo(
+    () => latestRoundId && new BigNumber(latestRoundId).minus(1).eq(roundId),
+    [latestRoundId, roundId],
+  )
 
   if (!isFetched) {
     return <Skeleton margin="24px" maxWidth="100%" height="96px" />

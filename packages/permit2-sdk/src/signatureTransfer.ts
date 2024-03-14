@@ -1,29 +1,29 @@
-import invariant from 'tiny-invariant'
 import { BigintIsh } from '@pancakeswap/sdk'
-import { Address } from 'viem'
+import invariant from 'tiny-invariant'
+import { Address, Hex, hashTypedData } from 'viem'
+import { MaxSigDeadline, MaxSignatureTransferAmount, MaxUnorderedNonce } from './constants'
 import { permit2Domain } from './domain'
-import { MaxSigDeadline, MaxUnorderedNonce, MaxSignatureTransferAmount } from './constants'
 import { TypedDataDomain, TypedDataParameter } from './utils/types'
 
-export interface Witness {
-  witness: any
+export type Witness = {
+  witness: { [key: string]: unknown }
   witnessTypeName: string
   witnessType: Record<string, TypedDataParameter[]>
 }
 
-export interface TokenPermissions {
+export type TokenPermissions = {
   token: string
   amount: BigintIsh
 }
 
-export interface PermitTransferFrom {
+export type PermitTransferFrom = {
   permitted: TokenPermissions
   spender: string
   nonce: BigintIsh
   deadline: BigintIsh
 }
 
-export interface PermitBatchTransferFrom {
+export type PermitBatchTransferFrom = {
   permitted: TokenPermissions[]
   spender: string
   nonce: BigintIsh
@@ -34,12 +34,28 @@ export type PermitTransferFromData = {
   domain: TypedDataDomain
   types: Record<string, TypedDataParameter[]>
   values: PermitTransferFrom
+  primaryType: 'PermitTransferFrom'
+}
+
+export type PermitWitnessTransferFromData = {
+  domain: TypedDataDomain
+  types: Record<string, TypedDataParameter[]>
+  values: PermitTransferFrom & { witness: { [key: string]: unknown } }
+  primaryType: 'PermitWitnessTransferFrom'
 }
 
 export type PermitBatchTransferFromData = {
   domain: TypedDataDomain
   types: Record<string, TypedDataParameter[]>
   values: PermitBatchTransferFrom
+  primaryType: 'PermitBatchTransferFrom'
+}
+
+export type PermitBatchWitnessTransferFromData = {
+  domain: TypedDataDomain
+  types: Record<string, TypedDataParameter[]>
+  values: PermitBatchTransferFrom & { witness: { [key: string]: unknown } }
+  primaryType: 'PermitBatchWitnessTransferFrom'
 }
 
 const TOKEN_PERMISSIONS = [
@@ -108,12 +124,17 @@ export abstract class SignatureTransfer {
 
   // return the data to be sent in a eth_signTypedData RPC call
   // for signing the given permit data
-  public static getPermitData(
-    permit: PermitTransferFrom | PermitBatchTransferFrom,
-    permit2Address: Address,
-    chainId: number,
-    witness?: Witness,
-  ): PermitTransferFromData | PermitBatchTransferFromData {
+  public static getPermitData<
+    TPermit extends PermitTransferFrom | PermitBatchTransferFrom,
+    TWitness extends Witness | undefined,
+    ReturnType = TPermit extends PermitTransferFrom
+      ? TWitness extends undefined
+        ? PermitTransferFromData
+        : PermitWitnessTransferFromData
+      : TWitness extends undefined
+      ? PermitBatchTransferFromData
+      : PermitBatchWitnessTransferFromData,
+  >(permit: TPermit, permit2Address: Address, chainId: number, witness?: TWitness): ReturnType {
     invariant(MaxSigDeadline >= BigInt(permit.deadline), 'SIG_DEADLINE_OUT_OF_RANGE')
     invariant(MaxUnorderedNonce >= BigInt(permit.nonce), 'NONCE_OUT_OF_RANGE')
 
@@ -122,20 +143,44 @@ export abstract class SignatureTransfer {
       validateTokenPermissions(permit.permitted)
       const types = witness ? permitTransferFromWithWitnessType(witness) : PERMIT_TRANSFER_FROM_TYPES
       const values = witness ? Object.assign(permit, { witness: witness.witness }) : permit
+      const primaryType = witness ? 'PermitWitnessTransferFrom' : 'PermitTransferFrom'
       return {
         domain,
         types,
         values,
-      }
+        primaryType,
+      } as ReturnType
     }
     permit.permitted.forEach(validateTokenPermissions)
     const types = witness ? permitBatchTransferFromWithWitnessType(witness) : PERMIT_BATCH_TRANSFER_FROM_TYPES
     const values = witness ? Object.assign(permit, { witness: witness.witness }) : permit
+    const primaryType = witness ? 'PermitBatchWitnessTransferFrom' : 'PermitBatchTransferFrom'
     return {
       domain,
       types,
       values,
-    }
+      primaryType,
+    } as ReturnType
+  }
+
+  public static hash(
+    permit: PermitTransferFrom | PermitBatchTransferFrom,
+    permit2Address: Address,
+    chainId: number,
+    witness?: Witness,
+  ): Hex {
+    const { domain, types, values, primaryType } = SignatureTransfer.getPermitData(
+      permit,
+      permit2Address,
+      chainId,
+      witness,
+    )
+    return hashTypedData({
+      domain,
+      types,
+      primaryType,
+      message: values,
+    })
   }
 }
 

@@ -30,6 +30,8 @@ const ApproveCakePage: React.FC<React.PropsWithChildren<ApproveCakePageProps>> =
   const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
 
   const handleApprove = async () => {
+    if (!account || !cakeContract) return
+
     const receipt = await fetchWithCatchTxError(() => {
       return cakeContract.write.approve([getPancakeProfileAddress(), cost * 2n], {
         account,

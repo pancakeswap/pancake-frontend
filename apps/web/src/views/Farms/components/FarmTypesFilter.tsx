@@ -1,18 +1,18 @@
-import { useEffect, useState, useRef } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Button,
-  RocketIcon,
   CurrencyIcon,
-  Flex,
-  Text,
-  InlineMenu,
-  Toggle,
   FarmIcon,
+  Flex,
+  InlineMenu,
+  RocketIcon,
+  Text,
+  Toggle,
   TradeIcon,
 } from '@pancakeswap/uikit'
+import { useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
 
 interface FarmTypesFilterProps {
   boostedOnly: boolean
@@ -62,8 +62,8 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
   const { t } = useTranslation()
 
   const [isOpen, setIsOpen] = useState(false)
-  const wrapperRef = useRef(null)
-  const menuRef = useRef(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
   const handleMenuClick = () => setIsOpen(!isOpen)
 
   useEffect(() => {
@@ -71,8 +71,8 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
       if (
         wrapperRef.current &&
         menuRef.current &&
-        !menuRef.current.contains(target) &&
-        !wrapperRef.current.contains(target)
+        !menuRef.current.contains(target as HTMLElement) &&
+        !wrapperRef.current.contains(target as HTMLElement)
       ) {
         setIsOpen(false)
       }
@@ -119,7 +119,7 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                         const totalFarmsEnableCount = farmTypesEnableCount + (!v3FarmOnly ? 1 : -1)
                         handleSetFarmTypesEnableCount(totalFarmsEnableCount)
 
-                        handleSetV3FarmOnly(!v3FarmOnly)
+                        handleSetV3FarmOnly?.(!v3FarmOnly)
                       }}
                       scale="sm"
                     />
@@ -138,7 +138,7 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                         const totalFarmsEnableCount = farmTypesEnableCount + (!v2FarmOnly ? 1 : -1)
                         handleSetFarmTypesEnableCount(totalFarmsEnableCount)
 
-                        handleSetV2FarmOnly(!v2FarmOnly)
+                        handleSetV2FarmOnly?.(!v2FarmOnly)
                       }}
                       scale="sm"
                     />

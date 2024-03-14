@@ -2898,7 +2898,7 @@
   "Migrate to veCAKE": "Μεταφορά σε veCAKE",
   "Learn More >>": "Μάθετε περισσότερα >>",
   "View CAKE Pool Position": "Προβολή θέσης δεξαμενής CAKE",
-  "on": "στο",
+  "on": "στις",
   "Position migrated from CAKE Pool can not be extended or topped up. To extend or add more CAKE, set up a native veCAKE position.": "Η θέση που μεταφέρθηκε από τη δεξαμενή CAKE δεν μπορεί να επεκταθεί ή να αναπληρωθεί. Για να επεκτείνετε ή να προσθέσετε περισσότερο CAKE, δημιουργήστε μια αρχική θέση veCAKE.",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Ανανεώστε τη θέση σας στο veCAKE για να συνεχίσετε να απολαμβάνετε τα οφέλη της εβδομαδιαίας απόδοσης του CAKE, της διανομής εσόδων, της ψηφοφορίας gauges, της ενίσχυσης της απόδοσης των farm, της συμμετοχής σε IFO και πολλά άλλα!",
   "Migrate your CAKE staking position to veCAKE and enjoy the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Μεταφέρετε τη θέση σας staking CAKE σε veCAKE για να συνεχίσετε να απολαμβάνετε τα οφέλη της εβδομαδιαίας απόδοσης του CAKE, της διανομής εσόδων, της ψηφοφορίας gauges, της ενίσχυσης της απόδοσης των farm, της συμμετοχής σε IFO και πολλά άλλα!",
@@ -3201,5 +3201,10 @@
   "Reset approval on USDT.": "Reset approval on USDT.",
   "Go to CAKE Staking": "Μετάβαση στο Staking CAKE",
   "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
+  "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.",
+  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.",
+  "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.",
+  "This liquidity position is currently earning rewards on Merkl.": "This liquidity position is currently earning rewards on Merkl.",
+  "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.",
   "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Approve transaction filled, but Approval still not enough to fill current trade. Please try again."
 }

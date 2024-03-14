@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
 import { Flex, FlexProps } from '@pancakeswap/uikit'
 import random from 'lodash/random'
 import uniqueId from 'lodash/uniqueId'
+import { useEffect, useState } from 'react'
 import { parseRetrievedNumber } from '../helpers'
 import { BallWithNumber } from '../svgs'
 import { BallColor } from '../svgs/Balls'
@@ -17,10 +17,10 @@ const WinningNumbers: React.FC<React.PropsWithChildren<WinningNumbersProps>> = (
   number,
   size = '32px',
   fontSize = '16px',
-  rotateText,
+  rotateText = false,
   ...containerProps
 }) => {
-  const [rotationValues, setRotationValues] = useState([])
+  const [rotationValues, setRotationValues] = useState<number[]>([])
   const reversedNumber = parseRetrievedNumber(number)
   const numAsArray = reversedNumber.split('')
   const colors: BallColor[] = ['pink', 'lilac', 'teal', 'aqua', 'green', 'yellow']
@@ -37,7 +37,7 @@ const WinningNumbers: React.FC<React.PropsWithChildren<WinningNumbersProps>> = (
         return (
           <BallWithNumber
             key={uniqueId()}
-            rotationTransform={rotateText && rotationValues[index]}
+            rotationTransform={rotateText ? rotationValues[index] : undefined}
             size={size}
             fontSize={fontSize}
             color={colors[index]}

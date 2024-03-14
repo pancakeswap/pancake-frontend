@@ -1,13 +1,13 @@
-import { useCallback } from 'react'
-import { useAppDispatch } from 'state'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { usePotterytVaultContract } from 'hooks/useContract'
-import { Address } from 'wagmi'
-import { fetchPotteryUserDataAsync } from 'state/pottery'
 import { useWeb3React } from '@pancakeswap/wagmi'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { usePotterytVaultContract } from 'hooks/useContract'
+import { useCallback } from 'react'
+import { useAppDispatch } from 'state'
+import { fetchPotteryUserDataAsync } from 'state/pottery'
+import { Address } from 'wagmi'
 
 export const useWithdrawPottery = (redeemShare: string, vaultAddress: Address) => {
   const { t } = useTranslation()
@@ -18,6 +18,7 @@ export const useWithdrawPottery = (redeemShare: string, vaultAddress: Address) =
   const contract = usePotterytVaultContract(vaultAddress)
 
   const handleWithdraw = useCallback(async () => {
+    if (!account) return
     const receipt = await fetchWithCatchTxError(() =>
       contract.write.redeem([BigInt(redeemShare), account, account], {
         account,

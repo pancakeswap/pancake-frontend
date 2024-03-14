@@ -1,8 +1,8 @@
-import { Flex, Text, Button, Link, OpenNewIcon } from '@pancakeswap/uikit'
+import { Button, Flex, Link, OpenNewIcon, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter as RouterLink } from '@pancakeswap/widgets-internal'
 
-import CompositeImage, { CompositeImageProps } from '../CompositeImage'
 import ColoredWordHeading from '../ColoredWordHeading'
+import CompositeImage, { CompositeImageProps } from '../CompositeImage'
 
 interface SalesSectionButton {
   to: string
@@ -32,8 +32,8 @@ const SalesSection: React.FC<React.PropsWithChildren<SalesSectionProps>> = (prop
         <Flex
           flexDirection="column"
           flex="1"
-          ml={[null, null, null, reverse && '64px']}
-          mr={[null, null, null, !reverse && '64px']}
+          ml={[null, null, null, reverse ? '64px' : null]}
+          mr={[null, null, null, !reverse ? '64px' : null]}
           alignSelf={['flex-start', null, null, 'center']}
         >
           <ColoredWordHeading text={headingText} />

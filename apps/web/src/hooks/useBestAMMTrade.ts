@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
-import { Currency, CurrencyAmount, Native, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import {
   BATCH_MULTICALL_CONFIGS,
   PoolType,
@@ -8,7 +8,7 @@ import {
   SmartRouter,
   SmartRouterTrade,
   V4Router,
-} from '@pancakeswap/smart-router/evm'
+} from '@pancakeswap/smart-router'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react'
@@ -22,6 +22,7 @@ import { tracker } from 'utils/datadog'
 import { createViemPublicClientGetter } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import {
   CommonPoolsParams,
   PoolsWithState,
@@ -31,8 +32,9 @@ import {
 } from './useCommonPools'
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
-import { useGlobalWorker } from './useWorker'
 import { useSpeedQuote } from './useSpeedQuote'
+import { useTokenFee } from './useTokenFee'
+import { useGlobalWorker } from './useWorker'
 
 export class NoValidRouteError extends Error {
   constructor(message?: string) {
@@ -77,6 +79,26 @@ interface useBestAMMTradeOptions extends Options {
   type?: 'offchain' | 'quoter' | 'auto' | 'api'
 }
 
+type QuoteResult = ReturnType<ReturnType<typeof bestTradeHookFactory>>
+
+function useBetterQuote(quoteA: QuoteResult, quoteB: QuoteResult) {
+  return useMemo(() => {
+    if (!quoteB.trade) {
+      return quoteA
+    }
+    if (!quoteA.trade && quoteB.trade) {
+      return quoteB
+    }
+    return quoteA.trade!.tradeType === TradeType.EXACT_INPUT
+      ? quoteB.trade?.outputAmount.greaterThan(quoteA.trade!.outputAmount)
+        ? quoteB
+        : quoteA
+      : quoteB.trade?.inputAmount.lessThan(quoteA.trade!.inputAmount)
+      ? quoteB
+      : quoteA
+  }, [quoteA, quoteB])
+}
+
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
   const { amount, baseCurrency, currency, autoRevalidate, enabled = true } = params
   const [speedQuoteEnabled] = useSpeedQuote()
@@ -105,11 +127,20 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const quoterAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterEnabled
 
-  const bestTradeFromOffchainQuoter = useBestAMMTradeFromOffchainQuoter({
+  const offchainQuoterEnabled = Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled && speedQuoteEnabled)
+  const bestTradeFromQuickOnChainQuote = useBestAMMTradeFromQuoterWorker({
     ...params,
-    enabled: Boolean(enabled && isQuoterEnabled && !isQuoterAPIEnabled && speedQuoteEnabled),
+    maxHops: 1,
+    maxSplits: 0,
+    enabled: offchainQuoterEnabled,
     autoRevalidate: quoterAutoRevalidate,
   })
+  const bestTradeFromOffchainQuoter = useBestAMMTradeFromOffchainQuoter({
+    ...params,
+    enabled: offchainQuoterEnabled,
+    autoRevalidate: quoterAutoRevalidate,
+  })
+  const bestOffchainWithQuickOnChainQuote = useBetterQuote(bestTradeFromOffchainQuoter, bestTradeFromQuickOnChainQuote)
 
   const noValidRouteFromOffchainQuoter =
     Boolean(amount) &&
@@ -126,7 +157,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const bestTradeFromQuoterWorker = shouldFallbackQuoterOnChain
     ? bestTradeFromOnChainQuoter
-    : bestTradeFromOffchainQuoter
+    : bestOffchainWithQuickOnChainQuote
 
   return useMemo(
     () => (isQuoterAPIEnabled ? bestTradeFromQuoterApi : bestTradeFromQuoterWorker),
@@ -184,13 +215,41 @@ function bestTradeHookFactory({
       allowInconsistentBlock: true,
       enabled,
     })
-    const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
+
+    const { data: tokenInFee } = useTokenFee(baseCurrency && baseCurrency.isToken ? baseCurrency : undefined)
+    const { data: tokenOutFee } = useTokenFee(currency && currency.isToken ? currency : undefined)
+
+    const candidatePoolsWithoutV3WithFot = useMemo(() => {
+      let pools = candidatePools
+      if (tokenInFee && tokenInFee.result.sellFeeBps > 0n) {
+        pools = pools?.filter(
+          (pool) =>
+            !(
+              pool.type === PoolType.V3 &&
+              baseCurrency &&
+              (pool.token0.equals(baseCurrency) || pool.token1.equals(baseCurrency))
+            ),
+        )
+      }
+      if (tokenOutFee && tokenOutFee.result.buyFeeBps > 0n) {
+        pools = pools?.filter(
+          (pool) =>
+            !(pool.type === PoolType.V3 && currency && (pool.token0.equals(currency) || pool.token1.equals(currency))),
+        )
+      }
+
+      return pools
+    }, [candidatePools, tokenInFee, tokenOutFee, baseCurrency, currency])
+
+    const poolProvider = useMemo(
+      () => SmartRouter.createStaticPoolProvider(candidatePoolsWithoutV3WithFot),
+      [candidatePoolsWithoutV3WithFot],
+    )
     const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
     const deferQuotient = useDebounce(deferQuotientRaw, 500)
     const { data: quoteCurrencyUsdPrice } = useCurrencyUsdPrice(currency ?? undefined)
-    const { data: nativeCurrencyUsdPrice } = useCurrencyUsdPrice(
-      currency?.chainId ? Native.onChain(currency.chainId) : undefined,
-    )
+    const currencyNativeChain = useNativeCurrency(currency?.chainId)
+    const { data: nativeCurrencyUsdPrice } = useCurrencyUsdPrice(currencyNativeChain)
 
     const poolTypes = useMemo(() => {
       const types: PoolType[] = []
