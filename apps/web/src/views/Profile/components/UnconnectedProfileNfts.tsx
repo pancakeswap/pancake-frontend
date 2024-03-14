@@ -1,9 +1,9 @@
-import { Grid, Text, Flex } from '@pancakeswap/uikit'
-import { NftToken } from 'state/nftMarket/types'
 import { useTranslation } from '@pancakeswap/localization'
+import { Flex, Grid, Text } from '@pancakeswap/uikit'
+import { NftToken } from 'state/nftMarket/types'
+import NoNftsImage from '../../Nft/market/components/Activity/NoNftsImage'
 import { CollectibleLinkCard } from '../../Nft/market/components/CollectibleCard'
 import GridPlaceholder from '../../Nft/market/components/GridPlaceholder'
-import NoNftsImage from '../../Nft/market/components/Activity/NoNftsImage'
 
 const UserNfts: React.FC<React.PropsWithChildren<{ nfts: NftToken[]; isLoading: boolean }>> = ({ nfts, isLoading }) => {
   const { t } = useTranslation()
@@ -33,7 +33,9 @@ const UserNfts: React.FC<React.PropsWithChildren<{ nfts: NftToken[]; isLoading: 
                 key={`${nft?.tokenId}-${nft?.collectionName}`}
                 nft={nft}
                 currentAskPrice={
-                  marketData?.currentAskPrice && marketData?.isTradable && parseFloat(marketData?.currentAskPrice)
+                  marketData?.currentAskPrice && marketData?.isTradable
+                    ? parseFloat(marketData?.currentAskPrice)
+                    : undefined
                 }
               />
             )

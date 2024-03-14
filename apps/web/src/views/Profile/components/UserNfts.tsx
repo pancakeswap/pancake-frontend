@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react'
-import { Grid, useModal, Text, Flex } from '@pancakeswap/uikit'
-import { NftLocation, NftToken } from 'state/nftMarket/types'
 import { useTranslation } from '@pancakeswap/localization'
+import { Flex, Grid, Text, useModal } from '@pancakeswap/uikit'
+import { useEffect, useState } from 'react'
+import { NftLocation, NftToken } from 'state/nftMarket/types'
+import NoNftsImage from '../../Nft/market/components/Activity/NoNftsImage'
+import SellModal from '../../Nft/market/components/BuySellModals/SellModal'
 import { CollectibleActionCard } from '../../Nft/market/components/CollectibleCard'
 import GridPlaceholder from '../../Nft/market/components/GridPlaceholder'
 import ProfileNftModal from '../../Nft/market/components/ProfileNftModal'
-import NoNftsImage from '../../Nft/market/components/Activity/NoNftsImage'
-import SellModal from '../../Nft/market/components/BuySellModals/SellModal'
 
 interface ProfileNftProps {
-  nft: NftToken
-  location: NftLocation
+  nft?: NftToken
+  location?: NftLocation
 }
 
 interface SellNftProps {
-  nft: NftToken
-  location: NftLocation
-  variant: 'sell' | 'edit'
+  nft?: NftToken
+  location?: NftLocation
+  variant?: 'sell' | 'edit'
 }
 
 const UserNfts: React.FC<
@@ -27,8 +27,8 @@ const UserNfts: React.FC<
     onSuccessEditProfile: () => void
   }>
 > = ({ nfts, isLoading, onSuccessSale, onSuccessEditProfile }) => {
-  const [clickedProfileNft, setClickedProfileNft] = useState<ProfileNftProps>({ nft: null, location: null })
-  const [clickedSellNft, setClickedSellNft] = useState<SellNftProps>({ nft: null, location: null, variant: null })
+  const [clickedProfileNft, setClickedProfileNft] = useState<ProfileNftProps>({})
+  const [clickedSellNft, setClickedSellNft] = useState<SellNftProps>({})
   const [onPresentProfileNftModal] = useModal(
     <ProfileNftModal nft={clickedProfileNft.nft} onSuccess={onSuccessEditProfile} />,
   )
@@ -42,7 +42,7 @@ const UserNfts: React.FC<
   )
   const { t } = useTranslation()
 
-  const handleCollectibleClick = (nft: NftToken, location: NftLocation) => {
+  const handleCollectibleClick = (nft: NftToken, location?: NftLocation) => {
     switch (location) {
       case NftLocation.PROFILE:
         setClickedProfileNft({ nft, location })
@@ -101,7 +101,9 @@ const UserNfts: React.FC<
                 key={`${nft?.tokenId}-${nft?.collectionName}`}
                 nft={nft}
                 currentAskPrice={
-                  marketData?.currentAskPrice && marketData?.isTradable && parseFloat(marketData?.currentAskPrice)
+                  marketData?.currentAskPrice && marketData?.isTradable
+                    ? parseFloat(marketData?.currentAskPrice)
+                    : undefined
                 }
                 nftLocation={location}
               />

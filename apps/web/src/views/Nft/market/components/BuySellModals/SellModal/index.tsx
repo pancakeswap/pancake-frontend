@@ -68,7 +68,7 @@ const getToastText = (variant: string, stage: SellingStage, t: ContextApi['t']) 
 }
 
 interface SellModalProps extends InjectedModalProps {
-  variant: 'sell' | 'edit'
+  variant?: 'sell' | 'edit'
   nftToSell?: NftToken
   onSuccessSale: () => void
   onSuccessEditProfile?: () => void
@@ -208,6 +208,7 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
       ])
     },
     onSuccess: async ({ receipt }) => {
+      if (!variant) return
       toastSuccess(getToastText(variant, stage, t), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       onSuccessSale()
       setConfirmedTxHash(receipt.transactionHash)

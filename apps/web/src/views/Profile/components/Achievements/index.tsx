@@ -1,7 +1,7 @@
-import { Card, CardBody, Heading, PrizeIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import IconStatBox from 'views/Teams/components/IconStatBox'
+import { Card, CardBody, Heading, PrizeIcon } from '@pancakeswap/uikit'
 import { Achievement } from 'state/types'
+import IconStatBox from 'views/Teams/components/IconStatBox'
 import AchievementsList from './AchievementsList'
 import ClaimPointsCallout from './ClaimPointsCallout'
 
@@ -12,7 +12,7 @@ const Achievements: React.FC<
     points?: number
     onSuccess?: () => void
   }>
-> = ({ achievements, isLoading, points = 0, onSuccess = null }) => {
+> = ({ achievements, isLoading, points = 0, onSuccess }) => {
   const { t } = useTranslation()
 
   return (

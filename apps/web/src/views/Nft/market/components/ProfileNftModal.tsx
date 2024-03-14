@@ -29,7 +29,7 @@ const TextWrapper = styled(Flex)`
 `
 
 interface ProfileNftModalProps extends InjectedModalProps {
-  nft: NftToken
+  nft?: NftToken
   onSuccess?: () => void
 }
 
@@ -39,17 +39,17 @@ const ProfileNftModal: React.FC<React.PropsWithChildren<ProfileNftModalProps>> =
   const { theme } = useTheme()
 
   const itemPageUrlId =
-    safeGetAddress(nft.collectionAddress) === safeGetAddress(pancakeBunniesAddress)
-      ? nft.attributes?.[0].value
-      : nft.tokenId
+    safeGetAddress(nft?.collectionAddress) === safeGetAddress(pancakeBunniesAddress)
+      ? nft?.attributes?.[0].value
+      : nft?.tokenId
 
   return (
     <StyledModal title={t('Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradientCardHeader}>
       <Flex flexDirection="column" maxWidth="420px">
         <Flex p="16px">
-          <RoundedImage src={nft.image.thumbnail} height={68} width={68} mr="16px" />
+          <RoundedImage src={nft?.image.thumbnail} height={68} width={68} mr="16px" />
           <Grid flex="1" gridTemplateColumns="1fr 1fr" alignItems="center">
-            <Text bold>{nft.name}</Text>
+            <Text bold>{nft?.name}</Text>
             <Text fontSize="12px" color="textSubtle" textAlign="right">
               {nft?.collectionName}
             </Text>
@@ -59,19 +59,19 @@ const ProfileNftModal: React.FC<React.PropsWithChildren<ProfileNftModalProps>> =
         <Flex justifyContent="space-between" px="16px" mb="16px">
           <Flex flex="2">
             <Text small color="textSubtle">
-              {t('Token ID: %id%', { id: nft.tokenId })}
+              {t('Token ID: %id%', { id: nft?.tokenId })}
             </Text>
           </Flex>
           <Flex justifyContent="space-between" flex="3">
             <LinkExternal
               p="0px"
               height="16px"
-              href={`${nftsBaseUrl}/collections/${nft.collectionAddress}/${itemPageUrlId}`}
+              href={`${nftsBaseUrl}/collections/${nft?.collectionAddress}/${itemPageUrlId}`}
             >
               {t('View Item')}
             </LinkExternal>
             <HorizontalDivider />
-            <ScanLink p="0px" height="16px" href={getBscScanLinkForNft(nft.collectionAddress, nft.tokenId)}>
+            <ScanLink p="0px" height="16px" href={getBscScanLinkForNft(nft?.collectionAddress, nft?.tokenId)}>
               BscScan
             </ScanLink>
           </Flex>
