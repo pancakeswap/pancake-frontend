@@ -226,11 +226,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                       shouldUpdate={shouldUpdate}
                       expectMultiplier={veCakeUserMultiplierBeforeBoosted}
                     />
-                    {shouldUpdate && (
-                      <Button ml="5px" onClick={() => onUpdate(refetch)}>
-                        {t('Update')}
-                      </Button>
-                    )}
+                    {shouldUpdate && <Button onClick={() => onUpdate(refetch)}>{t('Update')}</Button>}
                   </Flex>
                 </RowBetween>
               </>
