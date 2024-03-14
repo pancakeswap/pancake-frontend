@@ -3,7 +3,7 @@ import { ArrowForwardIcon, Box, Button, Flex, Link, useMatchBreakpoints } from '
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
-import { styled, css } from 'styled-components'
+import { css, styled } from 'styled-components'
 import * as S from './Styled'
 
 const { pancakeProtectorBunny, pancakeProtectorBgMobile, pancakeProtectorBg, pancakeSwapLogo } = {
@@ -151,7 +151,11 @@ const PancakeProtectorBanner = () => {
               </StyledButton>
             </Link>
             <Devider />
-            <Link href="https://protectors.pancakeswap.finance" external style={{ textDecoration: 'none' }}>
+            <Link
+              href="https://pancakeswap.games/project/pancake-protectors"
+              external
+              style={{ textDecoration: 'none' }}
+            >
               <StyledButton variant="text" style={{ color: 'white' }} scale={isMobile ? 'sm' : 'md'}>
                 {t('Play Now')}
                 <ArrowForwardIcon color="white" />
