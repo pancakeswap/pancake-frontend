@@ -2,13 +2,34 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
-import { Container, Text } from '@pancakeswap/uikit'
+import { AceIcon, Container, Flex, Row, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { ellipseAddress } from 'utils/address'
 import { useAccount } from 'wagmi'
+import { useQuery } from '@tanstack/react-query'
+import { DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
+import { displayBalance } from 'utils/display'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import avatarPng from '../../../public/images/nfts2/avatar.png'
 import sgtIcon from '../../../public/images/nfts2/sgt-icon.png'
 import Button from '../../components/Button'
+
+dayjs.extend(relativeTime)
+const ShowAcePrice = ({ price }: { price: any }) => {
+  return (
+    <>
+      {price ? (
+        <Row gap="4px">
+          {displayBalance(price)}
+          <AceIcon />
+        </Row>
+      ) : (
+        <>--</>
+      )}
+    </>
+  )
+}
 
 export const Wrapper = styled.div`
   & div::-webkit-scrollbar {
@@ -69,7 +90,7 @@ export const Wrapper = styled.div`
     justify-content: space-between;
   }
   /* .user__total-data-item {
-  
+
 } */
   .user__total-data-item-label {
     font-size: 14px;
@@ -389,21 +410,7 @@ export const Wrapper = styled.div`
 export default function User() {
   const { address } = useAccount()
   const [activeNav, setActiveNav] = useState('nft')
-  const defaultItem = {
-    id: 1,
-    icon: sgtIcon,
-    name: 'KAMA',
-    floorPrice: '3.66 ACE',
-    bestOffer: '3.66 ACE',
-    listingPrice: '3.66 ACE',
-    cost: '3.66 ACE',
-    time: '8mo ago',
-    sgr: '+56.12',
-    sgrIcon: sgtIcon,
-    difference: '+3',
-    differenceIcon: sgtIcon,
-  }
-  const datasetList = [defaultItem, defaultItem, defaultItem, defaultItem]
+
   const defaultOfferModeItem = {
     name: 'BAYC',
     icon: sgtIcon,
@@ -413,65 +420,7 @@ export default function User() {
     timeCreated: '8mo ago',
   }
   const offerModeList = [defaultOfferModeItem, defaultOfferModeItem, defaultOfferModeItem, defaultOfferModeItem]
-  const columns = [
-    {
-      name: '12 items',
-      style: {
-        width: '130px',
-      },
-      tdStyle: {},
-    },
-    {
-      name: 'Floor Price',
-      style: {
-        width: '130px',
-      },
-      tdStyle: {},
-    },
-    {
-      name: 'Best offer',
-      style: {
-        width: '130px',
-      },
-    },
-    {
-      name: 'Listing Price',
-      style: {
-        width: '130px',
-      },
-    },
-    {
-      name: 'Cost',
-      style: {
-        width: '130px',
-      },
-    },
-    {
-      name: 'Time',
-      style: {
-        width: '120px',
-      },
-    },
-    {
-      name: 'SGR',
-      style: {
-        width: '120px',
-      },
-    },
-    {
-      name: 'Difference ',
-      style: {
-        width: '120px',
-      },
-    },
-    {
-      name: '',
-      style: {
-        paddingLeft: '32px',
-        flex: '1',
-      },
-    },
-  ]
+
   const offerModeColumns = [
     {
       name: '12 Offers',
@@ -512,6 +461,54 @@ export default function User() {
       },
     },
   ]
+
+  const { data } = useQuery({
+    queryKey: ['userAssets', address],
+    queryFn: () => {
+      return fetch(`${DOCKMAN_HOST}/me/nft?page_number=1&page_size=20&owner_address=${address}`, {
+        method: 'GET',
+      }).then((r) => r.json())
+    },
+    enabled: !!address,
+  })
+
+  const totalCount = data?.meta?.totalCount
+  const assets = data?.data
+
+  const datasetList = assets?.map((asset) => ({
+    id: 1,
+    name: (
+      <Flex style={{ fontSize: '14px' }} alignItems="center">
+        <img
+          src={asset?.nft_image ? asset?.nft_image : DEFAULT_NFT_IMAGE}
+          width={38}
+          height={38}
+          alt="avatar"
+          style={{ marginRight: '5px', borderRadius: '4px', border: '1px solid #fff' }}
+        />
+        {asset?.nft_name}
+      </Flex>
+    ),
+    floorPrice: <ShowAcePrice price={0} />,
+    bestOffer: <ShowAcePrice price={asset?.best_offer_price} />,
+    listingPrice: <ShowAcePrice price={asset?.listing_price} />,
+    cost: <ShowAcePrice price={asset?.cost_price} />,
+    time: dayjs(asset?.buy_time).fromNow(),
+    difference: '+3',
+  }))
+
+  const columns = [
+    { name: `${totalCount} items`, style: { width: '200px' }, tdStyle: {} },
+    { name: 'Floor Price', style: { width: '130px' }, tdStyle: {} },
+    { name: 'Best offer', style: { width: '130px' } },
+    { name: 'Listing Price', style: { width: '130px' } },
+    { name: 'Cost', style: { width: '130px' } },
+    { name: 'Time', style: { width: '120px' } },
+    { name: '', style: { paddingLeft: '32px', flex: '1' } },
+  ]
+
+  console.log(assets)
+
   return (
     <Container>
       <Wrapper>
@@ -603,15 +600,6 @@ export default function User() {
                         }}
                         className="sensei__table-body-td"
                       >
-                        <Image
-                          style={{
-                            width: '16px',
-                            height: '16px',
-                            marginRight: '4px',
-                          }}
-                          alt="icon"
-                          src={item.icon}
-                        />
                         {item.name}
                       </div>
                       <div
@@ -664,46 +652,6 @@ export default function User() {
                         style={{
                           ...columns[6].style,
                           ...(columns[6].tdStyle || {}),
-                        }}
-                        className="sensei__table-body-td"
-                      >
-                        <div className="sensei__tag">
-                          <div className="sensei__tag-content">{item.sgr}</div>
-                          <Image
-                            style={{
-                              width: '20px',
-                              height: '20px',
-                              marginLeft: '4px',
-                            }}
-                            alt="icon"
-                            src={item.sgrIcon}
-                          />
-                        </div>
-                      </div>
-                      <div
-                        style={{
-                          ...columns[7].style,
-                          ...(columns[7].tdStyle || {}),
-                        }}
-                        className="sensei__table-body-td"
-                      >
-                        <div className="sensei__tag">
-                          <div className="sensei__tag-content">{item.difference}</div>
-                          <Image
-                            style={{
-                              width: '20px',
-                              height: '20px',
-                              marginLeft: '4px',
-                            }}
-                            alt="icon"
-                            src={item.differenceIcon}
-                          />
-                        </div>
-                      </div>
-                      <div
-                        style={{
-                          ...columns[8].style,
-                          ...(columns[8].tdStyle || {}),
                         }}
                         className="sensei__table-body-td"
                       >
