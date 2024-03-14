@@ -164,7 +164,7 @@ export const StartBuilding = () => {
                     '8px 0 24px 0',
                     '8px 0 0 0',
                   ]}
-                  href="https://"
+                  href={build.url}
                 >
                   {build.title}
                 </LinkExternal>
