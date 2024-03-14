@@ -15,6 +15,7 @@ import { ProviderGroupItem } from '../components/ProviderSelector/ProviderGroupI
 import { ProviderSelector } from '../components/ProviderSelector/ProviderSelector'
 import { TransactionFeeDetails } from '../components/TransactionFeeDetails/TransactionFeeDetails'
 import {
+  ONRAMP_PROVIDERS,
   fiatCurrencyMap,
   formatQuoteDecimals,
   getOnRampCryptoById,
@@ -37,6 +38,7 @@ interface OnRampCurrencySelectPopOverProps {
   setSelectedQuote: (quote: OnRampProviderQuote) => void
   setShowProvidersPopOver: any
   showProivdersPopOver: boolean
+  disabledProviders?: Array<keyof typeof ONRAMP_PROVIDERS>
 }
 
 export function BuyCryptoForm() {
@@ -160,6 +162,7 @@ export function BuyCryptoForm() {
         setSelectedQuote={setSelectedQuote}
         setShowProvidersPopOver={setShowProvidersPopOver}
         showProivdersPopOver={showProivdersPopOver}
+        disabledProviders={inputCurrencyId === 'ETH_324' ? ['MoonPay'] : []}
       />
       <FormContainer>
         <StyledVerticalLine />
@@ -236,6 +239,7 @@ const OnRampCurrencySelectPopOver = ({
   setSelectedQuote,
   setShowProvidersPopOver,
   showProivdersPopOver,
+  disabledProviders,
 }: OnRampCurrencySelectPopOverProps) => {
   const { t } = useTranslation()
 
@@ -263,6 +267,7 @@ const OnRampCurrencySelectPopOver = ({
           selectedQuote &&
           quotes
             .filter((quote) => !quote.error)
+            .filter((quote) => !disabledProviders?.includes(quote.provider))
             .map((quote) => {
               return (
                 <ProviderGroupItem

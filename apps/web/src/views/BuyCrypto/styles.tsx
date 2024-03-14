@@ -14,7 +14,11 @@ export const Wrapper = styled(Flex)`
   position: relative;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0px 1rem 1rem 1rem;
+  padding: 0px 0.6rem 0.6rem 0.6rem;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 0px 1rem 1rem 1rem;
+  }
 `
 export const DropdownWrapper = styled.div<{ isClicked: boolean }>`
   opacity: ${({ isClicked }) => (isClicked ? '0' : '1')};

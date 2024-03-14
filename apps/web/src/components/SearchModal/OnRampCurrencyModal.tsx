@@ -239,7 +239,7 @@ export default function OnRampCurrencySearchModal({
       />
       <ModalHeader>
         <ModalTitle margin="12px">
-          <Heading>{t('Select a Token to Purchase')}</Heading>
+          <Heading>{mode === 'onramp-fiat' ? t('Select a currency') : t('Select a Token to Purchase')}</Heading>
         </ModalTitle>
       </ModalHeader>
       <StyledModalBody>

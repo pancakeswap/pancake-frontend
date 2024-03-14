@@ -104,15 +104,9 @@ function OnRampCurrencyRow({
         </Column>
 
         <RowFixed style={{ justifySelf: 'flex-end' }} zIndex={999}>
-          {!isBtcNative ? (
-            <ArrowForwardIcon />
-          ) : (
-            // <NativeBTCToggle allowBuyBtc={allowBuyBtc} setAllowBuyBtc={setAllowBuyBtc} />
-            <></>
-          )}
+          {!isBtcNative && <ArrowForwardIcon />}
         </RowFixed>
       </MenuItem>
-      {/* <NativeBTCToggle allowBuyBtc={allowBuyBtc} setAllowBuyBtc={setAllowBuyBtc} /> */}
     </>
   )
 }
@@ -172,6 +166,7 @@ export default function OnRampCurrencyList({
 
   return (
     <FixedSizeList
+      style={{ overflowX: 'hidden' }}
       height={height}
       ref={fixedListRef as any}
       width="100%"

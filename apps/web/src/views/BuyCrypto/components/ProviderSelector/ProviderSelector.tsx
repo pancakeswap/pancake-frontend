@@ -11,10 +11,11 @@ import {
   Skeleton,
   SkeletonText,
   Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
-import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
+import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
@@ -73,7 +74,14 @@ const QuoteBadge = ({ isBestQuote, text, loading }: BadgeProps) => {
         <Skeleton width={40} height={17} isDark />
       ) : (
         <Flex alignItems="center" pl={2} pr={1} py={0.5} background={bg} borderRadius={7} mx="4px">
-          <Text fontSize="11px" textAlign="left" color={theme.colors.background} lineHeight="11px" fontWeight="bold">
+          <Text
+            ellipsis
+            fontSize="11px"
+            textAlign="left"
+            color={theme.colors.background}
+            lineHeight="11px"
+            fontWeight="bold"
+          >
             {text}
           </Text>
           <Icon width={13} height={13} color={theme.colors.background} />
@@ -98,15 +106,19 @@ export const ProviderSelector = ({
   quotes,
   ...props
 }: ProviderSelectorProps) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
   const isBestQuote = Boolean(selectedQuote === quotes?.[0] && !quoteLoading)
   const differenceFromBest = percentageDifference(quotes?.[0]?.quote, selectedQuote?.quote)
 
   const quoteText = useMemo(() => {
-    if (isBestQuote) return t('Best price')
+    if (isBestQuote) return isMobile ? t('Best') : t('Best price')
     if (error) return t('quote unavailable')
     return t('%change% %', { change: differenceFromBest })
-  }, [isBestQuote, differenceFromBest, t, error])
+  }, [isBestQuote, differenceFromBest, t, error, isMobile])
 
   return (
     <Box width="100%" {...props}>
@@ -118,7 +130,7 @@ export const ProviderSelector = ({
           onClick={() => onQuoteSelect?.(true)}
           disabled={quoteLoading}
         >
-          <Flex>
+          <Flex alignItems="center" width="100%">
             <OnRampProviderLogo size={32} provider={selectedQuote?.provider} loading={quoteLoading} />
             <AutoColumn px="12px" justifyContent="flex-start" alignItems="flex-start" gap="2px">
               <SkeletonText
@@ -128,7 +140,8 @@ export const ProviderSelector = ({
                 fontSize="18px"
                 fontWeight={600}
                 textAlign="left"
-                lineHeight="16px"
+                lineHeight="18px"
+                ellipsis
               >
                 {t('%provider%', { provider: selectedQuote?.provider })}
               </SkeletonText>
@@ -139,20 +152,24 @@ export const ProviderSelector = ({
                 fontSize="12px"
                 textAlign="left"
                 color="textSubtle"
-                lineHeight="14px"
+                lineHeight="12px"
+                ellipsis
               >
                 {selectedQuote &&
-                  t('1 %asset% = %prefix%%amount%', {
-                    amount: selectedQuote.price.toFixed(2),
+                  t('1 %asset% = %amount%', {
+                    amount: formatLocaleNumber({
+                      number: Number(selectedQuote.price.toFixed(2)),
+                      locale,
+                      options: { currency: selectedQuote.fiatCurrency, style: 'currency' },
+                    }),
                     asset: selectedQuote.cryptoCurrency,
-                    prefix: fiatCurrencyMap[selectedQuote.fiatCurrency].symbol,
                   })}
               </SkeletonText>
             </AutoColumn>
           </Flex>
 
           <Flex>
-            <QuoteBadge isBestQuote={isBestQuote} text={quoteText} loading={quoteLoading} />
+            {isMobile && <QuoteBadge isBestQuote={isBestQuote} text={quoteText} loading={quoteLoading} />}
             <ArrowDropDownIcon />
           </Flex>
         </OptionSelectButton>

@@ -13,6 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { ReactNode, useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
+import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
@@ -100,7 +101,10 @@ export const ProviderGroupItem = ({
   bottomElement,
   ...props
 }: ProviderGroupItemProps) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const isBestQuote = Boolean(quotes?.[0] === currentQuote && !quoteLoading)
   const differenceFromBest = percentageDifference(quotes?.[0]?.quote, currentQuote?.quote)
 
@@ -146,9 +150,13 @@ export const ProviderGroupItem = ({
                 color="textSubtle"
                 lineHeight="14px"
               >
-                {t('%amount% %asset%', {
-                  amount: currentQuote?.quote?.toFixed(5),
-                  asset: currentQuote?.cryptoCurrency,
+                {t('1 %asset% = %amount%', {
+                  amount: formatLocaleNumber({
+                    number: Number(selectedQuote.price.toFixed(2)),
+                    locale,
+                    options: { currency: selectedQuote.fiatCurrency, style: 'currency' },
+                  }),
+                  asset: selectedQuote.cryptoCurrency,
                 })}
               </SkeletonText>
             </AutoColumn>
