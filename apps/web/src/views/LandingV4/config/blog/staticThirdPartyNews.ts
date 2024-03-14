@@ -6,7 +6,7 @@ export const staticThirdPartyNews: V4ArticleDataType[] = [
     id: -1,
     title: 'ETHGlobal London',
     description:
-      'PancakeSwap is a leading multichain decentralized exchange that operates on an automated market maker (AMM) model.Launched in 2020, Pancakeswap is one of the most popular DEXs in the cryptocurrency industry due to its low transaction fees',
+      'PancakeSwap is the official partner of ETHGlobal London 2024. Hosting our first-ever hackathon featuring a $10,000 prize pool, where developers can showcase their creativity by building innovative hooks and win rewards.',
     createAt: '2024-03-15',
     categories: [],
     content: '',
