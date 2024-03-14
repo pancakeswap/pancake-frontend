@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
-import { useAccount } from 'wagmi'
 import { nftSaleABI } from 'config/abi/nftSale'
+import { useEffect, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
+import { useAccount } from 'wagmi'
 import ArtistSection from './components/ArtistSection'
 import BunniesSection from './components/BunniesSection'
 import EventDescriptionSection from './components/EventDescriptionSection'
@@ -32,7 +32,7 @@ const PancakeSquad: React.FC<React.PropsWithChildren> = () => {
   const userStatus = getUserStatus({
     account,
     hasActiveProfile: hasProfile && isInitialized,
-    hasGen0: userInfos?.canClaimForGen0,
+    hasGen0: Boolean(userInfos?.canClaimForGen0),
   })
 
   useEffect(() => {

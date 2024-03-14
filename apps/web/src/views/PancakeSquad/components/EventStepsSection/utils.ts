@@ -6,6 +6,7 @@ type getStepperStatusType = getEventStepStatusType & {
   hasProfileActivated: boolean
   numberTicketsOfUser?: number
   isLastPhase?: boolean
+  saleStatus: SaleStatusEnum | undefined
 }
 
 const eventStatusMapping: Record<EventStatus, StepStatus> = {

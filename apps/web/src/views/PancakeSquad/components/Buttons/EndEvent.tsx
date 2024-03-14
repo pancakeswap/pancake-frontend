@@ -6,21 +6,21 @@ import { SaleStatusEnum, UserStatusEnum } from '../../types'
 
 type EndEventProps = {
   t: ContextApi['t']
-  account: string
+  account?: string
   saleStatus: SaleStatusEnum
   userStatus: UserStatusEnum
-  maxSupply: number
-  totalSupplyMinted: number
-  numberTokensOfUser: number
+  maxSupply?: number
+  totalSupplyMinted?: number
+  numberTokensOfUser?: number
 }
 
 const EndEventButtons: React.FC<React.PropsWithChildren<EndEventProps>> = ({
   t,
   account,
   saleStatus,
-  numberTokensOfUser,
-  maxSupply,
-  totalSupplyMinted,
+  numberTokensOfUser = 0,
+  maxSupply = 0,
+  totalSupplyMinted = 0,
 }) => {
   const hasSquad = saleStatus === SaleStatusEnum.Claim && numberTokensOfUser > 0
   const canViewMarket = maxSupply === totalSupplyMinted

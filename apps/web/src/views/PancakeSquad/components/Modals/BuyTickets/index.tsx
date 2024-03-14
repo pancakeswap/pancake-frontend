@@ -1,4 +1,5 @@
 /* eslint-disable react/no-array-index-key */
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Button,
@@ -8,16 +9,15 @@ import {
   IconButton,
   InfoIcon,
   ModalBody,
-  ModalWrapper,
   ModalHeader,
   ModalProps,
   ModalTitle,
+  ModalWrapper,
   Text,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
-import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { SaleStatusEnum } from 'views/PancakeSquad/types'
 
 interface BuyTicketsModalProps extends ModalProps {
@@ -57,7 +57,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
     : maxPerAddress - (numberTicketsOfUser - numberTicketsUsedForGen0)
   const isCakeBalanceInsufficient = cakeBalance < pricePerTicket
   const maxBuyTickets = Math.min(Number(cakeBalance / pricePerTicket), remainingTickets)
-  const totalCost = pricePerTicket * BigInt(ticketsNumber)
+  const totalCost = pricePerTicket * BigInt(ticketsNumber ?? 0n)
   const maxBuyButtons =
     saleStatus === SaleStatusEnum.Presale
       ? Math.min(numberTicketsForGen0, DEFAULT_MAX_PER_TX)
@@ -157,7 +157,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
           <Box px="16px">
             <Button
               disabled={isCakeBalanceInsufficient}
-              onClick={() => buyTicketCallBack({ ticketsNumber })}
+              onClick={() => ticketsNumber && buyTicketCallBack({ ticketsNumber })}
               width="100%"
             >
               {isCakeBalanceInsufficient ? t('Insufficient Balance') : t('Confirm')}
