@@ -1,4 +1,4 @@
-import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { SmartRouter } from '@pancakeswap/smart-router'
 
 import { v3SubgraphProvider } from './provider'
 import { SUPPORTED_CHAINS } from './constants'

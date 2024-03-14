@@ -3,7 +3,7 @@ import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { GAUGES_ADDRESS, GAUGES_CALC_ADDRESS } from '@pancakeswap/gauges'
 import { ICAKE } from '@pancakeswap/ifos'
 import { CAKE_VAULT } from '@pancakeswap/pools'
-import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
+import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router'
 import { DEPLOYER_ADDRESSES, NFT_POSITION_MANAGER_ADDRESSES } from '@pancakeswap/v3-sdk'
 
 export default {

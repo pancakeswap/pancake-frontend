@@ -1,5 +1,5 @@
 import { TradeType } from '@pancakeswap/sdk'
-import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router'
 import { AutoColumn } from '@pancakeswap/uikit'
 import useLastTruthy from 'hooks/useLast'
 import { memo, useMemo } from 'react'

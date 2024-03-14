@@ -1,5 +1,5 @@
 import { Currency } from '@pancakeswap/sdk'
-import { SmartRouter, V3Pool, V4Router } from '@pancakeswap/smart-router/evm'
+import { SmartRouter, V3Pool, V4Router } from '@pancakeswap/smart-router'
 import { Tick } from '@pancakeswap/v3-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'

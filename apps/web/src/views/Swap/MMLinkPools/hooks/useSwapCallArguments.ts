@@ -1,5 +1,5 @@
 import { SwapParameters, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { toHex } from '@pancakeswap/v3-sdk'
 import { mmLinkedPoolABI } from 'config/abi/mmLinkedPool'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'

@@ -44,8 +44,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "rm -rf dist && tsup",
-    "test": "vitest --run",
-    "prepublishOnly": "pnpm run build"
+    "test": "vitest --run"
   },
   "exports": {
     "./package.json": "./package.json",

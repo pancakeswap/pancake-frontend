@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
-import { SMART_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SMART_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router'
 import { AutoColumn, Box, Button, Dots, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
 import { confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'

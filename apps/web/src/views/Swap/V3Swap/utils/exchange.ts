@@ -9,7 +9,7 @@ import {
   TradeType,
   ZERO,
 } from '@pancakeswap/sdk'
-import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router'
 import { formatPrice, parseNumberToFraction } from '@pancakeswap/utils/formatFractions'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 
