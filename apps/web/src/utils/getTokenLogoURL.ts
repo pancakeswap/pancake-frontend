@@ -3,6 +3,7 @@ import { Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { safeGetAddress } from 'utils'
 import { isAddress } from 'viem'
+import { ASSET_CDN } from 'config/constants/endpoints'
 
 const mapping = {
   [ChainId.BSC]: 'smartchain',
@@ -16,7 +17,7 @@ const mapping = {
 const getTokenLogoURL = memoize(
   (token?: Token) => {
     if (token && mapping[token.chainId] && isAddress(token.address)) {
-      return `https://cdn.jsdelivr.net/gh/tesseract-world/assets@master/${token?.symbol?.toLocaleLowerCase()}.png`
+      return `${ASSET_CDN}/${token?.symbol?.toLocaleLowerCase()}.png`
     }
     return null
   },

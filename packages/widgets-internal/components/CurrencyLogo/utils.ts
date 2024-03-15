@@ -18,7 +18,7 @@ const mapping: { [key: number]: string } = {
 export const getTokenLogoURL = memoize(
   (token?: Token) => {
     if (token && mapping[token.chainId]) {
-      return `https://cdn.jsdelivr.net/gh/tesseract-world/assets@master/${token?.symbol?.toLocaleLowerCase()}.png`;
+      return `https://cdn.jsdelivr.net/gh/tesseract-world/assets@main/${token?.symbol?.toLocaleLowerCase()}.png`;
     }
     return null;
   },
@@ -55,7 +55,7 @@ export const getTokenListBaseURL = (chainId: number) =>
 
 export const getTokenListTokenUrl = (token: Token) =>
   Object.keys(chainName).includes(String(token.chainId))
-    ? `https://cdn.jsdelivr.net/gh/tesseract-world/assets@master/${token?.symbol?.toLocaleLowerCase()}.png`
+    ? `https://cdn.jsdelivr.net/gh/tesseract-world/assets@main/${token?.symbol?.toLocaleLowerCase()}.png`
     : null;
 
 const commonCurrencySymbols = [
@@ -77,7 +77,7 @@ export const getCommonCurrencyUrl = memoize(
 export const getCommonCurrencyUrlBySymbol = memoize(
   (symbol?: string): string | undefined =>
     symbol && commonCurrencySymbols.includes(symbol)
-      ? `https://cdn.jsdelivr.net/gh/tesseract-world/assets@master/${symbol.toLocaleLowerCase()}.png`
+      ? `https://cdn.jsdelivr.net/gh/tesseract-world/assets@main/${symbol.toLocaleLowerCase()}.png`
       : undefined,
   (symbol?: string) => `logoUrls#symbol#${symbol}`
 );

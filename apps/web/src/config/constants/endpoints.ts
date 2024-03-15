@@ -48,7 +48,7 @@ export const INFO_CLIENT_WITH_CHAIN = V2_SUBGRAPHS
 
 export const BLOCKS_CLIENT_WITH_CHAIN = BLOCKS_SUBGRAPHS
 
-export const ASSET_CDN = 'https://cdn.jsdelivr.net/gh/tesseract-world/assets@master'
+export const ASSET_CDN = 'https://cdn.jsdelivr.net/gh/tesseract-world/assets@main'
 
 export const V3_SUBGRAPH_URLS = V3_SUBGRAPHS
 

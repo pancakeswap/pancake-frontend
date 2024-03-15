@@ -12,6 +12,6 @@ export const SEO: DefaultSeoProps = {
   openGraph: {
     title: "Tesseract - Everyone's Favorite DEX",
     description: 'Trade, earn, and own tokens on the all-in-one DEX',
-    images: [{ url: 'https://cdn.jsdelivr.net/gh/tesseract-world/assets@master/tesseract-banner.png' }],
+    images: [{ url: 'https://cdn.jsdelivr.net/gh/tesseract-world/assets@main/tesseract-banner.png' }],
   },
 }
