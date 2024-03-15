@@ -1,5 +1,11 @@
 # @pancakeswap/v3-sdk
 
+## 3.8.0
+
+### Minor Changes
+
+- 67ca3d6: Support getting input quote by exact output
+
 ## 3.7.13
 
 ### Patch Changes
