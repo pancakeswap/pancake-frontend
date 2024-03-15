@@ -1,7 +1,8 @@
 import { Percent } from "@pancakeswap/sdk";
 import { formatFraction } from "@pancakeswap/utils/formatFractions";
 
-export function getAccrued(principal: number, apy: Percent, stakeFor = 1) {
-  const interestEarned = principal * parseFloat(formatFraction(apy.asFraction, 6) || "0") * (stakeFor / 365);
-  return principal + interestEarned;
+export function getAccrued(principal: number, apr: Percent, timesCompounded = 1, stakeFor = 1) {
+  const aprAsDecimal = parseFloat(formatFraction(apr.asFraction, 6) || "0");
+  const daysAsDecimalOfYear = stakeFor / 365;
+  return principal * (1 + aprAsDecimal / timesCompounded) ** (timesCompounded * daysAsDecimalOfYear);
 }
