@@ -261,7 +261,7 @@ export default function SGTDetail() {
   const router = useRouter()
   const { id } = router.query
 
-  const { data: nft } = useQuery({
+  const { data: nft, refetch: refetchNft } = useQuery({
     queryKey: ['nftDetail', id],
     queryFn: () => {
       return fetch(`${DOCKMAN_HOST}/nft/detail?nft_id=${id}`, {
@@ -404,11 +404,13 @@ export default function SGTDetail() {
               <MetaBlock>
                 <Adventure
                   nft={nft}
+                  list={list}
                   refetch={() => {
                     setTimeout(() => {
                       refetchActivities()
                       refetchOffers()
                       refetchList()
+                      refetchNft?.()
                     }, 1500)
                   }}
                 />

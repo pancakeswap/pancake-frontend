@@ -1,17 +1,23 @@
 import { useState } from 'react'
 import { ellipseAddress } from 'utils/address'
 import { useAccount } from 'wagmi'
-import { AceIcon, AutoRow, Button, Flex, Link, useModal } from '@pancakeswap/uikit'
+import { AceIcon, AutoRow, Button, Flex, Link, Loading, useModal, useToast } from '@pancakeswap/uikit'
 import MakeOfferModal from 'components/nfts/MakeOfferModal'
 import ListModal from 'components/nfts/ListModal'
-import { DEFAULT_COLLECTION_AVATAR } from 'config/nfts'
+import { DEFAULT_COLLECTION_AVATAR, DOCKMAN_HOST, SEAPORT_ADDRESS } from 'config/nfts'
 import { displayBalance } from 'utils/display'
 import ConfirmRecycleModal from 'components/nfts/ConfirmRecycleModal'
 import TransferModal from 'components/nfts/TransferModal'
-import Modal from '../../Modal2'
+import { Seaport } from '@opensea/seaport-js'
+import { sleep } from 'utils/sleep'
+import { useEthersSigner } from 'utils/ethers'
 import { Wrapper } from './adventure.style'
+import Modal from '../../Modal2'
 
-export default function Adventure({ nft, refetch }: { nft: any; refetch: any }) {
+export default function Adventure({ nft, refetch, list }: { nft: any; refetch: any; list: any }) {
+  const [loading, setLoading] = useState(false)
+  const signer = useEthersSigner()
+  const { toastSuccess, toastError } = useToast()
   const [showMakeOfferModal] = useModal(
     <MakeOfferModal collectionAddress={nft?.collection_contract_address} tokenId={nft?.token_id} refetch={refetch} />,
   )
@@ -25,6 +31,13 @@ export default function Adventure({ nft, refetch }: { nft: any; refetch: any }) 
   const [showTransferModal] = useModal(
     <TransferModal collectionAddress={nft?.collection_contract_address} tokenId={nft?.token_id} refetch={refetch} />,
   )
+
+  const topList =
+    list?.length > 0
+      ? list?.reduce(function (prev, curr) {
+          return BigInt(prev.price) < BigInt(curr.price) ? prev : curr
+        }, {})
+      : undefined
 
   const { address } = useAccount()
   const [showListConfirmModal, setShowListConfirmModal] = useState(false)
@@ -67,6 +80,40 @@ export default function Adventure({ nft, refetch }: { nft: any; refetch: any }) 
       ),
     },
   ]
+
+  const onAccept = async () => {
+    if (!signer) return
+    setLoading(true)
+    try {
+      const seaport = new Seaport(signer, {
+        overrides: { contractAddress: SEAPORT_ADDRESS },
+      })
+
+      const tx = await seaport.fulfillOrder({ order: topList.order })
+      const res = await tx.executeAllActions()
+
+      for (let i = 0; i < 20; i++) {
+        // eslint-disable-next-line no-await-in-loop
+        const rr = await fetch(`${DOCKMAN_HOST}/orders/status?order_hash=${topList?.order_hash}`).then((r) => r.json())
+        // eslint-disable-next-line no-await-in-loop
+        await sleep(2000)
+        if (rr?.order_status !== 'Normal') {
+          break
+        }
+      }
+      toastSuccess('Purchase successfully')
+
+      refetch?.()
+    } catch (e: any) {
+      const msg = e.toString()
+      if (msg.includes('have the balances')) {
+        toastError('The fulfiller does not have the balances needed to fulfill.')
+      }
+      console.error(e.toString())
+    }
+
+    setLoading(false)
+  }
 
   return (
     <Wrapper>
@@ -137,9 +184,17 @@ export default function Adventure({ nft, refetch }: { nft: any; refetch: any }) 
               </Flex>
             )}
             {!isOwner && (
-              <Button onClick={showMakeOfferModal} width="130px" scale="sm">
-                Make offer
-              </Button>
+              <Flex style={{ gap: '10px', marginLeft: 'auto' }}>
+                <Button onClick={showMakeOfferModal} width="130px" scale="sm">
+                  Make offer
+                </Button>
+                {!!topList && (
+                  <Button onClick={onAccept} width="130px" scale="sm" isLoading={loading}>
+                    {loading && <Loading />}
+                    Buy now
+                  </Button>
+                )}
+              </Flex>
             )}
           </AutoRow>
         </div>

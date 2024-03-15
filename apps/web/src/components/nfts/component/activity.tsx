@@ -96,7 +96,7 @@ export default function Activity({ activities }: { activities: any[] }) {
                       </Link>
                     </Box>
 
-                    <Box width="120px">{dayjs(activity?.time).fromNow()}</Box>
+                    <Box width="180px">{dayjs(activity?.time).fromNow()}</Box>
                   </ItemRow>
                 )
               })}

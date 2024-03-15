@@ -101,6 +101,7 @@ export default function SGTList() {
     },
     enabled: !!id,
   })
+  console.log(collection)
 
   const _columns = [
     {
@@ -165,7 +166,6 @@ export default function SGTList() {
 
   const [columns, setColumns] = useState(_columns)
   const raritySort = columns?.[1]?.sortType === 'asc' ? 'rarity_increase' : 'rarity_decrease'
-  console.log(raritySort)
 
   const { data, fetchNextPage } = useInfiniteQuery({
     queryKey: [`nfts_${id}_${raritySort}`],
@@ -237,7 +237,7 @@ export default function SGTList() {
                       Floor Price
                     </Text>
                     <AutoRow gap="4px">
-                      <Text>0.00</Text>
+                      <Text>{displayBalance(collection?.collection_floor_price)}</Text>
                       <AceIcon />
                     </AutoRow>
                   </Box>
@@ -246,7 +246,7 @@ export default function SGTList() {
                       Top BID
                     </Text>
                     <AutoRow gap="4px">
-                      <Text>0.00</Text>
+                      <Text>{displayBalance(collection?.collection_top_bid)}</Text>
                       <AceIcon />
                     </AutoRow>
                   </Box>
@@ -267,7 +267,7 @@ export default function SGTList() {
                       1D Volume
                     </Text>
                     <AutoRow gap="4px">
-                      <Text>0.00</Text>
+                      <Text>{displayBalance(collection?.one_day_volume)}</Text>
                       <AceIcon />
                     </AutoRow>
                   </Box>
@@ -276,7 +276,7 @@ export default function SGTList() {
                       3D Volume
                     </Text>
                     <AutoRow gap="4px">
-                      <Text>0.00</Text>
+                      <Text>{displayBalance(collection?.three_day_volume)}</Text>
                       <AceIcon />
                     </AutoRow>
                   </Box>
