@@ -138,7 +138,7 @@
     "lightweight-charts": "^4.0.1",
     "lodash": "^4.17.20",
     "react-popper": "^2.3.0",
-    "sonner": "^1.2.4",
+    "sonner": "^1.4.3",
     "styled-system": "^5.1.5",
     "tslib": "^2.2.0",
     "wagmi": "1.4.13"

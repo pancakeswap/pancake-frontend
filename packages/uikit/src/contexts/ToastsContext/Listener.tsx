@@ -5,6 +5,7 @@ const ToastListener = () => {
   const { isDark } = useTheme();
   return (
     <Toaster
+      pauseWhenPageIsHidden
       duration={6000}
       position="top-right"
       gap={24}
