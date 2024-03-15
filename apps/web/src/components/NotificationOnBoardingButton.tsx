@@ -4,6 +4,7 @@ import {
   usePrepareRegistration,
   useRegister,
   useSubscribe,
+  useSubscription,
   useWeb3InboxAccount,
   useWeb3InboxClient,
 } from '@web3inbox/react'
@@ -45,8 +46,9 @@ function NotificationsOnboardingButton({ ...props }: React.CSSProperties) {
 
   const { data: client } = useWeb3InboxClient()
   const { isRegistered } = useWeb3InboxAccount(`eip155:1:${address}`)
-  const { data: subscription, subscribe, isLoading: isSubscribing } = useSubscribe()
+  const { subscribe, isLoading: isSubscribing } = useSubscribe()
   const { subscribeToWebPush } = useSubscribeToWebPushNotifications()
+  const { data: subscription } = useSubscription()
   const { prepareRegistration } = usePrepareRegistration()
   const { register } = useRegister()
 
