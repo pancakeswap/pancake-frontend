@@ -1,5 +1,5 @@
-import { invariant } from '@epic-web/invariant'
 import { BigintIsh, ONE, ZERO } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@pancakeswap/utils/invariant'
 
 interface Params {
   amplifier: BigintIsh

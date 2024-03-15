@@ -1,6 +1,6 @@
 /* eslint-disable no-return-assign */
-import { invariant } from '@epic-web/invariant'
 import { Price } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { Currency } from './currency'
 import { Pair } from './pair'
 

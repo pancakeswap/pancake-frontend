@@ -1,6 +1,6 @@
-import { invariant } from '@epic-web/invariant'
 import { SwapParameters, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { toHex } from '@pancakeswap/v3-sdk'
 import { mmLinkedPoolABI } from 'config/abi/mmLinkedPool'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'

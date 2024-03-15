@@ -1,4 +1,4 @@
-import { invariant } from '@epic-web/invariant'
+import { invariant } from '@pancakeswap/utils/invariant'
 import warning from 'tiny-warning'
 import { Address, getAddress } from 'viem'
 

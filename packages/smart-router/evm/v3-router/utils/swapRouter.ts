@@ -1,6 +1,6 @@
-import { invariant } from '@epic-web/invariant'
 import { ChainId } from '@pancakeswap/chains'
 import { Currency, CurrencyAmount, Percent, TradeType, WNATIVE, validateAndParseAddress } from '@pancakeswap/sdk'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { FeeOptions, MethodParameters, Payments, PermitOptions, Position, SelfPermit, toHex } from '@pancakeswap/v3-sdk'
 import { Address, Hex, encodeFunctionData } from 'viem'
 

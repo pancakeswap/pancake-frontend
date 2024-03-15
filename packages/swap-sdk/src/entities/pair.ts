@@ -1,4 +1,3 @@
-import { invariant } from '@epic-web/invariant'
 import { ChainId } from '@pancakeswap/chains'
 import {
   BigintIsh,
@@ -14,6 +13,7 @@ import {
   _9975,
   sqrt,
 } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@pancakeswap/utils/invariant'
 import {
   Address,
   ByteArray,

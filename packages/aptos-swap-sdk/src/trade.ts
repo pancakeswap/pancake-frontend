@@ -1,7 +1,6 @@
 /* eslint-disable no-continue */
 /* eslint-disable no-lonely-if */
 /* eslint-disable no-else-return */
-import { invariant } from '@epic-web/invariant'
 import {
   CurrencyAmount,
   Fraction,
@@ -15,6 +14,7 @@ import {
   computePriceImpact,
   sortedInsert,
 } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@pancakeswap/utils/invariant'
 
 import { ONE_HUNDRED_PERCENT, ZERO_PERCENT } from './constants'
 import { Currency } from './currency'

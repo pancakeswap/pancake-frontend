@@ -1,4 +1,4 @@
-import { invariant } from '@epic-web/invariant'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { TickMath } from './tickMath'
 
 /**

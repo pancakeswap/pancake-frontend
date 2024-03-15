@@ -1,5 +1,5 @@
-import { invariant } from '@epic-web/invariant'
 import { Currency, CurrencyAmount, Native, Price } from '@pancakeswap/sdk'
+import { invariant } from '@pancakeswap/utils/invariant'
 
 import { getTokenPrice } from '../../v3-router/utils'
 import { getReserve } from '../pool'

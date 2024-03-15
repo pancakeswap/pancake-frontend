@@ -1,6 +1,6 @@
-import { invariant } from '@epic-web/invariant'
 import { ChainId } from '@pancakeswap/chains'
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { Address, PublicClient, createPublicClient, getContract, http } from 'viem'
 import { bsc, bscTestnet, goerli, mainnet } from 'viem/chains'
 import { erc20ABI } from './abis/ERC20'

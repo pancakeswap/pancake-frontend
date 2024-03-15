@@ -1,5 +1,5 @@
-import { invariant } from '@epic-web/invariant'
 import { Currency, CurrencyAmount, ERC20Token, Pair, Percent, Price, Trade, TradeType } from '@pancakeswap/sdk'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { Address } from 'viem'
 
 import { RouteType, RouteWithStableSwap, StableSwapFeePercent, StableSwapFeeRaw, StableSwapPair } from './types'

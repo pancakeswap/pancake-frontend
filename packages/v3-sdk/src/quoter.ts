@@ -1,11 +1,11 @@
-import { invariant } from '@epic-web/invariant'
 import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/swap-sdk-core'
-import { Address, encodeFunctionData, Hex } from 'viem'
+import { invariant } from '@pancakeswap/utils/invariant'
+import { Address, Hex, encodeFunctionData } from 'viem'
 import { quoterABI } from './abi/Quoter'
 import { quoterV2ABI } from './abi/QuoterV2'
 import { FeeAmount } from './constants'
 import { Route } from './entities'
-import { encodeRouteToPath, MethodParameters, toHex } from './utils'
+import { MethodParameters, encodeRouteToPath, toHex } from './utils'
 
 /**
  * Optional arguments to send to the quoter.

@@ -1,4 +1,4 @@
-import { invariant } from '@epic-web/invariant'
+import { invariant } from '@pancakeswap/utils/invariant'
 import type { Address } from 'viem'
 import { ROUTER_AS_RECIPIENT } from '../constants'
 import { Permit2Signature } from '../entities/types'

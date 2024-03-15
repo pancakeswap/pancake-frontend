@@ -1,5 +1,5 @@
-import { invariant } from '@epic-web/invariant'
 import { Currency, NativeCurrency, Token } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { NATIVE, WNATIVE } from '../constants'
 
 /**

@@ -1,5 +1,5 @@
-import { invariant } from '@epic-web/invariant'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { ONE, Q96, ZERO } from '../internalConstants'
 import { FullMath } from './fullMath'
 

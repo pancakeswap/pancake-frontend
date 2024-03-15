@@ -1,4 +1,4 @@
-import { invariant } from '@epic-web/invariant'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { ONE, THREE, TWO, VMType, VM_TYPE_MAXIMA, ZERO } from './constants'
 import { Currency } from './currency'
 import { CurrencyAmount, Percent, Price } from './fractions'

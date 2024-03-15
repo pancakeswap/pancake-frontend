@@ -1,4 +1,3 @@
-import { invariant } from '@epic-web/invariant'
 import { Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 import {
   BaseRoute,
@@ -8,6 +7,7 @@ import {
   StablePool,
   getPoolAddress,
 } from '@pancakeswap/smart-router'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { Address } from 'viem'
 
 import { CONTRACT_BALANCE, ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../../constants'

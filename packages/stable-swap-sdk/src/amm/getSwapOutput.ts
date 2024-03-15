@@ -1,5 +1,5 @@
-import { invariant } from '@epic-web/invariant'
 import { BigintIsh, Currency, CurrencyAmount, Percent, ZERO } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@pancakeswap/utils/invariant'
 
 import { ONE_HUNDRED_PERCENT } from '../constants'
 import { getY } from './amm'

@@ -1,7 +1,7 @@
 import { BigintIsh, Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
-import { encodeFunctionData, Hex } from 'viem'
+import { Hex, encodeFunctionData } from 'viem'
 
-import { invariant } from '@epic-web/invariant'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { swapRouterABI } from './abi/SwapRouter'
 import { ADDRESS_ZERO } from './constants'
 import { Trade } from './entities/trade'

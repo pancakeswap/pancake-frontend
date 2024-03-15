@@ -1,5 +1,5 @@
-import { defineConfig } from 'tsup'
 import { exec } from 'child_process'
+import { defineConfig } from 'tsup'
 
 export default defineConfig((options) => ({
   entry: {
@@ -8,6 +8,7 @@ export default defineConfig((options) => ({
   format: ['esm', 'cjs'],
   dts: false,
   clean: !options.watch,
+  noExternal: ['@pancakeswap/utils'],
   treeshake: true,
   splitting: true,
   onSuccess: async () => {

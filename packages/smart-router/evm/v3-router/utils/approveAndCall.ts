@@ -1,5 +1,5 @@
-import { invariant } from '@epic-web/invariant'
 import { Currency, Percent, Token } from '@pancakeswap/sdk'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { IncreaseSpecificOptions, MintSpecificOptions, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { Address, Hex, encodeFunctionData } from 'viem'
 

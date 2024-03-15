@@ -29,7 +29,6 @@
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "big.js": "^5.2.2",
     "decimal.js-light": "^2.5.0",
-    "@epic-web/invariant": "^1.0.0",
     "tiny-warning": "^1.0.3",
     "toformat": "^2.0.0"
   },

@@ -1,6 +1,6 @@
-import { invariant } from '@epic-web/invariant'
 import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { MethodParameters } from '@pancakeswap/v3-sdk'
 import { encodeFunctionData, toHex } from 'viem'
 import { UniversalRouterABI } from './abis/UniversalRouter'

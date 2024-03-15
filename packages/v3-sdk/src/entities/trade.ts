@@ -11,7 +11,7 @@ import {
   sortedInsert,
 } from '@pancakeswap/sdk'
 
-import { invariant } from '@epic-web/invariant'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { ONE, ZERO } from '../internalConstants'
 import { Pool } from './pool'
 import { Route } from './route'

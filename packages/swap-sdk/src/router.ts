@@ -1,5 +1,5 @@
-import { invariant } from '@epic-web/invariant'
 import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { Address, Hex } from 'viem'
 import { Trade } from './entities'
 import { validateAndParseAddress } from './utils'

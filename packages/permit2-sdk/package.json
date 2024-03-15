@@ -35,7 +35,6 @@
   "dependencies": {
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
-    "@epic-web/invariant": "^1.0.0",
     "viem": "1.19.11"
   },
   "devDependencies": {

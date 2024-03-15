@@ -1,5 +1,5 @@
-import { invariant } from '@epic-web/invariant'
 import { BaseCurrency, Currency, Token } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { Address } from 'viem'
 import { validateAndParseAddress } from '../utils'
 

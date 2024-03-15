@@ -1,4 +1,3 @@
-import { invariant } from '@epic-web/invariant'
 import {
   Currency,
   CurrencyAmount,
@@ -10,6 +9,7 @@ import {
   ZERO,
   computePriceImpact,
 } from '@pancakeswap/sdk'
+import { invariant } from '@pancakeswap/utils/invariant'
 
 import { TradeWithStableSwap } from './types'
 import { getMidPrice } from './utils/route'

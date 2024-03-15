@@ -1,6 +1,6 @@
-import { invariant } from '@epic-web/invariant'
 import { Currency, CurrencyAmount, Fraction, TradeType } from '@pancakeswap/sdk'
 import { formatFraction } from '@pancakeswap/utils/formatFractions'
+import { invariant } from '@pancakeswap/utils/invariant'
 import memoize from 'lodash/memoize.js'
 import { Address } from 'viem'
 

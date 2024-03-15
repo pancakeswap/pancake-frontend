@@ -1,6 +1,6 @@
-import { invariant } from '@epic-web/invariant'
 import { ChainId } from '@pancakeswap/chains'
 import { CurrencyAmount, Rounding, Token, TradeType } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { describe, expect, it } from 'vitest'
 import { WNATIVE as _WETH } from '../src/constants'
 import { Pair, Route, Trade } from '../src/entities'

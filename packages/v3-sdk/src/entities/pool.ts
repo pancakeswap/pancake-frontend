@@ -1,7 +1,7 @@
 /* eslint-disable operator-assignment */
-import { invariant } from '@epic-web/invariant'
 import { ChainId } from '@pancakeswap/chains'
 import { BigintIsh, CurrencyAmount, Price, Token } from '@pancakeswap/sdk'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { Address, Hash } from 'viem'
 import { DEPLOYER_ADDRESSES, FeeAmount, TICK_SPACINGS } from '../constants'
 import { NEGATIVE_ONE, ONE, Q192, ZERO } from '../internalConstants'

@@ -1,6 +1,6 @@
-import { invariant } from '@epic-web/invariant'
 import { Currency, CurrencyAmount, Fraction, MaxUint256, Percent, ZERO } from '@pancakeswap/swap-sdk-core'
 import { parseNumberToFraction } from '@pancakeswap/utils/formatFractions'
+import { invariant } from '@pancakeswap/utils/invariant'
 
 import { Tick } from '../entities'
 import { MAX_FEE, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from '../internalConstants'

@@ -1,5 +1,5 @@
-import { invariant } from '@epic-web/invariant'
 import { BigintIsh, CurrencyAmount, ONE, Token, validateAndParseAddress, ZERO } from '@pancakeswap/sdk'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { encodeFunctionData, Hex } from 'viem'
 import { masterChefV3ABI } from './abi/MasterChefV3'
 import { ADDRESS_ZERO } from './constants'

@@ -1,4 +1,4 @@
-import { invariant } from '@epic-web/invariant'
+import { invariant } from '@pancakeswap/utils/invariant'
 import _Big from 'big.js'
 // @ts-ignore
 import toFormat from 'toformat'

@@ -664,9 +664,6 @@ importers:
       '@datadog/browser-rum':
         specifier: ^5.8.0
         version: 5.8.0(@datadog/browser-logs@5.8.0)
-      '@epic-web/invariant':
-        specifier: ^1.0.0
-        version: 1.0.0
       '@gelatonetwork/limit-orders-lib':
         specifier: ^4.1.0
         version: 4.5.0(encoding@0.1.13)
@@ -1085,9 +1082,6 @@ importers:
 
   packages/aptos-swap-sdk:
     dependencies:
-      '@epic-web/invariant':
-        specifier: ^1.0.0
-        version: 1.0.0
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
@@ -1428,9 +1422,6 @@ importers:
 
   packages/permit2-sdk:
     dependencies:
-      '@epic-web/invariant':
-        specifier: ^1.0.0
-        version: 1.0.0
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
@@ -1552,9 +1543,6 @@ importers:
 
   packages/smart-router:
     dependencies:
-      '@epic-web/invariant':
-        specifier: ^1.0.0
-        version: 1.0.0
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
@@ -1634,9 +1622,6 @@ importers:
 
   packages/stable-swap-sdk:
     dependencies:
-      '@epic-web/invariant':
-        specifier: ^1.0.0
-        version: 1.0.0
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
@@ -1662,9 +1647,6 @@ importers:
 
   packages/swap-sdk:
     dependencies:
-      '@epic-web/invariant':
-        specifier: ^1.0.0
-        version: 1.0.0
       '@pancakeswap/chains':
         specifier: workspace:^
         version: link:../chains
@@ -1696,9 +1678,6 @@ importers:
 
   packages/swap-sdk-core:
     dependencies:
-      '@epic-web/invariant':
-        specifier: ^1.0.0
-        version: 1.0.0
       big.js:
         specifier: ^5.2.2
         version: 5.2.2
@@ -2041,9 +2020,6 @@ importers:
 
   packages/universal-router-sdk:
     dependencies:
-      '@epic-web/invariant':
-        specifier: ^1.0.0
-        version: 1.0.0
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
@@ -2124,9 +2100,6 @@ importers:
 
   packages/v3-sdk:
     dependencies:
-      '@epic-web/invariant':
-        specifier: ^1.0.0
-        version: 1.0.0
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
@@ -4613,10 +4586,6 @@ packages:
 
   /@ensdomains/eth-ens-namehash@2.0.15:
     resolution: {integrity: sha512-JRDFP6+Hczb1E0/HhIg0PONgBYasfGfDheujmfxaZaAv/NAH4jE6Kf48WbqfRZdxt4IZI3jl3Ri7sZ1nP09lgw==}
-    dev: false
-
-  /@epic-web/invariant@1.0.0:
-    resolution: {integrity: sha512-lrTPqgvfFQtR/eY/qkIzp98OGdNJu0m5ji3q/nJI8v3SXkRKEnWiOxMmbvcSoAIzv/cGiuvRy57k4suKQSAdwA==}
     dev: false
 
   /@esbuild-plugins/node-globals-polyfill@0.1.1(esbuild@0.16.3):

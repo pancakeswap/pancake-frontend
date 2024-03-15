@@ -1,5 +1,5 @@
-import { invariant } from '@epic-web/invariant'
 import { BigintIsh } from '@pancakeswap/sdk'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { Address, Hex, hashTypedData } from 'viem'
 import { MaxSigDeadline, MaxSignatureTransferAmount, MaxUnorderedNonce } from './constants'
 import { permit2Domain } from './domain'

@@ -1,5 +1,5 @@
-import { invariant } from '@epic-web/invariant'
 import { BigintIsh, CurrencyAmount, MaxUint256, Percent, Price, Token } from '@pancakeswap/sdk'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { ZERO } from '../internalConstants'
 import { encodeSqrtRatioX96 } from '../utils/encodeSqrtRatioX96'
 import { maxLiquidityForAmounts } from '../utils/maxLiquidityForAmounts'

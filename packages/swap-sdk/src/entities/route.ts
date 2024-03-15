@@ -1,5 +1,5 @@
-import { invariant } from '@epic-web/invariant'
 import { Currency, Price, Token } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@pancakeswap/utils/invariant'
 
 import { Pair } from './pair'
 

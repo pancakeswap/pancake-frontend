@@ -1,4 +1,4 @@
-import { invariant } from '@epic-web/invariant'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { Tick } from '../entities/tick'
 import { ZERO } from '../internalConstants'
 import { isSorted } from './isSorted'

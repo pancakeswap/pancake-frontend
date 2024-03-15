@@ -1,4 +1,3 @@
-import { invariant } from '@epic-web/invariant'
 import {
   BigintIsh,
   CurrencyAmount,
@@ -13,6 +12,7 @@ import {
   _9975,
   sqrt,
 } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@pancakeswap/utils/invariant'
 import { HexString, TxnBuilderTypes, TypeTagParser } from 'aptos'
 
 import { Coin } from './coin'
