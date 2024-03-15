@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 import { styled } from 'styled-components'
 import { DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
 import List from 'components/nfts/component/list'
-import { AceIcon, AutoRow, Box, Card, Column, Container, Flex, Loading, Text } from '@pancakeswap/uikit'
+import { AceIcon, AutoRow, Box, Card, Column, Container, Flex, Grid, Loading, Text } from '@pancakeswap/uikit'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { getBlockExploreLink } from 'utils'
 import { ChainId } from '@pancakeswap/chains'
@@ -94,7 +94,7 @@ export const Wrapper = styled.div`
     gap: 15px;
   }
   .sgt-detail__left-trait-item {
-    min-width: 166px;
+    width: 166px;
     height: 104px;
     display: flex;
     padding-top: 12px;
@@ -328,10 +328,18 @@ export default function SGTDetail() {
                 </Text>
                 <div className="sgt-detail__left-trait-title-value">{nft?.trails?.length}</div>
               </div>
-              <div className="sgt-detail__left-trait-list">
+              <Flex>
                 {nft?.traits?.map((trait) => {
                   return (
-                    <div key={trait?.trait_type} className="sgt-detail__left-trait-item">
+                    <Box
+                      key={trait?.trait_type}
+                      width="32%"
+                      background="#232323"
+                      borderRadius="6px"
+                      p={2}
+                      display="flex"
+                      style={{ flexDirection: 'column', alignItems: 'center' }}
+                    >
                       <div className="sgt-detail__left-trait-item-title">{trait?.trait_type}</div>
                       <div className="sgt-detail__left-trait-item-short-box">
                         {trait?.value}
@@ -339,10 +347,10 @@ export default function SGTDetail() {
                           {Math.floor((100 * trait?.numerator) / trait?.denominator)}%
                         </Tag>
                       </div>
-                    </div>
+                    </Box>
                   )
                 })}
-              </div>
+              </Flex>
             </div>
             <div className="sgt-detail__left-detail-box">
               <div className="sgt-detail__left-detail-title-box">

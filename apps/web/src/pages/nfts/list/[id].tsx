@@ -333,7 +333,7 @@ export default function SGTList() {
                             alt="avatar"
                           />
                           <Text fontSize="13px" ml="10px">
-                            {nft?.nft_name}
+                            {nft?.nft_name ? nft?.nft_name : `#${nft?.token_id}`}
                           </Text>
                         </Flex>
                         <Box width="120px" style={{ textAlign: 'center', flexShrink: 0 }}>

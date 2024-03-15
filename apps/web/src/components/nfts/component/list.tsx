@@ -16,15 +16,21 @@ export default function List({ list, refetch }: { list: any; refetch: any }) {
 
   const onCancel = async (orderHash: string) => {
     if (!signer) return
-    const seaport = new Seaport(signer, {
-      overrides: { contractAddress: SEAPORT_ADDRESS },
-    })
+    try {
+      setLoading(true)
+      const seaport = new Seaport(signer, {
+        overrides: { contractAddress: SEAPORT_ADDRESS },
+      })
 
-    const order = list?.find((l) => l.order_hash === orderHash)
+      const order = list?.find((l) => l.order_hash === orderHash)
 
-    const tx = await seaport.cancelOrders([order.order.parameters])
-    const res = await tx.transact()
-    toastSuccess('Cancel order successfully')
+      const tx = await seaport.cancelOrders([order.order.parameters])
+      const res = await tx.transact()
+      toastSuccess('Cancel order successfully')
+    } catch (e) {
+      console.error(e)
+    }
+    setLoading(false)
   }
   const onAccept = async (orderHash: string) => {
     if (!signer) return
