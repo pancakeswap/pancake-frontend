@@ -1,5 +1,11 @@
 # @pancakeswap/tokens
 
+## 0.6.11
+
+### Patch Changes
+
+- 30ef48c: Add new tokens
+
 ## 0.6.10
 
 ### Patch Changes
