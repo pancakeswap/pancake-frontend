@@ -7,5 +7,5 @@ export function getAccrued(principal: number, apr: Percent, timesCompounded = 0,
   if (timesCompounded !== 0) {
     return principal * (1 + aprAsDecimal / timesCompounded) ** (timesCompounded * daysAsDecimalOfYear);
   }
-  return principal * aprAsDecimal * daysAsDecimalOfYear; // simple calc when not compounding
+  return principal + principal * aprAsDecimal * daysAsDecimalOfYear; // simple calc when not compounding
 }
