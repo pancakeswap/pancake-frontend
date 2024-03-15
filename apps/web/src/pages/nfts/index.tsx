@@ -34,24 +34,31 @@ const CollectionSwiper = styled.div`
     display: none;
   }
   overflow-x: scroll;
-  height: 180px;
+  height: 160px;
   display: flex;
   gap: 25px;
 `
 
 const CollectionSwiperItem = styled(Link)`
-  width: 340px;
+  width: 300px;
   flex-grow: 0;
   flex-shrink: 0;
   border-radius: 8px;
   border: 1px solid #3a3a3a;
-  padding: 16px;
   display: flex;
   align-items: end;
   cursor: pointer;
   &:hover {
     border: 1px solid #666;
   }
+`
+
+const CollectionSwiperItemMeta = styled.div`
+  width: 100%;
+  padding: 12px;
+  border-radius: 0 0 6px 6px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
 `
 
 export default function Index() {
@@ -110,9 +117,38 @@ export default function Index() {
               }}
               key={c?.id}
             >
-              {c?.collection_name}
+              <CollectionSwiperItemMeta>{c?.collection_name}</CollectionSwiperItemMeta>
             </CollectionSwiperItem>
           ))}
+          <CollectionSwiperItem
+            href="/nfts"
+            style={{
+              backgroundImage: `url(/images/c2.png)`,
+              backgroundSize: '100% 100%',
+            }}
+          >
+            <CollectionSwiperItemMeta>Tesseract Genesis NFT</CollectionSwiperItemMeta>
+          </CollectionSwiperItem>
+
+          <CollectionSwiperItem
+            href="/nfts"
+            style={{
+              backgroundImage: `url(/images/c3.png)`,
+              backgroundSize: '100% 100%',
+            }}
+          >
+            <CollectionSwiperItemMeta>Upcoming NFTs</CollectionSwiperItemMeta>
+          </CollectionSwiperItem>
+
+          <CollectionSwiperItem
+            href="/nfts"
+            style={{
+              backgroundImage: `url(/images/c4.png)`,
+              backgroundSize: '100% 100%',
+            }}
+          >
+            <CollectionSwiperItemMeta>Upcoming NFTs</CollectionSwiperItemMeta>
+          </CollectionSwiperItem>
         </CollectionSwiper>
       </Container>
     </Box>
