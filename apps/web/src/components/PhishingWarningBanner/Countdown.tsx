@@ -28,7 +28,7 @@ const CountdownContainer = styled.div<{ $percentage: number }>`
     }
     > circle:nth-child(2) {
       stroke: ${({ theme }) => theme.colors.primaryBright};
-      stroke-dashoffset: ${({ $percentage }) => `${105 * $percentage}px`};
+      stroke-dashoffset: ${({ $percentage }) => `${120 * $percentage}px`};
     }
   }
 

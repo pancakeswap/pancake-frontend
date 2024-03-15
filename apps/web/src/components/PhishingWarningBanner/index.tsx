@@ -1,12 +1,11 @@
 import { CloseIcon, Flex, IconButton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 import { Autoplay, EffectFade } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import type { Swiper as SwiperClass } from 'swiper/types'
 import { Countdown } from './Countdown'
 import { Step1 } from './Step1'
 import { Step2 } from './Step2'
@@ -26,7 +25,6 @@ const Container = styled(Flex)`
 const InnerContainer = styled(Flex)`
   width: 100%;
   height: 100%;
-  justify-content: center;
   align-items: center;
 `
 
@@ -49,7 +47,7 @@ const SpeechBubble = styled(Flex)`
     content: '';
     position: absolute;
     top: 50%;
-    left: -8px;
+    left: -7px;
     transform: translateY(-50%);
     width: 0;
     height: 0;
@@ -68,8 +66,7 @@ const DELAY_TIME = 2000
 
 const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const [, hideBanner] = usePhishingBanner()
-  const { isMobile, isMd } = useMatchBreakpoints()
-  const [step, setStep] = useState(0)
+  const { isDesktop, isLg } = useMatchBreakpoints()
   const [percentage, setPerCentage] = useState(0)
 
   const configList = useMemo(() => {
@@ -80,65 +77,43 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
     setPerCentage(1 - progress)
   }
 
-  const handleRealIndexChange = useCallback(
-    (swiperInstance: SwiperClass) => {
-      if (step !== swiperInstance.realIndex) {
-        setTimeout(() => setStep(swiperInstance.realIndex), DELAY_TIME - 1000)
-      }
-    },
-    [step],
-  )
-
-  const SwiperComponent = (
-    <Swiper
-      loop
-      observer
-      speed={5000}
-      effect="fade"
-      slidesPerView={1}
-      modules={[Autoplay, EffectFade]}
-      fadeEffect={{ crossFade: true }}
-      autoplay={{ delay: DELAY_TIME, pauseOnMouseEnter: true, disableOnInteraction: false }}
-      onAutoplayTimeLeft={onAutoplayTimeLeft}
-      onRealIndexChange={handleRealIndexChange}
-    >
-      {configList.map((config, index) => {
-        const childKey = `Banner${index}`
-        return <SwiperSlide key={childKey}>{config}</SwiperSlide>
-      })}
-    </Swiper>
-  )
-
   return (
     <Container className="warning-banner">
-      {isMobile || isMd ? (
-        <>
-          <Flex alignItems="center">
-            {SwiperComponent}
-            <Countdown percentage={percentage} />
-          </Flex>
-          <IconButton onClick={hideBanner} variant="text">
-            <CloseIcon color="#FFFFFF" />
-          </IconButton>
-        </>
-      ) : (
-        <>
-          <InnerContainer>
-            <img
-              width="92px"
-              alt="phishing-warning"
-              src={`/images/decorations/phishing-warning-bunny-${step + 1}.png`}
-            />
-            <SpeechBubble>
-              {SwiperComponent}
-              <Countdown percentage={percentage} />
-            </SpeechBubble>
-          </InnerContainer>
-          <IconButton onClick={hideBanner} variant="text">
-            <CloseIcon color="#FFFFFF" />
-          </IconButton>
-        </>
-      )}
+      <Swiper
+        loop
+        observer
+        speed={5000}
+        effect="fade"
+        slidesPerView={1}
+        modules={[Autoplay, EffectFade]}
+        fadeEffect={{ crossFade: true }}
+        autoplay={{ delay: DELAY_TIME, pauseOnMouseEnter: true, disableOnInteraction: false }}
+        onAutoplayTimeLeft={onAutoplayTimeLeft}
+      >
+        {configList.map((config, index) => {
+          const childKey = `Banner${index}`
+          return (
+            <SwiperSlide key={childKey}>
+              <Flex justifyContent="center" alignItems="center">
+                {(isDesktop || isLg) && (
+                  <img
+                    width="92px"
+                    alt="phishing-warning"
+                    src={`/images/decorations/phishing-warning-bunny-${index + 1}.png`}
+                  />
+                )}
+                <SpeechBubble>
+                  <InnerContainer>{config}</InnerContainer>
+                  <Countdown percentage={percentage} />
+                </SpeechBubble>
+              </Flex>
+            </SwiperSlide>
+          )
+        })}
+      </Swiper>
+      <IconButton onClick={hideBanner} variant="text">
+        <CloseIcon color="#FFFFFF" />
+      </IconButton>
     </Container>
   )
 }
