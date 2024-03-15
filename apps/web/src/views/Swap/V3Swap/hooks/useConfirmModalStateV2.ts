@@ -12,9 +12,10 @@ import { usePermit2 } from 'hooks/usePermit2'
 import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { retry } from 'state/multicall/retry'
 import { publicDelicateClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
-import { Address, Hex } from 'viem'
+import { Address, Hex, TransactionReceipt } from 'viem'
 import { erc20ABI } from 'wagmi'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
@@ -106,6 +107,23 @@ const useConfirmActions = (
     setTxHash(undefined)
     setPermit2Signature(undefined)
   }, [])
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const retryWaitForTransaction = useCallback(
+    async ({ hash }: { hash: Hex | undefined }) => {
+      if (hash && chainId) {
+        const getReceipt = () => publicDelicateClient({ chainId }).waitForTransactionReceipt({ hash })
+        const { promise } = retry<TransactionReceipt>(getReceipt, {
+          n: 3,
+          minWait: 2000,
+          maxWait: 5000,
+        })
+        return promise
+      }
+      return undefined
+    },
+    [chainId],
+  )
 
   // define the action of each step
   const revokeStep = useMemo(() => {
@@ -274,7 +292,7 @@ const useConfirmActions = (
           if (result?.hash) {
             setTxHash(result.hash)
 
-            await publicDelicateClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
+            await retryWaitForTransaction({ hash: result.hash })
           }
           setConfirmState(ConfirmModalState.COMPLETED)
         } catch (error: any) {
@@ -288,7 +306,7 @@ const useConfirmActions = (
       },
       showIndicator: false,
     }
-  }, [chainId, resetState, showError, swap, swapError, swapPreflightCheck])
+  }, [resetState, retryWaitForTransaction, showError, swap, swapError, swapPreflightCheck])
 
   const actions = useMemo(() => {
     return {
