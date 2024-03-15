@@ -86,7 +86,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
     modifiers: [{ name: "offset", options: { offset: [0, 0] } }],
   });
 
-  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
+  const accountEllipsis = account ? `${account.substring(0, 8)}...${account.substring(account.length - 4)}` : null;
 
   // recalculate the popover position
   useEffect(() => {
