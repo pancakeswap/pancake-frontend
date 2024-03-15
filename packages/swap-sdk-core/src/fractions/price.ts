@@ -1,9 +1,9 @@
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
 
 import { BigintIsh, Rounding } from '../constants'
 import { Currency } from '../currency'
-import { Fraction } from './fraction'
 import { CurrencyAmount } from './currencyAmount'
+import { Fraction } from './fraction'
 
 export class Price<TBase extends Currency, TQuote extends Currency> extends Fraction {
   public readonly baseCurrency: TBase // input i.e. denominator

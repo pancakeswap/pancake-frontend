@@ -1,4 +1,4 @@
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
 import { Tick } from '../entities/tick'
 import { ZERO } from '../internalConstants'
 import { isSorted } from './isSorted'

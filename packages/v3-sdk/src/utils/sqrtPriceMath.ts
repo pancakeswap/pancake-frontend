@@ -1,6 +1,6 @@
+import { invariant } from '@epic-web/invariant'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
-import invariant from 'tiny-invariant'
-import { ONE, ZERO, Q96 } from '../internalConstants'
+import { ONE, Q96, ZERO } from '../internalConstants'
 import { FullMath } from './fullMath'
 
 const MaxUint160 = 2n ** 160n - ONE
@@ -62,8 +62,8 @@ export abstract class SqrtPriceMath {
     amountIn: bigint,
     zeroForOne: boolean
   ): bigint {
-    invariant(sqrtPX96 > ZERO)
-    invariant(liquidity > ZERO)
+    invariant(sqrtPX96 > ZERO, 'InvalidPrice')
+    invariant(liquidity > ZERO, 'InvalidLiquidity')
 
     return zeroForOne
       ? this.getNextSqrtPriceFromAmount0RoundingUp(sqrtPX96, liquidity, amountIn, true)
@@ -76,8 +76,8 @@ export abstract class SqrtPriceMath {
     amountOut: bigint,
     zeroForOne: boolean
   ): bigint {
-    invariant(sqrtPX96 > ZERO)
-    invariant(liquidity > ZERO)
+    invariant(sqrtPX96 > ZERO, 'InvalidPrice')
+    invariant(liquidity > ZERO, 'InvalidLiquidity')
 
     return zeroForOne
       ? this.getNextSqrtPriceFromAmount1RoundingDown(sqrtPX96, liquidity, amountOut, false)
@@ -106,8 +106,8 @@ export abstract class SqrtPriceMath {
     }
     const product = multiplyIn256(amount, sqrtPX96)
 
-    invariant(product / amount === sqrtPX96)
-    invariant(numerator1 > product)
+    invariant(product / amount === sqrtPX96, 'PriceOverflow')
+    invariant(numerator1 > product, 'PriceOverflow')
     const denominator = numerator1 - product
     return FullMath.mulDivRoundingUp(numerator1, sqrtPX96, denominator)
   }
@@ -125,7 +125,7 @@ export abstract class SqrtPriceMath {
     }
     const quotient = FullMath.mulDivRoundingUp(amount, Q96, liquidity)
 
-    invariant(sqrtPX96 > quotient)
+    invariant(sqrtPX96 > quotient, 'NotEnoughLiquidity')
     return sqrtPX96 - quotient
   }
 }

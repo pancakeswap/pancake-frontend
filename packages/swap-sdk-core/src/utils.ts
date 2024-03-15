@@ -1,5 +1,5 @@
-import invariant from 'tiny-invariant'
-import { ZERO, ONE, TWO, THREE, VMType, VM_TYPE_MAXIMA } from './constants'
+import { invariant } from '@epic-web/invariant'
+import { ONE, THREE, TWO, VMType, VM_TYPE_MAXIMA, ZERO } from './constants'
 import { Currency } from './currency'
 import { CurrencyAmount, Percent, Price } from './fractions'
 import { Token } from './token'

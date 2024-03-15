@@ -1,4 +1,4 @@
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
 
 import { Currency, Price, Token } from '@pancakeswap/swap-sdk-core'
 import { Pool } from './pool'

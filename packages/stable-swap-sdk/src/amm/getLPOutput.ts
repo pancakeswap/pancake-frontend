@@ -1,5 +1,5 @@
-import { BigintIsh, CurrencyAmount, Currency, ZERO, Percent } from '@pancakeswap/swap-sdk-core'
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
+import { BigintIsh, Currency, CurrencyAmount, Percent, ZERO } from '@pancakeswap/swap-sdk-core'
 
 import { getD } from './amm'
 import { getRawAmount } from './utils'

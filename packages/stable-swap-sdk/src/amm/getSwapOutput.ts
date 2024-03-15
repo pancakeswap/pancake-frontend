@@ -1,9 +1,9 @@
-import { BigintIsh, CurrencyAmount, Currency, Percent, ZERO } from '@pancakeswap/swap-sdk-core'
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
+import { BigintIsh, Currency, CurrencyAmount, Percent, ZERO } from '@pancakeswap/swap-sdk-core'
 
+import { ONE_HUNDRED_PERCENT } from '../constants'
 import { getY } from './amm'
 import { getRawAmount, parseAmount } from './utils'
-import { ONE_HUNDRED_PERCENT } from '../constants'
 
 export interface GetSwapOutputParams {
   amplifier: BigintIsh

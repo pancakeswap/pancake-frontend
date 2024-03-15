@@ -1,9 +1,9 @@
 /* eslint-disable operator-assignment */
-import { BigintIsh, CurrencyAmount, Price, Token } from '@pancakeswap/sdk'
+import { invariant } from '@epic-web/invariant'
 import { ChainId } from '@pancakeswap/chains'
-import invariant from 'tiny-invariant'
+import { BigintIsh, CurrencyAmount, Price, Token } from '@pancakeswap/sdk'
 import { Address, Hash } from 'viem'
-import { FeeAmount, TICK_SPACINGS, DEPLOYER_ADDRESSES } from '../constants'
+import { DEPLOYER_ADDRESSES, FeeAmount, TICK_SPACINGS } from '../constants'
 import { NEGATIVE_ONE, ONE, Q192, ZERO } from '../internalConstants'
 import { computePoolAddress } from '../utils/computePoolAddress'
 import { LiquidityMath } from '../utils/liquidityMath'

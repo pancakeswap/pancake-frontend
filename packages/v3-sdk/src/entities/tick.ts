@@ -1,4 +1,4 @@
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
 import { BigintIsh } from '@pancakeswap/sdk'
 
 import { TickMath } from '../utils/tickMath'

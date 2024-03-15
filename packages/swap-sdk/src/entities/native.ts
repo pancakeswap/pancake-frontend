@@ -1,6 +1,6 @@
-import invariant from 'tiny-invariant'
-import { Currency, Token, NativeCurrency } from '@pancakeswap/swap-sdk-core'
-import { WNATIVE, NATIVE } from '../constants'
+import { invariant } from '@epic-web/invariant'
+import { Currency, NativeCurrency, Token } from '@pancakeswap/swap-sdk-core'
+import { NATIVE, WNATIVE } from '../constants'
 
 /**
  *

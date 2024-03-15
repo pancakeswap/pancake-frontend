@@ -1,6 +1,6 @@
-import invariant from 'tiny-invariant'
-import _Decimal from 'decimal.js-light'
+import { invariant } from '@epic-web/invariant'
 import _Big from 'big.js'
+import _Decimal from 'decimal.js-light'
 // @ts-ignore
 import toFormat from 'toformat'
 

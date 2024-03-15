@@ -1,6 +1,6 @@
-import { Address, getAddress } from 'viem'
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
 import warning from 'tiny-warning'
+import { Address, getAddress } from 'viem'
 
 // warns if addresses are not checksummed
 // eslint-disable-next-line consistent-return

@@ -1,6 +1,6 @@
-import invariant from 'tiny-invariant'
-import { Currency, NativeCurrency, Token } from '@pancakeswap/swap-sdk-core'
+import { invariant } from '@epic-web/invariant'
 import { ChainId } from '@pancakeswap/chains'
+import { Currency, NativeCurrency, Token } from '@pancakeswap/swap-sdk-core'
 import { WETH9 } from './constants'
 
 /**

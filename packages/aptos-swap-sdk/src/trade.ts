@@ -1,25 +1,25 @@
 /* eslint-disable no-continue */
 /* eslint-disable no-lonely-if */
 /* eslint-disable no-else-return */
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
 import {
+  CurrencyAmount,
+  Fraction,
   InsufficientInputAmountError,
   InsufficientReservesError,
   ONE,
-  TradeType,
-  ZERO,
-  CurrencyAmount,
-  Fraction,
   Percent,
   Price,
+  TradeType,
+  ZERO,
   computePriceImpact,
   sortedInsert,
 } from '@pancakeswap/swap-sdk-core'
 
+import { ONE_HUNDRED_PERCENT, ZERO_PERCENT } from './constants'
+import { Currency } from './currency'
 import { Pair } from './pair'
 import { Route } from './route'
-import { Currency } from './currency'
-import { ZERO_PERCENT, ONE_HUNDRED_PERCENT } from './constants'
 
 // minimal interface so the input output comparator may be shared across types
 interface InputOutput<TInput extends Currency, TOutput extends Currency> {

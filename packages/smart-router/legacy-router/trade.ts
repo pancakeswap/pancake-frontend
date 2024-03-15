@@ -1,13 +1,13 @@
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
 import {
   Currency,
-  TradeType,
-  Percent,
-  ZERO,
   CurrencyAmount,
   Fraction,
   ONE,
+  Percent,
   Price,
+  TradeType,
+  ZERO,
   computePriceImpact,
 } from '@pancakeswap/sdk'
 

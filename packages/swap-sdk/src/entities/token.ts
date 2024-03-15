@@ -1,6 +1,6 @@
+import { invariant } from '@epic-web/invariant'
 import { BaseCurrency, Currency, Token } from '@pancakeswap/swap-sdk-core'
 import { Address } from 'viem'
-import invariant from 'tiny-invariant'
 import { validateAndParseAddress } from '../utils'
 
 export interface SerializedToken {

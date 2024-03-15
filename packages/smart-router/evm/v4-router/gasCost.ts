@@ -1,4 +1,4 @@
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
 import { TickList } from '@pancakeswap/v3-sdk'
 
 import {

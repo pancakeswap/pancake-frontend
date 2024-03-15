@@ -9,7 +9,7 @@ import {
 } from '@pancakeswap/sdk'
 import { Address, Hex, encodeFunctionData } from 'viem'
 
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
 import { nonfungiblePositionManagerABI } from './abi/NonfungiblePositionManager'
 import { ADDRESS_ZERO } from './constants'
 import { Pool } from './entities'

@@ -1,13 +1,13 @@
-import { Currency, CurrencyAmount, MaxUint256, Percent, Fraction, ZERO } from '@pancakeswap/swap-sdk-core'
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
+import { Currency, CurrencyAmount, Fraction, MaxUint256, Percent, ZERO } from '@pancakeswap/swap-sdk-core'
 import { parseNumberToFraction } from '@pancakeswap/utils/formatFractions'
 
-import { maxLiquidityForAmounts } from './maxLiquidityForAmounts'
-import { TickMath } from './tickMath'
-import { PositionMath } from './positionMath'
-import { ONE_HUNDRED_PERCENT, MAX_FEE, ZERO_PERCENT } from '../internalConstants'
 import { Tick } from '../entities'
+import { MAX_FEE, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from '../internalConstants'
+import { maxLiquidityForAmounts } from './maxLiquidityForAmounts'
+import { PositionMath } from './positionMath'
 import { TickList } from './tickList'
+import { TickMath } from './tickMath'
 
 export const FeeCalculator = {
   getEstimatedLPFee,

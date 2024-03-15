@@ -1,6 +1,6 @@
+import { invariant } from '@epic-web/invariant'
 import { ChainId } from '@pancakeswap/chains'
 import { BigintIsh, WETH9 } from '@pancakeswap/sdk'
-import invariant from 'tiny-invariant'
 import { ROUTER_AS_RECIPIENT } from '../../constants'
 import { encodeInputTokenOptions } from '../../utils/inputTokens'
 import { CommandType, RoutePlanner } from '../../utils/routerCommands'

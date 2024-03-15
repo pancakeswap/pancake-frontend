@@ -1,4 +1,4 @@
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
 import _Big from 'big.js'
 // @ts-ignore
 import toFormat from 'toformat'
@@ -6,7 +6,7 @@ import { Currency } from '../currency'
 import { Token } from '../token'
 import { Fraction } from './fraction'
 
-import { BigintIsh, Rounding, MaxUint256 } from '../constants'
+import { BigintIsh, MaxUint256, Rounding } from '../constants'
 
 const Big = toFormat(_Big)
 

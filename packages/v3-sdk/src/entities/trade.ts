@@ -1,17 +1,17 @@
 import {
   Currency,
-  Fraction,
-  Percent,
-  Price,
-  sortedInsert,
   CurrencyAmount,
-  TradeType,
-  Token,
+  Fraction,
   InsufficientInputAmountError,
   InsufficientReservesError,
+  Percent,
+  Price,
+  Token,
+  TradeType,
+  sortedInsert,
 } from '@pancakeswap/sdk'
 
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
 import { ONE, ZERO } from '../internalConstants'
 import { Pool } from './pool'
 import { Route } from './route'

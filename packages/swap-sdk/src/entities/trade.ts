@@ -1,18 +1,18 @@
-import invariant from 'tiny-invariant'
+import { invariant } from '@epic-web/invariant'
 import {
+  Currency,
+  CurrencyAmount,
+  Fraction,
   InsufficientInputAmountError,
   InsufficientReservesError,
   ONE,
-  TradeType,
-  ZERO,
-  CurrencyAmount,
-  Currency,
-  Fraction,
   Percent,
   Price,
   Token,
-  sortedInsert,
+  TradeType,
+  ZERO,
   computePriceImpact,
+  sortedInsert,
 } from '@pancakeswap/swap-sdk-core'
 
 import { Pair } from './pair'

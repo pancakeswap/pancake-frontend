@@ -48,7 +48,7 @@
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
     "abitype": "^0.9.8",
-    "tiny-invariant": "^1.1.0",
+    "@epic-web/invariant": "^1.0.0",
     "viem": "1.19.11"
   }
 }
