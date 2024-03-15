@@ -112,7 +112,11 @@ const useConfirmActions = (
   const retryWaitForTransaction = useCallback(
     async ({ hash }: { hash: Hex | undefined }) => {
       if (hash && chainId) {
-        const getReceipt = () => publicClient({ chainId }).waitForTransactionReceipt({ hash })
+        let retryTimes = 0
+        const getReceipt = () => {
+          console.info('retryWaitForTransaction', hash, retryTimes++)
+          return publicClient({ chainId }).waitForTransactionReceipt({ hash })
+        }
         const { promise } = retry<TransactionReceipt>(getReceipt, {
           n: 6,
           minWait: 2000,
