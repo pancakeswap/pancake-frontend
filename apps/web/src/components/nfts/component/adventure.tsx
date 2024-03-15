@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import { ellipseAddress } from 'utils/address'
 import { useAccount } from 'wagmi'
-import { AceIcon, AutoRow, Button, useModal } from '@pancakeswap/uikit'
+import { AceIcon, AutoRow, Button, Link, useModal } from '@pancakeswap/uikit'
 import MakeOfferModal from 'components/nfts/MakeOfferModal'
 import ListModal from 'components/nfts/ListModal'
 import { DEFAULT_COLLECTION_AVATAR } from 'config/nfts'
 import { displayBalance } from 'utils/display'
-import Link from 'next/link'
 import Modal from '../../Modal2'
 import { Wrapper } from './adventure.style'
 

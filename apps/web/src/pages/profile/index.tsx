@@ -2,18 +2,15 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
-import { AceIcon, Container, Flex, Row, Text } from '@pancakeswap/uikit'
+import { AceIcon, Button, Container, Flex, Link, Row, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { ellipseAddress } from 'utils/address'
 import { useAccount } from 'wagmi'
 import { useQuery } from '@tanstack/react-query'
-import { DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
+import { DEFAULT_AVATAR, DEFAULT_COLLECTION_AVATAR, DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
 import { displayBalance } from 'utils/display'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import avatarPng from '../../../public/images/nfts2/avatar.png'
-import sgtIcon from '../../../public/images/nfts2/sgt-icon.png'
-import Button from '../../components/Button'
 
 dayjs.extend(relativeTime)
 const ShowAcePrice = ({ price }: { price: any }) => {
@@ -411,21 +408,11 @@ export default function User() {
   const { address } = useAccount()
   const [activeNav, setActiveNav] = useState('nft')
 
-  const defaultOfferModeItem = {
-    name: 'BAYC',
-    icon: sgtIcon,
-    price: '2.53 ACE',
-    quantity: '2',
-    total: '2.53 ACE',
-    timeCreated: '8mo ago',
-  }
-  const offerModeList = [defaultOfferModeItem, defaultOfferModeItem, defaultOfferModeItem, defaultOfferModeItem]
-
   const offerModeColumns = [
     {
       name: '12 Offers',
       style: {
-        width: '130px',
+        width: '200px',
       },
       tdStyle: {},
     },
@@ -451,7 +438,7 @@ export default function User() {
     {
       name: 'Time Created',
       style: {
-        width: '130px',
+        width: '160px',
       },
     },
     {
@@ -465,7 +452,17 @@ export default function User() {
   const { data } = useQuery({
     queryKey: ['userAssets', address],
     queryFn: () => {
-      return fetch(`${DOCKMAN_HOST}/me/nft?page_number=1&page_size=20&owner_address=${address}`, {
+      return fetch(`${DOCKMAN_HOST}/me/nft?page_number=1&page_size=50&owner_address=${address}`, {
+        method: 'GET',
+      }).then((r) => r.json())
+    },
+    enabled: !!address,
+  })
+
+  const { data: offersRes } = useQuery({
+    queryKey: ['userOffers', address],
+    queryFn: () => {
+      return fetch(`${DOCKMAN_HOST}/me/offer?page_number=1&page_size=50&owner_address=${address}`, {
         method: 'GET',
       }).then((r) => r.json())
     },
@@ -474,9 +471,31 @@ export default function User() {
 
   const totalCount = data?.meta?.totalCount
   const assets = data?.data
+  const offers = offersRes?.data
+
+  console.log(offers)
+  const offerModeList = offers?.map((offer) => ({
+    id: offer?.id,
+    name: (
+      <Flex style={{ fontSize: '14px' }} alignItems="center">
+        <img
+          src={offer?.nft_image ? offer?.nft_image : DEFAULT_NFT_IMAGE}
+          width={38}
+          height={38}
+          alt="avatar"
+          style={{ marginRight: '5px', borderRadius: '4px', border: '1px solid #fff' }}
+        />
+        {offer?.nft_name}
+      </Flex>
+    ),
+    price: <ShowAcePrice price={offer?.price} />,
+    quantity: offer?.quantity,
+    total: <ShowAcePrice price={offer?.quantity * offer?.price} />,
+    timeCreated: dayjs(offer.start_titme * 1000).fromNow(),
+  }))
 
   const datasetList = assets?.map((asset) => ({
-    id: 1,
+    id: asset?.nft_id,
     name: (
       <Flex style={{ fontSize: '14px' }} alignItems="center">
         <img
@@ -489,7 +508,7 @@ export default function User() {
         {asset?.nft_name}
       </Flex>
     ),
-    floorPrice: <ShowAcePrice price={0} />,
+    floorPrice: <ShowAcePrice price={asset?.collection_floor_price} />,
     bestOffer: <ShowAcePrice price={asset?.best_offer_price} />,
     listingPrice: <ShowAcePrice price={asset?.listing_price} />,
     cost: <ShowAcePrice price={asset?.cost_price} />,
@@ -507,15 +526,13 @@ export default function User() {
     { name: '', style: { paddingLeft: '32px', flex: '1' } },
   ]
 
-  console.log(assets)
-
   return (
     <Container>
       <Wrapper>
         <div className="user__wrapper">
           <div className="user__total-box">
             <div className="user__total-msg-box">
-              <Image src={avatarPng} alt="avatar" className="user__total-msg-avatar" />
+              <img src={DEFAULT_AVATAR} alt="avatar" className="user__total-msg-avatar" />
               <div>
                 <Text fontSize="22px">{ellipseAddress(address)}</Text>
                 <Text fontSize="14px" color="textSubtle">
@@ -545,24 +562,15 @@ export default function User() {
               </div>
               <div className="user__total-data-item">
                 <div className="user__total-data-item-label">SGTP</div>
-                <div className="user__total-data-item-content">
-                  <Image src={sgtIcon} alt="icon" className="user__total-data-item-content-icon" />
-                  200
-                </div>
+                <div className="user__total-data-item-content">200</div>
               </div>
               <div className="user__total-data-item">
                 <div className="user__total-data-item-label">SGT</div>
-                <div className="user__total-data-item-content">
-                  <Image src={sgtIcon} alt="icon" className="user__total-data-item-content-icon" />
-                  10.27
-                </div>
+                <div className="user__total-data-item-content">10.27</div>
               </div>
               <div className="user__total-data-item">
                 <div className="user__total-data-item-label"> Revenue</div>
-                <div className="user__total-data-item-content">
-                  <Image src={sgtIcon} alt="icon" className="user__total-data-item-content-icon" />
-                  2.182
-                </div>
+                <div className="user__total-data-item-content">2.182</div>
               </div>
             </div>
           </div>
@@ -590,9 +598,9 @@ export default function User() {
                 })}
               </div>
               <div className="sensei__table-body">
-                {datasetList.map((item, index) => {
+                {datasetList?.map((item, index) => {
                   return (
-                    <div className="sensei__table-body-tr" key={item.id}>
+                    <Link href={`/nfts/detail/${item?.id}`} className="sensei__table-body-tr" key={item.id}>
                       <div
                         style={{
                           ...columns[0].style,
@@ -655,14 +663,14 @@ export default function User() {
                         }}
                         className="sensei__table-body-td"
                       >
-                        <Button type="transparent" size="sm" style={{ width: '153px' }}>
+                        <Button scale="sm" style={{ width: '170px' }}>
                           Accept best offer
                         </Button>
-                        <Button type="transparent" size="sm" style={{ width: '111px', marginLeft: '32px' }}>
+                        <Button scale="sm" style={{ width: '140px', marginLeft: '20px' }}>
                           List for sale
                         </Button>
                       </div>
-                    </div>
+                    </Link>
                   )
                 })}
               </div>
@@ -683,9 +691,9 @@ export default function User() {
                 })}
               </div>
               <div className="sensei__table-body">
-                {offerModeList.map((item, index) => {
+                {offerModeList?.map((item, index) => {
                   return (
-                    <div className="sensei__table-body-tr" key={item.name}>
+                    <Link href={`/nfts/detail/${item.id}`} className="sensei__table-body-tr" key={item.name}>
                       <div
                         style={{
                           ...columns[0].style,
@@ -694,15 +702,6 @@ export default function User() {
                         className="sensei__table-body-td"
                       >
                         {item.name}
-                        <Image
-                          style={{
-                            width: '16px',
-                            height: '16px',
-                            marginLeft: '4px',
-                          }}
-                          alt="icon"
-                          src={item.icon}
-                        />
                       </div>
                       <div
                         style={{
@@ -749,11 +748,11 @@ export default function User() {
                         }}
                         className="sensei__table-body-td"
                       >
-                        <Button type="transparent" size="sm" style={{ width: '111px' }}>
-                          Cancel offer
+                        <Button scale="sm" style={{ width: '200px' }}>
+                          Cancel
                         </Button>
                       </div>
-                    </div>
+                    </Link>
                   )
                 })}
               </div>

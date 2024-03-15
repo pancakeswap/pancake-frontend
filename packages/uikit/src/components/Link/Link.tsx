@@ -9,8 +9,9 @@ export const StyledLink = styled(Text)<LinkProps>`
   font-weight: 400;
   align-items: center;
   width: fit-content;
+  transition: all 0.3s;
   &:hover {
-    text-decoration: underline;
+    opacity: 0.8;
   }
 `;
 

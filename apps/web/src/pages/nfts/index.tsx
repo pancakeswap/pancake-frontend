@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { styled } from 'styled-components'
 import { Box, Container, Flex, Text } from '@pancakeswap/uikit'
 import Link from 'next/link'
-import { DOCKMAN_HOST } from 'config/nfts'
+import { DEFAULT_COLLECTION_AVATAR, DEFAULT_COLLECTION_BANNER, DOCKMAN_HOST } from 'config/nfts'
 
 const CollectionCard = styled(Flex)`
   border-radius: 8px;
@@ -105,7 +105,8 @@ export default function Index() {
             <CollectionSwiperItem
               href={`/nfts/list/${c?.id}`}
               style={{
-                backgroundImage: `url(${c?.collection_image})`,
+                backgroundImage: `url(${c?.collection_image ?? DEFAULT_COLLECTION_BANNER})`,
+                backgroundSize: '100% 100%',
               }}
               key={c?.id}
             >

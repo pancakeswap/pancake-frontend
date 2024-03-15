@@ -6,5 +6,6 @@ export const DOCKMAN_HOST = 'https://api.tesseract.world'
 export const SEAPORT_ADDRESS = '0xFF28baa302C29cFcbe898A10d4AD4f3CA574D02F'
 
 export const DEFAULT_NFT_IMAGE = `${ASSET_CDN}/default-nft.png`
-
+export const DEFAULT_AVATAR = `${ASSET_CDN}/default-avatar.png`
 export const DEFAULT_COLLECTION_AVATAR = `${ASSET_CDN}/default-collection-avatar-3.png`
+export const DEFAULT_COLLECTION_BANNER = `${ASSET_CDN}/default-collection-banner.png`
