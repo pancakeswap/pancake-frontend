@@ -12,13 +12,15 @@ interface Params extends AprParams {
 // @see https://www.calculatorsoup.com/calculators/financial/compound-interest-calculator.php
 export function useRate({ stakeFor = 1, ...rest }: Params) {
   const { apr, apy } = useApr(rest);
-  const { principal, compoundEvery } = rest;
+  const { principal, compoundEvery, compoundOn } = rest;
+  // console.log({ principal, apr, compoundEvery, stakeFor, rest });
   const accrued = useMemo(() => {
     if (!principal) {
       return 0;
     }
-    return getAccrued(principal, apr, compoundEvery, stakeFor);
-  }, [apr, principal, stakeFor, compoundEvery]);
+
+    return getAccrued(principal, apr, compoundEvery, stakeFor, compoundOn ?? false);
+  }, [apr, principal, stakeFor, compoundEvery, compoundOn]);
 
   const reward = useMemo(() => {
     if (!principal || !accrued) {
