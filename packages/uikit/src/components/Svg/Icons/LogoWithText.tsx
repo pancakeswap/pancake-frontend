@@ -4,7 +4,7 @@ import { SvgProps } from "../types";
 
 const Logo: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (
-    <Svg width="200" height="38" viewBox="0 0 431 79" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <Svg width="431" height="79" viewBox="0 0 431 79" fill="none" {...props}>
       <g clip-path="url(#clip0_1654_11985)">
         <path d="M45.3355 19.6281V32.7177L34 26.1708L45.3355 19.6281Z" fill="black" />
         <path d="M45.3355 32.7177V45.8031L34 39.2604L45.3355 32.7177Z" fill="black" />
@@ -16,9 +16,13 @@ const Logo: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
         <path d="M33.9994 26.1708L22.666 32.7177V19.6281L33.9994 26.1708Z" fill="black" />
         <path d="M56.6671 39.2604L45.3359 45.8031V32.7177L56.6671 39.2604Z" fill="black" />
         <path d="M56.6671 26.1708L45.3359 32.7177V19.6281L56.6671 26.1708Z" fill="black" />
-        <path d="M33.9994 26.1708V39.2604L22.666 32.7177L33.9994 26.1708Z" fill="#FFCC47" />
         <path d="M33.9994 39.2604L22.666 45.8031V32.7177L33.9994 39.2604Z" fill="black" />
-        <path d="M45.3355 32.7177L34 39.2604V26.1708L45.3355 32.7177Z" fill="#FFCC47" />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M33.9994 39.2604V26.1708L22.666 32.7177L33.9994 39.2604ZM34 39.2604L45.3355 32.7177L34 26.1708V39.2604Z"
+          fill="#FFCC47"
+        />
         <path d="M56.6671 65.4311L45.3359 71.9737V58.8884L56.6671 65.4311Z" fill="black" />
         <path d="M45.3355 58.8884V71.9737L34 65.4311L45.3355 58.8884Z" fill="black" />
         <path d="M22.6673 19.6281V32.7177L11.334 26.1708L22.6673 19.6281Z" fill="black" />

@@ -408,11 +408,94 @@ export default function User() {
   const { address } = useAccount()
   const [activeNav, setActiveNav] = useState('nft')
 
+  const { data } = useQuery({
+    queryKey: ['userAssets', address],
+    queryFn: () => {
+      return fetch(`${DOCKMAN_HOST}/me/nft?page_number=1&page_size=50&owner_address=${address}`, {
+        method: 'GET',
+      }).then((r) => r.json())
+    },
+    enabled: !!address,
+  })
+
+  const { data: offersRes } = useQuery({
+    queryKey: ['userOffers', address],
+    queryFn: () => {
+      return fetch(
+        `${DOCKMAN_HOST}/me/order?page_number=1&page_size=50&owner_address=${address}&order_market_type=Offer`,
+        {
+          method: 'GET',
+        },
+      ).then((r) => r.json())
+    },
+    enabled: !!address,
+  })
+
+  const { data: listRes } = useQuery({
+    queryKey: ['userList', address],
+    queryFn: () => {
+      return fetch(
+        `${DOCKMAN_HOST}/me/order?page_number=1&page_size=50&owner_address=${address}&order_market_type=List`,
+        {
+          method: 'GET',
+        },
+      ).then((r) => r.json())
+    },
+    enabled: !!address,
+  })
+
+  const totalCount = data?.meta?.totalCount
+  const assets = data?.data
+  const offers = offersRes?.data
+  const list = listRes?.data
+
+  const totalOfferCount = offersRes?.meta?.totalCount
+  const totalListCount = listRes?.meta?.totalCount
+
+  const offerModeList = offers?.map((offer) => ({
+    id: offer?.nft_id,
+    name: (
+      <Flex style={{ fontSize: '14px' }} alignItems="center">
+        <img
+          src={offer?.nft_image ? offer?.nft_image : DEFAULT_NFT_IMAGE}
+          width={38}
+          height={38}
+          alt="avatar"
+          style={{ marginRight: '5px', borderRadius: '4px', border: '1px solid #fff' }}
+        />
+        {offer?.nft_name}
+      </Flex>
+    ),
+    price: <ShowAcePrice price={offer?.price} />,
+    quantity: offer?.quantity,
+    total: <ShowAcePrice price={offer?.quantity * offer?.price} />,
+    timeCreated: dayjs(offer.start_titme * 1000).fromNow(),
+  }))
+
+  const listModeList = list?.map((offer) => ({
+    id: offer?.nft_id,
+    name: (
+      <Flex style={{ fontSize: '14px' }} alignItems="center">
+        <img
+          src={offer?.nft_image ? offer?.nft_image : DEFAULT_NFT_IMAGE}
+          width={38}
+          height={38}
+          alt="avatar"
+          style={{ marginRight: '5px', borderRadius: '4px', border: '1px solid #fff' }}
+        />
+        {offer?.nft_name}
+      </Flex>
+    ),
+    price: <ShowAcePrice price={offer?.price} />,
+    quantity: offer?.quantity,
+    total: <ShowAcePrice price={offer?.quantity * offer?.price} />,
+    timeCreated: dayjs(offer.start_titme * 1000).fromNow(),
+  }))
   const offerModeColumns = [
     {
-      name: '12 Offers',
+      name: `${totalOfferCount} Offers`,
       style: {
-        width: '200px',
+        width: `200px`,
       },
       tdStyle: {},
     },
@@ -449,53 +532,46 @@ export default function User() {
     },
   ]
 
-  const { data } = useQuery({
-    queryKey: ['userAssets', address],
-    queryFn: () => {
-      return fetch(`${DOCKMAN_HOST}/me/nft?page_number=1&page_size=50&owner_address=${address}`, {
-        method: 'GET',
-      }).then((r) => r.json())
+  const listModeColumns = [
+    {
+      name: `${totalListCount} List`,
+      style: {
+        width: `200px`,
+      },
+      tdStyle: {},
     },
-    enabled: !!address,
-  })
-
-  const { data: offersRes } = useQuery({
-    queryKey: ['userOffers', address],
-    queryFn: () => {
-      return fetch(
-        `${DOCKMAN_HOST}/me/order?page_number=1&page_size=50&owner_address=${address}&order_market_type=Offer`,
-        {
-          method: 'GET',
-        },
-      ).then((r) => r.json())
+    {
+      name: 'Offer Price',
+      style: {
+        width: '130px',
+      },
+      tdStyle: {},
     },
-    enabled: !!address,
-  })
-
-  const totalCount = data?.meta?.totalCount
-  const assets = data?.data
-  const offers = offersRes?.data
-
-  console.log(offers)
-  const offerModeList = offers?.map((offer) => ({
-    id: offer?.id,
-    name: (
-      <Flex style={{ fontSize: '14px' }} alignItems="center">
-        <img
-          src={offer?.nft_image ? offer?.nft_image : DEFAULT_NFT_IMAGE}
-          width={38}
-          height={38}
-          alt="avatar"
-          style={{ marginRight: '5px', borderRadius: '4px', border: '1px solid #fff' }}
-        />
-        {offer?.nft_name}
-      </Flex>
-    ),
-    price: <ShowAcePrice price={offer?.price} />,
-    quantity: offer?.quantity,
-    total: <ShowAcePrice price={offer?.quantity * offer?.price} />,
-    timeCreated: dayjs(offer.start_titme * 1000).fromNow(),
-  }))
+    {
+      name: 'Quantity',
+      style: {
+        width: '130px',
+      },
+    },
+    {
+      name: 'Total',
+      style: {
+        width: '130px',
+      },
+    },
+    {
+      name: 'Time Created',
+      style: {
+        width: '160px',
+      },
+    },
+    {
+      name: '',
+      style: {
+        flex: 1,
+      },
+    },
+  ]
 
   const datasetList = assets?.map((asset) => ({
     id: asset?.nft_id,
@@ -689,6 +765,89 @@ export default function User() {
               </div>
               <div className="sensei__table-body">
                 {offerModeList?.map((item, index) => {
+                  return (
+                    <Link href={`/nfts/detail/${item.id}`} className="sensei__table-body-tr" key={item.name}>
+                      <div
+                        style={{
+                          ...columns[0].style,
+                          ...(columns[0].tdStyle || {}),
+                        }}
+                        className="sensei__table-body-td"
+                      >
+                        {item.name}
+                      </div>
+                      <div
+                        style={{
+                          ...columns[1].style,
+                          ...(columns[1].tdStyle || {}),
+                        }}
+                        className="sensei__table-body-td"
+                      >
+                        {item.price}
+                      </div>
+                      <div
+                        style={{
+                          ...columns[2].style,
+                          ...(columns[2].tdStyle || {}),
+                        }}
+                        className="sensei__table-body-td"
+                      >
+                        {item.quantity}
+                      </div>
+                      <div
+                        style={{
+                          ...columns[3].style,
+                          ...(columns[3].tdStyle || {}),
+                        }}
+                        className="sensei__table-body-td"
+                      >
+                        {item.total}
+                      </div>
+
+                      <div
+                        style={{
+                          ...columns[4].style,
+                          ...(columns[4].tdStyle || {}),
+                        }}
+                        className="sensei__table-body-td"
+                      >
+                        {item.timeCreated}
+                      </div>
+
+                      <div
+                        style={{
+                          ...columns[5].style,
+                          ...(columns[5].tdStyle || {}),
+                        }}
+                        className="sensei__table-body-td"
+                      >
+                        <Button scale="sm" style={{ width: '200px' }}>
+                          Cancel
+                        </Button>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="user__graph-block" style={{ marginTop: '20px' }}>
+            <Text fontSize="20px" fontWeight={600}>
+              List
+            </Text>
+            <div className="sensei__table" style={{ marginTop: '24px' }}>
+              <div className="sensei__table-header">
+                {listModeColumns.map((item, index) => {
+                  return (
+                    <div key={item.name} style={item.style} className="sensei__table-header-item">
+                      {item.name}
+                    </div>
+                  )
+                })}
+              </div>
+              <div className="sensei__table-body">
+                {listModeList?.map((item, index) => {
                   return (
                     <Link href={`/nfts/detail/${item.id}`} className="sensei__table-body-tr" key={item.name}>
                       <div

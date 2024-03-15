@@ -82,10 +82,10 @@ const SortButton = ({ type, onClick }: ISortButton) => {
   const downClassName = type === 'desc' ? 'sensei__arrow--active' : ''
   return (
     <SortButtonWrapper>
-      {/* <div className="sensei__arrow-box" onClick={onClick}> */}
-      {/*  <div className={`sensei__arrow sensei__arrow-up ${upClassName}`} /> */}
-      {/*  <div className={`sensei__arrow sensei__arrow-down ${downClassName}`} /> */}
-      {/* </div> */}
+      <div className="sensei__arrow-box" onClick={onClick}>
+        <div className={`sensei__arrow sensei__arrow-up ${upClassName}`} />
+        <div className={`sensei__arrow sensei__arrow-down ${downClassName}`} />
+      </div>
     </SortButtonWrapper>
   )
 }
@@ -101,33 +101,6 @@ export default function SGTList() {
     },
     enabled: !!id,
   })
-
-  const { data, fetchNextPage } = useInfiniteQuery({
-    queryKey: [`nfts_${id}`],
-    queryFn: async ({ pageParam = 0 }) => {
-      const res = await fetch(
-        `${DOCKMAN_HOST}/nft?page_number=${pageParam + 1}&page_size=20&collection_id=${id}&sort_type=price_increase`,
-      ).then((r) => r.json())
-
-      if (res?.statusCode === 500) {
-        throw new Error(res?.message)
-      }
-
-      return res
-    },
-    getNextPageParam: (lastPage, pages) => {
-      return lastPage.meta?.currentPage
-    },
-    initialPageParam: 0,
-    enabled: !!id,
-  })
-
-  const pages = data?.pages
-  const nfts = pages?.reduce((results: any[], ci: any) => {
-    results.push(...ci.data)
-    return results
-  }, [])
-  const meta = pages?.[pages?.length - 1]?.meta
 
   const _columns = [
     {
@@ -191,6 +164,35 @@ export default function SGTList() {
   ]
 
   const [columns, setColumns] = useState(_columns)
+  const raritySort = columns?.[1]?.sortType === 'asc' ? 'rarity_increase' : 'rarity_decrease'
+  console.log(raritySort)
+
+  const { data, fetchNextPage } = useInfiniteQuery({
+    queryKey: [`nfts_${id}_${raritySort}`],
+    queryFn: async ({ pageParam = 0 }) => {
+      const res = await fetch(
+        `${DOCKMAN_HOST}/nft?page_number=${pageParam + 1}&page_size=20&collection_id=${id}&sort_type=${raritySort}`,
+      ).then((r) => r.json())
+
+      if (res?.statusCode === 500) {
+        throw new Error(res?.message)
+      }
+
+      return res
+    },
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.meta?.currentPage
+    },
+    initialPageParam: 0,
+    enabled: !!id,
+  })
+
+  const pages = data?.pages
+  const nfts = pages?.reduce((results: any[], ci: any) => {
+    results.push(...ci.data)
+    return results
+  }, [])
+  const meta = pages?.[pages?.length - 1]?.meta
 
   if (!nfts || !collection) {
     return (
@@ -288,7 +290,7 @@ export default function SGTList() {
                     return (
                       <div key={item.name} style={item.style} className="sensei__table-header-item">
                         {item.name}
-                        {index > 0 && index < columns.length - 1 && (
+                        {index > 0 && index < 2 && (
                           <SortButton
                             type={item.sortType as 'asc' | 'desc' | 'none'}
                             onClick={() => {

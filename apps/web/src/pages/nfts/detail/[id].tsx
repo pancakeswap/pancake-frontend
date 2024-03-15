@@ -323,7 +323,7 @@ export default function SGTDetail() {
             />
             <div className="sgt-detail__left-trait-box">
               <div className="sgt-detail__left-trait-title-box">
-                <Text fontWeight={600} fontSize="18px">
+                <Text fontWeight={600} fontSize="18px" mb="10px">
                   Traits
                 </Text>
                 <div className="sgt-detail__left-trait-title-value">{nft?.trails?.length}</div>
@@ -384,7 +384,7 @@ export default function SGTDetail() {
                 {
                   label: 'Metadata',
                   value: (
-                    <Link href={nft?.metadata} target="_blank">
+                    <Link href={nft?.metadata ?? ''} target="_blank">
                       {ellipseAddress(nft?.metadata, 10)}
                     </Link>
                   ),
