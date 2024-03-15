@@ -17,12 +17,8 @@ export function useRate({ stakeFor = 1, ...rest }: Params) {
     if (!principal) {
       return 0;
     }
-
-    if (compoundEvery && compoundEvery >= stakeFor) {
-      return getAccrued(principal, apr, compoundEvery, stakeFor);
-    }
     return getAccrued(principal, apy, compoundEvery, stakeFor);
-  }, [apy, principal, stakeFor, apr, compoundEvery]);
+  }, [apy, principal, stakeFor, compoundEvery]);
 
   const reward = useMemo(() => {
     if (!principal || !accrued) {
