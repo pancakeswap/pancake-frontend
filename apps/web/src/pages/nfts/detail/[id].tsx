@@ -328,12 +328,12 @@ export default function SGTDetail() {
                 </Text>
                 <div className="sgt-detail__left-trait-title-value">{nft?.trails?.length}</div>
               </div>
-              <Flex>
+              <AutoRow flexWrap="wrap" gap="12px">
                 {nft?.traits?.map((trait) => {
                   return (
                     <Box
                       key={trait?.trait_type}
-                      width="32%"
+                      width="30%"
                       background="#232323"
                       borderRadius="6px"
                       p={2}
@@ -341,16 +341,16 @@ export default function SGTDetail() {
                       style={{ flexDirection: 'column', alignItems: 'center' }}
                     >
                       <div className="sgt-detail__left-trait-item-title">{trait?.trait_type}</div>
-                      <div className="sgt-detail__left-trait-item-short-box">
-                        {trait?.value}
+                      <div className="sgt-detail__left-trait-item-short-box">{trait?.value}</div>
+                      <Box style={{ textAlign: 'center' }}>
                         <Tag color="rgba(255, 204, 71, 1)" bgColor="rgba(255, 204, 71, .12)">
                           {Math.floor((100 * trait?.numerator) / trait?.denominator)}%
                         </Tag>
-                      </div>
+                      </Box>
                     </Box>
                   )
                 })}
-              </Flex>
+              </AutoRow>
             </div>
             <div className="sgt-detail__left-detail-box">
               <div className="sgt-detail__left-detail-title-box">
