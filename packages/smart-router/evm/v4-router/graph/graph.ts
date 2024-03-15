@@ -220,6 +220,8 @@ export async function findBestTrade(params: FindBestTradeParams): Promise<V4Trad
   if (isExactIn) {
     return getBestTrade(params)
   }
+
+  // Exact output doesn't support mixed route
   const poolsByType = groupPoolsByType(candidatePools)
   const trades = await Promise.all(
     poolsByType.map((pools) => getBestTrade({ tradeType, candidatePools: pools, ...rest })),
