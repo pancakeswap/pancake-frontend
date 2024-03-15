@@ -200,8 +200,6 @@ export default function SGTList() {
     )
   }
 
-  console.log(nfts)
-
   return (
     <InfiniteScroll
       dataLength={nfts?.length ?? 0}

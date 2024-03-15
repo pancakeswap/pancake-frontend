@@ -10,6 +10,8 @@ import { styled } from 'styled-components'
 const ItemRow = styled(Flex)`
   & div {
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
   }
 `
 
@@ -54,7 +56,7 @@ export default function Activity({ activities }: { activities: any[] }) {
     {
       name: 'Time',
       style: {
-        width: '140px',
+        width: '180px',
       },
       tdStyle: {
         color: '#928D88',
@@ -85,13 +87,14 @@ export default function Activity({ activities }: { activities: any[] }) {
                       {activity?.activity_type === 'Mint' ? 'Null' : ellipseAddress(activity?.from)}
                     </Box>
 
-                    <Link
-                      href={getBlockExploreLink(activity?.to, 'address', ChainId.ENDURANCE)}
-                      style={{ ...columns[3].style, ...(columns[3].tdStyle || {}) }}
-                      className="sensei__table-body-td"
-                    >
-                      {ellipseAddress(activity?.to, 5)}
-                    </Link>
+                    <Box width="140px">
+                      <Link
+                        href={getBlockExploreLink(activity?.to, 'address', ChainId.ENDURANCE)}
+                        className="sensei__table-body-td"
+                      >
+                        {ellipseAddress(activity?.to, 5)}
+                      </Link>
+                    </Box>
 
                     <Box width="120px">{dayjs(activity?.time).fromNow()}</Box>
                   </ItemRow>

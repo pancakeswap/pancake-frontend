@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
-import { AceIcon, Button, Container, Flex, Link, Row, Text } from '@pancakeswap/uikit'
+import { AceIcon, Button, Container, Flex, Link, Loading, Row, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { ellipseAddress } from 'utils/address'
 import { useAccount } from 'wagmi'
@@ -462,9 +462,12 @@ export default function User() {
   const { data: offersRes } = useQuery({
     queryKey: ['userOffers', address],
     queryFn: () => {
-      return fetch(`${DOCKMAN_HOST}/me/offer?page_number=1&page_size=50&owner_address=${address}`, {
-        method: 'GET',
-      }).then((r) => r.json())
+      return fetch(
+        `${DOCKMAN_HOST}/me/order?page_number=1&page_size=50&owner_address=${address}&order_market_type=Offer`,
+        {
+          method: 'GET',
+        },
+      ).then((r) => r.json())
     },
     enabled: !!address,
   })
@@ -525,6 +528,14 @@ export default function User() {
     { name: 'Time', style: { width: '120px' } },
     { name: '', style: { paddingLeft: '32px', flex: '1' } },
   ]
+
+  if (!data || !offersRes) {
+    return (
+      <Flex alignItems="center" justifyContent="center" py="40px">
+        <Loading color="primary" width="30px" height="30px" />
+      </Flex>
+    )
+  }
 
   return (
     <Container>
@@ -664,7 +675,7 @@ export default function User() {
           </div>
           <div className="user__graph-block" style={{ marginTop: '20px' }}>
             <Text fontSize="20px" fontWeight={600}>
-              Offers Made
+              Offers
             </Text>
             <div className="sensei__table" style={{ marginTop: '24px' }}>
               <div className="sensei__table-header">

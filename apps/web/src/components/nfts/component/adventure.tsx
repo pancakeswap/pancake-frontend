@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { ellipseAddress } from 'utils/address'
 import { useAccount } from 'wagmi'
-import { AceIcon, AutoRow, Button, Link, useModal } from '@pancakeswap/uikit'
+import { AceIcon, AutoRow, Button, Flex, Link, useModal } from '@pancakeswap/uikit'
 import MakeOfferModal from 'components/nfts/MakeOfferModal'
 import ListModal from 'components/nfts/ListModal'
 import { DEFAULT_COLLECTION_AVATAR } from 'config/nfts'
 import { displayBalance } from 'utils/display'
-import CancelOrderModal from 'components/nfts/CancelOrderModal'
+import ConfirmRecycleModal from 'components/nfts/ConfirmRecycleModal'
 import Modal from '../../Modal2'
 import { Wrapper } from './adventure.style'
 
@@ -16,6 +16,9 @@ export default function Adventure({ nft, refetch }: { nft: any; refetch: any }) 
   )
   const [showListModal] = useModal(
     <ListModal collectionAddress={nft?.collection_contract_address} tokenId={nft?.token_id} refetch={refetch} />,
+  )
+  const [showConfirmRecycleModal] = useModal(
+    <ConfirmRecycleModal contract={nft?.collection_contract_address} tokenId={nft?.token_id} refetch={refetch} />,
   )
 
   const { address } = useAccount()
@@ -93,9 +96,20 @@ export default function Adventure({ nft, refetch }: { nft: any; refetch: any }) 
         <div className="sgt-adventure__bottom">
           <AutoRow gap="20px" justifyContent="flex-end">
             {isOwner && (
-              <Button onClick={showListModal} width="200px">
-                List
-              </Button>
+              <Flex style={{ gap: '10px' }}>
+                <Button
+                  onClick={showConfirmRecycleModal}
+                  width="130px"
+                  scale="sm"
+                  variant="tertiary"
+                  style={{ color: '#999' }}
+                >
+                  Recycle
+                </Button>
+                <Button onClick={showListModal} width="130px" scale="sm">
+                  List
+                </Button>
+              </Flex>
             )}
             {!isOwner && (
               <Button onClick={showMakeOfferModal} width="200px">
