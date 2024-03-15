@@ -2586,8 +2586,6 @@
   "Arbitrum One is LIVE!": "Arbitrum One is LIVE!",
   "PancakeSwap Now Live on Arbitrum One": "PancakeSwap Now Live on Arbitrum One",
   "Swap and Provide Liquidity Now": "Swap and Provide Liquidity Now",
-  "Why do i receive different USDC tokens on Arbitrum?": "Why do i receive different USDC tokens on Arbitrum?",
-  "In the case of Arbitrum, there's a bridged version of USDC known as USDC.e that has been bridged from Ethereum to Arbitrum, and native USDC, known as USDC. Depending on providers, we support both USDC.e and USDC. Please check your wallet balances for both tokens": "In the case of Arbitrum, there's a bridged version of USDC known as USDC.e that has been bridged from Ethereum to Arbitrum, and native USDC, known as USDC. Depending on providers, we support both USDC.e and USDC. Please check your wallet balances for both tokens",
   "%token1%'s exchange rate is determined by the value accrued vs %token0%. As you receive rewards, your amount of %token1% will not change.": "%token1%'s exchange rate is determined by the value accrued vs %token0%. As you receive rewards, your amount of %token1% will not change.",
   "APR is calculated based on the past 24H of staking rewards from the %token0% network.": "APR is calculated based on the past 24H of staking rewards from the %token0% network.",
   "1 %token0% = %exchangeRateAmount% %token1%": "1 %token0% = %exchangeRateAmount% %token1%",
