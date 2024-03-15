@@ -1,5 +1,14 @@
 # @pancakeswap/smart-router
 
+## 5.1.6
+
+### Patch Changes
+
+- 67ca3d6: Support getting input quote by exact output
+- Updated dependencies [67ca3d6]
+  - @pancakeswap/v3-sdk@3.8.0
+  - @pancakeswap/gauges@1.1.6
+
 ## 5.1.5
 
 ### Patch Changes

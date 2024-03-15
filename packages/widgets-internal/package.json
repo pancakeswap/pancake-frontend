@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/widgets-internal",
-  "version": "0.1.29",
+  "version": "0.1.30",
   "private": true,
   "main": "index.ts",
   "exports": {

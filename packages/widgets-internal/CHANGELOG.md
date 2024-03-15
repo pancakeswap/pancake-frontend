@@ -1,5 +1,13 @@
 # @pancakeswap/widgets-internal
 
+## 0.1.30
+
+### Patch Changes
+
+- Updated dependencies [67ca3d6]
+  - @pancakeswap/v3-sdk@3.8.0
+  - @pancakeswap/farms@1.0.47
+
 ## 0.1.29
 
 ### Patch Changes
