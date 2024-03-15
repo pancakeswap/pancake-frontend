@@ -73,13 +73,11 @@ export const useTweetsData = () => {
     return [
       {
         tweet: `📢Say hello to PancakeSwap v4
-
 🪝Hooks
 🔗Custom Pool Types & Donate
 ⛽️Gas Optimization via Singleton & Flash Accounting
 🧑‍💻Codebase Open-Source Licensing
 ➡️Coming to Ethereum and BNB Chain in Q3
-
 📚Read more: https://bit.ly/48QgtgN
 `,
         link: 'https://x.com/PancakeSwap/status/1768623187959672871?s=20',
