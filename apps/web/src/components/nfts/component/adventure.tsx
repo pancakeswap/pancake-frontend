@@ -32,11 +32,12 @@ export default function Adventure({ nft, refetch, list }: { nft: any; refetch: a
     <TransferModal collectionAddress={nft?.collection_contract_address} tokenId={nft?.token_id} refetch={refetch} />,
   )
 
+  console.log(list)
   const topList =
     list?.length > 0
       ? list?.reduce(function (prev, curr) {
           return BigInt(prev.price) < BigInt(curr.price) ? prev : curr
-        }, {})
+        })
       : undefined
 
   const { address } = useAccount()
