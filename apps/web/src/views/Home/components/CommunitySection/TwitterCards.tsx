@@ -72,13 +72,20 @@ export const useTweetsData = () => {
   return useMemo(() => {
     return [
       {
-        tweet: `🐲 Step into the Dragon Lunar Lottery at PancakeSwap! Chase a treasure of 16,000 CAKE & an additional $3,880 in USDT prizes! ✨
-🧧 Join the celebration: https://app.questn.com/event/869387113325449247
+        tweet: `📢Say hello to PancakeSwap v4
+
+🪝Hooks
+🔗Custom Pool Types & Donate
+⛽️Gas Optimization via Singleton & Flash Accounting
+🧑‍💻Codebase Open-Source Licensing
+➡️Coming to Ethereum and BNB Chain in Q3
+
+📚Read more: https://bit.ly/48QgtgN
 `,
-        link: 'https://x.com/PancakeSwap/status/1755252804086628435?s=20',
-        date: 'Feb 7',
-        like: '1.1k',
-        impression: '99.2k',
+        link: 'https://x.com/PancakeSwap/status/1768623187959672871?s=20',
+        date: 'Mar 15',
+        like: '0.5k',
+        impression: '54k',
       },
     ]
   }, [])
