@@ -12,10 +12,10 @@ import { usePermit2 } from 'hooks/usePermit2'
 import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { retry } from 'state/multicall/retry'
+import { RetryableError, retry } from 'state/multicall/retry'
 import { publicClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
-import { Address, Hex, TransactionReceipt } from 'viem'
+import { Address, Hex, TransactionReceipt, TransactionReceiptNotFoundError } from 'viem'
 import { erc20ABI } from 'wagmi'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
@@ -113,9 +113,16 @@ const useConfirmActions = (
     async ({ hash }: { hash: Hex | undefined }) => {
       if (hash && chainId) {
         let retryTimes = 0
-        const getReceipt = () => {
+        const getReceipt = async () => {
           console.info('retryWaitForTransaction', hash, retryTimes++)
-          return publicClient({ chainId }).waitForTransactionReceipt({ hash })
+          try {
+            return await publicClient({ chainId }).waitForTransactionReceipt({ hash })
+          } catch (error) {
+            if (error instanceof TransactionReceiptNotFoundError) {
+              throw new RetryableError()
+            }
+            throw error
+          }
         }
         const { promise } = retry<TransactionReceipt>(getReceipt, {
           n: 6,
