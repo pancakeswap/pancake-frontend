@@ -904,7 +904,14 @@ export default function User() {
                         }}
                         className="sensei__table-body-td"
                       >
-                        <Button scale="sm" style={{ width: '200px' }}>
+                        <Button
+                          scale="sm"
+                          style={{ width: '200px' }}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            e.preventDefault()
+                          }}
+                        >
                           Cancel
                         </Button>
                       </div>

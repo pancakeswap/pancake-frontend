@@ -22,6 +22,7 @@ const Item = ({ columns, offer, isOwner, refetch }: { columns: any; offer: any; 
       })
 
       const order = offer?.order
+      console.log(offer)
 
       const tx = await seaport.fulfillOrder({ order })
       const res = await tx.executeAllActions()
