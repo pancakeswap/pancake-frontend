@@ -4,6 +4,7 @@ import { formatFraction } from '@pancakeswap/utils/formatFractions'
 import { getPriceImpact } from '../v3-router/utils/getPriceImpact'
 import { findBestTrade } from './graph'
 import { TradeConfig, V4Trade } from './types'
+import { getBetterTrade } from './utils'
 
 const DEFAULT_STREAM = 10
 
@@ -30,25 +31,6 @@ function getBestStreamsConfig(trade?: V4Trade<TradeType>) {
     return DEFAULT_STREAM
   }
   return Math.max(1, Math.min(streams, maxStreams))
-}
-
-function getBetterTrade(tradeA?: V4Trade<TradeType>, tradeB?: V4Trade<TradeType>): V4Trade<TradeType> | undefined {
-  if (!tradeA && !tradeB) return undefined
-  if (!tradeA && tradeB) return tradeB
-  if (tradeA && !tradeB) return tradeA
-
-  const isExactIn = tradeA!.tradeType === TradeType.EXACT_INPUT
-  if (isExactIn) {
-    if (tradeB!.outputAmountWithGasAdjusted.greaterThan(tradeA!.outputAmountWithGasAdjusted)) {
-      return tradeB
-    }
-    return tradeA
-  }
-
-  if (tradeB!.inputAmountWithGasAdjusted.lessThan(tradeA!.inputAmountWithGasAdjusted)) {
-    return tradeB
-  }
-  return tradeA
 }
 
 export async function getBestTrade(
