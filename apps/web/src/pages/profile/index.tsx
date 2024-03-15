@@ -656,20 +656,6 @@ export default function User() {
                       >
                         {item.time}
                       </div>
-                      <div
-                        style={{
-                          ...columns[6].style,
-                          ...(columns[6].tdStyle || {}),
-                        }}
-                        className="sensei__table-body-td"
-                      >
-                        <Button scale="sm" style={{ width: '170px' }}>
-                          Accept best offer
-                        </Button>
-                        <Button scale="sm" style={{ width: '140px', marginLeft: '20px' }}>
-                          List for sale
-                        </Button>
-                      </div>
                     </Link>
                   )
                 })}
