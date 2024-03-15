@@ -1,10 +1,17 @@
 import { ellipseAddress } from 'utils/address'
 
-import { Box, Column, Link } from '@pancakeswap/uikit'
+import { AceIcon, AutoRow, Box, Column, Flex, Link } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import { getBlockExploreLink } from 'utils'
 import { ChainId } from '@pancakeswap/chains'
 import { displayBalance } from 'utils/display'
+import { styled } from 'styled-components'
+
+const ItemRow = styled(Flex)`
+  & div {
+    flex-shrink: 0;
+  }
+`
 
 export default function Activity({ activities }: { activities: any[] }) {
   const columns = [
@@ -68,29 +75,16 @@ export default function Activity({ activities }: { activities: any[] }) {
             })}
           </div>
           <Box maxHeight="160px">
-            <Column gap="12px">
+            <Column gap="0px" mt="12px">
               {activities?.map((activity, index) => {
                 return (
-                  <div className="sensei__table-body-tr" key={activity.price}>
-                    <div
-                      style={{ ...columns[0].style, ...(columns[0].tdStyle || {}) }}
-                      className="sensei__table-body-td"
-                    >
-                      {activity.activity_type}
-                    </div>
-                    <div
-                      style={{ ...columns[1].style, ...(columns[1].tdStyle || {}) }}
-                      className="sensei__table-body-td"
-                    >
-                      {displayBalance(activity.price)}
-                    </div>
-
-                    <div
-                      style={{ ...columns[2].style, ...(columns[2].tdStyle || {}) }}
-                      className="sensei__table-body-td"
-                    >
+                  <ItemRow key={activity?.id}>
+                    <Box width="110px">{activity.activity_type}</Box>
+                    <Box width="120px">{displayBalance(activity.price)}</Box>
+                    <Box width="140px">
                       {activity?.activity_type === 'Mint' ? 'Null' : ellipseAddress(activity?.from)}
-                    </div>
+                    </Box>
+
                     <Link
                       href={getBlockExploreLink(activity?.to, 'address', ChainId.ENDURANCE)}
                       style={{ ...columns[3].style, ...(columns[3].tdStyle || {}) }}
@@ -99,13 +93,8 @@ export default function Activity({ activities }: { activities: any[] }) {
                       {ellipseAddress(activity?.to, 5)}
                     </Link>
 
-                    <div
-                      style={{ ...columns[4].style, ...(columns[4].tdStyle || {}) }}
-                      className="sensei__table-body-td"
-                    >
-                      {dayjs(activity?.time).fromNow()}
-                    </div>
-                  </div>
+                    <Box width="120px">{dayjs(activity?.time).fromNow()}</Box>
+                  </ItemRow>
                 )
               })}
             </Column>

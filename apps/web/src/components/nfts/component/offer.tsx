@@ -1,8 +1,7 @@
-import { AceIcon, Box, Column } from '@pancakeswap/uikit'
+import { AceIcon, Box, Button, Column } from '@pancakeswap/uikit'
 import { displayBalance } from 'utils/display'
 import { ellipseAddress } from 'utils/address'
 import { useAccount } from 'wagmi'
-import Button from '../../Button'
 import { Wrapper } from './offer.style'
 
 export default function Offer({ offers, nft }: { offers: any; nft: any }) {
@@ -13,7 +12,7 @@ export default function Offer({ offers, nft }: { offers: any; nft: any }) {
     {
       name: 'Price',
       style: {
-        width: '140px',
+        width: '120px',
       },
       tdStyle: {
         color: 'rgba(249, 143, 18, 1)',
@@ -23,7 +22,7 @@ export default function Offer({ offers, nft }: { offers: any; nft: any }) {
     {
       name: 'Quantity',
       style: {
-        width: '150px',
+        width: '120px',
       },
       tdStyle: {
         paddingLeft: '4px',
@@ -90,8 +89,7 @@ export default function Offer({ offers, nft }: { offers: any; nft: any }) {
                           style={{
                             width: '116px',
                           }}
-                          type="transparent"
-                          size="sm"
+                          scale="sm"
                         >
                           Accept
                         </Button>

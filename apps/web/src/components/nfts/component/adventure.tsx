@@ -6,6 +6,7 @@ import MakeOfferModal from 'components/nfts/MakeOfferModal'
 import ListModal from 'components/nfts/ListModal'
 import { DEFAULT_COLLECTION_AVATAR } from 'config/nfts'
 import { displayBalance } from 'utils/display'
+import CancelOrderModal from 'components/nfts/CancelOrderModal'
 import Modal from '../../Modal2'
 import { Wrapper } from './adventure.style'
 
@@ -16,9 +17,9 @@ export default function Adventure({ nft, refetch }: { nft: any; refetch: any }) 
   const [showListModal] = useModal(
     <ListModal collectionAddress={nft?.collection_contract_address} tokenId={nft?.token_id} refetch={refetch} />,
   )
+
   const { address } = useAccount()
   const [showListConfirmModal, setShowListConfirmModal] = useState(false)
-  const [showCancelListModal, setShowCancelListModal] = useState(false)
   const isOwner = address?.toLocaleLowerCase() === nft?.owner
   const dataList = [
     {
@@ -107,31 +108,6 @@ export default function Adventure({ nft, refetch }: { nft: any; refetch: any }) 
         {showListConfirmModal && (
           <Modal title="🎉 You did it! " onClose={() => {}} confirmText="Share">
             You have successfully purchased item!{' '}
-          </Modal>
-        )}
-        {/* item属于用户-已上架 */}
-        {showCancelListModal && (
-          <Modal
-            titleElement={
-              <div
-                style={{
-                  display: 'flex',
-                  fontSize: '16px',
-                  lineHeight: '32px',
-                  height: '32px',
-                  fontWeight: 500,
-                  alignItems: 'center',
-                }}
-              >
-                Cancel listing
-              </div>
-            }
-            onClose={() => {}}
-            showCancel
-            onCancel={() => {}}
-            onConfirm={() => {}}
-          >
-            Are you sure you want to cancel the listing?
           </Modal>
         )}
       </div>

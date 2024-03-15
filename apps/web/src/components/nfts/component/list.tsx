@@ -56,13 +56,13 @@ export default function List({ list, refetch }: { list: any; refetch: any }) {
         <div className="sensei__table">
           <Text color="textSubtle">
             <AutoRow mb="20px">
-              <Box width="160px">Price</Box>
-              <Box width="160px">Quantity</Box>
+              <Box width="125px">Price</Box>
+              <Box width="120px">Quantity</Box>
               <Box>From</Box>
             </AutoRow>
           </Text>
           <Box maxHeight="160px">
-            <Column gap="12px">
+            <Column gap="4px">
               {list?.map((l) => {
                 return (
                   <Flex key={l?.id}>
@@ -72,14 +72,14 @@ export default function List({ list, refetch }: { list: any; refetch: any }) {
                         <AceIcon />
                       </AutoRow>
                     </Box>
-                    <Box width="160px">
+                    <Box width="140px">
                       <Text>{l.quantity}</Text>
                     </Box>
                     <Box width="200px">
                       <Text>{ellipseAddress(l.from)}</Text>
                     </Box>
                     {l.from === address?.toLocaleLowerCase() ? (
-                      <Button scale="sm" onClick={() => onCancel(l?.order_hash)} isLoading={loading}>
+                      <Button scale="sm" onClick={() => onCancel(l.order_hash)} isLoading={loading}>
                         {loading && <Loading />}
                         Cancel
                       </Button>
