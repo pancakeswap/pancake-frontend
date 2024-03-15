@@ -84,7 +84,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
   [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc, arbSepoliaTokens.weth],
   [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc, baseSepoliaTokens.weth],
-  [ChainId.ENDURANCE]: [enduranceTokens.aceUSD, enduranceTokens.wace],
+  [ChainId.ENDURANCE]: [enduranceTokens.aapfp, enduranceTokens.wace],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -109,7 +109,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
   [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc, arbSepoliaTokens.weth],
   [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc, baseSepoliaTokens.weth],
-  [ChainId.ENDURANCE]: [enduranceTokens.aceUSD, enduranceTokens.wace],
+  [ChainId.ENDURANCE]: [enduranceTokens.aapfp, enduranceTokens.wace],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {

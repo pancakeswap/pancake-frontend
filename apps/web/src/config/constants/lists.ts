@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 
-export const PANCAKE_EXTENDED = 'https://tokens.pancakeswap.finance/pancakeswap-extended.json'
+export const PANCAKE_EXTENDED = 'https://cdn.jsdelivr.net/gh/tesseract-world/assets@main/tesseract-tokens.json'
 
 const COINGECKO = 'https://tokens.pancakeswap.finance/coingecko.json'
 const PANCAKE_ETH_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-eth-default.json'
