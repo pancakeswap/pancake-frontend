@@ -1,6 +1,6 @@
-import { styled } from "styled-components";
-import { LinkExternal, Text, LinkProps } from "@pancakeswap/uikit";
+import { LinkExternal, LinkProps, Text } from "@pancakeswap/uikit";
 import { PropsWithChildren } from "react";
+import { styled } from "styled-components";
 
 type Props = {
   color?: string;
@@ -8,26 +8,17 @@ type Props = {
 
 const StyledLinkExternal = styled(LinkExternal)`
   padding: 4px 0;
-  font-size: 12px;
-  line-height: 14px;
-  texttransform: uppercase;
 
   &:hover {
     text-decoration: none;
     cursor: pointer;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 16px;
-    line-height: 16px;
-    texttransform: capitalize;
   }
 `;
 
 export function LinkExternalAction({ children, color, ...props }: PropsWithChildren<Props & LinkProps>) {
   return (
     <StyledLinkExternal color={color} {...props}>
-      <Text color={color} bold>
+      <Text bold color={color} fontSize={["14px", "14px", "16px"]} lineHeight={["16px"]}>
         {children}
       </Text>
     </StyledLinkExternal>
