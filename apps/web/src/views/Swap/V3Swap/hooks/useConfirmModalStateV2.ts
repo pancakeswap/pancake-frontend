@@ -13,7 +13,7 @@ import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { retry } from 'state/multicall/retry'
-import { publicDelicateClient } from 'utils/client'
+import { publicClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
 import { Address, Hex, TransactionReceipt } from 'viem'
 import { erc20ABI } from 'wagmi'
@@ -36,7 +36,7 @@ const getTokenAllowance = ({
   address: Address
   inputs: [`0x${string}`, `0x${string}`]
 }) => {
-  const client = publicDelicateClient({ chainId })
+  const client = publicClient({ chainId })
 
   return client.readContract({
     abi: erc20ABI,
@@ -112,9 +112,9 @@ const useConfirmActions = (
   const retryWaitForTransaction = useCallback(
     async ({ hash }: { hash: Hex | undefined }) => {
       if (hash && chainId) {
-        const getReceipt = () => publicDelicateClient({ chainId }).waitForTransactionReceipt({ hash })
+        const getReceipt = () => publicClient({ chainId }).waitForTransactionReceipt({ hash })
         const { promise } = retry<TransactionReceipt>(getReceipt, {
-          n: 3,
+          n: 6,
           minWait: 2000,
           maxWait: 5000,
         })
@@ -135,7 +135,7 @@ const useConfirmActions = (
         if (result?.hash && chainId) {
           setTxHash(result.hash)
 
-          await publicDelicateClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
+          await retryWaitForTransaction({ hash: result.hash })
         }
 
         let newAllowanceRaw: bigint = 0n
@@ -177,7 +177,7 @@ const useConfirmActions = (
       action,
       showIndicator: true,
     }
-  }, [amountToApprove?.currency, chainId, getAllowanceArgs, revoke, showError, t])
+  }, [amountToApprove?.currency, chainId, getAllowanceArgs, retryWaitForTransaction, revoke, showError, t])
 
   const permitStep = useMemo(() => {
     return {
@@ -210,7 +210,7 @@ const useConfirmActions = (
           const result = await approve()
           if (result?.hash && chainId) {
             setTxHash(result.hash)
-            await publicDelicateClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
+            await retryWaitForTransaction({ hash: result.hash })
           }
           let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
           // check if user really approved the amount trade needs
@@ -252,7 +252,7 @@ const useConfirmActions = (
       },
       showIndicator: true,
     }
-  }, [amountToApprove, approve, chainId, getAllowanceArgs, showError, t])
+  }, [amountToApprove, approve, chainId, getAllowanceArgs, retryWaitForTransaction, showError, t])
 
   const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const swapPreflightCheck = useCallback(() => {
