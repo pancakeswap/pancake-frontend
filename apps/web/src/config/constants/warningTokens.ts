@@ -51,4 +51,5 @@ export const bscWarningTokens = {
     'NFPrompt Token',
     'https://nfprompt.io/',
   ),
+  nmt: new ERC20Token(ChainId.BSC, '0x03AA6298F1370642642415EDC0db8b957783e8D6', 18, 'NMT', 'NetMind Token'),
 }
