@@ -44,20 +44,6 @@ export const HooksConfig: HooksType[] = [
     githubLink: 'https://github.com/pancakeswap/pancake-v4-hooks/tree/main/src/pool-cl/limit-order',
   },
   {
-    title: <Trans>TWAMM</Trans>,
-    desc: (
-      <Trans>
-        The TWAMM hook allows swappers to break large orders into smaller chunks that get automatically executed over a
-        period of time. This helps them to improve the average price of execution by reducing the overall price impact.
-      </Trans>
-    ),
-    tags: [TagType.ORDER_TYPES, TagType.CLAMM],
-    tagsValue: [TagValue.ORDER_TYPES, TagValue.CLAMM],
-    createDate: '15/03/2024',
-    githubLink: 'https://github.com/pancakeswap/pancake-v4-hooks/tree/main/src/pool-cl/twamm',
-  },
-
-  {
     title: <Trans>Geomean Oracle</Trans>,
     desc: (
       <Trans>
@@ -70,7 +56,6 @@ export const HooksConfig: HooksType[] = [
     createDate: '15/03/2024',
     githubLink: 'https://github.com/pancakeswap/pancake-v4-hooks/tree/main/src/pool-bin/geomean-oracle',
   },
-
   {
     title: <Trans>Limit Order</Trans>,
     desc: (
