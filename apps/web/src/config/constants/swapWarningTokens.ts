@@ -1,11 +1,11 @@
-import { Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { Token } from '@pancakeswap/sdk'
 import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
 import { bscWarningTokens } from 'config/constants/warningTokens'
 
 const { alETH } = ethereumTokens
 const { bondly, itam, ccar, bttold, abnbc, metis } = bscTokens
-const { pokemoney, free, safemoon, gala, xcad, lusd } = bscWarningTokens
+const { pokemoney, free, safemoon, gala, xcad, lusd, nfp } = bscWarningTokens
 
 interface WarningTokenList {
   [chainId: number]: {
@@ -30,6 +30,7 @@ const SwapWarningTokens = <WarningTokenList>{
     xcad,
     metis,
     lusd,
+    nfp,
   },
 }
 

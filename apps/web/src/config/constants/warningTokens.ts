@@ -1,5 +1,5 @@
-import { ERC20Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { ERC20Token } from '@pancakeswap/sdk'
 
 export const bscWarningTokens = {
   pokemoney: new ERC20Token(ChainId.BSC, '0x32ff5b4C3B1744F0344D96fA2f87799Ed2805749', 18, 'PMY', 'Pokemoney Coin', ''),
@@ -42,5 +42,13 @@ export const bscWarningTokens = {
     'lUSD',
     'lUSD',
     'https://linear.finance/',
+  ),
+  nfp: new ERC20Token(
+    ChainId.BSC,
+    '0x75E8ddB518bB757b4282cd5b83bb70d4101D12FB',
+    18,
+    'NFP',
+    'NFPrompt Token',
+    'https://nfprompt.io/',
   ),
 }
