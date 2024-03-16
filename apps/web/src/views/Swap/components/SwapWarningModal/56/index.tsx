@@ -10,12 +10,11 @@ import ItamWarning from './ItamWarning'
 import LUSDWarning from './LUSDWarning'
 import METISWarning from './METISWarning'
 import NFPWarning from './NFPWarning'
-import NMTWarning from './NMTWarning'
 import RugPullWarning from './RugPullWarning'
 import SafemoonWarning from './SafemoonWarning'
 import XCADWarning from './XCADWarning'
 
-const { safemoon, bondly, itam, ccar, bttold, pokemoney, free, gala, abnbc, xcad, metis, lusd, nfp, nmt } =
+const { safemoon, bondly, itam, ccar, bttold, pokemoney, free, gala, abnbc, xcad, metis, lusd, nfp } =
   SwapWarningTokensConfig[ChainId.BSC]
 
 const BSC_WARNING_LIST = {
@@ -70,10 +69,6 @@ const BSC_WARNING_LIST = {
   [nfp.address]: {
     symbol: nfp.symbol,
     component: <NFPWarning />,
-  },
-  [nmt.address]: {
-    symbol: nmt.symbol,
-    component: <NMTWarning />,
   },
 }
 
