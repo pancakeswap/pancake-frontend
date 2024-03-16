@@ -91,7 +91,7 @@ export function UnstakeBeforeEnededModal({
             <Flex justifyContent="space-between">
               <Box>
                 <Text fontSize="12px" textTransform="uppercase" bold color="textSubtle">
-                  {t('Commission')}
+                  {t('Withdrawal Fee')}
                 </Text>
                 <Text color="#D67E0A" fontSize="20px" bold mb="-4px">
                   {withdrawFee.toSignificant(2)} {token.symbol}
