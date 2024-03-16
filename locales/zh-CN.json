@@ -1789,7 +1789,7 @@
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "CAKE 入金将转入定期质押池。请注意，存入的 CAKE 只能在 10 周后提取。",
   "in": "倒计时：",
   "Chance of winning next round": "下一轮的中奖几率",
-  "Your": "您的",
+  "Your": "我的",
   "Current Prize Pot": "当前奖池",
   "Stake to get your tickets NOW": "立即质押以获得您的彩票",
   "Rewards": "奖励",
@@ -3252,5 +3252,8 @@
   "Empower your liquidity pool with the innovative Donate method. It enables direct payments to in-range LPs in one or both pool tokens. Donate ensures seamless and efficient transactions by leveraging the pool's fee accounting system.": "Empower your liquidity pool with the innovative Donate method. It enables direct payments to in-range LPs in one or both pool tokens. Donate ensures seamless and efficient transactions by leveraging the pool's fee accounting system.",
   "Introducing PancakeSwap v4": "Introducing PancakeSwap v4",
   "Your DEX Your Innovation Introducing PancakeSwap v4": "Your DEX Your Innovation Introducing PancakeSwap v4",
-  "Whitepaper": "Whitepaper"
+  "Whitepaper": "Whitepaper",
+  "twitter page": "twitter page",
+  "The NFP token has recently experienced an exploit. Please refrain from swapping NFP until further notice. More information can be found on the project's twitter page.": "The NFP token has recently experienced an exploit. Please refrain from swapping NFP until further notice. More information can be found on the project's twitter page.",
+  "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice.": "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice."
 }
