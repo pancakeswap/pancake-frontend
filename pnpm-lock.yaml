@@ -1870,8 +1870,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(@popperjs/core@2.11.8)(react-dom@18.2.0)(react@18.2.0)
       sonner:
-        specifier: ^1.4.3
-        version: 1.4.3(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^1.2.4
+        version: 1.2.4(react-dom@18.2.0)(react@18.2.0)
       styled-system:
         specifier: ^5.1.5
         version: 5.1.5
@@ -22296,8 +22296,8 @@ packages:
     dependencies:
       atomic-sleep: 1.0.0
 
-  /sonner@1.4.3(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-SArYlHbkjqRuLiR0iGY2ZSr09oOrxw081ZZkQPfXrs8aZQLIBOLOdzTYxGJB5yIZ7qL56UEPmrX1YqbODwG0Lw==}
+  /sonner@1.2.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-WGLP2QQnomgewaCTsK7YWiLcy5n1Yj83vsL5cP4zHMmpSkmFsCYTpQKhlXJrPE5kzjwbqCkCFXcOpbKc4vaUaA==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
