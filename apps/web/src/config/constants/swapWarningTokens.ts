@@ -5,7 +5,7 @@ import { bscWarningTokens } from 'config/constants/warningTokens'
 
 const { alETH } = ethereumTokens
 const { bondly, itam, ccar, bttold, abnbc, metis } = bscTokens
-const { pokemoney, free, safemoon, gala, xcad, lusd, nfp } = bscWarningTokens
+const { pokemoney, free, safemoon, gala, xcad, lusd, nfp, nmt } = bscWarningTokens
 
 interface WarningTokenList {
   [chainId: number]: {
@@ -31,6 +31,7 @@ const SwapWarningTokens = <WarningTokenList>{
     metis,
     lusd,
     nfp,
+    nmt,
   },
 }
 
