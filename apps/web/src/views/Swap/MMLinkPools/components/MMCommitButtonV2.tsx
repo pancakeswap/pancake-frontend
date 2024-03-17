@@ -81,6 +81,7 @@ SwapCommitButtonPropsType) {
     (recipient as Address) ?? null,
     amountToApprove?.currency.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
     mmSpender,
+    rfqTrade.quoteExpiry,
   )
 
   // Handlers

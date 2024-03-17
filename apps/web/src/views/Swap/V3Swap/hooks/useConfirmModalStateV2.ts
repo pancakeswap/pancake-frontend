@@ -108,7 +108,6 @@ const useConfirmActions = (
     setPermit2Signature(undefined)
   }, [])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const retryWaitForTransaction = useCallback(
     async ({ hash }: { hash: Hex | undefined }) => {
       if (hash && chainId) {
@@ -143,7 +142,7 @@ const useConfirmActions = (
       setConfirmState(ConfirmModalState.RESETTING_APPROVAL)
       try {
         const result = await revoke()
-        if (result?.hash && chainId) {
+        if (result?.hash) {
           setTxHash(result.hash)
 
           await retryWaitForTransaction({ hash: result.hash })

@@ -5,9 +5,10 @@ import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/swap-sd
 import { ConfirmModalState } from '@pancakeswap/widgets-internal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { RetryableError, retry } from 'state/multicall/retry'
 import { publicClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
-import { Address, Hex } from 'viem'
+import { Address, Hex, TransactionReceipt, TransactionReceiptNotFoundError } from 'viem'
 import { ConfirmAction } from 'views/Swap/V3Swap/hooks/useConfirmModalStateV2'
 import { userRejectedError } from 'views/Swap/V3Swap/hooks/useSendSwapTransaction'
 import { useApprove, useApproveRequires } from './useApprove'
@@ -36,11 +37,12 @@ const useConfirmActions = (
   recipient: Address | null,
   amountToApprove: CurrencyAmount<Token> | undefined,
   spender: Address | undefined,
+  expiredAt?: number,
 ) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const { revoke, approve, refetch } = useApprove(amountToApprove, spender)
-  const { callback: swap, error: swapCallbackError } = useSwapCallback(trade, recipient, swapCalls)
+  const { callback: swap, error: swapCallbackError } = useSwapCallback(trade, recipient, swapCalls, expiredAt)
 
   const [confirmState, setConfirmState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
   const [txHash, setTxHash] = useState<Hex | undefined>(undefined)
@@ -57,15 +59,43 @@ const useConfirmActions = (
     setTxHash(undefined)
   }, [])
 
+  const retryWaitForTransaction = useCallback(
+    async ({ hash }: { hash: Hex | undefined }) => {
+      if (hash && chainId) {
+        let retryTimes = 0
+        const getReceipt = async () => {
+          console.info('retryWaitForTransaction', hash, retryTimes++)
+          try {
+            return await publicClient({ chainId }).waitForTransactionReceipt({ hash })
+          } catch (error) {
+            if (error instanceof TransactionReceiptNotFoundError) {
+              throw new RetryableError()
+            }
+            throw error
+          }
+        }
+        const { promise } = retry<TransactionReceipt>(getReceipt, {
+          n: 6,
+          minWait: 2000,
+          maxWait: 5000,
+        })
+        return promise
+      }
+      return undefined
+    },
+    [chainId],
+  )
+
   const revokeStep = useMemo(() => {
     const action = async (nextState?: ConfirmModalState) => {
       setTxHash(undefined)
       setConfirmState(ConfirmModalState.RESETTING_APPROVAL)
       try {
         const result = await revoke()
-        if (result?.hash && chainId) {
+        if (result?.hash) {
           setTxHash(result.hash)
-          await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
+
+          await retryWaitForTransaction({ hash: result.hash })
         }
 
         let newAllowanceRaw: bigint = 0n
@@ -104,7 +134,7 @@ const useConfirmActions = (
       action,
       showIndicator: true,
     }
-  }, [amountToApprove?.currency, chainId, refetch, revoke, showError, t])
+  }, [amountToApprove?.currency, refetch, retryWaitForTransaction, revoke, showError, t])
 
   const approveStep = useMemo(() => {
     const action = async (nextState?: ConfirmModalState) => {
@@ -115,7 +145,8 @@ const useConfirmActions = (
 
         if (result?.hash) {
           setTxHash(result.hash)
-          await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
+
+          await retryWaitForTransaction({ hash: result.hash })
         }
         // check if user really approved the amount trade needs
         let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
@@ -154,7 +185,7 @@ const useConfirmActions = (
       action,
       showIndicator: true,
     }
-  }, [amountToApprove, approve, chainId, refetch, showError, t])
+  }, [amountToApprove, approve, refetch, retryWaitForTransaction, showError, t])
 
   const swapStep = useMemo(() => {
     const action = async () => {
@@ -174,7 +205,7 @@ const useConfirmActions = (
         const result = await swap()
         if (result?.hash) {
           setTxHash(result.hash)
-          await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
+          await retryWaitForTransaction({ hash: result.hash })
         }
         setConfirmState(ConfirmModalState.COMPLETED)
       } catch (error: any) {
@@ -191,7 +222,7 @@ const useConfirmActions = (
       action,
       showIndicator: false,
     }
-  }, [chainId, resetState, swap, swapCallbackError])
+  }, [resetState, retryWaitForTransaction, swap, swapCallbackError])
 
   return {
     txHash,
@@ -213,6 +244,7 @@ export const useMMConfirmModalState = (
   recipient: Address | null,
   amountToApprove: CurrencyAmount<Token> | undefined,
   spender: Address | undefined,
+  expiredAt?: number,
 ) => {
   const { actions, confirmState, resetState, errorMessage, txHash } = useConfirmActions(
     trade,
@@ -220,6 +252,7 @@ export const useMMConfirmModalState = (
     recipient,
     amountToApprove,
     spender,
+    expiredAt,
   )
   const preConfirmState = usePreviousValue(confirmState)
   const [confirmSteps, setConfirmSteps] = useState<ConfirmModalState[]>()

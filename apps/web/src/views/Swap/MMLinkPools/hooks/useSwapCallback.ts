@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
 import { useSwapState } from 'state/swap/hooks'
@@ -46,9 +47,10 @@ export function useSwapCallback(
   trade: SmartRouterTrade<TradeType> | undefined | null, // trade to execute, required
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
   swapCalls: MMSwapCall[],
+  expiredAt?: number,
 ): { state: SwapCallbackState; callback: null | (() => Promise<SendTransactionResult>); error: string | null } {
   const { account, chainId } = useAccountActiveChain()
-  const { callback } = useSendMMTransaction(account, chainId, trade, swapCalls)
+  const { callback } = useSendMMTransaction(account, chainId, trade, swapCalls, expiredAt)
 
   const recipient = recipientAddress === null ? account : recipientAddress
 
@@ -76,6 +78,7 @@ const useSendMMTransaction = (
   chainId?: number,
   trade?: SmartRouterTrade<TradeType> | null,
   swapCalls: MMSwapCall[] = [],
+  expiredAt?: number,
 ): { callback: null | (() => Promise<SendTransactionResult>) } => {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
@@ -91,6 +94,9 @@ const useSendMMTransaction = (
 
     return {
       callback: async function callback(): Promise<SendTransactionResult> {
+        if (expiredAt && dayjs().unix() > expiredAt) {
+          throw new Error('Order expired. Please try again.')
+        }
         const estimatedCalls: SwapCallEstimate[] = await Promise.all(
           swapCalls.map((call) => {
             const { address, calldata, value } = call
@@ -217,6 +223,7 @@ const useSendMMTransaction = (
     account,
     addTransaction,
     chainId,
+    expiredAt,
     publicClient,
     recipient,
     recipientAddress,
