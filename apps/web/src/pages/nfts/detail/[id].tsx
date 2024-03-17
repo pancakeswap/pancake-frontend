@@ -1,21 +1,21 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import { ellipseAddress } from 'utils/address'
-import dayjs from 'dayjs'
-import { styled } from 'styled-components'
-import { DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
-import List from 'components/nfts/component/list'
-import { AceIcon, AutoRow, Box, Card, Column, Container, Flex, Grid, Loading, Text } from '@pancakeswap/uikit'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import { getBlockExploreLink } from 'utils'
 import { ChainId } from '@pancakeswap/chains'
+import { AutoRow, Box, Column, Container, Flex, Loading, Text } from '@pancakeswap/uikit'
+import { useQuery } from '@tanstack/react-query'
+import List from 'components/nfts/component/list'
+import { DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import { useRouter } from 'next/router'
+import { styled } from 'styled-components'
+import { getBlockExploreLink } from 'utils'
+import { ellipseAddress } from 'utils/address'
+import Tag from '../../../components/Tag/tag'
 import Activity from '../../../components/nfts/component/activity'
 import Adventure from '../../../components/nfts/component/adventure'
+import Link from '../../../components/nfts/component/link'
 import Offer from '../../../components/nfts/component/offer'
-import Tag from '../../../components/Tag/tag'
 
 dayjs.extend(relativeTime)
 
@@ -77,6 +77,7 @@ export const Wrapper = styled.div`
     flex-direction: row;
     align-items: center;
     gap: 4px;
+    margin-bottom: 8px;
   }
   .sgt-detail__left-trait-title {
     color: white;
@@ -364,7 +365,10 @@ export default function SGTDetail() {
                 {
                   label: 'Contract address',
                   value: (
-                    <Link href={getBlockExploreLink(nft?.collection_contract_address, 'address', ChainId.ENDURANCE)}>
+                    <Link
+                      href={getBlockExploreLink(nft?.collection_contract_address, 'address', ChainId.ENDURANCE)}
+                      target="_blank"
+                    >
                       {ellipseAddress(nft?.collection_contract_address)}
                     </Link>
                   ),

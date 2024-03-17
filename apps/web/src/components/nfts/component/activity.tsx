@@ -1,11 +1,11 @@
 import { ellipseAddress } from 'utils/address'
 
-import { AceIcon, AutoRow, Box, Column, Flex, Link } from '@pancakeswap/uikit'
-import dayjs from 'dayjs'
-import { getBlockExploreLink } from 'utils'
 import { ChainId } from '@pancakeswap/chains'
-import { displayBalance } from 'utils/display'
+import { Box, Column, Flex, Link } from '@pancakeswap/uikit'
+import dayjs from 'dayjs'
 import { styled } from 'styled-components'
+import { getBlockExploreLink } from 'utils'
+import { displayBalance } from 'utils/display'
 
 const ItemRow = styled(Flex)`
   & div {

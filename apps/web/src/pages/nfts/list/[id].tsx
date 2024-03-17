@@ -3,16 +3,16 @@
 
 'use client'
 
-import { useState } from 'react'
-import { styled } from 'styled-components'
-import { useRouter } from 'next/router'
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { AceIcon, AutoRow, Box, Button, Card, Column, Container, Flex, Loading, Row, Text } from '@pancakeswap/uikit'
-import { ellipseAddress } from 'utils/address'
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { DEFAULT_COLLECTION_AVATAR, DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
-import { displayBalance } from 'utils/display'
-import InfiniteScroll from 'react-infinite-scroll-component'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { styled } from 'styled-components'
+import { ellipseAddress } from 'utils/address'
+import { displayBalance } from 'utils/display'
 
 const NFTImage = styled.img`
   border: 1px solid #fff;
@@ -146,7 +146,7 @@ export default function SGTList() {
       },
     },
     {
-      name: 'Owners',
+      name: 'Owner',
       sortType: 'none',
       style: {
         width: '180px',
@@ -224,7 +224,7 @@ export default function SGTList() {
                     <img
                       src={collection?.collection_avatar ?? DEFAULT_COLLECTION_AVATAR}
                       alt="avatar"
-                      style={{ width: '80px', height: '80px' }}
+                      style={{ width: '80px', height: '80px', border: '1px solid #fff', borderRadius: 4 }}
                     />
                   </Box>
                   <Box ml="10px" mr="30px" mt="20px">

@@ -52,7 +52,7 @@ export const Wrapper = styled.div`
     font-weight: 500;
     height: 26px;
     line-height: 26px;
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(255, 255, 255, 1);
     background-color: transparent;
     outline: none;
     border: none;
