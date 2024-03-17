@@ -1,9 +1,9 @@
 import React, { MouseEvent } from "react";
 import { styled } from "styled-components";
-import Flex from "../../components/Box/Flex";
 import { MotionBox } from "../../components/Box";
-import { ArrowBackIcon, CloseIcon } from "../../components/Svg";
+import Flex from "../../components/Box/Flex";
 import { IconButton } from "../../components/Button";
+import { ArrowBackIcon, CloseIcon } from "../../components/Svg";
 import { ModalProps } from "./types";
 
 export const mobileFooterHeight = 73;
@@ -12,7 +12,7 @@ export const ModalHeader = styled(Flex)<{ background?: string; headerBorderColor
   align-items: center;
   background: transparent;
   display: flex;
-  padding: 12px 24px;
+  padding: 10px 20px 12px 20px;
 
   ${({ theme }) => theme.mediaQueries.md} {
     background: ${({ background }) => background || "transparent"};
@@ -65,7 +65,7 @@ export const ModalContainer = styled(MotionBox)`
   background: ${({ theme }) => theme.modal.background};
   box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  border-radius: 20px 20px 0px 0px;
+  border-radius: 8px 8px 0px 0px;
   width: 100%;
   max-height: calc(var(--vh, 1vh) * 100);
   z-index: ${({ theme }) => theme.zIndices.modal};
@@ -78,7 +78,7 @@ export const ModalContainer = styled(MotionBox)`
     width: auto;
     position: auto;
     bottom: auto;
-    border-radius: 20px;
+    border-radius: 8px;
     max-height: 100vh;
   }
 ` as typeof MotionBox;

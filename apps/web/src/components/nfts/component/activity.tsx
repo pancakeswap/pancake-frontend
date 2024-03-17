@@ -1,11 +1,12 @@
 import { ellipseAddress } from 'utils/address'
 
 import { ChainId } from '@pancakeswap/chains'
-import { Box, Column, Flex, Link } from '@pancakeswap/uikit'
+import { Box, Column, Flex } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { displayBalance } from 'utils/display'
+import CopyAddress from './copyAddress'
 
 const ItemRow = styled(Flex)`
   & div {
@@ -84,16 +85,22 @@ export default function Activity({ activities }: { activities: any[] }) {
                     <Box width="110px">{activity.activity_type}</Box>
                     <Box width="120px">{displayBalance(activity.price)}</Box>
                     <Box width="140px">
-                      {activity?.activity_type === 'Mint' ? 'Null' : ellipseAddress(activity?.from)}
+                      {activity?.activity_type === 'Mint' ? (
+                        'Null'
+                      ) : (
+                        <CopyAddress address={ellipseAddress(activity?.from)}>
+                          {ellipseAddress(activity?.from)}
+                        </CopyAddress>
+                      )}
                     </Box>
 
                     <Box width="140px">
-                      <Link
-                        href={getBlockExploreLink(activity?.to, 'address', ChainId.ENDURANCE)}
+                      <CopyAddress
+                        address={getBlockExploreLink(activity?.to, 'address', ChainId.ENDURANCE)}
                         className="sensei__table-body-td"
                       >
                         {ellipseAddress(activity?.to, 5)}
-                      </Link>
+                      </CopyAddress>
                     </Box>
 
                     <Box width="180px">{dayjs(activity?.time).fromNow()}</Box>
