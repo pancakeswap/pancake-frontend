@@ -95,12 +95,16 @@ export default function Activity({ activities }: { activities: any[] }) {
                     </Box>
 
                     <Box width="140px">
-                      <CopyAddress
-                        address={getBlockExploreLink(activity?.to, 'address', ChainId.ENDURANCE)}
-                        className="sensei__table-body-td"
-                      >
-                        {ellipseAddress(activity?.to, 5)}
-                      </CopyAddress>
+                      {!activity?.to ? (
+                        'Null'
+                      ) : (
+                        <CopyAddress
+                          address={getBlockExploreLink(activity?.to, 'address', ChainId.ENDURANCE)}
+                          className="sensei__table-body-td"
+                        >
+                          {ellipseAddress(activity?.to, 5)}
+                        </CopyAddress>
+                      )}
                     </Box>
 
                     <Box width="180px">{dayjs(activity?.time).fromNow()}</Box>

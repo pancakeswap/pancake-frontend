@@ -63,3 +63,10 @@ body {
   align-items: center;
   flex-shrink: 0;
 }
+.sensei__table-no-data {
+  opacity: 0.72;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+}

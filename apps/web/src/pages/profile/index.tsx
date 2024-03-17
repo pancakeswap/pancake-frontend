@@ -1,16 +1,15 @@
 'use client'
 
-import Image from 'next/image'
-import { useState } from 'react'
 import { AceIcon, Button, Container, Flex, Link, Loading, Row, Text } from '@pancakeswap/uikit'
-import styled from 'styled-components'
-import { ellipseAddress } from 'utils/address'
-import { useAccount } from 'wagmi'
 import { useQuery } from '@tanstack/react-query'
-import { DEFAULT_AVATAR, DEFAULT_COLLECTION_AVATAR, DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
-import { displayBalance } from 'utils/display'
+import { DEFAULT_AVATAR, DEFAULT_NFT_IMAGE, DOCKMAN_HOST } from 'config/nfts'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { useState } from 'react'
+import styled from 'styled-components'
+import { ellipseAddress } from 'utils/address'
+import { displayBalance } from 'utils/display'
+import { useAccount } from 'wagmi'
 
 dayjs.extend(relativeTime)
 const ShowAcePrice = ({ price }: { price: any }) => {
@@ -746,6 +745,7 @@ export default function User() {
                     </Link>
                   )
                 })}
+                {!datasetList.length ? <span className="sensei__table-no-data">No Data</span> : ''}
               </div>
             </div>
           </div>
@@ -828,6 +828,7 @@ export default function User() {
                     </Link>
                   )
                 })}
+                {!offerModeList.length ? <span className="sensei__table-no-data">No Data</span> : ''}
               </div>
             </div>
           </div>
@@ -918,6 +919,7 @@ export default function User() {
                     </Link>
                   )
                 })}
+                {!listModeList.length ? <span className="sensei__table-no-data">No Data</span> : ''}
               </div>
             </div>
           </div>

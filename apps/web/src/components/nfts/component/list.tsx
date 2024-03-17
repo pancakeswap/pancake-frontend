@@ -1,12 +1,12 @@
-import { AceIcon, AutoRow, Box, Button, Column, Flex, Loading, Text, useToast } from '@pancakeswap/uikit'
-import { displayBalance } from 'utils/display'
-import { ellipseAddress } from 'utils/address'
-import { useAccount } from 'wagmi'
-import { useEthersSigner } from 'utils/ethers'
 import { Seaport } from '@opensea/seaport-js'
+import { AceIcon, AutoRow, Box, Button, Column, Flex, Loading, Text, useToast } from '@pancakeswap/uikit'
 import { DOCKMAN_HOST, SEAPORT_ADDRESS } from 'config/nfts'
 import { useState } from 'react'
+import { ellipseAddress } from 'utils/address'
+import { displayBalance } from 'utils/display'
+import { useEthersSigner } from 'utils/ethers'
 import { sleep } from 'utils/sleep'
+import { useAccount } from 'wagmi'
 import { Wrapper } from './offer.style'
 
 const Item = ({ list, order, refetch }: { list: any; order: any; refetch?: any }) => {
@@ -120,6 +120,7 @@ export default function List({ list, refetch }: { list: any; refetch: any }) {
               {list?.map((l, i) => {
                 return <Item key={l?.id} list={list} order={l} refetch={refetch} />
               })}
+              {!list.length ? <span className="sensei__table-no-data">No Data</span> : ''}
             </Column>
           </Box>
         </div>

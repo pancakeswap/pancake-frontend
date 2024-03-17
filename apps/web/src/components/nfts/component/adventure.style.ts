@@ -14,6 +14,8 @@ export const Wrapper = styled.div`
   .sgt-adventure__user-avatar {
     width: 24px;
     height: 24px;
+    border: 0.5px solid #fff;
+    border-radius: 2px;
   }
   .sgt-adventure__user-name {
     font-size: 16px;

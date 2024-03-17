@@ -1,8 +1,8 @@
-import { useQuery } from '@tanstack/react-query'
-import { styled } from 'styled-components'
 import { Box, Container, Flex, Text } from '@pancakeswap/uikit'
+import { useQuery } from '@tanstack/react-query'
+import { DEFAULT_COLLECTION_BANNER, DOCKMAN_HOST } from 'config/nfts'
 import Link from 'next/link'
-import { DEFAULT_COLLECTION_AVATAR, DEFAULT_COLLECTION_BANNER, DOCKMAN_HOST } from 'config/nfts'
+import { styled } from 'styled-components'
 
 const CollectionCard = styled(Flex)`
   border-radius: 8px;
@@ -37,6 +37,7 @@ const CollectionSwiper = styled.div`
   height: 160px;
   display: flex;
   gap: 25px;
+  margin-top: 12px;
 `
 
 const CollectionSwiperItem = styled(Link)`
@@ -106,50 +107,52 @@ export default function Index() {
             </Box>
           </CollectionCardContent>
         </CollectionCard>
-
-        <CollectionSwiper>
-          {collections?.map((c) => (
+        <div>
+          <span style={{ fontSize: 32, fontWeight: 900, fontFamily: 'Poppins' }}> NFT Collection List </span>
+          <CollectionSwiper>
+            {collections?.map((c) => (
+              <CollectionSwiperItem
+                href={`/nfts/list/${c?.id}`}
+                style={{
+                  backgroundImage: `url(${c?.collection_image ?? DEFAULT_COLLECTION_BANNER})`,
+                  backgroundSize: '100% 100%',
+                }}
+                key={c?.id}
+              >
+                <CollectionSwiperItemMeta>{c?.collection_name}</CollectionSwiperItemMeta>
+              </CollectionSwiperItem>
+            ))}
             <CollectionSwiperItem
-              href={`/nfts/list/${c?.id}`}
+              href="/nfts"
               style={{
-                backgroundImage: `url(${c?.collection_image ?? DEFAULT_COLLECTION_BANNER})`,
+                backgroundImage: `url(/images/c2.png)`,
                 backgroundSize: '100% 100%',
               }}
-              key={c?.id}
             >
-              <CollectionSwiperItemMeta>{c?.collection_name}</CollectionSwiperItemMeta>
+              <CollectionSwiperItemMeta>Tesseract Genesis NFT</CollectionSwiperItemMeta>
             </CollectionSwiperItem>
-          ))}
-          <CollectionSwiperItem
-            href="/nfts"
-            style={{
-              backgroundImage: `url(/images/c2.png)`,
-              backgroundSize: '100% 100%',
-            }}
-          >
-            <CollectionSwiperItemMeta>Tesseract Genesis NFT</CollectionSwiperItemMeta>
-          </CollectionSwiperItem>
 
-          <CollectionSwiperItem
-            href="/nfts"
-            style={{
-              backgroundImage: `url(/images/c3.png)`,
-              backgroundSize: '100% 100%',
-            }}
-          >
-            <CollectionSwiperItemMeta>Upcoming NFTs</CollectionSwiperItemMeta>
-          </CollectionSwiperItem>
+            <CollectionSwiperItem
+              href="/nfts"
+              style={{
+                backgroundImage: `url(/images/c3.png)`,
+                backgroundSize: '100% 100%',
+              }}
+            >
+              <CollectionSwiperItemMeta>Upcoming NFTs</CollectionSwiperItemMeta>
+            </CollectionSwiperItem>
 
-          <CollectionSwiperItem
-            href="/nfts"
-            style={{
-              backgroundImage: `url(/images/c4.png)`,
-              backgroundSize: '100% 100%',
-            }}
-          >
-            <CollectionSwiperItemMeta>Upcoming NFTs</CollectionSwiperItemMeta>
-          </CollectionSwiperItem>
-        </CollectionSwiper>
+            <CollectionSwiperItem
+              href="/nfts"
+              style={{
+                backgroundImage: `url(/images/c4.png)`,
+                backgroundSize: '100% 100%',
+              }}
+            >
+              <CollectionSwiperItemMeta>Upcoming NFTs</CollectionSwiperItemMeta>
+            </CollectionSwiperItem>
+          </CollectionSwiper>
+        </div>
       </Container>
     </Box>
   )
