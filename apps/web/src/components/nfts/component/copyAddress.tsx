@@ -21,7 +21,7 @@ const StyledInternalAddress = styled('span')`
   }
 `
 
-const InternalLink: React.FC<React.PropsWithChildren<unknown>> = ({ children, ...props }) => {
+const InternalLink = function ({ children, ...props }) {
   const { toastError, toastSuccess } = useToast()
   const { t } = useTranslation()
 

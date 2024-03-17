@@ -19,7 +19,7 @@ const StyledInternalLink = styled('a')`
   }
 `
 
-const InternalLink: React.FC<React.PropsWithChildren<unknown>> = ({ children, ...props }) => {
+const InternalLink = function ({ children, ...props }) {
   return <StyledInternalLink {...props}>{children}</StyledInternalLink>
 }
 
