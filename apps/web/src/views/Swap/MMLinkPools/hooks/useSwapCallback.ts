@@ -96,7 +96,7 @@ const useSendMMTransaction = (
     return {
       callback: async function callback(): Promise<SendTransactionResult> {
         if (expiredAt && dayjs().unix() > expiredAt - AVERAGE_CHAIN_BLOCK_TIMES[chainId] * 1000) {
-          throw new Error('Order expired. Please try again.')
+          throw new Error(t('Order expired. Please try again.'))
         }
         const estimatedCalls: SwapCallEstimate[] = await Promise.all(
           swapCalls.map((call) => {
