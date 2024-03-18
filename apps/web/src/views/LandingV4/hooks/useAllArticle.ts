@@ -4,14 +4,14 @@ import { AllArticleType } from 'views/LandingV4/config/types'
 import { staticThirdPartyNews } from '../config/blog/staticThirdPartyNews'
 
 const LIMIT = 20
-const FEATURED_IDS = [2532, 2506, 2505]
+const FEATURED_IDS = [2505, 2506, 2509]
 
 export const useV4Featured = (): AllArticleType => {
   const { data: articlesData, isPending } = useQuery({
     queryKey: ['/latest-v4-articles'],
 
-    queryFn: async () =>
-      getArticle({
+    queryFn: async () => {
+      const response = await getArticle({
         url: '/articles',
         urlParamsObject: {
           populate: 'categories,image',
@@ -22,8 +22,23 @@ export const useV4Featured = (): AllArticleType => {
             },
           },
         },
-      }),
+      })
 
+      const data = response.data.sort((a, b) => {
+        const indexA = FEATURED_IDS.indexOf(a.id)
+        const indexB = FEATURED_IDS.indexOf(b.id)
+
+        if (indexA === -1) return 1
+        if (indexB === -1) return -1
+
+        return indexA - indexB
+      })
+
+      return {
+        ...response,
+        data,
+      }
+    },
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   })
