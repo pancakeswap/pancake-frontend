@@ -15,7 +15,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { RetryableError, retry } from 'state/multicall/retry'
 import { publicClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
-import { Address, Hex, TransactionReceipt, TransactionReceiptNotFoundError } from 'viem'
+import { Address, Hex, TransactionNotFoundError, TransactionReceipt, TransactionReceiptNotFoundError } from 'viem'
 import { erc20ABI } from 'wagmi'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
@@ -117,7 +117,7 @@ const useConfirmActions = (
           try {
             return await publicClient({ chainId }).waitForTransactionReceipt({ hash })
           } catch (error) {
-            if (error instanceof TransactionReceiptNotFoundError) {
+            if (error instanceof TransactionReceiptNotFoundError || error instanceof TransactionNotFoundError) {
               throw new RetryableError()
             }
             throw error

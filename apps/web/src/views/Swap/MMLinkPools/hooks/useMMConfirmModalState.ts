@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { RetryableError, retry } from 'state/multicall/retry'
 import { publicClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
-import { Address, Hex, TransactionReceipt, TransactionReceiptNotFoundError } from 'viem'
+import { Address, Hex, TransactionNotFoundError, TransactionReceipt, TransactionReceiptNotFoundError } from 'viem'
 import { ConfirmAction } from 'views/Swap/V3Swap/hooks/useConfirmModalStateV2'
 import { userRejectedError } from 'views/Swap/V3Swap/hooks/useSendSwapTransaction'
 import { useApprove, useApproveRequires } from './useApprove'
@@ -68,7 +68,7 @@ const useConfirmActions = (
           try {
             return await publicClient({ chainId }).waitForTransactionReceipt({ hash })
           } catch (error) {
-            if (error instanceof TransactionReceiptNotFoundError) {
+            if (error instanceof TransactionReceiptNotFoundError || error instanceof TransactionNotFoundError) {
               throw new RetryableError()
             }
             throw error
