@@ -1,24 +1,27 @@
 import { ZERO_PERCENT } from "@pancakeswap/sdk";
 import { useMemo } from "react";
 
+import { formatFraction } from "@pancakeswap/utils/formatFractions";
 import { getAccrued } from "../aprHelper";
 import { floatToPercent as formatDecimalToPercent } from "../utils";
 
 interface Params extends AprParams {
   // Num of days staked
   stakeFor?: number;
+  cakeInterest?: number;
 }
 
 // @see https://www.calculatorsoup.com/calculators/financial/compound-interest-calculator.php
 export function useRate({ stakeFor = 1, ...rest }: Params) {
-  const { apr, apy } = useApr(rest);
+  const { apr, apy } = useApr({ ...rest, interest: (rest.interest ?? 0) + (rest?.cakeInterest ?? 0) });
   const { principal, compoundEvery, compoundOn } = rest;
   const accrued = useMemo(() => {
     if (!principal) {
       return 0;
     }
+    const aprAsDecimal = parseFloat(formatFraction(apr.asFraction, 6) || "0");
 
-    return getAccrued(principal, apr, compoundEvery, stakeFor, compoundOn ?? false);
+    return getAccrued(principal, aprAsDecimal, compoundEvery, stakeFor, compoundOn ?? false);
   }, [apr, principal, stakeFor, compoundEvery, compoundOn]);
 
   const reward = useMemo(() => {
