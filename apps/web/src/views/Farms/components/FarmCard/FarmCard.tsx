@@ -188,6 +188,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           account={account}
           addLiquidityUrl={addLiquidityUrl}
           displayApr={displayApr}
+          boosterMultiplier={isBooster ? farm.bCakeUserData?.boosterMultiplier ?? 1 : 1}
         />
       </FarmCardInnerContainer>
 

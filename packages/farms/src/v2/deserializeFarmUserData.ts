@@ -23,5 +23,7 @@ export const deserializeFarmBCakeUserData = (farm?: SerializedFarm): Deserialize
     tokenBalance: farm?.bCakeUserData ? new BigNumber(farm.bCakeUserData.tokenBalance) : BIG_ZERO,
     stakedBalance: farm?.bCakeUserData ? new BigNumber(farm.bCakeUserData.stakedBalance) : BIG_ZERO,
     earnings: farm?.bCakeUserData ? new BigNumber(farm.bCakeUserData.earnings) : BIG_ZERO,
+    boosterMultiplier: farm?.bCakeUserData?.boosterMultiplier ?? 1,
+    boostedAmounts: farm?.bCakeUserData?.boostedAmounts ? new BigNumber(farm.bCakeUserData.boostedAmounts) : BIG_ZERO,
   }
 }

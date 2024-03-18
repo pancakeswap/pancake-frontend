@@ -158,6 +158,8 @@ export interface SerializedBCakeUserData {
   stakedBalance: string
   earnings: string
   earningsDualTokenBalance?: string
+  boosterMultiplier?: number
+  boostedAmounts?: string
 }
 
 export interface SerializedFarm extends SerializedFarmPublicData {
@@ -209,6 +211,8 @@ export interface DeserializedBCakeWrapperUserData {
   stakedBalance: BigNumber
   earnings: BigNumber
   earningsDualTokenBalance?: BigNumber
+  boosterMultiplier?: number
+  boostedAmounts?: BigNumber
 }
 
 export interface DeserializedFarm extends DeserializedFarmConfig {
