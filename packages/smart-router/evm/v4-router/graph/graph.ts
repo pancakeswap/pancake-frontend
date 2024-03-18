@@ -358,7 +358,11 @@ async function getBestTrade({
       let bestVertIndex: number | undefined
       for (const [i, vertice] of nextVertList.entries()) {
         const currentBestQuote = getBestQuote(vertice)
-        if (vert === undefined || bestQuote === undefined || currentBestQuote?.greaterThan(bestQuote)) {
+        if (
+          vert === undefined ||
+          bestQuote === undefined ||
+          (currentBestQuote && isQuoteBetter(currentBestQuote, bestQuote))
+        ) {
           vert = vertice
           bestQuote = currentBestQuote
           bestVertIndex = i
