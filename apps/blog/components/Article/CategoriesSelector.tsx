@@ -15,7 +15,8 @@ const CategoriesSelector = ({ selected, categoriesData, childMargin, setSelected
 
   const allCategories = useMemo(() => {
     const firstCategories = { id: 0, name: t('All') }
-    return [firstCategories, ...categoriesData]
+    const sortData = categoriesData.sort((i) => (i.name === 'V4' ? -1 : 1))
+    return [firstCategories, ...sortData]
   }, [categoriesData, t])
 
   return (
