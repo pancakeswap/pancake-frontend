@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 5.1.8
+
+### Patch Changes
+
+- 4e88d8f: Fix not picking the optimal output when trading with exact output
+
 ## 5.1.7
 
 ### Patch Changes
