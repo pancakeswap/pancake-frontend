@@ -37,32 +37,3 @@ export const { publicClient, chains } = configureChains(
     pollingInterval: 6_000,
   },
 )
-
-export const { publicClient: publicDelicateClient } = configureChains(
-  CHAINS,
-  Array.from({ length: 1 })
-    .map((_, i) => i)
-    .map((i) => {
-      return jsonRpcProvider({
-        rpc: (chain) => {
-          if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id && i === 0) {
-            return { http: 'https://ethereum.publicnode.com' }
-          }
-          return PUBLIC_NODES[chain.id]?.[i]
-            ? {
-                http: PUBLIC_NODES[chain.id][i],
-              }
-            : null
-        },
-      })
-    }),
-  {
-    batch: {
-      multicall: {
-        batchSize: 1024 * 200,
-        wait: 16,
-      },
-    },
-    pollingInterval: 6_000,
-  },
-)
