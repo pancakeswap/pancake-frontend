@@ -4,6 +4,43 @@ import { AllArticleType } from 'views/LandingV4/config/types'
 import { staticThirdPartyNews } from '../config/blog/staticThirdPartyNews'
 
 const LIMIT = 20
+const FEATURED_IDS = [2532, 2506, 2505]
+
+export const useV4Featured = (): AllArticleType => {
+  const { data: articlesData, isPending } = useQuery({
+    queryKey: ['/latest-v4-articles'],
+
+    queryFn: async () =>
+      getArticle({
+        url: '/articles',
+        urlParamsObject: {
+          populate: 'categories,image',
+          sort: 'createAt:desc',
+          filters: {
+            id: {
+              $in: FEATURED_IDS,
+            },
+          },
+        },
+      }),
+
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  })
+
+  return {
+    isFetching: isPending,
+    articlesData: articlesData ?? {
+      data: [],
+      pagination: {
+        page: 0,
+        pageSize: 0,
+        pageCount: 0,
+        total: 0,
+      },
+    },
+  }
+}
 
 export const useV4Articles = (): AllArticleType => {
   const { data: articlesData, isPending } = useQuery({
