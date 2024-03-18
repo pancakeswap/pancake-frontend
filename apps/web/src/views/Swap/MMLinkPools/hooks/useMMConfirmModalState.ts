@@ -205,7 +205,10 @@ const useConfirmActions = (
         const result = await swap()
         if (result?.hash) {
           setTxHash(result.hash)
-          await retryWaitForTransaction({ hash: result.hash })
+          const receipt = await retryWaitForTransaction({ hash: result.hash })
+          if (receipt && receipt.status === 'reverted') {
+            throw new Error('Transaction reverted')
+          }
         }
         setConfirmState(ConfirmModalState.COMPLETED)
       } catch (error: any) {

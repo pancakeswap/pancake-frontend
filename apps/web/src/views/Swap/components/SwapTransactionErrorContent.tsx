@@ -1,13 +1,13 @@
-import { useCallback } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
 import { LinkExternal, Text } from '@pancakeswap/uikit'
 import { TransactionErrorContent } from '@pancakeswap/widgets-internal'
-import { useTranslation } from '@pancakeswap/localization'
+import { useCallback } from 'react'
 
 const PancakeRouterSlippageErrorMsg =
   'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.'
 
 export const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) => {
-  const isSlippagedErrorMsg = message?.includes(PancakeRouterSlippageErrorMsg)
+  const isSlippagedErrorMsg = Array.isArray(message) ? message?.includes(PancakeRouterSlippageErrorMsg) : false
 
   const handleErrorDismiss = useCallback(() => {
     onDismiss?.()
