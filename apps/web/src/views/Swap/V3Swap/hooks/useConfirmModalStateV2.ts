@@ -74,7 +74,7 @@ const useConfirmActions = (
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const [deadline] = useTransactionDeadline()
-  const { revoke, permit, approve, refetch } = usePermit2(amountToApprove, spender)
+  const { revoke, permit, approve } = usePermit2(amountToApprove, spender)
   const { account } = useAccountActiveChain()
   const getAllowanceArgs = useMemo(() => {
     if (!chainId) return undefined
@@ -187,7 +187,7 @@ const useConfirmActions = (
       action,
       showIndicator: true,
     }
-  }, [amountToApprove?.currency, chainId, getAllowanceArgs, retryWaitForTransaction, revoke, showError, t])
+  }, [amountToApprove?.currency, getAllowanceArgs, retryWaitForTransaction, revoke, showError, t])
 
   const permitStep = useMemo(() => {
     return {

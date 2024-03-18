@@ -76,12 +76,12 @@ SwapCommitButtonPropsType) {
   }, [mmTradeInfo])
   const swapCalls = useSwapCallArguments(rfqTrade.trade, rfqTrade.rfq ?? undefined, recipient ?? undefined)
   const { resetState, txHash, confirmState, confirmActions, callToAction, errorMessage } = useMMConfirmModalState(
-    isExpertMode ? rfqTrade.trade : tradeToConfirm,
+    (isExpertMode ? rfqTrade.trade : tradeToConfirm) ?? undefined,
     swapCalls,
     (recipient as Address) ?? null,
     amountToApprove?.currency.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
     mmSpender,
-    rfqTrade.quoteExpiry,
+    rfqTrade.quoteExpiry ?? undefined,
   )
 
   // Handlers
