@@ -43,6 +43,7 @@ const CircleOpenNew = styled(Flex)<{ $isHover: boolean }>`
 
 const StyledBlogCard = styled(Link)`
   display: flex;
+  width: 100%;
 
   &:hover {
     text-decoration: initial;
@@ -90,7 +91,7 @@ export const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <Card>
+      <Card style={{ width: '100%' }}>
         <Flex
           height="100%"
           width="100%"
@@ -99,7 +100,7 @@ export const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
           <Box
             position="relative"
             overflow="hidden"
-            width={isSpecialLayout ? ['100%', '100%', '100%', '100%', '180%'] : ['100%']}
+            width={['100%']}
             minHeight={isSpecialLayout ? ['200px', '200px', '200px', '200px', '360px'] : imgHeight ?? '200px'}
             height={isSpecialLayout ? ['200px', '200px', '200px', '200px', '360px'] : imgHeight ?? '200px'}
           >
