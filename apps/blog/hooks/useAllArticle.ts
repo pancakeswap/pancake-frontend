@@ -31,16 +31,25 @@ const useAllArticle = ({
         const urlParamsObject = {
           ...(query && { _q: query }),
           filters: {
-            categories: {
-              name: {
-                $notIn: filterTagArray,
-              },
-              ...(selectedCategories && {
-                id: {
-                  $eq: selectedCategories,
+            $and: [
+              {
+                newsOutBoundLink: {
+                  $null: true,
                 },
-              }),
-            },
+              },
+              {
+                categories: {
+                  name: {
+                    $notIn: filterTagArray,
+                  },
+                  ...(selectedCategories && {
+                    id: {
+                      $eq: selectedCategories,
+                    },
+                  }),
+                },
+              },
+            ],
           },
           locale: languageOption,
           populate: 'categories,image',
@@ -53,9 +62,8 @@ const useAllArticle = ({
         const queryString = qs.stringify(urlParamsObject)
         const response = await fetch(`/api/articles?${queryString}`)
         const result: ResponseArticleType = await response.json()
-        const blogs = result.data.map((i: ResponseArticleDataType) => transformArticle(i))
         return {
-          data: blogs.filter((i) => !i.newsOutBoundLink) ?? [], // TODO: Filter out News, should find a better way.
+          data: result.data.map((i: ResponseArticleDataType) => transformArticle(i)) ?? [],
           pagination: { ...result.meta.pagination },
         }
       } catch (error) {
