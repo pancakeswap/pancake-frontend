@@ -15,10 +15,11 @@ const Container = styled(Flex)`
   height: 100%;
   padding: 12px;
   align-items: center;
-  background: ${({ theme }) => theme.colors.textSubtle};
+  background: ${({ theme }) => theme.colors.text};
 
   ${({ theme }) => theme.mediaQueries.md} {
     padding: 0px;
+    background: ${({ theme }) => theme.colors.textSubtle};
   }
 `
 
@@ -29,36 +30,36 @@ const InnerContainer = styled(Flex)`
 `
 
 const SpeechBubble = styled(Flex)`
-  justify-content: space-between;
   position: relative;
-  background: ${({ theme }) => theme.colors.text};
   border-radius: 16px;
-  padding: 8px;
-  width: 65%;
+  width: 100%;
   height: 80%;
   align-items: center;
+  justify-content: space-between;
 
   & ${Text} {
     flex-shrink: 0;
     margin-right: 4px;
   }
 
-  &:before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: -7px;
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-right: ${({ theme }) => `8px solid ${theme.colors.text}`};
-  }
-
   ${({ theme }) => theme.mediaQueries.md} {
+    padding: 8px;
     margin-left: 8px;
     width: 900px;
+    background: ${({ theme }) => theme.colors.text};
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -7px;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-right: ${({ theme }) => `8px solid ${theme.colors.text}`};
+    }
   }
 `
 
@@ -68,10 +69,8 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const [, hideBanner] = usePhishingBanner()
   const { isDesktop, isLg } = useMatchBreakpoints()
   const [percentage, setPerCentage] = useState(0)
-
-  const configList = useMemo(() => {
-    return [<Step1 />, <Step2 />]
-  }, [])
+  const showInBigDevice = isDesktop || isLg
+  const configList = useMemo(() => [<Step1 />, <Step2 />], [])
 
   const onAutoplayTimeLeft = (s, time, progress) => {
     setPerCentage(1 - progress)
@@ -95,7 +94,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
           return (
             <SwiperSlide key={childKey}>
               <Flex justifyContent="center" alignItems="center">
-                {(isDesktop || isLg) && (
+                {showInBigDevice && (
                   <img
                     width="92px"
                     alt="phishing-warning"
@@ -104,7 +103,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
                 )}
                 <SpeechBubble>
                   <InnerContainer>{config}</InnerContainer>
-                  <Countdown percentage={percentage} />
+                  {showInBigDevice && <Countdown percentage={percentage} />}
                 </SpeechBubble>
               </Flex>
             </SwiperSlide>
