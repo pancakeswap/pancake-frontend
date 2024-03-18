@@ -53,8 +53,9 @@ const useAllArticle = ({
         const queryString = qs.stringify(urlParamsObject)
         const response = await fetch(`/api/articles?${queryString}`)
         const result: ResponseArticleType = await response.json()
+        const news = result.data.map((i: ResponseArticleDataType) => transformArticle(i))
         return {
-          data: result.data.map((i: ResponseArticleDataType) => transformArticle(i)) ?? [],
+          data: news.filter((i) => !i.newsOutBoundLink) ?? [], // TODO: Filter out News, should find a better way.
           pagination: { ...result.meta.pagination },
         }
       } catch (error) {
