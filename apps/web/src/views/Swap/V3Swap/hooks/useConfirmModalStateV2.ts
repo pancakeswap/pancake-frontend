@@ -118,7 +118,7 @@ const useConfirmActions = (
         if (userRejectedError(error)) {
           showError(t('Transaction rejected'))
         } else if (error instanceof UserUnexpectedTxError) {
-          showError(t('Revert transaction filled, but Approval not reset to 0. Please try again.'))
+          showError(t('Revoke transaction failed, and Approval not reset to 0. Please try again.'))
         } else {
           showError(typeof error === 'string' ? error : (error as any)?.message)
         }
