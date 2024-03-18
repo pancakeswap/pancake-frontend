@@ -120,6 +120,7 @@ export const fetchFarmUserBCakeWrapperStakedBalances = async (
   farmsToFetch: SerializedFarmPublicData[],
   chainId: number,
 ) => {
+  const boosterPrecision = '1000000000000'
   const rawStakedBalances = (await publicClient({ chainId }).multicall({
     contracts: farmsToFetch.map((farm) => {
       return {
@@ -135,7 +136,14 @@ export const fetchFarmUserBCakeWrapperStakedBalances = async (
   const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
     return new BigNumber(stakedBalance[0].toString()).toJSON()
   })
-  return parsedStakedBalances
+  const boosterMultiplier = rawStakedBalances.map((stakedBalance) => {
+    return new BigNumber(stakedBalance[2].toString()).div(boosterPrecision).toNumber()
+  })
+  const boostedAmounts = rawStakedBalances.map((stakedBalance) => {
+    return new BigNumber(stakedBalance[3].toString()).toJSON()
+  })
+
+  return { parsedStakedBalances, boosterMultiplier, boostedAmounts }
 }
 
 export const fetchFarmUserEarnings = async (

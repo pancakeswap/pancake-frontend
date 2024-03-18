@@ -177,7 +177,12 @@ async function getBoostedFarmsStakeValue(farms, account, chainId, proxyAddress) 
 }
 
 async function getBCakeWrapperFarmsStakeValue(farms, account, chainId) {
-  const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
+  const [
+    userFarmAllowances,
+    userFarmTokenBalances,
+    { parsedStakedBalances: userStakedBalances, boostedAmounts, boosterMultiplier },
+    userFarmEarnings,
+  ] = await Promise.all([
     fetchFarmBCakeWrapperUserAllowances(account, farms, chainId),
     fetchFarmUserTokenBalances(account, farms, chainId),
     fetchFarmUserBCakeWrapperStakedBalances(account, farms, chainId),
@@ -191,6 +196,8 @@ async function getBCakeWrapperFarmsStakeValue(farms, account, chainId) {
       tokenBalance: userFarmTokenBalances[index],
       stakedBalance: userStakedBalances[index],
       earnings: userFarmEarnings[index],
+      boosterMultiplier: boosterMultiplier[index],
+      boostedAmounts: boostedAmounts[index],
     }
   })
 
