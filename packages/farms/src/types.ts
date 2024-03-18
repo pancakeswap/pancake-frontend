@@ -160,6 +160,7 @@ export interface SerializedBCakeUserData {
   earningsDualTokenBalance?: string
   boosterMultiplier?: number
   boostedAmounts?: string
+  boosterContractAddress?: Address
 }
 
 export interface SerializedFarm extends SerializedFarmPublicData {
@@ -213,6 +214,7 @@ export interface DeserializedBCakeWrapperUserData {
   earningsDualTokenBalance?: BigNumber
   boosterMultiplier?: number
   boostedAmounts?: BigNumber
+  boosterContractAddress?: Address
 }
 
 export interface DeserializedFarm extends DeserializedFarmConfig {
