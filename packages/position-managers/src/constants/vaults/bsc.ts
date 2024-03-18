@@ -83,7 +83,8 @@ export const vaults: VaultConfig[] = [
     allowDepositToken0: false,
     allowDepositToken1: true,
     managerInfoUrl: 'https://www.alpacafinance.org/',
-    strategyInfoUrl: 'https://docs.alpacafinance.org/leveraged-yield-farming/strategies',
+    strategyInfoUrl:
+      'https://docs.alpacafinance.org/automated-vault/introduction-to-automated-vaults/savings-vault-strategy',
     learnMoreAboutUrl: 'https://docs.alpacafinance.org/leveraged-yield-farming/strategies/pancakeswap-farms',
     priceFromV3FarmPid: 5,
     minDepositUSD: 50,
@@ -105,7 +106,8 @@ export const vaults: VaultConfig[] = [
     allowDepositToken0: false,
     allowDepositToken1: true,
     managerInfoUrl: 'https://www.alpacafinance.org/',
-    strategyInfoUrl: 'https://docs.alpacafinance.org/leveraged-yield-farming/strategies',
+    strategyInfoUrl:
+      'https://docs.alpacafinance.org/automated-vault/introduction-to-automated-vaults/savings-vault-strategy',
     learnMoreAboutUrl: 'https://docs.alpacafinance.org/leveraged-yield-farming/strategies/pancakeswap-farms',
     priceFromV3FarmPid: 8,
     minDepositUSD: 50,
