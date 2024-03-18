@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
@@ -94,7 +95,7 @@ const useSendMMTransaction = (
 
     return {
       callback: async function callback(): Promise<SendTransactionResult> {
-        if (expiredAt && dayjs().unix() > expiredAt) {
+        if (expiredAt && dayjs().unix() > expiredAt - AVERAGE_CHAIN_BLOCK_TIMES[chainId] * 1000) {
           throw new Error('Order expired. Please try again.')
         }
         const estimatedCalls: SwapCallEstimate[] = await Promise.all(
