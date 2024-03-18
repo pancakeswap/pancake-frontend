@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency } from '@pancakeswap/sdk'
 import { Box, Flex, RowBetween, Text } from '@pancakeswap/uikit'
 import { memo, useMemo } from 'react'
 import { AprResult } from '../hooks'
@@ -9,7 +10,6 @@ interface Props {
   id: number | string
   apr: AprResult
   isAprLoading: boolean
-  withCakeReward?: boolean
   lpSymbol: string
   autoCompound?: boolean
   totalStakedInUsd: number
@@ -20,13 +20,13 @@ interface Props {
   precision?: bigint
   lpTokenDecimals?: number
   aprTimeWindow?: number
+  rewardToken?: Currency
 }
 
 export const YieldInfo = memo(function YieldInfo({
   id,
   apr,
   isAprLoading,
-  withCakeReward,
   autoCompound,
   totalAssetsInUsd,
   lpSymbol,
@@ -36,12 +36,13 @@ export const YieldInfo = memo(function YieldInfo({
   precision,
   lpTokenDecimals,
   aprTimeWindow,
+  rewardToken,
 }: Props) {
   const { t } = useTranslation()
 
   const earning = useMemo(
-    () => (withCakeReward && apr.isInCakeRewardDateRange ? t('CAKE + Fees') : t('Fees')),
-    [withCakeReward, t, apr.isInCakeRewardDateRange],
+    () => (apr.isInCakeRewardDateRange ? t('CAKE + Fees') : t('Fees')),
+    [t, apr.isInCakeRewardDateRange],
   )
 
   return (
@@ -60,6 +61,7 @@ export const YieldInfo = memo(function YieldInfo({
           precision={precision}
           lpTokenDecimals={lpTokenDecimals}
           aprTimeWindow={aprTimeWindow}
+          rewardToken={rewardToken}
         />
       </RowBetween>
       <RowBetween>
