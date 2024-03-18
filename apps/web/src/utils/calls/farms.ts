@@ -30,7 +30,6 @@ export const bCakeStakeFarm = async (v2SSContract: V2SSBCakeContract, amount, ga
     account: v2SSContract.account ?? '0x',
     chain: v2SSContract.chain,
   })
-  return () => {}
 }
 
 export const unstakeFarm = async (masterChefContract: MasterChefContract, pid, amount, gasPrice, gasLimit?: bigint) => {

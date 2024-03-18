@@ -5,7 +5,7 @@ import { useBCakeFarmWrapperBoosterVeCakeContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import { Address } from 'viem'
 
-const SHOULD_UPDATE_THRESHOLD = 1.05
+const SHOULD_UPDATE_THRESHOLD = 1.000001
 
 export const useWrapperBooster = (bCakeBoosterAddress: Address, boostMultiplier: number, wrapperAddress?: Address) => {
   const bCakeFarmWrapperBoosterVeCakeContract = useBCakeFarmWrapperBoosterVeCakeContract(bCakeBoosterAddress)

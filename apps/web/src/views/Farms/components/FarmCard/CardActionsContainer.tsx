@@ -1,11 +1,13 @@
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
-import { AtomBox, Flex, RowBetween, Skeleton, Text } from '@pancakeswap/uikit'
+import { AtomBox, Button, Flex, RowBetween, Skeleton, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { StatusView } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusView'
 import { useBoostStatusPM } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
+import { useWrapperBooster } from 'views/PositionManagers/hooks'
+import { useUpdateBCakeFarms } from '../../hooks/useUpdateBCake'
 import { HarvestActionContainer } from '../FarmTable/Actions/HarvestAction'
 import { StakedContainer } from '../FarmTable/Actions/StakedAction'
 import HarvestAction from './HarvestAction'
@@ -61,6 +63,13 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { status } = useBoostStatusPM(isBooster, boosterMultiplier)
   const { colors } = useTheme()
   const dividerBorderStyle = useMemo(() => `1px solid ${colors.input}`, [colors.input])
+  const { shouldUpdate, veCakeUserMultiplierBeforeBoosted } = useWrapperBooster(
+    farm.bCakeUserData?.boosterContractAddress ?? '0x',
+    boosterMultiplier ?? 1,
+    bCakeWrapperAddress,
+  )
+  const { onUpdate } = useUpdateBCakeFarms(bCakeWrapperAddress ?? '0x', pid)
+
   return (
     <AtomBox mt="16px">
       <ActionContainer bg="background" flexDirection="column">
@@ -126,7 +135,17 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
               style={{ borderLeft: dividerBorderStyle, borderTop: dividerBorderStyle }}
             />
             <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
-              <StatusView status={status} isFarmStaking boostedMultiplier={boosterMultiplier} maxBoostMultiplier={3} />
+              <Flex width="100%" justifyContent="space-between" alignItems="center">
+                <StatusView
+                  status={status}
+                  isFarmStaking
+                  boostedMultiplier={boosterMultiplier}
+                  maxBoostMultiplier={3}
+                  shouldUpdate={shouldUpdate}
+                  expectMultiplier={veCakeUserMultiplierBeforeBoosted}
+                />
+                {shouldUpdate && <Button onClick={onUpdate}>{t('Update')}</Button>}
+              </Flex>
             </RowBetween>
           </>
         )}

@@ -20,6 +20,7 @@ import { resetUserState } from '../global/actions'
 import {
   fetchFarmBCakeWrapperUserAllowances,
   fetchFarmUserAllowances,
+  fetchFarmUserBCakeWrapperConstants,
   fetchFarmUserBCakeWrapperEarnings,
   fetchFarmUserBCakeWrapperStakedBalances,
   fetchFarmUserEarnings,
@@ -182,11 +183,13 @@ async function getBCakeWrapperFarmsStakeValue(farms, account, chainId) {
     userFarmTokenBalances,
     { parsedStakedBalances: userStakedBalances, boostedAmounts, boosterMultiplier },
     userFarmEarnings,
+    { boosterContractAddress },
   ] = await Promise.all([
     fetchFarmBCakeWrapperUserAllowances(account, farms, chainId),
     fetchFarmUserTokenBalances(account, farms, chainId),
     fetchFarmUserBCakeWrapperStakedBalances(account, farms, chainId),
     fetchFarmUserBCakeWrapperEarnings(account, farms, chainId),
+    fetchFarmUserBCakeWrapperConstants(account, farms, chainId),
   ])
 
   const normalFarmAllowances = userFarmAllowances.map((_, index) => {
@@ -198,6 +201,7 @@ async function getBCakeWrapperFarmsStakeValue(farms, account, chainId) {
       earnings: userFarmEarnings[index],
       boosterMultiplier: boosterMultiplier[index],
       boostedAmounts: boostedAmounts[index],
+      boosterContractAddress: boosterContractAddress[index],
     }
   })
 
