@@ -3,12 +3,12 @@ import { useQuery } from '@tanstack/react-query'
 import { AllArticleType } from 'views/LandingV4/config/types'
 import { staticThirdPartyNews } from '../config/blog/staticThirdPartyNews'
 
-const LIMIT = 20
+const LIMIT = 50
 const FEATURED_IDS = [2505, 2506, 2509]
 
 export const useV4Featured = (): AllArticleType => {
   const { data: articlesData, isPending } = useQuery({
-    queryKey: ['/latest-v4-articles'],
+    queryKey: ['/featured-v4-articles'],
 
     queryFn: async () => {
       const response = await getArticle({
