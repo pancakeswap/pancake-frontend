@@ -3239,8 +3239,6 @@
   "The Geomean Oracle hook computes time-weighted average price from a set of pool price observations, using geometric mean rather than arithmetic mean. This approach makes it more resilient to temporary price spikes.": "The Geomean Oracle hook computes time-weighted average price from a set of pool price observations, using geometric mean rather than arithmetic mean. This approach makes it more resilient to temporary price spikes.",
   "Limit Order": "Zlecenie z limitem",
   "The Limit Order hook facilitates on-chain limit order functionality for liquidity pools, eliminating the need for off-chain keepers to process orders. Offering a user experience akin to centralized exchanges, traders can specify buy or sell prices for assets. Orders are executed automatically when the pool price meets the specified limit price.": "The Limit Order hook facilitates on-chain limit order functionality for liquidity pools, eliminating the need for off-chain keepers to process orders. Offering a user experience akin to centralized exchanges, traders can specify buy or sell prices for assets. Orders are executed automatically when the pool price meets the specified limit price.",
-  "TWAMM": "TWAMM",
-  "The TWAMM hook allows swappers to break large orders into smaller chunks that get automatically executed over a period of time. This helps them to improve the average price of execution by reducing the overall price impact.": "The TWAMM hook allows swappers to break large orders into smaller chunks that get automatically executed over a period of time. This helps them to improve the average price of execution by reducing the overall price impact.",
   "Customized Pool Types": "Customized Pool Types",
   "Singleton": "Singleton",
   "Flash Accounting": "Flash Accounting",
@@ -3255,5 +3253,6 @@
   "Whitepaper": "Whitepaper",
   "twitter page": "twitter page",
   "The NFP token has recently experienced an exploit. Please refrain from swapping NFP until further notice. More information can be found on the project's twitter page.": "The NFP token has recently experienced an exploit. Please refrain from swapping NFP until further notice. More information can be found on the project's twitter page.",
-  "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice.": "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice."
+  "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice.": "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice.",
+  "Withdrawal Fee": "Withdrawal Fee"
 }
