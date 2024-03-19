@@ -4,7 +4,8 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { useMemo } from 'react'
 import { getVeCakeAddress } from 'utils/addressHelpers'
-import { Address, erc20ABI, useAccount, useBalance, useContractRead } from 'wagmi'
+import { Address, erc20Abi } from 'viem'
+import { useAccount, useBalance, useReadContract } from 'wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
 const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean) => {
@@ -15,9 +16,9 @@ export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: 
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
 
-  const { data, status, ...rest } = useContractRead({
+  const { data, status, ...rest } = useReadContract({
     chainId: chainIdOverride || chainId,
-    abi: erc20ABI,
+    abi: erc20Abi,
     address: tokenAddress,
     functionName: 'balanceOf',
     args: [account || '0x'],
