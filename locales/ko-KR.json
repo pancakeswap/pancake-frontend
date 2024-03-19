@@ -2763,7 +2763,6 @@
   "Yield IQ": "Yield IQ",
   "Token amounts displayed above are estimations. The final amount of tokens received may vary.": "위에 표시된 토큰 금액은 추정치입니다. 수령하는 최종 토큰 금액은 다를 수 있습니다.",
   "Pending Confirm": "확인 대기 중",
-  "CAKE APR": "CAKE APR",
   "LP APR": "LP APR",
   "Calculated based on previous %days% days average data.": "이전 %days%일 평균 데이터를 기반으로 계산되었습니다.",
   "Farming Rewards": "파밍 리워드",
@@ -3200,7 +3199,7 @@
   "Enable spending %symbol%": "%symbol% 사용 활성화",
   "Reset approval on USDT.": "USDT의 승인을 재설정하세요.",
   "Go to CAKE Staking": "CAKE 스테이킹으로 이동",
-  "Revert transaction filled, but Approval not reset to 0. Please try again.": "트랜잭션 되돌리기가 실패했지만 승인이 0으로 재설정되지 않았습니다. 다시 시도해 주세요.",
+  "Revoke transaction filled, but Approval not reset to 0. Please try again.": "Revoke transaction filled, but Approval not reset to 0. Please try again.",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Merkl 리워드를 받을 자격이 있는 모든 포지션에서 %symbol%에 통합된 리워드 수입니다.",
   "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "Merkl에서 리워드를 받으려면 PancakeSwap 팜에서 이 포지션을 언스테이킹하세요.",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "이 Merkl 캠페인은 범위를 벗어난 유동성에 대해 리워드를 제공하지 않습니다. 리워드를 받으려면 포지션을 조정하세요.",
@@ -3254,5 +3253,8 @@
   "twitter page": "twitter page",
   "The NFP token has recently experienced an exploit. Please refrain from swapping NFP until further notice. More information can be found on the project's twitter page.": "The NFP token has recently experienced an exploit. Please refrain from swapping NFP until further notice. More information can be found on the project's twitter page.",
   "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice.": "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice.",
-  "Withdrawal Fee": "Withdrawal Fee"
+  "Order expired. Please try again.": "Order expired. Please try again.",
+  "Transaction failed: quote expired": "Transaction failed: quote expired",
+  "Withdrawal Fee": "Withdrawal Fee",
+  "View Staking Token Project Site": "View Staking Token Project Site"
 }
