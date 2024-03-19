@@ -8,6 +8,7 @@
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
     "@pancakeswap/worker-utils": "workspace:*",
+    "dayjs": "^1.11.10",
     "graphql-request": "5.0.0",
     "itty-router": "^2.6.1",
     "itty-router-extras": "^0.4.2",

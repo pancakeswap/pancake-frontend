@@ -1,9 +1,20 @@
 import type { Router, Request, RouteHandler } from 'itty-router'
 import { missing } from 'itty-router-extras'
+import dayjs from 'dayjs'
 
-export const getPoolsObjectName = (chainId: string | number) => `v3_pools_${chainId}_latest`
+function formatToDate(date: Date | number) {
+  return dayjs(date).format('YYYY-MM-DD')
+}
 
-export const getPoolsTvlObjectName = (chainId: string | number) => `v3_pools_tvl_${chainId}_latest`
+export const getPoolsObjectNameByDate = (chainId: string | number, date?: Date | number) =>
+  `v3_pools_${chainId}_${date ? formatToDate(date) : 'latest'}`
+
+export const getPoolsObjectName = (chainId: string | number) => getPoolsObjectNameByDate(chainId)
+
+export const getPoolsTvlObjectNameByDate = (chainId: string | number, date?: Date | number) =>
+  `v3_pools_tvl_${chainId}_${date ? formatToDate(date) : 'latest'}`
+
+export const getPoolsTvlObjectName = (chainId: string | number) => getPoolsTvlObjectNameByDate(chainId)
 
 const respondWithCache = async (req: Request, event: any, handler: RouteHandler<Request>) => {
   const url = new URL(req.url)
@@ -21,11 +32,13 @@ const respondWithCache = async (req: Request, event: any, handler: RouteHandler<
 }
 
 export function poolsRoute(router: Router) {
-  const createRoute = (route: string, getObjectName: (chainId: string) => string) => {
+  const createRoute = (route: string, getObjectName: (chainId: string, date?: Date | number) => string) => {
     router.get(route, async (req, event) => {
       return respondWithCache(req, event, async () => {
         const chainId = req.params?.chainId
-        const objectName = chainId && getObjectName(chainId)
+        const date = req.query?.date ? dayjs(req.query?.date).toDate() : undefined
+        const isQueryByDate = Boolean(date)
+        const objectName = chainId && getObjectName(chainId, date)
         if (!objectName) {
           return missing('Not Found')
         }
@@ -39,7 +52,10 @@ export function poolsRoute(router: Router) {
         object.writeHttpMetadata(headers)
         headers.set('etag', object.httpEtag)
 
-        headers.append('Cache-Control', 's-maxage=1800, stale-while-revalidate=900')
+        headers.append(
+          'Cache-Control',
+          isQueryByDate ? 's-maxage=86400, stale-while-revalidate=3600' : 's-maxage=1800, stale-while-revalidate=900',
+        )
 
         return new Response(object.body, {
           headers,
@@ -48,6 +64,6 @@ export function poolsRoute(router: Router) {
     })
   }
 
-  createRoute('/v0/v3-pools/:chainId', getPoolsObjectName)
-  createRoute('/v0/v3-pools-tvl/:chainId', getPoolsTvlObjectName)
+  createRoute('/v0/v3-pools/:chainId', getPoolsObjectNameByDate)
+  createRoute('/v0/v3-pools-tvl/:chainId', getPoolsTvlObjectNameByDate)
 }

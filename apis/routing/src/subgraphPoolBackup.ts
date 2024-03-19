@@ -1,8 +1,12 @@
 import { SmartRouter } from '@pancakeswap/smart-router'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 
 import { v3SubgraphProvider } from './provider'
 import { SUPPORTED_CHAINS } from './constants'
-import { getPoolsObjectName, getPoolsTvlObjectName } from './pools'
+import { getPoolsObjectName, getPoolsTvlObjectName, getPoolsTvlObjectNameByDate } from './pools'
+
+dayjs.extend(utc)
 
 // eslint-disable-next-line consistent-return
 async function handleScheduled(event: ScheduledEvent) {
@@ -33,6 +37,17 @@ async function handleScheduled(event: ScheduledEvent) {
                 contentType: 'application/json',
               },
             }),
+            isUTCMidnight(event.scheduledTime)
+              ? SUBGRAPH_POOLS.put(
+                  getPoolsTvlObjectNameByDate(chainId, event.scheduledTime),
+                  JSON.stringify(poolsTvl),
+                  {
+                    httpMetadata: {
+                      contentType: 'application/json',
+                    },
+                  },
+                )
+              : Promise.resolve(),
           ])
         } catch (e) {
           console.error(e)
@@ -43,6 +58,11 @@ async function handleScheduled(event: ScheduledEvent) {
     default:
       break
   }
+}
+
+function isUTCMidnight(timestamp: number) {
+  const date = dayjs(timestamp).utc()
+  return date.hour() === 0 && date.minute() === 0 && date.second() === 0 && date.millisecond() === 0
 }
 
 export function setupPoolBackupCrontab() {
