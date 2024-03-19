@@ -2763,7 +2763,6 @@
   "Yield IQ": "Yield IQ",
   "Token amounts displayed above are estimations. The final amount of tokens received may vary.": "Die oben angezeigten Tokenbeträge sind Schätzungen. Der endgültige Betrag der erhaltenen Token kann variieren.",
   "Pending Confirm": "Bestätigung ausstehend",
-  "CAKE APR": "CAKE-APR",
   "LP APR": "LP-APR",
   "Calculated based on previous %days% days average data.": "Berechnet auf der Grundlage der Durchschnittsdaten der vorherigen %days% Tage.",
   "Farming Rewards": "Farming-Belohnungen",
@@ -3200,7 +3199,7 @@
   "Enable spending %symbol%": "%symbol%-Ausgaben aktivieren",
   "Reset approval on USDT.": "Genehmigung für USDT zurücksetzen.",
   "Go to CAKE Staking": "Zu den CAKE-Einsätzen",
-  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Transaktionswiderruf ausgefüllt, aber Genehmigung nicht auf 0 zurückgesetzt. Bitte versuchen Sie es erneut.",
+  "Revoke transaction filled, but Approval not reset to 0. Please try again.": "Revoke transaction filled, but Approval not reset to 0. Please try again.",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Kombinierte Anzahl der Belohnungen in %symbol% ALL Ihrer Positionen, die für Merkl-Belohnungen in Frage kommen.",
   "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "Um Merkl-Belohnungen zu verdienen, heben Sie diese Position von den PancakeSwap-Farms auf.",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "Diese Merkl-Kampagne belohnt Liquidität außerhalb des Bereichs NICHT. Um Belohnungen zu erhalten, passen Sie Ihre Position an.",
@@ -3254,5 +3253,8 @@
   "twitter page": "twitter page",
   "The NFP token has recently experienced an exploit. Please refrain from swapping NFP until further notice. More information can be found on the project's twitter page.": "The NFP token has recently experienced an exploit. Please refrain from swapping NFP until further notice. More information can be found on the project's twitter page.",
   "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice.": "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice.",
-  "Withdrawal Fee": "Withdrawal Fee"
+  "Order expired. Please try again.": "Order expired. Please try again.",
+  "Transaction failed: quote expired": "Transaction failed: quote expired",
+  "Withdrawal Fee": "Withdrawal Fee",
+  "View Staking Token Project Site": "View Staking Token Project Site"
 }
