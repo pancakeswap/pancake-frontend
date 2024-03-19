@@ -6,7 +6,7 @@ import { useFarmUser } from 'state/farms/hooks'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { useUserBoosterStatus } from 'views/Farms/hooks/useUserBoosterStatus'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 
 export enum YieldBoosterState {
   UNCONNECTED,
@@ -25,7 +25,7 @@ function useIsPoolActive(pid: number) {
   const farmBoosterContract = useBCakeFarmBoosterContract()
   const { account, chainId } = useAccountActiveChain()
 
-  const { data, refetch } = useContractRead({
+  const { data, refetch } = useReadContract({
     abi: farmBoosterContract.abi,
     address: farmBoosterContract.address,
     functionName: 'isBoostedPool',

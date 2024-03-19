@@ -3,7 +3,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import { Address } from 'viem'
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import { CakeLockStatus, CakePoolType } from '../types'
 import { useCakePoolLockInfo } from './useCakePoolLockInfo'
 import { useCheckIsUserAllowMigrate } from './useCheckIsUserAllowMigrate'
@@ -45,7 +45,7 @@ export const useVeCakeUserInfo = (): {
   const veCakeContract = useVeCakeContract()
   const { account } = useAccountActiveChain()
 
-  const { data, refetch } = useContractRead({
+  const { data, refetch } = useReadContract({
     chainId: veCakeContract?.chain?.id,
     ...veCakeContract,
     functionName: 'getUserInfo',

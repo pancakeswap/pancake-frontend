@@ -13,8 +13,8 @@ import {
   usePositionManagerWrapperContract,
 } from 'hooks/useContract'
 import { publicClient } from 'utils/wagmi'
-import { Address } from 'viem'
-import { erc20ABI, useAccount } from 'wagmi'
+import { Address, erc20Abi } from 'viem'
+import { useAccount } from 'wagmi'
 
 export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
   token0Amounts: bigint
@@ -160,7 +160,7 @@ export const useWrapperStaticData = (wrapperAddress: Address, isBCakeWrapper: bo
 
 export const useVaultStaticData = (vaultAddress?: Address) => {
   const { chainId } = useActiveChainId()
-  const vaultContract = useContract(vaultAddress, erc20ABI)
+  const vaultContract = useContract(vaultAddress, erc20Abi)
   const { data, refetch } = useQuery({
     queryKey: ['useVaultStaticData', vaultAddress, chainId],
     queryFn: () => vaultContract?.read.decimals(),

@@ -3,8 +3,8 @@ import BigNumber from 'bignumber.js'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import { getVeCakeAddress } from 'utils/addressHelpers'
-import { Address, isAddressEqual, zeroAddress } from 'viem'
-import { erc20ABI, useContractRead } from 'wagmi'
+import { Address, erc20Abi, isAddressEqual, zeroAddress } from 'viem'
+import { useReadContract } from 'wagmi'
 import { useVeCakeUserInfo } from './useVeCakeUserInfo'
 
 export const useProxyVeCakeBalance = () => {
@@ -15,11 +15,11 @@ export const useProxyVeCakeBalance = () => {
     return userInfo && userInfo?.cakePoolProxy && !isAddressEqual(userInfo!.cakePoolProxy, zeroAddress)
   }, [userInfo])
 
-  const { status, refetch, data } = useContractRead({
+  const { status, refetch, data } = useReadContract({
     chainId,
     address: getVeCakeAddress(chainId),
     functionName: 'balanceOf',
-    abi: erc20ABI,
+    abi: erc20Abi,
     args: [userInfo?.cakePoolProxy as Address],
     watch: true,
     enabled: hasProxy,

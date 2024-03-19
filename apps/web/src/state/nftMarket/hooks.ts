@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty'
 import shuffle from 'lodash/shuffle'
 import { safeGetAddress } from 'utils'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import { erc721ABI, useContractReads } from 'wagmi'
+import { erc721ABI, useReadContracts } from 'wagmi'
 
 import fromPairs from 'lodash/fromPairs'
 import { nftMarketActivityFiltersAtom, nftMarketFiltersAtom, tryVideoNftMediaAtom } from './atoms'
@@ -57,7 +57,7 @@ export const useGetShuffledCollections = (): { data: Collection[]; status: 'pend
 }
 
 export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
-  const { data } = useContractReads({
+  const { data } = useReadContracts({
     contracts: nftsInWallet.map(
       (f) =>
         ({
