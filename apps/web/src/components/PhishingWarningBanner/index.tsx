@@ -15,11 +15,11 @@ const Container = styled(Flex)`
   height: 100%;
   padding: 12px;
   align-items: center;
-  background: ${({ theme }) => theme.colors.text};
+  background: #280d5f;
 
   ${({ theme }) => theme.mediaQueries.md} {
     padding: 0px;
-    background: ${({ theme }) => theme.colors.textSubtle};
+    background: #7a6eaa;
   }
 `
 
@@ -46,7 +46,7 @@ const SpeechBubble = styled(Flex)`
     padding: 8px;
     margin-left: 8px;
     width: 900px;
-    background: ${({ theme }) => theme.colors.text};
+    background: #280d5f;
 
     &:before {
       content: '';
@@ -58,7 +58,7 @@ const SpeechBubble = styled(Flex)`
       height: 0;
       border-top: 8px solid transparent;
       border-bottom: 8px solid transparent;
-      border-right: ${({ theme }) => `8px solid ${theme.colors.text}`};
+      border-right: 8px solid #280d5f;
     }
   }
 `
