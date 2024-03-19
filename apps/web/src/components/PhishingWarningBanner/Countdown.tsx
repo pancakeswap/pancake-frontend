@@ -7,6 +7,7 @@ const CountdownContainer = styled.div<{ $percentage: number }>`
   height: 20px;
   width: 20px;
   min-width: 20px;
+  cursor: pointer;
 
   >svg: first-child {
     position: absolute;
@@ -40,9 +41,9 @@ const CountdownContainer = styled.div<{ $percentage: number }>`
   }
 `
 
-export const Countdown = ({ percentage }: { percentage: number }) => {
+export const Countdown = ({ percentage, onClick }: { percentage: number; onClick?: () => void }) => {
   return (
-    <CountdownContainer $percentage={percentage}>
+    <CountdownContainer $percentage={percentage} onClick={onClick}>
       <svg>
         <circle r="9" cx="10" cy="10" />
         <circle r="9" cx="10" cy="10" />
