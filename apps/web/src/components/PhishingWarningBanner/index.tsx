@@ -139,6 +139,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const handleClickNext = () => {
     setTimeout(() => {
       setStep(nextItem)
+      setPerCentage(0)
       setRemainingTimer(DISPLAY_TIMER)
       setShowAnimation(true)
     }, 600)
