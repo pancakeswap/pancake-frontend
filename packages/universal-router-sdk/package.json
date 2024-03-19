@@ -49,6 +49,6 @@
     "@pancakeswap/v3-sdk": "workspace:*",
     "abitype": "^0.9.8",
     "tiny-invariant": "^1.1.0",
-    "viem": "1.19.11"
+    "viem": "2.8.13"
   }
 }
