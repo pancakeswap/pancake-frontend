@@ -225,8 +225,6 @@ const useConfirmActions = (
           let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
           // check if user really approved the amount trade needs
           try {
-            // const { data } = await refetch()
-
             if (getAllowanceArgs) {
               const data = await getTokenAllowance(getAllowanceArgs)
               newAllowanceRaw = data ?? 0n
