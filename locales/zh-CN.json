@@ -2763,7 +2763,6 @@
   "Yield IQ": "Yield IQ",
   "Token amounts displayed above are estimations. The final amount of tokens received may vary.": "上面显示的代币数量为估计值。最终收到的代币数量可能会有所不同。",
   "Pending Confirm": "待确认",
-  "CAKE APR": "CAKE APR",
   "LP APR": "LP 手续费 APR",
   "Calculated based on previous %days% days average data.": "根据前 24 小时内的平均数据计算得出。",
   "Farming Rewards": "CAKE 奖励",
@@ -3055,7 +3054,7 @@
   "Inscriptions are a recent and novel development in blockchain, and $APTS uses a lock-and-burn mechanism to convert non-fungible, and non-tradable Aptos Inscriptions into fungible and tradable representations. As with most smart contracts, this come with certain risks. Please do your own research.": "铭文是区块链上一种新近的发展。$APTS 使用锁定销毁机制（lock-and-burn ），将非同质化和不可交易的 Aptos 链铭文转换为同质化和可交易的表示形式。与大多数智能合约一样，使用有一定的风险。请务必先自行研究。",
   "CAKE Pool:": "CAKE 糖浆池：",
   "Revenue Sharing:": "收入分成：",
-  "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.": "CAKE 糖浆池 APR 根据投票结果和 veCAKE 糖浆池 Gauge 的产出量计算得出。",
+  "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.": "CAKE Pool 的 APR，将根据 veCAKE 投票结果，CAKE Pool Gauge 得票率换算成产出率计算得出。",
   "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.": "收入分成的 APR 受到多种外部因素的影响，包括交易量，每周可能有所不同。",
   "Claim Your Exclusive NFTs Now!": "现在就申领独家 NFT！",
   "Calculated based average data since vault inception.": "根据流动性资金库成立以来的平均数据计算得出。",
@@ -3200,7 +3199,7 @@
   "Enable spending %symbol%": "授权支出 %symbol%",
   "Reset approval on USDT.": "重置 USDT 的授权",
   "Go to CAKE Staking": "前往 CAKE Staking",
-  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
+  "Revoke transaction filled, but Approval not reset to 0. Please try again.": "Revoke transaction filled, but Approval not reset to 0. Please try again.",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.",
   "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.",
@@ -3254,5 +3253,8 @@
   "twitter page": "twitter page",
   "The NFP token has recently experienced an exploit. Please refrain from swapping NFP until further notice. More information can be found on the project's twitter page.": "The NFP token has recently experienced an exploit. Please refrain from swapping NFP until further notice. More information can be found on the project's twitter page.",
   "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice.": "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice.",
-  "Withdrawal Fee": "Withdrawal Fee"
+  "Order expired. Please try again.": "Order expired. Please try again.",
+  "Transaction failed: quote expired": "Transaction failed: quote expired",
+  "Withdrawal Fee": "Withdrawal Fee",
+  "View Staking Token Project Site": "View Staking Token Project Site"
 }
