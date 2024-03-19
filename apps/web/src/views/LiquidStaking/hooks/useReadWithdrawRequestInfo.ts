@@ -5,7 +5,7 @@ import { UNWRAPPED_ETH_ADDRESS } from 'config/constants/liquidStaking'
 import dayjs from 'dayjs'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
-import { Address, useContractRead } from 'wagmi'
+import { Address, useReadContract } from 'wagmi'
 
 interface UserWithdrawRequest {
   allocated: boolean
@@ -32,7 +32,7 @@ export function useReadWithdrawRequestInfo():
   | undefined {
   const { account, chainId } = useActiveWeb3React()
 
-  const { data } = useContractRead({
+  const { data } = useReadContract({
     chainId,
     abi: unwrappedEth,
     address: UNWRAPPED_ETH_ADDRESS,

@@ -9,7 +9,7 @@ import { useMemo } from 'react'
 import { useSingleContractMultipleData } from 'state/multicall/hooks'
 import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 import { getAddress } from 'viem'
-import { useAccount, useContractRead } from 'wagmi'
+import { useAccount, useReadContract } from 'wagmi'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { DISABLED_POOLS } from '../constant'
@@ -20,7 +20,7 @@ export function useCurrentDay(): number {
 
   const { chainId } = useActiveChainId()
 
-  const { data } = useContractRead({
+  const { data } = useReadContract({
     abi: fixedStakingContract.abi,
     address: fixedStakingContract.address as `0x${string}`,
     functionName: 'getCurrentDay',
@@ -44,7 +44,7 @@ export function useIfUserLocked() {
   const vaultPoolContract = useVaultPoolContract(VaultKey.CakeVault)
   const { account, chainId } = useActiveWeb3React()
 
-  const { data } = useContractRead({
+  const { data } = useReadContract({
     chainId,
     abi: vaultPoolContract?.abi,
     address: vaultPoolContract?.address,
@@ -141,7 +141,7 @@ export function useStakedPools(): FixedStakingPool[] {
   const tokens = useOfficialsAndUserAddedTokens()
   const { chainId } = useActiveChainId()
 
-  const { data: poolLength } = useContractRead({
+  const { data: poolLength } = useReadContract({
     abi: fixedStakingContract.abi,
     address: fixedStakingContract.address as `0x${string}`,
     functionName: 'poolLength',

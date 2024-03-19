@@ -31,7 +31,7 @@ import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { tryParsePrice } from 'hooks/v3/utils'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
-import { Address, useContractRead } from 'wagmi'
+import { Address, useReadContract } from 'wagmi'
 // import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { useV2Pair } from 'hooks/usePairs'
@@ -60,14 +60,14 @@ export function Migrate({ v2PairAddress }: { v2PairAddress: Address }) {
   const pairContract = usePairContract(v2PairAddress)
   const { chainId } = useActiveChainId()
 
-  const { data: token0Address } = useContractRead({
+  const { data: token0Address } = useReadContract({
     abi: pairContract?.abi,
     address: v2PairAddress,
     functionName: 'token0',
     chainId,
   })
 
-  const { data: token1Address } = useContractRead({
+  const { data: token1Address } = useReadContract({
     abi: pairContract?.abi,
     address: v2PairAddress,
     functionName: 'token1',

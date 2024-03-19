@@ -3,7 +3,7 @@ import { ICAKE, iCakeABI } from '@pancakeswap/ifos'
 import BigNumber from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
-import { Address, useContractRead } from 'wagmi'
+import { Address, useReadContract } from 'wagmi'
 
 interface UseVeCakeUserCreditWithTime {
   userCreditWithTime: number
@@ -13,7 +13,7 @@ interface UseVeCakeUserCreditWithTime {
 export const useVeCakeUserCreditWithTime = (endTime: number): UseVeCakeUserCreditWithTime => {
   const { account, chainId } = useAccountActiveChain()
 
-  const { data, refetch } = useContractRead({
+  const { data, refetch } = useReadContract({
     chainId,
     address: chainId && ICAKE[chainId] ? ICAKE[chainId] : ICAKE[ChainId.BSC],
     functionName: 'getUserCreditWithTime',
