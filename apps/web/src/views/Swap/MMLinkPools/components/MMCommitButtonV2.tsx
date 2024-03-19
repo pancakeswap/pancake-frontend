@@ -36,7 +36,7 @@ interface SwapCommitButtonPropsType {
   }
   isExpertMode: boolean
   rfqTrade: MMRfqTrade
-  swapInputError: string
+  swapInputError?: string
   currencyBalances: {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
