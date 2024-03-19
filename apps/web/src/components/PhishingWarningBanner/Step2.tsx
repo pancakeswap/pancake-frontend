@@ -14,16 +14,16 @@ export const Step2 = () => {
 
   return (
     <Box mr={['6px']}>
-      <Text as="span" color="warning" small bold textTransform="uppercase">
+      <Text bold as="span" color="warning" textTransform="uppercase" fontSize={['12px', '12px', '14px']}>
         {t('Phishing warning: ')}
       </Text>
       {warningTextAsParts.map((text, i) => (
         <Text
           // eslint-disable-next-line react/no-array-index-key
           key={i}
-          small
           as="span"
           bold={text === domain}
+          fontSize={['12px', '12px', '14px']}
           color={text === domain ? '#FFFFFF' : '#BDC2C4'}
         >
           {text}
