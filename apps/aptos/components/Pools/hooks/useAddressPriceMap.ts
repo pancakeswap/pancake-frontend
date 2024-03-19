@@ -1,14 +1,14 @@
 import _uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
 
-import { usePairs } from 'hooks/usePairs'
-import { CE_USDC, L0_USDC, WH_USDC } from 'config/coins'
 import { Currency } from '@pancakeswap/aptos-swap-sdk'
+import { CE_USDC, L0_USDC, WH_USDC } from 'config/coins'
+import { usePairs } from 'hooks/usePairs'
 
-import splitTypeTag from '../../../utils/splitTypeTag'
-import getTokenByAddress from '../utils/getTokenByAddress'
 import useNativeCurrency from '../../../hooks/useNativeCurrency'
 import getCurrencyPrice from '../../../utils/getCurrencyPrice'
+import splitTypeTag from '../../../utils/splitTypeTag'
+import getTokenByAddress from '../utils/getTokenByAddress'
 
 function getPoolsCoins({ pools, chainId }): Currency[] {
   if (!pools?.length) return []
@@ -96,7 +96,7 @@ export default function useAddressPriceMap({ pools, chainId }) {
       })
       .forEach((price) => {
         if (price) {
-          prices[price.baseCurrency.wrapped.address] = parseFloat(price.toFixed())
+          prices[price.baseCurrency.wrapped.address] = parseFloat(price.toFixed(18))
         }
       })
     return prices
