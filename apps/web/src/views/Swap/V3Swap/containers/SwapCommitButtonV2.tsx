@@ -29,6 +29,7 @@ import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapInputError } from 
 import { useConfirmModalStateV2 } from '../hooks/useConfirmModalStateV2'
 import { useSwapConfig } from '../hooks/useSwapConfig'
 import { useSwapCurrency } from '../hooks/useSwapCurrency'
+import { CommitButtonProps } from '../types'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModalV2 } from './ConfirmSwapModalV2'
 
@@ -38,7 +39,7 @@ interface SwapCommitButtonPropsType {
   trade?: SmartRouterTrade<TradeType>
   tradeError?: Error
   tradeLoading?: boolean
-  setLock: (lock: boolean) => void
+  // setLock: (lock: boolean) => void
 }
 
 const useSettingModal = (onDismiss) => {
@@ -102,7 +103,7 @@ const UnsupportedSwapButtonReplace = ({ children }) => {
   return children
 }
 
-const SwapCommitButtonCompV2: React.FC<SwapCommitButtonPropsType> = (props) => {
+const SwapCommitButtonCompV2: React.FC<SwapCommitButtonPropsType & CommitButtonProps> = (props) => {
   return (
     <UnsupportedSwapButtonReplace>
       <ConnectButtonReplace>
@@ -120,8 +121,9 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   trade,
   tradeError,
   tradeLoading,
-  setLock,
-}: SwapCommitButtonPropsType) {
+  beforeCommit,
+  afterCommit,
+}: SwapCommitButtonPropsType & CommitButtonProps) {
   const { address: account } = useAccount()
   const { t } = useTranslation()
   const chainId = useChainId()
@@ -164,12 +166,12 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
 
   const { onUserInput } = useSwapActionHandlers()
   const reset = useCallback(() => {
-    setLock(false)
+    afterCommit?.()
     if (confirmState === ConfirmModalState.COMPLETED) {
       onUserInput(Field.INPUT, '')
     }
     resetState()
-  }, [confirmState, onUserInput, resetState, setLock])
+  }, [afterCommit, confirmState, onUserInput, resetState])
 
   const handleAcceptChanges = useCallback(() => {
     setTradeToConfirm(trade)
@@ -187,9 +189,9 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   )
 
   const onConfirm = useCallback(() => {
-    setLock(true)
+    beforeCommit?.()
     callToAction()
-  }, [callToAction, setLock])
+  }, [beforeCommit, callToAction])
 
   // modals
   const onSettingModalDismiss = useCallback(() => {

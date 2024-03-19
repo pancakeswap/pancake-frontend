@@ -14,6 +14,7 @@ import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { Address } from 'viem'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { ConfirmSwapModalV2 } from 'views/Swap/V3Swap/containers/ConfirmSwapModalV2'
+import { CommitButtonProps } from 'views/Swap/V3Swap/types'
 import { MMTradeInfo } from '../hooks'
 import { useMMConfirmModalState } from '../hooks/useMMConfirmModalState'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
@@ -29,7 +30,6 @@ interface SwapCommitButtonPropsType {
   wrapInputError?: string
   onWrap?: () => Promise<void>
   wrapType: WrapType
-  setLock: (lock: boolean) => void
   currencies: {
     INPUT?: Currency
     OUTPUT?: Currency
@@ -44,8 +44,6 @@ interface SwapCommitButtonPropsType {
   recipient: string | null
   onUserInput: (field: Field, typedValue: string) => void
   mmQuoteExpiryRemainingSec?: number | null
-  // isPendingError: boolean
-  // currentAllowance?: CurrencyAmount<Currency>
 }
 
 export function MMSwapCommitButtonV2({
@@ -61,9 +59,10 @@ export function MMSwapCommitButtonV2({
   currencyBalances,
   recipient,
   onUserInput,
-  setLock,
+  beforeCommit,
+  afterCommit,
 }: // isPendingError,
-SwapCommitButtonPropsType) {
+SwapCommitButtonPropsType & CommitButtonProps) {
   const [isExpertMode] = useExpertMode()
 
   const { t } = useTranslation()
@@ -92,13 +91,13 @@ SwapCommitButtonPropsType) {
   }, [rfqTrade.trade, resetState])
 
   const handleConfirmDismiss = useCallback(() => {
-    setLock(false)
+    afterCommit?.()
     resetState()
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onUserInput(Field.INPUT, '')
     }
-  }, [setLock, resetState, txHash, onUserInput])
+  }, [afterCommit, resetState, txHash, onUserInput])
 
   // Modals
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
@@ -111,9 +110,10 @@ SwapCommitButtonPropsType) {
   )
 
   const onConfirm = useCallback(() => {
-    setLock(true)
+    beforeCommit?.()
+
     callToAction()
-  }, [callToAction, setLock])
+  }, [beforeCommit, callToAction])
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModalV2
