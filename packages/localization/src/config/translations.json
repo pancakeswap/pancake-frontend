@@ -3257,5 +3257,6 @@
   "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice.": "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice.",
   "Order expired. Please try again.": "Order expired. Please try again.",
   "Transaction failed: quote expired": "Transaction failed: quote expired",
-  "Withdrawal Fee": "Withdrawal Fee"
+  "Withdrawal Fee": "Withdrawal Fee",
+  "View Staking Token Project Site": "View Staking Token Project Site"
 }
