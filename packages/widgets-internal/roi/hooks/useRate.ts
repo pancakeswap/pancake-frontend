@@ -21,7 +21,7 @@ export function useRate({ stakeFor = 1, ...rest }: Params) {
     }
     const aprAsDecimal = parseFloat(formatFraction(apr.asFraction, 6) || "0");
 
-    return getAccrued(principal, aprAsDecimal, compoundEvery, stakeFor, compoundOn ?? false);
+    return getAccrued(principal, aprAsDecimal, compoundOn ? compoundEvery : 0, stakeFor);
   }, [apr, principal, stakeFor, compoundEvery, compoundOn]);
 
   const reward = useMemo(() => {
