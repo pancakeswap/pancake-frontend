@@ -8,7 +8,7 @@ import _toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakeLockStatus } from 'views/CakeStaking/types'
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import { PRECISION_FACTOR, getUserMultiplier } from './multiplierAPI'
 
 export const USER_ESTIMATED_MULTIPLIER = 2
@@ -22,7 +22,7 @@ const QUERY_SETTINGS_WITHOUT_REFETCH = {
 export const useBakeV3farmCanBoost = (farmPid: number) => {
   const { chainId } = useActiveChainId()
   const farmBoosterV3Contract = useBCakeFarmBoosterVeCakeContract()
-  const { data } = useContractRead({
+  const { data } = useReadContract({
     abi: farmBoosterV3Contract.abi,
     address: farmBoosterV3Contract.address,
     chainId,

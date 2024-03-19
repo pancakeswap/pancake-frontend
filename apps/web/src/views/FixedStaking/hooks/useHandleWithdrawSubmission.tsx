@@ -7,7 +7,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useFixedStakingContract } from 'hooks/useContract'
 import { createElement, useCallback, useMemo } from 'react'
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 
 import { getBep20Contract } from 'utils/contractHelpers'
 
@@ -49,7 +49,7 @@ export function useHandleWithdrawSubmission({
 
   const tokenContract = getBep20Contract(stakingToken.wrapped.address)
 
-  const { data } = useContractRead({
+  const { data } = useReadContract({
     chainId,
     ...tokenContract,
     enabled: Boolean(fixedStakingContract.address),

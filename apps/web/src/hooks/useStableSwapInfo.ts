@@ -2,13 +2,13 @@ import { Percent } from '@pancakeswap/sdk'
 
 import { lpTokenABI } from 'config/abi/lpTokenAbi'
 import { stableSwapABI } from 'config/abi/stableSwapAbi'
-import { Address, useContractReads } from 'wagmi'
+import { Address, useReadContracts } from 'wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
 export function useStableSwapInfo(stableSwapAddress: Address | undefined, lpAddress: Address | undefined) {
   const { chainId } = useActiveChainId()
 
-  const { data: results, isLoading } = useContractReads({
+  const { data: results, isLoading } = useReadContracts({
     watch: true,
     enabled: Boolean(stableSwapAddress && lpAddress),
     contracts: [

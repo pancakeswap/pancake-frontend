@@ -12,7 +12,7 @@ import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import { getMasterChefV2Address, getRevenueSharingVeCakeAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
 import { useVeCakeTotalSupply } from './useVeCakeTotalSupply'
 import { useVeCakeUserInfo } from './useVeCakeUserInfo'
@@ -115,7 +115,7 @@ const SECONDS_IN_YEAR = 31536000 // 365 * 24 * 60 * 60
 export const useRevShareEmission = () => {
   const { chainId } = useActiveChainId()
   const currentTimestamp = useCurrentBlockTimestamp()
-  const { data: totalDistributed } = useContractRead({
+  const { data: totalDistributed } = useReadContract({
     abi: revenueSharingPoolProxyABI,
     address: getRevenueSharingVeCakeAddress(chainId) ?? getRevenueSharingVeCakeAddress(ChainId.BSC),
     functionName: 'totalDistributed',

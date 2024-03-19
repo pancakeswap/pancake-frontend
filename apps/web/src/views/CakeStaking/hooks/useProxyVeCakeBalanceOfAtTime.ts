@@ -5,7 +5,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import { getVeCakeAddress } from 'utils/addressHelpers'
 import { Address, isAddressEqual, zeroAddress } from 'viem'
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import { useVeCakeUserInfo } from './useVeCakeUserInfo'
 
 export const useProxyVeCakeBalanceOfAtTime = (timestamp: number) => {
@@ -16,7 +16,7 @@ export const useProxyVeCakeBalanceOfAtTime = (timestamp: number) => {
     return userInfo && userInfo?.cakePoolProxy && !isAddressEqual(userInfo!.cakePoolProxy, zeroAddress)
   }, [userInfo])
 
-  const { status, refetch, data } = useContractRead({
+  const { status, refetch, data } = useReadContract({
     chainId,
     address: getVeCakeAddress(chainId),
     functionName: 'balanceOfAtTime',
