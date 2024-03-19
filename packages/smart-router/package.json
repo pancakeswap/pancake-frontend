@@ -28,8 +28,8 @@
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/stable-swap-sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
-    "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
+    "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
     "async-retry": "^1.3.1",
     "debug": "^4.3.4",
@@ -39,7 +39,7 @@
     "mnemonist": "^0.38.3",
     "stats-lite": "^2.2.0",
     "tiny-invariant": "^1.3.0",
-    "viem": "1.19.11",
+    "viem": "2.8.13",
     "zod": "^3.22.3"
   },
   "devDependencies": {

@@ -15,7 +15,7 @@
     "itty-router": "^2.6.1",
     "itty-router-extras": "^0.4.2",
     "lodash": "^4.17.21",
-    "viem": "1.19.11",
+    "viem": "2.8.13",
     "zod": "^3.22.3"
   },
   "devDependencies": {

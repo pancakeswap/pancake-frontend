@@ -19,7 +19,7 @@
     "bignumber.js": "^9.0.0",
     "jotai": "^2.4.3",
     "styled-components": "6.0.7",
-    "viem": "1.19.11"
+    "viem": "2.8.13"
   },
   "peerDependenciesMeta": {
     "@pancakeswap/localization": {
