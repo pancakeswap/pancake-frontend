@@ -13,7 +13,7 @@ import { NextRouter } from 'next/router'
 import { initializeStore, makeStore } from 'state'
 import { wagmiConfig } from 'utils/wagmi'
 import { vi } from 'vitest'
-import { WagmiConfig } from 'wagmi'
+import { WagmiProvider } from 'wagmi'
 
 const mockRouter: NextRouter = {
   basePath: '',
@@ -93,9 +93,9 @@ export const createWagmiWrapper =
     const queryClient = new QueryClient()
 
     return (
-      <QueryClientProvider client={queryClient}>
-        <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
-      </QueryClientProvider>
+      <WagmiProvider config={wagmiConfig}>
+        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      </WagmiProvider>
     )
   }
 
