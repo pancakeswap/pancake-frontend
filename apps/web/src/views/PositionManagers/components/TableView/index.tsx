@@ -322,7 +322,13 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                 return (
                   <td key={key}>
                     <CellInner>
-                      <CellLayout label={t('Total Staked')}>${totalStakedInUsd.toFixed(2)}</CellLayout>
+                      <CellLayout label={t('Total Staked')}>
+                        $
+                        {totalStakedInUsd.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </CellLayout>
                     </CellInner>
                   </td>
                 )

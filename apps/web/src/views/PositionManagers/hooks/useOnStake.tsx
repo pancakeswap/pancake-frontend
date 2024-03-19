@@ -51,6 +51,7 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress: Addres
                 {
                   account: account ?? '0x',
                   chain,
+                  gasLimit: BOOSTED_FARM_V3_GAS_LIMIT,
                 },
               ),
       )
@@ -91,6 +92,7 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress: Addres
               positionManagerWrapperContract.write.deposit([0n], {
                 account: account ?? '0x',
                 chain,
+                gasLimit: BOOSTED_FARM_V3_GAS_LIMIT,
               }),
       )
 
