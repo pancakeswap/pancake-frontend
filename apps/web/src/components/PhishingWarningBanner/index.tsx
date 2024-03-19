@@ -80,7 +80,7 @@ const AnimationContainer = styled(Flex)<{ $showAnimation?: boolean }>`
   }
 `
 
-const DISPLAY_TIMER = 10000
+const DISPLAY_TIMER = 13000
 
 const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const [, hideBanner] = usePhishingBanner()
@@ -108,7 +108,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
       }
 
       timer.current = setInterval(() => {
-        const timeInSecond = remainingTimer - 80
+        const timeInSecond = remainingTimer - 70
         const newRemainingTimer = timeInSecond > 0 ? timeInSecond : DISPLAY_TIMER
         setRemainingTimer(newRemainingTimer)
 
