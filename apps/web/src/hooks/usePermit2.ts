@@ -55,7 +55,7 @@ export const usePermit2 = (
   const [isApproving, setIsApproving] = useState(false)
 
   const writePermit = useWritePermit(amount?.currency, spender, permit2Details?.nonce)
-  const { approveCallback, revokeCallback } = useApproveCallback(amount, approveTarget)
+  const { approveNoCheck, revokeNoCheck } = useApproveCallback(amount, approveTarget)
 
   const permit = useCallback(async () => {
     setIsPermitting(true)
@@ -70,22 +70,22 @@ export const usePermit2 = (
   const approve = useCallback(async () => {
     setIsApproving(true)
     try {
-      const result = await approveCallback()
+      const result = await approveNoCheck()
       return result
     } finally {
       setIsApproving(false)
     }
-  }, [approveCallback])
+  }, [approveNoCheck])
 
   const revoke = useCallback(async () => {
     setIsRevoking(true)
     try {
-      const result = await revokeCallback()
+      const result = await revokeNoCheck()
       return result
     } finally {
       setIsRevoking(false)
     }
-  }, [revokeCallback])
+  }, [revokeNoCheck])
 
   return {
     permit2Allowance,
