@@ -89,7 +89,6 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const showInBigDevice = isDesktop || isLg
   const [step, setStep] = useState(0)
   const timer = useRef<NodeJS.Timeout | null>(null)
-  const [mouseEntered, setMouseEntered] = useState(false)
   const [showAnimation, setShowAnimation] = useState(true)
   const [remainingTimer, setRemainingTimer] = useState(DISPLAY_TIMER)
 
@@ -99,10 +98,6 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
 
   useEffect(() => {
     const startCountdown = () => {
-      if (mouseEntered) {
-        return
-      }
-
       // Clear previous interval
       if (timer.current) {
         if (showAnimation) {
@@ -134,7 +129,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
         clearInterval(timer.current)
       }
     }
-  }, [mouseEntered, remainingTimer, showAnimation, step, nextItem])
+  }, [remainingTimer, showAnimation, step, nextItem])
 
   const handleClickNext = () => {
     setTimeout(() => {
@@ -146,11 +141,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   }
 
   return (
-    <Container
-      className="warning-banner"
-      onMouseEnter={() => setMouseEntered(true)}
-      onMouseLeave={() => setMouseEntered(false)}
-    >
+    <Container className="warning-banner">
       <AnimationContainer $showAnimation={showAnimation}>
         <Flex justifyContent="center" alignItems="center">
           {showInBigDevice && (
