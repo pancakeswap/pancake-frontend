@@ -10,16 +10,16 @@ export const Step1 = () => {
         {t('In the event of any')}
       </Text>
       <Text bold as="span" color="#FCC631" fontSize={['12px', '12px', '14px']}>
-        {t('token distribution:')}
+        {t('token distribution,')}
       </Text>
       <Text bold as="span" color="#FFFFFF" fontSize={['12px', '12px', '14px']}>
-        {t('We will distribute')}
+        {t('we will distribute')}
       </Text>
       <Text bold as="span" color="#FCC631" fontSize={['12px', '12px', '14px']}>
         100%
       </Text>
       <Text bold as="span" color="#FFFFFF" fontSize={['12px', '12px', '14px']}>
-        {t('of the proceeds to the CAKE community.')}
+        {t('of the proceeds to the')}
       </Text>
       <Text bold as="span" color="#FCC631" fontSize={['12px', '12px', '14px']}>
         {t('CAKE community.')}
