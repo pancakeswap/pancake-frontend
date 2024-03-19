@@ -2467,6 +2467,16 @@ importers:
         specifier: ^6.7.0
         version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
 
+  packages/v4-sdk:
+    dependencies:
+      viem:
+        specifier: 1.19.11
+        version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
+    devDependencies:
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
+
   packages/wagmi:
     dependencies:
       '@tanstack/react-query':
