@@ -19,7 +19,7 @@ export function V3SwapForm() {
     tradeError,
     tradeLoaded,
     refreshTrade,
-    refreshable,
+    refreshDisabled,
     pauseQuoting,
     resumeQuoting,
   } = useAllTypeBestTrade()
@@ -36,7 +36,7 @@ export function V3SwapForm() {
 
   return (
     <>
-      <FormHeader onRefresh={refreshTrade} refreshDisabled={!refreshable} />
+      <FormHeader onRefresh={refreshTrade} refreshDisabled={refreshDisabled} />
       <FormMain
         tradeLoading={isMMBetter ? false : !tradeLoaded}
         pricingAndSlippage={

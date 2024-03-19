@@ -1,10 +1,10 @@
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { TradeType } from '@pancakeswap/swap-sdk-core'
-import throttle from 'lodash/throttle'
+import { useThrottleFn } from 'hooks/useThrottleFn'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { useDerivedBestTradeWithMM } from 'views/Swap/MMLinkPools/hooks/useDerivedSwapInfoWithMM'
-import { useSwapBestTrade } from './useSwapBestTrade'
 import { MMCommitTrade } from '../types'
+import { useSwapBestTrade } from './useSwapBestTrade'
 
 export const useAllTypeBestTrade = () => {
   const [isQuotingPaused, setIsQuotingPaused] = useState(false)
@@ -36,11 +36,7 @@ export const useAllTypeBestTrade = () => {
     setIsQuotingPaused(false)
   }, [])
 
-  const refreshTrade = useCallback(() => {
-    throttle(() => {
-      refresh()
-    }, 3000)
-  }, [refresh])
+  const refreshTrade = useThrottleFn(refresh, 3000)
 
   return {
     isMMBetter: mmCurrentTrade?.isMMBetter,
@@ -49,7 +45,7 @@ export const useAllTypeBestTrade = () => {
     mmTrade: mmCurrentTrade as MMCommitTrade,
     tradeLoaded: !isLoading,
     tradeError: error,
-    refreshable: !isLoading && !syncing && isStale,
+    refreshDisabled: isLoading || syncing || !isStale,
     refreshTrade,
     pauseQuoting,
     resumeQuoting,
