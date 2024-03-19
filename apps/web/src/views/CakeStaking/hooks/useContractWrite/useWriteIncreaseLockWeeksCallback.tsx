@@ -1,3 +1,4 @@
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useVeCakeContract } from 'hooks/useContract'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 import { useSetAtom } from 'jotai'
@@ -9,12 +10,16 @@ import {
   cakeLockWeeksAtom,
 } from 'state/vecake/atoms'
 import { useLockCakeData } from 'state/vecake/hooks'
+import { logger } from 'utils/datadog'
+import { logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
+import { TransactionExecutionError } from 'viem'
 import { useAccount, useWalletClient } from 'wagmi'
 import { useRoundedUnlockTimestamp } from '../useRoundedUnlockTimestamp'
 import { useCakeLockStatus } from '../useVeCakeUserInfo'
 
 export const useWriteIncreaseLockWeeksCallback = (onDismiss?: () => void) => {
+  const { chainId } = useActiveChainId()
   const veCakeContract = useVeCakeContract()
   const { cakeUnlockTime, cakeLockExpired } = useCakeLockStatus()
   const { address: account } = useAccount()
@@ -28,7 +33,7 @@ export const useWriteIncreaseLockWeeksCallback = (onDismiss?: () => void) => {
 
   const increaseLockWeeks = useCallback(async () => {
     const week = Number(cakeLockWeeks)
-    if (!week || !roundedUnlockTimestamp) return
+    if (!week || !roundedUnlockTimestamp || !account) return
 
     try {
       const { request } = await veCakeContract.simulate.increaseUnlockTime([roundedUnlockTimestamp], {
@@ -46,6 +51,7 @@ export const useWriteIncreaseLockWeeksCallback = (onDismiss?: () => void) => {
       setStatus(ApproveAndLockStatus.INCREASE_WEEKS_PENDING)
       if (hash) {
         const transactionReceipt = await waitForTransaction({ hash })
+        logTx({ account, chainId: chainId!, hash })
         if (transactionReceipt?.status === 'success') {
           setCakeLockWeeks('')
           setStatus(ApproveAndLockStatus.CONFIRMED)
@@ -54,24 +60,36 @@ export const useWriteIncreaseLockWeeksCallback = (onDismiss?: () => void) => {
           setStatus(ApproveAndLockStatus.ERROR)
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to increase lock weeks', error)
       if (isUserRejected(error)) {
         setStatus(ApproveAndLockStatus.REJECT)
       } else {
+        logger.warn(
+          '[CakeStaking]: Failed to increase lock weeks',
+          {
+            error: error instanceof TransactionExecutionError ? error.cause : undefined,
+            account,
+            chainId,
+            cakeLockWeeks,
+            roundedUnlockTimestamp,
+          },
+          error,
+        )
         setStatus(ApproveAndLockStatus.ERROR)
       }
     }
   }, [
     cakeLockWeeks,
     roundedUnlockTimestamp,
+    account,
     veCakeContract.simulate,
     veCakeContract.chain,
-    account,
     setStatus,
     walletClient,
     setTxHash,
     waitForTransaction,
+    chainId,
     setCakeLockWeeks,
     onDismiss,
   ])
