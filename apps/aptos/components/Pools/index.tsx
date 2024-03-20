@@ -1,21 +1,21 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Heading, PageHeader, Text, FlexLayout, ViewMode } from '@pancakeswap/uikit'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
+import { useTranslation } from '@pancakeswap/localization'
+import { Flex, FlexLayout, Heading, PageHeader, Text, ViewMode } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { ConnectWalletButton } from 'components/ConnectWalletButton'
+import Page from 'components/Layout/Page'
+import { AptRewardTooltip } from 'components/Pools/components/PoolTable/AptRewardTooltip'
+import { TokenPairImage } from 'components/TokenImage'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { styled } from 'styled-components'
 
-import Page from 'components/Layout/Page'
-import { TokenPairImage } from 'components/TokenImage'
-import { ConnectWalletButton } from 'components/ConnectWalletButton'
-
 import NoSSR from '../NoSSR'
-import PoolControls from './components/PoolControls'
-import CardActions from './components/PoolCard/CardActions'
 import Apr from './components/PoolCard/Apr'
+import CakeCardActions from './components/PoolCard/CakeCardActions'
+import CardActions from './components/PoolCard/CardActions'
 import CardFooter from './components/PoolCard/CardFooter'
 import PoolStatsInfo from './components/PoolCard/PoolStatsInfo'
-import CakeCardActions from './components/PoolCard/CakeCardActions'
+import PoolControls from './components/PoolControls'
 import PoolRow from './components/PoolTable/PoolRow'
 import { usePoolsList } from './hooks/usePoolsList'
 import isVaultPool from './utils/isVaultPool'
@@ -95,6 +95,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                           <Apr pool={pool} stakedBalance={pool?.userData?.stakedBalance} showIcon={false} />
                         </Pool.AprRowWithToolTip>
                       }
+                      headerTooltipComponent={<AptRewardTooltip pool={pool} />}
                     />
                   ))}
                 </CardLayout>

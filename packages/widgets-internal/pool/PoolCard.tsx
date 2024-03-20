@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
+import { CardBody, CardRibbon, Flex, Skeleton } from "@pancakeswap/uikit";
 import { ReactElement, useMemo } from "react";
-import { Flex, CardBody, CardRibbon, Skeleton } from "@pancakeswap/uikit";
 import { PoolCardHeader, PoolCardHeaderTitle } from "./PoolCardHeader";
 import { StyledCard } from "./StyledCard";
 import { DeserializedPool } from "./types";
@@ -13,6 +13,7 @@ interface PoolCardPropsType<T> {
   tokenPairImage: ReactElement;
   isStaked: boolean;
   isBoostedPool?: boolean;
+  headerTooltipComponent?: ReactElement;
 }
 
 export function PoolCard<T>({
@@ -23,6 +24,7 @@ export function PoolCard<T>({
   cardFooter,
   tokenPairImage,
   isBoostedPool,
+  headerTooltipComponent,
 }: PoolCardPropsType<T>) {
   const { sousId, stakingToken, earningToken, isFinished, totalStaked } = pool;
   const { t } = useTranslation();
@@ -46,6 +48,7 @@ export function PoolCard<T>({
                 isCakePool ? t("Earn CAKE, stake CAKE") : t("Stake %symbol%", { symbol: stakingToken?.symbol || "" })
               }
               showBoostedTag={showBoostedTag}
+              headerTooltipComponent={headerTooltipComponent}
             />
             {tokenPairImage}
           </>

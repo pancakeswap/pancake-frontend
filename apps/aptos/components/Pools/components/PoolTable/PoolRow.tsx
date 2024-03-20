@@ -1,6 +1,7 @@
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { AptRewardTooltip } from 'components/Pools/components/PoolTable/AptRewardTooltip'
 import { useIsAptosRewardToken } from 'components/Pools/hooks/useIsAptosRewardToken'
 import { TokenPairImage } from 'components/TokenImage'
 import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
@@ -22,7 +23,10 @@ const PoolRow: React.FC<
   const isLargerScreen = isLg || isXl || isXxl
   const { stakingToken, totalStaked, earningToken } = pool
 
-  const isAptosRewardToken = useIsAptosRewardToken({ isFinished: pool.isFinished, earningToken: pool.earningToken })
+  const { isUSUserWithAptosReward } = useIsAptosRewardToken({
+    isFinished: pool.isFinished,
+    earningToken: pool.earningToken,
+  })
 
   return (
     <Pool.ExpandRow initialActivity={initialActivity} panel={<ActionPanel account={account} pool={pool} expanded />}>
@@ -38,8 +42,9 @@ const PoolRow: React.FC<
             secondaryToken={stakingToken}
           />
         }
+        tooltipComponent={<AptRewardTooltip pool={pool} />}
       />
-      <Pool.EarningsCell<Coin> pool={pool} account={account} showAptosRewardTooltips={isAptosRewardToken} />
+      <Pool.EarningsCell<Coin> pool={pool} account={account} showAptosRewardTooltips={isUSUserWithAptosReward} />
       {isLargerScreen && (
         <Pool.TotalStakedCell
           stakingTokenDecimals={stakingToken?.decimals}
