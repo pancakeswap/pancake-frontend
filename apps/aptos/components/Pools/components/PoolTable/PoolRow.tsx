@@ -1,12 +1,10 @@
+import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
-import { useCheckIsUserIpPass } from 'components/Farms/hooks/useCheckIsUserIpPass'
-import { APT } from 'config/coins'
-import { memo, useMemo } from 'react'
-
-import { Coin } from '@pancakeswap/aptos-swap-sdk'
+import { useIsAptosRewardToken } from 'components/Pools/hooks/useIsAptosRewardToken'
 import { TokenPairImage } from 'components/TokenImage'
 import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
+import { memo } from 'react'
 import Apr from '../PoolCard/Apr'
 import ActionPanel from './ActionPanel'
 
@@ -20,21 +18,11 @@ const PoolRow: React.FC<
 > = ({ account = '', initialActivity, pool }) => {
   const getNow = useLedgerTimestamp()
   const { isLg, isXl, isXxl } = useMatchBreakpoints()
-  const isUserIpPass = useCheckIsUserIpPass()
 
   const isLargerScreen = isLg || isXl || isXxl
   const { stakingToken, totalStaked, earningToken } = pool
 
-  const isAptosRewardToken = useMemo(
-    () =>
-      Boolean(
-        account &&
-          !isUserIpPass &&
-          !pool.isFinished &&
-          pool.earningToken.address.toLowerCase() === APT[pool.earningToken.chainId].address.toLowerCase(),
-      ),
-    [account, isUserIpPass, pool],
-  )
+  const isAptosRewardToken = useIsAptosRewardToken({ isFinished: pool.isFinished, earningToken: pool.earningToken })
 
   return (
     <Pool.ExpandRow initialActivity={initialActivity} panel={<ActionPanel account={account} pool={pool} expanded />}>

@@ -21,7 +21,7 @@ export const AptRewardTooltips = () => {
   );
 
   return (
-    <Box mt="-4px">
+    <Box>
       <TooltipText ref={targetRef}>
         <WarningIcon m="0 4px" color="failure" width="20px" />
       </TooltipText>

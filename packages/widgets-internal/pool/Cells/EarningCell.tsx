@@ -44,7 +44,6 @@ export function EarningsCell<T>({ pool, account, showAptosRewardTooltips }: Earn
   return (
     <StyledCell role="cell">
       <Flex>
-        {showAptosRewardTooltips && <AptRewardTooltips />}
         <CellContent>
           <Text fontSize="12px" color="textSubtle" textAlign="left">
             {labelText}
@@ -85,6 +84,11 @@ export function EarningsCell<T>({ pool, account, showAptosRewardTooltips }: Earn
             </>
           )}
         </CellContent>
+        {showAptosRewardTooltips && (
+          <Box mt="-8px">
+            <AptRewardTooltips />
+          </Box>
+        )}
       </Flex>
     </StyledCell>
   );
