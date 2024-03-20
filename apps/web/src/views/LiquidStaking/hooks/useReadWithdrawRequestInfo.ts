@@ -4,8 +4,8 @@ import { unwrappedEth } from 'config/abi/unwrappedEth'
 import { UNWRAPPED_ETH_ADDRESS } from 'config/constants/liquidStaking'
 import dayjs from 'dayjs'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useMemo } from 'react'
-import { Address, useReadContract } from 'wagmi'
+import { useEffect, useMemo } from 'react'
+import { Address, useBlockNumber, useReadContract } from 'wagmi'
 
 interface UserWithdrawRequest {
   allocated: boolean
@@ -31,16 +31,22 @@ export function useReadWithdrawRequestInfo():
     }
   | undefined {
   const { account, chainId } = useActiveWeb3React()
+  const { data: blockNumber } = useBlockNumber({ watch: true })
 
-  const { data } = useReadContract({
+  const { data, refetch } = useReadContract({
     chainId,
     abi: unwrappedEth,
     address: UNWRAPPED_ETH_ADDRESS,
     functionName: 'getUserWithdrawRequests',
     args: [account || '0x'],
-    enabled: !!account,
-    watch: true,
+    query: {
+      enabled: !!account,
+    },
   })
+
+  useEffect(() => {
+    refetch()
+  }, [blockNumber, refetch])
 
   const currentTime = dayjs().unix()
 

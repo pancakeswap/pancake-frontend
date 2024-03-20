@@ -14,10 +14,12 @@ export const useCakeEmissionPerBlock = (inView?: boolean) => {
     address: masterChefAddress,
     chainId: ChainId.BSC,
     functionName: 'cakePerBlockToBurn',
-    enabled: inView,
-    select: (d) => {
-      const burn = formatEther(d)
-      return new BigNumber(CAKE_PER_BLOCK).minus(burn).toNumber()
+    query: {
+      enabled: inView,
+      select: (d) => {
+        const burn = formatEther(d)
+        return new BigNumber(CAKE_PER_BLOCK).minus(burn).toNumber()
+      },
     },
   })
 

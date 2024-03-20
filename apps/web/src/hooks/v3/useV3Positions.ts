@@ -3,7 +3,8 @@ import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useEffect, useMemo } from 'react'
-import { Address, useReadContract, useReadContracts } from 'wagmi'
+import { Address } from 'viem'
+import { useBlockNumber, useReadContract, useReadContracts } from 'wagmi'
 
 interface UseV3PositionsResults {
   loading: boolean
@@ -98,6 +99,8 @@ export function useV3TokenIdsByAccount(
   account?: Address | null | undefined,
 ): { tokenIds: bigint[]; loading: boolean } {
   const { chainId } = useActiveChainId()
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+
   const {
     isLoading: balanceLoading,
     data: accountBalance,
@@ -105,12 +108,17 @@ export function useV3TokenIdsByAccount(
   } = useReadContract({
     abi: masterChefV3ABI,
     address: contractAddress as `0x${string}`,
-    enabled: !!account && !!contractAddress,
+    query: {
+      enabled: !!account && !!contractAddress,
+    },
     args: [account!],
     functionName: 'balanceOf',
-    watch: true,
     chainId,
   })
+
+  useEffect(() => {
+    refetchBalance()
+  }, [blockNumber, refetchBalance])
 
   const tokenIdsArgs = useMemo(() => {
     if (accountBalance && account) {
@@ -141,10 +149,10 @@ export function useV3TokenIdsByAccount(
     refetch: refetchTokenIds,
   } = useReadContracts({
     contracts: tokenIdsArgs,
-    watch: true,
     allowFailure: true,
-    enabled: !!tokenIdsArgs.length,
-    keepPreviousData: true,
+    query: {
+      enabled: !!tokenIdsArgs.length,
+    },
   })
 
   // refetch when account changes, It seems like the useReadContracts doesn't refetch when the account changes on production
@@ -154,7 +162,7 @@ export function useV3TokenIdsByAccount(
       refetchBalance()
       refetchTokenIds()
     }
-  }, [account, refetchBalance, refetchTokenIds])
+  }, [account, refetchBalance, refetchTokenIds, blockNumber])
 
   return {
     tokenIds: useMemo(
