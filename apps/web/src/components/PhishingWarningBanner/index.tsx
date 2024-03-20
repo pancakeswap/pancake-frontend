@@ -1,5 +1,6 @@
 import { CloseIcon, Flex, IconButton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import 'swiper/css'
@@ -148,7 +149,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
             <img
               width="92px"
               alt="phishing-warning"
-              src={`/images/decorations/phishing-warning-bunny-${step + 1}.png`}
+              src={`${ASSET_CDN}/web/phishing-warning/phishing-warning-bunny-${step + 1}.png`}
             />
           )}
           <SpeechBubble>
