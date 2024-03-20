@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { languageList, useTranslation } from '@pancakeswap/localization'
 import { Menu as UIMenu, footerLinks } from '@pancakeswap/uikit'
+import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
-
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import { useActiveChainId } from 'hooks/useNetwork'
@@ -43,6 +43,7 @@ const LinkComponent = (linkProps) => {
 }
 
 export const Menu = (props) => {
+  const [show] = usePhishingBanner()
   const { currentLanguage, setLanguage, t } = useTranslation()
 
   const menuItems = useMenuItems()
@@ -79,7 +80,7 @@ export const Menu = (props) => {
           links={menuItems}
           activeItem={activeMenuItem?.href}
           isDark={isDark}
-          banner={<PhishingWarningBanner />}
+          banner={show ? <PhishingWarningBanner /> : undefined}
           rightSide={
             <>
               <SettingsButton mr="8px" />
