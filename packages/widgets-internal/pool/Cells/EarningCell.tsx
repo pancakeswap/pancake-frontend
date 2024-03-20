@@ -6,13 +6,12 @@ import { styled } from "styled-components";
 
 import { Balance, Box, Flex, Skeleton, Text, useMatchBreakpoints } from "@pancakeswap/uikit";
 import { DeserializedPool } from "../types";
-import { AptRewardTooltips } from "./AptRewardTooltips";
 import { BaseCell, CellContent } from "./BaseCell";
 
 interface EarningsCellProps<T> {
   pool: DeserializedPool<T>;
   account: string;
-  showAptosRewardTooltips?: boolean;
+  aptosRewardTooltips?: React.ReactElement;
 }
 
 const StyledCell = styled(BaseCell)`
@@ -22,7 +21,7 @@ const StyledCell = styled(BaseCell)`
   }
 `;
 
-export function EarningsCell<T>({ pool, account, showAptosRewardTooltips }: EarningsCellProps<T>) {
+export function EarningsCell<T>({ pool, account, aptosRewardTooltips }: EarningsCellProps<T>) {
   const { t } = useTranslation();
   const { isMobile } = useMatchBreakpoints();
   const { earningToken, userData, earningTokenPrice } = pool;
@@ -84,11 +83,7 @@ export function EarningsCell<T>({ pool, account, showAptosRewardTooltips }: Earn
             </>
           )}
         </CellContent>
-        {showAptosRewardTooltips && (
-          <Box mt="-8px">
-            <AptRewardTooltips />
-          </Box>
-        )}
+        {aptosRewardTooltips}
       </Flex>
     </StyledCell>
   );
