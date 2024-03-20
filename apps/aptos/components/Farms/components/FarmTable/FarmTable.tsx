@@ -136,6 +136,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
         quoteToken: farm.quoteToken,
         isReady: farm.multiplier !== undefined,
         isStaking: farm.userData?.stakedBalance.gt(0),
+        showPoolEarnAptTooltips: farm.showPoolEarnAptTooltips,
       },
       earned: farm,
       liquidity: {

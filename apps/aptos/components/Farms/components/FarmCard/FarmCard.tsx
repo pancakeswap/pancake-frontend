@@ -94,6 +94,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           isCommunityFarm={farm.isCommunity}
           token={farm.token}
           quoteToken={farm.quoteToken}
+          showPoolEarnAptTooltips={farm.showPoolEarnAptTooltips}
         />
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>

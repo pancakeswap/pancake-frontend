@@ -27,6 +27,7 @@ export const deserializeFarm = (
     stableSwapAddress,
     stableLpFee,
     stableLpFeeRateOfTotalFee,
+    showPoolEarnAptTooltips,
   } = farm
 
   const auctionHostingStartDate = !isUndefinedOrNull(auctionHostingStartSeconds)
@@ -77,5 +78,6 @@ export const deserializeFarm = (
     stableLpFee,
     stableLpFeeRateOfTotalFee,
     lpTokenStakedAmount: farm.lpTokenStakedAmount ? new BigNumber(farm.lpTokenStakedAmount) : BIG_ZERO,
+    showPoolEarnAptTooltips,
   }
 }
