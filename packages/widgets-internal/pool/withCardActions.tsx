@@ -1,9 +1,9 @@
 import BigNumber from "bignumber.js";
 
-import { styled } from "styled-components";
-import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { useTranslation } from "@pancakeswap/localization";
-import { Flex, Text, Box, TextProps } from "@pancakeswap/uikit";
+import { Box, Flex, Text, TextProps } from "@pancakeswap/uikit";
+import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
+import { styled } from "styled-components";
 import { DeserializedPool } from "./types";
 
 const InlineText = styled((props: TextProps) => <Text {...props} />)`
@@ -14,6 +14,7 @@ interface CardActionsProps<T> {
   pool: DeserializedPool<T>;
   stakedBalance?: BigNumber;
   hideLocateAddress?: boolean;
+  usUserTooltipComponent?: any;
 }
 
 export function withTableActions<T>(HarvestActionsComp: any, StakeActionsComp: any) {
@@ -68,7 +69,7 @@ export function withTableActions<T>(HarvestActionsComp: any, StakeActionsComp: a
 }
 
 export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: any) {
-  return ({ pool, stakedBalance, hideLocateAddress = false }: CardActionsProps<T>) => {
+  return ({ pool, stakedBalance, hideLocateAddress = false, usUserTooltipComponent }: CardActionsProps<T>) => {
     const { sousId, stakingToken, earningToken, userData, earningTokenPrice } = pool;
 
     const isBnbPool = false;
@@ -82,14 +83,17 @@ export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: an
       <Flex flexDirection="column">
         <Flex flexDirection="column">
           <>
-            <Box display="inline">
-              <InlineText color="secondary" bold fontSize="12px">
-                {`${earningToken.symbol} `}
-              </InlineText>
-              <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-                {t("Earned")}
-              </InlineText>
-            </Box>
+            <Flex>
+              <Flex>
+                <InlineText color="secondary" bold fontSize="12px">
+                  {`${earningToken.symbol} `}
+                </InlineText>
+                <InlineText ml="4px" color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+                  {t("Earned")}
+                </InlineText>
+              </Flex>
+              {usUserTooltipComponent}
+            </Flex>
             <HarvestActionsComp
               earnings={earnings}
               stakingTokenAddress={stakingToken.address}

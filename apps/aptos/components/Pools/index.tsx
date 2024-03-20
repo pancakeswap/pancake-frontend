@@ -5,6 +5,7 @@ import { Pool } from '@pancakeswap/widgets-internal'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
 import Page from 'components/Layout/Page'
 import { AptRewardTooltip } from 'components/Pools/components/PoolTable/AptRewardTooltip'
+import { UsUserAptRewardTooltips } from 'components/Pools/components/PoolTable/UsUserAptRewardTooltips'
 import { TokenPairImage } from 'components/TokenImage'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { styled } from 'styled-components'
@@ -66,7 +67,12 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                               stakedBalance={pool?.userData?.stakedBalance}
                             />
                           ) : (
-                            <CardActions hideLocateAddress pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
+                            <CardActions
+                              hideLocateAddress
+                              pool={pool}
+                              stakedBalance={pool?.userData?.stakedBalance}
+                              usUserTooltipComponent={<UsUserAptRewardTooltips pool={pool} />}
+                            />
                           )
                         ) : (
                           <>
