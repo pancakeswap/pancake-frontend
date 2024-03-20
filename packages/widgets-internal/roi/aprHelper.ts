@@ -8,5 +8,5 @@ export function getAccrued(principal: number, apr: number, compoundEvery = 0, st
     return convertedPrincipal * (1 + convertedApr / timesCompounded) ** (timesCompounded * daysAsDecimalOfYear);
   }
 
-  return convertedPrincipal + convertedPrincipal * apr * daysAsDecimalOfYear; // simple calc when not compounding
+  return convertedPrincipal + convertedPrincipal * convertedApr * daysAsDecimalOfYear; // simple calc when not compounding
 }
