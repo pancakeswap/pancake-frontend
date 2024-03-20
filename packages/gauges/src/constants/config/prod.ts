@@ -3323,4 +3323,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: ethereumTokens.usdt.address,
     feeTier: FeeAmount.LOWEST,
   },
+  {
+    gid: 332,
+    pairName: 'GRAI-USDC.E',
+    address: '0x160f3d3af6A2ECe5274AfD0925137e0387BAA5F2',
+    chainId: ChainId.POLYGON_ZKEVM,
+    type: GaugeType.V3,
+    token0Address: polygonZkEvmTokens.usdce.address,
+    token1Address: polygonZkEvmTokens.grai.address,
+    feeTier: FeeAmount.LOWEST,
+  },
 ]
