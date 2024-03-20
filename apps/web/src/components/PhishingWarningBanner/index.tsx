@@ -1,5 +1,5 @@
-import { CloseIcon, Flex, IconButton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { usePhishingBanner } from '@pancakeswap/utils/user'
+import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+// import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
@@ -84,7 +84,7 @@ const AnimationContainer = styled(Flex)<{ $showAnimation?: boolean }>`
 const DISPLAY_TIMER = 13000
 
 const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
-  const [, hideBanner] = usePhishingBanner()
+  // const [, hideBanner] = usePhishingBanner()
   const { isDesktop, isLg } = useMatchBreakpoints()
   const [percentage, setPerCentage] = useState(0)
   const showInBigDevice = isDesktop || isLg
@@ -158,9 +158,9 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
           </SpeechBubble>
         </Flex>
       </AnimationContainer>
-      <IconButton onClick={hideBanner} variant="text">
+      {/* <IconButton onClick={hideBanner} variant="text">
         <CloseIcon color="#FFFFFF" />
-      </IconButton>
+      </IconButton> */}
     </Container>
   )
 }

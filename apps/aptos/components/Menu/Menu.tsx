@@ -5,16 +5,15 @@ import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
+import { useActiveChainId } from 'hooks/useNetwork'
 import { useCakePrice } from 'hooks/useStablePrice'
 import orderBy from 'lodash/orderBy'
 import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { usePhishingBanner } from '@pancakeswap/utils/user'
-import { useActiveChainId } from 'hooks/useNetwork'
-import { useMenuItems, ConfigMenuItemsType } from './hooks/useMenuItems'
 import { SettingsButton } from './Settings/SettingsButton'
 import UserMenu from './UserMenu'
+import { ConfigMenuItemsType, useMenuItems } from './hooks/useMenuItems'
 
 export const getActiveMenuItem = ({ pathname, menuConfig }: { pathname: string; menuConfig: ConfigMenuItemsType[] }) =>
   menuConfig.find((menuItem) => pathname.startsWith(menuItem.href) || getActiveSubMenuItem({ menuItem, pathname }))
@@ -51,7 +50,6 @@ export const Menu = (props) => {
   const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })
   const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
   const { setTheme, resolvedTheme } = useTheme()
-  const [show] = usePhishingBanner()
   const chainId = useActiveChainId()
 
   const { data: cakePrice } = useCakePrice()
@@ -81,7 +79,7 @@ export const Menu = (props) => {
           links={menuItems}
           activeItem={activeMenuItem?.href}
           isDark={isDark}
-          banner={show ? <PhishingWarningBanner /> : undefined}
+          banner={<PhishingWarningBanner />}
           rightSide={
             <>
               <SettingsButton mr="8px" />
