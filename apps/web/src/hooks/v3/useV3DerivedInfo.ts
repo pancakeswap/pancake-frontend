@@ -143,7 +143,6 @@ export default function useV3DerivedInfo(
   const mockPool = useMemo(() => {
     if (!pool && tokenA && tokenB && feeAmount && price && !invalidPrice) {
       const currentTick = priceToClosestTick(price)
-      console.log('currentTick', currentTick)
       const currentSqrt = TickMath.getSqrtRatioAtTick(currentTick)
       return new Pool(tokenA, tokenB, feeAmount, currentSqrt, 0n, currentTick, [])
     }
