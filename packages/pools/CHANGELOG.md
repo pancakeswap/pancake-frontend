@@ -1,5 +1,11 @@
 # @pancakeswap/pools
 
+## 5.1.16
+
+### Patch Changes
+
+- 087a863: Move finished pools
+
 ## 5.1.15
 
 ### Patch Changes
