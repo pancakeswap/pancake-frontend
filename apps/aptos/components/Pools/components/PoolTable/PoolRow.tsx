@@ -1,6 +1,8 @@
-import { memo } from 'react'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { useCheckIsUserIpPass } from 'components/Farms/hooks/useCheckIsUserIpPass'
+import { APT } from 'config/coins'
+import { memo, useMemo } from 'react'
 
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { TokenPairImage } from 'components/TokenImage'
@@ -16,11 +18,23 @@ const PoolRow: React.FC<
     pool: Pool.DeserializedPool<Coin>
   }>
 > = ({ account = '', initialActivity, pool }) => {
+  const getNow = useLedgerTimestamp()
   const { isLg, isXl, isXxl } = useMatchBreakpoints()
+  const isUserIpPass = useCheckIsUserIpPass()
+
   const isLargerScreen = isLg || isXl || isXxl
   const { stakingToken, totalStaked, earningToken } = pool
 
-  const getNow = useLedgerTimestamp()
+  const isAptosRewardToken = useMemo(
+    () =>
+      Boolean(
+        account &&
+          !isUserIpPass &&
+          !pool.isFinished &&
+          pool.earningToken.address.toLowerCase() === APT[pool.earningToken.chainId].address.toLowerCase(),
+      ),
+    [account, isUserIpPass, pool],
+  )
 
   return (
     <Pool.ExpandRow initialActivity={initialActivity} panel={<ActionPanel account={account} pool={pool} expanded />}>
@@ -37,7 +51,7 @@ const PoolRow: React.FC<
           />
         }
       />
-      <Pool.EarningsCell<Coin> pool={pool} account={account} />
+      <Pool.EarningsCell<Coin> pool={pool} account={account} showAptosRewardTooltips={isAptosRewardToken} />
       {isLargerScreen && (
         <Pool.TotalStakedCell
           stakingTokenDecimals={stakingToken?.decimals}
