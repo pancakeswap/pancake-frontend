@@ -3331,6 +3331,6 @@ export const CONFIG_PROD: GaugeConfig[] = [
     type: GaugeType.V3,
     token0Address: polygonZkEvmTokens.usdce.address,
     token1Address: polygonZkEvmTokens.grai.address,
-    feeTier: FeeAmount.LOWEST,
+    feeTier: FeeAmount.LOW,
   },
 ]
