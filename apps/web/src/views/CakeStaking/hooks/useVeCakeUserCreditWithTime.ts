@@ -2,8 +2,8 @@ import { ChainId } from '@pancakeswap/chains'
 import { ICAKE, iCakeABI } from '@pancakeswap/ifos'
 import BigNumber from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useMemo } from 'react'
-import { Address, useReadContract } from 'wagmi'
+import { useEffect, useMemo } from 'react'
+import { Address, useBlockNumber, useReadContract } from 'wagmi'
 
 interface UseVeCakeUserCreditWithTime {
   userCreditWithTime: number
@@ -12,6 +12,7 @@ interface UseVeCakeUserCreditWithTime {
 
 export const useVeCakeUserCreditWithTime = (endTime: number): UseVeCakeUserCreditWithTime => {
   const { account, chainId } = useAccountActiveChain()
+  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const { data, refetch } = useReadContract({
     chainId,
@@ -19,9 +20,14 @@ export const useVeCakeUserCreditWithTime = (endTime: number): UseVeCakeUserCredi
     functionName: 'getUserCreditWithTime',
     abi: iCakeABI,
     args: [account as Address, BigInt(endTime)],
-    watch: true,
-    enabled: Boolean(account && chainId && endTime),
+    query: {
+      enabled: Boolean(account && chainId && endTime),
+    },
   })
+
+  useEffect(() => {
+    refetch()
+  }, [blockNumber, refetch])
 
   const userCreditWithTime = useMemo(
     () => (typeof data !== 'undefined' ? new BigNumber(data.toString()).toNumber() : 0),
