@@ -27,7 +27,9 @@ export const useBakeV3farmCanBoost = (farmPid: number) => {
     address: farmBoosterV3Contract.address,
     chainId,
     functionName: 'whiteList',
-    enabled: Boolean(chainId && farmPid && bCakeSupportedChainId.includes(chainId)),
+    query: {
+      enabled: Boolean(chainId && farmPid && bCakeSupportedChainId.includes(chainId)),
+    },
     args: [BigInt(farmPid ?? 0)],
   })
   return { farmCanBoost: data }
