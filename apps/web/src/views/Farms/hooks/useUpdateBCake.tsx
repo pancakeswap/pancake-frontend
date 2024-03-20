@@ -36,9 +36,9 @@ export const useUpdateBCakeFarms = (bCakeWrapperAddress: Address, pid: number) =
     const receipt = await fetchWithCatchTxError(() => handleStake())
     if (receipt?.status) {
       toastSuccess(
-        `${t('Staked')}!`,
+        `${t('Updated')}!`,
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('Your funds have been staked in the farm')}
+          {t('Your bCake booster have been updated')}
         </ToastDescriptionWithTx>,
       )
       onDone()
