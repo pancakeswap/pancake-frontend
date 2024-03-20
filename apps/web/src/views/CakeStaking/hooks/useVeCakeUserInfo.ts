@@ -1,9 +1,9 @@
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Address } from 'viem'
-import { useReadContract } from 'wagmi'
+import { useBlockNumber, useReadContract } from 'wagmi'
 import { CakeLockStatus, CakePoolType } from '../types'
 import { useCakePoolLockInfo } from './useCakePoolLockInfo'
 import { useCheckIsUserAllowMigrate } from './useCheckIsUserAllowMigrate'
@@ -44,30 +44,37 @@ export const useVeCakeUserInfo = (): {
 } => {
   const veCakeContract = useVeCakeContract()
   const { account } = useAccountActiveChain()
+  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const { data, refetch } = useReadContract({
     chainId: veCakeContract?.chain?.id,
     ...veCakeContract,
     functionName: 'getUserInfo',
-    enabled: Boolean(veCakeContract?.address && account),
-    args: [account!],
-    watch: true,
-    select: (d) => {
-      if (!d) return undefined
+    query: {
+      enabled: Boolean(veCakeContract?.address && account),
+      select: (d) => {
+        if (!d) return undefined
 
-      const [amount, end, cakePoolProxy, cakeAmount, lockEndTime, migrationTime, cakePoolType, withdrawFlag] = d
-      return {
-        amount,
-        end,
-        cakePoolProxy,
-        cakeAmount,
-        lockEndTime,
-        migrationTime,
-        cakePoolType,
-        withdrawFlag,
-      } as VeCakeUserInfo
+        const [amount, end, cakePoolProxy, cakeAmount, lockEndTime, migrationTime, cakePoolType, withdrawFlag] = d
+        return {
+          amount,
+          end,
+          cakePoolProxy,
+          cakeAmount,
+          lockEndTime,
+          migrationTime,
+          cakePoolType,
+          withdrawFlag,
+        } as VeCakeUserInfo
+      },
     },
+    args: [account!],
   })
+
+  useEffect(() => {
+    refetch()
+  }, [blockNumber, refetch])
+
   return {
     data,
     refetch,

@@ -1,6 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
+import { useEffect } from 'react'
 import { getChainlinkOracleContract } from 'utils/contractHelpers'
-import { Address, useReadContract } from 'wagmi'
+import { Address } from 'viem'
+import { useBlockNumber, useReadContract } from 'wagmi'
 
 const getOracleAddress = (chainId: number): Address | null => {
   switch (chainId) {
@@ -13,15 +15,20 @@ const getOracleAddress = (chainId: number): Address | null => {
 }
 
 export const useOraclePrice = (chainId?: number) => {
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+
   const tokenAddress = chainId ? getOracleAddress(chainId) : undefined
   const chainlinkOracleContract = tokenAddress ? getChainlinkOracleContract(tokenAddress, undefined, ChainId.BSC) : null
-  const { data: price } = useReadContract({
+  const { data: price, refetch } = useReadContract({
     abi: chainlinkOracleContract?.abi,
     chainId: ChainId.BSC,
     address: tokenAddress ?? undefined,
     functionName: 'latestAnswer',
-    watch: true,
   })
+
+  useEffect(() => {
+    refetch()
+  }, [blockNumber, refetch])
 
   return price?.toString() ?? '0'
 }

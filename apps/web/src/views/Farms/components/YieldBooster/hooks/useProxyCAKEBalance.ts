@@ -13,7 +13,9 @@ const useProxyCAKEBalance = () => {
   const { data, refetch } = useReadContract({
     chainId,
     ...cakeContract,
-    enabled: Boolean(account && proxyAddress),
+    query: {
+      enabled: Boolean(account && proxyAddress),
+    },
     functionName: 'balanceOf',
     args: [proxyAddress],
   })

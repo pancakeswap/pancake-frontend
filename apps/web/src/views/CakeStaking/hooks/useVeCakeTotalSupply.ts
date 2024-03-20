@@ -14,7 +14,9 @@ export const useVeCakeTotalSupply = () => {
     address: getVeCakeAddress(chainId),
     functionName: 'totalSupply',
     abi: veCakeABI,
-    enabled: Boolean(getVeCakeAddress(chainId)),
+    query: {
+      enabled: Boolean(getVeCakeAddress(chainId)),
+    },
   })
 
   return {

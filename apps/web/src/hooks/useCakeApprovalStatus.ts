@@ -22,8 +22,7 @@ export const useCakeApprovalStatus = (spender) => {
 
   useEffect(() => {
     refetch()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber])
+  }, [blockNumber, refetch])
 
   return useMemo(
     () => ({

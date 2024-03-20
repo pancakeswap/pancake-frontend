@@ -25,7 +25,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useGetRoundsByCloseOracleId, useGetSortedRounds } from 'state/predictions/hooks'
 import { NodeRound } from 'state/types'
 import { styled } from 'styled-components'
-import { useReadContract, useReadContracts } from 'wagmi'
+import { useBlockNumber, useReadContract, useReadContracts } from 'wagmi'
 import { useConfig } from '../context/ConfigProvider'
 import { CHART_DOT_CLICK_EVENT } from '../helpers'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
@@ -34,15 +34,24 @@ import useSwiper from '../hooks/useSwiper'
 function useChainlinkLatestRound() {
   const config = useConfig()
   const { chainId } = useActiveChainId()
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+
   const chainlinkOracleContract = useChainlinkOracleContract(config?.chainlinkOracleAddress)
-  return useReadContract({
+  const { data, refetch } = useReadContract({
     abi: chainlinkOracleABI,
     address: chainlinkOracleContract.address,
     functionName: 'latestRound',
-    enabled: !!chainlinkOracleContract,
-    watch: true,
+    query: {
+      enabled: !!chainlinkOracleContract,
+    },
     chainId,
   })
+
+  useEffect(() => {
+    refetch()
+  }, [blockNumber, refetch])
+
+  return data
 }
 
 function useChainlinkRoundDataSet() {
@@ -52,7 +61,7 @@ function useChainlinkRoundDataSet() {
   const chainlinkOracleAddress = config?.chainlinkOracleAddress
 
   const { data, error } = useReadContracts({
-    ...(lastRound?.data &&
+    ...(lastRound &&
       chainlinkOracleAddress && {
         contracts: Array.from({ length: 50 }).map(
           (_, i) =>
@@ -61,12 +70,13 @@ function useChainlinkRoundDataSet() {
               abi: chainlinkOracleABI,
               address: chainlinkOracleAddress,
               functionName: 'getRoundData',
-              args: [(lastRound?.data ?? 0n) - BigInt(i)] as const,
+              args: [(lastRound ?? 0n) - BigInt(i)] as const,
             } as const),
         ),
       }),
-    enabled: !!lastRound.data,
-    keepPreviousData: true,
+    query: {
+      enabled: !!lastRound,
+    },
   })
 
   const computedData: ChartData[] = useMemo(() => {

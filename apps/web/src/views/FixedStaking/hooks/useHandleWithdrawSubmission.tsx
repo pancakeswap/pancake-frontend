@@ -52,7 +52,9 @@ export function useHandleWithdrawSubmission({
   const { data } = useReadContract({
     chainId,
     ...tokenContract,
-    enabled: Boolean(fixedStakingContract.address),
+    query: {
+      enabled: Boolean(fixedStakingContract.address),
+    },
     functionName: 'balanceOf',
     args: [fixedStakingContract.address],
   })
