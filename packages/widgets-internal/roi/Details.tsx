@@ -1,11 +1,11 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Percent, ZERO_PERCENT } from "@pancakeswap/sdk";
-import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
-import { useState, ReactNode, memo } from "react";
-import { styled } from "styled-components";
+import { Box, ExpandableLabel, Flex, Grid, Text } from "@pancakeswap/uikit";
+import { BulletList, Footer } from "@pancakeswap/uikit/components/RoiCalculatorModal/RoiCalculatorFooter";
 import { formatPercent } from "@pancakeswap/utils/formatFractions";
-import { ExpandableLabel, Box, Grid, Text, Flex } from "@pancakeswap/uikit";
-import { Footer, BulletList } from "@pancakeswap/uikit/components/RoiCalculatorModal/RoiCalculatorFooter";
+import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
+import { ReactNode, memo, useState } from "react";
+import { styled } from "styled-components";
 
 const StyledFooter = styled(Footer)`
   border-radius: 16px;
@@ -18,6 +18,7 @@ interface Props {
   lpApr?: Percent;
   lpApy?: Percent;
   farmApy?: Percent;
+  combinedApy?: Percent;
   farmApr?: Percent;
   externalLink?: ReactNode;
   compoundIndex?: number;
@@ -30,13 +31,12 @@ export const Details = memo(function Details({
   externalLink,
   lpReward = 0,
   farmReward = 0,
-  lpApy = ZERO_PERCENT,
   farmApr = ZERO_PERCENT,
-  farmApy = ZERO_PERCENT,
   lpApr = ZERO_PERCENT,
   isFarm = false,
   compoundIndex = 0,
   compoundOn = true,
+  combinedApy = ZERO_PERCENT,
 }: Props) {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -105,7 +105,7 @@ export const Details = memo(function Details({
             {t("APY")} {compoundText && `(${compoundText})`}
           </Text>
           <Text small bold textAlign="right">
-            {`${formatPercent(lpApy.add(farmApy), 5) || "0"}%`}
+            {`${formatPercent(combinedApy, 5) || "0"}%`}
           </Text>
         </Grid>
       )}
