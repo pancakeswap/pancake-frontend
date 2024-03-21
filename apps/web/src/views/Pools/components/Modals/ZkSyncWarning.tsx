@@ -1,11 +1,10 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
-import { useNetwork } from 'wagmi'
-import { Message, MessageText, Box } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Message, MessageText } from '@pancakeswap/uikit'
 
 const ZkSyncWarning = () => {
   const { t } = useTranslation()
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
 
   return (
     <>

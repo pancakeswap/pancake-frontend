@@ -17,8 +17,8 @@ import { safeGetAddress } from 'utils'
 import { getNftMarketAddress } from 'utils/addressHelpers'
 import { getNftMarketContract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/wagmi'
+import { Address } from 'viem'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
-import { Address } from 'wagmi'
 import { baseNftFields, baseTransactionFields, collectionBaseFields } from './queries'
 import {
   ApiCollection,

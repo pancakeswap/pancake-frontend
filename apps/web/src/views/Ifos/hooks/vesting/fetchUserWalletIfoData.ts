@@ -1,5 +1,5 @@
-import { Ifo, fetchUserVestingData, UserVestingData, VestingCharacteristics } from '@pancakeswap/ifos'
-import { Address } from 'wagmi'
+import { Ifo, UserVestingData, VestingCharacteristics, fetchUserVestingData } from '@pancakeswap/ifos'
+import { Address } from 'viem'
 
 import { getViemClients } from 'utils/viem'
 
