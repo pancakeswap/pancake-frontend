@@ -1,8 +1,8 @@
+import { useTranslation } from "@pancakeswap/localization";
+import { Balance, Button, Flex, Heading, Skeleton, Text, useModal } from "@pancakeswap/uikit";
+import { formatNumber, getBalanceNumber, getFullDisplayBalance } from "@pancakeswap/utils/formatBalance";
 import BigNumber from "bignumber.js";
 import { ReactElement, ReactNode } from "react";
-import { useTranslation } from "@pancakeswap/localization";
-import { getFullDisplayBalance, getBalanceNumber, formatNumber } from "@pancakeswap/utils/formatBalance";
-import { Flex, Heading, Button, Text, Skeleton, Balance, useModal } from "@pancakeswap/uikit";
 import { CollectModalProps } from "./CollectModal";
 import { HarvestAction as TableHarvestAction } from "./PoolsTable/HarvestAction";
 import { HarvestActionsProps } from "./types";
@@ -61,6 +61,7 @@ export const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProp
   earningTokenPrice,
   earningTokenBalance,
   earningTokenDollarBalance,
+  disabledHarvestButton,
 }) => {
   const { t } = useTranslation();
   const hasEarnings = earnings.toNumber() > 0;
@@ -73,7 +74,7 @@ export const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProp
       earningTokenBalance={earningTokenBalance}
       earningTokenDollarBalance={earningTokenDollarBalance}
       actions={
-        <Button disabled={!hasEarnings} onClick={onPresentCollect}>
+        <Button disabled={disabledHarvestButton || !hasEarnings} onClick={onPresentCollect}>
           {t("Harvest")}
         </Button>
       }
@@ -91,6 +92,7 @@ interface WithHarvestActionsProps {
   earningTokenDecimals: number;
   earningTokenAddress?: string;
   poolAddress?: string;
+  disabledHarvestButton?: boolean;
 }
 
 const withCollectModalFactory =
@@ -106,6 +108,7 @@ const withCollectModalFactory =
     earningTokenPrice,
     isLoading,
     poolAddress,
+    disabledHarvestButton,
     ...props
   }: WithHarvestActionsProps) => {
     const earningTokenBalance: number = getBalanceNumber(earnings, earningTokenDecimals);
@@ -140,6 +143,7 @@ const withCollectModalFactory =
         earningTokenBalance={earningTokenBalance}
         isLoading={isLoading}
         earningTokenSymbol={earningTokenSymbol}
+        disabledHarvestButton={disabledHarvestButton}
         {...props}
       />
     );

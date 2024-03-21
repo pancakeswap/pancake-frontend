@@ -1,35 +1,35 @@
-import BigNumber from "bignumber.js";
 import type {
+  DeserializedCakeVault,
+  DeserializedLockedCakeVault,
+  DeserializedLockedVaultUser,
+  DeserializedPool,
+  DeserializedPoolConfig,
+  DeserializedPoolLockedVault,
+  DeserializedPoolVault,
+  DeserializedVaultFees,
+  DeserializedVaultUser,
   PoolCategory,
   PoolConfigBaseProps,
   SerializedPoolConfig,
-  DeserializedPoolConfig,
-  DeserializedPool,
-  DeserializedPoolVault,
-  DeserializedPoolLockedVault,
-  DeserializedLockedVaultUser,
-  DeserializedLockedCakeVault,
   SerializedVaultFees,
-  DeserializedVaultFees,
-  DeserializedVaultUser,
-  DeserializedCakeVault,
 } from "@pancakeswap/pools";
 import { VaultKey } from "@pancakeswap/pools";
+import BigNumber from "bignumber.js";
 
 export {
+  DeserializedCakeVault,
+  DeserializedLockedCakeVault,
+  DeserializedLockedVaultUser,
+  DeserializedPool,
+  DeserializedPoolConfig,
+  DeserializedPoolLockedVault,
+  DeserializedPoolVault,
+  DeserializedVaultFees,
+  DeserializedVaultUser,
   PoolCategory,
   PoolConfigBaseProps,
   SerializedPoolConfig,
-  DeserializedPoolConfig,
-  DeserializedPoolVault,
-  DeserializedPoolLockedVault,
-  DeserializedPool,
-  DeserializedLockedVaultUser,
-  DeserializedLockedCakeVault,
   SerializedVaultFees,
-  DeserializedVaultFees,
-  DeserializedVaultUser,
-  DeserializedCakeVault,
   VaultKey,
 };
 
@@ -40,4 +40,5 @@ export interface HarvestActionsProps {
   earningTokenPrice: number;
   earningTokenBalance: number;
   earningTokenDollarBalance: number;
+  disabledHarvestButton?: boolean;
 }

@@ -9,6 +9,7 @@ import NewIFOBanner from '../NewIFOBanner'
 import PerpetualBanner from '../PerpetualBanner'
 import { TopTraderBanner } from '../TopTraderBanner'
 import UserBanner from '../UserBanner'
+import { V4InfoBanner } from '../V4InfoBanner'
 import VeCakeBanner from '../VeCakeBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
@@ -45,6 +46,10 @@ export const useMultipleBannerConfig = () => {
         banner: <UserBanner />,
       },
       { shouldRender: isRenderIFOBanner || Boolean(countdown), banner: <NewIFOBanner /> },
+      {
+        shouldRender: true,
+        banner: <V4InfoBanner />,
+      },
       {
         shouldRender: true,
         banner: <NemesisDownfallBanner />,

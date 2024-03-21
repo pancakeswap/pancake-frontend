@@ -145,6 +145,7 @@ export const mainnetTokens = {
     6,
     'GUI',
     'GUI INU',
+    'https://www.guiinu.com/',
   ),
   stAPT: new Coin(
     ChainId.MAINNET,

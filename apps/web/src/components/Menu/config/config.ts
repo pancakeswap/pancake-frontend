@@ -190,6 +190,12 @@ const config: (
       ],
     },
     {
+      label: t('v4'),
+      href: '/v4',
+      showOnMobile: false,
+      items: [],
+    },
+    {
       label: '',
       href: '/info',
       icon: MoreIcon,
@@ -236,6 +242,11 @@ const config: (
           label: t('Docs'),
           href: 'https://docs.pancakeswap.finance',
           type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+        {
+          label: t('v4'),
+          href: '/v4',
+          isMobileOnly: true,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },

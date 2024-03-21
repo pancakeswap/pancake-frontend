@@ -1,16 +1,17 @@
-import { styled } from "styled-components";
-import BigNumber from "bignumber.js";
+import { useTranslation } from "@pancakeswap/localization";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { getBalanceNumber } from "@pancakeswap/utils/formatBalance";
-import { useTranslation } from "@pancakeswap/localization";
+import BigNumber from "bignumber.js";
+import { styled } from "styled-components";
 
-import { Skeleton, Text, Flex, Box, Balance, useMatchBreakpoints } from "@pancakeswap/uikit";
+import { Balance, Box, Flex, Skeleton, Text, useMatchBreakpoints } from "@pancakeswap/uikit";
 import { DeserializedPool } from "../types";
-import { CellContent, BaseCell } from "./BaseCell";
+import { BaseCell, CellContent } from "./BaseCell";
 
 interface EarningsCellProps<T> {
   pool: DeserializedPool<T>;
   account: string;
+  aptosRewardTooltips?: React.ReactElement;
 }
 
 const StyledCell = styled(BaseCell)`
@@ -20,7 +21,7 @@ const StyledCell = styled(BaseCell)`
   }
 `;
 
-export function EarningsCell<T>({ pool, account }: EarningsCellProps<T>) {
+export function EarningsCell<T>({ pool, account, aptosRewardTooltips }: EarningsCellProps<T>) {
   const { t } = useTranslation();
   const { isMobile } = useMatchBreakpoints();
   const { earningToken, userData, earningTokenPrice } = pool;
@@ -41,46 +42,49 @@ export function EarningsCell<T>({ pool, account }: EarningsCellProps<T>) {
 
   return (
     <StyledCell role="cell">
-      <CellContent>
-        <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {labelText}
-        </Text>
-        {!pool && !account ? (
-          <Skeleton width="80px" height="16px" />
-        ) : (
-          <>
-            <Flex>
-              <Box mr="8px" height="32px" onClick={hasEarnings ? handleEarningsClick : undefined}>
-                <Balance
-                  mt="4px"
-                  bold={!isMobile}
-                  fontSize={isMobile ? "14px" : "16px"}
-                  color={hasEarnings ? "primary" : "textDisabled"}
-                  decimals={hasEarnings ? 5 : 1}
-                  value={hasEarnings ? earningTokenBalance : 0}
-                />
-                {hasEarnings && Boolean(earningTokenDollarBalance) ? (
-                  <>
-                    <Balance
-                      display="inline"
-                      fontSize="12px"
-                      color="textSubtle"
-                      decimals={2}
-                      prefix="~"
-                      value={earningTokenDollarBalance}
-                      unit=" USD"
-                    />
-                  </>
-                ) : (
-                  <Text mt="4px" fontSize="12px" color="textDisabled">
-                    0 USD
-                  </Text>
-                )}
-              </Box>
-            </Flex>
-          </>
-        )}
-      </CellContent>
+      <Flex>
+        <CellContent>
+          <Text fontSize="12px" color="textSubtle" textAlign="left">
+            {labelText}
+          </Text>
+          {!pool && !account ? (
+            <Skeleton width="80px" height="16px" />
+          ) : (
+            <>
+              <Flex>
+                <Box mr="8px" height="32px" onClick={hasEarnings ? handleEarningsClick : undefined}>
+                  <Balance
+                    mt="4px"
+                    bold={!isMobile}
+                    fontSize={isMobile ? "14px" : "16px"}
+                    color={hasEarnings ? "primary" : "textDisabled"}
+                    decimals={hasEarnings ? 5 : 1}
+                    value={hasEarnings ? earningTokenBalance : 0}
+                  />
+                  {hasEarnings && Boolean(earningTokenDollarBalance) ? (
+                    <>
+                      <Balance
+                        display="inline"
+                        fontSize="12px"
+                        color="textSubtle"
+                        decimals={2}
+                        prefix="~"
+                        value={earningTokenDollarBalance}
+                        unit=" USD"
+                      />
+                    </>
+                  ) : (
+                    <Text mt="4px" fontSize="12px" color="textDisabled">
+                      0 USD
+                    </Text>
+                  )}
+                </Box>
+              </Flex>
+            </>
+          )}
+        </CellContent>
+        {aptosRewardTooltips}
+      </Flex>
     </StyledCell>
   );
 }

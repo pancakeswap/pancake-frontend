@@ -3,7 +3,16 @@ import { getAddress } from 'viem'
 
 import { PoolCategory, SerializedPool } from '../../types'
 
-export const livePools: SerializedPool[] = [
+export const livePools: SerializedPool[] = []
+// .map((p) => ({
+//   ...p,
+//   contractAddress: getAddress(p.contractAddress),
+//   stakingToken: p.stakingToken.serialize,
+//   earningToken: p.earningToken.serialize,
+// }))
+
+// known finished pools
+export const finishedPools: SerializedPool[] = [
   {
     sousId: 1,
     stakingToken: opBnbTokens.alp,
@@ -15,19 +24,10 @@ export const livePools: SerializedPool[] = [
   },
 ].map((p) => ({
   ...p,
+  isFinished: true,
   contractAddress: getAddress(p.contractAddress),
   stakingToken: p.stakingToken.serialize,
   earningToken: p.earningToken.serialize,
 }))
-
-// known finished pools
-export const finishedPools: SerializedPool[] = []
-// .map((p) => ({
-//   ...p,
-//   isFinished: true,
-//   contractAddress: getAddress(p.contractAddress),
-//   stakingToken: p.stakingToken.serialize,
-//   earningToken: p.earningToken.serialize,
-// }))
 
 export const pools: SerializedPool[] = [...livePools, ...finishedPools]

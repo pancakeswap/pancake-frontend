@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency } from '@pancakeswap/sdk'
 import {
   CalculateIcon,
   Flex,
@@ -10,7 +11,7 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useCakePrice } from 'hooks/useCakePrice'
+import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { memo, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
@@ -28,6 +29,7 @@ interface Props {
   precision?: bigint
   lpTokenDecimals?: number
   aprTimeWindow?: number
+  rewardToken?: Currency
 }
 
 const AprText = styled(Text)`
@@ -47,11 +49,12 @@ export const AprButton = memo(function YieldInfo({
   precision,
   lpTokenDecimals = 0,
   aprTimeWindow = 0,
+  rewardToken,
 }: Props) {
   const { t } = useTranslation()
 
   const { address: account } = useAccount()
-  const cakePriceBusd = useCakePrice()
+  const { data: rewardUsdPrice } = useCurrencyUsdPrice(rewardToken)
   const tokenBalanceMultiplier = useMemo(() => new BigNumber(10).pow(lpTokenDecimals), [lpTokenDecimals])
   const tokenBalance = useMemo(
     () =>
@@ -74,9 +77,9 @@ export const AprButton = memo(function YieldInfo({
         </Text>
       </Text>
       <ul>
-        {apr.isInCakeRewardDateRange && (
+        {apr.isInCakeRewardDateRange && rewardToken && (
           <li>
-            {t('CAKE APR')}:
+            {`${rewardToken?.symbol ?? ''} ${t('APR')}`}:
             <Text ml="3px" style={{ display: 'inline-block' }} bold>
               {`${apr.cakeYieldApr}%`}
             </Text>
@@ -110,7 +113,7 @@ export const AprButton = memo(function YieldInfo({
       stakingTokenDecimals={lpTokenDecimals}
       stakingTokenSymbol={lpSymbol}
       stakingTokenPrice={tokenPrice}
-      earningTokenPrice={cakePriceBusd.toNumber()}
+      earningTokenPrice={rewardUsdPrice ?? 0}
       apr={Number(apr.cakeYieldApr) + Number(apr.lpApr)}
       displayApr={apr.combinedApr}
       linkHref=""

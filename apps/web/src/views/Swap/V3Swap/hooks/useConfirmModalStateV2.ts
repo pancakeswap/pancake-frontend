@@ -1,22 +1,22 @@
 import { usePreviousValue } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { BSC_BLOCK_TIME } from '@pancakeswap/pools'
+import { getPermit2Address } from '@pancakeswap/permit2-sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@pancakeswap/swap-sdk-core'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { ConfirmModalState, confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
-import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
 import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from 'config/constants/exchange'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePermit2 } from 'hooks/usePermit2'
 import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { wait } from 'state/multicall/retry'
+import { RetryableError, retry } from 'state/multicall/retry'
 import { publicClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
-import { Address, Hex } from 'viem'
-import { mainnet } from 'wagmi'
+import { Address, Hex, TransactionNotFoundError, TransactionReceipt, TransactionReceiptNotFoundError } from 'viem'
+import { erc20ABI } from 'wagmi'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
 import { useSwapCallbackV2 } from './useSwapCallbackV2'
@@ -25,6 +25,25 @@ export type ConfirmAction = {
   step: ConfirmModalState
   action: (nextStep?: ConfirmModalState) => Promise<void>
   showIndicator: boolean
+}
+
+const getTokenAllowance = ({
+  chainId,
+  address,
+  inputs,
+}: {
+  chainId: number
+  address: Address
+  inputs: [`0x${string}`, `0x${string}`]
+}) => {
+  const client = publicClient({ chainId })
+
+  return client.readContract({
+    abi: erc20ABI,
+    address,
+    functionName: 'allowance',
+    args: inputs,
+  })
 }
 
 const useCreateConfirmSteps = (amountToApprove: CurrencyAmount<Token> | undefined, spender: Address | undefined) => {
@@ -55,7 +74,17 @@ const useConfirmActions = (
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const [deadline] = useTransactionDeadline()
-  const { revoke, permit, approve, refetch } = usePermit2(amountToApprove, spender)
+  const { revoke, permit, approve } = usePermit2(amountToApprove, spender)
+  const { account } = useAccountActiveChain()
+  const getAllowanceArgs = useMemo(() => {
+    if (!chainId) return undefined
+    const inputs = [account, getPermit2Address(chainId)] as [`0x${string}`, `0x${string}`]
+    return {
+      chainId,
+      address: amountToApprove?.currency.address as Address,
+      inputs,
+    }
+  }, [chainId, amountToApprove?.currency.address, account])
   const [permit2Signature, setPermit2Signature] = useState<Permit2Signature | undefined>(undefined)
   const { callback: swap, error: swapError } = useSwapCallbackV2({
     trade,
@@ -79,6 +108,33 @@ const useConfirmActions = (
     setPermit2Signature(undefined)
   }, [])
 
+  const retryWaitForTransaction = useCallback(
+    async ({ hash }: { hash: Hex | undefined }) => {
+      if (hash && chainId) {
+        let retryTimes = 0
+        const getReceipt = async () => {
+          console.info('retryWaitForTransaction', hash, retryTimes++)
+          try {
+            return await publicClient({ chainId }).waitForTransactionReceipt({ hash })
+          } catch (error) {
+            if (error instanceof TransactionReceiptNotFoundError || error instanceof TransactionNotFoundError) {
+              throw new RetryableError()
+            }
+            throw error
+          }
+        }
+        const { promise } = retry<TransactionReceipt>(getReceipt, {
+          n: 6,
+          minWait: 2000,
+          maxWait: 5000,
+        })
+        return promise
+      }
+      return undefined
+    },
+    [chainId],
+  )
+
   // define the action of each step
   const revokeStep = useMemo(() => {
     const action = async (nextState?: ConfirmModalState) => {
@@ -86,19 +142,21 @@ const useConfirmActions = (
       setConfirmState(ConfirmModalState.RESETTING_APPROVAL)
       try {
         const result = await revoke()
-        if (result?.hash && chainId) {
+        if (result?.hash) {
           setTxHash(result.hash)
-          // sync to same with updater /apps/web/src/state/transactions/updater.tsx#L101
-          await wait((AVERAGE_CHAIN_BLOCK_TIMES[chainId] ?? BSC_BLOCK_TIME) * 1000 + 2000)
-          await publicClient({ chainId }).waitForTransactionReceipt({ hash: result.hash })
+
+          await retryWaitForTransaction({ hash: result.hash })
         }
 
         let newAllowanceRaw: bigint = 0n
 
         try {
           // check if user really reset the approval to 0
-          const { data } = await refetch()
-          newAllowanceRaw = data ?? 0n
+          // const { data } = await refetch()
+          if (getAllowanceArgs) {
+            const data = await getTokenAllowance(getAllowanceArgs)
+            newAllowanceRaw = data ?? 0n
+          }
         } catch (error) {
           // assume the approval reset is successful, if we can't check the allowance
           console.error('check allowance after revoke failed: ', error)
@@ -118,7 +176,7 @@ const useConfirmActions = (
         if (userRejectedError(error)) {
           showError(t('Transaction rejected'))
         } else if (error instanceof UserUnexpectedTxError) {
-          showError(t('Revert transaction filled, but Approval not reset to 0. Please try again.'))
+          showError(t('Revoke transaction filled, but Approval not reset to 0. Please try again.'))
         } else {
           showError(typeof error === 'string' ? error : (error as any)?.message)
         }
@@ -129,7 +187,7 @@ const useConfirmActions = (
       action,
       showIndicator: true,
     }
-  }, [amountToApprove?.currency, chainId, refetch, revoke, showError, t])
+  }, [amountToApprove?.currency, getAllowanceArgs, retryWaitForTransaction, revoke, showError, t])
 
   const permitStep = useMemo(() => {
     return {
@@ -162,16 +220,15 @@ const useConfirmActions = (
           const result = await approve()
           if (result?.hash && chainId) {
             setTxHash(result.hash)
-            await publicClient({ chainId }).waitForTransactionReceipt({
-              hash: result.hash,
-              confirmations: chainId === mainnet.id ? 2 : 1,
-            })
+            await retryWaitForTransaction({ hash: result.hash })
           }
           let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
           // check if user really approved the amount trade needs
           try {
-            const { data } = await refetch()
-            newAllowanceRaw = data ?? 0n
+            if (getAllowanceArgs) {
+              const data = await getTokenAllowance(getAllowanceArgs)
+              newAllowanceRaw = data ?? 0n
+            }
           } catch (error) {
             // assume the approval is successful, if we can't check the allowance
             console.error('check allowance after approve failed: ', error)
@@ -182,7 +239,7 @@ const useConfirmActions = (
           )
           if (amountToApprove && newAllowance && newAllowance.lessThan(amountToApprove)) {
             throw new UserUnexpectedTxError({
-              expectedData: amountToApprove.toExact(),
+              expectedData: amountToApprove.quotient.toString(),
               actualData: newAllowanceRaw.toString(),
             })
           }
@@ -203,7 +260,7 @@ const useConfirmActions = (
       },
       showIndicator: true,
     }
-  }, [amountToApprove, approve, chainId, refetch, showError, t])
+  }, [amountToApprove, approve, chainId, getAllowanceArgs, retryWaitForTransaction, showError, t])
 
   const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const swapPreflightCheck = useCallback(() => {
@@ -243,10 +300,7 @@ const useConfirmActions = (
           if (result?.hash) {
             setTxHash(result.hash)
 
-            await publicClient({ chainId }).waitForTransactionReceipt({
-              hash: result.hash,
-              confirmations: chainId === mainnet.id ? 2 : 1,
-            })
+            await retryWaitForTransaction({ hash: result.hash })
           }
           setConfirmState(ConfirmModalState.COMPLETED)
         } catch (error: any) {
@@ -260,7 +314,7 @@ const useConfirmActions = (
       },
       showIndicator: false,
     }
-  }, [chainId, resetState, showError, swap, swapError, swapPreflightCheck])
+  }, [resetState, retryWaitForTransaction, showError, swap, swapError, swapPreflightCheck])
 
   const actions = useMemo(() => {
     return {

@@ -1,9 +1,9 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { createElement } from "react";
 
-import { Button, Text, Flex, Heading, Balance } from "@pancakeswap/uikit";
+import { Balance, Button, Flex, Heading, Text } from "@pancakeswap/uikit";
 
-import { ActionContainer, ActionTitles, ActionContent } from "./styles";
+import { ActionContainer, ActionContent, ActionTitles } from "./styles";
 
 import { HarvestActionsProps } from "../types";
 
@@ -48,9 +48,9 @@ export function HarvestAction({
   earningTokenDollarBalance,
   earningTokenSymbol,
   earnings,
+  disabledHarvestButton,
 }: HarvestActionsProps & { account: string; earningTokenSymbol: string }) {
   const { t } = useTranslation();
-
   const hasEarnings = earnings.gt(0);
 
   const actionTitle = (
@@ -107,7 +107,7 @@ export function HarvestAction({
             )}
           </>
         </Flex>
-        <Button disabled={!hasEarnings} onClick={onPresentCollect}>
+        <Button disabled={disabledHarvestButton || !hasEarnings} onClick={onPresentCollect}>
           {t("Harvest")}
         </Button>
       </ActionContent>

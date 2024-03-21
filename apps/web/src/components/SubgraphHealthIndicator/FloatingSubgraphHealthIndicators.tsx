@@ -16,7 +16,7 @@ type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 export function subgraphHealthIndicatorFactory({ getSubgraphName }: FactoryParams) {
-  return function Indicator(props: PartialBy<SubgraphHealthIndicatorProps, 'subgraphName'>) {
+  return function Indicator(props: PartialBy<SubgraphHealthIndicatorProps, 'subgraphName' | 'chainId'>) {
     const { chainId } = useActiveChainId()
     const subgraphName = useMemo(() => chainId && getSubgraphName(chainId), [chainId])
 
@@ -27,7 +27,7 @@ export function subgraphHealthIndicatorFactory({ getSubgraphName }: FactoryParam
     const portalRoot = getPortalRoot()
 
     return portalRoot
-      ? createPortal(<SubgraphHealthIndicator subgraphName={subgraphName} {...props} />, portalRoot)
+      ? createPortal(<SubgraphHealthIndicator chainId={chainId} subgraphName={subgraphName} {...props} />, portalRoot)
       : null
   }
 }

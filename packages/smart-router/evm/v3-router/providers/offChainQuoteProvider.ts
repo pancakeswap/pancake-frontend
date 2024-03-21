@@ -145,7 +145,7 @@ function createGetV3Quote(isExactIn = true) {
       const v3Pool = new V3Pool(token0.wrapped, token1.wrapped, fee, sqrtRatioX96, liquidity, tick, ticks)
       const [quote, poolAfter] = isExactIn
         ? await v3Pool.getOutputAmount(amount.wrapped)
-        : await v3Pool.getInputAmount(amount.wrapped)
+        : await v3Pool.getInputAmountByExactOut(amount.wrapped)
 
       // Not enough liquidity to perform the swap
       if (quote.quotient <= 0n) {

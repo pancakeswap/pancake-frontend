@@ -762,13 +762,13 @@ exports[`renders correctly 1`] = `
   }
 }
 
-@media screen and (min-width: 968px) {
+@media screen and (min-width: 1080px) {
   .c5 .mobile-icon {
     display: none;
   }
 }
 
-@media screen and (min-width: 968px) {
+@media screen and (min-width: 1080px) {
   .c5 .desktop-icon {
     display: block;
   }
@@ -2297,11 +2297,11 @@ exports[`renders correctly 1`] = `
 
 }
 
-@media screen and (min-width: 968px) {
+@media screen and (min-width: 1080px) {
 
 }
 
-@media screen and (min-width: 968px) {
+@media screen and (min-width: 1080px) {
 
 }
 
@@ -3723,11 +3723,11 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
 
 }
 
-@media screen and (min-width: 968px) {
+@media screen and (min-width: 1080px) {
 
 }
 
-@media screen and (min-width: 968px) {
+@media screen and (min-width: 1080px) {
 
 }
 

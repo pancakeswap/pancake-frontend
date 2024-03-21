@@ -1,15 +1,15 @@
-import { Flex, LinkExternal, Text, TimerIcon, useTooltip, ScanLink, AptosIcon } from '@pancakeswap/uikit'
-import { Pool } from '@pancakeswap/widgets-internal'
-import { memo, useMemo } from 'react'
-import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { Token } from '@pancakeswap/swap-sdk-core'
 import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/swap-sdk-core'
+import { AptosIcon, Flex, LinkExternal, ScanLink, Text, TimerIcon, useTooltip } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
+import { Pool } from '@pancakeswap/widgets-internal'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
+import { useActiveChainId } from 'hooks/useNetwork'
+import { memo, useMemo } from 'react'
 import { getBlockExploreLinkDefault } from 'utils'
 import getContactAddress from 'utils/getContactAddress'
-import { useActiveChainId } from 'hooks/useNetwork'
 import { AprInfo } from './Stat'
 
 interface ExpandedFooterProps {
@@ -153,6 +153,11 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
       <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
         <LinkExternal href={earningToken.projectLink} bold={false} small>
           {t('View Project Site')}
+        </LinkExternal>
+      </Flex>
+      <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+        <LinkExternal href={stakingToken.projectLink} bold={false} small>
+          {t('View Staking Token Project Site')}
         </LinkExternal>
       </Flex>
       {poolContractAddress && (

@@ -2,6 +2,7 @@
 import debounce from "lodash/debounce";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { usePopper } from "react-popper";
+import useMatchBreakpoints from "../../contexts/MatchBreakpoints/useMatchBreakpoints";
 import { useOnClickOutside } from "../../hooks";
 import { MenuContext } from "../../widgets/Menu/context";
 import { Box, Flex } from "../Box";
@@ -28,6 +29,7 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
 }) => {
   const { linkComponent } = useContext(MenuContext);
   const [isOpen, setIsOpen] = useState(false);
+  const { isMobile, isMd } = useMatchBreakpoints();
   const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null);
   const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null);
   const hasItems = items.length > 0;
@@ -98,7 +100,7 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
           $isOpen={isMenuShow}
         >
           {items
-            .filter((item) => !item.isMobileOnly)
+            .filter((item) => ((isMobile || isMd) && item.isMobileOnly) || !item.isMobileOnly)
             .map(
               (
                 { type = DropdownMenuItemType.INTERNAL_LINK, label, href = "/", status, disabled, ...itemProps },

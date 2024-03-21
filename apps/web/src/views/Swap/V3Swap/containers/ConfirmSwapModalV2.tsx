@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import { Box, BscScanIcon, Flex, InjectedModalProps, Link } from '@pancakeswap/uikit'
+import { Box, BscScanIcon, Column, Flex, InjectedModalProps, Link, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useUserSlippage } from '@pancakeswap/utils/user'
@@ -13,6 +13,7 @@ import {
   SwapTransactionReceiptModalContent,
 } from '@pancakeswap/widgets-internal'
 import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
+import DescriptionWithTx from 'components/Toast/DescriptionWithTx'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallback, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
@@ -115,10 +116,22 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalProps> = ({
     const amountB = formatAmount(trade?.outputAmount, 6) ?? ''
 
     if (swapErrorMessage) {
+      const errorMessage =
+        txHash && isMM ? (
+          <Column style={{ margin: '0 -12rem' }} alignItems="center">
+            <DescriptionWithTx txHash={txHash} txChainId={chainId}>
+              <Text color="failure" mb="16px">
+                {t('Transaction failed: quote expired')}
+              </Text>
+            </DescriptionWithTx>
+          </Column>
+        ) : (
+          swapErrorMessage
+        )
       return (
         <Flex width="100%" alignItems="center" height="calc(430px - 73px - 120px)">
           <SwapTransactionErrorContent
-            message={swapErrorMessage}
+            message={errorMessage}
             onDismiss={handleDismiss}
             openSettingModal={openSettingModal}
           />

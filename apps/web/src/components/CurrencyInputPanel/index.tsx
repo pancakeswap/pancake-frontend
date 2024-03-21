@@ -1,32 +1,20 @@
-import { useMemo, memo, useCallback } from 'react'
-import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
-import { zksyncTokens } from '@pancakeswap/tokens'
-import {
-  Button,
-  Text,
-  useModal,
-  Flex,
-  Box,
-  CopyButton,
-  Loading,
-  Skeleton,
-  ArrowDropDownIcon,
-  LinkExternal,
-} from '@pancakeswap/uikit'
-import { Swap as SwapUI, CurrencyLogo, DoubleCurrencyLogo } from '@pancakeswap/widgets-internal'
+import { useTranslation } from '@pancakeswap/localization'
+import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
+import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import { ArrowDropDownIcon, Box, Button, CopyButton, Flex, Loading, Skeleton, Text, useModal } from '@pancakeswap/uikit'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import { CurrencyLogo, DoubleCurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
+import { memo, useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
-import { useTranslation } from '@pancakeswap/localization'
-import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import { formatAmount } from '@pancakeswap/utils/formatFractions'
 
-import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
 import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
-import { useAccount } from 'wagmi'
 import { useCurrencyBalance } from 'state/wallet/hooks'
+import { useAccount } from 'wagmi'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 
 import AddToWalletButton from '../AddToWallet/AddToWalletButton'
@@ -230,17 +218,6 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                   tokenLogo={token instanceof WrappedTokenInfo ? token.logoURI : undefined}
                 />
               </Flex>
-            ) : null}
-            {token && tokenAddress && token.equals(zksyncTokens.meow) ? (
-              <LinkExternal
-                ml="4px"
-                data-dd-action-name="Token campaign"
-                style={{ textDecoration: 'none' }}
-                showExternalIcon={false}
-                href="https://blog.pancakeswap.finance/articles/airdrop-carnival-trade-and-add-lp-to-win-9-billion-zeek-coin-meow-airdrop-on-zk-sync-pancake-swap-1?utm_source=swappage&utm_medium=button&utm_campaign=meow&utm_id=meow"
-              >
-                🎁
-              </LinkExternal>
             ) : null}
           </Flex>
           {account && !hideBalanceComp && (

@@ -1,11 +1,5 @@
-import { ArticleType } from '@pancakeswap/blog'
+import { AllArticleType, getArticle } from '@pancakeswap/blog'
 import { useQuery } from '@tanstack/react-query'
-import { getArticle } from './getArticle'
-
-interface AllArticleType {
-  isFetching: boolean
-  articlesData: ArticleType
-}
 
 export const useAllNewsArticle = (): AllArticleType => {
   const { data: articlesData, isPending } = useQuery({

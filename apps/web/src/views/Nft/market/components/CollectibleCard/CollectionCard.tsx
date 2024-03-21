@@ -1,7 +1,7 @@
 import { Card, CardBody, Flex, Heading, ProfileAvatar } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
-import { styled, css } from 'styled-components'
+import { css, styled } from 'styled-components'
 
 interface CollectionCardProps {
   bgSrc: string
@@ -16,6 +16,7 @@ export const CollectionAvatar = styled(ProfileAvatar)`
   position: absolute;
   top: -32px;
   border: 4px white solid;
+  background-color: ${({ theme }) => theme.colors.background};
 `
 
 const StyledCollectionCard = styled(Card)<{ disabled?: boolean }>`

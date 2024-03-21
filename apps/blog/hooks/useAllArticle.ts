@@ -31,16 +31,25 @@ const useAllArticle = ({
         const urlParamsObject = {
           ...(query && { _q: query }),
           filters: {
-            categories: {
-              name: {
-                $notIn: filterTagArray,
-              },
-              ...(selectedCategories && {
-                id: {
-                  $eq: selectedCategories,
+            $and: [
+              {
+                newsOutBoundLink: {
+                  $null: true,
                 },
-              }),
-            },
+              },
+              {
+                categories: {
+                  name: {
+                    $notIn: filterTagArray,
+                  },
+                  ...(selectedCategories && {
+                    id: {
+                      $eq: selectedCategories,
+                    },
+                  }),
+                },
+              },
+            ],
           },
           locale: languageOption,
           populate: 'categories,image',
