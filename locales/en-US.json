@@ -3261,5 +3261,10 @@
   "token distribution,": "token distribution,",
   "we will distribute": "we will distribute",
   "of the proceeds to the": "of the proceeds to the",
-  "CAKE community.": "CAKE community."
+  "CAKE community.": "CAKE community.",
+  "Stake %stakedToken%, Earn APT on": "Stake %stakedToken%, Earn APT on",
+  "%stakedToken% Syrup Pool": "%stakedToken% Syrup Pool",
+  "If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.": "If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.",
+  "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our": "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our",
+  "The rewards for this Syrup Pool will not be applicable to or claimable by": "The rewards for this Syrup Pool will not be applicable to or claimable by"
 }
