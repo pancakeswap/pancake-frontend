@@ -26,6 +26,7 @@ interface HarvestActionProps extends FarmWithStakedValue {
   onReward?: () => Promise<SendTransactionResult>
   proxyCakeBalance?: number
   onDone?: () => void
+  style?: React.CSSProperties
 }
 
 export const ProxyHarvestActionContainer = ({ children, ...props }) => {
@@ -73,6 +74,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   lpSymbol,
   onReward,
   onDone,
+  style,
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
@@ -132,6 +134,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
       proxyCakeBalance={proxyCakeBalance}
       disabled={earnings.eq(0) || pendingTx || !userDataReady}
       handleHarvest={onClickHarvestButton}
+      style={style}
     />
   )
 }

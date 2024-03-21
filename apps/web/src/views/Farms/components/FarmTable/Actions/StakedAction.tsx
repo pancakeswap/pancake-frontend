@@ -45,6 +45,7 @@ interface StackedActionProps extends FarmWithStakedValue {
   onApprove: () => Promise<Hash>
   isApproved: boolean
   shouldUseProxyFarm?: boolean
+  bCakeInfoSlot?: React.ReactElement
 }
 
 export function useStakedActions(lpContract, pid, vaultPid) {
@@ -166,6 +167,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   onUnstake,
   onApprove,
   isApproved,
+  bCakeInfoSlot,
 }) => {
   const dispatch = useAppDispatch()
   const native = useNativeCurrency()
@@ -410,7 +412,8 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   if (!account) {
     return (
       <FarmWidget.FarmTable.AccountNotConnect>
-        <ConnectWalletButton width="100%" />
+        <ConnectWalletButton width={bCakeInfoSlot ? '50%' : '100%'} />
+        {bCakeInfoSlot}
       </FarmWidget.FarmTable.AccountNotConnect>
     )
   }
@@ -420,7 +423,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   }
 
   if (!userDataReady) {
-    return <FarmWidget.FarmTable.StakeActionDataNotReady />
+    return <FarmWidget.FarmTable.StakeActionDataNotReady bCakeInfoSlot={bCakeInfoSlot} />
   }
 
   if (stakedBalance?.gt(0)) {
@@ -431,6 +434,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         disabledPlusButton={isStakeReady || isBloctoETH}
         onPresentWithdraw={onPresentWithdraw}
         onPresentDeposit={onPresentDeposit}
+        bCakeInfoSlot={bCakeInfoSlot}
       >
         <FarmWidget.StakedLP
           decimals={18}
@@ -455,6 +459,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       lpSymbol={lpSymbol}
       isStakeReady={isStakeReady}
       onPresentDeposit={onPresentDeposit}
+      bCakeInfoSlot={bCakeInfoSlot}
     />
   )
 }

@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
 import { useTranslation } from "@pancakeswap/localization";
-import { Text, IconButton, MinusIcon, AddIcon } from "@pancakeswap/uikit";
-import { StyledActionContainer, ActionContent, ActionTitles, IconButtonWrapper } from "./styles";
+import { AddIcon, IconButton, MinusIcon, Text } from "@pancakeswap/uikit";
+import { ReactNode } from "react";
+import { ActionContent, ActionTitles, IconButtonWrapper, StyledActionContainer } from "./styles";
 
 export interface StakedActionComponentProps {
   lpSymbol: string;
@@ -10,6 +10,7 @@ export interface StakedActionComponentProps {
   disabledPlusButton?: boolean;
   onPresentWithdraw: () => void;
   onPresentDeposit: () => void;
+  bCakeInfoSlot?: React.ReactElement;
 }
 
 const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<StakedActionComponentProps>> = ({
@@ -19,6 +20,7 @@ const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<Sta
   disabledPlusButton,
   onPresentWithdraw,
   onPresentDeposit,
+  bCakeInfoSlot,
 }) => {
   const { t } = useTranslation();
 
@@ -32,7 +34,7 @@ const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<Sta
           {t("Staked")}
         </Text>
       </ActionTitles>
-      <ActionContent>
+      <ActionContent style={{ gap: 16, width: "100%" }}>
         {children}
         <IconButtonWrapper>
           <IconButton mr="6px" variant="secondary" disabled={disabledMinusButton} onClick={onPresentWithdraw}>
@@ -42,6 +44,7 @@ const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<Sta
             <AddIcon color="primary" width="14px" />
           </IconButton>
         </IconButtonWrapper>
+        {bCakeInfoSlot}
       </ActionContent>
     </StyledActionContainer>
   );

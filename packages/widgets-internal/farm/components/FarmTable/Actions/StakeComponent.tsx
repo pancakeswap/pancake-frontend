@@ -1,17 +1,19 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { Text, Button } from "@pancakeswap/uikit";
-import { StyledActionContainer, ActionContent, ActionTitles } from "./styles";
+import { Button, Text } from "@pancakeswap/uikit";
+import { ActionContent, ActionTitles, StyledActionContainer } from "./styles";
 
 export interface StakeComponentProps {
   lpSymbol: string;
   isStakeReady: boolean;
   onPresentDeposit: () => void;
+  bCakeInfoSlot?: React.ReactElement;
 }
 
 const StakeComponent: React.FunctionComponent<React.PropsWithChildren<StakeComponentProps>> = ({
   lpSymbol,
   isStakeReady,
   onPresentDeposit,
+  bCakeInfoSlot,
 }) => {
   const { t } = useTranslation();
 
@@ -30,6 +32,7 @@ const StakeComponent: React.FunctionComponent<React.PropsWithChildren<StakeCompo
           {t("Stake LP")}
         </Button>
       </ActionContent>
+      {bCakeInfoSlot}
     </StyledActionContainer>
   );
 };
