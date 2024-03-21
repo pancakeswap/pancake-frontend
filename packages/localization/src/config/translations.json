@@ -1448,6 +1448,7 @@
   "Delayed": "Delayed",
   "Fast": "Fast",
   "Subgraph is currently experiencing delays due to %chainName% issues. Performance may suffer until subgraph is restored.": "Subgraph is currently experiencing delays due to %chainName% issues. Performance may suffer until subgraph is restored.",
+  "Subgraph is currently experiencing delays due to %chainName% issues. Performance may suffer until subgraph is restored.": "Subgraph is currently experiencing delays due to %chainName% issues. Performance may suffer until subgraph is restored.",
   "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.": "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.",
   "No issues with the subgraph.": "No issues with the subgraph.",
   "Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed",
