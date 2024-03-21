@@ -156,6 +156,7 @@ export default function V3FormView({
     depositBDisabled,
     invertPrice,
     ticksAtLimit,
+    tickSpaceLimits,
   } = useV3DerivedInfo(
     baseCurrency ?? undefined,
     quoteCurrency ?? undefined,
@@ -673,6 +674,7 @@ export default function V3FormView({
               currencyB={quoteCurrency}
               feeAmount={feeAmount}
               ticksAtLimit={ticksAtLimit}
+              tickSpaceLimits={tickSpaceLimits}
             />
             {showCapitalEfficiencyWarning ? (
               <Message variant="warning">

@@ -64,6 +64,7 @@ export default function useV3DerivedInfo(
   depositBDisabled: boolean
   invertPrice: boolean
   ticksAtLimit: { [bound in Bound]?: boolean | undefined }
+  tickSpaceLimits: { [bound in Bound]: number | undefined }
 } {
   const { t } = useTranslation()
 
@@ -421,5 +422,6 @@ export default function useV3DerivedInfo(
     depositBDisabled,
     invertPrice,
     ticksAtLimit,
+    tickSpaceLimits,
   }
 }
