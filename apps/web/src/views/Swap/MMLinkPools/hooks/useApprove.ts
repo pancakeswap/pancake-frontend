@@ -6,7 +6,6 @@ import { useApproveCallback } from 'hooks/useApproveCallback'
 import useTokenAllowance from 'hooks/useTokenAllowance'
 import { useMemo, useState } from 'react'
 import { Address, isAddressEqual } from 'viem'
-import { SendTransactionResult } from 'wagmi/actions'
 
 type UseApproveReturnType = {
   allowance: CurrencyAmount<Token> | undefined
@@ -17,8 +16,8 @@ type UseApproveReturnType = {
   isApproving: boolean
   isRevoking: boolean
 
-  approve: () => Promise<SendTransactionResult | undefined>
-  revoke: () => Promise<SendTransactionResult | undefined>
+  approve: () => Promise<`0x${string}` | undefined>
+  revoke: () => Promise<`0x${string}` | undefined>
   refetch: () => Promise<QueryObserverResult<bigint>>
 }
 

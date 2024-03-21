@@ -6,7 +6,7 @@ import {
   getPoolsConfig,
   isLegacyPool,
 } from '@pancakeswap/pools'
-import { publicClient } from 'utils/client'
+import { publicClient } from 'utils/wagmi'
 import { Address, formatUnits } from 'viem'
 import { describe, it } from 'vitest'
 
