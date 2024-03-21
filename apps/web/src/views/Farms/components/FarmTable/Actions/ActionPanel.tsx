@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
+  Button,
   Flex,
   LinkExternal,
   Message,
@@ -30,6 +31,7 @@ import { StatusView } from 'views/Farms/components/YieldBooster/components/bCake
 import { useBoostStatusPM } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { useWrapperBooster } from 'views/PositionManagers/hooks'
 import { useAccount } from 'wagmi'
+import { useUpdateBCakeFarms } from '../../../hooks/useUpdateBCake'
 import { FarmV3ApyButton } from '../../FarmCard/V3/FarmV3ApyButton'
 import FarmV3CardList from '../../FarmCard/V3/FarmV3CardList'
 import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
@@ -361,6 +363,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
     details?.bCakeUserData?.boosterMultiplier ?? 1,
     details?.bCakeWrapperAddress,
   )
+  const { onUpdate } = useUpdateBCakeFarms(details?.bCakeWrapperAddress ?? '0x', details?.pid)
 
   return (
     <>
@@ -478,7 +481,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                           </>
                         )}
                         <Box style={{ height: 70, width: 2, backgroundColor: theme.colors.cardBorder }} />
-                        <Flex flexGrow={1} maxWidth="27%">
+                        <Flex flexGrow={1} maxWidth="27%" justifyContent="space-between" alignItems="center">
                           <StatusView
                             status={status}
                             isFarmStaking
@@ -487,6 +490,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                             shouldUpdate={shouldUpdate}
                             expectMultiplier={veCakeUserMultiplierBeforeBoosted}
                           />
+                          {shouldUpdate && <Button onClick={onUpdate}>{t('Update')}</Button>}
                         </Flex>
                       </>
                     ) : undefined
