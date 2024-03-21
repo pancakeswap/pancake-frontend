@@ -38,9 +38,6 @@ export const styleVariants: { [key: string]: { backgroundColor?: string; bg?: st
   [variants.WARNING]: {
     backgroundColor: "warning",
   },
-  [variants.WARNING]: {
-    backgroundColor: "warning",
-  },
   [variants.GRADIENTBOLD]: {
     bg: "gradientBold",
   },

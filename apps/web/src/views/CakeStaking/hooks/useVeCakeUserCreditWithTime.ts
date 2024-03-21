@@ -3,7 +3,8 @@ import { ICAKE, iCakeABI } from '@pancakeswap/ifos'
 import BigNumber from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useEffect, useMemo } from 'react'
-import { Address, useBlockNumber, useReadContract } from 'wagmi'
+import { Address } from 'viem'
+import { useBlockNumber, useReadContract } from 'wagmi'
 
 interface UseVeCakeUserCreditWithTime {
   userCreditWithTime: number

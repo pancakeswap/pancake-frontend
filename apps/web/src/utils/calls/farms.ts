@@ -4,10 +4,16 @@ import { getMasterChefContract, getNonBscVaultContract, getV2SSBCakeWrapperContr
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { MessageTypes, getNonBscVaultContractFee } from 'views/Farms/hooks/getNonBscVaultFee'
 
-type MasterChefContract = ReturnType<typeof getMasterChefContract>
-type V2SSBCakeContract = ReturnType<typeof getV2SSBCakeWrapperContract>
+export type MasterChefContractType = ReturnType<typeof getMasterChefContract>
+type V2SSBCakeContractType = ReturnType<typeof getV2SSBCakeWrapperContract>
 
-export const stakeFarm = async (masterChefContract: MasterChefContract, pid, amount, gasPrice, gasLimit?: bigint) => {
+export const stakeFarm = async (
+  masterChefContract: MasterChefContractType,
+  pid,
+  amount,
+  gasPrice,
+  gasLimit?: bigint,
+) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   logGTMClickStakeFarmEvent()
 
@@ -22,7 +28,7 @@ export const stakeFarm = async (masterChefContract: MasterChefContract, pid, amo
 }
 
 export const bCakeStakeFarm = async (
-  v2SSContract: V2SSBCakeContract,
+  v2SSContract: V2SSBCakeContractType,
   amount,
   gasPrice,
   gasLimit?: bigint,
@@ -38,7 +44,13 @@ export const bCakeStakeFarm = async (
   })
 }
 
-export const unstakeFarm = async (masterChefContract: MasterChefContract, pid, amount, gasPrice, gasLimit?: bigint) => {
+export const unstakeFarm = async (
+  masterChefContract: MasterChefContractType,
+  pid,
+  amount,
+  gasPrice,
+  gasLimit?: bigint,
+) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
 
   if (!masterChefContract.account) return undefined
@@ -51,7 +63,7 @@ export const unstakeFarm = async (masterChefContract: MasterChefContract, pid, a
   })
 }
 
-export const bCakeUnStakeFarm = async (v2SSContract: V2SSBCakeContract, amount, gasPrice, gasLimit?: bigint) => {
+export const bCakeUnStakeFarm = async (v2SSContract: V2SSBCakeContractType, amount, gasPrice, gasLimit?: bigint) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   return v2SSContract.write.withdraw([BigInt(value), false], {
     gas: gasLimit || DEFAULT_GAS_LIMIT,
@@ -61,7 +73,7 @@ export const bCakeUnStakeFarm = async (v2SSContract: V2SSBCakeContract, amount, 
   })
 }
 
-export const harvestFarm = async (masterChefContract: MasterChefContract, pid, gasPrice, gasLimit?: bigint) => {
+export const harvestFarm = async (masterChefContract: MasterChefContractType, pid, gasPrice, gasLimit?: bigint) => {
   if (!masterChefContract.account) return undefined
 
   return masterChefContract.write.deposit([pid, 0n], {
@@ -72,7 +84,7 @@ export const harvestFarm = async (masterChefContract: MasterChefContract, pid, g
   })
 }
 
-export const bCakeHarvestFarm = async (v2SSContract: V2SSBCakeContract, gasPrice, gasLimit?: bigint) => {
+export const bCakeHarvestFarm = async (v2SSContract: V2SSBCakeContractType, gasPrice, gasLimit?: bigint) => {
   return v2SSContract.write.deposit([0n, false], {
     gas: gasLimit || BOOSTED_FARM_GAS_LIMIT,
     gasPrice,

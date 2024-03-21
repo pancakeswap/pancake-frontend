@@ -27,7 +27,7 @@ export default useApproveFarm
 export const useApproveBoostProxyFarm = (lpContract: ReturnType<typeof useERC20>, proxyAddress?: Address) => {
   const { callWithGasPrice } = useCallWithGasPrice()
   const handleApprove = useCallback(async () => {
-    return callWithGasPrice(lpContract, 'approve', [proxyAddress, MaxUint256])
+    return proxyAddress ? callWithGasPrice(lpContract, 'approve', [proxyAddress, MaxUint256]) : undefined
   }, [lpContract, proxyAddress, callWithGasPrice])
 
   return { onApprove: proxyAddress ? handleApprove : undefined }

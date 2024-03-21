@@ -207,7 +207,7 @@ export default function useSendSwapTransaction(
               type,
             })
             logTx({ account, chainId, hash: response })
-            return response
+            return { hash: response }
           })
           .catch((error) => {
             // if the user rejected the tx, pass this along
