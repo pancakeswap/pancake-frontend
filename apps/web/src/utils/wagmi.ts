@@ -8,7 +8,7 @@ import { PUBLIC_NODES } from 'config/nodes'
 import first from 'lodash/first'
 import memoize from 'lodash/memoize'
 import { Transport, createPublicClient } from 'viem'
-import { createConfig, createStorage, http } from 'wagmi'
+import { createConfig, http } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors'
 
@@ -126,11 +126,6 @@ export const publicClient = ({ chainId }: { chainId?: ChainId }) => {
 
 export const wagmiConfig = createConfig({
   chains,
-
-  storage: createStorage({
-    storage: typeof window !== 'undefined' ? window.localStorage : noopStorage,
-    key: 'wagmi_v1.1',
-  }),
   syncConnectedChain: false,
   transports,
   ...CLIENT_CONFIG,

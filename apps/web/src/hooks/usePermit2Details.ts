@@ -3,7 +3,7 @@ import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { useQuery } from '@tanstack/react-query'
 import { FAST_INTERVAL } from 'config/constants'
 import { useMemo } from 'react'
-import { publicClient } from 'utils/client'
+import { publicClient } from 'utils/wagmi'
 import { Address, zeroAddress } from 'viem'
 import { useActiveChainId } from './useActiveChainId'
 

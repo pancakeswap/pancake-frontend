@@ -16,7 +16,6 @@ import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { Address, Hex, TransactionExecutionError, UserRejectedRequestError, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
-import { SendTransactionResult } from 'wagmi/actions'
 
 import { logger } from 'utils/datadog'
 import { viemClients } from 'utils/viem'
@@ -55,7 +54,7 @@ export default function useSendSwapTransaction(
   trade?: SmartRouterTrade<TradeType> | null, // trade to execute, required
   swapCalls: SwapCall[] | WallchainSwapCall[] = [],
   type: 'V3SmartSwap' | 'UniversalRouter' = 'V3SmartSwap',
-): { callback: null | (() => Promise<SendTransactionResult>) } {
+) {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
   const { sendTransactionAsync } = useSendTransaction()
@@ -69,7 +68,7 @@ export default function useSendSwapTransaction(
       return { callback: null }
     }
     return {
-      callback: async function onSwap(): Promise<SendTransactionResult> {
+      callback: async function onSwap() {
         const estimatedCalls: SwapCallEstimate[] = await Promise.all(
           swapCalls.map((call) => {
             const { address, calldata, value } = call
@@ -180,31 +179,34 @@ export default function useSendSwapTransaction(
                 : recipient === account
                 ? 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%'
                 : 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%'
-            addTransaction(response, {
-              summary: withRecipient,
-              translatableSummary: {
-                text: translatableWithRecipient,
-                data: {
-                  inputAmount,
-                  inputSymbol,
-                  outputAmount,
-                  outputSymbol,
-                  ...(recipient !== account && { recipientAddress: recipientAddressText }),
+            addTransaction(
+              { hash: response },
+              {
+                summary: withRecipient,
+                translatableSummary: {
+                  text: translatableWithRecipient,
+                  data: {
+                    inputAmount,
+                    inputSymbol,
+                    outputAmount,
+                    outputSymbol,
+                    ...(recipient !== account && { recipientAddress: recipientAddressText }),
+                  },
                 },
+                type: 'swap',
               },
-              type: 'swap',
-            })
+            )
             logSwap({
               account,
               chainId,
-              hash: response.hash,
+              hash: response,
               inputAmount,
               outputAmount,
               input: trade.inputAmount.currency,
               output: trade.outputAmount.currency,
               type,
             })
-            logTx({ account, chainId, hash: response.hash })
+            logTx({ account, chainId, hash: response })
             return response
           })
           .catch((error) => {

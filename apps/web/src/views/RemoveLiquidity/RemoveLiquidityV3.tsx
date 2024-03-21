@@ -1,55 +1,55 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, WNATIVE } from '@pancakeswap/sdk'
 import {
-  AutoRow,
-  CardBody,
-  Heading,
-  Flex,
-  Slider,
-  Button,
-  Text,
-  ColumnCenter,
   ArrowDownIcon,
   AutoColumn,
-  useModal,
+  AutoRow,
+  Box,
+  Button,
+  CardBody,
+  ColumnCenter,
+  Flex,
+  Heading,
+  Message,
   RowBetween,
   RowFixed,
-  Toggle,
-  Box,
+  Slider,
   Tag,
-  Message,
+  Text,
+  Toggle,
+  useModal,
 } from '@pancakeswap/uikit'
 import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 
-import { NonfungiblePositionManager, MasterChefV3 } from '@pancakeswap/v3-sdk'
+import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
+import { useUserSlippage } from '@pancakeswap/utils/user'
+import { MasterChefV3, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { AppBody, AppHeader } from 'components/App'
+import { LightGreyCard } from 'components/Card'
+import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
+import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
+import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useDerivedV3BurnInfo } from 'hooks/v3/useDerivedV3BurnInfo'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
-import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { useUserSlippage } from '@pancakeswap/utils/user'
+import { styled } from 'styled-components'
+import { hexToBigInt } from 'viem'
 import Page from 'views/Page'
 import { useSendTransaction, useWalletClient } from 'wagmi'
-import useLocalSelector from 'contexts/LocalRedux/useSelector'
-import { styled } from 'styled-components'
-import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
-import { LightGreyCard } from 'components/Card'
-import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
-import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
-import useNativeCurrency from 'hooks/useNativeCurrency'
-import { hexToBigInt } from 'viem'
 
-import { RangeTag } from 'components/RangeTag'
 import Divider from 'components/Divider'
-import { formatRawAmount } from 'utils/formatCurrencyAmount'
-import { basisPointsToPercent } from 'utils/exchange'
-import { getViemClients } from 'utils/viem'
+import { RangeTag } from 'components/RangeTag'
 import { calculateGasMargin } from 'utils'
+import { basisPointsToPercent } from 'utils/exchange'
+import { formatRawAmount } from 'utils/formatCurrencyAmount'
+import { getViemClients } from 'utils/viem'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { isUserRejected } from 'utils/sentry'
@@ -196,12 +196,15 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
           const amount0 = formatRawAmount(liquidityValue0.quotient.toString(), liquidityValue0.currency.decimals, 4)
           const amount1 = formatRawAmount(liquidityValue1.quotient.toString(), liquidityValue1.currency.decimals, 4)
 
-          setTxnHash(response.hash)
+          setTxnHash(response)
           setAttemptingTxn(false)
-          addTransaction(response, {
-            type: 'remove-liquidity-v3',
-            summary: `Remove ${amount0} ${liquidityValue0.currency.symbol} and ${amount1} ${liquidityValue1.currency.symbol}`,
-          })
+          addTransaction(
+            { hash: response },
+            {
+              type: 'remove-liquidity-v3',
+              summary: `Remove ${amount0} ${liquidityValue0.currency.symbol} and ${amount1} ${liquidityValue1.currency.symbol}`,
+            },
+          )
         })
         .catch((err) => {
           if (isUserRejected(err)) {

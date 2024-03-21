@@ -2,7 +2,7 @@ import { ERC20Token, Token } from '@pancakeswap/sdk'
 import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
 import omitBy from 'lodash/omitBy'
 import slice from 'lodash/slice'
-import { publicClient } from 'utils/client'
+import { publicClient } from 'utils/wagmi'
 import { erc20Abi } from 'viem'
 import { describe, it } from 'vitest'
 

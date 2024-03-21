@@ -16,7 +16,6 @@ import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { ConfirmSwapModal } from 'views/Swap/V3Swap/containers/ConfirmSwapModal'
 import { useConfirmModalState } from 'views/Swap/V3Swap/hooks/useConfirmModalState'
-import { SendTransactionResult } from 'wagmi/actions'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
 import { MMRfqTrade } from '../types'
@@ -33,8 +32,8 @@ interface SwapCommitButtonPropsType {
   onWrap?: () => Promise<void>
   wrapType: WrapType
   approval: ApprovalState
-  approveCallback: () => Promise<SendTransactionResult | undefined>
-  revokeCallback: () => Promise<SendTransactionResult | undefined>
+  approveCallback: () => Promise<`0x${string}` | undefined>
+  revokeCallback: () => Promise<`0x${string}` | undefined>
   approvalSubmitted: boolean
   currencies: {
     INPUT?: Currency
