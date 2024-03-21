@@ -3,6 +3,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { PoolEarnAptTooltips } from 'components/Farms/components/FarmTable/PoolEarnAptTooltips'
+import { useIsAptRewardFarm } from 'components/Farms/hooks/useIsAptRewardFarm'
 import { TokenPairImage } from 'components/TokenImage'
 import { useFarmUserInfoCache } from 'state/farms/hook'
 
@@ -15,10 +16,11 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmWidget.FarmTable
   pid,
   isReady,
   merklLink,
-  showPoolEarnAptTooltips,
+  lpAddress,
 }) => {
   const { data: userInfo } = useFarmUserInfoCache(String(pid))
   const stakedBalance = userInfo?.amount ? new BigNumber(userInfo.amount) : BIG_ZERO
+  const showPoolEarnAptTooltip = useIsAptRewardFarm(lpAddress)
 
   return (
     <Flex>
@@ -33,7 +35,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmWidget.FarmTable
       >
         <TokenPairImage width={40} height={40} variant="inverted" primaryToken={token} secondaryToken={quoteToken} />
       </FarmTokenInfo>
-      {showPoolEarnAptTooltips && <PoolEarnAptTooltips lpLabel={label} token={token} quoteToken={quoteToken} />}
+      {showPoolEarnAptTooltip && <PoolEarnAptTooltips lpLabel={label} token={token} quoteToken={quoteToken} />}
     </Flex>
   )
 }

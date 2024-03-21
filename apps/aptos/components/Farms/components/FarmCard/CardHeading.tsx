@@ -2,6 +2,7 @@ import { Token } from '@pancakeswap/aptos-swap-sdk'
 import { Box, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { PoolEarnAptTooltips } from 'components/Farms/components/FarmTable/PoolEarnAptTooltips'
+import { useIsAptRewardFarm } from 'components/Farms/hooks/useIsAptRewardFarm'
 import { TokenPairImage } from 'components/TokenImage'
 import { styled } from 'styled-components'
 
@@ -15,7 +16,7 @@ export interface ExpandableSectionProps {
   quoteToken: Token
   farmCakePerSecond?: string
   totalMultipliers?: string
-  showPoolEarnAptTooltips?: boolean
+  lpAddress?: string
 }
 
 const Wrapper = styled(Flex)`
@@ -30,9 +31,10 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   isCommunityFarm,
   token,
   quoteToken,
-  showPoolEarnAptTooltips,
+  lpAddress,
 }) => {
   const isReady = multiplier !== undefined
+  const showPoolEarnAptTooltip = useIsAptRewardFarm(lpAddress)
 
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
@@ -45,7 +47,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
         {isReady ? (
           <Flex mb="4px">
             <Heading>{lpLabel?.split(' ')[0]}</Heading>
-            {showPoolEarnAptTooltips && (
+            {showPoolEarnAptTooltip && (
               <PoolEarnAptTooltips lpLabel={lpLabel ?? ''} token={token} quoteToken={quoteToken} />
             )}
           </Flex>

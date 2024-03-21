@@ -89,12 +89,12 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
     <StyledCard isActive={isPromotedFarm}>
       <FarmCardInnerContainer>
         <CardHeading
+          lpAddress={farm.lpAddress}
           lpLabel={lpLabel}
           multiplier={farm.multiplier}
           isCommunityFarm={farm.isCommunity}
           token={farm.token}
           quoteToken={farm.quoteToken}
-          showPoolEarnAptTooltips={farm.showPoolEarnAptTooltips}
         />
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>

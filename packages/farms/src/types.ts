@@ -57,7 +57,6 @@ export interface FarmConfigBaseProps {
     aptIncentiveInfo: number
   }
   boosted?: boolean
-  showPoolEarnAptTooltips?: boolean
 }
 
 export interface SerializedStableFarmConfig extends FarmConfigBaseProps {
@@ -215,7 +214,6 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
     token: Token
     aptIncentiveInfo: number
   }
-  showPoolEarnAptTooltips?: boolean
 }
 
 export interface DeserializedFarmsState {
