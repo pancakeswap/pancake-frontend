@@ -152,11 +152,11 @@ export const ProviderGroupItem = ({
               >
                 {t('1 %asset% = %amount%', {
                   amount: formatLocaleNumber({
-                    number: Number(selectedQuote.price.toFixed(2)),
+                    number: Number(currentQuote.price.toFixed(2)),
                     locale,
-                    options: { currency: selectedQuote.fiatCurrency, style: 'currency' },
+                    options: { currency: currentQuote.fiatCurrency, style: 'currency' },
                   }),
-                  asset: selectedQuote.cryptoCurrency,
+                  asset: currentQuote.cryptoCurrency,
                 })}
               </SkeletonText>
             </AutoColumn>
