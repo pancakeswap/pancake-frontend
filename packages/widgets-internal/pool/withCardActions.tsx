@@ -15,6 +15,7 @@ interface CardActionsProps<T> {
   stakedBalance?: BigNumber;
   hideLocateAddress?: boolean;
   usUserTooltipComponent?: any;
+  disabledHarvestButton?: boolean;
 }
 
 export function withTableActions<T>(HarvestActionsComp: any, StakeActionsComp: any) {
@@ -22,12 +23,14 @@ export function withTableActions<T>(HarvestActionsComp: any, StakeActionsComp: a
     pool,
     stakedBalance,
     hideLocateAddress = false,
+    disabledHarvestButton,
     ...rest
   }: {
     pool: DeserializedPool<T>;
     account?: string;
     hideLocateAddress?: boolean;
     stakedBalance?: BigNumber;
+    disabledHarvestButton?: boolean;
   }) => {
     const { sousId, stakingToken, earningToken, userData, earningTokenPrice } = pool;
 
@@ -50,6 +53,7 @@ export function withTableActions<T>(HarvestActionsComp: any, StakeActionsComp: a
           isBnbPool={isBnbPool}
           isLoading={isLoading}
           poolAddress={pool.contractAddress}
+          disabledHarvestButton={disabledHarvestButton}
           {...rest}
         />
         <StakeActionsComp
@@ -69,7 +73,13 @@ export function withTableActions<T>(HarvestActionsComp: any, StakeActionsComp: a
 }
 
 export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: any) {
-  return ({ pool, stakedBalance, hideLocateAddress = false, usUserTooltipComponent }: CardActionsProps<T>) => {
+  return ({
+    pool,
+    stakedBalance,
+    hideLocateAddress = false,
+    usUserTooltipComponent,
+    disabledHarvestButton,
+  }: CardActionsProps<T>) => {
     const { sousId, stakingToken, earningToken, userData, earningTokenPrice } = pool;
 
     const isBnbPool = false;
@@ -105,6 +115,7 @@ export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: an
               isBnbPool={isBnbPool}
               isLoading={isLoading}
               poolAddress={pool.contractAddress}
+              disabledHarvestButton={disabledHarvestButton}
             />
           </>
           <Box display="inline">

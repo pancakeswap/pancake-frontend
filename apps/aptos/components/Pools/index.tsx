@@ -7,6 +7,7 @@ import Page from 'components/Layout/Page'
 import { AptRewardTooltip } from 'components/Pools/components/PoolTable/AptRewardTooltip'
 import { UsUserAptRewardTooltips } from 'components/Pools/components/PoolTable/UsUserAptRewardTooltips'
 import { TokenPairImage } from 'components/TokenImage'
+import { APT } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { styled } from 'styled-components'
 
@@ -72,6 +73,10 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                               pool={pool}
                               stakedBalance={pool?.userData?.stakedBalance}
                               usUserTooltipComponent={<UsUserAptRewardTooltips pool={pool} />}
+                              disabledHarvestButton={
+                                pool.earningToken.address.toLowerCase() ===
+                                APT[pool.earningToken.chainId].address.toLowerCase()
+                              }
                             />
                           )
                         ) : (
