@@ -42,7 +42,7 @@ const bsc = {
   rpcUrls: {
     ...bsc_.rpcUrls,
     public: {
-      ...bsc_.rpcUrls.public,
+      ...bsc_.rpcUrls,
       http: ['https://bsc-dataseed.binance.org/'],
     },
     default: {

@@ -101,9 +101,18 @@ import { v3MigratorABI } from 'config/abi/v3Migrator'
 import { vCakeABI } from 'config/abi/vCake'
 import { veCakeABI } from 'config/abi/veCake'
 import { getViemClients, viemClients } from 'utils/viem'
-import { Abi, Address, PublicClient, WalletClient, erc20Abi, erc721Abi, getContract as viemGetContract } from 'viem'
+import {
+  Abi,
+  Address,
+  GetContractReturnType,
+  PublicClient,
+  WalletClient,
+  erc20Abi,
+  erc721Abi,
+  getContract as viemGetContract,
+} from 'viem'
 
-export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
+export const getContract = <TAbi extends Abi | readonly unknown[], TWalletClient extends WalletClient>({
   abi,
   address,
   chainId = ChainId.BSC,
@@ -125,7 +134,7 @@ export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends 
     // TODO: Fix viem
     // @ts-ignore
     walletClient: signer,
-  })
+  }) as unknown as GetContractReturnType<TAbi, PublicClient, Address>
 
   return {
     ...c,

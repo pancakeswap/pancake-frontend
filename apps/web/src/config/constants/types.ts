@@ -3,7 +3,7 @@ import type { FarmConfigBaseProps, SerializedFarmConfig, SerializedFarmPublicDat
 import { Currency, CurrencyAmount, ERC20Token, Percent, Price, Token, Trade, TradeType } from '@pancakeswap/sdk'
 import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import BigNumber from 'bignumber.js'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 // a list of tokens by chain
 export type ChainMap<T> = {
