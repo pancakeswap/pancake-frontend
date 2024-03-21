@@ -1,14 +1,14 @@
-import BigNumber from 'bignumber.js'
+import { ChainId } from '@pancakeswap/chains'
 import { bscTokens } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { getBep20Contract, getPotteryVaultContract, getPotteryDrawContract } from 'utils/contractHelpers'
-import { request, gql } from 'graphql-request'
-import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
-import { PotteryDepositStatus } from 'state/types'
-import { Address } from 'wagmi'
-import { ChainId } from '@pancakeswap/chains'
+import BigNumber from 'bignumber.js'
 import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
+import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
+import { gql, request } from 'graphql-request'
+import { PotteryDepositStatus } from 'state/types'
+import { getBep20Contract, getPotteryDrawContract, getPotteryVaultContract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/wagmi'
+import { Address } from 'viem'
 
 const potteryDrawContract = getPotteryDrawContract()
 

@@ -1,7 +1,7 @@
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { getCrossFarmingSenderContract, getNonBscVaultContract } from 'utils/contractHelpers'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 export enum MessageTypes {
   Deposit = 0,

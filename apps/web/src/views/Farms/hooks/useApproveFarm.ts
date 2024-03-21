@@ -4,7 +4,7 @@ import { useERC20 } from 'hooks/useContract'
 import { useCallback } from 'react'
 import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelpers'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 const useApproveFarm = (lpContract: ReturnType<typeof useERC20>, chainId: number, bCakeWrapperAddress?: Address) => {
   const isBscNetwork = verifyBscNetwork(chainId)
