@@ -25,7 +25,9 @@ const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<Sta
   const { t } = useTranslation();
 
   return (
-    <StyledActionContainer>
+    <StyledActionContainer
+      style={bCakeInfoSlot ? { paddingBottom: 0, paddingTop: 0, display: "flex", alignItems: "center" } : undefined}
+    >
       {!bCakeInfoSlot && (
         <ActionTitles style={{ marginBottom: 0 }}>
           <Text bold color="secondary" fontSize="12px" pr="4px">
