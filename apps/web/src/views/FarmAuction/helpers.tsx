@@ -1,14 +1,14 @@
-import { BSC_BLOCK_TIME, DEFAULT_TOKEN_DECIMAL } from 'config'
-import { getBidderInfo } from 'config/constants/farmAuctions'
-import { AuctionsResponse, FarmAuctionContractStatus, BidsPerAuction } from 'utils/types'
-import { Auction, AuctionStatus, Bidder, BidderAuction } from 'config/constants/types'
-import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
-import orderBy from 'lodash/orderBy'
-import { farmAuctionABI } from 'config/abi/farmAuction'
-import { ContractFunctionResult } from 'viem'
-import { publicClient } from 'utils/wagmi'
 import { ChainId } from '@pancakeswap/chains'
+import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
+import { BSC_BLOCK_TIME, DEFAULT_TOKEN_DECIMAL } from 'config'
+import { farmAuctionABI } from 'config/abi/farmAuction'
+import { getBidderInfo } from 'config/constants/farmAuctions'
+import { Auction, AuctionStatus, Bidder, BidderAuction } from 'config/constants/types'
 import dayjs from 'dayjs'
+import orderBy from 'lodash/orderBy'
+import { AuctionsResponse, BidsPerAuction, FarmAuctionContractStatus } from 'utils/types'
+import { publicClient } from 'utils/wagmi'
+import { AbiStateMutability, ContractFunctionReturnType } from 'viem'
 
 export const FORM_ADDRESS =
   'https://docs.google.com/forms/d/e/1FAIpQLSfQNsAfh98SAfcqJKR3is2hdvMRdnvfd2F3Hql96vXHgIi3Bw/viewform'
@@ -136,7 +136,7 @@ export const processAuctionData = async (
 }
 
 export const processBidderAuctions = (
-  bidderAuctions: ContractFunctionResult<typeof farmAuctionABI, 'viewBidderAuctions'>,
+  bidderAuctions: ContractFunctionReturnType<typeof farmAuctionABI, AbiStateMutability, 'viewBidderAuctions'>,
 ): { auctions: BidderAuction[]; nextCursor: number } => {
   const [auctionIds, bids, claimed, nextCursor] = bidderAuctions
   const auctions = auctionIds.map((auctionId, index) => ({

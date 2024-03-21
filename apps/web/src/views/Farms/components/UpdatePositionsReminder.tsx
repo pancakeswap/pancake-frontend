@@ -81,8 +81,10 @@ export function UpdatePositionsReminder_() {
         })),
       [chainId, masterchefV3, stakedTokenIds],
     ),
-    cacheTime: 0,
-    enabled: Boolean(!loading && stakedTokenIds.length > 0 && masterchefV3),
+    query: {
+      staleTime: Infinity,
+      enabled: Boolean(!loading && stakedTokenIds.length > 0 && masterchefV3),
+    },
   })
 
   const isOverRewardGrowthGlobalUserInfos = stakedUserInfos?.data
@@ -118,8 +120,10 @@ export function UpdatePositionsReminder_() {
         chainId,
       }
     }),
-    cacheTime: 0,
-    enabled: (isOverRewardGrowthGlobalUserInfos?.length ?? 0) > 0,
+    query: {
+      staleTime: Infinity,
+      enabled: (isOverRewardGrowthGlobalUserInfos?.length ?? 0) > 0,
+    },
   })
 
   const needRetrigger = isOverRewardGrowthGlobalUserInfos

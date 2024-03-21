@@ -1,5 +1,4 @@
-import { styled } from 'styled-components'
-import every from 'lodash/every'
+import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import {
   Balance,
   Box,
@@ -19,16 +18,18 @@ import {
   Stepper,
   Text,
 } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter as RouterLink, Ifo } from '@pancakeswap/widgets-internal'
-import { ChainId, CurrencyAmount, Currency } from '@pancakeswap/sdk'
-import { Address, useAccount } from 'wagmi'
-import { useMemo, ReactNode } from 'react'
+import { Ifo, NextLinkFromReactRouter as RouterLink } from '@pancakeswap/widgets-internal'
+import every from 'lodash/every'
+import { ReactNode, useMemo } from 'react'
+import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { useProfile } from 'state/profile/hooks'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useCakePrice } from 'hooks/useCakePrice'
+import { useProfile } from 'state/profile/hooks'
 
+import { Address } from 'viem'
 import { useChainName } from '../hooks/useChainNames'
 
 interface TypeProps {

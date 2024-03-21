@@ -60,7 +60,7 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
 
         const contract = getErc721Contract(selectedNft.collectionAddress, signer)
 
-        return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
+        return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), BigInt(selectedNft.tokenId)])
       },
       onConfirm: () => {
         if (!selectedNft?.collectionAddress || !selectedNft?.tokenId) return undefined
@@ -68,11 +68,14 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
         if (!profile?.isActive) {
           return callWithGasPrice(profileContract, 'reactivateProfile', [
             selectedNft.collectionAddress,
-            selectedNft.tokenId,
+            BigInt(selectedNft.tokenId),
           ])
         }
 
-        return callWithGasPrice(profileContract, 'updateProfile', [selectedNft.collectionAddress, selectedNft.tokenId])
+        return callWithGasPrice(profileContract, 'updateProfile', [
+          selectedNft.collectionAddress,
+          BigInt(selectedNft.tokenId),
+        ])
       },
       onSuccess: async ({ receipt }) => {
         // Re-fetch profile

@@ -11,6 +11,7 @@ import { useSwapState } from 'state/swap/hooks'
 import { basisPointsToPercent } from 'utils/exchange'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { Address } from 'viem'
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { useSwapCallArgumentsV2 } from './useSwapCallArgumentsV2'
 import type { TWallchainMasterInput, WallchainStatus } from './useWallchain'
@@ -24,10 +25,11 @@ export enum SwapCallbackState {
 
 interface UseSwapCallbackReturns {
   state: SwapCallbackState
-  callback?: () => Promise<`0x${string}`>
+  callback?: () => Promise<{ hash: Address }>
   error?: string
   reason?: string
 }
+
 interface UseSwapCallbackArgs {
   trade: SmartRouterTrade<TradeType> | undefined | null // trade to execute, required
   // allowedSlippage: Percent // in bips
@@ -79,7 +81,7 @@ export function useSwapCallbackV2({
 
     return {
       state: SwapCallbackState.VALID,
-      callback: async () => callback(),
+      callback,
     }
   }, [trade, account, chainId, callback, recipient, recipientAddress, t])
 }

@@ -8,8 +8,8 @@ import { useHasPendingApproval, useTransactionAdder } from 'state/transactions/h
 import { calculateGasMargin } from 'utils'
 import { getViemErrorMessage } from 'utils/errors'
 import { isUserRejected, logError } from 'utils/sentry'
-import { Address, useAccount } from 'wagmi'
-import { SendTransactionResult } from 'wagmi/actions'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 import useGelatoLimitOrdersLib from './limitOrders/useGelatoLimitOrdersLib'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
 import { useTokenContract } from './useContract'
@@ -32,15 +32,7 @@ export function useApproveCallback(
   } = {
     addToTransaction: true,
   },
-): {
-  approvalState: ApprovalState
-  approveCallback: () => Promise<SendTransactionResult | undefined>
-  approveNoCheck: () => Promise<SendTransactionResult | undefined>
-  revokeCallback: () => Promise<SendTransactionResult | undefined>
-  revokeNoCheck: () => Promise<SendTransactionResult | undefined>
-  currentAllowance: CurrencyAmount<Currency> | undefined
-  isPendingError: boolean
-} {
+) {
   const { addToTransaction = true, targetAmount } = options
   const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -81,10 +73,7 @@ export function useApproveCallback(
   const addTransaction = useTransactionAdder()
 
   const approve = useCallback(
-    async (
-      overrideAmountApprove?: bigint,
-      alreadyApproved = approvalState !== ApprovalState.NOT_APPROVED,
-    ): Promise<SendTransactionResult | undefined> => {
+    async (overrideAmountApprove?: bigint, alreadyApproved = approvalState !== ApprovalState.NOT_APPROVED) => {
       if (alreadyApproved && isUndefinedOrNull(overrideAmountApprove)) {
         toastError(t('Error'), t('Approve was called unnecessarily'))
         console.error('approve was called unnecessarily')
@@ -151,7 +140,7 @@ export function useApproveCallback(
       if (!estimatedGas) return undefined
       const finalAmount =
         overrideAmountApprove ?? (useExact ? amountToApprove?.quotient ?? targetAmount ?? MaxUint256 : MaxUint256)
-      return callWithGasPrice(tokenContract, 'approve' as const, [spender as Address, finalAmount], {
+      const res = callWithGasPrice(tokenContract, 'approve' as const, [spender as Address, finalAmount], {
         gas: calculateGasMargin(estimatedGas),
       })
         .then((response) => {
@@ -176,6 +165,8 @@ export function useApproveCallback(
           }
           throw error
         })
+
+      return res
     },
     [
       approvalState,

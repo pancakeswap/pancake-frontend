@@ -1,17 +1,20 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { getContract } from 'viem'
+import { Address, GetContractReturnType, PublicClient, getContract } from 'viem'
 
-import { isNativeIfoSupported } from './isIfoSupported'
-import { INFO_SENDER } from '../constants/contracts'
 import { pancakeInfoSenderABI } from '../abis/PancakeInfoSender'
+import { INFO_SENDER } from '../constants/contracts'
 import { OnChainProvider } from '../types'
+import { isNativeIfoSupported } from './isIfoSupported'
 
 type Params = {
   chainId?: ChainId
   provider: OnChainProvider
 }
 
-export function getInfoSenderContract({ chainId, provider }: Params) {
+export function getInfoSenderContract({
+  chainId,
+  provider,
+}: Params): GetContractReturnType<typeof pancakeInfoSenderABI, PublicClient, Address> {
   if (!isNativeIfoSupported(chainId)) {
     throw new Error(`Cannot get info sender contract because native ifo is not supported on ${chainId}`)
   }
@@ -22,5 +25,5 @@ export function getInfoSenderContract({ chainId, provider }: Params) {
     // TODO: Fix viem
     // @ts-ignore
     publicClient: provider({ chainId }),
-  })
+  }) as GetContractReturnType<typeof pancakeInfoSenderABI, PublicClient, Address>
 }

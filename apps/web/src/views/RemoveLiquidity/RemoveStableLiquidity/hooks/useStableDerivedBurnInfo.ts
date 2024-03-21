@@ -1,16 +1,16 @@
 import { Currency, CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
 
 import { useTranslation } from '@pancakeswap/localization'
+import { useQuery } from '@tanstack/react-query'
+import { useInfoStableSwapContract } from 'hooks/useContract'
+import { useContext, useMemo } from 'react'
 import { Field } from 'state/burn/actions'
+import { useRemoveLiquidityV2FormState } from 'state/burn/reducer'
 import { useTokenBalances } from 'state/wallet/hooks'
+import { Address } from 'viem'
 import { StablePair, useStablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
-import { useContext, useMemo } from 'react'
 import { useAccount } from 'wagmi'
-import { Address } from 'viem'
-import { useInfoStableSwapContract } from 'hooks/useContract'
-import { useRemoveLiquidityV2FormState } from 'state/burn/reducer'
-import { useQuery } from '@tanstack/react-query'
 
 export function useGetRemovedTokenAmounts({ lpAmount }: { lpAmount?: string }) {
   const stableConfigContext = useContext(StableConfigContext)
