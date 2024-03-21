@@ -6,7 +6,6 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
-import { SendTransactionResult } from 'wagmi/actions'
 
 import { SerializedBCakeUserData } from '@pancakeswap/farms'
 import { Token } from '@pancakeswap/sdk'
@@ -23,7 +22,7 @@ interface FarmCardActionsProps {
   vaultPid?: number
   proxyCakeBalance?: number
   lpSymbol?: string
-  onReward: () => Promise<SendTransactionResult>
+  onReward: <SendTransactionResult>() => Promise<SendTransactionResult>
   onDone?: () => void
   bCakeWrapperAddress?: Address
   bCakeUserData?: SerializedBCakeUserData

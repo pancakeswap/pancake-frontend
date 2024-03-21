@@ -48,24 +48,24 @@ export const useCakePoolEmission = () => {
   }, [chainId])
 
   const { data } = useQuery({
-    queryKey: ['vecake/cakePoolEmission', client.chain.id],
+    queryKey: ['vecake/cakePoolEmission', client?.chain?.id],
 
     queryFn: async () => {
       const response = await client.multicall({
         contracts: [
           {
-            address: getMasterChefV2Address(client.chain.id),
+            address: getMasterChefV2Address(client?.chain?.id),
             abi: masterChefV2ABI,
             functionName: 'cakeRateToSpecialFarm',
           } as const,
           {
-            address: getMasterChefV2Address(client.chain.id),
+            address: getMasterChefV2Address(client?.chain?.id),
             abi: masterChefV2ABI,
             functionName: 'poolInfo',
             args: [pid],
           } as const,
           {
-            address: getMasterChefV2Address(client.chain.id),
+            address: getMasterChefV2Address(client?.chain?.id),
             abi: masterChefV2ABI,
             functionName: 'totalSpecialAllocPoint',
           } as const,

@@ -11,7 +11,7 @@ export const useUpdateLiquidity = (tokenId: string, onDone: () => void) => {
 
   const updateLiquidity = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(masterChefV3, 'updateLiquidity', [tokenId], { gas: BOOSTED_FARM_V3_GAS_LIMIT })
+      return callWithGasPrice(masterChefV3, 'updateLiquidity', [BigInt(tokenId)], { gas: BOOSTED_FARM_V3_GAS_LIMIT })
     })
 
     if (receipt?.status && onDone) {

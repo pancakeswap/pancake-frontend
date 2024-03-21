@@ -11,7 +11,6 @@ import { calculateGasMargin } from 'utils'
 import { getViemClients, viemClients } from 'utils/viem'
 import { Address, hexToBigInt } from 'viem'
 import { useAccount, useSendTransaction, useWalletClient } from 'wagmi'
-import { SendTransactionArgs } from 'wagmi/dist/actions'
 
 interface FarmV3ActionContainerChildrenProps {
   attemptingTxn: boolean
@@ -105,7 +104,7 @@ const useFarmV3Actions = ({
 
     const resp = await fetchWithCatchTxError(() =>
       publicClient.estimateGas(txn).then((estimate) => {
-        const newTxn: SendTransactionArgs = {
+        const newTxn = {
           ...txn,
           gas: calculateGasMargin(estimate),
         }

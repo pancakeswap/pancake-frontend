@@ -5,7 +5,8 @@ import { UNWRAPPED_ETH_ADDRESS } from 'config/constants/liquidStaking'
 import dayjs from 'dayjs'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useEffect, useMemo } from 'react'
-import { Address, useBlockNumber, useReadContract } from 'wagmi'
+import { Address } from 'viem'
+import { useBlockNumber, useReadContract } from 'wagmi'
 
 interface UserWithdrawRequest {
   allocated: boolean

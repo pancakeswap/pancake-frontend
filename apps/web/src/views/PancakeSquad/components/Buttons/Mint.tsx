@@ -24,7 +24,7 @@ const MintButton: React.FC<React.PropsWithChildren<PreEventProps>> = ({
   theme,
   saleStatus,
   numberTicketsOfUser = 0,
-  ticketsOfUser = 0,
+  ticketsOfUser,
 }) => {
   const { callWithGasPrice } = useCallWithGasPrice()
   const nftSaleContract = useNftSaleContract()
@@ -52,8 +52,10 @@ const MintButton: React.FC<React.PropsWithChildren<PreEventProps>> = ({
   )
 
   const mintTokenCallBack = async () => {
-    const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(nftSaleContract, 'mint', [ticketsOfUser])
+    const receipt = await fetchWithCatchTxError(async () => {
+      if (ticketsOfUser.length) return callWithGasPrice(nftSaleContract, 'mint', [ticketsOfUser])
+
+      return undefined
     })
     if (receipt?.status) {
       toastSuccess(t('Transaction has succeeded!'))
