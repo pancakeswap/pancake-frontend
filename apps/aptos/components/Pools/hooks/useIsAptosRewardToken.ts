@@ -8,15 +8,16 @@ export const useIsAptosRewardToken = ({ isFinished, earningToken }: { isFinished
   const { account } = useActiveWeb3React()
   const isUserIpPass = useCheckIsUserIpPass()
 
-  const isAptosRewardToken = useMemo(
-    () =>
-      Boolean(!isFinished && earningToken.address.toLowerCase() === APT[earningToken.chainId].address.toLowerCase()),
-    [, isFinished, earningToken],
+  const isTokenValid = useMemo(
+    () => earningToken.address.toLowerCase() === APT[earningToken.chainId].address.toLowerCase(),
+    [earningToken],
   )
 
+  const isAptosRewardToken = useMemo(() => Boolean(!isFinished && isTokenValid), [isFinished, isTokenValid])
+
   const isUSUserWithAptosReward = useMemo(
-    () => Boolean(account && isAptosRewardToken && !isUserIpPass),
-    [account, isAptosRewardToken, isUserIpPass],
+    () => Boolean(account && isTokenValid && !isUserIpPass),
+    [account, isTokenValid, isUserIpPass],
   )
 
   return {

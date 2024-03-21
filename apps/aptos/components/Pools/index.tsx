@@ -3,6 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, FlexLayout, Heading, PageHeader, Text, ViewMode } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
+import { useCheckIsUserIpPass } from 'components/Farms/hooks/useCheckIsUserIpPass'
 import Page from 'components/Layout/Page'
 import { AptRewardTooltip } from 'components/Pools/components/PoolTable/AptRewardTooltip'
 import { UsUserAptRewardTooltips } from 'components/Pools/components/PoolTable/UsUserAptRewardTooltips'
@@ -10,7 +11,6 @@ import { TokenPairImage } from 'components/TokenImage'
 import { APT } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { styled } from 'styled-components'
-
 import NoSSR from '../NoSSR'
 import Apr from './components/PoolCard/Apr'
 import CakeCardActions from './components/PoolCard/CakeCardActions'
@@ -30,6 +30,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const pools = usePoolsList()
+  const isUserIpPass = useCheckIsUserIpPass()
 
   return (
     <>
@@ -74,8 +75,10 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                               stakedBalance={pool?.userData?.stakedBalance}
                               usUserTooltipComponent={<UsUserAptRewardTooltips pool={pool} />}
                               disabledHarvestButton={
+                                account &&
+                                !isUserIpPass &&
                                 pool.earningToken.address.toLowerCase() ===
-                                APT[pool.earningToken.chainId].address.toLowerCase()
+                                  APT[pool.earningToken.chainId].address.toLowerCase()
                               }
                             />
                           )

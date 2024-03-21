@@ -1,5 +1,5 @@
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
-import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { AptRewardTooltip } from 'components/Pools/components/PoolTable/AptRewardTooltip'
 import { UsUserAptRewardTooltips } from 'components/Pools/components/PoolTable/UsUserAptRewardTooltips'
@@ -42,11 +42,7 @@ const PoolRow: React.FC<
       <Pool.EarningsCell<Coin>
         pool={pool}
         account={account}
-        aptosRewardTooltips={
-          <Box mt="-8px">
-            <UsUserAptRewardTooltips pool={pool} />
-          </Box>
-        }
+        aptosRewardTooltips={<UsUserAptRewardTooltips pool={pool} />}
       />
       {isLargerScreen && (
         <Pool.TotalStakedCell

@@ -1,4 +1,5 @@
 import { Box, Flex, HelpIcon, Text, useMatchBreakpoints, useTooltip } from '@pancakeswap/uikit'
+import { useIsAptosRewardToken } from 'components/Pools/hooks/useIsAptosRewardToken'
 import { css, keyframes, styled } from 'styled-components'
 
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
@@ -7,7 +8,6 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWidget, Pool } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import isVaultPool from 'components/Pools/utils/isVaultPool'
-import { APT } from 'config/coins'
 
 import PoolStatsInfo from '../PoolCard/PoolStatsInfo'
 import CakeTableActions from './CakeTableActions'
@@ -97,6 +97,10 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
   const { isMobile } = useMatchBreakpoints()
   const { t } = useTranslation()
 
+  const { isUSUserWithAptosReward } = useIsAptosRewardToken({
+    earningToken: pool.earningToken,
+  })
+
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
 
@@ -132,9 +136,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
               pool={pool}
               account={account}
               stakedBalance={stakedBalance}
-              disabledHarvestButton={
-                pool.earningToken.address.toLowerCase() === APT[pool.earningToken.chainId].address.toLowerCase()
-              }
+              disabledHarvestButton={isUSUserWithAptosReward}
             />
           </ActionContainer>
         </Box>
