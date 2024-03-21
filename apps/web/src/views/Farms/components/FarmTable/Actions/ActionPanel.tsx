@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  Box,
   Flex,
   LinkExternal,
   Message,
@@ -15,6 +16,7 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import useTheme from 'hooks/useTheme'
 import { FC, useContext, useMemo } from 'react'
 import { ChainLinkSupportChains, multiChainPaths } from 'state/info/constant'
 import { css, keyframes, styled } from 'styled-components'
@@ -24,6 +26,9 @@ import { isAddressEqual } from 'viem'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
+import { StatusView } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusView'
+import { useBoostStatusPM } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
+import { useWrapperBooster } from 'views/PositionManagers/hooks'
 import { useAccount } from 'wagmi'
 import { FarmV3ApyButton } from '../../FarmCard/V3/FarmV3ApyButton'
 import FarmV3CardList from '../../FarmCard/V3/FarmV3CardList'
@@ -322,6 +327,8 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   const bCakeProps = { bCakeWrapperAddress: details.bCakeWrapperAddress }
   const { chainId } = useActiveChainId()
   const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
+  const { address: account } = useAccount()
+  const { theme } = useTheme()
 
   const farm = details
 
@@ -347,6 +354,13 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   }, [chainId, farm.isStable, farm.lpAddress, farm.stableSwapAddress])
 
   const addLiquidityModal = useModalV2()
+
+  const { status } = useBoostStatusPM(Boolean(details?.bCakeWrapperAddress), details?.bCakeUserData?.boosterMultiplier)
+  const { shouldUpdate, veCakeUserMultiplierBeforeBoosted } = useWrapperBooster(
+    details?.bCakeUserData?.boosterContractAddress ?? '0x',
+    details?.bCakeUserData?.boosterMultiplier ?? 1,
+    details?.bCakeWrapperAddress,
+  )
 
   return (
     <>
@@ -424,25 +438,57 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
           <ProxyHarvestActionContainer {...proxyFarm} userDataReady={userDataReady}>
             {(props) => <HarvestAction {...props} />}
           </ProxyHarvestActionContainer>
-        ) : (
-          <HarvestActionContainer {...farm} {...bCakeProps} userDataReady={userDataReady}>
-            {(props) => <HarvestAction {...props} />}
-          </HarvestActionContainer>
-        )}
+        ) : null}
         {shouldUseProxyFarm ? (
           <ProxyStakedContainer {...proxyFarm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
             {(props) => <StakedAction {...props} />}
           </ProxyStakedContainer>
         ) : (
-          <StakedContainer
-            {...farm}
-            {...bCakeProps}
-            userDataReady={userDataReady}
-            lpLabel={lpLabel}
-            displayApr={apr.value}
-          >
-            {(props) => <StakedAction {...props} />}
-          </StakedContainer>
+          <>
+            <StakedContainer
+              {...farm}
+              {...bCakeProps}
+              userDataReady={userDataReady}
+              lpLabel={lpLabel}
+              displayApr={apr.value}
+            >
+              {(props) => (
+                <StakedAction
+                  {...props}
+                  bCakeInfoSlot={
+                    details?.bCakeWrapperAddress ? (
+                      <>
+                        {account && (
+                          <>
+                            <Box style={{ height: 70, width: 2, backgroundColor: theme.colors.cardBorder }} />
+                            <HarvestActionContainer {...farm} {...bCakeProps} userDataReady={userDataReady}>
+                              {(harvestProps) => (
+                                <HarvestAction
+                                  {...harvestProps}
+                                  style={{ border: 'none', minHeight: 'auto', marginLeft: '0px' }}
+                                />
+                              )}
+                            </HarvestActionContainer>
+                          </>
+                        )}
+                        <Box style={{ height: 70, width: 2, backgroundColor: theme.colors.cardBorder }} />
+                        <Flex flexGrow={1}>
+                          <StatusView
+                            status={status}
+                            isFarmStaking
+                            boostedMultiplier={details?.bCakeUserData?.boosterMultiplier}
+                            maxBoostMultiplier={3}
+                            shouldUpdate={shouldUpdate}
+                            expectMultiplier={veCakeUserMultiplierBeforeBoosted}
+                          />
+                        </Flex>
+                      </>
+                    ) : undefined
+                  }
+                />
+              )}
+            </StakedContainer>
+          </>
         )}
       </ActionPanelContainer>
     </>

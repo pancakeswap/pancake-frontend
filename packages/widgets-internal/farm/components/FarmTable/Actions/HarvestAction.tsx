@@ -14,6 +14,7 @@ export interface HarvestActionProps {
   disabled: boolean;
   proxyCakeBalance?: number;
   handleHarvest: () => void;
+  style?: React.CSSProperties;
 }
 
 const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
@@ -25,6 +26,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
   proxyCakeBalance,
   disabled,
   handleHarvest,
+  style,
 }) => {
   const { t } = useTranslation();
 
@@ -46,7 +48,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
   );
 
   return (
-    <ActionContainer style={{ minHeight: 124.5 }}>
+    <ActionContainer style={{ minHeight: 124.5, ...style }}>
       <ActionTitles>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
           CAKE

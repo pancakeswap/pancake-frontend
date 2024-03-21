@@ -2,7 +2,13 @@ import { useTranslation } from "@pancakeswap/localization";
 import { Text } from "@pancakeswap/uikit";
 import { ActionContent, ActionTitles, StyledActionContainer } from "./styles";
 
-const AccountNotConnect = ({ children }: { children: React.ReactNode }) => {
+const AccountNotConnect = ({
+  children,
+  bCakeInfoSlot,
+}: {
+  children: React.ReactNode;
+  bCakeInfoSlot?: React.ReactElement;
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -12,7 +18,8 @@ const AccountNotConnect = ({ children }: { children: React.ReactNode }) => {
           {t("Start Farming")}
         </Text>
       </ActionTitles>
-      <ActionContent>{children}</ActionContent>
+      <ActionContent style={{ justifyContent: "flex-start", alignItems: "center", gap: 16 }}>{children}</ActionContent>
+      {bCakeInfoSlot}
     </StyledActionContainer>
   );
 };
