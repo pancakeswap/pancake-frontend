@@ -12,6 +12,10 @@ export interface ExtendEthereum extends WindowProvider {
   isTrust?: true
   isTokenPocket?: true
   isMetaMask?: true
+  providers?: ExtendEthereum[]
+  isOpera?: true
+  isBraveWallet?: true
+  isRabby?: true
 }
 
 declare global {

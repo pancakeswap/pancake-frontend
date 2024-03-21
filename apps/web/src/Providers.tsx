@@ -24,7 +24,7 @@ const Providers: React.FC<
   React.PropsWithChildren<{ store: Store; children: React.ReactNode; dehydratedState: any }>
 > = ({ children, store, dehydratedState }) => {
   return (
-    <WagmiProvider config={wagmiConfig}>
+    <WagmiProvider reconnectOnMount config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={dehydratedState}>
           <Provider store={store}>
