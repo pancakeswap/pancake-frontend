@@ -1,9 +1,9 @@
-import BigNumber from "bignumber.js";
 import { useTranslation } from "@pancakeswap/localization";
-import React, { useMemo, ReactNode } from "react";
-import { styled } from "styled-components";
+import { Skeleton, Text, useMatchBreakpoints } from "@pancakeswap/uikit";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
-import { Text, Skeleton, useMatchBreakpoints } from "@pancakeswap/uikit";
+import BigNumber from "bignumber.js";
+import React, { ReactNode, useMemo } from "react";
+import { styled } from "styled-components";
 
 import { DeserializedPool } from "../types";
 import { BaseCell, CellContent } from "./BaseCell";
@@ -13,6 +13,7 @@ interface NameCellProps<T> {
   userShares?: BigNumber;
   totalCakeInVault?: BigNumber;
   tokenPairImage: ReactNode;
+  tooltipComponent?: ReactNode;
 }
 
 const StyledCell = styled(BaseCell)`
@@ -25,7 +26,13 @@ const StyledCell = styled(BaseCell)`
   }
 `;
 
-export function NameCell<T>({ pool, totalCakeInVault, userShares, tokenPairImage }: NameCellProps<T>) {
+export function NameCell<T>({
+  pool,
+  totalCakeInVault,
+  userShares,
+  tokenPairImage,
+  tooltipComponent,
+}: NameCellProps<T>) {
   const { t } = useTranslation();
   const { isMobile } = useMatchBreakpoints();
   const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey, totalStaked } = pool;
@@ -70,6 +77,7 @@ export function NameCell<T>({ pool, totalCakeInVault, userShares, tokenPairImage
               </Text>
             )}
           </CellContent>
+          {tooltipComponent}
         </>
       ) : (
         <>

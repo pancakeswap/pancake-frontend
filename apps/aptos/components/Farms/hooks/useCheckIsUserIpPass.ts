@@ -5,7 +5,7 @@ import { CHECK_USER_IP_API } from 'config/index'
 export const useCheckIsUserIpPass = (): boolean => {
   const { account } = useAccount()
 
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['checkIsUserIpPass', account],
 
     queryFn: async () => {
@@ -18,8 +18,8 @@ export const useCheckIsUserIpPass = (): boolean => {
         return true
       }
     },
-
     enabled: Boolean(account?.address),
   })
-  return data
+
+  return isPending ? true : data
 }

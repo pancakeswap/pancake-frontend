@@ -1,21 +1,23 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Heading, PageHeader, Text, FlexLayout, ViewMode } from '@pancakeswap/uikit'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
+import { useTranslation } from '@pancakeswap/localization'
+import { Flex, FlexLayout, Heading, PageHeader, Text, ViewMode } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { ConnectWalletButton } from 'components/ConnectWalletButton'
+import { useCheckIsUserIpPass } from 'components/Farms/hooks/useCheckIsUserIpPass'
+import Page from 'components/Layout/Page'
+import { AptRewardTooltip } from 'components/Pools/components/PoolTable/AptRewardTooltip'
+import { UsUserAptRewardTooltips } from 'components/Pools/components/PoolTable/UsUserAptRewardTooltips'
+import { TokenPairImage } from 'components/TokenImage'
+import { APT } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { styled } from 'styled-components'
-
-import Page from 'components/Layout/Page'
-import { TokenPairImage } from 'components/TokenImage'
-import { ConnectWalletButton } from 'components/ConnectWalletButton'
-
 import NoSSR from '../NoSSR'
-import PoolControls from './components/PoolControls'
-import CardActions from './components/PoolCard/CardActions'
 import Apr from './components/PoolCard/Apr'
+import CakeCardActions from './components/PoolCard/CakeCardActions'
+import CardActions from './components/PoolCard/CardActions'
 import CardFooter from './components/PoolCard/CardFooter'
 import PoolStatsInfo from './components/PoolCard/PoolStatsInfo'
-import CakeCardActions from './components/PoolCard/CakeCardActions'
+import PoolControls from './components/PoolControls'
 import PoolRow from './components/PoolTable/PoolRow'
 import { usePoolsList } from './hooks/usePoolsList'
 import isVaultPool from './utils/isVaultPool'
@@ -28,6 +30,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const pools = usePoolsList()
+  const isUserIpPass = useCheckIsUserIpPass()
 
   return (
     <>
@@ -66,7 +69,18 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                               stakedBalance={pool?.userData?.stakedBalance}
                             />
                           ) : (
-                            <CardActions hideLocateAddress pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
+                            <CardActions
+                              hideLocateAddress
+                              pool={pool}
+                              stakedBalance={pool?.userData?.stakedBalance}
+                              usUserTooltipComponent={<UsUserAptRewardTooltips pool={pool} />}
+                              disabledHarvestButton={
+                                account &&
+                                !isUserIpPass &&
+                                pool.earningToken.address.toLowerCase() ===
+                                  APT[pool.earningToken.chainId].address.toLowerCase()
+                              }
+                            />
                           )
                         ) : (
                           <>
@@ -95,6 +109,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                           <Apr pool={pool} stakedBalance={pool?.userData?.stakedBalance} showIcon={false} />
                         </Pool.AprRowWithToolTip>
                       }
+                      headerTooltipComponent={<AptRewardTooltip pool={pool} />}
                     />
                   ))}
                 </CardLayout>
