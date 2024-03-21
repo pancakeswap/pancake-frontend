@@ -3278,7 +3278,6 @@
   "Est total fees: $%fees%": "Est total fees: $%fees%",
   "Show details": "Show details",
   "New LP position successfully added. You will be notified on important updates.": "New LP position successfully added. You will be notified on important updates.",
-  "Revert transaction filled, but Approval not reset to 0. Please try again.": "Revert transaction filled, but Approval not reset to 0. Please try again.",
   "Amount too low": "Amount too low",
   "Amount too high": "Amount too high",
   "Why can't I see my bitcoin purchase": "Why can't I see my bitcoin purchase",
