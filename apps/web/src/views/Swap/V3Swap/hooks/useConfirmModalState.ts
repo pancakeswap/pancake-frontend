@@ -6,7 +6,6 @@ import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTrans
 import { useCallback, useEffect, useState } from 'react'
 import { Hex } from 'viem'
 import { ConfirmModalStateV1, PendingConfirmModalStateV1 } from 'views/Swap/V3Swap/types'
-import { SendTransactionResult } from 'wagmi/actions'
 import { TransactionRejectedError } from './useSendSwapTransaction'
 
 interface UseConfirmModalStateProps {
@@ -18,8 +17,8 @@ interface UseConfirmModalStateProps {
   isExpertMode: boolean
   currentAllowance?: CurrencyAmount<Currency>
   onConfirm: () => Promise<void>
-  approveCallback: () => Promise<SendTransactionResult | undefined>
-  revokeCallback: () => Promise<SendTransactionResult | undefined>
+  approveCallback: () => Promise<`0x${string}` | undefined>
+  revokeCallback: () => Promise<`0x${string}` | undefined>
 }
 
 function isInApprovalPhase(confirmModalState: ConfirmModalStateV1) {

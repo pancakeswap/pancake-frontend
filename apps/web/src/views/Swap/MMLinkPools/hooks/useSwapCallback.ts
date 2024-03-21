@@ -16,7 +16,6 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { viemClients } from 'utils/viem'
 import { Address, Hex, TransactionExecutionError, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
-import { SendTransactionResult } from 'wagmi/actions'
 import { MMSwapCall } from './useSwapCallArguments'
 
 export enum SwapCallbackState {
@@ -50,7 +49,7 @@ export function useSwapCallback(
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
   swapCalls: MMSwapCall[],
   expiredAt?: number,
-): { state: SwapCallbackState; callback: null | (() => Promise<SendTransactionResult>); error: string | null } {
+): { state: SwapCallbackState; callback: null | (() => Promise<`0x${string}`>); error: string | null } {
   const { account, chainId } = useAccountActiveChain()
   const { callback } = useSendMMTransaction(account, chainId, trade, swapCalls, expiredAt)
 

@@ -12,9 +12,10 @@ import { NftLocation } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
-import SelectionCard from 'views/ProfileCreation/SelectionCard'
-import { Address, useAccount, useWalletClient } from 'wagmi'
+import { Address } from 'viem'
 import { useNftsForAddress } from 'views/Nft/market/hooks/useNftsForAddress'
+import SelectionCard from 'views/ProfileCreation/SelectionCard'
+import { useAccount, useWalletClient } from 'wagmi'
 
 interface ChangeProfilePicPageProps extends InjectedModalProps {
   onSuccess?: () => void

@@ -13,7 +13,6 @@ import { styled } from 'styled-components'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract, getProfileContract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/wagmi'
-import { ContractFunctionResult } from 'viem'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { useAccount, useWalletClient } from 'wagmi'
 import { useNftsForAddress } from '../Nft/market/hooks/useNftsForAddress'
@@ -56,7 +55,7 @@ const ProfilePicture: React.FC = () => {
         if (nftsByCollection.length > 0) {
           const profileContract = getProfileContract()
           const nftRole = await profileContract.read.NFT_ROLE()
-          const collectionRoles = (await publicClient({ chainId: ChainId.BSC }).multicall({
+          const collectionRoles = await publicClient({ chainId: ChainId.BSC }).multicall({
             contracts: nftsByCollection.map((collectionAddress) => {
               return {
                 abi: pancakeProfileABI,
@@ -66,7 +65,7 @@ const ProfilePicture: React.FC = () => {
               }
             }),
             allowFailure: false,
-          })) as ContractFunctionResult<typeof pancakeProfileABI, 'hasRole'>[]
+          })
 
           setUserProfileCreationNfts(
             nfts.filter((nft) => collectionRoles[nftsByCollection.indexOf(nft.collectionAddress)]),
