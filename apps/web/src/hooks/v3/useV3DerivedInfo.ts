@@ -176,7 +176,7 @@ export default function useV3DerivedInfo(
           : (invertPrice && typeof rightRangeTypedValue === 'boolean') ||
             (!invertPrice && typeof leftRangeTypedValue === 'boolean')
           ? tickSpaceLimits[Bound.LOWER]
-            ? tickSpaceLimits[Bound.LOWER] + 1
+            ? tickSpaceLimits[Bound.LOWER]
             : tickSpaceLimits[Bound.LOWER]
           : invertPrice
           ? tryParseTick(feeAmount, rightRangeTypedValue)
@@ -187,7 +187,9 @@ export default function useV3DerivedInfo(
           : (!invertPrice && typeof rightRangeTypedValue === 'boolean') ||
             (invertPrice && typeof leftRangeTypedValue === 'boolean')
           ? tickSpaceLimits[Bound.UPPER]
-            ? tickSpaceLimits[Bound.UPPER] - 1
+            ? tickSpaceLimits[Bound.UPPER] === TickMath.MAX_TICK // if fee tier = 100 then TickMath.MAX_TICK will cause overflow, so minus 1 here
+              ? TickMath.MAX_TICK - 1
+              : tickSpaceLimits[Bound.UPPER]
             : tickSpaceLimits[Bound.UPPER]
           : invertPrice
           ? tryParseTick(feeAmount, leftRangeTypedValue)
