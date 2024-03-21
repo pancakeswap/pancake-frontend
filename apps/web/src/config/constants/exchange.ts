@@ -30,7 +30,7 @@ export {
   BASES_TO_CHECK_TRADES_AGAINST,
   CUSTOM_BASES,
   V2_ROUTER_ADDRESS,
-} from '@pancakeswap/smart-router/evm'
+} from '@pancakeswap/smart-router'
 
 export const CHAIN_REFRESH_TIME = {
   [ChainId.ETHEREUM]: 12_000,

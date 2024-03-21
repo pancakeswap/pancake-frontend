@@ -1,5 +1,5 @@
 import { TradeType } from '@pancakeswap/sdk'
-import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router'
 import { MethodParameters } from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'
 import { encodeFunctionData, toHex } from 'viem'

@@ -1,12 +1,12 @@
 import {
+  MessageType,
   OrderBookRequest,
   OrderBookResponse,
   QuoteRequest,
+  RFQErrorResponse,
   RFQIdResponse,
   RFQResponse,
-  RFQErrorResponse,
   zRFQResponse,
-  MessageType,
 } from '../types'
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_MM_API_URL
@@ -64,7 +64,7 @@ export const getRFQById = async (id: string | number) => {
 }
 
 export class MMError extends Error {
-  shouldRetry: boolean
+  shouldRetry: boolean = false
 
   internalError?: string
 

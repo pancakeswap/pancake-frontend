@@ -1,5 +1,45 @@
 # @pancakeswap/smart-router
 
+## 5.1.8
+
+### Patch Changes
+
+- 4e88d8f: Fix not picking the optimal output when trading with exact output
+
+## 5.1.7
+
+### Patch Changes
+
+- Updated dependencies [30ef48c]
+  - @pancakeswap/tokens@0.6.11
+  - @pancakeswap/gauges@1.1.7
+  - @pancakeswap/stable-swap-sdk@1.0.3
+
+## 5.1.6
+
+### Patch Changes
+
+- 67ca3d6: Support getting input quote by exact output
+- Updated dependencies [67ca3d6]
+  - @pancakeswap/v3-sdk@3.8.0
+  - @pancakeswap/gauges@1.1.6
+
+## 5.1.5
+
+### Patch Changes
+
+- ab7f9fb: Slient price api error when testnet or chain is not supported
+- d807074: Remove smart router evm sub path
+
+## 5.1.4
+
+### Patch Changes
+
+- Updated dependencies [d7586b8]
+  - @pancakeswap/gauges@1.1.5
+  - @pancakeswap/tokens@0.6.10
+  - @pancakeswap/stable-swap-sdk@1.0.2
+
 ## 5.1.3
 
 ### Patch Changes

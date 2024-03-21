@@ -9,7 +9,8 @@ export const API_NFT = 'https://nft.pancakeswap.com/api/v1'
 export const SNAPSHOT_API = `${SNAPSHOT_BASE_URL}/graphql`
 export const SNAPSHOT_HUB_API = `${SNAPSHOT_BASE_URL}/api/message`
 export const GRAPH_API_POTTERY = 'https://api.thegraph.com/subgraphs/name/pancakeswap/pottery'
-export const ONRAMP_API_BASE_URL = 'https://onramp-api.pancakeswap.com'
+// export const ONRAMP_API_BASE_URL = 'https://pcs-onramp-api.com'
+export const ONRAMP_API_BASE_URL = 'https://onramp2-api.pancakeswap.com'
 export const TRANSAK_API_BASE_URL = 'https://api-stg.transak.com/api/v1'
 export const MOONPAY_BASE_URL = 'https://api.moonpay.com'
 export const NOTIFICATION_HUB_BASE_URL = 'https://notification-hub.pancakeswap.com'
@@ -69,4 +70,4 @@ export const MERCURYO_WIDGET_URL =
     ? 'https://sandbox-widget.mrcr.io/embed.2.0.js'
     : 'https://widget.mercuryo.io/embed.2.0.js'
 
-export const WALLET_API = 'https://alpha.wallet-api.pancakeswap.com'
+export const WALLET_API = 'https://wallet-api.pancakeswap.com'

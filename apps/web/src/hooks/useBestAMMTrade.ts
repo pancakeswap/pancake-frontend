@@ -8,7 +8,7 @@ import {
   SmartRouter,
   SmartRouterTrade,
   V4Router,
-} from '@pancakeswap/smart-router/evm'
+} from '@pancakeswap/smart-router'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react'

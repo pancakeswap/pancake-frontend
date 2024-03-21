@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/stable-swap-sdk",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "SDK for pancakeswap stable swap",
   "repository": {
     "type": "git",
@@ -17,7 +17,6 @@
     "dev": "tsup --watch",
     "test": "vitest --run",
     "update:snapshot": "vitest -u",
-    "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "files": [

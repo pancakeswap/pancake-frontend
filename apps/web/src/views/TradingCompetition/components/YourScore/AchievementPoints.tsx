@@ -1,11 +1,11 @@
-import { Text, Flex, Image } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Flex, Image, Text } from '@pancakeswap/uikit'
 
 interface AchievementPointsProps {
-  achievement: {
+  achievement?: {
     image?: string
   }
-  userPointReward: number | string
+  userPointReward?: number | string
 }
 
 const AchievementPoints: React.FC<React.PropsWithChildren<AchievementPointsProps>> = ({

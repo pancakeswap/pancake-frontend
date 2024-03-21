@@ -1,7 +1,7 @@
-import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/chains'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useMemo } from 'react'
 import useAllTradingRewardPair, { RewardStatus, RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 const useTradingRewardTokenList = () => {
@@ -17,7 +17,7 @@ const useTradingRewardTokenList = () => {
     // eslint-disable-next-line array-callback-return, consistent-return
     const activeRewardCampaignId = data.campaignIds.filter((campaignId) => {
       const incentive = data.campaignIdsIncentive.find((i) => i.campaignId === campaignId)
-      if (currentTime <= incentive.campaignClaimTime) {
+      if (incentive?.campaignClaimTime && currentTime <= incentive.campaignClaimTime) {
         return campaignId
       }
     })
@@ -25,7 +25,7 @@ const useTradingRewardTokenList = () => {
     const activeCampaignPairs: { [key in string]: Array<string> } = {}
     activeRewardCampaignId.forEach((campaignId) => {
       if (data.campaignPairs[campaignId]) {
-        activeCampaignPairs[campaignId] = data.campaignPairs[campaignId][chainId]
+        activeCampaignPairs[campaignId] = data.campaignPairs[campaignId][chainId!]
       }
     })
 

@@ -122,7 +122,7 @@ const ProviderIFrame = ({ provider, loading, signedIframeUrl }: IProviderIFrameP
   return (
     <>
       <LoadingBuffer loading={loading} />
-      <IFrameWrapper id="mercuryo-widget" />;
+      <IFrameWrapper id="mercuryo-widget" />
     </>
   )
 }

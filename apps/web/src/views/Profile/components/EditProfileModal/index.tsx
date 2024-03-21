@@ -1,10 +1,10 @@
+import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import { InjectedModalProps, Modal } from '@pancakeswap/uikit'
-import { useTranslation, ContextApi } from '@pancakeswap/localization'
-import useEditProfile, { Views } from './reducer'
-import StartView from './StartView'
-import PauseProfileView from './PauseProfileView'
-import ChangeProfilePicView from './ChangeProfilePicView'
 import ApproveCakeView from './ApproveCakeView'
+import ChangeProfilePicView from './ChangeProfilePicView'
+import PauseProfileView from './PauseProfileView'
+import StartView from './StartView'
+import useEditProfile, { Views } from './reducer'
 
 interface EditProfileModalProps extends InjectedModalProps {
   onSuccess?: () => void
@@ -30,7 +30,7 @@ const EditProfileModal: React.FC<React.PropsWithChildren<EditProfileModalProps>>
   const { t } = useTranslation()
 
   const isStartView = currentView === Views.START
-  const handleBack = isStartView ? null : () => goPrevious()
+  const handleBack = isStartView ? undefined : () => goPrevious()
 
   return (
     <Modal

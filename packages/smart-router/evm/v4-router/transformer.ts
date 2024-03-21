@@ -1,5 +1,5 @@
-import { TradeType } from '@pancakeswap/swap-sdk-core'
 import { ChainId } from '@pancakeswap/chains'
+import { TradeType } from '@pancakeswap/swap-sdk-core'
 
 import {
   SerializedCurrency,
@@ -114,7 +114,7 @@ export function parseTrade(chainId: ChainId, trade: SerializedV4Trade): Omit<V4T
     inputAmount: parseCurrencyAmount(chainId, trade.inputAmount),
     outputAmount: parseCurrencyAmount(chainId, trade.outputAmount),
     routes: trade.routes.map((r) => parseRoute(chainId, r)),
-    gasEstimate: BigInt(trade.gasEstimate),
+    gasEstimate: trade.gasEstimate ? BigInt(trade.gasEstimate) : 0n,
     gasCostInBase: parseCurrencyAmount(chainId, trade.gasCostInBase),
     gasCostInQuote: parseCurrencyAmount(chainId, trade.gasCostInQuote),
     inputAmountWithGasAdjusted: parseCurrencyAmount(chainId, trade.inputAmountWithGasAdjusted),

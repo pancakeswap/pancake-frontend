@@ -1,9 +1,9 @@
-import { useMemo } from 'react'
-import { Card, Table, Th, Td, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useUserTradeRank } from 'views/TradingReward/hooks/useUserTradeRank'
+import { Box, Card, Table, Td, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
 import DesktopResult from 'views/TradingReward/components/Leaderboard/DesktopResult'
 import MobileResult from 'views/TradingReward/components/Leaderboard/MobileResult'
+import { useUserTradeRank } from 'views/TradingReward/hooks/useUserTradeRank'
 import { useAccount } from 'wagmi'
 
 interface MyRankProps {
@@ -17,17 +17,20 @@ const MyRank: React.FC<React.PropsWithChildren<MyRankProps>> = ({ campaignId }) 
   const { data: userRank, isFetching } = useUserTradeRank({ campaignId })
 
   const rank = useMemo(
-    () => ({
-      origin: account,
-      rank: userRank.topTradersIndex,
-      tradingFee: userRank.tradingFee,
-      volume: userRank.volume,
-      estimateRewardUSD: userRank.estimateRewardUSD,
-    }),
+    () =>
+      account
+        ? {
+            origin: account,
+            rank: userRank.topTradersIndex,
+            tradingFee: userRank.tradingFee,
+            volume: userRank.volume,
+            estimateRewardUSD: userRank.estimateRewardUSD,
+          }
+        : undefined,
     [account, userRank],
   )
 
-  if (!account) {
+  if (!rank) {
     return null
   }
 

@@ -1,5 +1,27 @@
 # @pancakeswap/gauges
 
+## 1.1.7
+
+### Patch Changes
+
+- Updated dependencies [30ef48c]
+  - @pancakeswap/tokens@0.6.11
+
+## 1.1.6
+
+### Patch Changes
+
+- Updated dependencies [67ca3d6]
+  - @pancakeswap/v3-sdk@3.8.0
+
+## 1.1.5
+
+### Patch Changes
+
+- d7586b8: Update farms, pools, gauges, tokens
+- Updated dependencies [d7586b8]
+  - @pancakeswap/tokens@0.6.10
+
 ## 1.1.4
 
 ### Patch Changes

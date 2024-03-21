@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-restricted-imports
 import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'

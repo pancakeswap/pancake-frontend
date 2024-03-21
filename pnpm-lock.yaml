@@ -199,6 +199,9 @@ importers:
       '@pancakeswap/worker-utils':
         specifier: workspace:*
         version: link:../../packages/worker-utils
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
       graphql-request:
         specifier: 5.0.0
         version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)

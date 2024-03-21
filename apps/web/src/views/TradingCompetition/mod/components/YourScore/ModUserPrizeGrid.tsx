@@ -1,13 +1,13 @@
-import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 
 import { styled } from 'styled-components'
+import { modPrizes } from '../../../../../config/constants/trading-competition/prizes'
+import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
+import AchievementPoints from '../../../components/YourScore/AchievementPoints'
+import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
 import { getRewardGroupAchievements, useModCompetitionRewards } from '../../../helpers'
 import { UserTradingInformation } from '../../../types'
-import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
-import { modPrizes } from '../../../../../config/constants/trading-competition/prizes'
-import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
-import AchievementPoints from '../../../components/YourScore/AchievementPoints'
 import { useCanClaimSpecialNFT } from '../../../useCanClaimSpecialNFT'
 
 const StyledThead = styled.thead`
@@ -18,7 +18,8 @@ const ModUserPrizeGrid: React.FC<React.PropsWithChildren<{ userTradingInformatio
   userTradingInformation,
 }) => {
   const { t } = useTranslation()
-  const { userRewardGroup, userCakeRewards, userDarRewards, userPointReward, canClaimNFT } = userTradingInformation
+  const { userRewardGroup, userCakeRewards, userDarRewards, userPointReward, canClaimNFT } =
+    userTradingInformation ?? {}
   const canClaimSpecialNFT = useCanClaimSpecialNFT()
   const { cakeReward, darReward, dollarValueOfTokensReward } = useModCompetitionRewards({
     userCakeRewards,

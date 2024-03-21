@@ -146,8 +146,6 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   const staked0Amount = stakedToken0Amount ? CurrencyAmount.fromRawAmount(currencyA, stakedToken0Amount) : undefined
   const staked1Amount = stakedToken1Amount ? CurrencyAmount.fromRawAmount(currencyB, stakedToken1Amount) : undefined
 
-  const withCakeReward: boolean = useMemo(() => earningToken.symbol === 'CAKE', [earningToken])
-
   return (
     <StyledCard>
       <CardTitle
@@ -166,7 +164,6 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           apr={apr}
           isAprLoading={aprDataInfo.isLoading}
           autoCompound={autoCompound}
-          withCakeReward={withCakeReward}
           totalAssetsInUsd={totalAssetsInUsd}
           totalStakedInUsd={totalStakedInUsd}
           lpSymbol={`${currencyA.symbol}-${currencyB.symbol} LP`}
@@ -175,6 +172,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           precision={precision}
           lpTokenDecimals={lpTokenDecimals}
           aprTimeWindow={aprDataInfo.timeWindow}
+          rewardToken={earningToken}
         />
         <ManagerInfo
           mt="1.5em"

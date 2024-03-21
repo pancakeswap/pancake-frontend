@@ -78,3 +78,29 @@ export interface Categories {
   id: number
   name: string
 }
+
+export interface ArticleDataType {
+  id: number
+  slug: string
+  title: string
+  locale: string
+  imgUrl: string
+  content: string
+  createAt: string
+  publishedAt: string
+  description: string
+  categories: Array<string>
+  newsOutBoundLink: string
+  newsFromPlatform: string
+  gamesCategories: Array<string>
+}
+
+export interface ArticleType {
+  data: ArticleDataType[]
+  pagination: PaginationType
+}
+
+export interface AllArticleType {
+  isFetching: boolean
+  articlesData: ArticleType
+}

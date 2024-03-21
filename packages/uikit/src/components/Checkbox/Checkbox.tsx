@@ -3,6 +3,8 @@ import { CheckboxProps, scales } from "./types";
 
 const getScale = ({ scale }: CheckboxProps) => {
   switch (scale) {
+    case scales.XS:
+      return "20px";
     case scales.SM:
       return "24px";
     case scales.MD:
@@ -19,6 +21,8 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
   display: inline-block;
   height: ${getScale};
   width: ${getScale};
+  min-height: ${getScale};
+  min-width: ${getScale};
   vertical-align: middle;
   transition: background-color 0.2s ease-in-out;
   border: ${({ theme }) => (theme.isDark ? `solid 1px ${theme.colors.disabled}` : "0")};

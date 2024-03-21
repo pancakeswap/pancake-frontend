@@ -41,7 +41,7 @@ const client = createPublicClient({
 
 ```typescript
 import { Native } from '@pancakeswap/sdk'
-import { V4Router } from '@pancakeswap/smart-router/evm'
+import { V4Router } from '@pancakeswap/smart-router'
 import { bscTokens } from '@pancakeswap/tokens'
 
 const swapFrom = Native.onChain(chainId)

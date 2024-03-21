@@ -14,33 +14,27 @@ const usePriceQuotes = () => {
     typedValue: amount,
     [Field.INPUT]: { currencyId: inputCurrency },
     [Field.OUTPUT]: { currencyId: outputCurrency },
-    userIpAddress: userIp,
   } = useBuyCryptoState()
 
-  const sortProviderQuotes = useCallback(
-    async (combinedData: ProviderQuote[], disabledProviders: string[]) => {
-      let sortedFilteredQuotes = combinedData
-      try {
-        if (userIp) {
-          const providerAvailabilities = await fetchProviderAvailabilities({ userIp })
-          sortedFilteredQuotes = combinedData.filter((quote: ProviderQuote) => {
-            return providerAvailabilities[quote.provider] && !disabledProviders.includes(quote.provider)
-          })
-        }
-        if (sortedFilteredQuotes.length === 0) return []
-        if (sortedFilteredQuotes.length > 1) {
-          if (sortedFilteredQuotes.every((quote) => quote.quote === 0)) return []
-          sortedFilteredQuotes.sort((a, b) => b.quote - a.quote)
-        }
-
-        return sortedFilteredQuotes
-      } catch (error) {
-        console.error('Error fetching price quotes:', error)
-        return []
+  const sortProviderQuotes = useCallback(async (combinedData: ProviderQuote[], disabledProviders: string[]) => {
+    let sortedFilteredQuotes = combinedData
+    try {
+      const providerAvailabilities = await fetchProviderAvailabilities()
+      sortedFilteredQuotes = combinedData.filter((quote: ProviderQuote) => {
+        return providerAvailabilities[quote.provider] && !disabledProviders.includes(quote.provider)
+      })
+      if (sortedFilteredQuotes.length === 0) return []
+      if (sortedFilteredQuotes.length > 1) {
+        if (sortedFilteredQuotes.every((quote) => quote.quote === 0)) return []
+        sortedFilteredQuotes.sort((a, b) => b.quote - a.quote)
       }
-    },
-    [userIp],
-  )
+
+      return sortedFilteredQuotes
+    } catch (error) {
+      console.error('Error fetching price quotes:', error)
+      return []
+    }
+  }, [])
 
   const fetchQuotes = useCallback(async () => {
     if (!chainId || !outputCurrency || !inputCurrency) return

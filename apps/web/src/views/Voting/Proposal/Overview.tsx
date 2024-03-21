@@ -6,6 +6,7 @@ import PageLoader from 'components/Loader/PageLoader'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import { ProposalState } from 'state/types'
 import { getAllVotes, getProposal } from 'state/voting/helpers'
 import { useAccount } from 'wagmi'
@@ -38,7 +39,7 @@ const Overview = () => {
 
   const {
     status: votesLoadingStatus,
-    data: votes,
+    data,
     refetch,
   } = useQuery({
     queryKey: ['voting', 'proposal', proposal, 'votes'],
@@ -53,6 +54,9 @@ const Overview = () => {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   })
+
+  const votes = useMemo(() => data || [], [data])
+
   const hasAccountVoted = account && votes && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
   const isPageLoading = votesLoadingStatus === 'pending' || proposalLoadingStatus === 'pending'

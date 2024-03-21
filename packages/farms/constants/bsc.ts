@@ -863,9 +863,9 @@ export const farmsV3 = defineFarmV3Configs([
   },
   {
     pid: 44,
-    token0: bscTokens.ageur,
+    token0: bscTokens.eura,
     token1: bscTokens.usdt,
-    lpAddress: Pool.getAddress(bscTokens.ageur, bscTokens.usdt, FeeAmount.LOW),
+    lpAddress: Pool.getAddress(bscTokens.eura, bscTokens.usdt, FeeAmount.LOW),
     feeAmount: FeeAmount.LOW,
   },
   {
@@ -1317,7 +1317,7 @@ const farms: SerializedFarmConfig[] = [
     pid: 153,
     lpSymbol: 'agEUR-USDT LP',
     lpAddress: '0x1DEC73074cE9cAbEd47D7748410277109B23Cda2',
-    token: bscTokens.ageur,
+    token: bscTokens.eura,
     quoteToken: bscTokens.usdt,
   },
   {

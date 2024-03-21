@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
-import BigNumber from 'bignumber.js'
-import { Address, useAccount } from 'wagmi'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import BigNumber from 'bignumber.js'
 import { useERC20, useTokenContract } from 'hooks/useContract'
+import { useEffect, useState } from 'react'
+import { Address, useAccount } from 'wagmi'
 
 // Retrieve IFO allowance
 const useIfoAllowance = (
@@ -16,8 +16,8 @@ const useIfoAllowance = (
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await tokenContract.read.allowance([account, spenderAddress])
-        setAllowance(new BigNumber(res.toString()))
+        const res = await tokenContract?.read.allowance([account!, spenderAddress])
+        setAllowance(new BigNumber(res?.toString() ?? 0))
       } catch (e) {
         console.error(e)
       }

@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
-import { useAccount } from 'wagmi'
-import BigNumber from 'bignumber.js'
+import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, InjectedModalProps, Message, MessageText } from '@pancakeswap/uikit'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import BigNumber from 'bignumber.js'
+import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
+import { FetchStatus } from 'config/constants/types'
+import { useCakeEnable } from 'hooks/useCakeEnable'
 import { useCake } from 'hooks/useContract'
 import { useBSCCakeBalance } from 'hooks/useTokenBalance'
-import { useCakeEnable } from 'hooks/useCakeEnable'
-import { useTranslation } from '@pancakeswap/localization'
-import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
-import { FetchStatus } from 'config/constants/types'
-import { requiresApproval } from 'utils/requiresApproval'
+import { useEffect, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
-import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
-import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import { styled } from 'styled-components'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { requiresApproval } from 'utils/requiresApproval'
+import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
+import { useAccount } from 'wagmi'
 import { UseEditProfileResponse } from './reducer'
 
 interface StartPageProps extends InjectedModalProps {
@@ -53,7 +53,7 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
     costs: { numberCakeToUpdate, numberCakeToReactivate },
     isLoading: isProfileCostsLoading,
   } = useGetProfileCosts()
-  const [needsApproval, setNeedsApproval] = useState(null)
+  const [needsApproval, setNeedsApproval] = useState<boolean | null>(null)
   const minimumCakeRequired = profile?.isActive ? numberCakeToUpdate : numberCakeToReactivate
   const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance >= minimumCakeRequired
   const { handleEnable, pendingEnableTx } = useCakeEnable(new BigNumber(minimumCakeRequired.toString()))
@@ -73,7 +73,7 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
     const checkApprovalStatus = async () => {
       const approvalNeeded = await requiresApproval(
         cakeContract,
-        account,
+        account!,
         getPancakeProfileAddress(),
         minimumCakeRequired,
       )

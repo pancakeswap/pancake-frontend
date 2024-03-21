@@ -417,6 +417,7 @@ export const AddLiquidity = memo(function AddLiquidity({
                   precision={precision}
                   lpTokenDecimals={lpTokenDecimals}
                   aprTimeWindow={aprTimeWindow}
+                  rewardToken={earningToken}
                 />
               </RowBetween>
             </Flex>

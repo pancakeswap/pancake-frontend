@@ -105,7 +105,7 @@ const createGetTokenPriceFromLlmaWithCache = ({
 
   return async ({ addresses, chainId }) => {
     if (!chainId || !getLlamaChainName(chainId)) {
-      throw new Error(`Invalid chain id ${chainId}`)
+      return []
     }
     const [cachedResults, addressesToFetch] = addresses.reduce<[TokenUsdPrice[], string[]]>(
       ([cachedAddrs, newAddrs], address) => {
@@ -152,7 +152,7 @@ export const getCommonTokenPricesByLlma = createCommonTokenPriceProvider<BySubgr
 
 export const getCommonTokenPricesByWalletApi = createCommonTokenPriceProvider<BySubgraphEssentials>(
   createGetTokenPriceFromLlmaWithCache({
-    endpoint: 'https://alpha.wallet-api.pancakeswap.com/v0/prices',
+    endpoint: 'https://wallet-api.pancakeswap.com/v1/prices',
   }),
 )
 

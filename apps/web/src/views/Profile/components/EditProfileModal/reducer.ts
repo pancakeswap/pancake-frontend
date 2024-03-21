@@ -32,7 +32,7 @@ const reducer = (state: State, action: Actions): State => {
     case 'go_previous':
       return {
         ...state,
-        currentView: state.previousView,
+        currentView: state.previousView!,
         previousView: state.currentView,
       }
     default:

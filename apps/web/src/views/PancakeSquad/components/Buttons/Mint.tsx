@@ -6,6 +6,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useNftSaleContract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
 import { DefaultTheme } from 'styled-components'
+import { Hash } from 'viem'
 import { SaleStatusEnum } from '../../types'
 import ConfirmModal from '../Modals/Confirm'
 
@@ -13,8 +14,8 @@ type PreEventProps = {
   t: ContextApi['t']
   theme: DefaultTheme
   saleStatus: SaleStatusEnum
-  numberTicketsOfUser: number
-  numberTokensOfUser: number
+  numberTicketsOfUser?: number
+  numberTokensOfUser?: number
   ticketsOfUser: bigint[]
 }
 
@@ -22,12 +23,12 @@ const MintButton: React.FC<React.PropsWithChildren<PreEventProps>> = ({
   t,
   theme,
   saleStatus,
-  numberTicketsOfUser,
-  ticketsOfUser,
+  numberTicketsOfUser = 0,
+  ticketsOfUser = 0,
 }) => {
   const { callWithGasPrice } = useCallWithGasPrice()
   const nftSaleContract = useNftSaleContract()
-  const [txHashMintingResult, setTxHashMintingResult] = useState(null)
+  const [txHashMintingResult, setTxHashMintingResult] = useState<Hash | null>(null)
   const canMintTickets = saleStatus === SaleStatusEnum.Claim && numberTicketsOfUser > 0
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isLoading } = useCatchTxError()
@@ -41,7 +42,7 @@ const MintButton: React.FC<React.PropsWithChildren<PreEventProps>> = ({
       title={t('Mint')}
       isLoading={isLoading}
       headerBackground={theme.colors.gradientCardHeader}
-      txHash={txHashMintingResult}
+      txHash={txHashMintingResult ?? undefined}
       loadingText={t('Please confirm your transaction in wallet.')}
       loadingButtonLabel={t('Minting...')}
       successButtonLabel={t('Close')}
@@ -62,7 +63,11 @@ const MintButton: React.FC<React.PropsWithChildren<PreEventProps>> = ({
     }
   }
 
-  useEffect(() => txHashMintingResult && !isLoading && onPresentConfirmModal(), [isLoading, txHashMintingResult])
+  useEffect(() => {
+    if (txHashMintingResult && !isLoading) {
+      onPresentConfirmModal()
+    }
+  }, [isLoading, txHashMintingResult])
 
   return (
     <>

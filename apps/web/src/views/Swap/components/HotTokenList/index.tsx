@@ -1,6 +1,6 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
 import { ButtonMenu, ButtonMenuItem, Checkbox, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useRouter } from 'next/router'
@@ -80,7 +80,7 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
       v2Tokens
         .filter(
           (t) =>
-            t.priceUSD !== 0 && t.priceUSDChange !== 0 && t.volumeUSD !== 0 && t.tvlUSD >= LIQUIDITY_FILTER[chainId],
+            t.priceUSD !== 0 && t.priceUSDChange !== 0 && t.volumeUSD !== 0 && t.tvlUSD >= LIQUIDITY_FILTER[chainId!],
         )
         .map((i) => {
           const tokenAddress = i?.address?.toLowerCase()
@@ -102,7 +102,7 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
       v3Tokens
         .filter(
           (t) =>
-            t.priceUSD !== 0 && t.priceUSDChange !== 0 && t.volumeUSD !== 0 && t.tvlUSD >= LIQUIDITY_FILTER[chainId],
+            t.priceUSD !== 0 && t.priceUSDChange !== 0 && t.volumeUSD !== 0 && t.tvlUSD >= LIQUIDITY_FILTER[chainId!],
         )
         .map((i) => {
           const tokenAddress = i?.address?.toLowerCase()

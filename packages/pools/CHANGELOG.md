@@ -1,5 +1,26 @@
 # @pancakeswap/pools
 
+## 5.1.16
+
+### Patch Changes
+
+- 087a863: Move finished pools
+
+## 5.1.15
+
+### Patch Changes
+
+- Updated dependencies [30ef48c]
+  - @pancakeswap/tokens@0.6.11
+
+## 5.1.14
+
+### Patch Changes
+
+- d7586b8: Update farms, pools, gauges, tokens
+- Updated dependencies [d7586b8]
+  - @pancakeswap/tokens@0.6.10
+
 ## 5.1.13
 
 ### Patch Changes

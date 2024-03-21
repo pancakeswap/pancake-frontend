@@ -1,6 +1,6 @@
 import { Currency, CurrencyAmount, Fraction, ONE, Percent, ZERO } from "@pancakeswap/sdk";
-import { FeeAmount, FeeCalculator } from "@pancakeswap/v3-sdk";
 import { formatFraction, parseNumberToFraction } from "@pancakeswap/utils/formatFractions";
+import { FeeAmount, FeeCalculator } from "@pancakeswap/v3-sdk";
 import { useMemo } from "react";
 
 import { useRate } from "./useRate";
@@ -78,6 +78,19 @@ export function useRoi({
     stakeFor,
   });
 
+  const {
+    apy: combinedApy,
+    rate: combinedRate,
+    reward: combinedReward,
+  } = useRate({
+    interest: parseFloat(formatFraction(fee24h, 6) || "0"),
+    principal,
+    compoundEvery,
+    compoundOn,
+    stakeFor,
+    cakeInterest: (cakeApr && principal && ((cakeApr / 100) * principal) / 365) ?? 0,
+  });
+
   return {
     fee,
     rate,
@@ -90,6 +103,9 @@ export function useRoi({
     cakeRate,
     cakeReward,
     originalCakeReward,
+    combinedApy,
+    combinedRate,
+    combinedReward,
   };
 }
 

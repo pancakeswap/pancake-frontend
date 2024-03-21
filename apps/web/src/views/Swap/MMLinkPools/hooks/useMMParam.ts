@@ -1,7 +1,7 @@
-import { Currency } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 
+import { UnsafeCurrency } from 'config/constants/types'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { parseMMParameter } from '../utils/exchange'
 
@@ -9,8 +9,8 @@ export const useMMParam = (
   isMMQuotingPair: boolean,
   independentField: Field,
   typedValue: `${number}`,
-  inputCurrency: Currency | undefined,
-  outputCurrency: Currency | undefined,
+  inputCurrency: UnsafeCurrency,
+  outputCurrency: UnsafeCurrency,
   isForRFQ?: boolean,
 ) => {
   const { account, chainId } = useAccountActiveChain()

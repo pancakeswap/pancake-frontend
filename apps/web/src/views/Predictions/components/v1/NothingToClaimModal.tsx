@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react'
-import { useAccount } from 'wagmi'
-import { styled } from 'styled-components'
-import {
-  ModalContainer,
-  ModalBody,
-  ModalTitle,
-  ModalHeader,
-  InjectedModalProps,
-  Text,
-  Heading,
-  ModalCloseButton,
-  Button,
-  AutoRenewIcon,
-} from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { getAllV1History } from './helpers'
+import {
+  AutoRenewIcon,
+  Button,
+  Heading,
+  InjectedModalProps,
+  ModalBody,
+  ModalCloseButton,
+  ModalContainer,
+  ModalHeader,
+  ModalTitle,
+  Text,
+} from '@pancakeswap/uikit'
+import { useEffect, useState } from 'react'
+import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
+import { V1History, getAllV1History } from './helpers'
 
 const Modal = styled(ModalContainer)`
   overflow: visible;
@@ -30,7 +30,7 @@ const BunnyDecoration = styled.div`
 
 const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const [isFetching, setIsFetching] = useState(false)
-  const [history, setHistory] = useState([])
+  const [history, setHistory] = useState<V1History[]>([])
   const { t } = useTranslation()
   const { address: account } = useAccount()
 
@@ -49,7 +49,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<InjectedModalP
       'Round Failed',
     ].join(',')
 
-    const rows = history.reduce((accum, bet) => {
+    const rows = history.reduce<string[]>((accum, bet) => {
       return [
         ...accum,
         [
@@ -66,7 +66,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<InjectedModalP
           bet.round.failed,
         ].join(','),
       ]
-    }, [])
+    }, [] as string[])
 
     const anchor = document.createElement('a')
     const blob = new Blob([`${header}\n${rows.join('\n')}`], {
@@ -87,7 +87,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<InjectedModalP
       setIsFetching(true)
 
       try {
-        const response = await getAllV1History({ user: account.toLowerCase() })
+        const response = await getAllV1History({ user: account?.toLowerCase() })
         setHistory(response)
       } catch (error) {
         console.error('Unable to fetch history', error)

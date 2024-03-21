@@ -21,6 +21,7 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
+import { V4CakeIcon } from 'views/Home/components/V4CakeIcon'
 
 import { useDataDogRUM } from 'hooks/useDataDogRUM'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
@@ -132,6 +133,7 @@ type NextPageWithLayout = NextPage & {
   chains?: number[]
   isShowScrollToTopButton?: true
   screen?: true
+  isShowV4IconButton?: false
   /**
    * Meta component for page, hacky solution for static build page to avoid `PersistGate` which blocks the page from rendering
    */
@@ -154,6 +156,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const ShowMenu = Component.mp ? Fragment : Menu
   const isShowScrollToTopButton = Component.isShowScrollToTopButton || true
   const shouldScreenWallet = Component.screen || false
+  const isShowV4IconButton = Component.isShowV4IconButton || false
 
   return (
     <ProductionErrorBoundary>
@@ -169,6 +172,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       <TransactionsDetailModal />
       {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
       {shouldScreenWallet && <Blocklist />}
+      {isShowV4IconButton && <V4CakeIcon />}
     </ProductionErrorBoundary>
   )
 }

@@ -19,7 +19,12 @@ const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, the
     numberTokensOfUser,
   } = userInfos || {}
 
-  const { saleStatus, totalTicketsDistributed, totalSupplyMinted, startTimestamp } = eventInfos || {}
+  const {
+    saleStatus = SaleStatusEnum.Pending,
+    totalTicketsDistributed,
+    totalSupplyMinted,
+    startTimestamp,
+  } = eventInfos || {}
 
   const hasProfileActivated = [UserStatusEnum.PROFILE_ACTIVE, UserStatusEnum.PROFILE_ACTIVE_GEN0].includes(userStatus)
   const isBuyPhaseFinished = totalTicketsDistributed === maxSupply
@@ -91,15 +96,15 @@ const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, the
               theme={theme}
               userStatus={userStatus}
               saleStatus={saleStatus}
-              canClaimForGen0={canClaimForGen0}
+              canClaimForGen0={Boolean(canClaimForGen0)}
               maxPerAddress={maxPerAddress}
               numberTicketsOfUser={numberTicketsOfUser}
               numberTicketsUsedForGen0={numberTicketsUsedForGen0}
               cakeBalance={cakeBalance}
               maxPerTransaction={maxPerTransaction}
               numberTicketsForGen0={numberTicketsForGen0}
-              pricePerTicket={pricePerTicket}
-              startTimestamp={startTimestamp}
+              pricePerTicket={pricePerTicket ?? 0n}
+              startTimestamp={startTimestamp ?? 0}
             />
           )}
           {isBuyPhaseFinished && hasData && <ReadyText mt="16px" text={t('Phase Complete!')} />}
@@ -127,7 +132,7 @@ const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, the
               saleStatus={saleStatus}
               numberTicketsOfUser={numberTicketsOfUser}
               numberTokensOfUser={numberTokensOfUser}
-              ticketsOfUser={ticketsOfUser}
+              ticketsOfUser={ticketsOfUser ?? []}
             />
           )}
           {isMintingFinished && hasData && <ReadyText mt="16px" text={t('Phase Complete!')} />}

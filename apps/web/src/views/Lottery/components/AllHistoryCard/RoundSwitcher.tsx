@@ -27,7 +27,7 @@ const StyledIconButton = styled(IconButton)`
 
 interface RoundSwitcherProps {
   isLoading?: boolean
-  selectedRoundId: string
+  selectedRoundId?: string
   mostRecentRound: number | null
   handleInputChange: (event: any) => void
   handleArrowButtonPress: (targetRound: number) => void
@@ -41,7 +41,7 @@ const RoundSwitcher: React.FC<React.PropsWithChildren<RoundSwitcherProps>> = ({
   handleArrowButtonPress,
 }) => {
   const { t } = useTranslation()
-  const selectedRoundIdAsInt = parseInt(selectedRoundId, 10)
+  const selectedRoundIdAsInt = parseInt(selectedRoundId ?? '0', 10)
 
   const handleOnChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

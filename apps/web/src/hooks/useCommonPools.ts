@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
 import { Currency } from '@pancakeswap/sdk'
-import { Pool } from '@pancakeswap/smart-router/evm'
+import { Pool } from '@pancakeswap/smart-router'
 import { useMemo, useCallback } from 'react'
 
 import {

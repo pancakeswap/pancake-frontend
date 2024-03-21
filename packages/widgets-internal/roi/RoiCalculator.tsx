@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { Currency, CurrencyAmount, Percent, Price, Token, ZERO, ZERO_PERCENT } from "@pancakeswap/sdk";
+import { Currency, CurrencyAmount, Percent, Price, Token, ZERO } from "@pancakeswap/sdk";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { formatFraction, formatPercent, formatPrice } from "@pancakeswap/utils/formatFractions";
 import { isPositionOutOfRange } from "@pancakeswap/utils/isPositionOutOfRange";
@@ -268,25 +268,39 @@ export function RoiCalculator({
     [cakePriceDiffPercent, derivedCakeApr]
   );
 
-  const { fee, rate, apr, apy, cakeApr, cakeApy, editCakeApr, editCakeApy, cakeRate, cakeReward, originalCakeReward } =
-    useRoi({
-      amountA,
-      amountB,
-      currencyAUsdPrice,
-      currencyBUsdPrice,
-      tickLower: priceRange?.tickLower,
-      tickUpper: priceRange?.tickUpper,
-      volume24H,
-      sqrtRatioX96,
-      mostActiveLiquidity: liquidity,
-      fee: feeAmount,
-      protocolFee,
-      compoundEvery: compoundingIndexToFrequency[compoundIndex],
-      stakeFor: spanIndexToSpan[spanIndex],
-      compoundOn,
-      cakeApr: farmingRewardsEnabled && derivedCakeApr ? derivedCakeApr.toNumber() : undefined,
-      editCakeApr: farmingRewardsEnabled && editedCakeApr ? editedCakeApr.toNumber() : undefined,
-    });
+  const {
+    fee,
+
+    apr,
+    apy,
+    cakeApr,
+    cakeApy,
+    editCakeApr,
+    editCakeApy,
+
+    cakeReward,
+    originalCakeReward,
+    combinedApy,
+    combinedReward,
+    combinedRate,
+  } = useRoi({
+    amountA,
+    amountB,
+    currencyAUsdPrice,
+    currencyBUsdPrice,
+    tickLower: priceRange?.tickLower,
+    tickUpper: priceRange?.tickUpper,
+    volume24H,
+    sqrtRatioX96,
+    mostActiveLiquidity: liquidity,
+    fee: feeAmount,
+    protocolFee,
+    compoundEvery: compoundingIndexToFrequency[compoundIndex],
+    stakeFor: spanIndexToSpan[spanIndex],
+    compoundOn,
+    cakeApr: farmingRewardsEnabled && derivedCakeApr ? derivedCakeApr.toNumber() : undefined,
+    editCakeApr: farmingRewardsEnabled && editedCakeApr ? editedCakeApr.toNumber() : undefined,
+  });
 
   const handleApply = useCallback(
     () =>
@@ -303,13 +317,10 @@ export function RoiCalculator({
     [onApply, priceRange, amountA, amountB, usdValue, currencyAUsdPrice, currencyBUsdPrice]
   );
 
-  const totalRate = useMemo(
-    () => parseFloat(formatPercent(rate?.add(cakeRate || ZERO_PERCENT), 12) ?? "0"),
-    [cakeRate, rate]
-  );
+  const totalRate = useMemo(() => parseFloat(formatPercent(combinedRate, 12) ?? "0"), [combinedRate]);
   const lpReward = useMemo(() => parseFloat(formatFraction(fee, 12) ?? "0"), [fee]);
   const farmReward = cakeReward;
-  const totalReward = lpReward + farmReward;
+  const totalReward = combinedReward;
 
   const depositSection = (
     <Section title={t("Deposit Amount")}>
@@ -499,6 +510,7 @@ export function RoiCalculator({
         farmApy={farmingRewardsEnabled ? editCakeApy || cakeApy : undefined}
         farmReward={farmReward}
         isFarm={farmingRewardsEnabled}
+        combinedApy={combinedApy}
       />
     </>
   );

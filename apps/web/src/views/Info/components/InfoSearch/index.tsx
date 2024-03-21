@@ -330,7 +330,6 @@ const Search = () => {
                       <Text ml="10px">
                         <Text>{`${token.address && getTokenNameAlias(token.address, chainId, token.name)} (${
                           token.address && getTokenSymbolAlias(token.address, chainId, token.symbol)
-                        }
                         })`}</Text>
                       </Text>
                       <SaveIcon

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useBuyCryptoActionHandlers, useDefaultsFromURLSearch } from 'state/buyCrypto/hooks'
+import { useDefaultsFromURLSearch } from 'state/buyCrypto/hooks'
 import { CryptoFormView } from 'views/BuyCrypto/types'
 import { useAccount } from 'wagmi'
 import Page from '../Page'
@@ -9,12 +9,10 @@ import { CryptoQuoteForm } from './containers/CryptoQuoteForm'
 import usePriceQuotes from './hooks/usePriceQuoter'
 import { StyledAppBody } from './styles'
 
-export default function BuyCrypto({ userIp }: { userIp: string | undefined }) {
+export default function BuyCrypto() {
   const [modalView, setModalView] = useState<CryptoFormView>(CryptoFormView.Input)
-  const { onUsersIp } = useBuyCryptoActionHandlers()
   const { address } = useAccount()
   useDefaultsFromURLSearch(address)
-  onUsersIp(userIp)
   const { fetchQuotes, quotes } = usePriceQuotes()
 
   return (

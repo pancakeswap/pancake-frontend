@@ -13,6 +13,7 @@ import { getNeighbour } from './edge'
 import { PriceCalculator, createPriceCalculator } from './priceCalculator'
 import { estimateGasCost } from '../gasCost'
 import { isSameRoute, mergeRoute } from './route'
+import { getBetterTrade, groupPoolsByType } from '../utils'
 
 type GraphParams = {
   pools?: Pool[]
@@ -213,7 +214,33 @@ const getGasCostInCurrency = ({
   return CurrencyAmount.fromRawAmount(currency, gasCostInCurrencyRaw?.quotient || 0)
 }
 
-export async function findBestTrade({
+export async function findBestTrade(params: FindBestTradeParams): Promise<V4Trade<TradeType> | undefined> {
+  const { tradeType, candidatePools, ...rest } = params
+  const isExactIn = tradeType === TradeType.EXACT_INPUT
+  if (isExactIn) {
+    return getBestTrade(params)
+  }
+
+  // Exact output doesn't support mixed route
+  const poolsByType = groupPoolsByType(candidatePools)
+  const trades = await Promise.all(
+    poolsByType.map((pools) => getBestTrade({ tradeType, candidatePools: pools, ...rest })),
+  )
+  let bestTrade: V4Trade<TradeType> | undefined
+  for (const trade of trades) {
+    if (!trade) {
+      continue
+    }
+    if (!bestTrade) {
+      bestTrade = trade
+      continue
+    }
+    bestTrade = getBetterTrade(bestTrade, trade)
+  }
+  return bestTrade
+}
+
+async function getBestTrade({
   amount: totalAmount,
   candidatePools,
   quoteCurrency,
@@ -331,7 +358,11 @@ export async function findBestTrade({
       let bestVertIndex: number | undefined
       for (const [i, vertice] of nextVertList.entries()) {
         const currentBestQuote = getBestQuote(vertice)
-        if (vert === undefined || bestQuote === undefined || currentBestQuote?.greaterThan(bestQuote)) {
+        if (
+          vert === undefined ||
+          bestQuote === undefined ||
+          (currentBestQuote && isQuoteBetter(currentBestQuote, bestQuote))
+        ) {
           vert = vertice
           bestQuote = currentBestQuote
           bestVertIndex = i
@@ -391,13 +422,6 @@ export async function findBestTrade({
 
       const currentHop = getHops(vert)
       for (const e of vert.edges) {
-        const prevBestSource = getBestSource(vert)
-
-        // Exact output doesn't support mixed route
-        if (!isExactIn && prevBestSource && e.pool.type !== prevBestSource.pool.type) {
-          continue
-        }
-
         const v2 = vert === e.vertice0 ? e.vertice1 : e.vertice0
         if (processedVert.has(v2)) continue
 

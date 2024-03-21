@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/tokens",
   "license": "MIT",
-  "version": "0.6.9",
+  "version": "0.6.11",
   "description": "Tokens for pancakeswap",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -10,7 +10,6 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "prepublishOnly": "pnpm run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
