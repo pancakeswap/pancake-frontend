@@ -13,7 +13,7 @@ export const getIfoCreditAddressContract = (
   chainId: ChainId,
   provider: OnChainProvider,
   walletClient?: WalletClient,
-): GetContractReturnType<typeof iCakeABI, PublicClient, WalletClient> => {
+): GetContractReturnType<typeof iCakeABI, PublicClient, Address> => {
   const address = getContractAddress(ICAKE, chainId)
   if (!address || address === '0x') {
     throw new Error(`ICAKE not supported on chain ${chainId}`)

@@ -1,8 +1,8 @@
 import { ERC20Token, MaxUint256 } from '@pancakeswap/sdk'
 import noop from 'lodash/noop'
 import { useCallback, useEffect, useReducer, useRef } from 'react'
-import { Address, useAccount } from 'wagmi'
-import { SendTransactionResult, WaitForTransactionResult } from 'wagmi/actions'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 import { ApprovalState, useApproveCallbackFromAmount } from './useApproveCallback'
 import useCatchTxError from './useCatchTxError'
 

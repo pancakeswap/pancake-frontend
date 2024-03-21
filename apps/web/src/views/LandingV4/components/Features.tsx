@@ -166,7 +166,7 @@ export const Features = () => {
   const { isLg, isMd, isXl, isXxl } = useMatchBreakpoints()
   const [percentage, setPerCentage] = useState(0)
   const [step, setStep] = useState(0)
-  const timer = useRef<NodeJS.Timeout | null>(null)
+  const timer = useRef<number | null>(null)
   const [mouseEntered, setMouseEntered] = useState(false)
   const [showAnimation, setShowAnimation] = useState(true)
   const [remainingTimer, setRemainingTimer] = useState(DISPLAY_TIMER)

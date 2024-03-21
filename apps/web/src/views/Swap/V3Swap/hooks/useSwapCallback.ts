@@ -24,7 +24,7 @@ enum SwapCallbackState {
 
 interface UseSwapCallbackReturns {
   state: SwapCallbackState
-  callback?: () => Promise<`0x${string}`>
+  callback?: () => Promise<{ hash: `0x${string}` }>
   error?: ReactNode
   reason?: string
 }

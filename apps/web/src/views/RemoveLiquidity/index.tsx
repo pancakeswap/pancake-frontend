@@ -1,71 +1,71 @@
-import { useCallback, useMemo, useState } from 'react'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { styled } from 'styled-components'
-import { useRouter } from 'next/router'
+import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Percent, WNATIVE } from '@pancakeswap/sdk'
 import {
-  Button,
-  Text,
   AddIcon,
   ArrowDownIcon,
-  CardBody,
-  Slider,
+  AutoColumn,
   Box,
+  Button,
+  CardBody,
+  ColumnCenter,
   Flex,
-  useModal,
-  TooltipText,
-  useTooltip,
-  useToast,
-  useMatchBreakpoints,
   IconButton,
   PencilIcon,
-  AutoColumn,
-  ColumnCenter,
+  Slider,
+  Text,
+  TooltipText,
+  useMatchBreakpoints,
+  useModal,
+  useToast,
+  useTooltip,
 } from '@pancakeswap/uikit'
-import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
-import { useSignTypedData } from 'wagmi'
-import useNativeCurrency from 'hooks/useNativeCurrency'
-import { CommitButton } from 'components/CommitButton'
-import { useTranslation } from '@pancakeswap/localization'
 import { useUserSlippage } from '@pancakeswap/utils/user'
-import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
-import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import { useLPApr } from 'state/swap/useLPApr'
+import { CommitButton } from 'components/CommitButton'
 import { formattedCurrencyAmount } from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
+import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useRouter } from 'next/router'
+import { useCallback, useMemo, useState } from 'react'
+import { useLPApr } from 'state/swap/useLPApr'
+import { styled } from 'styled-components'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
+import { useSignTypedData } from 'wagmi'
 // import { splitSignature } from 'utils/splitSignature'
 import { Hash } from 'viem'
 
-import { MinimalPositionCard } from 'components/PositionCard'
-import { RowBetween } from 'components/Layout/Row'
 import { LightGreyCard } from 'components/Card'
+import { RowBetween } from 'components/Layout/Row'
+import { MinimalPositionCard } from 'components/PositionCard'
 
 import { usePairContract } from 'hooks/useContract'
 
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
+import { useBurnActionHandlers, useDerivedBurnInfo } from 'state/burn/hooks'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
-import { calculateSlippageAmount, useRouterContract } from 'utils/exchange'
 import { currencyId } from 'utils/currencyId'
-import { useApproveCallback, ApprovalState } from 'hooks/useApproveCallback'
-import { useBurnActionHandlers, useDerivedBurnInfo } from 'state/burn/hooks'
+import { calculateSlippageAmount, useRouterContract } from 'utils/exchange'
 
+import { SettingsMode } from 'components/Menu/GlobalSettings/types'
+import { CommonBasesType } from 'components/SearchModal/types'
 import { Field } from 'state/burn/actions'
+import { useRemoveLiquidityV2FormState } from 'state/burn/reducer'
 import { useGasPrice } from 'state/user/hooks'
 import { isUserRejected, logError } from 'utils/sentry'
-import { CommonBasesType } from 'components/SearchModal/types'
-import { SettingsMode } from 'components/Menu/GlobalSettings/types'
-import { useRemoveLiquidityV2FormState } from 'state/burn/reducer'
+import { AppBody, AppHeader } from '../../components/App'
+import ConnectWalletButton from '../../components/ConnectWalletButton'
+import CurrencyInputPanel from '../../components/CurrencyInputPanel'
+import StyledInternalLink from '../../components/Links'
+import Dots from '../../components/Loader/Dots'
+import { CurrencyLogo } from '../../components/Logo'
+import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
+import { useTransactionDeadline } from '../../hooks/useTransactionDeadline'
+import { formatAmount } from '../../utils/formatInfoNumbers'
 import Page from '../Page'
 import ConfirmLiquidityModal from '../Swap/components/ConfirmRemoveLiquidityModal'
-import { formatAmount } from '../../utils/formatInfoNumbers'
-import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
-import Dots from '../../components/Loader/Dots'
-import StyledInternalLink from '../../components/Links'
-import { useTransactionDeadline } from '../../hooks/useTransactionDeadline'
-import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import { CurrencyLogo } from '../../components/Logo'
-import ConnectWalletButton from '../../components/ConnectWalletButton'
-import { AppHeader, AppBody } from '../../components/App'
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};

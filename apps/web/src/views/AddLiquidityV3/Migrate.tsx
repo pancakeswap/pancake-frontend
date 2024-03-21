@@ -23,25 +23,24 @@ import { CommitButton } from 'components/CommitButton'
 import { CurrencyLogo } from 'components/Logo'
 import { Bound } from 'config/constants/types'
 import { useToken } from 'hooks/Tokens'
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { usePairContract, useV3MigratorContract } from 'hooks/useContract'
+import { useV2Pair } from 'hooks/usePairs'
 import useTokenBalance from 'hooks/useTokenBalance'
+import useTotalSupply from 'hooks/useTotalSupply'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { tryParsePrice } from 'hooks/v3/utils'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
-import { Address, useReadContract } from 'wagmi'
-// import { V2_ROUTER_ADDRESS } from 'config/constants/exchange'
-import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { useV2Pair } from 'hooks/usePairs'
-import useTotalSupply from 'hooks/useTotalSupply'
 import { useIsTransactionPending, useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { useDensityChartData } from 'views/AddLiquidityV3/hooks/useDensityChartData'
+import { useReadContract } from 'wagmi'
 // import { splitSignature } from 'utils/splitSignature'
-import { encodeFunctionData, Hex } from 'viem'
+import { Address, encodeFunctionData, Hex } from 'viem'
 // import { isUserRejected } from 'utils/sentry'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -74,8 +73,8 @@ export function Migrate({ v2PairAddress }: { v2PairAddress: Address }) {
     chainId,
   })
 
-  const token0 = useToken(token0Address)
-  const token1 = useToken(token1Address)
+  const token0 = useToken(token0Address as Address)
+  const token1 = useToken(token1Address as Address)
 
   const [, pair] = useV2Pair(token0 ?? undefined, token1 ?? undefined)
   const totalSupply = useTotalSupply(pair?.liquidityToken)

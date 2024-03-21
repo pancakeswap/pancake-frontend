@@ -156,15 +156,6 @@ export const FetchStatus = {
   Failed: 'error',
 } as const
 
-// Remove after wagmi v2
-export const FetchStatusV1 = {
-  Idle: 'idle',
-  Fetching: 'loading',
-  Fetched: 'success',
-  Failed: 'error',
-} as const
-
-export type TFetchStatusV1 = (typeof FetchStatusV1)[keyof typeof FetchStatusV1]
 export type TFetchStatus = (typeof FetchStatus)[keyof typeof FetchStatus]
 
 export const isStableSwap = (trade: ITrade): trade is StableTrade => {
