@@ -465,14 +465,20 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                               {(harvestProps) => (
                                 <HarvestAction
                                   {...harvestProps}
-                                  style={{ border: 'none', minHeight: 'auto', marginLeft: '0px' }}
+                                  style={{
+                                    border: 'none',
+                                    minHeight: 'auto',
+                                    marginLeft: '0px',
+                                    paddingLeft: 0,
+                                    paddingRight: 0,
+                                  }}
                                 />
                               )}
                             </HarvestActionContainer>
                           </>
                         )}
                         <Box style={{ height: 70, width: 2, backgroundColor: theme.colors.cardBorder }} />
-                        <Flex flexGrow={1}>
+                        <Flex flexGrow={1} maxWidth="27%">
                           <StatusView
                             status={status}
                             isFarmStaking

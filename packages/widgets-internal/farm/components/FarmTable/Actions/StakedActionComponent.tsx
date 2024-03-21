@@ -26,14 +26,16 @@ const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<Sta
 
   return (
     <StyledActionContainer>
-      <ActionTitles>
-        <Text bold color="secondary" fontSize="12px" pr="4px">
-          {lpSymbol}
-        </Text>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {t("Staked")}
-        </Text>
-      </ActionTitles>
+      {!bCakeInfoSlot && (
+        <ActionTitles style={{ marginBottom: 0 }}>
+          <Text bold color="secondary" fontSize="12px" pr="4px">
+            {lpSymbol}
+          </Text>
+          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+            {t("Staked")}
+          </Text>
+        </ActionTitles>
+      )}
       <ActionContent style={{ gap: 16, width: "100%" }}>
         {children}
         <IconButtonWrapper>
