@@ -3239,7 +3239,7 @@
   "Limit Order": "Limit Order",
   "The Limit Order hook facilitates on-chain limit order functionality for liquidity pools, eliminating the need for off-chain keepers to process orders. Offering a user experience akin to centralized exchanges, traders can specify buy or sell prices for assets. Orders are executed automatically when the pool price meets the specified limit price.": "The Limit Order hook facilitates on-chain limit order functionality for liquidity pools, eliminating the need for off-chain keepers to process orders. Offering a user experience akin to centralized exchanges, traders can specify buy or sell prices for assets. Orders are executed automatically when the pool price meets the specified limit price.",
   "Customized Pool Types": "Customized Pool Types",
-  "Singleton": "Singleton",
+  "Singleton": "单例模式",
   "Flash Accounting": "Flash Accounting",
   "Donate": "Donate",
   "Unlock unparalleled customization with Hooks, enhancing liquidity pool functionality through smart contracts.Tailor your liquidity pools precisely, defining Hook contracts for key actions like initialize, swap, modify,position, and donate. Enable dynamic fees, on-chain limit orders, custom oracles, and more with PancakeSwap's Hooks!": "Unlock unparalleled customization with Hooks, enhancing liquidity pool functionality through smart contracts.Tailor your liquidity pools precisely, defining Hook contracts for key actions like initialize, swap, modify,position, and donate. Enable dynamic fees, on-chain limit orders, custom oracles, and more with PancakeSwap's Hooks!",
@@ -3261,5 +3261,10 @@
   "token distribution,": "token distribution,",
   "we will distribute": "we will distribute",
   "of the proceeds to the": "of the proceeds to the",
-  "CAKE community.": "CAKE community."
+  "CAKE community.": "CAKE community.",
+  "Stake %stakedToken%, Earn APT on": "Stake %stakedToken%, Earn APT on",
+  "%stakedToken% Syrup Pool": "%stakedToken% Syrup Pool",
+  "If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.": "If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.",
+  "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our": "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our",
+  "The rewards for this Syrup Pool will not be applicable to or claimable by": "The rewards for this Syrup Pool will not be applicable to or claimable by"
 }
