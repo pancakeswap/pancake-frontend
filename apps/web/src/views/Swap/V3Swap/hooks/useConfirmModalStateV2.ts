@@ -13,8 +13,8 @@ import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { RetryableError, retry } from 'state/multicall/retry'
-import { publicClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
+import { publicClient } from 'utils/wagmi'
 import {
   Address,
   Hex,

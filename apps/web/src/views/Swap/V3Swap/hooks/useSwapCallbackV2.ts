@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-restricted-imports
 import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
@@ -12,7 +11,6 @@ import { useSwapState } from 'state/swap/hooks'
 import { basisPointsToPercent } from 'utils/exchange'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { SendTransactionResult } from 'wagmi/actions'
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { useSwapCallArgumentsV2 } from './useSwapCallArgumentsV2'
 import type { TWallchainMasterInput, WallchainStatus } from './useWallchain'
@@ -26,7 +24,7 @@ export enum SwapCallbackState {
 
 interface UseSwapCallbackReturns {
   state: SwapCallbackState
-  callback?: () => Promise<SendTransactionResult>
+  callback?: () => Promise<`0x${string}`>
   error?: string
   reason?: string
 }
@@ -65,15 +63,6 @@ export function useSwapCallbackV2({
     deadline,
     feeOptions,
   )
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const wallchainSwapCalls = useWallchainSwapCallArguments(
-  //   trade,
-  //   swapCalls,
-  //   account,
-  //   onWallchainDrop,
-  //   wallchainMasterInput,
-  // )
-  // const wallchainSwapCalls = []
 
   const { callback } = useSendSwapTransaction(account, chainId, trade ?? undefined, swapCalls, 'UniversalRouter')
 
