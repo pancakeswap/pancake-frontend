@@ -1,9 +1,9 @@
+import { ifoV7ABI } from '@pancakeswap/ifos'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import { ifoV7ABI } from '@pancakeswap/ifos'
 
-import { publicClient } from 'utils/wagmi'
 import { useActiveIfoConfig } from 'hooks/useIfoConfig'
+import { publicClient } from 'utils/wagmi'
 
 export const useIfoStatus = () => {
   const { activeIfo } = useActiveIfoConfig()
