@@ -66,14 +66,24 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   }, [stakedOrHasTokenBalance, farmsList, userDataReady])
 
   return (
-    <MigrationFarmTable
-      title={t('Old Farms')}
-      noStakedFarmText={t('You are not currently staking in any farms that require migrations.')}
-      account={account ?? '0x'}
-      columnSchema={V3Step1DesktopColumnSchema}
-      farms={chosenFarmsMemoized}
-      userDataReady={userDataReady}
-    />
+    <>
+      <MigrationFarmTable
+        title={t('Old Farms')}
+        noStakedFarmText={t('You are not currently staking in any farms that require migrations.')}
+        account={account ?? '0x'}
+        columnSchema={V3Step1DesktopColumnSchema}
+        farms={chosenFarmsMemoized}
+        userDataReady={userDataReady}
+      />
+      <MigrationFarmTable
+        title={t('Old Farms')}
+        noStakedFarmText={t('You are not currently staking in any farms that require migrations.')}
+        account={account ?? '0x'}
+        columnSchema={V3Step1DesktopColumnSchema}
+        farms={chosenFarmsMemoized}
+        userDataReady={userDataReady}
+      />
+    </>
   )
 }
 

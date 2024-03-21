@@ -6,11 +6,11 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
 import { styled } from 'styled-components'
-import EmptyText from './MigrationTable/EmptyText'
-import TableStyle from './MigrationTable/StyledTable'
-import TableHeader from './MigrationTable/TableHeader'
-import { ColumnsDefTypes, RowProps, V3Step1DesktopColumnSchema } from './types'
-import { V3OldFarmRow } from './v3/OldFarmRow'
+import EmptyText from '../MigrationTable/EmptyText'
+import TableStyle from '../MigrationTable/StyledTable'
+import TableHeader from '../MigrationTable/TableHeader'
+import { ColumnsDefTypes, RowProps, V3Step1DesktopColumnSchema } from '../types'
+import { V3OldFarmRow } from '../v3/OldFarmRow'
 
 const Container = styled.div`
   overflow: hidden;
@@ -106,7 +106,6 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
     return newRow
   })
 
-  console.log(sortedRows, 'sortedRows?????')
   return (
     <Container>
       <TableHeader title={title} />

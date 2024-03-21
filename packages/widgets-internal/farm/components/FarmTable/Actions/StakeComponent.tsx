@@ -18,16 +18,18 @@ const StakeComponent: React.FunctionComponent<React.PropsWithChildren<StakeCompo
   const { t } = useTranslation();
 
   return (
-    <StyledActionContainer>
-      <ActionTitles>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px" pr="4px">
-          {t("Stake")}
-        </Text>
-        <Text bold color="secondary" fontSize="12px">
-          {lpSymbol}
-        </Text>
-      </ActionTitles>
-      <ActionContent>
+    <StyledActionContainer style={bCakeInfoSlot ? { display: "flex", gap: 16, alignItems: "center" } : undefined}>
+      {!bCakeInfoSlot && (
+        <ActionTitles>
+          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px" pr="4px">
+            {t("Stake")}
+          </Text>
+          <Text bold color="secondary" fontSize="12px">
+            {lpSymbol}
+          </Text>
+        </ActionTitles>
+      )}
+      <ActionContent style={bCakeInfoSlot ? { flexGrow: 1 } : undefined}>
         <Button width="100%" onClick={onPresentDeposit} variant="secondary" disabled={isStakeReady}>
           {t("Stake LP")}
         </Button>

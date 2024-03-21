@@ -356,8 +356,10 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   }, [chainId, farm.isStable, farm.lpAddress, farm.stableSwapAddress])
 
   const addLiquidityModal = useModalV2()
+  const isBooster = Boolean(details?.bCakeWrapperAddress)
+  const hasStakedInBCake = Boolean(details?.bCakeUserData?.stakedBalance?.gt(0))
 
-  const { status } = useBoostStatusPM(Boolean(details?.bCakeWrapperAddress), details?.bCakeUserData?.boosterMultiplier)
+  const { status } = useBoostStatusPM(isBooster, details?.bCakeUserData?.boosterMultiplier)
   const { shouldUpdate, veCakeUserMultiplierBeforeBoosted } = useWrapperBooster(
     details?.bCakeUserData?.boosterContractAddress ?? '0x',
     details?.bCakeUserData?.boosterMultiplier ?? 1,
@@ -463,9 +465,9 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                 <StakedAction
                   {...props}
                   bCakeInfoSlot={
-                    details?.bCakeWrapperAddress ? (
+                    isBooster ? (
                       <>
-                        {account && (
+                        {account && hasStakedInBCake && (
                           <>
                             <Box style={{ height: 70, width: 2, backgroundColor: theme.colors.cardBorder }} />
                             <HarvestActionContainer {...farm} {...bCakeProps} userDataReady={userDataReady}>
@@ -485,7 +487,12 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                           </>
                         )}
                         <Box style={{ height: 70, width: 2, backgroundColor: theme.colors.cardBorder }} />
-                        <Flex flexGrow={1} maxWidth="27%" justifyContent="space-between" alignItems="center">
+                        <Flex
+                          flexGrow={1}
+                          maxWidth={hasStakedInBCake ? '27%' : '50%'}
+                          justifyContent="space-between"
+                          alignItems="center"
+                        >
                           <StatusView
                             status={status}
                             isFarmStaking
