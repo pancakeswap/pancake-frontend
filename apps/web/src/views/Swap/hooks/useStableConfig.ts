@@ -8,7 +8,7 @@ import { stableSwapABI } from 'config/abi/stableSwapAbi'
 import { useContract } from 'hooks/useContract'
 import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 interface StableSwapConfigType extends LegacyStableSwapPair {
   liquidityToken: ERC20Token
