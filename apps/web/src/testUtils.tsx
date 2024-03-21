@@ -93,7 +93,7 @@ export const createWagmiWrapper =
     const queryClient = new QueryClient()
 
     return (
-      <WagmiProvider config={wagmiConfig}>
+      <WagmiProvider reconnectOnMount config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
       </WagmiProvider>
     )
