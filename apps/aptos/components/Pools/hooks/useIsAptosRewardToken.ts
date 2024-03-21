@@ -10,17 +10,13 @@ export const useIsAptosRewardToken = ({ isFinished, earningToken }: { isFinished
 
   const isAptosRewardToken = useMemo(
     () =>
-      Boolean(
-        account &&
-          !isFinished &&
-          earningToken.address.toLowerCase() === APT[earningToken.chainId].address.toLowerCase(),
-      ),
-    [account, isFinished, earningToken],
+      Boolean(!isFinished && earningToken.address.toLowerCase() === APT[earningToken.chainId].address.toLowerCase()),
+    [, isFinished, earningToken],
   )
 
   const isUSUserWithAptosReward = useMemo(
-    () => Boolean(isAptosRewardToken && !isUserIpPass),
-    [isAptosRewardToken, isUserIpPass],
+    () => Boolean(account && isAptosRewardToken && !isUserIpPass),
+    [account, isAptosRewardToken, isUserIpPass],
   )
 
   return {
