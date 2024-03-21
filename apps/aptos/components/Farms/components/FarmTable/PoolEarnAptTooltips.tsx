@@ -1,5 +1,5 @@
+import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { useTranslation } from '@pancakeswap/localization'
-import { Token } from '@pancakeswap/sdk'
 import { Box, Link, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { APT } from 'config/coins'
 import { useActiveChainId } from 'hooks/useNetwork'
@@ -7,8 +7,8 @@ import { useMemo } from 'react'
 
 interface PoolEarnAptTooltipsProps {
   lpLabel: string
-  token: Token
-  quoteToken: Token
+  token: Coin
+  quoteToken: Coin
 }
 
 export const PoolEarnAptTooltips: React.FunctionComponent<React.PropsWithChildren<PoolEarnAptTooltipsProps>> = ({
