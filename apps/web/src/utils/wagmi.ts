@@ -3,13 +3,16 @@ import { CyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { BloctoConnector } from '@pancakeswap/wagmi/connectors/blocto'
 import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
-import { CHAINS as chains } from 'config/chains'
+import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
+import first from 'lodash/first'
 import memoize from 'lodash/memoize'
-import { Transport } from 'viem'
+import { Transport, createPublicClient } from 'viem'
 import { createConfig, createStorage, http } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors'
+
+export const chains = CHAINS
 
 export const injectedConnector = injected({
   shimDisconnect: false,
@@ -74,14 +77,16 @@ export const noopStorage = {
   removeItem: (_key: any) => {},
 }
 
+const PUBLIC_MAINNET = 'https://ethereum.publicnode.com'
+
 const transports: Record<number, Transport> = chains.reduce((ts, chain) => {
   let httpStrings: string[] = []
 
   if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
-    httpStrings = ['https://ethereum.publicnode.com']
+    httpStrings = [PUBLIC_MAINNET]
+  } else {
+    httpStrings = PUBLIC_NODES[chain.id] ? PUBLIC_NODES[chain.id] : undefined
   }
-
-  httpStrings = PUBLIC_NODES[chain.id] ? PUBLIC_NODES[chain.id] : undefined
 
   if (ts) {
     return {
@@ -95,6 +100,30 @@ const transports: Record<number, Transport> = chains.reduce((ts, chain) => {
   }
 }, {})
 
+const CLIENT_CONFIG = {
+  batch: {
+    multicall: {
+      batchSize: 1024 * 200,
+      wait: 16,
+    },
+  },
+  pollingInterval: 6_000,
+}
+
+export const publicClient = ({ chainId }: { chainId?: ChainId }) => {
+  let httpString: string | undefined
+
+  if (process.env.NODE_ENV === 'test' && chainId === mainnet.id) {
+    httpString = PUBLIC_MAINNET
+  } else {
+    httpString = chainId && first(PUBLIC_NODES[chainId]) ? first(PUBLIC_NODES[chainId]) : undefined
+  }
+
+  const chain = chains.find((c) => c.id === chainId)
+
+  return createPublicClient({ chain, transport: http(httpString), ...CLIENT_CONFIG })
+}
+
 export const wagmiConfig = createConfig({
   chains,
 
@@ -104,13 +133,7 @@ export const wagmiConfig = createConfig({
   }),
   syncConnectedChain: false,
   transports,
-  batch: {
-    multicall: {
-      batchSize: 1024 * 200,
-      wait: 16,
-    },
-  },
-  pollingInterval: 6_000,
+  ...CLIENT_CONFIG,
 
   connectors: [
     metaMaskConnector,
