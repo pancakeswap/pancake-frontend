@@ -419,7 +419,13 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   }
 
   if (!isApproved && stakedBalance?.eq(0)) {
-    return <FarmWidget.FarmTable.EnableStakeAction pendingTx={pendingTx || isBloctoETH} handleApprove={handleApprove} />
+    return (
+      <FarmWidget.FarmTable.EnableStakeAction
+        bCakeInfoSlot={bCakeInfoSlot}
+        pendingTx={pendingTx || isBloctoETH}
+        handleApprove={handleApprove}
+      />
+    )
   }
 
   if (!userDataReady) {
