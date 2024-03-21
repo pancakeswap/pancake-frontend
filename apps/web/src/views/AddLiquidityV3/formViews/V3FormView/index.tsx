@@ -261,6 +261,11 @@ export default function V3FormView({
       return
     }
 
+    if (position?.liquidity === 0n) {
+      setTxnErrorMessage(t('The liquidity of this position is 0. Please try increasing the amount.'))
+      return
+    }
+
     if (position && account && deadline) {
       const useNative = baseCurrency.isNative ? baseCurrency : quoteCurrency.isNative ? quoteCurrency : undefined
 
