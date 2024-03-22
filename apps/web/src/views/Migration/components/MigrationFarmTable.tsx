@@ -106,7 +106,6 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
     return newRow
   })
 
-  console.log(sortedRows, 'sortedRows?????')
   return (
     <Container>
       <TableHeader title={title} />

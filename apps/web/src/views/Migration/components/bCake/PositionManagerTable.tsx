@@ -1,9 +1,11 @@
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
+import { VAULTS_CONFIG_BY_CHAIN, VaultConfig } from '@pancakeswap/position-managers'
 import { Flex, RowType, Spinner } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { useMemo } from 'react'
 import { styled } from 'styled-components'
 import EmptyText from '../MigrationTable/EmptyText'
@@ -30,7 +32,7 @@ export interface ITableProps {
   sortColumn?: string
 }
 
-const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
+export const PosManagerMigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
   title,
   noStakedFarmText,
   account,
@@ -39,6 +41,16 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
   userDataReady,
 }) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveWeb3React()
+
+  const needToMigrateList: VaultConfig[] = useMemo(() => {
+    if (!chainId) return []
+    return VAULTS_CONFIG_BY_CHAIN[chainId].filter(
+      (vault) => vault.address && vault?.bCakeWrapperAddress && vault?.bCakeWrapperAddress !== vault.address,
+    )
+  }, [chainId])
+
+  console.log('needToMigrateList', needToMigrateList)
 
   const rowData = farms.map((farm) => {
     const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
@@ -129,5 +141,3 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
     </Container>
   )
 }
-
-export default MigrationFarmTable

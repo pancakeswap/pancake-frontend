@@ -1,8 +1,9 @@
-import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
+import { ChainId } from '@pancakeswap/sdk'
 import Migration from 'views/Migration/bCake'
 
+const V2_SS_PM_SUPPORTED_CHAINS = [ChainId.BSC]
 const MigrationPage = () => <Migration />
 
-MigrationPage.chains = V3_MIGRATION_SUPPORTED_CHAINS
+MigrationPage.chains = V2_SS_PM_SUPPORTED_CHAINS
 
 export default MigrationPage
