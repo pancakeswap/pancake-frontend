@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "typechecks": "tsc --noEmit -p ./tsconfig.json"
   },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
