@@ -2,7 +2,7 @@ import { getWagmiConnectorV2 } from '@binance/w3w-wagmi-connector-v2'
 import { CyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { blocto } from '@pancakeswap/wagmi/connectors/blocto'
-import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
+import { trustWalletConnect } from '@pancakeswap/wagmi/connectors/trustWallet'
 import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
 import first from 'lodash/first'
@@ -41,12 +41,9 @@ const bloctoConnector = blocto({
   appId: 'e2f2f0cd-3ceb-4dec-b293-bb555f2ed5af',
 })
 
-export const trustWalletConnector = new TrustWalletConnector({
-  chains,
-  options: {
-    shimDisconnect: false,
-    shimChainChangedDisconnect: true,
-  },
+export const trustWalletConnector = trustWalletConnect({
+  shimDisconnect: false,
+  shimChainChangedDisconnect: true,
 })
 
 export const cyberWalletConnector = isCyberWallet()
