@@ -2980,10 +2980,8 @@
   "Unsubscribing": "குழுவிலகுதல்",
   "Unsubscribe": "குழுவிலகு",
   "Enable Notifications": "அறிவிப்புகளை இயக்கு",
-  "Awaiting signature response": "கையொப்ப பதிலுக்காகக் காத்திருக்கிறது",
   "Notifications": "அறிவிப்புகள்",
   "Update Preferences": "புதுப்பிப்பு விருப்பத்தேர்வுகள்",
-  "Authorize Push Notifications": "புஷ் அறிவிப்புகளை அங்கீகரிக்கவும்",
   "Notifications From PancakeSwap": "PancakeSwap வழங்கும் அறிவிப்புகள்",
   "Get started with notifications from PancakeSwap. First authorize notifications by signing in your wallet": "PancakeSwap வழங்கும் அறிவிப்புகளுடன் தொடங்குங்கள். முதலில் உங்கள் வாலெட்டில் உள்நுழைந்து அறிவிப்புகளை அங்கீகரிக்கவும்",
   "Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to offer.": "இறுதியாக, PancakeSwap வழங்கும் சமீபத்திய செய்திகள் மற்றும் புதுப்பிப்புகள் குறித்து தொடர்ந்து தெரிந்துகொள்ள அறிவிப்புகளுக்குக் குழுசேரவும்.",
@@ -2993,10 +2991,6 @@
   "View Farm": "ஃபார்மைக் காட்டு",
   "Empty": "காலி",
   "No new notifications at the moment": "தற்போது புதிய அறிவிப்புகள் எதுவும் இல்லை",
-  "Archived": "காப்பகப்படுத்தியது",
-  "All archived messages will be deleted in 24hr": "காப்பகப்படுத்திய அனைத்து செய்திகளும் 24 மணிநேரத்தில் நீக்கப்படும்",
-  "ARCHIVED MESSAGES": "காப்பகப்படுத்திய செய்திகள்",
-  "Archive all read": "படித்த எல்லாம் காப்பகப்படுத்து",
   "Allow notifications": "அறிவிப்புகளை அனுமதி",
   "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible": "இணைய அறிவிப்புகள் அம்சத்தை இயக்குகிறது. முடக்கினால், நீங்கள் தானாகவே குழுவிலகி விடுவீர்கள், மேலும் அறிவிப்பு மணி காட்டப்படாது",
   "Show only the notifications that belong to your wallet or LP positions": "உங்கள் வாலெட் அல்லது LP நிலைகளுக்குரிய அறிவிப்புகளை மட்டும் காட்டும்",
@@ -3266,5 +3260,9 @@
   "%stakedToken% Syrup Pool": "%stakedToken% Syrup Pool",
   "If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.": "If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.",
   "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our": "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our",
-  "The rewards for this Syrup Pool will not be applicable to or claimable by": "The rewards for this Syrup Pool will not be applicable to or claimable by"
+  "The rewards for this Syrup Pool will not be applicable to or claimable by": "The rewards for this Syrup Pool will not be applicable to or claimable by",
+  "The liquidity of this position is 0. Please try increasing the amount.": "The liquidity of this position is 0. Please try increasing the amount.",
+  "Sign In With Wallet": "Sign In With Wallet",
+  "Subscribe To PancakeSwap": "Subscribe To PancakeSwap",
+  "Registration Error": "Registration Error"
 }
