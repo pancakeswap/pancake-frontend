@@ -54,6 +54,9 @@ export function usePublicNodeWaitForTransaction() {
           if (selectedChain && viemClientsPublicNodes[selectedChain]) {
             return await viemClientsPublicNodes[selectedChain].getTransactionReceipt({ hash: opts.hash })
           }
+
+          if (!provider) return undefined
+
           return await provider.getTransactionReceipt({ hash: opts.hash })
         } catch (error) {
           if (error instanceof TransactionNotFoundError) {

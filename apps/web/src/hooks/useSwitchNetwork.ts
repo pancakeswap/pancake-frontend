@@ -1,11 +1,10 @@
-/* eslint-disable consistent-return */
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
-import { useCallback, useMemo } from 'react'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
-import { useAccount, useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
 import { CHAIN_QUERY_NAME } from 'config/chains'
+import { useCallback, useMemo } from 'react'
+import { useAccount, useSwitchChain } from 'wagmi'
 import { useSessionChainId } from './useSessionChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
@@ -23,11 +22,14 @@ export function useSwitchNetworkLocal() {
 export function useSwitchNetwork() {
   const [loading, setLoading] = useSwitchNetworkLoading()
   const {
-    switchNetworkAsync: _switchNetworkAsync,
-    isLoading: _isLoading,
-    switchNetwork: _switchNetwork,
+    status,
+    switchChainAsync: _switchNetworkAsync,
+    switchChain: _switchNetwork,
     ...switchNetworkArgs
-  } = useSwitchNetworkWallet()
+  } = useSwitchChain()
+
+  const _isLoading = status === 'pending'
+
   const { t } = useTranslation()
   const { toastError } = useToast()
   const { isConnected } = useAccount()
@@ -38,9 +40,9 @@ export function useSwitchNetwork() {
   const switchNetworkAsync = useCallback(
     async (chainId: number) => {
       if (isConnected && typeof _switchNetworkAsync === 'function') {
-        if (isLoading) return
+        if (isLoading) return undefined
         setLoading(true)
-        return _switchNetworkAsync(chainId)
+        return _switchNetworkAsync({ chainId })
           .then((c) => {
             // well token pocket
             if (window.ethereum?.isTokenPocket === true) {
@@ -65,7 +67,7 @@ export function useSwitchNetwork() {
   const switchNetwork = useCallback(
     (chainId: number) => {
       if (isConnected && typeof _switchNetwork === 'function') {
-        return _switchNetwork(chainId)
+        return _switchNetwork({ chainId })
       }
       return switchNetworkLocal(chainId)
     },

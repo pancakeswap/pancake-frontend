@@ -1,4 +1,4 @@
-import { getWagmiConnector } from '@binance/w3w-wagmi-connector'
+import { getWagmiConnectorV2 } from '@binance/w3w-wagmi-connector-v2'
 import { CyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { BloctoConnector } from '@pancakeswap/wagmi/connectors/blocto'
@@ -63,13 +63,7 @@ export const cyberWalletConnector = isCyberWallet()
     })
   : undefined
 
-const BinanceW3WConnector = getWagmiConnector()
-export const binanceWeb3WalletConnector = new BinanceW3WConnector({
-  chains,
-  options: {
-    chainId: ChainId.BSC,
-  },
-})
+export const binanceWeb3WalletConnector = getWagmiConnectorV2()
 
 export const noopStorage = {
   getItem: (_key: any) => '',
