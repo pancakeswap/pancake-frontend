@@ -213,6 +213,7 @@ export default function AddStableLiquidity({
 
     let value_: bigint | undefined
     let call: Promise<`0x${string}`>
+
     if (needWrapped) {
       if (!stableSwapContract) {
         return
@@ -242,18 +243,21 @@ export default function AddStableLiquidity({
     } else {
       const args = [tokenAmounts, (minLPOutput || lpMintedSlippage)!] as const
       args_ = args
-      if (!stableSwapContract) {
+      if (!stableSwapContract || !contract.account) {
         return
       }
+
+      const contractAccount = contract.account
+
       call = stableSwapContract.estimateGas
         .add_liquidity(args, {
-          account: contract.account!,
+          account: contractAccount!,
         })
         .then((estimatedGasLimit) => {
           return stableSwapContract.write.add_liquidity(args, {
             gas: calculateGasMargin(estimatedGasLimit),
             gasPrice,
-            account: contract.account,
+            account: contractAccount,
             chain: contract.chain,
           })
         })
