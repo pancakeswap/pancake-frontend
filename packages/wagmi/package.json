@@ -60,5 +60,8 @@
     "@blocto/sdk": {
       "optional": true
     }
+  },
+  "dependencies": {
+    "@walletconnect/ethereum-provider": "^2.11.3"
   }
 }
