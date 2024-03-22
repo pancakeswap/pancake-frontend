@@ -1,7 +1,7 @@
 import { getWagmiConnectorV2 } from '@binance/w3w-wagmi-connector-v2'
 import { CyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { BloctoConnector } from '@pancakeswap/wagmi/connectors/blocto'
+import { blocto } from '@pancakeswap/wagmi/connectors/blocto'
 import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
 import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
@@ -37,12 +37,8 @@ export const walletConnectNoQrCodeConnector = walletConnect({
 
 export const metaMaskConnector = injected({ target: 'metaMask', shimDisconnect: false })
 
-const bloctoConnector = new BloctoConnector({
-  chains,
-  options: {
-    defaultChainId: 56,
-    appId: 'e2f2f0cd-3ceb-4dec-b293-bb555f2ed5af',
-  },
+const bloctoConnector = blocto({
+  appId: 'e2f2f0cd-3ceb-4dec-b293-bb555f2ed5af',
 })
 
 export const trustWalletConnector = new TrustWalletConnector({
@@ -74,12 +70,12 @@ export const noopStorage = {
 const PUBLIC_MAINNET = 'https://ethereum.publicnode.com'
 
 const transports: Record<number, Transport> = chains.reduce((ts, chain) => {
-  let httpStrings: string[] = []
+  let httpStrings: string[] | readonly string[] = []
 
   if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
     httpStrings = [PUBLIC_MAINNET]
   } else {
-    httpStrings = PUBLIC_NODES[chain.id] ? PUBLIC_NODES[chain.id] : undefined
+    httpStrings = PUBLIC_NODES[chain.id] ? PUBLIC_NODES[chain.id] : []
   }
 
   if (ts) {
@@ -129,7 +125,6 @@ export const wagmiConfig = createConfig({
     injectedConnector,
     coinbaseConnector,
     walletConnectConnector,
-    // @ts-ignore FIXME: wagmi
     bloctoConnector,
     // ledgerConnector,
     trustWalletConnector,
