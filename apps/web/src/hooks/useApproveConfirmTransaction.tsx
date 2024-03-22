@@ -1,7 +1,7 @@
 import { ERC20Token, MaxUint256 } from '@pancakeswap/sdk'
 import noop from 'lodash/noop'
 import { useCallback, useEffect, useReducer, useRef } from 'react'
-import { Address } from 'viem'
+import { Address, TransactionReceipt } from 'viem'
 import { useAccount } from 'wagmi'
 import { ApprovalState, useApproveCallbackFromAmount } from './useApproveCallback'
 import useCatchTxError from './useCatchTxError'
@@ -65,12 +65,12 @@ const reducer = (state: State, actions: Action): State => {
 
 interface OnSuccessProps {
   state: State
-  receipt: WaitForTransactionResult
+  receipt: TransactionReceipt
 }
 
 type CustomApproveProps = {
   onRequiresApproval: () => Promise<boolean>
-  onApprove: () => Promise<SendTransactionResult | undefined> | undefined
+  onApprove: () => Promise<{ hash: Address } | undefined> | undefined
 }
 
 type ERC20TokenApproveProps = {
@@ -81,7 +81,7 @@ type ERC20TokenApproveProps = {
 }
 
 type ApproveConfirmTransaction = {
-  onConfirm: (params?) => Promise<SendTransactionResult> | undefined
+  onConfirm: (params?) => Promise<{ hash: Address }> | undefined
   onSuccess: ({ state, receipt }: OnSuccessProps) => void
   onApproveSuccess?: ({ state, receipt }: OnSuccessProps) => void
 } & (CustomApproveProps | ERC20TokenApproveProps)

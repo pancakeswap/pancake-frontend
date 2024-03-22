@@ -4,7 +4,6 @@ import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { QueryObserverResult } from '@tanstack/react-query'
 import { useCallback, useMemo, useState } from 'react'
 import { Address } from 'viem'
-import { SendTransactionResult } from 'wagmi/actions'
 import useAccountActiveChain from './useAccountActiveChain'
 import { useApproveCallback } from './useApproveCallback'
 import { Permit2Details, usePermit2Details } from './usePermit2Details'
@@ -26,8 +25,8 @@ type Permit2HookState = {
 
 type Permit2HookCallback = {
   permit: () => Promise<Permit2Signature>
-  approve: () => Promise<SendTransactionResult | undefined>
-  revoke: () => Promise<SendTransactionResult | undefined>
+  approve: () => Promise<{ hash: Address } | undefined>
+  revoke: () => Promise<{ hash: Address } | undefined>
 
   refetch: () => Promise<QueryObserverResult<bigint>>
 }

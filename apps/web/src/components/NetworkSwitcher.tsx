@@ -167,15 +167,12 @@ const SHORT_SYMBOL = {
 export const NetworkSwitcher = () => {
   const { t } = useTranslation()
   const { chainId, isWrongNetwork, isNotMatched } = useActiveChainId()
-  const { pendingChainId, isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
+  const { isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
   const router = useRouter()
 
   useNetworkConnectorUpdater()
 
-  const foundChain = useMemo(
-    () => chains.find((c) => c.id === (isLoading ? pendingChainId || chainId : chainId)),
-    [isLoading, pendingChainId, chainId],
-  )
+  const foundChain = useMemo(() => chains.find((c) => c.id === chainId), [chainId])
   const symbol =
     (foundChain?.id ? SHORT_SYMBOL[foundChain.id] ?? NATIVE[foundChain.id]?.symbol : undefined) ??
     foundChain?.nativeCurrency?.symbol
