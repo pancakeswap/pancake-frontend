@@ -4,9 +4,6 @@ import { Button, ButtonProps } from '@pancakeswap/uikit'
 import { createWallets, getDocLink } from 'config/wallet'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useAuth from 'hooks/useAuth'
-// @ts-ignore
-// eslint-disable-next-line import/extensions
-import { useActiveHandle } from 'hooks/useEagerConnect.bmp.ts'
 
 import { ChainId } from '@pancakeswap/chains'
 import { useMemo, useState } from 'react'
@@ -15,7 +12,6 @@ import { useConnect } from 'wagmi'
 import Trans from './Trans'
 
 const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
-  const handleActive = useActiveHandle()
   const { login } = useAuth()
   const {
     t,
@@ -27,19 +23,11 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
 
   const docLink = useMemo(() => getDocLink(code), [code])
 
-  const handleClick = () => {
-    if (typeof __NEZHA_BRIDGE__ !== 'undefined' && !window.ethereum) {
-      handleActive()
-    } else {
-      setOpen(true)
-    }
-  }
-
   const wallets = useMemo(() => createWallets(chainId || ChainId.BSC, connectAsync), [chainId, connectAsync])
 
   return (
     <>
-      <Button onClick={handleClick} {...props}>
+      <Button onClick={() => setOpen(true)} {...props}>
         {children || <Trans>Connect Wallet</Trans>}
       </Button>
       <style jsx global>{`
