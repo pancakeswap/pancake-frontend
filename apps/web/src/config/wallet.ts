@@ -3,6 +3,8 @@ import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
 import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
 import type { ExtendEthereum } from 'global'
+import { Config } from 'wagmi'
+import { ConnectMutateAsync } from 'wagmi/query'
 import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
 import { ASSET_CDN } from './constants/endpoints'
 
@@ -20,16 +22,17 @@ export enum ConnectorNames {
   CyberWallet = 'cyberwallet',
 }
 
-const createQrCode = (chainId: number, connect) => async () => {
-  connect({ connector: walletConnectNoQrCodeConnector, chainId })
+const createQrCode =
+  <config extends Config = Config, context = unknown>(chainId: number, connect: ConnectMutateAsync<config, context>) =>
+  async () => {
+    await connect({ connector: walletConnectNoQrCodeConnector, chainId })
 
-  const r = await walletConnectNoQrCodeConnector().getProvider()
-  return new Promise<string>((resolve) => {
-    r.on('display_uri', (uri) => {
-      resolve(uri)
+    return new Promise<string>((resolve) => {
+      r.on('display_uri', (uri) => {
+        resolve(uri)
+      })
     })
-  })
-}
+  }
 
 const isMetamaskInstalled = () => {
   if (typeof window === 'undefined') {
@@ -51,12 +54,12 @@ function isBinanceWeb3WalletInstalled() {
   return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBinance)
 }
 
-const walletsConfig = ({
+const walletsConfig = <config extends Config = Config, context = unknown>({
   chainId,
   connect,
 }: {
   chainId: number
-  connect: (connectorID: ConnectorNames) => void
+  connect: ConnectMutateAsync<config, context>
 }): WalletConfigV2<ConnectorNames>[] => {
   const qrCode = createQrCode(chainId, connect)
   return [
@@ -244,7 +247,10 @@ const walletsConfig = ({
   ]
 }
 
-export const createWallets = (chainId: number, connect: any) => {
+export const createWallets = <config extends Config = Config, context = unknown>(
+  chainId: number,
+  connect: ConnectMutateAsync<config, context>,
+) => {
   const hasInjected = typeof window !== 'undefined' && !window.ethereum
   const config = walletsConfig({ chainId, connect })
   return hasInjected && config.some((c) => c.installed && c.connectorId === ConnectorNames.Injected)
