@@ -23,7 +23,8 @@ import { useGasPrice } from 'state/user/hooks'
 import { calculateGasMargin } from 'utils'
 import { calculateSlippageAmount } from 'utils/exchange'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { SendTransactionResult } from 'wagmi/actions'
+import { Address } from 'viem'
+
 import ConfirmAddLiquidityModal from '../components/ConfirmAddLiquidityModal'
 
 import { useDerivedLPInfo } from './hooks/useDerivedLPInfo'
@@ -53,11 +54,11 @@ export interface AddStableChildrenProps {
   stableAPR?: number
   shouldShowApprovalGroup: boolean
   showFieldAApproval: boolean
-  approveACallback: () => Promise<SendTransactionResult | undefined>
+  approveACallback: () => Promise<{ hash: Address } | undefined>
   approvalA: ApprovalState
   showFieldBApproval: boolean
   approvalB: ApprovalState
-  approveBCallback: () => Promise<SendTransactionResult | undefined>
+  approveBCallback: () => Promise<{ hash: Address } | undefined>
   onAdd: () => Promise<void>
   onPresentAddLiquidityModal: () => void
   buttonDisabled: boolean
@@ -245,7 +246,6 @@ export default function AddStableLiquidity({
         return
       }
       call = stableSwapContract.estimateGas
-        // @ts-ignore TODO: Fix viem
         .add_liquidity(args, {
           account: contract.account!,
         })
