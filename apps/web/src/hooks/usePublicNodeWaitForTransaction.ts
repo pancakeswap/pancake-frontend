@@ -2,6 +2,7 @@ import { ChainId } from '@gelatonetwork/limit-orders-lib'
 import { BSC_BLOCK_TIME } from 'config'
 import { CHAINS } from 'config/chains'
 import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
+import first from 'lodash/first'
 import { useCallback } from 'react'
 import { RetryableError, retry } from 'state/multicall/retry'
 import {
@@ -23,7 +24,7 @@ export const viemClientsPublicNodes = CHAINS.reduce((prev, cur) => {
     ...prev,
     [cur.id]: createPublicClient({
       chain: cur,
-      transport: http(cur.rpcUrls.public.http[0], {
+      transport: http(first(cur.rpcUrls.default.http), {
         timeout: 15_000,
       }),
       batch: {
