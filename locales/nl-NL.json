@@ -2980,10 +2980,8 @@
   "Unsubscribing": "Afmelden",
   "Unsubscribe": "Afmelden",
   "Enable Notifications": "Meldingen inschakelen",
-  "Awaiting signature response": "In afwachting van antwoord voor ondertekening",
   "Notifications": "Meldingen",
   "Update Preferences": "Voorkeuren bijwerken",
-  "Authorize Push Notifications": "Pushmeldingen toestaan",
   "Notifications From PancakeSwap": "Meldingen van PancakeSwap",
   "Get started with notifications from PancakeSwap. First authorize notifications by signing in your wallet": "Ga aan de slag met meldingen van PancakeSwap. Meld je eerst aan bij je wallet om meldingen toe te staan",
   "Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to offer.": "Meld je vervolgens aan voor meldingen om op de hoogte te blijven van alle nieuws en updates van PancakeSwap.",
@@ -2993,10 +2991,6 @@
   "View Farm": "Farm bekijken",
   "Empty": "Leeg",
   "No new notifications at the moment": "Er zijn geen nieuwe meldingen",
-  "Archived": "Gearchiveerd",
-  "All archived messages will be deleted in 24hr": "Alle gearchiveerde berichten worden na 24 uur verwijderd",
-  "ARCHIVED MESSAGES": "GEARCHIVEERDE BERICHTEN",
-  "Archive all read": "Alle gelezen berichten archiveren",
   "Allow notifications": "Meldingen toestaan",
   "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible": "Schakelt de functie voor webmeldingen in. Als deze functie is uitgeschakeld, word je automatisch afgemeld en is de meldingenbel niet zichtbaar.",
   "Show only the notifications that belong to your wallet or LP positions": "Alleen de meldingen voor je wallet of LP-posities tonen",
@@ -3266,5 +3260,9 @@
   "%stakedToken% Syrup Pool": "%stakedToken% Syrup Pool",
   "If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.": "If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.",
   "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our": "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our",
-  "The rewards for this Syrup Pool will not be applicable to or claimable by": "The rewards for this Syrup Pool will not be applicable to or claimable by"
+  "The rewards for this Syrup Pool will not be applicable to or claimable by": "The rewards for this Syrup Pool will not be applicable to or claimable by",
+  "The liquidity of this position is 0. Please try increasing the amount.": "The liquidity of this position is 0. Please try increasing the amount.",
+  "Sign In With Wallet": "Sign In With Wallet",
+  "Subscribe To PancakeSwap": "Subscribe To PancakeSwap",
+  "Registration Error": "Registration Error"
 }
