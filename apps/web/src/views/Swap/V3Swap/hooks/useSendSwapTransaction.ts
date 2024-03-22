@@ -14,14 +14,7 @@ import { basisPointsToPercent } from 'utils/exchange'
 import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import {
-  Address,
-  EstimateGasExecutionError,
-  Hex,
-  TransactionExecutionError,
-  UserRejectedRequestError,
-  hexToBigInt,
-} from 'viem'
+import { Address, Hex, TransactionExecutionError, UserRejectedRequestError, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 
@@ -221,7 +214,7 @@ export default function useSendSwapTransaction(
             } else {
               // otherwise, the error was unexpected and we need to convey that
               logger.warn(
-                error instanceof EstimateGasExecutionError ? 'Estimate failed' : 'Swap failed',
+                'Swap failed',
                 {
                   chainId,
                   input: trade.inputAmount.currency,
@@ -231,10 +224,7 @@ export default function useSendSwapTransaction(
                   type,
                   target: 'AMM',
                   errorName: error?.name,
-                  cause:
-                    error instanceof TransactionExecutionError || error instanceof EstimateGasExecutionError
-                      ? error.cause
-                      : undefined,
+                  cause: error instanceof TransactionExecutionError ? error.cause : undefined,
                 },
                 error,
               )

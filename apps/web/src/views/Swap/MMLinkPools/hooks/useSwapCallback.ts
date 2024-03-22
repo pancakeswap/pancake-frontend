@@ -14,7 +14,7 @@ import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { viemClients } from 'utils/viem'
-import { Address, EstimateGasExecutionError, Hex, TransactionExecutionError, hexToBigInt } from 'viem'
+import { Address, Hex, TransactionExecutionError, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 import { MMSwapCall } from './useSwapCallArguments'
@@ -217,7 +217,7 @@ const useSendMMTransaction = (
               // otherwise, the error was unexpected and we need to convey that
               console.error(`Swap failed`, error)
               logger.warn(
-                error instanceof EstimateGasExecutionError ? 'Estimate failed' : 'Swap failed',
+                'Swap failed',
                 {
                   chainId,
                   input: trade.inputAmount.currency,
@@ -227,10 +227,7 @@ const useSendMMTransaction = (
                   type: 'UniversalRouter',
                   target: 'MarketMaker',
                   errorName: error?.name,
-                  cause:
-                    error instanceof TransactionExecutionError || error instanceof EstimateGasExecutionError
-                      ? error.cause
-                      : undefined,
+                  cause: error instanceof TransactionExecutionError ? error.cause : undefined,
                 },
                 error,
               )
