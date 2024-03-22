@@ -2980,10 +2980,8 @@
   "Unsubscribing": "購読停止",
   "Unsubscribe": "購読停止",
   "Enable Notifications": "通知を有効化",
-  "Awaiting signature response": "署名の応答待ち",
   "Notifications": "通知",
   "Update Preferences": "設定を更新",
-  "Authorize Push Notifications": "プッシュ通知を許可",
   "Notifications From PancakeSwap": "PancakeSwapからの通知",
   "Get started with notifications from PancakeSwap. First authorize notifications by signing in your wallet": "PancakeSwapからの通知をセットアップします。まず、ウォレットにサインインして通知を許可しましょう",
   "Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to offer.": "最後に、PancakeSwapが提供する最新ニュースやアップデート情報を入手できるように通知を購読します。",
@@ -2993,10 +2991,6 @@
   "View Farm": "ファームを見る",
   "Empty": "空",
   "No new notifications at the moment": "現在、新しい通知はありません",
-  "Archived": "アーカイブ",
-  "All archived messages will be deleted in 24hr": "すべてのアーカイブメッセージは24時間以内に削除されます",
-  "ARCHIVED MESSAGES": "アーカイブメッセージ",
-  "Archive all read": "すべての既読をアーカイブ",
   "Allow notifications": "通知を許可",
   "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible": "ウェブ通知機能を有効にします。オフにすると自動的に購読停止となり、通知ベルが表示されなくなります。",
   "Show only the notifications that belong to your wallet or LP positions": "自分のウォレットまたはLPポジションに関する通知のみを表示",
@@ -3266,5 +3260,9 @@
   "%stakedToken% Syrup Pool": "%stakedToken% Syrup Pool",
   "If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.": "If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.",
   "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our": "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our",
-  "The rewards for this Syrup Pool will not be applicable to or claimable by": "The rewards for this Syrup Pool will not be applicable to or claimable by"
+  "The rewards for this Syrup Pool will not be applicable to or claimable by": "The rewards for this Syrup Pool will not be applicable to or claimable by",
+  "The liquidity of this position is 0. Please try increasing the amount.": "The liquidity of this position is 0. Please try increasing the amount.",
+  "Sign In With Wallet": "Sign In With Wallet",
+  "Subscribe To PancakeSwap": "Subscribe To PancakeSwap",
+  "Registration Error": "Registration Error"
 }
