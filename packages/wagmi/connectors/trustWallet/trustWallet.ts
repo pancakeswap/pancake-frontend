@@ -4,7 +4,6 @@
 import { type EthereumProvider } from '@walletconnect/ethereum-provider'
 import { getAddress } from 'viem'
 import { createConnector, normalizeChainId } from 'wagmi'
-import 'wagmi/window'
 
 declare global {
   interface Window {
