@@ -1,5 +1,5 @@
-import qs from 'qs'
 import { NextApiRequest, NextApiResponse } from 'next'
+import qs from 'qs'
 
 import { z } from 'zod'
 
@@ -40,7 +40,7 @@ export const articles = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const data = await response.json()
 
-  res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate=59')
+  res.setHeader('Cache-Control', 'max-age=30, s-maxage=60, stale-while-revalidate=300')
 
   return res.status(200).json(data)
 }
