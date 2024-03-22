@@ -89,6 +89,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
     <StyledCard isActive={isPromotedFarm}>
       <FarmCardInnerContainer>
         <CardHeading
+          lpAddress={farm.lpAddress}
           lpLabel={lpLabel}
           multiplier={farm.multiplier}
           isCommunityFarm={farm.isCommunity}

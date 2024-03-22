@@ -1,28 +1,38 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Price, Token } from '@pancakeswap/swap-sdk-core'
 import {
-  encodeSqrtRatioX96,
   FeeAmount,
-  nearestUsableTick,
   Pool,
   Position,
-  priceToClosestTick,
   TICK_SPACINGS,
   TickMath,
+  encodeSqrtRatioX96,
+  nearestUsableTick,
+  priceToClosestTick,
 } from '@pancakeswap/v3-sdk'
+import { BIG_INT_ZERO } from 'config/constants/exchange'
+import { Bound } from 'config/constants/types'
 import { ReactNode, useMemo } from 'react'
 import { Field } from 'state/mint/actions'
-import tryParseCurrencyAmount from 'utils/tryParseCurrencyAmount'
-import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useCurrencyBalances } from 'state/wallet/hooks'
-import { useTranslation } from '@pancakeswap/localization'
-import { Bound } from 'config/constants/types'
+import tryParseCurrencyAmount from 'utils/tryParseCurrencyAmount'
 import { MintState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 
 import { useAccount } from 'wagmi'
-import { tryParseTick } from './utils'
-import { usePool } from './usePools'
-import { getTickToPrice } from './utils/getTickToPrice'
 import { PoolState } from './types'
+import { usePool } from './usePools'
+import { tryParseTick } from './utils'
+import { getTickToPrice } from './utils/getTickToPrice'
+
+/**
+ * if fee tier = 100 then TickMath.MAX_TICK will cause overflow, so minus 1 here
+ */
+const checkAndParseMaxTick = (tick: number) => {
+  if (tick === TickMath.MAX_TICK) {
+    return TickMath.MAX_TICK - 1
+  }
+  return tick
+}
 
 export default function useV3DerivedInfo(
   currencyA?: Currency,
@@ -54,6 +64,7 @@ export default function useV3DerivedInfo(
   depositBDisabled: boolean
   invertPrice: boolean
   ticksAtLimit: { [bound in Bound]?: boolean | undefined }
+  tickSpaceLimits: { [bound in Bound]: number | undefined }
 } {
   const { t } = useTranslation()
 
@@ -176,15 +187,19 @@ export default function useV3DerivedInfo(
           : (invertPrice && typeof rightRangeTypedValue === 'boolean') ||
             (!invertPrice && typeof leftRangeTypedValue === 'boolean')
           ? tickSpaceLimits[Bound.LOWER]
+            ? tickSpaceLimits[Bound.LOWER]
+            : tickSpaceLimits[Bound.LOWER]
           : invertPrice
           ? tryParseTick(feeAmount, rightRangeTypedValue)
           : tryParseTick(feeAmount, leftRangeTypedValue),
       [Bound.UPPER]:
         typeof existingPosition?.tickUpper === 'number'
-          ? existingPosition.tickUpper
+          ? checkAndParseMaxTick(existingPosition.tickUpper)
           : (!invertPrice && typeof rightRangeTypedValue === 'boolean') ||
             (invertPrice && typeof leftRangeTypedValue === 'boolean')
           ? tickSpaceLimits[Bound.UPPER]
+            ? checkAndParseMaxTick(tickSpaceLimits[Bound.UPPER])
+            : tickSpaceLimits[Bound.UPPER]
           : invertPrice
           ? tryParseTick(feeAmount, leftRangeTypedValue)
           : tryParseTick(feeAmount, rightRangeTypedValue),
@@ -407,5 +422,6 @@ export default function useV3DerivedInfo(
     depositBDisabled,
     invertPrice,
     ticksAtLimit,
+    tickSpaceLimits,
   }
 }

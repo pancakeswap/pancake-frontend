@@ -156,6 +156,7 @@ export default function V3FormView({
     depositBDisabled,
     invertPrice,
     ticksAtLimit,
+    tickSpaceLimits,
   } = useV3DerivedInfo(
     baseCurrency ?? undefined,
     quoteCurrency ?? undefined,
@@ -257,6 +258,11 @@ export default function V3FormView({
     if (!chainId || !signer || !account || !nftPositionManagerAddress) return
 
     if (!positionManager || !baseCurrency || !quoteCurrency) {
+      return
+    }
+
+    if (position?.liquidity === 0n) {
+      setTxnErrorMessage(t('The liquidity of this position is 0. Please try increasing the amount.'))
       return
     }
 
@@ -673,6 +679,7 @@ export default function V3FormView({
               currencyB={quoteCurrency}
               feeAmount={feeAmount}
               ticksAtLimit={ticksAtLimit}
+              tickSpaceLimits={tickSpaceLimits}
             />
             {showCapitalEfficiencyWarning ? (
               <Message variant="warning">

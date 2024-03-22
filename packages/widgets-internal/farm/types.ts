@@ -35,6 +35,7 @@ export interface FarmTableFarmTokenInfoProps {
   isCommunity?: boolean;
   merklLink?: string;
   hasBothFarmAndMerkl?: boolean;
+  lpAddress?: string;
 }
 
 export type ColumnsDefTypes = {

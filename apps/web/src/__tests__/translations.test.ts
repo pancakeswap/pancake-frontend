@@ -100,6 +100,12 @@ const whitelist = [
   'U.S.-based and VPN users.',
   'The CAKE and APT Farm rewards for this pool will not be applicable to or claimable by U.S.-based and VPN users.',
   'Base APR (APT yield only)',
+  'CAKE community.',
+  'Stake %stakedToken%, Earn APT on',
+  '%stakedToken% Syrup Pool',
+  `If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.`,
+  'Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our',
+  'The rewards for this Syrup Pool will not be applicable to or claimable by',
 ]
 
 describe.concurrent('Check translations integrity', () => {
