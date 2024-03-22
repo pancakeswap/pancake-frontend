@@ -36,13 +36,23 @@ export function useV3PositionsFromTokenIds(tokenIds: bigint[] | undefined): UseV
         : [],
     [chainId, positionManager, tokenIds],
   )
-  const { isLoading, data: positions = [] } = useReadContracts({
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+
+  const {
+    isLoading,
+    data: positions = [],
+    refetch,
+  } = useReadContracts({
     contracts: inputs,
-    watch: true,
     allowFailure: true,
-    enabled: !!inputs.length,
-    keepPreviousData: true,
+    query: {
+      enabled: !!inputs.length,
+    },
   })
+
+  useEffect(() => {
+    refetch()
+  }, [blockNumber, refetch])
 
   return {
     loading: isLoading,
