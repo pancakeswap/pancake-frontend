@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -26,8 +27,19 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress: Addres
     ) => {
       const receipt = await fetchWithCatchTxError(
         bCakeWrapperAddress
-          ? () =>
-              positionManagerBCakeWrapperContract.write.mintThenDeposit(
+          ? async () => {
+              const estGas = await positionManagerBCakeWrapperContract.estimateGas.mintThenDeposit(
+                [
+                  allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
+                  allowDepositToken1 ? amountB?.numerator ?? 0n : 0n,
+                  false,
+                  '0x',
+                ],
+                {
+                  account: account ?? '0x',
+                },
+              )
+              return positionManagerBCakeWrapperContract.write.mintThenDeposit(
                 [
                   allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
                   allowDepositToken1 ? amountB?.numerator ?? 0n : 0n,
@@ -37,8 +49,10 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress: Addres
                 {
                   account: account ?? '0x',
                   chain,
+                  gasLimit: new BigNumber(estGas.toString()).times(1.3).toNumber(),
                 },
               )
+            }
           : () =>
               positionManagerWrapperContract.write.mintThenDeposit(
                 [
@@ -66,6 +80,7 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress: Addres
     [
       fetchWithCatchTxError,
       bCakeWrapperAddress,
+      positionManagerBCakeWrapperContract.estimateGas,
       positionManagerBCakeWrapperContract.write,
       account,
       chain,
