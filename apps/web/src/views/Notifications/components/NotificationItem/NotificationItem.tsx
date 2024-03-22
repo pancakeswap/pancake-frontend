@@ -1,23 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  ArrowDropDownIcon,
-  ArrowDropUpIcon,
-  Box,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  Flex,
-  FlexGap,
-  Text,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { Box, ChevronDownIcon, ChevronUpIcon, Flex, FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
-import { ASSET_CDN } from 'config/constants/endpoints'
+import { useNotificationTypes } from '@web3inbox/react'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useAppDispatch } from 'state'
-import { setHasUnread } from 'state/notifications/actions'
 import { useHasUnreadNotification } from 'state/notifications/hooks'
-import { CHAIN_NAME_TO_CHAIN_ID } from 'views/Notifications/constants'
+import useNotificationHistory from 'views/Notifications/hooks/useNotificationHistory'
 import {
   ContentsContainer,
   Description,
@@ -30,135 +18,36 @@ import {
 } from 'views/Notifications/styles'
 import { SubsctiptionType } from 'views/Notifications/types'
 import { formatTime } from 'views/Notifications/utils/date'
-import {
-  extractChainIdFromMessage,
-  extractPercentageFromString,
-  extractWordBeforeFullStop,
-  getBadgeString,
-  getLinkText,
-  hasSingleFarm,
-} from 'views/Notifications/utils/textHelpers'
-import AlertIcon from '../../../../../public/images/notifications/alert-icon.svg'
+import { getLinkText } from 'views/Notifications/utils/textHelpers'
+import { NotificationBadge, NotificationImage, formatStringWithNewlines } from './NotificationItemImage'
 
 interface INotificationprops {
   title: string
   description: string
   date: number
-  url: string
-  id: number
+  url: string | null
+  id: string
   subscriptionId: string
   image?: string | undefined
 }
 
 interface INotificationContainerProps {
-  notifications: NotifyClientTypes.NotifyMessageRecord[]
-  isClosing: boolean
+  notifications: NotifyClientTypes.NotifyNotification[]
   subscriptionId: string
   importantAlertsOnly: boolean
-}
-
-const getNotificationPairlogo = (title: string, message: string) => {
-  const isAprNotification = title.includes('APR')
-  const chainName = isAprNotification ? extractWordBeforeFullStop(message) : extractChainIdFromMessage(message)
-  const chainId = CHAIN_NAME_TO_CHAIN_ID[chainName === 'polygon_zkevm.' ? 'polygon_zkevm' : chainName]
-
-  const image1 = isAprNotification ? '/images/notifications/farms-scope.svg' : '/logo.png'
-  const image2 = `${ASSET_CDN}/web/chains/${chainId}.png`
-
-  return { image1, image2 }
-}
-const NotificationImage = ({
-  image,
-  title,
-  message,
-}: {
-  image: string | undefined
-  title: string
-  message: string
-}) => {
-  if (title.includes('APR Update') || title.includes('LP position')) {
-    const { image1, image2 } = getNotificationPairlogo(title, message)
-    const hasOnlyOneItem = hasSingleFarm(message)
-    if (hasOnlyOneItem) {
-      return (
-        <Box marginRight="8px" paddingY="4px" minWidth="40px">
-          <Image src={image2} alt="apr Image" height={40} width={40} unoptimized />
-        </Box>
-      )
-    }
-    return (
-      <Box position="relative" minWidth="40px" minHeight="40px">
-        <Box marginRight="8px" position="absolute" top={0} left={0}>
-          <Image src={image1} alt="apr img" height={30} width={30} unoptimized />
-        </Box>
-        <Box marginRight="8px" position="absolute" bottom={0} right={0}>
-          <Image src={image2} alt="apr img" height={26} width={26} unoptimized />
-        </Box>
-      </Box>
-    )
-  }
-  return (
-    <Box marginRight="8px" paddingY="4px" minWidth="40px">
-      <Image src={image?.toString() ?? '/logo.png'} alt="Notification Image" height={40} width={40} unoptimized />
-    </Box>
-  )
-}
-
-const NotificationBadge = ({ title, message }: { title: string; message: string }) => {
-  const { t } = useTranslation()
-  if (title.includes('Balance')) {
-    return (
-      <FlexGap borderRadius={16} backgroundColor="tertiary" paddingY="2px" paddingX="6px" alignItems="center" gap="2px">
-        <Image src={AlertIcon} alt="Alert Image" height={16} width={16} unoptimized />
-        <Text fontSize="12px">{t('Alerts')}</Text>
-      </FlexGap>
-    )
-  }
-  if (title.includes('Price Movement') || title.includes('APR Update')) {
-    const percentageChange = extractPercentageFromString(message)
-    const hasFallen = message.includes('fallen')
-    const isAPR = title.includes('APR')
-    const badgeString = getBadgeString(isAPR, hasFallen, percentageChange ?? 0.0)
-
-    return (
-      <FlexGap borderRadius={16} backgroundColor="tertiary" paddingY="2px" paddingX="6px" alignItems="center" gap="2px">
-        {hasFallen ? <ArrowDropDownIcon color="text" /> : <ArrowDropUpIcon color="text" />}
-        <Text fontSize="12px" pr="6px" color="text">
-          {badgeString}
-        </Text>
-      </FlexGap>
-    )
-  }
-  return <></>
-}
-
-const formatStringWithNewlines = (inputString: string, isMobile: boolean) => {
-  return inputString.split('\n').map((line: string, index: number) => (
-    <Text
-      // eslint-disable-next-line react/no-array-index-key
-      key={`message-line-${index}`}
-      fontSize={isMobile ? '14px' : '16px'}
-      lineHeight="20px"
-      fontWeight={400}
-      color="textSubtle"
-    >
-      {line}
-    </Text>
-  ))
 }
 
 const NotificationItem = ({ title, description, date, image, url, subscriptionId, id }: INotificationprops) => {
   const [show, setShow] = useState<boolean>(false)
   const [elementHeight, setElementHeight] = useState<number>(0)
-  const dispatch = useAppDispatch()
+  const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
-  const hasUnread = useHasUnreadNotification(subscriptionId, id)
-  const formattedDate = formatTime(Math.floor(date / 1000).toString())
-  const containerRef = useRef(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const { t } = useTranslation()
+  const hasUnread = useHasUnreadNotification(subscriptionId, id)
+  const { markAsRead } = useNotificationHistory(subscriptionId)
 
+  const formattedDate = formatTime(Math.floor(date / 1000).toString())
   const formatedDescription = formatStringWithNewlines(description, isMobile)
   const linkText = getLinkText(title, t)
 
@@ -172,15 +61,17 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
 
   useEffect(() => {
     if (contentRef.current) setElementHeight(contentRef.current.scrollHeight)
-    if (!hasUnread) dispatch(setHasUnread({ subscriptionId, notificationId: id, hasUnread: false }))
+    if (!hasUnread) markAsRead(false, id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
     <StyledNotificationWrapper
-      ref={containerRef}
       onClick={handleExpandClick}
-      onMouseEnter={() => dispatch(setHasUnread({ subscriptionId, notificationId: id, hasUnread: true }))}
+      onMouseEnter={() => {
+        if (hasUnread) return
+        markAsRead(true, id)
+      }}
     >
       <ContentsContainer>
         <Flex flexDirection="column" width="100%">
@@ -213,7 +104,7 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
           </Flex>
           <Description ref={contentRef} show={show} elementHeight={elementHeight}>
             <Text>{formatedDescription}</Text>
-            {url !== '' && (
+            {url && url !== '' && (
               <StyledLink href={url} target="_blank">
                 {linkText}
               </StyledLink>
@@ -225,13 +116,10 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
   )
 }
 
-const NotificationContainer = ({
-  notifications,
-  isClosing,
-  subscriptionId,
-  importantAlertsOnly,
-}: INotificationContainerProps) => {
+const NotificationContainer = ({ notifications, subscriptionId, importantAlertsOnly }: INotificationContainerProps) => {
   const { t } = useTranslation()
+  const { data: types } = useNotificationTypes()
+
   if (notifications.length === 0) {
     return (
       <NoNotificationsWrapper>
@@ -259,26 +147,23 @@ const NotificationContainer = ({
     )
   }
   return (
-    <NotificationsWrapper isClosing={isClosing}>
+    <NotificationsWrapper>
       {notifications
-        .sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1))
-        .filter((notification: NotifyClientTypes.NotifyMessageRecord) => {
+        .sort((a, b) => (a.sentAt < b.sentAt ? 1 : -1))
+        .filter((notification: NotifyClientTypes.NotifyNotification) => {
           if (importantAlertsOnly)
-            return (
-              notification.message.type === SubsctiptionType.Alerts ||
-              notification.message.type === SubsctiptionType.Liquidity
-            )
+            return notification.type === SubsctiptionType.Alerts || notification.type === SubsctiptionType.Liquidity
           return true
         })
-        .map((notification: NotifyClientTypes.NotifyMessageRecord) => {
+        .map((notification: NotifyClientTypes.NotifyNotification) => {
           return (
             <NotificationItem
               key={notification.id}
-              title={notification.message.title}
-              description={notification.message.body}
-              date={notification.publishedAt}
-              url={notification.message.url}
-              image={notification.message.icon}
+              title={notification.title}
+              description={notification.body}
+              date={notification.sentAt}
+              url={notification.url}
+              image={types?.[notification.type]?.imageUrls.md}
               id={notification.id}
               subscriptionId={subscriptionId}
             />

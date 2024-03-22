@@ -1,108 +1,35 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Box, CircleLoader, Flex, FlexGap, Text, useToast } from '@pancakeswap/uikit'
-import { useManageSubscription } from '@web3inbox/widget-react'
-import { CommitButton } from 'components/CommitButton'
-import ConnectWalletButton from 'components/ConnectWalletButton'
+import { Box, Flex, FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import NotificationsOnboardingButton from 'components/NotificationOnBoardingButton'
 import Image from 'next/image'
-import { useCallback, useState } from 'react'
-import { useAccount } from 'wagmi'
-import { Events } from '../constants'
-import useSendPushNotification from '../hooks/sendPushNotification'
-import { parseErrorMessage } from '../utils/errorBuilder'
-import { getOnBoardingButtonText, getOnBoardingDescriptionMessage } from '../utils/textHelpers'
-
-interface IOnboardingButtonProps {
-  onClick: (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => void
-  loading: boolean
-  isOnBoarded: boolean
-  account: string | undefined
-  isReady: boolean
-}
+import { getOnBoardingDescriptionMessage } from '../utils/textHelpers'
 
 interface IOnBoardingProps {
-  identityKey: string | undefined
-  handleRegistration: () => Promise<void>
   isReady: boolean
-  isSubscribing: boolean
-  setIsSubscribing: (state: boolean) => void
+  isRegistered: boolean
 }
 
-function OnboardingButton({ onClick, loading, isOnBoarded, account, isReady }: IOnboardingButtonProps) {
+const OnBoardingView = ({ isRegistered }: IOnBoardingProps) => {
   const { t } = useTranslation()
-  const buttonText = getOnBoardingButtonText(isOnBoarded, loading, t)
-
-  if (!account)
-    return (
-      <AutoColumn gap="md" marginTop="24px" width="100%">
-        <ConnectWalletButton height="50px" disabled={!isReady} />
-      </AutoColumn>
-    )
+  const { isMobile } = useMatchBreakpoints()
+  const onBoardingDescription = getOnBoardingDescriptionMessage(Boolean(isRegistered), t)
 
   return (
-    <AutoColumn gap="md" marginTop="24px" width="100%">
-      <CommitButton variant="primary" onClick={onClick} isLoading={loading} height="50px" disabled={!isReady}>
-        <Flex alignItems="center">
-          <Text px="4px" fontWeight="bold" color="white">
-            {buttonText}
-          </Text>
-          {loading ? <CircleLoader stroke="white" /> : null}
-        </Flex>
-      </CommitButton>
-    </AutoColumn>
-  )
-}
-
-const OnBoardingView = ({
-  identityKey,
-  handleRegistration,
-  isReady,
-  isSubscribing,
-  setIsSubscribing,
-}: IOnBoardingProps) => {
-  const [isOboarding, setIsOnBoarding] = useState<boolean>(false)
-  const toast = useToast()
-  const { t } = useTranslation()
-  const { address: account } = useAccount()
-  const { subscribe } = useManageSubscription(`eip155:1:${account}`)
-  const { subscribeToPushNotifications } = useSendPushNotification()
-
-  const handleSubscribe = useCallback(async () => {
-    setIsSubscribing(true)
-    try {
-      await subscribeToPushNotifications()
-      await subscribe()
-    } catch (error) {
-      setIsSubscribing(false)
-      const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
-      toast.toastError(Events.SubscriptionRequestError.title(t), errMessage)
-    }
-  }, [t, toast, subscribe, subscribeToPushNotifications, setIsSubscribing])
-
-  const handleOnBoarding = useCallback(async () => {
-    setIsOnBoarding(true)
-    try {
-      await handleRegistration()
-    } catch (error) {
-      const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
-      toast.toastError(Events.SubscriptionRequestError.title(t), errMessage)
-    }
-    setIsOnBoarding(false)
-  }, [t, setIsOnBoarding, handleRegistration, toast])
-
-  const handleAction = useCallback(
-    async (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
-      e.stopPropagation()
-      if (!identityKey) handleOnBoarding()
-      else handleSubscribe()
-    },
-    [handleSubscribe, handleOnBoarding, identityKey],
-  )
-
-  const onBoardingDescription = getOnBoardingDescriptionMessage(Boolean(identityKey), t)
-
-  return (
-    <Box width="100%" maxHeight="400px">
-      <div style={{ padding: '24px' }}>
+    <Flex
+      width="100%"
+      height={isMobile ? window.document.documentElement.clientHeight * 0.9 : '100%'}
+      flexDirection="column"
+      justifyContent="space-between"
+    >
+      <div
+        style={{
+          padding: '24px',
+          height: '90%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
         <Box pl="40px" pb="24px" pt="48px">
           <Image src="/images/notifications/welcome-notification-bell.png" alt="#" height={185} width={270} />
         </Box>
@@ -113,16 +40,13 @@ const OnBoardingView = ({
           <Text fontSize="16px" textAlign="center" color="textSubtle">
             {onBoardingDescription}
           </Text>
-          <OnboardingButton
-            loading={isSubscribing || isOboarding}
-            onClick={handleAction}
-            isOnBoarded={Boolean(identityKey)}
-            account={account}
-            isReady={isReady}
-          />
         </FlexGap>
       </div>
-    </Box>
+
+      <Box margin="24px" height="10%">
+        <NotificationsOnboardingButton height="50px" />
+      </Box>
+    </Flex>
   )
 }
 

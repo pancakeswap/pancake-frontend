@@ -1,84 +1,61 @@
-import {
-  NotificationBell as BellIcon,
-  Box,
-  Flex,
-  ModalV2,
-  ModalWrapper,
-  UserMenuProps,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
-import { useMessages } from '@web3inbox/widget-react'
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
-import { useAppDispatch } from 'state'
-import { setHasUnread } from 'state/notifications/actions'
-import { useHasUnreadNotifications } from 'state/notifications/hooks'
+import { NotificationBell as BellIcon, Box, Flex, ModalV2, ModalWrapper, useMatchBreakpoints } from '@pancakeswap/uikit'
+// import { useNotifications } from '@web3inbox/react'
+import React, { ReactNode, memo, useCallback, useEffect, useRef, useState } from 'react'
 import useSendPushNotification from 'views/Notifications/hooks/sendPushNotification'
+import useNotificationHistory from 'views/Notifications/hooks/useNotificationHistory'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
 import { PAGE_VIEW } from 'views/Notifications/types'
 
 interface InotificationBellProps {
-  unread: boolean
+  unread: number
   toggleMenu: () => void
 }
 
 const NotificationBell = ({ unread, toggleMenu }: InotificationBellProps) => {
+  const unreadDisplay = unread >= 9 ? '9+' : `${unread}`
   return (
     <BellIconContainer onClick={toggleMenu}>
       <BellIcon height={24} width={24} color="textSubtle" />
-      {unread ? <div className="notification-badge">{unread}</div> : null}
+      {unread > 0 ? <div className="notification-badge">{unreadDisplay}</div> : null}
     </BellIconContainer>
   )
 }
 
-const NotificationMenu: React.FC<
-  UserMenuProps & {
-    isMenuOpen: boolean
-    setIsMenuOpen: Dispatch<SetStateAction<boolean>>
-    viewIndex: PAGE_VIEW
-    subscriptionId: string | undefined
-    account: string | undefined
-  }
-> = ({ children, isMenuOpen, setIsMenuOpen, viewIndex, subscriptionId, account }) => {
-  const hasUnread = useHasUnreadNotifications(subscriptionId)
-  const dispatch = useAppDispatch()
-  const { messages: notifications } = useMessages(account)
-  const { requestNotificationPermission } = useSendPushNotification()
-
+const NotificationMenu: React.FC<{
+  viewIndex: PAGE_VIEW
+  subscriptionId: string | undefined
+  children: ReactNode
+}> = ({ children, viewIndex, subscriptionId }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const ref = useRef<HTMLDivElement>(null)
   const { isMobile } = useMatchBreakpoints()
 
-  const markAllNotificationsAsRead = useCallback(() => {
-    if (!subscriptionId) return
-    for (const unreadNotification of notifications) {
-      dispatch(setHasUnread({ subscriptionId, notificationId: unreadNotification.id, hasUnread: true }))
-    }
-  }, [dispatch, notifications, subscriptionId])
+  const { hasUnread, markAllNotificationsAsRead } = useNotificationHistory(subscriptionId)
+  const { requestNotificationPermission } = useSendPushNotification()
 
   const toggleMenu = useCallback(() => {
-    if (!isMenuOpen) {
-      requestNotificationPermission()
-      markAllNotificationsAsRead()
-    }
+    if (!isMenuOpen) requestNotificationPermission()
     setIsMenuOpen(!isMenuOpen)
-  }, [setIsMenuOpen, isMenuOpen, markAllNotificationsAsRead, requestNotificationPermission])
+  }, [setIsMenuOpen, isMenuOpen, requestNotificationPermission])
 
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
+        markAllNotificationsAsRead()
         setIsMenuOpen(false)
       }
     }
     document.addEventListener('click', checkIfClickedOutside)
     return () => document.removeEventListener('click', checkIfClickedOutside)
-  }, [isMenuOpen, setIsMenuOpen])
+  }, [isMenuOpen, setIsMenuOpen, markAllNotificationsAsRead])
 
   if (isMobile) {
     return (
       <Flex alignItems="center" justifyContent="center" tabIndex={-1}>
         <NotificationBell unread={hasUnread} toggleMenu={toggleMenu} />
         <ModalV2 isOpen={isMenuOpen} onDismiss={toggleMenu} closeOnOverlayClick>
-          <ModalWrapper onDismiss={toggleMenu} height="100vh" minWidth="320px">
-            {children?.({ isOpen: isMenuOpen })}
+          <ModalWrapper onDismiss={toggleMenu} minWidth="320px" height="90vh">
+            {children}
           </ModalWrapper>
         </ModalV2>
       </Flex>
@@ -92,10 +69,10 @@ const NotificationMenu: React.FC<
         style={{ top: '100%', position: 'fixed' }}
         $overrideHeight={viewIndex === PAGE_VIEW.OnboardView}
       >
-        <Box>{children?.({ isOpen: isMenuOpen })}</Box>
+        <Box>{children}</Box>
       </Menu>
     </Flex>
   )
 }
 
-export default NotificationMenu
+export default memo(NotificationMenu)

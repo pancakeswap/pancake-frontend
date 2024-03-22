@@ -89,7 +89,7 @@ const Settingsitem = ({ scope, id, setScopes, index }: ISettingsprops) => {
 
 const SettingsContainer = ({ scopes, setScopes }: ISettingsContainerProps) => {
   const { isMobile } = useMatchBreakpoints()
-  const mobileHeight = window?.innerHeight
+  const mobileHeight = window?.document.documentElement.clientHeight * 0.9
   return (
     <NotificationContainerStyled $maxHeight={isMobile ? `${mobileHeight - 150}px` : '550px'}>
       {Object.entries(scopes)

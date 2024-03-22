@@ -1,6 +1,6 @@
 import { Colors, Flex } from '@pancakeswap/uikit'
 import Link from 'next/link'
-import styled, { css, keyframes } from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 // Notification View styles
 export const Menu = styled.div<{ $isOpen: boolean; $overrideHeight: boolean }>`
@@ -110,14 +110,9 @@ export const NoNotificationsWrapper = styled.div`
   animation: ${() => openLeft} 0.65s;
 `
 
-export const NotificationsWrapper = styled.div<{ isClosing: boolean }>`
+export const NotificationsWrapper = styled.div`
   animation-fill-mode: forwards;
   position: relative;
-  ${({ isClosing }) =>
-    isClosing &&
-    css`
-      animation: ${() => closeRight} 0.65s;
-    `}
 `
 
 export const NotificationContainerStyled = styled.div<{ $maxHeight: string }>`
@@ -208,11 +203,12 @@ export const BellIconContainer = styled(Flex)`
 
   .notification-badge {
     position: absolute;
-    bottom: 60%;
-    left: 45%;
-    width: 15px;
-    height: 15px;
-    border: 3px solid ${({ theme }) => theme.colors.backgroundAlt};
+    bottom: 45%;
+    left: 40%;
+    width: 21px;
+    font-size: 16px;
+    height: 21px;
+    border: 2px solid ${({ theme }) => theme.colors.backgroundAlt};
     border-radius: 50%;
     background: ${({ theme }) => theme.colors.success};
     display: flex;

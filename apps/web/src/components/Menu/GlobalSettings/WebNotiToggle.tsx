@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Toggle, useToast } from '@pancakeswap/uikit'
-import { useManageSubscription, useW3iAccount } from '@web3inbox/widget-react'
+import { useSubscribe, useUnsubscribe } from '@web3inbox/react'
 import { useCallback } from 'react'
 import { useAllowNotifications } from 'state/notifications/hooks'
 import { Events } from 'views/Notifications/constants'
@@ -8,8 +8,8 @@ import { parseErrorMessage } from 'views/Notifications/utils/errorBuilder'
 
 const useWebNotificationsToggle = () => {
   const { t } = useTranslation()
-  const { account } = useW3iAccount()
-  const { unsubscribe, isSubscribed } = useManageSubscription(account)
+  const { data: isSubscribed } = useSubscribe()
+  const { unsubscribe } = useUnsubscribe()
   const [allowNotifications, setAllowNotifications] = useAllowNotifications()
   const toast = useToast()
 
