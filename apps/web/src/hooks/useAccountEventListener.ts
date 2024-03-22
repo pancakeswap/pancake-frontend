@@ -37,12 +37,12 @@ export const useAccountEventListener = () => {
         clearUserStates(dispatch, { chainId })
       }
 
-      connector.addListener('disconnect', handleDeactiveEvent)
-      connector.addListener('change', handleUpdateEvent)
+      connector.emitter.on('disconnect', handleDeactiveEvent)
+      connector.emitter.on('change', handleUpdateEvent)
 
       return () => {
-        connector.removeListener('disconnect', handleDeactiveEvent)
-        connector.removeListener('change', handleUpdateEvent)
+        connector.emitter.off('disconnect', handleDeactiveEvent)
+        connector.emitter.off('change', handleUpdateEvent)
       }
     }
     return undefined
