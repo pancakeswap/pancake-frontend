@@ -2980,10 +2980,8 @@
   "Unsubscribing": "Hủy đăng ký",
   "Unsubscribe": "Hủy đăng ký",
   "Enable Notifications": "Bật thông báo",
-  "Awaiting signature response": "Đang chờ chữ ký trả lời",
   "Notifications": "Thông báo",
   "Update Preferences": "Cập nhật tùy chọn",
-  "Authorize Push Notifications": "Cho phép thông báo đẩy",
   "Notifications From PancakeSwap": "Thông báo từ PancakeSwap",
   "Get started with notifications from PancakeSwap. First authorize notifications by signing in your wallet": "Bắt đầu với các thông báo từ PancakeSwap. Trước hết hãy cho phép thông báo bằng cách đăng nhập vào ví của bạn",
   "Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to offer.": "Cuối cùng, đăng ký nhận thông báo để luôn theo dõi các tin tức và cập nhật mới nhất của PancakeSwap.",
@@ -2993,10 +2991,6 @@
   "View Farm": "Xem trang trại",
   "Empty": "Trống",
   "No new notifications at the moment": "Không có thông báo mới tại thời điểm này",
-  "Archived": "Đã lưu kho",
-  "All archived messages will be deleted in 24hr": "Tất cả tin nhắn đã lưu kho sẽ bị xóa trong vòng 24 giờ",
-  "ARCHIVED MESSAGES": "TIN NHẮN ĐÃ LƯU KHO",
-  "Archive all read": "Lưu kho tất cả tin nhắn đã đọc",
   "Allow notifications": "Cho phép thông báo",
   "Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible": "Bật tính năng thông báo qua web. Nếu tắt, bạn sẽ tự động được hủy đăng ký và chuông thông báo sẽ không được hiển thị",
   "Show only the notifications that belong to your wallet or LP positions": "Chỉ hiển thị các thông báo thuộc ví hoặc các vị thế LP của bạn",
@@ -3266,5 +3260,9 @@
   "%stakedToken% Syrup Pool": "%stakedToken% Syrup Pool",
   "If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.": "If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.",
   "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our": "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our",
-  "The rewards for this Syrup Pool will not be applicable to or claimable by": "The rewards for this Syrup Pool will not be applicable to or claimable by"
+  "The rewards for this Syrup Pool will not be applicable to or claimable by": "The rewards for this Syrup Pool will not be applicable to or claimable by",
+  "The liquidity of this position is 0. Please try increasing the amount.": "The liquidity of this position is 0. Please try increasing the amount.",
+  "Sign In With Wallet": "Sign In With Wallet",
+  "Subscribe To PancakeSwap": "Subscribe To PancakeSwap",
+  "Registration Error": "Registration Error"
 }
