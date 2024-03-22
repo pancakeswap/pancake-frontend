@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { BOOSTED_FARM_V3_GAS_LIMIT } from 'config'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerBCakeWrapperContract, usePositionManagerWrapperContract } from 'hooks/useContract'
@@ -38,7 +37,6 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress: Addres
                 {
                   account: account ?? '0x',
                   chain,
-                  gasLimit: BOOSTED_FARM_V3_GAS_LIMIT,
                 },
               )
           : () =>
@@ -51,7 +49,6 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress: Addres
                 {
                   account: account ?? '0x',
                   chain,
-                  gasLimit: BOOSTED_FARM_V3_GAS_LIMIT,
                 },
               ),
       )
@@ -86,13 +83,11 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress: Addres
               positionManagerBCakeWrapperContract.write.deposit([0n, false], {
                 account: account ?? '0x',
                 chain,
-                gasLimit: BOOSTED_FARM_V3_GAS_LIMIT,
               })
           : () =>
               positionManagerWrapperContract.write.deposit([0n], {
                 account: account ?? '0x',
                 chain,
-                gasLimit: BOOSTED_FARM_V3_GAS_LIMIT,
               }),
       )
 
