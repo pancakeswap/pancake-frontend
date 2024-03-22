@@ -23,7 +23,7 @@ export enum ConnectorNames {
 const createQrCode = (chainId: number, connect) => async () => {
   connect({ connector: walletConnectNoQrCodeConnector, chainId })
 
-  const r = await walletConnectNoQrCodeConnector.getProvider()
+  const r = await walletConnectNoQrCodeConnector().getProvider()
   return new Promise<string>((resolve) => {
     r.on('display_uri', (uri) => {
       resolve(uri)
