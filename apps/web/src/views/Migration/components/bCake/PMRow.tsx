@@ -16,6 +16,7 @@ import Earned from './Earned'
 import Liquidity from './Liquidity'
 import Farm from './PMInfo'
 import Staked from './Staked'
+import StakeButton from './StakedButton'
 import Unstake from './Unstake'
 import UnStakeButton from './UnstakeButton'
 
@@ -57,17 +58,15 @@ type PMRowProps = {
     manager: MANAGER
     wrapperAddress: Address
     adapterAddress: Address
-    bCakeWrapperAddress?: Address
+    bCakeWrapperAddress: Address
     earningToken: Token
   }
-  onStake: () => void
-  onUnStake: () => void
+  step: number
 }
 
 export const PositionManagerFarmRow: React.FunctionComponent<React.PropsWithChildren<PMRowProps>> = ({
   data,
-  onStake,
-  onUnStake,
+  step,
 }) => {
   const { isMobile, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isXl || isXxl
@@ -79,7 +78,7 @@ export const PositionManagerFarmRow: React.FunctionComponent<React.PropsWithChil
   }
   const { wrapperAddress, adapterAddress, token, quoteToken, earningToken, label, bCakeWrapperAddress } = data
 
-  const info = usePositionInfo(wrapperAddress, adapterAddress, false)
+  const info = usePositionInfo(step === 1 ? wrapperAddress : bCakeWrapperAddress, adapterAddress, false)
   const { data: token0USDPrice } = useCurrencyUsdPrice(token)
   const { data: token1USDPrice } = useCurrencyUsdPrice(quoteToken)
   const tokensPriceUSD = useMemo(() => {
@@ -124,22 +123,28 @@ export const PositionManagerFarmRow: React.FunctionComponent<React.PropsWithChil
         </LeftContainer>
         <RightContainer>
           {isLargerScreen || expanded ? (
-            <Unstake>
-              <UnStakeButton
-                userStakedLp={info?.userLpAmounts}
-                wrapperAddress={wrapperAddress}
-                vaultAddress={info?.vaultAddress}
-                lpSymbol={label}
-                onDone={info?.refetchPositionInfo}
-              />
-            </Unstake>
+            <>
+              <Unstake>
+                {step === 1 ? (
+                  <UnStakeButton
+                    userStakedLp={info?.userLpAmounts}
+                    wrapperAddress={wrapperAddress}
+                    vaultAddress={info?.vaultAddress}
+                    lpSymbol={label}
+                    onDone={info?.refetchPositionInfo}
+                  />
+                ) : (
+                  <StakeButton
+                    bCakeWrapperAddress={bCakeWrapperAddress}
+                    vaultAddress={info?.vaultAddress}
+                    lpSymbol={label}
+                    onDone={info?.refetchPositionInfo}
+                  />
+                )}
+              </Unstake>
+            </>
           ) : null}
-          {/* <StakeButton
-            bCakeWrapperAddress={bCakeWrapperAddress}
-            vaultAddress={info?.vaultAddress}
-            lpSymbol={label}
-            onDone={info?.refetchPositionInfo}
-          /> */}
+
           {!isLargerScreen && <ExpandActionCell expanded={expanded} showExpandedText={expanded || isMobile} />}
         </RightContainer>
       </StyledRow>
