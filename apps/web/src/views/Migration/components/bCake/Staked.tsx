@@ -1,11 +1,9 @@
 import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
-import BigNumber from 'bignumber.js'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { styled } from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
 
 const StyledCell = styled(Pool.BaseCell)`
   flex: 0;
@@ -21,7 +19,7 @@ const StyledCell = styled(Pool.BaseCell)`
 
 export interface StakedProps {
   label: string
-  stakedBalance: BigNumber
+  stakedBalance: number
 }
 
 const Staked: React.FC<React.PropsWithChildren<StakedProps>> = ({ label, stakedBalance }) => {
@@ -30,10 +28,6 @@ const Staked: React.FC<React.PropsWithChildren<StakedProps>> = ({ label, stakedB
 
   const labelText = t('%asset% Staked', { asset: label })
 
-  const displayBalance = useMemo(() => {
-    return formatLpBalance(stakedBalance, 18)
-  }, [stakedBalance])
-
   return (
     <StyledCell role="cell">
       <Pool.CellContent>
@@ -41,8 +35,8 @@ const Staked: React.FC<React.PropsWithChildren<StakedProps>> = ({ label, stakedB
           {labelText}
         </Text>
         <Flex mt="4px">
-          <Text fontSize={isMobile ? '14px' : '16px'} color={stakedBalance.gt(0) ? 'text' : 'textDisabled'}>
-            {displayBalance}
+          <Text fontSize={isMobile ? '14px' : '16px'} color={stakedBalance > 0 ? 'text' : 'textDisabled'}>
+            ~${stakedBalance.toFixed(2)} USD
           </Text>
         </Flex>
       </Pool.CellContent>

@@ -69,7 +69,7 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   return (
     <>
       <MigrationFarmTable
-        title={t('Old Farms')}
+        title={t('V2/SS Farms')}
         noStakedFarmText={t('You are not currently staking in any farms that require migrations.')}
         account={account ?? '0x'}
         columnSchema={V3Step1DesktopColumnSchema}
@@ -77,7 +77,7 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
         userDataReady={userDataReady}
       />
       <PosManagerMigrationFarmTable
-        title={t('Old Farms')}
+        title={t('Position Managers')}
         noStakedFarmText={t('You are not currently staking in any farms that require migrations.')}
         account={account ?? '0x'}
         columnSchema={V3Step1DesktopColumnSchema}
