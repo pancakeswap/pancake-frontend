@@ -54,7 +54,6 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
       },
       staked: {
         label: lpLabel,
-        pid: farm.pid,
         stakedBalance: (farm.boosted ? farm.userData?.proxy?.stakedBalance : farm.userData?.stakedBalance) ?? BIG_ZERO,
       },
       unstake: { pid: farm.pid, vaultPid: farm.vaultPid, farm },
