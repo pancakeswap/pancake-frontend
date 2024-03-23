@@ -83,7 +83,7 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
         columnSchema={V3Step1DesktopColumnSchema}
         farms={chosenFarmsMemoized}
         userDataReady={userDataReady}
-        step={1}
+        step={2}
       />
     </>
   )

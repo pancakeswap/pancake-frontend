@@ -21,7 +21,7 @@ import { farmV3MigrationBunnyFull } from 'views/Home/components/Banners/images'
 import MigrationSticky, { TEXT } from './components/MigrationSticky'
 import { MigrationProgressSteps, Step } from './components/ProgressSteps'
 import OldFarm from './components/bCake/Step1'
-import { Step2 } from './components/v3/Step2'
+import Step2 from './components/bCake/Step2'
 
 const steps: Step[] = [
   {

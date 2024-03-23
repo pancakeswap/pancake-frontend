@@ -27,6 +27,7 @@ export interface ITableProps {
   farms: FarmWithStakedValue[]
   userDataReady: boolean
   sortColumn?: string
+  step: number
 }
 
 export const PosManagerMigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
@@ -35,6 +36,7 @@ export const PosManagerMigrationFarmTable: React.FC<React.PropsWithChildren<ITab
   account,
   columnSchema,
   userDataReady,
+  step,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
@@ -56,7 +58,7 @@ export const PosManagerMigrationFarmTable: React.FC<React.PropsWithChildren<ITab
         manager: d.manager,
         wrapperAddress: d.address,
         adapterAddress: d.adapterAddress,
-        bCakeWrapperAddress: d.bCakeWrapperAddress,
+        bCakeWrapperAddress: d.bCakeWrapperAddress ?? '0x',
         earningToken: d.earningToken.wrapped,
       },
       onStake: () => {},
@@ -79,7 +81,7 @@ export const PosManagerMigrationFarmTable: React.FC<React.PropsWithChildren<ITab
           userDataReady &&
           rows.map((d) => {
             if (columnSchema === V3Step1DesktopColumnSchema) {
-              return <PositionManagerFarmRow {...d} key={`table-row-${d.id}`} />
+              return <PositionManagerFarmRow step={step} {...d} key={`table-row-${d.id}`} />
             }
             return null
           })}
