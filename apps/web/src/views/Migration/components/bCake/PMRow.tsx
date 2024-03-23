@@ -11,10 +11,13 @@ import {
   useTotalAssetInUsd,
   useTotalStakedInUsd,
 } from 'views/PositionManagers/hooks/'
+import ExpandActionCell from '../Cells/ExpandActionCell'
 import Earned from './Earned'
 import Liquidity from './Liquidity'
 import Farm from './PMInfo'
 import Staked from './Staked'
+import Unstake from './Unstake'
+import UnStakeButton from './UnstakeButton'
 
 const StyledRow = styled.div`
   display: flex;
@@ -74,7 +77,7 @@ export const PositionManagerFarmRow: React.FunctionComponent<React.PropsWithChil
       setExpanded((prev) => !prev)
     }
   }
-  const { wrapperAddress, adapterAddress, token, quoteToken, earningToken } = data
+  const { wrapperAddress, adapterAddress, token, quoteToken, earningToken, label, bCakeWrapperAddress } = data
 
   const info = usePositionInfo(wrapperAddress, adapterAddress, false)
   const { data: token0USDPrice } = useCurrencyUsdPrice(token)
@@ -119,23 +122,26 @@ export const PositionManagerFarmRow: React.FunctionComponent<React.PropsWithChil
           ) : null}
           {isLargerScreen && <Liquidity liquidity={totalStakedInUsd} />}
         </LeftContainer>
-
-        {/* {isLargerScreen || expanded ? (
-            <>
-              <Staked {...staked} stakedBalance={BIG_ZERO} />
-              <Earned {...earned} />
-            </>
-          ) : null}
-          {isLargerScreen && <Liquidity {...liquidity} />}
-        </LeftContainer>
         <RightContainer>
           {isLargerScreen || expanded ? (
             <Unstake>
-              <UnstableButton {...unstake} />
+              <UnStakeButton
+                userStakedLp={info?.userLpAmounts}
+                wrapperAddress={wrapperAddress}
+                vaultAddress={info?.vaultAddress}
+                lpSymbol={label}
+                onDone={info?.refetchPositionInfo}
+              />
             </Unstake>
           ) : null}
+          {/* <StakeButton
+            bCakeWrapperAddress={bCakeWrapperAddress}
+            vaultAddress={info?.vaultAddress}
+            lpSymbol={label}
+            onDone={info?.refetchPositionInfo}
+          /> */}
           {!isLargerScreen && <ExpandActionCell expanded={expanded} showExpandedText={expanded || isMobile} />}
-        </RightContainer> */}
+        </RightContainer>
       </StyledRow>
     </>
   )
