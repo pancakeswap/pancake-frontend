@@ -28,6 +28,7 @@ export interface ITableProps {
   farms: FarmWithStakedValue[]
   userDataReady: boolean
   sortColumn?: string
+  step?: number
 }
 
 const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
@@ -37,6 +38,7 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
   columnSchema,
   farms,
   userDataReady,
+  step,
 }) => {
   const { t } = useTranslation()
 
@@ -120,7 +122,7 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
           userDataReady &&
           sortedRows.map((row) => {
             if (columnSchema === V3Step1DesktopColumnSchema) {
-              return <V3OldFarmRow {...row} key={`table-row-${row.farm.pid}`} />
+              return <V3OldFarmRow step={step} {...row} key={`table-row-${row.farm.pid}`} />
             }
             return null
           })}
