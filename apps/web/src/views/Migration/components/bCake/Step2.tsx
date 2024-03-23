@@ -75,6 +75,7 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
         columnSchema={V3Step1DesktopColumnSchema}
         farms={chosenFarmsMemoized}
         userDataReady={userDataReady}
+        step={2}
       />
       <PosManagerMigrationFarmTable
         title={t('Position Managers')}

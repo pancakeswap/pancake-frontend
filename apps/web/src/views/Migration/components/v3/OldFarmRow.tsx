@@ -11,6 +11,7 @@ import Liquidity from '../Farm/Cells/Liquidity'
 import Multiplier from '../Farm/Cells/Multiplier'
 import Staked from '../Farm/Cells/Staked'
 import Unstake from '../Farm/Cells/Unstake'
+import V2StakeButton from '../bCake/V2StakedButton'
 import { RowProps } from '../types'
 import UnstableButton from './UnstakeButton'
 
@@ -44,13 +45,14 @@ const RightContainer = styled.div`
   }
 `
 
-export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
+export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps & { step?: number }>> = ({
   farm,
   staked,
   earned,
   multiplier,
   liquidity,
   unstake,
+  step,
 }) => {
   const { isMobile, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isXl || isXxl
@@ -82,7 +84,16 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
           {isLargerScreen || expanded ? (
             <ProxyFarmContainer farm={farm}>
               <Unstake>
-                <UnstableButton {...unstake} />
+                {step === 2 ? (
+                  <V2StakeButton
+                    onDone={() => {}}
+                    wrapperAddress={farm.bCakeWrapperAddress}
+                    lpSymbol={farm.label}
+                    pid={farm.pid}
+                  />
+                ) : (
+                  <UnstableButton {...unstake} />
+                )}
               </Unstake>
             </ProxyFarmContainer>
           ) : null}
