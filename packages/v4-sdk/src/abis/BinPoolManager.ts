@@ -1,0 +1,1072 @@
+export const BinPoolManager = [
+  {
+    type: 'constructor',
+    inputs: [
+      { name: 'vault', type: 'address', internalType: 'contract IVault' },
+      {
+        name: 'controllerGasLimit',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'MAX_BIN_STEP',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint16', internalType: 'uint16' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'MIN_BIN_STEP',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint16', internalType: 'uint16' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'MIN_PROTOCOL_FEE_DENOMINATOR',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint8', internalType: 'uint8' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'burn',
+    inputs: [
+      {
+        name: 'key',
+        type: 'tuple',
+        internalType: 'struct PoolKey',
+        components: [
+          {
+            name: 'currency0',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'currency1',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'hooks',
+            type: 'address',
+            internalType: 'contract IHooks',
+          },
+          {
+            name: 'poolManager',
+            type: 'address',
+            internalType: 'contract IPoolManager',
+          },
+          { name: 'fee', type: 'uint24', internalType: 'uint24' },
+          { name: 'parameters', type: 'bytes32', internalType: 'bytes32' },
+        ],
+      },
+      {
+        name: 'params',
+        type: 'tuple',
+        internalType: 'struct IBinPoolManager.BurnParams',
+        components: [
+          { name: 'ids', type: 'uint256[]', internalType: 'uint256[]' },
+          {
+            name: 'amountsToBurn',
+            type: 'uint256[]',
+            internalType: 'uint256[]',
+          },
+        ],
+      },
+      { name: 'hookData', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [{ name: 'delta', type: 'int256', internalType: 'BalanceDelta' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'collectProtocolFees',
+    inputs: [
+      { name: 'recipient', type: 'address', internalType: 'address' },
+      { name: 'currency', type: 'address', internalType: 'Currency' },
+      { name: 'amount', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [
+      {
+        name: 'amountCollected',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'donate',
+    inputs: [
+      {
+        name: 'key',
+        type: 'tuple',
+        internalType: 'struct PoolKey',
+        components: [
+          {
+            name: 'currency0',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'currency1',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'hooks',
+            type: 'address',
+            internalType: 'contract IHooks',
+          },
+          {
+            name: 'poolManager',
+            type: 'address',
+            internalType: 'contract IPoolManager',
+          },
+          { name: 'fee', type: 'uint24', internalType: 'uint24' },
+          { name: 'parameters', type: 'bytes32', internalType: 'bytes32' },
+        ],
+      },
+      { name: 'amount0', type: 'uint128', internalType: 'uint128' },
+      { name: 'amount1', type: 'uint128', internalType: 'uint128' },
+      { name: 'hookData', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [
+      { name: 'delta', type: 'int256', internalType: 'BalanceDelta' },
+      { name: 'binId', type: 'uint24', internalType: 'uint24' },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'extsload',
+    inputs: [{ name: 'slot', type: 'bytes32', internalType: 'bytes32' }],
+    outputs: [{ name: 'val', type: 'bytes32', internalType: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'extsload',
+    inputs: [{ name: 'slots', type: 'bytes32[]', internalType: 'bytes32[]' }],
+    outputs: [{ name: '', type: 'bytes32[]', internalType: 'bytes32[]' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getBin',
+    inputs: [
+      { name: 'id', type: 'bytes32', internalType: 'PoolId' },
+      { name: 'binId', type: 'uint24', internalType: 'uint24' },
+    ],
+    outputs: [
+      { name: 'binReserveX', type: 'uint128', internalType: 'uint128' },
+      { name: 'binReserveY', type: 'uint128', internalType: 'uint128' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getLmPool',
+    inputs: [{ name: 'id', type: 'bytes32', internalType: 'PoolId' }],
+    outputs: [{ name: 'lmPool', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getNextNonEmptyBin',
+    inputs: [
+      { name: 'id', type: 'bytes32', internalType: 'PoolId' },
+      { name: 'swapForY', type: 'bool', internalType: 'bool' },
+      { name: 'binId', type: 'uint24', internalType: 'uint24' },
+    ],
+    outputs: [{ name: 'nextId', type: 'uint24', internalType: 'uint24' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getPosition',
+    inputs: [
+      { name: 'id', type: 'bytes32', internalType: 'PoolId' },
+      { name: 'owner', type: 'address', internalType: 'address' },
+      { name: 'binId', type: 'uint24', internalType: 'uint24' },
+    ],
+    outputs: [
+      {
+        name: 'position',
+        type: 'tuple',
+        internalType: 'struct BinPosition.Info',
+        components: [{ name: 'share', type: 'uint256', internalType: 'uint256' }],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getSlot0',
+    inputs: [{ name: 'id', type: 'bytes32', internalType: 'PoolId' }],
+    outputs: [
+      { name: 'activeId', type: 'uint24', internalType: 'uint24' },
+      { name: 'protocolFee', type: 'uint16', internalType: 'uint16' },
+      { name: 'swapFee', type: 'uint24', internalType: 'uint24' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getSwapIn',
+    inputs: [
+      {
+        name: 'key',
+        type: 'tuple',
+        internalType: 'struct PoolKey',
+        components: [
+          {
+            name: 'currency0',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'currency1',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'hooks',
+            type: 'address',
+            internalType: 'contract IHooks',
+          },
+          {
+            name: 'poolManager',
+            type: 'address',
+            internalType: 'contract IPoolManager',
+          },
+          { name: 'fee', type: 'uint24', internalType: 'uint24' },
+          { name: 'parameters', type: 'bytes32', internalType: 'bytes32' },
+        ],
+      },
+      { name: 'swapForY', type: 'bool', internalType: 'bool' },
+      { name: 'amountOut', type: 'uint128', internalType: 'uint128' },
+    ],
+    outputs: [
+      { name: 'amountIn', type: 'uint128', internalType: 'uint128' },
+      { name: 'amountOutLeft', type: 'uint128', internalType: 'uint128' },
+      { name: 'fee', type: 'uint128', internalType: 'uint128' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getSwapOut',
+    inputs: [
+      {
+        name: 'key',
+        type: 'tuple',
+        internalType: 'struct PoolKey',
+        components: [
+          {
+            name: 'currency0',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'currency1',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'hooks',
+            type: 'address',
+            internalType: 'contract IHooks',
+          },
+          {
+            name: 'poolManager',
+            type: 'address',
+            internalType: 'contract IPoolManager',
+          },
+          { name: 'fee', type: 'uint24', internalType: 'uint24' },
+          { name: 'parameters', type: 'bytes32', internalType: 'bytes32' },
+        ],
+      },
+      { name: 'swapForY', type: 'bool', internalType: 'bool' },
+      { name: 'amountIn', type: 'uint128', internalType: 'uint128' },
+    ],
+    outputs: [
+      { name: 'amountInLeft', type: 'uint128', internalType: 'uint128' },
+      { name: 'amountOut', type: 'uint128', internalType: 'uint128' },
+      { name: 'fee', type: 'uint128', internalType: 'uint128' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'initialize',
+    inputs: [
+      {
+        name: 'key',
+        type: 'tuple',
+        internalType: 'struct PoolKey',
+        components: [
+          {
+            name: 'currency0',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'currency1',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'hooks',
+            type: 'address',
+            internalType: 'contract IHooks',
+          },
+          {
+            name: 'poolManager',
+            type: 'address',
+            internalType: 'contract IPoolManager',
+          },
+          { name: 'fee', type: 'uint24', internalType: 'uint24' },
+          { name: 'parameters', type: 'bytes32', internalType: 'bytes32' },
+        ],
+      },
+      { name: 'activeId', type: 'uint24', internalType: 'uint24' },
+      { name: 'hookData', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'masterChef',
+    inputs: [],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'mint',
+    inputs: [
+      {
+        name: 'key',
+        type: 'tuple',
+        internalType: 'struct PoolKey',
+        components: [
+          {
+            name: 'currency0',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'currency1',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'hooks',
+            type: 'address',
+            internalType: 'contract IHooks',
+          },
+          {
+            name: 'poolManager',
+            type: 'address',
+            internalType: 'contract IPoolManager',
+          },
+          { name: 'fee', type: 'uint24', internalType: 'uint24' },
+          { name: 'parameters', type: 'bytes32', internalType: 'bytes32' },
+        ],
+      },
+      {
+        name: 'params',
+        type: 'tuple',
+        internalType: 'struct IBinPoolManager.MintParams',
+        components: [
+          {
+            name: 'liquidityConfigs',
+            type: 'bytes32[]',
+            internalType: 'bytes32[]',
+          },
+          { name: 'amountIn', type: 'bytes32', internalType: 'bytes32' },
+        ],
+      },
+      { name: 'hookData', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [
+      { name: 'delta', type: 'int256', internalType: 'BalanceDelta' },
+      {
+        name: 'mintArray',
+        type: 'tuple',
+        internalType: 'struct BinPool.MintArrays',
+        components: [
+          { name: 'ids', type: 'uint256[]', internalType: 'uint256[]' },
+          {
+            name: 'amounts',
+            type: 'bytes32[]',
+            internalType: 'bytes32[]',
+          },
+          {
+            name: 'liquidityMinted',
+            type: 'uint256[]',
+            internalType: 'uint256[]',
+          },
+        ],
+      },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'owner',
+    inputs: [],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'pools',
+    inputs: [{ name: 'id', type: 'bytes32', internalType: 'PoolId' }],
+    outputs: [
+      {
+        name: 'slot0',
+        type: 'tuple',
+        internalType: 'struct BinPool.Slot0',
+        components: [
+          { name: 'activeId', type: 'uint24', internalType: 'uint24' },
+          { name: 'protocolFee', type: 'uint16', internalType: 'uint16' },
+          { name: 'swapFee', type: 'uint24', internalType: 'uint24' },
+        ],
+      },
+      { name: 'level0', type: 'bytes32', internalType: 'bytes32' },
+      {
+        name: 'lmPool',
+        type: 'address',
+        internalType: 'contract IBinLmPool',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'protocolFeeController',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'contract IProtocolFeeController',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'protocolFeesAccrued',
+    inputs: [{ name: 'currency', type: 'address', internalType: 'Currency' }],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'renounceOwnership',
+    inputs: [],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setLmPool',
+    inputs: [
+      {
+        name: 'key',
+        type: 'tuple',
+        internalType: 'struct PoolKey',
+        components: [
+          {
+            name: 'currency0',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'currency1',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'hooks',
+            type: 'address',
+            internalType: 'contract IHooks',
+          },
+          {
+            name: 'poolManager',
+            type: 'address',
+            internalType: 'contract IPoolManager',
+          },
+          { name: 'fee', type: 'uint24', internalType: 'uint24' },
+          { name: 'parameters', type: 'bytes32', internalType: 'bytes32' },
+        ],
+      },
+      { name: 'lmPool', type: 'address', internalType: 'address' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setMasterChef',
+    inputs: [{ name: '_masterChef', type: 'address', internalType: 'address' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setMaxBinStep',
+    inputs: [{ name: 'maxBinStep', type: 'uint16', internalType: 'uint16' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setProtocolFee',
+    inputs: [
+      {
+        name: 'key',
+        type: 'tuple',
+        internalType: 'struct PoolKey',
+        components: [
+          {
+            name: 'currency0',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'currency1',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'hooks',
+            type: 'address',
+            internalType: 'contract IHooks',
+          },
+          {
+            name: 'poolManager',
+            type: 'address',
+            internalType: 'contract IPoolManager',
+          },
+          { name: 'fee', type: 'uint24', internalType: 'uint24' },
+          { name: 'parameters', type: 'bytes32', internalType: 'bytes32' },
+        ],
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setProtocolFeeController',
+    inputs: [
+      {
+        name: 'controller',
+        type: 'address',
+        internalType: 'contract IProtocolFeeController',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'swap',
+    inputs: [
+      {
+        name: 'key',
+        type: 'tuple',
+        internalType: 'struct PoolKey',
+        components: [
+          {
+            name: 'currency0',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'currency1',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'hooks',
+            type: 'address',
+            internalType: 'contract IHooks',
+          },
+          {
+            name: 'poolManager',
+            type: 'address',
+            internalType: 'contract IPoolManager',
+          },
+          { name: 'fee', type: 'uint24', internalType: 'uint24' },
+          { name: 'parameters', type: 'bytes32', internalType: 'bytes32' },
+        ],
+      },
+      { name: 'swapForY', type: 'bool', internalType: 'bool' },
+      { name: 'amountIn', type: 'uint128', internalType: 'uint128' },
+      { name: 'hookData', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [{ name: 'delta', type: 'int256', internalType: 'BalanceDelta' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'transferOwnership',
+    inputs: [{ name: 'newOwner', type: 'address', internalType: 'address' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'updateDynamicSwapFee',
+    inputs: [
+      {
+        name: 'key',
+        type: 'tuple',
+        internalType: 'struct PoolKey',
+        components: [
+          {
+            name: 'currency0',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'currency1',
+            type: 'address',
+            internalType: 'Currency',
+          },
+          {
+            name: 'hooks',
+            type: 'address',
+            internalType: 'contract IHooks',
+          },
+          {
+            name: 'poolManager',
+            type: 'address',
+            internalType: 'contract IPoolManager',
+          },
+          { name: 'fee', type: 'uint24', internalType: 'uint24' },
+          { name: 'parameters', type: 'bytes32', internalType: 'bytes32' },
+        ],
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'vault',
+    inputs: [],
+    outputs: [{ name: '', type: 'address', internalType: 'contract IVault' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    name: 'Burn',
+    inputs: [
+      {
+        name: 'id',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'PoolId',
+      },
+      {
+        name: 'sender',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'ids',
+        type: 'uint256[]',
+        indexed: false,
+        internalType: 'uint256[]',
+      },
+      {
+        name: 'amounts',
+        type: 'bytes32[]',
+        indexed: false,
+        internalType: 'bytes32[]',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Donate',
+    inputs: [
+      {
+        name: 'id',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'PoolId',
+      },
+      {
+        name: 'sender',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'amount0',
+        type: 'int128',
+        indexed: false,
+        internalType: 'int128',
+      },
+      {
+        name: 'amount1',
+        type: 'int128',
+        indexed: false,
+        internalType: 'int128',
+      },
+      {
+        name: 'binId',
+        type: 'uint24',
+        indexed: false,
+        internalType: 'uint24',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'DynamicSwapFeeUpdated',
+    inputs: [
+      {
+        name: 'id',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'PoolId',
+      },
+      {
+        name: 'dynamicSwapFee',
+        type: 'uint24',
+        indexed: false,
+        internalType: 'uint24',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Initialize',
+    inputs: [
+      {
+        name: 'id',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'PoolId',
+      },
+      {
+        name: 'currency0',
+        type: 'address',
+        indexed: true,
+        internalType: 'Currency',
+      },
+      {
+        name: 'currency1',
+        type: 'address',
+        indexed: true,
+        internalType: 'Currency',
+      },
+      {
+        name: 'fee',
+        type: 'uint24',
+        indexed: false,
+        internalType: 'uint24',
+      },
+      {
+        name: 'binStep',
+        type: 'uint16',
+        indexed: false,
+        internalType: 'uint16',
+      },
+      {
+        name: 'hooks',
+        type: 'address',
+        indexed: false,
+        internalType: 'contract IBinHooks',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Mint',
+    inputs: [
+      {
+        name: 'id',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'PoolId',
+      },
+      {
+        name: 'sender',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'ids',
+        type: 'uint256[]',
+        indexed: false,
+        internalType: 'uint256[]',
+      },
+      {
+        name: 'amounts',
+        type: 'bytes32[]',
+        indexed: false,
+        internalType: 'bytes32[]',
+      },
+      {
+        name: 'compositionFee',
+        type: 'bytes32',
+        indexed: false,
+        internalType: 'bytes32',
+      },
+      {
+        name: 'pFee',
+        type: 'bytes32',
+        indexed: false,
+        internalType: 'bytes32',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'OwnershipTransferred',
+    inputs: [
+      {
+        name: 'previousOwner',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'newOwner',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'ProtocolFeeControllerUpdated',
+    inputs: [
+      {
+        name: 'protocolFeeController',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'ProtocolFeeUpdated',
+    inputs: [
+      {
+        name: 'id',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'PoolId',
+      },
+      {
+        name: 'protocolFee',
+        type: 'uint16',
+        indexed: false,
+        internalType: 'uint16',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'SetLmPool',
+    inputs: [
+      {
+        name: 'id',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'PoolId',
+      },
+      {
+        name: 'lmPool',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'SetMasterChef',
+    inputs: [
+      {
+        name: 'masterChef',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'SetMaxBinStep',
+    inputs: [
+      {
+        name: 'maxBinStep',
+        type: 'uint16',
+        indexed: false,
+        internalType: 'uint16',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Swap',
+    inputs: [
+      {
+        name: 'id',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'PoolId',
+      },
+      {
+        name: 'sender',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'amount0',
+        type: 'int128',
+        indexed: false,
+        internalType: 'int128',
+      },
+      {
+        name: 'amount1',
+        type: 'int128',
+        indexed: false,
+        internalType: 'int128',
+      },
+      {
+        name: 'activeId',
+        type: 'uint24',
+        indexed: false,
+        internalType: 'uint24',
+      },
+      {
+        name: 'fee',
+        type: 'uint24',
+        indexed: false,
+        internalType: 'uint24',
+      },
+      {
+        name: 'pFee',
+        type: 'bytes32',
+        indexed: false,
+        internalType: 'bytes32',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'error',
+    name: 'BinHelper__CompositionFactorFlawed',
+    inputs: [{ name: 'id', type: 'uint24', internalType: 'uint24' }],
+  },
+  { type: 'error', name: 'BinHelper__LiquidityOverflow', inputs: [] },
+  {
+    type: 'error',
+    name: 'BinPool__BurnZeroAmount',
+    inputs: [{ name: 'id', type: 'uint24', internalType: 'uint24' }],
+  },
+  { type: 'error', name: 'BinPool__EmptyLiquidityConfigs', inputs: [] },
+  { type: 'error', name: 'BinPool__InsufficientAmountIn', inputs: [] },
+  { type: 'error', name: 'BinPool__InsufficientAmountOut', inputs: [] },
+  { type: 'error', name: 'BinPool__InvalidBurnInput', inputs: [] },
+  {
+    type: 'error',
+    name: 'BinPool__NoLiquidityToReceiveFees',
+    inputs: [],
+  },
+  { type: 'error', name: 'BinPool__OutOfLiquidity', inputs: [] },
+  {
+    type: 'error',
+    name: 'BinPool__ZeroAmountsOut',
+    inputs: [{ name: 'id', type: 'uint24', internalType: 'uint24' }],
+  },
+  {
+    type: 'error',
+    name: 'BinPool__ZeroShares',
+    inputs: [{ name: 'id', type: 'uint24', internalType: 'uint24' }],
+  },
+  { type: 'error', name: 'BinStepTooLarge', inputs: [] },
+  { type: 'error', name: 'BinStepTooSmall', inputs: [] },
+  { type: 'error', name: 'CurrenciesInitializedOutOfOrder', inputs: [] },
+  { type: 'error', name: 'FeeNotDynamic', inputs: [] },
+  { type: 'error', name: 'FeeTooLarge', inputs: [] },
+  { type: 'error', name: 'HookConfigValidationError', inputs: [] },
+  { type: 'error', name: 'InvalidHookResponse', inputs: [] },
+  { type: 'error', name: 'InvalidProtocolFeeCollector', inputs: [] },
+  {
+    type: 'error',
+    name: 'LiquidityConfigurations__InvalidConfig',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'MaxBinStepTooSmall',
+    inputs: [{ name: 'maxBinStep', type: 'uint16', internalType: 'uint16' }],
+  },
+  { type: 'error', name: 'NoOpHookMissingBeforeCall', inputs: [] },
+  { type: 'error', name: 'PackedUint128Math__AddOverflow', inputs: [] },
+  { type: 'error', name: 'PackedUint128Math__SubUnderflow', inputs: [] },
+  { type: 'error', name: 'PoolAlreadyInitialized', inputs: [] },
+  { type: 'error', name: 'PoolManagerMismatch', inputs: [] },
+  { type: 'error', name: 'PoolNotInitialized', inputs: [] },
+  { type: 'error', name: 'PoolNotInitialized', inputs: [] },
+  { type: 'error', name: 'ProtocolFeeCannotBeFetched', inputs: [] },
+  {
+    type: 'error',
+    name: 'ProtocolFeeControllerCallFailedOrInvalidResult',
+    inputs: [],
+  },
+  { type: 'error', name: 'SafeCastOverflow', inputs: [] },
+  { type: 'error', name: 'SafeCast__Exceeds128Bits', inputs: [] },
+  { type: 'error', name: 'SafeCast__Exceeds24Bits', inputs: [] },
+  {
+    type: 'error',
+    name: 'Uint128x128Math__PowUnderflow',
+    inputs: [
+      { name: 'x', type: 'uint256', internalType: 'uint256' },
+      { name: 'y', type: 'int256', internalType: 'int256' },
+    ],
+  },
+  { type: 'error', name: 'Uint256x256Math__MulDivOverflow', inputs: [] },
+  {
+    type: 'error',
+    name: 'Uint256x256Math__MulShiftOverflow',
+    inputs: [],
+  },
+  { type: 'error', name: 'UnauthorizedCaller', inputs: [] },
+] as const
