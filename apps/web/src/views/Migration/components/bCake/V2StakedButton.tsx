@@ -3,13 +3,16 @@ import { ChainId, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useWeb3React } from '@pancakeswap/wagmi'
+import { useQuery } from '@tanstack/react-query'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useERC20, useV2SSBCakeWrapperContract } from 'hooks/useContract'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useV2SSBCakeWrapperContract } from 'hooks/useContract'
+import React, { useMemo } from 'react'
 import { useFarmFromPid } from 'state/farms/hooks'
+import { publicClient } from 'utils/wagmi'
 import { Address } from 'viem'
+import { erc20ABI } from 'wagmi'
 
 export interface StakeButtonProps {
   wrapperAddress?: Address
@@ -18,18 +21,74 @@ export interface StakeButtonProps {
   onDone: () => void
 }
 
+export async function getLpData({ lpAddress, chainId, account, wrapperAddress }): Promise<{
+  userLp: bigint
+  lpDecimals: number
+  allowanceLp: bigint
+} | null> {
+  const [userLpData, lpDecimalsData, allowanceLpData] = await publicClient({
+    chainId,
+  }).multicall({
+    contracts: [
+      {
+        address: lpAddress,
+        functionName: 'balanceOf',
+        abi: erc20ABI,
+        args: [account],
+      },
+      {
+        address: lpAddress,
+        functionName: 'decimals',
+        abi: erc20ABI,
+      },
+      {
+        address: lpAddress,
+        functionName: 'allowance',
+        abi: erc20ABI,
+        args: [account, wrapperAddress],
+      },
+    ],
+  })
+
+  if (
+    (!userLpData?.result && userLpData?.result !== 0n) ||
+    !lpDecimalsData?.result ||
+    (!allowanceLpData?.result && allowanceLpData?.result !== 0n)
+  )
+    return null
+
+  const [userLp, lpDecimals, allowanceLp] = [userLpData.result, lpDecimalsData.result, allowanceLpData.result]
+
+  return {
+    userLp,
+    lpDecimals,
+    allowanceLp,
+  }
+}
+
+export const useLpData = (lpAddress: Address, wrapperAddress: Address) => {
+  const { chainId, account } = useWeb3React()
+  const { data, refetch } = useQuery({
+    queryKey: ['lpContractData', lpAddress, chainId, wrapperAddress],
+    queryFn: () => getLpData({ lpAddress, chainId, account, wrapperAddress }),
+    enabled: !!lpAddress && !!chainId && !!account && !!wrapperAddress && lpAddress !== '0x' && wrapperAddress !== '0x',
+    refetchInterval: 3000,
+    staleTime: 3000,
+    gcTime: 3000,
+  })
+  return { data, refetch }
+}
+
 const StakeButton: React.FC<React.PropsWithChildren<StakeButtonProps>> = ({
   wrapperAddress,
   pid,
   lpSymbol,
   onDone,
 }) => {
-  const [userLp, setUserLp] = useState(0n)
-  const [lpDecimals, setLpDecimals] = useState(18)
-  const [allowanceLp, setAllowanceLp] = useState(0n)
-  const [fetchCounts, setFetchCounts] = useState(1)
   const { t } = useTranslation()
   const { lpAddress } = useFarmFromPid(pid) ?? {}
+  const { data, refetch } = useLpData(lpAddress ?? '0x', wrapperAddress ?? '0x')
+  const { lpDecimals, userLp, allowanceLp } = data ?? {}
 
   const { account, chain, chainId } = useWeb3React()
 
@@ -39,38 +98,22 @@ const StakeButton: React.FC<React.PropsWithChildren<StakeButtonProps>> = ({
 
   const [isLoading, setIsLoading] = React.useState(false)
 
-  const lpContract = useERC20(lpAddress ?? '0x')
-
-  useEffect(() => {
-    if (account && lpContract && wrapperAddress && fetchCounts) {
-      lpContract?.read.balanceOf([account ?? '0x']).then((res) => {
-        setUserLp(res)
-      })
-      lpContract?.read.decimals().then((res) => {
-        setLpDecimals(res)
-      })
-      lpContract?.read.allowance([account, wrapperAddress]).then((res) => {
-        setAllowanceLp(res)
-      })
-    }
-  }, [lpContract, account, wrapperAddress, fetchCounts])
-
-  const isNeedStake = userLp > 0n
+  const isNeedStake = (data?.userLp ?? 0n) > 0n
 
   const bCakeWrapperContract = useV2SSBCakeWrapperContract(wrapperAddress ?? '0x')
 
   const currency = useMemo(() => {
-    return new Token(chainId ?? ChainId.BSC, lpAddress ?? '0x', lpDecimals, lpSymbol, lpSymbol)
+    return new Token(chainId ?? ChainId.BSC, lpAddress ?? '0x', lpDecimals ?? 18, lpSymbol, lpSymbol)
   }, [lpAddress, chainId, lpSymbol, lpDecimals])
 
   const amountLp = useMemo(
-    () => tryParseAmount(userLp.toString(), currency) || CurrencyAmount.fromRawAmount(currency, '0'),
+    () => tryParseAmount((userLp ?? 0n).toString(), currency) || CurrencyAmount.fromRawAmount(currency, '0'),
     [userLp, currency],
   )
 
   const { approvalState, approveCallback } = useApproveCallback(amountLp, wrapperAddress ?? '0x')
-  const isAllApproved = approvalState === ApprovalState.APPROVED || (allowanceLp === userLp && userLp > 0n)
-  // eslint-disable-next-line consistent-return
+  const isAllApproved = approvalState === ApprovalState.APPROVED || (allowanceLp === userLp && (userLp ?? 0n) > 0n)
+
   const handleStake = async (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
 
@@ -86,7 +129,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StakeButtonProps>> = ({
 
       if (receipt?.status) {
         onDone()
-        setFetchCounts(fetchCounts + 1)
+        refetch()
         toastSuccess(
           `${t('Staked')}!`,
           <ToastDescriptionWithTx txHash={receipt.transactionHash}>
