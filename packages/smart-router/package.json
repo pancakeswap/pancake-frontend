@@ -16,7 +16,8 @@
     "dev": "tsup --watch",
     "test": "vitest --run",
     "update:snapshot": "vitest -u",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "typechecks": "tsc --noEmit -p ./tsconfig.json"
   },
   "files": [
     "dist"
