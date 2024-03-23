@@ -3262,7 +3262,7 @@
   "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our": "Ti piace l'APR di staking di %stakingToken%? Ottieni più ricompense con LP %lpLabel% sulle nostre",
   "The rewards for this Syrup Pool will not be applicable to or claimable by": "Le ricompense per questo Pool Syrup non saranno applicabili o rivendicabili da parte di",
   "The liquidity of this position is 0. Please try increasing the amount.": "La liquidità di questa posizione è 0. Prova ad aumentare l'importo.",
-  "Sign In With Wallet": "Sign In With Wallet",
-  "Subscribe To PancakeSwap": "Subscribe To PancakeSwap",
-  "Registration Error": "Registration Error"
+  "Sign In With Wallet": "Accedi con wallet",
+  "Subscribe To PancakeSwap": "Iscriviti a PancakeSwap",
+  "Registration Error": "Errore di registrazione"
 }
