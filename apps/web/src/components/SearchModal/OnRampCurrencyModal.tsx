@@ -23,6 +23,7 @@ import { Field } from 'state/buyCrypto/actions'
 import { styled } from 'styled-components'
 import { chainNameConverter } from 'utils/chainNameConverter'
 import { chains } from 'utils/wagmi'
+import { PopOverScreenContainer } from 'views/BuyCrypto/components/PopOverScreen/PopOverScreen'
 import { OnRampChainId as ChainId } from 'views/BuyCrypto/constants'
 import { FiatCurrency } from 'views/BuyCrypto/types'
 import { Dot } from 'views/Notifications/styles'
@@ -66,28 +67,6 @@ const NetworkItem = styled(RowBetween)<{ selected: boolean }>`
   opacity: ${({ selected }) => (!selected ? 0.8 : 1)};
 `
 
-const NetworksWrapper = styled(Box)<{ showFilterNetworks: boolean }>`
-  position: absolute;
-  width: 100%;
-  background: white;
-  height: 100%;
-  z-index: 1000;
-  transition: bottom 0.3s ease-in-out;
-  bottom: ${({ showFilterNetworks }) => (!showFilterNetworks ? '-100%' : '-35%')};
-  border-top-right-radius: 24px;
-  border-top-left-radius: 24px;
-  box-shadow: 6px 20px 12px 8px rgba(74, 74, 104, 0.1);
-`
-const NetworkFilterOverlay = styled(Box)<{ showFilterNetworks: boolean }>`
-  position: absolute;
-  width: 100%;
-  background-color: #e2d2ff;
-  height: 100%;
-  transition: opacity 0.2s ease-in-out;
-  opacity: ${({ showFilterNetworks }) => (!showFilterNetworks ? '0' : '0.8')};
-  pointer-events: ${({ showFilterNetworks }) => (showFilterNetworks ? 'auto' : 'none')};
-`
-
 export interface CurrencySearchModalProps extends InjectedModalProps {
   selectedCurrency?: Currency | FiatCurrency | null
   onCurrencySelect: (field: Field, newCurrency: Currency) => void
@@ -117,15 +96,14 @@ const SearchModalNetworkPopOver = ({
   const { t } = useTranslation()
   return (
     <>
-      <NetworkFilterOverlay showFilterNetworks={showFilterNetworks} onClick={onClick} />
-      <NetworksWrapper showFilterNetworks={showFilterNetworks}>
+      <PopOverScreenContainer showPopover={showFilterNetworks} onClick={onClick}>
         <ModalHeader>
           <ModalTitle>
             <Heading>{t('Token by network')}</Heading>
           </ModalTitle>
           <ModalCloseButton onDismiss={onClick} />
         </ModalHeader>
-        <StyledModalBody style={{ paddingLeft: '0px', paddingTop: '0px' }}>
+        <StyledModalBody style={{ paddingLeft: '0px', paddingRight: '0px', paddingTop: '0px' }}>
           <>
             {chains
               .filter((chain) => {
@@ -159,7 +137,7 @@ const SearchModalNetworkPopOver = ({
                     </Box>
 
                     {isActive && (
-                      <Box>
+                      <Box paddingRight="18px">
                         <Dot style={{ height: '12px', width: '12px' }} show color="success" className="dot" />
                       </Box>
                     )}
@@ -168,7 +146,7 @@ const SearchModalNetworkPopOver = ({
               })}
           </>
         </StyledModalBody>
-      </NetworksWrapper>
+      </PopOverScreenContainer>
     </>
   )
 }

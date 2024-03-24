@@ -49,7 +49,7 @@ export const StyledFeesContainer = styled(Box)`
   z-index: 10;
   background: ${({ theme }) => theme.colors.backgroundAlt};
   position: relative;
-  border: ${({ theme }) => `1.5px dashed ${theme.colors.inputSecondary}`};
+  border: 1.5px dashed ${({ theme }) => (theme.isDark ? `${theme.colors.input}` : `${theme.colors.inputSecondary}`)};
   &:hover {
     cursor: pointer;
   }
@@ -71,7 +71,8 @@ export const StyledFeesContainer3 = styled(Flex)`
 export const FilterdNetworkWrapper = styled(Flex)<{ showPopOver: boolean }>`
   position: absolute;
   width: 100%;
-  background: white;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+
   display: flex;
   flex-direction: column;
   height: max-content;
@@ -184,7 +185,8 @@ export const StyledVerticalLine = styled.div`
   position: absolute;
   height: calc(65%);
   width: 2px;
-  border-left: ${({ theme }) => `2px dashed ${theme.colors.inputSecondary}`};
+  border-left: 2px dashed ${({ theme }) => (theme.isDark ? `${theme.colors.input}` : `${theme.colors.inputSecondary}`)};
+
   margin-top: 10px;
   z-index: 0;
   left: calc(50% - 5px);
