@@ -2,8 +2,8 @@ import type { UseQueryResult } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import qs from 'qs'
-import { getIsNetworkEnabled, OnRampChainId } from '../constants'
-import { createQueryKey, Evaluate, OnRampLimitsPayload, UseQueryParameters } from '../types'
+import { getIsNetworkEnabled, type OnRampChainId } from '../constants'
+import { createQueryKey, type Evaluate, type OnRampLimitsPayload, type UseQueryParameters } from '../types'
 
 type CurrencyLimits = {
   code: string

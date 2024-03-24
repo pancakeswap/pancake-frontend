@@ -73,7 +73,7 @@ const NetworksWrapper = styled(Box)<{ showFilterNetworks: boolean }>`
   height: 100%;
   z-index: 1000;
   transition: bottom 0.3s ease-in-out;
-  bottom: ${({ showFilterNetworks }) => (!showFilterNetworks ? '-100%' : '-30%')};
+  bottom: ${({ showFilterNetworks }) => (!showFilterNetworks ? '-100%' : '-35%')};
   border-top-right-radius: 24px;
   border-top-left-radius: 24px;
   box-shadow: 6px 20px 12px 8px rgba(74, 74, 104, 0.1);
@@ -129,8 +129,7 @@ const SearchModalNetworkPopOver = ({
           <>
             {chains
               .filter((chain) => {
-                if ('testnet' in chain && chain.testnet) return false
-                if (chain.id === 56) return true
+                if (('testnet' in chain && chain.testnet) || chain.id === 204) return false
                 return true
               })
               .map((chain, index: number) => {

@@ -13,6 +13,8 @@ import {
   NftFillIcon,
   NftIcon,
   PancakeProtectorIcon,
+  ShoppingBasketFilledIcon,
+  ShoppingBasketIcon,
   SwapFillIcon,
   SwapIcon,
 } from '@pancakeswap/uikit'
@@ -88,13 +90,26 @@ const config: (
           image: '/images/decorations/3d-coin.png',
         },
         {
+          label: t('Trading Reward'),
+          href: '/trading-reward',
+          hideSubNav: true,
+        },
+      ].map((item) => addMenuItemSupported(item, chainId)),
+    },
+    {
+      label: t('Buy'),
+      href: '/buy-crypto',
+      icon: ShoppingBasketIcon,
+      fillIcon: ShoppingBasketFilledIcon,
+      items: [
+        {
           label: t('Buy Crypto'),
           href: '/buy-crypto',
         },
         {
-          label: t('Trading Reward'),
-          href: '/trading-reward',
-          hideSubNav: true,
+          label: t('Sell Crypto'),
+          href: '/sell-crypto',
+          disabled: true,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },

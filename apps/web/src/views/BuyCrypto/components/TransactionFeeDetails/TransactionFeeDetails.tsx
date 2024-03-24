@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/swap-sdk-core'
-import { Box, Flex, RowBetween, Text } from '@pancakeswap/uikit'
+import { ArrowDropDownIcon, ArrowDropUpIcon, Box, Flex, RowBetween, Text } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Field } from 'state/buyCrypto/actions'
@@ -37,7 +37,10 @@ export const TransactionFeeDetails = ({
   const theme = useTheme()
   const containerRef = useRef(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   const handleExpandClick = useCallback(() => setShow(!show), [show])
 
@@ -66,8 +69,12 @@ export const TransactionFeeDetails = ({
           <Flex alignItems="center">
             {selectedQuote && (
               <Text fontWeight="600" fontSize="14px" px="2px">
-                {t('Est total fees: $%fees%', {
-                  fees: (selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2),
+                {t('Est total fees: %fees%', {
+                  fees: formatLocaleNumber({
+                    number: Number((selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2)),
+                    locale,
+                    options: { currency: selectedQuote.fiatCurrency, style: 'currency' },
+                  }),
                 })}
               </Text>
             )}
@@ -78,9 +85,12 @@ export const TransactionFeeDetails = ({
             />
           </Flex>
 
-          <Text color="primary" fontWeight="600" fontSize="14px">
-            {t('Show details')}
-          </Text>
+          <Flex alignItems="center" justifyContent="center">
+            <Text color="primary" fontWeight="600" fontSize="14px">
+              {!show ? t('Show details') : t('Hide details')}
+            </Text>
+            {!show ? <ArrowDropDownIcon color="primary" /> : <ArrowDropUpIcon color="primary" />}
+          </Flex>
         </Flex>
         <StyledNotificationWrapper ref={containerRef} show={show}>
           <Description ref={contentRef} show={show} elementHeight={elementHeight}>
@@ -135,8 +145,8 @@ const FeeItem = ({ feeTitle, quote }: { feeTitle: FeeTypes; quote: OnRampProvide
             {formatLocaleNumber({
               number: FeeEstimates[feeTitle](quote),
               locale: currentLanguage.locale,
+              options: { currency: quote.fiatCurrency, style: 'currency' },
             })}{' '}
-            {quote.fiatCurrency}
           </Text>
         </Box>
       </Flex>

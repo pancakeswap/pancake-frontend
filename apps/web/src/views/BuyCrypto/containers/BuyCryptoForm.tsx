@@ -2,12 +2,12 @@ import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, AutoRow, Box, Flex, Row, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
-import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from 'react'
 import { useBuyCryptoActionHandlers, useBuyCryptoState } from 'state/buyCrypto/hooks'
 import { Field } from 'state/swap/actions'
 import { useTheme } from 'styled-components'
 import { v4 } from 'uuid'
-import { OnRampProviderQuote } from 'views/BuyCrypto/types'
+import type { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import { BuyCryptoSelector } from '../components/OnRampCurrencySelect'
 import { OnRampFlipButton } from '../components/OnRampFlipButton/OnRampFlipButton'
 import { PopOverScreenContainer } from '../components/PopOverScreen/PopOverScreen'
@@ -15,16 +15,17 @@ import { ProviderGroupItem } from '../components/ProviderSelector/ProviderGroupI
 import { ProviderSelector } from '../components/ProviderSelector/ProviderSelector'
 import { TransactionFeeDetails } from '../components/TransactionFeeDetails/TransactionFeeDetails'
 import {
-  ONRAMP_PROVIDERS,
   fiatCurrencyMap,
   formatQuoteDecimals,
   getOnRampCryptoById,
   getOnRampFiatById,
   onRampCurrenciesMap,
+  type ONRAMP_PROVIDERS,
 } from '../constants'
-import { GetBtcAddrValidationReturnType, useBtcAddressValidator } from '../hooks/useBitcoinAddressValidator'
+import { useBtcAddressValidator, type GetBtcAddrValidationReturnType } from '../hooks/useBitcoinAddressValidator'
 import { useLimitsAndInputError } from '../hooks/useOnRampInputError'
 import { useOnRampQuotes } from '../hooks/useOnRampQuotes'
+import type { ProviderAvailabilities } from '../hooks/useProviderAvailabilities'
 import InputExtended, { StyledVerticalLine } from '../styles'
 import { FormContainer } from './FormContainer'
 import { FormHeader } from './FormHeader'
@@ -39,9 +40,10 @@ interface OnRampCurrencySelectPopOverProps {
   setShowProvidersPopOver: any
   showProivdersPopOver: boolean
   disabledProviders?: Array<keyof typeof ONRAMP_PROVIDERS>
+  providerAvailabilities: ProviderAvailabilities
 }
 
-export function BuyCryptoForm() {
+export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabilities: ProviderAvailabilities }) {
   const {
     typedValue,
     independentField,
@@ -163,6 +165,7 @@ export function BuyCryptoForm() {
         setShowProvidersPopOver={setShowProvidersPopOver}
         showProivdersPopOver={showProivdersPopOver}
         disabledProviders={inputCurrencyId === 'ETH_324' ? ['MoonPay'] : []}
+        providerAvailabilities={providerAvailabilities}
       />
       <FormContainer>
         <StyledVerticalLine />
@@ -240,6 +243,7 @@ const OnRampCurrencySelectPopOver = ({
   setShowProvidersPopOver,
   showProivdersPopOver,
   disabledProviders,
+  providerAvailabilities,
 }: OnRampCurrencySelectPopOverProps) => {
   const { t } = useTranslation()
 
@@ -267,7 +271,7 @@ const OnRampCurrencySelectPopOver = ({
           selectedQuote &&
           quotes
             .filter((quote) => !quote.error)
-            .filter((quote) => !disabledProviders?.includes(quote.provider))
+            .filter((quote) => !providerAvailabilities[quote.provider] || !disabledProviders?.includes(quote.provider))
             .map((quote) => {
               return (
                 <ProviderGroupItem
