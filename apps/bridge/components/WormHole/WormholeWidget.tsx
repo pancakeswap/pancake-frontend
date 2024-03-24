@@ -11,7 +11,7 @@ import { WidgetEnvs, type ExtendedWidgetConfig } from './types'
 
 const WormholeBridge = dynamic(() => import('@wormhole-foundation/wormhole-connect'), {
   loading: () => (
-    <Box position="absolute" top="35%" left="45%" zIndex={-1}>
+    <Box position="absolute" top="35%" left="45%">
       <Spinner />
     </Box>
   ),
@@ -44,20 +44,16 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
     return config
   }, [isAptos])
 
-  if (!wormholeConfig) return <></>
   return (
     <>
       <GeneralRiskAcceptModal bridgeConfig={BridgeDisclaimerConfigs.Wormhole} />
       <Page>
-        <Box minHeight="calc(100vh - 56px - 70px)">
+        <Box minHeight="100vh">
           <Box mt={-45}>
             <WormholeBridge
               config={wormholeConfig}
               theme={theme.isDark ? Themes.dark.customTheme : Themes.light.customTheme}
             />
-          </Box>
-          <Box position="absolute" top="35%" left="45%" zIndex={-1}>
-            <Spinner />
           </Box>
         </Box>
       </Page>
