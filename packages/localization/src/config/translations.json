@@ -3277,5 +3277,9 @@
   "Why can't I see my bitcoin purchase": "Why can't I see my bitcoin purchase",
   "Transfers through the Bitcoin network may take longer due to network congestion. Please check your BTC address again after a few hours.": "Transfers through the Bitcoin network may take longer due to network congestion. Please check your BTC address again after a few hours.",
   "Sell Crypto": "Sell Crypto",
-  "Hide Details": "Hide Details"
+  "Hide Details": "Hide Details",
+  "The liquidity of this position is 0. Please try increasing the amount.": "The liquidity of this position is 0. Please try increasing the amount.",
+  "Sign In With Wallet": "Sign In With Wallet",
+  "Subscribe To PancakeSwap": "Subscribe To PancakeSwap",
+  "Registration Error": "Registration Error"
 }
