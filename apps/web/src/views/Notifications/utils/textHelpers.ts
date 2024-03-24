@@ -12,14 +12,21 @@ export const getOnBoardingDescriptionMessage = (isOnBoarded: boolean, t: Transla
   return onBoardingDescription
 }
 
-export const getOnBoardingButtonText = (isOnBoarded: boolean, loading: boolean, t: TranslateFunction) => {
-  let buttonText: string = t('Enable Notifications')
+export const getOnBoardingButtonText = (
+  areNotificationsEnabled: boolean,
+  isRegistered: boolean,
+  isSubscribed: boolean,
+  t: TranslateFunction,
+) => {
+  const isStep1 = Boolean(!areNotificationsEnabled)
+  const isStep2 = Boolean(areNotificationsEnabled && !isRegistered)
+  const isStep3 = Boolean(isRegistered && !isSubscribed)
 
-  if (loading) buttonText = t('Awaiting signature response')
-  if (!isOnBoarded) {
-    buttonText = t('Authorize Push Notifications')
-  }
-  return buttonText
+  if (isStep1) return t('Enable Notifications')
+  if (isStep2) return t('Sign In With Wallet')
+  if (isStep3) return t('Subscribe To PancakeSwap')
+
+  return t('Enable Notifications')
 }
 
 export const getSettingsButtonText = (isUnsubscribing: boolean, objectsAreEqual: boolean, t: TranslateFunction) => {

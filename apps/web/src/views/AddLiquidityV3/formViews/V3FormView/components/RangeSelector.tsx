@@ -1,7 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Price, Token } from '@pancakeswap/sdk'
 import { FlexGap } from '@pancakeswap/uikit'
+import { priceToClosestTick } from '@pancakeswap/v3-sdk'
 import { Bound } from 'config/constants/types'
+import { useMemo } from 'react'
 import StepCounter from './StepCounter'
 
 // currencyA is the base token
@@ -18,6 +20,7 @@ export default function RangeSelector({
   currencyB,
   feeAmount,
   ticksAtLimit,
+  tickSpaceLimits,
 }: {
   priceLower?: Price<Token, Token>
   priceUpper?: Price<Token, Token>
@@ -31,6 +34,7 @@ export default function RangeSelector({
   currencyB?: Currency | undefined | null
   feeAmount?: number
   ticksAtLimit: { [bound in Bound]?: boolean | undefined }
+  tickSpaceLimits?: { [bound in Bound]?: number | undefined }
 }) {
   const { t } = useTranslation()
   const tokenA = (currencyA ?? undefined)?.wrapped
@@ -40,10 +44,46 @@ export default function RangeSelector({
   const leftPrice = isSorted ? priceLower : priceUpper?.invert()
   const rightPrice = isSorted ? priceUpper : priceLower?.invert()
 
+  const leftValue = useMemo(() => {
+    if (ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER]) return '0'
+
+    if (
+      tickSpaceLimits?.[Bound.LOWER] !== undefined &&
+      leftPrice &&
+      priceToClosestTick(leftPrice) <= tickSpaceLimits[Bound.LOWER]
+    ) {
+      return '0'
+    }
+
+    return leftPrice?.toSignificant(5) ?? ''
+  }, [isSorted, leftPrice, tickSpaceLimits, ticksAtLimit])
+
+  const rightValue = useMemo(() => {
+    if (ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER]) return '∞'
+
+    if (
+      tickSpaceLimits?.[Bound.LOWER] !== undefined &&
+      rightPrice &&
+      priceToClosestTick(rightPrice) <= tickSpaceLimits[Bound.LOWER]
+    ) {
+      return '0'
+    }
+
+    if (
+      tickSpaceLimits?.[Bound.UPPER] !== undefined &&
+      rightPrice &&
+      priceToClosestTick(rightPrice) >= tickSpaceLimits[Bound.UPPER]
+    ) {
+      return '∞'
+    }
+
+    return rightPrice?.toSignificant(5) ?? ''
+  }, [isSorted, rightPrice, tickSpaceLimits, ticksAtLimit])
+
   return (
     <FlexGap gap="16px" width="100%">
       <StepCounter
-        value={ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER] ? '0' : leftPrice?.toSignificant(5) ?? ''}
+        value={leftValue}
         onUserInput={onLeftRangeInput}
         width="48%"
         decrement={isSorted ? getDecrementLower : getIncrementUpper}
@@ -57,7 +97,7 @@ export default function RangeSelector({
         tokenB={currencyB}
       />
       <StepCounter
-        value={ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] ? '∞' : rightPrice?.toSignificant(5) ?? ''}
+        value={rightValue}
         onUserInput={onRightRangeInput}
         width="48%"
         decrement={isSorted ? getDecrementUpper : getIncrementLower}

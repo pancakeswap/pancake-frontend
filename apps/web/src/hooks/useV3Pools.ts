@@ -72,7 +72,12 @@ export function useV3CandidatePoolsWithoutTicks(
   options?: V3PoolsHookParams,
 ) {
   const key = useMemo(() => {
-    if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
+    if (
+      !currencyA ||
+      !currencyB ||
+      currencyA.chainId !== currencyB.chainId ||
+      currencyA.wrapped.equals(currencyB.wrapped)
+    ) {
       return ''
     }
     const symbols = currencyA.wrapped.sortsBefore(currencyB.wrapped)
@@ -129,7 +134,12 @@ export function useV3PoolsWithTicksOnChain(
 ): V3PoolsResult {
   const gasLimit = useMulticallGasLimit(currencyA?.chainId)
   const key = useMemo(() => {
-    if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
+    if (
+      !currencyA ||
+      !currencyB ||
+      currencyA.chainId !== currencyB.chainId ||
+      currencyA.wrapped.equals(currencyB.wrapped)
+    ) {
       return ''
     }
     const symbols = currencyA.wrapped.sortsBefore(currencyB.wrapped)

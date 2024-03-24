@@ -222,6 +222,8 @@ export default function useSendSwapTransaction(
                   address: call.address,
                   value: call.value,
                   type,
+                  target: 'AMM',
+                  errorName: error?.name,
                   cause: error instanceof TransactionExecutionError ? error.cause : undefined,
                 },
                 error,

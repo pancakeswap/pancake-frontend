@@ -2,29 +2,23 @@ import { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState, useAppDispatch } from 'state'
 import { toggleAllowNotifications } from './actions'
-import { NotificationDetails, NotificationState } from './reducer'
+import { NotificationState } from './reducer'
 
-export function useAllNotifications(subscription: string | undefined): NotificationDetails[] {
+export function useHasUnreadNotifications(subscription: string | undefined): {
+  unreadLength: number
+  unreadNotificationKeys: string[]
+} {
   const state: NotificationState = useSelector<AppState, AppState['notifications']>((s) => s.notifications)
 
-  if (!subscription) return []
-  if (!state.notifications?.[subscription]?.notifications) return []
-
-  const notifications = Object.values(state.notifications?.[subscription].notifications)
-  return notifications
-}
-
-export function useHasUnreadNotifications(subscription: string | undefined): boolean {
-  const state: NotificationState = useSelector<AppState, AppState['notifications']>((s) => s.notifications)
-
-  if (!subscription) return false
-  if (!state.notifications?.[subscription]?.unread) return false
+  if (!subscription) return { unreadLength: 0, unreadNotificationKeys: [] }
+  if (!state.notifications?.[subscription]?.unread) return { unreadLength: 0, unreadNotificationKeys: [] }
 
   const unreadNotifications = Object.values(state.notifications?.[subscription].unread).filter((unread) => !unread)
-  return unreadNotifications.length > 0
+  const unreadNotificationKeys = Object.keys(state.notifications?.[subscription].unread)
+  return { unreadLength: unreadNotifications.length, unreadNotificationKeys }
 }
 
-export function useHasUnreadNotification(subscription: string | undefined, notificationId: number): boolean {
+export function useHasUnreadNotification(subscription: string | undefined, notificationId: string): boolean {
   const state: NotificationState = useSelector<AppState, AppState['notifications']>((s) => s.notifications)
   if (!subscription) return false
   if (!state.notifications?.[subscription]?.unread) return false

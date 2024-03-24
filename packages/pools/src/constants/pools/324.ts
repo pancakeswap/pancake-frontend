@@ -3,13 +3,22 @@ import { getAddress } from 'viem'
 
 import { PoolCategory, SerializedPool } from '../../types'
 
-export const livePools: SerializedPool[] = []
-// .map((p) => ({
-//   ...p,
-//   contractAddress: getAddress(p.contractAddress),
-//   stakingToken: p.stakingToken.serialize,
-//   earningToken: p.earningToken.serialize,
-// }))
+export const livePools: SerializedPool[] = [
+  {
+    sousId: 2,
+    stakingToken: zksyncTokens.cake,
+    earningToken: zksyncTokens.meow,
+    contractAddress: '0x3BF2521A44502eDC06efA069be66694ec4d3AB65',
+    poolCategory: PoolCategory.CORE,
+    tokenPerSecond: '765.8656',
+    version: 3,
+  },
+].map((p) => ({
+  ...p,
+  contractAddress: getAddress(p.contractAddress),
+  stakingToken: p.stakingToken.serialize,
+  earningToken: p.earningToken.serialize,
+}))
 
 // known finished pools
 export const finishedPools: SerializedPool[] = [

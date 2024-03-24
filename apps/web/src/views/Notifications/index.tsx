@@ -1,56 +1,43 @@
-import { Box, useToast } from '@pancakeswap/uikit'
-import { useInitWeb3InboxClient, useManageSubscription, useSubscription, useW3iAccount } from '@web3inbox/widget-react'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useAppDispatch } from 'state'
-import { clearArchivedTransactions } from 'state/notifications/actions'
-import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
-import { useAccount, useSignMessage } from 'wagmi'
-import { useTranslation } from '@pancakeswap/localization'
+import { Box } from '@pancakeswap/uikit'
+import { initWeb3InboxClient, useSubscription, useWeb3InboxAccount, useWeb3InboxClient } from '@web3inbox/react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
+import { useAccount } from 'wagmi'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
-import { APP_DOMAIN, Events, TWO_MINUTES_MILLISECONDS } from './constants'
-import NotificationSettingsView from './containers/NotificationSettings'
+import { APP_DOMAIN } from './constants'
+import NotificationSettings from './containers/NotificationSettings'
 import NotificationView from './containers/NotificationView'
+import OnBoardingView from './containers/OnBoardingView'
 import { ViewContainer } from './styles'
 import { PAGE_VIEW } from './types'
-import { parseErrorMessage } from './utils/errorBuilder'
 import { disableGlobalScroll, enableGlobalScroll } from './utils/toggleEnableScroll'
 
+interface INotificationWidget {
+  isRegistered: boolean
+}
+
+initWeb3InboxClient({
+  projectId: 'e542ff314e26ff34de2d4fba98db70bb',
+  domain: APP_DOMAIN,
+  allApps: true,
+})
+
 const Notifications = () => {
-  const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-  const [isSubscribing, setIsSubscribing] = useState<boolean>(false)
-  const dispatch = useAppDispatch()
   const { address } = useAccount()
-  const { signMessageAsync } = useSignMessage()
-  const { account, register: registerIdentity, identityKey, setAccount } = useW3iAccount()
-  const { isSubscribed } = useManageSubscription(account)
-  const { subscription } = useSubscription(account)
-  const toast = useToast()
-  const { t } = useTranslation()
 
-  const isW3iInitialized = useInitWeb3InboxClient({
-    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
-    domain: APP_DOMAIN,
-  })
+  const { data: client } = useWeb3InboxClient()
+  const { data: account, isRegistered } = useWeb3InboxAccount(`eip155:1:${address}`)
 
-  const isReady = Boolean(isSubscribed && account && isW3iInitialized)
-  const onDismiss = useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
-  const toggleOnboardView = useCallback(() => setViewIndex(PAGE_VIEW.OnboardView), [setViewIndex])
+  const isReady = Boolean(client)
 
-  const handleRegistration = useCallback(async () => {
-    if (!account) return
-    try {
-      await registerIdentity(async (message: string) => {
-        const res = await signMessageAsync({
-          message,
-        })
-        return res as string
-      })
-    } catch (error) {
-      const errMessage = parseErrorMessage(Events.SubscriptionRequestError, error)
-      toast.toastError(Events.SubscriptionRequestError.title(t), errMessage)
-    }
-  }, [t, signMessageAsync, registerIdentity, account, toast])
+  if (!isReady || !account) return null
+  return <NotificationsWidget isRegistered={isRegistered} />
+}
+
+const NotificationsWidget = memo(({ isRegistered }: INotificationWidget) => {
+  const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
+
+  const { data: subscription } = useSubscription()
+  const isSubscribed = Boolean(subscription)
 
   const toggleSettings = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -64,55 +51,23 @@ const Notifications = () => {
   )
 
   useEffect(() => {
-    if (!address || !isReady) setViewIndex(PAGE_VIEW.OnboardView)
-    if (address) setAccount(`eip155:1:${address}`)
-    if (isReady) {
-      handleRegistration()
-      setViewIndex(PAGE_VIEW.NotificationView)
-      setIsSubscribing(false)
-    }
-  }, [address, isReady, setAccount, setIsSubscribing, handleRegistration])
-
-  useEffect(() => {
-    if (!subscription?.topic) return () => null
-
-    const deleteInterval = setInterval(() => {
-      dispatch(clearArchivedTransactions({ subscriptionId: subscription.topic }))
-    }, TWO_MINUTES_MILLISECONDS)
-
-    return () => clearInterval(deleteInterval)
-  }, [subscription?.topic, dispatch])
+    if (!isSubscribed) setViewIndex(PAGE_VIEW.OnboardView)
+    if (isSubscribed) setViewIndex(PAGE_VIEW.NotificationView)
+  }, [isSubscribed])
 
   return (
-    <NotificationMenu
-      isMenuOpen={isMenuOpen}
-      setIsMenuOpen={setIsMenuOpen}
-      viewIndex={viewIndex}
-      subscriptionId={subscription?.topic}
-      account={account}
-    >
-      {() => (
-        <Box tabIndex={-1} onMouseEnter={disableGlobalScroll} onMouseLeave={enableGlobalScroll}>
-          <ViewContainer $viewIndex={viewIndex}>
-            <OnBoardingView
-              identityKey={identityKey}
-              handleRegistration={handleRegistration}
-              isReady={isW3iInitialized}
-              isSubscribing={isSubscribing}
-              setIsSubscribing={setIsSubscribing}
-            />
-            <NotificationView toggleSettings={toggleSettings} onDismiss={onDismiss} account={account!} />
-            <NotificationSettingsView
-              toggleSettings={toggleSettings}
-              onDismiss={onDismiss}
-              toggleOnboardView={toggleOnboardView}
-              account={account!}
-            />
-          </ViewContainer>
-        </Box>
-      )}
+    <NotificationMenu viewIndex={viewIndex} subscriptionId={subscription?.topic}>
+      <Box tabIndex={-1} onMouseEnter={disableGlobalScroll} onMouseLeave={enableGlobalScroll}>
+        <ViewContainer $viewIndex={viewIndex}>
+          <OnBoardingView isReady={isSubscribed} isRegistered={isRegistered} />
+
+          <NotificationView toggleSettings={toggleSettings} subscription={subscription} />
+
+          <NotificationSettings toggleSettings={toggleSettings} />
+        </ViewContainer>
+      </Box>
     </NotificationMenu>
   )
-}
+})
 
-export default React.memo(Notifications)
+export default Notifications

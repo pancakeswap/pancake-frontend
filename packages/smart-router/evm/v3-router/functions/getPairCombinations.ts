@@ -89,7 +89,12 @@ const getTokenBasesFromGauges = memoize(
 )
 
 const resolver = (currencyA?: Currency, currencyB?: Currency) => {
-  if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
+  if (
+    !currencyA ||
+    !currencyB ||
+    currencyA.chainId !== currencyB.chainId ||
+    currencyA.wrapped.equals(currencyB.wrapped)
+  ) {
     return `${currencyA?.chainId}_${currencyA?.wrapped?.address}_${currencyB?.wrapped?.address}`
   }
   const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
