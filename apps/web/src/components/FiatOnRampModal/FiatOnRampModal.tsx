@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   InjectedModalProps,
+  ModalBody,
   ModalHeader,
   ModalTitle,
   ModalWrapper,
@@ -22,7 +23,7 @@ import { v4 } from 'uuid'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 import { ONRAMP_PROVIDERS, OnRampChainId, getOnrampCurrencyChainId, isNativeBtc } from 'views/BuyCrypto/constants'
 import { useOnRampSignature } from 'views/BuyCrypto/hooks/useOnRampSignature'
-import { StyledBackArrowContainer } from 'views/BuyCrypto/styles'
+import { IFrameWrapper, StyledBackArrowContainer } from 'views/BuyCrypto/styles'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
@@ -188,7 +189,7 @@ export const FiatOnRampModal = memo<
 
   return (
     <>
-      <ModalWrapper minHeight="700px" minWidth="360px" width="425px">
+      <ModalWrapper>
         <ModalHeader background={theme.colors.gradientCardHeader}>
           <ModalTitle pt="6px" justifyContent="center">
             <StyledBackArrowContainer onClick={handleDismiss}>
@@ -199,15 +200,17 @@ export const FiatOnRampModal = memo<
             </Heading>
           </ModalTitle>
         </ModalHeader>
-        {error || !selectedQuote || !iframeUrl ? (
-          <Flex justifyContent="center" alignItems="center" alignContent="center">
-            <ErrorText>
-              <Trans>something went wrong!</Trans>
-            </ErrorText>
-          </Flex>
-        ) : (
-          <ProviderIFrame provider={selectedQuote?.provider} loading={loading} signedIframeUrl={iframeUrl} />
-        )}
+        <ModalBody position="relative" style={{ alignItems: 'center', overflowY: 'hidden' }}>
+          {error || !selectedQuote || !iframeUrl ? (
+            <IFrameWrapper justifyContent="center" alignItems="center">
+              <ErrorText>
+                <Trans>something went wrong!</Trans>
+              </ErrorText>
+            </IFrameWrapper>
+          ) : (
+            <ProviderIFrame provider={selectedQuote?.provider} loading={loading} signedIframeUrl={iframeUrl} />
+          )}
+        </ModalBody>
       </ModalWrapper>
       <Script
         src={MERCURYO_WIDGET_URL}

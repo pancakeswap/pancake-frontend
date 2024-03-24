@@ -9,6 +9,7 @@ export const useFetchProviderAvailabilities = () => {
     queryKey: ['providerAvailabilities'],
     queryFn: async () => {
       const response = await fetch(`${ONRAMP_API_BASE_URL}/fetch-provider-availability`, {
+        method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',

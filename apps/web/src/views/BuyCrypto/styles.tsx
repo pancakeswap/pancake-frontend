@@ -94,25 +94,25 @@ export const NetworkFilterOverlay = styled(Flex)<{ showPopOver: boolean }>`
   pointer-events: ${({ showPopOver }) => (showPopOver ? 'auto' : 'none')};
 `
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
-  width: 100%;
-  left: 50%;
-  top: 55%;
-  transform: translate(-50%, -50%);
-  position: absolute;
+  height: 650px;
+  width: 100vw;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 425px;
+  }
+
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
 `
 
 export const IFrameWrapper = styled(Flex)`
-  width: 100%;
-  left: 50%;
-  top: 55%;
-  transform: translate(-50%, -50%);
-  background: ${({ theme }) => (theme.isDark ? '#27262C' : 'white')};
-  position: absolute;
+  height: 650px;
+  width: 100vw;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 425px;
+  }
+
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
-  padding-bottom: 18px;
 `
 export const StyledBackArrowContainer = styled(Box)`
   position: absolute;
