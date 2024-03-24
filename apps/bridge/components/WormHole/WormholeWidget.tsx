@@ -10,8 +10,12 @@ import { Themes } from './theme'
 import { WidgetEnvs, type ExtendedWidgetConfig } from './types'
 
 const WormholeBridge = dynamic(() => import('@wormhole-foundation/wormhole-connect'), {
-  loading: () => <p>Loading...</p>, // You can customize the loading state
-  ssr: false, // Disable server-side rendering for this component
+  loading: () => (
+    <Box position="absolute" top="35%" left="45%" zIndex={-1}>
+      <Spinner />
+    </Box>
+  ),
+  ssr: false,
 })
 export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
   const theme = useTheme()
