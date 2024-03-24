@@ -271,7 +271,7 @@ const OnRampCurrencySelectPopOver = ({
           selectedQuote &&
           quotes
             .filter((quote) => !quote.error)
-            .filter((quote) => !providerAvailabilities[quote.provider] || !disabledProviders?.includes(quote.provider))
+            .filter((quote) => providerAvailabilities[quote.provider] || !disabledProviders?.includes(quote.provider))
             .map((quote) => {
               return (
                 <ProviderGroupItem
