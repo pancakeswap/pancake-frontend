@@ -1,4 +1,4 @@
-import { Button, LinkProps } from "@pancakeswap/uikit";
+import { Button, ButtonProps, LinkProps } from "@pancakeswap/uikit";
 import { PropsWithChildren } from "react";
 import { styled } from "styled-components";
 import { LinkExternalAction } from "./LinkExternal";
@@ -15,7 +15,13 @@ const StyledButton = styled(Button)`
   }
 `;
 
-export function ButtonLinkAction({ children, color, href, external, ...props }: PropsWithChildren<Props & LinkProps>) {
+export function ButtonLinkAction({
+  children,
+  color,
+  href,
+  external,
+  ...props
+}: PropsWithChildren<Props & LinkProps & ButtonProps>) {
   return (
     <StyledButton {...props}>
       <LinkExternalAction href={href} external={external} color={color}>
