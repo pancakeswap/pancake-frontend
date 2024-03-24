@@ -31,11 +31,7 @@ export const ProviderIFrame = ({ provider, loading, signedIframeUrl }: IProvider
         <LoadingBuffer loading={loading} />
         <StyledIframe
           id={providerIframeId}
-          src={
-            provider === ONRAMP_PROVIDERS.MoonPay && theme.isDark
-              ? signedIframeUrl.replace('theme=light', 'theme=dark')
-              : signedIframeUrl
-          }
+          src={signedIframeUrl}
           title="fiat-onramp-iframe"
           isDark={theme.isDark}
           allow="camera;microphone;fullscreen;payment"
