@@ -463,7 +463,7 @@ exports[`renders correctly 1`] = `
   position: relative;
   z-index: 1;
   width: 100%;
-  display: block;
+  display: flex;
   white-space: nowrap;
   scroll-behavior: smooth;
   flex-grow: 1;
@@ -752,13 +752,6 @@ exports[`renders correctly 1`] = `
 @media screen and (min-width: 576px) {
   .c50 {
     display: none;
-  }
-}
-
-@media screen and (min-width: 852px) {
-  .c45 {
-    width: auto;
-    display: flex;
   }
 }
 

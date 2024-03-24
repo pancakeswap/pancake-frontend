@@ -12,7 +12,7 @@ export const SubMenuItemWrapper = styled(Flex)<{ $isMobileOnly: boolean }>`
 const StyledSubMenuItems = styled(Flex)`
   position: relative;
   z-index: 1;
-  width: auto%;
+  width: 100%;
   display: flex;
   white-space: nowrap;
   scroll-behavior: smooth;
