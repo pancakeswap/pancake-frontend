@@ -87,7 +87,7 @@ export const TransactionFeeDetails = ({
 
           <Flex alignItems="center" justifyContent="center">
             <Text color="primary" fontWeight="600" fontSize="14px">
-              {!show ? t('Show details') : t('Hide details')}
+              {!show ? t('Show details') : t('Hide Details')}
             </Text>
             {!show ? <ArrowDropDownIcon color="primary" /> : <ArrowDropUpIcon color="primary" />}
           </Flex>
