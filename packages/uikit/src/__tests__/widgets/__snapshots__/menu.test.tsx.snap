@@ -176,14 +176,14 @@ exports[`renders correctly 1`] = `
 }
 
 .c43 {
-  padding-left: 12px;
+  padding-left: 0px;
 }
 
 .c46 {
   margin-right: 20px;
 }
 
-.c52 {
+.c51 {
   margin-top: 0;
 }
 
@@ -209,12 +209,7 @@ exports[`renders correctly 1`] = `
 
 .c44 {
   display: flex;
-  justify-content: start;
-}
-
-.c51 {
-  display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .c14 {
@@ -447,6 +442,10 @@ exports[`renders correctly 1`] = `
   background: var(--colors-tertiary);
 }
 
+.c49 {
+  gap: 10px;
+}
+
 .c40 {
   width: 100%;
   overflow: hidden;
@@ -528,10 +527,6 @@ exports[`renders correctly 1`] = `
   scroll-snap-align: start;
 }
 
-.c49 {
-  gap: 10px;
-}
-
 .c5 {
   display: flex;
 }
@@ -586,13 +581,13 @@ exports[`renders correctly 1`] = `
   z-index: 20;
 }
 
-.c53 {
+.c52 {
   position: relative;
   display: flex;
   max-width: 100vw;
 }
 
-.c54 {
+.c53 {
   flex-grow: 1;
   transition: margin-top 0.2s,margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translate3d(0, 0, 0);
@@ -664,12 +659,6 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width: 576px) {
-  .c43 {
-    padding-left: 0px;
-  }
-}
-
-@media screen and (min-width: 576px) {
 
 }
 
@@ -695,18 +684,6 @@ exports[`renders correctly 1`] = `
 
 @media screen and (min-width: 576px) {
 
-}
-
-@media screen and (min-width: 576px) {
-  .c44 {
-    justify-content: center;
-  }
-}
-
-@media screen and (min-width: 576px) {
-  .c51 {
-    justify-content: center;
-  }
 }
 
 @media screen and (min-width: 370px) {
@@ -849,7 +826,7 @@ exports[`renders correctly 1`] = `
             </a>
           </div>
           <div
-            class="reset_base__14t2dq60 sprinkles_display_none_xs__15lkarx10 sprinkles_display_block_md__15lkarx2"
+            class="reset_base__14t2dq60 sprinkles_display_none_xs__15lkarx10 sprinkles_display_block_lg__15lkarx3"
           >
             <div
               class="c7 c3"
@@ -1199,7 +1176,7 @@ exports[`renders correctly 1`] = `
           class="c25 c4"
         >
           <div
-            class="reset_base__14t2dq60 sprinkles_marginRight_12px_xs__15lkarxlo sprinkles_display_none_xs__15lkarx10 sprinkles_display_block_lg__15lkarx3"
+            class="reset_base__14t2dq60 sprinkles_marginRight_12px_xs__15lkarxlo sprinkles_display_none_xs__15lkarx10 sprinkles_display_block_xxl__15lkarx5"
           >
             <a
               class="c26"
@@ -1544,7 +1521,7 @@ exports[`renders correctly 1`] = `
           class="c42 reset_base__14t2dq60 sprinkles_display_block_xs__15lkarx0 sprinkles_display_none_md__15lkarx12"
         />
         <div
-          class="c43 c51 c45"
+          class="c43 c44 c45"
         >
           <div
             class="c46 c47"
@@ -1568,10 +1545,10 @@ exports[`renders correctly 1`] = `
       </div>
     </div>
     <div
-      class="c52 c53"
+      class="c51 c52"
     >
       <div
-        class="c54"
+        class="c53"
       >
         body
       </div>
@@ -2162,10 +2139,6 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width: 576px) {
-
-}
-
-@media screen and (min-width: 576px) {
   .c0 {
     padding: 56px 40px 32px 40px;
     margin-bottom: 0px;
@@ -2207,14 +2180,6 @@ exports[`renders correctly 1`] = `
   .c46 {
     margin-bottom: 0;
   }
-}
-
-@media screen and (min-width: 576px) {
-
-}
-
-@media screen and (min-width: 576px) {
-
 }
 
 @media screen and (min-width: 370px) {
@@ -2283,10 +2248,6 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width: 576px) {
-
-}
-
-@media screen and (min-width: 852px) {
 
 }
 
@@ -3656,18 +3617,6 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
 
 }
 
-@media screen and (min-width: 576px) {
-
-}
-
-@media screen and (min-width: 576px) {
-
-}
-
-@media screen and (min-width: 576px) {
-
-}
-
 @media screen and (min-width: 370px) {
 
 }
@@ -3712,10 +3661,6 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
 
 }
 
-@media screen and (min-width: 852px) {
-
-}
-
 @media screen and (min-width: 1080px) {
 
 }
@@ -3725,7 +3670,7 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
 }
 
 <div
-    class="reset_base__14t2dq60 sprinkles_display_block_xs__15lkarx0 sprinkles_display_none_md__15lkarx12"
+    class="reset_base__14t2dq60 sprinkles_display_block_xs__15lkarx0 sprinkles_display_none_lg__15lkarx13"
   >
     <div
       class="c0 c1"
