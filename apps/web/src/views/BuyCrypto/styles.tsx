@@ -94,7 +94,6 @@ export const NetworkFilterOverlay = styled(Flex)<{ showPopOver: boolean }>`
   pointer-events: ${({ showPopOver }) => (showPopOver ? 'auto' : 'none')};
 `
 export const StyledIframe = styled.iframe<{ isDark: boolean }>`
-  height: 90%;
   width: 100%;
   left: 50%;
   top: 55%;
