@@ -105,7 +105,6 @@ export const StyledIframe = styled.iframe<{ isDark: boolean }>`
 `
 
 export const IFrameWrapper = styled(Flex)`
-  height: 90%;
   width: 100%;
   left: 50%;
   top: 55%;
