@@ -42,7 +42,6 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
   const { quote, externalTransactionId, chainId, btcAddress, ...query } = parameters
 
   const walletAddress = chainId === 0 ? btcAddress : address
-  console.log(walletAddress)
   return useQuery({
     ...query,
     queryKey: getOnRampSignatureQueryKey([

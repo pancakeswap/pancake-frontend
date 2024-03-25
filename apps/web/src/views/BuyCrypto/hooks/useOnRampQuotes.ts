@@ -1,6 +1,6 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import type { ONRAMP_PROVIDERS } from '../constants'
+import { ONRAMP_PROVIDERS } from '../constants'
 import {
   createQueryKey,
   type Evaluate,
@@ -9,6 +9,7 @@ import {
   type OnRampQuotesPayload,
   type UseQueryParameters,
 } from '../types'
+import type { ProviderAvailabilities } from './useProviderAvailabilities'
 
 const getOnRampQuotesQueryKey = createQueryKey<'fetch-onramp-quotes', [ExactPartial<OnRampQuotesPayload>]>(
   'fetch-onramp-quotes',
@@ -26,9 +27,10 @@ export type UseOnRampQuotesParameters<selectData = GetOnRampQuoteReturnType> = E
 >
 
 export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
-  parameters: UseOnRampQuotesParameters<selectData>,
+  parameters: UseOnRampQuotesParameters<selectData> & { providerAvailabilities: ProviderAvailabilities },
 ) => {
-  const { fiatAmount, enabled, cryptoCurrency, fiatCurrency, network, isFiat, ...query } = parameters
+  const { fiatAmount, enabled, cryptoCurrency, fiatCurrency, network, providerAvailabilities, isFiat, ...query } =
+    parameters
 
   return useQuery({
     ...query,
@@ -57,7 +59,9 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         network,
         isFiat,
       })
-      const sortedFilteredQuotes = providerQuotes.sort((a, b) => b.quote - a.quote)
+      const sortedFilteredQuotes = providerQuotes
+        .filter((quote) => providerAvailabilities[quote.provider])
+        .sort((a, b) => b.quote - a.quote)
 
       return sortedFilteredQuotes
     },

@@ -20,7 +20,6 @@ import {
   getOnRampCryptoById,
   getOnRampFiatById,
   onRampCurrenciesMap,
-  type ONRAMP_PROVIDERS,
 } from '../constants'
 import { useBtcAddressValidator, type GetBtcAddrValidationReturnType } from '../hooks/useBitcoinAddressValidator'
 import { useLimitsAndInputError } from '../hooks/useOnRampInputError'
@@ -39,8 +38,6 @@ interface OnRampCurrencySelectPopOverProps {
   setSelectedQuote: (quote: OnRampProviderQuote) => void
   setShowProvidersPopOver: any
   showProivdersPopOver: boolean
-  disabledProviders?: Array<keyof typeof ONRAMP_PROVIDERS>
-  providerAvailabilities: ProviderAvailabilities
 }
 
 export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabilities: ProviderAvailabilities }) {
@@ -89,7 +86,6 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
 
   const isBtc = Boolean(inputCurrencyId === 'BTC_0')
   const isTypingInput = independentField === Field.INPUT
-  const disabledProviders = inputCurrencyId === 'ETH_324' ? ['MoonPay'] : []
   // const isTypingOutput = independentField === Field.OUTPUT
 
   const outputValue = useMemo(() => {
@@ -112,7 +108,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     isFiatFlow,
   })
   const {
-    data: rawQuotes,
+    data: quotes,
     isFetching,
     isError,
     refetch,
@@ -121,17 +117,15 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     fiatCurrency: fiatCurrency?.symbol,
     network: cryptoCurrency?.chainId,
     fiatAmount: typedValue || defaultAmt,
-    enabled: Boolean(!inputError),
+    providerAvailabilities,
+    enabled: Boolean(!inputError && providerAvailabilities),
     isFiat: 'true',
   })
 
-  const quotes = useMemo(() => {
-    if (!rawQuotes) return []
-    return rawQuotes
-      .filter((quote) => !quote.error)
-      .filter((quote) => providerAvailabilities[quote.provider])
-      .filter((quote) => !disabledProviders?.includes(quote.provider))
-  }, [rawQuotes, providerAvailabilities, disabledProviders])
+  const quotesError = useMemo(() => {
+    if (quotes && quotes.length === 0) return t('No quotes available')
+    return undefined
+  }, [quotes, t])
 
   const handleInput = useCallback((event) => {
     const input = event.target.value
@@ -144,7 +138,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
   }, [handleTypeInput, defaultAmt])
 
   useEffect(() => {
-    if (!quotes) return
+    if (!quotes || quotes?.length === 0) return
     setSelectedQuote(quotes[0])
     if (bestQuoteRef.current !== quotes[0]) {
       bestQuoteRef.current = quotes[0]
@@ -157,11 +151,6 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     handleTypeOutput(defaultAmt)
     handleTypeInput(defaultAmt)
   }, [defaultAmt, handleTypeOutput, handleTypeInput])
-
-  const quotesError = useMemo(() => {
-    if (quotes && quotes.length === 0) return t('No quotes available')
-    return undefined
-  }, [quotes, t])
 
   return (
     <AutoColumn position="relative">
@@ -178,8 +167,6 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
         setSelectedQuote={setSelectedQuote}
         setShowProvidersPopOver={setShowProvidersPopOver}
         showProivdersPopOver={showProivdersPopOver}
-        disabledProviders={inputCurrencyId === 'ETH_324' ? ['MoonPay'] : []}
-        providerAvailabilities={providerAvailabilities}
       />
       <FormContainer>
         <StyledVerticalLine />
@@ -192,7 +179,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           value={outputValue || ''}
           onUserInput={handleTypeInput}
           loading={Boolean(fetching || isFetching || !quotes)}
-          error={Boolean(error || isError || Boolean(inputError && isTypingInput))}
+          error={Boolean(error || inputError)}
           disableInput={false}
         />
         <BuyCryptoSelector
@@ -232,8 +219,8 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={inputCurrencyId}
             selectedQuote={selectedQuote}
-            disabled={isError || Boolean(inputError) || Boolean(isBtc && !validAddress?.result) || quotes.length === 0}
-            loading={!quotes || isFetching}
+            disabled={isError || Boolean(inputError) || Boolean(isBtc && !validAddress?.result)}
+            loading={!quotes || quotes?.length === 0 || isFetching}
             input={searchQuery}
             resetBuyCryptoState={resetBuyCryptoState}
             btcAddress={debouncedQuery}
@@ -258,8 +245,6 @@ const OnRampCurrencySelectPopOver = ({
   setSelectedQuote,
   setShowProvidersPopOver,
   showProivdersPopOver,
-  disabledProviders,
-  providerAvailabilities,
 }: OnRampCurrencySelectPopOverProps) => {
   const { t } = useTranslation()
 
