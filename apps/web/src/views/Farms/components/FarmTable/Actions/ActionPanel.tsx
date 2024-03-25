@@ -444,7 +444,12 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
             {(props) => <HarvestAction {...props} />}
           </ProxyHarvestActionContainer>
         ) : !farm?.bCakeWrapperAddress ? (
-          <HarvestActionContainer {...farm} {...bCakeProps} userDataReady={userDataReady}>
+          <HarvestActionContainer
+            {...farm}
+            {...bCakeProps}
+            bCakeUserData={farm.bCakeUserData}
+            userDataReady={userDataReady}
+          >
             {(harvestProps) => <HarvestAction {...harvestProps} />}
           </HarvestActionContainer>
         ) : null}
