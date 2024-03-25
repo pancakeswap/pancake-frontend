@@ -223,11 +223,15 @@ export async function findBestTrade(params: FindBestTradeParams): Promise<V4Trad
 
   // Exact output doesn't support mixed route
   const poolsByType = groupPoolsByType(candidatePools)
-  const trades = await Promise.all(
+  const trades = await Promise.allSettled(
     poolsByType.map((pools) => getBestTrade({ tradeType, candidatePools: pools, ...rest })),
   )
   let bestTrade: V4Trade<TradeType> | undefined
-  for (const trade of trades) {
+  for (const result of trades) {
+    if (result.status === 'rejected') {
+      continue
+    }
+    const { value: trade } = result
     if (!trade) {
       continue
     }
