@@ -9,7 +9,6 @@ import {
   type OnRampQuotesPayload,
   type UseQueryParameters,
 } from '../types'
-import type { ProviderAvailabilities } from './useProviderAvailabilities'
 
 const getOnRampQuotesQueryKey = createQueryKey<'fetch-onramp-quotes', [ExactPartial<OnRampQuotesPayload>]>(
   'fetch-onramp-quotes',
@@ -17,7 +16,7 @@ const getOnRampQuotesQueryKey = createQueryKey<'fetch-onramp-quotes', [ExactPart
 
 type GetOnRampQuotesQueryKey = ReturnType<typeof getOnRampQuotesQueryKey>
 
-type GetOnRampQuoteReturnType = OnRampProviderQuote[]
+type GetOnRampQuoteReturnType = { quotes: OnRampProviderQuote[]; quotesError: string | undefined }
 
 export type UseOnRampQuotesReturnType<selectData = GetOnRampQuoteReturnType> = UseQueryResult<selectData, Error>
 
@@ -27,10 +26,9 @@ export type UseOnRampQuotesParameters<selectData = GetOnRampQuoteReturnType> = E
 >
 
 export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
-  parameters: UseOnRampQuotesParameters<selectData> & { providerAvailabilities: ProviderAvailabilities },
+  parameters: UseOnRampQuotesParameters<selectData>,
 ) => {
-  const { fiatAmount, enabled, cryptoCurrency, fiatCurrency, network, providerAvailabilities, isFiat, ...query } =
-    parameters
+  const { fiatAmount, enabled, cryptoCurrency, fiatCurrency, network, ...query } = parameters
 
   return useQuery({
     ...query,
@@ -40,7 +38,6 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         fiatAmount,
         fiatCurrency,
         network,
-        isFiat,
       },
     ]),
     refetchInterval: 40 * 1_000,
@@ -48,8 +45,8 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
     enabled: Boolean(enabled),
     queryFn: async ({ queryKey }) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { cryptoCurrency, fiatAmount, fiatCurrency, network, isFiat } = queryKey[1]
-      if (!cryptoCurrency || !fiatAmount || !fiatCurrency || !isFiat) {
+      const { cryptoCurrency, fiatAmount, fiatCurrency, network } = queryKey[1]
+      if (!cryptoCurrency || !fiatAmount || !fiatCurrency) {
         throw new Error('Missing params')
       }
       const providerQuotes = await fetchProviderQuotes({
@@ -57,15 +54,10 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         fiatAmount,
         fiatCurrency,
         network,
-        isFiat,
       })
-      const sortedFilteredQuotes = providerQuotes
-        .filter((quote) => !quote.error)
-        .filter((quote) => providerAvailabilities[quote.provider])
-
-        .sort((a, b) => b.quote - a.quote)
-
-      return sortedFilteredQuotes
+      const error =
+        providerQuotes.length === 0 ? `No quotes available for ${fiatCurrency}/${cryptoCurrency}` : undefined
+      return { quotes: providerQuotes, quotesError: error }
     },
   })
 }

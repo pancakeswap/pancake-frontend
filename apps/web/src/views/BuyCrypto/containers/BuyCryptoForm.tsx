@@ -107,25 +107,16 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     fiatCurrency,
     isFiatFlow,
   })
-  const {
-    data: quotes,
-    isFetching,
-    isError,
-    refetch,
-  } = useOnRampQuotes({
+  const { data, isFetching, isError, refetch } = useOnRampQuotes({
     cryptoCurrency: cryptoCurrency?.symbol,
     fiatCurrency: fiatCurrency?.symbol,
     network: cryptoCurrency?.chainId,
     fiatAmount: typedValue || defaultAmt,
-    providerAvailabilities,
-    enabled: Boolean(!inputError && providerAvailabilities),
-    isFiat: 'true',
+    enabled: Boolean(!inputError),
   })
 
-  const quotesError = useMemo(() => {
-    if (quotes && quotes.length === 0) return t('No quotes available')
-    return undefined
-  }, [quotes, t])
+  const quotes = data?.quotes
+  const quotesError = data?.quotesError
 
   const handleInput = useCallback((event) => {
     const input = event.target.value
