@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "viem": "1.19.11",
+    "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*"
   },
   "devDependencies": {

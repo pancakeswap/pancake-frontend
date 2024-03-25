@@ -2469,6 +2469,9 @@ importers:
 
   packages/v4-sdk:
     dependencies:
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../swap-sdk-core
       '@pancakeswap/v3-sdk':
         specifier: workspace:*
         version: link:../v3-sdk
