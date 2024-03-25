@@ -48,12 +48,12 @@ const TableContainer = styled.div`
 
 export const TableLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <TableContainer id="table-container">
+    <Container id="table-container">
       <TableWrapper>
         <StyledTable>
           <TableBody>{children}</TableBody>
         </StyledTable>
       </TableWrapper>
-    </TableContainer>
+    </Container>
   )
 }

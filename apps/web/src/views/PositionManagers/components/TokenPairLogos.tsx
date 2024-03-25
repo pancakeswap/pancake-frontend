@@ -47,7 +47,7 @@ export const TokenPairLogos = memo(function TokenPairLogos({
   height = 64,
 }: Props) {
   return (
-    <Container>
+    <Container style={{ width, height }}>
       <TokenPairComp
         variant="inverted"
         primaryToken={currencyA.wrapped}

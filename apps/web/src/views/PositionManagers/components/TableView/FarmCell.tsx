@@ -3,8 +3,7 @@ import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { memo, useMemo } from 'react'
 
-import BoostedTag from 'views/Farms/components/YieldBooster/components/BoostedTag'
-import { CardHeader } from '../CardLayout'
+// import BoostedTag from 'views/Farms/components/YieldBooster/components/BoostedTag'
 import { FeeTag, SingleTokenTag } from '../Tags'
 import { TokenPairLogos } from '../TokenPairLogos'
 
@@ -49,18 +48,18 @@ export const FarmCell = memo(function CardTitle({
   )
 
   return (
-    <CardHeader>
-      <Box style={{ flexShrink: 0 }}>
+    <Flex pl="20px">
+      <Box style={{ flexShrink: 0 }} mr="16px">
         <TokenPairLogos
-          width={54}
-          height={54}
+          width={40}
+          height={40}
           currencyA={displayCurrencyA}
           currencyB={displayCurrencyB}
           autoMark={autoCompound}
         />
       </Box>
-      <Flex flexDirection="row" justifyContent="flex-start">
-        <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
+      <Flex flexDirection="row" justifyContent="flex-start" height="100%" alignItems="center">
+        <Flex flexDirection="row" justifyContent="flex-end" alignItems="center" mr="10px" height="40px">
           <Text fontSize="1em" bold style={{ whiteSpace: 'nowrap' }}>
             {tokenPairName}
           </Text>
@@ -68,12 +67,19 @@ export const FarmCell = memo(function CardTitle({
             {vaultName}
           </Text>
         </Flex>
-        <Flex flexDirection="row" justifyContent="flex-end" mt="0.25em" style={{ gap: '0.5em' }} flexWrap="wrap">
+        <Flex
+          flexDirection="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          mt="0.25em"
+          style={{ gap: '0.5em' }}
+          flexWrap="wrap"
+        >
           <FeeTag feeAmount={feeTier} />
           {isSingleDepositToken && <SingleTokenTag />}
-          {isBooster && <BoostedTag />}
+          {/* {isBooster && <BoostedTag />} */}
         </Flex>
       </Flex>
-    </CardHeader>
+    </Flex>
   )
 })
