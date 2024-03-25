@@ -121,7 +121,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StakeButtonProps>> = ({
       setIsLoading(true)
 
       const receipt = await fetchWithCatchTxError(() => {
-        return bCakeWrapperContract.write.deposit([userLp, false], {
+        return bCakeWrapperContract.write.deposit([userLp ?? 0n, false], {
           account: account ?? '0x',
           chain,
         })
