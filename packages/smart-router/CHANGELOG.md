@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 6.0.0
+
+### Major Changes
+
+- 1d74cbb: Introduce new trade format
+
 ## 5.1.8
 
 ### Patch Changes
