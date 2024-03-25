@@ -60,7 +60,7 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress: Addres
                 {
                   account: account ?? '0x',
                   chain,
-                  gasLimit: new BigNumber(estGas.toString()).times(1.5).toNumber(),
+                  gas: BigInt(new BigNumber(estGas.toString()).times(1.5).toNumber().toFixed(0)),
                 },
               )
             }
