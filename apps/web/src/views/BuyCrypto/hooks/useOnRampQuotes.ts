@@ -60,7 +60,9 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         isFiat,
       })
       const sortedFilteredQuotes = providerQuotes
+        .filter((quote) => !quote.error)
         .filter((quote) => providerAvailabilities[quote.provider])
+
         .sort((a, b) => b.quote - a.quote)
 
       return sortedFilteredQuotes
