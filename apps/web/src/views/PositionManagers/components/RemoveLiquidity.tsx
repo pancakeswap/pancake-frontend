@@ -85,6 +85,14 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
                 account: account ?? '0x',
               },
             )
+            console.log({
+              estGasOrigin: estGas.toString(),
+              estGasAdjusted: new BigNumber(estGas.toString()).times(1.5).toNumber(),
+              from: account,
+              to: bCakeWrapperContract.address,
+              amount: avoidDecimalsProblem,
+              method: 'withdrawThenBurn',
+            })
             return bCakeWrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, false, message], {
               account: account ?? '0x',
               chain,
