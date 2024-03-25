@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
 import { Button, useModal } from '@pancakeswap/uikit'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import { CommitButton } from 'components/CommitButton'
@@ -23,6 +23,8 @@ import { MMRfqTrade } from '../types'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
+type Trade = SmartRouterTrade<TradeType> | V4Router.V4Trade<TradeType>
+
 interface SwapCommitButtonPropsType {
   swapIsUnsupported: boolean
   account: string | undefined
@@ -39,7 +41,7 @@ interface SwapCommitButtonPropsType {
     OUTPUT?: Currency
   }
   isExpertMode: boolean
-  rfqTrade: MMRfqTrade
+  rfqTrade: MMRfqTrade<Trade>
   swapInputError: string
   currencyBalances: {
     INPUT?: CurrencyAmount<Currency>
@@ -88,7 +90,7 @@ export function MMSwapCommitButton({
     swapCalls,
   )
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm?: SmartRouterTrade<TradeType> | null
+    tradeToConfirm?: Trade | null
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined

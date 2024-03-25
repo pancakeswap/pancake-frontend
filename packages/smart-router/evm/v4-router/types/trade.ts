@@ -4,13 +4,15 @@ import { AbortControl } from '@pancakeswap/utils/abortControl'
 import { BaseTradeConfig, Pool, SmartRouterTrade, Route } from '../../v3-router/types'
 import { Graph } from './graph'
 
-export type V4Route = Route & {
-  gasCost: bigint
-  gasCostInBase: CurrencyAmount<Currency>
-  gasCostInQuote: CurrencyAmount<Currency>
+export type GasUseInfo = {
+  gasUseEstimate: bigint
+  gasUseEstimateBase: CurrencyAmount<Currency>
+  gasUseEstimateQuote: CurrencyAmount<Currency>
   inputAmountWithGasAdjusted: CurrencyAmount<Currency>
   outputAmountWithGasAdjusted: CurrencyAmount<Currency>
 }
+
+export type V4Route = Omit<Route, 'g'> & GasUseInfo
 
 export type TradeConfig = Omit<BaseTradeConfig, 'poolProvider' | 'allowedPoolTypes'> & {
   candidatePools: Pool[]
@@ -18,12 +20,11 @@ export type TradeConfig = Omit<BaseTradeConfig, 'poolProvider' | 'allowedPoolTyp
 
 export type V4Trade<TTradeType extends TradeType> = Omit<
   SmartRouterTrade<TTradeType>,
-  'gasEstimateInUSD' | 'blockNumber' | 'routes'
-> & {
-  routes: V4Route[]
-  graph: Graph
-  gasCostInQuote: CurrencyAmount<Currency>
-  gasCostInBase: CurrencyAmount<Currency>
-  inputAmountWithGasAdjusted: CurrencyAmount<Currency>
-  outputAmountWithGasAdjusted: CurrencyAmount<Currency>
-}
+  'gasEstimateInUSD' | 'blockNumber' | 'routes' | 'gasEstimate'
+> &
+  GasUseInfo & {
+    routes: V4Route[]
+    graph: Graph
+  }
+
+export type V4TradeWithoutGraph<TTradeType extends TradeType> = Omit<V4Trade<TTradeType>, 'graph'>

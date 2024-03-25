@@ -5,6 +5,7 @@ import {
   BATCH_MULTICALL_CONFIGS,
   PoolType,
   QuoteProvider,
+  Route,
   SmartRouter,
   SmartRouterTrade,
   V4Router,
@@ -22,6 +23,7 @@ import { tracker } from 'utils/datadog'
 import { createViemPublicClientGetter } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 
+import { BigintIsh } from '@pancakeswap/swap-sdk-core'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import {
   CommonPoolsParams,
@@ -49,11 +51,13 @@ type CreateQuoteProviderParams = {
   gasLimit?: bigint
 } & AbortControl
 
-interface FactoryOptions {
+type GetBestTradeParams = Parameters<typeof SmartRouter.getBestTrade>
+
+interface FactoryOptions<T> {
   // use to identify hook
   key: string
   useCommonPools: (currencyA?: Currency, currencyB?: Currency, params?: CommonPoolsParams) => PoolsWithState
-  useGetBestTrade?: () => typeof SmartRouter.getBestTrade
+  useGetBestTrade: () => (...args: GetBestTradeParams) => Promise<T | undefined | null>
   createQuoteProvider: (params: CreateQuoteProviderParams) => QuoteProvider
 
   // Decrease the size of batch getting quotes for better performance
@@ -81,7 +85,7 @@ interface useBestAMMTradeOptions extends Options {
 
 type QuoteResult = ReturnType<ReturnType<typeof bestTradeHookFactory>>
 
-function useBetterQuote(quoteA: QuoteResult, quoteB: QuoteResult) {
+function useBetterQuote<A extends QuoteResult, B extends QuoteResult>(quoteA: A, quoteB: B) {
   return useMemo(() => {
     if (!quoteB.trade) {
       return quoteA
@@ -165,19 +169,26 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   )
 }
 
-function createSimpleUseGetBestTradeHook(getBestTrade: typeof SmartRouter.getBestTrade = SmartRouter.getBestTrade) {
+function createSimpleUseGetBestTradeHook<T>(
+  getBestTrade: (...args: Parameters<typeof SmartRouter.getBestTrade>) => Promise<T | undefined | null>,
+) {
   return function useGetBestTrade() {
     return useCallback(getBestTrade, [])
   }
 }
 
-function bestTradeHookFactory({
+function bestTradeHookFactory<
+  T extends Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount' | 'tradeType'> & {
+    routes: Pick<Route, 'path' | 'pools' | 'inputAmount' | 'outputAmount'>[]
+    blockNumber?: BigintIsh
+  },
+>({
   key,
   useCommonPools,
   createQuoteProvider: createCustomQuoteProvider,
   quoterOptimization = true,
-  useGetBestTrade = createSimpleUseGetBestTradeHook(),
-}: FactoryOptions) {
+  useGetBestTrade,
+}: FactoryOptions<T>) {
   return function useBestTrade({
     amount,
     baseCurrency,
@@ -272,7 +283,7 @@ function bestTradeHookFactory({
       isPlaceholderData,
       error,
       refetch,
-    } = useQuery({
+    } = useQuery<T | undefined>({
       queryKey: [
         key,
         currency?.chainId,
@@ -338,10 +349,11 @@ function bestTradeHookFactory({
           res.routes,
         )
         SmartRouter.logger.log(label, res)
-        return {
+        const result: T = {
           ...res,
           blockNumber,
-        } as SmartRouterTrade<TradeType>
+        }
+        return result
       },
       enabled: !!(amount && currency && candidatePools && !loading && deferQuotient && enabled),
       refetchOnWindowFocus: false,
@@ -391,26 +403,27 @@ function createOffChainQuoteProvider() {
   return SmartRouter.createOffChainQuoteProvider()
 }
 
-export const useBestAMMTradeFromOffchain = bestTradeHookFactory({
+export const useBestAMMTradeFromOffchain = bestTradeHookFactory<SmartRouterTrade<TradeType>>({
   key: 'useBestAMMTradeFromOffchain',
   useCommonPools: useCommonPoolsWithTicks,
+  useGetBestTrade: createSimpleUseGetBestTradeHook(SmartRouter.getBestTrade),
   createQuoteProvider: createOffChainQuoteProvider,
 })
 
-export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
+export const useBestAMMTradeFromQuoter = bestTradeHookFactory<SmartRouterTrade<TradeType>>({
   key: 'useBestAMMTradeFromQuoter',
   useCommonPools: useCommonPoolsLite,
   createQuoteProvider,
+  useGetBestTrade: createSimpleUseGetBestTradeHook(SmartRouter.getBestTrade),
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
 })
 
-type V4GetBestTradeParams = Parameters<typeof SmartRouter.getBestTrade>
 type V4GetBestTradeReturnType = Omit<Exclude<Awaited<ReturnType<typeof V4Router.getBestTrade>>, undefined>, 'graph'>
 
 function createUseWorkerGetBestTradeOffchain() {
   return function useWorkerGetBestTradeOffchain(): (
-    ...args: V4GetBestTradeParams
+    ...args: GetBestTradeParams
   ) => Promise<V4GetBestTradeReturnType | null> {
     const worker = useGlobalWorker()
 
@@ -458,14 +471,14 @@ function createUseWorkerGetBestTradeOffchain() {
   }
 }
 
-export const useBestAMMTradeFromOffchainQuoter = bestTradeHookFactory({
+export const useBestAMMTradeFromOffchainQuoter = bestTradeHookFactory<V4Router.V4TradeWithoutGraph<TradeType>>({
   key: 'useBestAMMTradeFromOffchainQuoter',
   useCommonPools: useCommonPoolsOnChain,
   createQuoteProvider,
   useGetBestTrade: createUseWorkerGetBestTradeOffchain(),
 })
 
-export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
+export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory<SmartRouterTrade<TradeType>>({
   key: 'useBestAMMTradeFromQuoterApi',
   useCommonPools: useCommonPoolsLite,
   createQuoteProvider,
@@ -561,7 +574,7 @@ function createUseWorkerGetBestTrade() {
   }
 }
 
-export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory({
+export const useBestAMMTradeFromQuoterWorker = bestTradeHookFactory<SmartRouterTrade<TradeType>>({
   key: 'useBestAMMTradeFromQuoterWorker',
   useCommonPools: useCommonPoolsLite,
   createQuoteProvider,
@@ -587,7 +600,7 @@ function createQuoteProvider2({ gasLimit, signal }: CreateQuoteProviderParams) {
   })
 }
 
-export const useBestAMMTradeFromQuoterWorker2 = bestTradeHookFactory({
+export const useBestAMMTradeFromQuoterWorker2 = bestTradeHookFactory<SmartRouterTrade<TradeType>>({
   key: 'useBestAMMTradeFromQuoterWorker2',
   useCommonPools: useCommonPoolsLite,
   createQuoteProvider: createQuoteProvider2,

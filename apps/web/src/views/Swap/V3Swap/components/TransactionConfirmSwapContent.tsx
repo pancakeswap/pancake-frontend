@@ -11,17 +11,20 @@ import {
 } from 'views/Swap/MMLinkPools/utils/exchange'
 import SwapModalHeader from '../../components/SwapModalHeader'
 import {
+  TradeEssentialForPriceBreakdown,
   computeSlippageAdjustedAmounts as computeSlippageAdjustedAmountsWithSmartRouter,
   computeTradePriceBreakdown as computeTradePriceBreakdownWithSmartRouter,
 } from '../utils/exchange'
 import { SwapModalFooter } from './SwapModalFooter'
+
+type Trade = TradeEssentialForPriceBreakdown & Pick<SmartRouterTrade<TradeType>, 'tradeType'>
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
  * @param tradeA trade A
  * @param tradeB trade B
  */
-function tradeMeaningfullyDiffers(tradeA: SmartRouterTrade<TradeType>, tradeB: SmartRouterTrade<TradeType>): boolean {
+function tradeMeaningfullyDiffers(tradeA: Trade, tradeB: Trade): boolean {
   return (
     tradeA.tradeType !== tradeB.tradeType ||
     !tradeA.inputAmount.currency.equals(tradeB.inputAmount.currency) ||
@@ -34,13 +37,13 @@ function tradeMeaningfullyDiffers(tradeA: SmartRouterTrade<TradeType>, tradeB: S
 interface TransactionConfirmSwapContentProps {
   isMM?: boolean
   isRFQReady?: boolean
-  trade: SmartRouterTrade<TradeType> | undefined | null
-  originalTrade: SmartRouterTrade<TradeType> | undefined | null
+  trade: Trade | undefined | null
+  originalTrade: Trade | undefined | null
   onAcceptChanges: () => void
   allowedSlippage: number
   onConfirm: () => void
   recipient?: string | null
-  currencyBalances: {
+  currencyBalances?: {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
   }

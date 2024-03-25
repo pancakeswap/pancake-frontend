@@ -1,5 +1,6 @@
-import { Currency } from '@pancakeswap/sdk'
+import { Currency, TradeType } from '@pancakeswap/sdk'
 import { useExpertMode } from '@pancakeswap/utils/user'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
@@ -11,7 +12,7 @@ import { MMSwapCommitButtonV2 } from 'views/Swap/MMLinkPools/components/MMCommit
 import { useAccount } from 'wagmi'
 import { CommitButtonProps, MMCommitTrade } from '../types'
 
-const MMCommitButtonCompV2: React.FC<MMCommitTrade & CommitButtonProps> = ({
+const MMCommitButtonCompV2: React.FC<MMCommitTrade<SmartRouterTrade<TradeType>> & CommitButtonProps> = ({
   mmOrderBookTrade,
   mmRFQTrade,
   mmQuoteExpiryRemainingSec,

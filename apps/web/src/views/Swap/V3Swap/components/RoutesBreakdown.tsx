@@ -1,17 +1,17 @@
+import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Route } from '@pancakeswap/smart-router'
 import { Box, IconButton, QuestionHelper, SearchIcon, Text, useModalV2 } from '@pancakeswap/uikit'
-import { styled } from 'styled-components'
 import { memo } from 'react'
-import { useDebounce } from '@pancakeswap/hooks'
+import { styled } from 'styled-components'
 
 import { RowBetween } from 'components/Layout/Row'
 import SwapRoute from 'views/Swap/components/SwapRoute'
-import { RouteDisplayModal } from './RouteDisplayModal'
 import { useWallchainStatus } from '../hooks/useWallchain'
+import { RouteDisplayEssentials, RouteDisplayModal } from './RouteDisplayModal'
 
 interface Props {
-  routes?: Route[]
+  routes?: RouteDisplayEssentials[]
   isMM?: boolean
 }
 
@@ -71,7 +71,7 @@ export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], isMM
 })
 
 interface RouteProps {
-  route: Route
+  route: Pick<Route, 'path'>
 }
 
 function RouteComp({ route }: RouteProps) {
