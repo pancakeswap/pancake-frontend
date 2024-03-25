@@ -74,12 +74,16 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   lpSymbol,
   onReward,
   onDone,
+  bCakeUserData,
+  bCakeWrapperAddress,
   style,
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const earningsBigNumber = new BigNumber(userData?.earnings ?? 0)
+  const earningsBigNumber = bCakeWrapperAddress
+    ? new BigNumber(bCakeUserData?.earnings ?? 0)
+    : new BigNumber(userData?.earnings ?? 0)
   const cakePrice = useCakePrice()
   let earnings = BIG_ZERO
   let earningsBusd = 0
