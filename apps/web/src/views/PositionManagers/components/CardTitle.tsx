@@ -18,6 +18,7 @@ interface Props {
   autoFarm?: boolean
   autoCompound?: boolean
   isBooster?: boolean
+  isTableView?: boolean
 }
 
 export const CardTitle = memo(function CardTitle({
@@ -30,6 +31,7 @@ export const CardTitle = memo(function CardTitle({
   autoCompound,
   allowDepositToken1,
   isBooster,
+  isTableView,
 }: Props) {
   const isTokenDisplayReverse = useMemo(
     () => isSingleDepositToken && allowDepositToken1,
@@ -66,7 +68,7 @@ export const CardTitle = memo(function CardTitle({
           <FeeTag feeAmount={feeTier} />
           {autoFarm && <FarmTag />}
           {isSingleDepositToken && <SingleTokenTag />}
-          {isBooster && <BoostedTag />}
+          {isBooster && !isTableView && <BoostedTag />}
         </Flex>
       </Flex>
     </CardHeader>
