@@ -4,6 +4,11 @@ import { BinPoolParameter, CLPoolParameter, encodePoolParameters } from './utils
 
 export type PoolType = 'CL' | 'Bin'
 
+/**
+ * PoolKey is a unique identifier for a pool
+ *
+ * @see PoolKey
+ */
 export type PoolKey<T extends PoolType = never> = {
   currency0: Address
   currency1: Address

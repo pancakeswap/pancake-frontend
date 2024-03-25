@@ -26,7 +26,8 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "viem": "1.19.11"
+    "viem": "1.19.11",
+    "@pancakeswap/v3-sdk": "workspace:*"
   },
   "devDependencies": {
     "tsup": "^6.7.0"
