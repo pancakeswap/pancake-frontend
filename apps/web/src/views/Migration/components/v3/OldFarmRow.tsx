@@ -78,12 +78,18 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
                 stakedBalance={
                   step === 2
                     ? farm.bCakeUserData?.stakedBalance ?? BIG_ZERO
-                    : farm.boosted
+                    : farm.boosted && proxy?.stakedBalance.gt(0)
                     ? proxy?.stakedBalance ?? BIG_ZERO
                     : stakedBalance
                 }
               />
-              <Earned {...earned} />
+              <Earned
+                {...earned}
+                earnings={(
+                  (farm.boosted && proxy?.earnings.gt(0) ? proxy.earnings : farm.userData?.earnings)?.div(10 ** 18) ??
+                  BIG_ZERO
+                ).toNumber()}
+              />
               <Multiplier {...multiplier} />
             </>
           ) : null}
