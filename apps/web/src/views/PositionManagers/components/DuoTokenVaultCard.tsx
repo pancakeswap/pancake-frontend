@@ -254,7 +254,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           <VaultLinks
             mt="0.5em"
             manager={manager}
-            vaultAddress={contractAddress}
+            vaultAddress={bCakeWrapper ?? contractAddress}
             managerAddress={managerAddress}
             managerInfoUrl={managerInfoUrl}
             strategyInfoUrl={strategyInfoUrl}
