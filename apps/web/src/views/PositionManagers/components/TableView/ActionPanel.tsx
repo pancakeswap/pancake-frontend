@@ -80,7 +80,7 @@ export const ActionPanel: React.FC<
         <VaultLinks
           mt="0.5em"
           manager={manager}
-          vaultAddress={vaultAddress}
+          vaultAddress={bCakeWrapper ?? contractAddress}
           managerAddress={managerAddress}
           managerInfoUrl={managerInfoUrl}
           strategyInfoUrl={strategyInfoUrl}
