@@ -12,9 +12,9 @@ const BNB = Native.onChain(ChainId.OPBNB)
 const CAKE = opBnbTokens.cake
 
 const exampleRoute: V4Route = {
-  gasCost: 82000n,
-  gasCostInBase: CurrencyAmount.fromRawAmount(BNB, 820000n),
-  gasCostInQuote: CurrencyAmount.fromRawAmount(CAKE, 103854983n),
+  gasUseEstimate: 82000n,
+  gasUseEstimateBase: CurrencyAmount.fromRawAmount(BNB, 820000n),
+  gasUseEstimateQuote: CurrencyAmount.fromRawAmount(CAKE, 103854983n),
   inputAmount: CurrencyAmount.fromRawAmount(BNB, 40000000000000000n),
   outputAmount: CurrencyAmount.fromRawAmount(CAKE, 4983293793789930646n),
   inputAmountWithGasAdjusted: CurrencyAmount.fromRawAmount(BNB, 40000000000000000n),
@@ -50,9 +50,9 @@ const exampleRoute: V4Route = {
 const exampleTrade: V4Trade<TradeType> = {
   graph: createGraph({ pools: [] }),
   routes: [exampleRoute],
-  gasEstimate: 82000n,
-  gasCostInBase: CurrencyAmount.fromRawAmount(BNB, 820000n),
-  gasCostInQuote: CurrencyAmount.fromRawAmount(CAKE, 103854983n),
+  gasUseEstimate: 82000n,
+  gasUseEstimateBase: CurrencyAmount.fromRawAmount(BNB, 820000n),
+  gasUseEstimateQuote: CurrencyAmount.fromRawAmount(CAKE, 103854983n),
   inputAmount: CurrencyAmount.fromRawAmount(BNB, 40000000000000000n),
   outputAmount: CurrencyAmount.fromRawAmount(CAKE, 4983293793789930646n),
   inputAmountWithGasAdjusted: CurrencyAmount.fromRawAmount(BNB, 40000000000000000n),

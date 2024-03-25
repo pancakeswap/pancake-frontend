@@ -52,7 +52,7 @@ export function getQuoteCurrency({ input, output }: BaseRoute, baseCurrency: Cur
   return baseCurrency.equals(input) ? output : input
 }
 
-export function getMidPrice({ path, pools }: Route) {
+export function getMidPrice({ path, pools }: Pick<Route, 'path' | 'pools'>) {
   let i = 0
   let price: Price<Currency, Currency> | null = null
   for (const pool of pools) {

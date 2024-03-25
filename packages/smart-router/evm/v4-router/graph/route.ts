@@ -22,8 +22,10 @@ export function mergeRoute(one: V4Route, another: V4Route): V4Route {
     ...one,
     inputAmount: one.inputAmount.add(another.inputAmount),
     outputAmount: one.outputAmount.add(another.outputAmount),
-    gasCostInQuote: another.gasCostInQuote ? one.gasCostInQuote?.add(another.gasCostInQuote) : one.gasCostInQuote,
-    gasCost: one.gasCost + another.gasCost,
+    gasUseEstimateQuote: another.gasUseEstimateQuote
+      ? one.gasUseEstimateQuote?.add(another.gasUseEstimateQuote)
+      : one.gasUseEstimateQuote,
+    gasUseEstimate: one.gasUseEstimate + another.gasUseEstimate,
     inputAmountWithGasAdjusted: another.inputAmountWithGasAdjusted
       ? one.inputAmountWithGasAdjusted?.add(another.inputAmountWithGasAdjusted)
       : one.inputAmountWithGasAdjusted,

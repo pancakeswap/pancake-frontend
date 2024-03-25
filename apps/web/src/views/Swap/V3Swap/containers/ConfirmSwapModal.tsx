@@ -3,7 +3,7 @@ import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
 import { memo, useCallback, useMemo } from 'react'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { Box, BscScanIcon, Flex, InjectedModalProps, Link } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
@@ -34,8 +34,8 @@ import { ApproveStepFlow } from './ApproveStepFlow'
 interface ConfirmSwapModalProps {
   isMM?: boolean
   isRFQReady?: boolean
-  trade?: SmartRouterTrade<TradeType> | null
-  originalTrade?: SmartRouterTrade<TradeType> | null
+  trade?: SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeType> | null
+  originalTrade?: SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeType> | null
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   attemptingTxn: boolean
   txHash?: string

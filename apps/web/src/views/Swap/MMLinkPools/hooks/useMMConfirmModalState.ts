@@ -1,6 +1,6 @@
 import { usePreviousValue } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
 import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/swap-sdk-core'
 import { ConfirmModalState } from '@pancakeswap/widgets-internal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -32,7 +32,7 @@ const useCreateConfirmSteps = (amountToApprove: CurrencyAmount<Token> | undefine
 }
 
 const useConfirmActions = (
-  trade: SmartRouterTrade<TradeType> | undefined,
+  trade: SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeType> | undefined,
   swapCalls: MMSwapCall[],
   recipient: Address | null,
   amountToApprove: CurrencyAmount<Token> | undefined,
@@ -242,7 +242,7 @@ const useConfirmActions = (
 }
 
 export const useMMConfirmModalState = (
-  trade: SmartRouterTrade<TradeType> | undefined,
+  trade: SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeType> | undefined,
   swapCalls: MMSwapCall[],
   recipient: Address | null,
   amountToApprove: CurrencyAmount<Token> | undefined,

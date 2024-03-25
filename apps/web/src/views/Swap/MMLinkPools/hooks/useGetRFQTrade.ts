@@ -1,4 +1,6 @@
 import { useDebounce } from '@pancakeswap/hooks'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { TradeType } from '@pancakeswap/swap-sdk-core'
 import { useQuery } from '@tanstack/react-query'
 import { UnsafeCurrency } from 'config/constants/types'
 import { MutableRefObject, useDeferredValue, useEffect, useMemo, useState } from 'react'
@@ -56,7 +58,7 @@ export const useGetRFQTrade = (
   isMMBetter: boolean,
   refreshRFQ: () => void,
   isRFQLive: MutableRefObject<boolean> | null | undefined,
-): MMRfqTrade | null => {
+): MMRfqTrade<SmartRouterTrade<TradeType>> | null => {
   const deferredRfqId = useDeferredValue(rfqId)
   const deferredIsMMBetter = useDebounce(isMMBetter, 300)
   const enabled = Boolean(deferredIsMMBetter && deferredRfqId)

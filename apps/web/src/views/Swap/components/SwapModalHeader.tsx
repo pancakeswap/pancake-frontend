@@ -26,7 +26,7 @@ export default function SwapModalHeader({
 }: {
   inputAmount: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>
-  currencyBalances: {
+  currencyBalances?: {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
   }
@@ -88,7 +88,7 @@ export default function SwapModalHeader({
           <Text fontSize="14px" ml="10px" mr="8px">
             {inputAmount.currency.symbol}
           </Text>
-          <CurrencyLogo currency={currencyBalances.INPUT?.currency ?? inputAmount.currency} size="24px" />
+          <CurrencyLogo currency={currencyBalances?.INPUT?.currency ?? inputAmount.currency} size="24px" />
         </RowFixed>
       </RowBetween>
       <RowFixed margin="auto">
@@ -114,7 +114,7 @@ export default function SwapModalHeader({
           <Text fontSize="14px" ml="10px" mr="8px">
             {outputAmount.currency.symbol}
           </Text>
-          <CurrencyLogo currency={currencyBalances.OUTPUT?.currency ?? outputAmount.currency} size="24px" />
+          <CurrencyLogo currency={currencyBalances?.OUTPUT?.currency ?? outputAmount.currency} size="24px" />
         </RowFixed>
       </RowBetween>
       {showAcceptChanges ? (

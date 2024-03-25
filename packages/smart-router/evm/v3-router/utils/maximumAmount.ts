@@ -1,8 +1,12 @@
-import { Percent, TradeType, Fraction, ONE, CurrencyAmount } from '@pancakeswap/sdk'
+import { CurrencyAmount, Fraction, ONE, Percent, TradeType } from '@pancakeswap/sdk'
 
 import { SmartRouterTrade } from '../types'
 
-export function maximumAmountIn(trade: SmartRouterTrade<TradeType>, slippage: Percent, amountIn = trade.inputAmount) {
+export function maximumAmountIn(
+  trade: Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'tradeType'>,
+  slippage: Percent,
+  amountIn = trade.inputAmount,
+) {
   if (trade.tradeType === TradeType.EXACT_INPUT) {
     return amountIn
   }
@@ -12,7 +16,7 @@ export function maximumAmountIn(trade: SmartRouterTrade<TradeType>, slippage: Pe
 }
 
 export function minimumAmountOut(
-  trade: SmartRouterTrade<TradeType>,
+  trade: Pick<SmartRouterTrade<TradeType>, 'outputAmount' | 'tradeType'>,
   slippage: Percent,
   amountOut = trade.outputAmount,
 ) {

@@ -1,5 +1,4 @@
-import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { MutableRefObject } from 'react'
 import { Field } from 'state/swap/actions'
 import { nativeEnum as zNativeEnum, number as zNumber, object as zObject, string as zString } from 'zod'
@@ -86,11 +85,11 @@ export type RFQIdResponse = {
   }
 }
 
-export interface MMOrderBookTrade {
+export interface MMOrderBookTrade<T> {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   parsedAmount: CurrencyAmount<Currency> | undefined
-  trade?: SmartRouterTrade<TradeType> | null
+  trade?: T | null
   inputError?: string
   mmParam: OrderBookRequest | null
   rfqUserInputPath: MutableRefObject<string>
@@ -98,9 +97,9 @@ export interface MMOrderBookTrade {
   isLoading: boolean
 }
 
-export interface MMRfqTrade {
+export interface MMRfqTrade<T> {
   rfq: RFQResponse['message'] | null | undefined
-  trade: SmartRouterTrade<TradeType> | null
+  trade: T | null
   refreshRFQ: (() => void) | null
   quoteExpiry: number | null
   isLoading: boolean
