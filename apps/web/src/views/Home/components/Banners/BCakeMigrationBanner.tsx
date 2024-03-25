@@ -9,21 +9,18 @@ import {
   ButtonLinkAction,
   GraphicDetail,
 } from '@pancakeswap/widgets-internal'
-import { ASSET_CDN } from 'config/constants/endpoints'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import bCakeMigrationImage from 'views/Farms/images/bCakeMigration.png'
 
-const bgMobile = `${ASSET_CDN}/web/banners/v4-info/bg-mobile.png`
-
 const bgSmVariant: GraphicDetail = {
-  src: bgMobile,
+  src: bCakeMigrationImage.src,
   width: 272,
   height: 224,
 }
 
 const bgXsVariant: GraphicDetail = {
-  src: bgMobile,
+  src: bCakeMigrationImage.src,
   width: 218,
   height: 182,
 }
@@ -45,7 +42,7 @@ const learnMoreLink =
 
 export const BCakeMigrationBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isTablet } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
   const { theme } = useTheme()
   const readWhitepaperAction = (
     <StyledButtonLinkAction
@@ -81,9 +78,11 @@ export const BCakeMigrationBanner = () => {
         }
         desc={
           <Text color="white" fontSize={['14px', null, '18px']}>
-            {t(
-              'Migrate your V2, StableSwap or Position Manager staking to continue earning and boost your earning with veCAKE!',
-            )}
+            {isMobile
+              ? t('Migrate your V2, StableSwap or Position Manager staking for bCake')
+              : t(
+                  'Migrate your V2, StableSwap or Position Manager staking to continue earning and boost your earning with veCAKE!',
+                )}
           </Text>
         }
         actions={
