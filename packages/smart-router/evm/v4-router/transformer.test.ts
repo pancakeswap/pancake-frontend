@@ -121,7 +121,7 @@ describe('V4 Router Transformer', () => {
           ],
         },
       ],
-      gasCost: '82000',
+      gasUseEstimate: '82000',
       inputAmount: {
         currency: {
           address: '0x0000000000000000000000000000000000000000',
@@ -154,7 +154,7 @@ describe('V4 Router Transformer', () => {
         },
         value: '4983293793686075663',
       },
-      gasCostInQuote: {
+      gasUseEstimateQuote: {
         currency: {
           address: '0x2779106e4F4A8A28d77A24c18283651a2AE22D1C',
           decimals: 18,
@@ -162,7 +162,7 @@ describe('V4 Router Transformer', () => {
         },
         value: '103854983',
       },
-      gasCostInBase: {
+      gasUseEstimateBase: {
         currency: {
           address: '0x0000000000000000000000000000000000000000',
           decimals: 18,
@@ -236,7 +236,7 @@ describe('V4 Router Transformer', () => {
               ],
             },
           ],
-          gasCost: '82000',
+          gasUseEstimate: '82000',
           inputAmount: {
             currency: {
               address: '0x0000000000000000000000000000000000000000',
@@ -269,7 +269,7 @@ describe('V4 Router Transformer', () => {
             },
             value: '4983293793686075663',
           },
-          gasCostInQuote: {
+          gasUseEstimateQuote: {
             currency: {
               address: '0x2779106e4F4A8A28d77A24c18283651a2AE22D1C',
               decimals: 18,
@@ -277,7 +277,7 @@ describe('V4 Router Transformer', () => {
             },
             value: '103854983',
           },
-          gasCostInBase: {
+          gasUseEstimateBase: {
             currency: {
               address: '0x0000000000000000000000000000000000000000',
               decimals: 18,
@@ -289,7 +289,7 @@ describe('V4 Router Transformer', () => {
         },
       ],
 
-      gasCostInBase: {
+      gasUseEstimateBase: {
         currency: {
           address: '0x0000000000000000000000000000000000000000',
           decimals: 18,
@@ -297,7 +297,7 @@ describe('V4 Router Transformer', () => {
         },
         value: '820000',
       },
-      gasCostInQuote: {
+      gasUseEstimateQuote: {
         currency: {
           address: '0x2779106e4F4A8A28d77A24c18283651a2AE22D1C',
           decimals: 18,
@@ -321,7 +321,7 @@ describe('V4 Router Transformer', () => {
         },
         value: '4983293793686075663',
       },
-      gasEstimate: '82000',
+      gasUseEstimate: '82000',
       inputAmount: {
         currency: {
           address: '0x0000000000000000000000000000000000000000',
