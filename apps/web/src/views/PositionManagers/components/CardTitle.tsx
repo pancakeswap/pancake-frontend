@@ -65,10 +65,10 @@ export const CardTitle = memo(function CardTitle({
           </Text>
         </Flex>
         <Flex flexDirection="row" justifyContent="flex-end" mt="0.25em" style={{ gap: '0.5em' }} flexWrap="wrap">
-          <FeeTag feeAmount={feeTier} />
-          {autoFarm && <FarmTag />}
-          {isSingleDepositToken && <SingleTokenTag />}
-          {isBooster && !isTableView && <BoostedTag />}
+          <FeeTag feeAmount={feeTier} scale="sm" />
+          {autoFarm && <FarmTag scale="sm" />}
+          {isSingleDepositToken && <SingleTokenTag scale="sm" />}
+          {isBooster && !isTableView && <BoostedTag scale="sm" />}
         </Flex>
       </Flex>
     </CardHeader>

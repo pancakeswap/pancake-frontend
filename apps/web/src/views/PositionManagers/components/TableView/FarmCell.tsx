@@ -3,7 +3,7 @@ import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { memo, useMemo } from 'react'
 
-// import BoostedTag from 'views/Farms/components/YieldBooster/components/BoostedTag'
+import BoostedTag from 'views/Farms/components/YieldBooster/components/BoostedTag'
 import { FeeTag, SingleTokenTag } from '../Tags'
 import { TokenPairLogos } from '../TokenPairLogos'
 
@@ -75,9 +75,9 @@ export const FarmCell = memo(function CardTitle({
           style={{ gap: '0.5em' }}
           flexWrap="wrap"
         >
-          <FeeTag feeAmount={feeTier} />
-          {isSingleDepositToken && <SingleTokenTag />}
-          {/* {isBooster && <BoostedTag />} */}
+          <FeeTag feeAmount={feeTier} scale="sm" />
+          {isSingleDepositToken && <SingleTokenTag scale="sm" />}
+          {isBooster && <BoostedTag scale="sm" />}
         </Flex>
       </Flex>
     </Flex>
