@@ -85,10 +85,15 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
               />
               <Earned
                 {...earned}
-                earnings={(
-                  (farm.boosted && proxy?.earnings.gt(0) ? proxy.earnings : farm.userData?.earnings)?.div(10 ** 18) ??
-                  BIG_ZERO
-                ).toNumber()}
+                earnings={
+                  step === 2
+                    ? ((farm.bCakeUserData?.earnings ?? BIG_ZERO)?.div(10 ** 18) ?? BIG_ZERO).toNumber()
+                    : (
+                        (farm.boosted && proxy?.earnings.gt(0) ? proxy.earnings : farm.userData?.earnings)?.div(
+                          10 ** 18,
+                        ) ?? BIG_ZERO
+                      ).toNumber()
+                }
               />
               <Multiplier {...multiplier} />
             </>
