@@ -89,6 +89,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
 
   const isBtc = Boolean(inputCurrencyId === 'BTC_0')
   const isTypingInput = independentField === Field.INPUT
+  const disabledProviders = inputCurrencyId === 'ETH_324' ? ['MoonPay'] : []
   // const isTypingOutput = independentField === Field.OUTPUT
 
   const outputValue = useMemo(() => {
@@ -111,7 +112,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     isFiatFlow,
   })
   const {
-    data: quotes,
+    data: rawQuotes,
     isFetching,
     isError,
     refetch,
@@ -123,6 +124,14 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     enabled: Boolean(!inputError),
     isFiat: 'true',
   })
+
+  const quotes = useMemo(() => {
+    if (!rawQuotes) return []
+    return rawQuotes
+      .filter((quote) => !quote.error)
+      .filter((quote) => providerAvailabilities[quote.provider])
+      .filter((quote) => !disabledProviders?.includes(quote.provider))
+  }, [rawQuotes, providerAvailabilities, disabledProviders])
 
   const handleInput = useCallback((event) => {
     const input = event.target.value
@@ -148,6 +157,11 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     handleTypeOutput(defaultAmt)
     handleTypeInput(defaultAmt)
   }, [defaultAmt, handleTypeOutput, handleTypeInput])
+
+  const quotesError = useMemo(() => {
+    if (quotes && quotes.length === 0) return t('No quotes available')
+    return undefined
+  }, [quotes, t])
 
   return (
     <AutoColumn position="relative">
@@ -188,6 +202,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           selectedCurrency={inputCurrency}
           currencyLoading={Boolean(!inputCurrency)}
           value={inputError ? '' : inputValue ?? ''}
+          error={Boolean(quotesError)}
           disableInput
         />
         <BitcoinAddressInput
@@ -200,7 +215,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           id="provider-select"
           onQuoteSelect={setShowProvidersPopOver}
           selectedQuote={selectedQuote || bestQuoteRef.current}
-          quoteLoading={Boolean(isFetching || inputError || !quotes)}
+          quoteLoading={Boolean(isFetching || inputError || !quotes || quotesError)}
           quotes={quotes}
         />
 
@@ -209,6 +224,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           currency={cryptoCurrency}
           independentField={independentField}
           inputError={inputError}
+          quotesError={quotesError}
         />
 
         <Box>
@@ -216,12 +232,12 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={inputCurrencyId}
             selectedQuote={selectedQuote}
-            disabled={isError || Boolean(inputError) || Boolean(isBtc && !validAddress?.result)}
+            disabled={isError || Boolean(inputError) || Boolean(isBtc && !validAddress?.result) || quotes.length === 0}
             loading={!quotes || isFetching}
             input={searchQuery}
             resetBuyCryptoState={resetBuyCryptoState}
             btcAddress={debouncedQuery}
-            errorText={amountError}
+            errorText={amountError || quotesError}
           />
           <Text color="textSubtle" fontSize="14px" px="4px" textAlign="center">
             {t('By continuing you agree to our')}{' '}
@@ -258,7 +274,6 @@ const OnRampCurrencySelectPopOver = ({
     },
     [setShowProvidersPopOver, setSelectedQuote],
   )
-
   return (
     <PopOverScreenContainer showPopover={showProivdersPopOver} onClick={showProvidersOnClick}>
       <AutoRow borderBottom="1" borderColor="cardBorder" paddingX="24px" py="16px">
@@ -269,23 +284,20 @@ const OnRampCurrencySelectPopOver = ({
       <Box px="8px" pb="20px">
         {quotes &&
           selectedQuote &&
-          quotes
-            .filter((quote) => !quote.error)
-            .filter((quote) => providerAvailabilities[quote.provider] || !disabledProviders?.includes(quote.provider))
-            .map((quote) => {
-              return (
-                <ProviderGroupItem
-                  key={quote.provider}
-                  id={`provider-select-${quote.provider}`}
-                  onQuoteSelect={onQuoteSelect}
-                  quotes={quotes}
-                  selectedQuote={selectedQuote || quotes[0]}
-                  quoteLoading={isFetching || !quotes}
-                  error={isError || Boolean(inputError)}
-                  currentQuote={quote}
-                />
-              )
-            })}
+          quotes.map((quote) => {
+            return (
+              <ProviderGroupItem
+                key={quote.provider}
+                id={`provider-select-${quote.provider}`}
+                onQuoteSelect={onQuoteSelect}
+                quotes={quotes}
+                selectedQuote={selectedQuote || quotes[0]}
+                quoteLoading={isFetching || !quotes}
+                error={isError || Boolean(inputError)}
+                currentQuote={quote}
+              />
+            )
+          })}
       </Box>
     </PopOverScreenContainer>
   )

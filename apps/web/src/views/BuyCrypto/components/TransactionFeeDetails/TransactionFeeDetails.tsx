@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/swap-sdk-core'
+import type { Currency } from '@pancakeswap/swap-sdk-core'
 import { ArrowDropDownIcon, ArrowDropUpIcon, Box, Flex, RowBetween, Text } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -13,7 +13,7 @@ import {
   StyledFeesContainer3,
   StyledNotificationWrapper,
 } from 'views/BuyCrypto/styles'
-import { OnRampProviderQuote } from 'views/BuyCrypto/types'
+import type { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import { FeeTypes, getNetworkFullName, providerFeeTypes } from '../../constants'
 import { BtcLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
 import BuyCryptoTooltip from '../Tooltip/Tooltip'
@@ -24,6 +24,7 @@ interface TransactionFeeDetailsProps {
   currency: Currency
   independentField: Field
   inputError: string | undefined
+  quotesError: string | undefined
 }
 
 export const TransactionFeeDetails = ({
@@ -31,6 +32,7 @@ export const TransactionFeeDetails = ({
   currency,
   independentField,
   inputError,
+  quotesError,
 }: TransactionFeeDetailsProps) => {
   const [elementHeight, setElementHeight] = useState<number>(51)
   const [show, setShow] = useState<boolean>(false)
@@ -67,7 +69,7 @@ export const TransactionFeeDetails = ({
         <StyledArrowHead />
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
-            {selectedQuote && (
+            {selectedQuote && !quotesError ? (
               <Text fontWeight="600" fontSize="14px" px="2px">
                 {t('Est total fees: %fees%', {
                   fees: formatLocaleNumber({
@@ -77,20 +79,32 @@ export const TransactionFeeDetails = ({
                   }),
                 })}
               </Text>
+            ) : (
+              <Text fontWeight="600" fontSize="14px" px="2px">
+                {t('No quotes available')}
+              </Text>
             )}
             <BuyCryptoTooltip
               opacity={0.7}
               iconSize="17px"
-              tooltipText={t('Note that Fees are just an estimation and may vary slightly when completing a purchase')}
+              tooltipText={
+                quotesError
+                  ? t(
+                      'Quotes may be unavailable for some assets based on market conditions and provider availability in your region.',
+                    )
+                  : t('Note that Fees are just an estimation and may vary slightly when completing a purchase')
+              }
             />
           </Flex>
 
-          <Flex alignItems="center" justifyContent="center">
-            <Text color="primary" fontWeight="600" fontSize="14px">
-              {!show ? t('Show details') : t('Hide Details')}
-            </Text>
-            {!show ? <ArrowDropDownIcon color="primary" /> : <ArrowDropUpIcon color="primary" />}
-          </Flex>
+          {!quotesError && (
+            <Flex alignItems="center" justifyContent="center">
+              <Text color="primary" fontWeight="600" fontSize="14px">
+                {!show ? t('Show details') : t('Hide Details')}
+              </Text>
+              {!show ? <ArrowDropDownIcon color="primary" /> : <ArrowDropUpIcon color="primary" />}
+            </Flex>
+          )}
         </Flex>
         <StyledNotificationWrapper ref={containerRef} show={show}>
           <Description ref={contentRef} show={show} elementHeight={elementHeight}>
