@@ -72,7 +72,9 @@ const TableContainer = styled.div`
 `
 
 const getV2FarmEarnings = (farm: V2Farm) => {
-  const existingEarnings = farm.userData?.earnings ? new BigNumber(farm.userData?.earnings) : BIG_ZERO
+  let existingEarnings = farm.userData?.earnings ? new BigNumber(farm.userData?.earnings) : BIG_ZERO
+  if (farm.bCakeWrapperAddress)
+    existingEarnings = farm.bCakeUserData?.earnings ? new BigNumber(farm.bCakeUserData?.earnings) : BIG_ZERO
   let earnings: BigNumber = existingEarnings
 
   if (farm.boosted) {
