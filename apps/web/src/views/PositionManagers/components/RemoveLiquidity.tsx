@@ -96,7 +96,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
             return bCakeWrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, false, message], {
               account: account ?? '0x',
               chain,
-              gasLimit: new BigNumber(estGas.toString()).times(1.5).toNumber(),
+              gas: BigInt(new BigNumber(estGas.toString()).times(1.5).toNumber().toFixed(0)),
             })
           }
         : async () => {
