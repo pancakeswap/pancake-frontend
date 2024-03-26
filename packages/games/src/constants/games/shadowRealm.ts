@@ -38,7 +38,7 @@ export const shadowRealm: GameType = {
       {
         type: PostersItemDataType.Video,
         video: 'https://shadow-realm.chainzstudios.com/overview/shadow_realms.mp4',
-        image: 'https://shadow-realm.chainzstudios.com/overview/vd.png',
+        image: 'https://shadow-realm.chainzstudios.com/overview/vd.jpg',
       },
       {
         type: PostersItemDataType.Image,
