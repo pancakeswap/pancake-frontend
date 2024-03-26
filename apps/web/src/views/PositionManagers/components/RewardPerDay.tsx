@@ -4,22 +4,24 @@ import useTheme from 'hooks/useTheme'
 import { memo, useMemo } from 'react'
 import {} from 'styled-components'
 
-export const RewardPerDay: React.FC<{ rewardPerSec: number } & TagProps> = memo(({ rewardPerSec, ...props }) => {
-  const { t } = useTranslation()
-  const { theme } = useTheme()
-  const cakePerDay = useMemo(() => {
-    return rewardPerSec * 60 * 60 * 24
-  }, [rewardPerSec])
-  return (
-    <Tag
-      startIcon={<CakeOutlineIcon color={theme.colors.secondary} width={props.scale === 'sm' ? 13 : undefined} />}
-      variant="secondary"
-      {...props}
-    >
-      {cakePerDay === 0 ? '0.00' : cakePerDay.toFixed(2)} {t('CAKE')}{' '}
-    </Tag>
-  )
-})
+export const RewardPerDay: React.FC<{ rewardPerSec: number; symbol?: string } & TagProps> = memo(
+  ({ rewardPerSec, symbol, ...props }) => {
+    const { t } = useTranslation()
+    const { theme } = useTheme()
+    const cakePerDay = useMemo(() => {
+      return rewardPerSec * 60 * 60 * 24
+    }, [rewardPerSec])
+    return (
+      <Tag
+        startIcon={<CakeOutlineIcon color={theme.colors.secondary} width={props.scale === 'sm' ? 13 : undefined} />}
+        variant="secondary"
+        {...props}
+      >
+        {cakePerDay === 0 ? '0.00' : cakePerDay.toFixed(2)} {symbol ?? t('CAKE')}{' '}
+      </Tag>
+    )
+  },
+)
 
 const CakeOutlineIcon: React.FC<React.PropsWithChildren<SvgProps>> = memo((props) => {
   return (

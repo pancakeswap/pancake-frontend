@@ -46,7 +46,6 @@ export const YieldInfo = memo(function YieldInfo({
   boosterMultiplier,
 }: Props) {
   const { t } = useTranslation()
-
   const earning = useMemo(
     () => (apr.isInCakeRewardDateRange ? `${rewardToken?.symbol ?? ''} + ${t('Fees')}` : t('Fees')),
     [t, apr.isInCakeRewardDateRange, rewardToken?.symbol],
@@ -84,7 +83,7 @@ export const YieldInfo = memo(function YieldInfo({
         <RowBetween>
           <Text>{t('Reward/Day:')}</Text>
           <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
-            <RewardPerDay rewardPerSec={rewardPerSec ?? 0} />
+            <RewardPerDay rewardPerSec={rewardPerSec ?? 0} symbol={rewardToken?.symbol} />
           </Flex>
         </RowBetween>
       )}

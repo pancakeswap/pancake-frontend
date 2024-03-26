@@ -294,7 +294,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                           precision={info?.precision}
                           lpTokenDecimals={info?.lpTokenDecimals}
                           aprTimeWindow={aprTimeWindow}
-                          isBooster={isBooster}
+                          isBooster={isBoosterWhiteList}
                           boosterMultiplier={info?.boosterMultiplier}
                         />
                       </CellLayout>
@@ -307,7 +307,12 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t('Reward Per Day')}>
-                        <RewardPerDay rewardPerSec={tokenPerSecond ?? 0} scale="sm" style={{ marginTop: 5 }} />
+                        <RewardPerDay
+                          rewardPerSec={tokenPerSecond ?? 0}
+                          symbol={earningToken.symbol ?? undefined}
+                          scale="sm"
+                          style={{ marginTop: 5 }}
+                        />
                       </CellLayout>
                     </CellInner>
                   </td>
@@ -390,7 +395,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                     precision={info?.precision}
                     lpTokenDecimals={info?.lpTokenDecimals}
                     aprTimeWindow={aprTimeWindow}
-                    isBooster={isBooster}
+                    isBooster={isBoosterWhiteList}
                     boosterMultiplier={info?.boosterMultiplier}
                   />
                 </CellLayout>
@@ -452,7 +457,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
               aprTimeWindow={aprDataInfo.timeWindow}
               bCakeWrapper={bCakeWrapperAddress}
               minDepositUSD={minDepositUSD}
-              isBooster={isBooster}
+              isBooster={isBoosterWhiteList}
               boosterContractAddress={info?.boosterContractAddress}
             />
           </td>
