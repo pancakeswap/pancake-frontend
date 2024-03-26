@@ -2,6 +2,7 @@ import { Trans, useTranslation } from '@pancakeswap/localization'
 import { ArrowForwardIcon, Flex, Text } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
+  BannerActionContainer,
   BannerContainer,
   BannerGraphics,
   BannerMain,
@@ -11,7 +12,6 @@ import {
   GraphicDetail,
   LinkExternalAction,
   PancakeSwapBadge,
-  BannerActionContainer,
 } from '@pancakeswap/widgets-internal'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
@@ -67,7 +67,7 @@ const Floating = styled(FloatingGraphic)`
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    left: 0;
+    left: 2%;
     top: 0;
   }
 `
@@ -111,7 +111,13 @@ export function WBNBFixedStakingBanner() {
   )
 
   const learnMoreAction = isMobile ? (
-    <StyledButtonLinkAction href={learnMoreLink} color="white" ellipsis showExternalIcon>
+    <StyledButtonLinkAction
+      href={learnMoreLink}
+      color="white"
+      ellipsis
+      showExternalIcon
+      style={{ whiteSpace: 'nowrap' }}
+    >
       {t('Learn More')}
     </StyledButtonLinkAction>
   ) : (
