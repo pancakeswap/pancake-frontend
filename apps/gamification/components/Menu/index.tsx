@@ -8,6 +8,7 @@ import { useCakePrice } from 'hooks/useCakePrice'
 import useTheme from 'hooks/useTheme'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
+import { GlobalSettings } from './GlobalSettings'
 import UserMenu from './UserMenu'
 import { useMenuItems } from './hooks/useMenuItems'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
@@ -41,6 +42,7 @@ const Menu = (props: any) => {
         linkComponent={LinkComponent}
         rightSide={
           <>
+            <GlobalSettings />
             <NetworkSwitcher />
             <UserMenu />
           </>
