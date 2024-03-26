@@ -76,9 +76,9 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   const { chainId } = useActiveChainId()
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress, chainId })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-  return originalValue !== 0 ? (
+  return originalValue !== 0 || lpRewardsApr !== 0 ? (
     <Container>
-      {originalValue ? (
+      {originalValue || lpRewardsApr !== 0 ? (
         <ApyButton
           variant={hideButton ? 'text' : 'text-and-button'}
           pid={pid}
