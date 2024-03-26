@@ -46,7 +46,7 @@ interface SwapCallEstimate {
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade
 export function useSwapCallback(
-  trade: SmartRouterTrade<TradeType> | undefined | null, // trade to execute, required
+  trade: Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount' | 'tradeType'> | undefined | null, // trade to execute, required
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
   swapCalls: MMSwapCall[],
   expiredAt?: number,
@@ -78,7 +78,7 @@ export function useSwapCallback(
 const useSendMMTransaction = (
   account?: Address,
   chainId?: number,
-  trade?: SmartRouterTrade<TradeType> | null,
+  trade?: Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount' | 'tradeType'> | null,
   swapCalls: MMSwapCall[] = [],
   expiredAt?: number,
 ): { callback: null | (() => Promise<SendTransactionResult>) } => {

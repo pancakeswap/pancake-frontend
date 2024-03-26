@@ -91,7 +91,7 @@ export const useMMTrade = (
   typedValue: string,
   inputCurrency: UnsafeCurrency,
   outputCurrency: UnsafeCurrency,
-): MMOrderBookTrade => {
+): MMOrderBookTrade<SmartRouterTrade<TradeType>> => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const rfqUserInputPath = useRef<string>('')
@@ -193,7 +193,7 @@ export const useMMTrade = (
     return result
   }, [account, amountIn, balanceIn, bestTradeWithMM, currencies, mmQuote?.message?.error, parsedAmount, t, to])
 
-  return useMemo<MMOrderBookTrade>(() => {
+  return useMemo<MMOrderBookTrade<SmartRouterTrade<TradeType>>>(() => {
     return {
       trade: bestTradeWithMM,
       parsedAmount,

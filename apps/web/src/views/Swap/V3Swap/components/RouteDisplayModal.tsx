@@ -1,28 +1,30 @@
-import { Route, SmartRouter } from '@pancakeswap/smart-router'
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency } from '@pancakeswap/sdk'
+import { Route, SmartRouter } from '@pancakeswap/smart-router'
 import {
+  AtomBox,
+  AutoColumn,
+  Flex,
   Modal,
   ModalV2,
   QuestionHelper,
   Text,
-  Flex,
-  useTooltip,
-  AutoColumn,
   UseModalV2Props,
-  AtomBox,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import { CurrencyLogo } from '@pancakeswap/widgets-internal'
-import { Currency } from '@pancakeswap/sdk'
-import { useMemo, memo } from 'react'
+import { memo, useMemo } from 'react'
 
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
-import { RouterBox, RouterPoolBox, RouterTypeText, CurrencyLogoWrapper } from 'views/Swap/components/RouterViewer'
+import { CurrencyLogoWrapper, RouterBox, RouterPoolBox, RouterTypeText } from 'views/Swap/components/RouterViewer'
 import { v3FeeToPercent } from '../utils/exchange'
 
 type Pair = [Currency, Currency]
 
+export type RouteDisplayEssentials = Pick<Route, 'path' | 'pools' | 'inputAmount' | 'outputAmount' | 'percent'>
+
 interface Props extends UseModalV2Props {
-  routes: Route[]
+  routes: RouteDisplayEssentials[]
 }
 
 export const RouteDisplayModal = memo(function RouteDisplayModal({ isOpen, onDismiss, routes }: Props) {
@@ -56,7 +58,7 @@ export const RouteDisplayModal = memo(function RouteDisplayModal({ isOpen, onDis
 })
 
 interface RouteDisplayProps {
-  route: Route
+  route: RouteDisplayEssentials
 }
 
 export const RouteDisplay = memo(function RouteDisplay({ route }: RouteDisplayProps) {

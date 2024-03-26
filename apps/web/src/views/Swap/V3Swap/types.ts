@@ -33,12 +33,12 @@ export type AllowedAllowanceState =
   | ConfirmModalState.APPROVING_TOKEN
   | ConfirmModalState.PERMITTING
 
-export type MMCommitTrade = {
+export type MMCommitTrade<T> = {
   isMMBetter: boolean
-  mmOrderBookTrade: MMOrderBookTrade
-  mmRFQTrade: MMRfqTrade
-  mmQuoteExpiryRemainingSec: number
-  mmTradeInfo: MMTradeInfo
+  mmOrderBookTrade: MMOrderBookTrade<T> | null
+  mmRFQTrade: MMRfqTrade<T> | null
+  mmQuoteExpiryRemainingSec: number | null
+  mmTradeInfo: MMTradeInfo<T> | null
 }
 
 export type CommitButtonProps = {

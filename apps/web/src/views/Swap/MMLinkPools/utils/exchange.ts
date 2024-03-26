@@ -19,7 +19,9 @@ export function useMMSwapContract() {
 }
 
 // computes price breakdown for the trade
-export function computeTradePriceBreakdown(trade?: SmartRouterTrade<TradeType> | null): {
+export function computeTradePriceBreakdown(
+  trade?: Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount'> | null,
+): {
   priceImpactWithoutFee: Percent | undefined
   lpFeeAmount: CurrencyAmount<Currency> | undefined | null
 } {
@@ -54,7 +56,9 @@ export function computeTradePriceBreakdown(trade?: SmartRouterTrade<TradeType> |
 }
 
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
-export function computeSlippageAdjustedAmounts(trade: SmartRouterTrade<TradeType> | undefined | null): {
+export function computeSlippageAdjustedAmounts(
+  trade: Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount'> | undefined | null,
+): {
   [field in Field]?: CurrencyAmount<Currency>
 } {
   return {
@@ -63,11 +67,17 @@ export function computeSlippageAdjustedAmounts(trade: SmartRouterTrade<TradeType
   }
 }
 
-function executionPrice<TTradeType extends TradeType>({ inputAmount, outputAmount }: SmartRouterTrade<TTradeType>) {
+function executionPrice<TTradeType extends TradeType>({
+  inputAmount,
+  outputAmount,
+}: Pick<SmartRouterTrade<TTradeType>, 'inputAmount' | 'outputAmount'>) {
   return new Price(inputAmount.currency, outputAmount.currency, inputAmount.quotient, outputAmount.quotient)
 }
 
-export function formatExecutionPrice(trade?: SmartRouterTrade<TradeType>, inverted?: boolean): string {
+export function formatExecutionPrice(
+  trade?: Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount'>,
+  inverted?: boolean,
+): string {
   if (!trade) {
     return ''
   }

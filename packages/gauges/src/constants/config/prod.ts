@@ -3333,4 +3333,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: polygonZkEvmTokens.grai.address,
     feeTier: FeeAmount.LOW,
   },
+  {
+    gid: 333,
+    pairName: 'EGO-USDT',
+    address: '0xEDB6d7d456A570f790185aF9f6B99020Cc578Ed0',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.ego.address,
+    token1Address: bscTokens.usdt.address,
+    feeTier: FeeAmount.MEDIUM,
+  },
 ]

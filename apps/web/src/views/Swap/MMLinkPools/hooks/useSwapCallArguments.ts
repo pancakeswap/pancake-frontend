@@ -31,7 +31,7 @@ export type MMSwapCall = {
  * @param recipientAddressOrName
  */
 export const useSwapCallArguments = (
-  trade: SmartRouterTrade<TradeType> | null | undefined, // trade to execute, required
+  trade: Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount'> | null | undefined, // trade to execute, required
   rfq: RFQResponse['message'] | undefined,
   recipientAddressOrName: string | undefined, // the address of the recipient of the trade, or null if swap should be returned to sender
 ): MMSwapCall[] => {
@@ -62,7 +62,7 @@ export const useSwapCallArguments = (
 
 const swapCallParameters = (
   mmSigner: Address,
-  trade: SmartRouterTrade<TradeType>,
+  trade: Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount'>,
   rfq: RFQResponse['message'],
   recipient: Address,
 ) => {

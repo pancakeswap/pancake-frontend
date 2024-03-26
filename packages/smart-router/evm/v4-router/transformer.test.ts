@@ -12,9 +12,9 @@ const BNB = Native.onChain(ChainId.OPBNB)
 const CAKE = opBnbTokens.cake
 
 const exampleRoute: V4Route = {
-  gasCost: 82000n,
-  gasCostInBase: CurrencyAmount.fromRawAmount(BNB, 820000n),
-  gasCostInQuote: CurrencyAmount.fromRawAmount(CAKE, 103854983n),
+  gasUseEstimate: 82000n,
+  gasUseEstimateBase: CurrencyAmount.fromRawAmount(BNB, 820000n),
+  gasUseEstimateQuote: CurrencyAmount.fromRawAmount(CAKE, 103854983n),
   inputAmount: CurrencyAmount.fromRawAmount(BNB, 40000000000000000n),
   outputAmount: CurrencyAmount.fromRawAmount(CAKE, 4983293793789930646n),
   inputAmountWithGasAdjusted: CurrencyAmount.fromRawAmount(BNB, 40000000000000000n),
@@ -50,9 +50,9 @@ const exampleRoute: V4Route = {
 const exampleTrade: V4Trade<TradeType> = {
   graph: createGraph({ pools: [] }),
   routes: [exampleRoute],
-  gasEstimate: 82000n,
-  gasCostInBase: CurrencyAmount.fromRawAmount(BNB, 820000n),
-  gasCostInQuote: CurrencyAmount.fromRawAmount(CAKE, 103854983n),
+  gasUseEstimate: 82000n,
+  gasUseEstimateBase: CurrencyAmount.fromRawAmount(BNB, 820000n),
+  gasUseEstimateQuote: CurrencyAmount.fromRawAmount(CAKE, 103854983n),
   inputAmount: CurrencyAmount.fromRawAmount(BNB, 40000000000000000n),
   outputAmount: CurrencyAmount.fromRawAmount(CAKE, 4983293793789930646n),
   inputAmountWithGasAdjusted: CurrencyAmount.fromRawAmount(BNB, 40000000000000000n),
@@ -121,7 +121,7 @@ describe('V4 Router Transformer', () => {
           ],
         },
       ],
-      gasCost: '82000',
+      gasUseEstimate: '82000',
       inputAmount: {
         currency: {
           address: '0x0000000000000000000000000000000000000000',
@@ -154,7 +154,7 @@ describe('V4 Router Transformer', () => {
         },
         value: '4983293793686075663',
       },
-      gasCostInQuote: {
+      gasUseEstimateQuote: {
         currency: {
           address: '0x2779106e4F4A8A28d77A24c18283651a2AE22D1C',
           decimals: 18,
@@ -162,7 +162,7 @@ describe('V4 Router Transformer', () => {
         },
         value: '103854983',
       },
-      gasCostInBase: {
+      gasUseEstimateBase: {
         currency: {
           address: '0x0000000000000000000000000000000000000000',
           decimals: 18,
@@ -236,7 +236,7 @@ describe('V4 Router Transformer', () => {
               ],
             },
           ],
-          gasCost: '82000',
+          gasUseEstimate: '82000',
           inputAmount: {
             currency: {
               address: '0x0000000000000000000000000000000000000000',
@@ -269,7 +269,7 @@ describe('V4 Router Transformer', () => {
             },
             value: '4983293793686075663',
           },
-          gasCostInQuote: {
+          gasUseEstimateQuote: {
             currency: {
               address: '0x2779106e4F4A8A28d77A24c18283651a2AE22D1C',
               decimals: 18,
@@ -277,7 +277,7 @@ describe('V4 Router Transformer', () => {
             },
             value: '103854983',
           },
-          gasCostInBase: {
+          gasUseEstimateBase: {
             currency: {
               address: '0x0000000000000000000000000000000000000000',
               decimals: 18,
@@ -289,7 +289,7 @@ describe('V4 Router Transformer', () => {
         },
       ],
 
-      gasCostInBase: {
+      gasUseEstimateBase: {
         currency: {
           address: '0x0000000000000000000000000000000000000000',
           decimals: 18,
@@ -297,7 +297,7 @@ describe('V4 Router Transformer', () => {
         },
         value: '820000',
       },
-      gasCostInQuote: {
+      gasUseEstimateQuote: {
         currency: {
           address: '0x2779106e4F4A8A28d77A24c18283651a2AE22D1C',
           decimals: 18,
@@ -321,7 +321,7 @@ describe('V4 Router Transformer', () => {
         },
         value: '4983293793686075663',
       },
-      gasEstimate: '82000',
+      gasUseEstimate: '82000',
       inputAmount: {
         currency: {
           address: '0x0000000000000000000000000000000000000000',

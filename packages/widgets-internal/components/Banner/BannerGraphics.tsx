@@ -4,8 +4,9 @@ import styled from "styled-components";
 import { flyingAnim } from "./animations";
 
 const Container = styled(Flex)`
+  z-index: 1;
   position: relative;
-  flex: 1;
+  width: 50%;
 `;
 
 type SizeVariant = "xs" | "sm" | "md" | "lg" | "xl" | "xxl";

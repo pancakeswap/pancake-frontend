@@ -1,8 +1,23 @@
-import { Flex, StarCircle, Text } from '@pancakeswap/uikit'
+import { Flex, LinkExternal, StarCircle, Text } from '@pancakeswap/uikit'
 
+import { bscTokens } from '@pancakeswap/tokens'
 import { FixedStakingPool, PoolGroup } from '../type'
 import { AprRange, calculateAPRPercent } from './AprRange'
 import { FixedStakingCalculator } from './FixedStakingCalculator'
+
+const WBNBGiftLink = () => {
+  return (
+    <LinkExternal
+      mr="8px"
+      data-dd-action-name="wbnb staking campaign"
+      style={{ textDecoration: 'none' }}
+      showExternalIcon={false}
+      href="https://blog.pancakeswap.finance/articles/stake-wbnb-on-pancake-swap-to-win-combo-rewards-5-000-extra-reward-pool?utm_source=homepagebanner&utm_medium=website&utm_campaign=homepage&utm_id=WBNBsimplestakingcampaign"
+    >
+      🎁
+    </LinkExternal>
+  )
+}
 
 export default function AprCell({
   selectedPeriodIndex,
@@ -17,6 +32,7 @@ export default function AprCell({
 }) {
   return selectedPeriodIndex === null || !selectedPool ? (
     <Flex alignItems="center">
+      {pool.token.equals(bscTokens.wbnb) ? <WBNBGiftLink /> : null}
       <Text bold>
         <AprRange minLockDayPercent={pool.minLockDayPercent} maxLockDayPercent={pool.maxLockDayPercent} />
       </Text>
@@ -32,6 +48,7 @@ export default function AprCell({
     </Flex>
   ) : (
     <Flex alignItems="center">
+      {selectedPool.token.equals(bscTokens.wbnb) ? <WBNBGiftLink /> : null}
       {calculateAPRPercent(selectedPool.boostDayPercent).greaterThan(0) ? (
         <>
           <StarCircle width="18px" color="success" />

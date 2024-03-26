@@ -8,16 +8,27 @@ import { AdvancedSwapDetails, TradeSummary } from 'views/Swap/components/Advance
 import { AdvancedDetailsFooter } from 'views/Swap/components/AdvancedSwapDetailsDropdown'
 
 import { MMTradeInfo } from 'views/Swap/MMLinkPools/hooks'
-import { RoutesBreakdown } from '../components'
+import { RouteDisplayEssentials, RoutesBreakdown } from '../components'
 import { useIsWrapping, useSlippageAdjustedAmounts } from '../hooks'
-import { computeTradePriceBreakdown } from '../utils/exchange'
+import { TradeEssentialForPriceBreakdown, computeTradePriceBreakdown } from '../utils/exchange'
+
+type Trade = TradeEssentialForPriceBreakdown &
+  Pick<SmartRouterTrade<TradeType>, 'tradeType'> & {
+    routes: RouteDisplayEssentials[]
+  }
 
 interface Props {
   loaded: boolean
-  trade?: SmartRouterTrade<TradeType> | null
+  trade?: Trade | null
 }
 
-export function MMTradeDetail({ loaded, mmTrade }: { loaded: boolean; mmTrade?: MMTradeInfo | null }) {
+export function MMTradeDetail({
+  loaded,
+  mmTrade,
+}: {
+  loaded: boolean
+  mmTrade?: MMTradeInfo<SmartRouterTrade<TradeType>> | null
+}) {
   const lastTrade = useLastTruthy(mmTrade?.trade)
 
   return (

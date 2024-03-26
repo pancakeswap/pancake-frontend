@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { Box, BscScanIcon, Column, Flex, InjectedModalProps, Link, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
@@ -27,9 +27,13 @@ import { ConfirmAction } from '../hooks/useConfirmModalStateV2'
 import { AllowedAllowanceState } from '../types'
 import { ApproveStepFlowV2 } from './ApproveStepFlowV2'
 
-export const useApprovalPhaseStepTitles: ({ trade }: { trade: SmartRouterTrade<TradeType> | undefined }) => {
+export const useApprovalPhaseStepTitles: ({
+  trade,
+}: {
+  trade: Pick<SmartRouterTrade<TradeType>, 'inputAmount'> | undefined
+}) => {
   [step in AllowedAllowanceState]: string
-} = ({ trade }: { trade: SmartRouterTrade<TradeType> | undefined }) => {
+} = ({ trade }) => {
   const { t } = useTranslation()
   return useMemo(() => {
     return {
@@ -49,9 +53,9 @@ type ConfirmSwapModalProps = InjectedModalProps & {
   pendingModalSteps: ConfirmAction[]
   isMM?: boolean
   isRFQReady?: boolean
-  trade?: SmartRouterTrade<TradeType>
-  originalTrade?: SmartRouterTrade<TradeType>
-  currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
+  trade?: SmartRouterTrade<TradeType> | V4Router.V4Trade<TradeType>
+  originalTrade?: SmartRouterTrade<TradeType> | V4Router.V4Trade<TradeType>
+  currencyBalances?: { [field in Field]?: CurrencyAmount<Currency> }
   txHash?: string
   swapErrorMessage?: string
   onAcceptChanges: () => void
@@ -110,8 +114,8 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalProps> = ({
   }, [customOnDismiss, onDismiss])
 
   const modalContent = useMemo(() => {
-    const currencyA = currencyBalances.INPUT?.currency ?? trade?.inputAmount?.currency
-    const currencyB = currencyBalances.OUTPUT?.currency ?? trade?.outputAmount?.currency
+    const currencyA = currencyBalances?.INPUT?.currency ?? trade?.inputAmount?.currency
+    const currencyB = currencyBalances?.OUTPUT?.currency ?? trade?.outputAmount?.currency
     const amountA = formatAmount(trade?.inputAmount, 6) ?? ''
     const amountB = formatAmount(trade?.outputAmount, 6) ?? ''
 

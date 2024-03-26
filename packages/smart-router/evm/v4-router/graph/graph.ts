@@ -223,11 +223,15 @@ export async function findBestTrade(params: FindBestTradeParams): Promise<V4Trad
 
   // Exact output doesn't support mixed route
   const poolsByType = groupPoolsByType(candidatePools)
-  const trades = await Promise.all(
+  const trades = await Promise.allSettled(
     poolsByType.map((pools) => getBestTrade({ tradeType, candidatePools: pools, ...rest })),
   )
   let bestTrade: V4Trade<TradeType> | undefined
-  for (const trade of trades) {
+  for (const result of trades) {
+    if (result.status === 'rejected') {
+      continue
+    }
+    const { value: trade } = result
     if (!trade) {
       continue
     }
@@ -279,46 +283,46 @@ async function getBestTrade({
 
   const buildTrade = (g: Graph, routes: V4Route[]): V4Trade<TradeType> => {
     const {
-      gasEstimate,
+      gasUseEstimate,
       quoteAmount,
-      gasCostInQuote,
-      gasCostInBase,
+      gasUseEstimateQuote,
+      gasUseEstimateBase,
       inputAmountWithGasAdjusted,
       outputAmountWithGasAdjusted,
     } = routes.reduce<{
-      gasEstimate: bigint
+      gasUseEstimate: bigint
       quoteAmount: CurrencyAmount<Currency>
-      gasCostInBase: CurrencyAmount<Currency>
-      gasCostInQuote: CurrencyAmount<Currency>
+      gasUseEstimateBase: CurrencyAmount<Currency>
+      gasUseEstimateQuote: CurrencyAmount<Currency>
       inputAmountWithGasAdjusted: CurrencyAmount<Currency>
       outputAmountWithGasAdjusted: CurrencyAmount<Currency>
     }>(
       (result, r) => {
         return {
-          gasEstimate: result.gasEstimate + r.gasCost,
+          gasUseEstimate: result.gasUseEstimate + r.gasUseEstimate,
           quoteAmount: result.quoteAmount.add(getQuoteAmount(r)),
-          gasCostInBase: result.gasCostInBase.add(r.gasCostInBase),
-          gasCostInQuote: result.gasCostInQuote.add(r.gasCostInQuote),
+          gasUseEstimateBase: result.gasUseEstimateBase.add(r.gasUseEstimateBase),
+          gasUseEstimateQuote: result.gasUseEstimateQuote.add(r.gasUseEstimateQuote),
           inputAmountWithGasAdjusted: result.inputAmountWithGasAdjusted.add(r.inputAmountWithGasAdjusted),
           outputAmountWithGasAdjusted: result.outputAmountWithGasAdjusted.add(r.outputAmountWithGasAdjusted),
         }
       },
       {
-        gasEstimate: 0n,
+        gasUseEstimate: 0n,
         quoteAmount: CurrencyAmount.fromRawAmount(quoteCurrency, 0),
-        gasCostInBase: CurrencyAmount.fromRawAmount(baseCurrency, 0),
-        gasCostInQuote: CurrencyAmount.fromRawAmount(quoteCurrency, 0),
+        gasUseEstimateBase: CurrencyAmount.fromRawAmount(baseCurrency, 0),
+        gasUseEstimateQuote: CurrencyAmount.fromRawAmount(quoteCurrency, 0),
         inputAmountWithGasAdjusted: CurrencyAmount.fromRawAmount(inputCurrency, 0),
         outputAmountWithGasAdjusted: CurrencyAmount.fromRawAmount(outputCurrency, 0),
       },
     )
 
     return {
-      gasCostInBase,
-      gasCostInQuote,
+      gasUseEstimate,
+      gasUseEstimateQuote,
+      gasUseEstimateBase,
       inputAmountWithGasAdjusted,
       outputAmountWithGasAdjusted,
-      gasEstimate,
       inputAmount: getInputAmount(totalAmount, quoteAmount),
       outputAmount: getOutputAmount(totalAmount, quoteAmount),
       tradeType,
@@ -389,11 +393,11 @@ async function getBestTrade({
       const quoteAmountRaw = getBestAmount(vert)
       invariant(quoteAmountRaw !== undefined, 'Invalid quote amount')
       const quoteAmount = CurrencyAmount.fromRawAmount(quoteCurrency, quoteAmountRaw.quotient)
-      const gasCostInBase = getGasCostInCurrency({ priceCalculator, gasCost, currency: baseCurrency })
-      const gasCostInQuote = getGasCostInCurrency({ priceCalculator, gasCost, currency: quoteCurrency })
+      const gasUseEstimateBase = getGasCostInCurrency({ priceCalculator, gasCost, currency: baseCurrency })
+      const gasUseEstimateQuote = getGasCostInCurrency({ priceCalculator, gasCost, currency: quoteCurrency })
       const quoteAmountWithGasAdjusted = CurrencyAmount.fromRawAmount(
         quoteCurrency,
-        gasCostInQuote ? adjustQuoteByGas(quoteAmount, gasCostInQuote).quotient : 0,
+        gasUseEstimateQuote ? adjustQuoteByGas(quoteAmount, gasUseEstimateQuote).quotient : 0,
       )
 
       const { type } = buildBaseRoute(pools, start.currency, finish.currency)
@@ -401,13 +405,13 @@ async function getBestTrade({
         type,
         path,
         pools,
-        gasCost,
+        gasUseEstimate: gasCost,
         inputAmount: getInputAmount(amount, quoteAmount),
         outputAmount: getOutputAmount(amount, quoteAmount),
         inputAmountWithGasAdjusted: getInputAmount(amount, quoteAmountWithGasAdjusted),
         outputAmountWithGasAdjusted: getOutputAmount(amount, quoteAmountWithGasAdjusted),
-        gasCostInQuote,
-        gasCostInBase,
+        gasUseEstimateQuote,
+        gasUseEstimateBase,
       }
     }
 
@@ -524,21 +528,21 @@ async function getBestTrade({
     // eslint-disable-next-line no-await-in-loop
     const { amount, quote: quoteRaw, gasCost } = await finalGraph.applySwap({ isExactIn, route: r })
     const quote = CurrencyAmount.fromRawAmount(quoteCurrency, quoteRaw.quotient)
-    const gasCostInBase = getGasCostInCurrency({ priceCalculator: pc, gasCost, currency: baseCurrency })
-    const gasCostInQuote = getGasCostInCurrency({ priceCalculator: pc, gasCost, currency: quoteCurrency })
+    const gasUseEstimateBase = getGasCostInCurrency({ priceCalculator: pc, gasCost, currency: baseCurrency })
+    const gasUseEstimateQuote = getGasCostInCurrency({ priceCalculator: pc, gasCost, currency: quoteCurrency })
     const quoteAmountWithGasAdjusted = CurrencyAmount.fromRawAmount(
       quoteCurrency,
-      gasCostInQuote ? adjustQuoteByGas(quote, gasCostInQuote).quotient : 0,
+      gasUseEstimateQuote ? adjustQuoteByGas(quote, gasUseEstimateQuote).quotient : 0,
     )
     finalRoutes.push({
       ...r,
-      gasCost,
+      gasUseEstimate: gasCost,
       inputAmount: getInputAmount(amount, quote),
       outputAmount: getOutputAmount(amount, quote),
       inputAmountWithGasAdjusted: getInputAmount(amount, quoteAmountWithGasAdjusted),
       outputAmountWithGasAdjusted: getOutputAmount(amount, quoteAmountWithGasAdjusted),
-      gasCostInQuote,
-      gasCostInBase,
+      gasUseEstimateQuote,
+      gasUseEstimateBase,
     })
   }
   return buildTrade(finalGraph, finalRoutes)

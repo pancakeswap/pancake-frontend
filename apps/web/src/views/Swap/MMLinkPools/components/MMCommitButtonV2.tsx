@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
 import { Button, useModal } from '@pancakeswap/uikit'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import { CommitButton } from 'components/CommitButton'
@@ -22,8 +22,10 @@ import { MMRfqTrade } from '../types'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
+type Trade = SmartRouterTrade<TradeType> | V4Router.V4Trade<TradeType>
+
 interface SwapCommitButtonPropsType {
-  mmTradeInfo: MMTradeInfo
+  mmTradeInfo: MMTradeInfo<Trade> | null
   swapIsUnsupported: boolean
   account: Address | undefined
   showWrap: boolean
@@ -35,9 +37,9 @@ interface SwapCommitButtonPropsType {
     OUTPUT?: Currency
   }
   isExpertMode: boolean
-  rfqTrade: MMRfqTrade
+  rfqTrade: MMRfqTrade<Trade> | null
   swapInputError?: string
-  currencyBalances: {
+  currencyBalances?: {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
   }
@@ -66,29 +68,29 @@ SwapCommitButtonPropsType & CommitButtonProps) {
   const [isExpertMode] = useExpertMode()
 
   const { t } = useTranslation()
-  const [tradeToConfirm, setTradeToConfirm] = useState<SmartRouterTrade<TradeType> | undefined>(undefined)
+  const [tradeToConfirm, setTradeToConfirm] = useState<Trade | undefined>(undefined)
   const amountToApprove = useMemo(() => {
     return mmTradeInfo?.slippageAdjustedAmounts[Field.INPUT]
   }, [mmTradeInfo])
   const mmSpender = useMemo(() => {
     return mmTradeInfo?.routerAddress as Address | undefined
   }, [mmTradeInfo])
-  const swapCalls = useSwapCallArguments(rfqTrade.trade, rfqTrade.rfq ?? undefined, recipient ?? undefined)
+  const swapCalls = useSwapCallArguments(rfqTrade?.trade, rfqTrade?.rfq ?? undefined, recipient ?? undefined)
   const { resetState, txHash, confirmState, confirmActions, callToAction, errorMessage } = useMMConfirmModalState(
-    (isExpertMode ? rfqTrade.trade : tradeToConfirm) ?? undefined,
+    (isExpertMode ? rfqTrade?.trade : tradeToConfirm) ?? undefined,
     swapCalls,
     (recipient as Address) ?? null,
     amountToApprove?.currency.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
     mmSpender,
-    rfqTrade.quoteExpiry ?? undefined,
+    rfqTrade?.quoteExpiry ?? undefined,
   )
 
   // Handlers
 
   const handleAcceptChanges = useCallback(() => {
-    setTradeToConfirm(rfqTrade.trade ?? undefined)
+    setTradeToConfirm(rfqTrade?.trade ?? undefined)
     resetState()
-  }, [rfqTrade.trade, resetState])
+  }, [rfqTrade?.trade, resetState])
 
   const handleConfirmDismiss = useCallback(() => {
     afterCommit?.()
@@ -118,15 +120,15 @@ SwapCommitButtonPropsType & CommitButtonProps) {
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModalV2
       isMM
-      trade={rfqTrade.trade ?? undefined} // show the info while refresh RFQ
+      trade={rfqTrade?.trade ?? undefined} // show the info while refresh RFQ
       originalTrade={tradeToConfirm}
       txHash={txHash}
       confirmModalState={confirmState}
       pendingModalSteps={confirmActions ?? []}
       onConfirm={onConfirm}
       currencyBalances={currencyBalances}
-      isRFQReady={Boolean(rfqTrade.rfq) && !rfqTrade.isLoading}
-      swapErrorMessage={errorMessage || (!rfqTrade.trade ? t('Unable request a quote') : undefined)}
+      isRFQReady={Boolean(rfqTrade?.rfq) && !rfqTrade?.isLoading}
+      swapErrorMessage={errorMessage || (!rfqTrade?.trade ? t('Unable request a quote') : undefined)}
       onAcceptChanges={handleAcceptChanges}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
@@ -138,7 +140,7 @@ SwapCommitButtonPropsType & CommitButtonProps) {
   // End Modals
 
   const onSwapHandler = useCallback(() => {
-    setTradeToConfirm(rfqTrade.trade ?? undefined)
+    setTradeToConfirm(rfqTrade?.trade ?? undefined)
     resetState()
 
     if (isExpertMode) {
@@ -146,7 +148,7 @@ SwapCommitButtonPropsType & CommitButtonProps) {
     }
     onPresentConfirmModal()
     logGTMClickSwapEvent()
-  }, [rfqTrade.trade, resetState, isExpertMode, onPresentConfirmModal, onConfirm])
+  }, [rfqTrade?.trade, resetState, isExpertMode, onPresentConfirmModal, onConfirm])
 
   // useEffect
   useEffect(() => {
@@ -189,7 +191,7 @@ SwapCommitButtonPropsType & CommitButtonProps) {
       width="100%"
       id="swap-button"
       variant="primary"
-      disabled={!rfqTrade.rfq || !isValid || !!errorMessage}
+      disabled={!rfqTrade?.rfq || !isValid || !!errorMessage}
       onClick={onSwapHandler}
       data-dd-action-name="Swap mm commit button"
     >

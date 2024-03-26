@@ -17,14 +17,14 @@ function getBestStreamsConfig(trade?: V4Trade<TradeType>) {
   if (!priceImpact) {
     return DEFAULT_STREAM
   }
-  const { gasCostInBase, inputAmount, outputAmount } = trade
-  if (!gasCostInBase) {
+  const { gasUseEstimateBase, inputAmount, outputAmount } = trade
+  if (!gasUseEstimateBase) {
     return DEFAULT_STREAM
   }
   const amount = trade.tradeType === TradeType.EXACT_INPUT ? inputAmount : outputAmount
 
   const bestFlowAmount = Math.sqrt(
-    (Number(gasCostInBase.toExact()) * Number(amount.toExact())) / Number(formatFraction(priceImpact.asFraction)),
+    (Number(gasUseEstimateBase.toExact()) * Number(amount.toExact())) / Number(formatFraction(priceImpact.asFraction)),
   )
   const streams = Math.round(Number(amount.toExact()) / bestFlowAmount)
   if (!Number.isFinite(streams)) {

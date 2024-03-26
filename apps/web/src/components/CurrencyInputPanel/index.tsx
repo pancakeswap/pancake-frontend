@@ -1,7 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import { ArrowDropDownIcon, Box, Button, CopyButton, Flex, Loading, Skeleton, Text, useModal } from '@pancakeswap/uikit'
+import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
+import {
+  ArrowDropDownIcon,
+  Box,
+  Button,
+  CopyButton,
+  Flex,
+  LinkExternal,
+  Loading,
+  Skeleton,
+  Text,
+  useModal,
+} from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo, DoubleCurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useMemo } from 'react'
@@ -219,7 +231,19 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                 />
               </Flex>
             ) : null}
+            {token && tokenAddress && (token.equals(bscTokens.insp) || token.equals(ethereumTokens.insp)) ? (
+              <LinkExternal
+                ml="4px"
+                data-dd-action-name="Token campaign"
+                style={{ textDecoration: 'none' }}
+                showExternalIcon={false}
+                href="https://blog.pancakeswap.finance/articles/introducing-ins-pire-fiesta-swap-to-earn-155-000-insp-with-inspect-on-pancake-swap?utm_source=Swappage&utm_medium=website&utm_campaign=INSPSwappage&utm_id=INSPcampaign"
+              >
+                🎁
+              </LinkExternal>
+            ) : null}
           </Flex>
+
           {account && !hideBalanceComp && (
             <Text
               data-dd-action-name="Token balance"
