@@ -16,7 +16,7 @@ export const shadowRealm: GameType = {
     TrendingTagType.Multiplayer,
     TrendingTagType.CakeToken,
   ],
-  headerImage: 'https://shadow-realm.chainzstudios.com/overview/header.jpg',
+  headerImage: 'https://shadow-realm.chainzstudios.com/overview/header.png',
   headerIconImage: {
     desktop: 'https://shadow-realm.chainzstudios.com/overview/headerIcon.png',
     mobile: 'https://shadow-realm.chainzstudios.com/overview/headerIcon.png',
@@ -30,7 +30,7 @@ export const shadowRealm: GameType = {
     darkTheme: 'https://shadow-realm.chainzstudios.com/overview/logo-circle.png',
   },
   gameLink: {
-    playNowLink: 'https://www.chainzstudios.com/shadow-realm/',
+    playNowLink: 'https://www.chainzstudios.com/shadow-realms/',
   },
   posters: {
     layout: PostersLayout.Horizontal,
