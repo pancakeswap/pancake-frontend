@@ -21,10 +21,16 @@ export const stakeFarm = async (masterChefContract: MasterChefContract, pid, amo
   })
 }
 
-export const bCakeStakeFarm = async (v2SSContract: V2SSBCakeContract, amount, gasPrice, gasLimit?: bigint) => {
+export const bCakeStakeFarm = async (
+  v2SSContract: V2SSBCakeContract,
+  amount,
+  gasPrice,
+  gasLimit?: bigint,
+  noHarvest?: boolean,
+) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   logGTMClickStakeFarmEvent()
-  return v2SSContract.write.deposit([BigInt(value), false], {
+  return v2SSContract.write.deposit([BigInt(value), noHarvest ?? false], {
     gas: gasLimit || DEFAULT_GAS_LIMIT,
     gasPrice,
     account: v2SSContract.account ?? '0x',

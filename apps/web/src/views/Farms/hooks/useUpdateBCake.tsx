@@ -28,7 +28,8 @@ export const useUpdateBCakeFarms = (bCakeWrapperAddress: Address, pid: number) =
     }
   }, [account, chainId, dispatch, pid])
   const handleStake = useCallback(async () => {
-    const Tx = await bCakeStakeFarm(V2SSBCakeContract, '0', gasPrice, BOOSTED_FARM_V3_GAS_LIMIT)
+    const noHarvest = true
+    const Tx = await bCakeStakeFarm(V2SSBCakeContract, '0', gasPrice, BOOSTED_FARM_V3_GAS_LIMIT, noHarvest)
     return Tx
   }, [V2SSBCakeContract, gasPrice])
 
