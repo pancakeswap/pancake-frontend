@@ -3264,5 +3264,8 @@
   "The liquidity of this position is 0. Please try increasing the amount.": "Bu pozisyonun likiditesi 0. Lütfen miktarı artırmayı deneyin.",
   "Sign In With Wallet": "Cüzdanla Giriş Yap",
   "Subscribe To PancakeSwap": "PancakeSwap'e Abone Ol",
-  "Registration Error": "Kayıt Hatası"
+  "Registration Error": "Kayıt Hatası",
+  "Stake your WBNB here": "Stake your WBNB here",
+  "Stake WBNB, Win Combo Rewards!": "Stake WBNB, Win Combo Rewards!",
+  "Stake WBNB to Win Combo Rewards": "Stake WBNB to Win Combo Rewards"
 }
