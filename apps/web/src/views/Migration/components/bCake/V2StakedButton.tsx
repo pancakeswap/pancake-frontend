@@ -68,7 +68,7 @@ export async function getLpData({ lpAddress, chainId, account, wrapperAddress })
 
 export const useLpData = (lpAddress: Address, wrapperAddress: Address) => {
   const { chainId, account } = useWeb3React()
-  const { data, refetch } = useQuery({
+  const { data, refetch, isLoading } = useQuery({
     queryKey: ['lpContractData', lpAddress, chainId, wrapperAddress],
     queryFn: () => getLpData({ lpAddress, chainId, account, wrapperAddress }),
     enabled: !!lpAddress && !!chainId && !!account && !!wrapperAddress && lpAddress !== '0x' && wrapperAddress !== '0x',
@@ -76,7 +76,7 @@ export const useLpData = (lpAddress: Address, wrapperAddress: Address) => {
     staleTime: 3000,
     gcTime: 3000,
   })
-  return { data, refetch }
+  return { data, refetch, isDataLoading: isLoading }
 }
 
 const StakeButton: React.FC<React.PropsWithChildren<StakeButtonProps>> = ({
@@ -87,7 +87,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StakeButtonProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { lpAddress } = useFarmFromPid(pid) ?? {}
-  const { data, refetch } = useLpData(lpAddress ?? '0x', wrapperAddress ?? '0x')
+  const { data, refetch, isDataLoading } = useLpData(lpAddress ?? '0x', wrapperAddress ?? '0x')
   const { lpDecimals, userLp, allowanceLp } = data ?? {}
 
   const { account, chain, chainId } = useWeb3React()
@@ -151,12 +151,12 @@ const StakeButton: React.FC<React.PropsWithChildren<StakeButtonProps>> = ({
         >
           {t('Confirming')}
         </Button>
-      ) : !isAllApproved ? (
+      ) : !isAllApproved && !isDataLoading ? (
         <Button
           width="138px"
           marginLeft="auto"
           onClick={approveCallback}
-          disabled={approvalState === ApprovalState.PENDING}
+          disabled={approvalState === ApprovalState.PENDING || isDataLoading}
         >
           {approvalState === ApprovalState.PENDING ? t('Enabling...') : t('Enable')}
         </Button>

@@ -34,7 +34,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StakeButtonProps>> = ({
 
   const [isLoading, setIsLoading] = React.useState(false)
 
-  const { data, refetch } = useLpData(vaultAddress ?? '0x', bCakeWrapperAddress ?? '0x')
+  const { data, refetch, isDataLoading } = useLpData(vaultAddress ?? '0x', bCakeWrapperAddress ?? '0x')
   const { userLp, lpDecimals, allowanceLp } = data ?? {}
 
   const isNeedStake = (userLp ?? 0n) > 0n
@@ -90,7 +90,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StakeButtonProps>> = ({
         >
           {t('Confirming')}
         </Button>
-      ) : !isAllApproved ? (
+      ) : !isAllApproved && !isDataLoading ? (
         <Button
           width="138px"
           marginLeft="auto"
