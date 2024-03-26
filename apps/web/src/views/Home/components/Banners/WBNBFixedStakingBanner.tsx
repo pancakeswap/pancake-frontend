@@ -38,6 +38,7 @@ const BannerDesc = styled(Text)`
   font-style: normal;
   font-weight: 600;
   color: #280d5f;
+  white-space: nowrap;
 `
 
 const VerticalDivider = styled.span`
