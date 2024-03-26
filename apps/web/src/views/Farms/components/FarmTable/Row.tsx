@@ -209,7 +209,11 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                           hideButton={isSmallerScreen}
                           strikethrough={false}
                           boosted={false}
-                          farmCakePerSecond={multiplier.farmCakePerSecond}
+                          farmCakePerSecond={
+                            props?.details?.bCakeWrapperAddress
+                              ? (props?.details?.bCakeUserData?.rewardPerSecond ?? 0).toFixed(4)
+                              : multiplier.farmCakePerSecond
+                          }
                           totalMultipliers={multiplier.totalMultipliers}
                           boosterMultiplier={3}
                           isBooster={Boolean(props?.details?.bCakeWrapperAddress)}
@@ -219,13 +223,17 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   </td>
                 )
               case 'rewardPerDay':
-                if (farm.version === 2) {
+                if (props.type === 'v2') {
                   return (
                     <td key={key}>
                       <CellInner>
                         <CellLayout label={t('Reward Per Day')}>
                           <RewardPerDay
-                            rewardPerSec={props.farm.rewardCakePerSecond ?? 0}
+                            rewardPerSec={
+                              props?.details?.bCakeWrapperAddress
+                                ? props?.details?.bCakeUserData?.rewardPerSecond ?? 0
+                                : props.farm.rewardCakePerSecond ?? 0
+                            }
                             scale="sm"
                             style={{ marginTop: 5 }}
                           />

@@ -22,6 +22,7 @@ import {
   fetchFarmUserAllowances,
   fetchFarmUserBCakeWrapperConstants,
   fetchFarmUserBCakeWrapperEarnings,
+  fetchFarmUserBCakeWrapperRewardPerSec,
   fetchFarmUserBCakeWrapperStakedBalances,
   fetchFarmUserEarnings,
   fetchFarmUserStakedBalances,
@@ -135,6 +136,7 @@ interface BCakeUserDataResponse {
   tokenBalance: string
   stakedBalance: string
   earnings: string
+  rewardPerSecond: number
 }
 
 async function getBoostedFarmsStakeValue(farms, account, chainId, proxyAddress) {
@@ -184,12 +186,14 @@ async function getBCakeWrapperFarmsStakeValue(farms, account, chainId) {
     { parsedStakedBalances: userStakedBalances, boostedAmounts, boosterMultiplier },
     userFarmEarnings,
     { boosterContractAddress },
+    { rewardPerSec },
   ] = await Promise.all([
     fetchFarmBCakeWrapperUserAllowances(account, farms, chainId),
     fetchFarmUserTokenBalances(account, farms, chainId),
     fetchFarmUserBCakeWrapperStakedBalances(account, farms, chainId),
     fetchFarmUserBCakeWrapperEarnings(account, farms, chainId),
     fetchFarmUserBCakeWrapperConstants(account, farms, chainId),
+    fetchFarmUserBCakeWrapperRewardPerSec(account, farms, chainId),
   ])
 
   const normalFarmAllowances = userFarmAllowances.map((_, index) => {
@@ -202,6 +206,7 @@ async function getBCakeWrapperFarmsStakeValue(farms, account, chainId) {
       boosterMultiplier: boosterMultiplier[index],
       boostedAmounts: boostedAmounts[index],
       boosterContractAddress: boosterContractAddress[index],
+      rewardPerSecond: rewardPerSec[index],
     }
   })
 
@@ -345,6 +350,7 @@ export const farmsSlice = createSlice({
             tokenBalance: '0',
             stakedBalance: '0',
             earnings: '0',
+            rewardPerSecond: 0,
           },
         }
       })

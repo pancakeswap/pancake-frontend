@@ -161,6 +161,7 @@ export interface SerializedBCakeUserData {
   boosterMultiplier?: number
   boostedAmounts?: string
   boosterContractAddress?: Address
+  rewardPerSecond?: number
 }
 
 export interface SerializedFarm extends SerializedFarmPublicData {
@@ -215,6 +216,7 @@ export interface DeserializedBCakeWrapperUserData {
   boosterMultiplier?: number
   boostedAmounts?: BigNumber
   boosterContractAddress?: Address
+  rewardPerSecond?: number
 }
 
 export interface DeserializedFarm extends DeserializedFarmConfig {

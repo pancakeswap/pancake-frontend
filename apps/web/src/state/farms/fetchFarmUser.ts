@@ -165,6 +165,25 @@ export const fetchFarmUserBCakeWrapperConstants = async (
   return { boosterContractAddress }
 }
 
+export const fetchFarmUserBCakeWrapperRewardPerSec = async (
+  account: string,
+  farmsToFetch: SerializedFarmPublicData[],
+  chainId: number,
+) => {
+  const rewardPerSec = (await publicClient({ chainId }).multicall({
+    contracts: farmsToFetch.map((farm) => {
+      return {
+        abi: v2BCakeWrapperABI,
+        address: farm?.bCakeWrapperAddress ?? '0x',
+        functionName: 'rewardPerSecond',
+      } as const
+    }),
+    allowFailure: false,
+  })) as ContractFunctionResult<typeof v2BCakeWrapperABI, 'rewardPerSecond'>[]
+
+  return { rewardPerSec: rewardPerSec.map((reward) => Number(reward)) }
+}
+
 export const fetchFarmUserEarnings = async (
   account: Address,
   farmsToFetch: SerializedFarmConfig[],
