@@ -3109,4 +3109,12 @@ export const bscTokens = {
     'Octavia',
     'https://octavia.one/',
   ),
+  ego: new ERC20Token(
+    ChainId.BSC,
+    '0x44a21B3577924DCD2e9C81A3347D204C36a55466',
+    18,
+    'EGO',
+    'Paysenger EGO',
+    'https://egoco.in/',
+  ),
 }
