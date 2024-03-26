@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { NATIVE, WNATIVE } from '@pancakeswap/sdk'
-import { useModal, useToast } from '@pancakeswap/uikit'
+import { Flex, Text, useModal, useToast } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
@@ -23,6 +23,7 @@ import { fetchBCakeWrapperUserDataAsync, fetchFarmUserDataAsync } from 'state/fa
 import { pickFarmTransactionTx } from 'state/global/actions'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { useNonBscFarmPendingTransaction, useTransactionAdder } from 'state/transactions/hooks'
+import { styled } from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { Hash } from 'viem'
 import { useIsBloctoETH } from 'views/Farms'
@@ -34,6 +35,11 @@ import useUnstakeFarms, { useBCakeUnstakeFarms } from '../../../hooks/useUnstake
 import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
 import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
 import { YieldBoosterState } from '../../YieldBooster/hooks/useYieldBoosterState'
+
+export const ActionTitles = styled.div`
+  display: flex;
+  margin-bottom: 8px;
+`
 
 interface StackedActionProps extends FarmWithStakedValue {
   userDataReady: boolean
@@ -442,20 +448,49 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         onPresentDeposit={onPresentDeposit}
         bCakeInfoSlot={bCakeInfoSlot}
       >
-        <FarmWidget.StakedLP
-          decimals={18}
-          stakedBalance={stakedBalance}
-          quoteTokenSymbol={
-            chainId && WNATIVE[chainId]?.symbol === quoteToken.symbol ? NATIVE[chainId]?.symbol : quoteToken.symbol
-          }
-          tokenSymbol={chainId && WNATIVE[chainId]?.symbol === token.symbol ? NATIVE[chainId]?.symbol : token.symbol}
-          lpTotalSupply={lpTotalSupply ?? BIG_ZERO}
-          lpTokenPrice={lpTokenPrice ?? BIG_ZERO}
-          tokenAmountTotal={tokenAmountTotal ?? BIG_ZERO}
-          quoteTokenAmountTotal={quoteTokenAmountTotal ?? BIG_ZERO}
-          pendingFarmLength={pendingFarm.length}
-          onClickLoadingIcon={onClickLoadingIcon}
-        />
+        {bCakeInfoSlot ? (
+          <Flex flexDirection="column" flexBasis="75%">
+            <ActionTitles style={{ marginBottom: 0 }}>
+              <Text bold color="secondary" fontSize="12px" pr="4px">
+                {lpSymbol}
+              </Text>
+              <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+                {t('Staked')}
+              </Text>
+            </ActionTitles>
+            <FarmWidget.StakedLP
+              decimals={18}
+              stakedBalance={stakedBalance}
+              quoteTokenSymbol={
+                chainId && WNATIVE[chainId]?.symbol === quoteToken.symbol ? NATIVE[chainId]?.symbol : quoteToken.symbol
+              }
+              tokenSymbol={
+                chainId && WNATIVE[chainId]?.symbol === token.symbol ? NATIVE[chainId]?.symbol : token.symbol
+              }
+              lpTotalSupply={lpTotalSupply ?? BIG_ZERO}
+              lpTokenPrice={lpTokenPrice ?? BIG_ZERO}
+              tokenAmountTotal={tokenAmountTotal ?? BIG_ZERO}
+              quoteTokenAmountTotal={quoteTokenAmountTotal ?? BIG_ZERO}
+              pendingFarmLength={pendingFarm.length}
+              onClickLoadingIcon={onClickLoadingIcon}
+            />
+          </Flex>
+        ) : (
+          <FarmWidget.StakedLP
+            decimals={18}
+            stakedBalance={stakedBalance}
+            quoteTokenSymbol={
+              chainId && WNATIVE[chainId]?.symbol === quoteToken.symbol ? NATIVE[chainId]?.symbol : quoteToken.symbol
+            }
+            tokenSymbol={chainId && WNATIVE[chainId]?.symbol === token.symbol ? NATIVE[chainId]?.symbol : token.symbol}
+            lpTotalSupply={lpTotalSupply ?? BIG_ZERO}
+            lpTokenPrice={lpTokenPrice ?? BIG_ZERO}
+            tokenAmountTotal={tokenAmountTotal ?? BIG_ZERO}
+            quoteTokenAmountTotal={quoteTokenAmountTotal ?? BIG_ZERO}
+            pendingFarmLength={pendingFarm.length}
+            onClickLoadingIcon={onClickLoadingIcon}
+          />
+        )}
       </FarmWidget.FarmTable.StakedActionComponent>
     )
   }

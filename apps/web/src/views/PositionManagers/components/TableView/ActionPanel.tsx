@@ -1,5 +1,5 @@
 import { Strategy } from '@pancakeswap/position-managers'
-import { Flex } from '@pancakeswap/uikit'
+import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 import { useTheme } from 'styled-components'
 import { LiquidityManagement, LiquidityManagementProps } from '../LiquidityManagement'
@@ -59,10 +59,16 @@ export const ActionPanel: React.FC<
   boosterContractAddress,
 }) => {
   const { colors } = useTheme()
+  const { isMobile } = useMatchBreakpoints()
 
   return (
-    <Flex background={colors.dropdown} p="24px 32px" style={{ gap: 32 }}>
-      <Flex flexDirection="column" width={304}>
+    <Flex
+      background={colors.dropdown}
+      p="24px 32px"
+      flexDirection={isMobile ? 'column-reverse' : 'row'}
+      style={{ gap: 32 }}
+    >
+      <Flex flexDirection="column" width={isMobile ? '100%' : 304}>
         <VaultInfo
           currencyA={currencyA}
           currencyB={currencyB}
@@ -88,7 +94,7 @@ export const ActionPanel: React.FC<
           projectVaultUrl={projectVaultUrl}
         />
       </Flex>
-      <Flex flexDirection="column" flexGrow={1} style={{ gap: 16 }}>
+      <Flex flexDirection="column" flexGrow={1} style={{ gap: 16 }} width={isMobile ? '100%' : undefined}>
         <TableActionCard>
           <ManagerInfo
             id={manager.id}

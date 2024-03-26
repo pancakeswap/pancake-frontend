@@ -334,7 +334,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
 
   const farm = details
 
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
 
   const {
     t,
@@ -474,7 +474,13 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                       <>
                         {account && hasStakedInBCake && (
                           <>
-                            <Box style={{ height: 70, width: 2, backgroundColor: theme.colors.cardBorder }} />
+                            <Box
+                              style={{
+                                height: isMobile ? 2 : 70,
+                                width: isMobile ? '100%' : 2,
+                                backgroundColor: theme.colors.cardBorder,
+                              }}
+                            />
                             <HarvestActionContainer {...farm} {...bCakeProps} userDataReady={userDataReady}>
                               {(harvestProps) => (
                                 <HarvestAction
@@ -485,18 +491,28 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                                     marginLeft: '0px',
                                     paddingLeft: 0,
                                     paddingRight: 0,
+                                    width: isMobile ? '100%' : undefined,
+                                    marginBottom: isMobile ? '0' : undefined,
                                   }}
                                 />
                               )}
                             </HarvestActionContainer>
                           </>
                         )}
-                        <Box style={{ height: 70, width: 2, backgroundColor: theme.colors.cardBorder }} />
+                        <Box
+                          style={{
+                            height: isMobile ? 2 : 70,
+                            width: isMobile ? '100%' : 2,
+                            backgroundColor: theme.colors.cardBorder,
+                          }}
+                        />
                         <Flex
                           flexGrow={1}
-                          maxWidth={hasStakedInBCake ? '27%' : '50%'}
+                          maxWidth={isMobile ? 'auto' : hasStakedInBCake ? '27%' : '50%'}
                           justifyContent="space-between"
                           alignItems="center"
+                          p={isMobile ? '16px 0' : undefined}
+                          width={isMobile ? '100%' : undefined}
                         >
                           <StatusView
                             status={status}
