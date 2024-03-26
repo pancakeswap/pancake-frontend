@@ -57,7 +57,10 @@ export const ToastsProvider: React.FC<React.PropsWithChildren> = ({ children }) 
               description,
               type: types.DANGER,
             }}
-            onRemove={() => sonnerToast.dismiss(t)}
+            onRemove={() => {
+              toasts.delete(t);
+              sonnerToast.dismiss(t);
+            }}
           >
             {description}
           </Toast>
@@ -88,7 +91,10 @@ export const ToastsProvider: React.FC<React.PropsWithChildren> = ({ children }) 
               description,
               type: types.INFO,
             }}
-            onRemove={() => sonnerToast.dismiss(t)}
+            onRemove={() => {
+              toasts.delete(t);
+              sonnerToast.dismiss(t);
+            }}
           >
             {description}
           </Toast>
@@ -119,7 +125,10 @@ export const ToastsProvider: React.FC<React.PropsWithChildren> = ({ children }) 
               description,
               type: types.SUCCESS,
             }}
-            onRemove={() => sonnerToast.dismiss(t)}
+            onRemove={() => {
+              toasts.delete(t);
+              sonnerToast.dismiss(t);
+            }}
           >
             {description}
           </Toast>
@@ -150,7 +159,10 @@ export const ToastsProvider: React.FC<React.PropsWithChildren> = ({ children }) 
               description,
               type: types.WARNING,
             }}
-            onRemove={() => sonnerToast.dismiss(t)}
+            onRemove={() => {
+              toasts.delete(t);
+              sonnerToast.dismiss(t);
+            }}
           >
             {description}
           </Toast>
@@ -162,8 +174,12 @@ export const ToastsProvider: React.FC<React.PropsWithChildren> = ({ children }) 
     [deleteCallback]
   );
 
-  const clear = useCallback(() => sonnerToast.dismiss(), []);
+  const clear = useCallback(() => {
+    toasts.clear();
+    sonnerToast.dismiss();
+  }, []);
   const remove = useCallback((id: string | number) => {
+    toasts.delete(id);
     sonnerToast.dismiss(id);
   }, []);
 
