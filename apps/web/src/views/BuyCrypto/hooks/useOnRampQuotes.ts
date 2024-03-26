@@ -56,11 +56,8 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         network,
       })
       const networkDisplay = getNetworkDisplay(network)
-      const error =
-        providerQuotes.filter((q) => q.error).length === 0
-          ? `No quotes available for ${cryptoCurrency} on ${networkDisplay}`
-          : undefined
-      return { quotes: providerQuotes.filter((q) => q.error), quotesError: error }
+      const error = providerQuotes ? `No quotes available for ${cryptoCurrency} on ${networkDisplay}` : undefined
+      return { quotes: providerQuotes, quotesError: error }
     },
   })
 }
