@@ -21,7 +21,10 @@ export const ProxyFarmCardContainer = ({ farm }) => {
     <FarmCard
       key={finalFarm.pid}
       farm={finalFarm}
-      displayApr={getDisplayApr(finalFarm.apr, finalFarm.lpRewardsApr)}
+      displayApr={getDisplayApr(
+        finalFarm.bCakeWrapperAddress && finalFarm?.bCakeUserData?.rewardPerSecond === 0 ? 0 : finalFarm.apr,
+        finalFarm.lpRewardsApr,
+      )}
       cakePrice={cakePrice}
       account={account}
       removed={false}
@@ -46,7 +49,10 @@ const FarmsPage = () => {
             <FarmCard
               key={`${farm.pid}-${farm.version}`}
               farm={farm}
-              displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
+              displayApr={getDisplayApr(
+                farm.bCakeWrapperAddress && farm?.bCakeUserData?.rewardPerSecond === 0 ? 0 : farm.apr,
+                farm.lpRewardsApr,
+              )}
               cakePrice={cakePrice}
               account={account}
               removed={false}
