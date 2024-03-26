@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { AddIcon, IconButton, MinusIcon, Text } from "@pancakeswap/uikit";
+import { AddIcon, Flex, IconButton, MinusIcon, Text, useMatchBreakpoints } from "@pancakeswap/uikit";
 import { ReactNode } from "react";
 import { ActionContent, ActionTitles, IconButtonWrapper, StyledActionContainer } from "./styles";
 
@@ -23,10 +23,20 @@ const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<Sta
   bCakeInfoSlot,
 }) => {
   const { t } = useTranslation();
-
+  const { isMobile } = useMatchBreakpoints();
   return (
     <StyledActionContainer
-      style={bCakeInfoSlot ? { paddingBottom: 0, paddingTop: 0, display: "flex", alignItems: "center" } : undefined}
+      style={
+        bCakeInfoSlot
+          ? {
+              paddingBottom: isMobile ? undefined : 0,
+              paddingTop: isMobile ? undefined : 0,
+              display: "flex",
+              alignItems: "center",
+              minHeight: isMobile ? "auto" : undefined,
+            }
+          : undefined
+      }
     >
       {!bCakeInfoSlot && (
         <ActionTitles style={{ marginBottom: 0 }}>
@@ -38,16 +48,18 @@ const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<Sta
           </Text>
         </ActionTitles>
       )}
-      <ActionContent style={{ gap: 16, width: "100%" }}>
-        {children}
-        <IconButtonWrapper>
-          <IconButton mr="6px" variant="secondary" disabled={disabledMinusButton} onClick={onPresentWithdraw}>
-            <MinusIcon color="primary" width="14px" />
-          </IconButton>
-          <IconButton variant="secondary" disabled={disabledPlusButton} onClick={onPresentDeposit}>
-            <AddIcon color="primary" width="14px" />
-          </IconButton>
-        </IconButtonWrapper>
+      <ActionContent style={{ gap: 16, width: "100%", flexDirection: isMobile && bCakeInfoSlot ? "column" : "row" }}>
+        <Flex width="100%" justifyContent="space-between" alignItems="center">
+          {children}
+          <IconButtonWrapper>
+            <IconButton mr="6px" variant="secondary" disabled={disabledMinusButton} onClick={onPresentWithdraw}>
+              <MinusIcon color="primary" width="14px" />
+            </IconButton>
+            <IconButton variant="secondary" disabled={disabledPlusButton} onClick={onPresentDeposit}>
+              <AddIcon color="primary" width="14px" />
+            </IconButton>
+          </IconButtonWrapper>
+        </Flex>
         {bCakeInfoSlot}
       </ActionContent>
     </StyledActionContainer>
