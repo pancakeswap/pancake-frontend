@@ -3264,5 +3264,8 @@
   "The liquidity of this position is 0. Please try increasing the amount.": "이 포지션의 유동성은 0입니다. 금액을 늘려보세요.",
   "Sign In With Wallet": "지갑으로 로그인",
   "Subscribe To PancakeSwap": "PancakeSwap 구독",
-  "Registration Error": "등록 오류"
+  "Registration Error": "등록 오류",
+  "Stake your WBNB here": "Stake your WBNB here",
+  "Stake WBNB, Win Combo Rewards!": "Stake WBNB, Win Combo Rewards!",
+  "Stake WBNB to Win Combo Rewards": "Stake WBNB to Win Combo Rewards"
 }
