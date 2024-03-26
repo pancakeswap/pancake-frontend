@@ -98,7 +98,7 @@ export const BCakeBoosterCard: React.FC<{ variants?: 'farm' | 'pm' }> = ({ varia
   })
   return (
     <CardWrapper>
-      <ImageWrapper style={{ left: variants === 'pm' ? -185 : -70 }}>
+      <ImageWrapper style={{ left: variants === 'pm' ? -185 : isMobile ? -110 : -70, top: 105 }}>
         <Image
           src={variants === 'pm' ? boosterCardImagePM : boosterCardImage}
           alt="booster-card-image"
