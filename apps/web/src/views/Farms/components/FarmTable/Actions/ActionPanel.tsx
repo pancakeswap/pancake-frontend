@@ -503,10 +503,12 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                             isFarmStaking
                             boostedMultiplier={details?.bCakeUserData?.boosterMultiplier}
                             maxBoostMultiplier={3}
-                            shouldUpdate={shouldUpdate}
+                            shouldUpdate={shouldUpdate && farm?.bCakeUserData?.stakedBalance?.gt(0)}
                             expectMultiplier={veCakeUserMultiplierBeforeBoosted}
                           />
-                          {shouldUpdate && <Button onClick={onUpdate}>{t('Update')}</Button>}
+                          {shouldUpdate && farm?.bCakeUserData?.stakedBalance?.gt(0) && (
+                            <Button onClick={onUpdate}>{t('Update')}</Button>
+                          )}
                         </Flex>
                       </>
                     ) : undefined
