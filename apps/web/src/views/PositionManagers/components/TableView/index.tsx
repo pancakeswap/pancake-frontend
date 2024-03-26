@@ -11,7 +11,6 @@ import { useDelayedUnmount } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import BoostedTag from 'views/Farms/components/YieldBooster/components/BoostedTag'
 import { useIsWrapperWhiteList } from '../../hooks/useWrapperBooster'
 import { ActionPanel } from './ActionPanel'
 
@@ -34,7 +33,7 @@ import { AprButton } from '../AprButton'
 import { CellLayout } from './CellLayout'
 import { Details } from './Details'
 import { FarmCell } from './FarmCell'
-import { AprMobileCell, CellInner, EarnedMobileCell, FarmMobileCell, StyledTr } from './Styled'
+import { AprMobileCell, CellInner, FarmMobileCell, StyledTr } from './Styled'
 
 import { TIME_WINDOW_DEFAULT, TIME_WINDOW_FALLBACK } from '../../hooks/useFetchApr'
 
@@ -361,27 +360,12 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                   allowDepositToken1={allowDepositToken1 ?? false}
                   isBooster={isBooster}
                 />
-                <Flex
-                  mr="16px"
-                  alignItems={isMobile ? 'end' : 'center'}
-                  flexDirection={isMobile ? 'column' : 'row'}
-                  style={{ gap: '4px' }}
-                >
-                  {isBooster ? <BoostedTag scale="sm" /> : null}
-                </Flex>
               </Flex>
             </FarmMobileCell>
           </tr>
           <StyledTr onClick={toggleActionPanel}>
             <td width="33%">
-              <EarnedMobileCell>
-                <CellLayout label={t('Earned')}>
-                  {/* <Earned {...props.earned} userDataReady={userDataReady} /> */}
-                </CellLayout>
-              </EarnedMobileCell>
-            </td>
-            <td width="33%">
-              <AprMobileCell>
+              <AprMobileCell style={{ paddingLeft: 20 }}>
                 <CellLayout label={t('APR')}>
                   <AprButton
                     id={id}

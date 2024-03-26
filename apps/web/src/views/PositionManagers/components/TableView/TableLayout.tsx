@@ -42,9 +42,6 @@ const TableBody = styled.tbody`
     }
   }
 `
-const TableContainer = styled.div`
-  position: relative;
-`
 
 export const TableLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (

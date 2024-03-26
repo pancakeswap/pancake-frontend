@@ -2,10 +2,11 @@ import { Strategy } from '@pancakeswap/position-managers'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 import { useTheme } from 'styled-components'
-import { LiquidityManagement, LiquidityManagementProps } from '../LiquidityManagement'
+import { LiquidityManagementProps } from '../LiquidityManagement'
 import { ManagerInfo } from '../ManagerInfo'
 import { VaultInfo, VaultInfoProps } from '../VaultInfo'
 import { VaultLinks, VaultLinksProps } from '../VaultLinks'
+import { LiquidityManagement } from './LiquidityManagement'
 import { TableActionCard } from './TableActionCard'
 
 export const ActionPanel: React.FC<
@@ -105,7 +106,7 @@ export const ActionPanel: React.FC<
             }`}
           />
         </TableActionCard>
-        <TableActionCard>
+        <TableActionCard style={{ padding: 0 }}>
           <LiquidityManagement
             boosterMultiplier={boosterMultiplier}
             manager={manager}

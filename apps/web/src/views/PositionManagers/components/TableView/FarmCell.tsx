@@ -1,5 +1,5 @@
 import { Currency } from '@pancakeswap/sdk'
-import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { memo, useMemo } from 'react'
 
@@ -46,6 +46,7 @@ export const FarmCell = memo(function CardTitle({
     () => `${displayCurrencyA.symbol}-${displayCurrencyB.symbol}`,
     [displayCurrencyA, displayCurrencyB],
   )
+  const { isMobile } = useMatchBreakpoints()
 
   return (
     <Flex pl="20px">
@@ -75,8 +76,8 @@ export const FarmCell = memo(function CardTitle({
           style={{ gap: '0.5em' }}
           flexWrap="wrap"
         >
-          <FeeTag feeAmount={feeTier} scale="sm" />
-          {isSingleDepositToken && <SingleTokenTag scale="sm" />}
+          {!isMobile && <FeeTag feeAmount={feeTier} scale="sm" />}
+          {isSingleDepositToken && !isMobile && <SingleTokenTag scale="sm" />}
           {isBooster && <BoostedTag scale="sm" />}
         </Flex>
       </Flex>

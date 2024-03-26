@@ -92,7 +92,7 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
       <Button
         ml="auto"
         width="100px"
-        variant="secondary"
+        variant="primary"
         style={{ alignSelf: 'center' }}
         disabled={isDisabled}
         onClick={onClickHarvest}
