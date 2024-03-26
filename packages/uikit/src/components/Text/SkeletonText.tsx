@@ -6,12 +6,18 @@ import { TextProps } from "./types";
 type SkeletonTextProps = {
   loading: boolean;
   initialWidth: number;
-  initialHeight: number;
+  initialHeight?: number;
   color?: string;
   children: ReactNode;
 };
 
-const SkeletonText = ({ loading, initialWidth, initialHeight, children, ...props }: TextProps & SkeletonTextProps) => {
+const SkeletonText = ({
+  loading,
+  initialWidth,
+  initialHeight = 16,
+  children,
+  ...props
+}: TextProps & SkeletonTextProps) => {
   const textRef = useRef<HTMLDivElement>(null);
   return (
     <>

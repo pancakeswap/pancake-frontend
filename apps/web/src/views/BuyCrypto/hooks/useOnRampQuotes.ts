@@ -55,10 +55,12 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         fiatCurrency,
         network,
       })
+      const quotes = providerQuotes.sort((a, b) => b.quote - a.quote)
+
       const networkDisplay = getNetworkDisplay(network)
       const error =
         providerQuotes.length === 0 ? `No quotes available for ${cryptoCurrency} on ${networkDisplay}` : undefined
-      return { quotes: providerQuotes, quotesError: error }
+      return { quotes, quotesError: error }
     },
   })
 }

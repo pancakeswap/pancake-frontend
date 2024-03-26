@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import type { Currency } from '@pancakeswap/swap-sdk-core'
-import { ArrowDropDownIcon, ArrowDropUpIcon, Box, Flex, RowBetween, Text } from '@pancakeswap/uikit'
+import { ArrowDropDownIcon, ArrowDropUpIcon, Box, Flex, RowBetween, SkeletonText, Text } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Field } from 'state/buyCrypto/actions'
@@ -65,20 +65,25 @@ export const TransactionFeeDetails = ({
         </StyledFeesContainer3>
       </Flex>
 
-      <StyledFeesContainer width="100%" onClick={handleExpandClick} disabled={Boolean(quotesError)}>
+      <StyledFeesContainer width="100%" onClick={handleExpandClick} disabled={Boolean(quotesError || inputError)}>
         <StyledArrowHead />
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
             {selectedQuote && !quotesError ? (
-              <Text fontWeight="600" fontSize="14px" px="2px">
-                {t('Est total fees: %fees%', {
-                  fees: formatLocaleNumber({
-                    number: Number((selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2)),
-                    locale,
-                    options: { currency: selectedQuote.fiatCurrency, style: 'currency' },
-                  }),
-                })}
-              </Text>
+              <>
+                <Text fontWeight="600" fontSize="14px" px="2px">
+                  {t('Est total fees:')}
+                </Text>
+                <SkeletonText loading={Boolean(inputError)} initialWidth={40} fontSize="14px">
+                  {t('%fees%', {
+                    fees: formatLocaleNumber({
+                      number: Number((selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2)),
+                      locale,
+                      options: { currency: selectedQuote.fiatCurrency, style: 'currency' },
+                    }),
+                  })}
+                </SkeletonText>
+              </>
             ) : (
               <Text fontWeight="600" fontSize="14px" px="2px">
                 {quotesError}

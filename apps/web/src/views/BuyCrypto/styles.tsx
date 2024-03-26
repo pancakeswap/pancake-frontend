@@ -57,6 +57,7 @@ export const StyledFeesContainer = styled(Box)<{ disabled: boolean }>`
     disabled &&
     css`
       pointer-events: none;
+      opacity: 0.6;
     `}
 `
 
