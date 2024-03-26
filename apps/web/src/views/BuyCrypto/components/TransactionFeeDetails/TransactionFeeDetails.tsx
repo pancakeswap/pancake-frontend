@@ -50,7 +50,11 @@ export const TransactionFeeDetails = ({
   useEffect(() => {
     const elRef = contentRef.current
     if (elRef) setElementHeight(elRef.scrollHeight)
-  }, [selectedQuote])
+    if (inputError || quotesError) {
+      setShow(false)
+      setElementHeight(0)
+    }
+  }, [selectedQuote, inputError, quotesError])
 
   return (
     <Flex flexDirection="column">
