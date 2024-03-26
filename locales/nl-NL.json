@@ -3264,5 +3264,8 @@
   "The liquidity of this position is 0. Please try increasing the amount.": "De liquiditeit van deze positie is 0. Probeer het bedrag te verhogen.",
   "Sign In With Wallet": "Aanmelden met wallet",
   "Subscribe To PancakeSwap": "Registreer je op PancakeSwap",
-  "Registration Error": "Registratiefout"
+  "Registration Error": "Registratiefout",
+  "Stake your WBNB here": "Stake je WBNB hier",
+  "Stake WBNB, Win Combo Rewards!": "Stake WBNB en win combobeloningen!",
+  "Stake WBNB to Win Combo Rewards": "Stake WBNB en win combobeloningen"
 }
