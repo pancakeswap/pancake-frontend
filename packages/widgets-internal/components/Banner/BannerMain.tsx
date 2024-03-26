@@ -1,4 +1,4 @@
-import { FlexGap, useMatchBreakpoints, BreakpointChecks } from "@pancakeswap/uikit";
+import { BreakpointChecks, FlexGap, useMatchBreakpoints } from "@pancakeswap/uikit";
 import { ReactNode } from "react";
 import styled from "styled-components";
 
@@ -9,6 +9,7 @@ type Props = {
   title?: ReactNode;
   desc?: ReactNode;
   actions?: ReactNode;
+  containerStyle?: React.CSSProperties;
 };
 
 function getContainerPadding({ isXs }: BreakpointChecks) {
@@ -70,10 +71,10 @@ const ActionContainer = styled(FlexGap).attrs({
   flex-gap: ${(props) => getActionGap(props.$breakPoints)};
 `;
 
-export function BannerMain({ badges, title, desc, actions }: Props) {
+export function BannerMain({ badges, title, desc, actions, containerStyle }: Props) {
   const breakPoints = useMatchBreakpoints();
   return (
-    <Container $breakPoints={breakPoints}>
+    <Container $breakPoints={breakPoints} style={containerStyle}>
       <Content>
         {badges ? <BadgeContainer>{badges}</BadgeContainer> : null}
         {title || desc ? (

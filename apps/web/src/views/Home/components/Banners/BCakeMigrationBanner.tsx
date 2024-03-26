@@ -12,16 +12,17 @@ import {
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import bCakeMigrationImage from 'views/Farms/images/bCakeMigration.png'
+import bCakeMigrationMobileImage from 'views/Farms/images/bCakeMigrationMobileBg.png'
 
 const bgSmVariant: GraphicDetail = {
-  src: bCakeMigrationImage.src,
+  src: bCakeMigrationMobileImage.src,
   width: 272,
   height: 224,
 }
 
 const bgXsVariant: GraphicDetail = {
-  src: bCakeMigrationImage.src,
-  width: 218,
+  src: bCakeMigrationMobileImage.src,
+  width: 178,
   height: 182,
 }
 
@@ -71,18 +72,17 @@ export const BCakeMigrationBanner = () => {
   return (
     <BannerContainer background="linear-gradient(261deg, rgba(158, 63, 253, 0.12) 27.61%, rgba(98, 61, 255, 0.25) 76.11%), linear-gradient(247deg, #53DEE9 -16.43%, #A881FC 92.15%)">
       <BannerMain
+        containerStyle={{ marginRight: '-60px', width: '70%' }}
         title={
-          <Text fontWeight={600} fontSize={32} color="white">
+          <Text fontWeight={600} fontSize={isMobile ? 24 : 32} style={{ lineHeight: '110%' }} color="white">
             {t('Migrate for new bCAKE')}
           </Text>
         }
         desc={
-          <Text color="white" fontSize={['14px', null, '18px']}>
-            {isMobile
-              ? t('Migrate your V2, StableSwap or Position Manager staking for bCake')
-              : t(
-                  'Migrate your V2, StableSwap or Position Manager staking to continue earning and boost your earning with veCAKE!',
-                )}
+          <Text fontWeight={600} color="white" fontSize={['12px', null, '18px']}>
+            {t(
+              'Migrate your V2, StableSwap or Position Manager staking to continue earning and boost your earning with veCAKE!',
+            )}
           </Text>
         }
         actions={
