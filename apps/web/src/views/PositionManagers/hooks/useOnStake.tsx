@@ -39,17 +39,7 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress: Addres
                   account: account ?? '0x',
                 },
               )
-              console.log({
-                estGasOrigin: estGas.toString(),
-                estGasAdjusted: new BigNumber(estGas.toString()).times(1.5).toNumber(),
-                from: account,
-                to: positionManagerBCakeWrapperContract.address,
-                method: 'mintThenDeposit',
-                amounts: {
-                  token0: allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
-                  token1: allowDepositToken1 ? amountB?.numerator ?? 0n : 0n,
-                },
-              })
+
               return positionManagerBCakeWrapperContract.write.mintThenDeposit(
                 [
                   allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
@@ -106,7 +96,7 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress: Addres
       const receipt = await fetchWithCatchTxError(
         bCakeWrapperAddress
           ? () =>
-              positionManagerBCakeWrapperContract.write.deposit([0n, false], {
+              positionManagerBCakeWrapperContract.write.deposit([0n, true], {
                 account: account ?? '0x',
                 chain,
               })
