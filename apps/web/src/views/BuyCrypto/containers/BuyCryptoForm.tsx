@@ -24,7 +24,6 @@ import {
 import { useBtcAddressValidator, type GetBtcAddrValidationReturnType } from '../hooks/useBitcoinAddressValidator'
 import { useLimitsAndInputError } from '../hooks/useOnRampInputError'
 import { useOnRampQuotes } from '../hooks/useOnRampQuotes'
-import type { ProviderAvailabilities } from '../hooks/useProviderAvailabilities'
 import InputExtended, { StyledVerticalLine } from '../styles'
 import { FormContainer } from './FormContainer'
 import { FormHeader } from './FormHeader'
@@ -40,7 +39,7 @@ interface OnRampCurrencySelectPopOverProps {
   showProivdersPopOver: boolean
 }
 
-export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabilities: ProviderAvailabilities }) {
+export function BuyCryptoForm() {
   const {
     typedValue,
     independentField,
@@ -99,7 +98,8 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
   }, [typedValue, isTypingInput, selectedQuote])
 
   const btcValidationResults = useBtcAddressValidator({ address: searchQuery })
-  const { data: validAddress, isFetching: fetching, isError: error } = btcValidationResults
+  const { data: validAddress, isError: btcError } = btcValidationResults
+  const addressError = Boolean(btcError || (isBtc && !validAddress?.result))
 
   const { inputError, defaultAmt, amountError } = useLimitsAndInputError({
     typedValue: typedValue!,
@@ -163,18 +163,17 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
         <StyledVerticalLine />
 
         <BuyCryptoSelector
-          id={!isFiatFlow ? 'onramp-fiat' : 'onramp-crypto'}
+          id="onramp-fiat"
           onCurrencySelect={onCurrencySelection}
           selectedCurrency={outputCurrency}
           currencyLoading={Boolean(!outputCurrency)}
           value={outputValue || ''}
           onUserInput={handleTypeInput}
-          loading={Boolean(fetching || isFetching || !quotes)}
-          error={Boolean(error || inputError)}
+          error={Boolean(inputError)}
           disableInput={false}
         />
         <BuyCryptoSelector
-          id={!isFiatFlow ? 'onramp-crypto' : 'onramp-fiat'}
+          id="onramp-crypto"
           onCurrencySelect={onCurrencySelection}
           onUserInput={handleTypeOutput}
           selectedCurrency={inputCurrency}
@@ -192,7 +191,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           id="provider-select"
           onQuoteSelect={setShowProvidersPopOver}
           selectedQuote={selectedQuote || bestQuoteRef.current}
-          quoteLoading={Boolean(isFetching || inputError || !quotes || quotesError)}
+          quoteLoading={Boolean(isFetching || inputError || quotesError)}
           quotes={quotes}
         />
 
@@ -209,8 +208,8 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={inputCurrencyId}
             selectedQuote={selectedQuote}
-            disabled={isError || Boolean(quotesError) || Boolean(inputError) || Boolean(isBtc && !validAddress?.result)}
-            loading={!quotesError && (!quotes || quotes?.length === 0 || isFetching)}
+            disabled={Boolean(isError || quotesError || inputError || addressError)}
+            loading={Boolean(quotesError || isFetching)}
             input={searchQuery}
             resetBuyCryptoState={resetBuyCryptoState}
             btcAddress={debouncedQuery}
@@ -249,12 +248,12 @@ const OnRampCurrencySelectPopOver = ({
   const { t } = useTranslation()
 
   const showProvidersOnClick = useCallback(() => {
-    setShowProvidersPopOver((p: any) => !p)
+    setShowProvidersPopOver((p) => !p)
   }, [setShowProvidersPopOver])
 
   const onQuoteSelect = useCallback(
     (quote: OnRampProviderQuote) => {
-      setShowProvidersPopOver((p: any) => !p)
+      setShowProvidersPopOver((p) => !p)
       setSelectedQuote(quote)
     },
     [setShowProvidersPopOver, setSelectedQuote],
@@ -297,7 +296,7 @@ const BitcoinAddressInput = ({
   isBtc: boolean
   searchQuery: string
   validAddress: GetBtcAddrValidationReturnType | undefined
-  handleInput: (event: any) => void
+  handleInput: (event) => void
 }) => {
   const inputRef = useRef<HTMLInputElement>()
   const { isMobile } = useMatchBreakpoints()

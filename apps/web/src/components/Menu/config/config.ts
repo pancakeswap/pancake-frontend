@@ -106,11 +106,6 @@ const config: (
           label: t('Buy Crypto'),
           href: '/buy-crypto',
         },
-        // {
-        //   label: t('Sell Crypto'),
-        //   href: '/sell-crypto',
-        //   disabled: true,
-        // },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {

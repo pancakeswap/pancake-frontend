@@ -4,7 +4,6 @@ import { ArrowDropDownIcon, Box, BoxProps, Flex, Skeleton, Text, useModal } from
 import { NumericalInput } from '@pancakeswap/widgets-internal'
 import OnRampCurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/OnRampCurrencyModal'
 import { ReactNode } from 'react'
-import { useTheme } from 'styled-components'
 import { fiatCurrencyMap, getNetworkDisplay, onRampCurrencies } from 'views/BuyCrypto/constants'
 import { DropDownContainer, OptionSelectButton, StyledCircle } from 'views/BuyCrypto/styles'
 import { OnRampCurrencyLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
@@ -41,7 +40,7 @@ const ButtonAsset = ({
       {currencyLoading ? null : (
         <Flex flexDirection="column" marginLeft="6px" alignItems="flex-start" justifyContent="center">
           <Text id="pair" bold lineHeight="16px">
-            {(selectedCurrency && selectedCurrency.symbol && selectedCurrency.symbol.length > 10
+            {(selectedCurrency?.symbol && selectedCurrency.symbol.length > 10
               ? `${selectedCurrency.symbol.slice(0, 4)}...${selectedCurrency.symbol.slice(
                   selectedCurrency.symbol.length - 5,
                   selectedCurrency.symbol.length,
@@ -68,10 +67,6 @@ interface BuyCryptoSelectorProps extends Omit<CurrencySearchModalProps, 'mode'>,
   error?: boolean
   errorText?: string
   onInputBlur?: () => void
-  disabled?: boolean
-  loading?: boolean
-  topElement?: ReactNode
-  bottomElement?: ReactNode
   disableInput?: boolean
 }
 
@@ -83,15 +78,12 @@ export const BuyCryptoSelector = ({
   otherSelectedCurrency,
   id,
   currencyLoading,
-  topElement,
   error,
   value,
-  bottomElement,
   disableInput = false,
   ...props
 }: BuyCryptoSelectorProps) => {
   const tokensToShow = id === 'onramp-fiat' ? Object.values(fiatCurrencyMap) : onRampCurrencies
-  const theme = useTheme()
   const [onPresentCurrencyModal] = useModal(
     <OnRampCurrencySearchModal
       onCurrencySelect={onCurrencySelect}
