@@ -23,7 +23,9 @@ const Container = styled(FlexGap).attrs({
   justifyContent: "space-between",
   gap: "6px",
 })<WithBreakPoints>`
-  flex: 1;
+  z-index: 2;
+  width: 50%;
+  position: relative;
   padding: ${(props) => getContainerPadding(props.$breakPoints)};
 `;
 
