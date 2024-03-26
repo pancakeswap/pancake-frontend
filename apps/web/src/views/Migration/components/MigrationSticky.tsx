@@ -125,7 +125,7 @@ export const TEXT = {
       {
         title: <Trans>Restake LP tokens to the new Farms and Position Managers</Trans>,
         subTitle: <Trans>All trading fee earnings are included in the tokens returned.</Trans>,
-        button: <Trans>Next Steps</Trans>,
+        button: <Trans>Finish</Trans>,
       },
     ],
   },
