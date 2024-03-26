@@ -1,11 +1,11 @@
 import { GameType, GenreType, PostersItemDataType, PostersLayout, TrendingTagType } from '../../types'
 
 export const shadowRealm: GameType = {
-  id: 'shadow-realm',
+  id: 'shadow-realms',
   projectName: 'ChainzStudios',
-  title: 'Shadow Realm',
-  subTitle: 'Put your CAKE and Pancake NFTS to the test in this 3D Action-RPG',
-  description: `Join "Shadow Realms, Chainz Studios" RPG on PancakeSwap. Battle the Zerg, explore Dragon Cry, and become the ultimate Awakener. Your adventure starts now.`,
+  title: 'Shadow Realms',
+  subTitle: 'Embark on Your Adventure in Shadow Realms',
+  description: `Join the epic RPG experience crafted by ChainZ Studios on PancakeSwap. Conquer invaders and become the ultimate Awakener. Begin your journey now!`,
   publishDate: 1711612800,
   genre: GenreType.MMORPG,
   trendingTags: [
@@ -19,7 +19,7 @@ export const shadowRealm: GameType = {
   headerImage: 'https://shadow-realm.chainzstudios.com/overview/header.png',
   headerIconImage: {
     desktop: 'https://shadow-realm.chainzstudios.com/overview/headerIcon.png',
-    mobile: 'https://shadow-realm.chainzstudios.com/overview/headerIcon.png',
+    mobile: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/mobile-header-icon.png',
   },
   projectLogo: {
     lightTheme: 'https://shadow-realm.chainzstudios.com/overview/logo.png',
