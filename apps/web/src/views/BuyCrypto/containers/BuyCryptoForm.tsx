@@ -225,6 +225,8 @@ export function BuyCryptoForm() {
               display="flex"
               fontSize="14px"
               href="https://pancakeswap.finance/terms-of-service"
+              referrerPolicy="no-referrer"
+              target="_blank"
             >
               {t('terms of service')}
             </Link>
