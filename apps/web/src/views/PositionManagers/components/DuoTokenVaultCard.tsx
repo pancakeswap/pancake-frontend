@@ -186,7 +186,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           aprTimeWindow={aprDataInfo.timeWindow}
           rewardToken={earningToken}
           rewardPerSec={tokenPerSecond}
-          isBooster={isBooster}
+          isBooster={isBoosterWhiteList}
           boosterMultiplier={boosterMultiplier}
         />
         <ManagerInfo
@@ -234,7 +234,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           aprTimeWindow={aprDataInfo.timeWindow}
           bCakeWrapper={bCakeWrapper}
           minDepositUSD={minDepositUSD}
-          isBooster={isBooster}
+          isBooster={isBoosterWhiteList}
           boosterContractAddress={boosterContractAddress}
         />
         <ExpandableSection mt="1.5em">

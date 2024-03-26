@@ -43,6 +43,7 @@ export const Title = styled.div`
   line-height: 120%; /* 14.4px */
   letter-spacing: 0.36px;
   text-transform: uppercase;
+  margin-bottom: 8px;
 `
 
 export interface LiquidityManagementProps {
@@ -246,7 +247,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                 </Button>
               )}
             </RowBetween>
-            {Boolean(bCakeWrapper) && (
+            {isBooster && (
               <>
                 <AtomBox
                   width={{

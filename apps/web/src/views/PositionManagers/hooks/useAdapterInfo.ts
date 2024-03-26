@@ -184,6 +184,7 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
   const poolAndUserAmountsReady = (userAmounts || bCakeUserAmounts) && poolAmounts
   const bCakeDataReady = bCakeStaticData && bCakeUserAmounts
   const userLpAmounts = isBCakeWrapper ? bCakeUserAmounts?.[0] ?? BigInt(0) : userAmounts?.[0] ?? BigInt(0)
+  const resultStaticData = isBCakeWrapper ? bCakeStaticData : staticData
   return {
     pendingReward,
     poolToken0Amounts: poolAmounts?.token0Amounts ?? BigInt(0),
@@ -203,9 +204,9 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
       refetchPoolAmounts()
       refetchPendingReward()
     },
-    startTimestamp: staticData?.startTimestamp ? Number(staticData.startTimestamp) : 0,
-    endTimestamp: staticData?.endTimestamp ? Number(staticData.endTimestamp) : 0,
-    rewardPerSecond: staticData?.rewardPerSecond ?? '',
+    startTimestamp: resultStaticData?.startTimestamp ? Number(resultStaticData.startTimestamp) : 0,
+    endTimestamp: resultStaticData?.endTimestamp ? Number(resultStaticData.endTimestamp) : 0,
+    rewardPerSecond: resultStaticData?.rewardPerSecond ?? '',
     totalSupplyAmounts: poolAmounts?.totalSupply,
     userLpAmounts,
     boosterMultiplier:
@@ -213,7 +214,7 @@ export const usePositionInfo = (wrapperAddress: Address, adapterAddress: Address
         ? Number(new BigNumber(bCakeUserAmounts?.[2].toString()).div(bCakeStaticData.boosterPrecision.toString()))
         : 0,
     precision: poolAmounts?.precision,
-    adapterAddress: staticData?.adapterAddress,
+    adapterAddress: resultStaticData?.adapterAddress,
     vaultAddress: poolAmounts?.vaultAddress,
     managerFeePercentage: poolAmounts?.managerFeePercentage,
     managerAddress: poolAmounts?.managerAddress,
