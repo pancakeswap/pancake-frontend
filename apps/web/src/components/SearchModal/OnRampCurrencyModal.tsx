@@ -105,7 +105,7 @@ const SearchModalNetworkPopOver = ({
         </ModalHeader>
         <StyledModalBody style={{ paddingLeft: '0px', paddingRight: '0px', paddingTop: '0px' }}>
           <>
-            {chains
+            {[chains[0], ...chains]
               .filter((chain) => {
                 if (('testnet' in chain && chain.testnet) || chain.id === 204) return false
                 return true
