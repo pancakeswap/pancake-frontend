@@ -12,6 +12,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import BoostedTag from 'views/Farms/components/YieldBooster/components/BoostedTag'
+import { useIsWrapperWhiteList } from '../../hooks/useWrapperBooster'
 import { ActionPanel } from './ActionPanel'
 
 import {
@@ -235,6 +236,8 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     [withCakeReward, t, apr.isInCakeRewardDateRange],
   )
 
+  const { isBoosterWhiteList } = useIsWrapperWhiteList(info?.boosterContractAddress, bCakeWrapperAddress)
+
   return (
     <>
       {!isMobile ? (
@@ -254,7 +257,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                         autoCompound={autoCompound}
                         isSingleDepositToken={isSingleDepositToken}
                         allowDepositToken1={allowDepositToken1 ?? false}
-                        isBooster={isBooster}
+                        isBooster={isBoosterWhiteList}
                       />
                     </CellInner>
                   </td>

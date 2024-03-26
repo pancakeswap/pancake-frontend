@@ -11,7 +11,7 @@ export const useWrapperBooster = (bCakeBoosterAddress: Address, boostMultiplier:
   const bCakeFarmWrapperBoosterVeCakeContract = useBCakeFarmWrapperBoosterVeCakeContract(bCakeBoosterAddress)
   const { account } = useActiveWeb3React()
   const { data, refetch } = useQuery({
-    queryKey: ['useWrapperBooster', bCakeBoosterAddress, account],
+    queryKey: ['useWrapperBooster', bCakeBoosterAddress, account, wrapperAddress],
     queryFn: () =>
       bCakeFarmWrapperBoosterVeCakeContract.read.getUserMultiplierByWrapper([account ?? '0x', wrapperAddress ?? '0x']),
     enabled: !!bCakeBoosterAddress && !!account && !!wrapperAddress,
@@ -43,4 +43,23 @@ export const useWrapperBooster = (bCakeBoosterAddress: Address, boostMultiplier:
   }, [boostMultiplier, veCakeUserMultiplierBeforeBoosted])
 
   return { veCakeUserMultiplierBeforeBoosted, refetchWrapperBooster: refetch, shouldUpdate }
+}
+
+export const useIsWrapperWhiteList = (bCakeBoosterAddress?: Address, wrapperAddress?: Address) => {
+  const bCakeFarmWrapperBoosterVeCakeContract = useBCakeFarmWrapperBoosterVeCakeContract(bCakeBoosterAddress ?? `0x`)
+  const { data } = useQuery({
+    queryKey: ['useIsWrapperWhiteList', bCakeBoosterAddress, wrapperAddress],
+    queryFn: () => bCakeFarmWrapperBoosterVeCakeContract.read.whiteListWrapper([wrapperAddress ?? '0x']),
+    enabled: !!bCakeBoosterAddress && !!wrapperAddress,
+    refetchInterval: 10000,
+    staleTime: 10000,
+    gcTime: 10000,
+  })
+
+  const isBoosterWhiteList = useMemo(() => {
+    if (!bCakeBoosterAddress || !wrapperAddress) return false
+    return Boolean(data)
+  }, [bCakeBoosterAddress, data, wrapperAddress])
+
+  return { isBoosterWhiteList }
 }
