@@ -46,6 +46,7 @@ const OptionSelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' }
   justify-content: space-between;
   align-items: center;
   border-radius: 0px;
+  background-color: transparent !important;
 `
 
 interface ProviderSelectorProps extends BoxProps {
@@ -71,7 +72,7 @@ const QuoteBadge = ({ isBestQuote, text, loading }: BadgeProps) => {
   return (
     <>
       {loading ? (
-        <Skeleton width={40} height={17} isDark />
+        <Skeleton width={70} height={17} isDark />
       ) : (
         <Flex alignItems="center" pl={2} pr={1} py={0.5} background={bg} borderRadius={7} mx="4px">
           <Text
@@ -169,8 +170,8 @@ export const ProviderSelector = ({
           </Flex>
 
           <Flex>
-            {isMobile && <QuoteBadge isBestQuote={isBestQuote} text={quoteText} loading={quoteLoading} />}
-            <ArrowDropDownIcon />
+            <QuoteBadge isBestQuote={isBestQuote} text={quoteText} loading={quoteLoading} />
+            {!quoteLoading && <ArrowDropDownIcon />}
           </Flex>
         </OptionSelectButton>
       </DropDownContainer>
