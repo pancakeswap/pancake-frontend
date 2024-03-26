@@ -50,6 +50,7 @@ export const TransactionFeeDetails = ({
   useEffect(() => {
     const elRef = contentRef.current
     if (elRef) setElementHeight(elRef.scrollHeight)
+
     if (inputError || quotesError) {
       setShow(false)
       setElementHeight(0)
