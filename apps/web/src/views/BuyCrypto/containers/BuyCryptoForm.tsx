@@ -209,7 +209,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={inputCurrencyId}
             selectedQuote={selectedQuote}
-            disabled={isError || quotesError || Boolean(inputError) || Boolean(isBtc && !validAddress?.result)}
+            disabled={isError || Boolean(quotesError) || Boolean(inputError) || Boolean(isBtc && !validAddress?.result)}
             loading={!quotesError && (!quotes || quotes?.length === 0 || isFetching)}
             input={searchQuery}
             resetBuyCryptoState={resetBuyCryptoState}

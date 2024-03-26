@@ -3258,7 +3258,7 @@
   "1 %asset% = %amount%": "1 %asset% = %amount%",
   "paste your BTC address here": "paste your BTC address here",
   "By continuing you agree to our": "By continuing you agree to our",
-  "cookie policy": "cookie policy",
+  "terms of service": "terms of service",
   "Choose a provider": "Choose a provider",
   "The min amount is %minAmount% %fiatCurrency% / %minCryptoAmount% %cryptoCurrency%": "The min amount is %minAmount% %fiatCurrency% / %minCryptoAmount% %cryptoCurrency%",
   "The max amount is %maxAmount% %fiatCurrency% / %maxCryptoAmount% %cryptoCurrency%": "The max amount is %maxAmount% %fiatCurrency% / %maxCryptoAmount% %cryptoCurrency%",
