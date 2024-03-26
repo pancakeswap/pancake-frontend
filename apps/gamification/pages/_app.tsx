@@ -14,7 +14,6 @@ import { Provider as WrapBalancerProvider } from 'react-wrap-balancer'
 import { createGlobalStyle } from 'styled-components'
 import { wagmiConfig } from 'utils/wagmi'
 import { WagmiConfig } from 'wagmi'
-import Footer from '../components/Footer'
 import Menu from '../components/Menu/index'
 
 // Create a client
@@ -86,13 +85,13 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                   <ModalProvider>
                     <ResetCSS />
                     <GlobalStyle />
-                    <Menu />
-                    <Layout>
-                      <WrapBalancerProvider>
-                        <Component {...pageProps} />
-                      </WrapBalancerProvider>
-                    </Layout>
-                    <Footer />
+                    <Menu>
+                      <Layout>
+                        <WrapBalancerProvider>
+                          <Component {...pageProps} />
+                        </WrapBalancerProvider>
+                      </Layout>
+                    </Menu>
                   </ModalProvider>
                 </LanguageProvider>
               </StyledThemeProvider>
