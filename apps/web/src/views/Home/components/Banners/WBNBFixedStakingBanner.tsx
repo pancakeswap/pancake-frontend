@@ -11,6 +11,7 @@ import {
   GraphicDetail,
   LinkExternalAction,
   PancakeSwapBadge,
+  BannerActionContainer,
 } from '@pancakeswap/widgets-internal'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
@@ -85,19 +86,6 @@ const StyledButtonLinkAction = styled(ButtonLinkAction).withConfig({
     display: ${({ showExternalIcon }) => (showExternalIcon ? 'static' : 'none')};
   }
 `
-const Actions = styled.div`
-  position: absolute;
-  display: flex;
-  width: 100%;
-  gap: 8px;
-  z-index: 1;
-  bottom: 24px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    position: static;
-    z-index: 0;
-  }
-`
-
 const stakeLink =
   'https://pancakeswap.finance/simple-staking?utm_source=homepagebanner&utm_medium=website&utm_campaign=homepage&utm_id=WBNBsimplestakingcampaign'
 const learnMoreLink =
@@ -143,11 +131,11 @@ export function WBNBFixedStakingBanner() {
         }
         desc={isMobile ? null : <Desc />}
         actions={
-          <Actions>
+          <BannerActionContainer>
             {stakeAction}
             {isMobile ? null : <VerticalDivider />}
             {learnMoreAction}
-          </Actions>
+          </BannerActionContainer>
         }
       />
       <BannerGraphics>
