@@ -3264,5 +3264,8 @@
   "The liquidity of this position is 0. Please try increasing the amount.": "Płynność tej pozycji wynosi 0. Spróbuj zwiększyć kwotę.",
   "Sign In With Wallet": "Zaloguj się za pomocą portfela",
   "Subscribe To PancakeSwap": "Subskrybuj PancakeSwap",
-  "Registration Error": "Błąd rejestracji"
+  "Registration Error": "Błąd rejestracji",
+  "Stake your WBNB here": "Stakuj WBNB tutaj",
+  "Stake WBNB, Win Combo Rewards!": "Stakuj WBNB, Wygraj nagrody combo!",
+  "Stake WBNB to Win Combo Rewards": "Stakuj WBNB, aby wygrać nagrody combo"
 }
