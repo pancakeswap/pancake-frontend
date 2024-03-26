@@ -59,6 +59,7 @@ export const ActionPanel: React.FC<
   boosterContractAddress,
 }) => {
   const { colors } = useTheme()
+
   return (
     <Flex background={colors.dropdown} p="24px 32px" style={{ gap: 32 }}>
       <Flex flexDirection="column" width={304}>

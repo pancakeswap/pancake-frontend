@@ -9,6 +9,7 @@ import { styled } from 'styled-components'
 import { Address } from 'viem'
 import { useApr } from 'views/PositionManagers/hooks/useApr'
 import { AprDataInfo } from '../hooks'
+import { useIsWrapperWhiteList } from '../hooks/useWrapperBooster'
 import { getVaultName } from '../utils'
 import { CardTitle } from './CardTitle'
 import { ExpandableSection } from './ExpandableSection'
@@ -155,6 +156,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   }, [rewardPerSecond, earningToken])
 
   const isBooster = Boolean(bCakeWrapper)
+  const { isBoosterWhiteList } = useIsWrapperWhiteList(boosterContractAddress, bCakeWrapper)
   return (
     <StyledCard>
       <CardTitle
@@ -166,7 +168,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
         autoCompound={autoCompound}
         isSingleDepositToken={isSingleDepositToken}
         allowDepositToken1={allowDepositToken1}
-        isBooster={isBooster}
+        isBooster={isBoosterWhiteList}
       />
       <CardBody>
         <YieldInfo
