@@ -1,6 +1,6 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import { ONRAMP_PROVIDERS } from '../constants'
+import { ONRAMP_PROVIDERS, getNetworkDisplay } from '../constants'
 import {
   createQueryKey,
   type Evaluate,
@@ -55,9 +55,12 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         fiatCurrency,
         network,
       })
+      const networkDisplay = getNetworkDisplay(network)
       const error =
-        providerQuotes.length === 0 ? `No quotes available for ${fiatCurrency}/${cryptoCurrency}` : undefined
-      return { quotes: providerQuotes, quotesError: error }
+        providerQuotes.filter((q) => q.error).length === 0
+          ? `No quotes available for ${cryptoCurrency} on ${networkDisplay}`
+          : undefined
+      return { quotes: providerQuotes.filter((q) => q.error), quotesError: error }
     },
   })
 }

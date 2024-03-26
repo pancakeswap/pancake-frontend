@@ -1,7 +1,7 @@
 import { Box, Button, Flex, InputProps } from '@pancakeswap/uikit'
 import { scales } from '@pancakeswap/uikit/components/PancakeToggle/types'
 import { AppBody } from 'components/App'
-import { DefaultTheme, styled } from 'styled-components'
+import { DefaultTheme, css, styled } from 'styled-components'
 
 interface StyledInputProps extends InputProps {
   theme: DefaultTheme
@@ -43,7 +43,7 @@ export const Description = styled.div<{ show: boolean; elementHeight: number }>`
   transition: max-height 0.33s ease-in-out;
   max-height: ${({ show, elementHeight }) => (show ? `${elementHeight}px` : '0px')};
 `
-export const StyledFeesContainer = styled(Box)`
+export const StyledFeesContainer = styled(Box)<{ disabled: boolean }>`
   padding: 6px 16px;
   border-radius: 16px;
   z-index: 10;
@@ -53,6 +53,11 @@ export const StyledFeesContainer = styled(Box)`
   &:hover {
     cursor: pointer;
   }
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      pointer-events: none;
+    `}
 `
 
 export const StyledFeesContainer3 = styled(Flex)`

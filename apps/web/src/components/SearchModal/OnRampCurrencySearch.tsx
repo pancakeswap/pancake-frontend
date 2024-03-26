@@ -107,24 +107,26 @@ function OnRampCurrencySearch({
   )
 
   const getCurrencyListRows = useCallback(() => {
-    return filteredSortedTokens?.length ? (
+    return (
       <Box mx="-24px" mb="24px" mt="12px" height="100%">
-        <OnRampCurrencyList
-          height={isMobile ? (mode === 'onramp-fiat' ? 390 : 305) : 390}
-          currencies={filteredSortedTokens}
-          onCurrencySelect={handleCurrencySelect}
-          otherCurrency={otherSelectedCurrency}
-          selectedCurrency={selectedCurrency}
-          fixedListRef={fixedList}
-          mode={mode as string}
-        />
+        {filteredSortedTokens?.length ? (
+          <OnRampCurrencyList
+            height={isMobile ? (mode === 'onramp-fiat' ? 390 : 305) : 390}
+            currencies={filteredSortedTokens}
+            onCurrencySelect={handleCurrencySelect}
+            otherCurrency={otherSelectedCurrency}
+            selectedCurrency={selectedCurrency}
+            fixedListRef={fixedList}
+            mode={mode as string}
+          />
+        ) : (
+          <Column style={{ padding: '20px', height: '400px' }}>
+            <Text color="textSubtle" textAlign="center" mb="20px">
+              {t('No results found.')}
+            </Text>
+          </Column>
+        )}
       </Box>
-    ) : (
-      <Column style={{ padding: '20px', height: '100%' }}>
-        <Text color="textSubtle" textAlign="center" mb="20px">
-          {t('No results found.')}
-        </Text>
-      </Column>
     )
   }, [handleCurrencySelect, filteredSortedTokens, otherSelectedCurrency, selectedCurrency, t, isMobile, mode])
 

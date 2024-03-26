@@ -65,7 +65,7 @@ export const TransactionFeeDetails = ({
         </StyledFeesContainer3>
       </Flex>
 
-      <StyledFeesContainer width="100%" onClick={handleExpandClick}>
+      <StyledFeesContainer width="100%" onClick={handleExpandClick} disabled={Boolean(quotesError)}>
         <StyledArrowHead />
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
@@ -81,7 +81,7 @@ export const TransactionFeeDetails = ({
               </Text>
             ) : (
               <Text fontWeight="600" fontSize="14px" px="2px">
-                {t('No quotes available')}
+                {quotesError}
               </Text>
             )}
             <BuyCryptoTooltip

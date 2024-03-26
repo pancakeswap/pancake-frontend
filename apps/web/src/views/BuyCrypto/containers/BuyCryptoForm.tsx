@@ -1,6 +1,6 @@
 import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, AutoRow, Box, Flex, Row, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { AutoColumn, AutoRow, Box, Flex, Link, Row, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
 import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from 'react'
 import { useBuyCryptoActionHandlers, useBuyCryptoState } from 'state/buyCrypto/hooks'
@@ -179,8 +179,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           onUserInput={handleTypeOutput}
           selectedCurrency={inputCurrency}
           currencyLoading={Boolean(!inputCurrency)}
-          value={inputError ? '' : inputValue ?? ''}
-          error={Boolean(quotesError)}
+          value={inputError || quotesError ? '' : inputValue ?? ''}
           disableInput
         />
         <BitcoinAddressInput
@@ -210,17 +209,27 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={inputCurrencyId}
             selectedQuote={selectedQuote}
-            disabled={isError || Boolean(inputError) || Boolean(isBtc && !validAddress?.result)}
-            loading={!quotes || quotes?.length === 0 || isFetching}
+            disabled={isError || quotesError || Boolean(inputError) || Boolean(isBtc && !validAddress?.result)}
+            loading={!quotesError && (!quotes || quotes?.length === 0 || isFetching)}
             input={searchQuery}
             resetBuyCryptoState={resetBuyCryptoState}
             btcAddress={debouncedQuery}
-            errorText={amountError || quotesError}
+            errorText={amountError}
           />
-          <Text color="textSubtle" fontSize="14px" px="4px" textAlign="center">
-            {t('By continuing you agree to our')}{' '}
-            <span style={{ color: `${theme.colors.primary}` }}>{t('cookie policy')}</span>
-          </Text>
+          <Flex alignItems="center" justifyContent="center">
+            <Text color="textSubtle" fontSize="14px" px="4px" textAlign="center">
+              {t('By continuing you agree to our')}{' '}
+            </Text>
+            <Link
+              color={theme.colors.primary}
+              style={{ color: `${theme.colors.primary}` }}
+              display="flex"
+              fontSize="14px"
+              href="https://pancakeswap.finance/terms-of-service"
+            >
+              {t('terms of service')}
+            </Link>
+          </Flex>
         </Box>
       </FormContainer>
     </AutoColumn>
