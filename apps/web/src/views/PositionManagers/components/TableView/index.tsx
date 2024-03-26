@@ -308,7 +308,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                     <CellInner>
                       <CellLayout label={t('Reward Per Day')}>
                         <RewardPerDay
-                          rewardPerSec={tokenPerSecond ?? 0}
+                          rewardPerSec={(apr?.isInCakeRewardDateRange ? tokenPerSecond : 0) ?? 0}
                           symbol={earningToken.symbol ?? undefined}
                           scale="sm"
                           style={{ marginTop: 5 }}
