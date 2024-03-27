@@ -146,9 +146,11 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
                     <RocketIcon color="success" />
                     <Text bold color="success" fontSize={16}>
                       <>
-                        <Text bold color="success" fontSize={14} display="inline-block" mr="3px">
-                          {t('Up to')}
-                        </Text>
+                        {boosterMultiplier === 3 && (
+                          <Text bold color="success" fontSize={14} display="inline-block" mr="3px">
+                            {t('Up to')}
+                          </Text>
+                        )}
                         {`${isBooster ? (boosterMultiplier * apr + lpRewardsApr).toFixed(2) : displayApr}%`}
                       </>
                     </Text>
