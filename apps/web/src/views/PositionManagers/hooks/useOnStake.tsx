@@ -9,8 +9,8 @@ import { usePositionManagerBCakeWrapperContract, usePositionManagerWrapperContra
 import { useCallback } from 'react'
 import { Address } from 'viem'
 
-export const useOnStake = (contractAddress: Address, bCakeWrapperAddress: Address) => {
-  const positionManagerBCakeWrapperContract = usePositionManagerBCakeWrapperContract(bCakeWrapperAddress)
+export const useOnStake = (contractAddress: Address, bCakeWrapperAddress?: Address) => {
+  const positionManagerBCakeWrapperContract = usePositionManagerBCakeWrapperContract(bCakeWrapperAddress ?? '0x')
   const positionManagerWrapperContract = usePositionManagerWrapperContract(contractAddress)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
