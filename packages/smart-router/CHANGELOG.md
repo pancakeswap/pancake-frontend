@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 6.0.1
+
+### Patch Changes
+
+- 1aaed60: Disable stable swap for exact output
+
 ## 6.0.0
 
 ### Major Changes
