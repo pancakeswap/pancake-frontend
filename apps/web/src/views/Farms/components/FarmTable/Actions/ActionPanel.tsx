@@ -516,10 +516,10 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                         >
                           <StatusView
                             status={status}
-                            isFarmStaking
+                            isFarmStaking={farm?.bCakeUserData?.stakedBalance?.gt(0)}
                             boostedMultiplier={details?.bCakeUserData?.boosterMultiplier}
                             maxBoostMultiplier={3}
-                            shouldUpdate={shouldUpdate && farm?.bCakeUserData?.stakedBalance?.gt(0)}
+                            shouldUpdate={shouldUpdate}
                             expectMultiplier={veCakeUserMultiplierBeforeBoosted}
                           />
                           {shouldUpdate && farm?.bCakeUserData?.stakedBalance?.gt(0) && (

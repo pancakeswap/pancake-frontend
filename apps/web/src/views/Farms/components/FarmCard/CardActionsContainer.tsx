@@ -138,7 +138,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
               <Flex width="100%" justifyContent="space-between" alignItems="center">
                 <StatusView
                   status={status}
-                  isFarmStaking
+                  isFarmStaking={farm?.bCakeUserData?.stakedBalance?.gt(0)}
                   boostedMultiplier={boosterMultiplier}
                   maxBoostMultiplier={3}
                   shouldUpdate={shouldUpdate && farm?.bCakeUserData?.stakedBalance?.gt(0)}
