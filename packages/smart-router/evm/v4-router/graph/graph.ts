@@ -6,7 +6,7 @@ import memoize from 'lodash/memoize.js'
 
 import { Pool } from '../../v3-router/types'
 import { createPoolQuoteGetter } from '../../v3-router/providers'
-import { buildBaseRoute, getPoolAddress } from '../../v3-router/utils'
+import { buildBaseRoute, getPoolAddress, isStablePool } from '../../v3-router/utils'
 import { V4Trade, Edge, Vertice, Graph, TradeConfig, V4Route } from '../types'
 import { getCurrencyPairs } from '../pool'
 import { getNeighbour } from './edge'
@@ -222,7 +222,8 @@ export async function findBestTrade(params: FindBestTradeParams): Promise<V4Trad
   }
 
   // Exact output doesn't support mixed route
-  const poolsByType = groupPoolsByType(candidatePools)
+  // Disable stable swap for exact output as it's not natively supported. TX may fail if multiple swaps are executed within the same block
+  const poolsByType = groupPoolsByType(candidatePools).filter((pools) => !isStablePool(pools[0]))
   const trades = await Promise.allSettled(
     poolsByType.map((pools) => getBestTrade({ tradeType, candidatePools: pools, ...rest })),
   )
