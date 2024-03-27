@@ -294,7 +294,9 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                           aprTimeWindow={aprTimeWindow}
                           rewardToken={earningToken}
                           isBooster={isBoosterWhiteList}
-                          boosterMultiplier={info?.boosterMultiplier === 0 ? 3 : info?.boosterMultiplier}
+                          boosterMultiplier={
+                            totalAssetsInUsd === 0 ? 3 : info?.boosterMultiplier === 0 ? 3 : info?.boosterMultiplier
+                          }
                         />
                       </CellLayout>
                     </CellInner>
@@ -381,7 +383,9 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                     aprTimeWindow={aprTimeWindow}
                     rewardToken={earningToken}
                     isBooster={isBoosterWhiteList}
-                    boosterMultiplier={info?.boosterMultiplier === 0 ? 3 : info?.boosterMultiplier}
+                    boosterMultiplier={
+                      totalAssetsInUsd === 0 ? 3 : info?.boosterMultiplier === 0 ? 3 : info?.boosterMultiplier
+                    }
                   />
                 </CellLayout>
               </AprMobileCell>
