@@ -23,8 +23,8 @@
     "dist"
   ],
   "peerDependencies": {
-    "@pancakeswap/swap-sdk-core": "workspace:*",
-    "@pancakeswap/smart-router": "workspace:*"
+    "@pancakeswap/smart-router": "workspace:*",
+    "@pancakeswap/swap-sdk-core": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@pancakeswap/swap-sdk-core": {
@@ -39,6 +39,8 @@
   },
   "devDependencies": {
     "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/smart-router": "workspace:*",
+    "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
     "tsup": "^6.7.0"
   },

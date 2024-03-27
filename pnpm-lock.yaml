@@ -1564,16 +1564,16 @@ importers:
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
+    devDependencies:
+      '@pancakeswap/sdk':
+        specifier: workspace:*
+        version: link:../swap-sdk
       '@pancakeswap/smart-router':
         specifier: workspace:*
         version: link:../smart-router
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
-    devDependencies:
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../swap-sdk
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
