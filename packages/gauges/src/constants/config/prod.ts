@@ -3343,14 +3343,4 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: bscTokens.usdt.address,
     feeTier: FeeAmount.MEDIUM,
   },
-  {
-    gid: 334,
-    pairName: 'ezETH-ETH',
-    address: '0xfDe733b5DE5B5a06C68353e01E4c1D3415C89560',
-    chainId: ChainId.LINEA,
-    type: GaugeType.V3,
-    token0Address: lineaTokens.ezETH.address,
-    token1Address: lineaTokens.weth.address,
-    feeTier: FeeAmount.LOW,
-  },
 ]
