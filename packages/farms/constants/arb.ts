@@ -1,8 +1,9 @@
 import { arbitrumTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { FarmConfigV3 } from '../src'
 import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
-export const farmsV3 = defineFarmV3Configs([
+const v3TopFixedLps: FarmConfigV3[] = [
   {
     pid: 43,
     lpAddress: '0x389938CF14Be379217570D8e4619E51fBDafaa21',
@@ -17,6 +18,24 @@ export const farmsV3 = defineFarmV3Configs([
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
   },
+  {
+    pid: 2,
+    lpAddress: '0x0BaCc7a9717e70EA0DA5Ac075889Bd87d4C81197',
+    token0: arbitrumTokens.weth,
+    token1: arbitrumTokens.usdt,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 1,
+    lpAddress: '0xd9e2a1a61B6E61b275cEc326465d417e52C1b95c',
+    token0: arbitrumTokens.weth,
+    token1: arbitrumTokens.usdc,
+    feeAmount: FeeAmount.LOW,
+  },
+]
+
+export const farmsV3 = defineFarmV3Configs([
+  ...v3TopFixedLps,
   {
     pid: 41,
     lpAddress: '0x35D85D531BE7159cB6f92E8B9CeaF04eC28c6ad9',
@@ -86,20 +105,6 @@ export const farmsV3 = defineFarmV3Configs([
     token0: arbitrumTokens.xai,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
-  },
-  {
-    pid: 1,
-    lpAddress: '0xd9e2a1a61B6E61b275cEc326465d417e52C1b95c',
-    token0: arbitrumTokens.weth,
-    token1: arbitrumTokens.usdc,
-    feeAmount: FeeAmount.LOW,
-  },
-  {
-    pid: 2,
-    lpAddress: '0x0BaCc7a9717e70EA0DA5Ac075889Bd87d4C81197',
-    token0: arbitrumTokens.weth,
-    token1: arbitrumTokens.usdt,
-    feeAmount: FeeAmount.LOW,
   },
   {
     pid: 3,

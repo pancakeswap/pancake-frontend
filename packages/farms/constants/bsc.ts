@@ -7,12 +7,60 @@ import { CAKE_BNB_LP_MAINNET } from './common'
 
 const v3TopFixedLps: FarmConfigV3[] = [
   {
+    pid: 137,
+    lpAddress: '0x172fcD41E0913e95784454622d1c3724f546f849',
+    token0: bscTokens.usdt,
+    token1: bscTokens.wbnb,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 5,
+    token0: bscTokens.usdt,
+    token1: bscTokens.wbnb,
+    lpAddress: '0x36696169C63e42cd08ce11f5deeBbCeBae652050',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 7,
+    token0: bscTokens.usdt,
+    token1: bscTokens.btcb,
+    lpAddress: '0x46Cf1cF8c69595804ba91dFdd8d6b960c9B0a7C4',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 54,
+    token0: bscTokens.eth,
+    token1: bscTokens.wbnb,
+    lpAddress: '0xD0e226f674bBf064f54aB47F42473fF80DB98CBA',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 97,
+    lpAddress: '0xBe141893E4c6AD9272e8C04BAB7E6a10604501a5',
+    token0: bscTokens.eth,
+    token1: bscTokens.usdt,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
     pid: 1,
     token0: bscTokens.cake,
     token1: bscTokens.wbnb,
     lpAddress: '0x133B3D95bAD5405d14d53473671200e9342896BF',
     feeAmount: FeeAmount.MEDIUM,
   },
+  {
+    pid: 4,
+    token0: bscTokens.wbnb,
+    token1: bscTokens.busd,
+    lpAddress: '0x85FAac652b707FDf6907EF726751087F9E0b6687',
+    feeAmount: FeeAmount.LOW,
+  },
+]
+
+export const farmsV3 = defineFarmV3Configs([
+  ...v3TopFixedLps,
+  // new lps should follow after the top fixed lps
+  // latest first
   {
     pid: 2,
     token0: bscTokens.cake,
@@ -27,26 +75,6 @@ const v3TopFixedLps: FarmConfigV3[] = [
     lpAddress: '0x7f51c8AaA6B0599aBd16674e2b17FEc7a9f674A1',
     feeAmount: FeeAmount.MEDIUM,
   },
-  {
-    pid: 4,
-    token0: bscTokens.wbnb,
-    token1: bscTokens.busd,
-    lpAddress: '0x85FAac652b707FDf6907EF726751087F9E0b6687',
-    feeAmount: FeeAmount.LOW,
-  },
-  {
-    pid: 5,
-    token0: bscTokens.usdt,
-    token1: bscTokens.wbnb,
-    lpAddress: '0x36696169C63e42cd08ce11f5deeBbCeBae652050',
-    feeAmount: FeeAmount.LOW,
-  },
-]
-
-export const farmsV3 = defineFarmV3Configs([
-  ...v3TopFixedLps,
-  // new lps should follow after the top fixed lps
-  // latest first
   {
     pid: 159,
     lpAddress: '0xEDB6d7d456A570f790185aF9f6B99020Cc578Ed0',
@@ -200,13 +228,6 @@ export const farmsV3 = defineFarmV3Configs([
     token0: bscTokens.aitech,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.MEDIUM,
-  },
-  {
-    pid: 137,
-    lpAddress: '0x172fcD41E0913e95784454622d1c3724f546f849',
-    token0: bscTokens.usdt,
-    token1: bscTokens.wbnb,
-    feeAmount: FeeAmount.LOWEST,
   },
   {
     pid: 136,
@@ -480,13 +501,6 @@ export const farmsV3 = defineFarmV3Configs([
     token0: bscTokens.usdt,
     token1: bscTokens.fdusd,
     feeAmount: FeeAmount.LOWEST,
-  },
-  {
-    pid: 97,
-    lpAddress: '0xBe141893E4c6AD9272e8C04BAB7E6a10604501a5',
-    token0: bscTokens.eth,
-    token1: bscTokens.usdt,
-    feeAmount: FeeAmount.LOW,
   },
   {
     pid: 96,
@@ -790,13 +804,6 @@ export const farmsV3 = defineFarmV3Configs([
     feeAmount: FeeAmount.LOW,
   },
   {
-    pid: 54,
-    token0: bscTokens.eth,
-    token1: bscTokens.wbnb,
-    lpAddress: '0xD0e226f674bBf064f54aB47F42473fF80DB98CBA',
-    feeAmount: FeeAmount.LOW,
-  },
-  {
     pid: 53,
     token0: bscTokens.eqb,
     token1: bscTokens.bnb,
@@ -1034,13 +1041,6 @@ export const farmsV3 = defineFarmV3Configs([
     token0: bscTokens.btcb,
     token1: bscTokens.busd,
     lpAddress: '0x369482C78baD380a036cAB827fE677C1903d1523',
-    feeAmount: FeeAmount.LOW,
-  },
-  {
-    pid: 7,
-    token0: bscTokens.usdt,
-    token1: bscTokens.btcb,
-    lpAddress: '0x46Cf1cF8c69595804ba91dFdd8d6b960c9B0a7C4',
     feeAmount: FeeAmount.LOW,
   },
   {
