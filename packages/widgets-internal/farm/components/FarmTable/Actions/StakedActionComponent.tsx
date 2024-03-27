@@ -49,7 +49,12 @@ const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<Sta
         </ActionTitles>
       )}
       <ActionContent style={{ gap: 16, width: "100%", flexDirection: isMobile && bCakeInfoSlot ? "column" : "row" }}>
-        <Flex width="100%" justifyContent="space-between" alignItems="center">
+        <Flex
+          width="100%"
+          justifyContent="space-between"
+          alignItems="center"
+          flexBasis={bCakeInfoSlot ? "33%" : undefined}
+        >
           {children}
           <IconButtonWrapper>
             <IconButton mr="6px" variant="secondary" disabled={disabledMinusButton} onClick={onPresentWithdraw}>
