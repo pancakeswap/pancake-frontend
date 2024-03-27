@@ -166,7 +166,13 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     stableLpFee={stableLpFee}
                     farmCakePerSecond={farmCakePerSecond}
                     totalMultipliers={totalMultipliers}
-                    boosterMultiplier={isBooster ? 3 : 1}
+                    boosterMultiplier={
+                      isBooster
+                        ? farm?.bCakeUserData?.boosterMultiplier === 0
+                          ? 3
+                          : farm?.bCakeUserData?.boosterMultiplier
+                        : 1
+                    }
                   />
                 </>
               ) : (

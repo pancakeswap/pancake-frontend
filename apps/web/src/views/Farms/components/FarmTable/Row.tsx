@@ -215,7 +215,13 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                               : multiplier.farmCakePerSecond
                           }
                           totalMultipliers={multiplier.totalMultipliers}
-                          boosterMultiplier={3}
+                          boosterMultiplier={
+                            props?.details?.bCakeWrapperAddress
+                              ? props?.details?.bCakeUserData?.boosterMultiplier === 0
+                                ? 3
+                                : props?.details?.bCakeUserData?.boosterMultiplier
+                              : 1
+                          }
                           isBooster={Boolean(props?.details?.bCakeWrapperAddress)}
                         />
                       </CellLayout>
