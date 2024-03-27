@@ -292,6 +292,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                           precision={info?.precision}
                           lpTokenDecimals={info?.lpTokenDecimals}
                           aprTimeWindow={aprTimeWindow}
+                          rewardToken={earningToken}
                           isBooster={isBoosterWhiteList}
                           boosterMultiplier={info?.boosterMultiplier}
                         />
