@@ -42,7 +42,7 @@ const Liquidity: React.FC<React.PropsWithChildren<LiquidityProps>> = ({ liquidit
     <StyledCell role="cell">
       <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {t('Liquidity')}
+          {t('Total Staked')}
         </Text>
         <Flex mt="4px">
           <LiquidityWrapper>
