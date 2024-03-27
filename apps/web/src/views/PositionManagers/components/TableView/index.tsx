@@ -358,7 +358,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                   autoCompound={autoCompound}
                   isSingleDepositToken={isSingleDepositToken}
                   allowDepositToken1={allowDepositToken1 ?? false}
-                  isBooster={isBooster}
+                  isBooster={isBoosterWhiteList}
                 />
               </Flex>
             </FarmMobileCell>
