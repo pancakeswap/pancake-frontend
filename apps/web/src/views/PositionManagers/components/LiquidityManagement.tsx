@@ -170,7 +170,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
     boosterMultiplier ?? 1,
     bCakeWrapper,
   )
-  const { isTxLoading, onStake, onUpdate } = useOnStake(contractAddress ?? '0x', bCakeWrapper ?? '0x')
+  const { isTxLoading, onStake, onUpdate } = useOnStake(contractAddress, bCakeWrapper)
   const { locked } = useBCakeBoostLimitAndLockInfo()
 
   return (
