@@ -294,7 +294,7 @@ export const AddLiquidity = memo(function AddLiquidity({
         : t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', translationData),
     [t, isSingleDepositToken, translationData],
   )
-
+  if (id === 2) console.log(boosterMultiplier, isBooster, boosterMultiplier === 0 ? 3 : boosterMultiplier)
   return (
     <ModalV2 onDismiss={onDismiss} isOpen={isOpen}>
       <StyledModal title={isTxLoading ? t('Pending Confirm') : t('Add Liquidity')}>
@@ -372,7 +372,7 @@ export const AddLiquidity = memo(function AddLiquidity({
                   aprTimeWindow={aprTimeWindow}
                   rewardToken={earningToken}
                   isBooster={isBooster}
-                  boosterMultiplier={boosterMultiplier}
+                  boosterMultiplier={boosterMultiplier === 0 ? 3 : boosterMultiplier}
                 />
               </RowBetween>
             </Flex>
