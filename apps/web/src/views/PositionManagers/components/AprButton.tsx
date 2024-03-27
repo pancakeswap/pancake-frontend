@@ -54,10 +54,9 @@ export const AprButton = memo(function YieldInfo({
   aprTimeWindow = 0,
   rewardToken,
   isBooster,
-  boosterMultiplier = 1,
+  boosterMultiplier = 3,
 }: Props) {
   const { t } = useTranslation()
-
   const { address: account } = useAccount()
   const { data: rewardUsdPrice } = useCurrencyUsdPrice(rewardToken)
   const tokenBalanceMultiplier = useMemo(() => new BigNumber(10).pow(lpTokenDecimals), [lpTokenDecimals])
@@ -76,23 +75,35 @@ export const AprButton = memo(function YieldInfo({
 
   const cakeAPR = useMemo(() => parseFloat(apr?.cakeYieldApr ?? '0'), [apr])
   const lpAPR = useMemo(() => parseFloat(apr?.lpApr ?? '0'), [apr])
+  const combinedAPR = useMemo(
+    () => (isBooster ? (cakeAPR * boosterMultiplier + lpAPR).toFixed(2) : apr.combinedApr),
+    [apr.combinedApr, boosterMultiplier, cakeAPR, isBooster, lpAPR],
+  )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text>
         {t('Combined APR')}:
         <Text ml="3px" style={{ display: 'inline-block' }} bold>
-          {isBooster ? `${(cakeAPR * boosterMultiplier + lpAPR).toFixed(2)}%` : `${apr.combinedApr}%`}
+          {`${combinedAPR}%`}
         </Text>
       </Text>
       <ul>
         {apr.isInCakeRewardDateRange && rewardToken && (
-          <li>
-            {`${rewardToken?.symbol ?? ''} ${t('APR')}`}:
-            <Text ml="3px" style={{ display: 'inline-block' }} bold>
-              {isBooster ? `${(cakeAPR * boosterMultiplier).toFixed(2)}%` : `${apr.cakeYieldApr}%`}
-            </Text>
-          </li>
+          <>
+            <li>
+              {`${rewardToken?.symbol ?? ''} ${t('APR')}`}:{' '}
+              <b>
+                {isBooster && <>{(boosterMultiplier * cakeAPR).toFixed(2)}% </>}
+                <Text
+                  display="inline-block"
+                  style={{ textDecoration: isBooster ? 'line-through' : 'none', fontWeight: 800 }}
+                >
+                  {cakeAPR.toFixed(2)}%
+                </Text>
+              </b>
+            </li>
+          </>
         )}
         <li>
           {t('LP APR')}:
@@ -101,7 +112,11 @@ export const AprButton = memo(function YieldInfo({
           </Text>
         </li>
       </ul>
-
+      {isBooster && (
+        <Text mt="15px">
+          {t('bCAKE only boosts Farm APR. Actual boost multiplier is subject to farm and pool conditions.')}
+        </Text>
+      )}
       <Text lineHeight="120%" mt="20px">
         {aprTimeWindow > 0
           ? t(`Calculated based on previous %days% days average data.`, { days: aprTimeWindow })
@@ -138,14 +153,14 @@ export const AprButton = memo(function YieldInfo({
         <>
           <Text ref={targetRef} display="flex" style={{ gap: 3, whiteSpace: 'nowrap' }}>
             {isBooster && <RocketIcon color="success" />}
-            {isBooster && <Text color="success">{t('Up to')}</Text>}
+            {isBooster && boosterMultiplier === 3 && <Text color="success">{t('Up to')}</Text>}
             <AprText display="flex" style={{ gap: 3 }}>
               {isBooster && (
                 <Text color="success" bold onClick={onPresentApyModal}>
-                  {`${apr.combinedApr}%`}
+                  {`${combinedAPR}%`}
                 </Text>
               )}
-              <Text style={{ textDecoration: isBooster ? 'line-through' : undefined }}>{`${apr.combinedApr}%`}</Text>
+              <Text style={{ textDecoration: isBooster ? 'line-through' : undefined }}>{`${combinedAPR}%`}</Text>
             </AprText>
             {tooltipVisible && tooltip}
           </Text>

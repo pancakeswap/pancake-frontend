@@ -69,7 +69,7 @@ export const YieldInfo = memo(function YieldInfo({
           aprTimeWindow={aprTimeWindow}
           rewardToken={rewardToken}
           isBooster={isBooster}
-          boosterMultiplier={boosterMultiplier}
+          boosterMultiplier={boosterMultiplier === 0 ? 3 : boosterMultiplier}
         />
       </RowBetween>
       <RowBetween>
