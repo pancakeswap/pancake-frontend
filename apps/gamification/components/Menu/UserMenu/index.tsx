@@ -4,6 +4,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useAuth from 'hooks/useAuth'
 import { useDomainNameForAddress } from 'hooks/useDomain'
+import { useProfile } from 'hooks/useProfile'
 import { useCallback } from 'react'
 import { useAccount } from 'wagmi'
 import WalletModal, { WalletView } from './WalletModal'
@@ -41,12 +42,15 @@ const UserMenuItems = () => {
 const UserMenu = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { domainName } = useDomainNameForAddress(account)
+  const { domainName, avatar } = useDomainNameForAddress(account)
   const { isWrongNetwork } = useActiveChainId()
+  const { profile } = useProfile()
+
+  const avatarSrc = profile?.nft?.image?.thumbnail ?? avatar
 
   if (account) {
     return (
-      <UIKitUserMenu account={domainName || account} ellipsis={!domainName}>
+      <UIKitUserMenu account={domainName || account} ellipsis={!domainName} avatarSrc={avatarSrc}>
         {({ isOpen }) => (isOpen ? <UserMenuItems /> : null)}
       </UIKitUserMenu>
     )
