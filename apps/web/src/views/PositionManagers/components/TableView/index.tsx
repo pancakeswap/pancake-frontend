@@ -228,11 +228,10 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
       earningToken.decimals,
     ).toNumber()
   }, [info?.rewardPerSecond, earningToken])
-  const withCakeReward: boolean = useMemo(() => earningToken.symbol === 'CAKE', [earningToken])
 
   const earning = useMemo(
-    () => (withCakeReward && apr.isInCakeRewardDateRange ? t('CAKE + Fees') : t('Fees')),
-    [withCakeReward, t, apr.isInCakeRewardDateRange],
+    () => (apr.isInCakeRewardDateRange ? `${earningToken.symbol} + ${t('Fees')}` : t('Fees')),
+    [t, apr.isInCakeRewardDateRange, earningToken],
   )
 
   const { isBoosterWhiteList } = useIsWrapperWhiteList(info?.boosterContractAddress, bCakeWrapperAddress)
