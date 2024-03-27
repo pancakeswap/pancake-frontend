@@ -160,7 +160,7 @@ export const AprButton = memo(function YieldInfo({
                   {`${combinedAPR}%`}
                 </Text>
               )}
-              <Text style={{ textDecoration: isBooster ? 'line-through' : undefined }}>{`${combinedAPR}%`}</Text>
+              <Text style={{ textDecoration: isBooster ? 'line-through' : undefined }}>{`${apr.combinedApr}%`}</Text>
             </AprText>
             {tooltipVisible && tooltip}
           </Text>
