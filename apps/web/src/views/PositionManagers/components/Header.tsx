@@ -1,5 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import { Box, Flex, Heading, PageHeader, useMatchBreakpoints } from '@pancakeswap/uikit'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { memo } from 'react'
 import { BCakeBoosterCard } from 'views/Farms/components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 import { BCakeMigrationBanner } from 'views/Home/components/Banners/BCakeMigrationBanner'
@@ -7,6 +9,7 @@ import { BCakeMigrationBanner } from 'views/Home/components/Banners/BCakeMigrati
 export const Header = memo(function Header() {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
+  const { chainId } = useActiveWeb3React()
 
   return (
     <PageHeader>
@@ -28,7 +31,7 @@ export const Header = memo(function Header() {
           </Heading>
         </Flex>
 
-        {isDesktop && <BCakeBoosterCard variants="pm" />}
+        {isDesktop && ChainId.BSC === chainId && <BCakeBoosterCard variants="pm" />}
       </Flex>
     </PageHeader>
   )
