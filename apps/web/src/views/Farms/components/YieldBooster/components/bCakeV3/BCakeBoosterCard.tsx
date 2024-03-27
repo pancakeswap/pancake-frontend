@@ -119,14 +119,14 @@ export const BCakeBoosterCard: React.FC<{ variants?: 'farm' | 'pm' }> = ({ varia
           </Box>
         </StyledCardBody>
         <StyledCardFooter>
-          <CardContent />
+          <CardContent variants={variants} />
         </StyledCardFooter>
       </Card>
     </CardWrapper>
   )
 }
 
-const CardContent: React.FC = () => {
+const CardContent: React.FC<{ variants?: 'farm' | 'pm' }> = ({ variants }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { locked } = useBCakeBoostLimitAndLockInfo()
@@ -169,9 +169,13 @@ const CardContent: React.FC = () => {
         </Text>
       </Flex>
       <Text color="textSubtle" fontSize={12} mb="10px">
-        {t(
-          'Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.',
-        )}
+        {variants === 'pm'
+          ? t(
+              'Boost the token rewards from unlimited number of Position Managers. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.',
+            )
+          : t(
+              'Boost your CAKE rewards from V3, V2 and StableSwap farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.',
+            )}
       </Text>
       <NextLink href="/cake-staking" passHref>
         <Button width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>

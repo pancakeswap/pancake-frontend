@@ -114,7 +114,9 @@ export const AprButton = memo(function YieldInfo({
       </ul>
       {isBooster && (
         <Text mt="15px">
-          {t('bCAKE only boosts Farm APR. Actual boost multiplier is subject to farm and pool conditions.')}
+          {t(
+            'bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.',
+          )}
         </Text>
       )}
       <Text lineHeight="120%" mt="20px">
