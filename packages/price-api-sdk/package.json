@@ -27,6 +27,9 @@
     "@pancakeswap/smart-router": "workspace:*"
   },
   "peerDependenciesMeta": {
+    "@pancakeswap/swap-sdk-core": {
+      "optional": true
+    },
     "@pancakeswap/smart-router": {
       "optional": true
     }
