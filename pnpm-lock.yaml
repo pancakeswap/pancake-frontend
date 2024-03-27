@@ -712,6 +712,9 @@ importers:
       '@pancakeswap/prediction':
         specifier: workspace:*
         version: link:../../packages/prediction
+      '@pancakeswap/price-api-sdk':
+        specifier: workspace:*
+        version: link:../../packages/price-api-sdk
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../../packages/swap-sdk
@@ -1229,6 +1232,9 @@ importers:
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
+      '@pancakeswap/price-api-sdk':
+        specifier: workspace:*
+        version: link:../price-api-sdk
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
@@ -1552,6 +1558,28 @@ importers:
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+
+  packages/price-api-sdk:
+    dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@pancakeswap/smart-router':
+        specifier: workspace:*
+        version: link:../smart-router
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../swap-sdk-core
+    devDependencies:
+      '@pancakeswap/sdk':
+        specifier: workspace:*
+        version: link:../swap-sdk
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
 
   packages/smart-router:
     dependencies:

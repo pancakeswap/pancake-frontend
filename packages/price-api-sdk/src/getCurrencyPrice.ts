@@ -1,8 +1,8 @@
 import { ChainId, isTestnetChainId } from '@pancakeswap/chains'
 
-const PRICE_API = 'https://wallet-api.pancakeswap.com/v1/prices/list/'
+const WALLET_API = 'https://wallet-api.pancakeswap.com/v1/prices/list/'
 
-const zeroAddress = '0x0000000000000000000000000000000000000000' as const
+export const zeroAddress = '0x0000000000000000000000000000000000000000' as const
 
 // duck typing for native currency, token, token info
 export type CurrencyParams =
@@ -54,7 +54,7 @@ function getRequestUrl(params?: CurrencyParams | CurrencyParams[]): string | und
     return undefined
   }
   const encodedKey = encodeURIComponent(key)
-  return `${PRICE_API}${encodedKey}`
+  return `${WALLET_API}${encodedKey}`
 }
 
 export async function getCurrencyUsdPrice(currencyParams?: CurrencyParams) {

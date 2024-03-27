@@ -1,0 +1,50 @@
+{
+  "name": "@pancakeswap/price-api-sdk",
+  "version": "0.0.0",
+  "description": "SDK for pancakeswap price api",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pancakeswap/pancake-frontend.git",
+    "directory": "packages/price-api-sdk"
+  },
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest --run",
+    "update:snapshot": "vitest -u",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "@pancakeswap/swap-sdk-core": "workspace:*",
+    "@pancakeswap/smart-router": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "@pancakeswap/smart-router": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@pancakeswap/chains": "workspace:*"
+  },
+  "devDependencies": {
+    "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/tsconfig": "workspace:*",
+    "tsup": "^6.7.0"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  }
+}
