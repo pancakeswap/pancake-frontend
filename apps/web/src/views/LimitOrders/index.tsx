@@ -339,9 +339,7 @@ const LimitOrders = () => {
         {isDesktop && (
           <Flex width={isChartExpanded ? '100%' : '50%'} maxWidth="928px" flexDirection="column">
             <PriceChartContainer
-              inputCurrencyId={currencyIds.input}
               inputCurrency={currencies.input}
-              outputCurrencyId={currencyIds.output}
               outputCurrency={currencies.output}
               isChartExpanded={isChartExpanded}
               setIsChartExpanded={setIsChartExpanded}
@@ -497,9 +495,7 @@ const LimitOrders = () => {
       <BottomDrawer
         content={
           <PriceChartContainer
-            inputCurrencyId={currencyIds.input}
             inputCurrency={currencies.input}
-            outputCurrencyId={currencyIds.output}
             outputCurrency={currencies.output}
             isChartExpanded={isChartExpanded}
             setIsChartExpanded={setIsChartExpanded}
