@@ -46,8 +46,8 @@ export const deserializeFarm = (
       auctionHostingEndDate.getTime() > now
     )
 
-  if (farm.pid === 2) console.log(farm, 'farm?????')
   const bCakeUserData = deserializeFarmBCakeUserData(farm)
+  const bCakePublicData = deserializeFarmBCakeUserData(farm)
   return {
     bCakeWrapperAddress,
     lpAddress,
@@ -82,5 +82,6 @@ export const deserializeFarm = (
     stableLpFee,
     stableLpFeeRateOfTotalFee,
     lpTokenStakedAmount: farm.lpTokenStakedAmount ? new BigNumber(farm.lpTokenStakedAmount) : BIG_ZERO,
+    bCakePublicData,
   }
 }
