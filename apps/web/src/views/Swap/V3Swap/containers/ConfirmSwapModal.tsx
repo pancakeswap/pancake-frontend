@@ -78,6 +78,13 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
 
   const token: Token | undefined = wrappedCurrency(trade?.outputAmount?.currency, chainId)
 
+  const showAddToWalletButton = useMemo(() => {
+    if (token && trade?.outputAmount?.currency) {
+      return !trade?.outputAmount?.currency?.isNative
+    }
+    return false
+  }, [token, trade])
+
   const handleDismiss = useCallback(() => {
     if (customOnDismiss) {
       customOnDismiss?.()
@@ -143,19 +150,21 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
           amountA={amountA}
           amountB={amountB}
         >
-          <AddToWalletButton
-            mt="39px"
-            height="auto"
-            variant="tertiary"
-            width="fit-content"
-            padding="6.5px 20px"
-            marginTextBetweenLogo="6px"
-            textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
-            tokenAddress={token?.address}
-            tokenSymbol={currencyB?.symbol}
-            tokenDecimals={token?.decimals}
-            tokenLogo={token instanceof WrappedTokenInfo ? token?.logoURI : undefined}
-          />
+          {showAddToWalletButton && (
+            <AddToWalletButton
+              mt="39px"
+              height="auto"
+              variant="tertiary"
+              width="fit-content"
+              padding="6.5px 20px"
+              marginTextBetweenLogo="6px"
+              textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
+              tokenAddress={token?.address}
+              tokenSymbol={currencyB?.symbol}
+              tokenDecimals={token?.decimals}
+              tokenLogo={token instanceof WrappedTokenInfo ? token?.logoURI : undefined}
+            />
+          )}
         </SwapPendingModalContentV1>
       )
     }
@@ -169,19 +178,21 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
               {chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />}
             </Link>
           )}
-          <AddToWalletButton
-            mt="39px"
-            height="auto"
-            variant="tertiary"
-            width="fit-content"
-            padding="6.5px 20px"
-            marginTextBetweenLogo="6px"
-            textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
-            tokenAddress={token?.address}
-            tokenSymbol={currencyB?.symbol}
-            tokenDecimals={token?.decimals}
-            tokenLogo={token instanceof WrappedTokenInfo ? token?.logoURI : undefined}
-          />
+          {showAddToWalletButton && (
+            <AddToWalletButton
+              mt="39px"
+              height="auto"
+              variant="tertiary"
+              width="fit-content"
+              padding="6.5px 20px"
+              marginTextBetweenLogo="6px"
+              textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
+              tokenAddress={token?.address}
+              tokenSymbol={currencyB?.symbol}
+              tokenDecimals={token?.decimals}
+              tokenLogo={token instanceof WrappedTokenInfo ? token?.logoURI : undefined}
+            />
+          )}
         </SwapTransactionReceiptModalContentV1>
       )
     }
@@ -220,6 +231,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     startSwapFlow,
     onAcceptChanges,
     openSettingModal,
+    showAddToWalletButton,
   ])
 
   const isShowingLoadingAnimation = useMemo(
