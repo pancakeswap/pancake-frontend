@@ -23,10 +23,14 @@
     "dist"
   ],
   "peerDependencies": {
+    "@pancakeswap/permit2-sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*"
   },
   "peerDependenciesMeta": {
+    "@pancakeswap/permit2-sdk": {
+      "optional": true
+    },
     "@pancakeswap/swap-sdk-core": {
       "optional": true
     },
@@ -38,6 +42,7 @@
     "@pancakeswap/chains": "workspace:*"
   },
   "devDependencies": {
+    "@pancakeswap/permit2-sdk": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",

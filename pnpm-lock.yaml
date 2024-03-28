@@ -1565,6 +1565,9 @@ importers:
         specifier: workspace:*
         version: link:../chains
     devDependencies:
+      '@pancakeswap/permit2-sdk':
+        specifier: workspace:*
+        version: link:../permit2-sdk
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../swap-sdk
