@@ -9,18 +9,8 @@ export default defineConfig((options) => ({
   skipNodeModulesBundle: true,
   format: ['esm', 'cjs'],
   noExternal: ['@pancakeswap/utils'],
-  dts: false,
+  dts: true,
   clean: !options.watch,
   treeshake: true,
   splitting: true,
-  onSuccess: async () => {
-    exec('tsc --emitDeclarationOnly --declaration', (err, stdout) => {
-      if (err) {
-        console.error(stdout)
-        if (!options.watch) {
-          process.exit(1)
-        }
-      }
-    })
-  },
 }))
