@@ -16,6 +16,12 @@ import {
 } from '../hooks'
 import { ThirdPartyVaultCard } from './PCSVaultCard'
 
+const createSearchRegex = (wordText) => {
+  const words = wordText.split(/\s+/)
+  const escapedWords = words.map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+  const pattern = escapedWords.map((word) => `(?=.*${word})`).join('')
+  return new RegExp(pattern)
+}
 export const VaultCards = memo(function VaultCards() {
   const configs = useVaultConfigs()
   const [search] = useSearch()
@@ -52,7 +58,10 @@ export const VaultCards = memo(function VaultCards() {
     })
     .filter((d) => {
       if (search) {
-        return `${d.currencyA.symbol}-${d.currencyB.symbol}${d.name}`.toLowerCase().includes(search.toLowerCase())
+        const textToSearch = `${d.currencyA.symbol} ${d.currencyB.symbol} ${d.name}`.toLowerCase()
+        const searchText = search.toLowerCase()
+        const regExp = createSearchRegex(searchText)
+        return textToSearch.search(regExp) !== -1
       }
       return true
     })
