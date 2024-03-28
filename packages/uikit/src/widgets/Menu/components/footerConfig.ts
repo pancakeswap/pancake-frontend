@@ -7,11 +7,11 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
     items: [
       {
         label: t("Trade"),
-        href: "/swap",
+        href: "https://pancakeswap.finance/swap",
       },
       {
         label: t("Earn"),
-        href: "/farms",
+        href: "https://pancakeswap.finance/farms",
       },
       {
         label: t("Game"),
@@ -19,7 +19,7 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       },
       {
         label: t("NFT"),
-        href: "/nfts",
+        href: "https://pancakeswap.finance/nfts",
       },
       {
         label: t("Tokenomics"),
@@ -73,7 +73,7 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       },
       {
         label: t("v4"),
-        href: "/v4",
+        href: "https://pancakeswap.finance/v4",
       },
     ],
   },
