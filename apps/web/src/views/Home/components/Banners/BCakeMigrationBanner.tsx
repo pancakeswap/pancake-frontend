@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { PM_V2_SS_BOOSTER_SUPPORT_CHAINS } from '@pancakeswap/position-managers'
 import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
@@ -9,6 +10,7 @@ import {
   ButtonLinkAction,
   GraphicDetail,
 } from '@pancakeswap/widgets-internal'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import bCakeMigrationImage from 'views/Farms/images/bCakeMigration.png'
@@ -42,6 +44,7 @@ const learnMoreLink =
   'https://developer.pancakeswap.finance/?utm_source=homepagebanner&utm_medium=banner&utm_campaign=homepagebanner&utm_id=Startbuilding'
 
 export const BCakeMigrationBanner = () => {
+  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { theme } = useTheme()
@@ -68,7 +71,7 @@ export const BCakeMigrationBanner = () => {
       {t('Guide')}
     </StyledButtonLinkAction>
   )
-
+  if (!PM_V2_SS_BOOSTER_SUPPORT_CHAINS.includes(chainId ?? 0)) return null
   return (
     <BannerContainer background="linear-gradient(261deg, rgba(158, 63, 253, 0.12) 27.61%, rgba(98, 61, 255, 0.25) 76.11%), linear-gradient(247deg, #53DEE9 -16.43%, #A881FC 92.15%)">
       <BannerMain
