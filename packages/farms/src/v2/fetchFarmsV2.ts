@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { CurrencyParams, getCurrencyKey, getCurrencyListUsdPrice } from '@pancakeswap/utils/getCurrencyPrice'
+import { CurrencyParams, getCurrencyKey, getCurrencyListUsdPrice } from '@pancakeswap/price-api-sdk'
 import BN from 'bignumber.js'
 import { Address, PublicClient, formatUnits } from 'viem'
 import { FarmV2SupportedChainId, supportedChainIdV2 } from '../const'

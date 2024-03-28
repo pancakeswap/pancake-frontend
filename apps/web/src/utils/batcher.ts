@@ -1,9 +1,4 @@
-import {
-  CurrencyParams,
-  CurrencyUsdResult,
-  getCurrencyKey,
-  getCurrencyListUsdPrice,
-} from '@pancakeswap/utils/getCurrencyPrice'
+import { CurrencyParams, CurrencyUsdResult, getCurrencyKey, getCurrencyListUsdPrice } from '@pancakeswap/price-api-sdk'
 import { create, windowScheduler } from '@yornaath/batshit'
 
 export const usdPriceBatcher = create<CurrencyUsdResult, CurrencyParams, number>({
