@@ -4,6 +4,7 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
+import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 
@@ -23,6 +24,7 @@ interface FarmCardActionsProps {
   lpSymbol?: string
   onReward: () => Promise<SendTransactionResult>
   onDone?: () => void
+  bCakeWrapperAddress?: Address
 }
 
 const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
@@ -93,7 +95,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   )
 
   return (
-    <Flex mb="8px" justifyContent="space-between" alignItems="center">
+    <Flex mb="8px" justifyContent="space-between" alignItems="center" width="100%">
       <Flex flexDirection="column" alignItems="flex-start">
         {proxyCakeBalance ? (
           <>

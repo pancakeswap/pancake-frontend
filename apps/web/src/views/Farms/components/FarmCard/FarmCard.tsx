@@ -15,6 +15,7 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
+import { RewardPerDay } from 'views/PositionManagers/components/RewardPerDay'
 import ApyButton from './ApyButton'
 import CardActionsContainer from './CardActionsContainer'
 import CardHeading from './CardHeading'
@@ -64,9 +65,13 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const { chainId } = useActiveChainId()
   const [showExpandableSection, setShowExpandableSection] = useState(false)
 
-  const { totalMultipliers, getFarmCakePerSecond } = useFarmV2Multiplier()
-
+  const { totalMultipliers, getFarmCakePerSecond, getNumberFarmCakePerSecond } = useFarmV2Multiplier()
+  const isBooster = Boolean(farm.bCakeWrapperAddress)
   const farmCakePerSecond = getFarmCakePerSecond(farm.poolWeight)
+  const numberFarmCakePerSecond = isBooster
+    ? farm?.bCakeUserData?.rewardPerSecond ?? 0
+    : getNumberFarmCakePerSecond(farm.poolWeight)
+  // if (farm.pid === 163 || farm.pid === 2) console.log(farm, '888')
 
   const liquidity =
     farm?.liquidity && originalLiquidity?.gt(0) ? farm.liquidity.plus(originalLiquidity) : farm.liquidity
@@ -121,6 +126,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           pid={farm.pid}
           farmCakePerSecond={farmCakePerSecond}
           totalMultipliers={totalMultipliers}
+          isBooster={isBooster}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
@@ -151,16 +157,22 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     lpLabel={lpLabel}
                     addLiquidityUrl={addLiquidityUrl}
                     cakePrice={cakePrice}
-                    apr={farm.apr}
+                    apr={isBooster && farm.bCakeUserData?.rewardPerSecond === 0 ? 0 : farm.apr}
                     displayApr={displayApr ?? undefined}
                     lpRewardsApr={farm.lpRewardsApr}
-                    strikethrough={false}
+                    isBooster={isBooster}
                     useTooltipText
-                    boosted={false}
                     stableSwapAddress={stableSwapAddress}
                     stableLpFee={stableLpFee}
                     farmCakePerSecond={farmCakePerSecond}
                     totalMultipliers={totalMultipliers}
+                    boosterMultiplier={
+                      isBooster
+                        ? farm?.bCakeUserData?.boosterMultiplier === 0
+                          ? 3
+                          : farm?.bCakeUserData?.boosterMultiplier
+                        : 1
+                    }
                   />
                 </>
               ) : (
@@ -173,12 +185,17 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           <Text>{t('Earn')}:</Text>
           <Text>{earnLabel}</Text>
         </Flex>
+        <Flex justifyContent="space-between">
+          <Text>{t('Reward/Day')}:</Text>
+          <RewardPerDay rewardPerSec={Number(numberFarmCakePerSecond)} />
+        </Flex>
         <CardActionsContainer
           farm={farm}
           lpLabel={lpLabel}
           account={account}
           addLiquidityUrl={addLiquidityUrl}
           displayApr={displayApr}
+          boosterMultiplier={isBooster ? farm.bCakeUserData?.boosterMultiplier ?? 1 : 1}
         />
       </FarmCardInnerContainer>
 

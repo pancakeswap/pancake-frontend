@@ -127,6 +127,7 @@ export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   stableLpFee?: number
   stableLpFeeRateOfTotalFee?: number
   lpTokenStakedAmount?: string
+  bCakeWrapperAddress?: Address
 }
 
 export interface AprMap {
@@ -151,8 +152,21 @@ export interface SerializedFarmUserData {
   }
 }
 
+export interface SerializedBCakeUserData {
+  allowance: string
+  tokenBalance: string
+  stakedBalance: string
+  earnings: string
+  earningsDualTokenBalance?: string
+  boosterMultiplier?: number
+  boostedAmounts?: string
+  boosterContractAddress?: Address
+  rewardPerSecond?: number
+}
+
 export interface SerializedFarm extends SerializedFarmPublicData {
   userData?: SerializedFarmUserData
+  bCakeUserData?: SerializedBCakeUserData
 }
 
 export interface SerializedFarmsV3State {
@@ -168,6 +182,7 @@ export interface SerializedFarmsState {
   chainId?: number
   loadArchivedFarmsData: boolean
   userDataLoaded: boolean
+  bCakeUserDataLoaded: boolean
   loadingKeys: Record<string, boolean>
   poolLength?: number
   regularCakePerBlock?: number
@@ -192,6 +207,17 @@ export interface DeserializedFarmUserData {
     earnings: BigNumber
   }
 }
+export interface DeserializedBCakeWrapperUserData {
+  allowance: BigNumber
+  tokenBalance: BigNumber
+  stakedBalance: BigNumber
+  earnings: BigNumber
+  earningsDualTokenBalance?: BigNumber
+  boosterMultiplier?: number
+  boostedAmounts?: BigNumber
+  boosterContractAddress?: Address
+  rewardPerSecond?: number
+}
 
 export interface DeserializedFarm extends DeserializedFarmConfig {
   tokenPriceBusd?: string
@@ -204,7 +230,9 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   tokenPriceVsQuote?: BigNumber
   poolWeight?: BigNumber
   userData?: DeserializedFarmUserData
+  bCakeUserData?: DeserializedBCakeWrapperUserData
   boosted?: boolean
+  bCakeWrapperAddress?: Address
   isStable?: boolean
   stableSwapAddress?: string
   stableLpFee?: number

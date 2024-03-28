@@ -57,6 +57,7 @@ import { stableSwapNativeHelperABI } from 'config/abi/stableSwapNativeHelper'
 import { ChainId } from '@pancakeswap/chains'
 import { bCakeFarmBoosterV3ABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmBoosterV3'
 import { bCakeFarmBoosterVeCakeABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmBoosterVeCake'
+import { bCakeFarmWrapperBoosterVeCakeABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmWrapperBoosterVeCake'
 import { calcGaugesVotingABI, gaugesVotingABI } from '@pancakeswap/gauges'
 import { getIfoCreditAddressContract as getIfoCreditAddressContract_ } from '@pancakeswap/ifos'
 import { cakeFlexibleSideVaultV2ABI, cakeVaultV2ABI } from '@pancakeswap/pools'
@@ -94,6 +95,7 @@ import { tradingCompetitionFanTokenABI } from 'config/abi/tradingCompetitionFanT
 import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
 import { tradingCompetitionMoboxABI } from 'config/abi/tradingCompetitionMobox'
 import { tradingRewardABI } from 'config/abi/tradingReward'
+import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { v3MigratorABI } from 'config/abi/v3Migrator'
 import { vCakeABI } from 'config/abi/vCake'
@@ -272,6 +274,15 @@ export const getBCakeFarmBoosterVeCakeContract = (signer?: WalletClient, chainId
   })
 }
 
+export const getBCakeFarmWrapperBoosterVeCakeContract = (address: Address, signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: bCakeFarmWrapperBoosterVeCakeABI,
+    address,
+    signer,
+    chainId,
+  })
+}
+
 export const getPositionManagerWrapperContract = (address: `0x${string}`, signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: positionManagerWrapperABI,
@@ -284,6 +295,15 @@ export const getPositionManagerWrapperContract = (address: `0x${string}`, signer
 export const getPositionManagerBCakeWrapperContract = (address: Address, signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: positionManagerVeBCakeWrapperABI,
+    address,
+    signer,
+    chainId,
+  })
+}
+
+export const getV2SSBCakeWrapperContract = (address: Address, signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: v2BCakeWrapperABI,
     address,
     signer,
     chainId,
@@ -395,6 +415,7 @@ export const getMasterChefContract = (signer?: WalletClient, chainId?: number) =
     signer,
   })
 }
+
 export const getMasterChefV3Contract = (signer?: WalletClient, chainId?: number) => {
   const mcv3Address = getMasterChefV3Address(chainId)
   return mcv3Address

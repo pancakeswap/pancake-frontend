@@ -1,14 +1,21 @@
-import { memo } from 'react'
-import { PageHeader, Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import Image from 'next/image'
+import { ChainId } from '@pancakeswap/sdk'
+import { Box, Flex, Heading, PageHeader, useMatchBreakpoints } from '@pancakeswap/uikit'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { memo } from 'react'
+import { BCakeBoosterCard } from 'views/Farms/components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
+import { BCakeMigrationBanner } from 'views/Home/components/Banners/BCakeMigrationBanner'
 
 export const Header = memo(function Header() {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
+  const { chainId } = useActiveWeb3React()
 
   return (
     <PageHeader>
+      <Box mb="32px" mt="16px">
+        <BCakeMigrationBanner />
+      </Box>
       <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
         <Flex
           flex="1"
@@ -23,9 +30,8 @@ export const Header = memo(function Header() {
             {t('Automate your PancakeSwap V3 liquidity')}
           </Heading>
         </Flex>
-        {isDesktop && (
-          <Image alt="bunny" width={205} height={205} src="/images/position-manager/position-manager-bunny.png" />
-        )}
+
+        {isDesktop && ChainId.BSC === chainId && <BCakeBoosterCard variants="pm" />}
       </Flex>
     </PageHeader>
   )

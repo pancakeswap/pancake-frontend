@@ -1,13 +1,13 @@
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 
 import {
-  ControlsContainer,
   ControlGroup,
+  ControlsContainer,
   LiveSwitch,
-  // ViewSwitch,
-  StakeOnlyToggle,
-  SortFilter,
   SearchFilter,
+  SortFilter,
+  StakeOnlyToggle,
+  ViewSwitch,
 } from '../components'
 
 export function Controls() {
@@ -16,7 +16,7 @@ export function Controls() {
   const controls = isDesktop ? (
     <ControlsContainer>
       <ControlGroup>
-        {/* <ViewSwitch /> */}
+        <ViewSwitch />
         <StakeOnlyToggle />
         <LiveSwitch />
       </ControlGroup>
@@ -28,7 +28,7 @@ export function Controls() {
   ) : (
     <ControlsContainer justifyContent="flex-start" flexDirection="column">
       <ControlGroup>
-        {/* <ViewSwitch /> */}
+        <ViewSwitch />
         <StakeOnlyToggle />
       </ControlGroup>
       <ControlGroup justifyContent="flex-start">

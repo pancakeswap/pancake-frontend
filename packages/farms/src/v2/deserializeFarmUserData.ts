@@ -1,6 +1,8 @@
+import { bscTestnetTokens } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import { DeserializedFarmUserData, SerializedFarm } from '../types'
+import { DeserializedBCakeWrapperUserData, DeserializedFarmUserData, SerializedFarm } from '../types'
 
 export const deserializeFarmUserData = (farm?: SerializedFarm): DeserializedFarmUserData => {
   return {
@@ -14,5 +16,20 @@ export const deserializeFarmUserData = (farm?: SerializedFarm): DeserializedFarm
       stakedBalance: farm?.userData?.proxy ? new BigNumber(farm?.userData?.proxy.stakedBalance) : BIG_ZERO,
       earnings: farm?.userData?.proxy ? new BigNumber(farm?.userData?.proxy.earnings) : BIG_ZERO,
     },
+  }
+}
+
+export const deserializeFarmBCakeUserData = (farm?: SerializedFarm): DeserializedBCakeWrapperUserData => {
+  return {
+    allowance: farm?.bCakeUserData ? new BigNumber(farm.bCakeUserData.allowance) : BIG_ZERO,
+    tokenBalance: farm?.bCakeUserData ? new BigNumber(farm.bCakeUserData.tokenBalance) : BIG_ZERO,
+    stakedBalance: farm?.bCakeUserData ? new BigNumber(farm.bCakeUserData.stakedBalance) : BIG_ZERO,
+    earnings: farm?.bCakeUserData ? new BigNumber(farm.bCakeUserData.earnings) : BIG_ZERO,
+    boosterMultiplier: farm?.bCakeUserData?.boosterMultiplier ?? 1,
+    boostedAmounts: farm?.bCakeUserData?.boostedAmounts ? new BigNumber(farm.bCakeUserData.boostedAmounts) : BIG_ZERO,
+    boosterContractAddress: farm?.bCakeUserData?.boosterContractAddress,
+    rewardPerSecond: farm?.bCakeUserData?.rewardPerSecond
+      ? getBalanceAmount(new BigNumber(farm?.bCakeUserData?.rewardPerSecond), bscTestnetTokens.cake.decimals).toNumber()
+      : 0,
   }
 }

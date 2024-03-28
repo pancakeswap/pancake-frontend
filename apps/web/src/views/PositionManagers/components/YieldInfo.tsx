@@ -4,6 +4,7 @@ import { Box, Flex, RowBetween, Text } from '@pancakeswap/uikit'
 import { memo, useMemo } from 'react'
 import { AprResult } from '../hooks'
 import { AprButton } from './AprButton'
+import { RewardPerDay } from './RewardPerDay'
 import { AutoCompoundTag } from './Tags'
 
 interface Props {
@@ -21,6 +22,9 @@ interface Props {
   lpTokenDecimals?: number
   aprTimeWindow?: number
   rewardToken?: Currency
+  rewardPerSec?: number
+  isBooster?: boolean
+  boosterMultiplier?: number
 }
 
 export const YieldInfo = memo(function YieldInfo({
@@ -37,9 +41,11 @@ export const YieldInfo = memo(function YieldInfo({
   lpTokenDecimals,
   aprTimeWindow,
   rewardToken,
+  rewardPerSec,
+  isBooster,
+  boosterMultiplier,
 }: Props) {
   const { t } = useTranslation()
-
   const earning = useMemo(
     () => (apr.isInCakeRewardDateRange ? `${rewardToken?.symbol ?? ''} + ${t('Fees')}` : t('Fees')),
     [t, apr.isInCakeRewardDateRange, rewardToken?.symbol],
@@ -62,6 +68,8 @@ export const YieldInfo = memo(function YieldInfo({
           lpTokenDecimals={lpTokenDecimals}
           aprTimeWindow={aprTimeWindow}
           rewardToken={rewardToken}
+          isBooster={isBooster}
+          boosterMultiplier={totalAssetsInUsd === 0 ? 3 : boosterMultiplier === 0 ? 3 : boosterMultiplier}
         />
       </RowBetween>
       <RowBetween>
@@ -71,6 +79,14 @@ export const YieldInfo = memo(function YieldInfo({
           {autoCompound && <AutoCompoundTag ml="0.5em" />}
         </Flex>
       </RowBetween>
+      {apr.isInCakeRewardDateRange && (
+        <RowBetween>
+          <Text>{t('Reward/Day:')}</Text>
+          <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
+            <RewardPerDay rewardPerSec={rewardPerSec ?? 0} symbol={rewardToken?.symbol} />
+          </Flex>
+        </RowBetween>
+      )}
     </Box>
   )
 })
