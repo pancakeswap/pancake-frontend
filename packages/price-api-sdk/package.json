@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/price-api-sdk",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "SDK for pancakeswap price api",
   "repository": {
     "type": "git",
