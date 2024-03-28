@@ -43,7 +43,7 @@ const OnBoardingView = ({ isRegistered }: IOnBoardingProps) => {
         </FlexGap>
       </div>
 
-      <Box margin="24px" height="10%">
+      <Box margin="20px" height="10%">
         <NotificationsOnboardingButton height="50px" />
       </Box>
     </Flex>

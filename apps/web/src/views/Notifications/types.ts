@@ -15,7 +15,7 @@ enum ScopeIdsToName {
   Prediction = '52816341-59cd-49e2-8f3b-d15bf2c107fb',
   Liquidity = '02879833-eb9c-4cc3-8760-f762ab218ca6',
   Farms = 'cf41e730-22d8-42d6-a7d5-1e79b6f7820b',
-  PriceUpdates = 'ad885f1d-3f25-46ea-916a-7ebe630b6f98',
+  PriceUpdates = '627396d7-23ba-4a82-b83d-2aa6ba1110e6',
   Promotional = '87393202-5cd7-4a0b-a672-bd4eded25e7b',
   Alerts = '069d1195-50a0-47b0-81a6-2df3024831ba',
   TradingReward = 'e0a3aeb3-3ec2-496d-b6c7-343185de6aca',
