@@ -13,13 +13,14 @@ import {
   NftFillIcon,
   NftIcon,
   PancakeProtectorIcon,
+  ShoppingBasketFilledIcon,
+  ShoppingBasketIcon,
   SwapFillIcon,
   SwapIcon,
 } from '@pancakeswap/uikit'
 import {
   FIXED_STAKING_SUPPORTED_CHAINS,
   LIQUID_STAKING_SUPPORTED_CHAINS,
-  SUPPORT_BUY_CRYPTO,
   SUPPORT_CAKE_STAKING,
   SUPPORT_FARMS,
   SUPPORT_ONLY_BSC,
@@ -89,14 +90,21 @@ const config: (
           image: '/images/decorations/3d-coin.png',
         },
         {
-          label: t('Buy Crypto'),
-          href: '/buy-crypto',
-          supportChainIds: SUPPORT_BUY_CRYPTO,
-        },
-        {
           label: t('Trading Reward'),
           href: '/trading-reward',
           hideSubNav: true,
+        },
+      ].map((item) => addMenuItemSupported(item, chainId)),
+    },
+    {
+      label: t('Buy'),
+      href: '/buy-crypto',
+      icon: ShoppingBasketIcon,
+      fillIcon: ShoppingBasketFilledIcon,
+      items: [
+        {
+          label: t('Buy Crypto'),
+          href: '/buy-crypto',
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },

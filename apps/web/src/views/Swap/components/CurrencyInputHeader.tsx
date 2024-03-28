@@ -20,7 +20,6 @@ import InternalLink from 'components/Links'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import RefreshIcon from 'components/Svg/RefreshIcon'
 import { CHAIN_REFRESH_TIME } from 'config/constants/exchange'
-import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useAtom } from 'jotai'
@@ -111,7 +110,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
           <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
         </Flex>
         <Flex width="100%" justifyContent="end">
-          {chainId && SUPPORT_BUY_CRYPTO.includes(chainId) ? (
+          {chainId ? (
             <Flex alignItems="center" justifyContent="center" px="4px" mt="5px">
               <TooltipText
                 ref={buyCryptoTargetRef}

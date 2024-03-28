@@ -23,7 +23,7 @@ describe('getActiveMenuItem', () => {
     const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT, false, undefined) })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[1])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[2])
   })
 
   it('should not return an item that only includes pathname but not starts with', () => {
@@ -34,7 +34,7 @@ describe('getActiveMenuItem', () => {
     const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT, false, undefined) })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[5])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[6])
   })
 
   it('should return undefined if item is not found', () => {
@@ -77,10 +77,10 @@ describe('getActiveSubMenuItem', () => {
     const pathname = '/nfts/collections/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07'
 
     // When
-    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[3] })
+    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[4] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[3].items?.[1])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[4].items?.[1])
   })
 
   it('should return undefined if item is not found', () => {
@@ -99,10 +99,10 @@ describe('getActiveSubMenuItem', () => {
     const pathname = '/nfts/collections/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07'
 
     // When
-    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[3] })
+    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[4] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT, false, undefined)[3].items?.[1])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[4].items?.[1])
   })
 
   it.todo('should return items with supportChainId')

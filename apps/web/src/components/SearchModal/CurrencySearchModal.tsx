@@ -17,7 +17,6 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { ImportList } from '@pancakeswap/widgets-internal'
-import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useAllLists } from 'state/lists/hooks'
 import { useListState } from 'state/lists/lists'
@@ -60,7 +59,6 @@ export interface CurrencySearchModalProps extends InjectedModalProps {
   commonBasesType?: string
   showSearchInput?: boolean
   tokensToShow?: Token[]
-  mode?: string
 }
 
 export default function CurrencySearchModal({
@@ -72,11 +70,8 @@ export default function CurrencySearchModal({
   commonBasesType,
   showSearchInput,
   tokensToShow,
-  mode,
 }: CurrencySearchModalProps) {
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.search)
-  const { pathname } = useRouter()
-  const onRampFlow = pathname === '/buy-crypto'
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
@@ -174,8 +169,6 @@ export default function CurrencySearchModal({
             setImportToken={setImportToken}
             height={height}
             tokensToShow={tokensToShow}
-            mode={mode}
-            onRampFlow={onRampFlow}
           />
         ) : modalView === CurrencyModalView.importToken && importToken ? (
           <ImportToken tokens={[importToken]} handleCurrencySelect={handleCurrencySelect} />
@@ -198,7 +191,7 @@ export default function CurrencySearchModal({
         ) : (
           ''
         )}
-        {modalView === CurrencyModalView.search && !onRampFlow && (
+        {modalView === CurrencyModalView.search && (
           <Footer>
             <Button
               scale="sm"

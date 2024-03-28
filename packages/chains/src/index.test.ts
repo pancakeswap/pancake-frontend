@@ -7,6 +7,7 @@ test('exports', () => {
       "ChainId",
       "testnetChainIds",
       "chainNames",
+      "ChainNamesExtended",
       "chainNameToChainId",
       "defiLlamaChainNames",
       "getChainName",

@@ -206,8 +206,8 @@ export const NetworkSwitcher = () => {
             t('Network')
           ) : foundChain ? (
             <>
-              <Box display={['none', null, null, null, null, 'block']}>{chainNameConverter(foundChain.name)}</Box>
-              <Box display={['block', null, null, null, null, 'none']}>{symbol}</Box>
+              <Box display={['none', null, null, null, null, null, 'block']}>{chainNameConverter(foundChain.name)}</Box>
+              <Box display={['block', null, null, null, null, null, 'none']}>{symbol}</Box>
             </>
           ) : (
             t('Select a Network')

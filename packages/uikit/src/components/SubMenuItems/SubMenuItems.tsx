@@ -1,10 +1,13 @@
 import { useIsomorphicLayoutEffect } from "framer-motion";
 import debounce from "lodash/debounce";
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { Box } from "../Box";
-import { DropdownMenuItemType } from "../DropdownMenu/types";
 import { AtomBox } from "../AtomBox";
+import { Box } from "../Box";
+import { LinkStatus } from "../DropdownMenu/styles";
+import { DropdownMenuItemType } from "../DropdownMenu/types";
+import { FlexGap } from "../Layouts";
 import MenuItem from "../MenuItem/MenuItem";
+import NotificationDot from "../NotificationDot/NotificationDot";
 import { ChevronLeftIcon, ChevronRightIcon, OpenNewIcon } from "../Svg";
 import StyledSubMenuItems, {
   LeftMaskLayer,
@@ -13,9 +16,6 @@ import StyledSubMenuItems, {
   SubMenuItemWrapper,
 } from "./styles";
 import { SubMenuItemsProps } from "./types";
-import { FlexGap } from "../Layouts";
-import NotificationDot from "../NotificationDot/NotificationDot";
-import { LinkStatus } from "../DropdownMenu/styles";
 
 const SUBMENU_CHEVRON_CLICK_MOVE_PX = 100;
 const SUBMENU_SCROLL_DEVIATION = 3;
@@ -92,8 +92,8 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
           </RightMaskLayer>
         </AtomBox>
         <StyledSubMenuItems
-          justifyContent={[isMobileOnly ? "flex-end" : "start", null, "center"]}
-          pl={["12px", null, "0px"]}
+          justifyContent={hasOverflowing ? "flex-start" : "center"}
+          pl={hasOverflowing ? "12px" : "0px"}
           onScroll={debounce(layerController, 100)}
           ref={scrollLayerRef}
         >
