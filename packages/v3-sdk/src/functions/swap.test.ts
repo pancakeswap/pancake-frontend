@@ -4,7 +4,7 @@ import { FeeAmount, TICK_SPACINGS } from '../constants'
 import { TickListDataProvider } from '../entities'
 import { NEGATIVE_ONE } from '../internalConstants'
 import { TickMath, encodeSqrtRatioX96, nearestUsableTick } from '../utils'
-import { PoolState } from './poolState'
+import { PoolState } from './getPool'
 import { getInputAmount, getOutputAmount } from './swap'
 
 const ONE_ETHER = 10n ** 18n

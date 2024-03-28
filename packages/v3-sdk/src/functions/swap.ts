@@ -3,8 +3,8 @@ import invariant from 'tiny-invariant'
 import { TICK_SPACINGS } from '../constants'
 import { NEGATIVE_ONE, ONE, ZERO } from '../internalConstants'
 import { LiquidityMath, SwapMath, TickMath } from '../utils'
+import { PoolState } from './getPool'
 import { hasInvolvedToken } from './hasInvolvedToken'
-import { PoolState } from './poolState'
 
 interface StepComputations {
   sqrtPriceStartX96: bigint
