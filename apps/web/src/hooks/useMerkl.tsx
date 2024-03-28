@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { TokenInfo } from '@pancakeswap/token-lists'
 import { useToast } from '@pancakeswap/uikit'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { distributorABI } from 'config/abi/AngleProtocolDistributor'
 import { DISTRIBUTOR_ADDRESSES } from 'config/merkl'
@@ -31,19 +31,45 @@ export function useMerklInfo(poolAddress: string | null): {
   refreshData: () => void
 } {
   const { account, chainId } = useAccountActiveChain()
+  const queryClient = useQueryClient()
+
+  const {
+    data: merklDataV2,
+    isPending: isMerklPending,
+    refetch: refetchMerkl,
+  } = useQuery({
+    queryKey: [`fetchMerkl-${chainId}-${account || 'no-account'}`],
+    queryFn: async () => {
+      if (account) {
+        const responsev2 = await fetch(
+          `${MERKL_API_V2}?chainIds[]=${chainId}${account ? `&user=${account}` : ''}&AMMs[]=pancakeswapv3`,
+        )
+        if (responsev2.ok) {
+          return responsev2.json()
+        }
+        return undefined
+      }
+      const responsev2 = await fetch(`${MERKL_API_V2}?chainIds[]=${chainId}&AMMs[]=pancakeswapv3`)
+      if (responsev2.ok) {
+        return responsev2.json()
+      }
+      return undefined
+    },
+    enabled: Boolean(chainId),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  })
 
   const { data, isPending, refetch } = useQuery({
-    queryKey: [`fetchMerkl-${chainId}-${poolAddress}-${account || 'no-account'}`],
+    queryKey: [`fetchMerkl-${chainId}-${poolAddress}`],
     queryFn: async () => {
-      const responsev2 = await fetch(
-        `${MERKL_API_V2}?chainIds[]=${chainId}${account ? `&user=${account}` : ''}&AMMs[]=pancakeswapv3`,
-      )
+      const queryMerklDataV2 = queryClient.getQueryCache().find({
+        queryKey: [`fetchMerkl-${chainId}-${account || 'no-account'}`],
+      })?.state?.data
+      if (!queryMerklDataV2 || !queryMerklDataV2[chainId!]) return null
 
-      const merklDataV2 = await responsev2.json()
-
-      if (!chainId || !merklDataV2[chainId]) return null
-
-      const { pools, transactionData } = merklDataV2[chainId]
+      const { pools, transactionData } = queryMerklDataV2[chainId!]
 
       const hasLive = first(
         Object.keys(pools)
@@ -76,9 +102,9 @@ export function useMerklInfo(poolAddress: string | null): {
         rewardsPerToken,
         rewardTokenAddresses: uniq(merklPoolData?.distributionData?.map((d) => d.token)),
         transactionData,
-        isPending,
       }
     },
+    enabled: Boolean(chainId && merklDataV2),
   })
 
   const lists = useAllLists()
@@ -86,9 +112,14 @@ export function useMerklInfo(poolAddress: string | null): {
   return useMemo(() => {
     if (!data)
       return {
+        hasMerkl: false,
         rewardsPerToken: [],
         transactionData: null,
-        refreshData: refetch,
+        refreshData: async () => {
+          await refetchMerkl()
+          await refetch()
+        },
+        isPending: isPending || isMerklPending,
       }
 
     const { rewardsPerToken = [], rewardTokenAddresses = [], ...rest } = data
@@ -114,9 +145,13 @@ export function useMerklInfo(poolAddress: string | null): {
     return {
       ...rest,
       rewardsPerToken: rewardsPerToken.length ? rewardsPerToken : rewardCurrencies,
-      refreshData: refetch,
+      refreshData: async () => {
+        await refetchMerkl()
+        await refetch()
+      },
+      isPending: isPending || isMerklPending,
     }
-  }, [chainId, data, lists, refetch])
+  }, [chainId, data, lists, refetch, refetchMerkl, isPending, isMerklPending])
 }
 
 export default function useMerkl(poolAddress: string | null) {
