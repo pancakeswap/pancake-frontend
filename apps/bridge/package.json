@@ -18,7 +18,7 @@
     "@pancakeswap/utils": "workspace:*",
     "@vanilla-extract/next-plugin": "^2.3.0",
     "@wagmi/core": "^0.10.11",
-    "@wormhole-foundation/wormhole-connect": "0.1.7",
+    "@wormhole-foundation/wormhole-connect": "0.3.0-beta.9-development",
     "ethers": "^5.0.0",
     "jotai": "^2.4.3",
     "lodash": "^4.17.21",
