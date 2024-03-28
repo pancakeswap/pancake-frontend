@@ -6,7 +6,7 @@ import { ApprovalState } from 'hooks/useApproveCallback'
 import { useMemo } from 'react'
 import { Field } from 'state/mint/actions'
 import { styled } from 'styled-components'
-import { SendTransactionResult } from 'wagmi/actions'
+import { Address } from 'viem'
 
 const InlineLink = styled(Link)`
   display: inline-flex;
@@ -21,13 +21,13 @@ interface ApproveLiquidityTokensProps {
   }
   shouldShowApprovalGroup: boolean
   showFieldAApproval: boolean
-  approveACallback: () => Promise<SendTransactionResult | undefined>
-  revokeACallback: () => Promise<SendTransactionResult | undefined>
+  approveACallback: () => Promise<{ hash: Address } | undefined>
+  revokeACallback: () => Promise<{ hash: Address } | undefined>
   currentAllowanceA: CurrencyAmount<Currency> | undefined
   approvalA: ApprovalState
   showFieldBApproval: boolean
-  approveBCallback: () => Promise<SendTransactionResult | undefined>
-  revokeBCallback: () => Promise<SendTransactionResult | undefined>
+  approveBCallback: () => Promise<{ hash: Address } | undefined>
+  revokeBCallback: () => Promise<{ hash: Address } | undefined>
   currentAllowanceB: CurrencyAmount<Currency> | undefined
   approvalB: ApprovalState
 }

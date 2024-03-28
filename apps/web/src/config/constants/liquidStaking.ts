@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 export const WBETH: Record<number, Address> = {
   [ChainId.ETHEREUM]: '0xa2E3356610840701BDf5611a53974510Ae27E2e1',

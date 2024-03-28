@@ -36,7 +36,7 @@ const FarmsPoolsRow = () => {
   const { topPools } = useGetTopPoolsByApr(fetched && isIntersecting, chainId)
   const { lockedApy } = useVaultApy()
 
-  const timer = useRef<NodeJS.Timeout | null>(null)
+  const timer = useRef<number | null>(null)
   const isLoaded = topFarms[0] && topPools[0]
 
   const startTimer = useCallback(() => {

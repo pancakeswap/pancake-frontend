@@ -1,13 +1,14 @@
-import { Address, useAccount } from 'wagmi'
+import { useQuery } from '@tanstack/react-query'
+import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { FetchStatus } from 'config/constants/types'
-import { useCallback } from 'react'
 import { useErc721CollectionContract } from 'hooks/useContract'
+import { useCallback } from 'react'
 import { getNftApi, getNftsMarketData, getNftsOnChainMarketData } from 'state/nftMarket/helpers'
 import { NftLocation, NftToken, TokenMarketData } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
-import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { safeGetAddress } from 'utils'
-import { useQuery } from '@tanstack/react-query'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 
 const useNftOwn = (collectionAddress: Address | undefined, tokenId: string, marketData?: TokenMarketData) => {
   const { address: account } = useAccount()

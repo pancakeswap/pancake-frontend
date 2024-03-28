@@ -7,7 +7,7 @@ import {
   SerializedPotteryPublicData,
   SerializedPotteryUserData,
 } from 'state/types'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 import { resetUserState } from '../global/actions'
 import {
   fetchLastVaultAddress,

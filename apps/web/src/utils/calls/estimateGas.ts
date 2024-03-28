@@ -1,7 +1,5 @@
 import { calculateGasMargin } from 'utils'
-import { Abi, Account, Address, CallParameters, GetFunctionArgs, InferFunctionName } from 'viem'
-import { Chain } from 'wagmi'
-import { SendTransactionResult } from 'wagmi/actions'
+import { Abi, Account, Address, CallParameters, Chain, ContractFunctionArgs, ContractFunctionName } from 'viem'
 
 /**
  * Estimate the gas needed to call a function, and add a 10% margin
@@ -12,13 +10,8 @@ import { SendTransactionResult } from 'wagmi/actions'
  */
 export const estimateGas = async <
   TAbi extends Abi | unknown[],
-  TFunctionName extends string = string,
-  _FunctionName = InferFunctionName<TAbi, TFunctionName>,
-  Args = TFunctionName extends string
-    ? GetFunctionArgs<TAbi, TFunctionName>['args']
-    : _FunctionName extends string
-    ? GetFunctionArgs<TAbi, _FunctionName>['args']
-    : never,
+  functionName extends ContractFunctionName<TAbi, 'nonpayable' | 'payable'>,
+  args extends ContractFunctionArgs<TAbi, 'nonpayable' | 'payable', functionName>,
 >(
   contract: {
     abi: TAbi
@@ -28,8 +21,8 @@ export const estimateGas = async <
     write: any
     estimateGas: any
   },
-  methodName: _FunctionName,
-  methodArgs: Args,
+  methodName: functionName,
+  methodArgs: args,
   overrides: Omit<CallParameters, 'chain' | 'to' | 'data'> = {},
   gasMarginPer10000: bigint,
 ) => {
@@ -56,13 +49,8 @@ export const estimateGas = async <
  */
 export const callWithEstimateGas = async <
   TAbi extends Abi | unknown[],
-  TFunctionName extends string = string,
-  _FunctionName = InferFunctionName<TAbi, TFunctionName>,
-  Args = TFunctionName extends string
-    ? GetFunctionArgs<TAbi, TFunctionName>['args']
-    : _FunctionName extends string
-    ? GetFunctionArgs<TAbi, _FunctionName>['args']
-    : never,
+  functionName extends ContractFunctionName<TAbi, 'nonpayable' | 'payable'>,
+  args extends ContractFunctionArgs<TAbi, 'nonpayable' | 'payable', functionName>,
 >(
   contract: {
     abi: TAbi
@@ -72,13 +60,13 @@ export const callWithEstimateGas = async <
     write: any
     estimateGas: any
   },
-  methodName: InferFunctionName<TAbi, TFunctionName>,
-  methodArgs: Args,
+  methodName: functionName,
+  methodArgs: args,
   overrides: Omit<CallParameters, 'chain' | 'to' | 'data'> = {},
   gasMarginPer10000 = 1000n,
-): Promise<SendTransactionResult> => {
+) => {
   const gasEstimation = await estimateGas(contract, methodName, methodArgs, overrides, gasMarginPer10000)
-  // @ts-ignore
+
   const tx = await contract.write[methodName](methodArgs, {
     value: 0n,
     gas: gasEstimation,
@@ -86,6 +74,7 @@ export const callWithEstimateGas = async <
     chain: contract.chain,
     ...overrides,
   })
+
   return {
     hash: tx,
   }

@@ -3,7 +3,7 @@
 import { ContextApi } from '@pancakeswap/localization'
 import { Flex } from '@pancakeswap/uikit'
 import { DefaultTheme } from 'styled-components'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 import ActivateProfileButton from '../Buttons/ActivateProfile'
 import BuyTicketsButtons from '../Buttons/BuyTickets'

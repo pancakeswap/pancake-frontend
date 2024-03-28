@@ -9,7 +9,7 @@ import { usePotterytVaultContract } from 'hooks/useContract'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 export const useDepositPottery = (amount: string, potteryVaultAddress: Address) => {
   const { t } = useTranslation()

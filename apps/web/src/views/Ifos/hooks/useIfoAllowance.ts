@@ -2,7 +2,8 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { useERC20, useTokenContract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
-import { Address, useAccount } from 'wagmi'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 
 // Retrieve IFO allowance
 const useIfoAllowance = (

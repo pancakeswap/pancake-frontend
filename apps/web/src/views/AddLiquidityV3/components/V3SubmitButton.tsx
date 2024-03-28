@@ -5,8 +5,8 @@ import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { ReactNode, useMemo } from 'react'
+import { Address } from 'viem'
 import ApproveLiquidityTokens from 'views/AddLiquidityV3/components/ApproveLiquidityTokens'
-import { SendTransactionResult } from 'wagmi/actions'
 import { Field } from '../formViews/V3FormView/form/actions'
 
 interface V3SubmitButtonProps {
@@ -18,16 +18,16 @@ interface V3SubmitButtonProps {
   approvalB: ApprovalState
   isValid: boolean
   showApprovalA: boolean
-  approveACallback: () => Promise<SendTransactionResult | undefined>
+  approveACallback: () => Promise<{ hash: Address } | undefined>
   currentAllowanceA: CurrencyAmount<Currency> | undefined
-  revokeACallback: () => Promise<SendTransactionResult | undefined>
+  revokeACallback: () => Promise<{ hash: Address } | undefined>
   currencies: {
     CURRENCY_A?: Currency
     CURRENCY_B?: Currency
   }
-  approveBCallback: () => Promise<SendTransactionResult | undefined>
+  approveBCallback: () => Promise<{ hash: Address } | undefined>
   currentAllowanceB: CurrencyAmount<Currency> | undefined
-  revokeBCallback: () => Promise<SendTransactionResult | undefined>
+  revokeBCallback: () => Promise<{ hash: Address } | undefined>
   showApprovalB: boolean
   parsedAmounts: {
     CURRENCY_A?: CurrencyAmount<Currency>

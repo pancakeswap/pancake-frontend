@@ -160,7 +160,9 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
   const { data, isLoading } = useToken_({
     address: address || undefined,
     chainId,
-    enabled: Boolean(!!address && !token),
+    query: {
+      enabled: Boolean(!!address && !token),
+    },
     // consider longer stale time
   })
 

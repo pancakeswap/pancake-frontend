@@ -1,8 +1,7 @@
 import { MessageStatus } from '@layerzerolabs/scan-client'
 import { ChainId, Token } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
-import { PublicClient } from 'viem'
-import type { Address } from 'wagmi'
+import { Address, PublicClient } from 'viem'
 
 export enum PoolIds {
   poolBasic = 'poolBasic',

@@ -5,7 +5,6 @@ import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useAccount } from 'wagmi'
-import { SendTransactionResult } from 'wagmi/actions'
 
 import { Token } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -21,7 +20,7 @@ interface FarmCardActionsProps {
   vaultPid?: number
   proxyCakeBalance?: number
   lpSymbol?: string
-  onReward: () => Promise<SendTransactionResult>
+  onReward: <SendTransactionResult>() => Promise<SendTransactionResult>
   onDone?: () => void
 }
 

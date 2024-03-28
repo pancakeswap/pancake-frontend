@@ -14,8 +14,8 @@ import type { AppState } from 'state'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { getViemClients } from 'utils/viem'
 import { chains } from 'utils/wagmi'
+import { Address } from 'viem'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
-import { Address } from 'wagmi'
 import { resetUserState } from '../global/actions'
 import {
   fetchFarmUserAllowances,

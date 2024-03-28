@@ -20,7 +20,7 @@ const useGelatoLimitOrdersLib = (): GelatoLimitOrders | undefined => {
       const Web3Provider = await import('ethers').then(({ providers }) => {
         return providers.Web3Provider
       })
-      return connector.getProvider().then((provider) => {
+      return connector.getProvider().then((provider: any) => {
         const signer = new Web3Provider(provider).getSigner()
         const lib = new GelatoLimitOrders(chainId as ChainIdType, signer, GELATO_HANDLER, false)
         return lib

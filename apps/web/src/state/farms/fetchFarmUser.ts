@@ -8,8 +8,7 @@ import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelp
 import { getCrossFarmingReceiverContract } from 'utils/contractHelpers'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { publicClient } from 'utils/wagmi'
-import { ContractFunctionResult } from 'viem'
-import { Address, erc20ABI } from 'wagmi'
+import { Address, erc20Abi } from 'viem'
 
 export const fetchFarmUserAllowances = async (
   account: Address,
@@ -24,7 +23,7 @@ export const fetchFarmUserAllowances = async (
     contracts: farmsToFetch.map((farm) => {
       const lpContractAddress = farm.lpAddress
       return {
-        abi: erc20ABI,
+        abi: erc20Abi,
         address: lpContractAddress,
         functionName: 'allowance',
         args: [account, proxyAddress || masterChefAddress] as const,
@@ -49,7 +48,7 @@ export const fetchFarmUserTokenBalances = async (
     contracts: farmsToFetch.map((farm) => {
       const lpContractAddress = farm.lpAddress
       return {
-        abi: erc20ABI,
+        abi: erc20Abi,
         address: lpContractAddress,
         functionName: 'balanceOf',
         args: [account as Address] as const,
@@ -72,7 +71,7 @@ export const fetchFarmUserStakedBalances = async (
   const isBscNetwork = verifyBscNetwork(chainId)
   const masterChefAddress = isBscNetwork ? getMasterChefV2Address(chainId) : getNonBscVaultAddress(chainId)
 
-  const rawStakedBalances = (await publicClient({ chainId }).multicall({
+  const rawStakedBalances = await publicClient({ chainId }).multicall({
     contracts: farmsToFetch.map((farm) => {
       return {
         abi: isBscNetwork ? masterChefV2ABI : nonBscVaultABI,
@@ -82,7 +81,7 @@ export const fetchFarmUserStakedBalances = async (
       } as const
     }),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof masterChefV2ABI, 'userInfo'>[]
+  })
 
   const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
     return new BigNumber(stakedBalance[0].toString()).toJSON()

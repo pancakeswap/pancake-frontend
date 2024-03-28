@@ -13,10 +13,10 @@ import NextLink from 'next/link'
 import { OptionProps } from 'pages/liquid-staking/index'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { formatUnixTime } from 'utils/formatTime'
+import { Address } from 'viem'
 import { NativeToken } from 'views/LiquidStaking/constants/types'
 import { useCallClaimContract } from 'views/LiquidStaking/hooks/useCallStakingContract'
 import { useReadWithdrawRequestInfo } from 'views/LiquidStaking/hooks/useReadWithdrawRequestInfo'
-import { Address } from 'wagmi'
 
 function passCheckNativeToken(currency: Token | NativeToken, native: NativeCurrency) {
   if (currency.symbol.toUpperCase() === native.symbol.toUpperCase()) return currency.symbol

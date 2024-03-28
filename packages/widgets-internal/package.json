@@ -9,39 +9,39 @@
     "./roi": "./roi/index.ts"
   },
   "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/farms": "workspace:*",
+    "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
+    "@pancakeswap/pools": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/uikit": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
-    "@pancakeswap/hooks": "workspace:*",
-    "@pancakeswap/pools": "workspace:*",
-    "@pancakeswap/chains": "workspace:*",
-    "@pancakeswap/swap-sdk-core": "workspace:*",
     "bignumber.js": "^9.0.0",
-    "lodash": "^4.17.21",
-    "viem": "1.19.11",
-    "d3": "^7.8.2",
     "clsx": "^1.2.1",
-    "dayjs": "^1.11.10"
+    "d3": "^7.8.2",
+    "dayjs": "^1.11.10",
+    "lodash": "^4.17.21",
+    "viem": "2.8.13"
   },
   "peerDependencies": {
+    "@sentry/nextjs": "^7.0.0",
     "next": "13.5.6",
     "react": "^18.2.0",
     "styled-components": "6.0.7",
-    "styled-system": "^5.1.5",
-    "@sentry/nextjs": "^7.0.0"
+    "styled-system": "^5.1.5"
   },
   "devDependencies": {
-    "polished": "^4.2.2",
     "@sentry/nextjs": "^7.0.0",
     "@types/lodash": "^4.14.168",
     "@types/react": "^18.2.21",
     "@types/styled-system": "^5.1.17",
     "csstype": "^3.1.2",
     "next": "13.5.6",
+    "polished": "^4.2.2",
     "react": "^18.2.0",
     "styled-components": "6.0.7"
   }

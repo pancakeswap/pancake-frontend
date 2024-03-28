@@ -2,7 +2,7 @@ import { bCakeSupportedChainId } from '@pancakeswap/farms'
 import { useQuery } from '@tanstack/react-query'
 import { NO_PROXY_CONTRACT } from 'config/constants'
 import { useBCakeFarmBoosterContract } from 'hooks/useContract'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 export const useBCakeProxyContractAddress = (account?: Address, chainId?: number) => {
   const bCakeFarmBoosterContract = useBCakeFarmBoosterContract()

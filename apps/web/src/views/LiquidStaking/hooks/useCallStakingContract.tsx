@@ -12,7 +12,7 @@ import { calculateGasMargin } from 'utils'
 import { getViemClients } from 'utils/viem'
 import { encodeFunctionData } from 'viem'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
-import { useSendTransaction, useWaitForTransaction } from 'wagmi'
+import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
 
 export const useCallStakingContract = (selectedList: LiquidStakingList | null) => {
   const contract = useContract(selectedList?.contract, selectedList?.abi)
@@ -44,9 +44,9 @@ export const useCallStakingContract = (selectedList: LiquidStakingList | null) =
 }
 
 export const useCallClaimContract = (claimedAmount?: CurrencyAmount<Currency>, indexNumber?: number) => {
-  const { data, sendTransactionAsync, isLoading } = useSendTransaction()
-  const { isLoading: isConfirming } = useWaitForTransaction({
-    hash: data?.hash,
+  const { data, sendTransactionAsync, status } = useSendTransaction()
+  const { isLoading: isConfirming } = useWaitForTransactionReceipt({
+    hash: data,
   })
   const { account, chainId } = useAccountActiveChain()
   const addTransaction = useTransactionAdder()
@@ -81,9 +81,9 @@ export const useCallClaimContract = (claimedAmount?: CurrencyAmount<Currency>, i
           chainId,
         })
       })
-      .then((response) => {
+      .then((hash) => {
         addTransaction(
-          { hash: response.hash },
+          { hash },
           {
             type: 'claim-liquid-staking',
             summary: `Claim ${claimedAmount?.toSignificant(6)} ${claimedAmount?.currency?.symbol}`,
@@ -95,8 +95,8 @@ export const useCallClaimContract = (claimedAmount?: CurrencyAmount<Currency>, i
   return useMemo(
     () => ({
       onClaim,
-      isLoading: isConfirming || isLoading,
+      isLoading: isConfirming || status === 'pending',
     }),
-    [isConfirming, isLoading, onClaim],
+    [isConfirming, onClaim, status],
   )
 }

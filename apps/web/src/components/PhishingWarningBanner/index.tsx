@@ -89,7 +89,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const [percentage, setPerCentage] = useState(0)
   const showInBigDevice = isDesktop || isLg
   const [step, setStep] = useState(0)
-  const timer = useRef<NodeJS.Timeout | null>(null)
+  const timer = useRef<number | null>(null)
   const [showAnimation, setShowAnimation] = useState(true)
   const [remainingTimer, setRemainingTimer] = useState(DISPLAY_TIMER)
 

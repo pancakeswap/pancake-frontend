@@ -5,7 +5,7 @@ import chunk from 'lodash/chunk'
 import { farmFetcher } from 'state/farms'
 import { notEmpty } from 'utils/notEmpty'
 import { publicClient } from 'utils/wagmi'
-import { ContractFunctionResult } from 'viem'
+import { AbiStateMutability, ContractFunctionReturnType } from 'viem'
 import { SerializedFarmConfig } from '../../config/constants/types'
 import { getMasterChefV2Address } from '../../utils/addressHelpers'
 
@@ -48,8 +48,12 @@ const masterChefFarmCalls = (farm: SerializedFarm) => {
     : ([null, null] as const)
 }
 
-export type PoolInfo = ContractFunctionResult<typeof masterChefV2ABI, 'poolInfo'>
-export type TotalRegularAllocPoint = ContractFunctionResult<typeof masterChefV2ABI, 'totalRegularAllocPoint'>
+export type PoolInfo = ContractFunctionReturnType<typeof masterChefV2ABI, AbiStateMutability, 'poolInfo'>
+export type TotalRegularAllocPoint = ContractFunctionReturnType<
+  typeof masterChefV2ABI,
+  AbiStateMutability,
+  'totalRegularAllocPoint'
+>
 
 export const fetchMasterChefData = async (
   farms: SerializedFarmConfig[],

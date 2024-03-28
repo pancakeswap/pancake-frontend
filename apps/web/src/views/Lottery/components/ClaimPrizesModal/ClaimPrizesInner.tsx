@@ -90,9 +90,14 @@ const ClaimInnerContainer: React.FC<React.PropsWithChildren<ClaimInnerProps>> = 
   const handleClaim = async () => {
     const { lotteryId, ticketIds, brackets } = claimTicketsCallData
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets], {
-        gasPrice,
-      })
+      return callWithEstimateGas(
+        lotteryContract,
+        'claimTickets',
+        [BigInt(lotteryId), ticketIds.map(BigInt), brackets.map(Number)],
+        {
+          gasPrice,
+        },
+      )
     })
     if (receipt?.status) {
       toastSuccess(
@@ -117,7 +122,7 @@ const ClaimInnerContainer: React.FC<React.PropsWithChildren<ClaimInnerProps>> = 
         return callWithEstimateGas(
           lotteryContract,
           'claimTickets',
-          [lotteryId, ticketBatch.ticketIds, ticketBatch.brackets],
+          [BigInt(lotteryId), ticketBatch.ticketIds.map(BigInt), ticketBatch.brackets.map(Number)],
           { gasPrice },
         )
       })

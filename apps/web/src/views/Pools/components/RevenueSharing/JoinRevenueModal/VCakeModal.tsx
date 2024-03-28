@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react'
-import { ModalV2 } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/chains'
-import { useAccount } from 'wagmi'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import useVCake from 'views/Pools/hooks/useVCake'
-import JoinRevenueModal from 'views/Pools/components/RevenueSharing/JoinRevenueModal'
+import { ModalV2 } from '@pancakeswap/uikit'
 import useCakeBenefits from 'components/Menu/UserMenu/hooks/useCakeBenefits'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useEffect, useState } from 'react'
 import { VaultPosition } from 'utils/cakePool'
+import JoinRevenueModal from 'views/Pools/components/RevenueSharing/JoinRevenueModal'
+import useVCake from 'views/Pools/hooks/useVCake'
 
 const VCakeModal = () => {
-  const { account, chainId } = useAccountActiveChain()
+  const { account, chainId, status, connector } = useAccountActiveChain()
   const { isInitialization, refresh } = useVCake()
   const [open, setOpen] = useState(false)
   const { data: cakeBenefits, status: cakeBenefitsFetchStatus } = useCakeBenefits()
@@ -26,12 +25,13 @@ const VCakeModal = () => {
     }
   }, [account, cakeBenefits?.lockPosition, cakeBenefitsFetchStatus, chainId, isInitialization])
 
-  useAccount({
-    onConnect: ({ connector }) => {
-      connector?.addListener('change', () => closeModal())
-    },
-    onDisconnect: () => closeModal(),
-  })
+  useEffect(() => {
+    if (status === 'connected') {
+      connector?.emitter.on('change', () => closeModal())
+    } else if (status === 'disconnected') {
+      closeModal()
+    }
+  }, [connector?.emitter, status])
 
   const closeModal = () => {
     setOpen(false)

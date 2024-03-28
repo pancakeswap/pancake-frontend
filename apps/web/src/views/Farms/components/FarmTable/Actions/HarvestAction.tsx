@@ -15,7 +15,6 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useCallback } from 'react'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
-import { SendTransactionResult } from 'wagmi/actions'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
 
@@ -23,7 +22,7 @@ const { FarmTableHarvestAction } = FarmWidget.FarmTable
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
-  onReward?: () => Promise<SendTransactionResult>
+  onReward?: <TResult>() => Promise<TResult>
   proxyCakeBalance?: number
   onDone?: () => void
 }

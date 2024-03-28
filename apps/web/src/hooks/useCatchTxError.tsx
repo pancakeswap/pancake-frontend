@@ -4,20 +4,8 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallback, useState } from 'react'
 import { getViemErrorMessage, parseViemError } from 'utils/errors'
 import { isUserRejected, logError } from 'utils/sentry'
-import { Hash } from 'viem'
-import { SendTransactionResult, WaitForTransactionResult } from 'wagmi/actions'
+import { Address, Hash } from 'viem'
 import { usePublicNodeWaitForTransaction } from './usePublicNodeWaitForTransaction'
-
-export type CatchTxErrorReturn = {
-  fetchWithCatchTxError: (
-    fn: () => Promise<SendTransactionResult | Hash | undefined>,
-  ) => Promise<WaitForTransactionResult | null>
-  fetchTxResponse: (
-    fn: () => Promise<SendTransactionResult | Hash | undefined>,
-  ) => Promise<SendTransactionResult | null>
-  loading: boolean
-  txResponseLoading: boolean
-}
 
 const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
 
@@ -26,7 +14,7 @@ type Params = {
   throwCustomError?: () => void
 }
 
-export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
+export default function useCatchTxError(params?: Params) {
   const { throwUserRejectError = false, throwCustomError } = params || {}
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()
@@ -71,10 +59,8 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
   )
 
   const fetchWithCatchTxError = useCallback(
-    async (
-      callTx: () => Promise<SendTransactionResult | Hash | undefined>,
-    ): Promise<WaitForTransactionResult | null> => {
-      let tx: SendTransactionResult | Hash | null | undefined = null
+    async (callTx: () => Promise<{ hash: Address } | Hash | undefined>) => {
+      let tx: { hash: Address } | Hash | null | undefined = null
 
       try {
         setLoading(true)
@@ -116,8 +102,8 @@ export default function useCatchTxError(params?: Params): CatchTxErrorReturn {
   )
 
   const fetchTxResponse = useCallback(
-    async (callTx: () => Promise<SendTransactionResult | Hash | undefined>): Promise<SendTransactionResult | null> => {
-      let tx: SendTransactionResult | Hash | null | undefined = null
+    async (callTx: () => Promise<{ hash: Address } | Hash | undefined>): Promise<{ hash: Address } | null> => {
+      let tx: { hash: Address } | Hash | null | undefined = null
 
       try {
         setTxResponseLoading(true)

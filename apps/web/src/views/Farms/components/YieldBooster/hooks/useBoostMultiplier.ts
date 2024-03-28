@@ -7,7 +7,8 @@ import { useBCakeFarmBoosterContract, useMasterchef } from 'hooks/useContract'
 import _toNumber from 'lodash/toNumber'
 import { useCallback } from 'react'
 import { publicClient } from 'utils/wagmi'
-import { Address, useAccount } from 'wagmi'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 import { YieldBoosterState } from './useYieldBoosterState'
 
 const PRECISION_FACTOR = new BN('1000000000000') // 1e12

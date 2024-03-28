@@ -119,8 +119,8 @@ export const STABLESWAP_SUBGRAPHS_START_BLOCK = {
 }
 
 export const multiChainScan: Record<MultiChainName, string> = {
-  BSC: bsc.blockExplorers.etherscan.name,
-  ETH: mainnet.blockExplorers.etherscan.name,
+  BSC: bsc.blockExplorers.default.name,
+  ETH: mainnet.blockExplorers.default.name,
   POLYGON_ZKEVM: polygonZkEvm.blockExplorers.default.name,
   ZKSYNC: zkSync.blockExplorers.default.name,
   ARB: arbitrum.blockExplorers.default.name,

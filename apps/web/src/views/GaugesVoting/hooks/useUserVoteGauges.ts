@@ -56,10 +56,12 @@ export const useUserVoteSlopes = () => {
         })
       }
 
-      const response = await publicClient.multicall({
-        contracts,
-        allowFailure: false,
-      })
+      const response = publicClient
+        ? await publicClient.multicall({
+            contracts,
+            allowFailure: false,
+          })
+        : []
 
       const len = gauges.length
       return gauges.map((gauge, index) => {

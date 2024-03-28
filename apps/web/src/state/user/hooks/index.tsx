@@ -8,12 +8,12 @@ import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useFeatureFlagEvaluation } from 'hooks/useDataDogRUM'
 import flatMap from 'lodash/flatMap'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState, useAppDispatch } from 'state'
 import { safeGetAddress } from 'utils'
 import { Hex, hexToBigInt } from 'viem'
-import { useFeeData, useWalletClient } from 'wagmi'
+import { useBlockNumber, useFeeData, useWalletClient } from 'wagmi'
 import { GAS_PRICE_GWEI } from '../../types'
 import {
   FarmStakedOnly,
@@ -257,12 +257,20 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
 } {
   const { chainId: chainId_ } = useActiveChainId()
   const chainId = chainIdOverride ?? chainId_
+
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+
   const gasPrice = useGasPrice(chainId)
-  const { data } = useFeeData({
+  const { data, refetch } = useFeeData({
     chainId,
-    enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
-    watch: true,
+    query: {
+      enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
+    },
   })
+
+  useEffect(() => {
+    refetch()
+  }, [blockNumber, refetch])
 
   if (gasPrice) {
     return {

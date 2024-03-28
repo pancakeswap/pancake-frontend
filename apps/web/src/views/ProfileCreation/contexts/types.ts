@@ -1,4 +1,4 @@
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 export type Actions =
   | { type: 'next_step' }

@@ -2,7 +2,6 @@ import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 // eslint-disable-next-line camelcase
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { viemClients } from 'utils/viem'
 import { useBlockNumber, usePublicClient } from 'wagmi'
 
 const REFRESH_BLOCK_INTERVAL = 6000
@@ -12,32 +11,6 @@ export const usePollBlockNumber = () => {
   const { chainId } = useActiveChainId()
   const { data: blockNumber } = useBlockNumber({
     chainId,
-    onBlock: (data) => {
-      queryClient.setQueryData(['blockNumber', chainId], Number(data))
-    },
-    onSuccess: (data) => {
-      if (
-        !queryClient.getQueryCache().find({
-          queryKey: ['initialBlockNumber', chainId],
-        })?.state?.data
-      ) {
-        queryClient.setQueryData(['initialBlockNumber', chainId], Number(data))
-      }
-      if (
-        !queryClient.getQueryCache().find({
-          queryKey: ['initialBlockTimestamp', chainId],
-        })?.state?.data
-      ) {
-        const fetchInitialBlockTimestamp = async () => {
-          const provider = viemClients[chainId as keyof typeof viemClients]
-          if (provider) {
-            const block = await provider.getBlock({ blockNumber: data })
-            queryClient.setQueryData(['initialBlockTimestamp', chainId], Number(block.timestamp))
-          }
-        }
-        fetchInitialBlockTimestamp()
-      }
-    },
   })
 
   useQuery({
@@ -89,8 +62,12 @@ export const useChainCurrentBlock = (chainId: number): number => {
     queryKey: activeChainId === chainId ? ['blockNumber', chainId] : ['chainBlockNumber', chainId],
 
     queryFn: async () => {
-      const blockNumber = await provider.getBlockNumber()
-      return Number(blockNumber)
+      if (provider) {
+        const blockNumber = await provider.getBlockNumber()
+        return Number(blockNumber)
+      }
+
+      return undefined
     },
     enabled: activeChainId !== chainId,
     ...(activeChainId !== chainId && { refetchInterval: REFRESH_BLOCK_INTERVAL }),

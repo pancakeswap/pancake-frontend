@@ -1,7 +1,7 @@
 import { getPoolContractBySousId } from '@pancakeswap/pools'
 
-import { Abi, Address } from 'viem'
-import { erc20ABI, usePublicClient, useWalletClient } from 'wagmi'
+import { Abi, Address, erc20Abi } from 'viem'
+import { usePublicClient, useWalletClient } from 'wagmi'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
@@ -102,13 +102,13 @@ export const useIfoV7Contract = (address: Address, options?: UseContractOptions)
 }
 
 export const useERC20 = (address?: Address, options?: UseContractOptions) => {
-  return useContract(address, erc20ABI, options)
+  return useContract(address, erc20Abi, options)
 }
 
 export const useCake = () => {
   const { chainId } = useActiveChainId()
 
-  return useContract((chainId && CAKE[chainId]?.address) ?? CAKE[ChainId.BSC].address, erc20ABI)
+  return useContract((chainId && CAKE[chainId]?.address) ?? CAKE[ChainId.BSC].address, erc20Abi)
 }
 
 export const useBunnyFactory = () => {
@@ -277,7 +277,7 @@ export function useContract<TAbi extends Abi>(
 }
 
 export function useTokenContract(tokenAddress?: Address) {
-  return useContract(tokenAddress, erc20ABI)
+  return useContract(tokenAddress, erc20Abi)
 }
 
 export function useWNativeContract() {

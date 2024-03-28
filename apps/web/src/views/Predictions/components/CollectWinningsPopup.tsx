@@ -1,13 +1,13 @@
-import { memo, useEffect, useRef, useState } from 'react'
-import { useAccount } from 'wagmi'
-import { styled, css, keyframes } from 'styled-components'
-import { Button, CloseIcon, IconButton, TrophyGoldIcon } from '@pancakeswap/uikit'
-import { CSSTransition } from 'react-transition-group'
 import { useTranslation } from '@pancakeswap/localization'
+import { Button, CloseIcon, IconButton, TrophyGoldIcon } from '@pancakeswap/uikit'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
+import { memo, useEffect, useRef, useState } from 'react'
+import { CSSTransition } from 'react-transition-group'
+import { setHistoryPaneState } from 'state/predictions'
 import { getBetHistory } from 'state/predictions/helpers'
 import { useGetPredictionsStatus, useIsHistoryPaneOpen } from 'state/predictions/hooks'
-import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
-import { setHistoryPaneState } from 'state/predictions'
+import { css, keyframes, styled } from 'styled-components'
+import { useAccount } from 'wagmi'
 import { useConfig } from '../context/ConfigProvider'
 
 /**
@@ -119,7 +119,7 @@ const Popup = styled.div`
   padding: 16px 8px;
 `
 
-let timer: NodeJS.Timeout
+let timer: number
 
 const CollectWinningsPopup = () => {
   const [isOpen, setIsOpen] = useState(false)

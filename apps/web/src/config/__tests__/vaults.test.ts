@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { VAULTS_CONFIG_BY_CHAIN } from '@pancakeswap/position-managers'
 import { positionManagerAdapterABI, positionManagerWrapperABI } from '@pancakeswap/position-managers/src/abi'
 import { pancakeV3PoolABI } from '@pancakeswap/v3-sdk'
-import { publicClient } from 'utils/client'
+import { publicClient } from 'utils/wagmi'
 import { Address } from 'viem'
 import { describe, expect, it } from 'vitest'
 

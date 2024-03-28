@@ -4,9 +4,15 @@ import { getMasterChefContract, getNonBscVaultContract } from 'utils/contractHel
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { MessageTypes, getNonBscVaultContractFee } from 'views/Farms/hooks/getNonBscVaultFee'
 
-type MasterChefContract = ReturnType<typeof getMasterChefContract>
+export type MasterChefContractType = ReturnType<typeof getMasterChefContract>
 
-export const stakeFarm = async (masterChefContract: MasterChefContract, pid, amount, gasPrice, gasLimit?: bigint) => {
+export const stakeFarm = async (
+  masterChefContract: MasterChefContractType,
+  pid,
+  amount,
+  gasPrice,
+  gasLimit?: bigint,
+) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   logGTMClickStakeFarmEvent()
 
@@ -20,7 +26,13 @@ export const stakeFarm = async (masterChefContract: MasterChefContract, pid, amo
   })
 }
 
-export const unstakeFarm = async (masterChefContract: MasterChefContract, pid, amount, gasPrice, gasLimit?: bigint) => {
+export const unstakeFarm = async (
+  masterChefContract: MasterChefContractType,
+  pid,
+  amount,
+  gasPrice,
+  gasLimit?: bigint,
+) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
 
   if (!masterChefContract.account) return undefined
@@ -33,7 +45,7 @@ export const unstakeFarm = async (masterChefContract: MasterChefContract, pid, a
   })
 }
 
-export const harvestFarm = async (masterChefContract: MasterChefContract, pid, gasPrice, gasLimit?: bigint) => {
+export const harvestFarm = async (masterChefContract: MasterChefContractType, pid, gasPrice, gasLimit?: bigint) => {
   if (!masterChefContract.account) return undefined
 
   return masterChefContract.write.deposit([pid, 0n], {

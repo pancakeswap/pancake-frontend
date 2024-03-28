@@ -4,17 +4,19 @@ import { veCakeABI } from 'config/abi/veCake'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import { getVeCakeAddress } from 'utils/addressHelpers'
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 
 export const useVeCakeTotalSupply = () => {
   const { chainId } = useActiveChainId()
 
-  const { status, refetch, data } = useContractRead({
+  const { status, refetch, data } = useReadContract({
     chainId,
     address: getVeCakeAddress(chainId),
     functionName: 'totalSupply',
     abi: veCakeABI,
-    enabled: Boolean(getVeCakeAddress(chainId)),
+    query: {
+      enabled: Boolean(getVeCakeAddress(chainId)),
+    },
   })
 
   return {

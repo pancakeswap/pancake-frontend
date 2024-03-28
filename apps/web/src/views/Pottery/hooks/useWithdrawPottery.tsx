@@ -7,7 +7,7 @@ import { usePotterytVaultContract } from 'hooks/useContract'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 export const useWithdrawPottery = (redeemShare: string, vaultAddress: Address) => {
   const { t } = useTranslation()

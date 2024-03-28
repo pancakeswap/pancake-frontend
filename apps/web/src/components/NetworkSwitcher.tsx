@@ -26,7 +26,7 @@ import { useMemo } from 'react'
 import { useUserShowTestnet } from 'state/user/hooks/useUserShowTestnet'
 import { chainNameConverter } from 'utils/chainNameConverter'
 import { chains } from 'utils/wagmi'
-import { useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { ChainLogo } from './Logo/ChainLogo'
 
 const AptosChain = {
@@ -101,7 +101,7 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
       hideTimeout: 0,
     },
   )
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const localChainId = useLocalNetworkChain() || ChainId.BSC
   const [, setSessionChainId] = useSessionChainId()
 
@@ -167,15 +167,12 @@ const SHORT_SYMBOL = {
 export const NetworkSwitcher = () => {
   const { t } = useTranslation()
   const { chainId, isWrongNetwork, isNotMatched } = useActiveChainId()
-  const { pendingChainId, isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
+  const { isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
   const router = useRouter()
 
   useNetworkConnectorUpdater()
 
-  const foundChain = useMemo(
-    () => chains.find((c) => c.id === (isLoading ? pendingChainId || chainId : chainId)),
-    [isLoading, pendingChainId, chainId],
-  )
+  const foundChain = useMemo(() => chains.find((c) => c.id === chainId), [chainId])
   const symbol =
     (foundChain?.id ? SHORT_SYMBOL[foundChain.id] ?? NATIVE[foundChain.id]?.symbol : undefined) ??
     foundChain?.nativeCurrency?.symbol

@@ -1,11 +1,11 @@
-import { useCallback } from 'react'
-import { useToast } from '@pancakeswap/uikit'
-import useCatchTxError from 'hooks/useCatchTxError'
 import { useTranslation } from '@pancakeswap/localization'
-import { ToastDescriptionWithTx } from 'components/Toast'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
+import { useToast } from '@pancakeswap/uikit'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useCake } from 'hooks/useContract'
+import { useCallback } from 'react'
 import { Address } from 'viem'
 
 export const useApprovePottery = (potteryVaultAddress: string) => {

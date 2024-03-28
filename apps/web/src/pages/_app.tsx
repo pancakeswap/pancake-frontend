@@ -8,7 +8,6 @@ import { FixedSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator
 import TransactionsDetailModal from 'components/TransactionDetailModal'
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
 import useEagerConnect from 'hooks/useEagerConnect'
-import useEagerConnectMP from 'hooks/useEagerConnect.bmp'
 import useLockedEndNotification from 'hooks/useLockedEndNotification'
 import useSentryUser from 'hooks/useSentryUser'
 import useThemeCookie from 'hooks/useThemeCookie'
@@ -58,7 +57,6 @@ function GlobalHooks() {
 
 function MPGlobalHooks() {
   usePollBlockNumber()
-  useEagerConnectMP()
   useUserAgent()
   useAccountEventListener()
   useSentryUser()

@@ -6,10 +6,9 @@ import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTrans
 import { useCallback, useEffect, useState } from 'react'
 import { Hex } from 'viem'
 import { ConfirmModalStateV1, PendingConfirmModalStateV1 } from 'views/Swap/V3Swap/types'
-import { SendTransactionResult } from 'wagmi/actions'
 import { TransactionRejectedError } from './useSendSwapTransaction'
 
-interface UseConfirmModalStateProps {
+interface UseConfirmModalStateProps<SendTransactionReturnType> {
   txHash?: string
   chainId?: ChainId
   approval: ApprovalState
@@ -18,8 +17,8 @@ interface UseConfirmModalStateProps {
   isExpertMode: boolean
   currentAllowance?: CurrencyAmount<Currency>
   onConfirm: () => Promise<void>
-  approveCallback: () => Promise<SendTransactionResult | undefined>
-  revokeCallback: () => Promise<SendTransactionResult | undefined>
+  approveCallback: () => Promise<SendTransactionReturnType>
+  revokeCallback: () => Promise<SendTransactionReturnType>
 }
 
 function isInApprovalPhase(confirmModalState: ConfirmModalStateV1) {
@@ -28,7 +27,7 @@ function isInApprovalPhase(confirmModalState: ConfirmModalStateV1) {
     confirmModalState === ConfirmModalStateV1.APPROVE_PENDING
   )
 }
-export const useConfirmModalState = ({
+export const useConfirmModalState = <SendTransactionReturnType>({
   chainId,
   txHash,
   approval,
@@ -38,7 +37,7 @@ export const useConfirmModalState = ({
   onConfirm,
   approveCallback,
   revokeCallback,
-}: UseConfirmModalStateProps) => {
+}: UseConfirmModalStateProps<SendTransactionReturnType>) => {
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
   const [confirmModalState, setConfirmModalState] = useState<ConfirmModalStateV1>(ConfirmModalStateV1.REVIEWING)
   const [pendingModalSteps, setPendingModalSteps] = useState<PendingConfirmModalStateV1[]>([])

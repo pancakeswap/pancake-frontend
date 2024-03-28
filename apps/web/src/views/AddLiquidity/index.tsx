@@ -10,9 +10,8 @@ import { useLPApr } from 'state/swap/useLPApr'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { isUserRejected, logError } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import { Hash } from 'viem'
+import { Address, Hash } from 'viem'
 import { useWalletClient } from 'wagmi'
-import { SendTransactionResult } from 'wagmi/actions'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
@@ -60,13 +59,13 @@ export interface LP2ChildrenProps {
   } | null
   shouldShowApprovalGroup: boolean
   showFieldAApproval: boolean
-  approveACallback: () => Promise<SendTransactionResult | undefined>
-  revokeACallback: () => Promise<SendTransactionResult | undefined>
+  approveACallback: () => Promise<{ hash: Address } | undefined>
+  revokeACallback: () => Promise<{ hash: Address } | undefined>
   currentAllowanceA: CurrencyAmount<Currency> | undefined
   approvalA: ApprovalState
   showFieldBApproval: boolean
-  approveBCallback: () => Promise<SendTransactionResult | undefined>
-  revokeBCallback: () => Promise<SendTransactionResult | undefined>
+  approveBCallback: () => Promise<{ hash: Address } | undefined>
+  revokeBCallback: () => Promise<{ hash: Address } | undefined>
   currentAllowanceB: CurrencyAmount<Currency> | undefined
   approvalB: ApprovalState
   onAdd: () => Promise<void>

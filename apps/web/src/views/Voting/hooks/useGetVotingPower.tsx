@@ -3,7 +3,8 @@ import { bscTokens } from '@pancakeswap/tokens'
 import { useQuery } from '@tanstack/react-query'
 import { getActivePools } from 'utils/calls'
 import { publicClient } from 'utils/wagmi'
-import { Address, useAccount } from 'wagmi'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 import { VECAKE_VOTING_POWER_BLOCK, getVeVotingPower, getVotingPower } from '../helpers'
 
 interface State {

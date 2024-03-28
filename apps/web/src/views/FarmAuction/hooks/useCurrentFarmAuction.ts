@@ -6,7 +6,7 @@ import { Bidder, ConnectedBidder } from 'config/constants/types'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import isEqual from 'lodash/isEqual'
 import { useEffect, useState } from 'react'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 import { useFarmAuction } from './useFarmAuction'
 
 export const useCurrentFarmAuction = (account?: Address) => {

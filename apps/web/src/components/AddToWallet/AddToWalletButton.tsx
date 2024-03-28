@@ -9,7 +9,9 @@ import {
   TokenPocketIcon,
   TrustWalletIcon,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
+import { Address } from 'viem'
+import { watchAsset } from 'viem/actions'
+import { useAccount, useWalletClient } from 'wagmi'
 import { canRegisterToken } from '../../utils/wallet'
 import { BAD_SRCS } from '../Logo/constants'
 
@@ -82,10 +84,11 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
 }) => {
   const { t } = useTranslation()
   const { connector, isConnected } = useAccount()
+  const { data: walletClient } = useWalletClient()
   const isCanRegisterToken = canRegisterToken()
-
+  if (!walletClient) return null
   if (connector && connector.name === 'Binance') return null
-  if (!(connector && connector.watchAsset && isConnected)) return null
+  if (!(connector && isConnected)) return null
   if (!isCanRegisterToken) return null
 
   return (
@@ -93,13 +96,16 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
       {...props}
       onClick={() => {
         const image = tokenLogo ? (BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
-        if (!tokenAddress || !tokenSymbol) return
-        connector.watchAsset?.({
-          address: tokenAddress,
-          symbol: tokenSymbol,
-          image,
-          // @ts-ignore
-          decimals: tokenDecimals,
+        if (!tokenAddress || !tokenSymbol || !tokenDecimals) return
+        watchAsset(walletClient, {
+          // TODO: Add more types
+          type: 'ERC20',
+          options: {
+            address: tokenAddress as Address,
+            symbol: tokenSymbol,
+            image,
+            decimals: tokenDecimals,
+          },
         })
       }}
     >

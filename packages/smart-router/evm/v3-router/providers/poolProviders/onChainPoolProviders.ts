@@ -1,8 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
-import { BigintIsh, Currency, CurrencyAmount, Percent, erc20ABI } from '@pancakeswap/sdk'
+import { BigintIsh, Currency, CurrencyAmount, Percent, erc20Abi } from '@pancakeswap/sdk'
+import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { DEPLOYER_ADDRESSES, FeeAmount, pancakeV3PoolABI, parseProtocolFees } from '@pancakeswap/v3-sdk'
-import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
 import { Abi, ContractFunctionConfig } from 'viem'
 
 import { pancakePairABI } from '../../../abis/IPancakePair'
@@ -136,13 +136,13 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
       functionName: 'slot0',
     },
     {
-      abi: erc20ABI,
+      abi: erc20Abi,
       address: currencyA.wrapped.address,
       functionName: 'balanceOf',
       args: [address],
     },
     {
-      abi: erc20ABI,
+      abi: erc20Abi,
       address: currencyB.wrapped.address,
       functionName: 'balanceOf',
       args: [address],

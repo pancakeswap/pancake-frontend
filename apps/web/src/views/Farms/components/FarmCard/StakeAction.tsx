@@ -24,7 +24,6 @@ import { useNonBscFarmPendingTransaction, useTransactionAdder } from 'state/tran
 import { styled } from 'styled-components'
 import { useIsBloctoETH } from 'views/Farms'
 import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
-import { SendTransactionResult } from 'wagmi/actions'
 import { useFirstTimeCrossFarming } from '../../hooks/useFirstTimeCrossFarming'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
 import { YieldBoosterState } from '../YieldBooster/hooks/useYieldBoosterState'
@@ -33,10 +32,10 @@ interface FarmCardActionsProps extends FarmWithStakedValue {
   lpLabel?: string
   addLiquidityUrl?: string
   displayApr?: string
-  onStake: (value: string) => Promise<SendTransactionResult>
-  onUnstake: (value: string) => Promise<SendTransactionResult>
+  onStake: <SendTransactionResult>(value: string) => Promise<SendTransactionResult>
+  onUnstake: <SendTransactionResult>(value: string) => Promise<SendTransactionResult>
   onDone: () => void
-  onApprove: () => Promise<SendTransactionResult>
+  onApprove: <SendTransactionResult>() => Promise<SendTransactionResult>
   isApproved: boolean
 }
 

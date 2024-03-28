@@ -199,7 +199,7 @@ export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
   const masterchefV3 = useMasterchefV3()
 
   const harvestCalls = useMemo(() => {
-    if (!account || !supportedChainIdV3.includes(chainId ?? -1)) return []
+    if (!masterchefV3?.abi || !account || !supportedChainIdV3.includes(chainId ?? -1)) return []
     const callData: Hex[] = []
     for (const stakedTokenId of stakedTokenIds) {
       if (zkSyncChains.includes(chainId ?? -1)) {
@@ -223,10 +223,12 @@ export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
     return callData
   }, [account, masterchefV3?.abi, stakedTokenIds, chainId])
 
-  const { data } = useQuery({
+  const { data } = useQuery<bigint[]>({
     queryKey: ['mcv3-harvest', harvestCalls],
 
     queryFn: () => {
+      if (!masterchefV3) return []
+
       return masterchefV3?.simulate.multicall([harvestCalls], { account, value: 0n }).then((res) => {
         return res.result
           .map((r) =>

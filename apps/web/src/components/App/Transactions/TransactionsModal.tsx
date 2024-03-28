@@ -1,17 +1,17 @@
-import { useCallback } from 'react'
-import { Modal, ModalBody, Text, Button, Flex, InjectedModalProps } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import isEmpty from 'lodash/isEmpty'
+import { Button, Flex, InjectedModalProps, Modal, ModalBody, Text } from '@pancakeswap/uikit'
 import groupBy from 'lodash/groupBy'
-import { useAllSortedRecentTransactions } from 'state/transactions/hooks'
-import { TransactionDetails } from 'state/transactions/reducer'
+import isEmpty from 'lodash/isEmpty'
+import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
 import { clearAllTransactions } from 'state/transactions/actions'
+import { useAllSortedRecentTransactions } from 'state/transactions/hooks'
+import { TransactionDetails } from 'state/transactions/reducer'
 import { chains } from 'utils/wagmi'
 import { useAccount } from 'wagmi'
+import ConnectWalletButton from '../../ConnectWalletButton'
 import { AutoRow } from '../../Layout/Row'
 import Transaction from './Transaction'
-import ConnectWalletButton from '../../ConnectWalletButton'
 
 function renderTransactions(transactions: TransactionDetails[], chainId: number) {
   return (

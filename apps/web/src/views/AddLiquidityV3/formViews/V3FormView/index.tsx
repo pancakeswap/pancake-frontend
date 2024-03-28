@@ -291,7 +291,7 @@ export default function V3FormView({
             ...txn,
             gas: calculateGasMargin(gas),
           })
-            .then((response) => {
+            .then((hash) => {
               const baseAmount = formatRawAmount(
                 parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
                 baseCurrency.decimals,
@@ -304,12 +304,15 @@ export default function V3FormView({
               )
 
               setAttemptingTxn(false)
-              addTransaction(response, {
-                type: 'add-liquidity-v3',
-                summary: `Add ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
-              })
-              setTxHash(response.hash)
-              onAddLiquidityCallback(response.hash)
+              addTransaction(
+                { hash },
+                {
+                  type: 'add-liquidity-v3',
+                  summary: `Add ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
+                },
+              )
+              setTxHash(hash)
+              onAddLiquidityCallback(hash)
             })
             .catch((error) => {
               console.error('Failed to send transaction', error)

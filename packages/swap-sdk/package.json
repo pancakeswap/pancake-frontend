@@ -40,7 +40,7 @@
     "tiny-invariant": "^1.3.0",
     "tiny-warning": "^1.0.3",
     "toformat": "^2.0.0",
-    "viem": "1.19.11"
+    "viem": "2.8.13"
   },
   "devDependencies": {
     "@types/big.js": "^4.0.5",

@@ -6,12 +6,12 @@ import { usePublicClient } from 'wagmi'
 export function useTokenFee(token?: ERC20Token) {
   const publicClient = usePublicClient({ chainId: token?.chainId })
   return useQuery({
-    queryKey: ['tokenFee', token?.serialize, publicClient.key],
+    queryKey: ['tokenFee', token?.serialize, publicClient?.key],
     queryFn: () => {
       if (!token) {
         throw new Error('Token not found')
       }
-      if (publicClient.chain.id !== token.chainId) {
+      if (publicClient?.chain.id !== token.chainId) {
         throw new Error('Chain id mismatch')
       }
       if (!(token.chainId in feeOnTransferDetectorAddresses)) {

@@ -40,7 +40,7 @@ const AllHistoryCard = () => {
   const [latestRoundId, setLatestRoundId] = useState<number | null>(null)
   const [selectedRoundId, setSelectedRoundId] = useState('')
   const [selectedLotteryNodeData, setSelectedLotteryNodeData] = useState<LotteryRound | null>(null)
-  const timer = useRef<NodeJS.Timer | null>(null)
+  const timer = useRef<number | null>(null)
 
   const numRoundsFetched = lotteriesData?.length
 

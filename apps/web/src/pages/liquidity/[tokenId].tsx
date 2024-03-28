@@ -28,18 +28,10 @@ import {
 
 import { ConfirmationModalContent, NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
-import { MasterChefV3, NonfungiblePositionManager, Pool, Position, isPoolTickInRange } from '@pancakeswap/v3-sdk'
-import { AppHeader } from 'components/App'
-import { useToken } from 'hooks/Tokens'
-import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
-import { useFarm } from 'hooks/useFarm'
-import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
-import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
-import { usePool } from 'hooks/v3/usePools'
-import { NextSeo } from 'next-seo'
-// import { usePositionTokenURI } from 'hooks/v3/usePositionTokenURI'
 import { Trans, useTranslation } from '@pancakeswap/localization'
+import { MasterChefV3, NonfungiblePositionManager, Pool, Position, isPoolTickInRange } from '@pancakeswap/v3-sdk'
 import { useQuery } from '@tanstack/react-query'
+import { AppHeader } from 'components/App'
 import { LightGreyCard } from 'components/Card'
 import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
@@ -52,16 +44,23 @@ import TransactionConfirmationModal from 'components/TransactionConfirmationModa
 import { Bound } from 'config/constants/types'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
+import { useToken } from 'hooks/Tokens'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
+import { useFarm } from 'hooks/useFarm'
 import { useMerklInfo } from 'hooks/useMerkl'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { PoolState } from 'hooks/v3/types'
+import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
+import { usePool } from 'hooks/v3/usePools'
 import { useV3PositionFees } from 'hooks/v3/useV3PositionFees'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactNode, memo, useCallback, useMemo, useState } from 'react'
@@ -364,15 +363,15 @@ export default function PoolPage() {
           gas: calculateGasMargin(estimate),
         }
 
-        return sendTransactionAsync(newTxn).then((response) => {
-          setCollectMigrationHash(response.hash)
+        return sendTransactionAsync(newTxn).then((hash) => {
+          setCollectMigrationHash(hash)
           setCollecting(false)
 
           const amount0 = feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0)
           const amount1 = feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0)
 
           addTransaction(
-            { hash: response.hash },
+            { hash },
             {
               type: 'collect-fee',
               summary: `Collect fee ${amount0.toExact()} ${

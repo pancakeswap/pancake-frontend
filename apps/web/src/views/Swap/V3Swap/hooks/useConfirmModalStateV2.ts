@@ -13,10 +13,16 @@ import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { RetryableError, retry } from 'state/multicall/retry'
-import { publicClient } from 'utils/client'
 import { UserUnexpectedTxError } from 'utils/errors'
-import { Address, Hex, TransactionNotFoundError, TransactionReceipt, TransactionReceiptNotFoundError } from 'viem'
-import { erc20ABI } from 'wagmi'
+import { publicClient } from 'utils/wagmi'
+import {
+  Address,
+  Hex,
+  TransactionNotFoundError,
+  TransactionReceipt,
+  TransactionReceiptNotFoundError,
+  erc20Abi,
+} from 'viem'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
 import { useSwapCallbackV2 } from './useSwapCallbackV2'
@@ -39,7 +45,7 @@ const getTokenAllowance = ({
   const client = publicClient({ chainId })
 
   return client.readContract({
-    abi: erc20ABI,
+    abi: erc20Abi,
     address,
     functionName: 'allowance',
     args: inputs,

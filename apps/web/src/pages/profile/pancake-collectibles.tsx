@@ -1,14 +1,13 @@
 import { GetStaticProps } from 'next'
 // eslint-disable-next-line camelcase
-import { getCollections } from 'state/nftMarket/helpers'
-import PancakeCollectiblesPageRouter from 'views/Profile/components/PancakeCollectiblesPageRouter'
+import { ChainId } from '@pancakeswap/chains'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
+import { getCollections } from 'state/nftMarket/helpers'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getProfileContract } from 'utils/contractHelpers'
 import { viemServerClients } from 'utils/viem.server'
-import { ChainId } from '@pancakeswap/chains'
-import { ContractFunctionResult } from 'viem'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import { dehydrate, QueryClient } from '@tanstack/react-query'
+import PancakeCollectiblesPageRouter from 'views/Profile/components/PancakeCollectiblesPageRouter'
 
 const PancakeCollectiblesPage = () => {
   return <PancakeCollectiblesPageRouter />
@@ -31,7 +30,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const profileContract = getProfileContract()
     const nftRole = await profileContract.read.NFT_ROLE()
 
-    const collectionRoles = (await viemServerClients[ChainId.BSC].multicall({
+    const collectionRoles = await viemServerClients[ChainId.BSC].multicall({
       contracts: Object.keys(fetchedCollections).map((collectionAddress) => {
         return {
           abi: pancakeProfileABI,
@@ -41,7 +40,7 @@ export const getStaticProps: GetStaticProps = async () => {
         }
       }),
       allowFailure: false,
-    })) as ContractFunctionResult<typeof pancakeProfileABI, 'hasRole'>[]
+    })
 
     const pancakeCollectibles = Object.values(fetchedCollections).filter((collection, index) => {
       return collectionRoles[index]

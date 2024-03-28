@@ -1,26 +1,10 @@
 import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { bscTestnetTokens, ethereumTokens, goerliTestnetTokens } from '@pancakeswap/tokens'
-import { QueryObserverResult } from '@tanstack/react-query'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useApproveCallback } from 'hooks/useApproveCallback'
 import useTokenAllowance from 'hooks/useTokenAllowance'
 import { useMemo, useState } from 'react'
 import { Address, isAddressEqual } from 'viem'
-import { SendTransactionResult } from 'wagmi/actions'
-
-type UseApproveReturnType = {
-  allowance: CurrencyAmount<Token> | undefined
-
-  requireApprove: boolean
-  requireRevoke: boolean
-
-  isApproving: boolean
-  isRevoking: boolean
-
-  approve: () => Promise<SendTransactionResult | undefined>
-  revoke: () => Promise<SendTransactionResult | undefined>
-  refetch: () => Promise<QueryObserverResult<bigint>>
-}
 
 export const useApproveRequires = (amount: CurrencyAmount<Token> | undefined, spender?: Address) => {
   const { account } = useAccountActiveChain()
@@ -56,10 +40,7 @@ export const useApproveRequires = (amount: CurrencyAmount<Token> | undefined, sp
   }
 }
 
-export const useApprove = (
-  amount: CurrencyAmount<Token> | undefined,
-  spender: Address | undefined,
-): UseApproveReturnType => {
+export const useApprove = (amount: CurrencyAmount<Token> | undefined, spender: Address | undefined) => {
   const { requireApprove, requireRevoke, allowance, refetch } = useApproveRequires(amount, spender)
   const { revokeNoCheck, approveNoCheck } = useApproveCallback(amount, spender)
 

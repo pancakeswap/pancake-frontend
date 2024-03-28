@@ -32,11 +32,14 @@ const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
       spender: profileContract.address,
       minAmount: REGISTER_COST,
       onConfirm: () => {
-        return callWithGasPrice(profileContract, 'createProfile', [
-          teamId ? BigInt(teamId) : 0n,
-          selectedNft.collectionAddress,
-          BigInt(selectedNft.tokenId!),
-        ])
+        if (selectedNft.collectionAddress)
+          return callWithGasPrice(profileContract, 'createProfile', [
+            teamId ? BigInt(teamId) : 0n,
+            selectedNft.collectionAddress,
+            BigInt(selectedNft.tokenId!),
+          ])
+
+        return undefined
       },
       onSuccess: async ({ receipt }) => {
         refreshProfile()

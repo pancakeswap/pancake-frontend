@@ -1,20 +1,20 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/chains'
+import { cakeVaultV2ABI } from '@pancakeswap/pools'
 import { bscTokens } from '@pancakeswap/tokens'
 import { Balance, Flex, Heading, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { formatBigInt, formatLocalisedCompactNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
-import { cakeVaultV2ABI } from '@pancakeswap/pools'
+import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
-import { useEffect, useState } from 'react'
+import addresses from 'config/constants/contracts'
 import { useCakePrice } from 'hooks/useCakePrice'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
+import { erc20Abi } from 'viem'
 import { useCakeEmissionPerBlock } from 'views/Home/hooks/useCakeEmissionPerBlock'
-import { erc20ABI } from 'wagmi'
-import { useQuery } from '@tanstack/react-query'
-import addresses from 'config/constants/contracts'
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: boolean }>`
   flex-direction: column;
@@ -90,9 +90,9 @@ const CakeDataRow = () => {
         chainId: ChainId.BSC,
       }).multicall({
         contracts: [
-          { abi: erc20ABI, address: bscTokens.cake.address, functionName: 'totalSupply' },
+          { abi: erc20Abi, address: bscTokens.cake.address, functionName: 'totalSupply' },
           {
-            abi: erc20ABI,
+            abi: erc20Abi,
             address: bscTokens.cake.address,
             functionName: 'balanceOf',
             args: ['0x000000000000000000000000000000000000dEaD'],
@@ -103,7 +103,7 @@ const CakeDataRow = () => {
             functionName: 'totalLockedAmount',
           },
           {
-            abi: erc20ABI,
+            abi: erc20Abi,
             address: bscTokens.cake.address,
             functionName: 'balanceOf',
             args: [addresses.veCake[ChainId.BSC]],

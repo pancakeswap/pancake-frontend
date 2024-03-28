@@ -1,19 +1,19 @@
-import { useCallback, useMemo } from 'react'
-import { Modal, Box } from '@pancakeswap/uikit'
-import _noop from 'lodash/noop'
-import useTheme from 'hooks/useTheme'
-import { MAX_LOCK_DURATION } from '@pancakeswap/pools'
 import { useTranslation } from '@pancakeswap/localization'
+import { MAX_LOCK_DURATION } from '@pancakeswap/pools'
+import { Box, Modal } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import useTheme from 'hooks/useTheme'
+import _noop from 'lodash/noop'
+import { useCallback, useMemo } from 'react'
 import { useIfoCeiling } from 'state/pools/hooks'
 
 import { getBalanceAmount, getBalanceNumber, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
-import StaticAmount from '../Common/StaticAmount'
+import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
 import LockedBodyModal from '../Common/LockedModalBody'
 import Overview from '../Common/Overview'
-import { ExtendDurationModal } from '../types'
+import StaticAmount from '../Common/StaticAmount'
+import { type ExtendDurationModal } from '../types'
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
-import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
 
 const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   modalTitle,

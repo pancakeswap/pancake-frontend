@@ -1,6 +1,7 @@
 import { createContext, useEffect, useMemo, useReducer } from 'react'
 import { getBunnyFactoryContract } from 'utils/contractHelpers'
-import { Address, useAccount } from 'wagmi'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 import { ALLOWANCE_MULTIPLIER, MINT_COST, REGISTER_COST } from '../config'
 import { Actions, ContextType, State } from './types'
 
