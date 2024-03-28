@@ -132,6 +132,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
         principalInUSD: !lpTokensToStake.isNaN() ? usdToStake.toNumber() : 0,
         apr,
         earningTokenPrice: cakePrice.toNumber(),
+        lpRewardsApr,
       }),
     [lpTokensToStake, usdToStake, cakePrice, apr]
   );
