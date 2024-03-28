@@ -1,7 +1,7 @@
 import { Native } from '@pancakeswap/sdk'
-import { zeroAddress } from 'viem'
 import { describe, expect, it } from 'vitest'
-import { getCurrencyKey } from './getCurrencyPrice'
+
+import { getCurrencyKey, zeroAddress } from './getCurrencyPrice'
 
 describe('getCurrencyPrice', () => {
   describe('getCurrencyKey', () => {
