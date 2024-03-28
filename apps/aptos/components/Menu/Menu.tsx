@@ -1,20 +1,21 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { languageList, useTranslation } from '@pancakeswap/localization'
-import { Menu as UIMenu, footerLinks } from '@pancakeswap/uikit'
+import { Menu as UIMenu } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
+import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
+import { useActiveChainId } from 'hooks/useNetwork'
 import { useCakePrice } from 'hooks/useStablePrice'
 import orderBy from 'lodash/orderBy'
 import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-import { usePhishingBanner } from '@pancakeswap/utils/user'
-import { useActiveChainId } from 'hooks/useNetwork'
-import { useMenuItems, ConfigMenuItemsType } from './hooks/useMenuItems'
 import { SettingsButton } from './Settings/SettingsButton'
 import UserMenu from './UserMenu'
+import { footerLinks } from './footerConfig'
+import { ConfigMenuItemsType, useMenuItems } from './hooks/useMenuItems'
 
 export const getActiveMenuItem = ({ pathname, menuConfig }: { pathname: string; menuConfig: ConfigMenuItemsType[] }) =>
   menuConfig.find((menuItem) => pathname.startsWith(menuItem.href) || getActiveSubMenuItem({ menuItem, pathname }))
