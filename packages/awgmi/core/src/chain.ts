@@ -36,8 +36,7 @@ export const mainnet: Chain = {
   network: 'mainnet',
   nodeUrls: {
     default: 'https://fullnode.mainnet.aptoslabs.com/v1/',
-    // nodeReal: 'https://aptos-mainnet.nodereal.io/v1',
-    nodeReal: 'https://fullnode.mainnet.aptoslabs.com/v1/',
+    nodeReal: 'https://aptos-mainnet.nodereal.io/v1',
   },
   blockExplorers: {
     default: {
