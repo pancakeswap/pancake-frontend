@@ -35,3 +35,25 @@ export const deserializeFarmBCakeUserData = (farm?: SerializedFarm): Deserialize
     endTimestamp: farm?.bCakeUserData?.endTimestamp,
   }
 }
+
+export const deserializeFarmBCakePublicData = (farm?: SerializedFarm): DeserializedBCakeWrapperUserData => {
+  return {
+    allowance: farm?.bCakePublicData ? new BigNumber(farm.bCakePublicData.allowance) : BIG_ZERO,
+    tokenBalance: farm?.bCakePublicData ? new BigNumber(farm.bCakePublicData.tokenBalance) : BIG_ZERO,
+    stakedBalance: farm?.bCakePublicData ? new BigNumber(farm.bCakePublicData.stakedBalance) : BIG_ZERO,
+    earnings: farm?.bCakePublicData ? new BigNumber(farm.bCakePublicData.earnings) : BIG_ZERO,
+    boosterMultiplier: farm?.bCakePublicData?.boosterMultiplier ?? 1,
+    boostedAmounts: farm?.bCakePublicData?.boostedAmounts
+      ? new BigNumber(farm.bCakePublicData.boostedAmounts)
+      : BIG_ZERO,
+    boosterContractAddress: farm?.bCakePublicData?.boosterContractAddress,
+    rewardPerSecond: farm?.bCakePublicData?.rewardPerSecond
+      ? getBalanceAmount(
+          new BigNumber(farm?.bCakePublicData?.rewardPerSecond),
+          bscTestnetTokens.cake.decimals,
+        ).toNumber()
+      : 0,
+    startTimestamp: farm?.bCakePublicData?.startTimestamp,
+    endTimestamp: farm?.bCakePublicData?.endTimestamp,
+  }
+}

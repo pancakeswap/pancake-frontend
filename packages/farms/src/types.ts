@@ -169,6 +169,7 @@ export interface SerializedBCakeUserData {
 export interface SerializedFarm extends SerializedFarmPublicData {
   userData?: SerializedFarmUserData
   bCakeUserData?: SerializedBCakeUserData
+  bCakePublicData?: SerializedBCakeUserData
 }
 
 export interface SerializedFarmsV3State {

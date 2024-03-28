@@ -5,7 +5,11 @@ import BigNumber from 'bignumber.js'
 import dayjs from 'dayjs'
 import { FARM_AUCTION_HOSTING_IN_SECONDS } from '../const'
 import { DeserializedFarm, SerializedFarm } from '../types'
-import { deserializeFarmBCakeUserData, deserializeFarmUserData } from './deserializeFarmUserData'
+import {
+  deserializeFarmBCakePublicData,
+  deserializeFarmBCakeUserData,
+  deserializeFarmUserData,
+} from './deserializeFarmUserData'
 
 export const deserializeFarm = (
   farm: SerializedFarm,
@@ -47,7 +51,7 @@ export const deserializeFarm = (
     )
 
   const bCakeUserData = deserializeFarmBCakeUserData(farm)
-  const bCakePublicData = deserializeFarmBCakeUserData(farm)
+  const bCakePublicData = deserializeFarmBCakePublicData(farm)
   return {
     bCakeWrapperAddress,
     lpAddress,

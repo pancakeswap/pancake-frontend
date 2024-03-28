@@ -237,7 +237,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                           <RewardPerDay
                             rewardPerSec={
                               props?.details?.bCakeWrapperAddress
-                                ? props?.details?.bCakeUserData?.rewardPerSecond ?? 0
+                                ? props?.details?.bCakePublicData?.rewardPerSecond ?? 0
                                 : props.farm.rewardCakePerSecond ?? 0
                             }
                             scale="sm"

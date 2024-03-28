@@ -69,7 +69,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const isBooster = Boolean(farm.bCakeWrapperAddress)
   const farmCakePerSecond = getFarmCakePerSecond(farm.poolWeight)
   const numberFarmCakePerSecond = isBooster
-    ? farm?.bCakeUserData?.rewardPerSecond ?? 0
+    ? farm?.bCakePublicData?.rewardPerSecond ?? 0
     : getNumberFarmCakePerSecond(farm.poolWeight)
   // if (farm.pid === 163 || farm.pid === 2) console.log(farm, '888')
 
