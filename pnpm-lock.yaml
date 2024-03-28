@@ -2162,6 +2162,19 @@ importers:
         specifier: ^6.7.0
         version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
 
+  packages/v4-sdk:
+    dependencies:
+      '@pancakeswap/v3-sdk':
+        specifier: workspace:*
+        version: link:../v3-sdk
+      viem:
+        specifier: 1.19.11
+        version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
+    devDependencies:
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
+
   packages/wagmi:
     devDependencies:
       '@blocto/sdk':
@@ -10969,7 +10982,7 @@ packages:
       '@babel/plugin-syntax-typescript': 7.23.3(@babel/core@7.23.3)
       '@vanilla-extract/babel-plugin-debug-ids': 1.0.4
       '@vanilla-extract/css': 1.14.0
-      esbuild: 0.19.8
+      esbuild: 0.19.12
       eval: 0.1.8
       find-up: 5.0.0
       javascript-stringify: 2.1.0
