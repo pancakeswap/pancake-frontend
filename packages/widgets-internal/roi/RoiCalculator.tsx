@@ -206,8 +206,8 @@ export function RoiCalculator({
     }
     const maxA = parseFloat(balanceA.toExact()) * currencyAUsdPrice;
     const maxB = parseFloat(balanceA.toExact()) * currencyBUsdPrice;
-    return String(Math.max(maxA, maxB));
-  }, [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice, max]);
+    return String(Math.max(maxA, maxB) + parseFloat(stringDepositAmount));
+  }, [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice, max, stringDepositAmount]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [editCakePrice, setEditCakePrice] = useState<number | null>(null);
