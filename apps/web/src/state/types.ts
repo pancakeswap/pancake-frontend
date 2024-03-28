@@ -15,7 +15,7 @@ import { Address } from 'wagmi'
 import { NftToken } from './nftMarket/types'
 
 export enum GAS_PRICE {
-  default = '3',
+  default = '1',
   fast = '4',
   instant = '5',
   testnet = '10',
