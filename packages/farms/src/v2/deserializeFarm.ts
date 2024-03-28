@@ -46,6 +46,8 @@ export const deserializeFarm = (
       auctionHostingEndDate.getTime() > now
     )
 
+  if (farm.pid === 2) console.log(farm, 'farm?????')
+  const bCakeUserData = deserializeFarmBCakeUserData(farm)
   return {
     bCakeWrapperAddress,
     lpAddress,
@@ -66,7 +68,7 @@ export const deserializeFarm = (
     token: deserializeToken(farm.token),
     quoteToken: deserializeToken(farm.quoteToken),
     userData: deserializeFarmUserData(farm),
-    bCakeUserData: deserializeFarmBCakeUserData(farm),
+    bCakeUserData,
     tokenAmountTotal: farm.tokenAmountTotal ? new BigNumber(farm.tokenAmountTotal) : BIG_ZERO,
     quoteTokenAmountTotal: farm.quoteTokenAmountTotal ? new BigNumber(farm.quoteTokenAmountTotal) : BIG_ZERO,
     lpTotalInQuoteToken: farm.lpTotalInQuoteToken ? new BigNumber(farm.lpTotalInQuoteToken) : BIG_ZERO,

@@ -1,4 +1,9 @@
-export { fetchBCakeWrapperUserDataAsync, fetchFarmUserDataAsync, fetchFarmsPublicDataAsync } from './farms'
+export {
+  fetchBCakeWrapperDataAsync,
+  fetchBCakeWrapperUserDataAsync,
+  fetchFarmUserDataAsync,
+  fetchFarmsPublicDataAsync,
+} from './farms'
 export {
   fetchCakeVaultFees,
   fetchCakeVaultPublicData,

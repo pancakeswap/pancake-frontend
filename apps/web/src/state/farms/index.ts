@@ -185,18 +185,18 @@ async function getBCakeWrapperFarmsStakeValue(farms, account, chainId) {
     userFarmTokenBalances,
     { parsedStakedBalances: userStakedBalances, boostedAmounts, boosterMultiplier },
     userFarmEarnings,
-    { boosterContractAddress },
+    { boosterContractAddress, startTimestamp, endTimestamp },
     { rewardPerSec },
   ] = await Promise.all([
     fetchFarmBCakeWrapperUserAllowances(account, farms, chainId),
     fetchFarmUserTokenBalances(account, farms, chainId),
     fetchFarmUserBCakeWrapperStakedBalances(account, farms, chainId),
     fetchFarmUserBCakeWrapperEarnings(account, farms, chainId),
-    fetchFarmUserBCakeWrapperConstants(account, farms, chainId),
-    fetchFarmUserBCakeWrapperRewardPerSec(account, farms, chainId),
+    fetchFarmUserBCakeWrapperConstants(farms, chainId),
+    fetchFarmUserBCakeWrapperRewardPerSec(farms, chainId),
   ])
 
-  const normalFarmAllowances = userFarmAllowances.map((_, index) => {
+  const normalFarmAllowances = farms.map((_, index) => {
     return {
       pid: farms[index].pid,
       allowance: userFarmAllowances[index],
@@ -207,6 +207,27 @@ async function getBCakeWrapperFarmsStakeValue(farms, account, chainId) {
       boostedAmounts: boostedAmounts[index],
       boosterContractAddress: boosterContractAddress[index],
       rewardPerSecond: rewardPerSec[index],
+      startTimestamp: startTimestamp[index],
+      endTimestamp: endTimestamp[index],
+    }
+  })
+
+  return normalFarmAllowances
+}
+
+async function getBCakeWrapperFarmsData(farms, chainId) {
+  const [{ boosterContractAddress, startTimestamp, endTimestamp }, { rewardPerSec }] = await Promise.all([
+    fetchFarmUserBCakeWrapperConstants(farms, chainId),
+    fetchFarmUserBCakeWrapperRewardPerSec(farms, chainId),
+  ])
+
+  const normalFarmAllowances = farms.map((_, index) => {
+    return {
+      pid: farms[index].pid,
+      boosterContractAddress: boosterContractAddress[index],
+      rewardPerSecond: rewardPerSec[index],
+      startTimestamp: startTimestamp[index],
+      endTimestamp: endTimestamp[index],
     }
   })
 
@@ -280,7 +301,7 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
 
 export const fetchBCakeWrapperUserDataAsync = createAsyncThunk<
   BCakeUserDataResponse[],
-  { account: Address; pids: number[]; bCakeWrapperAddress?: Address; chainId: number },
+  { account: Address; pids: number[]; chainId: number },
   {
     state: AppState
   }
@@ -307,6 +328,42 @@ export const fetchBCakeWrapperUserDataAsync = createAsyncThunk<
       const { farms } = getState()
       if (farms.loadingKeys[stringify({ type: fetchFarmUserDataAsync.typePrefix, arg })]) {
         console.debug('farms with BCakeWrapper user action is fetching, skipping here')
+        return false
+      }
+      return true
+    },
+  },
+)
+
+export const fetchBCakeWrapperDataAsync = createAsyncThunk<
+  BCakeUserDataResponse[],
+  { pids: number[]; chainId: number },
+  {
+    state: AppState
+  }
+>(
+  'farms/fetchBCakeWrapperData',
+  async ({ chainId, pids }, { dispatch, getState }) => {
+    const state = getState()
+    if (state.farms.chainId !== chainId) {
+      await dispatch(fetchInitialFarmsData({ chainId }))
+    }
+    const poolLength = state.farms.poolLength ?? (await fetchMasterChefFarmPoolLength(ChainId.BSC))
+    const farmsConfig = await getFarmConfig(chainId)
+    const farmsCanFetch =
+      farmsConfig?.filter((farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid) ?? []
+    if (farmsCanFetch?.length) {
+      const normalAllowances = await getBCakeWrapperFarmsData(farmsCanFetch, chainId)
+      return normalAllowances
+    }
+
+    return getBCakeWrapperFarmsData(farmsCanFetch, chainId)
+  },
+  {
+    condition: (arg, { getState }) => {
+      const { farms } = getState()
+      if (farms.loadingKeys[stringify({ type: fetchFarmUserDataAsync.typePrefix, arg })]) {
+        console.debug('farms with BCakeWrapper is fetching, skipping here')
         return false
       }
       return true
@@ -402,12 +459,24 @@ export const farmsSlice = createSlice({
       })
       state.bCakeUserDataLoaded = true
     })
+    builder.addCase(fetchBCakeWrapperDataAsync.fulfilled, (state, action) => {
+      const userDataMap = keyBy(action.payload, 'pid')
+      state.data = state.data.map((farm) => {
+        const userDataEl = userDataMap[farm.pid]
+        if (userDataEl) {
+          return { ...farm, bCakePublicData: userDataEl }
+        }
+        return farm
+      })
+      state.bCakeUserDataLoaded = true
+    })
 
     builder.addMatcher(
       isAnyOf(
         fetchFarmUserDataAsync.pending,
         fetchFarmsPublicDataAsync.pending,
         fetchBCakeWrapperUserDataAsync.pending,
+        fetchBCakeWrapperDataAsync.pending,
       ),
       (state, action) => {
         state.loadingKeys[serializeLoadingKey(action, 'pending')] = true
@@ -417,6 +486,7 @@ export const farmsSlice = createSlice({
       isAnyOf(
         fetchFarmUserDataAsync.fulfilled,
         fetchFarmsPublicDataAsync.fulfilled,
+        fetchBCakeWrapperDataAsync.fulfilled,
         fetchBCakeWrapperUserDataAsync.fulfilled,
       ),
       (state, action) => {
@@ -428,6 +498,7 @@ export const farmsSlice = createSlice({
         fetchFarmsPublicDataAsync.rejected,
         fetchFarmUserDataAsync.rejected,
         fetchBCakeWrapperUserDataAsync.rejected,
+        fetchBCakeWrapperDataAsync.rejected,
       ),
       (state, action) => {
         state.loadingKeys[serializeLoadingKey(action, 'rejected')] = false

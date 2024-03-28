@@ -162,6 +162,8 @@ export interface SerializedBCakeUserData {
   boostedAmounts?: string
   boosterContractAddress?: Address
   rewardPerSecond?: number
+  startTimestamp?: number
+  endTimestamp?: number
 }
 
 export interface SerializedFarm extends SerializedFarmPublicData {
@@ -217,6 +219,8 @@ export interface DeserializedBCakeWrapperUserData {
   boostedAmounts?: BigNumber
   boosterContractAddress?: Address
   rewardPerSecond?: number
+  startTimestamp?: number
+  endTimestamp?: number
 }
 
 export interface DeserializedFarm extends DeserializedFarmConfig {
@@ -231,6 +235,7 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   poolWeight?: BigNumber
   userData?: DeserializedFarmUserData
   bCakeUserData?: DeserializedBCakeWrapperUserData
+  bCakePublicData?: DeserializedBCakeWrapperUserData
   boosted?: boolean
   bCakeWrapperAddress?: Address
   isStable?: boolean

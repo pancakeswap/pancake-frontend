@@ -31,5 +31,7 @@ export const deserializeFarmBCakeUserData = (farm?: SerializedFarm): Deserialize
     rewardPerSecond: farm?.bCakeUserData?.rewardPerSecond
       ? getBalanceAmount(new BigNumber(farm?.bCakeUserData?.rewardPerSecond), bscTestnetTokens.cake.decimals).toNumber()
       : 0,
+    startTimestamp: farm?.bCakeUserData?.startTimestamp,
+    endTimestamp: farm?.bCakeUserData?.endTimestamp,
   }
 }
