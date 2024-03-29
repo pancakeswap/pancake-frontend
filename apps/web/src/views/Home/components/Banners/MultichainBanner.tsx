@@ -14,8 +14,8 @@ import {
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 
-const bgDesktop = `${ASSET_CDN}/web/banners/multichain/bg-desktop.png`
 const bgMobile = `${ASSET_CDN}/web/banners/multichain/bg-mobile.png`
+const bgDesktop = `${ASSET_CDN}/web/banners/multichain/bg-desktop.png`
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,
