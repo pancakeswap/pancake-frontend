@@ -1,7 +1,8 @@
+import { ChainId } from '@pancakeswap/chains'
 import { type BigintIsh, Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/swap-sdk-core'
-import { PoolType } from '@pancakeswap/smart-router'
+import { PoolType, V4Router } from '@pancakeswap/smart-router'
 
-import { OrderType, type Request, type RequestConfig } from './types'
+import { AMMPriceResponse, OrderType, type Request, type RequestConfig } from './types'
 import { getTradeTypeKey } from './getTradeType'
 import { getPoolTypeKey } from './getPoolType'
 
@@ -58,5 +59,20 @@ export function getRequestBody({ amount, quoteCurrency, tradeType, amm, x }: Req
     tokenIn: getCurrencyIdentifier(currencyIn),
     tokenOut: getCurrencyIdentifier(currencyOut),
     configs,
+  }
+}
+
+export function parseAMMPriceResponse(
+  chainId: ChainId,
+  res: AMMPriceResponse,
+): V4Router.V4TradeWithoutGraph<TradeType> & { gasUseEstimateUSD: number } {
+  const {
+    message: { gasUseEstimateUSD, ...rest },
+  } = res
+  const trade = V4Router.Transformer.parseTrade(chainId, rest)
+
+  return {
+    ...trade,
+    gasUseEstimateUSD: Number(gasUseEstimateUSD),
   }
 }
