@@ -3353,4 +3353,20 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: lineaTokens.weth.address,
     feeTier: FeeAmount.LOW,
   },
+  {
+    gid: 335,
+    pairName: 'mPENDLE-PENDLE',
+    address: '0x73ed25e04Aa673ddf7411441098fC5ae19976CE0',
+    chainId: ChainId.ARBITRUM_ONE,
+    type: GaugeType.StableSwap,
+    tokenAddresses: [arbitrumTokens.mpendle.address, arbitrumTokens.pendle.address],
+  },
+  {
+    gid: 336,
+    pairName: 'mdLP-dLP',
+    address: '0xd0f0be815a76eFE677c92b07b39a5e972BAf22bD',
+    chainId: ChainId.ARBITRUM_ONE,
+    type: GaugeType.StableSwap,
+    tokenAddresses: [arbitrumTokens.mdlp.address, arbitrumTokens.dlp.address],
+  },
 ]
