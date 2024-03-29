@@ -4,6 +4,7 @@ import { ReactElement, useMemo } from 'react'
 import CompetitionBanner from '../CompetitionBanner'
 import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import GameBanner from '../GameBanner'
+import { MultiChainBanner } from '../MultichainBanner'
 import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
 import NewIFOBanner from '../NewIFOBanner'
 import PerpetualBanner from '../PerpetualBanner'
@@ -47,6 +48,10 @@ export const useMultipleBannerConfig = () => {
         banner: <UserBanner />,
       },
       { shouldRender: isRenderIFOBanner || Boolean(countdown), banner: <NewIFOBanner /> },
+      {
+        shouldRender: true,
+        banner: <MultiChainBanner />,
+      },
       {
         shouldRender: true,
         banner: <WBNBFixedStakingBanner />,
