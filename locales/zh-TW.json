@@ -2464,7 +2464,7 @@
   "Previously Ended": "之前已結束",
   "Exit price is out of the position price range. The number of estimated rewards will not account for the loss from the position being out-of-range.": "退出價格已超出設置價格區間。預估獎勵數量將不會納入倉位超出區間時的損失。",
   "The markets for some of the newer and low-cap tokens displayed on the v2 info page are highly volatile, and as a result, token information may not be accurate.": "v2 資訊頁面上顯示的一些較新和低市值代幣的市場波動性很大，因此代幣資訊可能不準確。",
-  "Before trading any token, please DYOR, and pay attention to the risk scanner.": "在交易任何代幣之前，都請自行做好功課，並留意風險掃瞄器的警訊。",
+  "Before trading any token, please DYOR, and pay attention to the risk scanner.": "在交易任何代幣之前，都請自行做好研究分析，並留意風險掃瞄器的警訊。",
   "Subgraph is currently experiencing issues. Performance may suffer until subgraph is restored.": "Subgraph 目前正在經歷問題。在其修復前，效能都可能會下降。",
   "Affiliate program registration is paused at the moment. Please check back after subgraph status is restored": "加盟計劃的註冊，目前已暫停。請在 Subgraph 狀態恢復後再回來查看",
   "Go to Farms": "前往農場",
