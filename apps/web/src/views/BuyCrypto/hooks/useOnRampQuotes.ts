@@ -55,7 +55,7 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         fiatCurrency,
         network,
       })
-      const quotes = providerQuotes.sort((a, b) => b.quote - a.quote)
+      const quotes = providerQuotes.filter((q) => Boolean(q.quote !== 0)).sort((a, b) => b.quote - a.quote)
 
       const networkDisplay = getNetworkDisplay(network)
       const error =

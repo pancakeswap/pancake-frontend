@@ -1,4 +1,3 @@
-import { ChainNamesExtended } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Token } from '@pancakeswap/sdk'
 import { ArrowForwardIcon, Column, Flex, QuestionHelper, Text, Toggle } from '@pancakeswap/uikit'
@@ -6,6 +5,7 @@ import { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { useAllowBtcPurchases } from 'state/buyCrypto/hooks'
 import { styled } from 'styled-components'
+import { chains } from 'utils/client'
 import { OnRampCurrencyLogo } from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
 import { isNativeBtc } from 'views/BuyCrypto/constants'
 import { FiatCurrency } from 'views/BuyCrypto/types'
@@ -85,6 +85,8 @@ function OnRampCurrencyRow({
   const btcNetworkDisplayName = t('Bitcoin Network')
   const isFiat = Boolean(mode === 'onramp-fiat')
 
+  const chainName = useMemo(() => chains.find((c) => c.id === currency.chainId), [currency.chainId])?.name
+
   return (
     <>
       {isBtcNative && <NativeBTCToggle allowBuyBtc={allowBuyBtc} setAllowBuyBtc={setAllowBuyBtc} />}
@@ -100,7 +102,7 @@ function OnRampCurrencyRow({
         <Column>
           <Text bold>{currency?.symbol}</Text>
           <Text color="textSubtle" small ellipsis maxWidth="200px">
-            {isFiat ? currency.name : isBtcNative ? btcNetworkDisplayName : ChainNamesExtended[currency.chainId]}
+            {isFiat ? currency.name : isBtcNative ? btcNetworkDisplayName : chainName}
           </Text>
         </Column>
 

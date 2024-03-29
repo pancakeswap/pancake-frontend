@@ -1,5 +1,4 @@
 /* eslint-disable no-restricted-syntax */
-import { ChainNamesExtended } from '@pancakeswap/chains'
 import { useDebounce, useSortedTokensByQuery } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Token } from '@pancakeswap/sdk'
@@ -10,6 +9,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import { safeGetAddress } from 'utils'
+import { chains } from 'utils/client'
 import { isAddress } from 'viem'
 import { OnRampChainId as ChainId } from 'views/BuyCrypto/constants'
 import { FiatCurrency } from 'views/BuyCrypto/types'
@@ -60,6 +60,8 @@ function OnRampCurrencySearch({
     const filterToken = createFilterToken(debouncedQuery, (address) => isAddress(address))
     return Object.values(tokensToShow).filter(filterToken as unknown as any)
   }, [tokensToShow, debouncedQuery])
+
+  const chainName = useMemo(() => chains.find((c) => c.id === activeChain), [activeChain])?.name
 
   const filteredSortedTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
 
@@ -148,7 +150,7 @@ function OnRampCurrencySearch({
         <AutoRow display="flex" justifyContent="space-between">
           {mode !== 'onramp-fiat' && activeChain ? (
             <Text color="primary" size="xs" fontWeight="bold" fontSize={15}>
-              {t('%network% tokens', { network: ChainNamesExtended[activeChain] })}
+              {t('%network% tokens', { network: chainName })}
             </Text>
           ) : mode !== 'onramp-fiat' ? (
             <Text color="primary" size="xs" fontWeight="bold" fontSize={15}>

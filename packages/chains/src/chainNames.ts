@@ -23,29 +23,6 @@ export const chainNames: Record<ChainId, string> = {
   [ChainId.BASE_SEPOLIA]: 'baseSepolia',
 }
 
-export const ChainNamesExtended: Record<ChainId, string> = {
-  [ChainId.ETHEREUM]: 'Ethereum',
-  [ChainId.GOERLI]: 'Goerli',
-  [ChainId.BSC]: 'Binance Smart Chain',
-  [ChainId.BSC_TESTNET]: 'Binance Smart Chain Testnet',
-  [ChainId.ZKSYNC_TESTNET]: 'ZkSync Testnet',
-  [ChainId.ZKSYNC]: 'ZkSync',
-  [ChainId.OPBNB_TESTNET]: 'OPBNB Testnet',
-  [ChainId.OPBNB]: 'OPBNB',
-  [ChainId.POLYGON_ZKEVM]: 'Polygon ZkEVM',
-  [ChainId.POLYGON_ZKEVM_TESTNET]: 'Polygon ZkEVM Testnet',
-  [ChainId.ARBITRUM_ONE]: 'Arbitrum One',
-  [ChainId.ARBITRUM_GOERLI]: 'Arbitrum Goerli',
-  [ChainId.ARBITRUM_SEPOLIA]: 'Arbitrum Sepolia',
-  [ChainId.SCROLL_SEPOLIA]: 'Scroll Sepolia',
-  [ChainId.LINEA]: 'Linea',
-  [ChainId.LINEA_TESTNET]: 'Linea Testnet',
-  [ChainId.BASE]: 'Base',
-  [ChainId.BASE_TESTNET]: 'Base Testnet',
-  [ChainId.BASE_SEPOLIA]: 'Base Sepolia',
-  [ChainId.SEPOLIA]: 'Sepolia',
-}
-
 export const chainNameToChainId = Object.entries(chainNames).reduce((acc, [chainId, chainName]) => {
   return {
     [chainName]: chainId as unknown as ChainId,
