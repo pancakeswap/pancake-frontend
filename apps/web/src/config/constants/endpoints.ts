@@ -55,7 +55,7 @@ export const V3_SUBGRAPH_URLS = V3_SUBGRAPHS
 
 export const TRADING_REWARD_API = 'https://trading-reward.pancakeswap.com/api/v1'
 
-export const QUOTING_API = `${process.env.NEXT_PUBLIC_QUOTING_API}/v0/quote`
+export const QUOTING_API = `${process.env.NEXT_PUBLIC_QUOTING_API}/order-price/amm`
 
 export const FARMS_API = 'https://farms-api.pancakeswap.com'
 

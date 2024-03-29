@@ -1,5 +1,7 @@
+import { BigintIsh } from '@pancakeswap/swap-sdk-core'
 import { ChainId } from '@pancakeswap/chains'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
+import { parseAMMPriceResponse } from '@pancakeswap/price-api-sdk'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import {
   BATCH_MULTICALL_CONFIGS,
@@ -22,8 +24,8 @@ import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { tracker } from 'utils/datadog'
 import { createViemPublicClientGetter } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
+import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
 
-import { BigintIsh } from '@pancakeswap/swap-sdk-core'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import {
   CommonPoolsParams,
@@ -37,6 +39,7 @@ import { useMulticallGasLimit } from './useMulticallGasLimit'
 import { useSpeedQuote } from './useSpeedQuote'
 import { useTokenFee } from './useTokenFee'
 import { useGlobalWorker } from './useWorker'
+import { useExperimentalFeatureEnabled } from './useExperimentalFeatureEnabled'
 
 export class NoValidRouteError extends Error {
   constructor(message?: string) {
@@ -113,16 +116,17 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
     [type, isWrapping],
   )
 
+  const isPriceApiEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.PriceAPI)
   const isQuoterAPIEnabled = useMemo(() => Boolean(!isWrapping && type === 'api'), [isWrapping, type])
 
   const apiAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled
 
-  // switch to api when it's stable
-  // const _bestTradeFromQuoterApi = useBestAMMTradeFromQuoterApi({
-  //   ...params,
-  //   enabled: Boolean(enabled && isQuoterAPIEnabled),
-  //   autoRevalidate: apiAutoRevalidate,
-  // })
+  useBestAMMTradeFromQuoterApi({
+    ...params,
+    enabled: Boolean(enabled && isPriceApiEnabled),
+    autoRevalidate: apiAutoRevalidate,
+  })
+
   const bestTradeFromQuoterApi = useBestAMMTradeFromQuoterWorker2({
     ...params,
     enabled: Boolean(enabled && isQuoterAPIEnabled),
@@ -478,18 +482,12 @@ export const useBestAMMTradeFromOffchainQuoter = bestTradeHookFactory<V4Router.V
   useGetBestTrade: createUseWorkerGetBestTradeOffchain(),
 })
 
-export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory<SmartRouterTrade<TradeType>>({
-  key: 'useBestAMMTradeFromQuoterApi',
+export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory<V4Router.V4TradeWithoutGraph<TradeType>>({
+  key: 'useBestAMMTradeFromPriceAPI',
   useCommonPools: useCommonPoolsLite,
   createQuoteProvider,
   useGetBestTrade: createSimpleUseGetBestTradeHook(
-    async (amount, currency, tradeType, { maxHops, maxSplits, gasPriceWei, allowedPoolTypes, poolProvider }) => {
-      const candidatePools = await poolProvider.getCandidatePools({
-        currencyA: amount.currency,
-        currencyB: currency,
-        protocols: allowedPoolTypes,
-      })
-
+    async (amount, currency, tradeType, { maxHops, maxSplits, allowedPoolTypes }) => {
       const serverRes = await fetch(`${QUOTING_API}`, {
         method: 'POST',
         headers: {
@@ -503,15 +501,13 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory<SmartRouterTrad
             currency: SmartRouter.Transformer.serializeCurrency(amount.currency),
             value: amount.quotient.toString(),
           },
-          gasPriceWei: typeof gasPriceWei !== 'function' ? gasPriceWei?.toString() : undefined,
           maxHops,
           maxSplits,
           poolTypes: allowedPoolTypes,
-          candidatePools: candidatePools.map(SmartRouter.Transformer.serializePool),
         }),
       })
       const serializedRes = await serverRes.json()
-      return SmartRouter.Transformer.parseTrade(currency.chainId, serializedRes)
+      return parseAMMPriceResponse(currency.chainId, serializedRes)
     },
   ),
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize

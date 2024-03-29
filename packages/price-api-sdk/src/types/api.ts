@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 
-import { AMMRequestConfig, TradeTypeKey } from './amm'
+import { AMMOrder, AMMRequestConfig, TradeTypeKey } from './amm'
 import { XRequestConfig } from './pcsx'
 import { Order } from './order'
 
@@ -39,4 +39,9 @@ export type Response = {
     bestOrder: Order
     allPossibleOrders: Order[]
   }
+}
+
+export type AMMPriceResponse = {
+  messageType: ResponseType.AMM_PRICE_RESPONSE
+  message: AMMOrder
 }
