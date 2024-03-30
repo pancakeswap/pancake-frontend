@@ -13,6 +13,8 @@ export const FarmCell: React.FunctionComponent<React.PropsWithChildren<FarmWidge
   isStaking,
   merklLink,
   hasBothFarmAndMerkl,
+  lpAddress,
+  chainId,
 }) => {
   return (
     <Flex alignItems="center">
@@ -25,6 +27,8 @@ export const FarmCell: React.FunctionComponent<React.PropsWithChildren<FarmWidge
         isStaking={isStaking}
         merklLink={merklLink}
         hasBothFarmAndMerkl={hasBothFarmAndMerkl}
+        lpAddress={lpAddress}
+        chainId={chainId}
       >
         <TokenPairImage width={40} height={40} variant="inverted" primaryToken={token} secondaryToken={quoteToken} />
       </FarmTokenInfo>

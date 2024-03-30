@@ -20,6 +20,7 @@
     "@pancakeswap/pools": "workspace:*",
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
+    "@tanstack/react-query": "^5.18.0",
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21",
     "viem": "1.19.11",

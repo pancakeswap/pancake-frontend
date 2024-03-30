@@ -4,6 +4,7 @@ import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
 import { styled } from 'styled-components'
+import { Address } from 'viem'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
 const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmWidget.Tags
@@ -25,6 +26,7 @@ type ExpandableSectionProps = {
   merklLink?: string
   hasBothFarmAndMerkl?: boolean
   isBoosted?: boolean
+  lpAddress?: Address
 }
 
 const Wrapper = styled(Flex)`
@@ -51,6 +53,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   merklLink,
   hasBothFarmAndMerkl,
   isBoosted,
+  lpAddress,
 }) => {
   const isReady = multiplier !== undefined
   const multiplierTooltipContent = FarmMultiplierInfo({
@@ -80,6 +83,8 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
                   tooltipOffset={[0, 10]}
                   merklLink={merklLink}
                   hasFarm={hasBothFarmAndMerkl}
+                  chainId={token.chainId}
+                  lpAddress={lpAddress}
                 />
               </Box>
             ) : null}

@@ -228,7 +228,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     <td key={key}>
                       <CellInner>
                         <CellLayout label={t(tableSchema[columnIndex].label)}>
-                          {createElement(cells[key], { ...props[key], userDataReady })}
+                          {createElement(cells[key], {
+                            ...props[key],
+                            userDataReady,
+                            chainId: props?.details?.token.chainId,
+                            lpAddress: props?.details?.lpAddress,
+                          })}
                         </CellLayout>
                       </CellInner>
                     </td>
@@ -243,7 +248,11 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <tr style={{ cursor: 'pointer' }} onClick={toggleActionPanel}>
             <FarmMobileCell colSpan={3}>
               <Flex justifyContent="space-between" alignItems="center">
-                <FarmCell {...props.farm} />
+                <FarmCell
+                  {...props.farm}
+                  chainId={props?.details?.token.chainId}
+                  lpAddress={props?.details?.lpAddress}
+                />
                 <Flex
                   mr="16px"
                   alignItems={isMobile ? 'end' : 'center'}

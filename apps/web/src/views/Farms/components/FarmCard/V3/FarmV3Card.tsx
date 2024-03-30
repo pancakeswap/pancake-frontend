@@ -114,6 +114,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
           isCommunityFarm={farm.isCommunity}
           boosted={boostStatus !== BoostStatus.CanNotBoost}
           isBoosted={isBoosted}
+          lpAddress={lpAddress}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
