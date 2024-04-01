@@ -2,9 +2,11 @@ import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox, Button, Flex, RowBetween, Skeleton, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import NextLink from 'next/link'
 import { useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { StatusView } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusView'
+import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { useBoostStatusPM } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { useWrapperBooster } from 'views/PositionManagers/hooks'
 import { useUpdateBCakeFarms } from '../../hooks/useUpdateBCake'
@@ -69,6 +71,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
     bCakeWrapperAddress,
   )
   const { onUpdate } = useUpdateBCakeFarms(bCakeWrapperAddress ?? '0x', pid)
+  const { locked } = useBCakeBoostLimitAndLockInfo()
 
   return (
     <AtomBox mt="16px">
@@ -144,6 +147,13 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
                   shouldUpdate={shouldUpdate && farm?.bCakeUserData?.stakedBalance?.gt(0)}
                   expectMultiplier={veCakeUserMultiplierBeforeBoosted}
                 />
+                {!locked && (
+                  <NextLink href="/cake-staking" passHref>
+                    <Button width="100%" style={{ whiteSpace: 'nowrap' }}>
+                      {t('Go to Lock')}
+                    </Button>
+                  </NextLink>
+                )}
                 {shouldUpdate && farm?.bCakeUserData?.stakedBalance?.gt(0) && (
                   <Button onClick={onUpdate}>{t('Update')}</Button>
                 )}
