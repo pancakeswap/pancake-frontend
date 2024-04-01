@@ -154,8 +154,6 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   const tokenPerSecond = useMemo(() => {
     return getBalanceAmount(new BigNumber(rewardPerSecond), earningToken.decimals).toNumber()
   }, [rewardPerSecond, earningToken])
-
-  const isBooster = Boolean(bCakeWrapper)
   const { isBoosterWhiteList } = useIsWrapperWhiteList(boosterContractAddress, bCakeWrapper)
   return (
     <StyledCard>

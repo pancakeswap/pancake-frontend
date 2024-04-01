@@ -208,7 +208,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                 refetch={refetch}
               />
             </RowBetween>
-            {Boolean(bCakeWrapper) && (
+            {isBooster && (
               <>
                 <AtomBox
                   width={{
