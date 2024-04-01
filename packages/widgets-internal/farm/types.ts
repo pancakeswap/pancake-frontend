@@ -1,6 +1,7 @@
 import { Token } from "@pancakeswap/sdk";
 import BigNumber from "bignumber.js";
 import { ReactNode } from "react";
+import { Address } from "viem";
 
 export interface FarmTableEarnedProps {
   earnings: number;
@@ -35,6 +36,7 @@ export interface FarmTableFarmTokenInfoProps {
   isCommunity?: boolean;
   merklLink?: string;
   hasBothFarmAndMerkl?: boolean;
+  lpAddress?: Address;
   merklApr?: number;
 }
 
