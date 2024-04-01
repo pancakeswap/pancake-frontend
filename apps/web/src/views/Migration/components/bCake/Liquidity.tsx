@@ -33,10 +33,10 @@ const Liquidity: React.FC<React.PropsWithChildren<LiquidityProps>> = ({ liquidit
   const { t } = useTranslation()
   const displayLiquidity =
     liquidity && liquidity > 0 ? `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : `$0`
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('Total value of the funds in this farm’s liquidity pair'),
-    { placement: 'top-end', tooltipOffset: [20, 10] },
-  )
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Total value of the funds in this Position Manager'), {
+    placement: 'top-end',
+    tooltipOffset: [20, 10],
+  })
 
   return (
     <StyledCell role="cell">
