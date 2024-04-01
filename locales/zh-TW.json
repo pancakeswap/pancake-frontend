@@ -2266,7 +2266,7 @@
   "10% trading rebate to be earned!": "可賺取 10% 的交易回饋！",
   "Why my traded volume was not tracked?": "為何我的交易量沒有被追蹤到？",
   "Volume numbers take time to update and are subject to SubGraph delays. Please check back later": "交易量的數字需要一些時間才能更新，而且會受到 SubGraph 延遲的影響。請稍後再回來查看",
-  "Please ensure your trade is routed through the trading pairs eligible for trading rewards.Check out": "請務必確保您的交易路徑使用到符合交易返利資格的代幣對。請參閱",
+  "Please ensure your trade is routed through the trading pairs eligible for trading rewards.Check out": "請務必確保您在交易時，使用的交換路徑將路由經過符合交易返利資格的代幣對。請參閱",
   "this tutorial": "此教學",
   "for how to view your trading routes": "，瞭解如何檢視您的交換路徑",
   "If you are trading on Ethereum, please use the same wallet address eligible for the trading reward program": "如果您是在以太坊上進行交易的，請使用同一個符合交易獎勵計劃資格的錢包地址",
