@@ -1,5 +1,11 @@
 # @pancakeswap/widgets-internal
 
+## 0.1.36
+
+### Patch Changes
+
+- d00abef: Added BannerDesc Component.
+
 ## 0.1.35
 
 ### Patch Changes
