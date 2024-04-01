@@ -46,7 +46,6 @@ const StyledButtonLinkAction = styled(ButtonLinkAction)`
   white-space: nowrap;
 `
 
-// @fixme: This link is not working @ChefJerry
 const tryItNowLink = 'https://pancakeswap.stryke.xyz'
 const learnMoreLink =
   'https://blog.pancakeswap.finance/articles/introducing-clamm-options-trading-on-pancake-swap-in-collaboration-with-stryke-formerly-dopex'
