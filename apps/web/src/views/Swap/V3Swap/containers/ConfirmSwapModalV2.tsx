@@ -105,6 +105,13 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalProps> = ({
     [chainId, trade?.outputAmount?.currency],
   )
 
+  const showAddToWalletButton = useMemo(() => {
+    if (token && trade?.outputAmount?.currency) {
+      return !trade?.outputAmount?.currency?.isNative
+    }
+    return false
+  }, [token, trade])
+
   const handleDismiss = useCallback(() => {
     if (typeof customOnDismiss === 'function') {
       customOnDismiss()
@@ -171,7 +178,7 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalProps> = ({
           amountB={amountB}
           currentStep={confirmModalState}
         >
-          {txHash ? (
+          {showAddToWalletButton && txHash ? (
             <AddToWalletButton
               mt="39px"
               height="auto"
@@ -204,19 +211,21 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalProps> = ({
             )
           }
         >
-          <AddToWalletButton
-            mt="39px"
-            height="auto"
-            variant="tertiary"
-            width="fit-content"
-            padding="6.5px 20px"
-            marginTextBetweenLogo="6px"
-            textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
-            tokenAddress={token?.address}
-            tokenSymbol={currencyB?.symbol}
-            tokenDecimals={token?.decimals}
-            tokenLogo={token instanceof WrappedTokenInfo ? (token as WrappedTokenInfo)?.logoURI : undefined}
-          />
+          {showAddToWalletButton && (
+            <AddToWalletButton
+              mt="39px"
+              height="auto"
+              variant="tertiary"
+              width="fit-content"
+              padding="6.5px 20px"
+              marginTextBetweenLogo="6px"
+              textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
+              tokenAddress={token?.address}
+              tokenSymbol={currencyB?.symbol}
+              tokenDecimals={token?.decimals}
+              tokenLogo={token instanceof WrappedTokenInfo ? (token as WrappedTokenInfo)?.logoURI : undefined}
+            />
+          )}
         </SwapTransactionReceiptModalContent>
       )
     }
