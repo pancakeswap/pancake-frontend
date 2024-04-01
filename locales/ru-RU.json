@@ -3251,7 +3251,7 @@
   "Transaction failed: quote expired": "Ошибка транзакции: истек срок действия котировки",
   "Withdrawal Fee": "Комиссия за снятие",
   "View Staking Token Project Site": "Просмотр проектного сайта по вложению токенов",
-  "In the event of any": "В случае любого",
+  "In the event of any": "Если любой",
   "token distribution,": "распределения токенов",
   "we will distribute": "мы распределим",
   "of the proceeds to the": "выручку",
@@ -3265,11 +3265,11 @@
   "Sign In With Wallet": "Войти через кошелек",
   "Subscribe To PancakeSwap": "Подписаться на PancakeSwap",
   "Registration Error": "Ошибка регистрации",
-  "Stake your WBNB here": "Stake your WBNB here",
-  "Stake WBNB, Win Combo Rewards!": "Stake WBNB, Win Combo Rewards!",
-  "Stake WBNB to Win Combo Rewards": "Stake WBNB to Win Combo Rewards",
-  "$5,000 extra reward pool": "$5,000 extra reward pool",
-  "PancakeSwap Multichain Celebration": "PancakeSwap Multichain Celebration",
-  "Starting MAR 14 - Over $3500 in prizes!": "Starting MAR 14 - Over $3500 in prizes!",
-  "Participate Now": "Participate Now"
+  "Stake your WBNB here": "Вложите свои WBNB здесь",
+  "Stake WBNB, Win Combo Rewards!": "Вложите WBNB, выиграйте вознаграждения Combo!",
+  "Stake WBNB to Win Combo Rewards": "Вложите WBNB, чтобы выиграть вознаграждения Combo",
+  "$5,000 extra reward pool": "Пул с дополнительным вознаграждением в размере 5 000 долл. США",
+  "PancakeSwap Multichain Celebration": "Чествование мультиплатформы блокчейн PancakeSwap",
+  "Starting MAR 14 - Over $3500 in prizes!": "Начиная с 14 марта – более 3 500 долл. США в призовом фонде!",
+  "Participate Now": "Примите участие прямо сейчас"
 }
