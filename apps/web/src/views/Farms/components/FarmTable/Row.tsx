@@ -167,7 +167,11 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                           <V2Tag scale="sm" />
                         )
                       ) : null}
-                      {props.type === 'v2' && props?.details?.bCakeWrapperAddress ? <BoostedTag scale="sm" /> : null}
+                      {props.type === 'v2' &&
+                      props?.details?.bCakeWrapperAddress &&
+                      props?.details?.bCakePublicData?.isRewardInRange ? (
+                        <BoostedTag scale="sm" />
+                      ) : null}
                       {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
                       {isBoosted ? <BoostedTag scale="sm" /> : null}
                     </CellInner>
@@ -225,7 +229,10 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                                 : props?.details?.bCakeUserData?.boosterMultiplier
                               : 1
                           }
-                          isBooster={Boolean(props?.details?.bCakeWrapperAddress)}
+                          isBooster={
+                            Boolean(props?.details?.bCakeWrapperAddress) &&
+                            props?.details?.bCakePublicData?.isRewardInRange
+                          }
                         />
                       </CellLayout>
                     </CellInner>
@@ -327,7 +334,10 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                             : multiplier.farmCakePerSecond
                         }
                         totalMultipliers={multiplier.totalMultipliers}
-                        isBooster={Boolean(props?.details?.bCakeWrapperAddress)}
+                        isBooster={
+                          Boolean(props?.details?.bCakeWrapperAddress) &&
+                          !props?.details?.bCakePublicData?.isRewardInRange
+                        }
                         boosterMultiplier={
                           props?.details?.bCakeWrapperAddress
                             ? props?.details?.bCakeUserData?.boosterMultiplier === 0 ||

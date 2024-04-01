@@ -128,7 +128,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           pid={farm.pid}
           farmCakePerSecond={farmCakePerSecond}
           totalMultipliers={totalMultipliers}
-          isBooster={isBooster}
+          isBooster={isBooster && farm?.bCakePublicData?.isRewardInRange}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
@@ -162,7 +162,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     apr={isBooster && farm.bCakeUserData?.rewardPerSecond === 0 ? 0 : farm.apr}
                     displayApr={displayApr ?? undefined}
                     lpRewardsApr={farm.lpRewardsApr}
-                    isBooster={isBooster}
+                    isBooster={isBooster && farm?.bCakePublicData?.isRewardInRange}
                     useTooltipText
                     stableSwapAddress={stableSwapAddress}
                     stableLpFee={stableLpFee}

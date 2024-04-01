@@ -222,6 +222,7 @@ export interface DeserializedBCakeWrapperUserData {
   rewardPerSecond?: number
   startTimestamp?: number
   endTimestamp?: number
+  isRewardInRange?: boolean
 }
 
 export interface DeserializedFarm extends DeserializedFarmConfig {
