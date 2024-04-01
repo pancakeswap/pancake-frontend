@@ -3229,10 +3229,10 @@
   "Load More": "Muat Lebih Banyak",
   "The Full Range Hook allows users to add liquidity across the entire price range within concentrated liquidity pools, similar to v2 pools. This hook eases liquidity position management for the LPs.": "Full Range Hook memungkinkan para pengguna untuk menambahkan likuiditas, di seluruh rentang harga dalam pool likuiditas yang terkonsentrasi (terkumpul), serupa dengan pool-pool v2. Hook ini mempermudah manajemen posisi likuiditas untuk LP.",
   "Geomean Oracle": "Geomean Oracle",
-  "The Geomean Oracle hook computes time-weighted average price from a set of pool price observations, using geometric mean rather than arithmetic mean. This approach makes it more resilient to temporary price spikes.": "The Geomean Oracle hook computes time-weighted average price from a set of pool price observations, using geometric mean rather than arithmetic mean. This approach makes it more resilient to temporary price spikes.",
-  "Limit Order": "Limit Order",
-  "The Limit Order hook facilitates on-chain limit order functionality for liquidity pools, eliminating the need for off-chain keepers to process orders. Offering a user experience akin to centralized exchanges, traders can specify buy or sell prices for assets. Orders are executed automatically when the pool price meets the specified limit price.": "The Limit Order hook facilitates on-chain limit order functionality for liquidity pools, eliminating the need for off-chain keepers to process orders. Offering a user experience akin to centralized exchanges, traders can specify buy or sell prices for assets. Orders are executed automatically when the pool price meets the specified limit price.",
-  "Customized Pool Types": "Customized Pool Types",
+  "The Geomean Oracle hook computes time-weighted average price from a set of pool price observations, using geometric mean rather than arithmetic mean. This approach makes it more resilient to temporary price spikes.": "Hookk Geomean Oracle menghitung harga rata-rata tertimbang waktu dari serangkaian pengamatan harga pool, menggunakan rata-rata geometrik, bukan rata-rata aritmetika. Pendekatan ini membuatnya lebih tahan terhadap lonjakan harga yang bersifat sementara.",
+  "Limit Order": "Order Berbatas",
+  "The Limit Order hook facilitates on-chain limit order functionality for liquidity pools, eliminating the need for off-chain keepers to process orders. Offering a user experience akin to centralized exchanges, traders can specify buy or sell prices for assets. Orders are executed automatically when the pool price meets the specified limit price.": "Hook Limit Order memfasilitasi fungsionalitas order berbatas on-chain untuk pool likuiditas, ini menghilangkan kebutuhan penjaga off-chain untuk memproses order. Menawarkan pengalaman pengguna yang mirip dengan bursa terpusat, para pedagang dapat menentukan harga beli atau jual aset. Order dieksekusi secara otomatis ketika harga pool memenuhi harga batas yang ditentukan.",
+  "Customized Pool Types": "Jenis-Jenis Pool Kustomisasi",
   "Singleton": "Singleton",
   "Flash Accounting": "Flash Accounting",
   "Donate": "Donate",
@@ -3267,5 +3267,9 @@
   "Registration Error": "Registration Error",
   "Stake your WBNB here": "Stake your WBNB here",
   "Stake WBNB, Win Combo Rewards!": "Stake WBNB, Win Combo Rewards!",
-  "Stake WBNB to Win Combo Rewards": "Stake WBNB to Win Combo Rewards"
+  "Stake WBNB to Win Combo Rewards": "Stake WBNB to Win Combo Rewards",
+  "$5,000 extra reward pool": "$5,000 extra reward pool",
+  "PancakeSwap Multichain Celebration": "PancakeSwap Multichain Celebration",
+  "Starting MAR 14 - Over $3500 in prizes!": "Starting MAR 14 - Over $3500 in prizes!",
+  "Participate Now": "Participate Now"
 }
