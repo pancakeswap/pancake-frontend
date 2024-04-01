@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
   BannerActionContainer,
@@ -36,11 +36,8 @@ export const MultiChainBanner = () => {
   const { isMobile } = useMatchBreakpoints()
 
   const participateAction = (
-    <LinkExternalAction href={participateLink} color="white" showExternalIcon={false}>
-      <Flex alignItems="center" style={{ whiteSpace: 'nowrap' }}>
-        {t('Participate Now')}
-        <ArrowForwardIcon color="white" ml="4px" />
-      </Flex>
+    <LinkExternalAction href={participateLink} color="white" externalIcon="arrowForward">
+      {t('Participate Now')}
     </LinkExternalAction>
   )
 
