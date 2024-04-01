@@ -37,6 +37,11 @@ export const deserializeFarmBCakeUserData = (farm?: SerializedFarm): Deserialize
 }
 
 export const deserializeFarmBCakePublicData = (farm?: SerializedFarm): DeserializedBCakeWrapperUserData => {
+  const isRewardInRange =
+    farm?.bCakePublicData?.startTimestamp &&
+    farm?.bCakePublicData?.endTimestamp &&
+    Date.now() / 1000 >= farm.bCakePublicData.startTimestamp &&
+    Date.now() / 1000 < farm.bCakePublicData.endTimestamp
   return {
     allowance: farm?.bCakePublicData ? new BigNumber(farm.bCakePublicData.allowance) : BIG_ZERO,
     tokenBalance: farm?.bCakePublicData ? new BigNumber(farm.bCakePublicData.tokenBalance) : BIG_ZERO,
@@ -47,12 +52,13 @@ export const deserializeFarmBCakePublicData = (farm?: SerializedFarm): Deseriali
       ? new BigNumber(farm.bCakePublicData.boostedAmounts)
       : BIG_ZERO,
     boosterContractAddress: farm?.bCakePublicData?.boosterContractAddress,
-    rewardPerSecond: farm?.bCakePublicData?.rewardPerSecond
-      ? getBalanceAmount(
-          new BigNumber(farm?.bCakePublicData?.rewardPerSecond),
-          bscTestnetTokens.cake.decimals,
-        ).toNumber()
-      : 0,
+    rewardPerSecond:
+      farm?.bCakePublicData?.rewardPerSecond && isRewardInRange
+        ? getBalanceAmount(
+            new BigNumber(farm?.bCakePublicData?.rewardPerSecond),
+            bscTestnetTokens.cake.decimals,
+          ).toNumber()
+        : 0,
     startTimestamp: farm?.bCakePublicData?.startTimestamp,
     endTimestamp: farm?.bCakePublicData?.endTimestamp,
   }

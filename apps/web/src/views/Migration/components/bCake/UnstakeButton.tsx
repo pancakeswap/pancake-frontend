@@ -35,8 +35,6 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnStakeButtonProps>> = ({
 
   const lpContract = useERC20(vaultAddress ?? '0x')
 
-  console.log(vaultAddress, 'vaultAddress')
-
   const wrapperContract = usePositionManagerWrapperContract(wrapperAddress ?? '0x')
 
   // eslint-disable-next-line consistent-return
