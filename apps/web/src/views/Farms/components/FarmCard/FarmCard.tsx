@@ -14,6 +14,7 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
+import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
 import { RewardPerDay } from 'views/PositionManagers/components/RewardPerDay'
 import ApyButton from './ApyButton'
@@ -72,6 +73,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
     ? farm?.bCakePublicData?.rewardPerSecond ?? 0
     : getNumberFarmCakePerSecond(farm.poolWeight)
   // if (farm.pid === 163 || farm.pid === 2) console.log(farm, '888')
+  const { locked } = useBCakeBoostLimitAndLockInfo()
 
   const liquidity =
     farm?.liquidity && originalLiquidity?.gt(0) ? farm.liquidity.plus(originalLiquidity) : farm.liquidity
@@ -168,7 +170,9 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     totalMultipliers={totalMultipliers}
                     boosterMultiplier={
                       isBooster
-                        ? farm?.bCakeUserData?.boosterMultiplier === 0
+                        ? farm?.bCakeUserData?.boosterMultiplier === 0 ||
+                          farm?.bCakeUserData?.stakedBalance.eq(0) ||
+                          !locked
                           ? 3
                           : farm?.bCakeUserData?.boosterMultiplier
                         : 1

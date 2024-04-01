@@ -8,6 +8,7 @@ import { styled } from 'styled-components'
 
 import { useMerklInfo } from 'hooks/useMerkl'
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
+import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { RewardPerDay } from 'views/PositionManagers/components/RewardPerDay'
 import { FarmV3ApyButton } from '../FarmCard/V3/FarmV3ApyButton'
 import { useUserBoostedPoolsTokenId } from '../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
@@ -118,7 +119,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
 
   const { tokenIds } = useUserBoostedPoolsTokenId()
   const { isBoosted } = useIsSomePositionBoosted(props.type === 'v3' ? props?.details?.stakedPositions : [], tokenIds)
-
+  const { locked } = useBCakeBoostLimitAndLockInfo()
   const toggleActionPanel = useCallback(() => {
     setActionPanelExpanded(!actionPanelExpanded)
   }, [actionPanelExpanded])
@@ -217,7 +218,9 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                           totalMultipliers={multiplier.totalMultipliers}
                           boosterMultiplier={
                             props?.details?.bCakeWrapperAddress
-                              ? props?.details?.bCakeUserData?.boosterMultiplier === 0
+                              ? props?.details?.bCakeUserData?.boosterMultiplier === 0 ||
+                                props?.details?.bCakeUserData?.stakedBalance.eq(0) ||
+                                !locked
                                 ? 3
                                 : props?.details?.bCakeUserData?.boosterMultiplier
                               : 1
@@ -318,8 +321,22 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                         hideButton
                         strikethrough={false}
                         boosted={false}
-                        farmCakePerSecond={multiplier.farmCakePerSecond}
+                        farmCakePerSecond={
+                          props?.details?.bCakeWrapperAddress
+                            ? (props?.details?.bCakeUserData?.rewardPerSecond ?? 0).toFixed(4)
+                            : multiplier.farmCakePerSecond
+                        }
                         totalMultipliers={multiplier.totalMultipliers}
+                        isBooster={Boolean(props?.details?.bCakeWrapperAddress)}
+                        boosterMultiplier={
+                          props?.details?.bCakeWrapperAddress
+                            ? props?.details?.bCakeUserData?.boosterMultiplier === 0 ||
+                              props?.details?.bCakeUserData?.stakedBalance.eq(0) ||
+                              !locked
+                              ? 3
+                              : props?.details?.bCakeUserData?.boosterMultiplier
+                            : 1
+                        }
                       />
                     </>
                   )}
