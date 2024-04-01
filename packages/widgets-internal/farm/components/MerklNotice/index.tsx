@@ -1,9 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Box, InfoFilledIcon, LinkExternal, Placement, Text, TooltipText, useTooltip } from "@pancakeswap/uikit";
-import { useQuery } from "@tanstack/react-query";
 import { isMobile } from "react-device-detect";
 import styled from "styled-components";
-import { Address } from "viem";
 
 const InlineLink = styled(LinkExternal)`
   display: inline-flex;
@@ -14,38 +12,16 @@ type MerklNoticeContentProps = {
   linkColor?: string;
   merklLink: string;
   hasFarm?: boolean;
-  chainId?: number;
-  lpAddress?: Address;
+  merklApr?: number;
 };
 
 export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
   linkColor = "primary",
   merklLink,
   hasFarm,
-  chainId,
-  lpAddress,
+  merklApr,
 }) => {
   const { t } = useTranslation();
-
-  const { data } = useQuery({
-    queryKey: ["merklAprData", chainId, lpAddress],
-    queryFn: async () => {
-      try {
-        const resp = await (
-          await fetch(`https://api.angle.money/v2/merkl?chainIds[]=${chainId}&AMMs[]=pancakeswapv3`)
-        ).json();
-        return resp;
-      } catch (error) {
-        console.error("Fetch merklAprData Error: ", error);
-        return true;
-      }
-    },
-    enabled: Boolean(chainId) && Boolean(lpAddress),
-  });
-
-  const merklAPR = data?.[chainId ?? 0]?.pools?.[lpAddress ?? ""]?.aprs?.["Average APR (rewards / pool TVL)"] as
-    | number
-    | undefined;
 
   if (hasFarm) {
     return (
@@ -64,10 +40,10 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
               </InlineLink>
             </p>
             <br />
-            {merklAPR && (
-              <>
-                {t("Merkl APR")}: {merklAPR?.toFixed(2)}%
-              </>
+            {merklApr && (
+              <InlineLink color={linkColor} external display="inline" href={merklLink}>
+                {t("Merkl APR")}: {merklApr?.toFixed(2)}%
+              </InlineLink>
             )}
             <br />
             <br />
@@ -87,10 +63,10 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
               {t("Merkl")}
             </InlineLink>
           </p>
-          {merklAPR && (
-            <>
-              {t("Merkl APR")}: {merklAPR?.toFixed(2)}%
-            </>
+          {merklApr && (
+            <InlineLink color={linkColor} external display="inline" href={merklLink}>
+              {t("Merkl APR")}: {merklApr?.toFixed(2)}%
+            </InlineLink>
           )}
           <br />
           <br />
@@ -111,8 +87,7 @@ type MerklNoticeProps = {
   tooltipOffset?: [number, number];
   merklLink: string;
   hasFarm?: boolean;
-  chainId?: number;
-  lpAddress?: Address;
+  merklApr?: number;
 };
 
 const MerklNotice: React.FC<MerklNoticeProps> = ({
@@ -121,11 +96,10 @@ const MerklNotice: React.FC<MerklNoticeProps> = ({
   tooltipOffset = [-20, 10],
   merklLink,
   hasFarm,
-  chainId,
-  lpAddress,
+  merklApr,
 }) => {
   const { tooltip, tooltipVisible, targetRef } = useTooltip(
-    <MerklNoticeContent merklLink={merklLink} hasFarm={hasFarm} chainId={chainId} lpAddress={lpAddress} />,
+    <MerklNoticeContent merklLink={merklLink} hasFarm={hasFarm} merklApr={merklApr} />,
     {
       placement,
       tooltipOffset,
