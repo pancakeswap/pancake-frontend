@@ -1,4 +1,4 @@
-import { useTranslation } from '@pancakeswap/localization'
+import { Trans, useTranslation } from '@pancakeswap/localization'
 import { ArrowForwardIcon, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
@@ -12,13 +12,16 @@ import {
   LinkExternalAction,
   PancakeSwapBadge,
 } from '@pancakeswap/widgets-internal'
-import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
+import { useFourYearTotalVeCakeApr } from 'views/CakeStaking/hooks/useAPR'
+// import { ASSET_CDN } from 'config/constants/endpoints'
+// const floatingAsset = `${ASSET_CDN}/web/banners/vecake/floating-item.png`
+// const bgDesktop = `${ASSET_CDN}/web/banners/vecake/bg-desktop.png`
+// const bgMobile = `${ASSET_CDN}/web/banners/vecake/bg-mobile.png`
 
-const floatingAsset = `${ASSET_CDN}/web/banners/nemesis-downfall/floating-item.png`
-const bgDesktop = `${ASSET_CDN}/web/banners/nemesis-downfall/bg-desktop.png`
-const bgMobile = `${ASSET_CDN}/web/banners/nemesis-downfall/bg-mobile.png`
-const bgImage = `${ASSET_CDN}/web/banners/nemesis-downfall/background-image.jpg`
+const floatingAsset = `/images/vecake/floating-item.png`
+const bgDesktop = `/images/vecake/bg-desktop.png`
+const bgMobile = `/images/vecake/bg-mobile.png`
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,
@@ -28,7 +31,7 @@ const bgSmVariant: GraphicDetail = {
 
 const bgXsVariant: GraphicDetail = {
   src: bgMobile,
-  width: 218,
+  width: 221,
   height: 182,
 }
 
@@ -39,21 +42,35 @@ const VerticalDivider = styled.span`
   margin: auto 8px;
 `
 
+const BannerDesc = styled(Text)`
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  color: #280d5f;
+  white-space: nowrap;
+`
+
 const stakeCakeLink = '/cake-staking'
-const learnMoreLink =
-  'https://blog.pancakeswap.finance/articles/introducing-nemesis-downfall-pancake-swap-s-latest-game-fi-release'
+const learnMoreLink = '' // TODO
+
+const Desc = () => {
+  return (
+    <BannerDesc>
+      <Trans>Discover other benefits like voting incentives...</Trans>
+    </BannerDesc>
+  )
+}
 
 export const VeCakeBanner = () => {
   const { t } = useTranslation()
   const { isMobile, isTablet } = useMatchBreakpoints()
+  const { totalApr } = useFourYearTotalVeCakeApr()
 
   const stakeCakeLinkAction = (
     <LinkExternalAction href={stakeCakeLink} showExternalIcon={false}>
-      <Flex>
-        <Text color="black" bold>
-          {t('Stake CAKE')}
-        </Text>
-        <ArrowForwardIcon color="black" />
+      <Flex color="black" alignItems="center" style={{ whiteSpace: 'nowrap' }}>
+        {t('Stake CAKE')}
+        <ArrowForwardIcon color="#black" ml="4px" />
       </Flex>
     </LinkExternalAction>
   )
@@ -65,16 +82,23 @@ export const VeCakeBanner = () => {
   )
 
   return (
-    <BannerContainer background={`url('${bgImage}')`}>
+    <BannerContainer background="radial-gradient(100.66% 178.94% at 26.19% 58.89%, #53DEE9 0%, #1FC7D4 69.43%, #0098A1 100%)">
       <BannerMain
         badges={
           <Flex>
             <PancakeSwapBadge />
           </Flex>
         }
+        desc={isMobile ? null : <Desc />}
         title={
-          <BannerTitle variant="orange">
-            {isMobile || isTablet ? t('Stake CAKE - up to 12.34% APR !') : t('Stake CAKE and Earn up to 12.34% APR !')}
+          <BannerTitle variant="yellow">
+            {isMobile || isTablet
+              ? t('Stake CAKE - up to %apr%% APR !', {
+                  apr: totalApr.toFixed(2),
+                })
+              : t('Stake CAKE and Earn up to %apr%% APR !', {
+                  apr: totalApr.toFixed(2),
+                })}
           </BannerTitle>
         }
         actions={
@@ -85,7 +109,7 @@ export const VeCakeBanner = () => {
           </BannerActionContainer>
         }
       />
-      <BannerGraphics mb={['20px', '10px', '10px', '10px', '0']}>
+      <BannerGraphics>
         <BackgroundGraphic src={bgDesktop} width={468} height={224} sm={bgSmVariant} xs={bgXsVariant} />
         <FloatingGraphic src={floatingAsset} width={99} height={99} />
       </BannerGraphics>
