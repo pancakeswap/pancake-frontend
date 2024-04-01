@@ -171,7 +171,7 @@ export const useFourYearTotalVeCakeApr = () => {
   const total = useMemo(() => veCAKEPoolApr.plus(revShareEmissionApr), [veCAKEPoolApr, revShareEmissionApr])
 
   return {
-    total: total.toString(),
+    totalApr: total,
     veCAKEPoolApr: veCAKEPoolApr.toString(),
     revShareEmissionApr: revShareEmissionApr.toString(),
   }
