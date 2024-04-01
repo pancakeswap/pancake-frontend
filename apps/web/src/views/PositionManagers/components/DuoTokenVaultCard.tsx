@@ -166,7 +166,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
         autoCompound={autoCompound}
         isSingleDepositToken={isSingleDepositToken}
         allowDepositToken1={allowDepositToken1}
-        isBooster={isBoosterWhiteList}
+        isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
       />
       <CardBody>
         <YieldInfo

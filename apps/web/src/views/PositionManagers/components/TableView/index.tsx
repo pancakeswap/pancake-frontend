@@ -255,7 +255,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                         autoCompound={autoCompound}
                         isSingleDepositToken={isSingleDepositToken}
                         allowDepositToken1={allowDepositToken1 ?? false}
-                        isBooster={isBoosterWhiteList}
+                        isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
                       />
                     </CellInner>
                   </td>
@@ -293,7 +293,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                           lpTokenDecimals={info?.lpTokenDecimals}
                           aprTimeWindow={aprTimeWindow}
                           rewardToken={earningToken}
-                          isBooster={isBoosterWhiteList}
+                          isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
                           boosterMultiplier={
                             totalAssetsInUsd === 0 ? 3 : info?.boosterMultiplier === 0 ? 3 : info?.boosterMultiplier
                           }
@@ -360,7 +360,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                   autoCompound={autoCompound}
                   isSingleDepositToken={isSingleDepositToken}
                   allowDepositToken1={allowDepositToken1 ?? false}
-                  isBooster={isBoosterWhiteList}
+                  isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
                 />
               </Flex>
             </FarmMobileCell>
@@ -382,7 +382,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                     lpTokenDecimals={info?.lpTokenDecimals}
                     aprTimeWindow={aprTimeWindow}
                     rewardToken={earningToken}
-                    isBooster={isBoosterWhiteList}
+                    isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
                     boosterMultiplier={
                       totalAssetsInUsd === 0 ? 3 : info?.boosterMultiplier === 0 ? 3 : info?.boosterMultiplier
                     }
