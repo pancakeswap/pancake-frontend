@@ -20,7 +20,7 @@ export const livePools: SerializedPool[] = [
     contractAddress: '0x625079cE28FaBe21F032083426288a82a69a2344',
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '1407',
-    isFinished: false,
+    version: 3,
   },
   {
     sousId: 376,
