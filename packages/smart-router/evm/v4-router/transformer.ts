@@ -106,9 +106,13 @@ export function serializeTrade(trade: V4Trade<TradeType>): SerializedV4Trade {
   }
 }
 
-export function parseTrade(chainId: ChainId, trade: SerializedV4Trade): Omit<V4Trade<TradeType>, 'graph'> {
+export function parseTrade<tradeType extends TradeType = TradeType>(
+  chainId: ChainId,
+  trade: SerializedV4Trade,
+): Omit<V4Trade<tradeType>, 'graph'> {
   return {
     ...trade,
+    tradeType: trade.tradeType as tradeType,
     inputAmount: parseCurrencyAmount(chainId, trade.inputAmount),
     outputAmount: parseCurrencyAmount(chainId, trade.outputAmount),
     routes: trade.routes.map((r) => parseRoute(chainId, r)),
