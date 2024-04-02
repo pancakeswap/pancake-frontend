@@ -12,12 +12,14 @@ type MerklNoticeContentProps = {
   linkColor?: string;
   merklLink: string;
   hasFarm?: boolean;
+  merklApr?: number;
 };
 
 export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
   linkColor = "primary",
   merklLink,
   hasFarm,
+  merklApr,
 }) => {
   const { t } = useTranslation();
 
@@ -38,6 +40,13 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
               </InlineLink>
             </p>
             <br />
+            {merklApr && (
+              <InlineLink color={linkColor} external display="inline" href={merklLink}>
+                {t("Merkl APR")}: {merklApr?.toFixed(2)}%
+              </InlineLink>
+            )}
+            <br />
+            <br />
             {t("To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.")}
           </Text>
         </Box>
@@ -54,6 +63,13 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
               {t("Merkl")}
             </InlineLink>
           </p>
+          {merklApr && (
+            <InlineLink color={linkColor} external display="inline" href={merklLink}>
+              {t("Merkl APR")}: {merklApr?.toFixed(2)}%
+            </InlineLink>
+          )}
+          <br />
+          <br />
           <br />
           {t(
             "To earn Merkl rewards, continue seeding liquidity on PancakeSwap, but DO NOT stake your LP token in the Farm. Otherwise, you will not accrue rewards."
@@ -71,6 +87,7 @@ type MerklNoticeProps = {
   tooltipOffset?: [number, number];
   merklLink: string;
   hasFarm?: boolean;
+  merklApr?: number;
 };
 
 const MerklNotice: React.FC<MerklNoticeProps> = ({
@@ -79,15 +96,17 @@ const MerklNotice: React.FC<MerklNoticeProps> = ({
   tooltipOffset = [-20, 10],
   merklLink,
   hasFarm,
+  merklApr,
 }) => {
   const { tooltip, tooltipVisible, targetRef } = useTooltip(
-    <MerklNoticeContent merklLink={merklLink} hasFarm={hasFarm} />,
+    <MerklNoticeContent merklLink={merklLink} hasFarm={hasFarm} merklApr={merklApr} />,
     {
       placement,
       tooltipOffset,
       trigger: isMobile ? "focus" : "hover",
     }
   );
+
   return (
     <>
       <TooltipText ref={targetRef} display="inline">

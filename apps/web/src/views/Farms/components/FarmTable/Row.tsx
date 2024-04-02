@@ -6,6 +6,7 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { createElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 
+import { useMerklInfo } from 'hooks/useMerkl'
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import { FarmV3ApyButton } from '../FarmCard/V3/FarmV3ApyButton'
 import { useUserBoostedPoolsTokenId } from '../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
@@ -138,6 +139,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   }, [isSmallerScreen, props.type])
   const columnNames = useMemo(() => tableSchema.map((column) => column.name), [tableSchema])
 
+  const { merklApr } = useMerklInfo(farm?.merklLink ? props.details.lpAddress : null)
   return (
     <>
       {!isMobile ? (
@@ -228,7 +230,13 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     <td key={key}>
                       <CellInner>
                         <CellLayout label={t(tableSchema[columnIndex].label)}>
-                          {createElement(cells[key], { ...props[key], userDataReady })}
+                          {createElement(cells[key], {
+                            ...props[key],
+                            userDataReady,
+                            chainId: props?.details?.token.chainId,
+                            lpAddress: props?.details?.lpAddress,
+                            merklApr,
+                          })}
                         </CellLayout>
                       </CellInner>
                     </td>
@@ -243,7 +251,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <tr style={{ cursor: 'pointer' }} onClick={toggleActionPanel}>
             <FarmMobileCell colSpan={3}>
               <Flex justifyContent="space-between" alignItems="center">
-                <FarmCell {...props.farm} />
+                <FarmCell {...props.farm} lpAddress={props?.details?.lpAddress} merklApr={merklApr} />
                 <Flex
                   mr="16px"
                   alignItems={isMobile ? 'end' : 'center'}
