@@ -700,6 +700,9 @@ importers:
       '@pancakeswap/multicall':
         specifier: workspace:*
         version: link:../../packages/multicall
+      '@pancakeswap/pcsx-sdk':
+        specifier: workspace:*
+        version: link:../../packages/pcsx-sdk
       '@pancakeswap/permit2-sdk':
         specifier: workspace:*
         version: link:../../packages/permit2-sdk
@@ -1438,7 +1441,7 @@ importers:
   packages/pcsx-sdk:
     dependencies:
       '@pancakeswap/permit2-sdk':
-        specifier: ^1.0.2
+        specifier: workspace:*
         version: link:../permit2-sdk
       dayjs:
         specifier: ^1.11.10
@@ -1447,9 +1450,6 @@ importers:
         specifier: 1.19.11
         version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
     devDependencies:
-      tsconfig:
-        specifier: '*'
-        version: 7.0.0
       tslib:
         specifier: ^2.3.1
         version: 2.6.2
@@ -10689,14 +10689,6 @@ packages:
 
   /@types/stats-lite@2.2.2:
     resolution: {integrity: sha512-T+bzT53cbPbE0hMlCNZux1QuH6hQFNHIwRMTQCu3YPG0W7XUfeoULHl+TehJCjaxQx8cz4wlg5oQsOyG9LvZmA==}
-    dev: true
-
-  /@types/strip-bom@3.0.0:
-    resolution: {integrity: sha512-xevGOReSYGM7g/kUBZzPqCrR/KYAo+F0yiPc85WFTJa0MSLtyFTVTU6cJu/aV4mid7IffDIWqo69THF2o4JiEQ==}
-    dev: true
-
-  /@types/strip-json-comments@0.0.30:
-    resolution: {integrity: sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==}
     dev: true
 
   /@types/styled-system@5.1.22:
@@ -23399,15 +23391,6 @@ packages:
       minimist: 1.2.8
       strip-bom: 3.0.0
     dev: false
-
-  /tsconfig@7.0.0:
-    resolution: {integrity: sha512-vZXmzPrL+EmC4T/4rVlT2jNVMWCi/O4DIiSj3UHg1OE5kCKbk4mfrXc6dZksLgRM/TZlKnousKH9bbTazUWRRw==}
-    dependencies:
-      '@types/strip-bom': 3.0.0
-      '@types/strip-json-comments': 0.0.30
-      strip-bom: 3.0.0
-      strip-json-comments: 2.0.1
-    dev: true
 
   /tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}

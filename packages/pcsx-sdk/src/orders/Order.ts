@@ -1,5 +1,5 @@
-import type { Address, Hex } from 'viem'
 import type { PermitTransferFrom, PermitTransferFromData, Witness } from '@pancakeswap/permit2-sdk'
+import type { Address, Hex } from 'viem'
 import type { XSupportedChainId } from '../constants'
 
 export const OrderInfoStruct =
@@ -77,7 +77,7 @@ export abstract class Order {
    * Returns the order hash
    * @return The order hash which is used as a key on-chain
    */
-  abstract hash(): string
+  abstract hash(): Hex
 
   // /**
   //  * Returns the resolved order with the given options

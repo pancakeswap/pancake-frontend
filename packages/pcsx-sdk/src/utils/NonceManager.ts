@@ -1,15 +1,14 @@
+import { SignatureTransfer, Permit2ABI as permit2Abi } from '@pancakeswap/permit2-sdk'
 import {
-  type Address,
   getContract,
+  recoverAddress,
+  type Address,
   type GetContractReturnType,
   type Hex,
-  recoverAddress,
   type PublicClient,
 } from 'viem'
-import { SignatureTransfer } from '@pancakeswap/permit2-sdk'
 import { PERMIT2_MAPPING, type XSupportedChainId } from '../constants'
 import { MissingConfiguration } from '../errors'
-import { permit2Abi } from '../abi/Permit2'
 import type { SignedOrder } from '../orders/Order'
 
 type SplitNonce = {
@@ -19,11 +18,7 @@ type SplitNonce = {
 export class NonceManager {
   private contract: GetContractReturnType<typeof permit2Abi, PublicClient>
 
-  constructor(
-    client: PublicClient,
-    private chainId: XSupportedChainId,
-    permit2Address?: Address,
-  ) {
+  constructor(client: PublicClient, private chainId: XSupportedChainId, permit2Address?: Address) {
     if (permit2Address) {
       this.contract = getContract({
         address: permit2Address,

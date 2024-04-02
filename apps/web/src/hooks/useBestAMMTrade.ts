@@ -28,7 +28,6 @@ import { publicClient } from 'utils/wagmi'
 import { useAccount } from 'wagmi'
 
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import { Address } from 'viem'
 import {
   CommonPoolsParams,
   PoolsWithState,
@@ -176,9 +175,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 }
 
 function createSimpleUseGetBestTradeHook<T>(
-  getBestTrade: (
-    ...args: Parameters<typeof SmartRouter.getBestTrade> & { swapper?: Address }
-  ) => Promise<T | undefined | null>,
+  getBestTrade: (...args: Parameters<typeof SmartRouter.getBestTrade>) => Promise<T | undefined | null>,
 ) {
   return function useGetBestTrade() {
     return useCallback(getBestTrade, [])
@@ -545,6 +542,7 @@ function useBestTradeFromApi({
         amm: { maxHops, maxSplits, poolTypes },
         x: {
           useSyntheticQuotes: true,
+          swapper: address,
         },
       })
       const serverRes = await fetch(`${QUOTING_API}`, {

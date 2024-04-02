@@ -16,12 +16,11 @@
   "types": "dist/index.d.ts",
   "module": "dist/index.mjs",
   "dependencies": {
-    "@pancakeswap/permit2-sdk": "^1.0.2",
+    "@pancakeswap/permit2-sdk": "workspace:*",
     "dayjs": "^1.11.10",
     "viem": "1.19.11"
   },
   "devDependencies": {
-    "tsconfig": "*",
     "tslib": "^2.3.1",
     "tsup": "^6.7.0"
   },

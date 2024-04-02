@@ -184,7 +184,7 @@ export class ExclusiveDutchOrder extends Order {
     ])
   }
 
-  hash(): string {
+  hash(): Hex {
     return hashStruct({
       data: this.witnessInfo(),
       types: EXCLUSIVE_DUTCH_ORDER_TYPES,

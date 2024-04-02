@@ -1,11 +1,11 @@
+import dayjs from 'dayjs'
 import {
+  getContract,
   type Address,
   type GetContractReturnType,
-  getContract,
-  type PublicClient,
   type MulticallReturnType,
+  type PublicClient,
 } from 'viem'
-import dayjs from 'dayjs'
 import { orderQuoterAbi } from '../abi/OrderQuoter'
 import { ORDER_QUOTER_MAPPING, type XSupportedChainId } from '../constants'
 import { KNOWN_ERRORS, MissingConfiguration, OrderValidation } from '../errors'
@@ -21,11 +21,7 @@ export type OrderQuote = {
 export class OrderQuoter {
   private contract: GetContractReturnType<typeof orderQuoterAbi, PublicClient>
 
-  constructor(
-    private client: PublicClient,
-    private chainId: XSupportedChainId,
-    orderQuoterAddress?: Address,
-  ) {
+  constructor(private client: PublicClient, private chainId: XSupportedChainId, orderQuoterAddress?: Address) {
     if (orderQuoterAddress) {
       this.contract = getContract({
         address: orderQuoterAddress,
@@ -47,9 +43,7 @@ export class OrderQuoter {
     return (await this.quoteBatch([order]))[0]
   }
 
-  async quoteBatch(
-    orders: SignedOrder[], // : Promise<OrderQuote[]>
-  ): Promise<OrderQuote[]> {
+  async quoteBatch(orders: SignedOrder[]): Promise<OrderQuote[]> {
     const calls = orders.map((order) => {
       return [order.order.encode(), order.signature] as const
     })
@@ -62,7 +56,7 @@ export class OrderQuoter {
             address: this.contract.address,
             functionName: 'quote',
             args: call,
-          }) as const,
+          } as const),
       ),
       allowFailure: true,
     })
