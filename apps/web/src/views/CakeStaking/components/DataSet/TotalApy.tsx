@@ -4,7 +4,7 @@ import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { BigNumber } from 'bignumber.js'
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { useCakePoolEmission, useRevShareEmission } from 'views/CakeStaking/hooks/useAPR'
+import { BRIBE_APR, useCakePoolEmission, useRevShareEmission } from 'views/CakeStaking/hooks/useAPR'
 import { useVeCakeTotalSupply } from 'views/CakeStaking/hooks/useVeCakeTotalSupply'
 
 const GradientText = styled(Text)`
@@ -46,7 +46,7 @@ export const TotalApy = ({ veCake, cakeAmount }: { veCake: string; cakeAmount: n
   }, [revShareEmission, userCakeTvl, userSharesPercentage])
 
   const totalApy = useMemo(
-    () => new BigNumber(cakePoolApr).plus(revenueSharingApr).toNumber(),
+    () => new BigNumber(cakePoolApr).plus(revenueSharingApr).plus(BRIBE_APR).toNumber(),
     [cakePoolApr, revenueSharingApr],
   )
 
@@ -176,7 +176,7 @@ export const TotalApy = ({ veCake, cakeAmount }: { veCake: string; cakeAmount: n
           <TooltipText fontSize="14px" color="textSubtle" ref={bribeAprRef}>
             {t('Bribe APR')}
           </TooltipText>
-          <GradientText>0%</GradientText>
+          <GradientText>{`${BRIBE_APR.toFixed(2)}%`}</GradientText>
         </Flex>
       </Box>
       {totalAprTooltipVisible && totalAprTooltips}
