@@ -111,7 +111,7 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress?: Addre
         toastSuccess(
           `${t('Booster Update')}!`,
           <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('booster has been updated.')}
+            {t('Booster has been updated.')}
           </ToastDescriptionWithTx>,
         )
         onDone?.()

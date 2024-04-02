@@ -81,7 +81,7 @@ export const YieldInfo = memo(function YieldInfo({
       </RowBetween>
       {apr.isInCakeRewardDateRange && (
         <RowBetween>
-          <Text>{t('Reward/Day:')}</Text>
+          <Text>{t('Reward/Day')}:</Text>
           <Flex flexDirection="row" justifyContent="flex-end" alignItems="center">
             <RewardPerDay rewardPerSec={rewardPerSec ?? 0} symbol={rewardToken?.symbol} />
           </Flex>
