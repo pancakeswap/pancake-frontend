@@ -371,7 +371,7 @@ export const AddLiquidity = memo(function AddLiquidity({
                   aprTimeWindow={aprTimeWindow}
                   rewardToken={earningToken}
                   isBooster={isBooster && apr?.isInCakeRewardDateRange}
-                  boosterMultiplier={boosterMultiplier === 0 ? 3 : boosterMultiplier}
+                  boosterMultiplier={totalAssetsInUsd === 0 ? 3 : boosterMultiplier === 0 ? 3 : boosterMultiplier}
                 />
               </RowBetween>
             </Flex>
