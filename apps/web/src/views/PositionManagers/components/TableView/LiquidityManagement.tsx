@@ -195,7 +195,14 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                         shouldUpdate={shouldUpdate}
                         expectMultiplier={veCakeUserMultiplierBeforeBoosted}
                       />
-                      {shouldUpdate && <Button onClick={() => onUpdate(refetch)}>{t('Update')}</Button>}
+                      {shouldUpdate && <Button onClick={() => onUpdate(refetch)}>{t('Update')}</Button>}{' '}
+                      {!locked && (
+                        <NextLink href="/cake-staking" passHref>
+                          <Button width="100%" style={{ whiteSpace: 'nowrap' }}>
+                            {t('Go to Lock')}
+                          </Button>
+                        </NextLink>
+                      )}
                     </Flex>
                   </RowBetween>
                 </>
