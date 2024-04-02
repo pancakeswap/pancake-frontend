@@ -3,40 +3,5 @@
     "chainId": 1,
     "address": "0x2201d2400d30BFD8172104B4ad046d019CA4E7bd",
     "link": "https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=pancakeswap&chains=1%2C"
-  },
-  {
-    "chainId": 1101,
-    "address": "0xE0a5B3A014084B7E0fF6526986497629AEE16533",
-    "link": "https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=pancakeswap&chains=1101%2C"
-  },
-  {
-    "chainId": 1101,
-    "address": "0x66f1320E9f77C6036a39C884E7fDC63F88e39E50",
-    "link": "https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=pancakeswap&chains=1101%2C"
-  },
-  {
-    "chainId": 1101,
-    "address": "0xbAABf57B49eaa079523b29EC9D25879D82D17Dc6",
-    "link": "https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=pancakeswap&chains=1101%2C"
-  },
-  {
-    "chainId": 1101,
-    "address": "0xf142d852c9c805e419399c9B3Ce2A8485F950BBf",
-    "link": "https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=pancakeswap&chains=1101%2C"
-  },
-  {
-    "chainId": 1101,
-    "address": "0x3752BDb9215A2C0609d71407b50A528e1C6ECaBD",
-    "link": "https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=pancakeswap&chains=1101%2C"
-  },
-  {
-    "chainId": 1101,
-    "address": "0x2e780D6666C2C44754a0cA7A8e2Ed97506B47751",
-    "link": "https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=pancakeswap&chains=1101%2C"
-  },
-  {
-    "chainId": 1101,
-    "address": "0x435564Fb7E82daB83B2733D6Bc1fDB8B5a732DE8",
-    "link": "https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=pancakeswap&chains=1101%2C"
   }
 ]
