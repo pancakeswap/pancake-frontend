@@ -54,6 +54,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   isBooster,
 }) => {
   const { t } = useTranslation()
+
   const { address: account } = useAccount()
   const { tokenBalance, stakedBalance, proxy } = useFarmUser(pid)
   const userBalanceInFarm = stakedBalance.plus(tokenBalance).gt(0)
@@ -128,7 +129,6 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       <Text mt="15px">{t('APRs for individual positions may vary depending on the configs.')}</Text>
     </>,
   )
-
   return (
     <>
       <FarmWidget.FarmApyButton

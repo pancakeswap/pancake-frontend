@@ -400,9 +400,14 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                   <Text>{t('APR')}</Text>
                   <Apr
                     {...apr}
-                    useTooltipText={false}
-                    boosted={farm.boosted}
-                    farmCakePerSecond={multiplier.farmCakePerSecond}
+                    useTooltipText
+                    strikethrough={false}
+                    boosted={false}
+                    farmCakePerSecond={
+                      details?.bCakeWrapperAddress
+                        ? (details?.bCakePublicData?.rewardPerSecond ?? 0).toFixed(4)
+                        : multiplier.farmCakePerSecond
+                    }
                     totalMultipliers={multiplier.totalMultipliers}
                     isBooster={Boolean(details?.bCakeWrapperAddress) && details?.bCakePublicData?.isRewardInRange}
                     boosterMultiplier={
