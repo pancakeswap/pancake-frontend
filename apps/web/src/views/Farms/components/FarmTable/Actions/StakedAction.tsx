@@ -27,6 +27,8 @@ import { styled } from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { Hash } from 'viem'
 import { useIsBloctoETH } from 'views/Farms'
+import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
+
 import { useAccount } from 'wagmi'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import { useFirstTimeCrossFarming } from '../../../hooks/useFirstTimeCrossFarming'
@@ -166,6 +168,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   quoteTokenAmountTotal,
   userData,
   bCakeUserData,
+  bCakePublicData,
   bCakeWrapperAddress,
   lpRewardsApr,
   onDone,
@@ -178,11 +181,12 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const dispatch = useAppDispatch()
   const native = useNativeCurrency()
 
+  const { locked } = useBCakeBoostLimitAndLockInfo()
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
   const { boosterState } = useContext(YieldBoosterStateContext)
   const { isFirstTime, refresh: refreshFirstTime } = useFirstTimeCrossFarming(vaultPid)
   const { t } = useTranslation()
-  const isBooster = Boolean(bCakeWrapperAddress)
+  const isBooster = Boolean(bCakeWrapperAddress) && bCakePublicData?.isRewardInRange
   const { toastSuccess } = useToast()
   const addTransaction = useTransactionAdder()
   const isBloctoETH = useIsBloctoETH()
@@ -383,6 +387,14 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       lpRewardsApr={lpRewardsApr}
       onConfirm={handleStake}
       handleApprove={handleApprove}
+      isBooster={isBooster}
+      boosterMultiplier={
+        isBooster
+          ? bCakeUserData?.boosterMultiplier === 0 || bCakeUserData?.stakedBalance.eq(0) || !locked
+            ? 3
+            : bCakeUserData?.boosterMultiplier
+          : 1
+      }
       // bCakeCalculatorSlot={bCakeCalculatorSlot}
     />,
     true,
