@@ -1,15 +1,13 @@
 import { Flex } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
-import { useMerklApr } from 'hooks/useMerkl'
 import { Address } from 'viem'
 
 const { FarmTokenInfo } = FarmWidget.FarmTable
 
 export const FarmCell: React.FunctionComponent<
   React.PropsWithChildren<FarmWidget.FarmTableFarmTokenInfoProps & { chainId?: number; lpAddress?: Address }>
-> = ({ token, quoteToken, label, pid, isReady, isStaking, merklLink, hasBothFarmAndMerkl, chainId, lpAddress }) => {
-  const { merklApr } = useMerklApr(lpAddress, chainId, Boolean(merklLink))
+> = ({ token, quoteToken, label, pid, isReady, isStaking, merklLink, hasBothFarmAndMerkl, merklApr }) => {
   return (
     <Flex alignItems="center">
       <FarmTokenInfo
