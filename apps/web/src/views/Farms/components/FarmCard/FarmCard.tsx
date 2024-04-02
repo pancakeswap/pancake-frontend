@@ -159,7 +159,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     lpLabel={lpLabel}
                     addLiquidityUrl={addLiquidityUrl}
                     cakePrice={cakePrice}
-                    apr={isBooster && farm.bCakeUserData?.rewardPerSecond === 0 ? 0 : farm.apr}
+                    apr={isBooster && farm.bCakePublicData?.rewardPerSecond === 0 ? 0 : farm.apr}
                     displayApr={displayApr ?? undefined}
                     lpRewardsApr={farm.lpRewardsApr}
                     isBooster={isBooster && farm?.bCakePublicData?.isRewardInRange}

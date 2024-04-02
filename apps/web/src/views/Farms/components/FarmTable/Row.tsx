@@ -216,7 +216,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                           boosted={false}
                           farmCakePerSecond={
                             props?.details?.bCakeWrapperAddress
-                              ? (props?.details?.bCakeUserData?.rewardPerSecond ?? 0).toFixed(4)
+                              ? (props?.details?.bCakePublicData?.rewardPerSecond ?? 0).toFixed(4)
                               : multiplier.farmCakePerSecond
                           }
                           totalMultipliers={multiplier.totalMultipliers}
@@ -330,7 +330,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                         boosted={false}
                         farmCakePerSecond={
                           props?.details?.bCakeWrapperAddress
-                            ? (props?.details?.bCakeUserData?.rewardPerSecond ?? 0).toFixed(4)
+                            ? (props?.details?.bCakePublicData?.rewardPerSecond ?? 0).toFixed(4)
                             : multiplier.farmCakePerSecond
                         }
                         totalMultipliers={multiplier.totalMultipliers}
