@@ -3244,8 +3244,8 @@
   "Introducing PancakeSwap v4": "PancakeSwap v4 ist da",
   "Your DEX Your Innovation Introducing PancakeSwap v4": "Ihre DEX, Ihre Innovation – PancakeSwap v4 ist da",
   "Whitepaper": "Whitepaper",
-  "twitter page": "Twitter-Seite",
-  "The NFP token has recently experienced an exploit. Please refrain from swapping NFP until further notice. More information can be found on the project's twitter page.": "Der NFP-Token wurde kürzlich von einem Exploit betroffen. Bitte verzichten Sie bis auf weiteres auf den Tausch von NFP. Weitere Informationen finden Sie auf der Twitter-Seite des Projekts.",
+  "twitter page": "X-Seite",
+  "The NFP token has recently experienced an exploit. Please refrain from swapping NFP until further notice. More information can be found on the project's twitter page.": "Der NFP-Token wurde kürzlich von einem Exploit betroffen. Bitte verzichten Sie bis auf weiteres auf den Tausch von NFP. Weitere Informationen finden Sie auf der X-Seite des Projekts.",
   "NMT Token has recently experienced an exploit. Please refrain from swapping NMT until further notice.": "Der NMT Token war vor kurzem von einem Exploit betroffen. Bitte verzichten Sie bis auf weiteres auf den Tausch von NMT.",
   "Order expired. Please try again.": "Order abgelaufen. Bitte versuchen Sie es erneut.",
   "Transaction failed: quote expired": "Transaktion fehlgeschlagen: Kurs abgelaufen",
@@ -3271,5 +3271,6 @@
   "$5,000 extra reward pool": "5000 $ zusätzlicher Belohnungspool",
   "PancakeSwap Multichain Celebration": "Wir feiern die PancakeSwap-Multichain",
   "Starting MAR 14 - Over $3500 in prizes!": "Ab 14. März – Über 3500 $ in Preisen!",
-  "Participate Now": "Jetzt mitmachen"
+  "Participate Now": "Jetzt mitmachen",
+  "Merkl APR": "Merkl APR"
 }
