@@ -13,6 +13,7 @@ test('exports', () => {
       "deserializeFarm",
       "deserializeFarmUserData",
       "deserializeFarmBCakeUserData",
+      "deserializeFarmBCakePublicData",
       "filterFarmsByQuoteToken",
       "filterFarmsByQuery",
       "bCakeSupportedChainId",
