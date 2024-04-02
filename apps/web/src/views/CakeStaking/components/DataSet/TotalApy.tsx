@@ -1,7 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Link, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
+import { BigNumber } from 'bignumber.js'
+import { useMemo } from 'react'
 import styled from 'styled-components'
-import { useFourYearTotalVeCakeApr } from 'views/CakeStaking/hooks/useAPR'
+import { useCakePoolEmission, useRevShareEmission } from 'views/CakeStaking/hooks/useAPR'
+import { useVeCakeTotalSupply } from 'views/CakeStaking/hooks/useVeCakeTotalSupply'
 
 const GradientText = styled(Text)`
   font-weight: 600;
@@ -11,9 +15,40 @@ const GradientText = styled(Text)`
   -webkit-text-fill-color: transparent;
 `
 
-export const TotalApy = () => {
+export const TotalApy = ({ veCake, cakeAmount }: { veCake: string; cakeAmount: number }) => {
   const { t } = useTranslation()
-  const { totalApr } = useFourYearTotalVeCakeApr()
+  const cakePoolEmission = useCakePoolEmission()
+  const revShareEmission = useRevShareEmission()
+  const { data: totalSupply } = useVeCakeTotalSupply()
+
+  // CAKE Pool APR
+  const userCakeTvl = getDecimalAmount(new BigNumber(cakeAmount))
+  const userSharesPercentage = getDecimalAmount(new BigNumber(veCake)).div(totalSupply).times(100)
+  const cakePoolApr = useMemo(() => {
+    const apr = new BigNumber(userSharesPercentage)
+      .times(cakePoolEmission)
+      .div(3 * 24 * 60 * 60 * 365)
+      .div(userCakeTvl)
+      .toNumber()
+
+    return Number.isNaN(apr) ? 0 : apr
+  }, [cakePoolEmission, userCakeTvl, userSharesPercentage])
+
+  // Revenue Sharing
+  const revenueSharingApr = useMemo(() => {
+    const apr = new BigNumber(userSharesPercentage)
+      .times(revShareEmission)
+      .times(24 * 60 * 60 * 365)
+      .div(userCakeTvl)
+      .toNumber()
+
+    return Number.isNaN(apr) ? 0 : apr
+  }, [revShareEmission, userCakeTvl, userSharesPercentage])
+
+  const totalApy = useMemo(
+    () => new BigNumber(cakePoolApr).plus(revenueSharingApr).toNumber(),
+    [cakePoolApr, revenueSharingApr],
+  )
 
   const {
     targetRef: totalAprRef,
@@ -121,7 +156,7 @@ export const TotalApy = () => {
         </TooltipText>
         <Flex>
           <Text>🔹</Text>
-          <GradientText>{t('Up to %apr%%', { apr: totalApr.toFixed(2) })} </GradientText>
+          <GradientText>{t('Up to %apr%%', { apr: totalApy.toFixed(2) })} </GradientText>
         </Flex>
       </Flex>
       <Box ml="25px">
@@ -129,19 +164,19 @@ export const TotalApy = () => {
           <TooltipText fontSize="14px" color="textSubtle" ref={veCakePoolAprRef}>
             {t('veCAKE Pool APR')}
           </TooltipText>
-          <Text>123</Text>
+          <Text>{`${cakePoolApr.toFixed(2)}%`}</Text>
         </Flex>
         <Flex mt="4px" justifyContent="space-between">
           <TooltipText fontSize="14px" color="textSubtle" ref={revenueSharingPoolAprRef}>
             {t('Revenue Sharing APR')}
           </TooltipText>
-          <Text>123</Text>
+          <Text>{`${revenueSharingApr.toFixed(2)}%`}</Text>
         </Flex>
         <Flex mt="4px" justifyContent="space-between">
           <TooltipText fontSize="14px" color="textSubtle" ref={bribeAprRef}>
             {t('Bribe APR')}
           </TooltipText>
-          <GradientText>12.3%</GradientText>
+          <GradientText>0%</GradientText>
         </Flex>
       </Box>
       {totalAprTooltipVisible && totalAprTooltips}
