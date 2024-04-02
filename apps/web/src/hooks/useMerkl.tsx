@@ -36,15 +36,12 @@ export function useMerklInfo(poolAddress: string | null): {
   const { data: merklData } = useQuery({
     queryKey: ['merklAprData', chainId, poolAddress],
     queryFn: async () => {
-      try {
-        const resp = await (
-          await fetch(`https://api.angle.money/v2/merkl?chainIds[]=${chainId}&AMMs[]=pancakeswapv3`)
-        ).json()
-        return resp
-      } catch (error) {
-        console.error('Fetch merklAprData Error: ', error)
-        return null
+      const resp = await fetch(`https://api.angle.money/v2/merkl?chainIds[]=${chainId}&AMMs[]=pancakeswapv3`)
+      if (resp.ok) {
+        const result = await resp.json()
+        return result
       }
+      throw resp
     },
     enabled: Boolean(chainId) && Boolean(poolAddress),
   })
