@@ -13,6 +13,7 @@ import { useVeCakeAmount } from 'views/CakeStaking/hooks/useVeCakeAmount'
 import { MyVeCakeCard } from '../MyVeCakeCard'
 import { Tooltips } from '../Tooltips'
 import { DataRow } from './DataBox'
+import { TotalApy } from './TotalApy'
 import { formatDate } from './format'
 
 const ValueText = styled(Text)`
@@ -33,6 +34,8 @@ export const NewStakingDataSet: React.FC<React.PropsWithChildren<NewStakingDataS
 }) => {
   const { t } = useTranslation()
   const { cakeLockWeeks } = useLockCakeData()
+  const { isDesktop } = useMatchBreakpoints()
+
   const unlockTimestamp = useTargetUnlockTime(Number(cakeLockWeeks) * WEEK)
   const cakeAmountBN = useMemo(() => getDecimalAmount(new BN(cakeAmount)).toString(), [cakeAmount])
   const veCakeAmountFromNative = useVeCakeAmount(cakeAmountBN, unlockTimestamp)
@@ -47,10 +50,8 @@ export const NewStakingDataSet: React.FC<React.PropsWithChildren<NewStakingDataS
     veCakeAmountFromNative && veCakeAmountFromNative
       ? `${new BN(veCakeAmountFromNative).div(cakeAmountBN).toPrecision(2)}x`
       : '0x'
-  const { isDesktop } = useMatchBreakpoints()
-  const unlockOn = useMemo(() => {
-    return formatDate(dayjs.unix(Number(unlockTimestamp)))
-  }, [unlockTimestamp])
+  const unlockOn = useMemo(() => formatDate(dayjs.unix(Number(unlockTimestamp))), [unlockTimestamp])
+
   return (
     <>
       <Text fontSize={12} bold color={isDesktop ? 'textSubtle' : undefined} textTransform="uppercase">
@@ -60,6 +61,7 @@ export const NewStakingDataSet: React.FC<React.PropsWithChildren<NewStakingDataS
         {customVeCakeCard ?? <MyVeCakeCard type="row" value={veCake} />}
         <AutoRow px={['0px', '0px', '16px']} py={['16px', '16px', '12px']} gap="8px">
           {customDataRow}
+          <TotalApy />
           <DataRow
             label={
               <Text fontSize={14} color="textSubtle" textTransform="uppercase">
