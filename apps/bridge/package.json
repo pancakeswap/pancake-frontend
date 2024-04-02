@@ -27,7 +27,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "6.0.7",
-    "styled-jsx": "^5.1.2",
+    "styled-jsx": "5.1.1",
     "viem": "2.8.13",
     "wagmi": "2.5.11"
   },
