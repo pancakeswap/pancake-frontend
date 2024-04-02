@@ -138,7 +138,8 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
     return isSmallerScreen ? MobileColumnSchema : props.type === 'v3' ? V3DesktopColumnSchema : DesktopColumnSchema
   }, [isSmallerScreen, props.type])
   const columnNames = useMemo(() => tableSchema.map((column) => column.name), [tableSchema])
-  const { merklApr } = useMerklInfo(farm?.merklLink ? farm?.lpAddress ?? null : null)
+
+  const { merklApr } = useMerklInfo(farm?.merklLink ? props.details.lpAddress : null)
   return (
     <>
       {!isMobile ? (
