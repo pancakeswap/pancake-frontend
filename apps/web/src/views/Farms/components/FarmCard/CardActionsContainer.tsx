@@ -60,7 +60,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { pid, token, quoteToken, vaultPid, lpSymbol, bCakeWrapperAddress, bCakeUserData } = farm
 
   const isReady = farm.multiplier !== undefined
-  const isBooster = Boolean(bCakeWrapperAddress)
+  const isBooster = Boolean(bCakeWrapperAddress) && farm?.bCakePublicData?.isRewardInRange
   const { earnings } = (isBooster ? farm.bCakeUserData : farm.userData) || {}
   const { status } = useBoostStatusPM(isBooster, boosterMultiplier)
   const { colors } = useTheme()

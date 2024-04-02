@@ -145,7 +145,7 @@ export const ActionPanel: React.FC<
             aprTimeWindow={aprTimeWindow}
             bCakeWrapper={bCakeWrapper}
             minDepositUSD={minDepositUSD}
-            isBooster={isBooster}
+            isBooster={isBooster && isInCakeRewardDateRange}
             boosterContractAddress={boosterContractAddress}
           />
         </TableActionCard>

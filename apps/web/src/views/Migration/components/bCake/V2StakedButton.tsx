@@ -133,7 +133,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StakeButtonProps>> = ({
         toastSuccess(
           `${t('Staked')}!`,
           <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your funds have been Staked in new BCake position manager.')}
+            {t('Your funds have been Staked in new BCake farm Wrapper.')}
           </ToastDescriptionWithTx>,
         )
       }

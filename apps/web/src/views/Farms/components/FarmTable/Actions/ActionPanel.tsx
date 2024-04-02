@@ -358,7 +358,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   }, [chainId, farm.isStable, farm.lpAddress, farm.stableSwapAddress])
 
   const addLiquidityModal = useModalV2()
-  const isBooster = Boolean(details?.bCakeWrapperAddress)
+  const isBooster = Boolean(details?.bCakeWrapperAddress) && farm?.bCakePublicData?.isRewardInRange
   const hasStakedInBCake = Boolean(details?.bCakeUserData?.stakedBalance?.gt(0))
 
   const { status } = useBoostStatusPM(isBooster, details?.bCakeUserData?.boosterMultiplier)

@@ -232,7 +232,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           aprTimeWindow={aprDataInfo.timeWindow}
           bCakeWrapper={bCakeWrapper}
           minDepositUSD={minDepositUSD}
-          isBooster={isBoosterWhiteList}
+          isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
           boosterContractAddress={boosterContractAddress}
         />
         <ExpandableSection mt="1.5em">
