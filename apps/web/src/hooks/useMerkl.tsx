@@ -43,7 +43,7 @@ export function useMerklInfo(poolAddress: string | null): {
         return resp
       } catch (error) {
         console.error('Fetch merklAprData Error: ', error)
-        return true
+        return null
       }
     },
     enabled: Boolean(chainId) && Boolean(poolAddress),
