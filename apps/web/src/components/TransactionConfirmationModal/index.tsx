@@ -16,7 +16,7 @@ import {
 } from '@pancakeswap/uikit'
 import { ConfirmationPendingContent, TransactionErrorContent } from '@pancakeswap/widgets-internal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
@@ -48,6 +48,13 @@ export function TransactionSubmittedContent({
 
   const token: Token | undefined = wrappedCurrency(currencyToAdd, chainId)
 
+  const showAddToWalletButton = useMemo(() => {
+    if (token && currencyToAdd) {
+      return !currencyToAdd.isNative
+    }
+    return false
+  }, [token, currencyToAdd])
+
   return (
     <Wrapper>
       <Section>
@@ -64,7 +71,7 @@ export function TransactionSubmittedContent({
               {chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />}
             </Link>
           )}
-          {currencyToAdd && (
+          {showAddToWalletButton && (
             <AddToWalletButton
               variant="tertiary"
               mt="12px"
@@ -72,7 +79,7 @@ export function TransactionSubmittedContent({
               marginTextBetweenLogo="6px"
               textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
               tokenAddress={token?.address}
-              tokenSymbol={currencyToAdd.symbol}
+              tokenSymbol={currencyToAdd!.symbol}
               tokenDecimals={token?.decimals}
               tokenLogo={token instanceof WrappedTokenInfo ? token.logoURI : undefined}
             />

@@ -1,5 +1,30 @@
 # @pancakeswap/widgets-internal
 
+## 0.1.36
+
+### Patch Changes
+
+- d00abef: Added BannerDesc Component.
+
+## 0.1.35
+
+### Patch Changes
+
+- @pancakeswap/farms@1.0.51
+
+## 0.1.34
+
+### Patch Changes
+
+- @pancakeswap/farms@1.0.50
+
+## 0.1.33
+
+### Patch Changes
+
+- Updated dependencies [dd5b38f]
+  - @pancakeswap/farms@1.0.49
+
 ## 0.1.32
 
 ### Patch Changes

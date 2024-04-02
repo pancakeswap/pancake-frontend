@@ -39,4 +39,12 @@ export const lineaTokens = {
     'Wrapped liquid staked Ether 2.0',
     'https://lido.fi/',
   ),
+  ezETH: new ERC20Token(
+    ChainId.LINEA,
+    '0x2416092f143378750bb29b79eD961ab195CcEea5',
+    18,
+    'ezETH',
+    'Renzo Restaked ETH',
+    'https://www.renzoprotocol.com/',
+  ),
 }

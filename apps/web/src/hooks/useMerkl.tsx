@@ -29,8 +29,26 @@ export function useMerklInfo(poolAddress: string | null): {
   } | null
   hasMerkl: boolean
   refreshData: () => void
+  merklApr?: number
 } {
   const { account, chainId } = useAccountActiveChain()
+
+  const { data: merklData } = useQuery({
+    queryKey: ['merklAprData', chainId, poolAddress],
+    queryFn: async () => {
+      const resp = await fetch(`https://api.angle.money/v2/merkl?chainIds[]=${chainId}&AMMs[]=pancakeswapv3`)
+      if (resp.ok) {
+        const result = await resp.json()
+        return result
+      }
+      throw resp
+    },
+    enabled: Boolean(chainId) && Boolean(poolAddress),
+  })
+
+  const merklApr = merklData?.[chainId ?? 0]?.pools?.[poolAddress ?? '']?.aprs?.['Average APR (rewards / pool TVL)'] as
+    | number
+    | undefined
 
   const { data, isPending, refetch } = useQuery({
     queryKey: [`fetchMerkl-${chainId}-${poolAddress}-${account || 'no-account'}`],
@@ -115,8 +133,9 @@ export function useMerklInfo(poolAddress: string | null): {
       ...rest,
       rewardsPerToken: rewardsPerToken.length ? rewardsPerToken : rewardCurrencies,
       refreshData: refetch,
+      merklApr,
     }
-  }, [chainId, data, lists, refetch])
+  }, [chainId, data, lists, refetch, merklApr])
 }
 
 export default function useMerkl(poolAddress: string | null) {

@@ -1,4 +1,4 @@
-import { Trans, useTranslation } from '@pancakeswap/localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { ArrowForwardIcon, Flex, Text } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
@@ -48,14 +48,6 @@ const VerticalDivider = styled.span`
   height: 1rem;
   margin: auto 8px;
 `
-
-const Desc = () => {
-  return (
-    <BannerDesc>
-      <Trans>$5,000 extra reward pool</Trans>
-    </BannerDesc>
-  )
-}
 
 const Floating = styled(FloatingGraphic)`
   left: 3%;
@@ -135,7 +127,7 @@ export function WBNBFixedStakingBanner() {
             {isMobile ? t('Stake WBNB, Win Combo Rewards!') : t('Stake WBNB to Win Combo Rewards')}
           </BannerTitle>
         }
-        desc={isMobile ? null : <Desc />}
+        desc={isMobile ? null : <BannerDesc>{t('$5,000 extra reward pool')}</BannerDesc>}
         actions={
           <BannerActionContainer>
             {stakeAction}

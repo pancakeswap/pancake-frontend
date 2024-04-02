@@ -26,7 +26,7 @@ export const ScopeIcon: React.FC<
       <Image src="/images/notifications/predictions-scope.svg" alt="prediction-scope" width={40} height={40} />
     ),
     [SubsctiptionType.PriceUpdates]: (
-      <Image src="/images/notifications/price-updates-scope.svg" alt="prices-scope" width={40} height={40} />
+      <Image src="/images/notifications/predictions-scope.svg" alt="prices-scope" width={40} height={40} />
     ),
     [SubsctiptionType.Promotional]: (
       <Image src="/images/notifications/promotional-scope.svg" alt="promo-scope" width={40} height={40} />
