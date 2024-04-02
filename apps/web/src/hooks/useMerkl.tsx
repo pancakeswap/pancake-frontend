@@ -29,8 +29,29 @@ export function useMerklInfo(poolAddress: string | null): {
   } | null
   hasMerkl: boolean
   refreshData: () => void
+  merklApr?: number
 } {
   const { account, chainId } = useAccountActiveChain()
+
+  const { data: merklData } = useQuery({
+    queryKey: ['merklAprData', chainId, poolAddress],
+    queryFn: async () => {
+      try {
+        const resp = await (
+          await fetch(`https://api.angle.money/v2/merkl?chainIds[]=${chainId}&AMMs[]=pancakeswapv3`)
+        ).json()
+        return resp
+      } catch (error) {
+        console.error('Fetch merklAprData Error: ', error)
+        return true
+      }
+    },
+    enabled: Boolean(chainId) && Boolean(poolAddress),
+  })
+
+  const merklApr = merklData?.[chainId ?? 0]?.pools?.[poolAddress ?? '']?.aprs?.['Average APR (rewards / pool TVL)'] as
+    | number
+    | undefined
 
   const { data, isPending, refetch } = useQuery({
     queryKey: [`fetchMerkl-${chainId}-${poolAddress}-${account || 'no-account'}`],
@@ -115,8 +136,9 @@ export function useMerklInfo(poolAddress: string | null): {
       ...rest,
       rewardsPerToken: rewardsPerToken.length ? rewardsPerToken : rewardCurrencies,
       refreshData: refetch,
+      merklApr,
     }
-  }, [chainId, data, lists, refetch])
+  }, [chainId, data, lists, refetch, merklApr])
 }
 
 export default function useMerkl(poolAddress: string | null) {
@@ -202,28 +224,4 @@ export default function useMerkl(poolAddress: string | null) {
     }),
     [claimTokenReward, hasMerkl, isTxPending, rewardsPerToken],
   )
-}
-
-export const useMerklApr = (lpAddress?: Address, chainId?: number, isMerklPool?: boolean) => {
-  const { data } = useQuery({
-    queryKey: ['merklAprData', chainId, lpAddress],
-    queryFn: async () => {
-      try {
-        const resp = await (
-          await fetch(`https://api.angle.money/v2/merkl?chainIds[]=${chainId}&AMMs[]=pancakeswapv3`)
-        ).json()
-        return resp
-      } catch (error) {
-        console.error('Fetch merklAprData Error: ', error)
-        return true
-      }
-    },
-    enabled: Boolean(chainId) && Boolean(lpAddress) && isMerklPool,
-  })
-
-  const merklApr = data?.[chainId ?? 0]?.pools?.[lpAddress ?? '']?.aprs?.['Average APR (rewards / pool TVL)'] as
-    | number
-    | undefined
-
-  return { merklApr }
 }

@@ -3,7 +3,6 @@ import { AutoRow, Box, FarmMultiplierInfo, Flex, Heading, Skeleton, Tag, useTool
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
-import { useMerklApr } from 'hooks/useMerkl'
 import { styled } from 'styled-components'
 import { Address } from 'viem'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
@@ -28,6 +27,7 @@ type ExpandableSectionProps = {
   hasBothFarmAndMerkl?: boolean
   isBoosted?: boolean
   lpAddress?: Address
+  merklApr?: number
 }
 
 const Wrapper = styled(Flex)`
@@ -54,7 +54,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   merklLink,
   hasBothFarmAndMerkl,
   isBoosted,
-  lpAddress,
+  merklApr,
 }) => {
   const isReady = multiplier !== undefined
   const multiplierTooltipContent = FarmMultiplierInfo({
@@ -65,8 +65,6 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   const { targetRef, tooltip, tooltipVisible } = useTooltip(multiplierTooltipContent, {
     placement: 'bottom',
   })
-
-  const { merklApr } = useMerklApr(lpAddress, token.chainId, Boolean(merklLink))
 
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">

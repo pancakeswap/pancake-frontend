@@ -4,6 +4,7 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useMerklInfo } from 'hooks/useMerkl'
 import { useCallback, useMemo, useState } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import { styled } from 'styled-components'
@@ -69,6 +70,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
   const { status: boostStatus } = useBoostStatus(farm.pid)
 
   const merklLink = getMerklLink({ chainId, lpAddress })
+  const { merklApr } = useMerklInfo(merklLink ? lpAddress : null)
   const infoUrl = useMemo(() => {
     return chainId ? `/info/v3${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}` : ''
   }, [chainId, lpAddress])
@@ -115,6 +117,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
           boosted={boostStatus !== BoostStatus.CanNotBoost}
           isBoosted={isBoosted}
           lpAddress={lpAddress}
+          merklApr={merklApr}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
