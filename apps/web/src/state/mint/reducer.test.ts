@@ -1,4 +1,4 @@
-import { createStore, Store } from 'redux'
+import { createStore, Store } from '@reduxjs/toolkit'
 
 import { Field, typeInput } from './actions'
 import { MintState, reducer } from './reducer'

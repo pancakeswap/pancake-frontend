@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { createStore, Store } from 'redux'
+import { createStore, Store } from '@reduxjs/toolkit'
 import {
   addTransaction,
   checkedTransaction,
