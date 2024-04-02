@@ -3117,4 +3117,12 @@ export const bscTokens = {
     'Paysenger EGO',
     'https://egoco.in/',
   ),
+  nmt: new ERC20Token(
+    ChainId.BSC,
+    '0x03AA6298F1370642642415EDC0db8b957783e8D6',
+    18,
+    'NMT',
+    'NetMind Token',
+    'https://power.netmind.ai/',
+  ),
 }
