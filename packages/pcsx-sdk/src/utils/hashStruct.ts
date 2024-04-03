@@ -1,6 +1,7 @@
 // purely from viem
-import type { AbiParameter } from 'abitype'
 import { encodeAbiParameters, keccak256, toHex } from 'viem'
+
+type AbiParameter = any
 
 type MessageTypeProperty = {
   name: string
