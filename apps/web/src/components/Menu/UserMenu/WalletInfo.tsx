@@ -26,7 +26,6 @@ import useTokenBalance, { useBSCCakeBalance } from 'hooks/useTokenBalance'
 
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import InternalLink from 'components/Links'
-import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -91,9 +90,8 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
     },
   )
 
-  const showBscEntryPoint = Number(bnbBalance?.data?.value) === 0 && SUPPORT_BUY_CRYPTO.includes(chainId as ChainId)
-  const showNativeEntryPoint =
-    Number(nativeBalance?.data?.value) === 0 && SUPPORT_BUY_CRYPTO.includes(chainId as ChainId)
+  const showBscEntryPoint = Number(bnbBalance?.data?.value) === 0
+  const showNativeEntryPoint = Number(nativeBalance?.data?.value) === 0
 
   return (
     <>
@@ -104,7 +102,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
         <CopyAddress tooltipMessage={t('Copied')} account={account ?? undefined} />
         {domainName ? <Text color="textSubtle">{domainName}</Text> : null}
       </FlexGap>
-      {hasLowNativeBalance && SUPPORT_BUY_CRYPTO.includes(chainId as ChainId) && (
+      {hasLowNativeBalance && (
         <Message variant="warning" mb="24px">
           <Box>
             <Text fontWeight="bold">

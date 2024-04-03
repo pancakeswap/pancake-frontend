@@ -1,8 +1,7 @@
-import { ChainId } from '@pancakeswap/chains'
+import type { ChainId } from '@pancakeswap/chains'
 import { useMemo } from 'react'
 
-// TODO: refactor. We shouldn't import modules from views in higher level hooks
-import { SUPPORTED_ONRAMP_TOKENS, isBuyCryptoSupported } from 'views/BuyCrypto/constants'
+const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB', 'WBTC']
 
 interface Params {
   currencySymbol?: string
@@ -11,11 +10,7 @@ interface Params {
 
 export function useCanBuyCrypto({ currencySymbol, chainId }: Params) {
   return useMemo(
-    () =>
-      !!currencySymbol &&
-      !!chainId &&
-      isBuyCryptoSupported(chainId) &&
-      SUPPORTED_ONRAMP_TOKENS.includes(currencySymbol),
+    () => !!currencySymbol && !!chainId && SUPPORTED_ONRAMP_TOKENS.includes(currencySymbol),
     [currencySymbol, chainId],
   )
 }

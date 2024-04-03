@@ -2,8 +2,10 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import Image from 'next/image'
-import { CURRENT_CAMPAIGN_TIMESTAMP, ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
+import { ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
 import pocketWatch from '../../../../../public/images/pocket-watch.svg'
+
+const CURRENT_CAMPAIGN_TIMESTAMP = 0
 
 const activeCampaigns: { [provider in keyof typeof ONRAMP_PROVIDERS]: boolean } = {
   [ONRAMP_PROVIDERS.Mercuryo]: false,
