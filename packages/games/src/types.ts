@@ -28,6 +28,7 @@ export enum GenreType {
   TowerDefense = 'Tower Defense',
   Casual = 'Casual',
   FPS = 'First Person Shooter',
+  MMORPG = 'MMORPG',
 }
 
 export enum TrendingTagType {
@@ -41,6 +42,7 @@ export enum TrendingTagType {
   NFT = 'NFT',
   FPS = 'First Person Shooter',
   Windows = 'Windows',
+  MMORPG = 'Massive Multiplayer Online Role-Playing Game',
 }
 
 export type Article = {
