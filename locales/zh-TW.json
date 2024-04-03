@@ -2266,7 +2266,7 @@
   "10% trading rebate to be earned!": "可賺取 10% 的交易回饋！",
   "Why my traded volume was not tracked?": "為何我的交易量沒有被追蹤到？",
   "Volume numbers take time to update and are subject to SubGraph delays. Please check back later": "交易量的數字需要一些時間才能更新，而且會受到 SubGraph 延遲的影響。請稍後再回來查看",
-  "Please ensure your trade is routed through the trading pairs eligible for trading rewards.Check out": "請務必確保您的交易路徑使用到符合交易返利資格的代幣對。請參閱",
+  "Please ensure your trade is routed through the trading pairs eligible for trading rewards.Check out": "請務必確保您在交易時，使用的交換路徑將路由經過符合交易返利資格的代幣對。請參閱",
   "this tutorial": "此教學",
   "for how to view your trading routes": "，瞭解如何檢視您的交換路徑",
   "If you are trading on Ethereum, please use the same wallet address eligible for the trading reward program": "如果您是在以太坊上進行交易的，請使用同一個符合交易獎勵計劃資格的錢包地址",
@@ -3242,7 +3242,7 @@
   "Flash Accounting optimizes gas usage by computing net balances for transactions and settling them collectively,resulting in significant gas savings.": "Flash Accounting 可透過計算交易的淨餘額並集體結算來將 gas 的使用最佳化，從而省下可觀的 gas。",
   "Empower your liquidity pool with the innovative Donate method. It enables direct payments to in-range LPs in one or both pool tokens. Donate ensures seamless and efficient transactions by leveraging the pool's fee accounting system.": "透過創新的「捐獻」方法來強化您的流動性糖漿池。透過這種方法，向範圍內的 LP 進行支付時，可直接支付一種或兩種糖漿池中的代幣。「捐獻」方法能夠充分發揮糖漿池的費用會計系統，從而確保了無縫且高效的交易。",
   "Introducing PancakeSwap v4": "引進 PancakeSwap v4",
-  "Your DEX Your Innovation Introducing PancakeSwap v4": "您的 DEX、您的創新，為您介紹 PancakeSwap v4",
+  "Your DEX Your Innovation Introducing PancakeSwap v4": "我的 DEX、我的創新，為您介紹 PancakeSwap v4",
   "Whitepaper": "白皮書",
   "twitter page": "X 頁面",
   "The NFP token has recently experienced an exploit. Please refrain from swapping NFP until further notice. More information can be found on the project's twitter page.": "NFP 代幣最近出現了一次漏洞。在另外收到通知前，請先避免交換 NFP。如需更多資訊，請洽該專案的 X 頁面。",
@@ -3271,5 +3271,6 @@
   "$5,000 extra reward pool": "5,000 美元的額外獎勵糖漿池",
   "PancakeSwap Multichain Celebration": "PancakeSwap 多鏈慶祝活動",
   "Starting MAR 14 - Over $3500 in prizes!": "3 月 14 日開始 - 獎金超過 3500 美元！",
-  "Participate Now": "立即參與"
+  "Participate Now": "立即參與",
+  "Merkl APR": "Merkl APR"
 }
