@@ -9,7 +9,7 @@ async function init(theme: ReturnType<typeof useTheme>) {
   }
   initialized = true
   const { bootstrapWidget, themes } = await import('@usdv/usdv-widget')
-  bootstrapWidget({ color: 1, theme: theme.isDark ? themes.dark : themes.light })
+  bootstrapWidget({ color: 20, theme: theme.isDark ? themes.dark : themes.light })
 }
 
 const USDVPage = () => {
