@@ -1,8 +1,12 @@
-import { VercelToolbar as VercelToolbarComp } from '@vercel/toolbar/next'
-import { FlagValues } from '@vercel/flags/react'
+import { Suspense, lazy } from 'react'
 
 import { useFeatureFlags } from 'hooks/useExperimentalFeatureEnabled'
 import { useShouldInjectVercelToolbar, useVercelToolbarEnabled } from 'hooks/useVercelToolbar'
+
+const VercelToolbarComp = lazy(() =>
+  import('@vercel/toolbar/next').then((module) => ({ default: module.VercelToolbar })),
+)
+const FlagValues = lazy(() => import('@vercel/flags/react').then((module) => ({ default: module.FlagValues })))
 
 export function VercelToolbar() {
   const flags = useFeatureFlags()
@@ -10,9 +14,13 @@ export function VercelToolbar() {
   const shouldInject = useShouldInjectVercelToolbar()
 
   return enabled ? (
-    <>
-      {shouldInject ? <VercelToolbarComp /> : null}
+    <Suspense>
+      {shouldInject ? (
+        <Suspense>
+          <VercelToolbarComp />
+        </Suspense>
+      ) : null}
       <FlagValues values={flags} />
-    </>
+    </Suspense>
   ) : null
 }
