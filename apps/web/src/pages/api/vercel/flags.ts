@@ -37,6 +37,7 @@ async function handler(_: NextApiRequest, response: NextApiResponse) {
     },
     overrideEncryptionMode: 'plaintext',
   }
+  response.setHeader('Cache-Control', `max-age=86400, s-maxage=604800`)
   return response.status(200).json(apiData)
 }
 

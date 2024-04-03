@@ -12,7 +12,7 @@ export function VercelToolbar() {
   return enabled ? (
     <>
       {shouldInject ? <VercelToolbarComp /> : null}
-      {enabled ? <FlagValues values={flags} /> : null}
+      <FlagValues values={flags} />
     </>
   ) : null
 }
