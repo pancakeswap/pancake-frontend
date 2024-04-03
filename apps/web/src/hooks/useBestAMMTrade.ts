@@ -506,6 +506,9 @@ function useBestTradeFromApi({
     if (stableSwap) {
       types.push(PoolType.STABLE)
     }
+    if (types.length === 0) {
+      return undefined
+    }
     return types
   }, [v2Swap, v3Swap, stableSwap])
 

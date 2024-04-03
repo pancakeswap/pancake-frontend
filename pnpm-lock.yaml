@@ -1440,9 +1440,15 @@ importers:
 
   packages/pcsx-sdk:
     dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
       '@pancakeswap/permit2-sdk':
         specifier: workspace:*
         version: link:../permit2-sdk
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../swap-sdk-core
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
@@ -1450,9 +1456,6 @@ importers:
         specifier: 1.19.11
         version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
     devDependencies:
-      tslib:
-        specifier: ^2.3.1
-        version: 2.6.2
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
