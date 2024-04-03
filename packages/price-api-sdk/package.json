@@ -50,6 +50,7 @@
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
+    "@pancakeswap/pcsx-sdk": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
     "tsup": "^6.7.0"
   },

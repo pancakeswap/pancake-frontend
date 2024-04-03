@@ -1589,10 +1589,10 @@ importers:
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../chains
+    devDependencies:
       '@pancakeswap/pcsx-sdk':
         specifier: workspace:*
         version: link:../pcsx-sdk
-    devDependencies:
       '@pancakeswap/permit2-sdk':
         specifier: workspace:*
         version: link:../permit2-sdk
