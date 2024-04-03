@@ -1,6 +1,6 @@
 import { recoverTypedDataAddress, zeroAddress } from 'viem'
 import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { ExclusiveDutchOrder, ExclusiveDutchOrderInfo } from './ExclusiveDutchOrder'
 
 describe('ExclusiveDutchOrder', () => {
@@ -67,10 +67,15 @@ describe('ExclusiveDutchOrder', () => {
   })
 
   it('hash', () => {
-    vi.useFakeTimers()
-    vi.setSystemTime(new Date(2024, 6, 9))
-    const order = new ExclusiveDutchOrder(getOrderInfo({}), 1)
+    const order = new ExclusiveDutchOrder(
+      getOrderInfo({
+        deadline: 100n,
+        decayStartTime: 100n,
+        decayEndTime: 100n,
+      }),
+      1,
+    )
 
-    expect(order.hash()).toMatchInlineSnapshot(`"0x3a92ee468943d4fee71024a0535a9968ac85eb9068e6a10032856c75388847f8"`)
+    expect(order.hash()).toMatchInlineSnapshot(`"0x7cef8eb26ac11e086c2784eb12d93cb9a4a68b3f04ce56b0858ff59829a13f0a"`)
   })
 })
