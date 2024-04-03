@@ -6,6 +6,9 @@ import { withSentryConfig } from '@sentry/nextjs'
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import vercelToolbarPlugin from '@vercel/toolbar/plugins/next'
+
+const withVercelToolbar = vercelToolbarPlugin()
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -87,6 +90,10 @@ const config = {
       {
         source: '/info/pool/:address',
         destination: '/info/pools/:address',
+      },
+      {
+        source: '/.well-known/vercel/flags',
+        destination: '/api/vercel/flags',
       },
     ]
   },
@@ -221,6 +228,6 @@ const config = {
   },
 }
 
-export default withBundleAnalyzer(
-  withVanillaExtract(withSentryConfig(withWebSecurityHeaders(config)), sentryWebpackPluginOptions),
+export default withVercelToolbar(
+  withBundleAnalyzer(withVanillaExtract(withSentryConfig(withWebSecurityHeaders(config)), sentryWebpackPluginOptions)),
 )
