@@ -328,7 +328,11 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   isLastFarm,
   alignLinksToRight = true,
 }) => {
-  const bCakeProps = { bCakeWrapperAddress: details.bCakeWrapperAddress }
+  const bCakeProps = {
+    bCakeWrapperAddress: details.bCakeWrapperAddress,
+    bCakeUserData: details.bCakeUserData,
+    bCakePublicData: details.bCakePublicData,
+  }
   const { chainId } = useActiveChainId()
   const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
   const { address: account } = useAccount()
@@ -358,8 +362,10 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   }, [chainId, farm.isStable, farm.lpAddress, farm.stableSwapAddress])
 
   const addLiquidityModal = useModalV2()
-  const isBooster = Boolean(details?.bCakeWrapperAddress) && farm?.bCakePublicData?.isRewardInRange
+  const isBooster = Boolean(details?.bCakeWrapperAddress)
+  const isRewardInRange = details?.bCakePublicData?.isRewardInRange
   const hasStakedInBCake = Boolean(details?.bCakeUserData?.stakedBalance?.gt(0))
+  if (details?.pid === 180) console.log(details, 'details????', hasStakedInBCake)
 
   const { status } = useBoostStatusPM(isBooster, details?.bCakeUserData?.boosterMultiplier)
   const { shouldUpdate, veCakeUserMultiplierBeforeBoosted } = useWrapperBooster(
@@ -516,40 +522,44 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                             </HarvestActionContainer>
                           </>
                         )}
-                        <Box
-                          style={{
-                            height: isMobile ? 2 : 70,
-                            width: isMobile ? '100%' : 2,
-                            backgroundColor: theme.colors.cardBorder,
-                          }}
-                        />
-                        <Flex
-                          flexGrow={1}
-                          maxWidth={isMobile ? 'auto' : hasStakedInBCake ? '27%' : '50%'}
-                          justifyContent="space-between"
-                          alignItems="center"
-                          p={isMobile ? '16px 0' : undefined}
-                          width={isMobile ? '100%' : undefined}
-                        >
-                          <StatusView
-                            status={status}
-                            isFarmStaking={farm?.bCakeUserData?.stakedBalance?.gt(0)}
-                            boostedMultiplier={details?.bCakeUserData?.boosterMultiplier}
-                            maxBoostMultiplier={3}
-                            shouldUpdate={shouldUpdate}
-                            expectMultiplier={veCakeUserMultiplierBeforeBoosted}
+                        {isRewardInRange && (
+                          <Box
+                            style={{
+                              height: isMobile ? 2 : 70,
+                              width: isMobile ? '100%' : 2,
+                              backgroundColor: theme.colors.cardBorder,
+                            }}
                           />
-                          {!locked && (
-                            <NextLink href="/cake-staking" passHref>
-                              <Button width="100%" style={{ whiteSpace: 'nowrap' }}>
-                                {t('Go to Lock')}
-                              </Button>
-                            </NextLink>
-                          )}
-                          {shouldUpdate && farm?.bCakeUserData?.stakedBalance?.gt(0) && (
-                            <Button onClick={onUpdate}>{t('Update')}</Button>
-                          )}
-                        </Flex>
+                        )}
+                        {isRewardInRange && (
+                          <Flex
+                            flexGrow={1}
+                            maxWidth={isMobile ? 'auto' : hasStakedInBCake ? '27%' : '50%'}
+                            justifyContent="space-between"
+                            alignItems="center"
+                            p={isMobile ? '16px 0' : undefined}
+                            width={isMobile ? '100%' : undefined}
+                          >
+                            <StatusView
+                              status={status}
+                              isFarmStaking={farm?.bCakeUserData?.stakedBalance?.gt(0)}
+                              boostedMultiplier={details?.bCakeUserData?.boosterMultiplier}
+                              maxBoostMultiplier={3}
+                              shouldUpdate={shouldUpdate}
+                              expectMultiplier={veCakeUserMultiplierBeforeBoosted}
+                            />
+                            {!locked && (
+                              <NextLink href="/cake-staking" passHref>
+                                <Button width="100%" style={{ whiteSpace: 'nowrap' }}>
+                                  {t('Go to Lock')}
+                                </Button>
+                              </NextLink>
+                            )}
+                            {shouldUpdate && farm?.bCakeUserData?.stakedBalance?.gt(0) && (
+                              <Button onClick={onUpdate}>{t('Update')}</Button>
+                            )}
+                          </Flex>
+                        )}
                       </>
                     ) : undefined
                   }

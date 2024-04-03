@@ -186,7 +186,8 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { boosterState } = useContext(YieldBoosterStateContext)
   const { isFirstTime, refresh: refreshFirstTime } = useFirstTimeCrossFarming(vaultPid)
   const { t } = useTranslation()
-  const isBooster = Boolean(bCakeWrapperAddress) && bCakePublicData?.isRewardInRange
+  const isBooster = Boolean(bCakeWrapperAddress)
+  const isBoosterAndRewardInRange = isBooster && bCakePublicData?.isRewardInRange
   const { toastSuccess } = useToast()
   const addTransaction = useTransactionAdder()
   const isBloctoETH = useIsBloctoETH()
@@ -197,7 +198,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   const router = useRouter()
   const cakePrice = useCakePrice()
-  const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
+  const [bCakeMultiplier] = useState<number | null>(() => null)
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
@@ -387,9 +388,9 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       lpRewardsApr={lpRewardsApr}
       onConfirm={handleStake}
       handleApprove={handleApprove}
-      isBooster={isBooster}
+      isBooster={isBoosterAndRewardInRange}
       boosterMultiplier={
-        isBooster
+        isBoosterAndRewardInRange
           ? bCakeUserData?.boosterMultiplier === 0 || bCakeUserData?.stakedBalance.eq(0) || !locked
             ? 3
             : bCakeUserData?.boosterMultiplier
