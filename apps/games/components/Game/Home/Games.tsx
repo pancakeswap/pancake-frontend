@@ -147,11 +147,9 @@ export const Games: React.FC<React.PropsWithChildren<GamesProps>> = ({ otherGame
 
   return (
     <Flex maxWidth="1100px" margin="auto">
-      {otherGames.length > 3 && (
-        <ArrowButton className="prev">
-          <ChevronLeftIcon color={theme.colors.textSubtle} />
-        </ArrowButton>
-      )}
+      <ArrowButton className="prev">
+        <ChevronLeftIcon color={theme.colors.textSubtle} />
+      </ArrowButton>
       <StyledSwiper
         slidesPerView={1}
         spaceBetween={10}
