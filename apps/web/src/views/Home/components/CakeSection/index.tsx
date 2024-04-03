@@ -537,7 +537,7 @@ const CakeSection: React.FC = () => {
           <CakeBottomLine />
           <BottomCakeContainer flexDirection="column">
             <Text textAlign="center" fontSize="40px" fontWeight="600">
-              {t('Ecosystem')}
+              {t('Staking')}
             </Text>
             <Text color="secondary" textAlign="center" fontSize="20px" fontWeight="600" mb="16px">
               {t('Earn up to %apr%% APR', { apr: totalApr.toFixed(2) })}
