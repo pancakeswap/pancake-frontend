@@ -166,8 +166,15 @@ export const useFourYearTotalVeCakeApr = () => {
   const revShareEmission = useRevShareEmission()
   const cakePoolEmission = useCakePoolEmission()
   const { data: totalSupply } = useVeCakeTotalSupply()
-  const veCAKEPoolApr = new BigNumber(cakePoolEmission).div(3 * 24 * 60 * 60 * 365).div(totalSupply)
-  const revShareEmissionApr = new BigNumber(revShareEmission).times(24 * 60 * 60 * 365).div(totalSupply)
+
+  const veCAKEPoolApr = new BigNumber(new BigNumber(cakePoolEmission).div(3).times(24 * 60 * 60 * 365))
+    .div(totalSupply.div(1e18))
+    .times(100)
+
+  const revShareEmissionApr = new BigNumber(revShareEmission)
+    .times(24 * 60 * 60 * 365)
+    .div(totalSupply)
+    .times(100)
 
   const total = useMemo(
     () => veCAKEPoolApr.plus(revShareEmissionApr).plus(BRIBE_APR),
