@@ -19,7 +19,7 @@ export const shadowRealm: GameType = {
   headerImage: 'https://shadow-realm.chainzstudios.com/overview/header.png',
   headerIconImage: {
     desktop: 'https://shadow-realm.chainzstudios.com/overview/headerIcon.png',
-    mobile: 'https://pancakeprotectors.io/assets/pancakeswap-game-landing/mobile-header-icon.png',
+    mobile: 'https://shadow-realm.chainzstudios.com/overview/headerIcon.png',
   },
   projectLogo: {
     lightTheme: 'https://shadow-realm.chainzstudios.com/overview/logo.png',
