@@ -4,14 +4,13 @@ import { ReactElement, useMemo } from 'react'
 import CompetitionBanner from '../CompetitionBanner'
 import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import GameBanner from '../GameBanner'
-import { MultiChainBanner } from '../MultichainBanner'
 import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
 import NewIFOBanner from '../NewIFOBanner'
 import PerpetualBanner from '../PerpetualBanner'
 import { TopTraderBanner } from '../TopTraderBanner'
 import UserBanner from '../UserBanner'
 import { V4InfoBanner } from '../V4InfoBanner'
-import VeCakeBanner from '../VeCakeBanner'
+import { VeCakeBanner } from '../VeCakeBanner'
 import { WBNBFixedStakingBanner } from '../WBNBFixedStakingBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
@@ -48,10 +47,7 @@ export const useMultipleBannerConfig = () => {
         banner: <UserBanner />,
       },
       { shouldRender: isRenderIFOBanner || Boolean(countdown), banner: <NewIFOBanner /> },
-      {
-        shouldRender: true,
-        banner: <MultiChainBanner />,
-      },
+      { shouldRender: true, banner: <VeCakeBanner /> },
       {
         shouldRender: true,
         banner: <WBNBFixedStakingBanner />,
@@ -73,7 +69,6 @@ export const useMultipleBannerConfig = () => {
     const SHUFFLE_BANNERS: IBannerConfig[] = [
       { shouldRender: true, banner: <GalxeTraverseBanner /> },
       { shouldRender: true, banner: <WebNotificationBanner /> },
-      { shouldRender: true, banner: <VeCakeBanner /> },
       { shouldRender: true, banner: <GameBanner /> },
       {
         shouldRender: isRenderCompetitionBanner,
