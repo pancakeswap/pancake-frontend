@@ -1,10 +1,25 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
-import { AutoRow, Box, FarmMultiplierInfo, Flex, Heading, Skeleton, Tag, useTooltip } from '@pancakeswap/uikit'
+import {
+  AutoRow,
+  Box,
+  FarmMultiplierInfo,
+  Flex,
+  Heading,
+  Link,
+  Skeleton,
+  Tag,
+  Text,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
+import { GiftTooltip } from 'components/GiftTooltip/GiftTooltip'
 import { TokenPairImage } from 'components/TokenImage'
 import { styled } from 'styled-components'
-import { Address } from 'viem'
+import { Address, isAddressEqual } from 'viem'
+import { bsc } from 'viem/chains'
+import { useChainId } from 'wagmi'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
 const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmWidget.Tags
@@ -55,7 +70,10 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   hasBothFarmAndMerkl,
   isBoosted,
   merklApr,
+  lpAddress,
 }) => {
+  const { t } = useTranslation()
+  const chainId = useChainId()
   const isReady = multiplier !== undefined
   const multiplierTooltipContent = FarmMultiplierInfo({
     farmCakePerSecond: farmCakePerSecond ?? '-',
@@ -87,6 +105,26 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
                   merklApr={merklApr}
                 />
               </Box>
+            ) : null}
+            {chainId === bsc.id &&
+            lpAddress &&
+            isAddressEqual(lpAddress, '0xdD82975ab85E745c84e497FD75ba409Ec02d4739') ? (
+              <GiftTooltip>
+                <Box>
+                  <Text lineHeight="110%" as="span">
+                    {t('Stake CAKE, Earn PEPE in our')}
+                    <Link
+                      ml="4px"
+                      lineHeight="110%"
+                      display="inline !important"
+                      href="/pools?chain=bsc"
+                      target="_blank"
+                    >
+                      PEPE Syrup Pool
+                    </Link>
+                  </Text>
+                </Box>
+              </GiftTooltip>
             ) : null}
           </Heading>
         ) : (

@@ -1,14 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { checkIsBoostedPool } from '@pancakeswap/pools'
 import { Token } from '@pancakeswap/sdk'
-import { Box, Skeleton, Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, Skeleton, Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWidget, Pool } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { memo, useMemo } from 'react'
+import { ReactNode, memo, useMemo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedLockedCakeVault, VaultKey } from 'state/types'
 import { styled } from 'styled-components'
@@ -18,6 +18,7 @@ const { AlpBoostedTag } = FarmWidget.Tags
 
 interface NameCellProps {
   pool: Pool.DeserializedPool<Token>
+  tooltip?: ReactNode
 }
 
 export const StyledCell = styled(Pool.BaseCell)`
@@ -30,7 +31,7 @@ export const StyledCell = styled(Pool.BaseCell)`
   }
 `
 
-const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) => {
+const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool, tooltip }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const { isMobile } = useMatchBreakpoints()
@@ -104,9 +105,12 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
                   {t('Staked')}
                 </Text>
               ))}
-            <Text bold={!isMobile} small={isMobile}>
-              {title}
-            </Text>
+            <Flex>
+              <Text bold={!isMobile} small={isMobile}>
+                {title}
+              </Text>
+              {tooltip}
+            </Flex>
             {showSubtitle && (
               <Text fontSize="12px" color="textSubtle">
                 {subtitle}
