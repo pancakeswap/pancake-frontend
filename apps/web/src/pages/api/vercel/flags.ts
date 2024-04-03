@@ -2,8 +2,13 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { type ApiData } from '@vercel/flags'
 
 import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
+import { isVercelToolbarEnabled } from 'utils/vercelToolbar'
 
 async function handler(_: NextApiRequest, response: NextApiResponse) {
+  if (!isVercelToolbarEnabled()) {
+    return response.status(401).json(null)
+  }
+
   const apiData: ApiData = {
     definitions: {
       [EXPERIMENTAL_FEATURES.UniversalRouter]: {
