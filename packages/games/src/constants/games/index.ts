@@ -8,6 +8,6 @@ import { shadowRealm } from './shadowRealm'
 
 export const TOP_GAMES_LIST: GameType[] = [pancakeProtectors]
 
-export const DEFAULT_GAMES_LIST: GameType[] = [nemesisDownfall, binaryX, shadowRealm]
+export const DEFAULT_GAMES_LIST: GameType[] = [shadowRealm, nemesisDownfall, binaryX]
 
 export const GAMES_LIST = [...TOP_GAMES_LIST, ...shuffle(DEFAULT_GAMES_LIST)]

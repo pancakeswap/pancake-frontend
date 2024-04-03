@@ -1,10 +1,12 @@
 import { GameType } from '@pancakeswap/games'
+import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Card, CardHeader, Flex, Text } from '@pancakeswap/uikit'
+import { Box, Button, Card, CardHeader, ChevronLeftIcon, ChevronRightIcon, Flex, Text } from '@pancakeswap/uikit'
 import { StyledTextLineClamp } from 'components/Game/StyledTextLineClamp'
 import dayjs from 'dayjs'
 import { useCallback } from 'react'
-import { styled, useTheme } from 'styled-components'
+import { styled } from 'styled-components'
+import { Navigation } from 'swiper/modules'
 import type { Swiper as SwiperClass } from 'swiper/types'
 
 import 'swiper/css'
@@ -43,17 +45,16 @@ const StyledCard = styled(Box)<{ picked?: boolean }>`
 const StyledSwiper = styled(Swiper)`
   position: relative;
   max-width: 298px;
-  margin: 0 0 20px 0;
-  overflow: initial;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin: 0 auto 20px auto;
-  }
+  margin: 0 auto 20px auto;
+  overflow: hidden;
 
   ${({ theme }) => theme.mediaQueries.md} {
     max-width: 630px; // 2 swiper
     margin: 0 auto 85px auto;
-    overflow: hidden;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    max-width: 945px; // 3 swiper
   }
 `
 
@@ -100,6 +101,26 @@ const StyledTag = styled(Button)`
     align-self: center;
   }
 `
+const ArrowButton = styled.div`
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  border: 2px solid ${({ theme }) => theme.colors.primary};
+  svg path {
+    fill: ${({ theme }) => theme.colors.primary};
+  }
+  cursor: pointer;
+
+  &.swiper-button-disabled {
+    opacity: 0;
+    pointer-events: none;
+  }
+`
 
 interface GamesProps {
   otherGames: GameType[]
@@ -109,7 +130,7 @@ interface GamesProps {
 
 export const Games: React.FC<React.PropsWithChildren<GamesProps>> = ({ otherGames, pickedGameId, setPickedGameId }) => {
   const { t } = useTranslation()
-  const { isDark } = useTheme()
+  const { theme, isDark } = useTheme()
 
   const getTime = useCallback((timestamp: number) => {
     const timeToMilliseconds = timestamp * 1000
@@ -125,51 +146,70 @@ export const Games: React.FC<React.PropsWithChildren<GamesProps>> = ({ otherGame
   )
 
   return (
-    <StyledSwiper
-      slidesPerView={1}
-      spaceBetween={10}
-      navigation={{
-        prevEl: '.prev',
-        nextEl: '.next',
-      }}
-      resizeObserver
-      breakpoints={{
-        860: {
-          slidesPerView: 2,
-          spaceBetween: 34,
-        },
-      }}
-      onRealIndexChange={handleRealIndexChange}
-    >
-      {otherGames?.map((game) => (
-        <SwiperSlide key={game.id} onClick={() => setPickedGameId(game.id)}>
-          <StyledCard picked={game.id === pickedGameId}>
-            <Card>
-              <Header imgUrl={game.headerImage} />
-              <Box padding="20px">
-                <StyledTextLineClamp lineClamp={2} bold fontSize={20} lineHeight="110%">
-                  {game.title}
-                </StyledTextLineClamp>
-                <StyledTextLineClamp lineClamp={3} m="20px 0" fontSize={12} color="textSubtle" lineHeight="120%">
-                  {game.description}
-                </StyledTextLineClamp>
-                <Box>
-                  <Text fontSize={12} color="textSubtle" bold>
-                    {t('Publish Date: %date%', { date: getTime(game.publishDate) })}
-                  </Text>
-                  <Text fontSize={12} color="textSubtle" bold mb="20px">
-                    {t('Publisher:')}
-                  </Text>
-                  <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="space-between">
-                    <ProjectLogo imgUrl={isDark ? game.projectLogo.darkTheme : game.projectLogo.lightTheme} />
-                    <StyledTag scale="xs">{game.genre}</StyledTag>
-                  </Flex>
+    <Flex maxWidth="1100px" margin="auto">
+      {otherGames.length > 3 && (
+        <ArrowButton className="prev">
+          <ChevronLeftIcon color={theme.colors.textSubtle} />
+        </ArrowButton>
+      )}
+      <StyledSwiper
+        slidesPerView={1}
+        spaceBetween={10}
+        modules={[Navigation]}
+        navigation={{
+          prevEl: '.prev',
+          nextEl: '.next',
+        }}
+        resizeObserver
+        breakpoints={{
+          320: {
+            slidesPerView: 1,
+            spaceBetween: 20,
+          },
+          860: {
+            slidesPerView: 2,
+            spaceBetween: 34,
+          },
+          1440: {
+            slidesPerView: 3,
+            spaceBetween: 32,
+          },
+        }}
+        onRealIndexChange={handleRealIndexChange}
+      >
+        {otherGames?.map((game) => (
+          <SwiperSlide key={game.id} onClick={() => setPickedGameId(game.id)}>
+            <StyledCard picked={game.id === pickedGameId}>
+              <Card>
+                <Header imgUrl={game.headerImage} />
+                <Box padding="20px">
+                  <StyledTextLineClamp lineClamp={2} bold fontSize={20} lineHeight="110%">
+                    {game.title}
+                  </StyledTextLineClamp>
+                  <StyledTextLineClamp lineClamp={3} m="20px 0" fontSize={12} color="textSubtle" lineHeight="120%">
+                    {game.description}
+                  </StyledTextLineClamp>
+                  <Box>
+                    <Text fontSize={12} color="textSubtle" bold>
+                      {t('Publish Date: %date%', { date: getTime(game.publishDate) })}
+                    </Text>
+                    <Text fontSize={12} color="textSubtle" bold mb="20px">
+                      {t('Publisher:')}
+                    </Text>
+                    <Flex flexDirection={['column', 'column', 'column', 'row']} justifyContent="space-between">
+                      <ProjectLogo imgUrl={isDark ? game.projectLogo.darkTheme : game.projectLogo.lightTheme} />
+                      <StyledTag scale="xs">{game.genre}</StyledTag>
+                    </Flex>
+                  </Box>
                 </Box>
-              </Box>
-            </Card>
-          </StyledCard>
-        </SwiperSlide>
-      ))}
-    </StyledSwiper>
+              </Card>
+            </StyledCard>
+          </SwiperSlide>
+        ))}
+      </StyledSwiper>
+      <ArrowButton className="next">
+        <ChevronRightIcon color={theme.colors.textSubtle} />
+      </ArrowButton>
+    </Flex>
   )
 }
