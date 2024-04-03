@@ -1,10 +1,18 @@
 import { ChainId } from '@pancakeswap/chains'
-import { type BigintIsh, Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/swap-sdk-core'
+import { ExclusiveDutchOrder, createExclusiveDutchOrderTrade } from '@pancakeswap/pcsx-sdk'
 import { PoolType, V4Router } from '@pancakeswap/smart-router'
-
-import { AMMPriceResponse, OrderType, type Request, type RequestConfig } from './types'
-import { getTradeTypeKey } from './getTradeType'
+import { Currency, CurrencyAmount, Percent, TradeType, type BigintIsh } from '@pancakeswap/swap-sdk-core'
 import { getPoolTypeKey } from './getPoolType'
+import { getTradeTypeKey } from './getTradeType'
+import {
+  AMMPriceResponse,
+  ErrorResponse,
+  OrderType,
+  ResponseType,
+  type Request,
+  type RequestConfig,
+  type Response,
+} from './types'
 
 type RequestInputs = {
   amount: CurrencyAmount<Currency>
@@ -60,6 +68,43 @@ export function getRequestBody({ amount, quoteCurrency, tradeType, amm, x }: Req
     tokenOut: getCurrencyIdentifier(currencyOut),
     configs,
   }
+}
+
+export function parseQuoteResponse<input extends Currency, output extends Currency, tradeType = TradeType>(
+  res: Response | ErrorResponse,
+  {
+    chainId,
+    currencyOut,
+    currencyIn,
+    tradeType,
+  }: {
+    chainId: ChainId
+    currencyIn: input
+    currencyOut: output
+    tradeType: TradeType
+  },
+) {
+  if (res.messageType === ResponseType.ERROR) {
+    throw new Error(res.message.error)
+  }
+
+  const { bestOrder } = res.message
+
+  if (bestOrder.type === OrderType.PCS_CLASSIC) {
+    return V4Router.Transformer.parseTrade(chainId, bestOrder.order)
+  }
+  if (bestOrder.type === OrderType.DUTCH_LIMIT) {
+    const order = ExclusiveDutchOrder.fromJSON(bestOrder.order, chainId)
+
+    return createExclusiveDutchOrderTrade({
+      currencyIn,
+      currenciesOut: [currencyOut],
+      orderInfo: order.info,
+      tradeType,
+    })
+  }
+
+  throw new Error(`Unknown order type`)
 }
 
 export function parseAMMPriceResponse(

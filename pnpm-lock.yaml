@@ -700,6 +700,9 @@ importers:
       '@pancakeswap/multicall':
         specifier: workspace:*
         version: link:../../packages/multicall
+      '@pancakeswap/pcsx-sdk':
+        specifier: workspace:*
+        version: link:../../packages/pcsx-sdk
       '@pancakeswap/permit2-sdk':
         specifier: workspace:*
         version: link:../../packages/permit2-sdk
@@ -1441,6 +1444,28 @@ importers:
         specifier: 13.5.6
         version: 13.5.6(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0)
 
+  packages/pcsx-sdk:
+    dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@pancakeswap/permit2-sdk':
+        specifier: workspace:*
+        version: link:../permit2-sdk
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../swap-sdk-core
+      dayjs:
+        specifier: ^1.11.10
+        version: 1.11.10
+      viem:
+        specifier: 1.19.11
+        version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
+    devDependencies:
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
+
   packages/permit2-sdk:
     dependencies:
       '@pancakeswap/chains':
@@ -1571,6 +1596,9 @@ importers:
         specifier: workspace:*
         version: link:../chains
     devDependencies:
+      '@pancakeswap/pcsx-sdk':
+        specifier: workspace:*
+        version: link:../pcsx-sdk
       '@pancakeswap/permit2-sdk':
         specifier: workspace:*
         version: link:../permit2-sdk
@@ -24587,7 +24615,7 @@ packages:
         optional: true
     dependencies:
       '@types/node': 13.13.52
-      esbuild: 0.19.8
+      esbuild: 0.19.12
       postcss: 8.4.33
       rollup: 4.9.6
     optionalDependencies:

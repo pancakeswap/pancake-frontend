@@ -1,7 +1,6 @@
-import { BigintIsh } from '@pancakeswap/swap-sdk-core'
 import { ChainId } from '@pancakeswap/chains'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
-import { parseAMMPriceResponse } from '@pancakeswap/price-api-sdk'
+import { getRequestBody, parseAMMPriceResponse, parseQuoteResponse } from '@pancakeswap/price-api-sdk'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import {
   BATCH_MULTICALL_CONFIGS,
@@ -12,11 +11,13 @@ import {
   SmartRouterTrade,
   V4Router,
 } from '@pancakeswap/smart-router'
+import { BigintIsh } from '@pancakeswap/swap-sdk-core'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react'
 
 import { QUOTING_API } from 'config/constants/endpoints'
+import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
 import { POOLS_NORMAL_REVALIDATE } from 'config/pools'
 import { useIsWrapping } from 'hooks/useWrapCallback'
 import { useCurrentBlock } from 'state/block/hooks'
@@ -24,7 +25,7 @@ import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { tracker } from 'utils/datadog'
 import { createViemPublicClientGetter } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
-import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
+import { useAccount } from 'wagmi'
 
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import {
@@ -35,11 +36,11 @@ import {
   useCommonPools as useCommonPoolsWithTicks,
 } from './useCommonPools'
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
+import { useExperimentalFeatureEnabled } from './useExperimentalFeatureEnabled'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
 import { useSpeedQuote } from './useSpeedQuote'
 import { useTokenFee } from './useTokenFee'
 import { useGlobalWorker } from './useWorker'
-import { useExperimentalFeatureEnabled } from './useExperimentalFeatureEnabled'
 
 export class NoValidRouteError extends Error {
   constructor(message?: string) {
@@ -121,7 +122,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
   const apiAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled
 
-  useBestAMMTradeFromQuoterApi({
+  useBestTradeFromApi({
     ...params,
     enabled: Boolean(enabled && isPriceApiEnabled),
     autoRevalidate: apiAutoRevalidate,
@@ -482,17 +483,115 @@ export const useBestAMMTradeFromOffchainQuoter = bestTradeHookFactory<V4Router.V
   useGetBestTrade: createUseWorkerGetBestTradeOffchain(),
 })
 
+function useBestTradeFromApi({
+  amount,
+  currency,
+  enabled,
+  maxHops,
+  maxSplits,
+  stableSwap,
+  trackPerf,
+  tradeType = TradeType.EXACT_INPUT,
+  v2Swap,
+  v3Swap,
+}: Options) {
+  const poolTypes = useMemo(() => {
+    const types: PoolType[] = []
+    if (v2Swap) {
+      types.push(PoolType.V2)
+    }
+    if (v3Swap) {
+      types.push(PoolType.V3)
+    }
+    if (stableSwap) {
+      types.push(PoolType.STABLE)
+    }
+    if (types.length === 0) {
+      return undefined
+    }
+    return types
+  }, [v2Swap, v3Swap, stableSwap])
+
+  const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
+  const deferQuotient = useDebounce(deferQuotientRaw, 500)
+  const { address } = useAccount()
+
+  return useQuery({
+    enabled: !!(amount && currency && deferQuotient && enabled),
+    queryKey: [
+      'quote-api',
+      address,
+      currency?.chainId,
+      amount?.currency?.symbol,
+      currency?.symbol,
+      tradeType,
+      deferQuotient,
+      maxHops,
+      maxSplits,
+      poolTypes,
+    ] as const,
+    queryFn: async ({ signal, queryKey }) => {
+      const [key] = queryKey
+      if (!amount || !amount.currency || !currency || !deferQuotient) {
+        throw new Error('Invalid amount or currency')
+      }
+
+      const startTime = performance.now()
+
+      const body = getRequestBody({
+        amount,
+        quoteCurrency: currency,
+        tradeType,
+        amm: { maxHops, maxSplits, poolTypes },
+        x: {
+          useSyntheticQuotes: true,
+          swapper: address,
+        },
+      })
+      const serverRes = await fetch(`${QUOTING_API}`, {
+        method: 'POST',
+        signal,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      })
+      const serializedRes = await serverRes.json()
+
+      const result = parseQuoteResponse(serializedRes, {
+        chainId: currency.chainId,
+        currencyIn: amount.currency,
+        currencyOut: currency,
+        tradeType,
+      })
+
+      const duration = Math.floor(performance.now() - startTime)
+
+      if (trackPerf) {
+        tracker.log(`[PERF] ${key} duration:${duration}ms`, {
+          chainId: currency.chainId,
+          label: key,
+          duration,
+        })
+      }
+
+      return result
+    },
+  })
+}
+
 export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory<V4Router.V4TradeWithoutGraph<TradeType>>({
   key: 'useBestAMMTradeFromPriceAPI',
   useCommonPools: useCommonPoolsLite,
   createQuoteProvider,
   useGetBestTrade: createSimpleUseGetBestTradeHook(
-    async (amount, currency, tradeType, { maxHops, maxSplits, allowedPoolTypes }) => {
+    async (amount, currency, tradeType, { maxHops, maxSplits, allowedPoolTypes, signal }) => {
       const serverRes = await fetch(`${QUOTING_API}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        signal,
         body: JSON.stringify({
           chainId: currency.chainId,
           currency: SmartRouter.Transformer.serializeCurrency(currency),

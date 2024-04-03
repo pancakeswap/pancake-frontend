@@ -51,6 +51,7 @@
     "@pancakeswap/ifos": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/multicall": "workspace:*",
+    "@pancakeswap/pcsx-sdk": "workspace:*",
     "@pancakeswap/permit2-sdk": "workspace:*",
     "@pancakeswap/pools": "workspace:*",
     "@pancakeswap/position-managers": "workspace:*",

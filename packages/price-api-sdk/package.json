@@ -25,7 +25,8 @@
   "peerDependencies": {
     "@pancakeswap/permit2-sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
-    "@pancakeswap/swap-sdk-core": "workspace:*"
+    "@pancakeswap/swap-sdk-core": "workspace:*",
+    "@pancakeswap/pcsx-sdk": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@pancakeswap/permit2-sdk": {
@@ -35,6 +36,9 @@
       "optional": true
     },
     "@pancakeswap/smart-router": {
+      "optional": true
+    },
+    "@pancakeswap/pcsx-sdk": {
       "optional": true
     }
   },
@@ -46,6 +50,7 @@
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/smart-router": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
+    "@pancakeswap/pcsx-sdk": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
     "tsup": "^6.7.0"
   },
