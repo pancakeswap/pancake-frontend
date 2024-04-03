@@ -1,5 +1,11 @@
 # @pancakeswap/pools
 
+## 5.1.17
+
+### Patch Changes
+
+- c469596: Add PEPE pool
+
 ## 5.1.16
 
 ### Patch Changes
