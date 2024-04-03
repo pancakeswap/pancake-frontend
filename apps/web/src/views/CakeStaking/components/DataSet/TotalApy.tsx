@@ -20,15 +20,16 @@ export const TotalApy = ({ veCake, cakeAmount }: { veCake: string; cakeAmount: n
   const cakePoolEmission = useCakePoolEmission()
   const revShareEmission = useRevShareEmission()
   const { data: totalSupply } = useVeCakeTotalSupply()
-
   // CAKE Pool APR
   const userCakeTvl = getDecimalAmount(new BigNumber(cakeAmount))
   const userSharesPercentage = getDecimalAmount(new BigNumber(veCake)).div(totalSupply).times(100)
+
   const cakePoolApr = useMemo(() => {
     const apr = new BigNumber(userSharesPercentage)
       .times(cakePoolEmission)
-      .div(3 * 24 * 60 * 60 * 365)
-      .div(userCakeTvl)
+      .div(3)
+      .times(24 * 60 * 60 * 365)
+      .div(userCakeTvl.div(1e18))
       .toNumber()
 
     return Number.isNaN(apr) ? 0 : apr
