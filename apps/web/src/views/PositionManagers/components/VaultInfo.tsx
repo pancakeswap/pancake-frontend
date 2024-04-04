@@ -89,7 +89,7 @@ export const VaultInfo = memo(function VaultInfo({
       )}
       {isInCakeRewardDateRange && isTableView && (
         <RowBetween style={{ padding: '2px 0px' }}>
-          <InfoText>{t('Reward per Day')}:</InfoText>
+          <InfoText>{t('Reward Per Day')}:</InfoText>
           <InfoText>
             <RewardPerDay scale="sm" rewardPerSec={tokenPerSecond} />
           </InfoText>
