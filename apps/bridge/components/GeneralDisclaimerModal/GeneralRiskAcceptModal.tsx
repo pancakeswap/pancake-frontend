@@ -18,7 +18,7 @@ function GeneralRiskAcceptModal({ bridgeConfig, cb }: { bridgeConfig: BridgeDisc
     <DisclaimerModal
       id={bridgeConfig.id}
       title={t(bridgeConfig.title)}
-      header={t('This an experimental product')}
+      header={t('This is an experimental product')}
       subtitle={t('We highly advise you go through the FAQ Guide below before continuing')}
       checks={[
         {
