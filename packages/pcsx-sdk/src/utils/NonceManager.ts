@@ -27,7 +27,7 @@ export class NonceManager {
       })
     } else if (PERMIT2_MAPPING[chainId]) {
       this.contract = getContract({
-        address: PERMIT2_MAPPING[chainId],
+        address: PERMIT2_MAPPING[chainId]!,
         abi: permit2Abi,
         publicClient: client,
       })
