@@ -150,7 +150,15 @@ export const AprButton = memo(function YieldInfo({
   )
 
   return (
-    <Flex flexDirection="row" justifyContent="center" alignItems="center">
+    <Flex
+      flexDirection="row"
+      justifyContent="center"
+      alignItems="center"
+      onClick={(e) => {
+        e.stopPropagation()
+        onPresentApyModal()
+      }}
+    >
       {apr && !isAprLoading ? (
         <>
           <Text ref={targetRef} display="flex" style={{ gap: 3, whiteSpace: 'nowrap' }}>
@@ -166,7 +174,7 @@ export const AprButton = memo(function YieldInfo({
             </AprText>
             {tooltipVisible && tooltip}
           </Text>
-          <IconButton variant="text" scale="sm" onClick={onPresentApyModal}>
+          <IconButton variant="text" scale="sm">
             <CalculateIcon mt="3px" color="textSubtle" ml="3px" width="20px" />
           </IconButton>
         </>

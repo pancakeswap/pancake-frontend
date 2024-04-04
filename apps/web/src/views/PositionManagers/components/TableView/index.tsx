@@ -134,6 +134,11 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     [manager],
   )
 
+  useEffect(() => {
+    if (info?.userToken0Amounts > 0n || info?.userToken1Amounts > 0n) {
+      setActionPanelExpanded(true)
+    }
+  }, [info?.userToken0Amounts, info?.userToken1Amounts])
   const aprDataInfo = useMemo(() => {
     const { isLoading, data, fallbackData, specificData } = aprDataList
     let timeWindow = TIME_WINDOW_FALLBACK
