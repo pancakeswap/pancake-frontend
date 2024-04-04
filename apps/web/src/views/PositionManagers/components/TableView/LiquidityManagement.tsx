@@ -115,13 +115,12 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   )
   const { isTxLoading, onStake, onUpdate } = useOnStake(contractAddress, bCakeWrapper)
   const { locked } = useBCakeBoostLimitAndLockInfo()
-  const { isMobile } = useMatchBreakpoints()
-
+  const { isDesktop } = useMatchBreakpoints()
   return (
     <>
       {hasStaked ? (
         <AtomBox>
-          <ActionContainer flexDirection={isMobile ? 'column' : 'row'}>
+          <ActionContainer flexDirection={!isDesktop ? 'column' : 'row'}>
             <Flex flexDirection="column" flexBasis="50%">
               <StakedAssets
                 currencyA={currencyA}
@@ -135,7 +134,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                 isSingleDepositToken={isSingleDepositToken}
                 isSingleDepositToken0={isSingleDepositToken0}
               />
-              {isMobile && (
+              {!isDesktop && (
                 <AtomBox
                   width={{
                     xs: '100%',
@@ -145,7 +144,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                 />
               )}
             </Flex>
-            {!isMobile && (
+            {isDesktop && (
               <AtomBox
                 height={{
                   xs: '100%',
@@ -158,7 +157,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
               <RowBetween
                 flexDirection="column"
                 justifyContent="center"
-                alignItems={isMobile ? 'flex-start' : 'center'}
+                alignItems={!isDesktop ? 'flex-start' : 'center'}
                 flex={1}
                 width="100%"
               >
@@ -182,7 +181,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                   />
                   <RowBetween
                     flexDirection="column"
-                    alignItems={isMobile ? 'flex-start' : 'center'}
+                    alignItems={!isDesktop ? 'flex-start' : 'center'}
                     flex={1}
                     width="100%"
                   >

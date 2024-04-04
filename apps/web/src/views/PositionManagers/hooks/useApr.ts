@@ -51,6 +51,7 @@ export const useApr = ({
   const { data: rewardUsdPrice } = useCurrencyUsdPrice(earningToken ?? undefined)
 
   const isInCakeRewardDateRange = useMemo(
+    // () =>  true // mock cake in range to see the booster changes
     () => Date.now() / 1000 < rewardEndTime && Date.now() / 1000 >= rewardStartTime,
     [rewardEndTime, rewardStartTime],
   )
@@ -88,7 +89,7 @@ export const useApr = ({
   ])
 
   const cakeYieldApr = useMemo(() => {
-    if (!isInCakeRewardDateRange || false) {
+    if (!isInCakeRewardDateRange) {
       return BIG_ZERO
     }
 

@@ -305,7 +305,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                 )
 
               case 'rewardPerDay':
-                return (
+                return isSmallerScreen ? null : (
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t('Reward Per Day')}>
@@ -321,7 +321,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                 )
 
               case 'earn':
-                return (
+                return isSmallerScreen ? null : (
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t('Earn')}>{earning}</CellLayout>
@@ -329,7 +329,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                   </td>
                 )
               case 'totalStaked':
-                return (
+                return isSmallerScreen ? null : (
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t('Total Staked')}>

@@ -60,7 +60,7 @@ export const ActionPanel: React.FC<
   boosterContractAddress,
 }) => {
   const { colors } = useTheme()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isDesktop } = useMatchBreakpoints()
 
   return (
     <Flex
@@ -70,21 +70,24 @@ export const ActionPanel: React.FC<
       style={{ gap: 32 }}
     >
       <Flex flexDirection="column" width={isMobile ? '100%' : 304}>
-        <VaultInfo
-          currencyA={currencyA}
-          currencyB={currencyB}
-          managerFee={managerFee}
-          token0PriceUSD={token0PriceUSD}
-          token1PriceUSD={token1PriceUSD}
-          poolToken0Amount={poolToken0Amount}
-          poolToken1Amount={poolToken1Amount}
-          allowDepositToken0={allowDepositToken0}
-          allowDepositToken1={allowDepositToken1}
-          isSingleDepositToken={isSingleDepositToken}
-          tokenPerSecond={tokenPerSecond}
-          earningToken={earningToken}
-          isInCakeRewardDateRange={isInCakeRewardDateRange}
-        />
+        {!isMobile && (
+          <VaultInfo
+            currencyA={currencyA}
+            currencyB={currencyB}
+            managerFee={managerFee}
+            token0PriceUSD={token0PriceUSD}
+            token1PriceUSD={token1PriceUSD}
+            poolToken0Amount={poolToken0Amount}
+            poolToken1Amount={poolToken1Amount}
+            allowDepositToken0={allowDepositToken0}
+            allowDepositToken1={allowDepositToken1}
+            isSingleDepositToken={isSingleDepositToken}
+            tokenPerSecond={tokenPerSecond}
+            earningToken={earningToken}
+            isTableView={!isDesktop}
+            isInCakeRewardDateRange={isInCakeRewardDateRange}
+          />
+        )}
         <VaultLinks
           mt="0.5em"
           manager={manager}
@@ -150,6 +153,24 @@ export const ActionPanel: React.FC<
           />
         </TableActionCard>
       </Flex>
+      {isMobile && (
+        <VaultInfo
+          currencyA={currencyA}
+          currencyB={currencyB}
+          managerFee={managerFee}
+          token0PriceUSD={token0PriceUSD}
+          token1PriceUSD={token1PriceUSD}
+          poolToken0Amount={poolToken0Amount}
+          poolToken1Amount={poolToken1Amount}
+          allowDepositToken0={allowDepositToken0}
+          allowDepositToken1={allowDepositToken1}
+          isSingleDepositToken={isSingleDepositToken}
+          tokenPerSecond={tokenPerSecond}
+          earningToken={earningToken}
+          isTableView
+          isInCakeRewardDateRange={isInCakeRewardDateRange}
+        />
+      )}
     </Flex>
   )
 }
