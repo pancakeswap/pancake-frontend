@@ -3468,4 +3468,13 @@ export const CONFIG_PROD: GaugeConfig[] = [
     type: GaugeType.StableSwap,
     tokenAddresses: [arbitrumTokens.mdlp.address, arbitrumTokens.dlp.address],
   },
+  {
+    gid: 348,
+    pairName: 'WETH-rswETH',
+    address: '0x2689eF3EC44f417d22c862F16F3D5e71E6287086',
+    chainId: ChainId.ETHEREUM,
+    type: GaugeType.ALM,
+    token0Address: ethereumTokens.weth.address,
+    token1Address: ethereumTokens.rswETH.address,
+  },
 ]

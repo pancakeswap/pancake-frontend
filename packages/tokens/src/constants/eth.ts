@@ -457,4 +457,12 @@ export const ethereumTokens = {
     'NetMind Token',
     'https://power.netmind.ai/',
   ),
+  rswETH: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xFAe103DC9cf190eD75350761e95403b7b8aFa6c0',
+    18,
+    'rswETH',
+    'rswETH',
+    'https://www.swellnetwork.io/',
+  ),
 }
