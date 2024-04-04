@@ -34,9 +34,9 @@ const PERMIT2_ADDRESSES: Record<ChainId, Address> = {
   [ChainId.OPBNB_TESTNET]: '0x31c2F6fcFf4F8759b3Bd5Bf0e1084A055615c768',
 }
 
-export const getPermit2Address = (chainId: ChainId | undefined): Address => {
+export const getPermit2Address = (chainId: ChainId | undefined): Address | undefined => {
   if (chainId === undefined) return PERMIT2_ADDRESSES[ChainId.BSC]
-  if (!(chainId in PERMIT2_ADDRESSES)) throw new Error(`Permit2 Contract not deployed on chain ${chainId}`)
+  if (!(chainId in PERMIT2_ADDRESSES)) return undefined
   return PERMIT2_ADDRESSES[chainId]
 }
 
