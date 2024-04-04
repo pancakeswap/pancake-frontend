@@ -84,7 +84,7 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
         throw new Error('Missing gelatoLimitOrders, account or chainId')
       }
       try {
-        const orders = await gelatoLimitOrders.getOpenOrders(account.toLowerCase(), false)
+        const orders = await gelatoLimitOrders.getOpenOrders(account.toLowerCase(), true)
 
         await syncOrderToLocalStorage({
           orders,
@@ -138,8 +138,8 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
         const acc = account.toLowerCase()
 
         const [canOrders, exeOrders] = await Promise.all([
-          gelatoLimitOrders.getCancelledOrders(acc, false),
-          gelatoLimitOrders.getExecutedOrders(acc, false),
+          gelatoLimitOrders.getCancelledOrders(acc, true),
+          gelatoLimitOrders.getExecutedOrders(acc, true),
         ])
 
         await syncOrderToLocalStorage({
@@ -187,7 +187,7 @@ const useExpiredOrders = (turnOn: boolean): Order[] => {
         throw new Error('Missing gelatoLimitOrders, account or chainId')
       }
       try {
-        const orders = await gelatoLimitOrders.getOpenOrders(account.toLowerCase(), false)
+        const orders = await gelatoLimitOrders.getOpenOrders(account.toLowerCase(), true)
         await syncOrderToLocalStorage({
           orders,
           chainId,
