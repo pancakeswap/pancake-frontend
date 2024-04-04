@@ -3,7 +3,7 @@ import { TypedDataDomain, TypedDataParameter } from './utils/types'
 
 const PERMIT2_DOMAIN_NAME = 'Permit2'
 
-export function permit2Domain(permit2Address: Address, chainId: number): TypedDataDomain {
+export function permit2Domain(permit2Address: Address | undefined, chainId: number): TypedDataDomain {
   return {
     name: PERMIT2_DOMAIN_NAME,
     chainId,

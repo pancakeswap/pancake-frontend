@@ -134,7 +134,7 @@ export abstract class SignatureTransfer {
       : TWitness extends undefined
       ? PermitBatchTransferFromData
       : PermitBatchWitnessTransferFromData,
-  >(permit: TPermit, permit2Address: Address, chainId: number, witness?: TWitness): ReturnType {
+  >(permit: TPermit, permit2Address: Address | undefined, chainId: number, witness?: TWitness): ReturnType {
     invariant(MaxSigDeadline >= BigInt(permit.deadline), 'SIG_DEADLINE_OUT_OF_RANGE')
     invariant(MaxUnorderedNonce >= BigInt(permit.nonce), 'NONCE_OUT_OF_RANGE')
 

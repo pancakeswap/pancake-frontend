@@ -83,7 +83,7 @@ const EXCLUSIVE_DUTCH_ORDER_ABI = parseAbiParameters([
 ])
 
 export class ExclusiveDutchOrder extends Order {
-  public permit2Address: Address
+  public permit2Address: Address | undefined
 
   constructor(
     public readonly info: ExclusiveDutchOrderInfo,
