@@ -114,15 +114,15 @@ const RewardsBreakdown: React.FC<React.PropsWithChildren<RewardsBreakdownProps>>
       {currentList && (
         <Box width="350px" margin="auto auto 16px auto">
           <ButtonMenu activeIndex={index} onItemClick={handleIndex} fullWidth scale="sm" variant="subtle">
-            <ButtonMenuItem>{t('Current Round')}</ButtonMenuItem>
-            <ButtonMenuItem>{t('Previous Rounds')}</ButtonMenuItem>
+            <ButtonMenuItem>{t('Current Period')}</ButtonMenuItem>
+            <ButtonMenuItem>{t('Previous Periods')}</ButtonMenuItem>
           </ButtonMenu>
         </Box>
       )}
       {list?.pairs?.length > 0 && (
         <Text textAlign="center" color="textSubtle" bold>
-          {t('Round #%round%  |  %startTime% - %endTime%', {
-            round: maxPage - (currentPage - 1),
+          {t('Period #%period%  |  %startTime% - %endTime%', {
+            period: maxPage - (currentPage - 1),
             startTime: timeFormat(locale, list.campaignStart),
             endTime: timeFormat(locale, list.campaignClaimTime),
           })}

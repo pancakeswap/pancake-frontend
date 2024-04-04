@@ -61,7 +61,7 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
     [allLeaderBoard],
   )
 
-  const round = useMemo(() => campaignMaxPage - (campaignPage - 1), [campaignMaxPage, campaignPage])
+  const period = useMemo(() => campaignMaxPage - (campaignPage - 1), [campaignMaxPage, campaignPage])
 
   const sliceAllLeaderBoard = useCallback(() => {
     const slice = allLeaderBoard.slice(MAX_CAMPAIGN_PER_PAGE * (campaignPage - 1), MAX_CAMPAIGN_PER_PAGE * campaignPage)
@@ -125,16 +125,16 @@ const Leaderboard: React.FC<React.PropsWithChildren<LeaderboardProps>> = ({ camp
         {currentLeaderBoard && (
           <Box width="350px" margin="auto auto 16px auto">
             <ButtonMenu activeIndex={index} onItemClick={setIndex} fullWidth scale="sm" variant="subtle">
-              <ButtonMenuItem>{t('Current Round')}</ButtonMenuItem>
-              <ButtonMenuItem>{t('Previous Rounds')}</ButtonMenuItem>
+              <ButtonMenuItem>{t('Current Period')}</ButtonMenuItem>
+              <ButtonMenuItem>{t('Previous Periods')}</ButtonMenuItem>
             </ButtonMenu>
           </Box>
         )}
-        {round > 0 && (
+        {period > 0 && (
           <>
             <Text textAlign="center" color="textSubtle" bold>
-              {t('Round #%round%  |  %startTime% - %endTime%', {
-                round,
+              {t('Period #%period%  |  %startTime% - %endTime%', {
+                period,
                 startTime: timeFormat(locale, campaignLeaderBoardList?.campaignStart),
                 endTime: timeFormat(locale, campaignLeaderBoardList?.campaignClaimTime),
               })}
