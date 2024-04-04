@@ -3125,4 +3125,12 @@ export const bscTokens = {
     'NetMind Token',
     'https://power.netmind.ai/',
   ),
+  sdt: new ERC20Token(
+    ChainId.BSC,
+    '0x07715EE7219B07b8e01CC7d2787f4e5e75860383',
+    18,
+    'SDT',
+    'Stake DAO Token',
+    'https://www.stakedao.org/',
+  ),
 }
