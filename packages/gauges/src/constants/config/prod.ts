@@ -3477,4 +3477,23 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: ethereumTokens.weth.address,
     token1Address: ethereumTokens.rswETH.address,
   },
+  {
+    gid: 349,
+    pairName: 'SDT-BNB',
+    address: '0x71b948B361ad69A233a208190C9ac9c5B130d095',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    token0Address: bscTokens.sdt.address,
+    token1Address: bscTokens.bnb.address,
+    feeTier: FeeAmount.MEDIUM,
+  },
+  {
+    gid: 350,
+    pairName: 'CAKE-WETH',
+    address: '0xAC98137c3dbE929aE354dDCF50E73Bf59d88dB00',
+    chainId: ChainId.ARBITRUM_ONE,
+    type: GaugeType.ALM,
+    token0Address: arbitrumTokens.cake.address,
+    token1Address: arbitrumTokens.weth.address,
+  },
 ]
