@@ -4,21 +4,21 @@ import { Strategy } from '@pancakeswap/position-managers'
 export function getStrategyName(t: TranslateFunction, strategy: Strategy, allTokenName?: string) {
   switch (strategy) {
     case Strategy.TYPICAL_WIDE:
-      return t('Typical Wide')
+      return 'Typical Wide'
     case Strategy.YIELD_IQ:
-      return t('Yield IQ')
+      return 'Yield IQ'
     case Strategy.ACTIVE:
-      return t('Active')
+      return 'Active'
     case Strategy.PASSIVE:
-      return t('Passive')
+      return 'Passive'
     case Strategy.PEGGED:
-      return t('Pegged')
+      return 'Pegged'
     case Strategy.ALO:
-      return t('Automated Liquidity Optimization')
+      return 'Automated Liquidity Optimization'
     case Strategy.ASCEND:
-      return t('Ascend')
+      return 'Ascend'
     case Strategy.SAVINGS:
-      return `${allTokenName ? `${allTokenName} ` : ''}${t('Savings')}`
+      return `${allTokenName ? `${allTokenName} ` : ''}${'Savings'}`
     default:
       return ''
   }
