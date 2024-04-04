@@ -3234,7 +3234,7 @@
   "%stakedToken% Syrup Pool": "%stakedToken% Syrup Pool",
   "If more %lpLabel% LP is deposited in our Farm this week, we'll increase APT rewards for %stakedToken% Syrup Pool next week.": "Wenn in dieser Woche mehr %lpLabel% LP in unsere Farm eingezahlt werden, erhöhen wir nächste Woche die APT-Belohnungen für den %stakedToken% Syrup Pool.",
   "Enjoying the %stakingToken% Staking APR? Get more rewards with the %lpLabel% LP on our": "Genießen Sie den %stakingToken% Einsatz-APR? Holen Sie sich weitere Belohnungen mit dem %lpLabel% LP auf unseren",
-  "The rewards for this Syrup Pool will not be applicable to or claimable by": "Die Prämien für diesen Syrup Pool sind nicht anwendbar oder zu beanspruchen von",
+  "The rewards for this Syrup Pool will not be applicable to or claimable by": "Die Prämien für diesen Syrup Pool sind nicht anwendbar oder zu beanspruchen von:",
   "Verify your address to continue": "Verify your address to continue",
   "Invalid BTC address": "Invalid BTC address",
   "Buy with %provider%": "Kaufen mit %provider%",
@@ -3287,5 +3287,7 @@
   "Starting MAR 14 - Over $3500 in prizes!": "Ab 14. März – Über 3500 $ in Preisen!",
   "Participate Now": "Jetzt mitmachen",
   "Merkl APR": "Merkl APR",
-  "Quotes may be unavailable for some assets based on market conditions and provider availability in your region.": "Quotes may be unavailable for some assets based on market conditions and provider availability in your region."
+  "Quotes may be unavailable for some assets based on market conditions and provider availability in your region.": "Quotes may be unavailable for some assets based on market conditions and provider availability in your region.",
+  "Stake CAKE, Earn PEPE in our": "Stake CAKE, Earn PEPE in our",
+  "Enjoying the APR? Get more PEPE rewards in next month's Syrup Pool by staking more PEPE-BNB LP in our": "Enjoying the APR? Get more PEPE rewards in next month's Syrup Pool by staking more PEPE-BNB LP in our"
 }
