@@ -113,7 +113,7 @@ const PoolRow: React.FC<React.PropsWithChildren<{ sousId: number; account: strin
         <Box>
           <Text lineHeight="110%" as="span">
             {t("Enjoying the APR? Get more PEPE rewards in next month's Syrup Pool by staking more PEPE-BNB LP in our")}
-            <Link ml="4px" lineHeight="110%" display="inline !important" href="/farm?chain=bsc" target="_blank">
+            <Link ml="4px" lineHeight="110%" display="inline !important" href="/farms?chain=bsc" target="_blank">
               Farms
             </Link>
           </Text>
