@@ -21,6 +21,20 @@ const v3TopFixedLps: FarmConfigV3[] = [
     feeAmount: FeeAmount.LOW,
   },
   {
+    pid: 149,
+    lpAddress: '0xf2688Fb5B81049DFB7703aDa5e770543770612C4',
+    token0: bscTokens.usdc,
+    token1: bscTokens.wbnb,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 148,
+    lpAddress: '0x81A9b5F18179cE2bf8f001b8a634Db80771F1824',
+    token0: bscTokens.usdc,
+    token1: bscTokens.wbnb,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
     pid: 7,
     token0: bscTokens.usdt,
     token1: bscTokens.btcb,
@@ -151,20 +165,6 @@ export const farmsV3 = defineFarmV3Configs([
     token0: bscTokens.trump,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
-  },
-  {
-    pid: 149,
-    lpAddress: '0xf2688Fb5B81049DFB7703aDa5e770543770612C4',
-    token0: bscTokens.usdc,
-    token1: bscTokens.wbnb,
-    feeAmount: FeeAmount.LOWEST,
-  },
-  {
-    pid: 148,
-    lpAddress: '0x81A9b5F18179cE2bf8f001b8a634Db80771F1824',
-    token0: bscTokens.usdc,
-    token1: bscTokens.wbnb,
-    feeAmount: FeeAmount.LOW,
   },
   {
     pid: 147,

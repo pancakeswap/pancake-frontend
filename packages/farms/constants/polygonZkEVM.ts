@@ -1,8 +1,55 @@
 import { polygonZkEvmTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { FarmConfigV3 } from '../src'
 import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
+const v3TopFixedFarms: FarmConfigV3[] = [
+  {
+    pid: 15,
+    lpAddress: '0x9f37552b87b68E7F169c442D595c1Be7A0F03b92',
+    token0: polygonZkEvmTokens.weth,
+    token1: polygonZkEvmTokens.usdc,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 1,
+    lpAddress: '0xD43b9dCbB61e6ccFbCFef9f21e1BB5064F1CB33f',
+    token0: polygonZkEvmTokens.weth,
+    token1: polygonZkEvmTokens.usdc,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 2,
+    lpAddress: '0x4A080D9488cE2C8258185d78852275D6d3c2820c',
+    token0: polygonZkEvmTokens.usdt,
+    token1: polygonZkEvmTokens.weth,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 16,
+    lpAddress: '0xb5d9E1622BFA6Efb3FB50c0bDc6a0EE2b2d046fA',
+    token0: polygonZkEvmTokens.weth,
+    token1: polygonZkEvmTokens.wbtc,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 17,
+    lpAddress: '0x7a816241EdaF060e33b774D6D3D6398485dFf9AF',
+    token0: polygonZkEvmTokens.weth,
+    token1: polygonZkEvmTokens.matic,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 4,
+    lpAddress: '0xaE30fcdEE41dC9eC265e841D8185d055B87d1B7a',
+    token0: polygonZkEvmTokens.weth,
+    token1: polygonZkEvmTokens.matic,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+]
+
 export const farmsV3 = defineFarmV3Configs([
+  ...v3TopFixedFarms,
   {
     pid: 20,
     lpAddress: '0x160f3d3af6A2ECe5274AfD0925137e0387BAA5F2',
@@ -24,27 +71,7 @@ export const farmsV3 = defineFarmV3Configs([
     token1: polygonZkEvmTokens.usdc,
     feeAmount: FeeAmount.HIGH,
   },
-  {
-    pid: 17,
-    lpAddress: '0x7a816241EdaF060e33b774D6D3D6398485dFf9AF',
-    token0: polygonZkEvmTokens.weth,
-    token1: polygonZkEvmTokens.matic,
-    feeAmount: FeeAmount.LOW,
-  },
-  {
-    pid: 16,
-    lpAddress: '0xb5d9E1622BFA6Efb3FB50c0bDc6a0EE2b2d046fA',
-    token0: polygonZkEvmTokens.weth,
-    token1: polygonZkEvmTokens.wbtc,
-    feeAmount: FeeAmount.LOWEST,
-  },
-  {
-    pid: 15,
-    lpAddress: '0x9f37552b87b68E7F169c442D595c1Be7A0F03b92',
-    token0: polygonZkEvmTokens.weth,
-    token1: polygonZkEvmTokens.usdc,
-    feeAmount: FeeAmount.LOWEST,
-  },
+
   {
     pid: 14,
     lpAddress: '0x435564Fb7E82daB83B2733D6Bc1fDB8B5a732DE8',
@@ -100,34 +127,6 @@ export const farmsV3 = defineFarmV3Configs([
     token0: polygonZkEvmTokens.usdce,
     token1: polygonZkEvmTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
-  },
-  {
-    pid: 1,
-    lpAddress: '0xD43b9dCbB61e6ccFbCFef9f21e1BB5064F1CB33f',
-    token0: polygonZkEvmTokens.weth,
-    token1: polygonZkEvmTokens.usdc,
-    feeAmount: FeeAmount.LOW,
-  },
-  {
-    pid: 2,
-    lpAddress: '0x4A080D9488cE2C8258185d78852275D6d3c2820c',
-    token0: polygonZkEvmTokens.usdt,
-    token1: polygonZkEvmTokens.weth,
-    feeAmount: FeeAmount.LOW,
-  },
-  {
-    pid: 3,
-    lpAddress: '0xca06375be938a2d6eF311dfaFab7E326d55D23Cc',
-    token0: polygonZkEvmTokens.usdt,
-    token1: polygonZkEvmTokens.usdc,
-    feeAmount: FeeAmount.LOWEST,
-  },
-  {
-    pid: 4,
-    lpAddress: '0xaE30fcdEE41dC9eC265e841D8185d055B87d1B7a',
-    token0: polygonZkEvmTokens.weth,
-    token1: polygonZkEvmTokens.matic,
-    feeAmount: FeeAmount.MEDIUM,
   },
   {
     pid: 5,
