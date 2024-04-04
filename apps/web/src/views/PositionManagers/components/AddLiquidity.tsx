@@ -12,6 +12,7 @@ import { memo, useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { Address } from 'viem'
+import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { DYORWarning } from 'views/PositionManagers/components/DYORWarning'
 import { SingleTokenWarning } from 'views/PositionManagers/components/SingleTokenWarning'
 import { StyledModal } from 'views/PositionManagers/components/StyledModal'
@@ -158,6 +159,7 @@ export const AddLiquidity = memo(function AddLiquidity({
     },
     [ratio, currencyA, currencyB],
   )
+  const { locked } = useBCakeBoostLimitAndLockInfo()
 
   const onCurrencyAChange = useCallback(
     (value: string) =>
@@ -371,7 +373,9 @@ export const AddLiquidity = memo(function AddLiquidity({
                   aprTimeWindow={aprTimeWindow}
                   rewardToken={earningToken}
                   isBooster={isBooster && apr?.isInCakeRewardDateRange}
-                  boosterMultiplier={totalAssetsInUsd === 0 ? 3 : boosterMultiplier === 0 ? 3 : boosterMultiplier}
+                  boosterMultiplier={
+                    totalAssetsInUsd === 0 || !locked ? 3 : boosterMultiplier === 0 ? 3 : boosterMultiplier
+                  }
                 />
               </RowBetween>
             </Flex>

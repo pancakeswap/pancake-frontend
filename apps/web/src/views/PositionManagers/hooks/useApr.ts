@@ -88,7 +88,7 @@ export const useApr = ({
   ])
 
   const cakeYieldApr = useMemo(() => {
-    if (!isInCakeRewardDateRange) {
+    if (!isInCakeRewardDateRange || false) {
       return BIG_ZERO
     }
 

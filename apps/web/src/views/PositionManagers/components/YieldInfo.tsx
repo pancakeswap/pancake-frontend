@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { Box, Flex, RowBetween, Text } from '@pancakeswap/uikit'
 import { memo, useMemo } from 'react'
+import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { AprResult } from '../hooks'
 import { AprButton } from './AprButton'
 import { RewardPerDay } from './RewardPerDay'
@@ -51,6 +52,7 @@ export const YieldInfo = memo(function YieldInfo({
     [t, apr.isInCakeRewardDateRange, rewardToken?.symbol],
   )
 
+  const { locked } = useBCakeBoostLimitAndLockInfo()
   return (
     <Box>
       <RowBetween>
@@ -69,7 +71,7 @@ export const YieldInfo = memo(function YieldInfo({
           aprTimeWindow={aprTimeWindow}
           rewardToken={rewardToken}
           isBooster={isBooster && apr?.isInCakeRewardDateRange}
-          boosterMultiplier={totalAssetsInUsd === 0 ? 3 : boosterMultiplier === 0 ? 3 : boosterMultiplier}
+          boosterMultiplier={totalAssetsInUsd === 0 || !locked ? 3 : boosterMultiplier === 0 ? 3 : boosterMultiplier}
         />
       </RowBetween>
       <RowBetween>

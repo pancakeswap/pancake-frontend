@@ -5,6 +5,7 @@ import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { usePositionManagerAdepterContract } from 'hooks/useContract'
+import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 
 /* eslint-disable no-case-declarations */
 import { useDelayedUnmount } from '@pancakeswap/hooks'
@@ -46,7 +47,7 @@ interface Props {
 
 export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, updatePositionMangerDetailsData }) => {
   const hasStakedAmount = false
-
+  const { locked } = useBCakeBoostLimitAndLockInfo()
   const { t } = useTranslation()
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const toggleActionPanel = useCallback(() => {
@@ -61,7 +62,6 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
   const isSmallerScreen = !isDesktop
 
   const columnNames = useMemo(() => ['title', 'apr', 'earn', 'rewardPerDay', 'totalStaked', 'details'], [])
-  const isBooster = Boolean(config.bCakeWrapperAddress)
 
   const { vault } = usePCSVault({ config })
   const {
@@ -125,14 +125,6 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
       token1: Number(isToken0And1Reversed ? farm.tokenPriceBusd : farm.quoteTokenPriceBusd),
     }
   }, [farmsV3, priceFromV3FarmPid, priceFromSubgraph, currencyB])
-
-  const managerInfo = useMemo(
-    () => ({
-      id: manager.id,
-      name: manager.name,
-    }),
-    [manager],
-  )
 
   useEffect(() => {
     if (info?.userToken0Amounts > 0n || info?.userToken1Amounts > 0n) {
@@ -300,7 +292,11 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                           rewardToken={earningToken}
                           isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
                           boosterMultiplier={
-                            totalAssetsInUsd === 0 ? 3 : info?.boosterMultiplier === 0 ? 3 : info?.boosterMultiplier
+                            totalAssetsInUsd === 0 || !locked
+                              ? 3
+                              : info?.boosterMultiplier === 0
+                              ? 3
+                              : info?.boosterMultiplier
                           }
                         />
                       </CellLayout>
@@ -389,7 +385,11 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                     rewardToken={earningToken}
                     isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
                     boosterMultiplier={
-                      totalAssetsInUsd === 0 ? 3 : info?.boosterMultiplier === 0 ? 3 : info?.boosterMultiplier
+                      totalAssetsInUsd === 0 || !locked
+                        ? 3
+                        : info?.boosterMultiplier === 0
+                        ? 3
+                        : info?.boosterMultiplier
                     }
                   />
                 </CellLayout>
