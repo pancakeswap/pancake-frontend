@@ -3490,11 +3490,10 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 350,
     pairName: 'CAKE-WETH',
-    address: '0xF5Fac36c2429e1Cf84D4aBACdB18477Ef32589c9',
+    address: '0xAC98137c3dbE929aE354dDCF50E73Bf59d88dB00',
     chainId: ChainId.ARBITRUM_ONE,
-    type: GaugeType.V3,
+    type: GaugeType.ALM,
     token0Address: arbitrumTokens.cake.address,
     token1Address: arbitrumTokens.weth.address,
-    feeTier: FeeAmount.MEDIUM,
   },
 ]
