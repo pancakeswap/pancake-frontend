@@ -33,13 +33,18 @@ export const usePermit2Details = (
 
   return useQuery({
     queryKey: ['/token-permit/', chainId, token?.address, owner, spender],
-    queryFn: async () =>
-      publicClient({ chainId }).readContract({
-        abi: Permit2ABI,
-        address: getPermit2Address(chainId),
-        functionName: 'allowance',
-        args: inputs,
-      }),
+    queryFn: async () => {
+      const permit2Address = getPermit2Address(chainId)
+      if (permit2Address) {
+        return publicClient({ chainId }).readContract({
+          abi: Permit2ABI,
+          address: permit2Address,
+          functionName: 'allowance',
+          args: inputs,
+        })
+      }
+      return undefined
+    },
     placeholderData,
     refetchInterval: FAST_INTERVAL,
     retry: true,
