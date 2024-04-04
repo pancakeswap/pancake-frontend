@@ -47,7 +47,16 @@ export const FarmCell: React.FunctionComponent<
               <Link ml="4px" lineHeight="110%" display="inline !important" href="/pools?chain=bsc" target="_blank">
                 PEPE Syrup Pool
               </Link>
+              .
             </Text>
+            <br />
+            <br />
+            <Text lineHeight="110%" as="span">
+              {t(
+                "If more PEPE-BNB LP is deposited in our Farm, we'll increase rewards for the PEPE Syrup Pool next month",
+              )}
+            </Text>
+            .
           </Box>
         </GiftTooltip>
       ) : null}

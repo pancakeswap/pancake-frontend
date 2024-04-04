@@ -123,6 +123,13 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
                       PEPE Syrup Pool
                     </Link>
                   </Text>
+                  <br />
+                  <br />
+                  <Text lineHeight="110%" as="span">
+                    {t(
+                      "If more PEPE-BNB LP is deposited in our Farm, we'll increase rewards for the PEPE Syrup Pool next month",
+                    )}
+                  </Text>
                 </Box>
               </GiftTooltip>
             ) : null}
