@@ -12,16 +12,13 @@ import {
   LinkExternalAction,
   PancakeSwapBadge,
 } from '@pancakeswap/widgets-internal'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
 import { useFourYearTotalVeCakeApr } from 'views/CakeStaking/hooks/useAPR'
-// import { ASSET_CDN } from 'config/constants/endpoints'
-// const floatingAsset = `${ASSET_CDN}/web/banners/vecake/floating-item.png`
-// const bgDesktop = `${ASSET_CDN}/web/banners/vecake/bg-desktop.png`
-// const bgMobile = `${ASSET_CDN}/web/banners/vecake/bg-mobile.png`
 
-const floatingAsset = `/images/vecake/floating-item.png`
-const bgDesktop = `/images/vecake/bg-desktop.png`
-const bgMobile = `/images/vecake/bg-mobile.png`
+const floatingAsset = `${ASSET_CDN}/web/banners/vecake/floating-item.png`
+const bgDesktop = `${ASSET_CDN}/web/banners/vecake/bg-desktop.png`
+const bgMobile = `${ASSET_CDN}/web/banners/vecake/bg-mobile.png`
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,
