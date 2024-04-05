@@ -74,12 +74,6 @@ import opbnbBunny from './opbnb-bunny.png'
 import polygonZkBgMobile from './polygon-zk-bg-mobile.png'
 import polygonZkBg from './polygon-zk-bg.png'
 import polygonZkBunny from './polygon-zk-bunny.png'
-import vecakeBg from './vecake-bg.png'
-import vecakeDesktopBunny from './vecake-desktop-bunny.png'
-import vecakeMobileBg from './vecake-mobile-bg.png'
-import vecakeMobileBunny from './vecake-mobile-bunny.png'
-import vecakeRuby from './vecake-ruby.png'
-import vecakeTitle from './vecake-title.png'
 import zkSyncBg from './zkSyncBg.png'
 import zkSyncBgMobile from './zkSyncBgMobile.png'
 import zkSyncBunny from './zkSyncBunny.png'
@@ -160,12 +154,6 @@ export {
   v3LaunchBunnyMobile,
   v3LaunchEth,
   v3LaunchFlag,
-  vecakeBg,
-  vecakeDesktopBunny,
-  vecakeMobileBg,
-  vecakeMobileBunny,
-  vecakeRuby,
-  vecakeTitle,
   zkSyncBg,
   zkSyncBgMobile,
   zkSyncBunny,

@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import useTheme from 'hooks/useTheme'
 import { ASSET_CDN } from 'config/constants/endpoints'
+import useTheme from 'hooks/useTheme'
 import React, { memo, useCallback, useLayoutEffect, useRef } from 'react'
-import { css, styled } from 'styled-components'
+import { css, keyframes, styled } from 'styled-components'
+import { useFourYearTotalVeCakeApr } from 'views/CakeStaking/hooks/useAPR'
 import { useDrawCanvas } from '../../hooks/useDrawCanvas'
 import { useDrawSequenceImages } from '../../hooks/useDrawSequence'
 import { checkIsIOS } from '../../hooks/useIsIOS'
@@ -96,7 +97,6 @@ export const CakeSectionMainBox = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-bottom: 40px;
   margin-top: -100px;
   width: 100%;
   padding-left: 8px;
@@ -301,6 +301,52 @@ const CakeCanvas = styled.canvas`
   background-color: transparent;
 `
 
+const bottomBorderCardAnim = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`
+const bottomBorderAnim = keyframes`
+  0% {
+    height: 0px;
+  }
+  100% {
+    height: 140px;
+  }
+`
+
+const CakeBottomLine = styled.div`
+  display: none;
+  position: relative;
+  position: absolute;
+  width: 1px;
+  height: 0px;
+  top: -100%;
+  left: 50%;
+  background: ${({ theme }) => theme.colors.secondary};
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: block;
+  }
+`
+
+const BottomCakeContainer = styled(Flex)`
+  opacity: 0;
+`
+
+const CakeSectionBottomBox = styled(Flex)`
+  &.show ${BottomCakeContainer} {
+    animation: ${bottomBorderCardAnim} ${LINE_TRANSITION_TIMES}s 0.5s forwards;
+  }
+
+  &.show ${CakeBottomLine} {
+    animation: ${bottomBorderAnim} ${LINE_TRANSITION_TIMES}s forwards;
+  }
+`
+
 const width = 900
 const height = 900
 
@@ -314,11 +360,13 @@ const CakeSection: React.FC = () => {
   const leftRef = useRef<HTMLDivElement>(null)
   const leftLineRef = useRef<HTMLDivElement>(null)
   const rightRef = useRef<HTMLDivElement>(null)
+  const bottomRef = useRef<HTMLDivElement>(null)
   const played = useRef<boolean>(false)
   const cakeBoxRef = useRef<HTMLDivElement>(null)
   const internalRef = useRef(0)
   const seqIntervalRef = useRef(0)
   const { isMobile, isTablet } = useMatchBreakpoints()
+  const { totalApr } = useFourYearTotalVeCakeApr()
 
   useLayoutEffect(() => {
     if (checkIsIOS() || isMobile) return
@@ -369,6 +417,9 @@ const CakeSection: React.FC = () => {
     setTimeout(() => {
       if (rightRef.current) rightRef.current?.classList.add('show')
     }, 2000)
+    setTimeout(() => {
+      if (bottomRef.current) bottomRef.current?.classList.add('show')
+    }, 3000)
     played.current = true
   }, [])
 
@@ -377,6 +428,7 @@ const CakeSection: React.FC = () => {
       if (leftRef.current) leftRef.current?.classList.add('show')
       if (leftLineRef.current) leftLineRef.current?.classList.add('show')
       if (rightRef.current) rightRef.current?.classList.add('show')
+      if (bottomRef.current) bottomRef.current?.classList.add('show')
     }
   }, [])
 
@@ -435,45 +487,67 @@ const CakeSection: React.FC = () => {
           </Button>
         </Link>
       </Flex>
-      <CakeSectionMainBox>
-        <CakeLeftLine ref={leftLineRef} className={played?.current ? 'show' : ''} />
-        <CakeSectionLeftBox>
-          <CakeLeftBorderBox ref={leftRef} className={played?.current ? 'show' : ''}>
-            <CakeLeftBorder />
-            <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
-              {t('Ecosystem')}
+      <Flex flexDirection={['column']} mb="40px">
+        <CakeSectionMainBox>
+          <CakeLeftLine ref={leftLineRef} className={played?.current ? 'show' : ''} />
+          <CakeSectionLeftBox>
+            <CakeLeftBorderBox ref={leftRef} className={played?.current ? 'show' : ''}>
+              <CakeLeftBorder />
+              <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
+                {t('Ecosystem')}
+              </Text>
+              <EcoSystemTagOuterWrapper>
+                <FeatureTagsWrapper direction={isMobile || isTablet ? 'right' : 'up'}>
+                  {ecosystemTagData.map((item) => (
+                    <CakeSectionTag key={item.text} icon={item.icon} text={item.text} />
+                  ))}
+                </FeatureTagsWrapper>
+              </EcoSystemTagOuterWrapper>
+            </CakeLeftBorderBox>
+          </CakeSectionLeftBox>
+          <CakeSectionCenterBox>
+            <CakeBox ref={cakeBoxRef}>
+              <CakeCanvas width={width} height={height} ref={canvasRef} />
+            </CakeBox>
+          </CakeSectionCenterBox>
+          <CakeSectionRightBox>
+            <CakeRightBorderBox ref={rightRef} className={played?.current ? 'show' : ''}>
+              <CakeRightBorder />
+              <CakeRightLine />
+              <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
+                {t('Partners')}
+              </Text>
+              <PartnerTagOuterWrapper>
+                <PartnerTagsWrapper direction={isMobile || isTablet ? 'right' : 'up'}>
+                  {partnerData.map((d) => (
+                    <CakePartnerTag icon={d.icon} width={d.width} text={d.text} />
+                  ))}
+                </PartnerTagsWrapper>
+              </PartnerTagOuterWrapper>
+            </CakeRightBorderBox>
+          </CakeSectionRightBox>
+        </CakeSectionMainBox>
+        <CakeSectionBottomBox
+          flexDirection="column"
+          position="relative"
+          mt={['48px', '48px', '48px', '48px', '0']}
+          ref={bottomRef}
+          className={played?.current ? 'show' : ''}
+        >
+          <CakeBottomLine />
+          <BottomCakeContainer flexDirection="column">
+            <Text textAlign="center" fontSize="40px" fontWeight="600">
+              {t('Staking')}
             </Text>
-            <EcoSystemTagOuterWrapper>
-              <FeatureTagsWrapper direction={isMobile || isTablet ? 'right' : 'up'}>
-                {ecosystemTagData.map((item) => (
-                  <CakeSectionTag key={item.text} icon={item.icon} text={item.text} />
-                ))}
-              </FeatureTagsWrapper>
-            </EcoSystemTagOuterWrapper>
-          </CakeLeftBorderBox>
-        </CakeSectionLeftBox>
-        <CakeSectionCenterBox>
-          <CakeBox ref={cakeBoxRef}>
-            <CakeCanvas width={width} height={height} ref={canvasRef} />
-          </CakeBox>
-        </CakeSectionCenterBox>
-        <CakeSectionRightBox>
-          <CakeRightBorderBox ref={rightRef} className={played?.current ? 'show' : ''}>
-            <CakeRightBorder />
-            <CakeRightLine />
-            <Text textAlign="center" fontSize="40px" fontWeight="600" mb="20px">
-              {t('Partners')}
+            <Text color="secondary" textAlign="center" fontSize="20px" fontWeight="600" mb="16px">
+              {t('Earn up to %apr%% APR', { apr: totalApr.toFixed(2) })}
             </Text>
-            <PartnerTagOuterWrapper>
-              <PartnerTagsWrapper direction={isMobile || isTablet ? 'right' : 'up'}>
-                {partnerData.map((d) => (
-                  <CakePartnerTag icon={d.icon} width={d.width} text={d.text} />
-                ))}
-              </PartnerTagsWrapper>
-            </PartnerTagOuterWrapper>
-          </CakeRightBorderBox>
-        </CakeSectionRightBox>
-      </CakeSectionMainBox>
+            <Link href="/cake-staking" margin="auto">
+              <Button variant="secondary">{t('Lock CAKE Now!')}🔥</Button>
+            </Link>
+          </BottomCakeContainer>
+        </CakeSectionBottomBox>
+      </Flex>
     </Flex>
   )
 }
