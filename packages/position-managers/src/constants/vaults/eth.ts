@@ -5,8 +5,27 @@ import { MANAGER } from '../managers'
 
 export const vaults: VaultConfig[] = [
   {
+    id: 8,
+    idByManager: 5,
+    name: 'BRIL',
+    address: '0x6a38e12CcDe7e35E818b341964fB8AA3BDBb80eE',
+    adapterAddress: '0x726663a646132EC0492D8A22619ECDdCcFc7D72C',
+    currencyA: ethereumTokens.weth,
+    currencyB: ethereumTokens.rswETH,
+    earningToken: ethereumTokens.cake,
+    feeTier: FeeAmount.LOW,
+    strategy: Strategy.YIELD_IQ,
+    manager: MANAGER.BRIL,
+    isSingleDepositToken: true,
+    allowDepositToken0: true,
+    allowDepositToken1: false,
+    managerInfoUrl: 'https://www.bril.finance/',
+    strategyInfoUrl: 'https://docs.bril.finance/yield-iq/overview',
+    learnMoreAboutUrl: 'https://docs.bril.finance/bril-finance/introduction',
+  },
+  {
     id: 6,
-    idByManager: 3,
+    idByManager: 5,
     name: 'RANGE',
     address: '0xF2D06DDE880fD506c1b153a3583c9162Dcac0148',
     adapterAddress: '0x7FDB520A92F9A7eF82d3B167b43b1EFB4b8BadD9',
