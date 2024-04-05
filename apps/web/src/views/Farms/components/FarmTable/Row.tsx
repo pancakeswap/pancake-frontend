@@ -292,6 +292,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   mr="16px"
                   alignItems={isMobile ? 'end' : 'center'}
                   flexDirection={isMobile ? 'column' : 'row'}
+                  flexWrap="nowrap"
                   style={{ gap: '4px' }}
                 >
                   {props.type === 'v2' ? (
@@ -300,6 +301,11 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     ) : (
                       <V2Tag scale="sm" />
                     )
+                  ) : null}
+                  {props.type === 'v2' &&
+                  props?.details?.bCakeWrapperAddress &&
+                  props?.details?.bCakePublicData?.isRewardInRange ? (
+                    <BoostedTag scale="sm" />
                   ) : null}
                   {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
                   {props.type === 'community' || props?.farm?.isCommunity ? <FarmAuctionTag scale="sm" /> : null}
