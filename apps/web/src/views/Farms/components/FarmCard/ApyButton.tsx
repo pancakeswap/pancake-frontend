@@ -146,7 +146,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
                     <RocketIcon color="success" />
                     <Text bold color="success" fontSize={16}>
                       <>
-                        {boosterMultiplier === 3 && (
+                        {boosterMultiplier === 2.5 && (
                           <Text bold color="success" fontSize={14} display="inline-block" mr="3px">
                             {t('Up to')}
                           </Text>
