@@ -8,7 +8,6 @@ export const vaults: VaultConfig[] = [
     id: 2,
     idByManager: 2,
     name: 'BRIL',
-    bCakeWrapperAddress: '0x676E2E3516B7899938B30d02AAb595326E1360d2',
     address: '0x799Ea58D15429fa7C42cc211e2181FD4EF54ec37',
     adapterAddress: '0x443454bd4916E84EB3de7b50F4D7f6B384E72457',
     currencyA: bscTokens.usdt,
