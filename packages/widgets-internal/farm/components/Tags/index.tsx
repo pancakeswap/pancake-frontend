@@ -8,7 +8,6 @@ import {
   BlockIcon,
   CheckmarkCircleIcon,
   CommunityIcon,
-  CurrencyIcon,
   EthChainIcon,
   LineaIcon,
   LockIcon,
@@ -78,7 +77,7 @@ const StableFarmTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
         display="flex"
         style={{ textDecoration: "none", justifyContent: "center", alignSelf: "center" }}
       >
-        <Tag variant="failure" outline startIcon={<CurrencyIcon width="18px" color="failure" mr="4px" />} {...props}>
+        <Tag variant="textSubtle" style={{ padding: 8 }} {...props}>
           {t("Stable LP")}
         </Tag>
       </TooltipText>

@@ -4,9 +4,11 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
+import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 
+import { SerializedBCakeUserData } from '@pancakeswap/farms'
 import { Token } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
@@ -23,6 +25,8 @@ interface FarmCardActionsProps {
   lpSymbol?: string
   onReward: () => Promise<SendTransactionResult>
   onDone?: () => void
+  bCakeWrapperAddress?: Address
+  bCakeUserData?: SerializedBCakeUserData
 }
 
 const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
@@ -35,13 +39,19 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   lpSymbol,
   onReward,
   onDone,
+  bCakeWrapperAddress,
+  bCakeUserData,
 }) => {
   const { address: account } = useAccount()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { t } = useTranslation()
   const cakePrice = useCakePrice()
-  const rawEarningsBalance = account ? getBalanceAmount(earnings) : BIG_ZERO
+  const rawEarningsBalance = account
+    ? bCakeWrapperAddress
+      ? getBalanceAmount(new BigNumber(bCakeUserData?.earnings ?? '0'))
+      : getBalanceAmount(earnings)
+    : BIG_ZERO
   const displayBalance = rawEarningsBalance.toFixed(5, BigNumber.ROUND_DOWN)
   const earningsBusd = rawEarningsBalance ? rawEarningsBalance.multipliedBy(cakePrice).toNumber() : 0
   const tooltipBalance = rawEarningsBalance.isGreaterThan(FarmWidget.FARMS_SMALL_AMOUNT_THRESHOLD)
@@ -93,7 +103,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   )
 
   return (
-    <Flex mb="8px" justifyContent="space-between" alignItems="center">
+    <Flex mb="8px" justifyContent="space-between" alignItems="center" width="100%">
       <Flex flexDirection="column" alignItems="flex-start">
         {proxyCakeBalance ? (
           <>

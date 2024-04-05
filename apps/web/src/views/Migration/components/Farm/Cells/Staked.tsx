@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react'
-import { styled } from 'styled-components'
-import BigNumber from 'bignumber.js'
 import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import BigNumber from 'bignumber.js'
+import React, { useMemo } from 'react'
+import { styled } from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
@@ -21,7 +21,6 @@ const StyledCell = styled(Pool.BaseCell)`
 
 export interface StakedProps {
   label: string
-  pid: number
   stakedBalance: BigNumber
 }
 

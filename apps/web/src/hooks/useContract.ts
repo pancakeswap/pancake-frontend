@@ -15,6 +15,7 @@ import {
   getBCakeFarmBoosterProxyFactoryContract,
   getBCakeFarmBoosterV3Contract,
   getBCakeFarmBoosterVeCakeContract,
+  getBCakeFarmWrapperBoosterVeCakeContract,
   getBCakeProxyContract,
   getBunnyFactoryContract,
   getCakeFlexibleSideVaultV2Contract,
@@ -56,6 +57,7 @@ import {
   getTradingRewardContract,
   getTradingRewardTopTradesContract,
   getUnsContract,
+  getV2SSBCakeWrapperContract,
   getV3AirdropContract,
   getV3MigratorContract,
   getVCakeContract,
@@ -341,6 +343,15 @@ export function useBCakeFarmBoosterVeCakeContract() {
   return useMemo(() => getBCakeFarmBoosterVeCakeContract(signer ?? undefined, chainId), [signer, chainId])
 }
 
+export function useBCakeFarmWrapperBoosterVeCakeContract(address: Address) {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(
+    () => getBCakeFarmWrapperBoosterVeCakeContract(address, signer ?? undefined, chainId),
+    [signer, chainId, address],
+  )
+}
+
 export function usePositionManagerWrapperContract(address: Address) {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
@@ -357,6 +368,12 @@ export function usePositionManagerBCakeWrapperContract(address: Address) {
     () => getPositionManagerBCakeWrapperContract(address, signer ?? undefined, chainId),
     [signer, chainId, address],
   )
+}
+
+export function useV2SSBCakeWrapperContract(address: Address) {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getV2SSBCakeWrapperContract(address, signer ?? undefined, chainId), [signer, chainId, address])
 }
 
 export function usePositionManagerAdepterContract(address: Address) {

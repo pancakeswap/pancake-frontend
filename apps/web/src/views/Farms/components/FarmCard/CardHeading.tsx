@@ -43,6 +43,7 @@ type ExpandableSectionProps = {
   isBoosted?: boolean
   lpAddress?: Address
   merklApr?: number
+  isBooster?: boolean
 }
 
 const Wrapper = styled(Flex)`
@@ -68,9 +69,9 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   totalMultipliers,
   merklLink,
   hasBothFarmAndMerkl,
-  isBoosted,
   merklApr,
   lpAddress,
+  isBooster,
 }) => {
   const { t } = useTranslation()
   const chainId = useChainId()
@@ -142,14 +143,16 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
           {isReady && version === 3 && <V3FeeTag feeAmount={feeAmount} />}
           {isReady && isCommunityFarm && <FarmAuctionTag mr="-4px" />}
           {isReady ? (
-            <Flex ref={targetRef}>
-              <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
-              {tooltipVisible && tooltip}
-            </Flex>
+            version !== 2 ? (
+              <Flex ref={targetRef}>
+                <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
+                {tooltipVisible && tooltip}
+              </Flex>
+            ) : null
           ) : (
             <Skeleton ml="4px" width={42} height={28} />
           )}
-          {isReady && isBoosted && <BoostedTag mr="-4px" />}
+          {isReady && isBooster && <BoostedTag mr="-4px" />}
         </AutoRow>
       </Flex>
     </Wrapper>

@@ -2,7 +2,8 @@ import { ChainId } from '@pancakeswap/chains'
 import BigNumber from 'bignumber.js'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import { nonBscVaultABI } from 'config/abi/nonBscVault'
-import { SerializedFarmConfig } from 'config/constants/types'
+import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
+import { SerializedFarmConfig, SerializedFarmPublicData } from 'config/constants/types'
 import { farmFetcher } from 'state/farms'
 import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelpers'
 import { getCrossFarmingReceiverContract } from 'utils/contractHelpers'
@@ -13,9 +14,8 @@ import { Address, erc20ABI } from 'wagmi'
 
 export const fetchFarmUserAllowances = async (
   account: Address,
-  farmsToFetch: SerializedFarmConfig[],
+  farmsToFetch: SerializedFarmPublicData[],
   chainId: number,
-  proxyAddress?: Address,
 ) => {
   const isBscNetwork = verifyBscNetwork(chainId)
   const masterChefAddress = isBscNetwork ? getMasterChefV2Address(chainId) : getNonBscVaultAddress(chainId)
@@ -27,7 +27,32 @@ export const fetchFarmUserAllowances = async (
         abi: erc20ABI,
         address: lpContractAddress,
         functionName: 'allowance',
-        args: [account, proxyAddress || masterChefAddress] as const,
+        args: [account, masterChefAddress] as const,
+      } as const
+    }),
+    allowFailure: false,
+  })
+
+  const parsedLpAllowances = lpAllowances.map((lpBalance) => {
+    return new BigNumber(lpBalance.toString()).toJSON()
+  })
+
+  return parsedLpAllowances
+}
+
+export const fetchFarmBCakeWrapperUserAllowances = async (
+  account: Address,
+  farmsToFetch: SerializedFarmPublicData[],
+  chainId: number,
+) => {
+  const lpAllowances = await publicClient({ chainId }).multicall({
+    contracts: farmsToFetch.map((farm) => {
+      const lpContractAddress = farm.lpAddress
+      return {
+        abi: erc20ABI,
+        address: lpContractAddress,
+        functionName: 'allowance',
+        args: [account, farm?.bCakeWrapperAddress ?? '0x'] as const,
       } as const
     }),
     allowFailure: false,
@@ -90,6 +115,94 @@ export const fetchFarmUserStakedBalances = async (
   return parsedStakedBalances
 }
 
+export const fetchFarmUserBCakeWrapperStakedBalances = async (
+  account: string,
+  farmsToFetch: SerializedFarmPublicData[],
+  chainId: number,
+) => {
+  const boosterPrecision = '1000000000000'
+  const rawStakedBalances = (await publicClient({ chainId }).multicall({
+    contracts: farmsToFetch.map((farm) => {
+      return {
+        abi: v2BCakeWrapperABI,
+        address: farm?.bCakeWrapperAddress ?? '0x',
+        functionName: 'userInfo',
+        args: [account as Address] as const,
+      } as const
+    }),
+    allowFailure: false,
+  })) as ContractFunctionResult<typeof v2BCakeWrapperABI, 'userInfo'>[]
+
+  const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
+    return new BigNumber(stakedBalance[0].toString()).toJSON()
+  })
+  const boosterMultiplier = rawStakedBalances.map((stakedBalance) => {
+    return new BigNumber(stakedBalance[2].toString()).div(boosterPrecision).toNumber()
+  })
+  const boostedAmounts = rawStakedBalances.map((stakedBalance) => {
+    return new BigNumber(stakedBalance[3].toString()).toJSON()
+  })
+
+  return { parsedStakedBalances, boosterMultiplier, boostedAmounts }
+}
+
+export const fetchFarmUserBCakeWrapperConstants = async (farmsToFetch: SerializedFarmPublicData[], chainId: number) => {
+  const boosterContractAddress = (await publicClient({ chainId }).multicall({
+    contracts: farmsToFetch.map((farm) => {
+      return {
+        abi: v2BCakeWrapperABI,
+        address: farm?.bCakeWrapperAddress ?? '0x',
+        functionName: 'boostContract',
+      } as const
+    }),
+    allowFailure: false,
+  })) as ContractFunctionResult<typeof v2BCakeWrapperABI, 'boostContract'>[]
+  const startTimestamp = (await publicClient({ chainId }).multicall({
+    contracts: farmsToFetch.map((farm) => {
+      return {
+        abi: v2BCakeWrapperABI,
+        address: farm?.bCakeWrapperAddress ?? '0x',
+        functionName: 'startTimestamp',
+      } as const
+    }),
+    allowFailure: false,
+  })) as ContractFunctionResult<typeof v2BCakeWrapperABI, 'startTimestamp'>[]
+  const endTimestamp = (await publicClient({ chainId }).multicall({
+    contracts: farmsToFetch.map((farm) => {
+      return {
+        abi: v2BCakeWrapperABI,
+        address: farm?.bCakeWrapperAddress ?? '0x',
+        functionName: 'endTimestamp',
+      } as const
+    }),
+    allowFailure: false,
+  })) as ContractFunctionResult<typeof v2BCakeWrapperABI, 'endTimestamp'>[]
+
+  return {
+    boosterContractAddress,
+    startTimestamp: startTimestamp.map((d) => Number(d)),
+    endTimestamp: endTimestamp.map((d) => Number(d)),
+  }
+}
+
+export const fetchFarmUserBCakeWrapperRewardPerSec = async (
+  farmsToFetch: SerializedFarmPublicData[],
+  chainId: number,
+) => {
+  const rewardPerSec = (await publicClient({ chainId }).multicall({
+    contracts: farmsToFetch.map((farm) => {
+      return {
+        abi: v2BCakeWrapperABI,
+        address: farm?.bCakeWrapperAddress ?? '0x',
+        functionName: 'rewardPerSecond',
+      } as const
+    }),
+    allowFailure: false,
+  })) as ContractFunctionResult<typeof v2BCakeWrapperABI, 'rewardPerSecond'>[]
+
+  return { rewardPerSec: rewardPerSec.map((reward) => Number(reward)) }
+}
+
 export const fetchFarmUserEarnings = async (
   account: Address,
   farmsToFetch: SerializedFarmConfig[],
@@ -112,6 +225,28 @@ export const fetchFarmUserEarnings = async (
     allowFailure: false,
   })
 
+  const parsedEarnings = rawEarnings.map((earnings) => {
+    return new BigNumber(earnings.toString()).toJSON()
+  })
+  return parsedEarnings
+}
+
+export const fetchFarmUserBCakeWrapperEarnings = async (
+  account: Address,
+  farmsToFetch: SerializedFarmPublicData[],
+  chainId: number,
+) => {
+  const rawEarnings = await publicClient({ chainId }).multicall({
+    contracts: farmsToFetch.map((farm) => {
+      return {
+        abi: v2BCakeWrapperABI,
+        address: farm?.bCakeWrapperAddress ?? '0x',
+        functionName: 'pendingReward',
+        args: [account] as const,
+      } as const
+    }),
+    allowFailure: false,
+  })
   const parsedEarnings = rawEarnings.map((earnings) => {
     return new BigNumber(earnings.toString()).toJSON()
   })

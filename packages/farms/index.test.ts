@@ -12,6 +12,8 @@ test('exports', () => {
       "isActiveV3Farm",
       "deserializeFarm",
       "deserializeFarmUserData",
+      "deserializeFarmBCakeUserData",
+      "deserializeFarmBCakePublicData",
       "filterFarmsByQuoteToken",
       "filterFarmsByQuery",
       "bCakeSupportedChainId",

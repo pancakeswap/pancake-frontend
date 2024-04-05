@@ -10,7 +10,12 @@ import { getMasterChefContract } from 'utils/contractHelpers'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
+import {
+  fetchBCakeWrapperDataAsync,
+  fetchBCakeWrapperUserDataAsync,
+  fetchFarmsPublicDataAsync,
+  fetchFarmUserDataAsync,
+} from '.'
 import {
   farmSelector,
   makeFarmFromPidSelector,
@@ -74,7 +79,8 @@ export const usePollFarmsWithUserData = () => {
         throw new Error('Failed to fetch farm config')
       }
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
-
+      const bCakePids = farmsConfig.filter((d) => Boolean(d.bCakeWrapperAddress)).map((farmToFetch) => farmToFetch.pid)
+      dispatch(fetchBCakeWrapperDataAsync({ pids: bCakePids, chainId }))
       dispatch(fetchFarmsPublicDataAsync({ pids, chainId }))
       return null
     },
@@ -94,14 +100,14 @@ export const usePollFarmsWithUserData = () => {
     queryKey: name,
 
     queryFn: async () => {
-      if (!account || !chainId) return
-
       const farmsConfig = await getFarmConfig(chainId)
-
-      if (!farmsConfig) return
+      if (!chainId || !farmsConfig || !account) return
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       const params = proxyCreated ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
+      const bCakePids = farmsConfig.filter((d) => Boolean(d.bCakeWrapperAddress)).map((farmToFetch) => farmToFetch.pid)
+      const bCakeParams = { account, pids: bCakePids, chainId }
       dispatch(fetchFarmUserDataAsync(params))
+      dispatch(fetchBCakeWrapperUserDataAsync(bCakeParams))
     },
     enabled: Boolean(account && chainId && !isProxyContractLoading),
     refetchInterval: SLOW_INTERVAL,

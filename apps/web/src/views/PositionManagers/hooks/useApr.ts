@@ -51,6 +51,7 @@ export const useApr = ({
   const { data: rewardUsdPrice } = useCurrencyUsdPrice(earningToken ?? undefined)
 
   const isInCakeRewardDateRange = useMemo(
+    // () =>  true // mock cake in range to see the booster changes
     () => Date.now() / 1000 < rewardEndTime && Date.now() / 1000 >= rewardStartTime,
     [rewardEndTime, rewardStartTime],
   )
@@ -74,7 +75,6 @@ export const useApr = ({
     const cakeRewardUsd = getBalanceAmount(new BigNumber(farmRewardAmount ?? 0), 18).times(rewardUsdPrice ?? 0)
 
     const totalAvgStakedInUsd = totalToken0Usd.plus(totalToken1Usd).plus(cakeRewardUsd)
-
     return totalAvgStakedInUsd.times(ONE_YEAR).div(totalStakedInUsd).times(100)
   }, [
     avgToken0Amount,

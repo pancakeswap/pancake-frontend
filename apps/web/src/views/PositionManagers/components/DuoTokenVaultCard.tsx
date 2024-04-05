@@ -1,12 +1,15 @@
 import { MANAGER, Strategy } from '@pancakeswap/position-managers'
-import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { Card, CardBody } from '@pancakeswap/uikit'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import BigNumber from 'bignumber.js'
 import { PropsWithChildren, ReactNode, memo, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { Address } from 'viem'
 import { useApr } from 'views/PositionManagers/hooks/useApr'
 import { AprDataInfo } from '../hooks'
+import { useIsWrapperWhiteList } from '../hooks/useWrapperBooster'
 import { getVaultName } from '../utils'
 import { CardTitle } from './CardTitle'
 import { ExpandableSection } from './ExpandableSection'
@@ -79,6 +82,8 @@ interface Props {
   aprTimeWindow?: number
   bCakeWrapper?: Address
   minDepositUSD?: number
+  boosterMultiplier?: number
+  boosterContractAddress?: Address
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -124,6 +129,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   lpTokenDecimals,
   bCakeWrapper,
   minDepositUSD,
+  boosterMultiplier,
+  boosterContractAddress,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -141,11 +148,13 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
     rewardStartTime,
   })
 
-  const price = new Price(currencyA, currencyB, 100000n, 100000n)
   const vaultName = useMemo(() => getVaultName(idByManager, name), [name, idByManager])
   const staked0Amount = stakedToken0Amount ? CurrencyAmount.fromRawAmount(currencyA, stakedToken0Amount) : undefined
   const staked1Amount = stakedToken1Amount ? CurrencyAmount.fromRawAmount(currencyB, stakedToken1Amount) : undefined
-
+  const tokenPerSecond = useMemo(() => {
+    return getBalanceAmount(new BigNumber(rewardPerSecond), earningToken.decimals).toNumber()
+  }, [rewardPerSecond, earningToken])
+  const { isBoosterWhiteList } = useIsWrapperWhiteList(boosterContractAddress, bCakeWrapper)
   return (
     <StyledCard>
       <CardTitle
@@ -157,6 +166,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
         autoCompound={autoCompound}
         isSingleDepositToken={isSingleDepositToken}
         allowDepositToken1={allowDepositToken1}
+        isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
       />
       <CardBody>
         <YieldInfo
@@ -173,6 +183,9 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           lpTokenDecimals={lpTokenDecimals}
           aprTimeWindow={aprDataInfo.timeWindow}
           rewardToken={earningToken}
+          rewardPerSec={tokenPerSecond}
+          isBooster={isBoosterWhiteList}
+          boosterMultiplier={boosterMultiplier}
         />
         <ManagerInfo
           mt="1.5em"
@@ -182,13 +195,13 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           allowTokenName={`${allowDepositToken0 ? currencyA.symbol : ''}${allowDepositToken1 ? currencyB.symbol : ''}`}
         />
         <LiquidityManagement
+          boosterMultiplier={boosterMultiplier}
           manager={manager}
           currencyA={currencyA}
           currencyB={currencyB}
           id={id}
           totalAssetsInUsd={totalAssetsInUsd}
           earningToken={earningToken}
-          price={price}
           vaultName={vaultName}
           feeTier={feeTier}
           ratio={ratio}
@@ -219,6 +232,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           aprTimeWindow={aprDataInfo.timeWindow}
           bCakeWrapper={bCakeWrapper}
           minDepositUSD={minDepositUSD}
+          isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
+          boosterContractAddress={boosterContractAddress}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo
@@ -232,14 +247,14 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
             allowDepositToken0={allowDepositToken0}
             allowDepositToken1={allowDepositToken1}
             isSingleDepositToken={isSingleDepositToken}
-            rewardPerSecond={rewardPerSecond}
+            tokenPerSecond={tokenPerSecond}
             earningToken={earningToken}
             isInCakeRewardDateRange={apr.isInCakeRewardDateRange}
           />
           <VaultLinks
             mt="0.5em"
             manager={manager}
-            vaultAddress={contractAddress}
+            vaultAddress={bCakeWrapper ?? contractAddress}
             managerAddress={managerAddress}
             managerInfoUrl={managerInfoUrl}
             strategyInfoUrl={strategyInfoUrl}

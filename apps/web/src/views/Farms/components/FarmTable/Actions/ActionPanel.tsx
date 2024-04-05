@@ -1,5 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  Box,
+  Button,
   Flex,
   LinkExternal,
   Message,
@@ -15,6 +17,8 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import useTheme from 'hooks/useTheme'
+import NextLink from 'next/link'
 import { FC, useContext, useMemo } from 'react'
 import { ChainLinkSupportChains, multiChainPaths } from 'state/info/constant'
 import { css, keyframes, styled } from 'styled-components'
@@ -24,7 +28,12 @@ import { isAddressEqual } from 'viem'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
+import { StatusView } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusView'
+import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
+import { useBoostStatusPM } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
+import { useWrapperBooster } from 'views/PositionManagers/hooks'
 import { useAccount } from 'wagmi'
+import { useUpdateBCakeFarms } from '../../../hooks/useUpdateBCake'
 import { FarmV3ApyButton } from '../../FarmCard/V3/FarmV3ApyButton'
 import FarmV3CardList from '../../FarmCard/V3/FarmV3CardList'
 import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
@@ -319,13 +328,20 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   isLastFarm,
   alignLinksToRight = true,
 }) => {
+  const bCakeProps = {
+    bCakeWrapperAddress: details.bCakeWrapperAddress,
+    bCakeUserData: details.bCakeUserData,
+    bCakePublicData: details.bCakePublicData,
+  }
   const { chainId } = useActiveChainId()
   const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
+  const { address: account } = useAccount()
+  const { theme } = useTheme()
 
   const farm = details
 
-  const { isDesktop } = useMatchBreakpoints()
-
+  const { isDesktop, isMobile } = useMatchBreakpoints()
+  const { locked } = useBCakeBoostLimitAndLockInfo()
   const {
     t,
     currentLanguage: { locale },
@@ -346,6 +362,18 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   }, [chainId, farm.isStable, farm.lpAddress, farm.stableSwapAddress])
 
   const addLiquidityModal = useModalV2()
+  const isBooster = Boolean(details?.bCakeWrapperAddress)
+  const isRewardInRange = details?.bCakePublicData?.isRewardInRange
+  const hasStakedInBCake = Boolean(details?.bCakeUserData?.stakedBalance?.gt(0))
+  if (details?.pid === 180) console.log(details, 'details????', hasStakedInBCake)
+
+  const { status } = useBoostStatusPM(isBooster, details?.bCakeUserData?.boosterMultiplier)
+  const { shouldUpdate, veCakeUserMultiplierBeforeBoosted } = useWrapperBooster(
+    details?.bCakeUserData?.boosterContractAddress ?? '0x',
+    details?.bCakeUserData?.boosterMultiplier ?? 1,
+    details?.bCakeWrapperAddress,
+  )
+  const { onUpdate } = useUpdateBCakeFarms(details?.bCakeWrapperAddress ?? '0x', details?.pid)
 
   return (
     <>
@@ -378,10 +406,25 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                   <Text>{t('APR')}</Text>
                   <Apr
                     {...apr}
-                    useTooltipText={false}
-                    boosted={farm.boosted}
-                    farmCakePerSecond={multiplier.farmCakePerSecond}
+                    useTooltipText
+                    strikethrough={false}
+                    boosted={false}
+                    farmCakePerSecond={
+                      details?.bCakeWrapperAddress
+                        ? (details?.bCakePublicData?.rewardPerSecond ?? 0).toFixed(4)
+                        : multiplier.farmCakePerSecond
+                    }
                     totalMultipliers={multiplier.totalMultipliers}
+                    isBooster={Boolean(details?.bCakeWrapperAddress) && details?.bCakePublicData?.isRewardInRange}
+                    boosterMultiplier={
+                      details?.bCakeWrapperAddress
+                        ? details?.bCakeUserData?.boosterMultiplier === 0 ||
+                          details?.bCakeUserData?.stakedBalance.eq(0) ||
+                          !locked
+                          ? 3
+                          : details?.bCakeUserData?.boosterMultiplier
+                        : 1
+                    }
                   />
                 </ValueWrapper>
                 <ValueWrapper>
@@ -423,19 +466,107 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
           <ProxyHarvestActionContainer {...proxyFarm} userDataReady={userDataReady}>
             {(props) => <HarvestAction {...props} />}
           </ProxyHarvestActionContainer>
-        ) : (
-          <HarvestActionContainer {...farm} userDataReady={userDataReady}>
-            {(props) => <HarvestAction {...props} />}
+        ) : !farm?.bCakeWrapperAddress ? (
+          <HarvestActionContainer
+            {...farm}
+            {...bCakeProps}
+            bCakeUserData={farm.bCakeUserData}
+            userDataReady={userDataReady}
+          >
+            {(harvestProps) => <HarvestAction {...harvestProps} />}
           </HarvestActionContainer>
-        )}
+        ) : null}
         {shouldUseProxyFarm ? (
           <ProxyStakedContainer {...proxyFarm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
             {(props) => <StakedAction {...props} />}
           </ProxyStakedContainer>
         ) : (
-          <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
-            {(props) => <StakedAction {...props} />}
-          </StakedContainer>
+          <>
+            <StakedContainer
+              {...farm}
+              {...bCakeProps}
+              userDataReady={userDataReady}
+              lpLabel={lpLabel}
+              displayApr={apr.value}
+            >
+              {(props) => (
+                <StakedAction
+                  {...props}
+                  bCakeInfoSlot={
+                    isBooster ? (
+                      <>
+                        {account && hasStakedInBCake && (
+                          <>
+                            <Box
+                              style={{
+                                height: isMobile ? 2 : 70,
+                                width: isMobile ? '100%' : 2,
+                                backgroundColor: theme.colors.cardBorder,
+                              }}
+                            />
+                            <HarvestActionContainer {...farm} {...bCakeProps} userDataReady={userDataReady}>
+                              {(harvestProps) => (
+                                <HarvestAction
+                                  {...harvestProps}
+                                  style={{
+                                    border: 'none',
+                                    minHeight: 'auto',
+                                    marginLeft: '0px',
+                                    paddingLeft: 0,
+                                    paddingRight: 0,
+                                    width: isMobile ? '100%' : undefined,
+                                    marginBottom: isMobile ? '0' : undefined,
+                                  }}
+                                />
+                              )}
+                            </HarvestActionContainer>
+                          </>
+                        )}
+                        {isRewardInRange && (
+                          <Box
+                            style={{
+                              height: isMobile ? 2 : 70,
+                              width: isMobile ? '100%' : 2,
+                              backgroundColor: theme.colors.cardBorder,
+                            }}
+                          />
+                        )}
+                        {isRewardInRange && (
+                          <Flex
+                            flexGrow={1}
+                            maxWidth={isMobile ? 'auto' : hasStakedInBCake ? '27%' : '50%'}
+                            justifyContent="space-between"
+                            alignItems="center"
+                            p={isMobile ? '16px 0' : undefined}
+                            width={isMobile ? '100%' : undefined}
+                          >
+                            <StatusView
+                              status={status}
+                              isFarmStaking={farm?.bCakeUserData?.stakedBalance?.gt(0)}
+                              boostedMultiplier={details?.bCakeUserData?.boosterMultiplier}
+                              maxBoostMultiplier={3}
+                              shouldUpdate={shouldUpdate}
+                              expectMultiplier={veCakeUserMultiplierBeforeBoosted}
+                            />
+                            {!locked && (
+                              <NextLink href="/cake-staking" passHref>
+                                <Button width="100%" style={{ whiteSpace: 'nowrap' }}>
+                                  {t('Go to Lock')}
+                                </Button>
+                              </NextLink>
+                            )}
+                            {shouldUpdate && farm?.bCakeUserData?.stakedBalance?.gt(0) && (
+                              <Button onClick={onUpdate}>{t('Update')}</Button>
+                            )}
+                          </Flex>
+                        )}
+                      </>
+                    ) : undefined
+                  }
+                />
+              )}
+            </StakedContainer>
+          </>
         )}
       </ActionPanelContainer>
     </>

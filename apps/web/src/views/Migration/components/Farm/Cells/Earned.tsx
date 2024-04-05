@@ -1,7 +1,7 @@
-import React from 'react'
-import { styled } from 'styled-components'
 import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import React from 'react'
+import { styled } from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
 
@@ -32,7 +32,7 @@ const Earned: React.FC<React.PropsWithChildren<EarnedProps>> = ({ earnings }) =>
         </Text>
         <Flex mt="4px">
           <Text fontSize={isMobile ? '14px' : '16px'} color={earnings > 0 ? 'text' : 'textDisabled'}>
-            {earnings}
+            {earnings.toFixed(4)}
           </Text>
         </Flex>
       </Pool.CellContent>

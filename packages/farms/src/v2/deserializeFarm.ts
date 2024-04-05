@@ -5,7 +5,11 @@ import BigNumber from 'bignumber.js'
 import dayjs from 'dayjs'
 import { FARM_AUCTION_HOSTING_IN_SECONDS } from '../const'
 import { DeserializedFarm, SerializedFarm } from '../types'
-import { deserializeFarmUserData } from './deserializeFarmUserData'
+import {
+  deserializeFarmBCakePublicData,
+  deserializeFarmBCakeUserData,
+  deserializeFarmUserData,
+} from './deserializeFarmUserData'
 
 export const deserializeFarm = (
   farm: SerializedFarm,
@@ -27,6 +31,7 @@ export const deserializeFarm = (
     stableSwapAddress,
     stableLpFee,
     stableLpFeeRateOfTotalFee,
+    bCakeWrapperAddress,
   } = farm
 
   const auctionHostingStartDate = !isUndefinedOrNull(auctionHostingStartSeconds)
@@ -45,7 +50,10 @@ export const deserializeFarm = (
       auctionHostingEndDate.getTime() > now
     )
 
+  const bCakeUserData = deserializeFarmBCakeUserData(farm)
+  const bCakePublicData = deserializeFarmBCakePublicData(farm)
   return {
+    bCakeWrapperAddress,
     lpAddress,
     lpSymbol,
     pid,
@@ -64,6 +72,7 @@ export const deserializeFarm = (
     token: deserializeToken(farm.token),
     quoteToken: deserializeToken(farm.quoteToken),
     userData: deserializeFarmUserData(farm),
+    bCakeUserData,
     tokenAmountTotal: farm.tokenAmountTotal ? new BigNumber(farm.tokenAmountTotal) : BIG_ZERO,
     quoteTokenAmountTotal: farm.quoteTokenAmountTotal ? new BigNumber(farm.quoteTokenAmountTotal) : BIG_ZERO,
     lpTotalInQuoteToken: farm.lpTotalInQuoteToken ? new BigNumber(farm.lpTotalInQuoteToken) : BIG_ZERO,
@@ -77,5 +86,6 @@ export const deserializeFarm = (
     stableLpFee,
     stableLpFeeRateOfTotalFee,
     lpTokenStakedAmount: farm.lpTokenStakedAmount ? new BigNumber(farm.lpTokenStakedAmount) : BIG_ZERO,
+    bCakePublicData,
   }
 }

@@ -19,6 +19,7 @@ import NextLink from 'next/link'
 import { styled, useTheme } from 'styled-components'
 import { useAccount } from 'wagmi'
 import boosterCardImage from '../../../../images/boosterCardImage.png'
+import boosterCardImagePM from '../../../../images/boosterCardImagePM.png'
 import { useBCakeBoostLimitAndLockInfo } from '../../hooks/bCakeV3/useBCakeV3Info'
 
 export const CardWrapper = styled.div`
@@ -70,7 +71,7 @@ export const useBCakeTooltipContent = () => {
     <>
       <Box mb="20px">
         {t(
-          'Yield Boosters allow you to boost your farming yields by locking CAKE in the fixed-term staking CAKE pool. The more CAKE you lock, and the longer you lock them, the higher the boost you will receive.',
+          'Yield Boosters allow you to boost your farming yields by locking CAKE in the veCAKE pool. The more CAKE you lock, and the longer you lock them, the higher the boost you will receive.',
         )}
       </Box>
       <Box>
@@ -84,7 +85,7 @@ export const useBCakeTooltipContent = () => {
   return tooltipContent
 }
 
-export const BCakeBoosterCard = () => {
+export const BCakeBoosterCard: React.FC<{ variants?: 'farm' | 'pm' }> = ({ variants = 'farm' }) => {
   const { t } = useTranslation()
   const theme = useTheme()
   const { isMobile } = useMatchBreakpoints()
@@ -97,8 +98,14 @@ export const BCakeBoosterCard = () => {
   })
   return (
     <CardWrapper>
-      <ImageWrapper>
-        <Image src={boosterCardImage} alt="boosterCardImage" width={99} height={191} placeholder="blur" />
+      <ImageWrapper style={{ left: variants === 'pm' ? -185 : isMobile ? -110 : -70, top: 105 }}>
+        <Image
+          src={variants === 'pm' ? boosterCardImagePM : boosterCardImage}
+          alt="booster-card-image"
+          width={variants === 'pm' ? 259 : 99}
+          height={variants === 'pm' ? 226 : 191}
+          placeholder="blur"
+        />
       </ImageWrapper>
       <Card p="0px" style={{ zIndex: 1 }}>
         <StyledCardBody style={{ padding: '15px 24px' }}>
@@ -112,14 +119,14 @@ export const BCakeBoosterCard = () => {
           </Box>
         </StyledCardBody>
         <StyledCardFooter>
-          <CardContent />
+          <CardContent variants={variants} />
         </StyledCardFooter>
       </Card>
     </CardWrapper>
   )
 }
 
-const CardContent: React.FC = () => {
+const CardContent: React.FC<{ variants?: 'farm' | 'pm' }> = ({ variants }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { locked } = useBCakeBoostLimitAndLockInfo()
@@ -162,9 +169,13 @@ const CardContent: React.FC = () => {
         </Text>
       </Flex>
       <Text color="textSubtle" fontSize={12} mb="10px">
-        {t(
-          'Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.',
-        )}
+        {variants === 'pm'
+          ? t(
+              'Boost the token rewards from unlimited number of Position Managers. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.',
+            )
+          : t(
+              'Boost your CAKE rewards from V3, V2 and StableSwap farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.',
+            )}
       </Text>
       <NextLink href="/cake-staking" passHref>
         <Button width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>

@@ -79,9 +79,24 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
               .toNumber()
             const avoidDecimalsProblem =
               percent === 100 ? BigInt(bCakeUserInfoAmount?.[0]) : BigInt(Math.floor(withdrawAmount))
+            const estGas = await bCakeWrapperContract.estimateGas.withdrawThenBurn(
+              [avoidDecimalsProblem, false, message],
+              {
+                account: account ?? '0x',
+              },
+            )
+            console.log({
+              estGasOrigin: estGas.toString(),
+              estGasAdjusted: new BigNumber(estGas.toString()).times(1.5).toNumber(),
+              from: account,
+              to: bCakeWrapperContract.address,
+              amount: avoidDecimalsProblem,
+              method: 'withdrawThenBurn',
+            })
             return bCakeWrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, false, message], {
               account: account ?? '0x',
               chain,
+              gas: BigInt(new BigNumber(estGas.toString()).times(1.5).toNumber().toFixed(0)),
             })
           }
         : async () => {
@@ -111,15 +126,16 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
       )
     }
   }, [
-    bCakeWrapperContract.read,
-    bCakeWrapperContract.write,
-    account,
-    wrapperContract.read,
-    wrapperContract.write,
     fetchWithCatchTxError,
     bCakeWrapper,
+    bCakeWrapperContract.read,
+    bCakeWrapperContract.estimateGas,
+    bCakeWrapperContract.write,
+    account,
     percent,
     chain,
+    wrapperContract.read,
+    wrapperContract.write,
     refetch,
     onDismiss,
     toastSuccess,

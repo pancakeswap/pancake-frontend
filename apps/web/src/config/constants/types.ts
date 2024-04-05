@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import type { FarmConfigBaseProps, SerializedFarmConfig } from '@pancakeswap/farms'
+import type { FarmConfigBaseProps, SerializedFarmConfig, SerializedFarmPublicData } from '@pancakeswap/farms'
 import { Currency, CurrencyAmount, ERC20Token, Percent, Price, Token, Trade, TradeType } from '@pancakeswap/sdk'
 import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import BigNumber from 'bignumber.js'
@@ -32,7 +32,7 @@ export enum PoolCategory {
   'AUTO' = 'Auto',
 }
 
-export type { FarmConfigBaseProps, SerializedFarmConfig }
+export type { FarmConfigBaseProps, SerializedFarmConfig, SerializedFarmPublicData }
 
 export type Images = {
   lg: string

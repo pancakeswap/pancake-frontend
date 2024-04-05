@@ -22,6 +22,8 @@ export const VAULTS_CONFIG_BY_CHAIN = {
   [ChainId.POLYGON_ZKEVM]: zkevmVault,
 }
 
+export const PM_V2_SS_BOOSTER_SUPPORT_CHAINS = [ChainId.BSC]
+
 export function isPCSVaultConfig(config: VaultConfig): config is PCSDuoTokenVaultConfig {
   return config.manager === MANAGER.PCS
 }

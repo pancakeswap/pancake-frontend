@@ -76,7 +76,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     gcTime: 6000,
   }).data
 
-  const info = usePositionInfo(address, adapterAddress ?? '0x')
+  const info = usePositionInfo(bCakeWrapperAddress ?? address, adapterAddress ?? '0x', Boolean(bCakeWrapperAddress))
 
   const { data: token0USDPrice } = useCurrencyUsdPrice(currencyA)
   const { data: token1USDPrice } = useCurrencyUsdPrice(currencyB)
@@ -146,6 +146,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     avgToken1Amount: aprDataInfo?.info?.token1 ?? 0,
     rewardEndTime: info.endTimestamp,
     rewardStartTime: info.startTimestamp,
+    farmRewardAmount: aprDataInfo?.info?.rewardAmount ?? 0,
   })
 
   const staked0Amount = info?.userToken0Amounts
@@ -224,6 +225,8 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
       lpTokenDecimals={info?.lpTokenDecimals}
       bCakeWrapper={bCakeWrapperAddress}
       minDepositUSD={minDepositUSD}
+      boosterMultiplier={info?.boosterMultiplier}
+      boosterContractAddress={info?.boosterContractAddress}
     >
       {id}
     </DuoTokenVaultCard>

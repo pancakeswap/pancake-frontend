@@ -1148,6 +1148,16 @@ const farms: SerializedFarmConfig[] = [
    * These 3 farms (PID 0, 2, 3) should always be at the top of the file.
    */
   {
+    pid: 2,
+    v1pid: 251,
+    lpSymbol: 'CAKE-BNB LP',
+    lpAddress: CAKE_BNB_LP_MAINNET,
+    token: bscTokens.cake,
+    quoteToken: bscTokens.wbnb,
+
+    bCakeWrapperAddress: '0x9669218e7ffACE40D78FF09C78aEA5F4DEb9aD4D',
+  },
+  {
     pid: 0,
     v1pid: 0,
     lpSymbol: 'CAKE',
@@ -1155,21 +1165,13 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.syrup,
     quoteToken: bscTokens.wbnb,
   },
-  {
-    pid: 2,
-    v1pid: 251,
-    lpSymbol: 'CAKE-BNB LP',
-    lpAddress: CAKE_BNB_LP_MAINNET,
-    token: bscTokens.cake,
-    quoteToken: bscTokens.wbnb,
-    boosted: true,
-  },
+
   {
     pid: 39,
     v1pid: 389,
     lpSymbol: 'CAKE-BUSD LP',
     lpAddress: '0x804678fa97d91B974ec2af3c843270886528a9E6',
-    boosted: true,
+
     token: bscTokens.cake,
     quoteToken: bscTokens.busd,
   },
@@ -1180,7 +1182,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0xA39Af17CE4a8eb807E076805Da1e2B8EA7D0755b',
     token: bscTokens.cake,
     quoteToken: bscTokens.usdt,
-    boosted: true,
+    bCakeWrapperAddress: '0xf320e4E90D3914EE224777dE842f4995467CBeF6',
   },
   {
     pid: 3,
@@ -1197,6 +1199,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0x2b3DBbA2D1F5158c7BA4b645B7ea187F7F1763af',
     token: bscTokens.mgp,
     quoteToken: bscTokens.wbnb,
+    bCakeWrapperAddress: '0x8F30711e577d8870B390B383a6d4B1c28D6DEdF8',
   },
   {
     pid: 181,
@@ -1204,6 +1207,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0x1C5bD1B4A4Fc05cC0Fb1a0f61136512744Ca4F34',
     token: bscTokens.pnp,
     quoteToken: bscTokens.wbnb,
+    bCakeWrapperAddress: '0x6F2ecB6929326Fd30406dDA3E643413f2736a3f7',
   },
   {
     pid: 179,
@@ -1215,6 +1219,7 @@ const farms: SerializedFarmConfig[] = [
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
     stableLpFee: 0.00125,
     stableLpFeeRateOfTotalFee: 0.5,
+    bCakeWrapperAddress: '0x3c5cdb87Ab4B05C6A6826A2dc69965B5d25A7419',
   },
   {
     pid: 178,
@@ -1226,6 +1231,7 @@ const farms: SerializedFarmConfig[] = [
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
     stableLpFee: 0.00125,
     stableLpFeeRateOfTotalFee: 0.5,
+    bCakeWrapperAddress: '0xdB52402F58D15974027911D8E5C958737949DBaA',
   },
   {
     pid: 177,
@@ -1233,6 +1239,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0xdb92AD18eD18752a194b9D831413B09976B34AE1',
     token: bscTokens.ckp,
     quoteToken: bscTokens.mcake,
+    bCakeWrapperAddress: '0xd4cE5488aEDfb0F26A2bcFa068fB57bDDEBE09Fd',
   },
   {
     pid: 176,
@@ -1240,6 +1247,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0xc9B415b8331e1Fb0d2f3442Ac8413E279304090f',
     token: bscTokens.rdp,
     quoteToken: bscTokens.wbnb,
+    bCakeWrapperAddress: '0x66e49e2b4c5c16EbE95E1af7902DAB1211b80E07',
   },
   {
     pid: 175,
@@ -1247,6 +1255,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0xDc9a574b9B341D4a98cE29005b614e1E27430E74',
     token: bscTokens.wbnb,
     quoteToken: bscTokens.hzn,
+    bCakeWrapperAddress: '0x33770fBC3952d5C85eEDF780Ca63E15C009DefaA',
   },
   {
     pid: 173,
@@ -1258,6 +1267,7 @@ const farms: SerializedFarmConfig[] = [
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
     stableLpFee: 0.0005,
     stableLpFeeRateOfTotalFee: 0.5,
+    bCakeWrapperAddress: '0x823AE568DD020894261FD587248304952b5931F1',
   },
   {
     pid: 174,
@@ -1269,6 +1279,19 @@ const farms: SerializedFarmConfig[] = [
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
     stableLpFee: 0.0005,
     stableLpFeeRateOfTotalFee: 0.5,
+    bCakeWrapperAddress: '0x10Cfcd2b3e8c35B3bd36dFDBd0063829eA244e84',
+  },
+  {
+    pid: 163,
+    lpSymbol: 'lisUSD-USDT LP',
+    lpAddress: '0xB2Aa63f363196caba3154D4187949283F085a488',
+    token: bscTokens.hay,
+    quoteToken: bscTokens.usdt,
+    stableSwapAddress: '0xb1Da7D2C257c5700612BdE35C8d7187dc80d79f1',
+    infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
+    stableLpFee: 0.0002,
+    stableLpFeeRateOfTotalFee: 0.5,
+    bCakeWrapperAddress: '0xd069a9E50E4ad04592cb00826d312D9f879eBb02',
   },
   {
     pid: 167,
@@ -1284,17 +1307,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.axlusdc,
     quoteToken: bscTokens.usdt,
     stableSwapAddress: '0x6D8fba276ec6F1EDa2344DA48565AdbCA7e4FFa5',
-    infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
-    stableLpFee: 0.0002,
-    stableLpFeeRateOfTotalFee: 0.5,
-  },
-  {
-    pid: 163,
-    lpSymbol: 'lisUSD-USDT LP',
-    lpAddress: '0xB2Aa63f363196caba3154D4187949283F085a488',
-    token: bscTokens.hay,
-    quoteToken: bscTokens.usdt,
-    stableSwapAddress: '0xb1Da7D2C257c5700612BdE35C8d7187dc80d79f1',
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
@@ -2130,6 +2142,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0x8FA59693458289914dB0097F5F366d771B7a7C3F',
     token: bscTokens.mbox,
     quoteToken: bscTokens.wbnb,
+    bCakeWrapperAddress: '0xD4e726fEE72BE7Db298034a46430935d735aD5A8',
   },
   {
     pid: 41,
@@ -2378,6 +2391,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0x3DcB1787a95D2ea0Eb7d00887704EeBF0D79bb13',
     token: bscTokens.twt,
     quoteToken: bscTokens.wbnb,
+    bCakeWrapperAddress: '0xF94cE20b9bd3a7E64A64E39DF5c7d7BDb915499f',
   },
   {
     pid: 7,

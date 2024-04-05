@@ -17,13 +17,12 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
 import { useCallback, useContext, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state'
-import { useFarmFromPid } from 'state/farms/hooks'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { useNonBscFarmPendingTransaction, useTransactionAdder } from 'state/transactions/hooks'
 import { styled } from 'styled-components'
 import { useIsBloctoETH } from 'views/Farms'
-import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
+import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { SendTransactionResult } from 'wagmi/actions'
 import { useFirstTimeCrossFarming } from '../../hooks/useFirstTimeCrossFarming'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
@@ -64,6 +63,9 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   tokenAmountTotal,
   quoteTokenAmountTotal,
   userData,
+  bCakeUserData,
+  bCakePublicData,
+  bCakeWrapperAddress,
   lpRewardsApr,
   onStake,
   onUnstake,
@@ -76,10 +78,10 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const addTransaction = useTransactionAdder()
   const { account, chainId } = useAccountActiveChain()
   const native = useNativeCurrency()
-  const { tokenBalance, stakedBalance, allowance } = userData || {}
+  const isBooster = Boolean(bCakeWrapperAddress)
+  const { tokenBalance, stakedBalance, allowance } = (isBooster ? bCakeUserData : userData) || {}
   const cakePrice = useCakePrice()
   const router = useRouter()
-  const { lpTokenStakedAmount } = useFarmFromPid(pid) ?? {}
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
   const { boosterState } = useContext(YieldBoosterStateContext)
@@ -87,6 +89,8 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
   const { isFirstTime, refresh: refreshFirstTime } = useFirstTimeCrossFarming(vaultPid)
   const isBloctoETH = useIsBloctoETH()
+  const isBoosterAndRewardInRange = isBooster && bCakePublicData?.isRewardInRange
+  const { locked } = useBCakeBoostLimitAndLockInfo()
 
   const crossChainWarningText = useMemo(() => {
     return isFirstTime
@@ -232,14 +236,14 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
     }
   }, [onApprove, t, toastSuccess, fetchWithCatchTxError, onDone])
 
-  const bCakeCalculatorSlot = (calculatorBalance) => (
-    <BCakeCalculator
-      targetInputBalance={calculatorBalance}
-      earningTokenPrice={cakePrice.toNumber()}
-      lpTokenStakedAmount={lpTokenStakedAmount ?? BIG_ZERO}
-      setBCakeMultiplier={setBCakeMultiplier}
-    />
-  )
+  // const bCakeCalculatorSlot = (calculatorBalance) => (
+  //   <BCakeCalculator
+  //     targetInputBalance={calculatorBalance}
+  //     earningTokenPrice={cakePrice.toNumber()}
+  //     lpTokenStakedAmount={lpTokenStakedAmount ?? BIG_ZERO}
+  //     setBCakeMultiplier={setBCakeMultiplier}
+  //   />
+  // )
 
   const [onPresentDeposit] = useModal(
     <FarmWidget.DepositModal
@@ -266,7 +270,15 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       lpRewardsApr={lpRewardsApr}
       onConfirm={handleStake}
       handleApprove={handleApprove}
-      bCakeCalculatorSlot={bCakeCalculatorSlot}
+      isBooster={isBoosterAndRewardInRange}
+      boosterMultiplier={
+        isBoosterAndRewardInRange
+          ? bCakeUserData?.boosterMultiplier === 0 || bCakeUserData?.stakedBalance.eq(0) || !locked
+            ? 3
+            : bCakeUserData?.boosterMultiplier
+          : 1
+      }
+      // bCakeCalculatorSlot={bCakeCalculatorSlot}
     />,
     true,
     true,
@@ -292,10 +304,10 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       </Button>
     ) : (
       <IconButtonWrapper>
-        <IconButton mr="6px" variant="tertiary" disabled={pendingFarm.length > 0} onClick={onPresentWithdraw}>
+        <IconButton mr="6px" variant="secondary" disabled={pendingFarm.length > 0} onClick={onPresentWithdraw}>
           <MinusIcon color="primary" width="14px" />
         </IconButton>
-        <IconButton variant="tertiary" onClick={onPresentDeposit} disabled={isStakeReady || isBloctoETH}>
+        <IconButton variant="secondary" onClick={onPresentDeposit} disabled={isStakeReady || isBloctoETH}>
           <AddIcon color="primary" width="14px" />
         </IconButton>
       </IconButtonWrapper>
@@ -316,7 +328,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   }
 
   // TODO: Move this out to prevent unnecessary re-rendered
-  if (!isApproved) {
+  if (!isApproved && stakedBalance?.eq(0)) {
     return (
       <Button mt="8px" width="100%" disabled={pendingTx || isBloctoETH} onClick={handleApprove}>
         {t('Enable Contract')}
@@ -325,7 +337,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   }
 
   return (
-    <Flex justifyContent="space-between" alignItems="center">
+    <Flex justifyContent="space-between" width="100%" alignItems="center">
       <FarmWidget.StakedLP
         decimals={18}
         stakedBalance={stakedBalance ?? BIG_ZERO}

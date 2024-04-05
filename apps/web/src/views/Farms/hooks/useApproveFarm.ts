@@ -6,9 +6,13 @@ import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelp
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { Address } from 'wagmi'
 
-const useApproveFarm = (lpContract: ReturnType<typeof useERC20>, chainId: number) => {
+const useApproveFarm = (lpContract: ReturnType<typeof useERC20>, chainId: number, bCakeWrapperAddress?: Address) => {
   const isBscNetwork = verifyBscNetwork(chainId)
-  const contractAddress = isBscNetwork ? getMasterChefV2Address(chainId) : getNonBscVaultAddress(chainId)
+  const contractAddress = bCakeWrapperAddress
+    ? bCakeWrapperAddress ?? '0x'
+    : isBscNetwork
+    ? getMasterChefV2Address(chainId)
+    : getNonBscVaultAddress(chainId)
 
   const { callWithGasPrice } = useCallWithGasPrice()
   const handleApprove = useCallback(async () => {

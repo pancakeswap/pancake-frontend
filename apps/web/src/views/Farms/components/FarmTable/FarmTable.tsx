@@ -12,7 +12,6 @@ import { getMerklLink } from 'utils/getMerklLink'
 import { V2Farm, V2StakeValueAndV3Farm } from 'views/Farms/FarmsV3'
 import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
 import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
-import ProxyFarmContainer from '../YieldBooster/components/ProxyFarmContainer'
 import { getDisplayApr } from '../getDisplayApr'
 import Row, { RowProps } from './Row'
 
@@ -73,7 +72,9 @@ const TableContainer = styled.div`
 `
 
 const getV2FarmEarnings = (farm: V2Farm) => {
-  const existingEarnings = farm.userData?.earnings ? new BigNumber(farm.userData?.earnings) : BIG_ZERO
+  let existingEarnings = farm.userData?.earnings ? new BigNumber(farm.userData?.earnings) : BIG_ZERO
+  if (farm.bCakeWrapperAddress)
+    existingEarnings = farm.bCakeUserData?.earnings ? new BigNumber(farm.bCakeUserData?.earnings) : BIG_ZERO
   let earnings: BigNumber = existingEarnings
 
   if (farm.boosted) {
@@ -163,9 +164,16 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
 
       if (farm.version === 2) {
+        const isBooster = Boolean(farm?.bCakeWrapperAddress)
         const row: RowProps = {
           apr: {
-            value: getDisplayApr(farm.apr, farm.lpRewardsApr) ?? '',
+            value:
+              getDisplayApr(
+                (isBooster && farm?.bCakeUserData?.rewardPerSecond === 0) || !farm?.bCakePublicData?.isRewardInRange
+                  ? 0
+                  : farm.apr,
+                farm.lpRewardsApr,
+              ) ?? '',
             pid: farm.pid,
             multiplier: farm.multiplier ?? '',
             lpLabel,
@@ -175,10 +183,14 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
             quoteTokenAddress,
             cakePrice,
             lpRewardsApr: farm.lpRewardsApr ?? 0,
-            originalValue: farm.apr ?? 0,
+            originalValue:
+              (isBooster && farm?.bCakeUserData?.rewardPerSecond === 0) || !farm?.bCakePublicData?.isRewardInRange
+                ? 0
+                : farm.apr ?? 0,
             stableSwapAddress: farm.stableSwapAddress,
             stableLpFee: farm.stableLpFee,
           },
+          rewardPerDay: {},
           farm: {
             version: 2,
             label: lpLabel,
@@ -187,6 +199,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
             quoteToken: farm.quoteToken,
             isReady: farm.multiplier !== undefined,
             isStaking: farm.userData?.proxy?.stakedBalance.gt(0) || farm.userData?.stakedBalance.gt(0),
+            rewardCakePerSecond: farmV2Multiplier.getNumberFarmCakePerSecond(farm.poolWeight),
           },
           earned: {
             earnings: getV2FarmEarnings(farm),
@@ -204,6 +217,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
           details: farm,
           initialActivity,
         }
+
         return row
       }
 
@@ -274,12 +288,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
             <TableBody>
               {sortedRows.map((row, index) => {
                 const isLastFarm = index === sortedRows.length - 1
-
-                return row.type === 'v2' && row?.details?.boosted ? (
-                  <ProxyFarmContainer key={`table-row-${row.farm.pid}-${row.type}`} farm={row.details}>
-                    <Row {...row} userDataReady={userDataReady} isLastFarm={isLastFarm} />
-                  </ProxyFarmContainer>
-                ) : (
+                return (
                   <Row
                     {...row}
                     userDataReady={userDataReady}
