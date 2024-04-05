@@ -161,7 +161,7 @@ export const useVeCakeAPR = () => {
   }
 }
 
-export const BRIBE_APR = 3.14159
+export const BRIBE_APR = 41.55
 export const useFourYearTotalVeCakeApr = () => {
   const revShareEmission = useRevShareEmission()
   const cakePoolEmission = useCakePoolEmission()
