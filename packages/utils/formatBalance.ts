@@ -9,11 +9,11 @@ import { BIG_ZERO } from './bigNumber'
  * Take a formatted amount, e.g. 15 BNB and convert it to full decimal value, e.g. 15000000000000000
  */
 export const getDecimalAmount = (amount: BigNumber, decimals = 18) => {
-  return new BigNumber(amount).times(getFullDecimalMultiplier(decimals))
+  return amount.times(getFullDecimalMultiplier(decimals))
 }
 
 export const getBalanceAmount = (amount: BigNumber, decimals: number | undefined = 18) => {
-  return new BigNumber(amount).dividedBy(getFullDecimalMultiplier(decimals))
+  return amount.dividedBy(getFullDecimalMultiplier(decimals))
 }
 
 /**
