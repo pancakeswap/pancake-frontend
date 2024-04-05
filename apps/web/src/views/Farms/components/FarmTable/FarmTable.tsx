@@ -169,7 +169,9 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
           apr: {
             value:
               getDisplayApr(
-                isBooster && farm?.bCakeUserData?.rewardPerSecond === 0 ? 0 : farm.apr,
+                (isBooster && farm?.bCakeUserData?.rewardPerSecond === 0) || !farm?.bCakePublicData?.isRewardInRange
+                  ? 0
+                  : farm.apr,
                 farm.lpRewardsApr,
               ) ?? '',
             pid: farm.pid,
@@ -181,7 +183,10 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
             quoteTokenAddress,
             cakePrice,
             lpRewardsApr: farm.lpRewardsApr ?? 0,
-            originalValue: isBooster && farm?.bCakeUserData?.rewardPerSecond === 0 ? 0 : farm.apr ?? 0,
+            originalValue:
+              (isBooster && farm?.bCakeUserData?.rewardPerSecond === 0) || !farm?.bCakePublicData?.isRewardInRange
+                ? 0
+                : farm.apr ?? 0,
             stableSwapAddress: farm.stableSwapAddress,
             stableLpFee: farm.stableLpFee,
           },

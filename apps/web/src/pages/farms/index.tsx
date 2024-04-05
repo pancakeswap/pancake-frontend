@@ -22,7 +22,7 @@ export const ProxyFarmCardContainer = ({ farm }) => {
       key={finalFarm.pid}
       farm={finalFarm}
       displayApr={getDisplayApr(
-        finalFarm.bCakeWrapperAddress && finalFarm?.bCakeUserData?.rewardPerSecond === 0 ? 0 : finalFarm.apr,
+        finalFarm.bCakeWrapperAddress && finalFarm?.bCakePublicData?.rewardPerSecond === 0 ? 0 : finalFarm.apr,
         finalFarm.lpRewardsApr,
       )}
       cakePrice={cakePrice}
@@ -50,7 +50,7 @@ const FarmsPage = () => {
               key={`${farm.pid}-${farm.version}`}
               farm={farm}
               displayApr={getDisplayApr(
-                farm.bCakeWrapperAddress && farm?.bCakeUserData?.rewardPerSecond === 0 ? 0 : farm.apr,
+                farm.bCakeWrapperAddress && farm?.bCakePublicData?.rewardPerSecond === 0 ? 0 : farm.apr,
                 farm.lpRewardsApr,
               )}
               cakePrice={cakePrice}
