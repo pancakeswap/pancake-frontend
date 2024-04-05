@@ -65,7 +65,7 @@ export const TotalApy = ({ veCake, cakeAmount }: { veCake: string; cakeAmount: n
           {t('is the sum of veCAKE Pool APR, Revenue sharing APR and Birbes APY from Guages voting.')}
         </Text>
       </Box>
-      <Link mt="8px" external href="https://docs.pancakeswap.finance/products/gaming-platform">
+      <Link mt="8px" external href="https://docs.pancakeswap.finance/products/vecake/faq#why-there-are-multiple-aprs">
         {t('Learn More')}
       </Link>
     </Box>,
@@ -88,7 +88,7 @@ export const TotalApy = ({ veCake, cakeAmount }: { veCake: string; cakeAmount: n
           {t('is generated from CAKE emission, controlled by the veCAKE Pool gauge.')}
         </Text>
       </Box>
-      <Link mt="8px" external href="https://docs.pancakeswap.finance/products/gaming-platform">
+      <Link mt="8px" external href="https://docs.pancakeswap.finance/products/vecake/faq#what-is-vecake-pool-apr">
         {t('Learn More')}
       </Link>
     </Box>,
@@ -111,7 +111,7 @@ export const TotalApy = ({ veCake, cakeAmount }: { veCake: string; cakeAmount: n
           {t('is generated from weekly revenue sharing from PancakeSwap V3.')}
         </Text>
       </Box>
-      <Link mt="8px" external href="https://docs.pancakeswap.finance/products/gaming-platform">
+      <Link mt="8px" external href="https://docs.pancakeswap.finance/products/vecake/faq#what-is-revenue-sharing-apr">
         {t('Learn More')}
       </Link>
     </Box>,
@@ -134,13 +134,10 @@ export const TotalApy = ({ veCake, cakeAmount }: { veCake: string; cakeAmount: n
           {t('is generated from voting incentives on bribe platforms. More info on platform websites:')}
         </Text>
       </Box>
-      <Link mt="8px" external href="https://docs.pancakeswap.finance/products/gaming-platform">
+      <Link mt="8px" external href="https://votemarket.stakedao.org/?market=cake&solution=All">
         {t('StakeDAO')}
       </Link>
-      <Link mt="8px" external href="https://docs.pancakeswap.finance/products/gaming-platform">
-        {t('Cakepie')}
-      </Link>
-      <Link mt="8px" external href="https://docs.pancakeswap.finance/products/gaming-platform">
+      <Link mt="8px" external href="https://hiddenhand.finance/pancakeswap">
         {t('Hiddenhand')}
       </Link>
     </Box>,
