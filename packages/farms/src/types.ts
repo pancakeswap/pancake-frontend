@@ -57,6 +57,7 @@ export interface FarmConfigBaseProps {
     aptIncentiveInfo: number
   }
   boosted?: boolean
+  allocPoint?: number
 }
 
 export interface SerializedStableFarmConfig extends FarmConfigBaseProps {

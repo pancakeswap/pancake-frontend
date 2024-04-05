@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
-import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { CurrencyParams, getCurrencyKey, getCurrencyListUsdPrice } from '@pancakeswap/price-api-sdk'
+import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BN from 'bignumber.js'
 import { Address, PublicClient, formatUnits } from 'viem'
 import { FarmV2SupportedChainId, supportedChainIdV2 } from '../const'
@@ -104,10 +104,11 @@ export async function farmV2FetchFarms({
               token0Decimals: farm.token.decimals,
               token1Decimals: farm.quoteToken.decimals,
             })),
+        // TODO: remove hardcode allocPoint & totalRegularAllocPoint later
         ...getFarmAllocation({
-          allocPoint: poolInfos[index]?.allocPoint,
+          allocPoint: BigInt(farm?.allocPoint ?? 0) ?? poolInfos[index]?.allocPoint,
           isRegular: poolInfos[index]?.isRegular,
-          totalRegularAllocPoint,
+          totalRegularAllocPoint: BigInt(2305) || totalRegularAllocPoint,
           totalSpecialAllocPoint,
         }),
       }
