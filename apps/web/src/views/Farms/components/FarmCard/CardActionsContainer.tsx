@@ -143,7 +143,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
                   status={status}
                   isFarmStaking={farm?.bCakeUserData?.stakedBalance?.gt(0)}
                   boostedMultiplier={boosterMultiplier}
-                  maxBoostMultiplier={3}
+                  maxBoostMultiplier={2.5}
                   shouldUpdate={shouldUpdate && farm?.bCakeUserData?.stakedBalance?.gt(0)}
                   expectMultiplier={veCakeUserMultiplierBeforeBoosted}
                 />
