@@ -84,7 +84,7 @@ const CellInner = styled.div`
   padding-right: 8px;
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    padding-right: 32px;
+    padding-right: 12px;
   }
 `
 
@@ -158,7 +158,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               case 'type':
                 return (
                   <td key={key}>
-                    <CellInner style={{ minWidth: '140px', gap: '4px' }}>
+                    <CellInner style={{ minWidth: '120px', gap: '4px', paddingRight: isDesktop ? 24 : undefined }}>
                       {(props[key] === 'community' || props?.farm?.isCommunity) && <FarmAuctionTag scale="sm" />}
                       {props.type === 'v2' ? (
                         props?.details?.isStable ? (
@@ -179,7 +179,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                 )
               case 'details':
                 return (
-                  <td key={key} colSpan={props.type === 'v3' ? 1 : 3}>
+                  <td key={key} colSpan={props.type === 'v3' ? 1 : 2}>
                     <CellInner
                       style={{
                         justifyContent: props.type !== 'v3' ? 'flex-end' : 'center',
@@ -225,7 +225,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                               ? props?.details?.bCakeUserData?.boosterMultiplier === 0 ||
                                 props?.details?.bCakeUserData?.stakedBalance.eq(0) ||
                                 !locked
-                                ? 3
+                                ? 2.5
                                 : props?.details?.bCakeUserData?.boosterMultiplier
                               : 1
                           }
@@ -258,7 +258,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     </td>
                   )
                 }
-                return null
+                return <td />
 
               default:
                 if (cells[key]) {
@@ -292,7 +292,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   mr="16px"
                   alignItems={isMobile ? 'end' : 'center'}
                   flexDirection={isMobile ? 'column' : 'row'}
-                  flexWrap="nowrap"
+                  // flexWrap="nowrap"
                   style={{ gap: '4px' }}
                 >
                   {props.type === 'v2' ? (
@@ -349,7 +349,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                             ? props?.details?.bCakeUserData?.boosterMultiplier === 0 ||
                               props?.details?.bCakeUserData?.stakedBalance.eq(0) ||
                               !locked
-                              ? 3
+                              ? 2.5
                               : props?.details?.bCakeUserData?.boosterMultiplier
                             : 1
                         }

@@ -178,7 +178,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                         ? farm?.bCakeUserData?.boosterMultiplier === 0 ||
                           farm?.bCakeUserData?.stakedBalance.eq(0) ||
                           !locked
-                          ? 3
+                          ? 2.5
                           : farm?.bCakeUserData?.boosterMultiplier
                         : 1
                     }
