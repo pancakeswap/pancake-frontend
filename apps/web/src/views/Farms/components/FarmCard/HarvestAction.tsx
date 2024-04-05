@@ -8,6 +8,7 @@ import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 
+import { SerializedBCakeUserData } from '@pancakeswap/farms'
 import { Token } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
@@ -25,6 +26,7 @@ interface FarmCardActionsProps {
   onReward: () => Promise<SendTransactionResult>
   onDone?: () => void
   bCakeWrapperAddress?: Address
+  bCakeUserData?: SerializedBCakeUserData
 }
 
 const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
@@ -37,13 +39,19 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   lpSymbol,
   onReward,
   onDone,
+  bCakeWrapperAddress,
+  bCakeUserData,
 }) => {
   const { address: account } = useAccount()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { t } = useTranslation()
   const cakePrice = useCakePrice()
-  const rawEarningsBalance = account ? getBalanceAmount(earnings) : BIG_ZERO
+  const rawEarningsBalance = account
+    ? bCakeWrapperAddress
+      ? getBalanceAmount(new BigNumber(bCakeUserData?.earnings ?? '0'))
+      : getBalanceAmount(earnings)
+    : BIG_ZERO
   const displayBalance = rawEarningsBalance.toFixed(5, BigNumber.ROUND_DOWN)
   const earningsBusd = rawEarningsBalance ? rawEarningsBalance.multipliedBy(cakePrice).toNumber() : 0
   const tooltipBalance = rawEarningsBalance.isGreaterThan(FarmWidget.FARMS_SMALL_AMOUNT_THRESHOLD)
