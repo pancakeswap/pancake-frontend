@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { DEFAULT_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from 'config'
+import { BOOSTED_FARM_GAS_LIMIT, DEFAULT_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from 'config'
 import { getMasterChefContract, getNonBscVaultContract, getV2SSBCakeWrapperContract } from 'utils/contractHelpers'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { MessageTypes, getNonBscVaultContractFee } from 'views/Farms/hooks/getNonBscVaultFee'
@@ -74,7 +74,7 @@ export const harvestFarm = async (masterChefContract: MasterChefContract, pid, g
 
 export const bCakeHarvestFarm = async (v2SSContract: V2SSBCakeContract, gasPrice, gasLimit?: bigint) => {
   return v2SSContract.write.deposit([0n, false], {
-    gas: gasLimit || DEFAULT_GAS_LIMIT,
+    gas: gasLimit || BOOSTED_FARM_GAS_LIMIT,
     gasPrice,
     account: v2SSContract.account ?? '0x',
     chain: v2SSContract.chain,

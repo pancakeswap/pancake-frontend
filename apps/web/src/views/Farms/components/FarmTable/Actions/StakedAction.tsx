@@ -392,7 +392,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       boosterMultiplier={
         isBoosterAndRewardInRange
           ? bCakeUserData?.boosterMultiplier === 0 || bCakeUserData?.stakedBalance.eq(0) || !locked
-            ? 3
+            ? 2.5
             : bCakeUserData?.boosterMultiplier
           : 1
       }

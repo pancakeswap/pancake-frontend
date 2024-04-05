@@ -225,7 +225,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                               ? props?.details?.bCakeUserData?.boosterMultiplier === 0 ||
                                 props?.details?.bCakeUserData?.stakedBalance.eq(0) ||
                                 !locked
-                                ? 3
+                                ? 2.5
                                 : props?.details?.bCakeUserData?.boosterMultiplier
                               : 1
                           }
@@ -349,7 +349,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                             ? props?.details?.bCakeUserData?.boosterMultiplier === 0 ||
                               props?.details?.bCakeUserData?.stakedBalance.eq(0) ||
                               !locked
-                              ? 3
+                              ? 2.5
                               : props?.details?.bCakeUserData?.boosterMultiplier
                             : 1
                         }

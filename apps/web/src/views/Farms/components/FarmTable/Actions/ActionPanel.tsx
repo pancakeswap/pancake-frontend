@@ -365,7 +365,6 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   const isBooster = Boolean(details?.bCakeWrapperAddress)
   const isRewardInRange = details?.bCakePublicData?.isRewardInRange
   const hasStakedInBCake = Boolean(details?.bCakeUserData?.stakedBalance?.gt(0))
-  if (details?.pid === 180) console.log(details, 'details????', hasStakedInBCake)
 
   const { status } = useBoostStatusPM(isBooster, details?.bCakeUserData?.boosterMultiplier)
   const { shouldUpdate, veCakeUserMultiplierBeforeBoosted } = useWrapperBooster(
@@ -421,7 +420,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                         ? details?.bCakeUserData?.boosterMultiplier === 0 ||
                           details?.bCakeUserData?.stakedBalance.eq(0) ||
                           !locked
-                          ? 3
+                          ? 2.5
                           : details?.bCakeUserData?.boosterMultiplier
                         : 1
                     }
@@ -544,7 +543,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                               status={status}
                               isFarmStaking={farm?.bCakeUserData?.stakedBalance?.gt(0)}
                               boostedMultiplier={details?.bCakeUserData?.boosterMultiplier}
-                              maxBoostMultiplier={3}
+                              maxBoostMultiplier={2.5}
                               shouldUpdate={shouldUpdate}
                               expectMultiplier={veCakeUserMultiplierBeforeBoosted}
                             />
