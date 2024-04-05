@@ -3,7 +3,7 @@ import { Token } from '@pancakeswap/sdk'
 import { Box, Button, Flex, Message, MessageText, ModalV2, PreTitle, useModalV2 } from '@pancakeswap/uikit'
 import Divider from 'components/Divider'
 import dayjs from 'dayjs'
-import { ReactNode, useMemo } from 'react'
+import { ReactNode, useCallback, useMemo } from 'react'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -48,17 +48,15 @@ export function FixedStakingModal({
 
   const currentDay = useCurrentDay()
 
+  const handleDismiss = useCallback(() => {
+    if (setSelectedPeriodIndex) setSelectedPeriodIndex(null)
+    stakeModal.onDismiss()
+  }, [stakeModal, setSelectedPeriodIndex])
+
   return account ? (
     <>
       {children(stakeModal.onOpen, hideStakeButton)}
-      <ModalV2
-        {...stakeModal}
-        onDismiss={() => {
-          if (setSelectedPeriodIndex) setSelectedPeriodIndex(null)
-          stakeModal.onDismiss()
-        }}
-        closeOnOverlayClick
-      >
+      <ModalV2 {...stakeModal} onDismiss={handleDismiss} closeOnOverlayClick>
         <StakingModalTemplate
           useNative
           stakingToken={stakingToken}

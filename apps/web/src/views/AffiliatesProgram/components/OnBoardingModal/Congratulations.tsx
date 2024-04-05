@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Flex, Text, Button, Link, ModalV2 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
@@ -8,10 +8,11 @@ const Congratulations = () => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.AFFILIATE_PROGRAM)
+  const handleDismiss = useCallback(() => setIsOpen(false), [])
 
   return (
     <>
-      <ModalV2 style={{ zIndex: 100 }} isOpen={isOpen} onDismiss={() => setIsOpen(false)}>
+      <ModalV2 style={{ zIndex: 100 }} isOpen={isOpen} onDismiss={handleDismiss}>
         <USCitizenConfirmModal title={t('PancakeSwap Affiliate Program')} id={IdType.AFFILIATE_PROGRAM} />
       </ModalV2>
       <Flex flexDirection="column" padding={['24px', '24px', '24px', '24px', '80px 24px']}>

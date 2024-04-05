@@ -26,7 +26,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useV3Positions } from 'hooks/v3/useV3Positions'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { LiquidityCardRow } from 'views/AddLiquidity/components/LiquidityCardRow'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
@@ -54,6 +54,14 @@ export function Step4() {
   const addLiquidityModal = useModalV2()
 
   const native = useNativeCurrency()
+
+  const closeModal = useCallback(() => {
+    setOpen(false)
+  }, [])
+
+  const openModal = useCallback(() => {
+    setOpen(true)
+  }, [])
 
   return (
     <AppBody style={{ maxWidth: '700px' }} m="auto">
@@ -108,8 +116,8 @@ export function Step4() {
           ))
         )}
       </AtomBox>
-      <ModalV2 isOpen={open} closeOnOverlayClick onDismiss={() => setOpen(false)}>
-        <Modal title={t('List of removed v2 liquidity')} onDismiss={() => setOpen(false)}>
+      <ModalV2 isOpen={open} closeOnOverlayClick onDismiss={closeModal}>
+        <Modal title={t('List of removed v2 liquidity')} onDismiss={closeModal}>
           <PreTitle mb="12px">{t('Previous LP')}</PreTitle>
           {removedPairsCurrentChainAsArray.map((tokenAddresses) => (
             <Flex key={tokenAddresses} alignItems="center" justifyContent="space-between" mb="8px">
@@ -131,7 +139,7 @@ export function Step4() {
             </Button>
           </>
         ) : (
-          <CommitButton onClick={() => setOpen(true)} width="100%">
+          <CommitButton onClick={openModal} width="100%">
             {t('Add Liquidity')}
           </CommitButton>
         )}

@@ -10,7 +10,7 @@ import { useAnniversaryAchievementContract } from 'hooks/useContract'
 import { useShowOnceAnniversaryModal } from 'hooks/useShowOnceAnniversaryModal'
 import delay from 'lodash/delay'
 import { useRouter } from 'next/router'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 
@@ -102,16 +102,16 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
     setIsFirstTime(true)
   }, [account, hasDisplayedModal])
 
-  const closeOnceAnniversaryModal = () => {
+  const closeOnceAnniversaryModal = useCallback(() => {
     if (account && !Object.keys(showOnceAnniversaryModal).includes(account)) {
       setShowOnceAnniversaryModal({ ...showOnceAnniversaryModal, [account]: false })
     }
-  }
+  }, [account, showOnceAnniversaryModal, setShowOnceAnniversaryModal])
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setShow(false)
     closeOnceAnniversaryModal()
-  }
+  }, [closeOnceAnniversaryModal])
 
   const handleClick = async () => {
     setIsLoading(true)
@@ -143,7 +143,7 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
   }
 
   return (
-    <ModalV2 isOpen={show} onDismiss={() => handleCloseModal()} closeOnOverlayClick>
+    <ModalV2 isOpen={show} onDismiss={handleCloseModal} closeOnOverlayClick>
       <Modal title={t('Congratulations!')}>
         <Flex flexDirection="column" alignItems="center" justifyContent="center" maxWidth="450px">
           <Box>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ModalV2 } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/chains'
 import { useAccount } from 'wagmi'
@@ -14,6 +14,10 @@ const VCakeModal = () => {
   const [open, setOpen] = useState(false)
   const { data: cakeBenefits, status: cakeBenefitsFetchStatus } = useCakeBenefits()
 
+  const closeModal = useCallback(() => {
+    setOpen(false)
+  }, [])
+
   useEffect(() => {
     if (
       account &&
@@ -28,18 +32,14 @@ const VCakeModal = () => {
 
   useAccount({
     onConnect: ({ connector }) => {
-      connector?.addListener('change', () => closeModal())
+      connector?.addListener('change', closeModal)
     },
-    onDisconnect: () => closeModal(),
+    onDisconnect: closeModal,
   })
 
-  const closeModal = () => {
-    setOpen(false)
-  }
-
   return (
-    <ModalV2 isOpen={open} onDismiss={() => closeModal()}>
-      <JoinRevenueModal refresh={refresh} onDismiss={() => closeModal()} />
+    <ModalV2 isOpen={open} onDismiss={closeModal}>
+      <JoinRevenueModal refresh={refresh} onDismiss={closeModal} />
     </ModalV2>
   )
 }

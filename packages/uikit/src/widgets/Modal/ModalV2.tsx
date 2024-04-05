@@ -1,6 +1,6 @@
 import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
 import { AnimatePresence, LazyMotion } from "framer-motion";
-import React, { createContext, useCallback, useRef, useState } from "react";
+import React, { createContext, useCallback, useMemo, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { createPortal } from "react-dom";
 import { BoxProps } from "../../components/Box";
@@ -30,12 +30,15 @@ export function useModalV2() {
   const onDismiss = useCallback(() => setIsOpen(false), []);
   const onOpen = useCallback(() => setIsOpen(true), []);
 
-  return {
-    onDismiss,
-    onOpen,
-    isOpen,
-    setIsOpen,
-  };
+  return useMemo(
+    () => ({
+      onDismiss,
+      onOpen,
+      isOpen,
+      setIsOpen,
+    }),
+    [onDismiss, onOpen, isOpen]
+  );
 }
 
 export function ModalV2({
@@ -57,9 +60,11 @@ export function ModalV2({
   };
   const portal = getPortalRoot();
 
+  const providerValue = useMemo(() => ({ onDismiss }), [onDismiss]);
+
   if (portal) {
     return createPortal(
-      <ModalV2Context.Provider value={{ onDismiss }}>
+      <ModalV2Context.Provider value={providerValue}>
         <LazyMotion features={isMobile ? DomMax : DomAnimation}>
           <AnimatePresence>
             {isOpen && (
