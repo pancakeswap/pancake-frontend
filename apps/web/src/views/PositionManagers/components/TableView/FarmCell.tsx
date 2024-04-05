@@ -59,8 +59,22 @@ export const FarmCell = memo(function CardTitle({
           autoMark={autoCompound}
         />
       </Box>
-      <Flex flexDirection="row" justifyContent="flex-start" height="100%" alignItems="center">
-        <Flex flexDirection="row" justifyContent="flex-end" alignItems="center" mr="10px" height="40px">
+      <Flex
+        flexDirection="row"
+        justifyContent={isMobile ? 'space-between' : 'flex-start'}
+        height="100%"
+        alignItems="center"
+        style={{ gap: isMobile ? '35px' : undefined }}
+      >
+        <Flex
+          flexDirection="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          mr="10px"
+          height="40px"
+          maxWidth={isMobile ? '100px' : undefined}
+          flexWrap={isMobile ? 'wrap' : 'nowrap'}
+        >
           <Text fontSize="1em" bold style={{ whiteSpace: 'nowrap' }}>
             {tokenPairName}
           </Text>
