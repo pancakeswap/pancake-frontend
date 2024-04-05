@@ -8,6 +8,7 @@ export const vaults: VaultConfig[] = [
     id: 8,
     idByManager: 5,
     name: 'BRIL',
+    bCakeWrapperAddress: '0x6a38e12CcDe7e35E818b341964fB8AA3BDBb80eE',
     address: '0x6a38e12CcDe7e35E818b341964fB8AA3BDBb80eE',
     adapterAddress: '0x726663a646132EC0492D8A22619ECDdCcFc7D72C',
     currencyA: ethereumTokens.weth,
