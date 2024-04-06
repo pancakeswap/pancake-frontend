@@ -257,14 +257,18 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [stableSwapOnly, setStableSwapOnly] = useState(false)
   const [farmTypesEnableCount, setFarmTypesEnableCount] = useState(0)
 
-  const activeFarms = farmsLP.filter(
-    (farm) =>
-      farm.pid !== 0 &&
-      (farm.multiplier !== '0X' || (farm.version === 2 && farm?.bCakeWrapperAddress)) &&
-      (farm.version === 3 ? !v3PoolLength || v3PoolLength >= farm.pid : !v2PoolLength || v2PoolLength > farm.pid),
+  const activeFarms = useMemo(
+    () =>
+      farmsLP.filter(
+        (farm) =>
+          farm.pid !== 0 &&
+          (farm.multiplier !== '0X' || (farm.version === 2 && farm?.bCakeWrapperAddress)) &&
+          (farm.version === 3 ? !v3PoolLength || v3PoolLength >= farm.pid : !v2PoolLength || v2PoolLength > farm.pid),
+      ),
+    [farmsLP],
   )
 
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const inactiveFarms = useMemo(() => farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X'), [farmsLP])
 
   const archivedFarms = farmsLP
 
@@ -306,10 +310,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     },
     [query, isActive, chainId, cakePrice, regularCakePerBlock, mockApr],
   )
-
-  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value)
-  }
 
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
 
@@ -417,9 +417,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   }, [isIntersecting])
 
-  const handleSortOptionChange = (option: OptionProps): void => {
+  const handleSortOptionChange = useCallback((option: OptionProps): void => {
     setSortOption(option.value)
-  }
+  }, [])
+
+  const handleChangeQuery = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value)
+  }, [])
 
   const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
 
