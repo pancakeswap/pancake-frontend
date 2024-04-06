@@ -1320,7 +1320,6 @@ const farms: SerializedFarmConfig[] = [
     infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
-    allocPoint: 5,
   },
   {
     pid: 160,
