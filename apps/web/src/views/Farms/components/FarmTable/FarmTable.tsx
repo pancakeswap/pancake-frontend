@@ -198,7 +198,10 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
             token: farm.token,
             quoteToken: farm.quoteToken,
             isReady: farm.multiplier !== undefined,
-            isStaking: farm.userData?.proxy?.stakedBalance.gt(0) || farm.userData?.stakedBalance.gt(0),
+            isStaking:
+              farm.userData?.proxy?.stakedBalance.gt(0) ||
+              farm.userData?.stakedBalance.gt(0) ||
+              farm.bCakeUserData?.stakedBalance.gt(0),
             rewardCakePerSecond: farmV2Multiplier.getNumberFarmCakePerSecond(farm.poolWeight),
           },
           earned: {
