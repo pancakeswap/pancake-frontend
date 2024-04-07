@@ -85,7 +85,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
   const { boosterState } = useContext(YieldBoosterStateContext)
-  const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
+  const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(null)
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
   const { isFirstTime, refresh: refreshFirstTime } = useFirstTimeCrossFarming(vaultPid)
   const isBloctoETH = useIsBloctoETH()

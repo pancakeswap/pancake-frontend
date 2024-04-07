@@ -265,7 +265,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           (farm.multiplier !== '0X' || (farm.version === 2 && farm?.bCakeWrapperAddress)) &&
           (farm.version === 3 ? !v3PoolLength || v3PoolLength >= farm.pid : !v2PoolLength || v2PoolLength > farm.pid),
       ),
-    [farmsLP],
+    [farmsLP, v2PoolLength, v3PoolLength],
   )
 
   const inactiveFarms = useMemo(() => farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X'), [farmsLP])
