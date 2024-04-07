@@ -2,14 +2,14 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, RocketIcon, RoiCalculatorModal, Text, TooltipText, useModal, useTooltip } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
-import { MouseEvent } from 'react'
+import { MouseEvent, useCallback, useMemo } from 'react'
 
-import { useFarmUser } from 'state/farms/hooks'
+import { useFarmFromPid, useFarmUser } from 'state/farms/hooks'
 
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useAccount } from 'wagmi'
+import { V2FarmWithoutStakedValue, V3FarmWithoutStakedValue } from 'views/Farms/FarmsV3'
 
-export const USER_ESTIMATED_MULTIPLIER = 3
 export interface ApyButtonProps {
   variant: 'text' | 'text-and-button'
   pid: number
@@ -56,12 +56,26 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   const { t } = useTranslation()
 
   const { address: account } = useAccount()
+  const farm = useFarmFromPid(pid) as V3FarmWithoutStakedValue | V2FarmWithoutStakedValue | undefined
   const { tokenBalance, stakedBalance, proxy } = useFarmUser(pid)
-  const userBalanceInFarm = stakedBalance.plus(tokenBalance).gt(0)
-    ? stakedBalance.plus(tokenBalance)
-    : proxy
-    ? proxy.stakedBalance.plus(proxy.tokenBalance)
-    : BIG_ZERO
+  const userBalanceInFarm = useMemo(() => {
+    if (stakedBalance.gt(0)) {
+      return stakedBalance.plus(tokenBalance)
+    }
+    if (proxy) {
+      const proxyBalance = proxy.stakedBalance.plus(proxy.tokenBalance)
+      if (proxyBalance.gt(0)) {
+        return proxyBalance.plus(tokenBalance)
+      }
+    }
+    if (farm?.version !== 3) {
+      const bCakeBalance = new BigNumber(farm?.bCakeUserData?.stakedBalance ?? '0')
+      if (bCakeBalance.gt(0)) {
+        return bCakeBalance.plus(tokenBalance)
+      }
+    }
+    return BIG_ZERO
+  }, [farm, stakedBalance, proxy, tokenBalance])
 
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
@@ -90,10 +104,13 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
     `FarmModal${pid}`,
   )
 
-  const handleClickButton = (event: MouseEvent): void => {
-    event.stopPropagation()
-    onPresentApyModal()
-  }
+  const handleClickButton = useCallback(
+    (event: MouseEvent): void => {
+      event.stopPropagation()
+      onPresentApyModal()
+    },
+    [onPresentApyModal],
+  )
 
   const aprTooltip = useTooltip(
     <>
