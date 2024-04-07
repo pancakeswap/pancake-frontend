@@ -126,8 +126,6 @@ export const DetailLimitOrderModal: React.FC<React.PropsWithChildren<DetailLimit
         />
       </Flex>
       <LimitTradeInfoCard
-        currentPriceExchangeRateText="0.002474 BNB = 1 BUSD"
-        currentPriceExchangeRateTextReversed="404.11169 BUSD = 1 BNB"
         limitPriceExchangeRateText={limitPriceExchangeRateText}
         limitPriceExchangeRateTextReversed={limitPriceExchangeRateTextReversed}
         isOpen={isOpen}
@@ -195,8 +193,6 @@ export const DetailLimitOrderModal: React.FC<React.PropsWithChildren<DetailLimit
 }
 
 interface LimitTradeInfoCardProps {
-  currentPriceExchangeRateText: string
-  currentPriceExchangeRateTextReversed: string
   limitPriceExchangeRateText: string
   limitPriceExchangeRateTextReversed: string
   isOpen: boolean
