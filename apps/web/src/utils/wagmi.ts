@@ -8,7 +8,7 @@ import { PUBLIC_NODES } from 'config/nodes'
 import first from 'lodash/first'
 import memoize from 'lodash/memoize'
 import { Transport, createPublicClient } from 'viem'
-import { createConfig, http } from 'wagmi'
+import { createConfig, fallback, http } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors'
 
@@ -63,7 +63,7 @@ export const noopStorage = {
 
 const PUBLIC_MAINNET = 'https://ethereum.publicnode.com'
 
-const transports: Record<number, Transport> = chains.reduce((ts, chain) => {
+const transports = chains.reduce((ts, chain) => {
   let httpStrings: string[] | readonly string[] = []
 
   if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
@@ -75,14 +75,14 @@ const transports: Record<number, Transport> = chains.reduce((ts, chain) => {
   if (ts) {
     return {
       ...ts,
-      [chain.id]: httpStrings.map((t) => http(t)),
+      [chain.id]: fallback(httpStrings.map((t) => http(t))),
     }
   }
 
   return {
-    [chain.id]: httpStrings.map((t) => http(t)),
+    [chain.id]: fallback(httpStrings.map((t) => http(t))),
   }
-}, {})
+}, {} as Record<number, Transport>)
 
 const CLIENT_CONFIG = {
   batch: {
@@ -122,8 +122,8 @@ export const wagmiConfig = createConfig({
     bloctoConnector,
     // ledgerConnector,
     // trustWalletConnector,
-    binanceWeb3WalletConnector,
-    ...(cyberWalletConnector ? [cyberWalletConnector as any] : []),
+    // binanceWeb3WalletConnector,
+    // ...(cyberWalletConnector ? [cyberWalletConnector as any] : []),
   ],
 })
 
