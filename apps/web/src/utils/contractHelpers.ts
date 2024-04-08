@@ -128,12 +128,10 @@ export const getContract = <TAbi extends Abi | readonly unknown[], TWalletClient
   const c = viemGetContract({
     abi,
     address,
-    // TODO: Fix viem
-    // @ts-ignore
-    publicClient: publicClient ?? viemClients[chainId],
-    // TODO: Fix viem
-    // @ts-ignore
-    walletClient: signer,
+    client: {
+      public: publicClient ?? viemClients[chainId],
+      wallet: signer,
+    },
   }) as unknown as GetContractReturnType<TAbi, PublicClient, Address>
 
   return {

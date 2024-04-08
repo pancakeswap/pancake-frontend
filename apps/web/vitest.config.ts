@@ -18,6 +18,7 @@ export default defineConfig({
     },
   },
   test: {
+    dangerouslyIgnoreUnhandledErrors: true, // this.WebSocketClass is not a constructor
     setupFiles: ['./vitest.setup.js'],
     environment: 'happy-dom',
     globals: true,
