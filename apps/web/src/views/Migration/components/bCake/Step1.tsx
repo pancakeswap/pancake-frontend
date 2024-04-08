@@ -39,8 +39,6 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
     )
   })
 
-  console.log(stakedOrHasTokenBalance, 'stakedOrHasTokenBalance???')
-
   const farmsList = useCallback(
     (farmsToDisplay: DeserializedFarm[]): FarmWithStakedValue[] => {
       const farmsToDisplayWithAPR: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
