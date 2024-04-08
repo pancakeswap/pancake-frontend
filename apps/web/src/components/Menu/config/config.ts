@@ -25,6 +25,7 @@ import {
   SUPPORT_FARMS,
   SUPPORT_ONLY_BSC,
 } from 'config/constants/supportChains'
+import { getOptionsUrl } from 'utils/getOptionsUrl'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 
@@ -75,7 +76,13 @@ const config: (
             languageCode,
             isDark,
           }),
-          confirmModalId: 'usCitizenConfirmModal',
+          confirmModalId: 'perpConfirmModal',
+          type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+        {
+          label: t('Options'),
+          href: getOptionsUrl(),
+          confirmModalId: 'optionsConfirmModal',
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {
