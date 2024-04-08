@@ -48,7 +48,8 @@ export const useVeCakeUserInfo = (): {
 
   const { data, refetch } = useReadContract({
     chainId: veCakeContract?.chain?.id,
-    ...veCakeContract,
+    abi: veCakeContract.abi,
+    address: veCakeContract.address,
     functionName: 'getUserInfo',
     query: {
       enabled: Boolean(veCakeContract?.address && account),
