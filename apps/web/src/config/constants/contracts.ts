@@ -165,7 +165,7 @@ export default {
   },
   tradingReward: {
     [ChainId.ETHEREUM]: '0x',
-    [ChainId.BSC]: '0xa309d8C84c5F9B0bd85715d2904BB5623285b06E',
+    [ChainId.BSC]: '0x3A41495D8ae7081A106D33D83D50fd95b79C1C6f',
     [ChainId.BSC_TESTNET]: '0x',
   },
   nftPositionManager: NFT_POSITION_MANAGER_ADDRESSES,
