@@ -16,6 +16,7 @@ const useEagerConnect = () => {
     }
 
     if (isInBinance()) {
+      // @ts-ignore FIXME wagmi v2
       connectAsync({ connector: binanceWeb3WalletConnector })
 
       return

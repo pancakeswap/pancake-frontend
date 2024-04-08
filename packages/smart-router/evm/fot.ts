@@ -25,7 +25,7 @@ const getFeeOnTransferDetectorContract = <TPublicClient extends PublicClient>(pu
     return getContract({
       abi: feeOnTransferDetectorAbi,
       address: feeOnTransferDetectorAddresses[publicClient.chain.id as keyof typeof feeOnTransferDetectorAddresses],
-      publicClient,
+      client: publicClient,
     })
   }
 
@@ -88,8 +88,8 @@ export async function fetchTokenFeeOnTransferBatch<TPublicClient extends PublicC
     contracts: tokensWithoutBaseToken.map(
       (token) =>
         ({
-          address: contract.address,
-          abi: contract.abi,
+          address: contract.address as Address,
+          abi: feeOnTransferDetectorAbi,
           functionName: 'validate',
           args: [token.address, baseToken.address, AMOUNT],
         } as const),
