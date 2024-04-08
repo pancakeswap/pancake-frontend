@@ -1,5 +1,11 @@
 # @pancakeswap/price-api-sdk
 
+## 1.2.0
+
+### Minor Changes
+
+- 03bd2a9: Introduce human readable pool type parser
+
 ## 1.1.1
 
 ### Patch Changes
