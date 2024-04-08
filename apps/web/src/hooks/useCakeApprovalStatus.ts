@@ -9,10 +9,12 @@ export const useCakeApprovalStatus = (spender) => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
   const { data: blockNumber } = useBlockNumber({ watch: true })
+  const cakeContract = useMemo(() => (chainId ? getCakeContract(chainId) : undefined), [chainId])
 
   const { data, refetch } = useReadContract({
     chainId,
-    ...getCakeContract(chainId),
+    abi: cakeContract?.abi,
+    address: cakeContract?.address,
     query: {
       enabled: Boolean(account && spender),
     },
