@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { getChainId } from 'config/chains'
 import { atom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
-import { useDeferredValue } from 'react'
+import { useDeferredValue, useMemo } from 'react'
 import { isChainSupported } from 'utils/wagmi'
 import { useAccount } from 'wagmi'
 import { useSessionChainId } from './useSessionChainId'
@@ -47,14 +47,17 @@ export const useActiveChainId = () => {
   const localChainId = useLocalNetworkChain()
   const queryChainId = useAtomValue(queryChainIdAtom)
 
-  const { chain } = useAccount()
-  const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BSC : undefined)
+  const { chainId: wagmiChainId } = useAccount()
+  const chainId = localChainId ?? wagmiChainId ?? (queryChainId >= 0 ? ChainId.BSC : undefined)
 
-  const isNotMatched = useDeferredValue(chain && localChainId && chain.id !== localChainId)
+  const isNotMatched = useDeferredValue(wagmiChainId && localChainId && wagmiChainId !== localChainId)
 
   return {
     chainId,
-    isWrongNetwork: Boolean((chain ?? false) || isNotMatched),
+    isWrongNetwork: useMemo(
+      () => Boolean(((wagmiChainId && !isChainSupported(wagmiChainId)) ?? false) || isNotMatched),
+      [wagmiChainId, isNotMatched],
+    ),
     isNotMatched,
   }
 }
