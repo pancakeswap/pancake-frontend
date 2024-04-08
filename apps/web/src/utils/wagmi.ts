@@ -41,10 +41,7 @@ const bloctoConnector = blocto({
   appId: 'e2f2f0cd-3ceb-4dec-b293-bb555f2ed5af',
 })
 
-export const trustWalletConnector = trustWalletConnect({
-  shimDisconnect: false,
-  shimChainChangedDisconnect: true,
-})
+export const trustWalletConnector = trustWalletConnect()
 
 export const cyberWalletConnector = isCyberWallet()
   ? new CyberWalletConnector({
