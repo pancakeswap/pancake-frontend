@@ -14,7 +14,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
 import toNumber from 'lodash/toNumber'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useCalculateProjectedReturnAmount } from '../hooks/useCalculateProjectedReturnAmount'
 import { useCurrentDay } from '../hooks/useStakedPools'
@@ -96,6 +96,9 @@ export function FixedStakingCalculator({
 
   const { t } = useTranslation()
   const stakeModal = useModalV2()
+  const handleDismiss = useCallback(() => {
+    stakeModal.onDismiss()
+  }, [stakeModal])
 
   return (
     <>
@@ -110,13 +113,7 @@ export function FixedStakingCalculator({
       >
         <CalculateIcon color="textSubtle" ml="0.25em" width="24px" />
       </IconButton>
-      <ModalV2
-        {...stakeModal}
-        onDismiss={() => {
-          stakeModal.onDismiss()
-        }}
-        closeOnOverlayClick
-      >
+      <ModalV2 {...stakeModal} onDismiss={handleDismiss} closeOnOverlayClick>
         <StakingModalTemplate
           useNative
           title={t('ROI Calculator')}

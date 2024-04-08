@@ -263,6 +263,7 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalProps> = ({
     token,
     trade,
     txHash,
+    showAddToWalletButton,
   ])
 
   if (!chainId) return null
