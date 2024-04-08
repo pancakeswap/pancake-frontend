@@ -1403,12 +1403,6 @@ importers:
         specifier: ^2.2.0
         version: 2.6.2
     devDependencies:
-      '@pancakeswap/hooks':
-        specifier: workspace:*
-        version: link:../hooks
-      '@pancakeswap/utils':
-        specifier: workspace:*
-        version: link:../utils
       '@types/lodash':
         specifier: ^4.14.178
         version: 4.14.201
