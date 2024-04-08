@@ -12,7 +12,7 @@ export type UseMenuItemsParams = {
   onClick?: (e: React.MouseEvent<HTMLButtonElement>, item: ConfigMenuDropDownItemsType) => void
 }
 
-export const useMenuItems = ({ onClick }: UseMenuItemsParams): ConfigMenuItemsType[] => {
+export const useMenuItems = ({ onClick }: UseMenuItemsParams = {}): ConfigMenuItemsType[] => {
   const {
     t,
     currentLanguage: { code: languageCode },
