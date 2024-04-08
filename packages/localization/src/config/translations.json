@@ -3332,8 +3332,11 @@
   "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.": "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.",
   "Booster Update": "Booster Update",
   "Booster has been updated.": "Booster has been updated.",
-  "Migrate to new v2 bCake here": "Migrate to new v2 bCake here",
   "Try it now": "Try it now",
   "Trade Options & Build On-Chain Liquidity": "Trade Options & Build On-Chain Liquidity",
-  "Trade Options & Build On-Chain Options Liquidity": "Trade Options & Build On-Chain Options Liquidity"
+  "Trade Options & Build On-Chain Options Liquidity": "Trade Options & Build On-Chain Options Liquidity",
+  "Options": "Options",
+  "PancakeSwap Options": "PancakeSwap Options",
+  "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).",
+  "Migrate to new v2 bCake here": "Migrate to new v2 bCake here"
 }

@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { perpLangMap } from 'utils/getPerpetualLanguageCode'
 import { perpTheme } from 'utils/getPerpetualTheme'
 
-interface GetPerpetualUrlProps {
+export interface GetPerpetualUrlProps {
   chainId: ChainId | undefined
   languageCode: string | undefined
   isDark: boolean

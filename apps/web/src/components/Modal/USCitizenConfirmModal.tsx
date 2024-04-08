@@ -1,9 +1,6 @@
 import DisclaimerModal, { CheckType } from 'components/DisclaimerModal'
 import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
-import { memo, useCallback, useEffect } from 'react'
-import { getPerpetualUrl } from 'utils/getPerpetualUrl'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useTheme } from 'styled-components'
+import { ReactNode, memo, useCallback, useEffect } from 'react'
 import { Text, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
@@ -12,7 +9,9 @@ import { usePreviousValue } from '@pancakeswap/hooks'
 interface USCitizenConfirmModalProps {
   id: IdType
   title: string
+  desc?: ReactNode
   checks?: CheckType[]
+  href?: string
   onDismiss?: () => void
 }
 
@@ -21,25 +20,19 @@ const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmMo
   title,
   checks,
   onDismiss,
+  href,
+  desc,
 }) => {
-  const {
-    t,
-    currentLanguage: { code },
-  } = useTranslation()
+  const { t } = useTranslation()
   const { pathname } = useRouter()
   const previousPathname = usePreviousValue(pathname)
   const [, setHasAcceptedRisk] = useUserNotUsCitizenAcknowledgement(id)
-  const { chainId } = useActiveChainId()
-  const { isDark } = useTheme()
 
   const handleSuccess = useCallback(() => {
     setHasAcceptedRisk(true)
-    if (id === IdType.PERPETUALS) {
-      const url = getPerpetualUrl({ chainId, languageCode: code, isDark })
-      window.open(url, '_blank', 'noopener noreferrer')
-    }
+    window.open(href, '_blank', 'noopener noreferrer')
     onDismiss?.()
-  }, [id, setHasAcceptedRisk, onDismiss, chainId, code, isDark])
+  }, [id, setHasAcceptedRisk, onDismiss, href])
 
   useEffect(() => {
     if (previousPathname && pathname !== previousPathname) {
@@ -65,10 +58,11 @@ const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmMo
       footer={
         <>
           <Text as="span">{t('By proceeding, you agree to comply with our')}</Text>
-          <Link external m="0 4px" display="inline" href="/terms-of-service">
+          <Link external m="0 4px" style={{ display: 'inline' }} href="/terms-of-service">
             {t('terms and conditions')}
           </Link>
           <Text as="span">{t('and all relevant laws and regulations.')}</Text>
+          {desc}
         </>
       }
       onSuccess={handleSuccess}
