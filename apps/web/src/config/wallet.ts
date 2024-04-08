@@ -5,7 +5,7 @@ import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWalle
 import type { ExtendEthereum } from 'global'
 import { Config } from 'wagmi'
 import { ConnectMutateAsync } from 'wagmi/query'
-import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
+import { chains, walletConnectNoQrCodeConnector } from '../utils/wagmi'
 import { ASSET_CDN } from './constants/endpoints'
 
 export enum ConnectorNames {
@@ -27,7 +27,10 @@ const createQrCode =
   async () => {
     await connect({ connector: walletConnectNoQrCodeConnector, chainId })
 
-    const r = await walletConnectNoQrCodeConnector().getProvider()
+    // @ts-ignore FIXME wagmi v2
+    const r = await walletConnectNoQrCodeConnector({
+      chains,
+    }).getProvider()
 
     return new Promise<string>((resolve) => {
       r.on('display_uri', (uri) => {
