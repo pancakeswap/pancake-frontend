@@ -3127,7 +3127,7 @@
   "Mainnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first": "Mainnetがデフォルトで設定されています。ブリッジに不慣れな場合は、先にtestnet取引をお試しください",
   "%title% Disclaimer": "%title%免責事項",
   "Go to FAQ guide": "FAQガイドに移動",
-  "This an experimental product": "これは実験的商品です",
+  "This is an experimental product": "This is an experimental product",
   "We highly advise you go through the FAQ Guide below before continuing": "先にFAQガイドに目を通してから進むことを強くお勧めします",
   "I have read the FAQ guide and am ready to continue.": "FAQガイドを読み、進む準備ができました。",
   "Enable Mainnet": "Mainnetを有効化",
@@ -3137,7 +3137,7 @@
   "Your Max Reward Capped": "あなたの最大報酬の上限",
   "at": "は",
   "can not be claim.": "は請求できません。",
-  "The estimated veCAKE amount at the snapshot time based on veCAKE’s linearly decreasing math.": "veCAKEの直線的に減少する計算に基づくスナップショット時の推定veCAKE 量。",
+  "The estimated veCAKE amount at the snapshot time is based on veCAKE’s linearly decreasing math.": "The estimated veCAKE amount at the snapshot time is based on veCAKE’s linearly decreasing math.",
   "To earn trading reward, there is a minimum requirement of your": "トレード報酬の獲得には、スナップショット時のveCAKEに関する",
   "veCAKE at snapshot time.": "最低要件があります。",
   "Preview of": "プレビュー -",
@@ -3327,5 +3327,12 @@
   "Your funds have been Staked in new BCake farm Wrapper.": "Your funds have been Staked in new BCake farm Wrapper.",
   "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.": "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.",
   "Booster Update": "Booster Update",
-  "Booster has been updated.": "Booster has been updated."
+  "Booster has been updated.": "Booster has been updated.",
+  "Try it now": "Try it now",
+  "Trade Options & Build On-Chain Liquidity": "Trade Options & Build On-Chain Liquidity",
+  "Trade Options & Build On-Chain Options Liquidity": "Trade Options & Build On-Chain Options Liquidity",
+  "Options": "Options",
+  "PancakeSwap Options": "PancakeSwap Options",
+  "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).",
+  "Migrate to new v2 bCake here": "Migrate to new v2 bCake here"
 }
