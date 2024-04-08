@@ -45,7 +45,8 @@ export function Step4() {
 
   const [removedPairs] = useAtom(removedPairsAtom)
 
-  const removedPairsCurrentChainAndAccount = chainId && account ? removedPairs[chainId as ChainId][account] : undefined
+  const removedPairsCurrentChainAndAccount =
+    chainId && account ? removedPairs[chainId as ChainId]?.[account] : undefined
 
   const removedPairsCurrentChainAsArray = removedPairsCurrentChainAndAccount
     ? Object.keys(removedPairsCurrentChainAndAccount)

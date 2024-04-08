@@ -2,7 +2,6 @@
   "extends": "@pancakeswap/tsconfig/react-library",
   "compilerOptions": {
     "resolveJsonModule": true,
-    "target": "ES2020",
     "baseUrl": "./",
     "paths": {
       "@pancakeswap/uikit": ["../../packages/uikit/src/index.ts"],
