@@ -9,9 +9,9 @@ export const getStakedFarms = (
       return farm.stakedPositions.length > 0
     }
     return (
-      farm.userData &&
-      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(0))
+      new BigNumber(farm?.userData?.stakedBalance ?? 0).gt(0) ||
+      new BigNumber(farm?.userData?.proxy?.stakedBalance ?? 0).gt(0) ||
+      new BigNumber(farm?.bCakeUserData?.stakedBalance ?? 0).gt(0)
     )
   })
 }
