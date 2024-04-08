@@ -3127,7 +3127,7 @@
   "Mainnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first": "Mainnet är inställt som standard. Om du inte är bekant med bryggning kan du prova en testnet-transaktion först",
   "%title% Disclaimer": "%title% ansvarsfriskrivning",
   "Go to FAQ guide": "Gå till guiden med vanliga frågor",
-  "This an experimental product": "Det här är en experimentell produkt",
+  "This is an experimental product": "This is an experimental product",
   "We highly advise you go through the FAQ Guide below before continuing": "Vi rekommenderar att du går igenom guiden med vanliga frågor nedan innan du fortsätter",
   "I have read the FAQ guide and am ready to continue.": "Jag har läst guiden med vanliga frågor och är redo att fortsätta.",
   "Enable Mainnet": "Aktivera Mainnet",
@@ -3137,7 +3137,7 @@
   "Your Max Reward Capped": "Din maximala belöning begränsad",
   "at": "till",
   "can not be claim.": "kan inte lösas in.",
-  "The estimated veCAKE amount at the snapshot time based on veCAKE’s linearly decreasing math.": "Det uppskattade veCAKE-beloppet vid ögonblicksbilden baserat på veCAKE:s linjärt minskande matematik.",
+  "The estimated veCAKE amount at the snapshot time is based on veCAKE’s linearly decreasing math.": "The estimated veCAKE amount at the snapshot time is based on veCAKE’s linearly decreasing math.",
   "To earn trading reward, there is a minimum requirement of your": "För att tjäna in handelsbelöning finns det ett minimikrav på din",
   "veCAKE at snapshot time.": "veCAKE vid tidpunkten för ögonblicksbilden.",
   "Preview of": "Förhandsgranskning av",
@@ -3327,5 +3327,12 @@
   "Your funds have been Staked in new BCake farm Wrapper.": "Your funds have been Staked in new BCake farm Wrapper.",
   "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.": "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.",
   "Booster Update": "Booster Update",
-  "Booster has been updated.": "Booster has been updated."
+  "Booster has been updated.": "Booster has been updated.",
+  "Try it now": "Try it now",
+  "Trade Options & Build On-Chain Liquidity": "Trade Options & Build On-Chain Liquidity",
+  "Trade Options & Build On-Chain Options Liquidity": "Trade Options & Build On-Chain Options Liquidity",
+  "Options": "Options",
+  "PancakeSwap Options": "PancakeSwap Options",
+  "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).",
+  "Migrate to new v2 bCake here": "Migrate to new v2 bCake here"
 }
