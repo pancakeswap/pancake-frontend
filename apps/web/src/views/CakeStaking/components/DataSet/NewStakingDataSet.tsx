@@ -61,7 +61,7 @@ export const NewStakingDataSet: React.FC<React.PropsWithChildren<NewStakingDataS
         {customVeCakeCard ?? <MyVeCakeCard type="row" value={veCake} />}
         <AutoRow px={['0px', '0px', '16px']} py={['16px', '16px', '12px']} gap="8px">
           {customDataRow}
-          <TotalApy veCake={veCake} cakeAmount={cakeAmount} />
+          <TotalApy veCake={veCake} cakeAmount={cakeAmount} cakeLockWeeks={cakeLockWeeks} />
           <DataRow
             label={
               <Text fontSize={14} color="textSubtle" textTransform="uppercase">
