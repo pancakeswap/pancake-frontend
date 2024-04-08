@@ -3127,7 +3127,7 @@
   "Mainnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first": "Mainnet установлен по умолчанию. Если вы незнакомы с процессом переноса, попробуйте сначала провести пробную транзакцию testnet",
   "%title% Disclaimer": "%title% Заявление об отказе от ответственности",
   "Go to FAQ guide": "Перейти в раздел часто задаваемых вопросов",
-  "This an experimental product": "Это экспериментальный продукт",
+  "This is an experimental product": "This is an experimental product",
   "We highly advise you go through the FAQ Guide below before continuing": "Мы настоятельно рекомендуем вам ознакомиться с разделом часто задаваемых вопросов ниже до перехода к дальнейшим действиям",
   "I have read the FAQ guide and am ready to continue.": "Я подтверждаю ознакомление с разделом часто задаваемых вопросов и выражаю готовность двигаться дальше.",
   "Enable Mainnet": "Активировать Mainnet",
@@ -3137,7 +3137,7 @@
   "Your Max Reward Capped": "Ваше максимальное вознаграждение ограничено",
   "at": "значением",
   "can not be claim.": "запрашивать нельзя.",
-  "The estimated veCAKE amount at the snapshot time based on veCAKE’s linearly decreasing math.": "Ориентировочное количество veCAKE на момент снимка основано на линейно понижающем расчете veCAKE.",
+  "The estimated veCAKE amount at the snapshot time is based on veCAKE’s linearly decreasing math.": "The estimated veCAKE amount at the snapshot time is based on veCAKE’s linearly decreasing math.",
   "To earn trading reward, there is a minimum requirement of your": "Чтобы зарабатывать вознаграждение за трейдинг, необходимо соответствовать требованию минимального количества",
   "veCAKE at snapshot time.": "veCAKE на момент снимка.",
   "Preview of": "Предпросмотр",
@@ -3327,5 +3327,12 @@
   "Your funds have been Staked in new BCake farm Wrapper.": "Your funds have been Staked in new BCake farm Wrapper.",
   "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.": "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.",
   "Booster Update": "Booster Update",
-  "Booster has been updated.": "Booster has been updated."
+  "Booster has been updated.": "Booster has been updated.",
+  "Try it now": "Try it now",
+  "Trade Options & Build On-Chain Liquidity": "Trade Options & Build On-Chain Liquidity",
+  "Trade Options & Build On-Chain Options Liquidity": "Trade Options & Build On-Chain Options Liquidity",
+  "Options": "Options",
+  "PancakeSwap Options": "PancakeSwap Options",
+  "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).",
+  "Migrate to new v2 bCake here": "Migrate to new v2 bCake here"
 }
