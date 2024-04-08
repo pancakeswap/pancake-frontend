@@ -1,7 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
-import { getRequestBody, parseAMMPriceResponse, parseQuoteResponse } from '@pancakeswap/price-api-sdk'
+import { getPoolTypeKey, getRequestBody, parseAMMPriceResponse, parseQuoteResponse } from '@pancakeswap/price-api-sdk'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { zeroAddress } from 'viem'
 import {
   BATCH_MULTICALL_CONFIGS,
   PoolType,
@@ -14,18 +15,19 @@ import {
 import { BigintIsh } from '@pancakeswap/swap-sdk-core'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useAccount } from 'wagmi'
+import qs from 'qs'
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react'
 
-import { QUOTING_API } from 'config/constants/endpoints'
+import { QUOTING_API, QUOTING_API_PREFIX } from 'config/constants/endpoints'
 import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
-import { POOLS_NORMAL_REVALIDATE } from 'config/pools'
+import { POOLS_FAST_REVALIDATE, POOLS_NORMAL_REVALIDATE } from 'config/pools'
 import { useIsWrapping } from 'hooks/useWrapCallback'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { tracker } from 'utils/datadog'
 import { createViemPublicClientGetter } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
-import { useAccount } from 'wagmi'
 
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import {
@@ -484,6 +486,7 @@ export const useBestAMMTradeFromOffchainQuoter = bestTradeHookFactory<V4Router.V
 })
 
 function useBestTradeFromApi({
+  baseCurrency,
   amount,
   currency,
   enabled,
@@ -511,6 +514,13 @@ function useBestTradeFromApi({
     }
     return types
   }, [v2Swap, v3Swap, stableSwap])
+
+  useTradeApiPrefetch({
+    currencyA: baseCurrency,
+    currencyB: currency,
+    enabled,
+    poolTypes,
+  })
 
   const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
   const deferQuotient = useDebounce(deferQuotientRaw, 500)
@@ -703,3 +713,43 @@ export const useBestAMMTradeFromQuoterWorker2 = bestTradeHookFactory<SmartRouter
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
 })
+
+type PrefetchParams = {
+  currencyA?: Currency | null
+  currencyB?: Currency | null
+  poolTypes?: PoolType[]
+  enabled?: boolean
+}
+
+function getCurrencyIdentifierForApi(currency: Currency) {
+  return currency.isNative ? zeroAddress : currency.address
+}
+
+function useTradeApiPrefetch({ currencyA, currencyB, poolTypes, enabled = true }: PrefetchParams) {
+  return useQuery({
+    enabled: !!(currencyA && currencyB && poolTypes?.length && enabled),
+    queryKey: ['quote-api-prefetch', currencyA?.chainId, currencyA?.symbol, currencyB?.symbol, poolTypes] as const,
+    queryFn: async ({ signal }) => {
+      if (!currencyA || !currencyB || !poolTypes?.length) {
+        throw new Error('Invalid prefetch params')
+      }
+
+      const serverRes = await fetch(
+        `${QUOTING_API_PREFIX}/_pools/${currencyA.chainId}/${getCurrencyIdentifierForApi(
+          currencyA,
+        )}/${getCurrencyIdentifierForApi(currencyB)}?${qs.stringify({ protocols: poolTypes.map(getPoolTypeKey) })}`,
+        {
+          method: 'GET',
+          signal,
+        },
+      )
+      const res = await serverRes.json()
+      if (!res.success) {
+        throw new Error(res.message)
+      }
+      return res
+    },
+    staleTime: currencyA?.chainId ? POOLS_FAST_REVALIDATE[currencyA.chainId] : 0,
+    refetchInterval: currencyA?.chainId ? POOLS_FAST_REVALIDATE[currencyA.chainId] : 0,
+  })
+}
