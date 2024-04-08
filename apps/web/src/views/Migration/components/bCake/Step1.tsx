@@ -35,7 +35,7 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
       (farm.userData &&
         (new BigNumber(farm.userData.stakedBalance).isGreaterThan(-1) ||
           new BigNumber(farm.userData.tokenBalance).isGreaterThan(-1))) ||
-      new BigNumber(farm.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(-1)
+      (farm.userData?.proxy?.stakedBalance && new BigNumber(farm.userData.proxy.stakedBalance).isGreaterThan(0))
     )
   })
 

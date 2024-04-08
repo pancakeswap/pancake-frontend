@@ -33,7 +33,7 @@ import { FarmWidget, NextLinkFromReactRouter } from '@pancakeswap/widgets-intern
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
-import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
+import { V2_BCAKE_MIGRATION_SUPPORTED_CHAINS, V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
 import orderBy from 'lodash/orderBy'
@@ -549,6 +549,18 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                     href="https://v1-farms.pancakeswap.finance/farms/history"
                   >
                     {t('check out v1 farms')}.
+                  </FinishedTextLink>
+                </Flex>
+              </FinishedTextContainer>
+            )}
+            {chainId && V2_BCAKE_MIGRATION_SUPPORTED_CHAINS.includes(chainId) && (
+              <FinishedTextContainer>
+                <Text fontSize={['16px', null, '20px']} color="failure" pr="4px">
+                  {t("Don't see the farm you are staking?")}
+                </Text>
+                <Flex>
+                  <FinishedTextLink external color="failure" fontSize={['16px', null, '20px']} href="/migration/bcake">
+                    {t('Migrate to new v2 bCake here')}.
                   </FinishedTextLink>
                 </Flex>
               </FinishedTextContainer>
