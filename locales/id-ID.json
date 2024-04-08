@@ -3127,7 +3127,7 @@
   "Mainnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first": "Mainnet ditetapkan sebagai standar. Jika Anda tidak terbiasa dengan penjembatanan, silakan coba transaksi testnet terlebih dahulu",
   "%title% Disclaimer": "Sangkalan %title%",
   "Go to FAQ guide": "Buka panduan T&J",
-  "This an experimental product": "Ini adalah produk percobaan",
+  "This is an experimental product": "This is an experimental product",
   "We highly advise you go through the FAQ Guide below before continuing": "Kami sangat menyarankan agar Anda membaca Panduan T&J di bawah ini dengan saksama sebelum melanjutkan",
   "I have read the FAQ guide and am ready to continue.": "Saya telah membaca panduan T&J, dan kini siap melanjutkan.",
   "Enable Mainnet": "Aktifkan Mainnet",
@@ -3137,7 +3137,7 @@
   "Your Max Reward Capped": "Hadiah Maksimal Anda Dibatasi",
   "at": "pada",
   "can not be claim.": "tidak dapat diklaim.",
-  "The estimated veCAKE amount at the snapshot time based on veCAKE’s linearly decreasing math.": "Jumlah estimasi veCAKE pada waktu tangkapan layar berdasarkan matematika veCAKE yang menurun secara linear.",
+  "The estimated veCAKE amount at the snapshot time is based on veCAKE’s linearly decreasing math.": "The estimated veCAKE amount at the snapshot time is based on veCAKE’s linearly decreasing math.",
   "To earn trading reward, there is a minimum requirement of your": "Untuk memperoleh hadiah perdagangan, ada persyaratan minimum untuk",
   "veCAKE at snapshot time.": "veCAKE Anda pada waktu tangkapan layar.",
   "Preview of": "Pratinjau",
@@ -3327,5 +3327,12 @@
   "Your funds have been Staked in new BCake farm Wrapper.": "Your funds have been Staked in new BCake farm Wrapper.",
   "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.": "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.",
   "Booster Update": "Booster Update",
-  "Booster has been updated.": "Booster has been updated."
+  "Booster has been updated.": "Booster has been updated.",
+  "Try it now": "Try it now",
+  "Trade Options & Build On-Chain Liquidity": "Trade Options & Build On-Chain Liquidity",
+  "Trade Options & Build On-Chain Options Liquidity": "Trade Options & Build On-Chain Options Liquidity",
+  "Options": "Options",
+  "PancakeSwap Options": "PancakeSwap Options",
+  "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).",
+  "Migrate to new v2 bCake here": "Migrate to new v2 bCake here"
 }
