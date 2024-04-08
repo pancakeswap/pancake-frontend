@@ -3400,7 +3400,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 340,
-    pairName: 'RNDT-USDC',
+    pairName: 'RDNT-USDC',
     address: '0xD6d29209C256aD605cAB2a0aa3A7e68BA25bD9E6',
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.ALM,
@@ -3409,7 +3409,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 341,
-    pairName: 'GMX-WETH',
+    pairName: 'WETH-GMX',
     address: '0xee58dC42bC4E80331553CF6c4eb11efA54fFecDB',
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.ALM,
@@ -3418,7 +3418,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 342,
-    pairName: 'LINK-WETH',
+    pairName: 'WETH-LINK',
     address: '0x2167812429122441eaF7ADC50Ac96BCA1A39aA7D',
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.ALM,
@@ -3427,7 +3427,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 343,
-    pairName: 'swETH-ETH',
+    pairName: 'WETH-swETH',
     address: '0xD0dCEf57Dd0F196dD549a3C56332166C2f2ded4b',
     chainId: ChainId.ETHEREUM,
     type: GaugeType.ALM,
@@ -3436,7 +3436,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 344,
-    pairName: 'wstETH-ETHX',
+    pairName: 'wstETH-ETHx',
     address: '0x97e4763B55D06230f7FAE335805edf53fC2E3275',
     chainId: ChainId.ETHEREUM,
     type: GaugeType.ALM,
@@ -3445,7 +3445,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 345,
-    pairName: 'USDC-ETHX',
+    pairName: 'USDC-ETHx',
     address: '0x1b6cEecc5FC0B26E9b85695F649c3A45c18dd46c',
     chainId: ChainId.ETHEREUM,
     type: GaugeType.ALM,
@@ -3497,7 +3497,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 351,
-    pairName: 'BNB-ankrBNB',
+    pairName: 'BNB-rBNB',
     address: '0xB22e845415C0B28854DC59D8FF14d12Cb757108B',
     chainId: ChainId.BSC,
     type: GaugeType.ALM,
@@ -3506,7 +3506,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 352,
-    pairName: 'BNB-ankrBNB',
+    pairName: 'BNB-rBNB',
     address: '0xA9bC9d27B040944388F1D43D7Ed65584aa692b17',
     chainId: ChainId.BSC,
     type: GaugeType.ALM,
