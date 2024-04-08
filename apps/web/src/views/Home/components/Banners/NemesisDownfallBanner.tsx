@@ -58,7 +58,7 @@ export const NemesisDownfallBanner = () => {
   )
 
   const learnMoreAction = isMobile ? null : (
-    <LinkExternalAction color="white" href={learnMoreLink} showExternalIcon={false}>
+    <LinkExternalAction color="white" href={learnMoreLink} externalIcon={undefined}>
       {t('Learn More')}
     </LinkExternalAction>
   )

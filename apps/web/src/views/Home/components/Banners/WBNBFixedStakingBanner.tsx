@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Flex, Text } from '@pancakeswap/uikit'
+import { Text } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
   BannerActionContainer,
@@ -63,19 +63,15 @@ const Floating = styled(FloatingGraphic)`
     top: 0;
   }
 `
-const StyledButtonLinkAction = styled(ButtonLinkAction).withConfig({
-  shouldForwardProp: (prop) => prop !== 'showExternalIcon',
-})`
+const StyledButtonLinkAction = styled(ButtonLinkAction)`
   height: 33px;
   border-radius: 12px;
   padding: 0 12px;
+  white-space: nowrap;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     height: 48px;
     border-radius: 16px;
-  }
-  & > a > svg {
-    display: ${({ showExternalIcon }) => (showExternalIcon ? 'static' : 'none')};
   }
 `
 const stakeLink =
@@ -87,29 +83,17 @@ export function WBNBFixedStakingBanner() {
   const { t } = useTranslation()
 
   const stakeAction = isMobile ? (
-    <StyledButtonLinkAction href={stakeLink} color="white">
-      <Flex alignItems="center" style={{ whiteSpace: 'nowrap' }}>
-        {t('Stake Now')}
-        <ArrowForwardIcon color="white" ml="4px" />
-      </Flex>
+    <StyledButtonLinkAction href={stakeLink} color="white" externalIcon="arrowForward">
+      {t('Stake Now')}
     </StyledButtonLinkAction>
   ) : (
-    <LinkExternalAction href={stakeLink} color="#280D5F" showExternalIcon={false}>
-      <Flex alignItems="center" style={{ whiteSpace: 'nowrap' }}>
-        {t('Stake your WBNB here')}
-        <ArrowForwardIcon color="#280D5F" ml="4px" />
-      </Flex>
+    <LinkExternalAction href={stakeLink} color="#280D5F" externalIcon="arrowForward">
+      {t('Stake your WBNB here')}
     </LinkExternalAction>
   )
 
   const learnMoreAction = isMobile ? (
-    <StyledButtonLinkAction
-      href={learnMoreLink}
-      color="white"
-      ellipsis
-      showExternalIcon
-      style={{ whiteSpace: 'nowrap' }}
-    >
+    <StyledButtonLinkAction href={learnMoreLink} color="white" ellipsis style={{ whiteSpace: 'nowrap' }}>
       {t('Learn More')}
     </StyledButtonLinkAction>
   ) : (

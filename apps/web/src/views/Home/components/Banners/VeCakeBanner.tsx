@@ -1,5 +1,5 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
   BannerActionContainer,
@@ -64,10 +64,9 @@ export const VeCakeBanner = () => {
   const { totalApr } = useFourYearTotalVeCakeApr()
 
   const stakeCakeLinkAction = (
-    <LinkExternalAction href={stakeCakeLink} showExternalIcon={false}>
+    <LinkExternalAction href={stakeCakeLink} color="black" externalIcon="arrowForward">
       <Flex color="black" alignItems="center" style={{ whiteSpace: 'nowrap' }}>
         {t('Stake CAKE')}
-        <ArrowForwardIcon color="#black" ml="4px" />
       </Flex>
     </LinkExternalAction>
   )
