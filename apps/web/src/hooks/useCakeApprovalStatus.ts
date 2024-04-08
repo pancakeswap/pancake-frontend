@@ -1,17 +1,20 @@
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { useEffect, useMemo } from 'react'
-import { getCakeContract } from 'utils/contractHelpers'
+import { Address, erc20Abi } from 'viem'
 import { useAccount, useBlockNumber, useReadContract } from 'wagmi'
+
+import { getCakeContract } from 'utils/contractHelpers'
+
 import { useActiveChainId } from './useActiveChainId'
 
-export const useCakeApprovalStatus = (spender) => {
+export const useCakeApprovalStatus = (spender: any) => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
   const { data: blockNumber } = useBlockNumber({ watch: true })
   const cakeContract = useMemo(() => (chainId ? getCakeContract(chainId) : undefined), [chainId])
 
-  const { data, refetch } = useReadContract({
+  const { data, refetch } = useReadContract<typeof erc20Abi, 'allowance', [Address, any]>({
     chainId,
     abi: cakeContract?.abi,
     address: cakeContract?.address,
