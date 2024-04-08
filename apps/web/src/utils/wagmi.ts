@@ -110,7 +110,8 @@ export const publicClient = ({ chainId }: { chainId?: ChainId }) => {
 
 export const wagmiConfig = createConfig({
   chains,
-  syncConnectedChain: false,
+  ssr: true,
+  syncConnectedChain: true,
   transports,
   ...CLIENT_CONFIG,
 
