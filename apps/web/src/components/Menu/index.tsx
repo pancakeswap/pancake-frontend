@@ -52,7 +52,7 @@ const Menu = (props) => {
       desc={
         <Text mt="0.5rem">
           {t(
-            'Please note that you are being redirected to an externally hosted website associated with our partner Dopex.',
+            'Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).',
           )}
         </Text>
       }
