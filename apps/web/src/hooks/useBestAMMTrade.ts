@@ -2,6 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 import { getPoolTypeKey, getRequestBody, parseAMMPriceResponse, parseQuoteResponse } from '@pancakeswap/price-api-sdk'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { zeroAddress } from 'viem'
 import {
   BATCH_MULTICALL_CONFIGS,
   PoolType,
@@ -721,7 +722,7 @@ type PrefetchParams = {
 }
 
 function getCurrencyIdentifierForApi(currency: Currency) {
-  return currency.isNative ? currency.symbol : currency.address
+  return currency.isNative ? zeroAddress : currency.address
 }
 
 function useTradeApiPrefetch({ currencyA, currencyB, poolTypes, enabled = true }: PrefetchParams) {
