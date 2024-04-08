@@ -13,6 +13,7 @@ export const usePollBlockNumber = () => {
   const provider = usePublicClient({ chainId })
   useWatchBlockNumber({
     chainId,
+    emitOnBegin: true,
     onBlockNumber: (data) => {
       const blockNumber = Number(data)
       queryClient.setQueryData(['blockNumber', chainId], blockNumber)
