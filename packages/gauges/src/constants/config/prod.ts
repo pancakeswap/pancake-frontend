@@ -3480,7 +3480,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 349,
     pairName: 'USDC.E-GRAI',
-    address: '0xAC98137c3dbE929aE354dDCF50E73Bf59d88dB00',
+    address: '0x5Eb74D624b60B3A9336a37509AF62f6906975264',
     chainId: ChainId.POLYGON_ZKEVM,
     type: GaugeType.ALM,
     token0Address: polygonZkEvmTokens.usdce.address,
@@ -3497,7 +3497,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 351,
-    pairName: 'BNB-rBNB',
+    pairName: 'rBNB-WBNB',
     address: '0xB22e845415C0B28854DC59D8FF14d12Cb757108B',
     chainId: ChainId.BSC,
     type: GaugeType.ALM,
@@ -3506,7 +3506,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 352,
-    pairName: 'BNB-rBNB',
+    pairName: 'WBNB-rBNB',
     address: '0xA9bC9d27B040944388F1D43D7Ed65584aa692b17',
     chainId: ChainId.BSC,
     type: GaugeType.ALM,
@@ -3524,7 +3524,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 354,
-    pairName: 'CAKE-USDT',
+    pairName: 'USDT-CAKE',
     address: '0x0Def612e7a7b51ca7Ee38f7905dA809BD3491268',
     chainId: ChainId.BSC,
     type: GaugeType.ALM,
@@ -3542,7 +3542,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 356,
-    pairName: 'CAKE-WBNB',
+    pairName: 'WBNB-CAKE',
     address: '0x8f22d7B80446F1dc4C5eb47F2038e17CA0306e0D',
     chainId: ChainId.BSC,
     type: GaugeType.ALM,
