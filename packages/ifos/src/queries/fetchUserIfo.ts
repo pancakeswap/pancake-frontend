@@ -13,15 +13,17 @@ export const getIfoCreditAddressContract = (
   chainId: ChainId,
   provider: OnChainProvider,
   walletClient?: WalletClient,
-): GetContractReturnType<typeof iCakeABI, PublicClient, Address> => {
+) => {
   const address = getContractAddress(ICAKE, chainId)
   if (!address || address === '0x') {
     throw new Error(`ICAKE not supported on chain ${chainId}`)
   }
   const publicClient = provider({ chainId })
+  if (!publicClient) {
+    throw new Error(`Invalid public client ${publicClient}`)
+  }
 
-  // @ts-ignore
-  return getContract({ abi: iCakeABI, address, publicClient, walletClient })
+  return getContract({ abi: iCakeABI, address, client: { public: publicClient, wallet: walletClient } })
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
