@@ -62,7 +62,7 @@ const fetchFarmCalls = (farm: SerializedFarmPublicData, masterChefAddress: strin
       abi,
       address: lpAddress,
       functionName: 'balanceOf',
-      args: [bCakeWrapperAddress ?? ((vaultAddress || masterChefAddress) as Address)],
+      args: [(bCakeWrapperAddress || vaultAddress || masterChefAddress) as Address],
     },
     // Total supply of LP tokens
     {
