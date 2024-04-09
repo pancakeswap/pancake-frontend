@@ -1,5 +1,12 @@
 # @pancakeswap/widgets-internal
 
+## 0.1.39
+
+### Patch Changes
+
+- 2954275: - add `externalIcon` props to `LinkExternal` & `ButtonLink`
+  - add new `CoBrandBadge` Component to show collaborate icon
+
 ## 0.1.38
 
 ### Patch Changes
