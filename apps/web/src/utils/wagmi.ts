@@ -11,6 +11,7 @@ import { Transport, createPublicClient } from 'viem'
 import { createConfig, fallback, http } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors'
+import { viemClients } from './viem'
 
 export const chains = CHAINS
 
@@ -36,6 +37,7 @@ export const walletConnectNoQrCodeConnector = walletConnect({
 })
 
 export const metaMaskConnector = injected({ target: 'metaMask', shimDisconnect: false })
+export const trustConnector = injected({ target: 'trustWallet', shimDisconnect: false })
 
 const bloctoConnector = blocto({
   appId: 'e2f2f0cd-3ceb-4dec-b293-bb555f2ed5af',
@@ -95,6 +97,9 @@ const CLIENT_CONFIG = {
 }
 
 export const publicClient = ({ chainId }: { chainId?: ChainId }) => {
+  if (chainId && viemClients[chainId]) {
+    return viemClients[chainId]
+  }
   let httpString: string | undefined
 
   if (process.env.NODE_ENV === 'test' && chainId === mainnet.id) {
@@ -123,7 +128,8 @@ export const wagmiConfig = createConfig({
     bloctoConnector,
     // ledgerConnector,
     // trustWalletConnector,
-    // binanceWeb3WalletConnector,
+    trustConnector,
+    binanceWeb3WalletConnector(),
     // ...(cyberWalletConnector ? [cyberWalletConnector as any] : []),
   ],
 })
