@@ -129,7 +129,7 @@ export const wagmiConfig = createConfig({
     // ledgerConnector,
     // trustWalletConnector,
     trustConnector,
-    binanceWeb3WalletConnector(),
+    // binanceWeb3WalletConnector(),
     // ...(cyberWalletConnector ? [cyberWalletConnector as any] : []),
   ],
 })
