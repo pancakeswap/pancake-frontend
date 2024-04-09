@@ -36,7 +36,6 @@
   },
   "dependencies": {
     "@binance/w3w-utils": "1.1.4",
-    "@binance/w3w-wagmi-connector": "1.1.4",
     "@binance/w3w-wagmi-connector-v2": "^1.1.4",
     "@cyberlab/cyber-app-sdk": "2.4.4",
     "@datadog/browser-logs": "^5.8.0",
