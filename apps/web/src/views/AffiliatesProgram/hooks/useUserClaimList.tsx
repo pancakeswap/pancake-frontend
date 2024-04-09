@@ -52,7 +52,7 @@ const useUserClaimList = ({ currentPage }) => {
       }
     },
 
-    enabled: Boolean(address && isUserExist),
+    enabled: Boolean(address),
     refetchInterval: FAST_INTERVAL * 3,
     placeholderData: keepPreviousData,
   })
