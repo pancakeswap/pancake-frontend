@@ -51,7 +51,8 @@ export function useHandleWithdrawSubmission({
 
   const { data } = useReadContract({
     chainId,
-    ...tokenContract,
+    address: tokenContract.address,
+    abi: tokenContract.abi,
     query: {
       enabled: Boolean(fixedStakingContract.address),
     },
