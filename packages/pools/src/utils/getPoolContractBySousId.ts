@@ -35,7 +35,10 @@ export function getSousChefBNBContract({
     ...getContract({
       abi: sousChefBnbABI,
       address,
-      client: publicClient as PublicClient,
+      client: {
+        public: publicClient as PublicClient,
+        wallet: signer,
+      },
     }),
     abi: sousChefBnbABI,
     address,
@@ -57,7 +60,10 @@ export function getSousChefV2Contract({
     ...getContract({
       abi: sousChefV2ABI,
       address,
-      client: publicClient as PublicClient,
+      client: {
+        public: publicClient as PublicClient,
+        wallet: signer,
+      },
     }),
     abi: sousChefV2ABI,
     address,
@@ -79,7 +85,10 @@ export function getSmartChefChefV2Contract({
     ...getContract({
       abi: smartChefABI,
       address,
-      client: publicClient as PublicClient,
+      client: {
+        public: publicClient as PublicClient,
+        wallet: signer,
+      },
     }),
     abi: smartChefABI,
     address,
