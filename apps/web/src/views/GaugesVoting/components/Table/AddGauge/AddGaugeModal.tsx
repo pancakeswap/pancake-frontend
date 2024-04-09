@@ -41,7 +41,7 @@ const ScrollableGaugesList = styled(GaugesList).attrs({ pagination: false })`
 
 const AddGaugesTable = styled(GaugesTable)`
   ${THeader}, ${TRow} {
-    grid-template-columns: 4fr 1.5fr 0.8fr 0.8fr;
+    grid-template-columns: 2fr 1.5fr 1.5fr 0.8fr 0.8fr;
   }
 `
 
