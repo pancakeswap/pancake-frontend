@@ -1,6 +1,6 @@
-import { useAccount } from 'wagmi'
-import qs from 'qs'
 import { useQuery } from '@tanstack/react-query'
+import qs from 'qs'
+import { useAccount } from 'wagmi'
 
 interface AuthAffiliateExistResponse {
   exist: boolean
@@ -24,7 +24,7 @@ const useAuthAffiliateExist = () => {
       }
     },
 
-    enabled: !!address,
+    enabled: Boolean(address),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   })
