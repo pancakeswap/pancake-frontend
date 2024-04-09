@@ -3621,7 +3621,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 364,
     pairName: 'NMT-USDC',
-    address: '0x2450f6B521567F0eDc8a95bF3CF5C452E4f9cC67',
+    address: '0x93c041eDa52849753066B6D729e5a15C19766A69',
     chainId: ChainId.ETHEREUM,
     type: GaugeType.V3,
     token0Address: ethereumTokens.nmt.address,
