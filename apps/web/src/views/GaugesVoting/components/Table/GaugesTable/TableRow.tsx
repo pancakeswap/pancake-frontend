@@ -10,7 +10,6 @@ import {
   ErrorIcon,
   Flex,
   FlexGap,
-  Grid,
   Tag,
   Text,
 } from '@pancakeswap/uikit'
@@ -104,26 +103,27 @@ const TableRowItem: React.FC<{
             </SelectButton>
           </span>
         ) : null}
-        <Grid gridTemplateColumns="1fr 1fr" justifyContent="space-between" width="100%">
-          <FlexGap alignItems="center" gap="13px">
-            <GaugeTokenImage gauge={data} />
-            <Text fontWeight={600} fontSize={16}>
-              {data.pairName}
-            </Text>
-          </FlexGap>
-          <FlexGap gap="5px" alignItems="center" flexWrap="wrap">
-            <NetworkBadge chainId={Number(data.chainId)} />
-            {data.type === GaugeType.V3 || data.type === GaugeType.V2 ? (
-              <Tag outline variant="secondary">
-                {feeTierPercent(data.feeTier)}
-              </Tag>
-            ) : null}
 
-            <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
-          </FlexGap>
-        </Grid>
+        <FlexGap alignItems="center" gap="13px">
+          <GaugeTokenImage gauge={data} />
+          <Text fontWeight={600} fontSize={16}>
+            {data.pairName}
+          </Text>
+        </FlexGap>
       </FlexGap>
-      <Flex alignItems="center" pl="32px">
+      <Flex>
+        <FlexGap gap="5px" alignItems="center" flexWrap="wrap">
+          <NetworkBadge chainId={Number(data.chainId)} />
+          {data.type === GaugeType.V3 || data.type === GaugeType.V2 ? (
+            <Tag outline variant="secondary">
+              {feeTierPercent(data.feeTier)}
+            </Tag>
+          ) : null}
+
+          <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
+        </FlexGap>
+      </Flex>
+      <Flex alignItems="center" pl="16px">
         <Tooltips
           disabled={!hitMaxCap}
           content={t(
