@@ -3127,7 +3127,7 @@
   "Mainnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first": "Mainnet은 기본적으로 설정되어 있습니다. 브리징에 익숙하지 않다면 먼저 테스트넷 트랜잭션을 시도해 보세요.",
   "%title% Disclaimer": "%title% 면책 조항",
   "Go to FAQ guide": "FAQ 가이드로 이동",
-  "This an experimental product": "실험적인 제품입니다",
+  "This is an experimental product": "This is an experimental product",
   "We highly advise you go through the FAQ Guide below before continuing": "계속 진행하기 전에 아래 FAQ 가이드를 읽어 보시기 바랍니다",
   "I have read the FAQ guide and am ready to continue.": "FAQ 가이드를 읽었으며 계속 진행할 준비가 되었습니다.",
   "Enable Mainnet": "Mainnet 활성화",
@@ -3137,7 +3137,7 @@
   "Your Max Reward Capped": "최대 리워드 한도",
   "at": "-",
   "can not be claim.": "- 클레임할 수 없습니다.",
-  "The estimated veCAKE amount at the snapshot time based on veCAKE’s linearly decreasing math.": "veCAKE의 선형 감소 수학에 기반한 스냅숏 시간의 예상 veCAKE 금액입니다.",
+  "The estimated veCAKE amount at the snapshot time is based on veCAKE’s linearly decreasing math.": "The estimated veCAKE amount at the snapshot time is based on veCAKE’s linearly decreasing math.",
   "To earn trading reward, there is a minimum requirement of your": "거래 리워드를 받으려면 다음의 최소 요구 사항을 충족해야 합니다:",
   "veCAKE at snapshot time.": "veCAKE, 스냅숏 시간.",
   "Preview of": "미리 보기 -",
@@ -3327,5 +3327,12 @@
   "Your funds have been Staked in new BCake farm Wrapper.": "Your funds have been Staked in new BCake farm Wrapper.",
   "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.": "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.",
   "Booster Update": "Booster Update",
-  "Booster has been updated.": "Booster has been updated."
+  "Booster has been updated.": "Booster has been updated.",
+  "Try it now": "Try it now",
+  "Trade Options & Build On-Chain Liquidity": "Trade Options & Build On-Chain Liquidity",
+  "Trade Options & Build On-Chain Options Liquidity": "Trade Options & Build On-Chain Options Liquidity",
+  "Options": "Options",
+  "PancakeSwap Options": "PancakeSwap Options",
+  "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).",
+  "Migrate to new v2 bCake here": "Migrate to new v2 bCake here"
 }
