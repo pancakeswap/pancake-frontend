@@ -1,4 +1,4 @@
-// Copy from viem package to avoid unneessary dependency
+// Copy from viem package to avoid unnecessary dependency
 export function parseUnits(value: string, decimals: number) {
   let [integer, fraction = '0'] = value.split('.')
 

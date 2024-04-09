@@ -1,4 +1,4 @@
-// Copy from viem package to avoid unneessary dependency
+// Copy from viem package to avoid unnecessary dependency
 export function formatUnits(value: bigint, decimals: number) {
   let display = value.toString()
 
