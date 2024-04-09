@@ -6,7 +6,7 @@ import { MANAGER } from '../managers'
 export const vaults: VaultConfig[] = [
   {
     id: 19,
-    idByManager: 11,
+    idByManager: 19,
     name: 'BRIL',
     bCakeWrapperAddress: '0xBc30771EACE84276A136D48bD353D866186A0e9c',
     address: '0xBc30771EACE84276A136D48bD353D866186A0e9c',
@@ -28,7 +28,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 18,
-    idByManager: 10,
+    idByManager: 18,
     name: 'BRIL',
     bCakeWrapperAddress: '0x13f8b6e57C2707A106Cf04D5a68B922e4972DF8d',
     address: '0x13f8b6e57C2707A106Cf04D5a68B922e4972DF8d',
@@ -49,7 +49,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 17,
-    idByManager: 9,
+    idByManager: 17,
     name: 'BRIL',
     bCakeWrapperAddress: '0xD9ca39cBE08E9ddE23d12670e472A2C2162239A3',
     address: '0xD9ca39cBE08E9ddE23d12670e472A2C2162239A3',
@@ -71,7 +71,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 16,
-    idByManager: 1,
+    idByManager: 16,
     name: 'ALPACA',
     bCakeWrapperAddress: '0x0c8F9C4b0dF31D9E091f0F1Fc8222cFf0F34C32e',
     address: '0x0c8F9C4b0dF31D9E091f0F1Fc8222cFf0F34C32e',
@@ -95,7 +95,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 15,
-    idByManager: 2,
+    idByManager: 15,
     name: 'ALPACA',
     bCakeWrapperAddress: '0x98385EBAC7055a569b76C66Dd559055263Bc88da',
     address: '0x98385EBAC7055a569b76C66Dd559055263Bc88da',
@@ -119,7 +119,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 14,
-    idByManager: 8,
+    idByManager: 14,
     name: 'BRIL',
     address: '0xf299115CdA681475DabFF3883939F91F5Cc40352',
     adapterAddress: '0x38bcc39F1fcb218F17c1C88651891F73681d11C1',
@@ -139,7 +139,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 12,
-    idByManager: 1,
+    idByManager: 12,
     name: 'DEFIEDGE',
     address: '0xf27fbD1c916672d6057416BA186FDde45fa980D7',
     adapterAddress: '0xD9fA26BaB321763b1e77bCc0e18EDF7Ee0081962',
@@ -179,7 +179,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 11,
-    idByManager: 7,
+    idByManager: 11,
     name: 'BRIL',
     address: '0x1De20A5825ADFc665F634A2A7A3b1c9e3D0d2987',
     adapterAddress: '0xD2EE2ed27963E91c0860AbAEfd0590A546342c83',
@@ -323,7 +323,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 7,
-    idByManager: 1,
+    idByManager: 7,
     name: 'RANGE',
     address: '0x00da85bD6C4e417f9EfC07807d6a0381045B037C',
     adapterAddress: '0x81dA9a3bE0490E23e0D5d31A0fC542405E45d7Ff',
@@ -343,7 +343,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 8,
-    idByManager: 2,
+    idByManager: 8,
     name: 'RANGE',
     address: '0xA43f877b66BBaaBE41eB1E538549F2fA45aceBD4',
     adapterAddress: '0x2eF089d192E4b48544049900A22472cFDB384898',
@@ -363,7 +363,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 9,
-    idByManager: 3,
+    idByManager: 9,
     name: 'RANGE',
     address: '0xe521f04d91721ba3F91E6E8E4d3cE16A2CaA8b3e',
     adapterAddress: '0x517C545BB754164cE1b416aA512cA80c72092Ae3',
@@ -383,7 +383,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 10,
-    idByManager: 4,
+    idByManager: 10,
     name: 'RANGE',
     address: '0x88F98992D95BF894B99fE7d47f58bDbF6da394f8',
     adapterAddress: '0x57260da74fabcD3e7aB93F6edf0D898d1648f919',

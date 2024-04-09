@@ -6,7 +6,7 @@ import { MANAGER } from '../managers'
 export const vaults: VaultConfig[] = [
   {
     id: 2,
-    idByManager: 1,
+    idByManager: 2,
     name: 'BRIL',
     address: '0xF0d2a2B4AD79dF6E2546C184fe6061fde6936eeE',
     adapterAddress: '0xd2c76e574467EEdcA050227B296272162a3A6617',
@@ -26,7 +26,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 3,
-    idByManager: 2,
+    idByManager: 3,
     name: 'BRIL',
     address: '0x5dc338f2298c3488384aB0A245DEA4761A4f7426',
     adapterAddress: '0xe8bEccAaC60fC8D5d3c120ee7fC23f4072B49927',
