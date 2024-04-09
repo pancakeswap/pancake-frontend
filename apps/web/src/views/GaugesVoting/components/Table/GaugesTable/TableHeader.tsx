@@ -62,7 +62,7 @@ export const TableHeader: React.FC<{
         </Text>
       </Th>
       <Th style={{ textAlign: 'left' }}>
-        <Text color="secondary" textTransform="uppercase" fontWeight={600} ml={selectable ? 44 : 0}>
+        <Text color="secondary" textTransform="uppercase" fontWeight={600}>
           {t('chain & strategy')}
         </Text>
       </Th>
