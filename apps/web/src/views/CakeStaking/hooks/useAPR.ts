@@ -10,7 +10,11 @@ import { WEEK } from 'config/constants/veCake'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
-import { getMasterChefV2Address, getRevenueSharingVeCakeAddress } from 'utils/addressHelpers'
+import {
+  getMasterChefV2Address,
+  getRevenueSharingVeCakeAddress,
+  getRevenueSharingVeCakeAddressNoFallback,
+} from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
 import { useReadContract } from 'wagmi'
 import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
@@ -117,9 +121,9 @@ export const useRevShareEmission = () => {
   const currentTimestamp = useCurrentBlockTimestamp()
   const { data: totalDistributed } = useReadContract({
     abi: revenueSharingPoolProxyABI,
-    address: getRevenueSharingVeCakeAddress(chainId) ?? getRevenueSharingVeCakeAddress(ChainId.BSC),
+    address: getRevenueSharingVeCakeAddress(chainId),
     functionName: 'totalDistributed',
-    chainId,
+    chainId: getRevenueSharingVeCakeAddressNoFallback(chainId) ? chainId : ChainId.BSC,
   })
   const lastThursday = useMemo(() => {
     return Math.floor(currentTimestamp / WEEK) * WEEK
