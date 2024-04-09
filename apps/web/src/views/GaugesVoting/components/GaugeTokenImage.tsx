@@ -7,15 +7,16 @@ import {
   GaugeV3Config,
 } from '@pancakeswap/gauges'
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Address } from 'viem'
 
-type Props = {
-  size?: number
-  margin?: string
-}
+// type Props = {
+//   size?: number
+//   margin?: string
+// }
 
 const GaugeSingleTokenImage = ({ size = 32 }: Props) => {
   return (
@@ -32,11 +33,34 @@ const GaugeSingleTokenImage = ({ size = 32 }: Props) => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
+
+  height: 30px;
+  width: 30px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: 48px;
+    width: 48px;
+  }
 `
 
-const GaugeDoubleTokenImage: React.FC<
-  { gaugeConfig: GaugeV2Config | GaugeV3Config | GaugeALMConfig | GaugeStableSwapConfig } & Props
-> = ({ gaugeConfig, size = 32, margin = '4px' }) => {
+const FronterLogo = styled.div`
+  border: 1.2px solid var(--colors-backgroundAlt);
+  border-radius: 50%;
+  margin-top: auto;
+  height: 26.4px;
+  width: 26.4px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    border-width: 2.4px;
+    height: 40.4px;
+    width: 40.4px;
+  }
+`
+
+const GaugeDoubleTokenImage: React.FC<{
+  gaugeConfig: GaugeV2Config | GaugeV3Config | GaugeALMConfig | GaugeStableSwapConfig
+}> = ({ gaugeConfig }) => {
+  const { isMobile } = useMatchBreakpoints()
   const token0Address = useMemo<Address | undefined>(() => {
     if (gaugeConfig.type === GaugeType.StableSwap) {
       return gaugeConfig.tokenAddresses[0]
@@ -60,22 +84,31 @@ const GaugeDoubleTokenImage: React.FC<
 
   return (
     <Wrapper>
-      {currency0 && <CurrencyLogo currency={currency0} size={`${size.toString()}px`} style={{ marginRight: margin }} />}
-      {currency1 && <CurrencyLogo currency={currency1} size={`${size.toString()}px`} />}
+      {currency0 && (
+        <CurrencyLogo
+          currency={currency0}
+          size={isMobile ? '18px' : '28px'}
+          style={{ marginRight: isMobile ? '-14px' : '-20px' }}
+        />
+      )}
+      {currency1 && (
+        <FronterLogo>
+          <CurrencyLogo currency={currency1} size={isMobile ? '24px' : '36px'} />
+        </FronterLogo>
+      )}
     </Wrapper>
   )
 }
 
-export const GaugeTokenImage: React.FC<
-  {
-    gauge?: GaugeConfig
-  } & Props
-> = ({ gauge, size, margin }) => {
+export const GaugeTokenImage: React.FC<{
+  gauge?: GaugeConfig
+  size?: string
+}> = ({ gauge, size }) => {
   if (!gauge) return null
 
   if (gauge?.type === GaugeType.VeCakePool) {
     return <GaugeSingleTokenImage size={size} />
   }
 
-  return <GaugeDoubleTokenImage gaugeConfig={gauge} size={size} margin={margin} />
+  return <GaugeDoubleTokenImage gaugeConfig={gauge} />
 }
