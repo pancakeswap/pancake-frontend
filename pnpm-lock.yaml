@@ -1316,6 +1316,9 @@ importers:
         specifier: 1.19.11
         version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
     devDependencies:
+      '@pancakeswap/position-managers':
+        specifier: workspace:^
+        version: link:../position-managers
       '@pancakeswap/sdk':
         specifier: workspace:^
         version: link:../swap-sdk
