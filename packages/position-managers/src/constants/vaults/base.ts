@@ -10,6 +10,7 @@ export const vaults: VaultConfig[] = [
     name: 'DEFIEDGE',
     address: '0x5fF47dE6F96937eB24d1Ae1A9036b5963418208b',
     adapterAddress: '0xFB90a3F1822fa3Da84C984272a6266Cf336A1807',
+    vaultAddress: '0x3875Bf4a7DB5aF64f9A9659ec371678743598594',
     currencyA: baseTokens.usdc,
     currencyB: baseTokens.usdbc,
     earningToken: baseTokens.cake,
