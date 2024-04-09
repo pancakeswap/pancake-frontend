@@ -56,6 +56,20 @@ export const fetchUserBalances = async ({ account, chainId, provider }: FetchUse
 
   const tokenBalance = await client.multicall({
     contracts: [
+      {
+        abi: [
+          {
+            inputs: [{ internalType: 'address', name: 'addr', type: 'address' }],
+            name: 'getEthBalance',
+            outputs: [{ internalType: 'uint256', name: 'balance', type: 'uint256' }],
+            stateMutability: 'view',
+            type: 'function',
+          },
+        ] as const,
+        address: '0xcA11bde05977b3631167028862bE2a173976CA11', // TODO: Here is multicall address, should extract addresses to a package for multi chain
+        functionName: 'getEthBalance',
+        args: [account as Address] as const,
+      } as any,
       ...tokens.map(
         (token) =>
           ({
