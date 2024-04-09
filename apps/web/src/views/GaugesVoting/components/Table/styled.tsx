@@ -4,16 +4,17 @@ export const Row = css`
   border-top: 0.5px solid ${({ theme }) => theme.colors.cardBorder};
   border-bottom: 0.5px solid ${({ theme }) => theme.colors.cardBorder};
   display: grid;
-  grid-template-columns: 3fr repeat(3, 1fr);
+  grid-template-columns: repeat(3, 2fr) repeat(2, 1fr);
   padding: 10px 16px 10px;
   min-height: 64px;
   transition: all 0.2s ease-in-out;
 
   & :nth-child(3) {
-    justify-content: center;
+    justify-content: flex-start;
   }
 
-  & :nth-child(4) {
+  & :nth-child(4),
+  & :nth-child(5) {
     text-align: right;
     justify-content: flex-end;
   }
