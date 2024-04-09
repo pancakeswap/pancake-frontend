@@ -655,9 +655,6 @@ importers:
       '@binance/w3w-utils':
         specifier: 1.1.4
         version: 1.1.4
-      '@binance/w3w-wagmi-connector':
-        specifier: 1.1.4
-        version: 1.1.4(encoding@0.1.13)(viem@2.8.13)(wagmi@2.5.11)
       '@binance/w3w-wagmi-connector-v2':
         specifier: ^1.1.4
         version: 1.1.4(encoding@0.1.13)(viem@2.8.13)(wagmi@2.5.11)
@@ -5193,24 +5190,6 @@ packages:
     peerDependencies:
       viem: 2.x
       wagmi: 2.x
-    dependencies:
-      '@binance/w3w-ethereum-provider': 1.1.4(encoding@0.1.13)
-      '@binance/w3w-utils': 1.1.4
-      viem: 2.8.13(typescript@5.2.2)(zod@3.22.4)
-      wagmi: 2.5.11(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.8.13)(zod@3.22.4)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - encoding
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  /@binance/w3w-wagmi-connector@1.1.4(encoding@0.1.13)(viem@2.8.13)(wagmi@2.5.11):
-    resolution: {integrity: sha512-wMC6XjRU1IRb/CYWcaM0KbIhdzHBhx9ArrhZUkg2G11K1jwYgM0WdwSdOauRHHotIP958tFfimmwL+pmn2LQdA==}
-    peerDependencies:
-      viem: ^1.19.3
-      wagmi: ^1.4.7
     dependencies:
       '@binance/w3w-ethereum-provider': 1.1.4(encoding@0.1.13)
       '@binance/w3w-utils': 1.1.4
