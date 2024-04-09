@@ -17,11 +17,4 @@ export const tradingRewardZkEvmV3Pair = defineFarmV3Configs([
     token1: polygonZkEvmTokens.usdc,
     feeAmount: FeeAmount.HIGH,
   },
-  {
-    pid: null as any,
-    lpAddress: '0xca06375be938a2d6eF311dfaFab7E326d55D23Cc',
-    token0: polygonZkEvmTokens.usdt,
-    token1: polygonZkEvmTokens.usdc,
-    feeAmount: FeeAmount.LOW,
-  },
 ])
