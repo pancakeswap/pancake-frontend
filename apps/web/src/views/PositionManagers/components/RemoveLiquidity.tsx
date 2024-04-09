@@ -131,6 +131,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
     bCakeWrapperContract.read,
     bCakeWrapperContract.estimateGas,
     bCakeWrapperContract.write,
+    bCakeWrapperContract.address,
     account,
     percent,
     chain,

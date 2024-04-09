@@ -21,7 +21,6 @@ interface CurrencySearchProps {
   selectedCurrency?: Currency | FiatCurrency | null
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | FiatCurrency | null
-  height?: number
   tokensToShow?: (
     | Currency
     | {
@@ -39,7 +38,6 @@ function OnRampCurrencySearch({
   selectedCurrency,
   onCurrencySelect,
   otherSelectedCurrency,
-  height,
   tokensToShow,
   mode,
   onRampFlow,

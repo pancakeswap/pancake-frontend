@@ -18,7 +18,7 @@ import {
 import { ChainLogo } from '@pancakeswap/widgets-internal'
 import isArray from 'lodash/isArray'
 import Image from 'next/image'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { Field } from 'state/buyCrypto/actions'
 import { styled } from 'styled-components'
 import { chainNameConverter } from 'utils/chainNameConverter'
@@ -181,16 +181,10 @@ export default function OnRampCurrencySearchModal({
 
   const { isMobile } = useMatchBreakpoints()
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const [height, setHeight] = useState<number | undefined>(undefined)
 
   const filterNetworksOnClick = useCallback(() => {
     setShowFilternetworks((f) => !f)
   }, [setShowFilternetworks])
-
-  useEffect(() => {
-    if (!wrapperRef.current) return
-    setHeight(wrapperRef.current.offsetHeight - 330)
-  }, [])
 
   return (
     <StyledModalContainer
@@ -225,7 +219,6 @@ export default function OnRampCurrencySearchModal({
           onCurrencySelect={handleCurrencySelect}
           selectedCurrency={selectedCurrency}
           otherSelectedCurrency={otherSelectedCurrency}
-          height={height}
           tokensToShow={newTokens}
           mode={mode}
           onRampFlow
