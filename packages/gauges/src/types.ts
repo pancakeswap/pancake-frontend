@@ -18,7 +18,7 @@ export const GAUGE_TYPE_NAMES: Record<GaugeType, string> = {
   [GaugeType.StableSwap]: 'StableSwap',
   [GaugeType.V2]: 'V2',
   [GaugeType.V3]: 'V3',
-  [GaugeType.ALM]: 'ALM',
+  [GaugeType.ALM]: 'Position Manager',
   [GaugeType.VeCakePool]: 'VeCakePool',
   [GaugeType.Aptos]: 'Aptos',
 }
@@ -56,6 +56,8 @@ export interface GaugeALMConfig extends GaugeBaseConfig {
   token0Address: Address
   token1Address: Address
   pairName: string
+  // @note: only used when ALM wrapper is not configured in position-managers
+  managerName?: string
 }
 
 export interface GaugeVeCakePoolConfig extends GaugeBaseConfig {

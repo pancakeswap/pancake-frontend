@@ -61,6 +61,11 @@ export const TableHeader: React.FC<{
           {total ? ` (${total})` : ''}
         </Text>
       </Th>
+      <Th style={{ textAlign: 'left' }}>
+        <Text color="secondary" textTransform="uppercase" fontWeight={600}>
+          {t('chain & strategy')}
+        </Text>
+      </Th>
       <Th>
         <Touchable onClick={onVoteSort}>
           <Text color="secondary" textTransform="uppercase" fontWeight={600}>

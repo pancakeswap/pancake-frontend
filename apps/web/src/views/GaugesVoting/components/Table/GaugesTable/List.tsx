@@ -13,16 +13,17 @@ import {
   Skeleton,
   Tag,
   Text,
-  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import formatLocalisedCompactNumber, { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { SpaceProps } from 'styled-system'
+import { getPositionManagerName } from 'views/GaugesVoting/utils'
 import { feeTierPercent } from 'views/V3Info/utils'
 import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
+import { PositionManagerLogo } from '../../PositionManagerLogo'
 import { RowData } from './types'
 
 const ListContainer = styled(Flex)`
@@ -132,14 +133,24 @@ type ListItemProps = {
 } & ListDisplayProps
 
 export function GaugeIdentifierDetails({ data }: ListItemProps) {
-  const { isMobile } = useMatchBreakpoints()
+  const hasManager = data.type === GaugeType.ALM
   return (
     <Flex justifyContent="space-between" flex="1">
       <FlexGap gap="0.25em" flexWrap="nowrap">
-        <GaugeTokenImage gauge={data} size={24} margin={isMobile ? '-4px' : undefined} />
-        <Text fontWeight={600} fontSize={16}>
-          {data.pairName}
-        </Text>
+        <GaugeTokenImage gauge={data} />
+        <Flex flexDirection="column">
+          <Text fontWeight={600} fontSize={16} lineHeight={hasManager ? 1 : 1.5}>
+            {data.pairName}
+          </Text>
+          {hasManager ? (
+            <Flex alignItems="center" mt="2px">
+              <PositionManagerLogo manager={getPositionManagerName(data)} />
+              <Text fontSize={14} color="textSubtle" lineHeight={1}>
+                {getPositionManagerName(data)}
+              </Text>
+            </Flex>
+          ) : null}
+        </Flex>
       </FlexGap>
       <FlexGap gap="0.25em" justifyContent="flex-end" flexWrap="wrap" style={{ flex: 1 }}>
         <NetworkBadge chainId={Number(data.chainId)} scale="sm" />

@@ -1,6 +1,6 @@
 import { GAUGE_TYPE_NAMES, GaugeType } from '@pancakeswap/gauges'
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, ChevronDownIcon, ChevronUpIcon, ErrorIcon, Flex, FlexGap, Grid, Tag, Text } from '@pancakeswap/uikit'
+import { Button, ChevronDownIcon, ChevronUpIcon, ErrorIcon, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import { useCallback, useMemo, useState } from 'react'
 import { stringify } from 'viem'
@@ -8,10 +8,12 @@ import { DebugTooltips, Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
+import { getPositionManagerName } from 'views/GaugesVoting/utils'
 import { feeTierPercent } from 'views/V3Info/utils'
 import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
-import { TRow } from '../styled'
+import { PositionManagerLogo } from '../../PositionManagerLogo'
+import { VRow } from '../styled'
 import { PercentInput } from './PercentInput'
 import { useRowVoteState } from './hooks/useRowVoteState'
 import { DEFAULT_VOTE, RowProps } from './types'
@@ -46,53 +48,62 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
   }
 
   return (
-    <TRow>
-      <Grid gridTemplateColumns="1fr 1fr" justifyContent="space-between" width="100%">
-        <FlexGap alignItems="center" gap="13px">
-          <DebugTooltips
-            content={
-              <pre>
-                {stringify(
-                  {
-                    ...userVote,
-                    currentTimestamp: debugFormat(currentTimestamp),
-                    nativeLasVoteTime: debugFormat(userVote?.nativeLastVoteTime),
-                    proxyLastVoteTime: debugFormat(userVote?.proxyLastVoteTime),
-                    lastVoteTime: debugFormat(userVote?.lastVoteTime),
-                    end: debugFormat(userVote?.end),
-                    proxyEnd: debugFormat(userVote?.proxyEnd),
-                    nativeEnd: debugFormat(userVote?.nativeEnd),
-                    proxyVeCakeBalance: proxyVeCakeBalance?.toString(),
-                  },
-                  undefined,
-                  2,
-                )}
-              </pre>
-            }
-          >
-            <GaugeTokenImage gauge={data} />
-          </DebugTooltips>
+    <VRow>
+      <FlexGap alignItems="center" gap="13px">
+        <DebugTooltips
+          content={
+            <pre>
+              {stringify(
+                {
+                  ...userVote,
+                  currentTimestamp: debugFormat(currentTimestamp),
+                  nativeLasVoteTime: debugFormat(userVote?.nativeLastVoteTime),
+                  proxyLastVoteTime: debugFormat(userVote?.proxyLastVoteTime),
+                  lastVoteTime: debugFormat(userVote?.lastVoteTime),
+                  end: debugFormat(userVote?.end),
+                  proxyEnd: debugFormat(userVote?.proxyEnd),
+                  nativeEnd: debugFormat(userVote?.nativeEnd),
+                  proxyVeCakeBalance: proxyVeCakeBalance?.toString(),
+                },
+                undefined,
+                2,
+              )}
+            </pre>
+          }
+        >
+          <GaugeTokenImage gauge={data} />
+        </DebugTooltips>
+        <Flex flexDirection="column">
           <Text fontWeight={600} fontSize={16}>
             {data.pairName}
           </Text>
-        </FlexGap>
-        <FlexGap gap="5px" alignItems="center">
-          <NetworkBadge chainId={Number(data.chainId)} />
-          {/* {[GaugeType.V3, GaugeType.V2].includes(data.type) ? ( */}
-          {GaugeType.V3 === data.type || GaugeType.V2 === data.type ? (
-            <Tag outline variant="secondary">
-              {feeTierPercent(data.feeTier)}
-            </Tag>
+          {data.type === GaugeType.ALM ? (
+            <Flex alignItems="center">
+              <PositionManagerLogo manager={getPositionManagerName(data)} />
+              <Text fontSize={14} color="textSubtle">
+                {getPositionManagerName(data)}
+              </Text>
+            </Flex>
           ) : null}
+        </Flex>
+      </FlexGap>
 
-          <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
-        </FlexGap>
-      </Grid>
-      <FlexGap alignItems="center" justifyContent="center" gap="4px">
+      <FlexGap gap="5px" alignItems="center">
+        <NetworkBadge chainId={Number(data.chainId)} />
+        {/* {[GaugeType.V3, GaugeType.V2].includes(data.type) ? ( */}
+        {GaugeType.V3 === data.type || GaugeType.V2 === data.type ? (
+          <Tag outline variant="secondary">
+            {feeTierPercent(data.feeTier)}
+          </Tag>
+        ) : null}
+
+        <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
+      </FlexGap>
+      <Flex alignItems="center" justifyContent="center" pl={16}>
         <Text bold>{currentVoteWeight}</Text>
         <Text>{currentVotePercent ? ` (${currentVotePercent}%)` : null}</Text>
-      </FlexGap>
-      <Flex alignItems="center" pr="25px">
+      </Flex>
+      <Flex alignItems="center" justifyContent="center" pr="25px">
         {voteLocked ? (
           <Tooltips
             content={t(
@@ -123,7 +134,7 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
           onUserInput={(v) => onChange({ ...vote!, power: v })}
         />
       </Flex>
-    </TRow>
+    </VRow>
   )
 }
 

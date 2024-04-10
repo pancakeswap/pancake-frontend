@@ -10,7 +10,6 @@ import {
   ErrorIcon,
   Flex,
   FlexGap,
-  Grid,
   Tag,
   Text,
 } from '@pancakeswap/uikit'
@@ -20,9 +19,11 @@ import { useHover } from 'hooks/useHover'
 import { memo, useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
+import { getPositionManagerName } from 'views/GaugesVoting/utils'
 import { feeTierPercent } from 'views/V3Info/utils'
 import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
+import { PositionManagerLogo } from '../../PositionManagerLogo'
 import { TRow } from '../styled'
 import { RowData } from './types'
 
@@ -104,26 +105,37 @@ const TableRowItem: React.FC<{
             </SelectButton>
           </span>
         ) : null}
-        <Grid gridTemplateColumns="1fr 1fr" justifyContent="space-between" width="100%">
-          <FlexGap alignItems="center" gap="13px">
-            <GaugeTokenImage gauge={data} />
+
+        <FlexGap alignItems="center" gap="13px">
+          <GaugeTokenImage gauge={data} />
+          <Flex flexDirection="column">
             <Text fontWeight={600} fontSize={16}>
               {data.pairName}
             </Text>
-          </FlexGap>
-          <FlexGap gap="5px" alignItems="center" flexWrap="wrap">
-            <NetworkBadge chainId={Number(data.chainId)} />
-            {data.type === GaugeType.V3 || data.type === GaugeType.V2 ? (
-              <Tag outline variant="secondary">
-                {feeTierPercent(data.feeTier)}
-              </Tag>
+            {data.type === GaugeType.ALM ? (
+              <Flex alignItems="center">
+                <PositionManagerLogo manager={getPositionManagerName(data)} />
+                <Text fontSize={14} color="textSubtle">
+                  {getPositionManagerName(data)}
+                </Text>
+              </Flex>
             ) : null}
-
-            <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
-          </FlexGap>
-        </Grid>
+          </Flex>
+        </FlexGap>
       </FlexGap>
-      <Flex alignItems="center" pl="32px">
+      <Flex>
+        <FlexGap gap="5px" alignItems="center" flexWrap="wrap">
+          <NetworkBadge chainId={Number(data.chainId)} />
+          {data.type === GaugeType.V3 || data.type === GaugeType.V2 ? (
+            <Tag outline variant="secondary">
+              {feeTierPercent(data.feeTier)}
+            </Tag>
+          ) : null}
+
+          <Tag variant="secondary">{data ? GAUGE_TYPE_NAMES[data.type] : ''}</Tag>
+        </FlexGap>
+      </Flex>
+      <Flex alignItems="center" pl="16px">
         <Tooltips
           disabled={!hitMaxCap}
           content={t(
@@ -142,7 +154,13 @@ const TableRowItem: React.FC<{
         </Tooltips>
       </Flex>
       <Flex alignItems="center">
-        <Text bold fontSize={16} color={data.boostMultiplier > 100n ? '#1BC59C' : undefined}>
+        <Text
+          width="100%"
+          bold
+          fontSize={16}
+          textAlign="center"
+          color={data.boostMultiplier > 100n ? '#1BC59C' : undefined}
+        >
           {Number(data.boostMultiplier) / 100}x
         </Text>
       </Flex>

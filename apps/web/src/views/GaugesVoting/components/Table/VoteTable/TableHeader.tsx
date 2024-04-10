@@ -1,16 +1,21 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Text, Th } from '@pancakeswap/uikit'
-import { THeader } from '../styled'
+import { VHeader } from '../styled'
 
 export const TableHeader: React.FC<{
   count?: number
 }> = ({ count = 0 }) => {
   const { t } = useTranslation()
   return (
-    <THeader style={{ borderTop: 'none' }}>
+    <VHeader style={{ borderTop: 'none' }}>
       <Th style={{ textAlign: 'left' }}>
         <Text color="secondary" textTransform="uppercase" fontWeight={600}>
           {t('gauges')}({count})
+        </Text>
+      </Th>
+      <Th style={{ textAlign: 'left' }}>
+        <Text color="secondary" textTransform="uppercase" fontWeight={600}>
+          {t('chain & strategy')}
         </Text>
       </Th>
       <Th>
@@ -19,7 +24,7 @@ export const TableHeader: React.FC<{
         </Text>
       </Th>
       <Th>
-        <Text color="secondary" textTransform="uppercase" fontWeight={600}>
+        <Text color="secondary" textTransform="uppercase" fontWeight={600} pr={20}>
           {t('preview votes')}
         </Text>
       </Th>
@@ -28,6 +33,6 @@ export const TableHeader: React.FC<{
           {t('My veCake %')}
         </Text>
       </Th>
-    </THeader>
+    </VHeader>
   )
 }
