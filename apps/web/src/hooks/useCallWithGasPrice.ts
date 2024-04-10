@@ -2,8 +2,9 @@ import { useCallback } from 'react'
 import { useGasPrice } from 'state/user/hooks'
 import { calculateGasMargin } from 'utils'
 import { publicClient } from 'utils/wagmi'
-import type { EstimateContractGasParameters } from 'viem'
 import {
+  encodeFunctionData,
+  EstimateContractGasParameters,
   Abi,
   Account,
   Address,
@@ -11,16 +12,17 @@ import {
   Chain,
   GetFunctionArgs,
   InferFunctionName,
-  WriteContractParameters,
+  EncodeFunctionDataParameters,
 } from 'viem'
-import { useWalletClient } from 'wagmi'
+import { useAccount, useSendTransaction } from 'wagmi'
 import { SendTransactionResult } from 'wagmi/actions'
 import { useActiveChainId } from './useActiveChainId'
 
 export function useCallWithGasPrice() {
   const gasPrice = useGasPrice()
   const { chainId } = useActiveChainId()
-  const { data: walletClient } = useWalletClient()
+  const { address: account } = useAccount()
+  const { sendTransactionAsync } = useSendTransaction()
 
   // const callWithGasPrice = useCallback(
   //   async <
@@ -76,16 +78,13 @@ export function useCallWithGasPrice() {
       if (!contract) {
         throw new Error('No valid contract')
       }
-      if (!walletClient) {
-        throw new Error('No valid wallet connect')
-      }
       const { gas: gas_, ...overrides_ } = overrides || {}
       let gas = gas_
       if (!gas) {
         gas = await publicClient({ chainId }).estimateContractGas({
           abi: contract.abi,
           address: contract.address,
-          account: walletClient.account,
+          account,
           functionName: methodName,
           args: methodArgs,
           value: 0n,
@@ -93,26 +92,28 @@ export function useCallWithGasPrice() {
         } as unknown as EstimateContractGasParameters)
       }
 
-      const res = await walletClient.writeContract({
-        abi: contract.abi,
-        address: contract.address,
-        account: walletClient.account,
-        functionName: methodName,
-        args: methodArgs,
+      const res = await sendTransactionAsync({
+        account,
+        to: contract.address,
+        data: encodeFunctionData({
+          abi: contract.abi,
+          functionName: methodName,
+          args: methodArgs,
+        } as unknown as EncodeFunctionDataParameters),
         gasPrice,
-        // for some reason gas price is insamely high when using maxuint approval, so commenting out for now
+        // for some reason gas price is insanely high when using maxuint approval, so commenting out for now
         gas: calculateGasMargin(gas),
         value: 0n,
         ...overrides_,
-      } as unknown as WriteContractParameters)
+      })
 
-      const hash = res
+      const { hash } = res
 
       return {
         hash,
       }
     },
-    [chainId, gasPrice, walletClient],
+    [chainId, gasPrice, account, sendTransactionAsync],
   )
 
   return { callWithGasPrice: callWithGasPriceWithSimulate }

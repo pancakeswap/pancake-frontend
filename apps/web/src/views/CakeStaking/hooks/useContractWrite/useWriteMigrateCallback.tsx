@@ -4,15 +4,17 @@ import { useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import { ApproveAndLockStatus, approveAndLockStatusAtom, cakeLockTxHashAtom } from 'state/vecake/atoms'
 import { calculateGasMargin } from 'utils'
-import { useAccount, useWalletClient } from 'wagmi'
+import { useAccount, useSendTransaction } from 'wagmi'
+import { encodeFunctionData } from 'viem'
+import { EncodeFunctionDataParameters } from 'viem/_types/utils/abi/encodeFunctionData'
 
 export const useWriteMigrateCallback = () => {
   const veCakeContract = useVeCakeContract()
   const { address: account } = useAccount()
   const setStatus = useSetAtom(approveAndLockStatusAtom)
   const setTxHash = useSetAtom(cakeLockTxHashAtom)
-  const { data: walletClient } = useWalletClient()
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
+  const { sendTransactionAsync } = useSendTransaction()
 
   const lockCake = useCallback(async () => {
     const { request } = await veCakeContract.simulate.migrateFromCakePool({
@@ -22,10 +24,17 @@ export const useWriteMigrateCallback = () => {
 
     setStatus(ApproveAndLockStatus.MIGRATE)
 
-    const hash = await walletClient?.writeContract({
-      ...request,
-      gas: request.gas ? calculateGasMargin(request.gas) : undefined,
+    const { hash } = await sendTransactionAsync({
       account,
+      to: request.address,
+      chainId: veCakeContract?.chain?.id,
+      data: encodeFunctionData({
+        abi: request.abi,
+        functionName: request.functionName,
+        args: request.args,
+      } as unknown as EncodeFunctionDataParameters),
+      gas: request.gas ? calculateGasMargin(request.gas) : undefined,
+      gasPrice: request.gasPrice,
     })
     setTxHash(hash ?? '')
     setStatus(ApproveAndLockStatus.MIGRATE_PENDING)
@@ -37,7 +46,7 @@ export const useWriteMigrateCallback = () => {
         setStatus(ApproveAndLockStatus.ERROR)
       }
     }
-  }, [veCakeContract, account, setStatus, setTxHash, waitForTransaction, walletClient])
+  }, [veCakeContract, account, setStatus, setTxHash, waitForTransaction, sendTransactionAsync])
 
   return lockCake
 }

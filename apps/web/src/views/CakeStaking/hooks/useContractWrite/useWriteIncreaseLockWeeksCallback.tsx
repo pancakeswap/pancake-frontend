@@ -13,8 +13,9 @@ import { useLockCakeData } from 'state/vecake/hooks'
 import { logger } from 'utils/datadog'
 import { logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
-import { TransactionExecutionError } from 'viem'
-import { useAccount, useWalletClient } from 'wagmi'
+import { encodeFunctionData, TransactionExecutionError } from 'viem'
+import { useAccount, useSendTransaction } from 'wagmi'
+import { EncodeFunctionDataParameters } from 'viem/_types/utils/abi/encodeFunctionData'
 import { useRoundedUnlockTimestamp } from '../useRoundedUnlockTimestamp'
 import { useCakeLockStatus } from '../useVeCakeUserInfo'
 
@@ -27,9 +28,9 @@ export const useWriteIncreaseLockWeeksCallback = (onDismiss?: () => void) => {
   const setStatus = useSetAtom(approveAndLockStatusAtom)
   const setTxHash = useSetAtom(cakeLockTxHashAtom)
   const setCakeLockWeeks = useSetAtom(cakeLockWeeksAtom)
-  const { data: walletClient } = useWalletClient()
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
   const roundedUnlockTimestamp = useRoundedUnlockTimestamp(cakeLockExpired ? undefined : Number(cakeUnlockTime))
+  const { sendTransactionAsync } = useSendTransaction()
 
   const increaseLockWeeks = useCallback(async () => {
     const week = Number(cakeLockWeeks)
@@ -43,9 +44,17 @@ export const useWriteIncreaseLockWeeksCallback = (onDismiss?: () => void) => {
 
       setStatus(ApproveAndLockStatus.INCREASE_WEEKS)
 
-      const hash = await walletClient?.writeContract({
-        ...request,
+      const { hash } = await sendTransactionAsync({
         account,
+        to: request.address,
+        chainId: veCakeContract?.chain?.id,
+        data: encodeFunctionData({
+          abi: request.abi,
+          functionName: request.functionName,
+          args: request.args,
+        } as unknown as EncodeFunctionDataParameters),
+        gas: request.gas,
+        gasPrice: request.gasPrice,
       })
       setTxHash(hash ?? '')
       setStatus(ApproveAndLockStatus.INCREASE_WEEKS_PENDING)
@@ -86,12 +95,12 @@ export const useWriteIncreaseLockWeeksCallback = (onDismiss?: () => void) => {
     veCakeContract.simulate,
     veCakeContract.chain,
     setStatus,
-    walletClient,
     setTxHash,
     waitForTransaction,
     chainId,
     setCakeLockWeeks,
     onDismiss,
+    sendTransactionAsync,
   ])
 
   return increaseLockWeeks

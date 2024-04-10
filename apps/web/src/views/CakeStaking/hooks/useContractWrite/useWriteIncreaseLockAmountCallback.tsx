@@ -10,8 +10,9 @@ import { useLockCakeData } from 'state/vecake/hooks'
 import { logger } from 'utils/datadog'
 import { logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
-import { TransactionExecutionError } from 'viem'
-import { useAccount, useWalletClient } from 'wagmi'
+import { encodeFunctionData, TransactionExecutionError } from 'viem'
+import { useAccount, useSendTransaction } from 'wagmi'
+import { EncodeFunctionDataParameters } from 'viem/_types/utils/abi/encodeFunctionData'
 
 export const useWriteIncreaseLockAmountCallback = () => {
   const { chainId } = useActiveChainId()
@@ -20,7 +21,7 @@ export const useWriteIncreaseLockAmountCallback = () => {
   const { cakeLockAmount } = useLockCakeData()
   const setTxHash = useSetAtom(cakeLockTxHashAtom)
   const setStatus = useSetAtom(approveAndLockStatusAtom)
-  const { data: walletClient } = useWalletClient()
+  const { sendTransactionAsync } = useSendTransaction()
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
 
   const increaseLockAmount = useCallback(async () => {
@@ -37,9 +38,17 @@ export const useWriteIncreaseLockAmountCallback = () => {
     setStatus(ApproveAndLockStatus.INCREASE_AMOUNT)
 
     try {
-      const hash = await walletClient?.writeContract({
-        ...request,
+      const { hash } = await sendTransactionAsync({
         account,
+        to: request.address,
+        chainId: veCakeContract?.chain?.id,
+        data: encodeFunctionData({
+          abi: request.abi,
+          functionName: request.functionName,
+          args: request.args,
+        } as unknown as EncodeFunctionDataParameters),
+        gas: request.gas,
+        gasPrice: request.gasPrice,
       })
       setTxHash(hash ?? '')
       setStatus(ApproveAndLockStatus.INCREASE_AMOUNT_PENDING)
@@ -72,10 +81,10 @@ export const useWriteIncreaseLockAmountCallback = () => {
     veCakeContract.simulate,
     veCakeContract.chain,
     setStatus,
-    walletClient,
     setTxHash,
     waitForTransaction,
     chainId,
+    sendTransactionAsync,
   ])
 
   return increaseLockAmount
