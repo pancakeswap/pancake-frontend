@@ -3401,7 +3401,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 340,
-    pairName: 'RDNT-USDC',
+    pairName: 'RDNT-WETH',
     address: '0xD6d29209C256aD605cAB2a0aa3A7e68BA25bD9E6',
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.ALM,
