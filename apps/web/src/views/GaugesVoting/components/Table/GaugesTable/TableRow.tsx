@@ -22,6 +22,7 @@ import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { feeTierPercent } from 'views/V3Info/utils'
 import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
+import { PositionManagerLogo } from '../../PositionManagerLogo'
 import { TRow } from '../styled'
 import { RowData } from './types'
 
@@ -106,9 +107,19 @@ const TableRowItem: React.FC<{
 
         <FlexGap alignItems="center" gap="13px">
           <GaugeTokenImage gauge={data} />
-          <Text fontWeight={600} fontSize={16}>
-            {data.pairName}
-          </Text>
+          <Flex flexDirection="column">
+            <Text fontWeight={600} fontSize={16}>
+              {data.pairName}
+            </Text>
+            {data.type === GaugeType.ALM && data.managerName ? (
+              <Flex alignItems="center">
+                <PositionManagerLogo manager={data.managerName} />
+                <Text fontSize={14} color="textSubtle">
+                  {data.managerName}
+                </Text>
+              </Flex>
+            ) : null}
+          </Flex>
         </FlexGap>
       </FlexGap>
       <Flex>
