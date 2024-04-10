@@ -10,7 +10,16 @@ async function init(theme: ReturnType<typeof useTheme>) {
   }
   initialized = true
   const { bootstrapWidget, themes } = await import('@usdv/usdv-widget')
-  bootstrapWidget({ color: 20, theme: theme.isDark ? themes.dark : themes.light })
+  bootstrapWidget({
+    color: 20,
+    theme: theme.isDark ? themes.dark : themes.light,
+    bridgeRecolorConfig: [
+      {
+        address: '0x8b929ade5e6835038f3ce6156768646c5f413b9b',
+        chainKey: 'bsc',
+      },
+    ],
+  })
 }
 
 const USDVPage = () => {
