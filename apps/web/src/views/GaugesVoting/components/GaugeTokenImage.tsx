@@ -103,7 +103,7 @@ const GaugeDoubleTokenImage: React.FC<{
 
 export const GaugeTokenImage: React.FC<{
   gauge?: GaugeConfig
-  size?: string
+  size?: number
 }> = ({ gauge, size }) => {
   if (!gauge) return null
 
