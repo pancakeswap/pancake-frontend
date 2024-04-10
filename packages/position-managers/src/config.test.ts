@@ -1,6 +1,7 @@
 import { chainNames } from '@pancakeswap/chains'
 import { Token } from '@pancakeswap/sdk'
 import difference from 'lodash/difference.js'
+import groupBy from 'lodash/groupBy.js'
 import uniqBy from 'lodash/uniqBy.js'
 import { PublicClient, createPublicClient, http, parseAbiItem } from 'viem'
 import * as CHAINS from 'viem/chains'
@@ -20,12 +21,12 @@ const publicClient = Object.keys(VAULTS_CONFIG_BY_CHAIN).reduce((acc, chainId) =
 describe('position manager config', () => {
   const chainIds = Object.keys(VAULTS_CONFIG_BY_CHAIN).map(Number)
 
-  const expectUnique = <T>(arr: Array<T>, key: string) => {
+  const expectUnique = <T>(arr: Array<T>, key: string, message?: string) => {
     const unique = uniqBy(arr, key)
     const diff = difference(arr, unique)
     expect(
       diff.length,
-      `
+      `${message || ''}
     expected all ${key} to be unique, but found duplicates: ${diff.map((item) => item[key]).join(', ')}
     `,
     ).toBe(0)
@@ -47,7 +48,9 @@ describe('position manager config', () => {
 
       it(`should have unique vault id for specified chain ${chainNames[chainId]}`, () => {
         expectUnique(vaults, 'id')
-        expectUnique(vaults, 'idByManager')
+        Object.entries(groupBy(vaults, 'manager')).forEach(([manager, vaultsByManager]) => {
+          expectUnique(vaultsByManager, 'idByManager', manager)
+        })
         expectUnique(vaults, 'address')
         expectUnique(vaults, 'adapterAddress')
 
