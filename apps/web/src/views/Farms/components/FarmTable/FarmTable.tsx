@@ -184,7 +184,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
             cakePrice,
             lpRewardsApr: farm.lpRewardsApr ?? 0,
             originalValue:
-              (isBooster && farm?.bCakeUserData?.rewardPerSecond === 0) || !farm?.bCakePublicData?.isRewardInRange
+              (isBooster && farm?.bCakePublicData?.rewardPerSecond === 0) || !farm?.bCakePublicData?.isRewardInRange
                 ? 0
                 : farm.apr ?? 0,
             stableSwapAddress: farm.stableSwapAddress,
