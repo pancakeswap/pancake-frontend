@@ -56,6 +56,7 @@ export interface GaugeALMConfig extends GaugeBaseConfig {
   token0Address: Address
   token1Address: Address
   pairName: string
+  managerName?: string
 }
 
 export interface GaugeVeCakePoolConfig extends GaugeBaseConfig {

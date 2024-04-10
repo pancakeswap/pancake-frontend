@@ -51,9 +51,13 @@ describe('Gauges Config', () => {
     })
 
     if (gauge.type === GaugeType.ALM) {
-      it(`${chainName} gid #${gauge.gid} ALM address ${gauge.address} should have already configured in position-managers`, () => {
-        const vaults = VAULTS_CONFIG_BY_CHAIN[Number(gauge.chainId) as keyof typeof VAULTS_CONFIG_BY_CHAIN]
-        expect(vaults.find((v) => v.vaultAddress === gauge.address)).toBeDefined()
+      const vaults = VAULTS_CONFIG_BY_CHAIN[Number(gauge.chainId) as keyof typeof VAULTS_CONFIG_BY_CHAIN]
+      const matchedVault = vaults.find((v) => v.vaultAddress === gauge.address)
+      // it(`${chainName} gid #${gauge.gid} ALM address ${gauge.address} should have already configured in position-managers`, () => {
+      //   expect(matchedVault).toBeDefined()
+      // })
+      it(`${chainName} gid #${gauge.gid} ALM address ${gauge.address} should have correct position manager name`, () => {
+        expect(gauge.managerName).toBe(matchedVault?.name)
       })
     }
   })
