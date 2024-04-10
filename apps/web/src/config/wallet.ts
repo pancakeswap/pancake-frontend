@@ -16,7 +16,7 @@ export enum ConnectorNames {
   // BSC = 'bsc',
   BinanceW3W = 'BinanceW3W',
   Blocto = 'blocto',
-  WalletLink = 'coinbaseWallet',
+  WalletLink = 'coinbaseWalletSDK',
   // Ledger = 'ledger',
   TrustWallet = 'trustWallet',
   CyberWallet = 'cyberwallet',
