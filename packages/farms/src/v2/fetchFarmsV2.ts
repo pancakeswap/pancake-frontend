@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { CurrencyParams, getCurrencyKey, getCurrencyListUsdPrice } from '@pancakeswap/price-api-sdk'
-import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { BIG_ONE, BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BN from 'bignumber.js'
 import { Address, PublicClient, formatUnits } from 'viem'
 import { FarmV2SupportedChainId, supportedChainIdV2 } from '../const'
@@ -362,7 +362,7 @@ const getStableFarmDynamicData = ({
   // Amount of token in the LP that are staked in the MC
   const tokenAmountMcFixed = tokenAmountTotal.times(lpTokenRatio)
 
-  const quoteTokenAmountMcFixedByTokenAmount = tokenAmountMcFixed.times(tokenPriceVsQuote)
+  const quoteTokenAmountMcFixedByTokenAmount = tokenAmountMcFixed.times(BIG_ONE.div(tokenPriceVsQuote))
 
   const lpTotalInQuoteToken = quoteTokenAmountMcFixed.plus(quoteTokenAmountMcFixedByTokenAmount)
 
