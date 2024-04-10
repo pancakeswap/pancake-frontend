@@ -112,7 +112,7 @@ const TableRowItem: React.FC<{
             <Text fontWeight={600} fontSize={16}>
               {data.pairName}
             </Text>
-            {data.type === GaugeType.ALM && data.managerName ? (
+            {data.type === GaugeType.ALM ? (
               <Flex alignItems="center">
                 <PositionManagerLogo manager={getPositionManagerName(data)} />
                 <Text fontSize={14} color="textSubtle">

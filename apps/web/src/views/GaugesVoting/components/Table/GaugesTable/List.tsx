@@ -133,7 +133,7 @@ type ListItemProps = {
 } & ListDisplayProps
 
 export function GaugeIdentifierDetails({ data }: ListItemProps) {
-  const hasManager = data.type === GaugeType.ALM && data.managerName
+  const hasManager = data.type === GaugeType.ALM
   return (
     <Flex justifyContent="space-between" flex="1">
       <FlexGap gap="0.25em" flexWrap="nowrap">
