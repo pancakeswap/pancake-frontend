@@ -138,6 +138,7 @@ export type Vault = PCSDuoTokenVault
 
 export interface PCSDuoTokenVaultConfig extends Omit<PCSDuoTokenVault, 'manager'> {
   manager: MANAGER
+  vaultAddress: Address
 }
 
 export type VaultConfig = PCSDuoTokenVaultConfig
