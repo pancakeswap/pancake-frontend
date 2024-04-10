@@ -293,7 +293,7 @@ export const CakeRewardsCard = ({ onDismiss }) => {
                         <br />
                         <p>
                           {t(
-                            'CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.',
+                            'The veCAKE Pool APR is calculated based on the emission speed which is defined by the voting result of the veCAKE Pool gauge in Gauges Voting.',
                           )}
                         </p>
                         <br />
