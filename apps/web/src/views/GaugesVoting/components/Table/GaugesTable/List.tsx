@@ -19,6 +19,7 @@ import BN from 'bignumber.js'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { SpaceProps } from 'styled-system'
+import { getPositionManagerName } from 'views/GaugesVoting/utils'
 import { feeTierPercent } from 'views/V3Info/utils'
 import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
@@ -143,9 +144,9 @@ export function GaugeIdentifierDetails({ data }: ListItemProps) {
           </Text>
           {hasManager ? (
             <Flex alignItems="center" mt="2px">
-              <PositionManagerLogo manager={data.managerName!} />
+              <PositionManagerLogo manager={getPositionManagerName(data)} />
               <Text fontSize={14} color="textSubtle" lineHeight={1}>
-                {data.managerName}
+                {getPositionManagerName(data)}
               </Text>
             </Flex>
           ) : null}

@@ -56,6 +56,7 @@ export interface GaugeALMConfig extends GaugeBaseConfig {
   token0Address: Address
   token1Address: Address
   pairName: string
+  // @note: only used when ALM wrapper is not configured in position-managers
   managerName?: string
 }
 

@@ -19,6 +19,7 @@ import { useHover } from 'hooks/useHover'
 import { memo, useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
+import { getPositionManagerName } from 'views/GaugesVoting/utils'
 import { feeTierPercent } from 'views/V3Info/utils'
 import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
@@ -113,9 +114,9 @@ const TableRowItem: React.FC<{
             </Text>
             {data.type === GaugeType.ALM && data.managerName ? (
               <Flex alignItems="center">
-                <PositionManagerLogo manager={data.managerName} />
+                <PositionManagerLogo manager={getPositionManagerName(data)} />
                 <Text fontSize={14} color="textSubtle">
-                  {data.managerName}
+                  {getPositionManagerName(data)}
                 </Text>
               </Flex>
             ) : null}

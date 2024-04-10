@@ -57,7 +57,12 @@ describe('Gauges Config', () => {
       //   expect(matchedVault).toBeDefined()
       // })
       it(`${chainName} gid #${gauge.gid} ALM address ${gauge.address} should have correct position manager name`, () => {
-        expect(gauge.managerName).toBe(matchedVault?.name)
+        if (!matchedVault) {
+          expect(gauge.managerName).toBeDefined()
+        } else {
+          expect(matchedVault).toBeDefined()
+          expect(gauge.managerName).toBeUndefined()
+        }
       })
     }
   })
