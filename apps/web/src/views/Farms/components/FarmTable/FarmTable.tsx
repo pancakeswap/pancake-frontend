@@ -169,7 +169,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
           apr: {
             value:
               getDisplayApr(
-                (isBooster && farm?.bCakeUserData?.rewardPerSecond === 0) || !farm?.bCakePublicData?.isRewardInRange
+                (isBooster && farm?.bCakePublicData?.rewardPerSecond === 0) || !farm?.bCakePublicData?.isRewardInRange
                   ? 0
                   : farm.apr,
                 farm.lpRewardsApr,
