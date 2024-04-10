@@ -135,10 +135,11 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                         disabled={disabled || isDisabled}
                         as={linkComponent}
                         href={href}
-                        onClick={() => {
-                          setIsOpen(false);
-                        }}
                         {...itemProps}
+                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                          setIsOpen(false);
+                          itemProps.onClick?.(e);
+                        }}
                       >
                         {MenuItemContent}
                       </DropdownMenuItem>
@@ -150,12 +151,11 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                         as="a"
                         href={href}
                         target="_blank"
-                        onClick={
-                          (() => {
-                            setIsOpen(false);
-                          }) as any
-                        }
                         {...itemProps}
+                        onClick={(e: any) => {
+                          setIsOpen(false);
+                          itemProps.onClick?.(e);
+                        }}
                       >
                         <Flex alignItems="center" justifyContent="space-between" width="100%">
                           {MenuItemContent}

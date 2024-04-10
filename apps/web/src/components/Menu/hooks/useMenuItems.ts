@@ -9,7 +9,7 @@ import config, { ConfigMenuDropDownItemsType, ConfigMenuItemsType } from '../con
 import { useMenuItemsStatus } from './useMenuItemsStatus'
 
 export type UseMenuItemsParams = {
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>, item: ConfigMenuDropDownItemsType) => void
+  onClick?: (e: React.MouseEvent<HTMLElement>, item: ConfigMenuDropDownItemsType) => void
 }
 
 export const useMenuItems = ({ onClick }: UseMenuItemsParams = {}): ConfigMenuItemsType[] => {
@@ -32,7 +32,10 @@ export const useMenuItems = ({ onClick }: UseMenuItemsParams = {}): ConfigMenuIt
     if (menuItemsStatus && Object.keys(menuItemsStatus).length) {
       return menuItems.map((item) => {
         const innerItems = item?.items?.map((currentItem) => {
-          const onClickEvent = (e: React.MouseEvent<HTMLButtonElement>) => onClick?.(e, currentItem)
+          const onClickEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
+            currentItem.onClick?.(e)
+            onClick?.(e, currentItem)
+          }
           const innerItem = {
             ...currentItem,
             onClick: onClickEvent,
