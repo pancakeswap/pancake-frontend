@@ -18,7 +18,7 @@ export const GAUGE_TYPE_NAMES: Record<GaugeType, string> = {
   [GaugeType.StableSwap]: 'StableSwap',
   [GaugeType.V2]: 'V2',
   [GaugeType.V3]: 'V3',
-  [GaugeType.ALM]: 'ALM',
+  [GaugeType.ALM]: 'Position Manager',
   [GaugeType.VeCakePool]: 'VeCakePool',
   [GaugeType.Aptos]: 'Aptos',
 }

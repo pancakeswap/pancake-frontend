@@ -13,11 +13,6 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Address } from 'viem'
 
-// type Props = {
-//   size?: number
-//   margin?: string
-// }
-
 const GaugeSingleTokenImage = ({ size = 32 }) => {
   return (
     <img
