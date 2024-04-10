@@ -51,15 +51,15 @@ const TableBody = styled.tbody`
     }
 
     :last-child {
-      td[colspan="7"] {
+      td[colspan='7'] {
         > div {
           border-bottom-left-radius: 16px;
           border-bottom-right-radius: 16px;
         }
       }
     }
+  }
 `
-
 const TableContainer = styled.div`
   position: relative;
 `
