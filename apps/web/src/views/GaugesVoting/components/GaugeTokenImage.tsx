@@ -18,7 +18,7 @@ import { Address } from 'viem'
 //   margin?: string
 // }
 
-const GaugeSingleTokenImage = ({ size = 32 }: Props) => {
+const GaugeSingleTokenImage = ({ size = 32 }) => {
   return (
     <img
       src="/images/cake-staking/token-vecake.png"
@@ -34,8 +34,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
 
-  height: 30px;
-  width: 30px;
+  height: 34px;
+  width: 42px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     height: 48px;
@@ -45,10 +45,11 @@ const Wrapper = styled.div`
 
 const FronterLogo = styled.div`
   border: 1.2px solid var(--colors-backgroundAlt);
+  background-color: var(--colors-background);
   border-radius: 50%;
   margin-top: auto;
-  height: 26.4px;
-  width: 26.4px;
+  height: 28.4px;
+  width: 28.4px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     border-width: 2.4px;
@@ -87,13 +88,13 @@ const GaugeDoubleTokenImage: React.FC<{
       {currency0 && (
         <CurrencyLogo
           currency={currency0}
-          size={isMobile ? '18px' : '28px'}
-          style={{ marginRight: isMobile ? '-14px' : '-20px' }}
+          size={isMobile ? '20px' : '28px'}
+          style={{ marginRight: isMobile ? '-8px' : '-20px' }}
         />
       )}
       {currency1 && (
         <FronterLogo>
-          <CurrencyLogo currency={currency1} size={isMobile ? '24px' : '36px'} />
+          <CurrencyLogo currency={currency1} size={isMobile ? '26px' : '36px'} />
         </FronterLogo>
       )}
     </Wrapper>
