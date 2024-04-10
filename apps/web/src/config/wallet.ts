@@ -18,7 +18,7 @@ export enum ConnectorNames {
   Blocto = 'blocto',
   WalletLink = 'coinbaseWalletSDK',
   // Ledger = 'ledger',
-  TrustWallet = 'trustWallet',
+  TrustWallet = 'trust',
   CyberWallet = 'cyberwallet',
 }
 

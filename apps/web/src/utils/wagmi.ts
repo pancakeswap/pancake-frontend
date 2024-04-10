@@ -36,7 +36,6 @@ export const walletConnectNoQrCodeConnector = walletConnect({
 })
 
 export const metaMaskConnector = injected({ target: 'metaMask', shimDisconnect: false })
-export const trustWalletConnector = injected({ target: 'trustWallet', shimDisconnect: false })
 export const trustConnector = injected({ target: 'trust', shimDisconnect: false })
 
 const bloctoConnector = blocto({
@@ -125,7 +124,6 @@ export const wagmiConfig = createConfig({
     walletConnectConnector,
     bloctoConnector,
     // ledgerConnector,
-    trustWalletConnector,
     trustConnector,
     // binanceWeb3WalletConnector(),
     // ...(cyberWalletConnector ? [cyberWalletConnector as any] : []),
