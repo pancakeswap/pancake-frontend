@@ -55,35 +55,75 @@ describe('position manager config', () => {
         // expectUnique(vaults, 'vaultAddress')
       })
 
-      vaults.forEach((vault) => {
-        it(`should have correct adapter address for wrapper ${vault.address}`, async () => {
-          const adapterAddress = await publicClient[chainId].readContract({
-            address: vault.address,
-            abi: [parseAbiItem('function adapterAddr() view returns (address)')],
-            functionName: 'adapterAddr',
+      describe.concurrent(
+        `vaults config for chain ${chainNames[chainId]}`,
+        () => {
+          it.each(vaults)('should have correct adapter address for $address', async (vault) => {
+            const adapterAddress = await publicClient[chainId].readContract({
+              address: vault.address,
+              abi: [parseAbiItem('function adapterAddr() view returns (address)')],
+              functionName: 'adapterAddr',
+            })
+            expect(adapterAddress).toBe(vault.adapterAddress)
           })
-          expect(adapterAddress).toBe(vault.adapterAddress)
-        })
-
-        it(`should have correct earningToken address for wrapper ${vault.address}`, async () => {
-          const earningTokenAddress = await publicClient[chainId].readContract({
-            address: vault.address,
-            abi: [parseAbiItem('function rewardToken() view returns (address)')],
-            functionName: 'rewardToken',
+          it.each(vaults)('should have correct earningToken address for $address', async (vault) => {
+            const earningTokenAddress = await publicClient[chainId].readContract({
+              address: vault.address,
+              abi: [parseAbiItem('function rewardToken() view returns (address)')],
+              functionName: 'rewardToken',
+            })
+            expect(earningTokenAddress).toBe((vault.earningToken as Token).address)
+          })
+          it.each(vaults)('should have correct pool config for adapterAddress $address', async (vault) => {
+            const [poolAddress, token0Address, token1Address] = await publicClient[chainId].multicall({
+              contracts: [
+                {
+                  abi: [parseAbiItem('function pool() view returns (address)')],
+                  address: vault.adapterAddress,
+                  functionName: 'pool',
+                },
+                {
+                  abi: [parseAbiItem('function token0() view returns (address)')],
+                  address: vault.adapterAddress,
+                  functionName: 'token0',
+                },
+                {
+                  abi: [parseAbiItem('function token1() view returns (address)')],
+                  address: vault.adapterAddress,
+                  functionName: 'token1',
+                },
+              ],
+              allowFailure: false,
+            })
+            const fee = await publicClient[chainId].readContract({
+              address: poolAddress,
+              abi: [parseAbiItem('function fee() view returns (uint24)')],
+              functionName: 'fee',
+            })
+            expect(
+              vault.currencyA.isToken ? vault.currencyA.address : '0x',
+              "Expected 'currencyA' address to be the same as the value from the smart contract",
+            ).toBe(token0Address)
+            expect(
+              vault.currencyB.isToken ? vault.currencyB.address : '0x',
+              "Expected 'currencyB' address to be the same as the value from the smart contract",
+            ).toBe(token1Address)
+            expect(vault.feeTier, "Expected 'feeTier' to be the same as the value from the smart contract").toBe(fee)
           })
 
-          expect(earningTokenAddress).toBe((vault.earningToken as Token).address)
-        })
-
-        it(`should have correct vault address for adapterAddress ${vault.adapterAddress}`, async () => {
-          const vaultAddress = await publicClient[chainId].readContract({
-            address: vault.adapterAddress,
-            abi: [parseAbiItem('function vault() view returns (address)')],
-            functionName: 'vault',
+          it.each(vaults)('should have correct vaultAddress for $address', async (vault) => {
+            const vaultAddress = await publicClient[chainId].readContract({
+              address: vault.adapterAddress,
+              abi: [parseAbiItem('function vault() view returns (address)')],
+              functionName: 'vault',
+            })
+            expect(vaultAddress).toBe(vault.vaultAddress)
           })
-          expect(vaultAddress).toBe(vault.vaultAddress)
-        })
-      })
+        },
+        {
+          timeout: 30_000,
+        },
+      )
     })
   })
 })
