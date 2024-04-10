@@ -154,7 +154,13 @@ const TableRowItem: React.FC<{
         </Tooltips>
       </Flex>
       <Flex alignItems="center">
-        <Text bold fontSize={16} color={data.boostMultiplier > 100n ? '#1BC59C' : undefined}>
+        <Text
+          width="100%"
+          bold
+          fontSize={16}
+          textAlign="center"
+          color={data.boostMultiplier > 100n ? '#1BC59C' : undefined}
+        >
           {Number(data.boostMultiplier) / 100}x
         </Text>
       </Flex>

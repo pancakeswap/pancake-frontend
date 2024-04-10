@@ -10,6 +10,7 @@ export const Row = css`
   transition: all 0.2s ease-in-out;
 
   & :nth-child(3) {
+    display: flex;
     justify-content: flex-start;
   }
 
@@ -43,4 +44,12 @@ export const TRow = styled.tr`
   &:last-of-type {
     border-bottom: none;
   }
+`
+
+export const VHeader = styled(THeader)`
+  grid-template-columns: repeat(2, 1.8fr) repeat(3, 1.5fr);
+`
+
+export const VRow = styled(TRow)`
+  grid-template-columns: repeat(2, 1.8fr) repeat(3, 1.5fr);
 `
