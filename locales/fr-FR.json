@@ -3022,7 +3022,7 @@
   "Inscriptions are a recent and novel development in blockchain, and $APTS uses a lock-and-burn mechanism to convert non-fungible, and non-tradable Aptos Inscriptions into fungible and tradable representations. As with most smart contracts, this come with certain risks. Please do your own research.": "Les inscriptions sont un développement récent et nouveau dans la blockchain, et $APTS utilise un mécanisme de verrouillage et de destruction pour convertir les inscriptions Aptos non fongibles et non négociables en représentations fongibles et négociables. Comme pour la plupart des contrats intelligents, cela comporte certains risques. Veuillez effectuer vos propres recherches.",
   "CAKE Pool:": "Pool de CAKE :",
   "Revenue Sharing:": "Partage des revenus :",
-  "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.": "L'APR du pool de CAKE est calculé sur la base du résultat du vote et de l'émission de la jauge du pool veCAKE.",
+  "The veCAKE Pool APR is calculated based on the emission speed which is defined by the voting result of the veCAKE Pool gauge in Gauges Voting.": "The veCAKE Pool APR is calculated based on the emission speed which is defined by the voting result of the veCAKE Pool gauge in Gauges Voting.",
   "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.": "L'APR de partage des revenus est soumis à divers facteurs externes, y compris le volume des transactions, et peut varier chaque semaine.",
   "Claim Your Exclusive NFTs Now!": "Réclamez vos NFT exclusifs dès maintenant !",
   "Calculated based average data since vault inception.": "Données moyennes calculées depuis la création du vault.",
@@ -3271,10 +3271,6 @@
   "Sign In With Wallet": "Se connecter avec le portefeuille",
   "Subscribe To PancakeSwap": "S'inscrire sur PancakeSwap",
   "Registration Error": "Erreur d'inscription",
-  "Stake your WBNB here": "Placez vos WBNB en staking ici",
-  "Stake WBNB, Win Combo Rewards!": "Placez des WBNB en staking et gagnez des récompenses Combo !",
-  "Stake WBNB to Win Combo Rewards": "Placez des WBNB en staking pour gagner des récompenses Combo",
-  "$5,000 extra reward pool": "5 000 $ de récompenses supplémentaires",
   "PancakeSwap Multichain Celebration": "Célébration de la multichaîne PancakeSwap",
   "Starting MAR 14 - Over $3500 in prizes!": "Début le 14 mars : plus de 3 500 $ en récompenses !",
   "Participate Now": "Participer maintenant",
@@ -3335,5 +3331,6 @@
   "PancakeSwap Options": "PancakeSwap Options",
   "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).",
   "Migrate to new v2 bCake here": "Migrate to new v2 bCake here",
+  "I understand that this feature is deprecated and no longer in maintenance.": "I understand that this feature is deprecated and no longer in maintenance.",
   "chain & strategy": "chain & strategy"
 }
