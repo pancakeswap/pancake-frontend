@@ -107,19 +107,21 @@ export default function TwapAndLimitSwap({ limit }: { limit?: boolean }) {
               <AppBody>
                 <TWAPPanel limit={limit} />
               </AppBody>
-              {limit && (
-                <AutoRow gap="4px" justifyContent="center">
-                  <Text fontSize="14px" color="textSubtle">
-                    {t('Orders missing? Check out:')}
-                  </Text>
-                  <Link href="/limit-orders" passHref prefetch={false}>
-                    <StyledLink fontSize="14px" color="primary">
-                      {t('Limit V2 (deprecated)')}
-                    </StyledLink>
-                  </Link>
-                </AutoRow>
-              )}
-              {!isDesktop && <OrderHistory />}
+              <Flex flexDirection={!isDesktop ? 'column-reverse' : 'column'}>
+                {limit && (
+                  <AutoRow gap="4px" justifyContent="center">
+                    <Text fontSize="14px" color="textSubtle">
+                      {t('Orders missing? Check out:')}
+                    </Text>
+                    <Link href="/limit-orders" passHref prefetch={false}>
+                      <StyledLink fontSize="14px" color="primary">
+                        {t('Limit V2 (deprecated)')}
+                      </StyledLink>
+                    </Link>
+                  </AutoRow>
+                )}
+                {!isDesktop && <OrderHistory />}
+              </Flex>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
         </Flex>
