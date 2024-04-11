@@ -193,53 +193,54 @@ const getErrorMessage = ({
   rateType: Rate
   t: any
 }) => {
-  if (!account) {
-    return t('Connect Wallet')
-  }
-  if (
-    wrappedCurrencies.input &&
-    wrappedCurrencies.output &&
-    wrappedCurrencies.input.address.toLowerCase() === wrappedCurrencies.output.address.toLowerCase()
-  ) {
-    return t('Order not allowed')
-  }
-  const hasBothTokensSelected = currencies.input && currencies.output
-  if (!hasBothTokensSelected) {
-    return t('Select a token')
-  }
-  const hasAtLeastOneParsedAmount = Boolean(parsedAmounts.input || parsedAmounts.output)
-
-  const tradeIsNotAvailable = !trade || !trade?.route
-  if (hasAtLeastOneParsedAmount && tradeIsNotAvailable) {
-    return t('Insufficient liquidity for this trade.')
-  }
-  const someParsedAmountIsMissing = !parsedAmounts.input || !parsedAmounts.output
-  if (someParsedAmountIsMissing) {
-    return t('Enter an amount')
-  }
-  if (currencyBalances.input && parsedAmounts.input && currencyBalances.input.lessThan(parsedAmounts.input)) {
-    return t(`Insufficient %symbol% balance`, { symbol: currencyBalances.input.currency.symbol })
-  }
-
-  if (price) {
-    if (
-      rateType === Rate.MUL &&
-      trade &&
-      (price.lessThan(trade.executionPrice.asFraction) || price.equalTo(trade.executionPrice.asFraction))
-    ) {
-      return t('Only possible to place sell orders above market rate')
-    }
-    if (
-      rateType === Rate.DIV &&
-      trade &&
-      (price.invert().greaterThan(trade.executionPrice.invert().asFraction) ||
-        price.invert().equalTo(trade.executionPrice.invert().asFraction))
-    ) {
-      return t('Only possible to place buy orders below market rate')
-    }
-  }
-
-  return undefined
+  return t('Placing Order Disabled')
+  // if (!account) {
+  //   return t('Connect Wallet')
+  // }
+  // if (
+  //   wrappedCurrencies.input &&
+  //   wrappedCurrencies.output &&
+  //   wrappedCurrencies.input.address.toLowerCase() === wrappedCurrencies.output.address.toLowerCase()
+  // ) {
+  //   return t('Order not allowed')
+  // }
+  // const hasBothTokensSelected = currencies.input && currencies.output
+  // if (!hasBothTokensSelected) {
+  //   return t('Select a token')
+  // }
+  // const hasAtLeastOneParsedAmount = Boolean(parsedAmounts.input || parsedAmounts.output)
+  //
+  // const tradeIsNotAvailable = !trade || !trade?.route
+  // if (hasAtLeastOneParsedAmount && tradeIsNotAvailable) {
+  //   return t('Insufficient liquidity for this trade.')
+  // }
+  // const someParsedAmountIsMissing = !parsedAmounts.input || !parsedAmounts.output
+  // if (someParsedAmountIsMissing) {
+  //   return t('Enter an amount')
+  // }
+  // if (currencyBalances.input && parsedAmounts.input && currencyBalances.input.lessThan(parsedAmounts.input)) {
+  //   return t(`Insufficient %symbol% balance`, { symbol: currencyBalances.input.currency.symbol })
+  // }
+  //
+  // if (price) {
+  //   if (
+  //     rateType === Rate.MUL &&
+  //     trade &&
+  //     (price.lessThan(trade.executionPrice.asFraction) || price.equalTo(trade.executionPrice.asFraction))
+  //   ) {
+  //     return t('Only possible to place sell orders above market rate')
+  //   }
+  //   if (
+  //     rateType === Rate.DIV &&
+  //     trade &&
+  //     (price.invert().greaterThan(trade.executionPrice.invert().asFraction) ||
+  //       price.invert().equalTo(trade.executionPrice.invert().asFraction))
+  //   ) {
+  //     return t('Only possible to place buy orders below market rate')
+  //   }
+  // }
+  //
+  // return undefined
 }
 
 // from the current swap inputs, compute the best trade and return it.

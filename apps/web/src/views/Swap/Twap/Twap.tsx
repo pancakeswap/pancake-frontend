@@ -162,9 +162,9 @@ export function TWAPPanel({ limit }: { limit?: boolean }) {
     [onCurrencySelection, warningSwapHandler, inputCurrencyId, outputCurrencyId],
   )
 
-  const toggleChartDisplayed = () => {
+  const toggleChartDisplayed = useCallback(() => {
     setIsChartDisplayed?.((currentIsChartDisplayed) => !currentIsChartDisplayed)
-  }
+  }, [setIsChartDisplayed])
 
   const onSrcTokenSelected = useCallback(
     (token: Currency) => {

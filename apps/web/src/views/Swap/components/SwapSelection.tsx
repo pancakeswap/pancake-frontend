@@ -21,7 +21,6 @@ export const SwapSelection = ({ swapType }: { swapType: SwapType }) => {
         case SwapType.MARKET:
           url = '/swap'
           break
-
         default:
           break
       }
