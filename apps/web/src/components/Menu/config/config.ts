@@ -91,6 +91,12 @@ const config: (
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {
+          label: `${t('Limit')} (Deprecated)`,
+          href: '/limit-orders',
+          supportChainIds: SUPPORT_ONLY_BSC,
+          image: '/images/decorations/3d-coin.png',
+        },
+        {
           label: t('Trading Reward'),
           href: '/trading-reward',
           hideSubNav: true,
