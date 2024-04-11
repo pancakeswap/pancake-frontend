@@ -145,11 +145,6 @@ const config = {
         permanent: true,
       },
       {
-        source: '/swap/:outputCurrency',
-        destination: '/swap?outputCurrency=:outputCurrency',
-        permanent: true,
-      },
-      {
         source: '/create/:currency*',
         destination: '/add/:currency*',
         permanent: true,

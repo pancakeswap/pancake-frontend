@@ -3,26 +3,25 @@ import { Currency } from '@pancakeswap/sdk'
 import { BottomDrawer, Flex, Modal, ModalV2, useMatchBreakpoints } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
-import { useRouter } from 'next/router'
-import { useCallback, useContext, useEffect, useState } from 'react'
-import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
-import { currencyId } from 'utils/currencyId'
-
 import { useCurrency } from 'hooks/Tokens'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
+import { useRouter } from 'next/router'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useDefaultsFromURLSearch, useSingleTokenSwapInfo, useSwapState } from 'state/swap/hooks'
-import Page from '../Page'
-import { SwapFeaturesContext } from './SwapFeaturesContext'
-import { V3SwapForm } from './V3Swap'
-import PriceChartContainer from './components/Chart/PriceChartContainer'
-import HotTokenList from './components/HotTokenList'
-import useWarningImport from './hooks/useWarningImport'
-import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
-import { SwapSelection } from './components/SwapSelection'
-import { SwapType } from './types'
+import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import { currencyId } from 'utils/currencyId'
+import Page from '../../Page'
+import PriceChartContainer from '../components/Chart/PriceChartContainer'
+import HotTokenList from '../components/HotTokenList'
+import { SwapSelection } from '../components/SwapSelection'
+import useWarningImport from '../hooks/useWarningImport'
+import { StyledInputCurrencyWrapper, StyledSwapContainer } from '../styles'
+import { SwapFeaturesContext } from '../SwapFeaturesContext'
+import { SwapType } from '../types'
+import { OrderHistory, TWAPPanel } from './Twap'
 
-export default function Swap() {
+export default function TwapAndLimitSwap({ limit }: { limit?: boolean }) {
   const { query } = useRouter()
   const { isDesktop } = useMatchBreakpoints()
   const {
@@ -35,6 +34,7 @@ export default function Swap() {
   } = useContext(SwapFeaturesContext)
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
   const { t } = useTranslation()
+  useDefaultsFromURLSearch()
   const [firstTime, setFirstTime] = useState(true)
 
   useEffect(() => {
@@ -90,17 +90,23 @@ export default function Swap() {
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width={['328px', '100%']} height="100%" justifyContent="center" position="relative" alignItems="flex-start">
-        {isDesktop && isChartSupported && (
-          <PriceChartContainer
-            inputCurrencyId={inputCurrencyId}
-            inputCurrency={currencies[Field.INPUT]}
-            outputCurrencyId={outputCurrencyId}
-            outputCurrency={currencies[Field.OUTPUT]}
-            isChartExpanded={isChartExpanded}
-            setIsChartExpanded={setIsChartExpanded}
-            isChartDisplayed={isChartDisplayed}
-            currentSwapPrice={singleTokenPrice}
-          />
+        {isDesktop && (
+          <Flex width={isChartExpanded ? '100%' : '50%'} maxWidth="928px" flexDirection="column" style={{ gap: 20 }}>
+            {isChartSupported && (
+              <PriceChartContainer
+                inputCurrencyId={inputCurrencyId}
+                inputCurrency={currencies[Field.INPUT]}
+                outputCurrencyId={outputCurrencyId}
+                outputCurrency={currencies[Field.OUTPUT]}
+                isChartExpanded={isChartExpanded}
+                setIsChartExpanded={setIsChartExpanded}
+                isChartDisplayed={isChartDisplayed}
+                currentSwapPrice={singleTokenPrice}
+                isFullWidthContainer
+              />
+            )}
+            <OrderHistory />
+          </Flex>
         )}
         {!isDesktop && isChartSupported && (
           <BottomDrawer
@@ -146,10 +152,11 @@ export default function Swap() {
         <Flex flexDirection="column">
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
-              <SwapSelection swapType={SwapType.MARKET} />
+              <SwapSelection swapType={limit ? SwapType.LIMIT : SwapType.TWAP} />
               <AppBody>
-                <V3SwapForm />
+                <TWAPPanel limit={limit} />{' '}
               </AppBody>
+              {!isDesktop && <OrderHistory />}
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
         </Flex>
