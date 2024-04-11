@@ -31,4 +31,12 @@ export const opBnbTokens = {
     'First Digital USD',
     'https://firstdigitallabs.com/',
   ),
+  xcad: new ERC20Token(
+    ChainId.OPBNB,
+    '0xAF9fE3B5cCDAe78188B1F8b9a49Da7ae9510F151',
+    18,
+    'XCAD',
+    'XCAD Token',
+    'https://xcadnetwork.com/',
+  ),
 }
