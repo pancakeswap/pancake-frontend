@@ -3022,7 +3022,7 @@
   "Inscriptions are a recent and novel development in blockchain, and $APTS uses a lock-and-burn mechanism to convert non-fungible, and non-tradable Aptos Inscriptions into fungible and tradable representations. As with most smart contracts, this come with certain risks. Please do your own research.": "ইনস্ক্রিপশন ব্লকচেইনের একটি সাম্প্রতিক এবং অভিনব বিকাশ, এবং প্রতিস্থাপন এবং ট্রেডযোগ্য নয় এমন অ্যাপটস ইনস্ক্রিপশনকে প্রতিস্থাপন এবং ট্রেডযোগ্য উপস্থাপনায় রূপান্তরিত করতে $APTS একটি লক-অ্যান্ড-বার্ন পদ্ধতি ব্যবহার করে। বেশিরভাগ স্মার্ট চুক্তির মতো এটি নির্দিষ্ট ঝুঁকি নিয়ে আসে। অনুগ্রহ করে নিজে গবেষণা করুন।",
   "CAKE Pool:": "CAKE পুল:",
   "Revenue Sharing:": "আয় ভাগাভাগি",
-  "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.": "CAKE Pool APR গণনা করা হয় ভোটের ফলাফল এবং veCAKE পুল গেজ-এর নির্গমনের উপর ভিত্তি করে।",
+  "The veCAKE Pool APR is calculated based on the emission speed which is defined by the voting result of the veCAKE Pool gauge in Gauges Voting.": "The veCAKE Pool APR is calculated based on the emission speed which is defined by the voting result of the veCAKE Pool gauge in Gauges Voting.",
   "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.": "আয় ভাগাভাগির APR ট্রেডিং-এর পরিমাণসহ বিভিন্ন বাহ্যিক কারণ সাপেক্ষে এবং সাপ্তাহিক ভিত্তিতে পরিবর্তিত হতে পারে।",
   "Claim Your Exclusive NFTs Now!": "এখন আপনার একান্ত NFT দাবি করুন!",
   "Calculated based average data since vault inception.": "ভল্ট শুরু হওয়ার পর থেকে গড় ডেটার ভিত্তিতে গণনাকৃত।",
@@ -3271,10 +3271,6 @@
   "Sign In With Wallet": "ওয়ালেট দিয়ে সাইন-ইন করুন",
   "Subscribe To PancakeSwap": "PancakeSwap-এর জন্য সাবস্ক্রাইব করুন",
   "Registration Error": "নিবন্ধনে ত্রুটি",
-  "Stake your WBNB here": "এখানে আপনার WBNB স্টেক করুন",
-  "Stake WBNB, Win Combo Rewards!": "WBNB স্টেক করুন, কম্বো পুরস্কার জিতুন!",
-  "Stake WBNB to Win Combo Rewards": "WBNB স্টেক করে কম্বো পুরস্কার জিতুন",
-  "$5,000 extra reward pool": "$5,000 অতিরিক্ত পুরস্কার পুল",
   "PancakeSwap Multichain Celebration": "PancakeSwap মাল্টিচেইন উদযাপন",
   "Starting MAR 14 - Over $3500 in prizes!": "মার্চ 14 থেকে শুরু হচ্ছে - $3500-এর বেশি পুরস্কার!",
   "Participate Now": "এখনই অংশগ্রহণ করুন",
@@ -3335,5 +3331,6 @@
   "PancakeSwap Options": "PancakeSwap Options",
   "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).",
   "Migrate to new v2 bCake here": "Migrate to new v2 bCake here",
+  "I understand that this feature is deprecated and no longer in maintenance.": "I understand that this feature is deprecated and no longer in maintenance.",
   "chain & strategy": "chain & strategy"
 }
