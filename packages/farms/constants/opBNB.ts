@@ -5,6 +5,13 @@ import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
 export const farmsV3 = defineFarmV3Configs([
   {
+    pid: 4,
+    lpAddress: '0x91C348015Eb3Bb32f5AaE59a594c727365816811',
+    token0: opBnbTokens.usdt,
+    token1: opBnbTokens.xcad,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
     pid: 3,
     lpAddress: '0xFf00F4E09820dbbe8582F771800732DaE7F002bD',
     token0: opBnbTokens.wbnb,
