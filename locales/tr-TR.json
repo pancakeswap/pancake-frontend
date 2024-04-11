@@ -3022,7 +3022,7 @@
   "Inscriptions are a recent and novel development in blockchain, and $APTS uses a lock-and-burn mechanism to convert non-fungible, and non-tradable Aptos Inscriptions into fungible and tradable representations. As with most smart contracts, this come with certain risks. Please do your own research.": "Inscription'lar, blok zincirinde yakın zamanda ortaya çıkan yenilikçi bir gelişmedir ve $APTS, benzeriyle değiştirilemez ve alım satımı yapılamaz Aptos Inscription'larını benzeriyle değiştirilebilir ve alım satımı yapılabilir temsillere dönüştürmek için bir kilitle-yak mekanizmasını kullanmaktadır. Çoğu akıllı sözleşmede olduğu gibi bunun da beraberinde getirdiği bazı riskler vardır. Lütfen kendi araştırmanızı yapın.",
   "CAKE Pool:": "CAKE Havuzu:",
   "Revenue Sharing:": "Gelir Paylaşımı:",
-  "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.": "CAKE Havuzu APR'si, oylama sonucuna ve veCAKE Havuzu gauge'inin emisyonuna göre hesaplanır.",
+  "The veCAKE Pool APR is calculated based on the emission speed which is defined by the voting result of the veCAKE Pool gauge in Gauges Voting.": "The veCAKE Pool APR is calculated based on the emission speed which is defined by the voting result of the veCAKE Pool gauge in Gauges Voting.",
   "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.": "Gelir Paylaşımı, işlem hacmi gibi çeşitli dış faktörlere tabidir ve her hafta değişiklik gösterebilir.",
   "Claim Your Exclusive NFTs Now!": "Özel NFT'lerinizi Hemen Alın!",
   "Calculated based average data since vault inception.": "Kasanın başlangıcından itibaren olan ortalama verilere göre hesaplanır.",
@@ -3271,10 +3271,6 @@
   "Sign In With Wallet": "Cüzdanla Giriş Yap",
   "Subscribe To PancakeSwap": "PancakeSwap'e Abone Ol",
   "Registration Error": "Kayıt Hatası",
-  "Stake your WBNB here": "WBNB'nizi buradan stake edin",
-  "Stake WBNB, Win Combo Rewards!": "WBNB stake edin, Kombo Ödüller Kazanın!",
-  "Stake WBNB to Win Combo Rewards": "Kombo Ödüller Kazanınmak için WBNB stake edin",
-  "$5,000 extra reward pool": "5.000$'lık ek ödül havuzu",
   "PancakeSwap Multichain Celebration": "PancakeSwap Çok Zincirli Kutlaması",
   "Starting MAR 14 - Over $3500 in prizes!": "14 MART'ta başlıyor - 3.500$ üzerinde ödüller!",
   "Participate Now": "Hemen Katılın",
@@ -3335,5 +3331,6 @@
   "PancakeSwap Options": "PancakeSwap Options",
   "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).",
   "Migrate to new v2 bCake here": "Migrate to new v2 bCake here",
+  "I understand that this feature is deprecated and no longer in maintenance.": "I understand that this feature is deprecated and no longer in maintenance.",
   "chain & strategy": "chain & strategy"
 }
