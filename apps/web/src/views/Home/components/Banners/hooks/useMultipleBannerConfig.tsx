@@ -12,7 +12,6 @@ import { TopTraderBanner } from '../TopTraderBanner'
 import UserBanner from '../UserBanner'
 import { V4InfoBanner } from '../V4InfoBanner'
 import { VeCakeBanner } from '../VeCakeBanner'
-import { WBNBFixedStakingBanner } from '../WBNBFixedStakingBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
@@ -53,10 +52,6 @@ export const useMultipleBannerConfig = () => {
         banner: <OptionsBanner />,
       },
       { shouldRender: true, banner: <VeCakeBanner /> },
-      {
-        shouldRender: true,
-        banner: <WBNBFixedStakingBanner />,
-      },
       {
         shouldRender: true,
         banner: <V4InfoBanner />,
