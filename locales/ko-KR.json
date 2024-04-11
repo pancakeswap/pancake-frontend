@@ -3022,7 +3022,7 @@
   "Inscriptions are a recent and novel development in blockchain, and $APTS uses a lock-and-burn mechanism to convert non-fungible, and non-tradable Aptos Inscriptions into fungible and tradable representations. As with most smart contracts, this come with certain risks. Please do your own research.": "인스크립션은 블록체인의 새로운 최신 개발이며, $APTS에서는 잠금 및 소각 메커니즘을 사용하여 대체 불가능하고 거래 불가능한 Aptos 인스크립션을 대체 가능하고 거래 가능한 표현으로 전환합니다. 대부분의 스마트 계약과 마찬가지로 여기에는 특정 위험이 따르므로, 직접 조사해 보시기 바랍니다.",
   "CAKE Pool:": "CAKE 풀:",
   "Revenue Sharing:": "수익 공유:",
-  "CAKE Pool APR is calculated based on the voting result and the emission of the veCAKE Pool gauge.": "CAKE 풀 APR은 투표 결과와 veCAKE 풀 게이지의 생성량을 기반으로 계산됩니다.",
+  "The veCAKE Pool APR is calculated based on the emission speed which is defined by the voting result of the veCAKE Pool gauge in Gauges Voting.": "The veCAKE Pool APR is calculated based on the emission speed which is defined by the voting result of the veCAKE Pool gauge in Gauges Voting.",
   "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.": "수익 공유 APR은 거래량을 포함한 다양한 외부 요인에 의해 영향을 받으며 매주 달라질 수 있습니다.",
   "Claim Your Exclusive NFTs Now!": "지금 독점 NFT를 클레임하세요!",
   "Calculated based average data since vault inception.": "볼트 개시 이후 평균 데이터 기반으로 계산됩니다.",
@@ -3271,10 +3271,6 @@
   "Sign In With Wallet": "지갑으로 로그인",
   "Subscribe To PancakeSwap": "PancakeSwap 구독",
   "Registration Error": "등록 오류",
-  "Stake your WBNB here": "여기에서 WBNB 스테이킹",
-  "Stake WBNB, Win Combo Rewards!": "WBNB를 스테이킹하고 콤보 리워드를 받으세요!",
-  "Stake WBNB to Win Combo Rewards": "WBNB를 스테이킹하여 콤보 리워드를 받으세요",
-  "$5,000 extra reward pool": "$5,000의 추가 리워드 풀",
   "PancakeSwap Multichain Celebration": "PancakeSwap 멀티체인 축제",
   "Starting MAR 14 - Over $3500 in prizes!": "3월 14일 시작 - 상금 $3500 이상!",
   "Participate Now": "지금 참여하세요",
@@ -3335,5 +3331,6 @@
   "PancakeSwap Options": "PancakeSwap Options",
   "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).",
   "Migrate to new v2 bCake here": "Migrate to new v2 bCake here",
+  "I understand that this feature is deprecated and no longer in maintenance.": "I understand that this feature is deprecated and no longer in maintenance.",
   "chain & strategy": "chain & strategy"
 }
