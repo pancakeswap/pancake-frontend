@@ -1,21 +1,15 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { BottomDrawer, Flex, Modal, ModalV2, useMatchBreakpoints } from '@pancakeswap/uikit'
-import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
+import { BottomDrawer, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
 import { useCurrency } from 'hooks/Tokens'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useRouter } from 'next/router'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useDefaultsFromURLSearch, useSingleTokenSwapInfo, useSwapState } from 'state/swap/hooks'
-import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
-import { currencyId } from 'utils/currencyId'
 import Page from '../../Page'
 import PriceChartContainer from '../components/Chart/PriceChartContainer'
-import HotTokenList from '../components/HotTokenList'
 import { SwapSelection } from '../components/SwapSelection'
-import useWarningImport from '../hooks/useWarningImport'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from '../styles'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import { SwapType } from '../types'
@@ -24,16 +18,9 @@ import { OrderHistory, TWAPPanel } from './Twap'
 export default function TwapAndLimitSwap({ limit }: { limit?: boolean }) {
   const { query } = useRouter()
   const { isDesktop } = useMatchBreakpoints()
-  const {
-    isChartExpanded,
-    isChartDisplayed,
-    setIsChartDisplayed,
-    setIsChartExpanded,
-    isChartSupported,
-    isHotTokenSupported,
-  } = useContext(SwapFeaturesContext)
+  const { isChartExpanded, isChartDisplayed, setIsChartDisplayed, setIsChartExpanded, isChartSupported } =
+    useContext(SwapFeaturesContext)
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
-  const { t } = useTranslation()
   useDefaultsFromURLSearch()
   const [firstTime, setFirstTime] = useState(true)
 
@@ -68,24 +55,7 @@ export default function TwapAndLimitSwap({ limit }: { limit?: boolean }) {
     outputCurrency,
     isChartSupported,
   )
-  const warningSwapHandler = useWarningImport()
   useDefaultsFromURLSearch()
-  const { onCurrencySelection } = useSwapActionHandlers()
-
-  const handleOutputSelect = useCallback(
-    (newCurrencyOutput: Currency) => {
-      onCurrencySelection(Field.OUTPUT, newCurrencyOutput)
-      warningSwapHandler(newCurrencyOutput)
-
-      const newCurrencyOutputId = currencyId(newCurrencyOutput)
-      if (newCurrencyOutputId === inputCurrencyId) {
-        replaceBrowserHistory('inputCurrency', outputCurrencyId)
-      }
-      replaceBrowserHistory('outputCurrency', newCurrencyOutputId)
-    },
-
-    [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
-  )
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
@@ -128,27 +98,6 @@ export default function TwapAndLimitSwap({ limit }: { limit?: boolean }) {
             setIsOpen={(isOpen) => setIsChartDisplayed?.(isOpen)}
           />
         )}
-        {isDesktop && isSwapHotTokenDisplay && isHotTokenSupported && (
-          <HotTokenList handleOutputSelect={handleOutputSelect} />
-        )}
-        <ModalV2
-          isOpen={!isDesktop && isSwapHotTokenDisplay && isHotTokenSupported}
-          onDismiss={() => setIsSwapHotTokenDisplay(false)}
-        >
-          <Modal
-            style={{ padding: 0 }}
-            title={t('Top Token')}
-            onDismiss={() => setIsSwapHotTokenDisplay(false)}
-            bodyPadding="0px"
-          >
-            <HotTokenList
-              handleOutputSelect={(newCurrencyOutput: Currency) => {
-                handleOutputSelect(newCurrencyOutput)
-                setIsSwapHotTokenDisplay(false)
-              }}
-            />
-          </Modal>
-        </ModalV2>
         <Flex flexDirection="column">
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
