@@ -19,6 +19,10 @@ function ClaimWarning() {
       header={t('I acknowledge that:')}
       checks={[
         {
+          key: 'deprecated-checkbox',
+          content: <b>{t('I understand that this feature is deprecated and no longer in maintenance.')}</b>,
+        },
+        {
           key: 'price-checkbox',
           content: t('I understand that small orders are executed at higher execution price due to gas fees.'),
         },
