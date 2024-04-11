@@ -18,7 +18,7 @@ import { styled } from 'styled-components'
 export interface CheckType {
   key: string
   value?: boolean
-  content: string
+  content: ReactNode
 }
 
 interface RiskDisclaimerProps extends InjectedModalProps {
