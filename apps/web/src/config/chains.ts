@@ -21,7 +21,6 @@ import {
   scrollSepolia,
   sepolia,
   zkSync,
-  zkSyncTestnet,
 } from 'wagmi/chains'
 
 export const CHAIN_QUERY_NAME = chainNames
@@ -83,7 +82,6 @@ export const CHAINS = [
   polygonZkEvm,
   polygonZkEvmTestnet,
   zkSync,
-  zkSyncTestnet,
   arbitrum,
   arbitrumGoerli,
   arbitrumSepolia,
