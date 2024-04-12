@@ -3753,4 +3753,20 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: bscTokens.usdt.address,
     token1Address: bscTokens.wbnb.address,
   },
+  {
+    gid: 378,
+    pairName: 'mPENDLE-PENDLE',
+    address: '0x1A2329546f11e4fE55b853D98Bba2c4678E3105A',
+    chainId: ChainId.ARBITRUM_ONE,
+    type: GaugeType.StableSwap,
+    tokenAddresses: [arbitrumTokens.mpendle.address, arbitrumTokens.pendle.address],
+  },
+  {
+    gid: 379,
+    pairName: 'mdLP-dLP',
+    address: '0x0db5e247ab73FBaE16d9301f2977f974EC0AA336',
+    chainId: ChainId.ARBITRUM_ONE,
+    type: GaugeType.StableSwap,
+    tokenAddresses: [arbitrumTokens.mdlp.address, arbitrumTokens.dlp.address],
+  },
 ]
