@@ -3133,4 +3133,12 @@ export const bscTokens = {
     'Stake DAO Token',
     'https://www.stakedao.org/',
   ),
+  masa: new ERC20Token(
+    ChainId.BSC,
+    '0x944824290CC12F31ae18Ef51216A223Ba4063092',
+    18,
+    'MASA',
+    'Masa Token',
+    'https://www.masa.finance/',
+  ),
 }
