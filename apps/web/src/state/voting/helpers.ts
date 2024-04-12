@@ -37,7 +37,7 @@ export const getProposal = async (id: string): Promise<Proposal> => {
   const response: { proposal: Proposal } = await request(
     SNAPSHOT_API,
     gql`
-      query getProposal($id: String) {
+      query getProposal($id: String!) {
         proposal(id: $id) {
           id
           title
