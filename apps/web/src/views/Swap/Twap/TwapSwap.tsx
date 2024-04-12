@@ -1,5 +1,5 @@
 import { Currency } from '@pancakeswap/sdk'
-import { BottomDrawer, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { BottomDrawer, Flex, Text, StyledLink, useMatchBreakpoints, AutoRow } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
 import { useCurrency } from 'hooks/Tokens'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
@@ -7,6 +7,8 @@ import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useDefaultsFromURLSearch, useSingleTokenSwapInfo, useSwapState } from 'state/swap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import Link from 'next/link'
 import Page from '../../Page'
 import PriceChartContainer from '../components/Chart/PriceChartContainer'
 import { SwapSelection } from '../components/SwapSelection'
@@ -17,11 +19,11 @@ import { OrderHistory, TWAPPanel } from './Twap'
 
 export default function TwapAndLimitSwap({ limit }: { limit?: boolean }) {
   const { query } = useRouter()
+  const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
   const { isChartExpanded, isChartDisplayed, setIsChartDisplayed, setIsChartExpanded, isChartSupported } =
     useContext(SwapFeaturesContext)
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
-  useDefaultsFromURLSearch()
   const [firstTime, setFirstTime] = useState(true)
 
   useEffect(() => {
@@ -103,9 +105,23 @@ export default function TwapAndLimitSwap({ limit }: { limit?: boolean }) {
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <SwapSelection swapType={limit ? SwapType.LIMIT : SwapType.TWAP} />
               <AppBody>
-                <TWAPPanel limit={limit} />{' '}
+                <TWAPPanel limit={limit} />
               </AppBody>
-              {!isDesktop && <OrderHistory />}
+              <Flex flexDirection={!isDesktop ? 'column-reverse' : 'column'}>
+                {limit && (
+                  <AutoRow gap="4px" justifyContent="center">
+                    <Text fontSize="14px" color="textSubtle">
+                      {t('Orders missing? Check out:')}
+                    </Text>
+                    <Link href="/limit-orders" passHref prefetch={false}>
+                      <StyledLink fontSize="14px" color="primary">
+                        {t('Limit V2 (deprecated)')}
+                      </StyledLink>
+                    </Link>
+                  </AutoRow>
+                )}
+                {!isDesktop && <OrderHistory />}
+              </Flex>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
         </Flex>
