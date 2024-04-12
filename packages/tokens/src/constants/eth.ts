@@ -465,4 +465,12 @@ export const ethereumTokens = {
     'rswETH',
     'https://www.swellnetwork.io/',
   ),
+  masa: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x944824290CC12F31ae18Ef51216A223Ba4063092',
+    18,
+    'MASA',
+    'Masa Token',
+    'https://www.masa.finance/',
+  ),
 }
