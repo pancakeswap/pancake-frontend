@@ -1919,9 +1919,6 @@
   "Zap in %amount% BNB for %symbol%": "Mag-zap ng %amount% BNB para sa %symbol%",
   "Zap in %amount% %symbol% for %lpSymbol%": "Mag-zap ng %amount% %symbol% para sa %lpSymbol%",
   "never executes": "hindi kailanman ipinapatupad",
-  "Order not allowed": "Hindi pinapayagan ang order",
-  "Only possible to place sell orders above market rate": "Posible lang maglagay ng mga sell order nang mas mataas sa rate ng market",
-  "Only possible to place buy orders below market rate": "Posible lang maglagay ng mga buy order nang mas mababa sa rate ng market",
   "Insufficient input token balance. Your transaction may fail.": "Hindi sapat ang input na balanse ng token. Posibleng hindi maisagawa ang transaksyon mo.",
   "Wrong Network": "Maling Network",
   "Check your network": "Tingnan ang network mo",
@@ -3332,5 +3329,8 @@
   "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).",
   "Migrate to new v2 bCake here": "Migrate to new v2 bCake here",
   "I understand that this feature is deprecated and no longer in maintenance.": "I understand that this feature is deprecated and no longer in maintenance.",
-  "chain & strategy": "chain & strategy"
+  "chain & strategy": "chain & strategy",
+  "Placing Order Disabled": "Placing Order Disabled",
+  "Orders missing? Check out:": "Orders missing? Check out:",
+  "Limit V2 (deprecated)": "Limit V2 (deprecated)"
 }
