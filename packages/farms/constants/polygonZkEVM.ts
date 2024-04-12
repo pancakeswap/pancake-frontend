@@ -26,6 +26,13 @@ const v3TopFixedFarms: FarmConfigV3[] = [
     feeAmount: FeeAmount.LOW,
   },
   {
+    pid: 3,
+    lpAddress: '0xca06375be938a2d6eF311dfaFab7E326d55D23Cc',
+    token0: polygonZkEvmTokens.usdt,
+    token1: polygonZkEvmTokens.usdc,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
     pid: 16,
     lpAddress: '0xb5d9E1622BFA6Efb3FB50c0bDc6a0EE2b2d046fA',
     token0: polygonZkEvmTokens.weth,
