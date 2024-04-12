@@ -16,6 +16,8 @@ const nextConfig = {
     '@pancakeswap/widgets-internal',
     '@pancakeswap/sdk',
     '@pancakeswap/ui-wallets',
+    '@pancakeswap/tokens',
+    '@pancakeswap/wagmi',
   ],
   images: {
     contentDispositionType: 'attachment',

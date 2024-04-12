@@ -4,16 +4,12 @@ import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { ConnectorNames } from 'config/wallet'
 import { useCallback } from 'react'
-import { useAppDispatch } from 'state'
-import { ConnectorNotFoundError, SwitchChainNotSupportedError, useConnect, useDisconnect, useNetwork } from 'wagmi'
-import { clearUserStates } from '../utils/clearUserStates'
+import { ConnectorNotFoundError, SwitchChainNotSupportedError, useConnect, useDisconnect } from 'wagmi'
 import { useActiveChainId } from './useActiveChainId'
 import { useSessionChainId } from './useSessionChainId'
 
 const useAuth = () => {
-  const dispatch = useAppDispatch()
   const { connectAsync, connectors } = useConnect()
-  const { chain } = useNetwork()
   const { disconnectAsync } = useDisconnect()
   const { chainId } = useActiveChainId()
   const [, setSessionChainId] = useSessionChainId()
@@ -51,10 +47,8 @@ const useAuth = () => {
       await disconnectAsync()
     } catch (error) {
       console.error(error)
-    } finally {
-      clearUserStates(dispatch, { chainId: chain?.id })
     }
-  }, [disconnectAsync, dispatch, chain?.id])
+  }, [disconnectAsync])
 
   return { login, logout }
 }

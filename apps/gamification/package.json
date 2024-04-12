@@ -20,6 +20,8 @@
     "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/widgets-internal": "workspace:*",
     "@pancakeswap/ui-wallets": "workspace:*",
+    "@pancakeswap/tokens": "workspace:*",
+    "@pancakeswap/wagmi": "workspace:*",
     "@reduxjs/toolkit": "^1.9.1",
     "@tanstack/react-query": "^5.18.0",
     "@vanilla-extract/next-plugin": "^2.3.0",

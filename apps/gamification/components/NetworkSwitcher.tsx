@@ -32,7 +32,7 @@ const AptosChain = {
   name: 'Aptos',
 }
 
-const NetworkSelect = ({ switchNetwork, chainId }) => {
+const NetworkSelect = ({ switchNetwork, chainId }: any) => {
   const { t } = useTranslation()
 
   return (
@@ -75,7 +75,7 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
   )
 }
 
-const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
+const WrongNetworkSelect = ({ switchNetwork, chainId }: any) => {
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
