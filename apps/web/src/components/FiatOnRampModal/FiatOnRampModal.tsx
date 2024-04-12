@@ -21,7 +21,13 @@ import { MutableRefObject, memo, useCallback, useEffect, useMemo, useState } fro
 import { useTheme } from 'styled-components'
 import { v4 } from 'uuid'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
-import { ONRAMP_PROVIDERS, OnRampChainId, getOnrampCurrencyChainId, isNativeBtc } from 'views/BuyCrypto/constants'
+import {
+  ONRAMP_PROVIDERS,
+  OnRampChainId,
+  combinedNetworkIdMap,
+  getOnrampCurrencyChainId,
+  isNativeBtc,
+} from 'views/BuyCrypto/constants'
 import { useOnRampSignature } from 'views/BuyCrypto/hooks/useOnRampSignature'
 import { IFrameWrapper, StyledBackArrowContainer } from 'views/BuyCrypto/styles'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
@@ -178,7 +184,7 @@ export const FiatOnRampModal = memo<
           fixCurrency: true,
           address: account,
           signature: sig,
-          network: chainId,
+          network: combinedNetworkIdMap[ONRAMP_PROVIDERS.Mercuryo][chainId],
           merchantTransactionId: `${account}_${txId}`,
           host: document.getElementById('mercuryo-widget'),
           theme: theme.isDark ? 'PCS_dark' : 'PCS_light',
