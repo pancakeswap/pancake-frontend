@@ -77,7 +77,7 @@ export abstract class AllowanceTransfer {
   public static getPermitData<
     TPermit extends PermitSingle | PermitBatch,
     ReturnType = TPermit extends PermitSingle ? PermitSingleData : PermitBatchData,
-  >(permit: TPermit, permit2Address: Address, chainId: number): ReturnType {
+  >(permit: TPermit, permit2Address: Address | undefined, chainId: number): ReturnType {
     invariant(MaxSigDeadline >= BigInt(permit.sigDeadline), 'SIG_DEADLINE_OUT_OF_RANGE')
 
     const domain = permit2Domain(permit2Address, chainId)

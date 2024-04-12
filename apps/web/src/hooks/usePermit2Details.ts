@@ -33,13 +33,18 @@ export const usePermit2Details = (
 
   return useQuery({
     queryKey: ['/token-permit/', chainId, token?.address, owner, spender],
-    queryFn: async () =>
-      publicClient({ chainId }).readContract({
+    queryFn: async () => {
+      const permit2Address = getPermit2Address(chainId)
+      if (!permit2Address) {
+        throw new Error(`Permit2 Contract not deployed on chain ${chainId}`)
+      }
+      return publicClient({ chainId }).readContract({
         abi: Permit2ABI,
-        address: getPermit2Address(chainId),
+        address: permit2Address,
         functionName: 'allowance',
         args: inputs,
-      }),
+      })
+    },
     placeholderData,
     refetchInterval: FAST_INTERVAL,
     retry: true,

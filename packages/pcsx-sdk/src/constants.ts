@@ -10,7 +10,7 @@ export const PERMIT2_MAPPING = {
   [ChainId.ETHEREUM]: getPermit2Address(ChainId.ETHEREUM),
   [ChainId.BSC]: getPermit2Address(ChainId.BSC),
   [ChainId.BSC_TESTNET]: getPermit2Address(ChainId.BSC_TESTNET),
-} as const satisfies Record<XSupportedChainId, Address>
+} as const satisfies Record<XSupportedChainId, Address | undefined>
 
 export const ORDER_QUOTER_MAPPING = {
   [ChainId.ETHEREUM]: '0x54539967a06Fc0E3C3ED0ee320Eb67362D13C5fF',
