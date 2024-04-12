@@ -1919,9 +1919,6 @@
   "Zap in %amount% BNB for %symbol%": "為 %symbol% Zap %amount% BNB",
   "Zap in %amount% %symbol% for %lpSymbol%": "為 %lpSymbol% Zap %amount% %symbol%",
   "never executes": "無法執行",
-  "Order not allowed": "不允許下訂",
-  "Only possible to place sell orders above market rate": "只能提交優於市價的訂單",
-  "Only possible to place buy orders below market rate": "只允許在低於市場匯率的情況下下達購買訂單",
   "Insufficient input token balance. Your transaction may fail.": "輸入代幣餘額不足。您的交易可能會失敗。",
   "Wrong Network": "網路錯誤",
   "Check your network": "請檢查您的網路",
@@ -2896,7 +2893,7 @@
   "CAKE rewards": "CAKE 獎勵",
   "Total votes": "已投票數",
   "Remaining veCAKE": "可投票的 veCAKE",
-  "Add Gauges": "選擇 Gauges",
+  "Add Gauges": "添加/移除 Gauges",
   "Search and add the gauge you want to vote": "搜尋並將欲投票的 Gauge 加入清單",
   "filter": "篩選器",
   "Chain": "公鏈",
@@ -2937,7 +2934,7 @@
   "Claim freshly cooked CAKE rewards weekly on Thursday from veCAKE gauge emission as well as trading revenue sharing.": "每週四領取最新分發的 CAKE 獎勵，源自使用 veCAKE 向特定 Gauge 投票後 Gauge 獲配的產能，以及交易收入分成。",
   "Use your veCAKE to vote on your favourite farms, position managers, reward pools, and any CAKE emission products, increase their allocations, and get more CAKE rewards.": "使用您的 veCAKE，向您心儀的農場、倉位管理器、獎勵池子以及所有涉及到 CAKE 產出的產品投票，提高它們的配額來獲得更多 CAKE 獎勵。",
   "Boost your PancakeSwap farming APR by up to 2.5x. Aquire more veCAKE to receive a higher boost.": "助推您的 PancakeSwap 耕種 APR 至最高 2.5x。獲取更多 veCAKE 以提高助推倍數！",
-  "Use veCAKE as your Snapshot voting power to vote on governance proposals. Including important protocol decisions, and adding new farming gauges.": "您在快照投票時持有的 veCAKE 將作為您的票數，以對治理提案進行投票。其中包括重要的協議決策和新增農場 Gauge。",
+  "Use veCAKE as your Snapshot voting power to vote on governance proposals. Including important protocol decisions, and adding new farming gauges.": "您在快照投票時持有的 veCAKE 將作為您的票數，以對治理提案進行投票。其中包括重要的協議決策和增加新的 Gauge 農場。",
   "Use your veCAKE as your IFO Public Sales commit credits. Aquire more veCAKE to commit more in the next PancakeSwap IFOs.": "使用您的 veCAKE 作為 IFO 公開銷售的投入信用。取得更多 veCAKE，以便在下次 PancakeSwap IFO 中投入更多。",
   "The total number of veCAKE votes being casted.": "已完成投票的 veCAKE 數量加總。",
   "The total amount of CAKE rewards to distribute to all the gauges according to the final vote results.": "根據最終投票結果，分發給所有 Gauges 的 CAKE 獎勵總數。",
@@ -3332,5 +3329,8 @@
   "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).",
   "Migrate to new v2 bCake here": "Migrate to new v2 bCake here",
   "I understand that this feature is deprecated and no longer in maintenance.": "I understand that this feature is deprecated and no longer in maintenance.",
-  "chain & strategy": "chain & strategy"
+  "chain & strategy": "chain & strategy",
+  "Placing Order Disabled": "Placing Order Disabled",
+  "Orders missing? Check out:": "Orders missing? Check out:",
+  "Limit V2 (deprecated)": "Limit V2 (deprecated)"
 }
