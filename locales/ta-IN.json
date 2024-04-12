@@ -1919,9 +1919,6 @@
   "Zap in %amount% BNB for %symbol%": "%symbol% -க்கு %amount% BNB-இல் ஸாப் செய்க",
   "Zap in %amount% %symbol% for %lpSymbol%": "%lpSymbol% -க்கு %amount% %symbol% -இல் ஸாப் செய்க",
   "never executes": "ஒருபோதும் செயலாற்றுவதில்லை",
-  "Order not allowed": "ஆர்டர் அனுமதிக்கப்படவில்லை",
-  "Only possible to place sell orders above market rate": "விற்பனை ஆர்டர்களை சந்தை விலைக்கு மேல் மட்டுமே செய்ய முடியும்",
-  "Only possible to place buy orders below market rate": "வாங்கல் ஆர்டர்களை சந்தை விலைக்குக் கீழ் மட்டுமே செய்ய முடியும்",
   "Insufficient input token balance. Your transaction may fail.": "போதுமான உள்ளீட்டு டோக்கன் இருப்பு இல்லை. உங்கள் பரிவர்த்தனை தோல்வியடையலாம்.",
   "Wrong Network": "தவறான நெட்வொர்க்",
   "Check your network": "உங்கள் நெட்வொர்க்கைச் சரிபார்க்கவும்",
@@ -3332,5 +3329,8 @@
   "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).",
   "Migrate to new v2 bCake here": "Migrate to new v2 bCake here",
   "I understand that this feature is deprecated and no longer in maintenance.": "I understand that this feature is deprecated and no longer in maintenance.",
-  "chain & strategy": "chain & strategy"
+  "chain & strategy": "chain & strategy",
+  "Placing Order Disabled": "Placing Order Disabled",
+  "Orders missing? Check out:": "Orders missing? Check out:",
+  "Limit V2 (deprecated)": "Limit V2 (deprecated)"
 }
