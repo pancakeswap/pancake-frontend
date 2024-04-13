@@ -1,19 +1,27 @@
-import { chainNames } from '@pancakeswap/chains'
+import { ChainId, chainNames } from '@pancakeswap/chains'
 import { Token } from '@pancakeswap/sdk'
 import difference from 'lodash/difference.js'
 import groupBy from 'lodash/groupBy.js'
 import uniqBy from 'lodash/uniqBy.js'
-import { PublicClient, createPublicClient, http, parseAbiItem } from 'viem'
+import { PublicClient, createPublicClient, http, parseAbiItem, fallback } from 'viem'
 import * as CHAINS from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 import { SUPPORTED_CHAIN_IDS, VAULTS_CONFIG_BY_CHAIN } from './constants'
+
+const PUBLIC_NODES = {
+  [ChainId.ARBITRUM_ONE]: [
+    CHAINS.arbitrum.rpcUrls.default,
+    'https://arbitrum-one.publicnode.com',
+    'https://arbitrum.llamarpc.com',
+  ],
+}
 
 const publicClient = Object.keys(VAULTS_CONFIG_BY_CHAIN).reduce((acc, chainId) => {
   return {
     ...acc,
     [chainId]: createPublicClient({
       chain: Object.values(CHAINS).find((chain) => chain.id === Number(chainId)),
-      transport: http(),
+      transport: PUBLIC_NODES[chainId] ? fallback(PUBLIC_NODES[chainId].map((rpc: string) => http(rpc))) : http(),
     }) as PublicClient,
   }
 }, {} as Record<string, PublicClient>)
