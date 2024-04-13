@@ -55,6 +55,7 @@ import { styled } from 'styled-components'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import currencyId from 'utils/currencyId'
 import { useAccount } from 'wagmi'
+import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { Wrapper } from '../components/styleds'
 import { SwapTransactionErrorContent } from '../components/SwapTransactionErrorContent'
 import useWarningImport from '../hooks/useWarningImport'
@@ -162,9 +163,16 @@ export function TWAPPanel({ limit }: { limit?: boolean }) {
     [onCurrencySelection, warningSwapHandler, inputCurrencyId, outputCurrencyId],
   )
 
+  const [, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
+
   const toggleChartDisplayed = useCallback(() => {
-    setIsChartDisplayed?.((currentIsChartDisplayed) => !currentIsChartDisplayed)
-  }, [setIsChartDisplayed])
+    setIsChartDisplayed?.((currentIsChartDisplayed) => {
+      if (!currentIsChartDisplayed) {
+        setIsSwapHotTokenDisplay(false)
+      }
+      return !currentIsChartDisplayed
+    })
+  }, [setIsChartDisplayed, setIsSwapHotTokenDisplay])
 
   const onSrcTokenSelected = useCallback(
     (token: Currency) => {
