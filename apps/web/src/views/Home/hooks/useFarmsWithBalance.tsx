@@ -52,6 +52,8 @@ const useFarmsWithBalance = () => {
 
   const getFarmsWithBalances = useCallback(
     async (farms: SerializedFarmPublicData[], accountToCheck: string, contract) => {
+      const isUserAccount = accountToCheck.toLowerCase() === account?.toLowerCase()
+
       const result = await publicClient({ chainId }).multicall({
         contracts: farms.map((farm) => ({
           abi: masterChefV2ABI,
@@ -61,18 +63,20 @@ const useFarmsWithBalance = () => {
         })),
       })
 
-      const bCakeResult = await publicClient({ chainId }).multicall({
-        contracts: farms
-          .filter((farm) => Boolean(farm?.bCakeWrapperAddress))
-          .map((farm) => {
-            return {
-              abi: v2BCakeWrapperABI,
-              address: farm?.bCakeWrapperAddress ?? '0x',
-              functionName: 'pendingReward',
-              args: [account] as const,
-            } as const
-          }),
-      })
+      const bCakeResult = isUserAccount
+        ? await publicClient({ chainId }).multicall({
+            contracts: farms
+              .filter((farm) => Boolean(farm?.bCakeWrapperAddress))
+              .map((farm) => {
+                return {
+                  abi: v2BCakeWrapperABI,
+                  address: farm?.bCakeWrapperAddress ?? '0x',
+                  functionName: 'pendingReward',
+                  args: [accountToCheck] as const,
+                } as const
+              }),
+          })
+        : []
 
       let bCakeIndex = 0
 
@@ -84,7 +88,7 @@ const useFarmsWithBalance = () => {
       const proxyCakeBalanceNumber = proxyCakeBalance ? getBalanceNumber(new BigNumber(proxyCakeBalance.toString())) : 0
       const results = farms.map((farm, index) => {
         let bCakeBalance = BIG_ZERO
-        if (farm?.bCakeWrapperAddress) {
+        if (isUserAccount && farm?.bCakeWrapperAddress) {
           bCakeBalance = new BigNumber(((bCakeResult[bCakeIndex].result as bigint) ?? '0').toString())
           bCakeIndex++
         }
@@ -99,9 +103,10 @@ const useFarmsWithBalance = () => {
         .map((farm) => ({
           ...farm,
           contract,
-          bCakeContract: farm.bCakeWrapperAddress
-            ? getV2SSBCakeWrapperContract(farm.bCakeWrapperAddress, signer ?? undefined, chainId)
-            : undefined,
+          bCakeContract:
+            isUserAccount && farm.bCakeWrapperAddress
+              ? getV2SSBCakeWrapperContract(farm.bCakeWrapperAddress, signer ?? undefined, chainId)
+              : undefined,
         }))
       const totalEarned = farmsWithBalances.reduce((accum, earning) => {
         const earningNumber = new BigNumber(earning.balance)
