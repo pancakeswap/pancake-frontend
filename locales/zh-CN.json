@@ -3019,7 +3019,7 @@
   "Inscriptions are a recent and novel development in blockchain, and $APTS uses a lock-and-burn mechanism to convert non-fungible, and non-tradable Aptos Inscriptions into fungible and tradable representations. As with most smart contracts, this come with certain risks. Please do your own research.": "铭文是区块链上一种新近的发展。$APTS 使用锁定销毁机制（lock-and-burn ），将非同质化和不可交易的 Aptos 链铭文转换为同质化和可交易的表示形式。与大多数智能合约一样，使用有一定的风险。请务必先自行研究。",
   "CAKE Pool:": "CAKE 糖浆池：",
   "Revenue Sharing:": "收入分成：",
-  "The veCAKE Pool APR is calculated based on the emission speed which is defined by the voting result of the veCAKE Pool gauge in Gauges Voting.": "VeCAKE 糖浆池 APR 根据产出速度计算，产出速度由 Gauge Voting 中 veCAKE 糖浆池 Gauge 的投票结果定义。",
+  "The veCAKE Pool APR is calculated based on the emission speed which is defined by the voting result of the veCAKE Pool gauge in Gauges Voting.": "veCAKE 池的 APR，将根据 Gauge Voting 投票结果，由 veCAKE 池 Gauge 的获票率换算成 CAKE 产出率计算得出。",
   "Revenue Sharing APR is subject to various external factors, including trading volume, and could vary weekly.": "收入分成的 APR 受到多种外部因素的影响，包括交易量，每周可能有所不同。",
   "Claim Your Exclusive NFTs Now!": "现在就申领独家 NFT！",
   "Calculated based average data since vault inception.": "根据流动性资金库成立以来的平均数据计算得出。",
@@ -3329,7 +3329,7 @@
   "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "请注意，您将被重定向到与我们的合作伙伴 Stryke（前身为 Dopex）关联的外部托管网站。",
   "Migrate to new v2 bCake here": "在此处迁移到新的 v2 bCake",
   "I understand that this feature is deprecated and no longer in maintenance.": "我了解此功能已被弃用，并且不再进行维护。",
-  "chain & strategy": "链和策略",
+  "chain & strategy": "公链 & 做市策略",
   "Placing Order Disabled": "已禁用下单功能",
   "Orders missing? Check out:": "订单丢失？查看：",
   "Limit V2 (deprecated)": "限价 V2（已弃用）"
