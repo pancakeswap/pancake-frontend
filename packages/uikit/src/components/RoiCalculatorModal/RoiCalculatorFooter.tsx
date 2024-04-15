@@ -54,6 +54,7 @@ interface RoiCalculatorFooterProps {
   farmCakePerSecond?: string;
   totalMultipliers?: string;
   dualTokenRewardApr?: number;
+  isBCakeBooster?: boolean;
 }
 
 const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterProps>> = ({
@@ -74,6 +75,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   totalMultipliers,
   dualTokenRewardApr,
   lpRewardsApr,
+  isBCakeBooster,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
@@ -174,7 +176,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                 %
               </Text>
             )}
-            {isFarm && (
+            {isFarm && isBCakeBooster && (
               <>
                 <Text color="textSubtle" small>
                   {t("Farm Multiplier")}

@@ -321,7 +321,8 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   ) : null}
                   {props.type === 'v2' &&
                   props?.details?.bCakeWrapperAddress &&
-                  props?.details?.bCakePublicData?.isRewardInRange ? (
+                  props?.details?.bCakePublicData?.isRewardInRange &&
+                  chainId === ChainId.BSC ? (
                     <BoostedTag scale="sm" />
                   ) : null}
                   {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
