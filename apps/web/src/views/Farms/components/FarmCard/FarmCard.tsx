@@ -231,6 +231,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
               multiplier={farm.multiplier}
               farmCakePerSecond={farmCakePerSecond}
               totalMultipliers={totalMultipliers}
+              isV2BCakeWrapperFarm={isBooster}
             />
           </>
         )}

@@ -258,7 +258,19 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     </td>
                   )
                 }
-                return <td />
+                return <td key={key} />
+              case 'multiplier':
+                if (props.type === 'v3')
+                  return (
+                    <td key={key}>
+                      <CellInner>
+                        <CellLayout label={t(tableSchema[columnIndex].label)}>
+                          <Multiplier {...props.multiplier} />
+                        </CellLayout>
+                      </CellInner>
+                    </td>
+                  )
+                return <td key={key} />
 
               default:
                 if (cells[key]) {

@@ -1,17 +1,17 @@
-import { ReactElement } from "react";
+import { ChainId } from "@pancakeswap/chains";
 import { useTranslation } from "@pancakeswap/localization";
-import { styled } from "styled-components";
 import {
+  FarmMultiplierInfo,
   Flex,
+  HelpIcon,
   LinkExternal,
   ScanLink,
   Skeleton,
   Text,
-  HelpIcon,
   useTooltip,
-  FarmMultiplierInfo,
 } from "@pancakeswap/uikit";
-import { ChainId } from "@pancakeswap/chains";
+import { ReactElement } from "react";
+import { styled } from "styled-components";
 
 export interface ExpandableSectionProps {
   scanAddress?: { link: string; chainId?: number; icon?: ReactElement };
@@ -27,6 +27,7 @@ export interface ExpandableSectionProps {
   multiplier?: string;
   farmCakePerSecond?: string;
   totalMultipliers?: string;
+  isV2BCakeWrapperFarm?: boolean;
 }
 
 const Wrapper = styled.div`
@@ -62,6 +63,7 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
   multiplier,
   farmCakePerSecond,
   totalMultipliers,
+  isV2BCakeWrapperFarm,
 }) => {
   const {
     t,
@@ -95,20 +97,22 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
         <Text>{totalValueLabel || t("Staked Liquidity")}:</Text>
         {totalValueFormatted ? <Text>{totalValueFormatted}</Text> : <Skeleton width={75} height={25} />}
       </Flex>
-      <Flex justifyContent="space-between">
-        <Text>{t("Multiplier")}:</Text>
-        {multiplier ? (
-          <Flex>
-            <Text>{multiplier}</Text>
-            {tooltipVisible && tooltip}
-            <Flex ref={targetRef}>
-              <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+      {!isV2BCakeWrapperFarm && (
+        <Flex justifyContent="space-between">
+          <Text>{t("Multiplier")}:</Text>
+          {multiplier ? (
+            <Flex>
+              <Text>{multiplier}</Text>
+              {tooltipVisible && tooltip}
+              <Flex ref={targetRef}>
+                <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+              </Flex>
             </Flex>
-          </Flex>
-        ) : (
-          <Skeleton width={75} height={25} />
-        )}
-      </Flex>
+          ) : (
+            <Skeleton width={75} height={25} />
+          )}
+        </Flex>
+      )}
       {!removed && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>
           {onAddLiquidity ? (
