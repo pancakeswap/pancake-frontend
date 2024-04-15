@@ -51,13 +51,14 @@ export const useActiveChainId = () => {
   const chainId = localChainId ?? wagmiChainId ?? (queryChainId >= 0 ? ChainId.BSC : undefined)
 
   const isNotMatched = useDeferredValue(wagmiChainId && localChainId && wagmiChainId !== localChainId)
+  const isWrongNetwork = useMemo(
+    () => Boolean(((wagmiChainId && !isChainSupported(wagmiChainId)) ?? false) || isNotMatched),
+    [wagmiChainId, isNotMatched],
+  )
 
   return {
-    chainId,
-    isWrongNetwork: useMemo(
-      () => Boolean(((wagmiChainId && !isChainSupported(wagmiChainId)) ?? false) || isNotMatched),
-      [wagmiChainId, isNotMatched],
-    ),
+    chainId: chainId && isChainSupported(chainId) ? chainId : ChainId.BSC,
+    isWrongNetwork,
     isNotMatched,
   }
 }
