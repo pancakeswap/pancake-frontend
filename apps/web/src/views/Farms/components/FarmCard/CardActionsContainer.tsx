@@ -1,7 +1,9 @@
+import { ChainId } from '@pancakeswap/chains'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox, Button, Flex, RowBetween, Skeleton, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import NextLink from 'next/link'
 import { useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
@@ -72,6 +74,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   )
   const { onUpdate } = useUpdateBCakeFarms(bCakeWrapperAddress ?? '0x', pid)
   const { locked } = useBCakeBoostLimitAndLockInfo()
+  const { chainId } = useActiveChainId()
 
   return (
     <AtomBox mt="16px">
@@ -128,7 +131,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
             </RowBetween>
           </>
         )}
-        {isBooster && (
+        {isBooster && chainId === ChainId.BSC && (
           <>
             <AtomBox
               width={{

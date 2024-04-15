@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Card, ExpandableSectionButton, Flex, Skeleton, Text, useModalV2 } from '@pancakeswap/uikit'
@@ -168,7 +169,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     }
                     displayApr={displayApr ?? undefined}
                     lpRewardsApr={farm.lpRewardsApr}
-                    isBooster={isBooster && farm?.bCakePublicData?.isRewardInRange}
+                    isBooster={isBooster && farm?.bCakePublicData?.isRewardInRange && chainId === ChainId.BSC}
                     useTooltipText
                     stableSwapAddress={stableSwapAddress}
                     stableLpFee={stableLpFee}
