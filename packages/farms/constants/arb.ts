@@ -1,8 +1,8 @@
 import { arbitrumTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { getAddress } from 'viem'
-import { FarmConfigV3, SerializedFarmConfig } from '../src'
 import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
+import { FarmConfigV3, SerializedFarmConfig } from '../src/types'
 
 const v3TopFixedLps: FarmConfigV3[] = [
   {
