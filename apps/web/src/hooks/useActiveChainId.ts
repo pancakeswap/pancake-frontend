@@ -57,7 +57,7 @@ export const useActiveChainId = () => {
   )
 
   return {
-    chainId: isWrongNetwork ? ChainId.BSC : chainId,
+    chainId: chainId && isChainSupported(chainId) ? chainId : ChainId.BSC,
     isWrongNetwork,
     isNotMatched,
   }
