@@ -7,7 +7,7 @@ import {
   BLOCKS_CLIENT_ZKSYNC,
 } from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
-import { infoClient, infoClientETH, infoStableSwapClients, v2Clients } from 'utils/graphql'
+import { infoStableSwapClients, v2Clients } from 'utils/graphql'
 
 import { ChainId } from '@pancakeswap/chains'
 import {
@@ -98,17 +98,6 @@ export const multiChainPaths = {
   [ChainId.OPBNB]: '/opbnb',
 }
 
-export const multiChainQueryClient = {
-  BSC: infoClient,
-  ETH: infoClientETH,
-  POLYGON_ZKEVM: v2Clients[ChainId.POLYGON_ZKEVM],
-  ZKSYNC: v2Clients[ChainId.ZKSYNC],
-  ARB: v2Clients[ChainId.ARBITRUM_ONE],
-  LINEA: v2Clients[ChainId.LINEA],
-  BASE: v2Clients[ChainId.BASE],
-  OPBNB: v2Clients[ChainId.OPBNB],
-}
-
 export const multiChainQueryStableClient = {
   BSC: infoStableSwapClients[ChainId.BSC],
   ARB: infoStableSwapClients[ChainId.ARBITRUM_ONE],
@@ -160,7 +149,7 @@ export const multiChainTokenWhiteList: Record<MultiChainName, string[]> = mapVal
 export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainNameExtend): GraphQLClient => {
   const isStableSwap = checkIsStableSwap()
   if (isStableSwap) return multiChainQueryStableClient[chainName]
-  return multiChainQueryClient[chainName]
+  return v2Clients[multiChainId[chainName]]
 }
 
 export const subgraphTokenName = {

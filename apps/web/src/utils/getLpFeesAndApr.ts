@@ -1,4 +1,4 @@
-import { TOTAL_FEE, LP_HOLDERS_FEE, WEEKS_IN_YEAR } from '../config/constants/info'
+import { LP_HOLDERS_FEE, TOTAL_FEE, WEEKS_IN_YEAR } from '../config/constants/info'
 
 export const getLpFeesAndApr = (volumeUSD: number, volumeUSDWeek: number, liquidityUSD: number) => {
   const totalFees24h = volumeUSD * TOTAL_FEE

@@ -1,3 +1,4 @@
+import { EXPLORER_API } from 'config/constants/endpoints'
 import { gql } from 'graphql-request'
 import union from 'lodash/union'
 import { useCallback, useEffect, useState } from 'react'
@@ -29,12 +30,18 @@ interface StableSwapTopTokensResponse {
  * Note: dailyTxns_gt: 300 is there to prevent fetching incorrectly priced tokens with high dailyVolumeUSD
  */
 const fetchTopTokens = async (chainName: MultiChainNameExtend, timestamp24hAgo: number): Promise<string[]> => {
+  if (chainName === 'BSC') {
+    const resp = await fetch(`${EXPLORER_API}/v0/top-tokens/bsc`)
+    const result = await resp.json()
+    return union(result.tokenDayDatas.map((t) => t.id.split('-')[0]))
+  }
+
   const whereCondition =
     chainName === 'ETH'
       ? `where: { date_gt: ${timestamp24hAgo}, token_not_in: $blacklist, dailyVolumeUSD_gt:2000 }`
       : checkIsStableSwap()
       ? ''
-      : `where: { dailyTxns_gt: ${chainName === 'BSC' ? 300 : 0}, id_not_in: $blacklist, date_gt: ${timestamp24hAgo}}`
+      : `where: { id_not_in: $blacklist, date_gt: ${timestamp24hAgo}}`
   const firstCount = 50
   try {
     const query = gql`

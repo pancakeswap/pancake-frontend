@@ -1,4 +1,4 @@
-import { BLOCKS_SUBGRAPHS, ChainId, V2_SUBGRAPHS, V3_SUBGRAPHS } from '@pancakeswap/chains'
+import { BLOCKS_SUBGRAPHS, ChainId, STABLESWAP_SUBGRAPHS, V2_SUBGRAPHS, V3_SUBGRAPHS } from '@pancakeswap/chains'
 
 export const GRAPH_API_PROFILE = 'https://api.thegraph.com/subgraphs/name/pancakeswap/profile'
 
@@ -45,13 +45,26 @@ export const ACCESS_RISK_API = 'https://red.alert.pancakeswap.com/red-api'
 
 export const CELER_API = 'https://api.celerscan.com/scan'
 
-export const INFO_CLIENT_WITH_CHAIN = V2_SUBGRAPHS
+export const EXPLORER_API = 'https://info-gateway.pancakeswap.com'
+
+export const V2_SUBGRAPH_URLS = {
+  ...V2_SUBGRAPHS,
+  [ChainId.BSC]: `${EXPLORER_API}/subgraphs/v2/bsc/graphql`,
+}
 
 export const BLOCKS_CLIENT_WITH_CHAIN = BLOCKS_SUBGRAPHS
 
 export const ASSET_CDN = 'https://assets.pancakeswap.finance'
 
-export const V3_SUBGRAPH_URLS = V3_SUBGRAPHS
+export const V3_SUBGRAPH_URLS = {
+  ...V3_SUBGRAPHS,
+  [ChainId.BSC]: `${EXPLORER_API}/subgraphs/v3/bsc/graphql`,
+}
+
+export const STABLESWAP_SUBGRAPHS_URLS = {
+  ...STABLESWAP_SUBGRAPHS,
+  [ChainId.BSC]: `${EXPLORER_API}/subgraphs/stable/bsc/graphql`,
+}
 
 export const TRADING_REWARD_API = 'https://trading-reward.pancakeswap.com/api/v1'
 

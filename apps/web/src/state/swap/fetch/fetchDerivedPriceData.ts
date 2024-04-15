@@ -1,5 +1,5 @@
 import { ChainId, STABLESWAP_SUBGRAPHS } from '@pancakeswap/chains'
-import { INFO_CLIENT, INFO_CLIENT_ETH, INFO_CLIENT_WITH_CHAIN, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
+import { V2_SUBGRAPH_URLS, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import dayjs from 'dayjs'
 import request from 'graphql-request'
@@ -19,20 +19,20 @@ type ProtocolEndpoint = Record<Protocol, string>
 
 const SWAP_INFO_BY_CHAIN = {
   [ChainId.BSC]: {
-    v2: INFO_CLIENT,
+    v2: V2_SUBGRAPH_URLS[ChainId.BSC],
     stable: STABLESWAP_SUBGRAPHS[ChainId.BSC],
-    // v3: V3_SUBGRAPH_URLS[ChainId.BSC],
+    v3: V3_SUBGRAPH_URLS[ChainId.BSC],
   },
   [ChainId.ETHEREUM]: {
-    v2: INFO_CLIENT_ETH,
-    // v3: V3_SUBGRAPH_URLS[ChainId.ETHEREUM],
+    v2: V2_SUBGRAPH_URLS[ChainId.ETHEREUM],
+    v3: V3_SUBGRAPH_URLS[ChainId.ETHEREUM],
   },
   [ChainId.BSC_TESTNET]: {
     v3: V3_SUBGRAPH_URLS[ChainId.BSC_TESTNET],
   },
   [ChainId.GOERLI]: {},
   [ChainId.ARBITRUM_ONE]: {
-    v2: INFO_CLIENT_WITH_CHAIN[ChainId.ARBITRUM_ONE],
+    v2: V2_SUBGRAPH_URLS[ChainId.ARBITRUM_ONE],
     v3: V3_SUBGRAPH_URLS[ChainId.ARBITRUM_ONE],
     stable: STABLESWAP_SUBGRAPHS[ChainId.ARBITRUM_ONE],
   },
@@ -47,11 +47,11 @@ const SWAP_INFO_BY_CHAIN = {
   [ChainId.ZKSYNC_TESTNET]: {},
   [ChainId.LINEA]: {},
   [ChainId.LINEA_TESTNET]: {
-    v2: INFO_CLIENT_WITH_CHAIN[ChainId.LINEA_TESTNET],
+    v2: V2_SUBGRAPH_URLS[ChainId.LINEA_TESTNET],
     v3: V3_SUBGRAPH_URLS[ChainId.LINEA_TESTNET],
   },
   [ChainId.OPBNB]: {
-    v2: INFO_CLIENT_WITH_CHAIN[ChainId.OPBNB],
+    v2: V2_SUBGRAPH_URLS[ChainId.OPBNB],
     v3: V3_SUBGRAPH_URLS[ChainId.OPBNB],
   },
   [ChainId.OPBNB_TESTNET]: {},

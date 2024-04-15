@@ -5,12 +5,7 @@ import orderBy from 'lodash/orderBy'
 import { PriceChartEntry } from 'state/info/types'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
-import {
-  MultiChainName,
-  checkIsStableSwap,
-  getMultiChainQueryEndPointWithStableSwap,
-  multiChainQueryMainToken,
-} from '../../constant'
+import { MultiChainName, checkIsStableSwap, getMultiChainQueryEndPointWithStableSwap } from '../../constant'
 
 interface FormattedHistory {
   time: number
@@ -24,10 +19,10 @@ const getPriceSubqueries = (chainName: MultiChainName, tokenAddress: string, blo
   blocks.map(
     (block: any) => `
       t${block.timestamp}:token(id:"${tokenAddress}", block: { number: ${block.number} }) {
-        derived${multiChainQueryMainToken[chainName]}
+        derivedETH
       }
       b${block.timestamp}: bundle(id:"1", block: { number: ${block.number} }) {
-        ${multiChainQueryMainToken[chainName].toLowerCase()}Price
+        ethPrice
       }
     `,
   )
@@ -98,8 +93,6 @@ const fetchTokenPriceData = async (
       priceUSD: number
     }[] = []
 
-    const mainToken = multiChainQueryMainToken[chainName]
-
     // Get Token prices in BNB
     Object.keys(prices).forEach((priceKey) => {
       const timestamp = priceKey.split('t')[1]
@@ -107,15 +100,11 @@ const fetchTokenPriceData = async (
       if (timestamp) {
         tokenPrices.push({
           timestamp,
-          derivedBNB: prices[priceKey]?.[`derived${mainToken}`]
-            ? parseFloat(prices[priceKey][`derived${mainToken}`])
-            : 0,
+          derivedBNB: prices[priceKey]?.derivedETH ? parseFloat(prices[priceKey].derivedETH) : 0,
           priceUSD: 0,
         })
       }
     })
-
-    console.warn('pricesPart1', tokenPrices)
 
     // Go through BNB USD prices and calculate Token price based on it
     Object.keys(prices).forEach((priceKey) => {
@@ -125,8 +114,7 @@ const fetchTokenPriceData = async (
         const tokenPriceIndex = tokenPrices.findIndex((tokenPrice) => tokenPrice.timestamp === timestamp)
         if (tokenPriceIndex >= 0) {
           const { derivedBNB } = tokenPrices[tokenPriceIndex]
-          tokenPrices[tokenPriceIndex].priceUSD =
-            parseFloat(prices[priceKey]?.[`${mainToken.toLowerCase()}Price`] ?? 0) * derivedBNB
+          tokenPrices[tokenPriceIndex].priceUSD = parseFloat(prices[priceKey]?.ethPrice ?? 0) * derivedBNB
         }
       }
     })

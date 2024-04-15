@@ -1,13 +1,13 @@
-import { gql } from 'graphql-request'
-import { Pair } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { Pair } from '@pancakeswap/sdk'
 import { useQuery } from '@tanstack/react-query'
-import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
-import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { SLOW_INTERVAL } from 'config/constants'
 import { LP_HOLDERS_FEE, WEEKS_IN_YEAR } from 'config/constants/info'
-import { getMultiChainQueryEndPointWithStableSwap, MultiChainName, multiChainQueryMainToken } from '../info/constant'
+import { gql } from 'graphql-request'
+import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
+import { getChangeForPeriod } from 'utils/getChangeForPeriod'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { MultiChainName, getMultiChainQueryEndPointWithStableSwap } from '../info/constant'
 
 interface PoolReserveVolume {
   reserveUSD: string
@@ -81,7 +81,7 @@ const POOL_AT_BLOCK = (chainName: MultiChainName, block: number | null, pool: st
   return `pairs(
     where: { id_in: ${addressesString} }
     ${blockString}
-    orderBy: trackedReserve${multiChainQueryMainToken[chainName]}
+    orderBy: trackedReserveETH
     orderDirection: desc
   ) {
     reserveUSD

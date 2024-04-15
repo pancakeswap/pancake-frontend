@@ -12,7 +12,6 @@ import {
   STABLESWAP_SUBGRAPHS_START_BLOCK,
   checkIsStableSwap,
   getMultiChainQueryEndPointWithStableSwap,
-  multiChainQueryMainToken,
 } from '../../constant'
 import { fetchTopPoolAddresses } from './topPools'
 
@@ -73,7 +72,7 @@ const POOL_AT_BLOCK = (chainName: MultiChainName, block: number | null, pools: s
   return `pairs(
     where: { id_in: ${addressesString} }
     ${blockString}
-    orderBy: trackedReserve${multiChainQueryMainToken[chainName]}
+    orderBy: trackedReserveETH
     orderDirection: desc
   ) {
     id
