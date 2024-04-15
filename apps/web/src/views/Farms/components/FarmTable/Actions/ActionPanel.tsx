@@ -415,9 +415,9 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                     }
                     totalMultipliers={multiplier.totalMultipliers}
                     isBooster={
+                      chainId === ChainId.BSC &&
                       Boolean(details?.bCakeWrapperAddress) &&
-                      details?.bCakePublicData?.isRewardInRange &&
-                      chainId !== ChainId.BSC
+                      details?.bCakePublicData?.isRewardInRange
                     }
                     boosterMultiplier={
                       details?.bCakeWrapperAddress
@@ -430,10 +430,12 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                     }
                   />
                 </ValueWrapper>
-                <ValueWrapper>
-                  <Text>{t('Multiplier')}</Text>
-                  <Multiplier {...multiplier} />
-                </ValueWrapper>
+                {!details?.bCakeWrapperAddress && (
+                  <ValueWrapper>
+                    <Text>{t('Multiplier')}</Text>
+                    <Multiplier {...multiplier} />
+                  </ValueWrapper>
+                )}
                 <ValueWrapper>
                   <Text>{t('Staked Liquidity')}</Text>
                   <Liquidity {...liquidity} />
