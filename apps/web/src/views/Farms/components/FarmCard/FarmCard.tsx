@@ -62,7 +62,6 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   account,
   originalLiquidity,
 }) => {
-  // console.log(farm, 'farmCard????')
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const [showExpandableSection, setShowExpandableSection] = useState(false)
