@@ -6,6 +6,8 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { createElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 
+import { ChainId } from '@pancakeswap/chains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMerklInfo } from 'hooks/useMerkl'
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
@@ -120,6 +122,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   const { tokenIds } = useUserBoostedPoolsTokenId()
   const { isBoosted } = useIsSomePositionBoosted(props.type === 'v3' ? props?.details?.stakedPositions : [], tokenIds)
   const { locked } = useBCakeBoostLimitAndLockInfo()
+  const { chainId } = useActiveChainId()
   const toggleActionPanel = useCallback(() => {
     setActionPanelExpanded(!actionPanelExpanded)
   }, [actionPanelExpanded])
@@ -169,7 +172,8 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                       ) : null}
                       {props.type === 'v2' &&
                       props?.details?.bCakeWrapperAddress &&
-                      props?.details?.bCakePublicData?.isRewardInRange ? (
+                      props?.details?.bCakePublicData?.isRewardInRange &&
+                      chainId === ChainId.BSC ? (
                         <BoostedTag scale="sm" />
                       ) : null}
                       {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
@@ -231,7 +235,8 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                           }
                           isBooster={
                             Boolean(props?.details?.bCakeWrapperAddress) &&
-                            props?.details?.bCakePublicData?.isRewardInRange
+                            props?.details?.bCakePublicData?.isRewardInRange &&
+                            chainId === ChainId.BSC
                           }
                         />
                       </CellLayout>
@@ -258,7 +263,19 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     </td>
                   )
                 }
-                return <td />
+                return <td key={key} />
+              case 'multiplier':
+                if (props.type === 'v3')
+                  return (
+                    <td key={key}>
+                      <CellInner>
+                        <CellLayout label={t(tableSchema[columnIndex].label)}>
+                          <Multiplier {...props.multiplier} />
+                        </CellLayout>
+                      </CellInner>
+                    </td>
+                  )
+                return <td key={key} />
 
               default:
                 if (cells[key]) {
@@ -383,6 +400,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                 expanded={actionPanelExpanded}
                 alignLinksToRight={isMobile}
                 isLastFarm={props.isLastFarm}
+                userDataReady={userDataReady}
               />
             )}
           </td>

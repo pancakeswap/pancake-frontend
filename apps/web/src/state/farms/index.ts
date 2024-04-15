@@ -312,10 +312,8 @@ export const fetchBCakeWrapperUserDataAsync = createAsyncThunk<
     if (state.farms.chainId !== chainId) {
       await dispatch(fetchInitialFarmsData({ chainId }))
     }
-    const poolLength = state.farms.poolLength ?? (await fetchMasterChefFarmPoolLength(ChainId.BSC))
     const farmsConfig = await getFarmConfig(chainId)
-    const farmsCanFetch =
-      farmsConfig?.filter((farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid) ?? []
+    const farmsCanFetch = farmsConfig?.filter((farmConfig) => pids.includes(farmConfig.pid)) ?? []
     if (farmsCanFetch?.length) {
       const normalAllowances = await getBCakeWrapperFarmsStakeValue(farmsCanFetch, account, chainId)
       return normalAllowances
@@ -348,10 +346,8 @@ export const fetchBCakeWrapperDataAsync = createAsyncThunk<
     if (state.farms.chainId !== chainId) {
       await dispatch(fetchInitialFarmsData({ chainId }))
     }
-    const poolLength = state.farms.poolLength ?? (await fetchMasterChefFarmPoolLength(ChainId.BSC))
     const farmsConfig = await getFarmConfig(chainId)
-    const farmsCanFetch =
-      farmsConfig?.filter((farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid) ?? []
+    const farmsCanFetch = farmsConfig?.filter((farmConfig) => pids.includes(farmConfig.pid)) ?? []
     if (farmsCanFetch?.length) {
       const normalAllowances = await getBCakeWrapperFarmsData(farmsCanFetch, chainId)
       return normalAllowances

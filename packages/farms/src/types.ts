@@ -58,6 +58,7 @@ export interface FarmConfigBaseProps {
   }
   boosted?: boolean
   allocPoint?: number
+  bCakeWrapperAddress?: Address
 }
 
 export interface SerializedStableFarmConfig extends FarmConfigBaseProps {
@@ -66,6 +67,7 @@ export interface SerializedStableFarmConfig extends FarmConfigBaseProps {
   stableSwapAddress: Address
   infoStableSwapAddress: Address
   stableLpFee?: number
+  stableLpFeeRateOfTotalFee?: number
 }
 
 export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {

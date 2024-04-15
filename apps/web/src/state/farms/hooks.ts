@@ -75,6 +75,7 @@ export const usePollFarmsWithUserData = () => {
         throw new Error('ChainId is not defined')
       }
       const farmsConfig = await getFarmConfig(chainId)
+
       if (!farmsConfig) {
         throw new Error('Failed to fetch farm config')
       }
@@ -101,13 +102,14 @@ export const usePollFarmsWithUserData = () => {
 
     queryFn: async () => {
       const farmsConfig = await getFarmConfig(chainId)
+
       if (!chainId || !farmsConfig || !account) return
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       const params = proxyCreated ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
       const bCakePids = farmsConfig.filter((d) => Boolean(d.bCakeWrapperAddress)).map((farmToFetch) => farmToFetch.pid)
       const bCakeParams = { account, pids: bCakePids, chainId }
-      dispatch(fetchFarmUserDataAsync(params))
       dispatch(fetchBCakeWrapperUserDataAsync(bCakeParams))
+      dispatch(fetchFarmUserDataAsync(params))
     },
     enabled: Boolean(account && chainId && !isProxyContractLoading),
     refetchInterval: SLOW_INTERVAL,

@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
@@ -373,7 +374,6 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
     details?.bCakeWrapperAddress,
   )
   const { onUpdate } = useUpdateBCakeFarms(details?.bCakeWrapperAddress ?? '0x', details?.pid)
-
   return (
     <>
       <AddLiquidityV3Modal
@@ -521,7 +521,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                             </HarvestActionContainer>
                           </>
                         )}
-                        {isRewardInRange && (
+                        {isRewardInRange && chainId === ChainId.BSC && (
                           <Box
                             style={{
                               height: isMobile ? 2 : 70,
@@ -530,7 +530,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                             }}
                           />
                         )}
-                        {isRewardInRange && (
+                        {isRewardInRange && chainId === ChainId.BSC && (
                           <Flex
                             flexGrow={1}
                             maxWidth={isMobile ? 'auto' : hasStakedInBCake ? '27%' : '50%'}

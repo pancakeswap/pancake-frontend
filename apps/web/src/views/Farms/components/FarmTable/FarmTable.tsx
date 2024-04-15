@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { RowType } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
@@ -202,7 +203,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
               farm.userData?.proxy?.stakedBalance.gt(0) ||
               farm.userData?.stakedBalance.gt(0) ||
               farm.bCakeUserData?.stakedBalance.gt(0),
-            rewardCakePerSecond: farmV2Multiplier.getNumberFarmCakePerSecond(farm.poolWeight),
+            rewardCakePerSecond:
+              farm?.bCakePublicData?.rewardPerSecond ?? farmV2Multiplier.getNumberFarmCakePerSecond(farm.poolWeight),
           },
           earned: {
             earnings: getV2FarmEarnings(farm),
@@ -294,7 +296,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
                 return (
                   <Row
                     {...row}
-                    userDataReady={userDataReady}
+                    userDataReady={userDataReady || chainId !== ChainId.BSC}
                     key={`table-row-${row.farm.pid}-${row.type}`}
                     isLastFarm={isLastFarm}
                   />

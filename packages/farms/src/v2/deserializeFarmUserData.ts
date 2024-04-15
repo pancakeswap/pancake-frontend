@@ -37,6 +37,7 @@ export const deserializeFarmBCakeUserData = (farm?: SerializedFarm): Deserialize
 }
 
 export const deserializeFarmBCakePublicData = (farm?: SerializedFarm): DeserializedBCakeWrapperUserData => {
+  // const isRewardInRange = true
   const isRewardInRange =
     farm?.bCakePublicData?.startTimestamp &&
     farm?.bCakePublicData?.endTimestamp &&

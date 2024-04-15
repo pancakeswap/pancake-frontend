@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import {
@@ -44,6 +45,7 @@ type ExpandableSectionProps = {
   lpAddress?: Address
   merklApr?: number
   isBooster?: boolean
+  bCakeWrapperAddress?: Address
 }
 
 const Wrapper = styled(Flex)`
@@ -72,10 +74,11 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   merklApr,
   lpAddress,
   isBooster,
+  bCakeWrapperAddress,
 }) => {
   const { t } = useTranslation()
   const chainId = useChainId()
-  const isReady = multiplier !== undefined
+  const isReady = multiplier !== undefined || bCakeWrapperAddress
   const multiplierTooltipContent = FarmMultiplierInfo({
     farmCakePerSecond: farmCakePerSecond ?? '-',
     totalMultipliers: totalMultipliers ?? '-',
@@ -152,7 +155,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
           ) : (
             <Skeleton ml="4px" width={42} height={28} />
           )}
-          {isReady && isBooster && <BoostedTag mr="-4px" />}
+          {isReady && isBooster && chainId === ChainId.BSC && <BoostedTag mr="-4px" />}
         </AutoRow>
       </Flex>
     </Wrapper>
