@@ -323,7 +323,7 @@ const farms: SerializedFarmConfig[] = [
     infoStableSwapAddress: '0x58B2F00f74a1877510Ec37b22f116Bf5D63Ab1b0',
     stableLpFee: 0.00125,
     stableLpFeeRateOfTotalFee: 0.5,
-    bCakeWrapperAddress: '0xBe03730EE3692B0f78C8E50597377edA96C9Da7E',
+    bCakeWrapperAddress: '0xC6B6926ef8B7218F054d64B52Ac455aEd22D690B',
     allocPoint: 1,
   },
   {
@@ -336,7 +336,7 @@ const farms: SerializedFarmConfig[] = [
     infoStableSwapAddress: '0x58B2F00f74a1877510Ec37b22f116Bf5D63Ab1b0',
     stableLpFee: 0.00125,
     stableLpFeeRateOfTotalFee: 0.5,
-    bCakeWrapperAddress: '0xaa85658A18e5176D5b3e5b72Ebe0e5750399Ed32',
+    bCakeWrapperAddress: '0x7Fa4536b3E78643E027Dc34bB5A055517B4D9096',
     allocPoint: 1,
   },
 ].map(
