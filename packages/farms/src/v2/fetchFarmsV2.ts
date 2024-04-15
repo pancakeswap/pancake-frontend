@@ -38,6 +38,11 @@ const evmNativeStableLpMap: Record<
     wNative: 'WBNB',
     stable: 'BUSD',
   },
+  [ChainId.ARBITRUM_ONE]: {
+    address: '0x4E96D2e92680Ca65D58A0e2eB5bd1c0f44cAB897',
+    wNative: 'WETH',
+    stable: 'USDC',
+  },
 }
 
 export const getTokenAmount = (balance: BN, decimals: number) => {
@@ -131,6 +136,8 @@ export async function farmV2FetchFarms({
     evmNativeStableLpMap[chainId as FarmV2SupportedChainId],
     decimals,
   )
+
+  console.log(farmsDataWithPrices, 'farmsDataWithPrices????')
 
   const tokensWithoutPrice = farmsDataWithPrices.reduce<Map<string, CurrencyParams>>((acc, cur) => {
     if (cur.tokenPriceBusd === '0') {

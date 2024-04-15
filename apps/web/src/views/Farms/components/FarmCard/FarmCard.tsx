@@ -62,6 +62,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   account,
   originalLiquidity,
 }) => {
+  // console.log(farm, 'farmCard????')
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const [showExpandableSection, setShowExpandableSection] = useState(false)
@@ -129,6 +130,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           farmCakePerSecond={farmCakePerSecond}
           totalMultipliers={totalMultipliers}
           isBooster={isBooster && farm?.bCakePublicData?.isRewardInRange}
+          bCakeWrapperAddress={farm.bCakeWrapperAddress}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">

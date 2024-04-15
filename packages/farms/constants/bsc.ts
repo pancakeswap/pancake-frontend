@@ -2465,11 +2465,14 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.abnbc,
     quoteToken: bscTokens.wbnb,
   },
-].map((p) => ({
-  ...p,
-  token: p.token.serialize,
-  quoteToken: p.quoteToken.serialize,
-  lpAddress: getAddress(p.lpAddress),
-}))
+].map(
+  (p) =>
+    ({
+      ...p,
+      token: p.token.serialize,
+      quoteToken: p.quoteToken.serialize,
+      lpAddress: getAddress(p.lpAddress),
+    } as SerializedFarmConfig),
+)
 
 export default farms

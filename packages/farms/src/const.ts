@@ -1,7 +1,13 @@
 import { ChainId } from '@pancakeswap/chains'
 import uniq from 'lodash/uniq'
 
-export const supportedChainIdV2 = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM] as const
+export const supportedChainIdV2 = [
+  ChainId.GOERLI,
+  ChainId.BSC,
+  ChainId.BSC_TESTNET,
+  ChainId.ETHEREUM,
+  ChainId.ARBITRUM_ONE,
+] as const
 export const supportedChainIdV3 = [
   ChainId.GOERLI,
   ChainId.BSC,

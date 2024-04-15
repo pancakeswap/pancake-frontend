@@ -46,17 +46,19 @@ const FarmsPage = () => {
               <ProxyFarmCardContainer farm={farm} />
             </ProxyFarmContainer>
           ) : (
-            <FarmCard
-              key={`${farm.pid}-${farm.version}`}
-              farm={farm}
-              displayApr={getDisplayApr(
-                farm.bCakeWrapperAddress && farm?.bCakePublicData?.rewardPerSecond === 0 ? 0 : farm.apr,
-                farm.lpRewardsApr,
-              )}
-              cakePrice={cakePrice}
-              account={account}
-              removed={false}
-            />
+            <>
+              <FarmCard
+                key={`${farm.pid}-${farm.version}`}
+                farm={farm}
+                displayApr={getDisplayApr(
+                  farm.bCakeWrapperAddress && farm?.bCakePublicData?.rewardPerSecond === 0 ? 0 : farm.apr,
+                  farm.lpRewardsApr,
+                )}
+                cakePrice={cakePrice}
+                account={account}
+                removed={false}
+              />
+            </>
           )
         }
 
