@@ -383,6 +383,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                 expanded={actionPanelExpanded}
                 alignLinksToRight={isMobile}
                 isLastFarm={props.isLastFarm}
+                userDataReady={userDataReady}
               />
             )}
           </td>

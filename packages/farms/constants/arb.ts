@@ -324,7 +324,7 @@ const farms: SerializedFarmConfig[] = [
     stableLpFee: 0.00125,
     stableLpFeeRateOfTotalFee: 0.5,
     bCakeWrapperAddress: '0xC6B6926ef8B7218F054d64B52Ac455aEd22D690B',
-    allocPoint: 41,
+    allocPoint: 1,
   },
   {
     pid: 178,
@@ -337,7 +337,7 @@ const farms: SerializedFarmConfig[] = [
     stableLpFee: 0.00125,
     stableLpFeeRateOfTotalFee: 0.5,
     bCakeWrapperAddress: '0x7Fa4536b3E78643E027Dc34bB5A055517B4D9096',
-    allocPoint: 263,
+    allocPoint: 1,
   },
 ].map(
   (p) =>

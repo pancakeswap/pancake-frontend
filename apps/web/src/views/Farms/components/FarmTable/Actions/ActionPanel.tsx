@@ -373,7 +373,6 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
     details?.bCakeWrapperAddress,
   )
   const { onUpdate } = useUpdateBCakeFarms(details?.bCakeWrapperAddress ?? '0x', details?.pid)
-
   return (
     <>
       <AddLiquidityV3Modal
