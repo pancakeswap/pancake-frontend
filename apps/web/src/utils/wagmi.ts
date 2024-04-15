@@ -1,5 +1,5 @@
 import { getWagmiConnectorV2 } from '@binance/w3w-wagmi-connector-v2'
-import { CyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
+import { cyberWalletConnector as createCyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { blocto } from '@pancakeswap/wagmi/connectors/blocto'
 import { CHAINS } from 'config/chains'
@@ -42,16 +42,6 @@ const bloctoConnector = blocto({
   appId: 'e2f2f0cd-3ceb-4dec-b293-bb555f2ed5af',
 })
 
-export const cyberWalletConnector = isCyberWallet()
-  ? new CyberWalletConnector({
-      chains: chains as any,
-      options: {
-        name: 'PancakeSwap',
-        appId: 'b825cd87-2db3-456d-b108-d61e74d89771',
-      },
-    })
-  : undefined
-
 export const binanceWeb3WalletConnector = getWagmiConnectorV2()
 
 export const noopStorage = {
@@ -74,12 +64,12 @@ const transports = chains.reduce((ts, chain) => {
   if (ts) {
     return {
       ...ts,
-      [chain.id]: fallback(httpStrings.map((t) => http(t))),
+      [chain.id]: fallback(httpStrings.map((t: any) => http(t))),
     }
   }
 
   return {
-    [chain.id]: fallback(httpStrings.map((t) => http(t))),
+    [chain.id]: fallback(httpStrings.map((t: any) => http(t))),
   }
 }, {} as Record<number, Transport>)
 
@@ -110,6 +100,13 @@ export const publicClient = ({ chainId }: { chainId?: ChainId }) => {
   return createPublicClient({ chain, transport: http(httpString), ...CLIENT_CONFIG })
 }
 
+export const cyberWalletConnector = isCyberWallet()
+  ? createCyberWalletConnector({
+      name: 'PancakeSwap',
+      appId: 'b825cd87-2db3-456d-b108-d61e74d89771',
+    })
+  : undefined
+
 export const wagmiConfig = createConfig({
   chains,
   ssr: true,
@@ -126,7 +123,8 @@ export const wagmiConfig = createConfig({
     // ledgerConnector,
     trustConnector,
     binanceWeb3WalletConnector(),
-    // ...(cyberWalletConnector ? [cyberWalletConnector as any] : []),
+
+    ...(cyberWalletConnector ? [cyberWalletConnector] : []),
   ],
 })
 
