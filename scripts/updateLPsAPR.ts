@@ -1,15 +1,15 @@
-import fs from 'fs'
-import os from 'os'
-import { request, gql } from 'graphql-request'
-import BigNumber from 'bignumber.js'
-import chunk from 'lodash/chunk'
-import _toLower from 'lodash/toLower'
-import dayjs from 'dayjs'
 import { ChainId, getChainName } from '@pancakeswap/chains'
 import { SerializedFarmConfig } from '@pancakeswap/farms'
+import BigNumber from 'bignumber.js'
+import dayjs from 'dayjs'
+import fs from 'fs'
+import { gql, request } from 'graphql-request'
+import chunk from 'lodash/chunk'
+import _toLower from 'lodash/toLower'
+import os from 'os'
 import { BlockResponse } from '../apps/web/src/components/SubgraphHealthIndicator'
 import { BLOCKS_CLIENT_WITH_CHAIN } from '../apps/web/src/config/constants/endpoints'
-import { stableSwapClient, infoClientWithChain } from '../apps/web/src/utils/graphql'
+import { stableSwapClient, v2Clients } from '../apps/web/src/utils/graphql'
 
 interface SingleFarmResponse {
   id: string
@@ -52,7 +52,7 @@ const getBlockAtTimestamp = async (timestamp: number, chainId = ChainId.BSC) => 
 
 const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number, chainId: number): Promise<AprMap> => {
   try {
-    const { farmsAtLatestBlock, farmsOneWeekAgo } = await infoClientWithChain(chainId).request<FarmsResponse>(
+    const { farmsAtLatestBlock, farmsOneWeekAgo } = await v2Clients[chainId].request<FarmsResponse>(
       gql`
         query farmsBulk($addresses: [ID!], $blockWeekAgo: Int!) {
           farmsAtLatestBlock: pairs(first: 30, where: { id_in: $addresses }) {
@@ -118,7 +118,7 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
 
     const { virtualPriceAtLatestBlock, virtualPrice3DaysAgo, virtualPrice7DaysAgo } = await stableSwapClient.request(
       gql`
-        query virtualPriceStableSwap($stableSwapAddress: String, $block3DaysAgo: Int!, $block7DaysAgo: Int!) {
+        query virtualPriceStableSwap($stableSwapAddress: ID!, $block3DaysAgo: Int!, $block7DaysAgo: Int!) {
           virtualPriceAtLatestBlock: pair(id: $stableSwapAddress) {
             virtualPrice
           }

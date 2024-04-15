@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js'
 import { gql } from 'graphql-request'
 import _toLower from 'lodash/toLower'
-import { getDeltaTimestamps } from './getDeltaTimestamps'
 import { getBlocksFromTimestamps } from './getBlocksFromTimestamps'
+import { getDeltaTimestamps } from './getDeltaTimestamps'
 import { stableSwapClient } from './graphql'
 
 export const getAprsForStableFarm = async (stableSwapAddress?: string): Promise<BigNumber> => {
@@ -12,7 +12,7 @@ export const getAprsForStableFarm = async (stableSwapAddress?: string): Promise<
 
     const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo: virtualPrice7DayAgo } = await stableSwapClient.request(
       gql`
-        query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!) {
+        query virtualPriceStableSwap($stableSwapAddress: ID!, $blockDayAgo: Int!) {
           virtualPriceAtLatestBlock: pair(id: $stableSwapAddress) {
             virtualPrice
           }

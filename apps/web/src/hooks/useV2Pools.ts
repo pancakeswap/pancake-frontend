@@ -1,11 +1,11 @@
 import { Currency } from '@pancakeswap/sdk'
 import { SmartRouter, V2Pool } from '@pancakeswap/smart-router'
-import { useMemo, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useMemo, useRef } from 'react'
 
-import { infoClientWithChain, v3Clients } from 'utils/graphql'
-import { getViemClients } from 'utils/viem'
 import { POOLS_FAST_REVALIDATE } from 'config/pools'
+import { v2Clients, v3Clients } from 'utils/graphql'
+import { getViemClients } from 'utils/viem'
 
 export interface V2PoolsHookParams {
   // Used for caching
@@ -63,7 +63,7 @@ export function useV2CandidatePools(
         const pools = await SmartRouter.getV2CandidatePools({
           currencyA,
           currencyB,
-          v2SubgraphProvider: ({ chainId }) => infoClientWithChain(chainId),
+          v2SubgraphProvider: ({ chainId }) => (chainId ? v2Clients[chainId] : undefined),
           v3SubgraphProvider: ({ chainId }) => (chainId ? v3Clients[chainId] : undefined),
           onChainProvider: getViemClients,
         })
