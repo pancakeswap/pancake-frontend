@@ -1,6 +1,6 @@
-import { PublicClient, parseUnits } from 'viem'
 import { ChainId } from '@pancakeswap/chains'
 import chunk from 'lodash/chunk'
+import { PublicClient, parseUnits } from 'viem'
 import { SerializedStableFarmConfig } from '../types'
 
 const stableSwapAbi = [
