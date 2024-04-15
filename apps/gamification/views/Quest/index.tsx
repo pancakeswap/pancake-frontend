@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, CalenderIcon, Flex, Heading, MoreIcon, Tag, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { Description } from 'views/Quest/components/Description'
+import { Reward } from 'views/Quest/components/Reward'
 import { Tasks } from 'views/Quest/components/Tasks'
 
 const QuestContainer = styled(Flex)`
@@ -27,7 +28,7 @@ export const Quest = () => {
 
   return (
     <QuestContainer>
-      <Box>
+      <Box width="100%" pr={['40px']}>
         <Flex mt="40px">
           <Tag variant="success">{t('Ongoing')}</Tag>
           {/* <Tag variant="secondary">{t('Upcoming')}</Tag>
@@ -49,6 +50,7 @@ export const Quest = () => {
         <Tasks />
         <Description />
       </Box>
+      <Reward />
     </QuestContainer>
   )
 }
