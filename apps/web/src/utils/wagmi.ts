@@ -1,16 +1,14 @@
 import { getWagmiConnectorV2 } from '@binance/w3w-wagmi-connector-v2'
 import { cyberWalletConnector as createCyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
-import { ChainId } from '@pancakeswap/chains'
 import { blocto } from '@pancakeswap/wagmi/connectors/blocto'
 import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
-import first from 'lodash/first'
 import memoize from 'lodash/memoize'
-import { Transport, createPublicClient } from 'viem'
+import { Transport } from 'viem'
 import { createConfig, fallback, http } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors'
-import { viemClients } from './viem'
+import { CLIENT_CONFIG, publicClient } from './viem'
 
 export const chains = CHAINS
 
@@ -52,7 +50,7 @@ export const noopStorage = {
 
 const PUBLIC_MAINNET = 'https://ethereum.publicnode.com'
 
-const transports = chains.reduce((ts, chain) => {
+export const transports = chains.reduce((ts, chain) => {
   let httpStrings: string[] | readonly string[] = []
 
   if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
@@ -73,33 +71,6 @@ const transports = chains.reduce((ts, chain) => {
   }
 }, {} as Record<number, Transport>)
 
-const CLIENT_CONFIG = {
-  batch: {
-    multicall: {
-      batchSize: 1024 * 200,
-      wait: 16,
-    },
-  },
-  pollingInterval: 6_000,
-}
-
-export const publicClient = ({ chainId }: { chainId?: ChainId }) => {
-  if (chainId && viemClients[chainId]) {
-    return viemClients[chainId]
-  }
-  let httpString: string | undefined
-
-  if (process.env.NODE_ENV === 'test' && chainId === mainnet.id) {
-    httpString = PUBLIC_MAINNET
-  } else {
-    httpString = chainId && first(PUBLIC_NODES[chainId]) ? first(PUBLIC_NODES[chainId]) : undefined
-  }
-
-  const chain = chains.find((c) => c.id === chainId)
-
-  return createPublicClient({ chain, transport: http(httpString), ...CLIENT_CONFIG })
-}
-
 export const cyberWalletConnector = isCyberWallet()
   ? createCyberWalletConnector({
       name: 'PancakeSwap',
@@ -107,26 +78,28 @@ export const cyberWalletConnector = isCyberWallet()
     })
   : undefined
 
-export const wagmiConfig = createConfig({
-  chains,
-  ssr: true,
-  syncConnectedChain: true,
-  transports,
-  ...CLIENT_CONFIG,
+export function createWagmiConfig() {
+  return createConfig({
+    chains,
+    ssr: true,
+    syncConnectedChain: true,
+    transports,
+    ...CLIENT_CONFIG,
 
-  connectors: [
-    metaMaskConnector,
-    injectedConnector,
-    coinbaseConnector,
-    walletConnectConnector,
-    bloctoConnector,
-    // ledgerConnector,
-    trustConnector,
-    binanceWeb3WalletConnector(),
+    connectors: [
+      metaMaskConnector,
+      injectedConnector,
+      coinbaseConnector,
+      walletConnectConnector,
+      bloctoConnector,
+      // ledgerConnector,
+      trustConnector,
+      binanceWeb3WalletConnector(),
 
-    ...(cyberWalletConnector ? [cyberWalletConnector] : []),
-  ],
-})
+      ...(cyberWalletConnector ? [cyberWalletConnector] : []),
+    ],
+  })
+}
 
 export const CHAIN_IDS = chains.map((c) => c.id)
 
@@ -135,3 +108,5 @@ export const isChainTestnet = memoize((chainId: number) => {
   const found = chains.find((c) => c.id === chainId)
   return found ? 'testnet' in found : false
 })
+
+export { publicClient }
