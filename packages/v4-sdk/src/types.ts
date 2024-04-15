@@ -19,3 +19,9 @@ export type HooksRegistration = {
   beforeDonate?: boolean
   afterDonate?: boolean
 }
+
+export type BinTree = {
+  level0: Bytes32
+  level1: Record<number, Bytes32>
+  level2: Record<number, Bytes32>
+}
