@@ -6,7 +6,7 @@ import orderBy from 'lodash/orderBy'
 import { useMemo } from 'react'
 import { safeGetAddress } from 'utils'
 import { getMulticallAddress } from 'utils/addressHelpers'
-import { Address, erc20Abi, isAddress } from 'viem'
+import { Address, erc20Abi, getAddress, isAddress } from 'viem'
 import { useAccount } from 'wagmi'
 import { useMultipleContractSingleData, useSingleContractMultipleData } from '../multicall/hooks'
 
@@ -135,7 +135,7 @@ export function useCurrencyBalances(
       currencies?.map((currency) => {
         if (!account || !currency) return undefined
         if (currency?.isToken) return tokenBalances[currency.address]
-        if (currency?.isNative) return nativeBalance[account]
+        if (currency?.isNative) return nativeBalance[account] || nativeBalance[getAddress(account)]
         return undefined
       }) ?? [],
     // eslint-disable-next-line react-hooks/exhaustive-deps
