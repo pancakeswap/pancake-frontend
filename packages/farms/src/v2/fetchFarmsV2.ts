@@ -137,8 +137,6 @@ export async function farmV2FetchFarms({
     decimals,
   )
 
-  console.log(farmsDataWithPrices, 'farmsDataWithPrices????')
-
   const tokensWithoutPrice = farmsDataWithPrices.reduce<Map<string, CurrencyParams>>((acc, cur) => {
     if (cur.tokenPriceBusd === '0') {
       acc.set(cur.token.address, cur.token)
