@@ -359,7 +359,8 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                         totalMultipliers={multiplier.totalMultipliers}
                         isBooster={
                           Boolean(props?.details?.bCakeWrapperAddress) &&
-                          props?.details?.bCakePublicData?.isRewardInRange
+                          props?.details?.bCakePublicData?.isRewardInRange &&
+                          chainId === ChainId.BSC
                         }
                         boosterMultiplier={
                           props?.details?.bCakeWrapperAddress
