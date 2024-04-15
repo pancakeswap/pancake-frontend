@@ -147,7 +147,7 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
 
     const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo: virtualPrice7DayAgo } = await stableSwapClient.request(
       gql`
-        query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!) {
+        query virtualPriceStableSwap($stableSwapAddress: ID!, $blockDayAgo: Int!) {
           virtualPriceAtLatestBlock: pair(id: $stableSwapAddress) {
             virtualPrice
           }

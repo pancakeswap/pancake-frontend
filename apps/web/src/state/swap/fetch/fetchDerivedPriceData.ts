@@ -1,5 +1,5 @@
-import { ChainId, STABLESWAP_SUBGRAPHS } from '@pancakeswap/chains'
-import { V2_SUBGRAPH_URLS, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
+import { ChainId } from '@pancakeswap/chains'
+import { STABLESWAP_SUBGRAPHS_URLS, V2_SUBGRAPH_URLS, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import dayjs from 'dayjs'
 import request from 'graphql-request'
@@ -20,7 +20,7 @@ type ProtocolEndpoint = Record<Protocol, string>
 const SWAP_INFO_BY_CHAIN = {
   [ChainId.BSC]: {
     v2: V2_SUBGRAPH_URLS[ChainId.BSC],
-    stable: STABLESWAP_SUBGRAPHS[ChainId.BSC],
+    stable: STABLESWAP_SUBGRAPHS_URLS[ChainId.BSC],
     v3: V3_SUBGRAPH_URLS[ChainId.BSC],
   },
   [ChainId.ETHEREUM]: {
@@ -34,7 +34,7 @@ const SWAP_INFO_BY_CHAIN = {
   [ChainId.ARBITRUM_ONE]: {
     v2: V2_SUBGRAPH_URLS[ChainId.ARBITRUM_ONE],
     v3: V3_SUBGRAPH_URLS[ChainId.ARBITRUM_ONE],
-    stable: STABLESWAP_SUBGRAPHS[ChainId.ARBITRUM_ONE],
+    stable: STABLESWAP_SUBGRAPHS_URLS[ChainId.ARBITRUM_ONE],
   },
   [ChainId.ARBITRUM_GOERLI]: {},
   [ChainId.POLYGON_ZKEVM]: {
