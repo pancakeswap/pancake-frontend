@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { STABLESWAP_SUBGRAPHS_URLS, V2_SUBGRAPH_URLS, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
+import { EXPLORER_API, STABLESWAP_SUBGRAPHS_URLS, V2_SUBGRAPH_URLS, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import dayjs from 'dayjs'
 import request from 'graphql-request'
@@ -21,7 +21,7 @@ const SWAP_INFO_BY_CHAIN = {
   [ChainId.BSC]: {
     v2: V2_SUBGRAPH_URLS[ChainId.BSC],
     stable: STABLESWAP_SUBGRAPHS_URLS[ChainId.BSC],
-    v3: V3_SUBGRAPH_URLS[ChainId.BSC],
+    v3: `${EXPLORER_API}/subgraphs/v3/bsc/graphql`,
   },
   [ChainId.ETHEREUM]: {
     v2: V2_SUBGRAPH_URLS[ChainId.ETHEREUM],
