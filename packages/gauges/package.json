@@ -33,6 +33,6 @@
     "@pancakeswap/chains": "workspace:^",
     "@pancakeswap/tokens": "workspace:^",
     "@pancakeswap/v3-sdk": "workspace:^",
-    "viem": "2.8.13"
+    "viem": "2.9.18"
   }
 }

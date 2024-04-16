@@ -11,8 +11,8 @@
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "viem": "2.8.13",
-    "wagmi": "2.5.11"
+    "viem": "2.9.18",
+    "wagmi": "2.5.20"
   },
   "dependencies": {
     "@layerzerolabs/scan-client": "^0.0.6",
@@ -24,7 +24,7 @@
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "viem": "2.8.13",
-    "wagmi": "2.5.11"
+    "viem": "2.9.18",
+    "wagmi": "2.5.20"
   }
 }

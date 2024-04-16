@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { bsc, zkSync } from 'wagmi/chains'
+import { bsc, zkSync } from 'viem/chains'
 
 export const SUPPORTED_CHAIN_IDS = [ChainId.BSC, ChainId.ZKSYNC] as const
 

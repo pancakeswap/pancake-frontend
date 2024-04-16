@@ -18,7 +18,7 @@
   "dependencies": {
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
-    "viem": "2.8.13"
+    "viem": "2.9.18"
   },
   "devDependencies": {
     "@pancakeswap/tsconfig": "workspace:*",
