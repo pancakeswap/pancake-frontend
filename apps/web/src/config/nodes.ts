@@ -104,7 +104,6 @@ export const PUBLIC_NODES: Record<ChainId, string[] | readonly string[]> = {
     getGroveUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
     'https://ethereum.publicnode.com',
     'https://eth.llamarpc.com',
-    'https://cloudflare-eth.com',
   ].filter(notEmpty),
   [ChainId.GOERLI]: [
     getNodeRealUrl(ChainId.GOERLI, process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI) || '',
