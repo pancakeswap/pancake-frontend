@@ -57,7 +57,7 @@ export const ASSET_CDN = 'https://assets.pancakeswap.finance'
 
 export const V3_SUBGRAPH_URLS = {
   ...V3_SUBGRAPHS,
-  [ChainId.BSC]: `${EXPLORER_API}/subgraphs/v3/bsc/graphql`,
+  // [ChainId.BSC]: `${EXPLORER_API}/subgraphs/v3/bsc/graphql`,
 }
 
 export const STABLESWAP_SUBGRAPHS_URLS = {
