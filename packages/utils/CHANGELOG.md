@@ -1,5 +1,14 @@
 # @pancakeswap/utils
 
+## 6.0.4
+
+### Patch Changes
+
+- 72c834c: Upgrade viem and wagmi v2
+- Updated dependencies [72c834c]
+- Updated dependencies [d4283e5]
+  - @pancakeswap/chains@0.4.2
+
 ## 6.0.3
 
 ### Patch Changes

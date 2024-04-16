@@ -1,5 +1,15 @@
 # @pancakeswap/tokens
 
+## 0.6.12
+
+### Patch Changes
+
+- Updated dependencies [72c834c]
+- Updated dependencies [d4283e5]
+  - @pancakeswap/sdk@5.8.1
+  - @pancakeswap/chains@0.4.2
+  - @pancakeswap/token-lists@0.0.11
+
 ## 0.6.11
 
 ### Patch Changes

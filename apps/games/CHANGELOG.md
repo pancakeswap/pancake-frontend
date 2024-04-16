@@ -1,5 +1,18 @@
 # games
 
+## 0.1.10
+
+### Patch Changes
+
+- 72c834c: Upgrade viem and wagmi v2
+- Updated dependencies [72c834c]
+- Updated dependencies [d4283e5]
+  - @pancakeswap/chains@0.4.2
+  - @pancakeswap/uikit@0.65.7
+  - @pancakeswap/utils@6.0.4
+  - @pancakeswap/games@0.0.5
+  - @pancakeswap/hooks@0.0.26
+
 ## 0.1.9
 
 ### Patch Changes

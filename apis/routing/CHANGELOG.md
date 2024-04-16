@@ -1,5 +1,18 @@
 # routing-api
 
+## 0.3.55
+
+### Patch Changes
+
+- 72c834c: Upgrade viem and wagmi v2
+- Updated dependencies [72c834c]
+- Updated dependencies [d4283e5]
+  - @pancakeswap/smart-router@6.0.2
+  - @pancakeswap/sdk@5.8.1
+  - @pancakeswap/chains@0.4.2
+  - @pancakeswap/v3-sdk@3.8.1
+  - @pancakeswap/farms@1.0.54
+
 ## 0.3.54
 
 ### Patch Changes

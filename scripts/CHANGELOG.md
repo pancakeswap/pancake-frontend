@@ -1,5 +1,11 @@
 # scripts
 
+## 0.0.4
+
+### Patch Changes
+
+- 72c834c: Upgrade viem and wagmi v2
+
 ## 0.0.3
 
 ### Patch Changes

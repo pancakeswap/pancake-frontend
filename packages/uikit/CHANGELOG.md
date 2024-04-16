@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.65.7
+
+### Patch Changes
+
+- 72c834c: Upgrade viem and wagmi v2
+  - @pancakeswap/hooks@0.0.26
+
 ## 0.65.6
 
 ### Patch Changes

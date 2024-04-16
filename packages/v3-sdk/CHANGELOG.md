@@ -1,5 +1,15 @@
 # @pancakeswap/v3-sdk
 
+## 3.8.1
+
+### Patch Changes
+
+- 72c834c: Upgrade viem and wagmi v2
+- Updated dependencies [72c834c]
+- Updated dependencies [d4283e5]
+  - @pancakeswap/sdk@5.8.1
+  - @pancakeswap/chains@0.4.2
+
 ## 3.8.0
 
 ### Minor Changes

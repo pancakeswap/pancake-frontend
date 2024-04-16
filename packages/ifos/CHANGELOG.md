@@ -1,5 +1,17 @@
 # @pancakeswap/ifos
 
+## 3.0.5
+
+### Patch Changes
+
+- 72c834c: Upgrade viem and wagmi v2
+- Updated dependencies [72c834c]
+- Updated dependencies [d4283e5]
+  - @pancakeswap/sdk@5.8.1
+  - @pancakeswap/chains@0.4.2
+  - @pancakeswap/utils@6.0.4
+  - @pancakeswap/tokens@0.6.12
+
 ## 3.0.4
 
 ### Patch Changes
