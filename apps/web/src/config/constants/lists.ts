@@ -63,6 +63,8 @@ export const DEFAULT_ACTIVE_LIST_URLS: string[] = [
   PANCAKE_BASE_DEFAULT,
   PANCAKE_OPBNB_DEFAULT,
   OP_SUPER_CHAIN_URL,
+  COINGECKO,
+  COINGECKO_ETH,
 ]
 
 export const MULTI_CHAIN_LIST_URLS: { [chainId: number]: string[] } = {
