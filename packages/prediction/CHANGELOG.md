@@ -1,5 +1,17 @@
 # @pancakeswap/prediction
 
+## 1.0.7
+
+### Patch Changes
+
+- 72c834c: Upgrade viem and wagmi v2
+- Updated dependencies [72c834c]
+- Updated dependencies [d4283e5]
+  - @pancakeswap/sdk@5.8.1
+  - @pancakeswap/chains@0.4.2
+  - @pancakeswap/pools@5.1.18
+  - @pancakeswap/tokens@0.6.12
+
 ## 1.0.6
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @pancakeswap/pools
 
+## 5.1.18
+
+### Patch Changes
+
+- 72c834c: Upgrade viem and wagmi v2
+- Updated dependencies [72c834c]
+- Updated dependencies [d4283e5]
+  - @pancakeswap/chains@0.4.2
+  - @pancakeswap/tokens@0.6.12
+  - @pancakeswap/token-lists@0.0.11
+
 ## 5.1.17
 
 ### Patch Changes

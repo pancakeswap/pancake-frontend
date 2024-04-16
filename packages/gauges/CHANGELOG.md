@@ -1,5 +1,16 @@
 # @pancakeswap/gauges
 
+## 1.1.8
+
+### Patch Changes
+
+- 72c834c: Upgrade viem and wagmi v2
+- Updated dependencies [72c834c]
+- Updated dependencies [d4283e5]
+  - @pancakeswap/chains@0.4.2
+  - @pancakeswap/v3-sdk@3.8.1
+  - @pancakeswap/tokens@0.6.12
+
 ## 1.1.7
 
 ### Patch Changes

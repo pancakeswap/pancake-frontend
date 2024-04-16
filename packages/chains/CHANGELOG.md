@@ -1,5 +1,12 @@
 # @pancakeswap/chains
 
+## 0.4.2
+
+### Patch Changes
+
+- 72c834c: Upgrade viem and wagmi v2
+- d4283e5: Add as const for subgraphs type
+
 ## 0.4.1
 
 ### Patch Changes
