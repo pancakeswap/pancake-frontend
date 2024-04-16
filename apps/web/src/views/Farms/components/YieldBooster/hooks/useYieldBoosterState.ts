@@ -7,6 +7,7 @@ import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyCon
 import { useUserBoosterStatus } from 'views/Farms/hooks/useUserBoosterStatus'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
 import { useBlockNumber, useReadContract } from 'wagmi'
+import { useQueryClient } from '@tanstack/react-query'
 
 export enum YieldBoosterState {
   UNCONNECTED,
@@ -24,9 +25,10 @@ export enum YieldBoosterState {
 function useIsPoolActive(pid: number) {
   const farmBoosterContract = useBCakeFarmBoosterContract()
   const { account, chainId } = useAccountActiveChain()
+  const queryClient = useQueryClient()
   const { data: blockNumber } = useBlockNumber({ watch: true })
 
-  const { data, refetch } = useReadContract({
+  const { data, queryKey, refetch } = useReadContract({
     abi: farmBoosterContract.abi,
     address: farmBoosterContract.address,
     functionName: 'isBoostedPool',
@@ -38,8 +40,9 @@ function useIsPoolActive(pid: number) {
   })
 
   useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
+    queryClient.invalidateQueries({ queryKey })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNumber, queryClient, queryKey.toString()])
 
   return {
     isActivePool: data,

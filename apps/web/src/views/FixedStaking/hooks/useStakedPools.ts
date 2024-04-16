@@ -12,16 +12,18 @@ import { getAddress } from 'viem'
 import { useAccount, useBlockNumber, useReadContract } from 'wagmi'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useQueryClient } from '@tanstack/react-query'
 import { DISABLED_POOLS } from '../constant'
 import { FixedStakingPool, StakedPosition } from '../type'
 
 export function useCurrentDay(): number {
   const fixedStakingContract = useFixedStakingContract()
   const { data: blockNumber } = useBlockNumber({ watch: true })
+  const queryClient = useQueryClient()
 
   const { chainId } = useActiveChainId()
 
-  const { data, refetch } = useReadContract({
+  const { data, queryKey } = useReadContract({
     abi: fixedStakingContract.abi,
     address: fixedStakingContract.address as `0x${string}`,
     functionName: 'getCurrentDay',
@@ -32,8 +34,9 @@ export function useCurrentDay(): number {
   })
 
   useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
+    queryClient.invalidateQueries({ queryKey })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNumber, queryKey.toString(), queryClient])
 
   return (data || 0) as number
 }

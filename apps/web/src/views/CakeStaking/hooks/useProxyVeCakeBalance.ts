@@ -5,10 +5,12 @@ import { useEffect, useMemo } from 'react'
 import { getVeCakeAddress } from 'utils/addressHelpers'
 import { Address, erc20Abi, isAddressEqual, zeroAddress } from 'viem'
 import { useBlockNumber, useReadContract } from 'wagmi'
+import { useQueryClient } from '@tanstack/react-query'
 import { useVeCakeUserInfo } from './useVeCakeUserInfo'
 
 export const useProxyVeCakeBalance = () => {
   const { chainId } = useActiveChainId()
+  const queryClient = useQueryClient()
   const { data: userInfo } = useVeCakeUserInfo()
 
   const hasProxy = useMemo(() => {
@@ -16,7 +18,7 @@ export const useProxyVeCakeBalance = () => {
   }, [userInfo])
   const { data: blockNumber } = useBlockNumber({ watch: true })
 
-  const { status, refetch, data } = useReadContract({
+  const { status, refetch, data, queryKey } = useReadContract({
     chainId,
     address: getVeCakeAddress(chainId),
     functionName: 'balanceOf',
@@ -28,8 +30,9 @@ export const useProxyVeCakeBalance = () => {
   })
 
   useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
+    queryClient.invalidateQueries({ queryKey })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNumber, queryKey.toString(), queryClient])
 
   return {
     balance: useMemo(() => (typeof data !== 'undefined' ? new BigNumber(data.toString()) : BIG_ZERO), [data]),

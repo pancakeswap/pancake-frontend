@@ -35,9 +35,10 @@ function useChainlinkLatestRound() {
   const config = useConfig()
   const { chainId } = useActiveChainId()
   const { data: blockNumber } = useBlockNumber({ watch: true })
+  const queryClient = useQueryClient()
 
   const chainlinkOracleContract = useChainlinkOracleContract(config?.chainlinkOracleAddress)
-  const { data, refetch } = useReadContract({
+  const { data, queryKey } = useReadContract({
     abi: chainlinkOracleABI,
     address: chainlinkOracleContract.address,
     functionName: 'latestRound',
@@ -48,8 +49,9 @@ function useChainlinkLatestRound() {
   })
 
   useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
+    queryClient.invalidateQueries({ queryKey })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNumber, queryKey.toString(), queryClient])
 
   return data
 }

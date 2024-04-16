@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { getChainlinkOracleContract } from 'utils/contractHelpers'
 import { Address } from 'viem'
 import { useBlockNumber, useReadContract } from 'wagmi'
+import { useQueryClient } from '@tanstack/react-query'
 
 const getOracleAddress = (chainId: number): Address | null => {
   switch (chainId) {
@@ -16,10 +17,11 @@ const getOracleAddress = (chainId: number): Address | null => {
 
 export const useOraclePrice = (chainId?: number) => {
   const { data: blockNumber } = useBlockNumber({ watch: true })
+  const queryClient = useQueryClient()
 
   const tokenAddress = chainId ? getOracleAddress(chainId) : undefined
   const chainlinkOracleContract = tokenAddress ? getChainlinkOracleContract(tokenAddress, undefined, ChainId.BSC) : null
-  const { data: price, refetch } = useReadContract({
+  const { data: price, queryKey } = useReadContract({
     abi: chainlinkOracleContract?.abi,
     chainId: ChainId.BSC,
     address: tokenAddress ?? undefined,
@@ -27,8 +29,9 @@ export const useOraclePrice = (chainId?: number) => {
   })
 
   useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
+    queryClient.invalidateQueries({ queryKey })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNumber, queryKey.toString(), queryClient])
 
   return price?.toString() ?? '0'
 }

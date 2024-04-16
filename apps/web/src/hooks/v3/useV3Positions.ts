@@ -5,6 +5,7 @@ import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContr
 import { useEffect, useMemo } from 'react'
 import { Address } from 'viem'
 import { useBlockNumber, useReadContract, useReadContracts } from 'wagmi'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface UseV3PositionsResults {
   loading: boolean
@@ -18,6 +19,7 @@ interface UseV3PositionResults {
 
 export function useV3PositionsFromTokenIds(tokenIds: bigint[] | undefined): UseV3PositionsResults {
   const positionManager = useV3NFTPositionManagerContract()
+  const queryClient = useQueryClient()
   const { chainId } = useActiveChainId()
 
   const inputs = useMemo(
@@ -41,7 +43,7 @@ export function useV3PositionsFromTokenIds(tokenIds: bigint[] | undefined): UseV
   const {
     isLoading,
     data: positions = [],
-    refetch,
+    queryKey,
   } = useReadContracts({
     contracts: inputs,
     allowFailure: true,
@@ -51,8 +53,9 @@ export function useV3PositionsFromTokenIds(tokenIds: bigint[] | undefined): UseV
   })
 
   useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
+    queryClient.invalidateQueries({ queryKey })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNumber, queryKey.toString(), queryClient])
 
   return {
     loading: isLoading,

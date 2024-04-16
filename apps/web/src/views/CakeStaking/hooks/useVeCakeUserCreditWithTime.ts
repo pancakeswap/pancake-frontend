@@ -5,6 +5,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useEffect, useMemo } from 'react'
 import { Address } from 'viem'
 import { useBlockNumber, useReadContract } from 'wagmi'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface UseVeCakeUserCreditWithTime {
   userCreditWithTime: number
@@ -13,9 +14,10 @@ interface UseVeCakeUserCreditWithTime {
 
 export const useVeCakeUserCreditWithTime = (endTime: number): UseVeCakeUserCreditWithTime => {
   const { account, chainId } = useAccountActiveChain()
+  const queryClient = useQueryClient()
   const { data: blockNumber } = useBlockNumber({ watch: true })
 
-  const { data, refetch } = useReadContract({
+  const { data, refetch, queryKey } = useReadContract({
     chainId,
     address: chainId && ICAKE[chainId] ? ICAKE[chainId] : ICAKE[ChainId.BSC],
     functionName: 'getUserCreditWithTime',
@@ -27,8 +29,9 @@ export const useVeCakeUserCreditWithTime = (endTime: number): UseVeCakeUserCredi
   })
 
   useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
+    queryClient.invalidateQueries({ queryKey })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNumber, queryKey.toString(), queryClient])
 
   const userCreditWithTime = useMemo(
     () => (typeof data !== 'undefined' ? new BigNumber(data.toString()).toNumber() : 0),

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { TFetchStatus } from 'config/constants/types'
 import { useAtom } from 'jotai'
 import isEmpty from 'lodash/isEmpty'
@@ -60,8 +60,9 @@ export const useGetShuffledCollections = (): { data: Collection[]; status: 'pend
 
 export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
   const { data: blockNumber } = useBlockNumber({ watch: true })
+  const queryClient = useQueryClient()
 
-  const { data, refetch } = useReadContracts({
+  const { data, queryKey } = useReadContracts({
     contracts: nftsInWallet.map(
       (f) =>
         ({
@@ -74,8 +75,9 @@ export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
   })
 
   useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
+    queryClient.invalidateQueries({ queryKey })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNumber, queryKey.toString(), queryClient])
 
   const profileAddress = getPancakeProfileAddress()
 

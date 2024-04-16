@@ -5,17 +5,19 @@ import { stableSwapABI } from 'config/abi/stableSwapAbi'
 import { useEffect } from 'react'
 import { Address } from 'viem'
 import { useBlockNumber, useReadContracts } from 'wagmi'
+import { useQueryClient } from '@tanstack/react-query'
 import { useActiveChainId } from './useActiveChainId'
 
 export function useStableSwapInfo(stableSwapAddress: Address | undefined, lpAddress: Address | undefined) {
   const { chainId } = useActiveChainId()
+  const queryClient = useQueryClient()
 
   const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const {
     data: results,
     isLoading,
-    refetch,
+    queryKey,
   } = useReadContracts({
     query: {
       enabled: Boolean(stableSwapAddress && lpAddress),
@@ -63,8 +65,9 @@ export function useStableSwapInfo(stableSwapAddress: Address | undefined, lpAddr
   })
 
   useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
+    queryClient.invalidateQueries({ queryKey })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNumber, queryKey.toString(), queryClient])
 
   const feeNumerator = results?.[4]?.result
   const feeDenominator = results?.[5]?.result

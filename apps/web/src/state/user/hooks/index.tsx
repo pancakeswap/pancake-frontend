@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { ERC20Token, Pair } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -256,12 +256,13 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
   maxPriorityFeePerGas?: bigint
 } {
   const { chainId: chainId_ } = useActiveChainId()
+  const queryClient = useQueryClient()
   const chainId = chainIdOverride ?? chainId_
 
   const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const gasPrice = useGasPrice(chainId)
-  const { data, refetch } = useFeeData({
+  const { data, queryKey } = useFeeData({
     chainId,
     query: {
       enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
@@ -269,8 +270,9 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
   })
 
   useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
+    queryClient.invalidateQueries({ queryKey })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNumber, queryKey.toString(), queryClient])
 
   if (gasPrice) {
     return {
