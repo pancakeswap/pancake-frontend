@@ -7,7 +7,6 @@ import memoize from 'lodash/memoize'
 import { createConfig, createStorage } from 'wagmi'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
-// import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { chains, publicClient } from './client'
@@ -61,13 +60,6 @@ const bloctoConnector = new BloctoConnector({
     appId: 'e2f2f0cd-3ceb-4dec-b293-bb555f2ed5af',
   },
 })
-
-// const ledgerConnector = new LedgerConnector({
-//   chains,
-//   options: {
-//     projectId: 'e542ff314e26ff34de2d4fba98db70bb',
-//   },
-// })
 
 export const trustWalletConnector = new TrustWalletConnector({
   chains,

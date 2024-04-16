@@ -12,6 +12,8 @@ import Script from 'next/script'
 import React, { Fragment } from 'react'
 import { Provider as WrapBalancerProvider } from 'react-wrap-balancer'
 import { createGlobalStyle } from 'styled-components'
+import { wagmiConfig } from 'utils/wagmi'
+import { WagmiConfig } from 'wagmi'
 import Footer from '../components/Footer'
 import Menu from '../components/Menu/index'
 
@@ -77,23 +79,25 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <DefaultSeo {...SEO} />
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={pageProps.dehydratedState}>
-          <NextThemeProvider>
-            <StyledThemeProvider>
-              <LanguageProvider>
-                <ModalProvider>
-                  <ResetCSS />
-                  <GlobalStyle />
-                  <Menu />
-                  <Layout>
-                    <WrapBalancerProvider>
-                      <Component {...pageProps} />
-                    </WrapBalancerProvider>
-                  </Layout>
-                  <Footer />
-                </ModalProvider>
-              </LanguageProvider>
-            </StyledThemeProvider>
-          </NextThemeProvider>
+          <WagmiConfig config={wagmiConfig}>
+            <NextThemeProvider>
+              <StyledThemeProvider>
+                <LanguageProvider>
+                  <ModalProvider>
+                    <ResetCSS />
+                    <GlobalStyle />
+                    <Menu />
+                    <Layout>
+                      <WrapBalancerProvider>
+                        <Component {...pageProps} />
+                      </WrapBalancerProvider>
+                    </Layout>
+                    <Footer />
+                  </ModalProvider>
+                </LanguageProvider>
+              </StyledThemeProvider>
+            </NextThemeProvider>
+          </WagmiConfig>
         </HydrationBoundary>
       </QueryClientProvider>
       <Script

@@ -20,7 +20,7 @@ export enum ConnectorNames {
   CyberWallet = 'cyberwallet',
 }
 
-const createQrCode = (chainId: number, connect) => async () => {
+const createQrCode = (chainId: number, connect: any) => async () => {
   connect({ connector: walletConnectNoQrCodeConnector, chainId })
 
   const r = await walletConnectNoQrCodeConnector.getProvider()
@@ -86,23 +86,6 @@ const walletsConfig = ({
         return undefined
       },
     },
-    // {
-    //   id: 'binance',
-    //   title: 'Binance Wallet',
-    //   icon: `${ASSET_CDN}/web/wallets/binance.png`,
-    //   get installed() {
-    //     return typeof window !== 'undefined' && Boolean(window.BinanceChain)
-    //   },
-    //   connectorId: ConnectorNames.BSC,
-    //   guide: {
-    //     desktop: 'https://www.bnbchain.org/en/binance-wallet',
-    //   },
-    //   downloadLink: {
-    //     desktop: isFirefox
-    //       ? 'https://addons.mozilla.org/en-US/firefox/addon/binance-chain/?src=search'
-    //       : 'https://chrome.google.com/webstore/detail/binance-wallet/fhbohimaelbohpjbbldcngcnapndodjp',
-    //   },
-    // },
     {
       id: 'coinbase',
       title: 'Coinbase Wallet',

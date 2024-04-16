@@ -19,9 +19,9 @@ export const { publicClient, chains } = configureChains(
           if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id && i === 0) {
             return { http: 'https://ethereum.publicnode.com' }
           }
-          return PUBLIC_NODES[chain.id]?.[i]
+          return PUBLIC_NODES?.[chain.id]?.[i]
             ? {
-                http: PUBLIC_NODES[chain.id][i],
+                http: PUBLIC_NODES?.[chain.id][i],
               }
             : null
         },
