@@ -1,4 +1,4 @@
-import { createStore, Store } from 'redux'
+import { createStore, Store } from '@reduxjs/toolkit'
 import { updateVersion } from '../global/actions'
 import reducer, { initialState, UserState } from './reducer'
 

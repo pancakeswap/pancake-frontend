@@ -1,12 +1,12 @@
 import { ChainId } from '@pancakeswap/chains'
-import { WalletClient, getContract, PublicClient, Address, GetContractReturnType, Account, Chain } from 'viem'
+import { Account, Address, Chain, GetContractReturnType, PublicClient, WalletClient, getContract } from 'viem'
 
-import { getPoolsConfig } from '../constants'
-import { isLegacyPool } from './isLegacyPool'
 import { smartChefABI } from '../abis/ISmartChef'
-import { PoolCategory } from '../types'
-import { sousChefV2ABI } from '../abis/ISousChefV2'
 import { sousChefBnbABI } from '../abis/ISousChefBNB'
+import { sousChefV2ABI } from '../abis/ISousChefV2'
+import { getPoolsConfig } from '../constants'
+import { PoolCategory } from '../types'
+import { isLegacyPool } from './isLegacyPool'
 
 interface Params {
   chainId?: ChainId
@@ -35,8 +35,10 @@ export function getSousChefBNBContract({
     ...getContract({
       abi: sousChefBnbABI,
       address,
-      walletClient: signer,
-      publicClient,
+      client: {
+        public: publicClient as PublicClient,
+        wallet: signer,
+      },
     }),
     abi: sousChefBnbABI,
     address,
@@ -58,8 +60,10 @@ export function getSousChefV2Contract({
     ...getContract({
       abi: sousChefV2ABI,
       address,
-      walletClient: signer,
-      publicClient,
+      client: {
+        public: publicClient as PublicClient,
+        wallet: signer,
+      },
     }),
     abi: sousChefV2ABI,
     address,
@@ -81,8 +85,10 @@ export function getSmartChefChefV2Contract({
     ...getContract({
       abi: smartChefABI,
       address,
-      walletClient: signer,
-      publicClient,
+      client: {
+        public: publicClient as PublicClient,
+        wallet: signer,
+      },
     }),
     abi: smartChefABI,
     address,

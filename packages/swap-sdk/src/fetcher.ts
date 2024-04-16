@@ -1,11 +1,11 @@
-import { createPublicClient, PublicClient, http, getContract, Address } from 'viem'
-import { bsc, bscTestnet, mainnet, goerli } from 'viem/chains'
-import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { ChainId } from '@pancakeswap/chains'
+import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
-import { Pair } from './entities/pair'
-import { erc20ABI } from './abis/ERC20'
+import { Address, PublicClient, createPublicClient, getContract, http } from 'viem'
+import { bsc, bscTestnet, goerli, mainnet } from 'viem/chains'
+import { erc20Abi } from './abis/ERC20'
 import { pancakePairV2ABI } from './abis/IPancakePair'
+import { Pair } from './entities/pair'
 
 let TOKEN_DECIMALS_CACHE: { [chainId: number]: { [address: string]: number } } = {
   [ChainId.BSC]: {},
@@ -57,9 +57,9 @@ export abstract class Fetcher {
     name?: string
   ): Promise<Token> {
     const erc20 = getContract({
-      abi: erc20ABI,
+      abi: erc20Abi,
       address,
-      publicClient: publicClient as PublicClient,
+      client: publicClient as PublicClient,
     })
     const parsedDecimals =
       typeof TOKEN_DECIMALS_CACHE?.[chainId]?.[address] === 'number'
@@ -90,10 +90,10 @@ export abstract class Fetcher {
   ): Promise<Pair> {
     invariant(tokenA.chainId === tokenB.chainId, 'CHAIN_ID')
     const address = Pair.getAddress(tokenA, tokenB)
-    const pairContract = getContract({
+    const pairContract: any = getContract({
       abi: pancakePairV2ABI,
       address,
-      publicClient: publicClient as PublicClient,
+      client: publicClient,
     })
     const [reserves0, reserves1] = await pairContract.read.getReserves()
     const balances = tokenA.sortsBefore(tokenB) ? [reserves0, reserves1] : [reserves1, reserves0]

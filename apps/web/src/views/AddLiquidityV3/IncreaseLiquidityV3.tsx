@@ -229,11 +229,14 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
           )
 
           setAttemptingTxn(false)
-          addTransaction(response, {
-            type: 'increase-liquidity-v3',
-            summary: `Increase ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
-          })
-          setTxHash(response.hash)
+          addTransaction(
+            { hash: response },
+            {
+              type: 'increase-liquidity-v3',
+              summary: `Increase ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
+            },
+          )
+          setTxHash(response)
         })
         .catch((err) => {
           // we only care if the error is something _other_ than the user rejected the tx

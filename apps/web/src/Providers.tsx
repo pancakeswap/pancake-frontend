@@ -4,9 +4,10 @@ import { Store } from '@reduxjs/toolkit'
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HistoryManagerProvider } from 'contexts/HistoryContext'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
+import { useMemo } from 'react'
 import { Provider } from 'react-redux'
-import { wagmiConfig } from 'utils/wagmi'
-import { WagmiConfig } from 'wagmi'
+import { createWagmiConfig } from 'utils/wagmi'
+import { WagmiProvider } from 'wagmi'
 
 // Create a client
 const queryClient = new QueryClient()
@@ -23,10 +24,11 @@ const StyledUIKitProvider: React.FC<React.PropsWithChildren> = ({ children, ...p
 const Providers: React.FC<
   React.PropsWithChildren<{ store: Store; children: React.ReactNode; dehydratedState: any }>
 > = ({ children, store, dehydratedState }) => {
+  const wagmiConfig = useMemo(() => createWagmiConfig(), [])
   return (
-    <QueryClientProvider client={queryClient}>
-      <HydrationBoundary state={dehydratedState}>
-        <WagmiConfig config={wagmiConfig}>
+    <WagmiProvider reconnectOnMount config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <HydrationBoundary state={dehydratedState}>
           <Provider store={store}>
             <NextThemeProvider>
               <LanguageProvider>
@@ -38,9 +40,9 @@ const Providers: React.FC<
               </LanguageProvider>
             </NextThemeProvider>
           </Provider>
-        </WagmiConfig>
-      </HydrationBoundary>
-    </QueryClientProvider>
+        </HydrationBoundary>
+      </QueryClientProvider>
+    </WagmiProvider>
   )
 }
 

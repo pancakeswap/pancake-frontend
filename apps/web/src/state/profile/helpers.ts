@@ -7,7 +7,7 @@ import { getTeam } from 'state/teams/helpers'
 import { Profile } from 'state/types'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 export interface GetProfileResponse {
   hasRegistered: boolean

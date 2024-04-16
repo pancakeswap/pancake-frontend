@@ -3,7 +3,7 @@ import type { FarmConfigBaseProps, SerializedFarmConfig, SerializedFarmPublicDat
 import { Currency, CurrencyAmount, ERC20Token, Percent, Price, Token, Trade, TradeType } from '@pancakeswap/sdk'
 import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import BigNumber from 'bignumber.js'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 // a list of tokens by chain
 export type ChainMap<T> = {
@@ -156,15 +156,6 @@ export const FetchStatus = {
   Failed: 'error',
 } as const
 
-// Remove after wagmi v2
-export const FetchStatusV1 = {
-  Idle: 'idle',
-  Fetching: 'loading',
-  Fetched: 'success',
-  Failed: 'error',
-} as const
-
-export type TFetchStatusV1 = (typeof FetchStatusV1)[keyof typeof FetchStatusV1]
 export type TFetchStatus = (typeof FetchStatus)[keyof typeof FetchStatus]
 
 export const isStableSwap = (trade: ITrade): trade is StableTrade => {

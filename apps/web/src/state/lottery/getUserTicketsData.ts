@@ -2,12 +2,12 @@ import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { TICKET_LIMIT_PER_REQUEST } from 'config/constants/lottery'
 import { LotteryTicket } from 'config/constants/types'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
-import { Address, ContractFunctionResult } from 'viem'
+import { AbiStateMutability, Address, ContractFunctionReturnType } from 'viem'
 
 const lotteryContract = getLotteryV2Contract()
 
 export const processRawTicketsResponse = (
-  ticketsResponse: ContractFunctionResult<typeof lotteryV2ABI, 'viewUserInfoForLotteryId'>,
+  ticketsResponse: ContractFunctionReturnType<typeof lotteryV2ABI, AbiStateMutability, 'viewUserInfoForLotteryId'>,
 ): LotteryTicket[] => {
   const [ticketIds, ticketNumbers, ticketStatuses] = ticketsResponse
 

@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
-import { Address, GetContractReturnType, PublicClient, WalletClient, getContract } from 'viem'
+import { Address, WalletClient, getContract } from 'viem'
 
 import { iCakeABI } from '../abis/ICake'
 import { ifoV7ABI } from '../abis/IfoV7'
@@ -13,15 +13,17 @@ export const getIfoCreditAddressContract = (
   chainId: ChainId,
   provider: OnChainProvider,
   walletClient?: WalletClient,
-): GetContractReturnType<typeof iCakeABI, PublicClient, WalletClient> => {
+) => {
   const address = getContractAddress(ICAKE, chainId)
   if (!address || address === '0x') {
     throw new Error(`ICAKE not supported on chain ${chainId}`)
   }
   const publicClient = provider({ chainId })
+  if (!publicClient) {
+    throw new Error(`Invalid public client ${publicClient}`)
+  }
 
-  // @ts-ignore
-  return getContract({ abi: iCakeABI, address, publicClient, walletClient })
+  return getContract({ abi: iCakeABI, address, client: { public: publicClient, wallet: walletClient } })
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

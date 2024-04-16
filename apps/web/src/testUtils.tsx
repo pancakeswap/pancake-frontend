@@ -11,9 +11,17 @@ import noop from 'lodash/noop'
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime'
 import { NextRouter } from 'next/router'
 import { initializeStore, makeStore } from 'state'
-import { wagmiConfig } from 'utils/wagmi'
 import { vi } from 'vitest'
-import { WagmiConfig } from 'wagmi'
+import { WagmiProvider, createConfig } from 'wagmi'
+
+import { CHAINS } from 'config/chains'
+import { transports } from 'utils/wagmi'
+
+const wagmiConfig = createConfig({
+  chains: CHAINS,
+  syncConnectedChain: true,
+  transports,
+})
 
 const mockRouter: NextRouter = {
   basePath: '',
@@ -93,9 +101,9 @@ export const createWagmiWrapper =
     const queryClient = new QueryClient()
 
     return (
-      <QueryClientProvider client={queryClient}>
-        <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
-      </QueryClientProvider>
+      <WagmiProvider reconnectOnMount config={wagmiConfig}>
+        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      </WagmiProvider>
     )
   }
 

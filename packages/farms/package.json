@@ -15,16 +15,16 @@
   },
   "dependencies": {
     "@pancakeswap/price-api-sdk": "workspace:*",
+    "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/token-lists": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
-    "@pancakeswap/chains": "workspace:*",
     "bignumber.js": "^9.0.0",
     "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
-    "viem": "1.19.11"
+    "viem": "2.9.19"
   }
 }

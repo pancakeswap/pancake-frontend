@@ -12,7 +12,7 @@ import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import { getMasterChefV2Address, getRevenueSharingVeCakeAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
 import { useVeCakeTotalSupply } from './useVeCakeTotalSupply'
 import { useVeCakeUserInfo } from './useVeCakeUserInfo'
@@ -48,24 +48,24 @@ export const useCakePoolEmission = () => {
   }, [chainId])
 
   const { data } = useQuery({
-    queryKey: ['vecake/cakePoolEmission', client.chain.id],
+    queryKey: ['vecake/cakePoolEmission', client?.chain?.id],
 
     queryFn: async () => {
       const response = await client.multicall({
         contracts: [
           {
-            address: getMasterChefV2Address(client.chain.id),
+            address: getMasterChefV2Address(client?.chain?.id),
             abi: masterChefV2ABI,
             functionName: 'cakeRateToSpecialFarm',
           } as const,
           {
-            address: getMasterChefV2Address(client.chain.id),
+            address: getMasterChefV2Address(client?.chain?.id),
             abi: masterChefV2ABI,
             functionName: 'poolInfo',
             args: [pid],
           } as const,
           {
-            address: getMasterChefV2Address(client.chain.id),
+            address: getMasterChefV2Address(client?.chain?.id),
             abi: masterChefV2ABI,
             functionName: 'totalSpecialAllocPoint',
           } as const,
@@ -115,7 +115,7 @@ const SECONDS_IN_YEAR = 31536000 // 365 * 24 * 60 * 60
 export const useRevShareEmission = () => {
   const { chainId } = useActiveChainId()
   const currentTimestamp = useCurrentBlockTimestamp()
-  const { data: totalDistributed } = useContractRead({
+  const { data: totalDistributed } = useReadContract({
     abi: revenueSharingPoolProxyABI,
     address: getRevenueSharingVeCakeAddress(chainId) ?? getRevenueSharingVeCakeAddress(ChainId.BSC),
     functionName: 'totalDistributed',

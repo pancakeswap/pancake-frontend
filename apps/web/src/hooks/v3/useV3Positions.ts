@@ -3,7 +3,8 @@ import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useEffect, useMemo } from 'react'
-import { Address, useContractRead, useContractReads } from 'wagmi'
+import { Address } from 'viem'
+import { useBlockNumber, useReadContract, useReadContracts } from 'wagmi'
 
 interface UseV3PositionsResults {
   loading: boolean
@@ -35,13 +36,23 @@ export function useV3PositionsFromTokenIds(tokenIds: bigint[] | undefined): UseV
         : [],
     [chainId, positionManager, tokenIds],
   )
-  const { isLoading, data: positions = [] } = useContractReads({
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+
+  const {
+    isLoading,
+    data: positions = [],
+    refetch,
+  } = useReadContracts({
     contracts: inputs,
-    watch: true,
     allowFailure: true,
-    enabled: !!inputs.length,
-    keepPreviousData: true,
+    query: {
+      enabled: !!inputs.length,
+    },
   })
+
+  useEffect(() => {
+    refetch()
+  }, [blockNumber, refetch])
 
   return {
     loading: isLoading,
@@ -98,19 +109,26 @@ export function useV3TokenIdsByAccount(
   account?: Address | null | undefined,
 ): { tokenIds: bigint[]; loading: boolean } {
   const { chainId } = useActiveChainId()
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+
   const {
     isLoading: balanceLoading,
     data: accountBalance,
     refetch: refetchBalance,
-  } = useContractRead({
+  } = useReadContract({
     abi: masterChefV3ABI,
     address: contractAddress as `0x${string}`,
-    enabled: !!account && !!contractAddress,
+    query: {
+      enabled: !!account && !!contractAddress,
+    },
     args: [account!],
     functionName: 'balanceOf',
-    watch: true,
     chainId,
   })
+
+  useEffect(() => {
+    refetchBalance()
+  }, [blockNumber, refetchBalance])
 
   const tokenIdsArgs = useMemo(() => {
     if (accountBalance && account) {
@@ -139,22 +157,22 @@ export function useV3TokenIdsByAccount(
     isLoading: someTokenIdsLoading,
     data: tokenIds = [],
     refetch: refetchTokenIds,
-  } = useContractReads({
+  } = useReadContracts({
     contracts: tokenIdsArgs,
-    watch: true,
     allowFailure: true,
-    enabled: !!tokenIdsArgs.length,
-    keepPreviousData: true,
+    query: {
+      enabled: !!tokenIdsArgs.length,
+    },
   })
 
-  // refetch when account changes, It seems like the useContractReads doesn't refetch when the account changes on production
+  // refetch when account changes, It seems like the useReadContracts doesn't refetch when the account changes on production
   // check if we can remove this effect when we upgrade to the latest version of wagmi
   useEffect(() => {
     if (account) {
       refetchBalance()
       refetchTokenIds()
     }
-  }, [account, refetchBalance, refetchTokenIds])
+  }, [account, refetchBalance, refetchTokenIds, blockNumber])
 
   return {
     tokenIds: useMemo(

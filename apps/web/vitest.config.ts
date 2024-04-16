@@ -12,13 +12,13 @@ export default defineConfig({
   resolve: {
     alias: {
       '@pancakeswap/wagmi/connectors/blocto': r('../../packages/wagmi/connectors/blocto/index.ts'),
-      '@pancakeswap/wagmi/connectors/miniProgram': r('../../packages/wagmi/connectors/miniProgram/index.ts'),
       '@pancakeswap/wagmi/connectors/trustWallet': r('../../packages/wagmi/connectors/trustWallet/index.ts'),
       '@pancakeswap/uikit': r('../../packages/uikit/src'),
       '@pancakeswap/localization': r('../../packages/localization/src'),
     },
   },
   test: {
+    dangerouslyIgnoreUnhandledErrors: true, // this.WebSocketClass is not a constructor
     setupFiles: ['./vitest.setup.js'],
     environment: 'happy-dom',
     globals: true,

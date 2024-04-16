@@ -16,7 +16,6 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { viemClients } from 'utils/viem'
 import { Address, Hex, TransactionExecutionError, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
-import { SendTransactionResult } from 'wagmi/actions'
 import { MMSwapCall } from './useSwapCallArguments'
 
 export enum SwapCallbackState {
@@ -50,7 +49,7 @@ export function useSwapCallback(
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
   swapCalls: MMSwapCall[],
   expiredAt?: number,
-): { state: SwapCallbackState; callback: null | (() => Promise<SendTransactionResult>); error: string | null } {
+) {
   const { account, chainId } = useAccountActiveChain()
   const { callback } = useSendMMTransaction(account, chainId, trade, swapCalls, expiredAt)
 
@@ -81,7 +80,7 @@ const useSendMMTransaction = (
   trade?: Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount' | 'tradeType'> | null,
   swapCalls: MMSwapCall[] = [],
   expiredAt?: number,
-): { callback: null | (() => Promise<SendTransactionResult>) } => {
+) => {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
   const { sendTransactionAsync } = useSendTransaction()
@@ -95,7 +94,7 @@ const useSendMMTransaction = (
     }
 
     return {
-      callback: async function callback(): Promise<SendTransactionResult> {
+      callback: async function callback() {
         if (expiredAt && dayjs().unix() > expiredAt - AVERAGE_CHAIN_BLOCK_TIMES[chainId]) {
           throw new Error(t('Order expired. Please try again.'))
         }
@@ -149,8 +148,7 @@ const useSendMMTransaction = (
           value: hexToBigInt(value),
           gas: calculateGasMargin(gasEstimate),
         })
-          .then((response) => {
-            const { hash } = response
+          .then((hash) => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
             // const pct = basisPointsToPercent(allowedSlippage)
@@ -207,7 +205,7 @@ const useSendMMTransaction = (
             })
             logTx({ account, chainId, hash })
 
-            return response
+            return { hash }
           })
           .catch((error: any) => {
             // if the user rejected the tx, pass this along

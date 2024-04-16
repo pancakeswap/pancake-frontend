@@ -9,8 +9,7 @@ import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelp
 import { getCrossFarmingReceiverContract } from 'utils/contractHelpers'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { publicClient } from 'utils/wagmi'
-import { ContractFunctionResult } from 'viem'
-import { Address, erc20ABI } from 'wagmi'
+import { Address, erc20Abi } from 'viem'
 
 export const fetchFarmUserAllowances = async (
   account: Address,
@@ -24,7 +23,7 @@ export const fetchFarmUserAllowances = async (
     contracts: farmsToFetch.map((farm) => {
       const lpContractAddress = farm.lpAddress
       return {
-        abi: erc20ABI,
+        abi: erc20Abi,
         address: lpContractAddress,
         functionName: 'allowance',
         args: [account, masterChefAddress] as const,
@@ -49,7 +48,7 @@ export const fetchFarmBCakeWrapperUserAllowances = async (
     contracts: farmsToFetch.map((farm) => {
       const lpContractAddress = farm.lpAddress
       return {
-        abi: erc20ABI,
+        abi: erc20Abi,
         address: lpContractAddress,
         functionName: 'allowance',
         args: [account, farm?.bCakeWrapperAddress ?? '0x'] as const,
@@ -74,7 +73,7 @@ export const fetchFarmUserTokenBalances = async (
     contracts: farmsToFetch.map((farm) => {
       const lpContractAddress = farm.lpAddress
       return {
-        abi: erc20ABI,
+        abi: erc20Abi,
         address: lpContractAddress,
         functionName: 'balanceOf',
         args: [account as Address] as const,
@@ -97,7 +96,7 @@ export const fetchFarmUserStakedBalances = async (
   const isBscNetwork = verifyBscNetwork(chainId)
   const masterChefAddress = isBscNetwork ? getMasterChefV2Address(chainId) : getNonBscVaultAddress(chainId)
 
-  const rawStakedBalances = (await publicClient({ chainId }).multicall({
+  const rawStakedBalances = await publicClient({ chainId }).multicall({
     contracts: farmsToFetch.map((farm) => {
       return {
         abi: isBscNetwork ? masterChefV2ABI : nonBscVaultABI,
@@ -107,7 +106,7 @@ export const fetchFarmUserStakedBalances = async (
       } as const
     }),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof masterChefV2ABI, 'userInfo'>[]
+  })
 
   const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
     return new BigNumber(stakedBalance[0].toString()).toJSON()
@@ -121,7 +120,7 @@ export const fetchFarmUserBCakeWrapperStakedBalances = async (
   chainId: number,
 ) => {
   const boosterPrecision = '1000000000000'
-  const rawStakedBalances = (await publicClient({ chainId }).multicall({
+  const rawStakedBalances = await publicClient({ chainId }).multicall({
     contracts: farmsToFetch.map((farm) => {
       return {
         abi: v2BCakeWrapperABI,
@@ -131,7 +130,7 @@ export const fetchFarmUserBCakeWrapperStakedBalances = async (
       } as const
     }),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof v2BCakeWrapperABI, 'userInfo'>[]
+  })
 
   const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
     return new BigNumber(stakedBalance[0].toString()).toJSON()
@@ -147,7 +146,7 @@ export const fetchFarmUserBCakeWrapperStakedBalances = async (
 }
 
 export const fetchFarmUserBCakeWrapperConstants = async (farmsToFetch: SerializedFarmPublicData[], chainId: number) => {
-  const boosterContractAddress = (await publicClient({ chainId }).multicall({
+  const boosterContractAddress = await publicClient({ chainId }).multicall({
     contracts: farmsToFetch.map((farm) => {
       return {
         abi: v2BCakeWrapperABI,
@@ -156,8 +155,8 @@ export const fetchFarmUserBCakeWrapperConstants = async (farmsToFetch: Serialize
       } as const
     }),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof v2BCakeWrapperABI, 'boostContract'>[]
-  const startTimestamp = (await publicClient({ chainId }).multicall({
+  })
+  const startTimestamp = await publicClient({ chainId }).multicall({
     contracts: farmsToFetch.map((farm) => {
       return {
         abi: v2BCakeWrapperABI,
@@ -166,8 +165,8 @@ export const fetchFarmUserBCakeWrapperConstants = async (farmsToFetch: Serialize
       } as const
     }),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof v2BCakeWrapperABI, 'startTimestamp'>[]
-  const endTimestamp = (await publicClient({ chainId }).multicall({
+  })
+  const endTimestamp = await publicClient({ chainId }).multicall({
     contracts: farmsToFetch.map((farm) => {
       return {
         abi: v2BCakeWrapperABI,
@@ -176,7 +175,7 @@ export const fetchFarmUserBCakeWrapperConstants = async (farmsToFetch: Serialize
       } as const
     }),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof v2BCakeWrapperABI, 'endTimestamp'>[]
+  })
 
   return {
     boosterContractAddress,
@@ -189,7 +188,7 @@ export const fetchFarmUserBCakeWrapperRewardPerSec = async (
   farmsToFetch: SerializedFarmPublicData[],
   chainId: number,
 ) => {
-  const rewardPerSec = (await publicClient({ chainId }).multicall({
+  const rewardPerSec = await publicClient({ chainId }).multicall({
     contracts: farmsToFetch.map((farm) => {
       return {
         abi: v2BCakeWrapperABI,
@@ -198,7 +197,7 @@ export const fetchFarmUserBCakeWrapperRewardPerSec = async (
       } as const
     }),
     allowFailure: false,
-  })) as ContractFunctionResult<typeof v2BCakeWrapperABI, 'rewardPerSecond'>[]
+  })
 
   return { rewardPerSec: rewardPerSec.map((reward) => Number(reward)) }
 }

@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "typechecks": "tsc --noEmit -p ./tsconfig.json"
   },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -32,6 +33,6 @@
     "@pancakeswap/chains": "workspace:^",
     "@pancakeswap/tokens": "workspace:^",
     "@pancakeswap/v3-sdk": "workspace:^",
-    "viem": "1.19.11"
+    "viem": "2.9.19"
   }
 }

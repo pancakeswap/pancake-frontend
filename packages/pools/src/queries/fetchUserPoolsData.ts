@@ -1,11 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
 import BigNumber from 'bignumber.js'
-import uniq from 'lodash/uniq'
 import fromPairs from 'lodash/fromPairs'
-import { erc20ABI } from 'wagmi'
-import { Address } from 'viem'
-import { getPoolsConfig } from '../constants'
+import uniq from 'lodash/uniq'
+import { Address, erc20Abi } from 'viem'
 import { sousChefABI } from '../abis/ISousChef'
+import { getPoolsConfig } from '../constants'
 import { OnChainProvider, SerializedPool } from '../types'
 
 // Pool 0, Cake / Cake is a different kind of contract (master chef)
@@ -36,7 +35,7 @@ export const fetchPoolsAllowance = async ({ account, chainId, provider }: FetchU
       ({ contractAddress, stakingToken }) =>
         ({
           address: stakingToken.address,
-          abi: erc20ABI,
+          abi: erc20Abi,
           functionName: 'allowance',
           args: [account as Address, contractAddress] as const,
         } as const),
@@ -54,6 +53,7 @@ export const fetchUserBalances = async ({ account, chainId, provider }: FetchUse
   // Non BNB pools
   const tokens = uniq(nonBnbPools.map((pool) => pool.stakingToken.address))
   const client = provider({ chainId })
+
   const tokenBalance = await client.multicall({
     contracts: [
       {
@@ -69,11 +69,11 @@ export const fetchUserBalances = async ({ account, chainId, provider }: FetchUse
         address: '0xcA11bde05977b3631167028862bE2a173976CA11', // TODO: Here is multicall address, should extract addresses to a package for multi chain
         functionName: 'getEthBalance',
         args: [account as Address] as const,
-      } as const,
+      } as any,
       ...tokens.map(
         (token) =>
           ({
-            abi: erc20ABI,
+            abi: erc20Abi,
             address: token,
             functionName: 'balanceOf',
             args: [account] as const,

@@ -4,7 +4,7 @@ import { useERC20 } from 'hooks/useContract'
 import { useCallback } from 'react'
 import { getMasterChefV2Address, getNonBscVaultAddress } from 'utils/addressHelpers'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 const useApproveFarm = (lpContract: ReturnType<typeof useERC20>, chainId: number, bCakeWrapperAddress?: Address) => {
   const isBscNetwork = verifyBscNetwork(chainId)
@@ -27,7 +27,7 @@ export default useApproveFarm
 export const useApproveBoostProxyFarm = (lpContract: ReturnType<typeof useERC20>, proxyAddress?: Address) => {
   const { callWithGasPrice } = useCallWithGasPrice()
   const handleApprove = useCallback(async () => {
-    return callWithGasPrice(lpContract, 'approve', [proxyAddress, MaxUint256])
+    return proxyAddress ? callWithGasPrice(lpContract, 'approve', [proxyAddress, MaxUint256]) : undefined
   }, [lpContract, proxyAddress, callWithGasPrice])
 
   return { onApprove: proxyAddress ? handleApprove : undefined }

@@ -40,10 +40,10 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     mainnetRpc:
       getGroveUrl(WormholeChainIds.ETHEREUM, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      ethereum.rpcUrls.public.http[0],
+      ethereum.rpcUrls.default.http[0],
     testnetRpc:
       getNodeRealUrl(WormholeChainIds.GOERLI, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      goerli.rpcUrls.public.http[0],
+      goerli.rpcUrls.default.http[0],
   },
   [NETWORKS.BSC]: {
     name: 'BSC',
@@ -53,7 +53,7 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
       getGroveUrl(WormholeChainIds.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
       'https://bsc-dataseed1.binance.org',
-    testnetRpc: bscTestnet.rpcUrls.public.http[0],
+    testnetRpc: bscTestnet.rpcUrls.default.http[0],
   },
   [NETWORKS.ARBITRUM_ONE]: {
     name: 'Arbitrum',
@@ -62,8 +62,8 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     mainnetRpc:
       getGroveUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      arbitrum.rpcUrls.public.http[0],
-    testnetRpc: arbitrumGoerli.rpcUrls.public.http[0],
+      arbitrum.rpcUrls.default.http[0],
+    testnetRpc: arbitrumGoerli.rpcUrls.default.http[0],
   },
   [NETWORKS.BASE]: {
     name: 'Base',
@@ -72,8 +72,8 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     mainnetRpc:
       getGroveUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      base.rpcUrls.public.http[0],
-    testnetRpc: baseGoerli.rpcUrls.public.http[0],
+      base.rpcUrls.default.http[0],
+    testnetRpc: baseGoerli.rpcUrls.default.http[0],
   },
   [NETWORKS.APTOS]: {
     name: 'Aptos',

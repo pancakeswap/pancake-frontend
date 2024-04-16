@@ -3,18 +3,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { multicallReducerAtom } from 'state/multicall/reducer'
-import {
-  Abi,
-  Address,
-  ContractFunctionResult,
-  DecodeFunctionResultParameters,
-  EncodeFunctionDataParameters,
-  GetFunctionArgs,
-  Hex,
-  InferFunctionName,
-  decodeFunctionResult,
-  encodeFunctionData,
-} from 'viem'
+import { Abi, Address, EncodeFunctionDataParameters, Hex, decodeFunctionResult, encodeFunctionData } from 'viem'
 import {
   Call,
   ListenerOptions,
@@ -122,9 +111,10 @@ function toCallState<
 >(
   callResult: CallResult | undefined,
   abi: TAbi | undefined,
-  functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>,
+  // FIXME: wagmiv2
+  functionName: any,
   latestBlockNumber: number | undefined,
-): CallState<ContractFunctionResult<TAbi, TFunctionName>> {
+): CallState<any> {
   if (!callResult) return INVALID_CALL_STATE
   const { valid, data, blockNumber } = callResult
   if (!valid) return INVALID_CALL_STATE
@@ -135,11 +125,12 @@ function toCallState<
   let result
   if (success && data) {
     try {
+      // @ts-ignore FIXME: wagmiv2
       result = decodeFunctionResult({
         abi,
         data,
         functionName,
-      } as unknown as DecodeFunctionResultParameters<TAbi, TFunctionName>)
+      })
     } catch (error) {
       console.debug('Result data parsing failed', abi, data)
       return {
@@ -163,51 +154,6 @@ function toCallState<
   }
 }
 
-// export interface MultiContractsMultiMethodsCallInput {
-//   contract: Contract | null | undefined
-//   methodName: string
-//   inputs?: OptionalMethodInputs
-// }
-
-// export function useMultiContractsMultiMethods(
-//   callInputs: MultiContractsMultiMethodsCallInput[],
-//   options?: ListenerOptions,
-// ) {
-//   const { chainId } = useActiveChainId()
-
-//   const { calls, fragments, contracts } = useMemo(() => {
-//     if (!callInputs || !callInputs.length) {
-//       return { calls: [], fragments: [], contracts: [] }
-//     }
-//     const validFragments: FunctionFragment[] = []
-//     const validContracts: Contract[] = []
-//     const validCalls: Call[] = []
-//     for (const { methodName, inputs, contract } of callInputs) {
-//       const fragment = contract?.interface.getFunction(methodName)
-//       if (!contract || !fragment) {
-//         // eslint-disable-next-line no-continue
-//         continue
-//       }
-//       validFragments.push(fragment)
-//       validContracts.push(contract)
-//       validCalls.push({
-//         address: contract.address,
-//         callData: contract.interface.encodeFunctionData(fragment, inputs),
-//       })
-//     }
-//     return { calls: validCalls, fragments: validFragments, contracts: validContracts }
-//   }, [callInputs])
-
-//   const results = useCallsData(calls, options)
-
-//   const { cache } = useSWRConfig()
-
-//   return useMemo(() => {
-//     const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
-//     return results.map((result, i) => toCallState(result, contracts[i]?.interface, fragments[i], currentBlockNumber))
-//   }, [cache, chainId, results, fragments, contracts])
-// }
-
 export type SingleContractMultipleDataCallParameters<
   TAbi extends Abi | readonly unknown[] = Abi,
   TFunctionName extends string = string,
@@ -217,9 +163,11 @@ export type SingleContractMultipleDataCallParameters<
     abi?: TAbi
     address?: Address
   }
-  functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>
+  // FIXME: wagmiv2
+  functionName: any
   options?: ListenerOptionsWithGas
-  args: GetFunctionArgs<TAbi, TFunctionName>['args'][]
+  // FIXME: wagmiv2
+  args: any
 }
 
 export function useSingleContractMultipleData<TAbi extends Abi | readonly unknown[], TFunctionName extends string>({
@@ -227,9 +175,8 @@ export function useSingleContractMultipleData<TAbi extends Abi | readonly unknow
   args,
   functionName,
   options,
-}: SingleContractMultipleDataCallParameters<TAbi, TFunctionName>): CallState<
-  ContractFunctionResult<TAbi, TFunctionName>
->[] {
+}: // FIXME: wagmiv2
+SingleContractMultipleDataCallParameters<TAbi, TFunctionName>): CallState<any>[] {
   const { chainId } = useActiveChainId()
 
   const calls = useMemo(
@@ -273,9 +220,11 @@ export type MultipleSameDataCallParameters<
 > = {
   addresses: (Address | undefined)[]
   abi: TAbi
-  functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>
+  // FIXME: wagmiv2
+  functionName: any
   options?: ListenerOptionsWithGas
-} & GetFunctionArgs<TAbi, TFunctionName>
+} & any
+// GetFunctionArgs<TAbi, TFunctionName>
 
 export function useMultipleContractSingleData<TAbi extends Abi | readonly unknown[], TFunctionName extends string>({
   abi,
@@ -283,7 +232,9 @@ export function useMultipleContractSingleData<TAbi extends Abi | readonly unknow
   functionName,
   args,
   options,
-}: MultipleSameDataCallParameters<TAbi, TFunctionName>): CallState<ContractFunctionResult<TAbi, TFunctionName>>[] {
+}: // FIXME: wagmiv2
+// MultipleSameDataCallParameters<TAbi, TFunctionName>): CallState<ContractFunctionResult<TAbi, TFunctionName>>[] {
+MultipleSameDataCallParameters<TAbi, TFunctionName>): CallState<any>[] {
   const { enabled, blocksPerFetch } = options ?? { enabled: true }
   const callData: Hex | undefined = useMemo(
     () =>
@@ -300,7 +251,7 @@ export function useMultipleContractSingleData<TAbi extends Abi | readonly unknow
   const calls = useMemo(
     () =>
       addresses && addresses.length > 0 && callData
-        ? addresses.map<Call | undefined>((address) => {
+        ? addresses.map((address) => {
             return address && callData
               ? {
                   address,
@@ -334,16 +285,20 @@ export type SingleCallParameters<
     abi?: TAbi
     address?: Address
   } | null
-  functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>
+  // FIXME: wagmiv2
+  // functionName: InferFunctionName<TAbi, TFunctionName, TAbiStateMutability>
+  functionName: string
   options?: ListenerOptionsWithGas
-} & GetFunctionArgs<TAbi, TFunctionName>
+} & any
+// } & GetFunctionArgs<TAbi, TFunctionName>
 
 export function useSingleCallResult<TAbi extends Abi | readonly unknown[], TFunctionName extends string>({
   contract,
   functionName,
   args,
   options,
-}: SingleCallParameters<TAbi, TFunctionName>): CallState<ContractFunctionResult<TAbi, TFunctionName>> {
+}: // FIXME: wagmiv2
+SingleCallParameters<TAbi, TFunctionName>): CallState<any> {
   const calls = useMemo<Call[]>(() => {
     return contract && contract.abi && contract.address
       ? [

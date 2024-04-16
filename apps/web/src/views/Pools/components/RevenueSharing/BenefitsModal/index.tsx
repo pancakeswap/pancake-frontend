@@ -4,6 +4,7 @@ import { Pool } from '@pancakeswap/widgets-internal'
 import { styled } from 'styled-components'
 
 import { Token } from '@pancakeswap/sdk'
+import { useEffect } from 'react'
 import { DeserializedLockedVaultUser } from 'state/types'
 import RevenueSharing from 'views/Pools/components/RevenueSharing/BenefitsModal/RevenueSharing'
 import SharingPoolNameCell from 'views/Pools/components/RevenueSharing/BenefitsModal/SharingPoolNameCell'
@@ -39,12 +40,15 @@ interface BenefitsModalProps {
 const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsModalProps>> = ({ onDismiss }) => {
   const { t } = useTranslation()
 
-  useAccount({
-    onConnect: ({ connector }) => {
-      connector?.addListener('change', () => onDismiss?.())
-    },
-    onDisconnect: () => onDismiss?.(),
-  })
+  const { status, connector } = useAccount()
+
+  useEffect(() => {
+    if (status === 'connected') {
+      connector?.emitter.on('change', () => onDismiss?.())
+    } else if (status === 'disconnected') {
+      onDismiss?.()
+    }
+  }, [connector?.emitter, onDismiss, status])
 
   return (
     <Container>

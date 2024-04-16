@@ -1,4 +1,5 @@
-import { Chain, Connector, useAccount, useNetwork } from 'wagmi'
+import { Chain } from 'viem'
+import { Connector, useAccount } from 'wagmi'
 
 export function useWeb3React(): {
   chainId: number | undefined
@@ -8,8 +9,7 @@ export function useWeb3React(): {
   chain: (Chain & { unsupported?: boolean | undefined }) | undefined
   connector: Connector | undefined
 } {
-  const { chain } = useNetwork()
-  const { address, connector, isConnected, isConnecting } = useAccount()
+  const { chain, address, connector, isConnected, isConnecting } = useAccount()
 
   return {
     chainId: chain?.id,

@@ -1,7 +1,8 @@
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { Address, erc20ABI, useAccount, useContractRead } from 'wagmi'
+import { Address, erc20Abi } from 'viem'
+import { useAccount, useReadContract } from 'wagmi'
 
 interface UseLiquidStakingApprovalProps {
   approveToken?: string
@@ -17,12 +18,14 @@ export const useLiquidStakingApprovalStatus = ({
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
 
-  const { data, refetch } = useContractRead({
+  const { data, refetch } = useReadContract({
     chainId,
-    abi: erc20ABI,
+    abi: erc20Abi,
     address: approveToken as Address,
     functionName: 'allowance',
-    enabled: !!account && !!contractAddress && !!shouldCheckApproval,
+    query: {
+      enabled: !!account && !!contractAddress && !!shouldCheckApproval,
+    },
     args: [account!, contractAddress!],
   })
 

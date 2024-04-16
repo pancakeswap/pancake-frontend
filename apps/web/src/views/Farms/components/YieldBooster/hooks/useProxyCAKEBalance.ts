@@ -1,19 +1,22 @@
-import { getCakeContract } from 'utils/contractHelpers'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import BigNumber from 'bignumber.js'
-import { useContractRead } from 'wagmi'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { getCakeContract } from 'utils/contractHelpers'
+import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
+import { useReadContract } from 'wagmi'
 
 const useProxyCAKEBalance = () => {
   const { account, chainId } = useAccountActiveChain()
   const { proxyAddress } = useBCakeProxyContractAddress(account, chainId)
   const cakeContract = getCakeContract()
 
-  const { data, refetch } = useContractRead({
+  const { data, refetch } = useReadContract({
     chainId,
-    ...cakeContract,
-    enabled: Boolean(account && proxyAddress),
+    address: cakeContract.address,
+    abi: cakeContract.abi,
+    query: {
+      enabled: Boolean(account && proxyAddress),
+    },
     functionName: 'balanceOf',
     args: [proxyAddress],
   })

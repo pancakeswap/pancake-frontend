@@ -193,11 +193,12 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
         ])
       }
       if (stage === SellingStage.CONFIRM_TRANSFER) {
-        return callWithGasPrice(collectionContract, 'safeTransferFrom', [
-          account,
-          transferAddress as Address,
-          BigInt(nftToSell.tokenId),
-        ])
+        if (account)
+          return callWithGasPrice(collectionContract, 'safeTransferFrom', [
+            account,
+            transferAddress as Address,
+            BigInt(nftToSell.tokenId),
+          ])
       }
       const methodName = variant === 'sell' ? 'createAskOrder' : 'modifyAskOrder'
       const askPrice = parseUnits(price as `${number}`, 18)

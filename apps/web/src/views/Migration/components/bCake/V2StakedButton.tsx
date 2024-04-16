@@ -11,8 +11,7 @@ import { useV2SSBCakeWrapperContract } from 'hooks/useContract'
 import React, { useMemo } from 'react'
 import { useFarmFromPid } from 'state/farms/hooks'
 import { publicClient } from 'utils/wagmi'
-import { Address } from 'viem'
-import { erc20ABI } from 'wagmi'
+import { Address, erc20Abi } from 'viem'
 
 export interface StakeButtonProps {
   wrapperAddress?: Address
@@ -33,18 +32,18 @@ export async function getLpData({ lpAddress, chainId, account, wrapperAddress })
       {
         address: lpAddress,
         functionName: 'balanceOf',
-        abi: erc20ABI,
+        abi: erc20Abi,
         args: [account],
       },
       {
         address: lpAddress,
         functionName: 'decimals',
-        abi: erc20ABI,
+        abi: erc20Abi,
       },
       {
         address: lpAddress,
         functionName: 'allowance',
-        abi: erc20ABI,
+        abi: erc20Abi,
         args: [account, wrapperAddress],
       },
     ],

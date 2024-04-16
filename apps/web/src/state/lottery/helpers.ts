@@ -8,12 +8,12 @@ import { getLotteryV2Address } from 'utils/addressHelpers'
 import { getLotteryV2Contract } from 'utils/contractHelpers'
 import { notEmpty } from 'utils/notEmpty'
 import { publicClient } from 'utils/wagmi'
-import { ContractFunctionResult } from 'viem'
+import { AbiStateMutability, ContractFunctionReturnType } from 'viem'
 
 const lotteryContract = getLotteryV2Contract()
 
 const processViewLotterySuccessResponse = (
-  response: ContractFunctionResult<typeof lotteryV2ABI, 'viewLottery'>,
+  response: ContractFunctionReturnType<typeof lotteryV2ABI, AbiStateMutability, 'viewLottery'>,
   lotteryId: string,
 ): LotteryResponse => {
   const {
@@ -98,7 +98,7 @@ export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<Lott
     const client = publicClient({ chainId: ChainId.BSC })
     const multicallRes = (await client.multicall({
       contracts: calls,
-    })) as { result: ContractFunctionResult<typeof lotteryV2ABI, 'viewLottery'> }[]
+    })) as { result: ContractFunctionReturnType<typeof lotteryV2ABI, AbiStateMutability, 'viewLottery'> }[]
 
     const processedResponses = multicallRes
       .filter(notEmpty)

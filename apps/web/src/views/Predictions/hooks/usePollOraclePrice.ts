@@ -1,9 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Address } from 'viem'
-import { useContractRead } from 'wagmi'
+import { useBlockNumber, useReadContract } from 'wagmi'
 import { useGaletoOraclePrice } from './useGaletoOraclePrice'
 
 interface UsePollOraclePriceProps {
@@ -13,20 +13,28 @@ interface UsePollOraclePriceProps {
 
 const usePollOraclePrice = ({ chainlinkOracleAddress, galetoOracleAddress }: UsePollOraclePriceProps) => {
   const { chainId } = useActiveChainId()
+  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const shouldFetchGaletoPrice = useMemo(
     () => Boolean(galetoOracleAddress && chainId === ChainId.ZKSYNC),
     [galetoOracleAddress, chainId],
   )
 
-  const { data: chainlinkOraclePrice = 0n, refetch: refetchChainlinkOraclePrice } = useContractRead({
+  const { data: chainlinkOraclePrice = 0n, refetch: refetchChainlinkOraclePrice } = useReadContract({
     abi: chainlinkOracleABI,
     address: chainlinkOracleAddress,
     functionName: 'latestAnswer',
-    watch: true,
     chainId,
-    enabled: !shouldFetchGaletoPrice,
+    query: {
+      enabled: !shouldFetchGaletoPrice,
+    },
   })
+
+  useEffect(() => {
+    if (!shouldFetchGaletoPrice) {
+      refetchChainlinkOraclePrice()
+    }
+  }, [blockNumber, refetchChainlinkOraclePrice, shouldFetchGaletoPrice])
 
   const { galetoOraclePrice, refetchGaletoOraclePrice } = useGaletoOraclePrice({
     address: galetoOracleAddress,
