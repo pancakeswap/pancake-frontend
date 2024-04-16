@@ -96,7 +96,7 @@ export function createWagmiConfig() {
       trustConnector,
       binanceWeb3WalletConnector(),
 
-      ...(cyberWalletConnector ? [cyberWalletConnector] : []),
+      ...(cyberWalletConnector ? [cyberWalletConnector as any] : []),
     ],
   })
 }
