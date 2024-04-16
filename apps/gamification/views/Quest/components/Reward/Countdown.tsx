@@ -2,7 +2,7 @@ import { Card, Flex, InfoIcon, Text } from '@pancakeswap/uikit'
 
 export const Countdown = () => {
   return (
-    <Card style={{ width: '100%' }}>
+    <Card style={{ width: '100%', marginBottom: '16px' }}>
       <Flex flexDirection="column" padding="12px 34px">
         <Flex m="auto">
           <Text bold mr="4px">

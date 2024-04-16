@@ -5,6 +5,7 @@ import { Countdown } from 'views/Quest/components/Reward/Countdown'
 import { RemainMessage } from 'views/Quest/components/Reward/RemainMessage'
 import { RewardAmount } from 'views/Quest/components/Reward/RewardAmount'
 import { SuccessMessage } from 'views/Quest/components/Reward/SuccessMessage'
+import { TotalRewards } from 'views/Quest/components/Reward/TotalRewards'
 
 const RewardContainer = styled(Box)`
   max-width: 368px;
@@ -30,6 +31,7 @@ export const Reward = () => {
       </Text>
       <RewardAmount />
       <Countdown />
+      <TotalRewards />
       <StyledButton>{t('Claim the reward')}</StyledButton>
       <StyledButton disabled endIcon={<InfoIcon color="textDisabled" />}>
         {t('Unavailable')}
