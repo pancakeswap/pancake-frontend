@@ -9,11 +9,11 @@ import { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Script from 'next/script'
-import React, { Fragment } from 'react'
+import React, { Fragment, useMemo } from 'react'
 import { Provider as WrapBalancerProvider } from 'react-wrap-balancer'
 import { createGlobalStyle } from 'styled-components'
-import { wagmiConfig } from 'utils/wagmi'
-import { WagmiConfig } from 'wagmi'
+import { createWagmiConfig } from 'utils/wagmi'
+import { WagmiProvider } from 'wagmi'
 import Menu from '../components/Menu/index'
 
 // Create a client
@@ -65,6 +65,7 @@ type AppPropsWithLayout = AppProps & {
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const Layout = Component.Layout || Fragment
+  const wagmiConfig = useMemo(() => createWagmiConfig(), [])
 
   return (
     <>
@@ -76,9 +77,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <meta name="theme-color" content="#1FC7D4" />
       </Head>
       <DefaultSeo {...SEO} />
-      <QueryClientProvider client={queryClient}>
-        <HydrationBoundary state={pageProps.dehydratedState}>
-          <WagmiConfig config={wagmiConfig}>
+      <WagmiProvider reconnectOnMount config={wagmiConfig}>
+        <QueryClientProvider client={queryClient}>
+          <HydrationBoundary state={pageProps.dehydratedState}>
             <NextThemeProvider>
               <StyledThemeProvider>
                 <LanguageProvider>
@@ -96,9 +97,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                 </LanguageProvider>
               </StyledThemeProvider>
             </NextThemeProvider>
-          </WagmiConfig>
-        </HydrationBoundary>
-      </QueryClientProvider>
+          </HydrationBoundary>
+        </QueryClientProvider>
+      </WagmiProvider>
       <Script
         strategy="afterInteractive"
         id="google-tag"

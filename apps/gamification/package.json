@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@binance/w3w-wagmi-connector": "1.1.4",
-    "@cyberlab/cyber-app-sdk": "2.4.4",
+    "@cyberlab/cyber-app-sdk": "v3.0.0-beta.5",
+    "@binance/w3w-wagmi-connector-v2": "^1.1.6",
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/localization": "workspace:*",

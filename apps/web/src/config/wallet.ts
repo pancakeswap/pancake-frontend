@@ -5,7 +5,7 @@ import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWalle
 import type { ExtendEthereum } from 'global'
 import { Config } from 'wagmi'
 import { ConnectMutateAsync } from 'wagmi/query'
-import { chains, walletConnectNoQrCodeConnector, createWagmiConfig } from '../utils/wagmi'
+import { chains, createWagmiConfig, walletConnectNoQrCodeConnector } from '../utils/wagmi'
 import { ASSET_CDN } from './constants/endpoints'
 
 export enum ConnectorNames {
