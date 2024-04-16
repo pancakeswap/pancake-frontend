@@ -14,7 +14,7 @@
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/pools": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
-    "viem": "2.9.18"
+    "viem": "2.9.19"
   },
   "devDependencies": {
     "@pancakeswap/sdk": "workspace:*",

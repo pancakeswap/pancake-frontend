@@ -11,7 +11,7 @@
     "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "viem": "2.9.18",
+    "viem": "2.9.19",
     "wagmi": "2.5.20"
   },
   "dependencies": {
@@ -24,7 +24,7 @@
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "viem": "2.9.18",
+    "viem": "2.9.19",
     "wagmi": "2.5.20"
   }
 }
