@@ -67,7 +67,7 @@ export function useStableSwapInfo(stableSwapAddress: Address | undefined, lpAddr
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, queryKey.toString(), queryClient])
+  }, [blockNumber, queryClient])
 
   const feeNumerator = results?.[4]?.result
   const feeDenominator = results?.[5]?.result

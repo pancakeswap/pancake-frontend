@@ -34,7 +34,7 @@ export const useProxyVeCakeBalanceOfAtTime = (timestamp: number) => {
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, queryKey.toString(), queryClient])
+  }, [blockNumber, queryClient])
 
   return {
     balance: useMemo(() => (typeof data !== 'undefined' ? new BigNumber(data.toString()) : BIG_ZERO), [data]),

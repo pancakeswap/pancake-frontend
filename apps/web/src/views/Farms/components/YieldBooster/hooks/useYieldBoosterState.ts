@@ -42,7 +42,7 @@ function useIsPoolActive(pid: number) {
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, queryClient, queryKey.toString()])
+  }, [blockNumber, queryClient])
 
   return {
     isActivePool: data,
