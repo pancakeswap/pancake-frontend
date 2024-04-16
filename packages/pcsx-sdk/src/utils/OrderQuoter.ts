@@ -19,20 +19,24 @@ export type OrderQuote = {
 }
 
 export class OrderQuoter {
-  private contract: GetContractReturnType<typeof orderQuoterAbi, PublicClient>
+  private contract: GetContractReturnType<typeof orderQuoterAbi, { public: PublicClient }>
 
   constructor(private client: PublicClient, private chainId: XSupportedChainId, orderQuoterAddress?: Address) {
     if (orderQuoterAddress) {
       this.contract = getContract({
         address: orderQuoterAddress,
         abi: orderQuoterAbi,
-        publicClient: client,
+        client: {
+          public: client,
+        },
       })
     } else if (ORDER_QUOTER_MAPPING[chainId]) {
       this.contract = getContract({
         address: ORDER_QUOTER_MAPPING[chainId],
         abi: orderQuoterAbi,
-        publicClient: client,
+        client: {
+          public: client,
+        },
       })
     } else {
       throw new MissingConfiguration('orderQuoter', chainId.toString())

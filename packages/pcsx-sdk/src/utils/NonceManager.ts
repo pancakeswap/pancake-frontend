@@ -16,20 +16,24 @@ type SplitNonce = {
   bitPos: bigint
 }
 export class NonceManager {
-  private contract: GetContractReturnType<typeof permit2Abi, PublicClient>
+  private contract: GetContractReturnType<typeof permit2Abi, { public: PublicClient }>
 
   constructor(client: PublicClient, private chainId: XSupportedChainId, permit2Address?: Address) {
     if (permit2Address) {
       this.contract = getContract({
         address: permit2Address,
         abi: permit2Abi,
-        publicClient: client,
+        client: {
+          public: client,
+        },
       })
     } else if (PERMIT2_MAPPING[chainId]) {
       this.contract = getContract({
         address: PERMIT2_MAPPING[chainId]!,
         abi: permit2Abi,
-        publicClient: client,
+        client: {
+          public: client,
+        },
       })
     } else {
       throw new MissingConfiguration('permit2', chainId.toString())
