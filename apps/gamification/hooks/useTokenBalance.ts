@@ -2,11 +2,10 @@ import { ChainId } from '@pancakeswap/chains'
 import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Address, erc20Abi } from 'viem'
-import { useAccount, useBlockNumber } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { useBalance, useReadContract } from '@pancakeswap/wagmi'
-import { useQueryClient } from '@tanstack/react-query'
 import { useActiveChainId } from './useActiveChainId'
 
 const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean) => {
@@ -17,7 +16,7 @@ export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: 
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
 
-  const { data, status, queryKey, refetch, ...rest } = useReadContract({
+  const { data, status, refetch, ...rest } = useReadContract({
     chainId: chainIdOverride || chainId,
     abi: erc20Abi,
     address: tokenAddress,
@@ -40,7 +39,7 @@ export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: 
 export const useGetBnbBalance = () => {
   const { address: account } = useAccount()
 
-  const { status, refetch, data, queryKey } = useBalance({
+  const { status, refetch, data } = useBalance({
     chainId: ChainId.BSC,
     address: account,
     query: {
