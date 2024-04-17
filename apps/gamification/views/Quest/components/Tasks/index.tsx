@@ -1,11 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Tag, Text } from '@pancakeswap/uikit'
+import { Box, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
+import { Task } from 'views/Quest/components/Tasks/Task'
 
 export const Tasks = () => {
   const { t } = useTranslation()
 
   return (
-    <Box>
+    <Box mb="32px">
       <Flex mb="16px">
         <Text fontSize={['24px']} bold mr="8px">
           {t('Tasks')}
@@ -22,6 +23,9 @@ export const Tasks = () => {
           </Tag>
         </Box>
       </Flex>
+      <FlexGap flexDirection="column" gap="12px">
+        <Task />
+      </FlexGap>
     </Box>
   )
 }
