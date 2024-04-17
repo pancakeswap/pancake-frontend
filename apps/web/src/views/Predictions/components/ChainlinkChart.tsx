@@ -49,7 +49,7 @@ function useChainlinkLatestRound() {
   })
 
   useEffect(() => {
-    queryClient.invalidateQueries({ queryKey })
+    queryClient.invalidateQueries({ queryKey }, { cancelRefetch: false })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blockNumber, queryClient])
 

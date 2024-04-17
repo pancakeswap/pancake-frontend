@@ -30,7 +30,7 @@ export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: 
   })
 
   useEffect(() => {
-    queryClient.invalidateQueries({ queryKey })
+    queryClient.invalidateQueries({ queryKey }, { cancelRefetch: false })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blockNumber, queryClient])
 
@@ -56,7 +56,7 @@ export const useGetBnbBalance = () => {
   })
 
   useEffect(() => {
-    queryClient.invalidateQueries({ queryKey })
+    queryClient.invalidateQueries({ queryKey }, { cancelRefetch: false })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blockNumber, refetch, queryClient, queryKey.toString()])
 
@@ -78,7 +78,7 @@ export const useGetNativeTokenBalance = () => {
   })
 
   useEffect(() => {
-    queryClient.invalidateQueries({ queryKey })
+    queryClient.invalidateQueries({ queryKey }, { cancelRefetch: false })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blockNumber, refetch, queryClient, queryKey.toString()])
 
