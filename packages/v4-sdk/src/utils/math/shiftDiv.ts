@@ -17,8 +17,6 @@ export const shiftDivRoundUp = (x: bigint, offset: bigint | number, denominator:
 
 const _getEndOfDivRoundDown = (x: bigint, y: bigint, denominator: bigint, prod0: bigint, prod1: bigint): bigint => {
   if (prod1 === 0n) {
-    console.log('prod0', prod0)
-    console.log('denominator', denominator)
     return prod0 / denominator
   }
 
