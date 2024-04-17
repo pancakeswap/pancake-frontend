@@ -7,13 +7,18 @@ import { RemainMessage } from 'views/Quest/components/Reward/RemainMessage'
 import { RewardAmount } from 'views/Quest/components/Reward/RewardAmount'
 import { SuccessMessage } from 'views/Quest/components/Reward/SuccessMessage'
 import { TotalRewards } from 'views/Quest/components/Reward/TotalRewards'
+import { Winners } from 'views/Quest/components/Reward/Winners'
 
 const RewardContainer = styled(Box)`
-  max-width: 368px;
   width: 100%;
-  height: 100vh;
-  padding: 40px 40px 0 40px;
-  border-left: 1px solid ${({ theme }) => theme.colors.input};
+  padding-bottom: 32px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    max-width: 368px;
+    height: 100vh;
+    padding: 40px 40px 0 40px;
+    border-left: 1px solid ${({ theme }) => theme.colors.input};
+  }
 `
 
 const StyledButton = styled(Button)`
@@ -40,6 +45,7 @@ export const Reward = () => {
       </StyledButton>
       <RemainMessage />
       <SuccessMessage />
+      <Winners />
     </RewardContainer>
   )
 }

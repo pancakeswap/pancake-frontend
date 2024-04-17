@@ -1,16 +1,29 @@
-import { Card, Flex, InfoIcon, Text } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Card, Flex, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
 
 export const Countdown = () => {
+  const { t } = useTranslation()
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <Text>
+      {t('When the Quest time expires, the users who are eligible to get the reward will be randomly drawn')}
+    </Text>,
+    {
+      placement: 'top',
+    },
+  )
+
   return (
     <Card style={{ width: '100%', marginBottom: '16px' }}>
-      <Flex flexDirection="column" padding="12px 34px">
-        <Flex m="auto">
+      <Flex flexDirection="column" padding="12px">
+        <Flex m="auto" ref={targetRef}>
           <Text bold mr="4px">
             Lucky Draw
           </Text>
           <InfoIcon color="textSubtle" style={{ alignSelf: 'center' }} />
         </Flex>
-        <Flex>
+        {tooltipVisible && tooltip}
+        <Flex justifyContent="center">
           <Flex width="40px" flexDirection="column" alignItems="center">
             <Text fontSize={['28px']} bold line-height="32px">
               01
