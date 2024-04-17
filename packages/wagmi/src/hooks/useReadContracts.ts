@@ -29,7 +29,7 @@ export function useReadContracts<
       queryClient.invalidateQueries({ queryKey: readContractResult.queryKey }, { cancelRefetch: false })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, queryClient])
+  }, [blockNumber, queryClient, watch])
 
   return readContractResult as UseReadContractsReturnType<contracts, allowFailure, selectData>
 }
