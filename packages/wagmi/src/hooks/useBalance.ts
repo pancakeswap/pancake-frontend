@@ -1,10 +1,19 @@
-import { useBlockNumber, useBalance as useWagmiBalance } from 'wagmi'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
+import {
+  useBlockNumber,
+  useBalance as useWagmiBalance,
+  type Config,
+  type ResolvedRegister,
+  type UseBalanceParameters,
+  type UseBalanceReturnType,
+} from 'wagmi'
 
-import { ExtendFunctionParams } from '../types'
+import { GetBalanceData } from '../types'
 
-export const useBalance: ExtendFunctionParams<typeof useWagmiBalance, { watch?: boolean }> = (params) => {
+export function useBalance<config extends Config = ResolvedRegister['config'], selectData = GetBalanceData>(
+  params: UseBalanceParameters<config, selectData> & { watch?: boolean } = {},
+): UseBalanceReturnType<selectData> {
   const { watch, ...queryParameters } = params
   const queryClient = useQueryClient()
   const { data: blockNumber } = useBlockNumber({ watch })
