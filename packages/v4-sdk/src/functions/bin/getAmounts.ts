@@ -3,6 +3,7 @@ import { mulShiftRoundDown, mulShiftRoundUp } from '../../utils/math/mulShift'
 import { shiftDivRoundDown, shiftDivRoundUp } from '../../utils/math/shiftDiv'
 import { BinPoolState } from './getBinPool'
 import { getFeeAmount } from './getFeeAmount'
+import { getFeeAmountFrom } from './getFeeAmountFrom'
 import { getPriceFromId } from './getPriceFromId'
 
 export const getAmounts = (
@@ -20,7 +21,7 @@ export const getAmounts = (
   amountsOutOfBin: [bigint, bigint]
   totalFees: [bigint, bigint]
 } => {
-  let amountInWithFee = 0n
+  let amountInWithFee = amountIn
   let amountOutOfBin = 0n
   let totalFee = 0n
 
@@ -28,11 +29,12 @@ export const getAmounts = (
 
   const price = getPriceFromId(binPool.activeId, binPool.binStep)
   const binReserveOut = zeroForOne ? binReserves.reserve1 : binReserves.reserve0
+
   let maxAmountIn = zeroForOne
     ? shiftDivRoundUp(binReserveOut, SCALE_OFFSET, price)
     : mulShiftRoundUp(binReserveOut, price, SCALE_OFFSET)
 
-  const maxFee = getFeeAmount(maxAmountIn, binPool.fee)
+  const maxFee = getFeeAmount(maxAmountIn, binPool.swapFee)
 
   maxAmountIn += maxFee
 
@@ -41,7 +43,7 @@ export const getAmounts = (
     amountInWithFee = maxAmountIn
     amountOutOfBin = binReserveOut
   } else {
-    totalFee = getFeeAmount(amountIn, binPool.fee)
+    totalFee = getFeeAmountFrom(amountIn, binPool.swapFee)
     const amountsInWithoutFee = amountIn - totalFee
 
     amountOutOfBin = zeroForOne
