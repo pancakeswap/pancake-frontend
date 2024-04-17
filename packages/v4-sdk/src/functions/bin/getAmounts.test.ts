@@ -18,13 +18,13 @@ const getRandom = (max: number, min = 0): bigint => {
   return BigInt(Math.floor(random * (max - min) + min))
 }
 
-const createBinPool = (fee: bigint, activeId: bigint, reserve0: bigint, reserve1: bigint) => {
+const createBinPool = (swapFee: bigint, activeId: bigint, reserve0: bigint, reserve1: bigint) => {
   return {
     currency0: WNATIVE[56],
     currency1: WNATIVE[56],
     activeId,
     binStep: 10n,
-    fee,
+    swapFee,
     reserveOfBin: {
       [Number(activeId)]: { reserve0, reserve1 },
     },
