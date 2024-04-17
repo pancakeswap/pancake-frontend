@@ -4,10 +4,9 @@ import { unwrappedEth } from 'config/abi/unwrappedEth'
 import { UNWRAPPED_ETH_ADDRESS } from 'config/constants/liquidStaking'
 import dayjs from 'dayjs'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useEffect, useMemo } from 'react'
+import { useReadContract } from '@pancakeswap/wagmi'
+import { useMemo } from 'react'
 import { Address } from 'viem'
-import { useBlockNumber, useReadContract } from 'wagmi'
-import { useQueryClient } from '@tanstack/react-query'
 
 interface UserWithdrawRequest {
   allocated: boolean
@@ -33,10 +32,8 @@ export function useReadWithdrawRequestInfo():
     }
   | undefined {
   const { account, chainId } = useActiveWeb3React()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
-  const queryClient = useQueryClient()
 
-  const { data, queryKey } = useReadContract({
+  const { data } = useReadContract({
     chainId,
     abi: unwrappedEth,
     address: UNWRAPPED_ETH_ADDRESS,
@@ -45,12 +42,8 @@ export function useReadWithdrawRequestInfo():
     query: {
       enabled: !!account,
     },
+    watch: true,
   })
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey }, { cancelRefetch: false })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, queryClient])
 
   const currentTime = dayjs().unix()
 

@@ -1,10 +1,9 @@
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Address } from 'viem'
-import { useBlockNumber, useReadContract } from 'wagmi'
-import { useQueryClient } from '@tanstack/react-query'
+import { useReadContract } from '@pancakeswap/wagmi'
 import { CakeLockStatus, CakePoolType } from '../types'
 import { useCakePoolLockInfo } from './useCakePoolLockInfo'
 import { useCheckIsUserAllowMigrate } from './useCheckIsUserAllowMigrate'
@@ -45,10 +44,8 @@ export const useVeCakeUserInfo = (): {
 } => {
   const veCakeContract = useVeCakeContract()
   const { account } = useAccountActiveChain()
-  const queryClient = useQueryClient()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
 
-  const { data, refetch, queryKey } = useReadContract({
+  const { data, refetch } = useReadContract({
     chainId: veCakeContract?.chain?.id,
     abi: veCakeContract.abi,
     address: veCakeContract.address,
@@ -72,12 +69,8 @@ export const useVeCakeUserInfo = (): {
       },
     },
     args: [account!],
+    watch: true,
   })
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey }, { cancelRefetch: false })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, queryClient])
 
   return {
     data,

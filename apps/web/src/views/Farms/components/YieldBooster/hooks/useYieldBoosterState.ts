@@ -1,13 +1,12 @@
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useBCakeFarmBoosterContract } from 'hooks/useContract'
-import { useCallback, useEffect } from 'react'
+import { useReadContract } from '@pancakeswap/wagmi'
+import { useCallback } from 'react'
 import { useFarmUser } from 'state/farms/hooks'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { useUserBoosterStatus } from 'views/Farms/hooks/useUserBoosterStatus'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
-import { useBlockNumber, useReadContract } from 'wagmi'
-import { useQueryClient } from '@tanstack/react-query'
 
 export enum YieldBoosterState {
   UNCONNECTED,
@@ -25,10 +24,8 @@ export enum YieldBoosterState {
 function useIsPoolActive(pid: number) {
   const farmBoosterContract = useBCakeFarmBoosterContract()
   const { account, chainId } = useAccountActiveChain()
-  const queryClient = useQueryClient()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
 
-  const { data, queryKey, refetch } = useReadContract({
+  const { data, refetch } = useReadContract({
     abi: farmBoosterContract.abi,
     address: farmBoosterContract.address,
     functionName: 'isBoostedPool',
@@ -37,12 +34,8 @@ function useIsPoolActive(pid: number) {
       enabled: !!account,
     },
     chainId,
+    watch: true,
   })
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey }, { cancelRefetch: false })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, queryClient])
 
   return {
     isActivePool: data,

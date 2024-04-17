@@ -4,7 +4,8 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { useEffect, useMemo } from 'react'
 import { Address, erc20Abi } from 'viem'
-import { useAccount, useBalance, useBlockNumber, useReadContract } from 'wagmi'
+import { useAccount, useBlockNumber } from 'wagmi'
+import { useBalance, useReadContract } from '@pancakeswap/wagmi'
 import { useQueryClient } from '@tanstack/react-query'
 import { useActiveChainId } from './useActiveChainId'
 
@@ -14,9 +15,7 @@ const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean) => {
 
 export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: ChainId) => {
   const { address: account } = useAccount()
-  const queryClient = useQueryClient()
   const { chainId } = useActiveChainId()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const { data, status, queryKey, refetch, ...rest } = useReadContract({
     chainId: chainIdOverride || chainId,
@@ -27,12 +26,8 @@ export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: 
     query: {
       enabled: !!account,
     },
+    watch: true,
   })
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey }, { cancelRefetch: false })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, queryClient])
 
   return {
     ...rest,
@@ -44,8 +39,6 @@ export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: 
 
 export const useGetBnbBalance = () => {
   const { address: account } = useAccount()
-  const queryClient = useQueryClient()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const { status, refetch, data, queryKey } = useBalance({
     chainId: ChainId.BSC,
@@ -53,34 +46,24 @@ export const useGetBnbBalance = () => {
     query: {
       enabled: !!account,
     },
+    watch: true,
   })
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey }, { cancelRefetch: false })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, refetch, queryClient, queryKey.toString()])
 
   return { balance: data?.value ? BigInt(data.value) : 0n, fetchStatus: status, refresh: refetch }
 }
 
 export const useGetNativeTokenBalance = () => {
   const { address: account } = useAccount()
-  const queryClient = useQueryClient()
   const { chainId } = useActiveChainId()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
 
-  const { status, refetch, data, queryKey } = useBalance({
+  const { status, refetch, data } = useBalance({
     chainId,
     address: account,
     query: {
       enabled: !!account,
     },
+    watch: true,
   })
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey }, { cancelRefetch: false })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, refetch, queryClient, queryKey.toString()])
 
   return { balance: data?.value ? BigInt(data.value) : 0n, fetchStatus: status, refresh: refetch }
 }

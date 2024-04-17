@@ -25,7 +25,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useGetRoundsByCloseOracleId, useGetSortedRounds } from 'state/predictions/hooks'
 import { NodeRound } from 'state/types'
 import { styled } from 'styled-components'
-import { useBlockNumber, useReadContract, useReadContracts } from 'wagmi'
+import { useReadContracts } from 'wagmi'
+import { useReadContract } from '@pancakeswap/wagmi'
 import { useConfig } from '../context/ConfigProvider'
 import { CHART_DOT_CLICK_EVENT } from '../helpers'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
@@ -34,11 +35,9 @@ import useSwiper from '../hooks/useSwiper'
 function useChainlinkLatestRound() {
   const config = useConfig()
   const { chainId } = useActiveChainId()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
-  const queryClient = useQueryClient()
 
   const chainlinkOracleContract = useChainlinkOracleContract(config?.chainlinkOracleAddress)
-  const { data, queryKey } = useReadContract({
+  const { data } = useReadContract({
     abi: chainlinkOracleABI,
     address: chainlinkOracleContract.address,
     functionName: 'latestRound',
@@ -46,12 +45,8 @@ function useChainlinkLatestRound() {
       enabled: !!chainlinkOracleContract,
     },
     chainId,
+    watch: true,
   })
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey }, { cancelRefetch: false })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, queryClient])
 
   return data
 }
