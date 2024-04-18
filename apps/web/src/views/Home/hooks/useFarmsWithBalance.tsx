@@ -47,14 +47,16 @@ const useFarmsWithBalance = () => {
     async (farms: SerializedFarmPublicData[], accountToCheck: string, contract) => {
       const isUserAccount = accountToCheck.toLowerCase() === account?.toLowerCase()
 
-      const result = await publicClient({ chainId }).multicall({
-        contracts: farms.map((farm) => ({
-          abi: masterChefV2ABI,
-          address: masterChefContract.address,
-          functionName: 'pendingCake',
-          args: [farm.pid, accountToCheck],
-        })),
-      })
+      const result = masterChefContract
+        ? await publicClient({ chainId }).multicall({
+            contracts: farms.map((farm) => ({
+              abi: masterChefV2ABI,
+              address: masterChefContract.address,
+              functionName: 'pendingCake',
+              args: [farm.pid, accountToCheck],
+            })),
+          })
+        : undefined
 
       const bCakeResult = isUserAccount
         ? await publicClient({ chainId }).multicall({
@@ -74,7 +76,7 @@ const useFarmsWithBalance = () => {
       let bCakeIndex = 0
 
       const proxyCakeBalance =
-        contract.address !== masterChefContract.address && bCakeProxy && cake
+        masterChefContract && contract.address !== masterChefContract.address && bCakeProxy && cake
           ? await cake.read.balanceOf([bCakeProxy.address])
           : null
 
@@ -87,7 +89,7 @@ const useFarmsWithBalance = () => {
         }
         return {
           ...farm,
-          balance: new BigNumber((result[index].result as bigint).toString()),
+          balance: result ? new BigNumber((result[index].result as bigint).toString()) : BIG_ZERO,
           bCakeBalance,
         }
       })
@@ -115,7 +117,7 @@ const useFarmsWithBalance = () => {
       }, 0)
       return { farmsWithBalances, totalEarned: totalEarned + proxyCakeBalanceNumber }
     },
-    [bCakeProxy, cake, chainId, masterChefContract?.address, account, signer],
+    [bCakeProxy, cake, chainId, masterChefContract, account, signer],
   )
 
   const {

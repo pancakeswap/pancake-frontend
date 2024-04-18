@@ -23,10 +23,10 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallback } from 'react'
 import { useGasPrice } from 'state/user/hooks'
 import { styled } from 'styled-components'
-import { getMasterChefV2Address } from 'utils/addressHelpers'
 import { bCakeHarvestFarm, harvestFarm } from 'utils/calls'
 import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
 import useFarmsWithBalance, { FarmWithBalance } from 'views/Home/hooks/useFarmsWithBalance'
+import { useMasterchef } from 'hooks/useContract'
 import { getEarningsText } from './EarningsText'
 
 const StyledCard = styled(Card)`
@@ -40,8 +40,6 @@ const StyledCardBody = styled(CardBody)`
   }
 `
 
-const masterChefAddress = getMasterChefV2Address()
-
 interface HarvestCardProps extends TextProps {
   onHarvestStart: () => void | undefined
   onHarvestEnd: () => void | undefined
@@ -54,6 +52,7 @@ const HarvestCard: React.FC<React.PropsWithChildren<HarvestCardProps>> = ({ onHa
   const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
 
   const cakePriceBusd = useCakePrice()
+  const masterChefAddress = useMasterchef()
   const { isMobile } = useMatchBreakpoints()
   const gasPrice = useGasPrice()
   const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
@@ -136,6 +135,7 @@ const HarvestCard: React.FC<React.PropsWithChildren<HarvestCardProps>> = ({ onHa
     t,
     onHarvestStart,
     onHarvestEnd,
+    masterChefAddress,
   ])
 
   return (

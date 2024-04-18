@@ -11,7 +11,7 @@ const useApproveFarm = (lpContract: ReturnType<typeof useERC20>, chainId: number
   const contractAddress = bCakeWrapperAddress
     ? bCakeWrapperAddress ?? '0x'
     : isBscNetwork
-    ? getMasterChefV2Address(chainId)
+    ? getMasterChefV2Address(chainId)!
     : getNonBscVaultAddress(chainId)
 
   const { callWithGasPrice } = useCallWithGasPrice()

@@ -89,7 +89,7 @@ async function getMultiplierFromMC({
   proxyAddress: Address
   masterChefContract: ReturnType<typeof useMasterchef>
 }): Promise<number> {
-  const boostMultiplier = await masterChefContract.read.getBoostMultiplier([proxyAddress, BigInt(pid)])
+  const boostMultiplier = await masterChefContract?.read.getBoostMultiplier([proxyAddress, BigInt(pid)])
 
   if (!boostMultiplier) return 0
 

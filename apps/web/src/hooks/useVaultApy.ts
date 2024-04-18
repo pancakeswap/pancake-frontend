@@ -11,7 +11,7 @@ import { getMasterChefV2Address } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
 import { useQuery } from '@tanstack/react-query'
 
-const masterChefAddress = getMasterChefV2Address()
+const masterChefAddress = getMasterChefV2Address(ChainId.BSC)!
 
 // default
 const DEFAULT_PERFORMANCE_FEE_DECIMALS = 2
