@@ -4,12 +4,24 @@ import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 let initialized = false
 
+// default to bsc
+const DEFAULT_CHAIN_ID = 102
+
 async function init(theme: ReturnType<typeof useTheme>) {
   if (initialized) {
     return
   }
   initialized = true
-  const { bootstrapWidget, themes } = await import('@usdv/usdv-widget')
+  const { bootstrapWidget, themes, mintStore } = await import('@usdv/usdv-widget')
+  const originalGetCurrencies = mintStore.getDstCurrencies.bind(mintStore)
+  mintStore.getDstCurrencies = async (...args: any[]) => {
+    const currencies = await originalGetCurrencies(...args)
+    return currencies.sort((a, b) => {
+      if (a.chainId === DEFAULT_CHAIN_ID) return -1
+      if (b.chainId === DEFAULT_CHAIN_ID) return 1
+      return 0
+    })
+  }
   bootstrapWidget({
     color: 20,
     theme: theme.isDark ? themes.dark : themes.light,
