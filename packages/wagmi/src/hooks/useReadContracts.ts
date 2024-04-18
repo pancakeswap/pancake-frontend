@@ -26,7 +26,7 @@ export function useReadContracts<
 
   useEffect(() => {
     if (watch) {
-      queryClient.invalidateQueries({ queryKey: readContractResult.queryKey }, { cancelRefetch: false })
+      queryClient.invalidateQueries({ queryKey: readContractResult.queryKey, exact: true }, { cancelRefetch: false })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blockNumber, queryClient, watch])
