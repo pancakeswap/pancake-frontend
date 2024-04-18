@@ -13,9 +13,11 @@ async function init(theme: ReturnType<typeof useTheme>) {
   }
   initialized = true
   const { bootstrapWidget, themes, mintStore } = await import('@usdv/usdv-widget')
+  // @ts-ignore
   const originalGetCurrencies = mintStore.getDstCurrencies.bind(mintStore)
-  mintStore.getDstCurrencies = async (...args: any[]) => {
-    const currencies = await originalGetCurrencies(...args)
+  // @ts-ignore
+  mintStore.getDstCurrencies = async (color: number) => {
+    const currencies = await originalGetCurrencies(color)
     return currencies.sort((a, b) => {
       if (a.chainId === DEFAULT_CHAIN_ID) return -1
       if (b.chainId === DEFAULT_CHAIN_ID) return 1
