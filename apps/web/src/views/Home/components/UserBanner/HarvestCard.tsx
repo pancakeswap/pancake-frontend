@@ -24,7 +24,7 @@ import { useCallback } from 'react'
 import { useGasPrice } from 'state/user/hooks'
 import { styled } from 'styled-components'
 import { getMasterChefV2Address } from 'utils/addressHelpers'
-import { harvestFarm } from 'utils/calls'
+import { bCakeHarvestFarm, harvestFarm } from 'utils/calls'
 import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
 import useFarmsWithBalance, { FarmWithBalance } from 'views/Home/hooks/useFarmsWithBalance'
 import { getEarningsText } from './EarningsText'
@@ -74,23 +74,44 @@ const HarvestCard: React.FC<React.PropsWithChildren<HarvestCardProps>> = ({ onHa
     const v2Farms = farmsWithStakedBalance.filter((value) => value && 'pid' in value) as FarmWithBalance[]
     for (let i = 0; i < v2Farms.length; i++) {
       const farmWithBalance = v2Farms[i]
-      // eslint-disable-next-line no-await-in-loop
-      const receipt = await fetchWithCatchTxError(() => {
-        return harvestFarm(
-          // @ts-ignore
-          farmWithBalance.contract,
-          farmWithBalance.pid,
-          gasPrice,
-          farmWithBalance.contract.address !== masterChefAddress ? BOOSTED_FARM_GAS_LIMIT : undefined,
-        )
-      })
-      if (receipt?.status) {
-        toastSuccess(
-          `${t('Harvested')}!`,
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
-          </ToastDescriptionWithTx>,
-        )
+      if (farmWithBalance.balance.gt(0)) {
+        // eslint-disable-next-line no-await-in-loop
+        const receipt = await fetchWithCatchTxError(() => {
+          return harvestFarm(
+            // @ts-ignore
+            farmWithBalance.contract,
+            farmWithBalance.pid,
+            gasPrice,
+            farmWithBalance.contract.address !== masterChefAddress ? BOOSTED_FARM_GAS_LIMIT : undefined,
+          )
+        })
+        if (receipt?.status) {
+          toastSuccess(
+            `${t('Harvested')}!`,
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+            </ToastDescriptionWithTx>,
+          )
+        }
+      }
+      if (farmWithBalance.bCakeBalance.gt(0)) {
+        // eslint-disable-next-line no-await-in-loop
+        const receipt = await fetchWithCatchTxError(() => {
+          return bCakeHarvestFarm(
+            // @ts-ignore
+            farmWithBalance.bCakeContract,
+            gasPrice,
+            BOOSTED_FARM_GAS_LIMIT,
+          )
+        })
+        if (receipt?.status) {
+          toastSuccess(
+            `${t('Harvested')}!`,
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+            </ToastDescriptionWithTx>,
+          )
+        }
       }
     }
 

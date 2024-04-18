@@ -245,7 +245,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         <AtomBox mt="16px">
           <ActionContainer bg="background" flexDirection="column">
             <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
-              <Title>start earning</Title>
+              <Title>{t('Start earning')}</Title>
               {!account ? (
                 <ConnectWalletButton mt="4px" width="100%" />
               ) : (
