@@ -6,6 +6,7 @@ import { PageMeta } from 'components/Layout/Page'
 import { NetworkModal } from 'components/NetworkModal'
 import { FixedSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator/FixedSubgraphHealthIndicator'
 import TransactionsDetailModal from 'components/TransactionDetailModal'
+import { VercelToolbar } from 'components/VercelToolbar'
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
 import useEagerConnect from 'hooks/useEagerConnect'
 import useLockedEndNotification from 'hooks/useLockedEndNotification'
@@ -21,11 +22,11 @@ import Script from 'next/script'
 import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { V4CakeIcon } from 'views/Home/components/V4CakeIcon'
-import { VercelToolbar } from 'components/VercelToolbar'
 
 import { useDataDogRUM } from 'hooks/useDataDogRUM'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
 import { useVercelFeatureFlagOverrides } from 'hooks/useVercelToolbar'
+import { useWeb3WalletView } from 'hooks/useWeb3WalletView'
 import { useInitGlobalWorker } from 'hooks/useWorker'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
@@ -46,6 +47,7 @@ BigNumber.config({
 function GlobalHooks() {
   useInitGlobalWorker()
   useDataDogRUM()
+  useWeb3WalletView()
   useLoadExperimentalFeatures()
   useVercelFeatureFlagOverrides()
   usePollBlockNumber()
