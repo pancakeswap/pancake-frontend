@@ -43,4 +43,20 @@ export const bscTestnetTokens = {
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
+  mockWstEth: new ERC20Token(
+    ChainId.BSC_TESTNET,
+    '0x5dbB9d2D526Ab0C5F8829ad4951FB2DD93e0B62F',
+    18,
+    'wstETH',
+    'MOCK Oracle Token',
+    'https://pancakeswap.finance/',
+  ),
+  mockMstEth: new ERC20Token(
+    ChainId.BSC_TESTNET,
+    '0xC97642F407Caea4f31464aB005276E5fb215C6fa',
+    18,
+    'mstETH',
+    'MOCK Oracle Token',
+    'https://pancakeswap.finance/',
+  ),
 }

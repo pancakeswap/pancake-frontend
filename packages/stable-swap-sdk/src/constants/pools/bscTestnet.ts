@@ -55,4 +55,14 @@ export const pools: StableSwapPool[] = [
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
   },
+  {
+    lpSymbol: 'wstETH-mstETH LP',
+    lpAddress: '0x157b06E4D9501071a401234F117edEe913217833',
+    token: bscTestnetTokens.mockWstEth, // coins[0]
+    quoteToken: bscTestnetTokens.mockMstEth, // coins[1]
+    stableSwapAddress: '0x157b06E4D9501071a401234F117edEe913217833',
+    infoStableSwapAddress: '0x856E8c4E33517af9A1a4cd58face8F74F6864e47',
+    stableLpFee: 0.0002,
+    stableLpFeeRateOfTotalFee: 0.5,
+  },
 ]

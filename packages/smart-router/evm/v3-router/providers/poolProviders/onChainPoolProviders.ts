@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { BigintIsh, Currency, CurrencyAmount, Percent, erc20Abi } from '@pancakeswap/sdk'
-import { getStableSwapPools } from '@pancakeswap/stable-swap-sdk'
+import { getStableSwapPools, FEE_DENOMINATOR } from '@pancakeswap/stable-swap-sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { DEPLOYER_ADDRESSES, FeeAmount, pancakeV3PoolABI, parseProtocolFees } from '@pancakeswap/v3-sdk'
 import { Abi, Address } from 'viem'
@@ -79,14 +79,9 @@ export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, PoolMe
       functionName: 'fee',
       args: [],
     },
-    {
-      address,
-      functionName: 'FEE_DENOMINATOR',
-      args: [],
-    },
   ],
-  buildPool: ({ currencyA, currencyB, address }, [balance0, balance1, a, fee, feeDenominator]) => {
-    if (!balance0 || !balance1 || !a || !fee || !feeDenominator) {
+  buildPool: ({ currencyA, currencyB, address }, [balance0, balance1, a, fee]) => {
+    if (!balance0 || !balance1 || !a || !fee) {
       return null
     }
     const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
@@ -100,7 +95,7 @@ export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, PoolMe
         CurrencyAmount.fromRawAmount(token1, balance1.toString()),
       ],
       amplifier: BigInt(a.toString()),
-      fee: new Percent(BigInt(fee.toString()), BigInt(feeDenominator.toString())),
+      fee: new Percent(BigInt(fee.toString()), FEE_DENOMINATOR),
     }
   },
 })
