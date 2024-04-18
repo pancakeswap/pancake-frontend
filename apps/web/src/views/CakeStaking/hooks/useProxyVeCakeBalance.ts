@@ -1,10 +1,10 @@
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { getVeCakeAddress } from 'utils/addressHelpers'
 import { Address, erc20Abi, isAddressEqual, zeroAddress } from 'viem'
-import { useBlockNumber, useReadContract } from 'wagmi'
+import { useReadContract } from '@pancakeswap/wagmi'
 import { useVeCakeUserInfo } from './useVeCakeUserInfo'
 
 export const useProxyVeCakeBalance = () => {
@@ -14,7 +14,6 @@ export const useProxyVeCakeBalance = () => {
   const hasProxy = useMemo(() => {
     return userInfo && userInfo?.cakePoolProxy && !isAddressEqual(userInfo!.cakePoolProxy, zeroAddress)
   }, [userInfo])
-  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const { status, refetch, data } = useReadContract({
     chainId,
@@ -25,11 +24,8 @@ export const useProxyVeCakeBalance = () => {
     query: {
       enabled: hasProxy,
     },
+    watch: true,
   })
-
-  useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
 
   return {
     balance: useMemo(() => (typeof data !== 'undefined' ? new BigNumber(data.toString()) : BIG_ZERO), [data]),

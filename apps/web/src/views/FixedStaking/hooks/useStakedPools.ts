@@ -5,23 +5,23 @@ import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useFixedStakingContract, useVaultPoolContract } from 'hooks/useContract'
 import toNumber from 'lodash/toNumber'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useSingleContractMultipleData } from 'state/multicall/hooks'
 import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 import { getAddress } from 'viem'
-import { useAccount, useBlockNumber, useReadContract } from 'wagmi'
+import { useAccount } from 'wagmi'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useReadContract } from '@pancakeswap/wagmi'
 import { DISABLED_POOLS } from '../constant'
 import { FixedStakingPool, StakedPosition } from '../type'
 
 export function useCurrentDay(): number {
   const fixedStakingContract = useFixedStakingContract()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const { chainId } = useActiveChainId()
 
-  const { data, refetch } = useReadContract({
+  const { data } = useReadContract({
     abi: fixedStakingContract.abi,
     address: fixedStakingContract.address as `0x${string}`,
     functionName: 'getCurrentDay',
@@ -29,11 +29,8 @@ export function useCurrentDay(): number {
       enabled: true,
     },
     chainId,
+    watch: true,
   })
-
-  useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
 
   return (data || 0) as number
 }

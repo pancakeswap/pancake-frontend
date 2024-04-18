@@ -2,9 +2,9 @@ import { PositionDetails } from '@pancakeswap/farms'
 import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
+import { useReadContracts, useReadContract } from '@pancakeswap/wagmi'
 import { useEffect, useMemo } from 'react'
 import { Address } from 'viem'
-import { useBlockNumber, useReadContract, useReadContracts } from 'wagmi'
 
 interface UseV3PositionsResults {
   loading: boolean
@@ -36,23 +36,15 @@ export function useV3PositionsFromTokenIds(tokenIds: bigint[] | undefined): UseV
         : [],
     [chainId, positionManager, tokenIds],
   )
-  const { data: blockNumber } = useBlockNumber({ watch: true })
 
-  const {
-    isLoading,
-    data: positions = [],
-    refetch,
-  } = useReadContracts({
+  const { isLoading, data: positions = [] } = useReadContracts({
     contracts: inputs,
     allowFailure: true,
     query: {
       enabled: !!inputs.length,
     },
+    watch: true,
   })
-
-  useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
 
   return {
     loading: isLoading,
@@ -109,7 +101,6 @@ export function useV3TokenIdsByAccount(
   account?: Address | null | undefined,
 ): { tokenIds: bigint[]; loading: boolean } {
   const { chainId } = useActiveChainId()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const {
     isLoading: balanceLoading,
@@ -124,11 +115,8 @@ export function useV3TokenIdsByAccount(
     args: [account!],
     functionName: 'balanceOf',
     chainId,
+    watch: true,
   })
-
-  useEffect(() => {
-    refetchBalance()
-  }, [blockNumber, refetchBalance])
 
   const tokenIdsArgs = useMemo(() => {
     if (accountBalance && account) {
@@ -172,7 +160,7 @@ export function useV3TokenIdsByAccount(
       refetchBalance()
       refetchTokenIds()
     }
-  }, [account, refetchBalance, refetchTokenIds, blockNumber])
+  }, [account, refetchBalance, refetchTokenIds])
 
   return {
     tokenIds: useMemo(

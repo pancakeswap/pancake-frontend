@@ -5,11 +5,10 @@ import isEmpty from 'lodash/isEmpty'
 import shuffle from 'lodash/shuffle'
 import { safeGetAddress } from 'utils'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import { useBlockNumber, useReadContracts } from 'wagmi'
 
 import fromPairs from 'lodash/fromPairs'
-import { useEffect } from 'react'
 import { erc721Abi } from 'viem'
+import { useReadContracts } from '@pancakeswap/wagmi'
 import { nftMarketActivityFiltersAtom, nftMarketFiltersAtom, tryVideoNftMediaAtom } from './atoms'
 import { getCollection, getCollections } from './helpers'
 import { ApiCollections, Collection, MarketEvent, NftAttribute, NftToken } from './types'
@@ -59,9 +58,7 @@ export const useGetShuffledCollections = (): { data: Collection[]; status: 'pend
 }
 
 export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
-  const { data: blockNumber } = useBlockNumber({ watch: true })
-
-  const { data, refetch } = useReadContracts({
+  const { data } = useReadContracts({
     contracts: nftsInWallet.map(
       (f) =>
         ({
@@ -71,11 +68,8 @@ export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
           args: [BigInt(f.tokenId)],
         } as const),
     ),
+    watch: true,
   })
-
-  useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
 
   const profileAddress = getPancakeProfileAddress()
 

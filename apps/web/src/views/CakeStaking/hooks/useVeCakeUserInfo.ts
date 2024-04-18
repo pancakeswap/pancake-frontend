@@ -1,9 +1,9 @@
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Address } from 'viem'
-import { useBlockNumber, useReadContract } from 'wagmi'
+import { useReadContract } from '@pancakeswap/wagmi'
 import { CakeLockStatus, CakePoolType } from '../types'
 import { useCakePoolLockInfo } from './useCakePoolLockInfo'
 import { useCheckIsUserAllowMigrate } from './useCheckIsUserAllowMigrate'
@@ -44,7 +44,6 @@ export const useVeCakeUserInfo = (): {
 } => {
   const veCakeContract = useVeCakeContract()
   const { account } = useAccountActiveChain()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const { data, refetch } = useReadContract({
     chainId: veCakeContract?.chain?.id,
@@ -70,11 +69,8 @@ export const useVeCakeUserInfo = (): {
       },
     },
     args: [account!],
+    watch: true,
   })
-
-  useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
 
   return {
     data,

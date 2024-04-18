@@ -2350,6 +2350,9 @@ importers:
 
   packages/wagmi:
     dependencies:
+      '@tanstack/react-query':
+        specifier: ^5.28.4
+        version: 5.29.2(react@18.2.0)
       '@walletconnect/ethereum-provider':
         specifier: ^2.11.3
         version: 2.12.2(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0)

@@ -2,9 +2,10 @@ import { ChainId } from '@pancakeswap/chains'
 import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Address, erc20Abi } from 'viem'
-import { useAccount, useBalance, useBlockNumber, useReadContract } from 'wagmi'
+import { useAccount } from 'wagmi'
+import { useBalance, useReadContract } from '@pancakeswap/wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
 const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean) => {
@@ -14,7 +15,6 @@ const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean) => {
 export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: ChainId) => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const { data, status, refetch, ...rest } = useReadContract({
     chainId: chainIdOverride || chainId,
@@ -25,11 +25,8 @@ export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: 
     query: {
       enabled: !!account,
     },
+    watch: true,
   })
-
-  useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
 
   return {
     ...rest,
@@ -41,7 +38,6 @@ export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: 
 
 export const useGetBnbBalance = () => {
   const { address: account } = useAccount()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const { status, refetch, data } = useBalance({
     chainId: ChainId.BSC,
@@ -49,11 +45,8 @@ export const useGetBnbBalance = () => {
     query: {
       enabled: !!account,
     },
+    watch: true,
   })
-
-  useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
 
   return { balance: data?.value ? BigInt(data.value) : 0n, fetchStatus: status, refresh: refetch }
 }
@@ -61,7 +54,6 @@ export const useGetBnbBalance = () => {
 export const useGetNativeTokenBalance = () => {
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
-  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const { status, refetch, data } = useBalance({
     chainId,
@@ -69,11 +61,8 @@ export const useGetNativeTokenBalance = () => {
     query: {
       enabled: !!account,
     },
+    watch: true,
   })
-
-  useEffect(() => {
-    refetch()
-  }, [blockNumber, refetch])
 
   return { balance: data?.value ? BigInt(data.value) : 0n, fetchStatus: status, refresh: refetch }
 }
