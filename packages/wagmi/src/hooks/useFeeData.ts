@@ -20,7 +20,7 @@ export function useFeeData<
 ): UseEstimateFeesPerGasReturnType<type, selectData> {
   const { watch, ...queryParameters } = parameters
   const queryClient = useQueryClient()
-  const { data: blockNumber } = useBlockNumber({ watch })
+  const { data: blockNumber } = useBlockNumber({ watch, scopeKey: 'blockNumber' })
 
   const readContractResult = useWagmiBalance(queryParameters as any)
 
