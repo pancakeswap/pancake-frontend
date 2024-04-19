@@ -17,6 +17,7 @@ test('exports', () => {
       "isStableSwapSupported",
       "STABLE_SUPPORTED_CHAIN_IDS",
       "ONE_HUNDRED_PERCENT",
+      "FEE_DENOMINATOR",
     ]
   `)
 })
