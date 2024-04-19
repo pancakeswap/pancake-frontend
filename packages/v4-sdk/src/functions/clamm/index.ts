@@ -24,12 +24,14 @@ export const swap = ({
 }) => {
   invariant(amountIn.greaterThan(0), 'AMOUNT_IN')
 
-  while (true) {
-    const { reserve0, reserve1 } = pool.reserveOfBin[pool.activeId.toString()]
-    const reserve = zeroForOne ? reserve0 : reserve1
-    if (reserve !== 0n) {
-      const amountOut = zeroForOne ? reserve1 : reserve0
-      return amountOut
-    }
-  }
+  throw new Error('Not implemented yet')
+
+  // while (true) {
+  //   const { reserve0, reserve1 } = pool.reserveOfBin[pool.activeId.toString()]
+  //   const reserve = zeroForOne ? reserve0 : reserve1
+  //   if (reserve !== 0n) {
+  //     const amountOut = zeroForOne ? reserve1 : reserve0
+  //     return amountOut
+  //   }
+  // }
 }
