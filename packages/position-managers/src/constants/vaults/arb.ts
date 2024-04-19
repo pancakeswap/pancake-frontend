@@ -5,6 +5,27 @@ import { MANAGER } from '../managers'
 
 export const vaults: VaultConfig[] = [
   {
+    id: 20,
+    idByManager: 20,
+    name: 'DEFIEDGE',
+    bCakeWrapperAddress: '0x968EAf5e7cf26419129f9aEC8B28BC6BfE83057F',
+    address: '0x968EAf5e7cf26419129f9aEC8B28BC6BfE83057F',
+    vaultAddress: '0x7B89B8c243bd56301B0B749a16B071A8285203c8',
+    adapterAddress: '0xFDb02b3dEABb11b7F6377e264b3D041dD1BcfD82',
+    currencyA: arbitrumTokens.weth,
+    currencyB: arbitrumTokens.mgp,
+    earningToken: arbitrumTokens.cake,
+    feeTier: FeeAmount.MEDIUM,
+    strategy: Strategy.ALO,
+    manager: MANAGER.DEFIEDGE,
+    isSingleDepositToken: false,
+    allowDepositToken0: true,
+    allowDepositToken1: true,
+    managerInfoUrl: 'https://www.defiedge.io/',
+    strategyInfoUrl: 'https://docs.defiedge.io/category/strategy-manager',
+    learnMoreAboutUrl: 'https://docs.defiedge.io/category/strategy-manager',
+  },
+  {
     id: 19,
     idByManager: 19,
     name: 'DEFIEDGE',

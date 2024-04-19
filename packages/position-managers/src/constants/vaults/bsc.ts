@@ -5,6 +5,27 @@ import { MANAGER } from '../managers'
 
 export const vaults: VaultConfig[] = [
   {
+    id: 12,
+    idByManager: 3,
+    name: 'DEFIEDGE',
+    bCakeWrapperAddress: '0x04F4f6E63b830EAf750888a847C03532601c60C4',
+    address: '0x04F4f6E63b830EAf750888a847C03532601c60C4',
+    adapterAddress: '0x278c522CB3EcF687CA4cA279F77aD17A093f0fFe',
+    vaultAddress: '0xBc5Bbf09F1d20724E083E75B92E48073172576f7',
+    currencyA: bscTokens.ckp,
+    currencyB: bscTokens.wbnb,
+    earningToken: bscTokens.cake,
+    feeTier: FeeAmount.MEDIUM,
+    strategy: Strategy.ALO,
+    manager: MANAGER.DEFIEDGE,
+    isSingleDepositToken: false,
+    allowDepositToken0: true,
+    allowDepositToken1: true,
+    managerInfoUrl: 'https://www.defiedge.io/',
+    strategyInfoUrl: 'https://docs.defiedge.io/category/strategy-manager',
+    learnMoreAboutUrl: 'https://docs.defiedge.io/category/strategy-manager',
+  },
+  {
     id: 19,
     idByManager: 11,
     name: 'BRIL',
@@ -159,7 +180,7 @@ export const vaults: VaultConfig[] = [
   },
   {
     id: 13,
-    idByManager: 7,
+    idByManager: 2,
     name: 'DEFIEDGE',
     address: '0x72A326D1e71Ff5c52849e3F27F7CFdA01eB27Fe7',
     adapterAddress: '0xeC0cc9D2dfBc1Ba36B2843A8BCB3aF7dd4FdB891',
