@@ -3,7 +3,7 @@ import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { FetchStatus } from 'config/constants/types'
 import { useErc721CollectionContract } from 'hooks/useContract'
 import { useCallback } from 'react'
-import { getNftApi, getNftsMarketData, getNftsOnChainMarketData } from 'state/nftMarket/helpers'
+import { getCollectionApi, getNftApi, getNftsMarketData, getNftsOnChainMarketData } from 'state/nftMarket/helpers'
 import { NftLocation, NftToken, TokenMarketData } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
 import { safeGetAddress } from 'utils'
@@ -57,10 +57,11 @@ export const useCompleteNft = (collectionAddress: Address | undefined, tokenId: 
     queryFn: async () => {
       const metadata = await getNftApi(collectionAddress!, tokenId)
       if (metadata) {
+        const collectionMetadata = await getCollectionApi(collectionAddress!)
         const basicNft: NftToken = {
           tokenId,
           collectionAddress: collectionAddress!,
-          collectionName: metadata.collection.name,
+          collectionName: collectionMetadata?.name || metadata.collection.name,
           name: metadata.name,
           description: metadata.description,
           image: metadata.image,
