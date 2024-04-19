@@ -81,7 +81,7 @@ export const swap = (
   }
 }
 
-export const getSwapIn = (binPool: BinPoolState, amountOut: bigint, zeroForOne: bool) => {
+export const getSwapIn = (binPool: BinPoolState, amountOut: bigint, zeroForOne: boolean) => {
   let id = binPool.activeId
   let amountOutLeft = amountOut
   let amountIn = 0n
@@ -122,7 +122,7 @@ export const getSwapIn = (binPool: BinPoolState, amountOut: bigint, zeroForOne: 
   }
 }
 
-export const getSwapOut = (binPool: BinPoolState, amountIn: bigint, zeroForOne: bool) => {
+export const getSwapOut = (binPool: BinPoolState, amountIn: bigint, zeroForOne: boolean) => {
   let id = binPool.activeId
   let amountInLeft = amountIn
   let amountOut = 0n
