@@ -1,14 +1,49 @@
-import { AllowanceTransfer, Permit, generatePermitTypedData, getPermit2Address } from '@pancakeswap/permit2-sdk'
+import {
+  AllowanceTransfer,
+  Permit,
+  Permit2ABI,
+  generatePermitTypedData,
+  getPermit2Address,
+} from '@pancakeswap/permit2-sdk'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { useCallback } from 'react'
+import { publicClient } from 'utils/viem'
 import { Address, isHex } from 'viem'
-import { useSignTypedData } from 'wagmi'
+import { useSignTypedData, useWalletClient } from 'wagmi'
 import useAccountActiveChain from './useAccountActiveChain'
+import { useIsContract } from './useIsContract'
+
+const useAllowanceTransferPermit = () => {
+  const { account, chainId } = useAccountActiveChain()
+  const { data: walletClient } = useWalletClient()
+
+  return useCallback(
+    async (permit: Permit) => {
+      if (!chainId) throw new Error('PERMIT: missing chainId')
+      if (!account) throw new Error('PERMIT: missing account')
+      const permit2Address = getPermit2Address(chainId)
+      if (!permit2Address) throw new Error('PERMIT: missing permit2Address')
+
+      const { amount, token, expiration } = permit.details
+
+      const { request } = await publicClient({ chainId }).simulateContract({
+        address: permit2Address,
+        abi: Permit2ABI,
+        functionName: 'approve',
+        args: [token as Address, permit.spender as Address, BigInt(amount), Number(expiration)],
+      })
+      await walletClient?.writeContract(request)
+    },
+    [account, chainId, walletClient],
+  )
+}
 
 export const useWritePermit = (token?: Token, spender?: Address, nonce?: number) => {
   const { account, chainId } = useAccountActiveChain()
+  const safeWritePermit = useAllowanceTransferPermit()
   const { signTypedDataAsync } = useSignTypedData()
+  const isSmartAccount = useIsContract(account)
 
   return useCallback(async (): Promise<Permit2Signature> => {
     if (!chainId) throw new Error('PERMIT: missing chainId')
@@ -18,6 +53,15 @@ export const useWritePermit = (token?: Token, spender?: Address, nonce?: number)
     if (nonce === undefined) throw new Error('PERMIT: missing nonce')
 
     const permit: Permit = generatePermitTypedData(token, nonce, spender)
+
+    if (isSmartAccount) {
+      await safeWritePermit(permit)
+      return {
+        ...permit,
+        signature: '0x',
+      }
+    }
+
     const {
       domain,
       types,
@@ -39,5 +83,5 @@ export const useWritePermit = (token?: Token, spender?: Address, nonce?: number)
       ...permit,
       signature,
     }
-  }, [account, chainId, nonce, signTypedDataAsync, spender, token])
+  }, [account, chainId, isSmartAccount, nonce, safeWritePermit, signTypedDataAsync, spender, token])
 }
