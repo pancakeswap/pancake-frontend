@@ -79,7 +79,7 @@ const LayerZero = ({ isCake }: { isCake?: boolean }) => {
       <link rel="stylesheet" href={`${LAYER_ZERO_JS.css}`} />
       {show && (
         <Box width={['100%', null, '420px']} m="auto">
-          <Message variant="warning" mb="16px">
+          <Message variant="warning" m={['16px', '16px', '0 0 16px 0']}>
             <MessageText>
               Outbound transfers from Polygon zkEVM are subject to a 7 days delay for block confirmations.
             </MessageText>
