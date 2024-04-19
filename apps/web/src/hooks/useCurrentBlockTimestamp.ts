@@ -1,11 +1,7 @@
-import { useSingleCallResult } from '../state/multicall/hooks'
-import { useMulticallContract } from './useContract'
+import { useCurrentBlockTimestamp as useBlockTimestamp } from 'state/block/hooks'
 
 // gets the current timestamp from the blockchain
 export default function useCurrentBlockTimestamp(): bigint | undefined {
-  const multicall = useMulticallContract()
-  return useSingleCallResult({
-    contract: multicall,
-    functionName: 'getCurrentBlockTimestamp',
-  })?.result
+  const timestamp = useBlockTimestamp()
+  return timestamp ? BigInt(timestamp) : undefined
 }

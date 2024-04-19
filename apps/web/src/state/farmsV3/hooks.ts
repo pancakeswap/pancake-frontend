@@ -224,10 +224,10 @@ export const useStakedPositionsByUser = (stakedTokenIds: bigint[]) => {
   }, [account, masterchefV3?.abi, stakedTokenIds, chainId])
 
   const { data } = useQuery<bigint[]>({
-    queryKey: ['mcv3-harvest', harvestCalls],
+    queryKey: ['mcv3-harvest', ...harvestCalls],
 
     queryFn: () => {
-      if (!masterchefV3) return []
+      if (!masterchefV3 || !harvestCalls.length) return []
 
       return masterchefV3?.simulate.multicall([harvestCalls], { account, value: 0n }).then((res) => {
         return res.result
