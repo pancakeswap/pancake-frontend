@@ -75,7 +75,11 @@ const PerpetualBanner = () => {
   }, [isMobile, code])
 
   return (
-    <S.Wrapper>
+    <S.Wrapper
+      style={{
+        background: `linear-gradient(140deg, #7645d9 0%, #452a7a 100%)`,
+      }}
+    >
       <S.Inner>
         <S.LeftWrapper>
           <S.StyledSubheading ref={headerRef}>{t('Perpetual Futures')}</S.StyledSubheading>
