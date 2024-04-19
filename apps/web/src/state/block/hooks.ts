@@ -1,7 +1,8 @@
 import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 // eslint-disable-next-line camelcase
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { usePublicClient, useWatchBlockNumber } from 'wagmi'
+import { useBlock, usePublicClient, useWatchBlockNumber } from 'wagmi'
+import { useEffect } from 'react'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
@@ -10,35 +11,39 @@ const REFRESH_BLOCK_INTERVAL = 6000
 export const usePollBlockNumber = () => {
   const queryClient = useQueryClient()
   const { chainId } = useActiveChainId()
-  const provider = usePublicClient({ chainId })
+  const { data: block } = useBlock({
+    chainId,
+  })
+
+  useEffect(() => {
+    if (!block) {
+      return
+    }
+
+    const { number: blockNumber, timestamp: blockTimestamp } = block
+    queryClient.setQueryData(['blockNumber', chainId], blockNumber)
+    if (
+      !queryClient.getQueryCache().find({
+        queryKey: ['initialBlockNumber', chainId],
+      })?.state?.data
+    ) {
+      queryClient.setQueryData(['initialBlockNumber', chainId], blockNumber)
+    }
+
+    if (
+      !queryClient.getQueryCache().find({
+        queryKey: ['initialBlockTimestamp', chainId],
+      })?.state?.data
+    ) {
+      queryClient.setQueryData(['initialBlockTimestamp', chainId], Number(blockTimestamp))
+    }
+  }, [chainId, block, queryClient])
+
   useWatchBlockNumber({
     chainId,
-    emitOnBegin: true,
     onBlockNumber: (data) => {
       const blockNumber = Number(data)
       queryClient.setQueryData(['blockNumber', chainId], blockNumber)
-
-      if (
-        !queryClient.getQueryCache().find({
-          queryKey: ['initialBlockNumber', chainId],
-        })?.state?.data
-      ) {
-        queryClient.setQueryData(['initialBlockNumber', chainId], blockNumber)
-      }
-
-      if (
-        !queryClient.getQueryCache().find({
-          queryKey: ['initialBlockTimestamp', chainId],
-        })?.state?.data
-      ) {
-        const fetchInitialBlockTimestamp = async () => {
-          if (provider) {
-            const block = await provider.getBlock({ blockNumber: data })
-            queryClient.setQueryData(['initialBlockTimestamp', chainId], Number(block.timestamp))
-          }
-        }
-        fetchInitialBlockTimestamp()
-      }
     },
   })
 
