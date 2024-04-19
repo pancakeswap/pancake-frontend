@@ -1,11 +1,9 @@
 import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useBlock, usePublicClient, useWatchBlocks, useBlockNumber } from 'wagmi'
+import { useBlock, useWatchBlocks, useBlockNumber } from 'wagmi'
 import { useEffect } from 'react'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
-
-const REFRESH_BLOCK_INTERVAL = 6000
 
 export const usePollBlockNumber = () => {
   const queryClient = useQueryClient()
@@ -117,7 +115,6 @@ export const useChainCurrentBlock = (chainId: number) => {
   const isTargetDifferent = Boolean(chainId && activeChainId !== chainId)
   const { data: currentBlock } = useBlockNumber({
     chainId,
-    blockTag: 'latest',
     watch: true,
     query: {
       enabled: Boolean(isTargetDifferent),
