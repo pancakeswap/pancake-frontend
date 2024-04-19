@@ -16,12 +16,10 @@ export type BinPool = {
 export const swap = ({
   pool,
   zeroForOne,
-  binStep,
   amountIn,
 }: {
   pool: BinPool
   zeroForOne: boolean
-  binStep: bigint
   amountIn: CurrencyAmount<Currency>
 }) => {
   invariant(amountIn.greaterThan(0), 'AMOUNT_IN')
