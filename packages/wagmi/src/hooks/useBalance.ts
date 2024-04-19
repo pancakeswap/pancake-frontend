@@ -16,7 +16,7 @@ export function useBalance<config extends Config = ResolvedRegister['config'], s
 ): UseBalanceReturnType<selectData> {
   const { watch, ...queryParameters } = params
   const queryClient = useQueryClient()
-  const { data: blockNumber } = useBlockNumber({ watch, scopeKey: 'blockNumber' })
+  const { data: blockNumber } = useBlockNumber({ watch })
 
   const readContractResult = useWagmiBalance(queryParameters)
 

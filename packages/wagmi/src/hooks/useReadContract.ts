@@ -22,7 +22,7 @@ export function useReadContract<
 ): UseReadContractReturnType<abi, functionName, args, selectData> {
   const { watch, ...queryParameters } = parameters
   const queryClient = useQueryClient()
-  const { data: blockNumber } = useBlockNumber({ watch, scopeKey: 'blockNumber' })
+  const { data: blockNumber } = useBlockNumber({ watch })
 
   const readContractResult = useWagmiReadContract(queryParameters as any)
 
