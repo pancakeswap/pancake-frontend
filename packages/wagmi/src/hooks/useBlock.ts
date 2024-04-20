@@ -81,7 +81,7 @@ export function useBlockNumber({
 }
 
 export function useWatchedBlockNumber({ chainId }: Omit<Params, 'enabled'>) {
-  return useQuery({
+  return useQuery<bigint>({
     queryKey: getBlockNumberQueryKey(chainId),
     enabled: false,
     refetchOnReconnect: false,
@@ -91,7 +91,7 @@ export function useWatchedBlockNumber({ chainId }: Omit<Params, 'enabled'>) {
 }
 
 export function useBlockTimestamp({ chainId }: Omit<Params, 'enabled'>) {
-  return useQuery({
+  return useQuery<number>({
     queryKey: getBlockTimestampQueryKey(chainId),
     enabled: false,
     refetchOnReconnect: false,
@@ -101,7 +101,7 @@ export function useBlockTimestamp({ chainId }: Omit<Params, 'enabled'>) {
 }
 
 export function useInitialBlockNumber({ chainId }: Omit<Params, 'enabled'>) {
-  return useQuery({
+  return useQuery<bigint>({
     queryKey: getInitialBlockNumberQueryKey(chainId),
     enabled: false,
     refetchOnReconnect: false,
@@ -111,7 +111,7 @@ export function useInitialBlockNumber({ chainId }: Omit<Params, 'enabled'>) {
 }
 
 export function useInitialBlockTimestamp({ chainId }: Omit<Params, 'enabled'>) {
-  return useQuery({
+  return useQuery<number>({
     queryKey: getInitialBlockTimestampQueryKey(chainId),
     enabled: false,
     refetchOnReconnect: false,
