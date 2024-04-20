@@ -1,5 +1,4 @@
 import {
-  useBlockNumber,
   useBalance as useWagmiBalance,
   ResolvedRegister,
   Config,
@@ -11,6 +10,8 @@ import { EstimateFeesPerGasData } from 'wagmi/query'
 import { useEffect } from 'react'
 import type { FeeValuesType } from 'viem'
 
+import { useBlockNumber } from './useBlock'
+
 export function useFeeData<
   config extends Config = ResolvedRegister['config'],
   type extends FeeValuesType = 'eip1559',
@@ -20,7 +21,7 @@ export function useFeeData<
 ): UseEstimateFeesPerGasReturnType<type, selectData> {
   const { watch, ...queryParameters } = parameters
   const queryClient = useQueryClient()
-  const { data: blockNumber } = useBlockNumber({ watch })
+  const { data: blockNumber } = useBlockNumber({ watch, chainId: parameters.chainId })
 
   const readContractResult = useWagmiBalance(queryParameters as any)
 
