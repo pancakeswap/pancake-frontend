@@ -2,7 +2,6 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import type { Abi, ContractFunctionArgs, ContractFunctionName } from 'viem'
 import {
-  useBlockNumber,
   useReadContract as useWagmiReadContract,
   type Config,
   type ResolvedRegister,
@@ -10,6 +9,8 @@ import {
   type UseReadContractReturnType,
 } from 'wagmi'
 import type { ReadContractData } from 'wagmi/query'
+
+import { useBlockNumber } from './useBlock'
 
 export function useReadContract<
   const abi extends Abi | readonly unknown[],
@@ -22,7 +23,7 @@ export function useReadContract<
 ): UseReadContractReturnType<abi, functionName, args, selectData> {
   const { watch, ...queryParameters } = parameters
   const queryClient = useQueryClient()
-  const { data: blockNumber } = useBlockNumber({ watch })
+  const { data: blockNumber } = useBlockNumber({ chainId: parameters.chainId, watch })
 
   const readContractResult = useWagmiReadContract(queryParameters as any)
 

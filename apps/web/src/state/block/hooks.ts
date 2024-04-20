@@ -1,73 +1,27 @@
 import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useBlock, useWatchBlocks, useBlockNumber } from 'wagmi'
-import { useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useBlockNumber as useWagmiBlockNumber } from 'wagmi'
+import {
+  useWatchBlock,
+  useBlockNumber,
+  useBlockTimestamp,
+  useInitialBlockNumber,
+  useInitialBlockTimestamp as useInitBlockTimestamp,
+} from '@pancakeswap/wagmi'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
 export const usePollBlockNumber = () => {
-  const queryClient = useQueryClient()
   const { chainId } = useActiveChainId()
-  const { data: initialBlock } = useBlock({
+
+  useWatchBlock({
     chainId,
-    blockTag: 'latest',
+    enabled: true,
   })
 
-  useEffect(() => {
-    if (!initialBlock) {
-      return
-    }
-
-    const { number: blockNumber, timestamp: blockTimestamp } = initialBlock
-    queryClient.setQueryData(['blockNumber', chainId], blockNumber)
-    if (
-      !queryClient.getQueryCache().find({
-        queryKey: ['initialBlockNumber', chainId],
-      })?.state?.data
-    ) {
-      queryClient.setQueryData(['initialBlockNumber', chainId], blockNumber)
-    }
-
-    if (
-      !queryClient.getQueryCache().find({
-        queryKey: ['initialBlockTimestamp', chainId],
-      })?.state?.data
-    ) {
-      queryClient.setQueryData(['initialBlockTimestamp', chainId], Number(blockTimestamp))
-    }
-  }, [chainId, initialBlock, queryClient])
-
-  useWatchBlocks({
+  const { data: blockNumber } = useBlockNumber({
     chainId,
-    blockTag: 'latest',
-    onBlock: (data) => {
-      const blockNumber = Number(data.number)
-      const timestamp = Number(data.timestamp)
-      queryClient.setQueryData(['blockNumber', chainId], blockNumber)
-      queryClient.setQueryData(['blockTimestamp', chainId], timestamp)
-    },
-  })
-
-  const { data: blockNumber } = useQuery({
-    queryKey: ['blockNumber', chainId],
-    enabled: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  })
-
-  useQuery({
-    queryKey: ['blockNumberFetcher', chainId],
-
-    queryFn: async () => {
-      queryClient.setQueryData(['blockNumber', chainId], Number(blockNumber))
-      return null
-    },
-
-    enabled: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    watch: true,
   })
 
   useQuery({
@@ -87,24 +41,17 @@ export const usePollBlockNumber = () => {
 
 export const useCurrentBlock = (): number => {
   const { chainId } = useActiveChainId()
-  const { data: currentBlock = 0 } = useQuery({
-    queryKey: ['blockNumber', chainId],
-    enabled: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+  const { data: currentBlock = 0 } = useBlockNumber({
+    chainId,
+    watch: true,
   })
   return Number(currentBlock)
 }
 
 export function useCurrentBlockTimestamp() {
   const { chainId } = useActiveChainId()
-  const { data: timestamp } = useQuery<number>({
-    queryKey: ['blockTimestamp', chainId],
-    enabled: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+  const { data: timestamp } = useBlockTimestamp({
+    chainId,
   })
   return timestamp
 }
@@ -113,7 +60,7 @@ export const useChainCurrentBlock = (chainId: number) => {
   const { chainId: activeChainId } = useActiveChainId()
   const activeChainBlockNumber = useCurrentBlock()
   const isTargetDifferent = Boolean(chainId && activeChainId !== chainId)
-  const { data: currentBlock } = useBlockNumber({
+  const { data: currentBlock } = useWagmiBlockNumber({
     chainId,
     watch: true,
     query: {
@@ -127,24 +74,16 @@ export const useChainCurrentBlock = (chainId: number) => {
 
 export const useInitialBlock = (): number => {
   const { chainId } = useActiveChainId()
-  const { data: initialBlock = 0 } = useQuery({
-    queryKey: ['initialBlockNumber', chainId],
-    enabled: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+  const { data: initialBlock = 0 } = useInitialBlockNumber({
+    chainId,
   })
   return Number(initialBlock)
 }
 
 export const useInitialBlockTimestamp = (): number => {
   const { chainId } = useActiveChainId()
-  const { data: initialBlockTimestamp = 0 } = useQuery({
-    queryKey: ['initialBlockTimestamp', chainId],
-    enabled: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+  const { data: initialBlockTimestamp = 0 } = useInitBlockTimestamp({
+    chainId,
   })
   return Number(initialBlockTimestamp)
 }
