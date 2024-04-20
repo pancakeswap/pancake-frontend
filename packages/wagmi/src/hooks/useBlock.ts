@@ -41,7 +41,6 @@ export function useWatchBlock({ chainId, enabled }: Params) {
     if (
       !queryClient.getQueryCache().find({
         queryKey: initialBlockNumberQueryKey,
-        exact: true,
       })?.state?.data
     ) {
       queryClient.setQueryData(initialBlockNumberQueryKey, blockNumber)
@@ -51,7 +50,6 @@ export function useWatchBlock({ chainId, enabled }: Params) {
     if (
       !queryClient.getQueryCache().find({
         queryKey: initialBlockTimestampQueryKey,
-        exact: true,
       })?.state?.data
     ) {
       queryClient.setQueryData(initialBlockTimestampQueryKey, Number(blockTimestamp))
