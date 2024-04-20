@@ -119,7 +119,7 @@ function useChartHoverMutate() {
       if (data) {
         queryClient.setQueryData(['chainlinkChartHover'], data)
       } else {
-        queryClient.resetQueries({ queryKey: ['chainlinkChartHover'], exact: true })
+        queryClient.resetQueries({ queryKey: ['chainlinkChartHover'] })
       }
     },
     [queryClient],
