@@ -1,5 +1,11 @@
 # @pancakeswap/tokens
 
+## 0.6.13
+
+### Patch Changes
+
+- b4a1d82: Add wBETH mwBETH stable pair
+
 ## 0.6.12
 
 ### Patch Changes
