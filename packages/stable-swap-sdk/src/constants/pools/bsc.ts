@@ -123,4 +123,14 @@ export const pools: StableSwapPool[] = [
     stableLpFee: 0.0025,
     stableLpFeeRateOfTotalFee: 0.5,
   },
+  {
+    lpSymbol: 'mwBETH-wBETH LP',
+    lpAddress: '0x4cBEa76B4A1c42C356B4c52B0314A98313fFE9df',
+    token: bscTokens.mwbeth,
+    quoteToken: bscTokens.wbeth,
+    stableSwapAddress: '0xfF5Ce4846A3708EA9befa6c3Ab145e63f65DC045',
+    infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
+    stableLpFee: 0.0002,
+    stableLpFeeRateOfTotalFee: 0.5,
+  },
 ]
