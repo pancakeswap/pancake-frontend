@@ -42,7 +42,7 @@ const NativeBTCToggle = ({
     <Flex left="82%" top="5%" position="absolute" zIndex={999}>
       <QuestionHelper
         text={t(
-          'Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.',
+          'Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.',
         )}
         placement="top"
         size="16px"
