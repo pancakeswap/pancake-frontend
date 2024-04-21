@@ -1602,7 +1602,7 @@
   "\"Fee on Transfer\" Tokens": "“内置转账费用” 代币（抽税）",
   "\"Fee on transfer\" tokens should not be used with Limit Orders (use at your own risk)": "“内置转账费用（抽税）” 代币不应用于限价单（使用后您需风险自负）",
   "Can't execute this order": "无法执行此订单",
-  "Limit": "限价",
+  "Limit": "旧版限价单",
   "at market price": "以市价",
   "Error occurred, please try again later": "发生错误，请稍后再试",
   "Hold some CAKE in your wallet or on PancakeSwap at the snapshot block to get voting power for future proposals.": "在您的钱包中或快照区块的 PancakeSwap 上持有一些 CAKE，以获得未来提案的投票权。",
@@ -3246,7 +3246,7 @@
   "terms of service": "服务条款",
   "Choose a provider": "选择提供商",
   "The min amount is %minAmount% %fiatCurrency% / %minCryptoAmount% %cryptoCurrency%": "最小金额为 %minAmount% %fiatCurrency% / %minCryptoAmount% %cryptoCurrency%",
-  "The max amount is %maxAmount% %fiatCurrency% / %maxCryptoAmount% %cryptoCurrency%": "最大金额为 %maxAmount% %fiatCurrency% / %maxCryptoAmount% %cryptoCurrency%",
+  "The max amount is %maxAmount% %fiatCurrency% / %maxCryptoAmount% %cryptoCurrency%": "最大获得量为 %maxAmount% %fiatCurrency% / %maxCryptoAmount% %cryptoCurrency%",
   "Buy Crypto here.": "在此处购买加密货币。",
   "Fast routing (BETA)": "快速路由（测试版）",
   "Increase the speed of finding best swapping routes": "提高寻找最佳交换路径的速度",
@@ -3326,10 +3326,10 @@
   "Options": "期权",
   "PancakeSwap Options": "PancakeSwap 期权",
   "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "请注意，您将被重定向到与我们的合作伙伴 Stryke（前身为 Dopex）关联的外部托管网站。",
-  "Migrate to new v2 bCake here": "在此处迁移到新的 v2 bCake",
+  "Migrate to new v2 bCake here": "请在此迁移到新版的 bCAKE，以便支持 v2 农场",
   "I understand that this feature is deprecated and no longer in maintenance.": "我了解此功能已被弃用，并且不再进行维护。",
   "chain & strategy": "公链和做市策略",
   "Placing Order Disabled": "已禁用下单功能",
-  "Orders missing? Check out:": "订单丢失？查看：",
-  "Limit V2 (deprecated)": "限价 V2（已弃用）"
+  "Orders missing? Check out:": "找不到我的现价单？查看：",
+  "Limit V2 (deprecated)": "仅支援 v2 流动性的旧版限价单（已弃用）"
 }
