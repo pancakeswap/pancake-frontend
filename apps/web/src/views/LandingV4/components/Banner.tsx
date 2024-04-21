@@ -161,10 +161,10 @@ export const Banner = () => {
               to="https://github.com/pancakeswap/pancake-v4-core/blob/main/docs/whitepaper-en.pdf?utm_source=v4landingpage&utm_medium=banner&utm_campaign=v4landingpage&utm_id=v4whitepaper"
             >
               <Button display="flex" margin={['auto', 'auto', 'auto', 'auto', '0']}>
-                <Text color="white" bold fontSize={['12px', '16px']} mr="4px">
+                <Text color="invertedContrast" bold fontSize={['12px', '16px']} mr="4px">
                   {t('Read Whitepaper')}
                 </Text>
-                <OpenNewIcon color="white" />
+                <OpenNewIcon color="invertedContrast" />
               </Button>
             </NextLinkFromReactRouter>
           </Flex>

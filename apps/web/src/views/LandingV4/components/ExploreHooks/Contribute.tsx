@@ -50,10 +50,10 @@ export const Contribute = () => {
                 to="https://pancakeswapforms.fillout.com/PancakeSwap_Hooks_Submission"
               >
                 <Button display="flex" margin="auto">
-                  <Text color="white" bold fontSize={['12px', '16px']} mr="4px">
+                  <Text color="invertedContrast" bold fontSize={['12px', '16px']} mr="4px">
                     {t('Submit Your Hook')}
                   </Text>
-                  <OpenNewIcon color="white" />
+                  <OpenNewIcon color="invertedContrast" />
                 </Button>
               </NextLinkFromReactRouter>
               <NextLinkFromReactRouter

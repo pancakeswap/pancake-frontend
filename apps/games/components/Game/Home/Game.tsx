@@ -235,7 +235,7 @@ export const Game: React.FC<React.PropsWithChildren<GameProps>> = ({ isLatest, g
                   mb={['32px', '32px', '32px', '32px', '32px', '49px']}
                 >
                   <Button width="100%">
-                    <Text bold color="white">
+                    <Text bold color="invertedContrast">
                       {game?.gameLink?.signUpLink && !game.gameLink.playNowLink ? t('Sign Up') : t('Play Now')}
                     </Text>
                   </Button>

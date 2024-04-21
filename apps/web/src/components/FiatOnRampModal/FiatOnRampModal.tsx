@@ -125,7 +125,7 @@ export const FiatOnRampModalButton = ({
         height="56px"
       >
         <Flex alignItems="center">
-          <Text px="4px" fontWeight="bold" color="white">
+          <Text px="4px" fontWeight="bold" color="invertedContrast">
             {buttonText}
           </Text>
           {isLoading || (loading && !errorText && <CircleLoader stroke="white" />)}

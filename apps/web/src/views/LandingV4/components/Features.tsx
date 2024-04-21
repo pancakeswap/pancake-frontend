@@ -318,10 +318,10 @@ export const Features = () => {
               to="https://developer.pancakeswap.finance/?utm_source=v4landingpage&utm_medium=banner&utm_campaign=v4landingpage&utm_id=v4landingpage"
             >
               <Button width="fit-content" mt={['32px', '32px', '32px', '32px', '32px', '56px']}>
-                <Text color="white" bold mr="4px">
+                <Text color="invertedContrast" bold mr="4px">
                   {t('Read more')}
                 </Text>
-                <OpenNewIcon color="white" />
+                <OpenNewIcon color="invertedContrast" />
               </Button>
             </NextLinkFromReactRouter>
           </Box>
