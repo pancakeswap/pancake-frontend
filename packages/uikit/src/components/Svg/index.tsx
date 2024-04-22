@@ -2,6 +2,7 @@ export { default as AccountIcon } from "./Icons/Account";
 export { default as AccountFilledIcon } from "./Icons/AccountFilled";
 export { default as AddIcon } from "./Icons/Add";
 export { default as AddCircleIcon } from "./Icons/AddCircle";
+export { default as AllBlogIcon } from "./Icons/AllBlog";
 export { default as AlpIcon } from "./Icons/AlpIcon";
 export { default as AptosIcon } from "./Icons/Aptos";
 export { default as ArbitrumIcon } from "./Icons/Arbitrum";

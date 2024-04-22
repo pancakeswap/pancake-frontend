@@ -1,5 +1,12 @@
 import { ContextApi } from '@pancakeswap/localization'
-import { DropdownMenuItems, MenuItemsType } from '@pancakeswap/uikit'
+import {
+  AllBlogIcon,
+  CalenderIcon,
+  DropdownMenuItems,
+  MenuItemsType,
+  TrophyFillIcon,
+  TrophyIcon,
+} from '@pancakeswap/uikit'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
 export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: boolean; image?: string } & {
@@ -19,24 +26,26 @@ const addMenuItemSupported = (item: any, chainId: any) => {
   }
 }
 
-const config: (
-  t: ContextApi['t'],
-  isDark: boolean,
-  languageCode?: string,
-  chainId?: number,
-) => ConfigMenuItemsType[] = (t, isDark, languageCode, chainId) =>
+const config: (t: ContextApi['t'], chainId?: number) => ConfigMenuItemsType[] = (t, chainId) =>
   [
     {
       label: t('Explore Quests'),
       href: '/',
+      items: [],
+      icon: TrophyIcon,
+      fillIcon: TrophyFillIcon,
     },
     {
       label: t('Explore Campaigns'),
       href: '/campaigns',
+      items: [],
+      icon: CalenderIcon,
     },
     {
       label: t('Dashboard'),
       href: '/dashboard',
+      items: [],
+      icon: AllBlogIcon,
     },
   ].map((item) => addMenuItemSupported(item, chainId))
 
