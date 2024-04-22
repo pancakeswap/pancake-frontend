@@ -1,16 +1,53 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap } from '@pancakeswap/uikit'
 import { useState } from 'react'
+import { styled } from 'styled-components'
 import { Campaign } from 'views/Home/components/Campaign'
+
+const StyledFlexGap = styled(FlexGap)`
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  > a {
+    width: 264px;
+    margin: auto;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    > a {
+      width: calc(50% - 8px);
+      margin: 0;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    > a {
+      width: calc(33.33% - 11px);
+    }
+
+    > a:nth-child(1),
+    > a:nth-child(2) {
+      width: calc(50% - 11px);
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    > a {
+      width: calc(25% - 12px);
+    }
+
+    > a:nth-child(1),
+    > a:nth-child(2),
+    > a:nth-child(3) {
+      width: calc(33.33% - 11px);
+    }
+  }
+`
 
 export const Campaigns = () => {
   const { t } = useTranslation()
-  const [activeButtonIndex, setActiveButtonIndex] = useState(0)
   const [statusButtonIndex, setStatusButtonIndex] = useState(0)
-
-  const onActiveButtonChange = (newIndex: number) => {
-    setActiveButtonIndex(newIndex)
-  }
 
   const onStatusButtonChange = (newIndex: number) => {
     setStatusButtonIndex(newIndex)
@@ -29,15 +66,10 @@ export const Campaigns = () => {
       padding={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
     >
       <Flex flexDirection={['column', 'column', 'row']} mb={['16px', '16px', '24px']}>
-        <ButtonMenu scale="sm" activeIndex={activeButtonIndex} onItemClick={onActiveButtonChange} variant="subtle">
-          <ButtonMenuItem>{t('Quests')}</ButtonMenuItem>
-          <ButtonMenuItem>{t('Campaigns')}</ButtonMenuItem>
-        </ButtonMenu>
-
         <ButtonMenu
           scale="sm"
           variant="subtle"
-          m={['16px 0 0 0', '16px 0 0 0', '0 0 0 24px']}
+          m={['16px 0 0 0', '16px 0 0 0', '0']}
           activeIndex={statusButtonIndex}
           onItemClick={onStatusButtonChange}
         >
@@ -47,11 +79,15 @@ export const Campaigns = () => {
         </ButtonMenu>
       </Flex>
 
-      <FlexGap gap="16px" flexWrap="wrap">
+      <StyledFlexGap>
         <Campaign />
         <Campaign />
         <Campaign />
-      </FlexGap>
+        <Campaign />
+        <Campaign />
+        <Campaign />
+        <Campaign />
+      </StyledFlexGap>
     </Box>
   )
 }

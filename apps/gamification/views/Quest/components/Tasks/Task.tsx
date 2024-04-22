@@ -57,7 +57,9 @@ export const Task = () => {
               scale="sm"
               width="100%"
               $verified={isVerified}
-              endIcon={isVerified ? <CheckmarkCircleFillIcon color="white" /> : <Loading width={16} height={16} />}
+              endIcon={
+                isVerified ? <CheckmarkCircleFillIcon color="invertedContrast" /> : <Loading width={16} height={16} />
+              }
             >
               {isVerified ? t('Verified ') : t('Verify')}
             </VerifyButton>
@@ -65,7 +67,7 @@ export const Task = () => {
               width="100%"
               scale="sm"
               $isError
-              endIcon={<RefreshIcon style={{ transform: 'scaleX(-1) rotate(0deg)' }} color="white" />}
+              endIcon={<RefreshIcon style={{ transform: 'scaleX(-1) rotate(0deg)' }} color="invertedContrast" />}
             >
               {t('Retry')}
             </ErrorButton>

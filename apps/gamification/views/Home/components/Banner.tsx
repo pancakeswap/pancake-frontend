@@ -38,7 +38,7 @@ export const Banner = () => {
             lineHeight={['36px', '36px', '40px', '40px', '48px', '48px', '64px']}
             m={['24px 0 16px 0', '24px 0 16px 0', '24px 0 16px 0', '24px 0 16px 0', '0 0 16px 0']}
           >
-            {t('Explore Quests & Campaigns')}
+            {t('Explore Campaigns')}
           </Text>
           <Text
             bold

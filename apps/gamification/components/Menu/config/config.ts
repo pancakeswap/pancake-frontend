@@ -27,8 +27,16 @@ const config: (
 ) => ConfigMenuItemsType[] = (t, isDark, languageCode, chainId) =>
   [
     {
-      label: t('Home'),
+      label: t('Explore Quests'),
       href: '/',
+    },
+    {
+      label: t('Explore Campaigns'),
+      href: '/campaigns',
+    },
+    {
+      label: t('Dashboard'),
+      href: '/dashboard',
     },
   ].map((item) => addMenuItemSupported(item, chainId))
 
