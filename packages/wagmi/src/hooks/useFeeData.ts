@@ -7,10 +7,10 @@ import {
 } from 'wagmi'
 import { useQueryClient } from '@tanstack/react-query'
 import { EstimateFeesPerGasData } from 'wagmi/query'
-import { useEffect } from 'react'
 import type { FeeValuesType } from 'viem'
 
 import { useBlockNumber } from './useBlock'
+import useDidMountEffect from './useDidMountEffect'
 
 export function useFeeData<
   config extends Config = ResolvedRegister['config'],
@@ -25,12 +25,11 @@ export function useFeeData<
 
   const readContractResult = useWagmiBalance(queryParameters as any)
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     if (watch) {
       queryClient.invalidateQueries({ queryKey: readContractResult.queryKey }, { cancelRefetch: false })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, queryClient, watch])
+  }, blockNumber)
 
   return readContractResult as UseEstimateFeesPerGasReturnType<type, selectData>
 }
