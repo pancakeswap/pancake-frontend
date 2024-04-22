@@ -1,4 +1,3 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/image'
@@ -20,9 +19,12 @@ const StyledBunny = styled(Box)`
   margin-left: auto;
 `
 
-export const Banner = () => {
-  const { t } = useTranslation()
+interface BannerProps {
+  title: string
+  subTitle: string
+}
 
+export const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ title, subTitle }) => {
   return (
     <Container>
       <Flex
@@ -38,14 +40,14 @@ export const Banner = () => {
             lineHeight={['36px', '36px', '40px', '40px', '48px', '48px', '64px']}
             m={['24px 0 16px 0', '24px 0 16px 0', '24px 0 16px 0', '24px 0 16px 0', '0 0 16px 0']}
           >
-            {t('Explore Campaigns')}
+            {title}
           </Text>
           <Text
             bold
             fontSize={['16px', '16px', '16px', '16px', '16px', '16px', '20px']}
             lineHeight={['16px', '16px', '16px', '16px', '16px', '16px', '20px']}
           >
-            {t('Earn by contributing to the community')}
+            {subTitle}
           </Text>
         </Flex>
         <StyledBunny>

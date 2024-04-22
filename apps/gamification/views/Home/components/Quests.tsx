@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { styled } from 'styled-components'
-import { Campaign } from 'views/Home/components/Campaign'
+import { Quest } from 'views/Home/components/Quest'
 
 const StyledFlexGap = styled(FlexGap)`
   flex-wrap: wrap;
@@ -12,6 +12,10 @@ const StyledFlexGap = styled(FlexGap)`
   > a {
     width: 264px;
     margin: auto;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -25,27 +29,16 @@ const StyledFlexGap = styled(FlexGap)`
     > a {
       width: calc(33.33% - 11px);
     }
-
-    > a:nth-child(1),
-    > a:nth-child(2) {
-      width: calc(50% - 11px);
-    }
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
     > a {
       width: calc(25% - 12px);
     }
-
-    > a:nth-child(1),
-    > a:nth-child(2),
-    > a:nth-child(3) {
-      width: calc(33.33% - 11px);
-    }
   }
 `
 
-export const Campaigns = () => {
+export const Quests = () => {
   const { t } = useTranslation()
   const [statusButtonIndex, setStatusButtonIndex] = useState(0)
 
@@ -80,13 +73,13 @@ export const Campaigns = () => {
       </Flex>
 
       <StyledFlexGap>
-        <Campaign />
-        <Campaign />
-        <Campaign />
-        <Campaign />
-        <Campaign />
-        <Campaign />
-        <Campaign />
+        <Quest />
+        <Quest />
+        <Quest />
+        <Quest />
+        <Quest />
+        <Quest />
+        <Quest />
       </StyledFlexGap>
     </Box>
   )

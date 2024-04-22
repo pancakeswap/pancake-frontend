@@ -1,27 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CalenderIcon, Card, Flex, InfoIcon, Link, LogoRoundIcon, Text } from '@pancakeswap/uikit'
+import { Box, CalenderIcon, Card, Flex, InfoIcon, Link, LogoRoundIcon, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 
 const StyledThumbnail = styled('div')`
   width: 100%;
-  height: 175px;
-  border-radius: 16px;
-  margin-bottom: 16px;
+  height: 100%;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    height: 180px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    height: 236px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    height: 200px;
-  }
+  transition: 0.5s;
 `
 
 export const Campaign = () => {
@@ -31,11 +18,19 @@ export const Campaign = () => {
     <Link href="/" external>
       <Card>
         <Flex flexDirection="column" padding="16px">
-          <StyledThumbnail
-            style={{
-              backgroundImage: `url('https://sgp1.digitaloceanspaces.com/strapi.space/ef14df0bf361ee3d0a0b604a54f0decb.jpg')`,
-            }}
-          />
+          <Box
+            overflow="hidden"
+            borderRadius="16px"
+            height={['175px', '175px', '180px', '236px', '236px', '200px']}
+            mb="16px"
+          >
+            <StyledThumbnail
+              className="thumbnail"
+              style={{
+                backgroundImage: `url('https://sgp1.digitaloceanspaces.com/strapi.space/ef14df0bf361ee3d0a0b604a54f0decb.jpg')`,
+              }}
+            />
+          </Box>
           {/* <StyledThumbnail style={{ backgroundImage: `url(${build.imageUrl})` }}/> */}
           <Flex mb="16px">
             <CalenderIcon color="textSubtle" mr="8px" />

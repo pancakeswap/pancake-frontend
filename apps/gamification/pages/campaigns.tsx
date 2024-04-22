@@ -1,7 +1,7 @@
-import { Home } from 'views/Home/index'
+import { CampaignsView } from 'views/Campaigns/index'
 
 const CampaignsPage = () => {
-  return <Home />
+  return <CampaignsView />
 }
 
 export default CampaignsPage
