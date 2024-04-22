@@ -1,6 +1,27 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { CalenderIcon, Card, Flex, InfoIcon, Link, LogoRoundIcon, Text } from '@pancakeswap/uikit'
 
+import { styled } from 'styled-components'
+
+const Detail = styled(Flex)`
+  padding: 0 8px;
+  border-right: solid 1px ${({ theme }) => theme.colors.cardBorder};
+`
+
+const DetailContainer = styled(Flex)`
+  margin-top: 16px;
+
+  ${Detail} {
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:last-child {
+      border: 0;
+    }
+  }
+`
+
 export const Quest = () => {
   const { t } = useTranslation()
 
@@ -30,25 +51,25 @@ export const Quest = () => {
               </Flex>
             </Flex>
           </Card>
-          <Flex mt="16px">
-            <Flex>
+          <DetailContainer>
+            <Detail>
               <Text fontSize="12px" color="textSubtle">
                 6 Tasks
               </Text>
-            </Flex>
-            <Flex>
-              <Text ml="16px" fontSize="12px" color="textSubtle">
+            </Detail>
+            <Detail>
+              <Text fontSize="12px" color="textSubtle">
                 50 rewards
               </Text>
               <InfoIcon ml="2px" width="14px" height="14px" color="textSubtle" style={{ alignSelf: 'center' }} />
-            </Flex>
-            <Flex ml="16px">
+            </Detail>
+            <Detail>
               <Text fontSize="12px" color="textSubtle">
                 Lucky Draw
               </Text>
               <InfoIcon ml="2px" width="14px" height="14px" color="textSubtle" style={{ alignSelf: 'center' }} />
-            </Flex>
-          </Flex>
+            </Detail>
+          </DetailContainer>
         </Flex>
       </Card>
     </Link>

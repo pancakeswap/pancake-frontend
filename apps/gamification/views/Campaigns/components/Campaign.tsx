@@ -11,6 +11,25 @@ const StyledThumbnail = styled('div')`
   transition: 0.5s;
 `
 
+const Detail = styled(Flex)`
+  padding: 0 8px;
+  border-right: solid 1px ${({ theme }) => theme.colors.cardBorder};
+`
+
+const DetailContainer = styled(Flex)`
+  margin-top: 16px;
+
+  ${Detail} {
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:last-child {
+      border: 0;
+    }
+  }
+`
+
 export const Campaign = () => {
   const { t } = useTranslation()
 
@@ -54,20 +73,20 @@ export const Campaign = () => {
               </Flex>
             </Flex>
           </Card>
-          <Flex mt="16px">
-            <Flex>
+          <DetailContainer>
+            <Detail>
               <Text fontSize="12px" color="textSubtle">
                 ~150 Total Value
               </Text>
               <InfoIcon ml="2px" width="14px" height="14px" color="textSubtle" style={{ alignSelf: 'center' }} />
-            </Flex>
-            <Flex ml="16px">
+            </Detail>
+            <Detail>
               <Text fontSize="12px" color="textSubtle">
                 Lucky Draw
               </Text>
               <InfoIcon ml="2px" width="14px" height="14px" color="textSubtle" style={{ alignSelf: 'center' }} />
-            </Flex>
-          </Flex>
+            </Detail>
+          </DetailContainer>
         </Flex>
       </Card>
     </Link>
