@@ -30,7 +30,7 @@ const config: (t: ContextApi['t'], chainId?: number) => ConfigMenuItemsType[] = 
   [
     {
       label: t('Explore Quests'),
-      href: '/',
+      href: '/quests',
       items: [],
       icon: TrophyIcon,
       fillIcon: TrophyFillIcon,

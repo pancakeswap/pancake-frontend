@@ -34,6 +34,15 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/quests',
+        permanent: false,
+      },
+    ]
+  },
 }
 
 export default withVanillaExtract(withWebSecurityHeaders(nextConfig))

@@ -1,5 +1,4 @@
 import { Box, Flex, Text } from '@pancakeswap/uikit'
-import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/image'
 import { styled } from 'styled-components'
 
@@ -22,9 +21,10 @@ const StyledBunny = styled(Box)`
 interface BannerProps {
   title: string
   subTitle: string
+  bannerImageUrl: string
 }
 
-export const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ title, subTitle }) => {
+export const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ title, subTitle, bannerImageUrl }) => {
   return (
     <Container>
       <Flex
@@ -59,7 +59,7 @@ export const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ title, 
               zIndex: 0,
               minWidth: 270,
             }}
-            src={`${ASSET_CDN}/web/game/developers/game-banner-bunny.png`}
+            src={bannerImageUrl}
           />
         </StyledBunny>
       </Flex>

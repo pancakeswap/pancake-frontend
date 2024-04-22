@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { styled } from 'styled-components'
-import { Quest } from 'views/Home/components/Quest'
+import { Quest } from 'views/Quests/components/Quest'
 
 const StyledFlexGap = styled(FlexGap)`
   flex-wrap: wrap;
