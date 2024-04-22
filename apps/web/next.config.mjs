@@ -68,6 +68,7 @@ const config = {
     '@pancakeswap/ifos',
     // https://github.com/TanStack/query/issues/6560#issuecomment-1975771676
     '@tanstack/query-core',
+    '@tanstack/react-query',
   ],
   reactStrictMode: true,
   swcMinify: true,
