@@ -3228,7 +3228,7 @@
   "Buy with %provider%": "%provider%で買う",
   "Token by network": "ネットワークごとのトークン",
   "Bitcoin Network": "ビットコインネットワーク",
-  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.": "ネイティブBTC購入を有効にします。資金を受け取るビットコインアドレスを持っている場合にのみ有効にしてください。EVMアドレスをネイティブBTCに使用することはできません。",
+  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.": "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.",
   "All Networks": "すべてのネットワーク",
   "Select a Token to Purchase": "購入するトークンを選択",
   "Select Tokens by network": "ネットワークごとのトークンを選択",
