@@ -3228,7 +3228,7 @@
   "Buy with %provider%": "Acquista con %provider%",
   "Token by network": "Token per rete",
   "Bitcoin Network": "Rete Bitcoin",
-  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.": "Abilita gli acquisti BTC nativi. Fallo solo se hai un indirizzo Bitcoin a cui ricevere i fondi. Non puoi utilizzare i tuoi indirizzi EVM per BTC nativo.",
+  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.": "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.",
   "All Networks": "Tutte le reti",
   "Select a Token to Purchase": "Seleziona un token da acquistare",
   "Select Tokens by network": "Seleziona token per rete",
