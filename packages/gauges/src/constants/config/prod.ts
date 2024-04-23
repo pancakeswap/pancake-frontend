@@ -1056,13 +1056,13 @@ export const CONFIG_PROD: GaugeConfig[] = [
 
   {
     gid: 104,
-    address: '0xb1Da7D2C257c5700612BdE35C8d7187dc80d79f1',
+    // address: '0xb1Da7D2C257c5700612BdE35C8d7187dc80d79f1',
+    address: '0xB2Aa63f363196caba3154D4187949283F085a488',
     pairName: 'lisUSD-USDT',
     chainId: ChainId.BSC,
     type: GaugeType.StableSwap,
     tokenAddresses: [bscTokens.hay.address, bscTokens.usdt.address],
   },
-
   {
     gid: 105,
     address: '0x1ac1A8FEaAEa1900C4166dEeed0C11cC10669D36',
@@ -3456,7 +3456,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 346,
     pairName: 'mPENDLE-PENDLE',
-    address: '0x73ed25e04Aa673ddf7411441098fC5ae19976CE0',
+    // address: '0x73ed25e04Aa673ddf7411441098fC5ae19976CE0',
+    address: '0x1A2329546f11e4fE55b853D98Bba2c4678E3105A',
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.StableSwap,
     tokenAddresses: [arbitrumTokens.mpendle.address, arbitrumTokens.pendle.address],
@@ -3464,7 +3465,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
   {
     gid: 347,
     pairName: 'mdLP-dLP',
-    address: '0xd0f0be815a76eFE677c92b07b39a5e972BAf22bD',
+    // address: '0xd0f0be815a76eFE677c92b07b39a5e972BAf22bD',
+    address: '0x0db5e247ab73FBaE16d9301f2977f974EC0AA336',
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.StableSwap,
     tokenAddresses: [arbitrumTokens.mdlp.address, arbitrumTokens.dlp.address],
