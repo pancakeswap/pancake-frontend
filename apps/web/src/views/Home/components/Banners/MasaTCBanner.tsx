@@ -67,8 +67,8 @@ export const MasaTCBanner = () => {
             coBrand={coBrandLogo}
             coBrandLogo={coBrandLogo}
             coBrandAlt="masa"
-            cHeight="20"
-            cWidth="38"
+            cHeight="15"
+            cWidth="60"
             dividerBg="rgba(0,0,0,0.2)"
           />
         }
@@ -82,7 +82,7 @@ export const MasaTCBanner = () => {
           <BannerActionContainer>
             {participateAction}
             {!isMobile && <VerticalDivider />}
-            {!isMobile && learnMoreAction}
+            {!isMobile && learnMoreAction}x
           </BannerActionContainer>
         }
       />

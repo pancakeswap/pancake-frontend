@@ -9,7 +9,7 @@ const CountdownContainer = styled.div<{ $percentage: number }>`
   min-width: 20px;
   cursor: pointer;
 
-  >svg: first-child {
+  > svg:first-child {
     position: absolute;
     top: 0;
     right: 0;
