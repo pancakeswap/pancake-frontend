@@ -3228,7 +3228,7 @@
   "Buy with %provider%": "Mua với %provider%",
   "Token by network": "Token bởi mạng lưới",
   "Bitcoin Network": "Mạng lưới Bitcoin",
-  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.": "Bật đơn hàng BTC tự nhiên. Chỉ làm điều này nếu bạn có một địa chỉ Bitcoin để nhận tiền. Bạn không thể sử dụng các địa chỉ EVM của mình cho BTC tự nhiên.",
+  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.": "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.",
   "All Networks": "Tất cả các mạng lưới",
   "Select a Token to Purchase": "Chọn một token để mua",
   "Select Tokens by network": "Chọn token theo mạng lưới",
