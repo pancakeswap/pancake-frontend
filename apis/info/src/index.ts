@@ -28,6 +28,7 @@ BigNumber.config({
 
 const router = Router()
 
+// Values fetched from TheGraph and BitQuery jan 24, 2022
 const txCount = 54780336
 const addressCount = 4425459
 const tvl = 6082955532.115718
@@ -45,6 +46,7 @@ const bitQueryServerClient = new GraphQLClient(BIT_QUERY, {
     'X-API-KEY': BIT_QUERY_HEADER || '',
   },
   timeout: 5000,
+  fetch,
 })
 
 const bscClient: PublicClient = createPublicClient({
@@ -98,6 +100,7 @@ router.get('/info', async (_, event) => {
           headers: {
             origin: 'https://pancakeswap.finance',
           },
+          fetch,
         })
       })
 
@@ -114,6 +117,7 @@ router.get('/info', async (_, event) => {
           headers: {
             origin: 'https://pancakeswap.finance',
           },
+          fetch,
         })
       })
 
