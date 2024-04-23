@@ -3228,7 +3228,7 @@
   "Buy with %provider%": "Köp med %provider%",
   "Token by network": "Token efter nätverk",
   "Bitcoin Network": "Bitcoin-nätverk",
-  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.": "Aktivera köp av Native BTC. Gör det bara om du har en Bitcoin-adress att ta emot pengarna till. du kan inte använda dina EVM-adresser för inbyggd BTC.",
+  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.": "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.",
   "All Networks": "Alla nätverk",
   "Select a Token to Purchase": "Välj en token för att köpa",
   "Select Tokens by network": "Välj tokens efter nätverk",
