@@ -36,10 +36,9 @@ export const CoBrandBadge: React.FC<React.PropsWithChildren<CoBrandBadgeProps>> 
   }
 
   return (
-    <FlexGap gap="8px">
+    <FlexGap gap="8px" alignItems="center">
       <PancakeSwapBadge whiteText={whiteText} />
       <VerticalDivider bg={dividerBg ?? ""} />
-
       {cWidth && cHeight ? <Image src={coBrand} alt={coBrandAlt} width={cWidth} height={cHeight} unoptimized /> : null}
     </FlexGap>
   );
