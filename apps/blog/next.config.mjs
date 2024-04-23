@@ -7,7 +7,14 @@ const withVanillaExtract = createVanillaExtractPlugin()
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  transpilePackages: ['@pancakeswap/uikit', '@pancakeswap/hooks', '@pancakeswap/localization', '@pancakeswap/utils'],
+  transpilePackages: [
+    '@pancakeswap/uikit',
+    '@pancakeswap/hooks',
+    '@pancakeswap/localization',
+    '@pancakeswap/utils',
+    // https://github.com/TanStack/query/issues/6560#issuecomment-1975771676
+    '@tanstack/query-core',
+  ],
   compiler: {
     styledComponents: true,
   },

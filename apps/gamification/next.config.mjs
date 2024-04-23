@@ -18,6 +18,8 @@ const nextConfig = {
     '@pancakeswap/ui-wallets',
     '@pancakeswap/tokens',
     '@pancakeswap/wagmi',
+    // https://github.com/TanStack/query/issues/6560#issuecomment-1975771676
+    '@tanstack/query-core',
   ],
   images: {
     contentDispositionType: 'attachment',

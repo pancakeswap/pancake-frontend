@@ -280,7 +280,7 @@ importers:
         version: 1.14.0
       '@vanilla-extract/next-plugin':
         specifier: ^2.3.0
-        version: 2.3.2(@types/node@18.0.4)(next@13.5.6)(webpack@5.89.0)
+        version: 2.3.2(@types/node@18.0.4)(next@14.2.2)(webpack@5.89.0)
       '@vanilla-extract/recipes':
         specifier: ^0.5.0
         version: 0.5.1(@vanilla-extract/css@1.14.0)
@@ -300,14 +300,14 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       next:
-        specifier: 13.5.6
-        version: 13.5.6(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 14.2.2
+        version: 14.2.2(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
       next-seo:
         specifier: ^5.15.0
-        version: 5.15.0(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)
+        version: 5.15.0(next@14.2.2)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)
+        version: 0.2.1(next@14.2.2)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -328,8 +328,8 @@ importers:
         specifier: 13.0.7
         version: 13.0.7
       '@next/eslint-plugin-next':
-        specifier: 13.4.2
-        version: 13.4.2
+        specifier: 14.2.2
+        version: 14.2.2
       '@pancakeswap/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
@@ -386,16 +386,16 @@ importers:
         version: 5.29.2(react@18.2.0)
       '@vanilla-extract/next-plugin':
         specifier: ^2.3.0
-        version: 2.3.2(@types/node@18.0.4)(next@13.5.6)(webpack@5.89.0)
+        version: 2.3.2(@types/node@18.0.4)(next@14.2.2)(webpack@5.89.0)
       next:
-        specifier: 13.5.6
-        version: 13.5.6(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 14.2.2
+        version: 14.2.2(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
       next-seo:
         specifier: ^5.15.0
-        version: 5.15.0(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)
+        version: 5.15.0(next@14.2.2)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)
+        version: 0.2.1(next@14.2.2)(react-dom@18.2.0)(react@18.2.0)
       qs:
         specifier: ^6.0.0
         version: 6.11.2
@@ -419,8 +419,8 @@ importers:
         version: 3.22.4
     devDependencies:
       '@next/eslint-plugin-next':
-        specifier: 13.4.2
-        version: 13.4.2
+        specifier: 14.2.2
+        version: 14.2.2
       '@pancakeswap/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
@@ -471,7 +471,7 @@ importers:
         version: link:../../packages/utils
       '@vanilla-extract/next-plugin':
         specifier: ^2.3.0
-        version: 2.3.2(@types/node@18.0.4)(next@13.5.6)(webpack@5.89.0)
+        version: 2.3.2(@types/node@18.0.4)(next@14.2.2)(webpack@5.89.0)
       '@wagmi/core':
         specifier: ^0.10.11
         version: 0.10.17(@types/react@18.2.37)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
@@ -488,11 +488,11 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       next:
-        specifier: 13.5.6
-        version: 13.5.6(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 14.2.2
+        version: 14.2.2(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)
+        version: 0.2.1(next@14.2.2)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -513,8 +513,8 @@ importers:
         version: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
     devDependencies:
       '@next/eslint-plugin-next':
-        specifier: 13.4.2
-        version: 13.4.2
+        specifier: 14.2.2
+        version: 14.2.2
       '@pancakeswap/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
@@ -572,7 +572,7 @@ importers:
         version: 5.29.2(react@18.2.0)
       '@vanilla-extract/next-plugin':
         specifier: ^2.3.0
-        version: 2.3.2(@types/node@18.0.4)(next@13.5.6)(webpack@5.89.0)
+        version: 2.3.2(@types/node@18.0.4)(next@14.2.2)(webpack@5.89.0)
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
@@ -580,14 +580,14 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       next:
-        specifier: 13.5.6
-        version: 13.5.6(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 14.2.2
+        version: 14.2.2(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
       next-seo:
         specifier: ^5.15.0
-        version: 5.15.0(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)
+        version: 5.15.0(next@14.2.2)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)
+        version: 0.2.1(next@14.2.2)(react-dom@18.2.0)(react@18.2.0)
       qs:
         specifier: ^6.0.0
         version: 6.11.2
@@ -614,8 +614,8 @@ importers:
         version: 3.22.4
     devDependencies:
       '@next/eslint-plugin-next':
-        specifier: 13.4.2
-        version: 13.4.2
+        specifier: 14.2.2
+        version: 14.2.2
       '@pancakeswap/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
@@ -696,7 +696,7 @@ importers:
         version: 5.29.2(react@18.2.0)
       '@vanilla-extract/next-plugin':
         specifier: ^2.3.0
-        version: 2.3.2(@types/node@18.0.4)(next@13.5.6)(webpack@5.89.0)
+        version: 2.3.2(@types/node@18.0.4)(next@14.2.2)(webpack@5.89.0)
       bignumber.js:
         specifier: ^9.1.2
         version: 9.1.2
@@ -713,14 +713,14 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       next:
-        specifier: 13.5.6
-        version: 13.5.6(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 14.2.2
+        version: 14.2.2(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
       next-seo:
         specifier: ^5.15.0
-        version: 5.15.0(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)
+        version: 5.15.0(next@14.2.2)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
-        version: 0.2.1(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)
+        version: 0.2.1(next@14.2.2)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -756,8 +756,8 @@ importers:
         version: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
     devDependencies:
       '@next/eslint-plugin-next':
-        specifier: 13.4.2
-        version: 13.4.2
+        specifier: 14.2.2
+        version: 14.2.2
       '@pancakeswap/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
@@ -1090,8 +1090,8 @@ importers:
         version: 3.22.4
     devDependencies:
       '@next/eslint-plugin-next':
-        specifier: 13.4.2
-        version: 13.4.2
+        specifier: 14.2.2
+        version: 14.2.2
       '@pancakeswap/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
@@ -1586,8 +1586,8 @@ importers:
   packages/next-config:
     devDependencies:
       next:
-        specifier: 13.5.6
-        version: 13.5.6(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 14.2.2
+        version: 14.2.2(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0)
 
   packages/pcsx-sdk:
     dependencies:
@@ -2441,7 +2441,7 @@ importers:
     devDependencies:
       '@sentry/nextjs':
         specifier: ^7.0.0
-        version: 7.80.0(next@13.5.6)(react@18.2.0)
+        version: 7.80.0(next@14.2.2)(react@18.2.0)
       '@types/lodash':
         specifier: ^4.14.168
         version: 4.14.201
@@ -2455,8 +2455,8 @@ importers:
         specifier: ^3.1.2
         version: 3.1.2
       next:
-        specifier: 13.5.6
-        version: 13.5.6(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 14.2.2
+        version: 14.2.2(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0)
       polished:
         specifier: ^4.2.2
         version: 4.2.2
@@ -8757,14 +8757,15 @@ packages:
 
   /@next/env@13.5.6:
     resolution: {integrity: sha512-Yac/bV5sBGkkEXmAX5FWPS9Mmo2rthrOPRQQNfycJPkjUAUclomCPH7QFVCDQ4Mp2k2K1SSM6m0zrxYrOwtFQw==}
+    dev: false
 
   /@next/env@14.2.2:
     resolution: {integrity: sha512-sk72qRfM1Q90XZWYRoJKu/UWlTgihrASiYw/scb15u+tyzcze3bOuJ/UV6TBOQEeUaxOkRqGeuGUdiiuxc5oqw==}
 
-  /@next/eslint-plugin-next@13.4.2:
-    resolution: {integrity: sha512-ZeFWgrxwckxTpYM+ANeUL9E7LOGPbZKmI94LJIjbDU69iEIgqd4WD0l2pVbOJMr/+vgoZmJ9Dx1m0WJ7WScXHA==}
+  /@next/eslint-plugin-next@14.2.2:
+    resolution: {integrity: sha512-q+Ec2648JtBpKiu/FSJm8HAsFXlNvioHeBCbTP12T1SGcHYwhqHULSfQgFkPgHDu3kzNp2Kem4J54bK4rPQ5SQ==}
     dependencies:
-      glob: 7.1.7
+      glob: 10.3.10
     dev: true
 
   /@next/swc-darwin-arm64@13.5.6:
@@ -8773,6 +8774,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@next/swc-darwin-arm64@14.2.2:
@@ -8789,6 +8791,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@next/swc-darwin-x64@14.2.2:
@@ -8805,6 +8808,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@next/swc-linux-arm64-gnu@14.2.2:
@@ -8821,6 +8825,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@next/swc-linux-arm64-musl@14.2.2:
@@ -8837,6 +8842,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@next/swc-linux-x64-gnu@14.2.2:
@@ -8853,6 +8859,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@next/swc-linux-x64-musl@14.2.2:
@@ -8869,6 +8876,7 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@next/swc-win32-arm64-msvc@14.2.2:
@@ -8885,6 +8893,7 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@next/swc-win32-ia32-msvc@14.2.2:
@@ -8901,6 +8910,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@next/swc-win32-x64-msvc@14.2.2:
@@ -10916,7 +10926,7 @@ packages:
     dev: false
     optional: true
 
-  /@sentry/nextjs@7.80.0(next@13.5.6)(react@18.2.0):
+  /@sentry/nextjs@7.80.0(next@14.2.2)(react@18.2.0):
     resolution: {integrity: sha512-4KZVZV1U/1ldmVKS85n31MSKIWJElcy9gZW+PTyQnrlCxbQnnhXBde95+TXmvO1DKTNhVphv/2DXq7bmxBW9bA==}
     engines: {node: '>=8'}
     peerDependencies:
@@ -10937,7 +10947,7 @@ packages:
       '@sentry/vercel-edge': 7.80.0
       '@sentry/webpack-plugin': 1.20.0
       chalk: 3.0.0
-      next: 13.5.6(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0)
+      next: 14.2.2(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       resolve: 1.22.8
       rollup: 2.78.0
@@ -12315,6 +12325,7 @@ packages:
     resolution: {integrity: sha512-E4KcWTpoLHqwPHLxidpOqQbcrZVgi0rsmmZXUle1jXmJfuIf/UWpczUJ7MZZ5tlxytgJXyp0w4PGkkeLiuIdZw==}
     dependencies:
       tslib: 2.6.2
+    dev: false
 
   /@swc/helpers@0.5.5:
     resolution: {integrity: sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==}
@@ -13939,13 +13950,13 @@ packages:
       - webpack
     dev: false
 
-  /@vanilla-extract/next-plugin@2.3.2(@types/node@18.0.4)(next@13.5.6)(webpack@5.89.0):
+  /@vanilla-extract/next-plugin@2.3.2(@types/node@18.0.4)(next@14.2.2)(webpack@5.89.0):
     resolution: {integrity: sha512-wBulJAhmr8guYo5YxrfsA1T/TQ3tbMJjNtE6QrVZvs1NTnT9/WAmf4IVrbUvQbH+LBj5LXO8dRzueGPAvepSng==}
     peerDependencies:
       next: '>=12.1.7'
     dependencies:
       '@vanilla-extract/webpack-plugin': 2.3.1(@types/node@18.0.4)(webpack@5.89.0)
-      next: 13.5.6(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
+      next: 14.2.2(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -17417,6 +17428,7 @@ packages:
 
   /caniuse-lite@1.0.30001561:
     resolution: {integrity: sha512-NTt0DNoKe958Q0BE0j0c1V9jbUzhBxHIEJy7asmGrpE0yG63KTV7PLHPnK2E1O9RsQrQ081I3NLuXGS6zht3cw==}
+    dev: false
 
   /caniuse-lite@1.0.30001608:
     resolution: {integrity: sha512-cjUJTQkk9fQlJR2s4HMuPMvTiRggl0rAVMtthQuyOlDWuqHXqN8azLq+pi8B2TjwKJ32diHjUqRIKeFX4z1FoA==}
@@ -21101,6 +21113,7 @@ packages:
 
   /glob@7.1.7:
     resolution: {integrity: sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==}
+    requiresBuild: true
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
@@ -21108,6 +21121,8 @@ packages:
       minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
+    dev: false
+    optional: true
 
   /glob@7.2.0:
     resolution: {integrity: sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==}
@@ -24357,18 +24372,6 @@ packages:
   /neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  /next-seo@5.15.0(next@13.5.6)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-LGbcY91yDKGMb7YI+28n3g+RuChUkt6pXNpa8FkfKkEmNiJkeRDEXTnnjVtwT9FmMhG6NH8qwHTelGrlYm9rgg==}
-    peerDependencies:
-      next: ^8.1.1-canary.54 || >=9.0.0
-      react: '>=16.0.0'
-      react-dom: '>=16.0.0'
-    dependencies:
-      next: 13.5.6(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
   /next-seo@5.15.0(next@14.2.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-LGbcY91yDKGMb7YI+28n3g+RuChUkt6pXNpa8FkfKkEmNiJkeRDEXTnnjVtwT9FmMhG6NH8qwHTelGrlYm9rgg==}
     peerDependencies:
@@ -24377,18 +24380,6 @@ packages:
       react-dom: '>=16.0.0'
     dependencies:
       next: 14.2.2(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  /next-themes@0.2.1(next@13.5.6)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==}
-    peerDependencies:
-      next: '*'
-      react: '*'
-      react-dom: '*'
-    dependencies:
-      next: 13.5.6(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -24445,45 +24436,49 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+    dev: false
 
-  /next@13.5.6(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-Y2wTcTbO4WwEsVb4A8VSnOsG1I9ok+h74q0ZdxkwM3EODqrs4pasq7O0iUxbcS9VtWMicG7f3+HAj0r1+NtKSw==}
-    engines: {node: '>=16.14.0'}
+  /next@14.2.2(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-oGwUaa2bCs47FbuxWMpOoXtBMPYpvTPgdZr3UAo+pu7Ns00z9otmYpoeV1HEiYL06AlRQQIA/ypK526KjJfaxg==}
+    engines: {node: '>=18.17.0'}
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
+      '@playwright/test': ^1.41.2
       react: ^18.2.0
       react-dom: ^18.2.0
       sass: ^1.3.0
     peerDependenciesMeta:
       '@opentelemetry/api':
         optional: true
+      '@playwright/test':
+        optional: true
       sass:
         optional: true
     dependencies:
-      '@next/env': 13.5.6
-      '@swc/helpers': 0.5.2
+      '@next/env': 14.2.2
+      '@swc/helpers': 0.5.5
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001561
+      caniuse-lite: 1.0.30001608
+      graceful-fs: 4.2.11
       postcss: 8.4.31
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      styled-jsx: 5.1.1(@babel/core@7.23.9)(react@18.2.0)
-      watchpack: 2.4.0
+      styled-jsx: 5.1.1(@babel/core@7.23.3)(react@18.2.0)
     optionalDependencies:
-      '@next/swc-darwin-arm64': 13.5.6
-      '@next/swc-darwin-x64': 13.5.6
-      '@next/swc-linux-arm64-gnu': 13.5.6
-      '@next/swc-linux-arm64-musl': 13.5.6
-      '@next/swc-linux-x64-gnu': 13.5.6
-      '@next/swc-linux-x64-musl': 13.5.6
-      '@next/swc-win32-arm64-msvc': 13.5.6
-      '@next/swc-win32-ia32-msvc': 13.5.6
-      '@next/swc-win32-x64-msvc': 13.5.6
+      '@next/swc-darwin-arm64': 14.2.2
+      '@next/swc-darwin-x64': 14.2.2
+      '@next/swc-linux-arm64-gnu': 14.2.2
+      '@next/swc-linux-arm64-musl': 14.2.2
+      '@next/swc-linux-x64-gnu': 14.2.2
+      '@next/swc-linux-x64-musl': 14.2.2
+      '@next/swc-win32-arm64-msvc': 14.2.2
+      '@next/swc-win32-ia32-msvc': 14.2.2
+      '@next/swc-win32-x64-msvc': 14.2.2
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
-    dev: false
+    dev: true
 
   /next@14.2.2(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-oGwUaa2bCs47FbuxWMpOoXtBMPYpvTPgdZr3UAo+pu7Ns00z9otmYpoeV1HEiYL06AlRQQIA/ypK526KjJfaxg==}

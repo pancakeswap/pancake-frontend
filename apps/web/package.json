@@ -136,7 +136,7 @@
     "zod": "^3.22.3"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "13.4.2",
+    "@next/eslint-plugin-next": "14.2.2",
     "@pancakeswap/next-config": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
     "@stylelint/postcss-css-in-js": "^0.37.2",
