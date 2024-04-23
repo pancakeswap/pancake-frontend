@@ -49,10 +49,6 @@ export const infoStableSwapClients = {
   [ChainId.ARBITRUM_ONE]: new GraphQLClient(STABLESWAP_SUBGRAPHS_URLS[ChainId.ARBITRUM_ONE]),
 }
 
-export const infoServerClient = new GraphQLClient(STABLESWAP_SUBGRAPHS_URLS[ChainId.BSC], {
-  timeout: 5000,
-})
-
 export const stableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPHS_URLS[ChainId.BSC])
 
 export const bitQueryServerClient = new GraphQLClient(BIT_QUERY, {

@@ -1,0 +1,27 @@
+{
+  "name": "info-api",
+  "version": "0.0.0",
+  "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
+    "@pancakeswap/worker-utils": "workspace:*",
+    "bignumber.js": "^9.0.0",
+    "dayjs": "^1.11.10",
+    "graphql-request": "5.0.0",
+    "itty-router": "^2.6.1",
+    "itty-router-extras": "^0.4.2",
+    "lodash": "^4.17.21",
+    "viem": "2.9.19"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^3.10.0",
+    "@pancakeswap/tsconfig": "workspace:*",
+    "@types/itty-router-extras": "^0.4.0",
+    "@types/lodash": "^4.14.168",
+    "wrangler": "2.20.2"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler publish"
+  }
+}
