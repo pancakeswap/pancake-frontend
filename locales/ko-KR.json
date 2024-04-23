@@ -3228,7 +3228,7 @@
   "Buy with %provider%": "%provider%(으)로 구입",
   "Token by network": "네트워크별 토큰",
   "Bitcoin Network": "비트코인 네트워크",
-  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.": "네이티브 BTC 구매를 활성화합니다. 자금을 받을 수 있는 비트코인 ​​주소가 있는 경우에만 가능합니다. 네이티브 BTC에는 EVM 주소를 사용할 수 없습니다.",
+  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.": "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.",
   "All Networks": "모든 네트워크",
   "Select a Token to Purchase": "구매할 토큰 선택",
   "Select Tokens by network": "네트워크별 토큰 선택",
