@@ -1,13 +1,13 @@
+import jazzicon from '@metamask/jazzicon'
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, Flex, Text } from '@pancakeswap/uikit'
-import { styled } from 'styled-components'
-import { AssetSet } from 'views/Quest/components/Reward/AssetSet'
-// import jazzicon from '@metamask/jazzicon'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { useLayoutEffect, useRef } from 'react'
+import styled, { css } from 'styled-components'
 
 const TextBlock = styled(Flex)`
   position: absolute;
   top: calc(50% - 1px);
-  right: 16px;
+  right: 12px;
   z-index: 2;
   padding: 2px 0;
   transform: translateY(-50%);
@@ -24,19 +24,67 @@ const TextBlock = styled(Flex)`
       `linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, ${theme.colors.backgroundAlt} 100%)`};
   }
 `
+const AssetSetContainer = styled(Box)`
+  position: relative;
+  z-index: 1;
+  height: 24px;
+  overflow: hidden;
+`
+
+const TOTAL = 10
+const SIZE = 22
+
+function createCSS() {
+  let styles = ''
+  for (let i = 0; i < TOTAL; i += 1) {
+    const width = SIZE * TOTAL
+    const maxCount = 10
+    const radius = SIZE / 1.8
+    const spacer = (maxCount / TOTAL - 1) * (radius * 1.8)
+    const leftOffsetFor = ((width - radius * 1.8 + spacer) / (maxCount - 1)) * i
+
+    styles += `
+      > :nth-child(${i}) {
+        position: absolute;
+        left: ${leftOffsetFor}px;
+        z-index: ${i - TOTAL};
+      }
+    `
+  }
+
+  return css`
+    ${styles}
+  `
+}
+
+const JazzIcon = styled(Box)`
+  ${createCSS()}
+`
 
 export const Questers = () => {
   const { t } = useTranslation()
-  // const icon = useMemo(() => account && jazzicon(iconSize, parseInt(account.slice(2, 10), 16)), [account, iconSize])
+  const iconRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const { current } = iconRef
+
+    for (let i = 0; i < TOTAL; i++) {
+      const icon = jazzicon(SIZE, i)
+      current?.appendChild(icon)
+    }
+  }, [])
 
   return (
-    <Card style={{ width: '100%' }}>
-      <Flex padding="16px">
-        <AssetSet size={28} />
+    <Flex position="relative">
+      <Flex padding="12px">
+        <AssetSetContainer>
+          <JazzIcon className="Test" ref={iconRef} />
+        </AssetSetContainer>
+
         <TextBlock m="auto">
-          <Text bold>999+ questers</Text>
+          <Text bold>{t('%total%+ questers', { total: TOTAL })}</Text>
         </TextBlock>
       </Flex>
-    </Card>
+    </Flex>
   )
 }

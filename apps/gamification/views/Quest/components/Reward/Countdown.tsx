@@ -1,5 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, Flex, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
+import { Flex, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
+
+const CountdownContainer = styled(Flex)`
+  flex-direction: column;
+  padding: 12px;
+  border-bottom: solid 1px ${({ theme }) => theme.colors.cardBorder};
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 24px 12px;
+  }
+`
 
 export const Countdown = () => {
   const { t } = useTranslation()
@@ -14,59 +25,57 @@ export const Countdown = () => {
   )
 
   return (
-    <Card style={{ width: '100%', marginBottom: '16px' }}>
-      <Flex flexDirection="column" padding="12px">
-        <Flex m="auto" ref={targetRef}>
-          <Text bold mr="4px">
-            Lucky Draw
+    <CountdownContainer>
+      <Flex m="auto" ref={targetRef}>
+        <Text bold mr="4px">
+          Lucky Draw
+        </Text>
+        <InfoIcon color="textSubtle" style={{ alignSelf: 'center' }} />
+      </Flex>
+      {tooltipVisible && tooltip}
+      <Flex justifyContent="center">
+        <Flex width="40px" flexDirection="column" alignItems="center">
+          <Text fontSize={['28px']} bold line-height="32px">
+            01
           </Text>
-          <InfoIcon color="textSubtle" style={{ alignSelf: 'center' }} />
+          <Text fontSize={['12px']} color="textSubtle" bold line-height="14px">
+            Days
+          </Text>
         </Flex>
-        {tooltipVisible && tooltip}
-        <Flex justifyContent="center">
-          <Flex width="40px" flexDirection="column" alignItems="center">
-            <Text fontSize={['28px']} bold line-height="32px">
-              01
-            </Text>
-            <Text fontSize={['12px']} color="textSubtle" bold line-height="14px">
-              Days
-            </Text>
-          </Flex>
-          <Text fontSize={['28px']} m="0 8px" color="textSubtle" bold>
-            :
+        <Text fontSize={['28px']} m="0 8px" color="textSubtle" bold>
+          :
+        </Text>
+        <Flex width="40px" flexDirection="column" alignItems="center">
+          <Text fontSize={['28px']} bold line-height="32px">
+            01
           </Text>
-          <Flex width="40px" flexDirection="column" alignItems="center">
-            <Text fontSize={['28px']} bold line-height="32px">
-              01
-            </Text>
-            <Text fontSize={['12px']} color="textSubtle" bold line-height="14px">
-              Hours
-            </Text>
-          </Flex>
-          <Text fontSize={['28px']} m="0 8px" color="textSubtle" bold>
-            :
+          <Text fontSize={['12px']} color="textSubtle" bold line-height="14px">
+            Hours
           </Text>
-          <Flex width="40px" flexDirection="column" alignItems="center">
-            <Text fontSize={['28px']} bold line-height="32px">
-              01
-            </Text>
-            <Text fontSize={['12px']} color="textSubtle" bold line-height="14px">
-              Minutes
-            </Text>
-          </Flex>
-          <Text fontSize={['28px']} m="0 8px" color="textSubtle" bold>
-            :
+        </Flex>
+        <Text fontSize={['28px']} m="0 8px" color="textSubtle" bold>
+          :
+        </Text>
+        <Flex width="40px" flexDirection="column" alignItems="center">
+          <Text fontSize={['28px']} bold line-height="32px">
+            01
           </Text>
-          <Flex width="40px" flexDirection="column" alignItems="center">
-            <Text fontSize={['28px']} bold line-height="32px">
-              01
-            </Text>
-            <Text fontSize={['12px']} color="textSubtle" bold line-height="14px">
-              Seconds
-            </Text>
-          </Flex>
+          <Text fontSize={['12px']} color="textSubtle" bold line-height="14px">
+            Minutes
+          </Text>
+        </Flex>
+        <Text fontSize={['28px']} m="0 8px" color="textSubtle" bold>
+          :
+        </Text>
+        <Flex width="40px" flexDirection="column" alignItems="center">
+          <Text fontSize={['28px']} bold line-height="32px">
+            01
+          </Text>
+          <Text fontSize={['12px']} color="textSubtle" bold line-height="14px">
+            Seconds
+          </Text>
         </Flex>
       </Flex>
-    </Card>
+    </CountdownContainer>
   )
 }

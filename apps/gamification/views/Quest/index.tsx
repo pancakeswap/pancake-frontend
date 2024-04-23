@@ -1,5 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, CalenderIcon, Flex, Heading, MoreIcon, Tag, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  ArrowBackIcon,
+  Box,
+  CalenderIcon,
+  Flex,
+  Heading,
+  Link,
+  MoreIcon,
+  Tag,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { Description } from 'views/Quest/components/Description'
 import { Reward } from 'views/Quest/components/Reward'
@@ -23,6 +34,12 @@ const StyledHeading = styled(Heading)`
   }
 `
 
+const StyledBackButton = styled(Link)`
+  &:hover {
+    text-decoration: none;
+  }
+`
+
 export const Quest = () => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
@@ -31,9 +48,14 @@ export const Quest = () => {
     <QuestContainer>
       <Box width="100%" p={['0', '0', '0', '0', '0 40px']}>
         <Flex mt={['16px', '16px', '16px', '16px', '40px']}>
-          <Tag variant="success">{t('Ongoing')}</Tag>
-          {/* <Tag variant="secondary">{t('Upcoming')}</Tag>
-          <Tag variant="textDisabled">{t('Finished')}</Tag> */}
+          <StyledBackButton href="/">
+            <Flex>
+              <ArrowBackIcon color="primary" />
+              <Text ml="6px" color="primary" bold>
+                {t('Back')}
+              </Text>
+            </Flex>
+          </StyledBackButton>
           <Flex ml="auto" style={{ cursor: 'pointer' }}>
             <Text color="primary" bold>
               {t('Share')}
@@ -41,6 +63,11 @@ export const Quest = () => {
             <MoreIcon ml="6px" color="primary" />
           </Flex>
         </Flex>
+        <Box mt="16px">
+          <Tag variant="success">{t('Ongoing')}</Tag>
+          {/* <Tag variant="secondary">{t('Upcoming')}</Tag>
+            <Tag variant="textDisabled">{t('Finished')}</Tag> */}
+        </Box>
         <StyledHeading m="16px 0" as="h1">
           PancakeSwap Multichain Celebration - Base
         </StyledHeading>

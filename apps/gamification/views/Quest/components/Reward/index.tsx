@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, InfoIcon, Text } from '@pancakeswap/uikit'
+import { Box, Button, Card, InfoIcon, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { Countdown } from 'views/Quest/components/Reward/Countdown'
 import { Questers } from 'views/Quest/components/Reward/Questers'
@@ -14,16 +14,16 @@ const RewardContainer = styled(Box)`
   padding-bottom: 32px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    max-width: 368px;
-    height: 100vh;
-    padding: 40px 40px 0 40px;
+    max-width: 448px;
+    min-height: 100vh;
+    padding: 40px 40px 168px 40px;
     border-left: 1px solid ${({ theme }) => theme.colors.input};
   }
 `
 
 const StyledButton = styled(Button)`
   width: 100%;
-  margin: 16px 0;
+  margin: 8px 0;
   border-radius: 24px;
 `
 
@@ -32,20 +32,24 @@ export const Reward = () => {
 
   return (
     <RewardContainer>
-      <Text fontSize={['24px']} bold mb="16px">
-        {t('Reward')}
-      </Text>
-      <RewardAmount />
-      <Countdown />
-      <TotalRewards />
-      <Questers />
-      <StyledButton>{t('Claim the reward')}</StyledButton>
-      <StyledButton disabled endIcon={<InfoIcon color="textDisabled" />}>
-        {t('Unavailable')}
-      </StyledButton>
-      <RemainMessage />
-      <SuccessMessage />
-      <Winners />
+      <Card>
+        <Box padding="24px">
+          <Text fontSize={['24px']} bold mb={['24px', '24px', '40px']}>
+            {t('Reward')}
+          </Text>
+          <RewardAmount />
+          <Countdown />
+          <TotalRewards />
+          <Questers />
+          <StyledButton>{t('Claim the reward')}</StyledButton>
+          <StyledButton disabled endIcon={<InfoIcon color="textDisabled" />}>
+            {t('Unavailable')}
+          </StyledButton>
+          <RemainMessage />
+          <SuccessMessage />
+          <Winners />
+        </Box>
+      </Card>
     </RewardContainer>
   )
 }
