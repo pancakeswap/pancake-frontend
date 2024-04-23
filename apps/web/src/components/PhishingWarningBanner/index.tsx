@@ -96,7 +96,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const [remainingTimer, setRemainingTimer] = useState(DISPLAY_TIMER)
   const { pathname } = useRouter()
 
-  const configList = useMemo(() => [<Step1 />, <Step2 />, ...(pathname === '/swap' ? [<Step3 />] : [])], [pathname])
+  const configList = useMemo(() => [<Step1 />, <Step2 />].concat(pathname === '/swap' ? [<Step3 />] : []), [pathname])
   const isCampaignStep = step === 2
 
   const nextItem = useMemo(() => (step < configList.length - 1 ? step + 1 : 0), [step, configList])
