@@ -1061,8 +1061,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
     chainId: ChainId.BSC,
     type: GaugeType.StableSwap,
     tokenAddresses: [bscTokens.hay.address, bscTokens.usdt.address],
+    killed: true,
   },
-
   {
     gid: 105,
     address: '0x1ac1A8FEaAEa1900C4166dEeed0C11cC10669D36',
@@ -3460,6 +3460,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.StableSwap,
     tokenAddresses: [arbitrumTokens.mpendle.address, arbitrumTokens.pendle.address],
+    killed: true,
   },
   {
     gid: 347,
@@ -3468,6 +3469,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.StableSwap,
     tokenAddresses: [arbitrumTokens.mdlp.address, arbitrumTokens.dlp.address],
+    killed: true,
   },
   {
     gid: 348,
