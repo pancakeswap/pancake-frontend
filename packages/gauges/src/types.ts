@@ -28,6 +28,7 @@ export interface GaugeBaseConfig {
   chainId: ChainId
   type: GaugeType
   address: Address
+  killed?: boolean
 }
 
 export interface GaugeV2Config extends GaugeBaseConfig {

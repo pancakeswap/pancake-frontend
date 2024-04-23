@@ -9,16 +9,6 @@ import { describe, expect, it, test } from 'vitest'
 import { CONFIG_PROD } from '../constants/config/prod'
 import { GaugeStableSwapConfig, GaugeType } from '../types'
 
-// const publicClient = Object.keys(VAULTS_CONFIG_BY_CHAIN).reduce((acc, chainId) => {
-//   return {
-//     ...acc,
-//     [chainId]: createPublicClient({
-//       chain: Object.values(ChainId).find((chain) => chain.id === Number(chainId)),
-//       transport: PUBLIC_NODES[chainId] ? fallback(PUBLIC_NODES[chainId].map((rpc: string) => http(rpc))) : http(),
-//     }) as PublicClient,
-//   }
-// }, {} as Record<string, PublicClient>)
-
 describe('Gauges Config', async () => {
   const gidGroups = groupBy(CONFIG_PROD, 'gid')
   const chainIdGroups = groupBy(CONFIG_PROD, 'chainId')
@@ -47,7 +37,9 @@ describe('Gauges Config', async () => {
   })
 
   const stableSwapGauges = Object.entries(chainIdGroups).reduce((acc, [chainId, gauges]) => {
-    const _stableSwapGauges = gauges.filter((gauge) => gauge.type === GaugeType.StableSwap) as GaugeStableSwapConfig[]
+    const _stableSwapGauges = gauges.filter(
+      (gauge) => gauge.type === GaugeType.StableSwap && !gauge.killed,
+    ) as GaugeStableSwapConfig[]
     if (_stableSwapGauges.length === 0) return acc
     return {
       ...acc,
