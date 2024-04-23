@@ -157,52 +157,6 @@ importers:
         specifier: 2.20.2
         version: 2.20.2
 
-  apis/info:
-    dependencies:
-      '@pancakeswap/chains':
-        specifier: workspace:*
-        version: link:../../packages/chains
-      '@pancakeswap/worker-utils':
-        specifier: workspace:*
-        version: link:../../packages/worker-utils
-      bignumber.js:
-        specifier: ^9.0.0
-        version: 9.1.2
-      dayjs:
-        specifier: ^1.11.10
-        version: 1.11.10
-      graphql-request:
-        specifier: 5.0.0
-        version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
-      itty-router:
-        specifier: ^2.6.1
-        version: 2.6.6
-      itty-router-extras:
-        specifier: ^0.4.2
-        version: 0.4.5
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
-      viem:
-        specifier: 2.9.19
-        version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
-    devDependencies:
-      '@cloudflare/workers-types':
-        specifier: ^3.10.0
-        version: 3.19.0
-      '@pancakeswap/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
-      '@types/itty-router-extras':
-        specifier: ^0.4.0
-        version: 0.4.3
-      '@types/lodash':
-        specifier: ^4.14.168
-        version: 4.14.202
-      wrangler:
-        specifier: 2.20.2
-        version: 2.20.2
-
   apis/proxy-worker:
     dependencies:
       itty-router:
