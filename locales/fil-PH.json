@@ -3228,7 +3228,7 @@
   "Buy with %provider%": "Bumili sa %provider%",
   "Token by network": "Token by network",
   "Bitcoin Network": "Bitcoin Network",
-  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.": "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.",
+  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.": "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.",
   "All Networks": "All Networks",
   "Select a Token to Purchase": "Select a Token to Purchase",
   "Select Tokens by network": "Select Tokens by network",
