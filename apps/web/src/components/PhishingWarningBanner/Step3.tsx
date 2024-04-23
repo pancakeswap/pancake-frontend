@@ -26,6 +26,7 @@ export const Step3 = () => {
         color="primary"
         fontSize={['12px', '12px', '14px']}
         style={{ display: 'flex', alignItems: 'center', gap: 3 }}
+        data-dd-action-name="Masa trading competition"
       >
         {t('Start Trading')}
         <ArrowForwardIcon width="14px" color="primary" />
