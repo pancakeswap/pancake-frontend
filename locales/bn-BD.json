@@ -3228,7 +3228,7 @@
   "Buy with %provider%": "%provider% দিয়ে কিনুন",
   "Token by network": "নেটওয়ার্ক-এর মাধ্যমে টোকেন",
   "Bitcoin Network": "বিটকয়েন নেটওয়ার্ক",
-  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.": "নেটিভ BTC ক্রয় সক্রিয় করুন। শুধুমাত্র এটি করুন যে তহবিল পাওয়ার জন্য আপনার একটি বিটকয়েন ঠিকানা রয়েছে। আপনি স্থানীয় BTC-এর জন্য আপনার EVM ঠিকানা ব্যবহার করতে পারবেন না।",
+  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.": "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.",
   "All Networks": "সমস্ত নেটওয়ার্ক",
   "Select a Token to Purchase": "ক্রয় করার জন্য একটি টোকেন নির্বাচন করুন",
   "Select Tokens by network": "নেটওয়ার্ক-এর মাধ্যমে টোকেন নির্বাচন করুন",
