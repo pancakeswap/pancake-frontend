@@ -13,24 +13,24 @@ const tvl = 6082955532.115718
 
 export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient()
+  let results = {
+    totalTx30Days: txCount,
+    addressCount30Days: addressCount,
+    tvl,
+  }
   try {
-    let results = {
-      totalTx30Days: txCount,
-      addressCount30Days: addressCount,
-      tvl,
-    }
     if (process.env.NODE_ENV === 'production') {
       results = await (await fetch('https://pancakeswap.finance/api/info')).json()
     } else {
       results = await (await fetch('http://localhost:3000/api/info')).json()
     }
-    queryClient.setQueryData(['totalTx30Days'], results.totalTx30Days)
-    queryClient.setQueryData(['tvl'], results.tvl)
-    queryClient.setQueryData(['addressCount30Days'], results.addressCount30Days)
   } catch (error) {
     if (process.env.NODE_ENV === 'production') {
       console.error('Error when fetching tvl stats', error)
     }
+    queryClient.setQueryData(['totalTx30Days'], results.totalTx30Days)
+    queryClient.setQueryData(['tvl'], results.tvl)
+    queryClient.setQueryData(['addressCount30Days'], results.addressCount30Days)
   }
 
   return {
