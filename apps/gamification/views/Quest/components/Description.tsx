@@ -1,15 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, ReactMarkdown, Text } from '@pancakeswap/uikit'
+import { Box, Card, ReactMarkdown, Text } from '@pancakeswap/uikit'
 
 export const Description = () => {
   const { t } = useTranslation()
 
   return (
-    <Box>
-      <Text fontSize={['24px']} bold mb="16px">
-        {t('Description')}
-      </Text>
-      <ReactMarkdown>11233</ReactMarkdown>
-    </Box>
+    <Card>
+      <Box padding="24px">
+        <Text bold mb="16px" fontSize={['24px']} lineHeight={['28px']}>
+          {t('Description')}
+        </Text>
+        <ReactMarkdown>11233</ReactMarkdown>
+      </Box>
+    </Card>
   )
 }
