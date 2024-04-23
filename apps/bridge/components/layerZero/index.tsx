@@ -52,19 +52,24 @@ const LayerZero = ({ isCake }: { isCake?: boolean }) => {
 
       if (isCake) {
         setTimeout(async () => {
-          const app: any = await customElements.whenDefined('lz-bridge')
-          const length = app?.bridgeStore?.currencies?.length
-          if (length !== null || length !== undefined) {
-            const currencies = app?.bridgeStore?.currencies?.slice()
-            // @ts-ignore
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            app!.bridgeStore!.currencies.length = 0
-            app?.bridgeStore?.addCurrencies(currencies?.filter((i: any) => i.symbol.toLowerCase() === 'cake'))
+          try {
+            await customElements.whenDefined('lz-bridge')
+            const app: any = customElements.get('lz-bridge')
+            const length = app?.bridgeStore?.currencies?.length
+            if (length !== null || length !== undefined) {
+              const currencies = app?.bridgeStore?.currencies?.slice()
+              // @ts-ignore
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              app!.bridgeStore!.currencies.length = 0
+              app?.bridgeStore?.addCurrencies(currencies?.filter((i: any) => i.symbol.toLowerCase() === 'cake'))
 
-            const srcCake = app?.bridgeStore?.currencies?.find(
-              (i: any) => i.symbol.toUpperCase() === 'CAKE' && i.chainId === 102,
-            )
-            app?.bridgeStore?.setSrcCurrency(srcCake)
+              const srcCake = app?.bridgeStore?.currencies?.find(
+                (i: any) => i.symbol.toUpperCase() === 'CAKE' && i.chainId === 102,
+              )
+              app?.bridgeStore?.setSrcCurrency(srcCake)
+            }
+          } catch (error) {
+            console.error('Failed to load lz-bridge', error)
           }
         }, 800)
       }

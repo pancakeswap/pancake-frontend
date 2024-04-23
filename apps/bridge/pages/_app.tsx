@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { useEffect, useState } from 'react'
 import { createGlobalStyle } from 'styled-components'
+import 'utils/whenDefinedPolyfill'
 import Providers from '../Providers'
 import { Menu } from '../components/Menu'
 
