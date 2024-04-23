@@ -12,6 +12,7 @@ export type CoBrandBadgeProps = {
   coBrandAlt?: string;
   cWidth?: number | `${number}`;
   cHeight?: number | `${number}`;
+  dividerBg?: string;
 };
 
 export const CoBrandBadge: React.FC<React.PropsWithChildren<CoBrandBadgeProps>> = ({
@@ -22,12 +23,13 @@ export const CoBrandBadge: React.FC<React.PropsWithChildren<CoBrandBadgeProps>> 
   coBrandAlt = "",
   cWidth,
   cHeight,
+  dividerBg,
 }) => {
   if (compact) {
     return (
       <FlexGap gap="4px">
         <PancakeSwapBadge whiteText={whiteText} compact />
-        <VerticalDivider />
+        <VerticalDivider bg={dividerBg ?? ""} />
         <BadgeLogo src={coBrandLogo} alt={coBrandAlt} />
       </FlexGap>
     );
@@ -36,7 +38,7 @@ export const CoBrandBadge: React.FC<React.PropsWithChildren<CoBrandBadgeProps>> 
   return (
     <FlexGap gap="8px">
       <PancakeSwapBadge whiteText={whiteText} />
-      <VerticalDivider />
+      <VerticalDivider bg={dividerBg ?? ""} />
 
       {cWidth && cHeight ? <Image src={coBrand} alt={coBrandAlt} width={cWidth} height={cHeight} unoptimized /> : null}
     </FlexGap>
