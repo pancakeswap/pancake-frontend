@@ -47,4 +47,12 @@ export const lineaTokens = {
     'Renzo Restaked ETH',
     'https://www.renzoprotocol.com/',
   ),
+  foxy: new ERC20Token(
+    ChainId.LINEA,
+    '0x5FBDF89403270a1846F5ae7D113A989F850d1566',
+    18,
+    'FOXY',
+    'Foxy',
+    'https://www.welikethefox.io/ ',
+  ),
 }

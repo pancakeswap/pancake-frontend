@@ -63,4 +63,12 @@ export const polygonZkEvmTokens = {
     'Wrapped liquid staked Ether 2.0',
     'https://lido.fi/',
   ),
+  dai: new ERC20Token(
+    ChainId.POLYGON_ZKEVM,
+    '0xC5015b9d9161Dca7e18e32f6f25C4aD850731Fd4',
+    18,
+    'DAI',
+    'Dai Stablecoin',
+    'https://makerdao.com/',
+  ),
 }
