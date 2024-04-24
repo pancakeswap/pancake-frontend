@@ -73,6 +73,7 @@ export const FiatOnRampModalButton = ({
     quote: selectedQuote!,
     externalTransactionId: externalTxIdRef.current!,
     btcAddress,
+    isFiat: 'fiat',
   })
 
   const [onPresentConfirmModal] = useModal(

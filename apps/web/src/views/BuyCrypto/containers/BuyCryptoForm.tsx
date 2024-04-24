@@ -113,6 +113,7 @@ export function BuyCryptoForm() {
     network: cryptoCurrency?.chainId,
     fiatAmount: typedValue || defaultAmt,
     enabled: Boolean(!inputError),
+    isFiat: 'fiat',
   })
 
   const quotes = data?.quotes
