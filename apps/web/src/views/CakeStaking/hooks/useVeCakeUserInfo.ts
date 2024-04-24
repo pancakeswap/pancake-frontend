@@ -1,9 +1,9 @@
+import { useReadContract } from '@pancakeswap/wagmi'
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import { Address } from 'viem'
-import { useReadContract } from '@pancakeswap/wagmi'
 import { CakeLockStatus, CakePoolType } from '../types'
 import { useCakePoolLockInfo } from './useCakePoolLockInfo'
 import { useCheckIsUserAllowMigrate } from './useCheckIsUserAllowMigrate'
@@ -122,9 +122,11 @@ export const useCakeLockStatus = (): {
     return dayjs.unix(cakeUnlockTime).isBefore(now)
   }, [cakeLocked, cakeUnlockTime, now])
 
+  const delegated = useMemo(() => userInfo?.cakePoolType === CakePoolType.DELEGATED, [userInfo])
+
   const cakePoolLocked = useMemo(
-    () => Boolean(userInfo?.cakeAmount) && userInfo?.withdrawFlag !== CakePoolLockStatus.WITHDRAW,
-    [userInfo],
+    () => !delegated && Boolean(userInfo?.cakeAmount) && userInfo?.withdrawFlag !== CakePoolLockStatus.WITHDRAW,
+    [delegated, userInfo?.cakeAmount, userInfo?.withdrawFlag],
   )
 
   const cakePoolLockExpired = useMemo(() => {
@@ -138,10 +140,10 @@ export const useCakeLockStatus = (): {
   }, [userInfo])
 
   const proxyCakeLockedAmount = useMemo(() => {
-    if (!cakePoolLocked) return 0n
+    if (!cakePoolLocked || delegated) return 0n
 
     return userInfo?.cakeAmount ?? 0n
-  }, [userInfo, cakePoolLocked])
+  }, [cakePoolLocked, delegated, userInfo?.cakeAmount])
 
   const cakeLockedAmount = useMemo(() => {
     return nativeCakeLockedAmount + proxyCakeLockedAmount
