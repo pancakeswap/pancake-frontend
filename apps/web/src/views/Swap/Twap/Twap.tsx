@@ -1,11 +1,12 @@
 import { Orders, TWAP as PancakeTWAP } from '@orbs-network/twap-ui-pancake'
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { Price } from '@pancakeswap/sdk'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/swap-sdk-core'
 import {
   ArrowUpIcon,
+  AtomBox,
   AutoColumn,
+  AutoRenewIcon,
   Box,
   BscScanIcon,
   Button,
@@ -15,7 +16,10 @@ import {
   Flex,
   IconButton,
   Link,
+  Loading,
   Spinner,
+  SwapCSS,
+  SyncAltIcon,
   Text,
   useMatchBreakpoints,
   useModal,
@@ -24,12 +28,7 @@ import {
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
-import {
-  ApproveModalContentV1,
-  Swap,
-  Swap as SwapUI,
-  SwapTransactionReceiptModalContentV1,
-} from '@pancakeswap/widgets-internal'
+import { ApproveModalContentV1, Swap, SwapTransactionReceiptModalContentV1 } from '@pancakeswap/widgets-internal'
 import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
 import { BodyWrapper } from 'components/App/AppBody'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -40,6 +39,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useTheme } from 'next-themes'
 import { ReactNode, useCallback, useContext, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
@@ -55,7 +55,6 @@ import { styled } from 'styled-components'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import currencyId from 'utils/currencyId'
 import { useAccount } from 'wagmi'
-import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { Wrapper } from '../components/styleds'
 import { SwapTransactionErrorContent } from '../components/SwapTransactionErrorContent'
 import useWarningImport from '../hooks/useWarningImport'
@@ -223,32 +222,33 @@ export function TWAPPanel({ limit }: { limit?: boolean }) {
           SwapTransactionReceiptModalContent={TwapSwapTransactionReceiptModalContent}
           AddToWallet={AddToWallet}
           TradePrice={TradePrice}
+          TradePriceToggle={TradePriceToggle}
         />
       </FormContainer>
     </>
   )
 }
 
-const TradePrice = (props: {
-  inputCurrency: Currency
-  outputCurrency: Currency
-  inputAmount: string
-  outAmount: string
-  loading?: boolean
-}) => {
-  const price = useMemo(() => {
-    const inputAmountCurrency = CurrencyAmount.fromRawAmount(props.inputCurrency, BigInt(props.inputAmount))
-    const outputAmountCurrency = CurrencyAmount.fromRawAmount(props.outputCurrency, BigInt(props.outAmount))
-    return new Price(
-      inputAmountCurrency.currency,
-      outputAmountCurrency.currency,
-      inputAmountCurrency.quotient,
-      outputAmountCurrency.quotient,
-    )
-  }, [props.inputCurrency, props.outputCurrency, props.inputAmount, props.outAmount])
+const TradePriceToggle = ({ onClick, loading }: { onClick: () => void; loading: boolean }) => {
+  return loading ? (
+    <AtomBox className={SwapCSS.iconButtonClass}>
+      <Loading width="14px" height="14px" />
+    </AtomBox>
+  ) : (
+    <AtomBox role="button" className={SwapCSS.iconButtonClass} onClick={onClick}>
+      <AutoRenewIcon width="16px" />
+    </AtomBox>
+  )
+}
 
-  if (!price) return null
-  return <SwapUI.TradePrice loading={props.loading} price={price} />
+function TradePrice({ price, leftSymbol, rightSymbol }: { price?: string; leftSymbol?: string; rightSymbol?: string }) {
+  return (
+    <Text fontSize="14px" style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+      {`1 ${leftSymbol}`}
+      <SyncAltIcon width="14px" height="14px" color="textSubtle" ml="4px" mr="4px" />
+      {`${price} ${rightSymbol}`}
+    </Text>
+  )
 }
 
 export const SwapPendingModalContent: React.FC<{ title: string; showIcon?: boolean; children?: ReactNode }> = ({
