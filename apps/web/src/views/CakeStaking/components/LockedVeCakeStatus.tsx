@@ -13,7 +13,9 @@ import {
   Link,
   Message,
   RowBetween,
+  Tag,
   Text,
+  WarningIcon,
 } from '@pancakeswap/uikit'
 import { formatBigInt, formatNumber, getBalanceAmount, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import dayjs from 'dayjs'
@@ -33,13 +35,12 @@ import { StyledLockedCard } from './styled'
 
 dayjs.extend(relativeTime)
 
-const LearnMore = () => {
+const LearnMore: React.FC<{ href?: string }> = ({
+  href = 'https://docs.pancakeswap.finance/products/vecake/migrate-from-cake-pool#10ffc408-be58-4fa8-af56-be9f74d03f42',
+}) => {
   const { t } = useTranslation()
   return (
-    <Link
-      href="https://docs.pancakeswap.finance/products/vecake/migrate-from-cake-pool#10ffc408-be58-4fa8-af56-be9f74d03f42"
-      color="text"
-    >
+    <Link href={href} color="text">
       {t('Learn More >>')}
     </Link>
   )
@@ -95,7 +96,9 @@ export const LockedVeCakeStatus: React.FC<{
           </RowBetween>
         </CardHeader>
         <NativePosition />
-        <LockedInfo />
+        <MigratePosition />
+        {/* <LockedInfo /> */}
+        {/* <SubmitUnlockButton /> */}
       </Card>
     </Box>
   )
@@ -105,7 +108,9 @@ const CUSTOM_WARNING_COLOR = '#D67E0A'
 
 const NativePosition = () => {
   const { t } = useTranslation()
-  const { cakeLockExpired, nativeCakeLockedAmount, cakeUnlockTime } = useCakeLockStatus()
+  const { cakeLockExpired, nativeCakeLockedAmount, cakeUnlockTime, proxyCakeLockedAmount } = useCakeLockStatus()
+
+  if (!nativeCakeLockedAmount) return null
 
   return (
     <Flex flexDirection="column" margin={24}>
@@ -129,16 +134,88 @@ const NativePosition = () => {
             </AutoColumn>
           </RowBetween>
         </StyledLockedCard>
-        <Flex justifyContent="center">
-          <img src="/images/cake-staking/my-cake-bunny.png" alt="my-cake-bunny" width="254px" />
-        </Flex>
-        <SubmitUnlockButton />
+        {!proxyCakeLockedAmount ? (
+          <Flex justifyContent="center">
+            <img src="/images/cake-staking/my-cake-bunny.png" alt="my-cake-bunny" width="254px" />
+          </Flex>
+        ) : null}
       </FlexGap>
     </Flex>
   )
 }
 
-const MigratePosition = () => {}
+const MigratePosition = () => {
+  const { t } = useTranslation()
+  const { cakePoolLockExpired, cakePoolUnlockTime, nativeCakeLockedAmount, proxyCakeLockedAmount } = useCakeLockStatus()
+
+  if (!proxyCakeLockedAmount) return null
+
+  return (
+    <FlexGap gap="12px" flexDirection="column" margin={24}>
+      <RowBetween>
+        <Text color="secondary" bold fontSize={12} textTransform="uppercase">
+          {t('migrated position')}
+        </Text>
+        {cakePoolLockExpired ? (
+          <Tag variant="failure" scale="sm" startIcon={<WarningIcon color="white" />} px="8px">
+            {t('Unlocked')}
+          </Tag>
+        ) : null}
+      </RowBetween>
+      <FlexGap flexDirection="column" gap="24px">
+        <StyledLockedCard gap="16px">
+          <RowBetween>
+            <AutoColumn>
+              <Text fontSize={12} color="textSubtle" textTransform="uppercase" bold>
+                {t('cake locked')}
+              </Text>
+              <CakeLockedV2 lockedAmount={proxyCakeLockedAmount} />
+            </AutoColumn>
+            <AutoColumn>
+              <Text fontSize={12} color="textSubtle" textTransform="uppercase" bold>
+                {t('unlocks in')}
+              </Text>
+              <CakeUnlockAtV2 expired={cakePoolLockExpired} unlockTime={Number(cakePoolUnlockTime)} />
+            </AutoColumn>
+          </RowBetween>
+        </StyledLockedCard>
+
+        {cakePoolLockExpired ? (
+          <Message variant="warning" icon={<InfoFilledIcon color="warning" />}>
+            <Text as="p">
+              {t(
+                'CAKE Pool migrated position has unlocked. Go to the pool page to withdraw, add CAKE into veCAKE to increase your veCAKE benefits.',
+              )}
+            </Text>
+          </Message>
+        ) : nativeCakeLockedAmount ? (
+          <Message variant="primary" icon={<InfoFilledIcon color="secondary" />}>
+            <AutoColumn gap="8px">
+              <Text as="p">{t('Adding CAKE or extending CAKE will be applying to your native position.')}</Text>
+              <LearnMore href="https://docs.pancakeswap.finance/products/vecake/faq#52f27118-bbf3-448b-9ffe-e9e1a9dd97ef" />
+            </AutoColumn>
+          </Message>
+        ) : (
+          <Message variant="primary" icon={<InfoFilledIcon color="secondary" />}>
+            <AutoColumn gap="8px">
+              <Text as="p">
+                {t(
+                  'Position migrated from CAKE Pool can not be extended or topped up. To extend or add more CAKE, set up a native veCAKE position.',
+                )}
+              </Text>
+              <LearnMore />
+            </AutoColumn>
+          </Message>
+        )}
+        <Link external style={{ textDecoration: 'none', width: '100%' }} href="/pools">
+          <Button width="100%" variant="secondary">
+            {t('View Migrated Position')}
+          </Button>
+        </Link>
+      </FlexGap>
+    </FlexGap>
+  )
+}
 
 const LockedInfo = () => {
   const { t } = useTranslation()
@@ -466,15 +543,17 @@ const UnderlineText = styled(Text)`
 const SubmitUnlockButton = () => {
   const { t } = useTranslation()
   const unlock = useWriteWithdrawCallback()
-  const { cakeLockedAmount } = useCakeLockStatus()
+  const { cakeLockedAmount, cakeLockExpired, cakePoolLockExpired } = useCakeLockStatus()
 
-  if (!cakeLockedAmount) {
+  if (!cakeLockedAmount || (cakeLockExpired && !cakePoolLockExpired)) {
     return null
   }
 
   return (
-    <Button variant="secondary" onClick={unlock}>
-      {t('Unlock')}
-    </Button>
+    <Flex flexDirection="column" margin={24}>
+      <Button variant="secondary" onClick={unlock}>
+        {t('Unlock')}
+      </Button>
+    </Flex>
   )
 }
