@@ -147,7 +147,7 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
   const { hasActiveProfile, isLoading: isProfileLoading } = useProfile()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(config.tooltip, { placement: 'bottom' })
 
-  const isLoading = isProfileLoading || publicIfoData.status === 'idle'
+  const isLoading = Boolean(isProfileLoading && needQualifiedNFT) || publicIfoData.status === 'idle'
 
   const { isEligible, criterias } = useCriterias(walletIfoData[poolId], {
     needQualifiedNFT,
