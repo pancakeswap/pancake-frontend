@@ -35,7 +35,7 @@ const useAffiliateClaimList = ({ currentPage }) => {
       }
     },
 
-    enabled: Boolean(address && isAffiliateExist && isAffiliate),
+    enabled: Boolean(address && isAffiliateExist !== null && isAffiliate),
     refetchInterval: FAST_INTERVAL * 3,
     placeholderData: keepPreviousData,
   })
