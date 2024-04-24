@@ -82,7 +82,7 @@ export const MasaTCBanner = () => {
           <BannerActionContainer>
             {participateAction}
             {!isMobile && <VerticalDivider />}
-            {!isMobile && learnMoreAction}x
+            {!isMobile && learnMoreAction}
           </BannerActionContainer>
         }
       />
