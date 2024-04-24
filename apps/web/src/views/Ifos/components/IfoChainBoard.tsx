@@ -1,5 +1,4 @@
 import { ChainId } from '@pancakeswap/chains'
-import Image from 'next/image'
 import { memo, useMemo } from 'react'
 import { Box, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import styled from 'styled-components'

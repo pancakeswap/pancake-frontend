@@ -169,6 +169,10 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
 
   const [isExpanded, setIsExpanded] = useState(false)
 
+  if (!isLoading && !publicIfoData[poolId]?.distributionRatio) {
+    return null
+  }
+
   return (
     <>
       {tooltipVisible && tooltip}

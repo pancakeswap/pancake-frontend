@@ -296,7 +296,7 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
 
   const hasPoolBasic = Boolean(publicIfoData.poolBasic?.distributionRatio)
   const hasPoolUnlimited = Boolean(publicIfoData.poolUnlimited?.distributionRatio)
-  const isSingleCard = !publicIfoData.poolBasic || !walletIfoData.poolBasic || !hasPoolBasic || !hasPoolUnlimited
+  const isSingleCard = publicIfoData.isInitialized && (!hasPoolBasic || !hasPoolUnlimited)
 
   return (
     <>
@@ -305,7 +305,7 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
           $shouldReverse={ifo.version >= 3.1 && publicIfoData.poolBasic?.saleType !== 2}
           $singleCard={isSingleCard}
         >
-          {hasPoolBasic && publicIfoData.poolBasic && walletIfoData.poolBasic && (
+          {publicIfoData.poolBasic && walletIfoData.poolBasic && (
             <IfoPoolCard
               poolId={PoolIds.poolBasic}
               ifo={ifo}
@@ -315,16 +315,14 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
               enableStatus={enableStatus}
             />
           )}
-          {hasPoolUnlimited && (
-            <IfoPoolCard
-              poolId={PoolIds.poolUnlimited}
-              ifo={ifo}
-              publicIfoData={publicIfoData}
-              walletIfoData={walletIfoData}
-              onApprove={handleApprove}
-              enableStatus={enableStatus}
-            />
-          )}
+          <IfoPoolCard
+            poolId={PoolIds.poolUnlimited}
+            ifo={ifo}
+            publicIfoData={publicIfoData}
+            walletIfoData={walletIfoData}
+            onApprove={handleApprove}
+            enableStatus={enableStatus}
+          />
         </CardsWrapper>
       </StyledCardBody>
     </>
