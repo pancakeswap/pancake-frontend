@@ -24,10 +24,33 @@ export const useChainIdListener = () => {
   })
 }
 
+const useAddressListener = () => {
+  const { connector, chainId } = useAccount()
+  const dispatch = useAppDispatch()
+
+  const onAddressChanged = useCallback(
+    ({ accounts }: { accounts?: any }) => {
+      if (accounts.length > 0) {
+        clearUserStates(dispatch, { chainId })
+      }
+    },
+    [chainId, dispatch],
+  )
+
+  useEffect(() => {
+    connector?.emitter?.on('change', onAddressChanged)
+
+    return () => {
+      connector?.emitter?.off('change', onAddressChanged)
+    }
+  })
+}
+
 export const useAccountEventListener = () => {
   const dispatch = useAppDispatch()
   const { chainId } = useAccount()
   useChainIdListener()
+  useAddressListener()
 
   useAccountEffect({
     onDisconnect() {
