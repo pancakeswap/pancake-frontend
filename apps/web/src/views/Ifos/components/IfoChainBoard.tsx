@@ -14,6 +14,7 @@ const BACKGROUND = {
   [ChainId.BSC_TESTNET]: '#D8A70A',
   [ChainId.ETHEREUM]: '#627AD8',
   [ChainId.GOERLI]: '#627AD8',
+  [ChainId.ARBITRUM_ONE]: '#2D364D',
 }
 
 const Container = styled(Box)`
@@ -51,7 +52,7 @@ export const IfoChainBoard = memo(function IfoChainBoard({ chainId }: Props) {
 
   return (
     <Container>
-      {!isMobile && <Image alt={`chain-${chainId}`} src={boardImageUrl} width={100} height={85} />}
+      {!isMobile && <img alt={`chain-${chainId}`} src={boardImageUrl} width={100} height={85} />}
       <Tag background={BACKGROUND[chainId]}>
         <Text fontSize="0.875rem" bold color="white">
           {t('On %chainName%', { chainName })}
