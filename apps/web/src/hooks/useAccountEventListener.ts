@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react'
+import { Address } from 'viem'
 import { useAccount, useAccountEffect } from 'wagmi'
 import { useAppDispatch } from '../state'
 import { clearUserStates } from '../utils/clearUserStates'
@@ -29,8 +30,8 @@ const useAddressListener = () => {
   const dispatch = useAppDispatch()
 
   const onAddressChanged = useCallback(
-    ({ accounts }: { accounts?: any }) => {
-      if (accounts.length > 0) {
+    ({ accounts }: { accounts?: readonly Address[] | undefined }) => {
+      if (accounts && accounts?.length > 0) {
         clearUserStates(dispatch, { chainId })
       }
     },
