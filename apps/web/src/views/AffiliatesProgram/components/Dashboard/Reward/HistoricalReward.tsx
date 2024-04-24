@@ -74,14 +74,12 @@ const HistoricalReward: React.FC<React.PropsWithChildren<HistoricalRewardProps>>
       const claimType = isAffiliateClaim ? 0 : 1
       const expiryTime = Math.floor(new Date(reward.expiryTime ?? 0).getTime() / 1000)
 
-      if (!contract || !contract.account || !address) return
-
       const receipt = await fetchWithCatchTxError(() =>
         contract.write.claim(
           [
             {
               nonce,
-              claimer: address,
+              claimer: address!,
               claimType,
               totalAmount: totalCakeSmallUnit,
               expiryTimestamp: BigInt(expiryTime),
