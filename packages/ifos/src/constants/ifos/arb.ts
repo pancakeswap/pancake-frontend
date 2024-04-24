@@ -4,8 +4,8 @@ import { BaseIfoConfig } from '../../types'
 
 export const ifos: BaseIfoConfig[] = [
   {
-    id: 'Test',
-    address: '0xdbB1ABd6caAAE217eACb80b605F5d6bF9d4fE874',
+    id: 'test-arb',
+    address: '0x661E2e222c0CD739ec5c7540506c999A2195290e',
     isActive: true,
     cIFO: false,
     name: 'Test',
