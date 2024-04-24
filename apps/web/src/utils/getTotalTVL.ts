@@ -1,12 +1,11 @@
-import { ChainId } from '@pancakeswap/chains'
-import { NextApiHandler } from 'next'
-import { formatEther, stringify } from 'viem'
 import { gql, GraphQLClient } from 'graphql-request'
-import dayjs from 'dayjs'
 import { V2_SUBGRAPH_URLS, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
+import { ChainId } from '@pancakeswap/chains'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
-import { getCakeVaultAddress } from 'utils/addressHelpers'
+import dayjs from 'dayjs'
 import { getCakeContract } from 'utils/contractHelpers'
+import { formatEther } from 'viem'
+import { getCakeVaultAddress } from 'utils/addressHelpers'
 import addresses from 'config/constants/contracts'
 import { bitQueryServerClient } from 'utils/graphql'
 
@@ -15,7 +14,12 @@ const txCount = 54780336
 const addressCount = 4425459
 const tvl = 6082955532.115718
 
-const handler: NextApiHandler = async (req, res) => {
+export const getTotalTvl = async () => {
+  const results = {
+    totalTx30Days: txCount,
+    addressCount30Days: addressCount,
+    tvl,
+  }
   try {
     const totalTxV2Query = gql`
       query TotalTransactions($block: Block_height) {
@@ -34,12 +38,6 @@ const handler: NextApiHandler = async (req, res) => {
     `
 
     const days30Ago = dayjs().subtract(30, 'days')
-
-    const results = {
-      totalTx30Days: txCount,
-      addressCount30Days: addressCount,
-      tvl,
-    }
 
     const v3ProdClients = Object.entries(V3_SUBGRAPH_URLS)
       .filter(([string, clientUrl]) => {
@@ -298,17 +296,10 @@ const handler: NextApiHandler = async (req, res) => {
       parseFloat(formatEther(totalCakeInVE)) * cake.price +
       v3Tvl +
       v2Tvl
-
-    // cache for long time, it should revalidate on every deployment
-    res.setHeader('Cache-Control', `max-age=86400, s-maxage=86400`)
-
-    return res.status(200).json({
-      ...results,
-      lastUpdated: new Date().toISOString(),
-    })
   } catch (error) {
-    return res.status(500).json({ error: JSON.parse(stringify(error)) })
+    if (process.env.NODE_ENV === 'production') {
+      console.error('Error when fetching tvl stats', error)
+    }
   }
+  return results
 }
-
-export default handler
