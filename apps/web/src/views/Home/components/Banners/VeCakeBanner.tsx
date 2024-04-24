@@ -82,17 +82,17 @@ export const VeCakeBanner = () => {
       <BannerMain
         badges={
           <Flex>
-            <PancakeSwapBadge />
+            {/*  <PancakeSwapBadge /> */}
           </Flex>
         }
         desc={isMobile ? null : <Desc />}
         title={
           <BannerTitle variant="yellow">
             {isMobile || isTablet
-              ? t('Stake CAKE - up to %apr%% APR !', {
+              ? t('Stake CARIB:CAKE - up to %apr%% APR !', {
                   apr: totalApr.toFixed(2),
                 })
-              : t('Stake CAKE and Earn up to %apr%% APR !', {
+              : t('Stake CARIB:CAKE and earn up to %apr%% APR !', {
                   apr: totalApr.toFixed(2),
                 })}
           </BannerTitle>
