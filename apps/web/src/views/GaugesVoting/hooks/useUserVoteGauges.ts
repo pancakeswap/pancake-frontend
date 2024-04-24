@@ -4,6 +4,7 @@ import { useGaugesVotingContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import { Hex, isAddressEqual, zeroAddress } from 'viem'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
+import { CakePoolType } from 'views/CakeStaking/types'
 import { usePublicClient } from 'wagmi'
 import { useGauges } from './useGauges'
 
@@ -36,7 +37,10 @@ export const useUserVoteSlopes = () => {
     queryFn: async (): Promise<VoteSlope[]> => {
       if (!gauges || gauges.length === 0 || !account) return []
 
-      const hasProxy = userInfo?.cakePoolProxy && !isAddressEqual(userInfo?.cakePoolProxy, zeroAddress)
+      const delegated = userInfo?.cakePoolType === CakePoolType.DELEGATED
+
+      const hasProxy =
+        userInfo?.cakePoolProxy && !isAddressEqual(userInfo?.cakePoolProxy, zeroAddress) && userInfo && !delegated
 
       const contracts = gauges.map((gauge) => {
         return {
