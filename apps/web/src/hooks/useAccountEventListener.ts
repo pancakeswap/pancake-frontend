@@ -1,8 +1,8 @@
 import { useCallback, useEffect } from 'react'
-import { Address } from 'viem'
-import { useAccount, useAccountEffect } from 'wagmi'
-import { useAppDispatch } from '../state'
-import { clearUserStates } from '../utils/clearUserStates'
+import { watchAccount } from '@wagmi/core'
+import { useAccount, useAccountEffect, useConfig } from 'wagmi'
+import { useAppDispatch } from 'state'
+import { clearUserStates } from 'utils/clearUserStates'
 import { useSwitchNetworkLocal } from './useSwitchNetwork'
 
 export const useChainIdListener = () => {
@@ -26,25 +26,19 @@ export const useChainIdListener = () => {
 }
 
 const useAddressListener = () => {
-  const { connector, chainId } = useAccount()
+  const config = useConfig()
   const dispatch = useAppDispatch()
-
-  const onAddressChanged = useCallback(
-    ({ accounts }: { accounts?: readonly Address[] | undefined }) => {
-      if (accounts && accounts?.length > 0) {
-        clearUserStates(dispatch, { chainId })
-      }
-    },
-    [chainId, dispatch],
-  )
+  const { chainId } = useAccount()
 
   useEffect(() => {
-    connector?.emitter?.on('change', onAddressChanged)
-
-    return () => {
-      connector?.emitter?.off('change', onAddressChanged)
-    }
-  })
+    return watchAccount(config, {
+      onChange(data, prevData) {
+        if (prevData.status === 'connected' && data.status === 'connected' && prevData.chainId === data.chainId) {
+          clearUserStates(dispatch, { chainId })
+        }
+      },
+    })
+  }, [config, dispatch, chainId])
 }
 
 export const useAccountEventListener = () => {
