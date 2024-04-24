@@ -48,7 +48,7 @@ export const useMultipleBannerConfig = () => {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
       },
-      { shouldRender: isRenderIFOBanner || Boolean(countdown), banner: <NewIFOBanner /> },
+{/*   { shouldRender: isRenderIFOBanner || Boolean(countdown), banner: <NewIFOBanner /> },
       {
         shouldRender: true,
         banner: <MasaTCBanner />,
@@ -61,8 +61,9 @@ export const useMultipleBannerConfig = () => {
         shouldRender: true,
         banner: <OptionsBanner />,
       },
+*/}
       { shouldRender: true, banner: <VeCakeBanner /> },
-      {
+{/*    {
         shouldRender: true,
         banner: <V4InfoBanner />,
       },
@@ -74,10 +75,11 @@ export const useMultipleBannerConfig = () => {
         shouldRender: true,
         banner: <TopTraderBanner />,
       },
+  */}
     ]
 
     const SHUFFLE_BANNERS: IBannerConfig[] = [
-      { shouldRender: true, banner: <GalxeTraverseBanner /> },
+{/*   { shouldRender: true, banner: <GalxeTraverseBanner /> },
       { shouldRender: true, banner: <WebNotificationBanner /> },
       { shouldRender: true, banner: <GameBanner /> },
       {
@@ -88,6 +90,7 @@ export const useMultipleBannerConfig = () => {
         shouldRender: true,
         banner: <PerpetualBanner />,
       },
+ */}     
     ]
     return [
       ...NO_SHUFFLE_BANNERS,
