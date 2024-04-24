@@ -59,7 +59,7 @@
   "days": "dias",
   "Your harvest request has been submitted.": "Sua solicitação de colheita foi enviada.",
   "Ended": "Encerrado",
-  "Single-Sided Simple Earn Staking": "Stake de ganho simples com token único",
+  "Single-Sided Simple Earn Staking": "Stake individual de ganho simples",
   "No rewards are credited for early withdrawal, and commission is required": "Nenhuma recompensa será creditada em caso de retirada antecipada, e a comissão é obrigatória",
   "View Position": "Visualizar posição",
   "Yield booster available": "Impulsionador de rendimento disponível",
@@ -3331,5 +3331,9 @@
   "chain & strategy": "chain e estratégia",
   "Placing Order Disabled": "Realização de ordem desativada",
   "Orders missing? Check out:": "Está faltando ordens? Confira:",
-  "Limit V2 (deprecated)": "Limit V2 (descontinuado)"
+  "Limit V2 (deprecated)": "Limit V2 (descontinuado)",
+  "Join the MASA Trading Competition": "Join the MASA Trading Competition",
+  "Win 700,000 $MASA": "Win 700,000 $MASA",
+  "Trade to win 700,000 $MASA": "Trade to win 700,000 $MASA",
+  "to Win 700,000 $MASA": "to Win 700,000 $MASA"
 }
