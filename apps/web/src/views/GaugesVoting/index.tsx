@@ -17,6 +17,7 @@ import Page from 'components/Layout/Page'
 import { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import { CurrentEpoch } from './components/CurrentEpoch'
+import { FilterFieldByType, FilterFieldInput, FilterFieldSort } from './components/GaugesFilter'
 import { MyVeCakeBalance } from './components/MyVeCakeBalance'
 import { GaugesList, GaugesTable, VoteTable } from './components/Table'
 import { WeightsPieChart } from './components/WeightsPieChart'
@@ -30,7 +31,6 @@ const InlineLink = styled(LinkExternal)`
 `
 
 const StyledGaugesVotingPage = styled.div`
-  overflow: hidden;
   background: transparent;
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -129,16 +129,38 @@ const GaugesVoting = () => {
                 <Text color="secondary" textTransform="uppercase" bold>
                   {t('proposed weights')}
                 </Text>
-                <WeightsPieChart data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} isLoading={isLoading} />
+                <Box mt={isDesktop ? '40px' : '0'} mb={isDesktop ? '20px' : 0}>
+                  <WeightsPieChart data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} isLoading={isLoading} />
+                </Box>
               </Box>
+              {!isMobile ? (
+                <Grid mt={-60} gridTemplateColumns="1fr 1fr" gridGap="32px">
+                  <FilterFieldByType onFilterChange={console.log} />
+                  <FilterFieldInput placeholder={t('Search')} onChange={console.log} />
+                </Grid>
+              ) : null}
             </Grid>
+            {/* for mobile sticky, make it redundancy */}
             {isMobile ? (
-              <GaugesList
-                mt="1.5em"
-                data={gauges}
-                isLoading={isLoading}
-                totalGaugesWeight={Number(totalGaugesWeight)}
-              />
+              <Grid
+                background="background"
+                mx={-16}
+                p={16}
+                gridTemplateColumns="1fr"
+                gridGap="1em"
+                // style={isMobile ? { position: 'sticky', top: 0 } : undefined}
+                position="sticky"
+                top="0"
+              >
+                <Grid gridTemplateColumns="2fr 1fr" gridGap="8px">
+                  <FilterFieldByType onFilterChange={console.log} />
+                  <FilterFieldSort onChange={console.log} />
+                </Grid>
+                <FilterFieldInput placeholder={t('Search')} onChange={console.log} />
+              </Grid>
+            ) : null}
+            {isMobile ? (
+              <GaugesList data={gauges} isLoading={isLoading} totalGaugesWeight={Number(totalGaugesWeight)} />
             ) : (
               <GaugesTable
                 mt="1.5em"

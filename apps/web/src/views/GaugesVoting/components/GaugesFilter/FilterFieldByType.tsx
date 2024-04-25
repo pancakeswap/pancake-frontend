@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Button, FlexGap, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Button, FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import React from 'react'
 import styled from 'styled-components'
 import { OptionsType } from './type'
@@ -17,13 +17,14 @@ type FilterButtonGroupProps = {
 
 export const FilterFieldByType: React.FC<FilterButtonGroupProps> = ({ onFilterChange }) => {
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
 
   return (
     <AutoColumn gap="4px">
       <Text fontSize={12} fontWeight={600} color="textSubtle" textTransform="uppercase">
         {t('filter')}
       </Text>
-      <FlexGap gap="10px">
+      <FlexGap gap={isMobile ? '0' : '10px'} justifyContent={isMobile ? 'space-between' : 'flex-start'}>
         <FilterButton variant="light" onClick={() => onFilterChange(OptionsType.ByChain)}>
           {t('Chain')}
         </FilterButton>
