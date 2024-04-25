@@ -1,7 +1,6 @@
-import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Input, Text } from '@pancakeswap/uikit'
-import React, { useEffect, useState } from 'react'
+import { AutoColumn, InputGroup, SearchIcon, SearchInput, Text } from '@pancakeswap/uikit'
+import React from 'react'
 
 type FilterInputProps = {
   placeholder: string
@@ -11,12 +10,6 @@ type FilterInputProps = {
 
 export const FilterFieldInput: React.FC<FilterInputProps> = ({ placeholder, onChange, hideLabel }) => {
   const { t } = useTranslation()
-  const [search, setSearch] = useState<string>('')
-  const debouncedSearchText = useDebounce(search, 800)
-
-  useEffect(() => {
-    onChange(debouncedSearchText)
-  }, [debouncedSearchText, onChange])
 
   return (
     <AutoColumn gap="4px">
@@ -25,7 +18,9 @@ export const FilterFieldInput: React.FC<FilterInputProps> = ({ placeholder, onCh
           {t('search')}
         </Text>
       )}
-      <Input placeholder={placeholder} onChange={(e) => setSearch(e.target.value)} />
+      <InputGroup startIcon={<SearchIcon style={{ zIndex: 1 }} color="textSubtle" width="18px" />}>
+        <SearchInput placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
+      </InputGroup>
     </AutoColumn>
   )
 }

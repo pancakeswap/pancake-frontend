@@ -8,6 +8,7 @@ const FilterButton = styled(Button)`
   height: 35px;
   border-radius: 18px;
   padding: 0 12px;
+  white-space: nowrap;
 `
 
 type FilterButtonGroupProps = {
