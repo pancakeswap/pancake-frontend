@@ -817,7 +817,7 @@ importers:
         version: 4.5.0(encoding@0.1.13)
       '@gnosis.pm/safe-apps-wagmi':
         specifier: ^1.2.0
-        version: 1.2.0(@wagmi/core@0.7.9)(encoding@0.1.13)
+        version: 1.2.0(@wagmi/core@2.6.17)(encoding@0.1.13)
       '@next/bundle-analyzer':
         specifier: 13.0.7
         version: 13.0.7
@@ -926,6 +926,9 @@ importers:
       '@vanilla-extract/next-plugin':
         specifier: ^2.3.0
         version: 2.3.2(@types/node@13.13.52)(next@13.5.6)(webpack@5.89.0)
+      '@wagmi/core':
+        specifier: 2.6.17
+        version: 2.6.17(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
       '@wallchain/sdk':
         specifier: ^0.6.8
         version: 0.6.8
@@ -7672,14 +7675,14 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@gnosis.pm/safe-apps-wagmi@1.2.0(@wagmi/core@0.7.9)(encoding@0.1.13):
+  /@gnosis.pm/safe-apps-wagmi@1.2.0(@wagmi/core@2.6.17)(encoding@0.1.13):
     resolution: {integrity: sha512-ecDiNMkQ01m2yM/eKKtt08bTvYjWfacG+vwAeb4Lpiitm8RBI8wkW1jUoOgvd9tNhHZtdykgGETUZGmMo1XDuw==}
     peerDependencies:
       '@wagmi/core': '>= 0.3.8 < 0.8.0'
     dependencies:
       '@gnosis.pm/safe-apps-provider': 0.15.1(encoding@0.1.13)
       '@gnosis.pm/safe-apps-sdk': 7.8.0(encoding@0.1.13)
-      '@wagmi/core': 0.7.9(@types/react@18.2.37)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)
+      '@wagmi/core': 2.6.17(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -14405,29 +14408,6 @@ packages:
       - supports-color
       - utf-8-validate
       - zod
-    dev: false
-
-  /@wagmi/core@0.7.9(@types/react@18.2.37)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2):
-    resolution: {integrity: sha512-97KCELUP5Q1AagRyE7SmpLh4/v3xdcy/XMbybLvvtQbgmi3y5oEzy4h/wJMY1hEZlmicqyWZAHHm6xIr1tP5HA==}
-    peerDependencies:
-      '@coinbase/wallet-sdk': '>=3.3.0'
-      '@walletconnect/ethereum-provider': '>=1.7.5'
-      ethers: '>=5.5.1'
-    peerDependenciesMeta:
-      '@coinbase/wallet-sdk':
-        optional: true
-      '@walletconnect/ethereum-provider':
-        optional: true
-    dependencies:
-      abitype: 0.1.8(typescript@5.2.2)
-      ethers: 5.7.2
-      eventemitter3: 4.0.7
-      zustand: 4.4.6(@types/react@18.2.37)(react@18.2.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-      - react
-      - typescript
     dev: false
 
   /@wagmi/core@2.6.17(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4):
