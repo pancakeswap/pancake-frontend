@@ -67,7 +67,7 @@ export const DashboardQuests = () => {
             <Text fontSize={['36px']} bold>
               {t('Guests')}
             </Text>
-            <IconButton scale="sm" endIcon={<AddIcon color="white" />} />
+            <IconButton scale="sm" endIcon={<AddIcon color="invertedContrast" />} />
           </Flex>
           <Flex width="100%" alignItems={['flex-start', 'flex-start', 'flex-start', 'flex-start', 'center']}>
             <StyledButtonMenu
@@ -82,7 +82,7 @@ export const DashboardQuests = () => {
               <ButtonMenuItem>{t('Finished')}</ButtonMenuItem>
               <ButtonMenuItem>{t('Drafted')}</ButtonMenuItem>
             </StyledButtonMenu>
-            <Button display={['none', 'none', 'flex']} scale="sm" endIcon={<AddIcon color="white" />}>
+            <Button display={['none', 'none', 'flex']} scale="sm" endIcon={<AddIcon color="invertedContrast" />}>
               {isTablet ? t('Create') : t('Create a quest')}
             </Button>
           </Flex>

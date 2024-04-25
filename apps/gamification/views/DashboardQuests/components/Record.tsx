@@ -7,17 +7,22 @@ import {
   Link,
   LogoRoundIcon,
   OpenNewIcon,
+  SortArrowIcon,
   Table,
   Td,
   Text,
   Th,
   useMatchBreakpoints,
+  useTooltip,
 } from '@pancakeswap/uikit'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import { SortButton, SortBy, Touchable, getSortClassName } from 'views/DashboardQuests/components/SortButton'
 
 export const Record = () => {
   const { t } = useTranslation()
   const { isXxl, isXl, isDesktop, isTablet } = useMatchBreakpoints()
+  const [rewardPoolSort, setRewardPoolSort] = useState<SortBy | undefined>()
+  const [timelineSort, setTimelineSort] = useState<SortBy | undefined>()
 
   const colSpanNumber = useMemo(() => {
     if (isXxl) {
@@ -30,6 +35,34 @@ export const Record = () => {
 
     return 2
   }, [isTablet, isXl, isXxl])
+
+  const {
+    targetRef: targetRefStatistics,
+    tooltip: tooltipStatistics,
+    tooltipVisible: tooltipVisibleStatistics,
+  } = useTooltip(t('Statistics'), { placement: 'top' })
+
+  const {
+    targetRef: targetRefReview,
+    tooltip: tooltipReview,
+    tooltipVisible: tooltipVisibleReview,
+  } = useTooltip(t('Review'), { placement: 'top' })
+
+  const onRewardPoolSort = () => {
+    setRewardPoolSort(undefined)
+    const newSort = !rewardPoolSort ? SortBy.Desc : rewardPoolSort === SortBy.Asc ? SortBy.Desc : SortBy.Asc
+
+    setRewardPoolSort(newSort)
+    // onSort?.(SortField.Votes, newSort)
+  }
+
+  const onTimelineSort = () => {
+    setTimelineSort(undefined)
+    const newSort = !timelineSort ? SortBy.Desc : timelineSort === SortBy.Asc ? SortBy.Desc : SortBy.Asc
+
+    setTimelineSort(newSort)
+    // onSort?.(SortField.Votes, newSort)
+  }
 
   return (
     <Box
@@ -50,9 +83,21 @@ export const Record = () => {
                 {isXxl && (
                   <>
                     <Th>
-                      <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
-                        {t('total reward pool')}
-                      </Text>
+                      <Touchable onClick={onRewardPoolSort}>
+                        <Text
+                          bold
+                          fontSize="12px"
+                          textAlign="left"
+                          lineHeight="24px"
+                          color="secondary"
+                          textTransform="uppercase"
+                        >
+                          {t('total reward pool')}
+                        </Text>
+                        <SortButton scale="sm" variant="subtle" className={getSortClassName(rewardPoolSort)}>
+                          <SortArrowIcon />
+                        </SortButton>
+                      </Touchable>
                     </Th>
                     <Th>
                       <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="right">
@@ -62,9 +107,22 @@ export const Record = () => {
                   </>
                 )}
                 <Th>
-                  <Text textAlign="right" fontSize="12px" bold textTransform="uppercase" color="secondary">
-                    {t('Timeline')}
-                  </Text>
+                  <Touchable onClick={onTimelineSort}>
+                    <Text
+                      bold
+                      ml="auto"
+                      fontSize="12px"
+                      textAlign="right"
+                      lineHeight="24px"
+                      color="secondary"
+                      textTransform="uppercase"
+                    >
+                      {t('Timeline')}
+                    </Text>
+                    <SortButton scale="sm" variant="subtle" className={getSortClassName(timelineSort)}>
+                      <SortArrowIcon />
+                    </SortButton>
+                  </Touchable>
                 </Th>
                 <Th />
               </tr>
@@ -106,12 +164,18 @@ export const Record = () => {
                 )}
                 <Td>
                   <Flex>
-                    <Link href="/">
-                      <BarChartIcon color="primary" width="20px" height="20px" />
-                    </Link>
-                    <Link ml="8px" href="/">
-                      <OpenNewIcon color="primary" width="20px" height="20px" />
-                    </Link>
+                    <Box ref={targetRefStatistics}>
+                      <Link href="/">
+                        <BarChartIcon color="primary" width="20px" height="20px" />
+                      </Link>
+                      {tooltipVisibleStatistics && tooltipStatistics}
+                    </Box>
+                    <Box ref={targetRefReview}>
+                      <Link ml="8px" href="/">
+                        <OpenNewIcon color="primary" width="20px" height="20px" />
+                      </Link>
+                      {tooltipVisibleReview && tooltipReview}
+                    </Box>
                   </Flex>
                 </Td>
               </tr>
