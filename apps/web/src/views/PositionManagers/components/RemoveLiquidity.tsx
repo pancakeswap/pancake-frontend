@@ -72,7 +72,6 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
 
   const amountA = useMemo(() => staked0Amount?.multiply(percent)?.divide(100), [staked0Amount, percent])
   const amountB = useMemo(() => staked1Amount?.multiply(percent)?.divide(100), [staked1Amount, percent])
-  const slippage = '0x00000000000000000000000000000000000000000000000000b1a2bc2ec50000' // 5
 
   const withdrawThenBurn = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(
@@ -80,7 +79,9 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
         ? async () => {
             const bCakeUserInfoAmount = await bCakeWrapperContract.read.userInfo([account ?? '0x'], {})
             const message =
-              manager.id === MANAGER.TEAHOUSE ? slippage : encodePacked(['uint256', 'uint256'], [BigInt(0), BigInt(0)])
+              manager.id === MANAGER.TEAHOUSE
+                ? encodePacked(['uint256'], [BigInt(5)])
+                : encodePacked(['uint256', 'uint256'], [BigInt(0), BigInt(0)])
 
             const withdrawAmount = new BigNumber(bCakeUserInfoAmount?.[0]?.toString() ?? 0)
               .multipliedBy(percent)

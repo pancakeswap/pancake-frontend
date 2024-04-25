@@ -8,7 +8,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerBCakeWrapperContract, usePositionManagerWrapperContract } from 'hooks/useContract'
 import { useCallback } from 'react'
-import { Address } from 'viem'
+import { Address, encodePacked } from 'viem'
 
 export const useOnStake = (managerId: MANAGER, contractAddress: Address, bCakeWrapperAddress?: Address) => {
   const positionManagerBCakeWrapperContract = usePositionManagerBCakeWrapperContract(bCakeWrapperAddress ?? '0x')
@@ -17,7 +17,7 @@ export const useOnStake = (managerId: MANAGER, contractAddress: Address, bCakeWr
   const { toastSuccess } = useToast()
   const { chain, account } = useActiveWeb3React()
   const { t } = useTranslation()
-  const slippage = '0x00000000000000000000000000000000000000000000000000b1a2bc2ec50000' // 5
+
   const mintThenDeposit = useCallback(
     async (
       amountA: CurrencyAmount<Currency>,
@@ -29,13 +29,14 @@ export const useOnStake = (managerId: MANAGER, contractAddress: Address, bCakeWr
       const receipt = await fetchWithCatchTxError(
         bCakeWrapperAddress
           ? async () => {
-              const message = managerId === MANAGER.TEAHOUSE ? slippage : '0x'
+              // const slippage = '0x00000000000000000000000000000000000000000000000000b1a2bc2ec50000' // 5
+              const message = managerId === MANAGER.TEAHOUSE ? encodePacked(['uint256'], [BigInt(5)]) : '0x'
               const estGas = await positionManagerBCakeWrapperContract.estimateGas.mintThenDeposit(
                 [
                   allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
                   allowDepositToken1 ? amountB?.numerator ?? 0n : 0n,
                   false,
-                  '0x',
+                  message,
                 ],
                 {
                   account: account ?? '0x',
