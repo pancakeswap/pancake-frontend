@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Box, Button, ButtonMenu, ButtonMenuItem, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { styled } from 'styled-components'
+import { Record } from 'views/DashboardQuests/components/Record'
 
 const Container = styled(Box)`
   padding: 24px;
@@ -11,13 +12,14 @@ const Container = styled(Box)`
       : 'linear-gradient(0deg, #f1eeff 0%, #e9f6ff 100%)'};
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    padding: 40px 0;
+    padding: 40px 24px;
   }
 `
 
 const IconButton = styled(Button)`
   display: block;
   align-self: center;
+  margin-left: auto;
 
   > svg {
     margin-left: 0;
@@ -41,31 +43,33 @@ export const DashboardQuests = () => {
   return (
     <Flex flexDirection="column">
       <Container>
-        <Flex maxWidth={['1200px']} margin="auto">
+        <Flex flexDirection={['column', 'column', 'column', 'column', 'row']} maxWidth={['1200px']} margin="auto">
           <Flex>
             <Text fontSize={['36px']} bold>
               {t('Guests')}
             </Text>
             <IconButton scale="sm" endIcon={<AddIcon color="white" />} />
           </Flex>
-          <Flex alignItems={['center']}>
+          <Flex width="100%" alignItems={['flex-start', 'flex-start', 'flex-start', 'flex-start', 'center']}>
             <ButtonMenu
               scale="sm"
+              m={['0', '0', '0 auto 0 0', '0 auto 0 0', 'auto']}
               variant="subtle"
-              m={['16px 0 0 0', '16px 0 0 0', '0']}
               activeIndex={statusButtonIndex}
               onItemClick={onStatusButtonChange}
             >
               <ButtonMenuItem>{t('Ongoing')}</ButtonMenuItem>
-              <ButtonMenuItem>{t('Upcoming')}</ButtonMenuItem>
+              <ButtonMenuItem>{t('Scheduled')}</ButtonMenuItem>
               <ButtonMenuItem>{t('Finished')}</ButtonMenuItem>
+              <ButtonMenuItem>{t('Drafted')}</ButtonMenuItem>
             </ButtonMenu>
-            <Button display={['none', 'none', 'flex']} ml="auto" scale="sm" endIcon={<AddIcon color="white" />}>
+            <Button display={['none', 'none', 'flex']} scale="sm" endIcon={<AddIcon color="white" />}>
               {isTablet ? t('Create') : t('Create a quest')}
             </Button>
           </Flex>
         </Flex>
       </Container>
+      <Record />
     </Flex>
   )
 }
