@@ -18,6 +18,7 @@ export const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onDismiss, typ
 
   if (!type) return null
 
+  const allSelected = options[type]?.length === OPTIONS[type].options.length
   const allOptionValues = options[type] as Array<unknown>
 
   return (
@@ -36,7 +37,7 @@ export const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onDismiss, typ
               onChange(type, OPTIONS[type].options)
             }}
           >
-            {t('Select All')}
+            {allSelected ? t('Unselect All') : t('Select All')}
           </Button>
           <Button variant="primary" onClick={onDismiss}>
             {t('Done')}
