@@ -78,11 +78,9 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
       bCakeWrapper
         ? async () => {
             const bCakeUserInfoAmount = await bCakeWrapperContract.read.userInfo([account ?? '0x'], {})
+            const slippage = '0x00000000000000000000000000000000000000000000000000b1a2bc2ec50000' // 5
             const message =
-              manager.id === MANAGER.TEAHOUSE
-                ? encodePacked(['uint256'], [BigInt(5)])
-                : encodePacked(['uint256', 'uint256'], [BigInt(0), BigInt(0)])
-
+              manager.id === MANAGER.TEAHOUSE ? slippage : encodePacked(['uint256', 'uint256'], [BigInt(0), BigInt(0)])
             const withdrawAmount = new BigNumber(bCakeUserInfoAmount?.[0]?.toString() ?? 0)
               .multipliedBy(percent)
               .div(100)
