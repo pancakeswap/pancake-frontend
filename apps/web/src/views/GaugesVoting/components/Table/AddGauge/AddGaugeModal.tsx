@@ -11,7 +11,6 @@ import {
   FlexGap,
   Grid,
   Heading,
-  Input,
   ModalV2,
   ModalWrapper,
   Text,
@@ -21,15 +20,17 @@ import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
 import { useGaugesTotalWeight } from 'views/GaugesVoting/hooks/useGaugesTotalWeight'
+import {
+  Filter,
+  FilterFieldByType,
+  FilterFieldInput,
+  FilterModal,
+  FilterValue,
+  Gauges,
+  OptionsType,
+} from '../../GaugesFilter'
 import { GaugesList, GaugesTable } from '../GaugesTable'
 import { THeader, TRow } from '../styled'
-import { Filter, FilterValue, Gauges, OptionsModal, OptionsType } from './OptionsModal'
-
-const FilterButton = styled(Button)`
-  height: 35px;
-  border-radius: 18px;
-  padding: 0 12px;
-`
 
 const ScrollableGaugesList = styled(GaugesList).attrs({ pagination: false })`
   overflow-y: auto;
@@ -176,30 +177,8 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
                 </Button>
               </FlexGap>
               <Grid gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'} gridGap={isDesktop ? '32px' : '1em'}>
-                <AutoColumn gap="4px">
-                  <Text fontSize={12} fontWeight={600} color="textSubtle" textTransform="uppercase">
-                    {t('filter')}
-                  </Text>
-                  <FlexGap gap="10px">
-                    <FilterButton variant="light" onClick={() => setOption(OptionsType.ByChain)}>
-                      {t('Chain')}
-                    </FilterButton>
-                    <FilterButton variant="light" onClick={() => setOption(OptionsType.ByFeeTier)}>
-                      {t('Fee Tier')}
-                    </FilterButton>
-                    <FilterButton variant="light" onClick={() => setOption(OptionsType.ByType)}>
-                      {t('Type')}
-                    </FilterButton>
-                  </FlexGap>
-                </AutoColumn>
-                <AutoColumn gap="4px">
-                  {!isMobile ? (
-                    <Text fontSize={12} fontWeight={600} color="textSubtle" textTransform="uppercase">
-                      {t('search')}
-                    </Text>
-                  ) : null}
-                  <Input placeholder={t('Search gauges')} onChange={(e) => setSearchText(e.target.value)} />
-                </AutoColumn>
+                <FilterFieldByType onFilterChange={setOption} />
+                <FilterFieldInput placeholder={t('Search gauges')} onChange={setSearchText} hideLabel={isMobile} />
               </Grid>
               {isMobile && selectRows?.length ? (
                 <Flex>
@@ -219,7 +198,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
           </Flex>
         </ModalWrapper>
       </ModalV2>
-      <OptionsModal
+      <FilterModal
         isOpen={Boolean(option)}
         onDismiss={() => setOption(null)}
         type={option}
