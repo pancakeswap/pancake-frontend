@@ -11,7 +11,7 @@ export const useVeCakeTotalSupply = () => {
   const { chainId } = useActiveChainId()
 
   const { status, refetch, data } = useReadContract({
-      chainId: getVeCakeAddressNoFallback(chainId) ? chainId : ChainId.BSC,
+    chainId: getVeCakeAddressNoFallback(chainId) ? chainId : ChainId.BSC,
     address: getVeCakeAddress(chainId),
     functionName: 'totalSupply',
     abi: veCakeABI,
