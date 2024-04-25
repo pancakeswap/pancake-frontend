@@ -113,7 +113,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
     boosterMultiplier ?? 1,
     bCakeWrapper,
   )
-  const { isTxLoading, onStake, onUpdate } = useOnStake(contractAddress, bCakeWrapper)
+  const { isTxLoading, onStake, onUpdate } = useOnStake(manager.id, contractAddress, bCakeWrapper)
   const { locked } = useBCakeBoostLimitAndLockInfo()
   const { isDesktop } = useMatchBreakpoints()
   return (
@@ -303,6 +303,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         token1PriceUSD={token1PriceUSD}
         contractAddress={contractAddress}
         refetch={refetch}
+        manager={manager}
         bCakeWrapper={bCakeWrapper}
       />
     </>

@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { MANAGER } from '@pancakeswap/position-managers'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
@@ -9,14 +10,14 @@ import { usePositionManagerBCakeWrapperContract, usePositionManagerWrapperContra
 import { useCallback } from 'react'
 import { Address } from 'viem'
 
-export const useOnStake = (contractAddress: Address, bCakeWrapperAddress?: Address) => {
+export const useOnStake = (managerId: MANAGER, contractAddress: Address, bCakeWrapperAddress?: Address) => {
   const positionManagerBCakeWrapperContract = usePositionManagerBCakeWrapperContract(bCakeWrapperAddress ?? '0x')
   const positionManagerWrapperContract = usePositionManagerWrapperContract(contractAddress)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
   const { chain, account } = useActiveWeb3React()
   const { t } = useTranslation()
-
+  const slippage = '0x00000000000000000000000000000000000000000000000000b1a2bc2ec50000' // 5
   const mintThenDeposit = useCallback(
     async (
       amountA: CurrencyAmount<Currency>,
@@ -28,6 +29,7 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress?: Addre
       const receipt = await fetchWithCatchTxError(
         bCakeWrapperAddress
           ? async () => {
+              const message = managerId === MANAGER.TEAHOUSE ? slippage : '0x'
               const estGas = await positionManagerBCakeWrapperContract.estimateGas.mintThenDeposit(
                 [
                   allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
@@ -45,7 +47,7 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress?: Addre
                   allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
                   allowDepositToken1 ? amountB?.numerator ?? 0n : 0n,
                   false,
-                  '0x',
+                  message,
                 ],
                 {
                   account: account ?? '0x',
@@ -81,6 +83,7 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress?: Addre
     [
       fetchWithCatchTxError,
       bCakeWrapperAddress,
+      managerId,
       positionManagerBCakeWrapperContract.estimateGas,
       positionManagerBCakeWrapperContract.write,
       account,

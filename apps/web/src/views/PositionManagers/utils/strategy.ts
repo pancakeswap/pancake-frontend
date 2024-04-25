@@ -17,6 +17,10 @@ export function getStrategyName(t: TranslateFunction, strategy: Strategy, allTok
       return t('Automated Liquidity Optimization')
     case Strategy.ASCEND:
       return t('Ascend')
+    case Strategy.SSS:
+      return t('Single-Sided Strategy')
+    case Strategy.APS:
+      return t('Adaptive Portfolio Strategy')
     case Strategy.SAVINGS:
       return `${allTokenName ? `${allTokenName} ` : ''}${t('Savings')}`
     default:

@@ -79,7 +79,9 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
       bCakeWrapper
         ? async () => {
             const bCakeUserInfoAmount = await bCakeWrapperContract.read.userInfo([account ?? '0x'], {})
-            const message = encodePacked(['uint256', 'uint256'], [BigInt(0), BigInt(0)])
+            const message =
+              manager.id === MANAGER.TEAHOUSE ? slippage : encodePacked(['uint256', 'uint256'], [BigInt(0), BigInt(0)])
+
             const withdrawAmount = new BigNumber(bCakeUserInfoAmount?.[0]?.toString() ?? 0)
               .multipliedBy(percent)
               .div(100)
@@ -92,14 +94,6 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
                 account: account ?? '0x',
               },
             )
-            console.log({
-              estGasOrigin: estGas.toString(),
-              estGasAdjusted: new BigNumber(estGas.toString()).times(1.5).toNumber(),
-              from: account,
-              to: bCakeWrapperContract.address,
-              amount: avoidDecimalsProblem,
-              method: 'withdrawThenBurn',
-            })
             return bCakeWrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, false, message], {
               account: account ?? '0x',
               chain,
@@ -115,13 +109,10 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
 
             const avoidDecimalsProblem =
               percent === 100 ? BigInt(userInfoAmount?.[0]) : BigInt(Math.floor(withdrawAmount))
-            return wrapperContract.write.withdrawThenBurn(
-              [avoidDecimalsProblem, manager.name === 'Teahouse Finance' ? slippage : '0x'],
-              {
-                account: account ?? '0x',
-                chain,
-              },
-            )
+            return wrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, '0x'], {
+              account: account ?? '0x',
+              chain,
+            })
           },
     )
 
