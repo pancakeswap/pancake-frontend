@@ -31,12 +31,15 @@ export const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onDismiss, typ
             )
           })}
           <Button
-            variant="text"
+            variant="secondary"
             onClick={() => {
               onChange(type, OPTIONS[type].options)
             }}
           >
             {t('Select All')}
+          </Button>
+          <Button variant="primary" onClick={onDismiss}>
+            {t('Done')}
           </Button>
         </FlexGap>
       </Modal>
