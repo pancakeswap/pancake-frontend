@@ -39,37 +39,37 @@ export const Record = () => {
     >
       <Card style={{ width: '100%' }}>
         <Table width="100%">
-          <thead>
-            <tr>
-              <Th>
-                <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
-                  {t('quest title')}
-                </Text>
-              </Th>
-              {isXxl && (
-                <>
-                  <Th>
-                    <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
-                      {t('total reward pool')}
-                    </Text>
-                  </Th>
-                  <Th>
-                    <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="right">
-                      {t('questers')}
-                    </Text>
-                  </Th>
-                </>
-              )}
-              {(isTablet || isDesktop) && (
+          {(isTablet || isDesktop) && (
+            <thead>
+              <tr>
+                <Th>
+                  <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
+                    {t('quest title')}
+                  </Text>
+                </Th>
+                {isXxl && (
+                  <>
+                    <Th>
+                      <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
+                        {t('total reward pool')}
+                      </Text>
+                    </Th>
+                    <Th>
+                      <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="right">
+                        {t('questers')}
+                      </Text>
+                    </Th>
+                  </>
+                )}
                 <Th>
                   <Text textAlign="right" fontSize="12px" bold textTransform="uppercase" color="secondary">
                     {t('Timeline')}
                   </Text>
                 </Th>
-              )}
-              <Th />
-            </tr>
-          </thead>
+                <Th />
+              </tr>
+            </thead>
+          )}
           <tbody>
             {/* <tr>
               <Td colSpan={colSpanNumber} textAlign="center">
