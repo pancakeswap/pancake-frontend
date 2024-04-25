@@ -133,8 +133,8 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
     bCakeWrapperContract.read,
     bCakeWrapperContract.estimateGas,
     bCakeWrapperContract.write,
-    bCakeWrapperContract.address,
     account,
+    manager.id,
     percent,
     chain,
     wrapperContract.read,
@@ -142,7 +142,6 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
     refetch,
     onDismiss,
     toastSuccess,
-    manager.name,
     t,
   ])
 
