@@ -29,14 +29,14 @@ const addMenuItemSupported = (item: any, chainId: any) => {
 const config: (t: ContextApi['t'], chainId?: number) => ConfigMenuItemsType[] = (t, chainId) =>
   [
     {
-      label: t('Explore Quests'),
+      label: t('Quests'),
       href: '/quests',
       items: [],
       icon: TrophyIcon,
       fillIcon: TrophyFillIcon,
     },
     {
-      label: t('Explore Campaigns'),
+      label: t('Campaigns'),
       href: '/campaigns',
       items: [],
       icon: CalenderIcon,
