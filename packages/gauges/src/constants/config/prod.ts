@@ -3926,4 +3926,13 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: lineaTokens.foxy.address,
     token1Address: lineaTokens.weth.address,
   },
+  {
+    gid: 397,
+    pairName: 'SDT-WBNB',
+    address: '0x52b59E3eAdc7C4ce8d3533020ca0Cd770E4eAbC3',
+    chainId: ChainId.BSC,
+    type: GaugeType.ALM,
+    token0Address: bscTokens.sdt.address,
+    token1Address: bscTokens.wbnb.address,
+  },
 ]
