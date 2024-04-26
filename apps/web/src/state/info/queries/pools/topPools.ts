@@ -38,7 +38,7 @@ const fetchTopPools = async (chainName: MultiChainName | null, timestamp24hAgo: 
   let whereCondition =
     chainName === 'BSC'
       ? `where: { dailyTxns_gt: 300, token0_not_in: $blacklist, token1_not_in: $blacklist, date_gt: ${timestamp24hAgo} }`
-      : `where: { date_gt: ${timestamp24hAgo}, token0_not_in: $blacklist, token1_not_in: $blacklist, dailyVolumeUSD_gt: 2000 }`
+      : `where: { date_gt: ${timestamp24hAgo}, token0_not_in: $blacklist, token1_not_in: $blacklist, dailyVolumeUSD_gt: 5 }`
   if (isStableSwap)
     whereCondition = `where: { date_gt: ${timestamp24hAgo}, token0_not_in: $blacklist, token1_not_in: $blacklist}`
   try {

@@ -2587,14 +2587,6 @@ export const bscTokens = {
     'Wrapped Binance Beacon ETH',
     'https://ethereum.org/en/roadmap/beacon-chain/',
   ),
-  mwbeth: new ERC20Token(
-    ChainId.BSC,
-    '0x7dC91cBD6CB5A3E6A95EED713Aa6bF1d987146c8',
-    18,
-    'mwBETH',
-    'Bridged mwBETH',
-    'https://ethereum.org/en/roadmap/beacon-chain/',
-  ),
   edu: new ERC20Token(
     ChainId.BSC,
     '0xBdEAe1cA48894A1759A8374D63925f21f2Ee2639',

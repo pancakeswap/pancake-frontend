@@ -27,7 +27,7 @@ export const farmsV3ConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmC
   [ChainId.ZKSYNC]: zkSyncFarms,
   [ChainId.ARBITRUM_ONE]: arbFarms,
   [ChainId.LINEA]: lineaFarms,
-  [ChainId.BASE]: baseFarms,
+  [ChainId.PULSECHAIN]: baseFarms,
   [ChainId.OPBNB_TESTNET]: opBnbTestnetFarms,
   [ChainId.OPBNB]: opBNBFarms,
 }

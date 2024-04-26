@@ -1,5 +1,5 @@
-import { ERC20Token, Ether } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { ERC20Token, Ether } from '@pancakeswap/sdk'
 import * as Tokens from '@pancakeswap/tokens'
 import { zeroAddress } from 'viem'
 
@@ -44,7 +44,7 @@ export const USDT = {
   [ChainId.ARBITRUM_GOERLI]: new ERC20Token(ChainId.ARBITRUM_GOERLI, zeroAddress, 6, 'USDT'),
   [ChainId.SCROLL_SEPOLIA]: new ERC20Token(ChainId.SCROLL_SEPOLIA, zeroAddress, 6, 'USDT'),
   [ChainId.LINEA_TESTNET]: new ERC20Token(ChainId.LINEA_TESTNET, zeroAddress, 6, 'USDT'),
-  [ChainId.BASE]: new ERC20Token(ChainId.BASE, zeroAddress, 6, 'USDT'),
+  [ChainId.PULSECHAIN]: new ERC20Token(ChainId.PULSECHAIN, zeroAddress, 6, 'USDT'),
   [ChainId.BASE_TESTNET]: new ERC20Token(ChainId.BASE_TESTNET, zeroAddress, 6, 'USDT'),
 }
 export const USDC = {

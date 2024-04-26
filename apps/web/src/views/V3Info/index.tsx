@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, Button, Card, Heading, Text } from '@pancakeswap/uikit'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import Page from 'components/Layout/Page'
 import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
-import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import BarChart from './components/BarChart/alt'
 import { DarkGreyCard } from './components/Card'
 import LineChart from './components/LineChart/alt'
@@ -37,6 +37,8 @@ export default function Home() {
 
   const protocolData = useProtocolData()
   const transactionData = useProtocolTransactionData()
+
+  console.log('transactionData', transactionData)
   const topTokensData = useTopTokensData()
   const topPoolsData = useTopPoolsData()
   const chartData = useProtocolChartData()

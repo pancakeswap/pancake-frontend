@@ -1,12 +1,12 @@
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useBCakeFarmBoosterContract } from 'hooks/useContract'
-import { useReadContract } from '@pancakeswap/wagmi'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useFarmUser } from 'state/farms/hooks'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { useUserBoosterStatus } from 'views/Farms/hooks/useUserBoosterStatus'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
+import { useBlockNumber, useReadContract } from 'wagmi'
 
 export enum YieldBoosterState {
   UNCONNECTED,
@@ -24,6 +24,7 @@ export enum YieldBoosterState {
 function useIsPoolActive(pid: number) {
   const farmBoosterContract = useBCakeFarmBoosterContract()
   const { account, chainId } = useAccountActiveChain()
+  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const { data, refetch } = useReadContract({
     abi: farmBoosterContract.abi,
@@ -34,8 +35,11 @@ function useIsPoolActive(pid: number) {
       enabled: !!account,
     },
     chainId,
-    watch: true,
   })
+
+  useEffect(() => {
+    refetch()
+  }, [blockNumber, refetch])
 
   return {
     isActivePool: data,

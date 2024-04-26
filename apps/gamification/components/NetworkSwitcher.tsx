@@ -145,7 +145,7 @@ const SHORT_SYMBOL = {
   [ChainId.LINEA_TESTNET]: 'tLinea',
   [ChainId.OPBNB]: 'opBNB',
   [ChainId.OPBNB_TESTNET]: 'tOpBNB',
-  [ChainId.BASE]: 'Base',
+  [ChainId.PULSECHAIN]: 'Pulsechain',
   [ChainId.BASE_TESTNET]: 'tBase',
   [ChainId.SCROLL_SEPOLIA]: 'tScroll',
   [ChainId.SEPOLIA]: 'sepolia',

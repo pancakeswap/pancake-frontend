@@ -3,28 +3,28 @@ import {
   ButtonMenu,
   ButtonMenuItem,
   Flex,
+  Message,
+  MessageText,
+  Text,
   UserMenu,
   UserMenuDivider,
   UserMenuItem,
-  Text,
-  Message,
-  MessageText,
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
-import { useCallback, useMemo } from 'react'
-import {} from 'hooks/useSwitchNetwork'
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { useRouter } from 'next/router'
-import { styled } from 'styled-components'
-import Search from 'views/Info/components/InfoSearch'
-import { useMultiChainPath, useChainNameByQuery, useChainIdByQuery } from 'state/info/hooks'
-import { multiChainId, multiChainPaths, multiChainShortName } from 'state/info/constant'
-import { chains } from 'utils/wagmi'
 import { ChainLogo } from 'components/Logo/ChainLogo'
-import { arbitrum, bsc, mainnet, polygonZkEvm, zkSync, linea, base, opBNB } from 'wagmi/chains'
 import { ASSET_CDN } from 'config/constants/endpoints'
+import {} from 'hooks/useSwitchNetwork'
+import { useRouter } from 'next/router'
+import { useCallback, useMemo } from 'react'
+import { multiChainId, multiChainPaths, multiChainShortName } from 'state/info/constant'
+import { useChainIdByQuery, useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
+import { styled } from 'styled-components'
+import { chains } from 'utils/wagmi'
+import Search from 'views/Info/components/InfoSearch'
+import { arbitrum, bsc, linea, mainnet, opBNB, polygonZkEvm, pulsechain, zkSync } from 'wagmi/chains'
 
 const NavWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.gradientCardHeader};
@@ -96,7 +96,7 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
   )
 }
 
-const targetChains = [mainnet, bsc, polygonZkEvm, zkSync, arbitrum, linea, base, opBNB]
+const targetChains = [mainnet, bsc, polygonZkEvm, zkSync, arbitrum, linea, pulsechain, opBNB]
 
 export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
   const { t } = useTranslation()

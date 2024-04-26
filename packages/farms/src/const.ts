@@ -19,7 +19,7 @@ export const supportedChainIdV3 = [
   ChainId.ZKSYNC,
   ChainId.ARBITRUM_ONE,
   ChainId.LINEA,
-  ChainId.BASE,
+  ChainId.PULSECHAIN,
   ChainId.OPBNB,
   ChainId.OPBNB_TESTNET,
 ] as const
@@ -37,6 +37,7 @@ export type FarmV3SupportedChainId = (typeof supportedChainIdV3)[number]
 export const masterChefAddresses = {
   [ChainId.BSC_TESTNET]: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
   [ChainId.BSC]: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
+  [ChainId.PULSECHAIN]: '0x6b94F83E5885FfB6c2dfDCb50fA3abc0947FB036',
 } as const
 
 export const masterChefV3Addresses = {
@@ -50,7 +51,7 @@ export const masterChefV3Addresses = {
   [ChainId.ZKSYNC]: '0x4c615E78c5fCA1Ad31e4d66eb0D8688d84307463',
   [ChainId.ARBITRUM_ONE]: '0x5e09ACf80C0296740eC5d6F643005a4ef8DaA694',
   [ChainId.LINEA]: '0x22E2f236065B780FA33EC8C4E58b99ebc8B55c57',
-  [ChainId.BASE]: '0xC6A2Db661D5a5690172d8eB0a7DEA2d3008665A3',
+  [ChainId.PULSECHAIN]: '0xB31c5C9e32330d376aBAc9c757Ebba12e555EbF6',
   [ChainId.OPBNB]: '0x05ddEDd07C51739d2aE21F6A9d97a8d69C2C3aaA',
   [ChainId.OPBNB_TESTNET]: '0x236e713bFF45adb30e25D1c29A887aBCb0Ea7E21',
 } as const satisfies Record<FarmV3SupportedChainId, string>

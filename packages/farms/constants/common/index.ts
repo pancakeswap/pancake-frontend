@@ -48,8 +48,8 @@ export const priceHelperTokens = {
     chain: 'linea',
     list: [lineaTokens.weth, lineaTokens.usdc, lineaTokens.usdt, lineaTokens.wbtc, lineaTokens.dai],
   },
-  [ChainId.BASE]: {
-    chain: 'base',
+  [ChainId.PULSECHAIN]: {
+    chain: 'pulsechain',
     list: [baseTokens.weth, baseTokens.usdbc, baseTokens.dai, baseTokens.cbETH, baseTokens.usdc],
   },
   [ChainId.OPBNB]: {
@@ -79,7 +79,7 @@ export const DEFAULT_COMMON_PRICE: Record<FarmV3SupportedChainId, CommonPrice> =
   [ChainId.POLYGON_ZKEVM_TESTNET]: {},
   [ChainId.ARBITRUM_ONE]: {},
   [ChainId.LINEA]: {},
-  [ChainId.BASE]: {},
+  [ChainId.PULSECHAIN]: {},
   [ChainId.OPBNB_TESTNET]: {},
   [ChainId.OPBNB]: {},
 }

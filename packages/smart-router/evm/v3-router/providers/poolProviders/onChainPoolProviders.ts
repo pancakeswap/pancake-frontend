@@ -195,7 +195,7 @@ function createOnChainPoolFactory<
   return async function poolFactory(
     pairs: [Currency, Currency][],
     provider?: OnChainProvider,
-    _blockNumber?: BigintIsh,
+    blockNumber?: BigintIsh,
   ): Promise<TPool[]> {
     if (!provider) {
       throw new Error('No valid onchain data provider')
@@ -245,6 +245,7 @@ function createOnChainPoolFactory<
         args: call.args as any,
       })),
       allowFailure: true,
+      blockNumber: blockNumber ? BigInt(Number(BigInt(blockNumber))) : undefined,
     })
 
     const pools: TPool[] = []

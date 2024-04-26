@@ -1,20 +1,20 @@
 import { ChainId } from '@pancakeswap/chains'
 import {
+  Chain,
+  arbitrum,
+  arbitrumGoerli,
+  baseGoerli,
   bsc,
   bscTestnet,
   goerli,
+  lineaTestnet,
   mainnet,
+  polygonZkEvm,
+  polygonZkEvmTestnet,
+  pulsechain,
+  scrollSepolia as scrollSepolia_,
   zkSync,
   zkSyncTestnet,
-  polygonZkEvmTestnet,
-  polygonZkEvm,
-  lineaTestnet,
-  arbitrum,
-  arbitrumGoerli,
-  base,
-  baseGoerli,
-  scrollSepolia as scrollSepolia_,
-  Chain,
 } from 'viem/chains'
 
 const scrollSepolia = {
@@ -106,7 +106,6 @@ export const L2_CHAIN_IDS: ChainId[] = [
   ChainId.ZKSYNC_TESTNET,
   ChainId.LINEA_TESTNET,
   ChainId.LINEA,
-  ChainId.BASE,
   ChainId.BASE_TESTNET,
   ChainId.OPBNB_TESTNET,
 ]
@@ -126,7 +125,7 @@ export const CHAINS = [
   lineaTestnet,
   arbitrumGoerli,
   arbitrum,
-  base,
+  pulsechain,
   baseGoerli,
   opbnbTestnet,
   scrollSepolia,

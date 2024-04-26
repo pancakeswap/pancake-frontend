@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 import { TransactionType } from 'state/info/types'
 import { MultiChainName, multiChainStartTime } from '../constant'
 import { ChartEntry } from '../types'
-import { BurnResponse, MintResponse, PairDayData, PancakeDayData, SwapResponse, TokenDayData } from './types'
+import { BetterXDayData, BurnResponse, MintResponse, PairDayData, SwapResponse, TokenDayData } from './types'
 
 export const mapMints = (mint: MintResponse) => {
   return {
@@ -55,7 +55,7 @@ export const mapSwaps = (swap: SwapResponse) => {
   }
 }
 
-export const mapDayData = (tokenDayData: TokenDayData | PancakeDayData): ChartEntry => ({
+export const mapDayData = (tokenDayData: TokenDayData | BetterXDayData): ChartEntry => ({
   date: tokenDayData.date,
   volumeUSD: parseFloat(tokenDayData.dailyVolumeUSD),
   liquidityUSD: parseFloat(tokenDayData.totalLiquidityUSD),

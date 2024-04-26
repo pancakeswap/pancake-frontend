@@ -12,7 +12,7 @@ const SHORT_NAME = {
   [ChainId.ZKSYNC]: 'zkSync',
   [ChainId.ARBITRUM_ONE]: 'ARB',
   [ChainId.LINEA]: 'LINEA',
-  [ChainId.BASE]: 'BASE',
+  [ChainId.PULSECHAIN]: 'PULSE',
   [ChainId.OPBNB]: 'opBNB',
 }
 
@@ -24,7 +24,7 @@ const NETWORK_COLOR_DEFAULT = {
   [ChainId.ZKSYNC]: '#1E1E1E',
   [ChainId.ARBITRUM_ONE]: '#2D364D',
   [ChainId.LINEA]: '#1E1E1E',
-  [ChainId.BASE]: '#FFFFFF',
+  [ChainId.PULSECHAIN]: '#FFFFFF',
 }
 
 const NETWORK_COLOR_COLORED = {
@@ -35,7 +35,7 @@ const NETWORK_COLOR_COLORED = {
   [ChainId.ZKSYNC]: '#3567F6',
   [ChainId.ARBITRUM_ONE]: '#2D364D',
   [ChainId.LINEA]: '#83DCFB',
-  [ChainId.BASE]: '#0052FF',
+  [ChainId.PULSECHAIN]: '#0052FF',
 }
 
 const NETWORK_COLOR_PURE_BLACK = '#000000'

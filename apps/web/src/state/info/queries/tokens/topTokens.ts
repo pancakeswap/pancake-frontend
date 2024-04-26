@@ -38,7 +38,7 @@ const fetchTopTokens = async (chainName: MultiChainNameExtend, timestamp24hAgo: 
 
   const whereCondition =
     chainName === 'ETH'
-      ? `where: { date_gt: ${timestamp24hAgo}, token_not_in: $blacklist, dailyVolumeUSD_gt:2000 }`
+      ? `where: { date_gt: ${timestamp24hAgo}, token_not_in: $blacklist, dailyVolumeUSD_gt:2 }`
       : checkIsStableSwap()
       ? ''
       : `where: { id_not_in: $blacklist, date_gt: ${timestamp24hAgo}}`

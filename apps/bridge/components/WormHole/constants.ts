@@ -1,5 +1,5 @@
 import { MainnetChainName, TestnetChainName } from '@wormhole-foundation/wormhole-connect'
-import { arbitrum, arbitrumGoerli, base, baseGoerli, bscTestnet, mainnet as ethereum, goerli } from 'wagmi/chains'
+import { arbitrum, arbitrumGoerli, baseGoerli, bscTestnet, mainnet as ethereum, goerli, pulsechain } from 'wagmi/chains'
 import { getNodeRealUrl } from '../../utils/nodes/nodereal'
 import { getGroveUrl } from '../../utils/nodes/pokt'
 import { WormholeChainIds } from './chains'
@@ -18,7 +18,7 @@ enum NETWORKS {
   ETHEREUM = 'ethereum',
   BSC = 'bsc',
   ARBITRUM_ONE = 'arbitrum',
-  BASE = 'base',
+  PULSECHAIN = 'pulsechain',
   APTOS = 'aptos',
 }
 
@@ -65,14 +65,11 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
       arbitrum.rpcUrls.default.http[0],
     testnetRpc: arbitrumGoerli.rpcUrls.default.http[0],
   },
-  [NETWORKS.BASE]: {
-    name: 'Base',
+  [NETWORKS.PULSECHAIN]: {
+    name: 'Pulsechain',
     testnet: 'basegoerli',
     mainnet: 'base',
-    mainnetRpc:
-      getGroveUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
-      getNodeRealUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      base.rpcUrls.default.http[0],
+    mainnetRpc: pulsechain.rpcUrls.default.http[0],
     testnetRpc: baseGoerli.rpcUrls.default.http[0],
   },
   [NETWORKS.APTOS]: {

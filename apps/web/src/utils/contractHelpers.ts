@@ -465,8 +465,6 @@ export const getAffiliateProgramContract = (signer?: WalletClient, chainId?: num
   return getContract({
     abi: affiliateProgramABI,
     address: getAffiliateProgramAddress(chainId),
-    chainId,
-    signer,
   })
 }
 

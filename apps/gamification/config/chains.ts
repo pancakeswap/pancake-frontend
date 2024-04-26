@@ -66,7 +66,7 @@ export const L2_CHAIN_IDS: ChainId[] = [
   ChainId.ZKSYNC_TESTNET,
   ChainId.LINEA_TESTNET,
   ChainId.LINEA,
-  ChainId.BASE,
+  ChainId.PULSECHAIN,
   ChainId.BASE_TESTNET,
   ChainId.OPBNB,
   ChainId.OPBNB_TESTNET,

@@ -15,7 +15,7 @@ const tokenListMap = {
   [ChainId.POLYGON_ZKEVM]: 'https://tokens.pancakeswap.finance/pancakeswap-polygon-zkevm-default.json',
   [ChainId.ARBITRUM_ONE]: 'https://tokens.pancakeswap.finance/pancakeswap-arbitrum-default.json',
   [ChainId.LINEA]: 'https://tokens.pancakeswap.finance/pancakeswap-linea-default.json',
-  [ChainId.BASE]: 'https://tokens.pancakeswap.finance/pancakeswap-base-default.json',
+  [ChainId.PULSECHAIN]: 'https://raw.githubusercontent.com/sharadjaiswal1411/tokens/main/tokens.json',
   [ChainId.OPBNB]: 'https://tokens.pancakeswap.finance/pancakeswap-opbnb-default.json',
 } as const
 

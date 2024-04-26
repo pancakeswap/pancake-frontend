@@ -19,9 +19,9 @@ import {
   TOKEN_BLACKLIST,
 } from 'config/constants/info'
 import mapValues from 'lodash/mapValues'
-import { arbitrum, base, bsc, linea, mainnet, opBNB, polygonZkEvm, zkSync } from 'wagmi/chains'
+import { arbitrum, bsc, linea, mainnet, opBNB, polygonZkEvm, pulsechain, zkSync } from 'wagmi/chains'
 
-export type MultiChainName = 'BSC' | 'ETH' | 'POLYGON_ZKEVM' | 'ZKSYNC' | 'ARB' | 'LINEA' | 'BASE' | 'OPBNB'
+export type MultiChainName = 'BSC' | 'ETH' | 'PULSE' | 'POLYGON_ZKEVM' | 'ZKSYNC' | 'ARB' | 'LINEA' | 'OPBNB'
 
 export type MultiChainNameExtend = MultiChainName | 'BSC_TESTNET' | 'ZKSYNC_TESTNET'
 
@@ -32,7 +32,7 @@ export const multiChainName: Record<number | string, MultiChainNameExtend> = {
   [ChainId.POLYGON_ZKEVM]: 'POLYGON_ZKEVM',
   [ChainId.ZKSYNC]: 'ZKSYNC',
   [ChainId.LINEA]: 'LINEA',
-  [ChainId.BASE]: 'BASE',
+  [ChainId.PULSECHAIN]: 'PULSE',
   [ChainId.OPBNB]: 'OPBNB',
   [ChainId.ARBITRUM_ONE]: 'ARB',
 }
@@ -48,7 +48,7 @@ export const multiChainQueryMainToken: Record<MultiChainName, string> = {
   ZKSYNC: 'ETH',
   ARB: 'ETH',
   LINEA: 'ETH',
-  BASE: 'ETH',
+  PULSE: 'ETH',
   OPBNB: 'ETH',
 }
 
@@ -61,7 +61,7 @@ export const multiChainBlocksClient: Record<MultiChainNameExtend, string> = {
   ZKSYNC: BLOCKS_CLIENT_ZKSYNC,
   ARB: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
   LINEA: BLOCKS_CLIENT_LINEA,
-  BASE: BLOCKS_CLIENT_BASE,
+  PULSE: BLOCKS_CLIENT_BASE,
   OPBNB: BLOCKS_CLIENT_OPBNB,
 }
 
@@ -72,7 +72,7 @@ export const multiChainStartTime = {
   ZKSYNC: 1690462800, // Thu Jul 27 2023 13:00:00 UTC+0000
   ARB: 1686732526,
   LINEA: 1692878400,
-  BASE: 1693483200,
+  PULSE: 1713484800,
   OPBNB: 1695945600,
 }
 
@@ -83,7 +83,7 @@ export const multiChainId: Record<MultiChainName, ChainId> = {
   ZKSYNC: ChainId.ZKSYNC,
   ARB: ChainId.ARBITRUM_ONE,
   LINEA: ChainId.LINEA,
-  BASE: ChainId.BASE,
+  PULSE: ChainId.PULSECHAIN,
   OPBNB: ChainId.OPBNB,
 }
 
@@ -94,7 +94,7 @@ export const multiChainPaths = {
   [ChainId.ZKSYNC]: '/zksync',
   [ChainId.ARBITRUM_ONE]: '/arb',
   [ChainId.LINEA]: '/linea',
-  [ChainId.BASE]: '/base',
+  [ChainId.PULSECHAIN]: '/pulsechain',
   [ChainId.OPBNB]: '/opbnb',
 }
 
@@ -114,7 +114,7 @@ export const multiChainScan: Record<MultiChainName, string> = {
   ZKSYNC: zkSync.blockExplorers.default.name,
   ARB: arbitrum.blockExplorers.default.name,
   LINEA: linea.blockExplorers.default.name,
-  BASE: base.blockExplorers.default.name,
+  PULSE: pulsechain.blockExplorers.default.name,
   OPBNB: opBNB.blockExplorers.default.name,
 }
 
@@ -126,7 +126,7 @@ export const multiChainTokenBlackList: Record<MultiChainName, string[]> = mapVal
     ZKSYNC: ['0x'],
     ARB: ['0x'],
     LINEA: ['0x'],
-    BASE: ['0x'],
+    PULSE: ['0x'],
     OPBNB: ['0x'],
   },
   (val) => val.map((address) => address.toLowerCase()),
@@ -140,7 +140,7 @@ export const multiChainTokenWhiteList: Record<MultiChainName, string[]> = mapVal
     ZKSYNC: [],
     ARB: [],
     LINEA: [],
-    BASE: [],
+    PULSE: [],
     OPBNB: [],
   },
   (val) => val.map((address) => address.toLowerCase()),

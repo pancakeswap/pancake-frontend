@@ -1,8 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { multiChainId, multiChainName, MultiChainNameExtend } from 'state/info/constant'
+import { MultiChainNameExtend, multiChainId, multiChainName } from 'state/info/constant'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { Block } from 'state/info/types'
-import { useQuery } from '@tanstack/react-query'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 
 /**

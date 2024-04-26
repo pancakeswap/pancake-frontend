@@ -23,7 +23,7 @@ export enum OnRampChainId {
   SCROLL_SEPOLIA = 534351,
   LINEA = 59144,
   LINEA_TESTNET = 59140,
-  BASE = 8453,
+  PULSECHAIN = 369,
   BASE_TESTNET = 84531,
   BASE_SEPOLIA = 84532,
   SEPOLIA = 11155111,
@@ -70,8 +70,8 @@ export const getNetworkDisplay = (chainId: number | undefined): string => {
       return 'zkEvm'
     case OnRampChainId.LINEA:
       return 'linea'
-    case OnRampChainId.BASE:
-      return 'base'
+    case OnRampChainId.PULSECHAIN:
+      return 'pulsechain'
     case OnRampChainId.BTC:
       return 'bitcoin'
     default:
@@ -93,8 +93,8 @@ export const getNetworkFullName = (chainId: number | undefined): string => {
       return 'Polygon ZkEvm'
     case OnRampChainId.LINEA:
       return 'Linea Mainnet'
-    case OnRampChainId.BASE:
-      return 'Base Mainnet'
+    case OnRampChainId.PULSECHAIN:
+      return 'PulseChain'
     case OnRampChainId.BTC:
       return 'Bitcoin Network'
     default:
@@ -109,7 +109,7 @@ export const chainIdToMercuryoNetworkId: { [id: number]: string } = {
   [OnRampChainId.ZKSYNC]: 'ZKSYNC',
   [OnRampChainId.POLYGON_ZKEVM]: 'ZKEVM',
   [OnRampChainId.LINEA]: 'LINEA',
-  [OnRampChainId.BASE]: 'BASE',
+  [OnRampChainId.PULSECHAIN]: 'PULSECHAIN',
   [OnRampChainId.BTC]: 'BITCOIN',
 }
 
@@ -120,7 +120,7 @@ export const chainIdToMoonPayNetworkId: { [id: number]: string } = {
   [OnRampChainId.ZKSYNC]: '_zksync',
   [OnRampChainId.POLYGON_ZKEVM]: '_polygonzkevm',
   [OnRampChainId.LINEA]: '_linea',
-  [OnRampChainId.BASE]: '_base',
+  [OnRampChainId.PULSECHAIN]: '_pulsechain',
   [OnRampChainId.BTC]: '',
 }
 
@@ -131,7 +131,7 @@ export const chainIdToTransakNetworkId: { [id: number]: string } = {
   [OnRampChainId.ZKSYNC]: 'zksync',
   [OnRampChainId.POLYGON_ZKEVM]: 'polygonzkevm',
   [OnRampChainId.LINEA]: 'linea',
-  [OnRampChainId.BASE]: 'base',
+  [OnRampChainId.PULSECHAIN]: 'pulsechain',
   [OnRampChainId.BTC]: 'mainnet',
 }
 
@@ -216,7 +216,7 @@ export const onRampCurrencies: OnRampCurrency[] = [
   Native.onChain(OnRampChainId.POLYGON_ZKEVM),
   Native.onChain(OnRampChainId.ZKSYNC),
   Native.onChain(OnRampChainId.LINEA),
-  Native.onChain(OnRampChainId.BASE),
+  Native.onChain(OnRampChainId.PULSECHAIN),
   ethereumTokens.usdt,
   bscTokens.usdt,
   bscTokens.usdc,
@@ -237,7 +237,7 @@ export const onRampCurrenciesMap: { [tokenSymbol: string]: Currency } = {
   ETH_1101: Native.onChain(OnRampChainId.POLYGON_ZKEVM),
   ETH_324: Native.onChain(OnRampChainId.ZKSYNC),
   ETH_59144: Native.onChain(OnRampChainId.LINEA),
-  ETH_8453: Native.onChain(OnRampChainId.BASE),
+  ETH_8453: Native.onChain(OnRampChainId.PULSECHAIN),
   // Add more entries for other currencies as needed
   USDT_1: ethereumTokens.usdt,
   USDT_56: bscTokens.usdt,

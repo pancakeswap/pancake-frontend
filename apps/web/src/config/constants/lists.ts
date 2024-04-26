@@ -25,7 +25,7 @@ const LINEA_URLS = [PANCAKE_LINEA_DEFAULT, 'https://tokens.coingecko.com/linea/a
 const ZKSYNC_URLS = [PANCAKE_ZKSYNC_DEFAULT, 'https://tokens.coingecko.com/zksync/all.json']
 const OP_SUPER_CHAIN_URL =
   'https://raw.githubusercontent.com/ethereum-optimism/ethereum-optimism.github.io/master/optimism.tokenlist.json'
-const BASE_URLS = [PANCAKE_BASE_DEFAULT, OP_SUPER_CHAIN_URL, 'https://tokens.coingecko.com/base/all.json']
+const BASE_URLS = [PANCAKE_BASE_DEFAULT]
 const OPBNB_URLS = [PANCAKE_OPBNB_DEFAULT]
 
 // List of official tokens list
@@ -63,8 +63,6 @@ export const DEFAULT_ACTIVE_LIST_URLS: string[] = [
   PANCAKE_BASE_DEFAULT,
   PANCAKE_OPBNB_DEFAULT,
   OP_SUPER_CHAIN_URL,
-  COINGECKO,
-  COINGECKO_ETH,
 ]
 
 export const MULTI_CHAIN_LIST_URLS: { [chainId: number]: string[] } = {
@@ -74,6 +72,6 @@ export const MULTI_CHAIN_LIST_URLS: { [chainId: number]: string[] } = {
   [ChainId.POLYGON_ZKEVM]: POLYGON_ZKEVM_URLS,
   [ChainId.ARBITRUM_ONE]: ARBITRUM_URLS,
   [ChainId.LINEA]: LINEA_URLS,
-  [ChainId.BASE]: BASE_URLS,
+  [ChainId.PULSECHAIN]: BASE_URLS,
   [ChainId.OPBNB]: OPBNB_URLS,
 }

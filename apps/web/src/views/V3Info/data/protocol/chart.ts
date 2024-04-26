@@ -12,8 +12,8 @@ dayjs.extend(weekOfYear)
 const ONE_DAY_UNIX = 24 * 60 * 60
 
 const GLOBAL_CHART = gql`
-  query pancakeDayDatas($startTime: Int!, $skip: Int!) {
-    pancakeDayDatas(first: 1000, skip: $skip, where: { date_gt: $startTime }, orderBy: date, orderDirection: asc) {
+  query betterXDayDatas($startTime: Int!, $skip: Int!) {
+    betterXDayDatas(first: 1000, skip: $skip, where: { date_gt: $startTime }, orderBy: date, orderDirection: asc) {
       id
       date
       volumeUSD
@@ -23,7 +23,7 @@ const GLOBAL_CHART = gql`
 `
 
 interface ChartResults {
-  pancakeDayDatas: {
+  betterXDayDatas: {
     date: number
     volumeUSD: string
     tvlUSD: string
@@ -47,7 +47,7 @@ export async function fetchChartData(client: GraphQLClient) {
       startTime: startTimestamp,
       skip,
     })
-    data = chartData.pancakeDayDatas
+    data = chartData.betterXDayDatas
   } catch {
     error = true
   }

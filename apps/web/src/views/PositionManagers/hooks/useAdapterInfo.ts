@@ -66,7 +66,7 @@ export async function getAdapterTokensAmounts({ address, chainId }): Promise<{
     })
 
   if (
-    (!totalSupplyData?.result && totalSupplyData?.result !== 0n) ||
+    !totalSupplyData?.result ||
     !tokenPerShareData?.result ||
     !PRECISIONData?.result ||
     (!managerFeeData?.result && managerFeeData?.result !== 0n) ||

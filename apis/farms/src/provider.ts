@@ -285,7 +285,7 @@ export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient 
       return arbitrumOneClient
     case ChainId.LINEA:
       return lineaClient
-    case ChainId.BASE:
+    case ChainId.PULSECHAIN:
       return baseClient
     case ChainId.OPBNB:
       return opBNBClient

@@ -20,7 +20,7 @@ export const tokenImageChainNameMapping = {
   [ChainId.ZKSYNC]: 'zksync/',
   [ChainId.ARBITRUM_ONE]: 'arbitrum/',
   [ChainId.LINEA]: 'linea/',
-  [ChainId.BASE]: 'base/',
+  [ChainId.PULSECHAIN]: 'pulsechain/',
   [ChainId.OPBNB]: 'opbnb/',
 }
 

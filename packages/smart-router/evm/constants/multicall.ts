@@ -57,7 +57,7 @@ export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
   [ChainId.ZKSYNC_TESTNET]: DEFAULT,
   [ChainId.LINEA]: DEFAULT,
   [ChainId.LINEA_TESTNET]: DEFAULT,
-  [ChainId.BASE]: {
+  [ChainId.PULSECHAIN]: {
     ...DEFAULT,
     defaultConfig: {
       ...DEFAULT.defaultConfig,

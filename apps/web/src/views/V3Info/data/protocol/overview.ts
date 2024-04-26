@@ -5,7 +5,7 @@ import { ProtocolData } from '../../types'
 import { getPercentChange } from '../../utils/data'
 
 export const GLOBAL_DATA = (block?: string | number) => {
-  const queryString = ` query pancakeFactories {
+  const queryString = ` query betterXFactories {
       factories(
        ${block !== undefined ? `block: { number: ${block}}` : ``} 
        first: 1) {

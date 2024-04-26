@@ -338,8 +338,8 @@ export const useChainNameByQuery = (): MultiChainName => {
         return 'ARB'
       case 'linea':
         return 'LINEA'
-      case 'base':
-        return 'BASE'
+      case 'pulsechain':
+        return 'PULSE'
       case 'opbnb':
         return 'OPBNB'
       default:

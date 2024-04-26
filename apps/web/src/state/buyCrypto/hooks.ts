@@ -109,7 +109,7 @@ export async function queryParametersToBuyCryptoState(
   account: string | undefined,
   chainId: any,
 ): Promise<BuyCryptoState> {
-  const DEFAULT_FIAT_CURRENCY = [ChainId.BASE, ChainId.LINEA].includes(chainId) ? 'EUR' : 'USD'
+  const DEFAULT_FIAT_CURRENCY = [ChainId.PULSECHAIN, ChainId.LINEA].includes(chainId) ? 'EUR' : 'USD'
   return {
     [Field.INPUT]: {
       currencyId: DEFAULT_FIAT_CURRENCY,

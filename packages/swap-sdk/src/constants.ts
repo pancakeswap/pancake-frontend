@@ -25,7 +25,7 @@ export const FACTORY_ADDRESS_MAP = {
   [ChainId.LINEA_TESTNET]: '0xB6FAfd4ADbCd21cF665909767e0eD0D05709abfB',
   [ChainId.OPBNB]: '0x02a84c1b3BBD7401a5f7fa98a384EBC70bB5749E',
   [ChainId.OPBNB_TESTNET]: '0x776e4bD2f72de2176A59465e316335aaf8ed4E8F',
-  [ChainId.BASE]: '0x02a84c1b3BBD7401a5f7fa98a384EBC70bB5749E',
+  [ChainId.PULSECHAIN]: '0x61DcCf75afA264Fb4e6125F42927a16068e718B6',
   [ChainId.BASE_TESTNET]: '0x715303D2eF7dA7FFAbF637651D71FD11d41fAf7F',
   [ChainId.SCROLL_SEPOLIA]: '0x2B3C5df29F73dbF028BA82C33e0A5A6e5800F75e',
   [ChainId.SEPOLIA]: '0x1bdc540dEB9Ed1fA29964DeEcCc524A8f5e2198e',
@@ -51,7 +51,7 @@ export const INIT_CODE_HASH_MAP = {
   [ChainId.LINEA_TESTNET]: INIT_CODE_HASH_ETH,
   [ChainId.OPBNB]: INIT_CODE_HASH_ETH,
   [ChainId.OPBNB_TESTNET]: INIT_CODE_HASH_ETH,
-  [ChainId.BASE]: INIT_CODE_HASH_ETH,
+  [ChainId.PULSECHAIN]: '0x9d364d68ac50f0cf5816fe8a31705141da1d067995c9cb2256edb7b4a014e585',
   [ChainId.BASE_TESTNET]: '0xa5934690703a592a07e841ca29d5e5c79b5e22ed4749057bb216dc31100be1c0',
   [ChainId.SCROLL_SEPOLIA]: INIT_CODE_HASH_ETH,
   [ChainId.SEPOLIA]: INIT_CODE_HASH_ETH,
@@ -172,12 +172,12 @@ export const WETH9 = {
     'Binance-Peg Ethereum Token',
     'https://ethereum.org'
   ),
-  [ChainId.BASE]: new ERC20Token(
-    ChainId.BASE,
-    '0x4200000000000000000000000000000000000006',
+  [ChainId.PULSECHAIN]: new ERC20Token(
+    ChainId.PULSECHAIN,
+    '0xA1077a294dDE1B09bB078844df40758a5D0f9a27',
     18,
-    'WETH',
-    'Wrapped Ether',
+    'WPLS',
+    'Wrapped PLS',
     'https://weth.io'
   ),
   [ChainId.BASE_TESTNET]: new ERC20Token(
@@ -280,7 +280,7 @@ export const WNATIVE = {
   [ChainId.LINEA_TESTNET]: WETH9[ChainId.LINEA_TESTNET],
   [ChainId.OPBNB_TESTNET]: WBNB[ChainId.OPBNB_TESTNET],
   [ChainId.OPBNB]: WBNB[ChainId.OPBNB],
-  [ChainId.BASE]: WETH9[ChainId.BASE],
+  [ChainId.PULSECHAIN]: WETH9[ChainId.PULSECHAIN],
   [ChainId.BASE_TESTNET]: WETH9[ChainId.BASE_TESTNET],
   [ChainId.SCROLL_SEPOLIA]: WETH9[ChainId.SCROLL_SEPOLIA],
   [ChainId.SEPOLIA]: WETH9[ChainId.SEPOLIA],
@@ -289,6 +289,9 @@ export const WNATIVE = {
 } satisfies Record<ChainId, ERC20Token>
 
 const ETHER = { name: 'Ether', symbol: 'ETH', decimals: 18 } as const
+
+const PLS = { name: 'PLS', symbol: 'PLS', decimals: 18 } as const
+
 const BNB = {
   name: 'Binance Chain Native Token',
   symbol: 'BNB',
@@ -322,7 +325,7 @@ export const NATIVE = {
     symbol: 'tBNB',
     decimals: 18,
   },
-  [ChainId.BASE]: ETHER,
+  [ChainId.PULSECHAIN]: PLS,
   [ChainId.BASE_TESTNET]: ETHER,
   [ChainId.SCROLL_SEPOLIA]: ETHER,
   [ChainId.SEPOLIA]: {

@@ -43,7 +43,7 @@ export const SMART_ROUTER_ADDRESSES = {
   [ChainId.LINEA_TESTNET]: '0x21d809FB4052bb1807cfe2418bA638d72F4aEf87',
   [ChainId.OPBNB]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
   [ChainId.OPBNB_TESTNET]: '0xf317eD77Baed624d0EA2384AA88D91B774a9b009',
-  [ChainId.BASE]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
+  [ChainId.PULSECHAIN]: '0x0D790da84956B425e6c5D8E3d311A4e553829221',
   [ChainId.BASE_TESTNET]: '0xDDC44b8507B4Ca992fB60F0ECdF5651A87668509',
   [ChainId.SCROLL_SEPOLIA]: '0xDDC44b8507B4Ca992fB60F0ECdF5651A87668509',
   [ChainId.SEPOLIA]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
@@ -66,7 +66,7 @@ export const V2_ROUTER_ADDRESS: ChainMap<string> = {
   [ChainId.LINEA_TESTNET]: '0xD7A304138D50C125733d1fE8a2041199E4944Aa1',
   [ChainId.OPBNB]: '0x8cFe327CEc66d1C090Dd72bd0FF11d690C33a2Eb',
   [ChainId.OPBNB_TESTNET]: '0x62FF25CFD64E55673168c3656f4902bD7Aa5F0f4',
-  [ChainId.BASE]: '0x8cFe327CEc66d1C090Dd72bd0FF11d690C33a2Eb',
+  [ChainId.PULSECHAIN]: '0x8A3A245Fe09796Df9432Dc5E56e04DAAE7885364',
   [ChainId.BASE_TESTNET]: '0xC259d1D3476558630d83b0b60c105ae958382792',
   [ChainId.SCROLL_SEPOLIA]: '0x715303D2eF7dA7FFAbF637651D71FD11d41fAf7F',
   [ChainId.SEPOLIA]: '0x8cFe327CEc66d1C090Dd72bd0FF11d690C33a2Eb',
@@ -89,7 +89,7 @@ export const STABLE_SWAP_INFO_ADDRESS: ChainMap<string> = {
   [ChainId.LINEA_TESTNET]: '',
   [ChainId.OPBNB]: '',
   [ChainId.OPBNB_TESTNET]: '',
-  [ChainId.BASE]: '',
+  [ChainId.PULSECHAIN]: '',
   [ChainId.BASE_TESTNET]: '',
   [ChainId.SCROLL_SEPOLIA]: '',
   [ChainId.SEPOLIA]: '',
@@ -121,7 +121,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.LINEA_TESTNET]: [lineaTestnetTokens.usdc, lineaTestnetTokens.weth],
   [ChainId.OPBNB]: [opBnbTokens.wbnb, opBnbTokens.usdt],
   [ChainId.OPBNB_TESTNET]: [opBnbTestnetTokens.usdc, opBnbTestnetTokens.wbnb],
-  [ChainId.BASE]: [baseTokens.usdc, baseTokens.weth],
+  [ChainId.PULSECHAIN]: [baseTokens.usdc, baseTokens.weth],
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
   [ChainId.SEPOLIA]: [sepoliaTokens.usdc, sepoliaTokens.weth],
@@ -178,7 +178,7 @@ export const ADDITIONAL_BASES: {
     // rETH - ETH
     [ethereumTokens.weth.address]: [ethereumTokens.rETH],
   },
-  [ChainId.BASE]: {
+  [ChainId.PULSECHAIN]: {
     // axlusdc - USDbC
     [baseTokens.axlusdc.address]: [baseTokens.usdbc],
     [baseTokens.usdbc.address]: [baseTokens.axlusdc],

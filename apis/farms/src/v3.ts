@@ -23,7 +23,7 @@ export const V3_SUBGRAPH_CLIENTS_CHAIN_IDS = [
   ChainId.ZKSYNC,
   ChainId.ARBITRUM_ONE,
   ChainId.LINEA,
-  ChainId.BASE,
+  ChainId.PULSECHAIN,
   ChainId.OPBNB,
 ] as const
 

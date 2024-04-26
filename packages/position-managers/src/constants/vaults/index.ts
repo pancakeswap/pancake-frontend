@@ -17,7 +17,7 @@ export const VAULTS_CONFIG_BY_CHAIN = {
   [ChainId.ETHEREUM]: ethVaults,
   [ChainId.BSC]: bscVaults,
   [ChainId.ARBITRUM_ONE]: arbVaults,
-  [ChainId.BASE]: baseVaults,
+  [ChainId.PULSECHAIN]: baseVaults,
   [ChainId.ZKSYNC]: zksyncVault,
   [ChainId.POLYGON_ZKEVM]: zkevmVault,
 }

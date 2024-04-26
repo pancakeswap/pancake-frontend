@@ -36,7 +36,7 @@ export const allTokens = {
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerliTokens,
   [ChainId.OPBNB]: opBnbTokens,
   [ChainId.OPBNB_TESTNET]: opBnbTestnetTokens,
-  [ChainId.BASE]: baseTokens,
+  [ChainId.PULSECHAIN]: baseTokens,
   [ChainId.BASE_TESTNET]: baseTestnetTokens,
   [ChainId.SCROLL_SEPOLIA]: scrollSepoliaTokens,
   [ChainId.SEPOLIA]: sepoliaTokens,

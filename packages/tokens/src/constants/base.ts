@@ -1,56 +1,22 @@
 import { ChainId } from '@pancakeswap/chains'
 import { ERC20Token, WETH9 } from '@pancakeswap/sdk'
-import { CAKE, USDC } from './common'
+import { CAKE, USDC, USDT } from './common'
 
 export const baseTokens = {
-  weth: WETH9[ChainId.BASE],
-  usdc: USDC[ChainId.BASE],
-  cake: CAKE[ChainId.BASE],
-  cbETH: new ERC20Token(
-    ChainId.BASE,
-    '0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22',
-    18,
-    'cbETH',
-    'Coinbase Wrapped Staked ETH',
-  ),
-  usdbc: new ERC20Token(
-    ChainId.BASE,
-    '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
-    6,
-    'USDbC',
-    'USD Base Coin',
-    'https://help.coinbase.com/en/coinbase/getting-started/crypto-education/usd-base-coin',
-  ),
+  weth: WETH9[ChainId.PULSECHAIN],
+  usdc: USDC[ChainId.PULSECHAIN],
+  cake: CAKE[ChainId.PULSECHAIN],
+  cbETH: new ERC20Token(ChainId.PULSECHAIN, '0x93Cf7d72333Fe9faEb9D455b82A4c85D7F0609aa', 18, 'PEPPA', 'PEPPA'),
+  usdbc: USDT[ChainId.PULSECHAIN],
   dai: new ERC20Token(
-    ChainId.BASE,
-    '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb',
+    ChainId.PULSECHAIN,
+    '0xefD766cCb38EaF1dfd701853BFCe31359239F305',
     18,
     'DAI',
     'Dai Stablecoin',
     'https://www.makerdao.com/',
   ),
-  tbtc: new ERC20Token(
-    ChainId.BASE,
-    '0x236aa50979D5f3De3Bd1Eeb40E81137F22ab794b',
-    18,
-    'tBTC',
-    'Base tBTC v2',
-    'https://threshold.network/',
-  ),
-  axlusdc: new ERC20Token(
-    ChainId.BASE,
-    '0xEB466342C4d449BC9f53A865D5Cb90586f405215',
-    6,
-    'axlUSDC',
-    'Axelar Wrapped USDC',
-    'https://axelarscan.io/assets/',
-  ),
-  wstETH: new ERC20Token(
-    ChainId.BASE,
-    '0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452',
-    18,
-    'wstETH',
-    'Wrapped liquid staked Ether 2.0',
-    'https://lido.fi/',
-  ),
+  tbtc: new ERC20Token(ChainId.PULSECHAIN, '0x74D98E37132dF921dF38c5A2Ae8748aDbab63238', 18, 'NANANA', 'Nanana', ''),
+  axlusdc: new ERC20Token(ChainId.PULSECHAIN, '0x8BDB63033b02C15f113De51EA1C3a96Af9e8ecb5', 18, 'AXIS', 'AXIS', ''),
+  wstETH: new ERC20Token(ChainId.PULSECHAIN, '0x0dEEd1486bc52aA0d3E6f8849cEC5adD6598A162', 18, 'USDL', 'USDL', ''),
 }

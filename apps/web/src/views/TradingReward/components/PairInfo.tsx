@@ -77,7 +77,7 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
               {chainId === ChainId.ZKSYNC && <ZkSyncTag />}
               {chainId === ChainId.ARBITRUM_ONE && <ArbTag />}
               {chainId === ChainId.LINEA && <LineaTag />}
-              {chainId === ChainId.BASE && <BaseTag />}
+              {chainId === ChainId.PULSECHAIN && <BaseTag />}
               {chainId === ChainId.OPBNB && <OpBnbTag />}
             </Flex>
           </Flex>
