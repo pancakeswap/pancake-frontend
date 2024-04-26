@@ -17,10 +17,12 @@ import Page from 'components/Layout/Page'
 import { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import { CurrentEpoch } from './components/CurrentEpoch'
+import { FilterFieldByType, FilterFieldInput, FilterFieldSort } from './components/GaugesFilter'
 import { MyVeCakeBalance } from './components/MyVeCakeBalance'
 import { GaugesList, GaugesTable, VoteTable } from './components/Table'
 import { WeightsPieChart } from './components/WeightsPieChart'
 import { useGauges } from './hooks/useGauges'
+import { useGaugesFilter } from './hooks/useGaugesFilter'
 import { useGaugesTotalWeight } from './hooks/useGaugesTotalWeight'
 
 const InlineLink = styled(LinkExternal)`
@@ -30,7 +32,6 @@ const InlineLink = styled(LinkExternal)`
 `
 
 const StyledGaugesVotingPage = styled.div`
-  overflow: hidden;
   background: transparent;
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -73,8 +74,9 @@ const BunnyImage = styled.img`
 const GaugesVoting = () => {
   const { t } = useTranslation()
   const totalGaugesWeight = useGaugesTotalWeight()
+  const { isDesktop, isMobile, isXl, isXs } = useMatchBreakpoints()
   const { data: gauges, isLoading } = useGauges()
-  const { isDesktop, isMobile } = useMatchBreakpoints()
+  const { filterGauges, setSearchText, filter, onFilterChange, sort, setSort } = useGaugesFilter(gauges)
 
   return (
     <StyledGaugesVotingPage>
@@ -129,20 +131,68 @@ const GaugesVoting = () => {
                 <Text color="secondary" textTransform="uppercase" bold>
                   {t('proposed weights')}
                 </Text>
-                <WeightsPieChart data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} isLoading={isLoading} />
+                <Box mt={isDesktop ? '40px' : '0'} mb={isDesktop ? '20px' : 0}>
+                  <WeightsPieChart
+                    data={filterGauges}
+                    totalGaugesWeight={Number(totalGaugesWeight)}
+                    isLoading={isLoading}
+                  />
+                </Box>
               </Box>
+              {!isMobile && !isXl ? (
+                <Grid gridTemplateColumns="1fr 1fr" gridGap="32px">
+                  <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                  <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
+                </Grid>
+              ) : null}
             </Grid>
+            {/* for tablet fit */}
+            {isXl ? (
+              <Grid gridTemplateColumns="1fr 1fr">
+                <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
+              </Grid>
+            ) : null}
+            {/* for mobile sticky, make it redundancy */}
+            {isMobile ? (
+              <Grid
+                background="background"
+                mx={-16}
+                p={16}
+                gridTemplateColumns="1fr"
+                gridGap="1em"
+                position="sticky"
+                top="0"
+              >
+                {isXs ? (
+                  <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                ) : (
+                  <Grid gridTemplateColumns="2fr 1fr" gridGap="8px">
+                    <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                    <FilterFieldSort onChange={setSort} />
+                  </Grid>
+                )}
+                {isXs ? (
+                  <Grid gridTemplateColumns="2fr 1fr" gridGap="8px">
+                    <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
+                    <FilterFieldSort onChange={setSort} />
+                  </Grid>
+                ) : (
+                  <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
+                )}
+              </Grid>
+            ) : null}
             {isMobile ? (
               <GaugesList
-                mt="1.5em"
-                data={gauges}
+                key={sort}
+                data={filterGauges}
                 isLoading={isLoading}
                 totalGaugesWeight={Number(totalGaugesWeight)}
               />
             ) : (
               <GaugesTable
                 mt="1.5em"
-                data={gauges}
+                data={filterGauges}
                 isLoading={isLoading}
                 totalGaugesWeight={Number(totalGaugesWeight)}
               />

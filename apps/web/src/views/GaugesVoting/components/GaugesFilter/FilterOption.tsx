@@ -1,60 +1,17 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Trans, useTranslation } from '@pancakeswap/localization'
-import {
-  AutoRow,
-  Button,
-  Checkbox,
-  FlexGap,
-  GroupsIcon,
-  Modal,
-  ModalV2,
-  RocketIcon,
-  Tag,
-  Text,
-  VoteIcon,
-} from '@pancakeswap/uikit'
+import { AutoRow, Checkbox, FlexGap, GroupsIcon, RocketIcon, Tag, Text, VoteIcon } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import React from 'react'
 import styled from 'styled-components'
 import { v3FeeToPercent } from 'views/Swap/V3Swap/utils/exchange'
-import { NetworkBadge } from '../../NetworkBadge'
+import { NetworkBadge } from '../NetworkBadge'
+import { Gauges, OptionsType } from './type'
 
-const Label = styled.label`
-  cursor: pointer;
-  padding: 8px 32px;
-  padding-right: 42px;
-  margin: 0 -32px;
-  transition: background-color 200ms ease-in-out;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.dropdown};
-  }
-`
-
-export enum OptionsType {
-  ByChain = 'byChain',
-  ByFeeTier = 'byFeeTier',
-  ByType = 'byType',
-}
-
-export const GAUGES_TYPE = ['Regular Gauges', 'Boosted Gauges', 'Capped Gauges'] as const
-
-export const enum Gauges {
-  Regular = 'Regular Gauges',
-  Boosted = 'Boosted Gauges',
-  Capped = 'Capped Gauges',
-}
-
-const GaugesIcon = {
-  [GAUGES_TYPE[0]]: <VoteIcon color="textSubtle" />,
-  [GAUGES_TYPE[1]]: <RocketIcon color="textSubtle" />,
-  [GAUGES_TYPE[2]]: <GroupsIcon color="textSubtle" />,
-}
-
-const OPTIONS = {
+export const OPTIONS = {
   [OptionsType.ByChain]: {
     key: OptionsType.ByChain,
     title: <Trans>Filter By Chains</Trans>,
+    // @fixme: @ChefJerry add SUPPORTED_CHAINS to packages/gauges and import it here
     options: [
       ChainId.ETHEREUM,
       ChainId.BSC,
@@ -76,6 +33,18 @@ const OPTIONS = {
     options: [Gauges.Regular, Gauges.Boosted, Gauges.Capped] as Gauges[],
   },
 }
+
+const Label = styled.label`
+  cursor: pointer;
+  padding: 8px 32px;
+  padding-right: 42px;
+  margin: 0 -32px;
+  transition: background-color 200ms ease-in-out;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.dropdown};
+  }
+`
 
 const ByChainsOption: React.FC<{
   option: ChainId
@@ -112,6 +81,13 @@ const ByFeeTierOption: React.FC<{
   )
 }
 
+const GAUGES_TYPE = ['Regular Gauges', 'Boosted Gauges', 'Capped Gauges'] as const
+
+const GaugesIcon = {
+  [GAUGES_TYPE[0]]: <VoteIcon color="textSubtle" />,
+  [GAUGES_TYPE[1]]: <RocketIcon color="textSubtle" />,
+  [GAUGES_TYPE[2]]: <GroupsIcon color="textSubtle" />,
+}
 const ByTypeOption: React.FC<{
   option: Gauges
   checked: boolean
@@ -136,7 +112,7 @@ const ByTypeOption: React.FC<{
   )
 }
 
-const Option: React.FC<{
+export const FilterOption: React.FC<{
   type: OptionsType
   option: Gauges | ChainId | FeeAmount
   checked: boolean
@@ -170,45 +146,4 @@ const Option: React.FC<{
     default:
       return null
   }
-}
-
-export type Filter = {
-  [OptionsType.ByChain]: ChainId[]
-  [OptionsType.ByFeeTier]: FeeAmount[]
-  [OptionsType.ByType]: Gauges[]
-}
-
-export type FilterValue = Gauges[] | ChainId[] | FeeAmount[] | Gauges | ChainId | FeeAmount
-
-export const OptionsModal: React.FC<{
-  isOpen: boolean
-  onDismiss: () => void
-  type: OptionsType | null
-  options: Filter
-  onChange: (type: OptionsType, value: FilterValue) => void
-}> = ({ isOpen, type, onDismiss, options, onChange }) => {
-  const { t } = useTranslation()
-  if (!type) return null
-  const allChecks = options[type] as Array<unknown>
-
-  return (
-    <ModalV2 isOpen={isOpen} onDismiss={onDismiss}>
-      <Modal title={OPTIONS[type].title} headerBackground="gradientCardHeader">
-        <FlexGap flexDirection="column" gap="8px">
-          {OPTIONS[type].options.map((option) => {
-            const checked = allChecks.includes(option)
-            return <Option type={type} key={OPTIONS[type].key} option={option} checked={checked} onChange={onChange} />
-          })}
-          <Button
-            variant="text"
-            onClick={() => {
-              onChange(type, OPTIONS[type].options)
-            }}
-          >
-            {t('Select All')}
-          </Button>
-        </FlexGap>
-      </Modal>
-    </ModalV2>
-  )
 }

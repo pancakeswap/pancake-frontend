@@ -1,5 +1,3 @@
-import { Gauge, GaugeType } from '@pancakeswap/gauges'
-import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AutoColumn,
@@ -11,25 +9,18 @@ import {
   FlexGap,
   Grid,
   Heading,
-  Input,
   ModalV2,
   ModalWrapper,
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
+import { useGaugesFilter } from 'views/GaugesVoting/hooks/useGaugesFilter'
 import { useGaugesTotalWeight } from 'views/GaugesVoting/hooks/useGaugesTotalWeight'
+import { FilterFieldByType, FilterFieldInput, FilterFieldSort } from '../../GaugesFilter'
 import { GaugesList, GaugesTable } from '../GaugesTable'
 import { THeader, TRow } from '../styled'
-import { Filter, FilterValue, Gauges, OptionsModal, OptionsType } from './OptionsModal'
-
-const FilterButton = styled(Button)`
-  height: 35px;
-  border-radius: 18px;
-  padding: 0 12px;
-`
 
 const ScrollableGaugesList = styled(GaugesList).attrs({ pagination: false })`
   overflow-y: auto;
@@ -50,71 +41,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
   const { isDesktop, isMobile } = useMatchBreakpoints()
   const totalGaugesWeight = useGaugesTotalWeight()
   const { data: gauges } = useGauges()
-  const [searchText, setSearchText] = useState<string>('')
-  const debouncedSearchText = useDebounce(searchText, 800)
-  const [option, setOption] = useState<OptionsType | null>(null)
-  const [filter, setFilter] = useState<Filter>({
-    byChain: [],
-    byFeeTier: [],
-    byType: [],
-  })
-
-  const filterRows = useMemo(() => {
-    if (!gauges || !gauges.length) return []
-    const { byChain, byFeeTier, byType } = filter
-    let rows: Gauge[] = gauges
-
-    if (debouncedSearchText?.length > 0) {
-      rows = gauges.filter((gauge) => {
-        return gauge.pairName.toLowerCase().includes(debouncedSearchText.toLowerCase())
-      })
-    }
-
-    if (byChain.length || byFeeTier.length || byType.length) {
-      rows = rows?.filter((gauge: Gauge) => {
-        const feeTier = gauge.type === GaugeType.V3 ? gauge?.feeTier : undefined
-        const chain = gauge.chainId
-        const boosted = gauge.boostMultiplier > 100n
-        const capped = gauge.maxVoteCap > 0n
-        const types = [boosted ? Gauges.Boosted : Gauges.Regular]
-        if (capped) {
-          types.push(Gauges.Capped)
-        }
-        return (
-          (byChain.length === 0 || (chain && byChain.includes(chain))) &&
-          (byFeeTier.length === 0 || (feeTier && byFeeTier.includes(feeTier))) &&
-          (byType.length === 0 || byType.some((bt) => types.includes(bt)))
-        )
-      })
-    }
-
-    return rows
-  }, [filter, gauges, debouncedSearchText])
-
-  const onFilterChange = (type: OptionsType, value: FilterValue) => {
-    const opts = filter[type] as Array<unknown>
-
-    // select all
-    if (Array.isArray(value)) {
-      setFilter((prev) => ({
-        ...prev,
-        [type]: value.length === opts.length ? [] : value,
-      }))
-      return
-    }
-    // select one
-    if (opts.includes(value)) {
-      setFilter((prev) => ({
-        ...prev,
-        [type]: opts.filter((v) => v !== value),
-      }))
-    } else {
-      setFilter((prev) => ({
-        ...prev,
-        [type]: [...opts, value],
-      }))
-    }
-  }
+  const { filterGauges, setSearchText, filter, onFilterChange, setSort } = useGaugesFilter(gauges)
 
   const gaugesTable = isDesktop ? (
     <AddGaugesTable
@@ -122,7 +49,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
       selectRows={selectRows}
       onRowSelect={onGaugeAdd}
       totalGaugesWeight={Number(totalGaugesWeight)}
-      data={filterRows}
+      data={filterGauges}
       maxHeight={70 * 5}
     />
   ) : (
@@ -131,21 +58,10 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
       selectRows={selectRows}
       onRowSelect={onGaugeAdd}
       totalGaugesWeight={Number(totalGaugesWeight)}
-      data={filterRows}
+      data={filterGauges}
       listDisplay="card"
     />
   )
-
-  useEffect(() => {
-    if (!isOpen) {
-      setSearchText('')
-      setFilter({
-        byChain: [],
-        byFeeTier: [],
-        byType: [],
-      })
-    }
-  }, [isOpen])
 
   return (
     <>
@@ -176,30 +92,11 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
                 </Button>
               </FlexGap>
               <Grid gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'} gridGap={isDesktop ? '32px' : '1em'}>
-                <AutoColumn gap="4px">
-                  <Text fontSize={12} fontWeight={600} color="textSubtle" textTransform="uppercase">
-                    {t('filter')}
-                  </Text>
-                  <FlexGap gap="10px">
-                    <FilterButton variant="light" onClick={() => setOption(OptionsType.ByChain)}>
-                      {t('Chain')}
-                    </FilterButton>
-                    <FilterButton variant="light" onClick={() => setOption(OptionsType.ByFeeTier)}>
-                      {t('Fee Tier')}
-                    </FilterButton>
-                    <FilterButton variant="light" onClick={() => setOption(OptionsType.ByType)}>
-                      {t('Type')}
-                    </FilterButton>
-                  </FlexGap>
-                </AutoColumn>
-                <AutoColumn gap="4px">
-                  {!isMobile ? (
-                    <Text fontSize={12} fontWeight={600} color="textSubtle" textTransform="uppercase">
-                      {t('search')}
-                    </Text>
-                  ) : null}
-                  <Input placeholder={t('Search gauges')} onChange={(e) => setSearchText(e.target.value)} />
-                </AutoColumn>
+                <Grid gridTemplateColumns="2fr 1fr" gridGap="8px">
+                  <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                  <FilterFieldSort onChange={setSort} />
+                </Grid>
+                <FilterFieldInput placeholder={t('Search gauges')} onChange={setSearchText} hideLabel={isMobile} />
               </Grid>
               {isMobile && selectRows?.length ? (
                 <Flex>
@@ -207,7 +104,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
                     {selectRows?.length} {t('selected')}
                   </Text>
                   <Text ml="2px" fontSize={14} bold color="textSubtle" textTransform="uppercase">
-                    / {gauges?.length} {t('total')}
+                    / {filterGauges?.length} {t('total')}
                   </Text>
                 </Flex>
               ) : null}
@@ -219,13 +116,6 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
           </Flex>
         </ModalWrapper>
       </ModalV2>
-      <OptionsModal
-        isOpen={Boolean(option)}
-        onDismiss={() => setOption(null)}
-        type={option}
-        options={filter}
-        onChange={onFilterChange}
-      />
     </>
   )
 }
