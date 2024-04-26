@@ -40,7 +40,7 @@ const LearnMore: React.FC<{ href?: string }> = ({
 }) => {
   const { t } = useTranslation()
   return (
-    <Link href={href} color="text">
+    <Link href={href} color="text" target="_blank">
       {t('Learn More >>')}
     </Link>
   )
