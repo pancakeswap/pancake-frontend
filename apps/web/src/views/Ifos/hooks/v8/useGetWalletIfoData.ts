@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { Address } from 'viem'
 import BigNumber from 'bignumber.js'
-import { Ifo, PoolIds, ifoV7ABI } from '@pancakeswap/ifos'
+import { Ifo, PoolIds, ifoV8ABI } from '@pancakeswap/ifos'
 import { useERC20, useIfoV7Contract } from 'hooks/useContract'
 import { fetchCakeVaultUserData } from 'state/pools'
 import { useAppDispatch } from 'state'
@@ -97,13 +97,13 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       contracts: [
         {
           address,
-          abi: ifoV7ABI,
+          abi: ifoV8ABI,
           functionName: 'viewUserInfo',
           args: [account, [0, 1]],
         },
         {
           address,
-          abi: ifoV7ABI,
+          abi: ifoV8ABI,
           functionName: 'viewUserOfferingAndRefundingAmountsForPools',
           args: [account, [0, 1]],
         },
@@ -118,15 +118,15 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         contracts: [
           {
             address,
-            abi: ifoV7ABI,
+            abi: ifoV8ABI,
             functionName: 'computeVestingScheduleIdForAddressAndPid',
-            args: [account, 0n],
+            args: [account, 0],
           },
           {
             address,
-            abi: ifoV7ABI,
+            abi: ifoV8ABI,
             functionName: 'computeVestingScheduleIdForAddressAndPid',
-            args: [account, 1n],
+            args: [account, 1],
           },
         ],
       })
@@ -166,36 +166,36 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         contracts: [
           {
             address,
-            abi: ifoV7ABI,
+            abi: ifoV8ABI,
             functionName: 'isQualifiedNFT',
             args: [account],
           },
           {
-            abi: ifoV7ABI,
+            abi: ifoV8ABI,
             address,
             functionName: 'isQualifiedPoints',
             args: [account],
           },
           {
-            abi: ifoV7ABI,
+            abi: ifoV8ABI,
             address,
             functionName: 'getVestingSchedule',
             args: [basicId],
           },
           {
-            abi: ifoV7ABI,
+            abi: ifoV8ABI,
             address,
             functionName: 'getVestingSchedule',
             args: [unlimitedId],
           },
           {
-            abi: ifoV7ABI,
+            abi: ifoV8ABI,
             address,
             functionName: 'computeReleasableAmount',
             args: [basicId],
           },
           {
-            abi: ifoV7ABI,
+            abi: ifoV8ABI,
             address,
             functionName: 'computeReleasableAmount',
             args: [unlimitedId],

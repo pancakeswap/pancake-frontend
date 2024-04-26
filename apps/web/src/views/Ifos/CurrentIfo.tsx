@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { Ifo, isCrossChainIfoSupportedOnly } from '@pancakeswap/ifos'
 
 import useGetPublicIfoV8Data from 'views/Ifos/hooks/v8/useGetPublicIfoData'
-import useGetWalletIfoV7Data from 'views/Ifos/hooks/v7/useGetWalletIfoData'
+import useGetWalletIfoV8Data from 'views/Ifos/hooks/v8/useGetWalletIfoData'
 import { useFetchIfo } from 'state/pools/hooks'
 
 import { IfoCurrentCard } from './components/IfoFoldableCard'
@@ -20,7 +20,7 @@ interface TypeProps {
 const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo }) => {
   useFetchIfo()
   const publicIfoData = useGetPublicIfoV8Data(activeIfo)
-  const walletIfoData = useGetWalletIfoV7Data(activeIfo)
+  const walletIfoData = useGetWalletIfoV8Data(activeIfo)
   const { hasBridged, sourceChainCredit, srcChainId, destChainCredit } = useICakeBridgeStatus({
     ifoChainId: activeIfo.chainId,
     ifoAddress: activeIfo.address,
