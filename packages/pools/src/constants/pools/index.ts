@@ -11,7 +11,7 @@ import { livePools as arbTestnetLivePools, pools as arbTestnetPools } from './42
 import { livePools as bscLivePools, pools as bscPools } from './56'
 import { livePools as lineaTestnetLivePools, pools as lineaTestnetPools } from './59140'
 import { livePools as lineaLivePools, pools as lineaPools } from './59144'
-import { livePools as baseLivePools, pools as basePools } from './8453'
+import { livePools as baseLivePools, pools as basePools } from './369'
 import { livePools as baseTestnetLivePools, pools as baseTestnetPools } from './84531'
 import { livePools as bscTestnetLivePools, pools as bscTestnetPools } from './97'
 
