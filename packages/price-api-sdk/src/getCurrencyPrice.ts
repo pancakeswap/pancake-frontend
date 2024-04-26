@@ -2,7 +2,7 @@ import { ChainId, isTestnetChainId } from '@pancakeswap/chains'
 
 import { Address } from './types/common'
 
-const WALLET_API = 'https://wallet-api.pancakeswap.com/v1/prices/list/'
+const WALLET_API = 'https://wallet-api.betterX.pro/v1/prices/list/'
 
 export const zeroAddress = '0x0000000000000000000000000000000000000000' as const
 

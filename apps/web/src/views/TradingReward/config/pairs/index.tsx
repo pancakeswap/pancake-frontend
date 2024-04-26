@@ -3,19 +3,23 @@ import { farmsV3 as arbitrumFarm } from '@pancakeswap/farms/constants/arb'
 import { farmsV3 as baseFarm } from '@pancakeswap/farms/constants/base'
 import { farmsV3 as bscFarm } from '@pancakeswap/farms/constants/bsc'
 import { farmsV3 as farm97 } from '@pancakeswap/farms/constants/bscTestnet'
+import { farmsV3 as degenFarm } from '@pancakeswap/farms/constants/degenchain'
 import { farmsV3 as ethFarm } from '@pancakeswap/farms/constants/eth'
 import { farmsV3 as farm5 } from '@pancakeswap/farms/constants/goerli'
 import { farmsV3 as lineaFarm } from '@pancakeswap/farms/constants/linea'
 import { farmsV3 as opBNBFarms } from '@pancakeswap/farms/constants/opBNB'
 import { farmsV3 as opBNBTestnetFarms } from '@pancakeswap/farms/constants/opBnbTestnet'
 import { farmsV3 as zkEvmFarm } from '@pancakeswap/farms/constants/polygonZkEVM'
+import { farmsV3 as pulseFarm } from '@pancakeswap/farms/constants/pulsechain'
 import { farmsV3 as zkSyncFarm } from '@pancakeswap/farms/constants/zkSync'
 import { ComputedFarmConfigV3, FarmV3SupportedChainId } from '@pancakeswap/farms/src'
 
 // Edge Case Farms
 import { tradingRewardBaseV3Pair } from './edgeCasesFarms/baseFarm'
 import { tradingRewardBscV3Pair } from './edgeCasesFarms/bscFarm'
+import { tradingRewardDegenV3Pair } from './edgeCasesFarms/degenFarm'
 import { tradingRewardLineaV3Pair } from './edgeCasesFarms/lineaFarm'
+import { tradingRewardPulseV3Pair } from './edgeCasesFarms/pulseFarm'
 import { tradingRewardZkEvmV3Pair } from './edgeCasesFarms/zkEVMFarm'
 import { tradingRewardZkSyncV3Pair } from './edgeCasesFarms/zkSyncFarm'
 
@@ -30,7 +34,9 @@ export const tradingRewardPairConfigChainMap: Record<FarmV3SupportedChainId, Com
   [ChainId.ZKSYNC_TESTNET]: [],
   [ChainId.ARBITRUM_ONE]: arbitrumFarm,
   [ChainId.LINEA]: [...lineaFarm, ...tradingRewardLineaV3Pair],
+  [ChainId.PULSECHAIN]: [...pulseFarm, ...tradingRewardPulseV3Pair],
   [ChainId.BASE]: [...baseFarm, ...tradingRewardBaseV3Pair],
+  [ChainId.DEGENCHAIN]: [...degenFarm, ...tradingRewardDegenV3Pair],
   [ChainId.OPBNB_TESTNET]: opBNBTestnetFarms,
   [ChainId.OPBNB]: opBNBFarms,
 }

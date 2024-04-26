@@ -25,8 +25,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useGetRoundsByCloseOracleId, useGetSortedRounds } from 'state/predictions/hooks'
 import { NodeRound } from 'state/types'
 import { styled } from 'styled-components'
-import { useReadContracts } from 'wagmi'
-import { useReadContract } from '@pancakeswap/wagmi'
+import { useBlockNumber, useReadContract, useReadContracts } from 'wagmi'
 import { useConfig } from '../context/ConfigProvider'
 import { CHART_DOT_CLICK_EVENT } from '../helpers'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
@@ -35,9 +34,10 @@ import useSwiper from '../hooks/useSwiper'
 function useChainlinkLatestRound() {
   const config = useConfig()
   const { chainId } = useActiveChainId()
+  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const chainlinkOracleContract = useChainlinkOracleContract(config?.chainlinkOracleAddress)
-  const { data } = useReadContract({
+  const { data, refetch } = useReadContract({
     abi: chainlinkOracleABI,
     address: chainlinkOracleContract.address,
     functionName: 'latestRound',
@@ -45,8 +45,11 @@ function useChainlinkLatestRound() {
       enabled: !!chainlinkOracleContract,
     },
     chainId,
-    watch: true,
   })
+
+  useEffect(() => {
+    refetch()
+  }, [blockNumber, refetch])
 
   return data
 }
@@ -119,7 +122,7 @@ function useChartHoverMutate() {
       if (data) {
         queryClient.setQueryData(['chainlinkChartHover'], data)
       } else {
-        queryClient.resetQueries({ queryKey: ['chainlinkChartHover'] })
+        queryClient.resetQueries({ queryKey: ['chainlinkChartHover'], exact: true })
       }
     },
     [queryClient],

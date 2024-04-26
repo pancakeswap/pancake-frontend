@@ -10,6 +10,9 @@ export const useBSCCakeBalance = () => {
   const cakeAddress = useMemo(() => {
     if (ChainId.BSC === chainId) return CAKE[chainId as ChainId].address
     if (ChainId.BSC_TESTNET === chainId) return bscTestnetTokens.cake2.address
+    if (ChainId.PULSECHAIN === chainId) return CAKE[chainId as ChainId].address
+    if (ChainId.DEGENCHAIN === chainId) return CAKE[chainId as ChainId].address
+    if (ChainId.BASE === chainId) return CAKE[chainId as ChainId].address
     return undefined
   }, [chainId])
   const { balance } = useTokenBalance(cakeAddress)

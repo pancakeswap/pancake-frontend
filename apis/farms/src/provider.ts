@@ -4,11 +4,13 @@ import {
   arbitrum,
   bsc,
   bscTestnet,
+  degen,
   goerli,
   mainnet,
   opBNB,
   opBNBTestnet,
   polygonZkEvm,
+  pulsechain,
   zkSync,
   zkSyncTestnet,
 } from 'viem/chains'
@@ -23,6 +25,8 @@ const requireCheck = [
   ARBITRUM_ONE_NODE,
   LINEA_NODE,
   BASE_NODE,
+  PULSE_NODE,
+  DEGEN_NODE,
   OPBNB_NODE,
   OPBNB_TESTNET_NODE,
   NODE_REAL_SUBGRAPH_API_KEY,
@@ -243,6 +247,38 @@ const baseClient = createPublicClient({
   pollingInterval: 6_000,
 })
 
+const pulseClient = createPublicClient({
+  chain: pulsechain,
+  transport: http(PULSE_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 200,
+      wait: 16,
+    },
+  },
+  pollingInterval: 6_000,
+})
+
+const degenClient = createPublicClient({
+  chain: {
+    ...degen,
+    contracts: {
+      multicall3: {
+        address: '0x54337A58C93f306B1f47d2796bb8b500Ea859010',
+        blockCreated: 8074132,
+      },
+    },
+  },
+  transport: http(DEGEN_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 200,
+      wait: 16,
+    },
+  },
+  pollingInterval: 6_000,
+})
+
 const opBNBClient = createPublicClient({
   chain: opBNB,
   transport: http(OPBNB_NODE),
@@ -285,8 +321,12 @@ export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient 
       return arbitrumOneClient
     case ChainId.LINEA:
       return lineaClient
+    case ChainId.PULSECHAIN:
+      return pulseClient
     case ChainId.BASE:
       return baseClient
+    case ChainId.DEGENCHAIN:
+      return degenClient
     case ChainId.OPBNB:
       return opBNBClient
     case ChainId.OPBNB_TESTNET:

@@ -2,6 +2,8 @@ import { ChainId } from '@pancakeswap/chains'
 
 const pocketPrefix = {
   [ChainId.ARBITRUM_ONE]: 'arbitrum-one',
+  [ChainId.PULSECHAIN]: 'pulsechain-mainnet',
+  [ChainId.DEGENCHAIN]: 'degen-mainnet',
   [ChainId.BASE]: 'base-mainnet',
   [ChainId.BSC]: 'bsc-mainnet',
   [ChainId.ETHEREUM]: 'eth-mainnet',

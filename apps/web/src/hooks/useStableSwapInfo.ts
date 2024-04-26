@@ -2,14 +2,21 @@ import { Percent } from '@pancakeswap/sdk'
 
 import { lpTokenABI } from 'config/abi/lpTokenAbi'
 import { stableSwapABI } from 'config/abi/stableSwapAbi'
+import { useEffect } from 'react'
 import { Address } from 'viem'
-import { useReadContracts } from '@pancakeswap/wagmi'
+import { useBlockNumber, useReadContracts } from 'wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
 export function useStableSwapInfo(stableSwapAddress: Address | undefined, lpAddress: Address | undefined) {
   const { chainId } = useActiveChainId()
 
-  const { data: results, isLoading } = useReadContracts({
+  const { data: blockNumber } = useBlockNumber({ watch: true })
+
+  const {
+    data: results,
+    isLoading,
+    refetch,
+  } = useReadContracts({
     query: {
       enabled: Boolean(stableSwapAddress && lpAddress),
     },
@@ -53,8 +60,11 @@ export function useStableSwapInfo(stableSwapAddress: Address | undefined, lpAddr
         functionName: 'FEE_DENOMINATOR',
       },
     ],
-    watch: true,
   })
+
+  useEffect(() => {
+    refetch()
+  }, [blockNumber, refetch])
 
   const feeNumerator = results?.[4]?.result
   const feeDenominator = results?.[5]?.result

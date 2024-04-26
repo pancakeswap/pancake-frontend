@@ -10,6 +10,7 @@ import {
   baseSepolia,
   bscTestnet,
   bsc as bsc_,
+  degen,
   goerli,
   linea,
   lineaTestnet,
@@ -18,6 +19,7 @@ import {
   opBNBTestnet,
   polygonZkEvm,
   polygonZkEvmTestnet,
+  pulsechain,
   scrollSepolia,
   sepolia,
   zkSync,
@@ -67,6 +69,7 @@ export const L2_CHAIN_IDS: ChainId[] = [
   ChainId.LINEA_TESTNET,
   ChainId.LINEA,
   ChainId.BASE,
+  ChainId.DEGENCHAIN,
   ChainId.BASE_TESTNET,
   ChainId.OPBNB,
   ChainId.OPBNB_TESTNET,
@@ -76,6 +79,8 @@ export const L2_CHAIN_IDS: ChainId[] = [
 
 export const CHAINS = [
   bsc,
+  pulsechain,
+  degen,
   bscTestnet,
   mainnet,
   goerli,

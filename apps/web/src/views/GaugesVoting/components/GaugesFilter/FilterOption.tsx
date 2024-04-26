@@ -19,7 +19,9 @@ export const OPTIONS = {
       ChainId.POLYGON_ZKEVM,
       ChainId.ARBITRUM_ONE,
       ChainId.LINEA,
+      ChainId.PULSECHAIN,
       ChainId.BASE,
+      ChainId.DEGENCHAIN,
     ],
   },
   [OptionsType.ByFeeTier]: {

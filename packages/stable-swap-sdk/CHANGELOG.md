@@ -1,13 +1,5 @@
 # @pancakeswap/stable-swap-sdk
 
-## 1.0.5
-
-### Patch Changes
-
-- b4a1d82: Add wBETH mwBETH stable pair
-- Updated dependencies [b4a1d82]
-  - @pancakeswap/tokens@0.6.13
-
 ## 1.0.4
 
 ### Patch Changes

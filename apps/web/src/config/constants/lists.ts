@@ -9,6 +9,8 @@ const PANCAKE_POLYGON_ZKEVM_DEFAULT = 'https://tokens.pancakeswap.finance/pancak
 const PANCAKE_ARB_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-arbitrum-default.json'
 const PANCAKE_LINEA_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-linea-default.json'
 const PANCAKE_BASE_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-base-default.json'
+const PANCAKE_PULSE_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-pulse-default.json'
+const PANCAKE_DEGEN_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-degen-default.json'
 const PANCAKE_OPBNB_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-opbnb-default.json'
 
 export const PANCAKE_ETH_MM = 'https://tokens.pancakeswap.finance/pancakeswap-eth-mm.json'
@@ -25,7 +27,9 @@ const LINEA_URLS = [PANCAKE_LINEA_DEFAULT, 'https://tokens.coingecko.com/linea/a
 const ZKSYNC_URLS = [PANCAKE_ZKSYNC_DEFAULT, 'https://tokens.coingecko.com/zksync/all.json']
 const OP_SUPER_CHAIN_URL =
   'https://raw.githubusercontent.com/ethereum-optimism/ethereum-optimism.github.io/master/optimism.tokenlist.json'
-const BASE_URLS = [PANCAKE_BASE_DEFAULT, OP_SUPER_CHAIN_URL, 'https://tokens.coingecko.com/base/all.json']
+const BASE_URLS = [PANCAKE_BASE_DEFAULT]
+const PULSE_URLS = [PANCAKE_PULSE_DEFAULT]
+const DEGEN_URLS = [PANCAKE_DEGEN_DEFAULT]
 const OPBNB_URLS = [PANCAKE_OPBNB_DEFAULT]
 
 // List of official tokens list
@@ -47,6 +51,8 @@ export const DEFAULT_LIST_OF_LISTS: string[] = [
   ...UNSUPPORTED_LIST_URLS, // need to load unsupported tokens as well
   ...WARNING_LIST_URLS,
   ...OPBNB_URLS,
+  ...PULSE_URLS,
+  ...DEGEN_URLS,
 ]
 
 // default lists to be 'active' aka searched across
@@ -61,10 +67,10 @@ export const DEFAULT_ACTIVE_LIST_URLS: string[] = [
   PANCAKE_ARB_DEFAULT,
   PANCAKE_LINEA_DEFAULT,
   PANCAKE_BASE_DEFAULT,
+  PANCAKE_PULSE_DEFAULT,
+  PANCAKE_DEGEN_DEFAULT,
   PANCAKE_OPBNB_DEFAULT,
   OP_SUPER_CHAIN_URL,
-  COINGECKO,
-  COINGECKO_ETH,
 ]
 
 export const MULTI_CHAIN_LIST_URLS: { [chainId: number]: string[] } = {
@@ -74,6 +80,8 @@ export const MULTI_CHAIN_LIST_URLS: { [chainId: number]: string[] } = {
   [ChainId.POLYGON_ZKEVM]: POLYGON_ZKEVM_URLS,
   [ChainId.ARBITRUM_ONE]: ARBITRUM_URLS,
   [ChainId.LINEA]: LINEA_URLS,
+  [ChainId.PULSECHAIN]: PULSE_URLS,
   [ChainId.BASE]: BASE_URLS,
+  [ChainId.DEGENCHAIN]: DEGEN_URLS,
   [ChainId.OPBNB]: OPBNB_URLS,
 }

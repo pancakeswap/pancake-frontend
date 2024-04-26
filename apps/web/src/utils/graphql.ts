@@ -23,7 +23,9 @@ export const v3Clients = {
   [ChainId.ZKSYNC_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.ZKSYNC_TESTNET]),
   [ChainId.LINEA]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.LINEA]),
   [ChainId.LINEA_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.LINEA_TESTNET]),
+  [ChainId.PULSECHAIN]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.PULSECHAIN]),
   [ChainId.BASE]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BASE]),
+  [ChainId.DEGENCHAIN]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.DEGENCHAIN]),
   [ChainId.BASE_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BASE_TESTNET]),
   [ChainId.SCROLL_SEPOLIA]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.SCROLL_SEPOLIA]),
   [ChainId.OPBNB]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.OPBNB]),
@@ -39,7 +41,9 @@ export const v2Clients = {
   [ChainId.POLYGON_ZKEVM]: new GraphQLClient(V2_SUBGRAPH_URLS[ChainId.POLYGON_ZKEVM]),
   [ChainId.ZKSYNC]: new GraphQLClient(V2_SUBGRAPH_URLS[ChainId.ZKSYNC]),
   [ChainId.LINEA]: new GraphQLClient(V2_SUBGRAPH_URLS[ChainId.LINEA]),
+  [ChainId.PULSECHAIN]: new GraphQLClient(V2_SUBGRAPH_URLS[ChainId.PULSECHAIN]),
   [ChainId.BASE]: new GraphQLClient(V2_SUBGRAPH_URLS[ChainId.BASE]),
+  [ChainId.DEGENCHAIN]: new GraphQLClient(V2_SUBGRAPH_URLS[ChainId.DEGENCHAIN]),
   [ChainId.ARBITRUM_ONE]: new GraphQLClient(V2_SUBGRAPH_URLS[ChainId.ARBITRUM_ONE]),
   [ChainId.OPBNB]: new GraphQLClient(V2_SUBGRAPH_URLS[ChainId.OPBNB]),
 }
@@ -48,6 +52,10 @@ export const infoStableSwapClients = {
   [ChainId.BSC]: new GraphQLClient(STABLESWAP_SUBGRAPHS_URLS[ChainId.BSC]),
   [ChainId.ARBITRUM_ONE]: new GraphQLClient(STABLESWAP_SUBGRAPHS_URLS[ChainId.ARBITRUM_ONE]),
 }
+
+export const infoServerClient = new GraphQLClient(STABLESWAP_SUBGRAPHS_URLS[ChainId.BSC], {
+  timeout: 5000,
+})
 
 export const stableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPHS_URLS[ChainId.BSC])
 

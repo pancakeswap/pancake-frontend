@@ -19,5 +19,6 @@ export function getMulticallContract({ chainId, client }: Params) {
 }
 
 export function getMulticall3ContractAddress(chainId?: ChainId): Address {
+  console.log('MULTICALL3_ADDRESSES', MULTICALL3_ADDRESSES[chainId || ChainId.BSC])
   return MULTICALL3_ADDRESSES[chainId || ChainId.BSC] || MULTICALL3_ADDRESS
 }

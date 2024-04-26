@@ -2,9 +2,9 @@
 import { ChainId } from '@pancakeswap/chains'
 import { multicallByGasLimit } from '@pancakeswap/multicall'
 import { BigintIsh } from '@pancakeswap/sdk'
+import { AbortControl } from '@pancakeswap/utils/abortControl'
 import stats from 'stats-lite'
 import { PublicClient, decodeFunctionResult, encodeFunctionData } from 'viem'
-import { AbortControl } from '@pancakeswap/utils/abortControl'
 
 import IMulticallABI from '../../abis/InterfaceMulticall'
 import {
@@ -114,10 +114,10 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       }
     }
 
-    // console.log(
-    //   { results },
-    //   `Results for multicall on ${functionName} across ${addresses.length} addresses as of block ${blockNumber}`,
-    // )
+    console.log(
+      { results },
+      `Results for multicall on ${functionName} across ${addresses.length} addresses as of block ${blockNumber}`,
+    )
     return {
       blockNumber,
       results,

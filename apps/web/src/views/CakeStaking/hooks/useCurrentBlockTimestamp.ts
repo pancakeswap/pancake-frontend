@@ -1,9 +1,19 @@
+import { publicClient } from 'utils/wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 
-import { useCurrentBlockTimestamp as useBlockTimestamp } from 'state/block/hooks'
-
 export const useCurrentBlockTimestamp = () => {
-  const timestamp = useBlockTimestamp()
+  const { chainId } = useActiveChainId()
 
-  return timestamp ?? dayjs().unix()
+  const { data } = useQuery({
+    queryKey: ['/gauges/currentBlockTimestamp', chainId],
+
+    queryFn: async () => {
+      const block = await publicClient({ chainId }).getBlock({ blockTag: 'latest' })
+      return Number(block.timestamp)
+    },
+  })
+
+  return data ?? dayjs().unix()
 }

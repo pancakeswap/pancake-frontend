@@ -9,7 +9,9 @@ export const BLOCK_CONFLICT_TOLERANCE: { [key in ChainId]?: number } = {
   [ChainId.POLYGON_ZKEVM]: 1,
   [ChainId.ZKSYNC]: 3,
   [ChainId.LINEA]: 3,
+  [ChainId.PULSECHAIN]: 3,
   [ChainId.BASE]: 3,
+  [ChainId.DEGENCHAIN]: 3,
   [ChainId.OPBNB]: 3,
 
   // Testnets

@@ -10,6 +10,7 @@ import {
   baseSepolia,
   bscTestnet,
   bsc as bsc_,
+  degen as degen_,
   goerli,
   linea,
   lineaTestnet,
@@ -18,6 +19,7 @@ import {
   opBNBTestnet,
   polygonZkEvm,
   polygonZkEvmTestnet,
+  pulsechain,
   scrollSepolia,
   sepolia,
   zkSync,
@@ -39,6 +41,7 @@ export const getChainId = memoize((chainName: string) => {
 
 const bsc = {
   ...bsc_,
+
   rpcUrls: {
     ...bsc_.rpcUrls,
     public: {
@@ -48,6 +51,17 @@ const bsc = {
     default: {
       ...bsc_.rpcUrls.default,
       http: ['https://bsc-dataseed.binance.org/'],
+    },
+  },
+} satisfies Chain
+
+const degen = {
+  ...degen_,
+
+  contracts: {
+    multicall3: {
+      address: '0x54337A58C93f306B1f47d2796bb8b500Ea859010',
+      blockCreated: 8074132,
     },
   },
 } satisfies Chain
@@ -65,8 +79,9 @@ export const L2_CHAIN_IDS: ChainId[] = [
   ChainId.ZKSYNC_TESTNET,
   ChainId.LINEA_TESTNET,
   ChainId.LINEA,
-  ChainId.BASE,
   ChainId.BASE_TESTNET,
+  ChainId.BASE,
+  ChainId.DEGENCHAIN,
   ChainId.OPBNB,
   ChainId.OPBNB_TESTNET,
   ChainId.ARBITRUM_SEPOLIA,
@@ -75,6 +90,9 @@ export const L2_CHAIN_IDS: ChainId[] = [
 
 export const CHAINS: [Chain, ...Chain[]] = [
   bsc,
+  pulsechain,
+  degen,
+  base,
   bscTestnet,
   mainnet,
   goerli,
@@ -87,7 +105,6 @@ export const CHAINS: [Chain, ...Chain[]] = [
   arbitrumSepolia,
   linea,
   lineaTestnet,
-  base,
   baseGoerli,
   baseSepolia,
   opBNB,

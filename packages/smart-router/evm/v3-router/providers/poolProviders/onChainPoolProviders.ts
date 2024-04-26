@@ -195,7 +195,7 @@ function createOnChainPoolFactory<
   return async function poolFactory(
     pairs: [Currency, Currency][],
     provider?: OnChainProvider,
-    _blockNumber?: BigintIsh,
+    blockNumber?: BigintIsh,
   ): Promise<TPool[]> {
     if (!provider) {
       throw new Error('No valid onchain data provider')
@@ -203,6 +203,11 @@ function createOnChainPoolFactory<
 
     const chainId: ChainId = pairs[0]?.[0]?.chainId
     const client = provider({ chainId })
+
+    // if(client?.chain?.id ===666666666)
+
+    console.log('clientclientclient', client)
+
     if (!chainId || !client) {
       return []
     }
@@ -245,6 +250,7 @@ function createOnChainPoolFactory<
         args: call.args as any,
       })),
       allowFailure: true,
+      blockNumber: blockNumber ? BigInt(Number(BigInt(blockNumber))) : undefined,
     })
 
     const pools: TPool[] = []

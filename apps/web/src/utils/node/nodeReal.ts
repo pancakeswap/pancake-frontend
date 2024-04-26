@@ -39,6 +39,17 @@ export const getNodeRealUrl = (chainId: number, key?: string) => {
         host = `open-platform.nodereal.io/${key}/base`
       }
       break
+
+    case ChainId.PULSECHAIN:
+      if (key) {
+        host = `open-platform.nodereal.io/${key}/pulsechain`
+      }
+      break
+    case ChainId.DEGENCHAIN:
+      if (key) {
+        host = `open-platform.nodereal.io/${key}/degenchain`
+      }
+      break
     case ChainId.ZKSYNC:
       if (key) {
         host = `open-platform.nodereal.io/${key}/zksync`

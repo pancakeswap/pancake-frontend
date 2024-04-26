@@ -2,6 +2,9 @@ import { ChainId } from '@pancakeswap/chains'
 
 export const SUPPORTED_CHAIN_IDS = [
   ChainId.BSC,
+  ChainId.PULSECHAIN,
+  ChainId.BASE,
+  ChainId.DEGENCHAIN,
   ChainId.BSC_TESTNET,
   ChainId.ETHEREUM,
   ChainId.ARBITRUM_ONE,
@@ -16,6 +19,11 @@ export const SUPPORTED_CHAIN_IDS = [
 
 export type SupportedChainId = (typeof SUPPORTED_CHAIN_IDS)[number]
 
-export const CAKE_VAULT_SUPPORTED_CHAINS = [ChainId.BSC, ChainId.BSC_TESTNET] as const
+export const CAKE_VAULT_SUPPORTED_CHAINS = [
+  ChainId.BSC,
+  ChainId.PULSECHAIN,
+  ChainId.DEGENCHAIN,
+  ChainId.BSC_TESTNET,
+] as const
 
 export type CakeVaultSupportedChainId = (typeof CAKE_VAULT_SUPPORTED_CHAINS)[number]

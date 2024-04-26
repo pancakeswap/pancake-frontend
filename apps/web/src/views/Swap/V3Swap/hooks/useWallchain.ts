@@ -133,7 +133,7 @@ export function useWallchainApi(
   const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const allowedSlippage = useMemo(() => basisPointsToPercent(allowedSlippageRaw), [allowedSlippageRaw])
   const [lastUpdate, setLastUpdate] = useState(0)
-  const useUniversalRouter = true
+  const useUniversalRouter = false
 
   const sdk = useWallchainSDK()
 

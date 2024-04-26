@@ -6,6 +6,7 @@ import { farmsV3 as arbFarms } from '../arb'
 import { farmsV3 as baseFarms } from '../base'
 import { farmsV3 as bscFarms } from '../bsc'
 import { farmsV3 as bscTestnetFarms } from '../bscTestnet'
+import { farmsV3 as degenFarms } from '../degenchain'
 import { farmsV3 as ethFarms } from '../eth'
 import { farmsV3 as goerliFarms } from '../goerli'
 import { farmsV3 as lineaFarms } from '../linea'
@@ -13,6 +14,7 @@ import { farmsV3 as opBNBFarms } from '../opBNB'
 import { farmsV3 as opBnbTestnetFarms } from '../opBnbTestnet'
 import { farmsV3 as polygonZkEVMFarms } from '../polygonZkEVM'
 import { farmsV3 as polygonZkEVMTestnetFarms } from '../polygonZkEVMTestnet'
+import { farmsV3 as pulseFarms } from '../pulsechain'
 import { farmsV3 as zkSyncFarms } from '../zkSync'
 import { farmsV3 as zkSyncTestnetFarms } from '../zkSyncTestnet'
 
@@ -27,7 +29,9 @@ export const farmsV3ConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmC
   [ChainId.ZKSYNC]: zkSyncFarms,
   [ChainId.ARBITRUM_ONE]: arbFarms,
   [ChainId.LINEA]: lineaFarms,
+  [ChainId.PULSECHAIN]: pulseFarms,
   [ChainId.BASE]: baseFarms,
+  [ChainId.DEGENCHAIN]: degenFarms,
   [ChainId.OPBNB_TESTNET]: opBnbTestnetFarms,
   [ChainId.OPBNB]: opBNBFarms,
 }

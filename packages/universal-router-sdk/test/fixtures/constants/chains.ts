@@ -1,20 +1,22 @@
 import { ChainId } from '@pancakeswap/chains'
 import {
-  bsc,
-  bscTestnet,
-  goerli,
-  mainnet,
-  zkSync,
-  zkSyncTestnet,
-  polygonZkEvmTestnet,
-  polygonZkEvm,
-  lineaTestnet,
+  Chain,
+  degen as _degen,
   arbitrum,
   arbitrumGoerli,
   base,
   baseGoerli,
+  bsc,
+  bscTestnet,
+  goerli,
+  lineaTestnet,
+  mainnet,
+  polygonZkEvm,
+  polygonZkEvmTestnet,
+  pulsechain,
   scrollSepolia as scrollSepolia_,
-  Chain,
+  zkSync,
+  zkSyncTestnet,
 } from 'viem/chains'
 
 const scrollSepolia = {
@@ -23,6 +25,16 @@ const scrollSepolia = {
     multicall3: {
       address: '0xcA11bde05977b3631167028862bE2a173976CA11',
       blockCreated: 9473,
+    },
+  },
+} as const satisfies Chain
+
+const degen = {
+  ..._degen,
+  contracts: {
+    multicall3: {
+      address: '0x54337A58C93f306B1f47d2796bb8b500Ea859010',
+      blockCreated: 8074132,
     },
   },
 } as const satisfies Chain
@@ -107,6 +119,7 @@ export const L2_CHAIN_IDS: ChainId[] = [
   ChainId.LINEA_TESTNET,
   ChainId.LINEA,
   ChainId.BASE,
+  ChainId.DEGENCHAIN,
   ChainId.BASE_TESTNET,
   ChainId.OPBNB_TESTNET,
 ]
@@ -126,7 +139,9 @@ export const CHAINS = [
   lineaTestnet,
   arbitrumGoerli,
   arbitrum,
+  pulsechain,
   base,
+  degen,
   baseGoerli,
   opbnbTestnet,
   scrollSepolia,

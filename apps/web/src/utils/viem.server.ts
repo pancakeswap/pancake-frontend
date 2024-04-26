@@ -21,6 +21,7 @@ export const viemServerClients = CHAINS.reduce((prev, cur) => {
           wait: 16,
         },
       },
+
       pollingInterval: 6_000,
     }),
   }

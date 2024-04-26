@@ -135,7 +135,7 @@ const newsItems = [
     iconWidth: '18px',
   },
   {
-    key: 'Base',
+    key: 'Pulsechain',
     component: (
       <StyledChainIcon>
         <BaseIcon />

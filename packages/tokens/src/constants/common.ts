@@ -204,6 +204,23 @@ export const CAKE = {
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
+  [ChainId.PULSECHAIN]: new ERC20Token(
+    ChainId.PULSECHAIN,
+    '0x3C3C2BE92AdEa76F7481540256CB7df1803c7074',
+    18,
+    'BetterX',
+    'BetterX Token',
+    'https://betterX.pro/',
+  ),
+
+  [ChainId.DEGENCHAIN]: new ERC20Token(
+    ChainId.DEGENCHAIN,
+    '0x78F19f5eC7A18F4106b9ec79A1afcBD399773E7E',
+    18,
+    'BetterX',
+    'BetterX Token',
+    'https://betterX.pro/',
+  ),
   [ChainId.BASE_TESTNET]: new ERC20Token(
     ChainId.BASE_TESTNET,
     '0x052a99849Ef2e13a5CB28275862991671D4b6fF5',
@@ -240,6 +257,7 @@ export const CAKE = {
 
 export const USDC = {
   [ChainId.BSC]: USDC_BSC,
+  [ChainId.BASE]: new ERC20Token(ChainId.BASE, '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', 6, 'USDC', 'USD Coin'),
   [ChainId.BSC_TESTNET]: USDC_TESTNET,
   [ChainId.ETHEREUM]: USDC_ETH,
   [ChainId.GOERLI]: USDC_GOERLI,
@@ -287,7 +305,13 @@ export const USDC = {
     'USDC',
     'USD Coin',
   ),
-  [ChainId.BASE]: new ERC20Token(ChainId.BASE, '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', 6, 'USDC', 'USD Coin'),
+  [ChainId.PULSECHAIN]: new ERC20Token(
+    ChainId.PULSECHAIN,
+    '0x15D38573d2feeb82e7ad5187aB8c1D52810B1f07',
+    6,
+    'USDC',
+    'USD Coin',
+  ),
   [ChainId.OPBNB_TESTNET]: new ERC20Token(
     ChainId.OPBNB_TESTNET,
     '0x845E27B8A4ad1Fe3dc0b41b900dC8C1Bb45141C3',
@@ -335,6 +359,13 @@ export const USDT = {
     'USDT',
     'Tether USD',
   ),
+  [ChainId.DEGENCHAIN]: new ERC20Token(
+    ChainId.DEGENCHAIN,
+    '0x8ACeb2687B59F97Da274FE9135C3fAda0751ecb2',
+    6,
+    'USDT',
+    'Tether USD',
+  ),
   [ChainId.POLYGON_ZKEVM]: new ERC20Token(
     ChainId.POLYGON_ZKEVM,
     '0x1E4a5963aBFD975d8c9021ce480b42188849D41d',
@@ -370,6 +401,13 @@ export const USDT = {
     'USDT',
     'Tether USD',
   ),
+  [ChainId.PULSECHAIN]: new ERC20Token(
+    ChainId.PULSECHAIN,
+    '0x0Cb6F5a34ad42ec934882A05265A7d5F59b51A2f',
+    18,
+    'USDT',
+    'Tether USD',
+  ),
   [ChainId.LINEA]: new ERC20Token(ChainId.LINEA, '0xA219439258ca9da29E9Cc4cE5596924745e12B93', 6, 'USDT', 'Tether USD'),
 }
 
@@ -396,7 +434,9 @@ export const STABLE_COIN = {
   [ChainId.LINEA_TESTNET]: USDC[ChainId.LINEA_TESTNET],
   [ChainId.OPBNB]: USDT[ChainId.OPBNB],
   [ChainId.OPBNB_TESTNET]: USDT[ChainId.OPBNB_TESTNET],
+  [ChainId.PULSECHAIN]: USDC[ChainId.PULSECHAIN],
   [ChainId.BASE]: USDC[ChainId.BASE],
+  [ChainId.DEGENCHAIN]: USDT[ChainId.DEGENCHAIN],
   [ChainId.BASE_TESTNET]: USDC[ChainId.BASE_TESTNET],
   [ChainId.SCROLL_SEPOLIA]: USDC[ChainId.SCROLL_SEPOLIA],
   [ChainId.SEPOLIA]: USDC[ChainId.SEPOLIA],

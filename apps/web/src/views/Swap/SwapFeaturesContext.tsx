@@ -27,11 +27,13 @@ export const SwapFeaturesContext = createContext<{
 
 const CHART_SUPPORT_CHAIN_IDS = [
   ChainId.BSC,
+  ChainId.PULSECHAIN,
+  ChainId.DEGENCHAIN,
   ChainId.BSC_TESTNET,
   // ChainId.ETHEREUM
 ]
 const STABLE_SUPPORT_CHAIN_IDS = [ChainId.BSC_TESTNET, ChainId.BSC]
-const HOT_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC, ChainId.ETHEREUM]
+const HOT_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC, ChainId.ETHEREUM, ChainId.PULSECHAIN, ChainId.DEGENCHAIN]
 
 export const SwapFeaturesProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { isMobile } = useMatchBreakpoints()

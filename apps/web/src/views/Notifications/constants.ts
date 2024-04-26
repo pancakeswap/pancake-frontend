@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
-import { OptionProps } from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
+import { OptionProps } from '@pancakeswap/uikit'
 import {
   EventInformation,
   PancakeNotificationBuilders,
@@ -110,6 +110,8 @@ export const CHAIN_NAME_TO_CHAIN_ID = {
   era: ChainId.ZKSYNC,
   arbitrum: ChainId.ARBITRUM_ONE,
   linea: ChainId.LINEA,
+  pulsechain: ChainId.PULSECHAIN,
+  degenchain: ChainId.DEGENCHAIN,
   base: ChainId.BASE,
 }
 

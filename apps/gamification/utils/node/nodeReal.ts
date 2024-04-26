@@ -34,7 +34,17 @@ export const getNodeRealUrl = (chainId: number, key?: string) => {
         host = `open-platform.nodereal.io/${key}/arbitrum-nitro`
       }
       break
+    case ChainId.PULSECHAIN:
+      if (key) {
+        host = `open-platform.nodereal.io/${key}/base`
+      }
+      break
     case ChainId.BASE:
+      if (key) {
+        host = `open-platform.nodereal.io/${key}/base`
+      }
+      break
+    case ChainId.DEGENCHAIN:
       if (key) {
         host = `open-platform.nodereal.io/${key}/base`
       }

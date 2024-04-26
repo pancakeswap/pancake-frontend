@@ -58,20 +58,6 @@ const v3TopFixedFarms: FarmConfigV3[] = [
 export const farmsV3 = defineFarmV3Configs([
   ...v3TopFixedFarms,
   {
-    pid: 22,
-    lpAddress: '0x9Bc342259cCEdA0487E70b71A3161F002a95F0e8',
-    token0: polygonZkEvmTokens.usdc,
-    token1: polygonZkEvmTokens.dai,
-    feeAmount: FeeAmount.LOWEST,
-  },
-  {
-    pid: 21,
-    lpAddress: '0x337AF062CE32bB423010415196E315c4154D36C3',
-    token0: polygonZkEvmTokens.usdt,
-    token1: polygonZkEvmTokens.weth,
-    feeAmount: FeeAmount.LOWEST,
-  },
-  {
     pid: 20,
     lpAddress: '0x160f3d3af6A2ECe5274AfD0925137e0387BAA5F2',
     token0: polygonZkEvmTokens.usdce,

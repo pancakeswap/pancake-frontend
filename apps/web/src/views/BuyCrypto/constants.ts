@@ -1,6 +1,6 @@
 import { Native } from '@pancakeswap/sdk'
 import { Currency } from '@pancakeswap/swap-sdk-core'
-import { arbitrumTokens, baseTokens, bscTokens, ethereumTokens, lineaTokens } from '@pancakeswap/tokens'
+import { arbitrumTokens, baseTokens, bscTokens, ethereumTokens, lineaTokens, pulseTokens } from '@pancakeswap/tokens'
 import { NativeBtc } from './utils/NativeBtc'
 
 export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB', 'WBTC']
@@ -23,7 +23,9 @@ export enum OnRampChainId {
   SCROLL_SEPOLIA = 534351,
   LINEA = 59144,
   LINEA_TESTNET = 59140,
+  PULSECHAIN = 369,
   BASE = 8453,
+  DEGENCHAIN = 666666666,
   BASE_TESTNET = 84531,
   BASE_SEPOLIA = 84532,
   SEPOLIA = 11155111,
@@ -70,8 +72,12 @@ export const getNetworkDisplay = (chainId: number | undefined): string => {
       return 'zkEvm'
     case OnRampChainId.LINEA:
       return 'linea'
+    case OnRampChainId.PULSECHAIN:
+      return 'pulsechain'
     case OnRampChainId.BASE:
       return 'base'
+    case OnRampChainId.DEGENCHAIN:
+      return 'degenchain'
     case OnRampChainId.BTC:
       return 'bitcoin'
     default:
@@ -93,8 +99,12 @@ export const getNetworkFullName = (chainId: number | undefined): string => {
       return 'Polygon ZkEvm'
     case OnRampChainId.LINEA:
       return 'Linea Mainnet'
+    case OnRampChainId.PULSECHAIN:
+      return 'PulseChain'
     case OnRampChainId.BASE:
-      return 'Base Mainnet'
+      return 'Base'
+    case OnRampChainId.DEGENCHAIN:
+      return 'DegenChain'
     case OnRampChainId.BTC:
       return 'Bitcoin Network'
     default:
@@ -109,7 +119,9 @@ export const chainIdToMercuryoNetworkId: { [id: number]: string } = {
   [OnRampChainId.ZKSYNC]: 'ZKSYNC',
   [OnRampChainId.POLYGON_ZKEVM]: 'ZKEVM',
   [OnRampChainId.LINEA]: 'LINEA',
+  [OnRampChainId.PULSECHAIN]: 'PULSECHAIN',
   [OnRampChainId.BASE]: 'BASE',
+  [OnRampChainId.DEGENCHAIN]: 'DEGENCHAIN',
   [OnRampChainId.BTC]: 'BITCOIN',
 }
 
@@ -120,7 +132,9 @@ export const chainIdToMoonPayNetworkId: { [id: number]: string } = {
   [OnRampChainId.ZKSYNC]: '_zksync',
   [OnRampChainId.POLYGON_ZKEVM]: '_polygonzkevm',
   [OnRampChainId.LINEA]: '_linea',
+  [OnRampChainId.PULSECHAIN]: '_pulsechain',
   [OnRampChainId.BASE]: '_base',
+  [OnRampChainId.DEGENCHAIN]: '_degenchain',
   [OnRampChainId.BTC]: '',
 }
 
@@ -131,7 +145,9 @@ export const chainIdToTransakNetworkId: { [id: number]: string } = {
   [OnRampChainId.ZKSYNC]: 'zksync',
   [OnRampChainId.POLYGON_ZKEVM]: 'polygonzkevm',
   [OnRampChainId.LINEA]: 'linea',
+  [OnRampChainId.PULSECHAIN]: 'pulsechain',
   [OnRampChainId.BASE]: 'base',
+  [OnRampChainId.DEGENCHAIN]: 'degenchain',
   [OnRampChainId.BTC]: 'mainnet',
 }
 
@@ -216,7 +232,7 @@ export const onRampCurrencies: OnRampCurrency[] = [
   Native.onChain(OnRampChainId.POLYGON_ZKEVM),
   Native.onChain(OnRampChainId.ZKSYNC),
   Native.onChain(OnRampChainId.LINEA),
-  Native.onChain(OnRampChainId.BASE),
+  Native.onChain(OnRampChainId.PULSECHAIN),
   ethereumTokens.usdt,
   bscTokens.usdt,
   bscTokens.usdc,
@@ -224,6 +240,7 @@ export const onRampCurrencies: OnRampCurrency[] = [
   arbitrumTokens.usdc,
   lineaTokens.usdc,
   baseTokens.usdc,
+  pulseTokens.usdc,
   ethereumTokens.dai,
   ethereumTokens.wbtc,
   // arbitrumTokens.usdce,
@@ -237,7 +254,9 @@ export const onRampCurrenciesMap: { [tokenSymbol: string]: Currency } = {
   ETH_1101: Native.onChain(OnRampChainId.POLYGON_ZKEVM),
   ETH_324: Native.onChain(OnRampChainId.ZKSYNC),
   ETH_59144: Native.onChain(OnRampChainId.LINEA),
+  ETH_369: Native.onChain(OnRampChainId.PULSECHAIN),
   ETH_8453: Native.onChain(OnRampChainId.BASE),
+  ETH_666666666: Native.onChain(OnRampChainId.DEGENCHAIN),
   // Add more entries for other currencies as needed
   USDT_1: ethereumTokens.usdt,
   USDT_56: bscTokens.usdt,
@@ -246,6 +265,7 @@ export const onRampCurrenciesMap: { [tokenSymbol: string]: Currency } = {
   USDC_42161: arbitrumTokens.usdc,
   USDC_59144: lineaTokens.usdc,
   USDC_8453: baseTokens.usdc,
+  USDC_369: pulseTokens.usdc,
   DAI_1: ethereumTokens.dai,
   WBTC_1: ethereumTokens.wbtc,
   // 'USDC.e_42161': arbitrumTokens.usdce,

@@ -57,7 +57,21 @@ export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
   [ChainId.ZKSYNC_TESTNET]: DEFAULT,
   [ChainId.LINEA]: DEFAULT,
   [ChainId.LINEA_TESTNET]: DEFAULT,
+  [ChainId.PULSECHAIN]: {
+    ...DEFAULT,
+    defaultConfig: {
+      ...DEFAULT.defaultConfig,
+      dropUnexecutedCalls: true,
+    },
+  },
   [ChainId.BASE]: {
+    ...DEFAULT,
+    defaultConfig: {
+      ...DEFAULT.defaultConfig,
+      dropUnexecutedCalls: true,
+    },
+  },
+  [ChainId.DEGENCHAIN]: {
     ...DEFAULT,
     defaultConfig: {
       ...DEFAULT.defaultConfig,

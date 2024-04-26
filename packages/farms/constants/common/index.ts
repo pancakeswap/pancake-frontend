@@ -5,11 +5,13 @@ import {
   baseTokens,
   bscTestnetTokens,
   bscTokens,
+  degenTokens,
   ethereumTokens,
   goerliTestnetTokens,
   lineaTokens,
   opBnbTokens,
   polygonZkEvmTokens,
+  pulseTokens,
   zkSyncTestnetTokens,
   zksyncTokens,
 } from '@pancakeswap/tokens'
@@ -48,9 +50,17 @@ export const priceHelperTokens = {
     chain: 'linea',
     list: [lineaTokens.weth, lineaTokens.usdc, lineaTokens.usdt, lineaTokens.wbtc, lineaTokens.dai],
   },
+  [ChainId.PULSECHAIN]: {
+    chain: 'pulsechain',
+    list: [pulseTokens.weth, pulseTokens.usdbc, pulseTokens.dai, pulseTokens.cbETH, pulseTokens.usdc],
+  },
   [ChainId.BASE]: {
     chain: 'base',
     list: [baseTokens.weth, baseTokens.usdbc, baseTokens.dai, baseTokens.cbETH, baseTokens.usdc],
+  },
+  [ChainId.DEGENCHAIN]: {
+    chain: 'degenchain',
+    list: [degenTokens.weth],
   },
   [ChainId.OPBNB]: {
     chain: 'opbnb',
@@ -79,7 +89,9 @@ export const DEFAULT_COMMON_PRICE: Record<FarmV3SupportedChainId, CommonPrice> =
   [ChainId.POLYGON_ZKEVM_TESTNET]: {},
   [ChainId.ARBITRUM_ONE]: {},
   [ChainId.LINEA]: {},
+  [ChainId.PULSECHAIN]: {},
   [ChainId.BASE]: {},
+  [ChainId.DEGENCHAIN]: {},
   [ChainId.OPBNB_TESTNET]: {},
   [ChainId.OPBNB]: {},
 }

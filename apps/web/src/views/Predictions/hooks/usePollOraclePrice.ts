@@ -1,9 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Address } from 'viem'
-import { useReadContract } from '@pancakeswap/wagmi'
+import { useBlockNumber, useReadContract } from 'wagmi'
 import { useGaletoOraclePrice } from './useGaletoOraclePrice'
 
 interface UsePollOraclePriceProps {
@@ -13,6 +13,7 @@ interface UsePollOraclePriceProps {
 
 const usePollOraclePrice = ({ chainlinkOracleAddress, galetoOracleAddress }: UsePollOraclePriceProps) => {
   const { chainId } = useActiveChainId()
+  const { data: blockNumber } = useBlockNumber({ watch: true })
 
   const shouldFetchGaletoPrice = useMemo(
     () => Boolean(galetoOracleAddress && chainId === ChainId.ZKSYNC),
@@ -27,8 +28,13 @@ const usePollOraclePrice = ({ chainlinkOracleAddress, galetoOracleAddress }: Use
     query: {
       enabled: !shouldFetchGaletoPrice,
     },
-    watch: !shouldFetchGaletoPrice,
   })
+
+  useEffect(() => {
+    if (!shouldFetchGaletoPrice) {
+      refetchChainlinkOraclePrice()
+    }
+  }, [blockNumber, refetchChainlinkOraclePrice, shouldFetchGaletoPrice])
 
   const { galetoOraclePrice, refetchGaletoOraclePrice } = useGaletoOraclePrice({
     address: galetoOracleAddress,

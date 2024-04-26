@@ -94,7 +94,7 @@ const Stats = () => {
           description={t('in the last 30 days')}
         />
         <MetricsCard title={t('Total Trades:')} value={txCount} description={t('in the last 30 days')} />
-        <MetricsCard title={t('Total Value Locked:')} value={tvl} description="" prefix="$" />
+        <MetricsCard title={t('Total Value Locked:')} value={tvl} description={t('in the last 30 days')} prefix="$" />
       </Flex>
       <ChainTags />
       <ImageLayer>

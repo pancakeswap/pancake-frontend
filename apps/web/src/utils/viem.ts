@@ -12,6 +12,7 @@ export type CreatePublicClientParams = {
 
 export function createViemPublicClients({ transportSignal }: CreatePublicClientParams = {}) {
   return CHAINS.reduce((prev, cur) => {
+    // console.log("PUBLIC_NODES[cur.id]",PUBLIC_NODES[cur.id],cur.id);
     return {
       ...prev,
       [cur.id]: createPublicClient({

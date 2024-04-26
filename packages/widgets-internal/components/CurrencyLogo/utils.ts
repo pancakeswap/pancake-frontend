@@ -10,6 +10,8 @@ const mapping: { [key: number]: string } = {
   [ChainId.POLYGON_ZKEVM]: "polygonzkevm",
   [ChainId.ARBITRUM_ONE]: "arbitrum",
   [ChainId.ZKSYNC]: "zksync",
+  [ChainId.PULSECHAIN]: "pulsechain",
+  [ChainId.DEGENCHAIN]: "degenchain",
   [ChainId.BASE]: "base",
   [ChainId.LINEA]: "linea",
   [ChainId.OPBNB]: "opbnb",
@@ -46,7 +48,9 @@ const chainName: { [key: number]: string } = {
   [ChainId.ARBITRUM_ONE]: "arbitrum",
   [ChainId.ZKSYNC]: "zksync",
   [ChainId.LINEA]: "linea",
+  [ChainId.PULSECHAIN]: "pulse",
   [ChainId.BASE]: "base",
+  [ChainId.DEGENCHAIN]: "degen",
   [ChainId.OPBNB]: "opbnb",
 };
 

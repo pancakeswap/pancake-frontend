@@ -5,14 +5,14 @@ import { ChartEntry } from 'state/info/types'
 import { MultiChainName, getMultiChainQueryEndPointWithStableSwap, multiChainStartTime } from '../../constant'
 import { useGetChainName } from '../../hooks'
 import { fetchChartData, mapDayData } from '../helpers'
-import { PancakeDayDatasResponse } from '../types'
+import { BetterXDayDatasResponse } from '../types'
 
 /**
  * Data for displaying Liquidity and Volume charts on Overview page
  */
-const PANCAKE_DAY_DATAS = gql`
+const BETTERX_DAY_DATAS = gql`
   query overviewCharts($startTime: Int!, $skip: Int!) {
-    pancakeDayDatas(first: 1000, skip: $skip, where: { date_gt: $startTime }, orderBy: date, orderDirection: asc) {
+    betterXDayDatas(first: 1000, skip: $skip, where: { date_gt: $startTime }, orderBy: date, orderDirection: asc) {
       date
       dailyVolumeUSD
       totalLiquidityUSD
@@ -25,13 +25,13 @@ const getOverviewChartData = async (
   skip: number,
 ): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   try {
-    const { pancakeDayDatas } = await getMultiChainQueryEndPointWithStableSwap(
+    const { betterXDayDatas } = await getMultiChainQueryEndPointWithStableSwap(
       chainName,
-    ).request<PancakeDayDatasResponse>(PANCAKE_DAY_DATAS, {
+    ).request<BetterXDayDatasResponse>(BETTERX_DAY_DATAS, {
       startTime: multiChainStartTime[chainName],
       skip,
     })
-    const data = pancakeDayDatas.map(mapDayData)
+    const data = betterXDayDatas.map(mapDayData)
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch overview chart data', error)

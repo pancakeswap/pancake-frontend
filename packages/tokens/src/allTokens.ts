@@ -8,6 +8,7 @@ import { baseSepoliaTokens } from './constants/baseSepolia'
 import { baseTestnetTokens } from './constants/baseTestnet'
 import { bscTokens } from './constants/bsc'
 import { bscTestnetTokens } from './constants/bscTestnet'
+import { degenTokens } from './constants/degenchain'
 import { ethereumTokens } from './constants/eth'
 import { goerliTestnetTokens } from './constants/goerli'
 import { lineaTokens } from './constants/linea'
@@ -16,6 +17,7 @@ import { opBnbTokens } from './constants/opBNB'
 import { opBnbTestnetTokens } from './constants/opBnbTestnet'
 import { polygonZkEvmTokens } from './constants/polygonZkEVM'
 import { polygonZkEvmTestnetTokens } from './constants/polygonZkEVMTestnet'
+import { pulseTokens } from './constants/pulsechain'
 import { scrollSepoliaTokens } from './constants/scrollSepolia'
 import { sepoliaTokens } from './constants/sepolia'
 import { zksyncTokens } from './constants/zkSync'
@@ -36,7 +38,9 @@ export const allTokens = {
   [ChainId.ARBITRUM_GOERLI]: arbitrumGoerliTokens,
   [ChainId.OPBNB]: opBnbTokens,
   [ChainId.OPBNB_TESTNET]: opBnbTestnetTokens,
+  [ChainId.PULSECHAIN]: pulseTokens,
   [ChainId.BASE]: baseTokens,
+  [ChainId.DEGENCHAIN]: degenTokens,
   [ChainId.BASE_TESTNET]: baseTestnetTokens,
   [ChainId.SCROLL_SEPOLIA]: scrollSepoliaTokens,
   [ChainId.SEPOLIA]: sepoliaTokens,

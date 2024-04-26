@@ -14,7 +14,20 @@ const TokenWrapper = styled.div`
   }
 `
 
-const { V3Tag, V3FeeTag, EthTag, BscTag, ZkEVMTag, ZkSyncTag, ArbTag, BaseTag, LineaTag, OpBnbTag } = FarmWidget.Tags
+const {
+  V3Tag,
+  V3FeeTag,
+  EthTag,
+  BscTag,
+  ZkEVMTag,
+  ZkSyncTag,
+  ArbTag,
+  BaseTag,
+  PulseTag,
+  DegenTag,
+  LineaTag,
+  OpBnbTag,
+} = FarmWidget.Tags
 
 interface PairInfoProps {
   isReady: boolean
@@ -77,7 +90,9 @@ const PairInfo: React.FunctionComponent<React.PropsWithChildren<PairInfoProps>> 
               {chainId === ChainId.ZKSYNC && <ZkSyncTag />}
               {chainId === ChainId.ARBITRUM_ONE && <ArbTag />}
               {chainId === ChainId.LINEA && <LineaTag />}
+              {chainId === ChainId.PULSECHAIN && <PulseTag />}
               {chainId === ChainId.BASE && <BaseTag />}
+              {chainId === ChainId.DEGENCHAIN && <DegenTag />}
               {chainId === ChainId.OPBNB && <OpBnbTag />}
             </Flex>
           </Flex>

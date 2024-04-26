@@ -5,7 +5,9 @@ import { SupportedChainId } from '../supportedChains'
 import { vaults as arbVaults } from './arb'
 import { vaults as baseVaults } from './base'
 import { vaults as bscVaults } from './bsc'
+import { vaults as degenVaults } from './degen'
 import { vaults as ethVaults } from './eth'
+import { vaults as pulseVaults } from './pulse'
 import { vaults as zkevmVault } from './zkevm'
 import { vaults as zksyncVault } from './zksync'
 
@@ -17,7 +19,9 @@ export const VAULTS_CONFIG_BY_CHAIN = {
   [ChainId.ETHEREUM]: ethVaults,
   [ChainId.BSC]: bscVaults,
   [ChainId.ARBITRUM_ONE]: arbVaults,
+  [ChainId.PULSECHAIN]: pulseVaults,
   [ChainId.BASE]: baseVaults,
+  [ChainId.DEGENCHAIN]: degenVaults,
   [ChainId.ZKSYNC]: zksyncVault,
   [ChainId.POLYGON_ZKEVM]: zkevmVault,
 }

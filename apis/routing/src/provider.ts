@@ -1,8 +1,8 @@
 import { ChainId, getV3Subgraphs } from '@pancakeswap/chains'
 import { OnChainProvider, SubgraphProvider } from '@pancakeswap/smart-router'
+import { GraphQLClient } from 'graphql-request'
 import { createPublicClient, http } from 'viem'
 import { bsc, bscTestnet, goerli, mainnet } from 'viem/chains'
-import { GraphQLClient } from 'graphql-request'
 
 import { SupportedChainId } from './constants'
 
@@ -65,7 +65,9 @@ export const v3SubgraphClients: Record<SupportedChainId, GraphQLClient> = {
   [ChainId.LINEA]: new GraphQLClient(V3_SUBGRAPHS[ChainId.LINEA], { fetch }),
   [ChainId.SCROLL_SEPOLIA]: new GraphQLClient(V3_SUBGRAPHS[ChainId.SCROLL_SEPOLIA], { fetch }),
   [ChainId.BASE_TESTNET]: new GraphQLClient(V3_SUBGRAPHS[ChainId.BASE_TESTNET], { fetch }),
+  [ChainId.PULSECHAIN]: new GraphQLClient(V3_SUBGRAPHS[ChainId.PULSECHAIN], { fetch }),
   [ChainId.BASE]: new GraphQLClient(V3_SUBGRAPHS[ChainId.BASE], { fetch }),
+  [ChainId.DEGENCHAIN]: new GraphQLClient(V3_SUBGRAPHS[ChainId.DEGENCHAIN], { fetch }),
   [ChainId.OPBNB]: new GraphQLClient(V3_SUBGRAPHS[ChainId.OPBNB], { fetch }),
 } as const
 

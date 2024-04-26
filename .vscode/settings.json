@@ -13,7 +13,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "deno.enablePaths": ["./cli/aptos-codegen"],
   "deno.config": "./cli/aptos-codegen/deno.jsonc",

@@ -13,6 +13,8 @@ declare global {
   const ARBITRUM_ONE_NODE: string
   const LINEA_NODE: string
   const BASE_NODE: string
+  const PULSE_NODE: string
+  const DEGEN_NODE: string
   const OPBNB_NODE: string
   const OPBNB_TESTNET_NODE: string
   const NODE_REAL_SUBGRAPH_API_KEY: string

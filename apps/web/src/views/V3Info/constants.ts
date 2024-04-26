@@ -61,7 +61,9 @@ export const SUBGRAPH_START_BLOCK = {
   [ChainId.ZKSYNC]: 8639214,
   [ChainId.ARBITRUM_ONE]: 101028949,
   [ChainId.LINEA]: 1444,
-  [ChainId.BASE]: 2912007,
+  [ChainId.PULSECHAIN]: 20180504,
+  [ChainId.DEGENCHAIN]: 20180504,
+  [ChainId.BASE]: 20180504,
   [ChainId.OPBNB]: 1721753,
 }
 

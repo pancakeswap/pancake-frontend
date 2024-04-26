@@ -34,10 +34,9 @@ export const useWrapperBooster = (bCakeBoosterAddress: Address, boostMultiplier:
 
   const shouldUpdate = useMemo(() => {
     if (
-      (boostMultiplier &&
-        veCakeUserMultiplierBeforeBoosted &&
-        boostMultiplier * SHOULD_UPDATE_THRESHOLD <= veCakeUserMultiplierBeforeBoosted) ||
-      (boostMultiplier === 1 && veCakeUserMultiplierBeforeBoosted > boostMultiplier)
+      boostMultiplier &&
+      veCakeUserMultiplierBeforeBoosted &&
+      boostMultiplier * SHOULD_UPDATE_THRESHOLD <= veCakeUserMultiplierBeforeBoosted
     )
       return true
     return false

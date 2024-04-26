@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
 import { BigintIsh, Currency } from '@pancakeswap/sdk'
 import { OnChainProvider, Pool, SmartRouter } from '@pancakeswap/smart-router'
-import { useQuery } from '@tanstack/react-query'
-import { useMemo } from 'react'
 
-import { createViemPublicClientGetter } from 'utils/viem'
-import { POOLS_FAST_REVALIDATE } from 'config/pools'
+import { useQuery } from '@tanstack/react-query'
+import { useEffect, useMemo, useRef } from 'react'
+
+import { getViemClients } from 'utils/viem'
 
 interface Options {
   blockNumber?: number
@@ -34,14 +34,7 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
     currencyB?: Currency,
     { blockNumber, enabled = true }: Options = {},
   ) {
-    const refetchInterval = useMemo(() => {
-      const chainId = currencyA?.chainId
-      if (!chainId) {
-        return 0
-      }
-      return POOLS_FAST_REVALIDATE[chainId] || 0
-    }, [currencyA?.chainId])
-
+    const fetchingBlock = useRef<string | null>(null)
     const key = useMemo(() => {
       if (
         !currencyA ||
@@ -65,29 +58,44 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
     const poolState = useQuery({
       queryKey: [poolType, 'pools', key],
 
-      queryFn: async ({ signal }) => {
+      queryFn: async () => {
         if (!blockNumber || !pairs) {
           throw new Error('Failed to get pools on chain. Missing valid params')
         }
-        const label = `[POOLS_ONCHAIN](${poolType}) ${key} at block ${blockNumber}`
-        SmartRouter.logger.metric(label)
-        const getViemClients = createViemPublicClientGetter({ transportSignal: signal })
-        const pools = await getPoolsOnChain(pairs, getViemClients, blockNumber)
-        SmartRouter.logger.metric(label, pools)
+        fetchingBlock.current = blockNumber.toString()
+        try {
+          const label = `[POOLS_ONCHAIN](${poolType}) ${key} at block ${fetchingBlock.current}`
+          SmartRouter.logger.metric(label)
+          const pools = await getPoolsOnChain(pairs, getViemClients, blockNumber)
+          SmartRouter.logger.metric(label, pools)
 
-        return {
-          pools,
-          key,
-          blockNumber,
+          return {
+            pools,
+            key,
+            blockNumber,
+          }
+        } finally {
+          fetchingBlock.current = null
         }
       },
 
       enabled: queryEnabled,
-      refetchInterval,
       refetchOnWindowFocus: false,
     })
 
     const { refetch, data, isLoading, isFetching: isValidating, dataUpdatedAt } = poolState
+    useEffect(() => {
+      // Revalidate pools if block number increases
+      if (
+        queryEnabled &&
+        blockNumber &&
+        fetchingBlock.current !== blockNumber.toString() &&
+        (!data?.blockNumber || blockNumber > data.blockNumber)
+      ) {
+        refetch()
+      }
+      // eslint-disable-next-line
+    }, [blockNumber, data?.blockNumber, queryEnabled])
 
     return {
       refresh: refetch,

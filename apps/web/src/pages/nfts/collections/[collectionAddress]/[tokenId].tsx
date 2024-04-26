@@ -50,7 +50,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       return {
         tokenId,
         collectionAddress: collectionAddress as Address,
-        collectionName: collection?.[collectionAddress.toLowerCase()]?.name || metadata.collection.name,
+        collectionName: metadata.collection.name,
         name: metadata.name,
         description: metadata.description,
         image: metadata.image,

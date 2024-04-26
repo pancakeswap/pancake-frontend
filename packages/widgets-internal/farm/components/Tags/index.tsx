@@ -269,6 +269,22 @@ const BaseTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   );
 };
 
+const PulseTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  return (
+    <Tag style={{ background: "#0052FF" }} startIcon={<BaseIcon width="18px" mr="4px" />} {...props}>
+      Pulsechain
+    </Tag>
+  );
+};
+
+const DegenTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  return (
+    <Tag style={{ background: "#0052FF" }} startIcon={<BaseIcon width="18px" mr="4px" />} {...props}>
+      Degenchain
+    </Tag>
+  );
+};
+
 const LineaTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   return (
     <Tag style={{ background: "#121212" }} startIcon={<LineaIcon width="18px" mr="4px" />} {...props}>
@@ -310,6 +326,8 @@ const Tags = {
   ZkSyncTag,
   ArbTag,
   BaseTag,
+  PulseTag,
+  DegenTag,
   LineaTag,
   AlpBoostedTag,
   OpBnbTag,
