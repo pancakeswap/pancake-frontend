@@ -3228,7 +3228,7 @@
   "Buy with %provider%": "%provider% से खरीदें",
   "Token by network": "Token by network",
   "Bitcoin Network": "Bitcoin Network",
-  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.": "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.",
+  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.": "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.",
   "All Networks": "All Networks",
   "Select a Token to Purchase": "Select a Token to Purchase",
   "Select Tokens by network": "Select Tokens by network",
@@ -3331,5 +3331,9 @@
   "chain & strategy": "chain & strategy",
   "Placing Order Disabled": "Placing Order Disabled",
   "Orders missing? Check out:": "Orders missing? Check out:",
-  "Limit V2 (deprecated)": "Limit V2 (deprecated)"
+  "Limit V2 (deprecated)": "Limit V2 (deprecated)",
+  "Join the MASA Trading Competition": "Join the MASA Trading Competition",
+  "Win 700,000 $MASA": "Win 700,000 $MASA",
+  "Trade to win 700,000 $MASA": "Trade to win 700,000 $MASA",
+  "to Win 700,000 $MASA": "to Win 700,000 $MASA"
 }

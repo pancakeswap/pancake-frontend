@@ -3228,7 +3228,7 @@
   "Buy with %provider%": "Beli dengan %provider%",
   "Token by network": "Token sesuai jaringan",
   "Bitcoin Network": "Jaringan Bitcoin",
-  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.": "Aktifkan pembelian BTC Asli. Anda hanya dapat melakukan ini jika memiliki alamat Bitcoin untuk menerima dana. Anda tidak dapat menggunakan alamat EVM Anda untuk BTC asli.",
+  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.": "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.",
   "All Networks": "Semua Jaringan",
   "Select a Token to Purchase": "Pilih Token yang akan Dibeli",
   "Select Tokens by network": "Pilih Token sesuai jaringan",
@@ -3331,5 +3331,9 @@
   "chain & strategy": "chain & strategy",
   "Placing Order Disabled": "Placing Order Disabled",
   "Orders missing? Check out:": "Orders missing? Check out:",
-  "Limit V2 (deprecated)": "Limit V2 (deprecated)"
+  "Limit V2 (deprecated)": "Limit V2 (deprecated)",
+  "Join the MASA Trading Competition": "Join the MASA Trading Competition",
+  "Win 700,000 $MASA": "Win 700,000 $MASA",
+  "Trade to win 700,000 $MASA": "Trade to win 700,000 $MASA",
+  "to Win 700,000 $MASA": "to Win 700,000 $MASA"
 }

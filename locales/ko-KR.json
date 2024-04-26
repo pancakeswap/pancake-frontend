@@ -3228,7 +3228,7 @@
   "Buy with %provider%": "%provider%(으)로 구입",
   "Token by network": "네트워크별 토큰",
   "Bitcoin Network": "비트코인 네트워크",
-  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.": "네이티브 BTC 구매를 활성화합니다. 자금을 받을 수 있는 비트코인 ​​주소가 있는 경우에만 가능합니다. 네이티브 BTC에는 EVM 주소를 사용할 수 없습니다.",
+  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.": "네이티브 BTC 구매를 활성화합니다. 자금을 받을 수 있는 비트코인 ​​주소가 있는 경우에만 가능합니다. 네이티브 BTC에는 EVM 주소를 사용할 수 없습니다.",
   "All Networks": "모든 네트워크",
   "Select a Token to Purchase": "구매할 토큰 선택",
   "Select Tokens by network": "네트워크별 토큰 선택",
@@ -3331,5 +3331,9 @@
   "chain & strategy": "체인 및 전략",
   "Placing Order Disabled": "주문하기 비활성화됨",
   "Orders missing? Check out:": "주문이 누락되었나요? 확인해 보세요:",
-  "Limit V2 (deprecated)": "Limit V2(더 이상 사용 안 됨)"
+  "Limit V2 (deprecated)": "Limit V2(더 이상 사용 안 됨)",
+  "Join the MASA Trading Competition": "MASA 트레이딩 대회 참가",
+  "Win 700,000 $MASA": "상금 700,000 $MASA 획득",
+  "Trade to win 700,000 $MASA": "트레이딩으로 상금 700,000 $MASA 획득",
+  "to Win 700,000 $MASA": "상금 700,000 $MASA 획득"
 }

@@ -3228,7 +3228,7 @@
   "Buy with %provider%": "Kup u %provider%",
   "Token by network": "Token według sieci",
   "Bitcoin Network": "Sieć Bitcoin",
-  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. you cannot use your EVM addresses for native BTC.": "Włącz natywne zakupy BTC. Zrób to jedynie pod warunkiem, że masz adres Bitcoin, na który możesz otrzymać środki. Nie możesz używać swoich adresów EVM do natywnego BTC.",
+  "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.": "Enable Native BTC purchases. Only do this is you have a Bitcoin address to receive the funds to. You cannot use your EVM addresses for native BTC.",
   "All Networks": "Wszystkie sieci",
   "Select a Token to Purchase": "Wybierz token do zakupu",
   "Select Tokens by network": "Wybierz tokeny według sieci",
@@ -3331,5 +3331,9 @@
   "chain & strategy": "łańcuch i strategia",
   "Placing Order Disabled": "Wyłączono składanie zleceń",
   "Orders missing? Check out:": "Brakuje zleceń? Sprawdź:",
-  "Limit V2 (deprecated)": "Ogranicz V2 (przestarzałe)"
+  "Limit V2 (deprecated)": "Ogranicz V2 (przestarzałe)",
+  "Join the MASA Trading Competition": "Join the MASA Trading Competition",
+  "Win 700,000 $MASA": "Win 700,000 $MASA",
+  "Trade to win 700,000 $MASA": "Trade to win 700,000 $MASA",
+  "to Win 700,000 $MASA": "to Win 700,000 $MASA"
 }
