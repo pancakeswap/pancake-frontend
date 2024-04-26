@@ -3,12 +3,12 @@ import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Record } from 'views/DashboardQuests/components/Record'
 import { RecordTemplate } from 'views/DashboardQuests/components/RecordTemplate'
 
-export const DashboardQuests = () => {
+export const DashboardCampaigns = () => {
   const { t } = useTranslation()
   const { isTablet } = useMatchBreakpoints()
 
   return (
-    <RecordTemplate title={t('Guests')} createButtonText={isTablet ? t('Create') : t('Create a quest')}>
+    <RecordTemplate title={t('Campaigns')} createButtonText={isTablet ? t('Create') : t('Create a campaign')}>
       <Record />
     </RecordTemplate>
   )

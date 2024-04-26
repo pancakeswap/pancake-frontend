@@ -75,7 +75,7 @@ export const Record = () => {
           {(isTablet || isDesktop) && (
             <thead>
               <tr>
-                <Th>
+                <Th width="40%">
                   <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
                     {t('quest title')}
                   </Text>
@@ -142,7 +142,18 @@ export const Record = () => {
             <>
               <tr>
                 <Td>
-                  <Text bold>PancakeSwap Multichain Celebration - zkSync Era</Text>
+                  <Text
+                    bold
+                    overflow="hidden"
+                    display="-webkit-box"
+                    style={{
+                      whiteSpace: 'initial',
+                      WebkitLineClamp: 1,
+                      WebkitBoxOrient: 'vertical',
+                    }}
+                  >
+                    PancakeSwap Multichain Celebration - zkSync Era 123 123123 12312
+                  </Text>
                 </Td>
                 {isXxl && (
                   <>
