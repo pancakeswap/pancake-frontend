@@ -3317,7 +3317,7 @@
   "V2/SS Farms": "مزارع V2/SS",
   "Position Managers": "مديرو المراكز",
   "Your funds have been Staked in new BCake farm Wrapper.": "تم رهن أموالك في غلاف مزرعة BCake الجديد.",
-  "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.": "bCAKE يدعم فقط معدل الفائدة السنوي لحافز الرمز المميز (عادة ما يكون CAKE) APR. يخضع المضاعف الفعلي لمدير المركز وشروط تجمع veCAKE.",
+  "bCAKE only boosts token incentive (often CAKE) APR. Actual multiplier is subject to position manager and veCAKE pool condition.": "bCAKE يدعم فقط معدل الفائدة السنوي لحافز الرمز المميز (عادة ما يكون CAKE). يخضع المضاعف الفعلي لمدير المركز وشروط تجمع veCAKE.",
   "Booster Update": "تحديث المعزز",
   "Booster has been updated.": "تم تحديث المعزز.",
   "Try it now": "جربه الآن",
@@ -3332,8 +3332,8 @@
   "Placing Order Disabled": "تم تعطيل تقديم الطلب",
   "Orders missing? Check out:": "هل الأوامر مفقودة؟ تحقق من:",
   "Limit V2 (deprecated)": "تقييد V2 (مهمل)",
-  "Join the MASA Trading Competition": "Join the MASA Trading Competition",
-  "Win 700,000 $MASA": "Win 700,000 $MASA",
-  "Trade to win 700,000 $MASA": "Trade to win 700,000 $MASA",
-  "to Win 700,000 $MASA": "to Win 700,000 $MASA"
+  "Join the MASA Trading Competition": "انضم إلى مسابقة تداول MASA",
+  "Win 700,000 $MASA": "اربح 700,000 $MASA",
+  "Trade to win 700,000 $MASA": "تداول لتربح 700,000 $MASA",
+  "to Win 700,000 $MASA": "لتربح 700,000 $MASA"
 }
