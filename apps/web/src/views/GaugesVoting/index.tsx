@@ -74,7 +74,7 @@ const BunnyImage = styled.img`
 const GaugesVoting = () => {
   const { t } = useTranslation()
   const totalGaugesWeight = useGaugesTotalWeight()
-  const { isDesktop, isMobile } = useMatchBreakpoints()
+  const { isDesktop, isMobile, isXs } = useMatchBreakpoints()
   const { data: gauges, isLoading } = useGauges()
   const { filterGauges, setSearchText, filter, onFilterChange, sort, setSort } = useGaugesFilter(gauges)
 
@@ -157,11 +157,22 @@ const GaugesVoting = () => {
                 position="sticky"
                 top="0"
               >
-                <Grid gridTemplateColumns="2fr 1fr" gridGap="8px">
+                {isXs ? (
                   <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
-                  <FilterFieldSort onChange={setSort} />
-                </Grid>
-                <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
+                ) : (
+                  <Grid gridTemplateColumns="2fr 1fr" gridGap="8px">
+                    <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                    <FilterFieldSort onChange={setSort} />
+                  </Grid>
+                )}
+                {isXs ? (
+                  <Grid gridTemplateColumns="2fr 1fr" gridGap="8px">
+                    <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
+                    <FilterFieldSort onChange={setSort} />
+                  </Grid>
+                ) : (
+                  <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
+                )}
               </Grid>
             ) : null}
             {isMobile ? (

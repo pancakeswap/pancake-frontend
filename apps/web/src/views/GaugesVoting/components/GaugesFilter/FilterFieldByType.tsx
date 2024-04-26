@@ -20,7 +20,7 @@ type FilterButtonGroupProps = {
 export const FilterFieldByType: React.FC<FilterButtonGroupProps> = ({ onFilterChange, value }) => {
   const { t } = useTranslation()
   const [option, setOption] = useState<OptionsType | null>(null)
-  const { isMobile } = useMatchBreakpoints()
+  const { isSm } = useMatchBreakpoints()
 
   return (
     <>
@@ -28,7 +28,7 @@ export const FilterFieldByType: React.FC<FilterButtonGroupProps> = ({ onFilterCh
         <Text fontSize={12} fontWeight={600} color="textSubtle" textTransform="uppercase">
           {t('filter')}
         </Text>
-        <FlexGap gap={isMobile ? '0' : '10px'} justifyContent={isMobile ? 'space-between' : 'flex-start'}>
+        <FlexGap gap={isSm ? '0' : '10px'} justifyContent={isSm ? 'space-between' : 'flex-start'}>
           <FilterButton variant="light" onClick={() => setOption(OptionsType.ByChain)}>
             {t('Chain')}
           </FilterButton>
