@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
-import { Record } from 'views/DashboardQuests/components/Record'
+import { Record } from 'views/DashboardCampaigns/components/Record'
 import { RecordTemplate } from 'views/DashboardQuests/components/RecordTemplate'
 
 export const DashboardCampaigns = () => {
