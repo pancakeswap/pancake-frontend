@@ -59,7 +59,7 @@ type ListProps = {
   onRowSelect?: (hash: Gauge['hash']) => void
 } & SpaceProps
 
-export function GaugesList({
+export const GaugesList = ({
   listDisplay,
   pagination = true,
   pageSize = 5,
@@ -70,7 +70,7 @@ export function GaugesList({
   selectRows,
   onRowSelect,
   ...props
-}: ListProps & ListDisplayProps & PaginationProps) {
+}: ListProps & ListDisplayProps & PaginationProps) => {
   const [page, setPage] = useState(1)
   const maxPage = useMemo(() => (data && data.length ? Math.ceil(data.length / pageSize) : 1), [data, pageSize])
 
@@ -80,10 +80,15 @@ export function GaugesList({
     }
   }, [pagination, maxPage, page])
 
+  useEffect(() => {
+    setPage(1)
+  }, [data])
+
   const dataDisplay = useMemo(
     () => (pagination ? data?.slice((page - 1) * pageSize, page * pageSize) : data),
     [data, page, pageSize, pagination],
   )
+
   const list = dataDisplay?.map((item) => (
     <GaugeListItem
       key={`${item.hash}-${item.pid}`}

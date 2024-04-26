@@ -28,7 +28,7 @@ export const FilterModal: React.FC<FilterModalProps> = ({ isOpen, onDismiss, typ
           {OPTIONS[type].options.map((option: Gauges | ChainId | FeeAmount) => {
             const checked = allOptionValues.includes(option)
             return (
-              <FilterOption type={type} key={OPTIONS[type].key} option={option} checked={checked} onChange={onChange} />
+              <FilterOption type={type} key={String(option)} option={option} checked={checked} onChange={onChange} />
             )
           })}
           <Button

@@ -22,6 +22,7 @@ import { MyVeCakeBalance } from './components/MyVeCakeBalance'
 import { GaugesList, GaugesTable, VoteTable } from './components/Table'
 import { WeightsPieChart } from './components/WeightsPieChart'
 import { useGauges } from './hooks/useGauges'
+import { useGaugesFilter } from './hooks/useGaugesFilter'
 import { useGaugesTotalWeight } from './hooks/useGaugesTotalWeight'
 
 const InlineLink = styled(LinkExternal)`
@@ -73,8 +74,9 @@ const BunnyImage = styled.img`
 const GaugesVoting = () => {
   const { t } = useTranslation()
   const totalGaugesWeight = useGaugesTotalWeight()
-  const { data: gauges, isLoading } = useGauges()
   const { isDesktop, isMobile } = useMatchBreakpoints()
+  const { data: gauges, isLoading } = useGauges()
+  const { filterGauges, setSearchText, filter, onFilterChange, sort, setSort } = useGaugesFilter(gauges)
 
   return (
     <StyledGaugesVotingPage>
@@ -130,13 +132,17 @@ const GaugesVoting = () => {
                   {t('proposed weights')}
                 </Text>
                 <Box mt={isDesktop ? '40px' : '0'} mb={isDesktop ? '20px' : 0}>
-                  <WeightsPieChart data={gauges} totalGaugesWeight={Number(totalGaugesWeight)} isLoading={isLoading} />
+                  <WeightsPieChart
+                    data={filterGauges}
+                    totalGaugesWeight={Number(totalGaugesWeight)}
+                    isLoading={isLoading}
+                  />
                 </Box>
               </Box>
               {!isMobile ? (
                 <Grid mt={-60} gridTemplateColumns="1fr 1fr" gridGap="32px">
-                  <FilterFieldByType onFilterChange={console.log} />
-                  <FilterFieldInput placeholder={t('Search')} onChange={console.log} />
+                  <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                  <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
                 </Grid>
               ) : null}
             </Grid>
@@ -148,23 +154,27 @@ const GaugesVoting = () => {
                 p={16}
                 gridTemplateColumns="1fr"
                 gridGap="1em"
-                // style={isMobile ? { position: 'sticky', top: 0 } : undefined}
                 position="sticky"
                 top="0"
               >
                 <Grid gridTemplateColumns="2fr 1fr" gridGap="8px">
-                  <FilterFieldByType onFilterChange={console.log} />
-                  <FilterFieldSort onChange={console.log} />
+                  <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                  <FilterFieldSort onChange={setSort} />
                 </Grid>
-                <FilterFieldInput placeholder={t('Search')} onChange={console.log} />
+                <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
               </Grid>
             ) : null}
             {isMobile ? (
-              <GaugesList data={gauges} isLoading={isLoading} totalGaugesWeight={Number(totalGaugesWeight)} />
+              <GaugesList
+                key={sort}
+                data={filterGauges}
+                isLoading={isLoading}
+                totalGaugesWeight={Number(totalGaugesWeight)}
+              />
             ) : (
               <GaugesTable
                 mt="1.5em"
-                data={gauges}
+                data={filterGauges}
                 isLoading={isLoading}
                 totalGaugesWeight={Number(totalGaugesWeight)}
               />

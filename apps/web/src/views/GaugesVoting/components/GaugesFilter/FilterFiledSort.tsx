@@ -3,10 +3,10 @@ import { AutoColumn, OptionProps, Select, Text } from '@pancakeswap/uikit'
 import React from 'react'
 
 type FilterFieldSortProps = {
-  onChange: (option: OptionProps) => void
+  onChange: (value: OptionProps['value']) => void
 }
 
-enum SortOptions {
+export enum SortOptions {
   Default = 'default',
   Vote = 'vote',
   Boost = 'boost',
@@ -29,7 +29,8 @@ export const FilterFieldSort: React.FC<FilterFieldSortProps> = ({ onChange }) =>
         style={{ minWidth: '100px' }}
         placeHolderText="default"
         options={SORT_OPTIONS}
-        onOptionChange={onChange}
+        defaultOptionIndex={1}
+        onOptionChange={(option) => onChange(option.value)}
       />
     </AutoColumn>
   )

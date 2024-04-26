@@ -15,10 +15,10 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useFilter } from 'views/GaugesVoting/hooks/useFilter'
 import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
+import { useGaugesFilter } from 'views/GaugesVoting/hooks/useGaugesFilter'
 import { useGaugesTotalWeight } from 'views/GaugesVoting/hooks/useGaugesTotalWeight'
-import { FilterFieldByType, FilterFieldInput } from '../../GaugesFilter'
+import { FilterFieldByType, FilterFieldInput, FilterFieldSort } from '../../GaugesFilter'
 import { GaugesList, GaugesTable } from '../GaugesTable'
 import { THeader, TRow } from '../styled'
 
@@ -41,7 +41,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
   const { isDesktop, isMobile } = useMatchBreakpoints()
   const totalGaugesWeight = useGaugesTotalWeight()
   const { data: gauges } = useGauges()
-  const { filterGauges, setSearchText, filter, onFilterChange } = useFilter(gauges)
+  const { filterGauges, setSearchText, filter, onFilterChange, setSort } = useGaugesFilter(gauges)
 
   const gaugesTable = isDesktop ? (
     <AddGaugesTable
@@ -92,7 +92,10 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
                 </Button>
               </FlexGap>
               <Grid gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'} gridGap={isDesktop ? '32px' : '1em'}>
-                <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                <Grid gridTemplateColumns="2fr 1fr" gridGap="8px">
+                  <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                  <FilterFieldSort onChange={setSort} />
+                </Grid>
                 <FilterFieldInput placeholder={t('Search gauges')} onChange={setSearchText} hideLabel={isMobile} />
               </Grid>
               {isMobile && selectRows?.length ? (
@@ -101,7 +104,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
                     {selectRows?.length} {t('selected')}
                   </Text>
                   <Text ml="2px" fontSize={14} bold color="textSubtle" textTransform="uppercase">
-                    / {gauges?.length} {t('total')}
+                    / {filterGauges?.length} {t('total')}
                   </Text>
                 </Flex>
               ) : null}
