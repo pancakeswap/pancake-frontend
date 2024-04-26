@@ -170,9 +170,14 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const userDataReady = !account || (!!account && userDataLoaded)
 
   const activeFarms = farmsLP?.filter(
-    (farm) => farm.pid !== 0 && farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid),
+    (farm) =>
+      farm.pid !== 0 &&
+      (farm.multiplier !== '0X' || farm?.bCakeWrapperAddress) &&
+      (!poolLength || poolLength > farm.pid),
   )
-  const inactiveFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const inactiveFarms = farmsLP?.filter(
+    (farm) => farm.pid !== 0 && farm.multiplier === '0X' && !farm?.bCakeWrapperAddress,
+  )
   const archivedFarms = farmsLP
 
   const stakedOnlyFarms = activeFarms?.filter(
