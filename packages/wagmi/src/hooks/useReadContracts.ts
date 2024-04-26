@@ -6,10 +6,10 @@ import {
   type UseReadContractsReturnType,
 } from 'wagmi'
 import { useQueryClient } from '@tanstack/react-query'
-import { useEffect } from 'react'
 import type { ReadContractsData } from 'wagmi/query'
 
 import { useBlockNumber } from './useBlock'
+import useDidMountEffect from './useDidMountEffect'
 
 export function useReadContracts<
   const contracts extends readonly unknown[],
@@ -25,12 +25,11 @@ export function useReadContracts<
 
   const readContractResult = useWagmiReadContracts(queryParameters as any)
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     if (watch) {
       queryClient.invalidateQueries({ queryKey: readContractResult.queryKey }, { cancelRefetch: false })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, queryClient, watch])
+  }, blockNumber)
 
   return readContractResult as UseReadContractsReturnType<contracts, allowFailure, selectData>
 }

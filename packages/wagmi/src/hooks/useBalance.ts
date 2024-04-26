@@ -1,5 +1,4 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { useEffect } from 'react'
 import {
   useBalance as useWagmiBalance,
   type Config,
@@ -10,6 +9,7 @@ import {
 
 import { GetBalanceData } from '../types'
 import { useBlockNumber } from './useBlock'
+import useDidMountEffect from './useDidMountEffect'
 
 export function useBalance<config extends Config = ResolvedRegister['config'], selectData = GetBalanceData>(
   params: UseBalanceParameters<config, selectData> & { watch?: boolean } = {},
@@ -20,12 +20,11 @@ export function useBalance<config extends Config = ResolvedRegister['config'], s
 
   const readContractResult = useWagmiBalance(queryParameters)
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     if (watch) {
       queryClient.invalidateQueries({ queryKey: readContractResult.queryKey }, { cancelRefetch: false })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNumber, queryClient, watch])
+  }, blockNumber)
 
-  return readContractResult
+  return readContractResult as UseBalanceReturnType<selectData>
 }
