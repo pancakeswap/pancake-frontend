@@ -74,7 +74,7 @@ const BunnyImage = styled.img`
 const GaugesVoting = () => {
   const { t } = useTranslation()
   const totalGaugesWeight = useGaugesTotalWeight()
-  const { isDesktop, isMobile, isXs } = useMatchBreakpoints()
+  const { isDesktop, isMobile, isXl, isXs } = useMatchBreakpoints()
   const { data: gauges, isLoading } = useGauges()
   const { filterGauges, setSearchText, filter, onFilterChange, sort, setSort } = useGaugesFilter(gauges)
 
@@ -139,13 +139,20 @@ const GaugesVoting = () => {
                   />
                 </Box>
               </Box>
-              {!isMobile ? (
-                <Grid mt={-60} gridTemplateColumns="1fr 1fr" gridGap="32px">
+              {!isMobile && !isXl ? (
+                <Grid gridTemplateColumns="1fr 1fr" gridGap="32px">
                   <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
                   <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
                 </Grid>
               ) : null}
             </Grid>
+            {/* for tablet fit */}
+            {isXl ? (
+              <Grid gridTemplateColumns="1fr 1fr">
+                <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
+              </Grid>
+            ) : null}
             {/* for mobile sticky, make it redundancy */}
             {isMobile ? (
               <Grid
