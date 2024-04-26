@@ -2,6 +2,7 @@ import { chainNames } from '@pancakeswap/chains'
 import { GAUGE_TYPE_NAMES, Gauge, GaugeType } from '@pancakeswap/gauges'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Filter, FilterValue, Gauges, OptionsType, SortOptions } from '../components/GaugesFilter'
+import { getPositionManagerName } from '../utils'
 
 const getSorter = (sort: SortOptions | undefined) => {
   if (sort === SortOptions.Vote) {
@@ -76,12 +77,19 @@ export const useGaugesFilter = (fullGauges: Gauge[] | undefined) => {
     if (searchText?.length > 0) {
       results = results.filter((gauge) => {
         return [
+          // search by pairName or tokenName
           gauge.pairName.toLowerCase(),
+          // search by gauges type, e.g. "v2", "v3", "position manager"
           GAUGE_TYPE_NAMES[gauge.type].toLowerCase(),
+          // search by chain name
           chainNames[gauge.chainId],
+          // search by chain id
           String(gauge.chainId),
+          // search by boost multiplier, e.g. "1.5x"
           `${Number(gauge.boostMultiplier) / 100}x`,
-        ].some((text) => text.includes(searchText.toLowerCase()))
+          // search by alm strategy name
+          getPositionManagerName(gauge).toLowerCase(),
+        ].some((text) => text?.includes(searchText.toLowerCase()))
       })
     }
 
