@@ -167,6 +167,10 @@ export const getVeCakeAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.veCake, chainId)
 }
 
+export const getVeCakeAddressNoFallback = (chainId?: number) => {
+  return getAddressFromMapNoFallback(addresses.veCake, chainId)
+}
+
 export const getGaugesVotingAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.gaugesVoting, chainId)
 }
@@ -181,6 +185,10 @@ export const getRevenueSharingCakePoolAddress = (chainId?: number) => {
 
 export const getRevenueSharingVeCakeAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.revenueSharingVeCake, chainId)
+}
+
+export const getRevenueSharingVeCakeAddressNoFallback = (chainId?: number) => {
+  return getAddressFromMapNoFallback(addresses.revenueSharingVeCake, chainId)
 }
 
 export const getRevenueSharingPoolGatewayAddress = (chainId?: number) => {
