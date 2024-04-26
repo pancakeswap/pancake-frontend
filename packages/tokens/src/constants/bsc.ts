@@ -3149,12 +3149,4 @@ export const bscTokens = {
     'Masa Token',
     'https://www.masa.finance/',
   ),
-  mwbETH: new ERC20Token(
-    ChainId.BSC,
-    '0x7dC91cBD6CB5A3E6A95EED713Aa6bF1d987146c8',
-    18,
-    'mwBETH',
-    'Bridged mwBETH',
-    'https://www.eigenlayer.magpiexyz.io/restake',
-  ),
 }
