@@ -6,7 +6,7 @@ import { cakeBnbLpToken } from '../lpTokens'
 export const ifos: BaseIfoConfig[] = [
   {
     id: 'test-bsc',
-    address: '0xa2EF06e5d904cab7D8110feC27FA9003468E2d77',
+    address: '0x9B04E02808D83c1C8a420A3B618B7CbF4b7e41Ad',
     isActive: true,
     cIFO: true,
     name: 'Test BSC',
