@@ -3850,7 +3850,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 389,
-    pairName: 'mwbETH-wbETH',
+    pairName: 'mwBETH-wBETH',
     address: '0x4cBEa76B4A1c42C356B4c52B0314A98313fFE9df',
     chainId: ChainId.BSC,
     type: GaugeType.StableSwap,
