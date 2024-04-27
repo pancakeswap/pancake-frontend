@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Card, InfoIcon, Text } from '@pancakeswap/uikit'
+import { Box, Card, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
+import { ClaimButton } from 'views/Quest/components/Reward/ClaimButton'
 import { Countdown } from 'views/Quest/components/Reward/Countdown'
 import { Questers } from 'views/Quest/components/Reward/Questers'
 import { RemainMessage } from 'views/Quest/components/Reward/RemainMessage'
@@ -21,12 +22,6 @@ const RewardContainer = styled(Box)`
   }
 `
 
-const StyledButton = styled(Button)`
-  width: 100%;
-  margin: 8px 0;
-  border-radius: 24px;
-`
-
 export const Reward = () => {
   const { t } = useTranslation()
 
@@ -41,10 +36,7 @@ export const Reward = () => {
           <Countdown />
           <TotalRewards />
           <Questers />
-          <StyledButton>{t('Claim the reward')}</StyledButton>
-          <StyledButton disabled endIcon={<InfoIcon color="textDisabled" />}>
-            {t('Unavailable')}
-          </StyledButton>
+          <ClaimButton />
           <RemainMessage />
           <SuccessMessage />
           <Winners />

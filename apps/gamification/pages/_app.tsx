@@ -9,7 +9,7 @@ import { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Script from 'next/script'
-import React, { Fragment, useMemo } from 'react'
+import React, { Fragment, ReactNode, useMemo } from 'react'
 import { Provider as WrapBalancerProvider } from 'react-wrap-balancer'
 import { createGlobalStyle } from 'styled-components'
 import { createWagmiConfig } from 'utils/wagmi'
@@ -58,6 +58,8 @@ type NextPageWithLayout = NextPage & {
   Layout?: React.FC<React.PropsWithChildren<unknown>>
   /** render component without all layouts */
   pure?: true
+
+  CustomComponent?: ReactNode
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -94,6 +96,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                         </WrapBalancerProvider>
                       </Layout>
                     </Menu>
+                    {Component?.CustomComponent}
                   </ModalProvider>
                 </LanguageProvider>
               </StyledThemeProvider>
