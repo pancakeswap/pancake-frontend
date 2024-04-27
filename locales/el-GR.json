@@ -3123,7 +3123,7 @@
   "Mainnet is set by default. If you are unfamiliar with bridging please try a testnet transaction first": "Το Mainnet έχει οριστεί από προεπιλογή. Αν δεν είστε εξοικειωμένοι με τη γεφύρωση, δοκιμάστε πρώτα μια συναλλαγή στο δοκιμαστικό δίκτυο",
   "%title% Disclaimer": "%title% Αποποίηση ευθυνών",
   "Go to FAQ guide": "Μετάβαση στις Συχνές Ερωτήσεις",
-  "This is an experimental product": "This is an experimental product",
+  "This is an experimental product": "Αυτό είναι ένα πειραματικό προϊόν",
   "We highly advise you go through the FAQ Guide below before continuing": "Σας συμβουλεύουμε να μελετήσετε τις παρακάτω Συχνές Ερωτήσεις πριν συνεχίσετε",
   "I have read the FAQ guide and am ready to continue.": "Διάβασα τις Συχνές Ερωτήσεις και είμαι έτοιμος(-η) να συνεχίσω.",
   "Enable Mainnet": "Ενεργοποίηση Mainnet",
@@ -3335,5 +3335,9 @@
   "Join the MASA Trading Competition": "Join the MASA Trading Competition",
   "Win 700,000 $MASA": "Win 700,000 $MASA",
   "Trade to win 700,000 $MASA": "Trade to win 700,000 $MASA",
-  "to Win 700,000 $MASA": "to Win 700,000 $MASA"
+  "to Win 700,000 $MASA": "to Win 700,000 $MASA",
+  "Vote": "Vote",
+  "sort by": "sort by",
+  "Unselect All": "Unselect All",
+  "Done": "Done"
 }
