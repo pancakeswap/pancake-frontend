@@ -66,7 +66,7 @@ export const VeCakeFourYearCard = () => {
             {t('CAKE Staking')}
           </Text>
           <Text fontSize={20} bold color="text">
-            {t('Up to %apr%% APR', { apr: totalApr.toFixed(2) })}
+            {`Up to ${totalApr.toFixed(2)}% APR`}
           </Text>
         </StyledCardBody>
         <StyledCardFooter>

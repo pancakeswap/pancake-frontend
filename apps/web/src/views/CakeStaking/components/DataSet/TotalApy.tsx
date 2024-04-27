@@ -184,7 +184,7 @@ export const TotalApy: React.FC<React.PropsWithChildren<TotalApyProps>> = ({ veC
         </TooltipText>
         <Flex>
           <Text>🔹</Text>
-          <GradientText>{t('Up to %apr%%', { apr: totalApy.toFixed(2) })} </GradientText>
+          <GradientText>{`Up to ${totalApy.toFixed(2)}%`} </GradientText>
         </Flex>
       </Flex>
       <Box ml="25px">
@@ -193,7 +193,7 @@ export const TotalApy: React.FC<React.PropsWithChildren<TotalApyProps>> = ({ veC
             {t('veCAKE Pool APR')}
           </TooltipText>
           {shouldShow4yrApr ? (
-            <Text>{t('Up to %apr%%', { apr: cakePoolApr.toFixed(2) })} </Text>
+            <Text>{`Up to ${cakePoolApr.toFixed(2)}%`} </Text>
           ) : (
             <Text>{`${cakePoolApr.toFixed(2)}%`} </Text>
           )}
@@ -203,7 +203,7 @@ export const TotalApy: React.FC<React.PropsWithChildren<TotalApyProps>> = ({ veC
             {t('Revenue Sharing APR')}
           </TooltipText>
           {shouldShow4yrApr ? (
-            <Text>{t('Up to %apr%%', { apr: revenueSharingApr.toFixed(2) })} </Text>
+            <Text>{`Up to ${revenueSharingApr.toFixed(2)}%`} </Text>
           ) : (
             <Text>{`${revenueSharingApr.toFixed(2)}%`} </Text>
           )}
@@ -213,7 +213,7 @@ export const TotalApy: React.FC<React.PropsWithChildren<TotalApyProps>> = ({ veC
             {t('Bribe APR')}
           </TooltipText>
           {shouldShow4yrApr ? (
-            <GradientText>{t('Up to %apr%%', { apr: bribeApr.toFixed(2) })} </GradientText>
+            <GradientText>{`Up to ${bribeApr.toFixed(2)}%`} </GradientText>
           ) : (
             <GradientText>{`${bribeApr.toFixed(2)}%`} </GradientText>
           )}
