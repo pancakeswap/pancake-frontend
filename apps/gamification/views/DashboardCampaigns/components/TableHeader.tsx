@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, SortArrowIcon, Text } from '@pancakeswap/uikit'
+import { Box, SortArrowIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { StyledCell } from 'views/DashboardCampaigns/components/TableStyle'
@@ -32,7 +32,7 @@ const StyledRow = styled.div`
     }
 
     &:last-child {
-      flex: 0 0 80px;
+      flex: 0 0 36px;
       padding-right: 24px;
     }
   }
@@ -40,6 +40,7 @@ const StyledRow = styled.div`
 
 export const TableHeader = () => {
   const { t } = useTranslation()
+  const { isXxl } = useMatchBreakpoints()
 
   const [rewardPoolSort, setRewardPoolSort] = useState<SortBy | undefined>()
   const [timelineSort, setTimelineSort] = useState<SortBy | undefined>()
@@ -68,21 +69,32 @@ export const TableHeader = () => {
             {t('Campaign title')}
           </Text>
         </StyledCell>
-        <StyledCell role="cell">
-          <Touchable onClick={onRewardPoolSort}>
-            <Text bold fontSize="12px" textAlign="left" lineHeight="24px" color="secondary" textTransform="uppercase">
-              {t('total reward pool')}
-            </Text>
-            <SortButton scale="sm" variant="subtle" className={getSortClassName(rewardPoolSort)}>
-              <SortArrowIcon />
-            </SortButton>
-          </Touchable>
-        </StyledCell>
-        <StyledCell role="cell">
-          <Text fontSize="12px" bold textTransform="uppercase" color="secondary" ml="auto">
-            {t('questers')}
-          </Text>
-        </StyledCell>
+        {isXxl && (
+          <>
+            <StyledCell role="cell">
+              <Touchable onClick={onRewardPoolSort}>
+                <Text
+                  bold
+                  fontSize="12px"
+                  textAlign="left"
+                  lineHeight="24px"
+                  color="secondary"
+                  textTransform="uppercase"
+                >
+                  {t('total reward pool')}
+                </Text>
+                <SortButton scale="sm" variant="subtle" className={getSortClassName(rewardPoolSort)}>
+                  <SortArrowIcon />
+                </SortButton>
+              </Touchable>
+            </StyledCell>
+            <StyledCell role="cell">
+              <Text fontSize="12px" bold textTransform="uppercase" color="secondary" ml="auto">
+                {t('questers')}
+              </Text>
+            </StyledCell>
+          </>
+        )}
         <StyledCell role="cell">
           <Touchable onClick={onTimelineSort} ml="auto">
             <Text bold fontSize="12px" textAlign="right" lineHeight="24px" color="secondary" textTransform="uppercase">
