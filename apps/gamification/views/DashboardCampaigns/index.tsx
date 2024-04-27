@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
-import { Record } from 'views/DashboardCampaigns/components/Record'
+import { Records } from 'views/DashboardCampaigns/components/Records'
 import { RecordTemplate } from 'views/DashboardQuests/components/RecordTemplate'
 
 export const DashboardCampaigns = () => {
@@ -9,7 +9,7 @@ export const DashboardCampaigns = () => {
 
   return (
     <RecordTemplate title={t('Campaigns')} createButtonText={isTablet ? t('Create') : t('Create a campaign')}>
-      <Record />
+      <Records />
     </RecordTemplate>
   )
 }

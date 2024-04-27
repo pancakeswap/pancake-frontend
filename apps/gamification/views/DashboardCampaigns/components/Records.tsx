@@ -17,7 +17,7 @@ const StyledRows = styled(Box)`
   }
 `
 
-export const Record = () => {
+export const Records = () => {
   const { isDesktop } = useMatchBreakpoints()
   return (
     <Box
