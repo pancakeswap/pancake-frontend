@@ -1,23 +1,22 @@
-import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { DropdownMenuItems } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
+import { useIsValidDashboardUser } from 'views/Dashboard/hooks/useIsValidDashboardUser'
 import config, { ConfigMenuItemsType } from '../config/config'
 import { useMenuItemsStatus } from './useMenuItemsStatus'
 
 export const useMenuItems = (): ConfigMenuItemsType[] => {
-  const {
-    t,
-    currentLanguage: { code: languageCode },
-  } = useTranslation()
+  const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const { isDark } = useTheme()
   const menuItemsStatus = useMenuItemsStatus()
+  const showDashboardNav = useIsValidDashboardUser()
 
   const menuItems = useMemo(() => {
-    return config(t, isDark, languageCode, chainId)
-  }, [t, isDark, languageCode, chainId])
+    const forkConfig = [...config(t, chainId)]
+    const removeDashboardNav = forkConfig.slice(1, forkConfig.length)
+    return showDashboardNav ? config(t, chainId) : removeDashboardNav
+  }, [t, chainId, showDashboardNav])
 
   return useMemo(() => {
     if (menuItemsStatus && Object.keys(menuItemsStatus).length) {

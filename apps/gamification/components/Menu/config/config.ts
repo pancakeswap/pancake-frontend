@@ -29,6 +29,12 @@ const addMenuItemSupported = (item: any, chainId: any) => {
 const config: (t: ContextApi['t'], chainId?: number) => ConfigMenuItemsType[] = (t, chainId) =>
   [
     {
+      label: t('Dashboard'),
+      href: '/dashboard',
+      items: [],
+      icon: AllBlogIcon,
+    },
+    {
       label: t('Quests'),
       href: '/quests',
       items: [],
@@ -40,12 +46,6 @@ const config: (t: ContextApi['t'], chainId?: number) => ConfigMenuItemsType[] = 
       href: '/campaigns',
       items: [],
       icon: CalenderIcon,
-    },
-    {
-      label: t('Dashboard'),
-      href: '/dashboard',
-      items: [],
-      icon: AllBlogIcon,
     },
   ].map((item) => addMenuItemSupported(item, chainId))
 
