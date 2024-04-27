@@ -17,6 +17,7 @@ import {
 } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
 import { useReadContract } from 'wagmi'
+import { CakePoolType } from '../types'
 import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
 import { useVeCakeTotalSupply } from './useVeCakeTotalSupply'
 import { useVeCakeUserInfo } from './useVeCakeUserInfo'
@@ -26,6 +27,7 @@ export const useUserCakeTVL = (): bigint => {
 
   return useMemo(() => {
     if (!data) return 0n
+    if (data.cakePoolType === CakePoolType.DELEGATED) return data.amount
     return data.amount + data.cakeAmount
   }, [data])
 }
@@ -142,6 +144,7 @@ export const useRevenueSharingAPR = () => {
 
   return useMemo(() => {
     if (!revShareEmission || !userSharesPercent?.denominator || !userCakeTVL) return new Percent(0, 1)
+
     return new Percent(
       new BigNumber(revShareEmission).times(SECONDS_IN_YEAR).times(userSharesPercent.numerator.toString()).toFixed(0),
       (userCakeTVL * userSharesPercent.denominator).toString(),
