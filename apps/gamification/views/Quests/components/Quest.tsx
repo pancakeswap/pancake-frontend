@@ -26,7 +26,7 @@ export const Quest = () => {
   const { t } = useTranslation()
 
   return (
-    <Link href="/" external>
+    <Link href="/quests/1">
       <Card>
         <Flex flexDirection="column" padding="16px">
           <Flex mb="16px">

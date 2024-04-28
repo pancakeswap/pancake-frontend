@@ -1,11 +1,26 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, SubMenuItems } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useIsValidDashboardUser } from 'views/Dashboard/hooks/useIsValidDashboardUser'
+import { useAccount } from 'wagmi'
 
 export const DashboardLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
-  const { pathname } = useRouter()
+  const { pathname, push } = useRouter()
+  const { address: account } = useAccount()
+  const [isFirstTime, setIsFirstTime] = useState(true)
+  const showDashboardNav = useIsValidDashboardUser()
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsFirstTime(false), 1000)
+
+    if (showDashboardNav === false || (!isFirstTime && !account)) {
+      push('/')
+    }
+
+    return () => clearTimeout(timer)
+  }, [account, isFirstTime, push, showDashboardNav])
 
   const subMenuItems = useMemo(() => {
     const menu = [
@@ -26,6 +41,10 @@ export const DashboardLayout: React.FC<React.PropsWithChildren> = ({ children })
     () => subMenuItems.find((subMenuItem) => subMenuItem.href === pathname)?.href,
     [subMenuItems, pathname],
   )
+
+  if (!showDashboardNav || (!isFirstTime && !account)) {
+    return null
+  }
 
   return (
     <Box>

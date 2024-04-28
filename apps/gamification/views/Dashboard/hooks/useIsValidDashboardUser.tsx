@@ -1,3 +1,8 @@
+import { useMemo } from 'react'
+import { useAccount } from 'wagmi'
+
 export const useIsValidDashboardUser = () => {
-  return true
+  const { address: account } = useAccount()
+
+  return useMemo(() => Boolean(account && true), [account])
 }

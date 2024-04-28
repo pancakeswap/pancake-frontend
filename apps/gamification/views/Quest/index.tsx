@@ -48,7 +48,7 @@ export const Quest = () => {
     <QuestContainer>
       <Box width="100%" p={['0', '0', '0', '0', '0 40px']}>
         <Flex mt={['16px', '16px', '16px', '16px', '40px']}>
-          <StyledBackButton href="/">
+          <StyledBackButton href="/quests">
             <Flex>
               <ArrowBackIcon color="primary" />
               <Text ml="6px" color="primary" bold>
