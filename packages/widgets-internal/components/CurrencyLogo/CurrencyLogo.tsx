@@ -1,4 +1,3 @@
-import { Token } from "@pancakeswap/swap-sdk-core";
 import { ChainId } from "@pancakeswap/chains";
 import { useMemo } from "react";
 import { styled } from "styled-components";
@@ -7,6 +6,7 @@ import { useHttpLocations } from "@pancakeswap/hooks";
 import { TokenLogo, BinanceIcon } from "@pancakeswap/uikit";
 
 import { getCurrencyLogoUrlsByInfo } from "./utils";
+import { CurrencyInfo } from "./types";
 
 const StyledLogo = styled(TokenLogo)<{ size: string }>`
   width: ${({ size }) => size};
@@ -23,7 +23,7 @@ export function CurrencyLogo({
   useTrustWalletUrl,
   ...props
 }: {
-  currency?: Partial<Pick<Token, "chainId" | "address" | "symbol" | "isNative" | "isToken">> & {
+  currency?: CurrencyInfo & {
     logoURI?: string | undefined;
   };
   size?: string;

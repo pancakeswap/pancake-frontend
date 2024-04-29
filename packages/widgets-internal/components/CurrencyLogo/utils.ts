@@ -3,6 +3,7 @@ import { Currency, NATIVE, Token } from "@pancakeswap/sdk";
 import { bscTokens, ethereumTokens } from "@pancakeswap/tokens";
 import memoize from "lodash/memoize";
 import { getAddress } from "viem";
+import { CurrencyInfo } from "./types";
 
 const mapping: { [key: number]: string } = {
   [ChainId.BSC]: "smartchain",
@@ -103,10 +104,7 @@ export const getCurrencyLogoUrls = memoize(
 );
 
 export const getCurrencyLogoUrlsByInfo = memoize(
-  (
-    currency: Partial<Pick<Token, "chainId" | "symbol" | "address">> | undefined,
-    { useTrustWallet = true }: GetLogoUrlsOptions = {}
-  ): string[] => {
+  (currency: CurrencyInfo | undefined, { useTrustWallet = true }: GetLogoUrlsOptions = {}): string[] => {
     if (!currency) {
       return [];
     }
