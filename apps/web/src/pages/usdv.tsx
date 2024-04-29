@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useTheme } from '@pancakeswap/hooks'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import styled from 'styled-components'
 
 let initialized = false
 
@@ -36,6 +37,14 @@ async function init(theme: ReturnType<typeof useTheme>) {
   })
 }
 
+const Container = styled(Flex).attrs({
+  flexDirection: 'column',
+  alignItems: 'center',
+})`
+  height: 100%;
+  background: ${({ theme }) => theme.colors.gradientBubblegum};
+`
+
 const USDVPage = () => {
   const theme = useTheme()
   const { isMobile } = useMatchBreakpoints()
@@ -45,14 +54,15 @@ const USDVPage = () => {
   }, [theme])
 
   return (
-    <Flex flexDirection="column" alignItems="center">
+    <Container>
       <usdv-widget
         style={{
+          marginTop: isMobile ? 0 : '3rem',
           padding: isMobile ? 0 : '20px',
           maxWidth: isMobile ? '100%' : '468px',
         }}
       />
-    </Flex>
+    </Container>
   )
 }
 
