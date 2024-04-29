@@ -30,7 +30,7 @@ async function init(theme: ReturnType<typeof useTheme>) {
     theme: theme.isDark ? themes.dark : themes.light,
     bridgeRecolorConfig: [
       {
-        address: '0x8b929ade5e6835038f3ce6156768646c5f413b9b',
+        address: '0x8b929aDE5e6835038f3cE6156768646c5f413B9B',
         chainKey: 'bsc',
       },
     ],
