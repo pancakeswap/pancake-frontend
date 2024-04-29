@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-bitwise */
 import { maxUint24, maxUint256, maxUint8, toHex } from 'viem'
 import type { BinTree, Bytes32 } from '../../types'
 
@@ -5,6 +7,9 @@ const toHex32 = (value: number | bigint) => {
   return toHex(BigInt(value) & maxUint256, { size: 32 })
 }
 
+/**
+ * Returns true if the tree contains the id
+ */
 const contains = (tree: BinTree, id: bigint): boolean => {
   const key2 = Number(id >> 8n)
   const leaves = BigInt(tree.level2[key2] || '0')
@@ -12,6 +17,9 @@ const contains = (tree: BinTree, id: bigint): boolean => {
   return (leaves & (1n << (id & maxUint8))) !== 0n
 }
 
+/**
+ * Adds the id to the tree, returns true if the id was not already in the tree
+ */
 const add = (tree: BinTree, id: bigint): boolean => {
   const key2 = Number(id >> 8n)
 
@@ -37,6 +45,9 @@ const add = (tree: BinTree, id: bigint): boolean => {
   return false
 }
 
+/**
+ * Removes the id from the tree, returns true if the id was in the tree
+ */
 const remove = (tree: BinTree, id: bigint): boolean => {
   const key2 = Number(id >> 8n)
 
@@ -70,7 +81,7 @@ const leastSignificantBit = (value: bigint | Bytes32 = 0n): bigint => {
   value = BigInt(value)
   if (value === 0n) return 255n
   let bitPosition = 0n
-  while ((value & 1n) == 0n) {
+  while ((value & 1n) === 0n) {
     value >>= 1n
     bitPosition++
   }
@@ -92,6 +103,9 @@ const closestBitRight = (leaves: Bytes32, bit: bigint): bigint => {
   return BigInt(r) === 0n ? maxUint256 : mostSignificantBit(r) - shift
 }
 
+/**
+ * Returns the first right id in the tree that is lte the given id
+ */
 const findFirstRight = (tree: BinTree, id: bigint): bigint => {
   let leaves
 
@@ -142,6 +156,9 @@ const findFirstRight = (tree: BinTree, id: bigint): bigint => {
   return maxUint24
 }
 
+/**
+ * Returns the first left id in the tree that is gte the given id
+ */
 const findFirstLeft = (tree: BinTree, id: bigint): bigint => {
   let leaves
 
@@ -191,7 +208,9 @@ const findFirstLeft = (tree: BinTree, id: bigint): bigint => {
 
   return 0n
 }
-
+/**
+ * functions to interact with the binTree
+ */
 export const TreeMath = {
   contains,
   add,

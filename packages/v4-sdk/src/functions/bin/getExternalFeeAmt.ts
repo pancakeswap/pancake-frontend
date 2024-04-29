@@ -7,7 +7,7 @@ export const getExternalFeeAmt = (amounts: [bigint, bigint], fee: bigint): [bigi
   }
 
   const fee0 = fee % 256n
-  const fee1 = fee >> 8n
+  const fee1 = fee / 2n ** 8n
 
   const fee0Amt = fee0 === 0n ? 0n : amounts[0] / fee0
   const fee1Amt = fee1 === 0n ? 0n : amounts[1] / fee1

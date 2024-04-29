@@ -1,3 +1,7 @@
+/**
+ * Constants of the BinPool
+ */
+
 export const SCALE_OFFSET = 128n
 
 // eslint-disable-next-line no-bitwise

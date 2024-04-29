@@ -24,6 +24,9 @@ export type BinPoolState = {
   tree?: BinTree
 }
 
+/**
+ * Returns a new BinPoolState object
+ */
 export const getBinPool = ({
   currencyA,
   currencyB,

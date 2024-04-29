@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-constant-condition */
 import invariant from 'tiny-invariant'
 import { maxUint24 } from 'viem'
 import { SCALE_OFFSET } from '../../constants/binPool'
@@ -11,7 +13,7 @@ import { getNextNonEmptyBin } from './getNextNonEmptyBin'
 import { getPriceFromId } from './getPriceFromId'
 
 /**
- * dryrun of swap
+ * dryrun of swap to a given bin pool
  */
 export const swap = (
   binPool: BinPoolState,
@@ -19,6 +21,7 @@ export const swap = (
   zeroForOne: boolean
 ): {
   binPool: BinPoolState
+  feeForProtocol: bigint
   result: [bigint, bigint]
 } => {
   invariant(amountIn > 0n, 'INSUFFICIENT_AMOUNT_IN')
@@ -77,6 +80,7 @@ export const swap = (
 
   return {
     binPool,
+    feeForProtocol,
     result,
   }
 }
