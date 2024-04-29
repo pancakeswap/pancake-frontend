@@ -6,11 +6,7 @@ import { getFeeAmount } from './getFeeAmount'
 import { getFeeAmountFrom } from './getFeeAmountFrom'
 import { getPriceFromId } from './getPriceFromId'
 
-export const getAmounts = (
-  binPool: BinPoolState,
-  zeroForOne: boolean,
-  amountIn: bigint
-): {
+export type AmountsChanged = {
   /**
    * The amounts of tokens that will be added to the pool, including fees
    */
@@ -19,8 +15,22 @@ export const getAmounts = (
    * The amounts of tokens that will be removed from the pool
    */
   amountsOutOfBin: [bigint, bigint]
+  /**
+   * The fees that will be charged
+   */
   totalFees: [bigint, bigint]
-} => {
+}
+
+/**
+ * Returns the amounts of tokens that will be added and removed from the bin during a swap
+ * along with the fees that will be charged
+ *
+ * @param binPool BinPoolState
+ * @param zeroForOne boolean
+ * @param amountIn bigint
+ * @returns AmountsChanged
+ */
+export const getAmounts = (binPool: BinPoolState, zeroForOne: boolean, amountIn: bigint): AmountsChanged => {
   let amountInWithFee = amountIn
   let amountOutOfBin = 0n
   let totalFee = 0n

@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import invariant from 'tiny-invariant'
 import { maxUint256 } from 'viem'
 

@@ -20,6 +20,7 @@ export const encodeHooksRegistration = (hooksRegistration?: HooksRegistration): 
   if (hooksRegistration) {
     for (const key in hooksRegistration) {
       if (hooksRegistration[key as keyof HooksRegistration]) {
+        // eslint-disable-next-line no-bitwise
         registration |= 1 << HOOKS_REGISTRATION_OFFSET[key as keyof HooksRegistration]
       }
     }

@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-bitwise */
 import invariant from 'tiny-invariant'
 
 export const shiftDivRoundDown = (x: bigint, offset: bigint | number, denominator: bigint): bigint => {
