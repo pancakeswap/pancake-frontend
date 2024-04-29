@@ -24,6 +24,7 @@ const StyledDropdown = styled(Dropdown)`
 
 const Container = styled(Box)`
   position: relative;
+  cursor: pointer;
 
   &:before {
     content: '';
@@ -68,7 +69,7 @@ export const Share = () => {
   return (
     <Flex position="relative" ml="auto">
       <Container onMouseEnter={() => setIsOpenShareIcon(true)} onMouseLeave={() => setIsOpenShareIcon(false)}>
-        <Text color="primary" bold style={{ cursor: 'pointer' }} onClick={(e: MouseEvent) => toggleShareIcon(e)}>
+        <Text color="primary" bold onClick={(e: MouseEvent) => toggleShareIcon(e)}>
           {t('Share')}
         </Text>
         {isOpenShareIcon && (
@@ -105,8 +106,12 @@ export const Share = () => {
         )}
       </Container>
 
-      <Container onMouseEnter={() => setIsOpenMoreIcon(true)} onMouseLeave={() => setIsOpenMoreIcon(false)}>
-        <Flex style={{ cursor: 'pointer' }} alignSelf="center" onClick={(e: MouseEvent) => toggleMoreIcon(e)}>
+      <Container
+        style={{ alignSelf: 'center' }}
+        onMouseEnter={() => setIsOpenMoreIcon(true)}
+        onMouseLeave={() => setIsOpenMoreIcon(false)}
+      >
+        <Flex onClick={(e: MouseEvent) => toggleMoreIcon(e)}>
           <MoreIcon ml="6px" color="primary" />
         </Flex>
         {isOpenMoreIcon && (
