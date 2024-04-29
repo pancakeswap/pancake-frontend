@@ -12,6 +12,7 @@ import {
 } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { Description } from 'views/Campaign/components/Description'
+import { QuestList } from 'views/Campaign/components/QuestList'
 import { Reward } from 'views/Campaign/components/Reward'
 import { Share } from 'views/Quest/components/Share'
 
@@ -54,7 +55,7 @@ export const Campaign = () => {
 
   return (
     <QuestContainer>
-      <Box width="100%" p={['0', '0', '0', '0', '0 40px']}>
+      <Box width="100%" p={['0 0 150px 0', '0 0 150px 0', '0 0 150px 0', '0 0 150px 0', '0 40px 200px 40px']}>
         <Flex mt={['16px', '16px', '16px', '16px', '40px']}>
           <StyledBackButton href="/campaigns">
             <Flex>
@@ -87,6 +88,7 @@ export const Campaign = () => {
           />
         </Box>
         {!isDesktop && <Reward />}
+        <QuestList />
         <Description />
       </Box>
       {isDesktop && <Reward />}
