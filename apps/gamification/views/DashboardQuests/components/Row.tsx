@@ -51,35 +51,6 @@ const ArrowIcon = styled((props: any) => <ChevronDownIcon {...props} />)<{ $togg
   height: 24px;
 `
 
-const EditContainer = styled(Flex)`
-  position: absolute;
-  z-index: 2;
-  flex-direction: column;
-  width: 200px;
-  left: -180px;
-  top: -100px;
-  overflow: hidden;
-  border-radius: ${({ theme }) => theme.radii.card};
-  background-color: ${({ theme }) => theme.card.background};
-  border: solid 1px ${({ theme }) => theme.colors.cardBorder};
-
-  > a {
-    width: 100%;
-    padding: 8px 16px;
-
-    &:hover {
-      text-decoration: none;
-      background-color: ${({ theme }) => theme.colors.dropdown};
-    }
-
-    &:first-child {
-      padding-top: 16px;
-    }
-    &:last-child {
-      padding-bottom: 16px;
-    }
-  }
-`
 const StyledDropdown = styled(Dropdown)`
   width: 200px;
   left: -180px;

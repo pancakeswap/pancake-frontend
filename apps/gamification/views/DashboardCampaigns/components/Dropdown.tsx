@@ -7,11 +7,13 @@ const DropdownContainer = styled(Flex)`
   z-index: 2;
   flex-direction: column;
   overflow: hidden;
-  border-radius: ${({ theme }) => theme.radii.card};
+  cursor: pointer;
+  border-radius: 16px;
   background-color: ${({ theme }) => theme.card.background};
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};
 
-  > div {
+  > div,
+  > a {
     width: 100%;
     padding: 8px 16px;
 
@@ -49,6 +51,7 @@ export const Dropdown: React.FC<React.PropsWithChildren<DropdownProps>> = ({
     }
 
     document.addEventListener('click', handleClickOutside)
+
     return () => document.removeEventListener('click', handleClickOutside)
   }, [dropdownRef, setIsOpen])
 
