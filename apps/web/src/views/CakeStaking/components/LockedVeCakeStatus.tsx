@@ -97,8 +97,6 @@ export const LockedVeCakeStatus: React.FC<{
         </CardHeader>
         <NativePosition />
         <MigratePosition />
-        {/* <LockedInfo /> */}
-        {/* <SubmitUnlockButton /> */}
       </Card>
     </Box>
   )
@@ -140,6 +138,7 @@ const NativePosition = () => {
           </Flex>
         ) : null}
       </FlexGap>
+      {cakeLockExpired ? <SubmitUnlockButton /> : null}
     </Flex>
   )
 }
@@ -213,99 +212,6 @@ const MigratePosition = () => {
           </Button>
         </Link>
       </FlexGap>
-    </FlexGap>
-  )
-}
-
-const LockedInfo = () => {
-  const { t } = useTranslation()
-  const {
-    cakeUnlockTime,
-    nativeCakeLockedAmount,
-    proxyCakeLockedAmount,
-    cakePoolLocked,
-    cakePoolUnlockTime,
-    cakeLocked,
-    cakeLockExpired,
-    cakePoolLockExpired,
-  } = useCakeLockStatus()
-  return (
-    <FlexGap flexDirection="column" gap="24px" margin={24}>
-      <StyledLockedCard gap="16px">
-        <RowBetween>
-          <AutoColumn>
-            <Text fontSize={12} color="textSubtle" textTransform="uppercase" bold>
-              {t('cake locked')}
-            </Text>
-            <CakeLocked
-              proxyExpired={cakePoolLockExpired}
-              proxyUnlockTime={cakePoolUnlockTime}
-              nativeCakeLocked={nativeCakeLockedAmount}
-              proxyCakeLocked={proxyCakeLockedAmount}
-            />
-          </AutoColumn>
-          <AutoColumn>
-            <Text fontSize={12} color="textSubtle" textTransform="uppercase" bold>
-              {t('unlocks in')}
-            </Text>
-            <CakeUnlockAt
-              proxyCakeLocked={proxyCakeLockedAmount}
-              nativeLocked={cakeLocked}
-              nativeExpired={cakeLockExpired}
-              proxyLocked={cakePoolLocked}
-              proxyExpired={cakePoolLockExpired}
-              nativeUnlockTime={cakeUnlockTime}
-              proxyUnlockTime={cakePoolUnlockTime}
-            />
-          </AutoColumn>
-        </RowBetween>
-      </StyledLockedCard>
-      {cakePoolLocked ? (
-        <>
-          {cakePoolLockExpired ? (
-            <Message variant="warning" icon={<InfoFilledIcon color="warning" />}>
-              <Text as="p">
-                {t(
-                  'CAKE Pool migrated position has unlocked. Go to the pool page to withdraw, add CAKE into veCAKE to increase your veCAKE benefits.',
-                )}
-              </Text>
-            </Message>
-          ) : (
-            <Message variant="primary" icon={<InfoFilledIcon color="secondary" />}>
-              <AutoColumn gap="8px">
-                <Text as="p">
-                  {t(
-                    'Position migrated from CAKE Pool can not be extended or topped up. To extend or add more CAKE, set up a native veCAKE position.',
-                  )}
-                </Text>
-                <LearnMore />
-              </AutoColumn>
-            </Message>
-          )}
-          <Link external style={{ textDecoration: 'none', width: '100%' }} href="/pools">
-            <Button width="100%" variant="secondary">
-              {t('View CAKE Pool Position')}
-            </Button>
-          </Link>
-        </>
-      ) : null}
-      {/* if both veCake and cakePool expired, user should deal with cake pool first */}
-      {cakeLockExpired && !cakePoolLockExpired ? (
-        <Message variant="warning" icon={<InfoFilledIcon color={CUSTOM_WARNING_COLOR} />}>
-          <Text as="p" color={CUSTOM_WARNING_COLOR}>
-            {t(
-              'Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!',
-            )}
-          </Text>
-        </Message>
-      ) : null}
-      {!cakeLockExpired ? (
-        <Flex justifyContent="center">
-          <img src="/images/cake-staking/my-cake-bunny.png" alt="my-cake-bunny" width="254px" />
-        </Flex>
-      ) : null}
-      {/* if both veCake and cakePool expired, user should deal with cake pool first */}
-      {cakeLockExpired && !cakePoolLockExpired ? <SubmitUnlockButton /> : null}
     </FlexGap>
   )
 }
