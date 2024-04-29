@@ -32,8 +32,11 @@ export const TotalApy: React.FC<React.PropsWithChildren<TotalApyProps>> = ({ veC
   const { veCAKEPoolApr, revShareEmissionApr } = useFourYearTotalVeCakeApr()
   const { data: totalSupply } = useVeCakeTotalSupply()
   // CAKE Pool APR
-  const userCakeTvl = getDecimalAmount(new BigNumber(cakeAmount))
-  const userSharesPercentage = getDecimalAmount(new BigNumber(veCake)).div(totalSupply).times(100)
+  const userCakeTvl = useMemo(() => getDecimalAmount(new BigNumber(cakeAmount)), [cakeAmount])
+  const userSharesPercentage = useMemo(
+    () => getDecimalAmount(new BigNumber(veCake)).div(totalSupply).times(100),
+    [totalSupply],
+  )
 
   const shouldShow4yrApr = useMemo(() => cakeAmount === 0 || cakeLockWeeks === '', [cakeAmount, cakeLockWeeks])
 
