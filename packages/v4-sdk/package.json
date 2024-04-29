@@ -26,13 +26,13 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "@pancakeswap/sdk": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/v3-sdk": "workspace:*",
     "tiny-invariant": "^1.3.3",
     "viem": "2.9.19"
   },
   "devDependencies": {
+    "@pancakeswap/sdk": "workspace:*",
     "tsup": "^6.7.0"
   },
   "engines": {

@@ -2469,9 +2469,6 @@ importers:
 
   packages/v4-sdk:
     dependencies:
-      '@pancakeswap/sdk':
-        specifier: workspace:*
-        version: link:../swap-sdk
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
@@ -2485,6 +2482,9 @@ importers:
         specifier: 2.9.19
         version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
     devDependencies:
+      '@pancakeswap/sdk':
+        specifier: workspace:*
+        version: link:../swap-sdk
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
