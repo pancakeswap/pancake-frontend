@@ -118,7 +118,7 @@ export const ProviderSelector = ({
   const quoteText = useMemo(() => {
     if (isBestQuote) return isMobile ? t('Best') : t('Best price')
     if (error) return t('quote unavailable')
-    return t('%change% %', { change: differenceFromBest })
+    return `${differenceFromBest}%`
   }, [isBestQuote, differenceFromBest, t, error, isMobile])
 
   return (
