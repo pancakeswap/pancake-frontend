@@ -26,7 +26,7 @@ export function MintLink(props: SpaceProps) {
   const { t } = useTranslation();
   const title = (
     <>
-      <ExternalCurrencyLinkTitle>{t("Mint / Transfar USDV")}</ExternalCurrencyLinkTitle>
+      <ExternalCurrencyLinkTitle>{t("Mint / Transfer USDV")}</ExternalCurrencyLinkTitle>
       <StyledTag variant="success">{t("New")}</StyledTag>
     </>
   );
