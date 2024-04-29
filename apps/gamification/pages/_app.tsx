@@ -1,5 +1,5 @@
 import { LanguageProvider } from '@pancakeswap/localization'
-import { ModalProvider, PancakeTheme, ResetCSS, UIKitProvider, dark, light } from '@pancakeswap/uikit'
+import { ModalProvider, PancakeTheme, ResetCSS, ToastListener, UIKitProvider, dark, light } from '@pancakeswap/uikit'
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { NextPage } from 'next'
 import { DefaultSeo } from 'next-seo'
@@ -96,6 +96,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                         </WrapBalancerProvider>
                       </Layout>
                     </Menu>
+                    <ToastListener />
                     {Component?.CustomComponent}
                   </ModalProvider>
                 </LanguageProvider>
