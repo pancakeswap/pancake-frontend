@@ -216,7 +216,7 @@ export default function FeeSelector({
               return null
             })}
           </SelectContainer>
-          {currencyA && currencyB && v2PairHasBetterTokenAmounts && handleSelectV2 && (
+          {currencyA && currencyB && handleSelectV2 && (
             <AtomBox textAlign="center">
               {/*
                 using state instead of replacing url to /v2 here
