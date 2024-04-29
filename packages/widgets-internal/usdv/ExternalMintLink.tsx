@@ -1,7 +1,6 @@
 import { Tag } from "@pancakeswap/uikit";
 import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
-import { bscTokens } from "@pancakeswap/tokens";
 import { SpaceProps } from "styled-system";
 
 import {
@@ -17,6 +16,12 @@ const StyledTag = styled(Tag)`
   height: auto;
 `;
 
+const USDV = {
+  chainId: 56,
+  symbol: "USDV",
+  isToken: true,
+};
+
 export function MintLink(props: SpaceProps) {
   const { t } = useTranslation();
   const title = (
@@ -26,6 +31,6 @@ export function MintLink(props: SpaceProps) {
     </>
   );
   const desc = <ExternalCurrencyLinkDesc>{t("Swap stablecoins for USDV")}</ExternalCurrencyLinkDesc>;
-  const currencyLogo = <CurrencyLogo mt={desc ? "0.125rem" : 0} currency={bscTokens.usdv} size="1.375rem" />;
+  const currencyLogo = <CurrencyLogo mt={desc ? "0.125rem" : 0} currency={USDV} size="1.375rem" />;
   return <ExternalCurrencyLink href="/usdv" currencyLogo={currencyLogo} title={title} desc={desc} {...props} />;
 }

@@ -1,4 +1,4 @@
-import { Currency } from "@pancakeswap/sdk";
+import { Token } from "@pancakeswap/swap-sdk-core";
 import { ChainId } from "@pancakeswap/chains";
 import { useMemo } from "react";
 import { styled } from "styled-components";
@@ -6,7 +6,7 @@ import { space, SpaceProps } from "styled-system";
 import { useHttpLocations } from "@pancakeswap/hooks";
 import { TokenLogo, BinanceIcon } from "@pancakeswap/uikit";
 
-import { getCurrencyLogoUrls } from "./utils";
+import { getCurrencyLogoUrlsByInfo } from "./utils";
 
 const StyledLogo = styled(TokenLogo)<{ size: string }>`
   width: ${({ size }) => size};
@@ -23,7 +23,7 @@ export function CurrencyLogo({
   useTrustWalletUrl,
   ...props
 }: {
-  currency?: Currency & {
+  currency?: Partial<Pick<Token, "chainId" | "address" | "symbol" | "isNative" | "isToken">> & {
     logoURI?: string | undefined;
   };
   size?: string;
@@ -36,7 +36,7 @@ export function CurrencyLogo({
     if (currency?.isNative) return [];
 
     if (currency?.isToken) {
-      const logoUrls = getCurrencyLogoUrls(currency, { useTrustWallet: useTrustWalletUrl });
+      const logoUrls = getCurrencyLogoUrlsByInfo(currency, { useTrustWallet: useTrustWalletUrl });
 
       if (currency?.logoURI) {
         return [...uriLocations, ...logoUrls];
