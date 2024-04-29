@@ -8,7 +8,7 @@ export const QuestsView = () => {
   const { t } = useTranslation()
 
   return (
-    <Box>
+    <Box pb="200px">
       <Banner
         title={t('Explore Quests')}
         subTitle={t('Earn by contributing to the community')}

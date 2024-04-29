@@ -5,15 +5,15 @@ import {
   ChevronDownIcon,
   EllipsisIcon,
   Flex,
-  Link,
   LogoRoundIcon,
   OpenNewIcon,
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { MouseEvent, useState } from 'react'
+import { useRouter } from 'next/router'
+import { MouseEvent, useRef, useState } from 'react'
 import { styled } from 'styled-components'
-
+import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
 import { StyledCell } from 'views/DashboardCampaigns/components/TableStyle'
 
 const StyledRow = styled.div`
@@ -80,6 +80,11 @@ const EditContainer = styled(Flex)`
     }
   }
 `
+const StyledDropdown = styled(Dropdown)`
+  width: 200px;
+  left: -180px;
+  top: -100px;
+`
 
 interface RowProps {
   expanded?: boolean
@@ -88,13 +93,21 @@ interface RowProps {
 
 export const Row: React.FC<RowProps> = ({ expanded, toggleExpanded }) => {
   const { t } = useTranslation()
+  const router = useRouter()
+  const dropdownRef = useRef<HTMLDivElement>(null)
   const { isXxl, isDesktop } = useMatchBreakpoints()
-  const [open, setOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   const openMoreButton = (e: MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    setOpen(!open)
+    setIsOpen(!isOpen)
+  }
+
+  const redirectUrl = (e: MouseEvent, sourceUrl: string) => {
+    e.preventDefault()
+    e.stopPropagation()
+    router.push(sourceUrl)
   }
 
   return (
@@ -137,21 +150,17 @@ export const Row: React.FC<RowProps> = ({ expanded, toggleExpanded }) => {
       <StyledCell role="cell" onClick={(e: MouseEvent) => openMoreButton(e)}>
         <Box position="relative">
           <EllipsisIcon color="primary" width="12px" height="12px" />
-          {open && (
-            <EditContainer>
-              <Link href="/">
-                <Flex>
-                  <BarChartIcon color="primary" width="20px" height="20px" />
-                  <Text ml="8px">{t('Statistics')}</Text>
-                </Flex>
-              </Link>
-              <Link href="/">
-                <Flex>
-                  <OpenNewIcon color="primary" width="20px" height="20px" />
-                  <Text ml="8px">{t('Review')}</Text>
-                </Flex>
-              </Link>
-            </EditContainer>
+          {isOpen && (
+            <StyledDropdown setIsOpen={setIsOpen} dropdownRef={dropdownRef}>
+              <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/campaigns')}>
+                <BarChartIcon color="primary" width="20px" height="20px" />
+                <Text ml="8px">{t('Statistics')}</Text>
+              </Flex>
+              <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/campaigns')}>
+                <OpenNewIcon color="primary" width="20px" height="20px" />
+                <Text ml="8px">{t('Review')}</Text>
+              </Flex>
+            </StyledDropdown>
           )}
         </Box>
       </StyledCell>

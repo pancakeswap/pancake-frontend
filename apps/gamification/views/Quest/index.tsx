@@ -6,7 +6,6 @@ import {
   Flex,
   Heading,
   Link,
-  MoreIcon,
   Tag,
   Text,
   useMatchBreakpoints,
@@ -14,6 +13,7 @@ import {
 import { styled } from 'styled-components'
 import { Description } from 'views/Quest/components/Description'
 import { Reward } from 'views/Quest/components/Reward'
+import { Share } from 'views/Quest/components/Share'
 import { Tasks } from 'views/Quest/components/Tasks'
 
 const QuestContainer = styled(Flex)`
@@ -56,12 +56,7 @@ export const Quest = () => {
               </Text>
             </Flex>
           </StyledBackButton>
-          <Flex ml="auto" style={{ cursor: 'pointer' }}>
-            <Text color="primary" bold>
-              {t('Share')}
-            </Text>
-            <MoreIcon ml="6px" color="primary" />
-          </Flex>
+          <Share />
         </Flex>
         <Box mt="16px">
           <Tag variant="success">{t('Ongoing')}</Tag>

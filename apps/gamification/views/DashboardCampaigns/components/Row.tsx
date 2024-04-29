@@ -11,9 +11,9 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
-import { MouseEvent, useEffect, useRef, useState } from 'react'
+import { MouseEvent, useRef, useState } from 'react'
 import { styled } from 'styled-components'
-
+import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
 import { StyledCell } from 'views/DashboardCampaigns/components/TableStyle'
 
 const StyledRow = styled.div`
@@ -51,34 +51,10 @@ const ArrowIcon = styled((props: any) => <ChevronDownIcon {...props} />)<{ $togg
   height: 24px;
 `
 
-const EditContainer = styled(Flex)`
-  position: absolute;
-  z-index: 2;
-  flex-direction: column;
+const StyledDropdown = styled(Dropdown)`
   width: 200px;
   left: -180px;
   top: -100px;
-  overflow: hidden;
-  border-radius: ${({ theme }) => theme.radii.card};
-  background-color: ${({ theme }) => theme.card.background};
-  border: solid 1px ${({ theme }) => theme.colors.cardBorder};
-
-  > div {
-    width: 100%;
-    padding: 8px 16px;
-
-    &:hover {
-      text-decoration: none;
-      background-color: ${({ theme }) => theme.colors.dropdown};
-    }
-
-    &:first-child {
-      padding-top: 16px;
-    }
-    &:last-child {
-      padding-bottom: 16px;
-    }
-  }
 `
 
 interface RowProps {
@@ -92,17 +68,6 @@ export const Row: React.FC<RowProps> = ({ expanded, toggleExpanded }) => {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const { isXxl, isDesktop } = useMatchBreakpoints()
   const [isOpen, setIsOpen] = useState(false)
-
-  useEffect(() => {
-    const handleClickOutside = ({ target }: Event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(target as HTMLElement)) {
-        setIsOpen(false)
-      }
-    }
-
-    document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
-  }, [setIsOpen])
 
   const openMoreButton = (e: MouseEvent) => {
     e.preventDefault()
@@ -157,7 +122,7 @@ export const Row: React.FC<RowProps> = ({ expanded, toggleExpanded }) => {
         <Box position="relative">
           <EllipsisIcon color="primary" width="12px" height="12px" />
           {isOpen && (
-            <EditContainer ref={dropdownRef}>
+            <StyledDropdown setIsOpen={setIsOpen} dropdownRef={dropdownRef}>
               <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/campaigns')}>
                 <BarChartIcon color="primary" width="20px" height="20px" />
                 <Text ml="8px">{t('Statistics')}</Text>
@@ -166,7 +131,7 @@ export const Row: React.FC<RowProps> = ({ expanded, toggleExpanded }) => {
                 <OpenNewIcon color="primary" width="20px" height="20px" />
                 <Text ml="8px">{t('Review')}</Text>
               </Flex>
-            </EditContainer>
+            </StyledDropdown>
           )}
         </Box>
       </StyledCell>
