@@ -1,5 +1,11 @@
 # @pancakeswap/farms
 
+## 1.0.56
+
+### Patch Changes
+
+- @pancakeswap/price-api-sdk@1.2.3
+
 ## 1.0.55
 
 ### Patch Changes

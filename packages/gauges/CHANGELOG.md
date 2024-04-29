@@ -1,5 +1,11 @@
 # @pancakeswap/gauges
 
+## 1.2.0
+
+### Minor Changes
+
+- 75e7a03: Added `GAUGES_SUPPORTED_CHAIN_IDS`
+
 ## 1.1.9
 
 ### Patch Changes
