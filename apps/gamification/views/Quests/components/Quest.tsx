@@ -4,7 +4,7 @@ import { CalenderIcon, Card, Flex, InfoIcon, Link, LogoRoundIcon, Text } from '@
 import { styled } from 'styled-components'
 
 const Detail = styled(Flex)`
-  padding: 0 8px;
+  padding: 0 5px;
   border-right: solid 1px ${({ theme }) => theme.colors.cardBorder};
 `
 

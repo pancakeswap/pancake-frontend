@@ -12,7 +12,7 @@ const StyledThumbnail = styled('div')`
 `
 
 const Detail = styled(Flex)`
-  padding: 0 8px;
+  padding: 0 5px;
   border-right: solid 1px ${({ theme }) => theme.colors.cardBorder};
 `
 

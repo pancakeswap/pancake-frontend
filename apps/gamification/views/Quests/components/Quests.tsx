@@ -10,7 +10,7 @@ const StyledFlexGap = styled(FlexGap)`
   margin-bottom: 16px;
 
   > a {
-    width: 264px;
+    width: 100%;
     margin: auto;
 
     &:hover {

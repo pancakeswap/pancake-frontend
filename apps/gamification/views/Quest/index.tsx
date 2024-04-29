@@ -12,6 +12,8 @@ import {
 } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { Description } from 'views/Quest/components/Description'
+import { ExploreMore } from 'views/Quest/components/ExploreMore'
+import { RelatedQuest } from 'views/Quest/components/RelatedQuest'
 import { Reward } from 'views/Quest/components/Reward'
 import { Share } from 'views/Quest/components/Share'
 import { Tasks } from 'views/Quest/components/Tasks'
@@ -46,7 +48,7 @@ export const Quest = () => {
 
   return (
     <QuestContainer>
-      <Box width="100%" p={['0', '0', '0', '0', '0 40px']}>
+      <Box width="100%" p={['0 0 150px 0', '0 0 150px 0', '0 0 150px 0', '0 0 150px 0', '0 40px 200px 40px']}>
         <Flex mt={['16px', '16px', '16px', '16px', '40px']}>
           <StyledBackButton href="/quests">
             <Flex>
@@ -73,6 +75,8 @@ export const Quest = () => {
         {!isDesktop && <Reward />}
         <Tasks />
         <Description />
+        <RelatedQuest />
+        <ExploreMore />
       </Box>
       {isDesktop && <Reward />}
     </QuestContainer>
