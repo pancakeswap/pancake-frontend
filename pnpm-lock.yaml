@@ -2469,12 +2469,18 @@ importers:
 
   packages/v4-sdk:
     dependencies:
+      '@pancakeswap/sdk':
+        specifier: workspace:*
+        version: link:../swap-sdk
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
       '@pancakeswap/v3-sdk':
         specifier: workspace:*
         version: link:../v3-sdk
+      tiny-invariant:
+        specifier: ^1.3.3
+        version: 1.3.3
       viem:
         specifier: 1.19.11
         version: 1.19.11(typescript@5.2.2)(zod@3.22.4)
@@ -28807,6 +28813,10 @@ packages:
 
   /tiny-invariant@1.3.1:
     resolution: {integrity: sha512-AD5ih2NlSssTCwsMznbvwMZpJ1cbhkGd2uueNxzv2jDlEeZdU04JQfRnggJQ8DrcVBGjAsCKwFBbDlVNtEMlzw==}
+
+  /tiny-invariant@1.3.3:
+    resolution: {integrity: sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==}
+    dev: false
 
   /tiny-secp256k1@1.1.6:
     resolution: {integrity: sha512-FmqJZGduTyvsr2cF3375fqGHUovSwDi/QytexX1Se4BPuPZpTE5Ftp5fg+EFSuEf3lhZqgCRjEG3ydUQ/aNiwA==}
