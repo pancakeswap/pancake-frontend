@@ -172,7 +172,7 @@ function splitNormalAndStableFarmsReducer(result: SplitFarmResult, farm: any): S
 }
 // ====
 
-const FETCH_CHAIN_ID = [ChainId.BSC, ChainId.ETHEREUM]
+const FETCH_CHAIN_ID = [ChainId.BSC, ChainId.ETHEREUM, ChainId.ARBITRUM_ONE]
 const fetchAndUpdateLPsAPR = async () => {
   Promise.all(
     FETCH_CHAIN_ID.map(async (chainId) => {
