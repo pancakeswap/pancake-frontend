@@ -1,4 +1,4 @@
-import { chainNames } from '@pancakeswap/chains'
+import { ChainId, chainNames } from '@pancakeswap/chains'
 import { VAULTS_CONFIG_BY_CHAIN } from '@pancakeswap/position-managers'
 import { FACTORY_ADDRESS_MAP, Token, computePairAddress } from '@pancakeswap/sdk'
 import { DEPLOYER_ADDRESSES, computePoolAddress } from '@pancakeswap/v3-sdk'
@@ -6,12 +6,22 @@ import groupBy from 'lodash/groupBy'
 import { PublicClient, createPublicClient, http, parseAbiItem } from 'viem'
 import * as CHAINS from 'viem/chains'
 import { describe, expect, it, test } from 'vitest'
+import { GAUGES_SUPPORTED_CHAIN_IDS } from '../constants/chainId'
 import { CONFIG_PROD } from '../constants/config/prod'
 import { GaugeStableSwapConfig, GaugeType } from '../types'
 
 describe('Gauges Config', async () => {
   const gidGroups = groupBy(CONFIG_PROD, 'gid')
   const chainIdGroups = groupBy(CONFIG_PROD, 'chainId')
+
+  Object.keys(chainIdGroups).forEach((chainId) => {
+    it(`chainId ${
+      chainNames[chainId as unknown as ChainId]
+    }(${chainId}) should be in GAUGES_SUPPORTED_CHAIN_IDS`, () => {
+      expect(GAUGES_SUPPORTED_CHAIN_IDS.includes(Number(chainId))).toBe(true)
+    })
+  })
+
   const publicClient = Object.keys(chainIdGroups).reduce((acc, chainId) => {
     return {
       ...acc,

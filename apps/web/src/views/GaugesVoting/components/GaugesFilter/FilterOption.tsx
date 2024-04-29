@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
+import { GAUGES_SUPPORTED_CHAIN_IDS } from '@pancakeswap/gauges'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { AutoRow, Checkbox, FlexGap, GroupsIcon, RocketIcon, Tag, Text, VoteIcon } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -11,16 +12,7 @@ export const OPTIONS = {
   [OptionsType.ByChain]: {
     key: OptionsType.ByChain,
     title: <Trans>Filter By Chains</Trans>,
-    // @fixme: @ChefJerry add SUPPORTED_CHAINS to packages/gauges and import it here
-    options: [
-      ChainId.ETHEREUM,
-      ChainId.BSC,
-      ChainId.ZKSYNC,
-      ChainId.POLYGON_ZKEVM,
-      ChainId.ARBITRUM_ONE,
-      ChainId.LINEA,
-      ChainId.BASE,
-    ],
+    options: GAUGES_SUPPORTED_CHAIN_IDS,
   },
   [OptionsType.ByFeeTier]: {
     key: OptionsType.ByFeeTier,
