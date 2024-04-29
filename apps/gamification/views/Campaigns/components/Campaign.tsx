@@ -34,7 +34,7 @@ export const Campaign = () => {
   const { t } = useTranslation()
 
   return (
-    <Link href="/" external>
+    <Link href="/campaigns/2">
       <Card>
         <Flex flexDirection="column" padding="16px">
           <Box
