@@ -2867,7 +2867,6 @@
   "add": "add",
   "Unlock": "Unlock",
   "Renew Lock": "Renew Lock",
-  "my cake staking": "my cake staking",
   "Migration Needed": "Migration Needed",
   "cake locked": "cake locked",
   "unlocks in": "unlocks in",
@@ -2928,7 +2927,6 @@
   "This product has been upgraded": "This product has been upgraded",
   "Reward paused for this position": "Reward paused for this position",
   "to be locked until": "to be locked until",
-  "My VeCAKE": "My VeCAKE",
   "Once locked, your CAKE will be staked in veCAKE contract until this date. Early withdrawal is not available.": "Once locked, your CAKE will be staked in veCAKE contract until this date. Early withdrawal is not available.",
   "The ratio factor between the amount of CAKE locked and the final veCAKE number. Extend your lock duration for a higher ratio factor.": "The ratio factor between the amount of CAKE locked and the final veCAKE number. Extend your lock duration for a higher ratio factor.",
   "Unlock to create a new lock position": "Unlock to create a new lock position",
@@ -3351,5 +3349,10 @@
   "Swell's website": "Swell's website",
   "Done": "Done",
   "Single-Sided Strategy": "Single-Sided Strategy",
-  "Adaptive Portfolio Strategy": "Adaptive Portfolio Strategy"
+  "Adaptive Portfolio Strategy": "Adaptive Portfolio Strategy",
+  "migrated position": "migrated position",
+  "My veCAKE": "My veCAKE",
+  "native position": "native position",
+  "Adding CAKE or extending CAKE will be applying to your native position.": "Adding CAKE or extending CAKE will be applying to your native position.",
+  "View Migrated Position": "View Migrated Position"
 }
