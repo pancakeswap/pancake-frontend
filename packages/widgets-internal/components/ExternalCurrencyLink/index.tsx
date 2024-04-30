@@ -53,19 +53,19 @@ type Props = {
   href?: string;
 } & SpaceProps;
 
-export function ExternalCurrencyLink({ currencyLogo, title, desc, href }: Props) {
+export function ExternalCurrencyLink({ currencyLogo, title, desc, href, ...props }: Props) {
   const onLinkClick = useCallback(() => {
     window.open(href, "_blank");
   }, [href]);
 
   return (
-    <LinkCard data-dd-action-name="USDV Mint" onClick={onLinkClick}>
+    <LinkCard onClick={onLinkClick} {...props}>
       {currencyLogo}
       <Main>
         <TitleContainer>{title}</TitleContainer>
         {desc}
       </Main>
-      <Link external href={href} data-dd-action-name="USDV Mint" style={{ alignSelf: "center" }}>
+      <Link external href={href} style={{ alignSelf: "center" }}>
         <OpenNewIcon width="1.5rem" height="1.5rem" color="primary" />
       </Link>
     </LinkCard>

@@ -32,5 +32,14 @@ export function MintLink(props: SpaceProps) {
   );
   const desc = <ExternalCurrencyLinkDesc>{t("Swap stablecoins for USDV")}</ExternalCurrencyLinkDesc>;
   const currencyLogo = <CurrencyLogo mt={desc ? "0.125rem" : 0} currency={USDV} size="1.375rem" />;
-  return <ExternalCurrencyLink href="/usdv" currencyLogo={currencyLogo} title={title} desc={desc} {...props} />;
+  return (
+    <ExternalCurrencyLink
+      data-dd-action-name="USDV Mint"
+      href="/usdv"
+      currencyLogo={currencyLogo}
+      title={title}
+      desc={desc}
+      {...props}
+    />
+  );
 }
