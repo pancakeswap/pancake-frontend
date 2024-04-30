@@ -54,5 +54,6 @@ export const KNOWN_ERRORS: { [key: string]: OrderValidation } = {
   // "062dec56": OrderValidation.ExclusivityPeriod,
   // Exclusive Filler Validation NotExclusiveFiller
   '75c1bb14': OrderValidation.ExclusivityPeriod,
+  // Usually did not approve permit2
   TRANSFER_FROM_FAILED: OrderValidation.InsufficientFunds,
 }

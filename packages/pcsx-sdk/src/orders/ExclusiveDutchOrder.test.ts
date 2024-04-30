@@ -35,14 +35,14 @@ describe('ExclusiveDutchOrder', () => {
 
   it('parses a encoded order', () => {
     const orderInfo = getOrderInfo({})
-    const order = new ExclusiveDutchOrder(orderInfo, 1)
+    const order = new ExclusiveDutchOrder(orderInfo, 97)
     const encoded = order.encode()
-    const parsed = ExclusiveDutchOrder.parse(encoded, 1)
+    const parsed = ExclusiveDutchOrder.parse(encoded, 97)
     expect(parsed.info).toEqual(orderInfo)
   })
 
   it('valid signature over info', async () => {
-    const order = new ExclusiveDutchOrder(getOrderInfo({}), 1)
+    const order = new ExclusiveDutchOrder(getOrderInfo({}), 97)
 
     const privateKey = generatePrivateKey()
     const account = privateKeyToAccount(privateKey)
@@ -73,7 +73,7 @@ describe('ExclusiveDutchOrder', () => {
         decayStartTime: 100n,
         decayEndTime: 100n,
       }),
-      1,
+      97,
     )
 
     expect(order.hash()).toMatchInlineSnapshot(`"0x7cef8eb26ac11e086c2784eb12d93cb9a4a68b3f04ce56b0858ff59829a13f0a"`)
