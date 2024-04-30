@@ -17,10 +17,10 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Hex } from 'viem'
-import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useEpochOnTally } from 'views/GaugesVoting/hooks/useEpochTime'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
+import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
 import { useUserVoteSlopes } from 'views/GaugesVoting/hooks/useUserVoteGauges'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { useAccount } from 'wagmi'
@@ -51,7 +51,8 @@ export const VoteTable = () => {
   // const { cakeUnlockTime, cakeLockedAmount } = useCakeLockStatus()
   const { cakeLockedAmount } = useCakeLockStatus()
   const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
-  const gaugesCount = useGaugesVotingCount()
+  const { data: allGauges } = useGauges()
+  const gaugesCount = allGauges?.length
   const [isOpen, setIsOpen] = useState(false)
   const epochPower = useEpochVotePower()
   const onTally = useEpochOnTally()
