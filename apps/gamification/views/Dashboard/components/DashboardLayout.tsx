@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, SubMenuItems } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useIsValidDashboardUser } from 'views/Dashboard/hooks/useIsValidDashboardUser'
 import { useAccount } from 'wagmi'
 
@@ -12,15 +12,15 @@ export const DashboardLayout: React.FC<React.PropsWithChildren> = ({ children })
   const [isFirstTime, setIsFirstTime] = useState(true)
   const showDashboardNav = useIsValidDashboardUser()
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsFirstTime(false), 1000)
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setIsFirstTime(false), 1000)
 
-    if (showDashboardNav === false || (!isFirstTime && !account)) {
-      push('/')
-    }
+  //   if (showDashboardNav === false || !isFirstTime) {
+  //     push('/')
+  //   }
 
-    return () => clearTimeout(timer)
-  }, [account, isFirstTime, push, showDashboardNav])
+  //   return () => clearTimeout(timer)
+  // }, [isFirstTime, push, showDashboardNav])
 
   const subMenuItems = useMemo(() => {
     const menu = [
@@ -37,10 +37,13 @@ export const DashboardLayout: React.FC<React.PropsWithChildren> = ({ children })
     return menu
   }, [t])
 
-  const activeSubItem = useMemo(
-    () => subMenuItems.find((subMenuItem) => subMenuItem.href === pathname)?.href,
-    [subMenuItems, pathname],
-  )
+  const activeSubItem = useMemo(() => {
+    if (pathname.includes('/dashboard/quest')) {
+      return '/dashboard'
+    }
+
+    return subMenuItems.find((subMenuItem) => subMenuItem.href === pathname)?.href
+  }, [subMenuItems, pathname])
 
   if (!showDashboardNav || (!isFirstTime && !account)) {
     return null

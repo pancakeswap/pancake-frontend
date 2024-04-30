@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import {
   BarChartIcon,
   Box,
-  ChevronDownIcon,
   EllipsisIcon,
   Flex,
   LogoRoundIcon,
@@ -19,7 +18,6 @@ import { StyledCell } from 'views/DashboardCampaigns/components/TableStyle'
 const StyledRow = styled.div`
   background-color: transparent;
   display: flex;
-  cursor: pointer;
 
   ${StyledCell} {
     &:first-child {
@@ -46,23 +44,15 @@ const StyledRow = styled.div`
   }
 `
 
-const ArrowIcon = styled((props: any) => <ChevronDownIcon {...props} />)<{ $toggled?: boolean }>`
-  transform: ${({ $toggled }) => ($toggled ? 'rotate(180deg)' : 'rotate(0)')};
-  height: 24px;
-`
-
 const StyledDropdown = styled(Dropdown)`
   width: 200px;
   left: -180px;
   top: -100px;
 `
 
-interface RowProps {
-  expanded?: boolean
-  toggleExpanded?: () => void
-}
+interface RowProps {}
 
-export const Row: React.FC<RowProps> = ({ expanded, toggleExpanded }) => {
+export const Row: React.FC<RowProps> = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -82,10 +72,9 @@ export const Row: React.FC<RowProps> = ({ expanded, toggleExpanded }) => {
   }
 
   return (
-    <StyledRow role="row" onClick={toggleExpanded ?? undefined}>
+    <StyledRow role="row">
       <StyledCell role="cell">
         <Flex>
-          {toggleExpanded && <ArrowIcon width="20px" height="20px" mr="6px" color="primary" $toggled={expanded} />}
           <Text
             bold
             overflow="hidden"
@@ -119,7 +108,7 @@ export const Row: React.FC<RowProps> = ({ expanded, toggleExpanded }) => {
         </StyledCell>
       )}
       <StyledCell role="cell" onClick={(e: MouseEvent) => openMoreButton(e)}>
-        <Box position="relative">
+        <Box position="relative" style={{ cursor: 'pointer' }}>
           <EllipsisIcon color="primary" width="12px" height="12px" />
           {isOpen && (
             <StyledDropdown setIsOpen={setIsOpen} dropdownRef={dropdownRef}>
@@ -127,9 +116,9 @@ export const Row: React.FC<RowProps> = ({ expanded, toggleExpanded }) => {
                 <BarChartIcon color="primary" width="20px" height="20px" />
                 <Text ml="8px">{t('Statistics')}</Text>
               </Flex>
-              <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/campaigns')}>
+              <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/quest/edit')}>
                 <OpenNewIcon color="primary" width="20px" height="20px" />
-                <Text ml="8px">{t('Review')}</Text>
+                <Text ml="8px">{t('Edit')}</Text>
               </Flex>
             </StyledDropdown>
           )}
