@@ -1,5 +1,12 @@
 # @pancakeswap/price-api-sdk
 
+## 1.2.4
+
+### Patch Changes
+
+- Updated dependencies [8c52665]
+  - @pancakeswap/pcsx-sdk@0.0.4
+
 ## 1.2.3
 
 ### Patch Changes
