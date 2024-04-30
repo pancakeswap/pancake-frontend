@@ -62,7 +62,7 @@ const Container = styled(Flex).attrs({
 function useUSDVDisclaimer() {
   const { t } = useTranslation()
   const [accepted, setAccepted] = useAtom(usdvDisclaimer)
-  const onAccept = useCallback(() => setAccepted(true), [])
+  const onAccept = useCallback(() => setAccepted(true), [setAccepted])
   const checks = useMemo(
     () => [
       {
@@ -92,7 +92,7 @@ function useUSDVDisclaimer() {
     if (!accepted) {
       showModal()
     }
-  }, [accepted])
+  }, [])
 }
 
 function Widget() {
