@@ -46,57 +46,40 @@ export const getTotalTvl = async () => {
     }
 
     const usersQuery = gql`
-      query userCount($network: evm_network, $since: DateTime, $till: DateTime) {
-        EVM(network: $network) {
-          DEXTrades(
-            where: {
-              Trade: { Dex: { ProtocolFamily: { includes: "PancakeSwap" } } }
-              Block: { Time: { since: $since, till: $till } }
-            }
+      query userCount($network: EthereumNetwork, $since: ISO8601DateTime, $till: ISO8601DateTime) {
+        ethereum(network: $network) {
+          dexTrades(
+            exchangeName: { in: ["Pancake", "Pancake v2", "PancakeSwap"] }
+            date: { since: $since, till: $till }
           ) {
-            count(distinct: Transaction_From)
+            count(uniq: senders)
           }
         }
       }
     `
 
     if (process.env.BIT_QUERY_HEADER) {
-      const sinceToISO = days30Ago.toISOString()
-      const tillToISO = new Date().toISOString()
       try {
         let querySuccess = false
         const bscResult = await bitQueryServerClient.request<any>(usersQuery, {
           network: 'bsc',
-          since: sinceToISO,
-          till: tillToISO,
+          since: days30Ago.toISOString(),
+          till: new Date().toISOString(),
         })
-        if (bscResult?.EVM?.DEXTrades?.[0]?.count) {
-          results.addressCount30Days = bscResult.EVM.DEXTrades[0].count
+        if (bscResult?.ethereum?.dexTrades?.[0]?.count) {
+          results.addressCount30Days = bscResult.ethereum.dexTrades[0].count
           querySuccess = true
         }
         const ethResult = await bitQueryServerClient.request<any>(usersQuery, {
-          network: 'eth',
-          since: sinceToISO,
-          till: tillToISO,
+          network: 'ethereum',
+          since: days30Ago.toISOString(),
+          till: new Date().toISOString(),
         })
-        if (ethResult?.EVM?.DEXTrades?.[0]?.count) {
+        if (ethResult?.ethereum?.dexTrades?.[0]?.count) {
           if (querySuccess) {
-            results.addressCount30Days += ethResult.EVM.DEXTrades[0].count
+            results.addressCount30Days += ethResult.ethereum.dexTrades[0].count
           } else {
-            results.addressCount30Days = ethResult.EVM.DEXTrades[0].count
-            querySuccess = true
-          }
-        }
-        const arbResult = await bitQueryServerClient.request<any>(usersQuery, {
-          network: 'arbitrum',
-          since: sinceToISO,
-          till: tillToISO,
-        })
-        if (arbResult?.EVM?.DEXTrades?.[0]?.count) {
-          if (querySuccess) {
-            results.addressCount30Days += arbResult.EVM.DEXTrades[0].count
-          } else {
-            results.addressCount30Days = arbResult.EVM.DEXTrades[0].count
+            results.addressCount30Days = ethResult.ethereum.dexTrades[0].count
           }
         }
       } catch (error) {
