@@ -27,8 +27,17 @@
         "reserveUSD": "1336410.149915759"
       },
       {
+<<<<<<< HEAD
         "volumeUSD": "32980.81938263726",
         "reserveUSD": "1294095.5255513005"
+=======
+        "volumeUSD": "33176.173937238294",
+        "reserveUSD": "962495.2550966841"
+      },
+      {
+        "volumeUSD": "58512.03961502663",
+        "reserveUSD": "955171.6328516668"
+>>>>>>> 4b42d456e (chore: Update Aptos LP APRs for Farms (#9715))
       }
     ]
   },
