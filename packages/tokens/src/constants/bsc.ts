@@ -3149,4 +3149,12 @@ export const bscTokens = {
     'Masa Token',
     'https://www.masa.finance/',
   ),
+  weEth: new ERC20Token(
+    ChainId.BSC,
+    '0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A',
+    18,
+    'weETH',
+    'Wrapped eETH',
+    'https://www.ether.fi/',
+  ),
 }
