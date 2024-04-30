@@ -34,7 +34,7 @@ export const getAllGauges = async (
 
   allActiveGaugeInfos = await fetchAllKilledGauges(client, allGaugeInfos, { blockNumber })
 
-  if (!killed) allActiveGaugeInfos = allGaugeInfos.filter((gauge) => !gauge.killed)
+  if (!killed) allActiveGaugeInfos = allActiveGaugeInfos.filter((gauge) => !gauge.killed)
 
   const allGaugeInfoConfigs = allActiveGaugeInfos.reduce((prev, gauge) => {
     const filters = presets.filter((p) => p.address === gauge.pairAddress && Number(p.chainId) === gauge.chainId)
