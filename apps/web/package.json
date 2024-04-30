@@ -77,6 +77,7 @@
     "@sentry/nextjs": "^7.52.1",
     "@snapshot-labs/snapshot.js": "^0.4.40",
     "@tanstack/react-query": "^5.28.4",
+    "@usdv/usdv-widget": "^0.9.8",
     "@vanilla-extract/next-plugin": "^2.3.0",
     "@wallchain/sdk": "^0.6.8",
     "@walletconnect/notify-client": "^1.0.0",

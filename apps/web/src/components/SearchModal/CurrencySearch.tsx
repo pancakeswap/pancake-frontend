@@ -1,3 +1,4 @@
+import { UsdvWidget } from '@pancakeswap/widgets-internal'
 import { useDebounce, useSortedTokensByQuery } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 /* eslint-disable no-restricted-syntax */
@@ -5,20 +6,22 @@ import { Currency, Token } from '@pancakeswap/sdk'
 import { WrappedTokenInfo, createFilterToken } from '@pancakeswap/token-lists'
 import { AutoColumn, Box, Column, Input, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useAudioPlay } from '@pancakeswap/utils/user'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import useNativeCurrency from 'hooks/useNativeCurrency'
 import { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FixedSizeList } from 'react-window'
-import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
-import { safeGetAddress } from 'utils'
 import { isAddress } from 'viem'
+
+import { safeGetAddress } from 'utils'
+import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useUsdvMintAvailable } from 'hooks/useUsdvMintAvailable'
+
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
 import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
-
 import ImportRow from './ImportRow'
 
 interface CurrencySearchProps {
@@ -97,6 +100,10 @@ function CurrencySearch({
 
   const [searchQuery, setSearchQuery] = useState<string>('')
   const debouncedQuery = useDebounce(searchQuery, 200)
+  const usdvMintAvailable = useUsdvMintAvailable({
+    chainId,
+    tokenSymbol: debouncedQuery,
+  })
 
   const [invertSearchOrder] = useState<boolean>(false)
 
@@ -260,6 +267,7 @@ function CurrencySearch({
             commonBasesType={commonBasesType}
           />
         )}
+        {usdvMintAvailable ? <UsdvWidget.MintLink mt="0.625rem" /> : null}
       </AutoColumn>
       {getCurrencyListRows()}
     </>
