@@ -2,11 +2,18 @@ import { useEffect } from 'react'
 import { useTheme } from '@pancakeswap/hooks'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import { CurrencyLogo, PoweredBy } from '@pancakeswap/widgets-internal'
+import { ChainId } from '@pancakeswap/chains'
 
 let initialized = false
 
 // default to bsc
 const DEFAULT_CHAIN_ID = 102
+const USDV = {
+  chainId: ChainId.BSC,
+  symbol: 'USDV',
+  isToken: true,
+}
 
 async function init(theme: ReturnType<typeof useTheme>) {
   if (initialized) {
@@ -59,9 +66,12 @@ const USDVPage = () => {
         style={{
           marginTop: isMobile ? 0 : '3rem',
           padding: isMobile ? 0 : '20px',
-          maxWidth: isMobile ? '100%' : '468px',
+          maxWidth: isMobile ? '100%' : 'unset',
         }}
       />
+      <PoweredBy href="https://usdv.money" suffix={<CurrencyLogo currency={USDV} size="1.375rem" />}>
+        USDV.money
+      </PoweredBy>
     </Container>
   )
 }
