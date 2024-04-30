@@ -54,7 +54,7 @@ export const vaults: VaultConfig[] = [
     currencyA: zksyncTokens.usdc,
     currencyB: zksyncTokens.weth,
     earningToken: zksyncTokens.cake,
-    feeTier: FeeAmount.LOW,
+    feeTier: FeeAmount.HIGH,
     strategy: Strategy.ALO,
     manager: MANAGER.DEFIEDGE,
     isSingleDepositToken: false,
