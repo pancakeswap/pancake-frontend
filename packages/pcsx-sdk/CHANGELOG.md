@@ -1,5 +1,11 @@
 # @pancakeswap/pcsx-sdk
 
+## 0.0.4
+
+### Patch Changes
+
+- 8c52665: update address
+
 ## 0.0.3
 
 ### Patch Changes
