@@ -1,9 +1,16 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useTheme } from '@pancakeswap/hooks'
-import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { CurrencyLogo, PoweredBy } from '@pancakeswap/widgets-internal'
+import { CurrencyLogo, PoweredBy, ClientOnly } from '@pancakeswap/widgets-internal'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
+import { atomWithStorage } from 'jotai/utils'
+
+import DisclaimerModal from 'components/DisclaimerModal'
+import { useAtom } from 'jotai'
+
+const usdvDisclaimer = atomWithStorage('pcs:usdv-disclaimer-accept', false, undefined, { unstable_getOnInit: true })
 
 let initialized = false
 
@@ -52,9 +59,46 @@ const Container = styled(Flex).attrs({
   background: ${({ theme }) => theme.colors.gradientBubblegum};
 `
 
-const USDVPage = () => {
+function useUSDVDisclaimer() {
+  const { t } = useTranslation()
+  const [accepted, setAccepted] = useAtom(usdvDisclaimer)
+  const onAccept = useCallback(() => setAccepted(true), [])
+  const checks = useMemo(
+    () => [
+      {
+        key: 'accept-risk',
+        content: t(
+          'By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.',
+        ),
+      },
+    ],
+    [t],
+  )
+  const [showModal] = useModal(
+    <DisclaimerModal
+      modalHeader={t('USDV Disclaimer')}
+      id="usdv-disclaimer-modal"
+      header={t('This is an experimental product')}
+      subtitle={t('Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.')}
+      checks={checks}
+      onSuccess={onAccept}
+    />,
+    false,
+    true,
+    'usdv-disclaimer-modal',
+  )
+
+  useEffect(() => {
+    if (!accepted) {
+      showModal()
+    }
+  }, [accepted])
+}
+
+function Widget() {
   const theme = useTheme()
   const { isMobile } = useMatchBreakpoints()
+  useUSDVDisclaimer()
 
   useEffect(() => {
     init(theme)
@@ -73,6 +117,14 @@ const USDVPage = () => {
         USDV.money
       </PoweredBy>
     </Container>
+  )
+}
+
+const USDVPage = () => {
+  return (
+    <ClientOnly>
+      <Widget />
+    </ClientOnly>
   )
 }
 
