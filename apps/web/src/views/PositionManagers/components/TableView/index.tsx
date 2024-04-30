@@ -37,6 +37,8 @@ import { FarmCell } from './FarmCell'
 import { AprMobileCell, CellInner, FarmMobileCell, StyledTr } from './Styled'
 
 import { TIME_WINDOW_DEFAULT, TIME_WINDOW_FALLBACK } from '../../hooks/useFetchApr'
+import { useHasSwellReward } from '../../hooks/useHasSwellReward'
+import { SwellTooltip } from '../SwellTooltip'
 
 interface Props {
   config: PCSDuoTokenVaultConfig
@@ -91,6 +93,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     autoCompound,
   } = vault
 
+  const hasSwellReward = useHasSwellReward(adapterAddress)
   const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
   const tokenRatio = useQuery({
     queryKey: ['adapterAddress', adapterAddress, id],
@@ -242,7 +245,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
               case 'title':
                 return (
                   <td key={key}>
-                    <CellInner style={{ minWidth: '140px', gap: '4px' }}>
+                    <CellInner style={{ minWidth: '140px', gap: '0.5rem' }}>
                       <FarmCell
                         currencyA={currencyA}
                         currencyB={currencyB}
@@ -254,6 +257,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                         allowDepositToken1={allowDepositToken1 ?? false}
                         isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
                       />
+                      {hasSwellReward ? <SwellTooltip /> : null}
                     </CellInner>
                   </td>
                 )
@@ -351,7 +355,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
         <>
           <tr style={{ cursor: 'pointer' }} onClick={toggleActionPanel}>
             <FarmMobileCell colSpan={3}>
-              <Flex justifyContent="space-between" alignItems="center">
+              <Flex justifyContent="flex-start" alignItems="center">
                 <FarmCell
                   currencyA={currencyA}
                   currencyB={currencyB}
@@ -363,6 +367,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                   allowDepositToken1={allowDepositToken1 ?? false}
                   isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
                 />
+                {hasSwellReward ? <SwellTooltip /> : null}
               </Flex>
             </FarmMobileCell>
           </tr>
