@@ -66,7 +66,7 @@ export const TableHeader = () => {
       <StyledRow role="row">
         <StyledCell role="cell">
           <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
-            {t('Campaign title')}
+            {t('Guest title')}
           </Text>
         </StyledCell>
         {isXxl && (

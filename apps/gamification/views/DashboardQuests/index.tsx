@@ -8,7 +8,11 @@ export const DashboardQuests = () => {
   const { isTablet } = useMatchBreakpoints()
 
   return (
-    <RecordTemplate title={t('Guests')} createButtonText={isTablet ? t('Create') : t('Create a quest')}>
+    <RecordTemplate
+      title={t('Guests')}
+      createButtonText={isTablet ? t('Create') : t('Create a quest')}
+      createLink="/dashboard/quest/edit"
+    >
       <Records />
     </RecordTemplate>
   )

@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Box, Button, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 
@@ -51,16 +52,22 @@ const StyledButtonMenu = styled(ButtonMenu)`
 interface RecordTemplateProps {
   title: string
   createButtonText: string
+  createLink: string
   children?: React.ReactNode
 }
 
-export const RecordTemplate: React.FC<RecordTemplateProps> = ({ title, createButtonText, children }) => {
+export const RecordTemplate: React.FC<RecordTemplateProps> = ({ title, createButtonText, createLink, children }) => {
   const { t } = useTranslation()
+  const router = useRouter()
 
   const [statusButtonIndex, setStatusButtonIndex] = useState(0)
 
   const onStatusButtonChange = (newIndex: number) => {
     setStatusButtonIndex(newIndex)
+  }
+
+  const toCreatePage = () => {
+    router.push(createLink)
   }
 
   return (
@@ -71,7 +78,7 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({ title, createBut
             <Text fontSize={['36px']} bold>
               {title}
             </Text>
-            <IconButton scale="sm" endIcon={<AddIcon color="invertedContrast" />} />
+            <IconButton scale="sm" endIcon={<AddIcon color="invertedContrast" />} onClick={toCreatePage} />
           </Flex>
           <Flex width="100%" alignItems={['flex-start', 'flex-start', 'flex-start', 'flex-start', 'center']}>
             <StyledButtonMenu
@@ -86,7 +93,12 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({ title, createBut
               <ButtonMenuItem>{t('Finished')}</ButtonMenuItem>
               <ButtonMenuItem>{t('Drafted')}</ButtonMenuItem>
             </StyledButtonMenu>
-            <Button display={['none', 'none', 'flex']} scale="sm" endIcon={<AddIcon color="invertedContrast" />}>
+            <Button
+              scale="sm"
+              display={['none', 'none', 'flex']}
+              endIcon={<AddIcon color="invertedContrast" />}
+              onClick={toCreatePage}
+            >
               {createButtonText}
             </Button>
           </Flex>

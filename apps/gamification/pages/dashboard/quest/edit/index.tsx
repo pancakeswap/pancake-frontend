@@ -1,9 +1,10 @@
 import { DashboardLayout } from 'views/Dashboard/components/DashboardLayout'
+import { DashboardQuestEdit } from 'views/DashboardQuestEdit/index'
 
-const DashboardQuestEdit = () => {
-  return <>Quest Edit</>
+const DashboardQuestEditPage = () => {
+  return <DashboardQuestEdit />
 }
 
-DashboardQuestEdit.Layout = DashboardLayout
+DashboardQuestEditPage.Layout = DashboardLayout
 
-export default DashboardQuestEdit
+export default DashboardQuestEditPage
