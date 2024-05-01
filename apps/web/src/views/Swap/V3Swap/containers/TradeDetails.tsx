@@ -9,19 +9,16 @@ import { AdvancedDetailsFooter } from 'views/Swap/components/AdvancedSwapDetails
 
 import { GasTokenSelector } from 'components/Paymaster/GasTokenSelector'
 import { usePaymaster } from 'hooks/usePaymaster'
+import { PriceOrder } from '@pancakeswap/price-api-sdk'
 import { MMTradeInfo } from 'views/Swap/MMLinkPools/hooks'
-import { RouteDisplayEssentials, RoutesBreakdown } from '../components'
+import { isClassicOrder, isXOrder } from 'views/Swap/utils'
+import { RoutesBreakdown, XRoutesBreakdown } from '../components'
 import { useIsWrapping, useSlippageAdjustedAmounts } from '../hooks'
-import { TradeEssentialForPriceBreakdown, computeTradePriceBreakdown } from '../utils/exchange'
-
-type Trade = TradeEssentialForPriceBreakdown &
-  Pick<SmartRouterTrade<TradeType>, 'tradeType'> & {
-    routes: RouteDisplayEssentials[]
-  }
+import { computeTradePriceBreakdown } from '../utils/exchange'
 
 interface Props {
   loaded: boolean
-  trade?: Trade | null
+  order?: PriceOrder
 }
 
 export function MMTradeDetail({
@@ -54,22 +51,28 @@ export function MMTradeDetail({
   )
 }
 
-export const TradeDetails = memo(function TradeDetails({ loaded, trade }: Props) {
-  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade ?? undefined)
+export const TradeDetails = memo(function TradeDetails({ loaded, order }: Props) {
+  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(order)
   const isWrapping = useIsWrapping()
-  const { priceImpactWithoutFee, lpFeeAmount } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const { priceImpactWithoutFee, lpFeeAmount } = useMemo(
+    () => computeTradePriceBreakdown(isXOrder(order) ? order.ammTrade : order?.trade),
+    [order],
+  )
   const hasStablePool = useMemo(
-    () => trade?.routes.some((route) => route.pools.some(SmartRouter.isStablePool)),
-    [trade],
+    () =>
+      isClassicOrder(order)
+        ? order.trade?.routes.some((route) => route.pools.some(SmartRouter.isStablePool))
+        : undefined,
+    [order],
   )
 
   const { isPaymasterAvailable } = usePaymaster()
 
-  if (isWrapping || !loaded || !trade || !slippageAdjustedAmounts) {
+  if (isWrapping || !loaded || !order || !slippageAdjustedAmounts) {
     return null
   }
 
-  const { inputAmount, outputAmount, tradeType, routes } = trade
+  const { inputAmount, outputAmount, tradeType } = order.trade
 
   return (
     <AdvancedDetailsFooter show={loaded}>
@@ -82,9 +85,9 @@ export const TradeDetails = memo(function TradeDetails({ loaded, trade }: Props)
           priceImpactWithoutFee={priceImpactWithoutFee ?? undefined}
           realizedLPFee={lpFeeAmount ?? undefined}
           hasStablePair={hasStablePool}
-          gasTokenSelector={isPaymasterAvailable && <GasTokenSelector trade={trade} />}
+          gasTokenSelector={isPaymasterAvailable && <GasTokenSelector currency={order?.trade.inputAmount.currency} />}
         />
-        <RoutesBreakdown routes={routes} />
+        {isXOrder(order) ? <XRoutesBreakdown /> : <RoutesBreakdown routes={order?.trade?.routes} />}
       </AutoColumn>
     </AdvancedDetailsFooter>
   )

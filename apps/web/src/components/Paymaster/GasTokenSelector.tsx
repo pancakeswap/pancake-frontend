@@ -33,13 +33,10 @@ import styled from 'styled-components'
 import { Address } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
-import { Currency, TradeType } from '@pancakeswap/swap-sdk-core'
+import { Currency } from '@pancakeswap/swap-sdk-core'
 import { watchAccount } from '@wagmi/core'
 import { DEFAULT_PAYMASTER_TOKEN, paymasterInfo, paymasterTokens } from 'config/paymaster'
 import { useGasToken } from 'hooks/useGasToken'
-import { RouteDisplayEssentials } from 'views/Swap/V3Swap/components'
-import { TradeEssentialForPriceBreakdown } from 'views/Swap/V3Swap/utils/exchange'
 
 // Selector Styles
 const GasTokenSelectButton = styled(Button).attrs({ variant: 'text', scale: 'xs' })`
@@ -119,16 +116,11 @@ const StyledWarningIcon = styled(WarningIcon)`
   fill: ${({ theme }) => theme.colors.yellow};
 `
 
-type Trade = TradeEssentialForPriceBreakdown &
-  Pick<SmartRouterTrade<TradeType>, 'tradeType'> & {
-    routes: RouteDisplayEssentials[]
-  }
-
 interface GasTokenSelectorProps {
-  trade?: Trade | null
+  currency?: Currency
 }
 
-export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
+export const GasTokenSelector = ({ currency: inputCurrency }: GasTokenSelectorProps) => {
   const { t } = useTranslation()
   const { isOpen, setIsOpen, onDismiss } = useModalV2()
   const { address: account } = useAccount()
@@ -143,9 +135,6 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
     account,
     paymasterTokens.filter((token) => token.isToken) as any[],
   )
-
-  // Input Token Address from Swap
-  const inputCurrency = useMemo(() => trade && trade.inputAmount.currency, [trade])
 
   const showSameTokenWarning = useMemo(
     () =>

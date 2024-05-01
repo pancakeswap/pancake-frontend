@@ -32,6 +32,7 @@ import { ExpertModal } from '@pancakeswap/widgets-internal'
 import { TOKEN_RISK } from 'components/AccessRisk'
 import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useSpeedQuote } from 'hooks/useSpeedQuote'
 import useTheme from 'hooks/useTheme'
 import { useWebNotifications } from 'hooks/useWebNotifications'
 import { ReactNode, Suspense, lazy, useCallback, useState } from 'react'
@@ -39,7 +40,6 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
 import { useUserShowTestnet } from 'state/user/hooks/useUserShowTestnet'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
-import { useSpeedQuote } from 'hooks/useSpeedQuote'
 import {
   useMMLinkedPoolByDefault,
   useOnlyOneAMMSourceEnabled,
@@ -48,6 +48,7 @@ import {
   useUserStableSwapEnable,
   useUserV2SwapEnable,
   useUserV3SwapEnable,
+  useUserXEnable,
 } from 'state/user/smartRouter'
 import { styled } from 'styled-components'
 import GasSettings from './GasSettings'
@@ -349,6 +350,7 @@ function RoutingSettings() {
   const [isStableSwapByDefault, setIsStableSwapByDefault] = useUserStableSwapEnable()
   const [v2Enable, setV2Enable] = useUserV2SwapEnable()
   const [v3Enable, setV3Enable] = useUserV3SwapEnable()
+  const [xEnable, setXEnable] = useUserXEnable()
   const [split, setSplit] = useUserSplitRouteEnable()
   const [isMMLinkedPoolByDefault, setIsMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
@@ -373,6 +375,22 @@ function RoutingSettings() {
         }}
         gap="16px"
       >
+        <Flex justifyContent="space-between" alignItems="flex-start" mb="24px">
+          <Flex flexDirection="column">
+            <Text>PancakeSwap X</Text>
+            <Text fontSize="12px" color="textSubtle" maxWidth={360} mt={10}>
+              When applicable, aggregates liquidity to provide better price, more token options, and gas free swaps.
+            </Text>
+          </Flex>
+          <PancakeToggle
+            id="stable-swap-toggle"
+            scale="md"
+            checked={xEnable}
+            onChange={() => {
+              setXEnable((s) => !s)
+            }}
+          />
+        </Flex>
         <AtomBox>
           <PreTitle mb="24px">{t('Liquidity source')}</PreTitle>
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
@@ -441,7 +459,7 @@ function RoutingSettings() {
                 ml="4px"
               />
             </Flex>
-            <PancakeToggle
+            <Toggle
               disabled={isStableSwapByDefault && onlyOneAMMSourceEnabled}
               id="stable-swap-toggle"
               scale="md"

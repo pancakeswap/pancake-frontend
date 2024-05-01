@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency, CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
+import { ChainId, Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { useCallback, useMemo } from 'react'
+
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { Box, BscScanIcon, Column, Flex, InjectedModalProps, Link, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
@@ -15,23 +16,20 @@ import {
 import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
 import DescriptionWithTx from 'components/Toast/DescriptionWithTx'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useCallback, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import ConfirmSwapModalContainer from 'views/Swap/components/ConfirmSwapModalContainer'
 import { SwapTransactionErrorContent } from 'views/Swap/components/SwapTransactionErrorContent'
+
+import { InterfaceOrder, isMMOrder, isXOrder } from 'views/Swap/utils'
 import { TransactionConfirmSwapContent } from '../components'
 import { ConfirmAction } from '../hooks/useConfirmModalState'
 import { AllowedAllowanceState } from '../types'
 import { ApproveStepFlow } from './ApproveStepFlow'
 
-export const useApprovalPhaseStepTitles: ({
-  trade,
-}: {
-  trade: Pick<SmartRouterTrade<TradeType>, 'inputAmount'> | undefined
-}) => {
+export const useApprovalPhaseStepTitles: ({ trade }: { trade: InterfaceOrder['trade'] | undefined }) => {
   [step in AllowedAllowanceState]: string
 } = ({ trade }) => {
   const { t } = useTranslation()
@@ -51,10 +49,9 @@ type ConfirmSwapModalProps = InjectedModalProps & {
   onDismiss?: () => void
   confirmModalState: ConfirmModalState
   pendingModalSteps: ConfirmAction[]
-  isMM?: boolean
   isRFQReady?: boolean
-  trade?: SmartRouterTrade<TradeType> | V4Router.V4Trade<TradeType>
-  originalTrade?: SmartRouterTrade<TradeType> | V4Router.V4Trade<TradeType>
+  order?: InterfaceOrder | null
+  originalOrder?: InterfaceOrder | null
   currencyBalances?: { [field in Field]?: CurrencyAmount<Currency> }
   txHash?: string
   swapErrorMessage?: string
@@ -66,15 +63,14 @@ type ConfirmSwapModalProps = InjectedModalProps & {
 export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
   confirmModalState,
   pendingModalSteps,
-  customOnDismiss,
+  isRFQReady,
+  order,
+  originalOrder,
+  currencyBalances,
   swapErrorMessage,
   onDismiss,
-  isMM,
-  isRFQReady,
-  trade,
-  originalTrade,
+  customOnDismiss,
   txHash,
-  currencyBalances,
   openSettingModal,
   onAcceptChanges,
   onConfirm,
@@ -99,18 +95,18 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
     return pendingModalSteps.length > 0 && pendingModalSteps.some((step) => step.showIndicator)
   }, [confirmModalState, pendingModalSteps, swapErrorMessage, txHash])
 
-  const stepContents = useApprovalPhaseStepTitles({ trade })
+  const stepContents = useApprovalPhaseStepTitles({ trade: order?.trade })
   const token: Token | undefined = useMemo(
-    () => wrappedCurrency(trade?.outputAmount?.currency, chainId),
-    [chainId, trade?.outputAmount?.currency],
+    () => wrappedCurrency(order?.trade?.outputAmount?.currency, chainId),
+    [chainId, order?.trade?.outputAmount?.currency],
   )
 
   const showAddToWalletButton = useMemo(() => {
-    if (token && trade?.outputAmount?.currency) {
-      return !trade?.outputAmount?.currency?.isNative
+    if (token && order?.trade?.outputAmount?.currency) {
+      return !order?.trade?.outputAmount?.currency?.isNative
     }
     return false
-  }, [token, trade])
+  }, [token, order])
 
   const handleDismiss = useCallback(() => {
     if (typeof customOnDismiss === 'function') {
@@ -121,14 +117,14 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
   }, [customOnDismiss, onDismiss])
 
   const modalContent = useMemo(() => {
-    const currencyA = currencyBalances?.INPUT?.currency ?? trade?.inputAmount?.currency
-    const currencyB = currencyBalances?.OUTPUT?.currency ?? trade?.outputAmount?.currency
-    const amountA = formatAmount(trade?.inputAmount, 6) ?? ''
-    const amountB = formatAmount(trade?.outputAmount, 6) ?? ''
+    const currencyA = currencyBalances?.INPUT?.currency ?? order?.trade?.inputAmount?.currency
+    const currencyB = currencyBalances?.OUTPUT?.currency ?? order?.trade?.outputAmount?.currency
+    const amountA = formatAmount(order?.trade?.inputAmount, 6) ?? ''
+    const amountB = formatAmount(order?.trade?.outputAmount, 6) ?? ''
 
     if (swapErrorMessage) {
       const errorMessage =
-        txHash && isMM ? (
+        txHash && isMMOrder(order) ? (
           <Column style={{ margin: '0 -12rem' }} alignItems="center">
             <DescriptionWithTx txHash={txHash} txChainId={chainId}>
               <Text color="failure" mb="16px">
@@ -157,7 +153,8 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
       return (
         <ApproveModalContent
           title={stepContents}
-          isMM={isMM}
+          isMM={isMMOrder(order)}
+          isX={isXOrder(order)}
           // TODO
           isBonus={false}
           currencyA={currencyA as Currency}
@@ -232,11 +229,10 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
 
     return (
       <TransactionConfirmSwapContent
-        isMM={isMM}
-        isRFQReady={isRFQReady}
-        trade={trade}
+        order={order}
         recipient={recipient}
-        originalTrade={originalTrade}
+        isRFQReady={isRFQReady}
+        originalOrder={originalOrder}
         allowedSlippage={allowedSlippage}
         currencyBalances={currencyBalances}
         onConfirm={onConfirm}
@@ -244,26 +240,25 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
       />
     )
   }, [
-    allowedSlippage,
-    chainId,
-    confirmModalState,
     currencyBalances,
-    handleDismiss,
-    isMM,
-    isRFQReady,
-    onAcceptChanges,
-    onConfirm,
-    openSettingModal,
-    originalTrade,
-    pendingModalSteps,
-    recipient,
-    stepContents,
+    order,
     swapErrorMessage,
-    t,
-    token,
-    trade,
+    confirmModalState,
     txHash,
+    recipient,
+    isRFQReady,
+    originalOrder,
+    allowedSlippage,
+    onConfirm,
+    onAcceptChanges,
+    chainId,
+    t,
+    handleDismiss,
+    openSettingModal,
+    stepContents,
+    pendingModalSteps,
     showAddToWalletButton,
+    token,
   ])
 
   if (!chainId) return null

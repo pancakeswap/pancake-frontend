@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Percent, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { Percent } from '@pancakeswap/sdk'
 import {
   PancakeSwapUniversalRouter,
   Permit2Signature,
   getUniversalRouterAddress,
 } from '@pancakeswap/universal-router-sdk'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 import { useMemo } from 'react'
+
+import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
+
+import { ClassicOrder } from '@pancakeswap/price-api-sdk'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { safeGetAddress } from 'utils'
 import { Address, Hex } from 'viem'
 
@@ -28,7 +30,7 @@ interface SwapCall {
  * @param feeOptions the fee options to be applied to the trade.
  */
 export function useSwapCallArguments(
-  trade: SmartRouterTrade<TradeType> | undefined | null,
+  trade: ClassicOrder['trade'] | undefined | null,
   allowedSlippage: Percent,
   recipientAddressOrName: string | null | undefined,
   permitSignature: Permit2Signature | undefined,
