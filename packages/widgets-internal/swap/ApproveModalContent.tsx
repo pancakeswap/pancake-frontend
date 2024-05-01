@@ -32,6 +32,7 @@ interface ApproveModalContentProps {
     [step in AllowedAllowanceState]: string;
   };
   isMM: boolean | undefined;
+  isX: boolean;
   isBonus: boolean;
   currencyA: Currency;
   asBadge: boolean;
@@ -63,6 +64,7 @@ export const StepTitleAnimationContainer: FC<StepTitleAnimationContainerProps> =
 
 export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
   title,
+  isX,
   isMM,
   isBonus,
   currencyA,
@@ -102,7 +104,11 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
                   </Text>
                   <Flex>
                     <Text fontSize="14px">{t("Swapping thru:")}</Text>
-                    {isMM ? (
+                    {isX ? (
+                      <Text ml="4px" fontSize="14px">
+                        PancakeSwap X
+                      </Text>
+                    ) : isMM ? (
                       <Text ml="4px" fontSize="14px">
                         {t("Pancakeswap MM")}
                       </Text>
@@ -129,6 +135,7 @@ export const ApproveModalContent: React.FC<ApproveModalContentProps> = ({
     [
       currencyA,
       isBonus,
+      isX,
       isMM,
       t,
       targetRef,

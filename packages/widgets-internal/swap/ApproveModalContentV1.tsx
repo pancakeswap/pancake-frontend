@@ -3,11 +3,12 @@ import { AutoColumn, Box, ColumnCenter, Flex, Spinner, Text, TooltipText, useToo
 
 interface ApproveModalContentProps {
   title: string;
+  isX: boolean;
   isMM?: boolean;
   isBonus: boolean;
 }
 
-export const ApproveModalContentV1: React.FC<ApproveModalContentProps> = ({ title, isMM, isBonus }) => {
+export const ApproveModalContentV1: React.FC<ApproveModalContentProps> = ({ title, isMM, isBonus, isX }) => {
   const { t } = useTranslation();
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text>{t("Pancakeswap AMM includes V3, V2 and stable swap.")}</Text>,
@@ -27,7 +28,11 @@ export const ApproveModalContentV1: React.FC<ApproveModalContentProps> = ({ titl
         </Text>
         <Flex>
           <Text fontSize="14px">{t("Swapping thru:")}</Text>
-          {isMM ? (
+          {isX ? (
+            <Text ml="4px" fontSize="14px">
+              PancakeSwap X
+            </Text>
+          ) : isMM ? (
             <Text ml="4px" fontSize="14px">
               {t("Pancakeswap MM")}
             </Text>

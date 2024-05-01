@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
-import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router'
+import { SmartRouter } from '@pancakeswap/smart-router'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useUserSlippage } from '@pancakeswap/utils/user'
@@ -17,6 +17,7 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { Address, Hex, TransactionExecutionError, UserRejectedRequestError, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
 
+import { ClassicOrder } from '@pancakeswap/price-api-sdk'
 import { logger } from 'utils/datadog'
 import { viemClients } from 'utils/viem'
 import { isZero } from '../utils/isZero'
@@ -51,7 +52,7 @@ export class TransactionRejectedError extends Error {}
 export default function useSendSwapTransaction(
   account?: Address,
   chainId?: number,
-  trade?: SmartRouterTrade<TradeType> | null, // trade to execute, required
+  trade?: ClassicOrder['trade'] | null, // trade to execute, required
   swapCalls: SwapCall[] | WallchainSwapCall[] = [],
   type: 'V3SmartSwap' | 'UniversalRouter' = 'V3SmartSwap',
 ) {

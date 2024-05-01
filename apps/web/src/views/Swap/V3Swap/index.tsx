@@ -3,27 +3,21 @@ import { Box } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
 import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
+import { isMMOrder } from '../utils'
 import { BuyCryptoLink, FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, TradeDetails } from './containers'
 import { CommitButton } from './containers/CommitButton'
 import { useAllTypeBestTrade } from './hooks/useAllTypeBestTrade'
 import { useCheckInsufficientError } from './hooks/useCheckSufficient'
 
 export function V3SwapForm() {
-  const {
-    bestTrade,
-    ammTrade,
-    mmTrade,
-    isMMBetter,
-    tradeError,
-    tradeLoaded,
-    refreshTrade,
-    refreshDisabled,
-    pauseQuoting,
-    resumeQuoting,
-  } = useAllTypeBestTrade()
+  const { bestOrder, refreshOrder, isMMBetter, tradeError, tradeLoaded, refreshDisabled, pauseQuoting, resumeQuoting } =
+    useAllTypeBestTrade()
 
-  const ammPrice = useMemo(() => (ammTrade ? SmartRouter.getExecutionPrice(ammTrade) : undefined), [ammTrade])
-  const insufficientFundCurrency = useCheckInsufficientError(ammTrade)
+  const executionPrice = useMemo(
+    () => (bestOrder?.trade ? SmartRouter.getExecutionPrice(bestOrder.trade) : undefined),
+    [bestOrder?.trade],
+  )
+  const insufficientFundCurrency = useCheckInsufficientError(bestOrder)
   const commitHooks = useMemo(() => {
     return {
       beforeCommit: pauseQuoting,
@@ -33,17 +27,17 @@ export function V3SwapForm() {
 
   return (
     <>
-      <FormHeader onRefresh={refreshTrade} refreshDisabled={refreshDisabled} />
+      <FormHeader onRefresh={refreshOrder} refreshDisabled={refreshDisabled} />
       <FormMain
         tradeLoading={isMMBetter ? false : !tradeLoaded}
         pricingAndSlippage={
-          <PricingAndSlippage priceLoading={!tradeLoaded} price={ammPrice ?? undefined} showSlippage={!isMMBetter} />
+          <PricingAndSlippage priceLoading={!tradeLoaded} price={executionPrice ?? undefined} showSlippage={false} />
         }
-        inputAmount={bestTrade?.inputAmount}
-        outputAmount={bestTrade?.outputAmount}
+        inputAmount={bestOrder?.trade?.inputAmount}
+        outputAmount={bestOrder?.trade?.outputAmount}
         swapCommitButton={
           <CommitButton
-            trade={isMMBetter ? mmTrade : ammTrade}
+            order={bestOrder}
             tradeError={tradeError}
             tradeLoaded={tradeLoaded}
             {...commitHooks}
@@ -53,13 +47,13 @@ export function V3SwapForm() {
 
       <BuyCryptoLink currency={insufficientFundCurrency} />
 
-      {isMMBetter ? (
-        <MMTradeDetail loaded={!mmTrade.mmOrderBookTrade.isLoading} mmTrade={mmTrade.mmTradeInfo} />
+      {isMMOrder(bestOrder) ? (
+        <MMTradeDetail loaded={!bestOrder.mmOrderBookTrade?.isLoading} mmTrade={bestOrder.mmTradeInfo} />
       ) : (
-        <TradeDetails loaded={tradeLoaded} trade={ammTrade} />
+        <TradeDetails loaded={tradeLoaded} order={bestOrder} />
       )}
-      {(shouldShowMMLiquidityError(mmTrade?.mmOrderBookTrade?.inputError) || mmTrade?.mmRFQTrade?.error) &&
-        !ammTrade && (
+      {isMMOrder(bestOrder) &&
+        (shouldShowMMLiquidityError(bestOrder?.mmOrderBookTrade?.inputError) || bestOrder?.mmRFQTrade?.error) && (
           <Box mt="5px">
             <MMLiquidityWarning />
           </Box>

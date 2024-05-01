@@ -70,6 +70,34 @@ export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [], isMM
   )
 })
 
+export const XRoutesBreakdown = memo(function XRoutesBreakdown() {
+  const { t } = useTranslation()
+
+  return (
+    <>
+      <RouteInfoContainer>
+        <span style={{ display: 'flex', alignItems: 'center' }}>
+          <Text fontSize="14px" color="textSubtle">
+            {t('Route')}
+          </Text>
+          <QuestionHelper
+            text={t(
+              'Route is automatically calculated based on your routing preference to achieve the best price for your trade.',
+            )}
+            ml="4px"
+            placement="top-start"
+          />
+        </span>
+        <Box>
+          <span style={{ display: 'flex', alignItems: 'center' }}>
+            <Text fontSize="14px">PancakeSwap X</Text>
+          </span>
+        </Box>
+      </RouteInfoContainer>
+    </>
+  )
+})
+
 interface RouteProps {
   route: Pick<Route, 'path'>
 }

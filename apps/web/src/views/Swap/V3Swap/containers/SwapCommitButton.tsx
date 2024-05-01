@@ -1,10 +1,8 @@
-import { TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Box, Button, Dots, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useTranslation } from '@pancakeswap/localization'
 import { getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
 import { ConfirmModalState } from '@pancakeswap/widgets-internal'
 import { GreyCard } from 'components/Card'
@@ -25,6 +23,9 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { warningSeverity } from 'utils/exchange'
 import { useAccount, useChainId } from 'wagmi'
+
+import { PriceOrder } from '@pancakeswap/price-api-sdk'
+import { isClassicOrder, isXOrder } from 'views/Swap/utils'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapInputError } from '../hooks'
 import { useConfirmModalState } from '../hooks/useConfirmModalState'
 import { useSwapConfig } from '../hooks/useSwapConfig'
@@ -36,8 +37,8 @@ import { ConfirmSwapModal } from './ConfirmSwapModal'
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
 interface SwapCommitButtonPropsType {
-  trade?: SmartRouterTrade<TradeType>
-  tradeError?: Error
+  order?: PriceOrder
+  tradeError?: Error | null
   tradeLoading?: boolean
   // setLock: (lock: boolean) => void
 }
@@ -118,7 +119,7 @@ const SwapCommitButtonComp: React.FC<SwapCommitButtonPropsType & CommitButtonPro
 export const SwapCommitButton = memo(SwapCommitButtonComp)
 
 const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
-  trade,
+  order,
   tradeError,
   tradeLoading,
   beforeCommit,
@@ -132,13 +133,16 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const [inputCurrency, outputCurrency] = useSwapCurrency()
   const { isExpertMode } = useSwapConfig()
 
-  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
+  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(order)
   const amountToApprove = useMemo(
     () => (inputCurrency?.isNative ? undefined : slippageAdjustedAmounts[Field.INPUT]),
     [inputCurrency?.isNative, slippageAdjustedAmounts],
   )
 
-  const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const tradePriceBreakdown = useMemo(
+    () => computeTradePriceBreakdown(isXOrder(order) ? order.ammTrade : order?.trade),
+    [order],
+  )
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(
     tradePriceBreakdown ? tradePriceBreakdown.priceImpactWithoutFee : undefined,
@@ -152,14 +156,14 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1],
   }
-  const parsedAmounts = useParsedAmounts(trade, currencyBalances, false)
+  const parsedAmounts = useParsedAmounts(order?.trade, currencyBalances, false)
   const parsedIndependentFieldAmount = parsedAmounts[independentField]
-  const swapInputError = useSwapInputError(trade, currencyBalances)
-  const [tradeToConfirm, setTradeToConfirm] = useState<SmartRouterTrade<TradeType> | undefined>(undefined)
+  const swapInputError = useSwapInputError(order, currencyBalances)
+  const [tradeToConfirm, setTradeToConfirm] = useState<PriceOrder | undefined>(undefined)
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
 
   const { callToAction, confirmState, txHash, confirmActions, errorMessage, resetState } = useConfirmModalState(
-    isExpertMode ? trade : tradeToConfirm,
+    isExpertMode ? order : tradeToConfirm,
     amountToApprove?.currency.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
     getUniversalRouterAddress(chainId),
   )
@@ -174,10 +178,13 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   }, [afterCommit, confirmState, onUserInput, resetState])
 
   const handleAcceptChanges = useCallback(() => {
-    setTradeToConfirm(trade)
-  }, [trade])
+    setTradeToConfirm(order)
+  }, [order])
 
-  const noRoute = useMemo(() => !((trade?.routes?.length ?? 0) > 0) || tradeError, [trade?.routes?.length, tradeError])
+  const noRoute = useMemo(
+    () => isClassicOrder(order) && (!((order?.trade?.routes?.length ?? 0) > 0) || tradeError),
+    [order, tradeError],
+  )
   const isValid = useMemo(() => !swapInputError && !tradeLoading, [swapInputError, tradeLoading])
   const disabled = useMemo(
     () => !isValid || (priceImpactSeverity > 3 && !isExpertMode),
@@ -200,8 +207,8 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const openSettingModal = useSettingModal(onSettingModalDismiss)
   const [openConfirmSwapModal] = useModal(
     <ConfirmSwapModal
-      trade={trade}
-      originalTrade={tradeToConfirm}
+      order={order}
+      originalOrder={tradeToConfirm}
       txHash={txHash}
       confirmModalState={confirmState}
       pendingModalSteps={confirmActions ?? []}
@@ -218,7 +225,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   )
 
   const handleSwap = useCallback(() => {
-    setTradeToConfirm(trade)
+    setTradeToConfirm(order)
     resetState()
 
     // if expert mode turn-on, will not show preview modal
@@ -229,7 +236,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
 
     openConfirmSwapModal()
     logGTMClickSwapEvent()
-  }, [isExpertMode, onConfirm, openConfirmSwapModal, resetState, trade])
+  }, [isExpertMode, onConfirm, openConfirmSwapModal, resetState, order])
 
   useEffect(() => {
     if (indirectlyOpenConfirmModalState) {

@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
-import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router'
+import { SmartRouter } from '@pancakeswap/smart-router'
 import { AutoColumn, BackForwardIcon, Button, Dots, Flex, Link, QuestionHelper, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
@@ -12,6 +12,7 @@ import { styled } from 'styled-components'
 import { warningSeverity } from 'utils/exchange'
 import { formatExecutionPrice as mmFormatExecutionPrice } from 'views/Swap/MMLinkPools/utils/exchange'
 
+import { InterfaceOrder, isMMOrder } from 'views/Swap/utils'
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
 import { SlippageAdjustedAmounts, formatExecutionPrice } from '../utils/exchange'
@@ -29,18 +30,18 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   lpFee: realizedLPFee,
   inputAmount,
   outputAmount,
-  trade,
+  order,
   tradeType,
   slippageAdjustedAmounts,
   isEnoughInputBalance,
   onConfirm,
   swapErrorMessage,
   disabledConfirm,
-  isMM,
+  // isMM,
   isRFQReady,
   currencyBalances,
 }: {
-  trade?: Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount'>
+  order?: InterfaceOrder
   tradeType: TradeType
   lpFee?: CurrencyAmount<Currency>
   inputAmount: CurrencyAmount<Currency>
@@ -50,7 +51,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   isEnoughInputBalance?: boolean
   swapErrorMessage?: string | undefined
   disabledConfirm: boolean
-  isMM?: boolean
+  // isMM?: boolean
   isRFQReady?: boolean
   currencyBalances?: {
     INPUT?: CurrencyAmount<Currency>
@@ -68,13 +69,13 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   const buyBackFeePercent = `${(BUYBACK_FEE * 100).toFixed(4)}%`
 
   const executionPriceDisplay = useMemo(() => {
-    if (isMM) {
-      return mmFormatExecutionPrice(trade, showInverted)
+    if (isMMOrder(order)) {
+      return mmFormatExecutionPrice(order.trade, showInverted)
     }
 
-    const price = SmartRouter.getExecutionPrice(trade) ?? undefined
+    const price = SmartRouter.getExecutionPrice(order?.trade) ?? undefined
     return formatExecutionPrice(price, inputAmount, outputAmount, showInverted)
-  }, [inputAmount, isMM, outputAmount, trade, showInverted])
+  }, [order, inputAmount, outputAmount, showInverted])
 
   return (
     <>
@@ -129,7 +130,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
               ml="4px"
               placement="top"
               text={
-                isMM ? (
+                isMMOrder(order) ? (
                   <>
                     <Text>
                       <Text bold display="inline-block">
@@ -150,7 +151,11 @@ export const SwapModalFooter = memo(function SwapModalFooter({
               }
             />
           </RowFixed>
-          {isMM ? <Text color="textSubtle">--</Text> : <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />}
+          {isMMOrder(order) ? (
+            <Text color="textSubtle">--</Text>
+          ) : (
+            <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
+          )}
         </RowBetween>
         <RowBetween>
           <RowFixed>
@@ -159,7 +164,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
               ml="4px"
               placement="top"
               text={
-                isMM ? (
+                isMMOrder(order) ? (
                   <>
                     <Text mb="12px">
                       <Text bold display="inline-block">
@@ -232,12 +237,12 @@ export const SwapModalFooter = memo(function SwapModalFooter({
         <Button
           variant={severity > 2 ? 'danger' : 'primary'}
           onClick={onConfirm}
-          disabled={isMM ? disabledConfirm || !isRFQReady : disabledConfirm}
+          disabled={isMMOrder(order) ? disabledConfirm || !isRFQReady : disabledConfirm}
           mt="12px"
           id="confirm-swap-or-send"
           width="100%"
         >
-          {isMM && !isRFQReady ? (
+          {isMMOrder(order) && !isRFQReady ? (
             <Dots>{t('Checking RFQ with MM')}</Dots>
           ) : severity > 2 || (tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance) ? (
             t('Swap Anyway')

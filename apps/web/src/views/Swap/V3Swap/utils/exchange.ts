@@ -1,3 +1,4 @@
+import { OrderType } from '@pancakeswap/price-api-sdk'
 import {
   Currency,
   CurrencyAmount,
@@ -16,6 +17,7 @@ import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE } from 'config/constants/exchange'
 import { Field } from 'state/swap/actions'
 import { basisPointsToPercent } from 'utils/exchange'
+import { InterfaceOrder } from 'views/Swap/utils'
 
 export type SlippageAdjustedAmounts = {
   [field in Field]?: CurrencyAmount<Currency> | null
@@ -23,14 +25,21 @@ export type SlippageAdjustedAmounts = {
 
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
 export function computeSlippageAdjustedAmounts(
-  trade: Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount' | 'tradeType'> | undefined | null,
+  order: InterfaceOrder | undefined | null,
   allowedSlippage: number,
 ): SlippageAdjustedAmounts {
+  if (order?.type === OrderType.DUTCH_LIMIT) {
+    return {
+      [Field.INPUT]: order.trade.maximumAmountIn,
+      [Field.OUTPUT]: order.trade.minimumAmountOut,
+    }
+  }
+
   const pct = basisPointsToPercent(allowedSlippage)
 
   return {
-    [Field.INPUT]: trade && SmartRouter.maximumAmountIn(trade, pct),
-    [Field.OUTPUT]: trade && SmartRouter.minimumAmountOut(trade, pct),
+    [Field.INPUT]: order?.trade && SmartRouter.maximumAmountIn(order.trade, pct),
+    [Field.OUTPUT]: order?.trade && SmartRouter.minimumAmountOut(order.trade, pct),
   }
 }
 

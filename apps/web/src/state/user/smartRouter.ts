@@ -1,5 +1,5 @@
-import { atom, useAtom, useAtomValue } from 'jotai'
 import { userSingleHopAtom } from '@pancakeswap/utils/user'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 
 const userUseStableSwapAtom = atomWithStorageWithErrorCatch<boolean>('pcs:useStableSwap', true)
@@ -7,6 +7,11 @@ const userUseV2SwapAtom = atomWithStorageWithErrorCatch<boolean>('pcs:useV2Swap'
 const userUseV3SwapAtom = atomWithStorageWithErrorCatch<boolean>('pcs:useV3Swap', true)
 const userUserSplitRouteAtom = atomWithStorageWithErrorCatch<boolean>('pcs:useSplitRouting', true)
 const userUseMMLinkedPoolAtom = atomWithStorageWithErrorCatch<boolean>('pcs:useMMlinkedPool', true)
+const userUseXAtom = atomWithStorageWithErrorCatch<boolean>('pcs:useX', true)
+
+export function useUserXEnable() {
+  return useAtom(userUseXAtom)
+}
 
 export function useUserStableSwapEnable() {
   return useAtom(userUseStableSwapAtom)

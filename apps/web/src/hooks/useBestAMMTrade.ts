@@ -1,8 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
-import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
+import { useDebounce, usePreviousValue, usePropsChanged } from '@pancakeswap/hooks'
 import { getPoolTypeKey, getRequestBody, parseAMMPriceResponse, parseQuoteResponse } from '@pancakeswap/price-api-sdk'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { zeroAddress } from 'viem'
 import {
   BATCH_MULTICALL_CONFIGS,
   PoolType,
@@ -15,9 +14,10 @@ import {
 import { BigintIsh } from '@pancakeswap/swap-sdk-core'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useAccount } from 'wagmi'
 import qs from 'qs'
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react'
+import { zeroAddress } from 'viem'
+import { useAccount } from 'wagmi'
 
 import { QUOTING_API, QUOTING_API_PREFIX } from 'config/constants/endpoints'
 import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
@@ -30,6 +30,7 @@ import { createViemPublicClientGetter } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useUserXEnable } from 'state/user/smartRouter'
 import {
   CommonPoolsParams,
   PoolsWithState,
@@ -120,13 +121,14 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   )
 
   const isPriceApiEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.PriceAPI)
+  const [isXEnabled] = useUserXEnable()
   const isQuoterAPIEnabled = useMemo(() => Boolean(!isWrapping && type === 'api'), [isWrapping, type])
 
   const apiAutoRevalidate = typeof autoRevalidate === 'boolean' ? autoRevalidate : isQuoterAPIEnabled
 
   useBestTradeFromApi({
     ...params,
-    enabled: Boolean(enabled && isPriceApiEnabled),
+    enabled: Boolean(enabled && isPriceApiEnabled && !isXEnabled),
     autoRevalidate: apiAutoRevalidate,
   })
 
@@ -485,7 +487,7 @@ export const useBestAMMTradeFromOffchainQuoter = bestTradeHookFactory<V4Router.V
   useGetBestTrade: createUseWorkerGetBestTradeOffchain(),
 })
 
-function useBestTradeFromApi({
+export function useBestTradeFromApi({
   baseCurrency,
   amount,
   currency,
@@ -525,9 +527,15 @@ function useBestTradeFromApi({
   const deferQuotientRaw = useDeferredValue(amount?.quotient?.toString())
   const deferQuotient = useDebounce(deferQuotientRaw, 500)
   const { address } = useAccount()
+  const { gasPrice } = useFeeDataWithGasPrice()
+
+  const [isXEnabled] = useUserXEnable()
+
+  const previousEnabled = usePreviousValue(enabled)
 
   return useQuery({
     enabled: !!(amount && currency && deferQuotient && enabled),
+    refetchInterval: POOLS_FAST_REVALIDATE[currency?.chainId as keyof typeof POOLS_FAST_REVALIDATE] ?? 10_000,
     queryKey: [
       'quote-api',
       address,
@@ -540,6 +548,14 @@ function useBestTradeFromApi({
       maxSplits,
       poolTypes,
     ] as const,
+    placeholderData: (previousData, previousQuery) => {
+      const queryKey = previousQuery?.queryKey
+
+      if (!queryKey) return undefined
+      if (!previousEnabled) return undefined
+
+      return previousData
+    },
     queryFn: async ({ signal, queryKey }) => {
       const [key] = queryKey
       if (!amount || !amount.currency || !currency || !deferQuotient) {
@@ -552,13 +568,13 @@ function useBestTradeFromApi({
         amount,
         quoteCurrency: currency,
         tradeType,
-        amm: { maxHops, maxSplits, poolTypes },
+        amm: { maxHops, maxSplits, poolTypes, gasPriceWei: gasPrice },
         x: {
           useSyntheticQuotes: true,
           swapper: address,
         },
       })
-      const serverRes = await fetch(`${QUOTING_API}`, {
+      const serverRes = await fetch(`${QUOTING_API}${isXEnabled ? '?mock=true' : ''}`, {
         method: 'POST',
         signal,
         headers: {

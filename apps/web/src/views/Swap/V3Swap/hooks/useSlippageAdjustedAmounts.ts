@@ -1,12 +1,9 @@
-import { TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useMemo } from 'react'
+import { InterfaceOrder } from 'views/Swap/utils'
 import { computeSlippageAdjustedAmounts } from '../utils/exchange'
 
-export function useSlippageAdjustedAmounts(
-  trade?: Pick<SmartRouterTrade<TradeType>, 'inputAmount' | 'outputAmount' | 'tradeType'> | null,
-) {
+export function useSlippageAdjustedAmounts(order: InterfaceOrder | undefined | null) {
   const [allowedSlippage] = useUserSlippage()
-  return useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [allowedSlippage, trade])
+  return useMemo(() => computeSlippageAdjustedAmounts(order, allowedSlippage), [allowedSlippage, order])
 }

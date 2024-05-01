@@ -1,12 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { safeGetAddress } from 'utils'
 
+import { ClassicOrder, PriceOrder } from '@pancakeswap/price-api-sdk'
+import { isClassicOrder } from 'views/Swap/utils'
 import { useAccount } from 'wagmi'
 import { useSlippageAdjustedAmounts } from './useSlippageAdjustedAmounts'
 
@@ -20,7 +21,7 @@ interface Balances {
  * @param trade to check for the given address
  * @param checksummedAddress address to check in the pairs and tokens
  */
-function involvesAddress(trade: SmartRouterTrade<TradeType>, checksummedAddress: string): boolean {
+function involvesAddress(trade: ClassicOrder['trade'], checksummedAddress: string): boolean {
   // TODO check for pools
   return trade.routes.some((r) => r.path.some((token) => token.isToken && token.address === checksummedAddress))
 }
@@ -32,16 +33,13 @@ const BAD_RECIPIENT_ADDRESSES: string[] = [
   '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // v2 router 02
 ]
 
-export function useSwapInputError(
-  trade: SmartRouterTrade<TradeType> | null | undefined,
-  currencyBalances: Balances,
-): string | undefined {
+export function useSwapInputError(order: PriceOrder | undefined, currencyBalances: Balances): string | undefined {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { independentField, typedValue } = useSwapState()
   const inputCurrency = currencyBalances[Field.INPUT]?.currency
   const outputCurrency = currencyBalances[Field.OUTPUT]?.currency
-  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade ?? undefined)
+  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(order)
 
   const to: string | null = account || null
 
@@ -65,7 +63,10 @@ export function useSwapInputError(
   const formattedTo = safeGetAddress(to)
   if (!to || !formattedTo) {
     inputError = inputError ?? t('Enter a recipient')
-  } else if (BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 || (trade && involvesAddress(trade, formattedTo))) {
+  } else if (
+    BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
+    (isClassicOrder(order) && involvesAddress(order.trade, formattedTo))
+  ) {
     inputError = inputError ?? t('Invalid recipient')
   }
 

@@ -1,8 +1,8 @@
 import { usePreviousValue } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { getPermit2Address } from '@pancakeswap/permit2-sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
-import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@pancakeswap/swap-sdk-core'
+import { PriceOrder } from '@pancakeswap/price-api-sdk'
+import { Currency, CurrencyAmount, Percent, Token } from '@pancakeswap/swap-sdk-core'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { ConfirmModalState, confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
 import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from 'config/constants/exchange'
@@ -23,6 +23,7 @@ import {
   TransactionReceiptNotFoundError,
   erc20Abi,
 } from 'viem'
+import { isClassicOrder } from 'views/Swap/utils'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
 import { useSwapCallback } from './useSwapCallback'
@@ -73,7 +74,7 @@ const useCreateConfirmSteps = (amountToApprove: CurrencyAmount<Token> | undefine
 
 // define the actions of each step
 const useConfirmActions = (
-  trade: SmartRouterTrade<TradeType> | undefined,
+  order: PriceOrder | undefined,
   amountToApprove: CurrencyAmount<Token> | undefined,
   spender: Address | undefined,
 ) => {
@@ -93,7 +94,7 @@ const useConfirmActions = (
   }, [chainId, amountToApprove?.currency.address, account])
   const [permit2Signature, setPermit2Signature] = useState<Permit2Signature | undefined>(undefined)
   const { callback: swap, error: swapError } = useSwapCallback({
-    trade,
+    trade: isClassicOrder(order) ? order.trade : undefined,
     deadline,
     permitSignature: permit2Signature,
   })
@@ -326,15 +327,15 @@ const useConfirmActions = (
 }
 
 export const useConfirmModalState = (
-  trade: SmartRouterTrade<TradeType> | undefined,
+  order: PriceOrder | undefined,
   amountToApprove: CurrencyAmount<Token> | undefined,
   spender: Address | undefined,
 ) => {
   const { t } = useTranslation()
-  const { actions, confirmState, txHash, errorMessage, resetState } = useConfirmActions(trade, amountToApprove, spender)
+  const { actions, confirmState, txHash, errorMessage, resetState } = useConfirmActions(order, amountToApprove, spender)
   const preConfirmState = usePreviousValue(confirmState)
   const [confirmSteps, setConfirmSteps] = useState<ConfirmModalState[]>()
-  const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const tradePriceBreakdown = useMemo(() => isClassicOrder(order) && computeTradePriceBreakdown(order?.trade), [order])
   const swapPreflightCheck = useCallback(() => {
     if (
       tradePriceBreakdown &&

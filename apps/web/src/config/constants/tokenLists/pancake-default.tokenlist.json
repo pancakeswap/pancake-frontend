@@ -11,6 +11,22 @@
   "keywords": ["pancake", "default"],
   "tokens": [
     {
+      "name": "A",
+      "symbol": "A",
+      "address": "0x9f063C8ED6cF9c454993677fd53b2AF572c91d6F",
+      "chainId": 97,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x9f063C8ED6cF9c454993677fd53b2AF572c91d6F.png"
+    },
+    {
+      "name": "B",
+      "symbol": "B",
+      "address": "0x1F3dAD92459B65f98a206D55dbE9F21673C2815A",
+      "chainId": 97,
+      "decimals": 18,
+      "logoURI": "https://tokens.pancakeswap.finance/images/0x1F3dAD92459B65f98a206D55dbE9F21673C2815A.png"
+    },
+    {
       "name": "Wrapped BNB",
       "symbol": "WBNB",
       "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
