@@ -93,7 +93,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     autoCompound,
   } = vault
 
-  const hasSwellReward = useHasSwellReward(adapterAddress)
+  const hasSwellReward = useHasSwellReward(address)
   const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
   const tokenRatio = useQuery({
     queryKey: ['adapterAddress', adapterAddress, id],

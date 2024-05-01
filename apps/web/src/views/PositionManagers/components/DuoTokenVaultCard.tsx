@@ -18,6 +18,8 @@ import { ManagerInfo } from './ManagerInfo'
 import { VaultInfo } from './VaultInfo'
 import { VaultLinks } from './VaultLinks'
 import { YieldInfo } from './YieldInfo'
+import { useHasSwellReward } from '../hooks/useHasSwellReward'
+import { SwellTooltip } from './SwellTooltip'
 
 const StyledCard = styled(Card)`
   align-self: baseline;
@@ -155,6 +157,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
     return getBalanceAmount(new BigNumber(rewardPerSecond), earningToken.decimals).toNumber()
   }, [rewardPerSecond, earningToken])
   const { isBoosterWhiteList } = useIsWrapperWhiteList(boosterContractAddress, bCakeWrapper)
+  const hasSwellReward = useHasSwellReward(contractAddress)
+
   return (
     <StyledCard>
       <CardTitle
@@ -167,6 +171,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
         isSingleDepositToken={isSingleDepositToken}
         allowDepositToken1={allowDepositToken1}
         isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
+        tags={hasSwellReward ? <SwellTooltip /> : null}
       />
       <CardBody>
         <YieldInfo

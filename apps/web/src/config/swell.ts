@@ -1,5 +1,5 @@
 export const POSITION_MANAGERS_WITH_SWELL_REWARD = [
   {
-    identifier: '0xc24Ce98aA54Bb2A03D159Fc52f50D09513d7a63F',
+    identifier: '0x2b0Ca7A851aAc56fcACAB3ee85B8Dd96DE799aCa',
   },
 ] as const
