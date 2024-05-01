@@ -3325,7 +3325,7 @@
   "Options": "期权",
   "PancakeSwap Options": "PancakeSwap 期权",
   "Please note that you are being redirected to an externally hosted website associated with our partner Stryke (formerly Dopex).": "请注意，您将被重定向到与我们的合作伙伴 Stryke（前身为 Dopex）关联的外部托管网站。",
-  "Migrate to new v2 bCake here": "请在此迁移到新版的 bCAKE，以便支持 v2 农场",
+  "Migrate to new v2 bCake here": "迁移到新 bCAKE 以支持 v2 农场",
   "I understand that this feature is deprecated and no longer in maintenance.": "我了解此功能已被弃用，并且不再进行维护。",
   "chain & strategy": "公链＆做市策略",
   "Placing Order Disabled": "已禁用下单功能",
@@ -3338,5 +3338,11 @@
   "Vote": "Vote",
   "sort by": "sort by",
   "Unselect All": "Unselect All",
+  "Mint / Transfer USDV": "Mint / Transfer USDV",
+  "Swap stablecoins for USDV": "Swap stablecoins for USDV",
+  "Powered by": "Powered by",
+  "USDV Disclaimer": "USDV Disclaimer",
+  "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.",
+  "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.",
   "Done": "Done"
 }
