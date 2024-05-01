@@ -3,11 +3,11 @@ import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router'
 import { MethodParameters } from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'
 import { encodeFunctionData, toHex } from 'viem'
+import { UniversalRouterABI } from './abis/UniversalRouter'
 import { PancakeSwapTrade } from './entities/protocols/pancakeswap'
+import { PancakeSwapOptions, SwapRouterConfig } from './entities/types'
 import { encodePermit } from './utils/inputTokens'
 import { RoutePlanner } from './utils/routerCommands'
-import { PancakeSwapOptions, SwapRouterConfig } from './entities/types'
-import { UniversalRouterABI } from './abis/UniversalRouter'
 
 export abstract class PancakeSwapUniversalRouter {
   /**
@@ -16,7 +16,7 @@ export abstract class PancakeSwapUniversalRouter {
    * @param options options for the call parameters
    */
   public static swapERC20CallParameters(
-    trade: SmartRouterTrade<TradeType>,
+    trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>,
     options: PancakeSwapOptions,
   ): MethodParameters {
     // TODO: use permit if signature included in swapOptions

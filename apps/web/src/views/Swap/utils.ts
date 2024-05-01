@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { ClassicOrder, OrderType, PriceOrder, XOrder } from '@pancakeswap/price-api-sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
 import { Currency, TradeType } from '@pancakeswap/swap-sdk-core'
 import { MMCommitTrade } from './V3Swap/types'
 
@@ -12,7 +12,7 @@ export const isTwapSupported = (chainId?: ChainId) => {
 
 export type MMOrder = {
   type: 'MM'
-  trade: SmartRouterTrade<TradeType>
+  trade: SmartRouterTrade<TradeType> | V4Router.V4Trade<TradeType>
 } & MMCommitTrade<SmartRouterTrade<TradeType>>
 
 export const isXOrder = (order: InterfaceOrder | undefined | null): order is XOrder =>
