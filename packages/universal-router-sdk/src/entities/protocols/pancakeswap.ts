@@ -22,7 +22,7 @@ export class PancakeSwapTrade implements Command {
 
   readonly type: TradeType
 
-  constructor(public trade: SmartRouterTrade<TradeType>, public options: PancakeSwapOptions) {
+  constructor(public trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>, public options: PancakeSwapOptions) {
     this.type = this.trade.tradeType
     if (options.fee && options.flatFee) {
       throw new Error('Cannot specify both fee and flatFee')
@@ -55,7 +55,7 @@ export class PancakeSwapTrade implements Command {
     const routerMustCustody = outputIsNative || !!this.options.fee || performAggregatedSlippageCheck
 
     for (const route of trade.routes) {
-      const singleRouteTrade: SmartRouterTrade<TradeType> = {
+      const singleRouteTrade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'> = {
         ...trade,
         routes: [route],
         inputAmount: route.inputAmount,
@@ -138,7 +138,7 @@ export class PancakeSwapTrade implements Command {
 // encode a v2 swap
 function addV2Swap(
   planner: RoutePlanner,
-  trade: SmartRouterTrade<TradeType>,
+  trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>,
   options: PancakeSwapOptions,
   routerMustCustody: boolean,
   payerIsUser: boolean,
@@ -175,7 +175,7 @@ function addV2Swap(
 // encode a v3 swap
 function addV3Swap(
   planner: RoutePlanner,
-  trade: SmartRouterTrade<TradeType>,
+  trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>,
   options: PancakeSwapOptions,
   routerMustCustody: boolean,
   payerIsUser: boolean,
@@ -222,7 +222,7 @@ function addV3Swap(
 
 function addStableSwap(
   planner: RoutePlanner,
-  trade: SmartRouterTrade<TradeType>,
+  trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>,
   options: PancakeSwapOptions,
   routerMustCustody: boolean,
   // @notice: stable swap inputToken will never be nativeToken
@@ -271,7 +271,7 @@ function addStableSwap(
 // encode a mixed route swap, i.e. including both v2 and v3 pools
 function addMixedSwap(
   planner: RoutePlanner,
-  trade: SmartRouterTrade<TradeType>,
+  trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>,
   options: PancakeSwapOptions,
   payerIsUser: boolean,
   routerMustCustody: boolean,
@@ -432,6 +432,6 @@ function addMixedSwap(
 const REFUND_ETH_PRICE_IMPACT_THRESHOLD = new Percent(50, 100)
 
 // if price impact is very high, there's a chance of hitting max/min prices resulting in a partial fill of the swap
-function riskOfPartialFill(trade: SmartRouterTrade<TradeType>): boolean {
+function riskOfPartialFill(trade: Omit<SmartRouterTrade<TradeType>, 'gasEstimate'>): boolean {
   return SmartRouter.getPriceImpact(trade).greaterThan(REFUND_ETH_PRICE_IMPACT_THRESHOLD)
 }

@@ -548,14 +548,6 @@ export function useBestTradeFromApi({
       maxSplits,
       poolTypes,
     ] as const,
-    placeholderData: (previousData, previousQuery) => {
-      const queryKey = previousQuery?.queryKey
-
-      if (!queryKey) return undefined
-      if (!previousEnabled) return undefined
-
-      return previousData
-    },
     queryFn: async ({ signal, queryKey }) => {
       const [key] = queryKey
       if (!amount || !amount.currency || !currency || !deferQuotient) {
@@ -602,6 +594,14 @@ export function useBestTradeFromApi({
       }
 
       return result
+    },
+    placeholderData: (previousData, previousQuery) => {
+      const queryKey = previousQuery?.queryKey
+
+      if (!queryKey) return undefined
+      if (!previousEnabled) return undefined
+
+      return previousData
     },
   })
 }

@@ -1,5 +1,4 @@
-import { Currency, TradeType } from '@pancakeswap/sdk'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { Currency } from '@pancakeswap/sdk'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
@@ -9,17 +8,11 @@ import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { MMSwapCommitButton } from 'views/Swap/MMLinkPools/components/MMCommitButton'
+import { MMOrder } from 'views/Swap/utils'
 import { useAccount } from 'wagmi'
-import { CommitButtonProps, MMCommitTrade } from '../types'
+import { CommitButtonProps } from '../types'
 
-const MMCommitButtonComp: React.FC<MMCommitTrade<SmartRouterTrade<TradeType>> & CommitButtonProps> = ({
-  mmOrderBookTrade,
-  mmRFQTrade,
-  mmQuoteExpiryRemainingSec,
-  mmTradeInfo,
-  beforeCommit,
-  afterCommit,
-}) => {
+const MMCommitButtonComp: React.FC<{ order: MMOrder } & CommitButtonProps> = ({ order, beforeCommit, afterCommit }) => {
   const {
     typedValue,
     recipient,
@@ -52,17 +45,15 @@ const MMCommitButtonComp: React.FC<MMCommitTrade<SmartRouterTrade<TradeType>> & 
     <MMSwapCommitButton
       beforeCommit={beforeCommit}
       afterCommit={afterCommit}
-      mmTradeInfo={mmTradeInfo}
+      order={order}
       showWrap={showWrap}
       swapIsUnsupported={swapIsUnsupported}
       account={account}
       onWrap={onWrap}
       currencies={currencies}
-      currencyBalances={mmOrderBookTrade?.currencyBalances}
+      currencyBalances={order.mmOrderBookTrade!.currencyBalances}
       isExpertMode={isExpertMode}
-      mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
-      rfqTrade={mmRFQTrade}
-      swapInputError={mmOrderBookTrade?.inputError}
+      swapInputError={order.mmOrderBookTrade?.inputError}
       wrapType={wrapType}
       wrapInputError={wrapInputError}
       recipient={recipient}

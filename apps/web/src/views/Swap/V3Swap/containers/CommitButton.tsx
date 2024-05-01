@@ -19,7 +19,7 @@ export const CommitButton: React.FC<CommitButtonProps> = ({
   afterCommit,
 }) => {
   if (isMMOrder(order)) {
-    return <MMCommitButton {...order} beforeCommit={beforeCommit} afterCommit={afterCommit} />
+    return <MMCommitButton order={order} beforeCommit={beforeCommit} afterCommit={afterCommit} />
   }
 
   return (
