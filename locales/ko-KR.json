@@ -3335,8 +3335,14 @@
   "Win 700,000 $MASA": "상금 700,000 $MASA 획득",
   "Trade to win 700,000 $MASA": "트레이딩으로 상금 700,000 $MASA 획득",
   "to Win 700,000 $MASA": "상금 700,000 $MASA 획득",
-  "Vote": "Vote",
-  "sort by": "sort by",
-  "Unselect All": "Unselect All",
-  "Done": "Done"
+  "Vote": "투표",
+  "sort by": "정렬 기준",
+  "Unselect All": "모두 선택 취소",
+  "Mint / Transfer USDV": "Mint / Transfer USDV",
+  "Swap stablecoins for USDV": "Swap stablecoins for USDV",
+  "Powered by": "Powered by",
+  "USDV Disclaimer": "USDV Disclaimer",
+  "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.",
+  "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.",
+  "Done": "완료"
 }
