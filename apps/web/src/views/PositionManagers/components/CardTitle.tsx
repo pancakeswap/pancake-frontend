@@ -1,7 +1,7 @@
 import { Currency } from '@pancakeswap/sdk'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { memo, useMemo } from 'react'
+import { ReactNode, memo, useMemo } from 'react'
 
 import BoostedTag from 'views/Farms/components/YieldBooster/components/BoostedTag'
 import { CardHeader } from './CardLayout'
@@ -18,6 +18,7 @@ interface Props {
   autoFarm?: boolean
   autoCompound?: boolean
   isBooster?: boolean
+  tags?: ReactNode
 }
 
 export const CardTitle = memo(function CardTitle({
@@ -30,6 +31,7 @@ export const CardTitle = memo(function CardTitle({
   autoCompound,
   allowDepositToken1,
   isBooster,
+  tags,
 }: Props) {
   const isTokenDisplayReverse = useMemo(
     () => isSingleDepositToken && allowDepositToken1,
@@ -62,7 +64,15 @@ export const CardTitle = memo(function CardTitle({
             {vaultName}
           </Text>
         </Flex>
-        <Flex flexDirection="row" justifyContent="flex-end" mt="0.25em" style={{ gap: '0.5em' }} flexWrap="wrap">
+        <Flex
+          flexDirection="row"
+          justifyContent="flex-end"
+          mt="0.25em"
+          style={{ gap: '0.5em' }}
+          flexWrap="wrap"
+          alignItems="center"
+        >
+          {tags}
           <FeeTag feeAmount={feeTier} scale="sm" />
           {autoFarm && <FarmTag scale="sm" />}
           {isSingleDepositToken && <SingleTokenTag scale="sm" />}
