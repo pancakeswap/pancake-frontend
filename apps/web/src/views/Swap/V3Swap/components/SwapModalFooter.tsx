@@ -4,7 +4,6 @@ import { SmartRouter } from '@pancakeswap/smart-router'
 import { AutoColumn, BackForwardIcon, Button, Dots, Flex, Link, QuestionHelper, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
-import { CurrencyLogo } from 'components/Logo'
 import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { memo, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
@@ -12,7 +11,7 @@ import { styled } from 'styled-components'
 import { warningSeverity } from 'utils/exchange'
 import { formatExecutionPrice as mmFormatExecutionPrice } from 'views/Swap/MMLinkPools/utils/exchange'
 
-import { InterfaceOrder, isMMOrder } from 'views/Swap/utils'
+import { InterfaceOrder, isMMOrder, isXOrder } from 'views/Swap/utils'
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
 import { SlippageAdjustedAmounts, formatExecutionPrice } from '../utils/exchange'
@@ -37,9 +36,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   onConfirm,
   swapErrorMessage,
   disabledConfirm,
-  // isMM,
   isRFQReady,
-  currencyBalances,
 }: {
   order?: InterfaceOrder
   tradeType: TradeType
@@ -51,12 +48,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   isEnoughInputBalance?: boolean
   swapErrorMessage?: string | undefined
   disabledConfirm: boolean
-  // isMM?: boolean
   isRFQReady?: boolean
-  currencyBalances?: {
-    INPUT?: CurrencyAmount<Currency>
-    OUTPUT?: CurrencyAmount<Currency>
-  }
   onConfirm: () => void
 }) {
   const { t } = useTranslation()
@@ -154,7 +146,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
           {isMMOrder(order) ? (
             <Text color="textSubtle">--</Text>
           ) : (
-            <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
+            <FormattedPriceImpact isX={isXOrder(order)} priceImpact={priceImpactWithoutFee} />
           )}
         </RowBetween>
         <RowBetween>
@@ -218,12 +210,16 @@ export const SwapModalFooter = memo(function SwapModalFooter({
               }
             />
           </RowFixed>
-          {realizedLPFee ? (
+          {realizedLPFee || isXOrder(order) ? (
             <Flex>
-              <Text fontSize="14px" mr="8px">
-                {`${formatAmount(realizedLPFee, 6)} ${inputAmount.currency.symbol}`}
+              <Text color="primary" fontSize="14px">
+                0 {inputAmount.currency.symbol}
               </Text>
-              <CurrencyLogo currency={currencyBalances?.INPUT?.currency ?? inputAmount.currency} size="24px" />
+              {realizedLPFee && (
+                <Text fontSize="14px" mr="8px" strikeThrough={isXOrder(order)}>
+                  {`${formatAmount(realizedLPFee, 6)} ${inputAmount.currency.symbol}`}
+                </Text>
+              )}
             </Flex>
           ) : (
             <Text fontSize="14px" textAlign="right">

@@ -90,7 +90,9 @@ export const XRoutesBreakdown = memo(function XRoutesBreakdown() {
         </span>
         <Box>
           <span style={{ display: 'flex', alignItems: 'center' }}>
-            <Text fontSize="14px">PancakeSwap X</Text>
+            <Text color="primary" fontSize="14px">
+              PancakeSwap X
+            </Text>
           </span>
         </Box>
       </RouteInfoContainer>

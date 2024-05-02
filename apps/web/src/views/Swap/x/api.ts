@@ -1,22 +1,48 @@
 import { observe } from '@pancakeswap/utils/observe'
-import { BaseError, isHash, stringify, type Hash, type Hex } from 'viem'
+import { BaseError, isHash, stringify, type Address, type Hash, type Hex } from 'viem'
 
 export type XOrderStatus = 'OPEN' | 'PENDING' | 'EXPIRED' | 'FILLED'
 
-export type GetXOrderReceiptResponse = {
-  order: {
-    hash: Hash
-    chainId: number
-    status: XOrderStatus
-    deadline: string
-    decayStartTime: string
-    decayEndTime: string
-    transactionHash: Hash | null
-    blockNumber: number | null
-    nonce: string
-    createdAt: string
-    updatedAt: string
+export type GetXOrderReceiptResponseOrder = {
+  input: {
+    token: Address
+    startAmount: string
+    endAmount: string
   }
+  outputs: {
+    token: Address
+    amount: string
+    endAmount: string
+    recipient: Address
+  }[]
+  hash: Hash
+  chainId: number
+  status: XOrderStatus
+  deadline: string
+  decayStartTime: string
+  decayEndTime: string
+  transactionHash: Hash | null
+  blockNumber: number | null
+  nonce: string
+  createdAt: string
+  updatedAt: string
+}
+
+export type GetXOrderReceiptResponse = {
+  order: GetXOrderReceiptResponseOrder
+}
+
+export type GetXOrdersResponse = {
+  orders: GetXOrderReceiptResponseOrder[]
+}
+
+export const getRecentXOrders = async (chainId: number, address: Address) => {
+  const resp = await fetch(
+    `https://sgp1.test.x.pancakeswap.com/order-handler/orders?chainId=${chainId}&offerer=${address}`,
+  )
+
+  const data = (await resp.json()) as GetXOrdersResponse
+  return data
 }
 
 export const getXOrderReceipt = async (chainId: number, hash: Hash) => {

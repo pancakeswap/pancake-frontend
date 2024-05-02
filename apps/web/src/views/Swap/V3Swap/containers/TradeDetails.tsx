@@ -74,6 +74,7 @@ export const TradeDetails = memo(function TradeDetails({ loaded, order }: Props)
     <AdvancedDetailsFooter show={loaded}>
       <AutoColumn gap="0px">
         <TradeSummary
+          isX={isXOrder(order)}
           slippageAdjustedAmounts={slippageAdjustedAmounts}
           inputAmount={inputAmount}
           outputAmount={outputAmount}

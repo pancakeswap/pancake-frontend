@@ -23,7 +23,9 @@ import {
   TransactionReceiptNotFoundError,
   erc20Abi,
 } from 'viem'
-import { isClassicOrder } from 'views/Swap/utils'
+import { isClassicOrder, isXOrder } from 'views/Swap/utils'
+import { waitForXOrderReceipt } from 'views/Swap/x/api'
+import { useSendXOrder } from 'views/Swap/x/useSendXOrder'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
 import { useSwapCallback } from './useSwapCallback'
@@ -53,7 +55,11 @@ const getTokenAllowance = ({
   })
 }
 
-const useCreateConfirmSteps = (amountToApprove: CurrencyAmount<Token> | undefined, spender: Address | undefined) => {
+const useCreateConfirmSteps = (
+  order: PriceOrder | undefined,
+  amountToApprove: CurrencyAmount<Token> | undefined,
+  spender: Address | undefined,
+) => {
   const { requireApprove, requirePermit, requireRevoke } = usePermit2Requires(amountToApprove, spender)
 
   return useCallback(() => {
@@ -64,12 +70,12 @@ const useCreateConfirmSteps = (amountToApprove: CurrencyAmount<Token> | undefine
     if (requireApprove) {
       steps.push(ConfirmModalState.APPROVING_TOKEN)
     }
-    if (requirePermit) {
+    if (isClassicOrder(order) && requirePermit) {
       steps.push(ConfirmModalState.PERMITTING)
     }
     steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
-  }, [requireRevoke, requireApprove, requirePermit])
+  }, [requireRevoke, requireApprove, requirePermit, order])
 }
 
 // define the actions of each step
@@ -98,8 +104,12 @@ const useConfirmActions = (
     deadline,
     permitSignature: permit2Signature,
   })
+
+  const { mutateAsync: sendXOrder } = useSendXOrder()
+
   const [confirmState, setConfirmState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
   const [txHash, setTxHash] = useState<Hex | undefined>(undefined)
+  const [orderHash, setOrderHash] = useState<Hex | undefined>(undefined)
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
 
   const resetState = useCallback(() => {
@@ -307,17 +317,62 @@ const useConfirmActions = (
     }
   }, [resetState, retryWaitForTransaction, showError, swap, swapError])
 
+  const xSwapStep = useMemo(() => {
+    return {
+      step: ConfirmModalState.PENDING_CONFIRMATION,
+      action: async () => {
+        setTxHash(undefined)
+        setConfirmState(ConfirmModalState.PENDING_CONFIRMATION)
+
+        if (!isXOrder(order)) {
+          resetState()
+          return
+        }
+
+        // if (swapError) {
+        //   showError(swapError)
+        //   return
+        // }
+
+        try {
+          const xOrder = await sendXOrder({
+            chainId: order.trade.inputAmount.currency.chainId,
+            orderInfo: order.trade.orderInfo,
+          })
+          if (xOrder?.hash) {
+            setOrderHash(xOrder.hash)
+            const receipt = await waitForXOrderReceipt(xOrder)
+
+            if (receipt.transactionHash) {
+              setTxHash(receipt.transactionHash)
+              setConfirmState(ConfirmModalState.COMPLETED)
+            }
+          }
+        } catch (error: any) {
+          console.error('swap error', error)
+          if (userRejectedError(error)) {
+            showError('Transaction rejected')
+          } else {
+            showError(typeof error === 'string' ? error : (error as any)?.message)
+          }
+        }
+      },
+      showIndicator: false,
+    }
+  }, [order, resetState, sendXOrder, showError])
+
   const actions = useMemo(() => {
     return {
       [ConfirmModalState.RESETTING_APPROVAL]: revokeStep,
       [ConfirmModalState.PERMITTING]: permitStep,
       [ConfirmModalState.APPROVING_TOKEN]: approveStep,
-      [ConfirmModalState.PENDING_CONFIRMATION]: swapStep,
+      [ConfirmModalState.PENDING_CONFIRMATION]: isClassicOrder(order) ? swapStep : xSwapStep,
     } as { [k in ConfirmModalState]: ConfirmAction }
-  }, [approveStep, permitStep, revokeStep, swapStep])
+  }, [revokeStep, permitStep, approveStep, order, swapStep, xSwapStep])
 
   return {
     txHash,
+    orderHash,
     actions,
 
     confirmState,
@@ -332,7 +387,11 @@ export const useConfirmModalState = (
   spender: Address | undefined,
 ) => {
   const { t } = useTranslation()
-  const { actions, confirmState, txHash, errorMessage, resetState } = useConfirmActions(order, amountToApprove, spender)
+  const { actions, confirmState, txHash, orderHash, errorMessage, resetState } = useConfirmActions(
+    order,
+    amountToApprove,
+    spender,
+  )
   const preConfirmState = usePreviousValue(confirmState)
   const [confirmSteps, setConfirmSteps] = useState<ConfirmModalState[]>()
   const tradePriceBreakdown = useMemo(() => isClassicOrder(order) && computeTradePriceBreakdown(order?.trade), [order])
@@ -351,7 +410,7 @@ export const useConfirmModalState = (
     return true
   }, [t, tradePriceBreakdown])
 
-  const createSteps = useCreateConfirmSteps(amountToApprove, spender)
+  const createSteps = useCreateConfirmSteps(order, amountToApprove, spender)
   const confirmActions = useMemo(() => {
     return confirmSteps?.map((step) => actions[step])
   }, [confirmSteps, actions])
@@ -411,6 +470,7 @@ export const useConfirmModalState = (
     confirmState,
     resetState,
     txHash,
+    orderHash,
     confirmActions,
   }
 }

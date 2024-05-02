@@ -23,6 +23,7 @@ import { wrappedCurrency } from 'utils/wrappedCurrency'
 import ConfirmSwapModalContainer from 'views/Swap/components/ConfirmSwapModalContainer'
 import { SwapTransactionErrorContent } from 'views/Swap/components/SwapTransactionErrorContent'
 
+import { Hash } from 'viem'
 import { InterfaceOrder, isMMOrder, isXOrder } from 'views/Swap/utils'
 import { TransactionConfirmSwapContent } from '../components'
 import { ConfirmAction } from '../hooks/useConfirmModalState'
@@ -54,6 +55,7 @@ type ConfirmSwapModalProps = InjectedModalProps & {
   originalOrder?: InterfaceOrder | null
   currencyBalances?: { [field in Field]?: CurrencyAmount<Currency> }
   txHash?: string
+  orderHash?: Hash
   swapErrorMessage?: string
   onAcceptChanges: () => void
   onConfirm: (setConfirmModalState?: () => void) => void
@@ -71,6 +73,7 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
   onDismiss,
   customOnDismiss,
   txHash,
+  orderHash,
   openSettingModal,
   onAcceptChanges,
   onConfirm,
@@ -166,16 +169,20 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
     }
 
     if (confirmModalState === ConfirmModalState.PENDING_CONFIRMATION) {
+      let title = txHash ? t('Transaction Submitted') : t('Confirm Swap')
+      if (isXOrder(order)) {
+        title = txHash ? t('Order Filled') : orderHash ? t('Order Submitted') : t('Confirm Swap')
+      }
       return (
         <SwapPendingModalContent
-          title={txHash ? t('Transaction Submitted') : t('Confirm Swap')}
+          title={title}
           currencyA={currencyA}
           currencyB={currencyB}
           amountA={amountA}
           amountB={amountB}
           currentStep={confirmModalState}
         >
-          {showAddToWalletButton && txHash ? (
+          {showAddToWalletButton && (txHash || orderHash) ? (
             <AddToWalletButton
               mt="39px"
               height="auto"
@@ -258,6 +265,7 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
     stepContents,
     pendingModalSteps,
     showAddToWalletButton,
+    orderHash,
     token,
   ])
 

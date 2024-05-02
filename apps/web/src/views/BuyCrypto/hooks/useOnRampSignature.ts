@@ -2,16 +2,10 @@ import type { UseQueryResult } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import qs from 'qs'
+import { createQueryKey, type Evaluate, type ExactPartial, type UseQueryParameters } from 'utils/reactQuery'
 import { useAccount } from 'wagmi'
 import { ONRAMP_PROVIDERS, combinedNetworkIdMap, getIsNetworkEnabled, type OnRampChainId } from '../constants'
-import {
-  createQueryKey,
-  type Evaluate,
-  type ExactPartial,
-  type OnRampProviderQuote,
-  type OnRampUnit,
-  type UseQueryParameters,
-} from '../types'
+import { type OnRampProviderQuote, type OnRampUnit } from '../types'
 
 export const getOnRampSignatureQueryKey = createQueryKey<
   'fetch-provider-signature',

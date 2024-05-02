@@ -131,7 +131,6 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
           tradeType={order.trade.tradeType}
           inputAmount={order.trade.inputAmount}
           outputAmount={order.trade.outputAmount}
-          currencyBalances={currencyBalances}
           lpFee={lpFeeAmount ?? undefined}
           priceImpact={priceImpactWithoutFee ?? undefined}
           disabledConfirm={showAcceptChanges}
@@ -143,7 +142,6 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
     }, [
       order,
       isRFQReady,
-      currencyBalances,
       lpFeeAmount,
       priceImpactWithoutFee,
       showAcceptChanges,

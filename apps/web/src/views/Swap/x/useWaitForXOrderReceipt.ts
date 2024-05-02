@@ -1,9 +1,9 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { viemClientsPublicNodes } from 'hooks/usePublicNodeWaitForTransaction'
 import { logger } from 'utils/datadog'
+import { createQueryKey, type UseQueryParameters } from 'utils/reactQuery'
 import type { Hash, TransactionReceipt } from 'viem'
 import { waitForTransactionReceipt } from 'viem/actions'
-import { createQueryKey, UseQueryParameters } from 'views/BuyCrypto/types'
 import { GetXOrderReceiptResponse, waitForXOrderReceipt } from './api'
 
 const getXOrderReceiptQueryKey = createQueryKey<'x-receipt', [chainId: number, hash: Hash]>('x-receipt')
