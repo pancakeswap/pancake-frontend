@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, FlexGap, Input, Text } from '@pancakeswap/uikit'
+import { Box, Flex, FlexGap, Input, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { DatePicker, TimePicker } from 'components/DatePicker'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import { styled } from 'styled-components'
+import { Reward } from 'views/DashboardQuestEdit/components/Reward'
 
 const DashboardQuestEditContainer = styled(Flex)`
   padding: 16px;
@@ -40,6 +41,7 @@ const EasyMde = dynamic(() => import('components/EasyMde'), {
 
 export const DashboardQuestEdit = () => {
   const { t } = useTranslation()
+  const { isDesktop } = useMatchBreakpoints()
   const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
   const [state, setState] = useState(() => ({
     title: '',
@@ -130,6 +132,9 @@ export const DashboardQuestEdit = () => {
             </Box>
           </TimelineGroup>
         </Box>
+
+        {!isDesktop && <Reward />}
+
         <Box>
           <Text bold fontSize="24px" lineHeight="28px" mb="8px">
             {t('Description')}
@@ -140,6 +145,7 @@ export const DashboardQuestEdit = () => {
           <EasyMde id="body" name="body" onTextChange={handleEasyMdeChange} value={body} required />
         </Box>
       </FlexGap>
+      {isDesktop && <Reward />}
     </DashboardQuestEditContainer>
   )
 }

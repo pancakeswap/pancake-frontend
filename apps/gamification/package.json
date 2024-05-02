@@ -61,6 +61,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/styled-system": "^5.1.17",
     "eslint": "^8.32.0",
-    "eslint-plugin-lodash": "^7.4.0"
+    "eslint-plugin-lodash": "^7.4.0",
+    "@types/react-datepicker": "^4.4.1"
   }
 }
