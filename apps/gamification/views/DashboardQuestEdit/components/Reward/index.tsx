@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
+import { Countdown } from 'views/DashboardQuestEdit/components/Reward/Countdown'
 import { RewardAmount } from 'views/DashboardQuestEdit/components/Reward/RewardAmount'
 
 const RewardContainer = styled(Box)`
@@ -26,7 +27,7 @@ export const Reward = () => {
             {t('Reward')}
           </Text>
           <RewardAmount />
-          {/* <Countdown /> */}
+          <Countdown />
         </Box>
       </Card>
     </RewardContainer>
