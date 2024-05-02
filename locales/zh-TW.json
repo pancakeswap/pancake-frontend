@@ -3320,7 +3320,7 @@
   "Booster Update": "助推器更新",
   "Booster has been updated.": "助推器已更新。",
   "Try it now": "立即嘗試",
-  "Trade Options & Build On-Chain Liquidity": "在鏈上交易期權 ＆ 提供期權流動性",
+  "Trade Options & Build On-Chain Liquidity": "在鏈上交易選擇權 ＆ 建立選擇權流動性",
   "Trade Options & Build On-Chain Options Liquidity": "交易選擇權並建立鏈上選擇權流動性",
   "Options": "選擇權",
   "PancakeSwap Options": "PancakeSwap 選擇權",
@@ -3344,5 +3344,7 @@
   "USDV Disclaimer": "USDV 免責聲明",
   "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "經驗證的美元 ($USDV) 是 USDV.money 所提供的產品，與 PancakeSwap 沒有任何關聯。",
   "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "勾選此方塊即表示我了解使用 USDV 的風險應由我自行承擔。對於因我的行為而造成的任何損失，全部責任由我承擔。",
+  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit",
+  "Swell's website": "Swell's website",
   "Done": "完成"
 }
