@@ -34,7 +34,7 @@ const AptosChain = {
   name: 'Aptos',
 }
 
-const NetworkSelect = ({ switchNetwork, chainId }) => {
+const NetworkSelect = ({ switchNetwork, chainId, isWrongNetwork }) => {
   const { t } = useTranslation()
   const [showTestnet] = useUserShowTestnet()
 
@@ -56,10 +56,14 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
           <UserMenuItem
             key={chain.id}
             style={{ justifyContent: 'flex-start' }}
-            onClick={() => chain.id !== chainId && switchNetwork(chain.id)}
+            onClick={() => (chain.id !== chainId || isWrongNetwork) && switchNetwork(chain.id)}
           >
             <ChainLogo chainId={chain.id} />
-            <Text color={chain.id === chainId ? 'secondary' : 'text'} bold={chain.id === chainId} pl="12px">
+            <Text
+              color={chain.id === chainId && !isWrongNetwork ? 'secondary' : 'text'}
+              bold={chain.id === chainId && !isWrongNetwork}
+              pl="12px"
+            >
               {chainNameConverter(chain.name)}
             </Text>
           </UserMenuItem>
@@ -215,7 +219,7 @@ export const NetworkSwitcher = () => {
           isNotMatched ? (
             <WrongNetworkSelect switchNetwork={switchNetworkAsync} chainId={chainId} />
           ) : (
-            <NetworkSelect switchNetwork={switchNetworkAsync} chainId={chainId} />
+            <NetworkSelect switchNetwork={switchNetworkAsync} chainId={chainId} isWrongNetwork={isWrongNetwork} />
           )
         }
       </UserMenu>
