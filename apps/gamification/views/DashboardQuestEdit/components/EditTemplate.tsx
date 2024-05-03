@@ -31,6 +31,7 @@ const EasyMde = dynamic(() => import('components/EasyMde'), {
 export interface StateType {
   title: string
   body: string
+  amountPerWinner: string
   startDate: null | Date
   startTime: null | Date
   endDate: null | Date

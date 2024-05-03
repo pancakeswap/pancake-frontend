@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { bscTokens } from '@pancakeswap/tokens'
 import { ArrowUpIcon, Box, Button, Flex, Input, Text, useModal } from '@pancakeswap/uikit'
 import { TokenImage } from 'components/TokenImage'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { styled } from 'styled-components'
 import { WithdrawRewardModal } from 'views/DashboardQuestEdit/components/Reward/WithdrawRewardModal'
 
@@ -13,17 +13,26 @@ const RewardContainer = styled(Flex)`
   border-bottom: solid 1px ${({ theme }) => theme.colors.cardBorder};
 `
 
-export const RewardAmount = () => {
+interface RewardAmountProps {
+  amountPerWinner: string
+  setAmountPerWinner: (value: string) => void
+}
+
+export const RewardAmount: React.FC<RewardAmountProps> = ({ amountPerWinner, setAmountPerWinner }) => {
   const { t } = useTranslation()
   const token = bscTokens.usdt
   const rewardAmount = 1000
-  const [amountPerWinner, setAmountPerWinner] = useState('')
 
   const [onPresentWithdrawRewardModal] = useModal(<WithdrawRewardModal token={token} rewardAmount={rewardAmount} />)
 
-  const handleInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmountPerWinner(e.target.value)
-  }, [])
+  const handleInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.currentTarget.validity.valid) {
+        setAmountPerWinner(e.target.value)
+      }
+    },
+    [setAmountPerWinner],
+  )
 
   return (
     <Box>
@@ -50,7 +59,7 @@ export const RewardAmount = () => {
             {t('%token% per winner:', { token: token.symbol })}
           </Text>
           <Box width="80px">
-            <Input value={amountPerWinner} onChange={handleInput} />
+            <Input pattern="^[0-9]+$" inputMode="numeric" value={amountPerWinner} onChange={handleInput} />
           </Box>
         </Flex>
       </RewardContainer>

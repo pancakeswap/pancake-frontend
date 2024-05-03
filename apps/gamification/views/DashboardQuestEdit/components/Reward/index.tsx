@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, Text } from '@pancakeswap/uikit'
+import { useCallback } from 'react'
 import { styled } from 'styled-components'
 import { Countdown } from 'views/DashboardQuestEdit/components/Reward/Countdown'
 import { RewardAmount } from 'views/DashboardQuestEdit/components/Reward/RewardAmount'
@@ -16,8 +17,20 @@ const RewardContainer = styled(Box)`
   }
 `
 
-export const Reward = () => {
+interface RewardProps {
+  amountPerWinner: string
+  updateValue: (key: string, value: string) => void
+}
+
+export const Reward: React.FC<RewardProps> = ({ amountPerWinner, updateValue }) => {
   const { t } = useTranslation()
+
+  const handleRewardPerWin = useCallback(
+    (value: string) => {
+      updateValue('amountPerWinner', value)
+    },
+    [updateValue],
+  )
 
   return (
     <RewardContainer>
@@ -26,7 +39,7 @@ export const Reward = () => {
           <Text fontSize={['24px']} bold mb={['24px', '24px', '40px']}>
             {t('Reward')}
           </Text>
-          <RewardAmount />
+          <RewardAmount amountPerWinner={amountPerWinner} setAmountPerWinner={handleRewardPerWin} />
           <Countdown />
         </Box>
       </Card>

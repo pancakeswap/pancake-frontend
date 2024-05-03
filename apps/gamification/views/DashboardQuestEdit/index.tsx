@@ -23,6 +23,7 @@ export const DashboardQuestEdit = () => {
   const [state, setState] = useState<StateType>(() => ({
     title: '',
     body: '',
+    amountPerWinner: '',
     startDate: null,
     startTime: null,
     endDate: null,
@@ -59,10 +60,10 @@ export const DashboardQuestEdit = () => {
         handleDateChange={handleDateChange}
         handleEasyMdeChange={handleEasyMdeChange}
       >
-        {!isDesktop && <Reward />}
+        {!isDesktop && <Reward amountPerWinner={state.amountPerWinner} updateValue={updateValue} />}
         <Tasks />
       </EditTemplate>
-      {isDesktop && <Reward />}
+      {isDesktop && <Reward amountPerWinner={state.amountPerWinner} updateValue={updateValue} />}
     </DashboardQuestEditContainer>
   )
 }
