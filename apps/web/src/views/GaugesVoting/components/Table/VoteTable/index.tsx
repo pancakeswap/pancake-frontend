@@ -283,8 +283,8 @@ export const VoteTable = () => {
                 <Text>{t('You have no locked CAKE.')}</Text>
                 <FlexGap alignItems="center" gap="0.2em" flexWrap="wrap">
                   {t('To cast your vote, ')}
-                  <NextLink href="/cake-staking">
-                    <Link href="/cake-staking" color="text">
+                  <NextLink href="/cake-staking" passHref>
+                    <Link href="replace" color="text">
                       <Text bold style={{ textDecoration: 'underline' }}>
                         {t('lock your CAKE')}
                       </Text>
