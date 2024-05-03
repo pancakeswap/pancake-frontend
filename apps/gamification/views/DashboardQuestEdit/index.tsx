@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, FlexGap, Input, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { DatePicker, TimePicker } from 'components/DatePicker'
+import { DatePicker, DatePickerPortal, TimePicker } from 'components/DatePicker'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import { styled } from 'styled-components'
@@ -90,7 +90,7 @@ export const DashboardQuestEdit = () => {
           </Text>
           <Input value={title} onChange={(e) => updateValue('title', e.currentTarget.value)} />
         </Box>
-        <Box>
+        <Box position="relative" zIndex={1}>
           <Text bold fontSize="24px" lineHeight="28px" mb="8px">
             {t('Timeline')}
           </Text>
@@ -149,6 +149,7 @@ export const DashboardQuestEdit = () => {
         </Box>
       </FlexGap>
       {isDesktop && <Reward />}
+      <DatePickerPortal />
     </DashboardQuestEditContainer>
   )
 }

@@ -46,7 +46,7 @@ export const Tasks = () => {
   }
 
   return (
-    <Box>
+    <Box position="relative" zIndex="0">
       <Flex mb="16px" justifyContent="space-between">
         <Text fontSize={['24px']} bold mr="8px">
           {t('Tasks')}
