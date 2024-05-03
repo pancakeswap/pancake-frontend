@@ -43,23 +43,9 @@ export const DashboardQuestEdit = () => {
     }))
   }
 
-  const handleEasyMdeChange = (value: string) => {
-    updateValue('body', value)
-  }
-
-  const handleDateChange = (key: string) => (value: Date) => {
-    updateValue(key, value)
-  }
-
   return (
     <DashboardQuestEditContainer>
-      <EditTemplate
-        titleText={t('Quest title')}
-        state={state}
-        updateValue={updateValue}
-        handleDateChange={handleDateChange}
-        handleEasyMdeChange={handleEasyMdeChange}
-      >
+      <EditTemplate titleText={t('Quest title')} state={state} updateValue={updateValue}>
         {!isDesktop && <Reward amountPerWinner={state.amountPerWinner} updateValue={updateValue} />}
         <Tasks />
       </EditTemplate>

@@ -42,16 +42,12 @@ interface EditTemplateProps {
   titleText: string
   state: StateType
   updateValue: (key: string, value: string | Date) => void
-  handleDateChange: (key: string) => (value: Date) => void
-  handleEasyMdeChange: (value: string) => void
 }
 
 export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> = ({
   titleText,
   state,
   updateValue,
-  handleDateChange,
-  handleEasyMdeChange,
   children,
 }) => {
   const { t } = useTranslation()
@@ -79,36 +75,36 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
             <Text bold>{t('Start Date')}</Text>
             <DatePicker
               name="startDate"
-              onChange={handleDateChange('startDate')}
               selected={startDate}
               placeholderText="YYYY/MM/DD"
+              onChange={(value: Date) => updateValue('startDate', value)}
             />
           </Box>
           <Box>
             <Text bold>{t('Start Time')}</Text>
             <TimePicker
               name="startTime"
-              onChange={handleDateChange('startTime')}
               selected={startTime}
               placeholderText="00:00"
+              onChange={(value: Date) => updateValue('startTime', value)}
             />
           </Box>
           <Box>
             <Text bold>{t('End Date')}</Text>
             <DatePicker
               name="endDate"
-              onChange={handleDateChange('endDate')}
               selected={endDate}
               placeholderText="YYYY/MM/DD"
+              onChange={(value: Date) => updateValue('endDate', value)}
             />
           </Box>
           <Box>
             <Text bold>{t('End Time')}</Text>
             <TimePicker
               name="endTime"
-              onChange={handleDateChange('endTime')}
               selected={endTime}
               placeholderText="00:00"
+              onChange={(value: Date) => updateValue('endTime', value)}
             />
           </Box>
         </TimelineGroup>
@@ -124,7 +120,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
         <Text color="textSubtle" mb="8px">
           {t('Tip: write in Markdown!')}
         </Text>
-        <EasyMde id="body" name="body" onTextChange={handleEasyMdeChange} value={body} required />
+        <EasyMde id="body" name="body" onTextChange={(value) => updateValue('body', value)} value={body} required />
       </Box>
     </FlexGap>
   )
