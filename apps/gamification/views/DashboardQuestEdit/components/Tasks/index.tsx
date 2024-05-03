@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Box, Button, Card, DragIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useRef, useState } from 'react'
 import DraggableList from 'react-draggable-list'
+import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
 
 const data = Array(10)
   .fill(null)
@@ -27,7 +28,8 @@ const Item = ({ item, itemSelected, dragHandleProps }) => {
       />
       <Card style={{ width: '100%' }}>
         <Box padding="8px">
-          <span>{item.id}</span>
+          {/* <span>{item.id}</span> */}
+          <SocialTask />
         </Box>
       </Card>
     </Flex>
@@ -44,7 +46,7 @@ export const Tasks = () => {
   }
 
   return (
-    <Box mb="32px">
+    <Box>
       <Flex mb="16px" justifyContent="space-between">
         <Text fontSize={['24px']} bold mr="8px">
           {t('Tasks')}
