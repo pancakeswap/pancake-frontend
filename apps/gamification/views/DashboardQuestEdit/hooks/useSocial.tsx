@@ -18,7 +18,7 @@ export const useSocial = ({ social }: { social: SocialTaskType }) => {
   const { t } = useTranslation()
 
   const socialIcon = useMemo(() => {
-    switch (social as SocialTaskType) {
+    switch (social) {
       case SocialTaskType.X_LINK_POST:
       case SocialTaskType.X_FOLLOW_ACCOUNT:
       case SocialTaskType.X_REPOST_POST:
@@ -39,7 +39,7 @@ export const useSocial = ({ social }: { social: SocialTaskType }) => {
   }, [social])
 
   const socialNaming = useMemo(() => {
-    switch (social as SocialTaskType) {
+    switch (social) {
       case SocialTaskType.X_LINK_POST:
       case SocialTaskType.IG_LIKE_POST:
         return t('Like the post')
