@@ -39,7 +39,7 @@ const Item = ({ item, itemSelected, dragHandleProps }) => {
 export const Tasks = () => {
   const { t } = useTranslation()
   const [list, setList] = useState(data)
-  const containerRef = useRef(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const _onListChange = (newList: any) => {
     setList(newList)
@@ -67,7 +67,7 @@ export const Tasks = () => {
           list={list}
           template={Item as any}
           onMoveEnd={(newList: any) => _onListChange(newList)}
-          container={() => containerRef.current}
+          container={() => containerRef?.current}
         />
       </Flex>
     </Box>

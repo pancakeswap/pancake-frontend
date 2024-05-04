@@ -9,7 +9,7 @@ import { WithdrawRewardModal } from 'views/DashboardQuestEdit/components/Reward/
 const RewardContainer = styled(Flex)`
   flex-direction: column;
   align-items: center;
-  padding-bottom: 32px;
+  padding-bottom: 24px;
   border-bottom: solid 1px ${({ theme }) => theme.colors.cardBorder};
 `
 

@@ -38,12 +38,12 @@ export const DashboardLayout: React.FC<React.PropsWithChildren> = ({ children })
   }, [t])
 
   const activeSubItem = useMemo(() => {
-    if (pathname.includes('/dashboard/quest')) {
-      return '/dashboard'
+    if (pathname.includes('/dashboard/campaign')) {
+      return '/dashboard/campaign'
     }
 
-    return subMenuItems.find((subMenuItem) => subMenuItem.href === pathname)?.href
-  }, [subMenuItems, pathname])
+    return '/dashboard'
+  }, [pathname])
 
   if (!showDashboardNav || (!isFirstTime && !account)) {
     return null

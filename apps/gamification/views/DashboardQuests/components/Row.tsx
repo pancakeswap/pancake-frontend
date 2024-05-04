@@ -117,8 +117,8 @@ export const Row: React.FC<RowProps> = () => {
                 <Text ml="8px">{t('Statistics')}</Text>
               </Flex>
               <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/quest/edit?id=123')}>
-                <PencilIcon color="primary" width="20px" height="20px" />
-                <Text ml="8px">{t('Edit')}</Text>
+                <PencilIcon color="primary" width="14px" height="14px" />
+                <Text ml="14px">{t('Edit')}</Text>
               </Flex>
             </StyledDropdown>
           )}

@@ -6,7 +6,7 @@ import {
   EllipsisIcon,
   Flex,
   LogoRoundIcon,
-  OpenNewIcon,
+  PencilIcon,
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
@@ -127,9 +127,9 @@ export const Row: React.FC<RowProps> = ({ expanded, toggleExpanded }) => {
                 <BarChartIcon color="primary" width="20px" height="20px" />
                 <Text ml="8px">{t('Statistics')}</Text>
               </Flex>
-              <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/campaigns')}>
-                <OpenNewIcon color="primary" width="20px" height="20px" />
-                <Text ml="8px">{t('Review')}</Text>
+              <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/campaigns/edit?id=123')}>
+                <PencilIcon color="primary" width="14px" height="14px" />
+                <Text ml="14px">{t('Edit')}</Text>
               </Flex>
             </StyledDropdown>
           )}
