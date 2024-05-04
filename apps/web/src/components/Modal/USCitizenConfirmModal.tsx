@@ -30,7 +30,9 @@ const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmMo
 
   const handleSuccess = useCallback(() => {
     setHasAcceptedRisk(true)
-    window.open(href, '_blank', 'noopener noreferrer')
+    if (href) {
+      window.open(href, '_blank', 'noopener noreferrer')
+    }
     onDismiss?.()
   }, [id, setHasAcceptedRisk, onDismiss, href])
 
