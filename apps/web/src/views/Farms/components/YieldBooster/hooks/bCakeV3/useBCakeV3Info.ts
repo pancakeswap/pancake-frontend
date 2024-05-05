@@ -102,16 +102,19 @@ export const useUserBoostedPoolsTokenId = () => {
     enabled: Boolean(chainId && account),
     ...QUERY_SETTINGS_WITHOUT_REFETCH,
   })
-  const tokenIds = data?.map((tokenId) => Number(tokenId)) ?? []
-  const tokenIdsLegacy = dataLegacy?.map((tokenId) => Number(tokenId)) ?? []
 
-  return {
-    tokenIds: [...tokenIds, ...tokenIdsLegacy],
-    updateBoostedPoolsTokenId: () => {
-      refetch()
-      refetchLegacy()
-    },
-  }
+  return useMemo(() => {
+    const tokenIds = data?.map((tokenId) => Number(tokenId)) ?? []
+    const tokenIdsLegacy = dataLegacy?.map((tokenId) => Number(tokenId)) ?? []
+
+    return {
+      tokenIds: [...tokenIds, ...tokenIdsLegacy],
+      updateBoostedPoolsTokenId: () => {
+        refetch()
+        refetchLegacy()
+      },
+    }
+  }, [data, dataLegacy, refetch, refetchLegacy])
 }
 
 export const useVeCakeUserMultiplierBeforeBoosted = (tokenId?: string) => {
