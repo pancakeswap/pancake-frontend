@@ -31,6 +31,7 @@ export { default as BridgeIcon } from "./Icons/BridgeIcon";
 export { default as BscScanIcon } from "./Icons/BscScan";
 export { default as BulbIcon } from "./Icons/Bulb";
 export { default as BunnyCardsIcon } from "./Icons/BunnyCards";
+export { default as BunnyFillIcon } from "./Icons/BunnyFill";
 export { default as BunnyPlaceholderIcon } from "./Icons/BunnyPlaceholder";
 export { default as CalculateIcon } from "./Icons/Calculate";
 export { default as CalenderIcon } from "./Icons/Calender";

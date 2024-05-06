@@ -11,7 +11,12 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import { useState } from 'react'
+import { styled } from 'styled-components'
 import { SocialTaskType, useSocial } from 'views/DashboardQuestEdit/hooks/useSocial'
+
+const StyledInput = styled(Input)`
+  height: 32px;
+`
 
 export const SocialTask = () => {
   const { t } = useTranslation()
@@ -52,7 +57,7 @@ export const SocialTask = () => {
             </Box>
           }
         >
-          <Input style={{ borderRadius: '24px' }} value={urlLink} onChange={(e) => setUrlLink(e.target.value)} />
+          <StyledInput style={{ borderRadius: '24px' }} value={urlLink} onChange={(e) => setUrlLink(e.target.value)} />
         </InputGroup>
         {!isMobile && (
           <DeleteOutlineIcon style={{ cursor: 'pointer' }} color="primary" width="20px" height="20px" ml="8px" />
