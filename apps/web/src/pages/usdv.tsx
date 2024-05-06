@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useMemo } from 'react'
-import { useTheme } from '@pancakeswap/hooks'
-import { Flex, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
-import styled from 'styled-components'
-import { CurrencyLogo, PoweredBy, ClientOnly } from '@pancakeswap/widgets-internal'
 import { ChainId } from '@pancakeswap/chains'
+import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
+import { Flex, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
+import { ClientOnly, CurrencyLogo, PoweredBy } from '@pancakeswap/widgets-internal'
+import { useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
+import { useCallback, useEffect, useMemo } from 'react'
+import styled from 'styled-components'
 
 import DisclaimerModal from 'components/DisclaimerModal'
-import { useAtom } from 'jotai'
 
 const usdvDisclaimer = atomWithStorage('pcs:usdv-disclaimer-accept', false, undefined, { unstable_getOnInit: true })
 
