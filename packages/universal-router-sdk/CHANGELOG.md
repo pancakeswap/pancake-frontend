@@ -1,5 +1,11 @@
 # @pancakeswap/universal-router-sdk
 
+## 1.0.18
+
+### Patch Changes
+
+- @pancakeswap/smart-router@6.0.5
+
 ## 1.0.17
 
 ### Patch Changes
