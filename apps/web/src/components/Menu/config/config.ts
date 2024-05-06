@@ -108,6 +108,7 @@ const config: (
       href: '/buy-crypto',
       icon: ShoppingBasketIcon,
       fillIcon: ShoppingBasketFilledIcon,
+      showItemsOnMobile: false,
       items: [],
     },
     {
