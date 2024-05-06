@@ -41,7 +41,7 @@ export const ExploreMore = () => {
       </Text>
       <Box width="100%">
         <StyledFlexGap>
-          <Quest />
+          <Quest showStatus />
           <Quest />
           <Quest />
           <Quest />

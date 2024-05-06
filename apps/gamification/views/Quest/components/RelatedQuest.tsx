@@ -25,7 +25,7 @@ export const RelatedQuest = () => {
         {t('This quest is also a part of:')}
       </Text>
       <CampaignContainer>
-        <Campaign />
+        <Campaign showStatus />
       </CampaignContainer>
     </Box>
   )

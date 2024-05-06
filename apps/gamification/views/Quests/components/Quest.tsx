@@ -24,9 +24,10 @@ const DetailContainer = styled(Flex)`
 
 interface QuestProps {
   isDraft?: boolean
+  showStatus?: boolean
 }
 
-export const Quest: React.FC<QuestProps> = ({ isDraft }) => {
+export const Quest: React.FC<QuestProps> = ({ isDraft, showStatus }) => {
   const { t } = useTranslation()
 
   return (
@@ -37,6 +38,22 @@ export const Quest: React.FC<QuestProps> = ({ isDraft }) => {
             {isDraft && (
               <Tag variant="textDisabled" mr="auto">
                 {t('Drafted')}
+              </Tag>
+            )}
+            {showStatus && (
+              <Tag variant="textDisabled" outline mr="auto">
+                <Text bold color="textSubtle">
+                  {t('Upcoming')}
+                </Text>
+                {/* <Text bold color="success">
+                  {t('Completed')}
+                </Text>
+                <Text bold color="secondary">
+                  {t('Ongoing')}
+                </Text>
+                <Text bold color="textDisabled">
+                  {t('Finished')}
+                </Text> */}
               </Tag>
             )}
             <Flex>

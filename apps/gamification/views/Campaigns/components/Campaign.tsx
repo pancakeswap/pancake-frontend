@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, CalenderIcon, Card, Flex, InfoIcon, Link, LogoRoundIcon, Text } from '@pancakeswap/uikit'
+import { Box, CalenderIcon, Card, Flex, InfoIcon, Link, LogoRoundIcon, Tag, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 
 const StyledThumbnail = styled('div')`
@@ -30,7 +30,11 @@ const DetailContainer = styled(Flex)`
   }
 `
 
-export const Campaign = () => {
+interface CampaignProps {
+  showStatus?: boolean
+}
+
+export const Campaign: React.FC<CampaignProps> = ({ showStatus }) => {
   const { t } = useTranslation()
 
   return (
@@ -52,10 +56,28 @@ export const Campaign = () => {
           </Box>
           {/* <StyledThumbnail style={{ backgroundImage: `url(${build.imageUrl})` }}/> */}
           <Flex mb="16px">
-            <CalenderIcon color="textSubtle" mr="8px" />
-            <Text color="textSubtle" fontSize={['14px']}>
-              Apr 10 - Apr 21
-            </Text>
+            {showStatus && (
+              <Tag variant="textDisabled" outline mr="auto">
+                <Text bold color="textSubtle">
+                  {t('Upcoming')}
+                </Text>
+                {/* <Text bold color="success">
+                  {t('Completed')}
+                </Text>
+                <Text bold color="secondary">
+                  {t('Ongoing')}
+                </Text>
+                <Text bold color="textDisabled">
+                  {t('Finished')}
+                </Text> */}
+              </Tag>
+            )}
+            <Flex>
+              <CalenderIcon color="textSubtle" mr="8px" />
+              <Text color="textSubtle" fontSize={['14px']}>
+                Apr 10 - Apr 21
+              </Text>
+            </Flex>
           </Flex>
           <Text bold fontSize={['20px']} lineHeight={['24px']}>
             Swap and Share $10,000 on Ethereum PancakeSwap
