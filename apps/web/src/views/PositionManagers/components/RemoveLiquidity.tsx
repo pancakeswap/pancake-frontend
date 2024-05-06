@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { MANAGER } from '@pancakeswap/position-managers'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import type { AtomBoxProps } from '@pancakeswap/uikit'
 import { Box, Button, Flex, ModalV2, RowBetween, Text, useToast } from '@pancakeswap/uikit'
@@ -22,6 +23,10 @@ import { FeeTag } from './Tags'
 interface Props {
   isOpen?: boolean
   onDismiss?: () => void
+  manager: {
+    id: MANAGER
+    name: string
+  }
   vaultName: string
   feeTier: FeeAmount
   currencyA: Currency
@@ -54,6 +59,7 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
   contractAddress,
   refetch,
   bCakeWrapper,
+  manager,
 }: Props) {
   const { t } = useTranslation()
   const { account, chain } = useWeb3React()
@@ -72,7 +78,9 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
       bCakeWrapper
         ? async () => {
             const bCakeUserInfoAmount = await bCakeWrapperContract.read.userInfo([account ?? '0x'], {})
-            const message = encodePacked(['uint256', 'uint256'], [BigInt(0), BigInt(0)])
+            const slippage = '0x00000000000000000000000000000000000000000000000000b1a2bc2ec50000' // 5
+            const message =
+              manager.id === MANAGER.TEAHOUSE ? slippage : encodePacked(['uint256', 'uint256'], [BigInt(0), BigInt(0)])
             const withdrawAmount = new BigNumber(bCakeUserInfoAmount?.[0]?.toString() ?? 0)
               .multipliedBy(percent)
               .div(100)
@@ -85,14 +93,6 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
                 account: account ?? '0x',
               },
             )
-            console.log({
-              estGasOrigin: estGas.toString(),
-              estGasAdjusted: new BigNumber(estGas.toString()).times(1.5).toNumber(),
-              from: account,
-              to: bCakeWrapperContract.address,
-              amount: avoidDecimalsProblem,
-              method: 'withdrawThenBurn',
-            })
             return bCakeWrapperContract.write.withdrawThenBurn([avoidDecimalsProblem, false, message], {
               account: account ?? '0x',
               chain,
@@ -131,8 +131,8 @@ export const RemoveLiquidity = memo(function RemoveLiquidity({
     bCakeWrapperContract.read,
     bCakeWrapperContract.estimateGas,
     bCakeWrapperContract.write,
-    bCakeWrapperContract.address,
     account,
+    manager.id,
     percent,
     chain,
     wrapperContract.read,

@@ -4,6 +4,27 @@ import { Strategy, VaultConfig } from '../../types'
 import { MANAGER } from '../managers'
 
 export const vaults: VaultConfig[] = [
+  // {
+  //   id: 24,
+  //   idByManager: 1,
+  //   name: 'TEAHOUSE',
+  //   bCakeWrapperAddress: '0x12635Cb59c4fC4Ef777358165D52c2909DBA2Eb6',
+  //   address: '0x12635Cb59c4fC4Ef777358165D52c2909DBA2Eb6',
+  //   vaultAddress: '0xB64Ba2A7613D8250FB9a94df6667B7b8a893c7F6',
+  //   adapterAddress: '0x6fA17B8E95A3A8668d0e4e80be237CEa687a1358',
+  //   currencyA: bscTokens.eth,
+  //   currencyB: bscTokens.btcb,
+  //   earningToken: bscTokens.cake,
+  //   feeTier: FeeAmount.MEDIUM,
+  //   strategy: Strategy.APS,
+  //   manager: MANAGER.TEAHOUSE,
+  //   isSingleDepositToken: false,
+  //   allowDepositToken0: true,
+  //   allowDepositToken1: true,
+  //   managerInfoUrl: 'https://teahouse.finance/',
+  //   strategyInfoUrl: 'https://docs.teahouse.finance/teahouse-finance-1/lp-vaults/strategies',
+  //   learnMoreAboutUrl: 'https://docs.teahouse.finance/teahouse-finance-1/managed-vaults/about-managed-vaults',
+  // },
   {
     id: 23,
     idByManager: 4,

@@ -19,6 +19,8 @@ export enum Strategy {
   ALO,
   ASCEND,
   SAVINGS,
+  APS,
+  SSS,
 }
 
 export interface OnChainActionResponse {

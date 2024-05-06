@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { MANAGER } from '@pancakeswap/position-managers'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
@@ -6,16 +7,25 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerBCakeWrapperContract, usePositionManagerWrapperContract } from 'hooks/useContract'
-import { useCallback } from 'react'
-import { Address } from 'viem'
+import { useCallback, useMemo } from 'react'
+import { Address, encodePacked } from 'viem'
 
-export const useOnStake = (contractAddress: Address, bCakeWrapperAddress?: Address) => {
+const DEFAULT_SLIPPAGE = 50n // 0.5%
+const BIPS_PRECISION = 10000n
+const SLIPPAGE_PRECISION = 1000000000000000000n
+
+function usePMSlippage() {
+  return useMemo(() => (DEFAULT_SLIPPAGE * SLIPPAGE_PRECISION) / BIPS_PRECISION, [])
+}
+
+export const useOnStake = (managerId: MANAGER, contractAddress: Address, bCakeWrapperAddress?: Address) => {
   const positionManagerBCakeWrapperContract = usePositionManagerBCakeWrapperContract(bCakeWrapperAddress ?? '0x')
   const positionManagerWrapperContract = usePositionManagerWrapperContract(contractAddress)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
   const { chain, account } = useActiveWeb3React()
   const { t } = useTranslation()
+  const slippage = usePMSlippage()
 
   const mintThenDeposit = useCallback(
     async (
@@ -28,12 +38,13 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress?: Addre
       const receipt = await fetchWithCatchTxError(
         bCakeWrapperAddress
           ? async () => {
+              const message = managerId === MANAGER.TEAHOUSE ? encodePacked(['uint256'], [slippage]) : '0x'
               const estGas = await positionManagerBCakeWrapperContract.estimateGas.mintThenDeposit(
                 [
                   allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
                   allowDepositToken1 ? amountB?.numerator ?? 0n : 0n,
                   false,
-                  '0x',
+                  message,
                 ],
                 {
                   account: account ?? '0x',
@@ -45,7 +56,7 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress?: Addre
                   allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
                   allowDepositToken1 ? amountB?.numerator ?? 0n : 0n,
                   false,
-                  '0x',
+                  message,
                 ],
                 {
                   account: account ?? '0x',
@@ -81,6 +92,7 @@ export const useOnStake = (contractAddress: Address, bCakeWrapperAddress?: Addre
     [
       fetchWithCatchTxError,
       bCakeWrapperAddress,
+      managerId,
       positionManagerBCakeWrapperContract.estimateGas,
       positionManagerBCakeWrapperContract.write,
       account,
