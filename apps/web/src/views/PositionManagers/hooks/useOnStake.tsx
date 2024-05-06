@@ -7,8 +7,16 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePositionManagerBCakeWrapperContract, usePositionManagerWrapperContract } from 'hooks/useContract'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Address, encodePacked } from 'viem'
+
+const DEFAULT_SLIPPAGE = 50n // 0.5%
+const BIPS_PRECISION = 10000n
+const SLIPPAGE_PRECISION = 1000000000000000000n
+
+function usePMSlippage() {
+  return useMemo(() => (DEFAULT_SLIPPAGE * SLIPPAGE_PRECISION) / BIPS_PRECISION, [])
+}
 
 export const useOnStake = (managerId: MANAGER, contractAddress: Address, bCakeWrapperAddress?: Address) => {
   const positionManagerBCakeWrapperContract = usePositionManagerBCakeWrapperContract(bCakeWrapperAddress ?? '0x')
@@ -17,6 +25,7 @@ export const useOnStake = (managerId: MANAGER, contractAddress: Address, bCakeWr
   const { toastSuccess } = useToast()
   const { chain, account } = useActiveWeb3React()
   const { t } = useTranslation()
+  const slippage = usePMSlippage()
 
   const mintThenDeposit = useCallback(
     async (
@@ -29,8 +38,7 @@ export const useOnStake = (managerId: MANAGER, contractAddress: Address, bCakeWr
       const receipt = await fetchWithCatchTxError(
         bCakeWrapperAddress
           ? async () => {
-              // const slippage = '0x00000000000000000000000000000000000000000000000000b1a2bc2ec50000' // 5
-              const message = managerId === MANAGER.TEAHOUSE ? encodePacked(['uint256'], [BigInt(0.05)]) : '0x'
+              const message = managerId === MANAGER.TEAHOUSE ? encodePacked(['uint256'], [slippage]) : '0x'
               const estGas = await positionManagerBCakeWrapperContract.estimateGas.mintThenDeposit(
                 [
                   allowDepositToken0 ? amountA?.numerator ?? 0n : 0n,
