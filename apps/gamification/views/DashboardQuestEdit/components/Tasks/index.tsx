@@ -2,8 +2,9 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Box, Button, Card, DragIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useRef, useState } from 'react'
 import DraggableList from 'react-draggable-list'
-// import { AddLottery } from 'views/DashboardQuestEdit/components/Tasks/AddLottery'
-import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
+import { AddLottery } from 'views/DashboardQuestEdit/components/Tasks/AddLottery'
+// import { AddLpAddress } from 'views/DashboardQuestEdit/components/Tasks/AddLpAddress'
+// import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
 
 const data = Array(10)
   .fill(null)
@@ -29,8 +30,9 @@ const Item = ({ item, itemSelected, dragHandleProps }) => {
       />
       <Card style={{ width: '100%' }}>
         <Box padding="8px">
-          {/* <AddLottery /> */}
-          <SocialTask />
+          <AddLottery />
+          {/* <AddLpAddress /> */}
+          {/* <SocialTask /> */}
         </Box>
       </Card>
     </Flex>

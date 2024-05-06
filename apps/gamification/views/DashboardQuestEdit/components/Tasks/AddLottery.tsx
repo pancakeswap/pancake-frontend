@@ -1,20 +1,21 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BunnyFillIcon, DeleteOutlineIcon, Flex, Input, Text } from '@pancakeswap/uikit'
+import { BunnyFillIcon, DeleteOutlineIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useState } from 'react'
-import { styled } from 'styled-components'
-
-const StyledInput = styled(Input)`
-  height: 32px;
-`
+import {
+  ErrorIcon,
+  InputErrorText,
+  StyledInput,
+  StyledInputGroup,
+} from 'views/DashboardQuestEdit/components/InputStyle'
 
 export const AddLottery = () => {
   const { t } = useTranslation()
-  const [lpAddress, setLpAddress] = useState('')
+  const [total, setTotal] = useState('')
   const [startRound, setStartRound] = useState('')
   const [endRound, setEndRound] = useState('')
 
-  const handleLpAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLpAddress(e.target.value)
+  const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTotal(e.target.value)
   }
 
   const handleStartRoundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,19 +37,29 @@ export const AddLottery = () => {
         </Text>
         <DeleteOutlineIcon style={{ cursor: 'pointer' }} color="primary" width="20px" height="20px" ml="auto" />
       </Flex>
-      <Flex flexDirection={['column', 'column', 'row']} width="100%" mt="12px">
-        <Flex flex="6">
-          <StyledInput value={lpAddress} onChange={handleLpAddressChange} />
+      <Flex flexDirection={['column']} width="100%" mt="12px">
+        <Flex flex="6" flexDirection="column">
+          <StyledInputGroup endIcon={<ErrorIcon />}>
+            <StyledInput isError placeholder={t('Min. amount in $')} value={total} onChange={handleTotalChange} />
+          </StyledInputGroup>
+          <InputErrorText errorText={t('Cannot be 0')} />
         </Flex>
-        <Flex flex="4" m={['8px 0 0 0', '8px 0 0 0', '0 0 0 16px']}>
-          <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" mr="8px">
-            {t('Rounds:')}
-          </Text>
-          <StyledInput value={startRound} onChange={handleStartRoundChange} />
-          <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" m="0 4px">
-            -
-          </Text>
-          <StyledInput value={endRound} onChange={handleEndRoundChange} />
+        <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
+          <Flex>
+            <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" mr="8px">
+              {t('Rounds:')}
+            </Text>
+            <StyledInputGroup endIcon={<ErrorIcon />}>
+              <StyledInput isError placeholder={t('From')} value={startRound} onChange={handleStartRoundChange} />
+            </StyledInputGroup>
+            <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" m="0 4px">
+              -
+            </Text>
+            <StyledInputGroup endIcon={<ErrorIcon />}>
+              <StyledInput isError placeholder={t('To')} value={endRound} onChange={handleEndRoundChange} />
+            </StyledInputGroup>
+          </Flex>
+          <InputErrorText errorText={t('Wrong rounds numbers')} />
         </Flex>
       </Flex>
     </Flex>
