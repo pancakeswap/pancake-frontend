@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ArrowForwardIcon, Flex, Link, Text } from '@pancakeswap/uikit'
 
 import { styled } from 'styled-components'
+import NextLink from 'next/link'
 
 const VerticalDivider = styled.span`
   background: ${({ theme }) => theme.colors.primary};
@@ -21,16 +22,21 @@ export const Step3 = () => {
       <Text bold as="span" color="white" fontSize={['12px', '12px', '14px']}>
         {t('to Win 700,000 $MASA')}
       </Text>
-      <Link
-        href="https://pancakeswap.finance/swap?outputCurrency=0x944824290CC12F31ae18Ef51216A223Ba4063092&utm_source=PCSWebsite&utm_medium=HomePageBanner&utm_campaign=SwapMASA&utm_id=MASATradingCompetition"
-        color="primary"
-        fontSize={['12px', '12px', '14px']}
-        style={{ display: 'flex', alignItems: 'center', gap: 3 }}
-        data-dd-action-name="Masa trading competition"
+      <NextLink
+        href="/swap?outputCurrency=0x944824290CC12F31ae18Ef51216A223Ba4063092&utm_source=PCSWebsite&utm_medium=HomePageBanner&utm_campaign=SwapMASA&utm_id=MASATradingCompetition"
+        passHref
       >
-        {t('Start Trading')}
-        <ArrowForwardIcon width="14px" color="primary" />
-      </Link>
+        <Link
+          href="replace"
+          color="primary"
+          fontSize={['12px', '12px', '14px']}
+          style={{ display: 'flex', alignItems: 'center', gap: 3 }}
+          data-dd-action-name="Masa trading competition"
+        >
+          {t('Start Trading')}
+          <ArrowForwardIcon width="14px" color="primary" />
+        </Link>
+      </NextLink>
       <VerticalDivider />
       <Link
         external

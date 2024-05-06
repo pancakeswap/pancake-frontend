@@ -3,6 +3,7 @@ import { Box, Flex, LightBulbIcon, Link, Text, useTooltip } from '@pancakeswap/u
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { TransactionDetails } from 'state/transactions/reducer'
 import { styled } from 'styled-components'
+import NextLink from 'next/link'
 
 const ListStyle = styled.div`
   position: relative;
@@ -70,13 +71,19 @@ const FarmResult: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedDa
       <ListStyle>{t('You have received 0.0005 BNB as a first-time BNB Smart Chain user')}</ListStyle>
       <ListStyle>
         {t('You can swap more BNB on')}
-        <LinkStyle href="/swap">{t('Swap.')}</LinkStyle>
+        <NextLink href="/swap" passHref>
+          <LinkStyle href="replace">{t('Swap.')}</LinkStyle>
+        </NextLink>
       </ListStyle>
       <ListStyle>
         {t('Explore more features like')}
-        <LinkStyle href="/pools?chain=bsc">{t('Pools')}</LinkStyle>
+        <NextLink href="/pools?chain=bsc" passHref>
+          <LinkStyle href="replace">{t('Pools')}</LinkStyle>
+        </NextLink>
         {t('and')}
-        <LinkStyle href="/prediction?chain=bsc">{t('Win')}</LinkStyle>
+        <NextLink href="/prediction?chain=bsc" passHref>
+          <LinkStyle href="replace">{t('Win')}</LinkStyle>
+        </NextLink>
         {t('with your CAKE earned.')}
       </ListStyle>
     </Flex>,

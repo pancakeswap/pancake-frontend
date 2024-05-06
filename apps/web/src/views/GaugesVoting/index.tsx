@@ -16,6 +16,7 @@ import {
 import Page from 'components/Layout/Page'
 import { PropsWithChildren } from 'react'
 import styled from 'styled-components'
+import NextLink from 'next/link'
 import { CurrentEpoch } from './components/CurrentEpoch'
 import { FilterFieldByType, FilterFieldInput, FilterFieldSort } from './components/GaugesFilter'
 import { MyVeCakeBalance } from './components/MyVeCakeBalance'
@@ -83,14 +84,16 @@ const GaugesVoting = () => {
       <StyledPageHeader background="transparent">
         <Flex justifyContent="space-between">
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
-            <Link href="/cake-staking">
-              <Button p="0" variant="text">
-                <ArrowBackIcon color="primary" />
-                <Text color="primary" bold fontSize="16px" mr="4px" textTransform="uppercase">
-                  {t('cake staking')}
-                </Text>
-              </Button>
-            </Link>
+            <NextLink href="/cake-staking" passHref>
+              <Link href="replace">
+                <Button p="0" variant="text">
+                  <ArrowBackIcon color="primary" />
+                  <Text color="primary" bold fontSize="16px" mr="4px" textTransform="uppercase">
+                    {t('cake staking')}
+                  </Text>
+                </Button>
+              </Link>
+            </NextLink>
             <Text lineHeight="110%" bold color="secondary" mb="16px" fontSize={['32px', '32px', '64px', '64px']}>
               {t('Gauges Voting')}
             </Text>

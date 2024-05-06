@@ -1,5 +1,6 @@
 import { Trans } from '@pancakeswap/localization'
 import { Link, LinkExternal } from '@pancakeswap/uikit'
+import NextLink from 'next/link'
 
 export const EthWbethFaq = () => [
   {
@@ -73,9 +74,11 @@ export const EthWbethFaq = () => [
     description: (
       <>
         <Trans>You can convert wBETH to ETH through</Trans>
-        <Link m="0 4px" style={{ display: 'inline' }} href="/swap">
-          <Trans>our swap page</Trans>.
-        </Link>
+        <NextLink href="/swap" passHref>
+          <Link href="replace" m="0 4px" style={{ display: 'inline' }}>
+            <Trans>our swap page</Trans>.
+          </Link>
+        </NextLink>
         <Trans>
           PancakeSwap is also working to support a conversion contract on our liquid staking page to convert wBETH back
           to ETH seamlessly.

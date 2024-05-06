@@ -23,6 +23,7 @@ import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { V3Farm } from 'views/Farms/FarmsV3'
+import NextLink from 'next/link'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
 
 const StyledLink = styled(Link)`
@@ -55,10 +56,12 @@ export const FarmV3LPTitle = ({
   title: string
   outOfRange: boolean
 }) => (
-  <StyledLink href={liquidityUrl}>
-    <Text bold>{title}</Text>
-    <ChevronRightIcon fontSize="12px" />
-  </StyledLink>
+  <NextLink href={liquidityUrl} passHref>
+    <StyledLink href="replace">
+      <Text bold>{title}</Text>
+      <ChevronRightIcon fontSize="12px" />
+    </StyledLink>
+  </NextLink>
 )
 
 export const FarmV3LPPosition = ({

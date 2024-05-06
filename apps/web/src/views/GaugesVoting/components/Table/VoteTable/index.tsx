@@ -24,6 +24,7 @@ import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
 import { useUserVoteSlopes } from 'views/GaugesVoting/hooks/useUserVoteGauges'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { useAccount } from 'wagmi'
+import NextLink from 'next/link'
 import { RemainingVotePower } from '../../RemainingVotePower'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
 import { EmptyTable } from './EmptyTable'
@@ -263,11 +264,13 @@ export const VoteTable = () => {
                 </Text>
                 <FlexGap alignItems="center" gap="0.2em">
                   {t('To cast your vote, ')}
-                  <Link href="/cake-staking" color="text">
-                    <Text bold style={{ textDecoration: 'underline' }}>
-                      {t('extend your lock >>')}
-                    </Text>
-                  </Link>
+                  <NextLink href="/cake-staking" passHref>
+                    <Link href="replace" color="text">
+                      <Text bold style={{ textDecoration: 'underline' }}>
+                        {t('extend your lock >>')}
+                      </Text>
+                    </Link>
+                  </NextLink>
                 </FlexGap>
               </AutoColumn>
             </Message>
@@ -280,11 +283,13 @@ export const VoteTable = () => {
                 <Text>{t('You have no locked CAKE.')}</Text>
                 <FlexGap alignItems="center" gap="0.2em" flexWrap="wrap">
                   {t('To cast your vote, ')}
-                  <Link href="/cake-staking" color="text">
-                    <Text bold style={{ textDecoration: 'underline' }}>
-                      {t('lock your CAKE')}
-                    </Text>
-                  </Link>
+                  <NextLink href="/cake-staking" passHref>
+                    <Link href="replace" color="text">
+                      <Text bold style={{ textDecoration: 'underline' }}>
+                        {t('lock your CAKE')}
+                      </Text>
+                    </Link>
+                  </NextLink>
                   {t('for 3 weeks or more.')}
                 </FlexGap>
               </AutoColumn>
