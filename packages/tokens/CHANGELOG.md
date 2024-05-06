@@ -1,5 +1,11 @@
 # @pancakeswap/tokens
 
+## 0.6.14
+
+### Patch Changes
+
+- e8c58b7: Fix missing publish
+
 ## 0.6.13
 
 ### Patch Changes
