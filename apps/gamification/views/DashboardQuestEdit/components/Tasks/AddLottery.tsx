@@ -40,7 +40,7 @@ export const AddLottery = () => {
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flex="6" flexDirection="column">
           <StyledInputGroup endIcon={<ErrorIcon />}>
-            <StyledInput isError placeholder={t('Min. amount in $')} value={total} onChange={handleTotalChange} />
+            <StyledInput isError placeholder={t('Min. ticket’s amount')} value={total} onChange={handleTotalChange} />
           </StyledInputGroup>
           <InputErrorText errorText={t('Cannot be 0')} />
         </Flex>
