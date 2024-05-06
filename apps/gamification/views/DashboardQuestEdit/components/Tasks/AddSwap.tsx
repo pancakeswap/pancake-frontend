@@ -1,14 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BunnyFillIcon, Button, ChevronDownIcon, DeleteOutlineIcon, Flex, Text } from '@pancakeswap/uikit'
+import {
+  BunnyFillIcon,
+  Button,
+  ChevronDownIcon,
+  DeleteOutlineIcon,
+  ErrorFillIcon,
+  Flex,
+  Text,
+} from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useState } from 'react'
 import { styled } from 'styled-components'
-import {
-  ErrorIcon,
-  InputErrorText,
-  StyledInput,
-  StyledInputGroup,
-} from 'views/DashboardQuestEdit/components/InputStyle'
+import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 
 const StyleSelector = styled(Button)`
   position: absolute;
@@ -60,7 +63,7 @@ export const AddSwap = () => {
               <StyleNetwork style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/56.png)` }} />
               <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
             </Flex>
-            <StyledInputGroup endIcon={<ErrorIcon />}>
+            <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>
               <StyledInput
                 isError
                 value={lpAddress}

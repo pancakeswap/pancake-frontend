@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CalenderIcon, Card, Flex, InfoIcon, Link, LogoRoundIcon, Text } from '@pancakeswap/uikit'
+import { CalenderIcon, Card, Flex, InfoIcon, Link, LogoRoundIcon, Tag, Text } from '@pancakeswap/uikit'
 
 import { styled } from 'styled-components'
 
@@ -22,7 +22,11 @@ const DetailContainer = styled(Flex)`
   }
 `
 
-export const Quest = () => {
+interface QuestProps {
+  isDraft?: boolean
+}
+
+export const Quest: React.FC<QuestProps> = ({ isDraft }) => {
   const { t } = useTranslation()
 
   return (
@@ -30,12 +34,19 @@ export const Quest = () => {
       <Card>
         <Flex flexDirection="column" padding="16px">
           <Flex mb="16px">
-            <CalenderIcon color="textSubtle" mr="8px" />
-            <Text color="textSubtle" fontSize={['14px']}>
-              Apr 10 - Apr 21
-            </Text>
+            {isDraft && (
+              <Tag variant="textDisabled" mr="auto">
+                {t('Drafted')}
+              </Tag>
+            )}
+            <Flex>
+              <CalenderIcon color="textSubtle" mr="8px" />
+              <Text style={{ alignSelf: 'center' }} color="textSubtle" fontSize={['14px']}>
+                Apr 10 - Apr 21
+              </Text>
+            </Flex>
           </Flex>
-          <Text bold fontSize={['20px']} lineHeight={['24px']}>
+          <Text ellipsis bold fontSize={['20px']} lineHeight={['24px']}>
             Swap and Share $10,000 on Ethereum PancakeSwap
           </Text>
           <Card isActive style={{ width: 'fit-content', padding: '2px', marginTop: '16px' }}>

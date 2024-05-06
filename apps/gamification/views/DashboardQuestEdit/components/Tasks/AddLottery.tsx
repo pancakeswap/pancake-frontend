@@ -1,12 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BunnyFillIcon, DeleteOutlineIcon, Flex, Text } from '@pancakeswap/uikit'
+import { BunnyFillIcon, DeleteOutlineIcon, ErrorFillIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useState } from 'react'
-import {
-  ErrorIcon,
-  InputErrorText,
-  StyledInput,
-  StyledInputGroup,
-} from 'views/DashboardQuestEdit/components/InputStyle'
+import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 
 export const AddLottery = () => {
   const { t } = useTranslation()
@@ -39,7 +34,7 @@ export const AddLottery = () => {
       </Flex>
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flex="6" flexDirection="column">
-          <StyledInputGroup endIcon={<ErrorIcon />}>
+          <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>
             <StyledInput isError placeholder={t('Min. ticket’s amount')} value={total} onChange={handleTotalChange} />
           </StyledInputGroup>
           <InputErrorText errorText={t('Cannot be 0')} />
@@ -49,13 +44,13 @@ export const AddLottery = () => {
             <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" mr="8px">
               {t('Rounds:')}
             </Text>
-            <StyledInputGroup endIcon={<ErrorIcon />}>
+            <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>
               <StyledInput isError placeholder={t('From')} value={startRound} onChange={handleStartRoundChange} />
             </StyledInputGroup>
             <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" m="0 4px">
               -
             </Text>
-            <StyledInputGroup endIcon={<ErrorIcon />}>
+            <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>
               <StyledInput isError placeholder={t('To')} value={endRound} onChange={handleEndRoundChange} />
             </StyledInputGroup>
           </Flex>

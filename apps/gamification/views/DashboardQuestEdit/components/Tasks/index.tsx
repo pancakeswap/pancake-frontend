@@ -64,6 +64,15 @@ export const Tasks = () => {
         >
           {t('Add a new task')}
         </Button>
+        {/* <Button
+          padding="0"
+          variant="text"
+          height="fit-content"
+          style={{ alignSelf: 'center' }}
+          endIcon={<PencilIcon width={13} color="primary" />}
+        >
+          {t('Edit')}
+        </Button> */}
       </Flex>
       <Flex flexDirection="column" ref={containerRef}>
         <DraggableList

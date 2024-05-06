@@ -1,14 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BunnyFillIcon, Button, ChevronDownIcon, DeleteOutlineIcon, Flex, Text } from '@pancakeswap/uikit'
+import {
+  BunnyFillIcon,
+  Button,
+  ChevronDownIcon,
+  DeleteOutlineIcon,
+  ErrorFillIcon,
+  Flex,
+  Text,
+} from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useState } from 'react'
 import { styled } from 'styled-components'
-import {
-  ErrorIcon,
-  InputErrorText,
-  StyledInput,
-  StyledInputGroup,
-} from 'views/DashboardQuestEdit/components/InputStyle'
+import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 
 const StyleSelector = styled(Button)`
   position: absolute;
@@ -60,7 +63,7 @@ export const AddLpAddress = () => {
               <StyleNetwork style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/56.png)` }} />
               <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
             </Flex>
-            <StyledInputGroup endIcon={<ErrorIcon />}>
+            <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>
               <StyledInput
                 isError
                 value={lpAddress}
@@ -72,7 +75,7 @@ export const AddLpAddress = () => {
           <InputErrorText errorText={t('This is not an LP address link')} />
         </Flex>
         <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
-          <StyledInputGroup endIcon={<ErrorIcon />}>
+          <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>
             <StyledInput isError placeholder={t('Min. amount in $')} value={total} onChange={handleTotalChange} />
           </StyledInputGroup>
           <InputErrorText errorText={t('Cannot be 0')} />
