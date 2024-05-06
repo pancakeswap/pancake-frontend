@@ -5,7 +5,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useBCakeFarmBoosterV3Contract, useBCakeFarmBoosterVeCakeContract, useMasterchefV3 } from 'hooks/useContract'
 import _toNumber from 'lodash/toNumber'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakeLockStatus } from 'views/CakeStaking/types'
 import { useReadContract } from 'wagmi'
@@ -103,18 +103,20 @@ export const useUserBoostedPoolsTokenId = () => {
     ...QUERY_SETTINGS_WITHOUT_REFETCH,
   })
 
+  const updateBoostedPoolsTokenId = useCallback(() => {
+    refetch()
+    refetchLegacy()
+  }, [refetch, refetchLegacy])
+
   return useMemo(() => {
     const tokenIds = data?.map((tokenId) => Number(tokenId)) ?? []
     const tokenIdsLegacy = dataLegacy?.map((tokenId) => Number(tokenId)) ?? []
 
     return {
       tokenIds: [...tokenIds, ...tokenIdsLegacy],
-      updateBoostedPoolsTokenId: () => {
-        refetch()
-        refetchLegacy()
-      },
+      updateBoostedPoolsTokenId,
     }
-  }, [data, dataLegacy, refetch, refetchLegacy])
+  }, [data, dataLegacy, updateBoostedPoolsTokenId])
 }
 
 export const useVeCakeUserMultiplierBeforeBoosted = (tokenId?: string) => {
