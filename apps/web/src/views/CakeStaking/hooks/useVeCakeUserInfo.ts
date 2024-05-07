@@ -90,6 +90,7 @@ export const useCakeLockStatus = (): {
   cakePoolLockExpired: boolean
   cakeUnlockTime: number
   cakePoolUnlockTime: number
+  delegated: boolean
 } => {
   const currentTimestamp = useCurrentBlockTimestamp()
   const { data: userInfo } = useVeCakeUserInfo()
@@ -169,6 +170,7 @@ export const useCakeLockStatus = (): {
     cakeLockedAmount,
     nativeCakeLockedAmount,
     proxyCakeLockedAmount,
+    delegated,
     cakeLocked,
     cakeLockExpired,
     cakePoolLocked,
