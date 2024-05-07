@@ -116,7 +116,7 @@ export const ProviderSelector = ({
   const differenceFromBest = percentageDifference(quotes?.[0]?.quote, selectedQuote?.quote)
 
   const quoteText = useMemo(() => {
-    if (isBestQuote) return isMobile ? t('Best') : t('Best price')
+    if (isBestQuote) return isMobile ? t('Best') : t('Best quote')
     if (error) return t('quote unavailable')
     return `${differenceFromBest}%`
   }, [isBestQuote, differenceFromBest, t, error, isMobile])
