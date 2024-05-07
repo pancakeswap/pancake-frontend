@@ -61,8 +61,32 @@ export const useSocial = ({ social }: { social: SocialTaskType }) => {
     }
   }, [social, t])
 
+  const socialInputPlaceholder = useMemo(() => {
+    switch (social) {
+      case SocialTaskType.X_LINK_POST:
+      case SocialTaskType.X_REPOST_POST:
+        return t('X post link')
+      case SocialTaskType.X_FOLLOW_ACCOUNT:
+        return t('X account link')
+      case SocialTaskType.TELEGRAM_JOIN_GROUP:
+        return t('Telegram group link')
+      case SocialTaskType.DISCORD_JOIN_SERVICE:
+        return t('Discord server link')
+      case SocialTaskType.YOUTUBE_SUBSCRIBE:
+        return t('YouTube channel link')
+      case SocialTaskType.IG_LIKE_POST:
+      case SocialTaskType.IG_COMMENT_POST:
+        return t('Instagram post link')
+      case SocialTaskType.IG_FOLLOW_ACCOUNT:
+        return t('Instagram account link')
+      default:
+        return ''
+    }
+  }, [social, t])
+
   return {
     socialIcon,
     socialNaming,
+    socialInputPlaceholder,
   }
 }

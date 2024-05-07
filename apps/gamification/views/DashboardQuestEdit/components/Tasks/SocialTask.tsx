@@ -25,7 +25,7 @@ export const SocialTask = () => {
 
   const social = SocialTaskType.X_LINK_POST
 
-  const { socialIcon, socialNaming } = useSocial({ social })
+  const { socialIcon, socialNaming, socialInputPlaceholder } = useSocial({ social })
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Open in new tab'), {
     placement: 'top',
@@ -57,7 +57,12 @@ export const SocialTask = () => {
             </Box>
           }
         >
-          <StyledInput style={{ borderRadius: '24px' }} value={urlLink} onChange={(e) => setUrlLink(e.target.value)} />
+          <StyledInput
+            value={urlLink}
+            style={{ borderRadius: '24px' }}
+            placeholder={socialInputPlaceholder}
+            onChange={(e) => setUrlLink(e.target.value)}
+          />
         </InputGroup>
         {!isMobile && (
           <DeleteOutlineIcon style={{ cursor: 'pointer' }} color="primary" width="20px" height="20px" ml="8px" />
