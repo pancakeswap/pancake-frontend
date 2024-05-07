@@ -1,4 +1,4 @@
-import { Currency } from '@pancakeswap/sdk'
+import { Currency, ERC20Token } from '@pancakeswap/sdk'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { TokenImage } from 'components/TokenImage'
 import { styled } from 'styled-components'
@@ -35,11 +35,14 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
           currency?.address?.toLowerCase() === selectedCurrency?.address?.toLowerCase() &&
           currency?.chainId === selectedCurrency?.chainId
 
+        const { chainId, address, decimals, symbol, name, projectLink } = currency
+        const newToken = new ERC20Token(chainId, address, decimals, symbol, name, projectLink)
+
         return (
           <StyledCurrencyList
             key={currency.address}
             disable={disable}
-            onClick={() => !disable && onCurrencySelect(currency)}
+            onClick={() => !disable && onCurrencySelect(newToken)}
           >
             <TokenImage style={{ alignSelf: 'center' }} token={currency} width={24} height={24} />
             <Flex ml="8px" flexDirection="column">

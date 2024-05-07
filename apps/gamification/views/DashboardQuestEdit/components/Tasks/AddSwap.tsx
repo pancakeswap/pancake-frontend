@@ -55,7 +55,6 @@ export const AddSwap = () => {
   const [selectedCurrency, setSelectedCurrency] = useState<Currency | null>(defaultCurrency)
 
   const handleCurrencySelect = useCallback((currency: Currency) => {
-    console.log('gg', currency)
     setSelectedCurrency(currency)
   }, [])
 

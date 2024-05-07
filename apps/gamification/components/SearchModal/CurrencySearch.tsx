@@ -1,5 +1,4 @@
 import { ChainId } from '@pancakeswap/chains'
-import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { AutoColumn, Box, Column, Input, Row, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
@@ -8,7 +7,7 @@ import { ChainLogo } from 'components/Logo/ChainLogo'
 import { SHORT_SYMBOL } from 'components/NetworkSwitcher'
 import { CurrencyList } from 'components/SearchModal/CurrencyList'
 import { TOKEN_LIST, targetChains } from 'config/supportedChain'
-import { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
@@ -57,14 +56,7 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selected
   const { isMobile } = useMatchBreakpoints()
   const showNetworkBases = true
   const [searchQuery, setSearchQuery] = useState<string>('')
-  const debouncedQuery = useDebounce(searchQuery, 200)
   const [selectedChainId, setSelectedChainId] = useState<ChainId>(selectedCurrency?.chainId ?? ChainId.BSC)
-
-  const tokenList: Currency[] = useMemo(
-    () => Object.values((TOKEN_LIST as any)?.[selectedChainId]).map((i: Currency) => ({ ...i })),
-    [selectedChainId],
-  )
-  const filteredSortedTokens: Currency[] = useMemo(() => tokenList, [tokenList])
 
   // refs for fixed size lists
   const fixedList = useRef<FixedSizeList>()
@@ -83,30 +75,25 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selected
     fixedList.current?.scrollTo(0)
   }, [])
 
-  const handleEnter = useCallback(
-    (e: KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter') {
-        const s = debouncedQuery.toLowerCase().trim()
-        // if (s === native.symbol.toLowerCase().trim()) {
-        //   handleCurrencySelect(native)
-        // } else if (filteredSortedTokens.length > 0) {
-        //   if (
-        //     filteredSortedTokens[0].symbol?.toLowerCase() === debouncedQuery.trim().toLowerCase() ||
-        //     filteredSortedTokens.length === 1
-        //   ) {
-        //     handleCurrencySelect(filteredSortedTokens[0])
-        //   }
-        // }
-      }
-    },
-    [],
-    // [debouncedQuery, filteredSortedTokens, handleCurrencySelect, native],
+  const tokenList: Currency[] = useMemo(
+    () => Object.values((TOKEN_LIST as any)?.[selectedChainId]).map((i: Currency) => ({ ...i })),
+    [selectedChainId],
   )
 
-  const getCurrencyListRows = useCallback(() => {
-    const hasFilteredInactiveTokens = true
+  const filteredSortedTokens: Currency[] = useMemo(() => {
+    const searchQueryToLowerCase = searchQuery.toLowerCase()
 
-    return tokenList.length || hasFilteredInactiveTokens ? (
+    return searchQuery === ''
+      ? tokenList
+      : tokenList.filter(
+          (i) =>
+            i.symbol.toLowerCase().includes(searchQueryToLowerCase) ||
+            i.address.toLowerCase() === searchQueryToLowerCase.toLowerCase(),
+        )
+  }, [searchQuery, tokenList])
+
+  const getCurrencyListRows = useCallback(() => {
+    return filteredSortedTokens.length ? (
       <Box mx="-24px" my="24px" overflow="auto">
         <CurrencyList
           selectedCurrency={selectedCurrency}
@@ -122,16 +109,7 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selected
         </Text>
       </Column>
     )
-  }, [
-    height,
-    isMobile,
-    tokenList.length,
-    selectedCurrency,
-    showNetworkBases,
-    filteredSortedTokens,
-    onCurrencySelect,
-    t,
-  ])
+  }, [height, selectedCurrency, isMobile, showNetworkBases, filteredSortedTokens, onCurrencySelect, t])
 
   return (
     <>
@@ -145,7 +123,6 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selected
             value={searchQuery}
             ref={inputRef as RefObject<HTMLInputElement>}
             onChange={handleInput}
-            onKeyDown={handleEnter}
           />
         </Row>
         <AutoColumn gap="md">
