@@ -152,9 +152,8 @@ export const ProviderGroupItem = ({
                 lineHeight="14px"
               >
                 {`${ABOUT_EQUAL} ${formatLocaleNumber({
-                  number: Number(currentQuote.price.toFixed(2)),
+                  number: Number(currentQuote.quote.toFixed(4)),
                   locale,
-                  options: { currency: currentQuote.fiatCurrency, style: 'currency' },
                 })} ${currentQuote.cryptoCurrency}`}
               </SkeletonText>
             </AutoColumn>
