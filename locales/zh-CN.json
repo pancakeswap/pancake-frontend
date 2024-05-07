@@ -751,7 +751,7 @@
   "Prize pool allocation": "奖池分配",
   "Matches first %digits%": "命中前 %digits% 位",
   "Matches all 6": "命中全部 6 位",
-  "Burn Pool": "销毁池",
+  "Burn Pool": "销毁",
   "Still got questions?": "仍有疑问？",
   "Check our in-depth guide on": "查看我们的指南",
   "how to play the PancakeSwap lottery!": "PancakeSwap 彩票玩法！",
@@ -3346,5 +3346,7 @@
   "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.",
   "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit",
   "Swell's website": "Swell's website",
-  "Done": "Done"
+  "Done": "Done",
+  "Single-Sided Strategy": "Single-Sided Strategy",
+  "Adaptive Portfolio Strategy": "Adaptive Portfolio Strategy"
 }
