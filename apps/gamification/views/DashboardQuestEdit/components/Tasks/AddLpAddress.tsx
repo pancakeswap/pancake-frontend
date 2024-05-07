@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import {
   BunnyFillIcon,
   Button,
@@ -7,7 +8,9 @@ import {
   ErrorFillIcon,
   Flex,
   Text,
+  useModal,
 } from '@pancakeswap/uikit'
+import { NetworkSelectorModal } from 'components/NetworkSelectorModal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useState } from 'react'
 import { styled } from 'styled-components'
@@ -34,8 +37,13 @@ const StyleNetwork = styled(Flex)`
 
 export const AddLpAddress = () => {
   const { t } = useTranslation()
+  const [pickedChainId, setPickedChainId] = useState(ChainId.BSC)
   const [total, setTotal] = useState('')
   const [lpAddress, setLpAddress] = useState('')
+
+  const [onPresentNetworkSelectorModal] = useModal(
+    <NetworkSelectorModal pickedChainId={pickedChainId} setPickedChainId={setPickedChainId} />,
+  )
 
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTotal(e.target.value)
@@ -58,9 +66,9 @@ export const AddLpAddress = () => {
       </Flex>
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flex="6" flexDirection="column">
-          <Flex>
+          <Flex style={{ cursor: 'pointer' }} onClick={onPresentNetworkSelectorModal}>
             <Flex position="relative" paddingRight="45px">
-              <StyleNetwork style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/56.png)` }} />
+              <StyleNetwork style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/${pickedChainId}.png)` }} />
               <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
             </Flex>
             <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>

@@ -3,7 +3,8 @@ import { AddIcon, Box, Button, Card, DragIcon, Flex, Text } from '@pancakeswap/u
 import { useRef, useState } from 'react'
 import DraggableList from 'react-draggable-list'
 // import { AddLottery } from 'views/DashboardQuestEdit/components/Tasks/AddLottery'
-import { AddSwap } from 'views/DashboardQuestEdit/components/Tasks/AddSwap'
+// import { AddSwap } from 'views/DashboardQuestEdit/components/Tasks/AddSwap'
+import { AddLpAddress } from 'views/DashboardQuestEdit/components/Tasks/AddLpAddress'
 // import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
 
 const data = Array(10)
@@ -30,9 +31,9 @@ const Item = ({ item, itemSelected, dragHandleProps }) => {
       />
       <Card style={{ width: '100%' }}>
         <Box padding="8px">
-          <AddSwap />
+          {/* <AddSwap /> */}
           {/* <AddLottery /> */}
-          {/* <AddLpAddress /> */}
+          <AddLpAddress />
           {/* <SocialTask /> */}
         </Box>
       </Card>
