@@ -36,7 +36,6 @@ export const CardWrapper = styled.div`
 `
 export const ImageWrapper = styled.div`
   position: absolute;
-  top: 50%;
   transform: translateY(-50%) scale(75%);
   right: auto;
   ${({ theme }) => theme.mediaQueries.sm} {
