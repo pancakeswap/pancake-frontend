@@ -36,13 +36,10 @@ export const CardWrapper = styled.div`
 `
 export const ImageWrapper = styled.div`
   position: absolute;
-  top: -50px;
+  top: 50%;
   transform: translateY(-50%) scale(75%);
-  right: 10px;
+  right: auto;
   ${({ theme }) => theme.mediaQueries.sm} {
-    right: auto;
-    top: 50%;
-    left: -70px;
     transform: translateY(-50%);
   }
   z-index: 2;
@@ -98,7 +95,7 @@ export const BCakeBoosterCard: React.FC<{ variants?: 'farm' | 'pm' }> = ({ varia
   })
   return (
     <CardWrapper>
-      <ImageWrapper style={{ left: variants === 'pm' ? -185 : isMobile ? -110 : -70, top: 105 }}>
+      <ImageWrapper style={{ left: variants === 'pm' ? -185 : isMobile ? -65 : -70, top: 105 }}>
         <Image
           src={variants === 'pm' ? boosterCardImagePM : boosterCardImage}
           alt="booster-card-image"
