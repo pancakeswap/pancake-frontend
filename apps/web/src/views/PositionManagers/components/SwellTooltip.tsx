@@ -17,6 +17,11 @@ function SwellTips() {
         <InlineLink external display="inline" href="https://app.swellnetwork.io/portfolio">
           {t("Swell's website")}
         </InlineLink>
+
+        <br />
+        <br />
+
+        {t('Please note that the Pearls earned from this vault will only appear in your balance at a later time.')}
       </Text>
     </Box>
   )
