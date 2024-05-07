@@ -19,7 +19,7 @@ export const useLiquidStakingApr = (): UseLiquidStakingAprType => {
   const { data: liquidStakingList } = useLiquidStakingList()
 
   const { data, isPending, refetch } = useQuery({
-    queryKey: ['liquidStaking', 'liquid-staking-apr', chainId, liquidStakingList],
+    queryKey: ['liquidStaking', 'liquid-staking-apr', chainId],
 
     queryFn: async () => {
       try {

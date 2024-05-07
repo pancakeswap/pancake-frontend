@@ -27,7 +27,7 @@ export const useExchangeRate = ({ decimals }: UseExchangeRateProps): UseExchange
   const { data: liquidStakingList } = useLiquidStakingList()
 
   const { data, isPending, refetch } = useQuery({
-    queryKey: ['liquidStaking', 'user-exchange-rate', chainId, liquidStakingList, decimals],
+    queryKey: ['liquidStaking', 'user-exchange-rate', chainId, decimals],
 
     queryFn: async () => {
       try {
