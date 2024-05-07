@@ -1,5 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency } from '@pancakeswap/sdk'
+import { CAKE } from '@pancakeswap/tokens'
 import {
+  Box,
   BunnyFillIcon,
   Button,
   ChevronDownIcon,
@@ -9,9 +12,10 @@ import {
   Text,
   useModal,
 } from '@pancakeswap/uikit'
+import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { styled } from 'styled-components'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 
@@ -25,28 +29,42 @@ const StyleSelector = styled(Button)`
 `
 
 const StyleNetwork = styled(Flex)`
-  position: relative;
-  z-index: 2;
-  width: 32px;
-  height: 32px;
+  position: absolute;
+  bottom: 0px;
+  left: 20px;
+  z-index: 3;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   overflow: hidden;
   background-size: contain;
 `
 
+const TokenWithChain = styled(Flex)`
+  position: relative;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+`
+
 export const AddSwap = () => {
   const { t } = useTranslation()
   const [total, setTotal] = useState('')
-  const [lpAddress, setLpAddress] = useState('')
+  const defaultCurrency = (CAKE as any)?.[56]
+  const [selectedCurrency, setSelectedCurrency] = useState<Currency | null>(defaultCurrency)
 
-  const [onPresentCurrencyModal] = useModal(<CurrencySearchModal />)
+  const handleCurrencySelect = useCallback((currency: Currency) => {
+    console.log('gg', currency)
+    setSelectedCurrency(currency)
+  }, [])
+
+  const [onPresentCurrencyModal] = useModal(
+    <CurrencySearchModal selectedCurrency={selectedCurrency} onCurrencySelect={handleCurrencySelect} />,
+  )
 
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTotal(e.target.value)
-  }
-
-  const handleLpAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLpAddress(e.target.value)
   }
 
   return (
@@ -64,16 +82,18 @@ export const AddSwap = () => {
         <Flex flexDirection="column">
           <Flex>
             <Flex position="relative" paddingRight="45px" onClick={onPresentCurrencyModal}>
-              <StyleNetwork style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/56.png)` }} />
+              <TokenWithChain>
+                <Box position="relative" zIndex={1} minWidth="32px" height="32px">
+                  <CurrencyLogo currency={selectedCurrency} size="32px" />
+                </Box>
+                <StyleNetwork
+                  style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/${selectedCurrency?.chainId}.png)` }}
+                />
+              </TokenWithChain>
               <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
             </Flex>
             <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>
-              <StyledInput
-                isError
-                value={lpAddress}
-                placeholder={t('Min. amount in $')}
-                onChange={handleLpAddressChange}
-              />
+              <StyledInput isError value={total} placeholder={t('Min. amount in $')} onChange={handleTotalChange} />
             </StyledInputGroup>
           </Flex>
           <InputErrorText errorText={t('Cannot be 0')} />

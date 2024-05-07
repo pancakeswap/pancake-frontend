@@ -35,9 +35,16 @@ const StyledModalBody = styled(ModalBody)`
   }
 `
 
-interface CurrencySearchModalProps extends InjectedModalProps {}
+interface CurrencySearchModalProps extends InjectedModalProps {
+  selectedCurrency: Currency
+  onCurrencySelect: (value: Currency) => void
+}
 
-export const CurrencySearchModal: React.FC<CurrencySearchModalProps> = ({ onDismiss }) => {
+export const CurrencySearchModal: React.FC<CurrencySearchModalProps> = ({
+  selectedCurrency,
+  onCurrencySelect,
+  onDismiss,
+}) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -51,9 +58,9 @@ export const CurrencySearchModal: React.FC<CurrencySearchModalProps> = ({ onDism
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
       onDismiss?.()
-      // onCurrencySelect?.(currency)
+      onCurrencySelect?.(currency)
     },
-    [onDismiss],
+    [onCurrencySelect, onDismiss],
   )
 
   return (
@@ -78,7 +85,7 @@ export const CurrencySearchModal: React.FC<CurrencySearchModalProps> = ({ onDism
         <ModalCloseButton onDismiss={onDismiss} />
       </ModalHeader>
       <StyledModalBody>
-        <CurrencySearch height={height} />
+        <CurrencySearch height={height} selectedCurrency={selectedCurrency} onCurrencySelect={handleCurrencySelect} />
       </StyledModalBody>
     </StyledModalContainer>
   )

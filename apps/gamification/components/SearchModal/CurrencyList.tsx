@@ -17,16 +17,30 @@ const StyledCurrencyList = styled(Flex)<{ disable?: boolean }>`
 
 interface CurrencyListProps {
   height: number
+  selectedCurrency: Currency
   currencies: Currency[]
+  onCurrencySelect: (value: Currency) => void
 }
 
-export const CurrencyList: React.FC<CurrencyListProps> = ({ currencies, height }) => {
+export const CurrencyList: React.FC<CurrencyListProps> = ({
+  height,
+  currencies,
+  selectedCurrency,
+  onCurrencySelect,
+}) => {
   return (
     <Flex height={height} flexDirection={['column']}>
       {Object.assign(currencies).map((currency: Currency) => {
-        const disable = currency.symbol === 'CAKE'
+        const disable =
+          currency?.address?.toLowerCase() === selectedCurrency?.address?.toLowerCase() &&
+          currency?.chainId === selectedCurrency?.chainId
+
         return (
-          <StyledCurrencyList key={currency} disable={disable}>
+          <StyledCurrencyList
+            key={currency.address}
+            disable={disable}
+            onClick={() => !disable && onCurrencySelect(currency)}
+          >
             <TokenImage style={{ alignSelf: 'center' }} token={currency} width={24} height={24} />
             <Flex ml="8px" flexDirection="column">
               <Text bold>{currency?.symbol}</Text>

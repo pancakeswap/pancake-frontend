@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
@@ -47,16 +48,22 @@ const RowWrapper = styled.div`
 
 interface CurrencySearchProps {
   height: number | undefined
+  selectedCurrency: Currency
+  onCurrencySelect: (value: Currency) => void
 }
 
-export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height }) => {
+export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selectedCurrency, onCurrencySelect }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const showNetworkBases = true
   const [searchQuery, setSearchQuery] = useState<string>('')
   const debouncedQuery = useDebounce(searchQuery, 200)
+  const [selectedChainId, setSelectedChainId] = useState<ChainId>(selectedCurrency?.chainId ?? ChainId.BSC)
 
-  const tokenList: Currency[] = useMemo(() => Object.values(TOKEN_LIST[56]).map((i) => ({ ...i })), [])
+  const tokenList: Currency[] = useMemo(
+    () => Object.values((TOKEN_LIST as any)?.[selectedChainId]).map((i: Currency) => ({ ...i })),
+    [selectedChainId],
+  )
   const filteredSortedTokens: Currency[] = useMemo(() => tokenList, [tokenList])
 
   // refs for fixed size lists
@@ -102,8 +109,10 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height }) => {
     return tokenList.length || hasFilteredInactiveTokens ? (
       <Box mx="-24px" my="24px" overflow="auto">
         <CurrencyList
+          selectedCurrency={selectedCurrency}
           currencies={filteredSortedTokens}
           height={isMobile ? (showNetworkBases ? height || 250 : height ? height + 80 : 350) : 390}
+          onCurrencySelect={onCurrencySelect}
         />
       </Box>
     ) : (
@@ -113,7 +122,16 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height }) => {
         </Text>
       </Column>
     )
-  }, [filteredSortedTokens, height, isMobile, showNetworkBases, t, tokenList.length])
+  }, [
+    height,
+    isMobile,
+    tokenList.length,
+    selectedCurrency,
+    showNetworkBases,
+    filteredSortedTokens,
+    onCurrencySelect,
+    t,
+  ])
 
   return (
     <>
@@ -137,8 +155,7 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height }) => {
           <RowWrapper>
             {targetChains.map((chain) => (
               <ButtonWrapper key={chain.id}>
-                {/* <BaseWrapper onClick={() => !selected && onSelect(token)} disable={selected}> */}
-                <BaseWrapper disable={chain.id === 56}>
+                <BaseWrapper onClick={() => setSelectedChainId(chain.id)} disable={chain.id === selectedChainId}>
                   <ChainLogo chainId={chain.id} />
                   <Text color="text" pl="12px">
                     {SHORT_SYMBOL?.[chain.id]}
