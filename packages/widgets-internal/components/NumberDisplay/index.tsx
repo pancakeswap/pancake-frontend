@@ -1,17 +1,18 @@
 import BigNumber from "bignumber.js";
 import { Text, useTooltip, type TextProps } from "@pancakeswap/uikit";
 import { formatNumber, formatNumberWithFullDigits } from "@pancakeswap/utils/formatNumber";
-import { type ReactNode, memo, useMemo, type ElementType } from "react";
+import { type ReactNode, memo, useMemo, type ElementType, CSSProperties } from "react";
 import { useTranslation } from "@pancakeswap/localization";
 
-type Props = {
+export type NumberDisplayProps = {
   prefix?: ReactNode;
   suffix?: ReactNode;
-  value: string | number | BigNumber;
+  value?: string | number | BigNumber;
   maximumSignificantDigits?: number;
   showFullDigitsTooltip?: boolean;
   roundingMode?: BigNumber.RoundingMode;
   as?: ElementType;
+  style?: CSSProperties;
 } & TextProps;
 
 export const NumberDisplay = memo(function NumberDisplay({
@@ -21,23 +22,28 @@ export const NumberDisplay = memo(function NumberDisplay({
   maximumSignificantDigits = 12,
   roundingMode = BigNumber.ROUND_DOWN,
   showFullDigitsTooltip = true,
+  style,
   ...props
-}: Props) {
+}: NumberDisplayProps) {
   const { t } = useTranslation();
 
   const valueDisplayInFullDigits = useMemo(
     () =>
-      formatNumberWithFullDigits(value, {
-        roundingMode,
-      }),
+      value
+        ? formatNumberWithFullDigits(value, {
+            roundingMode,
+          })
+        : "",
     [value, roundingMode]
   );
   const valueDisplay = useMemo(
     () =>
-      formatNumber(value, {
-        maximumSignificantDigits,
-        roundingMode,
-      }),
+      value
+        ? formatNumber(value, {
+            maximumSignificantDigits,
+            roundingMode,
+          })
+        : "",
     [value, maximumSignificantDigits, roundingMode]
   );
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -46,15 +52,16 @@ export const NumberDisplay = memo(function NumberDisplay({
       placement: "top-end",
     }
   );
+  const showTooltip = value && showFullDigitsTooltip && valueDisplay !== valueDisplayInFullDigits;
 
   return (
     <>
-      <Text ref={targetRef} style={{ textDecoration: showFullDigitsTooltip ? "underline dotted" : "none" }} {...props}>
+      <Text ref={targetRef} style={{ textDecoration: showTooltip ? "underline dotted" : "none", ...style }} {...props}>
         {prefix}
         {valueDisplay}
         {suffix}
       </Text>
-      {showFullDigitsTooltip && tooltipVisible ? tooltip : null}
+      {showTooltip && tooltipVisible ? tooltip : null}
     </>
   );
 });

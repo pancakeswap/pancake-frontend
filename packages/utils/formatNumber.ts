@@ -19,7 +19,12 @@ function getIntegerDigits(value: BigNumber) {
 }
 
 function getTotalDigits(value: BigNumber) {
-  return getIntegerDigits(value) + (value.decimalPlaces() ?? 0)
+  const [integerDigits, decimalDigits] = getDigits(value)
+  return integerDigits + decimalDigits
+}
+
+function getDigits(value: BigNumber) {
+  return [getIntegerDigits(value), value.decimalPlaces() ?? 0]
 }
 
 type Options = {
@@ -32,6 +37,9 @@ export function formatNumber(
   { maximumSignificantDigits = 12, roundingMode = BigNumber.ROUND_DOWN }: Options = {},
 ) {
   const valueInBN = new BigNumber(value)
+  const [integerDigits, decimalDigits] = getDigits(valueInBN)
+  const totalDigits = integerDigits + decimalDigits
+  const maxDigits = Math.min(totalDigits, maximumSignificantDigits)
   const { max, min } = {
     max: TEN.exponentiatedBy(maximumSignificantDigits + 1).minus(1),
     min: ONE.div(TEN.exponentiatedBy(maximumSignificantDigits - 1)),
@@ -39,10 +47,9 @@ export function formatNumber(
   const isGreaterThanMax = valueInBN.gt(max)
   const isLessThanMin = valueInBN.lt(min)
   const bnToDisplay = isGreaterThanMax ? max : isLessThanMin ? min : valueInBN
-  const integerDigits = getIntegerDigits(bnToDisplay)
-  const digitsAvailable = maximumSignificantDigits - integerDigits
-  const decimalDigits = digitsAvailable < 0 ? 0 : digitsAvailable
-  const valueToDisplay = bnToDisplay.toFormat(decimalDigits, roundingMode, DEFAULT_FORMAT_CONFIG)
+  const digitsAvailable = maxDigits - integerDigits
+  const decimalDisplayDigits = digitsAvailable < 0 ? 0 : digitsAvailable
+  const valueToDisplay = bnToDisplay.toFormat(decimalDisplayDigits, roundingMode, DEFAULT_FORMAT_CONFIG)
   const limitIndicator = isGreaterThanMax ? '>' : isLessThanMin ? '<' : ''
   return `${limitIndicator}${valueToDisplay}`
 }
