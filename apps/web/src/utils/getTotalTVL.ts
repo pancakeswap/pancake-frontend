@@ -1,6 +1,6 @@
 import { gql, GraphQLClient } from 'graphql-request'
-import { STABLESWAP_SUBGRAPHS_URLS, V2_SUBGRAPH_URLS, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
-import { ChainId } from '@pancakeswap/chains'
+import { STABLESWAP_SUBGRAPHS_URLS } from 'config/constants/endpoints'
+import { ChainId, getBlocksSubgraphs, getV2Subgraphs, getV3Subgraphs } from '@pancakeswap/chains'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import dayjs, { Dayjs } from 'dayjs'
 import { getCakeContract } from 'utils/contractHelpers'
@@ -24,14 +24,19 @@ export const getTotalTvl = async () => {
   try {
     const days30Ago = dayjs().subtract(30, 'days')
 
+    const blockClients = getProdClients(getBlocksSubgraphs({ noderealApiKey: process.env.NODE_REAL_SUBGRAPH_API_KEY }))
     const stableProdClients = getProdClients(STABLESWAP_SUBGRAPHS_URLS)
-    const v3ProdClients = getProdClients(V3_SUBGRAPH_URLS)
-    const v2ProdClients = getProdClients(V2_SUBGRAPH_URLS)
+    const v3ProdClients = getProdClients(getV3Subgraphs({ noderealApiKey: process.env.NODE_REAL_SUBGRAPH_API_KEY }))
+    const v2ProdClients = getProdClients(getV2Subgraphs({ noderealApiKey: process.env.NODE_REAL_SUBGRAPH_API_KEY }))
 
     try {
-      const { v2TotalTx, v2Total30DaysAgoTx } = await getV2TotalTx(v2ProdClients, days30Ago)
-      const { stableTotalTx, stableTotal30DaysAgoTx } = await getStableTotalTx(stableProdClients, days30Ago)
-      const { v3TotalTx, v3Total30DaysAgoTx } = await getV3TotalTx(v3ProdClients, days30Ago)
+      const { v2TotalTx, v2Total30DaysAgoTx } = await getV2TotalTx(v2ProdClients, blockClients, days30Ago)
+      const { stableTotalTx, stableTotal30DaysAgoTx } = await getStableTotalTx(
+        stableProdClients,
+        blockClients,
+        days30Ago,
+      )
+      const { v3TotalTx, v3Total30DaysAgoTx } = await getV3TotalTx(v3ProdClients, blockClients, days30Ago)
 
       const totalTx = parseInt(v3TotalTx + v2TotalTx + stableTotalTx)
       const totalTx30DaysAgo = parseInt(v3Total30DaysAgoTx + v2Total30DaysAgoTx + stableTotal30DaysAgoTx)
@@ -88,9 +93,9 @@ export const getTotalTvl = async () => {
       }
     }
 
-    const v3Tvl = await getV3Tvl(v3ProdClients.map(({ client }) => client))
-    const stableTvl = await getStableTvl(stableProdClients.map(({ client }) => client))
-    const v2Tvl = await getV2Tvl(v2ProdClients.map(({ client }) => client))
+    const v3Tvl = await getV3Tvl(Object.values(v3ProdClients))
+    const stableTvl = await getStableTvl(Object.values(stableProdClients))
+    const v2Tvl = await getV2Tvl(Object.values(v2ProdClients))
 
     const cake = await (await fetch('https://farms-api.pancakeswap.com/price/cake')).json()
     const cakeVaultV2 = getCakeVaultAddress()
@@ -111,7 +116,11 @@ export const getTotalTvl = async () => {
   return results
 }
 
-const getV3TotalTx = async (v3ProdClients: { chainId: string; client: GraphQLClient }[], days30Ago: Dayjs) => {
+const getV3TotalTx = async (
+  v3ProdClients: Record<string, GraphQLClient>,
+  blockClients: Record<string, GraphQLClient>,
+  days30Ago: Dayjs,
+) => {
   const totalTxV3Query = gql`
     query TotalTransactions($block: Block_height) {
       factories(block: $block) {
@@ -122,7 +131,7 @@ const getV3TotalTx = async (v3ProdClients: { chainId: string; client: GraphQLCli
 
   const v3TotalTxResults: any[] = (
     await Promise.all(
-      v3ProdClients.map(async ({ client }) => {
+      Object.values(v3ProdClients).map(async (client) => {
         let result
         try {
           result = await client.request<any>(totalTxV3Query)
@@ -138,7 +147,7 @@ const getV3TotalTx = async (v3ProdClients: { chainId: string; client: GraphQLCli
 
   const v3TotalTx30DaysAgoResults: any[] = (
     await Promise.all(
-      v3ProdClients.map(async ({ chainId, client }) => {
+      Object.entries(v3ProdClients).map(async ([chainId, client]) => {
         let result
         try {
           const [days30AgoBlock] = await getBlocksFromTimestamps(
@@ -146,6 +155,7 @@ const getV3TotalTx = async (v3ProdClients: { chainId: string; client: GraphQLCli
             undefined,
             undefined,
             multiChainName[chainId],
+            blockClients[chainId],
           )
           if (!days30AgoBlock) {
             throw new Error('No block found for 30 days ago')
@@ -187,7 +197,11 @@ const getV3TotalTx = async (v3ProdClients: { chainId: string; client: GraphQLCli
   return { v3TotalTx, v3Total30DaysAgoTx }
 }
 
-const getV2TotalTx = async (v2ProdClients: { chainId: string; client: GraphQLClient }[], days30Ago: Dayjs) => {
+const getV2TotalTx = async (
+  v2ProdClients: Record<string, GraphQLClient>,
+  blockClients: Record<string, GraphQLClient>,
+  days30Ago: Dayjs,
+) => {
   const totalTxV2Query = gql`
     query TotalTransactions($block: Block_height) {
       pancakeFactories(block: $block) {
@@ -198,7 +212,7 @@ const getV2TotalTx = async (v2ProdClients: { chainId: string; client: GraphQLCli
 
   const v2TotalTxResults: any[] = (
     await Promise.all(
-      v2ProdClients.map(async ({ client }) => {
+      Object.values(v2ProdClients).map(async (client) => {
         let result
         try {
           result = await client.request<any>(totalTxV2Query)
@@ -214,7 +228,7 @@ const getV2TotalTx = async (v2ProdClients: { chainId: string; client: GraphQLCli
 
   const v2TotalTx30DaysAgoResults: any[] = (
     await Promise.all(
-      v2ProdClients.map(async ({ chainId, client }) => {
+      Object.entries(v2ProdClients).map(async ([chainId, client]) => {
         let result
         try {
           const [days30AgoBlock] = await getBlocksFromTimestamps(
@@ -222,6 +236,7 @@ const getV2TotalTx = async (v2ProdClients: { chainId: string; client: GraphQLCli
             undefined,
             undefined,
             multiChainName[chainId],
+            blockClients[chainId],
           )
           if (!days30AgoBlock) {
             throw new Error('No block found for 30 days ago')
@@ -263,7 +278,11 @@ const getV2TotalTx = async (v2ProdClients: { chainId: string; client: GraphQLCli
   return { v2TotalTx, v2Total30DaysAgoTx }
 }
 
-const getStableTotalTx = async (stableProdClients: { chainId: string; client: GraphQLClient }[], days30Ago: Dayjs) => {
+const getStableTotalTx = async (
+  stableProdClients: Record<string, GraphQLClient>,
+  blockClients: Record<string, GraphQLClient>,
+  days30Ago: Dayjs,
+) => {
   const totalTxStableQuery = gql`
     query TotalTransactions($block: Block_height) {
       factories(block: $block) {
@@ -274,7 +293,7 @@ const getStableTotalTx = async (stableProdClients: { chainId: string; client: Gr
 
   const stableTotalTxResults: any[] = (
     await Promise.all(
-      stableProdClients.map(async ({ client }) => {
+      Object.values(stableProdClients).map(async (client) => {
         let result
         try {
           result = await client.request<any>(totalTxStableQuery)
@@ -290,7 +309,7 @@ const getStableTotalTx = async (stableProdClients: { chainId: string; client: Gr
 
   const stableTotalTx30DaysAgoResults: any[] = (
     await Promise.all(
-      stableProdClients.map(async ({ chainId, client }) => {
+      Object.entries(stableProdClients).map(async ([chainId, client]) => {
         let result
         try {
           const [days30AgoBlock] = await getBlocksFromTimestamps(
@@ -298,6 +317,7 @@ const getStableTotalTx = async (stableProdClients: { chainId: string; client: Gr
             undefined,
             undefined,
             multiChainName[chainId],
+            blockClients[chainId],
           )
           if (!days30AgoBlock) {
             throw new Error('No block found for 30 days ago')
@@ -444,17 +464,14 @@ const getStableTvl = async (stableProdClients: GraphQLClient[]) => {
 const getProdClients = (urls: Partial<{ [key in ChainId]: string | null }>) => {
   return Object.entries(urls)
     .filter(([string, clientUrl]) => {
-      return Boolean(!ChainId[string].toLowerCase().includes('test') && clientUrl)
+      return Boolean(clientUrl && !ChainId[string].toLowerCase().includes('test'))
     })
-    .map(([string, clientUrl]) => {
+    .reduce((acc, [string, clientUrl]) => {
       return {
-        chainId: string,
-        client: new GraphQLClient(clientUrl!, {
+        ...acc,
+        [string]: new GraphQLClient(clientUrl!, {
           timeout: 5000,
-          headers: {
-            origin: 'https://pancakeswap.finance',
-          },
         }),
       }
-    })
+    }, {} as Record<string, GraphQLClient>)
 }
