@@ -37,12 +37,7 @@ export const useCakePoolLockInfo = () => {
         userBoostedShare,
         _locked,
         lockedAmount,
-      ] = await cakeVaultContract.read.userInfo(
-        [account],
-        // {
-        // blockNumber: 38143635n,
-        // }
-      )
+      ] = await cakeVaultContract.read.userInfo([account])
       const lockEndTimeStr = lockEndTime.toString()
       return {
         shares,
