@@ -5,6 +5,7 @@ import { NativeBtc } from './utils/NativeBtc'
 
 export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB', 'WBTC']
 export const DEFAULT_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
+export const ABOUT_EQUAL = '≈'
 
 export enum OnRampChainId {
   ETHEREUM = 1,
