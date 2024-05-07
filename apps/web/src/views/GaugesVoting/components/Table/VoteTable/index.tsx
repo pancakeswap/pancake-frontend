@@ -14,6 +14,7 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import NextLink from 'next/link'
 import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Hex } from 'viem'
@@ -24,7 +25,6 @@ import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
 import { useUserVoteSlopes } from 'views/GaugesVoting/hooks/useUserVoteGauges'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { useAccount } from 'wagmi'
-import NextLink from 'next/link'
 import { RemainingVotePower } from '../../RemainingVotePower'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
 import { EmptyTable } from './EmptyTable'
@@ -67,6 +67,7 @@ export const VoteTable = () => {
   }, [votes])
 
   const { gauges, rows, onRowSelect, refetch, isLoading } = useGaugeRows()
+
   const { data: slopes } = useUserVoteSlopes()
   const { isDesktop, isMobile } = useMatchBreakpoints()
   const rowsWithLock = useMemo(() => {

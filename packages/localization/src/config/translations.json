@@ -3357,5 +3357,7 @@
   "Exact number: %numberWithFullDigits%": "Exact number: %numberWithFullDigits%",
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Please note that the Pearls earned from this vault will only appear in your balance at a later time.",
   "Fee saved": "Fee saved",
-  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees"
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees",
+  "Gauge Not Found": "Gauge Not Found",
+  "Gauge can not be found using the hash passed via URL.": "Gauge can not be found using the hash passed via URL."
 }

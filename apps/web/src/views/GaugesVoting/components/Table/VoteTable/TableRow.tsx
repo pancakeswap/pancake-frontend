@@ -48,7 +48,7 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
   }
 
   return (
-    <VRow>
+    <VRow data-gauge-hash={data.hash}>
       <FlexGap alignItems="center" gap="13px">
         <DebugTooltips
           content={

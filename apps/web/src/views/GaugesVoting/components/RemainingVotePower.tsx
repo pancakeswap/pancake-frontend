@@ -44,7 +44,7 @@ export const RemainingVotePower: React.FC<{
   }, [epochPower, votedPercent])
 
   return (
-    <StyledBox>
+    <StyledBox id="vecake-vote-power">
       <img src="/images/cake-staking/token-vecake.png" alt="token-vecake" width="58px" />
       <Flex
         flexDirection={['column', 'column', 'row']}
