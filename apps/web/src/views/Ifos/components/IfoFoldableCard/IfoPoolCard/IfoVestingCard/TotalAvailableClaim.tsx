@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
+import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { TokenImage } from 'components/TokenImage'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
@@ -20,7 +21,7 @@ const TotalAvailableClaim: React.FC<React.PropsWithChildren<TotalAvailableClaimP
   const { token } = ifo
 
   const amountAvailable = useMemo(
-    () => (amountAvailableToClaim.gt(0) ? getFullDisplayBalance(amountAvailableToClaim, token.decimals, 4) : '0'),
+    () => (amountAvailableToClaim.gt(0) ? amountAvailableToClaim.div(10 ** token.decimals) : '0'),
     [token, amountAvailableToClaim],
   )
 
@@ -32,9 +33,7 @@ const TotalAvailableClaim: React.FC<React.PropsWithChildren<TotalAvailableClaimP
           <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
             {t('%symbol% available to claim', { symbol: token.symbol })}
           </Text>
-          <Text as="span" bold fontSize="20px">
-            {amountAvailable}
-          </Text>
+          <NumberDisplay value={amountAvailable} as="span" bold fontSize="20px" />
         </Box>
       </Flex>
     </LightGreyCard>
