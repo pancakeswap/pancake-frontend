@@ -46,7 +46,7 @@ const RowWrapper = styled.div`
 `
 
 interface CurrencySearchProps {
-  height: number | undefined
+  height?: number | undefined
   selectedCurrency: Currency
   onCurrencySelect: (value: Currency) => void
 }

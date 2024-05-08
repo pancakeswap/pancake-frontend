@@ -29,6 +29,7 @@ interface CurrencyInputPanelProps {
   onPercentInput?: (percent: number) => void
   onMax?: () => void
   onCurrencySelect?: (currency: Currency) => void
+  onPressCustomModal?: () => void
   showQuickInputButton?: boolean
   showMaxButton: boolean
   maxAmount?: BigNumber
@@ -55,6 +56,7 @@ export const CurrencyInputPanel = memo(function CurrencyInputPanel({
   onPercentInput,
   onMax,
   onCurrencySelect,
+  onPressCustomModal,
   showQuickInputButton = false,
   showMaxButton,
   maxAmount,
@@ -102,9 +104,13 @@ export const CurrencyInputPanel = memo(function CurrencyInputPanel({
 
   const onCurrencySelectClick = useCallback(() => {
     if (!disableCurrencySelect) {
-      onPresentCurrencyModal()
+      if (onPressCustomModal) {
+        onPressCustomModal()
+      } else {
+        onPresentCurrencyModal()
+      }
     }
-  }, [disableCurrencySelect, onPresentCurrencyModal])
+  }, [disableCurrencySelect, onPressCustomModal, onPresentCurrencyModal])
 
   const isAtPercentMax = (maxAmount && value === maxAmount.toString()) || (lpPercent && lpPercent === '100')
 
