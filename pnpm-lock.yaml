@@ -13,9 +13,6 @@ importers:
 
   .:
     dependencies:
-      encoding:
-        specifier: ^0.1.13
-        version: 0.1.13
       ws:
         specifier: ^8.13.0
         version: 8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
@@ -124,7 +121,7 @@ importers:
         version: 1.11.10
       graphql-request:
         specifier: 5.0.0
-        version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
+        version: 5.0.0(graphql@16.8.1)
       itty-router:
         specifier: ^2.6.1
         version: 2.6.6
@@ -204,7 +201,7 @@ importers:
         version: 1.11.10
       graphql-request:
         specifier: 5.0.0
-        version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
+        version: 5.0.0(graphql@16.8.1)
       itty-router:
         specifier: ^2.6.1
         version: 2.6.6
@@ -453,7 +450,7 @@ importers:
     dependencies:
       '@0xsquid/widget':
         specifier: ^1.6.0
-        version: 1.6.16(@types/react@18.2.37)(@wagmi/core@0.10.17)(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
+        version: 1.6.16(@types/react@18.2.37)(@wagmi/core@0.10.17)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
       '@material-ui/core':
         specifier: ^4.12.4
         version: 4.12.4(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
@@ -477,7 +474,7 @@ importers:
         version: 2.3.2(@types/node@18.0.4)(next@13.5.6)(webpack@5.89.0)
       '@wagmi/core':
         specifier: ^0.10.11
-        version: 0.10.17(@types/react@18.2.37)(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
+        version: 0.10.17(@types/react@18.2.37)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
       '@wormhole-foundation/wormhole-connect':
         specifier: 0.1.7
         version: 0.1.7(@emotion/react@11.11.4)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
@@ -513,7 +510,7 @@ importers:
         version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
       wagmi:
         specifier: 2.5.20
-        version: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
+        version: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
     devDependencies:
       '@next/eslint-plugin-next':
         specifier: 13.4.2
@@ -652,15 +649,12 @@ importers:
 
   apps/gamification:
     dependencies:
-      '@binance/w3w-wagmi-connector':
-        specifier: 1.1.4
-        version: 1.1.4(encoding@0.1.13)(viem@2.9.19)(wagmi@2.5.20)
       '@binance/w3w-wagmi-connector-v2':
-        specifier: ^1.1.6
-        version: 1.1.6(encoding@0.1.13)(viem@2.9.19)(wagmi@2.5.20)
+        specifier: ^1.2.3
+        version: 1.2.3(viem@2.9.19)(wagmi@2.5.20)
       '@cyberlab/cyber-app-sdk':
         specifier: v3.0.0-beta.5
-        version: 3.0.0-beta.5(@tanstack/react-query@5.29.2)(@types/node@18.0.4)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
+        version: 3.0.0-beta.5(@tanstack/react-query@5.29.2)(@types/node@18.0.4)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../../packages/chains
@@ -759,7 +753,7 @@ importers:
         version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
       wagmi:
         specifier: 2.5.20
-        version: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
+        version: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
     devDependencies:
       '@next/eslint-plugin-next':
         specifier: 13.4.2
@@ -801,11 +795,11 @@ importers:
         specifier: 1.1.4
         version: 1.1.4
       '@binance/w3w-wagmi-connector-v2':
-        specifier: ^1.1.6
-        version: 1.1.6(encoding@0.1.13)(viem@2.9.19)(wagmi@2.5.20)
+        specifier: ^1.2.3
+        version: 1.2.3(viem@2.9.19)(wagmi@2.5.20)
       '@cyberlab/cyber-app-sdk':
         specifier: v3.0.0-beta.5
-        version: 3.0.0-beta.5(@tanstack/react-query@5.29.2)(@types/node@13.13.52)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
+        version: 3.0.0-beta.5(@tanstack/react-query@5.29.2)(@types/node@13.13.52)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
       '@datadog/browser-logs':
         specifier: ^5.8.0
         version: 5.8.0(@datadog/browser-rum@5.8.0)
@@ -814,19 +808,19 @@ importers:
         version: 5.8.0(@datadog/browser-logs@5.8.0)
       '@gelatonetwork/limit-orders-lib':
         specifier: ^4.1.0
-        version: 4.5.0(encoding@0.1.13)
+        version: 4.5.0
       '@gnosis.pm/safe-apps-wagmi':
         specifier: ^1.2.0
-        version: 1.2.0(@wagmi/core@2.6.17)(encoding@0.1.13)
+        version: 1.2.0(@wagmi/core@2.6.17)
       '@next/bundle-analyzer':
         specifier: 13.0.7
         version: 13.0.7
       '@orbs-network/twap-ui':
         specifier: 0.10.14
-        version: 0.10.14(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(@types/react@18.2.37)(chalk@4.1.2)(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
+        version: 0.10.14(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(@types/react@18.2.37)(chalk@4.1.2)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
       '@orbs-network/twap-ui-pancake':
         specifier: 0.10.14
-        version: 0.10.14(@emotion/react@11.11.4)(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(@types/react@18.2.37)(chalk@4.1.2)(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
+        version: 0.10.14(@emotion/react@11.11.4)(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(@types/react@18.2.37)(chalk@4.1.2)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
       '@pancakeswap/blog':
         specifier: workspace:*
         version: link:../../packages/blog
@@ -916,10 +910,10 @@ importers:
         version: 1.9.7(react-redux@8.1.3)(react@18.2.0)
       '@sentry/nextjs':
         specifier: ^7.52.1
-        version: 7.80.0(encoding@0.1.13)(next@13.5.6)(react@18.2.0)(webpack@5.89.0)
+        version: 7.80.0(next@13.5.6)(react@18.2.0)(webpack@5.89.0)
       '@snapshot-labs/snapshot.js':
         specifier: ^0.4.40
-        version: 0.4.110(encoding@0.1.13)
+        version: 0.4.110
       '@tanstack/react-query':
         specifier: ^5.28.4
         version: 5.29.2(react@18.2.0)
@@ -937,10 +931,10 @@ importers:
         version: 0.6.8
       '@walletconnect/notify-client':
         specifier: ^1.0.0
-        version: 1.0.0(encoding@0.1.13)
+        version: 1.0.0
       '@web3inbox/core':
         specifier: 1.2.0
-        version: 1.2.0(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0)
+        version: 1.2.0(@types/react@18.2.37)(react@18.2.0)
       '@web3inbox/react':
         specifier: 1.2.0
         version: 1.2.0(@web3inbox/core@1.2.0)
@@ -991,7 +985,7 @@ importers:
         version: 16.8.1
       graphql-request:
         specifier: 5.0.0
-        version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
+        version: 5.0.0(graphql@16.8.1)
       jotai:
         specifier: ^2.4.3
         version: 2.5.1(@types/react@18.2.37)(react@18.2.0)
@@ -1090,7 +1084,7 @@ importers:
         version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
       wagmi:
         specifier: 2.5.20
-        version: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
+        version: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
       zod:
         specifier: ^3.22.3
         version: 3.22.4
@@ -1546,7 +1540,7 @@ importers:
         version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
       wagmi:
         specifier: 2.5.20
-        version: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
+        version: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
 
   packages/localization:
     dependencies:
@@ -1800,7 +1794,7 @@ importers:
         version: 16.8.1
       graphql-request:
         specifier: 5.0.0
-        version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
+        version: 5.0.0(graphql@16.8.1)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -2112,19 +2106,19 @@ importers:
         version: 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/addon-essentials':
         specifier: ^7.0.7
-        version: 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)
+        version: 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/addon-links':
         specifier: ^7.0.7
         version: 7.5.3(react-dom@18.2.0)(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^7.0.7
-        version: 7.5.3(encoding@0.1.13)(typescript@5.2.2)(vite@5.0.12)
+        version: 7.5.3(typescript@5.2.2)(vite@5.0.12)
       '@storybook/react':
         specifier: ^7.0.7
-        version: 7.5.3(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
+        version: 7.5.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@storybook/react-vite':
         specifier: ^7.0.7
-        version: 7.5.3(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(vite@5.0.12)
+        version: 7.5.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(vite@5.0.12)
       '@testing-library/jest-dom':
         specifier: ^5.11.6
         version: 5.17.0
@@ -2220,7 +2214,7 @@ importers:
         version: 2.1.2
       storybook:
         specifier: ^7.0.7
-        version: 7.5.3(encoding@0.1.13)
+        version: 7.5.3
       styled-components:
         specifier: 6.0.7
         version: 6.0.7(babel-plugin-styled-components@1.13.3)(react-dom@18.2.0)(react@18.2.0)
@@ -2361,7 +2355,7 @@ importers:
         version: 5.29.2(react@18.2.0)
       '@walletconnect/ethereum-provider':
         specifier: ^2.11.3
-        version: 2.12.2(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0)
+        version: 2.12.2(@types/react@18.2.37)(react@18.2.0)
     devDependencies:
       '@blocto/sdk':
         specifier: ^0.5.4
@@ -2386,7 +2380,7 @@ importers:
         version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
       wagmi:
         specifier: 2.5.20
-        version: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
+        version: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
 
   packages/widgets-internal:
     dependencies:
@@ -2447,7 +2441,7 @@ importers:
     devDependencies:
       '@sentry/nextjs':
         specifier: ^7.0.0
-        version: 7.80.0(encoding@0.1.13)(next@13.5.6)(react@18.2.0)
+        version: 7.80.0(next@13.5.6)(react@18.2.0)
       '@types/lodash':
         specifier: ^4.14.168
         version: 4.14.201
@@ -2500,13 +2494,13 @@ importers:
         version: 5.7.2
       graphql-request:
         specifier: 5.0.0
-        version: 5.0.0(encoding@0.1.13)(graphql@16.8.1)
+        version: 5.0.0(graphql@16.8.1)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
       node-fetch:
         specifier: ^2.6.7
-        version: 2.7.0(encoding@0.1.13)
+        version: 2.7.0
       viem:
         specifier: 2.9.19
         version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
@@ -2529,7 +2523,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@0xsquid/widget@1.6.16(@types/react@18.2.37)(@wagmi/core@0.10.17)(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
+  /@0xsquid/widget@1.6.16(@types/react@18.2.37)(@wagmi/core@0.10.17)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
     resolution: {integrity: sha512-k1LTEwVkLf9KAV7POU6v/doRBU0PEs3nEFQuYY8IC6IiKgIh6ypydEOufadgzhrbjC5xqhV0aQ4JYOnvgKfjbw==}
     peerDependencies:
       ethers: ^5.7.2 || ^4.0.49
@@ -2548,7 +2542,7 @@ packages:
       '@tanstack/react-query-devtools': 4.36.1(@tanstack/react-query@4.36.1)(react-dom@18.2.0)(react@18.2.0)
       '@types/color': 3.0.6
       '@types/lodash': 4.14.201
-      '@wagmi/connectors': 0.3.16(@wagmi/core@0.10.17)(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
+      '@wagmi/connectors': 0.3.16(@wagmi/core@0.10.17)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
       axios: 0.27.2(debug@4.3.4)
       bignumber.js: 9.1.2
       clsx: 1.2.1
@@ -2562,8 +2556,8 @@ packages:
       react-content-loader: 6.2.1(react@18.2.0)
       react-dom: 18.2.0(react@18.2.0)
       react-icons: 4.11.0(react@18.2.0)
-      secretjs: 1.12.1(encoding@0.1.13)
-      wagmi: 0.12.19(@types/react@18.2.37)(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
+      secretjs: 1.12.1
+      wagmi: 0.12.19(@types/react@18.2.37)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
       zustand: 4.4.6(@types/react@18.2.37)(react@18.2.0)
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -4454,7 +4448,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.3
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.24.0
     dev: true
 
   /@babel/plugin-transform-react-jsx-self@7.23.3(@babel/core@7.23.9):
@@ -4464,7 +4458,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.9
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.24.0
 
   /@babel/plugin-transform-react-jsx-source@7.23.3(@babel/core@7.23.3):
     resolution: {integrity: sha512-91RS0MDnAWDNvGC6Wio5XYkyWI39FMFO+JK9+4AlgaTH+yWwVTsw7/sn6LK0lH7c5F+TFkpv/3LfCJ1Ydwof/g==}
@@ -4473,7 +4467,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.3
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.24.0
     dev: true
 
   /@babel/plugin-transform-react-jsx-source@7.23.3(@babel/core@7.23.9):
@@ -4483,7 +4477,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.9
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.24.0
 
   /@babel/plugin-transform-react-jsx@7.22.15(@babel/core@7.23.3):
     resolution: {integrity: sha512-oKckg2eZFa8771O/5vi7XeTvmM6+O9cxZu+kanTU7tD4sin5nO/G8jGJhq8Hvt2Z0kUoEDRayuZLaUlYl8QuGA==}
@@ -5126,10 +5120,10 @@ packages:
     resolution: {integrity: sha512-4iri8i1AqYHJE2DstZYkyEprg6Pq6sKx3xn5FpySk9sNhH7qN2LLlHJCfDTZRILNwQNPD7mATWM0TBui7uC1pA==}
     dev: true
 
-  /@binance/w3w-core@1.1.4:
-    resolution: {integrity: sha512-ze5lRMlrp+0YnDdFGc2wmvJl6NnsGjCzVjYtOThzggBzJf9K0iMEdZ6s1+LRhOfjZToCTFqe+/hVX1laDyNEaQ==}
+  /@binance/w3w-core@1.1.7:
+    resolution: {integrity: sha512-Aipavg2sc8JyBsgvmdbpna0RmS1EVmaIIgZO3lQr+OV0Q2EKabAIZ5nZNQOEmhxAzOxcrCZAUaNu/tW17JfcGg==}
     dependencies:
-      '@binance/w3w-qrcode-modal': 1.1.4
+      '@binance/w3w-qrcode-modal': 1.1.5
       '@binance/w3w-socket-transport': 1.1.4
       '@binance/w3w-types': 1.1.4
       '@binance/w3w-utils': 1.1.4
@@ -5143,11 +5137,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@binance/w3w-ethereum-provider@1.1.4(encoding@0.1.13):
-    resolution: {integrity: sha512-pxIaC39J36Z0Ye3rIsdPgGLC4tqtZ4wfq9f75kn5VoU37quFtAHLNPrKSNzdeAKMo0OEfTIJVSC6ZUqU3O0krg==}
+  /@binance/w3w-ethereum-provider@1.1.7:
+    resolution: {integrity: sha512-fHHifGDidtYaXoboe1FzLZ5wKk0FzIvgq8SCuEtibXZK3d+iITF28gmCKZnp7BCuCjvuNvOCp3GNHcvY4ARPJg==}
     dependencies:
-      '@binance/w3w-http-client': 1.1.4(encoding@0.1.13)
-      '@binance/w3w-sign-client': 1.1.4
+      '@binance/w3w-http-client': 1.1.4
+      '@binance/w3w-sign-client': 1.1.7
       '@binance/w3w-types': 1.1.4
       '@binance/w3w-utils': 1.1.4
       eip1193-provider: 1.0.1
@@ -5160,19 +5154,19 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@binance/w3w-http-client@1.1.4(encoding@0.1.13):
+  /@binance/w3w-http-client@1.1.4:
     resolution: {integrity: sha512-dovohLZThYNY2DNbM0XILjLsgo+ZMdMRRTkbdewrLcj1KkXwUn36K2tFsi/aDZXTBjWcNlziaGQYHmbuLEXTpw==}
     dependencies:
       '@binance/w3w-types': 1.1.4
       '@binance/w3w-utils': 1.1.4
-      cross-fetch: 3.1.8(encoding@0.1.13)
+      cross-fetch: 3.1.8
       eventemitter3: 5.0.1
     transitivePeerDependencies:
       - encoding
     dev: false
 
-  /@binance/w3w-qrcode-modal@1.1.4:
-    resolution: {integrity: sha512-72lVPuvNozyF8Nr8/YX+0omRnYitKRbSz35Zr8Zqhno+fYzXdTwolMaZcgVFTCp8+mieMd7QgvGA2jx1GHcP0w==}
+  /@binance/w3w-qrcode-modal@1.1.5:
+    resolution: {integrity: sha512-SFwA9PeCAlPBjfgLf9chLoia3D5pWpDjDZOZ6wD3G3Xspd4XKrtQl4UvFpAm6hkrgw6fShtI2zis9PQYAxQjiA==}
     dependencies:
       '@binance/w3w-types': 1.1.4
       '@binance/w3w-utils': 1.1.4
@@ -5185,10 +5179,10 @@ packages:
       - ts-node
     dev: false
 
-  /@binance/w3w-sign-client@1.1.4:
-    resolution: {integrity: sha512-9Qb/iWZZku/WZUhJmSfEoZoG7xmFU9FunAHRDXWeFtJvgsmdmpPHZzJGZdoBeHzeRUZxt+LlwswdXg1n9OPIfQ==}
+  /@binance/w3w-sign-client@1.1.7:
+    resolution: {integrity: sha512-KmuQCJ6g0L2LS0LEUQWbugqWiB6Nx+GMCEVuyRhl1AxzAiDybolpx8bIYAIinUeWoO2NcDJdzn971tX+QkhjoQ==}
     dependencies:
-      '@binance/w3w-core': 1.1.4
+      '@binance/w3w-core': 1.1.7
       '@binance/w3w-types': 1.1.4
       '@binance/w3w-utils': 1.1.4
     transitivePeerDependencies:
@@ -5224,34 +5218,16 @@ packages:
       js-base64: 3.7.5
     dev: false
 
-  /@binance/w3w-wagmi-connector-v2@1.1.6(encoding@0.1.13)(viem@2.9.19)(wagmi@2.5.20):
-    resolution: {integrity: sha512-BxNZgYacLEL8W983o41L+UanSM1WGtbmlg6OJWKhwuDx4QRIMlfZZz4rOfgqLMjj0j1QxsB95XX44lpEH9CmOg==}
+  /@binance/w3w-wagmi-connector-v2@1.2.3(viem@2.9.19)(wagmi@2.5.20):
+    resolution: {integrity: sha512-tprDHbHuOctnqfCJ3Fygzw+zdNhkCtxs8JJZ+Yhk50Mi2hytjydoL2G0674GE+6dCiDP5SveDtT6X99MRMtQqQ==}
     peerDependencies:
       viem: 2.x
       wagmi: 2.x
     dependencies:
-      '@binance/w3w-ethereum-provider': 1.1.4(encoding@0.1.13)
+      '@binance/w3w-ethereum-provider': 1.1.7
       '@binance/w3w-utils': 1.1.4
       viem: 2.9.19(typescript@5.2.2)(zod@3.22.4)
-      wagmi: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - encoding
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  /@binance/w3w-wagmi-connector@1.1.4(encoding@0.1.13)(viem@2.9.19)(wagmi@2.5.20):
-    resolution: {integrity: sha512-wMC6XjRU1IRb/CYWcaM0KbIhdzHBhx9ArrhZUkg2G11K1jwYgM0WdwSdOauRHHotIP958tFfimmwL+pmn2LQdA==}
-    peerDependencies:
-      viem: ^1.19.3
-      wagmi: ^1.4.7
-    dependencies:
-      '@binance/w3w-ethereum-provider': 1.1.4(encoding@0.1.13)
-      '@binance/w3w-utils': 1.1.4
-      viem: 2.9.19(typescript@5.2.2)(zod@3.22.4)
-      wagmi: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
+      wagmi: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -5475,12 +5451,12 @@ packages:
     resolution: {integrity: sha512-0FRcsz7Ea3jT+gc5gKPIYciykm1bbAaTpygdzpCwGt0RL+V83zWnYN30NWDW4rIHj/FHtz+MIuBKS61C8l7AzQ==}
     dev: true
 
-  /@coinbase/wallet-sdk@3.7.2(encoding@0.1.13):
+  /@coinbase/wallet-sdk@3.7.2:
     resolution: {integrity: sha512-lIGvXMsgpsQWci/XOMQIJ2nIZ8JUy/L+bvC0wkRaYarr0YylwpXrJ2gRM3hCXPS477pkyO7N/kSiAoRgEXUdJQ==}
     engines: {node: '>= 10.0.0'}
     dependencies:
       '@metamask/safe-event-emitter': 2.0.0
-      '@solana/web3.js': 1.87.6(encoding@0.1.13)
+      '@solana/web3.js': 1.87.6
       bind-decorator: 1.0.11
       bn.js: 5.2.1
       buffer: 6.0.3
@@ -5707,14 +5683,14 @@ packages:
       postcss-selector-parser: 6.0.13
     dev: true
 
-  /@cyberlab/cyber-app-sdk@3.0.0-beta.5(@tanstack/react-query@5.29.2)(@types/node@13.13.52)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
+  /@cyberlab/cyber-app-sdk@3.0.0-beta.5(@tanstack/react-query@5.29.2)(@types/node@13.13.52)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
     resolution: {integrity: sha512-L0oyT2zCBHI9vWsbeWqRkQ+lipMlj0a5MLdP/XHnmy+5dLUJW9mQ3Wbrj1cVsxVVB6hS6XrPFyF58F/QYjPMXQ==}
     dependencies:
-      '@wagmi/connectors': 3.1.11(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
+      '@wagmi/connectors': 3.1.11(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
       '@wagmi/core': 2.6.17(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
       ts-node: 10.9.1(@types/node@13.13.52)(typescript@5.2.2)
       viem: 2.9.19(typescript@5.2.2)(zod@3.22.4)
-      wagmi: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
+      wagmi: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -5746,14 +5722,14 @@ packages:
       - zod
     dev: false
 
-  /@cyberlab/cyber-app-sdk@3.0.0-beta.5(@tanstack/react-query@5.29.2)(@types/node@18.0.4)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
+  /@cyberlab/cyber-app-sdk@3.0.0-beta.5(@tanstack/react-query@5.29.2)(@types/node@18.0.4)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
     resolution: {integrity: sha512-L0oyT2zCBHI9vWsbeWqRkQ+lipMlj0a5MLdP/XHnmy+5dLUJW9mQ3Wbrj1cVsxVVB6hS6XrPFyF58F/QYjPMXQ==}
     dependencies:
-      '@wagmi/connectors': 3.1.11(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
+      '@wagmi/connectors': 3.1.11(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
       '@wagmi/core': 2.6.17(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
       ts-node: 10.9.1(@types/node@18.0.4)(typescript@5.2.2)
       viem: 2.9.19(typescript@5.2.2)(zod@3.22.4)
-      wagmi: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
+      wagmi: 2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -5863,7 +5839,7 @@ packages:
     dev: false
     optional: true
 
-  /@defi.org/web3-candies@4.20.17(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(encoding@0.1.13)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4):
+  /@defi.org/web3-candies@4.20.17(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4):
     resolution: {integrity: sha512-7RKLT1mObScz+HqUehPH9ZSt6WB822aOiEIg5WcmLjJda1wflDgIB036UPh7BCLkHptgF+47Us5McK4iRsaBug==}
     dependencies:
       '@types/lodash': 4.14.202
@@ -5871,11 +5847,11 @@ packages:
       bignumber.js: 9.1.2
       debug: 4.3.4(supports-color@8.1.1)
       ethereum-multicall: 2.21.0
-      isomorphic-fetch: 3.0.0(encoding@0.1.13)
+      isomorphic-fetch: 3.0.0
       lodash: 4.17.21
       prettier: 2.8.8
       prettier-plugin-solidity: 1.3.1(prettier@2.8.8)
-      web3: 1.10.4(encoding@0.1.13)
+      web3: 1.10.4
     optionalDependencies:
       '@defi.org/chai-bignumber': 3.0.2(bignumber.js@9.1.2)
       '@nomiclabs/hardhat-etherscan': 3.1.8(hardhat@2.22.2)
@@ -7643,12 +7619,12 @@ packages:
   /@floating-ui/utils@0.2.1:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
 
-  /@gelatonetwork/limit-orders-lib@4.5.0(encoding@0.1.13):
+  /@gelatonetwork/limit-orders-lib@4.5.0:
     resolution: {integrity: sha512-XXlRWxZSpWaoOvdqEiKwAvB4Vg85+q1NmIKfnryNnLt9jrBRw0OcOJ8VTU71e4X7XJ0xkKuiVSWUAnTOnGiJ2w==}
     dependencies:
       ethers: 5.7.2
       graphql: 15.8.0
-      graphql-request: 3.7.0(encoding@0.1.13)(graphql@15.8.0)
+      graphql-request: 3.7.0(graphql@15.8.0)
       tslib: 2.6.2
     transitivePeerDependencies:
       - bufferutil
@@ -7656,10 +7632,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@gnosis.pm/safe-apps-provider@0.15.1(encoding@0.1.13):
+  /@gnosis.pm/safe-apps-provider@0.15.1:
     resolution: {integrity: sha512-jVU0jpXf30HFdLHSHkmscIm04BYSwfoddjcHI4uPolP+u4F+tHRgfah1xo4XNRSCDqs4GTq38d7YAipGTj0CLA==}
     dependencies:
-      '@gnosis.pm/safe-apps-sdk': 7.8.0(encoding@0.1.13)
+      '@gnosis.pm/safe-apps-sdk': 7.8.0
       events: 3.3.0
     transitivePeerDependencies:
       - bufferutil
@@ -7667,10 +7643,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@gnosis.pm/safe-apps-sdk@7.8.0(encoding@0.1.13):
+  /@gnosis.pm/safe-apps-sdk@7.8.0:
     resolution: {integrity: sha512-kO8fJi1ebiKN9qH1NdDToVBuDQQ0U9NkL467U+84LtNTx5PzUJIu6O7tb4nZD24e/OItinf5W8GDWhhfZeiqOA==}
     dependencies:
-      '@gnosis.pm/safe-react-gateway-sdk': 3.5.2(encoding@0.1.13)
+      '@gnosis.pm/safe-react-gateway-sdk': 3.5.2
       ethers: 5.7.2
     transitivePeerDependencies:
       - bufferutil
@@ -7678,13 +7654,13 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@gnosis.pm/safe-apps-wagmi@1.2.0(@wagmi/core@2.6.17)(encoding@0.1.13):
+  /@gnosis.pm/safe-apps-wagmi@1.2.0(@wagmi/core@2.6.17):
     resolution: {integrity: sha512-ecDiNMkQ01m2yM/eKKtt08bTvYjWfacG+vwAeb4Lpiitm8RBI8wkW1jUoOgvd9tNhHZtdykgGETUZGmMo1XDuw==}
     peerDependencies:
       '@wagmi/core': '>= 0.3.8 < 0.8.0'
     dependencies:
-      '@gnosis.pm/safe-apps-provider': 0.15.1(encoding@0.1.13)
-      '@gnosis.pm/safe-apps-sdk': 7.8.0(encoding@0.1.13)
+      '@gnosis.pm/safe-apps-provider': 0.15.1
+      '@gnosis.pm/safe-apps-sdk': 7.8.0
       '@wagmi/core': 2.6.17(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
@@ -7692,11 +7668,11 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@gnosis.pm/safe-react-gateway-sdk@3.5.2(encoding@0.1.13):
+  /@gnosis.pm/safe-react-gateway-sdk@3.5.2:
     resolution: {integrity: sha512-6P2uJMnhHcJeErd/t13ChH6sda+vUIOqcrcUDKyWCNXpcmMniPcZzkQxZ8cYz186gQFbslsHSjQ6twnh4yhXUw==}
     deprecated: Migrated to @safe-global/safe-gateway-typescript-sdk
     dependencies:
-      cross-fetch: 3.1.8(encoding@0.1.13)
+      cross-fetch: 3.1.8
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -7833,7 +7809,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 18.18.9
+      '@types/node': 18.0.4
       '@types/yargs': 15.0.18
       chalk: 4.1.2
 
@@ -7844,7 +7820,7 @@ packages:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 18.18.9
+      '@types/node': 18.0.4
       '@types/yargs': 17.0.31
       chalk: 4.1.2
 
@@ -8211,11 +8187,11 @@ packages:
     resolution: {integrity: sha512-ihb3B0T/wJm1eUuArYP4lCTSEoZsClHhuWyfo/kMX3m/odpqNcPfsz5O2A3NT7dXCAgWPGDQGPqygCpgeniKMw==}
     engines: {node: '>=12.0.0'}
 
-  /@metamask/sdk-communication-layer@0.14.3(encoding@0.1.13):
+  /@metamask/sdk-communication-layer@0.14.3:
     resolution: {integrity: sha512-yjSbj8y7fFbQXv2HBzUX6D9C8BimkCYP6BDV7hdw53W8b/GlYCtXVxUFajQ9tuO1xPTRjR/xt/dkdr2aCi6WGw==}
     dependencies:
       bufferutil: 4.0.8
-      cross-fetch: 3.1.8(encoding@0.1.13)
+      cross-fetch: 3.1.8
       date-fns: 2.30.0
       eciesjs: 0.3.18
       eventemitter2: 6.4.9
@@ -8240,7 +8216,7 @@ packages:
       - '@types/react'
       - react-native
 
-  /@metamask/sdk@0.14.3(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0):
+  /@metamask/sdk@0.14.3(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0):
     resolution: {integrity: sha512-BYLs//nY2wioVSih78gOQI6sLIYY3vWkwVqXGYUgkBV+bi49bv+9S0m+hZ2cwiRaxfMYtKs0KvhAQ8weiYwDrg==}
     peerDependencies:
       react: ^18.2.0
@@ -8254,12 +8230,12 @@ packages:
       '@metamask/onboarding': 1.0.1
       '@metamask/post-message-stream': 6.2.0
       '@metamask/providers': 10.2.1
-      '@metamask/sdk-communication-layer': 0.14.3(encoding@0.1.13)
+      '@metamask/sdk-communication-layer': 0.14.3
       '@metamask/sdk-install-modal-web': 0.14.1(@types/react@18.2.37)(react-native@0.73.6)
       '@react-native-async-storage/async-storage': 1.23.1(react-native@0.73.6)
       '@types/dom-screen-wake-lock': 1.0.3
       bowser: 2.11.0
-      cross-fetch: 4.0.0(encoding@0.1.13)
+      cross-fetch: 4.0.0
       eciesjs: 0.3.18
       eth-rpc-errors: 4.0.3
       eventemitter2: 6.4.9
@@ -8271,7 +8247,7 @@ packages:
       qrcode-terminal-nooctal: 0.12.1
       react: 18.2.0
       react-i18next: 13.5.0(i18next@22.5.1)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)
-      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(encoding@0.1.13)(react@18.2.0)
+      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(react@18.2.0)
       react-native-webview: 11.26.1(react-native@0.73.6)(react@18.2.0)
       readable-stream: 2.3.8
       rollup-plugin-visualizer: 5.9.2
@@ -9217,7 +9193,7 @@ packages:
     dependencies:
       '@types/bignumber.js': 5.0.0
       hardhat: 2.22.2(typescript@5.2.2)
-      web3: 1.10.4(encoding@0.1.13)
+      web3: 1.10.4
     dev: false
     optional: true
 
@@ -9227,21 +9203,21 @@ packages:
     dev: false
     optional: true
 
-  /@orbs-network/twap-ui-pancake@0.10.14(@emotion/react@11.11.4)(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(@types/react@18.2.37)(chalk@4.1.2)(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(web3-core@1.10.4)(web3-eth-contract@1.10.4):
+  /@orbs-network/twap-ui-pancake@0.10.14(@emotion/react@11.11.4)(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(@types/react@18.2.37)(chalk@4.1.2)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(web3-core@1.10.4)(web3-eth-contract@1.10.4):
     resolution: {integrity: sha512-AXs0U50R8A7DN1YbuXZ3LnwKipHPt1/uRpnrB58Nxy2+t3s0h7vZfKEeeb/MWMd5MvDOduq+XGhsfCNuoLvOXA==}
     peerDependencies:
       react: '*'
       react-dom: '*'
     dependencies:
-      '@defi.org/web3-candies': 4.20.17(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(encoding@0.1.13)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
+      '@defi.org/web3-candies': 4.20.17(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
       '@mui/material': 5.15.10(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       '@mui/system': 5.15.9(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.2.37)(react@18.2.0)
-      '@orbs-network/twap': 1.24.1(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(encoding@0.1.13)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
-      '@orbs-network/twap-ui': 0.10.14(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(@types/react@18.2.37)(chalk@4.1.2)(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
+      '@orbs-network/twap': 1.24.1(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
+      '@orbs-network/twap-ui': 0.10.14(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(@types/react@18.2.37)(chalk@4.1.2)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
       lodash: 4.17.21
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      web3: 1.10.4(encoding@0.1.13)
+      web3: 1.10.4
     transitivePeerDependencies:
       - '@codechecks/client'
       - '@emotion/react'
@@ -9265,18 +9241,18 @@ packages:
       - web3-eth-contract
     dev: false
 
-  /@orbs-network/twap-ui@0.10.14(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(@types/react@18.2.37)(chalk@4.1.2)(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(web3-core@1.10.4)(web3-eth-contract@1.10.4):
+  /@orbs-network/twap-ui@0.10.14(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(@types/react@18.2.37)(chalk@4.1.2)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(web3-core@1.10.4)(web3-eth-contract@1.10.4):
     resolution: {integrity: sha512-WKMNt2FvW6jSf2NuwHXTQIi+KCwxvZOIEdf2Yeibm1nwkndqKkogpj50Jsn2cHhU+1+p6inooA4FELsmq16SQQ==}
     peerDependencies:
       react: '*'
       react-dom: '*'
     dependencies:
-      '@defi.org/web3-candies': 4.20.17(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(encoding@0.1.13)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
+      '@defi.org/web3-candies': 4.20.17(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
       '@emotion/react': 11.11.4(@types/react@18.2.37)(react@18.2.0)
       '@emotion/styled': 11.11.5(@emotion/react@11.11.4)(@types/react@18.2.37)(react@18.2.0)
       '@mui/material': 5.15.10(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       '@mui/system': 5.15.9(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.2.37)(react@18.2.0)
-      '@orbs-network/twap': 1.24.1(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(encoding@0.1.13)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
+      '@orbs-network/twap': 1.24.1(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
       '@react-icons/all-files': 4.1.0(react@18.2.0)
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)
       '@types/async-retry': 1.4.8
@@ -9284,7 +9260,7 @@ packages:
       async-retry: 1.3.3
       bignumber.js: 9.1.2
       emotion-theming: 11.0.0
-      isomorphic-fetch: 3.0.0(encoding@0.1.13)
+      isomorphic-fetch: 3.0.0
       lodash: 4.17.21
       moment: 2.30.1
       qrcode.react: 3.1.0(react@18.2.0)
@@ -9293,7 +9269,7 @@ packages:
       react-error-boundary: 4.0.13(react@18.2.0)
       react-number-format: 5.3.4(react-dom@18.2.0)(react@18.2.0)
       react-text-overflow: 1.0.2(react-dom@18.2.0)(react@18.2.0)
-      web3: 1.10.4(encoding@0.1.13)
+      web3: 1.10.4
       zustand: 4.4.6(@types/react@18.2.37)(react@18.2.0)
     transitivePeerDependencies:
       - '@codechecks/client'
@@ -9316,10 +9292,10 @@ packages:
       - web3-eth-contract
     dev: false
 
-  /@orbs-network/twap@1.24.1(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(encoding@0.1.13)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4):
+  /@orbs-network/twap@1.24.1(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4):
     resolution: {integrity: sha512-YLB1vWCEux5Lc1p5VBf31hIaHVQWk3lKOqvIxZzyMy2Z62yqw5qQUVz9BHT08zrUiEXG+qA4h8um993qlUrG6g==}
     dependencies:
-      '@defi.org/web3-candies': 4.20.17(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(encoding@0.1.13)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
+      '@defi.org/web3-candies': 4.20.17(@ethersproject/abi@5.7.0)(@ethersproject/providers@5.7.2)(@typechain/ethers-v5@10.2.1)(chalk@4.1.2)(ethers@5.7.2)(web3-core@1.10.4)(web3-eth-contract@1.10.4)
     transitivePeerDependencies:
       - '@codechecks/client'
       - '@ethersproject/abi'
@@ -10149,21 +10125,21 @@ packages:
       react-native: ^0.0.0-0 || >=0.60 <1.0
     dependencies:
       merge-options: 3.0.4
-      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(encoding@0.1.13)(react@18.2.0)
+      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(react@18.2.0)
 
-  /@react-native-community/cli-clean@12.3.6(encoding@0.1.13):
+  /@react-native-community/cli-clean@12.3.6:
     resolution: {integrity: sha512-gUU29ep8xM0BbnZjwz9MyID74KKwutq9x5iv4BCr2im6nly4UMf1B1D+V225wR7VcDGzbgWjaezsJShLLhC5ig==}
     dependencies:
-      '@react-native-community/cli-tools': 12.3.6(encoding@0.1.13)
+      '@react-native-community/cli-tools': 12.3.6
       chalk: 4.1.2
       execa: 5.1.1
     transitivePeerDependencies:
       - encoding
 
-  /@react-native-community/cli-config@12.3.6(encoding@0.1.13):
+  /@react-native-community/cli-config@12.3.6:
     resolution: {integrity: sha512-JGWSYQ9EAK6m2v0abXwFLEfsqJ1zkhzZ4CV261QZF9MoUNB6h57a274h1MLQR9mG6Tsh38wBUuNfEPUvS1vYew==}
     dependencies:
-      '@react-native-community/cli-tools': 12.3.6(encoding@0.1.13)
+      '@react-native-community/cli-tools': 12.3.6
       chalk: 4.1.2
       cosmiconfig: 5.2.1
       deepmerge: 4.3.1
@@ -10179,13 +10155,13 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@react-native-community/cli-doctor@12.3.6(encoding@0.1.13):
+  /@react-native-community/cli-doctor@12.3.6:
     resolution: {integrity: sha512-fvBDv2lTthfw4WOQKkdTop2PlE9GtfrlNnpjB818MhcdEnPjfQw5YaTUcnNEGsvGomdCs1MVRMgYXXwPSN6OvQ==}
     dependencies:
-      '@react-native-community/cli-config': 12.3.6(encoding@0.1.13)
-      '@react-native-community/cli-platform-android': 12.3.6(encoding@0.1.13)
-      '@react-native-community/cli-platform-ios': 12.3.6(encoding@0.1.13)
-      '@react-native-community/cli-tools': 12.3.6(encoding@0.1.13)
+      '@react-native-community/cli-config': 12.3.6
+      '@react-native-community/cli-platform-android': 12.3.6
+      '@react-native-community/cli-platform-ios': 12.3.6
+      '@react-native-community/cli-tools': 12.3.6
       chalk: 4.1.2
       command-exists: 1.2.9
       deepmerge: 4.3.1
@@ -10201,20 +10177,20 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@react-native-community/cli-hermes@12.3.6(encoding@0.1.13):
+  /@react-native-community/cli-hermes@12.3.6:
     resolution: {integrity: sha512-sNGwfOCl8OAIjWCkwuLpP8NZbuO0dhDI/2W7NeOGDzIBsf4/c4MptTrULWtGIH9okVPLSPX0NnRyGQ+mSwWyuQ==}
     dependencies:
-      '@react-native-community/cli-platform-android': 12.3.6(encoding@0.1.13)
-      '@react-native-community/cli-tools': 12.3.6(encoding@0.1.13)
+      '@react-native-community/cli-platform-android': 12.3.6
+      '@react-native-community/cli-tools': 12.3.6
       chalk: 4.1.2
       hermes-profile-transformer: 0.0.6
     transitivePeerDependencies:
       - encoding
 
-  /@react-native-community/cli-platform-android@12.3.6(encoding@0.1.13):
+  /@react-native-community/cli-platform-android@12.3.6:
     resolution: {integrity: sha512-DeDDAB8lHpuGIAPXeeD9Qu2+/wDTFPo99c8uSW49L0hkmZJixzvvvffbGQAYk32H0TmaI7rzvzH+qzu7z3891g==}
     dependencies:
-      '@react-native-community/cli-tools': 12.3.6(encoding@0.1.13)
+      '@react-native-community/cli-tools': 12.3.6
       chalk: 4.1.2
       execa: 5.1.1
       fast-xml-parser: 4.3.6
@@ -10223,10 +10199,10 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@react-native-community/cli-platform-ios@12.3.6(encoding@0.1.13):
+  /@react-native-community/cli-platform-ios@12.3.6:
     resolution: {integrity: sha512-3eZ0jMCkKUO58wzPWlvAPRqezVKm9EPZyaPyHbRPWU8qw7JqkvnRlWIaYDGpjCJgVW4k2hKsEursLtYKb188tg==}
     dependencies:
-      '@react-native-community/cli-tools': 12.3.6(encoding@0.1.13)
+      '@react-native-community/cli-tools': 12.3.6
       chalk: 4.1.2
       execa: 5.1.1
       fast-xml-parser: 4.3.6
@@ -10238,11 +10214,11 @@ packages:
   /@react-native-community/cli-plugin-metro@12.3.6:
     resolution: {integrity: sha512-3jxSBQt4fkS+KtHCPSyB5auIT+KKIrPCv9Dk14FbvOaEh9erUWEm/5PZWmtboW1z7CYeNbFMeXm9fM2xwtVOpg==}
 
-  /@react-native-community/cli-server-api@12.3.6(encoding@0.1.13):
+  /@react-native-community/cli-server-api@12.3.6:
     resolution: {integrity: sha512-80NIMzo8b2W+PL0Jd7NjiJW9mgaT8Y8wsIT/lh6mAvYH7mK0ecDJUYUTAAv79Tbo1iCGPAr3T295DlVtS8s4yQ==}
     dependencies:
       '@react-native-community/cli-debugger-ui': 12.3.6
-      '@react-native-community/cli-tools': 12.3.6(encoding@0.1.13)
+      '@react-native-community/cli-tools': 12.3.6
       compression: 1.7.4
       connect: 3.7.0
       errorhandler: 1.5.1
@@ -10256,14 +10232,14 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /@react-native-community/cli-tools@12.3.6(encoding@0.1.13):
+  /@react-native-community/cli-tools@12.3.6:
     resolution: {integrity: sha512-FPEvZn19UTMMXUp/piwKZSh8cMEfO8G3KDtOwo53O347GTcwNrKjgZGtLSPELBX2gr+YlzEft3CoRv2Qmo83fQ==}
     dependencies:
       appdirsjs: 1.2.7
       chalk: 4.1.2
       find-up: 5.0.0
       mime: 2.6.0
-      node-fetch: 2.7.0(encoding@0.1.13)
+      node-fetch: 2.7.0
       open: 6.4.0
       ora: 5.4.1
       semver: 7.5.4
@@ -10277,19 +10253,19 @@ packages:
     dependencies:
       joi: 17.11.0
 
-  /@react-native-community/cli@12.3.6(encoding@0.1.13):
+  /@react-native-community/cli@12.3.6:
     resolution: {integrity: sha512-647OSi6xBb8FbwFqX9zsJxOzu685AWtrOUWHfOkbKD+5LOpGORw+GQo0F9rWZnB68rLQyfKUZWJeaD00pGv5fw==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
-      '@react-native-community/cli-clean': 12.3.6(encoding@0.1.13)
-      '@react-native-community/cli-config': 12.3.6(encoding@0.1.13)
+      '@react-native-community/cli-clean': 12.3.6
+      '@react-native-community/cli-config': 12.3.6
       '@react-native-community/cli-debugger-ui': 12.3.6
-      '@react-native-community/cli-doctor': 12.3.6(encoding@0.1.13)
-      '@react-native-community/cli-hermes': 12.3.6(encoding@0.1.13)
+      '@react-native-community/cli-doctor': 12.3.6
+      '@react-native-community/cli-hermes': 12.3.6
       '@react-native-community/cli-plugin-metro': 12.3.6
-      '@react-native-community/cli-server-api': 12.3.6(encoding@0.1.13)
-      '@react-native-community/cli-tools': 12.3.6(encoding@0.1.13)
+      '@react-native-community/cli-server-api': 12.3.6
+      '@react-native-community/cli-tools': 12.3.6
       '@react-native-community/cli-types': 12.3.6
       chalk: 4.1.2
       commander: 9.5.0
@@ -10388,20 +10364,20 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@react-native/community-cli-plugin@0.73.17(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(encoding@0.1.13):
+  /@react-native/community-cli-plugin@0.73.17(@babel/core@7.23.9)(@babel/preset-env@7.23.3):
     resolution: {integrity: sha512-F3PXZkcHg+1ARIr6FRQCQiB7ZAA+MQXGmq051metRscoLvgYJwj7dgC8pvgy0kexzUkHu5BNKrZeySzUft3xuQ==}
     engines: {node: '>=18'}
     dependencies:
-      '@react-native-community/cli-server-api': 12.3.6(encoding@0.1.13)
-      '@react-native-community/cli-tools': 12.3.6(encoding@0.1.13)
-      '@react-native/dev-middleware': 0.73.8(encoding@0.1.13)
+      '@react-native-community/cli-server-api': 12.3.6
+      '@react-native-community/cli-tools': 12.3.6
+      '@react-native/dev-middleware': 0.73.8
       '@react-native/metro-babel-transformer': 0.73.15(@babel/core@7.23.9)(@babel/preset-env@7.23.3)
       chalk: 4.1.2
       execa: 5.1.1
-      metro: 0.80.8(encoding@0.1.13)
-      metro-config: 0.80.8(encoding@0.1.13)
+      metro: 0.80.8
+      metro-config: 0.80.8
       metro-core: 0.80.8
-      node-fetch: 2.7.0(encoding@0.1.13)
+      node-fetch: 2.7.0
       readline: 1.3.0
     transitivePeerDependencies:
       - '@babel/core'
@@ -10415,7 +10391,7 @@ packages:
     resolution: {integrity: sha512-RgEKnWuoo54dh7gQhV7kvzKhXZEhpF9LlMdZolyhGxHsBqZ2gXdibfDlfcARFFifPIiaZ3lXuOVVa4ei+uPgTw==}
     engines: {node: '>=18'}
 
-  /@react-native/dev-middleware@0.73.8(encoding@0.1.13):
+  /@react-native/dev-middleware@0.73.8:
     resolution: {integrity: sha512-oph4NamCIxkMfUL/fYtSsE+JbGOnrlawfQ0kKtDQ5xbOjPKotKoXqrs1eGwozNKv7FfQ393stk1by9a6DyASSg==}
     engines: {node: '>=18'}
     dependencies:
@@ -10425,7 +10401,7 @@ packages:
       chromium-edge-launcher: 1.0.0
       connect: 3.7.0
       debug: 2.6.9
-      node-fetch: 2.7.0(encoding@0.1.13)
+      node-fetch: 2.7.0
       open: 7.4.2
       serve-static: 1.15.0
       temp-dir: 2.0.0
@@ -10469,7 +10445,7 @@ packages:
     dependencies:
       invariant: 2.2.4
       nullthrows: 1.1.1
-      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(encoding@0.1.13)(react@18.2.0)
+      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(react@18.2.0)
 
   /@reduxjs/toolkit@1.9.7(react-redux@8.1.3)(react@18.2.0):
     resolution: {integrity: sha512-t7v8ZPxhhKgOKtU+uyJT13lu4vL7az5aFi4IdoDs/eS548edn2M8Ik9h8fxgvMjGoAUVFSt6ZC1P5cWmQ014QQ==}
@@ -10798,7 +10774,7 @@ packages:
       '@sentry/types': 7.80.0
       '@sentry/utils': 7.80.0
 
-  /@sentry/cli@1.76.0(encoding@0.1.13):
+  /@sentry/cli@1.76.0:
     resolution: {integrity: sha512-56bVyUJoi52dop/rFEaSoU4AfVRXpR6M+nZBwN1iGUAwdfBrarNbtmIOjfgPi+tVzVB5ck09PzVXG6zeBqJJcA==}
     engines: {node: '>= 8'}
     hasBin: true
@@ -10806,7 +10782,7 @@ packages:
     dependencies:
       https-proxy-agent: 5.0.1
       mkdirp: 0.5.6
-      node-fetch: 2.7.0(encoding@0.1.13)
+      node-fetch: 2.7.0
       progress: 2.0.3
       proxy-from-env: 1.1.0
       which: 2.0.2
@@ -10865,7 +10841,7 @@ packages:
     dev: false
     optional: true
 
-  /@sentry/nextjs@7.80.0(encoding@0.1.13)(next@13.5.6)(react@18.2.0):
+  /@sentry/nextjs@7.80.0(next@13.5.6)(react@18.2.0):
     resolution: {integrity: sha512-4KZVZV1U/1ldmVKS85n31MSKIWJElcy9gZW+PTyQnrlCxbQnnhXBde95+TXmvO1DKTNhVphv/2DXq7bmxBW9bA==}
     engines: {node: '>=8'}
     peerDependencies:
@@ -10884,7 +10860,7 @@ packages:
       '@sentry/types': 7.80.0
       '@sentry/utils': 7.80.0
       '@sentry/vercel-edge': 7.80.0
-      '@sentry/webpack-plugin': 1.20.0(encoding@0.1.13)
+      '@sentry/webpack-plugin': 1.20.0
       chalk: 3.0.0
       next: 13.5.6(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
@@ -10896,7 +10872,7 @@ packages:
       - supports-color
     dev: true
 
-  /@sentry/nextjs@7.80.0(encoding@0.1.13)(next@13.5.6)(react@18.2.0)(webpack@5.89.0):
+  /@sentry/nextjs@7.80.0(next@13.5.6)(react@18.2.0)(webpack@5.89.0):
     resolution: {integrity: sha512-4KZVZV1U/1ldmVKS85n31MSKIWJElcy9gZW+PTyQnrlCxbQnnhXBde95+TXmvO1DKTNhVphv/2DXq7bmxBW9bA==}
     engines: {node: '>=8'}
     peerDependencies:
@@ -10915,7 +10891,7 @@ packages:
       '@sentry/types': 7.80.0
       '@sentry/utils': 7.80.0
       '@sentry/vercel-edge': 7.80.0
-      '@sentry/webpack-plugin': 1.20.0(encoding@0.1.13)
+      '@sentry/webpack-plugin': 1.20.0
       chalk: 3.0.0
       next: 13.5.6(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
@@ -11028,11 +11004,11 @@ packages:
       '@sentry/types': 7.80.0
       '@sentry/utils': 7.80.0
 
-  /@sentry/webpack-plugin@1.20.0(encoding@0.1.13):
+  /@sentry/webpack-plugin@1.20.0:
     resolution: {integrity: sha512-Ssj1mJVFsfU6vMCOM2d+h+KQR7QHSfeIP16t4l20Uq/neqWXZUQ2yvQfe4S3BjdbJXz/X4Rw8Hfy1Sd0ocunYw==}
     engines: {node: '>= 8'}
     dependencies:
-      '@sentry/cli': 1.76.0(encoding@0.1.13)
+      '@sentry/cli': 1.76.0
       webpack-sources: 3.2.3
     transitivePeerDependencies:
       - encoding
@@ -11099,7 +11075,7 @@ packages:
     dev: false
     optional: true
 
-  /@snapshot-labs/snapshot.js@0.4.110(encoding@0.1.13):
+  /@snapshot-labs/snapshot.js@0.4.110:
     resolution: {integrity: sha512-Cie6CsVVSUh5vbuo8ZU/YuPD+iF8mKuVGsCDbm2PLyvXX2EPJVVmBYrvuQizpP79Q8NWtQucqb/fFVnDBRogxA==}
     engines: {node: '>=14'}
     dependencies:
@@ -11114,7 +11090,7 @@ packages:
       '@ethersproject/wallet': 5.7.0
       ajv: 8.12.0
       ajv-formats: 2.1.1(ajv@8.12.0)
-      cross-fetch: 3.1.8(encoding@0.1.13)
+      cross-fetch: 3.1.8
       json-to-graphql-query: 2.2.5
       lodash.set: 4.3.2
     transitivePeerDependencies:
@@ -11133,7 +11109,7 @@ packages:
       buffer: 6.0.3
     dev: false
 
-  /@solana/web3.js@1.87.6(encoding@0.1.13):
+  /@solana/web3.js@1.87.6:
     resolution: {integrity: sha512-LkqsEBgTZztFiccZZXnawWa8qNCATEqE97/d0vIwjTclmVlc8pBpD1DmjfVHtZ1HS5fZorFlVhXfpwnCNDZfyg==}
     dependencies:
       '@babel/runtime': 7.23.9
@@ -11148,7 +11124,7 @@ packages:
       buffer: 6.0.3
       fast-stable-stringify: 1.0.0
       jayson: 4.1.0
-      node-fetch: 2.7.0(encoding@0.1.13)
+      node-fetch: 2.7.0
       rpc-websockets: 7.6.2
       superstruct: 0.14.2
     transitivePeerDependencies:
@@ -11374,7 +11350,7 @@ packages:
       - '@types/react-dom'
     dev: true
 
-  /@storybook/addon-controls@7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0):
+  /@storybook/addon-controls@7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-KEuU4X5Xr6cJI9xrzOUVGEmUf1iHPfK7cj0GACKv0GElsdIsQryv+OZ7gRnvmNax/e2hm2t9cJcFxB24/p6rVg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -11385,10 +11361,10 @@ packages:
       react-dom:
         optional: true
     dependencies:
-      '@storybook/blocks': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/blocks': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/client-logger': 7.5.3
       '@storybook/components': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/core-common': 7.5.3(encoding@0.1.13)
+      '@storybook/core-common': 7.5.3
       '@storybook/core-events': 7.5.3
       '@storybook/manager-api': 7.5.3(react-dom@18.2.0)(react@18.2.0)
       '@storybook/node-logger': 7.5.3
@@ -11406,7 +11382,7 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/addon-docs@7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0):
+  /@storybook/addon-docs@7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-JVQ6iCXKESij/SbE4Wq47dkSSgBRulvA8SUf8NWL5m9qpiHrg0lPSERHfoTLiB5uC/JwF0OKIlhxoWl+zCmtYg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -11414,7 +11390,7 @@ packages:
     dependencies:
       '@jest/transform': 29.7.0
       '@mdx-js/react': 2.3.0(react@18.2.0)
-      '@storybook/blocks': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/blocks': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/client-logger': 7.5.3
       '@storybook/components': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/csf-plugin': 7.5.3
@@ -11440,7 +11416,7 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/addon-essentials@7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0):
+  /@storybook/addon-essentials@7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-PYj6swEI4nEzIbOTyHJB8u3K8ABYKoaW8XB5emMwsnrzB/TN7auHVhze2bQ/+ax5wyPKZpArPjxbWlSHtSws+A==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -11448,14 +11424,14 @@ packages:
     dependencies:
       '@storybook/addon-actions': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/addon-backgrounds': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/addon-controls': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/addon-docs': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-controls': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-docs': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/addon-highlight': 7.5.3
       '@storybook/addon-measure': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/addon-outline': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/addon-toolbars': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/addon-viewport': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/core-common': 7.5.3(encoding@0.1.13)
+      '@storybook/core-common': 7.5.3
       '@storybook/manager-api': 7.5.3(react-dom@18.2.0)(react@18.2.0)
       '@storybook/node-logger': 7.5.3
       '@storybook/preview-api': 7.5.3
@@ -11604,7 +11580,7 @@ packages:
       - '@types/react-dom'
     dev: true
 
-  /@storybook/blocks@7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0):
+  /@storybook/blocks@7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-Z8yF820v78clQWkwG5OA5qugbQn7rtutq9XCsd03NDB+IEfDaTFQAZG8gs62ZX2ZaXAJsqJSr/mL9oURzXto2A==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -11615,7 +11591,7 @@ packages:
       '@storybook/components': 7.5.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/core-events': 7.5.3
       '@storybook/csf': 0.1.1
-      '@storybook/docs-tools': 7.5.3(encoding@0.1.13)
+      '@storybook/docs-tools': 7.5.3
       '@storybook/global': 5.0.0
       '@storybook/manager-api': 7.5.3(react-dom@18.2.0)(react@18.2.0)
       '@storybook/preview-api': 7.5.3
@@ -11642,11 +11618,11 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/builder-manager@7.5.3(encoding@0.1.13):
+  /@storybook/builder-manager@7.5.3:
     resolution: {integrity: sha512-uf4Vyj8ofHaq94m065SMvFKak1XrrxgI83VZAxc2QjiPcbRwcVOZd+wcKFdZydqqA6FlBDdJrU+k9INA4Qkfcw==}
     dependencies:
       '@fal-works/esbuild-plugin-global-externals': 2.1.2
-      '@storybook/core-common': 7.5.3(encoding@0.1.13)
+      '@storybook/core-common': 7.5.3
       '@storybook/manager': 7.5.3
       '@storybook/node-logger': 7.5.3
       '@types/ejs': 3.1.5
@@ -11666,7 +11642,7 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/builder-vite@7.5.3(encoding@0.1.13)(typescript@5.2.2)(vite@5.0.12):
+  /@storybook/builder-vite@7.5.3(typescript@5.2.2)(vite@5.0.12):
     resolution: {integrity: sha512-c104V3O75OCVnfZj0Jr70V09g0KSbPGvQK2Zh31omXGvakG8XrhWolYxkmjOcForJmAqsXnKs/nw3F75Gp853g==}
     peerDependencies:
       '@preact/preset-vite': '*'
@@ -11683,7 +11659,7 @@ packages:
     dependencies:
       '@storybook/channels': 7.5.3
       '@storybook/client-logger': 7.5.3
-      '@storybook/core-common': 7.5.3(encoding@0.1.13)
+      '@storybook/core-common': 7.5.3
       '@storybook/csf-plugin': 7.5.3
       '@storybook/node-logger': 7.5.3
       '@storybook/preview': 7.5.3
@@ -11715,7 +11691,7 @@ packages:
       tiny-invariant: 1.3.1
     dev: true
 
-  /@storybook/cli@7.5.3(encoding@0.1.13):
+  /@storybook/cli@7.5.3:
     resolution: {integrity: sha512-XysHSnknZTAcTbQ0bQsbfv5J8ifHpOBsmXjk1HCA05E9WGGrn9JrQRCfpDUQJ6O6UWq0bpMqzP8gFLWXFE7hug==}
     hasBin: true
     dependencies:
@@ -11724,12 +11700,12 @@ packages:
       '@babel/types': 7.23.3
       '@ndelangen/get-tarball': 3.0.9
       '@storybook/codemod': 7.5.3
-      '@storybook/core-common': 7.5.3(encoding@0.1.13)
+      '@storybook/core-common': 7.5.3
       '@storybook/core-events': 7.5.3
-      '@storybook/core-server': 7.5.3(encoding@0.1.13)
+      '@storybook/core-server': 7.5.3
       '@storybook/csf-tools': 7.5.3
       '@storybook/node-logger': 7.5.3
-      '@storybook/telemetry': 7.5.3(encoding@0.1.13)
+      '@storybook/telemetry': 7.5.3
       '@storybook/types': 7.5.3
       '@types/semver': 7.5.5
       '@yarnpkg/fslib': 2.10.3
@@ -11824,7 +11800,7 @@ packages:
       '@storybook/preview-api': 7.5.3
     dev: true
 
-  /@storybook/core-common@7.5.3(encoding@0.1.13):
+  /@storybook/core-common@7.5.3:
     resolution: {integrity: sha512-WGMwjtVUxUzFwQz7Mgs0gLuNebIGNV55dCdZgurx2/y6QOkJ2v8D0b3iL+xKMV4B5Nwoc2DsM418Y+Hy3UQd+w==}
     dependencies:
       '@storybook/core-events': 7.5.3
@@ -11844,7 +11820,7 @@ packages:
       glob: 10.3.10
       handlebars: 4.7.8
       lazy-universal-dotenv: 4.0.0
-      node-fetch: 2.7.0(encoding@0.1.13)
+      node-fetch: 2.7.0
       picomatch: 2.3.1
       pkg-dir: 5.0.0
       pretty-hrtime: 1.0.3
@@ -11861,14 +11837,14 @@ packages:
       ts-dedent: 2.2.0
     dev: true
 
-  /@storybook/core-server@7.5.3(encoding@0.1.13):
+  /@storybook/core-server@7.5.3:
     resolution: {integrity: sha512-Gmq1w7ulN/VIeTDboNcb6GNM+S8T0SqhJUqeoHzn0vLGnzxeuYRJ0V3ZJhGZiJfSmCNqYAjC8QUBf6uU1gLipw==}
     dependencies:
       '@aw-web-design/x-default-browser': 1.4.126
       '@discoveryjs/json-ext': 0.5.7
-      '@storybook/builder-manager': 7.5.3(encoding@0.1.13)
+      '@storybook/builder-manager': 7.5.3
       '@storybook/channels': 7.5.3
-      '@storybook/core-common': 7.5.3(encoding@0.1.13)
+      '@storybook/core-common': 7.5.3
       '@storybook/core-events': 7.5.3
       '@storybook/csf': 0.1.1
       '@storybook/csf-tools': 7.5.3
@@ -11877,7 +11853,7 @@ packages:
       '@storybook/manager': 7.5.3
       '@storybook/node-logger': 7.5.3
       '@storybook/preview-api': 7.5.3
-      '@storybook/telemetry': 7.5.3(encoding@0.1.13)
+      '@storybook/telemetry': 7.5.3
       '@storybook/types': 7.5.3
       '@types/detect-port': 1.3.5
       '@types/node': 18.18.9
@@ -11947,10 +11923,10 @@ packages:
     resolution: {integrity: sha512-JDaBR9lwVY4eSH5W8EGHrhODjygPd6QImRbwjAuJNEnY0Vw4ie3bPkeGfnacB3OBW6u/agqPv2aRlR46JcAQLg==}
     dev: true
 
-  /@storybook/docs-tools@7.5.3(encoding@0.1.13):
+  /@storybook/docs-tools@7.5.3:
     resolution: {integrity: sha512-f20EUQlwamcSPrOFn42fj9gpkZIDNCZkC3N19yGzLYiE4UMyaYQgRl18oLvqd3M6aBm6UW6SCoIIgeaOViBSqg==}
     dependencies:
-      '@storybook/core-common': 7.5.3(encoding@0.1.13)
+      '@storybook/core-common': 7.5.3
       '@storybook/preview-api': 7.5.3
       '@storybook/types': 7.5.3
       '@types/doctrine': 0.0.3
@@ -12039,7 +12015,7 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: true
 
-  /@storybook/react-vite@7.5.3(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(vite@5.0.12):
+  /@storybook/react-vite@7.5.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(vite@5.0.12):
     resolution: {integrity: sha512-ArPyHgiPbT5YvcyK4xK/DfqBOpn4R4/EP3kfIGhx8QKJyOtxPEYFdkLIZ5xu3KnPX7/z7GT+4a6Rb+8sk9gliA==}
     engines: {node: '>=16'}
     peerDependencies:
@@ -12049,8 +12025,8 @@ packages:
     dependencies:
       '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.0(typescript@5.2.2)(vite@5.0.12)
       '@rollup/pluginutils': 5.0.5(rollup@2.78.0)
-      '@storybook/builder-vite': 7.5.3(encoding@0.1.13)(typescript@5.2.2)(vite@5.0.12)
-      '@storybook/react': 7.5.3(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
+      '@storybook/builder-vite': 7.5.3(typescript@5.2.2)(vite@5.0.12)
+      '@storybook/react': 7.5.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@vitejs/plugin-react': 3.1.0(vite@5.0.12)
       magic-string: 0.30.5
       react: 18.2.0
@@ -12066,7 +12042,7 @@ packages:
       - vite-plugin-glimmerx
     dev: true
 
-  /@storybook/react@7.5.3(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2):
+  /@storybook/react@7.5.3(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2):
     resolution: {integrity: sha512-dZILdM36xMFDjdmmy421G5X+sOIncB2qF3IPTooniG1i1Z6v/dVNo57ovdID9lDTNa+AWr2fLB9hANiISMqmjQ==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
@@ -12079,7 +12055,7 @@ packages:
     dependencies:
       '@storybook/client-logger': 7.5.3
       '@storybook/core-client': 7.5.3
-      '@storybook/docs-tools': 7.5.3(encoding@0.1.13)
+      '@storybook/docs-tools': 7.5.3
       '@storybook/global': 5.0.0
       '@storybook/preview-api': 7.5.3
       '@storybook/react-dom-shim': 7.5.3(react-dom@18.2.0)(react@18.2.0)
@@ -12119,11 +12095,11 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: true
 
-  /@storybook/telemetry@7.5.3(encoding@0.1.13):
+  /@storybook/telemetry@7.5.3:
     resolution: {integrity: sha512-X6alII3o0jCb5xALuw+qcWmvyrbhlkmPeNZ6ZQXknOfB4DkwponFdWN5y6W7yGvr01xa5QBepJRV79isl97d8g==}
     dependencies:
       '@storybook/client-logger': 7.5.3
-      '@storybook/core-common': 7.5.3(encoding@0.1.13)
+      '@storybook/core-common': 7.5.3
       '@storybook/csf-tools': 7.5.3
       chalk: 4.1.2
       detect-package-manager: 2.0.1
@@ -12340,7 +12316,7 @@ packages:
       '@tanstack/query-core': 4.36.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(encoding@0.1.13)(react@18.2.0)
+      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
@@ -12611,9 +12587,9 @@ packages:
       lodash: 4.17.21
       ts-essentials: 7.0.3(typescript@4.9.5)
       typechain: 8.3.2(typescript@5.2.2)
-      web3: 1.10.4(encoding@0.1.13)
-      web3-core: 1.10.4(encoding@0.1.13)
-      web3-eth-contract: 1.10.4(encoding@0.1.13)
+      web3: 1.10.4
+      web3-core: 1.10.4
+      web3-eth-contract: 1.10.4
     transitivePeerDependencies:
       - typescript
     dev: false
@@ -14206,7 +14182,7 @@ packages:
       typescript: 5.2.2
     dev: false
 
-  /@wagmi/connectors@0.3.16(@wagmi/core@0.10.17)(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
+  /@wagmi/connectors@0.3.16(@wagmi/core@0.10.17)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
     resolution: {integrity: sha512-WtiFyvai6IWbV7DhujjmtJF0m+FFQCiIDrtHsNf1xio0gBfpnO8rT9PZQQf0uxuLn0nLxqXqYMMwzPipUNaIcg==}
     peerDependencies:
       '@wagmi/core': '>=0.9.x'
@@ -14218,13 +14194,13 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@coinbase/wallet-sdk': 3.7.2(encoding@0.1.13)
+      '@coinbase/wallet-sdk': 3.7.2
       '@ledgerhq/connect-kit-loader': 1.1.2(patch_hash=xlsebypdiwsukm3c2ow7voujra)
       '@safe-global/safe-apps-provider': 0.15.2
       '@safe-global/safe-apps-sdk': 7.11.0
-      '@wagmi/core': 0.10.17(@types/react@18.2.37)(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
-      '@walletconnect/ethereum-provider': 2.7.0(@web3modal/standalone@2.4.3)(encoding@0.1.13)
-      '@walletconnect/legacy-provider': 2.0.0(encoding@0.1.13)
+      '@wagmi/core': 0.10.17(@types/react@18.2.37)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
+      '@walletconnect/ethereum-provider': 2.7.0(@web3modal/standalone@2.4.3)
+      '@walletconnect/legacy-provider': 2.0.0
       '@web3modal/standalone': 2.4.3(react@18.2.0)
       abitype: 0.3.0(typescript@5.2.2)(zod@3.22.4)
       ethers: 5.7.2
@@ -14251,7 +14227,7 @@ packages:
       - zod
     dev: false
 
-  /@wagmi/connectors@0.3.24(@types/react@18.2.37)(@wagmi/core@0.10.17)(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
+  /@wagmi/connectors@0.3.24(@types/react@18.2.37)(@wagmi/core@0.10.17)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
     resolution: {integrity: sha512-1pI0G9HRblc651dCz9LXuEu/zWQk23XwOUYqJEINb/c2TTLtw5TnTRIcefxxK6RnxeJvcKfnmK0rdZp/4ujFAA==}
     peerDependencies:
       '@wagmi/core': '>=0.9.x'
@@ -14263,13 +14239,13 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@coinbase/wallet-sdk': 3.7.2(encoding@0.1.13)
+      '@coinbase/wallet-sdk': 3.7.2
       '@ledgerhq/connect-kit-loader': 1.1.2(patch_hash=xlsebypdiwsukm3c2ow7voujra)
       '@safe-global/safe-apps-provider': 0.15.2
       '@safe-global/safe-apps-sdk': 7.11.0
-      '@wagmi/core': 0.10.17(@types/react@18.2.37)(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
-      '@walletconnect/ethereum-provider': 2.9.0(@walletconnect/modal@2.6.2)(encoding@0.1.13)
-      '@walletconnect/legacy-provider': 2.0.0(encoding@0.1.13)
+      '@wagmi/core': 0.10.17(@types/react@18.2.37)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
+      '@walletconnect/ethereum-provider': 2.9.0(@walletconnect/modal@2.6.2)
+      '@walletconnect/legacy-provider': 2.0.0
       '@walletconnect/modal': 2.6.2(@types/react@18.2.37)(react@18.2.0)
       abitype: 0.3.0(typescript@5.2.2)(zod@3.22.4)
       ethers: 5.7.2
@@ -14296,7 +14272,7 @@ packages:
       - zod
     dev: false
 
-  /@wagmi/connectors@3.1.11(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4):
+  /@wagmi/connectors@3.1.11(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4):
     resolution: {integrity: sha512-wzxp9f9PtSUFjDUP/QDjc1t7HON4D8wrVKsw35ejdO8hToDpx1gU9lwH/47Zo/1zExGezQc392sjoHSszYd7OA==}
     peerDependencies:
       typescript: '>=5.0.4'
@@ -14305,11 +14281,11 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@coinbase/wallet-sdk': 3.7.2(encoding@0.1.13)
+      '@coinbase/wallet-sdk': 3.7.2
       '@safe-global/safe-apps-provider': 0.18.2(typescript@5.2.2)(zod@3.22.4)
       '@safe-global/safe-apps-sdk': 8.1.0(typescript@5.2.2)(zod@3.22.4)
-      '@walletconnect/ethereum-provider': 2.11.0(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0)
-      '@walletconnect/legacy-provider': 2.0.0(encoding@0.1.13)
+      '@walletconnect/ethereum-provider': 2.11.0(@types/react@18.2.37)(react@18.2.0)
+      '@walletconnect/legacy-provider': 2.0.0
       '@walletconnect/modal': 2.6.2(@types/react@18.2.37)(react@18.2.0)
       '@walletconnect/utils': 2.11.0
       abitype: 0.8.7(typescript@5.2.2)(zod@3.22.4)
@@ -14337,7 +14313,7 @@ packages:
       - zod
     dev: false
 
-  /@wagmi/connectors@4.1.26(@types/react@18.2.37)(@wagmi/core@2.6.17)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4):
+  /@wagmi/connectors@4.1.26(@types/react@18.2.37)(@wagmi/core@2.6.17)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4):
     resolution: {integrity: sha512-0bANLzi4gZcszPnCj3l7+DPztCG+L+W1Zm/a02YmEh2MaQC/blBsbAdb2JALdW66HJJE8m4cNZjPJPTsS2/MQQ==}
     peerDependencies:
       '@wagmi/core': 2.6.17
@@ -14348,11 +14324,11 @@ packages:
         optional: true
     dependencies:
       '@coinbase/wallet-sdk': 3.9.1
-      '@metamask/sdk': 0.14.3(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)
+      '@metamask/sdk': 0.14.3(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)
       '@safe-global/safe-apps-provider': 0.18.1(typescript@5.2.2)(zod@3.22.4)
       '@safe-global/safe-apps-sdk': 8.1.0(typescript@5.2.2)(zod@3.22.4)
       '@wagmi/core': 2.6.17(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
-      '@walletconnect/ethereum-provider': 2.11.2(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0)
+      '@walletconnect/ethereum-provider': 2.11.2(@types/react@18.2.37)(react@18.2.0)
       '@walletconnect/modal': 2.6.2(@types/react@18.2.37)(react@18.2.0)
       typescript: 5.2.2
       viem: 2.9.19(typescript@5.2.2)(zod@3.22.4)
@@ -14379,7 +14355,7 @@ packages:
       - utf-8-validate
       - zod
 
-  /@wagmi/core@0.10.17(@types/react@18.2.37)(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
+  /@wagmi/core@0.10.17(@types/react@18.2.37)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
     resolution: {integrity: sha512-qud45y3IlHp7gYWzoFeyysmhyokRie59Xa5tcx5F1E/v4moD5BY0kzD26mZW/ZQ3WZuVK/lZwiiPRqpqWH52Gw==}
     peerDependencies:
       ethers: '>=5.5.1 <6'
@@ -14389,7 +14365,7 @@ packages:
         optional: true
     dependencies:
       '@wagmi/chains': 0.2.22(typescript@5.2.2)
-      '@wagmi/connectors': 0.3.24(@types/react@18.2.37)(@wagmi/core@0.10.17)(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
+      '@wagmi/connectors': 0.3.24(@types/react@18.2.37)(@wagmi/core@0.10.17)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
       abitype: 0.3.0(typescript@5.2.2)(zod@3.22.4)
       ethers: 5.7.2
       eventemitter3: 4.0.7
@@ -14458,17 +14434,17 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@walletconnect/cacao@1.0.2(encoding@0.1.13):
+  /@walletconnect/cacao@1.0.2:
     resolution: {integrity: sha512-LEO/MqbVvaOj0BerlBJQMsyEfSZGGUusHkICkVH1tIxrk7QCBJ5SCU0XzbVkncXMHqNPvyThEjEFSvf+vdYFJA==}
     dependencies:
       '@ethersproject/hash': 5.7.0
       '@ethersproject/transactions': 5.7.0
-      isomorphic-unfetch: 3.1.0(encoding@0.1.13)
+      isomorphic-unfetch: 3.1.0
     transitivePeerDependencies:
       - encoding
     dev: false
 
-  /@walletconnect/core@2.11.0(encoding@0.1.13):
+  /@walletconnect/core@2.11.0:
     resolution: {integrity: sha512-2Tjp5BCevI7dbmqo/OrCjX4tqgMqwJNQLlQAlphqPfvwlF9+tIu6pGcVbSN3U9zyXzWIZCeleqEaWUeSeET4Ew==}
     dependencies:
       '@walletconnect/heartbeat': 1.2.1
@@ -14485,7 +14461,7 @@ packages:
       '@walletconnect/types': 2.11.0
       '@walletconnect/utils': 2.11.0
       events: 3.3.0
-      isomorphic-unfetch: 3.1.0(encoding@0.1.13)
+      isomorphic-unfetch: 3.1.0
       lodash.isequal: 4.5.0
       uint8arrays: 3.1.1
     transitivePeerDependencies:
@@ -14506,7 +14482,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@walletconnect/core@2.11.2(encoding@0.1.13):
+  /@walletconnect/core@2.11.2:
     resolution: {integrity: sha512-bB4SiXX8hX3/hyBfVPC5gwZCXCl+OPj+/EDVM71iAO3TDsh78KPbrVAbDnnsbHzZVHlsMohtXX3j5XVsheN3+g==}
     dependencies:
       '@walletconnect/heartbeat': 1.2.1
@@ -14523,7 +14499,7 @@ packages:
       '@walletconnect/types': 2.11.2
       '@walletconnect/utils': 2.11.2
       events: 3.3.0
-      isomorphic-unfetch: 3.1.0(encoding@0.1.13)
+      isomorphic-unfetch: 3.1.0
       lodash.isequal: 4.5.0
       uint8arrays: 3.1.1
     transitivePeerDependencies:
@@ -14543,7 +14519,7 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /@walletconnect/core@2.12.2(encoding@0.1.13):
+  /@walletconnect/core@2.12.2:
     resolution: {integrity: sha512-7Adv/b3pp9F42BkvReaaM4KS8NEvlkS7AMtwO3uF/o6aRMKtcfTJq9/jgWdKJh4RP8pPRTRFjCw6XQ/RZtT4aQ==}
     dependencies:
       '@walletconnect/heartbeat': 1.2.1
@@ -14560,7 +14536,7 @@ packages:
       '@walletconnect/types': 2.12.2
       '@walletconnect/utils': 2.12.2
       events: 3.3.0
-      isomorphic-unfetch: 3.1.0(encoding@0.1.13)
+      isomorphic-unfetch: 3.1.0
       lodash.isequal: 4.5.0
       uint8arrays: 3.1.1
     transitivePeerDependencies:
@@ -14692,17 +14668,17 @@ packages:
     dependencies:
       tslib: 1.14.1
 
-  /@walletconnect/ethereum-provider@2.11.0(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0):
+  /@walletconnect/ethereum-provider@2.11.0(@types/react@18.2.37)(react@18.2.0):
     resolution: {integrity: sha512-YrTeHVjuSuhlUw7SQ6xBJXDuJ6iAC+RwINm9nVhoKYJSHAy3EVSJZOofMKrnecL0iRMtD29nj57mxAInIBRuZA==}
     dependencies:
-      '@walletconnect/jsonrpc-http-connection': 1.0.7(encoding@0.1.13)
+      '@walletconnect/jsonrpc-http-connection': 1.0.7
       '@walletconnect/jsonrpc-provider': 1.0.13
       '@walletconnect/jsonrpc-types': 1.0.3
       '@walletconnect/jsonrpc-utils': 1.0.8
       '@walletconnect/modal': 2.6.2(@types/react@18.2.37)(react@18.2.0)
-      '@walletconnect/sign-client': 2.11.0(encoding@0.1.13)
+      '@walletconnect/sign-client': 2.11.0
       '@walletconnect/types': 2.11.0
-      '@walletconnect/universal-provider': 2.11.0(encoding@0.1.13)
+      '@walletconnect/universal-provider': 2.11.0
       '@walletconnect/utils': 2.11.0
       events: 3.3.0
     transitivePeerDependencies:
@@ -14725,17 +14701,17 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@walletconnect/ethereum-provider@2.11.2(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0):
+  /@walletconnect/ethereum-provider@2.11.2(@types/react@18.2.37)(react@18.2.0):
     resolution: {integrity: sha512-BUDqee0Uy2rCZVkW5Ao3q6Ado/3fePYnFdryVF+YL6bPhj+xQZ5OfKodl+uvs7Rwq++O5wTX2RqOTzpW7+v+Mg==}
     dependencies:
-      '@walletconnect/jsonrpc-http-connection': 1.0.7(encoding@0.1.13)
+      '@walletconnect/jsonrpc-http-connection': 1.0.7
       '@walletconnect/jsonrpc-provider': 1.0.13
       '@walletconnect/jsonrpc-types': 1.0.3
       '@walletconnect/jsonrpc-utils': 1.0.8
       '@walletconnect/modal': 2.6.2(@types/react@18.2.37)(react@18.2.0)
-      '@walletconnect/sign-client': 2.11.2(encoding@0.1.13)
+      '@walletconnect/sign-client': 2.11.2
       '@walletconnect/types': 2.11.2
-      '@walletconnect/universal-provider': 2.11.2(encoding@0.1.13)
+      '@walletconnect/universal-provider': 2.11.2
       '@walletconnect/utils': 2.11.2
       events: 3.3.0
     transitivePeerDependencies:
@@ -14757,17 +14733,17 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /@walletconnect/ethereum-provider@2.12.2(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0):
+  /@walletconnect/ethereum-provider@2.12.2(@types/react@18.2.37)(react@18.2.0):
     resolution: {integrity: sha512-vBl2zCnNm2iPaomJdr5YT16cT7aa8cH2WFs6879XPngU5i7HXS3bU6TamhyhKKl13sdIfifmCkCC+RWn5GdPMw==}
     dependencies:
-      '@walletconnect/jsonrpc-http-connection': 1.0.7(encoding@0.1.13)
+      '@walletconnect/jsonrpc-http-connection': 1.0.7
       '@walletconnect/jsonrpc-provider': 1.0.13
       '@walletconnect/jsonrpc-types': 1.0.3
       '@walletconnect/jsonrpc-utils': 1.0.8
       '@walletconnect/modal': 2.6.2(@types/react@18.2.37)(react@18.2.0)
-      '@walletconnect/sign-client': 2.12.2(encoding@0.1.13)
+      '@walletconnect/sign-client': 2.12.2
       '@walletconnect/types': 2.12.2
-      '@walletconnect/universal-provider': 2.12.2(encoding@0.1.13)
+      '@walletconnect/universal-provider': 2.12.2
       '@walletconnect/utils': 2.12.2
       events: 3.3.0
     transitivePeerDependencies:
@@ -14790,7 +14766,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@walletconnect/ethereum-provider@2.7.0(@web3modal/standalone@2.4.3)(encoding@0.1.13):
+  /@walletconnect/ethereum-provider@2.7.0(@web3modal/standalone@2.4.3):
     resolution: {integrity: sha512-6TwQ05zi6DP1TP1XNgSvLbmCmLf/sz7kLTfMaVk45YYHNgYTTBlXqkyjUpQZI9lpq+uXLBbHn/jx2OGhOPUP0Q==}
     peerDependencies:
       '@web3modal/standalone': '>=2'
@@ -14798,13 +14774,13 @@ packages:
       '@web3modal/standalone':
         optional: true
     dependencies:
-      '@walletconnect/jsonrpc-http-connection': 1.0.7(encoding@0.1.13)
+      '@walletconnect/jsonrpc-http-connection': 1.0.7
       '@walletconnect/jsonrpc-provider': 1.0.13
       '@walletconnect/jsonrpc-types': 1.0.3
       '@walletconnect/jsonrpc-utils': 1.0.8
       '@walletconnect/sign-client': 2.7.0
       '@walletconnect/types': 2.7.0
-      '@walletconnect/universal-provider': 2.7.0(encoding@0.1.13)
+      '@walletconnect/universal-provider': 2.7.0
       '@walletconnect/utils': 2.7.0
       '@web3modal/standalone': 2.4.3(react@18.2.0)
       events: 3.3.0
@@ -14827,7 +14803,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@walletconnect/ethereum-provider@2.9.0(@walletconnect/modal@2.6.2)(encoding@0.1.13):
+  /@walletconnect/ethereum-provider@2.9.0(@walletconnect/modal@2.6.2):
     resolution: {integrity: sha512-rSXkC0SXMigJRdIi/M2RMuEuATY1AwtlTWQBnqyxoht7xbO2bQNPCXn0XL4s/GRNrSUtoKSY4aPMHXV4W4yLBA==}
     peerDependencies:
       '@walletconnect/modal': '>=2'
@@ -14835,14 +14811,14 @@ packages:
       '@walletconnect/modal':
         optional: true
     dependencies:
-      '@walletconnect/jsonrpc-http-connection': 1.0.7(encoding@0.1.13)
+      '@walletconnect/jsonrpc-http-connection': 1.0.7
       '@walletconnect/jsonrpc-provider': 1.0.13
       '@walletconnect/jsonrpc-types': 1.0.3
       '@walletconnect/jsonrpc-utils': 1.0.8
       '@walletconnect/modal': 2.6.2(@types/react@18.2.37)(react@18.2.0)
       '@walletconnect/sign-client': 2.9.0
       '@walletconnect/types': 2.9.0
-      '@walletconnect/universal-provider': 2.9.0(encoding@0.1.13)
+      '@walletconnect/universal-provider': 2.9.0
       '@walletconnect/utils': 2.9.0
       events: 3.3.0
     transitivePeerDependencies:
@@ -14876,14 +14852,14 @@ packages:
       '@walletconnect/time': 1.0.2
       tslib: 1.14.1
 
-  /@walletconnect/identity-keys@1.0.1(encoding@0.1.13):
+  /@walletconnect/identity-keys@1.0.1:
     resolution: {integrity: sha512-xcq5xmK0vTbJdw95UT4cNFrEMg6gr/hG+IIVj3q20drg+nmM5CnzV26uPTvnyo3gig3NVWkmjRJ054sdQmy4Zw==}
     dependencies:
       '@ethersproject/hash': 5.7.0
       '@ethersproject/transactions': 5.7.0
       '@noble/ed25519': 1.7.3
-      '@walletconnect/cacao': 1.0.2(encoding@0.1.13)
-      '@walletconnect/core': 2.11.0(encoding@0.1.13)
+      '@walletconnect/cacao': 1.0.2
+      '@walletconnect/core': 2.11.0
       '@walletconnect/did-jwt': 2.0.3
       '@walletconnect/types': 2.11.0
       '@walletconnect/utils': 2.11.0
@@ -14907,14 +14883,14 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@walletconnect/identity-keys@2.0.1(encoding@0.1.13):
+  /@walletconnect/identity-keys@2.0.1:
     resolution: {integrity: sha512-/U7YhUHFRtHUT0QZ0Q19sdescEDZsP3zCFIJcZhSwSw0M65refhg7CmJmgFAtjC5YtwFoEnkDuG3AYJ8vBJKHw==}
     dependencies:
       '@ethersproject/hash': 5.7.0
       '@ethersproject/transactions': 5.7.0
       '@noble/ed25519': 1.7.3
-      '@walletconnect/cacao': 1.0.2(encoding@0.1.13)
-      '@walletconnect/core': 2.11.0(encoding@0.1.13)
+      '@walletconnect/cacao': 1.0.2
+      '@walletconnect/core': 2.11.0
       '@walletconnect/did-jwt': 2.0.3
       '@walletconnect/types': 2.11.0
       '@walletconnect/utils': 2.11.0
@@ -14938,12 +14914,12 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@walletconnect/jsonrpc-http-connection@1.0.7(encoding@0.1.13):
+  /@walletconnect/jsonrpc-http-connection@1.0.7:
     resolution: {integrity: sha512-qlfh8fCfu8LOM9JRR9KE0s0wxP6ZG9/Jom8M0qsoIQeKF3Ni0FyV4V1qy/cc7nfI46SLQLSl4tgWSfLiE1swyQ==}
     dependencies:
       '@walletconnect/jsonrpc-utils': 1.0.8
       '@walletconnect/safe-json': 1.0.2
-      cross-fetch: 3.1.8(encoding@0.1.13)
+      cross-fetch: 3.1.8
       tslib: 1.14.1
     transitivePeerDependencies:
       - encoding
@@ -15049,10 +15025,10 @@ packages:
       qrcode: 1.5.3
     dev: false
 
-  /@walletconnect/legacy-provider@2.0.0(encoding@0.1.13):
+  /@walletconnect/legacy-provider@2.0.0:
     resolution: {integrity: sha512-A8xPebMI1A+50HbWwTpFCbwP7G+1NGKdTKyg8BUUg3h3Y9JucpC1W6w/x0v1Xw7qFEqQnz74LoIN/A3ytH9xrQ==}
     dependencies:
-      '@walletconnect/jsonrpc-http-connection': 1.0.7(encoding@0.1.13)
+      '@walletconnect/jsonrpc-http-connection': 1.0.7
       '@walletconnect/jsonrpc-provider': 1.0.13
       '@walletconnect/legacy-client': 2.0.0
       '@walletconnect/legacy-modal': 2.0.0
@@ -15121,14 +15097,14 @@ packages:
       - '@types/react'
       - react
 
-  /@walletconnect/notify-client@1.0.0(encoding@0.1.13):
+  /@walletconnect/notify-client@1.0.0:
     resolution: {integrity: sha512-UIvWHmEwEBCV4Pxu9YPZoF4fygjLKGUFkErixGyytPX+7LsLfKc3/EoSm7bn2D2EWSIgO215NXQsUjVx32k/5Q==}
     dependencies:
       '@noble/ed25519': 1.7.3
-      '@walletconnect/cacao': 1.0.2(encoding@0.1.13)
-      '@walletconnect/core': 2.11.0(encoding@0.1.13)
+      '@walletconnect/cacao': 1.0.2
+      '@walletconnect/core': 2.11.0
       '@walletconnect/did-jwt': 2.0.1
-      '@walletconnect/identity-keys': 1.0.1(encoding@0.1.13)
+      '@walletconnect/identity-keys': 1.0.1
       '@walletconnect/jsonrpc-utils': 1.0.7
       '@walletconnect/time': 1.0.2
       '@walletconnect/utils': 2.11.0
@@ -15153,14 +15129,14 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@walletconnect/notify-client@1.1.3(encoding@0.1.13):
+  /@walletconnect/notify-client@1.1.3:
     resolution: {integrity: sha512-mUGsIRPVMxfvHRbfk00+FeeNLbVNvDnnDqcmYtpzdzo40jO2T3Rjh2L/tw24CF/FI9xbhvhzMzibhIduOQF+fw==}
     dependencies:
       '@noble/ed25519': 1.7.3
-      '@walletconnect/cacao': 1.0.2(encoding@0.1.13)
-      '@walletconnect/core': 2.11.0(encoding@0.1.13)
+      '@walletconnect/cacao': 1.0.2
+      '@walletconnect/core': 2.11.0
       '@walletconnect/did-jwt': 2.0.1
-      '@walletconnect/identity-keys': 2.0.1(encoding@0.1.13)
+      '@walletconnect/identity-keys': 2.0.1
       '@walletconnect/jsonrpc-utils': 1.0.7
       '@walletconnect/time': 1.0.2
       '@walletconnect/utils': 2.11.0
@@ -15215,10 +15191,10 @@ packages:
     dependencies:
       tslib: 1.14.1
 
-  /@walletconnect/sign-client@2.11.0(encoding@0.1.13):
+  /@walletconnect/sign-client@2.11.0:
     resolution: {integrity: sha512-H2ukscibBS+6WrzQWh+WyVBqO5z4F5et12JcwobdwgHnJSlqIoZxqnUYYWNCI5rUR5UKsKWaUyto4AE9N5dw4Q==}
     dependencies:
-      '@walletconnect/core': 2.11.0(encoding@0.1.13)
+      '@walletconnect/core': 2.11.0
       '@walletconnect/events': 1.0.1
       '@walletconnect/heartbeat': 1.2.1
       '@walletconnect/jsonrpc-utils': 1.0.8
@@ -15245,10 +15221,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@walletconnect/sign-client@2.11.2(encoding@0.1.13):
+  /@walletconnect/sign-client@2.11.2:
     resolution: {integrity: sha512-MfBcuSz2GmMH+P7MrCP46mVE5qhP0ZyWA0FyIH6/WuxQ6G+MgKsGfaITqakpRPsykWOJq8tXMs3XvUPDU413OQ==}
     dependencies:
-      '@walletconnect/core': 2.11.2(encoding@0.1.13)
+      '@walletconnect/core': 2.11.2
       '@walletconnect/events': 1.0.1
       '@walletconnect/heartbeat': 1.2.1
       '@walletconnect/jsonrpc-utils': 1.0.8
@@ -15274,10 +15250,10 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /@walletconnect/sign-client@2.12.2(encoding@0.1.13):
+  /@walletconnect/sign-client@2.12.2:
     resolution: {integrity: sha512-cM0ualXj6nVvLqS4BDNRk+ZWR+lubcsz/IHreH+3wYrQ2sV+C0fN6ctrd7MMGZss0C0qacWCx0pm62ZBuoKvqA==}
     dependencies:
-      '@walletconnect/core': 2.12.2(encoding@0.1.13)
+      '@walletconnect/core': 2.12.2
       '@walletconnect/events': 1.0.1
       '@walletconnect/heartbeat': 1.2.1
       '@walletconnect/jsonrpc-utils': 1.0.8
@@ -15486,15 +15462,15 @@ packages:
       - supports-color
     dev: false
 
-  /@walletconnect/universal-provider@2.11.0(encoding@0.1.13):
+  /@walletconnect/universal-provider@2.11.0:
     resolution: {integrity: sha512-zgJv8jDvIMP4Qse/D9oIRXGdfoNqonsrjPZanQ/CHNe7oXGOBiQND2IIeX+tS0H7uNA0TPvctljCLiIN9nw4eA==}
     dependencies:
-      '@walletconnect/jsonrpc-http-connection': 1.0.7(encoding@0.1.13)
+      '@walletconnect/jsonrpc-http-connection': 1.0.7
       '@walletconnect/jsonrpc-provider': 1.0.13
       '@walletconnect/jsonrpc-types': 1.0.3
       '@walletconnect/jsonrpc-utils': 1.0.8
       '@walletconnect/logger': 2.1.2
-      '@walletconnect/sign-client': 2.11.0(encoding@0.1.13)
+      '@walletconnect/sign-client': 2.11.0
       '@walletconnect/types': 2.11.0
       '@walletconnect/utils': 2.11.0
       events: 3.3.0
@@ -15516,15 +15492,15 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@walletconnect/universal-provider@2.11.2(encoding@0.1.13):
+  /@walletconnect/universal-provider@2.11.2:
     resolution: {integrity: sha512-cNtIn5AVoDxKAJ4PmB8m5adnf5mYQMUamEUPKMVvOPscfGtIMQEh9peKsh2AN5xcRVDbgluC01Id545evFyymw==}
     dependencies:
-      '@walletconnect/jsonrpc-http-connection': 1.0.7(encoding@0.1.13)
+      '@walletconnect/jsonrpc-http-connection': 1.0.7
       '@walletconnect/jsonrpc-provider': 1.0.13
       '@walletconnect/jsonrpc-types': 1.0.3
       '@walletconnect/jsonrpc-utils': 1.0.8
       '@walletconnect/logger': 2.1.2
-      '@walletconnect/sign-client': 2.11.2(encoding@0.1.13)
+      '@walletconnect/sign-client': 2.11.2
       '@walletconnect/types': 2.11.2
       '@walletconnect/utils': 2.11.2
       events: 3.3.0
@@ -15545,15 +15521,15 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /@walletconnect/universal-provider@2.12.2(encoding@0.1.13):
+  /@walletconnect/universal-provider@2.12.2:
     resolution: {integrity: sha512-0k5ZgSkABopQLVhkiwl2gRGG7dAP4SWiI915pIlyN5sRvWV+qX1ALhWAmRcdv0TXWlKHDcDgPJw/q2sCSAHuMQ==}
     dependencies:
-      '@walletconnect/jsonrpc-http-connection': 1.0.7(encoding@0.1.13)
+      '@walletconnect/jsonrpc-http-connection': 1.0.7
       '@walletconnect/jsonrpc-provider': 1.0.13
       '@walletconnect/jsonrpc-types': 1.0.3
       '@walletconnect/jsonrpc-utils': 1.0.8
       '@walletconnect/logger': 2.1.2
-      '@walletconnect/sign-client': 2.12.2(encoding@0.1.13)
+      '@walletconnect/sign-client': 2.12.2
       '@walletconnect/types': 2.12.2
       '@walletconnect/utils': 2.12.2
       events: 3.3.0
@@ -15575,10 +15551,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@walletconnect/universal-provider@2.7.0(encoding@0.1.13):
+  /@walletconnect/universal-provider@2.7.0:
     resolution: {integrity: sha512-aAIudO3ZlKD16X36VnXChpxBB6/JLK1SCJBfidk7E0GE2S4xr1xW5jXGSGS4Z+wIkNZXK0n7ULSK3PZ7mPBdog==}
     dependencies:
-      '@walletconnect/jsonrpc-http-connection': 1.0.7(encoding@0.1.13)
+      '@walletconnect/jsonrpc-http-connection': 1.0.7
       '@walletconnect/jsonrpc-provider': 1.0.13
       '@walletconnect/jsonrpc-types': 1.0.3
       '@walletconnect/jsonrpc-utils': 1.0.8
@@ -15607,10 +15583,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@walletconnect/universal-provider@2.9.0(encoding@0.1.13):
+  /@walletconnect/universal-provider@2.9.0:
     resolution: {integrity: sha512-k3nkSBkF69sJJVoe17IVoPtnhp/sgaa2t+x7BvA/BKeMxE0DGdtRJdEXotTc8DBmI7o2tkq6l8+HyFBGjQ/CjQ==}
     dependencies:
-      '@walletconnect/jsonrpc-http-connection': 1.0.7(encoding@0.1.13)
+      '@walletconnect/jsonrpc-http-connection': 1.0.7
       '@walletconnect/jsonrpc-provider': 1.0.13
       '@walletconnect/jsonrpc-types': 1.0.3
       '@walletconnect/jsonrpc-utils': 1.0.8
@@ -15808,11 +15784,11 @@ packages:
       '@walletconnect/window-getters': 1.0.1
       tslib: 1.14.1
 
-  /@web3inbox/core@1.2.0(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0):
+  /@web3inbox/core@1.2.0(@types/react@18.2.37)(react@18.2.0):
     resolution: {integrity: sha512-sICpEW935rFacI8EmMgXhwdIumA4qP1d0yvIxbwI8Cp1N30qzw1W5EShJCiVyOkRAP7gK9k2VfQRjgAR2dupFg==}
     dependencies:
-      '@walletconnect/core': 2.11.0(encoding@0.1.13)
-      '@walletconnect/notify-client': 1.1.3(encoding@0.1.13)
+      '@walletconnect/core': 2.11.0
+      '@walletconnect/notify-client': 1.1.3
       valtio: 1.11.2(@types/react@18.2.37)(react@18.2.0)
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -15840,7 +15816,7 @@ packages:
     peerDependencies:
       '@web3inbox/core': '*'
     dependencies:
-      '@web3inbox/core': 1.2.0(@types/react@18.2.37)(encoding@0.1.13)(react@18.2.0)
+      '@web3inbox/core': 1.2.0(@types/react@18.2.37)(react@18.2.0)
       react: 18.2.0
     dev: false
 
@@ -18079,25 +18055,25 @@ packages:
     resolution: {integrity: sha512-izfGgKyzzIyLaeb1EtZ3KbglkS6AKp9cv7LxmiyoOu+fXfol1tQDC0Cof0enVZGNtudTHW+3lfuW9ZkLQss4Wg==}
     dev: true
 
-  /cross-fetch@3.1.5(encoding@0.1.13):
+  /cross-fetch@3.1.5:
     resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
     dependencies:
-      node-fetch: 2.6.7(encoding@0.1.13)
+      node-fetch: 2.6.7
     transitivePeerDependencies:
       - encoding
     dev: false
 
-  /cross-fetch@3.1.8(encoding@0.1.13):
+  /cross-fetch@3.1.8:
     resolution: {integrity: sha512-cvA+JwZoU0Xq+h6WkMvAUqPEYy92Obet6UdKLfW60qn99ftItKjB5T+BkyWOFWe2pUyfQ+IJHmpOTznqk1M6Kg==}
     dependencies:
-      node-fetch: 2.7.0(encoding@0.1.13)
+      node-fetch: 2.7.0
     transitivePeerDependencies:
       - encoding
 
-  /cross-fetch@4.0.0(encoding@0.1.13):
+  /cross-fetch@4.0.0:
     resolution: {integrity: sha512-e4a5N8lVvuLgAWgnCrLr2PP0YyDOTHa9H/Rj54dirp61qXnNq46m82bRhNqIA5VccJtWBvPTFRV3TtvHUKPB1g==}
     dependencies:
-      node-fetch: 2.7.0(encoding@0.1.13)
+      node-fetch: 2.7.0
     transitivePeerDependencies:
       - encoding
 
@@ -19008,7 +18984,7 @@ packages:
       secp256k1: 5.0.0
 
   /ee-first@1.1.1:
-    resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
+    resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=}
 
   /eip1193-provider@1.0.1:
     resolution: {integrity: sha512-kSuqwQ26d7CzuS/t3yRXo2Su2cVH0QfvyKbr2H7Be7O5YDyIq4hQGCNTo5wRdP07bt+E2R/8nPCzey4ojBHf7g==}
@@ -19077,11 +19053,6 @@ packages:
   /encodeurl@1.0.2:
     resolution: {integrity: sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==}
     engines: {node: '>= 0.8'}
-
-  /encoding@0.1.13:
-    resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
-    dependencies:
-      iconv-lite: 0.6.3
 
   /end-of-stream@1.4.4:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
@@ -20517,6 +20488,7 @@ packages:
   /fill-range@7.0.1:
     resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==}
     engines: {node: '>=8'}
+    requiresBuild: true
     dependencies:
       to-regex-range: 5.0.1
 
@@ -20758,7 +20730,7 @@ packages:
     dev: false
 
   /fresh@0.5.2:
-    resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
+    resolution: {integrity: sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=}
     engines: {node: '>= 0.6'}
 
   /from@0.1.7:
@@ -21206,12 +21178,12 @@ packages:
   /graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
-  /graphql-request@3.7.0(encoding@0.1.13)(graphql@15.8.0):
+  /graphql-request@3.7.0(graphql@15.8.0):
     resolution: {integrity: sha512-dw5PxHCgBneN2DDNqpWu8QkbbJ07oOziy8z+bK/TAXufsOLaETuVO4GkXrbs0WjhdKhBMN3BkpN/RIvUHkmNUQ==}
     peerDependencies:
       graphql: 14 - 16
     dependencies:
-      cross-fetch: 3.1.8(encoding@0.1.13)
+      cross-fetch: 3.1.8
       extract-files: 9.0.0
       form-data: 3.0.1
       graphql: 15.8.0
@@ -21219,13 +21191,13 @@ packages:
       - encoding
     dev: false
 
-  /graphql-request@5.0.0(encoding@0.1.13)(graphql@16.8.1):
+  /graphql-request@5.0.0(graphql@16.8.1):
     resolution: {integrity: sha512-SpVEnIo2J5k2+Zf76cUkdvIRaq5FMZvGQYnA4lUWYbc99m+fHh4CZYRRO/Ff4tCLQ613fzCm3SiDT64ubW5Gyw==}
     peerDependencies:
       graphql: 14 - 16
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.8.1)
-      cross-fetch: 3.1.8(encoding@0.1.13)
+      cross-fetch: 3.1.8
       extract-files: 9.0.0
       form-data: 3.0.1
       graphql: 16.8.1
@@ -22068,6 +22040,7 @@ packages:
   /is-number@7.0.0:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
     engines: {node: '>=0.12.0'}
+    requiresBuild: true
 
   /is-object@0.1.2:
     resolution: {integrity: sha512-GkfZZlIZtpkFrqyAXPQSRBMsaHAw+CgoKe2HXAkjd/sfoI9+hS8PT4wg2rJxdQyUKr7N2vHJbg7/jQtE5l5vBQ==}
@@ -22236,19 +22209,19 @@ packages:
     resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
     engines: {node: '>=0.10.0'}
 
-  /isomorphic-fetch@3.0.0(encoding@0.1.13):
+  /isomorphic-fetch@3.0.0:
     resolution: {integrity: sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==}
     dependencies:
-      node-fetch: 2.7.0(encoding@0.1.13)
+      node-fetch: 2.7.0
       whatwg-fetch: 3.6.20
     transitivePeerDependencies:
       - encoding
     dev: false
 
-  /isomorphic-unfetch@3.1.0(encoding@0.1.13):
+  /isomorphic-unfetch@3.1.0:
     resolution: {integrity: sha512-geDJjpoZ8N0kWexiwkX8F9NkTsXhetLPVbZFQ+JTW239QNOwvB0gniuR1Wc6f0AMTn7/mFGyXvHTifrCp/GH8Q==}
     dependencies:
-      node-fetch: 2.7.0(encoding@0.1.13)
+      node-fetch: 2.7.0
       unfetch: 4.2.0
     transitivePeerDependencies:
       - encoding
@@ -22450,7 +22423,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 18.18.9
+      '@types/node': 18.0.4
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -22479,7 +22452,7 @@ packages:
     resolution: {integrity: sha512-eIz2msL/EzL9UFTFFx7jBTkeZfku0yUAyZZZmJ93H2TYEiroIx2PQjEXcwYtYl8zXCxb+PAmA2hLIt/6ZEkPHw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@types/node': 18.18.9
+      '@types/node': 18.0.4
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
@@ -23649,14 +23622,14 @@ packages:
       metro-core: 0.80.8
       rimraf: 3.0.2
 
-  /metro-config@0.80.8(encoding@0.1.13):
+  /metro-config@0.80.8:
     resolution: {integrity: sha512-VGQJpfJawtwRzGzGXVUoohpIkB0iPom4DmSbAppKfumdhtLA8uVeEPp2GM61kL9hRvdbMhdWA7T+hZFDlo4mJA==}
     engines: {node: '>=18'}
     dependencies:
       connect: 3.7.0
       cosmiconfig: 5.2.1
       jest-validate: 29.7.0
-      metro: 0.80.8(encoding@0.1.13)
+      metro: 0.80.8
       metro-cache: 0.80.8
       metro-core: 0.80.8
       metro-runtime: 0.80.8
@@ -23749,7 +23722,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /metro-transform-worker@0.80.8(encoding@0.1.13):
+  /metro-transform-worker@0.80.8:
     resolution: {integrity: sha512-+4FG3TQk3BTbNqGkFb2uCaxYTfsbuFOCKMMURbwu0ehCP8ZJuTUramkaNZoATS49NSAkRgUltgmBa4YaKZ5mqw==}
     engines: {node: '>=18'}
     dependencies:
@@ -23757,7 +23730,7 @@ packages:
       '@babel/generator': 7.23.6
       '@babel/parser': 7.23.9
       '@babel/types': 7.24.0
-      metro: 0.80.8(encoding@0.1.13)
+      metro: 0.80.8
       metro-babel-transformer: 0.80.8
       metro-cache: 0.80.8
       metro-cache-key: 0.80.8
@@ -23771,7 +23744,7 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /metro@0.80.8(encoding@0.1.13):
+  /metro@0.80.8:
     resolution: {integrity: sha512-in7S0W11mg+RNmcXw+2d9S3zBGmCARDxIwoXJAmLUQOQoYsRP3cpGzyJtc7WOw8+FXfpgXvceD0u+PZIHXEL7g==}
     engines: {node: '>=18'}
     hasBin: true
@@ -23800,7 +23773,7 @@ packages:
       metro-babel-transformer: 0.80.8
       metro-cache: 0.80.8
       metro-cache-key: 0.80.8
-      metro-config: 0.80.8(encoding@0.1.13)
+      metro-config: 0.80.8
       metro-core: 0.80.8
       metro-file-map: 0.80.8
       metro-resolver: 0.80.8
@@ -23808,9 +23781,9 @@ packages:
       metro-source-map: 0.80.8
       metro-symbolicate: 0.80.8
       metro-transform-plugins: 0.80.8
-      metro-transform-worker: 0.80.8(encoding@0.1.13)
+      metro-transform-worker: 0.80.8
       mime-types: 2.1.35
-      node-fetch: 2.7.0(encoding@0.1.13)
+      node-fetch: 2.7.0
       nullthrows: 1.1.1
       rimraf: 3.0.2
       serialize-error: 2.1.0
@@ -24446,7 +24419,7 @@ packages:
   /node-fetch-native@1.4.1:
     resolution: {integrity: sha512-NsXBU0UgBxo2rQLOeWNZqS3fvflWePMECr8CoSWoSTqCqGbVVsvl9vZu1HfQicYN0g5piV9Gh8RTEvo/uP752w==}
 
-  /node-fetch@2.6.7(encoding@0.1.13):
+  /node-fetch@2.6.7:
     resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
@@ -24455,11 +24428,10 @@ packages:
       encoding:
         optional: true
     dependencies:
-      encoding: 0.1.13
       whatwg-url: 5.0.0
     dev: false
 
-  /node-fetch@2.7.0(encoding@0.1.13):
+  /node-fetch@2.7.0:
     resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
@@ -24468,7 +24440,6 @@ packages:
       encoding:
         optional: true
     dependencies:
-      encoding: 0.1.13
       whatwg-url: 5.0.0
 
   /node-forge@1.3.1:
@@ -25983,7 +25954,7 @@ packages:
       i18next: 22.5.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(encoding@0.1.13)(react@18.2.0)
+      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(react@18.2.0)
 
   /react-icons@4.11.0(react@18.2.0):
     resolution: {integrity: sha512-V+4khzYcE5EBk/BvcuYRq6V/osf11ODUM2J8hg2FDSswRrGvqiYUYPRy4OdrWaQOBj4NcpJfmHZLNaD+VH0TyA==}
@@ -26052,9 +26023,9 @@ packages:
       escape-string-regexp: 2.0.0
       invariant: 2.2.4
       react: 18.2.0
-      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(encoding@0.1.13)(react@18.2.0)
+      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(react@18.2.0)
 
-  /react-native@0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(encoding@0.1.13)(react@18.2.0):
+  /react-native@0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(react@18.2.0):
     resolution: {integrity: sha512-oqmZe8D2/VolIzSPZw+oUd6j/bEmeRHwsLn1xLA5wllEYsZ5zNuMsDus235ONOnCRwexqof/J3aztyQswSmiaA==}
     engines: {node: '>=18'}
     hasBin: true
@@ -26062,12 +26033,12 @@ packages:
       react: 18.2.0
     dependencies:
       '@jest/create-cache-key-function': 29.7.0
-      '@react-native-community/cli': 12.3.6(encoding@0.1.13)
-      '@react-native-community/cli-platform-android': 12.3.6(encoding@0.1.13)
-      '@react-native-community/cli-platform-ios': 12.3.6(encoding@0.1.13)
+      '@react-native-community/cli': 12.3.6
+      '@react-native-community/cli-platform-android': 12.3.6
+      '@react-native-community/cli-platform-ios': 12.3.6
       '@react-native/assets-registry': 0.73.1
       '@react-native/codegen': 0.73.3(@babel/preset-env@7.23.3)
-      '@react-native/community-cli-plugin': 0.73.17(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(encoding@0.1.13)
+      '@react-native/community-cli-plugin': 0.73.17(@babel/core@7.23.9)(@babel/preset-env@7.23.3)
       '@react-native/gradle-plugin': 0.73.4
       '@react-native/js-polyfills': 0.73.1
       '@react-native/normalize-colors': 0.73.2
@@ -26172,7 +26143,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-is: 18.2.0
-      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(encoding@0.1.13)(react@18.2.0)
+      react-native: 0.73.6(@babel/core@7.23.9)(@babel/preset-env@7.23.3)(react@18.2.0)
       redux: 4.2.1
       use-sync-external-store: 1.2.0(react@18.2.0)
 
@@ -27088,7 +27059,7 @@ packages:
       node-addon-api: 5.1.0
       node-gyp-build: 4.6.1
 
-  /secretjs@1.12.1(encoding@0.1.13):
+  /secretjs@1.12.1:
     resolution: {integrity: sha512-EmvgVJIgxZDj73En2WI5lNopy5eIv88gA8lhWfWW2MGED5pchvN5NEhCfIijTVB8JlK51iZkMZnGdD2q2b9hrA==}
     dependencies:
       '@cosmjs/encoding': 0.27.1
@@ -27100,7 +27071,7 @@ packages:
       bignumber.js: 9.0.2
       bip32: 2.0.6
       bip39: 3.0.4
-      cross-fetch: 3.1.5(encoding@0.1.13)
+      cross-fetch: 3.1.5
       curve25519-js: 0.0.4
       google-protobuf: 3.21.2
       miscreant: 0.3.2
@@ -27744,11 +27715,11 @@ packages:
     resolution: {integrity: sha512-siT1RiqlfQnGqgT/YzXVUNsom9S0H1OX+dpdGN1xkyYATo4I6sep5NmsRD/40s3IIOvlCq6akxkqG82urIZW1w==}
     dev: true
 
-  /storybook@7.5.3(encoding@0.1.13):
+  /storybook@7.5.3:
     resolution: {integrity: sha512-lkn9hcedNmSNCzbDIrky2LpZJqlpS7Fy1KpGBZmLY34g5Mb0+KnXaUqzY0dxsd7aFm8Oa7Du/emceMYNNL4DMA==}
     hasBin: true
     dependencies:
-      '@storybook/cli': 7.5.3(encoding@0.1.13)
+      '@storybook/cli': 7.5.3
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -28620,6 +28591,7 @@ packages:
   /to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
+    requiresBuild: true
     dependencies:
       is-number: 7.0.0
 
@@ -29555,7 +29527,7 @@ packages:
       which-typed-array: 1.1.13
 
   /utils-merge@1.0.1:
-    resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
+    resolution: {integrity: sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=}
     engines: {node: '>= 0.4.0'}
 
   /uuid@3.4.0:
@@ -30130,7 +30102,7 @@ packages:
       typescript: 5.2.2
     dev: true
 
-  /wagmi@0.12.19(@types/react@18.2.37)(encoding@0.1.13)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
+  /wagmi@0.12.19(@types/react@18.2.37)(ethers@5.7.2)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4):
     resolution: {integrity: sha512-S/el9BDb/HNeQWh1v8TvntMPX/CgKLDAoJqDb8i7jifLfWPqFL7gor3vnI1Vs6ZlB8uh7m+K1Qyg+mKhbITuDQ==}
     peerDependencies:
       ethers: '>=5.5.1 <6'
@@ -30143,7 +30115,7 @@ packages:
       '@tanstack/query-sync-storage-persister': 4.36.1
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)
       '@tanstack/react-query-persist-client': 4.36.1(@tanstack/react-query@4.36.1)
-      '@wagmi/core': 0.10.17(@types/react@18.2.37)(encoding@0.1.13)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
+      '@wagmi/core': 0.10.17(@types/react@18.2.37)(ethers@5.7.2)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
       abitype: 0.3.0(typescript@5.2.2)(zod@3.22.4)
       ethers: 5.7.2
       react: 18.2.0
@@ -30172,7 +30144,7 @@ packages:
       - zod
     dev: false
 
-  /wagmi@2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4):
+  /wagmi@2.5.20(@tanstack/react-query@5.29.2)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4):
     resolution: {integrity: sha512-K/9qk6+t/+NKFdbQyB7LtFgl3UXnGjvgyzAyfMQ+dF56uTSJipQwc94CSlN8kdQXTIOvhUSK2P7WJrdTEd15AA==}
     peerDependencies:
       '@tanstack/react-query': '>=5.0.0'
@@ -30184,7 +30156,7 @@ packages:
         optional: true
     dependencies:
       '@tanstack/react-query': 5.29.2(react@18.2.0)
-      '@wagmi/connectors': 4.1.26(@types/react@18.2.37)(@wagmi/core@2.6.17)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
+      '@wagmi/connectors': 4.1.26(@types/react@18.2.37)(@wagmi/core@2.6.17)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
       '@wagmi/core': 2.6.17(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
       react: 18.2.0
       typescript: 5.2.2
@@ -30290,13 +30262,13 @@ packages:
       eventemitter3: 4.0.4
     dev: false
 
-  /web3-core-requestmanager@1.10.4(encoding@0.1.13):
+  /web3-core-requestmanager@1.10.4:
     resolution: {integrity: sha512-vqP6pKH8RrhT/2MoaU+DY/OsYK9h7HmEBNCdoMj+4ZwujQtw/Mq2JifjwsJ7gits7Q+HWJwx8q6WmQoVZAWugg==}
     engines: {node: '>=8.0.0'}
     dependencies:
       util: 0.12.5
       web3-core-helpers: 1.10.4
-      web3-providers-http: 1.10.4(encoding@0.1.13)
+      web3-providers-http: 1.10.4
       web3-providers-ipc: 1.10.4
       web3-providers-ws: 1.10.4
     transitivePeerDependencies:
@@ -30312,7 +30284,7 @@ packages:
       web3-core-helpers: 1.10.4
     dev: false
 
-  /web3-core@1.10.4(encoding@0.1.13):
+  /web3-core@1.10.4:
     resolution: {integrity: sha512-B6elffYm81MYZDTrat7aEhnhdtVE3lDBUZft16Z8awYMZYJDbnykEbJVS+l3mnA7AQTnSDr/1MjWofGDLBJPww==}
     engines: {node: '>=8.0.0'}
     dependencies:
@@ -30321,7 +30293,7 @@ packages:
       bignumber.js: 9.1.2
       web3-core-helpers: 1.10.4
       web3-core-method: 1.10.4
-      web3-core-requestmanager: 1.10.4(encoding@0.1.13)
+      web3-core-requestmanager: 1.10.4
       web3-utils: 1.10.4
     transitivePeerDependencies:
       - encoding
@@ -30336,7 +30308,7 @@ packages:
       web3-utils: 1.10.4
     dev: false
 
-  /web3-eth-accounts@1.10.4(encoding@0.1.13):
+  /web3-eth-accounts@1.10.4:
     resolution: {integrity: sha512-ysy5sVTg9snYS7tJjxVoQAH6DTOTkRGR8emEVCWNGLGiB9txj+qDvSeT0izjurS/g7D5xlMAgrEHLK1Vi6I3yg==}
     engines: {node: '>=8.0.0'}
     dependencies:
@@ -30346,7 +30318,7 @@ packages:
       eth-lib: 0.2.8
       scrypt-js: 3.0.1
       uuid: 9.0.1
-      web3-core: 1.10.4(encoding@0.1.13)
+      web3-core: 1.10.4
       web3-core-helpers: 1.10.4
       web3-core-method: 1.10.4
       web3-utils: 1.10.4
@@ -30355,12 +30327,12 @@ packages:
       - supports-color
     dev: false
 
-  /web3-eth-contract@1.10.4(encoding@0.1.13):
+  /web3-eth-contract@1.10.4:
     resolution: {integrity: sha512-Q8PfolOJ4eV9TvnTj1TGdZ4RarpSLmHnUnzVxZ/6/NiTfe4maJz99R0ISgwZkntLhLRtw0C7LRJuklzGYCNN3A==}
     engines: {node: '>=8.0.0'}
     dependencies:
       '@types/bn.js': 5.1.5
-      web3-core: 1.10.4(encoding@0.1.13)
+      web3-core: 1.10.4
       web3-core-helpers: 1.10.4
       web3-core-method: 1.10.4
       web3-core-promievent: 1.10.4
@@ -30372,17 +30344,17 @@ packages:
       - supports-color
     dev: false
 
-  /web3-eth-ens@1.10.4(encoding@0.1.13):
+  /web3-eth-ens@1.10.4:
     resolution: {integrity: sha512-LLrvxuFeVooRVZ9e5T6OWKVflHPFgrVjJ/jtisRWcmI7KN/b64+D/wJzXqgmp6CNsMQcE7rpmf4CQmJCrTdsgg==}
     engines: {node: '>=8.0.0'}
     dependencies:
       content-hash: 2.5.2
       eth-ens-namehash: 2.0.8
-      web3-core: 1.10.4(encoding@0.1.13)
+      web3-core: 1.10.4
       web3-core-helpers: 1.10.4
       web3-core-promievent: 1.10.4
       web3-eth-abi: 1.10.4
-      web3-eth-contract: 1.10.4(encoding@0.1.13)
+      web3-eth-contract: 1.10.4
       web3-utils: 1.10.4
     transitivePeerDependencies:
       - encoding
@@ -30397,47 +30369,47 @@ packages:
       web3-utils: 1.10.4
     dev: false
 
-  /web3-eth-personal@1.10.4(encoding@0.1.13):
+  /web3-eth-personal@1.10.4:
     resolution: {integrity: sha512-BRa/hs6jU1hKHz+AC/YkM71RP3f0Yci1dPk4paOic53R4ZZG4MgwKRkJhgt3/GPuPliwS46f/i5A7fEGBT4F9w==}
     engines: {node: '>=8.0.0'}
     dependencies:
       '@types/node': 12.20.55
-      web3-core: 1.10.4(encoding@0.1.13)
+      web3-core: 1.10.4
       web3-core-helpers: 1.10.4
       web3-core-method: 1.10.4
-      web3-net: 1.10.4(encoding@0.1.13)
+      web3-net: 1.10.4
       web3-utils: 1.10.4
     transitivePeerDependencies:
       - encoding
       - supports-color
     dev: false
 
-  /web3-eth@1.10.4(encoding@0.1.13):
+  /web3-eth@1.10.4:
     resolution: {integrity: sha512-Sql2kYKmgt+T/cgvg7b9ce24uLS7xbFrxE4kuuor1zSCGrjhTJ5rRNG8gTJUkAJGKJc7KgnWmgW+cOfMBPUDSA==}
     engines: {node: '>=8.0.0'}
     dependencies:
-      web3-core: 1.10.4(encoding@0.1.13)
+      web3-core: 1.10.4
       web3-core-helpers: 1.10.4
       web3-core-method: 1.10.4
       web3-core-subscriptions: 1.10.4
       web3-eth-abi: 1.10.4
-      web3-eth-accounts: 1.10.4(encoding@0.1.13)
-      web3-eth-contract: 1.10.4(encoding@0.1.13)
-      web3-eth-ens: 1.10.4(encoding@0.1.13)
+      web3-eth-accounts: 1.10.4
+      web3-eth-contract: 1.10.4
+      web3-eth-ens: 1.10.4
       web3-eth-iban: 1.10.4
-      web3-eth-personal: 1.10.4(encoding@0.1.13)
-      web3-net: 1.10.4(encoding@0.1.13)
+      web3-eth-personal: 1.10.4
+      web3-net: 1.10.4
       web3-utils: 1.10.4
     transitivePeerDependencies:
       - encoding
       - supports-color
     dev: false
 
-  /web3-net@1.10.4(encoding@0.1.13):
+  /web3-net@1.10.4:
     resolution: {integrity: sha512-mKINnhOOnZ4koA+yV2OT5s5ztVjIx7IY9a03w6s+yao/BUn+Luuty0/keNemZxTr1E8Ehvtn28vbOtW7Ids+Ow==}
     engines: {node: '>=8.0.0'}
     dependencies:
-      web3-core: 1.10.4(encoding@0.1.13)
+      web3-core: 1.10.4
       web3-core-method: 1.10.4
       web3-utils: 1.10.4
     transitivePeerDependencies:
@@ -30445,12 +30417,12 @@ packages:
       - supports-color
     dev: false
 
-  /web3-providers-http@1.10.4(encoding@0.1.13):
+  /web3-providers-http@1.10.4:
     resolution: {integrity: sha512-m2P5Idc8hdiO0l60O6DSCPw0kw64Zgi0pMjbEFRmxKIck2Py57RQMu4bxvkxJwkF06SlGaEQF8rFZBmuX7aagQ==}
     engines: {node: '>=8.0.0'}
     dependencies:
       abortcontroller-polyfill: 1.7.5
-      cross-fetch: 4.0.0(encoding@0.1.13)
+      cross-fetch: 4.0.0
       es6-promise: 4.2.8
       web3-core-helpers: 1.10.4
     transitivePeerDependencies:
@@ -30476,15 +30448,15 @@ packages:
       - supports-color
     dev: false
 
-  /web3-shh@1.10.4(encoding@0.1.13):
+  /web3-shh@1.10.4:
     resolution: {integrity: sha512-cOH6iFFM71lCNwSQrC3niqDXagMqrdfFW85hC9PFUrAr3PUrIem8TNstTc3xna2bwZeWG6OBy99xSIhBvyIACw==}
     engines: {node: '>=8.0.0'}
     requiresBuild: true
     dependencies:
-      web3-core: 1.10.4(encoding@0.1.13)
+      web3-core: 1.10.4
       web3-core-method: 1.10.4
       web3-core-subscriptions: 1.10.4
-      web3-net: 1.10.4(encoding@0.1.13)
+      web3-net: 1.10.4
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -30504,17 +30476,17 @@ packages:
       utf8: 3.0.0
     dev: false
 
-  /web3@1.10.4(encoding@0.1.13):
+  /web3@1.10.4:
     resolution: {integrity: sha512-kgJvQZjkmjOEKimx/tJQsqWfRDPTTcBfYPa9XletxuHLpHcXdx67w8EFn5AW3eVxCutE9dTVHgGa9VYe8vgsEA==}
     engines: {node: '>=8.0.0'}
     requiresBuild: true
     dependencies:
       web3-bzz: 1.10.4
-      web3-core: 1.10.4(encoding@0.1.13)
-      web3-eth: 1.10.4(encoding@0.1.13)
-      web3-eth-personal: 1.10.4(encoding@0.1.13)
-      web3-net: 1.10.4(encoding@0.1.13)
-      web3-shh: 1.10.4(encoding@0.1.13)
+      web3-core: 1.10.4
+      web3-eth: 1.10.4
+      web3-eth-personal: 1.10.4
+      web3-net: 1.10.4
+      web3-shh: 1.10.4
       web3-utils: 1.10.4
     transitivePeerDependencies:
       - bufferutil
