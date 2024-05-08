@@ -61,7 +61,7 @@ const fetchTokenPriceData = async (
     if (blocksLength > 0 && chainName === 'BSC' && !checkIsStableSwap()) {
       const data = blocks[blocksLength - 1]
       blocks[blocksLength - 1] = { timestamp: data.timestamp, number: data.number - 32 }
-      // nodeReal will sync the the 32 block before latest
+      // nodeReal will sync the 32 block before latest
     }
     if (!blocks || blocksLength === 0) {
       console.error('Error fetching blocks for timestamps', timestamps)
