@@ -12,8 +12,8 @@ import { useWebNotifications } from 'hooks/useWebNotifications'
 import { useGasPriceManager, useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
 import { useUserChart } from 'state/user/hooks/useUserChart'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
-import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import {
+  useMMLinkedPoolByDefault,
   useUserSplitRouteEnable,
   useUserStableSwapEnable,
   useUserV2SwapEnable,
