@@ -2,22 +2,24 @@ import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import BigNumber from 'bignumber.js'
+import { useQuery } from '@tanstack/react-query'
 
 import { useIfoConfigsAcrossChains } from 'hooks/useIfoConfig'
 import { FAST_INTERVAL } from 'config/constants'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
-import { useQuery } from '@tanstack/react-query'
 import { fetchUserWalletIfoData } from './fetchUserWalletIfoData'
 
 const useFetchVestingData = () => {
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const configs = useIfoConfigsAcrossChains()
   const allVestingIfo = useMemo<Ifo[]>(
     () => configs?.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle) || [],
     [configs],
   )
 
-  const { data, refetch } = useQuery({
+  const { data: vestingData, refetch } = useQuery({
     queryKey: ['vestingData', account],
 
     queryFn: async () => {
@@ -67,6 +69,22 @@ const useFetchVestingData = () => {
     refetchInterval: FAST_INTERVAL,
     staleTime: FAST_INTERVAL,
   })
+
+  // Sort by active chain
+  const data = useMemo(
+    () =>
+      vestingData &&
+      vestingData.toSorted((a, b) => {
+        if (a.ifo.chainId === chainId && b.ifo.chainId !== chainId) {
+          return -1
+        }
+        if (a.ifo.chainId !== chainId && b.ifo.chainId === chainId) {
+          return 1
+        }
+        return 0
+      }),
+    [chainId, vestingData],
+  )
 
   return {
     data: data || [],
