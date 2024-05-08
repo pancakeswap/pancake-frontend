@@ -36,7 +36,9 @@ export const useGaugeRows = () => {
     return [null, null]
   }, [account, queryHashes, gauges])
   const rows = useMemo(() => {
-    return gauges?.filter((gauge) => selectRowsHash.includes(gauge.hash) || queryPresetHashes?.includes(gauge.hash))
+    return gauges
+      ?.filter((gauge) => queryPresetHashes?.includes(gauge.hash))
+      .concat(gauges?.filter((gauge) => selectRowsHash.includes(gauge.hash)))
   }, [gauges, selectRowsHash, queryPresetHashes])
 
   useEffect(() => {
