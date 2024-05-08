@@ -14,6 +14,7 @@ import {
 import { ReactNode, useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
 import formatLocaleNumber from 'utils/formatLocaleNumber'
+import { ABOUT_EQUAL } from 'views/BuyCrypto/constants'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
@@ -109,7 +110,7 @@ export const ProviderGroupItem = ({
   const differenceFromBest = percentageDifference(quotes?.[0]?.quote, currentQuote?.quote)
 
   const quoteText = useMemo(() => {
-    if (isBestQuote) return t('Best price')
+    if (isBestQuote) return t('Best quote')
     if (error) return t('quote unavailable')
     return `${differenceFromBest}%`
   }, [isBestQuote, differenceFromBest, t, error])
@@ -150,14 +151,10 @@ export const ProviderGroupItem = ({
                 color="textSubtle"
                 lineHeight="14px"
               >
-                {t('1 %asset% = %amount%', {
-                  amount: formatLocaleNumber({
-                    number: Number(currentQuote.price.toFixed(2)),
-                    locale,
-                    options: { currency: currentQuote.fiatCurrency, style: 'currency' },
-                  }),
-                  asset: currentQuote.cryptoCurrency,
-                })}
+                {`${ABOUT_EQUAL} ${formatLocaleNumber({
+                  number: Number(currentQuote.quote.toFixed(4)),
+                  locale,
+                })} ${currentQuote.cryptoCurrency}`}
               </SkeletonText>
             </AutoColumn>
           </Flex>
