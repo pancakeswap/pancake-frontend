@@ -73,17 +73,14 @@ export const getTotalTvl = async () => {
           since: days30Ago.toISOString(),
           till: new Date().toISOString(),
         })
-        if (queryResult.bsc?.dexTrades?.[0]?.count) {
-          results.addressCount30Days = queryResult.bsc.dexTrades[0].count
-          querySuccess = true
-        }
-        if (queryResult.ethereum?.dexTrades?.[0]?.count) {
-          if (querySuccess) {
-            results.addressCount30Days += queryResult.ethereum.dexTrades[0].count
+        Object.keys(queryResult).forEach((key) => {
+          if (!querySuccess) {
+            results.addressCount30Days = queryResult[key].dexTrades[0].count
           } else {
-            results.addressCount30Days = queryResult.ethereum.dexTrades[0].count
+            results.addressCount30Days += queryResult[key].dexTrades[0].count
           }
-        }
+          querySuccess = true
+        })
       } catch (error) {
         if (process.env.NODE_ENV === 'production') {
           console.error('Error when fetching address count', error)
