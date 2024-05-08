@@ -1,8 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 
 import { AMMOrder, AMMRequestConfig, TradeTypeKey } from './amm'
-import { XRequestConfig } from './pcsx'
 import { Order } from './order'
+import { XRequestConfig } from './pcsx'
 
 export enum ResponseType {
   PRICE_RESPONSE = 'PRICE_RESPONSE',
@@ -33,7 +33,7 @@ export type Request = {
   slippageTolerance?: string
 }
 
-export type Response = {
+export type PriceResponse = {
   messageType: ResponseType.PRICE_RESPONSE
   message: {
     bestOrder: Order
