@@ -46,8 +46,16 @@ export const getTotalTvl = async () => {
     }
 
     const usersQuery = gql`
-      query userCount($network: EthereumNetwork, $since: ISO8601DateTime, $till: ISO8601DateTime) {
-        ethereum(network: $network) {
+      query userCount($since: ISO8601DateTime, $till: ISO8601DateTime) {
+        ethereum: ethereum(network: ethereum) {
+          dexTrades(
+            exchangeName: { in: ["Pancake", "Pancake v2", "PancakeSwap"] }
+            date: { since: $since, till: $till }
+          ) {
+            count(uniq: senders)
+          }
+        }
+        bsc: ethereum(network: bsc) {
           dexTrades(
             exchangeName: { in: ["Pancake", "Pancake v2", "PancakeSwap"] }
             date: { since: $since, till: $till }
@@ -61,25 +69,19 @@ export const getTotalTvl = async () => {
     if (process.env.BIT_QUERY_HEADER) {
       try {
         let querySuccess = false
-        const bscResult = await bitQueryServerClient.request<any>(usersQuery, {
-          network: 'bsc',
+        const queryResult = await bitQueryServerClient.request<any>(usersQuery, {
           since: days30Ago.toISOString(),
           till: new Date().toISOString(),
         })
-        if (bscResult?.ethereum?.dexTrades?.[0]?.count) {
-          results.addressCount30Days = bscResult.ethereum.dexTrades[0].count
+        if (queryResult.bsc?.dexTrades?.[0]?.count) {
+          results.addressCount30Days = queryResult.bsc.dexTrades[0].count
           querySuccess = true
         }
-        const ethResult = await bitQueryServerClient.request<any>(usersQuery, {
-          network: 'ethereum',
-          since: days30Ago.toISOString(),
-          till: new Date().toISOString(),
-        })
-        if (ethResult?.ethereum?.dexTrades?.[0]?.count) {
+        if (queryResult.ethereum?.dexTrades?.[0]?.count) {
           if (querySuccess) {
-            results.addressCount30Days += ethResult.ethereum.dexTrades[0].count
+            results.addressCount30Days += queryResult.ethereum.dexTrades[0].count
           } else {
-            results.addressCount30Days = ethResult.ethereum.dexTrades[0].count
+            results.addressCount30Days = queryResult.ethereum.dexTrades[0].count
           }
         }
       } catch (error) {
