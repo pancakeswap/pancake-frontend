@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, Token } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import { ArrowDropDownIcon, Button, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { CurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
@@ -27,24 +27,19 @@ interface CurrencyInputPanelProps {
   onInputBlur?: () => void
   onPercentInput?: (percent: number) => void
   onMax?: () => void
+  onCurrencySelect?: (currency: Currency) => void
   showQuickInputButton?: boolean
   showMaxButton: boolean
   maxAmount?: BigNumber
   lpPercent?: string
   label?: string
-  onCurrencySelect?: (currency: Currency) => void
   currency?: Currency | null
   disableCurrencySelect?: boolean
   hideBalance?: boolean
-  otherCurrency?: Currency | null
   id: string
-  showCommonBases?: boolean
-  commonBasesType?: string
-  showSearchInput?: boolean
   beforeButton?: React.ReactNode
   disabled?: boolean
   error?: boolean | string
-  tokensToShow?: Token[]
   currencyLoading?: boolean
   inputLoading?: boolean
   title?: React.ReactNode
@@ -57,24 +52,19 @@ export const CurrencyInputPanel = memo(function CurrencyInputPanel({
   onInputBlur,
   onPercentInput,
   onMax,
+  onCurrencySelect,
   showQuickInputButton = false,
   showMaxButton,
   maxAmount,
   lpPercent,
   label,
-  onCurrencySelect,
   currency,
   disableCurrencySelect = false,
   hideBalance = false,
   beforeButton,
-  otherCurrency,
   id,
-  showCommonBases,
-  commonBasesType,
-  showSearchInput,
   disabled,
   error,
-  tokensToShow,
   currencyLoading,
   inputLoading,
   title,
@@ -85,8 +75,11 @@ export const CurrencyInputPanel = memo(function CurrencyInputPanel({
 
   const { t } = useTranslation()
 
-  const mode = id
-  const [onPresentCurrencyModal] = useModal(<CurrencySearchModal />)
+  const [onPresentCurrencyModal] = useModal(
+    currency && onCurrencySelect && (
+      <CurrencySearchModal selectedCurrency={currency} onCurrencySelect={onCurrencySelect} />
+    ),
+  )
 
   const percentAmount: any = useMemo(
     () => ({
