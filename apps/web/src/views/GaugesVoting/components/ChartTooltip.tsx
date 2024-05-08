@@ -46,11 +46,10 @@ export const OTHERS_GAUGES = '0xOTHERS'
 
 export const ChartTooltip: React.FC<{
   color: string
-  visible: boolean
   gauge?: Gauge
   total?: number
   sort: string
-}> = ({ color, sort, gauge, visible, total }) => {
+}> = ({ color, sort, gauge, total }) => {
   const { isDesktop } = useMatchBreakpoints()
   const percent = useMemo(() => {
     return new Percent(gauge?.weight ?? 0, total || 1).toFixed(2)
@@ -64,7 +63,7 @@ export const ChartTooltip: React.FC<{
     return gauge?.hash === OTHERS_GAUGES ? gauge?.pairName.split('|')[1] : GAUGE_TYPE_NAMES[gauge.type]
   }, [gauge])
 
-  if (!visible) return null
+  if (!gauge) return null
 
   return (
     <Tooltip color={color}>

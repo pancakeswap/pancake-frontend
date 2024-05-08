@@ -79,7 +79,6 @@ export const WeightsPieChart: React.FC<{
   isLoading?: boolean
 }> = ({ data, totalGaugesWeight, isLoading }) => {
   const tooltipRef = useRef<string | null>(null)
-  const [tooltipVisible, setTooltipVisible] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 })
   const [selectedGauge, setSelectedGauge] = useState<Gauge>()
   const sortedGauge = useMemo<Gauge[]>(() => data?.sort((a, b) => (a.weight < b.weight ? 1 : -1)) ?? [], [data])
@@ -139,7 +138,6 @@ export const WeightsPieChart: React.FC<{
     ({ tooltip }: { tooltip: TooltipModel<'doughnut'>; chart: ChartJS }) => {
       // hide tooltip
       if (tooltip.opacity === 0) {
-        setTooltipVisible(false)
         setSelectedGauge(undefined)
         tooltipRef.current = null
         return
@@ -153,7 +151,6 @@ export const WeightsPieChart: React.FC<{
       tooltipRef.current = `${tooltip.x},${tooltip.y}`
       setSelectedGauge(topGaugesAndOthers?.find((gauge) => gauge.hash === tooltip.title[0]))
       setColor(tooltip.labelColors[0].backgroundColor as string)
-      setTooltipVisible(true)
       setTooltipPosition({
         // left: tooltip.caretX,
         // top: tooltip.caretY,
@@ -166,7 +163,6 @@ export const WeightsPieChart: React.FC<{
 
   const tooltipComp = (
     <ChartTooltip
-      visible={tooltipVisible}
       total={totalGaugesWeight}
       color={color}
       gauge={selectedGauge}
