@@ -3238,7 +3238,6 @@
   "Best price": "أفضل سعر",
   "Best": "الأفضل",
   "quote unavailable": "عرض السعر غير متوفر",
-  "%change% %": "%change% %",
   "%provider%": "%provider%",
   "1 %asset% = %amount%": "1 %asset% = %amount%",
   "paste your BTC address here": "الصق عنوان BTC الخاص بك هنا",
@@ -3339,5 +3338,15 @@
   "Vote": "Vote",
   "sort by": "sort by",
   "Unselect All": "Unselect All",
-  "Done": "Done"
+  "Mint / Transfer USDV": "Mint / Transfer USDV",
+  "Swap stablecoins for USDV": "Swap stablecoins for USDV",
+  "Powered by": "Powered by",
+  "USDV Disclaimer": "USDV Disclaimer",
+  "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.",
+  "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.",
+  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit",
+  "Swell's website": "Swell's website",
+  "Done": "Done",
+  "Single-Sided Strategy": "Single-Sided Strategy",
+  "Adaptive Portfolio Strategy": "Adaptive Portfolio Strategy"
 }

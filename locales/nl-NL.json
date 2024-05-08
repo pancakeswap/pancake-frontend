@@ -3238,7 +3238,6 @@
   "Best price": "Beste prijs",
   "Best": "Beste",
   "quote unavailable": "Koers niet beschikbaar",
-  "%change% %": "%change% %",
   "%provider%": "%provider%",
   "1 %asset% = %amount%": "1 %asset% = %amount%",
   "paste your BTC address here": "plak hier je BTC-adres",
@@ -3336,8 +3335,18 @@
   "Win 700,000 $MASA": "Win 700.000 $MASA",
   "Trade to win 700,000 $MASA": "Handel om 700.000 $MASA te winnen",
   "to Win 700,000 $MASA": "om 700.000 $MASA te winnen",
-  "Vote": "Stemmen",
+  "Vote": "Stem",
   "sort by": "sorteren op",
   "Unselect All": "Alles deselecteren",
-  "Done": "Klaar"
+  "Mint / Transfer USDV": "USDV slaan/overdragen",
+  "Swap stablecoins for USDV": "Swap stablecoins voor USDV",
+  "Powered by": "Mogelijk gemaakt door",
+  "USDV Disclaimer": "Disclaimer voor USDV",
+  "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "Verified USD ($USDV) is een product aangeboden door USDV.money en is niet verbonden aan PancakeSwap.",
+  "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "Door dit vakje aan te vinken, begrijp ik dat ik USDV op eigen risico gebruik. Ik accepteer de volledige verantwoordelijkheid voor eventuele verliezen als gevolg van mijn acties.",
+  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit",
+  "Swell's website": "Swell's website",
+  "Done": "Klaar",
+  "Single-Sided Strategy": "Single-Sided Strategy",
+  "Adaptive Portfolio Strategy": "Adaptive Portfolio Strategy"
 }
