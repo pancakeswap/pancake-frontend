@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 
+const ZERO = new BigNumber(0)
 const ONE = new BigNumber(1)
 const TEN = new BigNumber(10)
 
@@ -37,6 +38,9 @@ export function formatNumber(
   { maximumSignificantDigits = 12, roundingMode = BigNumber.ROUND_DOWN }: Options = {},
 ) {
   const valueInBN = new BigNumber(value)
+  if (valueInBN.eq(ZERO)) {
+    return valueInBN.toString()
+  }
   const [integerDigits, decimalDigits] = getDigits(valueInBN)
   const totalDigits = integerDigits + decimalDigits
   const maxDigits = Math.min(totalDigits, maximumSignificantDigits)
