@@ -13,7 +13,9 @@ import {
   Link,
   Message,
   RowBetween,
+  Tag,
   Text,
+  WarningIcon,
 } from '@pancakeswap/uikit'
 import { formatBigInt, formatNumber, getBalanceAmount, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import dayjs from 'dayjs'
@@ -28,18 +30,17 @@ import { useWriteWithdrawCallback } from '../hooks/useContractWrite/useWriteWith
 import { useCurrentBlockTimestamp } from '../hooks/useCurrentBlockTimestamp'
 import { useProxyVeCakeBalance } from '../hooks/useProxyVeCakeBalance'
 import { useCakeLockStatus } from '../hooks/useVeCakeUserInfo'
-import { Tooltips } from './Tooltips'
+import { DebugTooltips, Tooltips } from './Tooltips'
 import { StyledLockedCard } from './styled'
 
 dayjs.extend(relativeTime)
 
-const LearnMore = () => {
+const LearnMore: React.FC<{ href?: string }> = ({
+  href = 'https://docs.pancakeswap.finance/products/vecake/migrate-from-cake-pool#10ffc408-be58-4fa8-af56-be9f74d03f42',
+}) => {
   const { t } = useTranslation()
   return (
-    <Link
-      href="https://docs.pancakeswap.finance/products/vecake/migrate-from-cake-pool#10ffc408-be58-4fa8-af56-be9f74d03f42"
-      color="text"
-    >
+    <Link href={href} color="text" target="_blank">
       {t('Learn More >>')}
     </Link>
   )
@@ -51,6 +52,7 @@ export const LockedVeCakeStatus: React.FC<{
   const { t } = useTranslation()
   const { balance } = useVeCakeBalance()
   const { balance: proxyBalance } = useProxyVeCakeBalance()
+  const { delegated, cakeLockExpired, cakePoolLockExpired } = useCakeLockStatus()
   const balanceBN = useMemo(() => getBalanceNumber(balance), [balance])
   const proxyCake = useMemo(() => getBalanceNumber(proxyBalance), [proxyBalance])
   const nativeCake = useMemo(() => getBalanceNumber(balance.minus(proxyBalance)), [balance, proxyBalance])
@@ -78,7 +80,7 @@ export const LockedVeCakeStatus: React.FC<{
         <CardHeader>
           <RowBetween>
             <AutoColumn>
-              <Heading color="text">{t('My VeCAKE')}</Heading>
+              <Heading color="text">{t('My veCAKE')}</Heading>
               <Tooltips
                 content={
                   proxyBalance.gt(0) ? (
@@ -91,10 +93,31 @@ export const LockedVeCakeStatus: React.FC<{
                 {balanceText}
               </Tooltips>
             </AutoColumn>
-            <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="token-vecake" />
+            <DebugTooltips
+              content={
+                <pre>
+                  {JSON.stringify(
+                    {
+                      balance: balance.toString(),
+                      proxyBalance: proxyBalance.toString(),
+                      nativeCake: nativeCake.toString(),
+                      proxyCake: proxyCake.toString(),
+                      delegated,
+                      cakeLockExpired,
+                      cakePoolLockExpired,
+                    },
+                    null,
+                    2,
+                  )}
+                </pre>
+              }
+            >
+              <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="token-vecake" />
+            </DebugTooltips>
           </RowBetween>
         </CardHeader>
-        <LockedInfo />
+        <NativePosition />
+        <MigratePosition />
       </Card>
     </Box>
   )
@@ -102,95 +125,123 @@ export const LockedVeCakeStatus: React.FC<{
 
 const CUSTOM_WARNING_COLOR = '#D67E0A'
 
-const LockedInfo = () => {
+const NativePosition = () => {
   const { t } = useTranslation()
-  const {
-    cakeUnlockTime,
-    nativeCakeLockedAmount,
-    proxyCakeLockedAmount,
-    cakePoolLocked,
-    cakePoolUnlockTime,
-    cakeLocked,
-    cakeLockExpired,
-    cakePoolLockExpired,
-  } = useCakeLockStatus()
+  const { cakeLockExpired, nativeCakeLockedAmount, cakeUnlockTime, proxyCakeLockedAmount } = useCakeLockStatus()
+
+  if (!nativeCakeLockedAmount) return null
+
   return (
-    <FlexGap flexDirection="column" gap="24px" margin={24}>
-      <StyledLockedCard gap="16px">
-        <RowBetween>
-          <AutoColumn>
-            <Text fontSize={12} color="textSubtle" textTransform="uppercase" bold>
-              {t('cake locked')}
+    <Flex flexDirection="column" margin={24}>
+      <Text color="secondary" fontWeight={600} fontSize={12} mb={12} textTransform="uppercase">
+        {t('native position')}
+      </Text>
+      <FlexGap flexDirection="column" gap="24px">
+        <StyledLockedCard gap="16px">
+          <RowBetween>
+            <AutoColumn>
+              <Text fontSize={12} color="textSubtle" textTransform="uppercase" bold>
+                {t('cake locked')}
+              </Text>
+              <CakeLocked lockedAmount={nativeCakeLockedAmount} />
+            </AutoColumn>
+            <AutoColumn>
+              <Text fontSize={12} color="textSubtle" textTransform="uppercase" bold>
+                {t('unlocks in')}
+              </Text>
+              <CakeUnlockAt expired={cakeLockExpired} unlockTime={Number(cakeUnlockTime)} />
+            </AutoColumn>
+          </RowBetween>
+        </StyledLockedCard>
+        {!proxyCakeLockedAmount && !cakeLockExpired ? (
+          <Flex justifyContent="center">
+            <img src="/images/cake-staking/my-cake-bunny.png" alt="my-cake-bunny" width="254px" />
+          </Flex>
+        ) : null}
+        {cakeLockExpired ? (
+          <Message variant="warning" icon={<InfoFilledIcon color={CUSTOM_WARNING_COLOR} />}>
+            <Text as="p" color={CUSTOM_WARNING_COLOR}>
+              {t(
+                'Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!',
+              )}
             </Text>
-            <CakeLocked
-              proxyExpired={cakePoolLockExpired}
-              proxyUnlockTime={cakePoolUnlockTime}
-              nativeCakeLocked={nativeCakeLockedAmount}
-              proxyCakeLocked={proxyCakeLockedAmount}
-            />
-          </AutoColumn>
-          <AutoColumn>
-            <Text fontSize={12} color="textSubtle" textTransform="uppercase" bold>
-              {t('unlocks in')}
+          </Message>
+        ) : null}
+      </FlexGap>
+      <SubmitUnlockButton />
+    </Flex>
+  )
+}
+
+const MigratePosition = () => {
+  const { t } = useTranslation()
+  const { cakePoolLockExpired, cakePoolUnlockTime, nativeCakeLockedAmount, proxyCakeLockedAmount } = useCakeLockStatus()
+
+  if (!proxyCakeLockedAmount) return null
+
+  return (
+    <FlexGap gap="12px" flexDirection="column" margin={24}>
+      <RowBetween>
+        <Text color="secondary" bold fontSize={12} textTransform="uppercase">
+          {t('migrated position')}
+        </Text>
+        {cakePoolLockExpired ? (
+          <Tag variant="failure" scale="sm" startIcon={<WarningIcon color="white" />} px="8px">
+            {t('Unlocked')}
+          </Tag>
+        ) : null}
+      </RowBetween>
+      <FlexGap flexDirection="column" gap="24px">
+        <StyledLockedCard gap="16px">
+          <RowBetween>
+            <AutoColumn>
+              <Text fontSize={12} color="textSubtle" textTransform="uppercase" bold>
+                {t('cake locked')}
+              </Text>
+              <CakeLocked lockedAmount={proxyCakeLockedAmount} />
+            </AutoColumn>
+            <AutoColumn>
+              <Text fontSize={12} color="textSubtle" textTransform="uppercase" bold>
+                {t('unlocks in')}
+              </Text>
+              <CakeUnlockAt expired={cakePoolLockExpired} unlockTime={Number(cakePoolUnlockTime)} />
+            </AutoColumn>
+          </RowBetween>
+        </StyledLockedCard>
+
+        {cakePoolLockExpired ? (
+          <Message variant="warning" icon={<InfoFilledIcon color="warning" />}>
+            <Text as="p">
+              {t(
+                'CAKE Pool migrated position has unlocked. Go to the pool page to withdraw, add CAKE into veCAKE to increase your veCAKE benefits.',
+              )}
             </Text>
-            <CakeUnlockAt
-              proxyCakeLocked={proxyCakeLockedAmount}
-              nativeLocked={cakeLocked}
-              nativeExpired={cakeLockExpired}
-              proxyLocked={cakePoolLocked}
-              proxyExpired={cakePoolLockExpired}
-              nativeUnlockTime={cakeUnlockTime}
-              proxyUnlockTime={cakePoolUnlockTime}
-            />
-          </AutoColumn>
-        </RowBetween>
-      </StyledLockedCard>
-      {cakePoolLocked ? (
-        <>
-          {cakePoolLockExpired ? (
-            <Message variant="warning" icon={<InfoFilledIcon color="warning" />}>
+          </Message>
+        ) : nativeCakeLockedAmount ? (
+          <Message variant="primary" icon={<InfoFilledIcon color="secondary" />}>
+            <AutoColumn gap="8px">
+              <Text as="p">{t('Adding CAKE or extending CAKE will be applying to your native position.')}</Text>
+              <LearnMore href="https://docs.pancakeswap.finance/products/vecake/faq#52f27118-bbf3-448b-9ffe-e9e1a9dd97ef" />
+            </AutoColumn>
+          </Message>
+        ) : (
+          <Message variant="primary" icon={<InfoFilledIcon color="secondary" />}>
+            <AutoColumn gap="8px">
               <Text as="p">
                 {t(
-                  'CAKE Pool migrated position has unlocked. Go to the pool page to withdraw, add CAKE into veCAKE to increase your veCAKE benefits.',
+                  'Position migrated from CAKE Pool can not be extended or topped up. To extend or add more CAKE, set up a native veCAKE position.',
                 )}
               </Text>
-            </Message>
-          ) : (
-            <Message variant="primary" icon={<InfoFilledIcon color="secondary" />}>
-              <AutoColumn gap="8px">
-                <Text as="p">
-                  {t(
-                    'Position migrated from CAKE Pool can not be extended or topped up. To extend or add more CAKE, set up a native veCAKE position.',
-                  )}
-                </Text>
-                <LearnMore />
-              </AutoColumn>
-            </Message>
-          )}
-          <Link external style={{ textDecoration: 'none', width: '100%' }} href="/pools">
-            <Button width="100%" variant="secondary">
-              {t('View CAKE Pool Position')}
-            </Button>
-          </Link>
-        </>
-      ) : null}
-      {/* if both veCake and cakePool expired, user should deal with cake pool first */}
-      {cakeLockExpired && !cakePoolLockExpired ? (
-        <Message variant="warning" icon={<InfoFilledIcon color={CUSTOM_WARNING_COLOR} />}>
-          <Text as="p" color={CUSTOM_WARNING_COLOR}>
-            {t(
-              'Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!',
-            )}
-          </Text>
-        </Message>
-      ) : null}
-      {!cakeLockExpired ? (
-        <Flex justifyContent="center">
-          <img src="/images/cake-staking/my-cake-bunny.png" alt="my-cake-bunny" width="254px" />
-        </Flex>
-      ) : null}
-      {/* if both veCake and cakePool expired, user should deal with cake pool first */}
-      {cakeLockExpired && !cakePoolLockExpired ? <SubmitUnlockButton /> : null}
+              <LearnMore />
+            </AutoColumn>
+          </Message>
+        )}
+        <Link external style={{ textDecoration: 'none', width: '100%' }} href="/pools">
+          <Button width="100%" variant="secondary">
+            {t('View Migrated Position')}
+          </Button>
+        </Link>
+      </FlexGap>
     </FlexGap>
   )
 }
@@ -254,109 +305,49 @@ const ProxyUnlockTooltip: React.FC<{
   )
 }
 
-export const CakeLocked: React.FC<{
-  nativeCakeLocked: bigint
-  proxyCakeLocked: bigint
-  proxyExpired: boolean
-  proxyUnlockTime: number
-}> = ({ nativeCakeLocked, proxyCakeLocked, proxyExpired, proxyUnlockTime }) => {
+export const CakeLocked: React.FC<{ lockedAmount: bigint }> = ({ lockedAmount }) => {
   const cakePrice = useCakePrice()
-  const nativeCake = useMemo(() => Number(formatBigInt(nativeCakeLocked, 18)), [nativeCakeLocked])
-  const nativeCakeUsdValue: number = useMemo(() => {
-    return cakePrice.times(nativeCake).toNumber()
-  }, [cakePrice, nativeCake])
-  const proxyCake = useMemo(() => Number(formatBigInt(proxyCakeLocked, 18)), [proxyCakeLocked])
-  const totalCake = useMemo(
-    () => Number(formatBigInt(nativeCakeLocked + proxyCakeLocked, 18)),
-    [nativeCakeLocked, proxyCakeLocked],
-  )
-  const totalCakeUsdValue: number = useMemo(() => {
-    return cakePrice.times(totalCake).toNumber()
-  }, [cakePrice, totalCake])
-
-  if (!proxyCakeLocked && nativeCakeLocked) {
-    return (
-      <>
-        <Balance value={nativeCake} decimals={2} fontWeight={600} fontSize={20} />
-        <Balance prefix="~" value={nativeCakeUsdValue} decimals={2} unit="USD" fontSize={12} />
-      </>
-    )
-  }
+  const formattedCake = useMemo(() => Number(formatBigInt(lockedAmount, 18)), [lockedAmount])
+  const cakeUsdValue: number = useMemo(() => {
+    return cakePrice.times(formattedCake).toNumber()
+  }, [cakePrice, formattedCake])
 
   return (
     <>
-      <Tooltips
-        content={
-          <ProxyUnlockTooltip proxyExpired={proxyExpired} proxyCake={proxyCake} proxyUnlockTime={proxyUnlockTime} />
-        }
-      >
-        <UnderlinedBalance value={totalCake} decimals={2} fontWeight={600} fontSize={20} underlined />
-      </Tooltips>
-      <Balance prefix="~" value={totalCakeUsdValue} decimals={2} unit="USD" fontSize={12} />
+      <Balance value={formattedCake} decimals={2} fontWeight={600} fontSize={20} />
+      <Balance prefix="~" value={cakeUsdValue} decimals={2} unit="USD" fontSize={12} />
     </>
   )
 }
 
 const CakeUnlockAt: React.FC<{
-  proxyCakeLocked: bigint
-  nativeLocked: boolean
-  nativeExpired: boolean
-  proxyLocked: boolean
-  proxyExpired: boolean
-  nativeUnlockTime: number
-  proxyUnlockTime: number
-}> = ({
-  proxyCakeLocked,
-  nativeLocked,
-  nativeExpired,
-  nativeUnlockTime,
-  proxyLocked,
-  proxyExpired,
-  proxyUnlockTime,
-}) => {
+  expired: boolean
+  unlockTime: number
+}> = ({ unlockTime, expired }) => {
   const { t } = useTranslation()
-  const proxyCake = useMemo(() => Number(formatBigInt(proxyCakeLocked, 18)), [proxyCakeLocked])
   const now = useCurrentBlockTimestamp()
-  const [unlocked, unlockTime, unlockTimeToNow] = useMemo(() => {
-    const nowDay = dayjs.unix(Number(now || 0))
-    if (!nativeLocked && proxyLocked) {
-      return [proxyExpired, proxyUnlockTime, proxyUnlockTime ? dayjs.unix(proxyUnlockTime).from(nowDay, true) : '']
-    }
-    return [nativeExpired, nativeUnlockTime, nativeUnlockTime ? dayjs.unix(nativeUnlockTime).from(nowDay, true) : '']
-  }, [nativeExpired, nativeLocked, nativeUnlockTime, now, proxyExpired, proxyLocked, proxyUnlockTime])
+  const unlockTimeToNow = useMemo(() => {
+    return unlockTime ? dayjs.unix(unlockTime).from(dayjs.unix(now), true) : ''
+  }, [now, unlockTime])
 
-  const TextComp = proxyLocked ? UnderlineText : Text
-
-  const unlockText = (
+  return (
     <>
-      {unlocked ? (
-        <TextComp fontWeight={600} fontSize={20} color={CUSTOM_WARNING_COLOR}>
+      {expired ? (
+        <Text fontWeight={600} fontSize={20} color={CUSTOM_WARNING_COLOR}>
           {t('Unlocked')}
-        </TextComp>
+        </Text>
       ) : (
-        <TextComp fontWeight={600} fontSize={20}>
+        <Text fontWeight={600} fontSize={20}>
           {unlockTimeToNow}
-        </TextComp>
+        </Text>
       )}
 
       {unlockTime ? (
-        <Text fontSize={12} color={unlocked ? CUSTOM_WARNING_COLOR : undefined}>
+        <Text fontSize={12} color={expired ? CUSTOM_WARNING_COLOR : undefined}>
           {t('on')} {formatTime(Number(dayjs.unix(unlockTime)))}
         </Text>
       ) : null}
     </>
-  )
-
-  if (!proxyLocked) return unlockText
-
-  return (
-    <Tooltips
-      content={
-        <ProxyUnlockTooltip proxyExpired={proxyExpired} proxyCake={proxyCake} proxyUnlockTime={proxyUnlockTime} />
-      }
-    >
-      {unlockText}
-    </Tooltips>
   )
 }
 
@@ -382,14 +373,14 @@ const UnderlineText = styled(Text)`
 const SubmitUnlockButton = () => {
   const { t } = useTranslation()
   const unlock = useWriteWithdrawCallback()
-  const { cakeLockedAmount } = useCakeLockStatus()
+  const { cakeLockedAmount, cakeLockExpired, cakePoolLockExpired } = useCakeLockStatus()
 
-  if (!cakeLockedAmount) {
+  if (!cakeLockedAmount || !(cakeLockExpired && !cakePoolLockExpired)) {
     return null
   }
 
   return (
-    <Button variant="secondary" onClick={unlock}>
+    <Button variant="secondary" onClick={unlock} mt={24}>
       {t('Unlock')}
     </Button>
   )
