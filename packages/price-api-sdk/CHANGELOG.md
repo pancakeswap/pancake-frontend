@@ -1,5 +1,11 @@
 # @pancakeswap/price-api-sdk
 
+## 1.2.6
+
+### Patch Changes
+
+- c1f1288: Update tyeps
+
 ## 1.2.5
 
 ### Patch Changes
