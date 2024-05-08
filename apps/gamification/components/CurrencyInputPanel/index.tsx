@@ -5,6 +5,7 @@ import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { CurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { BigNumber } from 'bignumber.js'
 import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
+import { TokenWithChain } from 'components/TokenWithChain'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { memo, useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
@@ -44,6 +45,7 @@ interface CurrencyInputPanelProps {
   inputLoading?: boolean
   title?: React.ReactNode
   hideBalanceComp?: boolean
+  showLogoWithChain?: boolean
 }
 
 export const CurrencyInputPanel = memo(function CurrencyInputPanel({
@@ -69,6 +71,7 @@ export const CurrencyInputPanel = memo(function CurrencyInputPanel({
   inputLoading,
   title,
   hideBalanceComp,
+  showLogoWithChain,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
   const { balance: selectedCurrencyBalance } = useTokenBalance(currency?.address)
@@ -130,12 +133,16 @@ export const CurrencyInputPanel = memo(function CurrencyInputPanel({
             >
               <Flex alignItems="center" justifyContent="space-between">
                 {currency ? (
-                  <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                  showLogoWithChain ? (
+                    <TokenWithChain currency={currency} width={24} height={24} />
+                  ) : (
+                    <CurrencyLogo currency={currency} size="24px" />
+                  )
                 ) : currencyLoading ? (
                   <Skeleton width="24px" height="24px" variant="circle" />
                 ) : null}
                 {currencyLoading ? null : (
-                  <Text id="pair" bold>
+                  <Text ml="8px" id="pair" bold>
                     {(currency && currency.symbol && currency.symbol.length > 10
                       ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
                           currency.symbol.length - 5,

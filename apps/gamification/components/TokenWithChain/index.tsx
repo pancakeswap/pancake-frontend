@@ -8,20 +8,21 @@ const TokenWithChainContainer = styled(Flex)<{ $width: number; $height: number }
   position: relative;
   z-index: 2;
   cursor: pointer;
-  width: ${($width) => `${$width}px`};
-  height: ${($height) => `${$height}px`};
+  width: ${({ $width }) => `${$width}px`};
+  height: ${({ $height }) => `${$height}px`};
 `
 
-const StyleNetwork = styled(Flex)`
+const StyleNetwork = styled(Flex)<{ $size: number }>`
   position: absolute;
   bottom: 0px;
-  left: 20px;
   z-index: 3;
-  width: 14px;
-  height: 14px;
   border-radius: 50%;
   overflow: hidden;
+  background-repeat: no-repeat;
   background-size: contain;
+  left: ${({ $size }) => `${$size / 1.6}px`};
+  width: ${({ $size }) => `${$size / 2.28}px`};
+  height: ${({ $size }) => `${$size / 2.28}px`};
 `
 
 interface TokenWithChainProps {
@@ -36,7 +37,10 @@ export const TokenWithChain: React.FC<TokenWithChainProps> = ({ currency, width,
       <Box position="relative" zIndex={1} minWidth={width} height={height}>
         <CurrencyLogo currency={currency} size={`${width}px`} />
       </Box>
-      <StyleNetwork style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/${currency?.chainId}.png)` }} />
+      <StyleNetwork
+        $size={width}
+        style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/${currency?.chainId}.png)` }}
+      />
     </TokenWithChainContainer>
   )
 }

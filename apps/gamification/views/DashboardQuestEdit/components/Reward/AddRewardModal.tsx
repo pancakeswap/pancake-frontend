@@ -47,6 +47,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
           <CurrencyInputPanel
             id="currency-input"
             showMaxButton
+            showLogoWithChain
             showQuickInputButton
             value={stakeAmount}
             currency={inputCurrency}
