@@ -3955,4 +3955,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: zksyncTokens.usdt.address,
     token1Address: zksyncTokens.usdtPlus.address,
   },
+  {
+    gid: 400,
+    pairName: 'SolvBTC-BTCB',
+    address: '0x12197d7a4fE2d67F9f97ae64D82A44c24B7Ad407',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    feeTier: FeeAmount.LOW,
+    token0Address: bscTokens.solvbtc.address,
+    token1Address: bscTokens.btcb.address,
+  },
 ]
