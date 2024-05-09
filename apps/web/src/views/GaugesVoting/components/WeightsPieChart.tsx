@@ -162,12 +162,7 @@ export const WeightsPieChart: React.FC<{
   )
 
   const tooltipComp = (
-    <ChartTooltip
-      total={totalGaugesWeight}
-      color={color}
-      gauge={selectedGauge}
-      sort={selectedGaugeSort}
-    />
+    <ChartTooltip total={totalGaugesWeight} color={color} gauge={selectedGauge} sort={selectedGaugeSort} />
   )
   const tooltipNode = isDesktop ? (
     <Absolute left={tooltipPosition.left} top={tooltipPosition.top}>
