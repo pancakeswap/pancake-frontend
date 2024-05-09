@@ -51,11 +51,11 @@ export const useMultipleBannerConfig = () => {
       { shouldRender: isRenderIFOBanner || Boolean(countdown), banner: <NewIFOBanner /> },
       {
         shouldRender: true,
-        banner: <MasaTCBanner />,
+        banner: <MultiChainBanner />,
       },
       {
         shouldRender: true,
-        banner: <MultiChainBanner />,
+        banner: <MasaTCBanner />,
       },
       {
         shouldRender: true,
