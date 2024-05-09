@@ -16,6 +16,7 @@ import { TokenWithChain } from 'components/TokenWithChain'
 import { useCallback, useState } from 'react'
 import { styled } from 'styled-components'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
+import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
 
 const StyleSelector = styled(Button)`
   position: absolute;
@@ -40,6 +41,8 @@ export const AddSwap = () => {
     <CurrencySearchModal selectedCurrency={selectedCurrency} onCurrencySelect={handleCurrencySelect} />,
   )
 
+  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal />)
+
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTotal(e.target.value)
   }
@@ -53,7 +56,14 @@ export const AddSwap = () => {
         <Text style={{ alignSelf: 'center' }} bold>
           {t('Make a swap')}
         </Text>
-        <DeleteOutlineIcon style={{ cursor: 'pointer' }} color="primary" width="20px" height="20px" ml="auto" />
+        <DeleteOutlineIcon
+          ml="auto"
+          width="20px"
+          height="20px"
+          color="primary"
+          style={{ cursor: 'pointer' }}
+          onClick={onPresentDeleteModal}
+        />
       </Flex>
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flexDirection="column">

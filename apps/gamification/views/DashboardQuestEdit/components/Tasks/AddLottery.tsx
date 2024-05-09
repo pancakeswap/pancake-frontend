@@ -1,13 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BunnyFillIcon, DeleteOutlineIcon, ErrorFillIcon, Flex, Text } from '@pancakeswap/uikit'
+import { BunnyFillIcon, DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
+import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
 
 export const AddLottery = () => {
   const { t } = useTranslation()
   const [total, setTotal] = useState('')
   const [startRound, setStartRound] = useState('')
   const [endRound, setEndRound] = useState('')
+  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal />)
 
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTotal(e.target.value)
@@ -30,7 +32,14 @@ export const AddLottery = () => {
         <Text style={{ alignSelf: 'center' }} bold>
           {t('Participate in a lottery')}
         </Text>
-        <DeleteOutlineIcon style={{ cursor: 'pointer' }} color="primary" width="20px" height="20px" ml="auto" />
+        <DeleteOutlineIcon
+          ml="auto"
+          width="20px"
+          height="20px"
+          color="primary"
+          style={{ cursor: 'pointer' }}
+          onClick={onPresentDeleteModal}
+        />
       </Flex>
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flex="6" flexDirection="column">

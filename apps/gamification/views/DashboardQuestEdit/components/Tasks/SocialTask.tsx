@@ -8,10 +8,12 @@ import {
   OpenNewIcon,
   Text,
   useMatchBreakpoints,
+  useModal,
   useTooltip,
 } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { styled } from 'styled-components'
+import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
 import { SocialTaskType, useSocial } from 'views/DashboardQuestEdit/hooks/useSocial'
 
 const StyledInput = styled(Input)`
@@ -22,6 +24,7 @@ export const SocialTask = () => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const [urlLink, setUrlLink] = useState('https://google.com')
+  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal />)
 
   const social = SocialTaskType.X_LINK_POST
 
@@ -45,7 +48,14 @@ export const SocialTask = () => {
           {socialNaming}
         </Text>
         {isMobile && (
-          <DeleteOutlineIcon style={{ cursor: 'pointer' }} color="primary" width="20px" height="20px" ml="auto" />
+          <DeleteOutlineIcon
+            ml="auto"
+            width="20px"
+            height="20px"
+            color="primary"
+            style={{ cursor: 'pointer' }}
+            onClick={onPresentDeleteModal}
+          />
         )}
       </Flex>
       <Flex width={['100%', '100%', 'fit-content']} m={['8px 0 0 0', '8px 0 0 0', '0 0 0 auto']} alignSelf="center">
@@ -65,7 +75,14 @@ export const SocialTask = () => {
           />
         </InputGroup>
         {!isMobile && (
-          <DeleteOutlineIcon style={{ cursor: 'pointer' }} color="primary" width="20px" height="20px" ml="8px" />
+          <DeleteOutlineIcon
+            ml="8px"
+            width="20px"
+            height="20px"
+            color="primary"
+            style={{ cursor: 'pointer' }}
+            onClick={onPresentDeleteModal}
+          />
         )}
       </Flex>
     </Flex>
