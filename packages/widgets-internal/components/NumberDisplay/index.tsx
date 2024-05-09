@@ -47,7 +47,7 @@ export const NumberDisplay = memo(function NumberDisplay({
     [value, maximumSignificantDigits, roundingMode]
   );
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t("Full digits: %numberWithFullDigits%", { numberWithFullDigits: valueDisplayInFullDigits }),
+    t("Exact number: %numberWithFullDigits%", { numberWithFullDigits: valueDisplayInFullDigits }),
     {
       placement: "top-end",
     }
