@@ -47,8 +47,19 @@ export const getTotalTvl = async () => {
 
     const usersQuery = gql`
       query userCount($since: ISO8601DateTime, $till: ISO8601DateTime) {
-        ethereum(network: bsc) {
-          dexTrades(exchangeName: { in: ["Pancake", "Pancake v2"] }, date: { since: $since, till: $till }) {
+        ethereum: ethereum(network: ethereum) {
+          dexTrades(
+            exchangeName: { in: ["Pancake", "Pancake v2", "PancakeSwap"] }
+            date: { since: $since, till: $till }
+          ) {
+            count(uniq: senders)
+          }
+        }
+        bsc: ethereum(network: bsc) {
+          dexTrades(
+            exchangeName: { in: ["Pancake", "Pancake v2", "PancakeSwap"] }
+            date: { since: $since, till: $till }
+          ) {
             count(uniq: senders)
           }
         }
@@ -57,13 +68,19 @@ export const getTotalTvl = async () => {
 
     if (process.env.BIT_QUERY_HEADER) {
       try {
-        const result = await bitQueryServerClient.request<any>(usersQuery, {
+        let querySuccess = false
+        const queryResult = await bitQueryServerClient.request<any>(usersQuery, {
           since: days30Ago.toISOString(),
           till: new Date().toISOString(),
         })
-        if (result?.ethereum?.dexTrades?.[0]?.count) {
-          results.addressCount30Days = result.ethereum.dexTrades[0].count
-        }
+        Object.keys(queryResult).forEach((key) => {
+          if (!querySuccess) {
+            results.addressCount30Days = queryResult[key].dexTrades[0].count
+          } else {
+            results.addressCount30Days += queryResult[key].dexTrades[0].count
+          }
+          querySuccess = true
+        })
       } catch (error) {
         if (process.env.NODE_ENV === 'production') {
           console.error('Error when fetching address count', error)
