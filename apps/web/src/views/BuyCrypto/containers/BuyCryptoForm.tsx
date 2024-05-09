@@ -101,8 +101,9 @@ export function BuyCryptoForm() {
 
   const resetBuyCryptoState = useCallback(() => {
     setSearchQuery('')
+    onSwitchTokens()
     if (defaultAmt) handleTypeInput(defaultAmt)
-  }, [handleTypeInput, defaultAmt])
+  }, [handleTypeInput, defaultAmt, onSwitchTokens])
 
   const onFlip = useCallback(() => {
     if (!selectedQuote) return
