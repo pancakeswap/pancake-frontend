@@ -3231,7 +3231,7 @@
   "%network% tokens": "Tokeny %network%",
   "All tokens": "Wszystkie tokeny",
   "select a currency": "wybierz walutę",
-  "Best quote": "Best quote",
+  "Best quote": "Najlepsza wycena",
   "Best": "Najlepsza",
   "quote unavailable": "wycena jest niedostępna",
   "%provider%": "%provider%",
@@ -3345,11 +3345,11 @@
   "Done": "Gotowe",
   "Single-Sided Strategy": "Strategia jednostronna",
   "Adaptive Portfolio Strategy": "Adaptacyjna strategia portfolio",
-  "migrated position": "migrated position",
-  "My veCAKE": "My veCAKE",
-  "native position": "native position",
-  "Adding CAKE or extending CAKE will be applying to your native position.": "Adding CAKE or extending CAKE will be applying to your native position.",
-  "View Migrated Position": "View Migrated Position",
+  "migrated position": "migrowana pozycja",
+  "My veCAKE": "Moje veCAKE",
+  "native position": "pozycja natywna",
+  "Adding CAKE or extending CAKE will be applying to your native position.": "Dodanie CAKE lub przedłużenie CAKE będzie miało zastosowanie do Twojej pozycji natywnej.",
+  "View Migrated Position": "Wyświetl migrowaną pozycję",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Odnów swoją pozycję veCAKE, aby nadal czerpać korzyści z cotygodniowych przychodów z CAKE, udziału w przychodach, głosowania na wskaźniki, zwiększania przychodów z farmienia, udziału w IFO itd.!",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Please note that the Pearls earned from this vault will only appear in your balance at a later time."
+  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Pamiętaj, że zarobione Pearls z tego skarbca pojawią się na Twoim saldzie dopiero później."
 }
