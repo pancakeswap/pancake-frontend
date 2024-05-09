@@ -1,22 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
-import {
-  BunnyFillIcon,
-  Button,
-  ChevronDownIcon,
-  DeleteOutlineIcon,
-  ErrorFillIcon,
-  Flex,
-  Text,
-  useModal,
-} from '@pancakeswap/uikit'
+import { Button, ChevronDownIcon, DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
 import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { useCallback, useState } from 'react'
 import { styled } from 'styled-components'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
+import { TaskType, useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 
 const StyleSelector = styled(Button)`
   position: absolute;
@@ -29,6 +21,7 @@ const StyleSelector = styled(Button)`
 
 export const AddSwap = () => {
   const { t } = useTranslation()
+  const { taskIcon, taskNaming } = useTaskInfo()
   const [total, setTotal] = useState('')
   const defaultCurrency = (CAKE as any)?.[ChainId.BSC]
   const [selectedCurrency, setSelectedCurrency] = useState<Currency | null>(defaultCurrency)
@@ -51,10 +44,10 @@ export const AddSwap = () => {
     <Flex flexDirection={['column']}>
       <Flex width="100%">
         <Flex mr="8px" alignSelf="center">
-          <BunnyFillIcon color="#7A6EAA" width="20px" height="20px" />
+          {taskIcon(TaskType.MAKE_A_SWAP)}
         </Flex>
         <Text style={{ alignSelf: 'center' }} bold>
-          {t('Make a swap')}
+          {taskNaming(TaskType.MAKE_A_SWAP)}
         </Text>
         <DeleteOutlineIcon
           ml="auto"

@@ -1,21 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
-import {
-  BunnyFillIcon,
-  Button,
-  ChevronDownIcon,
-  DeleteOutlineIcon,
-  ErrorFillIcon,
-  Flex,
-  Text,
-  useModal,
-} from '@pancakeswap/uikit'
+import { Button, ChevronDownIcon, DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
 import { NetworkSelectorModal } from 'components/NetworkSelectorModal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
+import { TaskType, useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 
 const StyleSelector = styled(Button)`
   position: absolute;
@@ -38,6 +30,7 @@ const StyleNetwork = styled(Flex)`
 
 export const AddLpAddress = () => {
   const { t } = useTranslation()
+  const { taskIcon, taskNaming } = useTaskInfo()
   const [pickedChainId, setPickedChainId] = useState(ChainId.BSC)
   const [total, setTotal] = useState('')
   const [lpAddress, setLpAddress] = useState('')
@@ -60,10 +53,10 @@ export const AddLpAddress = () => {
     <Flex flexDirection={['column']}>
       <Flex width="100%">
         <Flex mr="8px" alignSelf="center">
-          <BunnyFillIcon color="#7A6EAA" width="20px" height="20px" />
+          {taskIcon(TaskType.ADD_LIQUIDITY)}
         </Flex>
         <Text style={{ alignSelf: 'center' }} bold>
-          {t('Add liquidity')}
+          {taskNaming(TaskType.ADD_LIQUIDITY)}
         </Text>
         <DeleteOutlineIcon
           ml="auto"

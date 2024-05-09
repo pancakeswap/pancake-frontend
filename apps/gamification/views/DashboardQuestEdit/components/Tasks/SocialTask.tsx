@@ -14,7 +14,7 @@ import {
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
-import { SocialTaskType, useSocial } from 'views/DashboardQuestEdit/hooks/useSocial'
+import { TaskType, useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 
 const StyledInput = styled(Input)`
   height: 32px;
@@ -26,9 +26,8 @@ export const SocialTask = () => {
   const [urlLink, setUrlLink] = useState('https://google.com')
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal />)
 
-  const social = SocialTaskType.X_LINK_POST
-
-  const { socialIcon, socialNaming, socialInputPlaceholder } = useSocial({ social })
+  const social = TaskType.X_LINK_POST
+  const { taskIcon, taskNaming, taskInputPlaceholder } = useTaskInfo()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Open in new tab'), {
     placement: 'top',
@@ -42,10 +41,10 @@ export const SocialTask = () => {
     <Flex flexDirection={['column', 'column', 'row']}>
       <Flex>
         <Flex mr="8px" alignSelf="center">
-          {socialIcon}
+          {taskIcon(social)}
         </Flex>
         <Text style={{ alignSelf: 'center' }} bold>
-          {socialNaming}
+          {taskNaming(social)}
         </Text>
         {isMobile && (
           <DeleteOutlineIcon
@@ -70,7 +69,7 @@ export const SocialTask = () => {
           <StyledInput
             value={urlLink}
             style={{ borderRadius: '24px' }}
-            placeholder={socialInputPlaceholder}
+            placeholder={taskInputPlaceholder(social)}
             onChange={(e) => setUrlLink(e.target.value)}
           />
         </InputGroup>

@@ -1,12 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BunnyFillIcon, DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
+import { DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
+import { TaskType, useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 
 export const AddLottery = () => {
   const { t } = useTranslation()
   const [total, setTotal] = useState('')
+  const { taskIcon, taskNaming } = useTaskInfo()
   const [startRound, setStartRound] = useState('')
   const [endRound, setEndRound] = useState('')
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal />)
@@ -27,10 +29,10 @@ export const AddLottery = () => {
     <Flex flexDirection={['column']}>
       <Flex width="100%">
         <Flex mr="8px" alignSelf="center">
-          <BunnyFillIcon color="#7A6EAA" width="20px" height="20px" />
+          {taskIcon(TaskType.PARTICIPATE_LOTTERY)}
         </Flex>
         <Text style={{ alignSelf: 'center' }} bold>
-          {t('Participate in a lottery')}
+          {taskNaming(TaskType.PARTICIPATE_LOTTERY)}
         </Text>
         <DeleteOutlineIcon
           ml="auto"

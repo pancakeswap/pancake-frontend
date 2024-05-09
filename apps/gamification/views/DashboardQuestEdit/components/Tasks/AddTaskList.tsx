@@ -1,11 +1,13 @@
 import { Flex, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
+import { TaskType, useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 
 const StyledDropdown = styled(Dropdown)`
-  width: 200px;
+  width: 280px;
   top: 30px;
   right: 0px;
+  z-index: 10;
 `
 
 interface AddTaskListProps {
@@ -14,18 +16,22 @@ interface AddTaskListProps {
 }
 
 export const AddTaskList: React.FC<AddTaskListProps> = ({ setIsOpen, dropdownRef }) => {
+  const { taskIcon, taskNaming } = useTaskInfo(true)
+
   const closeDropdown = () => {
     setIsOpen(false)
   }
 
   return (
     <StyledDropdown setIsOpen={setIsOpen} dropdownRef={dropdownRef}>
-      <Flex onClick={closeDropdown}>
-        <Text ml="8px">Statistics</Text>
-      </Flex>
-      <Flex onClick={closeDropdown}>
-        <Text ml="14px">Edit</Text>
-      </Flex>
+      {Object.keys(TaskType).map((i) => (
+        <Flex key={i} onClick={closeDropdown}>
+          <Flex mr="8px" alignSelf="center">
+            {taskIcon(i as TaskType)}
+          </Flex>
+          <Text style={{ alignSelf: 'center' }}>{taskNaming(i as TaskType)}</Text>
+        </Flex>
+      ))}
     </StyledDropdown>
   )
 }

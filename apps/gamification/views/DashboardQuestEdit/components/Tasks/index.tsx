@@ -5,14 +5,15 @@ import DraggableList from 'react-draggable-list'
 // import { AddLottery } from 'views/DashboardQuestEdit/components/Tasks/AddLottery'
 import { AddSwap } from 'views/DashboardQuestEdit/components/Tasks/AddSwap'
 // import { AddLpAddress } from 'views/DashboardQuestEdit/components/Tasks/AddLpAddress'
-// import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
 import { AddTaskList } from 'views/DashboardQuestEdit/components/Tasks/AddTaskList'
+// import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
 
 const data = Array(10)
   .fill(null)
   .map((item, index) => ({ id: index }))
 
-const Item = ({ item, itemSelected, dragHandleProps }) => {
+// const Item = ({ item, itemSelected, dragHandleProps }: any) => {
+const Item = ({ dragHandleProps }: any) => {
   const { onMouseDown, onTouchStart } = dragHandleProps
 
   return (
