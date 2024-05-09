@@ -39,9 +39,9 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
 import { useUserShowTestnet } from 'state/user/hooks/useUserShowTestnet'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
-import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import { useSpeedQuote } from 'hooks/useSpeedQuote'
 import {
+  useMMLinkedPoolByDefault,
   useOnlyOneAMMSourceEnabled,
   useRoutingSettingChanged,
   useUserSplitRouteEnable,
