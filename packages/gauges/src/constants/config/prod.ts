@@ -3957,6 +3957,16 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 400,
+    pairName: 'WBTC-USDC',
+    address: '0x843aC8dc6D34AEB07a56812b8b36429eE46BDd07',
+    chainId: ChainId.ARBITRUM_ONE,
+    type: GaugeType.V3,
+    feeTier: FeeAmount.LOW,
+    token0Address: arbitrumTokens.wbtc.address,
+    token1Address: arbitrumTokens.usdc.address,
+  },
+  {
+    gid: 401,
     pairName: 'SolvBTC-BTCB',
     address: '0x12197d7a4fE2d67F9f97ae64D82A44c24B7Ad407',
     chainId: ChainId.BSC,
