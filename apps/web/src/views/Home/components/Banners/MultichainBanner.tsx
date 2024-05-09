@@ -29,7 +29,7 @@ const bgXsVariant: GraphicDetail = {
   height: 182,
 }
 
-const participateLink = 'https://app.questn.com/quest/892921459566543050'
+const participateLink = 'https://app.questn.com/quest/896544581176705273'
 
 export const MultiChainBanner = () => {
   const { t } = useTranslation()
