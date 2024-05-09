@@ -45,7 +45,7 @@ export function formatNumber(
   const totalDigits = integerDigits + decimalDigits
   const maxDigits = Math.min(totalDigits, maximumSignificantDigits)
   const { max, min } = {
-    max: TEN.exponentiatedBy(maximumSignificantDigits + 1).minus(1),
+    max: TEN.exponentiatedBy(maximumSignificantDigits).minus(1),
     min: ONE.div(TEN.exponentiatedBy(maximumSignificantDigits - 1)),
   }
   const isGreaterThanMax = valueInBN.gt(max)
