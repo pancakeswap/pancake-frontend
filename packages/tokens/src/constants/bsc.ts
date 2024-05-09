@@ -3149,4 +3149,12 @@ export const bscTokens = {
     'Wrapped eETH',
     'https://www.ether.fi/',
   ),
+  solvbtc: new ERC20Token(
+    ChainId.BSC,
+    '0x4aae823a6a0b376De6A78e74eCC5b079d38cBCf7',
+    18,
+    'SolvBTC',
+    'Solv BTC',
+    'https://app.solv.finance/solvbtc',
+  ),
 }
