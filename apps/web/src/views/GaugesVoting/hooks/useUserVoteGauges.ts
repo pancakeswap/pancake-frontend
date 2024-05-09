@@ -25,7 +25,7 @@ export const useUserVoteSlopes = () => {
   const { account, chainId } = useAccountActiveChain()
   const publicClient = usePublicClient({ chainId })
 
-  const { data, refetch } = useQuery({
+  const { data, refetch, isLoading } = useQuery({
     queryKey: [
       '/vecake/user-vote-slopes',
       gaugesVotingContract.address,
@@ -89,12 +89,13 @@ export const useUserVoteSlopes = () => {
   return {
     data: data ?? [],
     refetch,
+    isLoading,
   }
 }
 
 export const useUserVoteGauges = () => {
-  const { data: gauges } = useGauges()
-  const { data: slopes, refetch } = useUserVoteSlopes()
+  const { data: gauges, isLoading: isGaugesLoading } = useGauges()
+  const { data: slopes, refetch, isLoading: isVoteLoading } = useUserVoteSlopes()
 
   const data = useMemo(() => {
     if (!gauges || !slopes) return []
@@ -109,5 +110,6 @@ export const useUserVoteGauges = () => {
   return {
     data,
     refetch,
+    isLoading: isGaugesLoading || isVoteLoading,
   }
 }
