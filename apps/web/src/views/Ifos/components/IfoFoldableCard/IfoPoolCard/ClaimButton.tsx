@@ -33,7 +33,7 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVers
       if (walletIfoData.version === 3) {
         return walletIfoData.contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
       }
-      if (walletIfoData.version === 7) {
+      if (walletIfoData.version === 7 || walletIfoData.version === 8) {
         return walletIfoData.contract.write.harvestPool([poolId === PoolIds.poolBasic ? 0 : 1], { account, chain })
       }
       throw new Error('Invalid wallet ifo data version')

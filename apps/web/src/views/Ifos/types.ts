@@ -115,8 +115,13 @@ type WalletIfoDataV7Contract = {
   version: 7
   contract: ReturnType<typeof useIfoV7Contract>
 }
+type WalletIfoDataV8Contract = {
+  version: 8
+  contract: ReturnType<typeof useIfoV7Contract>
+}
 type WalletIfoContract =
   | WalletIfoDataV1Contract
   | WalletIfoDataV2Contract
   | WalletIfoDataV3Contract
   | WalletIfoDataV7Contract
+  | WalletIfoDataV8Contract

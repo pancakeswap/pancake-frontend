@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import { styled } from 'styled-components'
-import { Text, Heading, Card, CardHeader, CardBody, Flex, Image } from '@pancakeswap/uikit'
+import { Text, Heading, Card, CardHeader, CardBody, Flex, Image, Container } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import FoldableText from 'components/FoldableSection/FoldableText'
 import { useMemo } from 'react'
@@ -44,35 +44,37 @@ const IfoQuestions = () => {
   }, [currentChainId])
 
   return (
-    <Flex alignItems={['center', null, null, 'start']} flexDirection={['column', null, null, 'row']}>
-      <ImageWrapper>
-        <Image src={bunnyImageUrl} alt="ifo faq bunny" width={395} height={410} />
-      </ImageWrapper>
-      <DetailsWrapper>
-        <Card>
-          <CardHeader>
-            <Heading scale="lg" color="secondary">
-              {t('Details')}
-            </Heading>
-          </CardHeader>
-          <CardBody>
-            {config.map(({ title, description }, i, { length }) => {
-              return (
-                <FoldableText key={i} mb={i + 1 === length ? '' : '24px'} title={title}>
-                  {description.map((desc, index) => {
-                    return (
-                      <Text key={index} color="textSubtle" as="p">
-                        {desc}
-                      </Text>
-                    )
-                  })}
-                </FoldableText>
-              )
-            })}
-          </CardBody>
-        </Card>
-      </DetailsWrapper>
-    </Flex>
+    <Container>
+      <Flex alignItems={['center', null, null, 'start']} flexDirection={['column', null, null, 'row']}>
+        <ImageWrapper>
+          <Image src={bunnyImageUrl} alt="ifo faq bunny" width={395} height={410} />
+        </ImageWrapper>
+        <DetailsWrapper>
+          <Card>
+            <CardHeader>
+              <Heading scale="lg" color="secondary">
+                {t('Details')}
+              </Heading>
+            </CardHeader>
+            <CardBody>
+              {config.map(({ title, description }, i, { length }) => {
+                return (
+                  <FoldableText key={i} mb={i + 1 === length ? '' : '24px'} title={title}>
+                    {description.map((desc, index) => {
+                      return (
+                        <Text key={index} color="textSubtle" as="p">
+                          {desc}
+                        </Text>
+                      )
+                    })}
+                  </FoldableText>
+                )
+              })}
+            </CardBody>
+          </Card>
+        </DetailsWrapper>
+      </Flex>
+    </Container>
   )
 }
 

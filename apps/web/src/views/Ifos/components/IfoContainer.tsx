@@ -1,20 +1,16 @@
-import { ReactElement } from 'react'
-import { styled } from 'styled-components'
+import { ReactNode } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Container, LinkExternal } from '@pancakeswap/uikit'
+import { Container, LinkExternal } from '@pancakeswap/uikit'
 import { Address } from 'viem'
 
 import IfoLayout, { IfoLayoutWrapper } from './IfoLayout'
 import IfoPoolVaultCard from './IfoPoolVaultCard'
-import IfoQuestions from './IfoQuestions'
-
-const IfoStepBackground = styled(Box)`
-  background: ${({ theme }) => theme.colors.gradientBubblegum};
-`
+import { SectionBackground } from './SectionBackground'
 
 interface TypeProps {
-  ifoSection: ReactElement
-  ifoSteps: ReactElement
+  ifoSection: ReactNode
+  ifoSteps: ReactNode
+  faq?: ReactNode
   ifoBasicSaleType?: number
   ifoAddress?: Address
 }
@@ -22,6 +18,7 @@ interface TypeProps {
 const IfoContainer: React.FC<React.PropsWithChildren<TypeProps>> = ({
   ifoSection,
   ifoSteps,
+  faq,
   ifoBasicSaleType,
   ifoAddress,
 }) => {
@@ -35,19 +32,17 @@ const IfoContainer: React.FC<React.PropsWithChildren<TypeProps>> = ({
           {ifoSection}
         </IfoLayoutWrapper>
       </Container>
-      <IfoStepBackground>
+      <SectionBackground>
         <Container>{ifoSteps}</Container>
-      </IfoStepBackground>
-      <Container>
-        <IfoQuestions />
-        <LinkExternal
-          href="https://docs.pancakeswap.finance/contact-us/business-partnerships#ifos-token-sales"
-          mx="auto"
-          mt="16px"
-        >
-          {t('Apply to run an IFO!')}
-        </LinkExternal>
-      </Container>
+      </SectionBackground>
+      {faq}
+      <LinkExternal
+        href="https://docs.pancakeswap.finance/contact-us/business-partnerships#ifos-token-sales"
+        mx="auto"
+        mt="16px"
+      >
+        {t('Apply to run an IFO!')}
+      </LinkExternal>
     </IfoLayout>
   )
 }
