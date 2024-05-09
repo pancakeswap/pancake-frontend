@@ -24,8 +24,8 @@ import { styled } from 'styled-components'
 import { chainNameConverter } from 'utils/chainNameConverter'
 import { chains } from 'utils/wagmi'
 import { PopOverScreenContainer } from 'views/BuyCrypto/components/PopOverScreen/PopOverScreen'
-import { OnRampChainId as ChainId } from 'views/BuyCrypto/constants'
-import { FiatCurrency } from 'views/BuyCrypto/types'
+import { selectCurrencyField, type OnRampChainId as ChainId } from 'views/BuyCrypto/constants'
+import type { FiatCurrency, OnRampUnit } from 'views/BuyCrypto/types'
 import { Dot } from 'views/Notifications/styles'
 import OnRampCurrencySearch from './OnRampCurrencySearch'
 
@@ -78,6 +78,7 @@ export interface CurrencySearchModalProps extends InjectedModalProps {
       }[]
     | Currency[]
   mode: string
+  unit: OnRampUnit
 }
 
 interface NetworksPopOverProps {
@@ -158,6 +159,7 @@ export default function OnRampCurrencySearchModal({
   otherSelectedCurrency,
   tokensToShow,
   mode,
+  unit,
 }: CurrencySearchModalProps) {
   const [activeChain, setActiveChain] = useState<ChainId | undefined>(undefined)
   const [showFilternetworks, setShowFilternetworks] = useState<boolean>(false)
@@ -166,11 +168,11 @@ export default function OnRampCurrencySearchModal({
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
-      const field = mode === 'onramp-fiat' ? Field.OUTPUT : Field.INPUT
+      const field = selectCurrencyField(unit, mode)
       onCurrencySelect?.(field, currency)
       onDismiss?.()
     },
-    [onDismiss, onCurrencySelect, mode],
+    [onDismiss, onCurrencySelect, mode, unit],
   )
 
   const newTokens = useMemo(() => {

@@ -6,6 +6,7 @@ import OnRampCurrencySearchModal, { CurrencySearchModalProps } from 'components/
 import { ReactNode } from 'react'
 import { fiatCurrencyMap, getNetworkDisplay, onRampCurrencies } from 'views/BuyCrypto/constants'
 import { DropDownContainer, OptionSelectButton, StyledCircle } from 'views/BuyCrypto/styles'
+import { OnRampUnit } from 'views/BuyCrypto/types'
 import { OnRampCurrencyLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
 
 interface BuyCryptoSelectorProps extends Omit<CurrencySearchModalProps, 'mode'>, BoxProps {
@@ -68,6 +69,7 @@ interface BuyCryptoSelectorProps extends Omit<CurrencySearchModalProps, 'mode'>,
   errorText?: string
   onInputBlur?: () => void
   disableInput?: boolean
+  unit: OnRampUnit
 }
 
 export const BuyCryptoSelector = ({
@@ -81,6 +83,7 @@ export const BuyCryptoSelector = ({
   error,
   value,
   disableInput = false,
+  unit,
   ...props
 }: BuyCryptoSelectorProps) => {
   const tokensToShow = id === 'onramp-fiat' ? Object.values(fiatCurrencyMap) : onRampCurrencies
@@ -91,6 +94,7 @@ export const BuyCryptoSelector = ({
       otherSelectedCurrency={otherSelectedCurrency}
       tokensToShow={tokensToShow}
       mode={id}
+      unit={unit}
     />,
   )
 

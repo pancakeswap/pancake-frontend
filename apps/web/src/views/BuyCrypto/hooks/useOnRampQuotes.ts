@@ -1,6 +1,6 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import { ONRAMP_PROVIDERS, getNetworkDisplay } from '../constants'
+import { getNetworkDisplay, type ONRAMP_PROVIDERS } from '../constants'
 import {
   createQueryKey,
   type Evaluate,
@@ -28,7 +28,7 @@ export type UseOnRampQuotesParameters<selectData = GetOnRampQuoteReturnType> = E
 export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
   parameters: UseOnRampQuotesParameters<selectData>,
 ) => {
-  const { fiatAmount, enabled, cryptoCurrency, fiatCurrency, network, ...query } = parameters
+  const { fiatAmount, enabled, cryptoCurrency, fiatCurrency, network, onRampUnit, ...query } = parameters
 
   return useQuery({
     ...query,
@@ -38,6 +38,7 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         fiatAmount,
         fiatCurrency,
         network,
+        onRampUnit,
       },
     ]),
     refetchInterval: 40 * 1_000,
@@ -45,15 +46,16 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
     enabled: Boolean(enabled),
     queryFn: async ({ queryKey }) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { cryptoCurrency, fiatAmount, fiatCurrency, network } = queryKey[1]
-      if (!cryptoCurrency || !fiatAmount || !fiatCurrency) {
-        throw new Error('Missing params')
+      const { cryptoCurrency, fiatAmount, fiatCurrency, network, onRampUnit } = queryKey[1]
+      if (!cryptoCurrency || !fiatAmount || !fiatCurrency || !onRampUnit) {
+        throw new Error('Missing buy-crypto fetch-provider-quotes params')
       }
       const providerQuotes = await fetchProviderQuotes({
         cryptoCurrency,
         fiatAmount,
         fiatCurrency,
         network,
+        onRampUnit,
       })
       const quotes = providerQuotes.filter((q) => Boolean(q.quote !== 0)).sort((a, b) => b.quote - a.quote)
 
