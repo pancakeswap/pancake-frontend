@@ -1,11 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Box, Button, Card, DragIcon, Flex, Text } from '@pancakeswap/uikit'
-import { useRef, useState } from 'react'
+import { MouseEvent, useRef, useState } from 'react'
 import DraggableList from 'react-draggable-list'
 // import { AddLottery } from 'views/DashboardQuestEdit/components/Tasks/AddLottery'
 import { AddSwap } from 'views/DashboardQuestEdit/components/Tasks/AddSwap'
 // import { AddLpAddress } from 'views/DashboardQuestEdit/components/Tasks/AddLpAddress'
 // import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
+import { AddTaskList } from 'views/DashboardQuestEdit/components/Tasks/AddTaskList'
 
 const data = Array(10)
   .fill(null)
@@ -44,6 +45,8 @@ const Item = ({ item, itemSelected, dragHandleProps }) => {
 export const Tasks = () => {
   const { t } = useTranslation()
   const [list, setList] = useState(data)
+  const [isOpen, setIsOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
   const _onListChange = (newList: any) => {
@@ -56,24 +59,22 @@ export const Tasks = () => {
         <Text fontSize={['24px']} bold mr="8px">
           {t('Tasks')}
         </Text>
-        <Button
-          padding="0"
-          variant="text"
-          height="fit-content"
-          style={{ alignSelf: 'center' }}
-          endIcon={<AddIcon color="primary" />}
-        >
-          {t('Add a new task')}
-        </Button>
-        {/* <Button
-          padding="0"
-          variant="text"
-          height="fit-content"
-          style={{ alignSelf: 'center' }}
-          endIcon={<PencilIcon width={13} color="primary" />}
-        >
-          {t('Edit')}
-        </Button> */}
+        <Box position="relative">
+          <Button
+            padding="0"
+            variant="text"
+            height="fit-content"
+            style={{ alignSelf: 'center' }}
+            endIcon={<AddIcon color="primary" />}
+            onClick={(e: MouseEvent) => {
+              e.stopPropagation()
+              setIsOpen(!isOpen)
+            }}
+          >
+            {t('Add a new task')}
+          </Button>
+          {isOpen && <AddTaskList dropdownRef={dropdownRef} setIsOpen={setIsOpen} />}
+        </Box>
       </Flex>
       <Flex flexDirection="column" ref={containerRef}>
         <DraggableList
