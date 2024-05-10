@@ -30,6 +30,11 @@ export function useFarmsLength() {
 
     queryFn: async () => {
       const mc = getMasterChefContract(undefined, chainId)
+      if (!mc) {
+        const farmsConfig = await getFarmConfig(chainId)
+        const maxPid = farmsConfig?.length ? Math.max(...farmsConfig?.map((farm) => farm.pid)) : undefined
+        return maxPid ? maxPid + 1 : 0
+      }
       return Number(await mc.read.poolLength())
     },
 

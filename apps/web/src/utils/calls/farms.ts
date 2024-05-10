@@ -17,7 +17,7 @@ export const stakeFarm = async (
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   logGTMClickStakeFarmEvent()
 
-  if (!masterChefContract.account) return undefined
+  if (!masterChefContract?.account) return undefined
 
   return masterChefContract.write.deposit([pid, BigInt(value)], {
     gas: gasLimit || DEFAULT_GAS_LIMIT,
@@ -53,7 +53,7 @@ export const unstakeFarm = async (
 ) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
 
-  if (!masterChefContract.account) return undefined
+  if (!masterChefContract?.account) return undefined
 
   return masterChefContract.write.withdraw([pid, BigInt(value)], {
     gas: gasLimit || DEFAULT_GAS_LIMIT,
@@ -74,7 +74,7 @@ export const bCakeUnStakeFarm = async (v2SSContract: V2SSBCakeContractType, amou
 }
 
 export const harvestFarm = async (masterChefContract: MasterChefContractType, pid, gasPrice, gasLimit?: bigint) => {
-  if (!masterChefContract.account) return undefined
+  if (!masterChefContract?.account) return undefined
 
   return masterChefContract.write.deposit([pid, 0n], {
     gas: gasLimit || DEFAULT_GAS_LIMIT,
