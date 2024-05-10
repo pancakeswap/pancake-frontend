@@ -30,7 +30,7 @@
     "dayjs": "^1.11.10",
     "jotai": "^2.4.3",
     "lodash": "^4.17.21",
-    "next": "14.2.2",
+    "next": "14.2.3",
     "next-seo": "^5.15.0",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
@@ -46,7 +46,7 @@
     "wagmi": "2.5.20"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "14.2.2",
+    "@next/eslint-plugin-next": "14.2.3",
     "@pancakeswap/next-config": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
     "@types/lodash": "^4.14.178",
