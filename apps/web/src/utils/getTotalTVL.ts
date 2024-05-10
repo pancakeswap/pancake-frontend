@@ -1,6 +1,6 @@
 import { gql, GraphQLClient } from 'graphql-request'
 import { STABLESWAP_SUBGRAPHS_URLS } from 'config/constants/endpoints'
-import { ChainId, getBlocksSubgraphs, getV2Subgraphs, getV3Subgraphs } from '@pancakeswap/chains'
+import { ChainId, getBlocksSubgraphs, getV2Subgraphs, getV3Subgraphs, testnetChainIds } from '@pancakeswap/chains'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import dayjs, { Dayjs } from 'dayjs'
 import { getCakeContract } from 'utils/contractHelpers'
@@ -14,6 +14,8 @@ import { multiChainName } from 'state/info/constant'
 const txCount = 54780336
 const addressCount = 4425459
 const tvl = 6082955532.115718
+
+const ORIGIN_NEEDED_CHAINS = [ChainId.BSC, ChainId.GOERLI, ChainId.POLYGON_ZKEVM, ChainId.SCROLL_SEPOLIA]
 
 export const getTotalTvl = async () => {
   const results = {
@@ -461,13 +463,24 @@ const getStableTvl = async (stableProdClients: GraphQLClient[]) => {
 const getProdClients = (urls: Partial<{ [key in ChainId]: string | null }>) => {
   return Object.entries(urls)
     .filter(([string, clientUrl]) => {
-      return Boolean(clientUrl && !ChainId[string].toLowerCase().includes('test'))
+      const isTestnet = testnetChainIds.some((chainId) => {
+        return chainId.valueOf() === parseInt(string)
+      })
+      return Boolean(clientUrl && !isTestnet)
     })
     .reduce((acc, [string, clientUrl]) => {
+      const isOriginNeeded = ORIGIN_NEEDED_CHAINS.some((chainId) => {
+        return chainId.valueOf() === parseInt(string)
+      })
       return {
         ...acc,
         [string]: new GraphQLClient(clientUrl!, {
           timeout: 5000,
+          ...(isOriginNeeded && {
+            headers: {
+              origin: 'https://pancakeswap.finance',
+            },
+          }),
         }),
       }
     }, {} as Record<string, GraphQLClient>)
