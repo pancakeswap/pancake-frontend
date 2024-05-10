@@ -70,6 +70,33 @@ export const STABLESWAP_SUBGRAPHS_URLS = {
   [ChainId.BSC]: `${INFO_GATEWAY_OLD_API}/subgraphs/stable/bsc/graphql`,
 }
 
+export const EXPLORER_V2_SUBGRAPHS = {
+  [ChainId.ETHEREUM]: `${EXPLORER_API}/subgraphs/v2/ethereum/graphql`,
+  [ChainId.BSC]: `${EXPLORER_API}/subgraphs/v2/bsc/graphql`,
+  [ChainId.OPBNB]: `${EXPLORER_API}/subgraphs/v2/opbnb/graphql`,
+  [ChainId.ZKSYNC]: `${EXPLORER_API}/subgraphs/v2/zksync/graphql`,
+  [ChainId.POLYGON_ZKEVM]: `${EXPLORER_API}/subgraphs/v2/polygon-zkevm/graphql`,
+  [ChainId.BASE]: `${EXPLORER_API}/subgraphs/v2/base/graphql`,
+  [ChainId.ARBITRUM_ONE]: `${EXPLORER_API}/subgraphs/v2/arbitrum/graphql`,
+  [ChainId.LINEA]: `${EXPLORER_API}/subgraphs/v2/linea/graphql`,
+}
+
+export const EXPLORER_V3_SUBGRAPHS = {
+  [ChainId.ETHEREUM]: `${EXPLORER_API}/subgraphs/v3/ethereum/graphql`,
+  [ChainId.BSC]: `${EXPLORER_API}/subgraphs/v3/bsc/graphql`,
+  [ChainId.OPBNB]: `${EXPLORER_API}/subgraphs/v3/opbnb/graphql`,
+  [ChainId.ZKSYNC]: `${EXPLORER_API}/subgraphs/v3/zksync/graphql`,
+  [ChainId.POLYGON_ZKEVM]: `${EXPLORER_API}/subgraphs/v3/polygon-zkevm/graphql`,
+  [ChainId.BASE]: `${EXPLORER_API}/subgraphs/v3/base/graphql`,
+  [ChainId.ARBITRUM_ONE]: `${EXPLORER_API}/subgraphs/v3/arbitrum/graphql`,
+  [ChainId.LINEA]: `${EXPLORER_API}/subgraphs/v3/linea/graphql`,
+}
+
+export const EXPLORER_STABLE_SUBGRAPHS = {
+  [ChainId.BSC]: `${EXPLORER_API}/subgraphs/stable/bsc/graphql`,
+  [ChainId.ARBITRUM_ONE]: `${EXPLORER_API}/subgraphs/stable/arbitrum/graphql`,
+}
+
 export const TRADING_REWARD_API = 'https://trading-reward.pancakeswap.com/api/v1'
 
 export const QUOTING_API_PREFIX = `${process.env.NEXT_PUBLIC_QUOTING_API}/order-price`

@@ -1,6 +1,6 @@
 import { gql, GraphQLClient } from 'graphql-request'
-import { STABLESWAP_SUBGRAPHS_URLS } from 'config/constants/endpoints'
-import { ChainId, getBlocksSubgraphs, getV2Subgraphs, getV3Subgraphs, testnetChainIds } from '@pancakeswap/chains'
+import { EXPLORER_STABLE_SUBGRAPHS, EXPLORER_V2_SUBGRAPHS, EXPLORER_V3_SUBGRAPHS } from 'config/constants/endpoints'
+import { ChainId, getBlocksSubgraphs, testnetChainIds } from '@pancakeswap/chains'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import dayjs, { Dayjs } from 'dayjs'
 import { getCakeContract } from 'utils/contractHelpers'
@@ -30,9 +30,9 @@ export const getTotalTvl = async () => {
     const days30Ago = dayjs().subtract(30, 'days')
 
     const blockClients = getProdClients(getBlocksSubgraphs({ noderealApiKey: process.env.NODE_REAL_SUBGRAPH_API_KEY }))
-    const stableProdClients = getProdClients(STABLESWAP_SUBGRAPHS_URLS)
-    const v3ProdClients = getProdClients(getV3Subgraphs({ noderealApiKey: process.env.NODE_REAL_SUBGRAPH_API_KEY }))
-    const v2ProdClients = getProdClients(getV2Subgraphs({ noderealApiKey: process.env.NODE_REAL_SUBGRAPH_API_KEY }))
+    const stableProdClients = getProdClients(EXPLORER_STABLE_SUBGRAPHS)
+    const v3ProdClients = getProdClients(EXPLORER_V3_SUBGRAPHS)
+    const v2ProdClients = getProdClients(EXPLORER_V2_SUBGRAPHS)
 
     try {
       const { v2TotalTx, v2Total30DaysAgoTx } = await getV2TotalTx(v2ProdClients, blockClients, days30Ago)
