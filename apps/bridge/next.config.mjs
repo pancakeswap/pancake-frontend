@@ -13,6 +13,8 @@ const nextConfig = {
     '@pancakeswap/localization',
     '@pancakeswap/utils',
     '@0xsquid/widget',
+    // https://github.com/TanStack/query/issues/6560#issuecomment-1975771676
+    '@tanstack/query-core',
   ],
   compiler: {
     styledComponents: true,

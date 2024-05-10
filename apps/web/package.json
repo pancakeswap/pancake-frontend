@@ -92,6 +92,7 @@
     "chart.js": "^4.4.0",
     "clsx": "^1.2.1",
     "cookies-next": "^2.1.1",
+    "core-js": "^3.37.0",
     "crypto-js": "^4.2.0",
     "d3": "^7.8.2",
     "dayjs": "^1.11.10",
@@ -106,7 +107,7 @@
     "local-storage": "^2.0.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
-    "next": "13.5.6",
+    "next": "14.2.3",
     "next-seo": "^5.15.0",
     "next-themes": "^0.2.1",
     "polished": "^4.2.2",
@@ -136,7 +137,7 @@
     "zod": "^3.22.3"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "13.4.2",
+    "@next/eslint-plugin-next": "14.2.3",
     "@pancakeswap/next-config": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
     "@stylelint/postcss-css-in-js": "^0.37.2",
