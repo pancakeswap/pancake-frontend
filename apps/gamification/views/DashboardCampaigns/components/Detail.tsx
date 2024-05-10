@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { Row } from 'views/DashboardCampaigns/components/Row'
+import { StateType } from 'views/DashboardQuests/components/RecordTemplate'
 
 const DetailContainer = styled(Box)`
   padding: 16px;
@@ -22,8 +23,11 @@ const StyledRows = styled(Box)`
     }
   }
 `
+interface DetailProps {
+  statusButtonIndex: StateType
+}
 
-export const Detail = () => {
+export const Detail: React.FC<DetailProps> = ({ statusButtonIndex }) => {
   const { t } = useTranslation()
 
   return (
@@ -32,8 +36,8 @@ export const Detail = () => {
         {t('Related Quests')}
       </Text>
       <StyledRows>
-        <Row />
-        <Row />
+        <Row statusButtonIndex={statusButtonIndex} />
+        <Row statusButtonIndex={statusButtonIndex} />
       </StyledRows>
     </DetailContainer>
   )

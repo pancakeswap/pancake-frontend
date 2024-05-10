@@ -3,8 +3,13 @@ import { Box } from '@pancakeswap/uikit'
 import { useCallback, useState } from 'react'
 import { Detail } from 'views/DashboardCampaigns/components/Detail'
 import { Row } from 'views/DashboardCampaigns/components/Row'
+import { StateType } from 'views/DashboardQuests/components/RecordTemplate'
 
-export const TableRow = () => {
+interface TableRowProps {
+  statusButtonIndex: StateType
+}
+
+export const TableRow: React.FC<TableRowProps> = ({ statusButtonIndex }) => {
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
   const toggleExpanded = useCallback(() => {
@@ -13,8 +18,8 @@ export const TableRow = () => {
 
   return (
     <Box>
-      <Row toggleExpanded={toggleExpanded} expanded={expanded} />
-      {shouldRenderActionPanel && <Detail />}
+      <Row statusButtonIndex={statusButtonIndex} toggleExpanded={toggleExpanded} expanded={expanded} />
+      {shouldRenderActionPanel && <Detail statusButtonIndex={statusButtonIndex} />}
     </Box>
   )
 }

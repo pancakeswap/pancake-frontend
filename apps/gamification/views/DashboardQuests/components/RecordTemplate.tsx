@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Box, Button, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import { styled } from 'styled-components'
 
 const Container = styled(Box)`
@@ -49,22 +48,32 @@ const StyledButtonMenu = styled(ButtonMenu)`
   }
 `
 
+export enum StateType {
+  ON_GOING = 0,
+  SCHEDULED = 1,
+  FINISHED = 2,
+  DRAFTED = 3,
+}
+
 interface RecordTemplateProps {
   title: string
   createButtonText: string
   createLink: string
+  statusButtonIndex: number
+  setStatusButtonIndex: (newIndex: number) => void
   children?: React.ReactNode
 }
 
-export const RecordTemplate: React.FC<RecordTemplateProps> = ({ title, createButtonText, createLink, children }) => {
+export const RecordTemplate: React.FC<RecordTemplateProps> = ({
+  title,
+  createButtonText,
+  createLink,
+  statusButtonIndex,
+  setStatusButtonIndex,
+  children,
+}) => {
   const { t } = useTranslation()
   const router = useRouter()
-
-  const [statusButtonIndex, setStatusButtonIndex] = useState(0)
-
-  const onStatusButtonChange = (newIndex: number) => {
-    setStatusButtonIndex(newIndex)
-  }
 
   const toCreatePage = () => {
     router.push(createLink)
@@ -86,7 +95,7 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({ title, createBut
               variant="subtle"
               m={['0', '0', '0 auto 0 0', '0 auto 0 0', 'auto']}
               activeIndex={statusButtonIndex}
-              onItemClick={onStatusButtonChange}
+              onItemClick={setStatusButtonIndex}
             >
               <ButtonMenuItem>{t('Ongoing')}</ButtonMenuItem>
               <ButtonMenuItem>{t('Scheduled')}</ButtonMenuItem>

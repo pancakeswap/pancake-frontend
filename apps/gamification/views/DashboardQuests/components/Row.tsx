@@ -14,6 +14,7 @@ import { MouseEvent, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
 import { StyledCell } from 'views/DashboardCampaigns/components/TableStyle'
+import { StateType } from 'views/DashboardQuests/components/RecordTemplate'
 
 const StyledRow = styled.div`
   background-color: transparent;
@@ -47,12 +48,14 @@ const StyledRow = styled.div`
 const StyledDropdown = styled(Dropdown)`
   width: 200px;
   left: -180px;
-  top: -100px;
+  bottom: 24px;
 `
 
-interface RowProps {}
+interface RowProps {
+  statusButtonIndex: StateType
+}
 
-export const Row: React.FC<RowProps> = () => {
+export const Row: React.FC<RowProps> = ({ statusButtonIndex }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -116,10 +119,12 @@ export const Row: React.FC<RowProps> = () => {
                 <BarChartIcon color="primary" width="20px" height="20px" />
                 <Text ml="8px">{t('Statistics')}</Text>
               </Flex>
-              <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/quest/edit?id=123')}>
-                <PencilIcon color="primary" width="14px" height="14px" />
-                <Text ml="14px">{t('Edit')}</Text>
-              </Flex>
+              {statusButtonIndex !== StateType.FINISHED && (
+                <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/quest/edit?id=123')}>
+                  <PencilIcon color="primary" width="14px" height="14px" />
+                  <Text ml="14px">{t('Edit')}</Text>
+                </Flex>
+              )}
             </StyledDropdown>
           )}
         </Box>

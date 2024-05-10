@@ -2,6 +2,7 @@ import { Box, Card, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { TableHeader } from 'views/DashboardCampaigns/components/TableHeader'
 import { TableRow } from 'views/DashboardCampaigns/components/TableRow'
+import { StateType } from 'views/DashboardQuests/components/RecordTemplate'
 
 const StyledRows = styled(Box)`
   > div {
@@ -17,7 +18,11 @@ const StyledRows = styled(Box)`
   }
 `
 
-export const Records = () => {
+interface RecordsProps {
+  statusButtonIndex: StateType
+}
+
+export const Records: React.FC<RecordsProps> = ({ statusButtonIndex }) => {
   const { isDesktop } = useMatchBreakpoints()
   return (
     <Box
@@ -28,7 +33,7 @@ export const Records = () => {
       <Card style={{ width: '100%', overflow: 'inherit' }}>
         {isDesktop && <TableHeader />}
         <StyledRows>
-          <TableRow />
+          <TableRow statusButtonIndex={statusButtonIndex} />
           {/* <TableRow />
           <TableRow /> */}
         </StyledRows>
