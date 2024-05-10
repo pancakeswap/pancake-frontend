@@ -2,18 +2,18 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Box, Button, Card, DragIcon, Flex, Text } from '@pancakeswap/uikit'
 import { MouseEvent, useRef, useState } from 'react'
 import DraggableList from 'react-draggable-list'
-// import { AddLottery } from 'views/DashboardQuestEdit/components/Tasks/AddLottery'
+import { AddLottery } from 'views/DashboardQuestEdit/components/Tasks/AddLottery'
+import { AddLpAddress } from 'views/DashboardQuestEdit/components/Tasks/AddLpAddress'
 import { AddSwap } from 'views/DashboardQuestEdit/components/Tasks/AddSwap'
-// import { AddLpAddress } from 'views/DashboardQuestEdit/components/Tasks/AddLpAddress'
 import { AddTaskList } from 'views/DashboardQuestEdit/components/Tasks/AddTaskList'
-// import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
+import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
 
-const data = Array(10)
+const data = Array(2)
   .fill(null)
-  .map((item, index) => ({ id: index }))
+  .map((_, index) => ({ id: index, input: 'helo' }))
 
 // const Item = ({ item, itemSelected, dragHandleProps }: any) => {
-const Item = ({ dragHandleProps }: any) => {
+const Item = ({ item, dragHandleProps }: any) => {
   const { onMouseDown, onTouchStart } = dragHandleProps
 
   return (
@@ -33,10 +33,10 @@ const Item = ({ dragHandleProps }: any) => {
       />
       <Card style={{ width: '100%' }}>
         <Box padding="8px">
-          <AddSwap />
-          {/* <AddLottery /> */}
-          {/* <AddLpAddress /> */}
-          {/* <SocialTask /> */}
+          {item.id === 0 && <AddSwap />}
+          {item.id === 1 && <AddLottery />}
+          {item.id === 2 && <AddLpAddress />}
+          {item.id === 3 && <SocialTask />}
         </Box>
       </Card>
     </Flex>

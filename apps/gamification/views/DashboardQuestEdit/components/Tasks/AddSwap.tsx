@@ -8,7 +8,8 @@ import { useCallback, useState } from 'react'
 import { styled } from 'styled-components'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
-import { TaskType, useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
+import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
+import { TaskType } from 'views/DashboardQuestEdit/type'
 
 const StyleSelector = styled(Button)`
   position: absolute;
@@ -19,7 +20,9 @@ const StyleSelector = styled(Button)`
   box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
 `
 
-export const AddSwap = () => {
+interface AddSwapProps {}
+
+export const AddSwap: React.FC<AddSwapProps> = () => {
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo()
   const [total, setTotal] = useState('')

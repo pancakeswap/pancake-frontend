@@ -1,22 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BunnyFillIcon, DiscordIcon, InstagramIcon, TelegramIcon, TwitterIcon, YoutubeIcon } from '@pancakeswap/uikit'
 import { useCallback } from 'react'
-
-export enum TaskType {
-  MAKE_A_SWAP = 'MAKE_A_SWAP',
-  ADD_LIQUIDITY = 'ADD_LIQUIDITY',
-  PARTICIPATE_LOTTERY = 'PARTICIPATE_LOTTERY',
-  MAKE_PREDICTION = 'MAKE_PREDICTION',
-  X_LINK_POST = 'X_LINK_POST',
-  X_FOLLOW_ACCOUNT = 'X_FOLLOW_ACCOUNT',
-  X_REPOST_POST = 'X_REPOST_POST',
-  TELEGRAM_JOIN_GROUP = 'TELEGRAM_JOIN_GROUP',
-  DISCORD_JOIN_SERVICE = 'DISCORD_JOIN_SERVICE',
-  YOUTUBE_SUBSCRIBE = 'YOUTUBE_SUBSCRIBE',
-  IG_LIKE_POST = 'IG_LIKE_POST',
-  IG_COMMENT_POST = 'IG_COMMENT_POST',
-  IG_FOLLOW_ACCOUNT = 'IG_FOLLOW_ACCOUNT',
-}
+import { TaskType } from 'views/DashboardQuestEdit/type'
 
 export const useTaskInfo = (primaryColor?: boolean) => {
   const { t } = useTranslation()

@@ -14,7 +14,8 @@ import {
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
-import { TaskType, useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
+import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
+import { TaskType } from 'views/DashboardQuestEdit/type'
 
 const StyledInput = styled(Input)`
   height: 32px;

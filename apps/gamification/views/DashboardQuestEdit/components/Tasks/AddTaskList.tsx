@@ -1,7 +1,8 @@
 import { Flex, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
-import { TaskType, useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
+import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
+import { TaskType } from 'views/DashboardQuestEdit/type'
 
 const StyledDropdown = styled(Dropdown)`
   width: 280px;

@@ -7,7 +7,8 @@ import { useState } from 'react'
 import { styled } from 'styled-components'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
-import { TaskType, useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
+import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
+import { TaskType } from 'views/DashboardQuestEdit/type'
 
 const StyleSelector = styled(Button)`
   position: absolute;
@@ -69,8 +70,13 @@ export const AddLpAddress = () => {
       </Flex>
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flex="6" flexDirection="column">
-          <Flex style={{ cursor: 'pointer' }} onClick={onPresentNetworkSelectorModal}>
-            <Flex position="relative" paddingRight="45px">
+          <Flex>
+            <Flex
+              position="relative"
+              paddingRight="45px"
+              style={{ cursor: 'pointer' }}
+              onClick={onPresentNetworkSelectorModal}
+            >
               <StyleNetwork style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/${pickedChainId}.png)` }} />
               <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
             </Flex>

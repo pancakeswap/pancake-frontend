@@ -3,7 +3,8 @@ import { DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancake
 import { useState } from 'react'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
-import { TaskType, useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
+import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
+import { TaskType } from 'views/DashboardQuestEdit/type'
 
 export const AddLottery = () => {
   const { t } = useTranslation()
