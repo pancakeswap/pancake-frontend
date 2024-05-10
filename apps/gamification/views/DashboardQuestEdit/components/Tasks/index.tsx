@@ -6,16 +6,13 @@ import { AddLottery } from 'views/DashboardQuestEdit/components/Tasks/AddLottery
 import { AddLpAddress } from 'views/DashboardQuestEdit/components/Tasks/AddLpAddress'
 import { AddSwap } from 'views/DashboardQuestEdit/components/Tasks/AddSwap'
 import { AddTaskList } from 'views/DashboardQuestEdit/components/Tasks/AddTaskList'
-import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
+// import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
+import { Task } from 'views/DashboardQuestEdit/context'
+import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
+import { TaskType } from 'views/DashboardQuestEdit/type'
 
-const data = Array(2)
-  .fill(null)
-  .map((_, index) => ({ id: index, input: 'helo' }))
-
-// const Item = ({ item, itemSelected, dragHandleProps }: any) => {
-const Item = ({ item, dragHandleProps }: any) => {
+const Item = ({ item, dragHandleProps }: { item: Task; dragHandleProps: any }) => {
   const { onMouseDown, onTouchStart } = dragHandleProps
-
   return (
     <Flex mb="4px">
       <DragIcon
@@ -33,10 +30,10 @@ const Item = ({ item, dragHandleProps }: any) => {
       />
       <Card style={{ width: '100%' }}>
         <Box padding="8px">
-          {item.id === 0 && <AddSwap />}
-          {item.id === 1 && <AddLottery />}
-          {item.id === 2 && <AddLpAddress />}
-          {item.id === 3 && <SocialTask />}
+          {item.type === TaskType.MAKE_A_SWAP && <AddSwap task={item} />}
+          {item.type === TaskType.PARTICIPATE_LOTTERY && <AddLottery />}
+          {item.type === TaskType.ADD_LIQUIDITY && <AddLpAddress />}
+          {/* {item.id === 3 && <SocialTask />} */}
         </Box>
       </Card>
     </Flex>
@@ -45,14 +42,10 @@ const Item = ({ item, dragHandleProps }: any) => {
 
 export const Tasks = () => {
   const { t } = useTranslation()
-  const [list, setList] = useState(data)
+  const { tasks, onTasksChange } = useQuestEdit()
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-
-  const _onListChange = (newList: any) => {
-    setList(newList)
-  }
 
   return (
     <Box position="relative" zIndex="0">
@@ -80,9 +73,9 @@ export const Tasks = () => {
       <Flex flexDirection="column" ref={containerRef}>
         <DraggableList
           itemKey="id"
-          list={list}
+          list={tasks}
           template={Item as any}
-          onMoveEnd={(newList: any) => _onListChange(newList)}
+          onMoveEnd={(newTasks: any) => onTasksChange(newTasks as Task[])}
           container={() => containerRef?.current}
         />
       </Flex>

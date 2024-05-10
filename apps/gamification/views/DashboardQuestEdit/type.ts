@@ -1,6 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
-import { Address } from 'viem'
-
 export enum TaskType {
   MAKE_A_SWAP = 'MAKE_A_SWAP',
   ADD_LIQUIDITY = 'ADD_LIQUIDITY',
@@ -16,31 +13,4 @@ export enum TaskType {
   IG_LIKE_POST = 'IG_LIKE_POST',
   IG_COMMENT_POST = 'IG_COMMENT_POST',
   IG_FOLLOW_ACCOUNT = 'IG_FOLLOW_ACCOUNT',
-}
-
-// Swap
-// - currency
-// - minAmount
-
-// Lottery
-// - minAmount
-// - fromRound,
-// - toRound
-
-// Add liquidity
-// - network
-// - lp address
-// - minAmount
-
-// - Social
-// - social link
-
-export interface Task {
-  type: TaskType
-  minAmount?: 0
-  fromRound?: 0
-  toRound?: 0
-  networkId?: ChainId
-  lpAddress?: Address
-  socialLink?: string
 }
