@@ -120,7 +120,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
         <Text color="textSubtle" mb="8px">
           {t('Tip: write in Markdown!')}
         </Text>
-        <EasyMde id="body" name="body" onTextChange={(value) => updateValue('body', value)} value={body} required />
+        <EasyMde id="body" name="body" required value={body} onTextChange={(value) => updateValue('body', value)} />
       </Box>
     </FlexGap>
   )

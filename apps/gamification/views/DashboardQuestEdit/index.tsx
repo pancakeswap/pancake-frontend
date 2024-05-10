@@ -1,10 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useState } from 'react'
 import { styled } from 'styled-components'
-import { EditTemplate, StateType } from 'views/DashboardQuestEdit/components/EditTemplate'
+import { EditTemplate } from 'views/DashboardQuestEdit/components/EditTemplate'
 import { Reward } from 'views/DashboardQuestEdit/components/Reward'
 import { Tasks } from 'views/DashboardQuestEdit/components/Tasks'
+import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 
 const DashboardQuestEditContainer = styled(Flex)`
   padding: 16px;
@@ -19,29 +19,7 @@ const DashboardQuestEditContainer = styled(Flex)`
 export const DashboardQuestEdit = () => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
-  const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
-  const [state, setState] = useState<StateType>(() => ({
-    title: '',
-    body: '',
-    amountPerWinner: '',
-    startDate: null,
-    startTime: null,
-    endDate: null,
-    endTime: null,
-  }))
-
-  const updateValue = (key: string, value: string | Date) => {
-    setState((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }))
-
-    // Keep track of what fields the user has attempted to edit
-    setFieldsState((prevFieldsState) => ({
-      ...prevFieldsState,
-      [key]: true,
-    }))
-  }
+  const { state, updateValue } = useQuestEdit()
 
   return (
     <DashboardQuestEditContainer>
