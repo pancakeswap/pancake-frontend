@@ -3348,7 +3348,7 @@
   "migrated position": "迁移持仓",
   "My veCAKE": "我的 veCAKE",
   "native position": "原生持仓",
-  "Adding CAKE or extending CAKE will be applying to your native position.": "添加 CAKE 或延长 CAKE 将适用于您的原生持仓。",
+  "Adding CAKE or extending CAKE will be applying to your native position.": "添加 CAKE 或延长 CAKE 锁仓期限仅适用于 veCAKE 原生持仓。",
   "View Migrated Position": "查看迁移持仓",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "更新您的 veCAKE 持仓，继续享受每周 CAKE 收益、收入分成、Gauge Voting、农场收益助推、参与 IFO 等，还有更多好处！",
   "Exact number: %numberWithFullDigits%": "Exact number: %numberWithFullDigits%",
