@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, CardBody, Flex, Image, RowBetween, Text } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
+import { Box, CardBody, Flex, RowBetween, Text } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
@@ -7,12 +8,14 @@ import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
 import { AppBody, AppHeader } from 'components/App'
 import { LightGreyCard } from 'components/Card'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
+import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import { useCurrency } from 'hooks/Tokens'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { useCurrencyBalance } from 'state/wallet/hooks'
+import getTokenLogoURL from 'utils/getTokenLogoURL'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { LiquidStakingFAQs } from 'views/LiquidStaking/components/FAQs'
 import LiquidStakingButton from 'views/LiquidStaking/components/LiquidStakingButton'
@@ -122,9 +125,7 @@ const LiquidStakingStakePage = () => {
                 tokenSymbol={outputCurrency?.symbol}
                 tokenDecimals={outputCurrency?.decimals}
                 tokenLogo={
-                  isClient
-                    ? `${window?.location?.origin}/images/tokens/${selectedList?.token1?.address}.png`
-                    : undefined
+                  isClient && selectedList?.token1 ? getTokenLogoURL(selectedList?.token1 as Token) : undefined
                 }
               />
               <Text color="textSubtle" fontSize="12px" ellipsis>
@@ -149,12 +150,7 @@ const LiquidStakingStakePage = () => {
               </Text>
               <Flex>
                 <Box width={24} height={24}>
-                  <Image
-                    src={`/images/tokens/${selectedList?.token1?.address}.png`}
-                    width={24}
-                    height={24}
-                    alt={selectedList?.token1?.symbol}
-                  />
+                  <CurrencyLogo currency={selectedList?.token1} size="24px" style={{ marginRight: '8px' }} />
                 </Box>
                 <Text ml="4px">{selectedList?.token1?.symbol}</Text>
               </Flex>

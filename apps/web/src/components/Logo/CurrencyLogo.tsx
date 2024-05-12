@@ -1,11 +1,11 @@
-import { Currency } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { BinanceIcon, TokenLogo } from '@pancakeswap/uikit'
-import { useMemo } from 'react'
-import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import { styled } from 'styled-components'
-import { ASSET_CDN } from 'config/constants/endpoints'
 import { useHttpLocations } from '@pancakeswap/hooks'
+import { Currency } from '@pancakeswap/sdk'
+import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import { BinanceIcon, TokenLogo } from '@pancakeswap/uikit'
+import { ASSET_CDN } from 'config/constants/endpoints'
+import { useMemo } from 'react'
+import { styled } from 'styled-components'
 import getTokenLogoURL from '../../utils/getTokenLogoURL'
 
 const StyledLogo = styled(TokenLogo)<{ size: string }>`

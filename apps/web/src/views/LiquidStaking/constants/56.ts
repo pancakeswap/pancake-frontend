@@ -51,7 +51,6 @@ const liquidStaking: LiquidStakingList[] = [
       },
     ],
     stakingMethodArgs: [],
-    requestWithdrawFn: 'requestWithdraw',
     stakingOverrides: ['value'],
     FAQs: BnbSnbnbFaq(),
   },

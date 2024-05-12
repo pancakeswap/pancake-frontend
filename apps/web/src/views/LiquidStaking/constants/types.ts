@@ -19,6 +19,7 @@ interface ExchangeRateMultiCall {
 export enum FunctionName {
   exchangeRate = 'exchangeRate',
   convertSnBnbToBnb = 'convertSnBnbToBnb',
+  getRate = 'getRate',
 }
 
 export interface FAQType {
@@ -40,5 +41,5 @@ export interface LiquidStakingList {
   stakingMethodArgs: string[]
   stakingOverrides: string[]
   FAQs: FAQType[]
-  requestWithdrawFn: string
+  requestWithdrawFn?: string
 }
