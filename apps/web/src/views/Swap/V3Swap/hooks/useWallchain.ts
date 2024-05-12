@@ -235,7 +235,7 @@ export function useWallchainSwapCallArguments(
         if (isNative) {
           setSwapCalls(previousSwapCalls)
         } else {
-          // if previous call succeded but MEV disappeared need to reset allowance flow
+          // if previous call succeeded but MEV disappeared need to reset allowance flow
           const callback = async () => {
             onWallchainDrop()
             return {

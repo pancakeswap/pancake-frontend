@@ -1,7 +1,7 @@
 import { ERC20Token } from '@pancakeswap/sdk'
 import { Currency, NativeCurrency, Token } from '@pancakeswap/swap-sdk-core'
 
-// only used as dummy to satify Currency Type
+// only used as dummy to satisfy Currency Type
 const WNATIVE_BTC = new ERC20Token(
   0,
   '0x0000000000000000000000000000000000000000',
