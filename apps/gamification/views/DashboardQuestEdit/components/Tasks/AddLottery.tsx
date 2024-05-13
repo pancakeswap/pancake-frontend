@@ -1,12 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
-import React, { useState } from 'react'
+import { useMemo } from 'react'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
 import { TaskLotteryConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
+import { validateNumber } from 'views/DashboardQuestEdit/utils/validateTask'
 
 interface AddLotteryProps {
   task: TaskLotteryConfig
@@ -14,25 +15,38 @@ interface AddLotteryProps {
 
 export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
   const { t } = useTranslation()
-  const [total, setTotal] = useState('')
   const { taskIcon, taskNaming } = useTaskInfo()
-  const [startRound, setStartRound] = useState('')
-  const [endRound, setEndRound] = useState('')
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTotal(e.target.value)
+    const forkTasks = Object.assign(tasks)
+    const indexToUpdate = forkTasks.findIndex((i: TaskLotteryConfig) => i.sid === task.sid)
+    forkTasks[indexToUpdate].minAmount = e.target.value
+
+    onTasksChange([...forkTasks])
   }
 
   const handleStartRoundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStartRound(e.target.value)
+    const forkTasks = Object.assign(tasks)
+    const indexToUpdate = forkTasks.findIndex((i: TaskLotteryConfig) => i.sid === task.sid)
+    forkTasks[indexToUpdate].fromRound = e.target.value
+
+    onTasksChange([...forkTasks])
   }
 
   const handleEndRoundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEndRound(e.target.value)
+    const forkTasks = Object.assign(tasks)
+    const indexToUpdate = forkTasks.findIndex((i: TaskLotteryConfig) => i.sid === task.sid)
+    forkTasks[indexToUpdate].toRound = e.target.value
+
+    onTasksChange([...forkTasks])
   }
+
+  const isMinAmountError = useMemo(() => validateNumber(task.minAmount), [task?.minAmount])
+  const isFromRoundError = useMemo(() => validateNumber(task.fromRound), [task?.fromRound])
+  const isToRoundError = useMemo(() => validateNumber(task.toRound), [task?.toRound])
 
   return (
     <Flex flexDirection={['column']}>
@@ -54,27 +68,48 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
       </Flex>
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flex="6" flexDirection="column">
-          <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>
-            <StyledInput isError placeholder={t('Min. ticket’s amount')} value={total} onChange={handleTotalChange} />
+          <StyledInputGroup
+            endIcon={isMinAmountError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+          >
+            <StyledInput
+              value={task.minAmount}
+              isError={isMinAmountError}
+              placeholder={t('Min. ticket’s amount')}
+              onChange={handleTotalChange}
+            />
           </StyledInputGroup>
-          <InputErrorText errorText={t('Cannot be 0')} />
+          {isMinAmountError && <InputErrorText errorText={t('Cannot be 0')} />}
         </Flex>
         <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
           <Flex>
             <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" mr="8px">
               {t('Rounds:')}
             </Text>
-            <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>
-              <StyledInput isError placeholder={t('From')} value={startRound} onChange={handleStartRoundChange} />
+            <StyledInputGroup
+              endIcon={isFromRoundError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+            >
+              <StyledInput
+                placeholder={t('From')}
+                value={task.fromRound}
+                isError={isFromRoundError}
+                onChange={handleStartRoundChange}
+              />
             </StyledInputGroup>
-            <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" m="0 4px">
+            <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" m="0 8px 0 0">
               -
             </Text>
-            <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>
-              <StyledInput isError placeholder={t('To')} value={endRound} onChange={handleEndRoundChange} />
+            <StyledInputGroup
+              endIcon={isToRoundError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+            >
+              <StyledInput
+                placeholder={t('To')}
+                value={task.toRound}
+                isError={isToRoundError}
+                onChange={handleEndRoundChange}
+              />
             </StyledInputGroup>
           </Flex>
-          <InputErrorText errorText={t('Wrong rounds numbers')} />
+          {(isFromRoundError || isToRoundError) && <InputErrorText errorText={t('Wrong rounds numbers')} />}
         </Flex>
       </Flex>
     </Flex>

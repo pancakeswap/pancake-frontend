@@ -11,7 +11,7 @@ import { TaskSwapConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
-import { validateMinAmount } from 'views/DashboardQuestEdit/utils/validateTask'
+import { validateNumber } from 'views/DashboardQuestEdit/utils/validateTask'
 
 const StyleSelector = styled(Button)`
   position: absolute;
@@ -56,7 +56,7 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
     onTasksChange([...forkTasks])
   }
 
-  const isError = useMemo(() => validateMinAmount(task.minAmount), [task?.minAmount])
+  const isError = useMemo(() => validateNumber(task.minAmount), [task?.minAmount])
 
   return (
     <Flex flexDirection={['column']}>
