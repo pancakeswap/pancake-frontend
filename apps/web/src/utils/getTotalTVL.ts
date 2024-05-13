@@ -173,23 +173,15 @@ const getV3TotalTx = async (
   ).filter(Boolean)
 
   const v3TotalTx = v3TotalTxResults
-    .map((factories) => {
-      return factories.factories?.[0]
-    })
+    .map((factories) => factories.factories?.[0])
     .filter(Boolean)
-    .map((transactions) => {
-      return transactions.txCount
-    })
+    .map((transactions) => transactions.txCount)
     .reduce((acc, v3Tx) => acc + parseFloat(v3Tx), 0)
 
   const v3Total30DaysAgoTx = v3TotalTx30DaysAgoResults
-    .map((factories) => {
-      return factories.factories?.[0]
-    })
+    .map((factories) => factories.factories?.[0])
     .filter(Boolean)
-    .map((transactions) => {
-      return transactions.txCount
-    })
+    .map((transactions) => transactions.txCount)
     .reduce((acc, v3Tx30DaysAgo) => acc + parseFloat(v3Tx30DaysAgo), 0)
   return { v3TotalTx, v3Total30DaysAgoTx }
 }
@@ -254,23 +246,15 @@ const getV2TotalTx = async (
   ).filter(Boolean)
 
   const v2TotalTx = v2TotalTxResults
-    .map((factories) => {
-      return factories.pancakeFactories?.[0]
-    })
+    .map((factories) => factories.pancakeFactories?.[0])
     .filter(Boolean)
-    .map((transactions) => {
-      return transactions.totalTransactions
-    })
+    .map((transactions) => transactions.totalTransactions)
     .reduce((acc, v2Tx) => acc + parseFloat(v2Tx), 0)
 
   const v2Total30DaysAgoTx = v2TotalTx30DaysAgoResults
-    .map((factories) => {
-      return factories.pancakeFactories?.[0]
-    })
+    .map((factories) => factories.pancakeFactories?.[0])
     .filter(Boolean)
-    .map((transactions) => {
-      return transactions.totalTransactions
-    })
+    .map((transactions) => transactions.totalTransactions)
     .reduce((acc, v2Tx30Ago) => acc + parseFloat(v2Tx30Ago), 0)
   return { v2TotalTx, v2Total30DaysAgoTx }
 }
@@ -335,23 +319,15 @@ const getStableTotalTx = async (
   ).filter(Boolean)
 
   const stableTotalTx = stableTotalTxResults
-    .map((factories) => {
-      return factories.factories?.[0]
-    })
+    .map((factories) => factories.factories?.[0])
     .filter(Boolean)
-    .map((transactions) => {
-      return transactions.totalTransactions
-    })
+    .map((transactions) => transactions.totalTransactions)
     .reduce((acc, stableTx) => acc + parseFloat(stableTx), 0)
 
   const stableTotal30DaysAgoTx = stableTotalTx30DaysAgoResults
-    .map((factories) => {
-      return factories.factories?.[0]
-    })
+    .map((factories) => factories.factories?.[0])
     .filter(Boolean)
-    .map((transactions) => {
-      return transactions.totalTransactions
-    })
+    .map((transactions) => transactions.totalTransactions)
     .reduce((acc, stableTx30DaysAgo) => acc + parseFloat(stableTx30DaysAgo), 0)
   return { stableTotalTx, stableTotal30DaysAgoTx }
 }
@@ -380,13 +356,9 @@ const getV3Tvl = async (v3ProdClients: GraphQLClient[]) => {
   ).filter(Boolean)
 
   return v3TvlResults
-    .map((factories) => {
-      return factories.factories?.[0]
-    })
+    .map((factories) => factories.factories?.[0])
     .filter(Boolean)
-    .map((valueLocked) => {
-      return valueLocked.totalValueLockedUSD
-    })
+    .map((valueLocked) => valueLocked.totalValueLockedUSD)
     .reduce((acc, v3TvlString) => acc + parseFloat(v3TvlString), 0)
 }
 
@@ -414,13 +386,9 @@ const getV2Tvl = async (v2ProdClients: GraphQLClient[]) => {
   ).filter(Boolean)
 
   return v2TvlResults
-    .map((factories) => {
-      return factories.pancakeFactories?.[0]
-    })
+    .map((factories) => factories.pancakeFactories?.[0])
     .filter(Boolean)
-    .map((valueLocked) => {
-      return valueLocked.totalLiquidityUSD
-    })
+    .map((valueLocked) => valueLocked.totalLiquidityUSD)
     .reduce((acc, v2TvlString) => acc + parseFloat(v2TvlString), 0)
 }
 
@@ -448,13 +416,9 @@ const getStableTvl = async (stableProdClients: GraphQLClient[]) => {
   ).filter(Boolean)
 
   return stableTvlResults
-    .map((factories) => {
-      return factories.factories?.[0]
-    })
+    .map((factories) => factories.factories?.[0])
     .filter(Boolean)
-    .map((valueLocked) => {
-      return valueLocked.totalLiquidityUSD
-    })
+    .map((valueLocked) => valueLocked.totalLiquidityUSD)
     .reduce((acc, v2TvlString) => acc + parseFloat(v2TvlString), 0)
 }
 
