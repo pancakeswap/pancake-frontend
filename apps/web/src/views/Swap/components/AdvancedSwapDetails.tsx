@@ -80,7 +80,6 @@ export const TradeSummary = memo(function TradeSummary({
             <NumberDisplay
               as="span"
               fontSize={14}
-              prefix={t('Up to ')}
               value={formatAmount(feeSavedAmount, 2)}
               suffix={` ${outputAmount?.currency?.symbol}`}
               color="success"
