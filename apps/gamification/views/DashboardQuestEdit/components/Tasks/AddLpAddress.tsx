@@ -1,9 +1,9 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
 import { NetworkSelectorModal } from 'components/NetworkSelectorModal'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { useState } from 'react'
+import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
@@ -11,6 +11,7 @@ import { TaskLiquidityConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
+import { validateLpAddress, validateNumber } from 'views/DashboardQuestEdit/utils/validateTask'
 
 const StyleSelector = styled(Button)`
   position: absolute;
@@ -38,24 +39,40 @@ interface AddLpAddressProps {
 export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo()
-  const [pickedChainId, setPickedChainId] = useState(ChainId.BSC)
-  const [total, setTotal] = useState('')
-  const [lpAddress, setLpAddress] = useState('')
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
+  const handlePickedChainId = (pickedChainId: ChainId) => {
+    const forkTasks = Object.assign(tasks)
+    const indexToUpdate = forkTasks.findIndex((i: TaskLiquidityConfig) => i.sid === task.sid)
+    forkTasks[indexToUpdate].network = pickedChainId
+
+    onTasksChange([...forkTasks])
+  }
+
   const [onPresentNetworkSelectorModal] = useModal(
-    <NetworkSelectorModal pickedChainId={pickedChainId} setPickedChainId={setPickedChainId} />,
+    <NetworkSelectorModal pickedChainId={task.network} setPickedChainId={handlePickedChainId} />,
   )
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTotal(e.target.value)
+    const forkTasks = Object.assign(tasks)
+    const indexToUpdate = forkTasks.findIndex((i: TaskLiquidityConfig) => i.sid === task.sid)
+    forkTasks[indexToUpdate].minAmount = e.target.value
+
+    onTasksChange([...forkTasks])
   }
 
   const handleLpAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLpAddress(e.target.value)
+    const forkTasks = Object.assign(tasks)
+    const indexToUpdate = forkTasks.findIndex((i: TaskLiquidityConfig) => i.sid === task.sid)
+    forkTasks[indexToUpdate].lpAddress = e.target.value
+
+    onTasksChange([...forkTasks])
   }
+
+  const isMinAmountError = useMemo(() => validateNumber(task.minAmount), [task?.minAmount])
+  const isLpAddressError = useMemo(() => validateLpAddress(task.lpAddress), [task?.lpAddress])
 
   return (
     <Flex flexDirection={['column']}>
@@ -84,25 +101,35 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
               style={{ cursor: 'pointer' }}
               onClick={onPresentNetworkSelectorModal}
             >
-              <StyleNetwork style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/${pickedChainId}.png)` }} />
+              <StyleNetwork style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/${task.network}.png)` }} />
               <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
             </Flex>
-            <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>
+            <StyledInputGroup
+              endIcon={isLpAddressError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+            >
               <StyledInput
-                isError
-                value={lpAddress}
+                isError={isLpAddressError}
+                value={task.lpAddress}
                 placeholder={t('LP address link')}
+                pattern="^(0x[a-fA-F0-9]{40})$"
                 onChange={handleLpAddressChange}
               />
             </StyledInputGroup>
           </Flex>
-          <InputErrorText errorText={t('This is not an LP address link')} />
+          {isLpAddressError && <InputErrorText errorText={t('This is not an LP address link')} />}
         </Flex>
         <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
-          <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>
-            <StyledInput isError placeholder={t('Min. amount in $')} value={total} onChange={handleTotalChange} />
+          <StyledInputGroup
+            endIcon={isMinAmountError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+          >
+            <StyledInput
+              isError
+              placeholder={t('Min. amount in $')}
+              value={task.minAmount}
+              onChange={handleTotalChange}
+            />
           </StyledInputGroup>
-          <InputErrorText errorText={t('Cannot be 0')} />
+          {isMinAmountError && <InputErrorText errorText={t('Cannot be 0')} />}
         </Flex>
       </Flex>
     </Flex>
