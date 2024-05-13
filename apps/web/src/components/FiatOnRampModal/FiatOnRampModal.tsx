@@ -13,6 +13,7 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 
+import { Currency } from '@pancakeswap/swap-sdk-core'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL } from 'config/constants/endpoints'
@@ -21,23 +22,18 @@ import { MutableRefObject, memo, useCallback, useEffect, useMemo, useState } fro
 import { useTheme } from 'styled-components'
 import { v4 } from 'uuid'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
-import {
-  ONRAMP_PROVIDERS,
-  OnRampChainId,
-  combinedNetworkIdMap,
-  getOnrampCurrencyChainId,
-  isNativeBtc,
-} from 'views/BuyCrypto/constants'
+import { ONRAMP_PROVIDERS, combinedNetworkIdMap, type OnRampChainId } from 'views/BuyCrypto/constants'
+import { useIsBtc } from 'views/BuyCrypto/hooks/useIsBtc'
 import { useOnRampSignature } from 'views/BuyCrypto/hooks/useOnRampSignature'
 import { IFrameWrapper, StyledBackArrowContainer } from 'views/BuyCrypto/styles'
-import { OnRampProviderQuote } from 'views/BuyCrypto/types'
+import type { OnRampProviderQuote, OnRampUnit } from 'views/BuyCrypto/types'
 import { ErrorText } from 'views/Swap/components/styleds'
 import { useAccount } from 'wagmi'
 import { ProviderIFrame } from './ProviderIframe'
 
 interface FiatOnRampProps {
   selectedQuote: OnRampProviderQuote | undefined
-  cryptoCurrency: string | undefined
+  cryptoCurrency: Currency | undefined
   externalTxIdRef: MutableRefObject<string | undefined>
   resetBuyCryptoState: () => void
 }
@@ -48,31 +44,32 @@ export const FiatOnRampModalButton = ({
   externalTxIdRef,
   disabled,
   loading,
-  input,
   btcAddress,
   resetBuyCryptoState,
   errorText,
+  onRampUnit,
 }: FiatOnRampProps & {
   disabled: boolean
   loading: boolean
-  input: string
   btcAddress: string
   errorText: string | undefined
+  onRampUnit: OnRampUnit
 }) => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
+  const isBtc = useIsBtc()
 
-  const isBtc = isNativeBtc(cryptoCurrency)
   const {
     data: sigData,
     isLoading,
     isError,
     refetch,
   } = useOnRampSignature({
-    chainId: getOnrampCurrencyChainId(cryptoCurrency),
-    quote: selectedQuote!,
-    externalTransactionId: externalTxIdRef.current!,
+    chainId: cryptoCurrency?.chainId,
+    quote: selectedQuote,
+    externalTransactionId: externalTxIdRef.current,
     btcAddress,
+    onRampUnit,
   })
 
   const [onPresentConfirmModal] = useModal(
@@ -83,7 +80,7 @@ export const FiatOnRampModalButton = ({
       error={isError}
       resetBuyCryptoState={resetBuyCryptoState}
       account={isBtc ? btcAddress : account}
-      chainId={getOnrampCurrencyChainId(cryptoCurrency)}
+      chainId={cryptoCurrency?.chainId}
       txId={externalTxIdRef.current}
     />,
   )
@@ -102,12 +99,12 @@ export const FiatOnRampModalButton = ({
     const provider = selectedQuote?.provider
 
     if (errorText) return errorText
-    if (isBtc && input === '') return t('Verify your address to continue')
+    if (isBtc && btcAddress === '') return t('Verify your address to continue')
     if (isBtc && disabled) return t('Invalid BTC address')
     if (loading || isLoading) return t('Fetching Quotes')
 
     return t('Buy with %provider%', { provider })
-  }, [loading, isLoading, selectedQuote, t, isBtc, disabled, input, errorText])
+  }, [loading, isLoading, selectedQuote, t, isBtc, disabled, btcAddress, errorText])
 
   if (!isBtc && !account)
     return (
@@ -142,7 +139,7 @@ export const FiatOnRampModal = memo<
       loading: boolean
       error: boolean
       account: `0x${string}` | string | undefined
-      chainId: OnRampChainId
+      chainId: OnRampChainId | undefined
       txId: string | undefined
     }
 >(function ConfirmSwapModalComp({
@@ -170,7 +167,7 @@ export const FiatOnRampModal = memo<
       const sigParam = iframeUrl.match(/[?&]signature=([^&]+)/)
       const sig = sigParam ? sigParam[1] : null
 
-      if (window?.mercuryoWidget && sig) {
+      if (window?.mercuryoWidget && sig && chainId) {
         // @ts-ignore
         const MC_WIDGET = window?.mercuryoWidget
         MC_WIDGET.run({
@@ -191,7 +188,7 @@ export const FiatOnRampModal = memo<
         })
       }
     }
-  }, [selectedQuote, theme, scriptLoaded, chainId, account, iframeUrl, txId])
+  }, [selectedQuote, theme, chainId, account, iframeUrl, txId])
 
   return (
     <>
