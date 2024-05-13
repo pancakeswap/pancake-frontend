@@ -8,7 +8,7 @@ import { useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
-import { Task } from 'views/DashboardQuestEdit/context'
+import { TaskSwapConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
@@ -23,7 +23,7 @@ const StyleSelector = styled(Button)`
 `
 
 interface AddSwapProps {
-  task: Task
+  task: TaskSwapConfig
 }
 
 export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
@@ -31,17 +31,17 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
   const { taskIcon, taskNaming } = useTaskInfo()
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
-  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.id)} />)
+  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
       const forkTasks = Object.assign(tasks)
-      const indexToUpdate = forkTasks.findIndex((i: Task) => i.id === task.id)
+      const indexToUpdate = forkTasks.findIndex((i: TaskSwapConfig) => i.sid === task.sid)
       forkTasks[indexToUpdate].currency = currency
 
       onTasksChange([...forkTasks])
     },
-    [onTasksChange, task.id, tasks],
+    [onTasksChange, task.sid, tasks],
   )
 
   const [onPresentCurrencyModal] = useModal(
@@ -50,13 +50,13 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
 
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const forkTasks = Object.assign(tasks)
-    const indexToUpdate = forkTasks.findIndex((i: Task) => i.id === task.id)
+    const indexToUpdate = forkTasks.findIndex((i: TaskSwapConfig) => i.sid === task.sid)
     forkTasks[indexToUpdate].minAmount = e.target.value
 
     onTasksChange([...forkTasks])
   }
 
-  const isError = useMemo(() => new BigNumber(task?.minAmount ?? 0).gt(0), [task?.minAmount])
+  const isError = useMemo(() => new BigNumber(task.minAmount ?? 0).gt(0), [task?.minAmount])
 
   return (
     <Flex flexDirection={['column']}>

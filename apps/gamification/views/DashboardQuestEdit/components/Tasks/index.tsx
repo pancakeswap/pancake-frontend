@@ -6,12 +6,12 @@ import { AddLottery } from 'views/DashboardQuestEdit/components/Tasks/AddLottery
 import { AddLpAddress } from 'views/DashboardQuestEdit/components/Tasks/AddLpAddress'
 import { AddSwap } from 'views/DashboardQuestEdit/components/Tasks/AddSwap'
 import { AddTaskList } from 'views/DashboardQuestEdit/components/Tasks/AddTaskList'
-// import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
-import { Task } from 'views/DashboardQuestEdit/context'
+import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
+import { TaskConfigType } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 
-const Item = ({ item, dragHandleProps }: { item: Task; dragHandleProps: any }) => {
+const Item = ({ item, dragHandleProps }: { item: TaskConfigType; dragHandleProps: any }) => {
   const { onMouseDown, onTouchStart } = dragHandleProps
   return (
     <Flex mb="4px">
@@ -33,7 +33,16 @@ const Item = ({ item, dragHandleProps }: { item: Task; dragHandleProps: any }) =
           {item.type === TaskType.MAKE_A_SWAP && <AddSwap task={item} />}
           {item.type === TaskType.PARTICIPATE_LOTTERY && <AddLottery />}
           {item.type === TaskType.ADD_LIQUIDITY && <AddLpAddress />}
-          {/* {item.id === 3 && <SocialTask />} */}
+
+          {(item.type === TaskType.X_LINK_POST ||
+            item.type === TaskType.X_FOLLOW_ACCOUNT ||
+            item.type === TaskType.X_REPOST_POST ||
+            item.type === TaskType.TELEGRAM_JOIN_GROUP ||
+            item.type === TaskType.DISCORD_JOIN_SERVICE ||
+            item.type === TaskType.YOUTUBE_SUBSCRIBE ||
+            item.type === TaskType.IG_LIKE_POST ||
+            item.type === TaskType.IG_COMMENT_POST ||
+            item.type === TaskType.IG_FOLLOW_ACCOUNT) && <SocialTask />}
         </Box>
       </Card>
     </Flex>
@@ -75,7 +84,7 @@ export const Tasks = () => {
           itemKey="id"
           list={tasks}
           template={Item as any}
-          onMoveEnd={(newTasks: any) => onTasksChange(newTasks as Task[])}
+          onMoveEnd={(newTasks: any) => onTasksChange(newTasks as TaskConfigType[])}
           container={() => containerRef?.current}
         />
       </Flex>

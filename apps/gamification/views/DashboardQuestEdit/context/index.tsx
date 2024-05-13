@@ -1,9 +1,7 @@
-import { ChainId } from '@pancakeswap/chains'
-import { Currency } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { createContext, useCallback, useMemo, useState } from 'react'
-import { Address } from 'viem'
+import { TaskConfigType } from 'views/DashboardQuestEdit/context/types'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 
 export interface StateType {
@@ -16,40 +14,11 @@ export interface StateType {
   endTime: null | Date
 }
 
-// Swap
-// - currency
-// - minAmount
-
-// Lottery
-// - minAmount
-// - fromRound,
-// - toRound
-
-// Add liquidity
-// - network
-// - lp address
-// - minAmount
-
-// - Social
-// - social link
-
-export interface Task {
-  id: string
-  type: TaskType
-  minAmount?: 0
-  fromRound?: 0
-  toRound?: 0
-  networkId?: ChainId
-  lpAddress?: Address
-  socialLink?: string
-  currency?: Currency
-}
-
 interface EditQuestContextType {
   state: StateType
-  tasks: Task[]
+  tasks: TaskConfigType[]
   updateValue: (key: string, value: string | Date) => void
-  onTasksChange: (task: Task[]) => void
+  onTasksChange: (task: TaskConfigType[]) => void
   deleteTask: (value: string) => void
 }
 
@@ -82,15 +51,15 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
   }, [])
 
   // Task
-  const [tasks, setTasks] = useState<Task[]>([
+  const [tasks, setTasks] = useState<TaskConfigType[]>([
     {
-      id: '0',
+      sid: '0',
       minAmount: 0,
       type: TaskType.MAKE_A_SWAP,
       currency: (CAKE as any)?.[chainId],
     },
     {
-      id: '1',
+      sid: '1',
       type: TaskType.PARTICIPATE_LOTTERY,
       minAmount: 0,
       fromRound: 0,
@@ -98,14 +67,14 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
     },
   ])
 
-  const onTasksChange = (newTasks: Task[]) => {
+  const onTasksChange = (newTasks: TaskConfigType[]) => {
     setTasks(newTasks)
   }
 
   const deleteTask = useCallback(
     (id: string) => {
       const forkTasks = Object.assign(tasks)
-      const indexToRemove = forkTasks.findIndex((task: Task) => id === task.id)
+      const indexToRemove = forkTasks.findIndex((task: TaskConfigType) => id === task.sid)
       forkTasks.splice(indexToRemove, 1)
       onTasksChange([...forkTasks])
     },
