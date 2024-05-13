@@ -3,7 +3,7 @@ import { Currency } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
 import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
 import { TokenWithChain } from 'components/TokenWithChain'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
@@ -29,12 +29,15 @@ interface AddSwapProps {
 export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo()
+  const [isFirst, setIsFirst] = useState(true)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
+      setIsFirst(false)
+
       const forkTasks = Object.assign(tasks)
       const indexToUpdate = forkTasks.findIndex((i: TaskSwapConfig) => i.sid === task.sid)
       forkTasks[indexToUpdate].currency = currency
@@ -49,6 +52,8 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
   )
 
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsFirst(false)
+
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskSwapConfig) => i.sid === task.sid)
     forkTasks[indexToUpdate].minAmount = e.target.value
@@ -56,7 +61,7 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
     onTasksChange([...forkTasks])
   }
 
-  const isError = useMemo(() => validateNumber(task.minAmount), [task?.minAmount])
+  const isError = useMemo(() => !isFirst && validateNumber(task.minAmount), [isFirst, task?.minAmount])
 
   return (
     <Flex flexDirection={['column']}>

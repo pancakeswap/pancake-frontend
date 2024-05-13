@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, ChevronDownIcon, DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
 import { NetworkSelectorModal } from 'components/NetworkSelectorModal'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
@@ -39,9 +39,12 @@ interface AddLpAddressProps {
 export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo()
+  const [isFirst, setIsFirst] = useState(true)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
   const handlePickedChainId = (pickedChainId: ChainId) => {
+    setIsFirst(false)
+
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskLiquidityConfig) => i.sid === task.sid)
     forkTasks[indexToUpdate].network = pickedChainId
@@ -56,6 +59,8 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsFirst(false)
+
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskLiquidityConfig) => i.sid === task.sid)
     forkTasks[indexToUpdate].minAmount = e.target.value
@@ -64,6 +69,8 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
   }
 
   const handleLpAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsFirst(false)
+
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskLiquidityConfig) => i.sid === task.sid)
     forkTasks[indexToUpdate].lpAddress = e.target.value
@@ -71,8 +78,8 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
     onTasksChange([...forkTasks])
   }
 
-  const isMinAmountError = useMemo(() => validateNumber(task.minAmount), [task?.minAmount])
-  const isLpAddressError = useMemo(() => validateLpAddress(task.lpAddress), [task?.lpAddress])
+  const isMinAmountError = useMemo(() => !isFirst && validateNumber(task.minAmount), [isFirst, task?.minAmount])
+  const isLpAddressError = useMemo(() => !isFirst && validateLpAddress(task.lpAddress), [isFirst, task?.lpAddress])
 
   return (
     <Flex flexDirection={['column']}>
@@ -123,9 +130,9 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
             endIcon={isMinAmountError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
           >
             <StyledInput
-              isError
-              placeholder={t('Min. amount in $')}
               value={task.minAmount}
+              isError={isMinAmountError}
+              placeholder={t('Min. amount in $')}
               onChange={handleTotalChange}
             />
           </StyledInputGroup>

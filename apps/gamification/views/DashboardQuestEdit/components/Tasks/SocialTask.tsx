@@ -11,7 +11,7 @@ import {
   useModal,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { InputErrorText, StyledInput } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
 import { TaskSocialConfig } from 'views/DashboardQuestEdit/context/types'
@@ -27,6 +27,7 @@ interface SocialTaskProps {
 export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
+  const [isFirst, setIsFirst] = useState(true)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
@@ -43,6 +44,8 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
   }
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsFirst(false)
+
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskSocialConfig) => i.sid === task.sid)
     forkTasks[indexToUpdate].socialLink = e.target.value
@@ -50,7 +53,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
     onTasksChange([...forkTasks])
   }
 
-  const isUrlError = useMemo(() => validateUrl(task.socialLink), [task?.socialLink])
+  const isUrlError = useMemo(() => !isFirst && validateUrl(task.socialLink), [isFirst, task?.socialLink])
 
   return (
     <Flex flexDirection="column">
