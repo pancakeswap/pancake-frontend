@@ -9,6 +9,7 @@ import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
 import { Field } from 'state/swap/actions'
 import { SlippageAdjustedAmounts } from '../V3Swap/utils/exchange'
+import { useFeeSaved } from '../hooks/useFeeSaved'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { RouterViewer } from './RouterViewer'
 import SwapRoute from './SwapRoute'
@@ -33,6 +34,7 @@ export const TradeSummary = memo(function TradeSummary({
 }) {
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
+  const feeSaved = useFeeSaved(inputAmount, outputAmount)
 
   return (
     <AutoColumn style={{ padding: '0 24px' }}>
@@ -57,6 +59,30 @@ export const TradeSummary = memo(function TradeSummary({
           </Text>
         </RowFixed>
       </RowBetween>
+      {feeSaved ? (
+        <RowBetween>
+          <RowFixed>
+            <Text fontSize="14px" color="textSubtle">
+              {t('Fee saved')}
+            </Text>
+            <QuestionHelper
+              text={
+                <>
+                  <Text>{t('Fees saved on PancakeSwap compared to major DEXs charging interface fees')}</Text>
+                </>
+              }
+              ml="4px"
+              placement="top"
+            />
+          </RowFixed>
+          <RowFixed>
+            <Text fontSize="14px" color="success">
+              {t('Up to ')}
+              {formatAmount(feeSaved, 4)} {inputAmount?.currency?.symbol}
+            </Text>
+          </RowFixed>
+        </RowBetween>
+      ) : null}
       {priceImpactWithoutFee && (
         <RowBetween style={{ padding: '4px 0 0 0' }}>
           <RowFixed>
