@@ -8,12 +8,13 @@ import { useHasPendingApproval, useTransactionAdder } from 'state/transactions/h
 import { calculateGasMargin } from 'utils'
 import { getViemErrorMessage } from 'utils/errors'
 import { isUserRejected, logError } from 'utils/sentry'
-import { Address } from 'viem'
+import { Address, Hex, SendTransactionReturnType, encodeFunctionData, parseAbi } from 'viem'
 import { useAccount } from 'wagmi'
-import useGelatoLimitOrdersLib from './limitOrders/useGelatoLimitOrdersLib'
+import { usePaymaster } from 'views/Swap/V3Swap/components/Paymaster/hooks/usePaymaster'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
 import { useTokenContract } from './useContract'
 import useTokenAllowance from './useTokenAllowance'
+import useGelatoLimitOrdersLib from './limitOrders/useGelatoLimitOrdersLib'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -41,6 +42,8 @@ export function useApproveCallback(
   const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
   const { allowance: currentAllowance, refetch } = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
+  const { isPaymasterAvailable, isPaymasterTokenActive, executePaymasterTransaction } = usePaymaster()
+
   const [pending, setPending] = useState<boolean>(pendingApproval)
   const [isPendingError, setIsPendingError] = useState<boolean>(false)
 
@@ -140,20 +143,45 @@ export function useApproveCallback(
       if (!estimatedGas) return undefined
       const finalAmount =
         overrideAmountApprove ?? (useExact ? amountToApprove?.quotient ?? targetAmount ?? MaxUint256 : MaxUint256)
-      const res = callWithGasPrice(tokenContract, 'approve' as const, [spender as Address, finalAmount], {
-        gas: calculateGasMargin(estimatedGas),
-      })
+
+      let sendTxResult: Promise<SendTransactionReturnType> | undefined
+
+      if (isPaymasterAvailable && isPaymasterTokenActive) {
+        const calldata = encodeFunctionData({
+          abi: parseAbi(['function approve(address spender, uint256 amount) public returns (bool)']),
+          functionName: 'approve',
+          args: [spender as Address, finalAmount],
+        })
+
+        const call = {
+          address: tokenContract.address,
+          gas: estimatedGas,
+          value: '0x0' as Hex,
+          calldata,
+        }
+
+        sendTxResult = executePaymasterTransaction(call, account as Address)
+      } else {
+        sendTxResult = callWithGasPrice(tokenContract, 'approve' as const, [spender as Address, finalAmount], {
+          gas: calculateGasMargin(estimatedGas),
+        }).then((response) => response.hash)
+      }
+
+      sendTxResult
         .then((response) => {
           if (addToTransaction && token) {
-            addTransaction(response, {
-              summary: `Approve ${overrideAmountApprove ?? amountToApprove?.currency?.symbol}`,
-              translatableSummary: {
-                text: 'Approve %symbol%',
-                data: { symbol: overrideAmountApprove?.toString() ?? amountToApprove?.currency?.symbol },
+            addTransaction(
+              { hash: response },
+              {
+                summary: `Approve ${overrideAmountApprove ?? amountToApprove?.currency?.symbol}`,
+                translatableSummary: {
+                  text: 'Approve %symbol%',
+                  data: { symbol: overrideAmountApprove?.toString() ?? amountToApprove?.currency?.symbol },
+                },
+                approval: { tokenAddress: token.address, spender, amount: finalAmount.toString() },
+                type: 'approve',
               },
-              approval: { tokenAddress: token.address, spender, amount: finalAmount.toString() },
-              type: 'approve',
-            })
+            )
           }
           return response
         })
@@ -166,7 +194,7 @@ export function useApproveCallback(
           throw error
         })
 
-      return res
+      return sendTxResult
     },
     [
       approvalState,
@@ -180,6 +208,10 @@ export function useApproveCallback(
       t,
       addToTransaction,
       addTransaction,
+      account,
+      isPaymasterAvailable,
+      isPaymasterTokenActive,
+      executePaymasterTransaction,
     ],
   )
 

@@ -14,12 +14,20 @@ import { basisPointsToPercent } from 'utils/exchange'
 import { logSwap, logTx } from 'utils/log'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import { Address, Hex, TransactionExecutionError, UserRejectedRequestError, hexToBigInt } from 'viem'
+import {
+  Address,
+  Hex,
+  TransactionExecutionError,
+  UserRejectedRequestError,
+  hexToBigInt,
+  SendTransactionReturnType,
+} from 'viem'
 import { useSendTransaction } from 'wagmi'
 
 import { logger } from 'utils/datadog'
 import { viemClients } from 'utils/viem'
 import { isZero } from '../utils/isZero'
+import { usePaymaster } from '../components/Paymaster/hooks/usePaymaster'
 
 interface SwapCall {
   address: Address
@@ -62,6 +70,9 @@ export default function useSendSwapTransaction(
   const [allowedSlippage] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const { recipient } = useSwapState()
   const recipientAddress = recipient === null ? account : recipient
+
+  // Paymaster for zkSync
+  const { isPaymasterAvailable, isPaymasterTokenActive, executePaymasterTransaction } = usePaymaster()
 
   return useMemo(() => {
     if (!trade || !sendTransactionAsync || !account || !chainId || !publicClient) {
@@ -139,14 +150,22 @@ export default function useSendSwapTransaction(
               : undefined
         }
 
-        return sendTransactionAsync({
-          account,
-          chainId,
-          to: call.address,
-          data: call.calldata,
-          value: call.value && !isZero(call.value) ? hexToBigInt(call.value) : 0n,
-          gas: call.gas,
-        })
+        let sendTxResult: Promise<SendTransactionReturnType> | undefined
+
+        if (isPaymasterAvailable && isPaymasterTokenActive) {
+          sendTxResult = executePaymasterTransaction(call, account, chainId)
+        } else {
+          sendTxResult = sendTransactionAsync({
+            account,
+            chainId,
+            to: call.address,
+            data: call.calldata,
+            value: call.value && !isZero(call.value) ? hexToBigInt(call.value) : 0n,
+            gas: call.gas,
+          })
+        }
+
+        sendTxResult
           .then((response) => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
