@@ -5,7 +5,6 @@ import { AutoColumn, Flex, Link, Modal, ModalV2, QuestionHelper, SearchIcon, Tex
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { memo, useState } from 'react'
 
-import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
@@ -90,7 +89,8 @@ export const TradeSummary = memo(function TradeSummary({
               as="span"
               fontSize={14}
               color="success"
-              value={feeSavedUsdValue ? formatNumber(feeSavedUsdValue) : 0}
+              maximumSignificantDigits={4}
+              value={feeSavedUsdValue}
               prefix="(~$"
               suffix=")"
               ml={1}
