@@ -3,12 +3,13 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import isZero from '@pancakeswap/utils/isZero'
 import { Address, Hex, hexToBigInt, isAddress, stringify } from 'viem'
 import { eip712WalletActions, zkSync } from 'viem/zksync'
-import { useWalletClient } from 'wagmi'
 import { useAtomValue } from 'jotai'
-import { feeTokenAddressAtom } from '../state/atoms'
 
+import { createWagmiConfig } from 'utils/wagmi'
+import { getWalletClient } from '@wagmi/core'
 import { ZyfiResponse } from '../types'
 import { paymasterTokens } from '../config/config'
+import { feeTokenAddressAtom } from '../state/atoms'
 
 interface SwapCall {
   address: Address
@@ -21,7 +22,6 @@ interface SwapCall {
  */
 export const usePaymaster = () => {
   const chain = useActiveChainId()
-  const { data: walletClient } = useWalletClient()
 
   const feeTokenAddress = useAtomValue(feeTokenAddressAtom)
 
@@ -58,7 +58,6 @@ export const usePaymaster = () => {
 
       if (response.ok) {
         const tokenList: ZyfiResponse[] = await response.json()
-        console.log('Paymaster Token List', tokenList)
         return tokenList
       }
 
@@ -138,14 +137,11 @@ export const usePaymaster = () => {
         paymasterInput: txResponse.txData.customData.paymasterParams.paymasterInput,
       }
 
-      if (walletClient) {
-        // Extend with Viem's Utils for zkSync
-        walletClient.extend(eip712WalletActions())
+      const walletClient = (await getWalletClient(createWagmiConfig())).extend(eip712WalletActions())
 
-        const hash = await walletClient.sendTransaction(newTx)
+      const hash = await walletClient.sendTransaction(newTx)
 
-        return hash
-      }
+      return hash
     }
 
     return Promise.reject(new Error('Failed to execute paymaster transaction'))
