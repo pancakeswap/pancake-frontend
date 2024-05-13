@@ -7,6 +7,8 @@ import { useState } from 'react'
 import { styled } from 'styled-components'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
+import { TaskLiquidityConfig } from 'views/DashboardQuestEdit/context/types'
+import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 
@@ -29,18 +31,23 @@ const StyleNetwork = styled(Flex)`
   background-size: contain;
 `
 
-export const AddLpAddress = () => {
+interface AddLpAddressProps {
+  task: TaskLiquidityConfig
+}
+
+export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo()
   const [pickedChainId, setPickedChainId] = useState(ChainId.BSC)
   const [total, setTotal] = useState('')
   const [lpAddress, setLpAddress] = useState('')
+  const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
   const [onPresentNetworkSelectorModal] = useModal(
     <NetworkSelectorModal pickedChainId={pickedChainId} setPickedChainId={setPickedChainId} />,
   )
 
-  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal />)
+  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTotal(e.target.value)

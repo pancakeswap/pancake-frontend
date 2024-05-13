@@ -14,6 +14,8 @@ import {
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
+import { TaskSocialConfig } from 'views/DashboardQuestEdit/context/types'
+import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 
@@ -21,11 +23,17 @@ const StyledInput = styled(Input)`
   height: 32px;
 `
 
-export const SocialTask = () => {
+interface SocialTaskProps {
+  task: TaskSocialConfig
+}
+
+export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const [urlLink, setUrlLink] = useState('https://google.com')
-  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal />)
+  const { tasks, onTasksChange, deleteTask } = useQuestEdit()
+
+  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const social = TaskType.X_LINK_POST
   const { taskIcon, taskNaming, taskInputPlaceholder } = useTaskInfo()

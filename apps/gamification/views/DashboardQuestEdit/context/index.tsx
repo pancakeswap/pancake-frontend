@@ -1,8 +1,6 @@
-import { CAKE } from '@pancakeswap/tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { createContext, useCallback, useMemo, useState } from 'react'
 import { TaskConfigType } from 'views/DashboardQuestEdit/context/types'
-import { TaskType } from 'views/DashboardQuestEdit/type'
 
 export interface StateType {
   title: string
@@ -26,6 +24,7 @@ export const QuesEditContext = createContext<EditQuestContextType | undefined>(u
 
 export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { chainId } = useActiveChainId()
+  const [tasks, setTasks] = useState<TaskConfigType[]>([])
   const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
   const [state, setState] = useState<StateType>(() => ({
     title: '',
@@ -51,22 +50,6 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
   }, [])
 
   // Task
-  const [tasks, setTasks] = useState<TaskConfigType[]>([
-    {
-      sid: '0',
-      minAmount: 0,
-      type: TaskType.MAKE_A_SWAP,
-      currency: (CAKE as any)?.[chainId],
-    },
-    {
-      sid: '1',
-      type: TaskType.PARTICIPATE_LOTTERY,
-      minAmount: 0,
-      fromRound: 0,
-      toRound: 0,
-    },
-  ])
-
   const onTasksChange = (newTasks: TaskConfigType[]) => {
     setTasks(newTasks)
   }

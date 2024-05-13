@@ -1,18 +1,26 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
+import { TaskLotteryConfig } from 'views/DashboardQuestEdit/context/types'
+import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 
-export const AddLottery = () => {
+interface AddLotteryProps {
+  task: TaskLotteryConfig
+}
+
+export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
   const { t } = useTranslation()
   const [total, setTotal] = useState('')
   const { taskIcon, taskNaming } = useTaskInfo()
   const [startRound, setStartRound] = useState('')
   const [endRound, setEndRound] = useState('')
-  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal />)
+  const { tasks, onTasksChange, deleteTask } = useQuestEdit()
+
+  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTotal(e.target.value)

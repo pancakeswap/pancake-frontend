@@ -31,8 +31,8 @@ const Item = ({ item, dragHandleProps }: { item: TaskConfigType; dragHandleProps
       <Card style={{ width: '100%' }}>
         <Box padding="8px">
           {item.type === TaskType.MAKE_A_SWAP && <AddSwap task={item} />}
-          {item.type === TaskType.PARTICIPATE_LOTTERY && <AddLottery />}
-          {item.type === TaskType.ADD_LIQUIDITY && <AddLpAddress />}
+          {item.type === TaskType.PARTICIPATE_LOTTERY && <AddLottery task={item} />}
+          {item.type === TaskType.ADD_LIQUIDITY && <AddLpAddress task={item} />}
 
           {(item.type === TaskType.X_LINK_POST ||
             item.type === TaskType.X_FOLLOW_ACCOUNT ||
@@ -42,7 +42,7 @@ const Item = ({ item, dragHandleProps }: { item: TaskConfigType; dragHandleProps
             item.type === TaskType.YOUTUBE_SUBSCRIBE ||
             item.type === TaskType.IG_LIKE_POST ||
             item.type === TaskType.IG_COMMENT_POST ||
-            item.type === TaskType.IG_FOLLOW_ACCOUNT) && <SocialTask />}
+            item.type === TaskType.IG_FOLLOW_ACCOUNT) && <SocialTask task={item} />}
         </Box>
       </Card>
     </Flex>
@@ -81,7 +81,7 @@ export const Tasks = () => {
       </Flex>
       <Flex flexDirection="column" ref={containerRef}>
         <DraggableList
-          itemKey="id"
+          itemKey="sid"
           list={tasks}
           template={Item as any}
           onMoveEnd={(newTasks: any) => onTasksChange(newTasks as TaskConfigType[])}
