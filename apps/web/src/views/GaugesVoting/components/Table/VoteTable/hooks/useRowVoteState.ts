@@ -84,10 +84,6 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
   const changeHighlight = useMemo(() => {
     const prev = getBalanceNumber(new BN(currentVoteWeightAmount.toString())).toPrecision(2)
     const current = previewVoteWeightAmount.toPrecision(2)
-    console.debug('debug amount', {
-      prev,
-      current,
-    })
     return prev !== current
   }, [currentVoteWeightAmount, previewVoteWeightAmount])
 

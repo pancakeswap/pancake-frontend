@@ -71,7 +71,7 @@ export const VoteTable = () => {
   const { data: slopes } = useUserVoteSlopes()
   const { isDesktop, isMobile } = useMatchBreakpoints()
   const rowsWithLock = useMemo(() => {
-    return rows?.map((row) => {
+    return rows?.filter(Boolean).map((row) => {
       return {
         ...row,
         locked: votes[row.hash]?.locked,
