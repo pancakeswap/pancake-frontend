@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
-import { AutoColumn, Column, Flex, Link, Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Flex, Link, Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { memo, useState } from 'react'
 
@@ -78,24 +78,23 @@ export const TradeSummary = memo(function TradeSummary({
             />
           </RowFixed>
           <RowFixed>
-            <Column alignItems="flex-end">
-              <NumberDisplay
-                as="span"
-                fontSize={14}
-                prefix={t('Up to ')}
-                value={formatAmount(feeSavedAmount, 2)}
-                suffix={` ${outputAmount?.currency?.symbol}`}
-                color="success"
-              />
-              <NumberDisplay
-                as="span"
-                fontSize={14}
-                // color="success"
-                value={feeSavedUsdValue ? formatNumber(feeSavedUsdValue) : 0}
-                prefix="(~"
-                suffix=" USD)"
-              />
-            </Column>
+            <NumberDisplay
+              as="span"
+              fontSize={14}
+              prefix={t('Up to ')}
+              value={formatAmount(feeSavedAmount, 2)}
+              suffix={` ${outputAmount?.currency?.symbol}`}
+              color="success"
+            />
+            <NumberDisplay
+              as="span"
+              fontSize={14}
+              color="success"
+              value={feeSavedUsdValue ? formatNumber(feeSavedUsdValue) : 0}
+              prefix="(~$"
+              suffix=")"
+              ml={1}
+            />
           </RowFixed>
         </RowBetween>
       ) : null}

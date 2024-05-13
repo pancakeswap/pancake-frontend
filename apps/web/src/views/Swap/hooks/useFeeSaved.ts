@@ -1,6 +1,6 @@
 import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { DAI, USDC, USDT } from '@pancakeswap/tokens'
-import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
+import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { useMemo } from 'react'
 
 const MAJOR_DEFINED_STABLE_COINS = {
@@ -38,7 +38,7 @@ export const useFeeSaved = (inputAmount?: CurrencyAmount<Currency>, outputAmount
     return outputAmount.multiply(25).divide(10000)
   }, [inputAmount, outputAmount])
 
-  const feeSavedUsdValue = useStablecoinPriceAmount(inputAmount?.currency, Number(feeSavedAmount?.toExact()), {
+  const { data: feeSavedUsdValue } = useCurrencyUsdPrice(feeSavedAmount?.currency, {
     enabled: Boolean(feeSavedAmount),
   })
 
