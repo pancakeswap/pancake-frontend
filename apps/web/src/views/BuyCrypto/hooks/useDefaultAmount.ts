@@ -1,5 +1,5 @@
 import { useQuery, type QueryFunction } from '@tanstack/react-query'
-import { WALLET_API_ENDPOINT } from 'config/constants/endpoints'
+import { WALLET_API } from 'config/constants/endpoints'
 import { useCallback, useMemo } from 'react'
 import { createQueryKey } from '../types'
 
@@ -11,9 +11,7 @@ const getFiatPrice: QueryFunction<number, GetFiatUsdRateKey> = async ({ queryKey
   if (!currencyCode) {
     throw new Error('Invalid fiat currency code')
   }
-  const result = await fetch(`${WALLET_API_ENDPOINT}/v0/prices/fiat/${currencyCode.toLowerCase()}`).then((res) =>
-    res.json(),
-  )
+  const result = await fetch(`${WALLET_API}/v0/prices/fiat/${currencyCode.toLowerCase()}`).then((res) => res.json())
   if (typeof result !== 'number') {
     throw new Error('Invalid response')
   }
