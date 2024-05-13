@@ -37,7 +37,7 @@ export const StepCounter = memo(
     tokenB,
   }: StepCounterProps) => {
     const { t } = useTranslation();
-    //  for focus state, styled components doesnt let you select input parent container
+    //  for focus state, styled components doesn't let you select input parent container
     const [, setActive] = useState(false);
 
     // let user type value and only update parent value on blur
