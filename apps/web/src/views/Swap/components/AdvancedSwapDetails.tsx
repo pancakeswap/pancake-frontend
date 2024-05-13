@@ -1,10 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
-import { AutoColumn, Flex, Link, Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Column, Flex, Link, Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { memo, useState } from 'react'
 
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
 import { Field } from 'state/swap/actions'
@@ -34,7 +36,7 @@ export const TradeSummary = memo(function TradeSummary({
 }) {
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
-  const feeSaved = useFeeSaved(inputAmount, outputAmount)
+  const { feeSavedAmount, feeSavedUsdValue } = useFeeSaved(inputAmount, outputAmount)
 
   return (
     <AutoColumn style={{ padding: '0 24px' }}>
@@ -59,8 +61,8 @@ export const TradeSummary = memo(function TradeSummary({
           </Text>
         </RowFixed>
       </RowBetween>
-      {feeSaved ? (
-        <RowBetween>
+      {feeSavedAmount ? (
+        <RowBetween align="flex-start">
           <RowFixed>
             <Text fontSize="14px" color="textSubtle">
               {t('Fee saved')}
@@ -76,10 +78,24 @@ export const TradeSummary = memo(function TradeSummary({
             />
           </RowFixed>
           <RowFixed>
-            <Text fontSize="14px" color="success">
-              {t('Up to ')}
-              {formatAmount(feeSaved, 4)} {inputAmount?.currency?.symbol}
-            </Text>
+            <Column alignItems="flex-end">
+              <NumberDisplay
+                as="span"
+                fontSize={14}
+                prefix={t('Up to ')}
+                value={formatAmount(feeSavedAmount, 2)}
+                suffix={` ${outputAmount?.currency?.symbol}`}
+                color="success"
+              />
+              <NumberDisplay
+                as="span"
+                fontSize={14}
+                // color="success"
+                value={feeSavedUsdValue ? formatNumber(feeSavedUsdValue) : 0}
+                prefix="(~"
+                suffix=" USD)"
+              />
+            </Column>
           </RowFixed>
         </RowBetween>
       ) : null}
