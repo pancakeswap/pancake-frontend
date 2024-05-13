@@ -66,7 +66,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
         </Text>
         <Input value={title} onChange={(e) => updateValue('title', e.currentTarget.value)} />
       </Box>
-      <Box position="relative" zIndex={1}>
+      <Box position="relative" zIndex={3}>
         <Text bold fontSize="24px" lineHeight="28px" mb="8px">
           {t('Timeline')}
         </Text>
@@ -113,7 +113,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
 
       {children}
 
-      <Box>
+      <Box position="relative" zIndex={1}>
         <Text bold fontSize="24px" lineHeight="28px" mb="8px">
           {t('Description')}
         </Text>

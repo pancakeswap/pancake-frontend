@@ -9,22 +9,22 @@ export interface TaskBaseConfig {
 
 export interface TaskSwapConfig extends TaskBaseConfig {
   type: TaskType.MAKE_A_SWAP
-  minAmount: number
+  minAmount: string
   currency: Currency
 }
 
 export interface TaskLotteryConfig extends TaskBaseConfig {
   type: TaskType.PARTICIPATE_LOTTERY
-  minAmount: number
-  fromRound: number
-  toRound: number
+  minAmount: string
+  fromRound: string
+  toRound: string
 }
 
 export interface TaskLiquidityConfig extends TaskBaseConfig {
   type: TaskType.ADD_LIQUIDITY
   network: ChainId
-  minAmount: number
-  lpAddress: number
+  minAmount: string
+  lpAddress: string
 }
 
 export interface TaskSocialConfig extends TaskBaseConfig {

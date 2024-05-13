@@ -18,7 +18,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
     case TaskType.MAKE_A_SWAP:
       return {
         sid: randomId,
-        minAmount: 0,
+        minAmount: '',
         type: taskType,
         currency: (CAKE as any)?.[DEFAULT_CHAIN],
       }
@@ -26,17 +26,17 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
       return {
         sid: randomId,
         type: taskType,
-        minAmount: 0,
-        fromRound: 0,
-        toRound: 0,
+        minAmount: '',
+        fromRound: '',
+        toRound: '',
       }
     case TaskType.ADD_LIQUIDITY:
       return {
         sid: randomId,
         type: taskType,
         network: DEFAULT_CHAIN,
-        minAmount: 0,
-        lpAddress: 0,
+        minAmount: '',
+        lpAddress: '',
       }
     case TaskType.X_LINK_POST:
     case TaskType.X_REPOST_POST:

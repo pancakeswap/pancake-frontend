@@ -6,6 +6,7 @@ import { AddLottery } from 'views/DashboardQuestEdit/components/Tasks/AddLottery
 import { AddLpAddress } from 'views/DashboardQuestEdit/components/Tasks/AddLpAddress'
 import { AddSwap } from 'views/DashboardQuestEdit/components/Tasks/AddSwap'
 import { AddTaskList } from 'views/DashboardQuestEdit/components/Tasks/AddTaskList'
+import { EmptyTasks } from 'views/DashboardQuestEdit/components/Tasks/EmptyTasks'
 import { SocialTask } from 'views/DashboardQuestEdit/components/Tasks/SocialTask'
 import { TaskConfigType } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
@@ -54,10 +55,9 @@ export const Tasks = () => {
   const { tasks, onTasksChange } = useQuestEdit()
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
 
   return (
-    <Box position="relative" zIndex="0">
+    <Box position="relative" zIndex={2}>
       <Flex mb="16px" justifyContent="space-between">
         <Text fontSize={['24px']} bold mr="8px">
           {t('Tasks')}
@@ -79,15 +79,18 @@ export const Tasks = () => {
           {isOpen && <AddTaskList dropdownRef={dropdownRef} setIsOpen={setIsOpen} />}
         </Box>
       </Flex>
-      <Flex flexDirection="column" ref={containerRef}>
-        <DraggableList
-          itemKey="sid"
-          list={tasks}
-          template={Item as any}
-          onMoveEnd={(newTasks: any) => onTasksChange(newTasks as TaskConfigType[])}
-          container={() => containerRef?.current}
-        />
-      </Flex>
+      {tasks.length ? (
+        <Flex flexDirection="column">
+          <DraggableList
+            itemKey="sid"
+            list={tasks}
+            template={Item as any}
+            onMoveEnd={(newTasks: any) => onTasksChange(newTasks as TaskConfigType[])}
+          />
+        </Flex>
+      ) : (
+        <EmptyTasks />
+      )}
     </Box>
   )
 }

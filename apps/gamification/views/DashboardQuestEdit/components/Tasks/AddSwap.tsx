@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
 import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { useCallback, useMemo } from 'react'
@@ -12,6 +11,7 @@ import { TaskSwapConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
+import { validateMinAmount } from 'views/DashboardQuestEdit/utils/validateTask'
 
 const StyleSelector = styled(Button)`
   position: absolute;
@@ -56,7 +56,7 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
     onTasksChange([...forkTasks])
   }
 
-  const isError = useMemo(() => new BigNumber(task.minAmount ?? 0).gt(0), [task?.minAmount])
+  const isError = useMemo(() => validateMinAmount(task.minAmount), [task?.minAmount])
 
   return (
     <Flex flexDirection={['column']}>
