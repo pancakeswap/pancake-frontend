@@ -15,8 +15,6 @@ const txCount = 54780336
 const addressCount = 4425459
 const tvl = 6082955532.115718
 
-const ORIGIN_NEEDED_CHAINS = [ChainId.BSC, ChainId.GOERLI, ChainId.POLYGON_ZKEVM, ChainId.SCROLL_SEPOLIA]
-
 export const getTotalTvl = async () => {
   const results = {
     totalTx30Days: txCount,
@@ -469,18 +467,10 @@ const getProdClients = (urls: Partial<{ [key in ChainId]: string | null }>) => {
       return Boolean(clientUrl && !isTestnet)
     })
     .reduce((acc, [string, clientUrl]) => {
-      const isOriginNeeded = ORIGIN_NEEDED_CHAINS.some((chainId) => {
-        return chainId.valueOf() === parseInt(string)
-      })
       return {
         ...acc,
         [string]: new GraphQLClient(clientUrl!, {
           timeout: 5000,
-          ...(isOriginNeeded && {
-            headers: {
-              origin: 'https://pancakeswap.finance',
-            },
-          }),
         }),
       }
     }, {} as Record<string, GraphQLClient>)
