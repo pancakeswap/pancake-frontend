@@ -1,5 +1,6 @@
 import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { DAI, USDC, USDT } from '@pancakeswap/tokens'
+import { parseNumberToFraction } from '@pancakeswap/utils/formatFractions'
 import { BigNumber } from 'bignumber.js'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { useMemo } from 'react'
@@ -43,9 +44,9 @@ export const useFeeSaved = (inputAmount?: CurrencyAmount<Currency>, outputAmount
     enabled: Boolean(feeSavedAmount),
   })
   const feeSavedUsdValue = useMemo(() => {
-    if (!feeSavedAmount || !outputCurrencyUSDPrice) return 0
+    if (!feeSavedAmount || !outputCurrencyUSDPrice) return parseNumberToFraction(0)
 
-    return new BigNumber(feeSavedAmount?.toExact()).times(outputCurrencyUSDPrice).toNumber()
+    return parseNumberToFraction(new BigNumber(feeSavedAmount?.toExact()).times(outputCurrencyUSDPrice).toNumber())
   }, [outputCurrencyUSDPrice, feeSavedAmount])
 
   return {

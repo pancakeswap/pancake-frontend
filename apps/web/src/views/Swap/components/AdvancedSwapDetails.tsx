@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
 import { AutoColumn, Flex, Link, Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
-import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import { formatAmount, formatFraction } from '@pancakeswap/utils/formatFractions'
 import { memo, useState } from 'react'
 
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
@@ -89,8 +89,7 @@ export const TradeSummary = memo(function TradeSummary({
               as="span"
               fontSize={14}
               color="success"
-              maximumSignificantDigits={4}
-              value={feeSavedUsdValue}
+              value={formatFraction(feeSavedUsdValue, 2)}
               prefix="(~$"
               suffix=")"
               ml={1}
