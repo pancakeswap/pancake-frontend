@@ -48,7 +48,9 @@ export const getTotalTvl = async () => {
         results.totalTx30Days = totalTx - totalTx30DaysAgo
       }
     } catch (error) {
-      console.error('Error when fetching total tx count', error)
+      if (process.env.NODE_ENV === 'production') {
+        console.error('Error when fetching total tx count', error)
+      }
     }
 
     const usersQuery = gql`
@@ -88,7 +90,9 @@ export const getTotalTvl = async () => {
           querySuccess = true
         })
       } catch (error) {
-        console.error('Error when fetching address count', error)
+        if (process.env.NODE_ENV === 'production') {
+          console.error('Error when fetching address count', error)
+        }
       }
     }
 
@@ -108,7 +112,9 @@ export const getTotalTvl = async () => {
       stableTvl +
       v2Tvl
   } catch (error) {
-    console.error('Error when fetching tvl stats', error)
+    if (process.env.NODE_ENV === 'production') {
+      console.error('Error when fetching tvl stats', error)
+    }
   }
   return results
 }
