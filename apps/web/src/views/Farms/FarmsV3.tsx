@@ -9,6 +9,7 @@ import {
 } from '@pancakeswap/farms'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
+import partition from 'lodash/partition'
 import {
   ArrowForwardIcon,
   Box,
@@ -257,9 +258,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [stableSwapOnly, setStableSwapOnly] = useState(false)
   const [farmTypesEnableCount, setFarmTypesEnableCount] = useState(0)
 
-  const activeFarms = useMemo(
+  const [activeFarms, inactiveFarms] = useMemo(
     () =>
-      farmsLP.filter(
+      partition(
+        farmsLP,
         (farm) =>
           farm.pid !== 0 &&
           (farm.multiplier !== '0X' || (farm.version === 2 && farm?.bCakeWrapperAddress)) &&
@@ -267,8 +269,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       ),
     [farmsLP, v2PoolLength, v3PoolLength],
   )
-
-  const inactiveFarms = useMemo(() => farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X'), [farmsLP])
 
   const archivedFarms = farmsLP
 
