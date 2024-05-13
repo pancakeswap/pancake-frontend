@@ -1,12 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, InjectedModalProps, Modal, Text, WarningIcon } from '@pancakeswap/uikit'
 
-interface ConfirmDeleteModalProps extends InjectedModalProps {}
+interface ConfirmDeleteModalProps extends InjectedModalProps {
+  handleDelete: () => void
+}
 
-export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({ onDismiss }) => {
+export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({ handleDelete, onDismiss }) => {
   const { t } = useTranslation()
 
-  const handleDelete = () => {
+  const handleTaskDelete = () => {
+    handleDelete()
     onDismiss?.()
   }
 
@@ -28,7 +31,7 @@ export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({ onDismis
               {t('Are you sure you want to delete task?')}
             </Text>
           </Box>
-          <Button width="100%" mt="40px" onClick={handleDelete}>
+          <Button width="100%" mt="40px" onClick={handleTaskDelete}>
             {t('Confirm')}
           </Button>
         </Box>

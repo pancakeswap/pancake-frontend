@@ -1,14 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency } from '@pancakeswap/sdk'
-import { CAKE } from '@pancakeswap/tokens'
+import { Currency } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
 import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
 import { TokenWithChain } from 'components/TokenWithChain'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/ConfirmDeleteModal'
 import { Task } from 'views/DashboardQuestEdit/context'
+import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 
@@ -28,23 +29,34 @@ interface AddSwapProps {
 export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo()
-  const [total, setTotal] = useState('')
-  const defaultCurrency = (CAKE as any)?.[ChainId.BSC]
-  const [selectedCurrency, setSelectedCurrency] = useState<Currency | null>(defaultCurrency)
+  const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
-  const handleCurrencySelect = useCallback((currency: Currency) => {
-    setSelectedCurrency(currency)
-  }, [])
+  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.id)} />)
 
-  const [onPresentCurrencyModal] = useModal(
-    <CurrencySearchModal selectedCurrency={selectedCurrency} onCurrencySelect={handleCurrencySelect} />,
+  const handleCurrencySelect = useCallback(
+    (currency: Currency) => {
+      const forkTasks = Object.assign(tasks)
+      const indexToUpdate = forkTasks.findIndex((i: Task) => i.id === task.id)
+      forkTasks[indexToUpdate].currency = currency
+
+      onTasksChange([...forkTasks])
+    },
+    [onTasksChange, task.id, tasks],
   )
 
-  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal />)
+  const [onPresentCurrencyModal] = useModal(
+    <CurrencySearchModal selectedCurrency={task.currency} onCurrencySelect={handleCurrencySelect} />,
+  )
 
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTotal(e.target.value)
+    const forkTasks = Object.assign(tasks)
+    const indexToUpdate = forkTasks.findIndex((i: Task) => i.id === task.id)
+    forkTasks[indexToUpdate].minAmount = e.target.value
+
+    onTasksChange([...forkTasks])
   }
+
+  const isError = useMemo(() => new BigNumber(task?.minAmount ?? 0).gt(0), [task?.minAmount])
 
   return (
     <Flex flexDirection={['column']}>
@@ -52,7 +64,7 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
         <Flex mr="8px" alignSelf="center">
           {taskIcon(TaskType.MAKE_A_SWAP)}
         </Flex>
-        <Text style={{ alignSelf: 'center' }} bold>
+        <Text bold style={{ alignSelf: 'center' }}>
           {taskNaming(TaskType.MAKE_A_SWAP)}
         </Text>
         <DeleteOutlineIcon
@@ -68,14 +80,19 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
         <Flex flexDirection="column">
           <Flex>
             <Flex position="relative" paddingRight="45px" onClick={onPresentCurrencyModal}>
-              <TokenWithChain width={32} height={32} currency={selectedCurrency} />
+              <TokenWithChain width={32} height={32} currency={task.currency} />
               <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
             </Flex>
-            <StyledInputGroup endIcon={<ErrorFillIcon color="failure" width={16} height={16} />}>
-              <StyledInput isError value={total} placeholder={t('Min. amount in $')} onChange={handleTotalChange} />
+            <StyledInputGroup endIcon={isError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>
+              <StyledInput
+                isError={isError}
+                value={task.minAmount}
+                placeholder={t('Min. amount in $')}
+                onChange={handleTotalChange}
+              />
             </StyledInputGroup>
           </Flex>
-          <InputErrorText errorText={t('Cannot be 0')} />
+          {isError && <InputErrorText errorText={t('Cannot be 0')} />}
         </Flex>
       </Flex>
     </Flex>
