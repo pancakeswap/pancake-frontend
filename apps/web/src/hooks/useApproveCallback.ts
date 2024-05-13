@@ -194,7 +194,7 @@ export function useApproveCallback(
           throw error
         })
 
-      return sendTxResult
+      return { hash: await sendTxResult }
     },
     [
       approvalState,
