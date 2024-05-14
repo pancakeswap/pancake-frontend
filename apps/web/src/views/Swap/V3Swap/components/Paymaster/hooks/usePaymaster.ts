@@ -2,14 +2,14 @@ import { useMemo } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import isZero from '@pancakeswap/utils/isZero'
 import { Address, Hex, hexToBigInt, isAddress, stringify } from 'viem'
-import { eip712WalletActions, zkSync } from 'viem/zksync'
+import { serializeTransaction, zkSync } from 'viem/zksync'
 import { useAtomValue } from 'jotai'
 
-import { createWagmiConfig } from 'utils/wagmi'
-import { getWalletClient } from '@wagmi/core'
-import { ZyfiResponse } from '../types'
+import { useWalletClient } from 'wagmi'
 import { paymasterTokens } from '../config/config'
 import { feeTokenAddressAtom } from '../state/atoms'
+import { ZyfiResponse } from '../types'
+import { getEip712Domain } from '../utils'
 
 interface SwapCall {
   address: Address
@@ -22,6 +22,7 @@ interface SwapCall {
  */
 export const usePaymaster = () => {
   const chain = useActiveChainId()
+  const { data: walletClient } = useWalletClient()
 
   const feeTokenAddress = useAtomValue(feeTokenAddressAtom)
 
@@ -46,13 +47,14 @@ export const usePaymaster = () => {
    * Fetch the token list using internal config
    * and the Zyfi API for Markup/Discount information
    */
-  const getPaymasterTokenlist = async () => {
+  const getPaymasterTokenlist = async (txData?: { from: Address; to: Address; value: string; data: Hex }) => {
     try {
       const response = await fetch('https://api.zyfi.org/api/erc20_paymaster/v1/batch', {
         method: 'POST',
         body: JSON.stringify({
           feeTokenAddresses: paymasterTokens.map((token) => token.address),
           gasLimit: '500000',
+          txData,
         }),
       })
 
@@ -69,32 +71,6 @@ export const usePaymaster = () => {
     }
   }
 
-  // async function previewPaymasterTransaction(call: SwapCall & { gas?: string | bigint | undefined }, account: Address) {
-  //   const response = await fetch(`https://api.zyfi.org/api/erc20_paymaster/v1`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: stringify({
-  //       feeTokenAddress,
-  //       gasLimit: call.gas,
-  //       txData: {
-  //         from: account,
-  //         to: call.address,
-  //         value: call.value,
-  //         data: call.calldata,
-  //       },
-  //     }),
-  //   })
-
-  //   if (response.ok) {
-  //     const txResponse: ZyfiResponse = await response.json()
-  //     return txResponse
-  //   }
-
-  //   return null
-  // }
-
   async function executePaymasterTransaction(
     call: SwapCall & {
       gas?: string | bigint | undefined
@@ -102,6 +78,8 @@ export const usePaymaster = () => {
     account: Address,
     chainId?: number,
   ) {
+    const activeChainId = chainId || chain?.chainId || zkSync.id
+
     const response = await fetch(`https://api.zyfi.org/api/erc20_paymaster/v1`, {
       method: 'POST',
       headers: {
@@ -127,7 +105,7 @@ export const usePaymaster = () => {
         account,
         to: txResponse.txData.to,
         value: txResponse.txData.value && !isZero(txResponse.txData.value) ? hexToBigInt(txResponse.txData.value) : 0n,
-        chainId: chainId || chain?.chainId || zkSync.id,
+        chainId: activeChainId,
         gas: BigInt(txResponse.gasLimit),
         maxFeePerGas: BigInt(txResponse.txData.maxFeePerGas),
         maxPriorityFeePerGas: BigInt(0),
@@ -137,13 +115,34 @@ export const usePaymaster = () => {
         paymasterInput: txResponse.txData.customData.paymasterParams.paymasterInput,
       }
 
-      // @ts-ignore
-      const walletClient = (await getWalletClient(createWagmiConfig())).extend(eip712WalletActions())
+      // Viem's zkSync Utils. If not working, use EIP-712 normally
+      // const walletClient = (await getWalletClient(createWagmiConfig())).extend(eip712WalletActions())
 
-      // @ts-ignore
-      const hash = await walletClient.sendTransaction(newTx)
+      if (walletClient) {
+        const txRequest = await walletClient.prepareTransactionRequest(newTx)
 
-      return hash
+        const eip712Domain = getEip712Domain({
+          ...txRequest,
+          chainId: activeChainId,
+          from: account,
+          type: 'eip712',
+        })
+
+        const customSignature = await walletClient.signTypedData({
+          ...eip712Domain,
+          account,
+        } as any)
+
+        const serializedTransaction = serializeTransaction({
+          ...txRequest,
+          chainId: activeChainId,
+          customSignature,
+          type: 'eip712',
+        } as any)
+
+        const hash = await walletClient.sendRawTransaction({ serializedTransaction })
+        return hash
+      }
     }
 
     return Promise.reject(new Error('Failed to execute paymaster transaction'))

@@ -15,4 +15,11 @@ export const paymasterTokens: PaymasterToken[] = [
     decimals: 18,
     logoURI: 'https://tokens.pancakeswap.finance/images/symbol/dai.png',
   },
+  {
+    name: 'USD Coin',
+    symbol: 'USDC',
+    address: '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4',
+    decimals: 6,
+    logoURI: 'https://tokens.pancakeswap.finance/images/symbol/usdc.png',
+  },
 ]
