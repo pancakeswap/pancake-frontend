@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/swap-sdk-core'
 import { ArrowDropDownIcon, Button, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { CurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
@@ -76,7 +76,7 @@ export const CurrencyInputPanel = memo(function CurrencyInputPanel({
   showLogoWithChain,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
-  const { balance: selectedCurrencyBalance } = useTokenBalance(currency?.address ?? '0x')
+  const { balance: selectedCurrencyBalance } = useTokenBalance(currency?.address)
 
   const { t } = useTranslation()
 

@@ -673,6 +673,9 @@ importers:
       '@pancakeswap/sdk':
         specifier: workspace:*
         version: link:../../packages/swap-sdk
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../../packages/swap-sdk-core
       '@pancakeswap/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens

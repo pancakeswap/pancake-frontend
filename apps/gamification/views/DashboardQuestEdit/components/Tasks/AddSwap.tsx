@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/swap-sdk-core'
 import { Button, ChevronDownIcon, DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
 import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
 import { TokenWithChain } from 'components/TokenWithChain'

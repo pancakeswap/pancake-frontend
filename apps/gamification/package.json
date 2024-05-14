@@ -17,6 +17,7 @@
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/prediction": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/ui-wallets": "workspace:*",
     "@pancakeswap/uikit": "workspace:*",

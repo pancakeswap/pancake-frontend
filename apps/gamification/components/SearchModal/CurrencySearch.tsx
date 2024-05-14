@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Box, Column, Input, Row, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AutoRow } from 'components/Layout/Row'
 import { ChainLogo } from 'components/Logo/ChainLogo'

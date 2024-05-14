@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/swap-sdk-core'
 import {
   Heading,
   InjectedModalProps,
