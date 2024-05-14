@@ -9,6 +9,7 @@ import { TokenWithChain } from 'components/TokenWithChain'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { memo, useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
+import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 
 const InputRow = styled.div<{ selected: boolean }>`
@@ -76,7 +77,7 @@ export const CurrencyInputPanel = memo(function CurrencyInputPanel({
   showLogoWithChain,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
-  const { balance: selectedCurrencyBalance } = useTokenBalance(currency?.address)
+  const { balance: selectedCurrencyBalance } = useTokenBalance(currency?.address as Address)
 
   const { t } = useTranslation()
 
