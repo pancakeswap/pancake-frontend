@@ -1,6 +1,6 @@
-import { Currency } from '@pancakeswap/aptos-swap-sdk'
-import { stringify } from 'querystring'
+import { Currency } from '@pancakeswap/sdk'
 import { chains, defaultChain } from 'config/chains'
+import { stringify } from 'querystring'
 import { TokenAddressMap } from 'state/lists/hooks'
 import convertStructTagToAddress from './convertStructTagToAddress'
 
