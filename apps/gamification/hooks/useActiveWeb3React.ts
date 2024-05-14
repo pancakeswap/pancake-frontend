@@ -28,7 +28,7 @@ export function useNetworkConnectorUpdater() {
       router.replace(
         {
           query: {
-            chain: CHAIN_QUERY_NAME[chainId],
+            chain: CHAIN_QUERY_NAME[chainId as ChainId],
           },
           ...(uriHash && { hash: uriHash }),
         },
