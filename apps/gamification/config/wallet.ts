@@ -33,7 +33,7 @@ const createQrCode =
     // HACK: utilizing event emitter from injected connector to notify wagmi of the connect events
     const connector = {
       ...walletConnectNoQrCodeConnector({
-        chains,
+        chains: chains as any,
         emitter: injectedConnector?.emitter,
       }),
       emitter: injectedConnector.emitter,
