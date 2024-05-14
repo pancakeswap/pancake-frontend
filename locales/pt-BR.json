@@ -3352,5 +3352,7 @@
   "View Migrated Position": "Visualizar posição migrada",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Renove sua posição veCAKE para continuar desfrutando dos benefícios do rendimento semanal do CAKE, participação na receita, votação de indicadores, aumento do rendimento de farm, participação em IFOs e muito mais!",
   "Exact number: %numberWithFullDigits%": "Número exato: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Observe que as Pearls ganhas com este cofre só aparecerão posteriormente em seu saldo."
+  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Observe que as Pearls ganhas com este cofre só aparecerão posteriormente em seu saldo.",
+  "Fee saved": "Taxa economizada",
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Economia no PancakeSwap em comparação com os principais DEXs que cobram taxas de interface"
 }
