@@ -22,7 +22,6 @@ import { useSessionChainId } from 'hooks/useSessionChainId'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useUserShowTestnet } from 'hooks/useUserShowTestnet'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { chainNameConverter } from 'utils/chainNameConverter'
 import { chains } from 'utils/wagmi'
@@ -186,7 +185,6 @@ export const NetworkSwitcher = () => {
   const { t } = useTranslation()
   const { chainId, isWrongNetwork, isNotMatched } = useActiveChainId()
   const { isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
-  const router = useRouter()
 
   useNetworkConnectorUpdater()
 
