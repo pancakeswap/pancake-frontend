@@ -3157,4 +3157,12 @@ export const bscTokens = {
     'Solv BTC',
     'https://app.solv.finance/solvbtc',
   ),
+  stone: new ERC20Token(
+    ChainId.BSC,
+    '0x80137510979822322193FC997d400D5A6C747bf7',
+    18,
+    'STONE',
+    'StakeStone Ether',
+    'https://stakestone.io/',
+  ),
 }
