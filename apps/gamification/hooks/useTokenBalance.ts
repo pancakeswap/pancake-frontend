@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
+import { Currency, NATIVE } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useBalance, useReadContract } from '@pancakeswap/wagmi'
@@ -23,7 +24,7 @@ export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: 
     functionName: 'balanceOf',
     args: [account || '0x'],
     query: {
-      enabled: !!account,
+      enabled: Boolean(!!account && tokenAddress),
     },
     watch: true,
   })
@@ -71,6 +72,15 @@ export const useBSCCakeBalance = () => {
   const { balance, fetchStatus } = useTokenBalance(CAKE[ChainId.BSC]?.address, true)
 
   return { balance: BigInt(balance.toString()), fetchStatus }
+}
+
+export const useCurrencyBalance = (currency: Currency) => {
+  const nativeToken = NATIVE?.[currency?.chainId as ChainId]
+  const isNativeToken = currency.symbol === nativeToken.symbol
+
+  const { balance: tokenBalance } = useTokenBalanceByChain(currency?.address)
+  const { balance: nativeTokenBalance } = useGetNativeTokenBalance()
+  return isNativeToken ? new BigNumber(nativeTokenBalance.toString()) : tokenBalance
 }
 
 export default useTokenBalance

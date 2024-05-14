@@ -6,7 +6,7 @@ import { CurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { BigNumber } from 'bignumber.js'
 import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
 import { TokenWithChain } from 'components/TokenWithChain'
-import useTokenBalance from 'hooks/useTokenBalance'
+import { useCurrencyBalance } from 'hooks/useTokenBalance'
 import { memo, useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
@@ -75,10 +75,9 @@ export const CurrencyInputPanel = memo(function CurrencyInputPanel({
   hideBalanceComp,
   showLogoWithChain,
 }: CurrencyInputPanelProps) {
-  const { address: account } = useAccount()
-  const { balance: selectedCurrencyBalance } = useTokenBalance(currency?.address)
-
   const { t } = useTranslation()
+  const { address: account } = useAccount()
+  const selectedCurrencyBalance = useCurrencyBalance(currency)
 
   const [onPresentCurrencyModal] = useModal(
     currency && onCurrencySelect && (
