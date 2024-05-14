@@ -1,11 +1,11 @@
 import { ChainId } from '@pancakeswap/chains'
 import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { useBalance, useReadContract } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import { useMemo } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useAccount } from 'wagmi'
-import { useBalance, useReadContract } from '@pancakeswap/wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
 const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean) => {
