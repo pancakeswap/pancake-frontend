@@ -655,6 +655,9 @@ importers:
       '@cyberlab/cyber-app-sdk':
         specifier: v3.0.0-beta.5
         version: 3.0.0-beta.5(@tanstack/react-query@5.29.2)(@types/node@18.0.4)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.73.6)(react@18.2.0)(typescript@5.2.2)(zod@3.22.4)
+      '@gnosis.pm/safe-apps-wagmi':
+        specifier: ^1.2.0
+        version: 1.2.0(@wagmi/core@2.6.17)
       '@pancakeswap/chains':
         specifier: workspace:*
         version: link:../../packages/chains
@@ -697,6 +700,9 @@ importers:
       '@vanilla-extract/next-plugin':
         specifier: ^2.3.0
         version: 2.3.2(@types/node@18.0.4)(next@14.2.3)(webpack@5.89.0)
+      '@wagmi/core':
+        specifier: 2.6.17
+        version: 2.6.17(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@2.9.19)(zod@3.22.4)
       bignumber.js:
         specifier: ^9.1.2
         version: 9.1.2

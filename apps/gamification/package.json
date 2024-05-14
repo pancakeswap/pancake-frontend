@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@binance/w3w-wagmi-connector-v2": "^1.2.3",
+    "@gnosis.pm/safe-apps-wagmi": "^1.2.0",
     "@cyberlab/cyber-app-sdk": "v3.0.0-beta.5",
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
@@ -43,7 +44,8 @@
     "swiper": "^11.0.5",
     "trustWallet": "link:@pancakeswap/wagmi/connectors/trustWallet",
     "viem": "2.9.19",
-    "wagmi": "2.5.20"
+    "wagmi": "2.5.20",
+    "@wagmi/core": "2.6.17"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "14.2.3",
