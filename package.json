@@ -25,7 +25,7 @@
     "build:bridge": "turbo run build --filter=bridge...",
     "build:games": "turbo run build --filter=games...",
     "build:packages": "turbo run build --filter=./packages/*",
-    "build:gamification": "pnpm turbo run dev --filter=gamification...",
+    "build:gamification": "pnpm turbo run dev --filter=gamification... --concurrency=28",
     "start": "turbo run start --filter=web",
     "test:config": "pnpm turbo run test:config --filter=web...[HEAD^1]",
     "test:ci": "pnpm turbo run test --filter=[HEAD^1]",

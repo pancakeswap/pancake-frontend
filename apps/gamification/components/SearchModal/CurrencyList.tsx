@@ -33,7 +33,8 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
       {Object.assign(currencies).map((currency: Currency) => {
         const disable =
           currency?.address?.toLowerCase() === selectedCurrency?.address?.toLowerCase() &&
-          currency?.chainId === selectedCurrency?.chainId
+          currency?.chainId === selectedCurrency?.chainId &&
+          currency.symbol === selectedCurrency?.symbol
 
         const { chainId, address, decimals, symbol, name, projectLink } = currency
         const newToken = new ERC20Token(chainId, address, decimals, symbol, name, projectLink)

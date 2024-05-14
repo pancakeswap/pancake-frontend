@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { Currency } from '@pancakeswap/swap-sdk-core'
+import { Currency } from '@pancakeswap/sdk'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 
 export interface TaskBaseConfig {
