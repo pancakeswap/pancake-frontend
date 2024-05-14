@@ -45,14 +45,12 @@
     "swiper": "^11.0.5",
     "trustWallet": "link:@pancakeswap/wagmi/connectors/trustWallet",
     "viem": "2.9.19",
-    "wagmi": "2.5.20",
-    "d3": "^7.8.2"
+    "wagmi": "2.5.20"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "14.2.3",
     "@pancakeswap/next-config": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
-    "@types/d3": "^7.4.0",
     "@types/lodash": "^4.14.178",
     "@types/node": "18.0.4",
     "@types/qs": "^6.0.0",

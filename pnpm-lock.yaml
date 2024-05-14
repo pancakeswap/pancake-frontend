@@ -709,9 +709,6 @@ importers:
       blocto:
         specifier: link:@pancakeswap/wagmi/connectors/blocto
         version: link:@pancakeswap/wagmi/connectors/blocto
-      d3:
-        specifier: ^7.8.2
-        version: 7.8.5
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
@@ -773,9 +770,6 @@ importers:
       '@pancakeswap/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
-      '@types/d3':
-        specifier: ^7.4.0
-        version: 7.4.3
       '@types/lodash':
         specifier: ^4.14.178
         version: 4.14.202
@@ -2457,6 +2451,9 @@ importers:
       '@sentry/nextjs':
         specifier: ^7.0.0
         version: 7.80.0(next@14.2.3)(react@18.2.0)
+      '@types/d3':
+        specifier: ^7.4.0
+        version: 7.4.3
       '@types/lodash':
         specifier: ^4.14.168
         version: 4.14.201
