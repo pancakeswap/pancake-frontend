@@ -1,9 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
-import { Currency, NATIVE } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useBalance, useReadContract } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useMemo } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useAccount } from 'wagmi'
@@ -75,8 +76,8 @@ export const useBSCCakeBalance = () => {
 }
 
 export const useCurrencyBalance = (currency: Currency) => {
-  const nativeToken = NATIVE?.[currency?.chainId as ChainId]
-  const isNativeToken = currency.symbol === nativeToken.symbol
+  const native = useNativeCurrency()
+  const isNativeToken = currency?.symbol === native?.symbol && currency.chainId === native.chainId
 
   const { balance: tokenBalance } = useTokenBalanceByChain(currency?.address)
   const { balance: nativeTokenBalance } = useGetNativeTokenBalance()
