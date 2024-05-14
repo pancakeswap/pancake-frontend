@@ -709,6 +709,9 @@ importers:
       blocto:
         specifier: link:@pancakeswap/wagmi/connectors/blocto
         version: link:@pancakeswap/wagmi/connectors/blocto
+      d3:
+        specifier: ^7.8.2
+        version: 7.8.5
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10

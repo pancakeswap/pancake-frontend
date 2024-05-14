@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@binance/w3w-wagmi-connector-v2": "^1.2.3",
-    "@gnosis.pm/safe-apps-wagmi": "^1.2.0",
     "@cyberlab/cyber-app-sdk": "v3.0.0-beta.5",
+    "@gnosis.pm/safe-apps-wagmi": "^1.2.0",
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
@@ -26,6 +26,7 @@
     "@reduxjs/toolkit": "^1.9.1",
     "@tanstack/react-query": "^5.28.4",
     "@vanilla-extract/next-plugin": "^2.3.0",
+    "@wagmi/core": "2.6.17",
     "bignumber.js": "^9.1.2",
     "blocto": "link:@pancakeswap/wagmi/connectors/blocto",
     "dayjs": "^1.11.10",
@@ -45,12 +46,13 @@
     "trustWallet": "link:@pancakeswap/wagmi/connectors/trustWallet",
     "viem": "2.9.19",
     "wagmi": "2.5.20",
-    "@wagmi/core": "2.6.17"
+    "d3": "^7.8.2"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "14.2.3",
     "@pancakeswap/next-config": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
+    "@types/d3": "^7.4.0",
     "@types/lodash": "^4.14.178",
     "@types/node": "18.0.4",
     "@types/qs": "^6.0.0",
@@ -58,7 +60,6 @@
     "@types/react-dom": "^18.0.6",
     "@types/styled-system": "^5.1.17",
     "eslint": "^8.32.0",
-    "eslint-plugin-lodash": "^7.4.0",
-    "@types/d3": "^7.4.0"
+    "eslint-plugin-lodash": "^7.4.0"
   }
 }
