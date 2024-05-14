@@ -21,17 +21,11 @@ import { useHover } from 'hooks/useHover'
 import { useSessionChainId } from 'hooks/useSessionChainId'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useUserShowTestnet } from 'hooks/useUserShowTestnet'
-import Image from 'next/image'
 import { useMemo } from 'react'
 import { chainNameConverter } from 'utils/chainNameConverter'
 import { chains } from 'utils/wagmi'
 import { useAccount } from 'wagmi'
 import { ChainLogo } from './Logo/ChainLogo'
-
-const AptosChain = {
-  id: 1,
-  name: 'Aptos',
-}
 
 const NetworkSelect = ({
   switchNetwork,
@@ -75,24 +69,6 @@ const NetworkSelect = ({
             </Text>
           </UserMenuItem>
         ))}
-      <UserMenuItem
-        key={`aptos-${AptosChain.id}`}
-        style={{ justifyContent: 'flex-start' }}
-        as="a"
-        target="_blank"
-        href="https://aptos.pancakeswap.finance/swap"
-      >
-        <Image
-          src="https://aptos.pancakeswap.finance/images/apt.png"
-          width={24}
-          height={24}
-          unoptimized
-          alt={`chain-aptos-${AptosChain.id}`}
-        />{' '}
-        <Text color="text" pl="12px">
-          {AptosChain.name}
-        </Text>
-      </UserMenuItem>
     </>
   )
 }
