@@ -6,8 +6,9 @@ import { useGaugesVotingContract } from 'hooks/useContract'
 import { Address, Hex, isAddressEqual, zeroAddress } from 'viem'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
+import { CakePoolType } from 'views/CakeStaking/types'
 import { usePublicClient } from 'wagmi'
-import { useNextEpochStart } from './useEpochTime'
+import { useCurrentEpochStart, useNextEpochStart } from './useEpochTime'
 
 export type VotedSlope = {
   hash: string
@@ -43,13 +44,16 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
   const contract = useGaugesVotingContract()
   const { data: userInfo } = useVeCakeUserInfo()
   const currentTimestamp = useCurrentBlockTimestamp()
+  const currentEpochStart = useCurrentEpochStart()
   const nextEpochStart = useNextEpochStart()
 
   const { data } = useQuery({
     queryKey: ['/vecake/userVoteSlopes', contract.address, gauge?.hash, account],
 
     queryFn: async (): Promise<VotedSlope> => {
-      const hasProxy = useProxyPool && userInfo?.cakePoolProxy && !isAddressEqual(userInfo?.cakePoolProxy, zeroAddress)
+      const delegated = userInfo?.cakePoolType === CakePoolType.DELEGATED
+      const hasProxy =
+        useProxyPool && userInfo?.cakePoolProxy && !isAddressEqual(userInfo?.cakePoolProxy, zeroAddress) && !delegated
       const calls = [
         {
           ...contract,
@@ -98,15 +102,30 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
           .add(10, 'day')
           .isAfter(dayjs.unix(currentTimestamp))
         let [nativeSlope, nativePower, proxySlope, proxyPower] = [_nativeSlope, _nativePower, _proxySlope, _proxyPower]
+        if (!proxyEnd) {
+          return {
+            hash: gauge?.hash as Hex,
+            nativeSlope,
+            nativePower,
+            nativeEnd,
+            nativeLastVoteTime,
+            nativeVoteLocked,
+            slope: nativeSlope,
+            power: nativePower,
+            end: nativeEnd,
+            lastVoteTime: nativeLastVoteTime,
+            voteLocked: nativeVoteLocked,
+          }
+        }
         let ignoredSlope = 0n
         let ignoredPower = 0n
         let ignoredSide: 'native' | 'proxy' | undefined
-        const nativeExpired = nativeEnd > 0n && nativeEnd < nextEpochStart
-        const proxyExpired = proxyEnd > 0n && proxyEnd < nextEpochStart
+        const nativeWillExpire = nativeEnd > 0n && nativeEnd > currentEpochStart && nativeEnd < nextEpochStart
+        const proxyWillExpire = proxyEnd > 0n && proxyEnd > currentEpochStart && proxyEnd < nextEpochStart
 
         // when native slope will expire before current epochEnd
         // use proxy slope only
-        if (nativeExpired && !proxyExpired) {
+        if (nativeWillExpire && !proxyWillExpire) {
           ignoredSlope = nativeSlope
           ignoredPower = nativePower
           ignoredSide = 'native'
@@ -115,7 +134,7 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
         }
         // when proxy slope will expire before current epochEnd
         // use native slope only
-        if (proxyExpired && !nativeExpired) {
+        if (proxyWillExpire && !nativeWillExpire) {
           ignoredSlope = proxySlope
           ignoredPower = proxyPower
           ignoredSide = 'proxy'
@@ -125,7 +144,7 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
 
         // when both slopes will expire before current epochEnd
         // use max of both slopes
-        if (nativeExpired && proxyExpired) {
+        if (nativeWillExpire && proxyWillExpire) {
           const nativeWeight = _nativeSlope * (nativeEnd - BigInt(currentTimestamp))
           const proxyWeight = _proxySlope * (proxyEnd - BigInt(currentTimestamp))
           if (nativeWeight > proxyWeight) {
