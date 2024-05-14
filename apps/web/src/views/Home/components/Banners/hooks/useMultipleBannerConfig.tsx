@@ -4,7 +4,6 @@ import { ReactElement, useMemo } from 'react'
 import CompetitionBanner from '../CompetitionBanner'
 import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import GameBanner from '../GameBanner'
-import { MasaTCBanner } from '../MasaTCBanner'
 import { MultiChainBanner } from '../MultichainBanner'
 import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
 import NewIFOBanner from '../NewIFOBanner'
@@ -52,10 +51,6 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: true,
         banner: <MultiChainBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <MasaTCBanner />,
       },
       {
         shouldRender: true,

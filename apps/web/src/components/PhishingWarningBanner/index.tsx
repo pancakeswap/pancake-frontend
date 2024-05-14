@@ -10,7 +10,6 @@ import 'swiper/css/effect-fade'
 import { Countdown } from './Countdown'
 import { Step1 } from './Step1'
 import { Step2 } from './Step2'
-import { Step3 } from './Step3'
 
 const Container = styled(Flex)`
   overflow: hidden;
@@ -96,7 +95,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const [remainingTimer, setRemainingTimer] = useState(DISPLAY_TIMER)
   const { pathname } = useRouter()
 
-  const configList = useMemo(() => [<Step1 />, <Step2 />].concat(pathname === '/swap' ? [<Step3 />] : []), [pathname])
+  const configList = useMemo(() => [<Step1 />, <Step2 />], [])
   const isCampaignStep = step === 2
 
   const nextItem = useMemo(() => (step < configList.length - 1 ? step + 1 : 0), [step, configList])
