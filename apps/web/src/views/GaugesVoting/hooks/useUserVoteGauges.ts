@@ -107,7 +107,7 @@ export const useUserVoteGauges = () => {
       const nativeExpired = slope?.nativeEnd && slope.nativeEnd > 0 && slope.nativeEnd < currentEpochStart
       const proxyExpired = slope?.proxyEnd && slope.proxyEnd > 0 && slope.proxyEnd < currentEpochStart
 
-      return slope && (slope.nativePower > 0 || slope.proxyPower > 0) && (!nativeExpired || !proxyExpired)
+      return slope && ((slope.nativePower > 0 && !nativeExpired) || (slope.proxyPower > 0 && !proxyExpired))
     })
   }, [gauges, slopes, currentEpochStart])
 
