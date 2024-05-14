@@ -76,18 +76,8 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selected
   }, [])
 
   const tokenList: Currency[] = useMemo(() => {
-    const newArray: { [key in string]: boolean } = {}
     const list = Object.values((TOKEN_LIST as any)?.[selectedChainId]).map((i: Currency) => ({ ...i }))
-    // Avoid duplicate address
-    const uniqueArray = list.filter((obj) => {
-      if (!newArray[obj.address]) {
-        newArray[obj.address] = true
-        return true
-      }
-      return false
-    })
-
-    return uniqueArray
+    return list
   }, [selectedChainId])
 
   const filteredSortedTokens: Currency[] = useMemo(() => {

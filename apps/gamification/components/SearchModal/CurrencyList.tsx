@@ -40,7 +40,7 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
 
         return (
           <StyledCurrencyList
-            key={currency.address}
+            key={`${currency.address}-${currency.symbol}`}
             disable={disable}
             onClick={() => !disable && onCurrencySelect(newToken)}
           >
