@@ -1,5 +1,6 @@
 import { getWagmiConnectorV2 } from '@binance/w3w-wagmi-connector-v2'
 import { cyberWalletConnector as createCyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { blocto } from '@pancakeswap/wagmi/connectors/blocto'
 import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
@@ -7,7 +8,7 @@ import memoize from 'lodash/memoize'
 import { Transport } from 'viem'
 import { createConfig, fallback, http } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
-import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors'
+import { coinbaseWallet, injected, safe, walletConnect } from 'wagmi/connectors'
 import { CLIENT_CONFIG, publicClient } from './viem'
 
 export const chains = CHAINS
@@ -56,7 +57,7 @@ export const transports = chains.reduce((ts, chain) => {
   if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
     httpStrings = [PUBLIC_MAINNET]
   } else {
-    httpStrings = PUBLIC_NODES[chain.id] ? PUBLIC_NODES[chain.id] : []
+    httpStrings = PUBLIC_NODES[chain.id as ChainId] ? PUBLIC_NODES[chain.id as ChainId] : []
   }
 
   if (ts) {
@@ -89,6 +90,7 @@ export function createWagmiConfig() {
     connectors: [
       metaMaskConnector,
       injectedConnector,
+      safe(),
       coinbaseConnector,
       walletConnectConnector,
       bloctoConnector,

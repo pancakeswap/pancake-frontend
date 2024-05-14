@@ -43,6 +43,7 @@
     "next": "14.2.3",
     "polished": "^4.2.2",
     "react": "^18.2.0",
-    "styled-components": "6.0.7"
+    "styled-components": "6.0.7",
+    "@types/d3": "^7.4.0"
   }
 }

@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, InjectedModalProps, Modal, PreTitle, Text, ThemeSwitcher } from '@pancakeswap/uikit'
+import { Flex, InjectedModalProps, Modal, PreTitle, Text, ThemeSwitcher, Toggle } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
+import { useUserShowTestnet } from 'hooks/useUserShowTestnet'
 import { styled } from 'styled-components'
 
 const ScrollableContainer = styled(Flex)`
@@ -17,6 +18,7 @@ const ScrollableContainer = styled(Flex)`
 export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const { t } = useTranslation()
   const { isDark, setTheme } = useTheme()
+  const [showTestnet, setShowTestnet] = useUserShowTestnet()
 
   return (
     <Modal title={t('Settings')} headerBackground="gradientCardHeader" onDismiss={onDismiss}>
@@ -27,6 +29,19 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
             <Text>{t('Dark mode')}</Text>
             <ThemeSwitcher isDark={isDark} toggleTheme={() => setTheme(isDark ? 'light' : 'dark')} />
           </Flex>
+        </Flex>
+        <Flex justifyContent="space-between" alignItems="center" mb="24px">
+          <Flex alignItems="center">
+            <Text>{t('Show testnet')}</Text>
+          </Flex>
+          <Toggle
+            id="toggle-show-testnet"
+            checked={showTestnet}
+            scale="md"
+            onChange={() => {
+              setShowTestnet((s) => !s)
+            }}
+          />
         </Flex>
       </ScrollableContainer>
     </Modal>
