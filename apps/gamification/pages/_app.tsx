@@ -1,6 +1,7 @@
 import { LanguageProvider } from '@pancakeswap/localization'
 import { ModalProvider, PancakeTheme, ResetCSS, ToastListener, UIKitProvider, dark, light } from '@pancakeswap/uikit'
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useAccountEventListener } from 'hooks/useAccountEventListener'
 import { NextPage } from 'next'
 import { DefaultSeo } from 'next-seo'
 import { SEO } from 'next-seo.config'
@@ -15,6 +16,11 @@ import { createGlobalStyle } from 'styled-components'
 import { createWagmiConfig } from 'utils/wagmi'
 import { WagmiProvider } from 'wagmi'
 import Menu from '../components/Menu/index'
+
+function GlobalHooks() {
+  useAccountEventListener()
+  return null
+}
 
 // Create a client
 const queryClient = new QueryClient()
@@ -89,6 +95,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                   <ModalProvider>
                     <ResetCSS />
                     <GlobalStyle />
+                    <GlobalHooks />
                     <Menu>
                       <Layout>
                         <WrapBalancerProvider>
