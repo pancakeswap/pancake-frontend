@@ -76,7 +76,7 @@ export const CurrencyInputPanel = memo(function CurrencyInputPanel({
   showLogoWithChain,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
-  const { balance: selectedCurrencyBalance } = useTokenBalance(currency?.address)
+  const { balance: selectedCurrencyBalance } = useTokenBalance(currency?.address ?? '0x')
 
   const { t } = useTranslation()
 
