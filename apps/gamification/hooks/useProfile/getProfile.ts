@@ -3,7 +3,7 @@ import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { API_NFT } from 'config/constants/endpoints'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 import { transformProfileResponse } from './transformProfileResponse'
 import { ApiResponseSpecificToken, GetProfileResponse, NftToken, Profile } from './type'
 

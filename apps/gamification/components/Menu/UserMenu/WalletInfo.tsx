@@ -24,7 +24,8 @@ import useTokenBalance, { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
-import { Address, useBalance } from 'wagmi'
+import { Address } from 'viem'
+import { useBalance } from 'wagmi'
 
 const COLORS = {
   ETH: '#627EEA',
