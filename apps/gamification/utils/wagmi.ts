@@ -1,5 +1,6 @@
 import { getWagmiConnectorV2 } from '@binance/w3w-wagmi-connector-v2'
 import { cyberWalletConnector as createCyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
+import { ChainId } from '@pancakeswap/chains'
 import { blocto } from '@pancakeswap/wagmi/connectors/blocto'
 import { CHAINS } from 'config/chains'
 import { PUBLIC_NODES } from 'config/nodes'
@@ -56,7 +57,7 @@ export const transports = chains.reduce((ts, chain) => {
   if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
     httpStrings = [PUBLIC_MAINNET]
   } else {
-    httpStrings = PUBLIC_NODES[chain.id] ? PUBLIC_NODES[chain.id] : []
+    httpStrings = PUBLIC_NODES[chain.id as ChainId] ? PUBLIC_NODES[chain.id as ChainId] : []
   }
 
   if (ts) {
@@ -80,7 +81,7 @@ export const cyberWalletConnector = isCyberWallet()
 
 export function createWagmiConfig() {
   return createConfig({
-    chains: chains as any,
+    chains,
     ssr: true,
     syncConnectedChain: true,
     transports,
