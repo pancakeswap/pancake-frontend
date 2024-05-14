@@ -75,12 +75,17 @@ export const useBSCCakeBalance = () => {
   return { balance: BigInt(balance.toString()), fetchStatus }
 }
 
-export const useCurrencyBalance = (currency: Currency) => {
+export const useCurrencyBalance = (currency: Currency | null) => {
   const native = useNativeCurrency()
   const isNativeToken = currency?.symbol === native?.symbol && currency.chainId === native.chainId
 
   const { balance: tokenBalance } = useTokenBalanceByChain(currency?.address)
   const { balance: nativeTokenBalance } = useGetNativeTokenBalance()
+
+  if (!currency) {
+    return BIG_ZERO
+  }
+
   return isNativeToken ? new BigNumber(nativeTokenBalance.toString()) : tokenBalance
 }
 
