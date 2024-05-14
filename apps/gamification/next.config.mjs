@@ -14,7 +14,6 @@ const nextConfig = {
     '@pancakeswap/utils',
     '@pancakeswap/prediction',
     '@pancakeswap/widgets-internal',
-    '@pancakeswap/sdk',
     '@pancakeswap/ui-wallets',
     '@pancakeswap/tokens',
     '@pancakeswap/wagmi',
