@@ -167,7 +167,7 @@ export function useApproveCallback(
         }).then((response) => response.hash)
       }
 
-      sendTxResult
+      return sendTxResult
         .then((response) => {
           if (addToTransaction && token) {
             addTransaction(
@@ -183,7 +183,7 @@ export function useApproveCallback(
               },
             )
           }
-          return response
+          return { hash: response }
         })
         .catch((error: any) => {
           logError(error)
@@ -193,8 +193,6 @@ export function useApproveCallback(
           }
           throw error
         })
-
-      return { hash: await sendTxResult }
     },
     [
       approvalState,

@@ -165,7 +165,7 @@ export default function useSendSwapTransaction(
           })
         }
 
-        sendTxResult
+        return sendTxResult
           .then((response) => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
@@ -268,6 +268,9 @@ export default function useSendSwapTransaction(
     recipient,
     addTransaction,
     type,
+    executePaymasterTransaction,
+    isPaymasterAvailable,
+    isPaymasterTokenActive,
   ])
 }
 

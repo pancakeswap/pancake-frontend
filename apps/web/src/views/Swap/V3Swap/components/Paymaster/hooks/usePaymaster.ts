@@ -137,8 +137,10 @@ export const usePaymaster = () => {
         paymasterInput: txResponse.txData.customData.paymasterParams.paymasterInput,
       }
 
+      // @ts-ignore
       const walletClient = (await getWalletClient(createWagmiConfig())).extend(eip712WalletActions())
 
+      // @ts-ignore
       const hash = await walletClient.sendTransaction(newTx)
 
       return hash
