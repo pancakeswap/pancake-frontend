@@ -1,11 +1,13 @@
-import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
 import { DAI, USDC, USDT } from '@pancakeswap/tokens'
 import { parseNumberToFraction } from '@pancakeswap/utils/formatFractions'
 import { BigNumber } from 'bignumber.js'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { useMemo } from 'react'
 
-const MAJOR_DEFINED_STABLE_COINS = {
+const MAJOR_DEFINED_STABLE_COINS: {
+  [chainId in ChainId]?: Array<ERC20Token | undefined>
+} = {
   [ChainId.ETHEREUM]: [USDC[ChainId.ETHEREUM], DAI[ChainId.ETHEREUM], USDT[ChainId.ETHEREUM]],
   [ChainId.ARBITRUM_ONE]: [USDC[ChainId.ARBITRUM_ONE], DAI[ChainId.ARBITRUM_ONE], USDT[ChainId.ARBITRUM_ONE]],
   [ChainId.POLYGON_ZKEVM]: [USDC[ChainId.POLYGON_ZKEVM], DAI[ChainId.POLYGON_ZKEVM], USDT[ChainId.POLYGON_ZKEVM]],
@@ -19,7 +21,9 @@ export const useFeeSaved = (inputAmount?: CurrencyAmount<Currency>, outputAmount
 
     const { chainId } = inputAmount.currency
 
-    const majorDefinedStableCoins = MAJOR_DEFINED_STABLE_COINS[chainId] ?? []
+    const majorDefinedStableCoins = MAJOR_DEFINED_STABLE_COINS[chainId as ChainId]
+    if (!majorDefinedStableCoins) return undefined
+
     const zeroFee = [inputAmount.currency, outputAmount.currency].every((currency) =>
       majorDefinedStableCoins.some((coin) => coin?.equals(currency)),
     )
