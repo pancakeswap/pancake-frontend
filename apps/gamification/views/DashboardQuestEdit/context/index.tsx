@@ -1,4 +1,3 @@
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { createContext, useCallback, useMemo, useState } from 'react'
 import { TaskConfigType } from 'views/DashboardQuestEdit/context/types'
 
@@ -20,12 +19,10 @@ interface EditQuestContextType {
   deleteTask: (value: string) => void
 }
 
-export const QuesEditContext = createContext<EditQuestContextType | undefined>(undefined)
+export const QuestEditContext = createContext<EditQuestContextType | undefined>(undefined)
 
 export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const { chainId } = useActiveChainId()
   const [tasks, setTasks] = useState<TaskConfigType[]>([])
-  const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
   const [state, setState] = useState<StateType>(() => ({
     title: '',
     body: '',
@@ -40,12 +37,6 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
     setState((prevState) => ({
       ...prevState,
       [key]: value,
-    }))
-
-    // Keep track of what fields the user has attempted to edit
-    setFieldsState((prevFieldsState) => ({
-      ...prevFieldsState,
-      [key]: true,
     }))
   }, [])
 
@@ -75,5 +66,5 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
     [state, tasks, deleteTask, updateValue],
   )
 
-  return <QuesEditContext.Provider value={providerValue}>{children}</QuesEditContext.Provider>
+  return <QuestEditContext.Provider value={providerValue}>{children}</QuestEditContext.Provider>
 }
