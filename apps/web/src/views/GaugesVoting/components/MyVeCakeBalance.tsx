@@ -18,7 +18,7 @@ const StyledBox = styled(Box)`
 export const MyVeCakeBalance = () => {
   const { t } = useTranslation()
   const { balance } = useVeCakeBalance()
-  const epochPower = useEpochVotePower()
+  const { data: epochPower } = useEpochVotePower()
   const showWillUnlockWarning = useMemo(() => {
     return balance.gt(0) && epochPower === 0n
   }, [balance, epochPower])
