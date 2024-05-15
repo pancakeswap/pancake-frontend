@@ -47,13 +47,28 @@ export const NumberDisplay = memo(function NumberDisplay({
         numberString = baseString;
       }
 
-      return numberString.toLocaleString(locale, {
+      const formattedNumber = numberString.toLocaleString(locale, {
+        ...fiatCurrencyOptions.options,
         style: "currency",
         currency: fiatCurrencyOptions.fiatCurrencyCode.toUpperCase(),
         minimumFractionDigits: 2, // for fiat no need for more than 2 decimals,
         maximumFractionDigits: 2, // for fiat no need for more than 2 decimals,
       });
+
+      const parts = extractCurrencyAndNumberParts(formattedNumber);
+
+      if (parts) {
+        const [, currencySymbol, numberPart] = parts as string[];
+        const numericValue = Number.parseFloat(numberPart.replace(/,/g, ""));
+        const greaterThanDisplay = numericValue > 10_000 ? ">" : "";
+        const formattedValue = formatNumericValue(numericValue);
+
+        return `${greaterThanDisplay}${currencySymbol}${formattedValue}`;
+      }
+
+      return formattedNumber;
     }
+
     return value
       ? formatNumber(value, {
           maximumSignificantDigits,
@@ -79,8 +94,7 @@ export const NumberDisplay = memo(function NumberDisplay({
     }
   );
 
-  const showTooltip =
-    !fiatCurrencyOptions && value && showFullDigitsTooltip && valueDisplay !== valueDisplayInFullDigits;
+  const showTooltip = value && showFullDigitsTooltip && valueDisplay !== valueDisplayInFullDigits;
 
   return (
     <>
@@ -93,3 +107,21 @@ export const NumberDisplay = memo(function NumberDisplay({
     </>
   );
 });
+
+function extractCurrencyAndNumberParts(formattedNumber: string) {
+  const match = formattedNumber.match(/^(\D*)(\d.*)$/);
+  return match ? [undefined, match[1], match[2]] : undefined;
+}
+
+function formatNumericValue(numericValue: number): string {
+  let formattedValue = numericValue.toString();
+
+  if (numericValue > 10_000) {
+    formattedValue = `${(numericValue / 1000).toFixed(0)}K`;
+  }
+  if (numericValue > 1_000_000) {
+    formattedValue = `${(numericValue / 10_000_000).toFixed(0)}M`;
+  }
+
+  return formattedValue;
+}
