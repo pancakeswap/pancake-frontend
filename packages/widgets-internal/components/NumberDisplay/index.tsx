@@ -38,32 +38,30 @@ export const NumberDisplay = memo(function NumberDisplay({
   } = useTranslation();
 
   const valueDisplay = useMemo(() => {
-    if (typeof fiatCurrencyOptions === "object" && "fiatCurrencyCode" in fiatCurrencyOptions) {
+    if (typeof fiatCurrencyOptions === "object" && "fiatCurrencyCode" in fiatCurrencyOptions && value) {
       let numberString: number | undefined;
-      if (typeof value === "number") {
-        numberString = value;
-      } else {
-        const baseString = Number.parseFloat(Number(value).toFixed(maximumSignificantDigits) ?? "");
-        numberString = baseString;
-      }
+
+      if (typeof value === "number") numberString = value;
+      else numberString = Number.parseFloat(Number(value).toFixed(2));
 
       const formattedNumber = numberString.toLocaleString(locale, {
         ...fiatCurrencyOptions.options,
         style: "currency",
         currency: fiatCurrencyOptions.fiatCurrencyCode.toUpperCase(),
-        minimumFractionDigits: 2, // for fiat no need for more than 2 decimals,
-        maximumFractionDigits: 2, // for fiat no need for more than 2 decimals,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
       });
 
+      // here we already have desired fiat curr symbol so we can split
+      // into parts to handle large fiat currency numbers
       const parts = extractCurrencyAndNumberParts(formattedNumber);
 
       if (parts) {
         const [, currencySymbol, numberPart] = parts as string[];
         const numericValue = Number.parseFloat(numberPart.replace(/,/g, ""));
-        const greaterThanDisplay = numericValue > 10_000 ? ">" : "";
         const formattedValue = formatNumericValue(numericValue);
 
-        return `${greaterThanDisplay}${currencySymbol}${formattedValue}`;
+        return `${numericValue > 10_000 ? ">" : ""}${currencySymbol}${formattedValue}`;
       }
 
       return formattedNumber;
