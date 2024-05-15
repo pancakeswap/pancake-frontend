@@ -104,10 +104,15 @@ export const useUserVoteGauges = () => {
 
     return gauges.filter((gauge) => {
       const slope = slopes.find((s) => s.hash === gauge.hash)
-      const nativeExpired = slope?.nativeEnd && slope.nativeEnd > 0 && slope.nativeEnd < currentEpochStart
-      const proxyExpired = slope?.proxyEnd && slope.proxyEnd > 0 && slope.proxyEnd < currentEpochStart
 
-      return slope && ((slope.nativePower > 0 && !nativeExpired) || (slope.proxyPower > 0 && !proxyExpired))
+      const hasNativePower = typeof slope?.nativePower !== 'undefined' && slope.nativePower > 0
+      const hasProxyPower = typeof slope?.proxyPower !== 'undefined' && slope.proxyPower > 0
+
+      // user have set power to 0 manually
+      const nativeReset = slope?.nativePower === 0 && slope?.nativeEnd > currentEpochStart
+      const proxyReset = slope?.proxyPower === 0 && slope?.proxyEnd > currentEpochStart
+
+      return hasNativePower || hasProxyPower || nativeReset || proxyReset
     })
   }, [gauges, slopes, currentEpochStart])
 
