@@ -38,7 +38,7 @@ export const useUrlQueryGauge = (gauges: Gauge[] | undefined) => {
 
   useEffect(() => {
     if (invalidHashes.length) {
-      toastError(t('Invalid gauge hash'), t('Some gauge hash is invalid'))
+      toastError(t('Gauge Not Found'), t('Gauge can not be found using the hash passed via URL.'))
     }
   }, [invalidHashes.length, t, toastError])
 
