@@ -11,10 +11,10 @@ import {
   SkeletonText,
   Text,
 } from '@pancakeswap/uikit'
+import { formatNumber } from '@pancakeswap/utils/formatNumber'
+import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { ReactNode, useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
-import formatLocaleNumber from 'utils/formatLocaleNumber'
-import { ABOUT_EQUAL } from 'views/BuyCrypto/constants'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
@@ -151,10 +151,14 @@ export const ProviderGroupItem = ({
                 color="textSubtle"
                 lineHeight="14px"
               >
-                {`${ABOUT_EQUAL} ${formatLocaleNumber({
-                  number: Number(currentQuote.quote.toFixed(4)),
-                  locale,
-                })} ${currentQuote.cryptoCurrency}`}
+                <NumberDisplay
+                  as="span"
+                  color="textSubtle"
+                  fontSize={16}
+                  value={formatNumber(currentQuote.quote)}
+                  suffix={` ${currentQuote.cryptoCurrency}`}
+                  maximumSignificantDigits={5}
+                />
               </SkeletonText>
             </AutoColumn>
           </Flex>

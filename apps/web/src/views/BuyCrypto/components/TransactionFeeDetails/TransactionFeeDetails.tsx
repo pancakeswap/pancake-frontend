@@ -1,11 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import type { Currency } from '@pancakeswap/swap-sdk-core'
 import { ArrowDropDownIcon, ArrowDropUpIcon, Box, Flex, RowBetween, SkeletonText, Text } from '@pancakeswap/uikit'
+import { formatNumber } from '@pancakeswap/utils/formatNumber'
+import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Field } from 'state/buyCrypto/actions'
 import { useTheme } from 'styled-components'
-import formatLocaleNumber from 'utils/formatLocaleNumber'
 import {
   Description,
   StyledArrowHead,
@@ -39,10 +40,7 @@ export const TransactionFeeDetails = ({
   const theme = useTheme()
   const containerRef = useRef(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
 
   const handleExpandClick = useCallback(() => setShow(!show), [show])
 
@@ -80,13 +78,13 @@ export const TransactionFeeDetails = ({
                   {t('Est total fees:')}
                 </Text>
                 <SkeletonText loading={Boolean(inputError)} initialWidth={40} fontSize="14px">
-                  {t('%fees%', {
-                    fees: formatLocaleNumber({
-                      number: Number((selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2)),
-                      locale,
-                      options: { currency: selectedQuote.fiatCurrency, style: 'currency' },
-                    }),
-                  })}
+                  <NumberDisplay
+                    as="span"
+                    fontSize={14}
+                    value={formatNumber(selectedQuote?.providerFee + selectedQuote?.networkFee)}
+                    prefix="$"
+                    fontWeight="semibold"
+                  />
                 </SkeletonText>
               </>
             ) : (
@@ -135,8 +133,6 @@ export const TransactionFeeDetails = ({
 }
 
 const FeeItem = ({ feeTitle, quote }: { feeTitle: FeeTypes; quote: OnRampProviderQuote }) => {
-  const { currentLanguage } = useTranslation()
-
   const FeeEstimates: {
     [feeType: string]: <T extends FeeComponents = FeeComponents>(args: T) => number
   } = {
@@ -166,11 +162,13 @@ const FeeItem = ({ feeTitle, quote }: { feeTitle: FeeTypes; quote: OnRampProvide
         />
         <Box width="max-content">
           <Text width="max-content" fontSize="14px" fontWeight="600">
-            {formatLocaleNumber({
-              number: FeeEstimates[feeTitle](quote),
-              locale: currentLanguage.locale,
-              options: { currency: quote.fiatCurrency, style: 'currency' },
-            })}{' '}
+            <NumberDisplay
+              as="span"
+              fontSize={14}
+              value={formatNumber(FeeEstimates[feeTitle](quote))}
+              prefix="$"
+              fontWeight="600"
+            />
           </Text>
         </Box>
       </Flex>

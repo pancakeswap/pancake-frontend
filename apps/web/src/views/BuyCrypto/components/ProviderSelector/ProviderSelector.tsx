@@ -13,9 +13,10 @@ import {
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { formatNumber } from '@pancakeswap/utils/formatNumber'
+import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
-import formatLocaleNumber from 'utils/formatLocaleNumber'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
@@ -156,15 +157,17 @@ export const ProviderSelector = ({
                 lineHeight="12px"
                 ellipsis
               >
-                {selectedQuote &&
-                  t('1 %asset% = %amount%', {
-                    amount: formatLocaleNumber({
-                      number: Number(selectedQuote.price.toFixed(2)),
-                      locale,
-                      options: { currency: selectedQuote.fiatCurrency, style: 'currency' },
-                    }),
-                    asset: selectedQuote.cryptoCurrency,
-                  })}
+                {selectedQuote && t('1 %asset% = ', { asset: selectedQuote.cryptoCurrency })}
+                {selectedQuote && (
+                  <NumberDisplay
+                    as="span"
+                    color="textSubtle"
+                    fontSize={12}
+                    lineHeight="12px"
+                    value={formatNumber(selectedQuote.price)}
+                    prefix="$"
+                  />
+                )}
               </SkeletonText>
             </AutoColumn>
           </Flex>
