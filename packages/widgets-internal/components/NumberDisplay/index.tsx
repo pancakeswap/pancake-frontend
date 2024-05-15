@@ -120,7 +120,7 @@ function formatNumericValue(numericValue: number): string {
     formattedValue = `${(numericValue / 1000).toFixed(0)}K`;
   }
   if (numericValue > 1_000_000) {
-    formattedValue = `${(numericValue / 10_000_000).toFixed(0)}M`;
+    formattedValue = `${(numericValue / 1_000_000).toFixed(0)}M`;
   }
 
   return formattedValue;
