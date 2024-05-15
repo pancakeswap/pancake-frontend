@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import isZero from '@pancakeswap/utils/isZero'
 import { Address, Hex, hexToBigInt, isAddress, stringify } from 'viem'
@@ -7,8 +7,8 @@ import { useAtomValue } from 'jotai'
 
 import { useWalletClient } from 'wagmi'
 import { paymasterTokens } from '../config/config'
-import { feeTokenAddressAtom } from '../state/atoms'
-import { ZyfiResponse } from '../types'
+import { feeTokenAtom } from '../state/atoms'
+import { PaymasterToken, ZyfiResponse } from '../types'
 import { getEip712Domain } from '../utils'
 
 interface SwapCall {
@@ -24,7 +24,7 @@ export const usePaymaster = () => {
   const chain = useActiveChainId()
   const { data: walletClient } = useWalletClient()
 
-  const feeTokenAddress = useAtomValue(feeTokenAddressAtom)
+  const feeToken = useAtomValue(feeTokenAtom)
 
   /**
    * Check if the Paymaster for zkSync is available
@@ -40,53 +40,66 @@ export const usePaymaster = () => {
    * Default is the native token to pay gas
    */
   const isPaymasterTokenActive = useMemo(() => {
-    return feeTokenAddress !== null && isAddress(feeTokenAddress)
-  }, [feeTokenAddress])
+    return feeToken.isToken && isAddress(feeToken.address)
+  }, [feeToken])
 
   /**
    * Fetch the token list using internal config
    * and the Zyfi API for Markup/Discount information
    */
-  const getPaymasterTokenlist = async (txData?: { from: Address; to: Address; value: string; data: Hex }) => {
-    try {
-      const response = await fetch('https://api.zyfi.org/api/erc20_paymaster/v1/batch', {
-        method: 'POST',
-        body: JSON.stringify({
-          feeTokenAddresses: paymasterTokens.map((token) => token.address),
-          gasLimit: '500000',
-          txData,
-        }),
-      })
+  const getPaymasterTokenlist = useCallback(
+    async (txData?: { from: Address; to: Address; value: string; data: Hex }) => {
+      try {
+        const response = await fetch('https://api.zyfi.org/api/erc20_paymaster/v1/batch', {
+          method: 'POST',
+          body: JSON.stringify({
+            feeTokenAddresses: paymasterTokens.map((token) => token.address),
+            gasLimit: '500000',
+            txData,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
 
-      if (response.ok) {
-        const tokenList: ZyfiResponse[] = await response.json()
-        return tokenList
+        if (response.ok) {
+          const tokenList: ZyfiResponse[] = await response.json()
+
+          const tempTokenList: (PaymasterToken & ZyfiResponse)[] = []
+
+          // The returned token list from Zyfi is in the same order as the paymasterTokens
+          for (let i = 0; i < tokenList.length; i++) {
+            tempTokenList.push({
+              ...tokenList[i],
+              ...paymasterTokens[i],
+            })
+          }
+
+          return tempTokenList
+        }
+
+        return []
+      } catch (e) {
+        console.error('Failed to fetch paymaster token list', e)
+        return []
       }
-
-      return []
-    } catch (e) {
-      console.error('Failed to fetch paymaster token list', e)
-      return []
-      // TODO: Add Datadog logger here?
-    }
-  }
+    },
+    [],
+  )
 
   async function executePaymasterTransaction(
     call: SwapCall & {
       gas?: string | bigint | undefined
     },
     account: Address,
-    chainId?: number,
   ) {
-    const activeChainId = chainId || chain?.chainId || zkSync.id
-
     const response = await fetch(`https://api.zyfi.org/api/erc20_paymaster/v1`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: stringify({
-        feeTokenAddress,
+        feeTokenAddress: feeToken?.address,
         gasLimit: call.gas,
         txData: {
           from: account,
@@ -105,7 +118,7 @@ export const usePaymaster = () => {
         account,
         to: txResponse.txData.to,
         value: txResponse.txData.value && !isZero(txResponse.txData.value) ? hexToBigInt(txResponse.txData.value) : 0n,
-        chainId: activeChainId,
+        chainId: zkSync.id,
         gas: BigInt(txResponse.gasLimit),
         maxFeePerGas: BigInt(txResponse.txData.maxFeePerGas),
         maxPriorityFeePerGas: BigInt(0),
@@ -123,7 +136,7 @@ export const usePaymaster = () => {
 
         const eip712Domain = getEip712Domain({
           ...txRequest,
-          chainId: activeChainId,
+          chainId: zkSync.id,
           from: account,
           type: 'eip712',
         })
@@ -135,7 +148,7 @@ export const usePaymaster = () => {
 
         const serializedTransaction = serializeTransaction({
           ...txRequest,
-          chainId: activeChainId,
+          chainId: zkSync.id,
           customSignature,
           type: 'eip712',
         } as any)
@@ -149,6 +162,7 @@ export const usePaymaster = () => {
   }
 
   return {
+    feeToken,
     isPaymasterAvailable,
     isPaymasterTokenActive,
     executePaymasterTransaction,

@@ -7,11 +7,9 @@ export interface PaymasterToken {
   symbol: string
   logoURI: string
 
-  // Note: Zyfi API provides a markup amount after calling
-  gasDiscount?: {
-    value: (usdAmount: number) => number
-    type: 'fixed' | 'percentage'
-  }
+  isNative: boolean
+  isToken: boolean
+  chainId: number
 }
 
 // Zyfi

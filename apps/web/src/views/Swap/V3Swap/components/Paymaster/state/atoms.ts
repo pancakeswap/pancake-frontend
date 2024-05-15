@@ -1,5 +1,5 @@
 import { atom } from 'jotai'
-import { Address } from 'viem'
+import { PaymasterToken, ZyfiResponse } from '../types'
+import { DEFAULT_PAYMASTER_TOKEN } from '../config/config'
 
-// export const feeTokenAddressAtom = atom<Address | null>(null)
-export const feeTokenAddressAtom = atom<Address | null>('0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4') // testing
+export const feeTokenAtom = atom<PaymasterToken & Partial<ZyfiResponse>>(DEFAULT_PAYMASTER_TOKEN)

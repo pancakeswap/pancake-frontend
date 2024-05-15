@@ -153,7 +153,7 @@ export default function useSendSwapTransaction(
         let sendTxResult: Promise<SendTransactionReturnType> | undefined
 
         if (isPaymasterAvailable && isPaymasterTokenActive) {
-          sendTxResult = executePaymasterTransaction(call, account, chainId)
+          sendTxResult = executePaymasterTransaction(call, account)
         } else {
           sendTxResult = sendTransactionAsync({
             account,

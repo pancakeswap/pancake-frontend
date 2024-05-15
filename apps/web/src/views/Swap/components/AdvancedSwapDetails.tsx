@@ -9,11 +9,15 @@ import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
 import { Field } from 'state/swap/actions'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { formatUnits } from '@pancakeswap/utils/viem/formatUnits'
 import { SlippageAdjustedAmounts } from '../V3Swap/utils/exchange'
 import { useFeeSaved } from '../hooks/useFeeSaved'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { RouterViewer } from './RouterViewer'
 import SwapRoute from './SwapRoute'
+import GasTokenModal from '../V3Swap/components/Paymaster/GasTokenModal'
+import { usePaymaster } from '../V3Swap/components/Paymaster/hooks/usePaymaster'
 
 export const TradeSummary = memo(function TradeSummary({
   inputAmount,
@@ -36,6 +40,9 @@ export const TradeSummary = memo(function TradeSummary({
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
   const { feeSavedAmount, feeSavedUsdValue } = useFeeSaved(inputAmount, outputAmount)
+
+  // Paymaster (zkSync)
+  const { isPaymasterAvailable, isPaymasterTokenActive, feeToken } = usePaymaster()
 
   return (
     <AutoColumn style={{ padding: '0 24px' }}>
@@ -177,6 +184,47 @@ export const TradeSummary = memo(function TradeSummary({
           </RowFixed>
           <Text fontSize="14px">{`${formatAmount(realizedLPFee, 4)} ${inputAmount?.currency?.symbol}`}</Text>
         </RowBetween>
+      )}
+
+      {isPaymasterAvailable && (
+        <>
+          <RowBetween style={{ padding: '4px 0 0 0' }}>
+            <RowFixed>
+              <Text fontSize="14px" color="textSubtle">
+                {t('Gas fee')}
+              </Text>
+              <QuestionHelper
+                text={
+                  <>
+                    <Text mb="12px">
+                      <Text bold display="inline-block">
+                        {t('Gas / Network fee')}
+                      </Text>
+                      <br />
+                      <br />
+                      {t('“Gas” is a measure of how much it costs someone to transact on the blockchain.')}
+                      <br /> <br />
+                      {t('Please check tx confirm modal in your wallet for the final gas fee.')}
+                    </Text>
+                  </>
+                }
+                ml="4px"
+                placement="top"
+              />
+            </RowFixed>
+            <Text fontSize="14px">
+              ~
+              {formatNumber(
+                +formatUnits(BigInt(feeToken?.estimatedFinalFeeTokenAmount ?? 0), feeToken?.decimals ?? 18),
+                2,
+                7,
+              )}
+              &nbsp;
+              {isPaymasterTokenActive ? feeToken?.symbol : 'ETH'}
+            </Text>
+          </RowBetween>
+          <GasTokenModal />
+        </>
       )}
     </AutoColumn>
   )
