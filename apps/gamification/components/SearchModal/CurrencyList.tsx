@@ -39,7 +39,7 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
           currency?.chainId === selectedCurrency?.chainId &&
           currency.symbol === selectedCurrency?.symbol
 
-        let newToken = null
+        let newToken
         if (isNative) {
           newToken = NATIVE[currency.chainId as ChainId]
         } else {
