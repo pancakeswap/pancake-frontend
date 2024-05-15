@@ -50,8 +50,8 @@ export const NumberDisplay = memo(function NumberDisplay({
       return numberString.toLocaleString(locale, {
         style: "currency",
         currency: fiatCurrencyOptions.fiatCurrencyCode.toUpperCase(),
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
+        minimumFractionDigits: 2, // for fiat no need for more than 2 decimals,
+        maximumFractionDigits: 2, // for fiat no need for more than 2 decimals,
       });
     }
     return value
