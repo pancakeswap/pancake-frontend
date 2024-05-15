@@ -15,6 +15,7 @@ import { formatNumber } from '@pancakeswap/utils/formatNumber'
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { ReactNode, useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
+import { ABOUT_EQUAL } from 'views/BuyCrypto/constants'
 import { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
@@ -156,6 +157,7 @@ export const ProviderGroupItem = ({
                   color="textSubtle"
                   fontSize={16}
                   value={formatNumber(currentQuote.quote)}
+                  prefix={`${ABOUT_EQUAL} `}
                   suffix={` ${currentQuote.cryptoCurrency}`}
                   maximumSignificantDigits={5}
                 />
