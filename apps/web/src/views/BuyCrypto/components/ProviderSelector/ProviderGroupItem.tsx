@@ -160,6 +160,7 @@ export const ProviderGroupItem = ({
                   prefix={`${ABOUT_EQUAL} `}
                   suffix={` ${currentQuote.cryptoCurrency}`}
                   maximumSignificantDigits={5}
+                  showFullDigitsTooltip={false}
                 />
               </SkeletonText>
             </AutoColumn>
