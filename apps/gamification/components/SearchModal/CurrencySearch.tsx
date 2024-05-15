@@ -1,7 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { Token } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Box, Column, Input, Row, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AutoRow } from 'components/Layout/Row'
 import { ChainLogo } from 'components/Logo/ChainLogo'
@@ -76,12 +75,12 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selected
     fixedList.current?.scrollTo(0)
   }, [])
 
-  const tokenList = useMemo((): Token[] => {
-    const list = Object.values((TOKEN_LIST as any)?.[selectedChainId]).map((i: Currency) => ({ ...i }))
-    return list as Token[]
+  const tokenList = useMemo((): Currency[] => {
+    const list = Object.values(TOKEN_LIST?.[selectedChainId]).map((i: Currency) => ({ ...i }))
+    return list
   }, [selectedChainId])
 
-  const filteredSortedTokens = useMemo((): Token[] => {
+  const filteredSortedTokens = useMemo((): Currency[] => {
     const searchQueryToLowerCase = searchQuery.toLowerCase()
 
     return searchQuery === ''
@@ -89,7 +88,7 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selected
       : tokenList.filter(
           (i) =>
             i.symbol.toLowerCase().includes(searchQueryToLowerCase) ||
-            i?.address.toLowerCase() === searchQueryToLowerCase.toLowerCase(),
+            i?.address?.toLowerCase() === searchQueryToLowerCase.toLowerCase(),
         )
   }, [searchQuery, tokenList])
 
