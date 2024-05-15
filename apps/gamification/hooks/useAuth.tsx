@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { WalletConnectorNotFoundError, WalletSwitchChainError } from '@pancakeswap/ui-wallets'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
@@ -23,7 +24,7 @@ const useAuth = () => {
 
         const connected = await connectAsync({ connector: findConnector, chainId })
         if (connected.chainId !== chainId) {
-          replaceBrowserHistory('chain', CHAIN_QUERY_NAME[connected.chainId])
+          replaceBrowserHistory('chain', CHAIN_QUERY_NAME[connected.chainId as ChainId])
           setSessionChainId(connected.chainId)
         }
         return connected

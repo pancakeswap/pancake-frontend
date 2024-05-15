@@ -9,6 +9,7 @@ import {
 } from '@pancakeswap/farms'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
+import partition from 'lodash/partition'
 import {
   ArrowForwardIcon,
   Box,
@@ -257,18 +258,18 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [stableSwapOnly, setStableSwapOnly] = useState(false)
   const [farmTypesEnableCount, setFarmTypesEnableCount] = useState(0)
 
-  const activeFarms = useMemo(
+  const [activeFarms, inactiveFarms] = useMemo(
     () =>
-      farmsLP.filter(
+      partition(
+        farmsLP,
         (farm) =>
           farm.pid !== 0 &&
-          (farm.multiplier !== '0X' || (farm.version === 2 && farm?.bCakeWrapperAddress)) &&
+          (farm.multiplier !== '0X' ||
+            Boolean(farm.version === 2 && farm?.bCakeWrapperAddress && farm?.bCakePublicData?.isRewardInRange)) &&
           (farm.version === 3 ? !v3PoolLength || v3PoolLength >= farm.pid : !v2PoolLength || v2PoolLength > farm.pid),
       ),
     [farmsLP, v2PoolLength, v3PoolLength],
   )
-
-  const inactiveFarms = useMemo(() => farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X'), [farmsLP])
 
   const archivedFarms = farmsLP
 
@@ -329,7 +330,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       const filterFarmsWithTypes = chosenFs.filter(
         (farm) =>
           (v3FarmOnly && farm.version === 3) ||
-          (v2FarmOnly && farm.version === 2) ||
+          (v2FarmOnly && farm.version === 2 && !farm.isStable) ||
           (boostedOnly && farm.boosted && farm.version === 3) ||
           (stableSwapOnly && farm.version === 2 && farm.isStable),
       )

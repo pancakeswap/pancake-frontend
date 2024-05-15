@@ -1,6 +1,6 @@
-import { ReactNode } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Container, LinkExternal } from '@pancakeswap/uikit'
+import { ReactNode } from 'react'
 import { Address } from 'viem'
 
 import IfoLayout, { IfoLayoutWrapper } from './IfoLayout'
@@ -37,7 +37,7 @@ const IfoContainer: React.FC<React.PropsWithChildren<TypeProps>> = ({
       </SectionBackground>
       {faq}
       <LinkExternal
-        href="https://docs.pancakeswap.finance/contact-us/business-partnerships#ifos-token-sales"
+        href="https://docs.pancakeswap.finance/ecosystem-and-partnerships/business-partnerships/initial-farm-offerings-ifos"
         mx="auto"
         mt="16px"
       >
