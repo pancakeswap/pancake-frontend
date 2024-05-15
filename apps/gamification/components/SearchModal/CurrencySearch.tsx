@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Box, Column, Input, Row, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AutoRow } from 'components/Layout/Row'
 import { ChainLogo } from 'components/Logo/ChainLogo'
@@ -86,7 +87,7 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selected
     return searchQuery === ''
       ? tokenList
       : tokenList.filter(
-          (i) =>
+          (i: Token) =>
             i.symbol.toLowerCase().includes(searchQueryToLowerCase) ||
             i?.address?.toLowerCase() === searchQueryToLowerCase.toLowerCase(),
         )
