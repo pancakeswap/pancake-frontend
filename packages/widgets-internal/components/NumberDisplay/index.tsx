@@ -58,15 +58,26 @@ export const NumberDisplay = memo(function NumberDisplay({
       : "";
   }, [value, fiatCurrencyOptions, maximumSignificantDigits, roundingMode, locale]);
 
-  const valueDisplayInFullDigits = useMemo(
-    () =>
-      value
-        ? formatNumberWithFullDigits(value, {
-            roundingMode,
+  const valueDisplayInFullDigits = useMemo(() => {
+    if (fiatCurrencyOptions && "fiatCurrencyCode" in fiatCurrencyOptions) {
+      const { fiatCurrencyCode, options } = fiatCurrencyOptions;
+      return value
+        ? formatFiatNumber({
+            value,
+            locale,
+            useFullDigits: true,
+            fiatCurrencyCode,
+            options,
           })
-        : "",
-    [value, roundingMode]
-  );
+        : "";
+    }
+
+    return value
+      ? formatNumberWithFullDigits(value, {
+          roundingMode,
+        })
+      : "";
+  }, [value, roundingMode, fiatCurrencyOptions, locale]);
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t("Exact number: %numberWithFullDigits%", { numberWithFullDigits: valueDisplayInFullDigits }),
