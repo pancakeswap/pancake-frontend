@@ -5,7 +5,7 @@ import { arbitrum, base, bsc, zkSync } from 'wagmi/chains'
 
 export const targetChains = [bsc, zkSync, arbitrum, base]
 
-export const TOKEN_LIST: { [key in string]: Currency } = {
+export const TOKEN_LIST: { [key in any]: Currency } = {
   [ChainId.BSC]: bscTokens,
   [ChainId.ZKSYNC]: zksyncTokens,
   [ChainId.ARBITRUM_ONE]: arbitrumTokens,
