@@ -29,7 +29,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   const defaultInputCurrency = (CAKE as any)?.[chainId]
   const [inputCurrency, setInputCurrency] = useState<Currency>(defaultInputCurrency)
   const [stakeAmount, setStakeAmount] = useState('')
-  const { balance: currencyBalance } = useTokenBalance(inputCurrency?.address)
+  const { balance: currencyBalance } = useTokenBalance(inputCurrency?.wrapped?.address)
 
   const config = {
     [CurrencyModalView.currencyInput]: { title: t('Add a reward'), onBack: onDismiss },

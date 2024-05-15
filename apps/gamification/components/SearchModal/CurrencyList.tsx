@@ -32,7 +32,7 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
     <Flex height={height} flexDirection={['column']}>
       {Object.assign(currencies).map((currency: Currency) => {
         const disable =
-          currency?.address?.toLowerCase() === selectedCurrency?.address?.toLowerCase() &&
+          currency?.address?.toLowerCase() === selectedCurrency?.wrapped?.address?.toLowerCase() &&
           currency?.chainId === selectedCurrency?.chainId &&
           currency.symbol === selectedCurrency?.symbol
 
