@@ -1,4 +1,5 @@
 import { Currency, ERC20Token } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/swap-sdk-core'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { TokenImage } from 'components/TokenImage'
 import { styled } from 'styled-components'
@@ -18,7 +19,7 @@ const StyledCurrencyList = styled(Flex)<{ disable?: boolean }>`
 interface CurrencyListProps {
   height: number
   selectedCurrency: Currency
-  currencies: Currency[]
+  currencies: Token[]
   onCurrencySelect: (value: Currency) => void
 }
 
