@@ -77,7 +77,7 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selected
 
   const tokenList = useMemo((): Currency[] => {
     const list = Object.values(TOKEN_LIST?.[selectedChainId]).map((i: Currency) => ({ ...i }))
-    return list
+    return list as Currency[]
   }, [selectedChainId])
 
   const filteredSortedTokens = useMemo((): Currency[] => {
