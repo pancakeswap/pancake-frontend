@@ -34,7 +34,6 @@ export const ImageUpload = () => {
             <Text color="textSubtle" style={{ alignSelf: 'center' }}>
               123.png
             </Text>
-            <input type="upload" />
             <Button
               paddingRight={0}
               variant="text"
