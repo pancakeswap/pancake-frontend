@@ -4,7 +4,6 @@ import {
   ArrowDropDownIcon,
   AutoColumn,
   Box,
-  BoxProps,
   Button,
   CheckmarkIcon,
   Flex,
@@ -12,12 +11,14 @@ import {
   SkeletonText,
   Text,
   useMatchBreakpoints,
+  type BoxProps,
 } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatNumber'
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
-import { OnRampProviderQuote } from 'views/BuyCrypto/types'
+import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
+import type { OnRampProviderQuote } from 'views/BuyCrypto/types'
 import OnRampProviderLogo from '../OnRampProviderLogo/OnRampProviderLogo'
 
 const DropDownContainer = styled.div<{ error: boolean }>`
@@ -108,10 +109,7 @@ export const ProviderSelector = ({
   quotes,
   ...props
 }: ProviderSelectorProps) => {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const isBestQuote = Boolean(selectedQuote === quotes?.[0] && !quoteLoading)
   const differenceFromBest = percentageDifference(quotes?.[0]?.quote, selectedQuote?.quote)
@@ -124,7 +122,7 @@ export const ProviderSelector = ({
 
   return (
     <Box width="100%" {...props}>
-      <DropDownContainer error={error as any}>
+      <DropDownContainer error={Boolean(error)}>
         <OptionSelectButton
           width="100%"
           className="open-currency-select-button"
@@ -165,7 +163,7 @@ export const ProviderSelector = ({
                     fontSize={12}
                     lineHeight="12px"
                     value={formatNumber(selectedQuote.price)}
-                    prefix="$"
+                    prefix={fiatCurrencyMap[selectedQuote.fiatCurrency].icon}
                   />
                 )}
               </SkeletonText>

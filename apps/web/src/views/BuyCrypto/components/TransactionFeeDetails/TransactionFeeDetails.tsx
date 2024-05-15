@@ -15,7 +15,7 @@ import {
   StyledNotificationWrapper,
 } from 'views/BuyCrypto/styles'
 import type { OnRampProviderQuote } from 'views/BuyCrypto/types'
-import { FeeTypes, getNetworkFullName, providerFeeTypes } from '../../constants'
+import { FeeTypes, fiatCurrencyMap, getNetworkFullName, providerFeeTypes } from '../../constants'
 import { BtcLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
 import BuyCryptoTooltip from '../Tooltip/Tooltip'
 
@@ -82,7 +82,7 @@ export const TransactionFeeDetails = ({
                     as="span"
                     fontSize={14}
                     value={formatNumber(selectedQuote?.providerFee + selectedQuote?.networkFee)}
-                    prefix="$"
+                    prefix={fiatCurrencyMap[selectedQuote.fiatCurrency].icon}
                     fontWeight="semibold"
                   />
                 </SkeletonText>
@@ -166,7 +166,7 @@ const FeeItem = ({ feeTitle, quote }: { feeTitle: FeeTypes; quote: OnRampProvide
               as="span"
               fontSize={14}
               value={formatNumber(FeeEstimates[feeTitle](quote))}
-              prefix="$"
+              prefix={fiatCurrencyMap[quote.fiatCurrency].icon}
               fontWeight="600"
             />
           </Text>

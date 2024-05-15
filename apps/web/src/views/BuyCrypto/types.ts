@@ -100,6 +100,7 @@ export enum OnRampUnit {
 export type FiatCurrency = {
   symbol: string
   name: string
+  icon: string
 }
 
 export type OnRampProviderQuote = {

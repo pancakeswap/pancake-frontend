@@ -2,7 +2,7 @@ import { Native } from '@pancakeswap/sdk'
 import type { Currency } from '@pancakeswap/swap-sdk-core'
 import { arbitrumTokens, baseTokens, bscTokens, ethereumTokens, lineaTokens } from '@pancakeswap/tokens'
 import { Field } from 'state/buyCrypto/actions'
-import { OnRampUnit } from './types'
+import { OnRampUnit, type FiatCurrency } from './types'
 import { NativeBtc } from './utils/NativeBtc'
 
 export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB', 'WBTC']
@@ -164,46 +164,56 @@ export const getOnRampFiatById = (id: string) => fiatCurrencyMap[id]
 
 export const isFiat = (unit: OnRampUnit) => unit === OnRampUnit.Fiat
 
-export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> = {
+export const fiatCurrencyMap: Record<string, FiatCurrency> = {
   USD: {
     name: 'United States Dollar',
     symbol: 'USD',
+    icon: '$',
   },
   EUR: {
     name: 'Euro',
     symbol: 'EUR',
+    icon: '€',
   },
   GBP: {
     name: 'Great British Pound',
     symbol: 'GBP',
+    icon: '£',
   },
   HKD: {
     name: 'Hong Kong Dollar',
     symbol: 'HKD',
+    icon: 'HK$',
   },
   CAD: {
     name: 'Canadian Dollar',
     symbol: 'CAD',
+    icon: 'CA$',
   },
   AUD: {
     name: 'Australian Dollar',
     symbol: 'AUD',
+    icon: 'A$',
   },
   BRL: {
     name: 'Brazilian Real',
     symbol: 'BRL',
+    icon: 'R$',
   },
   JPY: {
     name: 'Japanese Yen',
     symbol: 'JPY',
+    icon: '¥',
   },
   KRW: {
     name: 'South Korean Won',
     symbol: 'KRW',
+    icon: '₩',
   },
   VND: {
     name: 'Vietnamese Dong',
     symbol: 'VND',
+    icon: '₫',
   },
 }
 
