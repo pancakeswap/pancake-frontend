@@ -58,10 +58,57 @@ export function formatNumber(
   return `${limitIndicator}${valueToDisplay}`
 }
 
+export function formatFiatNumber({
+  value,
+  locale,
+  fiatCurrencyCode,
+  options = {},
+}: {
+  value: string | number | BigNumber
+  locale: string | undefined
+  fiatCurrencyCode: string
+  options?: Omit<Intl.NumberFormatOptions, 'currency' | 'style' | 'minimumFractionDigits' | 'maximumFractionDigits'>
+}) {
+  let numberString: number | undefined
+
+  if (typeof value === 'number') numberString = value
+  else numberString = Number.parseFloat(Number(value).toFixed(2))
+
+  const formattedNumber = numberString.toLocaleString(locale, {
+    ...options,
+    style: 'currency',
+    currency: fiatCurrencyCode.toUpperCase(),
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+
+  const currencySymbol = formattedNumber[0]
+  const currencyNumberValue = Number.parseFloat(formattedNumber.slice(1).replace(/,/g, ''))
+
+  const valueInBN = new BigNumber(currencyNumberValue)
+  if (valueInBN.eq(ZERO)) return `${currencySymbol}${valueInBN}`
+
+  const valueToDisplay = formatLargeFiatValue(valueInBN, currencySymbol)
+  return valueToDisplay
+}
+
 export function formatNumberWithFullDigits(
   value: string | number | BigNumber,
   options?: Omit<Options, 'maximumSignificantDigits'>,
 ) {
   const valueInBN = new BigNumber(value)
   return formatNumber(valueInBN, { ...options, maximumSignificantDigits: getTotalDigits(valueInBN) })
+}
+
+function formatLargeFiatValue(numericValue: BigNumber, currencySymbol: string): string {
+  const formattedValue = numericValue.toString()
+
+  if (numericValue.gt(BigNumber(10_000)) && numericValue.lt(BigNumber(1_000_000))) {
+    return `> ${currencySymbol}${numericValue.div(1000).toFixed(0)}K`
+  }
+  if (numericValue.gt(BigNumber(1_000_000))) {
+    return `> ${currencySymbol}${numericValue.div(1_000_000).toFixed(0)}M`
+  }
+
+  return `${currencySymbol}${formattedValue}`
 }

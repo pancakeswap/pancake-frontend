@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Text, useTooltip, type TextProps } from "@pancakeswap/uikit";
-import { formatNumber, formatNumberWithFullDigits } from "@pancakeswap/utils/formatNumber";
+import { formatFiatNumber, formatNumber, formatNumberWithFullDigits } from "@pancakeswap/utils/formatNumber";
 import BigNumber from "bignumber.js";
 import { memo, useMemo, type CSSProperties, type ElementType, type ReactNode } from "react";
 
@@ -38,33 +38,16 @@ export const NumberDisplay = memo(function NumberDisplay({
   } = useTranslation();
 
   const valueDisplay = useMemo(() => {
-    if (typeof fiatCurrencyOptions === "object" && "fiatCurrencyCode" in fiatCurrencyOptions && value) {
-      let numberString: number | undefined;
-
-      if (typeof value === "number") numberString = value;
-      else numberString = Number.parseFloat(Number(value).toFixed(2));
-
-      const formattedNumber = numberString.toLocaleString(locale, {
-        ...fiatCurrencyOptions.options,
-        style: "currency",
-        currency: fiatCurrencyOptions.fiatCurrencyCode.toUpperCase(),
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
-
-      // here we already have desired fiat curr symbol so we can split
-      // into parts to handle large fiat currency numbers
-      const parts = extractFiatCurrencyParts(formattedNumber);
-
-      if (parts) {
-        const [, currencySymbol, numberPart] = parts as string[];
-        const numericValue = Number.parseFloat(numberPart.replace(/,/g, ""));
-        const formattedValue = formatLargeFiatValue(numericValue);
-
-        return `${numericValue > 10_000 ? ">" : ""}${currencySymbol}${formattedValue}`;
-      }
-
-      return formattedNumber;
+    if (fiatCurrencyOptions && "fiatCurrencyCode" in fiatCurrencyOptions) {
+      const { fiatCurrencyCode, options } = fiatCurrencyOptions;
+      return value
+        ? formatFiatNumber({
+            value,
+            locale,
+            fiatCurrencyCode,
+            options,
+          })
+        : "";
     }
 
     return value
@@ -105,21 +88,3 @@ export const NumberDisplay = memo(function NumberDisplay({
     </>
   );
 });
-
-function extractFiatCurrencyParts(formattedNumber: string) {
-  const match = formattedNumber.match(/^(\D*)(\d.*)$/);
-  return match ? [undefined, match[1], match[2]] : undefined;
-}
-
-function formatLargeFiatValue(numericValue: number): string {
-  let formattedValue = numericValue.toString();
-
-  if (numericValue > 10_000) {
-    formattedValue = `${(numericValue / 1000).toFixed(0)}K`;
-  }
-  if (numericValue > 1_000_000) {
-    formattedValue = `${(numericValue / 1_000_000).toFixed(0)}M`;
-  }
-
-  return formattedValue;
-}
