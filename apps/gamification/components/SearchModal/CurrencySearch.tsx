@@ -88,7 +88,8 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selected
       : tokenList.filter(
           (i: Currency) =>
             i.symbol.toLowerCase().includes(searchQueryToLowerCase) ||
-            (i?.address?.toLowerCase() || i?.wrapped?.address?.toLowerCase()) === searchQueryToLowerCase.toLowerCase(),
+            (i.isNative ? i?.wrapped.address?.toLowerCase() : i?.address?.toLowerCase()) ===
+              searchQueryToLowerCase.toLowerCase(),
         )
   }, [searchQuery, tokenList])
 
