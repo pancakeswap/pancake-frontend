@@ -1,4 +1,5 @@
-import { Currency, ERC20Token } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/chains'
+import { Currency, ERC20Token, NATIVE } from '@pancakeswap/sdk'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { TokenImage } from 'components/TokenImage'
 import { styled } from 'styled-components'
@@ -38,8 +39,13 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
           currency?.chainId === selectedCurrency?.chainId &&
           currency.symbol === selectedCurrency?.symbol
 
-        const { chainId, address, decimals, symbol, name, projectLink } = currency
-        const newToken = new ERC20Token(chainId, address, decimals, symbol, name, projectLink)
+        let newToken = null
+        if (isNative) {
+          newToken = NATIVE[currency.chainId as ChainId]
+        } else {
+          const { chainId, address, decimals, symbol, name, projectLink } = currency
+          newToken = new ERC20Token(chainId, address, decimals, symbol, name, projectLink)
+        }
 
         return (
           <StyledCurrencyList
