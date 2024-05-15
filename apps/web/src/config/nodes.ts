@@ -86,15 +86,9 @@ export const SERVER_NODES = {
   [ChainId.BASE_SEPOLIA]: baseSepolia.rpcUrls.default.http,
 } satisfies Record<ChainId, readonly string[]>
 
-let rpcFromUrl: string | null = null
-
-if (typeof window !== 'undefined') {
-  rpcFromUrl = new URLSearchParams(window.location.search).get('rpc')
-}
-
 export const PUBLIC_NODES: Record<ChainId, string[] | readonly string[]> = {
   [ChainId.BSC]: [
-    rpcFromUrl,
+    'https://rpc.tenderly.co/fork/f56f1211-f488-4103-9a78-5f405c6464ef',
     process.env.NEXT_PUBLIC_NODE_PRODUCTION || '',
     getNodeRealUrl(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
     process.env.NEXT_PUBLIC_NODIES_BSC || '',
