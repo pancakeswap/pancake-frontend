@@ -41,12 +41,14 @@ export interface StateType {
 interface EditTemplateProps {
   titleText: string
   state: StateType
+  uploadImageComponent?: JSX.Element
   updateValue: (key: string, value: string | Date) => void
 }
 
 export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> = ({
   titleText,
   state,
+  uploadImageComponent,
   updateValue,
   children,
 }) => {
@@ -66,6 +68,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
         </Text>
         <Input value={title} onChange={(e) => updateValue('title', e.currentTarget.value)} />
       </Box>
+      {uploadImageComponent}
       <Box position="relative" zIndex={3}>
         <Text bold fontSize="24px" lineHeight="28px" mb="8px">
           {t('Timeline')}

@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
+import { ImageUpload } from 'views/DashboardCampaignEdit/components/ImageUpload'
 import { Quests } from 'views/DashboardCampaignEdit/components/Quests/index'
 import { useCampaignEdit } from 'views/DashboardCampaignEdit/context/useCampaignEdit'
 import { EditTemplate } from 'views/DashboardQuestEdit/components/EditTemplate'
@@ -23,7 +24,12 @@ export const DashboardCampaignEdit = () => {
 
   return (
     <DashboardCampaignEditContainer>
-      <EditTemplate titleText={t('Campaign title')} state={state} updateValue={updateValue}>
+      <EditTemplate
+        titleText={t('Campaign title')}
+        state={state}
+        updateValue={updateValue}
+        uploadImageComponent={<ImageUpload />}
+      >
         {!isDesktop && <Reward amountPerWinner={state.amountPerWinner} updateValue={updateValue} />}
         <Quests />
       </EditTemplate>
