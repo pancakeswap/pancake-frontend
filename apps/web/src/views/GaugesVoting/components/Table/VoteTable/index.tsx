@@ -106,6 +106,7 @@ export const VoteTable = () => {
     } else {
       newVotes[hash] = value
     }
+    console.debug('debug onVoteChange', { value, isMax, newVotes })
     setVotes(newVotes)
   }
 
@@ -174,7 +175,7 @@ export const VoteTable = () => {
   const gaugesTable = isDesktop ? (
     <>
       <TableHeader count={rows?.length} />
-
+      <pre>{JSON.stringify(votes, null, 2)}</pre>
       {isLoading ? (
         <AutoColumn gap="16px" py="16px">
           <Skeleton height={64} />
@@ -238,6 +239,7 @@ export const VoteTable = () => {
           delete newVotes[v.hash]
         }
       })
+      console.debug('debug unselect row', { rows, votes, newVotes })
       setVotes(newVotes)
     }
   }, [rows, rows?.length, votes])

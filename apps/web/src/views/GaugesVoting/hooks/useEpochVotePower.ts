@@ -15,6 +15,7 @@ export const useEpochVotePower = () => {
     queryKey: ['epochVotePower', nextEpoch, contract.address, contract.chain?.id],
 
     queryFn: async () => {
+      console.debug('debug useEpochVotePower', { nextEpoch, contract, account, userInfo })
       if (!contract || !nextEpoch) return 0n
       const votePower = await contract.read.balanceOfAtTime([account!, BigInt(nextEpoch)])
       const proxyVotePower =
