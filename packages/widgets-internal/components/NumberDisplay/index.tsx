@@ -54,12 +54,12 @@ export const NumberDisplay = memo(function NumberDisplay({
 
       // here we already have desired fiat curr symbol so we can split
       // into parts to handle large fiat currency numbers
-      const parts = extractCurrencyAndNumberParts(formattedNumber);
+      const parts = extractFiatCurrencyParts(formattedNumber);
 
       if (parts) {
         const [, currencySymbol, numberPart] = parts as string[];
         const numericValue = Number.parseFloat(numberPart.replace(/,/g, ""));
-        const formattedValue = formatNumericValue(numericValue);
+        const formattedValue = formatLargeFiatValue(numericValue);
 
         return `${numericValue > 10_000 ? ">" : ""}${currencySymbol}${formattedValue}`;
       }
@@ -106,12 +106,12 @@ export const NumberDisplay = memo(function NumberDisplay({
   );
 });
 
-function extractCurrencyAndNumberParts(formattedNumber: string) {
+function extractFiatCurrencyParts(formattedNumber: string) {
   const match = formattedNumber.match(/^(\D*)(\d.*)$/);
   return match ? [undefined, match[1], match[2]] : undefined;
 }
 
-function formatNumericValue(numericValue: number): string {
+function formatLargeFiatValue(numericValue: number): string {
   let formattedValue = numericValue.toString();
 
   if (numericValue > 10_000) {
