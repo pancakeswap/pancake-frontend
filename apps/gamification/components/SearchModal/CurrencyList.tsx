@@ -1,7 +1,7 @@
-import { ChainId } from '@pancakeswap/chains'
-import { Currency, ERC20Token, NATIVE } from '@pancakeswap/sdk'
+import { Currency, ERC20Token } from '@pancakeswap/sdk'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { TokenImage } from 'components/TokenImage'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { styled } from 'styled-components'
 
 const StyledCurrencyList = styled(Flex)<{ disable?: boolean }>`
@@ -29,6 +29,8 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
   selectedCurrency,
   onCurrencySelect,
 }) => {
+  const native = useNativeCurrency()
+
   return (
     <Flex height={height} flexDirection={['column']}>
       {Object.assign(currencies).map((currency: Currency) => {
@@ -41,7 +43,7 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
 
         let newToken: Currency
         if (isNative) {
-          newToken = NATIVE[currency.chainId as ChainId]
+          newToken = native
         } else {
           const { chainId, address, decimals, symbol, name, projectLink } = currency
           newToken = new ERC20Token(chainId, address, decimals, symbol, name, projectLink)
