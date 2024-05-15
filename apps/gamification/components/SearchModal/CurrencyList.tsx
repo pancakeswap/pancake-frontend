@@ -1,5 +1,4 @@
 import { Currency, ERC20Token } from '@pancakeswap/sdk'
-import { Token } from '@pancakeswap/swap-sdk-core'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { TokenImage } from 'components/TokenImage'
 import { styled } from 'styled-components'
@@ -19,7 +18,7 @@ const StyledCurrencyList = styled(Flex)<{ disable?: boolean }>`
 interface CurrencyListProps {
   height: number
   selectedCurrency: Currency
-  currencies: Token[]
+  currencies: Currency[]
   onCurrencySelect: (value: Currency) => void
 }
 
@@ -31,9 +30,11 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
 }) => {
   return (
     <Flex height={height} flexDirection={['column']}>
-      {Object.assign(currencies).map((currency: Token) => {
+      {Object.assign(currencies).map((currency: Currency) => {
+        const isNative = currency?.isNative
         const disable =
-          currency?.address?.toLowerCase() === selectedCurrency?.wrapped?.address?.toLowerCase() &&
+          (isNative ? currency?.wrapped?.address?.toLowerCase() : currency?.address?.toLowerCase()) ===
+            selectedCurrency?.wrapped?.address?.toLowerCase() &&
           currency?.chainId === selectedCurrency?.chainId &&
           currency.symbol === selectedCurrency?.symbol
 
