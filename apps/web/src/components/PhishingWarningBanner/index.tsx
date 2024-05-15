@@ -1,7 +1,6 @@
 import { CloseIcon, Flex, IconButton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import 'swiper/css'
@@ -93,7 +92,6 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const timer = useRef<number | null>(null)
   const [showAnimation, setShowAnimation] = useState(true)
   const [remainingTimer, setRemainingTimer] = useState(DISPLAY_TIMER)
-  const { pathname } = useRouter()
 
   const configList = useMemo(() => [<Step1 />, <Step2 />], [])
   const isCampaignStep = step === 2
