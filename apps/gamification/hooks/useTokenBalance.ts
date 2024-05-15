@@ -80,7 +80,7 @@ export const useCurrencyBalance = (currency: Currency | null | undefined) => {
   const isNativeToken = currency?.symbol === native?.symbol && currency.chainId === native.chainId
 
   const { balance: tokenBalance } = useTokenBalanceByChain(
-    (currency?.isNativeToken ? currency?.wrapped?.address : currency?.address) ?? '0x',
+    (currency?.isNative ? currency?.wrapped?.address : currency?.address) ?? '0x',
   )
   const { balance: nativeTokenBalance } = useGetNativeTokenBalance()
 
