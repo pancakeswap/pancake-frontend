@@ -35,9 +35,10 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
     <Flex height={height} flexDirection={['column']}>
       {Object.assign(currencies).map((currency: Currency) => {
         const isNative = currency?.isNative
+        const tokenAddress = isNative ? currency?.wrapped?.address : currency?.address
+
         const disable =
-          (isNative ? currency?.wrapped?.address?.toLowerCase() : currency?.address?.toLowerCase()) ===
-            selectedCurrency?.wrapped?.address?.toLowerCase() &&
+          tokenAddress.toLowerCase() === selectedCurrency?.wrapped?.address?.toLowerCase() &&
           currency?.chainId === selectedCurrency?.chainId &&
           currency.symbol === selectedCurrency?.symbol
 
@@ -51,7 +52,7 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
 
         return (
           <StyledCurrencyList
-            key={`${currency.address}-${currency.symbol}`}
+            key={`${tokenAddress}-${currency.symbol}`}
             disable={disable}
             onClick={() => !disable && onCurrencySelect(newToken)}
           >
