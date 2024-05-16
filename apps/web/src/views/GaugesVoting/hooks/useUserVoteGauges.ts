@@ -6,7 +6,6 @@ import { Hex, isAddressEqual, zeroAddress } from 'viem'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakePoolType } from 'views/CakeStaking/types'
 import { usePublicClient } from 'wagmi'
-import { useCurrentEpochStart } from './useEpochTime'
 import { useGauges } from './useGauges'
 
 export type VoteSlope = {
@@ -97,7 +96,6 @@ export const useUserVoteSlopes = () => {
 export const useUserVoteGauges = () => {
   const { data: gauges, isLoading: isGaugesLoading } = useGauges()
   const { data: slopes, refetch, isLoading: isVoteLoading } = useUserVoteSlopes()
-  const currentEpochStart = useCurrentEpochStart()
 
   const data = useMemo(() => {
     if (!gauges || !slopes) return []
@@ -108,13 +106,9 @@ export const useUserVoteGauges = () => {
       const hasNativePower = typeof slope?.nativePower !== 'undefined' && slope.nativePower > 0
       const hasProxyPower = typeof slope?.proxyPower !== 'undefined' && slope.proxyPower > 0
 
-      // user have set power to 0 manually
-      const nativeReset = slope?.nativePower === 0 && slope?.nativeEnd > currentEpochStart
-      const proxyReset = slope?.proxyPower === 0 && slope?.proxyEnd > currentEpochStart
-
-      return hasNativePower || hasProxyPower || nativeReset || proxyReset
+      return hasNativePower || hasProxyPower
     })
-  }, [gauges, slopes, currentEpochStart])
+  }, [gauges, slopes])
 
   return {
     data,
