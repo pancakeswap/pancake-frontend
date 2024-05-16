@@ -8,8 +8,8 @@ import { useAtomValue } from 'jotai'
 import { useWalletClient } from 'wagmi'
 import { paymasterTokens } from '../config/config'
 import { feeTokenAtom } from '../state/atoms'
-import { PaymasterToken, ZyfiResponse } from '../types'
 import { getEip712Domain } from '../utils'
+import { PaymasterToken, ZyfiResponse } from '../types'
 
 interface SwapCall {
   address: Address
@@ -40,7 +40,7 @@ export const usePaymaster = () => {
    * Default is the native token to pay gas
    */
   const isPaymasterTokenActive = useMemo(() => {
-    return feeToken.isToken && isAddress(feeToken.address)
+    return feeToken.isToken && feeToken.address && isAddress(feeToken.address)
   }, [feeToken])
 
   /**
@@ -65,7 +65,8 @@ export const usePaymaster = () => {
         if (response.ok) {
           const tokenList: ZyfiResponse[] = await response.json()
 
-          const tempTokenList: (PaymasterToken & ZyfiResponse)[] = []
+          // Type is a combination of (PaymasterToken OR ERC20Token) AND ZyfiResponse
+          const tempTokenList: PaymasterToken[] = []
 
           // The returned token list from Zyfi is in the same order as the paymasterTokens
           for (let i = 0; i < tokenList.length; i++) {

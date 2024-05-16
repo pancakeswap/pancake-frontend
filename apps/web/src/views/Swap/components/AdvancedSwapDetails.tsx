@@ -3,7 +3,7 @@ import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
 import { AutoColumn, Flex, Link, Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
 import { formatAmount, formatFraction } from '@pancakeswap/utils/formatFractions'
-import { memo, useState } from 'react'
+import React, { memo, useState } from 'react'
 
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
@@ -16,7 +16,6 @@ import { useFeeSaved } from '../hooks/useFeeSaved'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { RouterViewer } from './RouterViewer'
 import SwapRoute from './SwapRoute'
-import GasTokenModal from '../V3Swap/components/Paymaster/GasTokenModal'
 import { usePaymaster } from '../V3Swap/components/Paymaster/hooks/usePaymaster'
 
 export const TradeSummary = memo(function TradeSummary({
@@ -27,6 +26,7 @@ export const TradeSummary = memo(function TradeSummary({
   priceImpactWithoutFee,
   realizedLPFee,
   isMM = false,
+  gasTokenSelector,
 }: {
   hasStablePair?: boolean
   inputAmount?: CurrencyAmount<Currency>
@@ -36,6 +36,7 @@ export const TradeSummary = memo(function TradeSummary({
   priceImpactWithoutFee?: Percent | null
   realizedLPFee?: CurrencyAmount<Currency> | null
   isMM?: boolean
+  gasTokenSelector?: React.ReactNode
 }) {
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
@@ -223,7 +224,7 @@ export const TradeSummary = memo(function TradeSummary({
               {isPaymasterTokenActive ? feeToken?.symbol : 'ETH'}
             </Text>
           </RowBetween>
-          <GasTokenModal />
+          {gasTokenSelector}
         </>
       )}
     </AutoColumn>

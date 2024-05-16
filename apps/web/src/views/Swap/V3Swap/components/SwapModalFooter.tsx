@@ -1,7 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router'
-import { AutoColumn, BackForwardIcon, Button, Dots, Flex, Link, QuestionHelper, Text } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  BackForwardIcon,
+  Button,
+  Dots,
+  Flex,
+  Link,
+  QuestionHelper,
+  Text,
+  TokenLogo,
+} from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { CurrencyLogo } from 'components/Logo'
@@ -15,6 +25,7 @@ import { formatExecutionPrice as mmFormatExecutionPrice } from 'views/Swap/MMLin
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
 import { SlippageAdjustedAmounts, formatExecutionPrice } from '../utils/exchange'
+import { usePaymaster } from './Paymaster/hooks/usePaymaster'
 
 const SwapModalFooterContainer = styled(AutoColumn)`
   margin-top: 24px;
@@ -22,6 +33,12 @@ const SwapModalFooterContainer = styled(AutoColumn)`
   border-radius: ${({ theme }) => theme.radii.default};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   background-color: ${({ theme }) => theme.colors.background};
+`
+
+const StyledLogo = styled(TokenLogo)<{ size: string }>`
+  border-radius: 50%;
+  width: ${({ size }) => size};
+  height: ${({ size }) => size};
 `
 
 export const SwapModalFooter = memo(function SwapModalFooter({
@@ -60,6 +77,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
 }) {
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
+  const { isPaymasterTokenActive, feeToken } = usePaymaster()
   const severity = warningSeverity(priceImpactWithoutFee)
 
   const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
@@ -226,6 +244,38 @@ export const SwapModalFooter = memo(function SwapModalFooter({
             </Text>
           )}
         </RowBetween>
+        {isPaymasterTokenActive && (
+          <RowBetween mt="8px">
+            <RowFixed>
+              <Text fontSize="14px">{t('Gas Token')}</Text>
+            </RowFixed>
+
+            <Flex alignItems="center">
+              <div style={{ position: 'relative' }}>
+                <StyledLogo
+                  size="20px"
+                  srcs={[
+                    feeToken && feeToken.logoURI
+                      ? feeToken.logoURI
+                      : `https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png`,
+                  ]}
+                  alt={`${feeToken ? feeToken?.symbol : 'ETH'}`}
+                  width="20px"
+                />
+                <p style={{ position: 'absolute', bottom: '-2px', right: '-6px', fontSize: '14px' }}>⛽️</p>
+              </div>
+
+              <Text marginLeft={2} fontSize={14} bold>
+                {(feeToken && feeToken.symbol && feeToken.symbol.length > 10
+                  ? `${feeToken.symbol.slice(0, 4)}...${feeToken.symbol.slice(
+                      feeToken.symbol.length - 5,
+                      feeToken.symbol.length,
+                    )}`
+                  : feeToken?.symbol) || 'ETH'}
+              </Text>
+            </Flex>
+          </RowBetween>
+        )}
       </SwapModalFooterContainer>
 
       <AutoRow>

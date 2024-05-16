@@ -1,16 +1,20 @@
+import { Currency } from '@pancakeswap/sdk'
 import { Address, Hex } from 'viem'
 
-export interface PaymasterToken {
+export interface BasePaymasterToken {
   address: Address
-  decimals: number
-  name: string
   symbol: string
-  logoURI: string
+  decimals: number
 
+  chainId: number
   isNative: boolean
   isToken: boolean
-  chainId: number
+
+  name?: string
+  logoURI?: string
 }
+
+export type PaymasterToken = BasePaymasterToken & Partial<Currency & ZyfiResponse>
 
 // Zyfi
 export interface ZyfiResponse {

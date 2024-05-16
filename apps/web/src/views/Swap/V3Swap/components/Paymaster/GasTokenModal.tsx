@@ -1,5 +1,6 @@
 import {
   ArrowDropDownIcon,
+  ArrowForwardIcon,
   Box,
   Button,
   CircleLoader,
@@ -12,22 +13,25 @@ import {
   TokenLogo,
   useModalV2,
   useTooltip,
+  WarningIcon,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { useAtom } from 'jotai'
 import { useNativeBalances, useTokenBalances } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
-import { PaymasterToken, ZyfiResponse } from './types'
-import { feeTokenAtom } from './state/atoms'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { TradeType } from '@pancakeswap/swap-sdk-core'
 import { usePaymaster } from './hooks/usePaymaster'
 import { DEFAULT_PAYMASTER_TOKEN } from './config/config'
-
-/// Styles
+import { PaymasterToken } from './types'
+import { feeTokenAtom } from './state/atoms'
+import { TradeEssentialForPriceBreakdown } from '../../utils/exchange'
+import { RouteDisplayEssentials } from '../RouteDisplayModal'
 
 // Selector Styles
 const SelectorContainer = styled(Box)`
@@ -56,18 +60,25 @@ const GasTokenSelectButton = styled(Button).attrs({ variant: 'text', scale: 'xs'
 `
 
 // Modal Styles
-const FixedHeightRow = styled.div`
+const FixedHeightRow = styled.div<{ $disabled: boolean }>`
   height: 56px;
   display: flex;
   align-items: center;
   padding: 0 16px;
-  cursor: pointer;
 
+  cursor: ${({ $disabled }) => !$disabled && 'pointer'};
   border-radius: ${({ theme }) => theme.radii.default};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme, $disabled }) => !$disabled && theme.colors.background};
   }
+
+  ${({ $disabled }) =>
+    $disabled &&
+    `
+    opacity: 0.5;
+    user-select: none;
+`}
 `
 
 const StyledBalanceText = styled(Text).attrs({ small: true })`
@@ -77,10 +88,10 @@ const StyledBalanceText = styled(Text).attrs({ small: true })`
   text-overflow: ellipsis;
 `
 
-const USDValueText = styled(Text)`
-  font-size: 12px;
-  color: ${({ theme }) => theme.colors.textSubtle};
-`
+// const USDValueText = styled(Text)`
+//   font-size: 12px;
+//   color: ${({ theme }) => theme.colors.textSubtle};
+// `
 
 const Badge = styled.span`
   font-size: 14px;
@@ -89,25 +100,33 @@ const Badge = styled.span`
   color: ${({ theme }) => theme.colors.invertedContrast};
   background-color: ${({ theme }) => theme.colors.success};
 `
+type Trade = TradeEssentialForPriceBreakdown &
+  Pick<SmartRouterTrade<TradeType>, 'tradeType'> & {
+    routes: RouteDisplayEssentials[]
+  }
 
-function GasTokenModal() {
+interface GasTokenModalProps {
+  trade?: Trade | null
+}
+
+function GasTokenModal({ trade }: GasTokenModalProps) {
   const { t } = useTranslation()
   const { getPaymasterTokenlist } = usePaymaster()
   const { isOpen, setIsOpen, onDismiss } = useModalV2()
-  const { address } = useAccount()
+  const { address: account } = useAccount()
 
   const [feeToken, setFeeToken] = useAtom(feeTokenAtom)
   const [tokenList, setTokenList] = useState<PaymasterToken[]>([])
 
-  const nativeBalances = useNativeBalances([address])
-  const balances = useTokenBalances(address, tokenList as any[])
+  const nativeBalances = useNativeBalances([account])
+  const balances = useTokenBalances(account, tokenList.filter((token) => token.isToken) as any[])
 
   const onSelectorButtonClick = useCallback(() => {
     setIsOpen(true)
   }, [setIsOpen])
 
   const onTokenSelected = useCallback(
-    (token: PaymasterToken & ZyfiResponse) => {
+    (token: PaymasterToken) => {
       setFeeToken(token)
       setIsOpen(false)
     },
@@ -115,7 +134,10 @@ function GasTokenModal() {
   )
 
   const fetchTokenList = useCallback(async () => {
+    // TODO: Send txData for gas estimates
     const tempTokenList = await getPaymasterTokenlist()
+
+    // Set Native ETH as the first token
     setTokenList([DEFAULT_PAYMASTER_TOKEN, ...tempTokenList])
   }, [getPaymasterTokenlist])
 
@@ -123,32 +145,59 @@ function GasTokenModal() {
     fetchTokenList()
   }, [])
 
+  // Item Key for FixedSizeList
   const itemKey = useCallback((index: number, data: any) => `${data[index]}-${index}`, [])
 
-  const Row = ({ data, index, style }) => {
-    const item = data[index] as PaymasterToken & ZyfiResponse
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <>{t('Insufficient %symbol% balance for gas fee', { symbol: feeToken.symbol })}</>,
+    {
+      placement: 'right',
+    },
+  )
 
-    const { targetRef, tooltip, tooltipVisible } = useTooltip(
-      <>{item.markup && item.markup.replace('-', '')} discount on this gas fee token</>,
+  const isInsufficientBalanceForGas = useMemo(() => {
+    if (!feeToken || !feeToken.estimatedFinalFeeTokenAmount || !feeToken.address || !account) return false
+
+    const balance = feeToken.isNative ? nativeBalances[account] : balances[feeToken.address]
+
+    // If no balance, wallet is not connected or we are unable to fetch balances
+    if (!balance) return false
+
+    // TODO: Check formatting here, like if decimals are a problem
+    return balance.lessThan(BigInt(feeToken.estimatedFinalFeeTokenAmount))
+  }, [feeToken, account, nativeBalances, balances])
+
+  const Row = ({ data, index, style }) => {
+    const item = data[index] as PaymasterToken
+
+    const disabled = useMemo(
+      () =>
+        !account ||
+        (item.isNative && (!nativeBalances[account] || formatAmount(nativeBalances[account]) === '0')) ||
+        (item.isToken && (!balances[item.address] || formatAmount(balances[item.address]) === '0')),
+      [item],
     )
 
+    const {
+      targetRef: innerTargetRef,
+      tooltip: innerTooltip,
+      tooltipVisible: innerTooltipVisible,
+    } = useTooltip(<>{item.markup && item.markup.replace('-', '')} discount on this gas fee token</>)
+
     return (
-      <FixedHeightRow style={style} onClick={() => onTokenSelected(item)}>
+      <FixedHeightRow style={style} onClick={() => !disabled && onTokenSelected(item)} $disabled={disabled}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           <Flex alignItems="center">
             <StyledLogo
-              size="24px"
-              srcs={[
-                item
-                  ? item.logoURI
-                  : `https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png`,
-              ]}
+              size="20px"
+              srcs={[item && item.logoURI ? item.logoURI : ``]}
               alt={`${item ? item?.symbol : 'ETH'}`}
+              width="20px"
             />
             <Column marginLeft="12px">
               <Text bold>
                 {item.symbol} &nbsp;
-                {item.markup && <Badge ref={targetRef}>⛽️ {item.markup}</Badge>}
+                {item.markup && <Badge ref={!disabled ? innerTargetRef : null}>⛽️ {item.markup}</Badge>}
               </Text>
               <Text color="textSubtle" maxWidth="200px" ellipsis small>
                 {item.name}
@@ -156,16 +205,22 @@ function GasTokenModal() {
             </Column>
           </Flex>
 
-          <StyledBalanceText>
-            <NumberDisplay
-              value={
-                item.isNative && address ? formatAmount(nativeBalances[address]) : formatAmount(balances[item.address])
-              }
-            />
-            {/* <USDValueText>~0.0001 USD</USDValueText> */}
-          </StyledBalanceText>
+          {(account && nativeBalances[account]) || balances[item.address] ? (
+            <StyledBalanceText>
+              <NumberDisplay
+                value={
+                  item.isNative && account
+                    ? formatAmount(nativeBalances[account])
+                    : formatAmount(balances[item.address])
+                }
+              />
+              {/* <USDValueText>~0.0001 USD</USDValueText> */}
+            </StyledBalanceText>
+          ) : (
+            <ArrowForwardIcon />
+          )}
         </Flex>
-        {tooltipVisible && tooltip}
+        {innerTooltipVisible && innerTooltip}
       </FixedHeightRow>
     )
   }
@@ -183,11 +238,7 @@ function GasTokenModal() {
             <div style={{ position: 'relative' }}>
               <StyledLogo
                 size="20px"
-                srcs={[
-                  feeToken
-                    ? feeToken.logoURI
-                    : `https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png`,
-                ]}
+                srcs={[feeToken && feeToken.logoURI ? feeToken.logoURI : ``]}
                 alt={`${feeToken ? feeToken?.symbol : 'ETH'}`}
                 width="20px"
               />
@@ -206,18 +257,30 @@ function GasTokenModal() {
           </Flex>
         </GasTokenSelectButton>
 
-        <BalanceText>
-          {balances[feeToken?.address ?? '0x0'] || (address && nativeBalances[address]) ? (
-            t('Balance: %balance%', {
-              balance:
-                feeToken?.isNative && address
-                  ? formatAmount(nativeBalances[address])
-                  : formatAmount(balances[feeToken?.address ?? '0x0']),
-            })
-          ) : (
-            <CircleLoader />
-          )}
-        </BalanceText>
+        {account && (
+          <BalanceText>
+            {balances[feeToken?.address ?? '0x0'] || (account && nativeBalances[account]) ? (
+              <Flex alignItems="center">
+                <span style={{ marginTop: '2px' }}>
+                  {t('Balance: %balance%', {
+                    balance:
+                      feeToken?.isNative && account
+                        ? formatAmount(nativeBalances[account])
+                        : formatAmount(balances[feeToken?.address ?? '0x0']),
+                  })}
+                </span>
+                {isInsufficientBalanceForGas && (
+                  <div ref={targetRef}>
+                    <WarningIcon width={16} marginLeft={1} color="#ED4B9E" />
+                  </div>
+                )}
+              </Flex>
+            ) : (
+              <CircleLoader />
+            )}
+            {tooltipVisible && tooltip}
+          </BalanceText>
+        )}
       </SelectorContainer>
 
       <ModalV2 onDismiss={onDismiss} isOpen={isOpen} closeOnOverlayClick>

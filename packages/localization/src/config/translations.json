@@ -3361,5 +3361,7 @@
   "Gas fee": "Gas fee",
   "Gas / Network fee": "Gas / Network fee",
   "“Gas” is a measure of how much it costs someone to transact on the blockchain.": "“Gas” is a measure of how much it costs someone to transact on the blockchain.",
-  "Please check tx confirm modal in your wallet for the final gas fee.": "Please check tx confirm modal in your wallet for the final gas fee."
+  "Please check tx confirm modal in your wallet for the final gas fee.": "Please check tx confirm modal in your wallet for the final gas fee.",
+  "Insufficient %symbol% balance for gas fee": "Insufficient %symbol% balance for gas fee",
+  "Gas Token": "Gas Token"
 }
