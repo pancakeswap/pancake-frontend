@@ -7,7 +7,7 @@ import { ActionModal } from 'views/DashboardQuestEdit/components/SubmitAction/Ac
 export const SubmitAction = () => {
   const { t } = useTranslation()
   const { query } = useRouter()
-  const disabled = true
+  const disabled = false
   const [openModal, setOpenModal] = useState(false)
   const [isPublish, setIsPublish] = useState(false)
 
@@ -42,7 +42,7 @@ export const SubmitAction = () => {
         <Button
           width="100%"
           variant="secondary"
-          // disabled={disabled}
+          disabled={disabled}
           onClick={() => handleClick(true)}
           endIcon={<VolumeIcon color={disabled ? 'textDisabled' : 'primary'} width={20} height={20} />}
         >
