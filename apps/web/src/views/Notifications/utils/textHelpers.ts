@@ -1,4 +1,4 @@
-import { TranslateFunction } from '@pancakeswap/localization'
+import type { TranslateFunction } from '@pancakeswap/localization'
 
 export const getOnBoardingDescriptionMessage = (isOnBoarded: boolean, t: TranslateFunction) => {
   let onBoardingDescription: string = t(
@@ -45,7 +45,7 @@ export const removeTokensFromAPRString = (aprString: string): string => {
 
 export const extractPercentageFromString = (inputString: string): number | null => {
   const percentageMatch = inputString.match(/(\d+(\.\d*)?)%/)
-  if (percentageMatch) return parseFloat(percentageMatch[1])
+  if (percentageMatch) return Number.parseFloat(percentageMatch[1])
   return null
 }
 
@@ -55,20 +55,21 @@ export const extractTokensFromAPRString = (aprString: string): { token1: string;
   if (!match) return { token1: '', token2: '', chainId: 56 }
   const token1 = match[1]
   const token2 = match[2]
-  const chain = parseInt(match[3], 10)
+  const chain = Number.parseInt(match[3], 10)
   return { token1, token2, chainId: chain }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
 export const getLinkText = (title: string, t: TranslateFunction) => {
-  if (title.includes('APR Update')) return t('View Farm')
+  if (title.toLowerCase().includes('apr update')) return t('View Farm')
   if (title.includes('Balance') || title.includes('Purchase')) return t('Buy Crypto')
   return t('View Link')
 }
 
-export const extractWordBeforeFullStop = (inputString: string) => {
-  const match = inputString.match(/(\S+)\s*\./)
-  return match ? match[1] : 'bsc'
+export const extractChainIdFromAPRNotification = (inputString: string) => {
+  const splitInputString = inputString.split('.')[0]
+  const chainIdString = splitInputString.split(' ')
+  return chainIdString[chainIdString.length - 1]
 }
 
 export const extractChainIdFromMessage = (inputString: string) => {
@@ -80,9 +81,4 @@ export const getBadgeString = (isAPR: boolean, hasFallen: boolean, percentageCha
   return isAPR
     ? `${percentageChange}% APR change `
     : `${hasFallen ? 'Down' : 'Up'} ${hasFallen ? '-' : '+'}${percentageChange}%`
-}
-
-export const hasSingleFarm = (inputString: string) => {
-  const pattern = /[a-zA-Z]+-[a-zA-Z]+ LP,/
-  return !pattern.test(inputString)
 }

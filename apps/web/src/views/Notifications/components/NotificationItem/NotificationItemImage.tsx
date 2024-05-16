@@ -4,18 +4,17 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/image'
 import { CHAIN_NAME_TO_CHAIN_ID } from 'views/Notifications/constants'
 import {
+  extractChainIdFromAPRNotification,
   extractChainIdFromMessage,
   extractPercentageFromString,
-  extractWordBeforeFullStop,
   getBadgeString,
-  hasSingleFarm,
 } from 'views/Notifications/utils/textHelpers'
 import AlertIcon from '../../../../../public/images/notifications/alert-icon.svg'
 
 export const getNotificationPairlogo = (title: string, message: string) => {
-  const isAprNotification = title.includes('APR')
-  const chainName = isAprNotification ? extractWordBeforeFullStop(message) : extractChainIdFromMessage(message)
-  const chainId = CHAIN_NAME_TO_CHAIN_ID[chainName === 'polygon_zkevm.' ? 'polygon_zkevm' : chainName]
+  const isAprNotification = title.toLowerCase().includes('apr')
+  const chainName = isAprNotification ? extractChainIdFromAPRNotification(message) : extractChainIdFromMessage(message)
+  const chainId = CHAIN_NAME_TO_CHAIN_ID[chainName]
 
   const image1 = isAprNotification ? '/images/notifications/farms-scope.svg' : '/logo.png'
   const image2 = `${ASSET_CDN}/web/chains/${chainId}.png`
@@ -31,16 +30,9 @@ export const NotificationImage = ({
   title: string
   message: string
 }) => {
-  if (title.includes('APR Update') || title.includes('LP position')) {
+  if (title.toLowerCase().includes('apr update') || title.includes('LP position')) {
     const { image1, image2 } = getNotificationPairlogo(title, message)
-    const hasOnlyOneItem = hasSingleFarm(message)
-    if (hasOnlyOneItem) {
-      return (
-        <Box marginRight="8px" paddingY="4px" minWidth="40px">
-          <Image src={image2} alt="apr Image" height={40} width={40} unoptimized />
-        </Box>
-      )
-    }
+
     return (
       <Box position="relative" minWidth="40px" minHeight="40px">
         <Box marginRight="8px" position="absolute" top={0} left={0}>
@@ -69,7 +61,7 @@ export const NotificationBadge = ({ title, message }: { title: string; message: 
       </FlexGap>
     )
   }
-  if (title.includes('Price Movement') || title.includes('APR Update')) {
+  if (title.includes('Price Movement') || title.toLowerCase().includes('apr update')) {
     const percentageChange = extractPercentageFromString(message)
     const hasFallen = message.includes('fallen')
     const isAPR = title.includes('APR')
@@ -91,7 +83,7 @@ export const formatStringWithNewlines = (inputString: string, isMobile: boolean)
   return inputString.split('\n').map((line: string, index: number) => (
     <Text
       // eslint-disable-next-line react/no-array-index-key
-      key={`message-line-${index}`}
+      key={`message-line-${index.toString()}`}
       fontSize={isMobile ? '14px' : '16px'}
       lineHeight="20px"
       fontWeight={400}
