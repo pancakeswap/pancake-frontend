@@ -194,6 +194,7 @@ export { default as VCakeIcon } from "./Icons/VCake";
 export { default as VerifiedIcon } from "./Icons/Verified";
 export { default as VisibilityOff } from "./Icons/VisibilityOff";
 export { default as VisibilityOn } from "./Icons/VisibilityOn";
+export { default as VolumeIcon } from "./Icons/Volume";
 export { default as VolumeOffIcon } from "./Icons/VolumeOff";
 export { default as VolumeUpIcon } from "./Icons/VolumeUp";
 export { default as VoteIcon } from "./Icons/Vote";
