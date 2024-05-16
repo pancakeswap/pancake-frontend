@@ -35,11 +35,11 @@ export const useFeeSaved = (inputAmount?: CurrencyAmount<Currency>, outputAmount
     return outputAmount.multiply(25).divide(10000)
   }, [inputAmount, outputAmount])
 
-  const { data: outputCurrencyUSDPrice } = useCurrencyUsdPrice(feeSavedAmount?.currency, {
+  const { data: outputCurrencyUSDPrice, isLoading } = useCurrencyUsdPrice(feeSavedAmount?.currency, {
     enabled: Boolean(feeSavedAmount),
   })
   const fallbackPrice = useStablecoinPrice(feeSavedAmount?.currency, {
-    enabled: Boolean(feeSavedAmount) && !outputCurrencyUSDPrice,
+    enabled: Boolean(feeSavedAmount) && !isLoading && !outputCurrencyUSDPrice,
   })
   const feeSavedUsdValue = useMemo(() => {
     if (!feeSavedAmount) return parseNumberToFraction(0)
