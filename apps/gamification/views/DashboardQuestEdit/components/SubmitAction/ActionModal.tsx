@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Modal, ModalV2 } from '@pancakeswap/uikit'
 import { useState } from 'react'
+import { Quest } from 'views/Quests/components/Quest'
 
 interface ModalConfig {
   title: string
@@ -56,7 +57,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, 
           justifyContent="center"
           width={['100%', '100%', '100%', '380px']}
         >
-          213
+          <Quest width="100%" showStatus hideClick />
         </Flex>
       </Modal>
     </ModalV2>

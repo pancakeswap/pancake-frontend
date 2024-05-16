@@ -9,30 +9,26 @@ const StyledFlexGap = styled(FlexGap)`
   gap: 16px;
   margin-bottom: 16px;
 
-  > a {
+  > div {
     width: 100%;
     margin: auto;
-
-    &:hover {
-      text-decoration: none;
-    }
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    > a {
+    > div {
       width: calc(50% - 8px);
       margin: 0;
     }
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    > a {
+    > div {
       width: calc(33.33% - 11px);
     }
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    > a {
+    > div {
       width: calc(25% - 12px);
     }
   }

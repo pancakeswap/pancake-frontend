@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { CalenderIcon, Card, Flex, InfoIcon, Link, LogoRoundIcon, Tag, Text } from '@pancakeswap/uikit'
-
+import { Box, BoxProps, CalenderIcon, Card, Flex, InfoIcon, LogoRoundIcon, Tag, Text } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 
 const Detail = styled(Flex)`
@@ -22,16 +22,23 @@ const DetailContainer = styled(Flex)`
   }
 `
 
-interface QuestProps {
+interface QuestProps extends BoxProps {
   isDraft?: boolean
   showStatus?: boolean
+  hideClick?: boolean
 }
 
-export const Quest: React.FC<QuestProps> = ({ isDraft, showStatus }) => {
+export const Quest: React.FC<QuestProps> = ({ isDraft, showStatus, hideClick, ...props }) => {
   const { t } = useTranslation()
+  const router = useRouter()
+
+  const handleClick = () => {
+    const url = '/quests/1'
+    router.push(url)
+  }
 
   return (
-    <Link href="/quests/1">
+    <Box {...props} style={{ cursor: hideClick ? 'initial' : 'pointer' }} onClick={hideClick ? undefined : handleClick}>
       <Card>
         <Flex flexDirection="column" padding="16px">
           <Flex mb="16px">
@@ -46,14 +53,14 @@ export const Quest: React.FC<QuestProps> = ({ isDraft, showStatus }) => {
                   {t('Upcoming')}
                 </Text>
                 {/* <Text bold color="success">
-                  {t('Completed')}
-                </Text>
-                <Text bold color="secondary">
-                  {t('Ongoing')}
-                </Text>
-                <Text bold color="textDisabled">
-                  {t('Finished')}
-                </Text> */}
+                    {t('Completed')}
+                  </Text>
+                  <Text bold color="secondary">
+                    {t('Ongoing')}
+                  </Text>
+                  <Text bold color="textDisabled">
+                    {t('Finished')}
+                  </Text> */}
               </Tag>
             )}
             <Flex>
@@ -100,6 +107,6 @@ export const Quest: React.FC<QuestProps> = ({ isDraft, showStatus }) => {
           </DetailContainer>
         </Flex>
       </Card>
-    </Link>
+    </Box>
   )
 }
