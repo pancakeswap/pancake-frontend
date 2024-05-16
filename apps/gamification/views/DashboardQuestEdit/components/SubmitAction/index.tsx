@@ -18,7 +18,7 @@ export const SubmitAction = () => {
 
   return (
     <Flex flexDirection="column" mt="30px">
-      <ActionModal openModal={openModal} isPublish={isPublish} setOpenModal={setOpenModal} />
+      {openModal && <ActionModal openModal={openModal} isPublish={isPublish} setOpenModal={setOpenModal} />}
       {query.id ? (
         <>
           <Button
