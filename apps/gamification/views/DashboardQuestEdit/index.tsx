@@ -3,6 +3,7 @@ import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { EditTemplate } from 'views/DashboardQuestEdit/components/EditTemplate'
 import { Reward } from 'views/DashboardQuestEdit/components/Reward'
+import { SubmitAction } from 'views/DashboardQuestEdit/components/SubmitAction'
 import { Tasks } from 'views/DashboardQuestEdit/components/Tasks'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 
@@ -24,10 +25,18 @@ export const DashboardQuestEdit = () => {
   return (
     <DashboardQuestEditContainer>
       <EditTemplate titleText={t('Quest title')} state={state} updateValue={updateValue}>
-        {!isDesktop && <Reward amountPerWinner={state.amountPerWinner} updateValue={updateValue} />}
+        {!isDesktop && (
+          <Reward
+            amountPerWinner={state.amountPerWinner}
+            actionComponent={<SubmitAction />}
+            updateValue={updateValue}
+          />
+        )}
         <Tasks />
       </EditTemplate>
-      {isDesktop && <Reward amountPerWinner={state.amountPerWinner} updateValue={updateValue} />}
+      {isDesktop && (
+        <Reward amountPerWinner={state.amountPerWinner} actionComponent={<SubmitAction />} updateValue={updateValue} />
+      )}
     </DashboardQuestEditContainer>
   )
 }
