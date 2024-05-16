@@ -1,4 +1,4 @@
-import { Trans, useTranslation } from '@pancakeswap/localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
@@ -50,11 +50,8 @@ const learnMoreLink =
   'https://blog.pancakeswap.finance/articles/get-your-uniswap-interface-fees-refunded-on-pancake-swap-up-to-8-m?utm_source=homepagebanner&utm_medium=Ethereum&utm_campaign=Swap&utm_id=InterfacefeeRefund'
 
 const Desc = () => {
-  return (
-    <BannerDesc>
-      <Trans>Match your volume and we’ll refund ALL your interface fees paid</Trans>
-    </BannerDesc>
-  )
+  const { t } = useTranslation()
+  return <BannerDesc>{t("Match your volume and we'll refund ALL your interface fees paid")}</BannerDesc>
 }
 
 export const FeeRefundBanner = () => {
