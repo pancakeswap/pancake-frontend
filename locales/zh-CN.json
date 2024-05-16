@@ -863,7 +863,7 @@
   "Restricts swaps to direct pairs only.": "将兑换限制为仅限直接币对。",
   "Enter a valid slippage percentage": "输入有效的滑点百分比",
   "Your transaction may fail": "您的链上操作可能会失败",
-  "Your transaction may be frontrun": "您的链上交易可能会被强跑",
+  "Your transaction may be frontrun": "您的交易可能会被抢先交易",
   "Token Amount": "代币金额",
   "LP tokens in your wallet": "您的钱包中的 LP 代币",
   "Pooled %asset%": "已入池 %asset%",
@@ -3352,5 +3352,7 @@
   "View Migrated Position": "查看迁移持仓",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "更新您的 veCAKE 持仓，继续享受每周 CAKE 收益、收入分成、Gauge Voting、农场收益助推、参与 IFO 等，还有更多好处！",
   "Exact number: %numberWithFullDigits%": "Exact number: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "请注意，从此资金库中获得的珍珠只会稍后出现在您的余额中。"
+  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "请注意，从此资金库中获得的珍珠只会稍后出现在您的余额中。",
+  "Fee saved": "Fee saved",
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees"
 }
