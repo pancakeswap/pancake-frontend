@@ -1,6 +1,7 @@
 {
   "name": "@pancakeswap/v4-sdk",
   "license": "MIT",
+  "private": true,
   "publishConfig": {
     "access": "public"
   },
