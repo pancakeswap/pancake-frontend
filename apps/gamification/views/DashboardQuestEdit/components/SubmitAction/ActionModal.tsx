@@ -5,9 +5,9 @@ import {
   CalenderIcon,
   CheckmarkCircleIcon,
   Flex,
-  Loading,
   Modal,
   ModalV2,
+  Spinner,
   Text,
   VolumeIcon,
   useToast,
@@ -56,7 +56,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, 
     [QuestEditModalState.LOADING]: {
       title: isPublish ? t('Publishing the quest...') : t('Scheduling the quest...'),
       hideCloseButton: true,
-      icon: <Loading margin="auto auto 40px auto" width={64} height={64} color="secondary" />,
+      icon: <Spinner size={100} />,
       textInfo: isPublish
         ? t('Wait while the quest is being published...')
         : t('Wait while the quest is being scheduled...'),
@@ -64,7 +64,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, 
     [QuestEditModalState.FINISHED]: {
       title: isPublish ? t('The quest has been published') : t('The quest has been scheduled'),
       closeOnOverlayClick: true,
-      icon: <CheckmarkCircleIcon margin="auto auto 40px auto" width={64} height={64} color="primary" />,
+      icon: <CheckmarkCircleIcon width={64} height={64} color="primary" />,
       textInfo: isPublish
         ? t('The quest has been successfully published!')
         : t('The quest has been successfully scheduled!'),
@@ -139,7 +139,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, 
             </>
           )}
 
-          {modalView !== QuestEditModalState.DEFAULT && config[modalView].icon}
+          {modalView !== QuestEditModalState.DEFAULT && <Box m="auto auto 40px auto">{config[modalView].icon}</Box>}
 
           <Quest mb="24px" width="100%" showStatus hideClick />
 
