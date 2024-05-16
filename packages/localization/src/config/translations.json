@@ -3353,5 +3353,8 @@
   "Exact number: %numberWithFullDigits%": "Exact number: %numberWithFullDigits%",
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Please note that the Pearls earned from this vault will only appear in your balance at a later time.",
   "Fee saved": "Fee saved",
-  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees"
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees",
+  "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
 }
