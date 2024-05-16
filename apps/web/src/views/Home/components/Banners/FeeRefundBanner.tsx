@@ -14,8 +14,8 @@ import {
 import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
 
-const bgDesktop = `${ASSET_CDN}/web/banners/feeRefund/bg-desktop.png`
-const bgMobile = `${ASSET_CDN}/web/banners/feeRefund/bg-mobile.png`
+const bgDesktop = `${ASSET_CDN}/web/banners/fee-refund/bg-desktop.png`
+const bgMobile = `${ASSET_CDN}/web/banners/fee-refund/bg-mobile.png`
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,
