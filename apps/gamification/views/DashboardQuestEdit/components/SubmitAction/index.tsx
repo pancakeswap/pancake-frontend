@@ -42,7 +42,7 @@ export const SubmitAction = () => {
         <Button
           width="100%"
           variant="secondary"
-          disabled={disabled}
+          // disabled={disabled}
           onClick={() => handleClick(true)}
           endIcon={<VolumeIcon color={disabled ? 'textDisabled' : 'primary'} width={20} height={20} />}
         >
