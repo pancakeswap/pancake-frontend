@@ -28,7 +28,7 @@ const useIntersectionObserver = () => {
         setIsIntersecting(false)
       }
     } else {
-      // If client doesnt support IntersectionObserver, set Intersecting to be true
+      // If client doesn't support IntersectionObserver, set Intersecting to be true
       setIsIntersecting(true)
     }
 

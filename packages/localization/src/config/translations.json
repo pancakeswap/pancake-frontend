@@ -3363,5 +3363,8 @@
   "“Gas” is a measure of how much it costs someone to transact on the blockchain.": "“Gas” is a measure of how much it costs someone to transact on the blockchain.",
   "Please check tx confirm modal in your wallet for the final gas fee.": "Please check tx confirm modal in your wallet for the final gas fee.",
   "Insufficient %symbol% balance for gas fee": "Insufficient %symbol% balance for gas fee",
-  "Gas Token": "Gas Token"
+  "Gas Token": "Gas Token",
+  "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
 }
