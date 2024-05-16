@@ -62,7 +62,7 @@ export function BuyCryptoForm() {
 
   const bestQuoteRef = useRef<OnRampProviderQuote | undefined>(undefined)
   const debouncedQuery = useDebounce(searchQuery, 200)
-  const externalTxIdRef = useRef(v4())
+  const externalTxIdRef = useRef<string>(v4())
 
   const { onUserInput, onCurrencySelection, onSwitchTokens } = useBuyCryptoActionHandlers()
 
