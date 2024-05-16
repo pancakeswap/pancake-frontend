@@ -10,6 +10,7 @@ import {
   ModalV2,
   Text,
   VolumeIcon,
+  useToast,
 } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { Quest } from 'views/Quests/components/Quest'
@@ -38,6 +39,7 @@ interface ActionModalProps {
 
 export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, setOpenModal }) => {
   const { t } = useTranslation()
+  const { toastError } = useToast()
   const [modalView, setModalView] = useState<QuestEditModalState>(QuestEditModalState.DEFAULT)
 
   const config = {
@@ -73,6 +75,8 @@ export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, 
     setModalView(QuestEditModalState.LOADING)
 
     setTimeout(() => {
+      // toastError(isPublish ? t('Publish the quest fail!') : t('Schedule the quest fail!'))
+
       setModalView(QuestEditModalState.FINISHED)
     }, 3000)
   }
