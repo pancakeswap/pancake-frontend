@@ -3,7 +3,9 @@ import { DAI, USDC, USDT } from '@pancakeswap/tokens'
 import { parseNumberToFraction } from '@pancakeswap/utils/formatFractions'
 import { BigNumber } from 'bignumber.js'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
+import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { useMemo } from 'react'
+import { multiplyPriceByAmount } from 'utils/prices'
 
 const MAJOR_DEFINED_STABLE_COINS: {
   [chainId in ChainId]?: Array<ERC20Token | undefined>
@@ -36,11 +38,19 @@ export const useFeeSaved = (inputAmount?: CurrencyAmount<Currency>, outputAmount
   const { data: outputCurrencyUSDPrice } = useCurrencyUsdPrice(feeSavedAmount?.currency, {
     enabled: Boolean(feeSavedAmount),
   })
+  const fallbackPrice = useStablecoinPrice(feeSavedAmount?.currency, {
+    enabled: Boolean(feeSavedAmount) && !outputCurrencyUSDPrice,
+  })
   const feeSavedUsdValue = useMemo(() => {
-    if (!feeSavedAmount || !outputCurrencyUSDPrice) return parseNumberToFraction(0)
+    if (!feeSavedAmount) return parseNumberToFraction(0)
 
-    return parseNumberToFraction(new BigNumber(feeSavedAmount?.toExact()).times(outputCurrencyUSDPrice).toNumber())
-  }, [outputCurrencyUSDPrice, feeSavedAmount])
+    if (!outputCurrencyUSDPrice && !fallbackPrice) return parseNumberToFraction(0)
+
+    if (fallbackPrice)
+      return parseNumberToFraction(multiplyPriceByAmount(fallbackPrice, Number(feeSavedAmount.toExact())))
+
+    return parseNumberToFraction(new BigNumber(feeSavedAmount?.toExact()).times(outputCurrencyUSDPrice ?? 0).toNumber())
+  }, [feeSavedAmount, fallbackPrice, outputCurrencyUSDPrice])
 
   return {
     feeSavedAmount,
