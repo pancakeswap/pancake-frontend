@@ -1,38 +1,30 @@
-/* eslint-disable import/no-absolute-path */
-/* eslint-disable global-require */
-import { Token } from '@pancakeswap/swap-sdk-core'
+import type { Token } from '@pancakeswap/swap-sdk-core'
 import { Box, Skeleton, TokenPairImage } from '@pancakeswap/uikit'
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { getImageUrlFromToken } from 'components/TokenImage'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/image'
-import { HtmlHTMLAttributes } from 'react'
-import { ONRAMP_PROVIDERS, isNativeBtc } from 'views/BuyCrypto/constants'
+import { ONRAMP_PROVIDERS, PROVIDER_ICONS, isNativeBtc } from 'views/BuyCrypto/constants'
+import { OnRampIconCircleWrapper, OnRampIconContainer } from 'views/BuyCrypto/styles'
 
-const PROVIDER_ICONS = {
-  [ONRAMP_PROVIDERS.MoonPay]: `${ASSET_CDN}/web/onramp/moonpay.svg`,
-  [ONRAMP_PROVIDERS.Mercuryo]: `${ASSET_CDN}/web/onramp/mercuryo.svg`,
-  [ONRAMP_PROVIDERS.Transak]: `${ASSET_CDN}/web/onramp/transak.svg`,
-} satisfies Record<keyof typeof ONRAMP_PROVIDERS, any>
-
-const OnRampProviderLogo = ({
-  provider,
-  size = 35,
-  loading = false,
-}: {
+type ProviderLogoProps = {
   provider: keyof typeof ONRAMP_PROVIDERS | undefined
   size?: number
   loading?: boolean
-  styles?: HtmlHTMLAttributes<any>
-}) => {
+}
+
+const OnRampProviderLogo = ({ provider, size = 35, loading = false }: ProviderLogoProps) => {
+  const defaultProvider = provider ?? ONRAMP_PROVIDERS.MoonPay
+  const isLoading = Boolean(loading || !provider)
+  const showBorder = Boolean(defaultProvider === ONRAMP_PROVIDERS.Mercuryo)
+  const icon = PROVIDER_ICONS[defaultProvider]
   return (
-    <>
-      {loading || !provider ? (
-        <Skeleton isDark width={size} height={size} borderRadius="50%" marginTop="7px" />
-      ) : (
-        <Image alt={`${provider}-logo`} src={PROVIDER_ICONS[provider]} width={size} height={size} />
-      )}
-    </>
+    <OnRampIconContainer width={size} height={size}>
+      <Skeleton isDark width={size} height={size} borderRadius="50%" display={!isLoading ? 'none' : 'block'} />
+      <OnRampIconCircleWrapper width={size} height={size} border={showBorder} display={isLoading ? 'none' : 'block'}>
+        <Image alt={`${provider}-logo`} src={icon} width={size} height={size} />
+      </OnRampIconCircleWrapper>
+    </OnRampIconContainer>
   )
 }
 
