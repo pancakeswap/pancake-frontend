@@ -565,11 +565,11 @@ export default function PoolPage() {
               noConfig
               buttons={
                 !isMobile &&
-                currency0 &&
-                currency1 && (
+                currencyQuote &&
+                currencyBase && (
                   <>
                     <NextLinkFromReactRouter
-                      to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
+                      to={`/increase/${currencyId(currencyBase)}/${currencyId(currencyQuote)}/${feeAmount}/${tokenId}`}
                     >
                       <Button disabled={!isOwnNFT} width="100%">
                         {t('Add')}
@@ -587,10 +587,10 @@ export default function PoolPage() {
               }
             />
             <CardBody>
-              {isMobile && (
+              {isMobile && currencyQuote && currencyBase && (
                 <>
                   <NextLinkFromReactRouter
-                    to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
+                    to={`/increase/${currencyId(currencyBase)}/${currencyId(currencyQuote)}/${feeAmount}/${tokenId}`}
                   >
                     <Button disabled={!isOwnNFT} width="100%" mb="8px">
                       {t('Add')}
