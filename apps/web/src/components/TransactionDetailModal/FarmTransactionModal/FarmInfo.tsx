@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, LightBulbIcon, Link, StyledLink, Text, useTooltip } from '@pancakeswap/uikit'
+import { Box, Flex, LightBulbIcon, StyledLink, Text, useTooltip } from '@pancakeswap/uikit'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { TransactionDetails } from 'state/transactions/reducer'
 import { styled } from 'styled-components'
