@@ -544,7 +544,7 @@ const CakeSection: React.FC = () => {
               {t('Earn up to %apr%% APR', { apr: totalApr.toFixed(2) })}
             </Text>
             <NextLink href="/cake-staking">
-              <StyledLink margin="auto">
+              <StyledLink color="primary" margin="auto">
                 <Button variant="secondary">{t('Lock CAKE Now!')}🔥</Button>
               </StyledLink>
             </NextLink>
