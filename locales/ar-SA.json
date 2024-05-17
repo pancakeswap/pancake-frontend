@@ -3350,5 +3350,8 @@
   "Exact number: %numberWithFullDigits%": "الرقم الفعلي: %numberWithFullDigits%",
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "الرجاء ملاحظة أن Pearls التي ربحتها من هذا المخزن سوف تظهر فقط في رصيدك في وقت لاحق.",
   "Fee saved": "الرسوم المحفوظة",
-  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "الرسوم المحفوظة على PancakeSwap مقارنة برسوم واجهة شحن DEXs الرئيسية"
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "الرسوم المحفوظة على PancakeSwap مقارنة برسوم واجهة شحن DEXs الرئيسية",
+  "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
 }
