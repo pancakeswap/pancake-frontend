@@ -251,21 +251,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
             </RowFixed>
 
             <Flex alignItems="center">
-              <div style={{ position: 'relative' }}>
-                <StyledLogo
-                  size="20px"
-                  srcs={[
-                    feeToken && feeToken.logoURI
-                      ? feeToken.logoURI
-                      : `https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png`,
-                  ]}
-                  alt={`${feeToken ? feeToken?.symbol : 'ETH'}`}
-                  width="20px"
-                />
-                <p style={{ position: 'absolute', bottom: '-2px', right: '-6px', fontSize: '14px' }}>⛽️</p>
-              </div>
-
-              <Text marginLeft={2} fontSize={14} bold>
+              <Text marginRight={2} fontSize={14}>
                 {(feeToken && feeToken.symbol && feeToken.symbol.length > 10
                   ? `${feeToken.symbol.slice(0, 4)}...${feeToken.symbol.slice(
                       feeToken.symbol.length - 5,
@@ -273,6 +259,19 @@ export const SwapModalFooter = memo(function SwapModalFooter({
                     )}`
                   : feeToken?.symbol) || 'ETH'}
               </Text>
+
+              <div style={{ position: 'relative' }}>
+                <StyledLogo
+                  size="24px"
+                  srcs={[
+                    feeToken && feeToken.logoURI
+                      ? feeToken.logoURI
+                      : `https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png`,
+                  ]}
+                  alt={`${feeToken ? feeToken?.symbol : 'ETH'}`}
+                />
+                <p style={{ position: 'absolute', bottom: '-2px', left: '-6px', fontSize: '16px' }}>⛽️</p>
+              </div>
             </Flex>
           </RowBetween>
         )}

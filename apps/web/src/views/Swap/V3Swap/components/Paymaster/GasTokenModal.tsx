@@ -6,7 +6,12 @@ import {
   CircleLoader,
   Column,
   Flex,
-  Modal,
+  Heading,
+  ModalBody,
+  ModalCloseButton,
+  ModalContainer,
+  ModalHeader,
+  ModalTitle,
   ModalV2,
   QuestionHelper,
   Text,
@@ -17,7 +22,7 @@ import {
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { useAtom } from 'jotai'
@@ -60,6 +65,25 @@ const GasTokenSelectButton = styled(Button).attrs({ variant: 'text', scale: 'xs'
 `
 
 // Modal Styles
+const StyledModalContainer = styled(ModalContainer)`
+  width: 100%;
+  min-height: calc(var(--vh, 1vh) * 60);
+  ${({ theme }) => theme.mediaQueries.md} {
+    min-height: auto;
+    min-width: 320px;
+    max-width: 420px !important;
+  }
+`
+
+const StyledModalBody = styled(ModalBody)`
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`
+
 const FixedHeightRow = styled.div<{ $disabled: boolean }>`
   height: 56px;
   display: flex;
@@ -67,7 +91,6 @@ const FixedHeightRow = styled.div<{ $disabled: boolean }>`
   padding: 0 16px;
 
   cursor: ${({ $disabled }) => !$disabled && 'pointer'};
-  border-radius: ${({ theme }) => theme.radii.default};
 
   &:hover {
     background-color: ${({ theme, $disabled }) => !$disabled && theme.colors.background};
@@ -87,11 +110,6 @@ const StyledBalanceText = styled(Text).attrs({ small: true })`
   max-width: 8rem;
   text-overflow: ellipsis;
 `
-
-// const USDValueText = styled(Text)`
-//   font-size: 12px;
-//   color: ${({ theme }) => theme.colors.textSubtle};
-// `
 
 const Badge = styled.span`
   font-size: 14px;
@@ -116,10 +134,13 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   const { address: account } = useAccount()
 
   const [feeToken, setFeeToken] = useAtom(feeTokenAtom)
+
   const [tokenList, setTokenList] = useState<PaymasterToken[]>([])
 
   const nativeBalances = useNativeBalances([account])
   const balances = useTokenBalances(account, tokenList.filter((token) => token.isToken) as any[])
+
+  const isSorted = useRef(false)
 
   const onSelectorButtonClick = useCallback(() => {
     setIsOpen(true)
@@ -137,13 +158,42 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
     // TODO: Send txData for gas estimates
     const tempTokenList = await getPaymasterTokenlist()
 
+    isSorted.current = false
+
     // Set Native ETH as the first token
-    setTokenList([DEFAULT_PAYMASTER_TOKEN, ...tempTokenList])
+    setTokenList([DEFAULT_PAYMASTER_TOKEN, ...tempTokenList.toSorted(tokenListSortComparator)])
   }, [getPaymasterTokenlist])
+
+  /**
+   * Sort tokens based on balances
+   * Keeps the Native Token in the first position
+   */
+  const tokenListSortComparator = (tokenA: PaymasterToken, tokenB: PaymasterToken) => {
+    const balanceA = balances[tokenA.address]
+    const balanceB = balances[tokenB.address]
+
+    if (!balanceA || !balanceB) return 0
+
+    if (balanceA.greaterThan(balanceB)) return -1
+    if (balanceA.lessThan(balanceB)) return 1
+
+    return 0
+  }
 
   useEffect(() => {
     fetchTokenList()
   }, [])
+
+  // Sort tokenList when balances are fetched
+  useEffect(() => {
+    if (isSorted.current || tokenList.length === 0) return
+
+    const tempTokenList = tokenList.toSorted(tokenListSortComparator)
+
+    isSorted.current = Object.keys(balances).length === tempTokenList.length - 1 // -1 for excluding the native token
+
+    setTokenList(tempTokenList)
+  }, [balances])
 
   // Item Key for FixedSizeList
   const itemKey = useCallback((index: number, data: any) => `${data[index]}-${index}`, [])
@@ -172,9 +222,10 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
 
     const disabled = useMemo(
       () =>
-        !account ||
-        (item.isNative && (!nativeBalances[account] || formatAmount(nativeBalances[account]) === '0')) ||
-        (item.isToken && (!balances[item.address] || formatAmount(balances[item.address]) === '0')),
+        account
+          ? (item.isNative && (!nativeBalances[account] || formatAmount(nativeBalances[account]) === '0')) ||
+            (item.isToken && (!balances[item.address] || formatAmount(balances[item.address]) === '0'))
+          : false,
       [item],
     )
 
@@ -214,7 +265,6 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
                     : formatAmount(balances[item.address])
                 }
               />
-              {/* <USDValueText>~0.0001 USD</USDValueText> */}
             </StyledBalanceText>
           ) : (
             <ArrowForwardIcon />
@@ -284,45 +334,50 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
       </SelectorContainer>
 
       <ModalV2 onDismiss={onDismiss} isOpen={isOpen} closeOnOverlayClick>
-        <Modal
-          title={
-            <Flex>
-              <span>{t('Select token for gas')}</span>
-              <QuestionHelper
-                text={
-                  <>
-                    <Text mb="12px">
-                      <Text bold display="inline-block">
-                        {t('Select any ERC20 token to pay for the gas fee.')}
-                      </Text>
-                      <br />
-                      <br />
-                      {t('Pay for network fees with any asset from the list below.')}
-                      <br />
-                      {t('Make sure you have at least $1 worth of the token.')}
-                    </Text>
-                  </>
-                }
-                ml="6px"
-                mt="1px"
-                placement="top"
-              />
-            </Flex>
-          }
-          minWidth={400}
-        >
-          <FixedSizeList
-            height={400}
-            itemData={tokenList}
-            itemCount={tokenList.length}
-            itemSize={56}
-            width="100%"
-            itemKey={itemKey}
-            style={{ marginTop: '14px' }}
-          >
-            {Row}
-          </FixedSizeList>
-        </Modal>
+        <StyledModalContainer>
+          <ModalHeader>
+            <ModalTitle>
+              <Heading padding={2}>
+                <Flex>
+                  <span>{t('Select token for gas')}</span>
+                  <QuestionHelper
+                    text={
+                      <>
+                        <Text mb="12px">
+                          <Text bold display="inline-block">
+                            {t('Select any ERC20 token to pay for the gas fee.')}
+                          </Text>
+                          <br />
+                          <br />
+                          {t('Pay for network fees with any asset from the list below.')}
+                          <br />
+                          {t('Make sure you have at least $1 worth of the token.')}
+                        </Text>
+                      </>
+                    }
+                    ml="6px"
+                    mt="1px"
+                    placement="top"
+                  />
+                </Flex>
+              </Heading>
+            </ModalTitle>
+            <ModalCloseButton onDismiss={onDismiss} />
+          </ModalHeader>
+          <StyledModalBody>
+            <FixedSizeList
+              height={400}
+              itemData={tokenList}
+              itemCount={tokenList.length}
+              itemSize={56}
+              width="100%"
+              itemKey={itemKey}
+              style={{ marginTop: '1px' }}
+            >
+              {Row}
+            </FixedSizeList>
+          </StyledModalBody>
+        </StyledModalContainer>
       </ModalV2>
     </>
   )

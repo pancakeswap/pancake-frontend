@@ -40,7 +40,7 @@ export const usePaymaster = () => {
    * Default is the native token to pay gas
    */
   const isPaymasterTokenActive = useMemo(() => {
-    return feeToken.isToken && feeToken.address && isAddress(feeToken.address)
+    return feeToken.isToken && isAddress(feeToken.address)
   }, [feeToken])
 
   /**
