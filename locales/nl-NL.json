@@ -3350,5 +3350,8 @@
   "Exact number: %numberWithFullDigits%": "Exact getal: %numberWithFullDigits%",
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Houd er rekening mee dat de Pearls die je met deze kluis verdient pas later zichtbaar zijn in je saldo.",
   "Fee saved": "Bespaarde vergoeding",
-  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Vergoedingen bespaard op PancakeSwap vergeleken met de interfacekosten die grote DEX'en in rekening brengen"
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Vergoedingen bespaard op PancakeSwap vergeleken met de interfacekosten die grote DEX'en in rekening brengen",
+  "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
 }
