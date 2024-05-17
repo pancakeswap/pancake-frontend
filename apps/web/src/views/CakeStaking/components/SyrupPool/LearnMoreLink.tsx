@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Link } from '@pancakeswap/uikit'
+import { Link, StyledLink } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { memo } from 'react'
 import NextLink from 'next/link'
@@ -29,9 +29,8 @@ export const LearnMoreLink: React.FC<{ withArrow?: boolean }> = ({ withArrow }) 
 export const CakeStakingPageLink: React.FC = memo(() => {
   const { t } = useTranslation()
   return (
-    <NextLink href="/cake-staking" passHref>
-      <Link
-        href="replace"
+    <NextLink href="/cake-staking">
+      <StyledLink
         style={{
           display: 'inline',
           textDecoration: 'underline',
@@ -41,7 +40,7 @@ export const CakeStakingPageLink: React.FC = memo(() => {
         }}
       >
         {t('CAKE staking page')}
-      </Link>
+      </StyledLink>
     </NextLink>
   )
 })

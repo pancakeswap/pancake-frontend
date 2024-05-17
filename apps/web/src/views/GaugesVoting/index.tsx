@@ -7,9 +7,9 @@ import {
   Flex,
   Grid,
   Heading,
-  Link,
   LinkExternal,
   PageHeader,
+  StyledLink,
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
@@ -84,15 +84,15 @@ const GaugesVoting = () => {
       <StyledPageHeader background="transparent">
         <Flex justifyContent="space-between">
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
-            <NextLink href="/cake-staking" passHref>
-              <Link href="replace">
+            <NextLink href="/cake-staking">
+              <StyledLink color="primary">
                 <Button p="0" variant="text">
                   <ArrowBackIcon color="primary" />
                   <Text color="primary" bold fontSize="16px" mr="4px" textTransform="uppercase">
                     {t('cake staking')}
                   </Text>
                 </Button>
-              </Link>
+              </StyledLink>
             </NextLink>
             <Text lineHeight="110%" bold color="secondary" mb="16px" fontSize={['32px', '32px', '64px', '64px']}>
               {t('Gauges Voting')}
