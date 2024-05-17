@@ -5,6 +5,7 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { IdType, useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { useViewport } from 'hooks/useViewport'
 import Image, { StaticImageData } from 'next/image'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
@@ -348,6 +349,7 @@ const EcoSystemSection: React.FC = () => {
   const earnBlockData = useEarnBlockData()
   const nftGameBlockData = useNftGameBlockData()
   const { isMobile, isMd } = useMatchBreakpoints()
+  const { width } = useViewport()
 
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column" pt={isMobile ? '24px' : '60px'}>
@@ -377,16 +379,20 @@ const EcoSystemSection: React.FC = () => {
         <Flex
           style={{ gap: 32 }}
           flexDirection={isMobile || isMd ? 'column' : 'row'}
-          alignItems={isMobile || isMd ? undefined : 'center'}
+          alignItems={isMobile || isMd ? 'center' : 'center'}
+          justifyContent="center"
         >
-          <Image
-            style={{ marginLeft: isMobile ? -32 : -72 }}
-            src={`${ASSET_CDN}/web/landing/trade-bunny.png`}
-            alt="trade-bunny"
-            width={340}
-            height={340}
-            unoptimized
-          />
+          <Box minWidth={320} height="100%" style={{ marginLeft: width > 1300 ? -72 : 0 }}>
+            <Flex justifyContent="center" alignItems="center">
+              <Image
+                src={`${ASSET_CDN}/web/landing/trade-bunny.png`}
+                alt="trade-bunny"
+                width={320}
+                height={320}
+                unoptimized
+              />
+            </Flex>
+          </Box>
           <Flex flexDirection="column">
             <Title>{t('Trade')}</Title>
             <FeatureBoxesWrapper>
@@ -414,14 +420,17 @@ const EcoSystemSection: React.FC = () => {
           flexDirection={isMobile || isMd ? 'column' : 'row-reverse'}
           alignItems={isMobile || isMd ? undefined : 'center'}
         >
-          <Image
-            style={{ marginRight: isMobile || isMd ? 'auto' : -72, marginLeft: isMobile || isMd ? 0 : 'auto' }}
-            src={`${ASSET_CDN}/web/landing/earn-bunny.png`}
-            alt="earn-bunny"
-            width={296}
-            height={360}
-            unoptimized
-          />
+          <Box minWidth={296} height="100%" style={{ marginRight: width > 1300 ? -72 : 0 }}>
+            <Flex justifyContent="center" alignItems="center">
+              <Image
+                src={`${ASSET_CDN}/web/landing/earn-bunny.png`}
+                alt="earn-bunny"
+                width={296}
+                height={360}
+                unoptimized
+              />
+            </Flex>
+          </Box>
           <Flex flexDirection="column">
             <Title>{t('Earn')}</Title>
             <FeatureBoxesWrapper>
@@ -448,17 +457,21 @@ const EcoSystemSection: React.FC = () => {
           flexDirection={isMobile || isMd ? 'column' : 'row'}
           alignItems={isMobile || isMd ? undefined : 'center'}
         >
-          <Image
-            style={{ marginLeft: isMobile ? -32 : -72 }}
-            src={`${ASSET_CDN}/web/landing/game-nft-bunny.png`}
-            alt="game-nft-bunny"
-            width={344}
-            height={360}
-            unoptimized
-          />
+          <Box minWidth={300} height="100%" style={{ marginLeft: width > 1300 ? -72 : 0 }}>
+            <Flex justifyContent="center" alignItems="center">
+              <Image
+                src={`${ASSET_CDN}/web/landing/game-nft-bunny.png`}
+                alt="game-nft-bunny"
+                width={344}
+                height={360}
+                unoptimized
+              />
+            </Flex>
+          </Box>
+
           <Flex flexDirection="column">
             <Title>{t('Game & NFT')}</Title>
-            <FeatureBoxesWrapper>
+            <FeatureBoxesWrapper style={{ marginBottom: isMobile || isMd ? 0 : 24 }}>
               {nftGameBlockData.map((item) => (
                 <FeatureBox
                   className={`type-a higher${item?.className ? ` ${item?.className}` : ''}`}
