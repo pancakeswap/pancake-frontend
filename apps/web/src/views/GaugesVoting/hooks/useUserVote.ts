@@ -3,11 +3,12 @@ import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
+import { useMemo } from 'react'
+import { publicClient as getPublicClient } from 'utils/viem'
 import { Address, Hex, isAddressEqual, zeroAddress } from 'viem'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakePoolType } from 'views/CakeStaking/types'
-import { usePublicClient } from 'wagmi'
 import { useCurrentEpochStart, useNextEpochStart } from './useEpochTime'
 
 export type VotedSlope = {
@@ -40,12 +41,12 @@ const sum = (a: bigint, b: bigint) => a + b
 
 export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
   const { account, chainId } = useAccountActiveChain()
-  const publicClient = usePublicClient({ chainId })
   const contract = useGaugesVotingContract()
   const { data: userInfo } = useVeCakeUserInfo()
   const currentTimestamp = useCurrentBlockTimestamp()
   const currentEpochStart = useCurrentEpochStart()
   const nextEpochStart = useNextEpochStart()
+  const publicClient = useMemo(() => getPublicClient({ chainId }), [chainId])
 
   const { data } = useQuery({
     queryKey: ['/vecake/userVoteSlopes', contract.address, gauge?.hash, account],
@@ -66,6 +67,7 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
           args: [account!, gauge?.hash as Hex],
         },
       ] as const
+
       const callsWithProxy = [
         {
           ...contract,
@@ -80,12 +82,10 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
         ...calls,
       ] as const
       if (hasProxy) {
-        const response = publicClient
-          ? await publicClient.multicall({
-              contracts: callsWithProxy,
-              allowFailure: false,
-            })
-          : []
+        const response = await publicClient.multicall({
+          contracts: callsWithProxy,
+          allowFailure: false,
+        })
 
         const [
           [_proxySlope, _proxyPower, proxyEnd],
@@ -210,7 +210,7 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
       }
     },
 
-    enabled: !!account && Boolean(gauge?.hash),
+    enabled: !!account && publicClient && Boolean(gauge?.hash),
   })
   return data
 }

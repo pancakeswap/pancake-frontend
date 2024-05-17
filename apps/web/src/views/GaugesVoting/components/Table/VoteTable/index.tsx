@@ -124,11 +124,11 @@ export const VoteTable = () => {
     // no new votes
     if (newAddSum === 0) return true
     // voted reached 100% or submitting
-    if (lockedSum >= 100 || isPending) return true
+    if (lockedSum >= 100 || isPending || isLoading) return true
     // should allow summed votes to be 100%, if new vote added
     if (newAddSum + lockedSum > 100) return true
     return false
-  }, [epochPower, isPending, onTally, votes])
+  }, [epochPower, isLoading, isPending, onTally, votes])
   const leftGaugesCanAdd = useMemo(() => {
     return Number(gaugesCount) - (rows?.length || 0)
   }, [gaugesCount, rows])

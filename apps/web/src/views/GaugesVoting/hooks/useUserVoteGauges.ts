@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { useMemo } from 'react'
+import { publicClient as getPublicClient } from 'utils/viem'
 import { Hex, isAddressEqual, zeroAddress } from 'viem'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakePoolType } from 'views/CakeStaking/types'
-import { usePublicClient } from 'wagmi'
 import { useGauges } from './useGauges'
 
 export type VoteSlope = {
@@ -23,7 +23,7 @@ export const useUserVoteSlopes = () => {
   const { data: userInfo } = useVeCakeUserInfo()
   const gaugesVotingContract = useGaugesVotingContract()
   const { account, chainId } = useAccountActiveChain()
-  const publicClient = usePublicClient({ chainId })
+  const publicClient = useMemo(() => getPublicClient({ chainId }), [chainId])
 
   const { data, refetch, isLoading } = useQuery({
     queryKey: [
@@ -32,10 +32,11 @@ export const useUserVoteSlopes = () => {
       account,
       gauges?.length,
       userInfo?.cakePoolProxy,
+      publicClient,
     ],
 
     queryFn: async (): Promise<VoteSlope[]> => {
-      if (!gauges || gauges.length === 0 || !account) return []
+      if (!gauges || gauges.length === 0 || !account || !publicClient) return []
 
       const delegated = userInfo?.cakePoolType === CakePoolType.DELEGATED
 
@@ -60,17 +61,16 @@ export const useUserVoteSlopes = () => {
         })
       }
 
-      const response = publicClient
-        ? await publicClient.multicall({
-            contracts,
-            allowFailure: false,
-          })
-        : []
+      const response = await publicClient.multicall({
+        contracts,
+        allowFailure: false,
+      })
 
       const len = gauges.length
       return gauges.map((gauge, index) => {
         const [nativeSlope, nativePower, nativeEnd] = response[index] ?? [0n, 0n, 0n]
         const [proxySlope, proxyPower, proxyEnd] = response[index + len] ?? [0n, 0n, 0n]
+
         return {
           hash: gauge.hash,
           nativePower: Number(nativePower),
