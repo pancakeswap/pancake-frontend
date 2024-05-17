@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Box, Button, Card, DragIcon, Flex, Text } from '@pancakeswap/uikit'
 import { MouseEvent, useRef, useState } from 'react'
 import DraggableList from 'react-draggable-list'
+import { AddHoldToken } from 'views/DashboardQuestEdit/components/Tasks/AddHoldToken'
 import { AddLottery } from 'views/DashboardQuestEdit/components/Tasks/AddLottery'
 import { AddLpAddress } from 'views/DashboardQuestEdit/components/Tasks/AddLpAddress'
 import { AddSwap } from 'views/DashboardQuestEdit/components/Tasks/AddSwap'
@@ -32,6 +33,7 @@ const Item = ({ item, dragHandleProps }: { item: TaskConfigType; dragHandleProps
       <Card style={{ width: '100%' }}>
         <Box padding="8px">
           {item.type === TaskType.MAKE_A_SWAP && <AddSwap task={item} />}
+          {item.type === TaskType.HOLD_A_TOKEN && <AddHoldToken task={item} />}
           {item.type === TaskType.PARTICIPATE_LOTTERY && <AddLottery task={item} />}
           {item.type === TaskType.ADD_LIQUIDITY && <AddLpAddress task={item} />}
 
@@ -74,7 +76,7 @@ export const Tasks = () => {
               setIsOpen(!isOpen)
             }}
           >
-            {t('Add a new task')}
+            {t('Add')}
           </Button>
           {isOpen && <AddTaskList dropdownRef={dropdownRef} setIsOpen={setIsOpen} />}
         </Box>

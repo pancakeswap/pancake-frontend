@@ -13,6 +13,12 @@ export interface TaskSwapConfig extends TaskBaseConfig {
   currency: Currency
 }
 
+export interface TaskHoldTokenConfig extends TaskBaseConfig {
+  type: TaskType.HOLD_A_TOKEN
+  minAmount: string
+  currency: Currency
+}
+
 export interface TaskLotteryConfig extends TaskBaseConfig {
   type: TaskType.PARTICIPATE_LOTTERY
   minAmount: string
@@ -41,4 +47,9 @@ export interface TaskSocialConfig extends TaskBaseConfig {
   socialLink: string
 }
 
-export type TaskConfigType = TaskSwapConfig | TaskLotteryConfig | TaskLiquidityConfig | TaskSocialConfig
+export type TaskConfigType =
+  | TaskSwapConfig
+  | TaskHoldTokenConfig
+  | TaskLotteryConfig
+  | TaskLiquidityConfig
+  | TaskSocialConfig

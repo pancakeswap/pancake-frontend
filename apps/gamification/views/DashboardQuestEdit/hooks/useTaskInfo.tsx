@@ -13,7 +13,8 @@ export const useTaskInfo = (primaryColor?: boolean) => {
         case TaskType.MAKE_A_SWAP:
         case TaskType.ADD_LIQUIDITY:
         case TaskType.PARTICIPATE_LOTTERY:
-        case TaskType.MAKE_PREDICTION:
+        case TaskType.HOLD_A_TOKEN:
+          // case TaskType.MAKE_PREDICTION:
           return <BunnyFillIcon color={color} width="20px" height="20px" />
         case TaskType.X_LINK_POST:
         case TaskType.X_FOLLOW_ACCOUNT:
@@ -41,12 +42,14 @@ export const useTaskInfo = (primaryColor?: boolean) => {
       switch (social) {
         case TaskType.MAKE_A_SWAP:
           return t('Make a swap')
+        case TaskType.HOLD_A_TOKEN:
+          return t('Hold a token')
         case TaskType.ADD_LIQUIDITY:
           return t('Add liquidity')
         case TaskType.PARTICIPATE_LOTTERY:
           return t('Participate in a lottery')
-        case TaskType.MAKE_PREDICTION:
-          return t('Make a prediction')
+        // case TaskType.MAKE_PREDICTION:
+        //   return t('Make a prediction')
         case TaskType.X_LINK_POST:
         case TaskType.IG_LIKE_POST:
           return t('Like the post')

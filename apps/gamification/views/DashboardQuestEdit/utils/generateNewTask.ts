@@ -16,6 +16,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
 
   switch (taskType) {
     case TaskType.MAKE_A_SWAP:
+    case TaskType.HOLD_A_TOKEN:
       return {
         sid: randomId,
         minAmount: '',
