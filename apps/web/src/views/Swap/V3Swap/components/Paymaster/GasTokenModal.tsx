@@ -22,6 +22,7 @@ import {
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
+import memoize from 'lodash/memoize'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
@@ -30,7 +31,11 @@ import { useNativeBalances, useTokenBalances } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { Address } from 'viem'
 import { TradeType } from '@pancakeswap/swap-sdk-core'
+import { ChainId } from '@pancakeswap/chains'
+import { getUniversalRouterAddress, PancakeSwapUniversalRouter } from '@pancakeswap/universal-router-sdk'
+import { useUserSlippagePercent } from '@pancakeswap/utils/user'
 import { usePaymaster } from './hooks/usePaymaster'
 import { DEFAULT_PAYMASTER_TOKEN } from './config/config'
 import { PaymasterToken } from './types'
@@ -133,6 +138,9 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   const { isOpen, setIsOpen, onDismiss } = useModalV2()
   const { address: account } = useAccount()
 
+  const [slippage] = useUserSlippagePercent()
+  const swapRouterAddress = getUniversalRouterAddress(ChainId.ZKSYNC)
+
   const [feeToken, setFeeToken] = useAtom(feeTokenAtom)
 
   const [tokenList, setTokenList] = useState<PaymasterToken[]>([])
@@ -140,7 +148,9 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   const nativeBalances = useNativeBalances([account])
   const balances = useTokenBalances(account, tokenList.filter((token) => token.isToken) as any[])
 
-  const isSorted = useRef(false)
+  // const lastSorted = useRef(0)
+
+  const getTokenBalance = memoize((address: Address) => balances[address])
 
   const onSelectorButtonClick = useCallback(() => {
     setIsOpen(true)
@@ -155,12 +165,30 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   )
 
   const fetchTokenList = useCallback(async () => {
-    // TODO: Send txData for gas estimates
-    const tempTokenList = await getPaymasterTokenlist()
+    let tempTokenList: PaymasterToken[] = []
 
-    isSorted.current = false
+    // lastSorted.current = 0 // Reset
 
-    // Set Native ETH as the first token
+    if (account && trade) {
+      const rawTxData = PancakeSwapUniversalRouter.swapERC20CallParameters(
+        { ...trade, gasEstimate: (trade as any).gasUseEstimate } as any,
+        {
+          slippageTolerance: slippage,
+        },
+      )
+
+      tempTokenList = await getPaymasterTokenlist({
+        data: rawTxData.calldata,
+        value: rawTxData.value,
+        from: account,
+        to: swapRouterAddress,
+      })
+    } else {
+      // In case of fetching when user account is not connected or trade is not defined yet
+      tempTokenList = await getPaymasterTokenlist()
+    }
+
+    // Set Native ETH as the first token, followed by the supported ERC20 tokens
     setTokenList([DEFAULT_PAYMASTER_TOKEN, ...tempTokenList.toSorted(tokenListSortComparator)])
   }, [getPaymasterTokenlist])
 
@@ -169,8 +197,8 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
    * Keeps the Native Token in the first position
    */
   const tokenListSortComparator = (tokenA: PaymasterToken, tokenB: PaymasterToken) => {
-    const balanceA = balances[tokenA.address]
-    const balanceB = balances[tokenB.address]
+    const balanceA = getTokenBalance(tokenA.address)
+    const balanceB = getTokenBalance(tokenB.address)
 
     if (!balanceA || !balanceB) return 0
 
@@ -182,18 +210,24 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
 
   useEffect(() => {
     fetchTokenList()
-  }, [])
+  }, [trade])
 
   // Sort tokenList when balances are fetched
-  useEffect(() => {
-    if (isSorted.current || tokenList.length === 0) return
+  // useEffect(() => {
+  //   // Throttle sorting to avoid multiple re-renders from balances updating. Sort after minimum 5 seconds
+  //   if (lastSorted.current > Date.now() - 5000 || tokenList.length === 0) return
 
-    const tempTokenList = tokenList.toSorted(tokenListSortComparator)
+  //   console.log('sorting effect called', { lastSorted: lastSorted.current })
+  //   const tempTokenList = tokenList.toSorted(tokenListSortComparator)
 
-    isSorted.current = Object.keys(balances).length === tempTokenList.length - 1 // -1 for excluding the native token
+  //   // -1 for excluding the native token
+  //   if (Object.keys(balances).length === tempTokenList.length - 1) {
+  //     lastSorted.current = Date.now()
+  //     setTokenBalances(balances)
+  //   }
 
-    setTokenList(tempTokenList)
-  }, [balances])
+  //   setTokenList(tempTokenList)
+  // }, [balances])
 
   // Item Key for FixedSizeList
   const itemKey = useCallback((index: number, data: any) => `${data[index]}-${index}`, [])
@@ -208,14 +242,14 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   const isInsufficientBalanceForGas = useMemo(() => {
     if (!feeToken || !feeToken.estimatedFinalFeeTokenAmount || !feeToken.address || !account) return false
 
-    const balance = feeToken.isNative ? nativeBalances[account] : balances[feeToken.address]
+    const balance = feeToken.isNative ? nativeBalances[account] : getTokenBalance(feeToken.address)
 
     // If no balance, wallet is not connected or we are unable to fetch balances
     if (!balance) return false
 
     // TODO: Check formatting here, like if decimals are a problem
     return balance.lessThan(BigInt(feeToken.estimatedFinalFeeTokenAmount))
-  }, [feeToken, account, nativeBalances, balances])
+  }, [feeToken, account, nativeBalances, getTokenBalance])
 
   const Row = ({ data, index, style }) => {
     const item = data[index] as PaymasterToken
@@ -224,7 +258,7 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
       () =>
         account
           ? (item.isNative && (!nativeBalances[account] || formatAmount(nativeBalances[account]) === '0')) ||
-            (item.isToken && (!balances[item.address] || formatAmount(balances[item.address]) === '0'))
+            (item.isToken && (!getTokenBalance(item.address) || formatAmount(getTokenBalance(item.address)) === '0'))
           : false,
       [item],
     )
@@ -256,13 +290,13 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
             </Column>
           </Flex>
 
-          {(account && nativeBalances[account]) || balances[item.address] ? (
+          {(account && nativeBalances[account]) || getTokenBalance(item.address) ? (
             <StyledBalanceText>
               <NumberDisplay
                 value={
                   item.isNative && account
                     ? formatAmount(nativeBalances[account])
-                    : formatAmount(balances[item.address])
+                    : formatAmount(getTokenBalance(item.address))
                 }
               />
             </StyledBalanceText>
@@ -309,14 +343,14 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
 
         {account && (
           <BalanceText>
-            {balances[feeToken?.address ?? '0x0'] || (account && nativeBalances[account]) ? (
+            {getTokenBalance(feeToken.address) || (account && nativeBalances[account]) ? (
               <Flex alignItems="center">
                 <span style={{ marginTop: '2px' }}>
                   {t('Balance: %balance%', {
                     balance:
                       feeToken?.isNative && account
                         ? formatAmount(nativeBalances[account])
-                        : formatAmount(balances[feeToken?.address ?? '0x0']),
+                        : formatAmount(getTokenBalance(feeToken.address)),
                   })}
                 </span>
                 {isInsufficientBalanceForGas && (
@@ -367,7 +401,7 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
           <StyledModalBody>
             <FixedSizeList
               height={400}
-              itemData={tokenList}
+              itemData={tokenList.toSorted(tokenListSortComparator)}
               itemCount={tokenList.length}
               itemSize={56}
               width="100%"
