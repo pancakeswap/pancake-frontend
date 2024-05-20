@@ -81,8 +81,7 @@ describe.concurrent(
           })
           if (isLegacyPool(pool)) {
             const rewardPerBlock = await contract.read.rewardPerBlock()
-
-            expect(String(parseFloat(formatUnits(rewardPerBlock, pool.earningToken.decimals)))).toBe(pool.tokenPerBlock)
+            expect(formatUnits(rewardPerBlock, pool.earningToken.decimals)).toBe(pool.tokenPerBlock)
           } else {
             const rewardPerSecond = await contract.read.rewardPerSecond()
 
