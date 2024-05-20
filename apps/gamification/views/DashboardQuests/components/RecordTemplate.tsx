@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AddIcon, Box, Button, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
+import { AddIcon, Box, Button, ButtonMenu, ButtonMenuItem, Flex, MultiSelector, Text } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { styled } from 'styled-components'
 
 const Container = styled(Box)`
@@ -24,7 +25,7 @@ const IconButton = styled(Button)`
     margin-left: 0;
   }
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     display: none;
   }
 `
@@ -39,12 +40,51 @@ const StyledButtonMenu = styled(ButtonMenu)`
     width: calc(50% - 4px);
   }
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     width: fit-content;
 
     > button {
       width: fit-content;
     }
+  }
+`
+
+const MultiSelectorStyled = styled(MultiSelector)<{ $hasOptionsPicked: boolean }>`
+  height: 36px !important;
+  margin: 24px 0 0 0;
+
+  > div {
+    height: 36px;
+    background-color: ${({ theme, $hasOptionsPicked }) =>
+      $hasOptionsPicked ? theme.colors.primary : theme.colors.backgroundAlt};
+    border-color: ${({ theme, $hasOptionsPicked }) =>
+      $hasOptionsPicked ? 'transparent' : theme.colors.cardBorder} !important;
+
+    > div {
+      color: ${({ theme, $hasOptionsPicked }) => ($hasOptionsPicked ? theme.colors.white : theme.colors.text)};
+    }
+  }
+
+  > div:nth-child(2) {
+    border-color: ${({ theme }) => theme.colors.cardBorder};
+    background-color: ${({ theme }) => theme.colors.backgroundAlt};
+
+    input {
+      &:checked {
+        border: 0;
+        background-color: ${({ theme }) => theme.colors.primary};
+      }
+    }
+  }
+
+  svg {
+    fill: ${({ theme, $hasOptionsPicked }) => ($hasOptionsPicked ? theme.colors.white : theme.colors.text)};
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin: 0 auto 0 0;
+    min-width: 130px;
+    max-width: 160px;
   }
 `
 
@@ -74,10 +114,13 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({
 }) => {
   const { t } = useTranslation()
   const router = useRouter()
+  const [pickMultiSelect, setPickMultiSelect] = useState<Array<number>>([])
 
   const toCreatePage = () => {
     router.push(createLink)
   }
+
+  const options = [{ id: 0, label: 'BSC', value: 56 }]
 
   return (
     <Flex flexDirection="column">
@@ -90,21 +133,31 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({
             <IconButton scale="sm" endIcon={<AddIcon color="invertedContrast" />} onClick={toCreatePage} />
           </Flex>
           <Flex width="100%" alignItems={['flex-start', 'flex-start', 'flex-start', 'flex-start', 'center']}>
-            <StyledButtonMenu
-              scale="sm"
-              variant="subtle"
-              m={['0', '0', '0 auto 0 0', '0 auto 0 0', 'auto']}
-              activeIndex={statusButtonIndex}
-              onItemClick={setStatusButtonIndex}
-            >
-              <ButtonMenuItem>{t('Ongoing')}</ButtonMenuItem>
-              <ButtonMenuItem>{t('Scheduled')}</ButtonMenuItem>
-              <ButtonMenuItem>{t('Finished')}</ButtonMenuItem>
-              <ButtonMenuItem>{t('Drafted')}</ButtonMenuItem>
-            </StyledButtonMenu>
+            <Flex flexDirection={['column', 'column', 'column', 'row']} m="auto" width="100%">
+              <StyledButtonMenu
+                scale="sm"
+                variant="subtle"
+                m={['0', '0', '0 auto 0 0', 'auto 16px auto auto']}
+                activeIndex={statusButtonIndex}
+                onItemClick={setStatusButtonIndex}
+              >
+                <ButtonMenuItem>{t('Ongoing')}</ButtonMenuItem>
+                <ButtonMenuItem>{t('Scheduled')}</ButtonMenuItem>
+                <ButtonMenuItem>{t('Finished')}</ButtonMenuItem>
+                <ButtonMenuItem>{t('Drafted')}</ButtonMenuItem>
+              </StyledButtonMenu>
+              <MultiSelectorStyled
+                options={options}
+                placeHolderText="" // todo {customPlaceHolderText}
+                $hasOptionsPicked={false} // todo
+                pickMultiSelect={pickMultiSelect}
+                closeDropdownWhenClickOption={false}
+                onOptionChange={setPickMultiSelect}
+              />
+            </Flex>
             <Button
               scale="sm"
-              display={['none', 'none', 'flex']}
+              display={['none', 'none', 'none', 'flex']}
               endIcon={<AddIcon color="invertedContrast" />}
               onClick={toCreatePage}
             >
