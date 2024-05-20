@@ -1,6 +1,7 @@
 import { Native } from '@pancakeswap/sdk'
 import type { Currency } from '@pancakeswap/swap-sdk-core'
 import { arbitrumTokens, baseTokens, bscTokens, ethereumTokens, lineaTokens } from '@pancakeswap/tokens'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { Field } from 'state/buyCrypto/actions'
 import { OnRampUnit } from './types'
 import { NativeBtc } from './utils/NativeBtc'
@@ -52,6 +53,12 @@ export const getIsNetworkEnabled = (network: OnRampChainId | undefined) => {
   if (typeof network === 'number') return true
   return false
 }
+
+export const PROVIDER_ICONS = {
+  [ONRAMP_PROVIDERS.MoonPay]: `${ASSET_CDN}/web/onramp/moonpay.svg`,
+  [ONRAMP_PROVIDERS.Mercuryo]: `${ASSET_CDN}/web/onramp/mercuryo.svg`,
+  [ONRAMP_PROVIDERS.Transak]: `${ASSET_CDN}/web/onramp/transak.svg`,
+} satisfies Record<keyof typeof ONRAMP_PROVIDERS, string>
 
 export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: FeeTypes[] } = {
   [ONRAMP_PROVIDERS.MoonPay]: MOONPAY_FEE_TYPES,
