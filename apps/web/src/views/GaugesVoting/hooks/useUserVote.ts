@@ -1,9 +1,10 @@
 import { Gauge } from '@pancakeswap/gauges'
+import { usePreviousValue } from '@pancakeswap/hooks'
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { publicClient as getPublicClient } from 'utils/viem'
 import { Address, Hex, isAddressEqual, zeroAddress } from 'viem'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
@@ -39,7 +40,7 @@ export type VotedSlope = {
 const max = (a: bigint, b: bigint) => (a > b ? a : b)
 const sum = (a: bigint, b: bigint) => a + b
 
-export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
+export const useUserVote = (gauge: Gauge | undefined, submitted?: boolean, useProxyPool: boolean = true) => {
   const { account, chainId } = useAccountActiveChain()
   const contract = useGaugesVotingContract()
   const { data: userInfo } = useVeCakeUserInfo()
@@ -47,8 +48,9 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
   const currentEpochStart = useCurrentEpochStart()
   const nextEpochStart = useNextEpochStart()
   const publicClient = useMemo(() => getPublicClient({ chainId }), [chainId])
+  const prevSubmittedStatus = usePreviousValue(submitted)
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['/vecake/userVoteSlopes', contract.address, gauge?.hash, account],
 
     queryFn: async (): Promise<VotedSlope> => {
@@ -212,5 +214,12 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
 
     enabled: !!account && publicClient && Boolean(gauge?.hash),
   })
+
+  useEffect(() => {
+    if (submitted && !prevSubmittedStatus && typeof prevSubmittedStatus !== 'undefined') {
+      refetch()
+    }
+  }, [submitted, prevSubmittedStatus, refetch])
+
   return data
 }

@@ -49,7 +49,7 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
 export const VoteTable = () => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
-  // const { cakeUnlockTime, cakeLockedAmount } = useCakeLockStatus()
+  const [submitted, setSubmitted] = useState(false)
   const { cakeLockedAmount } = useCakeLockStatus()
   const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
   const { data: allGauges } = useGauges()
@@ -169,8 +169,10 @@ export const VoteTable = () => {
   }, [slopes, votes, gauges])
 
   const submitVote = useCallback(async () => {
+    setSubmitted(false)
     await writeVote(sortedSubmitVotes)
     await refetch()
+    setSubmitted(true)
   }, [refetch, sortedSubmitVotes, writeVote])
 
   const gaugesTable = isDesktop ? (
@@ -192,6 +194,7 @@ export const VoteTable = () => {
                 <TableRow
                   key={row.hash}
                   data={row}
+                  submitted={submitted}
                   vote={votes[row.hash]}
                   onChange={(v, isMax) => onVoteChange(v, isMax)}
                 />
@@ -219,6 +222,7 @@ export const VoteTable = () => {
             <VoteListItem
               key={row.hash}
               data={row}
+              submitted={submitted}
               vote={votes[row.hash]}
               onChange={(v, isMax) => onVoteChange(v, isMax)}
             />
