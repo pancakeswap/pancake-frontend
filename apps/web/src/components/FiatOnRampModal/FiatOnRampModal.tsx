@@ -4,25 +4,22 @@ import {
   CircleLoader,
   Flex,
   Heading,
-  InjectedModalProps,
   ModalBody,
   ModalHeader,
   ModalTitle,
   ModalWrapper,
   Text,
   useModal,
+  type InjectedModalProps,
 } from '@pancakeswap/uikit'
 
-import { Currency } from '@pancakeswap/swap-sdk-core'
+import type { Currency } from '@pancakeswap/swap-sdk-core'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { MERCURYO_WIDGET_ID, MERCURYO_WIDGET_URL } from 'config/constants/endpoints'
-import Script from 'next/script'
-import { MutableRefObject, memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useMemo, type MutableRefObject } from 'react'
 import { useTheme } from 'styled-components'
 import { v4 } from 'uuid'
 import OnRampProviderLogo from 'views/BuyCrypto/components/OnRampProviderLogo/OnRampProviderLogo'
-import { ONRAMP_PROVIDERS, combinedNetworkIdMap, type OnRampChainId } from 'views/BuyCrypto/constants'
 import { useIsBtc } from 'views/BuyCrypto/hooks/useIsBtc'
 import { useOnRampSignature } from 'views/BuyCrypto/hooks/useOnRampSignature'
 import { IFrameWrapper, StyledBackArrowContainer } from 'views/BuyCrypto/styles'
@@ -79,9 +76,6 @@ export const FiatOnRampModalButton = ({
       loading={isLoading}
       error={isError}
       resetBuyCryptoState={resetBuyCryptoState}
-      account={isBtc ? btcAddress : account}
-      chainId={cryptoCurrency?.chainId}
-      txId={externalTxIdRef.current}
     />,
   )
   const toggleFiatOnRampModal = useCallback(
@@ -138,90 +132,40 @@ export const FiatOnRampModal = memo<
       iframeUrl: string | undefined
       loading: boolean
       error: boolean
-      account: `0x${string}` | string | undefined
-      chainId: OnRampChainId | undefined
-      txId: string | undefined
     }
->(function ConfirmSwapModalComp({
-  onDismiss,
-  selectedQuote,
-  iframeUrl,
-  error,
-  loading,
-  resetBuyCryptoState,
-  account,
-  chainId,
-  txId,
-}) {
-  const [scriptLoaded, setScriptOnLoad] = useState<boolean>(Boolean(window?.mercuryoWidget))
+>(function ConfirmSwapModalComp({ onDismiss, selectedQuote, iframeUrl, error, loading, resetBuyCryptoState }) {
   const { t } = useTranslation()
-
   const theme = useTheme()
+
   const handleDismiss = useCallback(() => {
     resetBuyCryptoState?.()
     onDismiss?.()
   }, [onDismiss, resetBuyCryptoState])
 
-  useEffect(() => {
-    if (selectedQuote && selectedQuote.provider === ONRAMP_PROVIDERS.Mercuryo && account && iframeUrl) {
-      const sigParam = iframeUrl.match(/[?&]signature=([^&]+)/)
-      const sig = sigParam ? sigParam[1] : null
-
-      if (window?.mercuryoWidget && sig && chainId) {
-        // @ts-ignore
-        const MC_WIDGET = window?.mercuryoWidget
-        MC_WIDGET.run({
-          widgetId: MERCURYO_WIDGET_ID,
-          fiatCurrency: selectedQuote.fiatCurrency.toUpperCase(),
-          currency: selectedQuote.cryptoCurrency.toUpperCase(),
-          fiatAmount: selectedQuote.amount,
-          fixAmount: true,
-          fixFiatAmount: true,
-          fixFiatCurrency: true,
-          fixCurrency: true,
-          address: account,
-          signature: sig,
-          network: combinedNetworkIdMap[ONRAMP_PROVIDERS.Mercuryo][chainId],
-          merchantTransactionId: `${account}_${txId}`,
-          host: document.getElementById('mercuryo-widget'),
-          theme: theme.isDark ? 'PCS_dark' : 'PCS_light',
-        })
-      }
-    }
-  }, [selectedQuote, theme, chainId, account, iframeUrl, txId])
-
   return (
-    <>
-      <ModalWrapper>
-        <ModalHeader background={theme.colors.gradientCardHeader}>
-          <ModalTitle pt="6px" justifyContent="center">
-            <StyledBackArrowContainer onClick={handleDismiss}>
-              <Text color="primary">{t('Close')}</Text>
-            </StyledBackArrowContainer>
-            <Heading width="100%" textAlign="center" pr="20px">
-              <OnRampProviderLogo provider={selectedQuote?.provider} />
-            </Heading>
-          </ModalTitle>
-        </ModalHeader>
-        <ModalBody position="relative" style={{ alignItems: 'center', overflowY: 'hidden' }}>
-          {error || !selectedQuote || !iframeUrl ? (
-            <IFrameWrapper justifyContent="center" alignItems="center">
-              <ErrorText>
-                <Trans>something went wrong!</Trans>
-              </ErrorText>
-            </IFrameWrapper>
-          ) : (
-            <ProviderIFrame provider={selectedQuote?.provider} loading={loading} signedIframeUrl={iframeUrl} />
-          )}
-        </ModalBody>
-      </ModalWrapper>
-      <Script
-        src={MERCURYO_WIDGET_URL}
-        onLoad={() => {
-          setScriptOnLoad(true)
-        }}
-      />
-    </>
+    <ModalWrapper>
+      <ModalHeader background={theme.colors.gradientCardHeader}>
+        <ModalTitle pt="6px" justifyContent="center">
+          <StyledBackArrowContainer onClick={handleDismiss}>
+            <Text color="primary">{t('Close')}</Text>
+          </StyledBackArrowContainer>
+          <Heading width="100%" textAlign="center" pr="20px">
+            <OnRampProviderLogo provider={selectedQuote?.provider} />
+          </Heading>
+        </ModalTitle>
+      </ModalHeader>
+      <ModalBody position="relative" style={{ alignItems: 'center', overflowY: 'hidden' }}>
+        {error || !selectedQuote || !iframeUrl ? (
+          <IFrameWrapper justifyContent="center" alignItems="center">
+            <ErrorText>
+              <Trans>something went wrong!</Trans>
+            </ErrorText>
+          </IFrameWrapper>
+        ) : (
+          <ProviderIFrame provider={selectedQuote?.provider} loading={loading} signedIframeUrl={iframeUrl} />
+        )}
+      </ModalBody>
+    </ModalWrapper>
   )
 })
 
