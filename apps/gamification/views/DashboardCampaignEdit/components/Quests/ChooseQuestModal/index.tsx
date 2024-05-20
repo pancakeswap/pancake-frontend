@@ -92,11 +92,10 @@ export const ChooseQuestModal: React.FC<ChooseQuestProps> = ({ pickedQuests, upd
     if (findIndex >= 0) {
       selectedQuests.splice(findIndex, 1)
       setSelectedQuests([...selectedQuests])
-      return
+    } else {
+      selectedQuests.push(id)
+      setSelectedQuests([...selectedQuests])
     }
-
-    selectedQuests.push(id)
-    setSelectedQuests([...selectedQuests])
   }
 
   const handleSubmit = () => {
