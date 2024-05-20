@@ -26,12 +26,12 @@ import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { warningSeverity } from 'utils/exchange'
 import { useAccount, useChainId } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapInputError } from '../hooks'
-import { useConfirmModalState } from '../hooks/useConfirmModalStateV2'
+import { useConfirmModalState } from '../hooks/useConfirmModalState'
 import { useSwapConfig } from '../hooks/useSwapConfig'
 import { useSwapCurrency } from '../hooks/useSwapCurrency'
 import { CommitButtonProps } from '../types'
 import { computeTradePriceBreakdown } from '../utils/exchange'
-import { ConfirmSwapModal } from './ConfirmSwapModalV2'
+import { ConfirmSwapModal } from './ConfirmSwapModal'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 

@@ -8,7 +8,7 @@ import { memo, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
-import { MMSwapCommitButton } from 'views/Swap/MMLinkPools/components/MMCommitButtonV2'
+import { MMSwapCommitButton } from 'views/Swap/MMLinkPools/components/MMCommitButton'
 import { useAccount } from 'wagmi'
 import { CommitButtonProps, MMCommitTrade } from '../types'
 

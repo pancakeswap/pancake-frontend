@@ -13,7 +13,7 @@ import { basisPointsToPercent } from 'utils/exchange'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { Address } from 'viem'
 import useSendSwapTransaction from './useSendSwapTransaction'
-import { useSwapCallArguments } from './useSwapCallArgumentsV2'
+import { useSwapCallArguments } from './useSwapCallArguments'
 import type { TWallchainMasterInput, WallchainStatus } from './useWallchain'
 
 export enum SwapCallbackState {

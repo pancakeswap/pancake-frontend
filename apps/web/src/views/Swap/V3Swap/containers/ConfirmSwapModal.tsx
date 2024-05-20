@@ -23,9 +23,9 @@ import { wrappedCurrency } from 'utils/wrappedCurrency'
 import ConfirmSwapModalContainer from 'views/Swap/components/ConfirmSwapModalContainer'
 import { SwapTransactionErrorContent } from 'views/Swap/components/SwapTransactionErrorContent'
 import { TransactionConfirmSwapContent } from '../components'
-import { ConfirmAction } from '../hooks/useConfirmModalStateV2'
+import { ConfirmAction } from '../hooks/useConfirmModalState'
 import { AllowedAllowanceState } from '../types'
-import { ApproveStepFlow } from './ApproveStepFlowV2'
+import { ApproveStepFlow } from './ApproveStepFlow'
 
 export const useApprovalPhaseStepTitles: ({
   trade,

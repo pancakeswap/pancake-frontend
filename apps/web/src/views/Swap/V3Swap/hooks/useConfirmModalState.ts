@@ -25,7 +25,7 @@ import {
 } from 'viem'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
-import { useSwapCallback } from './useSwapCallbackV2'
+import { useSwapCallback } from './useSwapCallback'
 
 export type ConfirmAction = {
   step: ConfirmModalState

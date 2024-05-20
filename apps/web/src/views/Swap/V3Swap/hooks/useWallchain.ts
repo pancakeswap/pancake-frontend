@@ -19,7 +19,7 @@ import { useWalletClient } from 'wagmi'
 import Bottleneck from 'bottleneck'
 import { WALLCHAIN_ENABLED, WallchainKeys, WallchainTokens } from 'config/wallchain'
 import { Address, Hex } from 'viem'
-import { useSwapCallArguments } from './useSwapCallArgumentsV2'
+import { useSwapCallArguments } from './useSwapCallArguments'
 
 interface SwapCall {
   address: Address

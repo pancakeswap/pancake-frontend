@@ -1,8 +1,8 @@
 import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
 import { TradeType } from '@pancakeswap/swap-sdk-core'
 import { MMCommitTrade } from '../types'
-import { MMCommitButton } from './MMCommitButtonV2'
-import { SwapCommitButton } from './SwapCommitButtonV2'
+import { MMCommitButton } from './MMCommitButton'
+import { SwapCommitButton } from './SwapCommitButton'
 
 type Trade = SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeType>
 
