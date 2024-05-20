@@ -3109,14 +3109,6 @@ export const bscTokens = {
     'Grape coin',
     'https://www.joingrapes.com/',
   ),
-  via: new ERC20Token(
-    ChainId.BSC,
-    '0x21ac3bB914f90A2Bb1a16088E673a9fdDa641434',
-    18,
-    'VIA',
-    'Octavia',
-    'https://octavia.one/',
-  ),
   ego: new ERC20Token(
     ChainId.BSC,
     '0x44a21B3577924DCD2e9C81A3347D204C36a55466',
@@ -3156,5 +3148,21 @@ export const bscTokens = {
     'weETH',
     'Wrapped eETH',
     'https://www.ether.fi/',
+  ),
+  solvbtc: new ERC20Token(
+    ChainId.BSC,
+    '0x4aae823a6a0b376De6A78e74eCC5b079d38cBCf7',
+    18,
+    'SolvBTC',
+    'Solv BTC',
+    'https://app.solv.finance/solvbtc',
+  ),
+  stone: new ERC20Token(
+    ChainId.BSC,
+    '0x80137510979822322193FC997d400D5A6C747bf7',
+    18,
+    'STONE',
+    'StakeStone Ether',
+    'https://stakestone.io/',
   ),
 }

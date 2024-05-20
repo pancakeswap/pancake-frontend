@@ -7,9 +7,9 @@ import {
   Card,
   FlexGap,
   Grid,
-  Link,
   Message,
   Skeleton,
+  StyledLink,
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
@@ -17,13 +17,14 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Hex } from 'viem'
-import { useGaugesVotingCount } from 'views/CakeStaking/hooks/useGaugesVotingCount'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useEpochOnTally } from 'views/GaugesVoting/hooks/useEpochTime'
 import { useEpochVotePower } from 'views/GaugesVoting/hooks/useEpochVotePower'
+import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
 import { useUserVoteSlopes } from 'views/GaugesVoting/hooks/useUserVoteGauges'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { useAccount } from 'wagmi'
+import NextLink from 'next/link'
 import { RemainingVotePower } from '../../RemainingVotePower'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
 import { EmptyTable } from './EmptyTable'
@@ -51,7 +52,8 @@ export const VoteTable = () => {
   // const { cakeUnlockTime, cakeLockedAmount } = useCakeLockStatus()
   const { cakeLockedAmount } = useCakeLockStatus()
   const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
-  const gaugesCount = useGaugesVotingCount()
+  const { data: allGauges } = useGauges()
+  const gaugesCount = allGauges?.length
   const [isOpen, setIsOpen] = useState(false)
   const epochPower = useEpochVotePower()
   const onTally = useEpochOnTally()
@@ -262,11 +264,13 @@ export const VoteTable = () => {
                 </Text>
                 <FlexGap alignItems="center" gap="0.2em">
                   {t('To cast your vote, ')}
-                  <Link href="/cake-staking" color="text">
-                    <Text bold style={{ textDecoration: 'underline' }}>
-                      {t('extend your lock >>')}
-                    </Text>
-                  </Link>
+                  <NextLink href="/cake-staking">
+                    <StyledLink color="text">
+                      <Text bold style={{ textDecoration: 'underline' }}>
+                        {t('extend your lock >>')}
+                      </Text>
+                    </StyledLink>
+                  </NextLink>
                 </FlexGap>
               </AutoColumn>
             </Message>
@@ -279,11 +283,13 @@ export const VoteTable = () => {
                 <Text>{t('You have no locked CAKE.')}</Text>
                 <FlexGap alignItems="center" gap="0.2em" flexWrap="wrap">
                   {t('To cast your vote, ')}
-                  <Link href="/cake-staking" color="text">
-                    <Text bold style={{ textDecoration: 'underline' }}>
-                      {t('lock your CAKE')}
-                    </Text>
-                  </Link>
+                  <NextLink href="/cake-staking">
+                    <StyledLink color="text">
+                      <Text bold style={{ textDecoration: 'underline' }}>
+                        {t('lock your CAKE')}
+                      </Text>
+                    </StyledLink>
+                  </NextLink>
                   {t('for 3 weeks or more.')}
                 </FlexGap>
               </AutoColumn>

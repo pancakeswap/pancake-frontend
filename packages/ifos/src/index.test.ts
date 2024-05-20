@@ -36,11 +36,13 @@ test('exports', () => {
       "getUserIfoInfo",
       "getCurrentIfoRatio",
       "fetchUserVestingData",
+      "fetchUserVestingDataV8",
       "getBridgeICakeGasFee",
       "getCrossChainMessage",
       "iCakeABI",
       "pancakeInfoSenderABI",
       "ifoV7ABI",
+      "ifoV8ABI",
     ]
   `)
 })

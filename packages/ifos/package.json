@@ -1,10 +1,11 @@
 {
   "name": "@pancakeswap/ifos",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "test:u": "vitest -u --run"
   },
   "type": "module",
   "peerDependencies": {

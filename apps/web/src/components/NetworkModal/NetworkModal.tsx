@@ -52,7 +52,7 @@ export const NetworkModal = ({ pageSupportedChains = SUPPORT_ONLY_BSC }: { pageS
       .find((c) => c?.id === chainId)
     if (!currentChain) return null
     return (
-      <ModalV2 isOpen={isWrongNetwork} closeOnOverlayClick onDismiss={handleDismiss}>
+      <ModalV2 isOpen={isWrongNetwork} closeOnOverlayClick={false} onDismiss={handleDismiss}>
         <WrongNetworkModal currentChain={currentChain} onDismiss={handleDismiss} />
       </ModalV2>
     )

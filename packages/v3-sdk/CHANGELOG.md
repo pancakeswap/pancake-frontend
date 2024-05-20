@@ -1,5 +1,11 @@
 # @pancakeswap/v3-sdk
 
+## 3.8.2
+
+### Patch Changes
+
+- a29edf6: chore: Remove transferFrom definition from nonfungible position manager
+
 ## 3.8.1
 
 ### Patch Changes

@@ -268,22 +268,6 @@ const useConfirmActions = (
     }
   }, [amountToApprove, approve, chainId, getAllowanceArgs, retryWaitForTransaction, showError, t])
 
-  const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
-  const swapPreflightCheck = useCallback(() => {
-    if (
-      tradePriceBreakdown &&
-      !confirmPriceImpactWithoutFee(
-        tradePriceBreakdown.priceImpactWithoutFee as Percent,
-        PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
-        ALLOWED_PRICE_IMPACT_HIGH,
-        t,
-      )
-    ) {
-      return false
-    }
-    return true
-  }, [t, tradePriceBreakdown])
-
   const swapStep = useMemo(() => {
     return {
       step: ConfirmModalState.PENDING_CONFIRMATION,
@@ -291,7 +275,7 @@ const useConfirmActions = (
         setTxHash(undefined)
         setConfirmState(ConfirmModalState.PENDING_CONFIRMATION)
 
-        if (!swap || !swapPreflightCheck()) {
+        if (!swap) {
           resetState()
           return
         }
@@ -320,7 +304,7 @@ const useConfirmActions = (
       },
       showIndicator: false,
     }
-  }, [resetState, retryWaitForTransaction, showError, swap, swapError, swapPreflightCheck])
+  }, [resetState, retryWaitForTransaction, showError, swap, swapError])
 
   const actions = useMemo(() => {
     return {
@@ -346,9 +330,25 @@ export const useConfirmModalStateV2 = (
   amountToApprove: CurrencyAmount<Token> | undefined,
   spender: Address | undefined,
 ) => {
+  const { t } = useTranslation()
   const { actions, confirmState, txHash, errorMessage, resetState } = useConfirmActions(trade, amountToApprove, spender)
   const preConfirmState = usePreviousValue(confirmState)
   const [confirmSteps, setConfirmSteps] = useState<ConfirmModalState[]>()
+  const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const swapPreflightCheck = useCallback(() => {
+    if (
+      tradePriceBreakdown &&
+      !confirmPriceImpactWithoutFee(
+        tradePriceBreakdown.priceImpactWithoutFee as Percent,
+        PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
+        ALLOWED_PRICE_IMPACT_HIGH,
+        t,
+      )
+    ) {
+      return false
+    }
+    return true
+  }, [t, tradePriceBreakdown])
 
   const createSteps = useCreateConfirmSteps(amountToApprove, spender)
   const confirmActions = useMemo(() => {
@@ -382,12 +382,14 @@ export const useConfirmModalStateV2 = (
     const stepActions = steps.map((step) => actions[step])
     const nextStep = steps[1] ?? undefined
 
+    if (!swapPreflightCheck()) return
+
     performStep({
       nextStep,
       stepActions,
       state: steps[0],
     })
-  }, [actions, createSteps, performStep])
+  }, [actions, createSteps, performStep, swapPreflightCheck])
 
   // auto perform the next step
   useEffect(() => {

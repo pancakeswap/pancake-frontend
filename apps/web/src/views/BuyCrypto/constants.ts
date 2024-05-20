@@ -1,10 +1,14 @@
 import { Native } from '@pancakeswap/sdk'
-import { Currency } from '@pancakeswap/swap-sdk-core'
+import type { Currency } from '@pancakeswap/swap-sdk-core'
 import { arbitrumTokens, baseTokens, bscTokens, ethereumTokens, lineaTokens } from '@pancakeswap/tokens'
+import { ASSET_CDN } from 'config/constants/endpoints'
+import { Field } from 'state/buyCrypto/actions'
+import { OnRampUnit } from './types'
 import { NativeBtc } from './utils/NativeBtc'
 
 export const SUPPORTED_ONRAMP_TOKENS = ['ETH', 'DAI', 'USDT', 'USDC', 'BUSD', 'BNB', 'WBTC']
 export const DEFAULT_FIAT_CURRENCIES = ['USD', 'EUR', 'GBP', 'HKD', 'CAD', 'AUD', 'BRL', 'JPY', 'KRW', 'VND']
+export const ABOUT_EQUAL = '≈'
 
 export enum OnRampChainId {
   ETHEREUM = 1,
@@ -49,6 +53,12 @@ export const getIsNetworkEnabled = (network: OnRampChainId | undefined) => {
   if (typeof network === 'number') return true
   return false
 }
+
+export const PROVIDER_ICONS = {
+  [ONRAMP_PROVIDERS.MoonPay]: `${ASSET_CDN}/web/onramp/moonpay.svg`,
+  [ONRAMP_PROVIDERS.Mercuryo]: `${ASSET_CDN}/web/onramp/mercuryo.svg`,
+  [ONRAMP_PROVIDERS.Transak]: `${ASSET_CDN}/web/onramp/transak.svg`,
+} satisfies Record<keyof typeof ONRAMP_PROVIDERS, string>
 
 export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: FeeTypes[] } = {
   [ONRAMP_PROVIDERS.MoonPay]: MOONPAY_FEE_TYPES,
@@ -142,14 +152,14 @@ export const combinedNetworkIdMap: {
   [ONRAMP_PROVIDERS.Mercuryo]: chainIdToMercuryoNetworkId,
   [ONRAMP_PROVIDERS.Transak]: chainIdToTransakNetworkId,
 }
-const extractOnRampCurrencyChainId = (currencyId: string) => {
-  const parts = currencyId.split('_')
-  return parts[1]
-}
 
-export const formatQuoteDecimals = (quote: number | undefined, typedValue: string | undefined) => {
-  if (!quote || !typedValue || typedValue === '') return ''
-  return quote.toFixed(5)
+export const selectCurrencyField = (unit: OnRampUnit, mode: string) => {
+  if (unit === OnRampUnit.Fiat) return mode === 'onramp-fiat' ? Field.OUTPUT : Field.INPUT
+  return mode === 'onramp-fiat' ? Field.INPUT : Field.OUTPUT
+}
+export const formatQuoteDecimals = (quote: number | undefined, unit: OnRampUnit) => {
+  if (!quote) return ''
+  return unit === OnRampUnit.Crypto ? quote.toFixed(2) : quote.toFixed(5)
 }
 export const isNativeBtc = (currency: Currency | string | undefined) => {
   if (typeof currency === 'string') return Boolean(currency === 'BTC_0')
@@ -159,10 +169,7 @@ export const isNativeBtc = (currency: Currency | string | undefined) => {
 export const getOnRampCryptoById = (id: string) => onRampCurrenciesMap[id]
 export const getOnRampFiatById = (id: string) => fiatCurrencyMap[id]
 
-export const getOnrampCurrencyChainId = (currencyId: string | undefined): any => {
-  if (!currencyId) return undefined
-  return Number(extractOnRampCurrencyChainId(currencyId))
-}
+export const isFiat = (unit: OnRampUnit) => unit === OnRampUnit.Fiat
 
 export const fiatCurrencyMap: Record<string, { symbol: string; name: string }> = {
   USD: {

@@ -1,10 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Button, Flex, Link, OpenNewIcon, StyledLink, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import useTheme from 'hooks/useTheme'
 import React, { memo, useCallback, useLayoutEffect, useRef } from 'react'
 import { css, keyframes, styled } from 'styled-components'
 import { useFourYearTotalVeCakeApr } from 'views/CakeStaking/hooks/useAPR'
+import NextLink from 'next/link'
 import { useDrawCanvas } from '../../hooks/useDrawCanvas'
 import { useDrawSequenceImages } from '../../hooks/useDrawSequence'
 import { checkIsIOS } from '../../hooks/useIsIOS'
@@ -478,9 +479,9 @@ const CakeSection: React.FC = () => {
         </Text>
       </Flex>
       <Flex justifyContent="center" style={{ gap: 14 }}>
-        <Link href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56">
+        <NextLink href="/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56">
           <Button variant="primary">{t('Buy CAKE')}</Button>
-        </Link>
+        </NextLink>
         <Link href="https://docs.pancakeswap.finance/governance-and-tokenomics/cake-tokenomics">
           <Button pl="0" endIcon={<OpenNewIcon color="primary" />} variant="text">
             {t('Learn')}
@@ -542,9 +543,11 @@ const CakeSection: React.FC = () => {
             <Text color="secondary" textAlign="center" fontSize="20px" fontWeight="600" mb="16px">
               {t('Earn up to %apr%% APR', { apr: totalApr.toFixed(2) })}
             </Text>
-            <Link href="/cake-staking" margin="auto">
-              <Button variant="secondary">{t('Lock CAKE Now!')}🔥</Button>
-            </Link>
+            <NextLink href="/cake-staking">
+              <StyledLink color="primary" margin="auto">
+                <Button variant="secondary">{t('Lock CAKE Now!')}🔥</Button>
+              </StyledLink>
+            </NextLink>
           </BottomCakeContainer>
         </CakeSectionBottomBox>
       </Flex>

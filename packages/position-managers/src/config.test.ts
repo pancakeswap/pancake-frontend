@@ -14,6 +14,7 @@ const PUBLIC_NODES = {
     'https://arbitrum-one.publicnode.com',
     'https://arbitrum.llamarpc.com',
   ],
+  [ChainId.ETHEREUM]: [CHAINS.mainnet.rpcUrls.default, 'https://ethereum.publicnode.com', 'https://eth.llamarpc.com'],
 }
 
 const publicClient = Object.keys(VAULTS_CONFIG_BY_CHAIN).reduce((acc, chainId) => {

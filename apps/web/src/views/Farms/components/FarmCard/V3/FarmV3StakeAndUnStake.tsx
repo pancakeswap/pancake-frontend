@@ -7,9 +7,9 @@ import {
   Box,
   Button,
   ChevronRightIcon,
-  Link,
   QuestionHelper,
   RowBetween,
+  StyledLink,
   SyncAltIcon,
   Text,
 } from '@pancakeswap/uikit'
@@ -23,9 +23,10 @@ import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { V3Farm } from 'views/Farms/FarmsV3'
+import NextLink from 'next/link'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
 
-const StyledLink = styled(Link)`
+const StyledInitialLink = styled(StyledLink)`
   &:hover {
     text-decoration: initial;
   }
@@ -55,10 +56,12 @@ export const FarmV3LPTitle = ({
   title: string
   outOfRange: boolean
 }) => (
-  <StyledLink href={liquidityUrl}>
-    <Text bold>{title}</Text>
-    <ChevronRightIcon fontSize="12px" />
-  </StyledLink>
+  <NextLink href={liquidityUrl}>
+    <StyledInitialLink>
+      <Text bold>{title}</Text>
+      <ChevronRightIcon fontSize="12px" />
+    </StyledInitialLink>
+  </NextLink>
 )
 
 export const FarmV3LPPosition = ({

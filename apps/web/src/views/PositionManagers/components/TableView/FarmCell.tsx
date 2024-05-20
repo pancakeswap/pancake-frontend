@@ -72,7 +72,7 @@ export const FarmCell = memo(function CardTitle({
           alignItems="center"
           mr="10px"
           height="40px"
-          maxWidth={isMobile ? '100px' : undefined}
+          maxWidth={isMobile ? '100%' : undefined}
           flexWrap={isMobile ? 'wrap' : 'nowrap'}
         >
           <Text fontSize="1em" bold style={{ whiteSpace: 'nowrap' }}>

@@ -1,5 +1,30 @@
 # @pancakeswap/price-api-sdk
 
+## 1.2.7
+
+### Patch Changes
+
+- @pancakeswap/smart-router@6.0.6
+
+## 1.2.6
+
+### Patch Changes
+
+- c1f1288: Update tyeps
+
+## 1.2.5
+
+### Patch Changes
+
+- @pancakeswap/smart-router@6.0.5
+
+## 1.2.4
+
+### Patch Changes
+
+- Updated dependencies [8c52665]
+  - @pancakeswap/pcsx-sdk@0.0.4
+
 ## 1.2.3
 
 ### Patch Changes

@@ -108,12 +108,8 @@ const config: (
       href: '/buy-crypto',
       icon: ShoppingBasketIcon,
       fillIcon: ShoppingBasketFilledIcon,
-      items: [
-        {
-          label: t('Buy Crypto'),
-          href: '/buy-crypto',
-        },
-      ].map((item) => addMenuItemSupported(item, chainId)),
+      showItemsOnMobile: false,
+      items: [],
     },
     {
       label: t('Earn'),

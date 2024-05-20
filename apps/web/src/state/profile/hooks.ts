@@ -68,6 +68,7 @@ export const useProfile = (): {
   refresh: () => Promise<QueryObserverResult<GetProfileResponse | undefined | null>>
 } => {
   const { address: account } = useAccount()
+  const enabled = Boolean(account)
   const { data, status, refetch } = useQuery({
     queryKey: [account, 'profile'],
 
@@ -76,7 +77,7 @@ export const useProfile = (): {
       return getProfile(account)
     },
 
-    enabled: Boolean(account),
+    enabled,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -84,7 +85,7 @@ export const useProfile = (): {
 
   const { profile, hasRegistered } = data ?? ({ profile: undefined, hasRegistered: false } as GetProfileResponse)
 
-  const isLoading = status === FetchStatus.Fetching
+  const isLoading = enabled && status === FetchStatus.Fetching
   const isInitialized = status === FetchStatus.Fetched || status === FetchStatus.Failed
   const hasProfile = isInitialized && hasRegistered
   const hasActiveProfile = hasProfile && profile ? profile.isActive : false

@@ -1,7 +1,7 @@
 import { ArrowForwardIcon } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 
-const CountdownContainer = styled.div<{ $percentage: number }>`
+const CountdownContainer = styled.div`
   position: relative;
   margin-left: auto;
   height: 20px;
@@ -29,7 +29,6 @@ const CountdownContainer = styled.div<{ $percentage: number }>`
     }
     > circle:nth-child(2) {
       stroke: ${({ theme }) => theme.colors.primaryBright};
-      stroke-dashoffset: ${({ $percentage }) => `${120 * $percentage}px`};
     }
   }
 
@@ -43,10 +42,17 @@ const CountdownContainer = styled.div<{ $percentage: number }>`
 
 export const Countdown = ({ percentage, onClick }: { percentage: number; onClick?: () => void }) => {
   return (
-    <CountdownContainer $percentage={percentage} onClick={onClick}>
+    <CountdownContainer onClick={onClick}>
       <svg>
         <circle r="9" cx="10" cy="10" />
-        <circle r="9" cx="10" cy="10" />
+        <circle
+          r="9"
+          cx="10"
+          cy="10"
+          style={{
+            strokeDashoffset: `${120 * percentage}px`,
+          }}
+        />
       </svg>
       <ArrowForwardIcon color="primary" />
     </CountdownContainer>

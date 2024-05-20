@@ -28,6 +28,12 @@ declare global {
       switchNetwork?: (networkId: string) => Promise<string>
     } & Ethereum
   }
+
+  namespace JSX {
+    interface IntrinsicElements {
+      'usdv-widget': any
+    }
+  }
 }
 
 export {}

@@ -168,7 +168,9 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
     const newRow: RowProps = {}
     columns.forEach((column) => {
       if (!(column.name in row)) {
-        throw new Error(`Invalid row data, ${column.name} not found`)
+        // FIXME: new column property added. Suppress error for now
+        // throw new Error(`Invalid row data, ${column.name} not found`)
+        return
       }
       newRow[column.name] = row[column.name]
     })

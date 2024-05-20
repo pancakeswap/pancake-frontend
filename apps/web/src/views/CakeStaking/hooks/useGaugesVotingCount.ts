@@ -3,6 +3,9 @@ import { SUPPORT_CAKE_STAKING } from 'config/constants/supportChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useGaugesVotingContract } from 'hooks/useContract'
 
+/**
+ * all gauges count, including killed gauges
+ */
 export const useGaugesVotingCount = () => {
   const { chainId } = useActiveChainId()
   const gaugesVotingContract = useGaugesVotingContract()

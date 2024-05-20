@@ -216,6 +216,22 @@ export const StyledCircle = styled.div`
   left: calc(50% - 8px);
   top: 93%;
 `
+export const OnRampIconContainer = styled(Box)`
+  position: relative;
+  z-index: 1;
+`
+
+export const OnRampIconCircleWrapper = styled(Box)<{ border: boolean }>`
+  position: absolute;
+  border-radius: 50%;
+  overflow: hidden;
+  ${({ border }) =>
+    border &&
+    css`
+      border: solid 3px white;
+    `}
+`
+
 const InputExtended = styled('input').withConfig({
   shouldForwardProp: (props) => !['scale', 'isSuccess', 'isWarning'].includes(props),
 })<InputProps & { height: string }>`

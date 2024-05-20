@@ -415,12 +415,15 @@ export const getStableSwapNativeHelperContract = (signer?: WalletClient, chainId
 }
 
 export const getMasterChefContract = (signer?: WalletClient, chainId?: number) => {
-  return getContract({
-    abi: masterChefV2ABI,
-    address: getMasterChefV2Address(chainId),
-    chainId,
-    signer,
-  })
+  const mcv2Address = getMasterChefV2Address(chainId)
+  return mcv2Address
+    ? getContract({
+        abi: masterChefV2ABI,
+        address: mcv2Address,
+        chainId,
+        signer,
+      })
+    : null
 }
 
 export const getMasterChefV3Contract = (signer?: WalletClient, chainId?: number) => {

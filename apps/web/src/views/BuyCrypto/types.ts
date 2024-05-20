@@ -1,13 +1,13 @@
-import { ChainId } from '@pancakeswap/chains'
-import {
-  type DefaultError,
-  type QueryKey,
-  type UseInfiniteQueryOptions,
-  type UseMutationOptions,
-  type UseMutationResult,
-  type UseQueryOptions,
+import type { ChainId } from '@pancakeswap/chains'
+import type {
+  DefaultError,
+  QueryKey,
+  UseInfiniteQueryOptions,
+  UseMutationOptions,
+  UseMutationResult,
+  UseQueryOptions,
 } from '@tanstack/react-query'
-import { ONRAMP_PROVIDERS, OnRampChainId } from './constants'
+import type { ONRAMP_PROVIDERS, OnRampChainId } from './constants'
 
 export type Evaluate<type> = { [key in keyof type]: type[key] } & unknown
 
@@ -88,8 +88,13 @@ export type ProviderQuote = {
 }
 
 export enum CryptoFormView {
-  Input,
-  Quote,
+  Input = 'Input',
+  Quote = 'Quote',
+}
+
+export enum OnRampUnit {
+  Fiat = 'Fiat',
+  Crypto = 'Crypto',
 }
 
 export type FiatCurrency = {
@@ -107,7 +112,7 @@ export type OnRampProviderQuote = {
   provider: keyof typeof ONRAMP_PROVIDERS
   price: number
   noFee?: number
-  error?: any
+  error?: unknown
 }
 
 export type OnRampQuotesPayload = {
@@ -115,6 +120,7 @@ export type OnRampQuotesPayload = {
   cryptoCurrency: string | undefined
   fiatAmount: string | undefined
   network: OnRampChainId | undefined
+  onRampUnit: OnRampUnit
 }
 
 export type OnRampLimitsPayload = {

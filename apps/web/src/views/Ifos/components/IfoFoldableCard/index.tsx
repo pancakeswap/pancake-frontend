@@ -294,12 +294,16 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
     }
   }, [account, raisingTokenContract, contract, setEnableStatus])
 
+  const hasPoolBasic = Boolean(publicIfoData.poolBasic?.distributionRatio)
+  const hasPoolUnlimited = Boolean(publicIfoData.poolUnlimited?.distributionRatio)
+  const isSingleCard = publicIfoData.isInitialized && (!hasPoolBasic || !hasPoolUnlimited)
+
   return (
     <>
       <StyledCardBody>
         <CardsWrapper
           $shouldReverse={ifo.version >= 3.1 && publicIfoData.poolBasic?.saleType !== 2}
-          $singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}
+          $singleCard={isSingleCard}
         >
           {publicIfoData.poolBasic && walletIfoData.poolBasic && (
             <IfoPoolCard

@@ -12,11 +12,14 @@ import { getMasterChefV2Address } from '../../utils/addressHelpers'
 export const fetchMasterChefFarmPoolLength = async (chainId: number) => {
   try {
     const client = publicClient({ chainId })
-    const poolLength = await client.readContract({
-      abi: masterChefV2ABI,
-      address: getMasterChefV2Address(chainId),
-      functionName: 'poolLength',
-    })
+    const masterChefV2Address = getMasterChefV2Address(chainId)
+    const poolLength = masterChefV2Address
+      ? await client.readContract({
+          abi: masterChefV2ABI,
+          address: masterChefV2Address,
+          functionName: 'poolLength',
+        })
+      : 0n
 
     return Number(poolLength)
   } catch (error) {
@@ -31,7 +34,7 @@ const masterChefFarmCalls = (farm: SerializedFarm) => {
   const masterChefAddress = getMasterChefV2Address(multiCallChainId)
   const masterChefPid = pid
 
-  return masterChefPid || masterChefPid === 0
+  return masterChefAddress && (masterChefPid || masterChefPid === 0)
     ? ([
         {
           abi: masterChefV2ABI,

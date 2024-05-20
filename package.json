@@ -12,7 +12,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "turbo run dev --filter=web... --concurrency=31",
-    "dev:aptos": "pnpm turbo run dev --filter=aptos-web... --concurrency=20",
+    "dev:aptos": "pnpm turbo run dev --filter=aptos-web... --concurrency=28",
     "dev:blog": "pnpm turbo run dev --filter=blog... --concurrency=12",
     "dev:bridge": "pnpm turbo run dev --filter=bridge... --concurrency=16",
     "dev:games": "pnpm turbo run dev --filter=games... --concurrency=20",
@@ -45,7 +45,7 @@
     "prepare": "husky install"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.20.0"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
@@ -73,10 +73,10 @@
     "wrangler": "2.20.2"
   },
   "volta": {
-    "node": "18.16.0"
+    "node": "20.12.2",
+    "pnpm": "8.15.8"
   },
   "dependencies": {
-    "encoding": "^0.1.13",
     "ws": "^8.13.0",
     "zod": "^3.22.3"
   },

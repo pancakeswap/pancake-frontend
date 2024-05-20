@@ -65,12 +65,12 @@ const config = {
     '@pancakeswap/hooks',
     '@pancakeswap/utils',
     '@pancakeswap/widgets-internal',
-    '@pancakeswap/universal-router-sdk',
-    '@pancakeswap/permit2-sdk',
     '@pancakeswap/ifos',
+    // https://github.com/TanStack/query/issues/6560#issuecomment-1975771676
+    '@tanstack/query-core',
   ],
   reactStrictMode: true,
-  swcMinify: true,
+  swcMinify: false,
   images: {
     contentDispositionType: 'attachment',
     remotePatterns: [
@@ -78,6 +78,11 @@ const config = {
         protocol: 'https',
         hostname: 'static-nft.pancakeswap.com',
         pathname: '/mainnet/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.pancakeswap.finance',
+        pathname: '/web/**',
       },
     ],
   },

@@ -9,6 +9,7 @@ import {
   type Evaluate,
   type ExactPartial,
   type OnRampProviderQuote,
+  type OnRampUnit,
   type UseQueryParameters,
 } from '../types'
 
@@ -22,11 +23,11 @@ type GetOnRampSignatureQueryKey = ReturnType<typeof getOnRampSignatureQueryKey>
 export type GetOnRampSignatureReturnType = { signature: string }
 
 export type GetOnRampSignaturePayload = {
-  quote: OnRampProviderQuote
+  quote: OnRampProviderQuote | undefined
   walletAddress: string
-  chainId: OnRampChainId
-  externalTransactionId: string
-  redirectUrl: string
+  chainId: OnRampChainId | undefined
+  externalTransactionId: string | undefined
+  onRampUnit: OnRampUnit
 }
 export type UseOnRampSignatureReturnType<selectData = GetOnRampSignatureReturnType> = UseQueryResult<selectData, Error>
 
@@ -39,7 +40,7 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
   parameters: Omit<UseOnRampSignatureParameters<selectData>, 'walletAddress' | 'redirectUrl'> & { btcAddress?: string },
 ): UseOnRampSignatureReturnType<selectData> => {
   const { address } = useAccount()
-  const { quote, externalTransactionId, chainId, btcAddress, ...query } = parameters
+  const { quote, externalTransactionId, chainId, btcAddress, onRampUnit, ...query } = parameters
 
   const walletAddress = chainId === 0 ? btcAddress : address
   return useQuery({
@@ -50,14 +51,15 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
         quote,
         walletAddress,
         externalTransactionId,
+        onRampUnit,
       },
     ]),
     enabled: Boolean(externalTransactionId && quote && walletAddress && getIsNetworkEnabled(chainId)),
     queryFn: async ({ queryKey }) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { quote, externalTransactionId, chainId, ...rest } = queryKey[1]
+      const { quote, externalTransactionId, chainId, onRampUnit, ...rest } = queryKey[1]
 
-      if (!quote || !walletAddress || !externalTransactionId || !chainId?.toString()) {
+      if (!quote || !walletAddress || !externalTransactionId || !chainId || !onRampUnit) {
         throw new Error('Invalid parameters')
       }
 
@@ -73,10 +75,8 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
           amount,
           network,
           walletAddress,
-          isTestEnv: 'development',
-          redirectUrl: '',
           externalTransactionId,
-          ...rest,
+          onRampUnit,
         })}`,
       )
       const result: GetOnRampSignatureReturnType = await response.json()

@@ -20,6 +20,7 @@ import { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useHover } from 'hooks/useHover'
 import { useSessionChainId } from 'hooks/useSessionChainId'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
+import { useUserShowTestnet } from 'hooks/useUserShowTestnet'
 import Image from 'next/image'
 import { useMemo } from 'react'
 import { chainNameConverter } from 'utils/chainNameConverter'
@@ -32,8 +33,17 @@ const AptosChain = {
   name: 'Aptos',
 }
 
-const NetworkSelect = ({ switchNetwork, chainId }: any) => {
+const NetworkSelect = ({
+  switchNetwork,
+  chainId,
+  isWrongNetwork,
+}: {
+  chainId: ChainId
+  isWrongNetwork: boolean
+  switchNetwork: (network: ChainId) => void
+}) => {
   const { t } = useTranslation()
+  const [showTestnet] = useUserShowTestnet()
 
   return (
     <>
@@ -41,18 +51,30 @@ const NetworkSelect = ({ switchNetwork, chainId }: any) => {
         <Text color="textSubtle">{t('Select a Network')}</Text>
       </Box>
       <UserMenuDivider />
-      {chains.map((chain) => (
-        <UserMenuItem
-          key={chain.id}
-          style={{ justifyContent: 'flex-start' }}
-          onClick={() => chain.id !== chainId && switchNetwork(chain.id)}
-        >
-          <ChainLogo chainId={chain.id} />
-          <Text color={chain.id === chainId ? 'secondary' : 'text'} bold={chain.id === chainId} pl="12px">
-            {chainNameConverter(chain.name)}
-          </Text>
-        </UserMenuItem>
-      ))}
+      {chains
+        .filter((chain) => {
+          if (chain.id === chainId) return true
+          if ('testnet' in chain && chain.testnet) {
+            return showTestnet
+          }
+          return true
+        })
+        .map((chain) => (
+          <UserMenuItem
+            key={chain.id}
+            style={{ justifyContent: 'flex-start' }}
+            onClick={() => (chain.id !== chainId || isWrongNetwork) && switchNetwork(chain.id)}
+          >
+            <ChainLogo chainId={chain.id} />
+            <Text
+              color={chain.id === chainId && !isWrongNetwork ? 'secondary' : 'text'}
+              bold={chain.id === chainId && !isWrongNetwork}
+              pl="12px"
+            >
+              {chainNameConverter(chain.name)}
+            </Text>
+          </UserMenuItem>
+        ))}
       <UserMenuItem
         key={`aptos-${AptosChain.id}`}
         style={{ justifyContent: 'flex-start' }}
@@ -75,7 +97,13 @@ const NetworkSelect = ({ switchNetwork, chainId }: any) => {
   )
 }
 
-const WrongNetworkSelect = ({ switchNetwork, chainId }: any) => {
+const WrongNetworkSelect = ({
+  switchNetwork,
+  chainId,
+}: {
+  chainId: ChainId
+  switchNetwork: (network: ChainId) => void
+}) => {
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
@@ -162,7 +190,7 @@ export const NetworkSwitcher = () => {
 
   const foundChain = useMemo(() => chains.find((c) => c.id === chainId), [chainId])
   const symbol =
-    (foundChain?.id ? SHORT_SYMBOL[foundChain.id] ?? NATIVE[foundChain.id]?.symbol : undefined) ??
+    (foundChain?.id ? SHORT_SYMBOL[foundChain.id as ChainId] ?? NATIVE[foundChain.id as ChainId]?.symbol : undefined) ??
     foundChain?.nativeCurrency?.symbol
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Unable to switch network. Please try it on your wallet'),
@@ -199,7 +227,7 @@ export const NetworkSwitcher = () => {
           isNotMatched ? (
             <WrongNetworkSelect switchNetwork={switchNetworkAsync} chainId={chainId} />
           ) : (
-            <NetworkSelect switchNetwork={switchNetworkAsync} chainId={chainId} />
+            <NetworkSelect switchNetwork={switchNetworkAsync} chainId={chainId} isWrongNetwork={isWrongNetwork} />
           )
         }
       </UserMenu>

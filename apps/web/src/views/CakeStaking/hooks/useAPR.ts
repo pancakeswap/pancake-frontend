@@ -60,18 +60,18 @@ export const useCakePoolEmission = () => {
       const response = await client.multicall({
         contracts: [
           {
-            address: getMasterChefV2Address(client?.chain?.id),
+            address: getMasterChefV2Address(client?.chain?.id)!,
             abi: masterChefV2ABI,
             functionName: 'cakeRateToSpecialFarm',
           } as const,
           {
-            address: getMasterChefV2Address(client?.chain?.id),
+            address: getMasterChefV2Address(client?.chain?.id)!,
             abi: masterChefV2ABI,
             functionName: 'poolInfo',
             args: [pid],
           } as const,
           {
-            address: getMasterChefV2Address(client?.chain?.id),
+            address: getMasterChefV2Address(client?.chain?.id)!,
             abi: masterChefV2ABI,
             functionName: 'totalSpecialAllocPoint',
           } as const,

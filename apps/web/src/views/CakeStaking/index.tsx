@@ -7,17 +7,18 @@ import { useCakeDistributed } from 'hooks/useCakeDistributed'
 import useTheme from 'hooks/useTheme'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
+import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
 import { BenefitCard } from './components/BenefitCard'
 import { CakeRewardsCard } from './components/CakeRewardsCard'
 import { LockCake } from './components/LockCake'
 import { PageHead } from './components/PageHead'
-import { useGaugesVotingCount } from './hooks/useGaugesVotingCount'
 import { useSnapshotProposalsCount } from './hooks/useSnapshotProposalsCount'
 import { useTotalIFOSold } from './hooks/useTotalIFOSold'
 
 const CakeStaking = () => {
   const { t } = useTranslation()
-  const gaugesVotingCount = useGaugesVotingCount()
+  const { data: gauges } = useGauges()
+  const gaugesVotingCount = gauges?.length
   const snapshotProposalsCount = useSnapshotProposalsCount()
   const totalCakeDistributed = useCakeDistributed()
   const [cakeRewardModalVisible, setCakeRewardModalVisible] = useState(false)

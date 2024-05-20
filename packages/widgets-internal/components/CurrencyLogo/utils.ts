@@ -3,6 +3,7 @@ import { Currency, NATIVE, Token } from "@pancakeswap/sdk";
 import { bscTokens, ethereumTokens } from "@pancakeswap/tokens";
 import memoize from "lodash/memoize";
 import { getAddress } from "viem";
+import { CurrencyInfo } from "./types";
 
 const mapping: { [key: number]: string } = {
   [ChainId.BSC]: "smartchain",
@@ -54,7 +55,7 @@ const chainName: { [key: number]: string } = {
 export const getTokenListBaseURL = (chainId: number) =>
   `https://tokens.pancakeswap.finance/images/${chainName[chainId]}`;
 
-export const getTokenListTokenUrl = (token: Token) =>
+export const getTokenListTokenUrl = (token: Pick<Token, "chainId" | "address">) =>
   Object.keys(chainName).includes(String(token.chainId))
     ? `https://tokens.pancakeswap.finance/images/${
         token.chainId === ChainId.BSC ? "" : `${chainName[token.chainId]}/`
@@ -65,6 +66,7 @@ const commonCurrencySymbols = [
   ethereumTokens.usdt,
   ethereumTokens.usdc,
   bscTokens.cake,
+  bscTokens.usdv,
   ethereumTokens.wbtc,
   ethereumTokens.weth,
   NATIVE[ChainId.BSC],
@@ -99,4 +101,20 @@ export const getCurrencyLogoUrls = memoize(
   },
   (currency: Currency | undefined, options?: GetLogoUrlsOptions) =>
     `logoUrls#${currency?.chainId}#${currency?.wrapped?.address}#${options ? JSON.stringify(options) : ""}`
+);
+
+export const getCurrencyLogoUrlsByInfo = memoize(
+  (currency: CurrencyInfo | undefined, { useTrustWallet = true }: GetLogoUrlsOptions = {}): string[] => {
+    if (!currency) {
+      return [];
+    }
+    const { chainId, address, symbol } = currency;
+    const trustWalletLogo = getTokenLogoURLByAddress(address, chainId);
+    const logoUrl = chainId && address ? getTokenListTokenUrl({ chainId, address }) : null;
+    return [getCommonCurrencyUrlBySymbol(symbol), useTrustWallet ? trustWalletLogo : undefined, logoUrl].filter(
+      (url): url is string => !!url
+    );
+  },
+  (currency, options) =>
+    `logoUrls#${currency?.chainId}#${currency?.symbol}#${currency?.address}#${options ? JSON.stringify(options) : ""}`
 );

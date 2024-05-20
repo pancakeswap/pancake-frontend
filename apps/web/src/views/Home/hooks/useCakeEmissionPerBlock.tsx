@@ -6,7 +6,7 @@ import { formatEther } from 'viem'
 import { useReadContract } from 'wagmi'
 
 const CAKE_PER_BLOCK = 40
-const masterChefAddress = getMasterChefV2Address()
+const masterChefAddress = getMasterChefV2Address(ChainId.BSC)!
 
 export const useCakeEmissionPerBlock = (inView?: boolean) => {
   const { data: emissionsPerBlock } = useReadContract({

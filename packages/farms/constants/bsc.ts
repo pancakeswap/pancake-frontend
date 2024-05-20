@@ -76,6 +76,20 @@ export const farmsV3 = defineFarmV3Configs([
   // new lps should follow after the top fixed lps
   // latest first
   {
+    pid: 165,
+    token0: bscTokens.eth,
+    token1: bscTokens.stone,
+    lpAddress: '0xb66cB4092277ee946d4FbA1D34f425329fEdd37e',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 164,
+    token0: bscTokens.solvbtc,
+    token1: bscTokens.btcb,
+    lpAddress: '0x12197d7a4fE2d67F9f97ae64D82A44c24B7Ad407',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
     pid: 163,
     token0: bscTokens.weEth,
     token1: bscTokens.eth,
@@ -1208,6 +1222,15 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTokens.wbnb,
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
+  {
+    pid: 9,
+    v1pid: 260,
+    lpSymbol: 'XVS-BNB LP',
+    lpAddress: '0x7EB5D86FD78f3852a3e0e064f2842d45a3dB6EA2',
+    token: bscTokens.xvs,
+    quoteToken: bscTokens.wbnb,
+    bCakeWrapperAddress: '0xF919F052E4608D239E49E57957022FdcAaeeeB49',
+  },
   {
     pid: 182,
     lpSymbol: 'mwbETH-wbETH LP',
@@ -2401,14 +2424,6 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'ETH-BNB LP',
     lpAddress: '0x74E4716E431f45807DCF19f284c7aA99F18a4fbc',
     token: bscTokens.eth,
-    quoteToken: bscTokens.wbnb,
-  },
-  {
-    pid: 9,
-    v1pid: 260,
-    lpSymbol: 'XVS-BNB LP',
-    lpAddress: '0x7EB5D86FD78f3852a3e0e064f2842d45a3dB6EA2',
-    token: bscTokens.xvs,
     quoteToken: bscTokens.wbnb,
   },
   {

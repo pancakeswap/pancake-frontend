@@ -6,7 +6,7 @@ import { useCakeDistributed } from 'hooks/useCakeDistributed'
 import useTheme from 'hooks/useTheme'
 import { memo } from 'react'
 import { keyframes, styled } from 'styled-components'
-import { useGaugesVotingCount } from '../../hooks/useGaugesVotingCount'
+import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
 import { BENEFITS } from '../BenefitCard'
 import { StyledBox } from '../MyVeCakeCard'
 import { VeCakeButton } from './VeCakeButton'
@@ -133,7 +133,8 @@ export const VeCakeBenefitCard: React.FC<{ isTableView?: boolean }> = memo(({ is
 
 export const VeCakeCard = memo(() => {
   const { t } = useTranslation()
-  const gaugesVotingCount = useGaugesVotingCount()
+  const { data: gauges } = useGauges()
+  const gaugesVotingCount = gauges?.length
   const totalCakeDistributed = useCakeDistributed()
   return (
     <Flex flexDirection="column" style={{ gap: 10 }}>
@@ -230,7 +231,8 @@ export const VeCakeCardTableView = memo(() => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { isMobile } = useMatchBreakpoints()
-  const gaugesVotingCount = useGaugesVotingCount()
+  const { data: gauges } = useGauges()
+  const gaugesVotingCount = gauges?.length
   const totalCakeDistributed = useCakeDistributed()
   return (
     <LightGreyCard

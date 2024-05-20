@@ -71,8 +71,8 @@ export default function PoolV2Page() {
         (farm) => farm.lpAddress.toLowerCase() === pair?.liquidityToken?.address?.toLowerCase(),
       )
       if (farmPair) {
-        const poolInfo = await masterchefV2Contract.read.poolInfo([BigInt(farmPair.pid)])
-        const allocPoint = poolInfo[2] as bigint
+        const poolInfo = await masterchefV2Contract?.read.poolInfo([BigInt(farmPair.pid)])
+        const allocPoint = poolInfo ? (poolInfo[2] as bigint) : 0
         return allocPoint > 0 ? 'exist' : 'notexist'
       }
       return 'exist'

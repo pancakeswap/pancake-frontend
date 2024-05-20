@@ -91,9 +91,9 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     if (!account) {
       return
     }
-    const bscClient = publicClient({ chainId })
+    const client = publicClient({ chainId })
 
-    const [userInfo, amounts] = await bscClient.multicall({
+    const [userInfo, amounts] = await client.multicall({
       contracts: [
         {
           address,
@@ -114,7 +114,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     let basicId: Address | null = null
     let unlimitedId: Address | null = null
     if (version >= 3.2) {
-      const [basicIdDataResult, unlimitedIdDataResult] = await bscClient.multicall({
+      const [basicIdDataResult, unlimitedIdDataResult] = await client.multicall({
         contracts: [
           {
             address,
@@ -162,7 +162,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         unlimitedScheduleResult,
         basicReleasableAmountResult,
         unlimitedReleasableAmountResult,
-      ] = await bscClient.multicall({
+      ] = await client.multicall({
         contracts: [
           {
             address,

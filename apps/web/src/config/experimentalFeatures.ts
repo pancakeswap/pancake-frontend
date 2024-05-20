@@ -27,12 +27,12 @@ export const EXPERIMENTAL_FEATURE_CONFIGS: ExperimentalFeatureConfigs = [
   },
   {
     feature: EXPERIMENTAL_FEATURES.SpeedQuote,
-    percentage: 0.8,
+    percentage: 1,
     whitelist: [],
   },
   {
     feature: EXPERIMENTAL_FEATURES.UniversalRouter,
-    percentage: 0.7,
+    percentage: 1,
     whitelist: [],
   },
   {
