@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Checkbox, Flex, FlexGap, InjectedModalProps, Modal, ModalBody, Text } from '@pancakeswap/uikit'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { CheckedIcon } from 'views/DashboardCampaignEdit/components/Quests/ChooseQuestModal/CheckedIcon'
 import { Quest } from 'views/Quests/components/Quest'
@@ -46,7 +46,10 @@ const OutlineContainer = styled(Box)<{ $checked?: boolean }>`
   position: relative;
   overflow: hidden;
   border-radius: 24px;
-  cursor: pointer;
+
+  > div > div {
+    cursor: pointer !important;
+  }
 
   ${({ $checked, theme }) =>
     $checked &&
@@ -67,13 +70,39 @@ const Footer = styled.div`
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
 `
 
-interface ChooseQuestProps extends InjectedModalProps {}
+interface ChooseQuestProps extends InjectedModalProps {
+  pickedQuests: Array<string>
+  updatePickedQuests: (key: string, value: any) => void
+}
 
-export const ChooseQuestModal: React.FC<ChooseQuestProps> = ({ onDismiss }) => {
+export const ChooseQuestModal: React.FC<ChooseQuestProps> = ({ pickedQuests, updatePickedQuests, onDismiss }) => {
   const { t } = useTranslation()
+  const [selectedQuests, setSelectedQuests] = useState<Array<string>>([])
+  const fakeData = [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }, { id: '5' }]
   const [selectAll, setSelectAll] = useState(false)
 
-  const handleSubmit = () => {}
+  useEffect(() => {
+    if (pickedQuests.length > 0) {
+      setSelectedQuests(pickedQuests)
+    }
+  }, [])
+
+  const handleSelectQuest = (id: string) => {
+    const findIndex = selectedQuests.findIndex((i: any) => i === id)
+    if (findIndex >= 0) {
+      selectedQuests.splice(findIndex, 1)
+      setSelectedQuests([...selectedQuests])
+      return
+    }
+
+    selectedQuests.push(id)
+    setSelectedQuests([...selectedQuests])
+  }
+
+  const handleSubmit = () => {
+    updatePickedQuests('pickedQuests', selectedQuests)
+    onDismiss?.()
+  }
 
   return (
     <Modal title={t('Choose the quests to assign')} onDismiss={onDismiss}>
@@ -96,18 +125,20 @@ export const ChooseQuestModal: React.FC<ChooseQuestProps> = ({ onDismiss }) => {
               <Text ml="8px">{t('Select all %total%', { total: 6 })}</Text>
             </CheckboxArea>
             <StyledFlexGap flexWrap="wrap" gap="16px">
-              <OutlineContainer>
-                <StyledCheckedIcon width={48} height={48} />
-                <Quest isDraft hideClick />
-              </OutlineContainer>
-              <OutlineContainer>
-                <StyledCheckedIcon width={48} height={48} />
-                <Quest isDraft hideClick />
-              </OutlineContainer>
+              {fakeData.map((quest) => (
+                <OutlineContainer
+                  key={quest.id}
+                  $checked={selectedQuests.includes(quest.id)}
+                  onClick={() => handleSelectQuest(quest.id)}
+                >
+                  <StyledCheckedIcon width={48} height={48} />
+                  <Quest isDraft hideClick />
+                </OutlineContainer>
+              ))}
             </StyledFlexGap>
           </Container>
           <Footer>
-            <Button display="block" margin="auto">
+            <Button display="block" margin="auto" onClick={handleSubmit}>
               {t('Assign')}
             </Button>
           </Footer>

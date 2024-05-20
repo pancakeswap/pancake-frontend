@@ -20,13 +20,16 @@ const StyledFlexGap = styled(FlexGap)`
   }
 `
 
-export const QuestList = () => {
+interface QuestListProps {
+  pickedQuests: any
+}
+
+export const QuestList: React.FC<QuestListProps> = ({ pickedQuests }) => {
   return (
     <StyledFlexGap>
-      <Quest isDraft />
-      <Quest isDraft />
-      <Quest isDraft />
-      <Quest isDraft />
+      {pickedQuests.map((quest: any) => (
+        <Quest key={quest} isDraft hideClick />
+      ))}
     </StyledFlexGap>
   )
 }

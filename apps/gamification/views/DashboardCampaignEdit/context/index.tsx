@@ -8,11 +8,12 @@ export interface StateType {
   startTime: null | Date
   endDate: null | Date
   endTime: null | Date
+  pickedQuests: Array<string>
 }
 
 interface EditCampaignContextType {
   state: StateType
-  updateValue: (key: string, value: string | Date) => void
+  updateValue: (key: string, value: string | Date | any) => void
 }
 
 export const CampaignEditContext = createContext<EditCampaignContextType | undefined>(undefined)
@@ -26,9 +27,10 @@ export const CampaignEditProvider: React.FC<React.PropsWithChildren> = ({ childr
     startTime: null,
     endDate: null,
     endTime: null,
+    pickedQuests: [],
   }))
 
-  const updateValue = useCallback((key: string, value: string | Date) => {
+  const updateValue = useCallback((key: string, value: string | Date | any) => {
     setState((prevState) => ({
       ...prevState,
       [key]: value,
