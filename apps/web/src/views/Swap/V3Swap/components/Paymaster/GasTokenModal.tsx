@@ -35,6 +35,7 @@ import { Address } from 'viem'
 import { TradeType } from '@pancakeswap/swap-sdk-core'
 import { ChainId } from '@pancakeswap/chains'
 import { getUniversalRouterAddress, PancakeSwapUniversalRouter } from '@pancakeswap/universal-router-sdk'
+import Image from 'next/image'
 import { useUserSlippagePercent } from '@pancakeswap/utils/user'
 import { usePaymaster } from './hooks/usePaymaster'
 import { DEFAULT_PAYMASTER_TOKEN } from './config/config'
@@ -87,6 +88,10 @@ const StyledModalBody = styled(ModalBody)`
   &::-webkit-scrollbar {
     display: none;
   }
+`
+
+const StyledFooterText = styled(Text)`
+  padding: 10px 0 20px 0;
 `
 
 const FixedHeightRow = styled.div<{ $disabled: boolean }>`
@@ -148,8 +153,6 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   const nativeBalances = useNativeBalances([account])
   const balances = useTokenBalances(account, tokenList.filter((token) => token.isToken) as any[])
 
-  // const lastSorted = useRef(0)
-
   const getTokenBalance = memoize((address: Address) => balances[address])
 
   const onSelectorButtonClick = useCallback(() => {
@@ -166,8 +169,6 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
 
   const fetchTokenList = useCallback(async () => {
     let tempTokenList: PaymasterToken[] = []
-
-    // lastSorted.current = 0 // Reset
 
     if (account && trade) {
       const rawTxData = PancakeSwapUniversalRouter.swapERC20CallParameters(
@@ -211,23 +212,6 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   useEffect(() => {
     fetchTokenList()
   }, [trade])
-
-  // Sort tokenList when balances are fetched
-  // useEffect(() => {
-  //   // Throttle sorting to avoid multiple re-renders from balances updating. Sort after minimum 5 seconds
-  //   if (lastSorted.current > Date.now() - 5000 || tokenList.length === 0) return
-
-  //   console.log('sorting effect called', { lastSorted: lastSorted.current })
-  //   const tempTokenList = tokenList.toSorted(tokenListSortComparator)
-
-  //   // -1 for excluding the native token
-  //   if (Object.keys(balances).length === tempTokenList.length - 1) {
-  //     lastSorted.current = Date.now()
-  //     setTokenBalances(balances)
-  //   }
-
-  //   setTokenList(tempTokenList)
-  // }, [balances])
 
   // Item Key for FixedSizeList
   const itemKey = useCallback((index: number, data: any) => `${data[index]}-${index}`, [])
@@ -369,7 +353,7 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
 
       <ModalV2 onDismiss={onDismiss} isOpen={isOpen} closeOnOverlayClick>
         <StyledModalContainer>
-          <ModalHeader>
+          <ModalHeader style={{ border: 'none' }}>
             <ModalTitle>
               <Heading padding={2}>
                 <Flex>
@@ -410,6 +394,18 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
             >
               {Row}
             </FixedSizeList>
+            <StyledFooterText>
+              <Flex justifyContent="center" alignItems="center">
+                <span>{t('Powered by Zyfi Paymaster')}</span>
+                <Image
+                  src="/images/swap/zyfi-logo.png"
+                  alt="Zyfi Logo"
+                  width={18}
+                  height={18}
+                  style={{ marginLeft: '5px' }}
+                />
+              </Flex>
+            </StyledFooterText>
           </StyledModalBody>
         </StyledModalContainer>
       </ModalV2>
