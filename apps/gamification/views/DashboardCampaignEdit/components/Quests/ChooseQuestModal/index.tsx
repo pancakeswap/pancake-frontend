@@ -42,14 +42,14 @@ const StyledCheckedIcon = styled(CheckedIcon)`
   fill: ${({ theme }) => theme.colors.cardBorder};
 `
 
-const OutlineContainer = styled(Box)<{ checked?: boolean }>`
+const OutlineContainer = styled(Box)<{ $checked?: boolean }>`
   position: relative;
   overflow: hidden;
   border-radius: 24px;
   cursor: pointer;
 
-  ${({ checked, theme }) =>
-    checked &&
+  ${({ $checked, theme }) =>
+    $checked &&
     `
   > div > div {
     background:  ${theme.colors.primary};

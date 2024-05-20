@@ -10,3 +10,5 @@ export const TOKEN_LIST: { [key in string]: any } = {
   [ChainId.ARBITRUM_ONE]: arbitrumTokens,
   [ChainId.BASE]: baseTokens,
 }
+
+export const SUPPORTED_CHAIN = [ChainId.BSC, ChainId.ZKSYNC, ChainId.ARBITRUM_ONE, ChainId.BASE]

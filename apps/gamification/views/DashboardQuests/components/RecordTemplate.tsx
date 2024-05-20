@@ -1,7 +1,10 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Box, Button, ButtonMenu, ButtonMenuItem, Flex, MultiSelector, Text } from '@pancakeswap/uikit'
+import { SHORT_SYMBOL } from 'components/NetworkSwitcher'
+import { SUPPORTED_CHAIN } from 'config/supportedChain'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useMemo } from 'react'
 import { styled } from 'styled-components'
 
 const Container = styled(Box)`
@@ -100,6 +103,8 @@ interface RecordTemplateProps {
   createButtonText: string
   createLink: string
   statusButtonIndex: number
+  pickMultiSelect: Array<ChainId>
+  setPickMultiSelect: (chains: Array<ChainId>) => void
   setStatusButtonIndex: (newIndex: number) => void
   children?: React.ReactNode
 }
@@ -109,18 +114,38 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({
   createButtonText,
   createLink,
   statusButtonIndex,
+  pickMultiSelect,
+  setPickMultiSelect,
   setStatusButtonIndex,
   children,
 }) => {
   const { t } = useTranslation()
   const router = useRouter()
-  const [pickMultiSelect, setPickMultiSelect] = useState<Array<number>>([])
 
   const toCreatePage = () => {
     router.push(createLink)
   }
 
-  const options = [{ id: 0, label: 'BSC', value: 56 }]
+  const options = useMemo(() => {
+    return SUPPORTED_CHAIN.map((chain, index) => ({
+      id: index + 1,
+      label: SHORT_SYMBOL[chain],
+      value: chain,
+    }))
+  }, [])
+
+  const hasOptionsPicked = useMemo(() => {
+    if (pickMultiSelect.length > 0) {
+      const hasIndex = options.filter((i) => pickMultiSelect.includes(i.id))
+      return hasIndex.length > 0
+    }
+
+    return false
+  }, [options, pickMultiSelect])
+
+  const customPlaceHolderText = useMemo(() => {
+    return pickMultiSelect.length === 0 || pickMultiSelect.length === options.length ? t('All Network') : ''
+  }, [options.length, pickMultiSelect.length, t])
 
   return (
     <Flex flexDirection="column">
@@ -148,8 +173,8 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({
               </StyledButtonMenu>
               <MultiSelectorStyled
                 options={options}
-                placeHolderText="" // todo {customPlaceHolderText}
-                $hasOptionsPicked={false} // todo
+                placeHolderText={customPlaceHolderText}
+                $hasOptionsPicked={hasOptionsPicked}
                 pickMultiSelect={pickMultiSelect}
                 closeDropdownWhenClickOption={false}
                 onOptionChange={setPickMultiSelect}
