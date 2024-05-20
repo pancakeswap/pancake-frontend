@@ -25,7 +25,7 @@ import {
 } from 'viem'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { userRejectedError } from './useSendSwapTransaction'
-import { useSwapCallbackV2 } from './useSwapCallbackV2'
+import { useSwapCallback } from './useSwapCallbackV2'
 
 export type ConfirmAction = {
   step: ConfirmModalState
@@ -92,7 +92,7 @@ const useConfirmActions = (
     }
   }, [chainId, amountToApprove?.currency.address, account])
   const [permit2Signature, setPermit2Signature] = useState<Permit2Signature | undefined>(undefined)
-  const { callback: swap, error: swapError } = useSwapCallbackV2({
+  const { callback: swap, error: swapError } = useSwapCallback({
     trade,
     deadline,
     permitSignature: permit2Signature,
@@ -325,7 +325,7 @@ const useConfirmActions = (
   }
 }
 
-export const useConfirmModalStateV2 = (
+export const useConfirmModalState = (
   trade: SmartRouterTrade<TradeType> | undefined,
   amountToApprove: CurrencyAmount<Token> | undefined,
   spender: Address | undefined,

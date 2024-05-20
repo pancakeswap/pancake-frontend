@@ -1,6 +1,6 @@
 import { Currency, TradeType } from '@pancakeswap/sdk'
-import { useExpertMode } from '@pancakeswap/utils/user'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { useExpertMode } from '@pancakeswap/utils/user'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
@@ -8,11 +8,11 @@ import { memo, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
-import { MMSwapCommitButtonV2 } from 'views/Swap/MMLinkPools/components/MMCommitButtonV2'
+import { MMSwapCommitButton } from 'views/Swap/MMLinkPools/components/MMCommitButtonV2'
 import { useAccount } from 'wagmi'
 import { CommitButtonProps, MMCommitTrade } from '../types'
 
-const MMCommitButtonCompV2: React.FC<MMCommitTrade<SmartRouterTrade<TradeType>> & CommitButtonProps> = ({
+const MMCommitButtonComp: React.FC<MMCommitTrade<SmartRouterTrade<TradeType>> & CommitButtonProps> = ({
   mmOrderBookTrade,
   mmRFQTrade,
   mmQuoteExpiryRemainingSec,
@@ -49,7 +49,7 @@ const MMCommitButtonCompV2: React.FC<MMCommitTrade<SmartRouterTrade<TradeType>> 
   const { onUserInput } = useSwapActionHandlers()
 
   return (
-    <MMSwapCommitButtonV2
+    <MMSwapCommitButton
       beforeCommit={beforeCommit}
       afterCommit={afterCommit}
       mmTradeInfo={mmTradeInfo}
@@ -72,4 +72,4 @@ const MMCommitButtonCompV2: React.FC<MMCommitTrade<SmartRouterTrade<TradeType>> 
   )
 }
 
-export const MMCommitButtonV2 = memo(MMCommitButtonCompV2)
+export const MMCommitButton = memo(MMCommitButtonComp)

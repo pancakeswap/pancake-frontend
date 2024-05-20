@@ -27,7 +27,7 @@ interface SwapCall {
  * @param deadline the deadline for executing the trade
  * @param feeOptions the fee options to be applied to the trade.
  */
-export function useSwapCallArgumentsV2(
+export function useSwapCallArguments(
   trade: SmartRouterTrade<TradeType> | undefined | null,
   allowedSlippage: Percent,
   recipientAddressOrName: string | null | undefined,

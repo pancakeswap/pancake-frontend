@@ -13,7 +13,7 @@ import { basisPointsToPercent } from 'utils/exchange'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { Address } from 'viem'
 import useSendSwapTransaction from './useSendSwapTransaction'
-import { useSwapCallArgumentsV2 } from './useSwapCallArgumentsV2'
+import { useSwapCallArguments } from './useSwapCallArgumentsV2'
 import type { TWallchainMasterInput, WallchainStatus } from './useWallchain'
 
 export enum SwapCallbackState {
@@ -44,7 +44,7 @@ interface UseSwapCallbackArgs {
 
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade
-export function useSwapCallbackV2({
+export function useSwapCallback({
   trade,
   deadline,
   permitSignature,
@@ -57,7 +57,7 @@ export function useSwapCallbackV2({
   const { recipient: recipientAddress } = useSwapState()
   const recipient = recipientAddress === null ? account : recipientAddress
 
-  const swapCalls = useSwapCallArgumentsV2(
+  const swapCalls = useSwapCallArguments(
     trade,
     allowedSlippage,
     recipientAddress,

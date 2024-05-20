@@ -25,7 +25,7 @@ import { SwapTransactionErrorContent } from 'views/Swap/components/SwapTransacti
 import { TransactionConfirmSwapContent } from '../components'
 import { ConfirmAction } from '../hooks/useConfirmModalStateV2'
 import { AllowedAllowanceState } from '../types'
-import { ApproveStepFlowV2 } from './ApproveStepFlowV2'
+import { ApproveStepFlow } from './ApproveStepFlowV2'
 
 export const useApprovalPhaseStepTitles: ({
   trade,
@@ -63,7 +63,7 @@ type ConfirmSwapModalProps = InjectedModalProps & {
   openSettingModal?: () => void
 }
 
-export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalProps> = ({
+export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
   confirmModalState,
   pendingModalSteps,
   customOnDismiss,
@@ -280,7 +280,7 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalProps> = ({
     >
       <Box>{modalContent}</Box>
       {stepsVisible ? (
-        <ApproveStepFlowV2
+        <ApproveStepFlow
           confirmModalState={confirmModalState}
           pendingModalSteps={pendingModalSteps.map((step) => step.step) as any}
         />

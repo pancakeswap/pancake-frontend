@@ -13,7 +13,7 @@ import { Field } from 'state/swap/actions'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { Address } from 'viem'
 import { parseMMError } from 'views/Swap/MMLinkPools/utils/exchange'
-import { ConfirmSwapModalV2 } from 'views/Swap/V3Swap/containers/ConfirmSwapModalV2'
+import { ConfirmSwapModal } from 'views/Swap/V3Swap/containers/ConfirmSwapModalV2'
 import { CommitButtonProps } from 'views/Swap/V3Swap/types'
 import { MMTradeInfo } from '../hooks'
 import { useMMConfirmModalState } from '../hooks/useMMConfirmModalState'
@@ -48,7 +48,7 @@ interface SwapCommitButtonPropsType {
   mmQuoteExpiryRemainingSec?: number | null
 }
 
-export function MMSwapCommitButtonV2({
+export function MMSwapCommitButton({
   mmTradeInfo,
   swapIsUnsupported,
   account,
@@ -118,7 +118,7 @@ SwapCommitButtonPropsType & CommitButtonProps) {
   }, [beforeCommit, callToAction])
 
   const [onPresentConfirmModal] = useModal(
-    <ConfirmSwapModalV2
+    <ConfirmSwapModal
       isMM
       trade={rfqTrade?.trade ?? undefined} // show the info while refresh RFQ
       originalTrade={tradeToConfirm}

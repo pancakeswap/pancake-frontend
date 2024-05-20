@@ -1,8 +1,8 @@
 import { SmartRouterTrade, V4Router } from '@pancakeswap/smart-router'
 import { TradeType } from '@pancakeswap/swap-sdk-core'
 import { MMCommitTrade } from '../types'
-import { MMCommitButtonV2 } from './MMCommitButtonV2'
-import { SwapCommitButtonV2 } from './SwapCommitButtonV2'
+import { MMCommitButton } from './MMCommitButtonV2'
+import { SwapCommitButton } from './SwapCommitButtonV2'
 
 type Trade = SmartRouterTrade<TradeType> | V4Router.V4TradeWithoutGraph<TradeType>
 
@@ -23,12 +23,12 @@ export const CommitButton: React.FC<CommitButtonProps> = ({
 }) => {
   if (trade && 'isMMBetter' in trade && trade?.isMMBetter) {
     const currentTrade = trade
-    return <MMCommitButtonV2 {...currentTrade} beforeCommit={beforeCommit} afterCommit={afterCommit} />
+    return <MMCommitButton {...currentTrade} beforeCommit={beforeCommit} afterCommit={afterCommit} />
   }
 
   const currentTrade = trade as SmartRouterTrade<TradeType>
   return (
-    <SwapCommitButtonV2
+    <SwapCommitButton
       trade={currentTrade}
       tradeError={tradeError}
       tradeLoading={!tradeLoaded}

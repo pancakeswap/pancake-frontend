@@ -26,12 +26,12 @@ import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { warningSeverity } from 'utils/exchange'
 import { useAccount, useChainId } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapInputError } from '../hooks'
-import { useConfirmModalStateV2 } from '../hooks/useConfirmModalStateV2'
+import { useConfirmModalState } from '../hooks/useConfirmModalStateV2'
 import { useSwapConfig } from '../hooks/useSwapConfig'
 import { useSwapCurrency } from '../hooks/useSwapCurrency'
 import { CommitButtonProps } from '../types'
 import { computeTradePriceBreakdown } from '../utils/exchange'
-import { ConfirmSwapModalV2 } from './ConfirmSwapModalV2'
+import { ConfirmSwapModal } from './ConfirmSwapModalV2'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -103,7 +103,7 @@ const UnsupportedSwapButtonReplace = ({ children }) => {
   return children
 }
 
-const SwapCommitButtonCompV2: React.FC<SwapCommitButtonPropsType & CommitButtonProps> = (props) => {
+const SwapCommitButtonComp: React.FC<SwapCommitButtonPropsType & CommitButtonProps> = (props) => {
   return (
     <UnsupportedSwapButtonReplace>
       <ConnectButtonReplace>
@@ -115,7 +115,7 @@ const SwapCommitButtonCompV2: React.FC<SwapCommitButtonPropsType & CommitButtonP
   )
 }
 
-export const SwapCommitButtonV2 = memo(SwapCommitButtonCompV2)
+export const SwapCommitButton = memo(SwapCommitButtonComp)
 
 const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   trade,
@@ -158,7 +158,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   const [tradeToConfirm, setTradeToConfirm] = useState<SmartRouterTrade<TradeType> | undefined>(undefined)
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
 
-  const { callToAction, confirmState, txHash, confirmActions, errorMessage, resetState } = useConfirmModalStateV2(
+  const { callToAction, confirmState, txHash, confirmActions, errorMessage, resetState } = useConfirmModalState(
     isExpertMode ? trade : tradeToConfirm,
     amountToApprove?.currency.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
     getUniversalRouterAddress(chainId),
@@ -199,7 +199,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   }, [])
   const openSettingModal = useSettingModal(onSettingModalDismiss)
   const [openConfirmSwapModal] = useModal(
-    <ConfirmSwapModalV2
+    <ConfirmSwapModal
       trade={trade}
       originalTrade={tradeToConfirm}
       txHash={txHash}

@@ -50,7 +50,7 @@ const ApprovalSteps = ({ pendingModalSteps, confirmModalState }: ApproveStepFlow
   )
 }
 
-export const ApproveStepFlowV2: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> = ({
+export const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowProps>> = ({
   confirmModalState,
   pendingModalSteps,
 }) => {
