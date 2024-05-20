@@ -3327,10 +3327,6 @@
   "Placing Order Disabled": "Orders plaatsen uitgeschakeld",
   "Orders missing? Check out:": "Ontbreken er orders? Ga naar:",
   "Limit V2 (deprecated)": "Limit V2 (verouderd)",
-  "Join the MASA Trading Competition": "Doe mee aan de MASA-handelswedstrijd",
-  "Win 700,000 $MASA": "Win 700.000 $MASA",
-  "Trade to win 700,000 $MASA": "Handel om 700.000 $MASA te winnen",
-  "to Win 700,000 $MASA": "om 700.000 $MASA te winnen",
   "Vote": "Stem",
   "sort by": "sorteren op",
   "Unselect All": "Alles deselecteren",
@@ -3354,5 +3350,8 @@
   "Exact number: %numberWithFullDigits%": "Exact getal: %numberWithFullDigits%",
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Houd er rekening mee dat de Pearls die je met deze kluis verdient pas later zichtbaar zijn in je saldo.",
   "Fee saved": "Bespaarde vergoeding",
-  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Vergoedingen bespaard op PancakeSwap vergeleken met de interfacekosten die grote DEX'en in rekening brengen"
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Vergoedingen bespaard op PancakeSwap vergeleken met de interfacekosten die grote DEX'en in rekening brengen",
+  "Up to $8M in interface fees paid refunded!": "Tot 8 mln. USD aan betaalde interfacevergoedingen terugbetaald!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Krijg tot 8 mln. USD aan betaalde interfacevergoedingen terugbetaald op PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Behaal je volume en we betalen je ALLE betaalde interfacevergoedingen terug"
 }

@@ -3327,10 +3327,6 @@
   "Placing Order Disabled": "주문하기 비활성화됨",
   "Orders missing? Check out:": "주문이 누락되었나요? 확인해 보세요:",
   "Limit V2 (deprecated)": "Limit V2(더 이상 사용 안 됨)",
-  "Join the MASA Trading Competition": "MASA 트레이딩 대회 참가",
-  "Win 700,000 $MASA": "상금 700,000 $MASA 획득",
-  "Trade to win 700,000 $MASA": "트레이딩으로 상금 700,000 $MASA 획득",
-  "to Win 700,000 $MASA": "상금 700,000 $MASA 획득",
   "Vote": "투표",
   "sort by": "정렬 기준",
   "Unselect All": "모두 선택 취소",
@@ -3353,6 +3349,9 @@
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "veCAKE 포지션을 갱신하여 주간 CAKE 일드, 수익 공유, 게이지 투표, 팜 일드 부스팅, IFO 참여 등의 혜택을 계속 즐겨보세요!",
   "Exact number: %numberWithFullDigits%": "정확한 번호: %numberWithFullDigits%",
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "이 볼트에서 획득한 Pearl은 잔액에 표시되기까지 시간이 걸리므로 주의하시기 바랍니다.",
-  "Fee saved": "Fee saved",
-  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees"
+  "Fee saved": "수수료 절감",
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "주요 DEX에서 부과하는 수수료 대비 PancakeSwap에서 절감된 수수료",
+  "Up to $8M in interface fees paid refunded!": "지불한 인터페이스 수수료 중 최대 800만 달러가 환불되었습니다!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "PancakeSwap에서 지불한 인터페이스 수수료 중 최대 800만 달러를 환급받으세요",
+  "Match your volume and we'll refund ALL your interface fees paid": "볼륨을 맞추면 지불한 모든 인터페이스 수수료를 환불해 드립니다."
 }

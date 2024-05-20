@@ -3327,10 +3327,6 @@
   "Placing Order Disabled": "已停用下單功能",
   "Orders missing? Check out:": "找不到我的限價單？請前往：",
   "Limit V2 (deprecated)": "僅可用在 v2 流動性的舊版限價單（已棄用）",
-  "Join the MASA Trading Competition": "參加 MASA 交易大賽",
-  "Win 700,000 $MASA": "贏取 700,000 $MASA",
-  "Trade to win 700,000 $MASA": "交易以贏取 700,000 $MASA",
-  "to Win 700,000 $MASA": "贏取 700,000 $MASA",
   "Vote": "投票",
   "sort by": "排序依據",
   "Unselect All": "取消全選",
@@ -3354,5 +3350,8 @@
   "Exact number: %numberWithFullDigits%": "Exact number: %numberWithFullDigits%",
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Please note that the Pearls earned from this vault will only appear in your balance at a later time.",
   "Fee saved": "Fee saved",
-  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees"
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees",
+  "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
 }
