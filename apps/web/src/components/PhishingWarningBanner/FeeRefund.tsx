@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { ICampaignBanner } from './ICampaignBanner'
 
 const MobileImage = styled.img`
-  height: 100%;
+  height: 80px;
   width: auto;
   margin-left: -12px;
 `
@@ -17,17 +17,10 @@ export const FeeRefund: ICampaignBanner = () => {
 
   if (isMobile) {
     return (
-      <Flex ml="auto" alignItems="center" flexWrap="wrap">
+      <Flex alignItems="center" flexWrap="nowrap">
         <MobileImage src={`${ASSET_CDN}/web/banners/fee-refund/bg-stripe-mobile.png`} alt="fee-refund-campaign" />
         <Column>
-          <Text
-            bold
-            as="span"
-            color="warning"
-            fontSize={['12px', '12px', '14px']}
-            maxWidth="50vw"
-            style={{ whiteSpace: 'pre-wrap' }}
-          >
+          <Text bold as="span" color="warning" fontSize={['12px', '12px', '14px']} style={{ whiteSpace: 'pre-wrap' }}>
             {t('Get up to $8M USD in interface fees refunded on PancakeSwap')}
           </Text>
           <Link
