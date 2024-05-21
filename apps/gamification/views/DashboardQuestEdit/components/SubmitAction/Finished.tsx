@@ -2,11 +2,11 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 
 interface FinishedProps {
-  isPublish: boolean
+  title: string
   closeModal: () => void
 }
 
-export const Finished: React.FC<React.PropsWithChildren<FinishedProps>> = ({ isPublish, closeModal, children }) => {
+export const Finished: React.FC<React.PropsWithChildren<FinishedProps>> = ({ title, closeModal, children }) => {
   const { t } = useTranslation()
 
   return (
@@ -14,7 +14,7 @@ export const Finished: React.FC<React.PropsWithChildren<FinishedProps>> = ({ isP
       <CheckmarkCircleIcon width={64} height={64} color="primary" margin="auto auto 24px auto" />
       {children}
       <Text textAlign="center" bold color="textSubtle" mt="20px">
-        {isPublish ? t('The quest has been successfully published!') : t('The quest has been successfully scheduled!')}
+        {title}
       </Text>
       <Button mt="24px" width="100%" onClick={closeModal}>
         {t('Nice!')}

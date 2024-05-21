@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Modal, ModalV2 } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { Default } from 'views/DashboardQuestEdit/components/SubmitAction/Default'
+import { Default } from 'views/DashboardCampaignEdit/components/SubmitAction/Default'
 import { Fail } from 'views/DashboardQuestEdit/components/SubmitAction/Fail'
 import { Finished } from 'views/DashboardQuestEdit/components/SubmitAction/Finished'
 import { Loading } from 'views/DashboardQuestEdit/components/SubmitAction/Loading'
@@ -15,7 +15,7 @@ interface ModalConfig {
   component?: JSX.Element
 }
 
-export enum QuestEditModalState {
+export enum EditModalState {
   DEFAULT,
   LOADING,
   FAILED,
@@ -31,74 +31,74 @@ interface ActionModalProps {
 export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, setOpenModal }) => {
   const { t } = useTranslation()
   const router = useRouter()
-  const [modalView, setModalView] = useState<QuestEditModalState>(QuestEditModalState.DEFAULT)
+  const [modalView, setModalView] = useState<EditModalState>(EditModalState.DEFAULT)
 
-  const questComponent = <Quest mb="24px" width="100%" showStatus hideClick />
+  const component = <Quest mb="24px" width="100%" showStatus hideClick />
 
   const closeModal = () => {
     setOpenModal(false)
   }
 
   const handleSubmit = () => {
-    setModalView(QuestEditModalState.LOADING)
+    setModalView(EditModalState.LOADING)
 
     setTimeout(() => {
-      setModalView(QuestEditModalState.FINISHED)
+      setModalView(EditModalState.FINISHED)
     }, 3000)
   }
 
   const handleFinished = () => {
     closeModal()
-    router.push('/dashboard')
+    router.push('/dashboard/campaign')
   }
 
   const config = {
-    [QuestEditModalState.DEFAULT]: {
-      title: isPublish ? t('Publish the quest') : t('Schedule the quest'),
+    [EditModalState.DEFAULT]: {
+      title: isPublish ? t('Publish the campaign') : t('Schedule the campaign'),
       closeOnOverlayClick: true,
       component: (
         <Default isPublish={isPublish} handleSubmit={handleSubmit}>
-          {questComponent}
+          {component}
         </Default>
       ),
     },
-    [QuestEditModalState.LOADING]: {
-      title: isPublish ? t('Publishing the quest...') : t('Scheduling the quest...'),
+    [EditModalState.LOADING]: {
+      title: isPublish ? t('Publishing the campaign...') : t('Scheduling the campaign...'),
       hideCloseButton: true,
       component: (
         <Loading
           title={
             isPublish
-              ? t('Wait while the quest is being published...')
-              : t('Wait while the quest is being scheduled...')
+              ? t('Wait while the campaign is being published...')
+              : t('Wait while the campaign is being scheduled...')
           }
         >
-          {questComponent}
+          {component}
         </Loading>
       ),
     },
-    [QuestEditModalState.FAILED]: {
+    [EditModalState.FAILED]: {
       title: isPublish ? t('Publishing failed') : t('Scheduling failed'),
       closeOnOverlayClick: true,
       component: (
         <Fail closeModal={closeModal} handleSubmit={handleSubmit}>
-          {questComponent}
+          {component}
         </Fail>
       ),
     },
-    [QuestEditModalState.FINISHED]: {
-      title: isPublish ? t('The quest has been published') : t('The quest has been scheduled'),
+    [EditModalState.FINISHED]: {
+      title: isPublish ? t('The campaign has been published') : t('The campaign has been scheduled'),
       closeOnOverlayClick: true,
       component: (
         <Finished
           title={
             isPublish
-              ? t('The quest has been successfully published!')
-              : t('The quest has been successfully scheduled!')
+              ? t('The campaign has been successfully published!')
+              : t('The campaign has been successfully scheduled!')
           }
           closeModal={handleFinished}
         >
-          {questComponent}
+          {component}
         </Finished>
       ),
     },

@@ -3,6 +3,7 @@ import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { ImageUpload } from 'views/DashboardCampaignEdit/components/ImageUpload'
 import { Quests } from 'views/DashboardCampaignEdit/components/Quests/index'
+import { SubmitAction } from 'views/DashboardCampaignEdit/components/SubmitAction'
 import { useCampaignEdit } from 'views/DashboardCampaignEdit/context/useCampaignEdit'
 import { EditTemplate } from 'views/DashboardQuestEdit/components/EditTemplate'
 import { Reward } from 'views/DashboardQuestEdit/components/Reward'
@@ -30,10 +31,18 @@ export const DashboardCampaignEdit = () => {
         updateValue={updateValue}
         uploadImageComponent={<ImageUpload />}
       >
-        {!isDesktop && <Reward amountPerWinner={state.amountPerWinner} updateValue={updateValue} />}
+        {!isDesktop && (
+          <Reward
+            amountPerWinner={state.amountPerWinner}
+            updateValue={updateValue}
+            actionComponent={<SubmitAction />}
+          />
+        )}
         <Quests />
       </EditTemplate>
-      {isDesktop && <Reward amountPerWinner={state.amountPerWinner} updateValue={updateValue} />}
+      {isDesktop && (
+        <Reward amountPerWinner={state.amountPerWinner} updateValue={updateValue} actionComponent={<SubmitAction />} />
+      )}
     </DashboardCampaignEditContainer>
   )
 }
