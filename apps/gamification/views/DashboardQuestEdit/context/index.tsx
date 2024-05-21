@@ -27,8 +27,8 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
     title: '',
     body: '',
     amountPerWinner: '',
-    startDate: null,
-    startTime: null,
+    startDate: new Date('Wed May 22 2024 11:30:00 GMT+0800 (z)'),
+    startTime: new Date('Wed May 22 2024 11:30:00 GMT+0800 (z)'),
     endDate: null,
     endTime: null,
   }))

@@ -3,15 +3,22 @@ import { Button, CalenderIcon, Flex, PencilIcon, VolumeIcon } from '@pancakeswap
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { ActionModal } from 'views/DashboardQuestEdit/components/SubmitAction/ActionModal'
+// import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
+// import { combineDateAndTime, convertDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 
 export const SubmitAction = () => {
   const { t } = useTranslation()
   const { query } = useRouter()
+  // const { state } = useQuestEdit()
   const disabled = false
   const [openModal, setOpenModal] = useState(false)
   const [isPublish, setIsPublish] = useState(false)
 
   const handleClick = (publish: boolean) => {
+    // const { startDate, startTime, endDate, endTime } = state
+    // const startDateTime = combineDateAndTime(startDate, startTime) || 0
+    // const endDateTime = combineDateAndTime(endDate, endTime) || 0
+
     setOpenModal(true)
     setIsPublish(publish)
   }
