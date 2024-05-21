@@ -25,8 +25,6 @@ const Container = styled(Flex).withConfig({ shouldForwardProp: (prop) => !['$bac
     background: #7a6eaa;
     ${({ $background }) => $background && `background: ${$background};`}
   }
-
-  ${({ $background }) => $background && `background: ${$background};`}
 `
 
 const InnerContainer = styled(Flex)`
