@@ -688,7 +688,7 @@
   "Draw": "Sorteio",
   "Next Draw": "Próximo sorteio",
   "Your tickets": "Seus bilhetes",
-  "Match the winning number in the same order to share prizes.": "Match the winning number in the same order to share prizes.",
+  "Match the winning number in the same order to share prizes.": "Combine o número vencedor na mesma ordem para receber uma parte dos prêmios.",
   "Current prizes up for grabs:": "Prêmios atualmente na disputa:",
   "Burn": "Queimar",
   "Match all %numberMatch%": "Corresponder tudo: %numberMatch%",
@@ -805,7 +805,7 @@
   "You are the first liquidity provider.": "Você é o primeiro fornecedor de liquidez.",
   "The ratio of tokens you add will set the price of this pair.": "A proporção de tokens adicionada por você definirá o preço deste par.",
   "Once you are happy with the rate click supply to review.": "Quando você estiver satisfeito com a taxa, clique em fornecer para revisar.",
-  "Initial prices and share in the pair": "Preços iniciais e participação no par",
+  "Initial prices and share in the pair": "Preços iniciais e proporção no par",
   "Prices and Share": "Preços e participação",
   "Unsupported Asset": "Ativo incompatível",
   "Enabling %asset%": "Habilitando %asset%",
@@ -3353,5 +3353,9 @@
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Economia no PancakeSwap em comparação com os principais DEXs que cobram taxas de interface",
   "Up to $8M in interface fees paid refunded!": "Reembolso de até Us$8 milhões em taxas de interface pagas!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Receba o reembolso de até US$8 milhões em taxas de interface pagas no PancakeSwap",
-  "Match your volume and we'll refund ALL your interface fees paid": "Combine seu volume e reembolsaremos TODAS as taxas de interface pagas"
+  "Match your volume and we'll refund ALL your interface fees paid": "Combine seu volume e reembolsaremos TODAS as taxas de interface pagas",
+  "Get up to $8M USD in interface fees refunded on PancakeSwap": "Receba o reembolso de até US$8 milhões em taxas de interface no PancakeSwap",
+  "Match your Uni volume on PancakeSwap to get a refund of up to": "Combine seu volume Uni no PancakeSwap para obter um reembolso de até",
+  "$8M USD": "US$8M",
+  "in Uniswap interface fees paid": "taxas pagas na interface da Uniswap"
 }
