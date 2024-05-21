@@ -77,7 +77,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
 }) {
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
-  const { isPaymasterTokenActive, feeToken } = usePaymaster()
+  const { isPaymasterAvailable, isPaymasterTokenActive, feeToken } = usePaymaster()
   const severity = warningSeverity(priceImpactWithoutFee)
 
   const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
@@ -244,7 +244,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
             </Text>
           )}
         </RowBetween>
-        {isPaymasterTokenActive && (
+        {isPaymasterAvailable && isPaymasterTokenActive && (
           <RowBetween mt="8px">
             <RowFixed>
               <Text fontSize="14px">{t('Gas Token')}</Text>

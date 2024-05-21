@@ -79,7 +79,7 @@ export const TradeDetails = memo(function TradeDetails({ loaded, trade }: Props)
           priceImpactWithoutFee={priceImpactWithoutFee ?? undefined}
           realizedLPFee={lpFeeAmount ?? undefined}
           hasStablePair={hasStablePool}
-          gasTokenSelector={<GasTokenModal trade={trade} />}
+          gasTokenSelector={<GasTokenModal />}
         />
         <RoutesBreakdown routes={routes} />
       </AutoColumn>

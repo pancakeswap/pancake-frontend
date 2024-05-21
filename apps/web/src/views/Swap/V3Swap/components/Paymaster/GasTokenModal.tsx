@@ -2,6 +2,7 @@ import {
   ArrowDropDownIcon,
   ArrowForwardIcon,
   Button,
+  CircleLoader,
   Column,
   Flex,
   Heading,
@@ -24,22 +25,17 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { useAtom } from 'jotai'
-import { useNativeBalances, useTokenBalances } from 'state/wallet/hooks'
+import { useNativeBalances, useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
-import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { Address } from 'viem'
-import { TradeType } from '@pancakeswap/swap-sdk-core'
 import Image from 'next/image'
 import { usePaymaster } from './hooks/usePaymaster'
 import { DEFAULT_PAYMASTER_TOKEN } from './config/config'
 import { PaymasterToken } from './types'
 import { feeTokenAtom } from './state/atoms'
-import { TradeEssentialForPriceBreakdown } from '../../utils/exchange'
-import { RouteDisplayEssentials } from '../RouteDisplayModal'
 
 // Selector Styles
-
 const StyledLogo = styled(TokenLogo)<{ size: string }>`
   border-radius: 50%;
   width: ${({ size }) => size};
@@ -108,16 +104,7 @@ const Badge = styled.span`
   background-color: ${({ theme }) => theme.colors.success};
 `
 
-type Trade = TradeEssentialForPriceBreakdown &
-  Pick<SmartRouterTrade<TradeType>, 'tradeType'> & {
-    routes: RouteDisplayEssentials[]
-  }
-
-interface GasTokenModalProps {
-  trade?: Trade | null
-}
-
-function GasTokenModal({ trade }: GasTokenModalProps) {
+function GasTokenModal() {
   const { t } = useTranslation()
   const { getPaymasterTokenlist } = usePaymaster()
   const { isOpen, setIsOpen, onDismiss } = useModalV2()
@@ -128,7 +115,10 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   const [tokenList, setTokenList] = useState<PaymasterToken[]>([])
 
   const nativeBalances = useNativeBalances([account])
-  const balances = useTokenBalances(account, tokenList.filter((token) => token.isToken) as any[])
+  const [balances, balancesLoading] = useTokenBalancesWithLoadingIndicator(
+    account,
+    tokenList.filter((token) => token.isToken) as any[],
+  )
 
   const getTokenBalance = memoize((address: Address) => balances[address])
 
@@ -169,7 +159,7 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
 
   useEffect(() => {
     fetchTokenList()
-  }, [trade])
+  }, [])
 
   // Item Key for FixedSizeList
   const itemKey = useCallback((index: number, data: any) => `${data[index]}-${index}`, [])
@@ -213,7 +203,9 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
             </Column>
           </Flex>
 
-          {(account && nativeBalances[account]) || getTokenBalance(item.address) ? (
+          {balancesLoading ? (
+            <CircleLoader />
+          ) : (account && nativeBalances[account]) || getTokenBalance(item.address) ? (
             <StyledBalanceText>
               <NumberDisplay
                 value={

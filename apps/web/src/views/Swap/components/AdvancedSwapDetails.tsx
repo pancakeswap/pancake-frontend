@@ -199,13 +199,13 @@ export const TradeSummary = memo(function TradeSummary({
                   <>
                     <Text mb="12px">
                       <Text bold display="inline-block">
-                        {t('Gas / Network fee')}
+                        {t('Gas Token')}
                       </Text>
                       <br />
                       <br />
-                      {t('“Gas” is a measure of how much it costs someone to transact on the blockchain.')}
+                      {t('Select a token to pay gas fees.')}
                       <br /> <br />
-                      {t('Please check tx confirm modal in your wallet for the final gas fee.')}
+                      {t('Please refer to the transaction confirmation on your wallet for the final gas fee.')}
                     </Text>
                   </>
                 }
