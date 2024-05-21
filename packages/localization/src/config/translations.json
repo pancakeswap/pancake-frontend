@@ -3360,8 +3360,6 @@
   "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
   "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid",
-  "Please refer to the transaction confirmation on your wallet for the final gas fee.": "Please refer to the transaction confirmation on your wallet for the final gas fee.",
-  "Select a token to pay gas fees.": "Select a token to pay gas fees.",
   "Get up to $8M USD in interface fees refunded on PancakeSwap": "Get up to $8M USD in interface fees refunded on PancakeSwap",
   "Match your Uni volume on PancakeSwap to get a refund of up to": "Match your Uni volume on PancakeSwap to get a refund of up to",
   "$8M USD": "$8M USD",
@@ -3388,5 +3386,7 @@
   "Please check tx confirm modal in your wallet for the final gas fee.": "Please check tx confirm modal in your wallet for the final gas fee.",
   "Insufficient %symbol% balance for gas fee": "Insufficient %symbol% balance for gas fee",
   "Gas Token": "Gas Token",
-  "Powered by Zyfi Paymaster": "Powered by Zyfi Paymaster"
+  "Powered by Zyfi Paymaster": "Powered by Zyfi Paymaster",
+  "Please refer to the transaction confirmation on your wallet for the final gas fee.": "Please refer to the transaction confirmation on your wallet for the final gas fee.",
+  "Select a token to pay gas fees.": "Select a token to pay gas fees."
 }
