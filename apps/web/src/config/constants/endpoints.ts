@@ -46,9 +46,12 @@ export const CELER_API = 'https://api.celerscan.com/scan'
 
 export const EXPLORER_API = 'https://info-gateway.pancakeswap.com'
 
+export const THE_GRAPH_PROXY_API = 'https://thegraph.pancakeswap.com'
+
 export const V2_SUBGRAPH_URLS = {
   ...V2_SUBGRAPHS,
   [ChainId.BSC]: `${EXPLORER_API}/subgraphs/v2/bsc/graphql`,
+  [ChainId.POLYGON_ZKEVM]: `${THE_GRAPH_PROXY_API}/exchange-v2-polygon-zkevm`,
 }
 
 export const BLOCKS_CLIENT_WITH_CHAIN = BLOCKS_SUBGRAPHS
@@ -57,7 +60,7 @@ export const ASSET_CDN = 'https://assets.pancakeswap.finance'
 
 export const V3_SUBGRAPH_URLS = {
   ...V3_SUBGRAPHS,
-  // [ChainId.BSC]: `${EXPLORER_API}/subgraphs/v3/bsc/graphql`,
+  [ChainId.POLYGON_ZKEVM]: `${THE_GRAPH_PROXY_API}/exchange-v3-polygon-zkevm`,
 }
 
 export const STABLESWAP_SUBGRAPHS_URLS = {
