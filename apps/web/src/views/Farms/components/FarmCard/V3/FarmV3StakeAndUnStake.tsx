@@ -7,9 +7,9 @@ import {
   Box,
   Button,
   ChevronRightIcon,
-  Link,
   QuestionHelper,
   RowBetween,
+  StyledLink,
   SyncAltIcon,
   Text,
 } from '@pancakeswap/uikit'
@@ -26,7 +26,7 @@ import { V3Farm } from 'views/Farms/FarmsV3'
 import NextLink from 'next/link'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
 
-const StyledLink = styled(Link)`
+const StyledInitialLink = styled(StyledLink)`
   &:hover {
     text-decoration: initial;
   }
@@ -56,11 +56,11 @@ export const FarmV3LPTitle = ({
   title: string
   outOfRange: boolean
 }) => (
-  <NextLink href={liquidityUrl} passHref>
-    <StyledLink href="replace">
+  <NextLink href={liquidityUrl}>
+    <StyledInitialLink>
       <Text bold>{title}</Text>
       <ChevronRightIcon fontSize="12px" />
-    </StyledLink>
+    </StyledInitialLink>
   </NextLink>
 )
 

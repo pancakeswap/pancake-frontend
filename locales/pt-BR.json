@@ -510,7 +510,7 @@
   "After the battle ends, visit the event page and click the “Claim Prizes” button in the top section or in “Your Score” section. Once you claim your prizes successfully, the button text will change to “Prizes Claimed”.": "Depois do término da batalha, visite a página do evento e clique no botão “Reivindicar prêmios” na seção superior ou na seção “Sua Pontuação”. Depois de reivindicar seus prêmios com sucesso, o texto do botão mudará para “Prêmios reivindicados”.",
   "Trade to increase your rank": "Negocie para aumentar sua classificação",
   "Play as a team": "Participar como equipe",
-  "Top Traders": "Melhores negociantes",
+  "Top Traders": "Melhores Traders",
   "Since start of the competition": "Desde o início da competição",
   "Show More": "Exibir mais",
   "Share Score": "Compartilhar pontuação",
@@ -3327,10 +3327,6 @@
   "Placing Order Disabled": "Realização de ordem desativada",
   "Orders missing? Check out:": "Está faltando ordens? Confira:",
   "Limit V2 (deprecated)": "Limit V2 (descontinuado)",
-  "Join the MASA Trading Competition": "Participe da Competição de Negociação de MASA",
-  "Win 700,000 $MASA": "Ganhe 700.000 $MASA",
-  "Trade to win 700,000 $MASA": "Negocie para ganhar 700.000 $MASA",
-  "to Win 700,000 $MASA": "para ganhar 700.000 $MASA",
   "Vote": "Votar",
   "sort by": "classificar por",
   "Unselect All": "Desmarcar tudo",
@@ -3354,5 +3350,8 @@
   "Exact number: %numberWithFullDigits%": "Número exato: %numberWithFullDigits%",
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Observe que as Pearls ganhas com este cofre só aparecerão posteriormente em seu saldo.",
   "Fee saved": "Taxa economizada",
-  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Economia no PancakeSwap em comparação com os principais DEXs que cobram taxas de interface"
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Economia no PancakeSwap em comparação com os principais DEXs que cobram taxas de interface",
+  "Up to $8M in interface fees paid refunded!": "Reembolso de até Us$8 milhões em taxas de interface pagas!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Receba o reembolso de até US$8 milhões em taxas de interface pagas no PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Combine seu volume e reembolsaremos TODAS as taxas de interface pagas"
 }

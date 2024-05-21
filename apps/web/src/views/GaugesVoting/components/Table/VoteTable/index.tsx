@@ -7,9 +7,9 @@ import {
   Card,
   FlexGap,
   Grid,
-  Link,
   Message,
   Skeleton,
+  StyledLink,
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
@@ -264,12 +264,12 @@ export const VoteTable = () => {
                 </Text>
                 <FlexGap alignItems="center" gap="0.2em">
                   {t('To cast your vote, ')}
-                  <NextLink href="/cake-staking" passHref>
-                    <Link href="replace" color="text">
+                  <NextLink href="/cake-staking">
+                    <StyledLink color="text">
                       <Text bold style={{ textDecoration: 'underline' }}>
                         {t('extend your lock >>')}
                       </Text>
-                    </Link>
+                    </StyledLink>
                   </NextLink>
                 </FlexGap>
               </AutoColumn>
@@ -283,12 +283,12 @@ export const VoteTable = () => {
                 <Text>{t('You have no locked CAKE.')}</Text>
                 <FlexGap alignItems="center" gap="0.2em" flexWrap="wrap">
                   {t('To cast your vote, ')}
-                  <NextLink href="/cake-staking" passHref>
-                    <Link href="replace" color="text">
+                  <NextLink href="/cake-staking">
+                    <StyledLink color="text">
                       <Text bold style={{ textDecoration: 'underline' }}>
                         {t('lock your CAKE')}
                       </Text>
-                    </Link>
+                    </StyledLink>
                   </NextLink>
                   {t('for 3 weeks or more.')}
                 </FlexGap>

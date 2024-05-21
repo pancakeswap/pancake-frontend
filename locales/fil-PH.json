@@ -3327,10 +3327,6 @@
   "Placing Order Disabled": "Naka-disable ang Pag-place ng Order",
   "Orders missing? Check out:": "Kulang na mga order? Tingnan ang:",
   "Limit V2 (deprecated)": "Limitan ang V2 (inihinto)",
-  "Join the MASA Trading Competition": "Sumali sa kumpetisyon ng MASA Trading",
-  "Win 700,000 $MASA": "Manalo ng 700,000 $MASA",
-  "Trade to win 700,000 $MASA": "Mag-trade para manalo ng 700,00 $MASA",
-  "to Win 700,000 $MASA": "para manalo ng 700,000 $MASA",
   "Vote": "Boto",
   "sort by": "i-sort sa pamamagitan ng",
   "Unselect All": "Alisin Lahat sa Pagkakapili",
@@ -3353,6 +3349,9 @@
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "I-renew ang veCAKE position mo para patuloy na ma-enjoy ang mga benepisyo ng lingguhang CAKE yield, hati sa kita, gauges voting, pag-boost ng farm yield, pagsali sa mga IFO, at marami pa!",
   "Exact number: %numberWithFullDigits%": "Eksaktong numero: %numberWithFullDigits%",
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Pakitandaan na ang Mga Pearl na makukuha mula sa vault na ito ay makikita lang sa balanse mo sa ibang pagkakataon.",
-  "Fee saved": "Fee saved",
-  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees"
+  "Fee saved": "Natipid na fee",
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Mga fee na natipid sa PancakeSwap kumpara sa mga pangunahing DEX na sumisingil ng mga interface fee",
+  "Up to $8M in interface fees paid refunded!": "Na-refund ang hanggang $8M na mga interface fee na binayaran!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Makakuha ng refund na hanggang $8M na mga interface fee na binayaran sa PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Pantayan ang iyong volume at ire-refund namin ang LAHAT ng iyong interface fee na binayaran"
 }
