@@ -1,6 +1,6 @@
-const VERSION = '0.0.27'
+const VERSION = '0.0.29'
 // https://unpkg.com/@layerzerolabs/x-pancakeswap-widget@0.0.21/element.mjs.sha384
-const SHA384 = '6KIHUDbpC4LJFNyccQRTbSygG+s+dxGst626mWRi+s+kdhal5bR8BxktVuommt67'
+const SHA384 = 'sW2hWmjPdvusdVRqDloztq23DAB9BKr6u5pI1Xlbah9JQvSQt1ur7+/a6mmo9SZA'
 
 export const LAYER_ZERO_JS = {
   src: `https://unpkg.com/@layerzerolabs/x-pancakeswap-widget@${VERSION}/element.mjs`,
