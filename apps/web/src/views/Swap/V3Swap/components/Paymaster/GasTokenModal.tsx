@@ -1,9 +1,7 @@
 import {
   ArrowDropDownIcon,
   ArrowForwardIcon,
-  Box,
   Button,
-  CircleLoader,
   Column,
   Flex,
   Heading,
@@ -18,12 +16,11 @@ import {
   TokenLogo,
   useModalV2,
   useTooltip,
-  WarningIcon,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import memoize from 'lodash/memoize'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { useAtom } from 'jotai'
@@ -33,10 +30,7 @@ import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { Address } from 'viem'
 import { TradeType } from '@pancakeswap/swap-sdk-core'
-import { ChainId } from '@pancakeswap/chains'
-import { getUniversalRouterAddress, PancakeSwapUniversalRouter } from '@pancakeswap/universal-router-sdk'
 import Image from 'next/image'
-import { useUserSlippagePercent } from '@pancakeswap/utils/user'
 import { usePaymaster } from './hooks/usePaymaster'
 import { DEFAULT_PAYMASTER_TOKEN } from './config/config'
 import { PaymasterToken } from './types'
@@ -45,23 +39,6 @@ import { TradeEssentialForPriceBreakdown } from '../../utils/exchange'
 import { RouteDisplayEssentials } from '../RouteDisplayModal'
 
 // Selector Styles
-
-// Old selector style, for use if gas estimate is needed
-// const SelectorContainer = styled(Box)`
-//   margin: 6px 0;
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   background: ${({ theme }) => theme.colors.input};
-//   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-//   border-radius: ${({ theme }) => theme.radii.default};
-// `
-
-// const BalanceText = styled.p`
-//   font-size: 12px;
-//   padding: 10px 14px;
-//   color: ${({ theme }) => theme.colors.textSubtle};
-// `
 
 const StyledLogo = styled(TokenLogo)<{ size: string }>`
   border-radius: 50%;
@@ -145,9 +122,6 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   const { isOpen, setIsOpen, onDismiss } = useModalV2()
   const { address: account } = useAccount()
 
-  // const [slippage] = useUserSlippagePercent()
-  // const swapRouterAddress = getUniversalRouterAddress(ChainId.ZKSYNC)
-
   const [feeToken, setFeeToken] = useAtom(feeTokenAtom)
 
   const [tokenList, setTokenList] = useState<PaymasterToken[]>([])
@@ -170,29 +144,10 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   )
 
   const fetchTokenList = useCallback(async () => {
-    let tempTokenList: PaymasterToken[] = []
-
-    // if (account && trade) {
-    //   const rawTxData = PancakeSwapUniversalRouter.swapERC20CallParameters(
-    //     { ...trade, gasEstimate: (trade as any).gasUseEstimate } as any,
-    //     {
-    //       slippageTolerance: slippage,
-    //     },
-    //   )
-
-    //   tempTokenList = await getPaymasterTokenlist({
-    //     data: rawTxData.calldata,
-    //     value: rawTxData.value,
-    //     from: account,
-    //     to: swapRouterAddress,
-    //   })
-    // } else {
-    // In case of fetching when user account is not connected or trade is not defined yet
-    tempTokenList = await getPaymasterTokenlist()
-    // }
+    const tempTokenList = await getPaymasterTokenlist()
 
     // Set Native ETH as the first token, followed by the supported ERC20 tokens
-    setTokenList([DEFAULT_PAYMASTER_TOKEN, ...tempTokenList.toSorted(tokenListSortComparator)])
+    setTokenList([DEFAULT_PAYMASTER_TOKEN, ...tempTokenList])
   }, [getPaymasterTokenlist])
 
   /**
@@ -217,25 +172,6 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
 
   // Item Key for FixedSizeList
   const itemKey = useCallback((index: number, data: any) => `${data[index]}-${index}`, [])
-
-  // const { targetRef, tooltip, tooltipVisible } = useTooltip(
-  //   <>{t('Insufficient %symbol% balance for gas fee', { symbol: feeToken.symbol })}</>,
-  //   {
-  //     placement: 'right',
-  //   },
-  // )
-
-  // const isInsufficientBalanceForGas = useMemo(() => {
-  //   if (!feeToken || !feeToken.estimatedFinalFeeTokenAmount || !feeToken.address || !account) return false
-
-  //   const balance = feeToken.isNative ? nativeBalances[account] : getTokenBalance(feeToken.address)
-
-  //   // If no balance, wallet is not connected or we are unable to fetch balances
-  //   if (!balance) return false
-
-  //   // TODO: Check formatting here, like if decimals are a problem
-  //   return balance.lessThan(BigInt(feeToken.estimatedFinalFeeTokenAmount))
-  // }, [feeToken, account, nativeBalances, getTokenBalance])
 
   const Row = ({ data, index, style }) => {
     const item = data[index] as PaymasterToken
@@ -308,7 +244,7 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
             <StyledLogo
               size="20px"
               srcs={[feeToken && feeToken.logoURI ? feeToken.logoURI : ``]}
-              alt={`${feeToken ? feeToken?.symbol : 'ETH'}`}
+              alt={`${feeToken && feeToken?.symbol}`}
               width="20px"
             />
             <p style={{ position: 'absolute', bottom: '-2px', right: '-6px', fontSize: '14px' }}>⛽️</p>
@@ -320,36 +256,11 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
                   feeToken.symbol.length - 5,
                   feeToken.symbol.length,
                 )}`
-              : feeToken?.symbol) || 'ETH'}
+              : feeToken?.symbol) || ''}
           </Text>
           <ArrowDropDownIcon marginLeft={1} />
         </Flex>
       </GasTokenSelectButton>
-
-      {/* {account && (
-          <BalanceText>
-            {getTokenBalance(feeToken.address) || (account && nativeBalances[account]) ? (
-              <Flex alignItems="center">
-                <span style={{ marginTop: '2px' }}>
-                  {t('Balance: %balance%', {
-                    balance:
-                      feeToken?.isNative && account
-                        ? formatAmount(nativeBalances[account])
-                        : formatAmount(getTokenBalance(feeToken.address)),
-                  })}
-                </span>
-                {isInsufficientBalanceForGas && (
-                  <div ref={targetRef}>
-                    <WarningIcon width={16} marginLeft={1} color="#ED4B9E" />
-                  </div>
-                )}
-              </Flex>
-            ) : (
-              <CircleLoader />
-            )}
-            {tooltipVisible && tooltip}
-          </BalanceText>
-        )} */}
 
       <ModalV2 onDismiss={onDismiss} isOpen={isOpen} closeOnOverlayClick>
         <StyledModalContainer>
