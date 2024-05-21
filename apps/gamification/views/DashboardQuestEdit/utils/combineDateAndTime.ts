@@ -10,7 +10,7 @@ export const combineDateAndTime = (date: Date | null, time: Date | null) => {
   const dateStr = dateDayJs.format('YYYY-MM-DD')
   const timeStr = timeDayJs.format('HH:mm:ss')
 
-  return dayjs(`${dateStr}T${timeStr}`).unix()
+  return dayjs(`${dateStr}T${timeStr}`).unix() * 1000 // To milliseconds
 }
 
 export const convertDateAndTime = (timestamp: number) => {
