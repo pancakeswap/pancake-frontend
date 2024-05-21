@@ -72,7 +72,7 @@ export default function useSendSwapTransaction(
   const recipientAddress = recipient === null ? account : recipient
 
   // Paymaster for zkSync
-  const { isPaymasterAvailable, isPaymasterTokenActive, executePaymasterTransaction } = usePaymaster()
+  const { isPaymasterAvailable, isPaymasterTokenActive, sendPaymasterTransaction } = usePaymaster()
 
   return useMemo(() => {
     if (!trade || !sendTransactionAsync || !account || !chainId || !publicClient) {
@@ -153,7 +153,7 @@ export default function useSendSwapTransaction(
         let sendTxResult: Promise<SendTransactionReturnType> | undefined
 
         if (isPaymasterAvailable && isPaymasterTokenActive) {
-          sendTxResult = executePaymasterTransaction(call, account)
+          sendTxResult = sendPaymasterTransaction(call, account)
         } else {
           sendTxResult = sendTransactionAsync({
             account,
@@ -268,7 +268,7 @@ export default function useSendSwapTransaction(
     recipient,
     addTransaction,
     type,
-    executePaymasterTransaction,
+    sendPaymasterTransaction,
     isPaymasterAvailable,
     isPaymasterTokenActive,
   ])

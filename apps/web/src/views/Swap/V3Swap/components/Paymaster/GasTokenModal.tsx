@@ -45,21 +45,23 @@ import { TradeEssentialForPriceBreakdown } from '../../utils/exchange'
 import { RouteDisplayEssentials } from '../RouteDisplayModal'
 
 // Selector Styles
-const SelectorContainer = styled(Box)`
-  margin: 6px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: ${({ theme }) => theme.colors.input};
-  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-  border-radius: ${({ theme }) => theme.radii.default};
-`
 
-const BalanceText = styled.p`
-  font-size: 12px;
-  padding: 10px 14px;
-  color: ${({ theme }) => theme.colors.textSubtle};
-`
+// Old selector style, for use if gas estimate is needed
+// const SelectorContainer = styled(Box)`
+//   margin: 6px 0;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   background: ${({ theme }) => theme.colors.input};
+//   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+//   border-radius: ${({ theme }) => theme.radii.default};
+// `
+
+// const BalanceText = styled.p`
+//   font-size: 12px;
+//   padding: 10px 14px;
+//   color: ${({ theme }) => theme.colors.textSubtle};
+// `
 
 const StyledLogo = styled(TokenLogo)<{ size: string }>`
   border-radius: 50%;
@@ -67,7 +69,7 @@ const StyledLogo = styled(TokenLogo)<{ size: string }>`
   height: ${({ size }) => size};
 `
 const GasTokenSelectButton = styled(Button).attrs({ variant: 'text', scale: 'xs' })`
-  padding: 20px 10px;
+  padding: 18px 0 18px 6px;
 `
 
 // Modal Styles
@@ -143,8 +145,8 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   const { isOpen, setIsOpen, onDismiss } = useModalV2()
   const { address: account } = useAccount()
 
-  const [slippage] = useUserSlippagePercent()
-  const swapRouterAddress = getUniversalRouterAddress(ChainId.ZKSYNC)
+  // const [slippage] = useUserSlippagePercent()
+  // const swapRouterAddress = getUniversalRouterAddress(ChainId.ZKSYNC)
 
   const [feeToken, setFeeToken] = useAtom(feeTokenAtom)
 
@@ -170,24 +172,24 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   const fetchTokenList = useCallback(async () => {
     let tempTokenList: PaymasterToken[] = []
 
-    if (account && trade) {
-      const rawTxData = PancakeSwapUniversalRouter.swapERC20CallParameters(
-        { ...trade, gasEstimate: (trade as any).gasUseEstimate } as any,
-        {
-          slippageTolerance: slippage,
-        },
-      )
+    // if (account && trade) {
+    //   const rawTxData = PancakeSwapUniversalRouter.swapERC20CallParameters(
+    //     { ...trade, gasEstimate: (trade as any).gasUseEstimate } as any,
+    //     {
+    //       slippageTolerance: slippage,
+    //     },
+    //   )
 
-      tempTokenList = await getPaymasterTokenlist({
-        data: rawTxData.calldata,
-        value: rawTxData.value,
-        from: account,
-        to: swapRouterAddress,
-      })
-    } else {
-      // In case of fetching when user account is not connected or trade is not defined yet
-      tempTokenList = await getPaymasterTokenlist()
-    }
+    //   tempTokenList = await getPaymasterTokenlist({
+    //     data: rawTxData.calldata,
+    //     value: rawTxData.value,
+    //     from: account,
+    //     to: swapRouterAddress,
+    //   })
+    // } else {
+    // In case of fetching when user account is not connected or trade is not defined yet
+    tempTokenList = await getPaymasterTokenlist()
+    // }
 
     // Set Native ETH as the first token, followed by the supported ERC20 tokens
     setTokenList([DEFAULT_PAYMASTER_TOKEN, ...tempTokenList.toSorted(tokenListSortComparator)])
@@ -216,24 +218,24 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   // Item Key for FixedSizeList
   const itemKey = useCallback((index: number, data: any) => `${data[index]}-${index}`, [])
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <>{t('Insufficient %symbol% balance for gas fee', { symbol: feeToken.symbol })}</>,
-    {
-      placement: 'right',
-    },
-  )
+  // const { targetRef, tooltip, tooltipVisible } = useTooltip(
+  //   <>{t('Insufficient %symbol% balance for gas fee', { symbol: feeToken.symbol })}</>,
+  //   {
+  //     placement: 'right',
+  //   },
+  // )
 
-  const isInsufficientBalanceForGas = useMemo(() => {
-    if (!feeToken || !feeToken.estimatedFinalFeeTokenAmount || !feeToken.address || !account) return false
+  // const isInsufficientBalanceForGas = useMemo(() => {
+  //   if (!feeToken || !feeToken.estimatedFinalFeeTokenAmount || !feeToken.address || !account) return false
 
-    const balance = feeToken.isNative ? nativeBalances[account] : getTokenBalance(feeToken.address)
+  //   const balance = feeToken.isNative ? nativeBalances[account] : getTokenBalance(feeToken.address)
 
-    // If no balance, wallet is not connected or we are unable to fetch balances
-    if (!balance) return false
+  //   // If no balance, wallet is not connected or we are unable to fetch balances
+  //   if (!balance) return false
 
-    // TODO: Check formatting here, like if decimals are a problem
-    return balance.lessThan(BigInt(feeToken.estimatedFinalFeeTokenAmount))
-  }, [feeToken, account, nativeBalances, getTokenBalance])
+  //   // TODO: Check formatting here, like if decimals are a problem
+  //   return balance.lessThan(BigInt(feeToken.estimatedFinalFeeTokenAmount))
+  // }, [feeToken, account, nativeBalances, getTokenBalance])
 
   const Row = ({ data, index, style }) => {
     const item = data[index] as PaymasterToken
@@ -295,37 +297,36 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
 
   return (
     <>
-      <SelectorContainer>
-        <GasTokenSelectButton
-          className="open-gas-token-select-button"
-          data-dd-action-name="Select token for gas"
-          selected={!!feeToken}
-          onClick={onSelectorButtonClick}
-        >
-          <Flex alignItems="center">
-            <div style={{ position: 'relative' }}>
-              <StyledLogo
-                size="20px"
-                srcs={[feeToken && feeToken.logoURI ? feeToken.logoURI : ``]}
-                alt={`${feeToken ? feeToken?.symbol : 'ETH'}`}
-                width="20px"
-              />
-              <p style={{ position: 'absolute', bottom: '-2px', right: '-6px', fontSize: '14px' }}>⛽️</p>
-            </div>
+      <GasTokenSelectButton
+        className="open-gas-token-select-button"
+        data-dd-action-name="Select token for gas"
+        selected={!!feeToken}
+        onClick={onSelectorButtonClick}
+      >
+        <Flex alignItems="center">
+          <div style={{ position: 'relative' }}>
+            <StyledLogo
+              size="20px"
+              srcs={[feeToken && feeToken.logoURI ? feeToken.logoURI : ``]}
+              alt={`${feeToken ? feeToken?.symbol : 'ETH'}`}
+              width="20px"
+            />
+            <p style={{ position: 'absolute', bottom: '-2px', right: '-6px', fontSize: '14px' }}>⛽️</p>
+          </div>
 
-            <Text marginLeft={2} fontSize={14} bold>
-              {(feeToken && feeToken.symbol && feeToken.symbol.length > 10
-                ? `${feeToken.symbol.slice(0, 4)}...${feeToken.symbol.slice(
-                    feeToken.symbol.length - 5,
-                    feeToken.symbol.length,
-                  )}`
-                : feeToken?.symbol) || 'ETH'}
-            </Text>
-            <ArrowDropDownIcon marginLeft={1} />
-          </Flex>
-        </GasTokenSelectButton>
+          <Text marginLeft={2} fontSize={14} bold>
+            {(feeToken && feeToken.symbol && feeToken.symbol.length > 10
+              ? `${feeToken.symbol.slice(0, 4)}...${feeToken.symbol.slice(
+                  feeToken.symbol.length - 5,
+                  feeToken.symbol.length,
+                )}`
+              : feeToken?.symbol) || 'ETH'}
+          </Text>
+          <ArrowDropDownIcon marginLeft={1} />
+        </Flex>
+      </GasTokenSelectButton>
 
-        {account && (
+      {/* {account && (
           <BalanceText>
             {getTokenBalance(feeToken.address) || (account && nativeBalances[account]) ? (
               <Flex alignItems="center">
@@ -348,8 +349,7 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
             )}
             {tooltipVisible && tooltip}
           </BalanceText>
-        )}
-      </SelectorContainer>
+        )} */}
 
       <ModalV2 onDismiss={onDismiss} isOpen={isOpen} closeOnOverlayClick>
         <StyledModalContainer>

@@ -88,7 +88,7 @@ export const usePaymaster = () => {
     [],
   )
 
-  async function executePaymasterTransaction(
+  async function sendPaymasterTransaction(
     call: SwapCall & {
       gas?: string | bigint | undefined
     },
@@ -166,7 +166,7 @@ export const usePaymaster = () => {
     feeToken,
     isPaymasterAvailable,
     isPaymasterTokenActive,
-    executePaymasterTransaction,
+    sendPaymasterTransaction,
     getPaymasterTokenlist,
   }
 }

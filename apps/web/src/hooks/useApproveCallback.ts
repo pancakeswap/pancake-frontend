@@ -42,7 +42,7 @@ export function useApproveCallback(
   const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
   const { allowance: currentAllowance, refetch } = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
-  const { isPaymasterAvailable, isPaymasterTokenActive, executePaymasterTransaction } = usePaymaster()
+  const { isPaymasterAvailable, isPaymasterTokenActive, sendPaymasterTransaction } = usePaymaster()
 
   const [pending, setPending] = useState<boolean>(pendingApproval)
   const [isPendingError, setIsPendingError] = useState<boolean>(false)
@@ -160,7 +160,7 @@ export function useApproveCallback(
           calldata,
         }
 
-        sendTxResult = executePaymasterTransaction(call, account as Address)
+        sendTxResult = sendPaymasterTransaction(call, account as Address)
       } else {
         sendTxResult = callWithGasPrice(tokenContract, 'approve' as const, [spender as Address, finalAmount], {
           gas: calculateGasMargin(estimatedGas),
@@ -209,7 +209,7 @@ export function useApproveCallback(
       account,
       isPaymasterAvailable,
       isPaymasterTokenActive,
-      executePaymasterTransaction,
+      sendPaymasterTransaction,
     ],
   )
 

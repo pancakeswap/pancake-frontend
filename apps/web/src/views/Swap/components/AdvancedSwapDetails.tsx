@@ -192,7 +192,7 @@ export const TradeSummary = memo(function TradeSummary({
           <RowBetween style={{ padding: '4px 0 0 0' }}>
             <RowFixed>
               <Text fontSize="14px" color="textSubtle">
-                {t('Gas fee')}
+                {t('Gas Token')}
               </Text>
               <QuestionHelper
                 text={
@@ -213,18 +213,9 @@ export const TradeSummary = memo(function TradeSummary({
                 placement="top"
               />
             </RowFixed>
-            <Text fontSize="14px">
-              ~
-              {formatNumber(
-                +formatUnits(BigInt(feeToken?.estimatedFinalFeeTokenAmount ?? 0), feeToken?.decimals ?? 18),
-                2,
-                7,
-              )}
-              &nbsp;
-              {isPaymasterTokenActive ? feeToken?.symbol : 'ETH'}
-            </Text>
+
+            {gasTokenSelector}
           </RowBetween>
-          {gasTokenSelector}
         </>
       )}
     </AutoColumn>
