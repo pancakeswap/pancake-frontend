@@ -28,6 +28,7 @@ import { useAtom } from 'jotai'
 import { useNativeBalances, useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { Address } from 'viem'
 import Image from 'next/image'
 import { usePaymaster } from './hooks/usePaymaster'
@@ -301,7 +302,7 @@ function GasTokenModal() {
               <Flex justifyContent="center" alignItems="center">
                 <span>{t('Powered by Zyfi Paymaster')}</span>
                 <Image
-                  src="/images/swap/zyfi-logo.png"
+                  src={`${ASSET_CDN}/web/paymasters/zyfi-logo.png`}
                   alt="Zyfi Logo"
                   width={18}
                   height={18}
