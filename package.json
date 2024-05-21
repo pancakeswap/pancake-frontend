@@ -80,6 +80,9 @@
     "ws": "^8.13.0",
     "zod": "^3.22.3"
   },
+  "resolutions": {
+    "@coinbase/wallet-sdk": "npm:@coinbase/wallet-sdk@4.0.0-beta.12"
+  },
   "pnpm": {
     "patchedDependencies": {
       "@ledgerhq/connect-kit-loader@1.1.2": "patches/@ledgerhq__connect-kit-loader@1.1.2.patch"
