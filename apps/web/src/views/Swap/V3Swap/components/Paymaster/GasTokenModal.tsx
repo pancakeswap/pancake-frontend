@@ -107,6 +107,7 @@ const Badge = styled.span`
   color: ${({ theme }) => theme.colors.invertedContrast};
   background-color: ${({ theme }) => theme.colors.success};
 `
+
 type Trade = TradeEssentialForPriceBreakdown &
   Pick<SmartRouterTrade<TradeType>, 'tradeType'> & {
     routes: RouteDisplayEssentials[]
@@ -234,10 +235,9 @@ function GasTokenModal({ trade }: GasTokenModalProps) {
   return (
     <>
       <GasTokenSelectButton
-        className="open-gas-token-select-button"
-        data-dd-action-name="Select token for gas"
         selected={!!feeToken}
         onClick={onSelectorButtonClick}
+        data-dd-action-name="Zyfi Gas Token Select Button"
       >
         <Flex alignItems="center">
           <div style={{ position: 'relative' }}>

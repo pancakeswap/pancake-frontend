@@ -30,9 +30,7 @@ export const usePaymaster = () => {
    * Check if the Paymaster for zkSync is available
    */
   const isPaymasterAvailable = useMemo(() => {
-    if (chain && chain.chainId === zkSync.id) return true
-
-    return false
+    return chain && chain.chainId === zkSync.id
   }, [chain])
 
   /**
@@ -65,7 +63,6 @@ export const usePaymaster = () => {
         if (response.ok) {
           const tokenList: ZyfiResponse[] = await response.json()
 
-          // Type is a combination of (PaymasterToken OR ERC20Token) AND ZyfiResponse
           const tempTokenList: PaymasterToken[] = []
 
           // The returned token list from Zyfi is in the same order as the paymasterTokens
