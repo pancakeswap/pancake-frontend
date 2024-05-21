@@ -24,7 +24,8 @@ import useTokenBalance, { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
-import { Address, useBalance } from 'wagmi'
+import { Address } from 'viem'
+import { useBalance } from 'wagmi'
 
 const COLORS = {
   ETH: '#627EEA',
@@ -43,7 +44,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
   const { domainName } = useDomainNameForAddress(account ?? '')
   const isBSC = chainId === ChainId.BSC
   const bnbBalance = useBalance({ address: account ?? undefined, chainId: ChainId.BSC })
-  const nativeBalance = useBalance({ address: account ?? undefined, enabled: !isBSC })
+  const nativeBalance = useBalance({ address: account ?? undefined, query: { enabled: !isBSC } })
   const native = useNativeCurrency()
   const wNativeToken = !isBSC ? WNATIVE[chainId as ChainId] : null
   const wBNBToken = WNATIVE[ChainId.BSC]

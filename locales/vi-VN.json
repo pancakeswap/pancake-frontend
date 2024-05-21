@@ -3327,10 +3327,6 @@
   "Placing Order Disabled": "Đặt lệnh đã bị tắt",
   "Orders missing? Check out:": "Thiếu lệnh? Hãy xem:",
   "Limit V2 (deprecated)": "Giới hạn V2 (lỗi thời)",
-  "Join the MASA Trading Competition": "Tham gia Cuộc thi giao dịch MASA",
-  "Win 700,000 $MASA": "Thắng 700.000 $MASA",
-  "Trade to win 700,000 $MASA": "Giao dịch để thắng 700.000 $MASA",
-  "to Win 700,000 $MASA": "để thắng 700.000 $MASA",
   "Vote": "Phiếu",
   "sort by": "sắp xếp theo",
   "Unselect All": "Bỏ chọn tất cả",
@@ -3352,5 +3348,10 @@
   "View Migrated Position": "Xem vị thế được chuyển",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Gia hạn vị thế veCAKE của bạn để tiếp tục tận hưởng lợi ích của lợi nhuận CAKE hằng tuần, chia sẻ lợi nhuận, bỏ phiếu qua gauge, tăng cường lợi nhuận canh tác, tham gia các đợt IFO, v.v.!",
   "Exact number: %numberWithFullDigits%": "Exact number: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Vui lòng lưu ý lượng Pearls đã kiếm được từ kho lưu trữ này sẽ chỉ xuất hiện trong số dư của bạn sau một thời gian."
+  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Vui lòng lưu ý lượng Pearls đã kiếm được từ kho lưu trữ này sẽ chỉ xuất hiện trong số dư của bạn sau một thời gian.",
+  "Fee saved": "Fee saved",
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees",
+  "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
 }

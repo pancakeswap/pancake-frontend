@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, LightBulbIcon, Link, Text, useTooltip } from '@pancakeswap/uikit'
+import { Box, Flex, LightBulbIcon, StyledLink, Text, useTooltip } from '@pancakeswap/uikit'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { TransactionDetails } from 'state/transactions/reducer'
 import { styled } from 'styled-components'
@@ -24,7 +24,7 @@ const ListStyle = styled.div`
   }
 `
 
-const LinkStyle = styled(Link)`
+const LinkStyle = styled(StyledLink)`
   display: inline-block;
   margin: 0 4px;
   color: ${({ theme }) => theme.colors.text};
@@ -71,18 +71,18 @@ const FarmResult: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedDa
       <ListStyle>{t('You have received 0.0005 BNB as a first-time BNB Smart Chain user')}</ListStyle>
       <ListStyle>
         {t('You can swap more BNB on')}
-        <NextLink href="/swap" passHref>
-          <LinkStyle href="replace">{t('Swap.')}</LinkStyle>
+        <NextLink href="/swap">
+          <LinkStyle>{t('Swap.')}</LinkStyle>
         </NextLink>
       </ListStyle>
       <ListStyle>
         {t('Explore more features like')}
-        <NextLink href="/pools?chain=bsc" passHref>
-          <LinkStyle href="replace">{t('Pools')}</LinkStyle>
+        <NextLink href="/pools?chain=bsc">
+          <LinkStyle>{t('Pools')}</LinkStyle>
         </NextLink>
         {t('and')}
-        <NextLink href="/prediction?chain=bsc" passHref>
-          <LinkStyle href="replace">{t('Win')}</LinkStyle>
+        <NextLink href="/prediction?chain=bsc">
+          <LinkStyle>{t('Win')}</LinkStyle>
         </NextLink>
         {t('with your CAKE earned.')}
       </ListStyle>

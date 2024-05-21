@@ -3327,10 +3327,6 @@
   "Placing Order Disabled": "Pembuatan Order Dinonaktifkan",
   "Orders missing? Check out:": "Order tidak ada? Periksa:",
   "Limit V2 (deprecated)": "Limit V2 (usang)",
-  "Join the MASA Trading Competition": "Ikuti Kompetisi Dagang MASA",
-  "Win 700,000 $MASA": "Raih 700.000 $MASA",
-  "Trade to win 700,000 $MASA": "Berdaganglah untuk meraih 700.000 $MASA",
-  "to Win 700,000 $MASA": "untuk Meraih 700.000 $MASA",
   "Vote": "Pilih",
   "sort by": "pilah menurut",
   "Unselect All": "Batalkan Pilih Semua",
@@ -3352,5 +3348,10 @@
   "View Migrated Position": "Lihat Posisi Migrasi",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Perbarui posisi veCAKE Anda agar dapat terus menikmati manfaat hasil CAKE mingguan, pembagian hasil, pemilihan gauge, peningkatan hasil farm, berpartisipasi dalam IFO, dan banyak lagi!",
   "Exact number: %numberWithFullDigits%": "Angka persis: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Harap ketahui bahwa Pearls yang dihasilkan dari brankas ini hanya akan muncul di saldo Anda nanti."
+  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Harap ketahui bahwa Pearls yang dihasilkan dari brankas ini hanya akan muncul di saldo Anda nanti.",
+  "Fee saved": "Biaya yang dihemat",
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Biaya yang dihemat di PancakeSwap dibanding berbagai DEX besar yang membebankan biaya antarmuka",
+  "Up to $8M in interface fees paid refunded!": "Hingga $8 juta pembayaran biaya antarmuka telah dikembalikan!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Dapatkan hingga $8 juta dolar AS pembayaran biaya antarmuka dikembalikan di PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Cocokkan volume Anda, dan kami akan mengembalikan SEMUA biaya antarmuka yang telah Anda bayarkan"
 }

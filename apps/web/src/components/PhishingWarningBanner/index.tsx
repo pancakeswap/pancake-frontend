@@ -1,7 +1,6 @@
 import { CloseIcon, Flex, IconButton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import 'swiper/css'
@@ -10,7 +9,6 @@ import 'swiper/css/effect-fade'
 import { Countdown } from './Countdown'
 import { Step1 } from './Step1'
 import { Step2 } from './Step2'
-import { Step3 } from './Step3'
 
 const Container = styled(Flex)`
   overflow: hidden;
@@ -94,9 +92,8 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const timer = useRef<number | null>(null)
   const [showAnimation, setShowAnimation] = useState(true)
   const [remainingTimer, setRemainingTimer] = useState(DISPLAY_TIMER)
-  const { pathname } = useRouter()
 
-  const configList = useMemo(() => [<Step1 />, <Step2 />].concat(pathname === '/swap' ? [<Step3 />] : []), [pathname])
+  const configList = useMemo(() => [<Step1 />, <Step2 />], [])
   const isCampaignStep = step === 2
 
   const nextItem = useMemo(() => (step < configList.length - 1 ? step + 1 : 0), [step, configList])

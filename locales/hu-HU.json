@@ -3327,10 +3327,6 @@
   "Placing Order Disabled": "Rendelés leadása letiltva",
   "Orders missing? Check out:": "Hiányzó megrendelések? Nézd meg:",
   "Limit V2 (deprecated)": "V2 limit (elévült)",
-  "Join the MASA Trading Competition": "Csatlakozz a MASA kereskedési versenyhez",
-  "Win 700,000 $MASA": "Nyerj 700,000 $MASA öszeget",
-  "Trade to win 700,000 $MASA": "Kereskedj a 700,000 $MASA nyereményért",
-  "to Win 700,000 $MASA": "700,000 $MASA nyereményért",
   "Vote": "Szavazz",
   "sort by": "rendezés",
   "Unselect All": "Összes kijelölés megszüntetése",
@@ -3352,5 +3348,10 @@
   "View Migrated Position": "Az áttelepített pozíció megtekintése",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Újítsa meg veCAKE pozícióját, hogy továbbra is élvezhesse a heti CAKE hozam, a bevételek megosztása, a mércék szavazása, a gazdaságok hozamának növelése, az IFO-kon való részvétel és még sok más előnyeit!",
   "Exact number: %numberWithFullDigits%": "Exact number: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Kérjük, vegye figyelembe, hogy a értéktárból megszerzett gyöngyök csak később jelennek meg az egyenlegén."
+  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Kérjük, vegye figyelembe, hogy a értéktárból megszerzett gyöngyök csak később jelennek meg az egyenlegén.",
+  "Fee saved": "Fee saved",
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees",
+  "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
 }

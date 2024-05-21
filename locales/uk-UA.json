@@ -3327,10 +3327,6 @@
   "Placing Order Disabled": "Можливість розміщення ордерів вимкнено",
   "Orders missing? Check out:": "Немає ордерів? Подивіться тут:",
   "Limit V2 (deprecated)": "Обмеження V2 (застаріла функція)",
-  "Join the MASA Trading Competition": "Приєднуйтесь до змагання з торгівлі MASA",
-  "Win 700,000 $MASA": "Виграйте 700 000 $MASA",
-  "Trade to win 700,000 $MASA": "Торгуйте, щоб виграти 700 000 $MASA",
-  "to Win 700,000 $MASA": "і вигравайте 700 000 $MASA",
   "Vote": "Голос",
   "sort by": "сортування",
   "Unselect All": "Скасувати вибір",
@@ -3352,5 +3348,10 @@
   "View Migrated Position": "View Migrated Position",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Поновіть свою позицію veCAKE, щоб і надалі користуватися перевагами щотижневого виторгу CAKE, часткою доходу, голосуванням за Gauge, бустером виторгу від фармінгу, участю в IFO та багатьма іншими перевагами!",
   "Exact number: %numberWithFullDigits%": "Exact number: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Please note that the Pearls earned from this vault will only appear in your balance at a later time."
+  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Please note that the Pearls earned from this vault will only appear in your balance at a later time.",
+  "Fee saved": "Fee saved",
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees",
+  "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
 }

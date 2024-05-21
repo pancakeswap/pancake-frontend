@@ -3327,10 +3327,6 @@
   "Placing Order Disabled": "Wyłączono składanie zleceń",
   "Orders missing? Check out:": "Brakuje zleceń? Sprawdź:",
   "Limit V2 (deprecated)": "Ogranicz V2 (przestarzałe)",
-  "Join the MASA Trading Competition": "dołącz do konkursu tradingowego MASA",
-  "Win 700,000 $MASA": "Wygraj 700 000 $MASA",
-  "Trade to win 700,000 $MASA": "Handluj, aby wygrać 700 000 $MASA",
-  "to Win 700,000 $MASA": "aby wygrać 700 000 $MASA",
   "Vote": "Głosuj",
   "sort by": "sortuj wg",
   "Unselect All": "Usuń zaznaczenie wszystkich",
@@ -3352,5 +3348,10 @@
   "View Migrated Position": "Wyświetl migrowaną pozycję",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Odnów swoją pozycję veCAKE, aby nadal czerpać korzyści z cotygodniowych przychodów z CAKE, udziału w przychodach, głosowania na wskaźniki, zwiększania przychodów z farmienia, udziału w IFO itd.!",
   "Exact number: %numberWithFullDigits%": "Dokładna liczba: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Pamiętaj, że zarobione Pearls z tego skarbca pojawią się na Twoim saldzie dopiero później."
+  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Pamiętaj, że zarobione Pearls z tego skarbca pojawią się na Twoim saldzie dopiero później.",
+  "Fee saved": "Zaoszczędzone prowizje",
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Prowizje zaoszczędzone na PancakeSwap w porównaniu do głównych platform DEX pobierających prowizje za interfejs",
+  "Up to $8M in interface fees paid refunded!": "Zwrot do 8 mln USD zapłaconych prowizji za interfejs!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Uzyskaj zwrot do 8 mln USD zapłaconych prowizji za interfejs na PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Dopasuj swój wolumen, a zwrócimy Ci WSZYSTKIE zapłacone prowizje za interfejs"
 }

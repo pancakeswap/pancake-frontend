@@ -3330,10 +3330,6 @@
   "Placing Order Disabled": "Placing Order Disabled",
   "Orders missing? Check out:": "Orders missing? Check out:",
   "Limit V2 (deprecated)": "Limit V2 (deprecated)",
-  "Join the MASA Trading Competition": "Join the MASA Trading Competition",
-  "Win 700,000 $MASA": "Win 700,000 $MASA",
-  "Trade to win 700,000 $MASA": "Trade to win 700,000 $MASA",
-  "to Win 700,000 $MASA": "to Win 700,000 $MASA",
   "Vote": "Vote",
   "sort by": "sort by",
   "Unselect All": "Unselect All",
@@ -3359,5 +3355,8 @@
   "Fee saved": "Fee saved",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees",
   "Gauge Not Found": "Gauge Not Found",
-  "Gauge can not be found using the hash passed via URL.": "Gauge can not be found using the hash passed via URL."
+  "Gauge can not be found using the hash passed via URL.": "Gauge can not be found using the hash passed via URL.",
+  "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
 }

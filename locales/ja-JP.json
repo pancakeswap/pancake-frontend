@@ -3327,10 +3327,6 @@
   "Placing Order Disabled": "注文の送信が無効です",
   "Orders missing? Check out:": "注文が見つかりませんか？次をご確認ください：",
   "Limit V2 (deprecated)": "Limit V2（非推奨）",
-  "Join the MASA Trading Competition": "MASAトレーディングコンテストに参加して",
-  "Win 700,000 $MASA": "700,000 $MASAを獲得しましょう",
-  "Trade to win 700,000 $MASA": "トレードして700,000 $MASAを獲得しましょう",
-  "to Win 700,000 $MASA": "700,000 $MASAを獲得しましょう",
   "Vote": "投票",
   "sort by": "並べ替え:",
   "Unselect All": "すべて選択解除",
@@ -3352,5 +3348,10 @@
   "View Migrated Position": "移行されたポジションを表示",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "毎週得られるCAKE利回り、収益分配、ゲージ投票、ファーム利回り強化、IFOへの参加などを利用し続けるには、veCAKEポジションを更新しましょう！",
   "Exact number: %numberWithFullDigits%": "正確な数値: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "このVaultから獲得したPearlは、残高に表示されるまで時間がかかるのでご注意ください。"
+  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "このVaultから獲得したPearlは、残高に表示されるまで時間がかかるのでご注意ください。",
+  "Fee saved": "Fee saved",
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees",
+  "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
 }

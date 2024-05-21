@@ -2,9 +2,9 @@ import { useCountdown } from '@pancakeswap/hooks'
 import shuffle from 'lodash/shuffle'
 import { ReactElement, useMemo } from 'react'
 import CompetitionBanner from '../CompetitionBanner'
+import { FeeRefundBanner } from '../FeeRefundBanner'
 import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import GameBanner from '../GameBanner'
-import { MasaTCBanner } from '../MasaTCBanner'
 import { MultiChainBanner } from '../MultichainBanner'
 import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
 import NewIFOBanner from '../NewIFOBanner'
@@ -51,11 +51,11 @@ export const useMultipleBannerConfig = () => {
       { shouldRender: isRenderIFOBanner || Boolean(countdown), banner: <NewIFOBanner /> },
       {
         shouldRender: true,
-        banner: <MultiChainBanner />,
+        banner: <FeeRefundBanner />,
       },
       {
         shouldRender: true,
-        banner: <MasaTCBanner />,
+        banner: <MultiChainBanner />,
       },
       {
         shouldRender: true,

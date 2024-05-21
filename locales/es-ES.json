@@ -3327,10 +3327,6 @@
   "Placing Order Disabled": "Desactivar la realización de pedidos",
   "Orders missing? Check out:": "¿Faltan pedidos? Verifica:",
   "Limit V2 (deprecated)": "Límite V2 (obsoleto)",
-  "Join the MASA Trading Competition": "Únete al Concurso de Operaciones MASA",
-  "Win 700,000 $MASA": "Gana 700,000 $MASA",
-  "Trade to win 700,000 $MASA": "Opera para ganar 700,000 $MASA",
-  "to Win 700,000 $MASA": "para ganar 700,000 $MASA",
   "Vote": "Votar",
   "sort by": "ordenar por",
   "Unselect All": "Desmarcar todo",
@@ -3352,5 +3348,10 @@
   "View Migrated Position": "Ver la posición migrada",
   "Renew your veCAKE position to continue enjoying the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!": "Renueva tu posición de veCAKE para seguir disfrutando de las ventajas del rendimiento semanal de CAKE, los ingresos de las acciones, gauges de votación, el aumento del rendimiento de las granjas, la participación en los IFOs, ¡y mucho más!",
   "Exact number: %numberWithFullDigits%": "Exact number: %numberWithFullDigits%",
-  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Ten en cuenta que las Pearls obtenidas de esta bóveda sólo aparecerán en tu saldo más adelante."
+  "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Ten en cuenta que las Pearls obtenidas de esta bóveda sólo aparecerán en tu saldo más adelante.",
+  "Fee saved": "Fee saved",
+  "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees",
+  "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
+  "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
 }

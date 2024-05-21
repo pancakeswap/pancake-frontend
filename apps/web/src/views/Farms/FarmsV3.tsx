@@ -264,7 +264,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         farmsLP,
         (farm) =>
           farm.pid !== 0 &&
-          (farm.multiplier !== '0X' || (farm.version === 2 && farm?.bCakeWrapperAddress)) &&
+          (farm.multiplier !== '0X' ||
+            Boolean(farm.version === 2 && farm?.bCakeWrapperAddress && farm?.bCakePublicData?.isRewardInRange)) &&
           (farm.version === 3 ? !v3PoolLength || v3PoolLength >= farm.pid : !v2PoolLength || v2PoolLength > farm.pid),
       ),
     [farmsLP, v2PoolLength, v3PoolLength],
@@ -329,7 +330,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       const filterFarmsWithTypes = chosenFs.filter(
         (farm) =>
           (v3FarmOnly && farm.version === 3) ||
-          (v2FarmOnly && farm.version === 2) ||
+          (v2FarmOnly && farm.version === 2 && !farm.isStable) ||
           (boostedOnly && farm.boosted && farm.version === 3) ||
           (stableSwapOnly && farm.version === 2 && farm.isStable),
       )
