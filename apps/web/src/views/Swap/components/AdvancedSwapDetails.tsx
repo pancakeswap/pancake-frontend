@@ -3,7 +3,7 @@ import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
 import { AutoColumn, Flex, Link, Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
 import { formatAmount, formatFraction } from '@pancakeswap/utils/formatFractions'
-import React, { memo, useState } from 'react'
+import { memo, useState } from 'react'
 
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { RowBetween, RowFixed } from 'components/Layout/Row'

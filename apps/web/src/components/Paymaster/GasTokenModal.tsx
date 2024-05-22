@@ -167,8 +167,9 @@ function GasTokenModal() {
     const disabled = useMemo(
       () =>
         account
-          ? (item.isNative && (!nativeBalances[account] || formatAmount(nativeBalances[account]) === '0')) ||
-            (item.isToken && (!getTokenBalance(item.address) || formatAmount(getTokenBalance(item.address)) === '0'))
+          ? (Boolean(item.isNative) && (!nativeBalances[account] || formatAmount(nativeBalances[account]) === '0')) ||
+            (Boolean(item.isToken) &&
+              (!getTokenBalance(item.address) || formatAmount(getTokenBalance(item.address)) === '0'))
           : false,
       [item],
     )
@@ -177,7 +178,7 @@ function GasTokenModal() {
       targetRef: innerTargetRef,
       tooltip: innerTooltip,
       tooltipVisible: innerTooltipVisible,
-    } = useTooltip(<>{item.markup && item.markup.replace('-', '')} discount on this gas fee token</>)
+    } = useTooltip(<>{item.discount && item.discount.replace('-', '')} discount on this gas fee token</>)
 
     return (
       <FixedHeightRow style={style} onClick={() => !disabled && onTokenSelected(item)} $disabled={disabled}>
@@ -187,7 +188,7 @@ function GasTokenModal() {
             <Column marginLeft="12px">
               <Text bold>
                 {item.symbol} &nbsp;
-                {item.markup && <Badge ref={!disabled ? innerTargetRef : null}>⛽️ {item.markup}</Badge>}
+                {item.discount && <Badge ref={!disabled ? innerTargetRef : null}>⛽️ {item.discount}</Badge>}
               </Text>
               <Text color="textSubtle" maxWidth="200px" ellipsis small>
                 {item.name}

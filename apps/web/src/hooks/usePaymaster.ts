@@ -7,7 +7,8 @@ import { useAtomValue } from 'jotai'
 
 import { useWalletClient } from 'wagmi'
 import { ChainId } from '@pancakeswap/chains'
-import { paymasterTokens, PaymasterToken, ZyfiResponse } from '../config/paymaster'
+import { Currency } from '@pancakeswap/swap-sdk-core'
+import { paymasterTokens } from '../config/paymaster'
 import { feeTokenAtom } from '../state/paymaster/atoms'
 import { getEip712Domain } from '../utils/paymaster'
 
@@ -38,52 +39,12 @@ export const usePaymaster = () => {
    * Default is the native token to pay gas
    */
   const isPaymasterTokenActive = useMemo(() => {
-    return feeToken.isToken && isAddress(feeToken.address)
+    return feeToken.isToken && feeToken.address && isAddress(feeToken.address)
   }, [feeToken])
 
-  /**
-   * Fetch the token list using internal config
-   * and the Zyfi API for Markup/Discount information
-   */
-  const getPaymasterTokenlist = useCallback(
-    async (txData?: { from: Address; to: Address; value: string; data: Hex }) => {
-      try {
-        const response = await fetch('https://api.zyfi.org/api/erc20_paymaster/v1/batch', {
-          method: 'POST',
-          body: JSON.stringify({
-            feeTokenAddresses: paymasterTokens.map((token) => token.address),
-            gasLimit: '500000',
-            txData,
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-
-        if (response.ok) {
-          const tokenList: ZyfiResponse[] = await response.json()
-
-          const tempTokenList: PaymasterToken[] = []
-
-          // The returned token list from Zyfi is in the same order as the paymasterTokens
-          for (let i = 0; i < tokenList.length; i++) {
-            tempTokenList.push({
-              ...tokenList[i],
-              ...paymasterTokens[i],
-            })
-          }
-
-          return tempTokenList
-        }
-
-        return []
-      } catch (e) {
-        console.error('Failed to fetch paymaster token list', e)
-        return []
-      }
-    },
-    [],
-  )
+  const getPaymasterTokenlist = useCallback(() => {
+    return paymasterTokens
+  }, [])
 
   async function sendPaymasterTransaction(
     call: SwapCall & {
@@ -91,13 +52,16 @@ export const usePaymaster = () => {
     },
     account: Address,
   ) {
+    if (!feeToken.isToken)
+      return Promise.reject(new Error('Selected gas token is not an ERC20 token. Unsupported by Paymaster.'))
+
     const response = await fetch(`https://api.zyfi.org/api/erc20_paymaster/v1`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: stringify({
-        feeTokenAddress: feeToken?.address,
+        feeTokenAddress: feeToken.address,
         gasLimit: call.gas,
         txData: {
           from: account,
@@ -109,7 +73,7 @@ export const usePaymaster = () => {
     })
 
     if (response.ok) {
-      const txResponse: ZyfiResponse = await response.json()
+      const txResponse: any = await response.json()
       console.debug('debug txResponse', txResponse)
 
       const newTx = {
