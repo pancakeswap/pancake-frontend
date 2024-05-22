@@ -2,11 +2,11 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Link, Text } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { GiftTooltip } from 'components/GiftTooltip/GiftTooltip'
+import { SwellTooltip } from 'components/SwellTooltip/SwellTooltip'
 import { TokenPairImage } from 'components/TokenImage'
 import { useHasSwellReward } from 'hooks/useHasSwellReward'
 import { Address, isAddressEqual } from 'viem'
 import { bsc } from 'viem/chains'
-import { SwellTooltip } from 'views/PositionManagers/components/SwellTooltip'
 
 const { FarmTokenInfo } = FarmWidget.FarmTable
 
