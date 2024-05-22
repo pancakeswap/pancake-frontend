@@ -2624,7 +2624,6 @@
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "Syarat dan ketentuan program afiliasi kami telah diperbarui sejak tanggal 3 Mei 2023, perubahan terkait adalah pada",
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "Saat menumpuk di zkSync Era, membongkar CAKE Anda segera setelah menumpuknya dapat menyebabkan kegagalan memperoleh hadiah.",
   "Proceed in your wallet": "Lanjutkan di dompet Anda",
-  "Enable spending %symbol%": "Aktifkan menggunakan %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "Jika dompet mengharuskan Anda memasukkan jumlah token yang ingin Anda setujui, Anda dapat memasukkan angka yang lebih besar atau sama dengan jumlah token yang Anda tukarkan.",
   "Why": "Mengapa",
   "approving": "menyetujui",
@@ -3354,8 +3353,8 @@
   "Up to $8M in interface fees paid refunded!": "Hingga $8 juta pembayaran biaya antarmuka telah dikembalikan!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Dapatkan hingga $8 juta dolar AS pembayaran biaya antarmuka dikembalikan di PancakeSwap",
   "Match your volume and we'll refund ALL your interface fees paid": "Cocokkan volume Anda, dan kami akan mengembalikan SEMUA biaya antarmuka yang telah Anda bayarkan",
-  "Get up to $8M USD in interface fees refunded on PancakeSwap": "Get up to $8M USD in interface fees refunded on PancakeSwap",
-  "Match your Uni volume on PancakeSwap to get a refund of up to": "Match your Uni volume on PancakeSwap to get a refund of up to",
-  "$8M USD": "$8M USD",
-  "in Uniswap interface fees paid": "in Uniswap interface fees paid"
+  "Get up to $8M USD in interface fees refunded on PancakeSwap": "Dapatkan hingga $8 juta dolar AS dalam bentuk biaya antarmuka yang dikembalikan di PancakeSwap",
+  "Match your Uni volume on PancakeSwap to get a refund of up to": "Samai volume Uni Anda di PancakeSwap untuk mendapatkan pengembalian dana sebesar hingga",
+  "$8M USD": "$8 juta dolar AS",
+  "in Uniswap interface fees paid": "dalam bentuk biaya antarmuka Uniswap yang telah dibayarkan"
 }
