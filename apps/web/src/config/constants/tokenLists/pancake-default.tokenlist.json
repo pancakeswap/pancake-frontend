@@ -259,9 +259,17 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     },
     {
-      "name": "USD Coin",
-      "address": "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4",
+      "name": "USD Coin (Native)",
+      "address": "0x1d17CBcF0D6D143135aE902365D2E5e2A16538D4",
       "symbol": "USDC",
+      "decimals": 6,
+      "chainId": 324,
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
+    },
+    {
+      "name": "Bridged USDC",
+      "address": "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4",
+      "symbol": "USDC.e",
       "decimals": 6,
       "chainId": 324,
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"

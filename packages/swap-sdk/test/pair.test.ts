@@ -1,8 +1,8 @@
-import { Token, CurrencyAmount, Price } from '@pancakeswap/swap-sdk-core'
-import { describe, it, expect } from 'vitest'
 import { ChainId } from '@pancakeswap/chains'
-import { Pair } from '../src/entities'
+import { CurrencyAmount, Price, Token } from '@pancakeswap/swap-sdk-core'
+import { describe, expect, it } from 'vitest'
 import { WNATIVE } from '../src/constants'
+import { Pair } from '../src/entities'
 
 describe('Pair', () => {
   const USDC = new Token(ChainId.BSC, '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', 18, 'USDC', 'USD Coin')
@@ -31,7 +31,7 @@ describe('Pair', () => {
       expect(Pair.getAddress(USDC_, WETH)).toEqual('0x6470f17dB9B338dF4955328077ce59b52Fb5A961')
 
       const WETH_ = new Token(ChainId.ZKSYNC, '0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91', 18, 'WETH', 'WETH')
-      const USDC__ = new Token(ChainId.ZKSYNC, '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4', 18, 'USDC', 'USDC')
+      const USDC__ = new Token(ChainId.ZKSYNC, '0x1d17CBcF0D6D143135aE902365D2E5e2A16538D4', 18, 'USDC', 'USDC')
       expect(Pair.getAddress(USDC__, WETH_)).toEqual('0x63edB9338D81c6D8219856548251bacf2a9b1830')
     })
   })
