@@ -6,8 +6,8 @@ import { Autoplay, EffectFade, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import CommunitySummary, { sharedCss } from './CommunitySummary'
 import { CommunityTags } from './CommunityTags'
-import { LeftBottomBox, RightBottomBox } from './ImagesOnBg'
 import { BlogCard, TwitterCards } from './TwitterCards'
+import { LeftBottomBox, RightBottomBox } from './ImagesOnBg'
 
 const TransparentFrame = styled.div<{ isDark: boolean }>`
   position: relative;
