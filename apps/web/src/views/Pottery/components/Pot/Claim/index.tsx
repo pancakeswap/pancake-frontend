@@ -7,6 +7,7 @@ import BigNumber from 'bignumber.js'
 import { BIG_ONE } from '@pancakeswap/utils/bigNumber'
 import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import { useAccount } from 'wagmi'
+import { ChainId } from '@pancakeswap/chains'
 import YourDeposit from '../YourDeposit'
 import WalletNotConnected from './WalletNotConnected'
 import AvailableWithdraw from './AvailableWithdraw'
@@ -40,7 +41,7 @@ const Claim: React.FC<React.PropsWithChildren> = () => {
       {account ? (
         <Container>
           <GreyCard>
-            <SubgraphHealthIndicator inline subgraphName="pancakeswap/pottery" />
+            <SubgraphHealthIndicator inline chainId={ChainId.BSC} subgraphName="pancakeswap/pottery" />
             <Flex justifyContent="space-between" mb="20px">
               <YourDeposit depositBalance={allDeposit} />
             </Flex>

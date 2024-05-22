@@ -85,6 +85,5 @@ export const publicClient = ({ chainId }: { chainId?: ChainId }) => {
   }
 
   const chain = CHAINS.find((c) => c.id === chainId)
-
   return createPublicClient({ chain, transport: http(httpString), ...CLIENT_CONFIG })
 }

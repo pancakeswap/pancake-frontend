@@ -8,14 +8,9 @@ const useShowWarningMessage = () => {
   const subgraphName = chainId
     ? V3_SUBGRAPH_URLS[chainId]?.replace('https://api.thegraph.com/subgraphs/name/', '') || ''
     : ''
-  const { status } = useSubgraphHealth(subgraphName)
+  const { status } = useSubgraphHealth({ chainId, subgraphName })
 
-  return useMemo(() => {
-    if (status === SubgraphStatus.DOWN) {
-      return true
-    }
-    return false
-  }, [status])
+  return status === SubgraphStatus.DOWN
 }
 
 export default useShowWarningMessage
