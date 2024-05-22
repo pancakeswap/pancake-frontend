@@ -16,7 +16,6 @@ import {
   RowBetween,
   RowFixed,
   Text,
-  TokenLogo,
   useModalV2,
   useTooltip,
 } from '@pancakeswap/uikit'
@@ -26,7 +25,7 @@ import { feeTokenAtom } from 'state/paymaster/atoms'
 import memoize from 'lodash/memoize'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FixedSizeList } from 'react-window'
-import { NumberDisplay } from '@pancakeswap/widgets-internal'
+import { CurrencyLogo, NumberDisplay } from '@pancakeswap/widgets-internal'
 import { useAtom } from 'jotai'
 import { useNativeBalances, useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
@@ -39,11 +38,6 @@ import { DEFAULT_PAYMASTER_TOKEN, PaymasterToken } from 'config/paymaster'
 import { usePaymaster } from 'hooks/usePaymaster'
 
 // Selector Styles
-const StyledLogo = styled(TokenLogo)<{ size: string }>`
-  border-radius: 50%;
-  width: ${({ size }) => size};
-  height: ${({ size }) => size};
-`
 const GasTokenSelectButton = styled(Button).attrs({ variant: 'text', scale: 'xs' })`
   padding: 18px 0 18px 6px;
 `
@@ -189,12 +183,7 @@ function GasTokenModal() {
       <FixedHeightRow style={style} onClick={() => !disabled && onTokenSelected(item)} $disabled={disabled}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           <Flex alignItems="center">
-            <StyledLogo
-              size="20px"
-              srcs={[item && item.logoURI ? item.logoURI : ``]}
-              alt={`${item ? item?.symbol : 'ETH'}`}
-              width="20px"
-            />
+            <CurrencyLogo currency={item} />
             <Column marginLeft="12px">
               <Text bold>
                 {item.symbol} &nbsp;
@@ -261,12 +250,7 @@ function GasTokenModal() {
         >
           <Flex alignItems="center">
             <div style={{ position: 'relative' }}>
-              <StyledLogo
-                size="20px"
-                srcs={[feeToken && feeToken.logoURI ? feeToken.logoURI : ``]}
-                alt={`${feeToken && feeToken?.symbol}`}
-                width="20px"
-              />
+              <CurrencyLogo currency={feeToken} size="20px" />
               <p style={{ position: 'absolute', bottom: '-2px', right: '-6px', fontSize: '14px' }}>⛽️</p>
             </div>
 

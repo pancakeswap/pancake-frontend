@@ -1,20 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router'
-import {
-  AutoColumn,
-  BackForwardIcon,
-  Button,
-  Dots,
-  Flex,
-  Link,
-  QuestionHelper,
-  Text,
-  TokenLogo,
-} from '@pancakeswap/uikit'
+import { AutoColumn, BackForwardIcon, Button, Dots, Flex, Link, QuestionHelper, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { CurrencyLogo } from 'components/Logo'
+import { CurrencyLogo as CurrencyLogoWidget } from '@pancakeswap/widgets-internal'
 import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { memo, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
@@ -33,12 +24,6 @@ const SwapModalFooterContainer = styled(AutoColumn)`
   border-radius: ${({ theme }) => theme.radii.default};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   background-color: ${({ theme }) => theme.colors.background};
-`
-
-const StyledLogo = styled(TokenLogo)<{ size: string }>`
-  border-radius: 50%;
-  width: ${({ size }) => size};
-  height: ${({ size }) => size};
 `
 
 export const SwapModalFooter = memo(function SwapModalFooter({
@@ -261,15 +246,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
               </Text>
 
               <div style={{ position: 'relative' }}>
-                <StyledLogo
-                  size="24px"
-                  srcs={[
-                    feeToken && feeToken.logoURI
-                      ? feeToken.logoURI
-                      : `https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png`,
-                  ]}
-                  alt={`${feeToken ? feeToken?.symbol : 'ETH'}`}
-                />
+                <CurrencyLogoWidget currency={feeToken} />
                 <p style={{ position: 'absolute', bottom: '-2px', left: '-6px', fontSize: '16px' }}>⛽️</p>
               </div>
             </Flex>

@@ -16,18 +16,12 @@ export const DEFAULT_PAYMASTER_TOKEN: PaymasterToken = {
 }
 
 export const paymasterTokens: PaymasterToken[] = [
-  { ...zksyncTokens.wbtc, logoURI: 'https://tokens.pancakeswap.finance/images/symbol/wbtc.png' },
-  { ...zksyncTokens.dai, logoURI: 'https://tokens.pancakeswap.finance/images/symbol/dai.png' },
-  { ...zksyncTokens.usdc, logoURI: 'https://tokens.pancakeswap.finance/images/symbol/usdc.png' },
-  {
-    ...zksyncTokens.usdt,
-    logoURI: `https://tokens.pancakeswap.finance/images/symbol/usdt.png`,
-  },
-  {
-    ...zksyncTokens.grai,
-    logoURI: `https://tokens.pancakeswap.finance/images/zksync/${zksyncTokens.grai.address}.png`,
-  },
-  { ...zksyncTokens.tes, logoURI: `https://tokens.pancakeswap.finance/images/zksync/${zksyncTokens.tes.address}.png` },
+  zksyncTokens.wbtc,
+  zksyncTokens.dai,
+  zksyncTokens.usdc,
+  zksyncTokens.usdt,
+  zksyncTokens.grai,
+  zksyncTokens.tes,
 ]
 
 export interface BasePaymasterToken {
