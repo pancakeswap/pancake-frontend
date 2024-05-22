@@ -108,7 +108,7 @@ export const arbitrumTokens = {
     '0x539bdE0d7Dbd336b79148AA742883198BBF60342',
     18,
     'MAGIC',
-    'Magic Internet Money',
+    'MAGIC',
     'https://treasure.lol/',
   ),
   wstETH: new ERC20Token(

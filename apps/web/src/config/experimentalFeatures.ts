@@ -1,7 +1,6 @@
 export enum EXPERIMENTAL_FEATURES {
   WebNotifications = 'web-notifications',
   SpeedQuote = 'routing-speed-quote',
-  UniversalRouter = 'universal-router',
   PriceAPI = 'price-api',
 }
 export type EnumValues<T> = T extends { [key: string]: infer U } ? U : never
@@ -27,11 +26,6 @@ export const EXPERIMENTAL_FEATURE_CONFIGS: ExperimentalFeatureConfigs = [
   },
   {
     feature: EXPERIMENTAL_FEATURES.SpeedQuote,
-    percentage: 1,
-    whitelist: [],
-  },
-  {
-    feature: EXPERIMENTAL_FEATURES.UniversalRouter,
     percentage: 1,
     whitelist: [],
   },
