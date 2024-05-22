@@ -1,10 +1,16 @@
-import { ChainId, chainNames } from '@pancakeswap/chains'
+import { chainNames } from '@pancakeswap/chains'
 import { GAUGE_TYPE_NAMES, Gauge, GaugeType } from '@pancakeswap/gauges'
-import { useIsMounted } from '@pancakeswap/hooks'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  parseAsArrayOf,
+  parseAsInteger,
+  parseAsNumberLiteral,
+  parseAsString,
+  parseAsStringLiteral,
+  useQueryState,
+  useQueryStates,
+} from 'nuqs'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Filter, FilterValue, Gauges, OptionsType, SortOptions } from '../components/GaugesFilter'
 import { getPositionManagerName } from '../utils'
 
@@ -18,115 +24,118 @@ const getSorter = (sort: SortOptions | undefined) => {
   return (a: Gauge, b: Gauge) => Number(a.gid) - Number(b.gid)
 }
 
-export const useGaugesFilter = (fullGauges: Gauge[] | undefined, urlQuerySync = false) => {
-  const [searchText, _setSearchText] = useState<string>('')
+const useGaugesFilterPureState = () => {
+  const [searchText, setSearchText] = useState<string>('')
   const [filter, setFilter] = useState<Filter>({
     byChain: [],
     byFeeTier: [],
     byType: [],
   })
-  const isFilterEmpty = useMemo(() => Object.values(filter).every((v) => v.length === 0), [filter])
-  const isSearchTextEmpty = useMemo(() => searchText?.length === 0, [searchText])
-  const [sort, setSort] = useState<SortOptions>()
-  const searchParams = useSearchParams()
-  const isMounted = useIsMounted()
-  const router = useRouter()
-  const initRef = useRef(false)
-
-  const updateSearchQuery = useCallback(
-    (obj: Record<string, string[] | string>) => {
-      const search = new URLSearchParams(searchParams.toString())
-      Object.entries(obj).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          search.delete(key)
-          if (value.length > 0) {
-            value.forEach((v) => search.append(key, v))
-          }
-        } else if (value) {
-          search.set(key, value)
-        } else {
-          search.delete(key)
-        }
-      })
-
-      const searchString = search.toString().length ? `?${search.toString()}` : ''
-
-      router.replace(router.pathname, searchString, { shallow: true })
-    },
-    [router, searchParams],
-  )
-
-  const setSearchText = useCallback(
-    (text: string) => {
-      _setSearchText(text)
-      if (urlQuerySync) {
-        updateSearchQuery({ q: text })
-      }
-    },
-    [updateSearchQuery, urlQuerySync],
-  )
-
-  useEffect(() => {
-    if (router.isReady && !initRef.current && urlQuerySync && searchParams.size > 0) {
-      initRef.current = true
-      if (isFilterEmpty) {
-        const search = new URLSearchParams(searchParams.toString())
-        const filterByChain = search.getAll('byChain').map((v) => Number(v)) as ChainId[]
-        const filterByFeeTier = search.getAll('byFeeTier').map((v) => Number(v)) as FeeAmount[]
-        const filterByType = search.getAll('byType') as Gauges[]
-
-        setFilter({
-          byChain: filterByChain,
-          byFeeTier: filterByFeeTier,
-          byType: filterByType,
-        })
-      }
-      if (isSearchTextEmpty) {
-        const search = new URLSearchParams(searchParams.toString())
-        const q = search.get('q')
-        setSearchText(q || '')
-      }
-    }
-  }, [isFilterEmpty, isMounted, isSearchTextEmpty, router.isReady, searchParams, setSearchText, urlQuerySync])
 
   const onFilterChange = useCallback(
     (type: OptionsType, value: FilterValue) => {
       const opts = filter[type] as Array<unknown>
       let newFilter: Filter | undefined
-      // select all
       if (Array.isArray(value)) {
-        setFilter((prev) => {
-          newFilter = {
-            ...prev,
-            [type]: value.length === opts.length ? [] : value,
-          }
-          return newFilter
-        })
+        // select all
+        setFilter((prev) => ({
+          ...prev,
+          [type]: value.length === opts.length ? [] : value,
+        }))
       } else if (opts.includes(value)) {
-        // select one
-        setFilter((prev) => {
-          newFilter = {
-            ...prev,
-            [type]: opts.filter((v) => v !== value),
-          }
-          return newFilter
-        })
+        // deselect one
+        setFilter((prev) => ({
+          ...prev,
+          [type]: opts.filter((v) => v !== value),
+        }))
       } else {
-        setFilter((prev) => {
-          newFilter = {
-            ...prev,
-            [type]: [...opts, value],
-          }
-          return newFilter
-        })
-      }
-
-      if (urlQuerySync && newFilter) {
-        updateSearchQuery(JSON.parse(JSON.stringify(newFilter)))
+        // select one
+        setFilter((prev) => ({
+          ...prev,
+          [type]: [...opts, value],
+        }))
       }
     },
-    [filter, updateSearchQuery, urlQuerySync],
+    [filter],
   )
+
+  return {
+    searchText,
+    setSearchText,
+
+    filter,
+    setFilter,
+    onFilterChange,
+  }
+}
+
+const useGaugesFilterQueryState = () => {
+  const [searchText, setSearchText] = useQueryState(
+    'q',
+    parseAsString.withDefault('').withOptions({
+      history: 'replace',
+      shallow: true,
+    }),
+  )
+  const [filter, setFilter] = useQueryStates(
+    {
+      byChain: parseAsArrayOf(parseAsInteger).withDefault([]),
+      byFeeTier: parseAsArrayOf(
+        parseAsNumberLiteral<FeeAmount>([FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH, FeeAmount.LOWEST]),
+      ).withDefault([]),
+      byType: parseAsArrayOf(parseAsStringLiteral<Gauges>([Gauges.Regular, Gauges.Boosted, Gauges.Capped])).withDefault(
+        [],
+      ),
+    },
+    {
+      history: 'replace',
+      shallow: true,
+    },
+  )
+
+  const onFilterChange = useCallback(
+    (type: OptionsType, value: FilterValue) => {
+      const opts = filter[type]
+      // select all
+      if (Array.isArray(value)) {
+        setFilter({
+          [type]: value.length === opts.length ? [] : value,
+        })
+      } else if (opts.some((x) => x === value)) {
+        // deselect one
+        setFilter({
+          [type]: opts.filter((v) => v !== value),
+        })
+      } else {
+        // select one
+        setFilter({
+          [type]: [...opts, value],
+        })
+      }
+    },
+    [filter, setFilter],
+  )
+
+  return {
+    searchText,
+    setSearchText,
+
+    filter,
+    setFilter,
+    onFilterChange,
+  }
+}
+
+const useGaugesFilterState = (useQuery: boolean) => {
+  const pureHook = useGaugesFilterPureState()
+  const queryHook = useGaugesFilterQueryState()
+
+  return useQuery ? queryHook : pureHook
+}
+
+export const useGaugesFilter = (fullGauges: Gauge[] | undefined, urlQuerySync = false) => {
+  const { filter, setFilter, onFilterChange, searchText, setSearchText } = useGaugesFilterState(urlQuerySync)
+  const [sort, setSort] = useState<SortOptions>()
 
   const filterGauges = useMemo(() => {
     if (!fullGauges || !fullGauges.length) return []
