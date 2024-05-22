@@ -1,7 +1,5 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import { Box } from '@pancakeswap/uikit'
-import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
-import { useExperimentalFeatureEnabled } from 'hooks/useExperimentalFeatureEnabled'
 import { useMemo } from 'react'
 import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
 import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
@@ -24,7 +22,6 @@ export function V3SwapForm() {
     resumeQuoting,
   } = useAllTypeBestTrade()
 
-  const useUniversalRouter = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.UniversalRouter)
   const ammPrice = useMemo(() => (ammTrade ? SmartRouter.getExecutionPrice(ammTrade) : undefined), [ammTrade])
   const insufficientFundCurrency = useCheckInsufficientError(ammTrade)
   const commitHooks = useMemo(() => {
@@ -46,7 +43,6 @@ export function V3SwapForm() {
         outputAmount={bestTrade?.outputAmount}
         swapCommitButton={
           <CommitButton
-            useUniversalRouter={useUniversalRouter}
             trade={isMMBetter ? mmTrade : ammTrade}
             tradeError={tradeError}
             tradeLoaded={tradeLoaded}

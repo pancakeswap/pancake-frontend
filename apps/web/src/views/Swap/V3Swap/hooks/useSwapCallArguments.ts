@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Percent, TradeType } from '@pancakeswap/sdk'
-import { SMART_ROUTER_ADDRESSES, SmartRouterTrade, SwapRouter } from '@pancakeswap/smart-router'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import {
+  PancakeSwapUniversalRouter,
+  Permit2Signature,
+  getUniversalRouterAddress,
+} from '@pancakeswap/universal-router-sdk'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
-import { useMemo } from 'react'
-
-import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
-
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { Address, Hex, isAddress } from 'viem'
+import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
+import { useMemo } from 'react'
+import { safeGetAddress } from 'utils'
+import { Address, Hex } from 'viem'
 
 interface SwapCall {
   address: Address
@@ -27,6 +31,7 @@ export function useSwapCallArguments(
   trade: SmartRouterTrade<TradeType> | undefined | null,
   allowedSlippage: Percent,
   recipientAddressOrName: string | null | undefined,
+  permitSignature: Permit2Signature | undefined,
   deadline: bigint | undefined,
   feeOptions: FeeOptions | undefined,
 ): SwapCall[] {
@@ -35,9 +40,9 @@ export function useSwapCallArguments(
   const recipient = (
     recipientAddressOrName === null || recipientAddressOrName === undefined
       ? account
-      : isAddress(recipientAddressOrName)
+      : safeGetAddress(recipientAddressOrName)
       ? recipientAddressOrName
-      : isAddress(recipientENSAddress ?? '')
+      : safeGetAddress(recipientENSAddress)
       ? recipientENSAddress
       : null
   ) as Address | null
@@ -45,71 +50,21 @@ export function useSwapCallArguments(
   return useMemo(() => {
     if (!trade || !recipient || !account || !chainId) return []
 
-    const swapRouterAddress = chainId ? SMART_ROUTER_ADDRESSES[chainId] : undefined
-    if (!swapRouterAddress) return []
-
-    const { value, calldata } = SwapRouter.swapCallParameters(trade, {
+    const methodParameters = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, {
       fee: feeOptions,
       recipient,
+      inputTokenPermit: permitSignature,
       slippageTolerance: allowedSlippage,
-      // ...(signatureData
-      //   ? {
-      //       inputTokenPermit:
-      //         'allowed' in signatureData
-      //           ? {
-      //               expiry: signatureData.deadline,
-      //               nonce: signatureData.nonce,
-      //               s: signatureData.s,
-      //               r: signatureData.r,
-      //               v: signatureData.v as any,
-      //             }
-      //           : {
-      //               deadline: signatureData.deadline,
-      //               amount: signatureData.amount,
-      //               s: signatureData.s,
-      //               r: signatureData.r,
-      //               v: signatureData.v as any,
-      //             },
-      //     }
-      //   : {}),
-
       deadlineOrPreviousBlockhash: deadline?.toString(),
     })
-
-    // if (argentWalletContract && trade.inputAmount.currency.isToken) {
-    //   return [
-    //     {
-    //       address: argentWalletContract.address,
-    //       calldata: argentWalletContract.interface.encodeFunctionData('wc_multiCall', [
-    //         [
-    //           approveAmountCalldata(trade.maximumAmountIn(allowedSlippage), swapRouterAddress),
-    //           {
-    //             to: swapRouterAddress,
-    //             value,
-    //             data: calldata,
-    //           },
-    //         ],
-    //       ]),
-    //       value: '0x0',
-    //     },
-    //   ]
-    // }
+    const swapRouterAddress = getUniversalRouterAddress(chainId)
+    if (!swapRouterAddress) return []
     return [
       {
         address: swapRouterAddress,
-        calldata,
-        value,
+        calldata: methodParameters.calldata as `0x${string}`,
+        value: methodParameters.value as `0x${string}`,
       },
     ]
-  }, [
-    account,
-    allowedSlippage,
-    // argentWalletContract,
-    chainId,
-    deadline,
-    feeOptions,
-    recipient,
-    // signatureData,
-    trade,
-  ])
+  }, [account, allowedSlippage, chainId, deadline, feeOptions, recipient, permitSignature, trade])
 }
