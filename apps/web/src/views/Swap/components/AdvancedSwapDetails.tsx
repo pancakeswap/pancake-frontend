@@ -9,14 +9,13 @@ import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
 import { Field } from 'state/swap/actions'
-import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import { formatUnits } from '@pancakeswap/utils/viem/formatUnits'
+import { usePaymaster } from 'hooks/usePaymaster'
+import GasTokenModal from 'components/Paymaster/GasTokenModal'
 import { SlippageAdjustedAmounts } from '../V3Swap/utils/exchange'
 import { useFeeSaved } from '../hooks/useFeeSaved'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { RouterViewer } from './RouterViewer'
 import SwapRoute from './SwapRoute'
-import { usePaymaster } from '../V3Swap/components/Paymaster/hooks/usePaymaster'
 
 export const TradeSummary = memo(function TradeSummary({
   inputAmount,
@@ -26,7 +25,6 @@ export const TradeSummary = memo(function TradeSummary({
   priceImpactWithoutFee,
   realizedLPFee,
   isMM = false,
-  gasTokenSelector,
 }: {
   hasStablePair?: boolean
   inputAmount?: CurrencyAmount<Currency>
@@ -36,14 +34,13 @@ export const TradeSummary = memo(function TradeSummary({
   priceImpactWithoutFee?: Percent | null
   realizedLPFee?: CurrencyAmount<Currency> | null
   isMM?: boolean
-  gasTokenSelector?: React.ReactNode
 }) {
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
   const { feeSavedAmount, feeSavedUsdValue } = useFeeSaved(inputAmount, outputAmount)
 
   // Paymaster (zkSync)
-  const { isPaymasterAvailable, isPaymasterTokenActive, feeToken } = usePaymaster()
+  const { isPaymasterAvailable } = usePaymaster()
 
   return (
     <AutoColumn style={{ padding: '0 24px' }}>
@@ -187,37 +184,7 @@ export const TradeSummary = memo(function TradeSummary({
         </RowBetween>
       )}
 
-      {isPaymasterAvailable && (
-        <>
-          <RowBetween style={{ padding: '4px 0 0 0' }}>
-            <RowFixed>
-              <Text fontSize="14px" color="textSubtle">
-                {t('Gas Token')}
-              </Text>
-              <QuestionHelper
-                text={
-                  <>
-                    <Text mb="12px">
-                      <Text bold display="inline-block">
-                        {t('Gas Token')}
-                      </Text>
-                      <br />
-                      <br />
-                      {t('Select a token to pay gas fees.')}
-                      <br /> <br />
-                      {t('Please refer to the transaction confirmation on your wallet for the final gas fee.')}
-                    </Text>
-                  </>
-                }
-                ml="4px"
-                placement="top"
-              />
-            </RowFixed>
-
-            {gasTokenSelector}
-          </RowBetween>
-        </>
-      )}
+      {isPaymasterAvailable && <GasTokenModal />}
     </AutoColumn>
   )
 })

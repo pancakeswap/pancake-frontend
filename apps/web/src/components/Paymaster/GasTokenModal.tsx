@@ -13,6 +13,8 @@ import {
   ModalTitle,
   ModalV2,
   QuestionHelper,
+  RowBetween,
+  RowFixed,
   Text,
   TokenLogo,
   useModalV2,
@@ -20,6 +22,7 @@ import {
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
+import { feeTokenAtom } from 'state/paymaster/atoms'
 import memoize from 'lodash/memoize'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FixedSizeList } from 'react-window'
@@ -31,10 +34,9 @@ import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { Address } from 'viem'
 import Image from 'next/image'
-import { usePaymaster } from './hooks/usePaymaster'
-import { DEFAULT_PAYMASTER_TOKEN } from './config/config'
-import { PaymasterToken } from './types'
-import { feeTokenAtom } from './state/atoms'
+
+import { DEFAULT_PAYMASTER_TOKEN, PaymasterToken } from 'config/paymaster'
+import { usePaymaster } from 'hooks/usePaymaster'
 
 // Selector Styles
 const StyledLogo = styled(TokenLogo)<{ size: string }>`
@@ -227,33 +229,59 @@ function GasTokenModal() {
 
   return (
     <>
-      <GasTokenSelectButton
-        selected={!!feeToken}
-        onClick={onSelectorButtonClick}
-        data-dd-action-name="Zyfi Gas Token Select Button"
-      >
-        <Flex alignItems="center">
-          <div style={{ position: 'relative' }}>
-            <StyledLogo
-              size="20px"
-              srcs={[feeToken && feeToken.logoURI ? feeToken.logoURI : ``]}
-              alt={`${feeToken && feeToken?.symbol}`}
-              width="20px"
-            />
-            <p style={{ position: 'absolute', bottom: '-2px', right: '-6px', fontSize: '14px' }}>⛽️</p>
-          </div>
-
-          <Text marginLeft={2} fontSize={14} bold>
-            {(feeToken && feeToken.symbol && feeToken.symbol.length > 10
-              ? `${feeToken.symbol.slice(0, 4)}...${feeToken.symbol.slice(
-                  feeToken.symbol.length - 5,
-                  feeToken.symbol.length,
-                )}`
-              : feeToken?.symbol) || ''}
+      <RowBetween style={{ padding: '4px 0 0 0' }}>
+        <RowFixed>
+          <Text fontSize="14px" color="textSubtle">
+            {t('Gas Token')}
           </Text>
-          <ArrowDropDownIcon marginLeft={1} />
-        </Flex>
-      </GasTokenSelectButton>
+          <QuestionHelper
+            text={
+              <>
+                <Text mb="12px">
+                  <Text bold display="inline-block">
+                    {t('Gas Token')}
+                  </Text>
+                  <br />
+                  <br />
+                  {t('Select a token to pay gas fees.')}
+                  <br /> <br />
+                  {t('Please refer to the transaction confirmation on your wallet for the final gas fee.')}
+                </Text>
+              </>
+            }
+            ml="4px"
+            placement="top"
+          />
+        </RowFixed>
+
+        <GasTokenSelectButton
+          selected={!!feeToken}
+          onClick={onSelectorButtonClick}
+          data-dd-action-name="Zyfi Gas Token Select Button"
+        >
+          <Flex alignItems="center">
+            <div style={{ position: 'relative' }}>
+              <StyledLogo
+                size="20px"
+                srcs={[feeToken && feeToken.logoURI ? feeToken.logoURI : ``]}
+                alt={`${feeToken && feeToken?.symbol}`}
+                width="20px"
+              />
+              <p style={{ position: 'absolute', bottom: '-2px', right: '-6px', fontSize: '14px' }}>⛽️</p>
+            </div>
+
+            <Text marginLeft={2} fontSize={14} bold>
+              {(feeToken && feeToken.symbol && feeToken.symbol.length > 10
+                ? `${feeToken.symbol.slice(0, 4)}...${feeToken.symbol.slice(
+                    feeToken.symbol.length - 5,
+                    feeToken.symbol.length,
+                  )}`
+                : feeToken?.symbol) || ''}
+            </Text>
+            <ArrowDropDownIcon marginLeft={1} />
+          </Flex>
+        </GasTokenSelectButton>
+      </RowBetween>
 
       <ModalV2 onDismiss={onDismiss} isOpen={isOpen} closeOnOverlayClick>
         <StyledModalContainer>

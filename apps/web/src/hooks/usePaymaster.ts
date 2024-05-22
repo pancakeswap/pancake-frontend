@@ -2,14 +2,14 @@ import { useCallback, useMemo } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import isZero from '@pancakeswap/utils/isZero'
 import { Address, Hex, hexToBigInt, isAddress, stringify } from 'viem'
-import { serializeTransaction, zkSync } from 'viem/zksync'
+import { serializeTransaction } from 'viem/zksync'
 import { useAtomValue } from 'jotai'
 
 import { useWalletClient } from 'wagmi'
-import { paymasterTokens } from '../config/config'
-import { feeTokenAtom } from '../state/atoms'
-import { getEip712Domain } from '../utils'
-import { PaymasterToken, ZyfiResponse } from '../types'
+import { ChainId } from '@pancakeswap/chains'
+import { paymasterTokens, PaymasterToken, ZyfiResponse } from '../config/paymaster'
+import { feeTokenAtom } from '../state/paymaster/atoms'
+import { getEip712Domain } from '../utils/paymaster'
 
 interface SwapCall {
   address: Address
@@ -30,7 +30,7 @@ export const usePaymaster = () => {
    * Check if the Paymaster for zkSync is available
    */
   const isPaymasterAvailable = useMemo(() => {
-    return chain && chain.chainId === zkSync.id
+    return chain && chain.chainId === ChainId.ZKSYNC
   }, [chain])
 
   /**
@@ -116,7 +116,7 @@ export const usePaymaster = () => {
         account,
         to: txResponse.txData.to,
         value: txResponse.txData.value && !isZero(txResponse.txData.value) ? hexToBigInt(txResponse.txData.value) : 0n,
-        chainId: zkSync.id,
+        chainId: ChainId.ZKSYNC,
         gas: BigInt(txResponse.gasLimit),
         maxFeePerGas: BigInt(txResponse.txData.maxFeePerGas),
         maxPriorityFeePerGas: BigInt(0),
@@ -134,7 +134,7 @@ export const usePaymaster = () => {
 
         const eip712Domain = getEip712Domain({
           ...txRequest,
-          chainId: zkSync.id,
+          chainId: ChainId.ZKSYNC,
           from: account,
           type: 'eip712',
         })
@@ -146,7 +146,7 @@ export const usePaymaster = () => {
 
         const serializedTransaction = serializeTransaction({
           ...txRequest,
-          chainId: zkSync.id,
+          chainId: ChainId.ZKSYNC,
           customSignature,
           type: 'eip712',
         } as any)

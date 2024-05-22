@@ -26,8 +26,8 @@ import { useSendTransaction } from 'wagmi'
 
 import { logger } from 'utils/datadog'
 import { viemClients } from 'utils/viem'
+import { usePaymaster } from 'hooks/usePaymaster'
 import { isZero } from '../utils/isZero'
-import { usePaymaster } from '../components/Paymaster/hooks/usePaymaster'
 
 interface SwapCall {
   address: Address

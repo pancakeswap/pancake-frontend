@@ -11,7 +11,6 @@ import { MMTradeInfo } from 'views/Swap/MMLinkPools/hooks'
 import { RouteDisplayEssentials, RoutesBreakdown } from '../components'
 import { useIsWrapping, useSlippageAdjustedAmounts } from '../hooks'
 import { TradeEssentialForPriceBreakdown, computeTradePriceBreakdown } from '../utils/exchange'
-import GasTokenModal from '../components/Paymaster/GasTokenModal'
 
 type Trade = TradeEssentialForPriceBreakdown &
   Pick<SmartRouterTrade<TradeType>, 'tradeType'> & {
@@ -79,7 +78,6 @@ export const TradeDetails = memo(function TradeDetails({ loaded, trade }: Props)
           priceImpactWithoutFee={priceImpactWithoutFee ?? undefined}
           realizedLPFee={lpFeeAmount ?? undefined}
           hasStablePair={hasStablePool}
-          gasTokenSelector={<GasTokenModal />}
         />
         <RoutesBreakdown routes={routes} />
       </AutoColumn>

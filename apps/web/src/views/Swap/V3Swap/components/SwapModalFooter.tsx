@@ -22,10 +22,10 @@ import { styled } from 'styled-components'
 import { warningSeverity } from 'utils/exchange'
 import { formatExecutionPrice as mmFormatExecutionPrice } from 'views/Swap/MMLinkPools/utils/exchange'
 
+import { usePaymaster } from 'hooks/usePaymaster'
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
 import { SlippageAdjustedAmounts, formatExecutionPrice } from '../utils/exchange'
-import { usePaymaster } from './Paymaster/hooks/usePaymaster'
 
 const SwapModalFooterContainer = styled(AutoColumn)`
   margin-top: 24px;
