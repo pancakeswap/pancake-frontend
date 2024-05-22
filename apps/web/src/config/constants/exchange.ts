@@ -65,7 +65,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.ARBITRUM_GOERLI]: [arbitrumGoerliTokens.weth, arbitrumGoerliTokens.usdc],
   [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.weth, polygonZkEvmTokens.usdt, polygonZkEvmTokens.usdc],
   [ChainId.POLYGON_ZKEVM_TESTNET]: [polygonZkEvmTestnetTokens.weth, polygonZkEvmTestnetTokens.usdt],
-  [ChainId.ZKSYNC]: [zksyncTokens.usdc, zksyncTokens.weth],
+  [ChainId.ZKSYNC]: [zksyncTokens.usdcNative, zksyncTokens.usdc, zksyncTokens.weth],
   [ChainId.ZKSYNC_TESTNET]: [zkSyncTestnetTokens.usdc, zkSyncTestnetTokens.weth],
   [ChainId.LINEA]: [lineaTokens.usdc, lineaTokens.weth],
   [ChainId.LINEA_TESTNET]: [lineaTestnetTokens.usdc, lineaTestnetTokens.weth],
