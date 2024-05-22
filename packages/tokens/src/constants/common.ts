@@ -243,7 +243,13 @@ export const USDC = {
   [ChainId.BSC_TESTNET]: USDC_TESTNET,
   [ChainId.ETHEREUM]: USDC_ETH,
   [ChainId.GOERLI]: USDC_GOERLI,
-  [ChainId.ZKSYNC]: new ERC20Token(ChainId.ZKSYNC, '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4', 6, 'USDC', 'USD Coin'),
+  [ChainId.ZKSYNC]: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4',
+    6,
+    'USDC.e',
+    'Bridged USDC',
+  ),
   [ChainId.ZKSYNC_TESTNET]: new ERC20Token(
     ChainId.ZKSYNC_TESTNET,
     '0x0faF6df7054946141266420b43783387A78d82A9',
