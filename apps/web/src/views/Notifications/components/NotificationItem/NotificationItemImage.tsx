@@ -3,16 +3,16 @@ import { ArrowDropDownIcon, ArrowDropUpIcon, Box, FlexGap, Text } from '@pancake
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/image'
 import { CHAIN_NAME_TO_CHAIN_ID } from 'views/Notifications/constants'
+import { SubsctiptionType } from 'views/Notifications/types'
 import {
   extractChainIdFromAPRNotification,
   extractChainIdFromMessage,
   extractPercentageFromString,
   getBadgeString,
 } from 'views/Notifications/utils/textHelpers'
-import AlertIcon from '../../../../../public/images/notifications/alert-icon.svg'
 
-export const getNotificationPairlogo = (title: string, message: string) => {
-  const isAprNotification = title.toLowerCase().includes('apr')
+export const getNotificationPairlogo = (message: string, type: string) => {
+  const isAprNotification = type === SubsctiptionType.Farms
   const chainName = isAprNotification ? extractChainIdFromAPRNotification(message) : extractChainIdFromMessage(message)
   const chainId = CHAIN_NAME_TO_CHAIN_ID[chainName]
 
@@ -23,15 +23,15 @@ export const getNotificationPairlogo = (title: string, message: string) => {
 }
 export const NotificationImage = ({
   image,
-  title,
   message,
+  type,
 }: {
   image: string | undefined
-  title: string
   message: string
+  type: string
 }) => {
-  if (title.toLowerCase().includes('apr update') || title.includes('LP position')) {
-    const { image1, image2 } = getNotificationPairlogo(title, message)
+  if (type === SubsctiptionType.Farms || type === SubsctiptionType.Liquidity) {
+    const { image1, image2 } = getNotificationPairlogo(message, type)
 
     return (
       <Box position="relative" minWidth="40px" minHeight="40px">
@@ -51,20 +51,13 @@ export const NotificationImage = ({
   )
 }
 
-export const NotificationBadge = ({ title, message }: { title: string; message: string }) => {
+export const NotificationBadge = ({ message, type }: { message: string; type: string }) => {
   const { t } = useTranslation()
-  if (title.includes('Balance')) {
-    return (
-      <FlexGap borderRadius={16} backgroundColor="tertiary" paddingY="2px" paddingX="6px" alignItems="center" gap="2px">
-        <Image src={AlertIcon} alt="Alert Image" height={16} width={16} unoptimized />
-        <Text fontSize="12px">{t('Alerts')}</Text>
-      </FlexGap>
-    )
-  }
-  if (title.includes('Price Movement') || title.toLowerCase().includes('apr update')) {
+
+  if (type === SubsctiptionType.Farms || type === SubsctiptionType.PriceUpdates) {
     const percentageChange = extractPercentageFromString(message)
     const hasFallen = message.includes('fallen')
-    const isAPR = title.includes('APR')
+    const isAPR = type === SubsctiptionType.Farms
     const badgeString = getBadgeString(isAPR, hasFallen, percentageChange ?? 0.0)
 
     return (

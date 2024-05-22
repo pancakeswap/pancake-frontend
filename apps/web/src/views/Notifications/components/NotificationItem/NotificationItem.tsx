@@ -28,6 +28,7 @@ interface INotificationprops {
   url: string | null
   id: string
   subscriptionId: string
+  type: string
   image?: string | undefined
 }
 
@@ -37,7 +38,7 @@ interface INotificationContainerProps {
   importantAlertsOnly: boolean
 }
 
-const NotificationItem = ({ title, description, date, image, url, subscriptionId, id }: INotificationprops) => {
+const NotificationItem = ({ title, description, date, image, url, subscriptionId, id, type }: INotificationprops) => {
   const [show, setShow] = useState<boolean>(false)
   const [elementHeight, setElementHeight] = useState<number>(0)
   const { t } = useTranslation()
@@ -76,7 +77,7 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
       <ContentsContainer>
         <Flex flexDirection="column" width="100%">
           <Flex justifyContent="space-between" width="100%">
-            <NotificationImage image={image} title={title} message={description} />
+            <NotificationImage image={image} message={description} type={type} />
             <Flex flexDirection="column" width="100%">
               <Text fontWeight={600} marginBottom="2px">
                 {title}
@@ -86,7 +87,7 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
                 <Text fontSize="13px" color="textSubtle">
                   {formattedDate}
                 </Text>
-                <NotificationBadge title={title} message={description} />
+                <NotificationBadge message={description} type={type} />
               </FlexGap>
             </Flex>
             {url ? (
@@ -166,6 +167,7 @@ const NotificationContainer = ({ notifications, subscriptionId, importantAlertsO
               image={types?.[notification.type]?.imageUrls.md}
               id={notification.id}
               subscriptionId={subscriptionId}
+              type={notification.type}
             />
           )
         })}
