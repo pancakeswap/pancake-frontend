@@ -13,6 +13,7 @@ export const paymasterTokens: PaymasterToken[] = [
   zksyncTokens.wbtc,
   zksyncTokens.dai,
   zksyncTokens.usdc,
+  zksyncTokens.usdcNative,
   zksyncTokens.usdt,
   zksyncTokens.grai,
   zksyncTokens.tes,

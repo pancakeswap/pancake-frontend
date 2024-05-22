@@ -301,7 +301,7 @@ function GasTokenModal() {
           </ModalHeader>
           <StyledModalBody>
             <FixedSizeList
-              height={400}
+              height={450}
               itemData={tokenList.toSorted(tokenListSortComparator)}
               itemCount={tokenList.length}
               itemSize={56}
