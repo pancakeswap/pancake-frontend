@@ -1,17 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, QuestionHelper, Spinner, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, QuestionHelper, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
 import GeneralRiskAcceptModal from 'components/GeneralDisclaimerModal/GeneralRiskAcceptModal'
 import { BridgeDisclaimerConfigs } from 'components/GeneralDisclaimerModal/config'
-import dynamic from 'next/dynamic'
-import { useMemo } from 'react'
+import { Suspense, lazy, useMemo } from 'react'
 import { useEnableWormholeMainnet } from 'state/wormhole/enableTestnet'
 import { useTheme } from 'styled-components'
 import Page from './components/Page'
 import { WORMHOLE_NETWORKS, getBridgeTokens, getRpcUrls, pcsLogo } from './constants'
 import { Themes } from './theme'
-import { ExtendedWidgetConfig, Theme, WidgetEnvs } from './types'
+import { WidgetEnvs, type ExtendedWidgetConfig, type Theme } from './types'
 
-const WormholeBridge = dynamic(() => import('@wormhole-foundation/wormhole-connect'), { ssr: false })
+const WormholeBridge = lazy(() => import('@wormhole-foundation/wormhole-connect'))
 
 export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
   const [enableMainnet, setEnableMainnet] = useEnableWormholeMainnet()
@@ -73,12 +72,9 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
             </Flex>
           </Flex>
 
-          <Box mt={-45}>
-            <WormholeBridge config={wormholeConfig} theme={wormholeTheme} key={JSON.stringify(wormholeConfig)} />
-          </Box>
-          <Box position="absolute" top="35%" left="45%" zIndex={-1}>
-            <Spinner />
-          </Box>
+          <Suspense fallback={null}>
+            <WormholeBridge config={wormholeConfig} theme={wormholeTheme} />
+          </Suspense>
         </Box>
       </Page>
     </>
