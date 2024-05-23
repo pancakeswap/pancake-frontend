@@ -77,10 +77,7 @@ const GaugesVoting = () => {
   const totalGaugesWeight = useGaugesTotalWeight()
   const { isDesktop, isMobile, isXl, isXs } = useMatchBreakpoints()
   const { data: gauges, isLoading } = useGauges()
-  const { filterGauges, setSearchText, searchText, filter, onFilterChange, sort, setSort } = useGaugesFilter(
-    gauges,
-    true,
-  )
+  const { filterGauges, setSearchText, searchText, filter, setFilter, sort, setSort } = useGaugesFilter(gauges, true)
 
   return (
     <StyledGaugesVotingPage>
@@ -147,7 +144,7 @@ const GaugesVoting = () => {
               </Box>
               {!isMobile && !isXl ? (
                 <Grid gridTemplateColumns="1fr 1fr" gridGap="32px">
-                  <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                  <FilterFieldByType onFilterChange={setFilter} value={filter} />
                   <FilterFieldInput initialValue={searchText} placeholder={t('Search')} onChange={setSearchText} />
                 </Grid>
               ) : null}
@@ -155,7 +152,7 @@ const GaugesVoting = () => {
             {/* for tablet fit */}
             {isXl ? (
               <Grid gridTemplateColumns="1fr 1fr">
-                <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                <FilterFieldByType onFilterChange={setFilter} value={filter} />
                 <FilterFieldInput initialValue={searchText} placeholder={t('Search')} onChange={setSearchText} />
               </Grid>
             ) : null}
@@ -171,10 +168,10 @@ const GaugesVoting = () => {
                 top="0"
               >
                 {isXs ? (
-                  <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                  <FilterFieldByType onFilterChange={setFilter} value={filter} />
                 ) : (
                   <Grid gridTemplateColumns="2fr 1fr" gridGap="8px">
-                    <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                    <FilterFieldByType onFilterChange={setFilter} value={filter} />
                     <FilterFieldSort onChange={setSort} />
                   </Grid>
                 )}

@@ -41,7 +41,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
   const { isDesktop, isMobile } = useMatchBreakpoints()
   const totalGaugesWeight = useGaugesTotalWeight()
   const { data: gauges } = useGauges()
-  const { filterGauges, setSearchText, filter, onFilterChange, setSort } = useGaugesFilter(gauges)
+  const { filterGauges, setSearchText, filter, setFilter, setSort } = useGaugesFilter(gauges)
 
   const gaugesTable = isDesktop ? (
     <AddGaugesTable
@@ -93,7 +93,7 @@ export const AddGaugeModal = ({ isOpen, onDismiss, selectRows, onGaugeAdd }) => 
               </FlexGap>
               <Grid gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'} gridGap={isDesktop ? '32px' : '1em'}>
                 <Grid gridTemplateColumns="2fr 1fr" gridGap="8px">
-                  <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                  <FilterFieldByType onFilterChange={setFilter} value={filter} />
                   <FilterFieldSort onChange={setSort} />
                 </Grid>
                 <FilterFieldInput placeholder={t('Search gauges')} onChange={setSearchText} hideLabel={isMobile} />

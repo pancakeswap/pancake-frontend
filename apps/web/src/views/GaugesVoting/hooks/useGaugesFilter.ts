@@ -26,31 +26,30 @@ const getSorter = (sort: SortOptions | undefined) => {
 
 const useGaugesFilterPureState = () => {
   const [searchText, setSearchText] = useState<string>('')
-  const [filter, setFilter] = useState<Filter>({
+  const [filter, _setFilter] = useState<Filter>({
     byChain: [],
     byFeeTier: [],
     byType: [],
   })
 
-  const onFilterChange = useCallback(
+  const setFilter = useCallback(
     (type: OptionsType, value: FilterValue) => {
       const opts = filter[type] as Array<unknown>
-      let newFilter: Filter | undefined
       if (Array.isArray(value)) {
         // select all
-        setFilter((prev) => ({
+        _setFilter((prev) => ({
           ...prev,
           [type]: value.length === opts.length ? [] : value,
         }))
       } else if (opts.includes(value)) {
         // deselect one
-        setFilter((prev) => ({
+        _setFilter((prev) => ({
           ...prev,
           [type]: opts.filter((v) => v !== value),
         }))
       } else {
         // select one
-        setFilter((prev) => ({
+        _setFilter((prev) => ({
           ...prev,
           [type]: [...opts, value],
         }))
@@ -65,7 +64,6 @@ const useGaugesFilterPureState = () => {
 
     filter,
     setFilter,
-    onFilterChange,
   }
 }
 
@@ -77,7 +75,7 @@ const useGaugesFilterQueryState = () => {
       shallow: true,
     }),
   )
-  const [filter, setFilter] = useQueryStates(
+  const [filter, _setFilter] = useQueryStates(
     {
       byChain: parseAsArrayOf(parseAsInteger).withDefault([]),
       byFeeTier: parseAsArrayOf(
@@ -93,27 +91,27 @@ const useGaugesFilterQueryState = () => {
     },
   )
 
-  const onFilterChange = useCallback(
+  const setFilter = useCallback(
     (type: OptionsType, value: FilterValue) => {
       const opts = filter[type]
       // select all
       if (Array.isArray(value)) {
-        setFilter({
+        _setFilter({
           [type]: value.length === opts.length ? [] : value,
         })
       } else if (opts.some((x) => x === value)) {
         // deselect one
-        setFilter({
+        _setFilter({
           [type]: opts.filter((v) => v !== value),
         })
       } else {
         // select one
-        setFilter({
+        _setFilter({
           [type]: [...opts, value],
         })
       }
     },
-    [filter, setFilter],
+    [filter, _setFilter],
   )
 
   return {
@@ -122,7 +120,6 @@ const useGaugesFilterQueryState = () => {
 
     filter,
     setFilter,
-    onFilterChange,
   }
 }
 
@@ -134,7 +131,7 @@ const useGaugesFilterState = (useQuery: boolean) => {
 }
 
 export const useGaugesFilter = (fullGauges: Gauge[] | undefined, urlQuerySync = false) => {
-  const { filter, setFilter, onFilterChange, searchText, setSearchText } = useGaugesFilterState(urlQuerySync)
+  const { filter, setFilter, searchText, setSearchText } = useGaugesFilterState(urlQuerySync)
   const [sort, setSort] = useState<SortOptions>()
 
   const filterGauges = useMemo(() => {
@@ -199,7 +196,6 @@ export const useGaugesFilter = (fullGauges: Gauge[] | undefined, urlQuerySync = 
 
     filter,
     setFilter,
-    onFilterChange,
 
     sort,
     setSort,
