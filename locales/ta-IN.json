@@ -2624,7 +2624,6 @@
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "எங்கள் அஃபிலியேட் திட்டத்தின் விதிமுறைகள் மற்றும் நிபந்தனைகள், பின்வருவது தொடர்பான மாற்றங்களுடன் மே 3, 2023 அன்று புதுப்பிக்கப்பட்டுள்ளன:",
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "zkSync Eraவில் ஸ்டேக்கிங் செய்யும்போது, ஸ்டேக்கிங் செய்த சிறிது நேரத்திலேயே உங்கள் CAKE-ஐ அன்ஸ்டேக் செய்தால், ரிவார்டுகள் எதுவும் கிடைக்காது.",
   "Proceed in your wallet": "உங்கள் வாலெட்டில் தொடரவும்",
-  "Enable spending %symbol%": "%symbol% செலவழிப்பை இயக்கு",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "வாலெட்டில் நீங்கள் அங்கீகரிக்க விரும்பும் டோக்கன்களின் எண்ணிக்கையை உள்ளிட வேண்டியிருந்தால், நீங்கள் ஸ்வாப் செய்யும் டோக்கன்களின் அளவைவிட அதிகமான அல்லது அதற்குச் சமமான எண்ணை உள்ளிடலாம்.",
   "Why": "ஏன்",
   "approving": "அங்கீகரிப்பது",
@@ -3353,5 +3352,9 @@
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees",
   "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
-  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid",
+  "Get up to $8M USD in interface fees refunded on PancakeSwap": "Get up to $8M USD in interface fees refunded on PancakeSwap",
+  "Match your Uni volume on PancakeSwap to get a refund of up to": "Match your Uni volume on PancakeSwap to get a refund of up to",
+  "$8M USD": "$8M USD",
+  "in Uniswap interface fees paid": "in Uniswap interface fees paid"
 }

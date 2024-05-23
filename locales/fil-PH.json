@@ -2624,7 +2624,6 @@
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "Na-update ang mga tuntunin at kundisyon ng aming affiliate program noong Mayo 3, 2023 na may mga pagbabagong nauugnay sa",
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "Kapag nag-i-stake sa zkSync Era, puwedeng magresulta sa hindi pagkakaroon ng mga reward ang pag-unstake sa iyong CAKE agad-agad pagkatapos mag-stake.",
   "Proceed in your wallet": "Magpatuloy sa iyong wallet",
-  "Enable spending %symbol%": "I-enable ang paggastos ng %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "Kung hinihiling sa iyo ng wallet na ilagay ang bilang ng mga token na gusto mong aprubahan, puwede kang maglagay ng bilang na mas malaki sa o katumbas ng dami ng mga token na isina-swap mo.",
   "Why": "Bakit",
   "approving": "inaaprubahan",
@@ -3353,5 +3352,9 @@
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Mga fee na natipid sa PancakeSwap kumpara sa mga pangunahing DEX na sumisingil ng mga interface fee",
   "Up to $8M in interface fees paid refunded!": "Na-refund ang hanggang $8M na mga interface fee na binayaran!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Makakuha ng refund na hanggang $8M na mga interface fee na binayaran sa PancakeSwap",
-  "Match your volume and we'll refund ALL your interface fees paid": "Pantayan ang iyong volume at ire-refund namin ang LAHAT ng iyong interface fee na binayaran"
+  "Match your volume and we'll refund ALL your interface fees paid": "Pantayan ang iyong volume at ire-refund namin ang LAHAT ng iyong interface fee na binayaran",
+  "Get up to $8M USD in interface fees refunded on PancakeSwap": "Get up to $8M USD in interface fees refunded on PancakeSwap",
+  "Match your Uni volume on PancakeSwap to get a refund of up to": "Match your Uni volume on PancakeSwap to get a refund of up to",
+  "$8M USD": "$8M USD",
+  "in Uniswap interface fees paid": "in Uniswap interface fees paid"
 }
