@@ -25,10 +25,11 @@ export enum QuestEditModalState {
 interface ActionModalProps {
   openModal: boolean
   isPublish: boolean
+  handleSave: () => void
   setOpenModal: (val: boolean) => void
 }
 
-export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, setOpenModal }) => {
+export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, handleSave, setOpenModal }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const [modalView, setModalView] = useState<QuestEditModalState>(QuestEditModalState.DEFAULT)
@@ -41,6 +42,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, 
 
   const handleSubmit = () => {
     setModalView(QuestEditModalState.LOADING)
+    handleSave()
 
     setTimeout(() => {
       setModalView(QuestEditModalState.FINISHED)
