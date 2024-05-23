@@ -25,15 +25,16 @@ import { CurrencyLogo, NumberDisplay } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useAtom } from 'jotai'
 import memoize from 'lodash/memoize'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { feeTokenAtom } from 'state/paymaster/atoms'
 import { useNativeBalances, useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import styled from 'styled-components'
 import { Address } from 'viem'
-import { useAccount } from 'wagmi'
+import { useAccount, useConfig } from 'wagmi'
 
 import { Currency } from '@pancakeswap/swap-sdk-core'
+import { watchAccount } from '@wagmi/core'
 import { paymasterInfo, paymasterTokens } from 'config/paymaster'
 
 // Selector Styles
@@ -105,6 +106,8 @@ function GasTokenModal() {
   const { isOpen, setIsOpen, onDismiss } = useModalV2()
   const { address: account } = useAccount()
 
+  const config = useConfig()
+
   const [feeToken, setFeeToken] = useAtom(feeTokenAtom)
 
   const nativeBalances = useNativeBalances([account])
@@ -112,6 +115,15 @@ function GasTokenModal() {
     account,
     paymasterTokens.filter((token) => token.isToken) as any[],
   )
+
+  // Reset fee token if account changes or disconnects
+  useEffect(() => {
+    return watchAccount(config, {
+      onChange() {
+        setFeeToken(paymasterTokens[0])
+      },
+    })
+  }, [config])
 
   const getTokenBalance = memoize((address: Address) => balances[address])
 
