@@ -72,7 +72,7 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
             </Flex>
           </Flex>
 
-          <Suspense fallback={null}>
+          <Suspense>
             <WormholeBridge config={wormholeConfig} theme={wormholeTheme} />
           </Suspense>
         </Box>
