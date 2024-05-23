@@ -17,7 +17,6 @@ import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/Tasks/Co
 import { TaskSocialConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
-import { TaskType } from 'views/DashboardQuestEdit/type'
 import { validateUrl } from 'views/DashboardQuestEdit/utils/validateTask'
 
 interface SocialTaskProps {
@@ -32,7 +31,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
-  const social = TaskType.X_LINK_POST
+  const social = task.type
   const { taskIcon, taskNaming, taskInputPlaceholder } = useTaskInfo()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Open in new tab'), {
