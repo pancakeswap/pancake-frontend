@@ -11,7 +11,7 @@ import { WORMHOLE_NETWORKS, getBridgeTokens, getRpcUrls, pcsLogo } from './const
 import { Themes } from './theme'
 import { WidgetEnvs, type ExtendedWidgetConfig, type Theme } from './types'
 
-const WormholeBridge = dynamic(() => import('@wormhole-foundation/wormhole-connect'), { ssr: false })
+const WormholeWidget = dynamic(() => import('@wormhole-foundation/wormhole-connect'), { ssr: false })
 
 export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
   const [enableMainnet, setEnableMainnet] = useEnableWormholeMainnet()
@@ -74,7 +74,7 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
           </Flex>
 
           <Box mt={-45}>
-            <WormholeBridge config={wormholeConfig} theme={wormholeTheme} />
+            <WormholeWidget config={wormholeConfig} theme={wormholeTheme} />
           </Box>
         </Box>
       </Page>
