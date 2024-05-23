@@ -13,6 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/chains'
 import { LeaderboardDataItem, TeamRanksProps } from '../../../types'
 import TopTradersGrid from './TopTradersGrid'
 
@@ -77,6 +78,7 @@ const TopTradersCard: React.FC<React.PropsWithChildren<TeamRanksProps & { subgra
             </Flex>
             {subgraphName && (
               <SubgraphHealthIndicator
+                chainId={ChainId.BSC}
                 subgraphName={subgraphName}
                 inline
                 obeyGlobalSetting={false}

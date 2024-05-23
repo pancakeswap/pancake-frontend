@@ -17,6 +17,7 @@ import { CLAIM, OVER } from 'config/constants/trading-competition/phases'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/chains'
 import ClaimModal from '../ClaimModal'
 import CardUserInfo from './CardUserInfo'
 import ShareImageModal from '../ShareImageModal'
@@ -151,6 +152,7 @@ const ScoreCard: React.FC<React.PropsWithChildren<ScoreCardProps>> = ({
       {subgraphName && hasRegistered && (
         <Flex p="16px" justifyContent="flex-end">
           <SubgraphHealthIndicator
+            chainId={ChainId.BSC}
             subgraphName={subgraphName}
             inline
             obeyGlobalSetting={false}
