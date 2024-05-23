@@ -3350,6 +3350,8 @@
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "이 볼트에서 획득한 Pearl은 잔액에 표시되기까지 시간이 걸리므로 주의하시기 바랍니다.",
   "Fee saved": "수수료 절감",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "주요 DEX에서 부과하는 수수료 대비 PancakeSwap에서 절감된 수수료",
+  "Gauge Not Found": "Gauge Not Found",
+  "Gauge can not be found using the hash passed via URL.": "Gauge can not be found using the hash passed via URL.",
   "Up to $8M in interface fees paid refunded!": "지불한 인터페이스 수수료 중 최대 800만 달러가 환불되었습니다!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "PancakeSwap에서 지불한 인터페이스 수수료 중 최대 800만 달러를 환급받으세요",
   "Match your volume and we'll refund ALL your interface fees paid": "볼륨을 맞추면 지불한 모든 인터페이스 수수료를 환불해 드립니다.",
