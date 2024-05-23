@@ -1,5 +1,15 @@
 # @pancakeswap/smart-router
 
+## 6.0.8
+
+### Patch Changes
+
+- Updated dependencies [b20f210]
+- Updated dependencies [9bef4cd]
+  - @pancakeswap/tokens@0.6.16
+  - @pancakeswap/gauges@1.2.4
+  - @pancakeswap/stable-swap-sdk@1.0.8
+
 ## 6.0.7
 
 ### Patch Changes
