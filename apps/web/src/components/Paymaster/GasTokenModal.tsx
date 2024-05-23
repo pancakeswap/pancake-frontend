@@ -35,7 +35,7 @@ import { useAccount, useConfig } from 'wagmi'
 
 import { Currency } from '@pancakeswap/swap-sdk-core'
 import { watchAccount } from '@wagmi/core'
-import { paymasterInfo, paymasterTokens } from 'config/paymaster'
+import { DEFAULT_PAYMASTER_TOKEN, paymasterInfo, paymasterTokens } from 'config/paymaster'
 
 // Selector Styles
 const GasTokenSelectButton = styled(Button).attrs({ variant: 'text', scale: 'xs' })`
@@ -120,7 +120,7 @@ function GasTokenModal() {
   useEffect(() => {
     return watchAccount(config, {
       onChange() {
-        setFeeToken(paymasterTokens[0])
+        setFeeToken(DEFAULT_PAYMASTER_TOKEN)
       },
     })
   }, [config])
