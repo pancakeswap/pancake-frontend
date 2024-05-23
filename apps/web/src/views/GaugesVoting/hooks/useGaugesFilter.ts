@@ -1,9 +1,8 @@
 import { chainNames } from '@pancakeswap/chains'
-import { GAUGE_TYPE_NAMES, Gauge, GaugeType } from '@pancakeswap/gauges'
+import { GAUGES_SUPPORTED_CHAIN_IDS, GAUGE_TYPE_NAMES, Gauge, GaugeType } from '@pancakeswap/gauges'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import {
   parseAsArrayOf,
-  parseAsInteger,
   parseAsNumberLiteral,
   parseAsString,
   parseAsStringLiteral,
@@ -77,7 +76,9 @@ const useGaugesFilterQueryState = () => {
   )
   const [filter, _setFilter] = useQueryStates(
     {
-      byChain: parseAsArrayOf(parseAsInteger).withDefault([]),
+      byChain: parseAsArrayOf(
+        parseAsNumberLiteral<(typeof GAUGES_SUPPORTED_CHAIN_IDS)[number]>(GAUGES_SUPPORTED_CHAIN_IDS),
+      ).withDefault([]),
       byFeeTier: parseAsArrayOf(
         parseAsNumberLiteral<FeeAmount>([FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH, FeeAmount.LOWEST]),
       ).withDefault([]),
@@ -88,6 +89,7 @@ const useGaugesFilterQueryState = () => {
     {
       history: 'replace',
       shallow: true,
+      clearOnDefault: true,
     },
   )
 
