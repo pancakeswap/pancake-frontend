@@ -2624,7 +2624,6 @@
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "Οι όροι και προϋποθέσεις του προγράμματος συνεργατών μας ενημερώθηκαν στις 3 Μαΐου 2023, με αλλαγές που αφορούν",
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "Όταν κάνετε stake στο zkSync Era, η κατάργηση του stake του CAKE σας αμέσως μετά το stake μπορεί να έχει ως αποτέλεσμα να μην κερδίσετε καμία ανταμοιβή.",
   "Proceed in your wallet": "Συνεχίστε στο πορτοφόλι σας",
-  "Enable spending %symbol%": "Ενεργοποίηση δαπάνης %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "Εάν το πορτοφόλι απαιτεί να εισαγάγετε τον αριθμό των νομισμάτων που θέλετε να εγκρίνετε, μπορείτε να εισαγάγετε έναν αριθμό που είναι μεγαλύτερος ή ίσος με το ποσό των νομισμάτων που ανταλλάσσετε.",
   "Why": "Γιατί",
   "approving": "πρέπει να εγκριθεί",
@@ -3353,5 +3352,9 @@
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Εξοικονόμηση προμηθειών στο PancakeSwap σε σύγκριση με τα ποσοστά που χρεώνονται από μεγαλύτερα DEX",
   "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
-  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid",
+  "Get up to $8M USD in interface fees refunded on PancakeSwap": "Get up to $8M USD in interface fees refunded on PancakeSwap",
+  "Match your Uni volume on PancakeSwap to get a refund of up to": "Match your Uni volume on PancakeSwap to get a refund of up to",
+  "$8M USD": "$8M USD",
+  "in Uniswap interface fees paid": "in Uniswap interface fees paid"
 }

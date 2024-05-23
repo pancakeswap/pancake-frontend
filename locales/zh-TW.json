@@ -2624,7 +2624,6 @@
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "我們加盟計劃的條款與條件已於 2023 年 5 月 3 日更新，修改內容涉及",
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "在 zkSync Era 上進行質押時，如果在質押 CAKE 不久後又將其解除質押，可能會導致無法賺取獎勵。",
   "Proceed in your wallet": "在錢包中確認",
-  "Enable spending %symbol%": "授權支出 %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "如果錢包要求您輸入要批准的代幣數量，您可以輸入一個數字，該數字應大於或等於您要交換的代幣金額。",
   "Why": "為什麼需要",
   "approving": "授權",
@@ -3353,5 +3352,9 @@
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees",
   "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
-  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid",
+  "Get up to $8M USD in interface fees refunded on PancakeSwap": "Get up to $8M USD in interface fees refunded on PancakeSwap",
+  "Match your Uni volume on PancakeSwap to get a refund of up to": "Match your Uni volume on PancakeSwap to get a refund of up to",
+  "$8M USD": "$8M USD",
+  "in Uniswap interface fees paid": "in Uniswap interface fees paid"
 }

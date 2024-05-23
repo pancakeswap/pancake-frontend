@@ -1,5 +1,15 @@
 # @pancakeswap/widgets-internal
 
+## 0.1.48
+
+### Patch Changes
+
+- Updated dependencies [b20f210]
+- Updated dependencies [9bef4cd]
+  - @pancakeswap/tokens@0.6.16
+  - @pancakeswap/farms@1.0.62
+  - @pancakeswap/pools@5.1.22
+
 ## 0.1.47
 
 ### Patch Changes

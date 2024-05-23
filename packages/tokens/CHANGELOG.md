@@ -1,5 +1,12 @@
 # @pancakeswap/tokens
 
+## 0.6.16
+
+### Patch Changes
+
+- b20f210: Correction of $MAGIC token name from "Magic Internet Money" to "MAGIC"
+- 9bef4cd: Add Native USDC on zkSync
+
 ## 0.6.15
 
 ### Patch Changes

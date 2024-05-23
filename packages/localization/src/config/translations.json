@@ -3358,6 +3358,8 @@
   "Pay for network fees with any asset from the list below.": "Pay for network fees with any asset from the list below.",
   "Make sure you have at least $1 worth of the token.": "Make sure you have at least $1 worth of the token.",
   "Gas Token": "Gas Token",
+  "Gauge Not Found": "Gauge Not Found",
+  "Gauge can not be found using the hash passed via URL.": "Gauge can not be found using the hash passed via URL.",
   "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
   "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid",

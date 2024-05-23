@@ -23,12 +23,12 @@ const debugFormat = (unix?: bigint | number) => {
   return dayjs.unix(Number(unix)).format('YYYY-MM-DD HH:mm:ss')
 }
 
-export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE }, onChange }) => {
+export const TableRow: React.FC<RowProps> = ({ data, submitted, vote = { ...DEFAULT_VOTE }, onChange }) => {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
   const { cakeLockedAmount } = useCakeLockStatus()
   const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
-  const userVote = useUserVote(data)
+  const userVote = useUserVote(data, submitted)
   const {
     currentVoteWeight,
     currentVotePercent,
@@ -48,7 +48,7 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
   }
 
   return (
-    <VRow>
+    <VRow data-gauge-hash={data.hash}>
       <FlexGap alignItems="center" gap="13px">
         <DebugTooltips
           content={
@@ -64,6 +64,9 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
                   proxyEnd: debugFormat(userVote?.proxyEnd),
                   nativeEnd: debugFormat(userVote?.nativeEnd),
                   proxyVeCakeBalance: proxyVeCakeBalance?.toString(),
+                  willUnlock,
+                  voteLocked,
+                  cakeLocked,
                 },
                 undefined,
                 2,
