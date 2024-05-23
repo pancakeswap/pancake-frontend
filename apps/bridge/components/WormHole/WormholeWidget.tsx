@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, QuestionHelper, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
 import GeneralRiskAcceptModal from 'components/GeneralDisclaimerModal/GeneralRiskAcceptModal'
 import { BridgeDisclaimerConfigs } from 'components/GeneralDisclaimerModal/config'
-import NoSSR from 'components/NoSSR/NoSSR'
 import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
 import { useEnableWormholeMainnet } from 'state/wormhole/enableTestnet'
@@ -73,11 +72,9 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
               />
             </Flex>
           </Flex>
-          <NoSSR>
-            <Box mt={-45}>
-              <WormholeWidget config={wormholeConfig} theme={wormholeTheme} />
-            </Box>
-          </NoSSR>
+          <Box>
+            <WormholeWidget config={wormholeConfig} theme={wormholeTheme} />
+          </Box>
         </Box>
       </Page>
     </>
