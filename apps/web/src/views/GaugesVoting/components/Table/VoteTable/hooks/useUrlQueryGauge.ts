@@ -3,7 +3,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { watchAccount } from '@wagmi/core'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useConfig } from 'wagmi'
@@ -12,12 +11,17 @@ export const GAUGE_QUERY_KEY = 'gauge_hash'
 
 export const useUrlQueryGauge = (gauges: Gauge[] | undefined) => {
   const { account } = useAccountActiveChain()
-  const searchParams = useSearchParams()
   const router = useRouter()
   const { toastError } = useToast()
   const { t } = useTranslation()
 
-  const rawHashes = useMemo(() => searchParams.getAll(GAUGE_QUERY_KEY), [searchParams])
+  const rawHashes = useMemo(() => {
+    if (!router.query[GAUGE_QUERY_KEY]) return []
+    if (Array.isArray(router.query[GAUGE_QUERY_KEY])) {
+      return router.query[GAUGE_QUERY_KEY]
+    }
+    return [router.query[GAUGE_QUERY_KEY]]
+  }, [router.query])
   const [validHashes, invalidHashes] = useMemo(() => {
     if (!account) return [[], []]
     if (rawHashes && rawHashes.length && gauges && gauges.length) {
@@ -55,12 +59,12 @@ export const useUrlQueryGauge = (gauges: Gauge[] | undefined) => {
       if (!nextAccount.address && !preAccount.address) return
 
       if (router.isReady && nextAccount?.address !== preAccount?.address) {
-        const query = new URLSearchParams(searchParams.toString())
-        query.delete(GAUGE_QUERY_KEY)
-        router.replace(router.pathname, { query: query.toString() }, { shallow: true })
+        const query = { ...router.query }
+        delete query[GAUGE_QUERY_KEY]
+        router.replace(router.pathname, { query }, { shallow: true })
       }
     },
-    [router, searchParams],
+    [router],
   )
 
   useEffect(() => {
@@ -68,7 +72,7 @@ export const useUrlQueryGauge = (gauges: Gauge[] | undefined) => {
       onChange: onAccountChange,
     })
     return () => unwatch()
-  }, [config, onAccountChange, router, searchParams])
+  }, [config, onAccountChange])
 
   return validHashes
 }
