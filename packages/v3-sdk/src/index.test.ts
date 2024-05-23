@@ -13,8 +13,6 @@ test('exports', () => {
       "NoTickDataProvider",
       "TickListDataProvider",
       "getPool",
-      "getPoolAddress",
-      "toId",
       "getPriceOfToken",
       "getTokensPrice",
       "hasInvolvedToken",
