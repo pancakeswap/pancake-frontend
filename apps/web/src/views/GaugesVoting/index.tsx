@@ -23,7 +23,7 @@ import { MyVeCakeBalance } from './components/MyVeCakeBalance'
 import { GaugesList, GaugesTable, VoteTable } from './components/Table'
 import { WeightsPieChart } from './components/WeightsPieChart'
 import { useGauges } from './hooks/useGauges'
-import { useGaugesFilter } from './hooks/useGaugesFilter'
+import { useGaugesQueryFilter } from './hooks/useGaugesFilter'
 import { useGaugesTotalWeight } from './hooks/useGaugesTotalWeight'
 
 const InlineLink = styled(LinkExternal)`
@@ -77,7 +77,7 @@ const GaugesVoting = () => {
   const totalGaugesWeight = useGaugesTotalWeight()
   const { isDesktop, isMobile, isXl, isXs } = useMatchBreakpoints()
   const { data: gauges, isLoading } = useGauges()
-  const { filterGauges, setSearchText, searchText, filter, setFilter, sort, setSort } = useGaugesFilter(gauges, true)
+  const { filterGauges, setSearchText, searchText, filter, setFilter, sort, setSort } = useGaugesQueryFilter(gauges)
 
   return (
     <StyledGaugesVotingPage>

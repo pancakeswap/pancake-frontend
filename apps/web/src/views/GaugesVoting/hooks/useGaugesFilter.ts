@@ -123,18 +123,14 @@ const useGaugesFilterQueryState = () => {
   }
 }
 
-const useGaugesFilterState = (useQuery: boolean) => {
-  const pureHook = useGaugesFilterPureState()
-  const queryHook = useGaugesFilterQueryState()
+const useFilteredGauges = ({ filter, fullGauges, searchText, sort, setSort }) => {
+  useEffect(() => {
+    if (fullGauges && fullGauges.length && !sort) {
+      setSort(SortOptions.Default)
+    }
+  }, [fullGauges, setSort, sort])
 
-  return useQuery ? queryHook : pureHook
-}
-
-export const useGaugesFilter = (fullGauges: Gauge[] | undefined, urlQuerySync = false) => {
-  const { filter, setFilter, searchText, setSearchText } = useGaugesFilterState(urlQuerySync)
-  const [sort, setSort] = useState<SortOptions>()
-
-  const filterGauges = useMemo(() => {
+  return useMemo(() => {
     if (!fullGauges || !fullGauges.length) return []
     const { byChain, byFeeTier, byType } = filter
     let results: Gauge[] = fullGauges
@@ -181,12 +177,31 @@ export const useGaugesFilter = (fullGauges: Gauge[] | undefined, urlQuerySync = 
 
     return results
   }, [filter, fullGauges, searchText, sort])
+}
 
-  useEffect(() => {
-    if (fullGauges && fullGauges.length && !sort) {
-      setSort(SortOptions.Default)
-    }
-  }, [fullGauges, sort])
+export const useGaugesQueryFilter = (fullGauges: Gauge[] | undefined) => {
+  const { filter, setFilter, searchText, setSearchText } = useGaugesFilterQueryState()
+  const [sort, setSort] = useState<SortOptions>()
+  const filterGauges = useFilteredGauges({ filter, fullGauges, searchText, sort, setSort })
+
+  return {
+    filterGauges,
+
+    searchText,
+    setSearchText,
+
+    filter,
+    setFilter,
+
+    sort,
+    setSort,
+  }
+}
+
+export const useGaugesFilter = (fullGauges: Gauge[] | undefined) => {
+  const { filter, setFilter, searchText, setSearchText } = useGaugesFilterPureState()
+  const [sort, setSort] = useState<SortOptions>()
+  const filterGauges = useFilteredGauges({ filter, fullGauges, searchText, sort, setSort })
 
   return {
     filterGauges,
