@@ -18,24 +18,24 @@ export const paymasterTokens: Currency[] = [
 
 export const paymasterInfo = {
   [zksyncTokens.wbtc.address]: {
-    discount: '20%',
+    discount: '-20%',
   },
   [zksyncTokens.dai.address]: {
-    discount: '20%',
+    discount: '-20%',
   },
   [zksyncTokens.usdc.address]: {
-    discount: '20%',
+    discount: '-20%',
   },
   [zksyncTokens.usdcNative.address]: {
-    discount: '20%',
+    discount: '-20%',
   },
   [zksyncTokens.usdt.address]: {
-    discount: '20%',
+    discount: '-20%',
   },
   [zksyncTokens.grai.address]: {
-    discount: '20%',
+    discount: '-20%',
   },
   [zksyncTokens.tes.address]: {
-    discount: '20%',
+    discount: '-20%',
   },
 }

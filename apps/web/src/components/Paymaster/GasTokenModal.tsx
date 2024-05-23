@@ -166,7 +166,7 @@ function GasTokenModal() {
       targetRef: innerTargetRef,
       tooltip: innerTooltip,
       tooltipVisible: innerTooltipVisible,
-    } = useTooltip(<>{itemInfo?.discount && <>-{itemInfo.discount}</>} discount on this gas fee token</>)
+    } = useTooltip(<>{itemInfo?.discount && <>{itemInfo.discount}</>} discount on this gas fee token</>)
 
     return (
       <FixedHeightRow style={style} onClick={() => !disabled && onTokenSelected(item)} $disabled={disabled}>
@@ -176,7 +176,9 @@ function GasTokenModal() {
             <Column marginLeft="12px">
               <Text bold>
                 {item.symbol} &nbsp;
-                {itemInfo && <Badge ref={!disabled ? innerTargetRef : null}>⛽️ {itemInfo.discount}</Badge>}
+                {itemInfo && itemInfo.discount && (
+                  <Badge ref={!disabled ? innerTargetRef : null}>⛽️ {itemInfo.discount}</Badge>
+                )}
               </Text>
               <Text color="textSubtle" maxWidth="200px" ellipsis small>
                 {item.name}
