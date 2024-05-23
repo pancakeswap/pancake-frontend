@@ -1,5 +1,5 @@
+export * from './getCurrencyPrice'
 export * from './getPool'
-export * from './getPriceOfToken'
-export * from './getTokensPrice'
+export * from './getPriceOfCurrency'
 export * from './hasInvolvedToken'
 export * from './swap'
