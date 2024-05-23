@@ -18,7 +18,7 @@ test('exports', () => {
       "getPriceOfCurrency",
       "getPriceOfCurrency0",
       "getPriceOfCurrency1",
-      "hasInvolvedToken",
+      "hasInvolvedCurrency",
       "swap",
       "getOutputAmount",
       "getInputAmount",

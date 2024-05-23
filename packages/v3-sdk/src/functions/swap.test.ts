@@ -16,8 +16,8 @@ describe('swaps', () => {
 
   beforeEach(() => {
     pool = {
-      token0: USDC,
-      token1: DAI,
+      currency0: USDC,
+      currency1: DAI,
       fee: FeeAmount.LOW,
       sqrtRatioX96: encodeSqrtRatioX96(1, 1),
       liquidity: ONE_ETHER,
@@ -75,8 +75,8 @@ describe('#bigNums', () => {
   const bigNum2 = BigInt(Number.MAX_SAFE_INTEGER) + 1n
   beforeEach(() => {
     pool = {
-      token0: USDC,
-      token1: DAI,
+      currency0: USDC,
+      currency1: DAI,
       fee: FeeAmount.LOW,
       sqrtRatioX96: encodeSqrtRatioX96(bigNum1, bigNum2),
       liquidity: ONE_ETHER,
