@@ -1,4 +1,4 @@
-import { MainnetChainName, TestnetChainName } from '@wormhole-foundation/wormhole-connect'
+import { ChainName } from '@wormhole-foundation/wormhole-connect'
 import { arbitrum, arbitrumGoerli, base, baseGoerli, bscTestnet, mainnet as ethereum, goerli } from 'wagmi/chains'
 import { getNodeRealUrl } from '../../utils/nodes/nodereal'
 import { getGroveUrl } from '../../utils/nodes/pokt'
@@ -7,8 +7,8 @@ import { Env, WidgetEnvs } from './types'
 
 export type Network = {
   name: string
-  testnet: TestnetChainName
-  mainnet: MainnetChainName
+  testnet: ChainName
+  mainnet: ChainName
   mainnetRpc: string
   testnetRpc: string
 }
