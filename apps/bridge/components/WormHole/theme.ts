@@ -55,7 +55,7 @@ export const wormHoleDarkTheme = {
     A700: lightenColor('#372f46', 0.2),
   },
   divider: '#383241',
-  background: { default: 'rgb(53,54,88)', paper: '27262c' },
+  background: { default: 'rgb(53,54,88)', paper: '#27262c' },
   text: { primary: '#ffffff', secondary: '#b8acd2' },
   error: {
     '50': lightenColor('#ED4B9E', 0.9),
@@ -130,11 +130,12 @@ export const wormHoleDarkTheme = {
     actionText: '#27262c',
     hover: '#53DEE9',
   },
-  options: { hover: '#3c3742', select: '#372f46' },
-  card: { background: '#27262c', secondary: '#372f46', elevation: '5px 5px 15px 5px rgb(33,34,68)' },
+  options: { hover: '#3c3742', select: 'rgb(83,84,118, 0.3)' },
+  card: { background: '#27262c', secondary: 'rgb(93,94,128, 0.3)', elevation: '5px 5px 15px 5px rgb(33,34,68)' },
   popover: { background: '#27262c', secondary: '#372f46', elevation: '5px 5px 15px 5px rgb(33,34,68)' },
   modal: { background: 'rgb(53,54,88)' },
   font: { primary: 'Kanit', header: 'Kanit' },
+  mode: 'dark',
 }
 
 export const wormHoleLightTheme = {
@@ -246,11 +247,12 @@ export const wormHoleLightTheme = {
     actionText: '#ffffff',
     hover: '#53DEE9',
   },
-  options: { hover: '#edeaf4', select: '#ffffff' },
+  options: { hover: '#edeaf4', select: 'rgb(193,207,215, 0.3)' },
   card: { background: '#edeaf4', secondary: '#ffffff', elevation: '5px 5px 10px 5px #CCD2E7' },
   popover: { background: '#edeaf4', secondary: '#ffffff', elevation: '5px 5px 10px 5px #CCD2E7' },
   modal: { background: 'rgb(233,247,255)' },
   font: { primary: 'Kanit', header: 'Kanit' },
+  mode: 'light',
 }
 
 enum Modes {

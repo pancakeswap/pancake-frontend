@@ -1,15 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, QuestionHelper, Spinner, Text, Toggle, useMatchBreakpoints } from '@pancakeswap/uikit'
-import WormholeBridge from '@wormhole-foundation/wormhole-connect'
 import GeneralRiskAcceptModal from 'components/GeneralDisclaimerModal/GeneralRiskAcceptModal'
 import { BridgeDisclaimerConfigs } from 'components/GeneralDisclaimerModal/config'
+import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
 import { useEnableWormholeMainnet } from 'state/wormhole/enableTestnet'
 import { useTheme } from 'styled-components'
 import Page from './components/Page'
 import { WORMHOLE_NETWORKS, getBridgeTokens, getRpcUrls, pcsLogo } from './constants'
 import { Themes } from './theme'
-import { ExtendedWidgetConfig, WidgetEnvs } from './types'
+import { ExtendedWidgetConfig, Theme, WidgetEnvs } from './types'
+
+const WormholeBridge = dynamic(() => import('@wormhole-foundation/wormhole-connect'), { ssr: false })
 
 export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
   const [enableMainnet, setEnableMainnet] = useEnableWormholeMainnet()
@@ -19,7 +21,6 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
 
   const wormholeConfig: ExtendedWidgetConfig = useMemo(() => {
     const widgetEnv = enableMainnet ? WidgetEnvs.mainnet : WidgetEnvs.testnet
-    const { mode, customTheme } = theme.isDark ? Themes.dark : Themes.light
     const networks = WORMHOLE_NETWORKS.filter((n) => (isAptos ? true : n.name !== 'Aptos')).map((n) => n[widgetEnv])
 
     const rpcs = getRpcUrls(widgetEnv)
@@ -30,8 +31,6 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
       rpcs,
       networks,
       tokens,
-      mode,
-      customTheme,
       bridgeDefaults: {
         fromNetwork: isAptos ? 'aptos' : enableMainnet ? 'ethereum' : 'goerli',
         toNetwork: 'bsc',
@@ -42,7 +41,11 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
       partnerLogo: pcsLogo,
     }
     return config
-  }, [theme.isDark, enableMainnet, isAptos])
+  }, [enableMainnet, isAptos])
+
+  const wormholeTheme: Theme = useMemo(() => {
+    return theme.isDark ? Themes.dark.customTheme : Themes.light.customTheme
+  }, [theme.isDark])
 
   return (
     <>
@@ -71,7 +74,7 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
           </Flex>
 
           <Box mt={-45}>
-            <WormholeBridge config={wormholeConfig} key={JSON.stringify(wormholeConfig)} />
+            <WormholeBridge config={wormholeConfig} theme={wormholeTheme} key={JSON.stringify(wormholeConfig)} />
           </Box>
           <Box position="absolute" top="35%" left="45%" zIndex={-1}>
             <Spinner />
