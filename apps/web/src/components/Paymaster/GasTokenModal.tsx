@@ -25,7 +25,6 @@ import { CurrencyLogo, NumberDisplay } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useAtom } from 'jotai'
 import memoize from 'lodash/memoize'
-import Image from 'next/image'
 import { useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { feeTokenAtom } from 'state/paymaster/atoms'
@@ -34,7 +33,8 @@ import styled from 'styled-components'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 
-import { PaymasterToken, paymasterTokens, paymasterTokens as tokenList } from 'config/paymaster'
+import { Currency } from '@pancakeswap/swap-sdk-core'
+import { paymasterInfo, paymasterTokens } from 'config/paymaster'
 
 // Selector Styles
 const GasTokenSelectButton = styled(Button).attrs({ variant: 'text', scale: 'xs' })`
@@ -110,7 +110,7 @@ function GasTokenModal() {
   const nativeBalances = useNativeBalances([account])
   const [balances, balancesLoading] = useTokenBalancesWithLoadingIndicator(
     account,
-    tokenList.filter((token) => token.isToken) as any[],
+    paymasterTokens.filter((token) => token.isToken) as any[],
   )
 
   const getTokenBalance = memoize((address: Address) => balances[address])
@@ -120,7 +120,7 @@ function GasTokenModal() {
   }, [setIsOpen])
 
   const onTokenSelected = useCallback(
-    (token: PaymasterToken) => {
+    (token: Currency) => {
       setFeeToken(token)
       setIsOpen(false)
     },
@@ -131,9 +131,9 @@ function GasTokenModal() {
    * Sort tokens based on balances
    * Keeps the Native Token in the first position
    */
-  const tokenListSortComparator = (tokenA: (typeof paymasterTokens)[0], tokenB: (typeof paymasterTokens)[0]) => {
-    const balanceA = getTokenBalance(tokenA.address)
-    const balanceB = getTokenBalance(tokenB.address)
+  const tokenListSortComparator = (tokenA: Currency, tokenB: Currency) => {
+    const balanceA = getTokenBalance(tokenA.wrapped.address)
+    const balanceB = getTokenBalance(tokenB.wrapped.address)
 
     if (!balanceA || !balanceB) return 0
 
@@ -147,7 +147,10 @@ function GasTokenModal() {
   const itemKey = useCallback((index: number, data: any) => `${data[index]}-${index}`, [])
 
   const Row = ({ data, index, style }) => {
-    const item = data[index] as PaymasterToken
+    const item = data[index] as Currency
+
+    // Extra info for the token
+    const itemInfo = paymasterInfo[item.wrapped.address]
 
     const disabled = useMemo(
       () =>
@@ -163,7 +166,7 @@ function GasTokenModal() {
       targetRef: innerTargetRef,
       tooltip: innerTooltip,
       tooltipVisible: innerTooltipVisible,
-    } = useTooltip(<>{item.discount && item.discount.replace('-', '')} discount on this gas fee token</>)
+    } = useTooltip(<>{itemInfo?.discount && <>-{itemInfo.discount}</>} discount on this gas fee token</>)
 
     return (
       <FixedHeightRow style={style} onClick={() => !disabled && onTokenSelected(item)} $disabled={disabled}>
@@ -173,7 +176,7 @@ function GasTokenModal() {
             <Column marginLeft="12px">
               <Text bold>
                 {item.symbol} &nbsp;
-                {item.discount && <Badge ref={!disabled ? innerTargetRef : null}>⛽️ {item.discount}</Badge>}
+                {itemInfo && <Badge ref={!disabled ? innerTargetRef : null}>⛽️ {itemInfo.discount}</Badge>}
               </Text>
               <Text color="textSubtle" maxWidth="200px" ellipsis small>
                 {item.name}
@@ -287,8 +290,8 @@ function GasTokenModal() {
           <StyledModalBody>
             <FixedSizeList
               height={450}
-              itemData={tokenList.toSorted(tokenListSortComparator)}
-              itemCount={tokenList.length}
+              itemData={paymasterTokens.toSorted(tokenListSortComparator)}
+              itemCount={paymasterTokens.length}
               itemSize={56}
               width="100%"
               itemKey={itemKey}
@@ -299,7 +302,7 @@ function GasTokenModal() {
             <StyledFooterText>
               <Flex justifyContent="center" alignItems="center">
                 <span>{t('Powered by Zyfi Paymaster')}</span>
-                <Image
+                <img
                   src={`${ASSET_CDN}/web/paymasters/zyfi-logo.png`}
                   alt="Zyfi Logo"
                   width={18}

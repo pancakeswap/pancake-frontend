@@ -2,12 +2,11 @@ import { zksyncTokens } from '@pancakeswap/tokens'
 
 import { ChainId } from '@pancakeswap/chains'
 import { Currency, Native } from '@pancakeswap/sdk'
-import { Address } from 'viem'
 
 export const DEFAULT_PAYMASTER_TOKEN = Native.onChain(ChainId.ZKSYNC)
 
-export const paymasterTokens = [
-  DEFAULT_PAYMASTER_TOKEN.wrapped,
+export const paymasterTokens: Currency[] = [
+  DEFAULT_PAYMASTER_TOKEN,
   zksyncTokens.wbtc,
   zksyncTokens.dai,
   zksyncTokens.usdc,
@@ -15,15 +14,28 @@ export const paymasterTokens = [
   zksyncTokens.usdt,
   zksyncTokens.grai,
   zksyncTokens.tes,
-].map((token) => ({ ...token, discount: '-20%' }))
+]
 
-export interface BasePaymasterToken {
-  address: Address
-  discount?: string
-}
-
-// export type PaymasterToken = BasePaymasterToken & Partial<Currency | ERC20Token>
-
-export type PaymasterToken = Currency & {
-  discount?: string
+export const paymasterInfo = {
+  [zksyncTokens.wbtc.address]: {
+    discount: '20%',
+  },
+  [zksyncTokens.dai.address]: {
+    discount: '20%',
+  },
+  [zksyncTokens.usdc.address]: {
+    discount: '20%',
+  },
+  [zksyncTokens.usdcNative.address]: {
+    discount: '20%',
+  },
+  [zksyncTokens.usdt.address]: {
+    discount: '20%',
+  },
+  [zksyncTokens.grai.address]: {
+    discount: '20%',
+  },
+  [zksyncTokens.tes.address]: {
+    discount: '20%',
+  },
 }
