@@ -3350,6 +3350,8 @@
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Pamiętaj, że zarobione Pearls z tego skarbca pojawią się na Twoim saldzie dopiero później.",
   "Fee saved": "Zaoszczędzone prowizje",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Prowizje zaoszczędzone na PancakeSwap w porównaniu do głównych platform DEX pobierających prowizje za interfejs",
+  "Gauge Not Found": "Nie znaleziono wskaźnika",
+  "Gauge can not be found using the hash passed via URL.": "Nie można znaleźć wskaźnika przy użyciu skrótu przekazanego za pomocą adresu URL.",
   "Up to $8M in interface fees paid refunded!": "Zwrot do 8 mln USD zapłaconych prowizji za interfejs!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Uzyskaj zwrot do 8 mln USD zapłaconych prowizji za interfejs na PancakeSwap",
   "Match your volume and we'll refund ALL your interface fees paid": "Dopasuj swój wolumen, a zwrócimy Ci WSZYSTKIE zapłacone prowizje za interfejs",
