@@ -17,6 +17,7 @@ import { averageArray } from 'hooks/usePoolAvgInfo'
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
 import mapKeys from 'lodash/mapKeys'
 import mapValues from 'lodash/mapValues'
+import { usePreviousValue } from '@pancakeswap/hooks'
 import {
   farmSelector,
   makeFarmFromPidSelector,
@@ -72,6 +73,7 @@ export function useFarmV2PublicAPI() {
 
 export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2FarmWithoutStakedValue)[]) => {
   const { chainId } = useAccountActiveChain()
+  const prevActiveFarms = usePreviousValue(activeFarms)
 
   const { refetch } = useQuery({
     queryKey: ['farmsAvgInfo', chainId],
@@ -137,8 +139,16 @@ export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2F
   })
 
   useEffect(() => {
-    refetch()
-  }, [refetch, activeFarms])
+    if (activeFarms) {
+      if (prevActiveFarms) {
+        if (activeFarms.length !== prevActiveFarms.length) {
+          refetch()
+        }
+      } else {
+        refetch()
+      }
+    }
+  }, [refetch, activeFarms, prevActiveFarms])
 }
 
 export const usePollFarmsWithUserData = () => {
