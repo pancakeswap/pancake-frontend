@@ -80,7 +80,9 @@ const useConfirmActions = (
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const [deadline] = useTransactionDeadline()
-  const { revoke, permit, approve } = usePermit2(amountToApprove, spender)
+  const { revoke, permit, approve } = usePermit2(amountToApprove, spender, {
+    enablePaymaster: true,
+  })
   const { account } = useAccountActiveChain()
   const getAllowanceArgs = useMemo(() => {
     if (!chainId) return undefined

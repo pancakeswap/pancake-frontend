@@ -3,6 +3,7 @@ import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { useToast } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
+import { usePaymaster } from 'hooks/usePaymaster'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHasPendingApproval, useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
@@ -10,11 +11,10 @@ import { getViemErrorMessage } from 'utils/errors'
 import { isUserRejected, logError } from 'utils/sentry'
 import { Address, Hex, SendTransactionReturnType, encodeFunctionData, parseAbi } from 'viem'
 import { useAccount } from 'wagmi'
-import { usePaymaster } from 'hooks/usePaymaster'
+import useGelatoLimitOrdersLib from './limitOrders/useGelatoLimitOrdersLib'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
 import { useTokenContract } from './useContract'
 import useTokenAllowance from './useTokenAllowance'
-import useGelatoLimitOrdersLib from './limitOrders/useGelatoLimitOrdersLib'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -30,11 +30,18 @@ export function useApproveCallback(
   options: {
     addToTransaction
     targetAmount?: bigint
+
+    /**
+     * Use paymaster if available.
+     * Enable only if Gas Token Selector is present on the interface.
+     */
+    enablePaymaster?: boolean
   } = {
     addToTransaction: true,
+    enablePaymaster: false,
   },
 ) {
-  const { addToTransaction = true, targetAmount } = options
+  const { addToTransaction = true, targetAmount, enablePaymaster } = options
   const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
@@ -146,7 +153,7 @@ export function useApproveCallback(
 
       let sendTxResult: Promise<SendTransactionReturnType> | undefined
 
-      if (isPaymasterAvailable && isPaymasterTokenActive) {
+      if (enablePaymaster && isPaymasterAvailable && isPaymasterTokenActive) {
         const calldata = encodeFunctionData({
           abi: parseAbi(['function approve(address spender, uint256 amount) public returns (bool)']),
           functionName: 'approve',
@@ -210,6 +217,7 @@ export function useApproveCallback(
       isPaymasterAvailable,
       isPaymasterTokenActive,
       sendPaymasterTransaction,
+      enablePaymaster,
     ],
   )
 
