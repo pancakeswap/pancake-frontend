@@ -1,14 +1,12 @@
-import { useCallback, useMemo } from 'react'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import isZero from '@pancakeswap/utils/isZero'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useAtomValue } from 'jotai'
+import { useMemo } from 'react'
 import { Address, Hex, hexToBigInt, isAddress, stringify } from 'viem'
 import { serializeTransaction } from 'viem/zksync'
-import { useAtomValue } from 'jotai'
 
-import { useWalletClient } from 'wagmi'
 import { ChainId } from '@pancakeswap/chains'
-import { Currency } from '@pancakeswap/swap-sdk-core'
-import { paymasterTokens } from '../config/paymaster'
+import { useWalletClient } from 'wagmi'
 import { feeTokenAtom } from '../state/paymaster/atoms'
 import { getEip712Domain } from '../utils/paymaster'
 
@@ -41,10 +39,6 @@ export const usePaymaster = () => {
   const isPaymasterTokenActive = useMemo(() => {
     return feeToken.isToken && feeToken.address && isAddress(feeToken.address)
   }, [feeToken])
-
-  const getPaymasterTokenlist = useCallback(() => {
-    return paymasterTokens
-  }, [])
 
   async function sendPaymasterTransaction(
     call: SwapCall & {
@@ -128,6 +122,5 @@ export const usePaymaster = () => {
     isPaymasterAvailable,
     isPaymasterTokenActive,
     sendPaymasterTransaction,
-    getPaymasterTokenlist,
   }
 }

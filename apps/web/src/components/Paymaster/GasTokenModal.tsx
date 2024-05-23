@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import {
   ArrowDropDownIcon,
   ArrowForwardIcon,
@@ -19,23 +20,21 @@ import {
   useModalV2,
   useTooltip,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
-import { feeTokenAtom } from 'state/paymaster/atoms'
-import memoize from 'lodash/memoize'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { FixedSizeList } from 'react-window'
-import { CurrencyLogo, NumberDisplay } from '@pancakeswap/widgets-internal'
-import { useAtom } from 'jotai'
-import { useNativeBalances, useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
-import { useAccount } from 'wagmi'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import { CurrencyLogo, NumberDisplay } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { Address } from 'viem'
+import { useAtom } from 'jotai'
+import memoize from 'lodash/memoize'
 import Image from 'next/image'
+import { useCallback, useMemo } from 'react'
+import { FixedSizeList } from 'react-window'
+import { feeTokenAtom } from 'state/paymaster/atoms'
+import { useNativeBalances, useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
+import styled from 'styled-components'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 
-import { DEFAULT_PAYMASTER_TOKEN, PaymasterToken } from 'config/paymaster'
-import { usePaymaster } from 'hooks/usePaymaster'
+import { PaymasterToken, paymasterTokens, paymasterTokens as tokenList } from 'config/paymaster'
 
 // Selector Styles
 const GasTokenSelectButton = styled(Button).attrs({ variant: 'text', scale: 'xs' })`
@@ -103,13 +102,10 @@ const Badge = styled.span`
 
 function GasTokenModal() {
   const { t } = useTranslation()
-  const { getPaymasterTokenlist } = usePaymaster()
   const { isOpen, setIsOpen, onDismiss } = useModalV2()
   const { address: account } = useAccount()
 
   const [feeToken, setFeeToken] = useAtom(feeTokenAtom)
-
-  const [tokenList, setTokenList] = useState<PaymasterToken[]>([])
 
   const nativeBalances = useNativeBalances([account])
   const [balances, balancesLoading] = useTokenBalancesWithLoadingIndicator(
@@ -131,18 +127,11 @@ function GasTokenModal() {
     [setFeeToken, setIsOpen],
   )
 
-  const fetchTokenList = useCallback(async () => {
-    const tempTokenList = await getPaymasterTokenlist()
-
-    // Set Native ETH as the first token, followed by the supported ERC20 tokens
-    setTokenList([DEFAULT_PAYMASTER_TOKEN, ...tempTokenList])
-  }, [getPaymasterTokenlist])
-
   /**
    * Sort tokens based on balances
    * Keeps the Native Token in the first position
    */
-  const tokenListSortComparator = (tokenA: PaymasterToken, tokenB: PaymasterToken) => {
+  const tokenListSortComparator = (tokenA: (typeof paymasterTokens)[0], tokenB: (typeof paymasterTokens)[0]) => {
     const balanceA = getTokenBalance(tokenA.address)
     const balanceB = getTokenBalance(tokenB.address)
 
@@ -153,10 +142,6 @@ function GasTokenModal() {
 
     return 0
   }
-
-  useEffect(() => {
-    fetchTokenList()
-  }, [])
 
   // Item Key for FixedSizeList
   const itemKey = useCallback((index: number, data: any) => `${data[index]}-${index}`, [])
@@ -169,7 +154,7 @@ function GasTokenModal() {
         account
           ? (Boolean(item.isNative) && (!nativeBalances[account] || formatAmount(nativeBalances[account]) === '0')) ||
             (Boolean(item.isToken) &&
-              (!getTokenBalance(item.address) || formatAmount(getTokenBalance(item.address)) === '0'))
+              (!getTokenBalance(item.wrapped.address) || formatAmount(getTokenBalance(item.wrapped.address)) === '0'))
           : false,
       [item],
     )
@@ -198,13 +183,13 @@ function GasTokenModal() {
 
           {balancesLoading ? (
             <CircleLoader />
-          ) : (account && nativeBalances[account]) || getTokenBalance(item.address) ? (
+          ) : (account && nativeBalances[account]) || getTokenBalance(item.wrapped.address) ? (
             <StyledBalanceText>
               <NumberDisplay
                 value={
                   item.isNative && account
                     ? formatAmount(nativeBalances[account])
-                    : formatAmount(getTokenBalance(item.address))
+                    : formatAmount(getTokenBalance(item.wrapped.address))
                 }
               />
             </StyledBalanceText>
