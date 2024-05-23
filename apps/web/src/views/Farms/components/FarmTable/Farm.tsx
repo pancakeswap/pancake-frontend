@@ -26,7 +26,7 @@ export const FarmCell: React.FunctionComponent<
   chainId,
 }) => {
   const { t } = useTranslation()
-  const hasSwellReward = useHasSwellReward(lpAddress ?? '0x0', 'FARM')
+  const hasSwellReward = useHasSwellReward(lpAddress)
 
   return (
     <Flex alignItems="center">
@@ -67,9 +67,9 @@ export const FarmCell: React.FunctionComponent<
       ) : null}
 
       {hasSwellReward && (
-        <>
-          &nbsp; <SwellTooltip />
-        </>
+        <Box marginLeft={1}>
+          <SwellTooltip />
+        </Box>
       )}
     </Flex>
   )

@@ -81,7 +81,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   const { t } = useTranslation()
   const chainId = useChainId()
   const isReady = multiplier !== undefined || bCakeWrapperAddress
-  const hasSwellReward = useHasSwellReward(lpAddress ?? '0x0', 'FARM')
+  const hasSwellReward = useHasSwellReward(lpAddress)
   const multiplierTooltipContent = FarmMultiplierInfo({
     farmCakePerSecond: farmCakePerSecond ?? '-',
     totalMultipliers: totalMultipliers ?? '-',
@@ -146,12 +146,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
           <Skeleton mb="4px" width={60} height={18} />
         )}
         <AutoRow gap="4px" justifyContent="flex-end">
-          {hasSwellReward && (
-            <>
-              &nbsp;
-              <SwellTooltip />
-            </>
-          )}
+          {hasSwellReward && <SwellTooltip />}
           {isReady && isStable ? <StableFarmTag /> : version === 2 ? <V2Tag /> : null}
           {isReady && version === 3 && <V3FeeTag feeAmount={feeAmount} />}
           {isReady && isCommunityFarm && <FarmAuctionTag mr="-4px" />}

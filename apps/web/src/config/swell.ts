@@ -1,15 +1,15 @@
-export const POSITION_MANAGERS_WITH_SWELL_REWARD = [
+/**
+ * List of Position Managers or Farm LPs which have Swell Rewards
+ */
+export const CONTRACTS_WITH_SWELL_REWARD = [
   {
-    // WETH-swETH
+    // WETH-swETH PM
     identifier: '0x2b0Ca7A851aAc56fcACAB3ee85B8Dd96DE799aCa',
   },
   {
-    // WETH-rswETH
+    // WETH-rswETH PM
     identifier: '0x6a38e12CcDe7e35E818b341964fB8AA3BDBb80eE',
   },
-] as const
-
-export const FARMS_WITH_SWELL_REWARD = [
   {
     // swETH-ETH LP
     identifier: '0x6db0f81Db2C3B2A85a802d511577d8522D0D8C14',
