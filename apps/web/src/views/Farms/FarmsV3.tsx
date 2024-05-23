@@ -40,7 +40,7 @@ import { useCakePrice } from 'hooks/useCakePrice'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useFarms, usePollFarmsWithUserData } from 'state/farms/hooks'
+import { useFarms, usePollFarmsAvgInfo, usePollFarmsWithUserData } from 'state/farms/hooks'
 import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
 import { useCakeVaultUserData } from 'state/pools/hooks'
 import { ViewMode } from 'state/user/actions'
@@ -270,6 +270,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       ),
     [farmsLP, v2PoolLength, v3PoolLength],
   )
+
+  usePollFarmsAvgInfo(activeFarms)
 
   const archivedFarms = farmsLP
 

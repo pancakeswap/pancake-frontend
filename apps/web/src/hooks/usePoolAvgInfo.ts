@@ -4,6 +4,7 @@ import { gql } from 'graphql-request'
 import { useQuery } from '@tanstack/react-query'
 
 import { v3Clients } from 'utils/graphql'
+import { useRouter } from 'next/router'
 
 export interface UsePoolAvgInfoParams {
   numberOfDays?: number
@@ -34,8 +35,13 @@ const defaultInfo: Info = {
 }
 
 export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UsePoolAvgInfoParams) {
+  const router = useRouter()
+  const isInFarmsPage = router.pathname.includes('/farms')
+
+  const { data: farmsAvgInfo } = useQuery({ queryKey: ['farmsAvgInfo', chainId], enabled: false })
+
   const { data } = useQuery({
-    queryKey: [address, chainId],
+    queryKey: ['poolAvgInfo', address, chainId],
 
     queryFn: async () => {
       if (!chainId) return undefined
@@ -70,9 +76,9 @@ export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UseP
       }
     },
 
-    enabled: Boolean(address && chainId),
+    enabled: Boolean(address && chainId && !isInFarmsPage),
     refetchOnWindowFocus: false,
   })
 
-  return data || defaultInfo
+  return isInFarmsPage ? farmsAvgInfo?.[address?.toLowerCase()] || defaultInfo : data || defaultInfo
 }
