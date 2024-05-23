@@ -4,7 +4,7 @@ import { TICK_SPACINGS } from '../constants'
 import { NEGATIVE_ONE, ONE, ZERO } from '../internalConstants'
 import { LiquidityMath, SwapMath, TickMath } from '../utils'
 import { PoolState } from './getPool'
-import { hasInvolvedToken } from './hasInvolvedToken'
+import { hasInvolvedCurrency } from './hasInvolvedCurrency'
 
 interface StepComputations {
   sqrtPriceStartX96: bigint
@@ -135,9 +135,9 @@ export const getOutputAmount = async (
   inputAmount: CurrencyAmount<Token>,
   sqrtPriceLimitX96?: bigint
 ): Promise<[CurrencyAmount<Token>, PoolState]> => {
-  invariant(hasInvolvedToken(pool, inputAmount.currency), 'TOKEN')
+  invariant(hasInvolvedCurrency(pool, inputAmount.currency), 'TOKEN')
 
-  const zeroForOne = inputAmount.currency.equals(pool.token0)
+  const zeroForOne = inputAmount.currency.equals(pool.currency0)
 
   const {
     amountCalculated: outputAmount,
@@ -150,7 +150,7 @@ export const getOutputAmount = async (
     amountSpecified: inputAmount.quotient,
     sqrtPriceLimitX96,
   })
-  const outputToken = zeroForOne ? pool.token1 : pool.token0
+  const outputToken = zeroForOne ? pool.currency1 : pool.currency0
 
   return [
     CurrencyAmount.fromRawAmount(outputToken, outputAmount * NEGATIVE_ONE),
@@ -171,9 +171,9 @@ export const getInputAmount = async (
   outputAmount: CurrencyAmount<Token>,
   sqrtPriceLimitX96?: bigint
 ): Promise<[CurrencyAmount<Token>, PoolState]> => {
-  invariant(outputAmount.currency.isToken && hasInvolvedToken(pool, outputAmount.currency), 'TOKEN')
+  invariant(outputAmount.currency.isToken && hasInvolvedCurrency(pool, outputAmount.currency), 'CURRENCY')
 
-  const zeroForOne = outputAmount.currency.equals(pool.token1)
+  const zeroForOne = outputAmount.currency.equals(pool.currency1)
 
   const {
     amountCalculated: inputAmount,
@@ -187,7 +187,7 @@ export const getInputAmount = async (
     sqrtPriceLimitX96,
   })
 
-  const inputToken = zeroForOne ? pool.token0 : pool.token1
+  const inputToken = zeroForOne ? pool.currency0 : pool.currency1
 
   return [
     CurrencyAmount.fromRawAmount(inputToken, inputAmount),
@@ -208,9 +208,9 @@ export const getInputAmountByExactOut = async (
   outputAmount: CurrencyAmount<Token>,
   sqrtPriceLimitX96?: bigint
 ): Promise<[CurrencyAmount<Token>, PoolState]> => {
-  invariant(outputAmount.currency.isToken && hasInvolvedToken(pool, outputAmount.currency), 'TOKEN')
+  invariant(outputAmount.currency.isToken && hasInvolvedCurrency(pool, outputAmount.currency), 'CURRENCY')
 
-  const zeroForOne = outputAmount.currency.equals(pool.token1)
+  const zeroForOne = outputAmount.currency.equals(pool.currency1)
 
   const {
     amountCalculated: inputAmount,
@@ -224,7 +224,7 @@ export const getInputAmountByExactOut = async (
     sqrtPriceLimitX96,
   })
 
-  const inputToken = zeroForOne ? pool.token0 : pool.token1
+  const inputToken = zeroForOne ? pool.currency0 : pool.currency1
 
   return [
     CurrencyAmount.fromRawAmount(inputToken, inputAmount),
