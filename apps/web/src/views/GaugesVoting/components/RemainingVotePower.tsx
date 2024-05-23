@@ -31,7 +31,7 @@ export const RemainingVotePower: React.FC<{
   const { cakeLockedAmount } = useCakeLockStatus()
   const locked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
   const { balance: veCakeBalance } = useVeCakeBalance()
-  const epochPower = useEpochVotePower()
+  const { data: epochPower } = useEpochVotePower()
 
   // @note: real power is EpochEndPower * (10000 - PercentVoted)
   // use veCakeBalance as cardinal number for better UX understanding
@@ -44,7 +44,7 @@ export const RemainingVotePower: React.FC<{
   }, [epochPower, votedPercent])
 
   return (
-    <StyledBox>
+    <StyledBox id="vecake-vote-power">
       <img src="/images/cake-staking/token-vecake.png" alt="token-vecake" width="58px" />
       <Flex
         flexDirection={['column', 'column', 'row']}

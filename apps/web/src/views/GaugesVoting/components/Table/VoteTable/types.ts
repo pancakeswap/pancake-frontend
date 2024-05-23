@@ -11,6 +11,7 @@ export type UserVote = {
 export type RowProps = {
   data: Gauge
   vote?: UserVote
+  submitted?: boolean
   onChange: (value: UserVote, isMax?: boolean) => void
 } & SpaceProps
 
