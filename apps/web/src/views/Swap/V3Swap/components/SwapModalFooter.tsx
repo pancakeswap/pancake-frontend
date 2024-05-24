@@ -3,10 +3,11 @@ import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router'
 import { AutoColumn, BackForwardIcon, Button, Dots, Flex, Link, QuestionHelper, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import { CurrencyLogo as CurrencyLogoWidget } from '@pancakeswap/widgets-internal'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { CurrencyLogo } from 'components/Logo'
-import { CurrencyLogo as CurrencyLogoWidget } from '@pancakeswap/widgets-internal'
 import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
+import { useGasToken } from 'hooks/useGasToken'
 import { memo, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { styled } from 'styled-components'
@@ -62,9 +63,11 @@ export const SwapModalFooter = memo(function SwapModalFooter({
 }) {
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
-  const { isPaymasterAvailable, isPaymasterTokenActive, feeToken } = usePaymaster()
-  const severity = warningSeverity(priceImpactWithoutFee)
 
+  const [gasToken] = useGasToken()
+  const { isPaymasterAvailable, isPaymasterTokenActive } = usePaymaster()
+
+  const severity = warningSeverity(priceImpactWithoutFee)
   const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
   const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
   const treasuryFeePercent = `${(TREASURY_FEE * 100).toFixed(4)}%`
@@ -237,16 +240,16 @@ export const SwapModalFooter = memo(function SwapModalFooter({
 
             <Flex alignItems="center">
               <Text marginRight={2} fontSize={14}>
-                {(feeToken && feeToken.symbol && feeToken.symbol.length > 10
-                  ? `${feeToken.symbol.slice(0, 4)}...${feeToken.symbol.slice(
-                      feeToken.symbol.length - 5,
-                      feeToken.symbol.length,
+                {(gasToken && gasToken.symbol && gasToken.symbol.length > 10
+                  ? `${gasToken.symbol.slice(0, 4)}...${gasToken.symbol.slice(
+                      gasToken.symbol.length - 5,
+                      gasToken.symbol.length,
                     )}`
-                  : feeToken?.symbol) || 'ETH'}
+                  : gasToken?.symbol) || 'ETH'}
               </Text>
 
               <div style={{ position: 'relative' }}>
-                <CurrencyLogoWidget currency={feeToken} />
+                <CurrencyLogoWidget currency={gasToken} />
                 <p style={{ position: 'absolute', bottom: '-2px', left: '-6px', fontSize: '16px' }}>⛽️</p>
               </div>
             </Flex>

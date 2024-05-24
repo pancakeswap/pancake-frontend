@@ -1,19 +1,19 @@
 import isZero from '@pancakeswap/utils/isZero'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Address, Hex, hexToBigInt, isAddress, stringify } from 'viem'
 import { serializeTransaction } from 'viem/zksync'
 
 import { ChainId } from '@pancakeswap/chains'
+import { ZyfiResponse } from 'config/paymaster'
 import { useWalletClient } from 'wagmi'
-import { feeTokenAtom } from '../state/paymaster/atoms'
 import { getEip712Domain } from '../utils/paymaster'
+import { useGasToken } from './useGasToken'
 
 interface SwapCall {
   address: Address
   calldata: Hex
-  value: Hex
+  value?: Hex
 }
 
 /**
@@ -23,7 +23,7 @@ export const usePaymaster = () => {
   const chain = useActiveChainId()
   const { data: walletClient } = useWalletClient()
 
-  const feeToken = useAtomValue(feeTokenAtom)
+  const [gasToken] = useGasToken()
 
   /**
    * Check if the Paymaster for zkSync is available
@@ -37,8 +37,8 @@ export const usePaymaster = () => {
    * Default is the native token to pay gas
    */
   const isPaymasterTokenActive = useMemo(() => {
-    return feeToken.isToken && feeToken.address && isAddress(feeToken.address)
-  }, [feeToken])
+    return gasToken.isToken && gasToken.address && isAddress(gasToken.address)
+  }, [gasToken])
 
   async function sendPaymasterTransaction(
     call: SwapCall & {
@@ -46,8 +46,7 @@ export const usePaymaster = () => {
     },
     account: Address,
   ) {
-    if (!feeToken.isToken)
-      return Promise.reject(new Error('Selected gas token is not an ERC20 token. Unsupported by Paymaster.'))
+    if (!gasToken.isToken) throw new Error('Selected gas token is not an ERC20 token. Unsupported by Paymaster.')
 
     const response = await fetch(`https://api.zyfi.org/api/erc20_paymaster/v1`, {
       method: 'POST',
@@ -55,7 +54,7 @@ export const usePaymaster = () => {
         'Content-Type': 'application/json',
       },
       body: stringify({
-        feeTokenAddress: feeToken.address,
+        feeTokenAddress: gasToken.address,
         gasLimit: call.gas,
         txData: {
           from: account,
@@ -66,59 +65,57 @@ export const usePaymaster = () => {
       }),
     })
 
-    if (response.ok) {
-      const txResponse: any = await response.json()
-      console.debug('debug txResponse', txResponse)
+    if (!response.ok) throw new Error('Failed to send paymaster transaction')
 
-      const newTx = {
-        account,
-        to: txResponse.txData.to,
-        value: txResponse.txData.value && !isZero(txResponse.txData.value) ? hexToBigInt(txResponse.txData.value) : 0n,
-        chainId: ChainId.ZKSYNC,
-        gas: BigInt(txResponse.gasLimit),
-        maxFeePerGas: BigInt(txResponse.txData.maxFeePerGas),
-        maxPriorityFeePerGas: BigInt(0),
-        data: call.calldata,
-        gasPerPubdata: BigInt(txResponse.txData.customData.gasPerPubdata),
-        paymaster: txResponse.txData.customData.paymasterParams.paymaster,
-        paymasterInput: txResponse.txData.customData.paymasterParams.paymasterInput,
-      }
+    const txResponse: ZyfiResponse = await response.json()
 
-      // Viem's zkSync Utils. If not working, use EIP-712 normally
-      // const walletClient = (await getWalletClient(createWagmiConfig())).extend(eip712WalletActions())
-
-      if (walletClient) {
-        const txRequest = await walletClient.prepareTransactionRequest(newTx)
-
-        const eip712Domain = getEip712Domain({
-          ...txRequest,
-          chainId: ChainId.ZKSYNC,
-          from: account,
-          type: 'eip712',
-        })
-
-        const customSignature = await walletClient.signTypedData({
-          ...eip712Domain,
-          account,
-        } as any)
-
-        const serializedTransaction = serializeTransaction({
-          ...txRequest,
-          chainId: ChainId.ZKSYNC,
-          customSignature,
-          type: 'eip712',
-        } as any)
-
-        const hash = await walletClient.sendRawTransaction({ serializedTransaction })
-        return hash
-      }
+    const newTx = {
+      account,
+      to: txResponse.txData.to,
+      value: txResponse.txData.value && !isZero(txResponse.txData.value) ? hexToBigInt(txResponse.txData.value) : 0n,
+      chainId: ChainId.ZKSYNC,
+      gas: BigInt(txResponse.gasLimit),
+      maxFeePerGas: BigInt(txResponse.txData.maxFeePerGas),
+      maxPriorityFeePerGas: BigInt(0),
+      data: call.calldata,
+      gasPerPubdata: BigInt(txResponse.txData.customData.gasPerPubdata),
+      paymaster: txResponse.txData.customData.paymasterParams.paymaster,
+      paymasterInput: txResponse.txData.customData.paymasterParams.paymasterInput,
     }
 
-    return Promise.reject(new Error('Failed to execute paymaster transaction'))
+    // Viem's zkSync Utils. If not working, use EIP-712 normally
+    // const walletClient = (await getWalletClient(createWagmiConfig())).extend(eip712WalletActions())
+
+    if (walletClient) {
+      const txRequest = await walletClient.prepareTransactionRequest(newTx)
+
+      const eip712Domain = getEip712Domain({
+        ...txRequest,
+        chainId: ChainId.ZKSYNC,
+        from: account,
+        type: 'eip712',
+      })
+
+      const customSignature = await walletClient.signTypedData({
+        ...eip712Domain,
+        account,
+      } as any)
+
+      const serializedTransaction = serializeTransaction({
+        ...txRequest,
+        chainId: ChainId.ZKSYNC,
+        customSignature,
+        type: 'eip712',
+      } as any)
+
+      const hash = await walletClient.sendRawTransaction({ serializedTransaction })
+      return hash
+    }
+
+    throw new Error('Failed to execute paymaster transaction')
   }
 
   return {
-    feeToken,
     isPaymasterAvailable,
     isPaymasterTokenActive,
     sendPaymasterTransaction,

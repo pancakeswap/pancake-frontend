@@ -23,11 +23,9 @@ import {
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo, NumberDisplay } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { useAtom } from 'jotai'
 import memoize from 'lodash/memoize'
 import { useCallback, useEffect, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
-import { feeTokenAtom } from 'state/paymaster/atoms'
 import { useNativeBalances, useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import styled from 'styled-components'
 import { Address } from 'viem'
@@ -36,6 +34,7 @@ import { useAccount, useConfig } from 'wagmi'
 import { Currency } from '@pancakeswap/swap-sdk-core'
 import { watchAccount } from '@wagmi/core'
 import { DEFAULT_PAYMASTER_TOKEN, paymasterInfo, paymasterTokens } from 'config/paymaster'
+import { useGasToken } from 'hooks/useGasToken'
 
 // Selector Styles
 const GasTokenSelectButton = styled(Button).attrs({ variant: 'text', scale: 'xs' })`
@@ -101,14 +100,14 @@ const Badge = styled.span`
   background-color: ${({ theme }) => theme.colors.success};
 `
 
-function GasTokenModal() {
+export const GasTokenModal = () => {
   const { t } = useTranslation()
   const { isOpen, setIsOpen, onDismiss } = useModalV2()
   const { address: account } = useAccount()
 
   const config = useConfig()
 
-  const [feeToken, setFeeToken] = useAtom(feeTokenAtom)
+  const [gasToken, setGasToken] = useGasToken()
 
   const nativeBalances = useNativeBalances([account])
   const [balances, balancesLoading] = useTokenBalancesWithLoadingIndicator(
@@ -116,11 +115,11 @@ function GasTokenModal() {
     paymasterTokens.filter((token) => token.isToken) as any[],
   )
 
-  // Reset fee token if account changes or disconnects
+  // Reset fee token if account changes, connects or disconnects
   useEffect(() => {
     return watchAccount(config, {
       onChange() {
-        setFeeToken(DEFAULT_PAYMASTER_TOKEN)
+        setGasToken(DEFAULT_PAYMASTER_TOKEN)
       },
     })
   }, [config])
@@ -133,10 +132,10 @@ function GasTokenModal() {
 
   const onTokenSelected = useCallback(
     (token: Currency) => {
-      setFeeToken(token)
+      setGasToken(token)
       setIsOpen(false)
     },
-    [setFeeToken, setIsOpen],
+    [setGasToken, setIsOpen],
   )
 
   /**
@@ -247,23 +246,23 @@ function GasTokenModal() {
         </RowFixed>
 
         <GasTokenSelectButton
-          selected={!!feeToken}
+          selected={!!gasToken}
           onClick={onSelectorButtonClick}
           data-dd-action-name="Zyfi Gas Token Select Button"
         >
           <Flex alignItems="center">
             <div style={{ position: 'relative' }}>
-              <CurrencyLogo currency={feeToken} size="20px" />
+              <CurrencyLogo currency={gasToken} size="20px" />
               <p style={{ position: 'absolute', bottom: '-2px', right: '-6px', fontSize: '14px' }}>⛽️</p>
             </div>
 
             <Text marginLeft={2} fontSize={14} bold>
-              {(feeToken && feeToken.symbol && feeToken.symbol.length > 10
-                ? `${feeToken.symbol.slice(0, 4)}...${feeToken.symbol.slice(
-                    feeToken.symbol.length - 5,
-                    feeToken.symbol.length,
+              {(gasToken && gasToken.symbol && gasToken.symbol.length > 10
+                ? `${gasToken.symbol.slice(0, 4)}...${gasToken.symbol.slice(
+                    gasToken.symbol.length - 5,
+                    gasToken.symbol.length,
                   )}`
-                : feeToken?.symbol) || ''}
+                : gasToken?.symbol) || ''}
             </Text>
             <ArrowDropDownIcon marginLeft={1} />
           </Flex>
@@ -331,5 +330,3 @@ function GasTokenModal() {
     </>
   )
 }
-
-export default GasTokenModal
