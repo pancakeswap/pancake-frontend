@@ -1,6 +1,6 @@
 import { Ether, Token, WETH9 } from '@pancakeswap/sdk'
 import { describe, expect, it } from 'vitest'
-import { FeeAmount } from '../constants'
+import { FeeAmount, TICK_SPACINGS } from '../constants'
 import { encodeSqrtRatioX96 } from '../utils'
 import { getPool } from './getPool'
 
@@ -17,6 +17,7 @@ describe('getPool', () => {
         sqrtRatioX96: encodeSqrtRatioX96(1, 1),
         liquidity: 0,
         tickCurrent: 0,
+        tickSpacing: TICK_SPACINGS[FeeAmount.MEDIUM],
         ticks: [],
       })
     }).toThrow('CHAIN_IDS')
@@ -28,6 +29,7 @@ describe('getPool', () => {
         currencyA: USDC,
         currencyB: WETH9[1],
         fee: FeeAmount.MEDIUM + 0.5,
+        tickSpacing: 1,
         sqrtRatioX96: encodeSqrtRatioX96(1, 1),
         liquidity: 0,
         tickCurrent: 0,
@@ -42,6 +44,7 @@ describe('getPool', () => {
         currencyA: USDC,
         currencyB: WETH9[1],
         fee: FeeAmount.HIGH + 1e6,
+        tickSpacing: 1,
         sqrtRatioX96: encodeSqrtRatioX96(1, 1),
         liquidity: 0,
         tickCurrent: 0,
@@ -56,6 +59,7 @@ describe('getPool', () => {
         currencyA: USDC,
         currencyB: USDC,
         fee: FeeAmount.MEDIUM,
+        tickSpacing: TICK_SPACINGS[FeeAmount.MEDIUM],
         sqrtRatioX96: encodeSqrtRatioX96(1, 1),
         liquidity: 0,
         tickCurrent: 0,
@@ -69,6 +73,7 @@ describe('getPool', () => {
       currencyA: USDC,
       currencyB: Ether.onChain(1),
       fee: FeeAmount.MEDIUM,
+      tickSpacing: TICK_SPACINGS[FeeAmount.MEDIUM],
       sqrtRatioX96: encodeSqrtRatioX96(1, 1),
       liquidity: 0,
       tickCurrent: 0,
