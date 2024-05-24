@@ -1,6 +1,5 @@
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
-import { TICK_SPACINGS } from '../constants'
 import { NEGATIVE_ONE, ONE, ZERO } from '../internalConstants'
 import { LiquidityMath, SwapMath, TickMath } from '../utils'
 import { PoolState } from './getPool'
@@ -35,8 +34,6 @@ export const swap = async ({
 }> => {
   if (!sqrtPriceLimitX96) sqrtPriceLimitX96 = zeroForOne ? TickMath.MIN_SQRT_RATIO + ONE : TickMath.MAX_SQRT_RATIO - ONE
 
-  const tickSpacing = TICK_SPACINGS[pool.fee]
-
   if (zeroForOne) {
     invariant(sqrtPriceLimitX96 > TickMath.MIN_SQRT_RATIO, 'RATIO_MIN')
     invariant(sqrtPriceLimitX96 < pool.sqrtRatioX96, 'RATIO_CURRENT')
@@ -53,7 +50,7 @@ export const swap = async ({
     amountSpecifiedRemaining: amountSpecified,
     amountCalculated: ZERO,
     sqrtPriceX96: pool.sqrtRatioX96,
-    tick: pool.tick,
+    tick: pool.tickCurrent,
     liquidity: pool.liquidity,
   }
 
@@ -69,7 +66,7 @@ export const swap = async ({
     ;[step.tickNext, step.initialized] = await pool.tickDataProvider.nextInitializedTickWithinOneWord(
       state.tick,
       zeroForOne,
-      tickSpacing
+      pool.tickSpacing
     )
 
     if (step.tickNext < TickMath.MIN_TICK) {
@@ -171,7 +168,7 @@ export const getOutputAmount = async <
       ...pool,
       sqrtRatioX96,
       liquidity,
-      tick: tickCurrent,
+      tickCurrent,
     },
   ]
 }
@@ -219,7 +216,7 @@ export const getInputAmount = async <TCurrencyIn extends Currency = Currency, TC
       ...pool,
       sqrtRatioX96,
       liquidity,
-      tick: tickCurrent,
+      tickCurrent,
     },
   ]
 }

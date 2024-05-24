@@ -1,6 +1,6 @@
 import { Ether, Token } from '@pancakeswap/sdk'
 import { describe, expect, test } from 'vitest'
-import { FeeAmount } from '../constants'
+import { FeeAmount, TICK_SPACINGS } from '../constants'
 import { encodeSqrtRatioX96 } from '../utils'
 import { getPool } from './getPool'
 import { getPriceOfCurrency, getPriceOfCurrency0, getPriceOfCurrency1 } from './getPriceOfCurrency'
@@ -13,6 +13,7 @@ describe('getPriceOfCurrency', () => {
     currencyA: DAI,
     currencyB: USDC,
     fee: FeeAmount.MEDIUM,
+    tickSpacing: TICK_SPACINGS[FeeAmount.MEDIUM],
     sqrtRatioX96: encodeSqrtRatioX96(101e6, 100e18),
     liquidity: 0,
     tickCurrent: 0,
@@ -22,6 +23,7 @@ describe('getPriceOfCurrency', () => {
     currencyA: Ether.onChain(1),
     currencyB: USDC,
     fee: FeeAmount.MEDIUM,
+    tickSpacing: TICK_SPACINGS[FeeAmount.MEDIUM],
     sqrtRatioX96: encodeSqrtRatioX96(100e18, 101e6),
     liquidity: 0,
     tickCurrent: 0,

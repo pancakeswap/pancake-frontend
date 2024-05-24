@@ -1,13 +1,13 @@
 import { BigintIsh, Currency, sortCurrencies } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
-import { FeeAmount } from '../constants'
 import { NoTickDataProvider, Tick, TickConstructorArgs, TickDataProvider, TickListDataProvider } from '../entities'
 
 export type PoolState = {
   currency0: Currency
   currency1: Currency
-  fee: FeeAmount
-  tick: number
+  fee: number
+  tickCurrent: number
+  tickSpacing: number
   sqrtRatioX96: bigint
   liquidity: bigint
   tickDataProvider: TickDataProvider
@@ -26,14 +26,16 @@ export const getPool = ({
   sqrtRatioX96,
   liquidity,
   tickCurrent,
+  tickSpacing,
   ticks = NO_TICK_DATA_PROVIDER_DEFAULT,
 }: {
   currencyA: Currency
   currencyB: Currency
-  fee: FeeAmount
+  fee: number
   sqrtRatioX96: BigintIsh
   liquidity: BigintIsh
   tickCurrent: number
+  tickSpacing: number
   ticks?: TickDataProvider | (Tick | TickConstructorArgs)[]
 }): PoolState => {
   invariant(Number.isInteger(fee) && BigInt(fee) < MAX_FEE_AMOUNT, 'FEE')
@@ -44,7 +46,8 @@ export const getPool = ({
     currency0,
     currency1,
     fee,
-    tick: tickCurrent,
+    tickCurrent,
+    tickSpacing,
     sqrtRatioX96: BigInt(sqrtRatioX96),
     liquidity: BigInt(liquidity),
     tickDataProvider: Array.isArray(ticks) ? new TickListDataProvider(ticks) : ticks,
