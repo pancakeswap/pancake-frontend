@@ -271,7 +271,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     [farmsLP, v2PoolLength, v3PoolLength],
   )
 
-  usePollFarmsAvgInfo(activeFarms)
+  const farmsAvgInfo = usePollFarmsAvgInfo(activeFarms)
 
   const archivedFarms = farmsLP
 
@@ -428,7 +428,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     setQuery(event.target.value)
   }, [])
 
-  const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
+  const providerValue = useMemo(() => ({ chosenFarmsMemoized, farmsAvgInfo }), [chosenFarmsMemoized, farmsAvgInfo])
 
   return (
     <FarmsV3Context.Provider value={providerValue}>

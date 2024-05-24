@@ -75,19 +75,15 @@ export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2F
   const { chainId } = useAccountActiveChain()
   const prevActiveFarms = usePreviousValue(activeFarms)
 
-  const { refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['farmsAvgInfo', chainId],
-
+    placeholderData: {},
     queryFn: async () => {
       if (!chainId) return undefined
       const client = v3Clients[chainId]
       if (!client) {
         console.error('[Failed] Trading volume', chainId)
-        return {
-          volumeUSD: 0,
-          tvlUSD: 0,
-          feeUSD: 0,
-        }
+        return {}
       }
 
       const addresses = activeFarms
@@ -153,6 +149,8 @@ export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2F
       }
     }
   }, [refetch, activeFarms, prevActiveFarms])
+
+  return data
 }
 
 export const usePollFarmsWithUserData = () => {
