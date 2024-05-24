@@ -3165,4 +3165,12 @@ export const bscTokens = {
     'StakeStone Ether',
     'https://stakestone.io/',
   ),
+  fury: new ERC20Token(
+    ChainId.BSC,
+    '0x0203D275D2A65030889aF45ed91D472be3948B92',
+    18,
+    'FURY',
+    'Engines of Fury Token',
+    'https://www.eof.gg/',
+  ),
 }
