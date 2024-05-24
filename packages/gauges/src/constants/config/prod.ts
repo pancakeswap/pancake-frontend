@@ -4091,14 +4091,4 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: ethereumTokens.weth.address,
     token1Address: ethereumTokens.mETH.address,
   },
-  {
-    gid: 414,
-    pairName: 'ONEPUNCH-WETH',
-    address: '0x89E33c1952921A64Fb59994353d5C7b89eCDaDaD',
-    chainId: ChainId.LINEA,
-    type: GaugeType.V2,
-    feeTier: FeeAmount.MEDIUM,
-    token0Address: lineaTokens.onepunch.address,
-    token1Address: lineaTokens.weth.address,
-  },
 ]
