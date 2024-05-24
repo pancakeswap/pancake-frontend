@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, LogoutIcon, UserMenu as UIKitUserMenu, UserMenuItem, useModal } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -7,6 +8,7 @@ import { useDomainNameForAddress } from 'hooks/useDomain'
 import { useProfile } from 'hooks/useProfile'
 import { useCallback } from 'react'
 import { useAccount } from 'wagmi'
+import ProfileUserMenuItem from './ProfileUserMenuItem'
 import WalletModal, { WalletView } from './WalletModal'
 import WalletUserMenuItem from './WalletUserMenuItem'
 
@@ -14,9 +16,13 @@ const UserMenuItems = () => {
   const { t } = useTranslation()
   const { isWrongNetwork } = useActiveChainId()
   const { logout } = useAuth()
+  const { chainId } = useAccount()
+  const { isInitialized, isLoading, profile } = useProfile()
 
   const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
   const [onPresentWrongNetworkModal] = useModal(<WalletModal initialView={WalletView.WRONG_NETWORK} />)
+
+  const hasProfile = isInitialized && !!profile
 
   const onClickWalletMenu = useCallback((): void => {
     if (isWrongNetwork) {
@@ -29,6 +35,11 @@ const UserMenuItems = () => {
   return (
     <>
       <WalletUserMenuItem isWrongNetwork={isWrongNetwork} onPresentWalletModal={onClickWalletMenu} />
+      <ProfileUserMenuItem
+        isLoading={isLoading}
+        hasProfile={hasProfile}
+        disabled={isWrongNetwork || chainId !== ChainId.BSC}
+      />
       <UserMenuItem as="button" onClick={logout}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           {t('Disconnect')}

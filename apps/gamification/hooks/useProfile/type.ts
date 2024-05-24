@@ -24,6 +24,7 @@ export interface Profile {
 
 export interface GetProfileResponse {
   profile?: Profile
+  hasRegistered: boolean
 }
 
 export interface ContractProfileResponse {
