@@ -7,6 +7,7 @@ import { memo, useMemo } from 'react'
 import { AdvancedSwapDetails, TradeSummary } from 'views/Swap/components/AdvancedSwapDetails'
 import { AdvancedDetailsFooter } from 'views/Swap/components/AdvancedSwapDetailsDropdown'
 
+import { GasTokenModal } from 'components/Paymaster/GasTokenModal'
 import { MMTradeInfo } from 'views/Swap/MMLinkPools/hooks'
 import { RouteDisplayEssentials, RoutesBreakdown } from '../components'
 import { useIsWrapping, useSlippageAdjustedAmounts } from '../hooks'
@@ -78,6 +79,7 @@ export const TradeDetails = memo(function TradeDetails({ loaded, trade }: Props)
           priceImpactWithoutFee={priceImpactWithoutFee ?? undefined}
           realizedLPFee={lpFeeAmount ?? undefined}
           hasStablePair={hasStablePool}
+          gasTokenSelector={<GasTokenModal trade={trade} />}
         />
         <RoutesBreakdown routes={routes} />
       </AutoColumn>

@@ -3,12 +3,11 @@ import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
 import { AutoColumn, Flex, Link, Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
 import { formatAmount, formatFraction } from '@pancakeswap/utils/formatFractions'
-import { memo, useState } from 'react'
+import React, { memo, useState } from 'react'
 
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
-import { GasTokenModal } from 'components/Paymaster/GasTokenModal'
 import { usePaymaster } from 'hooks/usePaymaster'
 import { Field } from 'state/swap/actions'
 import { SlippageAdjustedAmounts } from '../V3Swap/utils/exchange'
@@ -25,6 +24,7 @@ export const TradeSummary = memo(function TradeSummary({
   priceImpactWithoutFee,
   realizedLPFee,
   isMM = false,
+  gasTokenSelector,
 }: {
   hasStablePair?: boolean
   inputAmount?: CurrencyAmount<Currency>
@@ -34,6 +34,7 @@ export const TradeSummary = memo(function TradeSummary({
   priceImpactWithoutFee?: Percent | null
   realizedLPFee?: CurrencyAmount<Currency> | null
   isMM?: boolean
+  gasTokenSelector?: React.ReactNode
 }) {
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
@@ -184,7 +185,7 @@ export const TradeSummary = memo(function TradeSummary({
         </RowBetween>
       )}
 
-      {isPaymasterAvailable && <GasTokenModal />}
+      {isPaymasterAvailable && gasTokenSelector}
     </AutoColumn>
   )
 })

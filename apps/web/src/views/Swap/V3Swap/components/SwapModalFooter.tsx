@@ -1,7 +1,18 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router'
-import { AutoColumn, BackForwardIcon, Button, Dots, Flex, Link, QuestionHelper, Text } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  BackForwardIcon,
+  Box,
+  Button,
+  Dots,
+  Flex,
+  Link,
+  QuestionHelper,
+  Text,
+  WarningIcon,
+} from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo as CurrencyLogoWidget } from '@pancakeswap/widgets-internal'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
@@ -25,6 +36,20 @@ const SwapModalFooterContainer = styled(AutoColumn)`
   border-radius: ${({ theme }) => theme.radii.default};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   background-color: ${({ theme }) => theme.colors.background};
+`
+
+const SameTokenWarningBox = styled(Box)`
+  font-size: 13px;
+  background-color: #ffb2371a;
+  padding: 10px;
+  margin-top: 12px;
+  color: ${({ theme }) => theme.colors.yellow};
+  border: 1px solid ${({ theme }) => theme.colors.yellow};
+  border-radius: ${({ theme }) => theme.radii['12px']};
+`
+
+const StyledWarningIcon = styled(WarningIcon)`
+  fill: ${({ theme }) => theme.colors.yellow};
 `
 
 export const SwapModalFooter = memo(function SwapModalFooter({
@@ -103,7 +128,6 @@ export const SwapModalFooter = memo(function SwapModalFooter({
             </StyledBalanceMaxMini>
           </Text>
         </RowBetween>
-
         <RowBetween mb="8px">
           <RowFixed>
             <Text fontSize="14px">
@@ -256,6 +280,20 @@ export const SwapModalFooter = memo(function SwapModalFooter({
           </RowBetween>
         )}
       </SwapModalFooterContainer>
+
+      {isPaymasterAvailable &&
+        isPaymasterTokenActive &&
+        inputAmount.currency.wrapped.address === gasToken.wrapped.address && (
+          <SameTokenWarningBox>
+            <Flex>
+              <StyledWarningIcon marginRight={2} />
+              <span>
+                Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input
+                token
+              </span>
+            </Flex>
+          </SameTokenWarningBox>
+        )}
 
       <AutoRow>
         <Button

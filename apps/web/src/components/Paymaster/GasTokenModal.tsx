@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import {
   ArrowDropDownIcon,
   ArrowForwardIcon,
+  Box,
   Button,
   CircleLoader,
   Column,
@@ -17,6 +18,7 @@ import {
   RowBetween,
   RowFixed,
   Text,
+  WarningIcon,
   useModalV2,
   useTooltip,
 } from '@pancakeswap/uikit'
@@ -31,10 +33,13 @@ import styled from 'styled-components'
 import { Address } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
 
-import { Currency } from '@pancakeswap/swap-sdk-core'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { Currency, TradeType } from '@pancakeswap/swap-sdk-core'
 import { watchAccount } from '@wagmi/core'
 import { DEFAULT_PAYMASTER_TOKEN, paymasterInfo, paymasterTokens } from 'config/paymaster'
 import { useGasToken } from 'hooks/useGasToken'
+import { RouteDisplayEssentials } from 'views/Swap/V3Swap/components'
+import { TradeEssentialForPriceBreakdown } from 'views/Swap/V3Swap/utils/exchange'
 
 // Selector Styles
 const GasTokenSelectButton = styled(Button).attrs({ variant: 'text', scale: 'xs' })`
@@ -99,7 +104,30 @@ const Badge = styled.span`
   background-color: ${({ theme }) => theme.colors.success};
 `
 
-export const GasTokenModal = () => {
+const SameTokenWarningBox = styled(Box)`
+  font-size: 13px;
+  background-color: #ffb2371a;
+  padding: 10px;
+  margin: 5px 0 8px;
+  color: ${({ theme }) => theme.colors.yellow};
+  border: 1px solid ${({ theme }) => theme.colors.yellow};
+  border-radius: ${({ theme }) => theme.radii['12px']};
+`
+
+const StyledWarningIcon = styled(WarningIcon)`
+  fill: ${({ theme }) => theme.colors.yellow};
+`
+
+type Trade = TradeEssentialForPriceBreakdown &
+  Pick<SmartRouterTrade<TradeType>, 'tradeType'> & {
+    routes: RouteDisplayEssentials[]
+  }
+
+interface GasTokenModalProps {
+  trade?: Trade | null
+}
+
+export const GasTokenModal = ({ trade }: GasTokenModalProps) => {
   const { t } = useTranslation()
   const { isOpen, setIsOpen, onDismiss } = useModalV2()
   const { address: account } = useAccount()
@@ -113,6 +141,9 @@ export const GasTokenModal = () => {
     account,
     paymasterTokens.filter((token) => token.isToken) as any[],
   )
+
+  // Input Token Address from Swap
+  const inputTokenAddress = useMemo(() => trade && trade.inputAmount.currency.wrapped.address, [trade])
 
   // Reset fee token if account changes, connects or disconnects
   useEffect(() => {
@@ -267,6 +298,18 @@ export const GasTokenModal = () => {
           </Flex>
         </GasTokenSelectButton>
       </RowBetween>
+
+      {inputTokenAddress && inputTokenAddress === gasToken.wrapped.address && gasToken.isToken && (
+        <SameTokenWarningBox>
+          <Flex>
+            <StyledWarningIcon marginRight={2} />
+            <span>
+              Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input
+              token
+            </span>
+          </Flex>
+        </SameTokenWarningBox>
+      )}
 
       <ModalV2 onDismiss={onDismiss} isOpen={isOpen} closeOnOverlayClick>
         <StyledModalContainer>
