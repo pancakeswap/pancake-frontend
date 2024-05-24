@@ -173,6 +173,9 @@ export const TotalApy: React.FC<React.PropsWithChildren<TotalApyProps>> = ({ veC
       <Link mt="8px" external href="https://hiddenhand.finance/pancakeswap">
         {t('Hiddenhand')}
       </Link>
+      <Link mt="8px" external href="https://www.pancake.magpiexyz.io/vecake-bribe">
+        {t('Cakepie')}
+      </Link>
     </Box>,
     {
       placement: 'top',
