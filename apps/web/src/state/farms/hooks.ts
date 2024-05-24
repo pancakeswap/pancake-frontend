@@ -141,7 +141,11 @@ export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2F
   useEffect(() => {
     if (activeFarms) {
       if (prevActiveFarms) {
-        if (activeFarms.length !== prevActiveFarms.length) {
+        const prevLpAddresses = prevActiveFarms.map((farm) => farm.lpAddress)
+        const hasDifferentAddresses = activeFarms
+          .map((farm) => farm.lpAddress)
+          .some((address) => !prevLpAddresses.includes(address))
+        if (hasDifferentAddresses) {
           refetch()
         }
       } else {
