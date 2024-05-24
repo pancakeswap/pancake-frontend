@@ -4095,7 +4095,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     gid: 414,
     pairName: 'ONEPUNCH-WETH',
     address: '0x89E33c1952921A64Fb59994353d5C7b89eCDaDaD',
-    chainId: ChainId.ETHEREUM,
+    chainId: ChainId.LINEA,
     type: GaugeType.V2,
     feeTier: FeeAmount.MEDIUM,
     token0Address: lineaTokens.onepunch.address,
