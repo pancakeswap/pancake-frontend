@@ -10,6 +10,7 @@ export interface UsePoolAvgInfoParams {
   numberOfDays?: number
   address?: string
   chainId?: ChainId
+  useFarmsCache?: boolean
 }
 
 export const averageArray = (dataToCalculate: number[]): number => {
@@ -34,10 +35,12 @@ const defaultInfo: Info = {
   feeUSD: 0,
 }
 
-export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UsePoolAvgInfoParams) {
-  const router = useRouter()
-  const isInFarmsPage = router.pathname.includes('/farms')
-
+export function usePoolAvgInfo({
+  address = '',
+  numberOfDays = 7,
+  chainId,
+  useFarmsCache = false,
+}: UsePoolAvgInfoParams) {
   const { data: farmsAvgInfo } = useQuery({ queryKey: ['farmsAvgInfo', chainId], enabled: false })
 
   const { data } = useQuery({
@@ -76,9 +79,9 @@ export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UseP
       }
     },
 
-    enabled: Boolean(address && chainId && !isInFarmsPage),
+    enabled: Boolean(address && chainId && !useFarmsCache),
     refetchOnWindowFocus: false,
   })
 
-  return isInFarmsPage ? farmsAvgInfo?.[address?.toLowerCase()] || defaultInfo : data || defaultInfo
+  return useFarmsCache ? farmsAvgInfo?.[address?.toLowerCase()] || defaultInfo : data || defaultInfo
 }

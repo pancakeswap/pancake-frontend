@@ -99,6 +99,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
   } = usePoolAvgInfo({
     address: farm.lpAddress,
     chainId: farm.token.chainId,
+    useFarmsCache: true,
   })
 
   const balanceA =
