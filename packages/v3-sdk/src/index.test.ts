@@ -22,7 +22,6 @@ test('exports', () => {
       "swap",
       "getOutputAmount",
       "getInputAmount",
-      "getInputAmountByExactOut",
       "toHex",
       "computePoolAddress",
       "encodeRouteToPath",

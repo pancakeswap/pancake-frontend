@@ -1,4 +1,4 @@
-import { CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 import { TICK_SPACINGS } from '../constants'
 import { NEGATIVE_ONE, ONE, ZERO } from '../internalConstants'
@@ -127,30 +127,43 @@ export const swap = async ({
 }
 
 /**
- * Given an input amount of a token, return the computed output amount, and a pool with state updated after the trade
- *
+ * Given a desired input amount of a token, return the computed output
+ * amount and a pool with state updated after the trade
  */
-export const getOutputAmount = async (
+export const getOutputAmount = async <
+  TCurrencyOut extends Currency = Currency,
+  TCurrencyIn extends Currency = Currency
+>(
   pool: PoolState,
-  inputAmount: CurrencyAmount<Token>,
-  sqrtPriceLimitX96?: bigint
-): Promise<[CurrencyAmount<Token>, PoolState]> => {
-  invariant(hasInvolvedCurrency(pool, inputAmount.currency), 'TOKEN')
+  inputAmount: CurrencyAmount<TCurrencyIn>,
+  options?: {
+    sqrtPriceLimitX96?: bigint
+    // if exact is true, will throw if the full input amount cannot be spent
+    exact?: boolean
+  }
+): Promise<[CurrencyAmount<TCurrencyOut>, PoolState]> => {
+  invariant(hasInvolvedCurrency(pool, inputAmount.currency), 'CURRENCY')
 
   const zeroForOne = inputAmount.currency.equals(pool.currency0)
+  const { sqrtPriceLimitX96, exact } = options || {}
 
   const {
     amountCalculated: outputAmount,
     sqrtRatioX96,
     liquidity,
     tickCurrent,
+    amountSpecifiedRemaining,
   } = await swap({
     pool,
     zeroForOne,
     amountSpecified: inputAmount.quotient,
     sqrtPriceLimitX96,
   })
-  const outputToken = zeroForOne ? pool.currency1 : pool.currency0
+  const outputToken = (zeroForOne ? pool.currency1 : pool.currency0) as TCurrencyOut
+
+  if (exact) {
+    invariant(amountSpecifiedRemaining === ZERO, 'INSUFFICIENT_LIQUIDITY')
+  }
 
   return [
     CurrencyAmount.fromRawAmount(outputToken, outputAmount * NEGATIVE_ONE),
@@ -164,22 +177,29 @@ export const getOutputAmount = async (
 }
 
 /**
- * Given a desired output amount of a token, return the computed input amount and a pool with state updated after the trade
+ * Given a desired output amount of a token, return the computed input
+ * amount and a pool with state updated after the trade
  */
-export const getInputAmount = async (
+export const getInputAmount = async <TCurrencyIn extends Currency = Currency, TCurrencyOut extends Currency = Currency>(
   pool: PoolState,
-  outputAmount: CurrencyAmount<Token>,
-  sqrtPriceLimitX96?: bigint
-): Promise<[CurrencyAmount<Token>, PoolState]> => {
-  invariant(outputAmount.currency.isToken && hasInvolvedCurrency(pool, outputAmount.currency), 'CURRENCY')
+  outputAmount: CurrencyAmount<TCurrencyOut>,
+  options?: {
+    sqrtPriceLimitX96?: bigint
+    // if exact is true, will throw if the full output amount cannot be spent
+    exact?: boolean
+  }
+): Promise<[CurrencyAmount<TCurrencyIn>, PoolState]> => {
+  invariant(hasInvolvedCurrency(pool, outputAmount.currency), 'CURRENCY')
 
   const zeroForOne = outputAmount.currency.equals(pool.currency1)
+  const { sqrtPriceLimitX96, exact } = options || {}
 
   const {
     amountCalculated: inputAmount,
     sqrtRatioX96,
     liquidity,
     tickCurrent,
+    amountSpecifiedRemaining,
   } = await swap({
     pool,
     zeroForOne,
@@ -187,47 +207,14 @@ export const getInputAmount = async (
     sqrtPriceLimitX96,
   })
 
-  const inputToken = zeroForOne ? pool.currency0 : pool.currency1
+  if (exact) {
+    invariant(amountSpecifiedRemaining === ZERO, 'INSUFFICIENT_LIQUIDITY')
+  }
+
+  const inputCurrency = (zeroForOne ? pool.currency0 : pool.currency1) as TCurrencyIn
 
   return [
-    CurrencyAmount.fromRawAmount(inputToken, inputAmount),
-    {
-      ...pool,
-      sqrtRatioX96,
-      liquidity,
-      tick: tickCurrent,
-    },
-  ]
-}
-
-/**
- * Given a desired output amount of a token, return the computed input amount and a pool with state updated after the trade
- */
-export const getInputAmountByExactOut = async (
-  pool: PoolState,
-  outputAmount: CurrencyAmount<Token>,
-  sqrtPriceLimitX96?: bigint
-): Promise<[CurrencyAmount<Token>, PoolState]> => {
-  invariant(outputAmount.currency.isToken && hasInvolvedCurrency(pool, outputAmount.currency), 'CURRENCY')
-
-  const zeroForOne = outputAmount.currency.equals(pool.currency1)
-
-  const {
-    amountCalculated: inputAmount,
-    sqrtRatioX96,
-    liquidity,
-    tickCurrent,
-  } = await swap({
-    pool,
-    zeroForOne,
-    amountSpecified: outputAmount.quotient * NEGATIVE_ONE,
-    sqrtPriceLimitX96,
-  })
-
-  const inputToken = zeroForOne ? pool.currency0 : pool.currency1
-
-  return [
-    CurrencyAmount.fromRawAmount(inputToken, inputAmount),
+    CurrencyAmount.fromRawAmount(inputCurrency, inputAmount),
     {
       ...pool,
       sqrtRatioX96,
