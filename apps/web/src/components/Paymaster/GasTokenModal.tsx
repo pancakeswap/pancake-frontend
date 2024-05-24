@@ -88,7 +88,6 @@ const FixedHeightRow = styled.div<{ $disabled: boolean }>`
 const StyledBalanceText = styled(Text).attrs({ small: true })`
   white-space: nowrap;
   overflow: hidden;
-  max-width: 8rem;
   text-overflow: ellipsis;
 `
 
