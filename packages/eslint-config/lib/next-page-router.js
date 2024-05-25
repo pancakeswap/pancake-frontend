@@ -6,7 +6,7 @@ module.exports = {
         paths: [
           {
             name: "next/navigation",
-            message: "Please use next/router instead of next/router",
+            message: "Please use next/router instead of next/navigation",
           },
           {
             name: "next/image",

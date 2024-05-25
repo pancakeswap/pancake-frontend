@@ -57,7 +57,7 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
     enabled: Boolean(externalTransactionId && quote && walletAddress && getIsNetworkEnabled(chainId)),
     queryFn: async ({ queryKey }) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { quote, externalTransactionId, chainId, onRampUnit, ...rest } = queryKey[1]
+      const { quote, externalTransactionId, chainId, onRampUnit } = queryKey[1]
 
       if (!quote || !walletAddress || !externalTransactionId || !chainId || !onRampUnit) {
         throw new Error('Invalid parameters')
