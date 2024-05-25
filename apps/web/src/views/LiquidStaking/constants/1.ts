@@ -6,7 +6,7 @@ import { FunctionName, LiquidStakingList } from 'views/LiquidStaking/constants/t
 // FAQs
 import { EthWbethFaq } from 'views/LiquidStaking/constants/FAQs/EthWbethFaq'
 // ABI
-import { swETHAbi } from 'config/abi/swEthABI'
+import { swETHAbi } from 'config/abi/swETHAbi'
 import { wbethEthABI } from 'config/abi/wbethETH'
 import { Abi } from 'viem'
 
