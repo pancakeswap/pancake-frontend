@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Token } from '@pancakeswap/sdk'
+import { Currency, Token } from '@pancakeswap/sdk'
 import { Box, CardBody, Flex, RowBetween, Text } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
@@ -150,7 +150,11 @@ const LiquidStakingStakePage = () => {
               </Text>
               <Flex>
                 <Box width={24} height={24}>
-                  <CurrencyLogo currency={selectedList?.token1} size="24px" style={{ marginRight: '8px' }} />
+                  <CurrencyLogo
+                    currency={selectedList?.token1 as Currency}
+                    size="24px"
+                    style={{ marginRight: '8px' }}
+                  />
                 </Box>
                 <Text ml="4px">{selectedList?.token1?.symbol}</Text>
               </Flex>
