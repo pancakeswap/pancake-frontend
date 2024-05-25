@@ -40,7 +40,7 @@ const liquidStaking: LiquidStakingList[] = [
     abi: swETHAbi as Abi,
     shouldCheckApproval: true,
     approveToken: WETH9[ChainId.ETHEREUM],
-    aprUrl: 'https://www.binance.com/bapi/earn/v1/public/pos/cftoken/project/getPurchasableProject',
+    aprUrl: 'https://v3-lrt-public.svc.swellnetwork.io/api/tokens/rsweth/apr',
     exchangeRateMultiCall: [
       {
         abi: swETHAbi as Abi,
