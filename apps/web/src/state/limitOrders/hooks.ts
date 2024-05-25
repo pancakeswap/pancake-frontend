@@ -169,30 +169,7 @@ export interface DerivedOrderInfo {
   }
 }
 
-const getErrorMessage = ({
-  account,
-  wrappedCurrencies,
-  currencies,
-  currencyBalances,
-  parsedAmounts,
-  trade,
-  price,
-  rateType,
-  t,
-}: {
-  account?: string
-  wrappedCurrencies: {
-    input?: Token
-    output?: Token
-  }
-  currencies: { input?: Currency | Token; output?: Currency | Token }
-  currencyBalances: { input?: CurrencyAmount<Currency>; output?: CurrencyAmount<Currency> }
-  parsedAmounts: { input?: CurrencyAmount<Currency>; output?: CurrencyAmount<Currency> }
-  trade?: Trade<Currency, Currency, TradeType> | null
-  price?: Price<Currency, Currency>
-  rateType: Rate
-  t: any
-}) => {
+const getErrorMessage = ({ t }: { t: any }) => {
   return t('Placing Order Disabled')
 }
 
@@ -396,14 +373,6 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     currencies,
     currencyBalances,
     inputError: getErrorMessage({
-      account,
-      wrappedCurrencies,
-      currencies,
-      currencyBalances,
-      parsedAmounts,
-      trade,
-      price,
-      rateType,
       t,
     }),
     formattedAmounts,
