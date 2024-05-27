@@ -3388,5 +3388,6 @@
   "Gas Token": "Gas Token",
   "Powered by Zyfi Paymaster": "Powered by Zyfi Paymaster",
   "Please refer to the transaction confirmation on your wallet for the final gas fee.": "Please refer to the transaction confirmation on your wallet for the final gas fee.",
-  "Select a token to pay gas fees.": "Select a token to pay gas fees."
+  "Select a token to pay gas fees.": "Select a token to pay gas fees.",
+  "Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input token": "Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input token"
 }
