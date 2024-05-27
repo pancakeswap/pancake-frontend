@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { V3FarmWithoutStakedValue, V2FarmWithoutStakedValue } from 'views/Farms/FarmsV3'
+import { V2FarmWithoutStakedValue, V3FarmWithoutStakedValue } from 'state/farms/types'
 
 export const getStakedFarms = (
   farmsData: (V3FarmWithoutStakedValue | V2FarmWithoutStakedValue)[],
