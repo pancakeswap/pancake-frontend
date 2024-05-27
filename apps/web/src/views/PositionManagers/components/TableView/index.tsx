@@ -5,7 +5,7 @@ import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { SwellTooltip } from 'components/SwellTooltip/SwellTooltip'
-import { usePositionManagerAdepterContract } from 'hooks/useContract'
+import { usePositionManagerAdapterContract } from 'hooks/useContract'
 import { useHasSwellReward } from 'hooks/useHasSwellReward'
 import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 
@@ -94,7 +94,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
   } = vault
 
   const hasSwellReward = useHasSwellReward(address)
-  const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
+  const adapterContract = usePositionManagerAdapterContract(adapterAddress ?? '0x')
   const tokenRatio = useQuery({
     queryKey: ['adapterAddress', adapterAddress, id],
 

@@ -376,7 +376,7 @@ export function useV2SSBCakeWrapperContract(address: Address) {
   return useMemo(() => getV2SSBCakeWrapperContract(address, signer ?? undefined, chainId), [signer, chainId, address])
 }
 
-export function usePositionManagerAdepterContract(address: Address) {
+export function usePositionManagerAdapterContract(address: Address) {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(
