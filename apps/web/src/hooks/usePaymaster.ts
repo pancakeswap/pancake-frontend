@@ -2,10 +2,10 @@ import isZero from '@pancakeswap/utils/isZero'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import { Address, Hex, hexToBigInt, isAddress, stringify } from 'viem'
-import { eip712WalletActions } from 'viem/zksync'
 
 import { ChainId } from '@pancakeswap/chains'
 import { ZyfiResponse } from 'config/paymaster'
+import { eip712WalletActions } from 'viem/zksync'
 import { useWalletClient } from 'wagmi'
 import { useGasToken } from './useGasToken'
 
@@ -84,7 +84,7 @@ export const usePaymaster = () => {
 
     if (walletClient) {
       // Extend Viem's zkSync utils
-      const client = walletClient.extend(eip712WalletActions())
+      const client: any = walletClient.extend(eip712WalletActions() as any)
       const hash = await client.sendTransaction(newTx)
       return hash
     }
