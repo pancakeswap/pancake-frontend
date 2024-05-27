@@ -2,12 +2,11 @@ import isZero from '@pancakeswap/utils/isZero'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import { Address, Hex, hexToBigInt, isAddress, stringify } from 'viem'
-import { serializeTransaction } from 'viem/zksync'
+import { eip712WalletActions } from 'viem/zksync'
 
 import { ChainId } from '@pancakeswap/chains'
 import { ZyfiResponse } from 'config/paymaster'
 import { useWalletClient } from 'wagmi'
-import { getEip712Domain } from '../utils/paymaster'
 import { useGasToken } from './useGasToken'
 
 interface SwapCall {
@@ -83,32 +82,10 @@ export const usePaymaster = () => {
       paymasterInput: txResponse.txData.customData.paymasterParams.paymasterInput,
     }
 
-    // Viem's zkSync Utils. If not working, use EIP-712 normally
-    // const walletClient = (await getWalletClient(createWagmiConfig())).extend(eip712WalletActions())
-
     if (walletClient) {
-      const txRequest = await walletClient.prepareTransactionRequest(newTx)
-
-      const eip712Domain = getEip712Domain({
-        ...txRequest,
-        chainId: ChainId.ZKSYNC,
-        from: account,
-        type: 'eip712',
-      })
-
-      const customSignature = await walletClient.signTypedData({
-        ...eip712Domain,
-        account,
-      } as any)
-
-      const serializedTransaction = serializeTransaction({
-        ...txRequest,
-        chainId: ChainId.ZKSYNC,
-        customSignature,
-        type: 'eip712',
-      } as any)
-
-      const hash = await walletClient.sendRawTransaction({ serializedTransaction })
+      // Extend Viem's zkSync utils
+      const client = walletClient.extend(eip712WalletActions())
+      const hash = await client.sendTransaction(newTx)
       return hash
     }
 
