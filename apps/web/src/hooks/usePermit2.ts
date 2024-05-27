@@ -64,7 +64,6 @@ export const usePermit2 = (
 
   const writePermit = useWritePermit(amount?.currency, spender, permit2Details?.nonce)
   const { approveNoCheck, revokeNoCheck } = useApproveCallback(amount, approveTarget, {
-    addToTransaction: true,
     enablePaymaster: options.enablePaymaster,
   })
 

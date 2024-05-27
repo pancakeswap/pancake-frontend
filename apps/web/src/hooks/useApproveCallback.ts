@@ -28,7 +28,7 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount<Currency>,
   spender?: string,
   options: {
-    addToTransaction
+    addToTransaction?: boolean
     targetAmount?: bigint
 
     /**

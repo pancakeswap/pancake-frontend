@@ -304,8 +304,9 @@ export const GasTokenModal = ({ trade }: GasTokenModalProps) => {
           <Flex>
             <StyledWarningIcon marginRight={2} />
             <span>
-              Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input
-              token
+              {t(
+                'Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input token',
+              )}
             </span>
           </Flex>
         </SameTokenWarningBox>
