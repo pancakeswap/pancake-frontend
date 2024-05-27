@@ -3350,11 +3350,14 @@
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Observe que as Pearls ganhas com este cofre só aparecerão posteriormente em seu saldo.",
   "Fee saved": "Taxa economizada",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Economia no PancakeSwap em comparação com os principais DEXs que cobram taxas de interface",
+  "Gauge Not Found": "Gauge Not Found",
+  "Gauge can not be found using the hash passed via URL.": "Gauge can not be found using the hash passed via URL.",
   "Up to $8M in interface fees paid refunded!": "Reembolso de até Us$8 milhões em taxas de interface pagas!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Receba o reembolso de até US$8 milhões em taxas de interface pagas no PancakeSwap",
   "Match your volume and we'll refund ALL your interface fees paid": "Combine seu volume e reembolsaremos TODAS as taxas de interface pagas",
   "Get up to $8M USD in interface fees refunded on PancakeSwap": "Receba o reembolso de até US$8 milhões em taxas de interface no PancakeSwap",
   "Match your Uni volume on PancakeSwap to get a refund of up to": "Combine seu volume Uni no PancakeSwap para obter um reembolso de até",
   "$8M USD": "US$8M",
-  "in Uniswap interface fees paid": "taxas pagas na interface da Uniswap"
+  "in Uniswap interface fees paid": "taxas pagas na interface da Uniswap",
+  "Cakepie": "Cakepie"
 }

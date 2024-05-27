@@ -3350,11 +3350,14 @@
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Harap ketahui bahwa Pearls yang dihasilkan dari brankas ini hanya akan muncul di saldo Anda nanti.",
   "Fee saved": "Biaya yang dihemat",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Biaya yang dihemat di PancakeSwap dibanding berbagai DEX besar yang membebankan biaya antarmuka",
+  "Gauge Not Found": "Gauge Tidak Ditemukan",
+  "Gauge can not be found using the hash passed via URL.": "Gauge tidak dapat ditemukan dengan menggunakan hash yang diteruskan melalui URL.",
   "Up to $8M in interface fees paid refunded!": "Hingga $8 juta pembayaran biaya antarmuka telah dikembalikan!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Dapatkan hingga $8 juta dolar AS pembayaran biaya antarmuka dikembalikan di PancakeSwap",
   "Match your volume and we'll refund ALL your interface fees paid": "Cocokkan volume Anda, dan kami akan mengembalikan SEMUA biaya antarmuka yang telah Anda bayarkan",
   "Get up to $8M USD in interface fees refunded on PancakeSwap": "Dapatkan hingga $8 juta dolar AS dalam bentuk biaya antarmuka yang dikembalikan di PancakeSwap",
   "Match your Uni volume on PancakeSwap to get a refund of up to": "Samai volume Uni Anda di PancakeSwap untuk mendapatkan pengembalian dana sebesar hingga",
   "$8M USD": "$8 juta dolar AS",
-  "in Uniswap interface fees paid": "dalam bentuk biaya antarmuka Uniswap yang telah dibayarkan"
+  "in Uniswap interface fees paid": "dalam bentuk biaya antarmuka Uniswap yang telah dibayarkan",
+  "Cakepie": "Cakepie"
 }
