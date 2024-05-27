@@ -36,15 +36,11 @@ type UsePermit2ReturnType = Permit2HookState & Permit2HookCallback
 export const usePermit2 = (
   amount: CurrencyAmount<Token> | undefined,
   spender: Address | undefined,
-  options: {
-    /**
-     * Use paymaster if available.
-     * Enable only if Gas Token Selector is present on the interface.
-     */
+  {
+    enablePaymaster = false,
+  }: {
     enablePaymaster?: boolean
-  } = {
-    enablePaymaster: false,
-  },
+  } = {},
 ): UsePermit2ReturnType => {
   const { account, chainId } = useAccountActiveChain()
   const approveTarget = useMemo(() => getPermit2Address(chainId), [chainId])
@@ -64,7 +60,7 @@ export const usePermit2 = (
 
   const writePermit = useWritePermit(amount?.currency, spender, permit2Details?.nonce)
   const { approveNoCheck, revokeNoCheck } = useApproveCallback(amount, approveTarget, {
-    enablePaymaster: options.enablePaymaster,
+    enablePaymaster,
   })
 
   const permit = useCallback(async () => {

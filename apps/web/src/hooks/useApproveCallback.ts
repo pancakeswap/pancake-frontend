@@ -29,13 +29,17 @@ export function useApproveCallback(
   spender?: string,
   {
     addToTransaction = true,
-    targetAmount = undefined as bigint | undefined,
+    targetAmount,
 
     /**
      * Use paymaster if available.
      * Enable only if Gas Token Selector is present on the interface.
      */
     enablePaymaster = false,
+  }: {
+    addToTransaction?: boolean
+    targetAmount?: bigint
+    enablePaymaster?: boolean
   } = {},
 ) {
   const { address: account } = useAccount()
