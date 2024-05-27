@@ -1,12 +1,13 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
+import { getTokensByChain } from '@pancakeswap/tokens'
 import { AutoColumn, Box, Column, Input, Row, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AutoRow } from 'components/Layout/Row'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { SHORT_SYMBOL } from 'components/NetworkSwitcher'
 import { CurrencyList } from 'components/SearchModal/CurrencyList'
-import { TOKEN_LIST, targetChains } from 'config/supportedChain'
+import { targetChains } from 'config/supportedChain'
 import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import { styled } from 'styled-components'
@@ -76,7 +77,7 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selected
   }, [])
 
   const tokenList = useMemo((): Currency[] => {
-    const list = Object.values(TOKEN_LIST?.[selectedChainId as ChainId]).map((i: any) => ({ ...i }))
+    const list = getTokensByChain(selectedChainId)
     return list as Currency[]
   }, [selectedChainId])
 
