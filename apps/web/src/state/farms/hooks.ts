@@ -3,21 +3,20 @@ import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { getMasterChefContract } from 'utils/contractHelpers'
-import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
+import { useBCakeProxyContractAddress } from 'hooks/useBCakeProxyContractAddress'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { V2FarmWithoutStakedValue, V3FarmWithoutStakedValue } from 'views/Farms/FarmsV3'
 import { v3Clients } from 'utils/graphql'
 import { gql } from 'graphql-request'
 import { averageArray } from 'hooks/usePoolAvgInfo'
-import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
+import { multiQuery } from 'utils/infoQueryHelpers'
 import mapKeys from 'lodash/mapKeys'
 import mapValues from 'lodash/mapValues'
-import { usePreviousValue } from '@pancakeswap/hooks'
+import { V2FarmWithoutStakedValue, V3FarmWithoutStakedValue } from 'state/farms/types'
 import {
   farmSelector,
   makeFarmFromPidSelector,
@@ -73,10 +72,13 @@ export function useFarmV2PublicAPI() {
 
 export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2FarmWithoutStakedValue)[]) => {
   const { chainId } = useAccountActiveChain()
-  const prevActiveFarms = usePreviousValue(activeFarms)
 
-  const { data, refetch } = useQuery({
-    queryKey: ['farmsAvgInfo', chainId],
+  const activeFarmAddresses = useMemo(() => {
+    return activeFarms.map((farm) => farm.lpAddress).sort()
+  }, [activeFarms])
+
+  const { data } = useQuery({
+    queryKey: ['farmsAvgInfo', chainId, activeFarmAddresses],
     placeholderData: {},
     queryFn: async () => {
       if (!chainId) return undefined
@@ -128,27 +130,11 @@ export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2F
       })
     },
 
-    enabled: Boolean(chainId && activeFarms),
+    enabled: Boolean(chainId && activeFarms?.length),
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   })
-
-  useEffect(() => {
-    if (activeFarms) {
-      if (prevActiveFarms) {
-        const prevLpAddresses = prevActiveFarms.map((farm) => farm.lpAddress)
-        const hasDifferentAddresses = activeFarms
-          .map((farm) => farm.lpAddress)
-          .some((address) => !prevLpAddresses.includes(address))
-        if (hasDifferentAddresses) {
-          refetch()
-        }
-      } else {
-        refetch()
-      }
-    }
-  }, [refetch, activeFarms, prevActiveFarms])
 
   return data
 }

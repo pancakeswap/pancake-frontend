@@ -1,12 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import {
-  DeserializedFarm,
-  FarmV3DataWithPriceAndUserInfo,
-  FarmWithStakedValue,
-  filterFarmsByQuery,
-  supportedChainIdV2,
-  supportedChainIdV3,
-} from '@pancakeswap/farms'
+import { FarmWithStakedValue, filterFarmsByQuery, supportedChainIdV2, supportedChainIdV3 } from '@pancakeswap/farms'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import partition from 'lodash/partition'
@@ -50,6 +43,7 @@ import { getFarmApr } from 'utils/apr'
 import { getStakedFarms } from 'views/Farms/utils/getStakedFarms'
 import { BCakeMigrationBanner } from 'views/Home/components/Banners/BCakeMigrationBanner'
 import { useAccount } from 'wagmi'
+import { V2FarmWithoutStakedValue, V3FarmWithoutStakedValue } from 'state/farms/types'
 import Table from './components/FarmTable/FarmTable'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { BCakeBoosterCard } from './components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
@@ -166,16 +160,8 @@ const FinishedTextLink = styled(Link)`
 
 const NUMBER_OF_FARMS_VISIBLE = 12
 
-export interface V3FarmWithoutStakedValue extends FarmV3DataWithPriceAndUserInfo {
-  version: 3
-}
-
 export interface V3Farm extends V3FarmWithoutStakedValue {
   version: 3
-}
-
-export interface V2FarmWithoutStakedValue extends DeserializedFarm {
-  version: 2
 }
 
 export interface V2Farm extends FarmWithStakedValue {
