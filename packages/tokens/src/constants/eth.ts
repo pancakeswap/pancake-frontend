@@ -473,4 +473,20 @@ export const ethereumTokens = {
     'Masa Token',
     'https://www.masa.finance/',
   ),
+  mnt: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x3c3a81e81dc49A522A592e7622A7E711c06bf354',
+    18,
+    'MNT',
+    'Mantle',
+    'https://www.mantle.xyz/',
+  ),
+  mETH: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xd5F7838F5C461fefF7FE49ea5ebaF7728bB0ADfa',
+    18,
+    'mETH',
+    'Mantle Staked Ether',
+    'https://www.mantle.xyz/',
+  ),
 }

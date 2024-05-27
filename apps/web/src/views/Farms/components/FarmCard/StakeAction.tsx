@@ -84,7 +84,6 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
   const { boosterState } = useContext(YieldBoosterStateContext)
-  const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(null)
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
   const { isFirstTime, refresh: refreshFirstTime } = useFirstTimeCrossFarming(vaultPid)
   const isBloctoETH = useIsBloctoETH()
@@ -260,7 +259,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
       showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
-      bCakeMultiplier={bCakeMultiplier}
+      bCakeMultiplier={null}
       showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET && !bCakeWrapperAddress}
       crossChainWarningText={crossChainWarningText}
       decimals={18}

@@ -5,7 +5,6 @@ import { TokenImage } from 'components/TokenImage'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import { Ifo } from '@pancakeswap/ifos'
-import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 
 interface TotalAvailableClaimProps {

@@ -51,6 +51,27 @@ const v3TopFixedLps: FarmConfigV3[] = [
 export const farmsV3 = defineFarmV3Configs([
   ...v3TopFixedLps,
   {
+    pid: 27,
+    lpAddress: '0xEE53B979d0C4B2A40279287965b918BD2a4B760D',
+    token0: zksyncTokens.usdcNative,
+    token1: zksyncTokens.weth,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 26,
+    lpAddress: '0xD05eEf3792276E92bB051029DaDFc2Bf81121692',
+    token0: zksyncTokens.usdcNative,
+    token1: zksyncTokens.usdt,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 25,
+    lpAddress: '0x3AEf05a8E7D7A83f5527edeD214e0b24A87d0991',
+    token0: zksyncTokens.usdcNative,
+    token1: zksyncTokens.usdc,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
     pid: 24,
     lpAddress: '0x5bc25c641174e443ba618d86fC63639CD5288dF0',
     token0: zksyncTokens.usdt,

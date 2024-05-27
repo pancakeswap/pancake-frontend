@@ -3350,11 +3350,14 @@
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Λάβετε υπόψη ότι τα Pearls που κερδίσατε από αυτό το θησαυροφυλάκιο θα εμφανιστούν στο υπόλοιπό σας αργότερα.",
   "Fee saved": "Εξοικονόμηση προμηθειών",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Εξοικονόμηση προμηθειών στο PancakeSwap σε σύγκριση με τα ποσοστά που χρεώνονται από μεγαλύτερα DEX",
+  "Gauge Not Found": "Gauge Not Found",
+  "Gauge can not be found using the hash passed via URL.": "Gauge can not be found using the hash passed via URL.",
   "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
   "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid",
   "Get up to $8M USD in interface fees refunded on PancakeSwap": "Get up to $8M USD in interface fees refunded on PancakeSwap",
   "Match your Uni volume on PancakeSwap to get a refund of up to": "Match your Uni volume on PancakeSwap to get a refund of up to",
   "$8M USD": "$8M USD",
-  "in Uniswap interface fees paid": "in Uniswap interface fees paid"
+  "in Uniswap interface fees paid": "in Uniswap interface fees paid",
+  "Cakepie": "Cakepie"
 }

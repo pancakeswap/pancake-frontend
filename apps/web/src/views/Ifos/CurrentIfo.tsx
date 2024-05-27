@@ -37,7 +37,7 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
 
   const isBasicSaleOnly = useMemo(
     () => isBasicSale(publicIfoData.poolBasic?.saleType) && publicIfoData.poolBasic?.distributionRatio === 1,
-    [publicIfoData.poolBasic?.saleType],
+    [publicIfoData.poolBasic?.saleType, publicIfoData.poolBasic?.distributionRatio],
   )
 
   const steps = isBasicSaleOnly ? null : (
