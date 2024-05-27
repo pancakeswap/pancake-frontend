@@ -13,3 +13,7 @@ export const getAddressFromMap = (address: Addresses, chainId?: number): `0x${st
 export const getPancakeProfileAddress = () => {
   return getAddressFromMap(addresses.pancakeProfile)
 }
+
+export const getBunnyFactoryAddress = () => {
+  return getAddressFromMap(addresses.bunnyFactory)
+}
