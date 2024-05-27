@@ -8,7 +8,6 @@ import React, { memo, useState } from 'react'
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
-import { usePaymaster } from 'hooks/usePaymaster'
 import { Field } from 'state/swap/actions'
 import { SlippageAdjustedAmounts } from '../V3Swap/utils/exchange'
 import { useFeeSaved } from '../hooks/useFeeSaved'
@@ -39,9 +38,6 @@ export const TradeSummary = memo(function TradeSummary({
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
   const { feeSavedAmount, feeSavedUsdValue } = useFeeSaved(inputAmount, outputAmount)
-
-  // Paymaster (zkSync)
-  const { isPaymasterAvailable } = usePaymaster()
 
   return (
     <AutoColumn style={{ padding: '0 24px' }}>
@@ -185,7 +181,7 @@ export const TradeSummary = memo(function TradeSummary({
         </RowBetween>
       )}
 
-      {isPaymasterAvailable && gasTokenSelector}
+      {gasTokenSelector}
     </AutoColumn>
   )
 })

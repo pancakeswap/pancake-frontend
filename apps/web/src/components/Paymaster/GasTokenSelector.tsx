@@ -123,11 +123,11 @@ type Trade = TradeEssentialForPriceBreakdown &
     routes: RouteDisplayEssentials[]
   }
 
-interface GasTokenModalProps {
+interface GasTokenSelectorProps {
   trade?: Trade | null
 }
 
-export const GasTokenModal = ({ trade }: GasTokenModalProps) => {
+export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
   const { t } = useTranslation()
   const { isOpen, setIsOpen, onDismiss } = useModalV2()
   const { address: account } = useAccount()
@@ -152,7 +152,7 @@ export const GasTokenModal = ({ trade }: GasTokenModalProps) => {
         setGasToken(DEFAULT_PAYMASTER_TOKEN)
       },
     })
-  }, [config])
+  }, [config, setGasToken])
 
   const getTokenBalance = memoize((address: Address) => balances[address])
 

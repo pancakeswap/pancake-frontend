@@ -43,8 +43,9 @@ export const usePaymaster = () => {
     call: SwapCall & {
       gas?: string | bigint | undefined
     },
-    account: Address,
+    account?: Address,
   ) {
+    if (!account) throw new Error('An active wallet connection is required to send paymaster transaction')
     if (!gasToken.isToken) throw new Error('Selected gas token is not an ERC20 token. Unsupported by Paymaster.')
 
     const response = await fetch(`https://api.zyfi.org/api/erc20_paymaster/v1`, {
@@ -82,14 +83,12 @@ export const usePaymaster = () => {
       paymasterInput: txResponse.txData.customData.paymasterParams.paymasterInput,
     }
 
-    if (walletClient) {
-      // Extend Viem's zkSync utils
-      const client: any = walletClient.extend(eip712WalletActions() as any)
-      const hash = await client.sendTransaction(newTx)
-      return hash
+    if (!walletClient) {
+      throw new Error('Failed to execute paymaster transaction')
     }
-
-    throw new Error('Failed to execute paymaster transaction')
+    // Extend Viem's zkSync utils
+    const client: any = walletClient.extend(eip712WalletActions() as any)
+    return client.sendTransaction(newTx)
   }
 
   return {

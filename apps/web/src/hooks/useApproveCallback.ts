@@ -9,7 +9,7 @@ import { useHasPendingApproval, useTransactionAdder } from 'state/transactions/h
 import { calculateGasMargin } from 'utils'
 import { getViemErrorMessage } from 'utils/errors'
 import { isUserRejected, logError } from 'utils/sentry'
-import { Address, Hex, SendTransactionReturnType, encodeFunctionData, parseAbi } from 'viem'
+import { Address, SendTransactionReturnType, encodeFunctionData, parseAbi } from 'viem'
 import { useAccount } from 'wagmi'
 import useGelatoLimitOrdersLib from './limitOrders/useGelatoLimitOrdersLib'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
@@ -27,21 +27,17 @@ export enum ApprovalState {
 export function useApproveCallback(
   amountToApprove?: CurrencyAmount<Currency>,
   spender?: string,
-  options: {
-    addToTransaction?: boolean
-    targetAmount?: bigint
+  {
+    addToTransaction = true,
+    targetAmount = MaxUint256,
 
     /**
      * Use paymaster if available.
      * Enable only if Gas Token Selector is present on the interface.
      */
-    enablePaymaster?: boolean
-  } = {
-    addToTransaction: true,
-    enablePaymaster: false,
-  },
+    enablePaymaster = false,
+  } = {},
 ) {
-  const { addToTransaction = true, targetAmount, enablePaymaster } = options
   const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
@@ -163,11 +159,10 @@ export function useApproveCallback(
         const call = {
           address: tokenContract.address,
           gas: estimatedGas,
-          value: '0x0' as Hex,
           calldata,
         }
 
-        sendTxResult = sendPaymasterTransaction(call, account as Address)
+        sendTxResult = sendPaymasterTransaction(call, account)
       } else {
         sendTxResult = callWithGasPrice(tokenContract, 'approve' as const, [spender as Address, finalAmount], {
           gas: calculateGasMargin(estimatedGas),
