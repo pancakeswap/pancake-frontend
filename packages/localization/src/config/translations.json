@@ -3371,5 +3371,6 @@
   "$8M USD": "$8M USD",
   "in Uniswap interface fees paid": "in Uniswap interface fees paid",
   "Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input token": "Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input token",
-  "Cakepie": "Cakepie"
+  "Cakepie": "Cakepie",
+  "Try again with more gas token balance.": "Try again with more gas token balance."
 }

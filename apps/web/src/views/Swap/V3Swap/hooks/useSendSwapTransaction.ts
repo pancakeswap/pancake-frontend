@@ -17,16 +17,16 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import {
   Address,
   Hex,
+  SendTransactionReturnType,
   TransactionExecutionError,
   UserRejectedRequestError,
   hexToBigInt,
-  SendTransactionReturnType,
 } from 'viem'
 import { useSendTransaction } from 'wagmi'
 
+import { usePaymaster } from 'hooks/usePaymaster'
 import { logger } from 'utils/datadog'
 import { viemClients } from 'utils/viem'
-import { usePaymaster } from 'hooks/usePaymaster'
 import { isZero } from '../utils/isZero'
 
 interface SwapCall {
@@ -249,6 +249,15 @@ export default function useSendSwapTransaction(
                 },
                 error,
               )
+
+              if (isPaymasterAvailable && isPaymasterTokenActive) {
+                throw new Error(
+                  `Swap failed: ${t('Try again with more gas token balance.')} ${transactionErrorToUserReadableMessage(
+                    error,
+                    t,
+                  )}`,
+                )
+              }
 
               throw new Error(`Swap failed: ${transactionErrorToUserReadableMessage(error, t)}`)
             }
