@@ -99,6 +99,7 @@ export const useOnStake = (managerId: MANAGER, contractAddress: Address, bCakeWr
       chain,
       positionManagerWrapperContract.write,
       toastSuccess,
+      slippage,
       t,
     ],
   )
