@@ -29,7 +29,7 @@ export function useApproveCallback(
   spender?: string,
   {
     addToTransaction = true,
-    targetAmount = MaxUint256,
+    targetAmount = undefined,
 
     /**
      * Use paymaster if available.
