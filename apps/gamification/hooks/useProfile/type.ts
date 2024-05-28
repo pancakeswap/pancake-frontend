@@ -31,7 +31,9 @@ export interface Profile {
   collectionAddress: Address
   tokenId: number
   isActive: boolean
+  username: string
   nft?: NftToken
+  hasRegistered: boolean
 }
 
 export interface GetProfileResponse {
