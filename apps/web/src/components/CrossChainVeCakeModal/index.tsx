@@ -115,6 +115,7 @@ export const CrossChainVeCakeModal: React.FC<{
     [ChainId.ETHEREUM]: '',
   })
   const [modalState, setModalState] = useState<'list' | 'ready' | 'submitted' | 'done'>('list')
+  const { balance: veCakeOnBsc } = useVeCakeBalance(ChainId.BSC)
 
   const syncVeCake = useCallback(
     async (chainId: ChainId) => {
@@ -174,11 +175,13 @@ export const CrossChainVeCakeModal: React.FC<{
               </Text>
               <Flex flexDirection="column" style={{ gap: 12 }}>
                 <OtherChainsCard
-                  chainName={t('Arbitrum One')}
+                  chainName={t('Arbitrum')}
                   chainId={ChainId.ARBITRUM_ONE}
                   onSelected={setSelectChainId}
                   Icon={<ArbitrumIcon width={20} height={20} />}
                   isSelected={selectChainId === ChainId.ARBITRUM_ONE}
+                  veCakeOnBsc={veCakeOnBsc}
+                  hash={txByChain[ChainId.ARBITRUM_ONE]}
                 />
                 <OtherChainsCard
                   chainName={t('Ethereum')}
@@ -186,6 +189,8 @@ export const CrossChainVeCakeModal: React.FC<{
                   onSelected={setSelectChainId}
                   Icon={<EthereumIcon width={16} />}
                   isSelected={selectChainId === ChainId.ETHEREUM}
+                  veCakeOnBsc={veCakeOnBsc}
+                  hash={txByChain[ChainId.ETHEREUM]}
                 />
               </Flex>
               <InfoBox />
@@ -256,16 +261,38 @@ const OtherChainsCard: React.FC<{
   Icon: React.ReactElement
   onSelected: (chainId: ChainId) => void
   isSelected: boolean
-}> = ({ chainName, chainId, Icon, onSelected, isSelected }) => {
+  veCakeOnBsc: BigNumber
+  hash?: string
+}> = ({ chainName, chainId, Icon, onSelected, isSelected, veCakeOnBsc, hash }) => {
   const { balance } = useVeCakeBalance(chainId)
+  const { t } = useTranslation()
+  const isSynced = balance.isGreaterThanOrEqualTo(veCakeOnBsc)
   return (
     <VeCakeChainBox onClick={() => onSelected(chainId)} className={isSelected ? 'is-selected' : undefined}>
       <Flex alignItems="center" style={{ gap: 5 }}>
         <LogoWrapper> {Icon}</LogoWrapper>
         <Text>{chainName}</Text>
       </Flex>
-
-      <Text>{formatNumber(getBalanceNumber(balance))}</Text>
+      <Flex flexDirection="column">
+        <Text fontSize="14px" color="textSubtle">
+          {t('Profile')}
+        </Text>
+        {hash && !isSynced ? (
+          <LinkExternal external href={`https://layerzeroscan.com/tx/${hash}`}>
+            {t('In Progress')}
+          </LinkExternal>
+        ) : (
+          <Text fontSize="16px">{isSynced ? t('Synced') : t('To be Synced')}</Text>
+        )}
+      </Flex>
+      <Flex flexDirection="column">
+        <Text fontSize="14px" color="textSubtle">
+          {t('veCAKE')}
+        </Text>
+        <Text fontSize="16px" textAlign="right">
+          {formatNumber(getBalanceNumber(balance))}
+        </Text>
+      </Flex>
     </VeCakeChainBox>
   )
 }
