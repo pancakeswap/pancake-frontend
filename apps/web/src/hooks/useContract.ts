@@ -517,10 +517,14 @@ export const useVeCakeContract = () => {
   return useMemo(() => getVeCakeContract(signer ?? undefined, chainId), [chainId, signer])
 }
 
-export const usePancakeVeSenderV2Contract = () => {
+export const usePancakeVeSenderV2Contract = (targetChainId?: ChainId) => {
+  const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
 
-  return useMemo(() => getPancakeVeSenderV2Contract(signer ?? undefined), [signer])
+  return useMemo(
+    () => getPancakeVeSenderV2Contract(signer ?? undefined, targetChainId ?? chainId),
+    [chainId, signer, targetChainId],
+  )
 }
 
 export const useGaugesVotingContract = () => {

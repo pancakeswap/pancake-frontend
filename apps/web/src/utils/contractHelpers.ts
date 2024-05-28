@@ -527,12 +527,12 @@ export const getVeCakeContract = (signer?: WalletClient, chainId?: number) => {
   })
 }
 
-export const getPancakeVeSenderV2Contract = (signer?: WalletClient) => {
+export const getPancakeVeSenderV2Contract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: pancakeVeSenderV2ABI,
-    address: getPancakeVeSenderV2Address(),
+    address: getPancakeVeSenderV2Address(chainId) ?? getPancakeVeSenderV2Address(ChainId.BSC),
     signer,
-    chainId: ChainId.BSC,
+    chainId,
   })
 }
 

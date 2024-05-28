@@ -44,13 +44,18 @@ const LayerZeroEIdMap = {
 }
 
 const LayerZeroFee = {
-  [ChainId.ETHEREUM]: 77505656328881000n,
-  [ChainId.ARBITRUM_ONE]: 195362447977261n,
+  [ChainId.ETHEREUM]: 98976797685597375n,
+  [ChainId.ARBITRUM_ONE]: 223647731635823n,
 }
 
 const ChainNameMap = {
   [ChainId.ETHEREUM]: 'Ethereum',
   [ChainId.ARBITRUM_ONE]: 'Arbitrum',
+}
+
+const chainDstGasMap = {
+  [ChainId.ETHEREUM]: 650000n,
+  [ChainId.ARBITRUM_ONE]: 850000n,
 }
 
 const ChainLogoMap = {
@@ -106,7 +111,7 @@ export const CrossChainVeCakeModal: React.FC<{
   const { isDesktop } = useMatchBreakpoints()
   const { account, chain } = useActiveWeb3React()
   const { t } = useTranslation()
-  const veCakeSenderV2Contract = usePancakeVeSenderV2Contract()
+  const veCakeSenderV2Contract = usePancakeVeSenderV2Contract(ChainId.BSC)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { toastSuccess } = useToast()
   const [selectChainId, setSelectChainId] = useState<ChainId | undefined>(undefined)
@@ -122,6 +127,17 @@ export const CrossChainVeCakeModal: React.FC<{
       if (!account || !veCakeSenderV2Contract || !chainId) return
       setModalState('ready')
       const syncFee = BigInt(new BigNumber(LayerZeroFee[chainId].toString()).times(1.1).toNumber().toFixed(0))
+      console.log([LayerZeroEIdMap[chainId], chainDstGasMap[chainId]], 'layer????')
+      try {
+        const feeData = await veCakeSenderV2Contract?.read?.getEstimateGasFees?.([
+          LayerZeroEIdMap[chainId],
+          chainDstGasMap[chainId],
+        ])
+        console.log(feeData, 'feeData')
+      } catch (e) {
+        console.log(e, 'feeData error')
+      }
+
       const receipt = await fetchWithCatchTxError(async () =>
         veCakeSenderV2Contract.write.sendSyncMsg([LayerZeroEIdMap[chainId], account, true, true, 850000n], {
           account,
