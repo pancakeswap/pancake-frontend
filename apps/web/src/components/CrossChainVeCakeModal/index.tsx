@@ -23,14 +23,35 @@ import {
 import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { pancakeVeSenderV2ABI } from 'config/abi/pancakeVeSenderV2ABI'
+import addresses from 'config/constants/contracts'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePancakeVeSenderV2Contract } from 'hooks/useContract'
 import { useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useCallback, useState } from 'react'
 import { styled } from 'styled-components'
+import { publicClient } from 'utils/wagmi'
 import { ArbitrumIcon, BinanceIcon, EthereumIcon } from './ChainLogos'
 // import { getCrossChainMessage } from '@pancakeswap/ifos'
+
+export async function getEstimateGasFees({ eid, dstGas }): Promise<{ nativeFee: bigint; lzTokenFee: bigint }> {
+  console.log(addresses.pancakeVeSenderV2[ChainId.BSC], 'address?????')
+  const [estimateGasFeesData] = await publicClient({ chainId: ChainId.BSC }).multicall({
+    contracts: [
+      {
+        address: addresses.pancakeVeSenderV2[ChainId.BSC],
+        functionName: 'getEstimateGasFees',
+        abi: pancakeVeSenderV2ABI,
+        args: [eid, dstGas] as const,
+      } as const,
+    ],
+  })
+  if (!estimateGasFeesData.result) return { nativeFee: 0n, lzTokenFee: 0n }
+
+  const [estimateGasFees] = [estimateGasFeesData.result]
+  return estimateGasFees
+}
 
 const StyledModalHeader = styled(ModalHeader)`
   padding: 0;
@@ -44,8 +65,8 @@ const LayerZeroEIdMap = {
 }
 
 const LayerZeroFee = {
-  [ChainId.ETHEREUM]: 98976797685597375n,
-  [ChainId.ARBITRUM_ONE]: 223647731635823n,
+  [ChainId.ETHEREUM]: 114670586267181697n,
+  [ChainId.ARBITRUM_ONE]: 262309998201766n,
 }
 
 const ChainNameMap = {
@@ -127,23 +148,23 @@ export const CrossChainVeCakeModal: React.FC<{
       if (!account || !veCakeSenderV2Contract || !chainId) return
       setModalState('ready')
       const syncFee = BigInt(new BigNumber(LayerZeroFee[chainId].toString()).times(1.1).toNumber().toFixed(0))
-      console.log([LayerZeroEIdMap[chainId], chainDstGasMap[chainId]], 'layer????')
+
       try {
-        const feeData = await veCakeSenderV2Contract?.read?.getEstimateGasFees?.([
-          LayerZeroEIdMap[chainId],
-          chainDstGasMap[chainId],
-        ])
+        const feeData = await getEstimateGasFees({ eid: LayerZeroEIdMap[chainId], dstGas: chainDstGasMap[chainId] })
         console.log(feeData, 'feeData')
       } catch (e) {
         console.log(e, 'feeData error')
       }
 
       const receipt = await fetchWithCatchTxError(async () =>
-        veCakeSenderV2Contract.write.sendSyncMsg([LayerZeroEIdMap[chainId], account, true, true, 850000n], {
-          account,
-          chain,
-          value: syncFee, // payable BNB for cross chain fee
-        }),
+        veCakeSenderV2Contract.write.sendSyncMsg(
+          [LayerZeroEIdMap[chainId], account, true, true, chainDstGasMap[chainId]],
+          {
+            account,
+            chain,
+            value: syncFee, // payable BNB for cross chain fee
+          },
+        ),
       )
       if (receipt?.status) {
         toastSuccess(
