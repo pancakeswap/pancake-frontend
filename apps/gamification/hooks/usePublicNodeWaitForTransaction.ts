@@ -4,7 +4,7 @@ import { CHAINS } from 'config/chains'
 import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
 import first from 'lodash/first'
 import { useCallback } from 'react'
-import { RetryableError, retry } from 'utils/retry'
+import { RetryableError, retry } from 'state/multicall/retry'
 import {
   BlockNotFoundError,
   GetTransactionReceiptParameters,

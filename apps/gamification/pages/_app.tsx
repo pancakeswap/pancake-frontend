@@ -11,7 +11,9 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Script from 'next/script'
 import React, { Fragment, ReactNode, useMemo } from 'react'
+import { Provider } from 'react-redux'
 import { Provider as WrapBalancerProvider } from 'react-wrap-balancer'
+import { useStore } from 'state'
 import { createGlobalStyle } from 'styled-components'
 import { createWagmiConfig } from 'utils/wagmi'
 import { WagmiProvider } from 'wagmi'
@@ -75,6 +77,7 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const Layout = Component.Layout || Fragment
   const wagmiConfig = useMemo(() => createWagmiConfig(), [])
+  const store = useStore(pageProps.initialReduxState)
 
   return (
     <>
@@ -89,26 +92,28 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <WagmiProvider reconnectOnMount config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <HydrationBoundary state={pageProps.dehydratedState}>
-            <NextThemeProvider>
-              <StyledThemeProvider>
-                <LanguageProvider>
-                  <ModalProvider>
-                    <ResetCSS />
-                    <GlobalStyle />
-                    <GlobalHooks />
-                    <Menu>
-                      <Layout>
-                        <WrapBalancerProvider>
-                          <Component {...pageProps} />
-                        </WrapBalancerProvider>
-                      </Layout>
-                    </Menu>
-                    <ToastListener />
-                    {Component?.CustomComponent}
-                  </ModalProvider>
-                </LanguageProvider>
-              </StyledThemeProvider>
-            </NextThemeProvider>
+            <Provider store={store}>
+              <NextThemeProvider>
+                <StyledThemeProvider>
+                  <LanguageProvider>
+                    <ModalProvider>
+                      <ResetCSS />
+                      <GlobalStyle />
+                      <GlobalHooks />
+                      <Menu>
+                        <Layout>
+                          <WrapBalancerProvider>
+                            <Component {...pageProps} />
+                          </WrapBalancerProvider>
+                        </Layout>
+                      </Menu>
+                      <ToastListener />
+                      {Component?.CustomComponent}
+                    </ModalProvider>
+                  </LanguageProvider>
+                </StyledThemeProvider>
+              </NextThemeProvider>
+            </Provider>
           </HydrationBoundary>
         </QueryClientProvider>
       </WagmiProvider>
