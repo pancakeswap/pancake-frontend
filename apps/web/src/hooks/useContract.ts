@@ -34,6 +34,7 @@ import {
   getNftMarketContract,
   getNftSaleContract,
   getNonBscVaultContract,
+  getPancakeVeSenderV2Contract,
   getPointCenterIfoContract,
   getPositionManagerAdapterContract,
   getPositionManagerBCakeWrapperContract,
@@ -514,6 +515,12 @@ export const useVeCakeContract = () => {
   const { data: signer } = useWalletClient()
 
   return useMemo(() => getVeCakeContract(signer ?? undefined, chainId), [chainId, signer])
+}
+
+export const usePancakeVeSenderV2Contract = () => {
+  const { data: signer } = useWalletClient()
+
+  return useMemo(() => getPancakeVeSenderV2Contract(signer ?? undefined), [signer])
 }
 
 export const useGaugesVotingContract = () => {

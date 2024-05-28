@@ -167,6 +167,10 @@ export const getVeCakeAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.veCake, chainId)
 }
 
+export const getPancakeVeSenderV2Address = () => {
+  return getAddressFromMap(addresses.pancakeVeSenderV2, ChainId.BSC)
+}
+
 export const getVeCakeAddressNoFallback = (chainId?: number) => {
   return getAddressFromMapNoFallback(addresses.veCake, chainId)
 }

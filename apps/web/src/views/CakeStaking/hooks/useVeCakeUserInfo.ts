@@ -54,7 +54,6 @@ export const useVeCakeUserInfo = (): {
       enabled: Boolean(veCakeContract?.address && account),
       select: (d) => {
         if (!d) return undefined
-
         const [amount, end, cakePoolProxy, cakeAmount, lockEndTime, migrationTime, cakePoolType, withdrawFlag] = d
         return {
           amount,

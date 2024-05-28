@@ -1,16 +1,16 @@
 import { ChainId } from '@pancakeswap/chains'
 import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { useBalance, useReadContract } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import { useMemo } from 'react'
 import { getVeCakeAddress } from 'utils/addressHelpers'
 import { Address, erc20Abi } from 'viem'
 import { useAccount } from 'wagmi'
-import { useBalance, useReadContract } from '@pancakeswap/wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
-const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean) => {
-  return useTokenBalanceByChain(tokenAddress, forceBSC ? ChainId.BSC : undefined)
+const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean, targetChainId?: ChainId) => {
+  return useTokenBalanceByChain(tokenAddress, forceBSC ? ChainId.BSC : targetChainId)
 }
 
 export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: ChainId) => {
@@ -75,9 +75,9 @@ export const useBSCCakeBalance = () => {
 }
 
 // veCake only deploy on bsc/bscTestnet
-export const useVeCakeBalance = () => {
+export const useVeCakeBalance = (targetChainId?: ChainId) => {
   const { chainId } = useActiveChainId()
-  const { balance, fetchStatus } = useTokenBalance(getVeCakeAddress(chainId))
+  const { balance, fetchStatus } = useTokenBalance(getVeCakeAddress(targetChainId ?? chainId), false, targetChainId)
 
   return { balance, fetchStatus }
 }

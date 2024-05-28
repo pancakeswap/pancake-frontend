@@ -14,8 +14,10 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
+import { useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { useAccount } from 'wagmi'
 import boosterCardImage from '../../../../images/boosterCardImage.png'
@@ -127,6 +129,7 @@ const CardContent: React.FC<{ variants?: 'farm' | 'pm' }> = ({ variants }) => {
   const { address: account } = useAccount()
   const { locked } = useBCakeBoostLimitAndLockInfo()
   const theme = useTheme()
+  const [isOpen, setIsOpen] = useState(false)
 
   if (!account)
     return (
@@ -178,6 +181,16 @@ const CardContent: React.FC<{ variants?: 'farm' | 'pm' }> = ({ variants }) => {
           {t('Go to CAKE Staking')}
         </Button>
       </NextLink>
+      <Button width="100%" style={{ backgroundColor: theme.colors.textSubtle }} onClick={() => setIsOpen(true)}>
+        {t('Sync')}
+      </Button>
+      <CrossChainVeCakeModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        onDismiss={() => {
+          setIsOpen(false)
+        }}
+      />
     </Box>
   )
 }
