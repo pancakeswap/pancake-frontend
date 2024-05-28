@@ -1,4 +1,5 @@
 import { SCALE_OFFSET } from '../../constants/binPool'
+import { calculateSwapFee } from '../../utils/calculateSwapFee'
 import { mulShiftRoundDown, mulShiftRoundUp } from '../../utils/math/mulShift'
 import { shiftDivRoundDown, shiftDivRoundUp } from '../../utils/math/shiftDiv'
 import { BinPoolState } from './getBinPool'
@@ -44,7 +45,10 @@ export const getAmounts = (binPool: BinPoolState, swapForY: boolean, amountIn: b
     ? shiftDivRoundUp(binReserveOut, SCALE_OFFSET, price)
     : mulShiftRoundUp(binReserveOut, price, SCALE_OFFSET)
 
-  const maxFee = getFeeAmount(maxAmountIn, binPool.swapFee)
+  const protocolFee = binPool.protocolFees[swapForY ? 0 : 1]
+  const swapFee = calculateSwapFee(protocolFee, binPool.lpFee)
+
+  const maxFee = getFeeAmount(maxAmountIn, swapFee)
 
   maxAmountIn += maxFee
 
@@ -53,7 +57,7 @@ export const getAmounts = (binPool: BinPoolState, swapForY: boolean, amountIn: b
     amountInWithFee = maxAmountIn
     amountOutOfBin = binReserveOut
   } else {
-    totalFee = getFeeAmountFrom(amountIn, binPool.swapFee)
+    totalFee = getFeeAmountFrom(amountIn, swapFee)
     const amountsInWithoutFee = amountIn - totalFee
 
     amountOutOfBin = swapForY

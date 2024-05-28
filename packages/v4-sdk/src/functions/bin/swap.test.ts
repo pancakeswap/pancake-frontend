@@ -8,8 +8,7 @@ describe('swap', () => {
   const activeId = 2n ** 23n
   const currencyX = WNATIVE[56]
   const currencyY = WNATIVE[56]
-  const fee = 3000n
-  const swapFee = 3000n
+  const lpFee = 3000n
   const binStep = 10n
 
   const defaultBinPool: BinPoolState = {
@@ -17,9 +16,8 @@ describe('swap', () => {
     currencyX,
     currencyY,
     binStep,
-    protocolFee: 0n,
-    fee,
-    swapFee,
+    lpFee,
+    protocolFees: [0n, 0n],
     reserveOfBin: {},
   }
 
@@ -60,18 +58,35 @@ describe('swap', () => {
   }
 
   test('getSwapIn::swapForY', () => {
-    const bin = { ...defaultBinPool }
+    const swapForY = true
+    const bin: BinPoolState = { ...defaultBinPool, protocolFees: [0n, 0n] }
     const amountOut = BigInt(1e18 - 1)
     setLiquidity(bin, bin.activeId, BigInt(1e18), BigInt(1e18), 50n, 50n)
 
-    const { amountIn, amountOutLeft } = getSwapIn(bin, amountOut, true)
+    const { amountIn, amountOutLeft } = getSwapIn(bin, amountOut, swapForY)
 
     expect(amountOutLeft).toBe(0n)
 
-    const { result } = swap(bin, amountIn, true)
+    const { result } = swap(bin, amountIn, swapForY)
     expect(result[0]).toBe(amountIn)
     expect(result[1]).toBe(-amountOut)
   })
+
+  test('getSwapIn::swapForY 0.1% protocolFee + 0.3% lpFee', () => {
+    const swapForY = true
+    const bin: BinPoolState = { ...defaultBinPool, protocolFees: [1000n, 1000n] }
+    const amountOut = BigInt(1e18 - 1)
+    setLiquidity(bin, bin.activeId, BigInt(1e18), BigInt(1e18), 50n, 50n)
+
+    const { amountIn, amountOutLeft } = getSwapIn(bin, amountOut, swapForY)
+
+    expect(amountOutLeft).toBe(0n)
+
+    const { result } = swap(bin, amountIn, swapForY)
+    expect(result[0]).toBe(amountIn)
+    expect(result[1]).toBe(-amountOut)
+  })
+
   test('getSwapIn::swapForX', () => {
     const bin = { ...defaultBinPool }
     const amountOut = BigInt(1e18) - 1n
@@ -187,5 +202,48 @@ describe('swap', () => {
 
     expect(() => swap(bin, amountIn, true)).toThrow('OUT_OF_LIQUIDITY')
     expect(() => swap(bin, amountIn, false)).toThrow('OUT_OF_LIQUIDITY')
+  })
+
+  describe('swapFee', () => {
+    const createBinPoolWithFee = (_lpFee: bigint, _protocolFees: [bigint, bigint]) => {
+      const bin = { ...defaultBinPool, lpFee: _lpFee, protocolFees: _protocolFees } as BinPoolState
+      setLiquidity(bin, bin.activeId, BigInt(10_000e18), BigInt(10_000e18), 50n, 50n)
+      return bin
+    }
+    const cases: Array<[string, BinPoolState]> = [
+      ['protocol fee = 0; lpFee = 0', createBinPoolWithFee(0n, [0n, 0n])],
+      ['protocol fee = 0; lpFee = 0.3%', createBinPoolWithFee(3000n, [0n, 0n])],
+      ['protocol fee = 0.1%; lpFee = 0', createBinPoolWithFee(0n, [1000n, 1000n])],
+      ['protocol fee = 0.1%; lpFee = 0.3%', createBinPoolWithFee(3000n, [1000n, 1000n])],
+    ]
+
+    cases.forEach(([name, bin]) => {
+      test(`SwapForY ${name}`, () => {
+        const amountIn = BigInt(1e18)
+        const swapForY = true
+
+        const { amountOut } = getSwapOut(bin, amountIn, swapForY)
+        const { amountIn: amountIn2 } = getSwapIn(bin, amountOut, swapForY)
+
+        const { result } = swap(bin, amountIn, swapForY)
+        expect(result[0]).toBe(amountIn)
+        expect(result[0]).toBe(amountIn2)
+        expect(result[1]).toBe(-amountOut)
+      })
+    })
+    cases.forEach(([name, bin]) => {
+      test(`SwapForX ${name}`, () => {
+        const amountIn = BigInt(1e18)
+        const swapForY = false
+
+        const { amountOut } = getSwapOut(bin, amountIn, swapForY)
+        const { amountIn: amountIn2 } = getSwapIn(bin, amountOut, swapForY)
+
+        const { result } = swap(bin, amountIn, swapForY)
+        expect(result[0]).toBe(-amountOut)
+        expect(result[1]).toBe(amountIn)
+        expect(result[1]).toBe(amountIn2)
+      })
+    })
   })
 })
