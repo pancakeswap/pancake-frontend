@@ -53,7 +53,7 @@ export type BinPoolState = {
 /**
  * Returns a new BinPoolState object
  */
-export const getBinPool = ({
+export const createBinPool = ({
   currencyA,
   currencyB,
   activeId,

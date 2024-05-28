@@ -1,6 +1,6 @@
 import invariant from 'tiny-invariant'
 import { TreeMath } from '../../utils/math/TreeMath'
-import { BinPoolState } from './getBinPool'
+import { BinPoolState } from './createBinPool'
 
 /**
  * Returns the next non-empty bin
