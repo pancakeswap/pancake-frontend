@@ -77,7 +77,7 @@ const LogoWrapper = styled.div`
   height: 32px;
   justify-content: center;
   align-items: center;
-  background: ${({ theme }) => theme.colors.text};
+  background: #280d5f;
   border-radius: 8px;
 `
 
@@ -89,7 +89,7 @@ export const VeCakeChainBox = styled.div`
   align-self: stretch;
   border-radius: 16px;
   cursor: pointer;
-  background: linear-gradient(112deg, #f2ecf2 0%, #e8f2f6 100%);
+  background: ${({ theme }) => theme.colors.gradientCardHeader};
   border: 2px solid transparent;
   transition: border-color 0.25s ease-in-out;
   &.is-selected {
