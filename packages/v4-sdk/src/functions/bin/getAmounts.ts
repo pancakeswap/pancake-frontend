@@ -26,11 +26,11 @@ export type AmountsChanged = {
  * along with the fees that will be charged
  *
  * @param binPool BinPoolState
- * @param zeroForOne boolean
+ * @param swapForY boolean
  * @param amountIn bigint
  * @returns AmountsChanged
  */
-export const getAmounts = (binPool: BinPoolState, zeroForOne: boolean, amountIn: bigint): AmountsChanged => {
+export const getAmounts = (binPool: BinPoolState, swapForY: boolean, amountIn: bigint): AmountsChanged => {
   let amountInWithFee = amountIn
   let amountOutOfBin = 0n
   let totalFee = 0n
@@ -38,9 +38,9 @@ export const getAmounts = (binPool: BinPoolState, zeroForOne: boolean, amountIn:
   const binReserves = binPool.reserveOfBin[Number(binPool.activeId)]
 
   const price = getPriceFromId(binPool.activeId, binPool.binStep)
-  const binReserveOut = zeroForOne ? binReserves.reserve1 : binReserves.reserve0
+  const binReserveOut = swapForY ? binReserves.reserveY : binReserves.reserveX
 
-  let maxAmountIn = zeroForOne
+  let maxAmountIn = swapForY
     ? shiftDivRoundUp(binReserveOut, SCALE_OFFSET, price)
     : mulShiftRoundUp(binReserveOut, price, SCALE_OFFSET)
 
@@ -56,7 +56,7 @@ export const getAmounts = (binPool: BinPoolState, zeroForOne: boolean, amountIn:
     totalFee = getFeeAmountFrom(amountIn, binPool.swapFee)
     const amountsInWithoutFee = amountIn - totalFee
 
-    amountOutOfBin = zeroForOne
+    amountOutOfBin = swapForY
       ? mulShiftRoundDown(amountsInWithoutFee, price, SCALE_OFFSET)
       : shiftDivRoundDown(amountsInWithoutFee, SCALE_OFFSET, price)
 
@@ -66,8 +66,8 @@ export const getAmounts = (binPool: BinPoolState, zeroForOne: boolean, amountIn:
   }
 
   return {
-    amountsInWithFee: zeroForOne ? [amountInWithFee, 0n] : [0n, amountInWithFee],
-    amountsOutOfBin: zeroForOne ? [0n, amountOutOfBin] : [amountOutOfBin, 0n],
-    totalFees: zeroForOne ? [totalFee, 0n] : [0n, totalFee],
+    amountsInWithFee: swapForY ? [amountInWithFee, 0n] : [0n, amountInWithFee],
+    amountsOutOfBin: swapForY ? [0n, amountOutOfBin] : [amountOutOfBin, 0n],
+    totalFees: swapForY ? [totalFee, 0n] : [0n, totalFee],
   }
 }

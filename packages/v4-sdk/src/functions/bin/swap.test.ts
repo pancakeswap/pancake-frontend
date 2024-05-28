@@ -6,16 +6,16 @@ import { getSwapIn, getSwapOut, swap } from './swap'
 
 describe('swap', () => {
   const activeId = 2n ** 23n
-  const currency0 = WNATIVE[56]
-  const currency1 = WNATIVE[56]
+  const currencyX = WNATIVE[56]
+  const currencyY = WNATIVE[56]
   const fee = 3000n
   const swapFee = 3000n
   const binStep = 10n
 
   const defaultBinPool: BinPoolState = {
     activeId,
-    currency0,
-    currency1,
+    currencyX,
+    currencyY,
     binStep,
     protocolFee: 0n,
     fee,
@@ -24,11 +24,13 @@ describe('swap', () => {
   }
 
   const setLiquidityToBin = (binPool: BinPoolState, id: bigint, amount0: bigint, amount1: bigint) => {
+    // eslint-disable-next-line no-param-reassign
     binPool.reserveOfBin[Number(id)] = {
-      reserve0: amount0,
-      reserve1: amount1,
+      reserveX: amount0,
+      reserveY: amount1,
     }
     if (!binPool.tree)
+      // eslint-disable-next-line no-param-reassign
       binPool.tree = {
         level0: '0x0',
         level1: {},
@@ -57,7 +59,7 @@ describe('swap', () => {
     }
   }
 
-  test('getSwapIn::zeroForOne', () => {
+  test('getSwapIn::swapForY', () => {
     const bin = { ...defaultBinPool }
     const amountOut = BigInt(1e18 - 1)
     setLiquidity(bin, bin.activeId, BigInt(1e18), BigInt(1e18), 50n, 50n)
@@ -70,7 +72,7 @@ describe('swap', () => {
     expect(result[0]).toBe(amountIn)
     expect(result[1]).toBe(-amountOut)
   })
-  test('getSwapIn::oneForZero', () => {
+  test('getSwapIn::swapForX', () => {
     const bin = { ...defaultBinPool }
     const amountOut = BigInt(1e18) - 1n
 
@@ -86,33 +88,33 @@ describe('swap', () => {
     expect(result[0]).toBe(-amountOut)
   })
 
-  test('getSwapOut::zeroForOne', () => {
+  test('getSwapOut::swapForY', () => {
     const bin = { ...defaultBinPool }
     const amountIn = BigInt(1e18)
-    const zeroForOne = true
+    const swapForY = true
     setLiquidity(bin, bin.activeId, BigInt(1e18), BigInt(1e18), 50n, 50n)
 
-    const { amountOut, amountInLeft } = getSwapOut(bin, amountIn, zeroForOne)
+    const { amountOut, amountInLeft } = getSwapOut(bin, amountIn, swapForY)
 
     expect(amountOut).toBeGreaterThan(0n)
     expect(amountInLeft).toBe(0n)
 
-    const { result } = swap(bin, amountIn, zeroForOne)
+    const { result } = swap(bin, amountIn, swapForY)
     expect(result[0]).toBe(amountIn)
     expect(result[1]).toBe(-amountOut)
   })
-  test('getSwapOut::oneForZero', () => {
+  test('getSwapOut::swapForX', () => {
     const bin = { ...defaultBinPool }
     const amountIn = BigInt(1e18)
-    const zeroForOne = false
+    const swapForY = false
     setLiquidity(bin, bin.activeId, BigInt(1e18), BigInt(1e18), 50n, 50n)
 
-    const { amountOut, amountInLeft } = getSwapOut(bin, amountIn, zeroForOne)
+    const { amountOut, amountInLeft } = getSwapOut(bin, amountIn, swapForY)
 
     expect(amountOut).toBeGreaterThan(0n)
     expect(amountInLeft).toBe(0n)
 
-    const { result } = swap(bin, amountIn, zeroForOne)
+    const { result } = swap(bin, amountIn, swapForY)
     expect(result[0]).toBe(-amountOut)
     expect(result[1]).toBe(amountIn)
   })

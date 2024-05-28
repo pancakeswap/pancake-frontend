@@ -6,18 +6,18 @@ import { BinPoolState } from './getBinPool'
  * Returns the next non-empty bin
  *
  * the next non-empty bin is the bin that is closest to the activeId.
- * if zeroForOne is true, it will return the next bin to the right (higher),
+ * if swapForY is true, it will return the next bin to the right (higher),
  * otherwise it will return the next bin to the left (lower)
  *
  * @param binPool
  * @param activeId
- * @param zeroForOne
+ * @param swapForY
  * @returns next non-empty bin
  */
-export const getNextNonEmptyBin = (binPool: BinPoolState, activeId: bigint, zeroForOne: boolean): bigint => {
+export const getNextNonEmptyBin = (binPool: BinPoolState, activeId: bigint, swapForY: boolean): bigint => {
   invariant(binPool.tree, 'EMPTY_BIN_POOL')
 
-  return zeroForOne
+  return swapForY
     ? TreeMath.findFirstRight(binPool.tree, BigInt(activeId))
     : TreeMath.findFirstLeft(binPool.tree, BigInt(activeId))
 }

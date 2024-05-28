@@ -18,7 +18,7 @@ import { getPriceFromId } from './getPriceFromId'
 export const swap = (
   binPool: BinPoolState,
   amountIn: bigint,
-  zeroForOne: boolean
+  swapForY: boolean
 ): {
   binPool: BinPoolState
   feeForProtocol: bigint
@@ -26,8 +26,8 @@ export const swap = (
 } => {
   invariant(amountIn > 0n, 'INSUFFICIENT_AMOUNT_IN')
 
-  const inside = zeroForOne ? '0' : '1'
-  const outside = zeroForOne ? '1' : '0'
+  const inside = swapForY ? '0' : '1'
+  const outside = swapForY ? '1' : '0'
   const { protocolFee } = binPool
   let { activeId } = binPool
   let amountLeft = amountIn
@@ -36,12 +36,12 @@ export const swap = (
 
   while (true) {
     const binReserves = binPool.reserveOfBin[Number(activeId)]
-    const binReserveTarget = zeroForOne ? binReserves.reserve1 : binReserves.reserve0
+    const binReserveTarget = swapForY ? binReserves.reserveY : binReserves.reserveX
 
     if (binReserveTarget) {
       const { amountsInWithFee, amountsOutOfBin, totalFees } = getAmounts(
         { ...binPool, activeId },
-        zeroForOne,
+        swapForY,
         amountLeft
       )
 
@@ -52,15 +52,15 @@ export const swap = (
         const protocolFees = getExternalFeeAmt(totalFees, protocolFee)
         feeForProtocol += protocolFees[inside]
         const amountInWithFee = amountsInWithFee[inside] - protocolFees[inside]
-        binPool.reserveOfBin[Number(activeId)][`reserve${inside}`] += amountInWithFee
-        binPool.reserveOfBin[Number(activeId)][`reserve${outside}`] -= amountsOutOfBin[inside]
+        binPool.reserveOfBin[Number(activeId)][`reserve${swapForY ? 'X' : 'Y'}`] += amountInWithFee
+        binPool.reserveOfBin[Number(activeId)][`reserve${swapForY ? 'Y' : 'X'}`] -= amountsOutOfBin[inside]
       }
     }
 
     if (amountLeft === 0n) {
       break
     } else {
-      const nextId = getNextNonEmptyBin(binPool, activeId, zeroForOne)
+      const nextId = getNextNonEmptyBin(binPool, activeId, swapForY)
       if (nextId === 0n || nextId === maxUint24) {
         throw new Error('OUT_OF_LIQUIDITY')
       }
@@ -76,7 +76,7 @@ export const swap = (
 
   let result: [bigint, bigint] = [0n, 0n]
   const consumed = amountIn - amountLeft
-  result = zeroForOne ? [consumed, -amountOut] : [-amountOut, consumed]
+  result = swapForY ? [consumed, -amountOut] : [-amountOut, consumed]
 
   return {
     binPool,
@@ -85,20 +85,20 @@ export const swap = (
   }
 }
 
-export const getSwapIn = (binPool: BinPoolState, amountOut: bigint, zeroForOne: boolean) => {
+export const getSwapIn = (binPool: BinPoolState, amountOut: bigint, swapForY: boolean) => {
   let id = binPool.activeId
   let amountOutLeft = amountOut
   let amountIn = 0n
   let fee = 0n
 
   while (true) {
-    const { reserve0, reserve1 } = binPool.reserveOfBin[Number(id)]
-    const reserve = zeroForOne ? reserve1 : reserve0
+    const { reserveX, reserveY } = binPool.reserveOfBin[Number(id)]
+    const reserve = swapForY ? reserveY : reserveX
     if (reserve > 0n) {
       const price = getPriceFromId(id, binPool.binStep)
 
       const amountOutOfBin = reserve > amountOutLeft ? amountOutLeft : reserve
-      const amountInWithoutFee = zeroForOne
+      const amountInWithoutFee = swapForY
         ? shiftDivRoundUp(amountOutOfBin, SCALE_OFFSET, price)
         : mulShiftRoundUp(amountOutOfBin, price, SCALE_OFFSET)
 
@@ -113,7 +113,7 @@ export const getSwapIn = (binPool: BinPoolState, amountOut: bigint, zeroForOne: 
     if (amountOutLeft === 0n) {
       break
     } else {
-      const nextId = getNextNonEmptyBin(binPool, id, zeroForOne)
+      const nextId = getNextNonEmptyBin(binPool, id, swapForY)
       if (nextId === 0n || nextId === maxUint24) break
       id = nextId
     }
@@ -126,26 +126,26 @@ export const getSwapIn = (binPool: BinPoolState, amountOut: bigint, zeroForOne: 
   }
 }
 
-export const getSwapOut = (binPool: BinPoolState, amountIn: bigint, zeroForOne: boolean) => {
+export const getSwapOut = (binPool: BinPoolState, amountIn: bigint, swapForY: boolean) => {
   let id = binPool.activeId
   let amountInLeft = amountIn
   let amountOut = 0n
   let fee = 0n
 
   while (true) {
-    const { reserve0, reserve1 } = binPool.reserveOfBin[Number(id)]
-    const reserve = zeroForOne ? reserve1 : reserve0
+    const { reserveX, reserveY } = binPool.reserveOfBin[Number(id)]
+    const reserve = swapForY ? reserveY : reserveX
     if (reserve > 0n) {
       const { amountsInWithFee, amountsOutOfBin, totalFees } = getAmounts(
         {
           ...binPool,
           activeId: id,
         },
-        zeroForOne,
+        swapForY,
         amountInLeft
       )
-      const inside = zeroForOne ? '0' : '1'
-      const outside = zeroForOne ? '1' : '0'
+      const inside = swapForY ? '0' : '1'
+      const outside = swapForY ? '1' : '0'
 
       if (amountsInWithFee[inside] > 0) {
         amountInLeft -= amountsInWithFee[inside]
@@ -157,7 +157,7 @@ export const getSwapOut = (binPool: BinPoolState, amountIn: bigint, zeroForOne: 
     if (amountInLeft === 0n) {
       break
     } else {
-      const nextId = getNextNonEmptyBin(binPool, id, zeroForOne)
+      const nextId = getNextNonEmptyBin(binPool, id, swapForY)
       if (nextId === 0n || nextId === maxUint24) break
       id = nextId
     }
