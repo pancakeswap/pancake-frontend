@@ -1766,6 +1766,28 @@ importers:
         specifier: ^6.7.0
         version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
 
+  packages/routing-sdk:
+    dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../swap-sdk-core
+      debug:
+        specifier: ^4.3.4
+        version: 4.3.4(supports-color@8.1.1)
+    devDependencies:
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/debug':
+        specifier: ^4.1.7
+        version: 4.1.12
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
+
   packages/smart-router:
     dependencies:
       '@pancakeswap/chains':
@@ -5893,7 +5915,7 @@ packages:
       solhint: 3.6.2(typescript@4.9.5)
       ts-generator: 0.1.1
       ts-node: 10.9.1(@types/node@18.18.9)(typescript@4.9.5)
-      typechain: 8.3.2(typescript@4.9.5)
+      typechain: 8.3.2(typescript@5.2.2)
       typescript: 4.9.5
     transitivePeerDependencies:
       - '@codechecks/client'
@@ -12590,7 +12612,7 @@ packages:
       ethers: 5.7.2
       fs-extra: 9.1.0
       hardhat: 2.22.2(typescript@5.2.2)
-      typechain: 8.3.2(typescript@4.9.5)
+      typechain: 8.3.2(typescript@5.2.2)
     dev: false
     optional: true
 
@@ -12605,7 +12627,7 @@ packages:
     dependencies:
       lodash: 4.17.21
       ts-essentials: 7.0.3(typescript@4.9.5)
-      typechain: 8.3.2(typescript@4.9.5)
+      typechain: 8.3.2(typescript@5.2.2)
       web3: 1.10.4
       web3-core: 1.10.4
       web3-eth-contract: 1.10.4
@@ -29100,28 +29122,6 @@ packages:
   /type@2.7.2:
     resolution: {integrity: sha512-dzlvlNlt6AXU7EBSfpAscydQ7gXB+pPGsPnfJnZpiNJBDj7IaJzQlBZYGdEi4R9HmPdBv2XmWJ6YUtoTa7lmCw==}
     dev: false
-
-  /typechain@8.3.2(typescript@4.9.5):
-    resolution: {integrity: sha512-x/sQYr5w9K7yv3es7jo4KTX05CLxOf7TRWwoHlrjRh8H82G64g+k7VuWPJlgMo6qrjfCulOdfBjiaDtmhFYD/Q==}
-    hasBin: true
-    peerDependencies:
-      typescript: '>=4.3.0'
-    dependencies:
-      '@types/prettier': 2.7.3
-      debug: 4.3.4(supports-color@8.1.1)
-      fs-extra: 7.0.1
-      glob: 7.1.7
-      js-sha3: 0.8.0
-      lodash: 4.17.21
-      mkdirp: 1.0.4
-      prettier: 2.8.8
-      ts-command-line-args: 2.5.1
-      ts-essentials: 7.0.3(typescript@4.9.5)
-      typescript: 4.9.5
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-    optional: true
 
   /typechain@8.3.2(typescript@5.2.2):
     resolution: {integrity: sha512-x/sQYr5w9K7yv3es7jo4KTX05CLxOf7TRWwoHlrjRh8H82G64g+k7VuWPJlgMo6qrjfCulOdfBjiaDtmhFYD/Q==}

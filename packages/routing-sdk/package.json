@@ -1,0 +1,43 @@
+{
+  "name": "@pancakeswap/routing-sdk",
+  "version": "0.0.1",
+  "description": "An SDK for AMM routing",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pancakeswap/pancake-frontend.git",
+    "directory": "packages/routing-sdk"
+  },
+  "main": "dist/evm.js",
+  "module": "dist/evm.mjs",
+  "types": "dist/evm/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest --run",
+    "test:u": "vitest --run -u",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "typechecks": "tsc --noEmit -p ./tsconfig.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@pancakeswap/chains": "workspace:*",
+    "@pancakeswap/swap-sdk-core": "workspace:*",
+    "debug": "^4.3.4"
+  },
+  "devDependencies": {
+    "@pancakeswap/tsconfig": "workspace:*",
+    "@types/debug": "^4.1.7",
+    "tsup": "^6.7.0"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/evm/index.d.ts",
+      "import": "./dist/evm.mjs",
+      "require": "./dist/evm.js"
+    }
+  }
+}
