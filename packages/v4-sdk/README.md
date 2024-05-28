@@ -10,6 +10,9 @@ TBD
 
 ### Bin Pool
 
+in Bin Pool, we use symbol `Y` and `X` to represent the two tokens in the pool. Like the `1` and `0` in CLAMM Pool.
+
+
 - [getBinPool](./src/functions/bin/getBinPool.ts): Get the bin pool with state
 - [getIdFromPrice](./src/functions/bin/getIdFromPrice.ts): Get the bin id from given price
 - [getPriceFromId](./src/functions/bin/getPriceFromId.ts): Get the price from given bin id

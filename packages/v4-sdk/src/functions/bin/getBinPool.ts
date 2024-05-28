@@ -8,13 +8,13 @@ import { getSortedCurrencies } from '../../utils/getSortedCurrencies'
 
 type ActiveId = number | `${number}`
 type Reserve = {
-  reserve0: bigint
-  reserve1: bigint
+  reserveX: bigint
+  reserveY: bigint
 }
 
 export type BinPoolState = {
-  currency0: Currency
-  currency1: Currency
+  currencyX: Currency
+  currencyY: Currency
   binStep: bigint
   activeId: bigint
   reserveOfBin: Record<ActiveId, Reserve>
@@ -54,11 +54,11 @@ export const getBinPool = ({
 
   invariant(Number.isInteger(activeId), 'ACTIVE_ID')
 
-  const [currency0, currency1] = getSortedCurrencies(currencyA, currencyB)
+  const [currencyX, currencyY] = getSortedCurrencies(currencyA, currencyB)
 
   return {
-    currency0,
-    currency1,
+    currencyX,
+    currencyY,
     activeId: BigInt(activeId),
     binStep: BigInt(binStep),
     swapFee: BigInt(swapFee),
