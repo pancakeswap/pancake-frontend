@@ -1,8 +1,7 @@
-import { BigintIsh, Currency } from '@pancakeswap/swap-sdk-core'
+import { BigintIsh, Currency, sortCurrencies } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
 import { MAX_TICK_SPACING, MIN_TICK_SPACING } from '../../constants'
 import { ONE_HUNDRED_PERCENT_FEE } from '../../constants/fee'
-import { getSortedCurrencies } from '../../utils/getSortedCurrencies'
 
 export type CLAMMState = {
   currency0: Currency
@@ -29,7 +28,7 @@ export const getCLPool = ({
 
   invariant(Number.isInteger(fee) && BigInt(fee) < ONE_HUNDRED_PERCENT_FEE, 'FEE')
 
-  const [currency0, currency1] = getSortedCurrencies(currencyA, currencyB)
+  const [currency0, currency1] = sortCurrencies([currencyA, currencyB])
 
   return {
     currency0,

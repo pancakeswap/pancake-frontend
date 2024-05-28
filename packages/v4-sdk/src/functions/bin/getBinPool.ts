@@ -1,10 +1,9 @@
-import { BigintIsh, Currency } from '@pancakeswap/swap-sdk-core'
+import { BigintIsh, Currency, sortCurrencies } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
 import { Address } from 'viem'
 import { MAX_BIN_STEP, MIN_BIN_STEP } from '../../constants'
 import { MAX_PROTOCOL_FEE, TEN_PERCENT_FEE } from '../../constants/fee'
 import type { BinTree } from '../../types'
-import { getSortedCurrencies } from '../../utils/getSortedCurrencies'
 
 type ActiveId = number | `${number}`
 type Reserve = {
@@ -88,7 +87,7 @@ export const getBinPool = ({
 
   invariant(Number.isInteger(activeId), 'ACTIVE_ID')
 
-  const [currencyX, currencyY] = getSortedCurrencies(currencyA, currencyB)
+  const [currencyX, currencyY] = sortCurrencies([currencyA, currencyB])
 
   return {
     currencyX,
