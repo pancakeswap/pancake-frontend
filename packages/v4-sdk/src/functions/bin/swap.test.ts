@@ -1,7 +1,7 @@
 import { WNATIVE } from '@pancakeswap/sdk'
 import { describe, expect, test } from 'vitest'
 import { TreeMath } from '../../utils/math/TreeMath'
-import { BinPoolState } from './getBinPool'
+import { BinPoolState } from './createBinPool'
 import { getSwapIn, getSwapOut, swap } from './swap'
 
 describe('swap', () => {

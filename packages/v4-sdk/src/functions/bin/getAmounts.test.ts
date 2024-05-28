@@ -2,8 +2,8 @@ import { WNATIVE } from '@pancakeswap/sdk'
 import { maxUint128 } from 'viem'
 import { beforeEach, describe, expect, test } from 'vitest'
 import { MAX_PROTOCOL_FEE, TEN_PERCENT_FEE } from '../../constants/fee'
+import { BinPoolState } from './createBinPool'
 import { getAmounts } from './getAmounts'
-import { BinPoolState } from './getBinPool'
 
 // const getRandomFee = () => {
 //   const random = Math.random()
