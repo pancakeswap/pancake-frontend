@@ -1,11 +1,17 @@
 // Addresses
-import { getBunnyFactoryAddress, getNftMarketAddress, getPancakeProfileAddress } from 'utils/addressHelpers'
+import {
+  getBunnyFactoryAddress,
+  getNftMarketAddress,
+  getPancakeProfileAddress,
+  getPointCenterIfoAddress,
+} from 'utils/addressHelpers'
 
 // ABI
 import { ChainId } from '@pancakeswap/chains'
 import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
 import { nftMarketABI } from 'config/abi/nftMarket'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
+import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
 import { viemClients } from 'utils/viem'
 import {
   Abi,
@@ -64,4 +70,8 @@ export const getProfileContract = (signer?: WalletClient) => {
 
 export const getNftMarketContract = (signer?: WalletClient) => {
   return getContract({ abi: nftMarketABI, address: getNftMarketAddress(), signer })
+}
+
+export const getPointCenterIfoContract = (signer?: WalletClient) => {
+  return getContract({ abi: pointCenterIfoABI, address: getPointCenterIfoAddress(), signer })
 }

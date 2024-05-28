@@ -1,10 +1,16 @@
 import { ChainId } from '@pancakeswap/chains'
+import { CAKE } from '@pancakeswap/tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { Abi, Address, erc20Abi } from 'viem'
 import { useWalletClient } from 'wagmi'
 
 import { useMemo } from 'react'
-import { getBunnyFactoryContract, getContract, getProfileContract } from 'utils/contractHelpers'
+import {
+  getBunnyFactoryContract,
+  getContract,
+  getPointCenterIfoContract,
+  getProfileContract,
+} from 'utils/contractHelpers'
 
 type UseContractOptions = {
   chainId?: ChainId
@@ -47,6 +53,12 @@ export function useTokenContract(tokenAddress?: Address) {
   return useContract(tokenAddress, erc20Abi)
 }
 
+export const useCake = () => {
+  const { chainId } = useActiveChainId()
+
+  return useContract((chainId && (CAKE as any)?.[chainId]?.address) ?? CAKE[ChainId.BSC].address, erc20Abi)
+}
+
 export const useBunnyFactory = () => {
   const { data: signer } = useWalletClient()
   return useMemo(() => getBunnyFactoryContract(signer ?? undefined), [signer])
@@ -55,4 +67,9 @@ export const useBunnyFactory = () => {
 export const useProfileContract = () => {
   const { data: signer } = useWalletClient()
   return useMemo(() => getProfileContract(signer ?? undefined), [signer])
+}
+
+export const usePointCenterIfoContract = () => {
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getPointCenterIfoContract(signer ?? undefined), [signer])
 }
