@@ -25,3 +25,13 @@ export type Campaign = {
   description?: TranslatableText
   badge?: string
 }
+
+export interface Achievement {
+  id: string
+  type: CampaignType
+  address: string
+  title: TranslatableText
+  description?: TranslatableText
+  badge: string
+  points: number
+}
