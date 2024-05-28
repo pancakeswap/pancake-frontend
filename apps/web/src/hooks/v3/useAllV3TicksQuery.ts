@@ -17,7 +17,7 @@ export type AllV3TicksQuery = {
 export type Ticks = AllV3TicksQuery['ticks']
 export type TickData = Ticks[number]
 
-export default function useAllV3TicksQuery(poolAddress: string | undefined, interval: number) {
+export default function useAllV3TicksQuery(poolAddress: string | undefined, interval: number, enabled = true) {
   const { chainId } = useActiveChainId()
   const { data, isLoading, error } = useQuery({
     queryKey: [`useAllV3TicksQuery-${poolAddress}-${chainId}`],
@@ -25,7 +25,7 @@ export default function useAllV3TicksQuery(poolAddress: string | undefined, inte
       if (!chainId || !poolAddress) return undefined
       return getPoolTicks(chainId, poolAddress)
     },
-    enabled: Boolean(poolAddress && chainId && v3Clients[chainId]),
+    enabled: Boolean(poolAddress && chainId && v3Clients[chainId] && enabled),
     refetchInterval: interval,
     refetchOnMount: false,
     refetchOnReconnect: false,

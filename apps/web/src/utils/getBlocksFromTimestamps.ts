@@ -3,7 +3,7 @@ import orderBy from 'lodash/orderBy'
 import { multiChainBlocksClient, multiChainName, MultiChainNameExtend } from 'state/info/constant'
 import { ChainId, getLlamaChainName } from '@pancakeswap/chains'
 import { Block } from 'state/info/types'
-import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
+import { multiQuery } from 'utils/infoQueryHelpers'
 
 const getBlockSubqueries = (timestamps: number[]) =>
   timestamps.map((timestamp) => {

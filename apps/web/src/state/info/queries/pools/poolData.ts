@@ -4,7 +4,7 @@ import { subgraphTokenSymbol } from 'state/info/constant'
 import { Block, PoolData } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
-import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
+import { getAmountChange, getPercentChange } from 'utils/infoDataHelpers'
 
 import { safeGetAddress } from 'utils'
 import {

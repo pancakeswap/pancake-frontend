@@ -4,7 +4,7 @@ import orderBy from 'lodash/orderBy'
 
 import { PriceChartEntry } from 'state/info/types'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
-import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
+import { multiQuery } from 'utils/infoQueryHelpers'
 import { MultiChainName, checkIsStableSwap, getMultiChainQueryEndPointWithStableSwap } from '../../constant'
 
 interface FormattedHistory {

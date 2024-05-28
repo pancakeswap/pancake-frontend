@@ -9,6 +9,7 @@ export interface UsePoolAvgInfoParams {
   numberOfDays?: number
   address?: string
   chainId?: ChainId
+  enabled?: boolean
 }
 
 export const averageArray = (dataToCalculate: number[]): number => {
@@ -33,9 +34,9 @@ const defaultInfo: Info = {
   feeUSD: 0,
 }
 
-export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UsePoolAvgInfoParams) {
+export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId, enabled = true }: UsePoolAvgInfoParams) {
   const { data } = useQuery({
-    queryKey: [address, chainId],
+    queryKey: ['poolAvgInfo', address, chainId],
 
     queryFn: async () => {
       if (!chainId) return undefined
@@ -70,7 +71,7 @@ export function usePoolAvgInfo({ address = '', numberOfDays = 7, chainId }: UseP
       }
     },
 
-    enabled: Boolean(address && chainId),
+    enabled: Boolean(address && chainId && enabled),
     refetchOnWindowFocus: false,
   })
 

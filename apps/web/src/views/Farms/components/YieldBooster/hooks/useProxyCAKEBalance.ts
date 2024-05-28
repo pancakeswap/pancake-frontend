@@ -2,7 +2,7 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { getCakeContract } from 'utils/contractHelpers'
-import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
+import { useBCakeProxyContractAddress } from 'hooks/useBCakeProxyContractAddress'
 import { useReadContract } from 'wagmi'
 
 const useProxyCAKEBalance = () => {
