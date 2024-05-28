@@ -1,16 +1,21 @@
 /**
- * given amount and protocolFee, calculate and return external protocol fee amt
+ * given amount(totalFeeAmount) and protocolFee, swapFee
+ * returns the protocol fee amount
  */
-export const getExternalFeeAmt = (amounts: [bigint, bigint], fee: bigint): [bigint, bigint] => {
-  if (fee === 0n) {
+export const getExternalFeeAmt = (
+  amounts: [bigint, bigint],
+  protocolFees: [bigint, bigint],
+  swapFee: bigint
+): [bigint, bigint] => {
+  if (swapFee === 0n || protocolFees.every((fee) => fee === 0n)) {
     return [0n, 0n]
   }
 
-  const fee0 = fee % 256n
-  const fee1 = fee / 2n ** 8n
+  const [feeX, feeY] = protocolFees
+  const [amountX, amountY] = amounts
 
-  const fee0Amt = fee0 === 0n ? 0n : amounts[0] / fee0
-  const fee1Amt = fee1 === 0n ? 0n : amounts[1] / fee1
+  const feeXAmt = feeX === 0n ? 0n : (amountX * feeX) / swapFee
+  const feeYAmt = feeY === 0n ? 0n : (amountY * feeY) / swapFee
 
-  return [fee0Amt, fee1Amt]
+  return [feeXAmt, feeYAmt]
 }

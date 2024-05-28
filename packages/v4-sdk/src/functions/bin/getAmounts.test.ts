@@ -1,7 +1,7 @@
 import { WNATIVE } from '@pancakeswap/sdk'
 import { maxUint128 } from 'viem'
 import { beforeEach, describe, expect, test } from 'vitest'
-import { TEN_PERCENT_FEE } from '../../constants/fee'
+import { MAX_PROTOCOL_FEE, TEN_PERCENT_FEE } from '../../constants/fee'
 import { getAmounts } from './getAmounts'
 import { BinPoolState } from './getBinPool'
 
@@ -19,28 +19,37 @@ const getRandom = (max: number, min = 0): bigint => {
   return BigInt(Math.floor(random * (max - min) + min))
 }
 
-const createBinPool = (swapFee: bigint, activeId: bigint, reserveX: bigint, reserveY: bigint): BinPoolState => {
+const createBinPool = (
+  activeId: bigint,
+  reserveX: bigint,
+  reserveY: bigint,
+  lpFee: bigint,
+  protocolFees: [bigint, bigint]
+): BinPoolState => {
   return {
     currencyX: WNATIVE[56],
     currencyY: WNATIVE[56],
     activeId,
     binStep: 10n,
-    swapFee,
+    lpFee,
+    protocolFees,
     reserveOfBin: {
       [Number(activeId)]: { reserveX, reserveY },
     },
-  } as BinPoolState
+  }
 }
 
 describe('getAmounts', () => {
-  let fee
+  let lpFee: bigint
+  let protocolFees: [bigint, bigint] = [0n, 0n]
   const activeId = 8388611n
-  let reserveX
-  let reserveY
-  let amountIn
+  let reserveX: bigint
+  let reserveY: bigint
+  let amountIn: bigint
 
   beforeEach(() => {
-    fee = 0n
+    lpFee = 0n
+    protocolFees = [0n, 0n]
     reserveX = 0n
     reserveY = 0n
     amountIn = 0n
@@ -48,12 +57,12 @@ describe('getAmounts', () => {
 
   test('swapForY = true', () => {
     const swapForY = true
-    fee = 72n
+    lpFee = 72n
     reserveX = 2542815942178n
     reserveY = 90306738043836369n
     amountIn = 340282366920938463463374607431768211452n
 
-    const binPool = createBinPool(fee, activeId, reserveX, reserveY)
+    const binPool = createBinPool(activeId, reserveX, reserveY, lpFee, protocolFees)
 
     const { amountsInWithFee, amountsOutOfBin, totalFees } = getAmounts(binPool, swapForY, amountIn)
 
@@ -65,12 +74,12 @@ describe('getAmounts', () => {
   })
   test('swapForY = false', () => {
     const swapForY = false
-    fee = 72n
+    lpFee = 72n
     reserveX = 2542815942178n
     reserveY = 90306738043836369n
     amountIn = 340282366920938463463374607431768211452n
 
-    const binPool = createBinPool(fee, activeId, reserveX, reserveY)
+    const binPool = createBinPool(activeId, reserveX, reserveY, lpFee, protocolFees)
 
     const { amountsInWithFee, amountsOutOfBin, totalFees } = getAmounts(binPool, swapForY, amountIn)
 
@@ -80,12 +89,13 @@ describe('getAmounts', () => {
     expect(totalFees).toEqual([0n, 183645769n])
   })
   test('fuzzing', () => {
-    fee = getRandom(Number(TEN_PERCENT_FEE))
+    lpFee = getRandom(Number(TEN_PERCENT_FEE))
+    protocolFees = [getRandom(Number(MAX_PROTOCOL_FEE)), getRandom(Number(MAX_PROTOCOL_FEE))]
     reserveX = getRandom(Number(maxUint128))
     reserveY = getRandom(Number(maxUint128))
     amountIn = getRandom(Number(maxUint128))
 
-    const binPool = createBinPool(fee, activeId, reserveX, reserveY)
+    const binPool = createBinPool(activeId, reserveX, reserveY, lpFee, protocolFees)
 
     const swapForY = Math.random() > 0.5
 

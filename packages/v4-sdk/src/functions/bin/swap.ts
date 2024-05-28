@@ -3,6 +3,7 @@
 import invariant from 'tiny-invariant'
 import { maxUint24 } from 'viem'
 import { SCALE_OFFSET } from '../../constants/binPool'
+import { calculateSwapFee } from '../../utils/calculateSwapFee'
 import { mulShiftRoundUp } from '../../utils/math/mulShift'
 import { shiftDivRoundUp } from '../../utils/math/shiftDiv'
 import { getAmounts } from './getAmounts'
@@ -28,11 +29,12 @@ export const swap = (
 
   const inside = swapForY ? '0' : '1'
   const outside = swapForY ? '1' : '0'
-  const { protocolFee } = binPool
+  const { protocolFees } = binPool
   let { activeId } = binPool
   let amountLeft = amountIn
   let amountOut = 0n
   let feeForProtocol = 0n
+  const swapFee = calculateSwapFee(protocolFees[swapForY ? 0 : 1], binPool.lpFee)
 
   while (true) {
     const binReserves = binPool.reserveOfBin[Number(activeId)]
@@ -49,9 +51,11 @@ export const swap = (
         amountLeft -= amountsInWithFee[inside]
         amountOut += amountsOutOfBin[outside]
 
-        const protocolFees = getExternalFeeAmt(totalFees, protocolFee)
-        feeForProtocol += protocolFees[inside]
-        const amountInWithFee = amountsInWithFee[inside] - protocolFees[inside]
+        // (totalFee * protocolFee) / (protocolFee + lpFee)
+        // get aggregated fee for protocol
+        const pFees = getExternalFeeAmt(totalFees, protocolFees, swapFee)
+        feeForProtocol += pFees[inside]
+        const amountInWithFee = amountsInWithFee[inside] - pFees[inside]
         binPool.reserveOfBin[Number(activeId)][`reserve${swapForY ? 'X' : 'Y'}`] += amountInWithFee
         binPool.reserveOfBin[Number(activeId)][`reserve${swapForY ? 'Y' : 'X'}`] -= amountsOutOfBin[inside]
       }
@@ -90,6 +94,7 @@ export const getSwapIn = (binPool: BinPoolState, amountOut: bigint, swapForY: bo
   let amountOutLeft = amountOut
   let amountIn = 0n
   let fee = 0n
+  const swapFee = calculateSwapFee(binPool.protocolFees[swapForY ? 0 : 1], binPool.lpFee)
 
   while (true) {
     const { reserveX, reserveY } = binPool.reserveOfBin[Number(id)]
@@ -102,7 +107,7 @@ export const getSwapIn = (binPool: BinPoolState, amountOut: bigint, swapForY: bo
         ? shiftDivRoundUp(amountOutOfBin, SCALE_OFFSET, price)
         : mulShiftRoundUp(amountOutOfBin, price, SCALE_OFFSET)
 
-      const feeAmount = getFeeAmount(amountInWithoutFee, binPool.swapFee)
+      const feeAmount = getFeeAmount(amountInWithoutFee, swapFee)
 
       amountIn += amountInWithoutFee + feeAmount
       amountOutLeft -= amountOutOfBin
