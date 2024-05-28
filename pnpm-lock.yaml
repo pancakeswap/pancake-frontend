@@ -664,6 +664,9 @@ importers:
       '@pancakeswap/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
+      '@pancakeswap/ifos':
+        specifier: workspace:*
+        version: link:../../packages/ifos
       '@pancakeswap/localization':
         specifier: workspace:*
         version: link:../../packages/localization

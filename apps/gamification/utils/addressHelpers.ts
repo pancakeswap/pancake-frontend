@@ -25,3 +25,7 @@ export const getPancakeBunniesAddress = () => {
 export const getNftMarketAddress = () => {
   return getAddressFromMap(addresses.nftMarket)
 }
+
+export const getPointCenterIfoAddress = () => {
+  return getAddressFromMap(addresses.pointCenterIfo)
+}

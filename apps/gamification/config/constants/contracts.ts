@@ -17,4 +17,8 @@ export default {
     [ChainId.BSC]: '0x17539cCa21C7933Df5c980172d22659B8C345C5A',
     [ChainId.BSC_TESTNET]: '0x7F9F37Ddcaa33893F9bEB3D8748c8D6BfbDE6AB2',
   },
+  pointCenterIfo: {
+    [ChainId.BSC]: '0x3C6919b132462C1FEc572c6300E83191f4F0012a',
+    [ChainId.BSC_TESTNET]: '0xd2Ac1B1728Bb1C11ae02AB6e75B76Ae41A2997e3',
+  },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
