@@ -1,11 +1,10 @@
-import { WormholeChainIds } from '../../components/WormHole/chains'
+import { ChainId } from '@pancakeswap/chains'
 
 const pocketPrefix = {
-  [WormholeChainIds.ARBITRUM_ONE]: 'arbitrum-one',
-  [WormholeChainIds.BASE]: 'base-mainnet',
-  [WormholeChainIds.BSC]: 'bsc-mainnet',
-  [WormholeChainIds.ETHEREUM]: 'eth-mainnet',
-  [WormholeChainIds.SOLANA]: 'solana-mainnet',
+  [ChainId.ARBITRUM_ONE]: 'arbitrum-one',
+  [ChainId.BASE]: 'base-mainnet',
+  [ChainId.BSC]: 'bsc-mainnet',
+  [ChainId.ETHEREUM]: 'eth-mainnet',
 } as const
 
 export const getPoktUrl = (chainId: keyof typeof pocketPrefix, key?: string) => {

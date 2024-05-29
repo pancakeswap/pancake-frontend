@@ -1,91 +1,47 @@
-import type { ChainName } from '@wormhole-foundation/wormhole-connect'
-import { arbitrum, arbitrumGoerli, base, baseGoerli, bscTestnet, mainnet as ethereum, goerli } from 'viem/chains'
+import { ChainId } from '@pancakeswap/chains'
+import type { ChainName, WormholeConnectConfig } from '@wormhole-foundation/wormhole-connect'
+import { arbitrum, base, bscTestnet, mainnet as ethereum, goerli } from 'viem/chains'
 import { getNodeRealUrl } from '../../utils/nodes/nodereal'
-import { getGroveUrl } from '../../utils/nodes/pokt'
-import { WormholeChainIds } from './chains'
-import { WidgetEnvs, type Env } from './types'
+import { WidgetEnvs } from './types'
 
 export type Network = {
   name: string
-  testnet: ChainName
-  mainnet: ChainName
-  mainnetRpc: string
-  testnetRpc: string
+  id: ChainName
+  rpc: ChainName
 }
 
 enum NETWORKS {
-  SOLANA = 'solana',
   ETHEREUM = 'ethereum',
   BSC = 'bsc',
   ARBITRUM_ONE = 'arbitrum',
   BASE = 'base',
-  APTOS = 'aptos',
 }
 
-export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
-  [NETWORKS.SOLANA]: {
-    name: 'Solana',
-    testnet: 'solana',
-    mainnet: 'solana',
-    mainnetRpc:
-      getNodeRealUrl(WormholeChainIds.SOLANA, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      getGroveUrl(WormholeChainIds.SOLANA, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
-      'https://solana-mainnet.rpc.extrnode.com',
-    testnetRpc: 'https://api.devnet.solana.com',
-  },
-  [NETWORKS.ETHEREUM]: {
-    name: 'Ethereum',
-    testnet: 'goerli',
-    mainnet: 'ethereum',
-    mainnetRpc:
-      getNodeRealUrl(WormholeChainIds.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      getGroveUrl(WormholeChainIds.ETHEREUM, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
-      ethereum.rpcUrls.default.http[0],
-    testnetRpc:
-      getNodeRealUrl(WormholeChainIds.GOERLI, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      goerli.rpcUrls.default.http[0],
-  },
-  [NETWORKS.BSC]: {
-    name: 'BSC',
-    testnet: 'bsc',
-    mainnet: 'bsc',
-    mainnetRpc:
-      getNodeRealUrl(WormholeChainIds.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      getGroveUrl(WormholeChainIds.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
-      'https://bsc-dataseed1.binance.org',
-    testnetRpc: bscTestnet.rpcUrls.default.http[0],
-  },
-  [NETWORKS.ARBITRUM_ONE]: {
-    name: 'Arbitrum',
-    testnet: 'arbitrumgoerli',
-    mainnet: 'arbitrum',
-    mainnetRpc:
-      arbitrum.rpcUrls.default.http[0] ||
-      getNodeRealUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      getGroveUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_GROVE_API_KEY),
-    testnetRpc: arbitrumGoerli.rpcUrls.default.http[0],
-  },
-  [NETWORKS.BASE]: {
-    name: 'Base',
-    testnet: 'basegoerli',
-    mainnet: 'base',
-    mainnetRpc:
-      'https://base.publicnode.com' ||
-      getNodeRealUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      getGroveUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
-      base.rpcUrls.default.http[0],
-    testnetRpc: baseGoerli.rpcUrls.default.http[0],
-  },
-  [NETWORKS.APTOS]: {
-    name: 'Aptos',
-    testnet: 'aptos',
-    mainnet: 'aptos',
-    mainnetRpc: 'https://aptos-mainnet.nodereal.io/v1',
-    testnetRpc: 'https://fullnode.devnet.aptoslabs.com/v1',
-  },
+enum TESTNET_NETWORKS {
+  ETHEREUM = 'goerli',
+  BSC = 'bsc',
 }
 
-export const WORMHOLE_NETWORKS = Object.values(NETWORK_CONFIG)
+export const pcsLogo = 'https://pancakeswap.finance/logo.png'
+export const walletConnectProjectId = 'e542ff314e26ff34de2d4fba98db70bb'
+
+export const MAINNET_RPCS: { [network in NETWORKS]: string } = {
+  [NETWORKS.ETHEREUM]:
+    getNodeRealUrl(ChainId.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) || ethereum.rpcUrls.default.http[0],
+  [NETWORKS.BSC]:
+    getNodeRealUrl(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) || 'https://bsc-dataseed1.binance.org',
+  [NETWORKS.ARBITRUM_ONE]:
+    arbitrum.rpcUrls.default.http[0] || getNodeRealUrl(ChainId.ARBITRUM_ONE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY),
+  [NETWORKS.BASE]:
+    'https://base.publicnode.com' ||
+    getNodeRealUrl(ChainId.BASE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
+    base.rpcUrls.default.http[0],
+}
+
+export const TESTNET_RPCS: { [network in TESTNET_NETWORKS]: string } = {
+  [TESTNET_NETWORKS.ETHEREUM]: goerli.rpcUrls.default.http[0],
+  [TESTNET_NETWORKS.BSC]: bscTestnet.rpcUrls.default.http[0],
+}
 
 export const MAINNET_TOKEN_KEYS: string[] = [
   'ETH',
@@ -96,53 +52,52 @@ export const MAINNET_TOKEN_KEYS: string[] = [
   'BUSD',
   'BNB',
   'WBNB',
-  'SOL',
-  'WSOL',
   'ETHarbitrum',
   'WETHarbitrum',
   'USDCarbitrum',
-  'ETHbase',
-  'WETHbase',
   'tBTC',
   'WETHbsc',
   'wstETHarbitrum',
-  'wstETHbase',
-].sort()
+]
 
-export const TESTNET_TOKEN_KEYS: string[] = [
-  'ETH',
-  'WETH',
-  'USDCeth',
-  'WBTC',
-  'USDT',
-  'DAI',
-  'BNB',
-  'WBNB',
-  'SOL',
-  'WSOL',
-  'USDCsol',
-  'ETHarbitrum',
-  'WETHarbitrum',
-  'USDCarbitrum',
-  'ETHbase',
-  'WETHbase',
-  'USDCbase',
-].sort()
+export const TESTNET_TOKEN_KEYS: string[] = ['ETH', 'WETH', 'BNB', 'WBNB']
 
-export const MAINNET_RPCS: { [mainnet: string]: string } = Object.entries(NETWORK_CONFIG).reduce((acc, [, config]) => {
-  const { mainnet, mainnetRpc } = config
-  return { ...acc, [mainnet]: mainnetRpc }
-}, {})
+const mainnetWidgetConfig: WormholeConnectConfig = {
+  env: WidgetEnvs.mainnet,
+  rpcs: MAINNET_RPCS,
+  networks: Object.keys(MAINNET_RPCS),
+  tokens: MAINNET_TOKEN_KEYS,
+  bridgeDefaults: {
+    fromNetwork: 'ethereum',
+    toNetwork: 'bsc',
+    token: 'ETH',
+  },
+  walletConnectProjectId,
+}
 
-export const TESTNET_RPCS: { [testnet: string]: string } = Object.entries(NETWORK_CONFIG).reduce((acc, [, config]) => {
-  const { testnet, testnetRpc } = config
-  return { ...acc, [testnet]: testnetRpc }
-}, {})
+const testnetWidgetConfig: WormholeConnectConfig = {
+  env: WidgetEnvs.testnet,
+  rpcs: TESTNET_RPCS,
+  networks: Object.keys(TESTNET_RPCS),
+  tokens: TESTNET_TOKEN_KEYS,
+  bridgeDefaults: {
+    fromNetwork: 'goerli',
+    toNetwork: 'bsc',
+    token: 'ETH',
+  },
+  walletConnectProjectId,
+}
 
-export const getRpcUrls = (env: Omit<Env, 'devnet'>) => (env === WidgetEnvs.mainnet ? MAINNET_RPCS : TESTNET_RPCS)
+export const getConfigEnv = ({ enableMainnet = true }: { enableMainnet: boolean }) => {
+  return process.env.NODE_ENV !== 'development'
+    ? WidgetEnvs.mainnet
+    : enableMainnet
+    ? WidgetEnvs.mainnet
+    : WidgetEnvs.testnet
+}
 
-export const getBridgeTokens = (env: Omit<Env, 'devnet'>) =>
-  env === WidgetEnvs.mainnet ? MAINNET_TOKEN_KEYS : TESTNET_TOKEN_KEYS
-
-export const pcsLogo = 'https://pancakeswap.finance/logo.png'
-export const walletConnectProjectId = 'e542ff314e26ff34de2d4fba98db70bb'
+export const widgetConfigs: { [env in WidgetEnvs]: WormholeConnectConfig } = {
+  [WidgetEnvs.mainnet]: mainnetWidgetConfig,
+  [WidgetEnvs.testnet]: testnetWidgetConfig,
+  [WidgetEnvs.devnet]: testnetWidgetConfig,
+}

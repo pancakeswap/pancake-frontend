@@ -1,7 +1,9 @@
-import { Box, DropdownMenu, DropdownMenuItemType, Flex, Logo, ThemeSwitcher } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, DropdownMenu, DropdownMenuItemType, Flex, Logo, Text, ThemeSwitcher, Toggle } from '@pancakeswap/uikit'
 import { useTheme as useNextTheme } from 'next-themes'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
+import { useEnableWormholeMainnet } from 'state/wormhole/enableTestnet'
 import { styled, useTheme } from 'styled-components'
 
 const StyledMenuItem = styled('div')<{ $isActive?: boolean }>`
@@ -70,6 +72,8 @@ const MenuConfig = [
 ]
 
 export function Menu() {
+  const [enableMainnet, setEnableMainnet] = useEnableWormholeMainnet()
+  const { t } = useTranslation()
   const theme = useTheme()
   const { setTheme } = useNextTheme()
   const nextRouter = useRouter()
@@ -107,7 +111,20 @@ export function Menu() {
         </Flex>
       </Flex>
       <Flex alignItems="center">
-        <Box mr="16px">
+        {nextRouter.pathname === '/wormhole' && (
+          <Flex justifyContent="space-between" alignItems="center">
+            <Text fontSize="18px" mr="4px">
+              {t('Mainnet')}
+            </Text>
+            <Toggle
+              id="toggle-enable-mainnet-button"
+              scale="md"
+              checked={enableMainnet}
+              onChange={() => setEnableMainnet((s: boolean) => !s)}
+            />
+          </Flex>
+        )}
+        <Box mx="16px">
           <ThemeSwitcher isDark={theme.isDark} toggleTheme={() => setTheme(theme.isDark ? 'light' : 'dark')} />
         </Box>
       </Flex>
