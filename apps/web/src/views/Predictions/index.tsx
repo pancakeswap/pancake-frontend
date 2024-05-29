@@ -63,7 +63,6 @@ const Predictions = () => {
           <CollectWinningsPopup />
         </Container>
       </SwiperProvider>
-      <PredictionSubgraphHealthIndicator />
     </>
   )
 }
