@@ -1,5 +1,17 @@
 # @pancakeswap/gauges
 
+## 1.2.5
+
+### Patch Changes
+
+- 755bb18: New FURY Token. 2 BSC Farms. 3 zkSync Farms. New Gauges.
+- 502d961: Add MNT and mETH tokens with their farms and gauges on Ethereum
+- Updated dependencies [b57fd91]
+- Updated dependencies [755bb18]
+- Updated dependencies [502d961]
+  - @pancakeswap/tokens@0.6.17
+  - @pancakeswap/v3-sdk@3.8.4
+
 ## 1.2.4
 
 ### Patch Changes

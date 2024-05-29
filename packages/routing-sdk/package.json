@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/routing-sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An SDK for AMM routing",
   "repository": {
     "type": "git",
