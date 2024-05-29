@@ -326,7 +326,7 @@ const ReadyToSyncView: React.FC<{ chainId: ChainId }> = ({ chainId }) => {
     <Flex flexDirection="column" alignItems="center" justifyContent="center" style={{ gap: 10 }}>
       <Spinner size={120} />
       <Text fontSize={16} fontWeight={600} mt="16px">
-        {t('VeCake Sync')}
+        {t('veCake Sync')}
       </Text>
       <Text fontSize={12} mt="12px">
         {t('From BSC to')} {ChainNameMap[chainId]}
@@ -355,7 +355,7 @@ const SubmittedView: React.FC<{ chainId: ChainId; hash: string }> = ({ chainId, 
     <Flex flexDirection="column" alignItems="center" justifyContent="center" style={{ gap: 10 }}>
       <ArrowUpIcon color="success" width="90px" />
       <Text fontSize={16} fontWeight={600} mt="16px">
-        {t('VeCake Sync Submitted')}
+        {t('veCake Sync Submitted')}
       </Text>
       <Text fontSize={12} mt="12px">
         {t('From BSC to')} {ChainNameMap[chainId]}
