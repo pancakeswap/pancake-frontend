@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Grid, Text } from '@pancakeswap/uikit'
 import { NftToken } from 'hooks/useProfile/nft/types'
-import { CollectibleLinkCard } from './CollectibleLinkCard'
+import { CollectibleLinkCard } from './CollectibleCard/CollectibleLinkCard'
 import GridPlaceholder from './GridPlaceholder'
 import NoNftsImage from './NoNftsImage'
 
