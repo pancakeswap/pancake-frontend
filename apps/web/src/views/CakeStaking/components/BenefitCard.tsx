@@ -107,7 +107,8 @@ export const BenefitCard: React.FC<{
   onClick?: () => void
   comingSoon?: boolean
   headSlot?: React.ReactNode
-}> = ({ type, onClick, dataText, headSlot, comingSoon }) => {
+  buttonSlot?: React.ReactNode
+}> = ({ type, onClick, dataText, headSlot, comingSoon, buttonSlot }) => {
   const { t } = useTranslation()
   const info = BENEFITS[type] as BenefitItem
 
@@ -161,12 +162,15 @@ export const BenefitCard: React.FC<{
             </StyleUl>
           </Text>
         </div>
-        {button && info.link ? (
-          <Link href={info.link} style={{ width: '100%' }}>
-            {button}
-          </Link>
-        ) : null}
-        {button && !info.link && onClick ? button : null}
+        <Flex style={{ gap: 10 }}>
+          {button && info.link ? (
+            <Link href={info.link} style={{ width: '100%' }}>
+              {button}
+            </Link>
+          ) : null}
+          {button && !info.link && onClick ? button : null}
+          {buttonSlot && buttonSlot}
+        </Flex>
       </FlexGap>
     </StyledCard>
   )

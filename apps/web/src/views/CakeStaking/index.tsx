@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Grid, Heading, ModalV2, PageHeader, QuestionHelper, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Button, Grid, Heading, ModalV2, PageHeader, QuestionHelper, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
@@ -92,6 +92,17 @@ const CakeStaking = () => {
             onClick={() => {
               setIsOpen(true)
             }}
+            buttonSlot={
+              <Button
+                variant="secondary"
+                width="100%"
+                onClick={() => {
+                  window.open('https://twitter.com/pancakeswap', '_blank', 'noopener noreferrer')
+                }}
+              >
+                {t('Learn More')}
+              </Button>
+            }
           />
         </Grid>
         <Heading scale="xl" mb={['24px', '24px', '48px']} mt={['16px', '16px', '32px']}>
