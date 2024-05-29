@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/v2-sdk",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "An SDK for Pancakeswap V2",
   "repository": {
     "type": "git",
