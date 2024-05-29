@@ -450,7 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.",
   "Unable to verify username": "Unable to verify username",
   "Created %dateCreated% ago": "Created %dateCreated% ago",
-  "Updated %dateUpdated% ago": "Created %dateUpdated% ago",
+  "Updated %dateUpdated% ago": "Updated %dateUpdated% ago",
   "Add %assetA%-%assetB% Liquidity": "Add %assetA%-%assetB% Liquidity",
   "$120,000 in Prizes!": "$120,000 in Prizes!",
   "Now Live!": "Now Live!",
