@@ -23,6 +23,7 @@ export const WormholeBridgeWidget = ({ isAptos }: { isAptos: boolean }) => {
     const widgetEnv = enableMainnet ? WidgetEnvs.mainnet : WidgetEnvs.testnet
     const networks = WORMHOLE_NETWORKS.filter((n) => (isAptos ? true : n.name !== 'Aptos')).map((n) => n[widgetEnv])
 
+    console.log(widgetEnv)
     const rpcs = getRpcUrls(widgetEnv)
     const tokens = getBridgeTokens(widgetEnv)
 

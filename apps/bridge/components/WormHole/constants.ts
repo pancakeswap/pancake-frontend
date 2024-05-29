@@ -1,9 +1,9 @@
-import { ChainName } from '@wormhole-foundation/wormhole-connect'
+import type { ChainName } from '@wormhole-foundation/wormhole-connect'
 import { arbitrum, arbitrumGoerli, base, baseGoerli, bscTestnet, mainnet as ethereum, goerli } from 'wagmi/chains'
 import { getNodeRealUrl } from '../../utils/nodes/nodereal'
 import { getGroveUrl } from '../../utils/nodes/pokt'
 import { WormholeChainIds } from './chains'
-import { Env, WidgetEnvs } from './types'
+import { WidgetEnvs, type Env } from './types'
 
 export type Network = {
   name: string
@@ -38,8 +38,8 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'goerli',
     mainnet: 'ethereum',
     mainnetRpc:
-      getGroveUrl(WormholeChainIds.ETHEREUM, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.ETHEREUM, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
+      getGroveUrl(WormholeChainIds.ETHEREUM, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       ethereum.rpcUrls.default.http[0],
     testnetRpc:
       getNodeRealUrl(WormholeChainIds.GOERLI, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
@@ -50,8 +50,8 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'bsc',
     mainnet: 'bsc',
     mainnetRpc:
-      getGroveUrl(WormholeChainIds.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
+      getGroveUrl(WormholeChainIds.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       'https://bsc-dataseed1.binance.org',
     testnetRpc: bscTestnet.rpcUrls.default.http[0],
   },
@@ -60,8 +60,8 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'arbitrumgoerli',
     mainnet: 'arbitrum',
     mainnetRpc:
-      getGroveUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
+      getGroveUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       arbitrum.rpcUrls.default.http[0],
     testnetRpc: arbitrumGoerli.rpcUrls.default.http[0],
   },
@@ -70,8 +70,8 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'basegoerli',
     mainnet: 'base',
     mainnetRpc:
-      getGroveUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
+      getGroveUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       base.rpcUrls.default.http[0],
     testnetRpc: baseGoerli.rpcUrls.default.http[0],
   },
