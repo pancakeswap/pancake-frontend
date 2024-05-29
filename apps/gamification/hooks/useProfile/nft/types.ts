@@ -274,3 +274,8 @@ export interface UserActivity {
   buyTradeHistory: Transaction[]
   sellTradeHistory: Transaction[]
 }
+
+export interface LowestNftPrice {
+  isFetching: boolean
+  lowestPrice?: number
+}
