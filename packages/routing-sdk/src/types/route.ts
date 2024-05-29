@@ -1,4 +1,4 @@
-import type { Currency, CurrencyAmount, Price } from '@pancakeswap/swap-sdk-core'
+import type { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 
 import type { Pool } from './pool'
 import type { GasUseEstimate } from './gasEstimate'

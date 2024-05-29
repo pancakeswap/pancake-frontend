@@ -1774,9 +1774,18 @@ importers:
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
+      '@pancakeswap/swap-sdk-evm':
+        specifier: workspace:*
+        version: link:../swap-sdk-evm
       debug:
         specifier: ^4.3.4
         version: 4.3.4(supports-color@8.1.1)
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      tiny-invariant:
+        specifier: ^1.3.0
+        version: 1.3.1
     devDependencies:
       '@pancakeswap/tsconfig':
         specifier: workspace:*
@@ -1784,6 +1793,9 @@ importers:
       '@types/debug':
         specifier: ^4.1.7
         version: 4.1.12
+      '@types/lodash':
+        specifier: ^4.14.168
+        version: 4.14.202
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
@@ -1906,6 +1918,12 @@ importers:
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
+      '@pancakeswap/swap-sdk-evm':
+        specifier: workspace:*
+        version: link:../swap-sdk-evm
+      '@pancakeswap/v2-sdk':
+        specifier: workspace:*
+        version: link:../v2-sdk
       big.js:
         specifier: ^5.2.2
         version: 5.2.2
@@ -1953,6 +1971,31 @@ importers:
       '@types/big.js':
         specifier: ^4.0.5
         version: 4.0.5
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
+
+  packages/swap-sdk-evm:
+    dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../swap-sdk-core
+      tiny-invariant:
+        specifier: ^1.3.0
+        version: 1.3.1
+      tiny-warning:
+        specifier: ^1.0.3
+        version: 1.0.3
+      viem:
+        specifier: 2.9.19
+        version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
+    devDependencies:
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
@@ -2344,6 +2387,31 @@ importers:
       viem:
         specifier: 2.9.19
         version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
+
+  packages/v2-sdk:
+    dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../swap-sdk-core
+      '@pancakeswap/swap-sdk-evm':
+        specifier: workspace:*
+        version: link:../swap-sdk-evm
+      tiny-invariant:
+        specifier: ^1.3.0
+        version: 1.3.1
+      viem:
+        specifier: 2.9.19
+        version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
+    devDependencies:
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
 
   packages/v3-sdk:
     dependencies:
@@ -21060,6 +21128,7 @@ packages:
 
   /glob@7.1.7:
     resolution: {integrity: sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==}
+    deprecated: Glob versions prior to v9 are no longer supported
     requiresBuild: true
     dependencies:
       fs.realpath: 1.0.0
@@ -21073,6 +21142,7 @@ packages:
 
   /glob@7.2.0:
     resolution: {integrity: sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==}
+    deprecated: Glob versions prior to v9 are no longer supported
     requiresBuild: true
     dependencies:
       fs.realpath: 1.0.0
