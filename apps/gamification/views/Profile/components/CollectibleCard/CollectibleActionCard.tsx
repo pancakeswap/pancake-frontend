@@ -1,7 +1,7 @@
 import { Card } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
-import CardBody from './CollectibleCard/CardBody'
-import { CollectibleCardProps } from './CollectibleCard/types'
+import CardBody from './CardBody'
+import { CollectibleCardProps } from './types'
 
 const StyledCollectibleCard = styled(Card)`
   border-radius: 8px;
