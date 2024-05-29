@@ -171,3 +171,25 @@ export interface ApiResponseSpecificToken {
     }
   }
 }
+
+export enum AskOrderType {
+  NEW = 'New',
+  MODIFY = 'Modify',
+  CANCEL = 'Cancel',
+}
+
+export interface AskOrder {
+  id: string
+  block: string
+  timestamp: string
+  askPrice: string
+  orderType: AskOrderType
+  nft?: TokenMarketData
+  seller?: { id: string }
+}
+
+export interface UserActivity {
+  askOrderHistory: AskOrder[]
+  buyTradeHistory: Transaction[]
+  sellTradeHistory: Transaction[]
+}
