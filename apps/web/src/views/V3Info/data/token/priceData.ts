@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import weekOfYear from 'dayjs/plugin/weekOfYear'
 import { gql, GraphQLClient } from 'graphql-request'
 import { MultiChainNameExtend } from 'state/info/constant'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
@@ -9,7 +8,6 @@ import { PriceChartEntry } from '../../types'
 
 // format dayjs with the libraries that we need
 dayjs.extend(utc)
-dayjs.extend(weekOfYear)
 
 export const PRICES_BY_BLOCK = (tokenAddress: string, blocks: any) => {
   let queryString = 'query blocks {'
