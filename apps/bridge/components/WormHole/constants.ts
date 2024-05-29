@@ -1,5 +1,5 @@
 import type { ChainName } from '@wormhole-foundation/wormhole-connect'
-import { arbitrum, arbitrumGoerli, base, baseGoerli, bscTestnet, mainnet as ethereum, goerli } from 'wagmi/chains'
+import { arbitrum, arbitrumGoerli, base, baseGoerli, bscTestnet, mainnet as ethereum, goerli } from 'viem/chains'
 import { getNodeRealUrl } from '../../utils/nodes/nodereal'
 import { getGroveUrl } from '../../utils/nodes/pokt'
 import { WormholeChainIds } from './chains'
@@ -28,8 +28,8 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'solana',
     mainnet: 'solana',
     mainnetRpc:
-      getGroveUrl(WormholeChainIds.SOLANA, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       getNodeRealUrl(WormholeChainIds.SOLANA, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
+      getGroveUrl(WormholeChainIds.SOLANA, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       'https://solana-mainnet.rpc.extrnode.com',
     testnetRpc: 'https://api.devnet.solana.com',
   },
@@ -60,9 +60,9 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'arbitrumgoerli',
     mainnet: 'arbitrum',
     mainnetRpc:
+      arbitrum.rpcUrls.default.http[0] ||
       getNodeRealUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
-      getGroveUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
-      arbitrum.rpcUrls.default.http[0],
+      getGroveUrl(WormholeChainIds.ARBITRUM_ONE, process.env.NEXT_PUBLIC_GROVE_API_KEY),
     testnetRpc: arbitrumGoerli.rpcUrls.default.http[0],
   },
   [NETWORKS.BASE]: {
@@ -70,6 +70,7 @@ export const NETWORK_CONFIG: { [network in NETWORKS]: Network } = {
     testnet: 'basegoerli',
     mainnet: 'base',
     mainnetRpc:
+      'https://base.publicnode.com' ||
       getNodeRealUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_NODE_REAL_API_KEY) ||
       getGroveUrl(WormholeChainIds.BASE, process.env.NEXT_PUBLIC_GROVE_API_KEY) ||
       base.rpcUrls.default.http[0],
