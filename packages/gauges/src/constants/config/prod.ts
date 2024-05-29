@@ -4090,5 +4090,16 @@ export const CONFIG_PROD: GaugeConfig[] = [
     feeTier: FeeAmount.LOW,
     token0Address: ethereumTokens.weth.address,
     token1Address: ethereumTokens.mETH.address,
+    killed: true,
+  },
+  {
+    gid: 414,
+    pairName: 'WETH-mETH',
+    address: '0xfcc3B8959d99f1154F0B1ac0252aa7e0F0617BCC',
+    chainId: ChainId.ETHEREUM,
+    type: GaugeType.V3,
+    feeTier: FeeAmount.LOWEST,
+    token0Address: ethereumTokens.weth.address,
+    token1Address: ethereumTokens.mETH.address,
   },
 ]
