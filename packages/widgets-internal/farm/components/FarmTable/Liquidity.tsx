@@ -6,10 +6,12 @@ import { styled } from "styled-components";
 import { FarmTableLiquidityProps } from "../../types";
 
 const distanceToNow = (t: TranslateFunction, timeInMilliSeconds: number) => {
+  if (!Number.isFinite(timeInMilliSeconds)) return t("Now");
+
   const time = dayjs(timeInMilliSeconds);
   const now = dayjs();
 
-  if (time.isAfter(now) || !Number.isFinite(timeInMilliSeconds)) return t("Now");
+  if (time.isAfter(now)) return t("Now");
 
   const secondsRemaining = time.diff(now, "seconds");
   const { days, hours, minutes, seconds } = getTimePeriods(secondsRemaining);
