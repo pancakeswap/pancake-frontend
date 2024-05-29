@@ -22,6 +22,7 @@ enum TESTNET_NETWORKS {
   BSC = 'bsc',
 }
 
+export const EnableWidgetEnvToggle = false
 export const pcsLogo = 'https://pancakeswap.finance/logo.png'
 export const walletConnectProjectId = 'e542ff314e26ff34de2d4fba98db70bb'
 

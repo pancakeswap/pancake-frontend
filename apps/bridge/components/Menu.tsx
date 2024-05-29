@@ -5,6 +5,7 @@ import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useEnableWormholeMainnet } from 'state/wormhole/enableTestnet'
 import { styled, useTheme } from 'styled-components'
+import { EnableWidgetEnvToggle } from './WormHole/constants'
 
 const StyledMenuItem = styled('div')<{ $isActive?: boolean }>`
   position: relative;
@@ -111,7 +112,7 @@ export function Menu() {
         </Flex>
       </Flex>
       <Flex alignItems="center">
-        {nextRouter.pathname === '/wormhole' && (
+        {nextRouter.pathname === '/wormhole' && EnableWidgetEnvToggle && (
           <Flex justifyContent="space-between" alignItems="center">
             <Text fontSize="18px" mr="4px">
               {t('Mainnet')}
