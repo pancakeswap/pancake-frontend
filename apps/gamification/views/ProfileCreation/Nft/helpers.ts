@@ -662,3 +662,73 @@ export const getCompleteAccountNftData = async (
 
   return completeNftData
 }
+
+/**
+ * Fetch static data from a collection using the API
+ * @returns
+ */
+export const getCollectionApi = async (collectionAddress: string): Promise<ApiCollection | null> => {
+  const res = await fetch(`${API_NFT}/collections/${collectionAddress}`)
+  if (res.ok) {
+    const json = await res.json()
+    return json.data
+  }
+  console.error(`API: Failed to fetch NFT collection ${collectionAddress}`, res.statusText)
+  return null
+}
+
+/**
+ * Fetch market data from a collection using the Subgraph
+ * @returns
+ */
+export const getCollectionSg = async (collectionAddress: string): Promise<CollectionMarketDataBaseFields | null> => {
+  try {
+    const res = await request(
+      GRAPH_API_NFTMARKET,
+      gql`
+        query getCollectionData($collectionAddress: String!) {
+          collection(id: $collectionAddress) {
+            ${collectionBaseFields}
+          }
+        }
+      `,
+      { collectionAddress: collectionAddress.toLowerCase() },
+    )
+    return res.collection
+  } catch (error) {
+    console.error('Failed to fetch collection', error)
+    return null
+  }
+}
+
+/**
+ * Fetch collection data by combining data from the API (static metadata) and the Subgraph (dynamic market data)
+ */
+export const getCollection = async (collectionAddress: string): Promise<Record<string, Collection> | null> => {
+  try {
+    const [collection, collectionMarket] = await Promise.all([
+      getCollectionApi(collectionAddress),
+      getCollectionSg(collectionAddress),
+    ])
+    let collectionsTotalSupply
+    try {
+      collectionsTotalSupply = await fetchCollectionsTotalSupply(collection ? [collection] : [])
+    } catch (error) {
+      console.error('on chain fetch collections total supply error', error)
+    }
+    const totalSupplyFromApi = Number(collection?.totalSupply) || 0
+    const totalSupplyFromOnChain = collectionsTotalSupply?.[0] || 0
+    const collectionApiDataCombinedOnChain = {
+      ...collection,
+      totalSupply: Math.max(totalSupplyFromApi, totalSupplyFromOnChain).toString(),
+    }
+
+    return combineCollectionData(
+      collectionApiDataCombinedOnChain ? [collectionApiDataCombinedOnChain as ApiCollection] : [],
+      collectionMarket ? [collectionMarket] : [],
+    )
+  } catch (error) {
+    console.error('Unable to fetch data:', error)
+    return null
+  }
+}

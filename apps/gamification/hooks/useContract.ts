@@ -8,9 +8,12 @@ import { useMemo } from 'react'
 import {
   getBunnyFactoryContract,
   getContract,
+  getNftMarketContract,
   getPointCenterIfoContract,
   getProfileContract,
 } from 'utils/contractHelpers'
+
+import { erc721CollectionABI } from 'config/abi/erc721collection'
 
 type UseContractOptions = {
   chainId?: ChainId
@@ -72,4 +75,13 @@ export const useProfileContract = () => {
 export const usePointCenterIfoContract = () => {
   const { data: signer } = useWalletClient()
   return useMemo(() => getPointCenterIfoContract(signer ?? undefined), [signer])
+}
+
+export const useNftMarketContract = () => {
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getNftMarketContract(signer ?? undefined), [signer])
+}
+
+export const useErc721CollectionContract = (collectionAddress: Address | undefined) => {
+  return useContract(collectionAddress, erc721CollectionABI)
 }

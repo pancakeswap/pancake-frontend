@@ -59,3 +59,7 @@ export function getBscScanLinkForNft(collectionAddress: string | undefined, toke
   if (!collectionAddress) return ''
   return `${bsc.blockExplorers.default.url}/token/${collectionAddress}?a=${tokenId}`
 }
+
+export function escapeRegExp(string: string): string {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
+}
