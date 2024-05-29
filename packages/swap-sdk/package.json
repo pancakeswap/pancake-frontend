@@ -30,11 +30,14 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest --run",
+    "test:u": "vitest --run -u",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
     "@pancakeswap/chains": "workspace:^",
     "@pancakeswap/swap-sdk-core": "workspace:*",
+    "@pancakeswap/swap-sdk-evm": "workspace:*",
+    "@pancakeswap/v2-sdk": "workspace:*",
     "big.js": "^5.2.2",
     "decimal.js-light": "^2.5.0",
     "tiny-invariant": "^1.3.0",
