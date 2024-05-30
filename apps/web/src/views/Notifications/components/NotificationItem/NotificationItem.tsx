@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, ChevronDownIcon, ChevronUpIcon, Flex, FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { NotifyClientTypes } from '@walletconnect/notify-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useNotificationTypes } from '@web3inbox/react'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -28,7 +28,7 @@ interface INotificationprops {
   url: string | null
   id: string
   subscriptionId: string
-  type: string
+  type: SubsctiptionType
   image?: string | undefined
 }
 

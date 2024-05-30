@@ -28,7 +28,7 @@ export const NotificationImage = ({
 }: {
   image: string | undefined
   message: string
-  type: string
+  type: SubsctiptionType
 }) => {
   if (type === SubsctiptionType.Farms || type === SubsctiptionType.Liquidity) {
     const { image1, image2 } = getNotificationPairlogo(message, type)
@@ -51,7 +51,7 @@ export const NotificationImage = ({
   )
 }
 
-export const NotificationBadge = ({ message, type }: { message: string; type: string }) => {
+export const NotificationBadge = ({ message, type }: { message: string; type: SubsctiptionType }) => {
   const { t } = useTranslation()
 
   if (type === SubsctiptionType.Farms || type === SubsctiptionType.PriceUpdates) {
