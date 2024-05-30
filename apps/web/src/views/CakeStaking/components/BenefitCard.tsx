@@ -19,7 +19,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
     headImg: '/images/cake-staking/cross-chain.png',
     title: <Trans>veCAKE Sync</Trans>,
     subTitle: <Trans>Number of Chains Synced</Trans>,
-    btnText: <Trans>Check Reward</Trans>,
+    btnText: <Trans>View Details</Trans>,
     desc: [
       <Trans>Enjoy the same veCAKE benefits on other networks.</Trans>,
       <Trans>Explorer other PancakeSwap benefits.</Trans>,
