@@ -13,10 +13,10 @@ export interface BuyCryptoState {
   readonly typedValue: string | undefined
   readonly independentField: Field
   readonly [Field.INPUT]: {
-    readonly currencyId: string | undefined
+    readonly currencyId: string
   }
   readonly [Field.OUTPUT]: {
-    readonly currencyId: string | undefined
+    readonly currencyId: string
   }
 }
 
@@ -63,8 +63,8 @@ export const reducer = createReducer<BuyCryptoState>(
         }
       })
       .addCase(replaceBuyCryptoState, (state, { payload: { typedValue, inputCurrencyId, outputCurrencyId } }) => {
-        state[Field.INPUT].currencyId = inputCurrencyId
-        state[Field.OUTPUT].currencyId = outputCurrencyId
+        state[Field.INPUT].currencyId = inputCurrencyId ?? ''
+        state[Field.OUTPUT].currencyId = outputCurrencyId ?? ''
         state.typedValue = typedValue
       })
       .addCase(switchCurrencies, (state) => {
