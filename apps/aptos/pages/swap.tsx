@@ -262,7 +262,6 @@ const SwapPage = () => {
       const confirmed = await confirmPriceImpactWithoutFee()
       if (!confirmed) return
     }
-
     if (!swapCallback) return
 
     setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
