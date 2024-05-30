@@ -1,4 +1,5 @@
 import type { TranslateFunction } from '@pancakeswap/localization'
+import { SubsctiptionType } from '../types'
 
 export const getOnBoardingDescriptionMessage = (isOnBoarded: boolean, t: TranslateFunction) => {
   let onBoardingDescription: string = t(
@@ -59,10 +60,9 @@ export const extractTokensFromAPRString = (aprString: string): { token1: string;
   return { token1, token2, chainId: chain }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-shadow
-export const getLinkText = (title: string, t: TranslateFunction) => {
-  if (title.toLowerCase().includes('apr update')) return t('View Farm')
-  if (title.includes('Balance') || title.includes('Purchase')) return t('Buy Crypto')
+export const getLinkText = (type: SubsctiptionType, t: TranslateFunction) => {
+  if (type === SubsctiptionType.Farms) return t('View Farm')
+  if (type === SubsctiptionType.PriceUpdates) return t('Buy Crypto')
   return t('View Link')
 }
 

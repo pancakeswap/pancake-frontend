@@ -76,7 +76,7 @@ export const formatStringWithNewlines = (inputString: string, isMobile: boolean)
   return inputString.split('\n').map((line: string, index: number) => (
     <Text
       // eslint-disable-next-line react/no-array-index-key
-      key={`message-line-${index.toString()}`}
+      key={`message-line-${index}`}
       fontSize={isMobile ? '14px' : '16px'}
       lineHeight="20px"
       fontWeight={400}
