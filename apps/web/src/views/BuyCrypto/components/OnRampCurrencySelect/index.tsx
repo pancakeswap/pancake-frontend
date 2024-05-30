@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Token } from '@pancakeswap/sdk'
-import { ArrowDropDownIcon, Box, BoxProps, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
+import { ArrowDropDownIcon, Box, BoxProps, Flex, SkeletonText, Text, useModal } from '@pancakeswap/uikit'
 import { NumberDisplay, NumericalInput } from '@pancakeswap/widgets-internal'
 import OnRampCurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/OnRampCurrencyModal'
 import { fiatCurrencyMap, getNetworkDisplay, onRampCurrencies } from 'views/BuyCrypto/constants'
@@ -101,12 +101,9 @@ export const BuyCryptoSelector = ({
             }}
           />
         ) : (
-          <NumberDisplay value={inputLoading ? '' : value} />
-        )}
-        {inputLoading && (
-          <Flex position="absolute" zIndex={10}>
-            <Skeleton width="105px" height="26px" variant="round" isDark />
-          </Flex>
+          <SkeletonText initialHeight={25} initialWidth={100} loading={inputLoading}>
+            <NumberDisplay value={value} />
+          </SkeletonText>
         )}
 
         <OptionSelectButton
