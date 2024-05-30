@@ -9,6 +9,29 @@ export interface Image {
   gif?: string
 }
 
+export type Images = {
+  lg: string
+  md: string
+  sm: string
+  ipfs?: string
+}
+
+export type TeamImages = {
+  alt: string
+} & Images
+
+export type Team = {
+  id: number
+  name: string
+  description: string
+  isJoinable?: boolean
+  users: number
+  points: number
+  images: TeamImages
+  background: string
+  textColor: string
+}
+
 export interface NftToken {
   tokenId: string
   name: string
@@ -33,6 +56,7 @@ export interface Profile {
   isActive: boolean
   username: string
   nft?: NftToken
+  team?: Team
   hasRegistered: boolean
 }
 

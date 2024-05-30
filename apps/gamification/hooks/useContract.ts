@@ -52,6 +52,11 @@ export function useContract<TAbi extends Abi>(
 /**
  * Helper hooks to get specific contracts (by ABI)
  */
+
+export const useERC20 = (address?: Address, options?: UseContractOptions) => {
+  return useContract(address, erc20Abi, options)
+}
+
 export function useTokenContract(tokenAddress?: Address) {
   return useContract(tokenAddress, erc20Abi)
 }
