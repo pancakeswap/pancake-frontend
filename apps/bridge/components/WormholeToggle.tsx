@@ -14,7 +14,7 @@ export function WormholeEnvToggle() {
   useEffect(() => {
     if (typeof window === 'undefined') return
     const { protocol } = window.location
-    setIsEnabled(protocol === 'https:')
+    setIsEnabled(protocol === 'http:')
   }, [])
 
   if (pathname !== '/wormhole' || !isEnabled) {
