@@ -6,7 +6,7 @@ import { Address, Hex, hexToBigInt, isAddress, stringify } from 'viem'
 import { ChainId } from '@pancakeswap/chains'
 import { ZyfiResponse } from 'config/paymaster'
 import { eip712WalletActions } from 'viem/zksync'
-import { useWalletClient } from 'wagmi'
+import { useAccount, useWalletClient } from 'wagmi'
 import { useGasToken } from './useGasToken'
 
 interface SwapCall {
@@ -22,14 +22,17 @@ export const usePaymaster = () => {
   const chain = useActiveChainId()
   const { data: walletClient } = useWalletClient()
 
+  const { connector } = useAccount()
+
   const [gasToken] = useGasToken()
 
   /**
    * Check if the Paymaster for zkSync is available
    */
   const isPaymasterAvailable = useMemo(() => {
-    return chain && chain.chainId === ChainId.ZKSYNC
-  }, [chain])
+    // Disable connections via WalletConnect until it is fully supported
+    return chain && chain.chainId === ChainId.ZKSYNC && (!connector || connector.type !== 'walletConnect')
+  }, [chain, connector])
 
   /**
    * Check if a paymaster token is selected.
@@ -47,6 +50,7 @@ export const usePaymaster = () => {
   ) {
     if (!account) throw new Error('An active wallet connection is required to send paymaster transaction')
     if (!gasToken.isToken) throw new Error('Selected gas token is not an ERC20 token. Unsupported by Paymaster.')
+    if (!isPaymasterAvailable || !isPaymasterTokenActive) throw new Error('Paymaster is not available or active.')
 
     const response = await fetch(`https://api.zyfi.org/api/erc20_paymaster/v1`, {
       method: 'POST',
@@ -86,6 +90,7 @@ export const usePaymaster = () => {
     if (!walletClient) {
       throw new Error('Failed to execute paymaster transaction')
     }
+
     // Extend Viem's zkSync utils
     const client: any = walletClient.extend(eip712WalletActions() as any)
     return client.sendTransaction(newTx)
