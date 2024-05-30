@@ -62,7 +62,13 @@ export const Dialog: React.FC<DialogProps> = ({
 
   return (
     <StyledModalV2 onDismiss={onDismiss} {...props}>
-      <Modal title={modalTitle} headerBackground="gradientCardHeader" minHeight="0" hideCloseButton>
+      <Modal
+        title={modalTitle}
+        headerBackground="gradientCardHeader"
+        minHeight="0"
+        hideCloseButton
+        width={["100%", "100%", "100%", "367px"]}
+      >
         <FlexGap flexDirection="column" gap="20px" mt="auto">
           <Text>{message}</Text>
           {useInput ? (

@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useConfirm, usePrompt } from "../../uikit/src/hooks/useDialog";
 
 export const useAsyncConfirmPriceImpactWithoutFee = (
-  priceImpactWithoutFee: Percent,
+  priceImpactWithoutFee: Percent | undefined,
   priceImpactWithoutFeeConfirmMin: Percent,
   allowedPriceImpactHigh: Percent
 ) => {
@@ -17,6 +17,8 @@ export const useAsyncConfirmPriceImpactWithoutFee = (
     const p = new Promise<boolean>((res) => {
       resolve = res;
     });
+
+    if (!priceImpactWithoutFee) return true;
 
     if (!priceImpactWithoutFee.lessThan(priceImpactWithoutFeeConfirmMin)) {
       const confirmWord = "confirm";
