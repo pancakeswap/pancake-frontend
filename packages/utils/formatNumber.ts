@@ -98,7 +98,7 @@ export function formatFiatNumber({
   const valueInBN = new BigNumber(currencyNumberValue)
   if (valueInBN.eq(ZERO) || useFullDigits) return `${currencySymbol}${valueInBN}`
 
-  const valueToDisplay = formatLargeFiatValue(valueInBN, currencySymbol)
+  const valueToDisplay = formatLargeFiatValue(valueInBN, currencySymbol, fractionDigits)
   return valueToDisplay
 }
 
@@ -110,8 +110,8 @@ export function formatNumberWithFullDigits(
   return formatNumber(valueInBN, { ...options, maximumSignificantDigits: getTotalDigits(valueInBN) })
 }
 
-function formatLargeFiatValue(numericValue: BigNumber, currencySymbol: string): string {
-  const formattedValue = numericValue.toString()
+function formatLargeFiatValue(numericValue: BigNumber, currencySymbol: string, fractionDigits: number): string {
+  const formattedValue = numericValue.toFormat(fractionDigits, BigNumber.ROUND_UP, DEFAULT_FORMAT_CONFIG)
 
   if (numericValue.gt(BigNumber(10_000)) && numericValue.lt(BigNumber(1_000_000))) {
     return `> ${currencySymbol}${numericValue.div(1000).toFixed(0)}K`

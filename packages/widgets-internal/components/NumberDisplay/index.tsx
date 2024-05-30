@@ -1,13 +1,8 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Text, useTooltip, type TextProps } from "@pancakeswap/uikit";
-import { formatFiatNumber, formatNumber, formatNumberWithFullDigits } from "@pancakeswap/utils/formatNumber";
+import { formatNumber, formatNumberWithFullDigits } from "@pancakeswap/utils/formatNumber";
 import BigNumber from "bignumber.js";
 import { memo, useMemo, type CSSProperties, type ElementType, type ReactNode } from "react";
-
-export type FiatNumberTypeOptions = {
-  fiatCurrencyCode: string;
-  options?: Omit<Intl.NumberFormatOptions, "currency" | "style" | "minimumFractionDigits" | "maximumFractionDigits">;
-};
 
 export type NumberDisplayProps = {
   prefix?: ReactNode;
@@ -16,7 +11,6 @@ export type NumberDisplayProps = {
   maximumSignificantDigits?: number;
   showFullDigitsTooltip?: boolean;
   roundingMode?: BigNumber.RoundingMode;
-  fiatCurrencyOptions?: FiatNumberTypeOptions;
   as?: ElementType;
   style?: CSSProperties;
 } & TextProps;
@@ -28,64 +22,36 @@ export const NumberDisplay = memo(function NumberDisplay({
   maximumSignificantDigits = 12,
   roundingMode = BigNumber.ROUND_DOWN,
   showFullDigitsTooltip = true,
-  fiatCurrencyOptions = undefined, // handle currency by defaulting to number.toLocalString
   style,
   ...props
 }: NumberDisplayProps) {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation();
+  const { t } = useTranslation();
 
-  const valueDisplay = useMemo(() => {
-    if (fiatCurrencyOptions && "fiatCurrencyCode" in fiatCurrencyOptions) {
-      const { fiatCurrencyCode, options } = fiatCurrencyOptions;
-      return value
-        ? formatFiatNumber({
-            value,
-            locale,
-            fiatCurrencyCode,
-            options,
+  const valueDisplayInFullDigits = useMemo(
+    () =>
+      value
+        ? formatNumberWithFullDigits(value, {
+            roundingMode,
           })
-        : "";
-    }
-
-    return value
-      ? formatNumber(value, {
-          maximumSignificantDigits,
-          roundingMode,
-        })
-      : "";
-  }, [value, fiatCurrencyOptions, maximumSignificantDigits, roundingMode, locale]);
-
-  const valueDisplayInFullDigits = useMemo(() => {
-    if (fiatCurrencyOptions && "fiatCurrencyCode" in fiatCurrencyOptions) {
-      const { fiatCurrencyCode, options } = fiatCurrencyOptions;
-      return value
-        ? formatFiatNumber({
-            value,
-            locale,
-            useFullDigits: true,
-            fiatCurrencyCode,
-            options,
+        : "",
+    [value, roundingMode]
+  );
+  const valueDisplay = useMemo(
+    () =>
+      value
+        ? formatNumber(value, {
+            maximumSignificantDigits,
+            roundingMode,
           })
-        : "";
-    }
-
-    return value
-      ? formatNumberWithFullDigits(value, {
-          roundingMode,
-        })
-      : "";
-  }, [value, roundingMode, fiatCurrencyOptions, locale]);
-
+        : "",
+    [value, maximumSignificantDigits, roundingMode]
+  );
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t("Exact number: %numberWithFullDigits%", { numberWithFullDigits: valueDisplayInFullDigits }),
     {
       placement: "top-end",
     }
   );
-
   const showTooltip = value && showFullDigitsTooltip && valueDisplay !== valueDisplayInFullDigits;
 
   return (
