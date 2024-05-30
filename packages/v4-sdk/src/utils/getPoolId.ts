@@ -1,28 +1,13 @@
-import { Address, encodeAbiParameters, keccak256, parseAbiParameters, zeroAddress } from 'viem'
+import { encodeAbiParameters, keccak256, parseAbiParameters, zeroAddress } from 'viem'
 import { Bytes32 } from '../types'
-import { BinPoolParameter, CLPoolParameter, encodePoolParameters } from './encodePoolParameters'
-
-export type PoolType = 'CL' | 'Bin'
-
-/**
- * PoolKey is a unique identifier for a pool
- *
- * @see PoolKey
- */
-export type PoolKey<T extends PoolType = never> = {
-  currency0: Address
-  currency1: Address
-  hooks?: Address
-  poolManger: Address
-  fee: number
-  parameters: T extends 'CL' ? CLPoolParameter : T extends 'Bin' ? BinPoolParameter : CLPoolParameter | BinPoolParameter
-}
+import { encodePoolParameters } from './encodePoolParameters'
+import { PoolKey } from './poolKey'
 
 export const getPoolId = ({
   currency0,
   currency1,
   hooks = zeroAddress,
-  poolManger,
+  poolManager,
   fee,
   parameters,
 }: PoolKey): Bytes32 => {
@@ -33,7 +18,7 @@ export const getPoolId = ({
       currency0,
       currency1,
       hooks,
-      poolManger,
+      poolManager,
       fee,
       poolParameter,
     ])

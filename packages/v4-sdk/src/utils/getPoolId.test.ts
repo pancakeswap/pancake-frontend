@@ -1,12 +1,13 @@
 import { zeroAddress } from 'viem'
 import { expect, test } from 'vitest'
-import { PoolKey, getPoolId } from './getPoolId'
+import { getPoolId } from './getPoolId'
+import { PoolKey } from './poolKey'
 
 test('BinPoolKey getPoolId', () => {
   const binPoolKey: PoolKey<'Bin'> = {
     currency0: zeroAddress,
     currency1: zeroAddress,
-    poolManger: zeroAddress,
+    poolManager: zeroAddress,
     fee: 3000,
     parameters: {
       binStep: 10,
@@ -19,7 +20,7 @@ test('CLPoolKey getPoolId', () => {
   const clPoolKey: PoolKey<'CL'> = {
     currency0: zeroAddress,
     currency1: zeroAddress,
-    poolManger: zeroAddress,
+    poolManager: zeroAddress,
     fee: 3000,
     parameters: {
       tickSpacing: 10,
