@@ -566,7 +566,7 @@ export function useBestTradeFromApi({
           swapper: address,
         },
       })
-      const serverRes = await fetch(`${QUOTING_API}${isXEnabled ? '?mock=true' : ''}`, {
+      const serverRes = await fetch(`${QUOTING_API}`, {
         method: 'POST',
         signal,
         headers: {
