@@ -50,7 +50,7 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
 
   const formattedDate = formatTime(Math.floor(date / 1000).toString())
   const formatedDescription = formatStringWithNewlines(description, isMobile)
-  const linkText = getLinkText(title, t)
+  const linkText = getLinkText(type, t)
 
   const handleExpandClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {

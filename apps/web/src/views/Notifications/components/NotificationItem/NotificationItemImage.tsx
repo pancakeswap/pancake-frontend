@@ -1,4 +1,3 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { ArrowDropDownIcon, ArrowDropUpIcon, Box, FlexGap, Text } from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/image'
@@ -52,8 +51,6 @@ export const NotificationImage = ({
 }
 
 export const NotificationBadge = ({ message, type }: { message: string; type: SubsctiptionType }) => {
-  const { t } = useTranslation()
-
   if (type === SubsctiptionType.Farms || type === SubsctiptionType.PriceUpdates) {
     const percentageChange = extractPercentageFromString(message)
     const hasFallen = message.includes('fallen')
