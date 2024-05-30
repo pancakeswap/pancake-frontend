@@ -1,10 +1,11 @@
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { useReadContract } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import { getVeCakeAddress } from 'utils/addressHelpers'
 import { Address, erc20Abi, isAddressEqual, zeroAddress } from 'viem'
-import { useReadContract } from '@pancakeswap/wagmi'
+import { CakePoolType } from '../types'
 import { useVeCakeUserInfo } from './useVeCakeUserInfo'
 
 export const useProxyVeCakeBalance = () => {
@@ -12,7 +13,8 @@ export const useProxyVeCakeBalance = () => {
   const { data: userInfo } = useVeCakeUserInfo()
 
   const hasProxy = useMemo(() => {
-    return userInfo && userInfo?.cakePoolProxy && !isAddressEqual(userInfo!.cakePoolProxy, zeroAddress)
+    const delegated = userInfo?.cakePoolType === CakePoolType.DELEGATED
+    return userInfo && userInfo?.cakePoolProxy && !isAddressEqual(userInfo!.cakePoolProxy, zeroAddress) && !delegated
   }, [userInfo])
 
   const { status, refetch, data } = useReadContract({

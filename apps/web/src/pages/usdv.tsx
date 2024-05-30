@@ -92,7 +92,7 @@ function useUSDVDisclaimer() {
     if (!accepted) {
       showModal()
     }
-  }, [])
+  }, [showModal, accepted])
 }
 
 function Widget() {

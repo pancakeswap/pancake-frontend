@@ -4,6 +4,8 @@ import { Card, CardBody } from '@pancakeswap/uikit'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
+import { SwellTooltip } from 'components/SwellTooltip/SwellTooltip'
+import { useHasSwellReward } from 'hooks/useHasSwellReward'
 import { PropsWithChildren, ReactNode, memo, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { Address } from 'viem'
@@ -18,8 +20,6 @@ import { ManagerInfo } from './ManagerInfo'
 import { VaultInfo } from './VaultInfo'
 import { VaultLinks } from './VaultLinks'
 import { YieldInfo } from './YieldInfo'
-import { useHasSwellReward } from '../hooks/useHasSwellReward'
-import { SwellTooltip } from './SwellTooltip'
 
 const StyledCard = styled(Card)`
   align-self: baseline;

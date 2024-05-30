@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useBCakeProxyContract, useCake } from 'hooks/useContract'
 import { useMemo } from 'react'
-import { useBCakeProxyContractAddress } from './useBCakeProxyContractAddress'
+import { useBCakeProxyContractAddress } from '../../../hooks/useBCakeProxyContractAddress'
 
 const SMALL_AMOUNT_THRESHOLD = new BigNumber(0.001)
 

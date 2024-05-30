@@ -9,6 +9,7 @@ import {
   PageHeader,
   PageSection,
   OpenNewIcon,
+  StyledLink,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
@@ -86,15 +87,15 @@ const FarmAuction = () => {
     <>
       <StyledHeader>
         <Breadcrumbs>
-          <NextLink href="/" passHref>
-            <Link href="replace" color="primary" style={{ fontWeight: 400 }}>
+          <NextLink href="/">
+            <StyledLink color="primary" style={{ fontWeight: 400 }}>
               {t('Home')}
-            </Link>
+            </StyledLink>
           </NextLink>
-          <NextLink href="/farms" passHref>
-            <Link href="replace" color="primary" style={{ fontWeight: 400 }}>
+          <NextLink href="/farms">
+            <StyledLink color="primary" style={{ fontWeight: 400 }}>
               {t('Farms')}
-            </Link>
+            </StyledLink>
           </NextLink>
           <Text>{t('Community Farm Auction')}</Text>
         </Breadcrumbs>

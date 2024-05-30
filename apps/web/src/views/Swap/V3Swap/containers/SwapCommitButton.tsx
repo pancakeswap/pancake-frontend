@@ -1,41 +1,35 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
-import { SMART_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, Box, Button, Dots, Message, MessageText, Text, useModal } from '@pancakeswap/uikit'
-import { confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
-import { memo, useCallback, useEffect, useMemo, useState } from 'react'
-import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useExpertMode } from '@pancakeswap/utils/user'
+import { useTranslation } from '@pancakeswap/localization'
+import { getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
+import { ConfirmModalState } from '@pancakeswap/widgets-internal'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { AutoRow } from 'components/Layout/Row'
 import SettingsModal, { RoutingSettingsButton, withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
-import {
-  ALLOWED_PRICE_IMPACT_HIGH,
-  BIG_INT_ZERO,
-  PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
-} from 'config/constants/exchange'
+import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useCurrencyBalances } from 'state/wallet/hooks'
+import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { warningSeverity } from 'utils/exchange'
-
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useAccount } from 'wagmi'
-import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapCallback, useSwapInputError } from '../hooks'
+import { useAccount, useChainId } from 'wagmi'
+import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapInputError } from '../hooks'
 import { useConfirmModalState } from '../hooks/useConfirmModalState'
-import { TransactionRejectedError } from '../hooks/useSendSwapTransaction'
-import { useWallchainApi } from '../hooks/useWallchain'
+import { useSwapConfig } from '../hooks/useSwapConfig'
+import { useSwapCurrency } from '../hooks/useSwapCurrency'
+import { CommitButtonProps } from '../types'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModal } from './ConfirmSwapModal'
 
@@ -45,256 +39,59 @@ interface SwapCommitButtonPropsType {
   trade?: SmartRouterTrade<TradeType>
   tradeError?: Error
   tradeLoading?: boolean
+  // setLock: (lock: boolean) => void
 }
 
-export const SwapCommitButton = memo(function SwapCommitButton({
-  trade,
-  tradeError,
-  tradeLoading,
-}: SwapCommitButtonPropsType) {
-  const { chainId } = useActiveChainId()
-  const { t } = useTranslation()
-  const { address: account } = useAccount()
-  const [isExpertMode] = useExpertMode()
+const useSettingModal = (onDismiss) => {
+  const [openSettingsModal] = useModal(
+    <SettingsModalWithCustomDismiss customOnDismiss={onDismiss} mode={SettingsMode.SWAP_LIQUIDITY} />,
+  )
+  return openSettingsModal
+}
+
+const useSwapCurrencies = () => {
   const {
-    typedValue,
-    independentField,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
-  const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
-  const swapIsUnsupported = useIsTransactionUnsupported(inputCurrency, outputCurrency)
-  const { onUserInput } = useSwapActionHandlers()
+  const inputCurrency = useCurrency(inputCurrencyId) as Currency
+  const outputCurrency = useCurrency(outputCurrencyId) as Currency
+  return { inputCurrency, outputCurrency }
+}
+
+const WrapCommitButtonReplace: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const { t } = useTranslation()
+  const { inputCurrency, outputCurrency } = useSwapCurrencies()
+  const { typedValue } = useSwapState()
   const {
     wrapType,
     execute: onWrap,
     inputError: wrapInputError,
   } = useWrapCallback(inputCurrency, outputCurrency, typedValue)
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
-  const [isRoutingSettingChange, resetRoutingSetting] = useRoutingSettingChanged()
-  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
 
-  const [deadline] = useTransactionDeadline()
-  const [statusWallchain, approvalAddressForWallchain, wallchainMasterInput] = useWallchainApi(trade, deadline)
-  const [wallchainSecondaryStatus, setWallchainSecondaryStatus] = useState<'found' | 'not-found'>('not-found')
-  const routerAddress =
-    statusWallchain === 'found' || wallchainSecondaryStatus === 'found'
-      ? approvalAddressForWallchain
-      : SMART_ROUTER_ADDRESSES[trade?.inputAmount?.currency?.chainId as keyof typeof SMART_ROUTER_ADDRESSES]
-  const amountToApprove = slippageAdjustedAmounts[Field.INPUT]
-  const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
-    inputCurrency ?? undefined,
-    outputCurrency ?? undefined,
-  ])
-  const currencyBalances = {
-    [Field.INPUT]: relevantTokenBalances[0],
-    [Field.OUTPUT]: relevantTokenBalances[1],
+  if (!showWrap) return children
+
+  return (
+    <CommitButton width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
+      {wrapInputError ?? (wrapType === WrapType.WRAP ? t('Wrap') : wrapType === WrapType.UNWRAP ? t('Unwrap') : null)}
+    </CommitButton>
+  )
+}
+
+const ConnectButtonReplace = ({ children }) => {
+  const { address: account } = useAccount()
+
+  if (!account) {
+    return <ConnectWalletButton width="100%" />
   }
+  return children
+}
 
-  // check whether the user has approved the router on the input token
-  const { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError } = useApproveCallback(
-    amountToApprove ?? undefined,
-    routerAddress,
-  )
-  const { priceImpactWithoutFee } = useMemo(
-    () => (!showWrap ? computeTradePriceBreakdown(trade) : {}),
-    [showWrap, trade],
-  )
-  const swapInputError = useSwapInputError(trade, currencyBalances)
-  const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
-  const parsedIndepentFieldAmount = parsedAmounts[independentField]
-
-  // check if user has gone through approval process, used to show two step buttons, reset on token change
-  const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
-
-  const onWallchainDrop = useCallback(() => {
-    setApprovalSubmitted(false)
-  }, [setApprovalSubmitted])
-
-  const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: SmartRouterTrade<TradeType> | undefined
-    attemptingTxn: boolean
-    swapErrorMessage: string | undefined
-    txHash: string | undefined
-  }>({
-    tradeToConfirm: undefined,
-    attemptingTxn: false,
-    swapErrorMessage: undefined,
-    txHash: undefined,
-  })
-
-  const {
-    callback: swapCallback,
-    error: swapCallbackError,
-    reason: revertReason,
-  } = useSwapCallback({
-    trade: isExpertMode ? trade : tradeToConfirm,
-    deadline,
-    onWallchainDrop,
-    wallchainMasterInput,
-  })
-
-  // Handlers
-  const handleConfirmDismiss = useCallback(() => {
-    setSwapState({ tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
-    // if there was a tx hash, we want to clear the input
-    if (txHash) {
-      onUserInput(Field.INPUT, '')
-    }
-  }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash, setSwapState])
-
-  const handleSwap = useCallback(async () => {
-    if (
-      priceImpactWithoutFee &&
-      !confirmPriceImpactWithoutFee(
-        priceImpactWithoutFee,
-        PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
-        ALLOWED_PRICE_IMPACT_HIGH,
-        t,
-      )
-    ) {
-      return undefined
-    }
-    if (!swapCallback) {
-      if (revertReason === 'insufficient allowance') {
-        setApprovalSubmitted(false)
-        setWallchainSecondaryStatus('found')
-        return undefined
-      }
-      return undefined
-    }
-    setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
-    return swapCallback()
-      .then((res) => {
-        setWallchainSecondaryStatus('not-found')
-        setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: res.hash })
-      })
-      .catch((error) => {
-        setWallchainSecondaryStatus('not-found')
-
-        if (error instanceof TransactionRejectedError) {
-          setSwapState((s) => ({
-            ...s,
-            txHash: undefined,
-            swapErrorMessage: t('Transaction rejected'),
-            attemptingTxn: false,
-          }))
-          // throw reject error to reset the flow
-          throw error
-        }
-
-        setSwapState({
-          attemptingTxn: false,
-          tradeToConfirm,
-          swapErrorMessage: typeof error === 'string' ? error : error?.message,
-          txHash: undefined,
-        })
-      })
-  }, [priceImpactWithoutFee, t, swapCallback, tradeToConfirm, revertReason])
-
-  const handleAcceptChanges = useCallback(() => {
-    setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
-  }, [attemptingTxn, swapErrorMessage, trade, txHash, setSwapState])
-  // End Handlers
-
-  // warnings on slippage
-  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
-
-  // show approve flow when: no error on inputs, not approved or pending, or approved in current session
-  // never show if price impact is above threshold in non expert mode
-  const showApproveFlow =
-    !swapInputError &&
-    (approvalState === ApprovalState.NOT_APPROVED ||
-      approvalState === ApprovalState.PENDING ||
-      (approvalSubmitted && approvalState === ApprovalState.APPROVED)) &&
-    !(priceImpactSeverity > 3 && !isExpertMode)
-
-  // Modals
-  const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
-
-  const [onPresentSettingsModal] = useModal(
-    <SettingsModalWithCustomDismiss
-      customOnDismiss={() => setIndirectlyOpenConfirmModalState(true)}
-      mode={SettingsMode.SWAP_LIQUIDITY}
-    />,
-  )
-
-  const { confirmModalState, pendingModalSteps, startSwapFlow, resetSwapFlow } = useConfirmModalState({
-    txHash,
-    chainId,
-    approval: approvalState,
-    approvalToken: trade?.inputAmount?.currency,
-    isPendingError,
-    isExpertMode,
-    currentAllowance,
-    approveCallback,
-    revokeCallback,
-    onConfirm: handleSwap,
-  })
-
-  const [onPresentConfirmModal] = useModal(
-    <ConfirmSwapModal
-      trade={trade}
-      txHash={txHash}
-      approval={approvalState}
-      attemptingTxn={attemptingTxn}
-      originalTrade={tradeToConfirm}
-      showApproveFlow={showApproveFlow}
-      currencyBalances={currencyBalances}
-      confirmModalState={confirmModalState}
-      pendingModalSteps={pendingModalSteps}
-      startSwapFlow={startSwapFlow}
-      swapErrorMessage={swapErrorMessage}
-      currentAllowance={currentAllowance}
-      onAcceptChanges={handleAcceptChanges}
-      customOnDismiss={handleConfirmDismiss}
-      openSettingModal={onPresentSettingsModal}
-    />,
-    true,
-    true,
-    'confirmSwapModal',
-  )
-  // End Modals
-
-  const onSwapHandler = useCallback(() => {
-    setSwapState({
-      tradeToConfirm: trade,
-      attemptingTxn: false,
-      swapErrorMessage: undefined,
-      txHash: undefined,
-    })
-    resetSwapFlow()
-    if (isExpertMode) {
-      startSwapFlow()
-    }
-    onPresentConfirmModal()
-    logGTMClickSwapEvent()
-  }, [trade, onPresentConfirmModal, isExpertMode, startSwapFlow, resetSwapFlow])
-
-  // useEffect
-  useEffect(() => {
-    if (indirectlyOpenConfirmModalState) {
-      setIndirectlyOpenConfirmModalState(false)
-      setSwapState((state) => ({
-        ...state,
-        swapErrorMessage: undefined,
-      }))
-      onPresentConfirmModal()
-    }
-  }, [indirectlyOpenConfirmModalState, onPresentConfirmModal, setSwapState])
-
-  // Reset approval flow if input currency changed
-  useEffect(() => {
-    setApprovalSubmitted(false)
-  }, [trade?.inputAmount?.currency])
-
-  // mark when a user has submitted an approval, reset onTokenSelection for input field
-  useEffect(() => {
-    if (approvalState === ApprovalState.PENDING) {
-      setApprovalSubmitted(true)
-    }
-  }, [approvalState, approvalSubmitted])
+const UnsupportedSwapButtonReplace = ({ children }) => {
+  const { t } = useTranslation()
+  const { inputCurrency, outputCurrency } = useSwapCurrencies()
+  const swapIsUnsupported = useIsTransactionUnsupported(inputCurrency, outputCurrency)
 
   if (swapIsUnsupported) {
     return (
@@ -303,84 +100,157 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       </Button>
     )
   }
+  return children
+}
 
-  if (!account) {
-    return <ConnectWalletButton width="100%" />
-  }
+const SwapCommitButtonComp: React.FC<SwapCommitButtonPropsType & CommitButtonProps> = (props) => {
+  return (
+    <UnsupportedSwapButtonReplace>
+      <ConnectButtonReplace>
+        <WrapCommitButtonReplace>
+          <SwapCommitButtonInner {...props} />
+        </WrapCommitButtonReplace>
+      </ConnectButtonReplace>
+    </UnsupportedSwapButtonReplace>
+  )
+}
 
-  if (showWrap) {
-    return (
-      <CommitButton
-        width="100%"
-        disabled={Boolean(wrapInputError)}
-        onClick={onWrap}
-        data-dd-action-name="Swap wrap button"
-      >
-        {wrapInputError ?? (wrapType === WrapType.WRAP ? t('Wrap') : wrapType === WrapType.UNWRAP ? t('Unwrap') : null)}
-      </CommitButton>
-    )
-  }
+export const SwapCommitButton = memo(SwapCommitButtonComp)
 
-  const noRoute = !((trade?.routes?.length ?? 0) > 0) || tradeError
+const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
+  trade,
+  tradeError,
+  tradeLoading,
+  beforeCommit,
+  afterCommit,
+}: SwapCommitButtonPropsType & CommitButtonProps) {
+  const { address: account } = useAccount()
+  const { t } = useTranslation()
+  const chainId = useChainId()
+  // form data
+  const { independentField } = useSwapState()
+  const [inputCurrency, outputCurrency] = useSwapCurrency()
+  const { isExpertMode } = useSwapConfig()
 
-  const userHasSpecifiedInputOutput = Boolean(
-    inputCurrency && outputCurrency && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),
+  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
+  const amountToApprove = useMemo(
+    () => (inputCurrency?.isNative ? undefined : slippageAdjustedAmounts[Field.INPUT]),
+    [inputCurrency?.isNative, slippageAdjustedAmounts],
   )
 
-  if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
-    return (
-      <AutoColumn gap="12px">
-        <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
-          <Text color="textSubtle">{t('Insufficient liquidity for this trade.')}</Text>
-        </GreyCard>
-        {isRoutingSettingChange && (
-          <Message variant="warning" icon={<></>}>
-            <AutoColumn gap="8px">
-              <MessageText>{t('Unable to establish trading route due to customized routing.')}</MessageText>
-              <AutoRow gap="4px">
-                <RoutingSettingsButton
-                  buttonProps={{
-                    scale: 'xs',
-                    p: 0,
-                  }}
-                  showRedDot={false}
-                >
-                  {t('Check your settings')}
-                </RoutingSettingsButton>
-                <MessageText>{t('or')}</MessageText>
-                <Button
-                  variant="text"
-                  scale="xs"
-                  p="0"
-                  onClick={resetRoutingSetting}
-                  data-dd-action-name="Swap reset routing settings button"
-                >
-                  {t('Reset to default')}
-                </Button>
-              </AutoRow>
-            </AutoColumn>
-          </Message>
-        )}
-      </AutoColumn>
-    )
-  }
+  const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  // warnings on slippage
+  const priceImpactSeverity = warningSeverity(
+    tradePriceBreakdown ? tradePriceBreakdown.priceImpactWithoutFee : undefined,
+  )
 
-  const isValid = !swapInputError && !tradeLoading
+  const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
+    inputCurrency ?? undefined,
+    outputCurrency ?? undefined,
+  ])
+  const currencyBalances = {
+    [Field.INPUT]: relevantTokenBalances[0],
+    [Field.OUTPUT]: relevantTokenBalances[1],
+  }
+  const parsedAmounts = useParsedAmounts(trade, currencyBalances, false)
+  const parsedIndependentFieldAmount = parsedAmounts[independentField]
+  const swapInputError = useSwapInputError(trade, currencyBalances)
+  const [tradeToConfirm, setTradeToConfirm] = useState<SmartRouterTrade<TradeType> | undefined>(undefined)
+  const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
+
+  const { callToAction, confirmState, txHash, confirmActions, errorMessage, resetState } = useConfirmModalState(
+    isExpertMode ? trade : tradeToConfirm,
+    amountToApprove?.currency.isToken ? (amountToApprove as CurrencyAmount<Token>) : undefined,
+    getUniversalRouterAddress(chainId),
+  )
+
+  const { onUserInput } = useSwapActionHandlers()
+  const reset = useCallback(() => {
+    afterCommit?.()
+    if (confirmState === ConfirmModalState.COMPLETED) {
+      onUserInput(Field.INPUT, '')
+    }
+    resetState()
+  }, [afterCommit, confirmState, onUserInput, resetState])
+
+  const handleAcceptChanges = useCallback(() => {
+    setTradeToConfirm(trade)
+  }, [trade])
+
+  const noRoute = useMemo(() => !((trade?.routes?.length ?? 0) > 0) || tradeError, [trade?.routes?.length, tradeError])
+  const isValid = useMemo(() => !swapInputError && !tradeLoading, [swapInputError, tradeLoading])
+  const disabled = useMemo(
+    () => !isValid || (priceImpactSeverity > 3 && !isExpertMode),
+    [isExpertMode, isValid, priceImpactSeverity],
+  )
+
+  const userHasSpecifiedInputOutput = Boolean(
+    inputCurrency && outputCurrency && parsedIndependentFieldAmount?.greaterThan(BIG_INT_ZERO),
+  )
+
+  const onConfirm = useCallback(() => {
+    beforeCommit?.()
+    callToAction()
+  }, [beforeCommit, callToAction])
+
+  // modals
+  const onSettingModalDismiss = useCallback(() => {
+    setIndirectlyOpenConfirmModalState(true)
+  }, [])
+  const openSettingModal = useSettingModal(onSettingModalDismiss)
+  const [openConfirmSwapModal] = useModal(
+    <ConfirmSwapModal
+      trade={trade}
+      originalTrade={tradeToConfirm}
+      txHash={txHash}
+      confirmModalState={confirmState}
+      pendingModalSteps={confirmActions ?? []}
+      swapErrorMessage={errorMessage}
+      currencyBalances={currencyBalances}
+      onAcceptChanges={handleAcceptChanges}
+      onConfirm={onConfirm}
+      openSettingModal={openSettingModal}
+      customOnDismiss={reset}
+    />,
+    true,
+    true,
+    'confirmSwapModal',
+  )
+
+  const handleSwap = useCallback(() => {
+    setTradeToConfirm(trade)
+    resetState()
+
+    // if expert mode turn-on, will not show preview modal
+    // start swap directly
+    if (isExpertMode) {
+      onConfirm()
+    }
+
+    openConfirmSwapModal()
+    logGTMClickSwapEvent()
+  }, [isExpertMode, onConfirm, openConfirmSwapModal, resetState, trade])
+
+  useEffect(() => {
+    if (indirectlyOpenConfirmModalState) {
+      setIndirectlyOpenConfirmModalState(false)
+      openConfirmSwapModal()
+    }
+  }, [indirectlyOpenConfirmModalState, openConfirmSwapModal])
+
+  if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
+    return <ResetRoutesButton />
+  }
 
   return (
     <Box mt="0.25rem">
       <CommitButton
         id="swap-button"
         width="100%"
-        variant={isValid && priceImpactSeverity > 2 ? 'danger' : 'primary'}
-        disabled={
-          !isValid ||
-          (priceImpactSeverity > 3 && !isExpertMode) ||
-          Boolean(isExpertMode && swapCallbackError) ||
-          statusWallchain === 'pending'
-        }
-        onClick={onSwapHandler}
         data-dd-action-name="Swap commit button"
+        variant={isValid && priceImpactSeverity > 2 && !errorMessage ? 'danger' : 'primary'}
+        disabled={disabled}
+        onClick={handleSwap}
       >
         {swapInputError ||
           (tradeLoading && <Dots>{t('Searching For The Best Price')}</Dots>) ||
@@ -393,3 +263,37 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     </Box>
   )
 })
+
+const ResetRoutesButton = () => {
+  const { t } = useTranslation()
+  const [isRoutingSettingChange, resetRoutingSetting] = useRoutingSettingChanged()
+  return (
+    <AutoColumn gap="12px">
+      <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
+        <Text color="textSubtle">{t('Insufficient liquidity for this trade.')}</Text>
+      </GreyCard>
+      {isRoutingSettingChange && (
+        <Message variant="warning" icon={<></>}>
+          <AutoColumn gap="8px">
+            <MessageText>{t('Unable to establish trading route due to customized routing.')}</MessageText>
+            <AutoRow gap="4px">
+              <RoutingSettingsButton
+                buttonProps={{
+                  scale: 'xs',
+                  p: 0,
+                }}
+                showRedDot={false}
+              >
+                {t('Check your settings')}
+              </RoutingSettingsButton>
+              <MessageText>{t('or')}</MessageText>
+              <Button variant="text" scale="xs" p="0" onClick={resetRoutingSetting}>
+                {t('Reset to default')}
+              </Button>
+            </AutoRow>
+          </AutoColumn>
+        </Message>
+      )}
+    </AutoColumn>
+  )
+}

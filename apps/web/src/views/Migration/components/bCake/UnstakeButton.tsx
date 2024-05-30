@@ -3,23 +3,19 @@ import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useERC20, usePositionManagerWrapperContract } from 'hooks/useContract'
+import { usePositionManagerWrapperContract } from 'hooks/useContract'
 import React from 'react'
 import { Address } from 'viem'
 
 export interface UnStakeButtonProps {
   userStakedLp?: bigint
   wrapperAddress?: Address
-  vaultAddress?: Address
-  lpSymbol: string
   onDone: () => void
 }
 
 const UnstakeButton: React.FC<React.PropsWithChildren<UnStakeButtonProps>> = ({
   userStakedLp,
   wrapperAddress,
-  vaultAddress,
-  lpSymbol,
   onDone,
 }) => {
   const { t } = useTranslation()
@@ -32,8 +28,6 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnStakeButtonProps>> = ({
   const isNeedUnstake = (userStakedLp ?? 0n) > 0n
 
   const [isLoading, setIsLoading] = React.useState(false)
-
-  const lpContract = useERC20(vaultAddress ?? '0x')
 
   const wrapperContract = usePositionManagerWrapperContract(wrapperAddress ?? '0x')
 

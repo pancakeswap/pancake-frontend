@@ -5,7 +5,7 @@ import { Block, ProtocolData } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
-import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
+import { getPercentChange } from 'utils/infoDataHelpers'
 import { MultiChainName, checkIsStableSwap, getMultiChainQueryEndPointWithStableSwap } from '../../constant'
 import { useGetChainName } from '../../hooks'
 

@@ -16,8 +16,8 @@ const NotTokens: React.FC<React.PropsWithChildren> = () => {
         <Text fontSize="14px" color="textSubtle" textAlign="center">
           {t('Participate in our next IFO. and remember to lock your CAKE to increase your allocation!')}
         </Text>
-        <NextLink href="/ifo#ifo-how-to" passHref>
-          <MessageTextLink href="replace" color="primary" display="inline">
+        <NextLink href="/ifo#ifo-how-to">
+          <MessageTextLink color="primary" display="inline">
             {t('How does it work?')} »
           </MessageTextLink>
         </NextLink>

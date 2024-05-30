@@ -4,7 +4,9 @@ import { CurrencyAmount } from '@pancakeswap/sdk'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
-import { usePositionManagerAdepterContract } from 'hooks/useContract'
+import { SwellTooltip } from 'components/SwellTooltip/SwellTooltip'
+import { usePositionManagerAdapterContract } from 'hooks/useContract'
+import { useHasSwellReward } from 'hooks/useHasSwellReward'
 import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 
 /* eslint-disable no-case-declarations */
@@ -37,8 +39,6 @@ import { FarmCell } from './FarmCell'
 import { AprMobileCell, CellInner, FarmMobileCell, StyledTr } from './Styled'
 
 import { TIME_WINDOW_DEFAULT, TIME_WINDOW_FALLBACK } from '../../hooks/useFetchApr'
-import { useHasSwellReward } from '../../hooks/useHasSwellReward'
-import { SwellTooltip } from '../SwellTooltip'
 
 interface Props {
   config: PCSDuoTokenVaultConfig
@@ -94,7 +94,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
   } = vault
 
   const hasSwellReward = useHasSwellReward(address)
-  const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
+  const adapterContract = usePositionManagerAdapterContract(adapterAddress ?? '0x')
   const tokenRatio = useQuery({
     queryKey: ['adapterAddress', adapterAddress, id],
 

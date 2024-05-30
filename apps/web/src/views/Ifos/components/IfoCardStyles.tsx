@@ -1,4 +1,4 @@
-import { Card, Link } from '@pancakeswap/uikit'
+import { Card, StyledLink } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import NextLink from 'next/link'
 import { TypographyProps, typography } from 'styled-system'
@@ -29,7 +29,7 @@ export const CardsWrapper = styled.div<{ $singleCard?: boolean; $shouldReverse?:
   }
 `
 
-export const MessageTextLink = styled(Link)`
+export const MessageTextLink = styled(StyledLink)`
   display: inline;
   text-decoration: underline;
   font-weight: bold;

@@ -129,8 +129,6 @@ export const PositionManagerFarmRow: React.FunctionComponent<React.PropsWithChil
                   <UnStakeButton
                     userStakedLp={info?.userLpAmounts}
                     wrapperAddress={wrapperAddress}
-                    vaultAddress={info?.vaultAddress}
-                    lpSymbol={label}
                     onDone={info?.refetchPositionInfo}
                   />
                 ) : (

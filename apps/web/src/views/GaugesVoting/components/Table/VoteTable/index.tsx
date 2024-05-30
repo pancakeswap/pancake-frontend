@@ -7,13 +7,14 @@ import {
   Card,
   FlexGap,
   Grid,
-  Link,
   Message,
   Skeleton,
+  StyledLink,
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import NextLink from 'next/link'
 import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Hex } from 'viem'
@@ -24,7 +25,6 @@ import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
 import { useUserVoteSlopes } from 'views/GaugesVoting/hooks/useUserVoteGauges'
 import { useWriteGaugesVoteCallback } from 'views/GaugesVoting/hooks/useWriteGaugesVoteCallback'
 import { useAccount } from 'wagmi'
-import NextLink from 'next/link'
 import { RemainingVotePower } from '../../RemainingVotePower'
 import { AddGaugeModal } from '../AddGauge/AddGaugeModal'
 import { EmptyTable } from './EmptyTable'
@@ -49,13 +49,13 @@ const Scrollable = styled.div.withConfig({ shouldForwardProp: (prop) => !['expan
 export const VoteTable = () => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
-  // const { cakeUnlockTime, cakeLockedAmount } = useCakeLockStatus()
+  const [submitted, setSubmitted] = useState(false)
   const { cakeLockedAmount } = useCakeLockStatus()
   const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
   const { data: allGauges } = useGauges()
   const gaugesCount = allGauges?.length
   const [isOpen, setIsOpen] = useState(false)
-  const epochPower = useEpochVotePower()
+  const { data: epochPower } = useEpochVotePower()
   const onTally = useEpochOnTally()
   const [expanded, setExpanded] = useState(false)
   const [votes, setVotes] = useState<Record<Hex, UserVote>>({})
@@ -67,10 +67,11 @@ export const VoteTable = () => {
   }, [votes])
 
   const { gauges, rows, onRowSelect, refetch, isLoading } = useGaugeRows()
+
   const { data: slopes } = useUserVoteSlopes()
   const { isDesktop, isMobile } = useMatchBreakpoints()
   const rowsWithLock = useMemo(() => {
-    return rows?.map((row) => {
+    return rows?.filter(Boolean).map((row) => {
       return {
         ...row,
         locked: votes[row.hash]?.locked,
@@ -123,11 +124,11 @@ export const VoteTable = () => {
     // no new votes
     if (newAddSum === 0) return true
     // voted reached 100% or submitting
-    if (lockedSum >= 100 || isPending) return true
+    if (lockedSum >= 100 || isPending || isLoading) return true
     // should allow summed votes to be 100%, if new vote added
     if (newAddSum + lockedSum > 100) return true
     return false
-  }, [epochPower, isPending, onTally, votes])
+  }, [epochPower, isLoading, isPending, onTally, votes])
   const leftGaugesCanAdd = useMemo(() => {
     return Number(gaugesCount) - (rows?.length || 0)
   }, [gaugesCount, rows])
@@ -141,7 +142,9 @@ export const VoteTable = () => {
           const row = gauges?.find((r) => r.hash === slope.hash)
           if (!row) return undefined
           const currentPower = BigInt((Number(vote.power) * 100).toFixed(0))
-          const { nativePower = 0, proxyPower = 0 } = slope || {}
+          const { nativePower = 0, proxyPower = 0, nativeEnd, proxyEnd } = slope || {}
+          // ignore vote if current power is 0 and never voted
+          if (currentPower === 0n && nativePower === 0 && proxyPower === 0 && !nativeEnd && !proxyEnd) return undefined
           return {
             ...row,
             delta: currentPower - (BigInt(nativePower) + BigInt(proxyPower)),
@@ -166,14 +169,15 @@ export const VoteTable = () => {
   }, [slopes, votes, gauges])
 
   const submitVote = useCallback(async () => {
+    setSubmitted(false)
     await writeVote(sortedSubmitVotes)
     await refetch()
+    setSubmitted(true)
   }, [refetch, sortedSubmitVotes, writeVote])
 
   const gaugesTable = isDesktop ? (
     <>
       <TableHeader count={rows?.length} />
-
       {isLoading ? (
         <AutoColumn gap="16px" py="16px">
           <Skeleton height={64} />
@@ -190,6 +194,7 @@ export const VoteTable = () => {
                 <TableRow
                   key={row.hash}
                   data={row}
+                  submitted={submitted}
                   vote={votes[row.hash]}
                   onChange={(v, isMax) => onVoteChange(v, isMax)}
                 />
@@ -217,6 +222,7 @@ export const VoteTable = () => {
             <VoteListItem
               key={row.hash}
               data={row}
+              submitted={submitted}
               vote={votes[row.hash]}
               onChange={(v, isMax) => onVoteChange(v, isMax)}
             />
@@ -264,12 +270,12 @@ export const VoteTable = () => {
                 </Text>
                 <FlexGap alignItems="center" gap="0.2em">
                   {t('To cast your vote, ')}
-                  <NextLink href="/cake-staking" passHref>
-                    <Link href="replace" color="text">
+                  <NextLink href="/cake-staking">
+                    <StyledLink color="text">
                       <Text bold style={{ textDecoration: 'underline' }}>
                         {t('extend your lock >>')}
                       </Text>
-                    </Link>
+                    </StyledLink>
                   </NextLink>
                 </FlexGap>
               </AutoColumn>
@@ -283,12 +289,12 @@ export const VoteTable = () => {
                 <Text>{t('You have no locked CAKE.')}</Text>
                 <FlexGap alignItems="center" gap="0.2em" flexWrap="wrap">
                   {t('To cast your vote, ')}
-                  <NextLink href="/cake-staking" passHref>
-                    <Link href="replace" color="text">
+                  <NextLink href="/cake-staking">
+                    <StyledLink color="text">
                       <Text bold style={{ textDecoration: 'underline' }}>
                         {t('lock your CAKE')}
                       </Text>
-                    </Link>
+                    </StyledLink>
                   </NextLink>
                   {t('for 3 weeks or more.')}
                 </FlexGap>

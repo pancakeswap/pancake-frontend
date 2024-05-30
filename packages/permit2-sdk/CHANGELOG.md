@@ -1,5 +1,21 @@
 # @pancakeswap/permit2-sdk
 
+## 1.0.5
+
+### Patch Changes
+
+- Updated dependencies [e99c216]
+  - @pancakeswap/sdk@5.8.3
+
+## 1.0.4
+
+### Patch Changes
+
+- Updated dependencies [0f4281c]
+- Updated dependencies [63a63d8]
+  - @pancakeswap/chains@0.4.3
+  - @pancakeswap/sdk@5.8.2
+
 ## 1.0.3
 
 ### Patch Changes

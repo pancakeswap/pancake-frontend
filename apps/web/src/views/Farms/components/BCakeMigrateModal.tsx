@@ -19,7 +19,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useBCakeProxyContract, useERC20 } from 'hooks/useContract'
 import { useEffect, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
-import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
+import { useBCakeProxyContractAddress } from '../../../hooks/useBCakeProxyContractAddress'
 import useProxyStakedActions from './YieldBooster/hooks/useProxyStakedActions'
 
 export const StepperCircle = styled.div`

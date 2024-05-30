@@ -22,10 +22,10 @@ type Props = {
   style?: CSSProperties
 } & RowProps
 
-export function VoteListItem({ style, data, vote = { ...DEFAULT_VOTE }, onChange, ...props }: Props) {
+export function VoteListItem({ style, data, submitted, vote = { ...DEFAULT_VOTE }, onChange, ...props }: Props) {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
-  const userVote = useUserVote(data)
+  const userVote = useUserVote(data, submitted)
   const { cakeLockedAmount } = useCakeLockStatus()
   const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
   const { currentVoteWeight, previewVoteWeight, voteValue, voteLocked, willUnlock, changeHighlight } = useRowVoteState({

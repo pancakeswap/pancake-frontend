@@ -127,15 +127,23 @@ const CUSTOM_WARNING_COLOR = '#D67E0A'
 
 const NativePosition = () => {
   const { t } = useTranslation()
-  const { cakeLockExpired, nativeCakeLockedAmount, cakeUnlockTime, proxyCakeLockedAmount } = useCakeLockStatus()
+  const { cakeLockExpired, cakeLockedAmount, nativeCakeLockedAmount, cakeUnlockTime, proxyCakeLockedAmount } =
+    useCakeLockStatus()
 
   if (!nativeCakeLockedAmount) return null
 
   return (
-    <Flex flexDirection="column" margin={24}>
-      <Text color="secondary" fontWeight={600} fontSize={12} mb={12} textTransform="uppercase">
-        {t('native position')}
-      </Text>
+    <FlexGap flexDirection="column" margin={24} gap="12px">
+      <RowBetween>
+        <Text color="secondary" bold fontSize={12} textTransform="uppercase">
+          {t('native position')}
+        </Text>
+        {cakeLockExpired ? (
+          <Tag variant="failure" scale="sm" startIcon={<WarningIcon color="white" />} px="8px">
+            {t('Unlocked')}
+          </Tag>
+        ) : null}
+      </RowBetween>
       <FlexGap flexDirection="column" gap="24px">
         <StyledLockedCard gap="16px">
           <RowBetween>
@@ -168,8 +176,8 @@ const NativePosition = () => {
           </Message>
         ) : null}
       </FlexGap>
-      <SubmitUnlockButton />
-    </Flex>
+      {cakeLockExpired && cakeLockedAmount ? <SubmitUnlockButton /> : null}
+    </FlexGap>
   )
 }
 
@@ -282,29 +290,6 @@ const DualStakeTooltip: React.FC<{
   )
 }
 
-const ProxyUnlockTooltip: React.FC<{
-  proxyExpired: boolean
-  proxyCake: number
-  proxyUnlockTime: number
-}> = ({ proxyExpired, proxyCake, proxyUnlockTime }) => {
-  const { t } = useTranslation()
-
-  return (
-    <>
-      {t(
-        proxyExpired
-          ? '%amount% CAKE from CAKE Pool migrated position is already unlocked. Go to the pool page to withdraw these CAKE.'
-          : '%amount% CAKE from CAKE Pool migrated position will unlock on %expiredAt%.',
-        {
-          amount: proxyCake,
-          expiredAt: formatTime(Number(dayjs.unix(proxyUnlockTime))),
-        },
-      )}
-      <LearnMore />
-    </>
-  )
-}
-
 export const CakeLocked: React.FC<{ lockedAmount: bigint }> = ({ lockedAmount }) => {
   const cakePrice = useCakePrice()
   const formattedCake = useMemo(() => Number(formatBigInt(lockedAmount, 18)), [lockedAmount])
@@ -373,14 +358,9 @@ const UnderlineText = styled(Text)`
 const SubmitUnlockButton = () => {
   const { t } = useTranslation()
   const unlock = useWriteWithdrawCallback()
-  const { cakeLockedAmount, cakeLockExpired, cakePoolLockExpired } = useCakeLockStatus()
-
-  if (!cakeLockedAmount || !(cakeLockExpired && !cakePoolLockExpired)) {
-    return null
-  }
 
   return (
-    <Button variant="secondary" onClick={unlock} mt={24}>
+    <Button variant="secondary" onClick={unlock}>
       {t('Unlock')}
     </Button>
   )

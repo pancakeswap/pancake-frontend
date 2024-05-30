@@ -27,7 +27,7 @@ const useIsRenderUserBanner = () => {
 
   return useMemo(() => {
     return { shouldRender: Boolean(shouldRenderUserBanner), isEarningsBusdZero }
-  }, [account, isEarningsBusdZero, shouldRenderUserBanner, chainId])
+  }, [isEarningsBusdZero, shouldRenderUserBanner])
 }
 
 export default useIsRenderUserBanner

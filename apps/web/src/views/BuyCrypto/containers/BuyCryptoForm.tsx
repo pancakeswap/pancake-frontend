@@ -25,7 +25,7 @@ import { PopOverScreenContainer } from '../components/PopOverScreen/PopOverScree
 import { ProviderGroupItem } from '../components/ProviderSelector/ProviderGroupItem'
 import { ProviderSelector } from '../components/ProviderSelector/ProviderSelector'
 import { TransactionFeeDetails } from '../components/TransactionFeeDetails/TransactionFeeDetails'
-import { formatQuoteDecimals, isFiat } from '../constants'
+import { formatQuoteDecimals, isFiat, onRampCurrenciesMap } from '../constants'
 import { useBtcAddressValidator, type GetBtcAddrValidationReturnType } from '../hooks/useBitcoinAddressValidator'
 import { useFiatCurrencyAmount } from '../hooks/useDefaultAmount'
 import { useIsBtc } from '../hooks/useIsBtc'
@@ -62,7 +62,7 @@ export function BuyCryptoForm() {
 
   const bestQuoteRef = useRef<OnRampProviderQuote | undefined>(undefined)
   const debouncedQuery = useDebounce(searchQuery, 200)
-  const externalTxIdRef = useRef(v4())
+  const externalTxIdRef = useRef<string>(v4())
 
   const { onUserInput, onCurrencySelection, onSwitchTokens } = useBuyCryptoActionHandlers()
 
@@ -99,12 +99,6 @@ export function BuyCryptoForm() {
   const handleTypeInput = useCallback((value: string) => onUserInput(Field.INPUT, value), [onUserInput])
   const handleAddressInput = useCallback((event: InputEvent) => setSearchQuery(event.target.value), [])
 
-  const resetBuyCryptoState = useCallback(() => {
-    setSearchQuery('')
-    onSwitchTokens()
-    if (defaultAmt) handleTypeInput(defaultAmt)
-  }, [handleTypeInput, defaultAmt, onSwitchTokens])
-
   const onFlip = useCallback(() => {
     if (!selectedQuote) return
     onSwitchTokens()
@@ -115,6 +109,13 @@ export function BuyCryptoForm() {
 
     handleTypeInput(isFiat(unit) ? quoteAmount : fiatAmount)
   }, [onSwitchTokens, unit, selectedQuote, handleTypeInput])
+
+  const resetBuyCryptoState = useCallback(() => {
+    if (searchQuery !== '') setSearchQuery('')
+    if (unit === OnRampUnit.Crypto) onFlip()
+    if (defaultAmt) handleTypeInput(defaultAmt)
+    onCurrencySelection(Field.INPUT, onRampCurrenciesMap.BNB_56)
+  }, [handleTypeInput, defaultAmt, unit, onFlip, searchQuery, onCurrencySelection])
 
   useEffect(() => {
     if (!quotes || quotes?.length === 0) return
