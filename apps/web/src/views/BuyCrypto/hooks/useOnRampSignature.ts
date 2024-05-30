@@ -1,9 +1,16 @@
+import { useTheme } from '@pancakeswap/hooks'
 import type { UseQueryResult } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import qs from 'qs'
 import { useAccount } from 'wagmi'
-import { ONRAMP_PROVIDERS, combinedNetworkIdMap, getIsNetworkEnabled, type OnRampChainId } from '../constants'
+import {
+  ONRAMP_PROVIDERS,
+  WidgetTheme,
+  combinedNetworkIdMap,
+  getIsNetworkEnabled,
+  type OnRampChainId,
+} from '../constants'
 import {
   createQueryKey,
   type Evaluate,
@@ -28,6 +35,7 @@ export type GetOnRampSignaturePayload = {
   chainId: OnRampChainId | undefined
   externalTransactionId: string | undefined
   onRampUnit: OnRampUnit
+  theme?: WidgetTheme | undefined
 }
 export type UseOnRampSignatureReturnType<selectData = GetOnRampSignatureReturnType> = UseQueryResult<selectData, Error>
 
@@ -40,9 +48,12 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
   parameters: Omit<UseOnRampSignatureParameters<selectData>, 'walletAddress' | 'redirectUrl'> & { btcAddress?: string },
 ): UseOnRampSignatureReturnType<selectData> => {
   const { address } = useAccount()
+  const { isDark } = useTheme()
   const { quote, externalTransactionId, chainId, btcAddress, onRampUnit, ...query } = parameters
 
   const walletAddress = chainId === 0 ? btcAddress : address
+  const theme = isDark ? WidgetTheme.Dark : WidgetTheme.Light
+
   return useQuery({
     ...query,
     queryKey: getOnRampSignatureQueryKey([
@@ -52,12 +63,13 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
         walletAddress,
         externalTransactionId,
         onRampUnit,
+        theme,
       },
     ]),
     enabled: Boolean(externalTransactionId && quote && walletAddress && getIsNetworkEnabled(chainId)),
     queryFn: async ({ queryKey }) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { quote, externalTransactionId, chainId, onRampUnit } = queryKey[1]
+      const { quote, externalTransactionId, chainId, onRampUnit, theme } = queryKey[1]
 
       if (!quote || !walletAddress || !externalTransactionId || !chainId || !onRampUnit) {
         throw new Error('Invalid parameters')
@@ -77,6 +89,7 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
           walletAddress,
           externalTransactionId,
           onRampUnit,
+          theme,
         })}`,
       )
       const result: GetOnRampSignatureReturnType = await response.json()

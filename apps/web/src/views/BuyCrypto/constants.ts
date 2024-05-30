@@ -45,6 +45,10 @@ export enum FeeTypes {
   ProviderRate = 'Rate',
 }
 
+export enum WidgetTheme {
+  Dark = 'dark',
+  Light = 'light',
+}
 const MOONPAY_FEE_TYPES = [FeeTypes.NetworkingFees, FeeTypes.ProviderFees, FeeTypes.ProviderRate]
 const MERCURYO_FEE_TYPES = [FeeTypes.ProviderFees, FeeTypes.ProviderRate]
 
