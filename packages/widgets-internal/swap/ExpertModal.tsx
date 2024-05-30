@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { useTranslation } from "@pancakeswap/localization";
-import { Button, Text, Flex, Checkbox, InjectedModalProps, Modal, Message } from "@pancakeswap/uikit";
+import { Button, Checkbox, Flex, InjectedModalProps, Message, Modal, Text, usePrompt } from "@pancakeswap/uikit";
+import { useCallback, useState } from "react";
 
 interface ExpertModalProps extends InjectedModalProps {
   setShowConfirmExpertModal: (show: boolean) => void;
@@ -14,6 +14,25 @@ export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = 
   toggleExpertMode,
 }) => {
   const [isRememberChecked, setIsRememberChecked] = useState(false);
+  const onPromptConfirm = useCallback(
+    (value: string) => {
+      if (value === "confirm") {
+        toggleExpertMode();
+        setShowConfirmExpertModal(false);
+        if (isRememberChecked) {
+          setShowExpertModeAcknowledgement(false);
+        }
+      }
+    },
+    [toggleExpertMode, setShowConfirmExpertModal, isRememberChecked, setShowExpertModeAcknowledgement]
+  );
+  const prompt = usePrompt();
+  const handlePrompt = useCallback(() => {
+    prompt({
+      message: 'Please type the word "confirm" to enable expert mode.',
+      onConfirm: onPromptConfirm,
+    });
+  }, [onPromptConfirm, prompt]);
 
   const { t } = useTranslation();
 
@@ -46,20 +65,7 @@ export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = 
         </Text>
       </Flex>
       <Flex flexDirection="column">
-        <Button
-          mb="8px"
-          id="confirm-expert-mode"
-          onClick={() => {
-            // eslint-disable-next-line no-alert
-            if (window.prompt(`Please type the word "confirm" to enable expert mode.`) === "confirm") {
-              toggleExpertMode();
-              setShowConfirmExpertModal(false);
-              if (isRememberChecked) {
-                setShowExpertModeAcknowledgement(false);
-              }
-            }
-          }}
-        >
+        <Button mb="8px" id="confirm-expert-mode" onClick={handlePrompt}>
           {t("Turn On Expert Mode")}
         </Button>
 
