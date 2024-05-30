@@ -79,7 +79,12 @@ export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2F
 
   const { data } = useQuery({
     queryKey: ['farmsAvgInfo', chainId, activeFarmAddresses],
-    placeholderData: {},
+    placeholderData: (prev) => {
+      if (!prev) {
+        return {}
+      }
+      return prev
+    },
     queryFn: async () => {
       if (!chainId) return undefined
       const client = v3Clients[chainId]
