@@ -167,7 +167,7 @@ const NotificationContainer = ({ notifications, subscriptionId, importantAlertsO
               image={types?.[notification.type]?.imageUrls.md}
               id={notification.id}
               subscriptionId={subscriptionId}
-              type={notification.type}
+              type={notification.type as SubsctiptionType}
             />
           )
         })}
