@@ -1,5 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { useMemo, useState } from "react";
+import styled from "styled-components";
 import { BoxProps } from "../../components/Box";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
@@ -53,12 +54,14 @@ export const Dialog: React.FC<DialogProps> = ({
     if (!useInput) {
       const confirm = onConfirm as (value: boolean) => void;
       confirm(false);
+    } else {
+      setValue(defaultValue ?? "");
     }
     onDismiss?.();
   };
 
   return (
-    <ModalV2 onDismiss={onDismiss} {...props}>
+    <StyledModalV2 onDismiss={onDismiss} {...props}>
       <Modal title={modalTitle} headerBackground="gradientCardHeader" minHeight="0" hideCloseButton>
         <FlexGap flexDirection="column" gap="20px" mt="auto">
           <Text>{message}</Text>
@@ -73,6 +76,10 @@ export const Dialog: React.FC<DialogProps> = ({
           </FlexGap>
         </FlexGap>
       </Modal>
-    </ModalV2>
+    </StyledModalV2>
   );
 };
+
+const StyledModalV2 = styled(ModalV2)`
+  z-index: ${({ theme }) => theme.zIndices.modal + 1};
+`;

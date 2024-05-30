@@ -75,7 +75,7 @@ export const Context = createContext<ModalsContext>({
 
 const ModalProvider: React.FC<
   React.PropsWithChildren<{
-    portalProvider: React.FC<React.PropsWithChildren>;
+    portalProvider?: React.FC<React.PropsWithChildren>;
   }>
 > = ({ children, portalProvider: NestProvider = React.Fragment }) => {
   const [isOpen, setIsOpen] = useState(false);
