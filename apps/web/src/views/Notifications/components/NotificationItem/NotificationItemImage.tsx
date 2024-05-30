@@ -10,7 +10,7 @@ import {
   getBadgeString,
 } from 'views/Notifications/utils/textHelpers'
 
-export const getNotificationPairlogo = (message: string, type: string) => {
+export const getNotificationPairlogo = (message: string, type: SubsctiptionType) => {
   const isAprNotification = type === SubsctiptionType.Farms
   const chainName = isAprNotification ? extractChainIdFromAPRNotification(message) : extractChainIdFromMessage(message)
   const chainId = CHAIN_NAME_TO_CHAIN_ID[chainName]
