@@ -2624,7 +2624,6 @@
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "De voorwaarden van ons affiliatieprogramma zijn op 3 mei 2023 bijgewerkt met wijzigingen met betrekking tot",
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "Bij het staken op zkSync Era is het mogelijk dat je geen beloningen verdient wanneer je je CAKE kort daarna uit staking haalt.",
   "Proceed in your wallet": "Doorgaan in je wallet",
-  "Enable spending %symbol%": "Uitgaven in %symbol% inschakelen",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "Als de wallet vereist dat je het aantal tokens invoert dat je wilt goedkeuren, kun je een getal invoeren dat groter is dan of gelijk is aan het aantal tokens dat je wilt swappen.",
   "Why": "Waarom",
   "approving": "goedkeuren",
@@ -3351,7 +3350,14 @@
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "Houd er rekening mee dat de Pearls die je met deze kluis verdient pas later zichtbaar zijn in je saldo.",
   "Fee saved": "Bespaarde vergoeding",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Vergoedingen bespaard op PancakeSwap vergeleken met de interfacekosten die grote DEX'en in rekening brengen",
+  "Gauge Not Found": "Meter niet gevonden",
+  "Gauge can not be found using the hash passed via URL.": "De meter kan niet worden gevonden met behulp van de hash via de URL.",
   "Up to $8M in interface fees paid refunded!": "Tot 8 mln. USD aan betaalde interfacevergoedingen terugbetaald!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Krijg tot 8 mln. USD aan betaalde interfacevergoedingen terugbetaald op PancakeSwap",
-  "Match your volume and we'll refund ALL your interface fees paid": "Behaal je volume en we betalen je ALLE betaalde interfacevergoedingen terug"
+  "Match your volume and we'll refund ALL your interface fees paid": "Behaal je volume en we betalen je ALLE betaalde interfacevergoedingen terug",
+  "Get up to $8M USD in interface fees refunded on PancakeSwap": "Krijg tot 8 mln. USD interfacevergoedingen terugbetaald op PancakeSwap",
+  "Match your Uni volume on PancakeSwap to get a refund of up to": "Behaal je Uni-volume op PancakeSwap om terugbetaling te krijgen tot",
+  "$8M USD": "8 mln. USD",
+  "in Uniswap interface fees paid": "aan Uniswap-interfacevergoedingen betaald",
+  "Cakepie": "Cakepie"
 }

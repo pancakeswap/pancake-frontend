@@ -2624,7 +2624,6 @@
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "我们联盟计划的条款与条件已于 2023 年 5 月 3 日更新，修改内容涉及",
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "在 zkSync Era 上进行质押时，质押 CAKE 不久后便解除质押可能会导致无法赚取奖励。",
   "Proceed in your wallet": "在钱包中确认",
-  "Enable spending %symbol%": "授权支出 %symbol%",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "如果钱包要求您输入要批准的代币数量，您可以输入一个数字，该数字应大于或等于您要交换的代币金额。",
   "Why": "为什么",
   "approving": "要授权",
@@ -3351,7 +3350,14 @@
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "请注意，从此资金库中获得的珍珠只会稍后出现在您的余额中。",
   "Fee saved": "Fee saved",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "Fees saved on PancakeSwap compared to major DEXs charging interface fees",
+  "Gauge Not Found": "Gauge Not Found",
+  "Gauge can not be found using the hash passed via URL.": "Gauge can not be found using the hash passed via URL.",
   "Up to $8M in interface fees paid refunded!": "Up to $8M in interface fees paid refunded!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "Get up to $8M USD in interface fees paid refunded on PancakeSwap",
-  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid"
+  "Match your volume and we'll refund ALL your interface fees paid": "Match your volume and we'll refund ALL your interface fees paid",
+  "Get up to $8M USD in interface fees refunded on PancakeSwap": "Get up to $8M USD in interface fees refunded on PancakeSwap",
+  "Match your Uni volume on PancakeSwap to get a refund of up to": "Match your Uni volume on PancakeSwap to get a refund of up to",
+  "$8M USD": "$8M USD",
+  "in Uniswap interface fees paid": "in Uniswap interface fees paid",
+  "Cakepie": "Cakepie"
 }

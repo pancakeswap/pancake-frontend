@@ -1,5 +1,22 @@
 # @pancakeswap/tokens
 
+## 0.6.17
+
+### Patch Changes
+
+- b57fd91: Add ONEPUNCH token on Linea
+- 755bb18: New FURY Token. 2 BSC Farms. 3 zkSync Farms. New Gauges.
+- 502d961: Add MNT and mETH tokens with their farms and gauges on Ethereum
+- Updated dependencies [e99c216]
+  - @pancakeswap/sdk@5.8.3
+
+## 0.6.16
+
+### Patch Changes
+
+- b20f210: Correction of $MAGIC token name from "Magic Internet Money" to "MAGIC"
+- 9bef4cd: Add Native USDC on zkSync
+
 ## 0.6.15
 
 ### Patch Changes

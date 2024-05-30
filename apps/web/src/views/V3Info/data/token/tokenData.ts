@@ -1,7 +1,7 @@
 import { gql, GraphQLClient } from 'graphql-request'
 
 import { Block } from 'state/info/types'
-import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
+import { getPercentChange } from 'utils/infoDataHelpers'
 import { get2DayChange } from '../../utils/data'
 import { fetchEthPrices } from '../../utils/getEthPrices'
 

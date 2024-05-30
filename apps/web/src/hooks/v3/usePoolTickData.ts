@@ -18,13 +18,14 @@ function useTicksFromSubgraph(
   currencyA: Currency | undefined | null,
   currencyB: Currency | undefined | null,
   feeAmount: FeeAmount | undefined,
+  enabled = true,
 ) {
   const poolAddress =
     currencyA && currencyB && feeAmount
       ? Pool.getAddress(currencyA?.wrapped, currencyB?.wrapped, feeAmount, undefined)
       : undefined
 
-  return useAllV3TicksQuery(poolAddress, 30000)
+  return useAllV3TicksQuery(poolAddress, 30000, enabled)
 }
 
 // Fetches all ticks for a given pool
@@ -32,12 +33,13 @@ export function useAllV3Ticks(
   currencyA: Currency | undefined | null,
   currencyB: Currency | undefined | null,
   feeAmount: FeeAmount | undefined,
+  enabled = true,
 ): {
   isLoading: boolean
   error: unknown
   ticks: TickData[] | undefined
 } {
-  const subgraphTickData = useTicksFromSubgraph(currencyA, currencyB, feeAmount)
+  const subgraphTickData = useTicksFromSubgraph(currencyA, currencyB, feeAmount, enabled)
 
   return {
     isLoading: subgraphTickData.isLoading,

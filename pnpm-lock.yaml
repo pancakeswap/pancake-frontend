@@ -1022,6 +1022,9 @@ importers:
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@14.2.3)(react-dom@18.2.0)(react@18.2.0)
+      nuqs:
+        specifier: ^1.17.4
+        version: 1.17.4(next@14.2.3)
       polished:
         specifier: ^4.2.2
         version: 4.2.2
@@ -1763,6 +1766,40 @@ importers:
         specifier: ^6.7.0
         version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
 
+  packages/routing-sdk:
+    dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../swap-sdk-core
+      '@pancakeswap/swap-sdk-evm':
+        specifier: workspace:*
+        version: link:../swap-sdk-evm
+      debug:
+        specifier: ^4.3.4
+        version: 4.3.4(supports-color@8.1.1)
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      tiny-invariant:
+        specifier: ^1.3.0
+        version: 1.3.1
+    devDependencies:
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/debug':
+        specifier: ^4.1.7
+        version: 4.1.12
+      '@types/lodash':
+        specifier: ^4.14.168
+        version: 4.14.202
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
+
   packages/smart-router:
     dependencies:
       '@pancakeswap/chains':
@@ -1881,6 +1918,12 @@ importers:
       '@pancakeswap/swap-sdk-core':
         specifier: workspace:*
         version: link:../swap-sdk-core
+      '@pancakeswap/swap-sdk-evm':
+        specifier: workspace:*
+        version: link:../swap-sdk-evm
+      '@pancakeswap/v2-sdk':
+        specifier: workspace:*
+        version: link:../v2-sdk
       big.js:
         specifier: ^5.2.2
         version: 5.2.2
@@ -1928,6 +1971,31 @@ importers:
       '@types/big.js':
         specifier: ^4.0.5
         version: 4.0.5
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
+
+  packages/swap-sdk-evm:
+    dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../swap-sdk-core
+      tiny-invariant:
+        specifier: ^1.3.0
+        version: 1.3.1
+      tiny-warning:
+        specifier: ^1.0.3
+        version: 1.0.3
+      viem:
+        specifier: 2.9.19
+        version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
+    devDependencies:
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
@@ -2319,6 +2387,31 @@ importers:
       viem:
         specifier: 2.9.19
         version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
+
+  packages/v2-sdk:
+    dependencies:
+      '@pancakeswap/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@pancakeswap/swap-sdk-core':
+        specifier: workspace:*
+        version: link:../swap-sdk-core
+      '@pancakeswap/swap-sdk-evm':
+        specifier: workspace:*
+        version: link:../swap-sdk-evm
+      tiny-invariant:
+        specifier: ^1.3.0
+        version: 1.3.1
+      viem:
+        specifier: 2.9.19
+        version: 2.9.19(typescript@5.2.2)(zod@3.22.4)
+    devDependencies:
+      '@pancakeswap/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(postcss@8.4.33)(typescript@5.2.2)
 
   packages/v3-sdk:
     dependencies:
@@ -30838,6 +30931,15 @@ packages:
     dependencies:
       bn.js: 4.11.6
       strip-hex-prefix: 1.0.0
+    dev: false
+
+  /nuqs@1.17.4(next@14.2.3):
+    resolution: {integrity: sha512-wraphFfKI+Y/aWIGFsld/Ta7fTFEyeya1LkgEGNPDiMuY+Hwea/eVHBiq1GYlyMqTYSAoxRWvQyjCIo1Dy1u7g==}
+    peerDependencies:
+      next: '>=13.4 <14.0.2 || ^14.0.3'
+    dependencies:
+      mitt: 3.0.1
+      next: 14.2.3(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
   /o3@1.0.3:

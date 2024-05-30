@@ -1,5 +1,12 @@
 # @pancakeswap/multicall
 
+## 3.5.3
+
+### Patch Changes
+
+- Updated dependencies [e99c216]
+  - @pancakeswap/sdk@5.8.3
+
 ## 3.5.2
 
 ### Patch Changes

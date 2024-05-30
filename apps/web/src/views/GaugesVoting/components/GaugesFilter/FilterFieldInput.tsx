@@ -4,11 +4,12 @@ import React from 'react'
 
 type FilterInputProps = {
   placeholder: string
+  initialValue?: string
   onChange: (value: string) => void
   hideLabel?: boolean
 }
 
-export const FilterFieldInput: React.FC<FilterInputProps> = ({ placeholder, onChange, hideLabel }) => {
+export const FilterFieldInput: React.FC<FilterInputProps> = ({ placeholder, initialValue, onChange, hideLabel }) => {
   const { t } = useTranslation()
 
   return (
@@ -19,7 +20,7 @@ export const FilterFieldInput: React.FC<FilterInputProps> = ({ placeholder, onCh
         </Text>
       )}
       <InputGroup startIcon={<SearchIcon style={{ zIndex: 1 }} color="textSubtle" width="18px" />}>
-        <SearchInput placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
+        <SearchInput placeholder={placeholder} initialValue={initialValue} onChange={(e) => onChange(e.target.value)} />
       </InputGroup>
     </AutoColumn>
   )

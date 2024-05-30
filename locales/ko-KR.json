@@ -2624,7 +2624,6 @@
   "Our affiliate program’s terms and conditions have been updated as of May 3rd, 2023, with changes relating to": "제휴 프로그램의 이용 약관이 2023년 5월 3일 업데이트되었으며, 변경 사항은 다음과 같습니다:",
   "When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.": "zkSync Era에서 스테이킹하는 경우, 스테이킹 직후에 CAKE를 언스테이킹하면 리워드를 받을 수 없습니다.",
   "Proceed in your wallet": "내 지갑으로 진행하기",
-  "Enable spending %symbol%": "%symbol% 사용 활성화",
   "If wallet require you to enter the number of tokens you want to approve, you could enter a number that is greater than or equal to the amount of tokens you are swapping.": "승인하려는 토큰 수를 입력하도록 지갑에서 요구하는 경우, 스왑하려는 토큰 금액보다 크거나 같은 숫자를 입력할 수 있습니다.",
   "Why": "이것을",
   "approving": "승인하는",
@@ -3351,7 +3350,14 @@
   "Please note that the Pearls earned from this vault will only appear in your balance at a later time.": "이 볼트에서 획득한 Pearl은 잔액에 표시되기까지 시간이 걸리므로 주의하시기 바랍니다.",
   "Fee saved": "수수료 절감",
   "Fees saved on PancakeSwap compared to major DEXs charging interface fees": "주요 DEX에서 부과하는 수수료 대비 PancakeSwap에서 절감된 수수료",
+  "Gauge Not Found": "게이지 없음",
+  "Gauge can not be found using the hash passed via URL.": "URL을 통해 전달된 해시를 사용하여 게이지를 찾을 수 없습니다.",
   "Up to $8M in interface fees paid refunded!": "지불한 인터페이스 수수료 중 최대 800만 달러가 환불되었습니다!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "PancakeSwap에서 지불한 인터페이스 수수료 중 최대 800만 달러를 환급받으세요",
-  "Match your volume and we'll refund ALL your interface fees paid": "볼륨을 맞추면 지불한 모든 인터페이스 수수료를 환불해 드립니다."
+  "Match your volume and we'll refund ALL your interface fees paid": "볼륨을 맞추면 지불한 모든 인터페이스 수수료를 환불해 드립니다.",
+  "Get up to $8M USD in interface fees refunded on PancakeSwap": "PancakeSwap에서 인터페이스 수수료 중 최대 800만 달러를 환급받으세요",
+  "Match your Uni volume on PancakeSwap to get a refund of up to": "PancakeSwap에서 Uni 거래량을 매칭하여 최대 다음 금액까지 환급받으세요:",
+  "$8M USD": "800만 달러",
+  "in Uniswap interface fees paid": "Uniswap 인터페이스에서 지불한 수수료",
+  "Cakepie": "Cakepie"
 }

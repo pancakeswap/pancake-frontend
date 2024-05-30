@@ -3,7 +3,7 @@
     "es6": true,
     "browser": true
   },
-  "extends": ["plugin:@next/next/recommended"],
+  "extends": ["plugin:@next/next/recommended", "../../packages/eslint-config/lib/next-page-router.js"],
   "rules": {
     "no-empty-function": 0,
     "no-restricted-syntax": 0,

@@ -3,7 +3,7 @@ import { PCSDuoTokenVaultConfig } from '@pancakeswap/position-managers'
 import { CurrencyAmount } from '@pancakeswap/sdk'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
-import { usePositionManagerAdepterContract } from 'hooks/useContract'
+import { usePositionManagerAdapterContract } from 'hooks/useContract'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { memo, useEffect, useMemo } from 'react'
 import { DuoTokenVaultCard } from '../components'
@@ -58,7 +58,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     minDepositUSD,
   } = vault
 
-  const adapterContract = usePositionManagerAdepterContract(adapterAddress ?? '0x')
+  const adapterContract = usePositionManagerAdapterContract(adapterAddress ?? '0x')
   const tokenRatio = useQuery({
     queryKey: ['adapterAddress', adapterAddress, id],
 

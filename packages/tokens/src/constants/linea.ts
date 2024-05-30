@@ -55,4 +55,12 @@ export const lineaTokens = {
     'Foxy',
     'https://www.welikethefox.io/ ',
   ),
+  onepunch: new ERC20Token(
+    ChainId.LINEA,
+    '0x1F63D0EC7193964142ef6B13d901462d0E5CbB50',
+    18,
+    'ONEPUNCH',
+    'ONEPUNCH',
+    'https://heroglyphs.com/',
+  ),
 }

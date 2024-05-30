@@ -7,21 +7,28 @@ import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { getMasterChefContract } from 'utils/contractHelpers'
-import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
+import { useBCakeProxyContractAddress } from 'hooks/useBCakeProxyContractAddress'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import {
-  fetchBCakeWrapperDataAsync,
-  fetchBCakeWrapperUserDataAsync,
-  fetchFarmsPublicDataAsync,
-  fetchFarmUserDataAsync,
-} from '.'
+import { v3Clients } from 'utils/graphql'
+import { gql } from 'graphql-request'
+import { averageArray } from 'hooks/usePoolAvgInfo'
+import { multiQuery } from 'utils/infoQueryHelpers'
+import mapKeys from 'lodash/mapKeys'
+import mapValues from 'lodash/mapValues'
+import { V2FarmWithoutStakedValue, V3FarmWithoutStakedValue } from 'state/farms/types'
 import {
   farmSelector,
   makeFarmFromPidSelector,
   makeLpTokenPriceFromLpSymbolSelector,
   makeUserFarmFromPidSelector,
 } from './selectors'
+import {
+  fetchBCakeWrapperDataAsync,
+  fetchBCakeWrapperUserDataAsync,
+  fetchFarmsPublicDataAsync,
+  fetchFarmUserDataAsync,
+} from '.'
 
 export function useFarmsLength() {
   const { chainId } = useActiveChainId()
@@ -61,6 +68,75 @@ export function useFarmV2PublicAPI() {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   })
+}
+
+export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2FarmWithoutStakedValue)[]) => {
+  const { chainId } = useAccountActiveChain()
+
+  const activeFarmAddresses = useMemo(() => {
+    return activeFarms.map((farm) => farm.lpAddress).sort()
+  }, [activeFarms])
+
+  const { data } = useQuery({
+    queryKey: ['farmsAvgInfo', chainId, activeFarmAddresses],
+    placeholderData: {},
+    queryFn: async () => {
+      if (!chainId) return undefined
+      const client = v3Clients[chainId]
+      if (!client) {
+        console.error('[Failed] Trading volume', chainId)
+        return {}
+      }
+
+      const addresses = activeFarms
+        .map((farm) => farm.lpAddress)
+        .map((lpAddress) => {
+          return lpAddress.toLowerCase()
+        })
+
+      const rawResult: any | undefined = await multiQuery(
+        (subqueries) => gql`
+      query getVolume {
+        ${subqueries}
+      }
+    `,
+        addresses.map(
+          (tokenAddress) => `
+          t${tokenAddress}:poolDayDatas(first: 7, orderBy: date, orderDirection: desc, where: { pool: "${tokenAddress.toLowerCase()}"}) {
+            volumeUSD
+            tvlUSD
+            feesUSD
+            protocolFeesUSD
+          }
+    `,
+        ),
+        client,
+      )
+
+      const results = mapKeys(rawResult, (_, key) => {
+        return key.substring(1, key.length)
+      })
+
+      return mapValues(results, (value) => {
+        const volumes = value.map((d: { volumeUSD: string }) => Number(d.volumeUSD))
+        const feeUSDs = value.map(
+          (d: { feesUSD: string; protocolFeesUSD: string }) => Number(d.feesUSD) - Number(d.protocolFeesUSD),
+        )
+        return {
+          volumeUSD: averageArray(volumes),
+          tvlUSD: parseFloat(value[0]?.tvlUSD) || 0,
+          feeUSD: averageArray(feeUSDs),
+        }
+      })
+    },
+
+    enabled: Boolean(chainId && activeFarms?.length),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
+
+  return data
 }
 
 export const usePollFarmsWithUserData = () => {

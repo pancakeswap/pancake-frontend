@@ -35,7 +35,7 @@ export const TotalApy: React.FC<React.PropsWithChildren<TotalApyProps>> = ({ veC
   const userCakeTvl = useMemo(() => getDecimalAmount(new BigNumber(cakeAmount)), [cakeAmount])
   const userSharesPercentage = useMemo(
     () => getDecimalAmount(new BigNumber(veCake)).div(totalSupply).times(100),
-    [totalSupply],
+    [totalSupply, veCake],
   )
 
   const shouldShow4yrApr = useMemo(() => cakeAmount === 0 || cakeLockWeeks === '', [cakeAmount, cakeLockWeeks])
@@ -172,6 +172,9 @@ export const TotalApy: React.FC<React.PropsWithChildren<TotalApyProps>> = ({ veC
       </Link>
       <Link mt="8px" external href="https://hiddenhand.finance/pancakeswap">
         {t('Hiddenhand')}
+      </Link>
+      <Link mt="8px" external href="https://www.pancake.magpiexyz.io/vecake-bribe">
+        {t('Cakepie')}
       </Link>
     </Box>,
     {

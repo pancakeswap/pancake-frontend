@@ -129,7 +129,6 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
             </Text>
           </Flex>
         )}
-
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>
           <Text>{earnLabel}</Text>

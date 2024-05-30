@@ -1,4 +1,4 @@
-import { getAmountChange, getPercentChange } from '../views/Info/utils/infoDataHelpers'
+import { getAmountChange, getPercentChange } from './infoDataHelpers'
 
 /**
  * Given current value and value 1 and 2 periods (e.g. 1day + 2days, 1week - 2weeks) returns the amount change for latest period

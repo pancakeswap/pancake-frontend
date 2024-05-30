@@ -1,5 +1,14 @@
 import { chainNames } from '@pancakeswap/chains'
-import { GAUGE_TYPE_NAMES, Gauge, GaugeType } from '@pancakeswap/gauges'
+import { GAUGES_SUPPORTED_CHAIN_IDS, GAUGE_TYPE_NAMES, Gauge, GaugeType } from '@pancakeswap/gauges'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
+import {
+  parseAsArrayOf,
+  parseAsNumberLiteral,
+  parseAsString,
+  parseAsStringLiteral,
+  useQueryState,
+  useQueryStates,
+} from 'nuqs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Filter, FilterValue, Gauges, OptionsType, SortOptions } from '../components/GaugesFilter'
 import { getPositionManagerName } from '../utils'
@@ -14,35 +23,32 @@ const getSorter = (sort: SortOptions | undefined) => {
   return (a: Gauge, b: Gauge) => Number(a.gid) - Number(b.gid)
 }
 
-export const useGaugesFilter = (fullGauges: Gauge[] | undefined) => {
+const useGaugesFilterPureState = () => {
   const [searchText, setSearchText] = useState<string>('')
-  const [filter, setFilter] = useState<Filter>({
+  const [filter, _setFilter] = useState<Filter>({
     byChain: [],
     byFeeTier: [],
     byType: [],
   })
-  const [sort, setSort] = useState<SortOptions>()
 
-  const onFilterChange = useCallback(
+  const setFilter = useCallback(
     (type: OptionsType, value: FilterValue) => {
       const opts = filter[type] as Array<unknown>
-
-      // select all
       if (Array.isArray(value)) {
-        setFilter((prev) => ({
+        // select all
+        _setFilter((prev) => ({
           ...prev,
           [type]: value.length === opts.length ? [] : value,
         }))
-        return
-      }
-      // select one
-      if (opts.includes(value)) {
-        setFilter((prev) => ({
+      } else if (opts.includes(value)) {
+        // deselect one
+        _setFilter((prev) => ({
           ...prev,
           [type]: opts.filter((v) => v !== value),
         }))
       } else {
-        setFilter((prev) => ({
+        // select one
+        _setFilter((prev) => ({
           ...prev,
           [type]: [...opts, value],
         }))
@@ -51,7 +57,82 @@ export const useGaugesFilter = (fullGauges: Gauge[] | undefined) => {
     [filter],
   )
 
-  const filterGauges = useMemo(() => {
+  return {
+    searchText,
+    setSearchText,
+
+    filter,
+    setFilter,
+  }
+}
+
+const useGaugesFilterQueryState = () => {
+  const [searchText, setSearchText] = useQueryState(
+    'q',
+    parseAsString.withDefault('').withOptions({
+      history: 'replace',
+      shallow: true,
+    }),
+  )
+  const [filter, _setFilter] = useQueryStates(
+    {
+      byChain: parseAsArrayOf(
+        parseAsNumberLiteral<(typeof GAUGES_SUPPORTED_CHAIN_IDS)[number]>(GAUGES_SUPPORTED_CHAIN_IDS),
+      ).withDefault([]),
+      byFeeTier: parseAsArrayOf(
+        parseAsNumberLiteral<FeeAmount>([FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH, FeeAmount.LOWEST]),
+      ).withDefault([]),
+      byType: parseAsArrayOf(parseAsStringLiteral<Gauges>([Gauges.Regular, Gauges.Boosted, Gauges.Capped])).withDefault(
+        [],
+      ),
+    },
+    {
+      history: 'replace',
+      shallow: true,
+      clearOnDefault: true,
+    },
+  )
+
+  const setFilter = useCallback(
+    (type: OptionsType, value: FilterValue) => {
+      const opts = filter[type]
+      // select all
+      if (Array.isArray(value)) {
+        _setFilter({
+          [type]: value.length === opts.length ? [] : value,
+        })
+      } else if (opts.some((x) => x === value)) {
+        // deselect one
+        _setFilter({
+          [type]: opts.filter((v) => v !== value),
+        })
+      } else {
+        // select one
+        _setFilter({
+          [type]: [...opts, value],
+        })
+      }
+    },
+    [filter, _setFilter],
+  )
+
+  return {
+    searchText,
+    setSearchText,
+
+    filter,
+    setFilter,
+  }
+}
+
+const useFilteredGauges = ({ filter, fullGauges, searchText, sort, setSort }) => {
+  useEffect(() => {
+    if (fullGauges && fullGauges.length && !sort) {
+      setSort(SortOptions.Default)
+    }
+  }, [fullGauges, setSort, sort])
+
+  return useMemo(() => {
     if (!fullGauges || !fullGauges.length) return []
     const { byChain, byFeeTier, byType } = filter
     let results: Gauge[] = fullGauges
@@ -98,12 +179,12 @@ export const useGaugesFilter = (fullGauges: Gauge[] | undefined) => {
 
     return results
   }, [filter, fullGauges, searchText, sort])
+}
 
-  useEffect(() => {
-    if (fullGauges && fullGauges.length && !sort) {
-      setSort(SortOptions.Default)
-    }
-  }, [fullGauges, sort])
+export const useGaugesQueryFilter = (fullGauges: Gauge[] | undefined) => {
+  const { filter, setFilter, searchText, setSearchText } = useGaugesFilterQueryState()
+  const [sort, setSort] = useState<SortOptions>()
+  const filterGauges = useFilteredGauges({ filter, fullGauges, searchText, sort, setSort })
 
   return {
     filterGauges,
@@ -113,7 +194,25 @@ export const useGaugesFilter = (fullGauges: Gauge[] | undefined) => {
 
     filter,
     setFilter,
-    onFilterChange,
+
+    sort,
+    setSort,
+  }
+}
+
+export const useGaugesFilter = (fullGauges: Gauge[] | undefined) => {
+  const { filter, setFilter, searchText, setSearchText } = useGaugesFilterPureState()
+  const [sort, setSort] = useState<SortOptions>()
+  const filterGauges = useFilteredGauges({ filter, fullGauges, searchText, sort, setSort })
+
+  return {
+    filterGauges,
+
+    searchText,
+    setSearchText,
+
+    filter,
+    setFilter,
 
     sort,
     setSort,
