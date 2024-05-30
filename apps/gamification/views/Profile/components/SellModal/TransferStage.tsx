@@ -1,20 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BinanceIcon, Button, ErrorIcon, Flex, Grid, Image, Input, Text } from '@pancakeswap/uikit'
+import { BinanceIcon, Button, ErrorIcon, Flex, Grid, Input, Text } from '@pancakeswap/uikit'
 import { NftToken } from 'hooks/useProfile/nft/types'
-import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
+import { Divider, RoundedImage } from 'views/Profile/components/SellModal/shared/styles'
 import { useAccount } from 'wagmi'
 import { GreyedOutContainer } from './styles'
-
-const RoundedImage = styled(Image)`
-  border-radius: ${({ theme }) => theme.radii.small};
-  overflow: hidden;
-`
-
-const Divider = styled.div`
-  margin: 16px 0;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
-`
 
 interface TransferStageProps {
   nftToSell: NftToken

@@ -1,24 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BinanceIcon, Button, Flex, Grid, Image, LinkExternal, ScanLink, Text } from '@pancakeswap/uikit'
+import { BinanceIcon, Button, Flex, Grid, LinkExternal, ScanLink, Text } from '@pancakeswap/uikit'
 import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
 import { NftToken } from 'hooks/useProfile/nft/types'
-import { styled } from 'styled-components'
 import { getBscScanLinkForNft, safeGetAddress } from 'utils'
+import { Divider, HorizontalDivider, RoundedImage } from 'views/Profile/components/SellModal/shared/styles'
 import { nftsBaseUrl, pancakeBunniesAddress } from 'views/ProfileCreation/Nft/constants'
-
-const RoundedImage = styled(Image)`
-  border-radius: ${({ theme }) => theme.radii.small};
-  overflow: hidden;
-`
-
-const Divider = styled.div`
-  margin: 16px 0;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
-`
-
-const HorizontalDivider = styled.div`
-  border-right: 1px solid ${({ theme }) => theme.colors.cardBorder};
-`
 
 interface EditStageProps {
   nftToSell: NftToken
