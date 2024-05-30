@@ -157,8 +157,8 @@ const ModalProvider: React.FC<
             </LazyMotion>,
             portal
           )}
+        {children}
       </NestProvider>
-      {children}
     </Context.Provider>
   );
 };

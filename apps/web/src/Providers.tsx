@@ -1,5 +1,5 @@
 import { LanguageProvider } from '@pancakeswap/localization'
-import { ModalProvider, PromptProvider, UIKitProvider, dark, light } from '@pancakeswap/uikit'
+import { DialogProvider, ModalProvider, UIKitProvider, dark, light } from '@pancakeswap/uikit'
 import { Store } from '@reduxjs/toolkit'
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HistoryManagerProvider } from 'contexts/HistoryContext'
@@ -34,7 +34,7 @@ const Providers: React.FC<
               <LanguageProvider>
                 <StyledUIKitProvider>
                   <HistoryManagerProvider>
-                    <ModalProvider portalProvider={PromptProvider}>{children}</ModalProvider>
+                    <ModalProvider portalProvider={DialogProvider}>{children}</ModalProvider>
                   </HistoryManagerProvider>
                 </StyledUIKitProvider>
               </LanguageProvider>
