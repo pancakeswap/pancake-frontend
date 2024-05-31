@@ -5,7 +5,7 @@ import type { HasRequiredKeys, PathsWithMethod } from 'openapi-typescript-helper
 import { createQueryKey } from 'views/BuyCrypto/types'
 import type { paths } from './schema.d'
 
-const endpoints = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:4123'
+const endpoints = process.env.NEXT_PUBLIC_EXPLORE_API_ENDPOINT || 'http://localhost:4123'
 
 const throwOnError: Middleware = {
   async onResponse(res) {
