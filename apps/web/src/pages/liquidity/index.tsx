@@ -30,7 +30,7 @@ import { useV3Positions } from 'hooks/v3/useV3Positions'
 import { useAtom } from 'jotai'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import React, { ReactNode, useMemo, useState } from 'react'
+import React, { ReactNode, useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { CHAIN_IDS } from 'utils/wagmi'
@@ -276,14 +276,13 @@ export default function PoolListPage() {
 
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
 
-  const handleClickShowAllPositions = () => {
+  const handleClickShowAllPositions = useCallback(() => {
     setShowAllPositionWithQuery(true)
-
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     })
-  }
+  }, [])
 
   return (
     <Page>
@@ -335,17 +334,15 @@ export default function PoolListPage() {
         <Body>
           {mainSection}
           {selectedTypeIndex === FILTER.V2 ? (
-            <>
-              <Liquidity.FindOtherLP>
-                {chainId && V3_MIGRATION_SUPPORTED_CHAINS.includes(chainId) && (
-                  <Link style={{ marginTop: '8px' }} href="/migration">
-                    <Button id="migration-link" variant="secondary" scale="sm">
-                      {t('Migrate to V3')}
-                    </Button>
-                  </Link>
-                )}
-              </Liquidity.FindOtherLP>
-            </>
+            <Liquidity.FindOtherLP>
+              {chainId && V3_MIGRATION_SUPPORTED_CHAINS.includes(chainId) && (
+                <Link style={{ marginTop: '8px' }} href="/migration">
+                  <Button id="migration-link" variant="secondary" scale="sm">
+                    {t('Migrate to V3')}
+                  </Button>
+                </Link>
+              )}
+            </Liquidity.FindOtherLP>
           ) : null}
           {showAllPositionButton && (
             <Flex alignItems="center" flexDirection="column">
