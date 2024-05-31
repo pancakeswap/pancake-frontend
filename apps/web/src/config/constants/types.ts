@@ -1,6 +1,7 @@
+import { Campaign, CampaignType, TranslatableText } from '@pancakeswap/achievements'
 import { ChainId } from '@pancakeswap/chains'
 import type { FarmConfigBaseProps, SerializedFarmConfig, SerializedFarmPublicData } from '@pancakeswap/farms'
-import { Currency, CurrencyAmount, ERC20Token, Percent, Price, Token, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent, Price, Token, TradeType } from '@pancakeswap/sdk'
 import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import BigNumber from 'bignumber.js'
 import { Address } from 'viem'
@@ -12,14 +13,6 @@ export type ChainMap<T> = {
 
 export type ChainTokenList = ChainMap<Token[]>
 
-export type TranslatableText =
-  | string
-  | {
-      key: string
-      data?: {
-        [key: string]: string | number
-      }
-    }
 export interface Addresses {
   56: Address
   [chainId: number]: Address
@@ -32,7 +25,14 @@ export enum PoolCategory {
   'AUTO' = 'Auto',
 }
 
-export type { FarmConfigBaseProps, SerializedFarmConfig, SerializedFarmPublicData }
+export type {
+  Campaign,
+  CampaignType,
+  FarmConfigBaseProps,
+  SerializedFarmConfig,
+  SerializedFarmPublicData,
+  TranslatableText,
+}
 
 export type Images = {
   lg: string
@@ -55,16 +55,6 @@ export type Team = {
   images: TeamImages
   background: string
   textColor: string
-}
-
-export type CampaignType = 'ifo' | 'teambattle' | 'participation'
-
-export type Campaign = {
-  id: string
-  type: CampaignType
-  title?: TranslatableText
-  description?: TranslatableText
-  badge?: string
 }
 
 export type PageMeta = {

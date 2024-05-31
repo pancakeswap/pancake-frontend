@@ -51,6 +51,7 @@
     "@pancakeswap/gauges": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
     "@pancakeswap/ifos": "workspace:*",
+    "@pancakeswap/achievements": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/pcsx-sdk": "workspace:*",
