@@ -1,6 +1,5 @@
 import Card from 'components/Card'
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import useTheme from 'hooks/useTheme'
 import { darken } from 'polished'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
@@ -8,8 +7,6 @@ import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { styled } from 'styled-components'
 import { LoadingRows } from '../Loader'
 import { RowBetween } from '../Row'
-
-dayjs.extend(utc)
 
 const DEFAULT_HEIGHT = 300
 

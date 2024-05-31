@@ -8,10 +8,13 @@ import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { GaugeIdentifierDetails } from '../GaugesTable/List'
 import { PercentInput } from './PercentInput'
 import { useRowVoteState } from './hooks/useRowVoteState'
 import { DEFAULT_VOTE, RowProps } from './types'
+
+dayjs.extend(relativeTime)
 
 const ListItemContainer = styled(FlexGap)<{ borderBottom?: boolean }>`
   border-bottom: ${({ borderBottom = true, theme }) =>

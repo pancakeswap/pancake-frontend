@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import useTheme from 'hooks/useTheme'
 import { ColorType, createChart, IChartApi } from 'lightweight-charts'
 import { darken } from 'polished'
@@ -9,8 +8,6 @@ import usePrevious from '../../hooks/usePrevious'
 import { formatDollarAmount } from '../../utils/numbers'
 import Card from '../Card'
 import { RowBetween } from '../Row'
-
-dayjs.extend(utc)
 
 const Wrapper = styled(Card)`
   width: 100%;

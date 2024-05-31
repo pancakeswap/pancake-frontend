@@ -1,8 +1,11 @@
 import { useMemo } from 'react'
 
 import dayjs from 'dayjs'
+import weekOfYear from 'dayjs/plugin/weekOfYear'
 import { ChartDayData, GenericChartEntry, PoolChartEntry, TokenChartEntry } from '../types'
 import { unixToDate } from '../utils/date'
+
+dayjs.extend(weekOfYear)
 
 function unixToType(unix: number, type: 'month' | 'week') {
   const date = dayjs.unix(unix).utc()
