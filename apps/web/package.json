@@ -143,6 +143,7 @@
     "@next/eslint-plugin-next": "14.2.3",
     "@pancakeswap/next-config": "workspace:*",
     "@pancakeswap/tsconfig": "workspace:*",
+    "@safe-global/safe-gateway-typescript-sdk": "^3.21.1",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^13.3.0",

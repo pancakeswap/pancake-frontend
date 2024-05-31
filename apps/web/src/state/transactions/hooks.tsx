@@ -16,6 +16,7 @@ import { Hash } from 'viem'
 
 import { Token } from '@pancakeswap/swap-sdk-core'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useSafeTxHashTransformer } from 'hooks/useSafeTxHashTransformer'
 import {
   FarmTransactionStatus,
   NonBscFarmStepType,
@@ -52,9 +53,10 @@ export function useTransactionAdder(): (
 ) => void {
   const { account, chainId } = useAccountActiveChain()
   const dispatch = useAppDispatch()
+  const safeTxHashTransformer = useSafeTxHashTransformer()
 
   return useCallback(
-    (
+    async (
       response,
       {
         summary,
@@ -89,6 +91,9 @@ export function useTransactionAdder(): (
       if (!hash) {
         throw Error('No transaction hash found.')
       }
+
+      hash = await safeTxHashTransformer(hash as Hash)
+
       dispatch(
         addTransaction({
           hash,
@@ -104,7 +109,7 @@ export function useTransactionAdder(): (
         }),
       )
     },
-    [dispatch, chainId, account],
+    [account, chainId, safeTxHashTransformer, dispatch],
   )
 }
 
