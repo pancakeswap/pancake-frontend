@@ -27,13 +27,15 @@ const useAllowanceTransferPermit = () => {
 
       const { amount, token, expiration } = permit.details
 
-      const { request } = await publicClient({ chainId }).simulateContract({
+      const client = publicClient({ chainId })
+
+      const { request } = await client.simulateContract({
         address: permit2Address,
         abi: Permit2ABI,
         functionName: 'approve',
         args: [token as Address, permit.spender as Address, BigInt(amount), Number(expiration)],
       })
-      await walletClient?.writeContract(request)
+      return walletClient?.writeContract(request)
     },
     [account, chainId, walletClient],
   )
@@ -55,9 +57,10 @@ export const useWritePermit = (token?: Token, spender?: Address, nonce?: number)
     const permit: Permit = generatePermitTypedData(token, nonce, spender)
 
     if (isSC) {
-      await scWritePermit(permit)
+      const tx = await scWritePermit(permit)
       return {
         ...permit,
+        tx,
         signature: '0x',
       }
     }

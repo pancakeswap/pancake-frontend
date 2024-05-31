@@ -201,8 +201,14 @@ const useConfirmActions = (
       action: async (nextState?: ConfirmModalState) => {
         setConfirmState(ConfirmModalState.PERMITTING)
         try {
-          const result = await permit()
-          setPermit2Signature(result)
+          const { tx, ...result } = (await permit()) ?? {}
+          if (tx) {
+            retryWaitForTransaction({ hash: tx })
+            // use transferAllowance, no need to use permit signature
+            setPermit2Signature(undefined)
+          } else {
+            setPermit2Signature(result)
+          }
           setConfirmState(nextState ?? ConfirmModalState.PENDING_CONFIRMATION)
         } catch (error) {
           if (userRejectedError(error)) {
@@ -214,7 +220,7 @@ const useConfirmActions = (
       },
       showIndicator: true,
     }
-  }, [permit, showError])
+  }, [permit, retryWaitForTransaction, showError])
 
   const approveStep = useMemo(() => {
     return {
