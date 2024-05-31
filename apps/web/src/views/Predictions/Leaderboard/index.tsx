@@ -9,6 +9,7 @@ import { filterLeaderboard } from 'state/predictions'
 import { useGetLeaderboardFilters, useGetLeaderboardLoadingState } from 'state/predictions/hooks'
 import { usePredictionConfigs } from 'views/Predictions/hooks/usePredictionConfigs'
 import { useAccount } from 'wagmi'
+import { PredictionSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import Filters from './components/Filters'
 import Hero from './components/Hero'
 import Results from './components/Results'
@@ -74,6 +75,7 @@ const Leaderboard = () => {
         token={predictionConfigs?.[pickedTokenSymbol]?.token}
         api={predictionConfigs?.[pickedTokenSymbol]?.api ?? ''}
       />
+      <PredictionSubgraphHealthIndicator />
     </>
   )
 }
