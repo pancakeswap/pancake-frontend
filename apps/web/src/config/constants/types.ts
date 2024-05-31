@@ -1,7 +1,7 @@
 import { Campaign, CampaignType, TranslatableText } from '@pancakeswap/achievements'
 import { ChainId } from '@pancakeswap/chains'
 import type { FarmConfigBaseProps, SerializedFarmConfig, SerializedFarmPublicData } from '@pancakeswap/farms'
-import { Currency, CurrencyAmount, Percent, Price, Token, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, ERC20Token, Percent, Price, Token, Trade, TradeType } from '@pancakeswap/sdk'
 import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 import BigNumber from 'bignumber.js'
 import { Address } from 'viem'
