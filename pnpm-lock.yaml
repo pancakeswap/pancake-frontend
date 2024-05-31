@@ -927,8 +927,8 @@ importers:
         specifier: ^5.28.4
         version: 5.29.2(react@18.2.0)
       '@usdv/usdv-widget':
-        specifier: ^0.9.9
-        version: 0.9.9
+        specifier: ^1.0.0
+        version: 1.0.0
       '@vanilla-extract/next-plugin':
         specifier: ^2.3.0
         version: 2.3.2(@types/node@13.13.52)(next@14.2.3)(webpack@5.89.0)
@@ -13864,8 +13864,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@usdv/usdv-widget@0.9.9:
-    resolution: {integrity: sha512-PN7qyEeQgeg67ukdzmbvOSuXSHWv0menRs0kp+Pqk9OBptRo0JWBrIjY5LfThcQyScUxgWRhGyM8LjLqltwl+g==}
+  /@usdv/usdv-widget@1.0.0:
+    resolution: {integrity: sha512-Vybaf01OVOEHQoaCsTiMLPv3SRsK9deMNkvDAT40cGZ3lKTeewsgvp+vltnbgtCmi5kScvso1sS5sqws7qHJGA==}
     dev: false
 
   /@vanilla-extract/babel-plugin-debug-ids@1.0.3:
