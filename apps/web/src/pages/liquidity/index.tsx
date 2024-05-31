@@ -119,7 +119,10 @@ export default function PoolListPage() {
       [[], []],
     ) ?? [[], []]
 
-    const filteredPositions = [...openPositions, ...(hideClosedPositions ? [] : closedPositions)]
+    const filteredPositions = [
+      ...openPositions,
+      ...(hideClosedPositions ? [] : closedPositions.sort((p1, p2) => Number(p2.tokenId - p1.tokenId))),
+    ]
 
     return filteredPositions.map((p) => {
       return (
