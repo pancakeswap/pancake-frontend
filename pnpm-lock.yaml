@@ -1261,21 +1261,7 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
 
-  packages/achievements:
-    dependencies:
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
-      qs:
-        specifier: ^6.0.0
-        version: 6.11.2
-    devDependencies:
-      '@types/lodash':
-        specifier: ^4.14.168
-        version: 4.14.202
-      '@types/qs':
-        specifier: ^6.0.0
-        version: 6.9.10
+  packages/achievements: {}
 
   packages/aptos-swap-sdk:
     dependencies:
