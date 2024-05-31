@@ -22,6 +22,7 @@ import {
 } from '@pancakeswap/uikit'
 import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import {} from 'ethers'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -29,6 +30,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { usePancakeVeSenderV2Contract } from 'hooks/useContract'
 import { useGetBnbBalance, useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useCallback, useState } from 'react'
+import { useProfile } from 'state/profile/hooks'
 import { styled } from 'styled-components'
 // import { encodeFunctionData } from 'viem'
 import { ArbitrumIcon, BinanceIcon, EthereumIcon } from './ChainLogos'
@@ -125,6 +127,7 @@ export const CrossChainVeCakeModal: React.FC<{
   const { balance: veCakeOnBsc } = useVeCakeBalance(ChainId.BSC)
   const { balance: bnbBalance } = useGetBnbBalance()
   const [nativeFee, setNativeFee] = useState<bigint>(0n)
+  const { hasProfile, isInitialized } = useProfile()
 
   const syncVeCake = useCallback(
     async (chainId: ChainId) => {
@@ -149,7 +152,7 @@ export const CrossChainVeCakeModal: React.FC<{
       if (bnbBalance <= syncFee) return
       const receipt = await fetchWithCatchTxError(async () => {
         return veCakeSenderV2Contract.write.sendSyncMsg(
-          [LayerZeroEIdMap[chainId], account, true, true, chainDstGasMap[chainId]],
+          [LayerZeroEIdMap[chainId], account, true, hasProfile, chainDstGasMap[chainId]],
           {
             account,
             chain,
@@ -168,7 +171,7 @@ export const CrossChainVeCakeModal: React.FC<{
         setModalState('submitted')
       }
     },
-    [account, veCakeSenderV2Contract, fetchWithCatchTxError, chain, toastSuccess, t, bnbBalance],
+    [account, veCakeSenderV2Contract, fetchWithCatchTxError, chain, toastSuccess, t, bnbBalance, hasProfile],
   )
   return (
     <ModalV2
@@ -223,15 +226,19 @@ export const CrossChainVeCakeModal: React.FC<{
               </Flex>
               <InfoBox />
               <Flex style={{ gap: 10 }} mt="20px">
-                <Button
-                  width="50%"
-                  disabled={!selectChainId}
-                  onClick={() => {
-                    if (selectChainId) syncVeCake(selectChainId)
-                  }}
-                >
-                  {t('Sync')}
-                </Button>
+                {account ? (
+                  <Button
+                    width="50%"
+                    disabled={!selectChainId}
+                    onClick={() => {
+                      if (selectChainId) syncVeCake(selectChainId)
+                    }}
+                  >
+                    {t('Sync')}
+                  </Button>
+                ) : (
+                  <ConnectWalletButton />
+                )}
                 <Button variant="secondary" width="50%" onClick={onDismiss}>
                   {t('Close')}
                 </Button>
