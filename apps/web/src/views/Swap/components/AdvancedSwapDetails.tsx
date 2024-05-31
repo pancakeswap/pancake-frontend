@@ -114,28 +114,28 @@ export const TradeSummary = memo(function TradeSummary({
                     {`: ${t('The difference between the market price and estimated price due to trade size.')}`}
                   </Text>
                   {`: ${t('The difference between the market price and estimated price due to trade size.')}`}
-                </Text>
-                <Text mt="10px">
-                  <Text bold display="inline-block">
-                    {t('MM')}
+                  <Text mt="10px">
+                    <Text bold display="inline-block">
+                      {t('MM')}
+                    </Text>
+                    {`: ${t('No slippage against quote from market maker')}`}
                   </Text>
-                  {`: ${t('No slippage against quote from market maker')}`}
-                </Text>
-              </>
-            }
-            ml="4px"
-            placement="top"
-          />
-        </RowFixed>
+                </>
+              }
+              ml="4px"
+              placement="top"
+            />
+          </RowFixed>
 
-        {isX ? (
-          <Text color="primary">0%</Text>
-        ) : isMM ? (
-          <Text color="textSubtle">--</Text>
-        ) : (
-          <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
-        )}
-      </RowBetween>
+          {isX ? (
+            <Text color="primary">0%</Text>
+          ) : isMM ? (
+            <Text color="textSubtle">--</Text>
+          ) : (
+            <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
+          )}
+        </RowBetween>
+      )}
 
       {(realizedLPFee || isX) && (
         <RowBetween style={{ padding: '4px 0 0 0' }}>

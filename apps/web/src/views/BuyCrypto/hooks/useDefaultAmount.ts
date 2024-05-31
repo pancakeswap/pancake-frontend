@@ -1,7 +1,7 @@
 import { useQuery, type QueryFunction } from '@tanstack/react-query'
 import { WALLET_API } from 'config/constants/endpoints'
 import { useCallback, useMemo } from 'react'
-import { createQueryKey } from '../types'
+import { createQueryKey } from 'utils/reactQuery'
 
 const getFiatUsdRateQueryKey = createQueryKey<'fia-usd-rate', [currencyCode: string]>('fia-usd-rate')
 type GetFiatUsdRateKey = ReturnType<typeof getFiatUsdRateQueryKey>
