@@ -3390,5 +3390,10 @@
   "Please refer to the transaction confirmation on your wallet for the final gas fee.": "Please refer to the transaction confirmation on your wallet for the final gas fee.",
   "Select a token to pay gas fees.": "Select a token to pay gas fees.",
   "Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input token": "Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input token",
-  "Try again with more gas token balance.": "Try again with more gas token balance."
+  "Try again with more gas token balance.": "Try again with more gas token balance.",
+  "Gas fees is fully sponsored": "Gas fees is fully sponsored",
+  "%discount% discount on this gas fee token": "%discount% discount on this gas fee token",
+  "Enjoy sponsored gas fees & earn Zyfi points": "Enjoy sponsored gas fees & earn Zyfi points",
+  "Pay gas with 10+ ERC-20 tokens": "Pay gas with 10+ ERC-20 tokens",
+  "Pay gas on zkSync Era PancakeSwap with 10+ ERC-20 tokens": "Pay gas on zkSync Era PancakeSwap with 10+ ERC-20 tokens"
 }
