@@ -5,6 +5,7 @@ import { Abi, Address, erc20Abi } from 'viem'
 import { useWalletClient } from 'wagmi'
 
 import { useMemo } from 'react'
+import { getMulticallAddress } from 'utils/addressHelpers'
 import {
   getBunnyFactoryContract,
   getContract,
@@ -14,6 +15,7 @@ import {
 } from 'utils/contractHelpers'
 
 import { erc721CollectionABI } from 'config/abi/erc721collection'
+import { multicallABI } from 'config/abi/Multicall'
 
 type UseContractOptions = {
   chainId?: ChainId
@@ -89,4 +91,9 @@ export const useNftMarketContract = () => {
 
 export const useErc721CollectionContract = (collectionAddress: Address | undefined) => {
   return useContract(collectionAddress, erc721CollectionABI)
+}
+
+export function useMulticallContract() {
+  const { chainId } = useActiveChainId()
+  return useContract(getMulticallAddress(chainId), multicallABI)
 }

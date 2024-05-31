@@ -29,3 +29,7 @@ export const getNftMarketAddress = () => {
 export const getPointCenterIfoAddress = () => {
   return getAddressFromMap(addresses.pointCenterIfo)
 }
+
+export const getMulticallAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.multiCall, chainId)
+}

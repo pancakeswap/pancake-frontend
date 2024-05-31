@@ -676,6 +676,9 @@ importers:
       '@pancakeswap/localization':
         specifier: workspace:*
         version: link:../../packages/localization
+      '@pancakeswap/multicall':
+        specifier: workspace:*
+        version: link:../../packages/multicall
       '@pancakeswap/prediction':
         specifier: workspace:*
         version: link:../../packages/prediction

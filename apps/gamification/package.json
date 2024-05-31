@@ -22,6 +22,7 @@
     "@pancakeswap/ifos": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
+    "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/ui-wallets": "workspace:*",
     "@pancakeswap/uikit": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
