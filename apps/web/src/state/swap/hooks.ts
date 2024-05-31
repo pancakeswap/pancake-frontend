@@ -15,7 +15,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ChartPeriod, chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
 import { safeGetAddress } from 'utils'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
@@ -340,22 +340,25 @@ export const usePairRate = ({
         })
         .then((res) => res.data)
     },
-    select: (data_) => {
-      if (!data_) {
-        throw new Error('No data')
-      }
-      const hasSwapPrice = currentSwapPrice && currentSwapPrice[token0Address] > 0
+    select: useCallback(
+      (data_) => {
+        if (!data_) {
+          throw new Error('No data')
+        }
+        const hasSwapPrice = currentSwapPrice && currentSwapPrice[token0Address] > 0
 
-      const formatted = data_.map((d) => ({
-        time: dayjs(d.bucket as string).toDate(),
-        value: d.close ? +d.close : 0,
-      }))
-      // can support candle later
-      if (hasSwapPrice) {
-        return [...formatted, { time: new Date(), value: currentSwapPrice[token0Address] }]
-      }
-      return formatted
-    },
+        const formatted = data_.map((d) => ({
+          time: dayjs(d.bucket as string).toDate(),
+          value: d.close ? +d.close : 0,
+        }))
+        // // can support candle later
+        if (hasSwapPrice) {
+          return [...formatted, { time: new Date(), value: currentSwapPrice[token0Address] }]
+        }
+        return formatted
+      },
+      [currentSwapPrice, token0Address],
+    ),
   })
 }
 

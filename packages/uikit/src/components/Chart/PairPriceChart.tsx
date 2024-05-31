@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import dayjs from "dayjs";
-import { createChart, IChartApi, LineStyle, UTCTimestamp } from "lightweight-charts";
+import { createChart, IChartApi, LineStyle } from "lightweight-charts";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import LineChartLoader from "./LineChartLoaderSVG";

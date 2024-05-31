@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, ButtonMenu, ButtonMenuItem, Flex, SwapLineChart, Text } from '@pancakeswap/uikit'
 import { memo, useMemo, useState } from 'react'
-import { usePairRate } from 'state/swap/hooks'
+import { useFetchPairPricesV3, usePairRate } from 'state/swap/hooks'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
 import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 import NoChartAvailable from './NoChartAvailable'
@@ -26,7 +26,7 @@ const BasicChart = ({
     timeWindow,
     currentSwapPrice,
   })
-  const { data: pairPrices1 = [] } = usePairRate({
+  const { data: pairPrices1 = [] } = useFetchPairPricesV3({
     token0Address,
     token1Address: enableExplorer ? undefined : token1Address,
     timeWindow,
