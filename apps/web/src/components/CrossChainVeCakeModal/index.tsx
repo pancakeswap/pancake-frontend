@@ -25,13 +25,13 @@ import BigNumber from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import {} from 'ethers'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePancakeVeSenderV2Contract } from 'hooks/useContract'
 import { useGetBnbBalance, useVeCakeBalance } from 'hooks/useTokenBalance'
 import { useCallback, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
 // import { encodeFunctionData } from 'viem'
 import { ArbitrumIcon, BinanceIcon, EthereumIcon } from './ChainLogos'
 // import { getCrossChainMessage } from '@pancakeswap/ifos'
@@ -113,7 +113,7 @@ export const CrossChainVeCakeModal: React.FC<{
   setIsOpen?: (isOpen: boolean) => void
 }> = ({ onDismiss, modalTitle, isOpen }) => {
   const { isDesktop } = useMatchBreakpoints()
-  const { account, chain } = useActiveWeb3React()
+  const { address: account, chain } = useAccount()
   const { t } = useTranslation()
   const veCakeSenderV2Contract = usePancakeVeSenderV2Contract(ChainId.BSC)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
@@ -129,9 +129,11 @@ export const CrossChainVeCakeModal: React.FC<{
   const [nativeFee, setNativeFee] = useState<bigint>(0n)
   const { hasProfile, isInitialized } = useProfile()
 
+  console.log({ account, render: account ? 'sync' : 'connect wallet' })
+
   const syncVeCake = useCallback(
     async (chainId: ChainId) => {
-      if (!account || !veCakeSenderV2Contract || !chainId) return
+      if (!account || !veCakeSenderV2Contract || !chainId || !isInitialized) return
       setModalState('ready')
       let syncFee = BigInt(new BigNumber(LayerZeroFee[chainId].toString()).times(1.1).toNumber().toFixed(0))
 
@@ -171,7 +173,17 @@ export const CrossChainVeCakeModal: React.FC<{
         setModalState('submitted')
       }
     },
-    [account, veCakeSenderV2Contract, fetchWithCatchTxError, chain, toastSuccess, t, bnbBalance, hasProfile],
+    [
+      account,
+      veCakeSenderV2Contract,
+      fetchWithCatchTxError,
+      chain,
+      toastSuccess,
+      t,
+      bnbBalance,
+      hasProfile,
+      isInitialized,
+    ],
   )
   return (
     <ModalV2
