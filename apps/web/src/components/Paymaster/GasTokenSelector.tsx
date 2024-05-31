@@ -216,12 +216,12 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
 
     const disabled = useMemo(
       () =>
-        account
+        account && itemInfo?.discount !== 'FREE'
           ? (Boolean(item.isNative) && (!nativeBalances[account] || formatAmount(nativeBalances[account]) === '0')) ||
             (Boolean(item.isToken) &&
               (!getTokenBalance(item.wrapped.address) || formatAmount(getTokenBalance(item.wrapped.address)) === '0'))
           : false,
-      [item],
+      [item, itemInfo],
     )
 
     const {
