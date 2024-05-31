@@ -239,7 +239,7 @@ export default function PoolListPage() {
   ])
 
   const mainSection = useMemo(() => {
-    let resultSection: null | ReactNode | (ReactNode[] | null | undefined)[] = null
+    let resultSection: null | ReactNode | (ReactNode[] | null | undefined)[]
     if (v3Loading || v2Loading) {
       resultSection = (
         <Text color="textSubtle" textAlign="center">
