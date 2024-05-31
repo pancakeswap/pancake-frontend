@@ -9,7 +9,7 @@ import { Campaign } from './types'
  * badge: Achievement avatar
  */
 
-const campaigns: Campaign[] = [
+export const campaigns: Campaign[] = [
   {
     id: '511110000',
     type: 'ifo',
@@ -623,5 +623,3 @@ export const campaignMap = new Map<string, Campaign>()
 campaigns.forEach((campaign) => {
   campaignMap.set(campaign.id, campaign)
 })
-
-export default campaigns
