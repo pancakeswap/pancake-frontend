@@ -59,6 +59,11 @@ export const Dialog: React.FC<DialogProps> = ({
     }
     onDismiss?.();
   };
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleOk();
+    }
+  };
 
   return (
     <StyledModalV2 onDismiss={onDismiss} {...props}>
@@ -72,7 +77,12 @@ export const Dialog: React.FC<DialogProps> = ({
         <FlexGap flexDirection="column" gap="20px" mt="auto">
           <Text>{message}</Text>
           {useInput ? (
-            <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder={placeholder} />
+            <Input
+              value={value}
+              onKeyDown={onKeyDown}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder={placeholder}
+            />
           ) : null}
           <FlexGap gap="12px">
             <Button onClick={handleCancel} ml="auto" variant="secondary">
