@@ -33,7 +33,7 @@ const BasicChart = ({
     currentSwapPrice,
   })
 
-  const pairPrices = enableExplorer ? pairPrices1 : pairPrices2
+  const pairPrices = enableExplorer ? pairPrices2 : pairPrices1
 
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()
