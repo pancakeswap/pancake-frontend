@@ -9,6 +9,7 @@ import {
   Heading,
   LinkExternal,
   LinkIcon,
+  Loading,
   ModalBody,
   ModalCloseButton,
   ModalContainer,
@@ -32,6 +33,7 @@ import { useCallback, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
+import { useProfileProxyWellSynced } from './hooks/useProfileProxyWellSynced'
 // import { encodeFunctionData } from 'viem'
 import { ArbitrumIcon, BinanceIcon, EthereumIcon } from './ChainLogos'
 // import { getCrossChainMessage } from '@pancakeswap/ifos'
@@ -128,8 +130,6 @@ export const CrossChainVeCakeModal: React.FC<{
   const { balance: bnbBalance } = useGetBnbBalance()
   const [nativeFee, setNativeFee] = useState<bigint>(0n)
   const { hasProfile, isInitialized } = useProfile()
-
-  console.log({ account, render: account ? 'sync' : 'connect wallet' })
 
   const syncVeCake = useCallback(
     async (chainId: ChainId) => {
@@ -312,10 +312,11 @@ const OtherChainsCard: React.FC<{
   isSelected: boolean
   veCakeOnBsc: BigNumber
   hash?: string
-}> = ({ chainName, chainId, Icon, onSelected, isSelected, veCakeOnBsc, hash }) => {
+}> = ({ chainName, chainId, Icon, onSelected, isSelected, hash }) => {
   const { balance } = useVeCakeBalance(chainId)
   const { t } = useTranslation()
-  const isSynced = balance.isGreaterThanOrEqualTo(veCakeOnBsc)
+  const { isSynced, isLoading } = useProfileProxyWellSynced(chainId)
+
   return (
     <VeCakeChainBox onClick={() => onSelected(chainId)} className={isSelected ? 'is-selected' : undefined}>
       <Flex alignItems="center" style={{ gap: 5 }}>
@@ -326,7 +327,9 @@ const OtherChainsCard: React.FC<{
         <Text fontSize="14px" color="textSubtle">
           {t('Profile')}
         </Text>
-        {hash && !isSynced ? (
+        {isLoading ? (
+          <Loading />
+        ) : hash && !isSynced ? (
           <LinkExternal external href={`https://layerzeroscan.com/tx/${hash}`}>
             {t('In Progress')}
           </LinkExternal>

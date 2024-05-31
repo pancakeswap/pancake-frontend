@@ -28,6 +28,10 @@ export const getLotteryV2Address = () => {
 export const getPancakeProfileAddress = () => {
   return getAddressFromMap(addresses.pancakeProfile)
 }
+export const getPancakeProfileProxyAddress = (chainId: number) => {
+  return getAddressFromMap(addresses.pancakeProfileProxy, chainId)
+}
+
 export const getPancakeBunniesAddress = () => {
   return getAddressFromMap(addresses.pancakeBunnies)
 }
