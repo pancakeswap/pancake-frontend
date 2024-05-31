@@ -18,6 +18,7 @@ import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
+import { PaymasterBanner } from '../PaymasterBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -49,6 +50,10 @@ export const useMultipleBannerConfig = () => {
         banner: <UserBanner />,
       },
       { shouldRender: isRenderIFOBanner || Boolean(countdown), banner: <NewIFOBanner /> },
+      {
+        shouldRender: true,
+        banner: <PaymasterBanner />,
+      },
       {
         shouldRender: true,
         banner: <FeeRefundBanner />,
