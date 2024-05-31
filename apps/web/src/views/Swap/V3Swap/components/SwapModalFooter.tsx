@@ -92,6 +92,17 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   const [gasToken] = useGasToken()
   const { isPaymasterAvailable, isPaymasterTokenActive } = usePaymaster()
 
+  const showSameTokenWarning = useMemo(
+    () =>
+      isPaymasterAvailable &&
+      isPaymasterTokenActive &&
+      inputAmount.currency?.wrapped.address &&
+      !inputAmount.currency.isNative &&
+      gasToken.isToken &&
+      inputAmount.currency.wrapped.address === gasToken.wrapped.address,
+    [inputAmount, gasToken, isPaymasterAvailable, isPaymasterTokenActive],
+  )
+
   const severity = warningSeverity(priceImpactWithoutFee)
   const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
   const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
@@ -281,20 +292,18 @@ export const SwapModalFooter = memo(function SwapModalFooter({
         )}
       </SwapModalFooterContainer>
 
-      {isPaymasterAvailable &&
-        isPaymasterTokenActive &&
-        inputAmount.currency.wrapped.address === gasToken.wrapped.address && (
-          <SameTokenWarningBox>
-            <Flex>
-              <StyledWarningIcon marginRight={2} />
-              <span>
-                {t(
-                  'Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input token',
-                )}
-              </span>
-            </Flex>
-          </SameTokenWarningBox>
-        )}
+      {showSameTokenWarning && (
+        <SameTokenWarningBox>
+          <Flex>
+            <StyledWarningIcon marginRight={2} />
+            <span>
+              {t(
+                'Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input token',
+              )}
+            </span>
+          </Flex>
+        </SameTokenWarningBox>
+      )}
 
       <AutoRow>
         <Button

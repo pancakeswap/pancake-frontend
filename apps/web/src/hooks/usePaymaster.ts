@@ -31,7 +31,7 @@ export const usePaymaster = () => {
    */
   const isPaymasterAvailable = useMemo(() => {
     // Disable connections via WalletConnect until it is fully supported
-    return chain && chain.chainId === ChainId.ZKSYNC && (!connector || connector.type !== 'walletConnect')
+    return chain && chain.chainId === ChainId.ZKSYNC && connector?.type !== 'walletConnect'
   }, [chain, connector])
 
   /**

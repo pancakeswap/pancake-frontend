@@ -15,11 +15,17 @@ export const paymasterTokens: Currency[] = [
   zksyncTokens.usdt,
   zksyncTokens.grai,
   zksyncTokens.tes,
+  zksyncTokens.busd,
+  zksyncTokens.reth,
+  zksyncTokens.wstETH,
+  zksyncTokens.meow,
+  zksyncTokens.weth,
+  zksyncTokens.wethe,
 ]
 
 export const paymasterInfo = {
   [zksyncTokens.wbtc.address]: {
-    discount: '-20%',
+    discount: '-20%', // Example: -20%, FREE
   },
   [zksyncTokens.dai.address]: {
     discount: '-20%',
@@ -37,6 +43,24 @@ export const paymasterInfo = {
     discount: '-20%',
   },
   [zksyncTokens.tes.address]: {
+    discount: '-20%',
+  },
+  [zksyncTokens.busd.address]: {
+    discount: '-20%',
+  },
+  [zksyncTokens.reth.address]: {
+    discount: '-20%',
+  },
+  [zksyncTokens.wstETH.address]: {
+    discount: '-20%',
+  },
+  [zksyncTokens.meow.address]: {
+    discount: '-20%',
+  },
+  [zksyncTokens.weth.address]: {
+    discount: '-20%',
+  },
+  [zksyncTokens.wethe.address]: {
     discount: '-20%',
   },
 }

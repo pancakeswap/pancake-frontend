@@ -143,7 +143,17 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
   )
 
   // Input Token Address from Swap
-  const inputTokenAddress = useMemo(() => trade && trade.inputAmount.currency.wrapped.address, [trade])
+  const inputCurrency = useMemo(() => trade && trade.inputAmount.currency, [trade])
+
+  const showSameTokenWarning = useMemo(
+    () =>
+      inputCurrency?.wrapped.address &&
+      // Check if input token is native ETH to avoid conflicts when WETH is selected as gas token
+      !inputCurrency.isNative &&
+      gasToken.isToken &&
+      inputCurrency.wrapped.address === gasToken.wrapped.address,
+    [inputCurrency, gasToken],
+  )
 
   // Reset fee token if account changes, connects or disconnects
   useEffect(() => {
@@ -173,6 +183,8 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
    * Keeps the Native Token in the first position
    */
   const tokenListSortComparator = (tokenA: Currency, tokenB: Currency) => {
+    if (tokenA.isNative || tokenB.isNative) return 1
+
     const balanceA = getTokenBalance(tokenA.wrapped.address)
     const balanceB = getTokenBalance(tokenB.wrapped.address)
 
@@ -191,7 +203,7 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
     const item = data[index] as Currency
 
     // Extra info for the token
-    const itemInfo = paymasterInfo[item.wrapped.address]
+    const itemInfo = paymasterInfo[item.isToken ? item.wrapped.address : '']
 
     const disabled = useMemo(
       () =>
@@ -299,7 +311,7 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
         </GasTokenSelectButton>
       </RowBetween>
 
-      {inputTokenAddress && inputTokenAddress === gasToken.wrapped.address && gasToken.isToken && (
+      {showSameTokenWarning && (
         <SameTokenWarningBox>
           <Flex>
             <StyledWarningIcon marginRight={2} />
