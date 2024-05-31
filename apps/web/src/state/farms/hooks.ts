@@ -93,11 +93,7 @@ export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2F
         return {}
       }
 
-      const addresses = activeFarms
-        .map((farm) => farm.lpAddress)
-        .map((lpAddress) => {
-          return lpAddress.toLowerCase()
-        })
+      const addresses = activeFarms.map((farm) => farm.lpAddress?.toLowerCase())
 
       const rawResult: any | undefined = await multiQuery(
         (subqueries) => gql`
@@ -118,9 +114,7 @@ export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2F
         client,
       )
 
-      const results = mapKeys(rawResult, (_, key) => {
-        return key.substring(1, key.length)
-      })
+      const results = mapKeys(rawResult, (_, key) => key.substring(1, key.length))
 
       return mapValues(results, (value) => {
         const volumes = value.map((d: { volumeUSD: string }) => Number(d.volumeUSD))
