@@ -36,7 +36,7 @@ export function involvesCurrency(pool: Pool, currency: Currency) {
   return false
 }
 
-// FIXME current verison is not working with stable pools that have more than 2 tokens
+// FIXME current version is not working with stable pools that have more than 2 tokens
 export function getOutputCurrency(pool: Pool, currencyIn: Currency): Currency {
   const tokenIn = currencyIn.wrapped
   if (isV2Pool(pool)) {
