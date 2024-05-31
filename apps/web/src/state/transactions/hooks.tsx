@@ -92,8 +92,14 @@ export function useTransactionAdder(): (
         throw Error('No transaction hash found.')
       }
 
-      hash = await safeTxHashTransformer(hash as Hash)
+      console.debug('debug before hahs', hash)
+      try {
+        hash = await safeTxHashTransformer(hash as Hash)
+      } catch (e) {
+        console.error('Failed to get transaction hash from Safe', e)
+      }
 
+      console.debug('debug after hahs', hash)
       dispatch(
         addTransaction({
           hash,
