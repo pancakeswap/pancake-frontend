@@ -102,3 +102,5 @@ export const widgetConfigs: { [env in WidgetEnvs]: WormholeConnectConfig } = {
   [WidgetEnvs.testnet]: testnetWidgetConfig,
   [WidgetEnvs.devnet]: testnetWidgetConfig,
 }
+
+export const isDev = typeof process.env.NEXT_PUBLIC_VERCEL_ENV === 'undefined'

@@ -1,25 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text, Toggle } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 import { useEnableWormholeMainnet } from 'state/wormhole/enableTestnet'
+import { isDev } from './WormHole/constants'
 
 export function WormholeEnvToggle() {
   const [enableMainnet, setEnableMainnet] = useEnableWormholeMainnet()
-  const [isEnabled, setIsEnabled] = useState(false)
-
   const { t } = useTranslation()
   const { pathname } = useRouter()
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const { protocol } = window.location
-    setIsEnabled(protocol === 'http:')
-  }, [])
-
-  if (pathname !== '/wormhole' || !isEnabled) {
-    return null
-  }
+  if (pathname !== '/wormhole' || !isDev) return null
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
