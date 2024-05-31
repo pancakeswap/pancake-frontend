@@ -33,4 +33,5 @@ crons = ["0 0 * * *", "*/1 * * * *"]
 # - LINEA_NODE
 # - BASE_NODE
 # - NODE_REAL_SUBGRAPH_API_KEY
+# - THE_GRAPH_API_KEY
 # Run `echo <VALUE> | wrangler secret put <NAME>` for each of these
