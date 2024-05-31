@@ -26,10 +26,13 @@ const blockClientWithChain = (chainId: FarmSupportedChainId) => {
 }
 
 const infoClientWithChain = (chainId: FarmSupportedChainId) => {
-  // @ts-ignore
-  return new GraphQLClient(getV2Subgraphs({ noderealApiKey: NODE_REAL_SUBGRAPH_API_KEY })[chainId], {
-    fetch,
-  })
+  return new GraphQLClient(
+    // @ts-ignore
+    getV2Subgraphs({ noderealApiKey: NODE_REAL_SUBGRAPH_API_KEY, theGraphApiKey: THE_GRAPH_API_KEY })[chainId],
+    {
+      fetch,
+    },
+  )
 }
 
 const stableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_ENDPOINT, {
