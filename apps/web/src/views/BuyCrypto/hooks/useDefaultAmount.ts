@@ -4,7 +4,8 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { Field } from 'state/buyCrypto/actions'
 import { useBuyCryptoActionHandlers } from 'state/buyCrypto/hooks'
 import { isFiat } from '../constants'
-import { OnRampUnit, createQueryKey } from '../types'
+import { OnRampUnit } from '../types'
+import { createQueryKey } from 'utils/reactQuery'
 
 const getFiatUsdRateQueryKey = createQueryKey<'fia-usd-rate', [currencyCode: string]>('fia-usd-rate')
 type GetFiatUsdRateKey = ReturnType<typeof getFiatUsdRateQueryKey>
