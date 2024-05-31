@@ -23,49 +23,52 @@ export const paymasterTokens: Currency[] = [
   zksyncTokens.wethe,
 ]
 
-export const paymasterInfo = {
+export const paymasterInfo: { [tokenAddress: Address]: { discount: `-${number}%` | 'FREE' } } = {
   [zksyncTokens.wbtc.address]: {
-    discount: '-20%', // Example: -20%, FREE
+    discount: 'FREE', // Example: -20%, FREE
   },
   [zksyncTokens.dai.address]: {
-    discount: '-20%',
+    discount: 'FREE',
   },
   [zksyncTokens.usdc.address]: {
-    discount: '-20%',
+    discount: 'FREE',
   },
   [zksyncTokens.usdcNative.address]: {
-    discount: '-20%',
+    discount: 'FREE',
   },
   [zksyncTokens.usdt.address]: {
-    discount: '-20%',
+    discount: 'FREE',
   },
   [zksyncTokens.grai.address]: {
-    discount: '-20%',
+    discount: 'FREE',
   },
   [zksyncTokens.tes.address]: {
-    discount: '-20%',
+    discount: 'FREE',
   },
   [zksyncTokens.busd.address]: {
-    discount: '-20%',
+    discount: 'FREE',
   },
   [zksyncTokens.reth.address]: {
-    discount: '-20%',
+    discount: 'FREE',
   },
   [zksyncTokens.wstETH.address]: {
-    discount: '-20%',
+    discount: 'FREE',
   },
   [zksyncTokens.meow.address]: {
-    discount: '-20%',
+    discount: 'FREE',
   },
   [zksyncTokens.weth.address]: {
-    discount: '-20%',
+    discount: 'FREE',
   },
   [zksyncTokens.wethe.address]: {
-    discount: '-20%',
+    discount: 'FREE',
   },
 }
 
 // Zyfi
+export const ZYFI_PAYMASTER_URL = 'https://api.zyfi.org/api/erc20_paymaster/v1'
+export const ZYFI_SPONSORED_PAYMASTER_URL = 'https://api.zyfi.org/api/erc20_sponsored_paymaster/v1'
+
 export interface ZyfiResponse {
   txData: TxData
   gasLimit: string

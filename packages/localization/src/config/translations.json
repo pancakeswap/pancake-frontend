@@ -3372,5 +3372,10 @@
   "in Uniswap interface fees paid": "in Uniswap interface fees paid",
   "Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input token": "Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input token",
   "Cakepie": "Cakepie",
-  "Try again with more gas token balance.": "Try again with more gas token balance."
+  "Try again with more gas token balance.": "Try again with more gas token balance.",
+  "Gas fees is fully sponsored": "Gas fees is fully sponsored",
+  "%discount% discount on this gas fee token": "%discount% discount on this gas fee token",
+  "Enjoy sponsored gas fees & earn Zyfi points": "Enjoy sponsored gas fees & earn Zyfi points",
+  "Pay gas with 10+ ERC-20 tokens": "Pay gas with 10+ ERC-20 tokens",
+  "Pay gas on zkSync Era PancakeSwap with 10+ ERC-20 tokens": "Pay gas on zkSync Era PancakeSwap with 10+ ERC-20 tokens"
 }

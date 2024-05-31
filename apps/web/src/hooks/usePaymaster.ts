@@ -52,20 +52,15 @@ export const usePaymaster = () => {
     if (!gasToken.isToken) throw new Error('Selected gas token is not an ERC20 token. Unsupported by Paymaster.')
     if (!isPaymasterAvailable || !isPaymasterTokenActive) throw new Error('Paymaster is not available or active.')
 
-    const response = await fetch(`https://api.zyfi.org/api/erc20_paymaster/v1`, {
+    const response = await fetch('/api/paymaster', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: stringify({
-        feeTokenAddress: gasToken.address,
-        gasLimit: call.gas,
-        txData: {
-          from: account,
-          to: call.address,
-          value: call.value,
-          data: call.calldata,
-        },
+        call,
+        account,
+        gasTokenAddress: gasToken.address,
       }),
     })
 

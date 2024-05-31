@@ -99,6 +99,7 @@ const StyledBalanceText = styled(Text).attrs({ small: true })`
 const Badge = styled.span`
   font-size: 14px;
   padding: 1px 6px;
+  user-select: none;
   border-radius: ${({ theme }) => theme.radii['32px']};
   color: ${({ theme }) => theme.colors.invertedContrast};
   background-color: ${({ theme }) => theme.colors.success};
@@ -135,6 +136,7 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
   const config = useConfig()
 
   const [gasToken, setGasToken] = useGasToken()
+  const gasTokenInfo = paymasterInfo[gasToken.isToken ? gasToken?.wrapped.address : '']
 
   const nativeBalances = useNativeBalances([account])
   const [balances, balancesLoading] = useTokenBalancesWithLoadingIndicator(
@@ -199,6 +201,13 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
   // Item Key for FixedSizeList
   const itemKey = useCallback((index: number, data: any) => `${data[index]}-${index}`, [])
 
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    gasTokenInfo?.discount &&
+      (gasTokenInfo.discount === 'FREE'
+        ? t('Gas fees is fully sponsored')
+        : t('%discount% discount on this gas fee token', { discount: gasTokenInfo.discount })),
+  )
+
   const Row = ({ data, index, style }) => {
     const item = data[index] as Currency
 
@@ -219,7 +228,12 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
       targetRef: innerTargetRef,
       tooltip: innerTooltip,
       tooltipVisible: innerTooltipVisible,
-    } = useTooltip(<>{itemInfo?.discount && <>{itemInfo.discount}</>} discount on this gas fee token</>)
+    } = useTooltip(
+      itemInfo?.discount &&
+        (itemInfo.discount === 'FREE'
+          ? t('Gas fees is fully sponsored')
+          : t('%discount% discount on this gas fee token', { discount: itemInfo.discount })),
+    )
 
     return (
       <FixedHeightRow style={style} onClick={() => !disabled && onTokenSelected(item)} $disabled={disabled}>
@@ -285,6 +299,12 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
             ml="4px"
             placement="top"
           />
+          {gasTokenInfo && gasTokenInfo.discount && (
+            <Badge ref={targetRef} style={{ fontSize: '12px', fontWeight: 600, padding: '3px 5px', marginLeft: '4px' }}>
+              ⛽️ {gasTokenInfo.discount}
+            </Badge>
+          )}
+          {tooltipVisible && tooltip}
         </RowFixed>
 
         <GasTokenSelectButton
