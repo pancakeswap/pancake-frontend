@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "Numele tău trebuie să aibă o lungime cel puțin 3 și cel mult 15 litere și numere standard. Nu îl poți modifica după ce faci clic pe Confirmare.",
   "Unable to verify username": "Nu se poate verifica numele de utilizator",
   "Created %dateCreated% ago": "Creat cu %dateCreated% în urmă",
+  "Updated %dateUpdated% ago": "Updated %dateUpdated% ago",
   "Add %assetA%-%assetB% Liquidity": "Adaugă lichidități %assetA%-%assetB%",
   "$120,000 in Prizes!": "120.000 $ premii!",
   "Now Live!": "Acum în direct!",
