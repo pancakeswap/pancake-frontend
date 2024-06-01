@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "이름은 표준 문자와 숫자로 구성되고 3자 이상, 15자 이하여야 합니다. 확인을 클릭한 후에는 이 이름을 변경할 수 없습니다.",
   "Unable to verify username": "사용자 이름을 확인할 수 없음",
   "Created %dateCreated% ago": "%dateCreated% 전에 생성함",
+  "Updated %dateUpdated% ago": "Updated %dateUpdated% ago",
   "Add %assetA%-%assetB% Liquidity": "%assetA%-%assetB% 유동성 추가",
   "$120,000 in Prizes!": "상금 $120,000!",
   "Now Live!": "지금 라이브!",
