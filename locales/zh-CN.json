@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "您的名称必须包含最少 3 个、最多 15 个由标准字母和数字组成的字符。点击“确认”后，您将无法更改此设置。",
   "Unable to verify username": "无法验证用户名",
   "Created %dateCreated% ago": "%dateCreated% 之前创建",
+  "Updated %dateUpdated% ago": "Updated %dateUpdated% ago",
   "Add %assetA%-%assetB% Liquidity": "添加 %assetA%-%assetB% 流动性",
   "$120,000 in Prizes!": "120,000 美元奖金！",
   "Now Live!": "正在进行 ！",
