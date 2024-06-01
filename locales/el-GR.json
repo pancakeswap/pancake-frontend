@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "Το όνομά σας πρέπει να έχει τουλάχιστον 3 και το πολύ 15 τυπικά γράμματα και αριθμούς. Δεν μπορείτε να το αλλάξετε όταν κάνετε κλικ στην επιλογή Επιβεβαίωση.",
   "Unable to verify username": "Δεν είναι δυνατή η επαλήθευση του ονόματος χρήστη",
   "Created %dateCreated% ago": "Δημιουργήθηκε %dateCreated% πριν",
+  "Updated %dateUpdated% ago": "Updated %dateUpdated% ago",
   "Add %assetA%-%assetB% Liquidity": "Προσθήκη ρευστότητας %assetA%-%assetB%",
   "$120,000 in Prizes!": "$120.000 σε έπαθλα!",
   "Now Live!": "Live τώρα!",
