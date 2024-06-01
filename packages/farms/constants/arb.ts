@@ -38,6 +38,34 @@ const v3TopFixedLps: FarmConfigV3[] = [
 export const farmsV3 = defineFarmV3Configs([
   ...v3TopFixedLps,
   {
+    pid: 55,
+    lpAddress: '0x4B89179dAfe5c36AE611208B5590FEf9153b7daa',
+    token0: arbitrumTokens.rsETH,
+    token1: arbitrumTokens.weth,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 54,
+    lpAddress: '0xb0C6Be7b6aaB831092A3c7ef3Fe2Ab4F48B80b6A',
+    token0: arbitrumTokens.weth,
+    token1: arbitrumTokens.grai,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 53,
+    lpAddress: '0x667ED8FCa4fc042B8425AA3547E3271d9E6E9bB4',
+    token0: arbitrumTokens.usdv,
+    token1: arbitrumTokens.usdt,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 52,
+    lpAddress: '0xb18eA0b56E46D4F890dC729425184fD1EF25dbFf',
+    token0: arbitrumTokens.usdv,
+    token1: arbitrumTokens.usdc,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
     pid: 51,
     lpAddress: '0xa1F9159e11aD48524c16C9bf10bf440815b03e6C',
     token0: arbitrumTokens.usdc,

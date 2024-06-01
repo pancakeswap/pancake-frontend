@@ -263,4 +263,12 @@ export const arbitrumTokens = {
     'Magpie locked DLP',
     'https://www.radiant.magpiexyz.io/stake',
   ),
+  rsETH: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x4186BFC76E2E237523CBC30FD220FE055156b41F',
+    18,
+    'rsETH',
+    'KelpDao Restaked ETH',
+    'https://kelpdao.xyz/',
+  ),
 }
