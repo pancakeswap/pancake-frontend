@@ -303,4 +303,28 @@ export const arbitrumTokens = {
     'Fluidity',
     'https://fluidity.money/',
   ),
+  tia: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x000F1720A263f96532D1ac2bb9CDC12b72C6f386',
+    6,
+    'TIA.n',
+    'TIA',
+    ' https://celestia.org/',
+  ),
+  woo: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xcAFcD85D8ca7Ad1e1C6F82F651fA15E33AEfD07b',
+    18,
+    'WOO',
+    'Wootrade Network',
+    'https://woo.org/',
+  ),
+  mim: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xFEa7a6a0B346362BF88A9e4A88416B77a57D6c2A',
+    18,
+    'MIM',
+    'Magic Internet Money',
+    'https://abracadabra.money/',
+  ),
 }
