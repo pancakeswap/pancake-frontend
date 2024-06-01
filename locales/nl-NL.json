@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "Je naam moet uit minimaal 3 en uit maximaal 15 standaard letters en cijfers bestaan. Je kunt dit niet meer wijzigen zodra je op Bevestigen klikt.",
   "Unable to verify username": "Kon gebruikersnaam niet verifiëren",
   "Created %dateCreated% ago": "%dateCreated% geleden aangemaakt",
+  "Updated %dateUpdated% ago": "%dateUpdated% geleden bijgewerkt",
   "Add %assetA%-%assetB% Liquidity": "%assetA%-%assetB%-liquiditeit toevoegen",
   "$120,000 in Prizes!": "$ 120.000 aan prijzen!",
   "Now Live!": "Nu live!",
