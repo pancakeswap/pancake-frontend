@@ -137,7 +137,7 @@ export const farmsV3 = defineFarmV3Configs([
   },
   {
     pid: 56,
-    lpAddress: '0x4B89179dAfe5c36AE611208B5590FEf9153b7daa',
+    lpAddress: '0xe2d9b612446180334D56e10e82Dc78E3dEe814B0',
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.ethX,
     feeAmount: FeeAmount.LOWEST,
