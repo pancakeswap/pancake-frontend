@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "Ім’я має містити від 3 до 15 стандартних літер або цифр. Після того, як ви натиснете «Підтвердити», це не можна буде змінити.",
   "Unable to verify username": "Не вдалось підтвердити ім’я користувача",
   "Created %dateCreated% ago": "Створено %dateCreated% тому",
+  "Updated %dateUpdated% ago": "Оновлено %dateUpdated% тому",
   "Add %assetA%-%assetB% Liquidity": "Додати ліквідність %assetA%-%assetB%",
   "$120,000 in Prizes!": "Призовий фонд у 120 000 доларів США!",
   "Now Live!": "Триває зараз!",
