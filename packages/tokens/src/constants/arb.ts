@@ -305,7 +305,7 @@ export const arbitrumTokens = {
   ),
   tia: new ERC20Token(
     ChainId.ARBITRUM_ONE,
-    '0x000F1720A263f96532D1ac2bb9CDC12b72C6f386',
+    '0xD56734d7f9979dD94FAE3d67C7e928234e71cD4C',
     6,
     'TIA.n',
     'TIA',
