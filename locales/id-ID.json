@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "Nama Anda harus sepanjang minimal 3 dan maksimal 15 huruf dan angka standar. Anda tidak dapat mengubah ini setelah mengeklik Konfirmasi.",
   "Unable to verify username": "Tidak dapat memverifikasi nama pengguna",
   "Created %dateCreated% ago": "Dibuat %dateCreated% lalu",
+  "Updated %dateUpdated% ago": "Diperbarui %dateUpdated% lalu",
   "Add %assetA%-%assetB% Liquidity": "Tambahkan Likuiditas %assetA%-%assetB%",
   "$120,000 in Prizes!": "Hadiah senilai $120.000!",
   "Now Live!": "Kini Live!",
