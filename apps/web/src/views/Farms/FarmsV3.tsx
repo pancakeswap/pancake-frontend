@@ -330,9 +330,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           (stableSwapOnly && farm.version === 2 && farm.isStable),
       )
 
-      const stakedFilterFarmsWithTypes = getStakedFarms(filterFarmsWithTypes)
-
-      chosenFs = stakedOnly ? farmsList(stakedFilterFarmsWithTypes) : farmsList(filterFarmsWithTypes)
+      chosenFs = farmsList(filterFarmsWithTypes)
     }
 
     return chosenFs
