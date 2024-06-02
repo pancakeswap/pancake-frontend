@@ -15,7 +15,7 @@ import Staked from '../Farm/Cells/Staked'
 import Unstake from '../Farm/Cells/Unstake'
 import V2StakeButton from '../bCake/V2StakedButton'
 import { RowProps } from '../types'
-import UnstableButton from './UnstakeButton'
+import UnstakeButton from './UnstakeButton'
 
 const StyledRow = styled.div`
   display: flex;
@@ -110,7 +110,7 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
                     pid={farm.pid}
                   />
                 ) : (
-                  <UnstableButton {...unstake} />
+                  <UnstakeButton {...unstake} />
                 )}
               </Unstake>
             </ProxyFarmContainer>
