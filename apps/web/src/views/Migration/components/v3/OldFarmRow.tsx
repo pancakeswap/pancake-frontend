@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import { useFarmUser } from 'state/farms/hooks'
 import { styled } from 'styled-components'
 import ProxyFarmContainer from 'views/Farms/components/YieldBooster/components/ProxyFarmContainer'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import noop from 'lodash/noop'
 import ExpandActionCell from '../Cells/ExpandActionCell'
 import Earned from '../Farm/Cells/Earned'
 import Farm from '../Farm/Cells/Farm'
@@ -87,12 +89,8 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
                 {...earned}
                 earnings={
                   step === 2
-                    ? ((farm.bCakeUserData?.earnings ?? BIG_ZERO)?.div(10 ** 18) ?? BIG_ZERO).toNumber()
-                    : (
-                        (farm.boosted && proxy?.earnings.gt(0) ? proxy.earnings : farm.userData?.earnings)?.div(
-                          10 ** 18,
-                        ) ?? BIG_ZERO
-                      ).toNumber()
+                    ? getBalanceNumber(farm.bCakeUserData?.earnings)
+                    : getBalanceNumber(farm.boosted && proxy?.earnings.gt(0) ? proxy.earnings : farm.userData?.earnings)
                 }
               />
               <Multiplier {...multiplier} />
@@ -106,7 +104,7 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
               <Unstake>
                 {step === 2 ? (
                   <V2StakeButton
-                    onDone={() => {}}
+                    onDone={noop}
                     wrapperAddress={farm.bCakeWrapperAddress}
                     lpSymbol={farm.label}
                     pid={farm.pid}
