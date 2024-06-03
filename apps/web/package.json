@@ -112,6 +112,7 @@
     "next-seo": "^5.15.0",
     "next-themes": "^0.2.1",
     "nuqs": "^1.17.4",
+    "openapi-fetch": "^0.9.7",
     "polished": "^4.2.2",
     "qs": "^6.0.0",
     "react": "^18.2.0",
@@ -170,6 +171,8 @@
     "eslint-plugin-lodash": "^7.4.0",
     "happy-dom": "^13.3.8",
     "lint-staged": "^12.3.4",
+    "openapi-typescript": "7.0.0-rc.0",
+    "openapi-typescript-helpers": "^0.0.8",
     "postcss-scss": "^4.0.3",
     "postcss-syntax": "^0.36.2",
     "prettier": "^2.8.3",
@@ -182,6 +185,7 @@
     "stylelint-config-standard": "^25.0.0",
     "stylelint-config-styled-components": "^0.1.1",
     "tilg": "^0.1.1",
+    "typescript": "5.2.2",
     "vite-tsconfig-paths": "^4.0.3"
   }
 }
