@@ -1,5 +1,13 @@
 # @pancakeswap/stable-swap-sdk
 
+## 1.0.10
+
+### Patch Changes
+
+- Updated dependencies [edf4640]
+  - @pancakeswap/chains@0.4.4
+  - @pancakeswap/tokens@0.6.18
+
 ## 1.0.9
 
 ### Patch Changes

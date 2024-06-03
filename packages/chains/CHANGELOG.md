@@ -1,5 +1,11 @@
 # @pancakeswap/chains
 
+## 0.4.4
+
+### Patch Changes
+
+- edf4640: Migrate base subgraphs to the graph studio
+
 ## 0.4.3
 
 ### Patch Changes
