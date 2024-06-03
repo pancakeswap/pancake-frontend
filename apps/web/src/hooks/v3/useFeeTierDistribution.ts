@@ -1,14 +1,14 @@
 import { Currency, Token } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
-import { useCurrentBlock } from 'state/block/hooks'
+import { enableExplorer } from 'state/info/api/client'
 import { PoolState } from './types'
-import useFeeTierDistributionQuery from './useFeeTierDistributionQuery'
+import useFeeTierDistributionQuery, { useFeeTierDistributionQuery2 } from './useFeeTierDistributionQuery'
 
 import { usePool } from './usePools'
 
 // maximum number of blocks past which we consider the data stale
-const MAX_DATA_BLOCK_AGE = 20
+// const MAX_DATA_BLOCK_AGE = 20
 
 interface FeeTierDistribution {
   isPending: boolean
@@ -76,27 +76,28 @@ export function useFeeTierDistribution(
 }
 
 function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
-  const latestBlock = useCurrentBlock()
-  const { isPending, error, data } = useFeeTierDistributionQuery(token0?.address, token1?.address, 30000)
+  const { isPending, error, data } = useFeeTierDistributionQuery(
+    enableExplorer ? undefined : token0?.address,
+    token1?.address,
+    30000,
+  )
+
+  const explorerFeeTierResults = useFeeTierDistributionQuery2(
+    !enableExplorer ? undefined : token0?.address,
+    token1?.address,
+    30000,
+  )
 
   const { asToken0, asToken1, _meta } = data ?? {}
 
   return useMemo(() => {
-    if (!latestBlock || !_meta || !asToken0 || !asToken1) {
-      return {
-        isPending,
-        error,
-      }
-    }
-
-    if (latestBlock - (_meta?.block?.number ?? 0) > MAX_DATA_BLOCK_AGE) {
-      return {
-        isPending,
-        error,
-      }
-    }
-
-    const all = asToken0.concat(asToken1)
+    const all = enableExplorer
+      ? explorerFeeTierResults.data?.map((t) => ({
+          feeTier: t.feeTier,
+          totalValueLockedToken0: +t.tvlToken0,
+          totalValueLockedToken1: +t.tvlToken1,
+        })) ?? []
+      : asToken0?.concat(asToken1 ?? []) ?? []
 
     // sum tvl for token0 and token1 by fee tier
     const tvlByFeeTier = all.reduce(
@@ -156,10 +157,18 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
     }
 
     return {
-      isPending,
-      error,
+      isPending: enableExplorer ? explorerFeeTierResults.isPending : isPending,
+      error: enableExplorer ? explorerFeeTierResults.error : error,
       distributions,
       tvlByFeeTier,
     }
-  }, [_meta, asToken0, asToken1, isPending, error, latestBlock])
+  }, [
+    asToken0,
+    asToken1,
+    explorerFeeTierResults.data,
+    explorerFeeTierResults.isPending,
+    explorerFeeTierResults.error,
+    isPending,
+    error,
+  ])
 }
