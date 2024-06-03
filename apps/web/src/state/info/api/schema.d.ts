@@ -384,6 +384,23 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/cached/pools/v3/{chainName}/list/simple': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get simple v3 pools list */
+    get: operations['getCachedPoolsV3ByChainNameListSimple']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/cached/pools/v3/{chainName}/list/top': {
     parameters: {
       query?: never
@@ -637,43 +654,47 @@ export interface components {
      */
     Protocol: 'v2' | 'v3' | 'stable'
     v3TokenData: {
+      /** @description Token address */
       id: string
       symbol: string
       name: string
       decimals: number
-      txCount: number
+      totalTxCount: number
       txCount24h: number
       txCount7d: number
       priceUSD: string
       priceUSD24h: string
       priceUSD7d: string
-      volumeUSD: string
-      volumeUSD24h: string
-      volumeUSD7d: string
+      /** @description Total volume in USD */
+      totalVolumeUSD: string
+      volumeUSD24h: null | string
+      volumeUSD7d: null | string
       tvlUSD: string
       tvlUSD24h: string
       tvlUSD7d: string
       tvl: string
       tvl24h: string
       tvl7d: string
-      feeUSD: string
+      totalFeeUSD: string
       feeUSD24h: string
       feeUSD7d: string
     }
     v2TokenData: {
+      /** @description Token address */
       id: string
       symbol: string
       name: string
       decimals: number
-      txCount: number
+      totalTxCount: number
       txCount24h: number
       txCount7d: number
       priceUSD: string
       priceUSD24h: string
       priceUSD7d: string
-      volumeUSD: string
-      volumeUSD24h: string
-      volumeUSD7d: string
+      /** @description Total volume in USD */
+      totalVolumeUSD: string
+      volumeUSD24h: null | string
+      volumeUSD7d: null | string
       tvlUSD: string
       tvlUSD24h: string
       tvlUSD7d: string
@@ -694,17 +715,32 @@ export interface components {
     }
     ticks: {
       id: string
+      /** @description Tick index */
       tickIdx: number
       liquidityGross: string
       liquidityNet: string
     }[]
     positions: {
-      id: string
-      liquidity: string
-      owner: string
-      lowerTickIdx: number
-      upperTickIdx: number
-    }[]
+      /** @description Cursor for pagination start */
+      startCursor?: string
+      /** @description Cursor for pagination end */
+      endCursor?: string
+      /** @description Has next page */
+      hasNextPage?: boolean
+      /** @description Has previous page */
+      hasPrevPage?: boolean
+      rows: {
+        /** @description Position id */
+        id: string
+        liquidity: string
+        /** @description Ethereum address */
+        owner: string
+        /** @description Lower tick index */
+        lowerTickIdx: number
+        /** @description Upper tick index */
+        upperTickIdx: number
+      }[]
+    }
     /**
      * @description Chart period
      * @example 1D
@@ -1180,26 +1216,28 @@ export interface operations {
         }
         content: {
           'application/json': {
+            /** @description Token address */
             id: string
             symbol: string
             name: string
             decimals: number
-            txCount: number
+            totalTxCount: number
             txCount24h: number
             txCount7d: number
             priceUSD: string
             priceUSD24h: string
             priceUSD7d: string
-            volumeUSD: string
-            volumeUSD24h: string
-            volumeUSD7d: string
+            /** @description Total volume in USD */
+            totalVolumeUSD: string
+            volumeUSD24h: null | string
+            volumeUSD7d: null | string
             tvlUSD: string
             tvlUSD24h: string
             tvlUSD7d: string
             tvl: string
             tvl24h: string
             tvl7d: string
-            feeUSD: string
+            totalFeeUSD: string
             feeUSD24h: string
             feeUSD7d: string
           }[]
@@ -1225,19 +1263,21 @@ export interface operations {
         }
         content: {
           'application/json': {
+            /** @description Token address */
             id: string
             symbol: string
             name: string
             decimals: number
-            txCount: number
+            totalTxCount: number
             txCount24h: number
             txCount7d: number
             priceUSD: string
             priceUSD24h: string
             priceUSD7d: string
-            volumeUSD: string
-            volumeUSD24h: string
-            volumeUSD7d: string
+            /** @description Total volume in USD */
+            totalVolumeUSD: string
+            volumeUSD24h: null | string
+            volumeUSD7d: null | string
             tvlUSD: string
             tvlUSD24h: string
             tvlUSD7d: string
@@ -1266,19 +1306,21 @@ export interface operations {
         }
         content: {
           'application/json': {
+            /** @description Token address */
             id: string
             symbol: string
             name: string
             decimals: number
-            txCount: number
+            totalTxCount: number
             txCount24h: number
             txCount7d: number
             priceUSD: string
             priceUSD24h: string
             priceUSD7d: string
-            volumeUSD: string
-            volumeUSD24h: string
-            volumeUSD7d: string
+            /** @description Total volume in USD */
+            totalVolumeUSD: string
+            volumeUSD24h: null | string
+            volumeUSD7d: null | string
             tvlUSD: string
             tvlUSD24h: string
             tvlUSD7d: string
@@ -1316,16 +1358,21 @@ export interface operations {
   }
   getCachedPoolsPositionsByChainNameV3ByPool: {
     parameters: {
-      query?: never
+      query?: {
+        /** @description Cursor for pagination before */
+        before?: string
+        /** @description Cursor for pagination after */
+        after?: string
+        /** @description Ethereum address */
+        owner?: string
+        tick?: number
+      }
       header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Pool address */
         pool: string
-        /** @description Ethereum address */
-        owner: string
-        tick: number
       }
       cookie?: never
     }
@@ -1408,7 +1455,7 @@ export interface operations {
   getCachedPoolsList: {
     parameters: {
       query: {
-        orderBy: 'tvlUSD' | 'volumeUSD24H' | 'apr24H'
+        orderBy: 'tvlUSD' | 'volumeUSD24h' | 'apr24h' | 'volumeUSD7d'
         /** @description Array of protocol versions */
         protocols: ('v2' | 'v3' | 'stable') | ('v2' | 'v3' | 'stable')[]
         /** @description Array of chain names */
@@ -1458,6 +1505,7 @@ export interface operations {
         }
         content: {
           'application/json': {
+            /** @description Pool id */
             id: string
             token0: {
               id: string
@@ -1471,23 +1519,32 @@ export interface operations {
               name: string
               decimals: number
             }
-            volumeUSD: string
+            /** @description Total volume in USD */
+            totalVolumeUSD: string
+            /** @description Token0 price to token1 */
             token0Price: string
+            /** @description Token1 price to token0 */
             token1Price: string
+            /** @description Total value locked in token0 */
             tvlToken0: string
+            /** @description Total value locked in token1 */
             tvlToken1: string
             volumeUSD24h: null | string
             volumeUSD7d: null | string
+            /** @description Total value locked in USD */
             tvlUSD: string
             tvlUSD24h: null | string
             tvlUSD7d: null | string
+            /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
             feeTier: number
             liquidity: string
             sqrtPrice: string
             tick: null | number
-            feeUSD: string
-            protocolFeeUSD: string
+            /** @description Total fee in USD */
+            totalFeeUSD: string
+            /** @description Total protocol fee in USD */
+            totalProtocolFeeUSD: string
           }
         }
       }
@@ -1513,6 +1570,7 @@ export interface operations {
         }
         content: {
           'application/json': {
+            /** @description Pool id */
             id: string
             token0: {
               id: string
@@ -1526,16 +1584,23 @@ export interface operations {
               name: string
               decimals: number
             }
-            volumeUSD: string
+            /** @description Total volume in USD */
+            totalVolumeUSD: string
+            /** @description Token0 price to token1 */
             token0Price: string
+            /** @description Token1 price to token0 */
             token1Price: string
+            /** @description Total value locked in token0 */
             tvlToken0: string
+            /** @description Total value locked in token1 */
             tvlToken1: string
             volumeUSD24h: null | string
             volumeUSD7d: null | string
+            /** @description Total value locked in USD */
             tvlUSD: string
             tvlUSD24h: null | string
             tvlUSD7d: null | string
+            /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
           }
         }
@@ -1561,6 +1626,7 @@ export interface operations {
         }
         content: {
           'application/json': {
+            /** @description Pool id */
             id: string
             token0: {
               id: string
@@ -1574,20 +1640,82 @@ export interface operations {
               name: string
               decimals: number
             }
-            volumeUSD: string
+            /** @description Total volume in USD */
+            totalVolumeUSD: string
+            /** @description Token0 price to token1 */
             token0Price: string
+            /** @description Token1 price to token0 */
             token1Price: string
+            /** @description Total value locked in token0 */
             tvlToken0: string
+            /** @description Total value locked in token1 */
             tvlToken1: string
             volumeUSD24h: null | string
             volumeUSD7d: null | string
+            /** @description Total value locked in USD */
             tvlUSD: string
             tvlUSD24h: null | string
             tvlUSD7d: null | string
+            /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
             virtualPrice: string
             virtualPrice24h: null | string
             virtualPrice7d: null | string
+          }
+        }
+      }
+    }
+  }
+  getCachedPoolsV3ByChainNameListSimple: {
+    parameters: {
+      query?: {
+        /** @description Filter by Token0 address */
+        token0?: string
+        /** @description Filter by Token1 address */
+        token1?: string
+      }
+      header?: never
+      path: {
+        /** @description Chain name */
+        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            /** @description Cursor for pagination start */
+            startCursor?: string
+            /** @description Cursor for pagination end */
+            endCursor?: string
+            /** @description Has next page */
+            hasNextPage?: boolean
+            /** @description Has previous page */
+            hasPrevPage?: boolean
+            rows: {
+              id: string
+              feeTier: number
+              token0: {
+                id: string
+                symbol: string
+                name: string
+                decimals: number
+              }
+              token1: {
+                id: string
+                symbol: string
+                name: string
+                decimals: number
+              }
+              tvlUSD: string
+              tvlToken0: string
+              tvlToken1: string
+            }[]
           }
         }
       }
@@ -1614,6 +1742,7 @@ export interface operations {
         }
         content: {
           'application/json': {
+            /** @description Pool id */
             id: string
             token0: {
               id: string
@@ -1627,23 +1756,32 @@ export interface operations {
               name: string
               decimals: number
             }
-            volumeUSD: string
+            /** @description Total volume in USD */
+            totalVolumeUSD: string
+            /** @description Token0 price to token1 */
             token0Price: string
+            /** @description Token1 price to token0 */
             token1Price: string
+            /** @description Total value locked in token0 */
             tvlToken0: string
+            /** @description Total value locked in token1 */
             tvlToken1: string
             volumeUSD24h: null | string
             volumeUSD7d: null | string
+            /** @description Total value locked in USD */
             tvlUSD: string
             tvlUSD24h: null | string
             tvlUSD7d: null | string
+            /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
             feeTier: number
             liquidity: string
             sqrtPrice: string
             tick: null | number
-            feeUSD: string
-            protocolFeeUSD: string
+            /** @description Total fee in USD */
+            totalFeeUSD: string
+            /** @description Total protocol fee in USD */
+            totalProtocolFeeUSD: string
           }[]
         }
       }
@@ -1670,6 +1808,7 @@ export interface operations {
         }
         content: {
           'application/json': {
+            /** @description Pool id */
             id: string
             token0: {
               id: string
@@ -1683,16 +1822,23 @@ export interface operations {
               name: string
               decimals: number
             }
-            volumeUSD: string
+            /** @description Total volume in USD */
+            totalVolumeUSD: string
+            /** @description Token0 price to token1 */
             token0Price: string
+            /** @description Token1 price to token0 */
             token1Price: string
+            /** @description Total value locked in token0 */
             tvlToken0: string
+            /** @description Total value locked in token1 */
             tvlToken1: string
             volumeUSD24h: null | string
             volumeUSD7d: null | string
+            /** @description Total value locked in USD */
             tvlUSD: string
             tvlUSD24h: null | string
             tvlUSD7d: null | string
+            /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
           }[]
         }
@@ -1719,6 +1865,7 @@ export interface operations {
         }
         content: {
           'application/json': {
+            /** @description Pool id */
             id: string
             token0: {
               id: string
@@ -1732,16 +1879,23 @@ export interface operations {
               name: string
               decimals: number
             }
-            volumeUSD: string
+            /** @description Total volume in USD */
+            totalVolumeUSD: string
+            /** @description Token0 price to token1 */
             token0Price: string
+            /** @description Token1 price to token0 */
             token1Price: string
+            /** @description Total value locked in token0 */
             tvlToken0: string
+            /** @description Total value locked in token1 */
             tvlToken1: string
             volumeUSD24h: null | string
             volumeUSD7d: null | string
+            /** @description Total value locked in USD */
             tvlUSD: string
             tvlUSD24h: null | string
             tvlUSD7d: null | string
+            /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
             virtualPrice: string
             virtualPrice24h: null | string
@@ -2102,11 +2256,11 @@ export interface operations {
             totalVolumeUSD: string
             totalProtocolFeeUSD: string
             totalProtocolFeeUSD24h: string
+            totalTxCount: number
             totalFeeUSD: string
             totalFeeUSD24h: string
             tvlUSD24h: string
-            totalVolumeUSD24h: string
-            txCount: number
+            volumeUSD24h: string
             txCount24h: number
           }
         }

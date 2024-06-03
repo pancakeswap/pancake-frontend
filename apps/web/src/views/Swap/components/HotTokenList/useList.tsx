@@ -1,13 +1,13 @@
+import { ChainId } from '@pancakeswap/chains'
 import { PANCAKE_EXTENDED } from 'config/constants/lists'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { selectorByUrlsAtom } from 'state/lists/hooks'
 import { multiChainName } from 'state/info/constant'
-import { useTokenDatasQuery, useAllTokenHighLight } from 'state/info/hooks'
+import { useAllTokenHighLight, useTokenDatasQuery } from 'state/info/hooks'
+import { selectorByUrlsAtom } from 'state/lists/hooks'
 import { useTokensData } from 'views/V3Info/hooks'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { ChainId } from '@pancakeswap/chains'
-import { parseV3TokenData, parseV2TokenData } from './utils'
+import { parseV2TokenData, parseV3TokenData } from './utils'
 
 export const useChainWhiteList = (chainId?: number) => {
   const listsByUrl = useAtomValue(selectorByUrlsAtom)

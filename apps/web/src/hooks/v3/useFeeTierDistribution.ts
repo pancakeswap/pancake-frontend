@@ -2,8 +2,9 @@ import { Currency, Token } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
+import { enableExplorer } from 'state/info/api/client'
 import { PoolState } from './types'
-import useFeeTierDistributionQuery from './useFeeTierDistributionQuery'
+import useFeeTierDistributionQuery, { useFeeTierDistributionQuery2 } from './useFeeTierDistributionQuery'
 
 import { usePool } from './usePools'
 
@@ -77,7 +78,17 @@ export function useFeeTierDistribution(
 
 function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
   const latestBlock = useCurrentBlock()
-  const { isPending, error, data } = useFeeTierDistributionQuery(token0?.address, token1?.address, 30000)
+  const { isPending, error, data } = useFeeTierDistributionQuery(
+    enableExplorer ? undefined : token0?.address,
+    token1?.address,
+    30000,
+  )
+
+  const explorerFeeTierResults = useFeeTierDistributionQuery2(
+    !enableExplorer ? undefined : token0?.address,
+    token1?.address,
+    30000,
+  )
 
   const { asToken0, asToken1, _meta } = data ?? {}
 
@@ -99,23 +110,42 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
     const all = asToken0.concat(asToken1)
 
     // sum tvl for token0 and token1 by fee tier
-    const tvlByFeeTier = all.reduce(
-      (acc: Record<FeeAmount, [number | undefined, number | undefined]>, value) => {
-        // We can safely remove the `[value.feeTier]?.` after we update ethereum fee tier
-        // eslint-disable-next-line no-param-reassign
-        acc[value.feeTier][0] = (acc[value.feeTier]?.[0] ?? 0) + Number(value.totalValueLockedToken0)
-        // eslint-disable-next-line no-param-reassign
-        acc[value.feeTier][1] = (acc[value.feeTier]?.[1] ?? 0) + Number(value.totalValueLockedToken1)
+    const tvlByFeeTier = enableExplorer
+      ? {
+          [FeeAmount.LOWEST]: [
+            explorerFeeTierResults.data?.[FeeAmount.LOWEST]?.tvlToken0,
+            explorerFeeTierResults.data?.[FeeAmount.LOWEST]?.tvlToken1,
+          ],
+          [FeeAmount.LOW]: [
+            explorerFeeTierResults.data?.[FeeAmount.LOW]?.tvlToken0,
+            explorerFeeTierResults.data?.[FeeAmount.LOW]?.tvlToken1,
+          ],
+          [FeeAmount.MEDIUM]: [
+            explorerFeeTierResults.data?.[FeeAmount.MEDIUM]?.tvlToken0,
+            explorerFeeTierResults.data?.[FeeAmount.MEDIUM]?.tvlToken1,
+          ],
+          [FeeAmount.HIGH]: [
+            explorerFeeTierResults.data?.[FeeAmount.HIGH]?.tvlToken0,
+            explorerFeeTierResults.data?.[FeeAmount.HIGH]?.tvlToken1,
+          ],
+        }
+      : all.reduce(
+          (acc: Record<FeeAmount, [number | undefined, number | undefined]>, value) => {
+            // We can safely remove the `[value.feeTier]?.` after we update ethereum fee tier
+            // eslint-disable-next-line no-param-reassign
+            acc[value.feeTier][0] = (acc[value.feeTier]?.[0] ?? 0) + Number(value.totalValueLockedToken0)
+            // eslint-disable-next-line no-param-reassign
+            acc[value.feeTier][1] = (acc[value.feeTier]?.[1] ?? 0) + Number(value.totalValueLockedToken1)
 
-        return acc
-      },
-      {
-        [FeeAmount.LOWEST]: [undefined, undefined],
-        [FeeAmount.LOW]: [undefined, undefined],
-        [FeeAmount.MEDIUM]: [undefined, undefined],
-        [FeeAmount.HIGH]: [undefined, undefined],
-      },
-    )
+            return acc
+          },
+          {
+            [FeeAmount.LOWEST]: [undefined, undefined],
+            [FeeAmount.LOW]: [undefined, undefined],
+            [FeeAmount.MEDIUM]: [undefined, undefined],
+            [FeeAmount.HIGH]: [undefined, undefined],
+          },
+        )
 
     // sum total tvl for token0 and token1
     const [sumToken0Tvl, sumToken1Tvl] = Object.values(tvlByFeeTier).reduce(
@@ -156,10 +186,20 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
     }
 
     return {
-      isPending,
-      error,
+      isPending: enableExplorer ? explorerFeeTierResults.isPending : isPending,
+      error: enableExplorer ? explorerFeeTierResults.error : error,
       distributions,
       tvlByFeeTier,
     }
-  }, [_meta, asToken0, asToken1, isPending, error, latestBlock])
+  }, [
+    latestBlock,
+    _meta,
+    asToken0,
+    asToken1,
+    explorerFeeTierResults.data,
+    explorerFeeTierResults.isPending,
+    explorerFeeTierResults.error,
+    isPending,
+    error,
+  ])
 }
