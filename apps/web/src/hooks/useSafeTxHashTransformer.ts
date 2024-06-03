@@ -1,14 +1,22 @@
-import type { MultisigExecutionDetails, TransactionDetails } from '@safe-global/safe-gateway-typescript-sdk'
+import { ChainId } from '@pancakeswap/chains'
+import {
+  DetailedExecutionInfoType,
+  type MultisigExecutionDetails,
+  type TransactionDetails,
+} from '@safe-global/safe-gateway-typescript-sdk'
+import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
 import { useCallback, useMemo } from 'react'
+import { wait } from 'state/multicall/retry'
 import { Hash } from 'viem'
 import { useAccount } from 'wagmi'
 
 export const useSafeTxHashTransformer = () => {
-  const { connector } = useAccount()
+  const { connector, chainId } = useAccount()
   const isGnosisSafe = useMemo(() => connector?.name === 'Safe', [connector])
+  const confirmationSeconds = chainId ? AVERAGE_CHAIN_BLOCK_TIMES[chainId] : AVERAGE_CHAIN_BLOCK_TIMES[ChainId.BSC]
 
   return useCallback(
-    async <T = Hash | TransactionDetails>(safeTxHash: T): Promise<Hash> => {
+    async <T = Hash | TransactionDetails>(safeTxHash: T, confirmationsRequired = 1): Promise<Hash> => {
       console.debug('debug call useSafeTxHashTransformer', safeTxHash)
       if (!isGnosisSafe) return safeTxHash as Hash
       let hash = safeTxHash as Hash
@@ -27,12 +35,15 @@ export const useSafeTxHashTransformer = () => {
           return safeTxHash as Hash
         }
 
+        await wait(confirmationSeconds * confirmationsRequired * 1000)
         const provider: any = await connector!.getProvider()
         const resp = (await provider.sdk.txs.getBySafeTxHash(hash)) as TransactionDetails
 
-        if (resp.detailedExecutionInfo && (resp.detailedExecutionInfo as MultisigExecutionDetails)?.safeTxHash) {
+        if (resp.txHash) return resp.txHash as Hash
+
+        if (resp.detailedExecutionInfo && resp.detailedExecutionInfo.type === DetailedExecutionInfoType.MULTISIG) {
           console.debug('debug detailedExecutionInfo', resp.detailedExecutionInfo)
-          return (resp.detailedExecutionInfo as MultisigExecutionDetails).safeTxHash as Hash
+          return resp.detailedExecutionInfo.safeTxHash as Hash
         }
 
         return resp.txHash as Hash
