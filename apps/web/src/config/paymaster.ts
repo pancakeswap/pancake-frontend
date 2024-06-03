@@ -23,7 +23,7 @@ export const paymasterTokens: Currency[] = [
   zksyncTokens.wethe,
 ]
 
-export const paymasterInfo: { [tokenAddress: Address]: { discount: `-${number}%` | 'FREE' } } = {
+export const paymasterInfo: { [gasTokenAddress: Address]: { discount: `-${number}%` | 'FREE' } } = {
   [zksyncTokens.wbtc.address]: {
     discount: 'FREE', // Example: -20%, FREE
   },
