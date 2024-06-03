@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "আপনার নাম অবশ্যই কমপক্ষে 3 এবং সর্বাধিক 15 স্ট্যান্ডার্ড অক্ষর এবং সংখ্যা যুক্ত হতে হবে। নিশ্চিত করুন বিকল্পে ক্লিক করলে আপনি এটি আর পরিবর্তন করতে পারবেন না।",
   "Unable to verify username": "ইউজারনেম যাচাই করা যাবে না",
   "Created %dateCreated% ago": "%dateCreated% আগে তৈরি করা হয়েছে",
+  "Updated %dateUpdated% ago": "Updated %dateUpdated% ago",
   "Add %assetA%-%assetB% Liquidity": "%assetA%-%assetB% তারল্য যোগ করুন",
   "$120,000 in Prizes!": "$120,000 পুরস্কার!",
   "Now Live!": "এখন লাইভ!",

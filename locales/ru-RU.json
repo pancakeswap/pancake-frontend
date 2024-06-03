@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "Длина имени должна быть в пределах от 3 до 15 букв и (или) цифр. После подтверждения дальнейшие изменения будут невозможны.",
   "Unable to verify username": "Не удается проверить имя пользователя",
   "Created %dateCreated% ago": "Создано %dateCreated% назад",
+  "Updated %dateUpdated% ago": "Обновлено %dateUpdated% назад",
   "Add %assetA%-%assetB% Liquidity": "Добавить ликвидность %assetA%-%assetB%",
   "$120,000 in Prizes!": "Призовой фонд на 120 000 долл. США!",
   "Now Live!": "Уже идет!",

@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "يجب ألا يقل طول اسمك عن 3 أحرف وأرقام قياسية وألا يزيد عن 15 حرفًا ورقمًا قياسيًا. ولا يمكنك تغييره بعد النقر على \"تأكيد\".",
   "Unable to verify username": "يتعذَّر التحقُّق من اسم المستخدم",
   "Created %dateCreated% ago": "تم الإنشاء منذ %dateCreated%",
+  "Updated %dateUpdated% ago": "Updated %dateUpdated% ago",
   "Add %assetA%-%assetB% Liquidity": "إضافة سيولة من %assetA%-%assetB%",
   "$120,000 in Prizes!": "جوائز بقيمة 120000 دولار!",
   "Now Live!": "جارية الآن!",

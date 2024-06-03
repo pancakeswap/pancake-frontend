@@ -1,6 +1,5 @@
 import Card from 'components/Card'
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import { RowBetween } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
@@ -8,8 +7,6 @@ import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { styled } from 'styled-components'
 import { VolumeWindow } from '../../types'
 import { LoadingRows } from '../Loader'
-
-dayjs.extend(utc)
 
 const DEFAULT_HEIGHT = 300
 

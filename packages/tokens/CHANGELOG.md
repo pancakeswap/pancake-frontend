@@ -1,5 +1,24 @@
 # @pancakeswap/tokens
 
+## 0.6.18
+
+### Patch Changes
+
+- Updated dependencies [edf4640]
+  - @pancakeswap/chains@0.4.4
+  - @pancakeswap/sdk@5.8.4
+  - @pancakeswap/token-lists@0.0.11
+
+## 0.6.17
+
+### Patch Changes
+
+- b57fd91: Add ONEPUNCH token on Linea
+- 755bb18: New FURY Token. 2 BSC Farms. 3 zkSync Farms. New Gauges.
+- 502d961: Add MNT and mETH tokens with their farms and gauges on Ethereum
+- Updated dependencies [e99c216]
+  - @pancakeswap/sdk@5.8.3
+
 ## 0.6.16
 
 ### Patch Changes

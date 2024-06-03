@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "உங்கள் பெயர் குறைந்தது 3 மற்றும் அதிகபட்சம் 15 தரநிலையான எழுத்துக்கள் மற்றும் எண்களில் இருக்க வேண்டும். உறுதி என்பதைக் கிளிக் செய்த பின் இதை மாற்ற முடியாது.",
   "Unable to verify username": "பயனர்பெயரை சரிபார்க்க முடியவில்லை",
   "Created %dateCreated% ago": "%dateCreated% க்கு முன் உருவாக்கப்பட்டது",
+  "Updated %dateUpdated% ago": "Updated %dateUpdated% ago",
   "Add %assetA%-%assetB% Liquidity": "%assetA%-%assetB% லிக்விடிட்டியைச் சேர்",
   "$120,000 in Prizes!": "பரிசுகளில் $120,000!",
   "Now Live!": "இப்போது நேரலையில்!",

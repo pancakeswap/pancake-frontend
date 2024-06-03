@@ -159,7 +159,6 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
             </>
           )}
         </PoolControls>
-        <V3SubgraphHealthIndicator />
       </Page>
     </>
   )

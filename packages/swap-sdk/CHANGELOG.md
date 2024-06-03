@@ -1,5 +1,23 @@
 # @pancakeswap/sdk
 
+## 5.8.4
+
+### Patch Changes
+
+- Updated dependencies [edf4640]
+  - @pancakeswap/chains@0.4.4
+  - @pancakeswap/swap-sdk-evm@1.0.1
+  - @pancakeswap/v2-sdk@1.0.1
+
+## 5.8.3
+
+### Patch Changes
+
+- e99c216: Introduce v2-sdk and swap-sdk-evm
+- Updated dependencies [e99c216]
+  - @pancakeswap/swap-sdk-evm@1.0.0
+  - @pancakeswap/v2-sdk@1.0.0
+
 ## 5.8.2
 
 ### Patch Changes

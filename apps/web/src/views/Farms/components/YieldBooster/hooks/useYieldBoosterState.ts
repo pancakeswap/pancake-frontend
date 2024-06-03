@@ -4,7 +4,7 @@ import { useBCakeFarmBoosterContract } from 'hooks/useContract'
 import { useReadContract } from '@pancakeswap/wagmi'
 import { useCallback } from 'react'
 import { useFarmUser } from 'state/farms/hooks'
-import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
+import { useBCakeProxyContractAddress } from 'hooks/useBCakeProxyContractAddress'
 import { useUserBoosterStatus } from 'views/Farms/hooks/useUserBoosterStatus'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
 

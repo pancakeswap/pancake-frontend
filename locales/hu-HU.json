@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "A neve legalább 3, legfeljebb 15 szabványos betűből és számból álljon. Miután a Megerősítés gombra kattint, ezt már nem módosíthatja.",
   "Unable to verify username": "Nem sikerült igazolni a felhasználónevet",
   "Created %dateCreated% ago": "Létrehozva ekkor: %dateCreated%",
+  "Updated %dateUpdated% ago": "Updated %dateUpdated% ago",
   "Add %assetA%-%assetB% Liquidity": "%assetA%%assetB% likviditás hozzáadása",
   "$120,000 in Prizes!": "120,000 dollár nyeremény!",
   "Now Live!": "Most élőben!",

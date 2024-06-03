@@ -1,8 +1,8 @@
 import { Currency, CurrencyAmount, Pair, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 
-import { useMultipleContractSingleData } from '../state/multicall/hooks'
-import { wrappedCurrency } from '../utils/wrappedCurrency'
+import { useMultipleContractSingleData } from 'state/multicall/hooks'
+import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { useActiveChainId } from './useActiveChainId'
 
 export enum PairState {

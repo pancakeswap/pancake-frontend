@@ -2,7 +2,7 @@
 import { gql } from 'graphql-request'
 import { Block, TokenData } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
-import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
+import { getAmountChange, getPercentChange } from 'utils/infoDataHelpers'
 import {
   MultiChainNameExtend,
   STABLESWAP_SUBGRAPHS_START_BLOCK,
