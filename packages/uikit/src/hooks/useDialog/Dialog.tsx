@@ -1,7 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { useMemo, useState } from "react";
 import styled from "styled-components";
-import { BoxProps } from "../../components/Box";
+import { BoxProps, Flex } from "../../components/Box";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import FlexGap from "../../components/Layouts/FlexGap";
@@ -84,12 +84,14 @@ export const Dialog: React.FC<DialogProps> = ({
               placeholder={placeholder}
             />
           ) : null}
-          <FlexGap gap="12px">
+          <Flex>
             <Button onClick={handleCancel} ml="auto" variant="secondary">
               {cancelText ?? t("Cancel")}
             </Button>
-            <Button onClick={handleOk}>{confirmText ?? t("OK")}</Button>
-          </FlexGap>
+            <Button ml="12px" onClick={handleOk}>
+              {confirmText ?? t("OK")}
+            </Button>
+          </Flex>
         </FlexGap>
       </Modal>
     </StyledModalV2>
