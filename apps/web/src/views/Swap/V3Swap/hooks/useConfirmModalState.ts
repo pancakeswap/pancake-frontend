@@ -330,7 +330,6 @@ export const useConfirmModalState = (
   amountToApprove: CurrencyAmount<Token> | undefined,
   spender: Address | undefined,
 ) => {
-  const { t } = useTranslation()
   const { actions, confirmState, txHash, errorMessage, resetState } = useConfirmActions(trade, amountToApprove, spender)
   const preConfirmState = usePreviousValue(confirmState)
   const [confirmSteps, setConfirmSteps] = useState<ConfirmModalState[]>()
