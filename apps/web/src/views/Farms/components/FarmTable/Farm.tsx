@@ -1,10 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { zksyncTokens } from '@pancakeswap/tokens'
 import { Box, Flex, Link, Text } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { GiftTooltip } from 'components/GiftTooltip/GiftTooltip'
 import { SwellTooltip } from 'components/SwellTooltip/SwellTooltip'
 import { TokenPairImage } from 'components/TokenImage'
+import { USDPlusWarningTooltip } from 'components/USDPlusWarningTooltip'
 import { useHasSwellReward } from 'hooks/useHasSwellReward'
+import { useMemo } from 'react'
 import { Address, isAddressEqual } from 'viem'
 import { bsc } from 'viem/chains'
 
@@ -27,6 +30,9 @@ export const FarmCell: React.FunctionComponent<
 }) => {
   const { t } = useTranslation()
   const hasSwellReward = useHasSwellReward(lpAddress)
+  const hasUsdPlusWarning = useMemo(() => {
+    return zksyncTokens.usdPlus.equals(token) || zksyncTokens.usdPlus.equals(quoteToken)
+  }, [token, quoteToken])
 
   return (
     <Flex alignItems="center">
@@ -71,6 +77,7 @@ export const FarmCell: React.FunctionComponent<
           <SwellTooltip />
         </Box>
       )}
+      {hasUsdPlusWarning ? <USDPlusWarningTooltip /> : null}
     </Flex>
   )
 }
