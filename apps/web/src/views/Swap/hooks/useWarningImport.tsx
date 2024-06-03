@@ -2,8 +2,8 @@ import { Token } from '@pancakeswap/sdk'
 import { useModal } from '@pancakeswap/uikit'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useRouter } from 'next/router'
 import { useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
 import shouldShowSwapWarning from 'utils/shouldShowSwapWarning'
 
 import ImportTokenWarningModal from 'components/ImportTokenWarningModal'
@@ -65,6 +65,7 @@ export default function useWarningImport() {
   const swapWarningHandler = useCallback(
     (currencyInput) => {
       const showSwapWarning = shouldShowSwapWarning(chainId, currencyInput)
+      console.debug('debug showSwapWarning', showSwapWarning)
       if (showSwapWarning) {
         setSwapWarningCurrency(currencyInput)
       } else {
