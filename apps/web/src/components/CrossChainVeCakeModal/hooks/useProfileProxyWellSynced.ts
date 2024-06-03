@@ -60,7 +60,7 @@ export const useProfileProxy = (
   const { address: account } = useAccount()
   const enabled = Boolean(account)
   const { data, isLoading } = useQuery({
-    queryKey: [account, 'profileProxy'],
+    queryKey: [account, 'profileProxy', targetChainId],
 
     queryFn: () => {
       if (!account) return undefined
