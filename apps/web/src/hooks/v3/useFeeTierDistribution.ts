@@ -1,7 +1,6 @@
 import { Currency, Token } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
-import { useCurrentBlock } from 'state/block/hooks'
 import { enableExplorer } from 'state/info/api/client'
 import { PoolState } from './types'
 import useFeeTierDistributionQuery, { useFeeTierDistributionQuery2 } from './useFeeTierDistributionQuery'
@@ -9,7 +8,7 @@ import useFeeTierDistributionQuery, { useFeeTierDistributionQuery2 } from './use
 import { usePool } from './usePools'
 
 // maximum number of blocks past which we consider the data stale
-const MAX_DATA_BLOCK_AGE = 20
+// const MAX_DATA_BLOCK_AGE = 20
 
 interface FeeTierDistribution {
   isPending: boolean
@@ -77,7 +76,6 @@ export function useFeeTierDistribution(
 }
 
 function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
-  const latestBlock = useCurrentBlock()
   const { isPending, error, data } = useFeeTierDistributionQuery(
     enableExplorer ? undefined : token0?.address,
     token1?.address,
@@ -93,59 +91,32 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
   const { asToken0, asToken1, _meta } = data ?? {}
 
   return useMemo(() => {
-    if (!latestBlock || !_meta || !asToken0 || !asToken1) {
-      return {
-        isPending,
-        error,
-      }
-    }
-
-    if (latestBlock - (_meta?.block?.number ?? 0) > MAX_DATA_BLOCK_AGE) {
-      return {
-        isPending,
-        error,
-      }
-    }
-
-    const all = asToken0.concat(asToken1)
+    const all = enableExplorer
+      ? explorerFeeTierResults.data?.map((t) => ({
+          feeTier: t.feeTier,
+          totalValueLockedToken0: +t.tvlToken0,
+          totalValueLockedToken1: +t.tvlToken1,
+        })) ?? []
+      : asToken0?.concat(asToken1 ?? []) ?? []
 
     // sum tvl for token0 and token1 by fee tier
-    const tvlByFeeTier = enableExplorer
-      ? {
-          [FeeAmount.LOWEST]: [
-            explorerFeeTierResults.data?.[FeeAmount.LOWEST]?.tvlToken0,
-            explorerFeeTierResults.data?.[FeeAmount.LOWEST]?.tvlToken1,
-          ],
-          [FeeAmount.LOW]: [
-            explorerFeeTierResults.data?.[FeeAmount.LOW]?.tvlToken0,
-            explorerFeeTierResults.data?.[FeeAmount.LOW]?.tvlToken1,
-          ],
-          [FeeAmount.MEDIUM]: [
-            explorerFeeTierResults.data?.[FeeAmount.MEDIUM]?.tvlToken0,
-            explorerFeeTierResults.data?.[FeeAmount.MEDIUM]?.tvlToken1,
-          ],
-          [FeeAmount.HIGH]: [
-            explorerFeeTierResults.data?.[FeeAmount.HIGH]?.tvlToken0,
-            explorerFeeTierResults.data?.[FeeAmount.HIGH]?.tvlToken1,
-          ],
-        }
-      : all.reduce(
-          (acc: Record<FeeAmount, [number | undefined, number | undefined]>, value) => {
-            // We can safely remove the `[value.feeTier]?.` after we update ethereum fee tier
-            // eslint-disable-next-line no-param-reassign
-            acc[value.feeTier][0] = (acc[value.feeTier]?.[0] ?? 0) + Number(value.totalValueLockedToken0)
-            // eslint-disable-next-line no-param-reassign
-            acc[value.feeTier][1] = (acc[value.feeTier]?.[1] ?? 0) + Number(value.totalValueLockedToken1)
+    const tvlByFeeTier = all.reduce(
+      (acc: Record<FeeAmount, [number | undefined, number | undefined]>, value) => {
+        // We can safely remove the `[value.feeTier]?.` after we update ethereum fee tier
+        // eslint-disable-next-line no-param-reassign
+        acc[value.feeTier][0] = (acc[value.feeTier]?.[0] ?? 0) + Number(value.totalValueLockedToken0)
+        // eslint-disable-next-line no-param-reassign
+        acc[value.feeTier][1] = (acc[value.feeTier]?.[1] ?? 0) + Number(value.totalValueLockedToken1)
 
-            return acc
-          },
-          {
-            [FeeAmount.LOWEST]: [undefined, undefined],
-            [FeeAmount.LOW]: [undefined, undefined],
-            [FeeAmount.MEDIUM]: [undefined, undefined],
-            [FeeAmount.HIGH]: [undefined, undefined],
-          },
-        )
+        return acc
+      },
+      {
+        [FeeAmount.LOWEST]: [undefined, undefined],
+        [FeeAmount.LOW]: [undefined, undefined],
+        [FeeAmount.MEDIUM]: [undefined, undefined],
+        [FeeAmount.HIGH]: [undefined, undefined],
+      },
+    )
 
     // sum total tvl for token0 and token1
     const [sumToken0Tvl, sumToken1Tvl] = Object.values(tvlByFeeTier).reduce(
@@ -192,8 +163,6 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
       tvlByFeeTier,
     }
   }, [
-    latestBlock,
-    _meta,
     asToken0,
     asToken1,
     explorerFeeTierResults.data,
