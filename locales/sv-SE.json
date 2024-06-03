@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "Ditt namn måste vara åtminstone 3 och som mest 15 vanliga bokstäver och siffror långt. Du kan inte ändra detta när du väl klickar på Bekräfta.",
   "Unable to verify username": "Det går inte att verifiera användarnamnet",
   "Created %dateCreated% ago": "Skapad för %dateCreated% sedan",
+  "Updated %dateUpdated% ago": "Updated %dateUpdated% ago",
   "Add %assetA%-%assetB% Liquidity": "Lägg till %assetA%-%assetB%-likviditet",
   "$120,000 in Prizes!": "120 000 dollar i prispotten!",
   "Now Live!": "Pågår nu!",

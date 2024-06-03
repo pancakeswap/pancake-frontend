@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "名前は英数字で、3～15文字です。一度確定をクリックすると、名前を変更することができなくなります。",
   "Unable to verify username": "ユーザー名を確認できませんでした",
   "Created %dateCreated% ago": "%dateCreated%前に作成されました",
+  "Updated %dateUpdated% ago": "Updated %dateUpdated% ago",
   "Add %assetA%-%assetB% Liquidity": "%assetA%-%assetB%流動性を追加",
   "$120,000 in Prizes!": "合計賞金120,000ドル！",
   "Now Live!": "開催中！",

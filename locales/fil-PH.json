@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "Ang iyong pangalan ay dapat na hindi bababa sa 3 at pinakamarami na ang 15 karaniwang mga titik at numero ang haba. Hindi mo ito mababago sa sandaling na-click mo ang Kumpirmahin.",
   "Unable to verify username": "Hindi ma-verify ang username",
   "Created %dateCreated% ago": "Ginawa %dateCreated% ang nakalipas",
+  "Updated %dateUpdated% ago": "Updated %dateUpdated% ago",
   "Add %assetA%-%assetB% Liquidity": "Magdagdag ng %assetA%-%assetB% Liquidity",
   "$120,000 in Prizes!": "$120,000 sa mga Papremyo!",
   "Now Live!": "Live Ngayon!",

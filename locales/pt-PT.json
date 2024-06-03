@@ -450,6 +450,7 @@
   "Your name must be at least 3 and at most 15 standard letters and numbers long. You can’t change this once you click Confirm.": "O seu nome deve ter no mínimo 3 e no máximo 15 letras e números standard. Não pode alterá-lo depois de clicar em Confirmar.",
   "Unable to verify username": "Não foi possível verificar o nome de utilizador",
   "Created %dateCreated% ago": "Criado há %dateCreated%",
+  "Updated %dateUpdated% ago": "Updated %dateUpdated% ago",
   "Add %assetA%-%assetB% Liquidity": "Adicionar liquidez %assetA%-%assetB%",
   "$120,000 in Prizes!": "120.000 dólares em Prémios!",
   "Now Live!": "Agora ao vivo!",
