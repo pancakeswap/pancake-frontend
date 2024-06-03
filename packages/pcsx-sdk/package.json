@@ -20,7 +20,7 @@
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/permit2-sdk": "workspace:*",
     "dayjs": "^1.11.10",
-    "viem": "2.9.19"
+    "viem": "2.13.3"
   },
   "devDependencies": {
     "tsup": "^6.7.0"
