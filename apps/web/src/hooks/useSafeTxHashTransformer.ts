@@ -35,8 +35,8 @@ export const useSafeTxHashTransformer = () => {
           return safeTxHash as Hash
         }
 
-        await wait(confirmationSeconds * confirmationsRequired * 1000)
         const provider: any = await connector!.getProvider()
+        await wait(confirmationSeconds * confirmationsRequired * 1000)
         const resp = (await provider.sdk.txs.getBySafeTxHash(hash)) as TransactionDetails
 
         if (resp.txHash) return resp.txHash as Hash
