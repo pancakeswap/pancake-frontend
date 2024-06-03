@@ -27,7 +27,7 @@
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/swap-sdk-evm": "workspace:*",
     "tiny-invariant": "^1.3.0",
-    "viem": "2.9.19"
+    "viem": "2.13.3"
   },
   "devDependencies": {
     "@pancakeswap/tsconfig": "workspace:*",
