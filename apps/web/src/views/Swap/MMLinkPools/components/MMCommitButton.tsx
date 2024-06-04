@@ -29,7 +29,7 @@ interface SwapCommitButtonPropsType {
   account: Address | undefined
   showWrap: boolean
   wrapInputError?: string
-  onWrap?: () => Promise<void>
+  onWrap?: () => Promise<unknown>
   wrapType: WrapType
   currencies: {
     INPUT?: Currency
