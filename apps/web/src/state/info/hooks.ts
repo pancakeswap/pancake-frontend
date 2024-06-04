@@ -438,18 +438,18 @@ export const useAllTokenDataQuery = (): {
             },
           })
           .then((res) => res.data)
-      }
-
-      data_ = await explorerApiClient
-        .GET('/cached/tokens/v2/{chainName}/list/top', {
-          signal,
-          params: {
-            path: {
-              chainName,
+      } else {
+        data_ = await explorerApiClient
+          .GET('/cached/tokens/v2/{chainName}/list/top', {
+            signal,
+            params: {
+              path: {
+                chainName,
+              },
             },
-          },
-        })
-        .then((res) => res.data)
+          })
+          .then((res) => res.data)
+      }
 
       for (const d of data_) {
         final[d.id] = {
@@ -479,6 +479,7 @@ export const useAllTokenDataQuery = (): {
     ...QUERY_SETTINGS_IMMUTABLE,
     ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
   })
+
   return data ?? {}
 }
 
