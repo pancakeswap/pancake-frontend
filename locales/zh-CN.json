@@ -3336,7 +3336,7 @@
   "USDV Disclaimer": " USDV 免责声明",
   "Verified USD ($USDV), is a product offered by USDV.money and is not associated with PancakeSwap.": "Verified USD ($USDV) 为 USDV.money 提供的产品，与 PancakeSwap 无关。",
   "By checking this box, I understand that I am using USDV at my own risk. I accept full responsibility for any losses incurred due to my actions.": "选中此复选框，即表示我了解将由我自行承担使用 USDV 的风险。我对由我的行为所造成的任何损失承担全部责任。",
-  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "将资金存入该资金库的用户将获得由 Swell 提供的珍珠。要跟踪您的珍珠余额，请访问",
+  "Users who deposit funds into this vault will earn Pearls by Swell. To track your Pearls balance, visit": "将资金存入该资金库的用户将获得由 Swell 提供的珍珠。要查询您的珍珠余额，请前往",
   "Swell's website": "Swell 的网站",
   "Done": "完成",
   "Single-Sided Strategy": "单边策略",
@@ -3360,5 +3360,6 @@
   "Match your Uni volume on PancakeSwap to get a refund of up to": "Match your Uni volume on PancakeSwap to get a refund of up to",
   "$8M USD": "$8M USD",
   "in Uniswap interface fees paid": "in Uniswap interface fees paid",
-  "Cakepie": "Cakepie"
+  "Cakepie": "Cakepie",
+  "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's": "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's"
 }
