@@ -1,5 +1,14 @@
 # games
 
+## 0.1.13
+
+### Patch Changes
+
+- Updated dependencies [edc3f30]
+  - @pancakeswap/utils@6.0.7
+  - @pancakeswap/hooks@0.0.29
+  - @pancakeswap/uikit@0.65.10
+
 ## 0.1.12
 
 ### Patch Changes

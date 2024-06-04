@@ -1,5 +1,14 @@
 # @pancakeswap/gauges
 
+## 1.2.7
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/v3-sdk@3.8.6
+  - @pancakeswap/tokens@0.6.19
+
 ## 1.2.6
 
 ### Patch Changes

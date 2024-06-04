@@ -1,5 +1,11 @@
 # scripts
 
+## 0.0.5
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+
 ## 0.0.4
 
 ### Patch Changes

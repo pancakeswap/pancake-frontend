@@ -1,5 +1,13 @@
 # @pancakeswap/permit2-sdk
 
+## 1.0.7
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/sdk@5.8.5
+
 ## 1.0.6
 
 ### Patch Changes
