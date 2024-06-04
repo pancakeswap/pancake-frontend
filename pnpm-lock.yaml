@@ -712,6 +712,9 @@ importers:
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
+      easymde:
+        specifier: 2.16.1
+        version: 2.16.1
       jotai:
         specifier: ^2.4.3
         version: 2.5.1(@types/react@18.2.37)(react@18.2.0)
@@ -730,6 +733,9 @@ importers:
       react:
         specifier: ^18.2.0
         version: 18.2.0
+      react-datepicker:
+        specifier: ^4.8.0
+        version: 4.21.0(react-dom@18.2.0)(react@18.2.0)
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
