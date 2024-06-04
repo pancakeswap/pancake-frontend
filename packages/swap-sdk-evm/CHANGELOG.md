@@ -1,5 +1,11 @@
 # @pancakeswap/swap-sdk-evm
 
+## 1.0.2
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+
 ## 1.0.1
 
 ### Patch Changes

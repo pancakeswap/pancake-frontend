@@ -1,5 +1,13 @@
 # @pancakeswap/pools
 
+## 5.1.25
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+  - @pancakeswap/tokens@0.6.19
+  - @pancakeswap/token-lists@0.0.11
+
 ## 5.1.24
 
 ### Patch Changes

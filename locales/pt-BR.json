@@ -3360,5 +3360,6 @@
   "Match your Uni volume on PancakeSwap to get a refund of up to": "Combine seu volume Uni no PancakeSwap para obter um reembolso de até",
   "$8M USD": "US$8M",
   "in Uniswap interface fees paid": "taxas pagas na interface da Uniswap",
-  "Cakepie": "Cakepie"
+  "Cakepie": "Cakepie",
+  "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's": "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's"
 }

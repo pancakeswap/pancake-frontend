@@ -1,5 +1,15 @@
 # @pancakeswap/ifos
 
+## 3.0.12
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/sdk@5.8.5
+  - @pancakeswap/utils@6.0.7
+  - @pancakeswap/tokens@0.6.19
+
 ## 3.0.11
 
 ### Patch Changes

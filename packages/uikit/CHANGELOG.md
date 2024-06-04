@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.65.10
+
+### Patch Changes
+
+- @pancakeswap/hooks@0.0.29
+
 ## 0.65.9
 
 ### Patch Changes
