@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { queryOptions, type QueryFunction } from '@tanstack/react-query'
 import createClient, { type MaybeOptionalInit, type Middleware } from 'openapi-fetch'
 import type { HasRequiredKeys, PathsWithMethod } from 'openapi-typescript-helpers'
-import { createQueryKey } from 'views/BuyCrypto/types'
+import { createQueryKey } from 'utils/reactQuery'
 import type { paths } from './schema.d'
 
 export const enableExplorer = true
