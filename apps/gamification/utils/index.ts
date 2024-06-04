@@ -54,3 +54,8 @@ export function getBlockExploreName(chainIdOverride?: number) {
 export function calculateGasMargin(value: bigint, margin = 1000n): bigint {
   return (value * (10000n + margin)) / 10000n
 }
+
+export function getBscScanLinkForNft(collectionAddress: string | undefined, tokenId?: string): string {
+  if (!collectionAddress) return ''
+  return `${bsc.blockExplorers.default.url}/token/${collectionAddress}?a=${tokenId}`
+}
