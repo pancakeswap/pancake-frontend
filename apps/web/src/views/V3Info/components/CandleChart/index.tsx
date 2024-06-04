@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import useTheme from 'hooks/useTheme'
 import { ColorType, IChartApi, createChart } from 'lightweight-charts'
-import React, { Dispatch, ReactNode, SetStateAction, useEffect, useRef, useState } from 'react'
+import React, { Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import Card from '../Card'
 import { RowBetween } from '../Row'
@@ -60,85 +60,90 @@ const CandleChart = ({
   const chartRef = useRef<HTMLDivElement>(null)
   const [chartCreated, setChart] = useState<IChartApi | undefined>()
 
-  // const handleResize = useCallback(() => {
-  //   if (chartCreated && chartRef?.current?.parentElement) {
-  //     chartCreated.resize(chartRef.current.parentElement.clientWidth - 32, height)
-  //     chartCreated.timeScale().fitContent()
-  //     chartCreated.timeScale().scrollToPosition(0, false)
-  //   }
-  // }, [chartCreated, chartRef, height])
+  const handleResize = useCallback(() => {
+    if (chartCreated && chartRef?.current?.parentElement) {
+      chartCreated.resize(chartRef.current.parentElement.clientWidth - 32, height)
+      chartCreated.timeScale().fitContent()
+      chartCreated.timeScale().scrollToPosition(0, false)
+    }
+  }, [chartCreated, chartRef, height])
 
-  // // add event listener for resize
-  // const isClient = typeof window === 'object'
-  // useEffect(() => {
-  //   if (!isClient) {
-  //     return
-  //   }
-  //   window.addEventListener('resize', handleResize)
-  //   // eslint-disable-next-line consistent-return
-  //   return () => window.removeEventListener('resize', handleResize)
-  // }, [isClient, chartRef, handleResize]) // Empty array ensures that effect is only run on mount and unmount
+  // add event listener for resize
+  const isClient = typeof window === 'object'
+  useEffect(() => {
+    if (!isClient) {
+      return
+    }
+    window.addEventListener('resize', handleResize)
+    // eslint-disable-next-line consistent-return
+    return () => window.removeEventListener('resize', handleResize)
+  }, [isClient, chartRef, handleResize]) // Empty array ensures that effect is only run on mount and unmount
 
   // if chart not instantiated in canvas, create it
   useEffect(() => {
-    if (!chartRef.current || !data) return
+    if (!chartCreated && data && data?.length > 0 && !!chartRef?.current?.parentElement) {
+      const chart = createChart(chartRef.current, {
+        height,
+        width: chartRef.current.parentElement.clientWidth - 32,
+        layout: {
+          background: {
+            type: ColorType.Solid,
+            color: 'transparent',
+          },
+          textColor: '#565A69',
+          fontFamily: 'Inter var',
+          fontSize: 14,
+        },
+        rightPriceScale: {
+          scaleMargins: {
+            top: 0.1,
+            bottom: 0.1,
+          },
+          borderVisible: false,
+        },
+        timeScale: {
+          borderVisible: false,
+          secondsVisible: true,
+          tickMarkFormatter: (unixTime: number) => {
+            return dayjs.unix(unixTime).format('MM/DD h:mm a')
+          },
+        },
+        watermark: {
+          visible: false,
+        },
+        grid: {
+          horzLines: {
+            visible: false,
+          },
+          vertLines: {
+            visible: false,
+          },
+        },
+        crosshair: {
+          horzLine: {
+            visible: false,
+            labelVisible: false,
+          },
+          mode: 1,
+          vertLine: {
+            visible: true,
+            labelVisible: false,
+            style: 3,
+            width: 1,
+            color: '#505050',
+            labelBackgroundColor: color,
+          },
+        },
+      })
 
-    const chart = createChart(chartRef.current, {
-      height,
-      // width: chartRef.current.parentElement.clientWidth - 32,
-      layout: {
-        background: {
-          type: ColorType.Solid,
-          color: 'transparent',
-        },
-        textColor: '#565A69',
-        fontFamily: 'Inter var',
-        fontSize: 14,
-      },
-      rightPriceScale: {
-        scaleMargins: {
-          top: 0.1,
-          bottom: 0.1,
-        },
-        borderVisible: false,
-      },
-      timeScale: {
-        borderVisible: false,
-        secondsVisible: true,
-        tickMarkFormatter: (unixTime: number) => {
-          return dayjs.unix(unixTime).format('MM/DD h:mm a')
-        },
-      },
-      watermark: {
-        visible: false,
-      },
-      grid: {
-        horzLines: {
-          visible: false,
-        },
-        vertLines: {
-          visible: false,
-        },
-      },
-      crosshair: {
-        horzLine: {
-          visible: false,
-          labelVisible: false,
-        },
-        mode: 1,
-        vertLine: {
-          visible: true,
-          labelVisible: false,
-          style: 3,
-          width: 1,
-          color: '#505050',
-          labelBackgroundColor: color,
-        },
-      },
-    })
-    if (data && data?.length > 0 && !!chartRef?.current?.parentElement) {
       chart.timeScale().fitContent()
-      const series = chart.addCandlestickSeries({
+      setChart(chart)
+    }
+  }, [color, chartCreated, data, height, setValue, textColor, theme])
+
+  useEffect(() => {
+    if (chartCreated && data && data?.length > 0) {
+      const series = chartCreated.addCandlestickSeries({
         upColor: baseColors.success,
         downColor: baseColors.failure,
         borderDownColor: baseColors.failure,
@@ -157,14 +162,14 @@ const CandleChart = ({
         },
       })
 
-      chart.applyOptions({
+      chartCreated.applyOptions({
         layout: {
           textColor: theme.isDark ? darkColors.textSubtle : lightColors.textSubtle,
         },
       })
 
       // update the title when hovering on the chart
-      chart.subscribeCrosshairMove((param) => {
+      chartCreated.subscribeCrosshairMove((param) => {
         if (
           chartRef?.current &&
           (param === undefined ||
@@ -186,18 +191,7 @@ const CandleChart = ({
         }
       })
     }
-    // eslint-disable-next-line consistent-return
-    return () => {
-      if (chart) {
-        chart.remove()
-      }
-    }
-  }, [color, chartCreated, data, height, setValue, textColor, theme, setLabel])
-
-  // useEffect(() => {
-  //   if (chartCreated && data && data?.length > 0) {
-  //   }
-  // }, [chartCreated, color, data, height, setValue, setLabel, theme.isDark])
+  }, [chartCreated, color, data, height, setValue, setLabel, theme.isDark])
 
   return (
     <Wrapper minHeight={minHeight}>
@@ -205,9 +199,7 @@ const CandleChart = ({
         {topLeft ?? null}
         {topRight ?? null}
       </RowBetween>
-      <div style={{ display: 'flex', flex: 1, height: '100%' }}>
-        <div style={{ flex: 1, maxWidth: '100%' }} ref={chartRef} />
-      </div>
+      <div ref={chartRef} id="candle-chart" {...rest} />
       <RowBetween>
         {bottomLeft ?? null}
         {bottomRight ?? null}
