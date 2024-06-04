@@ -1,6 +1,6 @@
 import { gql, GraphQLClient } from 'graphql-request'
 import { STABLESWAP_SUBGRAPHS_URLS, V2_SUBGRAPH_URLS, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
-import { ChainId, testnetChainIds } from '@pancakeswap/chains'
+import { ChainId, chainNames, testnetChainIds } from '@pancakeswap/chains'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import dayjs, { Dayjs } from 'dayjs'
 import { getCakeContract } from 'utils/contractHelpers'
@@ -10,7 +10,7 @@ import addresses from 'config/constants/contracts'
 import { bitQueryServerClient } from 'utils/graphql'
 import { multiChainName } from 'state/info/constant'
 import { CHAIN_IDS } from 'utils/wagmi'
-import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
+import { explorerApiClient } from 'state/info/api/client'
 
 // Values fetched from TheGraph and BitQuery jan 24, 2022
 const txCount = 54780336
@@ -359,7 +359,7 @@ const getTvl = async (type: 'v2' | 'v3' | 'stable', chainIds: number[]) => {
             params: {
               path: {
                 protocol: type,
-                chainName: chainIdToExplorerInfoChainName[chainId],
+                chainName: chainNames[chainId],
               },
             },
           })
