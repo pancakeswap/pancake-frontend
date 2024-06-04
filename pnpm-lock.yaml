@@ -718,6 +718,12 @@ importers:
       easymde:
         specifier: 2.16.1
         version: 2.16.1
+      graphql:
+        specifier: ^16.8.1
+        version: 16.8.1
+      graphql-request:
+        specifier: 5.0.0
+        version: 5.0.0(graphql@16.8.1)
       jotai:
         specifier: ^2.4.3
         version: 2.5.1(@types/react@18.2.37)(react@18.2.0)

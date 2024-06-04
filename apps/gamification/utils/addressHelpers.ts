@@ -17,3 +17,11 @@ export const getPancakeProfileAddress = () => {
 export const getBunnyFactoryAddress = () => {
   return getAddressFromMap(addresses.bunnyFactory)
 }
+
+export const getPancakeBunniesAddress = () => {
+  return getAddressFromMap(addresses.pancakeBunnies)
+}
+
+export const getNftMarketAddress = () => {
+  return getAddressFromMap(addresses.nftMarket)
+}

@@ -4,3 +4,5 @@ export const FetchStatus = {
   Fetched: 'success',
   Failed: 'error',
 } as const
+
+export type TFetchStatus = (typeof FetchStatus)[keyof typeof FetchStatus]
