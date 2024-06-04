@@ -103,6 +103,17 @@ export const multiChainQueryStableClient = {
   ARB: infoStableSwapClients[ChainId.ARBITRUM_ONE],
 }
 
+export const infoChainNameToExplorerChainName = {
+  BSC: ChainId.BSC,
+  ETH: ChainId.ETHEREUM,
+  POLYGON_ZKEVM: ChainId.POLYGON_ZKEVM,
+  ZKSYNC: ChainId.ZKSYNC,
+  ARB: ChainId.ARBITRUM_ONE,
+  LINEA: ChainId.LINEA,
+  BASE: ChainId.BASE,
+  OPBNB: ChainId.OPBNB,
+}
+
 export const STABLESWAP_SUBGRAPHS_START_BLOCK = {
   ARB: 169319653,
 }

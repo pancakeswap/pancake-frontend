@@ -126,6 +126,23 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/cached/tokens/price/list/{ids}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get token price reference batch */
+    get: operations['getCachedTokensPriceListByIds']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/cached/tokens/{chainName}/{address}/price': {
     parameters: {
       query?: never
@@ -248,7 +265,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/cached/pools/ticks/{chainName}/v3/{pool}': {
+  '/cached/pools/ticks/v3/{chainName}/{pool}': {
     parameters: {
       query?: never
       header?: never
@@ -256,7 +273,7 @@ export interface paths {
       cookie?: never
     }
     /** Get all ticks from v3 pool */
-    get: operations['getCachedPoolsTicksByChainNameV3ByPool']
+    get: operations['getCachedPoolsTicksV3ByChainNameByPool']
     put?: never
     post?: never
     delete?: never
@@ -265,7 +282,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/cached/pools/positions/{chainName}/v3/{pool}': {
+  '/cached/pools/positions/v3/{chainName}/{pool}': {
     parameters: {
       query?: never
       header?: never
@@ -273,7 +290,7 @@ export interface paths {
       cookie?: never
     }
     /** Get positions from v3 pool */
-    get: operations['getCachedPoolsPositionsByChainNameV3ByPool']
+    get: operations['getCachedPoolsPositionsV3ByChainNameByPool']
     put?: never
     post?: never
     delete?: never
@@ -452,7 +469,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/cached/tx/{chainName}/v3/swaps': {
+  '/cached/tx/v3/{chainName}/swaps': {
     parameters: {
       query?: never
       header?: never
@@ -460,7 +477,7 @@ export interface paths {
       cookie?: never
     }
     /** Get v3 swaps by page */
-    get: operations['getCachedTxByChainNameV3Swaps']
+    get: operations['getCachedTxV3ByChainNameSwaps']
     put?: never
     post?: never
     delete?: never
@@ -469,7 +486,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/cached/tx/{chainName}/v3/recent': {
+  '/cached/tx/v3/{chainName}/recent': {
     parameters: {
       query?: never
       header?: never
@@ -477,7 +494,7 @@ export interface paths {
       cookie?: never
     }
     /** Get recent v3 transaction */
-    get: operations['getCachedTxByChainNameV3Recent']
+    get: operations['getCachedTxV3ByChainNameRecent']
     put?: never
     post?: never
     delete?: never
@@ -486,7 +503,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/cached/tx/{chainName}/v2/recent': {
+  '/cached/tx/v2/{chainName}/recent': {
     parameters: {
       query?: never
       header?: never
@@ -494,7 +511,7 @@ export interface paths {
       cookie?: never
     }
     /** Get recent v2 transaction */
-    get: operations['getCachedTxByChainNameV2Recent']
+    get: operations['getCachedTxV2ByChainNameRecent']
     put?: never
     post?: never
     delete?: never
@@ -503,7 +520,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/cached/tx/{chainName}/stable/recent': {
+  '/cached/tx/stable/{chainName}/recent': {
     parameters: {
       query?: never
       header?: never
@@ -511,7 +528,7 @@ export interface paths {
       cookie?: never
     }
     /** Get recent stable transaction */
-    get: operations['getCachedTxByChainNameStableRecent']
+    get: operations['getCachedTxStableByChainNameRecent']
     put?: never
     post?: never
     delete?: never
@@ -703,6 +720,7 @@ export interface components {
       tvl7d: string
     }
     TokenPrice: {
+      id: string
       priceUSD: string
       /**
        * @description Protocol version
@@ -770,7 +788,7 @@ export interface components {
       recipient: null | string
       timestamp: Record<string, never> | string
     }[]
-    stableTransactions: {
+    transactionsWithType: {
       /** @enum {string} */
       type: 'mint' | 'burn' | 'swap'
       id: string
@@ -1091,6 +1109,28 @@ export interface operations {
       }
     }
   }
+  getCachedTokensPriceListByIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description ids to query */
+        ids: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': Record<string, never>
+        }
+      }
+    }
+  }
   getCachedTokensByChainNameByAddressPrice: {
     parameters: {
       query?: {
@@ -1332,7 +1372,7 @@ export interface operations {
       }
     }
   }
-  getCachedPoolsTicksByChainNameV3ByPool: {
+  getCachedPoolsTicksV3ByChainNameByPool: {
     parameters: {
       query?: never
       header?: never
@@ -1356,7 +1396,7 @@ export interface operations {
       }
     }
   }
-  getCachedPoolsPositionsByChainNameV3ByPool: {
+  getCachedPoolsPositionsV3ByChainNameByPool: {
     parameters: {
       query?: {
         /** @description Cursor for pagination before */
@@ -1529,12 +1569,16 @@ export interface operations {
             tvlToken0: string
             /** @description Total value locked in token1 */
             tvlToken1: string
-            volumeUSD24h: null | string
-            volumeUSD7d: null | string
+            /** @description Volume in USD in 24h */
+            volumeUSD24h: string
+            /** @description Volume in USD in 7d */
+            volumeUSD7d: string
             /** @description Total value locked in USD */
             tvlUSD: string
-            tvlUSD24h: null | string
-            tvlUSD7d: null | string
+            /** @description Total value locked in USD 24h ago */
+            tvlUSD24h: string
+            /** @description Total value locked in USD 7d ago */
+            tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
             feeTier: number
@@ -1594,12 +1638,16 @@ export interface operations {
             tvlToken0: string
             /** @description Total value locked in token1 */
             tvlToken1: string
-            volumeUSD24h: null | string
-            volumeUSD7d: null | string
+            /** @description Volume in USD in 24h */
+            volumeUSD24h: string
+            /** @description Volume in USD in 7d */
+            volumeUSD7d: string
             /** @description Total value locked in USD */
             tvlUSD: string
-            tvlUSD24h: null | string
-            tvlUSD7d: null | string
+            /** @description Total value locked in USD 24h ago */
+            tvlUSD24h: string
+            /** @description Total value locked in USD 7d ago */
+            tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
           }
@@ -1650,12 +1698,16 @@ export interface operations {
             tvlToken0: string
             /** @description Total value locked in token1 */
             tvlToken1: string
-            volumeUSD24h: null | string
-            volumeUSD7d: null | string
+            /** @description Volume in USD in 24h */
+            volumeUSD24h: string
+            /** @description Volume in USD in 7d */
+            volumeUSD7d: string
             /** @description Total value locked in USD */
             tvlUSD: string
-            tvlUSD24h: null | string
-            tvlUSD7d: null | string
+            /** @description Total value locked in USD 24h ago */
+            tvlUSD24h: string
+            /** @description Total value locked in USD 7d ago */
+            tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
             virtualPrice: string
@@ -1766,12 +1818,16 @@ export interface operations {
             tvlToken0: string
             /** @description Total value locked in token1 */
             tvlToken1: string
-            volumeUSD24h: null | string
-            volumeUSD7d: null | string
+            /** @description Volume in USD in 24h */
+            volumeUSD24h: string
+            /** @description Volume in USD in 7d */
+            volumeUSD7d: string
             /** @description Total value locked in USD */
             tvlUSD: string
-            tvlUSD24h: null | string
-            tvlUSD7d: null | string
+            /** @description Total value locked in USD 24h ago */
+            tvlUSD24h: string
+            /** @description Total value locked in USD 7d ago */
+            tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
             feeTier: number
@@ -1832,12 +1888,16 @@ export interface operations {
             tvlToken0: string
             /** @description Total value locked in token1 */
             tvlToken1: string
-            volumeUSD24h: null | string
-            volumeUSD7d: null | string
+            /** @description Volume in USD in 24h */
+            volumeUSD24h: string
+            /** @description Volume in USD in 7d */
+            volumeUSD7d: string
             /** @description Total value locked in USD */
             tvlUSD: string
-            tvlUSD24h: null | string
-            tvlUSD7d: null | string
+            /** @description Total value locked in USD 24h ago */
+            tvlUSD24h: string
+            /** @description Total value locked in USD 7d ago */
+            tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
           }[]
@@ -1889,12 +1949,16 @@ export interface operations {
             tvlToken0: string
             /** @description Total value locked in token1 */
             tvlToken1: string
-            volumeUSD24h: null | string
-            volumeUSD7d: null | string
+            /** @description Volume in USD in 24h */
+            volumeUSD24h: string
+            /** @description Volume in USD in 7d */
+            volumeUSD7d: string
             /** @description Total value locked in USD */
             tvlUSD: string
-            tvlUSD24h: null | string
-            tvlUSD7d: null | string
+            /** @description Total value locked in USD 24h ago */
+            tvlUSD24h: string
+            /** @description Total value locked in USD 7d ago */
+            tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
             virtualPrice: string
@@ -1905,7 +1969,7 @@ export interface operations {
       }
     }
   }
-  getCachedTxByChainNameV3Swaps: {
+  getCachedTxV3ByChainNameSwaps: {
     parameters: {
       query?: {
         /** @description Filter by token address */
@@ -2034,7 +2098,7 @@ export interface operations {
       }
     }
   }
-  getCachedTxByChainNameV3Recent: {
+  getCachedTxV3ByChainNameRecent: {
     parameters: {
       query?: {
         /** @description Filter by token address */
@@ -2056,12 +2120,12 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['stableTransactions']
+          'application/json': components['schemas']['transactionsWithType']
         }
       }
     }
   }
-  getCachedTxByChainNameV2Recent: {
+  getCachedTxV2ByChainNameRecent: {
     parameters: {
       query?: {
         /** @description Filter by token address */
@@ -2083,12 +2147,12 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['stableTransactions']
+          'application/json': components['schemas']['transactionsWithType']
         }
       }
     }
   }
-  getCachedTxByChainNameStableRecent: {
+  getCachedTxStableByChainNameRecent: {
     parameters: {
       query?: {
         /** @description Filter by token address */
@@ -2109,7 +2173,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['stableTransactions']
+          'application/json': components['schemas']['transactionsWithType']
         }
       }
     }

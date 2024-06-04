@@ -1,4 +1,4 @@
-import { EXPLORER_API } from 'config/constants/endpoints'
+import { INFO_GATEWAY_OLD_API } from 'config/constants/endpoints'
 import { gql } from 'graphql-request'
 import union from 'lodash/union'
 import { useCallback, useEffect, useState } from 'react'
@@ -31,7 +31,7 @@ interface StableSwapTopTokensResponse {
  */
 const fetchTopTokens = async (chainName: MultiChainNameExtend, timestamp24hAgo: number): Promise<string[]> => {
   if (chainName === 'BSC' && !checkIsStableSwap()) {
-    const resp = await fetch(`${EXPLORER_API}/v0/top-tokens/bsc`)
+    const resp = await fetch(`${INFO_GATEWAY_OLD_API}/v0/top-tokens/bsc`)
     const result = await resp.json()
     return union(result.tokenDayDatas.map((t) => t.id.split('-')[0]))
   }

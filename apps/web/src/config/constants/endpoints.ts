@@ -44,13 +44,13 @@ export const ACCESS_RISK_API = 'https://red.alert.pancakeswap.com/red-api'
 
 export const CELER_API = 'https://api.celerscan.com/scan'
 
-export const EXPLORER_API = 'https://info-gateway.pancakeswap.com'
+export const INFO_GATEWAY_OLD_API = 'https://info-gateway.pancakeswap.com'
 
 export const THE_GRAPH_PROXY_API = 'https://thegraph.pancakeswap.com'
 
 export const V2_SUBGRAPH_URLS = {
   ...V2_SUBGRAPHS,
-  [ChainId.BSC]: `${EXPLORER_API}/subgraphs/v2/bsc/graphql`,
+  [ChainId.BSC]: `${INFO_GATEWAY_OLD_API}/subgraphs/v2/bsc/graphql`,
   [ChainId.POLYGON_ZKEVM]: `${THE_GRAPH_PROXY_API}/exchange-v2-polygon-zkevm`,
   [ChainId.BASE]: `${THE_GRAPH_PROXY_API}/exchange-v2-base`,
 }
@@ -67,7 +67,7 @@ export const V3_SUBGRAPH_URLS = {
 
 export const STABLESWAP_SUBGRAPHS_URLS = {
   ...STABLESWAP_SUBGRAPHS,
-  [ChainId.BSC]: `${EXPLORER_API}/subgraphs/stable/bsc/graphql`,
+  [ChainId.BSC]: `${INFO_GATEWAY_OLD_API}/subgraphs/stable/bsc/graphql`,
 }
 
 export const TRADING_REWARD_API = 'https://trading-reward.pancakeswap.com/api/v1'
