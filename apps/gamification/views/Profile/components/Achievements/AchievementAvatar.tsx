@@ -1,6 +1,7 @@
+import { BunnyPlaceholderIcon } from '@pancakeswap/uikit'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { ImgHTMLAttributes } from 'react'
 import { styled } from 'styled-components'
-import { BunnyPlaceholderIcon } from '@pancakeswap/uikit'
 
 interface AchievementAvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   badge?: string
@@ -31,7 +32,7 @@ const AchievementAvatar: React.FC<React.PropsWithChildren<AchievementAvatarProps
     return <NoBadgePlaceholder />
   }
 
-  return <StyledAchievementAvatar src={`/images/achievements/${badge}`} alt="achievement badge" {...props} />
+  return <StyledAchievementAvatar src={`${ASSET_CDN}/web/achievements/${badge}`} alt="achievement badge" {...props} />
 }
 
 export default AchievementAvatar

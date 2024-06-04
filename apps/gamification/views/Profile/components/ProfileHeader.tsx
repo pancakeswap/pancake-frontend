@@ -1,6 +1,8 @@
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Button,
+  CogIcon,
   Flex,
   Grid,
   Heading,
@@ -10,11 +12,10 @@ import {
   VisibilityOn,
   useModal,
 } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter as ReactRouterLink } from '@pancakeswap/widgets-internal'
-
-import { useTranslation } from '@pancakeswap/localization'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import { NextLinkFromReactRouter as ReactRouterLink } from '@pancakeswap/widgets-internal'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { Achievement } from 'config/constants/types'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { Profile } from 'hooks/useProfile/type'
@@ -26,6 +27,7 @@ import AvatarImage from './AvatarImage'
 import { BannerHeader } from './BannerHeader'
 import EditProfileAvatar from './EditProfileAvatar'
 import EditProfileModal from './EditProfileModal'
+import { SettingsModal } from './SettingsModal'
 import StatBox, { StatBoxItem } from './StatBox'
 
 interface HeaderProps {
@@ -65,6 +67,8 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     false,
   )
 
+  const [onPressSettingsModal] = useModal(<SettingsModal />)
+
   const isConnectedAccount = safeGetAddress(account) === safeGetAddress(accountPath)
   const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0) : '-') : null
   const numPoints = !isProfileLoading ? (profile?.points ? formatNumber(profile.points, 0, 0) : '-') : null
@@ -86,7 +90,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const Icon = userUsernameVisibility ? VisibilityOff : VisibilityOn
 
   const bannerImage = useMemo(() => {
-    const imagePath = '/images/teams'
+    const imagePath = `${ASSET_CDN}/web/teams`
     switch (profileTeamId) {
       case 1:
         return `${imagePath}/storm-banner.png`
@@ -176,15 +180,24 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 
     return (
       <Flex flexDirection="column" mb={[16, null, 0]} mr={[0, null, 16]}>
-        {accountPath && profile?.username && (
-          <ScanLink href={getBlockExploreLink(accountPath, 'address')} bold color="primary">
-            {domainName || truncateHash(accountPath)}
-          </ScanLink>
-        )}
+        <Flex>
+          {accountPath && profile?.username && (
+            <ScanLink href={getBlockExploreLink(accountPath, 'address')} bold color="primary">
+              {domainName || truncateHash(accountPath)}
+            </ScanLink>
+          )}
+          <Button
+            variant="text"
+            endIcon={<CogIcon color="primary" height={20} width={20} />}
+            onClick={onPressSettingsModal}
+          >
+            {t('Settings')}
+          </Button>
+        </Flex>
         {accountPath && isConnectedAccount && (!profile || !profile?.nft) && getActivateButton()}
       </Flex>
     )
-  }, [domainName, accountPath, isConnectedAccount, onEditProfileModal, profile, t])
+  }, [accountPath, profile, domainName, onPressSettingsModal, t, isConnectedAccount, onEditProfileModal])
 
   return (
     <>
