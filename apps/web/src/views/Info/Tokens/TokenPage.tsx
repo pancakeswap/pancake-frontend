@@ -95,22 +95,22 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
 
   // pricing data
   const priceData = useTokenPriceDataQuery(address, ONE_HOUR_SECONDS, DEFAULT_TIME_WINDOW)
-  const adjustedPriceData = useMemo(() => {
-    // Include latest available price
-    if (priceData && tokenData && priceData.length > 0) {
-      return [
-        ...priceData,
-        {
-          time: Date.now() / 1000,
-          open: priceData[priceData.length - 1].close,
-          close: tokenData?.priceUSD,
-          high: tokenData?.priceUSD,
-          low: priceData[priceData.length - 1].close,
-        },
-      ]
-    }
-    return undefined
-  }, [priceData, tokenData])
+  // const adjustedPriceData = useMemo(() => {
+  //   // Include latest available price
+  //   if (priceData && tokenData && priceData.length > 0) {
+  //     return [
+  //       ...priceData,
+  //       {
+  //         time: Date.now() / 1000,
+  //         open: priceData[priceData.length - 1].close,
+  //         close: tokenData?.priceUSD,
+  //         high: tokenData?.priceUSD,
+  //         low: priceData[priceData.length - 1].close,
+  //       },
+  //     ]
+  //   }
+  //   return undefined
+  // }, [priceData, tokenData])
 
   const chainPath = useMultiChainPath()
   const chainName = useChainNameByQuery()
@@ -244,12 +244,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                 </Box>
               </Card>
               {/* charts card */}
-              <ChartCard
-                variant="token"
-                chartData={chartData}
-                tokenData={tokenData}
-                tokenPriceData={adjustedPriceData}
-              />
+              <ChartCard variant="token" chartData={chartData} tokenData={tokenData} tokenPriceData={priceData} />
             </ContentLayout>
 
             {/* pools and transaction tables */}
