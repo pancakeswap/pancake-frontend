@@ -1,6 +1,6 @@
 import { gql, GraphQLClient } from 'graphql-request'
 import { STABLESWAP_SUBGRAPHS_URLS, V2_SUBGRAPH_URLS, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId, testnetChainIds } from '@pancakeswap/chains'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import dayjs, { Dayjs } from 'dayjs'
 import { getCakeContract } from 'utils/contractHelpers'
@@ -9,11 +9,20 @@ import { getCakeVaultAddress } from 'utils/addressHelpers'
 import addresses from 'config/constants/contracts'
 import { bitQueryServerClient } from 'utils/graphql'
 import { multiChainName } from 'state/info/constant'
+import { CHAIN_IDS } from 'utils/wagmi'
+import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
 
 // Values fetched from TheGraph and BitQuery jan 24, 2022
 const txCount = 54780336
 const addressCount = 4425459
 const tvl = 6082955532.115718
+
+const mainnetChainIds = CHAIN_IDS.filter((chainId) => {
+  const isTestnet = testnetChainIds.some((testChainId) => {
+    return testChainId.valueOf() === chainId
+  })
+  return Boolean(chainId && !isTestnet)
+})
 
 export const getTotalTvl = async () => {
   const results = {
@@ -88,9 +97,9 @@ export const getTotalTvl = async () => {
       }
     }
 
-    const v3Tvl = await getV3Tvl(v3ProdClients.map(({ client }) => client))
-    const stableTvl = await getStableTvl(stableProdClients.map(({ client }) => client))
-    const v2Tvl = await getV2Tvl(v2ProdClients.map(({ client }) => client))
+    const v2Tvl = await getTvl('v2', mainnetChainIds)
+    const v3Tvl = await getTvl('v3', mainnetChainIds)
+    const stableTvl = await getTvl('stable', mainnetChainIds)
 
     const cake = await (await fetch('https://farms-api.pancakeswap.com/price/cake')).json()
     const cakeVaultV2 = getCakeVaultAddress()
@@ -339,19 +348,21 @@ const getStableTotalTx = async (stableProdClients: { chainId: string; client: Gr
   return { stableTotalTx, stableTotal30DaysAgoTx }
 }
 
-const getV3Tvl = async (v3ProdClients: GraphQLClient[]) => {
-  const v3TvlResults: any[] = (
+const getTvl = async (type: 'v2' | 'v3' | 'stable', chainIds: number[]) => {
+  const tvlResults: any[] = (
     await Promise.all(
-      v3ProdClients.map(async (client) => {
+      chainIds.map(async (chainId) => {
         let result
         try {
-          result = await client.request<any>(gql`
-            query tvl {
-              factories(first: 1) {
-                totalValueLockedUSD
-              }
-            }
-          `)
+          result = await explorerApiClient.GET('/cached/protocol/{protocol}/{chainName}/stats', {
+            signal: null,
+            params: {
+              path: {
+                protocol: type,
+                chainName: chainIdToExplorerInfoChainName[chainId],
+              },
+            },
+          })
         } catch (error) {
           if (process.env.NODE_ENV === 'production') {
             console.error('Error when fetching tvl stats', error)
@@ -362,83 +373,7 @@ const getV3Tvl = async (v3ProdClients: GraphQLClient[]) => {
     )
   ).filter(Boolean)
 
-  return v3TvlResults
-    .map((factories) => {
-      return factories.factories?.[0]
-    })
-    .filter(Boolean)
-    .map((valueLocked) => {
-      return valueLocked.totalValueLockedUSD
-    })
-    .reduce((acc, v3TvlString) => acc + parseFloat(v3TvlString), 0)
-}
-
-const getV2Tvl = async (v2ProdClients: GraphQLClient[]) => {
-  const v2TvlResults: any[] = (
-    await Promise.all(
-      v2ProdClients.map(async (client) => {
-        let result
-        try {
-          result = await client.request<any>(gql`
-            query tvl {
-              pancakeFactories(first: 1) {
-                totalLiquidityUSD
-              }
-            }
-          `)
-        } catch (error) {
-          if (process.env.NODE_ENV === 'production') {
-            console.error('Error when fetching tvl stats', error)
-          }
-        }
-        return result
-      }),
-    )
-  ).filter(Boolean)
-
-  return v2TvlResults
-    .map((factories) => {
-      return factories.pancakeFactories?.[0]
-    })
-    .filter(Boolean)
-    .map((valueLocked) => {
-      return valueLocked.totalLiquidityUSD
-    })
-    .reduce((acc, v2TvlString) => acc + parseFloat(v2TvlString), 0)
-}
-
-const getStableTvl = async (stableProdClients: GraphQLClient[]) => {
-  const stableTvlResults: any[] = (
-    await Promise.all(
-      stableProdClients.map(async (client) => {
-        let result
-        try {
-          result = await client.request<any>(gql`
-            query tvl {
-              factories(first: 1) {
-                totalLiquidityUSD
-              }
-            }
-          `)
-        } catch (error) {
-          if (process.env.NODE_ENV === 'production') {
-            console.error('Error when fetching tvl stats', error)
-          }
-        }
-        return result
-      }),
-    )
-  ).filter(Boolean)
-
-  return stableTvlResults
-    .map((factories) => {
-      return factories.factories?.[0]
-    })
-    .filter(Boolean)
-    .map((valueLocked) => {
-      return valueLocked.totalLiquidityUSD
-    })
-    .reduce((acc, v2TvlString) => acc + parseFloat(v2TvlString), 0)
+  return tvlResults.reduce((acc, tvlString) => acc + parseFloat(tvlString?.data?.tvlUSD), 0)
 }
 
 const getProdClients = (urls: Partial<{ [key in ChainId]: string | null }>) => {
