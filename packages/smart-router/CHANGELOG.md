@@ -1,5 +1,19 @@
 # @pancakeswap/smart-router
 
+## 6.0.11
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/multicall@3.5.5
+  - @pancakeswap/sdk@5.8.5
+  - @pancakeswap/gauges@1.2.7
+  - @pancakeswap/v3-sdk@3.8.6
+  - @pancakeswap/tokens@0.6.19
+  - @pancakeswap/stable-swap-sdk@1.0.11
+  - @pancakeswap/token-lists@0.0.11
+
 ## 6.0.10
 
 ### Patch Changes

@@ -26,7 +26,7 @@
     "@reduxjs/toolkit": "^1.9.1",
     "@tanstack/react-query": "^5.28.4",
     "@vanilla-extract/next-plugin": "^2.3.0",
-    "@wagmi/core": "2.6.17",
+    "@wagmi/core": "2.10.5",
     "bignumber.js": "^9.1.2",
     "blocto": "link:@pancakeswap/wagmi/connectors/blocto",
     "dayjs": "^1.11.10",
@@ -44,8 +44,8 @@
     "styled-components": "6.0.7",
     "swiper": "^11.0.5",
     "trustWallet": "link:@pancakeswap/wagmi/connectors/trustWallet",
-    "viem": "2.9.19",
-    "wagmi": "2.5.20"
+    "viem": "2.13.3",
+    "wagmi": "2.9.8"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "14.2.3",

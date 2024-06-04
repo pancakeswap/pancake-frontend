@@ -1,5 +1,13 @@
 # @pancakeswap/v3-sdk
 
+## 3.8.6
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/sdk@5.8.5
+
 ## 3.8.5
 
 ### Patch Changes

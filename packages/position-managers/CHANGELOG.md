@@ -1,5 +1,16 @@
 # @pancakeswap/position-managers
 
+## 0.1.29
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/sdk@5.8.5
+  - @pancakeswap/v3-sdk@3.8.6
+  - @pancakeswap/tokens@0.6.19
+  - @pancakeswap/token-lists@0.0.11
+
 ## 0.1.28
 
 ### Patch Changes

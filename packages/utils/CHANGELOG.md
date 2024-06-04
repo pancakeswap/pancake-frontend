@@ -1,5 +1,11 @@
 # @pancakeswap/utils
 
+## 6.0.7
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+
 ## 6.0.6
 
 ### Patch Changes

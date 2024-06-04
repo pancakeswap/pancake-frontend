@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/utils",
-  "version": "6.0.6",
+  "version": "6.0.7",
   "scripts": {
     "test": "vitest --run"
   },
@@ -10,7 +10,7 @@
     "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
     "styled-components": "^6.0.7",
-    "viem": "2.9.19"
+    "viem": "2.13.3"
   },
   "devDependencies": {
     "@pancakeswap/sdk": "workspace:*",
@@ -19,7 +19,7 @@
     "bignumber.js": "^9.0.0",
     "jotai": "^2.4.3",
     "styled-components": "6.0.7",
-    "viem": "2.9.19"
+    "viem": "2.13.3"
   },
   "peerDependenciesMeta": {
     "@pancakeswap/localization": {
