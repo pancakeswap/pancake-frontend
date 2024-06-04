@@ -8,6 +8,7 @@ import { ConfirmModalState, useAsyncConfirmPriceImpactWithoutFee } from '@pancak
 import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from 'config/constants/exchange'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useNativeWrap } from 'hooks/useNativeWrap'
 import { usePermit2 } from 'hooks/usePermit2'
 import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import { useSafeTxHashTransformer } from 'hooks/useSafeTxHashTransformer'
@@ -97,6 +98,7 @@ const useConfirmActions = (
   const { revoke, permit, approve } = usePermit2(amountToApprove, spender, {
     enablePaymaster: true,
   })
+  const nativeWrap = useNativeWrap()
   const { account } = useAccountActiveChain()
   const getAllowanceArgs = useMemo(() => {
     if (!chainId) return undefined
@@ -262,9 +264,24 @@ const useConfirmActions = (
     return {
       step: ConfirmModalState.WRAPPING,
       action: async (nextState?: ConfirmModalState) => {
-        const result = await execute?.()
-        if (result && result.hash && nextState) {
-          setConfirmState(nextState ?? ConfirmModalState.WRAPPING)
+        try {
+          setConfirmState(ConfirmModalState.WRAPPING)
+          // const result = await execute?.()
+          const wrapAmount = BigInt(order?.trade.inputAmount.quotient ?? 0)
+          const result = await nativeWrap(wrapAmount)
+          if (result && result.hash) {
+            await retryWaitForTransaction({ hash: txHash })
+          }
+          if (nextState) {
+            setConfirmState(nextState)
+          }
+        } catch (error) {
+          console.error('wrap error', error)
+          if (userRejectedError(error)) {
+            showError('Transaction rejected')
+          } else {
+            showError(typeof error === 'string' ? error : (error as any)?.message)
+          }
         }
         // TODO: x wrap flow
         // setConfirmState(ConfirmModalState.PERMITTING)
@@ -282,7 +299,7 @@ const useConfirmActions = (
       },
       showIndicator: true,
     }
-  }, [execute])
+  }, [nativeWrap, order?.trade.inputAmount.quotient, retryWaitForTransaction, showError, txHash])
 
   const approveStep = useMemo(() => {
     return {
