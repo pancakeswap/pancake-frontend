@@ -47,20 +47,25 @@ export const useSafeTxHashTransformer = () => {
             const provider: any = await connector!.getProvider()
             const resp = (await provider.sdk.txs.getBySafeTxHash(hash)) as TransactionDetails
 
-            if (resp.txHash) return resp.txHash as Hash
-
-            if (resp.detailedExecutionInfo && resp.detailedExecutionInfo.type === DetailedExecutionInfoType.MULTISIG) {
-              console.debug('debug detailedExecutionInfo', resp.detailedExecutionInfo)
-              return resp.detailedExecutionInfo.safeTxHash as Hash
-            }
-
-            console.debug('debug txStatus', resp.txStatus)
             if (
               resp.txStatus === TransactionStatus.AWAITING_CONFIRMATIONS ||
               resp.txStatus === TransactionStatus.AWAITING_EXECUTION
             ) {
               throw new SafeTxHashNotAvailableError()
             }
+
+            if (resp.txHash) return resp.txHash as Hash
+
+            if (
+              resp.detailedExecutionInfo &&
+              resp.detailedExecutionInfo.type === DetailedExecutionInfoType.MULTISIG &&
+              resp.detailedExecutionInfo.safeTxHash
+            ) {
+              console.debug('debug detailedExecutionInfo', resp.detailedExecutionInfo)
+              return resp.detailedExecutionInfo.safeTxHash as Hash
+            }
+
+            console.debug('debug txStatus', resp.txStatus)
             return (resp.txHash as Hash) ?? hash
           } catch (error) {
             console.error('Failed to get transaction hash from Safe SDK', error)
