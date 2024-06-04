@@ -16,5 +16,5 @@ export * from "./SwapTransactionReceiptModalContentV1";
 export * as Swap from "./SwapWidget";
 export * from "./TokenRowButton";
 export * from "./TransactionErrorContent";
-export * from "./confirmPriceImpactWithoutFee";
+export * from "./useAsyncConfirmPriceImpactWithoutFee";
 export * from "./withCurrencyLogo";

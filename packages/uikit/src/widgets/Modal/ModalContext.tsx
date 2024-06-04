@@ -1,13 +1,13 @@
 import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
 import { AnimatePresence, LazyMotion, m } from "framer-motion";
+import get from "lodash/get";
 import React, { createContext, useCallback, useMemo, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { createPortal } from "react-dom";
 import { styled } from "styled-components";
-import get from "lodash/get";
 import { mountAnimation, unmountAnimation } from "../../components/BottomDrawer/styles";
 import { Overlay } from "../../components/Overlay";
-import { useIsomorphicEffect } from "../../hooks";
+import { useIsomorphicEffect } from "../../hooks/useIsomorphicEffect";
 import {
   animationHandler,
   animationMap,
@@ -73,7 +73,11 @@ export const Context = createContext<ModalsContext>({
   onDismiss: () => null,
 });
 
-const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+const ModalProvider: React.FC<
+  React.PropsWithChildren<{
+    portalProvider?: React.FC<React.PropsWithChildren>;
+  }>
+> = ({ children, portalProvider: NestProvider = React.Fragment }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalNode, setModalNode] = useState<React.ReactNode>();
   const [nodeId, setNodeId] = useState("");
@@ -122,37 +126,39 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <Context.Provider value={providerValue}>
-      {portal &&
-        createPortal(
-          <LazyMotion features={isMobile ? DomMax : DomAnimation}>
-            <AnimatePresence>
-              {isOpen && (
-                <DismissableLayer
-                  role="dialog"
-                  disableOutsidePointerEvents={false}
-                  onEscapeKeyDown={handleOverlayDismiss}
-                >
-                  <StyledModalWrapper
-                    ref={animationRef}
-                    onAnimationStart={handleAnimationStart}
-                    {...animationMap}
-                    variants={animationVariants}
-                    transition={{ duration: 0.3 }}
+      <NestProvider>
+        {portal &&
+          createPortal(
+            <LazyMotion features={isMobile ? DomMax : DomAnimation}>
+              <AnimatePresence>
+                {isOpen && (
+                  <DismissableLayer
+                    role="dialog"
+                    disableOutsidePointerEvents={false}
+                    onEscapeKeyDown={handleOverlayDismiss}
                   >
-                    <Overlay onClick={handleOverlayDismiss} />
-                    {React.isValidElement(modalNode) &&
-                      React.cloneElement(modalNode, {
-                        // @ts-ignore
-                        onDismiss: handleDismiss,
-                      })}
-                  </StyledModalWrapper>
-                </DismissableLayer>
-              )}
-            </AnimatePresence>
-          </LazyMotion>,
-          portal
-        )}
-      {children}
+                    <StyledModalWrapper
+                      ref={animationRef}
+                      onAnimationStart={handleAnimationStart}
+                      {...animationMap}
+                      variants={animationVariants}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Overlay onClick={handleOverlayDismiss} />
+                      {React.isValidElement(modalNode) &&
+                        React.cloneElement(modalNode, {
+                          // @ts-ignore
+                          onDismiss: handleDismiss,
+                        })}
+                    </StyledModalWrapper>
+                  </DismissableLayer>
+                )}
+              </AnimatePresence>
+            </LazyMotion>,
+            portal
+          )}
+        {children}
+      </NestProvider>
     </Context.Provider>
   );
 };

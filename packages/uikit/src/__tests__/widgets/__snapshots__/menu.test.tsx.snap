@@ -212,6 +212,10 @@ exports[`renders correctly 1`] = `
   justify-content: center;
 }
 
+.c49 {
+  gap: 10px;
+}
+
 .c14 {
   align-items: center;
   border: 0;
@@ -440,10 +444,6 @@ exports[`renders correctly 1`] = `
 
 .c48:hover {
   background: var(--colors-tertiary);
-}
-
-.c49 {
-  gap: 10px;
 }
 
 .c40 {
