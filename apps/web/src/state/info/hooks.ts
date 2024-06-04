@@ -18,6 +18,7 @@ import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import { Block, Transaction, TransactionType } from 'state/info/types'
 import { getAprsForStableFarm } from 'utils/getAprsForStableFarm'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { getPercentChange } from 'utils/infoDataHelpers'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { explorerApiClient } from './api/client'
@@ -146,7 +147,7 @@ export const useProtocolTransactionsQuery = (): Transaction[] | undefined => {
   return transactions ?? undefined
 }
 
-export const useAllPoolDataQuery = () => {
+export const useAllPoolDataQueryOld = () => {
   const chainName = useChainNameByQuery()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d])
@@ -157,6 +158,94 @@ export const useAllPoolDataQuery = () => {
     enabled: Boolean(blocks && chainName),
     ...QUERY_SETTINGS_IMMUTABLE,
     ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
+  return useMemo(() => {
+    return data ?? {}
+  }, [data])
+}
+
+export const useAllPoolDataQuery = () => {
+  const chainName = useExplorerChainNameByQuery()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useQuery({
+    queryKey: [`info/pools2/data/${type}`, chainName],
+    queryFn: () => {
+      if (type === 'stableSwap' && (chainName === 'bsc' || chainName === 'arbitrum')) {
+        return explorerApiClient
+          .GET('/cached/pools/stable/{chainName}/list/top', {
+            params: {
+              path: {
+                chainName,
+              },
+            },
+          })
+          .then((res) => res.data)
+      }
+      return explorerApiClient
+        .GET('/cached/pools/v2/{chainName}/list/top', {
+          params: {
+            path: {
+              chainName,
+            },
+          },
+        })
+        .then((res) => res.data)
+    },
+    enabled: Boolean(chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+    select: useCallback((data_) => {
+      if (!data_) {
+        throw new Error('No data')
+      }
+
+      const final: {
+        [address: string]: {
+          data: PoolData
+        }
+      } = {}
+
+      for (const d of data_) {
+        const { totalFees24h, totalFees7d, lpFees24h, lpFees7d, lpApr7d } = getLpFeesAndApr(
+          +d.volumeUSD24h,
+          +d.volumeUSD7d,
+          +d.tvlUSD,
+        )
+        final[d.id] = {
+          data: {
+            address: d.id,
+            timestamp: d.createdAtTimestamp,
+            token0: {
+              address: d.token0.id,
+              symbol: d.token0.symbol,
+              name: d.token0.name,
+            },
+            token1: {
+              address: d.token1.id,
+              symbol: d.token1.symbol,
+              name: d.token1.name,
+            },
+            volumeUSD: +d.volumeUSD24h,
+            volumeUSDChange: 0,
+            volumeUSDWeek: +d.volumeUSD7d,
+            liquidityUSD: +d.tvlUSD,
+            liquidityUSDChange: getPercentChange(+d.tvlUSD, d.tvlUSD24h ? +d.tvlUSD24h : 0),
+            totalFees24h,
+            totalFees7d,
+            lpFees24h,
+            lpFees7d,
+            lpApr7d,
+            liquidityToken0: +d.tvlToken0,
+            liquidityToken1: +d.tvlToken1,
+            token0Price: +d.token0Price,
+            token1Price: +d.token1Price,
+            volumeUSDChangeWeek: 0,
+          },
+        }
+      }
+
+      return final
+    }, []),
   })
   return useMemo(() => {
     return data ?? {}
@@ -310,7 +399,7 @@ export const useAllTokenHighLight = ({
   }, [isPending, tokensWithData])
 }
 
-export const useAllTokenDataQuery = (): {
+export const useAllTokenDataQueryOld = (): {
   [address: string]: { data?: TokenData }
 } => {
   const chainName = useChainNameByQuery()
@@ -327,7 +416,7 @@ export const useAllTokenDataQuery = (): {
   return data ?? {}
 }
 
-export const useAllTokenDataQueryNew = (): {
+export const useAllTokenDataQuery = (): {
   [address: string]: { data?: TokenData }
 } => {
   const chainName = useExplorerChainNameByQuery()

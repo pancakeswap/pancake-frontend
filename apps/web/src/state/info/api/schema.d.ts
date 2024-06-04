@@ -1569,12 +1569,16 @@ export interface operations {
             tvlToken0: string
             /** @description Total value locked in token1 */
             tvlToken1: string
-            volumeUSD24h: null | string
-            volumeUSD7d: null | string
+            /** @description Volume in USD in 24h */
+            volumeUSD24h: string
+            /** @description Volume in USD in 7d */
+            volumeUSD7d: string
             /** @description Total value locked in USD */
             tvlUSD: string
-            tvlUSD24h: null | string
-            tvlUSD7d: null | string
+            /** @description Total value locked in USD 24h ago */
+            tvlUSD24h: string
+            /** @description Total value locked in USD 7d ago */
+            tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
             feeTier: number
@@ -1634,12 +1638,16 @@ export interface operations {
             tvlToken0: string
             /** @description Total value locked in token1 */
             tvlToken1: string
-            volumeUSD24h: null | string
-            volumeUSD7d: null | string
+            /** @description Volume in USD in 24h */
+            volumeUSD24h: string
+            /** @description Volume in USD in 7d */
+            volumeUSD7d: string
             /** @description Total value locked in USD */
             tvlUSD: string
-            tvlUSD24h: null | string
-            tvlUSD7d: null | string
+            /** @description Total value locked in USD 24h ago */
+            tvlUSD24h: string
+            /** @description Total value locked in USD 7d ago */
+            tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
           }
@@ -1690,12 +1698,16 @@ export interface operations {
             tvlToken0: string
             /** @description Total value locked in token1 */
             tvlToken1: string
-            volumeUSD24h: null | string
-            volumeUSD7d: null | string
+            /** @description Volume in USD in 24h */
+            volumeUSD24h: string
+            /** @description Volume in USD in 7d */
+            volumeUSD7d: string
             /** @description Total value locked in USD */
             tvlUSD: string
-            tvlUSD24h: null | string
-            tvlUSD7d: null | string
+            /** @description Total value locked in USD 24h ago */
+            tvlUSD24h: string
+            /** @description Total value locked in USD 7d ago */
+            tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
             virtualPrice: string
@@ -1806,12 +1818,16 @@ export interface operations {
             tvlToken0: string
             /** @description Total value locked in token1 */
             tvlToken1: string
-            volumeUSD24h: null | string
-            volumeUSD7d: null | string
+            /** @description Volume in USD in 24h */
+            volumeUSD24h: string
+            /** @description Volume in USD in 7d */
+            volumeUSD7d: string
             /** @description Total value locked in USD */
             tvlUSD: string
-            tvlUSD24h: null | string
-            tvlUSD7d: null | string
+            /** @description Total value locked in USD 24h ago */
+            tvlUSD24h: string
+            /** @description Total value locked in USD 7d ago */
+            tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
             feeTier: number
@@ -1872,12 +1888,16 @@ export interface operations {
             tvlToken0: string
             /** @description Total value locked in token1 */
             tvlToken1: string
-            volumeUSD24h: null | string
-            volumeUSD7d: null | string
+            /** @description Volume in USD in 24h */
+            volumeUSD24h: string
+            /** @description Volume in USD in 7d */
+            volumeUSD7d: string
             /** @description Total value locked in USD */
             tvlUSD: string
-            tvlUSD24h: null | string
-            tvlUSD7d: null | string
+            /** @description Total value locked in USD 24h ago */
+            tvlUSD24h: string
+            /** @description Total value locked in USD 7d ago */
+            tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
           }[]
@@ -1929,12 +1949,16 @@ export interface operations {
             tvlToken0: string
             /** @description Total value locked in token1 */
             tvlToken1: string
-            volumeUSD24h: null | string
-            volumeUSD7d: null | string
+            /** @description Volume in USD in 24h */
+            volumeUSD24h: string
+            /** @description Volume in USD in 7d */
+            volumeUSD7d: string
             /** @description Total value locked in USD */
             tvlUSD: string
-            tvlUSD24h: null | string
-            tvlUSD7d: null | string
+            /** @description Total value locked in USD 24h ago */
+            tvlUSD24h: string
+            /** @description Total value locked in USD 7d ago */
+            tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
             virtualPrice: string
