@@ -168,8 +168,39 @@ export const ConfirmSwapModal: React.FC<ConfirmSwapModalProps> = ({
       )
     }
 
+    // TODO: x wrap flow
+    if (confirmModalState === ConfirmModalState.WRAPPING) {
+      return (
+        <SwapPendingModalContent
+          title={t('Wrap')}
+          currencyA={currencyA}
+          currencyB={currencyA?.wrapped}
+          amountA={amountA}
+          amountB={amountA}
+          currentStep={confirmModalState}
+        >
+          {showAddToWalletButton && (txHash || orderHash) ? (
+            <AddToWalletButton
+              mt="39px"
+              height="auto"
+              variant="tertiary"
+              width="fit-content"
+              padding="6.5px 20px"
+              marginTextBetweenLogo="6px"
+              textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
+              tokenAddress={token?.address}
+              tokenSymbol={currencyB?.symbol}
+              tokenDecimals={token?.decimals}
+              tokenLogo={token instanceof WrappedTokenInfo ? (token as WrappedTokenInfo)?.logoURI : undefined}
+            />
+          ) : null}
+        </SwapPendingModalContent>
+      )
+    }
+
     if (confirmModalState === ConfirmModalState.PENDING_CONFIRMATION) {
       let title = txHash ? t('Transaction Submitted') : t('Confirm Swap')
+
       if (isXOrder(order)) {
         title = txHash ? t('Order Filled') : orderHash ? t('Order Submitted') : t('Confirm Swap')
       }

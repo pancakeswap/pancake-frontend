@@ -134,8 +134,13 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
 
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(order)
   const amountToApprove = useMemo(
-    () => (inputCurrency?.isNative ? undefined : slippageAdjustedAmounts[Field.INPUT]),
-    [inputCurrency?.isNative, slippageAdjustedAmounts],
+    () =>
+      inputCurrency?.isNative
+        ? isXOrder(order)
+          ? slippageAdjustedAmounts[Field.INPUT]
+          : undefined
+        : slippageAdjustedAmounts[Field.INPUT],
+    [inputCurrency?.isNative, order, slippageAdjustedAmounts],
   )
 
   const tradePriceBreakdown = useMemo(

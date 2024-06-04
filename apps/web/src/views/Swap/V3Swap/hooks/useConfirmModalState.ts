@@ -11,6 +11,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePermit2 } from 'hooks/usePermit2'
 import { usePermit2Requires } from 'hooks/usePermit2Requires'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
+import useWrapCallback from 'hooks/useWrapCallback'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { RetryableError, retry } from 'state/multicall/retry'
 import { UserUnexpectedTxError } from 'utils/errors'
@@ -64,6 +65,9 @@ const useCreateConfirmSteps = (
 
   return useCallback(() => {
     const steps: ConfirmModalState[] = []
+    if (isXOrder(order) && order.trade.inputAmount.currency.isNative) {
+      steps.push(ConfirmModalState.WRAPPING)
+    }
     if (requireRevoke) {
       steps.push(ConfirmModalState.RESETTING_APPROVAL)
     }
@@ -227,6 +231,38 @@ const useConfirmActions = (
     }
   }, [permit, showError])
 
+  const { execute } = useWrapCallback(
+    isXOrder(order) ? order.trade.inputAmount.currency : undefined,
+    order?.trade.inputAmount.currency.wrapped,
+    isXOrder(order) ? order?.trade.maximumAmountIn.toExact() : undefined,
+  )
+
+  const wrapStep = useMemo(() => {
+    return {
+      step: ConfirmModalState.WRAPPING,
+      action: async (nextState?: ConfirmModalState) => {
+        const result = await execute?.()
+        if (result && result.hash && nextState) {
+          setConfirmState(nextState ?? ConfirmModalState.WRAPPING)
+        }
+        // TODO: x wrap flow
+        // setConfirmState(ConfirmModalState.PERMITTING)
+        // try {
+        //   const result = await permit()
+        //   setPermit2Signature(result)
+        //   setConfirmState(nextState ?? ConfirmModalState.PENDING_CONFIRMATION)
+        // } catch (error) {
+        //   if (userRejectedError(error)) {
+        //     showError('Transaction rejected')
+        //   } else {
+        //     showError(typeof error === 'string' ? error : (error as any)?.message)
+        //   }
+        // }
+      },
+      showIndicator: true,
+    }
+  }, [execute])
+
   const approveStep = useMemo(() => {
     return {
       step: ConfirmModalState.APPROVING_TOKEN,
@@ -363,12 +399,13 @@ const useConfirmActions = (
 
   const actions = useMemo(() => {
     return {
+      [ConfirmModalState.WRAPPING]: wrapStep,
       [ConfirmModalState.RESETTING_APPROVAL]: revokeStep,
       [ConfirmModalState.PERMITTING]: permitStep,
       [ConfirmModalState.APPROVING_TOKEN]: approveStep,
       [ConfirmModalState.PENDING_CONFIRMATION]: isClassicOrder(order) ? swapStep : xSwapStep,
     } as { [k in ConfirmModalState]: ConfirmAction }
-  }, [revokeStep, permitStep, approveStep, order, swapStep, xSwapStep])
+  }, [revokeStep, permitStep, approveStep, order, swapStep, xSwapStep, wrapStep])
 
   return {
     txHash,
