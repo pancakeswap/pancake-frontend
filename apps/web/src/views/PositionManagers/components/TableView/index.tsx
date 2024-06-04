@@ -13,6 +13,7 @@ import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBoost
 import { useDelayedUnmount } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useIsWrapperWhiteList } from '../../hooks/useWrapperBooster'
 import { ActionPanel } from './ActionPanel'
@@ -25,7 +26,6 @@ import {
   useEarningTokenPriceInfo,
   usePCSVault,
   usePositionInfo,
-  useTokenPriceFromSubgraph,
   useTotalAssetInUsd,
   useTotalStakedInUsd,
 } from '../../hooks'
@@ -111,23 +111,26 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     staleTime: 6000,
     gcTime: 6000,
   }).data
-  const priceFromSubgraph = useTokenPriceFromSubgraph(
-    priceFromV3FarmPid ? undefined : currencyA.isToken ? currencyA.address.toLowerCase() : undefined,
-    priceFromV3FarmPid ? undefined : currencyB.isToken ? currencyB.address.toLowerCase() : undefined,
-  )
+
+  const token0Usd = useCurrencyUsdPrice(priceFromV3FarmPid ? currencyA : undefined)
+  const token1Usd = useCurrencyUsdPrice(priceFromV3FarmPid ? currencyB : undefined)
   const vaultName = useMemo(() => getVaultName(idByManager, name), [name, idByManager])
   const info = usePositionInfo(bCakeWrapperAddress ?? address, adapterAddress ?? '0x', Boolean(bCakeWrapperAddress))
 
   const tokensPriceUSD = useMemo(() => {
     const farm = farmsV3.find((d) => d.pid === priceFromV3FarmPid)
-    if (!farm) return priceFromSubgraph
+    if (!farm)
+      return {
+        token0: token0Usd.data ?? 0,
+        token1: token1Usd.data ?? 0,
+      }
     const isToken0And1Reversed =
       farm.token.address.toLowerCase() === (currencyB.isToken ? currencyB.address.toLowerCase() : '')
     return {
       token0: Number(isToken0And1Reversed ? farm.quoteTokenPriceBusd : farm.tokenPriceBusd),
       token1: Number(isToken0And1Reversed ? farm.tokenPriceBusd : farm.quoteTokenPriceBusd),
     }
-  }, [farmsV3, priceFromV3FarmPid, priceFromSubgraph, currencyB])
+  }, [farmsV3, token0Usd.data, token1Usd.data, currencyB, priceFromV3FarmPid])
 
   useEffect(() => {
     if (info?.userToken0Amounts > 0n || info?.userToken1Amounts > 0n) {
