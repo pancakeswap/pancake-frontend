@@ -1,5 +1,5 @@
 import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders'
-import smartRouterPkgs from '@pancakeswap/smart-router/package.json' with { type: 'json' }
+import smartRouterPkgs from '@pancakeswap/smart-router/package.json'
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
 
 const withVanillaExtract = createVanillaExtractPlugin()
