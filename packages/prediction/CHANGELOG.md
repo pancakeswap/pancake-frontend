@@ -1,5 +1,15 @@
 # @pancakeswap/prediction
 
+## 1.0.14
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/sdk@5.8.5
+  - @pancakeswap/pools@5.1.25
+  - @pancakeswap/tokens@0.6.19
+
 ## 1.0.13
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @pancakeswap/multicall
 
+## 3.5.5
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/sdk@5.8.5
+
 ## 3.5.4
 
 ### Patch Changes

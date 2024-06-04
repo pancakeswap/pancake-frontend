@@ -1,5 +1,18 @@
 # @pancakeswap/farms
 
+## 1.0.65
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/sdk@5.8.5
+  - @pancakeswap/v3-sdk@3.8.6
+  - @pancakeswap/utils@6.0.7
+  - @pancakeswap/price-api-sdk@1.2.12
+  - @pancakeswap/tokens@0.6.19
+  - @pancakeswap/token-lists@0.0.11
+
 ## 1.0.64
 
 ### Patch Changes
