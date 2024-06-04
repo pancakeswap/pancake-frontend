@@ -112,8 +112,12 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     gcTime: 6000,
   }).data
 
-  const token0Usd = useCurrencyUsdPrice(priceFromV3FarmPid ? currencyA : undefined)
-  const token1Usd = useCurrencyUsdPrice(priceFromV3FarmPid ? currencyB : undefined)
+  const token0Usd = useCurrencyUsdPrice(currencyA, {
+    enabled: !priceFromV3FarmPid,
+  })
+  const token1Usd = useCurrencyUsdPrice(currencyB, {
+    enabled: !priceFromV3FarmPid,
+  })
   const vaultName = useMemo(() => getVaultName(idByManager, name), [name, idByManager])
   const info = usePositionInfo(bCakeWrapperAddress ?? address, adapterAddress ?? '0x', Boolean(bCakeWrapperAddress))
 
