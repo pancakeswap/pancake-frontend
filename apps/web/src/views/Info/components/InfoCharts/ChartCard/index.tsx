@@ -1,13 +1,13 @@
-import { useMemo, useState } from 'react'
-import { Text, Box, Card, Flex, Skeleton } from '@pancakeswap/uikit'
-import LineChart from 'views/Info/components/InfoCharts/LineChart'
-import BarChart from 'views/Info/components/InfoCharts/BarChart'
-import { TabToggleGroup, TabToggle } from 'components/TabToggle'
 import { useTranslation } from '@pancakeswap/localization'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import { ChartEntry, TokenData, PriceChartEntry } from 'state/info/types'
-import dynamic from 'next/dynamic'
+import { Box, Card, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import dayjs from 'dayjs'
+import dynamic from 'next/dynamic'
+import { useMemo, useState } from 'react'
+import { ChartEntry, PriceChartEntry, TokenData } from 'state/info/types'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import BarChart from 'views/Info/components/InfoCharts/BarChart'
+import LineChart from 'views/Info/components/InfoCharts/LineChart'
 
 const CandleChart = dynamic(() => import('../CandleChart'), {
   ssr: false,
