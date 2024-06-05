@@ -3355,11 +3355,12 @@
   "Gauge can not be found using the hash passed via URL.": "Gauge, URL ile aktarılan hash kullanılarak bulunamadı.",
   "Up to $8M in interface fees paid refunded!": "8 milyon dolara kadar ödenmiş arayüz ücreti iade edildi!",
   "Get up to $8M USD in interface fees paid refunded on PancakeSwap": "PancakeSwap'ta 8 milyon ABD dolarına kadar ödenen arayüz ücretlerinin iadesini alın",
-  "Match your volume and we'll refund ALL your interface fees paid": "Hacminiz uygun miktara geldiğinde ödediğiniz TÜM arayüz ücretlerini iade edeceğiz",
+  "Match your volume and we'll refund ALL your interface fees paid": "İşlem hacimleriniz aynı seviyede olduğunda ödediğiniz TÜM arayüz ücretlerini iade edeceğiz",
   "Get up to $8M USD in interface fees refunded on PancakeSwap": "PancakeSwap'ta 8 milyon ABD dolarına kadar arayüz ücretlerinin iadesini alın",
-  "Match your Uni volume on PancakeSwap to get a refund of up to": "PanceakeSwap'ta belirli bir Uni hacmine ulaşarak şu tutara kadar iade alın:",
+  "Match your Uni volume on PancakeSwap to get a refund of up to": "PanceakeSwap'ta, Uni hacminizle aynı seviyeye ulaşarak şu tutara kadar iade alın:",
   "$8M USD": "8 milyon ABD doları",
   "in Uniswap interface fees paid": "(ödenmiş Uniswap arayüz ücretleri için)",
   "Cakepie": "Cakepie",
+  "OK": "OK",
   "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's": "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's"
 }
