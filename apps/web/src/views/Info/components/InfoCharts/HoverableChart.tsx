@@ -1,14 +1,13 @@
-import { Box, Skeleton, Text } from '@pancakeswap/uikit'
+import { Box, Text, Skeleton } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
-import { memo, useEffect, useMemo, useState } from 'react'
-import { ProtocolData, TvlChartEntry, VolumeChartEntry } from 'state/info/types'
+import { useState, useMemo, memo, useEffect } from 'react'
+import { ChartEntry, ProtocolData } from 'state/info/types'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import BarChart from './BarChart'
 import LineChart from './LineChart'
 
 interface HoverableChartProps {
-  volumeChartData: VolumeChartEntry[] | undefined
-  tvlChartData: TvlChartEntry[] | undefined
+  chartData: ChartEntry[] | undefined
   protocolData: ProtocolData | undefined
   currentDate: string
   valueProperty: string
@@ -17,8 +16,7 @@ interface HoverableChartProps {
 }
 
 const HoverableChart = ({
-  volumeChartData,
-  tvlChartData,
+  chartData,
   protocolData,
   currentDate,
   valueProperty,
@@ -40,9 +38,8 @@ const HoverableChart = ({
   }, [protocolData, hover, valueProperty])
 
   const formattedData = useMemo(() => {
-    const data = valueProperty === 'volumeUSD' ? volumeChartData : tvlChartData
-    if (data) {
-      return data.map((day) => {
+    if (chartData) {
+      return chartData.map((day) => {
         return {
           time: dayjs.unix(day.date).toDate(),
           value: day[valueProperty],
@@ -50,7 +47,7 @@ const HoverableChart = ({
       })
     }
     return []
-  }, [tvlChartData, valueProperty, volumeChartData])
+  }, [chartData, valueProperty])
 
   return (
     <Box p={['16px', '16px', '24px']}>

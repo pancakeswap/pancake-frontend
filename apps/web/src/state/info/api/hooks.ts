@@ -2,8 +2,8 @@ import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import type { components } from './schema'
 
-export const useExplorerChainNameByQuery = (): components['schemas']['ChainName'] | undefined => {
-  const { query, isReady } = useRouter()
+export const useExplorerChainNameByQuery = (): components['schemas']['ChainName'] => {
+  const { query } = useRouter()
   const chainName = useMemo(() => {
     switch (query?.chainName) {
       case 'eth':
@@ -25,5 +25,5 @@ export const useExplorerChainNameByQuery = (): components['schemas']['ChainName'
     }
   }, [query])
 
-  return isReady ? chainName : undefined
+  return chainName
 }
