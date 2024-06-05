@@ -5,657 +5,165 @@
 
 export interface paths {
   '/unclaim-fees/{protocol}/{chainId}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
     /**
      * Batch get unclaimed fees
      * @deprecated
      */
     post: operations['postUnclaim-feesByProtocolByChainId']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/chart/{chainName}/rate': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get token to token rate chart */
     get: operations['getCachedTokensChartByChainNameRate']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/chart/{chainName}/{address}/{protocol}/price': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get token price chart by protocol */
     get: operations['getCachedTokensChartByChainNameByAddressByProtocolPrice']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/chart/{chainName}/{address}/price': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get token price chart */
     get: operations['getCachedTokensChartByChainNameByAddressPrice']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/chart/{chainName}/{address}/{protocol}/volume': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get token volume chart by protocol */
     get: operations['getCachedTokensChartByChainNameByAddressByProtocolVolume']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/chart/{chainName}/{address}/{protocol}/tvl': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get token tvl chart by protocol */
     get: operations['getCachedTokensChartByChainNameByAddressByProtocolTvl']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/chart/{chainName}/{address}/tvl': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get token tvl chart */
     get: operations['getCachedTokensChartByChainNameByAddressTvl']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/price/list/{ids}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get token price reference batch */
     get: operations['getCachedTokensPriceListByIds']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/{chainName}/{address}/price': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /**
      * Get token price reference
      * @description Get token price reference from liquidity pool. If more than one protocol is provided, it will return the largest TVL protocol
      */
     get: operations['getCachedTokensByChainNameByAddressPrice']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/v3/{chainName}/{address}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get v3 token data */
     get: operations['getCachedTokensV3ByChainNameByAddress']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/v2/{chainName}/{address}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get v2 token data */
     get: operations['getCachedTokensV2ByChainNameByAddress']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/stable/{chainName}/{address}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get stable token data */
     get: operations['getCachedTokensStableByChainNameByAddress']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/v3/{chainName}/list/top': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get v3 top tokens */
     get: operations['getCachedTokensV3ByChainNameListTop']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/v2/{chainName}/list/top': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get v2 top tokens */
     get: operations['getCachedTokensV2ByChainNameListTop']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tokens/stable/{chainName}/list/top': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get stable top tokens */
     get: operations['getCachedTokensStableByChainNameListTop']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/pools/ticks/v3/{chainName}/{pool}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get all ticks from v3 pool */
     get: operations['getCachedPoolsTicksV3ByChainNameByPool']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/pools/positions/v3/{chainName}/{pool}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get positions from v3 pool */
     get: operations['getCachedPoolsPositionsV3ByChainNameByPool']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/pools/chart/{protocol}/{chainName}/{address}/tvl': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get pool tvl chart */
     get: operations['getCachedPoolsChartByProtocolByChainNameByAddressTvl']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/pools/chart/{protocol}/{chainName}/{address}/volume': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get pool volume chart */
     get: operations['getCachedPoolsChartByProtocolByChainNameByAddressVolume']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/pools/list': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get pools list */
     get: operations['getCachedPoolsList']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/pools/v3/{chainName}/{address}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get v3 pool data */
     get: operations['getCachedPoolsV3ByChainNameByAddress']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/pools/v2/{chainName}/{address}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get v2 pool data */
     get: operations['getCachedPoolsV2ByChainNameByAddress']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/pools/stable/{chainName}/{address}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get stable pool data */
     get: operations['getCachedPoolsStableByChainNameByAddress']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/pools/v3/{chainName}/list/simple': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get simple v3 pools list */
     get: operations['getCachedPoolsV3ByChainNameListSimple']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/pools/v3/{chainName}/list/top': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get top v3 pools */
     get: operations['getCachedPoolsV3ByChainNameListTop']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/pools/v2/{chainName}/list/top': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get top v2 pools */
     get: operations['getCachedPoolsV2ByChainNameListTop']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/pools/stable/{chainName}/list/top': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get top stable pools */
     get: operations['getCachedPoolsStableByChainNameListTop']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tx/v3/{chainName}/swaps': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get v3 swaps by page */
     get: operations['getCachedTxV3ByChainNameSwaps']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tx/v3/{chainName}/recent': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get recent v3 transaction */
     get: operations['getCachedTxV3ByChainNameRecent']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tx/v2/{chainName}/recent': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get recent v2 transaction */
     get: operations['getCachedTxV2ByChainNameRecent']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/tx/stable/{chainName}/recent': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get recent stable transaction */
     get: operations['getCachedTxStableByChainNameRecent']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/block/{chainName}/{timestamp}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get closest block by unix timestamp */
     get: operations['getCachedBlockByChainNameByTimestamp']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/gauges/total-votes/all': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     get: operations['getCachedGaugesTotal-votesAll']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/protocol/chart/{protocol}/{chainName}/volume': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get protocol volume chart */
     get: operations['getCachedProtocolChartByProtocolByChainNameVolume']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/protocol/chart/{protocol}/{chainName}/tvl': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get protocol tvl chart */
     get: operations['getCachedProtocolChartByProtocolByChainNameTvl']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/cached/protocol/{protocol}/{chainName}/stats': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get protocol stats */
     get: operations['getCachedProtocolByProtocolByChainNameStats']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/status/{protocol}/{chainName}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     /** Get status of info data for chain */
     get: operations['getStatusByProtocolByChainName']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
   '/doc/json': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
     get: operations['getDocJson']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
   }
 }
+
 export type webhooks = Record<string, never>
+
 export interface components {
   schemas: {
     /**
@@ -828,17 +336,22 @@ export interface components {
   headers: never
   pathItems: never
 }
+
 export type $defs = Record<string, never>
+
+export type external = Record<string, never>
+
 export interface operations {
+  /**
+   * Batch get unclaimed fees
+   * @deprecated
+   */
   'postUnclaim-feesByProtocolByChainId': {
     parameters: {
-      query?: never
-      header?: never
       path: {
         protocol: 'pancake-v3' | 'uniswap-v3'
         chainId: '1' | '56'
       }
-      cookie?: never
     }
     requestBody: {
       content: {
@@ -856,9 +369,6 @@ export interface operations {
     responses: {
       /** @description Successfully batch get unclaimed fees */
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             data: {
@@ -912,6 +422,7 @@ export interface operations {
       }
     }
   }
+  /** Get token to token rate chart */
   getCachedTokensChartByChainNameRate: {
     parameters: {
       query: {
@@ -922,19 +433,13 @@ export interface operations {
         /** @description Ethereum address */
         tokenB: string
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             bucket: Record<string, never> | string
@@ -947,13 +452,13 @@ export interface operations {
       }
     }
   }
+  /** Get token price chart by protocol */
   getCachedTokensChartByChainNameByAddressByProtocolPrice: {
     parameters: {
       query: {
         /** @description Chart period */
         period: '1H' | '1D' | '1W' | '1M' | '1Y'
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
@@ -962,14 +467,9 @@ export interface operations {
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             bucket: Record<string, never> | string
@@ -982,27 +482,22 @@ export interface operations {
       }
     }
   }
+  /** Get token price chart */
   getCachedTokensChartByChainNameByAddressPrice: {
     parameters: {
       query: {
         /** @description Chart period */
         period: '1H' | '1D' | '1W' | '1M' | '1Y'
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             bucket: Record<string, never> | string
@@ -1015,13 +510,13 @@ export interface operations {
       }
     }
   }
+  /** Get token volume chart by protocol */
   getCachedTokensChartByChainNameByAddressByProtocolVolume: {
     parameters: {
       query: {
         /** @description Chart period */
         period: '1H' | '1D' | '1W' | '1M' | '1Y'
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
@@ -1030,14 +525,9 @@ export interface operations {
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             bucket: Record<string, never> | string
@@ -1047,13 +537,13 @@ export interface operations {
       }
     }
   }
+  /** Get token tvl chart by protocol */
   getCachedTokensChartByChainNameByAddressByProtocolTvl: {
     parameters: {
       query: {
         /** @description Chart period */
         period: '1H' | '1D' | '1W' | '1M' | '1Y'
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
@@ -1062,14 +552,9 @@ export interface operations {
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             bucket: Record<string, never> | string
@@ -1079,27 +564,22 @@ export interface operations {
       }
     }
   }
+  /** Get token tvl chart */
   getCachedTokensChartByChainNameByAddressTvl: {
     parameters: {
       query: {
         /** @description Chart period */
         period: '1H' | '1D' | '1W' | '1M' | '1Y'
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             bucket: Record<string, never> | string
@@ -1109,28 +589,26 @@ export interface operations {
       }
     }
   }
+  /** Get token price reference batch */
   getCachedTokensPriceListByIds: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         /** @description ids to query */
         ids: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': Record<string, never>
         }
       }
     }
   }
+  /**
+   * Get token price reference
+   * @description Get token price reference from liquidity pool. If more than one protocol is provided, it will return the largest TVL protocol
+   */
   getCachedTokensByChainNameByAddressPrice: {
     parameters: {
       query?: {
@@ -1138,122 +616,89 @@ export interface operations {
         /** @description Array of protocol versions */
         protocols?: ('v2' | 'v3' | 'stable') | ('v2' | 'v3' | 'stable')[]
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': components['schemas']['TokenPrice']
         }
       }
       400: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': unknown
         }
       }
     }
   }
+  /** Get v3 token data */
   getCachedTokensV3ByChainNameByAddress: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': components['schemas']['v3TokenData']
         }
       }
     }
   }
+  /** Get v2 token data */
   getCachedTokensV2ByChainNameByAddress: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': components['schemas']['v2TokenData']
         }
       }
     }
   }
+  /** Get stable token data */
   getCachedTokensStableByChainNameByAddress: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         chainName: 'bsc' | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': components['schemas']['v2TokenData']
         }
       }
     }
   }
+  /** Get v3 top tokens */
   getCachedTokensV3ByChainNameListTop: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             /** @description Token address */
@@ -1285,22 +730,16 @@ export interface operations {
       }
     }
   }
+  /** Get v2 top tokens */
   getCachedTokensV2ByChainNameListTop: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             /** @description Token address */
@@ -1329,21 +768,15 @@ export interface operations {
       }
     }
   }
+  /** Get stable top tokens */
   getCachedTokensStableByChainNameListTop: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         chainName: 'bsc' | 'arbitrum'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             /** @description Token address */
@@ -1372,30 +805,25 @@ export interface operations {
       }
     }
   }
+  /** Get all ticks from v3 pool */
   getCachedPoolsTicksV3ByChainNameByPool: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Pool address */
         pool: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': components['schemas']['ticks']
         }
       }
     }
   }
+  /** Get positions from v3 pool */
   getCachedPoolsPositionsV3ByChainNameByPool: {
     parameters: {
       query?: {
@@ -1407,34 +835,28 @@ export interface operations {
         owner?: string
         tick?: number
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Pool address */
         pool: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': components['schemas']['positions']
         }
       }
     }
   }
+  /** Get pool tvl chart */
   getCachedPoolsChartByProtocolByChainNameByAddressTvl: {
     parameters: {
       query: {
         /** @description Chart period */
         period: '1H' | '1D' | '1W' | '1M' | '1Y'
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
@@ -1443,14 +865,9 @@ export interface operations {
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             bucket: Record<string, never> | string
@@ -1460,13 +877,13 @@ export interface operations {
       }
     }
   }
+  /** Get pool volume chart */
   getCachedPoolsChartByProtocolByChainNameByAddressVolume: {
     parameters: {
       query: {
         /** @description Chart period */
         period: '1H' | '1D' | '1W' | '1M' | '1Y'
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
@@ -1475,14 +892,9 @@ export interface operations {
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             bucket: Record<string, never> | string
@@ -1492,6 +904,7 @@ export interface operations {
       }
     }
   }
+  /** Get pools list */
   getCachedPoolsList: {
     parameters: {
       query: {
@@ -1511,38 +924,25 @@ export interface operations {
         /** @description Cursor for pagination after */
         after?: string
       }
-      header?: never
-      path?: never
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
+        content: never
       }
     }
   }
+  /** Get v3 pool data */
   getCachedPoolsV3ByChainNameByAddress: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             /** @description Pool id */
@@ -1594,24 +994,18 @@ export interface operations {
       }
     }
   }
+  /** Get v2 pool data */
   getCachedPoolsV2ByChainNameByAddress: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             /** @description Pool id */
@@ -1655,23 +1049,17 @@ export interface operations {
       }
     }
   }
+  /** Get stable pool data */
   getCachedPoolsStableByChainNameByAddress: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         chainName: 'bsc' | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             /** @description Pool id */
@@ -1718,6 +1106,7 @@ export interface operations {
       }
     }
   }
+  /** Get simple v3 pools list */
   getCachedPoolsV3ByChainNameListSimple: {
     parameters: {
       query?: {
@@ -1726,19 +1115,13 @@ export interface operations {
         /** @description Filter by Token1 address */
         token1?: string
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             /** @description Cursor for pagination start */
@@ -1773,25 +1156,20 @@ export interface operations {
       }
     }
   }
+  /** Get top v3 pools */
   getCachedPoolsV3ByChainNameListTop: {
     parameters: {
       query?: {
         /** @description Filter by Token address */
         token?: string
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             /** @description Pool id */
@@ -1843,25 +1221,20 @@ export interface operations {
       }
     }
   }
+  /** Get top v2 pools */
   getCachedPoolsV2ByChainNameListTop: {
     parameters: {
       query?: {
         /** @description Filter by Token address */
         token?: string
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             /** @description Pool id */
@@ -1905,24 +1278,19 @@ export interface operations {
       }
     }
   }
+  /** Get top stable pools */
   getCachedPoolsStableByChainNameListTop: {
     parameters: {
       query?: {
         /** @description Filter by Token address */
         token?: string
       }
-      header?: never
       path: {
         chainName: 'bsc' | 'arbitrum'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             /** @description Pool id */
@@ -1969,6 +1337,7 @@ export interface operations {
       }
     }
   }
+  /** Get v3 swaps by page */
   getCachedTxV3ByChainNameSwaps: {
     parameters: {
       query?: {
@@ -1981,19 +1350,13 @@ export interface operations {
         /** @description Cursor for pagination after */
         after?: string
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             /** @description Cursor for pagination start */
@@ -2098,6 +1461,7 @@ export interface operations {
       }
     }
   }
+  /** Get recent v3 transaction */
   getCachedTxV3ByChainNameRecent: {
     parameters: {
       query?: {
@@ -2106,25 +1470,20 @@ export interface operations {
         /** @description Filter by pool address */
         pool?: string
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': components['schemas']['transactionsWithType']
         }
       }
     }
   }
+  /** Get recent v2 transaction */
   getCachedTxV2ByChainNameRecent: {
     parameters: {
       query?: {
@@ -2133,25 +1492,20 @@ export interface operations {
         /** @description Filter by pool address */
         pool?: string
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': components['schemas']['transactionsWithType']
         }
       }
     }
   }
+  /** Get recent stable transaction */
   getCachedTxStableByChainNameRecent: {
     parameters: {
       query?: {
@@ -2160,41 +1514,29 @@ export interface operations {
         /** @description Filter by pool address */
         pool?: string
       }
-      header?: never
       path: {
         chainName: 'bsc' | 'arbitrum'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': components['schemas']['transactionsWithType']
         }
       }
     }
   }
+  /** Get closest block by unix timestamp */
   getCachedBlockByChainNameByTimestamp: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         timestamp: string | number
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             /** @example 11150916 */
@@ -2205,9 +1547,6 @@ export interface operations {
         }
       }
       400: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': unknown
         }
@@ -2215,18 +1554,8 @@ export interface operations {
     }
   }
   'getCachedGaugesTotal-votesAll': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             epoch: number
@@ -2236,27 +1565,22 @@ export interface operations {
       }
     }
   }
+  /** Get protocol volume chart */
   getCachedProtocolChartByProtocolByChainNameVolume: {
     parameters: {
       query: {
         /** @description Chart group by */
         groupBy: '1D' | '1W' | '1M'
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Protocol version */
         protocol: 'v2' | 'v3' | 'stable'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             bucket: Record<string, never> | string
@@ -2266,27 +1590,22 @@ export interface operations {
       }
     }
   }
+  /** Get protocol tvl chart */
   getCachedProtocolChartByProtocolByChainNameTvl: {
     parameters: {
       query: {
         /** @description Chart group by */
         groupBy: '1D' | '1W' | '1M'
       }
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Protocol version */
         protocol: 'v2' | 'v3' | 'stable'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             bucket: Record<string, never> | string
@@ -2296,59 +1615,52 @@ export interface operations {
       }
     }
   }
+  /** Get protocol stats */
   getCachedProtocolByProtocolByChainNameStats: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Protocol version */
         protocol: 'v2' | 'v3' | 'stable'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             tvlUSD: string
             totalVolumeUSD: string
             totalProtocolFeeUSD: string
             totalProtocolFeeUSD24h: string
+            totalProtocolFeeUSD30d: string
             totalTxCount: number
             totalFeeUSD: string
             totalFeeUSD24h: string
+            totalFeeUSD30d: string
             tvlUSD24h: string
+            tvlUSD30d: string
             volumeUSD24h: string
+            volumeUSD30d: string
             txCount24h: number
+            txCount30d: number
           }
         }
       }
     }
   }
+  /** Get status of info data for chain */
   getStatusByProtocolByChainName: {
     parameters: {
-      query?: never
-      header?: never
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
         /** @description Protocol version */
         protocol: 'v2' | 'v3' | 'stable'
       }
-      cookie?: never
     }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
         content: {
           'application/json': {
             height: number
@@ -2364,19 +1676,9 @@ export interface operations {
     }
   }
   getDocJson: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
     responses: {
       200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
+        content: never
       }
     }
   }
