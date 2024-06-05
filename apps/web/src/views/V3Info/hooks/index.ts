@@ -79,7 +79,7 @@ export const useProtocolTransactionData = (): Transaction[] | undefined => {
   const chainId = multiChainId[chainName]
   const { data } = useQuery({
     queryKey: [`v3/info/protocol/ProtocolTransactionData/${chainId}`, chainId],
-    queryFn: () => fetchTopTransactions(v3InfoClients[chainId]),
+    queryFn: () => fetchTopTransactions(chainIdToExplorerInfoChainName[chainId]),
     enabled: Boolean(chainId),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
