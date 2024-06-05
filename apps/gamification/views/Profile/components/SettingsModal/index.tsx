@@ -7,21 +7,24 @@ import {
   Flex,
   FlexGap,
   InjectedModalProps,
-  InstagramIcon,
+  // InstagramIcon,
+  // YoutubeIcon,
   Modal,
   TelegramIcon,
   Text,
   TwitterIcon,
-  YoutubeIcon,
 } from '@pancakeswap/uikit'
+import { useDiscord } from 'views/Profile/hooks/settingsModal/useDiscord'
 
 interface SocialComponentProps {
   icon: JSX.Element
   name: string
   connected?: boolean
+  connect?: () => void
+  disconnect?: () => void
 }
 
-const SocialComponent: React.FC<SocialComponentProps> = ({ icon, name, connected }) => {
+const SocialComponent: React.FC<SocialComponentProps> = ({ icon, name, connected, connect, disconnect }) => {
   const { t } = useTranslation()
   return (
     <Flex>
@@ -32,7 +35,7 @@ const SocialComponent: React.FC<SocialComponentProps> = ({ icon, name, connected
         </Text>
       </Flex>
       <Flex>
-        <Button variant={connected ? 'subtle' : 'primary'} scale="sm">
+        <Button variant={connected ? 'subtle' : 'primary'} scale="sm" onClick={connected ? disconnect : connect}>
           {connected ? t('Disconnect') : t('Connect')}
         </Button>
         <DotIcon ml="8px" width={8} height={8} color={connected ? 'success' : 'textDisabled'} />
@@ -45,8 +48,9 @@ interface SettingsModalProps extends InjectedModalProps {}
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ onDismiss }) => {
   const { t } = useTranslation()
-
   const isConnected = false
+
+  const { connect: connectDiscord } = useDiscord()
 
   return (
     <Modal title={t('Settings')} onDismiss={() => onDismiss}>
@@ -75,8 +79,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onDismiss }) => {
               name={t('Discord')}
               icon={<DiscordIcon color="textSubtle" width={20} height={20} />}
               connected={isConnected}
+              connect={connectDiscord}
             />
-            <SocialComponent
+            {/* <SocialComponent
               name={t('Youtube')}
               icon={<YoutubeIcon color="textSubtle" width={20} height={20} />}
               connected={isConnected}
@@ -85,7 +90,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onDismiss }) => {
               name={t('Instagram')}
               icon={<InstagramIcon color="textSubtle" width={20} height={20} />}
               connected={isConnected}
-            />
+            /> */}
           </FlexGap>
         </Box>
         <Box width="100%" mt="12px">
