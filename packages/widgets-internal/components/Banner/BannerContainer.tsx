@@ -1,4 +1,4 @@
-import { FlexGap } from "@pancakeswap/uikit";
+import { FlexGap, FlexGapProps } from "@pancakeswap/uikit";
 import { PropsWithChildren } from "react";
 import styled from "styled-components";
 
@@ -6,7 +6,8 @@ import { WithBackground } from "./types";
 
 type ContainerProps = PropsWithChildren<{
   background?: string;
-}>;
+}> &
+  FlexGapProps;
 
 const Container = styled(FlexGap).attrs({
   flexDirection: "row",
@@ -30,6 +31,10 @@ const Container = styled(FlexGap).attrs({
   }
 `;
 
-export function BannerContainer({ children, background }: ContainerProps) {
-  return <Container $background={background}>{children}</Container>;
+export function BannerContainer({ children, background, ...rest }: ContainerProps) {
+  return (
+    <Container $background={background} {...rest}>
+      {children}
+    </Container>
+  );
 }
