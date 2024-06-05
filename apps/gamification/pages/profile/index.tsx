@@ -1,21 +1,9 @@
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import { useAccount } from 'wagmi'
+import { NftProfileLayout } from 'views/Profile'
 
 const ProfilePage = () => {
-  const { address: account } = useAccount()
-  const router = useRouter()
-
-  useEffect(() => {
-    // if (account) {
-    //   router.push(`/profile/${account.toLowerCase()}`)
-    // }
-    // else { // TODO
-    //   // router.push(nftsBaseUrl)
-    // }
-  }, [account, router])
-
-  return null
+  return <></>
 }
+
+ProfilePage.Layout = NftProfileLayout
 
 export default ProfilePage

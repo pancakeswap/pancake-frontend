@@ -7,6 +7,7 @@ import { useCallback } from 'react'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
 import { useNftsForAddress } from 'views/ProfileCreation/Nft/hooks/useNftsForAddress'
+import { useAccount } from 'wagmi'
 import MarketPageHeader from './components/MarketPageHeader'
 import NoNftsImage from './components/NoNftsImage'
 import ProfileHeader from './components/ProfileHeader'
@@ -25,7 +26,8 @@ const TabMenuWrapper = styled(Box)`
 `
 
 const NftProfile: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
-  const accountAddress = useRouter().query.accountAddress as string
+  const { address: account } = useAccount()
+  const accountAddress = (useRouter().query.accountAddress as string) ?? account
   const { t } = useTranslation()
 
   const invalidAddress = !accountAddress || safeGetAddress(accountAddress) === undefined
