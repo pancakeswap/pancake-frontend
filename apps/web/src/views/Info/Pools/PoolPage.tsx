@@ -33,8 +33,7 @@ import {
   useChainIdByQuery,
   useChainNameByQuery,
   useMultiChainPath,
-  usePoolChartTvlDataQuery,
-  usePoolChartVolumeDataQuery,
+  usePoolChartDataQuery,
   usePoolDatasQuery,
   usePoolTransactionsQuery,
   useStableSwapPath,
@@ -98,10 +97,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const address = routeAddress.toLowerCase()
 
   const poolData = usePoolDatasQuery(useMemo(() => [address], [address]))[0]
-  // const chartData = usePoolChartDataQuery(address)
-  const tvlChartData = usePoolChartTvlDataQuery(address)
-  const volumeChartData = usePoolChartVolumeDataQuery(address)
-
+  const chartData = usePoolChartDataQuery(address)
   const transactions = usePoolTransactionsQuery(address)
   const chainId = useChainIdByQuery()
   const [poolSymbol, symbol0, symbol1] = useMemo(() => {
@@ -327,7 +323,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                 </Flex>
               </Card>
             </Box>
-            <ChartCard variant="pool" volumeChartData={volumeChartData} tvlChartData={tvlChartData} />
+            <ChartCard variant="pool" chartData={chartData || []} />
           </ContentLayout>
           <Heading mb="16px" mt="40px" scale="lg">
             {t('Transactions')}
