@@ -1,8 +1,9 @@
-import { useCallback, useEffect } from 'react'
 import { watchAccount } from '@wagmi/core'
-import { useAccount, useAccountEffect, useConfig } from 'wagmi'
+import { useCallback, useEffect } from 'react'
 import { useAppDispatch } from 'state'
 import { clearUserStates } from 'utils/clearUserStates'
+import { Address, isAddressEqual } from 'viem'
+import { useAccount, useAccountEffect, useConfig } from 'wagmi'
 import { useSwitchNetworkLocal } from './useSwitchNetwork'
 
 export const useChainIdListener = () => {
@@ -48,6 +49,17 @@ export const useAccountEventListener = () => {
   useAddressListener()
 
   useAccountEffect({
+    onConnect(data) {
+      const { address } = data
+      if (!address) return
+      const whiteListedAddresses = (process.env.NEXT_PUBLIC_X_WHITELISTED_ADDRESSES?.split(',') ?? []) as Address[]
+      if (
+        whiteListedAddresses.length === 0 ||
+        !whiteListedAddresses.some((whiteListedAddress) => isAddressEqual(address, whiteListedAddress))
+      ) {
+        window.location.replace('https://pancakeswap.finance')
+      }
+    },
     onDisconnect() {
       clearUserStates(dispatch, { chainId })
     },
