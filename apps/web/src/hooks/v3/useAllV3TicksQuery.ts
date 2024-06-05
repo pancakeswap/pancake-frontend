@@ -22,9 +22,9 @@ export default function useAllV3TicksQuery(poolAddress: string | undefined, inte
   const { chainId } = useActiveChainId()
   const { data, isLoading, error } = useQuery({
     queryKey: [`useAllV3TicksQuery-${poolAddress}-${chainId}`],
-    queryFn: async () => {
+    queryFn: async ({ signal }) => {
       if (!chainId || !poolAddress) return undefined
-      return getPoolTicksOld(chainId, poolAddress, undefined)
+      return getPoolTicks(chainId, poolAddress, undefined, signal)
     },
     enabled: Boolean(poolAddress && chainId && v3Clients[chainId] && enabled),
     refetchInterval: interval,
