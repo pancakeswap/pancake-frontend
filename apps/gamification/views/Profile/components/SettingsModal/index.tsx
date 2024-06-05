@@ -79,7 +79,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onDismiss }) => {
                 connected={isConnected}
                 connect={connectTwitter}
               />
-              <div id="telegram-login-script-container" style={{ display: 'none' }} />
             </Box>
             <SocialComponent
               name={t('Discord')}
