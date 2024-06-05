@@ -18,7 +18,7 @@ interface DiscordResponse {
   username: string
 }
 
-export const useDiscord = () => {
+export const useConnectDiscord = () => {
   useEffect(() => {
     // Url will be like #token_type=Bearer&access_token=${access_token}&expires_in=${expires_in}&scope=identify
     const fragment = new URLSearchParams(window.location.hash.slice(1))

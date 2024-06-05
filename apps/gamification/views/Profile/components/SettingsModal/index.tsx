@@ -14,7 +14,8 @@ import {
   Text,
   TwitterIcon,
 } from '@pancakeswap/uikit'
-import { useDiscord } from 'views/Profile/hooks/settingsModal/useDiscord'
+import { useConnectDiscord } from 'views/Profile/hooks/settingsModal/useConnectDiscord'
+import { useConnectTwitter } from 'views/Profile/hooks/settingsModal/useConnectTwitter'
 
 interface SocialComponentProps {
   icon: JSX.Element
@@ -50,7 +51,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onDismiss }) => {
   const { t } = useTranslation()
   const isConnected = false
 
-  const { connect: connectDiscord } = useDiscord()
+  const { connect: connectDiscord } = useConnectDiscord()
+  useConnectTwitter()
 
   return (
     <Modal title={t('Settings')} onDismiss={() => onDismiss}>
@@ -70,11 +72,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onDismiss }) => {
               icon={<TwitterIcon color="textSubtle" width={20} height={20} />}
               connected={isConnected}
             />
-            <SocialComponent
-              name={t('Telegram')}
-              icon={<TelegramIcon color="textSubtle" width={20} height={20} />}
-              connected={isConnected}
-            />
+            <div id="telegram-login-container">
+              <SocialComponent
+                name={t('Telegram')}
+                icon={<TelegramIcon color="textSubtle" width={20} height={20} />}
+                connected={isConnected}
+              />
+            </div>
             <SocialComponent
               name={t('Discord')}
               icon={<DiscordIcon color="textSubtle" width={20} height={20} />}
