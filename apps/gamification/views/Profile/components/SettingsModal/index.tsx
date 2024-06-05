@@ -52,7 +52,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onDismiss }) => {
   const isConnected = false
 
   const { connect: connectDiscord } = useConnectDiscord()
-  useConnectTwitter()
+  const { connect: connectTwitter } = useConnectTwitter()
 
   return (
     <Modal title={t('Settings')} onDismiss={() => onDismiss}>
@@ -72,13 +72,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onDismiss }) => {
               icon={<TwitterIcon color="textSubtle" width={20} height={20} />}
               connected={isConnected}
             />
-            <div id="telegram-login-container">
+            <Box>
               <SocialComponent
                 name={t('Telegram')}
                 icon={<TelegramIcon color="textSubtle" width={20} height={20} />}
                 connected={isConnected}
+                connect={connectTwitter}
               />
-            </div>
+              <div id="telegram-login-script-container" style={{ display: 'none' }} />
+            </Box>
             <SocialComponent
               name={t('Discord')}
               icon={<DiscordIcon color="textSubtle" width={20} height={20} />}

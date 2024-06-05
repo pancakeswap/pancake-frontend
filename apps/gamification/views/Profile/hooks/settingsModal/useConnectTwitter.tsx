@@ -2,7 +2,8 @@ import { useEffect } from 'react'
 
 declare global {
   interface Window {
-    onTelegramAuth?: any
+    onTelegramAuth: (value: any) => void
+    loadTelegramScript: () => void
   }
 }
 
@@ -18,18 +19,25 @@ export const useConnectTwitter = () => {
       // For example, you can send it to your backend server
     }
 
-    // Dynamically add the Telegram Login Widget script
-    const script = document.createElement('script')
-    script.src = 'https://telegram.org/js/telegram-widget.js?22'
-    script.setAttribute('data-telegram-login', YOUR_BOT_USERNAME) // Replace with your bot's username
-    script.setAttribute('data-size', 'large')
-    script.setAttribute('data-auth-url', YOUR_CALLBACK_URL) // Replace with your callback URL
-    script.setAttribute('data-request-access', 'write')
-    script.async = true
-    ;(document as any).getElementById('telegram-login-container').appendChild(script)
+    // Function to load the Telegram Login Widget script
+    const loadTelegramScript = () => {
+      const script = document.createElement('script')
+      script.src = 'https://telegram.org/js/telegram-widget.js?22'
+      script.setAttribute('data-telegram-login', YOUR_BOT_USERNAME) // Replace with your bot's username
+      script.setAttribute('data-size', 'large')
+      script.setAttribute('data-auth-url', YOUR_CALLBACK_URL) // Replace with your callback URL
+      script.setAttribute('data-request-access', 'write')
+      script.async = true
+      ;(document as any).getElementById('telegram-login-script-container').appendChild(script)
+    }
+
+    window.loadTelegramScript = loadTelegramScript
   }, [])
 
-  const connect = () => {}
+  const connect = () => {
+    // Trigger the loading of the Telegram script
+    window.loadTelegramScript()
+  }
 
   return {
     connect,
