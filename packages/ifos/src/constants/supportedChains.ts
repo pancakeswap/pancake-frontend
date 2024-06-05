@@ -3,7 +3,6 @@ import { ChainId } from '@pancakeswap/chains'
 // Chains that only support cross chain ifo
 export const CROSS_CHAIN_ONLY_SUPPORTED_CHAIN_IDS = [
   // ChainId.POLYGON_ZKEVM,
-  ChainId.ETHEREUM,
   ChainId.GOERLI,
   ChainId.ARBITRUM_ONE,
 ] as const
@@ -25,7 +24,6 @@ export const SOURCE_CHAIN_MAP: Record<CrossChainOnlySupportedChainId, ProfileSup
   // [ChainId.POLYGON_ZKEVM]: ChainId.BSC,
   [ChainId.GOERLI]: ChainId.BSC_TESTNET,
   [ChainId.ARBITRUM_ONE]: ChainId.BSC,
-  [ChainId.ETHEREUM]: ChainId.BSC,
 }
 
 export const SOURCE_CHAIN_TO_DEST_CHAINS = Object.keys(SOURCE_CHAIN_MAP).reduce((map, destChain) => {
