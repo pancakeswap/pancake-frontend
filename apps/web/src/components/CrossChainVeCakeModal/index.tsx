@@ -29,14 +29,14 @@ import {} from 'ethers'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePancakeVeSenderV2Contract } from 'hooks/useContract'
 import { useGetBnbBalance, useVeCakeBalance } from 'hooks/useTokenBalance'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { useProfileProxyWellSynced } from './hooks/useProfileProxyWellSynced'
 // import { encodeFunctionData } from 'viem'
 import { ArbitrumIcon, BinanceIcon, EthereumIcon } from './ChainLogos'
-// import { getCrossChainMessage } from '@pancakeswap/ifos'
+import { useCrossChianMessage } from './hooks/useCrossChainMessage'
 
 const StyledModalHeader = styled(ModalHeader)`
   padding: 0;
@@ -316,7 +316,13 @@ const OtherChainsCard: React.FC<{
   const { balance } = useVeCakeBalance(chainId)
   const { t } = useTranslation()
   const { isSynced, isLoading } = useProfileProxyWellSynced(chainId)
-
+  const { data: crossChainMessage, isLoading: isCrossChainLoading } = useCrossChianMessage(chainId, hash)
+  const isLayerZeroHashProcessing = useMemo(() => {
+    if (isCrossChainLoading || crossChainMessage?.status === 'INFLIGHT') {
+      return true
+    }
+    return false
+  }, [isCrossChainLoading, crossChainMessage])
   return (
     <VeCakeChainBox onClick={() => onSelected(chainId)} className={isSelected ? 'is-selected' : undefined}>
       <Flex alignItems="center" style={{ gap: 5 }}>
@@ -341,9 +347,15 @@ const OtherChainsCard: React.FC<{
         <Text fontSize="14px" color="textSubtle">
           {t('veCAKE')}
         </Text>
-        <Text fontSize="16px" textAlign="right">
-          {formatNumber(getBalanceNumber(balance))}
-        </Text>
+        {isLayerZeroHashProcessing ? (
+          <Flex alignItems="center" justifyContent="center" mt="7px" pb="4px">
+            <Loading width="14px" height="14px" />
+          </Flex>
+        ) : (
+          <Text fontSize="16px" textAlign="right">
+            {formatNumber(getBalanceNumber(balance))}
+          </Text>
+        )}
       </Flex>
     </VeCakeChainBox>
   )
