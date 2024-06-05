@@ -63,7 +63,6 @@ export const DialogProvider: React.FC<React.PropsWithChildren> = ({ children }) 
 
   const prompt = useCallback<PromptFn>(
     (newOptions) => {
-      console.debug("debug prompt", newOptions);
       setOptions({
         ...newOptions,
         useInput: true,

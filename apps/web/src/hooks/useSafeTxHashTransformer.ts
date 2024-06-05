@@ -31,7 +31,6 @@ export const useSafeTxHashTransformer = () => {
 
   return useCallback(
     async <T = Hash | TransactionDetails>(safeTxHash: T): Promise<Hash> => {
-      console.debug('debug call useSafeTxHashTransformer', safeTxHash)
       if (!isGnosisSafe) return safeTxHash as Hash
       const hash = safeTxHash as Hash
 
@@ -54,7 +53,6 @@ export const useSafeTxHashTransformer = () => {
 
             if (resp.txHash) return resp.txHash as Hash
 
-            console.debug('debug txStatus', resp.txStatus)
             return (resp.txHash as Hash) ?? hash
           } catch (error) {
             console.error('Failed to get transaction hash from Safe SDK', error)

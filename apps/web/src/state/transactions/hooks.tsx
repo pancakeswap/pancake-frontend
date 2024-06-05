@@ -10,11 +10,11 @@ import { useSelector } from 'react-redux'
 import { AppState, useAppDispatch } from 'state'
 import { useAccount } from 'wagmi'
 
-import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { Hash } from 'viem'
 
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useSafeTxHashTransformer } from 'hooks/useSafeTxHashTransformer'
 import {
@@ -92,14 +92,12 @@ export function useTransactionAdder(): (
         throw Error('No transaction hash found.')
       }
 
-      console.debug('debug before hahs', hash)
       try {
         hash = await safeTxHashTransformer(hash as Hash)
       } catch (e) {
         console.error('Failed to get transaction hash from Safe', e)
       }
 
-      console.debug('debug after hahs', hash)
       dispatch(
         addTransaction({
           hash,

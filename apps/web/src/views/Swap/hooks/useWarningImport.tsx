@@ -65,7 +65,6 @@ export default function useWarningImport() {
   const swapWarningHandler = useCallback(
     (currencyInput) => {
       const showSwapWarning = shouldShowSwapWarning(chainId, currencyInput)
-      console.debug('debug showSwapWarning', showSwapWarning)
       if (showSwapWarning) {
         setSwapWarningCurrency(currencyInput)
       } else {
