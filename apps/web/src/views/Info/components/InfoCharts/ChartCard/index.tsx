@@ -4,7 +4,7 @@ import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import dayjs from 'dayjs'
 import dynamic from 'next/dynamic'
 import { useMemo, useState } from 'react'
-import { PriceChartEntry, TokenData, TvlChartEntry, VolumeChartEntry } from 'state/info/types'
+import { ChartEntry, PriceChartEntry, TokenData } from 'state/info/types'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import BarChart from 'views/Info/components/InfoCharts/BarChart'
 import LineChart from 'views/Info/components/InfoCharts/LineChart'
@@ -21,16 +21,14 @@ enum ChartView {
 
 interface ChartCardProps {
   variant: 'pool' | 'token'
-  volumeChartData: VolumeChartEntry[] | undefined
-  tvlChartData: TvlChartEntry[] | undefined
+  chartData: ChartEntry[] | undefined
   tokenData?: TokenData
   tokenPriceData?: PriceChartEntry[]
 }
 
 const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
   variant,
-  volumeChartData,
-  tvlChartData,
+  chartData,
   tokenData,
   tokenPriceData,
 }) => {
@@ -45,8 +43,8 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
   const currentDate = new Date().toLocaleString(locale, { month: 'short', year: 'numeric', day: 'numeric' })
 
   const formattedTvlData = useMemo(() => {
-    if (tvlChartData) {
-      return tvlChartData.map((day) => {
+    if (chartData) {
+      return chartData.map((day) => {
         return {
           time: dayjs.unix(day.date).toDate(),
           value: day.liquidityUSD,
@@ -54,10 +52,10 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
       })
     }
     return []
-  }, [tvlChartData])
+  }, [chartData])
   const formattedVolumeData = useMemo(() => {
-    if (volumeChartData) {
-      return volumeChartData.map((day) => {
+    if (chartData) {
+      return chartData.map((day) => {
         return {
           time: dayjs.unix(day.date).toDate(),
           value: day.volumeUSD,
@@ -65,7 +63,7 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
       })
     }
     return []
-  }, [volumeChartData])
+  }, [chartData])
 
   const getLatestValueDisplay = () => {
     let valueToDisplay: string | undefined = ''
