@@ -15,7 +15,7 @@ import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
 import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
 import { fetchAllTokenData, fetchAllTokenDataByAddresses } from 'state/info/queries/tokens/tokenData'
 import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
-import { Block, Transaction, TransactionType } from 'state/info/types'
+import { Block, Transaction, TransactionType, TvlChartEntry, VolumeChartEntry } from 'state/info/types'
 import { getAprsForStableFarm } from 'utils/getAprsForStableFarm'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
@@ -47,7 +47,7 @@ const QUERY_SETTINGS_INTERVAL_REFETCH = {
   ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
 }
 
-export const useProtocolDataQuery = (): ProtocolData | undefined => {
+export const useProtocolDataQueryOld = (): ProtocolData | undefined => {
   const chainName = useChainNameByQuery()
   const [t24, t48] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampQuery([t24, t48])
@@ -61,6 +61,122 @@ export const useProtocolDataQuery = (): ProtocolData | undefined => {
     ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
   })
   return protocolData ?? undefined
+}
+
+export const useProtocolDataQuery = (): ProtocolData | undefined => {
+  const chainName = useExplorerChainNameByQuery()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data: protocolData } = useQuery({
+    queryKey: [`info/protocol/updateProtocolData2/${type}`, chainName],
+    queryFn: async ({ signal }) => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
+      return explorerApiClient
+        .GET('/cached/protocol/{protocol}/{chainName}/stats', {
+          signal,
+          params: {
+            path: {
+              chainName,
+              protocol: type === 'stableSwap' ? 'stable' : 'v2',
+            },
+          },
+        })
+        .then((res) => {
+          if (res.data) {
+            return {
+              volumeUSD: res.data.totalVolumeUSD ? +res.data.totalVolumeUSD : 0,
+              volumeUSDChange: 0,
+              liquidityUSD: +res.data.tvlUSD,
+              liquidityUSDChange: 0,
+              txCount: res.data.totalTxCount ? +res.data.totalTxCount : 0,
+              txCountChange: 0,
+            }
+          }
+          throw new Error('No data')
+        })
+    },
+    enabled: Boolean(chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
+  return protocolData ?? undefined
+}
+
+export const useProtocolChartDataTvlQuery = (): TvlChartEntry[] | undefined => {
+  const chainName = useExplorerChainNameByQuery()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data: chartData } = useQuery({
+    queryKey: [`info/protocol/chart/tvl/${type}`, chainName],
+    queryFn: async ({ signal }) => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
+      return explorerApiClient
+        .GET('/cached/protocol/chart/{protocol}/{chainName}/tvl', {
+          signal,
+          params: {
+            path: {
+              chainName,
+              protocol: type === 'stableSwap' ? 'stable' : 'v2',
+            },
+            query: {
+              groupBy: '1D',
+            },
+          },
+        })
+        .then(
+          (res) =>
+            res.data?.map((d) => {
+              return {
+                date: dayjs(d.bucket as string).unix(),
+                liquidityUSD: d.tvlUSD ? +d.tvlUSD : 0,
+              }
+            }) ?? [],
+        )
+    },
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
+  return chartData ?? undefined
+}
+
+export const useProtocolChartDataVolumeQuery = (): VolumeChartEntry[] | undefined => {
+  const chainName = useExplorerChainNameByQuery()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data: chartData } = useQuery({
+    queryKey: [`info/protocol/chart/volume/${type}`, chainName],
+    queryFn: async ({ signal }) => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
+      return explorerApiClient
+        .GET('/cached/protocol/chart/{protocol}/{chainName}/volume', {
+          signal,
+          params: {
+            path: {
+              chainName,
+              protocol: type === 'stableSwap' ? 'stable' : 'v2',
+            },
+            query: {
+              groupBy: '1D',
+            },
+          },
+        })
+        .then(
+          (res) =>
+            res.data?.map((d) => {
+              return {
+                date: dayjs(d.bucket as string).unix(),
+                volumeUSD: d.volumeUSD ? +d.volumeUSD : 0,
+              }
+            }) ?? [],
+        )
+    },
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
+  return chartData ?? undefined
 }
 
 export const useProtocolChartDataQuery = (): ChartEntry[] | undefined => {
@@ -95,6 +211,9 @@ export const useProtocolTransactionsQuery = (): Transaction[] | undefined => {
   const { data: transactions } = useQuery({
     queryKey: [`info/protocol/updateProtocolTransactionsData2/${type}`, chainName],
     queryFn: ({ signal }) => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
       if ((type === 'stableSwap' && chainName === 'bsc') || chainName === 'arbitrum') {
         return explorerApiClient
           .GET('/cached/tx/stable/{chainName}/recent', {
@@ -170,6 +289,9 @@ export const useAllPoolDataQuery = () => {
   const { data } = useQuery({
     queryKey: [`info/pools2/data/${type}`, chainName],
     queryFn: () => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
       if (type === 'stableSwap' && (chainName === 'bsc' || chainName === 'arbitrum')) {
         return explorerApiClient
           .GET('/cached/pools/stable/{chainName}/list/top', {
@@ -287,6 +409,79 @@ export const usePoolChartDataQuery = (address: string): ChartEntry[] | undefined
   return data?.data ?? undefined
 }
 
+export const usePoolChartTvlDataQuery = (address: string): TvlChartEntry[] | undefined => {
+  const chainName = useExplorerChainNameByQuery()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useQuery({
+    queryKey: [`info/pool/chartData/tvl/${address}/${type}`, chainName],
+    queryFn: async ({ signal }) => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
+      return explorerApiClient
+        .GET('/cached/pools/chart/{protocol}/{chainName}/{address}/tvl', {
+          signal,
+          params: {
+            path: {
+              address,
+              chainName,
+              protocol: type === 'stableSwap' ? 'stable' : 'v2',
+            },
+            query: {
+              period: '1Y',
+            },
+          },
+        })
+        .then((res) =>
+          res?.data?.map((d) => ({
+            date: dayjs(d.bucket as string).unix(),
+            liquidityUSD: d.tvlUSD ? +d.tvlUSD : 0,
+          })),
+        )
+    },
+    enabled: Boolean(chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
+  return data ?? undefined
+}
+export const usePoolChartVolumeDataQuery = (address: string): VolumeChartEntry[] | undefined => {
+  const chainName = useExplorerChainNameByQuery()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useQuery({
+    queryKey: [`info/pool/chartData/volume/${address}/${type}`, chainName],
+    queryFn: async ({ signal }) => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
+      return explorerApiClient
+        .GET('/cached/pools/chart/{protocol}/{chainName}/{address}/volume', {
+          signal,
+          params: {
+            path: {
+              address,
+              chainName,
+              protocol: type === 'stableSwap' ? 'stable' : 'v2',
+            },
+            query: {
+              period: '1Y',
+            },
+          },
+        })
+        .then((res) =>
+          res.data?.map((d) => ({
+            date: dayjs(d.bucket as string).unix(),
+            volumeUSD: d.volumeUSD ? +d.volumeUSD : 0,
+          })),
+        )
+    },
+    enabled: Boolean(chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
+  return data ?? undefined
+}
+
 export const usePoolTransactionsQueryOld = (address: string): Transaction[] | undefined => {
   const chainName = useChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
@@ -305,6 +500,9 @@ export const usePoolTransactionsQuery = (address: string): Transaction[] | undef
   const { data } = useQuery({
     queryKey: [`info/pool/transactionsData2/${address}/${type}`, chainName],
     queryFn: ({ signal }) => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
       if (type === 'stableSwap' && (chainName === 'bsc' || chainName === 'arbitrum')) {
         return explorerApiClient
           .GET('/cached/tx/stable/{chainName}/recent', {
@@ -424,6 +622,9 @@ export const useAllTokenDataQuery = (): {
   const { data } = useQuery({
     queryKey: [`info/token/data2/${type}`, chainName],
     queryFn: async ({ signal }) => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
       const final: { [address: string]: { data?: TokenData } } = {}
       let data_
 
@@ -559,6 +760,79 @@ export const useTokenChartDataQuery = (address: string): ChartEntry[] | undefine
   return data?.data ?? undefined
 }
 
+export const useTokenChartTvlDataQuery = (address: string): TvlChartEntry[] | undefined => {
+  const chainName = useExplorerChainNameByQuery()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useQuery({
+    queryKey: [`info/token/chartData/tvl/${address}/${type}`, chainName],
+    queryFn: async ({ signal }) => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
+      return explorerApiClient
+        .GET('/cached/tokens/chart/{chainName}/{address}/{protocol}/tvl', {
+          signal,
+          params: {
+            path: {
+              address,
+              chainName,
+              protocol: type === 'stableSwap' ? 'stable' : 'v2',
+            },
+            query: {
+              period: '1Y',
+            },
+          },
+        })
+        .then((res) =>
+          res?.data?.map((d) => ({
+            date: dayjs(d.bucket as string).unix(),
+            liquidityUSD: d.tvlUSD ? +d.tvlUSD : 0,
+          })),
+        )
+    },
+    enabled: Boolean(chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
+  return data ?? undefined
+}
+export const useTokenChartVolumeDataQuery = (address: string): VolumeChartEntry[] | undefined => {
+  const chainName = useExplorerChainNameByQuery()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useQuery({
+    queryKey: [`info/token/chartData/volume/${address}/${type}`, chainName],
+    queryFn: async ({ signal }) => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
+      return explorerApiClient
+        .GET('/cached/tokens/chart/{chainName}/{address}/{protocol}/volume', {
+          signal,
+          params: {
+            path: {
+              address,
+              chainName,
+              protocol: type === 'stableSwap' ? 'stable' : 'v2',
+            },
+            query: {
+              period: '1Y',
+            },
+          },
+        })
+        .then((res) =>
+          res.data?.map((d) => ({
+            date: dayjs(d.bucket as string).unix(),
+            volumeUSD: d.volumeUSD ? +d.volumeUSD : 0,
+          })),
+        )
+    },
+    enabled: Boolean(chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
+  return data ?? undefined
+}
+
 export const useTokenPriceDataQueryOld = (
   address: string,
   interval: number,
@@ -586,6 +860,9 @@ export const useTokenPriceDataQuery = (
   const { data } = useQuery({
     queryKey: [`info/token/priceData2/${address}/${type}`, chainName],
     queryFn: ({ signal }) => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
       return explorerApiClient
         .GET('/cached/tokens/chart/{chainName}/{address}/{protocol}/price', {
           signal,
@@ -636,6 +913,9 @@ export const useTokenTransactionsQuery = (address: string): Transaction[] | unde
   const { data } = useQuery({
     queryKey: [`info/token/transactionsData/${address}/${type}`, chainName],
     queryFn: ({ signal }) => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
       if (type === 'stableSwap' && (chainName === 'bsc' || chainName === 'arbitrum')) {
         return explorerApiClient
           .GET('/cached/tx/stable/{chainName}/recent', {

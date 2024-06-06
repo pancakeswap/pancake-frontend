@@ -35,7 +35,8 @@ import {
   usePoolDatasQuery,
   usePoolsForTokenQuery,
   useStableSwapPath,
-  useTokenChartDataQuery,
+  useTokenChartTvlDataQuery,
+  useTokenChartVolumeDataQuery,
   useTokenDataQuery,
   useTokenPriceDataQuery,
   useTokenTransactionsQuery,
@@ -91,7 +92,9 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
   const poolsForToken = usePoolsForTokenQuery(address)
   const poolDatas = usePoolDatasQuery(useMemo(() => poolsForToken ?? [], [poolsForToken]))
   const transactions = useTokenTransactionsQuery(address)
-  const chartData = useTokenChartDataQuery(address)
+  // const chartData = useTokenChartDataQuery(address)
+  const volumeChartData = useTokenChartVolumeDataQuery(address)
+  const tvlChartData = useTokenChartTvlDataQuery(address)
 
   // pricing data
   const priceData = useTokenPriceDataQuery(address, ONE_HOUR_SECONDS, DEFAULT_TIME_WINDOW)
@@ -244,7 +247,13 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                 </Box>
               </Card>
               {/* charts card */}
-              <ChartCard variant="token" chartData={chartData} tokenData={tokenData} tokenPriceData={priceData} />
+              <ChartCard
+                variant="token"
+                volumeChartData={volumeChartData}
+                tvlChartData={tvlChartData}
+                tokenData={tokenData}
+                tokenPriceData={priceData}
+              />
             </ContentLayout>
 
             {/* pools and transaction tables */}
