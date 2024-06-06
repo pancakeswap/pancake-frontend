@@ -16,6 +16,7 @@ export const ifos: BaseIfoConfig[] = [
     },
     poolUnlimited: {
       raiseAmount: '$90,000',
+      additionalClaimingFee: false,
     },
     currency: bscTokens.cake,
     token: bscTokens.lista,
