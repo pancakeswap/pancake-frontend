@@ -11,6 +11,9 @@ import { v3Clients, v3InfoClients } from 'utils/graphql'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 import { useQuery } from '@tanstack/react-query'
+import { getPercentChange } from 'views/V3Info/utils/data'
+import { components } from 'state/info/api/schema'
+import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
 import { DURATION_INTERVAL, SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchPoolDatas } from '../data/pool/poolData'
@@ -25,7 +28,6 @@ import { fetchTokenChartData } from '../data/token/chartData'
 import { fetchPoolsForToken } from '../data/token/poolsForToken'
 import { fetchPairPriceChartTokenData, fetchTokenPriceData } from '../data/token/priceData'
 import { fetchedTokenDatas } from '../data/token/tokenData'
-import { fetchTopTokenAddresses } from '../data/token/topTokens'
 import { fetchTokenTransactions } from '../data/token/transactions'
 import {
   ChartDayData,
@@ -163,11 +165,52 @@ export const usePairPriceChartTokenData = (
   )
 }
 
-export async function fetchTopTokens(dataClient: GraphQLClient, blocks?: Block[]) {
+export async function fetchTopTokens(chainName: components['schemas']['ChainName'], signal: AbortSignal) {
   try {
-    const topTokenAddress = await fetchTopTokenAddresses(dataClient)
-    const data = await fetchedTokenDatas(dataClient, topTokenAddress.addresses ?? [], blocks)
-    return data
+    const data = await explorerApiClient
+      .GET('/cached/tokens/v3/{chainName}/list/top', {
+        signal,
+        params: {
+          path: {
+            chainName,
+          },
+        },
+      })
+      .then((res) => res.data)
+    if (!data) {
+      return {
+        data: {},
+        error: false,
+      }
+    }
+    return {
+      data: data.reduce(
+        (acc, item) => {
+          // eslint-disable-next-line no-param-reassign
+          acc[item.id] = {
+            ...item,
+            address: item.id,
+            volumeUSD: parseFloat(item.volumeUSD24h || '0'),
+            volumeUSDWeek: parseFloat(item.volumeUSD7d || '0'),
+            tvlUSD: parseFloat(item.tvlUSD),
+            volumeUSDChange: 0,
+            tvlUSDChange: 0,
+            exists: false,
+            txCount: item.txCount24h,
+            feesUSD: parseFloat(item.feeUSD24h),
+            tvlToken: 0,
+            priceUSDChange: getPercentChange(item.priceUSD, item.priceUSD24h),
+            priceUSDChangeWeek: 0,
+            priceUSD: parseFloat(item.priceUSD),
+          }
+          return acc
+        },
+        {} as {
+          [address: string]: TokenData
+        },
+      ),
+      error: false,
+    }
   } catch (e) {
     console.error(e)
     return {
@@ -184,19 +227,12 @@ export const useTopTokensData = ():
   | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
-  const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d])
 
   const { data } = useQuery({
     queryKey: [`v3/info/token/TopTokensData/${chainId}`, chainId],
 
-    queryFn: () =>
-      fetchTopTokens(
-        v3InfoClients[chainId],
-        blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
-      ),
-
-    enabled: Boolean(chainId && blocks && blocks.length > 0),
+    queryFn: ({ signal }) => fetchTopTokens(chainIdToExplorerInfoChainName[chainId], signal),
+    enabled: Boolean(chainId),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
