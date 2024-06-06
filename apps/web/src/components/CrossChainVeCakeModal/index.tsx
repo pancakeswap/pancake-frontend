@@ -333,9 +333,9 @@ const OtherChainsCard: React.FC<{
         <Text fontSize="14px" color="textSubtle">
           {t('Profile')}
         </Text>
-        {isLoading ? (
+        {isLoading || isLayerZeroHashProcessing ? (
           <Loading />
-        ) : hash && !isSynced ? (
+        ) : isLayerZeroHashProcessing && !isSynced ? (
           <LinkExternal external href={`https://layerzeroscan.com/tx/${hash}`}>
             {t('In Progress')}
           </LinkExternal>
