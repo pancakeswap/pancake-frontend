@@ -1408,7 +1408,6 @@
   "Supply Count": "Supply Count",
   "Success": "Success",
   "cIFOs are a new subtype of IFOs, designed to reward our loyal community, and also introduce our community to projects with slightly smaller raises.": "cIFOs are a new subtype of IFOs, designed to reward our loyal community, and also introduce our community to projects with slightly smaller raises.",
-  "Go to IFO": "Go to IFO",
   "Phishing warning: ": "Phishing warning: ",
   "please make sure you're visiting %domain% - check the URL carefully.": "please make sure you're visiting %domain% - check the URL carefully.",
   "No bids yet": "No bids yet",
@@ -3365,6 +3364,8 @@
   "$8M USD": "$8M USD",
   "in Uniswap interface fees paid": "in Uniswap interface fees paid",
   "Cakepie": "Cakepie",
+  "IFO live!": "IFO live!",
+  "LISTA IFO": "LISTA IFO",
   "OK": "OK",
   "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's": "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's"
 }

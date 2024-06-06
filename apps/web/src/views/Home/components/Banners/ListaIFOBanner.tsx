@@ -38,7 +38,7 @@ export const ListaIFOBanner = () => {
 
   const getStarted = (
     <LinkExternalAction color="#1F198A" href="/ifo" style={{ whiteSpace: 'nowrap' }}>
-      {t('Get started')}
+      {t('Get Started')}
     </LinkExternalAction>
   )
 
