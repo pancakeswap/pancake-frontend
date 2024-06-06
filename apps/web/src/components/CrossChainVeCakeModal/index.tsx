@@ -93,6 +93,7 @@ const LogoWrapper = styled.div`
 `
 
 export const VeCakeChainBox = styled.div`
+  position: relative;
   display: flex;
   padding: 16px;
   justify-content: space-between;
@@ -103,8 +104,28 @@ export const VeCakeChainBox = styled.div`
   background: ${({ theme }) => theme.colors.gradientCardHeader};
   border: 2px solid transparent;
   transition: border-color 0.25s ease-in-out;
+  overflow: hidden;
   &.is-selected {
     border-color: ${({ theme }) => theme.colors.success};
+    &::before {
+      content: 'c';
+      position: absolute;
+      border-bottom: 20px solid ${({ theme }) => theme.colors.success};
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      height: 0;
+      top: -1px;
+      right: -15px;
+      width: 35px;
+      text-align: center;
+      padding-right: 10px;
+      line-height: 20px;
+      font-size: 12px;
+      font-weight: 400;
+      transform: rotate(45deg);
+      color: ${({ theme }) => theme.colors.white};
+      overflow: hidden;
+    }
   }
 `
 
