@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox, Button, Flex, RowBetween, Skeleton, Text } from '@pancakeswap/uikit'
@@ -131,7 +130,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
             </RowBetween>
           </>
         )}
-        {isBooster && chainId === ChainId.BSC && (
+        {isBooster && (
           <>
             <AtomBox
               width={{

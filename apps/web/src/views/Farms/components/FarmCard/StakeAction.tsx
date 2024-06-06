@@ -268,7 +268,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       lpRewardsApr={lpRewardsApr}
       onConfirm={handleStake}
       handleApprove={handleApprove}
-      isBooster={isBoosterAndRewardInRange && chainId === ChainId.BSC}
+      isBooster={isBoosterAndRewardInRange}
       boosterMultiplier={
         isBoosterAndRewardInRange
           ? bCakeUserData?.boosterMultiplier === 0 || bCakeUserData?.stakedBalance.eq(0) || !locked

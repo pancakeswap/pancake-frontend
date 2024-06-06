@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
@@ -424,11 +423,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                         : multiplier.farmCakePerSecond
                     }
                     totalMultipliers={multiplier.totalMultipliers}
-                    isBooster={
-                      chainId === ChainId.BSC &&
-                      Boolean(details?.bCakeWrapperAddress) &&
-                      details?.bCakePublicData?.isRewardInRange
-                    }
+                    isBooster={Boolean(details?.bCakeWrapperAddress) && details?.bCakePublicData?.isRewardInRange}
                     boosterMultiplier={
                       details?.bCakeWrapperAddress
                         ? details?.bCakeUserData?.boosterMultiplier === 0 ||
@@ -537,7 +532,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                             </HarvestActionContainer>
                           </>
                         )}
-                        {isRewardInRange && chainId === ChainId.BSC && (
+                        {isRewardInRange && (
                           <Box
                             style={{
                               height: isMobile ? 2 : 70,
@@ -546,7 +541,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                             }}
                           />
                         )}
-                        {isRewardInRange && chainId === ChainId.BSC && (
+                        {isRewardInRange && (
                           <Flex
                             flexGrow={1}
                             maxWidth={isMobile ? 'auto' : hasStakedInBCake ? '27%' : '50%'}

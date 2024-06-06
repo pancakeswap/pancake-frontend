@@ -6,7 +6,6 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { createElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 
-import { ChainId } from '@pancakeswap/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMerklInfo } from 'hooks/useMerkl'
 import { useMerklUserLink } from 'utils/getMerklLink'
@@ -174,8 +173,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                       ) : null}
                       {props.type === 'v2' &&
                       props?.details?.bCakeWrapperAddress &&
-                      props?.details?.bCakePublicData?.isRewardInRange &&
-                      chainId === ChainId.BSC ? (
+                      props?.details?.bCakePublicData?.isRewardInRange ? (
                         <BoostedTag scale="sm" />
                       ) : null}
                       {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
@@ -237,8 +235,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                           }
                           isBooster={
                             Boolean(props?.details?.bCakeWrapperAddress) &&
-                            props?.details?.bCakePublicData?.isRewardInRange &&
-                            chainId === ChainId.BSC
+                            props?.details?.bCakePublicData?.isRewardInRange
                           }
                         />
                       </CellLayout>
@@ -329,8 +326,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   ) : null}
                   {props.type === 'v2' &&
                   props?.details?.bCakeWrapperAddress &&
-                  props?.details?.bCakePublicData?.isRewardInRange &&
-                  chainId === ChainId.BSC ? (
+                  props?.details?.bCakePublicData?.isRewardInRange ? (
                     <BoostedTag scale="sm" />
                   ) : null}
                   {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
@@ -368,8 +364,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                         totalMultipliers={multiplier.totalMultipliers}
                         isBooster={
                           Boolean(props?.details?.bCakeWrapperAddress) &&
-                          props?.details?.bCakePublicData?.isRewardInRange &&
-                          chainId === ChainId.BSC
+                          props?.details?.bCakePublicData?.isRewardInRange
                         }
                         boosterMultiplier={
                           props?.details?.bCakeWrapperAddress
