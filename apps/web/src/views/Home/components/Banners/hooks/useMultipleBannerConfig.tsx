@@ -1,4 +1,3 @@
-import { useCountdown } from '@pancakeswap/hooks'
 import shuffle from 'lodash/shuffle'
 import { ReactElement, useMemo } from 'react'
 import CompetitionBanner from '../CompetitionBanner'
@@ -7,7 +6,6 @@ import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import GameBanner from '../GameBanner'
 import { MultiChainBanner } from '../MultichainBanner'
 import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
-import NewIFOBanner from '../NewIFOBanner'
 import { OptionsBanner } from '../OptionsBanner'
 import PerpetualBanner from '../PerpetualBanner'
 import { TopTraderBanner } from '../TopTraderBanner'
@@ -16,8 +14,9 @@ import { V4InfoBanner } from '../V4InfoBanner'
 import { VeCakeBanner } from '../VeCakeBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
-import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
+import { ListaIFOBanner } from '../ListaIFOBanner'
+import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -38,17 +37,17 @@ interface IBannerConfig {
  */
 
 export const useMultipleBannerConfig = () => {
-  const isRenderIFOBanner = useIsRenderIfoBanner()
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
   const isRenderUserBanner = useIsRenderUserBanner()
-  const countdown = useCountdown(1704369600)
+  const shouldRenderIfoBanner = useIsRenderIfoBanner()
+
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
       },
-      { shouldRender: isRenderIFOBanner || Boolean(countdown), banner: <NewIFOBanner /> },
+      { shouldRender: shouldRenderIfoBanner, banner: <ListaIFOBanner /> },
       {
         shouldRender: true,
         banner: <FeeRefundBanner />,
@@ -101,9 +100,8 @@ export const useMultipleBannerConfig = () => {
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)
   }, [
-    countdown,
+    shouldRenderIfoBanner,
     isRenderCompetitionBanner,
-    isRenderIFOBanner,
     isRenderUserBanner.isEarningsBusdZero,
     isRenderUserBanner.shouldRender,
   ])

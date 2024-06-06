@@ -17,6 +17,7 @@ import {
 } from '@pancakeswap/uikit'
 import { BIG_TEN } from '@pancakeswap/utils/bigNumber'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { PublicIfoData } from 'views/Ifos/types'
@@ -113,8 +114,8 @@ const IfoAchievement: React.FC<React.PropsWithChildren<Props>> = ({ ifo, publicI
     <Container p="16px" pb="32px">
       <AchievementFlex isFinished={publicIfoData.status === 'finished'} alignItems="flex-start" flex={1}>
         <Image
-          src={`/images/achievements/ifo-${tokenName}.svg`}
-          fallbackSrc="/images/achievements/ifo-placeholder-bun.png"
+          src={`${ASSET_CDN}/web/achievements/ifo-${tokenName}.svg`}
+          fallbackSrc={`${ASSET_CDN}/web/achievements/ifo-placeholder-bun.png`}
           width={56}
           height={56}
           mr="8px"

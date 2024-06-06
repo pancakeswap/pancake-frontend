@@ -11,6 +11,7 @@ export enum PoolIds {
 export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
 
 type IfoPoolInfo = {
+  additionalClaimingFee?: boolean
   saleAmount?: string
   raiseAmount: string
   cakeToBurn?: string
