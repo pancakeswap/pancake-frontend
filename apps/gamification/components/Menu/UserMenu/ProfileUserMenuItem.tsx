@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Skeleton, UserMenuItem } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
 import { styled } from 'styled-components'
-import { useAccount } from 'wagmi'
 
 interface ProfileUserMenuItemProps {
   isLoading: boolean
@@ -22,7 +21,6 @@ const ProfileUserMenuItem: React.FC<React.PropsWithChildren<ProfileUserMenuItemP
   hasProfile,
   disabled,
 }) => {
-  const { address: account } = useAccount()
   const { t } = useTranslation()
 
   if (isLoading) {
@@ -47,7 +45,7 @@ const ProfileUserMenuItem: React.FC<React.PropsWithChildren<ProfileUserMenuItemP
   }
 
   return (
-    <NextLink href={`/profile/${account?.toLowerCase()}/achievements`} passHref>
+    <NextLink href="/profile" passHref>
       <UserMenuItem disabled={disabled}>{t('Your Profile')}</UserMenuItem>
     </NextLink>
   )

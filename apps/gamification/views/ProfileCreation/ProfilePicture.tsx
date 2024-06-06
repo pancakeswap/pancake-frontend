@@ -116,7 +116,7 @@ const ProfilePicture: React.FC = () => {
         </Text>
         <Text as="p" mb="24px">
           {t('Only approved Pancake Collectibles can be used.')}
-          <Link to={`${nftsBaseUrl}/profile/pancake-collectibles`} style={{ marginLeft: '4px' }}>
+          <Link to="https://pancakeswap.finance/profile/pancake-collectibles" style={{ marginLeft: '4px' }}>
             {t('See the list >')}
           </Link>
         </Text>

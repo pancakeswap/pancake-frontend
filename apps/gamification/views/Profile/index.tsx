@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useAchievementsForAddress, useProfileForAddress } from 'hooks/useProfile'
-import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
@@ -27,7 +26,7 @@ const TabMenuWrapper = styled(Box)`
 
 const NftProfile: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   const { address: account } = useAccount()
-  const accountAddress = (useRouter().query.accountAddress as string) ?? account
+  const accountAddress = account as string
   const { t } = useTranslation()
 
   const invalidAddress = !accountAddress || safeGetAddress(accountAddress) === undefined

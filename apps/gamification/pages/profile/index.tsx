@@ -1,11 +1,22 @@
+import { useProfile } from 'hooks/useProfile'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import { NftProfileLayout } from 'views/Profile'
 import { useAccount } from 'wagmi'
 
 const ProfilePage = () => {
   const { address: account } = useAccount()
-  const isConnectedProfile = account?.toLowerCase()
+  const router = useRouter()
+  const { isInitialized, isLoading, profile } = useProfile()
+  const hasProfile = isInitialized && !!profile
 
-  return <></>
+  useEffect(() => {
+    if (account && !isLoading && !hasProfile) {
+      router.push('/create-profile')
+    }
+  }, [account, hasProfile, isLoading, router])
+
+  return <>{hasProfile && 'should show data'}</>
 }
 
 ProfilePage.Layout = NftProfileLayout
