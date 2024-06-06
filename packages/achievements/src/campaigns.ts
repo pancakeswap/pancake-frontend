@@ -433,6 +433,12 @@ export const campaigns: Campaign[] = [
     badge: 'ifo-ckp.svg',
   },
   {
+    id: '512400000',
+    type: 'ifo',
+    title: 'LISTA',
+    badge: 'ifo-lista.svg',
+  },
+  {
     id: '512030001',
     type: 'teambattle',
     title: 'Mobox Champion: Gold',
