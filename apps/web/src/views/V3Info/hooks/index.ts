@@ -425,7 +425,7 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
 
   const { data } = useQuery({
     queryKey: [`v3/info/pool/poolTransaction/${chainId}/${address}`, chainId],
-    queryFn: () => fetchPoolTransactions(address, v3InfoClients[chainId]),
+    queryFn: () => fetchPoolTransactions(address, chainIdToExplorerInfoChainName[chainId]),
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
