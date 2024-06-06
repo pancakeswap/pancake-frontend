@@ -5,6 +5,7 @@ import {
   AtomBox,
   Box,
   Button,
+  CheckmarkIcon,
   Flex,
   Heading,
   LinkExternal,
@@ -108,7 +109,7 @@ export const VeCakeChainBox = styled.div`
   &.is-selected {
     border-color: ${({ theme }) => theme.colors.success};
     &::before {
-      content: 'c';
+      content: ' ';
       position: absolute;
       border-bottom: 20px solid ${({ theme }) => theme.colors.success};
       border-left: 20px solid transparent;
@@ -346,6 +347,7 @@ const OtherChainsCard: React.FC<{
   }, [isCrossChainLoading, crossChainMessage])
   return (
     <VeCakeChainBox onClick={() => onSelected(chainId)} className={isSelected ? 'is-selected' : undefined}>
+      {isSelected && <CheckMarkRightTop />}
       <Flex alignItems="center" style={{ gap: 5 }}>
         <LogoWrapper> {Icon}</LogoWrapper>
         <Text>{chainName}</Text>
@@ -450,3 +452,11 @@ const SubmittedView: React.FC<{ chainId: ChainId; hash: string }> = ({ chainId, 
     </Flex>
   )
 }
+
+const CheckMarkRightTop = styled(CheckmarkIcon)`
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  color: ${({ theme }) => theme.colors.white};
+  font-size: 12px;
+`
