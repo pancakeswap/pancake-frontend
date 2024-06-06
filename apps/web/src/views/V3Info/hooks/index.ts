@@ -11,6 +11,7 @@ import { v3Clients, v3InfoClients } from 'utils/graphql'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 import { useQuery } from '@tanstack/react-query'
+import { chainIdToExplorerInfoChainName } from 'state/info/api/client'
 import { DURATION_INTERVAL, SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchPoolDatas } from '../data/pool/poolData'
@@ -328,7 +329,7 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
   const chainId = multiChainId[chainName]
   const { data } = useQuery({
     queryKey: [`v3/info/token/tokenTransaction/${chainId}/${address}`, chainId],
-    queryFn: () => fetchTokenTransactions(address, v3InfoClients[chainId]),
+    queryFn: () => fetchTokenTransactions(address, chainIdToExplorerInfoChainName[chainId]),
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
