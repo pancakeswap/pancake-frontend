@@ -10,6 +10,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePermit2 } from 'hooks/usePermit2'
 import { usePermit2Requires } from 'hooks/usePermit2Requires'
+import { useSafeTxHashTransformer } from 'hooks/useSafeTxHashTransformer'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { RetryableError, retry } from 'state/multicall/retry'
@@ -80,6 +81,7 @@ const useConfirmActions = (
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const [deadline] = useTransactionDeadline()
+  const safeTxHashTransformer = useSafeTxHashTransformer()
   const { revoke, permit, approve } = usePermit2(amountToApprove, spender)
   const { account } = useAccountActiveChain()
   const getAllowanceArgs = useMemo(() => {
@@ -149,9 +151,10 @@ const useConfirmActions = (
       try {
         const result = await revoke()
         if (result?.hash) {
-          setTxHash(result.hash)
+          const hash = await safeTxHashTransformer(result.hash)
+          setTxHash(hash)
 
-          await retryWaitForTransaction({ hash: result.hash })
+          await retryWaitForTransaction({ hash })
         }
 
         let newAllowanceRaw: bigint = 0n
@@ -193,7 +196,15 @@ const useConfirmActions = (
       action,
       showIndicator: true,
     }
-  }, [amountToApprove?.currency, getAllowanceArgs, retryWaitForTransaction, revoke, showError, t])
+  }, [
+    amountToApprove?.currency,
+    getAllowanceArgs,
+    retryWaitForTransaction,
+    revoke,
+    safeTxHashTransformer,
+    showError,
+    t,
+  ])
 
   const permitStep = useMemo(() => {
     return {
@@ -201,8 +212,15 @@ const useConfirmActions = (
       action: async (nextState?: ConfirmModalState) => {
         setConfirmState(ConfirmModalState.PERMITTING)
         try {
-          const result = await permit()
-          setPermit2Signature(result)
+          const { tx, ...result } = (await permit()) ?? {}
+          if (tx) {
+            const hash = await safeTxHashTransformer(tx)
+            retryWaitForTransaction({ hash })
+            // use transferAllowance, no need to use permit signature
+            setPermit2Signature(undefined)
+          } else {
+            setPermit2Signature(result)
+          }
           setConfirmState(nextState ?? ConfirmModalState.PENDING_CONFIRMATION)
         } catch (error) {
           if (userRejectedError(error)) {
@@ -214,7 +232,7 @@ const useConfirmActions = (
       },
       showIndicator: true,
     }
-  }, [permit, showError])
+  }, [permit, retryWaitForTransaction, safeTxHashTransformer, showError])
 
   const approveStep = useMemo(() => {
     return {
@@ -225,8 +243,9 @@ const useConfirmActions = (
         try {
           const result = await approve()
           if (result?.hash && chainId) {
-            setTxHash(result.hash)
-            await retryWaitForTransaction({ hash: result.hash })
+            const hash = await safeTxHashTransformer(result.hash)
+            setTxHash(hash)
+            await retryWaitForTransaction({ hash })
           }
           let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
           // check if user really approved the amount trade needs
@@ -266,7 +285,16 @@ const useConfirmActions = (
       },
       showIndicator: true,
     }
-  }, [amountToApprove, approve, chainId, getAllowanceArgs, retryWaitForTransaction, showError, t])
+  }, [
+    amountToApprove,
+    approve,
+    chainId,
+    getAllowanceArgs,
+    retryWaitForTransaction,
+    safeTxHashTransformer,
+    showError,
+    t,
+  ])
 
   const swapStep = useMemo(() => {
     return {
@@ -288,9 +316,10 @@ const useConfirmActions = (
         try {
           const result = await swap()
           if (result?.hash) {
-            setTxHash(result.hash)
+            const hash = await safeTxHashTransformer(result.hash)
+            setTxHash(hash)
 
-            await retryWaitForTransaction({ hash: result.hash })
+            await retryWaitForTransaction({ hash })
           }
           setConfirmState(ConfirmModalState.COMPLETED)
         } catch (error: any) {
@@ -304,7 +333,7 @@ const useConfirmActions = (
       },
       showIndicator: false,
     }
-  }, [resetState, retryWaitForTransaction, showError, swap, swapError])
+  }, [resetState, retryWaitForTransaction, safeTxHashTransformer, showError, swap, swapError])
 
   const actions = useMemo(() => {
     return {
