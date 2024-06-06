@@ -319,7 +319,7 @@ export const useTokenChartData = (address: string): TokenChartEntry[] | undefine
 
   const { data } = useQuery({
     queryKey: [`v3/info/token/tokenChartData/${chainId}/${address}`, chainId],
-    queryFn: () => fetchTokenChartData(address, v3InfoClients[chainId]),
+    queryFn: () => fetchTokenChartData('v3', chainIdToExplorerInfoChainName[chainId], address),
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
