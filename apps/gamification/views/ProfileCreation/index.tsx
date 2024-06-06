@@ -3,6 +3,7 @@ import PageLoader from 'components/Loader/PageLoader'
 import { useProfile } from 'hooks/useProfile'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { ProfileUrlType } from 'views/Profile/components/TabMenu'
 import { useAccount } from 'wagmi'
 import Header from './Header'
 import Steps from './Steps'
@@ -15,7 +16,7 @@ const ProfileCreation = () => {
 
   useEffect(() => {
     if (account && hasProfile) {
-      router.push(`/profile/${account.toLowerCase()}`)
+      router.push(`${ProfileUrlType.NFT}`)
     }
   }, [account, hasProfile, router])
 
