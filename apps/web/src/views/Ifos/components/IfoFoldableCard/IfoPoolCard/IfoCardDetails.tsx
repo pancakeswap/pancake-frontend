@@ -94,9 +94,9 @@ const MaxTokenEntry = ({
       <Box>
         <Text display="inline">{t('For the public sale, Max CAKE entry is capped by')} </Text>
         <Text bold display="inline">
-          {t('the number of iCAKE.')}{' '}
+          {t('the number of iCAKE.')}
         </Text>
-        <Text display="inline">
+        <Text display="inline" ml="0.25rem">
           {t('Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.')}
         </Text>
       </Box>
@@ -240,7 +240,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
               value={`$${ifo.tokenOfferingPrice}`}
             />
           )}
-          {hasTax && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
+          <FooterEntry label={t('Additional fee:')} value={taxRate} />
           {hasTax && (
             <FooterEntry
               label={t('Price per %symbol% with fee:', { symbol: ifo.token.symbol })}

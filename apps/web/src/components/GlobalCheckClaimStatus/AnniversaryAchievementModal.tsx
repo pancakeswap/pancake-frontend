@@ -4,6 +4,7 @@ import { AutoRenewIcon, Box, Button, Flex, Modal, ModalV2, Text, useToast } from
 import confetti from 'canvas-confetti'
 import Dots from 'components/Loader/Dots'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useAnniversaryAchievementContract } from 'hooks/useContract'
@@ -147,7 +148,7 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
       <Modal title={t('Congratulations!')}>
         <Flex flexDirection="column" alignItems="center" justifyContent="center" maxWidth="450px">
           <Box>
-            <AnniversaryImage src="/images/achievements/3-year.svg" />
+            <AnniversaryImage src={`${ASSET_CDN}/web/achievements/3-year.svg`} />
           </Box>
           <Text textAlign="center" bold fontSize="24px">
             {t('Happy Birthday!')}

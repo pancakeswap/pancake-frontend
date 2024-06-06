@@ -1,13 +1,11 @@
-import { useChainCurrentBlock } from 'state/block/hooks'
-import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
-import { ChainId } from '@pancakeswap/chains'
+import dayjs from 'dayjs'
+
+import { useActiveIfoWithTimestamps } from 'hooks/useActiveIfoWithTimestamps'
 
 const useIsRenderIfoBanner = () => {
-  const currentBlock = useChainCurrentBlock(ChainId.BSC)
+  const ifo = useActiveIfoWithTimestamps()
 
-  const activeIfoWithBlocks = useActiveIfoWithBlocks()
-
-  return !!(currentBlock && activeIfoWithBlocks && activeIfoWithBlocks.endBlock > currentBlock)
+  return !!(ifo && dayjs().isBefore(dayjs.unix(ifo.endTimestamp)))
 }
 
 export default useIsRenderIfoBanner

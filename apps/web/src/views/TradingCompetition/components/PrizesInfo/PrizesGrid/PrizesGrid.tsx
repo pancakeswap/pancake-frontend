@@ -17,6 +17,9 @@ import Trans from 'components/Trans'
 import { Tiers, PrizesConfig } from 'config/constants/trading-competition/prizes'
 import { useTranslation } from '@pancakeswap/localization'
 import { useState } from 'react'
+
+import { ASSET_CDN } from 'config/constants/endpoints'
+
 import { BoldTd, Td, StyledPrizeTable } from '../../StyledPrizeTable'
 
 const COLOR_GOLD = '#FFBF33'
@@ -114,7 +117,7 @@ const PrizesGrid: React.FC<React.PropsWithChildren<PrizesGridProps>> = ({ prizes
                   <Td>
                     <Flex alignItems="center" flexWrap="wrap" justifyContent="flex-start" width="100%">
                       <Image
-                        src={`/images/achievements/${row.achievements.image}`}
+                        src={`${ASSET_CDN}/web/achievements/${row.achievements.image}`}
                         alt={`achievement-image-${row.rank}`}
                         width={38}
                         height={38}

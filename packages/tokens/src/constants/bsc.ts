@@ -3173,4 +3173,12 @@ export const bscTokens = {
     'Engines of Fury Token',
     'https://www.eof.gg/',
   ),
+  lista: new ERC20Token(
+    ChainId.BSC,
+    '0xFceB31A79F71AC9CBDCF853519c1b12D379EdC46',
+    18,
+    'LISTA',
+    'Lista DAO',
+    'https://lista.org/',
+  ),
 }
