@@ -329,7 +329,7 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
   const chainId = multiChainId[chainName]
   const { data } = useQuery({
     queryKey: [`v3/info/token/tokenTransaction/${chainId}/${address}`, chainId],
-    queryFn: () => fetchTokenTransactions(address, v3InfoClients[chainId]),
+    queryFn: () => fetchTokenTransactions(address, chainIdToExplorerInfoChainName[chainId]),
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
