@@ -16,6 +16,7 @@ import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
 import { ListaIFOBanner } from '../ListaIFOBanner'
+import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -38,13 +39,15 @@ interface IBannerConfig {
 export const useMultipleBannerConfig = () => {
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
   const isRenderUserBanner = useIsRenderUserBanner()
+  const shouldRenderIfoBanner = useIsRenderIfoBanner()
+
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
       },
-      { shouldRender: true, banner: <ListaIFOBanner /> },
+      { shouldRender: shouldRenderIfoBanner, banner: <ListaIFOBanner /> },
       {
         shouldRender: true,
         banner: <FeeRefundBanner />,

@@ -31,16 +31,13 @@ const bgXsVariant: GraphicDetail = {
   height: 182,
 }
 
-const getStartedLink =
-  'https://blog.pancakeswap.finance/articles/get-your-uniswap-interface-fees-refunded-on-pancake-swap-up-to-8-m?utm_source=homepagebanner&utm_medium=Ethereum&utm_campaign=Swap&utm_id=InterfacefeeRefund'
-
 export const ListaIFOBanner = () => {
   const { t } = useTranslation()
   const { activeIfo } = useActiveIfoConfig()
   const { isMobile } = useMatchBreakpoints()
 
   const getStarted = (
-    <LinkExternalAction color="#1F198A" href={getStartedLink} style={{ whiteSpace: 'nowrap' }}>
+    <LinkExternalAction color="#1F198A" href="/ifo" style={{ whiteSpace: 'nowrap' }}>
       {t('Get started')}
     </LinkExternalAction>
   )
@@ -58,6 +55,7 @@ export const ListaIFOBanner = () => {
             background="#1F198A"
             color="#FFD600"
             showSeconds={!isMobile}
+            endsDisplay={t('IFO live!')}
           />
         }
         title={<BannerTitle variant="listaBlue">{t('LISTA IFO')}</BannerTitle>}

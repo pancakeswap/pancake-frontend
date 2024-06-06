@@ -10,7 +10,7 @@ export const ifos: BaseIfoConfig[] = [
     isActive: true,
     cIFO: true,
     name: 'LISTA',
-    plannedStartTime: 1718791200, // 19 June 10:00 UTC
+    plannedStartTime: 1718789400, // 19 June 09:30 UTC
     poolBasic: {
       raiseAmount: '$10,000',
     },
@@ -26,7 +26,7 @@ export const ifos: BaseIfoConfig[] = [
     version: 8,
     twitterUrl: 'https://x.com/lista_dao',
     description:
-      'Lista DAO is a liquid staking and decentralized stablecoin protocol. Users can liquid stake their BNB to receive slisBNB, and borrow lisUSD against accepted collateral assets.',
+      '[Lista DAO](https://lista.org/) is a liquid staking and decentralized stablecoin protocol. Users can liquid stake their BNB to receive slisBNB, and borrow lisUSD against accepted collateral assets.',
     vestingTitle: `LISTA is Lista DAO's governance token that unlocks the following utility: governance, protocol incentivization, gauge voting, and fee sharing.`,
   },
   {

@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { FlexGap, Text, useMatchBreakpoints, type TextProps } from "@pancakeswap/uikit";
 import { useTranslation } from "@pancakeswap/localization";
 import { useCountdown } from "@pancakeswap/hooks";
-import { TextProps } from "@pancakeswap/uikit";
 
 type CountdownProps = {
   targetTimestamp: number;
   prefix?: ReactNode;
   suffix?: ReactNode;
+  endsDisplay?: ReactNode;
   showSeconds?: boolean;
   background?: CSSProperties["background"];
   style?: CSSProperties;
@@ -69,35 +69,40 @@ export const BannerCountdown = memo(function Countdown({
   showSeconds = true,
   prefix,
   suffix,
+  endsDisplay,
   ...textProps
 }: CountdownProps) {
   const { t } = useTranslation();
   const countdown = useCountdown(targetTimestamp);
   const { isMobile } = useMatchBreakpoints();
 
-  if (!countdown) {
+  if (!countdown && !endsDisplay) {
     return null;
   }
 
   return (
     <CountdownContainer gap="0.25rem" style={style} $background={background}>
       {prefix}
-      <FlexGap gap={isMobile ? "0.125rem" : "0.5rem"} flexDirection={isMobile ? "column" : "row"}>
-        <LabelText {...textProps}>{t("Starts in")}</LabelText>
-        <FlexGap gap="0.25rem">
-          <NumberDisplay value={countdown?.days} label={t("d")} {...textProps} />
-          <TimeSeparator {...textProps} />
-          <NumberDisplay value={countdown?.hours} label={t("h")} {...textProps} />
-          <TimeSeparator />
-          <NumberDisplay value={countdown?.minutes} label={t("m")} {...textProps} />
-          {showSeconds ? (
-            <>
-              <TimeSeparator {...textProps} />
-              <NumberDisplay value={countdown?.seconds} label={t("s")} {...textProps} />
-            </>
-          ) : null}
+      {countdown ? (
+        <FlexGap gap={isMobile ? "0.125rem" : "0.5rem"} flexDirection={isMobile ? "column" : "row"}>
+          <LabelText {...textProps}>{t("Starts in")}</LabelText>
+          <FlexGap gap="0.25rem">
+            <NumberDisplay value={countdown?.days} label={t("d")} {...textProps} />
+            <TimeSeparator {...textProps} />
+            <NumberDisplay value={countdown?.hours} label={t("h")} {...textProps} />
+            <TimeSeparator />
+            <NumberDisplay value={countdown?.minutes} label={t("m")} {...textProps} />
+            {showSeconds ? (
+              <>
+                <TimeSeparator {...textProps} />
+                <NumberDisplay value={countdown?.seconds} label={t("s")} {...textProps} />
+              </>
+            ) : null}
+          </FlexGap>
         </FlexGap>
-      </FlexGap>
+      ) : (
+        <CountdownText {...textProps}>{endsDisplay}</CountdownText>
+      )}
       {suffix}
     </CountdownContainer>
   );
