@@ -22,6 +22,7 @@ import { Profile } from 'hooks/useProfile/type'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
 import { useMemo } from 'react'
 import { getBlockExploreLink, safeGetAddress } from 'utils'
+// import { useUserSocialStatus } from 'views/Profile/hooks/settingsModal/useUserSocialStatus'
 import { useAccount } from 'wagmi'
 import AvatarImage from './AvatarImage'
 import { BannerHeader } from './BannerHeader'
@@ -58,6 +59,9 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
     profile?.username || '',
   )
+
+  // useUserSocialStatus()
+
   const [onEditProfileModal] = useModal(
     <EditProfileModal
       onSuccess={() => {
