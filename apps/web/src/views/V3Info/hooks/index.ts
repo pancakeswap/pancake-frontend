@@ -401,8 +401,6 @@ export const useTopPoolsData = ():
   | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
-  const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d])
 
   const { data } = useQuery({
     queryKey: [`v3/info/pool/TopPoolsData/${chainId}`, chainId],
@@ -410,7 +408,7 @@ export const useTopPoolsData = ():
     queryFn: async ({ signal }) => {
       return fetchTopPools(chainIdToExplorerInfoChainName[chainId], signal)
     },
-    enabled: Boolean(chainId && blocks && blocks.length > 0),
+    enabled: Boolean(chainId),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
