@@ -186,17 +186,19 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       <Flex flexDirection="column" mb={[16, null, 0]} mr={[0, null, 16]}>
         <Flex>
           {accountPath && profile?.username && (
-            <ScanLink href={getBlockExploreLink(accountPath, 'address')} bold color="primary">
-              {domainName || truncateHash(accountPath)}
-            </ScanLink>
+            <>
+              <ScanLink href={getBlockExploreLink(accountPath, 'address')} bold color="primary">
+                {domainName || truncateHash(accountPath)}
+              </ScanLink>
+              <Button
+                variant="text"
+                endIcon={<CogIcon color="primary" height={20} width={20} />}
+                onClick={onPressSettingsModal}
+              >
+                {t('Settings')}
+              </Button>
+            </>
           )}
-          <Button
-            variant="text"
-            endIcon={<CogIcon color="primary" height={20} width={20} />}
-            onClick={onPressSettingsModal}
-          >
-            {t('Settings')}
-          </Button>
         </Flex>
         {accountPath && isConnectedAccount && (!profile || !profile?.nft) && getActivateButton()}
       </Flex>

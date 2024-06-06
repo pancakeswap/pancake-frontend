@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
-import { styled } from 'styled-components'
+import { Trans } from '@pancakeswap/localization'
 import { Flex } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { styled } from 'styled-components'
 
 import { useRouter } from 'next/router'
 
@@ -24,34 +23,31 @@ const Tab = styled.button<{ $active: boolean }>`
   transition: background-color 0.3s ease-out;
 `
 
-const TabMenu = () => {
-  const { t } = useTranslation()
-  const { pathname, query } = useRouter()
-  const { accountAddress } = query
-  const [achievementsActive, setIsAchievementsActive] = useState(pathname.includes('achievements'))
+export const list = [
+  {
+    title: <Trans>Quests & Campaigns</Trans>,
+    url: '/profile',
+  },
+  {
+    title: <Trans>NFTs</Trans>,
+    url: '/profile#nft',
+  },
+  {
+    title: <Trans>Achievements</Trans>,
+    url: '/profile#achievements',
+  },
+]
 
-  useEffect(() => {
-    setIsAchievementsActive(pathname.includes('achievements'))
-  }, [pathname])
+const TabMenu = () => {
+  const { asPath } = useRouter()
 
   return (
     <Flex>
-      <Tab
-        onClick={() => setIsAchievementsActive(false)}
-        $active={!achievementsActive}
-        as={NextLinkFromReactRouter}
-        to={`/profile/${accountAddress}`}
-      >
-        NFTs
-      </Tab>
-      <Tab
-        onClick={() => setIsAchievementsActive(true)}
-        $active={achievementsActive}
-        as={NextLinkFromReactRouter}
-        to={`/profile/${accountAddress}/achievements`}
-      >
-        {t('Achievements')}
-      </Tab>
+      {list.map((menu) => (
+        <Tab key={menu.url} $active={menu.url === asPath} as={NextLinkFromReactRouter} to={menu.url}>
+          {menu.title}
+        </Tab>
+      ))}
     </Flex>
   )
 }
