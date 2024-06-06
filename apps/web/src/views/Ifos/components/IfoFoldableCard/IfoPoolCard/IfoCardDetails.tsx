@@ -240,7 +240,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
               value={`$${ifo.tokenOfferingPrice}`}
             />
           )}
-          {hasTax && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
+          <FooterEntry label={t('Additional fee:')} value={taxRate} />
           {hasTax && (
             <FooterEntry
               label={t('Price per %symbol% with fee:', { symbol: ifo.token.symbol })}
