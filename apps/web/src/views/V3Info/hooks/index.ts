@@ -11,11 +11,12 @@ import { v3Clients, v3InfoClients } from 'utils/graphql'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 import { useQuery } from '@tanstack/react-query'
+import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
+import { components } from 'state/info/api/schema'
 import { DURATION_INTERVAL, SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchPoolDatas } from '../data/pool/poolData'
 import { PoolTickData, fetchTicksSurroundingPrice } from '../data/pool/tickData'
-import { fetchTopPoolAddresses } from '../data/pool/topPools'
 import { fetchPoolTransactions } from '../data/pool/transactions'
 import { fetchChartData } from '../data/protocol/chart'
 import { fetchProtocolData } from '../data/protocol/overview'
@@ -335,11 +336,55 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
   return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0), [data])
 }
 
-export async function fetchTopPools(dataClient: GraphQLClient, chainId: ChainId, blocks?: Block[]) {
+export async function fetchTopPools(chainName: components['schemas']['ChainName'], signal: AbortSignal) {
   try {
-    const topPoolAddress = await fetchTopPoolAddresses(dataClient, chainId)
-    const data = await fetchPoolDatas(dataClient, topPoolAddress.addresses ?? [], blocks)
-    return data
+    const data = await explorerApiClient
+      .GET('/cached/pools/v3/{chainName}/list/top', {
+        signal,
+        params: {
+          path: {
+            chainName,
+          },
+        },
+      })
+      .then((res) => res.data)
+    if (!data) {
+      return {
+        data: {},
+        error: false,
+      }
+    }
+    return {
+      data: data.reduce(
+        (acc, item) => {
+          // eslint-disable-next-line no-param-reassign
+          acc[item.id] = {
+            ...item,
+            address: item.id,
+            volumeUSD: parseFloat(item.volumeUSD24h),
+            volumeUSDWeek: parseFloat(item.volumeUSD7d),
+            token0: { ...item.token0, address: item.token0.id, derivedETH: 0 },
+            token1: { ...item.token1, address: item.token1.id, derivedETH: 0 },
+            feeUSD: item.totalFeeUSD,
+            liquidity: parseFloat(item.liquidity),
+            sqrtPrice: parseFloat(item.sqrtPrice),
+            tick: item.tick ?? 0,
+            tvlUSD: parseFloat(item.tvlUSD),
+            token0Price: parseFloat(item.token0Price),
+            token1Price: parseFloat(item.token1Price),
+            tvlToken0: parseFloat(item.tvlToken0),
+            tvlToken1: parseFloat(item.tvlToken1),
+            volumeUSDChange: 0,
+            tvlUSDChange: 0,
+          }
+          return acc
+        },
+        {} as {
+          [address: string]: PoolData
+        },
+      ),
+      error: false,
+    }
   } catch (e) {
     console.error(e)
     return {
@@ -362,13 +407,9 @@ export const useTopPoolsData = ():
   const { data } = useQuery({
     queryKey: [`v3/info/pool/TopPoolsData/${chainId}`, chainId],
 
-    queryFn: () =>
-      fetchTopPools(
-        v3InfoClients[chainId],
-        chainId,
-        blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
-      ),
-
+    queryFn: async ({ signal }) => {
+      return fetchTopPools(chainIdToExplorerInfoChainName[chainId], signal)
+    },
     enabled: Boolean(chainId && blocks && blocks.length > 0),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
