@@ -1,10 +1,10 @@
 import { useAchievementsForAddress, useProfileForAddress } from 'hooks/useProfile'
-import { useRouter } from 'next/router'
-import { NftProfileLayout } from 'views/Profile'
 import Achievements from 'views/Profile/components/Achievements'
+import { useAccount } from 'wagmi'
 
-const NftProfileAchievementsPage = () => {
-  const accountAddress = useRouter().query.accountAddress as string
+export const AchievementsPage = () => {
+  const { address: account } = useAccount()
+  const accountAddress = account as string
   const { profile } = useProfileForAddress(accountAddress)
   const { achievements, isFetching: isAchievementFetching, refresh } = useAchievementsForAddress(accountAddress)
 
@@ -17,7 +17,3 @@ const NftProfileAchievementsPage = () => {
     />
   )
 }
-
-NftProfileAchievementsPage.Layout = NftProfileLayout
-
-export default NftProfileAchievementsPage

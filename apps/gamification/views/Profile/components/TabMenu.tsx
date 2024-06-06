@@ -23,18 +23,24 @@ const Tab = styled.button<{ $active: boolean }>`
   transition: background-color 0.3s ease-out;
 `
 
+export enum ProfileUrlType {
+  HOME_PAGE = '/profile',
+  NFT = '/profile#nft',
+  ACHIEVEMENT = '/profile#achievements',
+}
+
 export const list = [
   {
     title: <Trans>Quests & Campaigns</Trans>,
-    url: '/profile',
+    url: ProfileUrlType.HOME_PAGE,
   },
   {
     title: <Trans>NFTs</Trans>,
-    url: '/profile#nft',
+    url: ProfileUrlType.NFT,
   },
   {
     title: <Trans>Achievements</Trans>,
-    url: '/profile#achievements',
+    url: ProfileUrlType.ACHIEVEMENT,
   },
 ]
 
