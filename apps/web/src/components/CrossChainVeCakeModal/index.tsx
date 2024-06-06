@@ -5,7 +5,7 @@ import {
   AtomBox,
   Box,
   Button,
-  CheckmarkIcon,
+  CheckmarkCircleFillIcon,
   Flex,
   Heading,
   LinkExternal,
@@ -453,10 +453,19 @@ const SubmittedView: React.FC<{ chainId: ChainId; hash: string }> = ({ chainId, 
   )
 }
 
-const CheckMarkRightTop = styled(CheckmarkIcon)`
+const CheckMarkRightTopSvg = styled(CheckmarkCircleFillIcon)`
   position: absolute;
-  top: 1px;
-  right: 1px;
-  color: ${({ theme }) => theme.colors.white};
-  font-size: 12px;
+  top: -4px;
+  left: -4px;
+  color: ${({ theme }) => theme.colors.success};
+  path {
+    fill: ${({ theme }) => theme.colors.success};
+  }
 `
+export const CheckMarkRightTop = () => {
+  return (
+    <Box width="13px" height="13px" background="white" position="absolute" top="4px" right="4px" borderRadius="25%">
+      <CheckMarkRightTopSvg />
+    </Box>
+  )
+}
