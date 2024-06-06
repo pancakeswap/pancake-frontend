@@ -26,7 +26,7 @@ export async function fetchTokenChartData(
             address,
           },
           query: {
-            period: '1D',
+            period: '1Y',
           },
         },
       })
@@ -42,7 +42,7 @@ export async function fetchTokenChartData(
             address,
           },
           query: {
-            period: '1D',
+            period: '1Y',
           },
         },
       })
