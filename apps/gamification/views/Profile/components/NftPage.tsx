@@ -1,12 +1,41 @@
 import { Trans } from '@pancakeswap/localization'
+import { FlexGap, Text } from '@pancakeswap/uikit'
 import { useProfileForAddress } from 'hooks/useProfile'
 import { useState } from 'react'
+import { styled } from 'styled-components'
 import ActivityHistory from 'views/Profile/components/ActivityHistory'
-import SubMenu from 'views/Profile/components/SubMenu'
 import UnconnectedProfileNfts from 'views/Profile/components/UnconnectedProfileNfts'
 import UserNfts from 'views/Profile/components/UserNfts'
 import { useNftsForAddress } from 'views/ProfileCreation/Nft/hooks/useNftsForAddress'
 import { useAccount } from 'wagmi'
+
+const BaseSubMenu = styled(FlexGap)`
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 18px;
+  border-bottom: 1px ${({ theme }) => theme.colors.cardBorder} solid;
+`
+
+const StyledMenuList = styled(Text)<{ $active: boolean }>`
+  position: relative;
+  padding: 0 4px;
+  line-height: 42px;
+  cursor: pointer;
+  font-weight: ${({ $active }) => ($active ? 600 : 400)};
+  color: ${({ theme, $active }) => ($active ? theme.colors.secondary : theme.colors.textSubtle)};
+
+  &:before {
+    display: ${({ $active }) => ($active ? 'block' : 'none')};
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    height: 4px;
+    width: 100%;
+    background-color: ${({ theme }) => theme.colors.primary};
+    border-radius: 2px 2px 0px 0px;
+  }
+`
 
 enum NftMenuType {
   Items = 'Items',
@@ -16,11 +45,11 @@ enum NftMenuType {
 const ItemsConfig = [
   {
     label: <Trans>Items</Trans>,
-    href: NftMenuType.Items,
+    id: NftMenuType.Items,
   },
   {
     label: <Trans>Activity</Trans>,
-    href: NftMenuType.Activity,
+    id: NftMenuType.Activity,
   },
 ]
 
@@ -47,7 +76,13 @@ export const NftPage = () => {
 
   return (
     <>
-      <SubMenu />
+      <BaseSubMenu>
+        {ItemsConfig.map((item) => (
+          <StyledMenuList key={item.id} $active={showMenu === item.id} onClick={() => setShowMenu(item.id)}>
+            {item.label}
+          </StyledMenuList>
+        ))}
+      </BaseSubMenu>
       {showMenu === NftMenuType.Items ? (
         <>
           {account ? (

@@ -4,7 +4,6 @@ import TableLoader from 'components/TableLoader'
 import { useBNBPrice } from 'hooks/useBNBPrice'
 import { Activity, NftToken } from 'hooks/useProfile/nft/types'
 import useTheme from 'hooks/useTheme'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { isAddress } from 'viem'
@@ -20,7 +19,7 @@ const MAX_PER_PAGE = 8
 const ActivityHistory = () => {
   const { address: account } = useAccount()
   const dispatch = useAppDispatch()
-  const accountAddress = useRouter().query.accountAddress as string
+  const accountAddress = account as string
   const { theme } = useTheme()
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)
