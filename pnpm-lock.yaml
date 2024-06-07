@@ -745,6 +745,9 @@ importers:
       react-draggable-list:
         specifier: 4.0.4
         version: 4.0.4(react@18.2.0)
+      react-images-uploading:
+        specifier: ^3.1.7
+        version: 3.1.7(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-jazzicon:
         specifier: ^1.0.4
         version: 1.0.4(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -14676,6 +14679,13 @@ packages:
     resolution: {integrity: sha512-V+4khzYcE5EBk/BvcuYRq6V/osf11ODUM2J8hg2FDSswRrGvqiYUYPRy4OdrWaQOBj4NcpJfmHZLNaD+VH0TyA==}
     peerDependencies:
       react: '*'
+
+  react-images-uploading@3.1.7:
+    resolution: {integrity: sha512-woET50eCezm645iIeP4gCoN7HjdR3T64UXC5l53yd+2vHFp+pwABH8Z/aAO5IXDeC1aP6doQ+K738L701zswAw==}
+    engines: {node: '>=8', npm: '>=5'}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
 
   react-inspector@6.0.2:
     resolution: {integrity: sha512-x+b7LxhmHXjHoU/VrFAzw5iutsILRoYyDq97EDYdFpPLcvqtEzk4ZSZSQjnFPbr5T57tLXnHcqFYoN1pI6u8uQ==}
@@ -36969,6 +36979,11 @@ snapshots:
   react-icons@4.11.0(react@18.2.0):
     dependencies:
       react: 18.2.0
+
+  react-images-uploading@3.1.7(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
 
   react-inspector@6.0.2(react@18.2.0):
     dependencies:
