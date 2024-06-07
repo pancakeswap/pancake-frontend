@@ -13,6 +13,13 @@ const v3TopFixedLps: FarmConfigV3[] = [
     feeAmount: FeeAmount.LOW,
   },
   {
+    pid: 62,
+    lpAddress: '0x1445F32D1A74872bA41f3D8cF4022E9996120b31',
+    token0: ethereumTokens.usdc,
+    token1: ethereumTokens.weth,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
     pid: 63,
     lpAddress: '0xaCDb27b266142223e1e676841C1E809255Fc6d07',
     token0: ethereumTokens.weth,
@@ -61,21 +68,6 @@ export const farmsV3 = defineFarmV3Configs([
   ...v3TopFixedLps,
   // new lps should follow after the top fixed lps
   // latest first
-  {
-    pid: 71,
-    lpAddress: '0x38437dBfd1D6a147A50CD0991A9581Ac8f996892',
-    token0: ethereumTokens.fusdc,
-    token1: ethereumTokens.usdc,
-    feeAmount: FeeAmount.LOWEST,
-  },
-  // postponed until further notice from mustard
-  // {
-  //   pid: 70,
-  //   lpAddress: '',
-  //   token0: ethereumTokens.taiko,
-  //   token1: ethereumTokens.weth,
-  //   feeAmount: FeeAmount.LOWEST,
-  // },
   {
     pid: 69,
     lpAddress: '0xfcc3B8959d99f1154F0B1ac0252aa7e0F0617BCC',
