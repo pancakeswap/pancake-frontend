@@ -105,7 +105,7 @@ export async function fetchGlobalChartData(
   data: ChartDayData[] | undefined
 }> {
   try {
-    const derivedData = await fetchDerivedProtocolTVLHistory(dataClient, chainId)
+    const derivedData = await fetchDerivedProtocolTVLHistory(dataClient, 'v3', chainId)
     const { data } = await fetchChartData(dataClient)
 
     const shouldUserDerivedData = chainId === ChainId.ETHEREUM
