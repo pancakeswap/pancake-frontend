@@ -7,6 +7,7 @@ import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import usePollOraclePrice from 'views/Predictions/hooks/usePollOraclePrice'
 import { useAccount } from 'wagmi'
 import { getMultiplierV2 } from '../../helpers'
+import { AILiveRoundCard } from './AIPredictions/AILiveRoundCard'
 import { AIOpenRoundCard } from './AIPredictions/AIOpenRoundCard'
 import ExpiredRoundCard from './ExpiredRoundCard'
 import LiveRoundCard from './LiveRoundCard'
@@ -94,6 +95,20 @@ const RoundCard: React.FC<React.PropsWithChildren<RoundCardProps>> = ({ round, i
 
   // Live round
   if (closePrice === null && epoch === currentEpoch - 1) {
+    if (config?.isAIPrediction) {
+      return (
+        <AILiveRoundCard
+          betAmount={ledger?.amount}
+          hasEnteredFor={hasEnteredUp}
+          hasEnteredAgainst={hasEnteredDown}
+          round={round}
+          bullMultiplier={formattedBullMultiplier}
+          bearMultiplier={formattedBearMultiplier}
+          livePrice={price}
+        />
+      )
+    }
+
     return (
       <LiveRoundCard
         betAmount={ledger?.amount}
