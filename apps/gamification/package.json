@@ -6,7 +6,10 @@
     "dev": "next dev -p 3005",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint '**/*.{js,jsx,ts,tsx}'"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   },
   "dependencies": {
     "@datadog/browser-logs": "^5.8.0",

@@ -1,4 +1,4 @@
-import { Currency, Percent, Router, SwapParameters, TradeType } from '@pancakeswap/sdk'
+import { Currency, Percent, Router, SwapParameters, Trade, TradeType } from '@pancakeswap/sdk'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { BIPS_BASE } from 'config/constants/exchange'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'

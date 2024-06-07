@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { safeGetAddress } from 'utils'
 import { getCollection } from 'views/ProfileCreation/Nft/helpers'
+import { Collection } from '../type'
 
 export const useGetCollection = (collectionAddress: string | undefined): Collection | undefined => {
   const checksummedCollectionAddress = safeGetAddress(collectionAddress) || ''

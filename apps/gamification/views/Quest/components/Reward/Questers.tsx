@@ -37,7 +37,7 @@ export const Questers = () => {
   const { t } = useTranslation()
 
   const total = useMemo(() => {
-    const array = []
+    const array: number[] = []
     for (let i = 0; i < TOTAL; i++) {
       array.push(i)
     }

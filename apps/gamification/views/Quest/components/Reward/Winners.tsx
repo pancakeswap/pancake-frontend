@@ -28,7 +28,7 @@ export const Winners = () => {
   const { t } = useTranslation()
 
   const winners = useMemo(() => {
-    const array = []
+    const array: number[] = []
     for (let i = 0; i < TOTAL; i++) {
       array.push(i)
     }

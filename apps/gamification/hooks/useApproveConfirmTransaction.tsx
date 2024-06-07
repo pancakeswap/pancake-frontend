@@ -1,4 +1,4 @@
-import { MaxUint256 } from '@pancakeswap/sdk'
+import { ERC20Token, MaxUint256 } from '@pancakeswap/sdk'
 import noop from 'lodash/noop'
 import { useCallback, useEffect, useReducer, useRef } from 'react'
 import { Address, TransactionReceipt } from 'viem'

@@ -85,7 +85,7 @@ export const ChooseQuestModal: React.FC<ChooseQuestProps> = ({ pickedQuests, upd
     if (pickedQuests.length > 0) {
       setSelectedQuests(pickedQuests)
     }
-  }, [])
+  }, [pickedQuests])
 
   const handleSelectQuest = (id: string) => {
     const findIndex = selectedQuests.findIndex((i: any) => i === id)

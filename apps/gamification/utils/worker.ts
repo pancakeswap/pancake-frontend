@@ -1,9 +1,9 @@
 import { V4Router } from '@pancakeswap/smart-router'
 
-import type { WorkerGetBestTradeEvent, WorkerGetBestTradeOffchainEvent, WorkerMultiChunkEvent } from 'quote-worker'
 import type { FetchChunkResult } from 'state/multicall/fetchChunk'
 
 import { createWorkerScriptLoader } from './workerScriptLoader'
+import { WorkerGetBestTradeEvent, WorkerGetBestTradeOffchainEvent, WorkerMultiChunkEvent } from './quote-worker'
 
 class WorkerProxy {
   id = 0

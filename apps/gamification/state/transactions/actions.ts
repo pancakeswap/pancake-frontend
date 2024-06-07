@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { createAction } from '@reduxjs/toolkit'
 
-export type TransactionType = 'approve'
+export type TransactionType = 'approve' | 'swap'
 
 export interface SerializableTransactionReceipt {
   to: string

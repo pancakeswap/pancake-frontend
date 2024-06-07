@@ -10,8 +10,11 @@ const workerDeps = Object.keys(smartRouterPkgs.dependencies)
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  typescript: {
+    tsconfigPath: 'tsconfig.json',
+  },
   reactStrictMode: true,
-  swcMinify: true,
+  swcMinify: false,
   transpilePackages: [
     '@pancakeswap/uikit',
     '@pancakeswap/hooks',
@@ -19,6 +22,7 @@ const nextConfig = {
     '@pancakeswap/utils',
     '@pancakeswap/prediction',
     '@pancakeswap/widgets-internal',
+    '@pancakeswap/sdk',
     '@pancakeswap/ui-wallets',
     '@pancakeswap/tokens',
     '@pancakeswap/wagmi',

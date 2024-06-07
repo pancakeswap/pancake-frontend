@@ -31,7 +31,6 @@ const TextBlock = styled(Flex)`
 `
 
 export const TotalRewards = () => {
-  const { t } = useTranslation()
   return (
     <TotalRewardContainer>
       <Flex padding="12px">
