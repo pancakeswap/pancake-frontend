@@ -60,6 +60,7 @@ export { default as CurrencyIcon } from "./Icons/Currency";
 export { default as DeleteOutlineIcon } from "./Icons/DeleteOutline";
 export { default as DiscordIcon } from "./Icons/Discord";
 export { default as DonateIcon } from "./Icons/Donate";
+export { default as DragIcon } from "./Icons/Drag";
 export { default as EarnIcon } from "./Icons/Earn";
 export { default as EarnFillIcon } from "./Icons/EarnFill";
 export { default as EarnFilledIcon } from "./Icons/EarnFilled";

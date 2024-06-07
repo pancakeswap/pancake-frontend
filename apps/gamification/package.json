@@ -30,13 +30,16 @@
     "bignumber.js": "^9.1.2",
     "blocto": "link:@pancakeswap/wagmi/connectors/blocto",
     "dayjs": "^1.11.10",
+    "easymde": "2.16.1",
     "jotai": "^2.4.3",
     "lodash": "^4.17.21",
     "next": "14.2.3",
     "next-seo": "^5.15.0",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
+    "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
+    "react-draggable-list": "4.0.4",
     "react-jazzicon": "^1.0.4",
     "react-redux": "^8.0.5",
     "react-wrap-balancer": "^0.4.0",
@@ -46,9 +49,7 @@
     "swiper": "^11.0.5",
     "trustWallet": "link:@pancakeswap/wagmi/connectors/trustWallet",
     "viem": "2.13.3",
-    "wagmi": "2.9.8",
-    "easymde": "2.16.1",
-    "react-datepicker": "^4.8.0"
+    "wagmi": "2.9.8"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "14.2.3",
@@ -58,10 +59,10 @@
     "@types/node": "18.0.4",
     "@types/qs": "^6.0.0",
     "@types/react": "^18.2.21",
+    "@types/react-datepicker": "^4.4.1",
     "@types/react-dom": "^18.0.6",
     "@types/styled-system": "^5.1.17",
     "eslint": "^8.32.0",
-    "eslint-plugin-lodash": "^7.4.0",
-    "@types/react-datepicker": "^4.4.1"
+    "eslint-plugin-lodash": "^7.4.0"
   }
 }

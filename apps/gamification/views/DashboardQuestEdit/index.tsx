@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { Reward } from 'views/DashboardQuestEdit/components/Reward'
+import { Tasks } from 'views/DashboardQuestEdit/components/Tasks'
 
 const DashboardQuestEditContainer = styled(Flex)`
   padding: 16px;
@@ -134,6 +135,8 @@ export const DashboardQuestEdit = () => {
         </Box>
 
         {!isDesktop && <Reward />}
+
+        <Tasks />
 
         <Box>
           <Text bold fontSize="24px" lineHeight="28px" mb="8px">
