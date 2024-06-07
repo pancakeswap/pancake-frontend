@@ -8,7 +8,7 @@ interface ConfirmDeleteModalProps extends InjectedModalProps {
 export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({ handleDelete, onDismiss }) => {
   const { t } = useTranslation()
 
-  const handleTaskDelete = () => {
+  const handleClickDelete = () => {
     handleDelete()
     onDismiss?.()
   }
@@ -25,13 +25,13 @@ export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({ handleDe
           <WarningIcon display="block" m="auto" width={50} height={50} color="failure" />
           <Box mt="20px">
             <Text textAlign="center" bold fontSize={20}>
-              {t('Delete Task?')}
+              {t('Confirm Delete?')}
             </Text>
             <Text fontSize={14} mt="4px" textAlign="center" color="textSubtle">
-              {t('Are you sure you want to delete task?')}
+              {t('Are you sure you want to delete?')}
             </Text>
           </Box>
-          <Button width="100%" mt="40px" onClick={handleTaskDelete}>
+          <Button width="100%" mt="40px" onClick={handleClickDelete}>
             {t('Confirm')}
           </Button>
         </Box>
