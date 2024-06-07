@@ -70,14 +70,14 @@ export const AIMultiplierArrow: React.FC<React.PropsWithChildren<AIMultiplierArr
   const { t } = useTranslation()
   const upColor = getTextColor('success')(isActive, isDisabled, isHouse)
   const downColor = getTextColor('failure')(isActive, isDisabled, isHouse)
-  const textColor = getTextColor()(isActive, isDisabled, isHouse)
+  const textColor = getTextColor('text')(isActive, isDisabled, isHouse)
   const multiplierText = (
     <Box>
-      <Flex justifyContent="center" height="14px">
-        <Text fontSize="14px" color={textColor} bold lineHeight="14x">
+      <Flex justifyContent="center">
+        <Text fontSize="12px" color={textColor} bold lineHeight="14x">
           {multiplier !== undefined ? `${multiplier}x` : '-'}
         </Text>
-        <Text fontSize="14px" color={textColor} lineHeight="14x" ml="4px">
+        <Text fontSize="12px" color={textColor} lineHeight="14x" ml="4px">
           {t('Payout')}
         </Text>
       </Flex>
@@ -103,15 +103,15 @@ export const AIMultiplierArrow: React.FC<React.PropsWithChildren<AIMultiplierArr
           <RoundMultiplierDownArrow isActive={isActive} />
           {getEnteredTag({ bottom: 40, right: 40 })}
           <Content>
-            {!isDisabled && hasEntered && multiplierText}
-            <Text bold>
+            <Text fontSize={hasEnteredAgainst ? '12px' : '14px'} bold>
               {t('%against%AI Prediction', {
                 against: hasEnteredAgainst ? t('Against ') : '',
               })}
             </Text>
-            <Text bold fontSize="20px" mb="8px" color={downColor} textTransform="uppercase">
+            <Text bold fontSize="14px" lineHeight="14px" color={downColor} textTransform="uppercase">
               {t('Down')}
             </Text>
+            {!isDisabled && hasEntered && multiplierText}
           </Content>
         </ArrowWrapper>
       </Box>
@@ -124,12 +124,12 @@ export const AIMultiplierArrow: React.FC<React.PropsWithChildren<AIMultiplierArr
         <RoundMultiplierUpArrow isActive={isActive} />
         {getEnteredTag({ top: 40, right: 40 })}
         <Content>
-          <Text bold>
+          <Text mt="16px" fontSize={hasEnteredAgainst ? '12px' : '14px'} bold>
             {t('%against%AI Prediction', {
               against: hasEnteredAgainst ? t('Against ') : '',
             })}
           </Text>
-          <Text bold fontSize="20px" lineHeight="21px" color={upColor} textTransform="uppercase">
+          <Text bold fontSize="14px" lineHeight="14px" color={upColor} textTransform="uppercase">
             {t('Up')}
           </Text>
           {!isDisabled && hasEntered && multiplierText}

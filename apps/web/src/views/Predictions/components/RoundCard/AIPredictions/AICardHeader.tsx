@@ -1,18 +1,17 @@
 import { Flex, Text } from '@pancakeswap/uikit'
-import React, { PropsWithChildren, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import { DefaultTheme, styled } from 'styled-components'
 
 type Status = 'expired' | 'live' | 'next' | 'soon' | 'canceled' | 'calculating'
 
-interface AICardHeaderProps extends PropsWithChildren {
+interface AICardHeaderProps {
   status: Status
   title: string
   epoch: number
   icon?: ReactElement
 }
 
-const HEADER_HEIGHT = '37px'
-const HEADER_HEIGHT_LARGE = '180px'
+const HEADER_HEIGHT = '28px'
 
 // Used to get the gradient for the card border, which depends on the header color to create the illusion
 // that header is overlapping the 1px card border.
@@ -72,32 +71,18 @@ const getTextColorByStatus = (status: Status, fallback: FallbackColor): TextColo
 const StyledCardHeader = styled.div<{ status: Status }>`
   position: relative;
   align-items: start;
+  height: ${HEADER_HEIGHT};
   background: ${({ theme, status }) => getBackgroundColor(theme, status)};
   display: flex;
   justify-content: space-between;
-  height: ${({ status }) => (status === 'next' ? HEADER_HEIGHT_LARGE : HEADER_HEIGHT)};
   padding: ${({ status }) => (status === 'live' ? '16px' : '12px')};
-  margin-bottom: ${({ status }) => (status === 'next' ? '36px' : '0')};
 `
 
 const Round = styled.div`
   justify-self: center;
 `
 
-const FloatingContent = styled.div`
-  position: absolute;
-  top: 36px;
-  left: 0;
-  width: 100%;
-`
-
-export const AICardHeader: React.FC<React.PropsWithChildren<AICardHeaderProps>> = ({
-  status,
-  title,
-  epoch,
-  icon,
-  children,
-}) => {
+export const AICardHeader: React.FC<React.PropsWithChildren<AICardHeaderProps>> = ({ status, title, epoch, icon }) => {
   const textColor = getTextColorByStatus(status, 'text')
   const isLive = status === 'live'
 
@@ -114,8 +99,6 @@ export const AICardHeader: React.FC<React.PropsWithChildren<AICardHeaderProps>> 
           {`#${epoch}`}
         </Text>
       </Round>
-
-      <FloatingContent>{children}</FloatingContent>
     </StyledCardHeader>
   )
 }

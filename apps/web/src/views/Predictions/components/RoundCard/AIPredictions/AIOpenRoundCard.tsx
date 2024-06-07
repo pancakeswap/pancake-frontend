@@ -39,6 +39,11 @@ const StyledPositionBox = styled(Box)`
   background-color: ${({ theme }) => theme.colors.tertiary};
 `
 
+const StyledCardBody = styled(CardBody)`
+  padding: 16px;
+  background: linear-gradient(to bottom, ${({ theme }) => theme.colors.secondary} 43%, transparent 0);
+`
+
 interface AIOpenRoundCardProps {
   round: NodeRound
   betAmount?: NodeLedger['amount']
@@ -188,7 +193,9 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
           epoch={round.epoch}
           icon={<PlayCircleOutlineIcon color="white" mr="4px" width="21px" />}
           title={t('Next')}
-        >
+        />
+
+        <StyledCardBody>
           {!positionEnteredText ? (
             <>
               <Text
@@ -203,8 +210,8 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
                 AI prediction
               </Text>
 
-              <Box mt="50px" mx="18px" position="relative">
-                <RoundResultBox>
+              <Box mt="50px" mb="12px" mx="18px" position="relative">
+                <RoundResultBox isNext>
                   <PayoutMeter pt="10px" bearMultiplier={bearMultiplier} bullMultiplier={bullMultiplier} />
                 </RoundResultBox>
 
@@ -226,43 +233,13 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
                 />
               )}
 
-              {canEnterPosition ? (
-                <>
-                  <Button
-                    variant="success"
-                    width="100%"
-                    onClick={() => handleSetPosition(BetPosition.BULL)}
-                    mb="4px"
-                    disabled={!canEnterPosition || isBufferPhase}
-                  >
-                    {t('Follow')}
-                  </Button>
-                  <Button
-                    variant="danger"
-                    width="100%"
-                    onClick={() => handleSetPosition(BetPosition.BEAR)}
-                    disabled={!canEnterPosition || isBufferPhase}
-                  >
-                    {t('Against')}
-                  </Button>
-                  <PrizePoolRow totalAmount={round.totalAmount} mt="8px" />
-                </>
-              ) : (
-                <RoundResultBox isNext={false} isLive>
-                  {!positionEnteredText ? (
-                    <>
-                      <div>
-                        <Button disabled width="100%" mb="8px">
-                          {t('No position entered')}
-                        </Button>
-                      </div>
-                      <PrizePoolRow totalAmount={round.totalAmount} />
-                    </>
-                  ) : (
-                    <>Graphic Here</>
-                  )}
+              <Box mx="18px">
+                <RoundResultBox padding="2px 0" isNext>
+                  <Flex justifyContent="center">
+                    <AIPredictionsLogo width={120} height={120} />
+                  </Flex>
                 </RoundResultBox>
-              )}
+              </Box>
 
               {!!positionEnteredText && ((hasEnteredFor && liveAIPosition === 'DOWN') || hasEnteredAgainst) && (
                 <AIMultiplierArrow
@@ -275,8 +252,30 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
               )}
             </>
           )}
-        </AICardHeader>
-        <CardBody p="16px">
+
+          {canEnterPosition && (
+            <>
+              <Button
+                variant="success"
+                width="100%"
+                onClick={() => handleSetPosition(BetPosition.BULL)}
+                mb="4px"
+                disabled={!canEnterPosition || isBufferPhase}
+              >
+                {t('Follow')}
+              </Button>
+              <Button
+                variant="danger"
+                width="100%"
+                onClick={() => handleSetPosition(BetPosition.BEAR)}
+                disabled={!canEnterPosition || isBufferPhase}
+              >
+                {t('Against')}
+              </Button>
+              <PrizePoolRow totalAmount={round.totalAmount} mt="8px" />
+            </>
+          )}
+
           {positionEnteredText && (
             <>
               <StyledPositionBox mt="16px" ref={targetRef}>
@@ -291,7 +290,7 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
               {tooltipVisible && tooltip}
             </>
           )}
-        </CardBody>
+        </StyledCardBody>
       </Card>
       <AISetPositionCard
         onBack={handleBack}
