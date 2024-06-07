@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@datadog/browser-logs": "^5.8.0",
+    "@datadog/browser-rum": "^5.8.0",
     "@binance/w3w-wagmi-connector-v2": "^1.2.3",
     "@cyberlab/cyber-app-sdk": "v3.0.0-beta.5",
     "@gnosis.pm/safe-apps-wagmi": "^1.2.0",
