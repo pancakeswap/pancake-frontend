@@ -50,9 +50,14 @@ export const THE_GRAPH_PROXY_API = 'https://thegraph.pancakeswap.com'
 
 export const V2_SUBGRAPH_URLS = {
   ...V2_SUBGRAPHS,
-  [ChainId.BSC]: `${INFO_GATEWAY_OLD_API}/subgraphs/v2/bsc/graphql`,
   [ChainId.POLYGON_ZKEVM]: `${THE_GRAPH_PROXY_API}/exchange-v2-polygon-zkevm`,
   [ChainId.BASE]: `${THE_GRAPH_PROXY_API}/exchange-v2-base`,
+  [ChainId.ETHEREUM]: `${THE_GRAPH_PROXY_API}/exchange-v2-eth`,
+  [ChainId.BSC]: `${INFO_GATEWAY_OLD_API}/subgraphs/v2/bsc/graphql`,
+  [ChainId.ARBITRUM_ONE]: `${THE_GRAPH_PROXY_API}/exchange-v2-arb`,
+  [ChainId.ZKSYNC]: `${THE_GRAPH_PROXY_API}/exchange-v2-zksync`,
+  [ChainId.LINEA]: `${THE_GRAPH_PROXY_API}/exchange-v2-linea`,
+  [ChainId.OPBNB]: `${THE_GRAPH_PROXY_API}/exchange-v2-opbnb`,
 }
 
 export const BLOCKS_CLIENT_WITH_CHAIN = BLOCKS_SUBGRAPHS
@@ -63,11 +68,18 @@ export const V3_SUBGRAPH_URLS = {
   ...V3_SUBGRAPHS,
   [ChainId.POLYGON_ZKEVM]: `${THE_GRAPH_PROXY_API}/exchange-v3-polygon-zkevm`,
   [ChainId.BASE]: `${THE_GRAPH_PROXY_API}/exchange-v3-base`,
+  [ChainId.ETHEREUM]: `${THE_GRAPH_PROXY_API}/exchange-v3-eth`,
+  [ChainId.BSC]: `${THE_GRAPH_PROXY_API}/exchange-v3-bsc`,
+  [ChainId.ARBITRUM_ONE]: `${THE_GRAPH_PROXY_API}/exchange-v3-arb`,
+  [ChainId.ZKSYNC]: `${THE_GRAPH_PROXY_API}/exchange-v3-zksync`,
+  [ChainId.LINEA]: `${THE_GRAPH_PROXY_API}/exchange-v3-linea`,
+  [ChainId.OPBNB]: `${THE_GRAPH_PROXY_API}/exchange-v3-opbnb`,
 }
 
 export const STABLESWAP_SUBGRAPHS_URLS = {
   ...STABLESWAP_SUBGRAPHS,
-  [ChainId.BSC]: `${INFO_GATEWAY_OLD_API}/subgraphs/stable/bsc/graphql`,
+  [ChainId.BSC]: `${THE_GRAPH_PROXY_API}/exchange-stableswap-bsc`,
+  [ChainId.ARBITRUM_ONE]: `${THE_GRAPH_PROXY_API}/exchange-stableswap-arb`,
 }
 
 export const TRADING_REWARD_API = 'https://trading-reward.pancakeswap.com/api/v1'
