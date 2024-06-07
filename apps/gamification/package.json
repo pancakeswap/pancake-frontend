@@ -19,6 +19,7 @@
     "@pancakeswap/localization": "workspace:*",
     "@pancakeswap/prediction": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/achievements": "workspace:*",
     "@pancakeswap/ifos": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",

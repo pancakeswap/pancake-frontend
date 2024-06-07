@@ -1,4 +1,5 @@
-import { Currency, CurrencyAmount, Percent, Price, TradeType } from '@pancakeswap/sdk'
+import { Campaign, CampaignType, TranslatableText } from '@pancakeswap/achievements'
+import { Currency, CurrencyAmount, Percent, Price, Trade, TradeType } from '@pancakeswap/sdk'
 import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/legacy-router'
 
 export const FetchStatus = {
@@ -10,24 +11,7 @@ export const FetchStatus = {
 
 export type TFetchStatus = (typeof FetchStatus)[keyof typeof FetchStatus]
 
-export type TranslatableText =
-  | string
-  | {
-      key: string
-      data?: {
-        [key: string]: string | number
-      }
-    }
-
-export type CampaignType = 'ifo' | 'teambattle' | 'participation'
-
-export type Campaign = {
-  id: string
-  type: CampaignType
-  title?: TranslatableText
-  description?: TranslatableText
-  badge?: string
-}
+export type { Campaign, CampaignType, TranslatableText }
 
 export interface Achievement {
   id: string
