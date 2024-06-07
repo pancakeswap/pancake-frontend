@@ -17,7 +17,6 @@ import {
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
-import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPoolsList'
 import { NextSeo } from 'next-seo'
 
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -50,7 +49,6 @@ import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import Percent from 'views/Info/components/Percent'
-import SaveIcon from 'views/Info/components/SaveIcon'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
 
 dayjs.extend(duration)
@@ -81,7 +79,6 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
   const chainId = useChainIdByQuery()
-  const { savedTokens, addToken } = useInfoUserSavedTokensAndPools(chainId)
 
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
@@ -171,7 +168,10 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                     <Image src="/images/CMC-logo.svg" height={22} width={22} alt={t('View token on CoinMarketCap')} />
                   </StyledCMCLink>
                 )}
-                <SaveIcon fill={savedTokens.includes(address)} onClick={() => addToken(address)} />
+                {/* <SaveIcon
+                  fill={savedTokens.includes(address)}
+                  onClick={() => (savedTokens.includes(address) ? removeToken(address) : addToken(address))}
+                /> */}
                 <CopyButton ml="4px" text={address} tooltipMessage={t('Token address copied')} />
               </Flex>
             </Flex>

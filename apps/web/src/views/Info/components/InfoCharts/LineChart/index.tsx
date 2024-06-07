@@ -1,12 +1,12 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react'
-import useTheme from 'hooks/useTheme'
-import { LineChartLoader } from 'components/ChartLoaders'
-import { createChart, IChartApi } from 'lightweight-charts'
-import dayjs from 'dayjs'
-import { darken } from 'polished'
 import { useTranslation } from '@pancakeswap/localization'
+import { darkColors, lightColors } from '@pancakeswap/uikit'
+import { LineChartLoader } from 'components/ChartLoaders'
+import dayjs from 'dayjs'
+import useTheme from 'hooks/useTheme'
+import { IChartApi, createChart } from 'lightweight-charts'
+import { darken } from 'polished'
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { lightColors, darkColors } from '@pancakeswap/uikit'
 
 export type LineChartProps = {
   data: any[]

@@ -2,20 +2,18 @@ import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Input, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
-import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPoolsList'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { checkIsStableSwap, multiChainId } from 'state/info/constant'
-import { useChainNameByQuery, useMultiChainPath, usePoolDatasQuery, useTokenDatasQuery } from 'state/info/hooks'
+import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import useFetchSearchResults from 'state/info/queries/search'
 import { PoolData } from 'state/info/types'
 import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { getTokenNameAlias, getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import SaveIcon from 'views/Info/components/SaveIcon'
 
 const Container = styled.div`
   position: relative;
@@ -166,7 +164,6 @@ const Search = () => {
 
   const [tokensShown, setTokensShown] = useState(3)
   const [poolsShown, setPoolsShown] = useState(3)
-  const { savedPools, savedTokens, addPool, addToken } = useInfoUserSavedTokensAndPools(chainId)
 
   useEffect(() => {
     setTokensShown(3)
@@ -210,61 +207,41 @@ const Search = () => {
     router.push(to)
   }
 
-  // get date for watchlist
-  const watchListTokenData = useTokenDatasQuery(savedTokens)
-  const watchListPoolData = usePoolDatasQuery(savedPools)
-  const watchListPoolLoading = watchListPoolData.length !== savedPools.length
-
   // filter on view
-  const [showWatchlist, setShowWatchlist] = useState(false)
   const tokensForList = useMemo(() => {
-    if (showWatchlist) {
-      return watchListTokenData
-        ? watchListTokenData.filter((token) => tokenIncludesSearchTerm(token, chainId, value))
-        : []
-    }
     return orderBy(tokens, (token) => token.volumeUSD, 'desc')
-  }, [showWatchlist, tokens, watchListTokenData, chainId, value])
+  }, [tokens])
 
   const poolForList = useMemo(() => {
-    if (showWatchlist) {
-      return watchListPoolData.filter((pool) => pool && poolIncludesSearchTerm(pool, chainId, value))
-    }
     return orderBy(pools, (pool) => pool?.volumeUSD, 'desc')
-  }, [showWatchlist, pools, watchListPoolData, chainId, value])
+  }, [pools])
 
   const contentUnderTokenList = () => {
     const isLoading = tokensLoading
     const noTokensFound =
       tokensForList.length === 0 && !isLoading && debouncedSearchTerm.length >= MINIMUM_SEARCH_CHARACTERS
-    const noWatchlistTokens = tokensForList.length === 0 && !isLoading
-    const showMessage = showWatchlist ? noWatchlistTokens : noTokensFound
+    const showMessage = noTokensFound
     const noTokensMessage = t('No results')
     return (
       <>
         {isLoading && <Skeleton />}
         {showMessage && <Text>{noTokensMessage}</Text>}
-        {!showWatchlist && debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && (
-          <Text>{t('Search liquidity pairs or tokens')}</Text>
-        )}
+        {debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && <Text>{t('Search liquidity pairs or tokens')}</Text>}
       </>
     )
   }
 
   const contentUnderPoolList = () => {
-    const isLoading = showWatchlist ? watchListPoolLoading : poolsLoading
+    const isLoading = poolsLoading
     const noPoolsFound =
       poolForList.length === 0 && !poolsLoading && debouncedSearchTerm.length >= MINIMUM_SEARCH_CHARACTERS
-    const noWatchlistPools = poolForList.length === 0 && !isLoading
-    const showMessage = showWatchlist ? noWatchlistPools : noPoolsFound
-    const noPoolsMessage = showWatchlist ? t('Saved tokens will appear here') : t('No results')
+    const showMessage = noPoolsFound
+    const noPoolsMessage = t('No results')
     return (
       <>
         {isLoading && <Skeleton />}
         {showMessage && <Text>{noPoolsMessage}</Text>}
-        {!showWatchlist && debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && (
-          <Text>{t('Search liquidity pairs or tokens')}</Text>
-        )}
+        {debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && <Text>{t('Search liquidity pairs or tokens')}</Text>}
       </>
     )
   }
@@ -289,12 +266,7 @@ const Search = () => {
         {showMenu && (
           <Menu ref={menuRef}>
             <Flex mb="16px">
-              <OptionButton enabled={!showWatchlist} onClick={() => setShowWatchlist(false)}>
-                {t('Search')}
-              </OptionButton>
-              <OptionButton enabled={showWatchlist} onClick={() => setShowWatchlist(true)}>
-                {t('Watchlist')}
-              </OptionButton>
+              <OptionButton enabled>{t('Search')}</OptionButton>
             </Flex>
             {error && <Text color="failure">{t('Error occurred, please try again')}</Text>}
 
@@ -332,15 +304,6 @@ const Search = () => {
                           token.address && getTokenSymbolAlias(token.address, chainId, token.symbol)
                         })`}</Text>
                       </Text>
-                      <SaveIcon
-                        id="watchlist-icon"
-                        style={{ marginLeft: '8px' }}
-                        fill={savedTokens.includes(token.address)}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          addToken(token.address)
-                        }}
-                      />
                     </Flex>
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.priceUSD)}</Text>}
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.volumeUSD)}</Text>}
@@ -401,17 +364,6 @@ const Search = () => {
                           p && getTokenSymbolAlias(p.token1.address, chainId, p.token1.symbol)
                         }`}</Text>
                       </Text>
-                      <SaveIcon
-                        id="watchlist-icon"
-                        style={{ marginLeft: '10px' }}
-                        fill={p ? savedPools.includes(p.address) : false}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          if (p) {
-                            addPool(p.address)
-                          }
-                        }}
-                      />
                     </Flex>
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(p?.volumeUSD)}</Text>}
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(p?.volumeUSDWeek)}</Text>}
