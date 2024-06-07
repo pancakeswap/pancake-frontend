@@ -1,7 +1,7 @@
-import jazzicon from '@metamask/jazzicon'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
-import { useLayoutEffect, useRef } from 'react'
+import { useMemo } from 'react'
+import Jazzicon from 'react-jazzicon'
 import { styled } from 'styled-components'
 
 const Container = styled(Box)`
@@ -21,20 +21,19 @@ const Container = styled(Box)`
   }
 `
 
+const TOTAL = 20
 const SIZE = 36
 
 export const Winners = () => {
   const { t } = useTranslation()
-  const iconRef = useRef<HTMLDivElement>(null)
 
-  useLayoutEffect(() => {
-    const { current } = iconRef
-
-    for (let i = 0; i < 48; i++) {
-      const icon = jazzicon(SIZE, i)
-      current?.appendChild(icon)
+  const winners = useMemo(() => {
+    const array = []
+    for (let i = 0; i < TOTAL; i++) {
+      array.push(i)
     }
-  }, [iconRef])
+    return array
+  }, [])
 
   return (
     <Flex mt="32px" flexDirection="column">
@@ -50,7 +49,11 @@ export const Winners = () => {
       </Flex>
       <Card>
         <Container>
-          <FlexGap gap="16px" justifyContent="center" flexWrap="wrap" ref={iconRef} />
+          <FlexGap gap="16px" justifyContent="center" flexWrap="wrap">
+            {winners.map((i) => (
+              <Jazzicon seed={i} diameter={SIZE} />
+            ))}
+          </FlexGap>
         </Container>
       </Card>
     </Flex>

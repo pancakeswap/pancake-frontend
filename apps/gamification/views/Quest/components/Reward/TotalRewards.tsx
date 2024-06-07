@@ -5,15 +5,16 @@ import { AssetSet } from 'views/Quest/components/Reward/AssetSet'
 
 const TotalRewardContainer = styled(Flex)`
   position: relative;
+  overflow: hidden;
   border-bottom: solid 1px ${({ theme }) => theme.colors.cardBorder};
 `
 
 const TextBlock = styled(Flex)`
   position: absolute;
   top: calc(50% - 1px);
-  right: 12px;
+  right: 0px;
   z-index: 2;
-  padding: 2px 0;
+  padding: 2px 12px 2px 0;
   transform: translateY(-50%);
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
 

@@ -1,15 +1,15 @@
-import jazzicon from '@metamask/jazzicon'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
-import { useLayoutEffect, useRef } from 'react'
-import styled, { css } from 'styled-components'
+import { useCallback, useMemo } from 'react'
+import Jazzicon from 'react-jazzicon'
+import styled from 'styled-components'
 
 const TextBlock = styled(Flex)`
   position: absolute;
   top: calc(50% - 1px);
-  right: 12px;
+  right: 0px;
   z-index: 2;
-  padding: 2px 0;
+  padding: 2px 12px 2px 0;
   transform: translateY(-50%);
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
 
@@ -27,58 +27,54 @@ const TextBlock = styled(Flex)`
 const AssetSetContainer = styled(Box)`
   position: relative;
   z-index: 1;
-  height: 24px;
-  overflow: hidden;
+  height: 26px;
 `
 
-const TOTAL = 10
-const SIZE = 22
-
-function createCSS() {
-  let styles = ''
-  for (let i = 0; i < TOTAL; i += 1) {
-    const width = SIZE * TOTAL
-    const maxCount = 10
-    const radius = SIZE / 1.8
-    const spacer = (maxCount / TOTAL - 1) * (radius * 1.8)
-    const leftOffsetFor = ((width - radius * 1.8 + spacer) / (maxCount - 1)) * i
-
-    styles += `
-      > :nth-child(${i}) {
-        position: absolute;
-        left: ${leftOffsetFor}px;
-        z-index: ${i - TOTAL};
-      }
-    `
-  }
-
-  return css`
-    ${styles}
-  `
-}
-
-const JazzIcon = styled(Box)`
-  ${createCSS()}
-`
+const TOTAL = 20
+const SIZE = 26
 
 export const Questers = () => {
   const { t } = useTranslation()
-  const iconRef = useRef<HTMLDivElement>(null)
 
-  useLayoutEffect(() => {
-    const { current } = iconRef
-
+  const total = useMemo(() => {
+    const array = []
     for (let i = 0; i < TOTAL; i++) {
-      const icon = jazzicon(SIZE, i)
-      current?.appendChild(icon)
+      array.push(i)
     }
+    return array
   }, [])
 
+  const totalLength = total.length
+  const width = useMemo(() => SIZE * totalLength, [totalLength])
+
+  const leftOffsetFor = useCallback(
+    (i: number): number => {
+      const maxCount = TOTAL / 0.6
+      const radius = SIZE / 1.8
+      const spacer = (maxCount / totalLength - 1) * (radius * 1.8)
+      return ((width - radius * 1.8 + spacer) / (maxCount - 1)) * i
+    },
+    [totalLength, width],
+  )
+
   return (
-    <Flex position="relative">
+    <Flex position="relative" overflow="hidden">
       <Flex padding="12px">
         <AssetSetContainer>
-          <JazzIcon className="Test" ref={iconRef} />
+          {total.map((i) => (
+            <Box
+              key={i}
+              width={SIZE}
+              height={SIZE}
+              position="absolute"
+              style={{
+                left: `${leftOffsetFor(i)}px`,
+                zIndex: `${i - totalLength}`,
+              }}
+            >
+              <Jazzicon seed={i} diameter={SIZE} />
+            </Box>
+          ))}
         </AssetSetContainer>
 
         <TextBlock m="auto">

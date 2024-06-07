@@ -52,7 +52,7 @@ export const AssetSet: React.FC<React.PropsWithChildren<AssetSetProps>> = ({ siz
           key={token.address}
           width={imageSize}
           height={imageSize}
-          style={{ left: `${leftOffsetFor(i)}px`, zIndex: `${i - 20}` }}
+          style={{ left: `${leftOffsetFor(i)}px`, zIndex: `${i - totalLength}` }}
         >
           <TokenImage token={token} width={imageSize} height={imageSize} />
         </Circle>
