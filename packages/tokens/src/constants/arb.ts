@@ -327,4 +327,12 @@ export const arbitrumTokens = {
     'Magic Internet Money',
     'https://abracadabra.money/',
   ),
+  fusdc: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x4CFA50B7Ce747e2D61724fcAc57f24B748FF2b2A',
+    6,
+    'FUSDC',
+    'Fluid USDC',
+    'https://fluidity.money/',
+  ),
 }
