@@ -3,8 +3,9 @@ import {
   BetPosition,
   PredictionStatus,
   PredictionSupportedSymbol,
-  predictionsV2ABI,
   ROUNDS_PER_PAGE,
+  aiPredictionsABI,
+  predictionsV2ABI,
 } from '@pancakeswap/prediction'
 import { gql, request } from 'graphql-request'
 import {
@@ -40,6 +41,7 @@ export const deserializeRound = (round: ReduxNodeRound): NodeRound => ({
   closePrice: convertBigInt(round.closePrice),
   rewardBaseCalAmount: convertBigInt(round.rewardBaseCalAmount),
   rewardAmount: convertBigInt(round.rewardAmount),
+  AIPrice: convertBigInt(round.AIPrice || null),
 })
 
 export enum Result {
@@ -314,14 +316,16 @@ export const getRoundsData = async (
   epochs: number[],
   address: Address,
   chainId: ChainId,
+  { isAIPrediction = true }: { isAIPrediction?: boolean } = {},
 ): Promise<PredictionsRoundsResponse[]> => {
   const client = publicClient({ chainId })
+
   const response = await client.multicall({
     contracts: epochs.map(
       (epoch) =>
         ({
           address,
-          abi: predictionsV2ABI,
+          abi: isAIPrediction ? aiPredictionsABI : predictionsV2ABI,
           functionName: 'rounds',
           args: [BigInt(epoch)] as const,
         } as const),
@@ -329,22 +333,40 @@ export const getRoundsData = async (
     allowFailure: false,
   })
 
-  return response.map((r) => ({
-    epoch: r[0],
-    startTimestamp: r[1],
-    lockTimestamp: r[2],
-    closeTimestamp: r[3],
-    lockPrice: r[4],
-    closePrice: r[5],
-    lockOracleId: r[6],
-    closeOracleId: r[7],
-    totalAmount: r[8],
-    bullAmount: r[9],
-    bearAmount: r[10],
-    rewardBaseCalAmount: r[11],
-    rewardAmount: r[12],
-    oracleCalled: r[13],
-  }))
+  return response.map((r, i) =>
+    isAIPrediction
+      ? {
+          epoch: BigInt(epochs[i]), // Should be in same order according to viem multicall docs
+          startTimestamp: BigInt(r[0]),
+          lockTimestamp: BigInt(r[1]),
+          closeTimestamp: BigInt(r[2]),
+          AIPrice: r[3],
+          lockPrice: r[4],
+          closePrice: r[5],
+          totalAmount: r[6],
+          bullAmount: r[7],
+          bearAmount: r[8],
+          rewardBaseCalAmount: r[9],
+          rewardAmount: r[10],
+          oracleCalled: Boolean(r[11]),
+        }
+      : {
+          epoch: BigInt(r[0]),
+          startTimestamp: BigInt(r[1]),
+          lockTimestamp: BigInt(r[2]),
+          closeTimestamp: BigInt(r[3]),
+          lockPrice: r[4],
+          closePrice: r[5],
+          lockOracleId: r[6],
+          closeOracleId: r[7],
+          totalAmount: r[8],
+          bullAmount: r[9],
+          bearAmount: r[10],
+          rewardBaseCalAmount: BigInt(r[11]),
+          rewardAmount: r[12] || 0n,
+          oracleCalled: Boolean(r[13]),
+        },
+  )
 }
 
 export const makeFutureRoundResponse = (epoch: number, startTimestamp: number): ReduxNodeRound => {
@@ -426,13 +448,16 @@ export const serializePredictionsRoundsResponse = (
     oracleCalled,
     lockOracleId,
     closeOracleId,
+    AIPrice,
   } = response
 
   let lockPriceAmount = lockPrice === 0n ? null : lockPrice.toString()
   let closePriceAmount = closePrice === 0n ? null : closePrice.toString()
 
   // Chainlink in ARBITRUM lockPrice & closePrice will return 18 decimals, other chain is return 8 decimals.
-  if (chainId === ChainId.ARBITRUM_ONE) {
+  // For AI predictions at least, this will be later replaced with prices from CMC API instead of Chainlink
+  // Note: Added BSC_TESTNET for TESTING because we're using ARB's ETH/USD chainlink price feed there
+  if (chainId === ChainId.ARBITRUM_ONE || chainId === ChainId.BSC_TESTNET) {
     lockPriceAmount = lockPrice === 0n ? null : (Number(lockPrice) / Number(1e10)).toFixed()
     closePriceAmount = closePrice === 0n ? null : (Number(closePrice) / Number(1e10)).toFixed()
   }
@@ -450,8 +475,13 @@ export const serializePredictionsRoundsResponse = (
     bearAmount: bearAmount.toString(),
     rewardBaseCalAmount: rewardBaseCalAmount.toString(),
     rewardAmount: rewardAmount.toString(),
-    lockOracleId: lockOracleId.toString(),
-    closeOracleId: closeOracleId.toString(),
+
+    // PredictionsV2
+    lockOracleId: lockOracleId?.toString(),
+    closeOracleId: closeOracleId?.toString(),
+
+    // AI Predictions
+    AIPrice: AIPrice?.toString(),
   }
 }
 

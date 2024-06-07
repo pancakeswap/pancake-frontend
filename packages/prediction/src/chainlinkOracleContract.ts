@@ -5,6 +5,7 @@ import { ContractAddresses } from './type'
 
 export const chainlinkOracleBNB: Record<string, Address> = {
   [ChainId.BSC]: '0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE',
+  [ChainId.BSC_TESTNET]: '0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612', // ARB ETH/USD used here for TESTING AI prediction market for Arbitrum
   [ChainId.ZKSYNC]: '0x',
   // [ChainId.ARBITRUM_ONE]: '0x',
 } as const satisfies ContractAddresses<SupportedChainId>

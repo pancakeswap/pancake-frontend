@@ -90,16 +90,18 @@ export const fetchPredictionData = createAsyncThunk<
 >('predictions/fetchPredictionData', async ({ account, chainId }, { extra }) => {
   // Static values
   const marketData = await getPredictionData(extra.address, chainId)
+
   const epochs =
     marketData.currentEpoch > PAST_ROUND_COUNT
       ? range(marketData.currentEpoch, marketData.currentEpoch - PAST_ROUND_COUNT)
       : [marketData.currentEpoch]
 
   // Round data
-  const roundsResponse = await getRoundsData(epochs, extra.address, chainId)
+  const roundsResponse = await getRoundsData(epochs, extra.address, chainId, {
+    isAIPrediction: Boolean(extra.isAIPrediction),
+  })
   const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
     const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse, chainId)
-
     return {
       ...accum,
       [roundResponse.epoch.toString()]: reduxNodeRound,

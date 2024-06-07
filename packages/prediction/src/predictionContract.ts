@@ -5,6 +5,7 @@ import { ContractAddresses } from './type'
 
 export const predictionsBNB: Record<string, Address> = {
   [ChainId.BSC]: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
+  [ChainId.BSC_TESTNET]: '0x505B6e8DA1c31f4033ef5b70cba426E00538Fb3c', // For TESTING AI prediction market for Arbitrum
   [ChainId.ZKSYNC]: '0x',
   // [ChainId.ARBITRUM_ONE]: '0x',
 } as const satisfies ContractAddresses<SupportedChainId>
