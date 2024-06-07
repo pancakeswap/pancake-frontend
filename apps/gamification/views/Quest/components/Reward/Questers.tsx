@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, Flex, InfoIcon, Text } from '@pancakeswap/uikit'
+import { Card, Flex, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { AssetSet } from 'views/Quest/components/Reward/AssetSet'
+// import jazzicon from '@metamask/jazzicon'
 
 const TextBlock = styled(Flex)`
   position: absolute;
@@ -24,17 +25,16 @@ const TextBlock = styled(Flex)`
   }
 `
 
-export const TotalRewards = () => {
+export const Questers = () => {
   const { t } = useTranslation()
+  // const icon = useMemo(() => account && jazzicon(iconSize, parseInt(account.slice(2, 10), 16)), [account, iconSize])
+
   return (
-    <Card style={{ width: '100%' }} marginBottom={['8px']}>
+    <Card style={{ width: '100%' }}>
       <Flex padding="16px">
         <AssetSet size={28} />
         <TextBlock m="auto">
-          <Text bold mr="4px">
-            999 rewards
-          </Text>
-          <InfoIcon color="textSubtle" style={{ alignSelf: 'center' }} />
+          <Text bold>999+ questers</Text>
         </TextBlock>
       </Flex>
     </Card>
