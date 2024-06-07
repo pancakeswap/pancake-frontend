@@ -145,6 +145,8 @@ export default {
   bCakeFarmBooster: {
     [ChainId.BSC]: '0xE4FAa3Ef5A9708C894435B0F39c2B440936A3A52',
     [ChainId.BSC_TESTNET]: '0x',
+    [ChainId.ARBITRUM_ONE]: '0x21Eb14cf06270Ef944A1480bEf9163fe4Cf7DB14',
+    [ChainId.ETHEREUM]: '0xB509DBeE68B273767Cd8D45c1Ce95453391741f6',
   },
   bCakeFarmBoosterProxyFactory: {
     [ChainId.BSC]: '0x2C36221bF724c60E9FEE3dd44e2da8017a8EF3BA',
@@ -236,7 +238,7 @@ export default {
     [ChainId.ETHEREUM]: '0x8095b52D936ACA9867c5773369adD5cbA1519632',
   },
   pancakeVeSenderV2: {
-    [ChainId.BSC]: '0x79d4d0E75B736B4131306e77E7cD2F2595d56628',
+    [ChainId.BSC]: '0xEF58528Ecb76b69a0F61F65d94797d531B34cf64',
   },
   gaugesVoting: GAUGES_ADDRESS,
   gaugesVotingCalc: GAUGES_CALC_ADDRESS,
