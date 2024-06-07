@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import dayjs, { ManipulateType } from 'dayjs'
+import dayjs from 'dayjs'
 import { GraphQLClient } from 'graphql-request'
 import { useMemo } from 'react'
 import { multiChainId, multiChainName } from 'state/info/constant'
@@ -11,6 +11,7 @@ import { v3Clients, v3InfoClients } from 'utils/graphql'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 import { useQuery } from '@tanstack/react-query'
+import { chainIdToExplorerInfoChainName } from 'state/info/api/client'
 import { DURATION_INTERVAL, SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchPoolDatas } from '../data/pool/poolData'
@@ -83,38 +84,6 @@ export const useProtocolTransactionData = (): Transaction[] | undefined => {
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(() => data?.filter((d) => d.amountUSD > 0) ?? [], [data])
-}
-
-export const useTokenPriceChartData = (
-  address: string,
-  duration?: 'day' | 'week' | 'month' | 'year',
-  targetChainId?: ChainId,
-): PriceChartEntry[] | undefined => {
-  const chainName = useChainNameByQuery()
-  const chainId = multiChainId[chainName]
-  const utcCurrentTime = dayjs()
-  const startTimestamp = utcCurrentTime
-    .subtract(1, duration ?? 'day')
-    .startOf('hour')
-    .unix()
-
-  const { data } = useQuery({
-    queryKey: [`v3/info/token/priceData/${address}/${duration}`, targetChainId ?? chainId],
-
-    queryFn: () =>
-      fetchTokenPriceData(
-        address,
-        DURATION_INTERVAL[duration ?? 'day'],
-        startTimestamp,
-        v3InfoClients[targetChainId ?? chainId],
-        multiChainName[targetChainId ?? chainId],
-        SUBGRAPH_START_BLOCK[chainId],
-      ),
-
-    enabled: Boolean(chainId && address),
-    ...QUERY_SETTINGS_IMMUTABLE,
-  })
-  return data?.data ?? []
 }
 
 // this is for the swap page and ROI calculator
@@ -293,29 +262,15 @@ export const useTokenChartData = (address: string): TokenChartEntry[] | undefine
 
 export const useTokenPriceData = (
   address: string,
-  interval: number,
-  timeWindow: ManipulateType,
+  duration: 'day' | 'week' | 'month' | 'year',
 ): PriceChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
-  const utcCurrentTime = dayjs()
-  const startTimestamp = utcCurrentTime
-    .subtract(1, timeWindow ?? 'day')
-    .startOf('hour')
-    .unix()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/token/tokenPriceData/${chainId}/${address}/${interval}/${timeWindow}`, chainId],
+    queryKey: [`v3/info/token/tokenPriceData/${chainId}/${address}/${duration}`, chainId],
 
-    queryFn: () =>
-      fetchTokenPriceData(
-        address,
-        interval,
-        startTimestamp,
-        v3InfoClients[chainId],
-        multiChainName[chainId],
-        SUBGRAPH_START_BLOCK[chainId],
-      ),
+    queryFn: () => fetchTokenPriceData(address, 'v3', duration, chainIdToExplorerInfoChainName[chainId]),
 
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
