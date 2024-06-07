@@ -234,7 +234,7 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
               )}
 
               <Box mx="18px">
-                <RoundResultBox padding="2px 0" isNext>
+                <RoundResultBox innerPadding="2px 0" isNext>
                   <Flex justifyContent="center">
                     <AIPredictionsLogo width={120} height={120} />
                   </Flex>

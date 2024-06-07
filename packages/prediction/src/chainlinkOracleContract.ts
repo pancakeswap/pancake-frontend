@@ -13,17 +13,20 @@ export const chainlinkOracleBNB: Record<string, Address> = {
 export const chainlinkOracleCAKE: Record<string, Address> = {
   [ChainId.BSC]: '0xB6064eD41d4f67e353768aA239cA86f4F73665a1',
   [ChainId.ZKSYNC]: '0x',
+  [ChainId.BSC_TESTNET]: '0x', // required for now, remove later
   // [ChainId.ARBITRUM_ONE]: '0x',
 } as const satisfies ContractAddresses<SupportedChainId>
 
 export const chainlinkOracleETH: Record<string, Address> = {
   [ChainId.BSC]: '0x',
   [ChainId.ZKSYNC]: '0x',
+  [ChainId.BSC_TESTNET]: '0x', // required for now, remove later
   // [ChainId.ARBITRUM_ONE]: '0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612',
 } as const satisfies ContractAddresses<SupportedChainId>
 
 export const chainlinkOracleWBTC: Record<string, Address> = {
   [ChainId.BSC]: '0x',
   [ChainId.ZKSYNC]: '0x',
+  [ChainId.BSC_TESTNET]: '0x', // required for now, remove later
   // [ChainId.ARBITRUM_ONE]: '0x6ce185860a4963106506C203335A2910413708e9',
 } as const satisfies ContractAddresses<SupportedChainId>

@@ -106,7 +106,7 @@ interface RoundResultBoxProps {
   isLive?: boolean
   hasEntered?: boolean
 
-  padding?: string
+  innerPadding?: string | null
 }
 
 const getBackgroundColor = ({
@@ -152,13 +152,13 @@ export const RoundResultBox: React.FC<React.PropsWithChildren<RoundResultBoxProp
   isNext = false,
   hasEntered = false,
   isLive = false,
-  padding,
+  innerPadding = '',
   children,
   ...props
 }) => {
   return (
     <Background isNext={isNext} hasEntered={hasEntered} isLive={isLive} {...props}>
-      <StyledRoundResultBox $padding={padding}>{children}</StyledRoundResultBox>
+      <StyledRoundResultBox $padding={innerPadding || ''}>{children}</StyledRoundResultBox>
     </Background>
   )
 }
