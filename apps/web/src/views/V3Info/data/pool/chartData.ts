@@ -16,6 +16,18 @@ export async function fetchPoolChartData(
   let error = false
 
   try {
+    const rawFeeResults = await explorerApiClient
+      .GET('/cached/pools/chart/v3/{chainName}/{address}/fees', {
+        signal: null,
+        params: {
+          path: {
+            chainName,
+            address,
+          },
+        },
+      })
+      .then((res) => res.data)
+
     const rawTvlResults = await explorerApiClient
       .GET('/cached/pools/chart/{protocol}/{chainName}/{address}/tvl', {
         signal: null,
@@ -48,7 +60,7 @@ export async function fetchPoolChartData(
       })
       .then((res) => res.data)
 
-    if (rawTvlResults || rawVolumeResults) {
+    if (rawTvlResults || rawVolumeResults || rawFeeResults) {
       const volumeResults = rawVolumeResults?.reduce(
         (acc, item) => {
           const unixDate = dayjs(item.bucket as string).unix()
@@ -85,13 +97,30 @@ export async function fetchPoolChartData(
         },
       )
 
+      const feeResults = rawFeeResults?.reduce(
+        (acc, item) => {
+          const unixDate = dayjs(item.bucket as string).unix()
+          // eslint-disable-next-line no-param-reassign
+          acc[unixDate] = {
+            feesUSD: parseFloat(item.feeUSD ?? '0'),
+            date: unixDate,
+          }
+          return acc
+        },
+        {} as {
+          [unixDate: number]: {
+            feesUSD: number
+            date: number
+          }
+        },
+      )
+
       const keys = [...new Set([...Object.keys(volumeResults ?? {}), ...Object.keys(tvlResults ?? {})])]
 
       const results = keys.reduce((acc, key) => {
         const volumeData = volumeResults?.[key] ?? { volumeUSD: 0, date: key }
         const tvlData = tvlResults?.[key] ?? { totalValueLockedUSD: 0, date: key }
-        // TODO: Implement when available
-        const feeData = { feesUSD: 0, date: key }
+        const feeData = feeResults?.[key] ?? { feesUSD: 0, date: key }
 
         // eslint-disable-next-line no-param-reassign
         acc[key] = { ...volumeData, ...tvlData, ...feeData }

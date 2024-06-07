@@ -78,6 +78,10 @@ export interface paths {
     /** Get positions from v3 pool */
     get: operations['getCachedPoolsPositionsV3ByChainNameByPool']
   }
+  '/cached/pools/chart/v3/{chainName}/{address}/fees': {
+    /** Get pool fees chart */
+    get: operations['getCachedPoolsChartV3ByChainNameByAddressFees']
+  }
   '/cached/pools/chart/{protocol}/{chainName}/{address}/tvl': {
     /** Get pool tvl chart */
     get: operations['getCachedPoolsChartByProtocolByChainNameByAddressTvl']
@@ -240,12 +244,22 @@ export interface components {
       timestamp: Record<string, never> | string
     }
     ticks: {
-      id: string
-      /** @description Tick index */
-      tickIdx: number
-      liquidityGross: string
-      liquidityNet: string
-    }[]
+      /** @description Cursor for pagination start */
+      startCursor?: string
+      /** @description Cursor for pagination end */
+      endCursor?: string
+      /** @description Has next page */
+      hasNextPage?: boolean
+      /** @description Has previous page */
+      hasPrevPage?: boolean
+      rows: {
+        id: string
+        /** @description Tick index */
+        tickIdx: number
+        liquidityGross: string
+        liquidityNet: string
+      }[]
+    }
     positions: {
       /** @description Cursor for pagination start */
       startCursor?: string
@@ -808,6 +822,12 @@ export interface operations {
   /** Get all ticks from v3 pool */
   getCachedPoolsTicksV3ByChainNameByPool: {
     parameters: {
+      query?: {
+        /** @description Cursor for pagination before */
+        before?: string
+        /** @description Cursor for pagination after */
+        after?: string
+      }
       path: {
         /** @description Chain name */
         chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
@@ -846,6 +866,27 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['positions']
+        }
+      }
+    }
+  }
+  /** Get pool fees chart */
+  getCachedPoolsChartV3ByChainNameByAddressFees: {
+    parameters: {
+      path: {
+        /** @description Chain name */
+        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        /** @description Ethereum address */
+        address: string
+      }
+    }
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            bucket: Record<string, never> | string
+            feeUSD: string
+          }[]
         }
       }
     }
@@ -987,8 +1028,16 @@ export interface operations {
             tick: null | number
             /** @description Total fee in USD */
             totalFeeUSD: string
+            /** @description Fee in USD in 24h */
+            feeUSD24h: string
+            /** @description Fee in USD in 7d */
+            feeUSD7d: string
             /** @description Total protocol fee in USD */
             totalProtocolFeeUSD: string
+            /** @description Protocol fee in USD in 24h */
+            protocolFeeUSD24h: string
+            /** @description Protocol fee in USD in 7d */
+            protocolFeeUSD7d: string
           }
         }
       }
@@ -1214,8 +1263,16 @@ export interface operations {
             tick: null | number
             /** @description Total fee in USD */
             totalFeeUSD: string
+            /** @description Fee in USD in 24h */
+            feeUSD24h: string
+            /** @description Fee in USD in 7d */
+            feeUSD7d: string
             /** @description Total protocol fee in USD */
             totalProtocolFeeUSD: string
+            /** @description Protocol fee in USD in 24h */
+            protocolFeeUSD24h: string
+            /** @description Protocol fee in USD in 7d */
+            protocolFeeUSD7d: string
           }[]
         }
       }
