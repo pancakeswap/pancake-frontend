@@ -509,7 +509,7 @@ export const usePoolChartData = (address: string): PoolChartEntry[] | undefined 
   const chainId = multiChainId[chainName]
   const { data } = useQuery({
     queryKey: [`v3/info/pool/poolChartData/${chainId}/${address}`, chainId],
-    queryFn: () => fetchPoolChartData(address, v3InfoClients[chainId]),
+    queryFn: () => fetchPoolChartData('v3', chainIdToExplorerInfoChainName[chainId], address),
     enabled: Boolean(chainId && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
