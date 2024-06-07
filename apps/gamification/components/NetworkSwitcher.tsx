@@ -134,7 +134,7 @@ const WrongNetworkSelect = ({
   )
 }
 
-const SHORT_SYMBOL = {
+export const SHORT_SYMBOL = {
   [ChainId.ETHEREUM]: 'ETH',
   [ChainId.BSC]: 'BNB',
   [ChainId.BSC_TESTNET]: 'tBNB',

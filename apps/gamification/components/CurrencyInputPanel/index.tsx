@@ -1,15 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Token } from '@pancakeswap/sdk'
-import { ArrowDropDownIcon, Button, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { ArrowDropDownIcon, Button, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { CurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { BigNumber } from 'bignumber.js'
+import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
+import useTokenBalance from 'hooks/useTokenBalance'
 import { memo, useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
-
-import useTokenBalance from 'hooks/useTokenBalance'
 import { useAccount } from 'wagmi'
-// import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 
 const InputRow = styled.div<{ selected: boolean }>`
   display: flex;
@@ -51,7 +50,8 @@ interface CurrencyInputPanelProps {
   title?: React.ReactNode
   hideBalanceComp?: boolean
 }
-const CurrencyInputPanel = memo(function CurrencyInputPanel({
+
+export const CurrencyInputPanel = memo(function CurrencyInputPanel({
   value,
   onUserInput,
   onInputBlur,
@@ -86,19 +86,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
   const { t } = useTranslation()
 
   const mode = id
-
-  // const [onPresentCurrencyModal] = useModal(
-  //   <CurrencySearchModal
-  //     onCurrencySelect={onCurrencySelect}
-  //     selectedCurrency={currency}
-  //     otherSelectedCurrency={otherCurrency}
-  //     showCommonBases={showCommonBases}
-  //     commonBasesType={commonBasesType}
-  //     showSearchInput={showSearchInput}
-  //     tokensToShow={tokensToShow}
-  //     mode={mode}
-  //   />,
-  // )
+  const [onPresentCurrencyModal] = useModal(<CurrencySearchModal />)
 
   const percentAmount: any = useMemo(
     () => ({
@@ -118,10 +106,9 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
 
   const onCurrencySelectClick = useCallback(() => {
     if (!disableCurrencySelect) {
-      // onPresentCurrencyModal()
-      console.log('Clicked me')
+      onPresentCurrencyModal()
     }
-  }, [disableCurrencySelect])
+  }, [disableCurrencySelect, onPresentCurrencyModal])
 
   const isAtPercentMax = (maxAmount && value === maxAmount.toString()) || (lpPercent && lpPercent === '100')
 
@@ -240,5 +227,3 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
     />
   )
 })
-
-export default CurrencyInputPanel

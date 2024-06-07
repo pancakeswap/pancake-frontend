@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { ArrowDropDownIcon, Box, Button, CopyButton, Flex, Loading, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'

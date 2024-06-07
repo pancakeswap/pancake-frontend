@@ -7,7 +7,9 @@ import {
   ErrorFillIcon,
   Flex,
   Text,
+  useModal,
 } from '@pancakeswap/uikit'
+import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useState } from 'react'
 import { styled } from 'styled-components'
@@ -37,6 +39,8 @@ export const AddSwap = () => {
   const [total, setTotal] = useState('')
   const [lpAddress, setLpAddress] = useState('')
 
+  const [onPresentCurrencyModal] = useModal(<CurrencySearchModal />)
+
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTotal(e.target.value)
   }
@@ -59,7 +63,7 @@ export const AddSwap = () => {
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flexDirection="column">
           <Flex>
-            <Flex position="relative" paddingRight="45px">
+            <Flex position="relative" paddingRight="45px" onClick={onPresentCurrencyModal}>
               <StyleNetwork style={{ backgroundImage: `url(${ASSET_CDN}/web/chains/56.png)` }} />
               <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
             </Flex>
