@@ -11,6 +11,7 @@ import { v3Clients, v3InfoClients } from 'utils/graphql'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 import { useQuery } from '@tanstack/react-query'
+import { chainIdToExplorerInfoChainName } from 'state/info/api/client'
 import { DURATION_INTERVAL, SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchPoolDatas } from '../data/pool/poolData'
@@ -449,7 +450,7 @@ export const usePoolTickData = (address: string): PoolTickData | undefined => {
 
   const { data } = useQuery({
     queryKey: [`v3/info/pool/poolTickData/${chainId}/${address}`, chainId],
-    queryFn: () => fetchTicksSurroundingPrice(address, v3InfoClients[chainId], chainId),
+    queryFn: () => fetchTicksSurroundingPrice(address, chainId, chainIdToExplorerInfoChainName[chainId]),
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
