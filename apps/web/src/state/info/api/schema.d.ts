@@ -258,6 +258,8 @@ export interface components {
         tickIdx: number
         liquidityGross: string
         liquidityNet: string
+        price0: string
+        price1: string
       }[]
     }
     positions: {

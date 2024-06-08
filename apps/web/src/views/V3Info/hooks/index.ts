@@ -476,7 +476,7 @@ export const usePoolTickData = (address: string): PoolTickData | undefined => {
 
   const { data } = useQuery({
     queryKey: [`v3/info/pool/poolTickData/${chainId}/${address}`, chainId],
-    queryFn: () => fetchTicksSurroundingPrice(address, v3InfoClients[chainId], chainId),
+    queryFn: () => fetchTicksSurroundingPrice(address, chainId, chainIdToExplorerInfoChainName[chainId]),
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
