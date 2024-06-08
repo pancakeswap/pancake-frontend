@@ -74,10 +74,25 @@ export const fetchTicksSurroundingPrice = async (
       return { error: false }
     }
 
+    const numSurroundingTicks = rawTickData?.length
+
+    const poolCurrentTickIdx = poolData.tick ?? 0
+    const tickSpacing = FEE_TIER_TO_TICK_SPACING(poolData.feeTier)
+    // The pools current tick isn't necessarily a tick that can actually be initialized.
+    // Find the nearest valid tick given the tick spacing.
+    const activeTickIdx = Math.floor(poolCurrentTickIdx / tickSpacing) * tickSpacing
+
+    // Our search bounds must take into account fee spacing. i.e. for fee tier 1%, only
+    // ticks with index 200, 400, 600, etc can be active.
+    const tickIdxLowerBound = activeTickIdx - numSurroundingTicks * tickSpacing
+    const tickIdxUpperBound = activeTickIdx + numSurroundingTicks * tickSpacing
+
     const tickData = rawTickData?.reduce(
       (acc, item) => {
-        // eslint-disable-next-line no-param-reassign
-        acc[item.tickIdx] = item
+        if (item.tickIdx >= tickIdxLowerBound && item.tickIdx <= tickIdxUpperBound) {
+          // eslint-disable-next-line no-param-reassign
+          acc[item.tickIdx] = item
+        }
         return acc
       },
       {} as {
@@ -91,14 +106,6 @@ export const fetchTicksSurroundingPrice = async (
         }
       },
     )
-
-    const numSurroundingTicks = rawTickData?.length
-
-    const poolCurrentTickIdx = poolData.tick ?? 0
-    const tickSpacing = FEE_TIER_TO_TICK_SPACING(poolData.feeTier)
-    // The pools current tick isn't necessarily a tick that can actually be initialized.
-    // Find the nearest valid tick given the tick spacing.
-    const activeTickIdx = Math.floor(poolCurrentTickIdx / tickSpacing) * tickSpacing
 
     const token0 = new Token(chainId, poolData.token0.id as Address, poolData.token0.decimals, poolData.token0.symbol)
     const token1 = new Token(chainId, poolData.token1.id as Address, poolData.token1.decimals, poolData.token1.symbol)
