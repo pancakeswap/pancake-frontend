@@ -69,7 +69,7 @@ describe('position manager config', () => {
 
       const getAdapterAddresses = await publicClient[chainId].multicall({
         contracts: vaults.map((vault) => ({
-          address: vault.address,
+          address: vault?.bCakeWrapperAddress ?? vault.address,
           abi: [parseAbiItem('function adapterAddr() view returns (address)')],
           functionName: 'adapterAddr',
         })),
