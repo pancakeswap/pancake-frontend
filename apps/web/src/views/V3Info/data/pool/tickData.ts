@@ -60,17 +60,38 @@ export const fetchTicksSurroundingPrice = async (
       })
       .then((res) => res.data)
 
-    const rawTickData = await explorerApiClient
-      .GET('/cached/pools/ticks/v3/{chainName}/{pool}', {
-        signal: null,
-        params: {
-          path: {
-            chainName,
-            pool: poolAddress,
+    const rawTickData: {
+      id: string
+      tickIdx: number
+      liquidityGross: string
+      liquidityNet: string
+      price0: string
+      price1: string
+    }[] = []
+    let hasNextPage = true
+    let endCursor = ''
+
+    while (hasNextPage) {
+      // eslint-disable-next-line no-await-in-loop
+      const result = await explorerApiClient
+        .GET(`/cached/pools/ticks/v3/{chainName}/{pool}`, {
+          signal: null,
+          params: {
+            path: {
+              chainName,
+              pool: poolAddress,
+            },
+            query: {
+              after: endCursor,
+            },
           },
-        },
-      })
-      .then((res) => res.data?.rows)
+        })
+        .then((res) => res.data)
+
+      rawTickData.push(...(result?.rows ?? []))
+      hasNextPage = result?.hasNextPage ?? false
+      endCursor = result?.endCursor ?? ''
+    }
 
     if (!poolData || !rawTickData) {
       return { error: false }
