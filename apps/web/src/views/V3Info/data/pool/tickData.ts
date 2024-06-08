@@ -43,6 +43,7 @@ export const fetchTicksSurroundingPrice = async (
   chainName: components['schemas']['ChainName'],
   chainId: number,
   numSurroundingTicks = DEFAULT_SURROUNDING_TICKS,
+  signal?: AbortSignal,
 ): Promise<{
   error?: boolean
   data?: PoolTickData
@@ -75,7 +76,7 @@ export const fetchTicksSurroundingPrice = async (
       // eslint-disable-next-line no-await-in-loop
       const result = await explorerApiClient
         .GET(`/cached/pools/ticks/v3/{chainName}/{pool}`, {
-          signal: null,
+          signal,
           params: {
             path: {
               chainName,
