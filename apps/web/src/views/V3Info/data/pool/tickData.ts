@@ -5,6 +5,7 @@ import { explorerApiClient } from 'state/info/api/client'
 import { components } from 'state/info/api/schema'
 
 const PRICE_FIXED_DIGITS = 4
+const DEFAULT_SURROUNDING_TICKS = 300
 const FEE_TIER_TO_TICK_SPACING = (feeTier: number): number => {
   switch (feeTier) {
     case 10000:
@@ -39,8 +40,9 @@ export interface PoolTickData {
 
 export const fetchTicksSurroundingPrice = async (
   poolAddress: string,
-  chainId: number,
   chainName: components['schemas']['ChainName'],
+  chainId: number,
+  numSurroundingTicks = DEFAULT_SURROUNDING_TICKS,
 ): Promise<{
   error?: boolean
   data?: PoolTickData
@@ -73,8 +75,6 @@ export const fetchTicksSurroundingPrice = async (
     if (!poolData || !rawTickData) {
       return { error: false }
     }
-
-    const numSurroundingTicks = rawTickData?.length
 
     const poolCurrentTickIdx = poolData.tick ?? 0
     const tickSpacing = FEE_TIER_TO_TICK_SPACING(poolData.feeTier)
