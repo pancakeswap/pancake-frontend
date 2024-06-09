@@ -79,6 +79,11 @@
     "@types/react-redux": "^7.1.24",
     "@types/react-window": "^1.8.8",
     "@types/styled-system": "^5.1.17",
+    "stylelint": "^14.5.3",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-recommended": "^7.0.0",
+    "stylelint-config-standard": "^25.0.0",
+    "stylelint-config-styled-components": "^0.1.1",
     "eslint": "^8.32.0",
     "eslint-plugin-lodash": "^7.4.0"
   }

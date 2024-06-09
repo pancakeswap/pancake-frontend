@@ -1,8 +1,12 @@
 import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders';
 import smartRouterPkgs from '@pancakeswap/smart-router/package.json' with { type: 'json' };
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
+import path from "path";
+import {fileURLToPath} from "url";
 
 const withVanillaExtract = createVanillaExtractPlugin()
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const workerDeps = Object.keys(smartRouterPkgs.dependencies)
   .map((d) => d.replace('@pancakeswap/', 'packages/'))
@@ -12,6 +16,15 @@ const workerDeps = Object.keys(smartRouterPkgs.dependencies)
 const nextConfig = {
   typescript: {
     tsconfigPath: 'tsconfig.json',
+  },
+  experimental: {
+    scrollRestoration: true,
+    fallbackNodePolyfills: false,
+    outputFileTracingRoot: path.join(__dirname, '../../'),
+    outputFileTracingExcludes: {
+      '*': [],
+    },
+    optimizePackageImports: ['@pancakeswap/widgets-internal', '@pancakeswap/uikit'],
   },
   reactStrictMode: true,
   swcMinify: false,
