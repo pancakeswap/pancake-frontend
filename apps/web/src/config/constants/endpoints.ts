@@ -23,14 +23,21 @@ export const V3_BSC_INFO_CLIENT = `https://open-platform.nodereal.io/${
   process.env.NEXT_PUBLIC_NODE_REAL_API_INFO || process.env.NEXT_PUBLIC_NODE_REAL_API_ETH
 }/pancakeswap-v3/graphql`
 
+export const THE_GRAPH_PROXY_API = 'https://thegraph.pancakeswap.com'
+
+const BLOCKS_SUBGRAPH_URLS = {
+  ...BLOCKS_SUBGRAPHS,
+  [ChainId.OPBNB]: `${THE_GRAPH_PROXY_API}/blocks-opbnb`,
+}
+
 export const INFO_CLIENT_ETH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth'
-export const BLOCKS_CLIENT = BLOCKS_SUBGRAPHS[ChainId.BSC]
-export const BLOCKS_CLIENT_ETH = BLOCKS_SUBGRAPHS[ChainId.ETHEREUM]
-export const BLOCKS_CLIENT_POLYGON_ZKEVM = BLOCKS_SUBGRAPHS[ChainId.POLYGON_ZKEVM]
-export const BLOCKS_CLIENT_ZKSYNC = BLOCKS_SUBGRAPHS[ChainId.ZKSYNC]
-export const BLOCKS_CLIENT_LINEA = BLOCKS_SUBGRAPHS[ChainId.LINEA]
-export const BLOCKS_CLIENT_BASE = BLOCKS_SUBGRAPHS[ChainId.BASE]
-export const BLOCKS_CLIENT_OPBNB = BLOCKS_SUBGRAPHS[ChainId.OPBNB]
+export const BLOCKS_CLIENT = BLOCKS_SUBGRAPH_URLS[ChainId.BSC]
+export const BLOCKS_CLIENT_ETH = BLOCKS_SUBGRAPH_URLS[ChainId.ETHEREUM]
+export const BLOCKS_CLIENT_POLYGON_ZKEVM = BLOCKS_SUBGRAPH_URLS[ChainId.POLYGON_ZKEVM]
+export const BLOCKS_CLIENT_ZKSYNC = BLOCKS_SUBGRAPH_URLS[ChainId.ZKSYNC]
+export const BLOCKS_CLIENT_LINEA = BLOCKS_SUBGRAPH_URLS[ChainId.LINEA]
+export const BLOCKS_CLIENT_BASE = BLOCKS_SUBGRAPH_URLS[ChainId.BASE]
+export const BLOCKS_CLIENT_OPBNB = BLOCKS_SUBGRAPH_URLS[ChainId.OPBNB]
 
 export const GRAPH_API_NFTMARKET = 'https://api.thegraph.com/subgraphs/name/pancakeswap/nft-market'
 export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
@@ -46,8 +53,6 @@ export const CELER_API = 'https://api.celerscan.com/scan'
 
 export const INFO_GATEWAY_OLD_API = 'https://info-gateway.pancakeswap.com'
 
-export const THE_GRAPH_PROXY_API = 'https://thegraph.pancakeswap.com'
-
 export const V2_SUBGRAPH_URLS = {
   ...V2_SUBGRAPHS,
   [ChainId.POLYGON_ZKEVM]: `${THE_GRAPH_PROXY_API}/exchange-v2-polygon-zkevm`,
@@ -60,7 +65,7 @@ export const V2_SUBGRAPH_URLS = {
   [ChainId.OPBNB]: `${THE_GRAPH_PROXY_API}/exchange-v2-opbnb`,
 }
 
-export const BLOCKS_CLIENT_WITH_CHAIN = BLOCKS_SUBGRAPHS
+export const BLOCKS_CLIENT_WITH_CHAIN = BLOCKS_SUBGRAPH_URLS
 
 export const ASSET_CDN = 'https://assets.pancakeswap.finance'
 
