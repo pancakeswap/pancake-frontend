@@ -8,6 +8,7 @@ export const vaults: VaultConfig[] = [
     id: 9,
     idByManager: 4,
     name: 'BRIL',
+    bCakeWrapperAddress: '0xEE27e4ba40794e03e9aD6A12e0CC5AC0E0Fc2182',
     address: '0xEE27e4ba40794e03e9aD6A12e0CC5AC0E0Fc2182',
     adapterAddress: '0x694f7e6e8B323dc5E2A6Ea6f5985D47DB381E5e9',
     vaultAddress: '0x0414055f84Cb5510C3ADaff7a9f98E401159E0Ab',
