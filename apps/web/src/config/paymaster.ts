@@ -21,6 +21,7 @@ export const paymasterTokens: Currency[] = [
   zksyncTokens.meow,
   zksyncTokens.weth,
   zksyncTokens.wethe,
+  zksyncTokens.hold,
 ]
 
 export const paymasterInfo: { [gasTokenAddress: Address]: { discount: `-${number}%` | 'FREE' } } = {
@@ -61,6 +62,9 @@ export const paymasterInfo: { [gasTokenAddress: Address]: { discount: `-${number
     discount: 'FREE',
   },
   [zksyncTokens.wethe.address]: {
+    discount: 'FREE',
+  },
+  [zksyncTokens.hold.address]: {
     discount: 'FREE',
   },
 }
