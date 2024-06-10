@@ -67,7 +67,7 @@ export const useProtocolData = (): ProtocolData | undefined => {
   const { blocks } = useBlockFromTimeStampQuery([t24, t48])
   const { data } = useQuery({
     queryKey: [`v3/info/protocol/ProtocolData/${chainId}`, chainId],
-    queryFn: () => fetchProtocolData(v3InfoClients[chainId], blocks),
+    queryFn: () => fetchProtocolData(chainIdToExplorerInfoChainName[chainId]),
     enabled: Boolean(chainId && blocks && blocks.length > 0),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
