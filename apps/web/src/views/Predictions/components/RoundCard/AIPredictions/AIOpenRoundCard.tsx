@@ -11,7 +11,6 @@ import {
   useToast,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -52,7 +51,8 @@ interface AIOpenRoundCardProps {
   bullMultiplier: string
   bearMultiplier: string
 
-  livePrice: bigint
+  liveAIPosition: 'UP' | 'DOWN' | undefined
+  userPosition?: 'UP' | 'DOWN' | undefined
 }
 
 interface State {
@@ -67,7 +67,8 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
   hasEnteredAgainst,
   bullMultiplier,
   bearMultiplier,
-  livePrice,
+  liveAIPosition,
+  userPosition,
 }) => {
   const [state, setState] = useState<State>({
     isSettingPosition: false,
@@ -83,26 +84,6 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
   const { lockTimestamp } = round ?? { lockTimestamp: null }
   const { isSettingPosition, position } = state
   const [isBufferPhase, setIsBufferPhase] = useState(false)
-
-  // TODO: what about if price is the same? I think undefined should cover it
-  // On undefined, show preference to neither (default behavior, for now)
-  const liveAIPosition: 'UP' | 'DOWN' | undefined = useMemo(() => {
-    // Accurate upto 8 decimals (if prices are equal at 8 decimals, it is considered a house win)
-    const formattedAIPrice = parseFloat(formatBigInt(round.AIPrice ?? 0n, 8, 18))
-    const formattedLivePrice = parseFloat(formatBigInt(livePrice ?? 0n, 8, 8)) // Chainlink price is 8 decimals on ARB's ETH/USD. TODO: Replace with CMC
-
-    if (formattedAIPrice && formattedLivePrice)
-      return formattedAIPrice === formattedLivePrice ? undefined : formattedAIPrice > formattedLivePrice ? 'UP' : 'DOWN'
-
-    return undefined
-  }, [livePrice, round.AIPrice])
-
-  const userPosition: 'UP' | 'DOWN' | undefined = useMemo(() => {
-    if ((hasEnteredFor && liveAIPosition === 'UP') || (hasEnteredAgainst && liveAIPosition === 'DOWN')) return 'UP'
-    if ((hasEnteredFor && liveAIPosition === 'DOWN') || (hasEnteredAgainst && liveAIPosition === 'UP')) return 'DOWN'
-
-    return undefined
-  }, [hasEnteredFor, hasEnteredAgainst, liveAIPosition])
 
   const positionEnteredText = useMemo(
     () => (hasEnteredFor ? t('Follow') : hasEnteredAgainst ? t('Against') : null),
@@ -232,7 +213,6 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
                   hasEnteredAgainst={hasEnteredAgainst && userPosition === 'UP' && liveAIPosition === 'DOWN'}
                 />
               )}
-
               <Box mx="18px">
                 <RoundResultBox innerPadding="2px 0" isNext>
                   <Flex justifyContent="center">
@@ -240,7 +220,6 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
                   </Flex>
                 </RoundResultBox>
               </Box>
-
               {!!positionEnteredText && ((hasEnteredFor && liveAIPosition === 'DOWN') || hasEnteredAgainst) && (
                 <AIMultiplierArrow
                   betAmount={betAmount}

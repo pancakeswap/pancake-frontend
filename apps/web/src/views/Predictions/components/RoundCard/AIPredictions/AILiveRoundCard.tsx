@@ -10,7 +10,6 @@ import {
   Text,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import RoundProgress from 'components/RoundProgress'
 import { useEffect, useMemo, useState } from 'react'
 import { getHasRoundFailed } from 'state/predictions/helpers'
@@ -42,9 +41,9 @@ const StyledCardBody = styled(CardBody)`
 const BetBadge = styled(Box)<{ $variant?: 'primary' | 'secondary'; $type?: 'UP' | 'DOWN'; $position?: string }>`
   position: absolute;
   right: 20px;
-  width: 80px;
+  width: 70px;
 
-  padding: 4px 0 4px 6px;
+  padding: 4px 0;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
@@ -77,18 +76,34 @@ const BetBadge = styled(Box)<{ $variant?: 'primary' | 'secondary'; $type?: 'UP' 
     content: '';
     width: 0;
     height: 0;
-    transform: rotate(-90deg);
 
     position: absolute;
-    left: -17.9px;
-    top: 5.85px;
+    left: ${({ $variant }) => ($variant === 'primary' ? '-1rem' : '-0.85rem')};
 
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-    border-bottom: 12px solid
-      ${({ theme, $variant }) => ($variant === 'primary' ? theme.colors.secondary : theme.colors.invertedContrast)};
+    border-top: 0.7rem solid transparent;
+    border-bottom: 0.7rem solid transparent;
+    border-right: ${({ theme, $variant }) =>
+      $variant === 'primary'
+        ? `1rem solid ${theme.colors.secondary}`
+        : `0.9rem solid ${theme.colors.invertedContrast}`};
 
     z-index: 10;
+  }
+
+  &:after {
+    content: '';
+    width: 0;
+    height: 0;
+
+    position: absolute;
+    left: -1rem;
+
+    border-top: 0.85rem solid transparent;
+    border-bottom: 0.85rem solid transparent;
+    border-right: 1rem solid
+      ${({ theme, $variant }) => ($variant === 'secondary' ? theme.colors.secondary : 'transparent')};
+
+    z-index: 9;
   }
 `
 
@@ -100,7 +115,8 @@ interface AILiveRoundCardProps {
   bullMultiplier: string
   bearMultiplier: string
 
-  livePrice: bigint
+  liveAIPosition: 'UP' | 'DOWN' | undefined
+  userPosition: 'UP' | 'DOWN' | undefined
 }
 
 const REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE = 2
@@ -172,7 +188,8 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   hasEnteredAgainst,
   bullMultiplier,
   bearMultiplier,
-  livePrice,
+  liveAIPosition,
+  userPosition,
 }) => {
   const { t } = useTranslation()
   const { lockPrice, totalAmount, lockTimestamp, closeTimestamp } = round
@@ -184,24 +201,6 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   })
 
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
-
-  const liveAIPosition: 'UP' | 'DOWN' | undefined = useMemo(() => {
-    // Accurate upto 8 decimals (if prices are equal at 8 decimals, it is considered a house win)
-    const formattedAIPrice = parseFloat(formatBigInt(round.AIPrice ?? 0n, 8, 18))
-    const formattedLivePrice = parseFloat(formatBigInt(livePrice ?? 0n, 8, 8)) // Chainlink price is 8 decimals on ARB's ETH/USD. TODO: Replace with CMC
-
-    if (formattedAIPrice && formattedLivePrice)
-      return formattedAIPrice === formattedLivePrice ? undefined : formattedAIPrice > formattedLivePrice ? 'UP' : 'DOWN'
-
-    return undefined
-  }, [livePrice, round.AIPrice])
-
-  const userPosition: 'UP' | 'DOWN' | undefined = useMemo(() => {
-    if ((hasEnteredFor && liveAIPosition === 'UP') || (hasEnteredAgainst && liveAIPosition === 'DOWN')) return 'UP'
-    if ((hasEnteredFor && liveAIPosition === 'DOWN') || (hasEnteredAgainst && liveAIPosition === 'UP')) return 'DOWN'
-
-    return undefined
-  }, [hasEnteredFor, hasEnteredAgainst, liveAIPosition])
 
   const isHouse = useMemo(() => {
     const secondsToClose = closeTimestamp ? closeTimestamp - getNowInSeconds() : 0
