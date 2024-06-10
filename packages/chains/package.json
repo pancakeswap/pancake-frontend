@@ -30,6 +30,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest --run",
+    "test:u": "vitest -u --run",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "update:snapshot": "vitest -u"
   },
