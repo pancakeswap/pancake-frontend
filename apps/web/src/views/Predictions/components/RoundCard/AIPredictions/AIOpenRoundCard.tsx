@@ -218,7 +218,7 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
                 <AIPredictionsLogo
                   width={140}
                   height={140}
-                  style={{ position: 'absolute', top: '-56px', left: '68px' }}
+                  style={{ position: 'absolute', top: '-58px', left: '68px' }}
                 />
               </Box>
             </>

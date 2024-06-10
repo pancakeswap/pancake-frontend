@@ -1,6 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BetPosition } from '@pancakeswap/prediction'
-import { Box, Card, CardBody, Flex, PlayCircleOutlineIcon, Text, useTooltip } from '@pancakeswap/uikit'
+import {
+  Box,
+  Card,
+  CardBody,
+  CheckmarkCircleFillIcon,
+  Flex,
+  PlayCircleOutlineIcon,
+  Text,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import RoundProgress from 'components/RoundProgress'
 import { useEffect, useMemo, useState } from 'react'
@@ -33,17 +42,27 @@ const StyledCardBody = styled(CardBody)`
 const BetBadge = styled(Box)<{ $variant?: 'primary' | 'secondary'; $type?: 'UP' | 'DOWN'; $position?: string }>`
   position: absolute;
   right: 20px;
-  padding: 5px 6px;
+  width: 80px;
+
+  padding: 4px 0 4px 6px;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
+  user-select: none;
   z-index: 10;
-  width: 100px;
+
+  display: flex;
+  align-items: center;
 
   color: ${({ theme, $variant }) => ($variant === 'primary' ? theme.colors.white : theme.colors.secondary)};
   border-radius: ${({ theme }) => theme.radii.small};
   background-color: ${({ theme, $variant }) =>
     $variant === 'primary' ? theme.colors.secondary : theme.colors.invertedContrast};
+
+  border: ${({ theme, $variant }) => ($variant === 'secondary' ? `2px solid ${theme.colors.secondary}` : 'none')};
+  border-left: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 
   ${({ $type, $position }) =>
     $type === 'UP'
@@ -52,7 +71,25 @@ const BetBadge = styled(Box)<{ $variant?: 'primary' | 'secondary'; $type?: 'UP' 
     `
       : `
     bottom: ${$position};
-    `}
+  `}
+
+  &:before {
+    content: '';
+    width: 0;
+    height: 0;
+    transform: rotate(-90deg);
+
+    position: absolute;
+    left: -17.9px;
+    top: 5.85px;
+
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid
+      ${({ theme, $variant }) => ($variant === 'primary' ? theme.colors.secondary : theme.colors.invertedContrast)};
+
+    z-index: 10;
+  }
 `
 
 interface AILiveRoundCardProps {
@@ -85,16 +122,43 @@ const BetBadgeStack = ({
   userBetType,
 }: BetBadgeStackProps) => {
   const { t } = useTranslation()
+
+  const {
+    tooltip: aiTooltip,
+    tooltipVisible: aiTooltipVisible,
+    targetRef: aiTargetRef,
+  } = useTooltip(t("AI's prediction"))
+
+  const {
+    tooltip: userTooltip,
+    tooltipVisible: userTooltipVisible,
+    targetRef: userTargetRef,
+  } = useTooltip(t('My position: %position% AI', { position: userBetType === aiBetType ? t('Follow') : t('Against') }))
+
   return (
     <>
       {aiBetType && (
-        <BetBadge $variant="primary" $type={aiBetType} $position={userBetType === 'DOWN' ? '40px' : aiBetPosition}>
-          {t("AI's Bet")}
+        <BetBadge
+          ref={aiTargetRef}
+          $variant="primary"
+          $type={aiBetType}
+          $position={aiBetType !== userBetType || userBetType === 'DOWN' ? '46px' : aiBetPosition}
+        >
+          <img src="/images/predictions-temp/glass-globe.svg" alt="AI" width={14} />
+          <span style={{ margin: '0 0 0 3px' }}>{t("AI's Bet")}</span>
+          {aiTooltipVisible && aiTooltip}
         </BetBadge>
       )}
       {userBetType && (
-        <BetBadge $variant="secondary" $type={userBetType} $position={aiBetType === 'UP' ? '40px' : userBetPosition}>
-          {t("Users's Bet")}
+        <BetBadge
+          ref={userTargetRef}
+          $variant="secondary"
+          $type={userBetType}
+          $position={aiBetType !== userBetType || aiBetType === 'UP' ? '40px' : userBetPosition}
+        >
+          <CheckmarkCircleFillIcon color="secondary" width={14} />
+          <span style={{ margin: '0.5px 0 0 3px' }}>{t('My Bet')}</span>
+          {userTooltipVisible && userTooltip}
         </BetBadge>
       )}
     </>
@@ -201,7 +265,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
         closeTimestamp={closeTimestamp ?? 0}
       />
       <StyledCardBody>
-        <BetBadgeStack aiBetType="UP" userBetType="UP" />
+        <BetBadgeStack aiBetType={liveAIPosition} userBetType={userPosition} />
         <MultiplierArrow
           betAmount={betAmount}
           multiplier={bullMultiplier}
