@@ -24,12 +24,11 @@ export enum QuestEditModalState {
 
 interface ActionModalProps {
   openModal: boolean
-  isPublish: boolean
   handleSave: () => void
   setOpenModal: (val: boolean) => void
 }
 
-export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, handleSave, setOpenModal }) => {
+export const ActionModal: React.FC<ActionModalProps> = ({ openModal, handleSave, setOpenModal }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const [modalView, setModalView] = useState<QuestEditModalState>(QuestEditModalState.DEFAULT)
@@ -56,31 +55,17 @@ export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, 
 
   const config = {
     [QuestEditModalState.DEFAULT]: {
-      title: isPublish ? t('Publish the quest') : t('Schedule the quest'),
+      title: t('Schedule the quest'),
       closeOnOverlayClick: true,
-      component: (
-        <Default isPublish={isPublish} handleSubmit={handleSubmit}>
-          {questComponent}
-        </Default>
-      ),
+      component: <Default handleSubmit={handleSubmit}>{questComponent}</Default>,
     },
     [QuestEditModalState.LOADING]: {
-      title: isPublish ? t('Publishing the quest...') : t('Scheduling the quest...'),
+      title: t('Scheduling the quest...'),
       hideCloseButton: true,
-      component: (
-        <Loading
-          title={
-            isPublish
-              ? t('Wait while the quest is being published...')
-              : t('Wait while the quest is being scheduled...')
-          }
-        >
-          {questComponent}
-        </Loading>
-      ),
+      component: <Loading title={t('Wait while the quest is being scheduled...')}>{questComponent}</Loading>,
     },
     [QuestEditModalState.FAILED]: {
-      title: isPublish ? t('Publishing failed') : t('Scheduling failed'),
+      title: t('Scheduling failed'),
       closeOnOverlayClick: true,
       component: (
         <Fail closeModal={closeModal} handleSubmit={handleSubmit}>
@@ -89,17 +74,10 @@ export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, 
       ),
     },
     [QuestEditModalState.FINISHED]: {
-      title: isPublish ? t('The quest has been published') : t('The quest has been scheduled'),
+      title: t('The quest has been scheduled'),
       closeOnOverlayClick: true,
       component: (
-        <Finished
-          title={
-            isPublish
-              ? t('The quest has been successfully published!')
-              : t('The quest has been successfully scheduled!')
-          }
-          closeModal={handleFinished}
-        >
+        <Finished title={t('The quest has been successfully scheduled!')} closeModal={handleFinished}>
           {questComponent}
         </Finished>
       ),

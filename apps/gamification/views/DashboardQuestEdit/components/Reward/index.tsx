@@ -3,7 +3,6 @@ import { Box, Card, Text } from '@pancakeswap/uikit'
 import { useCallback } from 'react'
 import { styled } from 'styled-components'
 import { AddReward } from 'views/DashboardQuestEdit/components/Reward/AddReward'
-import { Countdown } from 'views/DashboardQuestEdit/components/Reward/Countdown'
 // import { RewardAmount } from 'views/DashboardQuestEdit/components/Reward/RewardAmount'
 
 const RewardContainer = styled(Box)`
@@ -43,7 +42,6 @@ export const Reward: React.FC<RewardProps> = ({ amountPerWinner, actionComponent
           </Text>
           <AddReward />
           {/* <RewardAmount amountPerWinner={amountPerWinner} setAmountPerWinner={handleRewardPerWin} /> */}
-          <Countdown />
           {actionComponent}
         </Box>
       </Card>

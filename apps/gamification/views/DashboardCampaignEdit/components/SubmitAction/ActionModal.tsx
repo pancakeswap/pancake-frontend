@@ -24,11 +24,10 @@ export enum EditModalState {
 
 interface ActionModalProps {
   openModal: boolean
-  isPublish: boolean
   setOpenModal: (val: boolean) => void
 }
 
-export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, setOpenModal }) => {
+export const ActionModal: React.FC<ActionModalProps> = ({ openModal, setOpenModal }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const [modalView, setModalView] = useState<EditModalState>(EditModalState.DEFAULT)
@@ -54,31 +53,17 @@ export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, 
 
   const config = {
     [EditModalState.DEFAULT]: {
-      title: isPublish ? t('Publish the campaign') : t('Schedule the campaign'),
+      title: t('Schedule the campaign'),
       closeOnOverlayClick: true,
-      component: (
-        <Default isPublish={isPublish} handleSubmit={handleSubmit}>
-          {component}
-        </Default>
-      ),
+      component: <Default handleSubmit={handleSubmit}>{component}</Default>,
     },
     [EditModalState.LOADING]: {
-      title: isPublish ? t('Publishing the campaign...') : t('Scheduling the campaign...'),
+      title: t('Scheduling the campaign...'),
       hideCloseButton: true,
-      component: (
-        <Loading
-          title={
-            isPublish
-              ? t('Wait while the campaign is being published...')
-              : t('Wait while the campaign is being scheduled...')
-          }
-        >
-          {component}
-        </Loading>
-      ),
+      component: <Loading title={t('Wait while the campaign is being scheduled...')}>{component}</Loading>,
     },
     [EditModalState.FAILED]: {
-      title: isPublish ? t('Publishing failed') : t('Scheduling failed'),
+      title: t('Scheduling failed'),
       closeOnOverlayClick: true,
       component: (
         <Fail closeModal={closeModal} handleSubmit={handleSubmit}>
@@ -87,17 +72,10 @@ export const ActionModal: React.FC<ActionModalProps> = ({ isPublish, openModal, 
       ),
     },
     [EditModalState.FINISHED]: {
-      title: isPublish ? t('The campaign has been published') : t('The campaign has been scheduled'),
+      title: t('The campaign has been scheduled'),
       closeOnOverlayClick: true,
       component: (
-        <Finished
-          title={
-            isPublish
-              ? t('The campaign has been successfully published!')
-              : t('The campaign has been successfully scheduled!')
-          }
-          closeModal={handleFinished}
-        >
+        <Finished title={t('The campaign has been successfully scheduled!')} closeModal={handleFinished}>
           {component}
         </Finished>
       ),
