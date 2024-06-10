@@ -70,7 +70,7 @@ export const farmsV3 = defineFarmV3Configs([
   // latest first
   {
     pid: 70,
-    lpAddress: '0xfcc3B8959d99f1154F0B1ac0252aa7e0F0617BCC',
+    lpAddress: '0x6FD5029Ba47BA8dBee130DA71e2546b5c96b4B12',
     token0: ethereumTokens.blb,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.HIGH,
