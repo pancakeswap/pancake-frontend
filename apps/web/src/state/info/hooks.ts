@@ -811,8 +811,69 @@ export const useTokenDatasQuery = (addresses?: string[], withSettings = true): T
 }
 
 export const useTokenDataQuery = (address: string | undefined): TokenData | undefined => {
-  const allTokenData = useTokenDatasQuery([address ?? ''])
-  return allTokenData?.find((d) => d.address === address) ?? undefined
+  const chainName = useExplorerChainNameByQuery()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+
+  const { data } = useQuery({
+    queryKey: [`info/token/data/${address}/${type}/`, chainName],
+    queryFn: async ({ signal }) => {
+      if (!chainName || !address) {
+        throw new Error('No chain name')
+      }
+      if (type === 'stableSwap' && (chainName === 'bsc' || chainName === 'arbitrum')) {
+        return explorerApiClient
+          .GET('/cached/tokens/stable/{chainName}/{address}', {
+            signal,
+            params: {
+              path: {
+                chainName,
+                address,
+              },
+            },
+          })
+          .then((res) => res.data)
+      }
+
+      return explorerApiClient
+        .GET('/cached/tokens/v2/{chainName}/{address}', {
+          signal,
+          params: {
+            path: {
+              chainName,
+              address,
+            },
+          },
+        })
+        .then((res) => res.data)
+    },
+    select: useCallback((d) => {
+      if (!d) {
+        throw new Error('No data')
+      }
+      return {
+        exists: true,
+        name: d.name,
+        symbol: d.symbol,
+        address: d.id,
+        decimals: d.decimals,
+        volumeUSD: d.volumeUSD24h ? +d.volumeUSD24h : 0,
+        volumeUSDChange: 0,
+        volumeUSDWeek: d.volumeUSD7d ? +d.volumeUSD7d : 0,
+        txCount: d.txCount24h,
+        liquidityToken: +d.tvl,
+        liquidityUSD: +d.tvlUSD,
+        liquidityUSDChange: getPercentChange(+d.tvlUSD, +d.tvlUSD24h),
+        priceUSD: +d.priceUSD,
+        priceUSDChange: getPercentChange(+d.priceUSD, +d.priceUSD24h),
+        priceUSDChangeWeek: getPercentChange(+d.priceUSD, +d.priceUSD7d),
+      }
+    }, []),
+    enabled: Boolean(address && chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_INTERVAL_REFETCH,
+  })
+
+  return data
 }
 
 export function usePoolsForTokenDataQuery(address: string): PoolData[] | undefined {
