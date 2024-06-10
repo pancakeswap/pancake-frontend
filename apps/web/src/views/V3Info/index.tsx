@@ -206,14 +206,8 @@ export default function Home() {
             <RowFixed>
               <RowFixed mr="20px">
                 <Text mr="4px">{t('Volume 24H')}: </Text>
-                <Text mr="4px">{formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)}</Text>
-                <Percent
-                  value={getPercentChange(
-                    formattedVolumeData[formattedVolumeData.length - 1]?.value.toString(),
-                    formattedVolumeData[formattedVolumeData.length - 2]?.value.toString(),
-                  )}
-                  wrap
-                />
+                <Text mr="4px">{formatDollarAmount(protocolData?.volumeUSD)}</Text>
+                <Percent value={protocolData?.volumeUSDChange} wrap />
               </RowFixed>
               <RowFixed mr="20px">
                 <Text mr="4px">{t('Fees 24H')}: </Text>
