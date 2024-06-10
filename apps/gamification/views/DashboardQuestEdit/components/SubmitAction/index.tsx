@@ -45,44 +45,36 @@ export const SubmitAction = () => {
       {openModal && (
         <ActionModal openModal={openModal} isPublish={isPublish} setOpenModal={setOpenModal} handleSave={handleSave} />
       )}
-      {query.id ? (
-        <>
-          <Button
-            width="100%"
-            variant="secondary"
-            endIcon={<DeleteOutlineIcon color="primary" width={20} height={20} />}
-            onClick={onPresentDeleteModal}
-          >
-            {t('Delete')}
-          </Button>
-          <Button
-            m="8px 0"
-            width="100%"
-            variant="secondary"
-            endIcon={<CalenderIcon color="primary" width={20} height={20} />}
-            onClick={() => handleClick(false)}
-          >
-            {t('Save and schedule')}
-          </Button>
-          <Button
-            width="100%"
-            endIcon={<PencilIcon color="invertedContrast" width={14} height={14} />}
-            onClick={() => handleClick(true)}
-          >
-            {t('Save to the drafts')}
-          </Button>
-        </>
-      ) : (
+      {query.id && (
         <Button
+          mb="8px"
           width="100%"
           variant="secondary"
-          disabled={disabled}
-          onClick={() => handleClick(true)}
-          endIcon={<PencilIcon color={disabled ? 'textDisabled' : 'primary'} width={14} height={14} />}
+          endIcon={<DeleteOutlineIcon color="primary" width={20} height={20} />}
+          onClick={onPresentDeleteModal}
         >
-          {t('Save to the drafts')}
+          {t('Delete')}
         </Button>
       )}
+      <Button width="100%" variant="secondary" endIcon={<PencilIcon color="primary" width={14} height={14} />}>
+        {t('Save to the drafts')}
+      </Button>
+      <Button
+        m="8px 0"
+        width="100%"
+        variant="secondary"
+        endIcon={<CalenderIcon color="primary" width={20} height={20} />}
+        onClick={() => handleClick(false)}
+      >
+        {t('Save and schedule')}
+      </Button>
+      <Button
+        width="100%"
+        endIcon={<CalenderIcon color="invertedContrast" width={14} height={14} />}
+        onClick={() => handleClick(true)}
+      >
+        {t('Public schedule')}
+      </Button>
     </Flex>
   )
 }

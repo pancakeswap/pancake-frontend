@@ -9,6 +9,10 @@ export interface StateType {
   endDate: null | Date
   endTime: null | Date
   pickedQuests: Array<string>
+  thumbnail: {
+    id: string
+    url: string
+  }
 }
 
 interface EditCampaignContextType {
@@ -22,6 +26,10 @@ export const CampaignEditProvider: React.FC<React.PropsWithChildren> = ({ childr
   const [state, setState] = useState<StateType>(() => ({
     title: '',
     body: '',
+    thumbnail: {
+      id: '',
+      url: '',
+    },
     amountPerWinner: '',
     startDate: null,
     startTime: null,

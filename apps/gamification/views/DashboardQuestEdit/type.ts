@@ -15,3 +15,15 @@ export enum TaskType {
   IG_COMMENT_POST = 'IG_COMMENT_POST',
   IG_FOLLOW_ACCOUNT = 'IG_FOLLOW_ACCOUNT',
 }
+
+export enum CompletionStatus {
+  ONGOING = 'ONGOING',
+  CLAIMABLE = 'CLAIMABLE',
+  FINISHED = 'FINISHED',
+}
+
+export enum RewardType {
+  TOKEN = 'TOKEN',
+  NFT = 'NFT',
+  POINTS = 'POINTS',
+}

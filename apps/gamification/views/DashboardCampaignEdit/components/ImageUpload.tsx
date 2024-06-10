@@ -4,6 +4,7 @@ import { ArrowFirstIcon, Box, Button, Flex, Text } from '@pancakeswap/uikit'
 import { useMemo, useState } from 'react'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
 import { styled } from 'styled-components'
+import { useCampaignEdit } from 'views/DashboardCampaignEdit/context/useCampaignEdit'
 
 const StyledThumbnail = styled('div')`
   width: 100%;
@@ -30,10 +31,10 @@ const MAX_FILE_SIZE = 2000000 // 2000000 Bytes = 2 MB
 
 export const ImageUpload = () => {
   const { t } = useTranslation()
+  const { state, updateValue } = useCampaignEdit()
   const [images, setImages] = useState<ImageListType>([])
-  const base64Image = ''
-
-  const imageUrlDisplay = useMemo(() => images?.[0]?.data_url ?? base64Image ?? '', [images])
+  const base64Image = state.thumbnail.url
+  const imageUrlDisplay = useMemo(() => images?.[0]?.data_url ?? base64Image ?? '', [base64Image, images])
 
   const onChange = async (imageList: ImageListType) => {
     const singleImage: ImageType = imageList[0]
@@ -51,7 +52,10 @@ export const ImageUpload = () => {
 
       // const result = await response.json()
 
-      // console.log('send to BE', result)
+      // updateValue('thumbnail', {
+      //   id: result.id,
+      //   url: singleImage?.data_url,
+      // })
       setImages(imageList)
     }
   }
@@ -68,7 +72,7 @@ export const ImageUpload = () => {
         {({ imageList, errors, onImageUpload, onImageUpdate }) => {
           return (
             <Flex flexDirection="column">
-              {imageList[0] ? (
+              {imageList[0] || imageUrlDisplay ? (
                 <>
                   <Box>
                     <Flex justifyContent="space-between" mb="8px">

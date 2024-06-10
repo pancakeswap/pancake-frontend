@@ -130,7 +130,7 @@ export const Row: React.FC<RowProps> = ({ statusButtonIndex, expanded, toggleExp
                 <Text ml="8px">{t('Statistics')}</Text>
               </Flex>
               {statusButtonIndex !== StateType.FINISHED && (
-                <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/campaigns/edit?id=123')}>
+                <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/campaign/edit?id=123')}>
                   <PencilIcon color="primary" width="14px" height="14px" />
                   <Text ml="14px">{t('Edit')}</Text>
                 </Flex>
