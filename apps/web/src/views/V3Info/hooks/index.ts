@@ -26,7 +26,7 @@ import { fetchSearchResults } from '../data/search'
 import { fetchTokenChartData } from '../data/token/chartData'
 import { fetchPoolsForToken } from '../data/token/poolsForToken'
 import { fetchPairPriceChartTokenData, fetchTokenPriceData } from '../data/token/priceData'
-import { fetchedTokenDatas } from '../data/token/tokenData'
+import { fetchedTokenData, fetchedTokenDatas } from '../data/token/tokenData'
 import { fetchTokenTransactions } from '../data/token/transactions'
 import {
   ChartDayData,
@@ -249,24 +249,17 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
 export const useTokenData = (address: string): TokenData | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
-  const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d])
 
   const { data } = useQuery({
     queryKey: [`v3/info/token/tokenData/${chainId}/${address}`, chainId],
 
-    queryFn: () =>
-      fetchedTokenDatas(
-        v3InfoClients[chainId],
-        [address],
-        blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
-      ),
+    queryFn: ({ signal }) => fetchedTokenData(chainIdToExplorerInfoChainName[chainId], address, signal),
 
-    enabled: Boolean(chainId && blocks && address && address !== 'undefined' && blocks?.length > 0),
+    enabled: Boolean(chainId && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
 
-  return data?.data?.[address]
+  return data?.data
 }
 
 export const usePoolsForToken = (address: string): string[] | undefined => {
