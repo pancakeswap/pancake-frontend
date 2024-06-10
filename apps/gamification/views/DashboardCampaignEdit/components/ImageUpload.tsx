@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowFirstIcon, Box, Button, Flex, Text } from '@pancakeswap/uikit'
-import { useState } from 'react'
-import ImageUploading, { ImageListType } from 'react-images-uploading'
+// import { GAMIFICATION_API } from 'config/constants/endpoints'
+import { useMemo, useState } from 'react'
+import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
 import { styled } from 'styled-components'
 
 const StyledThumbnail = styled('div')`
@@ -30,9 +31,29 @@ const MAX_FILE_SIZE = 2000000 // 2000000 Bytes = 2 MB
 export const ImageUpload = () => {
   const { t } = useTranslation()
   const [images, setImages] = useState<ImageListType>([])
+  const base64Image = ''
 
-  const onChange = (imageList: ImageListType) => {
-    setImages(imageList)
+  const imageUrlDisplay = useMemo(() => images?.[0]?.data_url ?? base64Image ?? '', [images])
+
+  const onChange = async (imageList: ImageListType) => {
+    const singleImage: ImageType = imageList[0]
+    const imageType = singleImage?.file?.type?.split?.('/')?.[1] ?? ''
+    const imageSize = singleImage?.file?.size ?? 0
+
+    if (singleImage?.file && ACCEPT_TYPE.includes(imageType) && imageSize <= MAX_FILE_SIZE) {
+      // const response = await fetch(`${GAMIFICATION_API}/images/upload`, {
+      //   method: 'POST',
+      //   body: JSON.stringify({
+      //     type: 'CAMPAIGN',
+      //     contentData: singleImage?.data_url,
+      //   }),
+      // })
+
+      // const result = await response.json()
+
+      // console.log('send to BE', result)
+      setImages(imageList)
+    }
   }
 
   return (
@@ -75,7 +96,7 @@ export const ImageUpload = () => {
                       <StyledThumbnail
                         className="thumbnail"
                         style={{
-                          backgroundImage: `url(${images?.[0]?.data_url})`,
+                          backgroundImage: `url(${imageUrlDisplay})`,
                         }}
                       />
                     </Box>
