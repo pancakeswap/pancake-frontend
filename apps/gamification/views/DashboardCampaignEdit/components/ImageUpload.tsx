@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react'
 import ImageUploading, { ImageListType, ImageType } from 'react-images-uploading'
 import { styled } from 'styled-components'
 import { useCampaignEdit } from 'views/DashboardCampaignEdit/context/useCampaignEdit'
+// import { UploadImageType, ImageResponseDto } from 'views/DashboardCampaignEdit/type'
 
 const StyledThumbnail = styled('div')`
   width: 100%;
@@ -45,12 +46,12 @@ export const ImageUpload = () => {
       // const response = await fetch(`${GAMIFICATION_API}/images/upload`, {
       //   method: 'POST',
       //   body: JSON.stringify({
-      //     type: 'CAMPAIGN',
+      //     type: UploadImageType.CAMPAIGN,
       //     contentData: singleImage?.data_url,
       //   }),
       // })
 
-      // const result = await response.json()
+      // const result: ImageResponseDto = await response.json()
 
       // updateValue('thumbnail', {
       //   id: result.id,
