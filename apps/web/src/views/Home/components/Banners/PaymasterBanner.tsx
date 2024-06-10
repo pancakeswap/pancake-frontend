@@ -84,9 +84,12 @@ export const PaymasterBanner = () => {
         desc={isMobile ? null : <Desc />}
         title={
           <BannerTitle variant="purple">
-            {isMobile || isTablet
+            {/* {isMobile || isTablet
               ? t('Pay gas with 10+ ERC-20 tokens')
-              : t('Pay gas on zkSync Era PancakeSwap with 10+ ERC-20 tokens')}
+              : t('Pay gas on zkSync Era PancakeSwap with 10+ ERC-20 tokens')} */}
+            {isMobile || isTablet
+              ? t('Enjoy Gas-Free Transactions on zkSync PancakeSwap')
+              : t('Enjoy Gas-Free Transactions on zkSync Era PancakeSwap')}
           </BannerTitle>
         }
         actions={
