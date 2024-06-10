@@ -43,4 +43,6 @@ export const bCakeFarmBoosterV3Address: Addresses = {
 export const bCakeFarmBoosterVeCakeAddress: Addresses = {
   [ChainId.BSC]: '0x625F45234D6335859a8b940960067E89476300c6',
   [ChainId.BSC_TESTNET]: '0x1F32591CC45f00BaE3A742Bf2bCAdAe59DbAd228',
+  [ChainId.ARBITRUM_ONE]: '0x21Eb14cf06270Ef944A1480bEf9163fe4Cf7DB14',
+  [ChainId.ETHEREUM]: '0xB509DBeE68B273767Cd8D45c1Ce95453391741f6',
 }
