@@ -19,6 +19,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
     case TaskType.HOLD_A_TOKEN:
       return {
         sid: randomId,
+        isOptional: false,
         minAmount: '',
         type: taskType,
         currency: (CAKE as any)?.[DEFAULT_CHAIN],
@@ -30,6 +31,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         minAmount: '',
         fromRound: '',
         toRound: '',
+        isOptional: false,
       }
     case TaskType.ADD_LIQUIDITY:
       return {
@@ -38,12 +40,14 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         network: DEFAULT_CHAIN,
         minAmount: '',
         lpAddress: '',
+        isOptional: false,
       }
     case TaskType.ADD_BLOG_POST:
       return {
         sid: randomId,
         type: taskType,
         blogUrl: '',
+        isOptional: false,
       }
     case TaskType.X_LINK_POST:
     case TaskType.X_REPOST_POST:
@@ -59,6 +63,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         type: taskType,
         socialLink: '',
         accountId: '',
+        isOptional: false,
       }
     default:
       return null

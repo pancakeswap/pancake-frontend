@@ -11,9 +11,10 @@ import {
 import { useCallback } from 'react'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 
-export const useTaskInfo = (primaryColor?: boolean) => {
+export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20) => {
   const { t } = useTranslation()
   const color = primaryColor ? 'primary' : '#7A6EAA'
+  const size = `${iconSize}px`
 
   const taskIcon = useCallback(
     (social: TaskType) => {
@@ -23,28 +24,28 @@ export const useTaskInfo = (primaryColor?: boolean) => {
         case TaskType.PARTICIPATE_LOTTERY:
         case TaskType.HOLD_A_TOKEN:
           // case TaskType.MAKE_PREDICTION:
-          return <BunnyFillIcon color={color} width="20px" height="20px" />
+          return <BunnyFillIcon color={color} width={size} height={size} />
         case TaskType.X_LINK_POST:
         case TaskType.X_FOLLOW_ACCOUNT:
         case TaskType.X_REPOST_POST:
-          return <TwitterIcon color={color} width="20px" height="20px" />
+          return <TwitterIcon color={color} width={size} height={size} />
         case TaskType.TELEGRAM_JOIN_GROUP:
-          return <TelegramIcon color={color} width="20px" height="20px" />
+          return <TelegramIcon color={color} width={size} height={size} />
         case TaskType.DISCORD_JOIN_SERVICE:
-          return <DiscordIcon color={color} width="20px" height="20px" />
+          return <DiscordIcon color={color} width={size} height={size} />
         case TaskType.YOUTUBE_SUBSCRIBE:
-          return <YoutubeIcon color={color} width="20px" height="20px" />
+          return <YoutubeIcon color={color} width={size} height={size} />
         case TaskType.IG_LIKE_POST:
         case TaskType.IG_COMMENT_POST:
         case TaskType.IG_FOLLOW_ACCOUNT:
-          return <InstagramIcon color={color} width="20px" height="20px" />
+          return <InstagramIcon color={color} width={size} height={size} />
         case TaskType.ADD_BLOG_POST:
-          return <LanguageIcon color={color} width="20px" height="20px" />
+          return <LanguageIcon color={color} width={size} height={size} />
         default:
           return null
       }
     },
-    [color],
+    [color, size],
   )
 
   const taskNaming = useCallback(

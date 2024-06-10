@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
-  DeleteOutlineIcon,
   ErrorFillIcon,
   Flex,
   InputGroup,
@@ -12,12 +11,21 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import { useMemo, useState } from 'react'
+import { styled } from 'styled-components'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { InputErrorText, StyledInput } from 'views/DashboardQuestEdit/components/InputStyle'
+import { DropdownList } from 'views/DashboardQuestEdit/components/Tasks/DropdownList'
+import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
 import { TaskBlogPostConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { validateUrl } from 'views/DashboardQuestEdit/utils/validateTask'
+
+const StyledOptionIcon = styled(OptionIcon)`
+  position: absolute;
+  left: -2px;
+  bottom: -6px;
+`
 
 interface AddBlogPostProps {
   task: TaskBlogPostConfig
@@ -32,7 +40,7 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const social = task.type
-  const { taskIcon, taskNaming, taskInputPlaceholder } = useTaskInfo()
+  const { taskIcon, taskNaming, taskInputPlaceholder } = useTaskInfo(false, 24)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Open in new tab'), {
     placement: 'top',
@@ -52,26 +60,34 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
     onTasksChange([...forkTasks])
   }
 
+  const onClickOptional = () => {
+    const forkTasks = Object.assign(tasks)
+    const indexToUpdate = forkTasks.findIndex((i: TaskBlogPostConfig) => i.sid === task.sid)
+    forkTasks[indexToUpdate].isOptional = !forkTasks[indexToUpdate].isOptional
+
+    onTasksChange([...forkTasks])
+  }
+
   const isUrlError = useMemo(() => !isFirst && validateUrl(task.blogUrl), [isFirst, task?.blogUrl])
 
   return (
     <Flex flexDirection="column">
       <Flex flexDirection={['column', 'column', 'row']}>
         <Flex>
-          <Flex mr="8px" alignSelf="center">
+          <Flex mr="8px" alignSelf="center" position="relative">
             {taskIcon(social)}
+            {task.isOptional && <StyledOptionIcon width="28px" color="#7A6EAA" />}
           </Flex>
           <Text style={{ alignSelf: 'center' }} bold>
             {taskNaming(social)}
           </Text>
           {isMobile && (
-            <DeleteOutlineIcon
-              ml="auto"
-              width="20px"
-              height="20px"
-              color="primary"
-              style={{ cursor: 'pointer' }}
-              onClick={onPresentDeleteModal}
+            <DropdownList
+              m="auto 0px auto auto"
+              id={task.sid}
+              isOptional={task.isOptional}
+              onClickDelete={onPresentDeleteModal}
+              onClickOptional={onClickOptional}
             />
           )}
         </Flex>
@@ -99,13 +115,12 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
           </InputGroup>
 
           {!isMobile && (
-            <DeleteOutlineIcon
-              ml="8px"
-              width="20px"
-              height="20px"
-              color="primary"
-              style={{ cursor: 'pointer' }}
-              onClick={onPresentDeleteModal}
+            <DropdownList
+              m="auto"
+              id={task.sid}
+              isOptional={task.isOptional}
+              onClickDelete={onPresentDeleteModal}
+              onClickOptional={onClickOptional}
             />
           )}
         </Flex>

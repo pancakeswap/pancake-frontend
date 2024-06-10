@@ -70,6 +70,7 @@
     "react-dom": "^18.2.0",
     "react-draggable-list": "4.0.4",
     "react-images-uploading": "^3.1.7",
+    "react-popper": "^2.3.0",
     "react-jazzicon": "^1.0.4",
     "react-redux": "^8.0.5",
     "react-window": "^1.8.7",

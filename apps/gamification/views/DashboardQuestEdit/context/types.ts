@@ -5,6 +5,7 @@ import { TaskType } from 'views/DashboardQuestEdit/type'
 export interface TaskBaseConfig {
   sid: string
   type: TaskType
+  isOptional: boolean
 }
 
 export interface TaskSwapConfig extends TaskBaseConfig {
