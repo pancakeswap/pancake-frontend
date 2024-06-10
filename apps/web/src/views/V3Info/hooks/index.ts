@@ -16,7 +16,7 @@ import { components } from 'state/info/api/schema'
 import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
 import { DURATION_INTERVAL, SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
-import { fetchPoolDatas } from '../data/pool/poolData'
+import { fetchedPoolData, fetchPoolDatas } from '../data/pool/poolData'
 import { PoolTickData, fetchTicksSurroundingPrice } from '../data/pool/tickData'
 import { fetchPoolTransactions } from '../data/pool/transactions'
 import { fetchChartData } from '../data/protocol/chart'
@@ -420,23 +420,16 @@ export const usePoolsData = (addresses: string[]): PoolData[] | undefined => {
 export const usePoolData = (address: string): PoolData | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
-  const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d])
 
   const { data } = useQuery({
     queryKey: [`v3/info/pool/poolData/${chainId}/${address}`, chainId],
 
-    queryFn: () =>
-      fetchPoolDatas(
-        v3InfoClients[chainId],
-        [address],
-        blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
-      ),
+    queryFn: ({ signal }) => fetchedPoolData(chainIdToExplorerInfoChainName[chainId], address, signal),
 
-    enabled: Boolean(chainId && blocks && blocks?.length > 0 && address && address !== 'undefined'),
+    enabled: Boolean(chainId && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
-  return data?.data?.[address] ?? undefined
+  return data?.data
 }
 export const usePoolTransactions = (address: string): Transaction[] | undefined => {
   const chainName = useChainNameByQuery()
