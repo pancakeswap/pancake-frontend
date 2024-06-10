@@ -1,11 +1,12 @@
-import { useMemo } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
 import { Card, CardBody, CommunityIcon, Flex, Heading, Text } from '@pancakeswap/uikit'
 import { useQuery } from '@tanstack/react-query'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import shuffle from 'lodash/shuffle'
+import { useMemo } from 'react'
 import { getTeams } from 'state/teams/helpers'
-import { useTranslation } from '@pancakeswap/localization'
-import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
+import SelectionCard from './SelectionCard'
 import useProfileCreation from './contexts/hook'
 
 const Team: React.FC<React.PropsWithChildren> = () => {
@@ -47,7 +48,7 @@ const Team: React.FC<React.PropsWithChildren> = () => {
                   name="teams-selection"
                   value={team.id}
                   isChecked={currentTeamId === team.id}
-                  image={`/images/teams/${team.images.md}`}
+                  image={`${ASSET_CDN}/web/teams/${team.images.md}`}
                   onChange={handleTeamSelection}
                   disabled={!team.isJoinable}
                 >

@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Button,
@@ -10,11 +11,10 @@ import {
   VisibilityOn,
   useModal,
 } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter as ReactRouterLink } from '@pancakeswap/widgets-internal'
-
-import { useTranslation } from '@pancakeswap/localization'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import { NextLinkFromReactRouter as ReactRouterLink } from '@pancakeswap/widgets-internal'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
 import { useMemo } from 'react'
@@ -85,7 +85,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const Icon = userUsernameVisibility ? VisibilityOff : VisibilityOn
 
   const bannerImage = useMemo(() => {
-    const imagePath = '/images/teams'
+    const imagePath = `${ASSET_CDN}/web/teams`
     switch (profileTeamId) {
       case 1:
         return `${imagePath}/storm-banner.png`
