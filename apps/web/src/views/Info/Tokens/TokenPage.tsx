@@ -25,14 +25,12 @@ import { CHAIN_QUERY_NAME } from 'config/chains'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
-import { useMemo } from 'react'
 import { ChainLinkSupportChains, multiChainId, multiChainScan } from 'state/info/constant'
 import {
   useChainIdByQuery,
   useChainNameByQuery,
   useMultiChainPath,
-  usePoolDatasQuery,
-  usePoolsForTokenQuery,
+  usePoolsForTokenDataQuery,
   useStableSwapPath,
   useTokenChartTvlDataQuery,
   useTokenChartVolumeDataQuery,
@@ -86,8 +84,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
   const cmcLink = useCMCLink(address)
 
   const tokenData = useTokenDataQuery(address)
-  const poolsForToken = usePoolsForTokenQuery(address)
-  const poolDatas = usePoolDatasQuery(useMemo(() => poolsForToken ?? [], [poolsForToken]))
+  const poolDatas = usePoolsForTokenDataQuery(address)
   const transactions = useTokenTransactionsQuery(address)
   // const chartData = useTokenChartDataQuery(address)
   const volumeChartData = useTokenChartVolumeDataQuery(address)
@@ -95,22 +92,6 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
 
   // pricing data
   const priceData = useTokenPriceDataQuery(address, ONE_HOUR_SECONDS, DEFAULT_TIME_WINDOW)
-  // const adjustedPriceData = useMemo(() => {
-  //   // Include latest available price
-  //   if (priceData && tokenData && priceData.length > 0) {
-  //     return [
-  //       ...priceData,
-  //       {
-  //         time: Date.now() / 1000,
-  //         open: priceData[priceData.length - 1].close,
-  //         close: tokenData?.priceUSD,
-  //         high: tokenData?.priceUSD,
-  //         low: priceData[priceData.length - 1].close,
-  //       },
-  //     ]
-  //   }
-  //   return undefined
-  // }, [priceData, tokenData])
 
   const chainPath = useMultiChainPath()
   const chainName = useChainNameByQuery()
