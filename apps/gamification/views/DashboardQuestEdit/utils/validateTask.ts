@@ -15,3 +15,7 @@ export const validateUrl = (url: string) => {
 
   return !pattern.test(url)
 }
+
+export const validateIsNotEmpty = (value: string) => {
+  return !value
+}

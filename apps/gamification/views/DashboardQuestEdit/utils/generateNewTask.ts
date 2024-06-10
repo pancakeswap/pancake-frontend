@@ -52,6 +52,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         sid: randomId,
         type: taskType,
         socialLink: '',
+        accountId: '',
       }
     default:
       return null
