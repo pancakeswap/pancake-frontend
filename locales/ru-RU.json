@@ -75,8 +75,8 @@
   "Claim prizes": "Получить выигрыш",
   "Enable CAKE": "Активировать CAKE",
   "IFO: Initial Farm Offerings": "IFO: первичные предложения фарминга",
-  "Buy new tokens using CAKE": "Buy new tokens using CAKE",
-  "Buy new tokens launching on PancakeSwap using CAKE": "Buy new tokens launching on PancakeSwap using CAKE",
+  "Buy new tokens using CAKE": "Покупайте новые токены, используя CAKE",
+  "Buy new tokens launching on PancakeSwap using CAKE": "Покупайте новые токены при их запуске на PancakeSwap, используя CAKE",
   "Community": "Сообщество",
   "Core": "Основной",
   "Collect Winnings": "Забрать выигрыш",
@@ -273,7 +273,7 @@
   "Stake LP tokens to earn.": "Вкладывайте токены LP (пула ликвидности) и зарабатывайте.",
   "Basic Sale": "Базовая продажа",
   "Unlimited Sale": "Неограниченная продажа",
-  "No limits on the amount you can commit.": "No limits on the amount you can commit.",
+  "No limits on the amount you can commit.": "Вы можете выделить неограниченную сумму.",
   "No limits on the amount you can commit. Additional fee applies when claiming.": "Сумма участия каждого не ограничена, однако при получении взимается дополнительная комиссия.",
   "Every person can only commit a limited amount, but may expect a higher return per token committed.": "Сумма участия каждого ограничена, но участники могут рассчитывать на более высокий доход за каждый внесенный токен.",
   "You didn’t participate in this sale!": "Вы не участвовали в этой продаже!",
@@ -3362,8 +3362,8 @@
   "$8M USD": "8 млн долларов США,",
   "in Uniswap interface fees paid": "уплаченных в виде интерфейсных комиссий на Uniswap",
   "Cakepie": "Cakepie",
-  "IFO live!": "IFO live!",
-  "LISTA IFO": "LISTA IFO",
+  "IFO live!": "IFO работает!",
+  "LISTA IFO": "IFO LISTA",
   "OK": "OK",
-  "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's": "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's"
+  "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's": "Из-за эксплойта, недавно обнаруженного в Velocore, Overnight временно приостановила операции с USD+ по протоколу zkSync. Сейчас функции обмена, подтверждения, а также добавления и удаления ликвидности недоступны. Дополнительные сведения см. на веб-сайте Overnight"
 }
