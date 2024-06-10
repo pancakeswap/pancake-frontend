@@ -48,9 +48,15 @@ export interface TaskSocialConfig extends TaskBaseConfig {
   accountId: string
 }
 
+export interface TaskBlogPostConfig extends TaskBaseConfig {
+  type: TaskType.ADD_BLOG_POST
+  blogUrl: string
+}
+
 export type TaskConfigType =
   | TaskSwapConfig
   | TaskHoldTokenConfig
   | TaskLotteryConfig
   | TaskLiquidityConfig
   | TaskSocialConfig
+  | TaskBlogPostConfig

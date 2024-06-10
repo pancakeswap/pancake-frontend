@@ -39,6 +39,12 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         minAmount: '',
         lpAddress: '',
       }
+    case TaskType.ADD_BLOG_POST:
+      return {
+        sid: randomId,
+        type: taskType,
+        blogUrl: '',
+      }
     case TaskType.X_LINK_POST:
     case TaskType.X_REPOST_POST:
     case TaskType.X_FOLLOW_ACCOUNT:

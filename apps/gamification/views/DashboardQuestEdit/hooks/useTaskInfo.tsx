@@ -1,5 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BunnyFillIcon, DiscordIcon, InstagramIcon, TelegramIcon, TwitterIcon, YoutubeIcon } from '@pancakeswap/uikit'
+import {
+  BunnyFillIcon,
+  DiscordIcon,
+  InstagramIcon,
+  LanguageIcon,
+  TelegramIcon,
+  TwitterIcon,
+  YoutubeIcon,
+} from '@pancakeswap/uikit'
 import { useCallback } from 'react'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 
@@ -30,6 +38,8 @@ export const useTaskInfo = (primaryColor?: boolean) => {
         case TaskType.IG_COMMENT_POST:
         case TaskType.IG_FOLLOW_ACCOUNT:
           return <InstagramIcon color={color} width="20px" height="20px" />
+        case TaskType.ADD_BLOG_POST:
+          return <LanguageIcon color={color} width="20px" height="20px" />
         default:
           return null
       }
@@ -66,6 +76,8 @@ export const useTaskInfo = (primaryColor?: boolean) => {
           return t('Subscribe to the channel')
         case TaskType.IG_COMMENT_POST:
           return t('Comment on the post')
+        case TaskType.ADD_BLOG_POST:
+          return t('Visit the blog post')
         default:
           return ''
       }
@@ -92,6 +104,8 @@ export const useTaskInfo = (primaryColor?: boolean) => {
           return t('Instagram post link')
         case TaskType.IG_FOLLOW_ACCOUNT:
           return t('Instagram account link')
+        case TaskType.ADD_BLOG_POST:
+          return t('Blog post link')
         default:
           return ''
       }

@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Box, Button, Card, DragIcon, Flex, Text } from '@pancakeswap/uikit'
 import { MouseEvent, useRef, useState } from 'react'
 import DraggableList from 'react-draggable-list'
+import { AddBlogPost } from 'views/DashboardQuestEdit/components/Tasks/AddBlogPost'
 import { AddHoldToken } from 'views/DashboardQuestEdit/components/Tasks/AddHoldToken'
 import { AddLottery } from 'views/DashboardQuestEdit/components/Tasks/AddLottery'
 import { AddLpAddress } from 'views/DashboardQuestEdit/components/Tasks/AddLpAddress'
@@ -36,6 +37,7 @@ const Item = ({ item, dragHandleProps }: { item: TaskConfigType; dragHandleProps
           {item.type === TaskType.HOLD_A_TOKEN && <AddHoldToken task={item} />}
           {item.type === TaskType.PARTICIPATE_LOTTERY && <AddLottery task={item} />}
           {item.type === TaskType.ADD_LIQUIDITY && <AddLpAddress task={item} />}
+          {item.type === TaskType.ADD_BLOG_POST && <AddBlogPost task={item} />}
 
           {(item.type === TaskType.X_LINK_POST ||
             item.type === TaskType.X_FOLLOW_ACCOUNT ||
