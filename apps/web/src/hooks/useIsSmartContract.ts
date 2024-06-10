@@ -17,7 +17,7 @@ export const useIsSmartContract = (address?: Address): boolean => {
 
       const code = await client.getBytecode({ address })
 
-      return code !== '0x'
+      return code && code !== '0x'
     },
     enabled: !!address,
   })
