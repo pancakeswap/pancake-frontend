@@ -4322,4 +4322,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: arbitrumTokens.weth.address,
     token1Address: arbitrumTokens.usdce.address,
   },
+  {
+    gid: 437,
+    pairName: 'FUSDC-USDC',
+    address: '0x38437dBfd1D6a147A50CD0991A9581Ac8f996892',
+    chainId: ChainId.ARBITRUM_ONE,
+    type: GaugeType.V3,
+    feeTier: FeeAmount.LOWEST,
+    token0Address: arbitrumTokens.fusdc.address,
+    token1Address: arbitrumTokens.usdc.address,
+  },
 ]

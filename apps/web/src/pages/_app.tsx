@@ -1,4 +1,5 @@
 import 'core-js/features/string/replace-all'
+import 'core-js/features/array/to-sorted'
 import { ResetCSS, ScrollToTopButtonV2, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { SentryErrorBoundary } from 'components/ErrorBoundary'
