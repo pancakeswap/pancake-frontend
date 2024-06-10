@@ -92,7 +92,7 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
    */
   const liveAIPosition: 'UP' | 'DOWN' | undefined = useMemo(() => {
     // Accurate upto 8 decimals (if prices are equal at 8 decimals, it is considered a house win)
-    const formattedAIPrice = parseFloat(formatBigInt(round.AIPrice ?? 0n, 8, 8)) // note: lock price formatted with 8 decimals
+    const formattedAIPrice = parseFloat(formatBigInt(round.AIPrice ?? 0n, 8, 18))
     const formattedLivePrice = parseFloat(formatBigInt(livePrice ?? 0n, 8, 8)) // Chainlink price is 8 decimals on ARB's ETH/USD. TODO: Replace with CMC
 
     if (formattedAIPrice && formattedLivePrice)
@@ -206,7 +206,6 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
           icon={<PlayCircleOutlineIcon color="white" mr="4px" width="21px" />}
           title={t('Next')}
         />
-
         <StyledCardBody>
           {(!positionEnteredText || (liveAIPosition === 'DOWN' && userPosition === 'DOWN')) && (
             <Text
