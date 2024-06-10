@@ -1,8 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { DeleteOutlineIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
+import { ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
 import { useMemo, useState } from 'react'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
+import { DropdownList } from 'views/DashboardQuestEdit/components/Tasks/DropdownList'
+import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
 import { TaskLotteryConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
@@ -16,7 +18,7 @@ interface AddLotteryProps {
 export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
   const { t } = useTranslation()
   const [isFirst, setIsFirst] = useState(true)
-  const { taskIcon, taskNaming } = useTaskInfo()
+  const { taskIcon, taskNaming } = useTaskInfo(false, 22)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
@@ -51,6 +53,14 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
     onTasksChange([...forkTasks])
   }
 
+  const onClickOptional = () => {
+    const forkTasks = Object.assign(tasks)
+    const indexToUpdate = forkTasks.findIndex((i: TaskLotteryConfig) => i.sid === task.sid)
+    forkTasks[indexToUpdate].isOptional = !forkTasks[indexToUpdate].isOptional
+
+    onTasksChange([...forkTasks])
+  }
+
   const isMinAmountError = useMemo(() => !isFirst && validateNumber(task.minAmount), [isFirst, task?.minAmount])
   const isFromRoundError = useMemo(() => !isFirst && validateNumber(task.fromRound), [isFirst, task?.fromRound])
   const isToRoundError = useMemo(() => !isFirst && validateNumber(task.toRound), [isFirst, task?.toRound])
@@ -58,19 +68,19 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
   return (
     <Flex flexDirection={['column']}>
       <Flex width="100%">
-        <Flex mr="8px" alignSelf="center">
+        <Flex mr="8px" alignSelf="center" position="relative">
           {taskIcon(TaskType.PARTICIPATE_LOTTERY)}
+          {task.isOptional && <StyledOptionIcon />}
         </Flex>
         <Text style={{ alignSelf: 'center' }} bold>
           {taskNaming(TaskType.PARTICIPATE_LOTTERY)}
         </Text>
-        <DeleteOutlineIcon
-          ml="auto"
-          width="20px"
-          height="20px"
-          color="primary"
-          style={{ cursor: 'pointer' }}
-          onClick={onPresentDeleteModal}
+        <DropdownList
+          m="auto 0px auto auto"
+          id={task.sid}
+          isOptional={task.isOptional}
+          onClickDelete={onPresentDeleteModal}
+          onClickOptional={onClickOptional}
         />
       </Flex>
       <Flex flexDirection={['column']} width="100%" mt="12px">

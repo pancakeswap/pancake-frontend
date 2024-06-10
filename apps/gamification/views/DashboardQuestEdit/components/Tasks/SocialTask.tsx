@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
-  DeleteOutlineIcon,
   ErrorFillIcon,
   Flex,
   InputGroup,
@@ -14,6 +13,8 @@ import {
 import { useMemo, useState } from 'react'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { InputErrorText, StyledInput } from 'views/DashboardQuestEdit/components/InputStyle'
+import { DropdownList } from 'views/DashboardQuestEdit/components/Tasks/DropdownList'
+import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
 import { TaskSocialConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
@@ -34,7 +35,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const social = task.type
-  const { taskIcon, taskNaming, taskInputPlaceholder } = useTaskInfo()
+  const { taskIcon, taskNaming, taskInputPlaceholder } = useTaskInfo(false, 22)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Open in new tab'), {
     placement: 'top',
@@ -58,6 +59,14 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
     onTasksChange([...forkTasks])
   }
 
+  const onClickOptional = () => {
+    const forkTasks = Object.assign(tasks)
+    const indexToUpdate = forkTasks.findIndex((i: TaskSocialConfig) => i.sid === task.sid)
+    forkTasks[indexToUpdate].isOptional = !forkTasks[indexToUpdate].isOptional
+
+    onTasksChange([...forkTasks])
+  }
+
   const isUrlError = useMemo(() => !isFirst && validateUrl(task.socialLink), [isFirst, task?.socialLink])
   const isAccountError = useMemo(() => !isFirst && validateIsNotEmpty(task.accountId), [isFirst, task?.accountId])
 
@@ -65,20 +74,20 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
     <Flex flexDirection="column">
       <Flex flexDirection={['column', 'column', 'row']}>
         <Flex minWidth="200px">
-          <Flex mr="8px" alignSelf="center">
+          <Flex mr="8px" alignSelf="center" position="relative">
             {taskIcon(social)}
+            {task.isOptional && <StyledOptionIcon />}
           </Flex>
           <Text style={{ alignSelf: 'center' }} bold>
             {taskNaming(social)}
           </Text>
           {isMobile && (
-            <DeleteOutlineIcon
-              ml="auto"
-              width="20px"
-              height="20px"
-              color="primary"
-              style={{ cursor: 'pointer' }}
-              onClick={onPresentDeleteModal}
+            <DropdownList
+              m="auto 0px auto auto"
+              id={task.sid}
+              isOptional={task.isOptional}
+              onClickDelete={onPresentDeleteModal}
+              onClickOptional={onClickOptional}
             />
           )}
         </Flex>
@@ -112,13 +121,12 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
             onChange={(e) => handleUrlChange(e, 'accountId')}
           />
           {!isMobile && (
-            <DeleteOutlineIcon
-              ml="8px"
-              width="20px"
-              height="20px"
-              color="primary"
-              style={{ cursor: 'pointer' }}
-              onClick={onPresentDeleteModal}
+            <DropdownList
+              m="auto auto auto 8px"
+              id={task.sid}
+              isOptional={task.isOptional}
+              onClickDelete={onPresentDeleteModal}
+              onClickOptional={onClickOptional}
             />
           )}
         </Flex>

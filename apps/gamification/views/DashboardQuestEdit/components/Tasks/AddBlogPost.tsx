@@ -11,21 +11,14 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import { useMemo, useState } from 'react'
-import { styled } from 'styled-components'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { InputErrorText, StyledInput } from 'views/DashboardQuestEdit/components/InputStyle'
 import { DropdownList } from 'views/DashboardQuestEdit/components/Tasks/DropdownList'
-import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
+import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
 import { TaskBlogPostConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { validateUrl } from 'views/DashboardQuestEdit/utils/validateTask'
-
-const StyledOptionIcon = styled(OptionIcon)`
-  position: absolute;
-  left: -2px;
-  bottom: -6px;
-`
 
 interface AddBlogPostProps {
   task: TaskBlogPostConfig
@@ -40,7 +33,7 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const social = task.type
-  const { taskIcon, taskNaming, taskInputPlaceholder } = useTaskInfo(false, 24)
+  const { taskIcon, taskNaming, taskInputPlaceholder } = useTaskInfo(false, 22)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Open in new tab'), {
     placement: 'top',
@@ -76,7 +69,7 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
         <Flex>
           <Flex mr="8px" alignSelf="center" position="relative">
             {taskIcon(social)}
-            {task.isOptional && <StyledOptionIcon width="28px" color="#7A6EAA" />}
+            {task.isOptional && <StyledOptionIcon />}
           </Flex>
           <Text style={{ alignSelf: 'center' }} bold>
             {taskNaming(social)}
