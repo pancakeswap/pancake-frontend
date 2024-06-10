@@ -876,7 +876,7 @@ export const useTokenDataQuery = (address: string | undefined): TokenData | unde
   return data
 }
 
-export function usePoolsForTokenDataQuery(address: string): PoolData[] | undefined {
+export function usePoolsForTokenDataQuery(address: string): (PoolData | undefined)[] {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useQuery({
