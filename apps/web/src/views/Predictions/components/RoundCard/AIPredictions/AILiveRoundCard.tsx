@@ -1,15 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BetPosition } from '@pancakeswap/prediction'
-import {
-  Box,
-  Card,
-  CardBody,
-  CheckmarkCircleFillIcon,
-  Flex,
-  PlayCircleOutlineIcon,
-  Text,
-  useTooltip,
-} from '@pancakeswap/uikit'
+import { Card, CardBody, Flex, PlayCircleOutlineIcon, Text, useTooltip } from '@pancakeswap/uikit'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import RoundProgress from 'components/RoundProgress'
 import { useEffect, useMemo, useState } from 'react'
 import { getHasRoundFailed } from 'state/predictions/helpers'
@@ -27,6 +19,7 @@ import CanceledRoundCard from '../CanceledRoundCard'
 import LiveRoundPrice from '../LiveRoundPrice'
 import MultiplierArrow from '../MultiplierArrow'
 import { AICardHeader } from './AICardHeader'
+import { BetBadgeStack } from './BetBadgeStack'
 
 const StyledCardBody = styled(CardBody)`
   position: relative;
@@ -38,158 +31,26 @@ const StyledCardBody = styled(CardBody)`
   );
 `
 
-const BetBadge = styled(Box)<{ $variant?: 'primary' | 'secondary'; $type?: 'UP' | 'DOWN'; $position?: string }>`
-  position: absolute;
-  right: 20px;
-  width: 70px;
-
-  padding: 4px 0;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  user-select: none;
-  z-index: 10;
-
-  display: flex;
-  align-items: center;
-
-  color: ${({ theme, $variant }) => ($variant === 'primary' ? theme.colors.white : theme.colors.secondary)};
-  border-radius: ${({ theme }) => theme.radii.small};
-  background-color: ${({ theme, $variant }) =>
-    $variant === 'primary' ? theme.colors.secondary : theme.colors.invertedContrast};
-
-  border: ${({ theme, $variant }) => ($variant === 'secondary' ? `2px solid ${theme.colors.secondary}` : 'none')};
-  border-left: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-
-  ${({ $type, $position }) =>
-    $type === 'UP'
-      ? `
-    top: ${$position};
-    `
-      : `
-    bottom: ${$position};
-  `}
-
-  &:before {
-    content: '';
-    width: 0;
-    height: 0;
-
-    position: absolute;
-    left: ${({ $variant }) => ($variant === 'primary' ? '-1rem' : '-0.85rem')};
-
-    border-top: 0.7rem solid transparent;
-    border-bottom: 0.7rem solid transparent;
-    border-right: ${({ theme, $variant }) =>
-      $variant === 'primary'
-        ? `1rem solid ${theme.colors.secondary}`
-        : `0.9rem solid ${theme.colors.invertedContrast}`};
-
-    z-index: 10;
-  }
-
-  &:after {
-    content: '';
-    width: 0;
-    height: 0;
-
-    position: absolute;
-    left: -1rem;
-
-    border-top: 0.85rem solid transparent;
-    border-bottom: 0.85rem solid transparent;
-    border-right: 1rem solid
-      ${({ theme, $variant }) => ($variant === 'secondary' ? theme.colors.secondary : 'transparent')};
-
-    z-index: 9;
-  }
-`
-
 interface AILiveRoundCardProps {
   round: NodeRound
   betAmount?: NodeLedger['amount']
   hasEnteredFor: boolean // FOLLOWED AI's Prediction
   hasEnteredAgainst: boolean // AGAINST AI's Prediction
-  bullMultiplier: string
-  bearMultiplier: string
-
-  liveAIPosition: 'UP' | 'DOWN' | undefined
-  userPosition: 'UP' | 'DOWN' | undefined
+  formattedBullMultiplier: string
+  formattedBearMultiplier: string
 }
 
 const REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE = 2
 
 const SHOW_HOUSE_BEFORE_SECONDS_TO_CLOSE = 20
 
-interface BetBadgeStackProps {
-  aiBetType?: 'UP' | 'DOWN'
-  aiBetPosition?: string
-
-  userBetType?: 'UP' | 'DOWN'
-  userBetPosition?: string
-}
-
-const BetBadgeStack = ({
-  aiBetPosition = '20px',
-  userBetPosition = '20px',
-  aiBetType,
-  userBetType,
-}: BetBadgeStackProps) => {
-  const { t } = useTranslation()
-
-  const {
-    tooltip: aiTooltip,
-    tooltipVisible: aiTooltipVisible,
-    targetRef: aiTargetRef,
-  } = useTooltip(t("AI's prediction"))
-
-  const {
-    tooltip: userTooltip,
-    tooltipVisible: userTooltipVisible,
-    targetRef: userTargetRef,
-  } = useTooltip(t('My position: %position% AI', { position: userBetType === aiBetType ? t('Follow') : t('Against') }))
-
-  return (
-    <>
-      {aiBetType && (
-        <BetBadge
-          ref={aiTargetRef}
-          $variant="primary"
-          $type={aiBetType}
-          $position={aiBetType !== userBetType || userBetType === 'DOWN' ? '46px' : aiBetPosition}
-        >
-          <img src="/images/predictions-temp/glass-globe.svg" alt="AI" width={14} />
-          <span style={{ margin: '0 0 0 3px' }}>{t("AI's Bet")}</span>
-          {aiTooltipVisible && aiTooltip}
-        </BetBadge>
-      )}
-      {userBetType && (
-        <BetBadge
-          ref={userTargetRef}
-          $variant="secondary"
-          $type={userBetType}
-          $position={aiBetType !== userBetType || aiBetType === 'UP' ? '40px' : userBetPosition}
-        >
-          <CheckmarkCircleFillIcon color="secondary" width={14} />
-          <span style={{ margin: '0.5px 0 0 3px' }}>{t('My Bet')}</span>
-          {userTooltipVisible && userTooltip}
-        </BetBadge>
-      )}
-    </>
-  )
-}
-
 export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardProps>> = ({
   round,
   betAmount,
   hasEnteredFor,
   hasEnteredAgainst,
-  bullMultiplier,
-  bearMultiplier,
-  liveAIPosition,
-  userPosition,
+  formattedBullMultiplier,
+  formattedBearMultiplier,
 }) => {
   const { t } = useTranslation()
   const { lockPrice, totalAmount, lockTimestamp, closeTimestamp } = round
@@ -220,6 +81,27 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
       placement: 'bottom',
     },
   )
+
+  const aiPosition = useMemo(() => {
+    if (!round.AIPrice || !round.lockPrice) return undefined
+
+    const formattedLockPrice = +formatBigInt(round.lockPrice, 8, 8) // note: lock price formatted with 8 decimals
+    const formattedAIPrice = +formatBigInt(round.AIPrice, 8, 18)
+
+    return formattedAIPrice !== formattedLockPrice ? (formattedAIPrice > formattedLockPrice ? 'UP' : 'DOWN') : undefined
+  }, [round.AIPrice, round.lockPrice])
+
+  const userPosition = useMemo(() => {
+    if ((hasEnteredFor && aiPosition === 'UP') || (hasEnteredAgainst && aiPosition === 'DOWN')) return 'UP'
+    if ((hasEnteredFor && aiPosition === 'DOWN') || (hasEnteredAgainst && aiPosition === 'UP')) return 'DOWN'
+
+    return undefined
+  }, [aiPosition, hasEnteredFor, hasEnteredAgainst])
+
+  // AI-based Prediction's Multiplier
+  // If AI's prediction is UP, then BullMultiplier is AI's prediction and vice versa
+  const bullMultiplier = aiPosition === 'UP' ? formattedBullMultiplier : formattedBearMultiplier
+  const bearMultiplier = aiPosition === 'DOWN' ? formattedBullMultiplier : formattedBearMultiplier
 
   useEffect(() => {
     const secondsToClose = closeTimestamp ? closeTimestamp - getNowInSeconds() : 0
@@ -264,7 +146,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
         closeTimestamp={closeTimestamp ?? 0}
       />
       <StyledCardBody>
-        <BetBadgeStack aiBetType={liveAIPosition} userBetType={userPosition} />
+        <BetBadgeStack aiBetType={aiPosition} userBetType={userPosition} />
         <MultiplierArrow
           betAmount={betAmount}
           multiplier={bullMultiplier}

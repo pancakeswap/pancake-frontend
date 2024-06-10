@@ -11,6 +11,7 @@ import {
   useToast,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -48,11 +49,10 @@ interface AIOpenRoundCardProps {
   betAmount?: NodeLedger['amount']
   hasEnteredFor: boolean // FOLLOWED AI's Prediction
   hasEnteredAgainst: boolean // AGAINST AI's Prediction
-  bullMultiplier: string
-  bearMultiplier: string
+  formattedBullMultiplier: string
+  formattedBearMultiplier: string
 
-  liveAIPosition: 'UP' | 'DOWN' | undefined
-  userPosition?: 'UP' | 'DOWN' | undefined
+  livePrice: bigint
 }
 
 interface State {
@@ -65,10 +65,10 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
   betAmount,
   hasEnteredFor,
   hasEnteredAgainst,
-  bullMultiplier,
-  bearMultiplier,
-  liveAIPosition,
-  userPosition,
+  formattedBullMultiplier,
+  formattedBearMultiplier,
+
+  livePrice,
 }) => {
   const [state, setState] = useState<State>({
     isSettingPosition: false,
@@ -84,6 +84,37 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
   const { lockTimestamp } = round ?? { lockTimestamp: null }
   const { isSettingPosition, position } = state
   const [isBufferPhase, setIsBufferPhase] = useState(false)
+
+  // AI Prediction Market
+  /**
+   * AI's Bet based on the round's AIPrice and live price.
+   * If the prices are equal (house win), return undefined
+   */
+  const liveAIPosition: 'UP' | 'DOWN' | undefined = useMemo(() => {
+    // Accurate upto 8 decimals (if prices are equal at 8 decimals, it is considered a house win)
+    const formattedAIPrice = parseFloat(formatBigInt(round.AIPrice ?? 0n, 8, 8)) // note: lock price formatted with 8 decimals
+    const formattedLivePrice = parseFloat(formatBigInt(livePrice ?? 0n, 8, 8)) // Chainlink price is 8 decimals on ARB's ETH/USD. TODO: Replace with CMC
+
+    if (formattedAIPrice && formattedLivePrice)
+      return formattedAIPrice === formattedLivePrice ? undefined : formattedAIPrice > formattedLivePrice ? 'UP' : 'DOWN'
+
+    return undefined
+  }, [livePrice, round.AIPrice])
+
+  /**
+   * User Position in AI Prediction Market
+   */
+  const userPosition: 'UP' | 'DOWN' | undefined = useMemo(() => {
+    if ((hasEnteredFor && liveAIPosition === 'UP') || (hasEnteredAgainst && liveAIPosition === 'DOWN')) return 'UP'
+    if ((hasEnteredFor && liveAIPosition === 'DOWN') || (hasEnteredAgainst && liveAIPosition === 'UP')) return 'DOWN'
+
+    return undefined
+  }, [hasEnteredFor, hasEnteredAgainst, liveAIPosition])
+
+  // AI-based Prediction's Multiplier
+  // If AI's prediction is UP, then BullMultiplier is AI's prediction and vice versa
+  const bullMultiplier = liveAIPosition === 'UP' ? formattedBullMultiplier : formattedBearMultiplier
+  const bearMultiplier = liveAIPosition === 'DOWN' ? formattedBullMultiplier : formattedBearMultiplier
 
   const positionEnteredText = useMemo(
     () => (hasEnteredFor ? t('Follow') : hasEnteredAgainst ? t('Against') : null),
@@ -177,20 +208,22 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
         />
 
         <StyledCardBody>
+          {(!positionEnteredText || (liveAIPosition === 'DOWN' && userPosition === 'DOWN')) && (
+            <Text
+              color="white"
+              fontWeight={700}
+              textAlign="center"
+              style={{
+                fontSize: '24px',
+                marginBottom: liveAIPosition === 'DOWN' && userPosition === 'DOWN' ? '12px' : '0',
+                //  WebkitTextStroke: '3px #280D5F'
+              }}
+            >
+              AI prediction
+            </Text>
+          )}
           {!positionEnteredText ? (
             <>
-              <Text
-                color="white"
-                fontWeight={700}
-                textAlign="center"
-                style={{
-                  fontSize: '24px',
-                  //  WebkitTextStroke: '3px #280D5F'
-                }}
-              >
-                AI prediction
-              </Text>
-
               <Box mt="50px" mb="12px" mx="18px" position="relative">
                 <RoundResultBox isNext>
                   <PayoutMeter pt="10px" bearMultiplier={bearMultiplier} bullMultiplier={bullMultiplier} />
