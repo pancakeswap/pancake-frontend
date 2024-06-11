@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import dayjs, { ManipulateType } from 'dayjs'
+import dayjs from 'dayjs'
 import { GraphQLClient } from 'graphql-request'
 import { useMemo } from 'react'
 import { multiChainId, multiChainName } from 'state/info/constant'
@@ -11,11 +11,13 @@ import { v3Clients, v3InfoClients } from 'utils/graphql'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 import { useQuery } from '@tanstack/react-query'
+import { getPercentChange } from 'views/V3Info/utils/data'
+import { components } from 'state/info/api/schema'
+import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
 import { DURATION_INTERVAL, SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
-import { fetchPoolDatas } from '../data/pool/poolData'
+import { fetchedPoolData, fetchPoolDatas } from '../data/pool/poolData'
 import { PoolTickData, fetchTicksSurroundingPrice } from '../data/pool/tickData'
-import { fetchTopPoolAddresses } from '../data/pool/topPools'
 import { fetchPoolTransactions } from '../data/pool/transactions'
 import { fetchChartData } from '../data/protocol/chart'
 import { fetchProtocolData } from '../data/protocol/overview'
@@ -24,8 +26,7 @@ import { fetchSearchResults } from '../data/search'
 import { fetchTokenChartData } from '../data/token/chartData'
 import { fetchPoolsForToken } from '../data/token/poolsForToken'
 import { fetchPairPriceChartTokenData, fetchTokenPriceData } from '../data/token/priceData'
-import { fetchedTokenDatas } from '../data/token/tokenData'
-import { fetchTopTokenAddresses } from '../data/token/topTokens'
+import { fetchedTokenData, fetchedTokenDatas } from '../data/token/tokenData'
 import { fetchTokenTransactions } from '../data/token/transactions'
 import {
   ChartDayData,
@@ -52,7 +53,7 @@ export const useProtocolChartData = (): ChartDayData[] | undefined => {
   const chainId = multiChainId[chainName]
   const { data: chartData } = useQuery({
     queryKey: [`v3/info/protocol/ProtocolChartData/${chainId}`, chainId],
-    queryFn: () => fetchChartData(v3InfoClients[chainId]),
+    queryFn: () => fetchChartData('v3', chainIdToExplorerInfoChainName[chainId]),
     enabled: Boolean(chainId),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
@@ -66,7 +67,7 @@ export const useProtocolData = (): ProtocolData | undefined => {
   const { blocks } = useBlockFromTimeStampQuery([t24, t48])
   const { data } = useQuery({
     queryKey: [`v3/info/protocol/ProtocolData/${chainId}`, chainId],
-    queryFn: () => fetchProtocolData(v3InfoClients[chainId], blocks),
+    queryFn: () => fetchProtocolData(chainIdToExplorerInfoChainName[chainId]),
     enabled: Boolean(chainId && blocks && blocks.length > 0),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
@@ -78,43 +79,11 @@ export const useProtocolTransactionData = (): Transaction[] | undefined => {
   const chainId = multiChainId[chainName]
   const { data } = useQuery({
     queryKey: [`v3/info/protocol/ProtocolTransactionData/${chainId}`, chainId],
-    queryFn: () => fetchTopTransactions(v3InfoClients[chainId]),
+    queryFn: () => fetchTopTransactions(chainIdToExplorerInfoChainName[chainId]),
     enabled: Boolean(chainId),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(() => data?.filter((d) => d.amountUSD > 0) ?? [], [data])
-}
-
-export const useTokenPriceChartData = (
-  address: string,
-  duration?: 'day' | 'week' | 'month' | 'year',
-  targetChainId?: ChainId,
-): PriceChartEntry[] | undefined => {
-  const chainName = useChainNameByQuery()
-  const chainId = multiChainId[chainName]
-  const utcCurrentTime = dayjs()
-  const startTimestamp = utcCurrentTime
-    .subtract(1, duration ?? 'day')
-    .startOf('hour')
-    .unix()
-
-  const { data } = useQuery({
-    queryKey: [`v3/info/token/priceData/${address}/${duration}`, targetChainId ?? chainId],
-
-    queryFn: () =>
-      fetchTokenPriceData(
-        address,
-        DURATION_INTERVAL[duration ?? 'day'],
-        startTimestamp,
-        v3InfoClients[targetChainId ?? chainId],
-        multiChainName[targetChainId ?? chainId],
-        SUBGRAPH_START_BLOCK[chainId],
-      ),
-
-    enabled: Boolean(chainId && address),
-    ...QUERY_SETTINGS_IMMUTABLE,
-  })
-  return data?.data ?? []
 }
 
 // this is for the swap page and ROI calculator
@@ -163,11 +132,52 @@ export const usePairPriceChartTokenData = (
   )
 }
 
-export async function fetchTopTokens(dataClient: GraphQLClient, blocks?: Block[]) {
+export async function fetchTopTokens(chainName: components['schemas']['ChainName'], signal: AbortSignal) {
   try {
-    const topTokenAddress = await fetchTopTokenAddresses(dataClient)
-    const data = await fetchedTokenDatas(dataClient, topTokenAddress.addresses ?? [], blocks)
-    return data
+    const data = await explorerApiClient
+      .GET('/cached/tokens/v3/{chainName}/list/top', {
+        signal,
+        params: {
+          path: {
+            chainName,
+          },
+        },
+      })
+      .then((res) => res.data)
+    if (!data) {
+      return {
+        data: {},
+        error: false,
+      }
+    }
+    return {
+      data: data.reduce(
+        (acc, item) => {
+          // eslint-disable-next-line no-param-reassign
+          acc[item.id] = {
+            ...item,
+            address: item.id,
+            volumeUSD: parseFloat(item.volumeUSD24h || '0'),
+            volumeUSDWeek: parseFloat(item.volumeUSD7d || '0'),
+            tvlUSD: parseFloat(item.tvlUSD),
+            volumeUSDChange: 0,
+            tvlUSDChange: 0,
+            exists: false,
+            txCount: item.txCount24h,
+            feesUSD: parseFloat(item.feeUSD24h),
+            tvlToken: 0,
+            priceUSDChange: getPercentChange(item.priceUSD, item.priceUSD24h),
+            priceUSDChangeWeek: 0,
+            priceUSD: parseFloat(item.priceUSD),
+          }
+          return acc
+        },
+        {} as {
+          [address: string]: TokenData
+        },
+      ),
+      error: false,
+    }
   } catch (e) {
     console.error(e)
     return {
@@ -184,19 +194,12 @@ export const useTopTokensData = ():
   | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
-  const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d])
 
   const { data } = useQuery({
     queryKey: [`v3/info/token/TopTokensData/${chainId}`, chainId],
 
-    queryFn: () =>
-      fetchTopTokens(
-        v3InfoClients[chainId],
-        blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
-      ),
-
-    enabled: Boolean(chainId && blocks && blocks.length > 0),
+    queryFn: ({ signal }) => fetchTopTokens(chainIdToExplorerInfoChainName[chainId], signal),
+    enabled: Boolean(chainId),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
@@ -246,24 +249,17 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
 export const useTokenData = (address: string): TokenData | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
-  const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d])
 
   const { data } = useQuery({
     queryKey: [`v3/info/token/tokenData/${chainId}/${address}`, chainId],
 
-    queryFn: () =>
-      fetchedTokenDatas(
-        v3InfoClients[chainId],
-        [address],
-        blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
-      ),
+    queryFn: ({ signal }) => fetchedTokenData(chainIdToExplorerInfoChainName[chainId], address, signal),
 
-    enabled: Boolean(chainId && blocks && address && address !== 'undefined' && blocks?.length > 0),
+    enabled: Boolean(chainId && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
 
-  return data?.data?.[address]
+  return data?.data
 }
 
 export const usePoolsForToken = (address: string): string[] | undefined => {
@@ -284,7 +280,7 @@ export const useTokenChartData = (address: string): TokenChartEntry[] | undefine
 
   const { data } = useQuery({
     queryKey: [`v3/info/token/tokenChartData/${chainId}/${address}`, chainId],
-    queryFn: () => fetchTokenChartData(address, v3InfoClients[chainId]),
+    queryFn: () => fetchTokenChartData('v3', chainIdToExplorerInfoChainName[chainId], address),
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
@@ -293,29 +289,15 @@ export const useTokenChartData = (address: string): TokenChartEntry[] | undefine
 
 export const useTokenPriceData = (
   address: string,
-  interval: number,
-  timeWindow: ManipulateType,
+  duration: 'day' | 'week' | 'month' | 'year',
 ): PriceChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
-  const utcCurrentTime = dayjs()
-  const startTimestamp = utcCurrentTime
-    .subtract(1, timeWindow ?? 'day')
-    .startOf('hour')
-    .unix()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/token/tokenPriceData/${chainId}/${address}/${interval}/${timeWindow}`, chainId],
+    queryKey: [`v3/info/token/tokenPriceData/${chainId}/${address}/${duration}`, chainId],
 
-    queryFn: () =>
-      fetchTokenPriceData(
-        address,
-        interval,
-        startTimestamp,
-        v3InfoClients[chainId],
-        multiChainName[chainId],
-        SUBGRAPH_START_BLOCK[chainId],
-      ),
+    queryFn: () => fetchTokenPriceData(address, 'v3', duration, chainIdToExplorerInfoChainName[chainId]),
 
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
@@ -328,18 +310,62 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
   const chainId = multiChainId[chainName]
   const { data } = useQuery({
     queryKey: [`v3/info/token/tokenTransaction/${chainId}/${address}`, chainId],
-    queryFn: () => fetchTokenTransactions(address, v3InfoClients[chainId]),
+    queryFn: () => fetchTokenTransactions(address, chainIdToExplorerInfoChainName[chainId]),
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0), [data])
 }
 
-export async function fetchTopPools(dataClient: GraphQLClient, chainId: ChainId, blocks?: Block[]) {
+export async function fetchTopPools(chainName: components['schemas']['ChainName'], signal: AbortSignal) {
   try {
-    const topPoolAddress = await fetchTopPoolAddresses(dataClient, chainId)
-    const data = await fetchPoolDatas(dataClient, topPoolAddress.addresses ?? [], blocks)
-    return data
+    const data = await explorerApiClient
+      .GET('/cached/pools/v3/{chainName}/list/top', {
+        signal,
+        params: {
+          path: {
+            chainName,
+          },
+        },
+      })
+      .then((res) => res.data)
+    if (!data) {
+      return {
+        data: {},
+        error: false,
+      }
+    }
+    return {
+      data: data.reduce(
+        (acc, item) => {
+          // eslint-disable-next-line no-param-reassign
+          acc[item.id] = {
+            ...item,
+            address: item.id,
+            volumeUSD: parseFloat(item.volumeUSD24h),
+            volumeUSDWeek: parseFloat(item.volumeUSD7d),
+            token0: { ...item.token0, address: item.token0.id, derivedETH: 0 },
+            token1: { ...item.token1, address: item.token1.id, derivedETH: 0 },
+            feeUSD: item.totalFeeUSD,
+            liquidity: parseFloat(item.liquidity),
+            sqrtPrice: parseFloat(item.sqrtPrice),
+            tick: item.tick ?? 0,
+            tvlUSD: parseFloat(item.tvlUSD),
+            token0Price: parseFloat(item.token0Price),
+            token1Price: parseFloat(item.token1Price),
+            tvlToken0: parseFloat(item.tvlToken0),
+            tvlToken1: parseFloat(item.tvlToken1),
+            volumeUSDChange: 0,
+            tvlUSDChange: 0,
+          }
+          return acc
+        },
+        {} as {
+          [address: string]: PoolData
+        },
+      ),
+      error: false,
+    }
   } catch (e) {
     console.error(e)
     return {
@@ -356,20 +382,14 @@ export const useTopPoolsData = ():
   | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
-  const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d])
 
   const { data } = useQuery({
     queryKey: [`v3/info/pool/TopPoolsData/${chainId}`, chainId],
 
-    queryFn: () =>
-      fetchTopPools(
-        v3InfoClients[chainId],
-        chainId,
-        blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
-      ),
-
-    enabled: Boolean(chainId && blocks && blocks.length > 0),
+    queryFn: async ({ signal }) => {
+      return fetchTopPools(chainIdToExplorerInfoChainName[chainId], signal)
+    },
+    enabled: Boolean(chainId),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
@@ -400,23 +420,16 @@ export const usePoolsData = (addresses: string[]): PoolData[] | undefined => {
 export const usePoolData = (address: string): PoolData | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
-  const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d])
 
   const { data } = useQuery({
     queryKey: [`v3/info/pool/poolData/${chainId}/${address}`, chainId],
 
-    queryFn: () =>
-      fetchPoolDatas(
-        v3InfoClients[chainId],
-        [address],
-        blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
-      ),
+    queryFn: ({ signal }) => fetchedPoolData(chainIdToExplorerInfoChainName[chainId], address, signal),
 
-    enabled: Boolean(chainId && blocks && blocks?.length > 0 && address && address !== 'undefined'),
+    enabled: Boolean(chainId && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
-  return data?.data?.[address] ?? undefined
+  return data?.data
 }
 export const usePoolTransactions = (address: string): Transaction[] | undefined => {
   const chainName = useChainNameByQuery()
@@ -424,7 +437,7 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
 
   const { data } = useQuery({
     queryKey: [`v3/info/pool/poolTransaction/${chainId}/${address}`, chainId],
-    queryFn: () => fetchPoolTransactions(address, v3InfoClients[chainId]),
+    queryFn: () => fetchPoolTransactions(address, chainIdToExplorerInfoChainName[chainId]),
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
@@ -436,7 +449,7 @@ export const usePoolChartData = (address: string): PoolChartEntry[] | undefined 
   const chainId = multiChainId[chainName]
   const { data } = useQuery({
     queryKey: [`v3/info/pool/poolChartData/${chainId}/${address}`, chainId],
-    queryFn: () => fetchPoolChartData(address, v3InfoClients[chainId]),
+    queryFn: () => fetchPoolChartData('v3', chainIdToExplorerInfoChainName[chainId], address),
     enabled: Boolean(chainId && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
@@ -449,7 +462,8 @@ export const usePoolTickData = (address: string): PoolTickData | undefined => {
 
   const { data } = useQuery({
     queryKey: [`v3/info/pool/poolTickData/${chainId}/${address}`, chainId],
-    queryFn: () => fetchTicksSurroundingPrice(address, v3InfoClients[chainId], chainId),
+    queryFn: ({ signal }) =>
+      fetchTicksSurroundingPrice(address, chainIdToExplorerInfoChainName[chainId], chainId, undefined, signal),
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })

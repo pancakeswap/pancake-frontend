@@ -3,35 +3,13 @@ import utc from 'dayjs/plugin/utc'
 import { gql, GraphQLClient } from 'graphql-request'
 import { MultiChainNameExtend } from 'state/info/constant'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
+import { explorerApiClient } from 'state/info/api/client'
+import { components } from 'state/info/api/schema'
 import { ONE_DAY_SECONDS } from '../../constants'
 import { PriceChartEntry } from '../../types'
 
 // format dayjs with the libraries that we need
 dayjs.extend(utc)
-
-export const PRICES_BY_BLOCK = (tokenAddress: string, blocks: any) => {
-  let queryString = 'query blocks {'
-  queryString += blocks.map(
-    (block: any) => `
-      t${block.timestamp}:token(id:"${tokenAddress}", block: { number: ${block.number} }) {
-        derivedETH
-      }
-    `,
-  )
-  queryString += ','
-  queryString += blocks.map(
-    (block: any) => `
-      b${block.timestamp}: bundle(id:"1", block: { number: ${block.number} }) {
-        ethPriceUSD
-      }
-    `,
-  )
-
-  queryString += '}'
-  return gql`
-    ${queryString}
-  `
-}
 
 const DAY_PAIR_PRICE_CHART = (timestamps: number[] | string[]) => {
   let queryString = 'query poolHourDatas($address: String) {'
@@ -117,23 +95,6 @@ const HOUR_PAIR_PRICE_CHART = (timestamps: number[] | string[]) => {
   `
 }
 
-const HOUR_PRICE_CHART = gql`
-  query tokenHourDatas($startTime: Int!, $skip: Int!, $address: String!) {
-    tokenHourDatas(
-      first: 100
-      skip: $skip
-      where: { token: $address, periodStartUnix_gt: $startTime }
-      orderBy: periodStartUnix
-      orderDirection: asc
-    ) {
-      periodStartUnix
-      high
-      low
-      open
-      close
-    }
-  }
-`
 const HOUR_PRICE_MIN = (timestamp: number | string) => gql`
   query minPrice( $address: String!) {
     poolHourDatas(
@@ -168,101 +129,58 @@ interface TokenHourDatas {
   close: string
 }
 
-interface PriceResults {
-  tokenHourDatas: TokenHourDatas[]
-}
-
 type PriceResultsForPairPriceChartResult = Record<string, TokenHourDatas[]>
 type PairPriceMinMAxResults = Record<string, TokenHourDatas>
 
 export async function fetchTokenPriceData(
   address: string,
-  interval: number,
-  startTimestamp: number,
-  dataClient: GraphQLClient,
-  chainName: MultiChainNameExtend,
-  subgraphStartBlock: number,
+  protocol: 'v2' | 'v3' | 'stable',
+  duration: 'day' | 'week' | 'month' | 'year',
+  chainName: components['schemas']['ChainName'],
 ): Promise<{
   data: PriceChartEntry[]
   error: boolean
 }> {
-  // start and end bounds
   try {
-    const endTimestamp = dayjs.utc().unix()
-
-    if (!startTimestamp) {
-      console.error('Error constructing price start timestamp')
-      return {
-        data: [],
-        error: false,
-      }
-    }
-
-    // create an array of hour start times until we reach current hour
-    const timestamps: number[] = []
-    let time = startTimestamp
-    while (time <= endTimestamp) {
-      timestamps.push(time)
-      time += interval
-    }
-
-    // backout if invalid timestamp format
-    if (timestamps.length === 0) {
-      return {
-        data: [],
-        error: false,
-      }
-    }
-
-    // fetch blocks based on timestamp
-    const blocks = (await getBlocksFromTimestamps(timestamps, 'asc', 500, chainName)).filter(
-      (d) => d.number >= subgraphStartBlock,
-    )
-    if (!blocks || blocks.length === 0) {
-      console.error('Error fetching blocks')
-      return {
-        data: [],
-        error: false,
-      }
-    }
-
-    let data: {
-      periodStartUnix?: number
-      date?: number
-      high: string
-      low: string
-      open: string
-      close: string
-    }[] = []
-
-    let skip = 0
-    let allFound = false
-    while (!allFound) {
-      // eslint-disable-next-line no-await-in-loop
-      const priceData = await dataClient.request<PriceResults>(HOUR_PRICE_CHART, {
-        address,
-        startTime: startTimestamp,
-        skip,
+    const data = await explorerApiClient
+      .GET('/cached/tokens/chart/{chainName}/{address}/{protocol}/price', {
+        signal: null,
+        params: {
+          path: {
+            protocol,
+            chainName,
+            address,
+          },
+          query: {
+            period:
+              duration === 'day'
+                ? '1D'
+                : duration === 'week'
+                ? '1W'
+                : duration === 'month'
+                ? '1M'
+                : duration === 'year'
+                ? '1Y'
+                : '1D',
+          },
+        },
       })
+      .then((res) => res.data)
 
-      if (priceData?.tokenHourDatas?.length > 0) {
-        skip += 100
-        if (priceData?.tokenHourDatas?.length < 100) {
-          allFound = true
-        }
-        if (priceData) {
-          data = data.concat(priceData.tokenHourDatas)
-        }
+    if (!data) {
+      return {
+        data: [],
+        error: false,
       }
     }
 
     const formattedHistory = data.map((d) => {
       return {
-        time: (d?.periodStartUnix || d?.date)!,
-        open: parseFloat(d.open),
-        close: parseFloat(d.close),
-        high: parseFloat(d.high),
-        low: parseFloat(d.low),
+        time: dayjs(d.bucket as string).unix(),
+        open: parseFloat(d.open ?? ''),
+        close: parseFloat(d.close ?? ''),
+        high: parseFloat(d.high ?? ''),
+        low: parseFloat(d.low ?? ''),
       }
     })
 
