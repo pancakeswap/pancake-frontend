@@ -13,7 +13,7 @@ interface CustomTooltipsType {
 const CONTRACTS_LP_WITH_TOOLTIPS: CustomTooltipsType[] = [
   {
     // Taiko-ETH LP
-    identifier: '0x6FD5029Ba47BA8dBee130DA71e2546b5c96b4B12',
+    identifier: '0x05dF8F9fCFf0b6a6FDE7166706a52693906C9936',
     tooltips: <TaikoEthTooltips />,
   },
 ] as const
