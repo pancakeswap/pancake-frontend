@@ -173,7 +173,7 @@ export function HarvestModal({
               </Box>
               <DisclaimerCheckBox check={check} setCheck={setCheck} />
               <Button
-                disabled={!amountDeposit.greaterThan(0) || pendingTx || !check}
+                disabled
                 style={{
                   minHeight: '48px',
                   marginBottom: '8px',
