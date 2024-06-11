@@ -26,46 +26,46 @@ export const paymasterTokens: Currency[] = [
 
 export const paymasterInfo: { [gasTokenAddress: Address]: { discount: `-${number}%` | 'FREE' } } = {
   [zksyncTokens.wbtc.address]: {
-    discount: 'FREE', // Example: -20%, FREE
+    discount: '-20%', // Example: -20%, FREE
   },
   [zksyncTokens.dai.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
   [zksyncTokens.usdc.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
   [zksyncTokens.usdcNative.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
   [zksyncTokens.usdt.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
   [zksyncTokens.grai.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
   [zksyncTokens.tes.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
   [zksyncTokens.busd.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
   [zksyncTokens.reth.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
   [zksyncTokens.wstETH.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
   [zksyncTokens.meow.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
   [zksyncTokens.weth.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
   [zksyncTokens.wethe.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
   [zksyncTokens.hold.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
 }
 
