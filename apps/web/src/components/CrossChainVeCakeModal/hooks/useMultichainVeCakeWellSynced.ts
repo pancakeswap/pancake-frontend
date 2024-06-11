@@ -24,9 +24,7 @@ export const useMultichainVeCakeWellSynced = (
     },
 
     enabled,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
+    refetchInterval: FAST_INTERVAL,
     staleTime: FAST_INTERVAL,
   })
 
@@ -37,6 +35,7 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
   try {
     const targetClient = publicClient({ chainId: targetChainId })
     const bscClient = publicClient({ chainId: ChainId.BSC })
+
     const targetTime = Math.floor(Date.now() / 1000) + 60
 
     const [{ result: userInfo }] = await bscClient.multicall({
@@ -55,13 +54,13 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
         {
           address: getVeCakeAddress(ChainId.BSC),
           abi: veCakeABI,
-          functionName: 'balanceOfAt',
+          functionName: 'balanceOfAtTime',
           args: [address, BigInt(targetTime)],
         },
         {
           address: getVeCakeAddress(ChainId.BSC),
           abi: veCakeABI,
-          functionName: 'balanceOfAt',
+          functionName: 'balanceOfAtTime',
           args: [userInfo?.[2] ?? '0x0000000000000000000000000000000000000000', BigInt(targetTime)],
         },
       ],
@@ -72,13 +71,13 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
         {
           address: getVeCakeAddress(targetChainId),
           abi: veCakeABI,
-          functionName: 'balanceOfAt',
+          functionName: 'balanceOfAtTime',
           args: [address, BigInt(targetTime)],
         },
         {
           address: getVeCakeAddress(targetChainId),
           abi: veCakeABI,
-          functionName: 'balanceOfAt',
+          functionName: 'balanceOfAtTime',
           args: [userInfo?.[2] ?? '0x0000000000000000000000000000000000000000', BigInt(targetTime)],
         },
       ],
