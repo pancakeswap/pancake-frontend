@@ -349,6 +349,8 @@ const OtherChainsCard: React.FC<{
     }
     return false
   }, [isCrossChainLoading, crossChainMessage])
+
+  console.log(balance, chainId, 'chainId balance')
   return (
     <VeCakeChainBox onClick={() => onSelected(chainId)} className={isSelected ? 'is-selected' : undefined}>
       {isSelected && <CheckMarkRightTop />}
@@ -361,7 +363,7 @@ const OtherChainsCard: React.FC<{
           {t('Profile')}
         </Text>
         {isLoading || isLayerZeroHashProcessing ? (
-          <Loading />
+          <Loading width="14px" height="14px" />
         ) : isLayerZeroHashProcessing && !isSynced ? (
           <LinkExternal external href={`https://layerzeroscan.com/tx/${hash}`}>
             {t('In Progress')}

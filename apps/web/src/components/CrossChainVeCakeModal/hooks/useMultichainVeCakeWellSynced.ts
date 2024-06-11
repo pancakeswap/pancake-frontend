@@ -35,10 +35,11 @@ export const useMultichainVeCakeWellSynced = (
 
 export const getVCakeAndProxyData = async (address: Address, targetChainId: ChainId): Promise<boolean | null> => {
   try {
-    const client = publicClient({ chainId: targetChainId })
+    const targetClient = publicClient({ chainId: targetChainId })
+    const bscClient = publicClient({ chainId: ChainId.BSC })
     const targetTime = Math.floor(Date.now() / 1000) + 60
 
-    const [{ result: userInfo }] = await client.multicall({
+    const [{ result: userInfo }] = await bscClient.multicall({
       contracts: [
         {
           address: getVeCakeAddress(ChainId.BSC),
@@ -48,7 +49,8 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
         },
       ],
     })
-    const profileCallsResult = await client.multicall({
+
+    const callsResultBsc = await bscClient.multicall({
       contracts: [
         {
           address: getVeCakeAddress(ChainId.BSC),
@@ -62,6 +64,11 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
           functionName: 'balanceOfAt',
           args: [userInfo?.[2] ?? '0x0000000000000000000000000000000000000000', BigInt(targetTime)],
         },
+      ],
+    })
+
+    const callsResultTargetChain = await targetClient.multicall({
+      contracts: [
         {
           address: getVeCakeAddress(targetChainId),
           abi: veCakeABI,
@@ -77,12 +84,10 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
       ],
     })
 
-    const [
-      { result: bscBalance },
-      { result: bscProxyBalance },
-      { result: targetChainBalance },
-      { result: targetChainProxyBalance },
-    ] = profileCallsResult
+    const [{ result: bscBalance }, { result: bscProxyBalance }] = callsResultBsc
+
+    const [{ result: targetChainBalance }, { result: targetChainProxyBalance }] = callsResultTargetChain
+    console.info({ bscBalance, bscProxyBalance, targetChainBalance, targetChainProxyBalance }, 'veCakeSyncData')
 
     if (
       bscBalance === undefined ||
@@ -91,8 +96,6 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
       targetChainProxyBalance === undefined
     )
       return null
-
-    console.info({ bscBalance, bscProxyBalance, targetChainBalance, targetChainProxyBalance }, 'veCakeSyncData')
 
     const isVeCakeWillSync = bscBalance + bscProxyBalance === targetChainBalance + targetChainProxyBalance
 
