@@ -10,6 +10,7 @@ import { useHasSwellReward } from 'hooks/useHasSwellReward'
 import { useMemo } from 'react'
 import { Address, isAddressEqual } from 'viem'
 import { bsc } from 'viem/chains'
+import { useHasCustomFarmLpTooltips } from 'views/Farms/hooks/useHasCustomFarmLpTooltips'
 
 const { FarmTokenInfo } = FarmWidget.FarmTable
 
@@ -30,6 +31,8 @@ export const FarmCell: React.FunctionComponent<
 }) => {
   const { t } = useTranslation()
   const hasSwellReward = useHasSwellReward(lpAddress)
+  const customTooltips = useHasCustomFarmLpTooltips(lpAddress)
+
   const hasUsdPlusWarning = useMemo(() => {
     return zksyncTokens.usdPlus.equals(token) || zksyncTokens.usdPlus.equals(quoteToken)
   }, [token, quoteToken])
@@ -77,6 +80,7 @@ export const FarmCell: React.FunctionComponent<
           <SwellTooltip />
         </Box>
       )}
+      {customTooltips && <Box marginLeft={1}>{customTooltips.tooltips}</Box>}
       {hasUsdPlusWarning ? <USDPlusWarningTooltip /> : null}
     </Flex>
   )
