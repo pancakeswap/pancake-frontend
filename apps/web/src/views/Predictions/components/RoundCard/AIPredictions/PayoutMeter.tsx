@@ -8,18 +8,15 @@ interface PayoutMeterProps extends BoxProps {
 
 const rotatePointerAnimation = keyframes`
   0% {
-    transform: rotate(-90deg);
+    transform: rotate(-70deg);
   }
-  30%{
-    transform: rotate(10deg);
+  10% {
+    transform: rotate(-60deg);
   }
-    70% {
-    transform: rotate(55deg);
-  }
-  80% {
+  50% {
     transform: rotate(60deg);
   }
-  90% {
+  60%{
     transform: rotate(50deg);
   }
   100% {
@@ -30,7 +27,7 @@ const rotatePointerAnimation = keyframes`
 const MeterPointerImage = styled.img`
   position: absolute;
   left: 46px;
-  bottom: 0;
+  bottom: 3px;
 
   transform-origin: bottom;
   animation: ${rotatePointerAnimation} 2s alternate infinite;
@@ -40,7 +37,7 @@ const AnimatedMeter = (props: BoxProps) => {
   return (
     <Box position="relative" {...props}>
       <img src="/images/predictions-temp/meter.png" alt="Payout Meter" width={100} />
-      <MeterPointerImage src="/images/predictions-temp/meter-pointer.png" alt="Payout Pointer" width={16} />
+      <MeterPointerImage src="/images/predictions-temp/pointer.png" alt="Payout Pointer" width={9} />
     </Box>
   )
 }
