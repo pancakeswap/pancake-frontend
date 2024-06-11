@@ -350,7 +350,6 @@ const OtherChainsCard: React.FC<{
     return false
   }, [isCrossChainLoading, crossChainMessage])
 
-  console.log(balance, chainId, 'chainId balance')
   return (
     <VeCakeChainBox onClick={() => onSelected(chainId)} className={isSelected ? 'is-selected' : undefined}>
       {isSelected && <CheckMarkRightTop />}
