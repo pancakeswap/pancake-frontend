@@ -92,15 +92,5 @@ export const useProfileProxyWellSynced = (targetChainId: ChainId) => {
     )
   }, [profile, profileProxy, isLoading, isProfileProxyLoading])
 
-  console.info(
-    {
-      targetChainId,
-      isSynced,
-      isLoading: isLoading || isProfileProxyLoading,
-      bscProfile: profile,
-      targetChainProfileProxy: profileProxy,
-    },
-    'profile sync status',
-  )
   return { isLoading: isLoading || isProfileProxyLoading, isSynced }
 }
