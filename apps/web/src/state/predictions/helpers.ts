@@ -194,8 +194,9 @@ export const getHasRoundFailed = (
     return true
   }
 
-  if (!oracleCalled && !closeTimestamp) {
+  if (!oracleCalled || !closeTimestamp) {
     const closeTimestampMs = (Number(closeTimestamp) + buffer) * 1000
+
     if (Number.isFinite(closeTimestampMs)) {
       return Date.now() > closeTimestampMs
     }

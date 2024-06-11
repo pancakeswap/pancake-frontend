@@ -51,19 +51,19 @@ export const AIExpiredRoundCard: React.FC<React.PropsWithChildren<AIExpiredRound
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { epoch, lockPrice, closePrice } = round
+  const { epoch, lockPrice, closePrice, AIPrice } = round
   const betPosition = getRoundPosition(lockPrice ?? 0n, closePrice ?? 0n)
   const bufferSeconds = useGetBufferSeconds()
   const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds, round.closePrice)
 
   const aiPosition = useMemo(() => {
-    if (!round.AIPrice || !round.lockPrice) return undefined
+    if (!AIPrice || !lockPrice) return undefined
 
-    const formattedLockPrice = +formatBigInt(round.lockPrice, 8, 8) // note: lock price formatted with 8 decimals
-    const formattedAIPrice = +formatBigInt(round.AIPrice, 8, 18)
+    const formattedLockPrice = +formatBigInt(lockPrice, 8, 8) // note: lock price formatted with 8 decimals
+    const formattedAIPrice = +formatBigInt(AIPrice, 8, 18)
 
     return formattedAIPrice !== formattedLockPrice ? (formattedAIPrice > formattedLockPrice ? 'UP' : 'DOWN') : undefined
-  }, [round.AIPrice, round.lockPrice])
+  }, [AIPrice, lockPrice])
 
   const userPosition = useMemo(() => {
     // hasEnteredUp => Following AI
