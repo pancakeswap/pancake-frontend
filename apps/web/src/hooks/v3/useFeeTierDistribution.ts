@@ -1,9 +1,8 @@
 import { Currency, Token } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
-import { enableExplorer } from 'state/info/api/client'
 import { PoolState } from './types'
-import useFeeTierDistributionQuery, { useFeeTierDistributionQuery2 } from './useFeeTierDistributionQuery'
+import { useFeeTierDistributionQuery } from './useFeeTierDistributionQuery'
 
 import { usePool } from './usePools'
 
@@ -76,28 +75,15 @@ export function useFeeTierDistribution(
 }
 
 function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
-  const { isPending, error, data } = useFeeTierDistributionQuery(
-    enableExplorer ? undefined : token0?.address,
-    token1?.address,
-    30000,
-  )
-
-  const explorerFeeTierResults = useFeeTierDistributionQuery2(
-    !enableExplorer ? undefined : token0?.address,
-    token1?.address,
-    30000,
-  )
-
-  const { asToken0, asToken1, _meta } = data ?? {}
+  const { isPending, error, data } = useFeeTierDistributionQuery(token0?.address, token1?.address, 30000)
 
   return useMemo(() => {
-    const all = enableExplorer
-      ? explorerFeeTierResults.data?.map((t) => ({
-          feeTier: t.feeTier,
-          totalValueLockedToken0: +t.tvlToken0,
-          totalValueLockedToken1: +t.tvlToken1,
-        })) ?? []
-      : asToken0?.concat(asToken1 ?? []) ?? []
+    const all =
+      data?.map((t) => ({
+        feeTier: t.feeTier,
+        totalValueLockedToken0: +t.tvlToken0,
+        totalValueLockedToken1: +t.tvlToken1,
+      })) ?? []
 
     // sum tvl for token0 and token1 by fee tier
     const tvlByFeeTier = all.reduce(
@@ -157,18 +143,10 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
     }
 
     return {
-      isPending: enableExplorer ? explorerFeeTierResults.isPending : isPending,
-      error: enableExplorer ? explorerFeeTierResults.error : error,
+      isPending,
+      error,
       distributions,
       tvlByFeeTier,
     }
-  }, [
-    asToken0,
-    asToken1,
-    explorerFeeTierResults.data,
-    explorerFeeTierResults.isPending,
-    explorerFeeTierResults.error,
-    isPending,
-    error,
-  ])
+  }, [data, isPending, error])
 }
