@@ -36,6 +36,11 @@ type UsePermit2ReturnType = Permit2HookState & Permit2HookCallback
 export const usePermit2 = (
   amount: CurrencyAmount<Token> | undefined,
   spender: Address | undefined,
+  {
+    enablePaymaster = false,
+  }: {
+    enablePaymaster?: boolean
+  } = {},
 ): UsePermit2ReturnType => {
   const { account, chainId } = useAccountActiveChain()
   const approveTarget = useMemo(() => getPermit2Address(chainId), [chainId])
@@ -54,7 +59,9 @@ export const usePermit2 = (
   const [isApproving, setIsApproving] = useState(false)
 
   const writePermit = useWritePermit(amount?.currency, spender, permit2Details?.nonce)
-  const { approveNoCheck, revokeNoCheck } = useApproveCallback(amount, approveTarget)
+  const { approveNoCheck, revokeNoCheck } = useApproveCallback(amount, approveTarget, {
+    enablePaymaster,
+  })
 
   const permit = useCallback(async () => {
     setIsPermitting(true)

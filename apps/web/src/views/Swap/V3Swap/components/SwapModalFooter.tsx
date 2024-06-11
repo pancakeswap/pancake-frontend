@@ -1,17 +1,31 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router'
-import { AutoColumn, BackForwardIcon, Button, Dots, Flex, Link, QuestionHelper, Text } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  BackForwardIcon,
+  Box,
+  Button,
+  Dots,
+  Flex,
+  Link,
+  QuestionHelper,
+  Text,
+  WarningIcon,
+} from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import { CurrencyLogo as CurrencyLogoWidget } from '@pancakeswap/widgets-internal'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { CurrencyLogo } from 'components/Logo'
 import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
+import { useGasToken } from 'hooks/useGasToken'
 import { memo, useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { styled } from 'styled-components'
 import { warningSeverity } from 'utils/exchange'
 import { formatExecutionPrice as mmFormatExecutionPrice } from 'views/Swap/MMLinkPools/utils/exchange'
 
+import { usePaymaster } from 'hooks/usePaymaster'
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
 import { SlippageAdjustedAmounts, formatExecutionPrice } from '../utils/exchange'
@@ -22,6 +36,20 @@ const SwapModalFooterContainer = styled(AutoColumn)`
   border-radius: ${({ theme }) => theme.radii.default};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   background-color: ${({ theme }) => theme.colors.background};
+`
+
+const SameTokenWarningBox = styled(Box)`
+  font-size: 13px;
+  background-color: #ffb2371a;
+  padding: 10px;
+  margin-top: 12px;
+  color: ${({ theme }) => theme.colors.yellow};
+  border: 1px solid ${({ theme }) => theme.colors.yellow};
+  border-radius: ${({ theme }) => theme.radii['12px']};
+`
+
+const StyledWarningIcon = styled(WarningIcon)`
+  fill: ${({ theme }) => theme.colors.yellow};
 `
 
 export const SwapModalFooter = memo(function SwapModalFooter({
@@ -60,8 +88,22 @@ export const SwapModalFooter = memo(function SwapModalFooter({
 }) {
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
-  const severity = warningSeverity(priceImpactWithoutFee)
 
+  const [gasToken] = useGasToken()
+  const { isPaymasterAvailable, isPaymasterTokenActive } = usePaymaster()
+
+  const showSameTokenWarning = useMemo(
+    () =>
+      isPaymasterAvailable &&
+      isPaymasterTokenActive &&
+      inputAmount.currency?.wrapped.address &&
+      !inputAmount.currency.isNative &&
+      gasToken.isToken &&
+      inputAmount.currency.wrapped.address === gasToken.wrapped.address,
+    [inputAmount, gasToken, isPaymasterAvailable, isPaymasterTokenActive],
+  )
+
+  const severity = warningSeverity(priceImpactWithoutFee)
   const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
   const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
   const treasuryFeePercent = `${(TREASURY_FEE * 100).toFixed(4)}%`
@@ -97,7 +139,6 @@ export const SwapModalFooter = memo(function SwapModalFooter({
             </StyledBalanceMaxMini>
           </Text>
         </RowBetween>
-
         <RowBetween mb="8px">
           <RowFixed>
             <Text fontSize="14px">
@@ -226,7 +267,43 @@ export const SwapModalFooter = memo(function SwapModalFooter({
             </Text>
           )}
         </RowBetween>
+        {isPaymasterAvailable && isPaymasterTokenActive && (
+          <RowBetween mt="8px">
+            <RowFixed>
+              <Text fontSize="14px">{t('Gas Token')}</Text>
+            </RowFixed>
+
+            <Flex alignItems="center">
+              <Text marginRight={2} fontSize={14}>
+                {(gasToken && gasToken.symbol && gasToken.symbol.length > 10
+                  ? `${gasToken.symbol.slice(0, 4)}...${gasToken.symbol.slice(
+                      gasToken.symbol.length - 5,
+                      gasToken.symbol.length,
+                    )}`
+                  : gasToken?.symbol) || 'ETH'}
+              </Text>
+
+              <div style={{ position: 'relative' }}>
+                <CurrencyLogoWidget currency={gasToken} />
+                <p style={{ position: 'absolute', bottom: '-2px', left: '-6px', fontSize: '16px' }}>⛽️</p>
+              </div>
+            </Flex>
+          </RowBetween>
+        )}
       </SwapModalFooterContainer>
+
+      {showSameTokenWarning && (
+        <SameTokenWarningBox>
+          <Flex>
+            <StyledWarningIcon marginRight={2} />
+            <span>
+              {t(
+                'Please ensure you leave enough tokens for gas fees when selecting the same token for gas as the input token',
+              )}
+            </span>
+          </Flex>
+        </SameTokenWarningBox>
+      )}
 
       <AutoRow>
         <Button

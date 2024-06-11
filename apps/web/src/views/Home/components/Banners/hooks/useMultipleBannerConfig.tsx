@@ -4,9 +4,11 @@ import CompetitionBanner from '../CompetitionBanner'
 import { FeeRefundBanner } from '../FeeRefundBanner'
 import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import GameBanner from '../GameBanner'
+import { ListaIFOBanner } from '../ListaIFOBanner'
 import { MultiChainBanner } from '../MultichainBanner'
 import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
 import { OptionsBanner } from '../OptionsBanner'
+import { PaymasterBanner } from '../PaymasterBanner'
 import PerpetualBanner from '../PerpetualBanner'
 import { TopTraderBanner } from '../TopTraderBanner'
 import UserBanner from '../UserBanner'
@@ -14,9 +16,8 @@ import { V4InfoBanner } from '../V4InfoBanner'
 import { VeCakeBanner } from '../VeCakeBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
-import useIsRenderUserBanner from './useIsRenderUserBanner'
-import { ListaIFOBanner } from '../ListaIFOBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
+import useIsRenderUserBanner from './useIsRenderUserBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -48,6 +49,10 @@ export const useMultipleBannerConfig = () => {
         banner: <UserBanner />,
       },
       { shouldRender: shouldRenderIfoBanner, banner: <ListaIFOBanner /> },
+      {
+        shouldRender: true,
+        banner: <PaymasterBanner />,
+      },
       {
         shouldRender: true,
         banner: <FeeRefundBanner />,
