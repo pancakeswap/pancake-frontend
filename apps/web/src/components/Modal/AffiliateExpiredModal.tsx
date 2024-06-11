@@ -1,33 +1,65 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { useModal, Text } from '@pancakeswap/uikit'
-import { useCallback, useEffect } from 'react'
+import { useModal, Text, LinkExternal } from '@pancakeswap/uikit'
+import { ReactNode, useCallback, useEffect } from 'react'
 import { useAccount } from 'wagmi'
 
 import DisclaimerModal from 'components/DisclaimerModal'
 import { useAffiliateExpired } from 'hooks/useAffiliateExpired'
+import { useUserAcknowledgement } from 'hooks/useUserAcknowledgement'
+
+const transRegex = /(%[^%]+%)/
+
+function Trans({ text, data = {} }: { text: string; data?: { [key: string]: ReactNode } }) {
+  const parts = text.split(transRegex)
+  return parts.map((p) => {
+    if (!transRegex.test(p)) {
+      return p
+    }
+    const key = p.replace(/%/g, '')
+    return data[key] || p
+  })
+}
 
 export function AffiliateExpiredModal() {
   const { t } = useTranslation()
   const { address } = useAccount()
   const expired = useAffiliateExpired(address)
-  const onConfirm = useCallback(() => {}, [])
+  const [ack, setACK] = useUserAcknowledgement('affiliate-referral-expired')
+  const onConfirm = useCallback(() => setACK(true), [setACK])
 
   const [onOptionsConfirmModalPresent] = useModal(
     <DisclaimerModal
       bodyMaxWidth={['100%', '100%', '100%', '640px']}
-      modalHeader={t('Pancakeswap Affiliate Program')}
+      bodyMaxHeight="80vh"
+      modalHeader={t('PancakeSwap Affiliate Program')}
       header={
         <>
-          <Text>{t('Important Update')}</Text>
-          <Text>
+          <Text bold fontSize="1.25rem">
+            {t('Important Update')}
+          </Text>
+          <Text mt="1.5rem">
             {t(
-              `Please be informed that the Affiliate who referred you and through whose referral link you signed up to trade is no longer part of PancakeSwap's Affiliate Program. As a result, effective immediately <date of notification sent>, you will no longer receive any trading discounts from this Affiliate if they were previously enabled.`,
+              `Please be informed that the Affiliate who referred you and through whose referral link you signed up to trade is no longer part of PancakeSwap's Affiliate Program. As a result, effective immediately June 12, 2024, you will no longer receive any trading discounts from this Affiliate if they were previously enabled.`,
             )}
           </Text>
-          <Text>
-            {t(
-              `You can still access the affiliate claims dashboard until July 31, 2024. If you have any outstanding discounts unclaimed, please claim them before this date. After July 31, 2024, any unclaimed discounts will be forfeited, and you will no longer have access to the affiliate claims dashboard.`,
-            )}
+          <Text mt="1.5rem">
+            <Trans
+              text={t(
+                `You can still access the affiliate claims dashboard until July 31, 2024. If you have any outstanding discounts unclaimed, please %claim% them before this date. After July 31, 2024, any unclaimed discounts will be forfeited, and you will no longer have access to the affiliate claims dashboard.`,
+              )}
+              data={{
+                claim: (
+                  <LinkExternal
+                    bold
+                    style={{ display: 'inline-flex' }}
+                    showExternalIcon={false}
+                    href="/affiliates-program/dashboard"
+                  >
+                    {t('claim')}
+                  </LinkExternal>
+                ),
+              }}
+            />
           </Text>
         </>
       }
@@ -46,10 +78,10 @@ export function AffiliateExpiredModal() {
   )
 
   useEffect(() => {
-    if (expired) {
+    if (expired && ack === false) {
       onOptionsConfirmModalPresent()
     }
-  }, [expired, onOptionsConfirmModalPresent])
+  }, [expired, ack, onOptionsConfirmModalPresent])
 
   return null
 }

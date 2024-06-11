@@ -5,7 +5,7 @@ import { type Serializable, type AccessList, createAccessList } from 'utils/acce
 export function createUseInAccessListHook(list: Serializable[]) {
   return function useInAccessList(item?: Serializable) {
     const [accessList, setAccessList] = useState<AccessList | undefined>()
-    const [inList, setInList] = useState(false)
+    const [inList, setInList] = useState<[Serializable | undefined, boolean]>([undefined, false])
 
     useEffect(() => {
       let unmounted = false
@@ -23,18 +23,31 @@ export function createUseInAccessListHook(list: Serializable[]) {
     }, [])
 
     useEffect(() => {
-      if (!accessList || !item) {
-        return
+      let unmounted = false
+      const unmount = () => {
+        unmounted = true
       }
 
+      if (!accessList || !item) {
+        return unmount
+      }
+
+      setInList([undefined, false])
       accessList
         .isInList(item)
-        .then(setInList)
+        .then((hasAccess) => {
+          if (unmounted) return
+          setInList([item, hasAccess])
+        })
         .catch((e) => {
           console.error('Failed to check access status of', item, e)
+          if (unmounted) return
+          setInList([item, false])
         })
+      return unmount
     }, [accessList, item])
 
-    return inList
+    const [curItem, isInList] = inList
+    return curItem === item && isInList
   }
 }
