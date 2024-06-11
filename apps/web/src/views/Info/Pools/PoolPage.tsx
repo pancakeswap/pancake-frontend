@@ -34,7 +34,7 @@ import {
   useMultiChainPath,
   usePoolChartTvlDataQuery,
   usePoolChartVolumeDataQuery,
-  usePoolDatasQuery,
+  usePoolDataQuery,
   usePoolTransactionsQuery,
   useStableSwapPath,
 } from 'state/info/hooks'
@@ -95,7 +95,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
 
-  const poolData = usePoolDatasQuery(useMemo(() => [address], [address]))[0]
+  const poolData = usePoolDataQuery(address)
   // const chartData = usePoolChartDataQuery(address)
   const tvlChartData = usePoolChartTvlDataQuery(address)
   const volumeChartData = usePoolChartVolumeDataQuery(address)

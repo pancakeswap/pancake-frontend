@@ -336,7 +336,7 @@ export const useAllPoolDataQuery = () => {
         final[d.id] = {
           data: {
             address: d.id,
-            timestamp: d.createdAtTimestamp,
+            timestamp: dayjs(d.createdAtTimestamp as string).unix(),
             token0: {
               address: d.token0.id,
               symbol: d.token0.symbol,
@@ -372,6 +372,88 @@ export const useAllPoolDataQuery = () => {
   return useMemo(() => {
     return data ?? {}
   }, [data])
+}
+
+export function usePoolDataQuery(poolAddress: string): PoolData | undefined {
+  const chainName = useExplorerChainNameByQuery()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useQuery({
+    queryKey: [`info/pool/data/${poolAddress}/${type}`, chainName],
+    queryFn: async ({ signal }) => {
+      if (!chainName) {
+        throw new Error('No chain name')
+      }
+      if (type === 'stableSwap' && (chainName === 'bsc' || chainName === 'arbitrum')) {
+        return explorerApiClient
+          .GET('/cached/pools/stable/{chainName}/{address}', {
+            signal,
+            params: {
+              path: {
+                chainName,
+                address: poolAddress,
+              },
+            },
+          })
+          .then((res) => res.data)
+      }
+      return explorerApiClient
+        .GET('/cached/pools/v2/{chainName}/{address}', {
+          signal,
+          params: {
+            path: {
+              chainName,
+              address: poolAddress,
+            },
+          },
+        })
+        .then((res) => res.data)
+    },
+    select: useCallback((data_) => {
+      if (!data_) {
+        throw new Error('No data')
+      }
+
+      const { totalFees24h, totalFees7d, lpFees24h, lpFees7d, lpApr7d } = getLpFeesAndApr(
+        +data_.volumeUSD24h,
+        +data_.volumeUSD7d,
+        +data_.tvlUSD,
+      )
+
+      return {
+        address: data_.id,
+        timestamp: dayjs(data_.createdAtTimestamp as string).unix(),
+        token0: {
+          address: data_.token0.id,
+          symbol: data_.token0.symbol,
+          name: data_.token0.name,
+        },
+        token1: {
+          address: data_.token1.id,
+          symbol: data_.token1.symbol,
+          name: data_.token1.name,
+        },
+        volumeUSD: +data_.volumeUSD24h,
+        volumeUSDChange: 0,
+        volumeUSDWeek: +data_.volumeUSD7d,
+        liquidityUSD: +data_.tvlUSD,
+        liquidityUSDChange: getPercentChange(+data_.tvlUSD, data_.tvlUSD24h ? +data_.tvlUSD24h : 0),
+        totalFees24h,
+        totalFees7d,
+        lpFees24h,
+        lpFees7d,
+        lpApr7d,
+        liquidityToken0: +data_.tvlToken0,
+        liquidityToken1: +data_.tvlToken1,
+        token0Price: +data_.token0Price,
+        token1Price: +data_.token1Price,
+        volumeUSDChangeWeek: 0,
+      }
+    }, []),
+    enabled: Boolean(chainName && poolAddress),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
+  return data
 }
 
 export const usePoolDatasQuery = (poolAddresses: string[]): (PoolData | undefined)[] => {
@@ -729,8 +811,157 @@ export const useTokenDatasQuery = (addresses?: string[], withSettings = true): T
 }
 
 export const useTokenDataQuery = (address: string | undefined): TokenData | undefined => {
-  const allTokenData = useTokenDatasQuery([address ?? ''])
-  return allTokenData?.find((d) => d.address === address) ?? undefined
+  const chainName = useExplorerChainNameByQuery()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+
+  const { data } = useQuery({
+    queryKey: [`info/token/data/${address}/${type}/`, chainName],
+    queryFn: async ({ signal }) => {
+      if (!chainName || !address) {
+        throw new Error('No chain name')
+      }
+      if (type === 'stableSwap' && (chainName === 'bsc' || chainName === 'arbitrum')) {
+        return explorerApiClient
+          .GET('/cached/tokens/stable/{chainName}/{address}', {
+            signal,
+            params: {
+              path: {
+                chainName,
+                address,
+              },
+            },
+          })
+          .then((res) => res.data)
+      }
+
+      return explorerApiClient
+        .GET('/cached/tokens/v2/{chainName}/{address}', {
+          signal,
+          params: {
+            path: {
+              chainName,
+              address,
+            },
+          },
+        })
+        .then((res) => res.data)
+    },
+    select: useCallback((d) => {
+      if (!d) {
+        throw new Error('No data')
+      }
+      return {
+        exists: true,
+        name: d.name,
+        symbol: d.symbol,
+        address: d.id,
+        decimals: d.decimals,
+        volumeUSD: d.volumeUSD24h ? +d.volumeUSD24h : 0,
+        volumeUSDChange: 0,
+        volumeUSDWeek: d.volumeUSD7d ? +d.volumeUSD7d : 0,
+        txCount: d.txCount24h,
+        liquidityToken: +d.tvl,
+        liquidityUSD: +d.tvlUSD,
+        liquidityUSDChange: getPercentChange(+d.tvlUSD, +d.tvlUSD24h),
+        priceUSD: +d.priceUSD,
+        priceUSDChange: getPercentChange(+d.priceUSD, +d.priceUSD24h),
+        priceUSDChangeWeek: getPercentChange(+d.priceUSD, +d.priceUSD7d),
+      }
+    }, []),
+    enabled: Boolean(address && chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_INTERVAL_REFETCH,
+  })
+
+  return data
+}
+
+export function usePoolsForTokenDataQuery(address: string): (PoolData | undefined)[] {
+  const chainName = useExplorerChainNameByQuery()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useQuery({
+    queryKey: [`info/token/chartData2/${address}/${type}`, chainName],
+    queryFn: async ({ signal }) => {
+      if (!chainName || !address) {
+        throw new Error('No chain name')
+      }
+      if (type === 'stableSwap' && (chainName === 'bsc' || chainName === 'arbitrum')) {
+        return explorerApiClient
+          .GET('/cached/pools/stable/{chainName}/list/top', {
+            signal,
+            params: {
+              query: {
+                token: address,
+              },
+              path: {
+                chainName,
+              },
+            },
+          })
+          .then((res) => res.data)
+      }
+      return explorerApiClient
+        .GET('/cached/pools/v2/{chainName}/list/top', {
+          params: {
+            query: {
+              token: address,
+            },
+            path: {
+              chainName,
+            },
+          },
+        })
+        .then((res) => res.data)
+    },
+    select: useCallback((data_) => {
+      if (!data_) {
+        throw new Error('No data')
+      }
+
+      return data_.map((d) => {
+        const { totalFees24h, totalFees7d, lpFees24h, lpFees7d, lpApr7d } = getLpFeesAndApr(
+          +d.volumeUSD24h,
+          +d.volumeUSD7d,
+          +d.tvlUSD,
+        )
+
+        return {
+          address: d.id,
+          timestamp: dayjs(d.createdAtTimestamp as string).unix(),
+          token0: {
+            address: d.token0.id,
+            symbol: d.token0.symbol,
+            name: d.token0.name,
+          },
+          token1: {
+            address: d.token1.id,
+            symbol: d.token1.symbol,
+            name: d.token1.name,
+          },
+          volumeUSD: +d.volumeUSD24h,
+          volumeUSDChange: 0,
+          volumeUSDWeek: +d.volumeUSD7d,
+          liquidityUSD: +d.tvlUSD,
+          liquidityUSDChange: getPercentChange(+d.tvlUSD, d.tvlUSD24h ? +d.tvlUSD24h : 0),
+          totalFees24h,
+          totalFees7d,
+          lpFees24h,
+          lpFees7d,
+          lpApr7d,
+          liquidityToken0: +d.tvlToken0,
+          liquidityToken1: +d.tvlToken1,
+          token0Price: +d.token0Price,
+          token1Price: +d.token1Price,
+          volumeUSDChangeWeek: 0,
+        }
+      })
+    }, []),
+    enabled: Boolean(address && chainName),
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_INTERVAL_REFETCH,
+  })
+
+  return data ?? []
 }
 
 export const usePoolsForTokenQuery = (address: string): string[] | undefined => {
