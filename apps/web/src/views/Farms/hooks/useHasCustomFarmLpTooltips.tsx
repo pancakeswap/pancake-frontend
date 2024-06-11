@@ -16,7 +16,7 @@ const CONTRACTS_LP_WITH_TOOLTIPS: CustomTooltipsType[] = [
     identifier: '0x05dF8F9fCFf0b6a6FDE7166706a52693906C9936',
     tooltips: <TaikoEthTooltips />,
   },
-] as const
+]
 
 export function useHasCustomFarmLpTooltips(id?: Address) {
   return useMemo(() => CONTRACTS_LP_WITH_TOOLTIPS.find(({ identifier }) => identifier === id), [id])
