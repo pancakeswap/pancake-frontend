@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Checkbox, Flex, FlexGap, InjectedModalProps, Modal, ModalBody, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, FlexGap, InjectedModalProps, Modal, ModalBody, Text } from '@pancakeswap/uikit'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { CheckedIcon } from 'views/DashboardCampaignEdit/components/Quests/ChooseQuestModal/CheckedIcon'
@@ -13,7 +13,7 @@ const Container = styled(Box)`
   border: 2px dashed ${({ theme }) => (theme.isDark ? `${theme.colors.input}` : `${theme.colors.inputSecondary}`)};
 `
 
-const CheckboxArea = styled('label')`
+const CheckboxArea = styled('div')`
   display: flex;
   position: absolute;
   top: -15px;
@@ -29,6 +29,54 @@ const StyledFlexGap = styled(FlexGap)`
 
   > div {
     width: calc(50% - 8px);
+  }
+`
+
+const StyledCustomCheckBox = styled(Box)<{ $checked?: boolean; $checkedAll?: boolean }>`
+  position: relative;
+  height: 24px;
+  width: 24px;
+  min-height: 24px;
+  min-width: 24px;
+  transition: background-color 0.2s ease-in-out;
+  border-radius: 8px;
+  border: ${({ theme }) => (theme.isDark ? `solid 1px ${theme.colors.disabled}` : '0')};
+  background-color: ${({ theme, $checked, $checkedAll }) =>
+    $checked || $checkedAll ? theme.colors.success : theme.colors.cardBorder};
+  box-shadow: ${({ theme }) => theme.shadows.inset};
+  margin: 3px 3px 3px 4px;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: ${({ theme }) => theme.shadows.focus};
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    width: 50%;
+    height: 2px;
+    margin: auto;
+    background-color: ${({ $checked }) => ($checked ? 'white' : 'transparent')};
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    border-bottom: 2px solid;
+    border-left: 2px solid;
+    top: 30%;
+    left: 0;
+    right: 0;
+    width: 50%;
+    height: 25%;
+    margin: auto;
+    transform: rotate(-50deg);
+    transition: border-color 0.2s ease-in-out;
+    border-color: ${({ $checkedAll }) => ($checkedAll ? 'white' : 'transparent')};
   }
 `
 
@@ -79,7 +127,6 @@ export const ChooseQuestModal: React.FC<ChooseQuestProps> = ({ pickedQuests, upd
   const { t } = useTranslation()
   const [selectedQuests, setSelectedQuests] = useState<Array<string>>([])
   const fakeData = [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }, { id: '5' }]
-  const [selectAll, setSelectAll] = useState(false)
 
   useEffect(() => {
     if (pickedQuests.length > 0) {
@@ -103,6 +150,15 @@ export const ChooseQuestModal: React.FC<ChooseQuestProps> = ({ pickedQuests, upd
     onDismiss?.()
   }
 
+  const handleCheckboxClick = () => {
+    if (selectedQuests.length === 0) {
+      const allId = fakeData.map((i) => i.id)
+      setSelectedQuests(allId)
+    } else {
+      setSelectedQuests([])
+    }
+  }
+
   return (
     <Modal title={t('Choose the quests to assign')} onDismiss={onDismiss}>
       <Flex
@@ -113,15 +169,19 @@ export const ChooseQuestModal: React.FC<ChooseQuestProps> = ({ pickedQuests, upd
       >
         <ModalBody>
           <Container>
-            <CheckboxArea htmlFor="select-all">
-              <Checkbox
-                id="select-all"
-                scale="sm"
-                type="checkbox"
-                checked={selectAll}
-                onChange={() => setSelectAll(!selectAll)}
+            <CheckboxArea>
+              <StyledCustomCheckBox
+                $checked={selectedQuests.length > 0 && selectedQuests.length < fakeData.length}
+                $checkedAll={selectedQuests.length === fakeData.length}
+                onClick={handleCheckboxClick}
               />
-              <Text ml="8px">{t('Select all %total%', { total: 6 })}</Text>
+              <Flex>
+                <Text m="0 8px">{t('Selected')}</Text>
+                <Box>
+                  <Text as="span">{selectedQuests.length}</Text>
+                  <Text as="span" color="textSubtle">{`/${fakeData.length}`}</Text>
+                </Box>
+              </Flex>
             </CheckboxArea>
             <StyledFlexGap flexWrap="wrap" gap="16px">
               {fakeData.map((quest) => (
