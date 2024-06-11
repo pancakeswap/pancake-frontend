@@ -578,7 +578,8 @@ export function useBestTradeFromApi({
           swapper: address,
         },
       })
-      const serverRes = await fetch(`${QUOTING_API}`, {
+      // TODO: x remove pcsFiller=true
+      const serverRes = await fetch(`${QUOTING_API}?pcsFiller=true`, {
         method: 'POST',
         signal,
         headers: {
