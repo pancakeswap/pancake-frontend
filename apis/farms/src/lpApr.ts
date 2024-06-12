@@ -13,7 +13,7 @@ interface BlockResponse {
   }[]
 }
 
-const STABLESWAP_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap'
+const STABLESWAP_SUBGRAPH_ENDPOINT = 'https://thegraph.pancakeswap.com/exchange-stableswap-bsc'
 
 const LP_HOLDERS_FEE = 0.0017
 const WEEKS_IN_A_YEAR = 52.1429

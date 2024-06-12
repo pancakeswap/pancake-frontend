@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
 import { GRAPH_API_PREDICTION_BNB } from '@pancakeswap/prediction'
-import { GRAPH_API_LOTTERY, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
+import { GRAPH_API_LOTTERY, THE_GRAPH_PROXY_API, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { getPortalRoot } from '@pancakeswap/uikit'
 import { SubgraphHealthIndicator, SubgraphHealthIndicatorProps } from './SubgraphHealthIndicator'
@@ -43,18 +43,17 @@ export function subgraphHealthIndicatorFactory({ getSubgraphName }: FactoryParam
 
 export const V3SubgraphHealthIndicator = subgraphHealthIndicatorFactory({
   getSubgraphName: (chainId) => {
-    if (V3_SUBGRAPH_URLS[chainId]?.startsWith('https://api.thegraph.com/subgraphs/name/')) {
-      return V3_SUBGRAPH_URLS?.[chainId]?.replace('https://api.thegraph.com/subgraphs/name/', '') || ''
+    if (V3_SUBGRAPH_URLS[chainId]?.startsWith(`${THE_GRAPH_PROXY_API}/`)) {
+      return V3_SUBGRAPH_URLS?.[chainId]?.replace(`${THE_GRAPH_PROXY_API}/`, '') || ''
     }
     return ''
   },
 })
 
 export const LotterySubgraphHealthIndicator = subgraphHealthIndicatorFactory({
-  getSubgraphName: () => GRAPH_API_LOTTERY.replace('https://api.thegraph.com/subgraphs/name/', ''),
+  getSubgraphName: () => GRAPH_API_LOTTERY.replace(`${THE_GRAPH_PROXY_API}/`, ''),
 })
 
 export const PredictionSubgraphHealthIndicator = subgraphHealthIndicatorFactory({
-  getSubgraphName: (chainId) =>
-    GRAPH_API_PREDICTION_BNB?.[chainId]?.replace('https://api.thegraph.com/subgraphs/name/', ''),
+  getSubgraphName: (chainId) => GRAPH_API_PREDICTION_BNB?.[chainId]?.replace(`${THE_GRAPH_PROXY_API}/`, ''),
 })
