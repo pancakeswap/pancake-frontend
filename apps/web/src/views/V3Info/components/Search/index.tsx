@@ -14,7 +14,6 @@ import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/Currency
 import { getTokenNameAlias, getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { v3InfoPath } from '../../constants'
 import { useSearchData } from '../../hooks'
-import { PoolData } from '../../types'
 import { feeTierPercent } from '../../utils'
 import { GreyBadge } from '../Card'
 
@@ -122,30 +121,6 @@ const OptionButton = styled.div<{ enabled: boolean }>`
     cursor: pointer;
   }
 `
-type BasicTokenData = {
-  address: string
-  symbol: string
-  name: string
-}
-const tokenIncludesSearchTerm = (token: BasicTokenData, chainId: number, value: string) => {
-  const tokenSymbolAlias = getTokenSymbolAlias(token.address, chainId, token.symbol)
-  const tokenNameAlias = getTokenNameAlias(token.address, chainId, token.name)
-  return (
-    token.address.toLowerCase().includes(value.toLowerCase()) ||
-    token.symbol.toLowerCase().includes(value.toLowerCase()) ||
-    token.name.toLowerCase().includes(value.toLowerCase()) ||
-    (tokenSymbolAlias && tokenSymbolAlias.toLowerCase().includes(value.toLowerCase())) ||
-    (tokenNameAlias && tokenNameAlias.toLowerCase().includes(value.toLowerCase()))
-  )
-}
-
-const poolIncludesSearchTerm = (pool: PoolData, chainId: number, value: string) => {
-  return (
-    pool.address.toLowerCase().includes(value.toLowerCase()) ||
-    tokenIncludesSearchTerm(pool.token0, chainId, value) ||
-    tokenIncludesSearchTerm(pool.token1, chainId, value)
-  )
-}
 
 const Search = () => {
   const router = useRouter()
@@ -163,7 +138,7 @@ const Search = () => {
   const [value, setValue] = useState('')
   const debouncedSearchTerm = useDebounce(value, 600)
 
-  const { tokens, pools, loading, error } = useSearchData(debouncedSearchTerm)
+  const { tokens, pools, loading, error } = useSearchData(debouncedSearchTerm, showMenu)
 
   const [tokensShown, setTokensShown] = useState(3)
   const [poolsShown, setPoolsShown] = useState(3)

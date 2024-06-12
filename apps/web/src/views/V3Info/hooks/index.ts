@@ -443,7 +443,7 @@ export const usePoolTickData = (address: string): PoolTickData | undefined => {
   return data?.data ?? undefined
 }
 
-export const useSearchData = (searchValue: string) => {
+export const useSearchData = (searchValue: string, enabled = true) => {
   const chainName = useExplorerChainNameByQuery()
   const { data, status, error } = useQuery({
     queryKey: [`v3/info/pool/searchData/${chainName}/${searchValue}`, chainName],
@@ -455,7 +455,7 @@ export const useSearchData = (searchValue: string) => {
       return fetchSearchResults(chainName, searchValue)
     },
 
-    enabled: Boolean(chainName && searchValue),
+    enabled: Boolean(chainName && searchValue && enabled),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   const searchResult = useMemo(() => {

@@ -135,7 +135,7 @@ const Search = () => {
   const [value, setValue] = useState('')
   const debouncedSearchTerm = useDebounce(value, 600)
 
-  const { tokens, pools, tokensLoading, poolsLoading, error } = useFetchSearchResults(debouncedSearchTerm)
+  const { tokens, pools, tokensLoading, poolsLoading, error } = useFetchSearchResults(debouncedSearchTerm, showMenu)
 
   const [tokensShown, setTokensShown] = useState(3)
   const [poolsShown, setPoolsShown] = useState(3)

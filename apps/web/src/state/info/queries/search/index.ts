@@ -55,7 +55,7 @@ async function search(
   }
 }
 
-const useFetchSearchResults = (searchString: string) => {
+const useFetchSearchResults = (searchString: string, enabled = true) => {
   const searchStringTooShort = searchString.length < MINIMUM_SEARCH_CHARACTERS
 
   const chainName = useExplorerChainNameByQuery()
@@ -75,7 +75,7 @@ const useFetchSearchResults = (searchString: string) => {
       return search(chainName, type, searchString, signal)
     },
     queryKey: ['info-search', type, chainName],
-    enabled: Boolean(chainName && !searchStringTooShort),
+    enabled: Boolean(chainName && !searchStringTooShort && enabled),
   })
 
   return {
