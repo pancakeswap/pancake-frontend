@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/swap-sdk-evm",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An SDK for Pancakeswap EVM based chains",
   "repository": {
     "type": "git",
