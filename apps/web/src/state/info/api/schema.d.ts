@@ -169,6 +169,10 @@ export interface paths {
     /** Get protocol tvl chart */
     get: operations['getCachedProtocolChartByProtocolByChainNameTvl']
   }
+  '/cached/protocol/{protocol}/{chainName}/search': {
+    /** Search protocol tokens and pools */
+    get: operations['getCachedProtocolByProtocolByChainNameSearch']
+  }
   '/cached/protocol/{protocol}/{chainName}/stats': {
     /** Get protocol stats */
     get: operations['getCachedProtocolByProtocolByChainNameStats']
@@ -1028,7 +1032,9 @@ export interface operations {
     }
     responses: {
       200: {
-        content: never
+        content: {
+          'application/json': Record<string, never>
+        }
       }
     }
   }
@@ -1042,7 +1048,9 @@ export interface operations {
     }
     responses: {
       200: {
-        content: never
+        content: {
+          'application/json': Record<string, never>
+        }
       }
     }
   }
@@ -1055,7 +1063,9 @@ export interface operations {
     }
     responses: {
       200: {
-        content: never
+        content: {
+          'application/json': Record<string, never>
+        }
       }
     }
   }
@@ -1294,6 +1304,10 @@ export interface operations {
         token0?: string
         /** @description Filter by Token1 address */
         token1?: string
+        /** @description Cursor for pagination before */
+        before?: string
+        /** @description Cursor for pagination after */
+        after?: string
       }
       path: {
         /** @description Chain name */
@@ -1327,6 +1341,7 @@ export interface operations {
                 name: string
                 decimals: number
               }
+              totalVolumeUSD: string
               tvlUSD: string
               tvlToken0: string
               tvlToken1: string
@@ -1816,6 +1831,59 @@ export interface operations {
             bucket: Record<string, never> | string
             tvlUSD: null | string
           }[]
+        }
+      }
+    }
+  }
+  /** Search protocol tokens and pools */
+  getCachedProtocolByProtocolByChainNameSearch: {
+    parameters: {
+      query: {
+        text: string
+      }
+      path: {
+        /** @description Chain name */
+        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        /** @description Protocol version */
+        protocol: 'v2' | 'v3' | 'stable'
+      }
+    }
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            tokens: {
+              id: string
+              name: string
+              symbol: string
+              decimals: number
+              priceUSD: string
+              totalVolumeUSD: string
+              tvlUSD: string
+              tvl: string
+              totalTxCount: number
+            }[]
+            pools: {
+              id: string
+              token0: {
+                id: string
+                symbol: string
+                name: string
+                decimals: number
+              }
+              token1: {
+                id: string
+                symbol: string
+                name: string
+                decimals: number
+              }
+              feeTier: number
+              tvlUSD: string
+              totalVolumeUSD: string
+              tvlToken0: string
+              tvlToken1: string
+            }[]
+          }
         }
       }
     }
