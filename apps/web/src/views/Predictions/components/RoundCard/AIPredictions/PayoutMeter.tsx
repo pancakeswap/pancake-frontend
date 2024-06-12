@@ -31,6 +31,12 @@ const MeterPointerImage = styled.img`
 
   transform-origin: bottom;
   animation: ${rotatePointerAnimation} 2s alternate infinite;
+
+  ${({ theme }) =>
+    theme.isDark &&
+    `
+  filter: invert(100%) grayscale(100%) sepia(100%) saturate(0%);
+  `}
 `
 
 const AnimatedMeter = (props: BoxProps) => {
