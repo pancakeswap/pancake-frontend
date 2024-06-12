@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
@@ -15,9 +16,10 @@ import {
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
+import { useMultichainVeCakeWellSynced } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { useAccount } from 'wagmi'
 import boosterCardImage from '../../../../images/boosterCardImage.png'
@@ -126,10 +128,12 @@ export const BCakeBoosterCard: React.FC<{ variants?: 'farm' | 'pm' }> = ({ varia
 
 const CardContent: React.FC<{ variants?: 'farm' | 'pm' }> = ({ variants }) => {
   const { t } = useTranslation()
-  const { address: account } = useAccount()
-  const { locked } = useBCakeBoostLimitAndLockInfo()
+  const { address: account, chainId } = useAccount()
+  const { locked } = useBCakeBoostLimitAndLockInfo(ChainId.BSC)
+  const { isVeCakeWillSync } = useMultichainVeCakeWellSynced(chainId ?? -1)
   const theme = useTheme()
   const [isOpen, setIsOpen] = useState(false)
+  const isBSC = useMemo(() => chainId === ChainId.BSC, [chainId])
 
   if (!account)
     return (
@@ -164,25 +168,31 @@ const CardContent: React.FC<{ variants?: 'farm' | 'pm' }> = ({ variants }) => {
     <Box>
       <Flex justifyContent="space-between">
         <Text color="secondary" fontSize={12} bold textTransform="uppercase">
-          {t('Yield booster active')}
+          {isVeCakeWillSync ? t('Yield booster active') : t('veCAKE Not Synced')}
         </Text>
       </Flex>
       <Text color="textSubtle" fontSize={12} mb="10px">
-        {variants === 'pm'
-          ? t(
-              'Boost the token rewards from unlimited number of Position Managers. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.',
-            )
-          : t(
-              'Boost your CAKE rewards from V3, V2 and StableSwap farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.',
-            )}
+        {isBSC
+          ? variants === 'pm'
+            ? t(
+                'Boost the token rewards from unlimited number of Position Managers. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.',
+              )
+            : t(
+                'Boost your CAKE rewards from V3, V2 and StableSwap farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.',
+              )
+          : isVeCakeWillSync
+          ? t('Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking.')
+          : t('You need to sync your veCAKE to the current network to activate farm yield boosters.')}
       </Text>
-      <NextLink href="/cake-staking" passHref>
-        <Button width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
-          {t('Go to CAKE Staking')}
-        </Button>
-      </NextLink>
+      {!isBSC && isVeCakeWillSync && (
+        <Text fontSize={12} mb="10px" color="textSubtle">
+          {t(
+            'You will need to re-sync your veCAKE after extending or adding more CAKE to your veCAKE staking position.',
+          )}
+        </Text>
+      )}
       <Button width="100%" style={{ backgroundColor: theme.colors.textSubtle }} onClick={() => setIsOpen(true)}>
-        {t('Sync')}
+        {t('Sync veCake')}
       </Button>
       <CrossChainVeCakeModal
         isOpen={isOpen}

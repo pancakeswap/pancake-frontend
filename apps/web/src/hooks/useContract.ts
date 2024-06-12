@@ -196,10 +196,13 @@ export const useVaultPoolContract = <T extends VaultKey>(
   }, [signer, vaultKey, chainId]) as any
 }
 
-export const useCakeVaultContract = () => {
+export const useCakeVaultContract = (targetChain?: ChainId) => {
   const { data: signer } = useWalletClient()
   const { chainId } = useActiveChainId()
-  return useMemo(() => getCakeVaultV2Contract(signer ?? undefined, chainId), [signer, chainId])
+  return useMemo(
+    () => getCakeVaultV2Contract(signer ?? undefined, targetChain ?? chainId),
+    [signer, chainId, targetChain],
+  )
 }
 
 export const useIfoCreditAddressContract = () => {
@@ -509,12 +512,12 @@ export const useFixedStakingContract = () => {
   return useMemo(() => getFixedStakingContract(signer ?? undefined, chainId), [chainId, signer])
 }
 
-export const useVeCakeContract = () => {
+export const useVeCakeContract = (targetChain?: ChainId) => {
   const { chainId } = useActiveChainId()
 
   const { data: signer } = useWalletClient()
 
-  return useMemo(() => getVeCakeContract(signer ?? undefined, chainId), [chainId, signer])
+  return useMemo(() => getVeCakeContract(signer ?? undefined, targetChain ?? chainId), [chainId, signer, targetChain])
 }
 
 export const usePancakeVeSenderV2Contract = (targetChainId?: ChainId) => {

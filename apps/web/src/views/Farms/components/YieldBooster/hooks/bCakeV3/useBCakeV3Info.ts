@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { bCakeSupportedChainId } from '@pancakeswap/farms'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import BN from 'bignumber.js'
@@ -135,8 +136,8 @@ export const useVeCakeUserMultiplierBeforeBoosted = (tokenId?: string) => {
   }
 }
 
-export const useBCakeBoostLimitAndLockInfo = () => {
-  const { status } = useCakeLockStatus()
+export const useBCakeBoostLimitAndLockInfo = (targetChain?: ChainId) => {
+  const { status } = useCakeLockStatus(targetChain)
   const isLockEnd = useMemo(() => status === CakeLockStatus.Expired, [status])
   const locked = useMemo(() => status === CakeLockStatus.Locking, [status])
 
