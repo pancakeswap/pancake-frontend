@@ -18,7 +18,7 @@ const PERSISTED_KEYS: string[] = ['user', 'transactions', 'notifications']
 const persistConfig = {
   key: 'primary',
   whitelist: PERSISTED_KEYS,
-  blacklist: ['profile'],
+  blacklist: ['profile', 'notifications'],
   storage,
   version: 1,
 }
