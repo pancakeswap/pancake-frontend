@@ -24,6 +24,7 @@ import { FC, useContext, useMemo } from 'react'
 import { ChainLinkSupportChains, multiChainPaths } from 'state/info/constant'
 import { css, keyframes, styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
+import { useMerklUserLink } from 'utils/getMerklLink'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { isAddressEqual } from 'viem'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
@@ -190,13 +191,19 @@ const StyleMerklWarning = styled.div`
 
 const MerklWarning: React.FC<{
   merklLink: string
+  merklUserLink?: string
   hasFarm?: boolean
-}> = ({ merklLink, hasFarm }) => {
+}> = ({ merklLink, hasFarm, merklUserLink }) => {
   return (
     <StyleMerklWarning>
       <Message variant="primary" icon={<VerifiedIcon color="#7645D9" />}>
         <MessageText color="#7645D9">
-          <MerklNotice.Content hasFarm={hasFarm} merklLink={merklLink} linkColor="currentColor" />
+          <MerklNotice.Content
+            hasFarm={hasFarm}
+            merklLink={merklLink}
+            linkColor="currentColor"
+            merklUserLink={merklUserLink}
+          />
         </MessageText>
       </Message>
     </StyleMerklWarning>
@@ -219,6 +226,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   const { address: account } = useAccount()
   const { merklLink } = farm_
   const farm = details
+  const merklUserLink = useMerklUserLink()
   const isActive = farm.multiplier !== '0X'
   const lpLabel = useMemo(() => farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, ''), [farm.lpSymbol])
   const bsc = useMemo(
@@ -299,7 +307,9 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
           </>
         }
       >
-        {!isDesktop && merklLink ? <MerklWarning hasFarm={hasBothFarmAndMerkl} merklLink={merklLink} /> : null}
+        {!isDesktop && merklLink ? (
+          <MerklWarning hasFarm={hasBothFarmAndMerkl} merklLink={merklLink} merklUserLink={merklUserLink} />
+        ) : null}
         {!userDataReady ? (
           <Skeleton height={200} width="100%" />
         ) : account && !hasNoPosition ? (

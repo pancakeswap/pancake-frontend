@@ -1,6 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 import MERKL_POOLS from 'config/constants/merklPools.json'
+import { useMemo } from 'react'
 import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 
 type MerklPools = {
   chainId: ChainId
@@ -25,5 +27,13 @@ export const getMerklLink = ({
     }
   })
 
+  return link
+}
+
+export const useMerklUserLink = (): string => {
+  const { address: account } = useAccount()
+  const link = useMemo(() => {
+    return `https://merkl.angle.money/user/${account ?? ''}`
+  }, [account])
   return link
 }

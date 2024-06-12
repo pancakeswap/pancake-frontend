@@ -43,6 +43,7 @@ type ExpandableSectionProps = {
   farmCakePerSecond?: string
   totalMultipliers?: string
   merklLink?: string
+  merklUserLink?: string
   hasBothFarmAndMerkl?: boolean
   isBoosted?: boolean
   lpAddress?: Address
@@ -73,6 +74,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   farmCakePerSecond,
   totalMultipliers,
   merklLink,
+  merklUserLink,
   hasBothFarmAndMerkl,
   merklApr,
   lpAddress,
@@ -113,6 +115,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
                   merklLink={merklLink}
                   hasFarm={hasBothFarmAndMerkl}
                   merklApr={merklApr}
+                  merklUserLink={merklUserLink}
                 />
               </Box>
             ) : null}
