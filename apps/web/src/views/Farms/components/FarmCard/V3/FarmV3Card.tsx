@@ -9,7 +9,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
-import { getMerklLink } from 'utils/getMerklLink'
+import { getMerklLink, useMerklUserLink } from 'utils/getMerklLink'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { isAddressEqual } from 'viem'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
@@ -68,7 +68,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
   const { lpAddress } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
   const { status: boostStatus } = useBoostStatus(farm.pid)
-
+  const merklUserLink = useMerklUserLink()
   const merklLink = getMerklLink({ chainId, lpAddress })
   const { merklApr } = useMerklInfo(merklLink ? lpAddress : null)
   const infoUrl = useMemo(() => {
@@ -119,6 +119,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
           lpAddress={lpAddress}
           merklApr={merklApr}
           isBooster={isBoosted}
+          merklUserLink={merklUserLink}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">

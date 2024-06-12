@@ -9,6 +9,7 @@ import { styled } from 'styled-components'
 import { ChainId } from '@pancakeswap/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMerklInfo } from 'hooks/useMerkl'
+import { useMerklUserLink } from 'utils/getMerklLink'
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { RewardPerDay } from 'views/PositionManagers/components/RewardPerDay'
@@ -145,6 +146,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
     return isSmallerScreen ? MobileColumnSchema : props.type === 'v3' ? V3DesktopColumnSchema : DesktopColumnSchema
   }, [isSmallerScreen, props.type])
   const columnNames = useMemo(() => tableSchema.map((column) => column.name), [tableSchema])
+  const merklUserLink = useMerklUserLink()
 
   const { merklApr } = useMerklInfo(farm?.merklLink ? props.details.lpAddress : null)
   return (
@@ -289,6 +291,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                             chainId: props?.details?.token.chainId,
                             lpAddress: props?.details?.lpAddress,
                             merklApr,
+                            merklUserLink,
                           })}
                         </CellLayout>
                       </CellInner>
@@ -304,7 +307,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <tr style={{ cursor: 'pointer' }} onClick={toggleActionPanel}>
             <FarmMobileCell colSpan={3}>
               <Flex justifyContent="space-between" alignItems="center">
-                <FarmCell {...props.farm} lpAddress={props?.details?.lpAddress} merklApr={merklApr} />
+                <FarmCell
+                  {...props.farm}
+                  lpAddress={props?.details?.lpAddress}
+                  merklApr={merklApr}
+                  merklUserLink={merklUserLink}
+                />
                 <Flex
                   mr="16px"
                   alignItems={isMobile ? 'end' : 'center'}
