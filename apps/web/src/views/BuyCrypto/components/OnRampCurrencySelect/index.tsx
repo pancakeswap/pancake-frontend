@@ -1,26 +1,25 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Token } from '@pancakeswap/sdk'
-import { ArrowDropDownIcon, Box, BoxProps, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
-import { NumericalInput } from '@pancakeswap/widgets-internal'
+import { ArrowDropDownIcon, Box, BoxProps, Flex, SkeletonText, Text, useModal } from '@pancakeswap/uikit'
+import { NumberDisplay, NumericalInput } from '@pancakeswap/widgets-internal'
 import OnRampCurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/OnRampCurrencyModal'
-import { ReactNode } from 'react'
 import { fiatCurrencyMap, getNetworkDisplay, onRampCurrencies } from 'views/BuyCrypto/constants'
-import { DropDownContainer, OptionSelectButton, StyledCircle } from 'views/BuyCrypto/styles'
+import { DropDownContainer, OptionSelectButton } from 'views/BuyCrypto/styles'
 import { OnRampUnit } from 'views/BuyCrypto/types'
 import { OnRampCurrencyLogo } from '../OnRampProviderLogo/OnRampProviderLogo'
 
 interface BuyCryptoSelectorProps extends Omit<CurrencySearchModalProps, 'mode'>, BoxProps {
   id: 'onramp-fiat' | 'onramp-crypto'
+  currencyLoading: boolean
+  inputLoading?: boolean
   value: string
   onUserInput?: (value: string) => void
   disableCurrencySelect?: boolean
   error?: boolean
   errorText?: string
   onInputBlur?: () => void
-  disabled?: boolean
-  loading?: boolean
-  topElement?: ReactNode
-  bottomElement?: ReactNode
+  disableInput?: boolean
+  unit: OnRampUnit
 }
 
 const ButtonAsset = ({
@@ -59,19 +58,6 @@ const ButtonAsset = ({
   )
 }
 
-interface BuyCryptoSelectorProps extends Omit<CurrencySearchModalProps, 'mode'>, BoxProps {
-  id: 'onramp-fiat' | 'onramp-crypto'
-  currencyLoading: boolean
-  value: string
-  onUserInput?: (value: string) => void
-  disableCurrencySelect?: boolean
-  error?: boolean
-  errorText?: string
-  onInputBlur?: () => void
-  disableInput?: boolean
-  unit: OnRampUnit
-}
-
 export const BuyCryptoSelector = ({
   onCurrencySelect,
   onUserInput,
@@ -80,6 +66,7 @@ export const BuyCryptoSelector = ({
   otherSelectedCurrency,
   id,
   currencyLoading,
+  inputLoading = false,
   error,
   value,
   disableInput = false,
@@ -99,34 +86,33 @@ export const BuyCryptoSelector = ({
   )
 
   return (
-    <Box width="100%" {...props}>
-      <DropDownContainer error={error as any}>
-        {!disableInput && <StyledCircle />}
-        <NumericalInput
-          error={error}
-          disabled={disableInput || !selectedCurrency}
-          loading={!selectedCurrency}
-          className="token-amount-input"
-          value={value}
-          onBlur={onInputBlur}
-          onUserInput={(val) => {
-            onUserInput?.(val)
-          }}
-          align="left"
-        />
+    <Box width="100%" {...props} position="relative">
+      <DropDownContainer error={Boolean(error)}>
+        {!disableInput ? (
+          <NumericalInput
+            error={error}
+            align="left"
+            loading={!selectedCurrency}
+            className="token-amount-input"
+            value={inputLoading ? '' : value}
+            onBlur={onInputBlur}
+            onUserInput={(val) => {
+              onUserInput?.(val)
+            }}
+          />
+        ) : (
+          <SkeletonText initialHeight={25} initialWidth={100} loading={inputLoading}>
+            <NumberDisplay value={value} />
+          </SkeletonText>
+        )}
+
         <OptionSelectButton
           className="open-currency-select-button"
           selected={!!selectedCurrency}
           onClick={onPresentCurrencyModal}
         >
-          {selectedCurrency ? (
-            <ButtonAsset id={id} selectedCurrency={selectedCurrency as Currency} currencyLoading={currencyLoading} />
-          ) : (
-            <Flex>
-              <Skeleton width="105px" height="26px" variant="round" isDark />
-            </Flex>
-          )}
-          {selectedCurrency && <ArrowDropDownIcon color="primary" />}
+          <ButtonAsset id={id} selectedCurrency={selectedCurrency as Currency} currencyLoading={currencyLoading} />
+          <ArrowDropDownIcon color="primary" />
         </OptionSelectButton>
       </DropDownContainer>
     </Box>
