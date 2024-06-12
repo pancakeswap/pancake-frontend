@@ -49,36 +49,42 @@ const QUERY_SETTINGS_IMMUTABLE = {
 }
 
 export const useProtocolChartData = (): ChartDayData[] | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data: chartData } = useQuery({
-    queryKey: [`v3/info/protocol/ProtocolChartData/${chainName}`, chainName],
-    queryFn: ({ signal }) => fetchChartData('v3', chainName!, signal),
-    enabled: Boolean(chainName),
+    queryKey: [`v3/info/protocol/ProtocolChartData/${chainId}`, chainId],
+    queryFn: ({ signal }) => fetchChartData('v3', explorerChainName!, signal),
+    enabled: Boolean(explorerChainName),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(() => chartData?.data ?? [], [chartData])
 }
 
 export const useProtocolData = (): ProtocolData | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/protocol/ProtocolData/${chainName}`, chainName],
-    queryFn: ({ signal }) => fetchProtocolData(chainName!, signal),
-    enabled: Boolean(chainName),
+    queryKey: [`v3/info/protocol/ProtocolData/${chainId}`, chainId],
+    queryFn: ({ signal }) => fetchProtocolData(explorerChainName!, signal),
+    enabled: Boolean(explorerChainName),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data ?? undefined
 }
 
 export const useProtocolTransactionData = (): Transaction[] | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/protocol/ProtocolTransactionData/${chainName}`, chainName],
-    queryFn: ({ signal }) => fetchTopTransactions(chainName!, signal),
-    enabled: Boolean(chainName),
+    queryKey: [`v3/info/protocol/ProtocolTransactionData/${chainId}`, chainId],
+    queryFn: ({ signal }) => fetchTopTransactions(explorerChainName!, signal),
+    enabled: Boolean(explorerChainName),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(() => data?.filter((d) => d.amountUSD > 0) ?? [], [data])
@@ -91,7 +97,7 @@ export const usePairPriceChartTokenData = (
   targetChainId?: ChainId,
   enabled = true,
 ): { data: PriceChartEntry[] | undefined; maxPrice?: number; minPrice?: number; averagePrice?: number } => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
   const chainId = targetChainId ?? (chainName ? multiChainId[chainName] : undefined)
 
   const { data } = useQuery({
@@ -101,7 +107,7 @@ export const usePairPriceChartTokenData = (
       if (!address) {
         throw new Error('Address is not defined')
       }
-      return fetchPairPriceChartTokenData(address, chainIdToExplorerInfoChainName[chainId], duration ?? 'day', signal)
+      return fetchPairPriceChartTokenData(address, chainIdToExplorerInfoChainName[chainId!], duration ?? 'day', signal)
     },
 
     enabled: Boolean(
@@ -180,13 +186,15 @@ export const useTopTokensData = ():
       [address: string]: TokenData
     }
   | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/token/TopTokensData/${chainName}`, chainName],
+    queryKey: [`v3/info/token/TopTokensData/${chainId}`, chainId],
 
-    queryFn: ({ signal }) => fetchTopTokens(chainName!, signal),
-    enabled: Boolean(chainName),
+    queryFn: ({ signal }) => fetchTopTokens(explorerChainName!, signal),
+    enabled: Boolean(explorerChainName),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
@@ -238,14 +246,16 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
 }
 
 export const useTokenData = (address: string): TokenData | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/token/tokenData/${chainName}/${address}`, chainName],
+    queryKey: [`v3/info/token/tokenData/${chainId}/${address}`, chainId],
 
-    queryFn: ({ signal }) => fetchedTokenData(chainName!, address, signal),
+    queryFn: ({ signal }) => fetchedTokenData(explorerChainName!, address, signal),
 
-    enabled: Boolean(chainName && address && address !== 'undefined'),
+    enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
 
@@ -253,12 +263,14 @@ export const useTokenData = (address: string): TokenData | undefined => {
 }
 
 export const useTokenChartData = (address: string): TokenChartEntry[] | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/token/tokenChartData/${chainName}/${address}`, chainName],
-    queryFn: ({ signal }) => fetchTokenChartData('v3', chainName!, address, signal),
-    enabled: Boolean(chainName && address && address !== 'undefined'),
+    queryKey: [`v3/info/token/tokenChartData/${chainId}/${address}`, chainId],
+    queryFn: ({ signal }) => fetchTokenChartData('v3', explorerChainName!, address, signal),
+    enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
@@ -268,26 +280,30 @@ export const useTokenPriceData = (
   address: string,
   duration: 'day' | 'week' | 'month' | 'year',
 ): PriceChartEntry[] | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/token/tokenPriceData/${chainName}/${address}/${duration}`, chainName],
+    queryKey: [`v3/info/token/tokenPriceData/${chainId}/${address}/${duration}`, chainId],
 
-    queryFn: ({ signal }) => fetchTokenPriceData(address, 'v3', duration, chainName!, signal),
+    queryFn: ({ signal }) => fetchTokenPriceData(address, 'v3', duration, explorerChainName!, signal),
 
-    enabled: Boolean(chainName && address && address !== 'undefined'),
+    enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
 }
 
 export const useTokenTransactions = (address: string): Transaction[] | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/token/tokenTransaction/${chainName}/${address}`, chainName],
-    queryFn: ({ signal }) => fetchTokenTransactions(address, chainName!, signal),
-    enabled: Boolean(chainName && address && address !== 'undefined'),
+    queryKey: [`v3/info/token/tokenTransaction/${chainId}/${address}`, chainId],
+    queryFn: ({ signal }) => fetchTokenTransactions(address, explorerChainName!, signal),
+    enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0), [data])
@@ -356,101 +372,112 @@ export const useTopPoolsData = ():
       [address: string]: PoolData
     }
   | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/pool/TopPoolsData/${chainName}`, chainName],
+    queryKey: [`v3/info/pool/TopPoolsData/${chainId}`, chainId],
 
     queryFn: async ({ signal }) => {
-      return fetchTopPools(chainName!, signal)
+      return fetchTopPools(explorerChainName!, signal)
     },
-    enabled: Boolean(chainName),
+    enabled: Boolean(explorerChainName),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
 }
 
 export const usePoolsDataForToken = (address: string): PoolData[] | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/pool/poolsDataForToken/${chainName}/${address}`],
+    queryKey: [`v3/info/pool/poolsDataForToken/${chainId}/${address}`],
 
     queryFn: () => {
       if (!chainName) {
         throw new Error('Chain name is not defined')
       }
-      return fetchPoolsForToken(address, chainName)
+      return fetchPoolsForToken(address, explorerChainName!)
     },
-    enabled: Boolean(chainName && address && address !== 'undefined'),
+    enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
 }
 
 export const usePoolData = (address: string): PoolData | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/pool/poolData/${chainName}/${address}`, chainName],
+    queryKey: [`v3/info/pool/poolData/${chainId}/${address}`, chainId],
 
-    queryFn: ({ signal }) => fetchedPoolData(chainName!, address, signal),
+    queryFn: ({ signal }) => fetchedPoolData(explorerChainName!, address, signal),
 
-    enabled: Boolean(chainName && address && address !== 'undefined'),
+    enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
 }
 export const usePoolTransactions = (address: string): Transaction[] | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/pool/poolTransaction/${chainName}/${address}`, chainName],
-    queryFn: ({ signal }) => fetchPoolTransactions(address, chainName!, signal),
-    enabled: Boolean(chainName && address && address !== 'undefined'),
+    queryKey: [`v3/info/pool/poolTransaction/${chainId}/${address}`, chainId],
+    queryFn: ({ signal }) => fetchPoolTransactions(address, explorerChainName!, signal),
+    enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0) ?? undefined, [data])
 }
 
 export const usePoolChartData = (address: string): PoolChartEntry[] | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/pool/poolChartData/${chainName}/${address}`, chainName],
-    queryFn: ({ signal }) => fetchPoolChartData('v3', chainName!, address, signal),
-    enabled: Boolean(chainName && address && address !== 'undefined'),
+    queryKey: [`v3/info/pool/poolChartData/${chainId}/${address}`, chainId],
+    queryFn: ({ signal }) => fetchPoolChartData('v3', explorerChainName!, address, signal),
+    enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
 }
 
 export const usePoolTickData = (address: string): PoolTickData | undefined => {
-  const chainName = useExplorerChainNameByQuery()
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/pool/poolTickData/${chainName}/${address}`, chainName],
-    queryFn: ({ signal }) =>
-      fetchTicksSurroundingPrice(address, chainName!, multiChainId[chainName!], undefined, signal),
-    enabled: Boolean(chainName && address && address !== 'undefined'),
+    queryKey: [`v3/info/pool/poolTickData/${chainId}/${address}`, chainId],
+    queryFn: ({ signal }) => fetchTicksSurroundingPrice(address, explorerChainName!, chainId, undefined, signal),
+    enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data ?? undefined
 }
 
 export const useSearchData = (searchValue: string, enabled = true) => {
-  const chainName = useExplorerChainNameByQuery()
+  const explorerChainName = useExplorerChainNameByQuery()
   const { data, status, error } = useQuery({
-    queryKey: [`v3/info/pool/searchData/${chainName}/${searchValue}`, chainName],
+    queryKey: [`v3/info/pool/searchData/${explorerChainName}/${searchValue}`, explorerChainName],
 
     queryFn: () => {
-      if (!chainName) {
+      if (!explorerChainName) {
         throw new Error('Chain name is not defined')
       }
-      return fetchSearchResults(chainName, searchValue)
+      return fetchSearchResults(explorerChainName, searchValue)
     },
 
-    enabled: Boolean(chainName && searchValue && enabled),
+    enabled: Boolean(explorerChainName && searchValue && enabled),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   const searchResult = useMemo(() => {
