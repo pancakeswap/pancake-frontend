@@ -90,7 +90,7 @@ export const zksyncTokens = {
   usdtPlus: new ERC20Token(
     ChainId.ZKSYNC,
     '0xBb8D60008A08b1828E02120F1a952D295036eF3d',
-    7,
+    6,
     'USDT+',
     'USDT+',
     'https://overnight.fi/',
