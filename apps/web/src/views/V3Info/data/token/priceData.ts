@@ -12,14 +12,12 @@ export async function fetchTokenPriceData(
   protocol: 'v2' | 'v3' | 'stable',
   duration: 'day' | 'week' | 'month' | 'year',
   chainName: components['schemas']['ChainName'],
-): Promise<{
-  data: PriceChartEntry[]
-  error: boolean
-}> {
+  signal: AbortSignal,
+): Promise<{ data: PriceChartEntry[]; error: boolean }> {
   try {
     const data = await explorerApiClient
       .GET('/cached/tokens/chart/{chainName}/{address}/{protocol}/price', {
-        signal: null,
+        signal,
         params: {
           path: {
             protocol,
@@ -76,6 +74,7 @@ export async function fetchPairPriceChartTokenData(
   address: string,
   chainName: components['schemas']['ChainName'],
   duration: 'day' | 'week' | 'month' | 'year',
+  signal: AbortSignal,
 ): Promise<{
   data: PriceChartEntry[]
   maxPrice?: number
@@ -90,7 +89,7 @@ export async function fetchPairPriceChartTokenData(
   try {
     const data = await explorerApiClient
       .GET('/cached/pools/chart/v3/{chainName}/{address}/rate', {
-        signal: null,
+        signal,
         params: {
           path: {
             chainName,

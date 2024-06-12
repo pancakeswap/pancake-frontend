@@ -7,13 +7,17 @@ import { ChartDayData } from '../../types'
 // format dayjs with the libraries that we need
 dayjs.extend(utc)
 
-export async function fetchChartData(protocol: 'v2' | 'v3' | 'stable', chainName: components['schemas']['ChainName']) {
+export async function fetchChartData(
+  protocol: 'v2' | 'v3' | 'stable',
+  chainName: components['schemas']['ChainName'],
+  signal: AbortSignal,
+) {
   let error = false
 
   try {
     const rawTvlResults = await explorerApiClient
       .GET('/cached/protocol/chart/{protocol}/{chainName}/tvl', {
-        signal: null,
+        signal,
         params: {
           path: {
             protocol,
@@ -28,7 +32,7 @@ export async function fetchChartData(protocol: 'v2' | 'v3' | 'stable', chainName
 
     const rawVolumeResults = await explorerApiClient
       .GET('/cached/protocol/chart/{protocol}/{chainName}/volume', {
-        signal: null,
+        signal,
         params: {
           path: {
             protocol,
