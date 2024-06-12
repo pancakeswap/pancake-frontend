@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3005",
-    "build": "next build 3005",
-    "start": "next start 3005",
+    "build": "next build",
+    "start": "next start",
     "lint": "eslint '**/*.{js,jsx,ts,tsx}'"
   },
   "engines": {
