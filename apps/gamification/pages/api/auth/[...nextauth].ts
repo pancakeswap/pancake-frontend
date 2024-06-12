@@ -41,6 +41,7 @@ export default NextAuth({
       ;(session as any).user.twitterId = token.twitterId || null
       return session
     },
+
     // async redirect({ url, baseUrl }) {
     //   return url
     //   // return `${baseUrl}/profile`
