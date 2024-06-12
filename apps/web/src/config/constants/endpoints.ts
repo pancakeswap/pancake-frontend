@@ -58,7 +58,7 @@ export const V2_SUBGRAPH_URLS = {
   [ChainId.POLYGON_ZKEVM]: `${THE_GRAPH_PROXY_API}/exchange-v2-polygon-zkevm`,
   [ChainId.BASE]: `${THE_GRAPH_PROXY_API}/exchange-v2-base`,
   [ChainId.ETHEREUM]: `${THE_GRAPH_PROXY_API}/exchange-v2-eth`,
-  // [ChainId.BSC]: `${INFO_GATEWAY_OLD_API}/subgraphs/v2/bsc/graphql`,
+  [ChainId.BSC]: `${THE_GRAPH_PROXY_API}/exchange-v2-bsc`,
   [ChainId.ARBITRUM_ONE]: `${THE_GRAPH_PROXY_API}/exchange-v2-arb`,
   [ChainId.ZKSYNC]: `${THE_GRAPH_PROXY_API}/exchange-v2-zksync`,
   [ChainId.LINEA]: `${THE_GRAPH_PROXY_API}/exchange-v2-linea`,
