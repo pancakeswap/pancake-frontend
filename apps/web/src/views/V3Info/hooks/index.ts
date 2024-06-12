@@ -104,10 +104,7 @@ export const usePairPriceChartTokenData = (
     queryKey: [`v3/info/token/pairPriceChartToken/${address}/${duration}`, targetChainId ?? chainId],
 
     queryFn: async ({ signal }) => {
-      if (!address) {
-        throw new Error('Address is not defined')
-      }
-      return fetchPairPriceChartTokenData(address, chainIdToExplorerInfoChainName[chainId!], duration ?? 'day', signal)
+      return fetchPairPriceChartTokenData(address!, chainIdToExplorerInfoChainName[chainId!], duration ?? 'day', signal)
     },
 
     enabled: Boolean(
@@ -390,16 +387,12 @@ export const useTopPoolsData = ():
 
 export const usePoolsDataForToken = (address: string): PoolData[] | undefined => {
   const chainName = useChainNameByQuery()
-  const chainId = multiChainId[chainName]
   const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/pool/poolsDataForToken/${chainId}/${address}`],
+    queryKey: [`v3/info/pool/poolsDataForToken/${chainName}/${address}`],
 
     queryFn: () => {
-      if (!chainName) {
-        throw new Error('Chain name is not defined')
-      }
       return fetchPoolsForToken(address, explorerChainName!)
     },
     enabled: Boolean(explorerChainName && address && address !== 'undefined'),
@@ -466,15 +459,14 @@ export const usePoolTickData = (address: string): PoolTickData | undefined => {
 }
 
 export const useSearchData = (searchValue: string, enabled = true) => {
+  const chainName = useChainNameByQuery()
   const explorerChainName = useExplorerChainNameByQuery()
+
   const { data, status, error } = useQuery({
-    queryKey: [`v3/info/pool/searchData/${explorerChainName}/${searchValue}`, explorerChainName],
+    queryKey: [`v3/info/pool/searchData/${chainName}/${searchValue}`, chainName],
 
     queryFn: () => {
-      if (!explorerChainName) {
-        throw new Error('Chain name is not defined')
-      }
-      return fetchSearchResults(explorerChainName, searchValue)
+      return fetchSearchResults(explorerChainName!, searchValue)
     },
 
     enabled: Boolean(explorerChainName && searchValue && enabled),
