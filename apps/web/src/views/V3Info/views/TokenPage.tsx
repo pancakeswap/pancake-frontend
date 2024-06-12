@@ -45,8 +45,7 @@ import TransactionTable from '../components/TransactionsTable'
 import { MonoSpace, StyledCMCLink } from '../components/shared'
 import { v3InfoPath } from '../constants'
 import {
-  usePoolsData,
-  usePoolsForToken,
+  usePoolsDataForToken,
   useTokenChartData,
   useTokenData,
   useTokenPriceData,
@@ -95,8 +94,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   }, [])
   const { t } = useTranslation()
   const tokenData = useTokenData(address)
-  const poolsForToken = usePoolsForToken(address)
-  const poolDatas = usePoolsData(poolsForToken?.filter((d, index) => index < 200) ?? [])
+  const poolDatas = usePoolsDataForToken(address)
   const transactions = useTokenTransactions(address)
   const chartData = useTokenChartData(address)
   const formatPoolData = useMemo(() => {

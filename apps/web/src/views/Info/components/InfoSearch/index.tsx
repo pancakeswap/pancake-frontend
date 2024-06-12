@@ -9,7 +9,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { checkIsStableSwap, multiChainId } from 'state/info/constant'
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import useFetchSearchResults from 'state/info/queries/search'
-import { PoolData } from 'state/info/types'
 import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { getTokenNameAlias, getTokenSymbolAlias } from 'utils/getTokenAlias'
@@ -119,30 +118,6 @@ const OptionButton = styled.div<{ enabled: boolean }>`
     cursor: pointer;
   }
 `
-type BasicTokenData = {
-  address: string
-  symbol: string
-  name: string
-}
-const tokenIncludesSearchTerm = (token: BasicTokenData, chainId: number, value: string) => {
-  const tokenSymbolAlias = getTokenSymbolAlias(token.address, chainId, token.symbol)
-  const tokenNameAlias = getTokenNameAlias(token.address, chainId, token.name)
-  return (
-    token.address.toLowerCase().includes(value.toLowerCase()) ||
-    token.symbol.toLowerCase().includes(value.toLowerCase()) ||
-    token.name.toLowerCase().includes(value.toLowerCase()) ||
-    (tokenSymbolAlias && tokenSymbolAlias.toLowerCase().includes(value.toLowerCase())) ||
-    (tokenNameAlias && tokenNameAlias.toLowerCase().includes(value.toLowerCase()))
-  )
-}
-
-const poolIncludesSearchTerm = (pool: PoolData, chainId: number, value: string) => {
-  return (
-    pool.address.toLowerCase().includes(value.toLowerCase()) ||
-    tokenIncludesSearchTerm(pool.token0, chainId, value) ||
-    tokenIncludesSearchTerm(pool.token1, chainId, value)
-  )
-}
 
 const Search = () => {
   const router = useRouter()
@@ -209,11 +184,11 @@ const Search = () => {
 
   // filter on view
   const tokensForList = useMemo(() => {
-    return orderBy(tokens, (token) => token.volumeUSD, 'desc')
+    return orderBy(tokens, (token) => token.tvlUSD, 'desc')
   }, [tokens])
 
   const poolForList = useMemo(() => {
-    return orderBy(pools, (pool) => pool?.volumeUSD, 'desc')
+    return orderBy(pools, (pool) => pool?.tvlUSD, 'desc')
   }, [pools])
 
   const contentUnderTokenList = () => {
@@ -279,11 +254,11 @@ const Search = () => {
                   {t('Price')}
                 </Text>
               )}
-              {!isXs && !isSm && (
+              {/* {!isXs && !isSm && (
                 <Text textAlign="end" fontSize="12px">
                   {t('Volume 24H')}
                 </Text>
-              )}
+              )} */}
               {!isXs && !isSm && (
                 <Text textAlign="end" fontSize="12px">
                   {t('Liquidity')}
@@ -306,8 +281,7 @@ const Search = () => {
                       </Text>
                     </Flex>
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.priceUSD)}</Text>}
-                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.volumeUSD)}</Text>}
-                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.liquidityUSD)}</Text>}
+                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.tvlUSD)}</Text>}
                   </ResponsiveGrid>
                 </HoverRowLink>
               )
@@ -330,7 +304,7 @@ const Search = () => {
               <Text bold color="secondary" mb="8px">
                 {t('Pairs')}
               </Text>
-              {!isXs && !isSm && (
+              {/* {!isXs && !isSm && (
                 <Text textAlign="end" fontSize="12px">
                   {t('Volume 24H')}
                 </Text>
@@ -339,7 +313,7 @@ const Search = () => {
                 <Text textAlign="end" fontSize="12px">
                   {t('Volume 7D')}
                 </Text>
-              )}
+              )} */}
               {!isXs && !isSm && (
                 <Text textAlign="end" fontSize="12px">
                   {t('Liquidity')}
@@ -365,9 +339,9 @@ const Search = () => {
                         }`}</Text>
                       </Text>
                     </Flex>
-                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p?.volumeUSD)}</Text>}
-                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p?.volumeUSDWeek)}</Text>}
-                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p?.liquidityUSD)}</Text>}
+                    {/* {!isXs && !isSm && <Text textAlign="end">${formatAmount(p?.volumeUSD)}</Text>}
+                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p?.volumeUSDWeek)}</Text>} */}
+                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p?.tvlUSD)}</Text>}
                   </ResponsiveGrid>
                 </HoverRowLink>
               )

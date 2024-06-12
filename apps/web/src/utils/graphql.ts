@@ -1,11 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import {
-  BIT_QUERY,
-  INFO_CLIENT_ETH,
-  STABLESWAP_SUBGRAPHS_URLS,
-  V3_BSC_INFO_CLIENT,
-  V3_SUBGRAPH_URLS,
-} from 'config/constants/endpoints'
+import { BIT_QUERY, STABLESWAP_SUBGRAPHS_URLS, V3_BSC_INFO_CLIENT, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
 import { V2_SUBGRAPH_URLS } from '../config/constants/endpoints'
 
@@ -30,8 +24,6 @@ export const v3Clients = {
 }
 
 export const v3InfoClients = { ...v3Clients, [ChainId.BSC]: new GraphQLClient(V3_BSC_INFO_CLIENT) }
-
-export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH)
 
 export const v2Clients = {
   [ChainId.ETHEREUM]: new GraphQLClient(V2_SUBGRAPH_URLS[ChainId.ETHEREUM]),

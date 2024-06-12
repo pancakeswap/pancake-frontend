@@ -7,14 +7,13 @@ import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { checkIsStableSwap, multiChainId } from 'state/info/constant'
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
-import { useWatchlistPools, useWatchlistTokens } from 'state/user/hooks'
 import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 
 import { getTokenNameAlias, getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { v3InfoPath } from '../../constants'
-import { usePoolsData, useSearchData, useTokensData } from '../../hooks'
+import { useSearchData } from '../../hooks'
 import { PoolData } from '../../types'
 import { feeTierPercent } from '../../utils'
 import { GreyBadge } from '../Card'
@@ -205,10 +204,6 @@ const Search = () => {
     }
   }, [showMenu])
 
-  // watchlist
-  const [savedTokens] = useWatchlistTokens()
-  const [savedPools] = useWatchlistPools()
-
   const handleItemClick = (to: string) => {
     setShowMenu(false)
     setPoolsShown(3)
@@ -216,59 +211,41 @@ const Search = () => {
     router.push(to)
   }
 
-  // get date for watchlist
-  const watchListTokenData = useTokensData(savedTokens)
-  const watchListPoolData = usePoolsData(savedPools)
-  const watchListPoolLoading = watchListPoolData?.length !== savedPools.length
-
   // filter on view
-  const [showWatchlist, setShowWatchlist] = useState(false)
   const tokensForList = useMemo(() => {
-    if (showWatchlist) {
-      return watchListTokenData?.filter((token) => tokenIncludesSearchTerm(token, chainId, value)) ?? []
-    }
-    return orderBy(tokens, (token) => token.volumeUSD, 'desc')
-  }, [showWatchlist, tokens, watchListTokenData, chainId, value])
+    return orderBy(tokens, (token) => token.tvlUSD, 'desc')
+  }, [tokens])
 
   const poolForList = useMemo(() => {
-    if (showWatchlist) {
-      return watchListPoolData?.filter((pool) => poolIncludesSearchTerm(pool, chainId, value)) ?? []
-    }
-    return orderBy(pools, (pool) => pool.volumeUSD, 'desc')
-  }, [showWatchlist, pools, watchListPoolData, chainId, value])
+    return orderBy(pools, (pool) => pool.tvlUSD, 'desc')
+  }, [pools])
 
   const contentUnderTokenList = () => {
     const isLoading = loading
     const noTokensFound =
       tokensForList.length === 0 && !isLoading && debouncedSearchTerm.length >= MINIMUM_SEARCH_CHARACTERS
-    const noWatchlistTokens = tokensForList.length === 0 && !isLoading
-    const showMessage = showWatchlist ? noWatchlistTokens : noTokensFound
+    const showMessage = noTokensFound
     const noTokensMessage = t('No results')
     return (
       <>
         {isLoading && debouncedSearchTerm && <Skeleton />}
         {showMessage && <Text>{noTokensMessage}</Text>}
-        {!showWatchlist && debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && (
-          <Text>{t('Search liquidity pairs or tokens')}</Text>
-        )}
+        {debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && <Text>{t('Search liquidity pairs or tokens')}</Text>}
       </>
     )
   }
 
   const contentUnderPoolList = () => {
-    const isLoading = showWatchlist ? watchListPoolLoading : loading
+    const isLoading = loading
     const noPoolsFound =
       poolForList?.length === 0 && !loading && debouncedSearchTerm.length >= MINIMUM_SEARCH_CHARACTERS
-    const noWatchlistPools = poolForList?.length === 0 && !isLoading
-    const showMessage = showWatchlist ? noWatchlistPools : noPoolsFound
-    const noPoolsMessage = showWatchlist ? t('Saved tokens will appear here') : t('No results')
+    const showMessage = noPoolsFound
+    const noPoolsMessage = t('No results')
     return (
       <>
         {isLoading && debouncedSearchTerm && <Skeleton />}
         {showMessage && <Text>{noPoolsMessage}</Text>}
-        {!showWatchlist && debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && (
-          <Text>{t('Search liquidity pairs or tokens')}</Text>
-        )}
+        {debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && <Text>{t('Search liquidity pairs or tokens')}</Text>}
       </>
     )
   }
@@ -293,12 +270,7 @@ const Search = () => {
         {showMenu && (
           <Menu ref={menuRef}>
             <Flex mb="16px">
-              <OptionButton enabled={!showWatchlist} onClick={() => setShowWatchlist(false)}>
-                {t('Search')}
-              </OptionButton>
-              <OptionButton style={{ display: 'none' }} enabled={showWatchlist} onClick={() => setShowWatchlist(true)}>
-                {t('Watchlist')}
-              </OptionButton>
+              <OptionButton enabled>{t('Search')}</OptionButton>
             </Flex>
             {error && <Text color="failure">{t('Error occurred, please try again')}</Text>}
 
@@ -309,11 +281,6 @@ const Search = () => {
               {!isXs && !isSm && (
                 <Text textAlign="end" fontSize="12px">
                   {t('Price')}
-                </Text>
-              )}
-              {!isXs && !isSm && (
-                <Text textAlign="end" fontSize="12px">
-                  {t('Volume 24H')}
                 </Text>
               )}
               {!isXs && !isSm && (
@@ -336,7 +303,6 @@ const Search = () => {
                       <Text ml="10px">
                         <Text>{`${token.address && getTokenNameAlias(token.address, chainId, token.name)} (${
                           token.address && getTokenSymbolAlias(token.address, chainId, token.symbol)
-                        }
                         })`}</Text>
                       </Text>
                       {/* <SaveIcon
@@ -350,7 +316,6 @@ const Search = () => {
                       /> */}
                     </Flex>
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.priceUSD)}</Text>}
-                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.volumeUSD)}</Text>}
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.tvlUSD)}</Text>}
                   </ResponsiveGrid>
                 </HoverRowLink>
@@ -374,7 +339,7 @@ const Search = () => {
               <Text bold color="secondary" mb="8px">
                 {t('Pairs')}
               </Text>
-              {!isXs && !isSm && (
+              {/* {!isXs && !isSm && (
                 <Text textAlign="end" fontSize="12px">
                   {t('Volume 24H')}
                 </Text>
@@ -383,7 +348,7 @@ const Search = () => {
                 <Text textAlign="end" fontSize="12px">
                   {t('Volume 7D')}
                 </Text>
-              )}
+              )} */}
               {!isXs && !isSm && (
                 <Text textAlign="end" fontSize="12px">
                   {t('Liquidity')}
@@ -423,8 +388,8 @@ const Search = () => {
                         }}
                       /> */}
                     </Flex>
-                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSD)}</Text>}
-                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSDWeek)}</Text>}
+                    {/* {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSD)}</Text>}
+                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSDWeek)}</Text>} */}
                     {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.tvlUSD)}</Text>}
                   </ResponsiveGrid>
                 </HoverRowLink>

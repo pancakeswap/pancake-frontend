@@ -11,11 +11,12 @@ import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimest
 
 import { useQuery } from '@tanstack/react-query'
 import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
+import { useExplorerChainNameByQuery } from 'state/info/api/hooks'
 import { components } from 'state/info/api/schema'
 import { getPercentChange } from 'views/V3Info/utils/data'
 import { SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
-import { fetchPoolDatas, fetchedPoolData } from '../data/pool/poolData'
+import { fetchedPoolData } from '../data/pool/poolData'
 import { PoolTickData, fetchTicksSurroundingPrice } from '../data/pool/tickData'
 import { fetchPoolTransactions } from '../data/pool/transactions'
 import { fetchChartData } from '../data/protocol/chart'
@@ -62,12 +63,10 @@ export const useProtocolChartData = (): ChartDayData[] | undefined => {
 export const useProtocolData = (): ProtocolData | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
-  const [t24, t48] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48])
   const { data } = useQuery({
     queryKey: [`v3/info/protocol/ProtocolData/${chainId}`, chainId],
     queryFn: () => fetchProtocolData(chainIdToExplorerInfoChainName[chainId]),
-    enabled: Boolean(chainId && blocks && blocks.length > 0),
+    enabled: Boolean(chainId),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data ?? undefined
@@ -202,6 +201,10 @@ const tokenDataFetcher = (dataClient: GraphQLClient, tokenAddresses: string[], b
   }
   return Promise.all(addressGroup.map((d) => fetchedTokenDatas(dataClient, d, blocks)))
 }
+
+/**
+ * @deprecated
+ */
 export const useTokensData = (addresses: string[], targetChainId?: ChainId): TokenData[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = targetChainId ?? multiChainId[chainName]
@@ -382,26 +385,21 @@ export const useTopPoolsData = ():
   return data?.data
 }
 
-export const usePoolsData = (addresses: string[]): PoolData[] | undefined => {
-  const chainName = useChainNameByQuery()
-  const chainId = multiChainId[chainName]
-  const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d])
-
+export const usePoolsDataForToken = (address: string): PoolData[] | undefined => {
+  const chainName = useExplorerChainNameByQuery()
   const { data } = useQuery({
-    queryKey: [`v3/info/pool/poolsData/${chainId}/${addresses.join()}`, chainId],
+    queryKey: [`v3/info/pool/poolsDataForToken/${chainName}/${address}`],
 
-    queryFn: () =>
-      fetchPoolDatas(
-        v3InfoClients[chainId],
-        addresses,
-        blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
-      ),
-
-    enabled: Boolean(chainId && blocks && blocks?.length > 0 && addresses && addresses?.length > 0),
+    queryFn: () => {
+      if (!chainName) {
+        throw new Error('Chain name is not defined')
+      }
+      return fetchPoolsForToken(address, chainName)
+    },
+    enabled: Boolean(chainName && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
-  return useMemo(() => (data?.data ? Object.values(data.data) : undefined), [data])
+  return data?.data
 }
 
 export const usePoolData = (address: string): PoolData | undefined => {
@@ -457,24 +455,19 @@ export const usePoolTickData = (address: string): PoolTickData | undefined => {
   return data?.data ?? undefined
 }
 
-export const useSearchData = (
-  searchValue: string,
-): { tokens: TokenData[]; pools: PoolData[]; loading: boolean; error: any } => {
-  const chainName = useChainNameByQuery()
-  const chainId = multiChainId[chainName]
-  const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d])
+export const useSearchData = (searchValue: string) => {
+  const chainName = useExplorerChainNameByQuery()
   const { data, status, error } = useQuery({
-    queryKey: [`v3/info/pool/searchData/${chainId}/${searchValue}`, chainId],
+    queryKey: [`v3/info/pool/searchData/${chainName}/${searchValue}`, chainName],
 
-    queryFn: () =>
-      fetchSearchResults(
-        v3InfoClients[chainId],
-        searchValue,
-        blocks?.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
-      ),
+    queryFn: () => {
+      if (!chainName) {
+        throw new Error('Chain name is not defined')
+      }
+      return fetchSearchResults(chainName, searchValue)
+    },
 
-    enabled: Boolean(chainId && searchValue),
+    enabled: Boolean(chainName && searchValue),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   const searchResult = useMemo(() => {

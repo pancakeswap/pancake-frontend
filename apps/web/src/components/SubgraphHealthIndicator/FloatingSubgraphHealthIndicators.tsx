@@ -3,9 +3,9 @@ import { useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
 import { GRAPH_API_PREDICTION_BNB } from '@pancakeswap/prediction'
-import { GRAPH_API_LOTTERY, THE_GRAPH_PROXY_API, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { getPortalRoot } from '@pancakeswap/uikit'
+import { GRAPH_API_LOTTERY, THE_GRAPH_PROXY_API } from 'config/constants/endpoints'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { SubgraphHealthIndicator, SubgraphHealthIndicatorProps } from './SubgraphHealthIndicator'
 
 interface FactoryParams {
@@ -40,15 +40,6 @@ export function subgraphHealthIndicatorFactory({ getSubgraphName }: FactoryParam
       : null
   }
 }
-
-export const V3SubgraphHealthIndicator = subgraphHealthIndicatorFactory({
-  getSubgraphName: (chainId) => {
-    if (V3_SUBGRAPH_URLS[chainId]?.startsWith(`${THE_GRAPH_PROXY_API}/`)) {
-      return V3_SUBGRAPH_URLS?.[chainId]?.replace(`${THE_GRAPH_PROXY_API}/`, '') || ''
-    }
-    return ''
-  },
-})
 
 export const LotterySubgraphHealthIndicator = subgraphHealthIndicatorFactory({
   getSubgraphName: () => GRAPH_API_LOTTERY.replace(`${THE_GRAPH_PROXY_API}/`, ''),

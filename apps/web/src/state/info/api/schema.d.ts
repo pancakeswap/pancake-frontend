@@ -3,186 +3,191 @@
  * Do not make direct changes to the file.
  */
 
+
 export interface paths {
-  '/unclaim-fees/{protocol}/{chainId}': {
+  "/unclaim-fees/{protocol}/{chainId}": {
     /**
      * Batch get unclaimed fees
      * @deprecated
      */
-    post: operations['postUnclaim-feesByProtocolByChainId']
-  }
-  '/cached/tokens/chart/{chainName}/rate': {
+    post: operations["postUnclaim-feesByProtocolByChainId"];
+  };
+  "/cached/tokens/chart/{chainName}/rate": {
     /** Get token to token rate chart */
-    get: operations['getCachedTokensChartByChainNameRate']
-  }
-  '/cached/tokens/chart/{chainName}/{address}/{protocol}/price': {
+    get: operations["getCachedTokensChartByChainNameRate"];
+  };
+  "/cached/tokens/chart/{chainName}/{address}/{protocol}/price": {
     /** Get token price chart by protocol */
-    get: operations['getCachedTokensChartByChainNameByAddressByProtocolPrice']
-  }
-  '/cached/tokens/chart/{chainName}/{address}/price': {
+    get: operations["getCachedTokensChartByChainNameByAddressByProtocolPrice"];
+  };
+  "/cached/tokens/chart/{chainName}/{address}/price": {
     /** Get token price chart */
-    get: operations['getCachedTokensChartByChainNameByAddressPrice']
-  }
-  '/cached/tokens/chart/{chainName}/{address}/{protocol}/volume': {
+    get: operations["getCachedTokensChartByChainNameByAddressPrice"];
+  };
+  "/cached/tokens/chart/{chainName}/{address}/{protocol}/volume": {
     /** Get token volume chart by protocol */
-    get: operations['getCachedTokensChartByChainNameByAddressByProtocolVolume']
-  }
-  '/cached/tokens/chart/{chainName}/{address}/{protocol}/tvl': {
+    get: operations["getCachedTokensChartByChainNameByAddressByProtocolVolume"];
+  };
+  "/cached/tokens/chart/{chainName}/{address}/{protocol}/tvl": {
     /** Get token tvl chart by protocol */
-    get: operations['getCachedTokensChartByChainNameByAddressByProtocolTvl']
-  }
-  '/cached/tokens/chart/{chainName}/{address}/tvl': {
+    get: operations["getCachedTokensChartByChainNameByAddressByProtocolTvl"];
+  };
+  "/cached/tokens/chart/{chainName}/{address}/tvl": {
     /** Get token tvl chart */
-    get: operations['getCachedTokensChartByChainNameByAddressTvl']
-  }
-  '/cached/tokens/price/list/{ids}': {
+    get: operations["getCachedTokensChartByChainNameByAddressTvl"];
+  };
+  "/cached/tokens/price/list/{ids}": {
     /** Get token price reference batch */
-    get: operations['getCachedTokensPriceListByIds']
-  }
-  '/cached/tokens/{chainName}/{address}/price': {
+    get: operations["getCachedTokensPriceListByIds"];
+  };
+  "/cached/tokens/{chainName}/{address}/price": {
     /**
      * Get token price reference
      * @description Get token price reference from liquidity pool. If more than one protocol is provided, it will return the largest TVL protocol
      */
-    get: operations['getCachedTokensByChainNameByAddressPrice']
-  }
-  '/cached/tokens/v3/{chainName}/{address}': {
+    get: operations["getCachedTokensByChainNameByAddressPrice"];
+  };
+  "/cached/tokens/v3/{chainName}/{address}": {
     /** Get v3 token data */
-    get: operations['getCachedTokensV3ByChainNameByAddress']
-  }
-  '/cached/tokens/v2/{chainName}/{address}': {
+    get: operations["getCachedTokensV3ByChainNameByAddress"];
+  };
+  "/cached/tokens/v2/{chainName}/{address}": {
     /** Get v2 token data */
-    get: operations['getCachedTokensV2ByChainNameByAddress']
-  }
-  '/cached/tokens/stable/{chainName}/{address}': {
+    get: operations["getCachedTokensV2ByChainNameByAddress"];
+  };
+  "/cached/tokens/stable/{chainName}/{address}": {
     /** Get stable token data */
-    get: operations['getCachedTokensStableByChainNameByAddress']
-  }
-  '/cached/tokens/v3/{chainName}/list/top': {
+    get: operations["getCachedTokensStableByChainNameByAddress"];
+  };
+  "/cached/tokens/v3/{chainName}/list/top": {
     /** Get v3 top tokens */
-    get: operations['getCachedTokensV3ByChainNameListTop']
-  }
-  '/cached/tokens/v2/{chainName}/list/top': {
+    get: operations["getCachedTokensV3ByChainNameListTop"];
+  };
+  "/cached/tokens/v2/{chainName}/list/top": {
     /** Get v2 top tokens */
-    get: operations['getCachedTokensV2ByChainNameListTop']
-  }
-  '/cached/tokens/stable/{chainName}/list/top': {
+    get: operations["getCachedTokensV2ByChainNameListTop"];
+  };
+  "/cached/tokens/stable/{chainName}/list/top": {
     /** Get stable top tokens */
-    get: operations['getCachedTokensStableByChainNameListTop']
-  }
-  '/cached/pools/ticks/v3/{chainName}/{pool}': {
+    get: operations["getCachedTokensStableByChainNameListTop"];
+  };
+  "/cached/pools/ticks/v3/{chainName}/{pool}": {
     /** Get all ticks from v3 pool */
-    get: operations['getCachedPoolsTicksV3ByChainNameByPool']
-  }
-  '/cached/pools/positions/v3/{chainName}/{pool}': {
+    get: operations["getCachedPoolsTicksV3ByChainNameByPool"];
+  };
+  "/cached/pools/positions/v3/{chainName}/{pool}": {
     /** Get positions from v3 pool */
-    get: operations['getCachedPoolsPositionsV3ByChainNameByPool']
-  }
-  '/cached/pools/chart/v3/{chainName}/{address}/rate': {
+    get: operations["getCachedPoolsPositionsV3ByChainNameByPool"];
+  };
+  "/cached/pools/chart/v3/{chainName}/{address}/rate": {
     /** Get v3 pool rate chart */
-    get: operations['getCachedPoolsChartV3ByChainNameByAddressRate']
-  }
-  '/cached/pools/chart/v3/{chainName}/{address}/fees': {
+    get: operations["getCachedPoolsChartV3ByChainNameByAddressRate"];
+  };
+  "/cached/pools/chart/v3/{chainName}/{address}/fees": {
     /** Get v3 pool fees chart */
-    get: operations['getCachedPoolsChartV3ByChainNameByAddressFees']
-  }
-  '/cached/pools/chart/{protocol}/{chainName}/{address}/tvl': {
+    get: operations["getCachedPoolsChartV3ByChainNameByAddressFees"];
+  };
+  "/cached/pools/chart/{protocol}/{chainName}/{address}/tvl": {
     /** Get pool tvl chart */
-    get: operations['getCachedPoolsChartByProtocolByChainNameByAddressTvl']
-  }
-  '/cached/pools/chart/{protocol}/{chainName}/{address}/volume': {
+    get: operations["getCachedPoolsChartByProtocolByChainNameByAddressTvl"];
+  };
+  "/cached/pools/chart/{protocol}/{chainName}/{address}/volume": {
     /** Get pool volume chart */
-    get: operations['getCachedPoolsChartByProtocolByChainNameByAddressVolume']
-  }
-  '/cached/pools/apr/v2/{chainName}/farms-lp': {
+    get: operations["getCachedPoolsChartByProtocolByChainNameByAddressVolume"];
+  };
+  "/cached/pools/apr/v2/{chainName}/farms-lp": {
     /** Get v2 farm lp apr */
-    get: operations['getCachedPoolsAprV2ByChainNameFarms-lp']
-  }
-  '/cached/pools/apr/v3/{chainName}/farms-lp': {
+    get: operations["getCachedPoolsAprV2ByChainNameFarms-lp"];
+  };
+  "/cached/pools/apr/v3/{chainName}/farms-lp": {
     /** Get v3 farm lp apr */
-    get: operations['getCachedPoolsAprV3ByChainNameFarms-lp']
-  }
-  '/cached/pools/apr/stable/{chainName}/farms-lp': {
+    get: operations["getCachedPoolsAprV3ByChainNameFarms-lp"];
+  };
+  "/cached/pools/apr/stable/{chainName}/farms-lp": {
     /** Get stable farm lp apr */
-    get: operations['getCachedPoolsAprStableByChainNameFarms-lp']
-  }
-  '/cached/pools/list': {
+    get: operations["getCachedPoolsAprStableByChainNameFarms-lp"];
+  };
+  "/cached/pools/list": {
     /** Get pools list */
-    get: operations['getCachedPoolsList']
-  }
-  '/cached/pools/v3/{chainName}/{address}': {
+    get: operations["getCachedPoolsList"];
+  };
+  "/cached/pools/v3/{chainName}/{address}": {
     /** Get v3 pool data */
-    get: operations['getCachedPoolsV3ByChainNameByAddress']
-  }
-  '/cached/pools/v2/{chainName}/{address}': {
+    get: operations["getCachedPoolsV3ByChainNameByAddress"];
+  };
+  "/cached/pools/v2/{chainName}/{address}": {
     /** Get v2 pool data */
-    get: operations['getCachedPoolsV2ByChainNameByAddress']
-  }
-  '/cached/pools/stable/{chainName}/{address}': {
+    get: operations["getCachedPoolsV2ByChainNameByAddress"];
+  };
+  "/cached/pools/stable/{chainName}/{address}": {
     /** Get stable pool data */
-    get: operations['getCachedPoolsStableByChainNameByAddress']
-  }
-  '/cached/pools/v3/{chainName}/list/simple': {
+    get: operations["getCachedPoolsStableByChainNameByAddress"];
+  };
+  "/cached/pools/v3/{chainName}/list/simple": {
     /** Get simple v3 pools list */
-    get: operations['getCachedPoolsV3ByChainNameListSimple']
-  }
-  '/cached/pools/v3/{chainName}/list/top': {
+    get: operations["getCachedPoolsV3ByChainNameListSimple"];
+  };
+  "/cached/pools/v3/{chainName}/list/top": {
     /** Get top v3 pools */
-    get: operations['getCachedPoolsV3ByChainNameListTop']
-  }
-  '/cached/pools/v2/{chainName}/list/top': {
+    get: operations["getCachedPoolsV3ByChainNameListTop"];
+  };
+  "/cached/pools/v2/{chainName}/list/top": {
     /** Get top v2 pools */
-    get: operations['getCachedPoolsV2ByChainNameListTop']
-  }
-  '/cached/pools/stable/{chainName}/list/top': {
+    get: operations["getCachedPoolsV2ByChainNameListTop"];
+  };
+  "/cached/pools/stable/{chainName}/list/top": {
     /** Get top stable pools */
-    get: operations['getCachedPoolsStableByChainNameListTop']
-  }
-  '/cached/tx/v3/{chainName}/swaps': {
+    get: operations["getCachedPoolsStableByChainNameListTop"];
+  };
+  "/cached/tx/v3/{chainName}/swaps": {
     /** Get v3 swaps by page */
-    get: operations['getCachedTxV3ByChainNameSwaps']
-  }
-  '/cached/tx/v3/{chainName}/recent': {
+    get: operations["getCachedTxV3ByChainNameSwaps"];
+  };
+  "/cached/tx/v3/{chainName}/recent": {
     /** Get recent v3 transaction */
-    get: operations['getCachedTxV3ByChainNameRecent']
-  }
-  '/cached/tx/v2/{chainName}/recent': {
+    get: operations["getCachedTxV3ByChainNameRecent"];
+  };
+  "/cached/tx/v2/{chainName}/recent": {
     /** Get recent v2 transaction */
-    get: operations['getCachedTxV2ByChainNameRecent']
-  }
-  '/cached/tx/stable/{chainName}/recent': {
+    get: operations["getCachedTxV2ByChainNameRecent"];
+  };
+  "/cached/tx/stable/{chainName}/recent": {
     /** Get recent stable transaction */
-    get: operations['getCachedTxStableByChainNameRecent']
-  }
-  '/cached/block/{chainName}/{timestamp}': {
+    get: operations["getCachedTxStableByChainNameRecent"];
+  };
+  "/cached/block/{chainName}/{timestamp}": {
     /** Get closest block by unix timestamp */
-    get: operations['getCachedBlockByChainNameByTimestamp']
-  }
-  '/cached/gauges/total-votes/all': {
-    get: operations['getCachedGaugesTotal-votesAll']
-  }
-  '/cached/protocol/chart/{protocol}/{chainName}/volume': {
+    get: operations["getCachedBlockByChainNameByTimestamp"];
+  };
+  "/cached/gauges/total-votes/all": {
+    get: operations["getCachedGaugesTotal-votesAll"];
+  };
+  "/cached/protocol/chart/{protocol}/{chainName}/volume": {
     /** Get protocol volume chart */
-    get: operations['getCachedProtocolChartByProtocolByChainNameVolume']
-  }
-  '/cached/protocol/chart/{protocol}/{chainName}/tvl': {
+    get: operations["getCachedProtocolChartByProtocolByChainNameVolume"];
+  };
+  "/cached/protocol/chart/{protocol}/{chainName}/tvl": {
     /** Get protocol tvl chart */
-    get: operations['getCachedProtocolChartByProtocolByChainNameTvl']
-  }
-  '/cached/protocol/{protocol}/{chainName}/stats': {
+    get: operations["getCachedProtocolChartByProtocolByChainNameTvl"];
+  };
+  "/cached/protocol/{protocol}/{chainName}/search": {
+    /** Search protocol tokens and pools */
+    get: operations["getCachedProtocolByProtocolByChainNameSearch"];
+  };
+  "/cached/protocol/{protocol}/{chainName}/stats": {
     /** Get protocol stats */
-    get: operations['getCachedProtocolByProtocolByChainNameStats']
-  }
-  '/status/{protocol}/{chainName}': {
+    get: operations["getCachedProtocolByProtocolByChainNameStats"];
+  };
+  "/status/{protocol}/{chainName}": {
     /** Get status of info data for chain */
-    get: operations['getStatusByProtocolByChainName']
-  }
-  '/doc/json': {
-    get: operations['getDocJson']
-  }
+    get: operations["getStatusByProtocolByChainName"];
+  };
+  "/doc/json": {
+    get: operations["getDocJson"];
+  };
 }
 
-export type webhooks = Record<string, never>
+export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
@@ -191,463 +196,464 @@ export interface components {
      * @example arbitrum
      * @enum {string}
      */
-    ChainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+    ChainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
     /**
      * @description Protocol version
      * @example v3
      * @enum {string}
      */
-    Protocol: 'v2' | 'v3' | 'stable'
+    Protocol: "v2" | "v3" | "stable";
     v3TokenData: {
       /** @description Token address */
-      id: string
-      symbol: string
-      name: string
-      decimals: number
-      totalTxCount: number
-      txCount24h: number
-      txCount48h: number
-      txCount7d: number
-      priceUSD: string
-      priceUSD24h: string
-      priceUSD48h: string
-      priceUSD7d: string
+      id: string;
+      symbol: string;
+      name: string;
+      decimals: number;
+      totalTxCount: number;
+      txCount24h: number;
+      txCount48h: number;
+      txCount7d: number;
+      priceUSD: string;
+      priceUSD24h: string;
+      priceUSD48h: string;
+      priceUSD7d: string;
       /** @description Total volume in USD */
-      totalVolumeUSD: string
-      volumeUSD24h: null | string
-      volumeUSD48h: null | string
-      volumeUSD7d: null | string
-      tvlUSD: string
-      tvlUSD24h: string
-      tvlUSD48h: string
-      tvlUSD7d: string
-      tvl: string
-      tvl24h: string
-      tvl48h: string
-      tvl7d: string
-      totalFeeUSD: string
-      feeUSD24h: string
-      feeUSD48h: string
-      feeUSD7d: string
-    }
+      totalVolumeUSD: string;
+      volumeUSD24h: null | string;
+      volumeUSD48h: null | string;
+      volumeUSD7d: null | string;
+      tvlUSD: string;
+      tvlUSD24h: string;
+      tvlUSD48h: string;
+      tvlUSD7d: string;
+      tvl: string;
+      tvl24h: string;
+      tvl48h: string;
+      tvl7d: string;
+      totalFeeUSD: string;
+      feeUSD24h: string;
+      feeUSD48h: string;
+      feeUSD7d: string;
+    };
     v2TokenData: {
       /** @description Token address */
-      id: string
-      symbol: string
-      name: string
-      decimals: number
-      totalTxCount: number
-      txCount24h: number
-      txCount48h: number
-      txCount7d: number
-      priceUSD: string
-      priceUSD24h: string
-      priceUSD48h: string
-      priceUSD7d: string
+      id: string;
+      symbol: string;
+      name: string;
+      decimals: number;
+      totalTxCount: number;
+      txCount24h: number;
+      txCount48h: number;
+      txCount7d: number;
+      priceUSD: string;
+      priceUSD24h: string;
+      priceUSD48h: string;
+      priceUSD7d: string;
       /** @description Total volume in USD */
-      totalVolumeUSD: string
-      volumeUSD24h: null | string
-      volumeUSD48h: null | string
-      volumeUSD7d: null | string
-      tvlUSD: string
-      tvlUSD24h: string
-      tvlUSD48h: string
-      tvlUSD7d: string
-      tvl: string
-      tvl24h: string
-      tvl48h: string
-      tvl7d: string
-    }
+      totalVolumeUSD: string;
+      volumeUSD24h: null | string;
+      volumeUSD48h: null | string;
+      volumeUSD7d: null | string;
+      tvlUSD: string;
+      tvlUSD24h: string;
+      tvlUSD48h: string;
+      tvlUSD7d: string;
+      tvl: string;
+      tvl24h: string;
+      tvl48h: string;
+      tvl7d: string;
+    };
     TokenPrice: {
-      id: string
-      priceUSD: string
+      id: string;
+      priceUSD: string;
       /**
        * @description Protocol version
        * @example v3
        * @enum {string}
        */
-      protocol: 'v2' | 'v3' | 'stable'
-      tvlUSD: string
-      timestamp: Record<string, never> | string
-    }
+      protocol: "v2" | "v3" | "stable";
+      tvlUSD: string;
+      timestamp: Record<string, never> | string;
+    };
     ticks: {
       /** @description Cursor for pagination start */
-      startCursor?: string
+      startCursor?: string;
       /** @description Cursor for pagination end */
-      endCursor?: string
+      endCursor?: string;
       /** @description Has next page */
-      hasNextPage?: boolean
+      hasNextPage?: boolean;
       /** @description Has previous page */
-      hasPrevPage?: boolean
+      hasPrevPage?: boolean;
       rows: {
-        id: string
-        /** @description Tick index */
-        tickIdx: number
-        liquidityGross: string
-        liquidityNet: string
-        price0: string
-        price1: string
-      }[]
-    }
+          id: string;
+          /** @description Tick index */
+          tickIdx: number;
+          liquidityGross: string;
+          liquidityNet: string;
+          price0: string;
+          price1: string;
+        }[];
+    };
     positions: {
       /** @description Cursor for pagination start */
-      startCursor?: string
+      startCursor?: string;
       /** @description Cursor for pagination end */
-      endCursor?: string
+      endCursor?: string;
       /** @description Has next page */
-      hasNextPage?: boolean
+      hasNextPage?: boolean;
       /** @description Has previous page */
-      hasPrevPage?: boolean
+      hasPrevPage?: boolean;
       rows: {
-        /** @description Position id */
-        id: string
-        liquidity: string
-        /** @description Ethereum address */
-        owner: string
-        /** @description Lower tick index */
-        lowerTickIdx: number
-        /** @description Upper tick index */
-        upperTickIdx: number
-      }[]
-    }
+          /** @description Position id */
+          id: string;
+          liquidity: string;
+          /** @description Ethereum address */
+          owner: string;
+          /** @description Lower tick index */
+          lowerTickIdx: number;
+          /** @description Upper tick index */
+          upperTickIdx: number;
+        }[];
+    };
     /**
      * @description Chart period
      * @example 1D
      * @enum {string}
      */
-    ChartPeriod: '1H' | '1D' | '1W' | '1M' | '1Y'
-    transactions: {
-      id: string
-      transactionHash: string
-      poolId: string
-      token0: {
-        id: string
-        symbol: string
-        name: string
-        decimals: number
-      }
-      token1: {
-        id: string
-        symbol: string
-        name: string
-        decimals: number
-      }
-      amount0: string
-      amount1: string
-      amountUSD: string
-      origin: null | string
-      recipient: null | string
-      timestamp: Record<string, never> | string
-    }[]
-    transactionsWithType: {
-      /** @enum {string} */
-      type: 'mint' | 'burn' | 'swap'
-      id: string
-      transactionHash: string
-      poolId: string
-      token0: {
-        id: string
-        symbol: string
-        name: string
-        decimals: number
-      }
-      token1: {
-        id: string
-        symbol: string
-        name: string
-        decimals: number
-      }
-      amount0: string
-      amount1: string
-      amountUSD: string
-      origin: null | string
-      recipient: null | string
-      timestamp: Record<string, never> | string
-    }[]
+    ChartPeriod: "1H" | "1D" | "1W" | "1M" | "1Y";
+    transactions: ({
+        id: string;
+        transactionHash: string;
+        poolId: string;
+        token0: {
+          id: string;
+          symbol: string;
+          name: string;
+          decimals: number;
+        };
+        token1: {
+          id: string;
+          symbol: string;
+          name: string;
+          decimals: number;
+        };
+        amount0: string;
+        amount1: string;
+        amountUSD: string;
+        origin: null | string;
+        recipient: null | string;
+        timestamp: Record<string, never> | string;
+      })[];
+    transactionsWithType: ({
+        /** @enum {string} */
+        type: "mint" | "burn" | "swap";
+        id: string;
+        transactionHash: string;
+        poolId: string;
+        token0: {
+          id: string;
+          symbol: string;
+          name: string;
+          decimals: number;
+        };
+        token1: {
+          id: string;
+          symbol: string;
+          name: string;
+          decimals: number;
+        };
+        amount0: string;
+        amount1: string;
+        amountUSD: string;
+        origin: null | string;
+        recipient: null | string;
+        timestamp: Record<string, never> | string;
+      })[];
     ProtocolQuery: {
       /**
        * @description Chart group by
        * @example 1D
        * @enum {string}
        */
-      groupBy: '1D' | '1W' | '1M'
-    }
-  }
-  responses: never
-  parameters: never
-  requestBodies: never
-  headers: never
-  pathItems: never
+      groupBy: "1D" | "1W" | "1M";
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 
-export type $defs = Record<string, never>
+export type $defs = Record<string, never>;
 
-export type external = Record<string, never>
+export type external = Record<string, never>;
 
 export interface operations {
+
   /**
    * Batch get unclaimed fees
    * @deprecated
    */
-  'postUnclaim-feesByProtocolByChainId': {
+  "postUnclaim-feesByProtocolByChainId": {
     parameters: {
       path: {
-        protocol: 'pancake-v3' | 'uniswap-v3'
-        chainId: '1' | '56'
-      }
-    }
+        protocol: "pancake-v3" | "uniswap-v3";
+        chainId: "1" | "56";
+      };
+    };
     requestBody: {
       content: {
-        'application/json': {
-          ids: string[]
-        }
-        'multipart/form-data': {
-          ids: string[]
-        }
-        'text/plain': {
-          ids: string[]
-        }
-      }
-    }
+        "application/json": {
+          ids: string[];
+        };
+        "multipart/form-data": {
+          ids: string[];
+        };
+        "text/plain": {
+          ids: string[];
+        };
+      };
+    };
     responses: {
       /** @description Successfully batch get unclaimed fees */
       200: {
         content: {
-          'application/json': {
+          "application/json": {
             data: {
-              id: string
-              token0: {
-                symbol: string
-                amount: string
-                amountUSD: string
-              }
-              token1: {
-                symbol: string
-                amount: string
-                amountUSD: string
-              }
-              totalUSD: string
-            }[]
-          }
-          'multipart/form-data': {
+                id: string;
+                token0: {
+                  symbol: string;
+                  amount: string;
+                  amountUSD: string;
+                };
+                token1: {
+                  symbol: string;
+                  amount: string;
+                  amountUSD: string;
+                };
+                totalUSD: string;
+              }[];
+          };
+          "multipart/form-data": {
             data: {
-              id: string
-              token0: {
-                symbol: string
-                amount: string
-                amountUSD: string
-              }
-              token1: {
-                symbol: string
-                amount: string
-                amountUSD: string
-              }
-              totalUSD: string
-            }[]
-          }
-          'text/plain': {
+                id: string;
+                token0: {
+                  symbol: string;
+                  amount: string;
+                  amountUSD: string;
+                };
+                token1: {
+                  symbol: string;
+                  amount: string;
+                  amountUSD: string;
+                };
+                totalUSD: string;
+              }[];
+          };
+          "text/plain": {
             data: {
-              id: string
-              token0: {
-                symbol: string
-                amount: string
-                amountUSD: string
-              }
-              token1: {
-                symbol: string
-                amount: string
-                amountUSD: string
-              }
-              totalUSD: string
-            }[]
-          }
-        }
-      }
-    }
-  }
+                id: string;
+                token0: {
+                  symbol: string;
+                  amount: string;
+                  amountUSD: string;
+                };
+                token1: {
+                  symbol: string;
+                  amount: string;
+                  amountUSD: string;
+                };
+                totalUSD: string;
+              }[];
+          };
+        };
+      };
+    };
+  };
   /** Get token to token rate chart */
   getCachedTokensChartByChainNameRate: {
     parameters: {
       query: {
         /** @description Chart period */
-        period: '1H' | '1D' | '1W' | '1M' | '1Y'
+        period: "1H" | "1D" | "1W" | "1M" | "1Y";
         /** @description Ethereum address */
-        tokenA: string
+        tokenA: string;
         /** @description Ethereum address */
-        tokenB: string
-      }
+        tokenB: string;
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            bucket: Record<string, never> | string
-            open: null | string
-            close: null | string
-            high: null | string
-            low: null | string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              bucket: Record<string, never> | string;
+              open: null | string;
+              close: null | string;
+              high: null | string;
+              low: null | string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get token price chart by protocol */
   getCachedTokensChartByChainNameByAddressByProtocolPrice: {
     parameters: {
       query: {
         /** @description Chart period */
-        period: '1H' | '1D' | '1W' | '1M' | '1Y'
-      }
+        period: "1H" | "1D" | "1W" | "1M" | "1Y";
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: "v2" | "v3" | "stable";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            bucket: Record<string, never> | string
-            open: null | string
-            close: null | string
-            high: null | string
-            low: null | string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              bucket: Record<string, never> | string;
+              open: null | string;
+              close: null | string;
+              high: null | string;
+              low: null | string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get token price chart */
   getCachedTokensChartByChainNameByAddressPrice: {
     parameters: {
       query: {
         /** @description Chart period */
-        period: '1H' | '1D' | '1W' | '1M' | '1Y'
-      }
+        period: "1H" | "1D" | "1W" | "1M" | "1Y";
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            bucket: Record<string, never> | string
-            open: null | string
-            close: null | string
-            high: null | string
-            low: null | string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              bucket: Record<string, never> | string;
+              open: null | string;
+              close: null | string;
+              high: null | string;
+              low: null | string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get token volume chart by protocol */
   getCachedTokensChartByChainNameByAddressByProtocolVolume: {
     parameters: {
       query: {
         /** @description Chart period */
-        period: '1H' | '1D' | '1W' | '1M' | '1Y'
-      }
+        period: "1H" | "1D" | "1W" | "1M" | "1Y";
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: "v2" | "v3" | "stable";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            bucket: Record<string, never> | string
-            volumeUSD: null | string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              bucket: Record<string, never> | string;
+              volumeUSD: null | string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get token tvl chart by protocol */
   getCachedTokensChartByChainNameByAddressByProtocolTvl: {
     parameters: {
       query: {
         /** @description Chart period */
-        period: '1H' | '1D' | '1W' | '1M' | '1Y'
-      }
+        period: "1H" | "1D" | "1W" | "1M" | "1Y";
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: "v2" | "v3" | "stable";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            bucket: Record<string, never> | string
-            tvlUSD: null | string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              bucket: Record<string, never> | string;
+              tvlUSD: null | string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get token tvl chart */
   getCachedTokensChartByChainNameByAddressTvl: {
     parameters: {
       query: {
         /** @description Chart period */
-        period: '1H' | '1D' | '1W' | '1M' | '1Y'
-      }
+        period: "1H" | "1D" | "1W" | "1M" | "1Y";
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            bucket: Record<string, never> | string
-            tvlUSD: null | string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              bucket: Record<string, never> | string;
+              tvlUSD: null | string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get token price reference batch */
   getCachedTokensPriceListByIds: {
     parameters: {
       path: {
         /** @description ids to query */
-        ids: string
-      }
-    }
+        ids: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': Record<string, never>
-        }
-      }
-    }
-  }
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
   /**
    * Get token price reference
    * @description Get token price reference from liquidity pool. If more than one protocol is provided, it will return the largest TVL protocol
@@ -655,1241 +661,1303 @@ export interface operations {
   getCachedTokensByChainNameByAddressPrice: {
     parameters: {
       query?: {
-        timestamp?: string | number
+        timestamp?: string | number;
         /** @description Array of protocol versions */
-        protocols?: ('v2' | 'v3' | 'stable') | ('v2' | 'v3' | 'stable')[]
-      }
+        protocols?: ("v2" | "v3" | "stable") | (("v2" | "v3" | "stable")[]);
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': components['schemas']['TokenPrice']
-        }
-      }
+          "application/json": components["schemas"]["TokenPrice"];
+        };
+      };
       400: {
         content: {
-          'application/json': unknown
-        }
-      }
-    }
-  }
+          "application/json": unknown;
+        };
+      };
+    };
+  };
   /** Get v3 token data */
   getCachedTokensV3ByChainNameByAddress: {
     parameters: {
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': components['schemas']['v3TokenData']
-        }
-      }
-    }
-  }
+          "application/json": components["schemas"]["v3TokenData"];
+        };
+      };
+    };
+  };
   /** Get v2 token data */
   getCachedTokensV2ByChainNameByAddress: {
     parameters: {
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': components['schemas']['v2TokenData']
-        }
-      }
-    }
-  }
+          "application/json": components["schemas"]["v2TokenData"];
+        };
+      };
+    };
+  };
   /** Get stable token data */
   getCachedTokensStableByChainNameByAddress: {
     parameters: {
       path: {
-        chainName: 'bsc' | 'arbitrum'
+        chainName: "bsc" | "arbitrum";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': components['schemas']['v2TokenData']
-        }
-      }
-    }
-  }
+          "application/json": components["schemas"]["v2TokenData"];
+        };
+      };
+    };
+  };
   /** Get v3 top tokens */
   getCachedTokensV3ByChainNameListTop: {
     parameters: {
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            /** @description Token address */
-            id: string
-            symbol: string
-            name: string
-            decimals: number
-            totalTxCount: number
-            txCount24h: number
-            txCount48h: number
-            txCount7d: number
-            priceUSD: string
-            priceUSD24h: string
-            priceUSD48h: string
-            priceUSD7d: string
-            /** @description Total volume in USD */
-            totalVolumeUSD: string
-            volumeUSD24h: null | string
-            volumeUSD48h: null | string
-            volumeUSD7d: null | string
-            tvlUSD: string
-            tvlUSD24h: string
-            tvlUSD48h: string
-            tvlUSD7d: string
-            tvl: string
-            tvl24h: string
-            tvl48h: string
-            tvl7d: string
-            totalFeeUSD: string
-            feeUSD24h: string
-            feeUSD48h: string
-            feeUSD7d: string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              /** @description Token address */
+              id: string;
+              symbol: string;
+              name: string;
+              decimals: number;
+              totalTxCount: number;
+              txCount24h: number;
+              txCount48h: number;
+              txCount7d: number;
+              priceUSD: string;
+              priceUSD24h: string;
+              priceUSD48h: string;
+              priceUSD7d: string;
+              /** @description Total volume in USD */
+              totalVolumeUSD: string;
+              volumeUSD24h: null | string;
+              volumeUSD48h: null | string;
+              volumeUSD7d: null | string;
+              tvlUSD: string;
+              tvlUSD24h: string;
+              tvlUSD48h: string;
+              tvlUSD7d: string;
+              tvl: string;
+              tvl24h: string;
+              tvl48h: string;
+              tvl7d: string;
+              totalFeeUSD: string;
+              feeUSD24h: string;
+              feeUSD48h: string;
+              feeUSD7d: string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get v2 top tokens */
   getCachedTokensV2ByChainNameListTop: {
     parameters: {
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            /** @description Token address */
-            id: string
-            symbol: string
-            name: string
-            decimals: number
-            totalTxCount: number
-            txCount24h: number
-            txCount48h: number
-            txCount7d: number
-            priceUSD: string
-            priceUSD24h: string
-            priceUSD48h: string
-            priceUSD7d: string
-            /** @description Total volume in USD */
-            totalVolumeUSD: string
-            volumeUSD24h: null | string
-            volumeUSD48h: null | string
-            volumeUSD7d: null | string
-            tvlUSD: string
-            tvlUSD24h: string
-            tvlUSD48h: string
-            tvlUSD7d: string
-            tvl: string
-            tvl24h: string
-            tvl48h: string
-            tvl7d: string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              /** @description Token address */
+              id: string;
+              symbol: string;
+              name: string;
+              decimals: number;
+              totalTxCount: number;
+              txCount24h: number;
+              txCount48h: number;
+              txCount7d: number;
+              priceUSD: string;
+              priceUSD24h: string;
+              priceUSD48h: string;
+              priceUSD7d: string;
+              /** @description Total volume in USD */
+              totalVolumeUSD: string;
+              volumeUSD24h: null | string;
+              volumeUSD48h: null | string;
+              volumeUSD7d: null | string;
+              tvlUSD: string;
+              tvlUSD24h: string;
+              tvlUSD48h: string;
+              tvlUSD7d: string;
+              tvl: string;
+              tvl24h: string;
+              tvl48h: string;
+              tvl7d: string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get stable top tokens */
   getCachedTokensStableByChainNameListTop: {
     parameters: {
       path: {
-        chainName: 'bsc' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "arbitrum";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            /** @description Token address */
-            id: string
-            symbol: string
-            name: string
-            decimals: number
-            totalTxCount: number
-            txCount24h: number
-            txCount48h: number
-            txCount7d: number
-            priceUSD: string
-            priceUSD24h: string
-            priceUSD48h: string
-            priceUSD7d: string
-            /** @description Total volume in USD */
-            totalVolumeUSD: string
-            volumeUSD24h: null | string
-            volumeUSD48h: null | string
-            volumeUSD7d: null | string
-            tvlUSD: string
-            tvlUSD24h: string
-            tvlUSD48h: string
-            tvlUSD7d: string
-            tvl: string
-            tvl24h: string
-            tvl48h: string
-            tvl7d: string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              /** @description Token address */
+              id: string;
+              symbol: string;
+              name: string;
+              decimals: number;
+              totalTxCount: number;
+              txCount24h: number;
+              txCount48h: number;
+              txCount7d: number;
+              priceUSD: string;
+              priceUSD24h: string;
+              priceUSD48h: string;
+              priceUSD7d: string;
+              /** @description Total volume in USD */
+              totalVolumeUSD: string;
+              volumeUSD24h: null | string;
+              volumeUSD48h: null | string;
+              volumeUSD7d: null | string;
+              tvlUSD: string;
+              tvlUSD24h: string;
+              tvlUSD48h: string;
+              tvlUSD7d: string;
+              tvl: string;
+              tvl24h: string;
+              tvl48h: string;
+              tvl7d: string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get all ticks from v3 pool */
   getCachedPoolsTicksV3ByChainNameByPool: {
     parameters: {
       query?: {
         /** @description Cursor for pagination before */
-        before?: string
+        before?: string;
         /** @description Cursor for pagination after */
-        after?: string
-      }
+        after?: string;
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Pool address */
-        pool: string
-      }
-    }
+        pool: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': components['schemas']['ticks']
-        }
-      }
-    }
-  }
+          "application/json": components["schemas"]["ticks"];
+        };
+      };
+    };
+  };
   /** Get positions from v3 pool */
   getCachedPoolsPositionsV3ByChainNameByPool: {
     parameters: {
       query?: {
         /** @description Cursor for pagination before */
-        before?: string
+        before?: string;
         /** @description Cursor for pagination after */
-        after?: string
+        after?: string;
         /** @description Ethereum address */
-        owner?: string
-        tick?: number
-      }
+        owner?: string;
+        tick?: number;
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Pool address */
-        pool: string
-      }
-    }
+        pool: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': components['schemas']['positions']
-        }
-      }
-    }
-  }
+          "application/json": components["schemas"]["positions"];
+        };
+      };
+    };
+  };
   /** Get v3 pool rate chart */
   getCachedPoolsChartV3ByChainNameByAddressRate: {
     parameters: {
       query: {
         /** @description Chart period */
-        period: '1H' | '1D' | '1W' | '1M' | '1Y'
-      }
+        period: "1H" | "1D" | "1W" | "1M" | "1Y";
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            bucket: Record<string, never> | string
-            open: null | string
-            close: null | string
-            high: null | string
-            low: null | string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              bucket: Record<string, never> | string;
+              open: null | string;
+              close: null | string;
+              high: null | string;
+              low: null | string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get v3 pool fees chart */
   getCachedPoolsChartV3ByChainNameByAddressFees: {
     parameters: {
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            bucket: Record<string, never> | string
-            feeUSD: string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              bucket: Record<string, never> | string;
+              feeUSD: string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get pool tvl chart */
   getCachedPoolsChartByProtocolByChainNameByAddressTvl: {
     parameters: {
       query: {
         /** @description Chart period */
-        period: '1H' | '1D' | '1W' | '1M' | '1Y'
-      }
+        period: "1H" | "1D" | "1W" | "1M" | "1Y";
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: "v2" | "v3" | "stable";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            bucket: Record<string, never> | string
-            tvlUSD: null | string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              bucket: Record<string, never> | string;
+              tvlUSD: null | string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get pool volume chart */
   getCachedPoolsChartByProtocolByChainNameByAddressVolume: {
     parameters: {
       query: {
         /** @description Chart period */
-        period: '1H' | '1D' | '1W' | '1M' | '1Y'
-      }
+        period: "1H" | "1D" | "1W" | "1M" | "1Y";
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: "v2" | "v3" | "stable";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            bucket: Record<string, never> | string
-            volumeUSD: null | string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              bucket: Record<string, never> | string;
+              volumeUSD: null | string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get v2 farm lp apr */
-  'getCachedPoolsAprV2ByChainNameFarms-lp': {
+  "getCachedPoolsAprV2ByChainNameFarms-lp": {
     parameters: {
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
+      };
+    };
     responses: {
       200: {
-        content: never
-      }
-    }
-  }
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
   /** Get v3 farm lp apr */
-  'getCachedPoolsAprV3ByChainNameFarms-lp': {
+  "getCachedPoolsAprV3ByChainNameFarms-lp": {
     parameters: {
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
+      };
+    };
     responses: {
       200: {
-        content: never
-      }
-    }
-  }
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
   /** Get stable farm lp apr */
-  'getCachedPoolsAprStableByChainNameFarms-lp': {
+  "getCachedPoolsAprStableByChainNameFarms-lp": {
     parameters: {
       path: {
-        chainName: 'bsc' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "arbitrum";
+      };
+    };
     responses: {
       200: {
-        content: never
-      }
-    }
-  }
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
   /** Get pools list */
   getCachedPoolsList: {
     parameters: {
       query: {
-        orderBy: 'tvlUSD' | 'volumeUSD24h' | 'apr24h' | 'volumeUSD7d'
+        orderBy: "tvlUSD" | "volumeUSD24h" | "apr24h" | "volumeUSD7d";
         /** @description Array of protocol versions */
-        protocols: ('v2' | 'v3' | 'stable') | ('v2' | 'v3' | 'stable')[]
+        protocols: ("v2" | "v3" | "stable") | (("v2" | "v3" | "stable")[]);
         /** @description Array of chain names */
-        chains:
-          | ('bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum')
-          | ('bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum')[]
+        chains: ("bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum") | (("bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum")[]);
         /** @description Filter by Pool address, should be use with chain filter */
-        pool?: string
+        pool?: string;
         /** @description Filter by token address, should be use with chain filter */
-        token?: string
+        token?: string;
         /** @description Cursor for pagination before */
-        before?: string
+        before?: string;
         /** @description Cursor for pagination after */
-        after?: string
-      }
-    }
+        after?: string;
+      };
+    };
     responses: {
       200: {
-        content: never
-      }
-    }
-  }
+        content: never;
+      };
+    };
+  };
   /** Get v3 pool data */
   getCachedPoolsV3ByChainNameByAddress: {
     parameters: {
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
+          "application/json": {
             /** @description Pool id */
-            id: string
+            id: string;
             token0: {
-              id: string
-              symbol: string
-              name: string
-              decimals: number
-            }
+              id: string;
+              symbol: string;
+              name: string;
+              decimals: number;
+            };
             token1: {
-              id: string
-              symbol: string
-              name: string
-              decimals: number
-            }
+              id: string;
+              symbol: string;
+              name: string;
+              decimals: number;
+            };
             /** @description Total volume in USD */
-            totalVolumeUSD: string
+            totalVolumeUSD: string;
             /** @description Token0 price to token1 */
-            token0Price: string
+            token0Price: string;
             /** @description Token1 price to token0 */
-            token1Price: string
+            token1Price: string;
             /** @description Total value locked in token0 */
-            tvlToken0: string
+            tvlToken0: string;
             /** @description Total value locked in token1 */
-            tvlToken1: string
+            tvlToken1: string;
             /** @description Volume in USD in 24h */
-            volumeUSD24h: string
+            volumeUSD24h: string;
             /** @description Volume in USD in 24h */
-            volumeUSD48h: string
+            volumeUSD48h: string;
             /** @description Volume in USD in 7d */
-            volumeUSD7d: string
+            volumeUSD7d: string;
             /** @description Total value locked in USD */
-            tvlUSD: string
+            tvlUSD: string;
             /** @description Total value locked in USD 24h ago */
-            tvlUSD24h: string
+            tvlUSD24h: string;
             /** @description Total value locked in USD 24h ago */
-            tvlUSD48h: string
+            tvlUSD48h: string;
             /** @description Total value locked in USD 7d ago */
-            tvlUSD7d: string
+            tvlUSD7d: string;
             /** @description Pool created at timestamp */
-            createdAtTimestamp: Record<string, never> | string
-            feeTier: number
-            liquidity: string
-            sqrtPrice: string
-            tick: null | number
+            createdAtTimestamp: Record<string, never> | string;
+            feeTier: number;
+            liquidity: string;
+            sqrtPrice: string;
+            tick: null | number;
             /** @description Total fee in USD */
-            totalFeeUSD: string
+            totalFeeUSD: string;
             /** @description Fee in USD in 24h */
-            feeUSD24h: string
+            feeUSD24h: string;
             /** @description Fee in USD in 24h */
-            feeUSD48h: string
+            feeUSD48h: string;
             /** @description Fee in USD in 7d */
-            feeUSD7d: string
+            feeUSD7d: string;
             /** @description Total protocol fee in USD */
-            totalProtocolFeeUSD: string
+            totalProtocolFeeUSD: string;
             /** @description Protocol fee in USD in 24h */
-            protocolFeeUSD24h: string
+            protocolFeeUSD24h: string;
             /** @description Protocol fee in USD in 24h */
-            protocolFeeUSD48h: string
+            protocolFeeUSD48h: string;
             /** @description Protocol fee in USD in 7d */
-            protocolFeeUSD7d: string
-          }
-        }
-      }
-    }
-  }
+            protocolFeeUSD7d: string;
+          };
+        };
+      };
+    };
+  };
   /** Get v2 pool data */
   getCachedPoolsV2ByChainNameByAddress: {
     parameters: {
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
+          "application/json": {
             /** @description Pool id */
-            id: string
+            id: string;
             token0: {
-              id: string
-              symbol: string
-              name: string
-              decimals: number
-            }
+              id: string;
+              symbol: string;
+              name: string;
+              decimals: number;
+            };
             token1: {
-              id: string
-              symbol: string
-              name: string
-              decimals: number
-            }
+              id: string;
+              symbol: string;
+              name: string;
+              decimals: number;
+            };
             /** @description Total volume in USD */
-            totalVolumeUSD: string
+            totalVolumeUSD: string;
             /** @description Token0 price to token1 */
-            token0Price: string
+            token0Price: string;
             /** @description Token1 price to token0 */
-            token1Price: string
+            token1Price: string;
             /** @description Total value locked in token0 */
-            tvlToken0: string
+            tvlToken0: string;
             /** @description Total value locked in token1 */
-            tvlToken1: string
+            tvlToken1: string;
             /** @description Volume in USD in 24h */
-            volumeUSD24h: string
+            volumeUSD24h: string;
             /** @description Volume in USD in 24h */
-            volumeUSD48h: string
+            volumeUSD48h: string;
             /** @description Volume in USD in 7d */
-            volumeUSD7d: string
+            volumeUSD7d: string;
             /** @description Total value locked in USD */
-            tvlUSD: string
+            tvlUSD: string;
             /** @description Total value locked in USD 24h ago */
-            tvlUSD24h: string
+            tvlUSD24h: string;
             /** @description Total value locked in USD 24h ago */
-            tvlUSD48h: string
+            tvlUSD48h: string;
             /** @description Total value locked in USD 7d ago */
-            tvlUSD7d: string
+            tvlUSD7d: string;
             /** @description Pool created at timestamp */
-            createdAtTimestamp: Record<string, never> | string
-          }
-        }
-      }
-    }
-  }
+            createdAtTimestamp: Record<string, never> | string;
+          };
+        };
+      };
+    };
+  };
   /** Get stable pool data */
   getCachedPoolsStableByChainNameByAddress: {
     parameters: {
       path: {
-        chainName: 'bsc' | 'arbitrum'
+        chainName: "bsc" | "arbitrum";
         /** @description Ethereum address */
-        address: string
-      }
-    }
+        address: string;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
+          "application/json": {
             /** @description Pool id */
-            id: string
+            id: string;
             token0: {
-              id: string
-              symbol: string
-              name: string
-              decimals: number
-            }
+              id: string;
+              symbol: string;
+              name: string;
+              decimals: number;
+            };
             token1: {
-              id: string
-              symbol: string
-              name: string
-              decimals: number
-            }
+              id: string;
+              symbol: string;
+              name: string;
+              decimals: number;
+            };
             /** @description Total volume in USD */
-            totalVolumeUSD: string
+            totalVolumeUSD: string;
             /** @description Token0 price to token1 */
-            token0Price: string
+            token0Price: string;
             /** @description Token1 price to token0 */
-            token1Price: string
+            token1Price: string;
             /** @description Total value locked in token0 */
-            tvlToken0: string
+            tvlToken0: string;
             /** @description Total value locked in token1 */
-            tvlToken1: string
+            tvlToken1: string;
             /** @description Volume in USD in 24h */
-            volumeUSD24h: string
+            volumeUSD24h: string;
             /** @description Volume in USD in 24h */
-            volumeUSD48h: string
+            volumeUSD48h: string;
             /** @description Volume in USD in 7d */
-            volumeUSD7d: string
+            volumeUSD7d: string;
             /** @description Total value locked in USD */
-            tvlUSD: string
+            tvlUSD: string;
             /** @description Total value locked in USD 24h ago */
-            tvlUSD24h: string
+            tvlUSD24h: string;
             /** @description Total value locked in USD 24h ago */
-            tvlUSD48h: string
+            tvlUSD48h: string;
             /** @description Total value locked in USD 7d ago */
-            tvlUSD7d: string
+            tvlUSD7d: string;
             /** @description Pool created at timestamp */
-            createdAtTimestamp: Record<string, never> | string
-            virtualPrice: string
-            virtualPrice24h: null | string
-            virtualPrice48h: null | string
-            virtualPrice7d: null | string
-          }
-        }
-      }
-    }
-  }
+            createdAtTimestamp: Record<string, never> | string;
+            virtualPrice: string;
+            virtualPrice24h: null | string;
+            virtualPrice48h: null | string;
+            virtualPrice7d: null | string;
+          };
+        };
+      };
+    };
+  };
   /** Get simple v3 pools list */
   getCachedPoolsV3ByChainNameListSimple: {
     parameters: {
       query?: {
         /** @description Filter by Token0 address */
-        token0?: string
+        token0?: string;
         /** @description Filter by Token1 address */
-        token1?: string
-      }
+        token1?: string;
+        /** @description Cursor for pagination before */
+        before?: string;
+        /** @description Cursor for pagination after */
+        after?: string;
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
+          "application/json": {
             /** @description Cursor for pagination start */
-            startCursor?: string
+            startCursor?: string;
             /** @description Cursor for pagination end */
-            endCursor?: string
+            endCursor?: string;
             /** @description Has next page */
-            hasNextPage?: boolean
+            hasNextPage?: boolean;
             /** @description Has previous page */
-            hasPrevPage?: boolean
+            hasPrevPage?: boolean;
             rows: {
-              id: string
-              feeTier: number
-              token0: {
-                id: string
-                symbol: string
-                name: string
-                decimals: number
-              }
-              token1: {
-                id: string
-                symbol: string
-                name: string
-                decimals: number
-              }
-              tvlUSD: string
-              tvlToken0: string
-              tvlToken1: string
-            }[]
-          }
-        }
-      }
-    }
-  }
+                id: string;
+                feeTier: number;
+                token0: {
+                  id: string;
+                  symbol: string;
+                  name: string;
+                  decimals: number;
+                };
+                token1: {
+                  id: string;
+                  symbol: string;
+                  name: string;
+                  decimals: number;
+                };
+                totalVolumeUSD: string;
+                tvlUSD: string;
+                tvlToken0: string;
+                tvlToken1: string;
+              }[];
+          };
+        };
+      };
+    };
+  };
   /** Get top v3 pools */
   getCachedPoolsV3ByChainNameListTop: {
     parameters: {
       query?: {
         /** @description Filter by Token address */
-        token?: string
-      }
+        token?: string;
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            /** @description Pool id */
-            id: string
-            token0: {
-              id: string
-              symbol: string
-              name: string
-              decimals: number
-            }
-            token1: {
-              id: string
-              symbol: string
-              name: string
-              decimals: number
-            }
-            /** @description Total volume in USD */
-            totalVolumeUSD: string
-            /** @description Token0 price to token1 */
-            token0Price: string
-            /** @description Token1 price to token0 */
-            token1Price: string
-            /** @description Total value locked in token0 */
-            tvlToken0: string
-            /** @description Total value locked in token1 */
-            tvlToken1: string
-            /** @description Volume in USD in 24h */
-            volumeUSD24h: string
-            /** @description Volume in USD in 24h */
-            volumeUSD48h: string
-            /** @description Volume in USD in 7d */
-            volumeUSD7d: string
-            /** @description Total value locked in USD */
-            tvlUSD: string
-            /** @description Total value locked in USD 24h ago */
-            tvlUSD24h: string
-            /** @description Total value locked in USD 24h ago */
-            tvlUSD48h: string
-            /** @description Total value locked in USD 7d ago */
-            tvlUSD7d: string
-            /** @description Pool created at timestamp */
-            createdAtTimestamp: Record<string, never> | string
-            feeTier: number
-            liquidity: string
-            sqrtPrice: string
-            tick: null | number
-            /** @description Total fee in USD */
-            totalFeeUSD: string
-            /** @description Fee in USD in 24h */
-            feeUSD24h: string
-            /** @description Fee in USD in 24h */
-            feeUSD48h: string
-            /** @description Fee in USD in 7d */
-            feeUSD7d: string
-            /** @description Total protocol fee in USD */
-            totalProtocolFeeUSD: string
-            /** @description Protocol fee in USD in 24h */
-            protocolFeeUSD24h: string
-            /** @description Protocol fee in USD in 24h */
-            protocolFeeUSD48h: string
-            /** @description Protocol fee in USD in 7d */
-            protocolFeeUSD7d: string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              /** @description Pool id */
+              id: string;
+              token0: {
+                id: string;
+                symbol: string;
+                name: string;
+                decimals: number;
+              };
+              token1: {
+                id: string;
+                symbol: string;
+                name: string;
+                decimals: number;
+              };
+              /** @description Total volume in USD */
+              totalVolumeUSD: string;
+              /** @description Token0 price to token1 */
+              token0Price: string;
+              /** @description Token1 price to token0 */
+              token1Price: string;
+              /** @description Total value locked in token0 */
+              tvlToken0: string;
+              /** @description Total value locked in token1 */
+              tvlToken1: string;
+              /** @description Volume in USD in 24h */
+              volumeUSD24h: string;
+              /** @description Volume in USD in 24h */
+              volumeUSD48h: string;
+              /** @description Volume in USD in 7d */
+              volumeUSD7d: string;
+              /** @description Total value locked in USD */
+              tvlUSD: string;
+              /** @description Total value locked in USD 24h ago */
+              tvlUSD24h: string;
+              /** @description Total value locked in USD 24h ago */
+              tvlUSD48h: string;
+              /** @description Total value locked in USD 7d ago */
+              tvlUSD7d: string;
+              /** @description Pool created at timestamp */
+              createdAtTimestamp: Record<string, never> | string;
+              feeTier: number;
+              liquidity: string;
+              sqrtPrice: string;
+              tick: null | number;
+              /** @description Total fee in USD */
+              totalFeeUSD: string;
+              /** @description Fee in USD in 24h */
+              feeUSD24h: string;
+              /** @description Fee in USD in 24h */
+              feeUSD48h: string;
+              /** @description Fee in USD in 7d */
+              feeUSD7d: string;
+              /** @description Total protocol fee in USD */
+              totalProtocolFeeUSD: string;
+              /** @description Protocol fee in USD in 24h */
+              protocolFeeUSD24h: string;
+              /** @description Protocol fee in USD in 24h */
+              protocolFeeUSD48h: string;
+              /** @description Protocol fee in USD in 7d */
+              protocolFeeUSD7d: string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get top v2 pools */
   getCachedPoolsV2ByChainNameListTop: {
     parameters: {
       query?: {
         /** @description Filter by Token address */
-        token?: string
-      }
+        token?: string;
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            /** @description Pool id */
-            id: string
-            token0: {
-              id: string
-              symbol: string
-              name: string
-              decimals: number
-            }
-            token1: {
-              id: string
-              symbol: string
-              name: string
-              decimals: number
-            }
-            /** @description Total volume in USD */
-            totalVolumeUSD: string
-            /** @description Token0 price to token1 */
-            token0Price: string
-            /** @description Token1 price to token0 */
-            token1Price: string
-            /** @description Total value locked in token0 */
-            tvlToken0: string
-            /** @description Total value locked in token1 */
-            tvlToken1: string
-            /** @description Volume in USD in 24h */
-            volumeUSD24h: string
-            /** @description Volume in USD in 24h */
-            volumeUSD48h: string
-            /** @description Volume in USD in 7d */
-            volumeUSD7d: string
-            /** @description Total value locked in USD */
-            tvlUSD: string
-            /** @description Total value locked in USD 24h ago */
-            tvlUSD24h: string
-            /** @description Total value locked in USD 24h ago */
-            tvlUSD48h: string
-            /** @description Total value locked in USD 7d ago */
-            tvlUSD7d: string
-            /** @description Pool created at timestamp */
-            createdAtTimestamp: Record<string, never> | string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              /** @description Pool id */
+              id: string;
+              token0: {
+                id: string;
+                symbol: string;
+                name: string;
+                decimals: number;
+              };
+              token1: {
+                id: string;
+                symbol: string;
+                name: string;
+                decimals: number;
+              };
+              /** @description Total volume in USD */
+              totalVolumeUSD: string;
+              /** @description Token0 price to token1 */
+              token0Price: string;
+              /** @description Token1 price to token0 */
+              token1Price: string;
+              /** @description Total value locked in token0 */
+              tvlToken0: string;
+              /** @description Total value locked in token1 */
+              tvlToken1: string;
+              /** @description Volume in USD in 24h */
+              volumeUSD24h: string;
+              /** @description Volume in USD in 24h */
+              volumeUSD48h: string;
+              /** @description Volume in USD in 7d */
+              volumeUSD7d: string;
+              /** @description Total value locked in USD */
+              tvlUSD: string;
+              /** @description Total value locked in USD 24h ago */
+              tvlUSD24h: string;
+              /** @description Total value locked in USD 24h ago */
+              tvlUSD48h: string;
+              /** @description Total value locked in USD 7d ago */
+              tvlUSD7d: string;
+              /** @description Pool created at timestamp */
+              createdAtTimestamp: Record<string, never> | string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get top stable pools */
   getCachedPoolsStableByChainNameListTop: {
     parameters: {
       query?: {
         /** @description Filter by Token address */
-        token?: string
-      }
+        token?: string;
+      };
       path: {
-        chainName: 'bsc' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "arbitrum";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            /** @description Pool id */
-            id: string
-            token0: {
-              id: string
-              symbol: string
-              name: string
-              decimals: number
-            }
-            token1: {
-              id: string
-              symbol: string
-              name: string
-              decimals: number
-            }
-            /** @description Total volume in USD */
-            totalVolumeUSD: string
-            /** @description Token0 price to token1 */
-            token0Price: string
-            /** @description Token1 price to token0 */
-            token1Price: string
-            /** @description Total value locked in token0 */
-            tvlToken0: string
-            /** @description Total value locked in token1 */
-            tvlToken1: string
-            /** @description Volume in USD in 24h */
-            volumeUSD24h: string
-            /** @description Volume in USD in 24h */
-            volumeUSD48h: string
-            /** @description Volume in USD in 7d */
-            volumeUSD7d: string
-            /** @description Total value locked in USD */
-            tvlUSD: string
-            /** @description Total value locked in USD 24h ago */
-            tvlUSD24h: string
-            /** @description Total value locked in USD 24h ago */
-            tvlUSD48h: string
-            /** @description Total value locked in USD 7d ago */
-            tvlUSD7d: string
-            /** @description Pool created at timestamp */
-            createdAtTimestamp: Record<string, never> | string
-            virtualPrice: string
-            virtualPrice24h: null | string
-            virtualPrice48h: null | string
-            virtualPrice7d: null | string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              /** @description Pool id */
+              id: string;
+              token0: {
+                id: string;
+                symbol: string;
+                name: string;
+                decimals: number;
+              };
+              token1: {
+                id: string;
+                symbol: string;
+                name: string;
+                decimals: number;
+              };
+              /** @description Total volume in USD */
+              totalVolumeUSD: string;
+              /** @description Token0 price to token1 */
+              token0Price: string;
+              /** @description Token1 price to token0 */
+              token1Price: string;
+              /** @description Total value locked in token0 */
+              tvlToken0: string;
+              /** @description Total value locked in token1 */
+              tvlToken1: string;
+              /** @description Volume in USD in 24h */
+              volumeUSD24h: string;
+              /** @description Volume in USD in 24h */
+              volumeUSD48h: string;
+              /** @description Volume in USD in 7d */
+              volumeUSD7d: string;
+              /** @description Total value locked in USD */
+              tvlUSD: string;
+              /** @description Total value locked in USD 24h ago */
+              tvlUSD24h: string;
+              /** @description Total value locked in USD 24h ago */
+              tvlUSD48h: string;
+              /** @description Total value locked in USD 7d ago */
+              tvlUSD7d: string;
+              /** @description Pool created at timestamp */
+              createdAtTimestamp: Record<string, never> | string;
+              virtualPrice: string;
+              virtualPrice24h: null | string;
+              virtualPrice48h: null | string;
+              virtualPrice7d: null | string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get v3 swaps by page */
   getCachedTxV3ByChainNameSwaps: {
     parameters: {
       query?: {
         /** @description Filter by token address */
-        token?: string
+        token?: string;
         /** @description Filter by pool address */
-        pool?: string
+        pool?: string;
         /** @description Cursor for pagination before */
-        before?: string
+        before?: string;
         /** @description Cursor for pagination after */
-        after?: string
-      }
+        after?: string;
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
+          "application/json": {
             /** @description Cursor for pagination start */
-            startCursor?: string
+            startCursor?: string;
             /** @description Cursor for pagination end */
-            endCursor?: string
+            endCursor?: string;
             /** @description Has next page */
-            hasNextPage?: boolean
+            hasNextPage?: boolean;
             /** @description Has previous page */
-            hasPrevPage?: boolean
-            rows: {
-              id: string
-              transactionHash: string
-              poolId: string
-              token0: {
-                id: string
-                symbol: string
-                name: string
-                decimals: number
-              }
-              token1: {
-                id: string
-                symbol: string
-                name: string
-                decimals: number
-              }
-              amount0: string
-              amount1: string
-              amountUSD: string
-              origin: null | string
-              recipient: null | string
-              timestamp: Record<string, never> | string
-            }[]
-          }
-          'multipart/form-data': {
+            hasPrevPage?: boolean;
+            rows: ({
+                id: string;
+                transactionHash: string;
+                poolId: string;
+                token0: {
+                  id: string;
+                  symbol: string;
+                  name: string;
+                  decimals: number;
+                };
+                token1: {
+                  id: string;
+                  symbol: string;
+                  name: string;
+                  decimals: number;
+                };
+                amount0: string;
+                amount1: string;
+                amountUSD: string;
+                origin: null | string;
+                recipient: null | string;
+                timestamp: Record<string, never> | string;
+              })[];
+          };
+          "multipart/form-data": {
             /** @description Cursor for pagination start */
-            startCursor?: string
+            startCursor?: string;
             /** @description Cursor for pagination end */
-            endCursor?: string
+            endCursor?: string;
             /** @description Has next page */
-            hasNextPage?: boolean
+            hasNextPage?: boolean;
             /** @description Has previous page */
-            hasPrevPage?: boolean
-            rows: {
-              id: string
-              transactionHash: string
-              poolId: string
-              token0: {
-                id: string
-                symbol: string
-                name: string
-                decimals: number
-              }
-              token1: {
-                id: string
-                symbol: string
-                name: string
-                decimals: number
-              }
-              amount0: string
-              amount1: string
-              amountUSD: string
-              origin: null | string
-              recipient: null | string
-              timestamp: Record<string, never> | string
-            }[]
-          }
-          'text/plain': {
+            hasPrevPage?: boolean;
+            rows: ({
+                id: string;
+                transactionHash: string;
+                poolId: string;
+                token0: {
+                  id: string;
+                  symbol: string;
+                  name: string;
+                  decimals: number;
+                };
+                token1: {
+                  id: string;
+                  symbol: string;
+                  name: string;
+                  decimals: number;
+                };
+                amount0: string;
+                amount1: string;
+                amountUSD: string;
+                origin: null | string;
+                recipient: null | string;
+                timestamp: Record<string, never> | string;
+              })[];
+          };
+          "text/plain": {
             /** @description Cursor for pagination start */
-            startCursor?: string
+            startCursor?: string;
             /** @description Cursor for pagination end */
-            endCursor?: string
+            endCursor?: string;
             /** @description Has next page */
-            hasNextPage?: boolean
+            hasNextPage?: boolean;
             /** @description Has previous page */
-            hasPrevPage?: boolean
-            rows: {
-              id: string
-              transactionHash: string
-              poolId: string
-              token0: {
-                id: string
-                symbol: string
-                name: string
-                decimals: number
-              }
-              token1: {
-                id: string
-                symbol: string
-                name: string
-                decimals: number
-              }
-              amount0: string
-              amount1: string
-              amountUSD: string
-              origin: null | string
-              recipient: null | string
-              timestamp: Record<string, never> | string
-            }[]
-          }
-        }
-      }
-    }
-  }
+            hasPrevPage?: boolean;
+            rows: ({
+                id: string;
+                transactionHash: string;
+                poolId: string;
+                token0: {
+                  id: string;
+                  symbol: string;
+                  name: string;
+                  decimals: number;
+                };
+                token1: {
+                  id: string;
+                  symbol: string;
+                  name: string;
+                  decimals: number;
+                };
+                amount0: string;
+                amount1: string;
+                amountUSD: string;
+                origin: null | string;
+                recipient: null | string;
+                timestamp: Record<string, never> | string;
+              })[];
+          };
+        };
+      };
+    };
+  };
   /** Get recent v3 transaction */
   getCachedTxV3ByChainNameRecent: {
     parameters: {
       query?: {
         /** @description Filter by token address */
-        token?: string
+        token?: string;
         /** @description Filter by pool address */
-        pool?: string
-      }
+        pool?: string;
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': components['schemas']['transactionsWithType']
-        }
-      }
-    }
-  }
+          "application/json": components["schemas"]["transactionsWithType"];
+        };
+      };
+    };
+  };
   /** Get recent v2 transaction */
   getCachedTxV2ByChainNameRecent: {
     parameters: {
       query?: {
         /** @description Filter by token address */
-        token?: string
+        token?: string;
         /** @description Filter by pool address */
-        pool?: string
-      }
+        pool?: string;
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': components['schemas']['transactionsWithType']
-        }
-      }
-    }
-  }
+          "application/json": components["schemas"]["transactionsWithType"];
+        };
+      };
+    };
+  };
   /** Get recent stable transaction */
   getCachedTxStableByChainNameRecent: {
     parameters: {
       query?: {
         /** @description Filter by token address */
-        token?: string
+        token?: string;
         /** @description Filter by pool address */
-        pool?: string
-      }
+        pool?: string;
+      };
       path: {
-        chainName: 'bsc' | 'arbitrum'
-      }
-    }
+        chainName: "bsc" | "arbitrum";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': components['schemas']['transactionsWithType']
-        }
-      }
-    }
-  }
+          "application/json": components["schemas"]["transactionsWithType"];
+        };
+      };
+    };
+  };
   /** Get closest block by unix timestamp */
   getCachedBlockByChainNameByTimestamp: {
     parameters: {
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
-        timestamp: string | number
-      }
-    }
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
+        timestamp: string | number;
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
+          "application/json": {
             /** @example 11150916 */
-            height: number
+            height: number;
             /** @example 1603964988 */
-            timestamp: number
-          }
-        }
-      }
+            timestamp: number;
+          };
+        };
+      };
       400: {
         content: {
-          'application/json': unknown
-        }
-      }
-    }
-  }
-  'getCachedGaugesTotal-votesAll': {
+          "application/json": unknown;
+        };
+      };
+    };
+  };
+  "getCachedGaugesTotal-votesAll": {
     responses: {
       200: {
         content: {
-          'application/json': {
-            epoch: number
-            totalWeight?: string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": {
+              epoch: number;
+              totalWeight?: string;
+            }[];
+        };
+      };
+    };
+  };
   /** Get protocol volume chart */
   getCachedProtocolChartByProtocolByChainNameVolume: {
     parameters: {
       query: {
         /** @description Chart group by */
-        groupBy: '1D' | '1W' | '1M'
-      }
+        groupBy: "1D" | "1W" | "1M";
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
-      }
-    }
+        protocol: "v2" | "v3" | "stable";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            bucket: Record<string, never> | string
-            volumeUSD: null | string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              bucket: Record<string, never> | string;
+              volumeUSD: null | string;
+            })[];
+        };
+      };
+    };
+  };
   /** Get protocol tvl chart */
   getCachedProtocolChartByProtocolByChainNameTvl: {
     parameters: {
       query: {
         /** @description Chart group by */
-        groupBy: '1D' | '1W' | '1M'
-      }
+        groupBy: "1D" | "1W" | "1M";
+      };
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
-      }
-    }
+        protocol: "v2" | "v3" | "stable";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            bucket: Record<string, never> | string
-            tvlUSD: null | string
-          }[]
-        }
-      }
-    }
-  }
+          "application/json": ({
+              bucket: Record<string, never> | string;
+              tvlUSD: null | string;
+            })[];
+        };
+      };
+    };
+  };
+  /** Search protocol tokens and pools */
+  getCachedProtocolByProtocolByChainNameSearch: {
+    parameters: {
+      query: {
+        text: string;
+      };
+      path: {
+        /** @description Chain name */
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
+        /** @description Protocol version */
+        protocol: "v2" | "v3" | "stable";
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": {
+            tokens: {
+                id: string;
+                name: string;
+                symbol: string;
+                decimals: number;
+                priceUSD: string;
+                totalVolumeUSD: string;
+                tvlUSD: string;
+                tvl: string;
+                totalTxCount: number;
+              }[];
+            pools: {
+                id: string;
+                token0: {
+                  id: string;
+                  symbol: string;
+                  name: string;
+                  decimals: number;
+                };
+                token1: {
+                  id: string;
+                  symbol: string;
+                  name: string;
+                  decimals: number;
+                };
+                feeTier: number;
+                tvlUSD: string;
+                totalVolumeUSD: string;
+                tvlToken0: string;
+                tvlToken1: string;
+              }[];
+          };
+        };
+      };
+    };
+  };
   /** Get protocol stats */
   getCachedProtocolByProtocolByChainNameStats: {
     parameters: {
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
-      }
-    }
+        protocol: "v2" | "v3" | "stable";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            tvlUSD: string
-            totalVolumeUSD: string
-            totalProtocolFeeUSD: string
-            totalProtocolFeeUSD24h: string
-            totalProtocolFeeUSD48h: string
-            totalProtocolFeeUSD30d: string
-            totalTxCount: number
-            totalFeeUSD: string
-            totalFeeUSD24h: string
-            totalFeeUSD48h: string
-            totalFeeUSD30d: string
-            tvlUSD24h: string
-            tvlUSD48h: string
-            tvlUSD30d: string
-            volumeUSD24h: string
-            volumeUSD48h: string
-            volumeUSD30d: string
-            txCount24h: number
-            txCount48h: number
-            txCount30d: number
-          }
-        }
-      }
-    }
-  }
+          "application/json": {
+            tvlUSD: string;
+            totalVolumeUSD: string;
+            totalProtocolFeeUSD: string;
+            totalProtocolFeeUSD24h: string;
+            totalProtocolFeeUSD48h: string;
+            totalProtocolFeeUSD30d: string;
+            totalTxCount: number;
+            totalFeeUSD: string;
+            totalFeeUSD24h: string;
+            totalFeeUSD48h: string;
+            totalFeeUSD30d: string;
+            tvlUSD24h: string;
+            tvlUSD48h: string;
+            tvlUSD30d: string;
+            volumeUSD24h: string;
+            volumeUSD48h: string;
+            volumeUSD30d: string;
+            txCount24h: number;
+            txCount48h: number;
+            txCount30d: number;
+          };
+        };
+      };
+    };
+  };
   /** Get status of info data for chain */
   getStatusByProtocolByChainName: {
     parameters: {
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: "bsc" | "ethereum" | "base" | "opbnb" | "zksync" | "polygon-zkevm" | "linea" | "arbitrum";
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
-      }
-    }
+        protocol: "v2" | "v3" | "stable";
+      };
+    };
     responses: {
       200: {
         content: {
-          'application/json': {
-            height: number
-          }
-          'multipart/form-data': {
-            height: number
-          }
-          'text/plain': {
-            height: number
-          }
-        }
-      }
-    }
-  }
+          "application/json": {
+            height: number;
+          };
+          "multipart/form-data": {
+            height: number;
+          };
+          "text/plain": {
+            height: number;
+          };
+        };
+      };
+    };
+  };
   getDocJson: {
     responses: {
       200: {
-        content: never
-      }
-    }
-  }
+        content: never;
+      };
+    };
+  };
 }
