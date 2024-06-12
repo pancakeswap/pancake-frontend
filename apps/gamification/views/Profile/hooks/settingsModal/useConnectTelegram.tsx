@@ -25,7 +25,6 @@ export const useConnectTelegram = () => {
   }, [])
 
   const connect = () => {
-    console.log('process.env.TELEGRAM_BOT_TOKEN', process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN)
     // Telegram login button click handler
     window.Telegram.Login.auth(
       {
@@ -33,9 +32,14 @@ export const useConnectTelegram = () => {
         request_access: true,
       },
       (user: TelegramResponse) => {
-        console.log(user.id)
-        // Handle the authenticated user information
-        // You can send it to your backend server
+        if (user) {
+          // Handle the authenticated user information
+          // You can send it to your backend server
+          console.log(user.id)
+        } else {
+          // User cancelled authentication, redirect to /profile
+          window.location.href = '/profile'
+        }
       },
     )
   }
