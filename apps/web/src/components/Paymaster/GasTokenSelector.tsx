@@ -238,7 +238,7 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
       <FixedHeightRow style={style} onClick={() => !disabled && onTokenSelected(item)} $disabled={disabled}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           <Flex alignItems="center">
-            <CurrencyLogo currency={item} />
+            <CurrencyLogo currency={item} useTrustWalletUrl={false} />
             <Column marginLeft="12px">
               <Text bold>
                 {item.symbol} &nbsp;
