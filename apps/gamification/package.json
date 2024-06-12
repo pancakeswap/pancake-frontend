@@ -51,7 +51,6 @@
     "@pancakeswap/widgets-internal": "workspace:*",
     "@reduxjs/toolkit": "^1.9.1",
     "@tanstack/react-query": "^5.28.4",
-    "@telegram-auth/server": "^1.0.3",
     "@vanilla-extract/next-plugin": "^2.3.0",
     "@wagmi/core": "2.10.5",
     "bignumber.js": "^9.1.2",
