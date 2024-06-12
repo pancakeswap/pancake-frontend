@@ -49,6 +49,7 @@ export const useConnectDiscord = () => {
   // }, [])
 
   const connect = () => {
+    console.log('sss')
     signIn('discord')
     // const url =
     //   'https://discord.com/oauth2/authorize?client_id=1247444580874453065&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A3005%2Fprofile&scope=identify'
