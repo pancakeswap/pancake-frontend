@@ -24,7 +24,7 @@ export const supportedChainIdV3 = [
   ChainId.OPBNB_TESTNET,
 ] as const
 export const supportedChainId = uniq([...supportedChainIdV2, ...supportedChainIdV3])
-export const bCakeSupportedChainId = [ChainId.BSC] as const
+export const bCakeSupportedChainId = [ChainId.BSC, ChainId.ARBITRUM_ONE, ChainId.ETHEREUM] as const
 
 export const FARM_AUCTION_HOSTING_IN_SECONDS = 691200
 
