@@ -3382,8 +3382,13 @@
   "Pay gas on zkSync Era PancakeSwap with 10+ ERC-20 tokens": "Pay gas on zkSync Era PancakeSwap with 10+ ERC-20 tokens",
   "Enjoy Gas-Free Transactions on zkSync PancakeSwap": "Enjoy Gas-Free Transactions on zkSync PancakeSwap",
   "Enjoy Gas-Free Transactions on zkSync Era PancakeSwap": "Enjoy Gas-Free Transactions on zkSync Era PancakeSwap",
-  "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's": "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's",
   "Users are encouraged to try out": "Users are encouraged to try out",
   "Taiko": "Taiko",
-  "ahead of any potential PancakeSwap Affiliate deployment": "ahead of any potential PancakeSwap Affiliate deployment"
+  "ahead of any potential PancakeSwap Affiliate deployment": "ahead of any potential PancakeSwap Affiliate deployment",
+  "Important Update": "Important Update",
+  "claim": "claim",
+  "I've read and understood the following update.": "I've read and understood the following update.",
+  "Please be informed that the Affiliate who referred you and through whose referral link you signed up to trade is no longer part of PancakeSwap's Affiliate Program. As a result, effective immediately June 12, 2024, you will no longer receive any trading discounts from this Affiliate if they were previously enabled.": "Please be informed that the Affiliate who referred you and through whose referral link you signed up to trade is no longer part of PancakeSwap's Affiliate Program. As a result, effective immediately June 12, 2024, you will no longer receive any trading discounts from this Affiliate if they were previously enabled.",
+  "You can still access the affiliate claims dashboard until July 31, 2024. If you have any outstanding discounts unclaimed, please %claim% them before this date. After July 31, 2024, any unclaimed discounts will be forfeited, and you will no longer have access to the affiliate claims dashboard.": "You can still access the affiliate claims dashboard until July 31, 2024. If you have any outstanding discounts unclaimed, please %claim% them before this date. After July 31, 2024, any unclaimed discounts will be forfeited, and you will no longer have access to the affiliate claims dashboard.",
+  "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's": "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's"
 }
