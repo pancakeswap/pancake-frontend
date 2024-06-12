@@ -5,8 +5,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
-import fetchPoolChartData from 'state/info/queries/pools/chartData'
-import { fetchAllPoolDataWithAddress } from 'state/info/queries/pools/poolData'
 import fetchPoolTransactions from 'state/info/queries/pools/transactions'
 import { fetchGlobalChartData } from 'state/info/queries/protocol/chart'
 import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
@@ -433,41 +431,6 @@ export function usePoolDataQuery(poolAddress: string): PoolData | undefined {
     ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
   })
   return data
-}
-
-export const usePoolDatasQuery = (poolAddresses: string[]): (PoolData | undefined)[] => {
-  const name = poolAddresses.join('')
-  const chainName = useChainNameByQuery()
-  const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d])
-  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery({
-    queryKey: [`info/pool/data/${name}/${type}`, chainName],
-    queryFn: () => fetchAllPoolDataWithAddress(blocks ?? [], chainName, poolAddresses),
-    enabled: Boolean(blocks && chainName),
-    ...QUERY_SETTINGS_IMMUTABLE,
-    ...QUERY_SETTINGS_INTERVAL_REFETCH,
-  })
-
-  return useMemo(() => {
-    return poolAddresses
-      .map((address) => {
-        return data?.[address]?.data
-      })
-      .filter((pool) => pool)
-  }, [data, poolAddresses])
-}
-
-export const usePoolChartDataQuery = (address: string): ChartEntry[] | undefined => {
-  const chainName = useChainNameByQuery()
-  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery({
-    queryKey: [`info/pool/chartData/${address}/${type}`, chainName],
-    queryFn: () => fetchPoolChartData(chainName, address),
-    ...QUERY_SETTINGS_IMMUTABLE,
-    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
-  })
-  return data?.data ?? undefined
 }
 
 export const usePoolChartTvlDataQuery = (address: string): TvlChartEntry[] | undefined => {
