@@ -1,6 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
+
+import { TC_MOBOX_SUBGRAPH } from 'config/constants/endpoints'
+
 import { LIVE } from '../../../../../config/constants/trading-competition/phases'
 import RibbonWithImage from '../../../components/RibbonWithImage'
 import ScoreCard from '../../../components/YourScore/ScoreCard'
@@ -47,7 +50,7 @@ const MoboxYourScore: React.FC<React.PropsWithChildren<YourScoreProps>> = ({
         </RibbonWithImage>
       )}
       <ScoreCard
-        subgraphName="pancakeswap/trading-competition-v3"
+        subgraph={TC_MOBOX_SUBGRAPH}
         userPrizeGrid={<MoboxUserPrizeGrid userTradingInformation={userTradingInformation} />}
         extraUserRankBox={
           <UserRankBox
