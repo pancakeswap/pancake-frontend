@@ -11,8 +11,8 @@ export function useUserAcknowledgement(id: string) {
   )
   const [userACK, setUserACK] = useAtom(atom)
 
-  const ack = useMemo(() => address && userACK, [address])
-  const setAck = useCallback((value: boolean) => address && setUserACK(value), [address])
+  const ack = useMemo(() => address && userACK, [address, userACK])
+  const setAck = useCallback((value: boolean) => address && setUserACK(value), [address, setUserACK])
 
   return [ack, setAck] as const
 }
