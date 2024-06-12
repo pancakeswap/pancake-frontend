@@ -85,7 +85,7 @@ export const useProtocolDataQuery = (): ProtocolData | undefined => {
         .then((res) => {
           if (res.data) {
             return {
-              volumeUSD: res.data.totalVolumeUSD ? +res.data.totalVolumeUSD : 0,
+              volumeUSD: res.data.volumeUSD24h ? +res.data.volumeUSD24h : 0,
               volumeUSDChange: 0,
               liquidityUSD: +res.data.tvlUSD,
               liquidityUSDChange: 0,
