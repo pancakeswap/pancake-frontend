@@ -3,7 +3,13 @@
 import { Hex, toHex } from 'viem'
 
 export type LiquidityConfig = {
+  /**
+   * The distribution of the first token
+   */
   distributionX: bigint
+  /**
+   * The distribution of the second token
+   */
   distributionY: bigint
   id: bigint
 }
