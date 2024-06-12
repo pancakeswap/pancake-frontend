@@ -100,7 +100,9 @@ export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
       // Result: UP, AI Voted: UP => AI Win
       (Number(round?.closePrice) > Number(round?.lockPrice) && Number(round.AIPrice) > Number(round.lockPrice)) ||
       // Result: DOWN, AI Voted: DOWN => AI Win
-      (Number(round?.closePrice) < Number(round?.lockPrice) && Number(round.AIPrice) < Number(round.lockPrice))
+      (Number(round?.closePrice) < Number(round?.lockPrice) && Number(round.AIPrice) < Number(round.lockPrice)) ||
+      // Result: SAME, AI Voted: SAME => AI Win
+      (Number(round?.closePrice) === Number(round?.lockPrice) && Number(round.AIPrice) === Number(round.lockPrice))
     ) {
       // Follow AI wins
       roundResultPosition = BetPosition.BULL

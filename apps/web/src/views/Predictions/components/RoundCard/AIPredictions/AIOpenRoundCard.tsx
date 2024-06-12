@@ -7,6 +7,7 @@ import {
   CardBody,
   Flex,
   PlayCircleOutlineIcon,
+  QuestionHelper,
   Text,
   useToast,
   useTooltip,
@@ -208,18 +209,45 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
         />
         <StyledCardBody>
           {(!positionEnteredText || (liveAIPosition === 'DOWN' && userPosition === 'DOWN')) && (
-            <Text
-              color="white"
-              fontWeight={700}
-              textAlign="center"
-              style={{
-                fontSize: '24px',
-                marginBottom: liveAIPosition === 'DOWN' && userPosition === 'DOWN' ? '12px' : '0',
-                //  WebkitTextStroke: '3px #280D5F'
-              }}
-            >
-              AI prediction
-            </Text>
+            <Flex justifyContent="center" alignItems="center">
+              <Text
+                color="white"
+                fontWeight={700}
+                style={{
+                  fontSize: '24px',
+                  marginBottom: liveAIPosition === 'DOWN' && userPosition === 'DOWN' ? '12px' : '0',
+                  // WebkitTextStroke: '3px #280D5F',
+                }}
+              >
+                {t('AI prediction')}
+              </Text>
+              <QuestionHelper
+                text={
+                  <>
+                    {t('Enter bet by going with or against the prediction made by AI')}
+                    <br />
+                    <br />
+                    {t('You will be able to see AI is betting Up or Down after you place the bet!')}
+                    <br />
+                    <br />
+                    <Flex>
+                      {t('Powered by Allora')}
+                      <img
+                        src="/images/predictions-temp/allora.svg"
+                        alt="Allora Logo"
+                        width={20}
+                        height={20}
+                        style={{ marginLeft: '5px' }}
+                      />
+                    </Flex>
+                  </>
+                }
+                color="white"
+                size="18px"
+                ml="3px"
+                mt="3px"
+              />
+            </Flex>
           )}
           {!positionEnteredText ? (
             <>

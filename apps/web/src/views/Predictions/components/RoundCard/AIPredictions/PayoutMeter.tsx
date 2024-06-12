@@ -30,7 +30,7 @@ const MeterPointerImage = styled.img`
   bottom: 3px;
 
   transform-origin: bottom;
-  animation: ${rotatePointerAnimation} 2s alternate infinite;
+  animation: ${rotatePointerAnimation} 2s alternate infinite ease-in-out;
 
   ${({ theme }) =>
     theme.isDark &&

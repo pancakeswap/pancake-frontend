@@ -247,6 +247,8 @@ export const fetchNodeHistory = createAsyncThunk<
           bearBets: 0,
           bearAmount: parseFloat(formatUnits(round.bearAmount, 18)),
           position: getRoundPosition(),
+
+          AIPrice: round.AIPrice,
         },
       },
     ]
