@@ -92,7 +92,7 @@ const CakeStaking = () => {
         <Grid maxWidth="820px" gridGap="24px" gridTemplateColumns="1fr" alignItems="center" mx="auto">
           <BenefitCard
             type="crossChain"
-            dataText={account ? `${syncedCount}/${totalCount}` : '-'}
+            dataText={account ? `${syncedCount}` : '-'}
             onClick={() => {
               setIsOpen(true)
             }}
