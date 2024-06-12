@@ -1,5 +1,4 @@
 import { PRECISION } from '../../constants/binPool'
-import { BinPoolMintParams } from './calldatas/mint'
 import { LiquidityConfig } from './liquidityConfigs'
 
 const getTotalBins = (nbBinX: number, nbBinY: number) => {
@@ -12,14 +11,8 @@ const getBinId = (activeId: number, i: number, nbBinY: number) => {
   return nbBinY > 0 ? id - nbBinY + 1 : id
 }
 
-export const getBinMintParams = (args: {
-  binId: number
-  amountX: bigint
-  amountY: bigint
-  nbBinX: number
-  nbBinY: number
-}): Pick<BinPoolMintParams, 'amountIn' | 'liquidityConfigs'> => {
-  const { binId, amountX, amountY, nbBinX, nbBinY } = args
+export const getBinLiquidityConfigs = (args: { binId: number; nbBinX: number; nbBinY: number }): LiquidityConfig[] => {
+  const { binId, nbBinX, nbBinY } = args
   const totalBins = getTotalBins(nbBinX, nbBinY)
   const configs: LiquidityConfig[] = []
   for (let index = 0; index < totalBins; index++) {
@@ -31,8 +24,5 @@ export const getBinMintParams = (args: {
     configs.push({ distributionX, distributionY, id: BigInt(id) })
   }
 
-  return {
-    amountIn: [amountX, amountY],
-    liquidityConfigs: configs,
-  }
+  return configs
 }
