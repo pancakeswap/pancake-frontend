@@ -9,12 +9,13 @@ export default NextAuth({
       clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
     }),
     TwitterProvider({
-      // clientId: process.env.TWITTER_CONSUMER_KEY ?? '',
-      // clientSecret: process.env.TWITTER_CONSUMER_SECRET ?? '',
-      clientId: process.env.TWITTER_CONSUMER_KEY ?? '84Z4wBfgYZS8jt9oFONPilB7T',
-      clientSecret: process.env.TWITTER_CONSUMER_SECRET ?? '5Rn5BQQJMP7W8fJfKtHrPYujDbRhvQgU2njpQzjmeBWJh1L51L',
+      clientId: process.env.TWITTER_CONSUMER_KEY ?? '',
+      clientSecret: process.env.TWITTER_CONSUMER_SECRET ?? '',
     }),
   ],
+  // pages: {
+  //   signIn: '/profile',
+  // },
   callbacks: {
     async jwt({ token, account, profile }: any) {
       // Initial sign-in
