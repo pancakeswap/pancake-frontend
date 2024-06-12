@@ -9,10 +9,8 @@ export default NextAuth({
       clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
     }),
     TwitterProvider({
-      // clientId: process.env.TWITTER_CONSUMER_KEY ?? '',
-      // clientSecret: process.env.TWITTER_CONSUMER_SECRET ?? '',
-      clientId: '84Z4wBfgYZS8jt9oFONPilB7T',
-      clientSecret: '5Rn5BQQJMP7W8fJfKtHrPYujDbRhvQgU2njpQzjmeBWJh1L51L',
+      clientId: process.env.TWITTER_CONSUMER_KEY ?? '',
+      clientSecret: process.env.TWITTER_CONSUMER_SECRET ?? '',
     }),
   ],
   callbacks: {
