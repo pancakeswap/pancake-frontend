@@ -354,10 +354,6 @@ export function useFarmsV3WithPositionsAndBooster(options: UseFarmsOptions = {})
 } {
   const { data, error: _error, isLoading } = useFarmsV3(options)
   const { data: boosterWhitelist } = useV3BoostedFarm(data?.farmsWithPrice?.map((f) => f.pid))
-  console.infos(
-    'boosterWhitelistv3',
-    boosterWhitelist?.filter((d) => d.boosted === true),
-  )
 
   return {
     ...usePositionsByUserFarms(
