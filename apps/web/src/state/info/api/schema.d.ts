@@ -78,8 +78,12 @@ export interface paths {
     /** Get positions from v3 pool */
     get: operations['getCachedPoolsPositionsV3ByChainNameByPool']
   }
+  '/cached/pools/chart/v3/{chainName}/{address}/rate': {
+    /** Get v3 pool rate chart */
+    get: operations['getCachedPoolsChartV3ByChainNameByAddressRate']
+  }
   '/cached/pools/chart/v3/{chainName}/{address}/fees': {
-    /** Get pool fees chart */
+    /** Get v3 pool fees chart */
     get: operations['getCachedPoolsChartV3ByChainNameByAddressFees']
   }
   '/cached/pools/chart/{protocol}/{chainName}/{address}/tvl': {
@@ -89,6 +93,18 @@ export interface paths {
   '/cached/pools/chart/{protocol}/{chainName}/{address}/volume': {
     /** Get pool volume chart */
     get: operations['getCachedPoolsChartByProtocolByChainNameByAddressVolume']
+  }
+  '/cached/pools/apr/v2/{chainName}/farms-lp': {
+    /** Get v2 farm lp apr */
+    get: operations['getCachedPoolsAprV2ByChainNameFarms-lp']
+  }
+  '/cached/pools/apr/v3/{chainName}/farms-lp': {
+    /** Get v3 farm lp apr */
+    get: operations['getCachedPoolsAprV3ByChainNameFarms-lp']
+  }
+  '/cached/pools/apr/stable/{chainName}/farms-lp': {
+    /** Get stable farm lp apr */
+    get: operations['getCachedPoolsAprStableByChainNameFarms-lp']
   }
   '/cached/pools/list': {
     /** Get pools list */
@@ -899,7 +915,35 @@ export interface operations {
       }
     }
   }
-  /** Get pool fees chart */
+  /** Get v3 pool rate chart */
+  getCachedPoolsChartV3ByChainNameByAddressRate: {
+    parameters: {
+      query: {
+        /** @description Chart period */
+        period: '1H' | '1D' | '1W' | '1M' | '1Y'
+      }
+      path: {
+        /** @description Chain name */
+        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        /** @description Ethereum address */
+        address: string
+      }
+    }
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            bucket: Record<string, never> | string
+            open: null | string
+            close: null | string
+            high: null | string
+            low: null | string
+          }[]
+        }
+      }
+    }
+  }
+  /** Get v3 pool fees chart */
   getCachedPoolsChartV3ByChainNameByAddressFees: {
     parameters: {
       path: {
@@ -971,6 +1015,47 @@ export interface operations {
             volumeUSD: null | string
           }[]
         }
+      }
+    }
+  }
+  /** Get v2 farm lp apr */
+  'getCachedPoolsAprV2ByChainNameFarms-lp': {
+    parameters: {
+      path: {
+        /** @description Chain name */
+        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+      }
+    }
+    responses: {
+      200: {
+        content: never
+      }
+    }
+  }
+  /** Get v3 farm lp apr */
+  'getCachedPoolsAprV3ByChainNameFarms-lp': {
+    parameters: {
+      path: {
+        /** @description Chain name */
+        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+      }
+    }
+    responses: {
+      200: {
+        content: never
+      }
+    }
+  }
+  /** Get stable farm lp apr */
+  'getCachedPoolsAprStableByChainNameFarms-lp': {
+    parameters: {
+      path: {
+        chainName: 'bsc' | 'arbitrum'
+      }
+    }
+    responses: {
+      200: {
+        content: never
       }
     }
   }
