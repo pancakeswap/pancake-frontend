@@ -252,18 +252,6 @@ export const useTokenData = (address: string): TokenData | undefined => {
   return data?.data
 }
 
-export const usePoolsForToken = (address: string): string[] | undefined => {
-  const chainName = useChainNameByQuery()
-  const chainId = multiChainId[chainName]
-  const { data } = useQuery({
-    queryKey: [`v3/info/token/poolsForToken/${chainId}/${address}`, chainId],
-    queryFn: () => fetchPoolsForToken(address, v3InfoClients[chainId]),
-    enabled: Boolean(chainId && address),
-    ...QUERY_SETTINGS_IMMUTABLE,
-  })
-  return data?.addresses
-}
-
 export const useTokenChartData = (address: string): TokenChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
