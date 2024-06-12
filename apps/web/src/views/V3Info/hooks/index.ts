@@ -1,20 +1,19 @@
 import { ChainId } from '@pancakeswap/chains'
-import dayjs from 'dayjs'
 import { GraphQLClient } from 'graphql-request'
 import { useMemo } from 'react'
-import { multiChainId, multiChainName } from 'state/info/constant'
+import { multiChainId } from 'state/info/constant'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { Block } from 'state/info/types'
 import { getChainName } from 'state/info/utils'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { v3Clients, v3InfoClients } from 'utils/graphql'
+import { v3InfoClients } from 'utils/graphql'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 import { useQuery } from '@tanstack/react-query'
 import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
 import { components } from 'state/info/api/schema'
 import { getPercentChange } from 'views/V3Info/utils/data'
-import { DURATION_INTERVAL, SUBGRAPH_START_BLOCK } from '../constants'
+import { SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchPoolDatas, fetchedPoolData } from '../data/pool/poolData'
 import { PoolTickData, fetchTicksSurroundingPrice } from '../data/pool/tickData'
@@ -103,19 +102,7 @@ export const usePairPriceChartTokenData = (
       if (!address) {
         throw new Error('Address is not defined')
       }
-      const utcCurrentTime = dayjs()
-      const startTimestamp = utcCurrentTime
-        .subtract(1, duration ?? 'day')
-        .startOf('hour')
-        .unix()
-      return fetchPairPriceChartTokenData(
-        address,
-        DURATION_INTERVAL[duration ?? 'day'],
-        startTimestamp,
-        v3Clients[targetChainId ?? chainId],
-        multiChainName[targetChainId ?? chainId],
-        SUBGRAPH_START_BLOCK[chainId],
-      )
+      return fetchPairPriceChartTokenData(address, chainIdToExplorerInfoChainName[chainId], duration ?? 'day')
     },
 
     enabled: Boolean(enabled && chainId && address),
