@@ -9,20 +9,27 @@ const TelegramProvider = CredentialsProvider({
   name: 'Telegram Login',
   credentials: {},
   async authorize(credentials, req) {
-    const validator = new AuthDataValidator({ botToken: `${process.env.BOT_TOKEN}` })
+    const validator = new AuthDataValidator({
+      botToken: `${process.env.TELEGRAM_BOT_TOKEN}`,
+    })
 
     const data = objectToAuthDataMap(req.query || {})
-
     const user = await validator.validate(data)
 
     if (user.id && user.first_name) {
       return {
         id: user.id.toString(),
+        email: user.id.toString(),
         name: [user.first_name, user.last_name || ''].join(' '),
         image: user.photo_url,
       }
-    }
 
+      // try {
+      //   await createUserOrUpdate(user)
+      // } catch {
+      //   console.log('Something went wrong while creating the user.')
+      // }
+    }
     return null
   },
 })
