@@ -82,15 +82,30 @@ export const useProtocolDataQuery = (): ProtocolData | undefined => {
             },
           },
         })
+
         .then((res) => {
           if (res.data) {
+            const { data } = res
+            const volumeUSD = data.volumeUSD24h ? parseFloat(data.volumeUSD24h) : 0
+            const volumeOneWindowAgo =
+              data.volumeUSD24h && data.volumeUSD48h
+                ? parseFloat(data.volumeUSD48h) - parseFloat(data.volumeUSD24h)
+                : undefined
+            const volumeUSDChange =
+              volumeUSD && volumeOneWindowAgo ? getPercentChange(volumeUSD, volumeOneWindowAgo) : undefined
+            const tvlUSDChange = getPercentChange(+data.tvlUSD, +data.tvlUSD24h)
+            const txCount = data.txCount24h
+
+            const txCountOneWindowAgo =
+              data.txCount24h && data.txCount48h ? data.txCount48h - data.txCount24h : undefined
+            const txCountChange = txCount && txCountOneWindowAgo ? getPercentChange(txCount, txCountOneWindowAgo) : 0
             return {
-              volumeUSD: res.data.totalVolumeUSD ? +res.data.totalVolumeUSD : 0,
-              volumeUSDChange: 0,
+              volumeUSD,
+              volumeUSDChange: typeof volumeUSDChange === 'number' ? volumeUSDChange : 0,
               liquidityUSD: +res.data.tvlUSD,
-              liquidityUSDChange: 0,
-              txCount: res.data.totalTxCount ? +res.data.totalTxCount : 0,
-              txCountChange: 0,
+              liquidityUSDChange: tvlUSDChange,
+              txCount,
+              txCountChange,
             }
           }
           throw new Error('No data')
