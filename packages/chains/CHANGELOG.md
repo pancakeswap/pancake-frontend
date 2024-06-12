@@ -1,5 +1,11 @@
 # @pancakeswap/chains
 
+## 0.4.5
+
+### Patch Changes
+
+- b9c91d1: Migrate subgraph endpoints to internal proxies
+
 ## 0.4.4
 
 ### Patch Changes
