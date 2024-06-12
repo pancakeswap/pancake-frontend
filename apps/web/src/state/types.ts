@@ -200,6 +200,8 @@ export interface Round {
   bearBets: number
   bearAmount: number
   bets?: Bet[]
+
+  AIPrice?: number
 }
 
 export interface Market {

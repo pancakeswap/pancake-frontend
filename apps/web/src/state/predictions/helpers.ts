@@ -92,7 +92,26 @@ export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
     return Result.HOUSE
   }
 
-  const roundResultPosition = Number(round?.closePrice) > Number(round?.lockPrice) ? BetPosition.BULL : BetPosition.BEAR
+  let roundResultPosition: BetPosition
+
+  // If AI-based prediction. // TODO: re-check AIPrice when AI prediction is there v/s when normal prediction is active
+  if (round?.AIPrice) {
+    if (
+      // Result: UP, AI Voted: UP => AI Win
+      (Number(round?.closePrice) > Number(round?.lockPrice) && Number(round.AIPrice) > Number(round.lockPrice)) ||
+      // Result: DOWN, AI Voted: DOWN => AI Win
+      (Number(round?.closePrice) < Number(round?.lockPrice) && Number(round.AIPrice) < Number(round.lockPrice))
+    ) {
+      // Follow AI wins
+      roundResultPosition = BetPosition.BULL
+    } else {
+      // Against AI wins
+      // Note: House win should be covered in bet.round.position === BetPosition.HOUSE check above, coming from subgraph logic
+      roundResultPosition = BetPosition.BEAR
+    }
+  } else {
+    roundResultPosition = Number(round?.closePrice) > Number(round?.lockPrice) ? BetPosition.BULL : BetPosition.BEAR
+  }
 
   return bet.position === roundResultPosition ? Result.WIN : Result.LOSE
 }

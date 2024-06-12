@@ -41,10 +41,12 @@ export const Tag: React.FC<React.PropsWithChildren<TagProps>> = ({
 
 interface AIPositionTagProps extends FlexProps {
   betPosition: BetPosition
+  showIcon?: boolean
 }
 
 export const AIPositionTag: React.FC<React.PropsWithChildren<AIPositionTagProps>> = ({
   betPosition,
+  showIcon = true,
   children,
   ...props
 }) => {
@@ -80,7 +82,7 @@ export const AIPositionTag: React.FC<React.PropsWithChildren<AIPositionTagProps>
   }
 
   return (
-    <Tag bg="secondary" endIcon={<SwapVertIcon color="white" transform="rotate(90)" />} {...props}>
+    <Tag bg="secondary" endIcon={showIcon && <SwapVertIcon color="white" transform="rotate(90)" />} {...props}>
       {children}
     </Tag>
   )

@@ -9,14 +9,14 @@ import {
   InfoIcon,
   PlayCircleOutlineIcon,
   Text,
-  useTooltip,
   WaitIcon,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useState } from 'react'
 import { fetchLedgerData, markAsCollected } from 'state/predictions'
-import { getRoundResult, Result } from 'state/predictions/helpers'
+import { Result, getRoundResult } from 'state/predictions/helpers'
 import { useGetCurrentEpoch, useGetIsClaimable, useGetPredictionsStatus } from 'state/predictions/hooks'
 import { Bet } from 'state/types'
 import { styled } from 'styled-components'
@@ -24,6 +24,7 @@ import { useAccount } from 'wagmi'
 import { useConfig } from '../../context/ConfigProvider'
 import CollectWinningsButton from '../CollectWinningsButton'
 import ReclaimPositionButton from '../ReclaimPositionButton'
+import { AIBetDetails } from './AIPredictions/AIBetDetails'
 import BetDetails from './BetDetails'
 import { formatBnb, getNetPayout } from './helpers'
 
@@ -190,7 +191,12 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
           </IconButton>
         )}
       </StyledBet>
-      {isOpen && <BetDetails bet={bet} result={getRoundResult(bet, currentEpoch)} />}
+      {isOpen &&
+        (config?.isAIPrediction ? (
+          <AIBetDetails bet={bet} result={getRoundResult(bet, currentEpoch)} />
+        ) : (
+          <BetDetails bet={bet} result={getRoundResult(bet, currentEpoch)} />
+        ))}
     </>
   )
 }
