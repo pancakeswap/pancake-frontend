@@ -22,6 +22,10 @@ export const getBlocksFromTimestamps = async (
 
   const explorerChainName = infoChainNameToExplorerChainName[chainName]
 
+  if (!explorerChainName) {
+    throw new Error('Invalid chain name')
+  }
+
   const blocks = await timestamps.reduce(async (accumP, timestamp) => {
     const acc = await accumP
     try {
