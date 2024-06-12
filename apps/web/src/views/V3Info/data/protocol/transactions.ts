@@ -5,11 +5,12 @@ import { Transaction, TransactionType } from '../../types'
 
 export async function fetchTopTransactions(
   chainName: components['schemas']['ChainName'],
+  signal: AbortSignal,
 ): Promise<Transaction[] | undefined> {
   try {
     const data = await explorerApiClient
       .GET('/cached/tx/v3/{chainName}/recent', {
-        signal: null,
+        signal,
         params: {
           path: {
             chainName,

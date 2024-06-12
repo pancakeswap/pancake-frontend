@@ -12,13 +12,14 @@ export async function fetchPoolChartData(
   protocol: 'v2' | 'v3' | 'stable',
   chainName: components['schemas']['ChainName'],
   address: string,
+  signal?: AbortSignal,
 ) {
   let error = false
 
   try {
     const rawFeeResults = await explorerApiClient
       .GET('/cached/pools/chart/v3/{chainName}/{address}/fees', {
-        signal: null,
+        signal,
         params: {
           path: {
             chainName,
@@ -30,7 +31,7 @@ export async function fetchPoolChartData(
 
     const rawTvlResults = await explorerApiClient
       .GET('/cached/pools/chart/{protocol}/{chainName}/{address}/tvl', {
-        signal: null,
+        signal,
         params: {
           path: {
             protocol,
@@ -46,7 +47,7 @@ export async function fetchPoolChartData(
 
     const rawVolumeResults = await explorerApiClient
       .GET('/cached/pools/chart/{protocol}/{chainName}/{address}/volume', {
-        signal: null,
+        signal,
         params: {
           path: {
             protocol,
