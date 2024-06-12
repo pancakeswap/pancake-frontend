@@ -7,7 +7,6 @@ import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import fetchPoolTransactions from 'state/info/queries/pools/transactions'
 import { fetchGlobalChartData } from 'state/info/queries/protocol/chart'
-import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
 import { fetchAllTokenData, fetchAllTokenDataByAddresses } from 'state/info/queries/tokens/tokenData'
 import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import { Block, Transaction, TransactionType, TvlChartEntry, VolumeChartEntry } from 'state/info/types'
@@ -963,23 +962,6 @@ export const useTokenChartVolumeDataQuery = (address: string): VolumeChartEntry[
     ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
   })
   return data ?? undefined
-}
-
-export const useTokenPriceDataQueryOld = (
-  address: string,
-  interval: number,
-  timeWindow: duration.Duration,
-): PriceChartEntry[] | undefined => {
-  const startTimestamp = dayjs().subtract(timeWindow).startOf('hours').unix()
-  const chainName = useChainNameByQuery()
-  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery({
-    queryKey: [`info/token/priceData/${address}/${type}`, chainName],
-    queryFn: () => fetchTokenPriceData(chainName, address, interval, startTimestamp),
-    ...QUERY_SETTINGS_IMMUTABLE,
-    ...QUERY_SETTINGS_INTERVAL_REFETCH,
-  })
-  return data?.data ?? undefined
 }
 
 export const useTokenPriceDataQuery = (
