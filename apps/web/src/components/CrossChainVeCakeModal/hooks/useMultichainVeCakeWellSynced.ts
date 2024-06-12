@@ -6,6 +6,7 @@ import { getVeCakeAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
+import { CROSS_CHIAN_CONFIG } from '../constants'
 
 export const useMultichainVeCakeWellSynced = (
   targetChainId: ChainId,
@@ -29,6 +30,42 @@ export const useMultichainVeCakeWellSynced = (
   })
 
   return { isVeCakeWillSync: data, isLoading }
+}
+
+export const useAllMultichainSyncedCount = (): {
+  totalCount?: number
+  syncedCount?: number
+} => {
+  const { address: account } = useAccount()
+  const enabled = Boolean(account)
+  const { data } = useQuery({
+    queryKey: [account, 'AllMultichainSyncedCount'],
+
+    queryFn: () => {
+      if (!account) return undefined
+      return getAllMultichainSyncedCount(account)
+    },
+    enabled,
+    refetchInterval: FAST_INTERVAL,
+    staleTime: FAST_INTERVAL,
+  })
+
+  return { totalCount: data?.totalCount, syncedCount: data?.syncedCount }
+}
+
+export const getAllMultichainSyncedCount = async (
+  address: Address,
+): Promise<{ totalCount?: number; syncedCount?: number }> => {
+  const queryChainList = Object.keys(CROSS_CHIAN_CONFIG) as unknown as ChainId[]
+  const totalCount = queryChainList.length + 1 // add BSC CHAIN to count
+
+  const multichainIsWellSync = await Promise.all(
+    queryChainList.map((chainId) => getVCakeAndProxyData(address, chainId)),
+  )
+  return {
+    totalCount,
+    syncedCount: (multichainIsWellSync?.filter((isSync) => isSync === true)?.length ?? 0) + 1,
+  }
 }
 
 export const getVCakeAndProxyData = async (address: Address, targetChainId: ChainId): Promise<boolean | null> => {

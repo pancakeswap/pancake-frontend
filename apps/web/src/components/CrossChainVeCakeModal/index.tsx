@@ -28,7 +28,6 @@ import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance
 import BigNumber from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import {} from 'ethers'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePancakeVeSenderV2Contract } from 'hooks/useContract'
 import { useGetBnbBalance, useVeCakeBalance } from 'hooks/useTokenBalance'
@@ -40,33 +39,13 @@ import { useMultichainVeCakeWellSynced } from './hooks/useMultichainVeCakeWellSy
 import { useProfileProxyWellSynced } from './hooks/useProfileProxyWellSynced'
 
 import { ArbitrumIcon, BinanceIcon, EthereumIcon } from './ChainLogos'
+import { CROSS_CHIAN_CONFIG } from './constants'
 import { useCrossChianMessage } from './hooks/useCrossChainMessage'
 
 const StyledModalHeader = styled(ModalHeader)`
   padding: 0;
   margin-bottom: 16px;
 `
-
-const LayerZeroEIdMap = {
-  [ChainId.ETHEREUM]: 30101,
-  [ChainId.BSC]: 30102,
-  [ChainId.ARBITRUM_ONE]: 30110,
-}
-
-const LayerZeroFee = {
-  [ChainId.ETHEREUM]: 114670586267181697n,
-  [ChainId.ARBITRUM_ONE]: 262309998201766n,
-}
-
-const ChainNameMap = {
-  [ChainId.ETHEREUM]: 'Ethereum',
-  [ChainId.ARBITRUM_ONE]: 'Arbitrum',
-}
-
-const chainDstGasMap = {
-  [ChainId.ETHEREUM]: 650000n,
-  [ChainId.ARBITRUM_ONE]: 850000n,
-}
 
 const ChainLogoMap = {
   [ChainId.BSC]: <BinanceIcon />,
@@ -160,11 +139,13 @@ export const CrossChainVeCakeModal: React.FC<{
     async (chainId: ChainId) => {
       if (!account || !veCakeSenderV2Contract || !chainId || !isInitialized) return
       setModalState('ready')
-      let syncFee = BigInt(new BigNumber(LayerZeroFee[chainId].toString()).times(1.1).toNumber().toFixed(0))
+      let syncFee = BigInt(
+        new BigNumber(CROSS_CHIAN_CONFIG[chainId].layerZeroFee.toString()).times(1.1).toNumber().toFixed(0),
+      )
 
       try {
         const feeData = await veCakeSenderV2Contract.read.getEstimateGasFees(
-          [LayerZeroEIdMap[chainId], chainDstGasMap[chainId]],
+          [CROSS_CHIAN_CONFIG[chainId].eid, CROSS_CHIAN_CONFIG[chainId].dstGas],
           { account },
         )
         if (feeData.nativeFee !== 0n) {
@@ -179,7 +160,7 @@ export const CrossChainVeCakeModal: React.FC<{
       if (bnbBalance <= syncFee) return
       const receipt = await fetchWithCatchTxError(async () => {
         return veCakeSenderV2Contract.write.sendSyncMsg(
-          [LayerZeroEIdMap[chainId], account, true, hasProfile, chainDstGasMap[chainId]],
+          [CROSS_CHIAN_CONFIG[chainId].eid, account, true, hasProfile, CROSS_CHIAN_CONFIG[chainId].dstGas],
           {
             account,
             chain,
@@ -191,7 +172,7 @@ export const CrossChainVeCakeModal: React.FC<{
         toastSuccess(
           `${t('Syncing VeCake')}!`,
           <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your VeCake is Syncing to')} {ChainNameMap[chainId]}
+            {t('Your VeCake is Syncing to')} {CROSS_CHIAN_CONFIG[chainId].name}
           </ToastDescriptionWithTx>,
         )
         setTxByChain((prev) => ({ ...prev, [chainId]: receipt.transactionHash }))
@@ -407,7 +388,7 @@ const ReadyToSyncView: React.FC<{ chainId: ChainId; nativeFee: bigint; bnbBalanc
         {t('veCake Sync')}
       </Text>
       <Text fontSize={12} mt="12px">
-        {t('From BSC to')} {ChainNameMap[chainId]}
+        {t('From BSC to')} {CROSS_CHIAN_CONFIG[chainId].name}
       </Text>
       <Flex justifyContent="flex-end" alignItems="flex-end" style={{ gap: 5 }} mt="12px">
         <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="cross-chain-vecake" />
@@ -440,7 +421,7 @@ const SubmittedView: React.FC<{ chainId: ChainId; hash: string }> = ({ chainId, 
         {t('veCake Sync Submitted')}
       </Text>
       <Text fontSize={12} mt="12px">
-        {t('From BSC to')} {ChainNameMap[chainId]}
+        {t('From BSC to')} {CROSS_CHIAN_CONFIG[chainId].name}
       </Text>
       <Flex justifyContent="flex-end" alignItems="flex-end" style={{ gap: 5 }} mt="12px">
         <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="cross-chain-vecake" />

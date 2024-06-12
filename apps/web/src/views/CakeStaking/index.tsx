@@ -3,12 +3,14 @@ import { Button, Grid, Heading, ModalV2, PageHeader, QuestionHelper, useMatchBre
 import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
+import { useAllMultichainSyncedCount } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import Page from 'components/Layout/Page'
 import { useCakeDistributed } from 'hooks/useCakeDistributed'
 import useTheme from 'hooks/useTheme'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
+import { useAccount } from 'wagmi'
 import { BenefitCard } from './components/BenefitCard'
 import { CakeRewardsCard } from './components/CakeRewardsCard'
 import { LockCake } from './components/LockCake'
@@ -28,6 +30,8 @@ const CakeStaking = () => {
   const { theme } = useTheme()
   const handleDismiss = useCallback(() => setCakeRewardModalVisible(false), [])
   const [isOpen, setIsOpen] = useState(false)
+  const { totalCount, syncedCount } = useAllMultichainSyncedCount()
+  const { address: account } = useAccount()
 
   return (
     <>
@@ -88,7 +92,7 @@ const CakeStaking = () => {
         <Grid maxWidth="820px" gridGap="24px" gridTemplateColumns="1fr" alignItems="center" mx="auto">
           <BenefitCard
             type="crossChain"
-            dataText="1/3"
+            dataText={account ? `${syncedCount}/${totalCount}` : '-'}
             onClick={() => {
               setIsOpen(true)
             }}
