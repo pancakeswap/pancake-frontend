@@ -104,7 +104,7 @@ export const usePairPriceChartTokenData = (
       return fetchPairPriceChartTokenData(address, chainIdToExplorerInfoChainName[chainId], duration ?? 'day', signal)
     },
 
-    enabled: Boolean(enabled && chainId && address),
+    enabled: Boolean(enabled && chainId && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(
@@ -259,7 +259,7 @@ export const useTokenChartData = (address: string): TokenChartEntry[] | undefine
   const { data } = useQuery({
     queryKey: [`v3/info/token/tokenChartData/${chainId}/${address}`, chainId],
     queryFn: ({ signal }) => fetchTokenChartData('v3', chainIdToExplorerInfoChainName[chainId], address, signal),
-    enabled: Boolean(chainId && address),
+    enabled: Boolean(chainId && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
@@ -278,7 +278,7 @@ export const useTokenPriceData = (
     queryFn: ({ signal }) =>
       fetchTokenPriceData(address, 'v3', duration, chainIdToExplorerInfoChainName[chainId], signal),
 
-    enabled: Boolean(chainId && address),
+    enabled: Boolean(chainId && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
@@ -290,7 +290,7 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
   const { data } = useQuery({
     queryKey: [`v3/info/token/tokenTransaction/${chainId}/${address}`, chainId],
     queryFn: ({ signal }) => fetchTokenTransactions(address, chainIdToExplorerInfoChainName[chainId], signal),
-    enabled: Boolean(chainId && address),
+    enabled: Boolean(chainId && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0), [data])
@@ -385,7 +385,7 @@ export const usePoolsDataForToken = (address: string): PoolData[] | undefined =>
       }
       return fetchPoolsForToken(address, chainName)
     },
-    enabled: Boolean(chainName && address),
+    enabled: Boolean(chainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data
@@ -412,7 +412,7 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
   const { data } = useQuery({
     queryKey: [`v3/info/pool/poolTransaction/${chainId}/${address}`, chainId],
     queryFn: ({ signal }) => fetchPoolTransactions(address, chainIdToExplorerInfoChainName[chainId], signal),
-    enabled: Boolean(chainId && address),
+    enabled: Boolean(chainId && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0) ?? undefined, [data])
@@ -438,7 +438,7 @@ export const usePoolTickData = (address: string): PoolTickData | undefined => {
     queryKey: [`v3/info/pool/poolTickData/${chainId}/${address}`, chainId],
     queryFn: ({ signal }) =>
       fetchTicksSurroundingPrice(address, chainIdToExplorerInfoChainName[chainId], chainId, undefined, signal),
-    enabled: Boolean(chainId && address),
+    enabled: Boolean(chainId && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return data?.data ?? undefined
