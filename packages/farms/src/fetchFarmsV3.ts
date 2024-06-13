@@ -5,7 +5,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import BN from 'bignumber.js'
 import chunk from 'lodash/chunk'
-import { Address, PublicClient, formatUnits } from 'viem'
+import { Address, PublicClient, formatUnits, getAddress } from 'viem'
 
 import { getCurrencyListUsdPrice } from '@pancakeswap/price-api-sdk'
 import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
@@ -447,7 +447,7 @@ export const fetchTokenUSDValues = async (currencies: Currency[] = []): Promise<
 
     Object.entries(prices || {}).forEach(([key, value]) => {
       const [, address] = key.split(':')
-      commonTokenUSDValue[address] = value.toString()
+      commonTokenUSDValue[getAddress(address)] = value.toString()
     })
   }
 
@@ -464,11 +464,11 @@ export function getFarmsPrices(
     let quoteTokenPriceBusd = BIG_ZERO
 
     // try to get price via common price
-    if (commonPrice[farm.quoteToken.address.toLowerCase()]) {
-      quoteTokenPriceBusd = new BN(commonPrice[farm.quoteToken.address.toLowerCase()])
+    if (commonPrice[farm.quoteToken.address]) {
+      quoteTokenPriceBusd = new BN(commonPrice[farm.quoteToken.address])
     }
-    if (commonPrice[farm.token.address.toLowerCase()]) {
-      tokenPriceBusd = new BN(commonPrice[farm.token.address.toLowerCase()])
+    if (commonPrice[farm.token.address]) {
+      tokenPriceBusd = new BN(commonPrice[farm.token.address])
     }
 
     // try price via CAKE
