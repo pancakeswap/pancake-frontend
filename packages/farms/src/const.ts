@@ -1,8 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import uniq from 'lodash/uniq'
 
-export const EXPLORER_API = 'https://explorer-api.pancakeswap.com'
-
 export const supportedChainIdV2 = [
   ChainId.GOERLI,
   ChainId.BSC,

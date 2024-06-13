@@ -52,8 +52,6 @@ export const CELER_API = 'https://api.celerscan.com/scan'
 
 export const INFO_GATEWAY_OLD_API = 'https://info-gateway.pancakeswap.com'
 
-export const EXPLORER_API = 'https://explorer-api.pancakeswap.com'
-
 export const V2_SUBGRAPH_URLS = {
   ...V2_SUBGRAPHS,
   [ChainId.POLYGON_ZKEVM]: `${THE_GRAPH_PROXY_API}/exchange-v2-polygon-zkevm`,
