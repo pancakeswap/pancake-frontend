@@ -1,11 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BetPosition } from '@pancakeswap/prediction'
 import { BoxProps, Flex, Text } from '@pancakeswap/uikit'
+import { GlassGlobeIcon } from 'components/Svg/GlassGlobeIcon'
 import { Round } from 'state/types'
+import styled from 'styled-components'
+import { getRoundPosition } from 'views/Predictions/helpers'
 import { useConfig } from '../../../context/ConfigProvider'
 import PositionTag from '../../PositionTag'
 import { LockPriceHistoryRow, PrizePoolHistoryRow, RoundResultBox } from '../../RoundResult/styles'
 import { formatUsd } from '../helpers'
+
+const StyledGlassGlobeIcon = styled(GlassGlobeIcon).attrs(({ theme }) => ({ fill: theme.colors.secondary }))``
 
 interface AIRoundResultHistoryProps extends BoxProps {
   round: Round
@@ -17,7 +22,7 @@ export const AIRoundResultHistory: React.FC<React.PropsWithChildren<AIRoundResul
   ...props
 }) => {
   const config = useConfig()
-  const { lockPrice, closePrice, totalAmount } = round
+  const { lockPrice, closePrice, AIPrice, totalAmount } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const isPositionUp = betPosition === BetPosition.BULL
   const { t } = useTranslation()
@@ -44,6 +49,17 @@ export const AIRoundResultHistory: React.FC<React.PropsWithChildren<AIRoundResul
       )}
       {lockPrice && <LockPriceHistoryRow lockPrice={lockPrice} />}
       <PrizePoolHistoryRow totalAmount={totalAmount} />
+      <Flex justifyContent="space-between" alignItems="center">
+        <Text>{t('Result:')}</Text>
+        <Flex alignItems="center">
+          <StyledGlassGlobeIcon width={16} mr="3px" />
+          <Text bold>
+            {t('AI %result%', {
+              result: getRoundPosition(lockPrice, closePrice, AIPrice) === BetPosition.BULL ? t('Won') : t('Lost'),
+            })}
+          </Text>
+        </Flex>
+      </Flex>
       {children}
     </RoundResultBox>
   )

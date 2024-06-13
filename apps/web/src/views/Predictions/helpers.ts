@@ -94,7 +94,11 @@ export const getPriceDifference = (price: bigint | null, lockPrice: bigint | nul
   return price - lockPrice
 }
 
-export const getRoundPosition = (lockPrice?: bigint | null, closePrice?: bigint | null, AIPrice?: bigint | null) => {
+export const getRoundPosition = (
+  lockPrice?: bigint | number | null,
+  closePrice?: bigint | number | null,
+  AIPrice?: bigint | number | null,
+) => {
   if (!closePrice || !lockPrice) {
     return null
   }

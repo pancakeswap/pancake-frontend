@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, CheckmarkCircleFillIcon, useTooltip } from '@pancakeswap/uikit'
+import { GlassGlobeIcon } from 'components/Svg/GlassGlobeIcon'
 import styled from 'styled-components'
 
 const BetBadge = styled(Box)<{ $variant?: 'primary' | 'secondary'; $type?: 'UP' | 'DOWN'; $position?: string }>`
@@ -108,7 +109,7 @@ export const BetBadgeStack = ({
           $type={aiBetType}
           $position={aiBetType !== userBetType || userBetType === 'DOWN' ? '46px' : aiBetPosition}
         >
-          <img src="/images/predictions-temp/glass-globe.svg" alt="AI" width={14} />
+          <GlassGlobeIcon width={14} />
           <span style={{ margin: '0 0 0 3px' }}>{t("AI's Bet")}</span>
           {aiTooltipVisible && aiTooltip}
         </BetBadge>
