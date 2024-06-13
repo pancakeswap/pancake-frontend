@@ -39,7 +39,7 @@ import { useMultichainVeCakeWellSynced } from './hooks/useMultichainVeCakeWellSy
 import { useProfileProxyWellSynced } from './hooks/useProfileProxyWellSynced'
 
 import { ArbitrumIcon, BinanceIcon, EthereumIcon } from './ChainLogos'
-import { NetWorkUpdateToDateDisplay } from './components/NetWorkUpdateToDateDisplay'
+import { NetWorkUpdateToDateDisplay } from './components/NetworkUpdateToDate'
 import { CROSS_CHIAN_CONFIG } from './constants'
 import { useCrossChianMessage } from './hooks/useCrossChainMessage'
 
