@@ -1,10 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { InfoIcon, Message, MessageText, Text } from '@pancakeswap/uikit'
+import { InfoFilledIcon, Message, MessageText, Text } from '@pancakeswap/uikit'
 
 export const NetWorkUpdateToDateDisplay = () => {
   const { t } = useTranslation()
   return (
-    <Message variant="success" icon={<InfoIcon color="#129E7D" />} style={{ padding: '8px' }}>
+    <Message variant="success" icon={<InfoFilledIcon color="#129E7D" />} style={{ padding: '8px' }}>
       <MessageText>
         <Text bold fontSize="14px" color="#129E7D">
           {t('The network selected is already up-to-date.')}

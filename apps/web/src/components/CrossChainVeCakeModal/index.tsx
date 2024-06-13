@@ -140,6 +140,17 @@ export const CrossChainVeCakeModal: React.FC<{
   const shouldNotSyncAgain = useMemo(() => {
     return (isVeCakeWillSync && isSynced && selectChainId !== undefined) || txByChain[selectChainId ?? -1] !== ''
   }, [isVeCakeWillSync, isSynced, txByChain, selectChainId])
+  const { data: crossChainMessage, isLoading: isCrossChainLoading } = useCrossChianMessage(
+    selectChainId,
+    txByChain[selectChainId ?? -1],
+  )
+
+  const isLayerZeroHashProcessing = useMemo(() => {
+    if (isCrossChainLoading || crossChainMessage?.status === 'INFLIGHT') {
+      return true
+    }
+    return false
+  }, [isCrossChainLoading, crossChainMessage])
 
   const syncVeCake = useCallback(
     async (chainId: ChainId) => {
@@ -259,7 +270,7 @@ export const CrossChainVeCakeModal: React.FC<{
                 {account ? (
                   <Button
                     width="50%"
-                    disabled={!selectChainId || shouldNotSyncAgain}
+                    disabled={!selectChainId || isLayerZeroHashProcessing}
                     isLoading={pendingTx || isVeCakeSyncedLoading || isProfileSyncedLoading}
                     onClick={() => {
                       if (selectChainId) syncVeCake(selectChainId)
