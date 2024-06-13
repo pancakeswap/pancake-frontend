@@ -1,7 +1,9 @@
 import { ChainId, getChainName } from '@pancakeswap/chains'
-import { SerializedFarmConfig, fetchStableFarmsAvgInfo, fetchV2FarmsAvgInfo, AvgInfo } from '@pancakeswap/farms'
+import { SerializedFarmConfig } from '@pancakeswap/farms'
 import fs from 'fs'
 import os from 'os'
+
+import { fetchV2FarmsAvgInfo, fetchStableFarmsAvgInfo, type AvgInfo } from '../apps/web/src/queries/farms'
 
 interface AprMap {
   [key: string]: number
