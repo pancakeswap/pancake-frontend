@@ -2704,9 +2704,7 @@
   "Unstaking from v2 farm?": "V2 খামার থেকে আনস্টেকিং",
   "Migrate to v3 here": "এখানে v3-এ স্থানান্তরিত হোন",
   "Migrate to V3": "V3-এ স্থানান্তরিত হোন",
-  "Incentives have moved to": "প্রণোদনা যেখানে সরানো হয়েছে:",
   "Merkl": "Merkl",
-  "To earn Merkl rewards, continue seeding liquidity on PancakeSwap, but DO NOT stake your LP token in the Farm. Otherwise, you will not accrue rewards.": "Merkl পুরস্কার অর্জন করতে PancakeSwap-এ তারল্যের বিনিয়োগ চালিয়ে যান, কিন্তু আপনার LP টোকেন খামারে শেয়ার করবেন না। অন্যথায়, আপনি পুরস্কার অর্জন করতে পারবেন না।",
   "Learn more about the strategy": "কৌশল সম্পর্কে আরও জানুন",
   "Earn rewards hassle-free with single-sided staking": "এক-পাক্ষিক স্টেকিংসহ ঝামেলা-মুক্ত পুরস্কার অর্জন করুন",
   "You are providing liquidity via a 3rd party liquidity manager": "আপনি তৃতীয় পক্ষের তারল্য ম্যানেজারের মাধ্যমে তারল্য প্রদান করছেন",
@@ -3000,9 +2998,7 @@
   "PancakeSwap Meetup": "PancakeSwap সম্মেলন",
   "Spain": "স্পেন",
   "Automated Liquidity Optimization": "স্বয়ংক্রিয় তারল্য অপ্টিমাইজেশান",
-  "Incentives can be earned on either Merkl or Farm but NOT both": "Merkl-এ বা খামারে প্রণোদনা অর্জিত হতে পারে, কিন্তু উভয়টিতে নয়",
   "To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.": "খামার পুরষ্কার অর্জন করতে PancakeSwap-এ তারল্য বিনিয়োগ করা চালিয়ে যান এবং খামারে আপনার LP টোকেন স্টেক করুন।",
-  "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on ": "Merkl পুরষ্কার অর্জন করতে PancakeSwap-এ তারল্য বিনিয়োগ করা চালিয়ে যান, কিন্তু আপনার LP টোকেন খামারে স্টেক করবেন না। সরাসরি আপনার পুরস্কার দাবি করুন",
   "An active veCAKE staking position is required for activating farm yield boosters.": "খামার প্রাপ্তি বুস্টার সক্রিয় করার জন্য সক্রিয় veCAKE স্টেকিং অবস্থান প্রয়োজন।",
   "Go to CAKE Staking": "CAKE স্টেকিং-এ যান",
   "Yield booster active": "প্রাপ্তির জন্য বুস্টার বিদ্যমান",
@@ -3387,5 +3383,10 @@
   "I've read and understood the following update.": "I've read and understood the following update.",
   "Please be informed that the Affiliate who referred you and through whose referral link you signed up to trade is no longer part of PancakeSwap's Affiliate Program. As a result, effective immediately June 12, 2024, you will no longer receive any trading discounts from this Affiliate if they were previously enabled.": "Please be informed that the Affiliate who referred you and through whose referral link you signed up to trade is no longer part of PancakeSwap's Affiliate Program. As a result, effective immediately June 12, 2024, you will no longer receive any trading discounts from this Affiliate if they were previously enabled.",
   "You can still access the affiliate claims dashboard until July 31, 2024. If you have any outstanding discounts unclaimed, please %claim% them before this date. After July 31, 2024, any unclaimed discounts will be forfeited, and you will no longer have access to the affiliate claims dashboard.": "You can still access the affiliate claims dashboard until July 31, 2024. If you have any outstanding discounts unclaimed, please %claim% them before this date. After July 31, 2024, any unclaimed discounts will be forfeited, and you will no longer have access to the affiliate claims dashboard.",
-  "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's": "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's"
+  "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's": "Overnight has temporarily paused USD+ operations on zkSync due to the recent Velocore exploit.Swap, approve, and add / remove liquidity functions are currently unavailable. More information can be found on Overnight's",
+  "Incentives can now be earned on BOTH Merkl and Farms at the same time.": "Incentives can now be earned on BOTH Merkl and Farms at the same time.",
+  "Stake your LP token in the Farm and accrue both Merkl and Farm rewards.": "Stake your LP token in the Farm and accrue both Merkl and Farm rewards.",
+  "Claim your Farm rewards on PancakeSwap and your Merkl rewards on": "Claim your Farm rewards on PancakeSwap and your Merkl rewards on",
+  "Merkl's website": "Merkl's website",
+  "Warning: The $ATH token pool is not a valid token trading pair - please stop buying": "Warning: The $ATH token pool is not a valid token trading pair - please stop buying"
 }
