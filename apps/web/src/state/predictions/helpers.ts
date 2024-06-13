@@ -479,6 +479,8 @@ export const serializePredictionsRoundsResponse = (
   // Chainlink in ARBITRUM lockPrice & closePrice will return 18 decimals, other chain is return 8 decimals.
   // For AI predictions at least, this will be later replaced with prices from CMC API instead of Chainlink
   // Note: Added BSC_TESTNET for TESTING because we're using ARB's ETH/USD chainlink price feed there
+
+  // TODO: check if we can use decimals from config here instead of hardcoding this conditional statement
   if (chainId === ChainId.ARBITRUM_ONE || chainId === ChainId.BSC_TESTNET) {
     lockPriceAmount = lockPrice === 0n ? null : (Number(lockPrice) / Number(1e10)).toFixed()
     closePriceAmount = closePrice === 0n ? null : (Number(closePrice) / Number(1e10)).toFixed()

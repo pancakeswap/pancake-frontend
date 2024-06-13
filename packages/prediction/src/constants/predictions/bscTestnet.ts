@@ -17,5 +17,8 @@ export const predictions: Record<string, PredictionConfig> = {
     tokenBackgroundColor: '#F0B90B',
 
     isAIPrediction: true,
+    AIPriceDecimals: 18,
+    lockPriceDecimals: 18,
+    closePriceDecimals: 18,
   },
 }

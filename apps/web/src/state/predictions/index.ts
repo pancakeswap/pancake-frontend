@@ -182,20 +182,35 @@ export const fetchNodeHistory = createAsyncThunk<
   const bets: Bet[] = roundData.reduce((accum: any, round: PredictionsRoundsResponse) => {
     const ledger = userRounds[Number(round.epoch)]
     const ledgerAmount = BigInt(ledger.amount)
-    let closePrice = round.closePrice ? parseFloat(formatUnits(round.closePrice, 8)) : null
-    let lockPrice = round.lockPrice ? parseFloat(formatUnits(round.lockPrice, 8)) : null
-
-    // Chainlink in ARBITRUM lockPrice & closePrice will return 18 decimals, other chain is return 8 decimals.
-    if (chainId === ChainId.ARBITRUM_ONE && (round.closePrice || round.lockPrice)) {
-      closePrice = parseFloat(formatUnits(round.closePrice, 18))
-      lockPrice = parseFloat(formatUnits(round.lockPrice, 18))
-    }
+    const closePrice = round.closePrice
+      ? parseFloat(formatUnits(round.closePrice, extra.closePriceDecimals ?? 8))
+      : null
+    const lockPrice = round.lockPrice ? parseFloat(formatUnits(round.lockPrice, extra.lockPriceDecimals ?? 8)) : null
+    const AIPrice = round.AIPrice ? parseFloat(formatUnits(round.AIPrice, extra.AIPriceDecimals ?? 8)) : null
 
     const getRoundPosition = () => {
       if (!closePrice) {
         return null
       }
 
+      // If AI-based prediction
+      if (extra.isAIPrediction && round.AIPrice) {
+        if (round.closePrice === round.lockPrice && round.AIPrice !== round.lockPrice) {
+          return BetPosition.HOUSE
+        }
+
+        if (
+          (round.closePrice > round.lockPrice && round.AIPrice > round.lockPrice) ||
+          (round.closePrice < round.lockPrice && round.AIPrice < round.lockPrice) ||
+          (round.closePrice === round.lockPrice && round.AIPrice === round.lockPrice)
+        ) {
+          return BetPosition.BULL
+        }
+
+        return BetPosition.BEAR
+      }
+
+      // If not AI-based prediction
       if (round.closePrice === round.lockPrice) {
         return BetPosition.HOUSE
       }
@@ -248,7 +263,7 @@ export const fetchNodeHistory = createAsyncThunk<
           bearAmount: parseFloat(formatUnits(round.bearAmount, 18)),
           position: getRoundPosition(),
 
-          AIPrice: round.AIPrice,
+          AIPrice,
         },
       },
     ]

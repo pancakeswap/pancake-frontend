@@ -170,7 +170,7 @@ interface RoundPriceProps {
 
 export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({ lockPrice, closePrice }) => {
   const config = useConfig()
-  const betPosition = getRoundPosition(lockPrice, closePrice)
+  const betPosition = getRoundPosition(lockPrice, closePrice) // Only need to show UP/DOWN and not related to AI bet
   const priceDifference = getPriceDifference(closePrice, lockPrice)
 
   const textColor = useMemo(() => {

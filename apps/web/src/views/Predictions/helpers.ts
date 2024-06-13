@@ -94,11 +94,29 @@ export const getPriceDifference = (price: bigint | null, lockPrice: bigint | nul
   return price - lockPrice
 }
 
-export const getRoundPosition = (lockPrice?: bigint | null, closePrice?: bigint | null) => {
+export const getRoundPosition = (lockPrice?: bigint | null, closePrice?: bigint | null, AIPrice?: bigint | null) => {
   if (!closePrice || !lockPrice) {
     return null
   }
 
+  // If AI-based prediction
+  if (AIPrice) {
+    if (closePrice === lockPrice && AIPrice !== lockPrice) {
+      return BetPosition.HOUSE
+    }
+
+    if (
+      (closePrice > lockPrice && AIPrice > lockPrice) ||
+      (closePrice < lockPrice && AIPrice < lockPrice) ||
+      (closePrice === lockPrice && AIPrice === lockPrice)
+    ) {
+      return BetPosition.BULL
+    }
+
+    return BetPosition.BEAR
+  }
+
+  // If not AI-based prediction
   if (closePrice === lockPrice) {
     return BetPosition.HOUSE
   }

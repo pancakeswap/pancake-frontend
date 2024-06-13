@@ -52,7 +52,7 @@ export const AIExpiredRoundCard: React.FC<React.PropsWithChildren<AIExpiredRound
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { epoch, lockPrice, closePrice, AIPrice } = round
-  const betPosition = getRoundPosition(lockPrice ?? 0n, closePrice ?? 0n)
+  const betPosition = getRoundPosition(lockPrice ?? 0n, closePrice ?? 0n) // Only need for UP/DOWN, not related to AI's bet
   const bufferSeconds = useGetBufferSeconds()
   const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds, round.closePrice)
 

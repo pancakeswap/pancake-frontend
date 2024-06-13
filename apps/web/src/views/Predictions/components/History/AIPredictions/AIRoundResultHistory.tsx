@@ -35,14 +35,14 @@ export const AIRoundResultHistory: React.FC<React.PropsWithChildren<AIRoundResul
       ) : (
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text color={isPositionUp ? 'success' : 'failure'} bold fontSize="24px">
-            {formatUsd(closePrice / 1e10, config?.displayedDecimals ?? 0)}
+            {formatUsd(closePrice, config?.displayedDecimals ?? 0)}
           </Text>
           <PositionTag betPosition={betPosition}>
-            {formatUsd(priceDifference / 1e10, config?.displayedDecimals ?? 0)}
+            {formatUsd(priceDifference, config?.displayedDecimals ?? 0)}
           </PositionTag>
         </Flex>
       )}
-      {lockPrice && <LockPriceHistoryRow lockPrice={lockPrice / 1e10} />}
+      {lockPrice && <LockPriceHistoryRow lockPrice={lockPrice} />}
       <PrizePoolHistoryRow totalAmount={totalAmount} />
       {children}
     </RoundResultBox>

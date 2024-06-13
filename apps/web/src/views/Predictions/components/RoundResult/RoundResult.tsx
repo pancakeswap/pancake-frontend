@@ -16,7 +16,7 @@ const RoundResult: React.FC<React.PropsWithChildren<RoundResultProps>> = ({
   ...props
 }) => {
   const { lockPrice, closePrice, totalAmount } = round
-  const betPosition = getRoundPosition(lockPrice, closePrice)
+  const betPosition = getRoundPosition(lockPrice, closePrice) // Need to show UP/DOWN and not related to AI's bet
   const { t } = useTranslation()
 
   return (
