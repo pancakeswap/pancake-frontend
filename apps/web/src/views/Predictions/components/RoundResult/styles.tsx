@@ -42,9 +42,11 @@ export const PrizePoolRow: React.FC<React.PropsWithChildren<PrizePoolRowProps>> 
   return (
     <Row {...props}>
       <Text bold>{t('Prize Pool')}:</Text>
-      <Text bold>{`${getPrizePoolAmount(totalAmount, config?.token?.decimals ?? 0, config?.displayedDecimals ?? 0)} ${
-        config?.token?.symbol
-      }`}</Text>
+      <Text bold>{`${getPrizePoolAmount(
+        totalAmount,
+        config?.token?.decimals ?? 0,
+        config?.isAIPrediction ? 4 : config?.displayedDecimals ?? 0,
+      )} ${config?.token?.symbol}`}</Text>
     </Row>
   )
 }
