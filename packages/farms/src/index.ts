@@ -154,3 +154,5 @@ export * from './v2/farmsPriceHelpers'
 export * from './v2/filterFarmsByQuery'
 
 export { fetchCommonTokenUSDValue, fetchTokenUSDValues, masterChefV3Addresses }
+
+export * from './fetchFarmsAvgInfo'
