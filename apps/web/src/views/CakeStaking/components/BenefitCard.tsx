@@ -18,7 +18,7 @@ export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
   crossChain: {
     headImg: '/images/cake-staking/cross-chain.png',
     title: <Trans>veCAKE Sync</Trans>,
-    subTitle: <Trans>Number of Chains Synced</Trans>,
+    subTitle: <Trans>Number of Chains with veCAKE</Trans>,
     btnText: <Trans>View Details</Trans>,
     desc: [
       <Trans>Enjoy the same veCAKE benefits on other networks.</Trans>,

@@ -3411,7 +3411,7 @@
   "Cross chain fee": "Cross chain fee",
   "Insufficient BNB balance": "Insufficient BNB balance",
   "veCake Sync Submitted": "veCake Sync Submitted",
-  "Number of Chains Synced": "Number of Chains Synced",
+  "Number of Chains with veCAKE": "Number of Chains with veCAKE",
   "View Details": "View Details",
   "Enjoy the same veCAKE benefits on other networks.": "Enjoy the same veCAKE benefits on other networks.",
   "Explorer other PancakeSwap benefits.": "Explorer other PancakeSwap benefits.",
@@ -3421,5 +3421,6 @@
   "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking.": "Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking.",
   "You need to sync your veCAKE to the current network to activate farm yield boosters.": "You need to sync your veCAKE to the current network to activate farm yield boosters.",
   "Sync veCake": "Sync veCake",
-  "You will need to re-sync your veCAKE after extending or adding more CAKE to your veCAKE staking position.": "You will need to re-sync your veCAKE after extending or adding more CAKE to your veCAKE staking position."
+  "You will need to re-sync your veCAKE after extending or adding more CAKE to your veCAKE staking position.": "You will need to re-sync your veCAKE after extending or adding more CAKE to your veCAKE staking position.",
+  "Sync veCAKE to activate yield booster": "Sync veCAKE to activate yield booster"
 }
