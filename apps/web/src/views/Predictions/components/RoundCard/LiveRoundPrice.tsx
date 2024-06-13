@@ -16,7 +16,7 @@ const LiveRoundPrice: React.FC<React.PropsWithChildren<LiveRoundPriceProps>> = (
   price,
 }) => {
   const priceAsNumber = useMemo(
-    () => (typeof price === 'number' ? price : parseFloat(formatBigIntToFixed(price, 4, 8))),
+    () => (price ? (typeof price === 'number' ? price : parseFloat(formatBigIntToFixed(price, 4, 8))) : 0),
     [price],
   )
 
