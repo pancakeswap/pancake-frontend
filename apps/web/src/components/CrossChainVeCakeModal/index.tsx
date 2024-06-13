@@ -324,6 +324,7 @@ const OtherChainsCard: React.FC<{
   const { isSynced, isLoading } = useProfileProxyWellSynced(chainId)
   const { isVeCakeWillSync, isLoading: isVeCakeSyncLoading } = useMultichainVeCakeWellSynced(chainId)
   const { data: crossChainMessage, isLoading: isCrossChainLoading } = useCrossChianMessage(chainId, hash)
+  const { address: account } = useAccount()
   const isLayerZeroHashProcessing = useMemo(() => {
     if (isCrossChainLoading || crossChainMessage?.status === 'INFLIGHT') {
       return true
@@ -349,7 +350,7 @@ const OtherChainsCard: React.FC<{
             {t('In Progress')}
           </LinkExternal>
         ) : (
-          <Text fontSize="16px">{isSynced ? t('Synced') : t('To be Synced')}</Text>
+          <>{account ? <Text fontSize="16px">{isSynced ? t('Synced') : t('To be Synced')}</Text> : '-'}</>
         )}
       </Flex>
       <Flex style={{ gap: 10 }}>
