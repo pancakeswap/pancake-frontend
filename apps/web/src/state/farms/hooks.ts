@@ -91,16 +91,7 @@ export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2F
 
       const addresses = activeFarms.map((farm) => farm.lpAddress?.toLowerCase())
 
-      const [v2AvgRes, v3AvgRes, stableAvgRes] = await Promise.allSettled([
-        fetchV2FarmsAvgInfo(chainId),
-        fetchV3FarmsAvgInfo(chainId),
-        fetchStableFarmsAvgInfo(chainId),
-      ])
-      const farmAvgInfo = {
-        ...(v2AvgRes.status === 'fulfilled' ? v2AvgRes.value : {}),
-        ...(v3AvgRes.status === 'fulfilled' ? v3AvgRes.value : {}),
-        ...(stableAvgRes.status === 'fulfilled' ? stableAvgRes.value : {}),
-      }
+      const farmAvgInfo = await fetchV3FarmsAvgInfo(chainId)
 
       const info: { [key: string]: { volumeUSD: number; tvlUSD: number; feeUSD: number; apr: number } } = {}
       for (const addr of addresses) {
