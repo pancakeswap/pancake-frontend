@@ -136,7 +136,7 @@ export const useVeCakeUserMultiplierBeforeBoosted = (tokenId?: string) => {
   }
 }
 
-export const useBCakeBoostLimitAndLockInfo = (targetChain?: ChainId) => {
+export const useBCakeBoostLimitAndLockInfo = (targetChain: ChainId = ChainId.BSC) => {
   const { status } = useCakeLockStatus(targetChain)
   const isLockEnd = useMemo(() => status === CakeLockStatus.Expired, [status])
   const locked = useMemo(() => status === CakeLockStatus.Locking, [status])

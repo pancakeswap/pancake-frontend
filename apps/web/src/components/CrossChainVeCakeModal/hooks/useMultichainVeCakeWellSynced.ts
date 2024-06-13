@@ -28,7 +28,7 @@ export const useMultichainVeCakeWellSynced = (
     refetchInterval: FAST_INTERVAL,
     staleTime: FAST_INTERVAL,
   })
-
+  // return { isVeCakeWillSync: false, isLoading } //  mock status
   return { isVeCakeWillSync: data, isLoading }
 }
 
@@ -140,4 +140,14 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
     console.error(e)
     return null
   }
+}
+
+export const useStatusViewVeCakeWellSync = (
+  targetChainId?: ChainId,
+): {
+  isVeCakeWillSync?: boolean | null
+  isLoading: boolean
+} => {
+  const { isVeCakeWillSync, isLoading } = useMultichainVeCakeWellSynced(targetChainId)
+  return { isVeCakeWillSync: isVeCakeWillSync && targetChainId !== ChainId.BSC, isLoading }
 }

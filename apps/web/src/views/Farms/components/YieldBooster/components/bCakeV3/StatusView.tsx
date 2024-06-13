@@ -42,6 +42,7 @@ export const StatusView: React.FC<{
   const { isVeCakeWillSync } = useMultichainVeCakeWellSynced(chainId ?? -1)
   const bCakeMessage = useBCakeMessage(
     account,
+    chainId,
     Boolean(isFarmStaking),
     locked,
     isLockEnd,
@@ -61,7 +62,9 @@ export const StatusView: React.FC<{
         </Text>
       </Text>
       <Flex alignItems="center">
-        {shouldUpdate ? (
+        {!isVeCakeWillSync && chainId !== ChainId.BSC ? (
+          <Text>{t('Up to %boostMultiplier%x', { boostMultiplier: maxBoostMultiplier ?? 2 })}</Text>
+        ) : shouldUpdate ? (
           <Flex>
             <Text fontSize={16} lineHeight="120%" bold color="success" mr="3px">
               {(expectMultiplier ?? 0) < 1.001 && expectMultiplier !== 1
@@ -82,7 +85,6 @@ export const StatusView: React.FC<{
           <Text fontSize={16} lineHeight="120%" bold color="textSubtle">
             {(status === BoostStatus.Boosted || (status === BoostStatus.farmCanBoostButNot && isFarmStaking)) &&
             locked &&
-            (chainId === ChainId.BSC || isVeCakeWillSync) &&
             !isLockEnd
               ? `${
                   (boostedMultiplier ?? 0) < 1.001 && boostedMultiplier !== 1
@@ -112,6 +114,7 @@ export const StatusView: React.FC<{
 
 const useBCakeMessage = (
   account: `0x${string}` | undefined,
+  chainId: ChainId | undefined,
   isFarmStaking: boolean,
   locked: boolean,
   isLockEnd: boolean,
@@ -125,6 +128,7 @@ const useBCakeMessage = (
   const bCakeMessage = useMemo(() => {
     if (!account) return t('Connect wallet to activate yield booster')
     if (!isFarmStaking) return t('Start staking to activate yield booster.')
+    if (!locked && chainId !== ChainId.BSC) return t('Lock Cake to get veCAKE on BSC to activate yield booster.')
     if (!locked) return t('Get veCAKE to activate yield booster')
     if (!isVeCakeWillSync) return t('Sync veCAKE to activate yield booster')
     if (shouldUpdate) return t('Click to update and increase your boosts.')
@@ -144,6 +148,7 @@ const useBCakeMessage = (
     boosted,
     shouldUpdate,
     isVeCakeWillSync,
+    chainId,
   ])
   return bCakeMessage
 }
