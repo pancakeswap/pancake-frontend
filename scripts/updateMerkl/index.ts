@@ -53,9 +53,7 @@ const parseMerklConfig = (merklConfig: MerklConfig[]): MerklConfigPool[] => {
   return pools.map((pool) => ({
     chainId: pool.chainId,
     address: pool.pool,
-    // @notice: change to use pool address as query, after angle support it
-    // link: `https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=${pool.symbolToken0}-${pool.symbolToken1}&chains=${pool.chainId}%2C`,
-    link: `https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=pancakeswap&chains=${pool.chainId}%2C`,
+    link: `https://merkl.angle.money/?status=live&search=${pool.pool}&chain=${pool.chainId}%2C`,
   }))
 }
 

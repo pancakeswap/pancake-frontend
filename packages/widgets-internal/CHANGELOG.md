@@ -1,5 +1,42 @@
 # @pancakeswap/widgets-internal
 
+## 0.2.0
+
+### Minor Changes
+
+- 54f0f82: Added confirm and prompt webUI & hooks to replace window.confirm & window.prompt
+
+### Patch Changes
+
+- Updated dependencies [b9c91d1]
+- Updated dependencies [54f0f82]
+- Updated dependencies [5fa28e0]
+- Updated dependencies [95cfa0c]
+  - @pancakeswap/chains@0.4.5
+  - @pancakeswap/uikit@0.66.0
+  - @pancakeswap/tokens@0.6.20
+  - @pancakeswap/farms@1.0.66
+  - @pancakeswap/pools@5.1.26
+  - @pancakeswap/sdk@5.8.6
+  - @pancakeswap/utils@6.0.8
+  - @pancakeswap/v3-sdk@3.8.7
+  - @pancakeswap/hooks@0.0.30
+
+## 0.1.51
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/sdk@5.8.5
+  - @pancakeswap/v3-sdk@3.8.6
+  - @pancakeswap/farms@1.0.65
+  - @pancakeswap/pools@5.1.25
+  - @pancakeswap/utils@6.0.7
+  - @pancakeswap/tokens@0.6.19
+  - @pancakeswap/hooks@0.0.29
+  - @pancakeswap/uikit@0.65.10
+
 ## 0.1.50
 
 ### Patch Changes

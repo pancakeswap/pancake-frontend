@@ -1,5 +1,27 @@
 # routing-api
 
+## 0.3.67
+
+### Patch Changes
+
+- Updated dependencies [b9c91d1]
+  - @pancakeswap/chains@0.4.5
+  - @pancakeswap/farms@1.0.66
+  - @pancakeswap/smart-router@6.0.12
+  - @pancakeswap/sdk@5.8.6
+  - @pancakeswap/v3-sdk@3.8.7
+
+## 0.3.66
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/smart-router@6.0.11
+  - @pancakeswap/sdk@5.8.5
+  - @pancakeswap/v3-sdk@3.8.6
+  - @pancakeswap/farms@1.0.65
+
 ## 0.3.65
 
 ### Patch Changes

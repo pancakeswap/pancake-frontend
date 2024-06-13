@@ -31,7 +31,7 @@ const CHART_SUPPORT_CHAIN_IDS = [
   // ChainId.ETHEREUM
 ]
 const STABLE_SUPPORT_CHAIN_IDS = [ChainId.BSC_TESTNET, ChainId.BSC]
-const HOT_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC, ChainId.ETHEREUM]
+// const HOT_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC, ChainId.ETHEREUM]
 
 export const SwapFeaturesProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { isMobile } = useMatchBreakpoints()
@@ -53,10 +53,7 @@ export const SwapFeaturesProvider: React.FC<React.PropsWithChildren> = ({ childr
     [chainId],
   )
 
-  const isHotTokenSupported = useMemo(
-    () => Boolean(chainId && HOT_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId)),
-    [chainId],
-  )
+  const isHotTokenSupported = useMemo(() => false, [])
 
   const value = useMemo(() => {
     return {

@@ -5,6 +5,32 @@ import { cakeBnbLpToken } from '../lpTokens'
 
 export const ifos: BaseIfoConfig[] = [
   {
+    id: 'lista',
+    address: '0x232c577a3A9c4ecbeeb213E1eb5519cB0C2FDb0F',
+    isActive: true,
+    cIFO: false,
+    name: 'LISTA',
+    plannedStartTime: 1718789400, // 19 June 09:30 UTC
+    poolBasic: {
+      raiseAmount: '$10,000',
+    },
+    poolUnlimited: {
+      raiseAmount: '$90,000',
+      additionalClaimingFee: false,
+    },
+    currency: bscTokens.cake,
+    token: bscTokens.lista,
+    campaignId: '512400000',
+    articleUrl:
+      'https://pancakeswap.finance/voting/proposal/0x910b732e87993804b27bb93f9635d424f36fe760d0431865e02a7ccb96513bba',
+    tokenOfferingPrice: 0.02,
+    version: 8,
+    twitterUrl: 'https://x.com/lista_dao',
+    description:
+      '[Lista DAO](https://lista.org/) is a liquid staking and decentralized stablecoin protocol. Users can liquid stake their BNB to receive slisBNB, and borrow lisUSD against accepted collateral assets.',
+    vestingTitle: `LISTA is Lista DAO's governance token that unlocks the following utility: governance, protocol incentivization, gauge voting, and fee sharing.`,
+  },
+  {
     id: 'cakepie',
     address: '0x5f77A54F4314aef5BDd311aCfcccAC90B39432e8',
     isActive: false,

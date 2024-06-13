@@ -22,6 +22,7 @@ import { useHasSwellReward } from 'hooks/useHasSwellReward'
 import { styled } from 'styled-components'
 import { Address, isAddressEqual } from 'viem'
 import { bsc } from 'viem/chains'
+import { useHasCustomFarmLpTooltips } from 'views/Farms/hooks/useHasCustomFarmLpTooltips'
 import { useChainId } from 'wagmi'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
@@ -42,6 +43,7 @@ type ExpandableSectionProps = {
   farmCakePerSecond?: string
   totalMultipliers?: string
   merklLink?: string
+  merklUserLink?: string
   hasBothFarmAndMerkl?: boolean
   isBoosted?: boolean
   lpAddress?: Address
@@ -72,6 +74,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   farmCakePerSecond,
   totalMultipliers,
   merklLink,
+  merklUserLink,
   hasBothFarmAndMerkl,
   merklApr,
   lpAddress,
@@ -82,6 +85,8 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   const chainId = useChainId()
   const isReady = multiplier !== undefined || bCakeWrapperAddress
   const hasSwellReward = useHasSwellReward(lpAddress)
+  const customTooltips = useHasCustomFarmLpTooltips(lpAddress)
+
   const multiplierTooltipContent = FarmMultiplierInfo({
     farmCakePerSecond: farmCakePerSecond ?? '-',
     totalMultipliers: totalMultipliers ?? '-',
@@ -110,6 +115,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
                   merklLink={merklLink}
                   hasFarm={hasBothFarmAndMerkl}
                   merklApr={merklApr}
+                  merklUserLink={merklUserLink}
                 />
               </Box>
             ) : null}
@@ -147,6 +153,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
         )}
         <AutoRow gap="4px" justifyContent="flex-end">
           {hasSwellReward && <SwellTooltip />}
+          {customTooltips && customTooltips.tooltips}
           {isReady && isStable ? <StableFarmTag /> : version === 2 ? <V2Tag /> : null}
           {isReady && version === 3 && <V3FeeTag feeAmount={feeAmount} />}
           {isReady && isCommunityFarm && <FarmAuctionTag mr="-4px" />}

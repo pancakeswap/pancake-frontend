@@ -43,10 +43,9 @@ import Percent from '../components/Percent'
 import PoolTable from '../components/PoolTable'
 import TransactionTable from '../components/TransactionsTable'
 import { MonoSpace, StyledCMCLink } from '../components/shared'
-import { ONE_HOUR_SECONDS, TimeWindow, v3InfoPath } from '../constants'
+import { v3InfoPath } from '../constants'
 import {
-  usePoolsData,
-  usePoolsForToken,
+  usePoolsDataForToken,
   useTokenChartData,
   useTokenData,
   useTokenPriceData,
@@ -81,8 +80,6 @@ enum ChartView {
   PRICE,
 }
 
-const DEFAULT_TIME_WINDOW = TimeWindow.WEEK
-
 const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const { isXs, isSm } = useMatchBreakpoints()
   // const { chainId } = useActiveChainId()
@@ -97,8 +94,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   }, [])
   const { t } = useTranslation()
   const tokenData = useTokenData(address)
-  const poolsForToken = usePoolsForToken(address)
-  const poolDatas = usePoolsData(poolsForToken?.filter((d, index) => index < 200) ?? [])
+  const poolDatas = usePoolsDataForToken(address)
   const transactions = useTokenTransactions(address)
   const chartData = useTokenChartData(address)
   const formatPoolData = useMemo(() => {
@@ -133,10 +129,9 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const [view, setView] = useState(ChartView.TVL)
   const [latestValue, setLatestValue] = useState<number | undefined>()
   const [valueLabel, setValueLabel] = useState<string | undefined>()
-  const [timeWindow] = useState(DEFAULT_TIME_WINDOW)
 
   // pricing data
-  const priceData = useTokenPriceData(address, ONE_HOUR_SECONDS, timeWindow)
+  const priceData = useTokenPriceData(address, 'week')
   const adjustedToCurrent = useMemo(() => {
     if (priceData && tokenData && priceData.length > 0) {
       const adjusted = [...priceData]

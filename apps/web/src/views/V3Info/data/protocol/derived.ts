@@ -1,5 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { GraphQLClient } from 'graphql-request'
+import type { components } from 'state/info/api/schema'
+import { chainIdToExplorerInfoChainName } from 'state/info/api/client'
 import { POOL_HIDE } from '../../constants'
 import { ChartDayData, PoolChartEntry, PoolData } from '../../types'
 import { fetchPoolChartData } from '../pool/chartData'
@@ -35,13 +37,13 @@ export async function fetchTVLOffset(dataClient: GraphQLClient, chainId: ChainId
  *
  * @returns Chart data by day for values to offset accurate USD.
  */
-export async function fetchDerivedOffsetTVLHistory(dataClient: GraphQLClient, chainId: ChainId) {
+export async function fetchDerivedOffsetTVLHistory(protocol: 'v2' | 'v3' | 'stable', chainId: ChainId) {
   // fetch all data for each pool
   try {
     const chartData = await POOL_HIDE[chainId].reduce(
       async (accumP: Promise<{ [key: number]: ChartDayData }>, address) => {
         const accum = await accumP
-        const { data } = await fetchPoolChartData(address, dataClient)
+        const { data } = await fetchPoolChartData(protocol, chainIdToExplorerInfoChainName[chainId], address)
         if (!data) return accum
         data.forEach((poolDayData: PoolChartEntry) => {
           const { date, totalValueLockedUSD, volumeUSD } = poolDayData
@@ -77,7 +79,11 @@ const POOL_COUNT_FOR_AGGREGATE = 20
  * Derives historical TVL data for top 50 pools.
  * @returns Chart data for aggregate Uniswap TVL over time.
  */
-export async function fetchDerivedProtocolTVLHistory(dataClient: GraphQLClient, chainId: ChainId) {
+export async function fetchDerivedProtocolTVLHistory(
+  dataClient: GraphQLClient,
+  protocol: 'v2' | 'v3' | 'stable',
+  chainId: ChainId,
+) {
   try {
     const { addresses } = await fetchTopPoolAddresses(dataClient, chainId)
     if (!addresses) {
@@ -91,7 +97,7 @@ export async function fetchDerivedProtocolTVLHistory(dataClient: GraphQLClient, 
         if (POOL_HIDE[chainId].includes(address)) {
           return accum
         }
-        const { data } = await fetchPoolChartData(address, dataClient)
+        const { data } = await fetchPoolChartData(protocol, chainIdToExplorerInfoChainName[chainId], address)
         if (!data) return accum
         data.forEach((poolDayData: PoolChartEntry) => {
           const { date, totalValueLockedUSD, volumeUSD } = poolDayData

@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/gauges",
-  "version": "1.2.6",
+  "version": "1.2.8",
   "sideEffects": false,
   "scripts": {
     "dev": "tsup --watch",
@@ -33,6 +33,6 @@
     "@pancakeswap/chains": "workspace:^",
     "@pancakeswap/tokens": "workspace:^",
     "@pancakeswap/v3-sdk": "workspace:^",
-    "viem": "2.9.19"
+    "viem": "2.13.3"
   }
 }

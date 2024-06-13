@@ -11,6 +11,7 @@ const InlineLink = styled(LinkExternal)`
 type MerklNoticeContentProps = {
   linkColor?: string;
   merklLink: string;
+  merklUserLink?: string;
   hasFarm?: boolean;
   merklApr?: number;
 };
@@ -20,6 +21,7 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
   merklLink,
   hasFarm,
   merklApr,
+  merklUserLink,
 }) => {
   const { t } = useTranslation();
 
@@ -28,15 +30,14 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
       <>
         <Box>
           <Text display="inline" color="currentColor">
-            {t("Incentives can be earned on either Merkl or Farm but NOT both")}
-            <br />
-            <br />
+            {t("Incentives can now be earned on BOTH Merkl and Farms at the same time.")}
             <p>
-              {t(
-                "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on "
-              )}
-              <InlineLink color={linkColor} external display="inline" href={merklLink}>
-                {t("Merkl")}
+              {t("Stake your LP token in the Farm and accrue both Merkl and Farm rewards.")}
+              <br />
+              <br />
+              {t("Claim your Farm rewards on PancakeSwap and your Merkl rewards on")}
+              <InlineLink color={linkColor} external display="inline" href={merklUserLink}>
+                {t("Merkl's website")}
               </InlineLink>
             </p>
             <br />
@@ -57,23 +58,24 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
     <>
       <Box>
         <Text display="inline" color="currentColor">
-          <p>
-            {t("Incentives have moved to")}
-            <InlineLink color={linkColor} external display="inline" href={merklLink}>
-              {t("Merkl")}
-            </InlineLink>
-          </p>
+          <p>{t("Incentives can now be earned on BOTH Merkl and Farms at the same time.")}</p>
+          <br />
           {merklApr && (
-            <InlineLink color={linkColor} external display="inline" href={merklLink}>
-              {t("Merkl APR")}: {merklApr?.toFixed(2)}%
-            </InlineLink>
+            <>
+              <InlineLink color={linkColor} external display="inline" href={merklLink}>
+                {t("Merkl APR")}: {merklApr?.toFixed(2)}%
+              </InlineLink>
+              <br />
+              <br />
+            </>
           )}
+          {t("Stake your LP token in the Farm and accrue both Merkl and Farm rewards.")}
           <br />
           <br />
-          <br />
-          {t(
-            "To earn Merkl rewards, continue seeding liquidity on PancakeSwap, but DO NOT stake your LP token in the Farm. Otherwise, you will not accrue rewards."
-          )}
+          {t("Claim your Farm rewards on PancakeSwap and your Merkl rewards on")}
+          <InlineLink color={linkColor} external display="inline" href={merklUserLink}>
+            {t("Merkl's website")}
+          </InlineLink>
         </Text>
       </Box>
     </>
@@ -86,6 +88,7 @@ type MerklNoticeProps = {
   placement?: Placement;
   tooltipOffset?: [number, number];
   merklLink: string;
+  merklUserLink?: string;
   hasFarm?: boolean;
   merklApr?: number;
 };
@@ -97,9 +100,10 @@ const MerklNotice: React.FC<MerklNoticeProps> = ({
   merklLink,
   hasFarm,
   merklApr,
+  merklUserLink,
 }) => {
   const { tooltip, tooltipVisible, targetRef } = useTooltip(
-    <MerklNoticeContent merklLink={merklLink} hasFarm={hasFarm} merklApr={merklApr} />,
+    <MerklNoticeContent merklLink={merklLink} hasFarm={hasFarm} merklApr={merklApr} merklUserLink={merklUserLink} />,
     {
       placement,
       tooltipOffset,

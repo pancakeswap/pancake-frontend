@@ -1,13 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, ButtonMenu, ButtonMenuItem, Flex, SwapLineChart, Text } from '@pancakeswap/uikit'
 import { memo, useMemo, useState } from 'react'
-import { useFetchPairPricesV3, usePairRate } from 'state/swap/hooks'
+import { usePairRate } from 'state/swap/hooks'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
 import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 import NoChartAvailable from './NoChartAvailable'
 import { getTimeWindowChange } from './utils'
-
-const enableExplorer = true
 
 const BasicChart = ({
   token0Address,
@@ -20,20 +18,12 @@ const BasicChart = ({
 }) => {
   const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
 
-  const { data: pairPrices2 = [] } = usePairRate({
+  const { data: pairPrices = [] } = usePairRate({
     token0Address,
-    token1Address: enableExplorer ? token1Address : undefined,
+    token1Address,
     timeWindow,
     currentSwapPrice,
   })
-  const { data: pairPrices1 = [] } = useFetchPairPricesV3({
-    token0Address,
-    token1Address: enableExplorer ? undefined : token1Address,
-    timeWindow,
-    currentSwapPrice,
-  })
-
-  const pairPrices = enableExplorer ? pairPrices2 : pairPrices1
 
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()

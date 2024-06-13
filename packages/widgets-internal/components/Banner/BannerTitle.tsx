@@ -2,7 +2,7 @@ import { Text, TextProps, breakpoints } from "@pancakeswap/uikit";
 import { PropsWithChildren } from "react";
 import styled from "styled-components";
 
-type VariantTypes = "purple" | "orange" | "yellow";
+type VariantTypes = "purple" | "orange" | "yellow" | "listaBlue";
 
 type Props = {
   variant: VariantTypes;
@@ -46,10 +46,20 @@ const variants: { [key in VariantTypes]: Variant } = {
     lineHeight: 30,
     fontWeight: 800,
   },
+  listaBlue: {
+    color: "#1F198A",
+    strokeColor: "#1F198A",
+    strokeSize: 0,
+    fontSize: 40,
+    lineHeight: 44,
+    fontWeight: 800,
+  },
 };
 
 function getTextShadow(color: string, size = 2) {
-  return `-${size}px ${size}px 0px ${color}, ${size}px ${size}px 0px ${color}, ${size}px -${size}px 0 ${color}, -${size}px -${size}px 0 ${color}`;
+  return size
+    ? `-${size}px ${size}px 0px ${color}, ${size}px ${size}px 0px ${color}, ${size}px -${size}px 0 ${color}, -${size}px -${size}px 0 ${color}`
+    : "none";
 }
 
 function getFontSpecs({
@@ -114,17 +124,18 @@ export function BannerTitle({
   variant,
   strokeSize: defaultStrokeSize = 2,
   strokeColor: defaultStrokeColor = "#ffffff",
+  color: defaultColor,
   ...props
 }: PropsWithChildren<Omit<TextProps, "fontSize" | "lineHeight"> & Props>) {
   const { color, fontSize, fontWeight, strokeSize, strokeColor, lineHeight } = variants[variant];
   return (
     <FancyText
-      color={color}
+      color={color ?? defaultColor}
       fontSize={fontSize}
       lineHeight={lineHeight}
       fontWeight={fontWeight}
-      $strokeSize={strokeSize || defaultStrokeSize}
-      $strokeColor={strokeColor || defaultStrokeColor}
+      $strokeSize={strokeSize ?? defaultStrokeSize}
+      $strokeColor={strokeColor ?? defaultStrokeColor}
       {...props}
     >
       {children}

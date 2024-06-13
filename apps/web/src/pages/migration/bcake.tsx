@@ -1,9 +1,8 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { PM_V2_SS_BOOSTER_SUPPORT_CHAINS } from '@pancakeswap/position-managers'
 import Migration from 'views/Migration/bCake'
 
-const V2_SS_PM_SUPPORTED_CHAINS = [ChainId.BSC]
 const MigrationPage = () => <Migration />
 
-MigrationPage.chains = V2_SS_PM_SUPPORTED_CHAINS
+MigrationPage.chains = PM_V2_SS_BOOSTER_SUPPORT_CHAINS
 
 export default MigrationPage

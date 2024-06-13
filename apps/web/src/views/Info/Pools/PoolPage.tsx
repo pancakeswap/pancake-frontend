@@ -24,7 +24,6 @@ import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
 import { CHAIN_QUERY_NAME } from 'config/chains'
-import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPoolsList'
 import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import { NextSeo } from 'next-seo'
 import { useMemo, useState } from 'react'
@@ -33,8 +32,9 @@ import {
   useChainIdByQuery,
   useChainNameByQuery,
   useMultiChainPath,
-  usePoolChartDataQuery,
-  usePoolDatasQuery,
+  usePoolChartTvlDataQuery,
+  usePoolChartVolumeDataQuery,
+  usePoolDataQuery,
   usePoolTransactionsQuery,
   useStableSwapPath,
 } from 'state/info/hooks'
@@ -46,7 +46,6 @@ import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/Currency
 import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import Percent from 'views/Info/components/Percent'
-import SaveIcon from 'views/Info/components/SaveIcon'
 
 const ContentLayout = styled.div`
   display: grid;
@@ -96,8 +95,11 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
 
-  const poolData = usePoolDatasQuery(useMemo(() => [address], [address]))[0]
-  const chartData = usePoolChartDataQuery(address)
+  const poolData = usePoolDataQuery(address)
+  // const chartData = usePoolChartDataQuery(address)
+  const tvlChartData = usePoolChartTvlDataQuery(address)
+  const volumeChartData = usePoolChartVolumeDataQuery(address)
+
   const transactions = usePoolTransactionsQuery(address)
   const chainId = useChainIdByQuery()
   const [poolSymbol, symbol0, symbol1] = useMemo(() => {
@@ -105,7 +107,6 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
     const s1 = getTokenSymbolAlias(poolData?.token1.address, chainId, poolData?.token1.symbol)
     return [`${s0} / ${s1}`, s0, s1]
   }, [chainId, poolData?.token0.address, poolData?.token0.symbol, poolData?.token1.address, poolData?.token1.symbol])
-  const { savedPools, addPool } = useInfoUserSavedTokensAndPools(chainId)
   const chainName = useChainNameByQuery()
   const chainPath = useMultiChainPath()
   const infoTypeParam = useStableSwapPath()
@@ -164,7 +165,6 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
               >
                 {t('View on %site%', { site: multiChainScan[chainName] })}
               </ScanLink>
-              <SaveIcon fill={savedPools.includes(address)} onClick={() => addPool(address)} />
               <CopyButton ml="4px" text={address} tooltipMessage={t('Token address copied')} />
             </Flex>
           </Flex>
@@ -323,7 +323,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                 </Flex>
               </Card>
             </Box>
-            <ChartCard variant="pool" chartData={chartData || []} />
+            <ChartCard variant="pool" volumeChartData={volumeChartData} tvlChartData={tvlChartData} />
           </ContentLayout>
           <Heading mb="16px" mt="40px" scale="lg">
             {t('Transactions')}

@@ -96,7 +96,9 @@ const Hero = () => {
               <StyledHeading as="h1" mb={['12px', '12px', '24px']}>
                 {t('IFO: Initial Farm Offerings')}
               </StyledHeading>
-              <StyledSubTitle bold>{t('Buy new tokens launching on BNB Smart Chain')}</StyledSubTitle>
+              <StyledSubTitle bold>
+                {isMobile ? t('Buy new tokens using CAKE') : t('Buy new tokens launching on PancakeSwap using CAKE')}
+              </StyledSubTitle>
             </Box>
             {isMobile ? (
               <StyledButton onClick={handleClick} mt="0.375rem">
@@ -124,7 +126,7 @@ function HeaderBunny() {
 
   return (
     <BunnyContainer>
-      <Image alt="header-bunny" src={bunnyImageUrl} width={isDesktop ? 393 : 302} height={isDesktop ? 197 : 151} />
+      <img alt="header-bunny" src={bunnyImageUrl} width={isDesktop ? 393 : 302} height={isDesktop ? 197 : 151} />
     </BunnyContainer>
   )
 }

@@ -39,7 +39,6 @@ import { MerklSection } from 'components/Merkl/MerklSection'
 import { MerklTag } from 'components/Merkl/MerklTag'
 import { RangePriceSection } from 'components/RangePriceSection'
 import { RangeTag } from 'components/RangeTag'
-import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { Bound } from 'config/constants/types'
 import dayjs from 'dayjs'
@@ -837,7 +836,6 @@ export default function PoolPage() {
           </>
         )}
       </BodyWrapper>
-      <V3SubgraphHealthIndicator />
     </Page>
   )
 }
