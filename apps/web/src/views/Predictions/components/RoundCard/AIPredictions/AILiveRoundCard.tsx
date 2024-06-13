@@ -162,7 +162,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
               ${formatNumber(priceDifference, config?.displayedDecimals ?? 4, 4)}
             </PositionTag>
           </Flex>
-          {lockPrice?.toString() && <LockPriceRow lockPrice={lockPrice} />}
+          {lockPrice ? lockPrice?.toString() && <LockPriceRow lockPrice={lockPrice} /> : null}
           <PrizePoolRow totalAmount={totalAmount} />
         </RoundResultBox>
         <MultiplierArrow
