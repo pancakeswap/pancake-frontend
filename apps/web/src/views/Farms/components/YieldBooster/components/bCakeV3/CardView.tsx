@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import NextLink from 'next/link'
 import { useCallback, useMemo } from 'react'
 import {
   useBCakeBoostLimitAndLockInfo,
@@ -13,6 +12,7 @@ import { useBoostStatus } from '../../hooks/bCakeV3/useBoostStatus'
 import { useUpdateLiquidity } from '../../hooks/bCakeV3/useUpdateLiquidity'
 
 import { StatusView } from './StatusView'
+import { StatusViewButtons } from './StatusViewButtons'
 
 const SHOULD_UPDATE_THRESHOLD = 1.1
 
@@ -62,28 +62,29 @@ export const BCakeV3CardView: React.FC<{
         isFarmStaking={isFarmStaking}
         shouldUpdate={shouldUpdate}
       />
+
       <Box>
-        {!lockValidated && (
-          <NextLink href="/cake-staking" passHref>
-            <Button style={{ whiteSpace: 'nowrap' }}>{t('Go to Lock')}</Button>
-          </NextLink>
-        )}
-        {shouldUpdate && lockValidated && (
-          <Button
-            onClick={() => {
-              updateLiquidity()
-            }}
-            style={{
-              backgroundColor: 'transparent',
-              border: `2px solid ${theme.colors.primary}`,
-              color: theme.colors.primary,
-              padding: isConfirming ? '0 10px' : undefined,
-            }}
-            isLoading={isConfirming}
-          >
-            {isConfirming ? t('Confirming') : t('Update')}
-          </Button>
-        )}
+        <StatusViewButtons
+          locked={lockValidated}
+          updateButton={
+            shouldUpdate && lockValidated ? (
+              <Button
+                onClick={() => {
+                  updateLiquidity()
+                }}
+                style={{
+                  backgroundColor: 'transparent',
+                  border: `2px solid ${theme.colors.primary}`,
+                  color: theme.colors.primary,
+                  padding: isConfirming ? '0 10px' : undefined,
+                }}
+                isLoading={isConfirming}
+              >
+                {isConfirming ? t('Confirming') : t('Update')}
+              </Button>
+            ) : null
+          }
+        />
       </Box>
     </Flex>
   )

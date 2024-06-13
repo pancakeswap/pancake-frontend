@@ -9,9 +9,9 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { Address } from 'viem'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import NextLink from 'next/link'
 import { styled, useTheme } from 'styled-components'
 import { StatusView } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusView'
+import { StatusViewButtons } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusViewButtons'
 import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { useBoostStatusPM } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { useAccount } from 'wagmi'
@@ -227,14 +227,12 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                       shouldUpdate={shouldUpdate}
                       expectMultiplier={veCakeUserMultiplierBeforeBoosted}
                     />
-                    {shouldUpdate && <Button onClick={() => onUpdate(refetch)}>{t('Update')}</Button>}
-                    {!locked && (
-                      <NextLink href="/cake-staking" passHref>
-                        <Button width="100%" style={{ whiteSpace: 'nowrap' }}>
-                          {t('Go to Lock')}
-                        </Button>
-                      </NextLink>
-                    )}
+                    <StatusViewButtons
+                      updateButton={
+                        shouldUpdate ? <Button onClick={() => onUpdate(refetch)}>{t('Update')}</Button> : null
+                      }
+                      locked={locked}
+                    />
                   </Flex>
                 </RowBetween>
               </>
@@ -266,13 +264,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                 <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
                   <Flex width="100%" justifyContent="space-between" alignItems="center">
                     <StatusView status={status} maxBoostMultiplier={3} />
-                    {!locked && (
-                      <NextLink href="/cake-staking" passHref>
-                        <Button width="100%" style={{ whiteSpace: 'nowrap' }}>
-                          {t('Go to Lock')}
-                        </Button>
-                      </NextLink>
-                    )}
+                    <StatusViewButtons updateButton={null} locked={locked} />
                   </Flex>
                 </RowBetween>
               </>

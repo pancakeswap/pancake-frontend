@@ -18,7 +18,6 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
-import NextLink from 'next/link'
 import { FC, useContext, useMemo } from 'react'
 import { ChainLinkSupportChains, multiChainPaths } from 'state/info/constant'
 import { css, keyframes, styled } from 'styled-components'
@@ -30,6 +29,7 @@ import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import { StatusView } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusView'
+import { StatusViewButtons } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusViewButtons'
 import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { useBoostStatusPM } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { useWrapperBooster } from 'views/PositionManagers/hooks'
@@ -558,16 +558,14 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                               shouldUpdate={shouldUpdate}
                               expectMultiplier={veCakeUserMultiplierBeforeBoosted}
                             />
-                            {!locked && (
-                              <NextLink href="/cake-staking" passHref>
-                                <Button width="100%" style={{ whiteSpace: 'nowrap' }}>
-                                  {t('Go to Lock')}
-                                </Button>
-                              </NextLink>
-                            )}
-                            {shouldUpdate && farm?.bCakeUserData?.stakedBalance?.gt(0) && (
-                              <Button onClick={onUpdate}>{t('Update')}</Button>
-                            )}
+                            <StatusViewButtons
+                              locked={locked}
+                              updateButton={
+                                shouldUpdate && farm?.bCakeUserData?.stakedBalance?.gt(0) ? (
+                                  <Button onClick={onUpdate}>{t('Update')}</Button>
+                                ) : null
+                              }
+                            />
                           </Flex>
                         )}
                       </>
