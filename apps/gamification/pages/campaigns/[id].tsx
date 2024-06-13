@@ -4,4 +4,5 @@ const CampaignsPage = () => {
   return <Campaign />
 }
 
+CampaignsPage.chains = []
 export default CampaignsPage

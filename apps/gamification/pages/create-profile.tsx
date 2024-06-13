@@ -1,3 +1,7 @@
 import ProfileCreation from 'views/ProfileCreation'
 
-export default ProfileCreation
+const ProfileCreationPage = () => {
+  return <ProfileCreation />
+}
+
+export default ProfileCreationPage

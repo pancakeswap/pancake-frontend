@@ -4,4 +4,5 @@ const QuestPage = () => {
   return <Quest />
 }
 
+QuestPage.chains = []
 export default QuestPage
