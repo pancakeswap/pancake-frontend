@@ -3,6 +3,7 @@ import { Button, Grid, Heading, ModalV2, PageHeader, QuestionHelper, useMatchBre
 import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
+import { CROSS_CHIAN_CONFIG } from 'components/CrossChainVeCakeModal/constants'
 import { useAllMultichainSyncedCount } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import Page from 'components/Layout/Page'
 import { useCakeDistributed } from 'hooks/useCakeDistributed'
@@ -92,7 +93,7 @@ const CakeStaking = () => {
         <Grid maxWidth="820px" gridGap="24px" gridTemplateColumns="1fr" alignItems="center" mx="auto">
           <BenefitCard
             type="crossChain"
-            dataText={account ? `${syncedCount}` : '-'}
+            dataText={`${Object.keys(CROSS_CHIAN_CONFIG).length + 1}`}
             onClick={() => {
               setIsOpen(true)
             }}
