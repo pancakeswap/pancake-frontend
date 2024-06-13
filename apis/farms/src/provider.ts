@@ -25,8 +25,7 @@ const requireCheck = [
   BASE_NODE,
   OPBNB_NODE,
   OPBNB_TESTNET_NODE,
-  NODE_REAL_SUBGRAPH_API_KEY,
-  THE_GRAPH_API_KEY,
+  EXPLORER_URL,
 ]
 
 const base = {
