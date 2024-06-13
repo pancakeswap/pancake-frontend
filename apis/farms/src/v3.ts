@@ -328,7 +328,7 @@ async function fetchLiquidityFromExplorer(
     }
   } = await fetch(`${EXPLORER_URL}/cached/pools/v3/${chainName}/${address}`, {
     headers: {
-      'x-api-key': 'bunjs',
+      'x-api-key': EXPLORER_API_KEY,
       'Content-Type': 'application/json',
     },
   }).then((res) => {
@@ -359,7 +359,7 @@ async function fetchLiquidityFromExplorer(
       }`,
       {
         headers: {
-          'x-api-key': 'API_KEY',
+          'x-api-key': EXPLORER_API_KEY,
           'Content-Type': 'application/json',
         },
       },
