@@ -1,6 +1,6 @@
 import { DeserializedFarmsState, DeserializedFarmUserData, supportedChainIdV2 } from '@pancakeswap/farms'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { fetchStableFarmsAvgInfo, fetchV2FarmsAvgInfo, fetchV3FarmsAvgInfo } from 'queries/farms'
+import { fetchV3FarmsAvgInfo } from 'queries/farms'
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
