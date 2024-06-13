@@ -206,7 +206,7 @@ export const AISetPositionCard: React.FC<React.PropsWithChildren<AISetPositionCa
           <FlexRow>
             <Heading scale="md">{t('Set Position')}</Heading>
           </FlexRow>
-          <AIPositionTag betPosition={position} onClick={togglePosition}>
+          <AIPositionTag betPosition={position} onClick={togglePosition} showIcon>
             {position === BetPosition.BULL ? t('Follow AI') : t('Against AI')}
           </AIPositionTag>
         </Flex>

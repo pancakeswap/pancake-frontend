@@ -149,7 +149,7 @@ export const AIBetResult: React.FC<React.PropsWithChildren<AIBetResultProps>> = 
         )}
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text>{t('Your bet')}:</Text>
-          <AIPositionTag betPosition={bet.position} showIcon={false}>
+          <AIPositionTag betPosition={bet.position}>
             {bet.position === BetPosition.BULL ? t('Follow AI') : t('Against AI')}
           </AIPositionTag>
         </Flex>

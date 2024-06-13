@@ -46,7 +46,7 @@ interface AIPositionTagProps extends FlexProps {
 
 export const AIPositionTag: React.FC<React.PropsWithChildren<AIPositionTagProps>> = ({
   betPosition,
-  showIcon = true,
+  showIcon = false,
   children,
   ...props
 }) => {

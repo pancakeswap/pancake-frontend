@@ -209,7 +209,7 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
         />
         <StyledCardBody>
           {(!positionEnteredText || (liveAIPosition === 'DOWN' && userPosition === 'DOWN')) && (
-            <Flex justifyContent="center" alignItems="center">
+            <Flex justifyContent="center" alignItems="baseline">
               <Text
                 color="white"
                 fontWeight={700}
