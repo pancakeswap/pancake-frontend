@@ -46,14 +46,16 @@ const SocialComponent: React.FC<SocialComponentProps> = ({ icon, name, connected
   )
 }
 
-interface SettingsModalProps extends InjectedModalProps {}
+interface SettingsModalProps extends InjectedModalProps {
+  refresh: () => void
+}
 
-export const SettingsModal: React.FC<SettingsModalProps> = ({ onDismiss }) => {
+export const SettingsModal: React.FC<SettingsModalProps> = ({ refresh, onDismiss }) => {
   const { t } = useTranslation()
   const isConnected = false
 
   const { connect: connectDiscord } = useConnectDiscord()
-  const { connect: connectTelegram } = useConnectTelegram()
+  const { connect: connectTelegram } = useConnectTelegram({ refresh })
   const { connect: connectTwitter } = useConnectTwitter()
 
   return (

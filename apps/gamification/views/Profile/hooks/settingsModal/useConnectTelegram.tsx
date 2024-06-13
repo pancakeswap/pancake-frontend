@@ -11,7 +11,11 @@ interface TelegramResponse {
 // const YOUR_BOT_TOKEN = get from telegram
 // https://api.telegram.org/botYOUR_BOT_TOKEN/getMe
 
-export const useConnectTelegram = () => {
+interface UseConnectTelegramProps {
+  refresh: () => void
+}
+
+export const useConnectTelegram = ({ refresh }: UseConnectTelegramProps) => {
   useEffect(() => {
     // Load the Telegram Login Widget script
     const script = document.createElement('script')
@@ -36,6 +40,8 @@ export const useConnectTelegram = () => {
           // Handle the authenticated user information
           // You can send it to your backend server
           console.log(user.id)
+
+          // refresh?.()
         } else {
           // User cancelled authentication, redirect to /profile
           window.location.href = '/profile'

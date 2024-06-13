@@ -20,9 +20,10 @@ import { Achievement } from 'config/constants/types'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { Profile } from 'hooks/useProfile/type'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
+import { useSession } from 'next-auth/react'
 import { useMemo } from 'react'
 import { getBlockExploreLink, safeGetAddress } from 'utils'
-// import { useUserSocialStatus } from 'views/Profile/hooks/settingsModal/useUserSocialStatus'
+import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { useAccount } from 'wagmi'
 import AvatarImage from './AvatarImage'
 import { BannerHeader } from './BannerHeader'
@@ -55,12 +56,14 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const { refresh } = useUserSocialHub()
+  const { data: session } = useSession()
+  console.log('session', session)
+
   const { domainName, avatar: avatarFromDomain } = useDomainNameForAddress(accountPath)
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
     profile?.username || '',
   )
-
-  // useUserSocialStatus()
 
   const [onEditProfileModal] = useModal(
     <EditProfileModal
@@ -71,7 +74,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     false,
   )
 
-  const [onPressSettingsModal] = useModal(<SettingsModal />)
+  const [onPressSettingsModal] = useModal(<SettingsModal refresh={refresh} />)
 
   const isConnectedAccount = safeGetAddress(account) === safeGetAddress(accountPath)
   const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0) : '-') : null
