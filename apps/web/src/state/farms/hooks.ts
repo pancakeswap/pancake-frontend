@@ -97,7 +97,7 @@ export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2F
       for (const addr of addresses) {
         const farmInfo = farmAvgInfo[addr]
         info[addr] = {
-          volumeUSD: farmInfo?.volumeUSD7d.decimalPlaces(2).toNumber(),
+          volumeUSD: farmInfo?.volumeUSD7d.div(7).decimalPlaces(2).toNumber(),
           tvlUSD: 0,
           feeUSD: 0,
           apr: farmInfo?.apr7d.times(100).decimalPlaces(5).toNumber(),
