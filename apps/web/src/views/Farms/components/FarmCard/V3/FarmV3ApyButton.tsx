@@ -101,11 +101,8 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
     enabled: isUndefinedOrNull(farmsAvgInfo),
   })
 
-  const {
-    volumeUSD: volume24H,
-    feeUSD,
-    tvlUSD,
-  } = !isUndefinedOrNull(farmsAvgInfo)
+  const globalLpApr = !isUndefinedOrNull(farmsAvgInfo) ? farmsAvgInfo?.[farm.lpAddress?.toLowerCase()]?.apr ?? 0 : 0
+  const { volumeUSD: volume24H } = !isUndefinedOrNull(farmsAvgInfo)
     ? farmsAvgInfo?.[farm.lpAddress?.toLowerCase()] || {
         volumeUSD: 0,
         tvlUSD: 0,
@@ -117,8 +114,6 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
     (isSorted ? existingPosition?.amount0 : existingPosition?.amount1) ?? currencyBalances[Field.CURRENCY_A]
   const balanceB =
     (isSorted ? existingPosition?.amount1 : existingPosition?.amount0) ?? currencyBalances[Field.CURRENCY_B]
-
-  const globalLpApr = useMemo(() => (tvlUSD ? (100 * feeUSD * 365) / tvlUSD : 0), [feeUSD, tvlUSD])
 
   const depositUsdAsBN = useMemo(
     () =>

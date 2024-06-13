@@ -23,7 +23,7 @@ export const chainNames: Record<ChainId, string> = {
   [ChainId.BASE_SEPOLIA]: 'baseSepolia',
 }
 
-export const chainNamesInKebabCase: Record<ChainId, string> = {
+export const chainNamesInKebabCase = {
   [ChainId.ETHEREUM]: 'ethereum',
   [ChainId.GOERLI]: 'goerli',
   [ChainId.BSC]: 'bsc',
@@ -44,7 +44,7 @@ export const chainNamesInKebabCase: Record<ChainId, string> = {
   [ChainId.SEPOLIA]: 'sepolia',
   [ChainId.ARBITRUM_SEPOLIA]: 'arbitrum-sepolia',
   [ChainId.BASE_SEPOLIA]: 'base-sepolia',
-}
+} as const
 
 export const chainNameToChainId = Object.entries(chainNames).reduce((acc, [chainId, chainName]) => {
   return {

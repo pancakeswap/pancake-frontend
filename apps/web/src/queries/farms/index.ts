@@ -1,16 +1,14 @@
 import { ChainId, getChainNameInKebabCase } from '@pancakeswap/chains'
 import BN from 'bignumber.js'
 
-import { EXPLORER_API } from './const'
+import { explorerApiClient } from 'state/info/api/client'
 
 export type FarmAvgInfoRes = {
   [key: string]: AvgInfoRes
 }
 
 export type AvgInfoRes = {
-  apr24h: string
   apr7d: string
-  volumeUSD24h: string
   volumeUSD7d: string
 }
 
@@ -24,11 +22,19 @@ export type AvgInfo = {
 }
 
 export async function fetchV3FarmsAvgInfo(chainId: ChainId): Promise<FarmAvgInfo> {
-  const res = await fetch(`${EXPLORER_API}/cached/pools/apr/v3/${getChainNameInKebabCase(chainId)}/farms-lp`)
-  const data: FarmAvgInfoRes = await res.json()
-  if (!res.ok) {
-    throw new Error(`Failed to fetch v3 farms avg info for chain ${chainId}. ${res.status} ${res.statusText}: ${data}`)
+  const res = await explorerApiClient.GET('/cached/pools/apr/v3/{chainName}/farms-lp', {
+    params: {
+      path: {
+        chainName: getChainNameInKebabCase(chainId) as any,
+      },
+    },
+  })
+  if (!res.response.ok) {
+    throw new Error(
+      `Failed to fetch v3 farms avg info for chain ${chainId}. ${res.response.status} ${res.response.statusText}: ${res.error}`,
+    )
   }
+  const data = res.data as FarmAvgInfoRes
   const avgInfos: FarmAvgInfo = {}
   const addresses = Object.keys(data)
   for (const addr of addresses) {
@@ -45,11 +51,19 @@ export async function fetchV3FarmsAvgInfo(chainId: ChainId): Promise<FarmAvgInfo
 }
 
 export async function fetchV2FarmsAvgInfo(chainId: ChainId): Promise<FarmAvgInfo> {
-  const res = await fetch(`${EXPLORER_API}/cached/pools/apr/v2/${getChainNameInKebabCase(chainId)}/farms-lp`)
-  const data: FarmAvgInfoRes = await res.json()
-  if (!res.ok) {
-    throw new Error(`Failed to fetch v2 farms avg info for chain ${chainId}. ${res.status} ${res.statusText}: ${data}`)
+  const res = await explorerApiClient.GET('/cached/pools/apr/v2/{chainName}/farms-lp', {
+    params: {
+      path: {
+        chainName: getChainNameInKebabCase(chainId) as any,
+      },
+    },
+  })
+  if (!res.response.ok) {
+    throw new Error(
+      `Failed to fetch v2 farms avg info for chain ${chainId}. ${res.response.status} ${res.response.statusText}: ${res.error}`,
+    )
   }
+  const data = res.data as FarmAvgInfoRes
   const avgInfos: FarmAvgInfo = {}
   const addresses = Object.keys(data)
   for (const addr of addresses) {
@@ -66,13 +80,19 @@ export async function fetchV2FarmsAvgInfo(chainId: ChainId): Promise<FarmAvgInfo
 }
 
 export async function fetchStableFarmsAvgInfo(chainId: ChainId): Promise<FarmAvgInfo> {
-  const res = await fetch(`${EXPLORER_API}/cached/pools/apr/stable/${getChainNameInKebabCase(chainId)}/farms-lp`)
-  const data: FarmAvgInfoRes = await res.json()
-  if (!res.ok) {
+  const res = await explorerApiClient.GET('/cached/pools/apr/v2/{chainName}/farms-lp', {
+    params: {
+      path: {
+        chainName: getChainNameInKebabCase(chainId) as any,
+      },
+    },
+  })
+  if (!res.response.ok) {
     throw new Error(
-      `Failed to fetch stable farms avg info for chain ${chainId}. ${res.status} ${res.statusText}: ${data}`,
+      `Failed to fetch stable farms avg info for chain ${chainId}. ${res.response.status} ${res.response.statusText}: ${res.error}`,
     )
   }
+  const data = res.data as FarmAvgInfoRes
   const avgInfos: FarmAvgInfo = {}
   const addresses = Object.keys(data)
   for (const addr of addresses) {
