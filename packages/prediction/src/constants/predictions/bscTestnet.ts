@@ -12,10 +12,10 @@ export const predictions: Record<string, PredictionConfig> = {
     api: GRAPH_API_PREDICTION_BNB[ChainId.BSC_TESTNET],
     address: predictionsBNB[ChainId.BSC_TESTNET],
     chainlinkOracleAddress: chainlinkOracleBNB[ChainId.BSC_TESTNET], // Later should use CMC API on Arbitrum
-    displayedDecimals: 4,
     token: Native.onChain(ChainId.BSC_TESTNET),
     tokenBackgroundColor: '#F0B90B',
 
+    displayedDecimals: 2, // Normally 4, but binance API price is upto 2 decimals
     isAIPrediction: true,
     AIPriceDecimals: 18,
     lockPriceDecimals: 18,

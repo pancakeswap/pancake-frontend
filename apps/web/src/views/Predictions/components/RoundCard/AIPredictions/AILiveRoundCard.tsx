@@ -1,17 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BetPosition } from '@pancakeswap/prediction'
 import { Card, CardBody, Flex, PlayCircleOutlineIcon, Text, useTooltip } from '@pancakeswap/uikit'
-import { formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import RoundProgress from 'components/RoundProgress'
+import { usePrice } from 'hooks/usePrice'
 import { useEffect, useMemo, useState } from 'react'
 import { getHasRoundFailed } from 'state/predictions/helpers'
 import { useGetBufferSeconds } from 'state/predictions/hooks'
 import { NodeLedger, NodeRound } from 'state/types'
 import styled from 'styled-components'
 import { getNowInSeconds } from 'utils/getNowInSeconds'
-import usePollOraclePrice from 'views/Predictions/hooks/usePollOraclePrice'
 import { useConfig } from '../../../context/ConfigProvider'
-import { formatUsdv2, getPriceDifference } from '../../../helpers'
 import PositionTag from '../../PositionTag'
 import { LockPriceRow, PrizePoolRow, RoundResultBox } from '../../RoundResult'
 import CalculatingCard from '../CalculatingCard'
@@ -42,8 +41,6 @@ interface AILiveRoundCardProps {
 
 const REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE = 2
 
-const SHOW_HOUSE_BEFORE_SECONDS_TO_CLOSE = 20
-
 export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardProps>> = ({
   round,
   betAmount,
@@ -56,23 +53,24 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   const { lockPrice, totalAmount, lockTimestamp, closeTimestamp } = round
   const bufferSeconds = useGetBufferSeconds()
   const config = useConfig()
-  const { price, refresh } = usePollOraclePrice({
-    chainlinkOracleAddress: config?.chainlinkOracleAddress,
-    galetoOracleAddress: config?.galetoOracleAddress,
+
+  // Fetch Live Price for AI Predictions Open and Live Round Cards
+  const {
+    data: { price },
+    refetch,
+  } = usePrice({
+    // currencyA: config?.token.symbol || 'ETH',
+    currencyA: 'ETH', // testing on bsc testnet, later replace with config token on arbitrum
   })
 
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
 
-  const isHouse = useMemo(() => {
-    const secondsToClose = closeTimestamp ? closeTimestamp - getNowInSeconds() : 0
-    return Boolean(lockPrice && price === lockPrice && secondsToClose <= SHOW_HOUSE_BEFORE_SECONDS_TO_CLOSE)
-  }, [closeTimestamp, lockPrice, price])
-
   const isBull = Boolean(lockPrice && price > lockPrice)
 
-  const betPosition = isHouse ? BetPosition.HOUSE : isBull ? BetPosition.BULL : BetPosition.BEAR
+  const betPosition = isBull ? BetPosition.BULL : BetPosition.BEAR
 
-  const priceDifference = getPriceDifference(price, lockPrice ?? 0n)
+  const priceDifference = price - +formatBigInt(lockPrice ?? 0n, config?.displayedDecimals, 8)
+
   const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds, round.closePrice)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -107,7 +105,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
     const secondsToClose = closeTimestamp ? closeTimestamp - getNowInSeconds() : 0
     if (secondsToClose > 0) {
       const refreshPriceTimeout = setTimeout(() => {
-        refresh()
+        refetch()
       }, (secondsToClose - REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE) * 1000)
 
       const calculatingPhaseTimeout = setTimeout(() => {
@@ -120,7 +118,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
       }
     }
     return undefined
-  }, [refresh, closeTimestamp])
+  }, [refetch, closeTimestamp])
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
@@ -147,12 +145,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
       />
       <StyledCardBody>
         <BetBadgeStack aiBetType={aiPosition} userBetType={userPosition} />
-        <MultiplierArrow
-          betAmount={betAmount}
-          multiplier={bullMultiplier}
-          isActive={isHouse ? false : isBull}
-          isHouse={isHouse}
-        />
+        <MultiplierArrow betAmount={betAmount} multiplier={bullMultiplier} isActive={isBull} />
         <RoundResultBox betPosition={betPosition}>
           <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
             {t('Last Price')}
@@ -166,7 +159,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
               />
             </div>
             <PositionTag betPosition={betPosition}>
-              {formatUsdv2(priceDifference, config?.displayedDecimals ?? 0)}
+              {formatNumber(priceDifference, config?.displayedDecimals ?? 4, 4)}
             </PositionTag>
           </Flex>
           {lockPrice?.toString() && <LockPriceRow lockPrice={lockPrice} />}
@@ -176,8 +169,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
           betAmount={betAmount}
           multiplier={bearMultiplier}
           betPosition={BetPosition.BEAR}
-          isActive={isHouse ? false : !isBull}
-          isHouse={isHouse}
+          isActive={!isBull}
         />
       </StyledCardBody>
       {tooltipVisible && tooltip}

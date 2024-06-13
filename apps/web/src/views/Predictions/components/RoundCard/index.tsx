@@ -1,10 +1,8 @@
 import { BetPosition } from '@pancakeswap/prediction'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { useEffect } from 'react'
 import { useGetBetByEpoch, useGetCurrentEpoch } from 'state/predictions/hooks'
 import { NodeRound } from 'state/types'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import usePollOraclePrice from 'views/Predictions/hooks/usePollOraclePrice'
 import { useAccount } from 'wagmi'
 import { getMultiplierV2 } from '../../helpers'
 import { AIExpiredRoundCard } from './AIPredictions/AIExpiredRoundCard'
@@ -27,31 +25,12 @@ const RoundCard: React.FC<React.PropsWithChildren<RoundCardProps>> = ({ round, i
   const ledger = useGetBetByEpoch(account ?? '0x', epoch)
   const config = useConfig()
 
-  // For fetching live price used in Open and Live Round Cards
-  // Replace with CMC later (TODO)
-  const { price, refresh } = usePollOraclePrice({
-    chainlinkOracleAddress: config?.chainlinkOracleAddress,
-  })
-
   const hasEntered = ledger ? ledger.amount > 0n : false
 
   const hasEnteredUp = hasEntered && ledger?.position === BetPosition.BULL
   const hasEnteredDown = hasEntered && ledger?.position === BetPosition.BEAR
   const hasClaimedUp = hasEntered && ledger?.claimed && ledger.position === BetPosition.BULL
   const hasClaimedDown = hasEntered && ledger?.claimed && ledger.position === BetPosition.BEAR
-
-  // Poll oracle for price every 10 seconds (for now)
-  // remember this needs to sync with LiveRoundCard's price polling
-  // TODO: Replace with CMC logic later
-  useEffect(() => {
-    if (epoch > currentEpoch) return undefined
-
-    const interval = setInterval(() => {
-      refresh()
-    }, 10_000)
-
-    return () => clearInterval(interval)
-  }, [refresh, epoch, currentEpoch])
 
   // Fake future rounds
   if (epoch > currentEpoch) {
@@ -76,7 +55,6 @@ const RoundCard: React.FC<React.PropsWithChildren<RoundCardProps>> = ({ round, i
           betAmount={ledger?.amount}
           formattedBullMultiplier={formattedBullMultiplier}
           formattedBearMultiplier={formattedBearMultiplier}
-          livePrice={price}
         />
       )
     }

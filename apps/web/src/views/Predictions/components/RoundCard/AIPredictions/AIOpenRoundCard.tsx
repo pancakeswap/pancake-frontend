@@ -16,6 +16,7 @@ import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { usePrice } from 'hooks/usePrice'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
 import { fetchLedgerData } from 'state/predictions'
@@ -52,8 +53,6 @@ interface AIOpenRoundCardProps {
   hasEnteredAgainst: boolean // AGAINST AI's Prediction
   formattedBullMultiplier: string
   formattedBearMultiplier: string
-
-  livePrice: bigint
 }
 
 interface State {
@@ -68,8 +67,6 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
   hasEnteredAgainst,
   formattedBullMultiplier,
   formattedBearMultiplier,
-
-  livePrice,
 }) => {
   const [state, setState] = useState<State>({
     isSettingPosition: false,
@@ -86,6 +83,14 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
   const { isSettingPosition, position } = state
   const [isBufferPhase, setIsBufferPhase] = useState(false)
 
+  // Fetch Live Price for AI Predictions Open and Live Round Cards
+  const {
+    data: { price: livePrice },
+  } = usePrice({
+    // currencyA: config?.token.symbol || 'ETH',
+    currencyA: 'ETH', // testing on bsc testnet, later replace with config token on arbitrum
+  })
+
   // AI Prediction Market
   /**
    * AI's Bet based on the round's AIPrice and live price.
@@ -93,14 +98,13 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
    */
   const liveAIPosition: 'UP' | 'DOWN' | undefined = useMemo(() => {
     // Accurate upto 8 decimals (if prices are equal at 8 decimals, it is considered a house win)
-    const formattedAIPrice = parseFloat(formatBigInt(round.AIPrice ?? 0n, 8, 18))
-    const formattedLivePrice = parseFloat(formatBigInt(livePrice ?? 0n, 8, 8)) // Chainlink price is 8 decimals on ARB's ETH/USD. TODO: Replace with CMC
+    const formattedAIPrice = parseFloat(formatBigInt(round.AIPrice ?? 0n, 8, config?.AIPriceDecimals))
 
-    if (formattedAIPrice && formattedLivePrice)
-      return formattedAIPrice === formattedLivePrice ? undefined : formattedAIPrice > formattedLivePrice ? 'UP' : 'DOWN'
+    if (formattedAIPrice && livePrice)
+      return formattedAIPrice === livePrice ? undefined : formattedAIPrice > livePrice ? 'UP' : 'DOWN'
 
     return undefined
-  }, [livePrice, round.AIPrice])
+  }, [livePrice, round.AIPrice, config?.AIPriceDecimals])
 
   /**
    * User Position in AI Prediction Market

@@ -23,8 +23,7 @@ const usePollOraclePrice = ({ chainlinkOracleAddress, galetoOracleAddress }: Use
     abi: chainlinkOracleABI,
     address: chainlinkOracleAddress,
     functionName: 'latestAnswer',
-    // chainId,
-    chainId: 42161, // arbitrum chain id FOR TESTING
+    chainId,
     query: {
       enabled: !shouldFetchGaletoPrice,
     },
