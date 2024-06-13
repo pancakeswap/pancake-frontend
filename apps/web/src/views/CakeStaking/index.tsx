@@ -4,14 +4,12 @@ import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
 import { CROSS_CHIAN_CONFIG } from 'components/CrossChainVeCakeModal/constants'
-import { useAllMultichainSyncedCount } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import Page from 'components/Layout/Page'
 import { useCakeDistributed } from 'hooks/useCakeDistributed'
 import useTheme from 'hooks/useTheme'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
-import { useAccount } from 'wagmi'
 import { BenefitCard } from './components/BenefitCard'
 import { CakeRewardsCard } from './components/CakeRewardsCard'
 import { LockCake } from './components/LockCake'
@@ -31,8 +29,6 @@ const CakeStaking = () => {
   const { theme } = useTheme()
   const handleDismiss = useCallback(() => setCakeRewardModalVisible(false), [])
   const [isOpen, setIsOpen] = useState(false)
-  const { totalCount, syncedCount } = useAllMultichainSyncedCount()
-  const { address: account } = useAccount()
 
   return (
     <>
