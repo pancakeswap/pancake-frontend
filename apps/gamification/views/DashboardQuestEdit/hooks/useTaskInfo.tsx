@@ -23,7 +23,7 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
         case TaskType.ADD_LIQUIDITY:
         case TaskType.PARTICIPATE_LOTTERY:
         case TaskType.HOLD_A_TOKEN:
-          // case TaskType.MAKE_PREDICTION:
+        case TaskType.MAKE_PREDICTION:
           return <BunnyFillIcon color={color} width={size} height={size} />
         case TaskType.X_LINK_POST:
         case TaskType.X_FOLLOW_ACCOUNT:
@@ -59,8 +59,8 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
           return t('Add liquidity')
         case TaskType.PARTICIPATE_LOTTERY:
           return t('Participate in a lottery')
-        // case TaskType.MAKE_PREDICTION:
-        //   return t('Make a prediction')
+        case TaskType.MAKE_PREDICTION:
+          return t('Make a prediction')
         case TaskType.X_LINK_POST:
         case TaskType.IG_LIKE_POST:
           return t('Like the post')

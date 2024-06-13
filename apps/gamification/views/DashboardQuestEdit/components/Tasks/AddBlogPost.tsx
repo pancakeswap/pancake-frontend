@@ -18,6 +18,7 @@ import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/Styl
 import { TaskBlogPostConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
+import { TaskType } from 'views/DashboardQuestEdit/type'
 import { validateUrl } from 'views/DashboardQuestEdit/utils/validateTask'
 
 interface AddBlogPostProps {
@@ -32,7 +33,6 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
-  const social = task.type
   const { taskIcon, taskNaming, taskInputPlaceholder } = useTaskInfo(false, 22)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Open in new tab'), {
@@ -68,11 +68,11 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
       <Flex flexDirection={['column', 'column', 'row']}>
         <Flex>
           <Flex mr="8px" alignSelf="center" position="relative">
-            {taskIcon(social)}
+            {taskIcon(TaskType.ADD_BLOG_POST)}
             {task.isOptional && <StyledOptionIcon />}
           </Flex>
           <Text style={{ alignSelf: 'center' }} bold>
-            {taskNaming(social)}
+            {taskNaming(TaskType.ADD_BLOG_POST)}
           </Text>
           {isMobile && (
             <DropdownList
@@ -102,7 +102,7 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
               value={task.blogUrl}
               isError={isUrlError}
               style={{ borderRadius: '24px' }}
-              placeholder={taskInputPlaceholder(social)}
+              placeholder={taskInputPlaceholder(TaskType.ADD_BLOG_POST)}
               onChange={handleUrlChange}
             />
           </InputGroup>

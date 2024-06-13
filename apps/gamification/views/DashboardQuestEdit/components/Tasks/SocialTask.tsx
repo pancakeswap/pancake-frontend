@@ -34,7 +34,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
-  const social = task.type
+  const social = task.taskType
   const { taskIcon, taskNaming, taskInputPlaceholder } = useTaskInfo(false, 22)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Open in new tab'), {

@@ -33,21 +33,21 @@ const Item = ({ item, dragHandleProps }: { item: TaskConfigType; dragHandleProps
       />
       <Card style={{ width: '100%' }}>
         <Box padding="8px">
-          {item.type === TaskType.MAKE_A_SWAP && <AddSwap task={item} />}
-          {item.type === TaskType.HOLD_A_TOKEN && <AddHoldToken task={item} />}
-          {item.type === TaskType.PARTICIPATE_LOTTERY && <AddLottery task={item} />}
-          {item.type === TaskType.ADD_LIQUIDITY && <AddLpAddress task={item} />}
-          {item.type === TaskType.ADD_BLOG_POST && <AddBlogPost task={item} />}
+          {item.taskType === TaskType.MAKE_A_SWAP && <AddSwap task={item} />}
+          {item.taskType === TaskType.HOLD_A_TOKEN && <AddHoldToken task={item} />}
+          {item.taskType === TaskType.PARTICIPATE_LOTTERY && <AddLottery task={item} />}
+          {item.taskType === TaskType.ADD_LIQUIDITY && <AddLpAddress task={item} />}
+          {item.taskType === TaskType.ADD_BLOG_POST && <AddBlogPost task={item} />}
 
-          {(item.type === TaskType.X_LINK_POST ||
-            item.type === TaskType.X_FOLLOW_ACCOUNT ||
-            item.type === TaskType.X_REPOST_POST ||
-            item.type === TaskType.TELEGRAM_JOIN_GROUP ||
-            item.type === TaskType.DISCORD_JOIN_SERVICE ||
-            item.type === TaskType.YOUTUBE_SUBSCRIBE ||
-            item.type === TaskType.IG_LIKE_POST ||
-            item.type === TaskType.IG_COMMENT_POST ||
-            item.type === TaskType.IG_FOLLOW_ACCOUNT) && <SocialTask task={item} />}
+          {(item.taskType === TaskType.X_LINK_POST ||
+            item.taskType === TaskType.X_FOLLOW_ACCOUNT ||
+            item.taskType === TaskType.X_REPOST_POST ||
+            item.taskType === TaskType.TELEGRAM_JOIN_GROUP ||
+            item.taskType === TaskType.DISCORD_JOIN_SERVICE ||
+            item.taskType === TaskType.YOUTUBE_SUBSCRIBE ||
+            item.taskType === TaskType.IG_LIKE_POST ||
+            item.taskType === TaskType.IG_COMMENT_POST ||
+            item.taskType === TaskType.IG_FOLLOW_ACCOUNT) && <SocialTask task={item} />}
         </Box>
       </Card>
     </Flex>

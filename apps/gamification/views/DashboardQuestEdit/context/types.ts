@@ -4,38 +4,41 @@ import { TaskType } from 'views/DashboardQuestEdit/type'
 
 export interface TaskBaseConfig {
   sid: string
-  type: TaskType
+  title: string
+  description: string
+  taskType: TaskType
   isOptional: boolean
+  isCompleted: boolean
 }
 
 export interface TaskSwapConfig extends TaskBaseConfig {
-  type: TaskType.MAKE_A_SWAP
+  taskType: TaskType.MAKE_A_SWAP
   minAmount: string
   currency: Currency
 }
 
 export interface TaskHoldTokenConfig extends TaskBaseConfig {
-  type: TaskType.HOLD_A_TOKEN
+  taskType: TaskType.HOLD_A_TOKEN
   minAmount: string
   currency: Currency
 }
 
 export interface TaskLotteryConfig extends TaskBaseConfig {
-  type: TaskType.PARTICIPATE_LOTTERY
+  taskType: TaskType.PARTICIPATE_LOTTERY
   minAmount: string
   fromRound: string
   toRound: string
 }
 
 export interface TaskLiquidityConfig extends TaskBaseConfig {
-  type: TaskType.ADD_LIQUIDITY
+  taskType: TaskType.ADD_LIQUIDITY
   network: ChainId
   minAmount: string
   lpAddress: string
 }
 
 export interface TaskSocialConfig extends TaskBaseConfig {
-  type:
+  taskType:
     | TaskType.X_LINK_POST
     | TaskType.X_FOLLOW_ACCOUNT
     | TaskType.X_REPOST_POST
@@ -50,7 +53,7 @@ export interface TaskSocialConfig extends TaskBaseConfig {
 }
 
 export interface TaskBlogPostConfig extends TaskBaseConfig {
-  type: TaskType.ADD_BLOG_POST
+  taskType: TaskType.ADD_BLOG_POST
   blogUrl: string
 }
 

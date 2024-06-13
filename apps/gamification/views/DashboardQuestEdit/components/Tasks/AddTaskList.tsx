@@ -3,7 +3,7 @@ import { styled } from 'styled-components'
 import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
-import { TaskType } from 'views/DashboardQuestEdit/type'
+import { SUPPORT_ADD_TASK, TaskType } from 'views/DashboardQuestEdit/type'
 import { generateNewTask } from 'views/DashboardQuestEdit/utils/generateNewTask'
 
 const StyledDropdown = styled(Dropdown)`
@@ -34,7 +34,7 @@ export const AddTaskList: React.FC<AddTaskListProps> = ({ setIsOpen, dropdownRef
 
   return (
     <StyledDropdown setIsOpen={setIsOpen} dropdownRef={dropdownRef}>
-      {Object.keys(TaskType).map((i) => (
+      {SUPPORT_ADD_TASK.map((i) => (
         <Flex key={i} onClick={() => closeDropdown(i as TaskType)}>
           <Flex mr="8px" alignSelf="center">
             {taskIcon(i as TaskType)}
