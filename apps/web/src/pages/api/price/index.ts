@@ -1,4 +1,6 @@
-import { NextApiHandler } from 'next'
+import { NextApiHandler, ServerRuntime } from 'next'
+
+export const runtime: ServerRuntime = 'nodejs'
 
 const handler: NextApiHandler = async (req, res) => {
   try {
