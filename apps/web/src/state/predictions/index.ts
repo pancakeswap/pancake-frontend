@@ -195,10 +195,6 @@ export const fetchNodeHistory = createAsyncThunk<
 
       // If AI-based prediction
       if (extra.isAIPrediction && round.AIPrice) {
-        if (round.closePrice === round.lockPrice && round.AIPrice !== round.lockPrice) {
-          return BetPosition.HOUSE
-        }
-
         if (
           (round.closePrice > round.lockPrice && round.AIPrice > round.lockPrice) ||
           (round.closePrice < round.lockPrice && round.AIPrice < round.lockPrice) ||

@@ -88,13 +88,14 @@ export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
     return Result.LIVE
   }
 
+  // House Win would not occur in AI-based predictions, only in normal prediction feature
   if (bet?.round?.position === BetPosition.HOUSE) {
     return Result.HOUSE
   }
 
   let roundResultPosition: BetPosition
 
-  // If AI-based prediction. // TODO: re-check AIPrice when AI prediction is there v/s when normal prediction is active
+  // If AI-based prediction.
   if (round?.AIPrice) {
     if (
       // Result: UP, AI Voted: UP => AI Win
@@ -108,7 +109,6 @@ export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
       roundResultPosition = BetPosition.BULL
     } else {
       // Against AI wins
-      // Note: House win should be covered in bet.round.position === BetPosition.HOUSE check above, coming from subgraph logic
       roundResultPosition = BetPosition.BEAR
     }
   } else {

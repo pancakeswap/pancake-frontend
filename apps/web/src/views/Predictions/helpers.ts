@@ -105,10 +105,6 @@ export const getRoundPosition = (
 
   // If AI-based prediction
   if (AIPrice) {
-    if (closePrice === lockPrice && AIPrice !== lockPrice) {
-      return BetPosition.HOUSE
-    }
-
     if (
       (closePrice > lockPrice && AIPrice > lockPrice) ||
       (closePrice < lockPrice && AIPrice < lockPrice) ||
