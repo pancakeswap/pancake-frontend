@@ -75,7 +75,7 @@ export interface paths {
     get: operations['getCachedPoolsTicksV3ByChainNameByPool']
   }
   '/cached/pools/positions/v3/{chainName}/{pool}': {
-    /** Get positions from v3 pool */
+    /** Get active positions from v3 pool */
     get: operations['getCachedPoolsPositionsV3ByChainNameByPool']
   }
   '/cached/pools/chart/v3/{chainName}/{address}/rate': {
@@ -93,6 +93,14 @@ export interface paths {
   '/cached/pools/chart/{protocol}/{chainName}/{address}/volume': {
     /** Get pool volume chart */
     get: operations['getCachedPoolsChartByProtocolByChainNameByAddressVolume']
+  }
+  '/cached/pools/apr/v2/{chainName}/{address}': {
+    /** Get v2 lp apr */
+    get: operations['getCachedPoolsAprV2ByChainNameByAddress']
+  }
+  '/cached/pools/apr/v3/{chainName}/{address}': {
+    /** Get v3 lp apr */
+    get: operations['getCachedPoolsAprV3ByChainNameByAddress']
   }
   '/cached/pools/apr/v2/{chainName}/farms-lp': {
     /** Get v2 farm lp apr */
@@ -892,7 +900,7 @@ export interface operations {
       }
     }
   }
-  /** Get positions from v3 pool */
+  /** Get active positions from v3 pool */
   getCachedPoolsPositionsV3ByChainNameByPool: {
     parameters: {
       query?: {
@@ -902,7 +910,7 @@ export interface operations {
         after?: string
         /** @description Ethereum address */
         owner?: string
-        tick?: number
+        tick?: string | number
       }
       path: {
         /** @description Chain name */
@@ -1018,6 +1026,52 @@ export interface operations {
             bucket: Record<string, never> | string
             volumeUSD: null | string
           }[]
+        }
+      }
+    }
+  }
+  /** Get v2 lp apr */
+  getCachedPoolsAprV2ByChainNameByAddress: {
+    parameters: {
+      path: {
+        /** @description Chain name */
+        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        /** @description Ethereum address */
+        address: string
+      }
+    }
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            apr24h: string
+            apr7d: string
+            volumeUSD24h: string
+            volumeUSD7d: string
+          }
+        }
+      }
+    }
+  }
+  /** Get v3 lp apr */
+  getCachedPoolsAprV3ByChainNameByAddress: {
+    parameters: {
+      path: {
+        /** @description Chain name */
+        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        /** @description Ethereum address */
+        address: string
+      }
+    }
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            apr24h: string
+            apr7d: string
+            volumeUSD24h: string
+            volumeUSD7d: string
+          }
         }
       }
     }

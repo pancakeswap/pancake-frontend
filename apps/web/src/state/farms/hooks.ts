@@ -11,7 +11,6 @@ import { getMasterChefContract } from 'utils/contractHelpers'
 import { useBCakeProxyContractAddress } from 'hooks/useBCakeProxyContractAddress'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { v3Clients } from 'utils/graphql'
 import { V2FarmWithoutStakedValue, V3FarmWithoutStakedValue } from 'state/farms/types'
 import {
   farmSelector,
@@ -83,11 +82,6 @@ export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2F
     },
     queryFn: async () => {
       if (!chainId) return undefined
-      const client = v3Clients[chainId]
-      if (!client) {
-        console.error('[Failed] Trading volume', chainId)
-        return {}
-      }
 
       const addresses = activeFarms.map((farm) => farm.lpAddress?.toLowerCase())
 
