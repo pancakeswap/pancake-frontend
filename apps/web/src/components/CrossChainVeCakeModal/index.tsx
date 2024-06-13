@@ -39,6 +39,7 @@ import { useMultichainVeCakeWellSynced } from './hooks/useMultichainVeCakeWellSy
 import { useProfileProxyWellSynced } from './hooks/useProfileProxyWellSynced'
 
 import { ArbitrumIcon, BinanceIcon, EthereumIcon } from './ChainLogos'
+import { NetWorkUpdateToDateDisplay } from './components/NetWorkUpdateToDateDisplay'
 import { CROSS_CHIAN_CONFIG } from './constants'
 import { useCrossChianMessage } from './hooks/useCrossChainMessage'
 
@@ -134,6 +135,11 @@ export const CrossChainVeCakeModal: React.FC<{
   const { balance: bnbBalance } = useGetBnbBalance()
   const [nativeFee, setNativeFee] = useState<bigint>(0n)
   const { hasProfile, isInitialized } = useProfile()
+  const { isVeCakeWillSync, isLoading: isVeCakeSyncedLoading } = useMultichainVeCakeWellSynced(selectChainId)
+  const { isSynced, isLoading: isProfileSyncedLoading } = useProfileProxyWellSynced(selectChainId)
+  const shouldNotSyncAgain = useMemo(() => {
+    return (isVeCakeWillSync && isSynced && selectChainId !== undefined) || txByChain[selectChainId ?? -1] !== ''
+  }, [isVeCakeWillSync, isSynced, txByChain, selectChainId])
 
   const syncVeCake = useCallback(
     async (chainId: ChainId) => {
@@ -243,11 +249,18 @@ export const CrossChainVeCakeModal: React.FC<{
                 />
               </Flex>
               <InfoBox />
+
+              {shouldNotSyncAgain && (
+                <Box mt="20px">
+                  <NetWorkUpdateToDateDisplay />
+                </Box>
+              )}
               <Flex style={{ gap: 10 }} mt="20px">
                 {account ? (
                   <Button
                     width="50%"
-                    disabled={!selectChainId}
+                    disabled={!selectChainId || shouldNotSyncAgain}
+                    isLoading={pendingTx || isVeCakeSyncedLoading || isProfileSyncedLoading}
                     onClick={() => {
                       if (selectChainId) syncVeCake(selectChainId)
                     }}

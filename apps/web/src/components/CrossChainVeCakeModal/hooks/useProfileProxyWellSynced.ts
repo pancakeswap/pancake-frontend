@@ -52,19 +52,19 @@ export const getProfileProxy = async (address: Address, targetChainId: ChainId):
 }
 
 export const useProfileProxy = (
-  targetChainId: ChainId,
+  targetChainId?: ChainId,
 ): {
   profileProxy?: ProfileProxy | null
   isLoading: boolean
 } => {
   const { address: account } = useAccount()
-  const enabled = Boolean(account)
+  const enabled = Boolean(account) && Boolean(targetChainId)
   const { data, isLoading } = useQuery({
     queryKey: [account, 'profileProxy', targetChainId],
 
     queryFn: () => {
       if (!account) return undefined
-      return getProfileProxy(account, targetChainId)
+      return getProfileProxy(account, targetChainId!)
     },
 
     enabled,
@@ -77,7 +77,7 @@ export const useProfileProxy = (
   return { profileProxy: data, isLoading }
 }
 
-export const useProfileProxyWellSynced = (targetChainId: ChainId) => {
+export const useProfileProxyWellSynced = (targetChainId?: ChainId) => {
   const { profile, isLoading } = useProfile()
   const { profileProxy, isLoading: isProfileProxyLoading } = useProfileProxy(targetChainId)
   const isSynced = useMemo(() => {

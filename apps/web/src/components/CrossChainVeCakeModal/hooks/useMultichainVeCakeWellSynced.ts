@@ -9,19 +9,19 @@ import { useAccount } from 'wagmi'
 import { CROSS_CHIAN_CONFIG } from '../constants'
 
 export const useMultichainVeCakeWellSynced = (
-  targetChainId: ChainId,
+  targetChainId?: ChainId,
 ): {
   isVeCakeWillSync?: boolean | null
   isLoading: boolean
 } => {
   const { address: account } = useAccount()
-  const enabled = Boolean(account)
+  const enabled = Boolean(account) && Boolean(targetChainId)
   const { data, isLoading } = useQuery({
     queryKey: [account, 'veCakeSyncData', targetChainId],
 
     queryFn: () => {
       if (!account) return undefined
-      return getVCakeAndProxyData(account, targetChainId)
+      return getVCakeAndProxyData(account, targetChainId!)
     },
 
     enabled,

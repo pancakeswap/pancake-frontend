@@ -3422,5 +3422,7 @@
   "You need to sync your veCAKE to the current network to activate farm yield boosters.": "You need to sync your veCAKE to the current network to activate farm yield boosters.",
   "Sync veCake": "Sync veCake",
   "You will need to re-sync your veCAKE after extending or adding more CAKE to your veCAKE staking position.": "You will need to re-sync your veCAKE after extending or adding more CAKE to your veCAKE staking position.",
-  "Sync veCAKE to activate yield booster": "Sync veCAKE to activate yield booster"
+  "Sync veCAKE to activate yield booster": "Sync veCAKE to activate yield booster",
+  "The network selected is already up-to-date.": "The network selected is already up-to-date.",
+  "Click “Sync” to proceed with syncing but please mind that gas cost is needed to sync.": "Click “Sync” to proceed with syncing but please mind that gas cost is needed to sync."
 }
