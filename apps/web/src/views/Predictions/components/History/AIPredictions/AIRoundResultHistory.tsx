@@ -40,10 +40,10 @@ export const AIRoundResultHistory: React.FC<React.PropsWithChildren<AIRoundResul
       ) : (
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text color={isPositionUp ? 'success' : 'failure'} bold fontSize="24px">
-            {formatUsd(closePrice, config?.displayedDecimals ?? 0)}
+            {formatUsd(closePrice, config?.livePriceDecimals ?? config?.displayedDecimals ?? 0)}
           </Text>
           <PositionTag betPosition={betPosition}>
-            {formatUsd(priceDifference, config?.displayedDecimals ?? 0)}
+            {formatUsd(priceDifference, config?.livePriceDecimals ?? config?.displayedDecimals ?? 0)}
           </PositionTag>
         </Flex>
       )}

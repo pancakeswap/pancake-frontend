@@ -45,6 +45,7 @@ export interface PredictionConfig {
   AIPriceDecimals?: number
   lockPriceDecimals?: number
   closePriceDecimals?: number
+  livePriceDecimals?: number
 }
 
 export type ContractAddresses<T extends ChainId = SupportedChainId> = {

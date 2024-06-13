@@ -1,6 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Native } from '@pancakeswap/sdk'
-import { chainlinkOracleBNB } from '../../chainlinkOracleContract'
 import { GRAPH_API_PREDICTION_BNB } from '../../endpoints'
 import { predictionsBNB } from '../../predictionContract'
 import { PredictionConfig, PredictionSupportedSymbol } from '../../type'
@@ -11,12 +10,12 @@ export const predictions: Record<string, PredictionConfig> = {
     isNativeToken: true,
     api: GRAPH_API_PREDICTION_BNB[ChainId.BSC_TESTNET],
     address: predictionsBNB[ChainId.BSC_TESTNET],
-    chainlinkOracleAddress: chainlinkOracleBNB[ChainId.BSC_TESTNET], // Later should use CMC API on Arbitrum
     token: Native.onChain(ChainId.BSC_TESTNET),
     tokenBackgroundColor: '#F0B90B',
+    displayedDecimals: 4,
 
-    displayedDecimals: 2, // Normally 4, but binance API price is upto 2 decimals
     isAIPrediction: true,
+    livePriceDecimals: 2, // Binance API for this pair provides price upto 2 decimals
     AIPriceDecimals: 18,
     lockPriceDecimals: 18,
     closePriceDecimals: 18,

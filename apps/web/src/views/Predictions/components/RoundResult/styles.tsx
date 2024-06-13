@@ -42,11 +42,9 @@ export const PrizePoolRow: React.FC<React.PropsWithChildren<PrizePoolRowProps>> 
   return (
     <Row {...props}>
       <Text bold>{t('Prize Pool')}:</Text>
-      <Text bold>{`${getPrizePoolAmount(
-        totalAmount,
-        config?.token?.decimals ?? 0,
-        config?.isAIPrediction ? 4 : config?.displayedDecimals ?? 0,
-      )} ${config?.token?.symbol}`}</Text>
+      <Text bold>{`${getPrizePoolAmount(totalAmount, config?.token?.decimals ?? 0, config?.displayedDecimals ?? 0)} ${
+        config?.token?.symbol
+      }`}</Text>
     </Row>
   )
 }
@@ -191,14 +189,20 @@ export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({
     <Flex alignItems="center" justifyContent="space-between" mb="16px">
       {closePrice ? (
         <Text color={textColor} bold fontSize="24px">
-          {formatUsd(Number(formatBigInt(closePrice, 8, 8)), config?.displayedDecimals ?? 0)}
+          {formatUsd(
+            Number(formatBigInt(closePrice, 8, 8)),
+            config?.livePriceDecimals ?? config?.displayedDecimals ?? 0,
+          )}
         </Text>
       ) : (
         <Skeleton height="34px" my="1px" />
       )}
       {betPosition && (
         <PositionTag betPosition={betPosition}>
-          {formatUsd(Number(formatBigInt(priceDifference, 8, 8)), config?.displayedDecimals ?? 0)}
+          {formatUsd(
+            Number(formatBigInt(priceDifference, 8, 8)),
+            config?.livePriceDecimals ?? config?.displayedDecimals ?? 0,
+          )}
         </PositionTag>
       )}
     </Flex>
@@ -253,7 +257,7 @@ export const LockPriceHistoryRow: React.FC<React.PropsWithChildren<LockPriceHist
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsd(lockPrice, config?.displayedDecimals ?? 0)}</Text>
+      <Text fontSize="14px">{formatUsd(lockPrice, config?.livePriceDecimals ?? config?.displayedDecimals ?? 0)}</Text>
     </Row>
   )
 }

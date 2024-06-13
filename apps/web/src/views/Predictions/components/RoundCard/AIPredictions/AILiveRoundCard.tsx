@@ -74,7 +74,11 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds, round.closePrice)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    config?.chainlinkOracleAddress ? t('Last price from Chainlink Oracle') : t('Last price from Pyth Oracle'),
+    config?.isAIPrediction
+      ? t('Last price from Binance API')
+      : config?.chainlinkOracleAddress
+      ? t('Last price from Chainlink Oracle')
+      : t('Last price from Pyth Oracle'),
     {
       placement: 'bottom',
     },
@@ -155,11 +159,11 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
               <LiveRoundPrice
                 betPosition={betPosition}
                 price={price}
-                displayedDecimals={config?.displayedDecimals ?? 4}
+                displayedDecimals={config?.livePriceDecimals ?? config?.displayedDecimals ?? 4}
               />
             </div>
             <PositionTag betPosition={betPosition}>
-              ${formatNumber(priceDifference, config?.displayedDecimals ?? 4, 4)}
+              ${formatNumber(priceDifference, config?.livePriceDecimals ?? config?.displayedDecimals ?? 4, 4)}
             </PositionTag>
           </Flex>
           {lockPrice ? lockPrice?.toString() && <LockPriceRow lockPrice={lockPrice} /> : null}
