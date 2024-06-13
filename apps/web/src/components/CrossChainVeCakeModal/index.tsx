@@ -138,7 +138,7 @@ export const CrossChainVeCakeModal: React.FC<{
   const { isVeCakeWillSync, isLoading: isVeCakeSyncedLoading } = useMultichainVeCakeWellSynced(selectChainId)
   const { isSynced, isLoading: isProfileSyncedLoading } = useProfileProxyWellSynced(selectChainId)
   const shouldNotSyncAgain = useMemo(() => {
-    return (isVeCakeWillSync && isSynced && selectChainId !== undefined) || txByChain[selectChainId ?? -1] !== ''
+    return (isVeCakeWillSync && isSynced) || Boolean(txByChain[selectChainId ?? -1])
   }, [isVeCakeWillSync, isSynced, txByChain, selectChainId])
   const { data: crossChainMessage, isLoading: isCrossChainLoading } = useCrossChianMessage(
     selectChainId,
