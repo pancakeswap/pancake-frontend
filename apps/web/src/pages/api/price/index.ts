@@ -1,7 +1,7 @@
 import { NextApiHandler } from 'next'
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'nodejs',
 
   // All regions except USA (Binance API might be restricted there)
   regions: [
