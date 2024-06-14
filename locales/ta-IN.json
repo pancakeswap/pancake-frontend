@@ -96,7 +96,6 @@
   "NFT": "NFT",
   "Fixed-staking Ends": "நிலையான ஸ்டேக்கிங் முடிவது",
   "Restake period ends on": "ரீஸ்டேக் காலம் முடிவது",
-  "Claim Reward & Restake": "வெகுமதியை கிளைம் செய்து, ரீஸ்டேக் செய்",
   "Stake Duration": "ஸ்டேக் கால அளவு",
   "Staked Position": "ஸ்டேக் செய்த நிலை",
   "Locked Cake Boost": "பூட்டிய Cake பூஸ்ட்",
@@ -3388,5 +3387,6 @@
   "Stake your LP token in the Farm and accrue both Merkl and Farm rewards.": "Stake your LP token in the Farm and accrue both Merkl and Farm rewards.",
   "Claim your Farm rewards on PancakeSwap and your Merkl rewards on": "Claim your Farm rewards on PancakeSwap and your Merkl rewards on",
   "Merkl's website": "Merkl's website",
+  "Claim Reward & Unstake": "Claim Reward & Unstake",
   "Warning: The $ATH token pool is not a valid token trading pair - please stop buying": "Warning: The $ATH token pool is not a valid token trading pair - please stop buying"
 }
