@@ -96,7 +96,6 @@
   "NFT": "NFT",
   "Fixed-staking Ends": "고정 스테이킹 종료:",
   "Restake period ends on": "리스테이킹 기간 종료:",
-  "Claim Reward & Restake": "리워드 클레임 및 리스테이킹",
   "Stake Duration": "스테이킹 기간",
   "Staked Position": "스테이킹된 포지션",
   "Locked Cake Boost": "잠긴 Cake 부스트",
@@ -3388,5 +3387,6 @@
   "Stake your LP token in the Farm and accrue both Merkl and Farm rewards.": "Stake your LP token in the Farm and accrue both Merkl and Farm rewards.",
   "Claim your Farm rewards on PancakeSwap and your Merkl rewards on": "Claim your Farm rewards on PancakeSwap and your Merkl rewards on",
   "Merkl's website": "Merkl's website",
+  "Claim Reward & Unstake": "Claim Reward & Unstake",
   "Warning: The $ATH token pool is not a valid token trading pair - please stop buying": "Warning: The $ATH token pool is not a valid token trading pair - please stop buying"
 }
