@@ -96,7 +96,6 @@
   "NFT": "NFT",
   "Fixed-staking Ends": "Stakingul fix se încheie",
   "Restake period ends on": "Perioada de restaking se încheie pe",
-  "Claim Reward & Restake": "Revendică recompensa și realizează restaking",
   "Stake Duration": "Durata stakingului",
   "Staked Position": "Poziția stakingului",
   "Locked Cake Boost": "Amplificare cake blocat",
@@ -3388,5 +3387,6 @@
   "Stake your LP token in the Farm and accrue both Merkl and Farm rewards.": "Stake your LP token in the Farm and accrue both Merkl and Farm rewards.",
   "Claim your Farm rewards on PancakeSwap and your Merkl rewards on": "Claim your Farm rewards on PancakeSwap and your Merkl rewards on",
   "Merkl's website": "Merkl's website",
+  "Claim Reward & Unstake": "Claim Reward & Unstake",
   "Warning: The $ATH token pool is not a valid token trading pair - please stop buying": "Warning: The $ATH token pool is not a valid token trading pair - please stop buying"
 }
