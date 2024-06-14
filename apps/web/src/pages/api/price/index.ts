@@ -2,24 +2,6 @@ import { NextApiHandler } from 'next'
 
 export const config = {
   runtime: 'nodejs',
-
-  // All regions except USA (Binance API might be restricted there)
-  regions: [
-    'arn1',
-    'bom1',
-    'cdg1',
-    'cpt1',
-    'dub1',
-    'fra1',
-    'gru1',
-    'hkg1',
-    'hnd1',
-    'icn1',
-    'kix1',
-    'lhr1',
-    'sin1',
-    'syd1',
-  ],
 }
 
 const handler: NextApiHandler = async (req, res) => {

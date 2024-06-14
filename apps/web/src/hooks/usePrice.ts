@@ -14,10 +14,12 @@ interface PriceResponse {
   price: number
 }
 
+const PRICE_API = 'https://price.penguin-b5e.workers.dev'
+
 export const usePrice = ({ currencyA, currencyB = 'USDT', pollingInterval = 10 }: UsePriceParameters) => {
   return useQuery<PriceResponse>({
     queryKey: ['price', currencyA, currencyB],
-    queryFn: async () => fetch(`/api/price?currencyA=${currencyA}&currencyB=${currencyB}`).then((res) => res.json()),
+    queryFn: async () => fetch(`${PRICE_API}/?currencyA=${currencyA}&currencyB=${currencyB}`).then((res) => res.json()),
     refetchInterval: pollingInterval * 1000,
     retry: 2,
     initialData: {

@@ -42,8 +42,8 @@ const MeterPointerImage = styled.img`
 const AnimatedMeter = (props: BoxProps) => {
   return (
     <Box position="relative" {...props}>
-      <img src="/images/predictions-temp/meter.png" alt="Payout Meter" width={100} />
-      <MeterPointerImage src="/images/predictions-temp/pointer.png" alt="Payout Pointer" width={9} />
+      <img src="/images/predictions-temp/pointer.svg" alt="Payout Meter" width={100} />
+      <MeterPointerImage src="/images/predictions-temp/meter-pointer.svg" alt="Payout Pointer" width={9} />
     </Box>
   )
 }
