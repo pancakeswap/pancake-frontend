@@ -102,6 +102,10 @@ export interface paths {
     /** Get v3 lp apr */
     get: operations['getCachedPoolsAprV3ByChainNameByAddress']
   }
+  '/cached/pools/apr/stable/{chainName}/{address}': {
+    /** Get stable lp apr */
+    get: operations['getCachedPoolsAprStableByChainNameByAddress']
+  }
   '/cached/pools/apr/v2/{chainName}/farms-lp': {
     /** Get v2 farm lp apr */
     get: operations['getCachedPoolsAprV2ByChainNameFarms-lp']
@@ -1070,6 +1074,29 @@ export interface operations {
             apr24h: string
             apr7d: string
             volumeUSD24h: string
+            volumeUSD7d: string
+          }
+        }
+      }
+    }
+  }
+  /** Get stable lp apr */
+  getCachedPoolsAprStableByChainNameByAddress: {
+    parameters: {
+      path: {
+        chainName: 'bsc' | 'arbitrum'
+        /** @description Ethereum address */
+        address: string
+      }
+    }
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            apr7d: string
+            poolId: string
+            virtualPrice: string
+            virtualPrice7d: string
             volumeUSD7d: string
           }
         }

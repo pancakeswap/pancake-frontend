@@ -24,7 +24,6 @@ import {
 } from './hooks'
 import { useTransformedVolumeData } from './hooks/chart'
 import { VolumeWindow } from './types'
-import { getPercentChange } from './utils/data'
 import { unixToDate } from './utils/date'
 import { formatDollarAmount } from './utils/numbers'
 

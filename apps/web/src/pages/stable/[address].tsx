@@ -22,6 +22,8 @@ import currencyId from 'utils/currencyId'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { useGetRemovedTokenAmountsNoContext } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
 import { useAccount } from 'wagmi'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import { useLPApr } from 'state/swap/useLPApr'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -97,6 +99,8 @@ export default function StablePoolPage() {
   const poolTokenPercentage = usePoolTokenPercentage({ totalPoolTokens, userPoolBalance })
 
   const { isMobile } = useMatchBreakpoints()
+
+  const poolData = useLPApr('stable', selectedLp)
 
   if (!selectedLp) return null
 
@@ -220,6 +224,11 @@ export default function StablePoolPage() {
               </Box>
             </Flex>
           </AutoRow>
+          {poolData && (
+            <Text>
+              {t('LP reward APR')}: {formatAmount(poolData.lpApr7d)}%
+            </Text>
+          )}
           <Text color="textSubtle">
             {t('Your share in pool')}: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}
           </Text>
