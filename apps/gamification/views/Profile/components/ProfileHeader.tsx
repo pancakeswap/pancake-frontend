@@ -56,7 +56,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { refresh } = useUserSocialHub()
+  const { userInfo, refresh } = useUserSocialHub()
   const { data: session } = useSession()
   console.log('session', session)
 
@@ -74,7 +74,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     false,
   )
 
-  const [onPressSettingsModal] = useModal(<SettingsModal refresh={refresh} />)
+  const [onPressSettingsModal] = useModal(<SettingsModal userInfo={userInfo} refresh={refresh} />)
 
   const isConnectedAccount = safeGetAddress(account) === safeGetAddress(accountPath)
   const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0) : '-') : null

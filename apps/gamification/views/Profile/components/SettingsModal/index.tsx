@@ -17,6 +17,7 @@ import {
 import { useConnectDiscord } from 'views/Profile/hooks/settingsModal/useConnectDiscord'
 import { useConnectTelegram } from 'views/Profile/hooks/settingsModal/useConnectTelegram'
 import { useConnectTwitter } from 'views/Profile/hooks/settingsModal/useConnectTwitter'
+import { UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 
 interface SocialComponentProps {
   icon: JSX.Element
@@ -47,16 +48,15 @@ const SocialComponent: React.FC<SocialComponentProps> = ({ icon, name, connected
 }
 
 interface SettingsModalProps extends InjectedModalProps {
+  userInfo: UserInfo
   refresh: () => void
 }
 
-export const SettingsModal: React.FC<SettingsModalProps> = ({ refresh, onDismiss }) => {
+export const SettingsModal: React.FC<SettingsModalProps> = ({ userInfo, refresh, onDismiss }) => {
   const { t } = useTranslation()
-  const isConnected = false
-
-  const { connect: connectDiscord } = useConnectDiscord()
-  const { connect: connectTelegram } = useConnectTelegram({ refresh })
-  const { connect: connectTwitter } = useConnectTwitter()
+  const { connect: connectDiscord, disconnect: disconnectDiscord } = useConnectDiscord({ refresh })
+  const { connect: connectTelegram, disconnect: disconnectTelegram } = useConnectTelegram({ refresh })
+  const { connect: connectTwitter, disconnect: disconnectTwitter } = useConnectTwitter({ refresh })
 
   return (
     <Modal title={t('Settings')} onDismiss={() => onDismiss}>
@@ -74,32 +74,35 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ refresh, onDismiss
             <SocialComponent
               name={t('X')}
               icon={<TwitterIcon color="textSubtle" width={20} height={20} />}
-              connected={isConnected}
+              connected={Boolean(userInfo.socialHubToSocialUserIdMap.Twitter)}
               connect={connectTwitter}
+              disconnect={disconnectTwitter}
             />
             <Box>
               <SocialComponent
                 name={t('Telegram')}
                 icon={<TelegramIcon color="textSubtle" width={20} height={20} />}
-                connected={isConnected}
+                connected={Boolean(userInfo.socialHubToSocialUserIdMap.Telegram)}
                 connect={connectTelegram}
+                disconnect={disconnectTelegram}
               />
             </Box>
             <SocialComponent
               name={t('Discord')}
               icon={<DiscordIcon color="textSubtle" width={20} height={20} />}
-              connected={isConnected}
+              connected={Boolean(userInfo.socialHubToSocialUserIdMap.Discord)}
               connect={connectDiscord}
+              disconnect={disconnectDiscord}
             />
             {/* <SocialComponent
               name={t('Youtube')}
               icon={<YoutubeIcon color="textSubtle" width={20} height={20} />}
-              connected={isConnected}
+              connected={Boolean(userInfo.socialHubToSocialUserIdMap.Youtube)}
             />
             <SocialComponent
               name={t('Instagram')}
               icon={<InstagramIcon color="textSubtle" width={20} height={20} />}
-              connected={isConnected}
+              connected={Boolean(userInfo.socialHubToSocialUserIdMap.Instagram)}
             /> */}
           </FlexGap>
         </Box>

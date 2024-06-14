@@ -1,4 +1,8 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { useToast } from '@pancakeswap/uikit'
+import { GAMIFICATION_API } from 'config/constants/endpoints'
 import { signIn } from 'next-auth/react'
+import { useAccount } from 'wagmi'
 
 interface DiscordResponse {
   accent_color: null | string
@@ -18,7 +22,15 @@ interface DiscordResponse {
   username: string
 }
 
-export const useConnectDiscord = () => {
+interface UseConnectDiscordProps {
+  refresh: () => void
+}
+
+export const useConnectDiscord = ({ refresh }: UseConnectDiscordProps) => {
+  const { address: account } = useAccount()
+  const { t } = useTranslation()
+  const { toastSuccess, toastError } = useToast()
+
   // useEffect(() => {
   //   const fetchUser = async () => {
   //     // Url will be like #token_type=Bearer&access_token=${access_token}&expires_in=${expires_in}&scope=identify
@@ -55,7 +67,33 @@ export const useConnectDiscord = () => {
     // window.location.href = url
   }
 
+  const disconnect = async () => {
+    try {
+      const response = await fetch(`${GAMIFICATION_API}/userInfo/v1/updateUserInfo`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: account,
+          socialHubToSocialUserIdMap: {
+            Discord: '',
+          },
+        }),
+      })
+
+      if (response.ok) {
+        toastSuccess(t('Discord Disconnected'))
+        refresh?.()
+      }
+    } catch (error) {
+      console.error('Disconnect discord error: ', error)
+      toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
+    }
+  }
+
   return {
     connect,
+    disconnect,
   }
 }

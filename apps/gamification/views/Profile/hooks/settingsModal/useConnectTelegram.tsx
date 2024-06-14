@@ -1,4 +1,8 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { useToast } from '@pancakeswap/uikit'
+import { GAMIFICATION_API } from 'config/constants/endpoints'
 import { useEffect } from 'react'
+import { useAccount } from 'wagmi'
 
 interface TelegramResponse {
   auth_date: number
@@ -16,6 +20,10 @@ interface UseConnectTelegramProps {
 }
 
 export const useConnectTelegram = ({ refresh }: UseConnectTelegramProps) => {
+  const { address: account } = useAccount()
+  const { t } = useTranslation()
+  const { toastSuccess, toastError } = useToast()
+
   useEffect(() => {
     // Load the Telegram Login Widget script
     const script = document.createElement('script')
@@ -50,7 +58,33 @@ export const useConnectTelegram = ({ refresh }: UseConnectTelegramProps) => {
     )
   }
 
+  const disconnect = async () => {
+    try {
+      const response = await fetch(`${GAMIFICATION_API}/userInfo/v1/updateUserInfo`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: account,
+          socialHubToSocialUserIdMap: {
+            Telegram: '',
+          },
+        }),
+      })
+
+      if (response.ok) {
+        toastSuccess(t('Twitter Disconnected'))
+        refresh?.()
+      }
+    } catch (error) {
+      console.error('Disconnect telegram error: ', error)
+      toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
+    }
+  }
+
   return {
     connect,
+    disconnect,
   }
 }
