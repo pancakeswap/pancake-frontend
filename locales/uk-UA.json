@@ -96,7 +96,6 @@
   "NFT": "NFT",
   "Fixed-staking Ends": "Стейкінг із фіксованим терміном завершується",
   "Restake period ends on": "Період повторного стейкінгу завершується",
-  "Claim Reward & Restake": "Отримати винагороду й вкласти ще раз",
   "Stake Duration": "Тривалість стейкінгу",
   "Staked Position": "Позиція зі стейкінгом",
   "Locked Cake Boost": "Буст заблокованих Cake",
@@ -3388,5 +3387,6 @@
   "Stake your LP token in the Farm and accrue both Merkl and Farm rewards.": "Stake your LP token in the Farm and accrue both Merkl and Farm rewards.",
   "Claim your Farm rewards on PancakeSwap and your Merkl rewards on": "Claim your Farm rewards on PancakeSwap and your Merkl rewards on",
   "Merkl's website": "Merkl's website",
+  "Claim Reward & Unstake": "Claim Reward & Unstake",
   "Warning: The $ATH token pool is not a valid token trading pair - please stop buying": "Warning: The $ATH token pool is not a valid token trading pair - please stop buying"
 }
