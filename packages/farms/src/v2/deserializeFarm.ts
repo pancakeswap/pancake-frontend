@@ -17,6 +17,7 @@ export const deserializeFarm = (
 ): DeserializedFarm => {
   const {
     lpAddress,
+    lpRewardsApr,
     lpSymbol,
     pid,
     vaultPid,
@@ -55,6 +56,7 @@ export const deserializeFarm = (
   return {
     bCakeWrapperAddress,
     lpAddress,
+    lpRewardsApr,
     lpSymbol,
     pid,
     vaultPid,
