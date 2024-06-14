@@ -116,6 +116,7 @@ export type SerializedFarmConfig = SerializedStableFarmConfig | SerializedClassi
 
 export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   lpTokenPrice?: string
+  lpRewardsApr?: number
   tokenPriceBusd?: string
   quoteTokenPriceBusd?: string
   tokenAmountTotal?: string
@@ -248,6 +249,7 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   stableLpFee?: number
   stableLpFeeRateOfTotalFee?: number
   lpTokenStakedAmount?: BigNumber
+  lpRewardsApr?: number
   dual?: {
     token: Token
     aptIncentiveInfo: number
@@ -266,7 +268,6 @@ export interface DeserializedFarmsState {
 
 export interface FarmWithStakedValue extends DeserializedFarm {
   apr?: number
-  lpRewardsApr?: number
   liquidity?: BigNumber
   dualTokenRewardApr?: number
 }

@@ -1,5 +1,11 @@
 # @pancakeswap/chains
 
+## 0.4.6
+
+### Patch Changes
+
+- 9a16780: add helper for chainname in mainnet
+
 ## 0.4.5
 
 ### Patch Changes
