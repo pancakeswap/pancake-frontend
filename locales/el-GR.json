@@ -96,7 +96,6 @@
   "NFT": "NFT",
   "Fixed-staking Ends": "Το σταθερό staking τελείωσε",
   "Restake period ends on": "Η περίοδος επανάληψης stake τελειώνει σε",
-  "Claim Reward & Restake": "Διεκδίκηση ανταμοιβής & επανάληψη stake",
   "Stake Duration": "Διάρκεια staking",
   "Staked Position": "Θέση stake",
   "Locked Cake Boost": "Ενίσχυση κλειδωμένου Cake",
@@ -3388,5 +3387,6 @@
   "Stake your LP token in the Farm and accrue both Merkl and Farm rewards.": "Stake your LP token in the Farm and accrue both Merkl and Farm rewards.",
   "Claim your Farm rewards on PancakeSwap and your Merkl rewards on": "Claim your Farm rewards on PancakeSwap and your Merkl rewards on",
   "Merkl's website": "Merkl's website",
+  "Claim Reward & Unstake": "Claim Reward & Unstake",
   "Warning: The $ATH token pool is not a valid token trading pair - please stop buying": "Warning: The $ATH token pool is not a valid token trading pair - please stop buying"
 }
