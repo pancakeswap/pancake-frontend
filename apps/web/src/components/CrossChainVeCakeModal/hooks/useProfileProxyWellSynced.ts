@@ -63,7 +63,7 @@ export const useProfileProxy = (
     queryKey: [account, 'profileProxy', targetChainId],
 
     queryFn: () => {
-      if (!account) return undefined
+      if (!account) throw new Error('account is required')
       return getProfileProxy(account, targetChainId!)
     },
 

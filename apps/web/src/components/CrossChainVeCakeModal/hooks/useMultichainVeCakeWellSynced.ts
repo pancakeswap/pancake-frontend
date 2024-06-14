@@ -20,7 +20,7 @@ export const useMultichainVeCakeWellSynced = (
     queryKey: [account, 'veCakeSyncData', targetChainId],
 
     queryFn: () => {
-      if (!account) return undefined
+      if (!account) throw new Error('account is required')
       return getVCakeAndProxyData(account, targetChainId!)
     },
 
@@ -42,7 +42,7 @@ export const useAllMultichainSyncedCount = (): {
     queryKey: [account, 'AllMultichainSyncedCount'],
 
     queryFn: () => {
-      if (!account) return undefined
+      if (!account) throw new Error('account is required')
       return getAllMultichainSyncedCount(account)
     },
     enabled,
