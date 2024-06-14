@@ -6,6 +6,7 @@ import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBoost
 import { AprResult } from '../hooks'
 import { AprButton } from './AprButton'
 import { RewardPerDay } from './RewardPerDay'
+import { RorButton } from './RorButton'
 import { AutoCompoundTag } from './Tags'
 
 interface Props {
@@ -58,6 +59,25 @@ export const YieldInfo = memo(function YieldInfo({
       <RowBetween>
         <Text>{t('APR')}:</Text>
         <AprButton
+          id={id}
+          apr={apr}
+          isAprLoading={isAprLoading}
+          lpSymbol={lpSymbol}
+          totalAssetsInUsd={totalAssetsInUsd}
+          totalSupplyAmounts={totalSupplyAmounts}
+          totalStakedInUsd={totalStakedInUsd}
+          userLpAmounts={userLpAmounts}
+          precision={precision}
+          lpTokenDecimals={lpTokenDecimals}
+          aprTimeWindow={aprTimeWindow}
+          rewardToken={rewardToken}
+          isBooster={isBooster && apr?.isInCakeRewardDateRange}
+          boosterMultiplier={totalAssetsInUsd === 0 || !locked ? 3 : boosterMultiplier === 0 ? 3 : boosterMultiplier}
+        />
+      </RowBetween>
+      <RowBetween>
+        <Text>{t('ROR')}:</Text>
+        <RorButton
           id={id}
           apr={apr}
           isAprLoading={isAprLoading}
