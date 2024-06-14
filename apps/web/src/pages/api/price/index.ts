@@ -17,8 +17,6 @@ const handler: NextApiHandler = async (req, res) => {
       price: string
     } = await response.json()
 
-    console.log('Price API response from Binance API: ', response)
-
     // Cache the response for 10 seconds, revalidate in the background
     res.setHeader('Vercel-CDN-Cache-Control', 'max-age=10')
     res.setHeader('CDN-Cache-Control', 'max-age=10')

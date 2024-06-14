@@ -12,6 +12,9 @@ interface UsePriceParameters {
 
 interface PriceResponse {
   price: number
+
+  currencyA: string
+  currencyB: string
 }
 
 const PRICE_API = '/api/price'
@@ -24,6 +27,8 @@ export const usePrice = ({ currencyA, currencyB = 'USDT', pollingInterval = 10 }
     retry: 2,
     initialData: {
       price: 0,
+      currencyA,
+      currencyB,
     },
   })
 }
