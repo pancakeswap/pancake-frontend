@@ -260,11 +260,7 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
                   <PayoutMeter pt="10px" bearMultiplier={bearMultiplier} bullMultiplier={bullMultiplier} />
                 </RoundResultBox>
 
-                <AIPredictionsLogo
-                  width={140}
-                  height={140}
-                  style={{ position: 'absolute', top: '-58px', left: '68px' }}
-                />
+                <AIPredictionsLogo style={{ position: 'absolute', top: '-48px', left: '48px', width: '160px' }} />
               </Box>
             </>
           ) : (
@@ -280,7 +276,7 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
               <Box mx="18px">
                 <RoundResultBox innerPadding="2px 0" isNext>
                   <Flex justifyContent="center">
-                    <AIPredictionsLogo width={120} height={120} />
+                    <AIPredictionsLogo style={{ width: '160px', margin: '10px 0' }} />
                   </Flex>
                 </RoundResultBox>
               </Box>

@@ -1,49 +1,19 @@
 import { Box, BoxProps, Flex, Text } from '@pancakeswap/uikit'
-import styled, { keyframes } from 'styled-components'
+import Lottie from 'lottie-react'
+import MeterJSON from '../../../../../../public/images/predictions-temp/meter.json'
 
 interface PayoutMeterProps extends BoxProps {
   bearMultiplier?: string
   bullMultiplier?: string
 }
 
-const rotatePointerAnimation = keyframes`
-  0% {
-    transform: rotate(-70deg);
-  }
-  10% {
-    transform: rotate(-60deg);
-  }
-  50% {
-    transform: rotate(60deg);
-  }
-  60%{
-    transform: rotate(50deg);
-  }
-  100% {
-    transform: rotate(70deg);
-  }
-`
-
-const MeterPointerImage = styled.img`
-  position: absolute;
-  left: 46px;
-  bottom: 1px;
-
-  transform-origin: 50% 90%;
-  animation: ${rotatePointerAnimation} 2s alternate infinite ease-in-out;
-
-  ${({ theme }) =>
-    theme.isDark &&
-    `
-  filter: invert(100%) grayscale(100%) sepia(100%) saturate(0%);
-  `}
-`
-
 const AnimatedMeter = (props: BoxProps) => {
   return (
     <Box position="relative" {...props}>
-      <img src="/images/predictions-temp/meter.svg" alt="Payout Meter" width={100} />
-      <MeterPointerImage src="/images/predictions-temp/meter-pointer.svg" alt="Payout Pointer" width={12} />
+      {/* <img src="/images/predictions-temp/meter.svg" alt="Payout Meter" width={100} /> */}
+      {/* <MeterPointerImage src="/images/predictions-temp/meter-pointer.svg" alt="Payout Pointer" width={12} /> */}
+
+      <Lottie animationData={MeterJSON} style={{ width: '110px' }} />
     </Box>
   )
 }
@@ -56,8 +26,12 @@ export const PayoutMeter = ({ bearMultiplier = '0', bullMultiplier = '0', ...pro
       <Flex justifyContent="center">
         <AnimatedMeter />
       </Flex>
-      <Flex justifyContent={isRoundEmpty ? 'center' : 'space-between'} mx="50px" position="relative">
-        {!isRoundEmpty && <Text small>{Math.min(+bearMultiplier, +bullMultiplier)}x</Text>}
+      <Flex mt="-3px" justifyContent={isRoundEmpty ? 'center' : 'space-between'} mx="50px" position="relative">
+        {!isRoundEmpty && (
+          <Text small bold>
+            {Math.min(+bearMultiplier, +bullMultiplier)}x
+          </Text>
+        )}
         <Text
           color="textSubtle"
           style={{
@@ -70,7 +44,11 @@ export const PayoutMeter = ({ bearMultiplier = '0', bullMultiplier = '0', ...pro
         >
           Payout
         </Text>
-        {!isRoundEmpty && <Text small>{Math.max(+bearMultiplier, +bullMultiplier)}x</Text>}
+        {!isRoundEmpty && (
+          <Text small bold>
+            {Math.max(+bearMultiplier, +bullMultiplier)}x
+          </Text>
+        )}
       </Flex>
     </Box>
   )
