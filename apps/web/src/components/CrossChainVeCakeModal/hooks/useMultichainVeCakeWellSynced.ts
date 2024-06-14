@@ -40,7 +40,6 @@ export const useAllMultichainSyncedCount = (): {
   const enabled = Boolean(account)
   const { data } = useQuery({
     queryKey: [account, 'AllMultichainSyncedCount'],
-
     queryFn: () => {
       if (!account) throw new Error('account is required')
       return getAllMultichainSyncedCount(account)

@@ -59,7 +59,7 @@ export const useProfileProxy = (
 } => {
   const { address: account } = useAccount()
   const enabled = Boolean(account) && Boolean(targetChainId)
-  const { data, isLoading } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: [account, 'profileProxy', targetChainId],
 
     queryFn: () => {
@@ -74,7 +74,7 @@ export const useProfileProxy = (
     staleTime: FAST_INTERVAL,
   })
 
-  return { profileProxy: data, isLoading }
+  return { profileProxy: data, isLoading: isPending }
 }
 
 export const useProfileProxyWellSynced = (targetChainId?: ChainId) => {
