@@ -192,7 +192,7 @@ const CardContent: React.FC<{ variants?: 'farm' | 'pm' }> = ({ variants }) => {
         </Text>
       )}
       <Button width="100%" style={{ backgroundColor: theme.colors.textSubtle }} onClick={() => setIsOpen(true)}>
-        {t('Sync veCake')}
+        {t('Sync veCAKE')}
       </Button>
       <CrossChainVeCakeModal
         isOpen={isOpen}

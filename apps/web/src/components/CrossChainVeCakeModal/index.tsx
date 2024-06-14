@@ -187,9 +187,9 @@ export const CrossChainVeCakeModal: React.FC<{
       })
       if (receipt?.status) {
         toastSuccess(
-          `${t('Syncing VeCake')}!`,
+          `${t('Syncing veCAKE')}!`,
           <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your VeCake is Syncing to')} {CROSS_CHIAN_CONFIG[chainId].name}
+            {t('Your veCAKE is Syncing to')} {CROSS_CHIAN_CONFIG[chainId].name}
           </ToastDescriptionWithTx>,
         )
         setTxByChain((prev) => ({ ...prev, [chainId]: receipt.transactionHash }))
@@ -410,7 +410,7 @@ const ReadyToSyncView: React.FC<{ chainId: ChainId; nativeFee: bigint; bnbBalanc
     <Flex flexDirection="column" alignItems="center" justifyContent="center" style={{ gap: 10 }}>
       <Spinner size={120} />
       <Text fontSize={16} fontWeight={600} mt="16px">
-        {t('veCake Sync')}
+        {t('veCAKE Sync')}
       </Text>
       <Text fontSize={12} mt="12px">
         {t('From BSC to')} {CROSS_CHIAN_CONFIG[chainId].name}
@@ -443,7 +443,7 @@ const SubmittedView: React.FC<{ chainId: ChainId; hash: string }> = ({ chainId, 
     <Flex flexDirection="column" alignItems="center" justifyContent="center" style={{ gap: 10 }}>
       <ArrowUpIcon color="success" width="90px" />
       <Text fontSize={16} fontWeight={600} mt="16px">
-        {t('veCake Sync Submitted')}
+        {t('veCAKE Sync Submitted')}
       </Text>
       <Text fontSize={12} mt="12px">
         {t('From BSC to')} {CROSS_CHIAN_CONFIG[chainId].name}
