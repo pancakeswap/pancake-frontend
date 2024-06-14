@@ -12,7 +12,6 @@ interface UsePriceParameters {
 
 interface PriceResponse {
   price: number
-  symbol: string
 }
 
 export const usePrice = ({ currencyA, currencyB = 'USDT', pollingInterval = 10 }: UsePriceParameters) => {
@@ -23,7 +22,6 @@ export const usePrice = ({ currencyA, currencyB = 'USDT', pollingInterval = 10 }
     retry: 2,
     initialData: {
       price: 0,
-      symbol: `${currencyA}${currencyB}`,
     },
   })
 }

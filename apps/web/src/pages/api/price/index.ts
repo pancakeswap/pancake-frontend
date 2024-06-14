@@ -1,6 +1,26 @@
-import { NextApiHandler, ServerRuntime } from 'next'
+import { NextApiHandler } from 'next'
 
-export const runtime: ServerRuntime = 'nodejs'
+export const config = {
+  runtime: 'edge',
+
+  // All regions except USA (Binance API might be restricted there)
+  regions: [
+    'arn1',
+    'bom1',
+    'cdg1',
+    'cpt1',
+    'dub1',
+    'fra1',
+    'gru1',
+    'hkg1',
+    'hnd1',
+    'icn1',
+    'kix1',
+    'lhr1',
+    'sin1',
+    'syd1',
+  ],
+}
 
 const handler: NextApiHandler = async (req, res) => {
   try {
@@ -15,14 +35,17 @@ const handler: NextApiHandler = async (req, res) => {
       price: string
     } = await response.json()
 
+    console.log('Price API response from Binance API: ', response)
+
     // Cache the response for 10 seconds, revalidate in the background
     res.setHeader('Vercel-CDN-Cache-Control', 'max-age=10')
     res.setHeader('CDN-Cache-Control', 'max-age=10')
     res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate=10')
 
-    return res.status(200).json({
-      symbol: data.symbol,
-      price: parseFloat(data.price), // Note: Binance API is providing price upto 2 decimals
+    return res.status(response.status).json({
+      currencyA,
+      currencyB,
+      price: parseFloat(data.price),
     })
   } catch (error) {
     return res.status(500).json({ error })
