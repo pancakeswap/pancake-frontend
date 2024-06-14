@@ -47,15 +47,16 @@ const fetchFarmPublicDataPkg = async ({
   })
   const farmAprs: Record<string, number> = {}
   try {
-    const farmsV2AvgInfo = await fetchV2FarmsAvgInfo(chainId)
-    const farmsStableAvgInfo = await fetchStableFarmsAvgInfo(chainId)
-    Object.keys(farmsV2AvgInfo).forEach((key) => {
-      const tokenData = farmsV2AvgInfo[key]
-      farmAprs[key] = parseFloat(tokenData.apr7d.toFixed(2))
-    })
-    Object.keys(farmsStableAvgInfo).forEach((key) => {
-      const tokenData = farmsStableAvgInfo[key]
-      farmAprs[key] = parseFloat(tokenData.apr7d.toFixed(2))
+    const [farmsV2AvgInfo, farmsStableAvgInfo] = await Promise.all([
+      fetchV2FarmsAvgInfo(chainId),
+      fetchStableFarmsAvgInfo(chainId),
+    ])
+
+    const mergedFarmsAvgInfo = { ...farmsV2AvgInfo, ...farmsStableAvgInfo }
+
+    Object.keys(mergedFarmsAvgInfo).forEach((key) => {
+      const tokenData = mergedFarmsAvgInfo[key]
+      farmAprs[key] = parseFloat(tokenData.apr7d.multipliedBy(100).toFixed(2))
     })
   } catch (e) {
     console.error(e)
