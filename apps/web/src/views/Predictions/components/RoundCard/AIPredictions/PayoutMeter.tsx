@@ -27,9 +27,9 @@ const rotatePointerAnimation = keyframes`
 const MeterPointerImage = styled.img`
   position: absolute;
   left: 46px;
-  bottom: 3px;
+  bottom: 1px;
 
-  transform-origin: bottom;
+  transform-origin: 50% 90%;
   animation: ${rotatePointerAnimation} 2s alternate infinite ease-in-out;
 
   ${({ theme }) =>
@@ -43,7 +43,7 @@ const AnimatedMeter = (props: BoxProps) => {
   return (
     <Box position="relative" {...props}>
       <img src="/images/predictions-temp/pointer.svg" alt="Payout Meter" width={100} />
-      <MeterPointerImage src="/images/predictions-temp/meter-pointer.svg" alt="Payout Pointer" width={9} />
+      <MeterPointerImage src="/images/predictions-temp/meter-pointer.svg" alt="Payout Pointer" width={12} />
     </Box>
   )
 }
