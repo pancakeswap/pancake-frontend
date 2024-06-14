@@ -1,5 +1,15 @@
 # @pancakeswap/pools
 
+## 5.1.27
+
+### Patch Changes
+
+- 7235e91: Update ALP pool
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/tokens@0.6.21
+  - @pancakeswap/token-lists@0.0.11
+
 ## 5.1.26
 
 ### Patch Changes
