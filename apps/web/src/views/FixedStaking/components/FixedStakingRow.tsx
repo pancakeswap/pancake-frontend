@@ -23,7 +23,6 @@ import {
   StyledActionPanel,
 } from 'views/Pools/components/PoolsTable/ActionPanel/ActionPanel'
 
-import { bscTokens } from '@pancakeswap/tokens'
 import useSelectedPeriod from '../hooks/useSelectedPeriod'
 import { PoolGroup, StakedPosition } from '../type'
 import { AmountWithUSDSub } from './AmountWithUSDSub'
@@ -168,7 +167,7 @@ const FixedStakingRow = ({ pool, stakedPositions }: { pool: PoolGroup; stakedPos
                       stakedPositions={stakedPositions}
                     >
                       {(openModal) => (
-                        <Button disabled={pool.token.equals(bscTokens.cake)} onClick={openModal}>
+                        <Button disabled onClick={openModal}>
                           {t('Stake')}
                         </Button>
                       )}
