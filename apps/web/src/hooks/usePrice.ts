@@ -14,7 +14,7 @@ interface PriceResponse {
   price: number
 }
 
-const PRICE_API = 'https://price.penguin-b5e.workers.dev'
+const PRICE_API = '/api/price'
 
 export const usePrice = ({ currencyA, currencyB = 'USDT', pollingInterval = 10 }: UsePriceParameters) => {
   return useQuery<PriceResponse>({

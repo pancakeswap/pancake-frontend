@@ -11,7 +11,7 @@ const handler: NextApiHandler = async (req, res) => {
     const symbol = `${currencyA}${currencyB}` // According to Binance API Spec
 
     // Fetch price from Binance API
-    const response = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${symbol}`)
+    const response = await fetch(`https://data-api.binance.vision/api/v3/ticker/price?symbol=${symbol}`)
     const data: {
       symbol: string
       price: string
