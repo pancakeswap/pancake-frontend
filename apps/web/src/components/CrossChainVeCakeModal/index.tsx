@@ -241,7 +241,7 @@ export const CrossChainVeCakeModal: React.FC<{
               </Text>
               <Flex flexDirection="column" style={{ gap: 12 }}>
                 <OtherChainsCard
-                  chainName={t('Arbitrum')}
+                  chainName="Arbitrum"
                   chainId={ChainId.ARBITRUM_ONE}
                   onSelected={setSelectChainId}
                   Icon={<ArbitrumIcon width={20} height={20} />}
@@ -250,7 +250,7 @@ export const CrossChainVeCakeModal: React.FC<{
                   hash={txByChain[ChainId.ARBITRUM_ONE]}
                 />
                 <OtherChainsCard
-                  chainName={t('Ethereum')}
+                  chainName="Ethereum"
                   chainId={ChainId.ETHEREUM}
                   onSelected={setSelectChainId}
                   Icon={<EthereumIcon width={16} />}
@@ -326,7 +326,7 @@ const BinanceChainCard = () => {
         <LogoWrapper>
           <BinanceIcon />
         </LogoWrapper>
-        <Text>{t('BNB')}</Text>
+        <Text>BNB</Text>
       </Flex>
       <Text>{formatNumber(getBalanceNumber(balance))}</Text>
       <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="cross-chain-vecake" />
@@ -413,7 +413,7 @@ const ReadyToSyncView: React.FC<{ chainId: ChainId; nativeFee: bigint; bnbBalanc
         {t('veCAKE Sync')}
       </Text>
       <Text fontSize={12} mt="12px">
-        {t('From BSC to')} {CROSS_CHIAN_CONFIG[chainId].name}
+        {t('From  to')} {CROSS_CHIAN_CONFIG[chainId].name}
       </Text>
       <Flex justifyContent="flex-end" alignItems="flex-end" style={{ gap: 5 }} mt="12px">
         <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="cross-chain-vecake" />
@@ -426,7 +426,7 @@ const ReadyToSyncView: React.FC<{ chainId: ChainId; nativeFee: bigint; bnbBalanc
       <Text mt="30px" color="textSubtle">
         {t('Cross chain fee')}: {getBalanceNumber(new BigNumber(nativeFee.toString()))} BNB
       </Text>
-      {bnbBalance <= nativeFee && <Text color="warning">{t('Insufficient BNB balance')}</Text>}
+      {bnbBalance <= nativeFee && <Text color="warning">{t('Insufficient %symbol% balance', { symbol: 'BNB' })}</Text>}
       <Text mt="16px" color="textSubtle">
         {t('Proceed in your wallet')}
       </Text>
@@ -446,7 +446,7 @@ const SubmittedView: React.FC<{ chainId: ChainId; hash: string }> = ({ chainId, 
         {t('veCAKE Sync Submitted')}
       </Text>
       <Text fontSize={12} mt="12px">
-        {t('From BSC to')} {CROSS_CHIAN_CONFIG[chainId].name}
+        {t('From %chain% to', { chain: 'BSC' })} {CROSS_CHIAN_CONFIG[chainId].name}
       </Text>
       <Flex justifyContent="flex-end" alignItems="flex-end" style={{ gap: 5 }} mt="12px">
         <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="cross-chain-vecake" />
