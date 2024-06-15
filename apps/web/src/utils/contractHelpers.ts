@@ -9,6 +9,7 @@ import {
   getBCakeFarmBoosterProxyFactoryAddress,
   getBCakeFarmBoosterV3Address,
   getBCakeFarmBoosterVeCakeAddress,
+  getBCakeFarmWrapperBoosterVeCakeAddress,
   getBunnyFactoryAddress,
   getCakeFlexibleSideVaultAddress,
   getCakeVaultAddress,
@@ -283,10 +284,10 @@ export const getBCakeFarmBoosterVeCakeContract = (signer?: WalletClient, chainId
   })
 }
 
-export const getBCakeFarmWrapperBoosterVeCakeContract = (address: Address, signer?: WalletClient, chainId?: number) => {
+export const getBCakeFarmWrapperBoosterVeCakeContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: bCakeFarmWrapperBoosterVeCakeABI,
-    address,
+    address: getBCakeFarmWrapperBoosterVeCakeAddress(chainId),
     signer,
     chainId,
   })

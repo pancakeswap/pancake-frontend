@@ -347,13 +347,10 @@ export function useBCakeFarmBoosterVeCakeContract() {
   return useMemo(() => getBCakeFarmBoosterVeCakeContract(signer ?? undefined, chainId), [signer, chainId])
 }
 
-export function useBCakeFarmWrapperBoosterVeCakeContract(address: Address) {
+export function useBCakeFarmWrapperBoosterVeCakeContract() {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
-  return useMemo(
-    () => getBCakeFarmWrapperBoosterVeCakeContract(address, signer ?? undefined, chainId),
-    [signer, chainId, address],
-  )
+  return useMemo(() => getBCakeFarmWrapperBoosterVeCakeContract(signer ?? undefined, chainId), [signer, chainId])
 }
 
 export function usePositionManagerWrapperContract(address: Address) {

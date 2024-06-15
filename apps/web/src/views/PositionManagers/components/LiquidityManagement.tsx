@@ -15,7 +15,7 @@ import { StatusViewButtons } from 'views/Farms/components/YieldBooster/component
 import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { useBoostStatusPM } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { useAccount } from 'wagmi'
-import { AprDataInfo, useWrapperBooster } from '../hooks'
+import { AprDataInfo, usePMV2SSMaxBoostMultiplier, useWrapperBooster } from '../hooks'
 import { useOnStake } from '../hooks/useOnStake'
 import { AddLiquidity } from './AddLiquidity'
 import { RemoveLiquidity } from './RemoveLiquidity'
@@ -152,6 +152,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
 
   const showRemoveLiquidityModal = useCallback(() => setRemoveLiquidityModalOpen(true), [])
   const hideRemoveLiquidityModal = useCallback(() => setRemoveLiquidityModalOpen(false), [])
+  const { maxBoostMultiplier } = usePMV2SSMaxBoostMultiplier()
 
   const relevantTokenBalances = useCurrencyBalances(
     account ?? undefined,
@@ -223,7 +224,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                       status={status}
                       isFarmStaking
                       boostedMultiplier={boosterMultiplier}
-                      maxBoostMultiplier={3}
+                      maxBoostMultiplier={maxBoostMultiplier}
                       shouldUpdate={shouldUpdate}
                       expectMultiplier={veCakeUserMultiplierBeforeBoosted}
                     />
@@ -263,7 +264,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                 />
                 <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
                   <Flex width="100%" justifyContent="space-between" alignItems="center">
-                    <StatusView status={status} maxBoostMultiplier={3} />
+                    <StatusView status={status} maxBoostMultiplier={maxBoostMultiplier} />
                     <StatusViewButtons updateButton={null} locked={locked} />
                   </Flex>
                 </RowBetween>
