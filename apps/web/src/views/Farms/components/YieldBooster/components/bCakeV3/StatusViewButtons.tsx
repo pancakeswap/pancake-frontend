@@ -31,7 +31,11 @@ export const StatusViewButtons: React.FC<{
             </Button>
           </NextLink>
         ))}
-      {account && !isVeCakeWillSync && !isBnbChain ? <SyncButton /> : updateButton}
+      {account && !isVeCakeWillSync && !isBnbChain ? (
+        <SyncButton width={isTableView ? 'auto' : undefined} />
+      ) : (
+        updateButton
+      )}
     </>
   )
 }
