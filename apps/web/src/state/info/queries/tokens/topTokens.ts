@@ -94,27 +94,6 @@ const fetchTopTokens = async (chainName: MultiChainNameExtend, timestamp24hAgo: 
   }
 }
 
-/**
- * Fetch top addresses by volume
- */
-const useTopTokenAddresses = (): string[] => {
-  const [topTokenAddresses, setTopTokenAddresses] = useState<string[]>([])
-  const [timestamp24hAgo] = getDeltaTimestamps()
-  const chainName = useGetChainName()
-
-  const fetch = useCallback(async () => {
-    if (!chainName) return
-    const addresses = await fetchTopTokens(chainName, timestamp24hAgo)
-    if (addresses.length > 0) setTopTokenAddresses(addresses)
-  }, [timestamp24hAgo, chainName])
-
-  useEffect(() => {
-    fetch()
-  }, [chainName, fetch])
-
-  return topTokenAddresses
-}
-
 export const fetchTokenAddresses = async (chainName: MultiChainNameExtend) => {
   const [timestamp24hAgo] = getDeltaTimestamps()
 
@@ -122,5 +101,3 @@ export const fetchTokenAddresses = async (chainName: MultiChainNameExtend) => {
 
   return addresses
 }
-
-export default useTopTokenAddresses
