@@ -319,7 +319,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         (farm) =>
           (v3FarmOnly && farm.version === 3) ||
           (v2FarmOnly && farm.version === 2 && !farm.isStable) ||
-          (boostedOnly && farm.boosted && farm.version === 3) ||
+          (boostedOnly && ((farm.boosted && farm.version === 3) || (farm.version === 2 && farm.bCakeWrapperAddress))) ||
           (stableSwapOnly && farm.version === 2 && farm.isStable),
       )
 
