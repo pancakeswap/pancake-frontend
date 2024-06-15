@@ -88,7 +88,7 @@ export function BuyCryptoForm() {
 
   const quotes = useMemo(() => data?.quotes, [data?.quotes])
   const quotesError = useMemo(() => data?.quotesError, [data?.quotesError])
-
+  console.log(quotes)
   const outputValue = useMemo((): string | undefined => {
     if (inputError || quotesError || !selectedQuote) return undefined
     const { amount, quote } = selectedQuote
