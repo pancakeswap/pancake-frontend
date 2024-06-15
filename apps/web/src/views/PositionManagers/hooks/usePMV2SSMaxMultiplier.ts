@@ -1,14 +1,14 @@
 import { bCakeFarmWrapperBoosterVeCakeABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmWrapperBoosterVeCake'
 import { useQuery } from '@tanstack/react-query'
 import BN from 'bignumber.js'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useBCakeFarmWrapperBoosterVeCakeContract } from 'hooks/useContract'
 import _toNumber from 'lodash/toNumber'
 import { publicClient } from 'utils/wagmi'
-import { useAccount } from 'wagmi'
 
 export const usePMV2SSMaxBoostMultiplier = () => {
   const farmBoosterContract = useBCakeFarmWrapperBoosterVeCakeContract()
-  const { chainId } = useAccount()
+  const { chainId } = useActiveChainId()
   const enabled = Boolean(chainId)
   const { data } = useQuery({
     queryKey: [chainId, 'PMV2SSMaxMultiplier'],
@@ -18,7 +18,7 @@ export const usePMV2SSMaxBoostMultiplier = () => {
     },
     enabled,
   })
-  return { maxBoostMultiplier: data ?? 10 }
+  return { maxBoostMultiplier: data ?? 2.5 }
 }
 
 export async function getPublicMultiplier({ farmBoosterContract, chainId }): Promise<number> {
