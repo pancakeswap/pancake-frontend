@@ -18,6 +18,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
+import { useRouter } from 'next/router'
 import { FC, useContext, useMemo } from 'react'
 import { ChainLinkSupportChains, multiChainPaths } from 'state/info/constant'
 import { css, keyframes, styled } from 'styled-components'
@@ -347,7 +348,8 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
   const { address: account } = useAccount()
   const { theme } = useTheme()
-
+  const router = useRouter()
+  const isHistory = useMemo(() => router.pathname.includes('history'), [router])
   const farm = details
 
   const { isDesktop, isMobile } = useMatchBreakpoints()
@@ -532,7 +534,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                             </HarvestActionContainer>
                           </>
                         )}
-                        {isRewardInRange && (
+                        {isRewardInRange && !isHistory && (
                           <Box
                             style={{
                               height: isMobile ? 2 : 70,
@@ -541,7 +543,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                             }}
                           />
                         )}
-                        {isRewardInRange && (
+                        {isRewardInRange && !isHistory && (
                           <Flex
                             flexGrow={1}
                             maxWidth={isMobile ? 'auto' : hasStakedInBCake ? '27%' : '50%'}

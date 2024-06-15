@@ -122,7 +122,7 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
     const [{ result: bscBalance }, { result: bscProxyBalance }] = callsResultBsc
 
     const [{ result: targetChainBalance }, { result: targetChainProxyBalance }] = callsResultTargetChain
-    console.info({ bscBalance, bscProxyBalance, targetChainBalance, targetChainProxyBalance }, 'veCakeSyncData')
+    // console.info({ bscBalance, bscProxyBalance, targetChainBalance, targetChainProxyBalance }, 'veCakeSyncData')
 
     if (
       bscBalance === undefined ||

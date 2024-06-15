@@ -2,8 +2,8 @@ import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox, Button, Flex, RowBetween, Skeleton, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useStatusViewVeCakeWellSync } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 
+import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { StatusView } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusView'
@@ -11,7 +11,6 @@ import { StatusViewButtons } from 'views/Farms/components/YieldBooster/component
 import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { useBoostStatusPM } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { useWrapperBooster } from 'views/PositionManagers/hooks'
-import { useAccount } from 'wagmi'
 import { useUpdateBCakeFarms } from '../../hooks/useUpdateBCake'
 import { HarvestActionContainer } from '../FarmTable/Actions/HarvestAction'
 import { StakedContainer } from '../FarmTable/Actions/StakedAction'
@@ -75,8 +74,8 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   )
   const { onUpdate } = useUpdateBCakeFarms(bCakeWrapperAddress ?? '0x', pid)
   const { locked } = useBCakeBoostLimitAndLockInfo()
-  const { chainId } = useAccount()
-  const { isVeCakeWillSync } = useStatusViewVeCakeWellSync(chainId)
+  const router = useRouter()
+  const isHistory = useMemo(() => router.pathname.includes('history'), [router])
 
   return (
     <AtomBox mt="16px">
@@ -133,7 +132,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
             </RowBetween>
           </>
         )}
-        {isBooster && (
+        {isBooster && !isHistory && (
           <>
             <AtomBox
               width={{
