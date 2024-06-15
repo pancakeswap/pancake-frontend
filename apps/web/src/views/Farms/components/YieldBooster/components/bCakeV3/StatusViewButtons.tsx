@@ -7,10 +7,11 @@ import { useStatusViewVeCakeWellSync } from 'components/CrossChainVeCakeModal/ho
 import NextLink from 'next/link'
 import { useAccount } from 'wagmi'
 
-export const StatusViewButtons: React.FC<{ updateButton: React.ReactElement | null; locked: boolean }> = ({
-  updateButton,
-  locked,
-}) => {
+export const StatusViewButtons: React.FC<{
+  updateButton: React.ReactElement | null
+  locked: boolean
+  isTableView?: boolean
+}> = ({ updateButton, locked, isTableView = false }) => {
   const { chainId } = useAccount()
   const { t } = useTranslation()
   const { isVeCakeWillSync } = useStatusViewVeCakeWellSync(chainId)
@@ -18,7 +19,7 @@ export const StatusViewButtons: React.FC<{ updateButton: React.ReactElement | nu
     <>
       {!locked &&
         (chainId !== ChainId.BSC ? (
-          <NextButton />
+          <NextButton width={isTableView ? 'auto' : undefined} />
         ) : (
           <NextLink href="/cake-staking" passHref>
             <Button width="100%" style={{ whiteSpace: 'nowrap' }}>

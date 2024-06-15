@@ -59,7 +59,7 @@ export const SwitchToBnbChainModal: React.FC<{
             <Box width="60px" height="60px" style={{ transform: 'rotate(-25deg)' }} mt="-20px">
               <img width="100%" srcSet="/images/cake-staking/benefit-farm-boost.png 2x" alt="ve-cake" />
             </Box>
-            <Text mt="30px" color={theme.isDark ? '#280D5F' : '280D5F'}>
+            <Text mt="30px" color={theme.isDark ? '#280D5F' : 'white'}>
               {t('Stake CAKE to obtain bCAKE – to boost farm yields.')}
             </Text>
             <Box position="absolute" width="120px" right="-90px">

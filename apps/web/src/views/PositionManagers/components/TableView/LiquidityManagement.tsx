@@ -199,6 +199,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                           shouldUpdate ? <Button onClick={() => onUpdate(refetch)}>{t('Update')}</Button> : null
                         }
                         locked={locked}
+                        isTableView
                       />
                     </Flex>
                   </RowBetween>
@@ -232,7 +233,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                 <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
                   <Flex width="100%" justifyContent="space-between" alignItems="center">
                     <StatusView status={status} maxBoostMultiplier={3} />
-                    <StatusViewButtons updateButton={null} locked={locked} />
+                    <StatusViewButtons updateButton={null} locked={locked} isTableView />
                   </Flex>
                 </RowBetween>
               </>

@@ -565,6 +565,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
                                   <Button onClick={onUpdate}>{t('Update')}</Button>
                                 ) : null
                               }
+                              isTableView
                             />
                           </Flex>
                         )}

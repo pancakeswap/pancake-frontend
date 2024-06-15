@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button } from '@pancakeswap/uikit'
 import { useState } from 'react'
-import { CrossChainVeCakeModal } from '../index'
+import { SwitchToBnbChainModal } from './SwitchToBnbCahinModal'
 
 export const SyncButton = () => {
   const { t } = useTranslation()
@@ -11,7 +11,7 @@ export const SyncButton = () => {
       <Button width="50%" onClick={() => setIsOpen(true)}>
         {t('Sync')}
       </Button>
-      <CrossChainVeCakeModal
+      <SwitchToBnbChainModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         onDismiss={() => {
