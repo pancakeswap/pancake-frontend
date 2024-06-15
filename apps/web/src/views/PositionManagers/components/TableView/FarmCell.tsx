@@ -87,8 +87,9 @@ export const FarmCell = memo(function CardTitle({
           justifyContent="flex-end"
           alignItems="center"
           mt="0.25em"
-          style={{ gap: '0.5em' }}
+          style={{ gap: '0.5em', paddingRight: isMobile ? 20 : undefined }}
           flexWrap="wrap"
+          flexBasis={isMobile ? '35%' : undefined}
         >
           {!isMobile && <FeeTag feeAmount={feeTier} scale="sm" />}
           {isSingleDepositToken && !isMobile && <SingleTokenTag scale="sm" />}
