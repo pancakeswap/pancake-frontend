@@ -16,6 +16,7 @@ import {
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
+import { SwitchToBnbChainModal } from 'components/CrossChainVeCakeModal/components/SwitchToBnbCahinModal'
 import { useMultichainVeCakeWellSynced } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
@@ -194,13 +195,17 @@ const CardContent: React.FC<{ variants?: 'farm' | 'pm' }> = ({ variants }) => {
       <Button width="100%" style={{ backgroundColor: theme.colors.textSubtle }} onClick={() => setIsOpen(true)}>
         {t('Sync veCAKE')}
       </Button>
-      <CrossChainVeCakeModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        onDismiss={() => {
-          setIsOpen(false)
-        }}
-      />
+      {isBSC ? (
+        <CrossChainVeCakeModal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          onDismiss={() => {
+            setIsOpen(false)
+          }}
+        />
+      ) : (
+        <SwitchToBnbChainModal isOpen={isOpen} onDismiss={() => setIsOpen(false)} />
+      )}
     </Box>
   )
 }
