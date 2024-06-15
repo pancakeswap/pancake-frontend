@@ -13,7 +13,7 @@ export const StatusViewButtons: React.FC<{
   locked: boolean
   isTableView?: boolean
 }> = ({ updateButton, locked, isTableView = false }) => {
-  const { chainId } = useAccount()
+  const { chainId, address: account } = useAccount()
   const { t } = useTranslation()
   const { isVeCakeWillSync } = useStatusViewVeCakeWellSync(chainId)
   const isBnbChain = useMemo(() => {
@@ -31,7 +31,7 @@ export const StatusViewButtons: React.FC<{
             </Button>
           </NextLink>
         ))}
-      {!isVeCakeWillSync && !isBnbChain ? <SyncButton /> : updateButton}
+      {account && !isVeCakeWillSync && !isBnbChain ? <SyncButton /> : updateButton}
     </>
   )
 }
