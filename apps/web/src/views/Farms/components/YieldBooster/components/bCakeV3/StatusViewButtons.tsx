@@ -5,6 +5,7 @@ import { NextButton } from 'components/CrossChainVeCakeModal/components/NextButt
 import { SyncButton } from 'components/CrossChainVeCakeModal/components/SyncButton'
 import { useStatusViewVeCakeWellSync } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import NextLink from 'next/link'
+import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 
 export const StatusViewButtons: React.FC<{
@@ -15,10 +16,13 @@ export const StatusViewButtons: React.FC<{
   const { chainId } = useAccount()
   const { t } = useTranslation()
   const { isVeCakeWillSync } = useStatusViewVeCakeWellSync(chainId)
+  const isBnbChain = useMemo(() => {
+    return chainId === ChainId.BSC
+  }, [chainId])
   return (
     <>
       {!locked &&
-        (chainId !== ChainId.BSC ? (
+        (!isBnbChain ? (
           <NextButton width={isTableView ? 'auto' : undefined} />
         ) : (
           <NextLink href="/cake-staking" passHref>
@@ -27,7 +31,7 @@ export const StatusViewButtons: React.FC<{
             </Button>
           </NextLink>
         ))}
-      {!isVeCakeWillSync ? <SyncButton /> : updateButton}
+      {!isVeCakeWillSync && !isBnbChain ? <SyncButton /> : updateButton}
     </>
   )
 }
