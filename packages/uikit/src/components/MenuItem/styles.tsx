@@ -14,7 +14,7 @@ export const StyledMenuItemContainer = styled.div<StyledMenuItemProps>`
         bottom: 0;
         height: 4px;
         width: 100%;
-        background-color: ${theme.colors.primary};
+        background-color: ${theme.colors.secondary};
         border-radius: 2px 2px 0 0;
       }
     `};

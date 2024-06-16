@@ -1,5 +1,5 @@
 import { LanguageProvider } from '@pancakeswap/localization'
-import { ModalProvider, UIKitProvider, dark, light } from '@pancakeswap/uikit'
+import { ModalProvider, UIKitProvider, light } from '@pancakeswap/uikit'
 import { Store } from '@reduxjs/toolkit'
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HistoryManagerProvider } from 'contexts/HistoryContext'
@@ -16,7 +16,7 @@ const queryClient = new QueryClient()
 const StyledUIKitProvider: React.FC<React.PropsWithChildren> = ({ children, ...props }) => {
   const { resolvedTheme } = useNextTheme()
   return (
-    <UIKitProvider theme={resolvedTheme === 'dark' ? dark : light} {...props}>
+    <UIKitProvider theme={resolvedTheme === 'dark' ? light : light} {...props}>
       {children}
     </UIKitProvider>
   )
