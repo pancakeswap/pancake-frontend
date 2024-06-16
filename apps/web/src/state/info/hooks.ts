@@ -367,6 +367,7 @@ export function usePoolDataQuery(poolAddress: string): PoolData | undefined {
 
       return {
         address: data_.id,
+        lpAddress: data_.lpAddress,
         timestamp: dayjs(data_.createdAtTimestamp as string).unix(),
         token0: {
           address: data_.token0.id,
