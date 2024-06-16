@@ -1,10 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { gql } from 'graphql-request'
-import _toLower from 'lodash/toLower'
 import { explorerApiClient } from 'state/info/api/client'
-import { getBlocksFromTimestamps } from './getBlocksFromTimestamps'
-import { getDeltaTimestamps } from './getDeltaTimestamps'
-import { stableSwapClient } from './graphql'
 
 export const getAprsForStableFarm = async (stableSwapAddress?: string): Promise<BigNumber> => {
   try {
