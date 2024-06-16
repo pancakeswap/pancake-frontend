@@ -158,16 +158,12 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
           </FixedContainer>
           {subLinks ? (
             <Flex justifyContent="space-around" overflow="hidden">
-              <SubMenuItems
-                items={subLinksWithoutMobile}
-                mt={`${totalTopMenuHeight + 1}px`}
-                activeItem={activeSubItem}
-              />
+              <SubMenuItems items={subLinksWithoutMobile} mt={`${totalTopMenuHeight}px`} activeItem={activeSubItem} />
 
               {subLinksMobileOnly && subLinksMobileOnly?.length > 0 && (
                 <SubMenuItems
                   items={subLinksMobileOnly}
-                  mt={`${totalTopMenuHeight + 1}px`}
+                  mt={`${totalTopMenuHeight}px`}
                   activeItem={activeSubItem}
                   isMobileOnly
                 />
@@ -176,7 +172,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
           ) : (
             <div />
           )}
-          <BodyWrapper mt={!subLinks ? `${totalTopMenuHeight + 1}px` : "0"}>
+          <BodyWrapper mt={!subLinks ? `${totalTopMenuHeight}px` : "0"}>
             <Inner>{children}</Inner>
           </BodyWrapper>
         </Wrapper>
