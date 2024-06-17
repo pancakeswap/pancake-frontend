@@ -242,7 +242,6 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   userData?: DeserializedFarmUserData
   bCakeUserData?: DeserializedBCakeWrapperUserData
   bCakePublicData?: DeserializedBCakeWrapperUserData
-  boosterLiquidityX: number
   boosted?: boolean
   bCakeWrapperAddress?: Address
   isStable?: boolean
