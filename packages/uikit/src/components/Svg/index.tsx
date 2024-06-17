@@ -94,6 +94,7 @@ export { default as LibraryIcon } from "./Icons/Library";
 export { default as LightBulbIcon } from "./Icons/LightBulb";
 export { default as LineGraphIcon } from "./Icons/LineGraph";
 export { default as LineaIcon } from "./Icons/Linea";
+export { LinkIcon } from "./Icons/LinkIcon";
 export { default as ListViewIcon } from "./Icons/ListView";
 export { default as LocationIcon } from "./Icons/Location";
 export { default as LockIcon } from "./Icons/Lock";
