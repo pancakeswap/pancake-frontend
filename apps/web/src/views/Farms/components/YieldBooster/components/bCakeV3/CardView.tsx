@@ -47,7 +47,8 @@ export const BCakeV3CardView: React.FC<{
       boostMultiplier &&
       veCakeUserMultiplierBeforeBoosted &&
       locked &&
-      boostMultiplier * SHOULD_UPDATE_THRESHOLD <= veCakeUserMultiplierBeforeBoosted
+      (boostMultiplier * SHOULD_UPDATE_THRESHOLD <= veCakeUserMultiplierBeforeBoosted ||
+        (boostMultiplier === 1 && veCakeUserMultiplierBeforeBoosted > boostMultiplier))
     )
       return true
     return false

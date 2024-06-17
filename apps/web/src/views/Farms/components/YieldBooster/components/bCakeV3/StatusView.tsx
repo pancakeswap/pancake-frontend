@@ -51,9 +51,8 @@ export const StatusView: React.FC<{
     status === BoostStatus.Boosted,
     shouldUpdate ?? false,
     Boolean(isVeCakeWillSync),
+    (boostedMultiplier ?? 0) > 1,
   )
-
-  console.log({ isVeCakeWillSync, status })
 
   return (
     <Box>
@@ -131,17 +130,23 @@ const useBCakeMessage = (
   boosted: boolean,
   shouldUpdate: boolean,
   isVeCakeWillSync: boolean,
+  isMultiplierApplied: boolean,
 ) => {
   const { t } = useTranslation()
   const bCakeMessage = useMemo(() => {
     if (!account) return t('Connect wallet to activate yield booster')
     if (!isFarmStaking) {
-      if (!isVeCakeWillSync) return t('Sync veCAKE to activate yield booster')
+      if (!isVeCakeWillSync) {
+        return t('Sync veCAKE to activate yield booster')
+      }
       return t('Start staking to activate yield booster.')
     }
     if (!locked && chainId !== ChainId.BSC) return t('Lock Cake to get veCAKE on BSC to activate yield booster.')
     if (!locked) return t('Get veCAKE to activate yield booster')
-    if (!isVeCakeWillSync) return t('Sync veCAKE to activate yield booster')
+    if (!isVeCakeWillSync) {
+      if (isMultiplierApplied) return t('Sync veCAKE again to update yield booster')
+      return t('Sync veCAKE to activate yield booster')
+    }
     if (shouldUpdate) return t('Click to update and increase your boosts.')
     if (isLockEnd) return t('Renew your CAKE staking to activate yield booster')
     if (isReachedMaxBoostLimit && canBoostedButNot) return t('Unset other boosters to activate')
@@ -159,6 +164,7 @@ const useBCakeMessage = (
     boosted,
     shouldUpdate,
     isVeCakeWillSync,
+    isMultiplierApplied,
     chainId,
   ])
   return bCakeMessage
