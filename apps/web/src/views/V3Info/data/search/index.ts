@@ -4,21 +4,12 @@ import { components } from 'state/info/api/schema'
 export async function fetchSearchResults(
   chainName: components['schemas']['ChainName'],
   value: string,
+  signal: AbortSignal,
 ): Promise<{
   tokens: { address: string; name: string; symbol: string; decimals: number; tvlUSD: number; priceUSD: number }[]
   pools: {
-    token0: {
-      address: string
-      name: string
-      symbol: string
-      decimals: number
-    }
-    token1: {
-      address: string
-      name: string
-      symbol: string
-      decimals: number
-    }
+    token0: { address: string; name: string; symbol: string; decimals: number }
+    token1: { address: string; name: string; symbol: string; decimals: number }
     feeTier: number
     address: string
     tvlUSD: number
@@ -26,6 +17,7 @@ export async function fetchSearchResults(
 }> {
   try {
     const data = await explorerApiClient.GET('/cached/protocol/{protocol}/{chainName}/search', {
+      signal,
       params: {
         path: {
           protocol: 'v3',
