@@ -94,10 +94,8 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
   // AI Prediction Market
   /**
    * AI's Bet based on the round's AIPrice and live price.
-   * If the prices are equal (house win), return undefined
    */
   const liveAIPosition: 'UP' | 'DOWN' | undefined = useMemo(() => {
-    // Accurate upto 8 decimals (if prices are equal at 8 decimals, it is considered a house win)
     const formattedAIPrice = parseFloat(formatBigInt(round.AIPrice ?? 0n, 8, config?.AIPriceDecimals))
 
     if (formattedAIPrice && livePrice)
