@@ -1,5 +1,11 @@
 import { ChainId } from '@pancakeswap/chains'
-import { FarmWithStakedValue, filterFarmsByQuery, supportedChainIdV2, supportedChainIdV3 } from '@pancakeswap/farms'
+import {
+  FarmWithStakedValue,
+  bCakeSupportedChainId,
+  filterFarmsByQuery,
+  supportedChainIdV2,
+  supportedChainIdV3,
+} from '@pancakeswap/farms'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import {
@@ -441,9 +447,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 </Button>
               </NextLinkFromReactRouter>
             </Box>
-            <Box>
-              <BCakeBoosterCard />
-            </Box>
+            <Box>{bCakeSupportedChainId.includes(chainId) && <BCakeBoosterCard />}</Box>
           </FarmFlexWrapper>
         </Flex>
       </PageHeader>
