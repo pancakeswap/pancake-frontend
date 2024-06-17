@@ -94,7 +94,9 @@ export const LockPriceRow: React.FC<React.PropsWithChildren<LockPriceRowProps>> 
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsd(Number(formatBigInt(lockPrice, 8, 8)), config?.displayedDecimals ?? 0)}</Text>
+      <Text fontSize="14px">
+        {formatUsd(Number(formatBigInt(lockPrice, 8, config?.lockPriceDecimals ?? 8)), config?.displayedDecimals ?? 0)}
+      </Text>
     </Row>
   )
 }
@@ -190,7 +192,7 @@ export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({
       {closePrice ? (
         <Text color={textColor} bold fontSize="24px">
           {formatUsd(
-            Number(formatBigInt(closePrice, 8, 8)),
+            Number(formatBigInt(closePrice, 8, config?.closePriceDecimals ?? 8)),
             config?.livePriceDecimals ?? config?.displayedDecimals ?? 0,
           )}
         </Text>
@@ -200,7 +202,7 @@ export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({
       {betPosition && (
         <PositionTag betPosition={betPosition}>
           {formatUsd(
-            Number(formatBigInt(priceDifference, 8, 8)),
+            Number(formatBigInt(priceDifference, 8, config?.closePriceDecimals ?? 8)), // Ideally both closePriceDecimals and lockPriceDecimals should be same
             config?.livePriceDecimals ?? config?.displayedDecimals ?? 0,
           )}
         </PositionTag>

@@ -69,7 +69,8 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
 
   const betPosition = isBull ? BetPosition.BULL : BetPosition.BEAR
 
-  const priceDifference = price - +formatBigInt(lockPrice ?? 0n, config?.displayedDecimals, 8)
+  const priceDifference =
+    price - +formatBigInt(lockPrice ?? 0n, config?.displayedDecimals, config?.lockPriceDecimals ?? 8)
 
   const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds, round.closePrice)
 
