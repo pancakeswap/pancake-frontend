@@ -48,7 +48,7 @@ export const SwitchToBnbChainModal: React.FC<{
       <ModalContainer style={{ minHeight: 350 }}>
         <GradientModalHeader>
           <ModalTitle>
-            <Heading scale="lg">{t('Stake Cake')}</Heading>
+            <Heading scale="lg">{t('Stake %symbol%', { symbol: 'CAKE' })}</Heading>
           </ModalTitle>
           <ModalCloseButton onDismiss={onDismiss} />
         </GradientModalHeader>
