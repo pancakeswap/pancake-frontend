@@ -85,6 +85,8 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
       ],
     })
 
+    if (!userInfo) return null
+
     const callsResultBsc = await bscClient.multicall({
       contracts: [
         {
@@ -97,7 +99,7 @@ export const getVCakeAndProxyData = async (address: Address, targetChainId: Chai
           address: getVeCakeAddress(ChainId.BSC),
           abi: veCakeABI,
           functionName: 'balanceOfAtTime',
-          args: [userInfo?.[2] ?? '0x0000000000000000000000000000000000000000', BigInt(targetTime)],
+          args: [userInfo?.[2], BigInt(targetTime)],
         },
       ],
     })
