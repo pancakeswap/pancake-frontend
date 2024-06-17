@@ -10,9 +10,6 @@ interface PayoutMeterProps extends BoxProps {
 const AnimatedMeter = (props: BoxProps) => {
   return (
     <Box position="relative" {...props}>
-      {/* <img src="/images/predictions-temp/meter.svg" alt="Payout Meter" width={100} /> */}
-      {/* <MeterPointerImage src="/images/predictions-temp/meter-pointer.svg" alt="Payout Pointer" width={12} /> */}
-
       <Lottie animationData={MeterJSON} style={{ width: '110px' }} />
     </Box>
   )
