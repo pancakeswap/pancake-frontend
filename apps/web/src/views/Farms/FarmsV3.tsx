@@ -276,6 +276,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         if (!farm.quoteTokenAmountTotal || !farm.quoteTokenPriceBusd) {
           return farm
         }
+
         const totalLiquidityFromLp = new BigNumber(farm?.lpTotalInQuoteToken ?? 0).times(farm.quoteTokenPriceBusd)
         // Mock 1$ tvl if the farm doesn't have lp staked
         const totalLiquidity = totalLiquidityFromLp.eq(BIG_ZERO) && mockApr ? BIG_ONE : totalLiquidityFromLp
@@ -285,7 +286,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 chainId,
                 new BigNumber(farm?.poolWeight ?? 0),
                 cakePrice,
-                totalLiquidity,
+                totalLiquidity.times(farm.boosterLiquidityX ?? 1),
                 farm.lpAddress,
                 regularCakePerBlock,
                 farm.lpRewardsApr,

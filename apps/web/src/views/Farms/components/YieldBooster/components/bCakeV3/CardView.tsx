@@ -62,7 +62,6 @@ export const BCakeV3CardView: React.FC<{
         isFarmStaking={isFarmStaking}
         shouldUpdate={shouldUpdate}
       />
-
       <Box>
         <StatusViewButtons
           locked={lockValidated}

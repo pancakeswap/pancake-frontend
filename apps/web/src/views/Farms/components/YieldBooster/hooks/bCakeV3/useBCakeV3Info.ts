@@ -69,6 +69,7 @@ export const useUserPositionInfo = (tokenId?: string) => {
     enabled: Boolean(chainId && tokenId),
     ...QUERY_SETTINGS_WITHOUT_REFETCH,
   })
+
   return {
     data: {
       liquidity: data?.[0],
