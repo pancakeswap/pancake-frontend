@@ -5,7 +5,6 @@ import React, { createContext, useCallback, useMemo, useRef, useState } from "re
 import { isMobile } from "react-device-detect";
 import { createPortal } from "react-dom";
 import { styled } from "styled-components";
-import { mountAnimation, unmountAnimation } from "../../components/BottomDrawer/styles";
 import { Overlay } from "../../components/Overlay";
 import { useIsomorphicEffect } from "../../hooks/useIsomorphicEffect";
 import {
@@ -16,6 +15,7 @@ import {
   disappearAnimation,
 } from "../../util/animationToolkit";
 import getPortalRoot from "../../util/getPortalRoot";
+import { mountAnimation, unmountAnimation } from "./BottomDrawer/styles";
 import { ModalContainer } from "./styles";
 import { Handler } from "./types";
 
