@@ -413,7 +413,7 @@ const ReadyToSyncView: React.FC<{ chainId: ChainId; nativeFee: bigint; bnbBalanc
         {t('veCAKE Sync')}
       </Text>
       <Text fontSize={12} mt="12px">
-        {t('From  to')} {CROSS_CHIAN_CONFIG[chainId].name}
+        {t('From %chain% to', { chain: 'BSC' })} {CROSS_CHIAN_CONFIG[chainId].name}
       </Text>
       <Flex justifyContent="flex-end" alignItems="flex-end" style={{ gap: 5 }} mt="12px">
         <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="cross-chain-vecake" />

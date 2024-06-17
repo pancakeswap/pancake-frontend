@@ -3420,5 +3420,11 @@
   "You will need to re-sync your veCAKE after extending or adding more CAKE to your veCAKE staking position.": "You will need to re-sync your veCAKE after extending or adding more CAKE to your veCAKE staking position.",
   "Sync veCAKE to activate yield booster": "Sync veCAKE to activate yield booster",
   "The network selected is already up-to-date.": "The network selected is already up-to-date.",
-  "Click “Sync” to proceed with syncing but please mind that gas cost is needed to sync.": "Click “Sync” to proceed with syncing but please mind that gas cost is needed to sync."
+  "Click “Sync” to proceed with syncing but please mind that gas cost is needed to sync.": "Click “Sync” to proceed with syncing but please mind that gas cost is needed to sync.",
+  "It’s a BNB smart chain only feature": "It’s a BNB smart chain only feature",
+  "Lock CAKE on BNB smart chain to activate yield booster.": "Lock CAKE on BNB smart chain to activate yield booster.",
+  "Stake CAKE to obtain bCAKE – to boost farm yields.": "Stake CAKE to obtain bCAKE – to boost farm yields.",
+  "Switch chain to continue": "Switch chain to continue",
+  "Lock Cake to get veCAKE on BSC to activate yield booster.": "Lock Cake to get veCAKE on BSC to activate yield booster.",
+  "Sync veCAKE again to update yield booster": "Sync veCAKE again to update yield booster"
 }
