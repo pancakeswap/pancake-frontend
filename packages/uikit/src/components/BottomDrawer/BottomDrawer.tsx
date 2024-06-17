@@ -13,7 +13,7 @@ import { DrawerContainer } from "./styles";
 interface BottomDrawerProps {
   content: React.ReactNode;
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void | null;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>> | null;
 }
 
 const BottomDrawer: React.FC<React.PropsWithChildren<BottomDrawerProps>> = ({ content, isOpen, setIsOpen }) => {
