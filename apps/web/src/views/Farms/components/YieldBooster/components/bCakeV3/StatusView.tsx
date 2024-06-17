@@ -65,7 +65,7 @@ export const StatusView: React.FC<{
       <Flex alignItems="center">
         {!isVeCakeWillSync && chainId !== ChainId.BSC ? (
           <Text>
-            {status === BoostStatus.Boosted
+            {status === BoostStatus.Boosted && (boostedMultiplier ?? 0) > 1
               ? `${boostedMultiplier?.toLocaleString('en-US', {
                   maximumFractionDigits: 3,
                 })}x`
