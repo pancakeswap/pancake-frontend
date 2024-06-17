@@ -367,12 +367,12 @@ const OtherChainsCard: React.FC<{
         <Text fontSize="14px" color="textSubtle">
           {t('Profile')}
         </Text>
-        {isLoading || isLayerZeroHashProcessing ? (
-          <Loading width="14px" height="14px" />
-        ) : isLayerZeroHashProcessing && !isSynced ? (
+        {isLayerZeroHashProcessing && !isSynced ? (
           <LinkExternal external href={`https://layerzeroscan.com/tx/${hash}`}>
             {t('In Progress')}
           </LinkExternal>
+        ) : isLoading ? (
+          <Loading width="14px" height="14px" />
         ) : (
           <>{account ? <Text fontSize="16px">{isSynced ? t('Synced') : t('To be Synced')}</Text> : '-'}</>
         )}
@@ -382,7 +382,7 @@ const OtherChainsCard: React.FC<{
           <Text fontSize="14px" color="textSubtle">
             {t('veCAKE')}
           </Text>
-          {isLayerZeroHashProcessing ? (
+          {isLayerZeroHashProcessing && !isVeCakeWillSync ? (
             <Flex alignItems="center" justifyContent="center" mt="7px" pb="4px">
               <Loading width="14px" height="14px" />
             </Flex>
