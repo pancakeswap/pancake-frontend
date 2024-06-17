@@ -1,5 +1,5 @@
+import { bCakeSupportedChainId } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import { Box, Flex, Heading, PageHeader, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { memo } from 'react'
@@ -31,7 +31,7 @@ export const Header = memo(function Header() {
           </Heading>
         </Flex>
 
-        {isDesktop && ChainId.BSC === chainId && <BCakeBoosterCard variants="pm" />}
+        {isDesktop && bCakeSupportedChainId.includes(chainId) && <BCakeBoosterCard variants="pm" />}
       </Flex>
     </PageHeader>
   )
