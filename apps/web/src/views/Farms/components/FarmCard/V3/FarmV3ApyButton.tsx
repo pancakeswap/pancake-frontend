@@ -116,7 +116,7 @@ function FarmV3ApyButton_({
 
   const cakePrice = useCakePrice()
 
-  const sqrtRatioX96 = price && encodeSqrtRatioX96(price.numerator, price.denominator)
+  const sqrtRatioX96 = useMemo(() => price && encodeSqrtRatioX96(price.numerator, price.denominator), [price])
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
 
