@@ -72,6 +72,7 @@ export const useProfileProxy = (
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     staleTime: FAST_INTERVAL,
+    refetchInterval: FAST_INTERVAL,
   })
 
   return { profileProxy: data, isLoading: isPending }
