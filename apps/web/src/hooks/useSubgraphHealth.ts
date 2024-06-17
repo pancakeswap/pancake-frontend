@@ -4,7 +4,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useInitialBlockNumber } from '@pancakeswap/wagmi'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export enum SubgraphStatus {
   OK,
@@ -17,7 +17,7 @@ export enum SubgraphStatus {
 export type SubgraphHealthState = {
   status: SubgraphStatus
   chainId: number
-  subgraphName: string
+  subgraph: string
   currentBlock: number
   chainHeadBlock: number
   latestBlock: number
@@ -27,12 +27,47 @@ export type SubgraphHealthState = {
 const NOT_OK_BLOCK_DIFFERENCE = 200 // ~15 minutes delay
 const WARNING_BLOCK_DIFFERENCE = 50 // ~2.5 minute delay
 
-const useSubgraphHealth = ({ chainId, subgraphName }: { chainId: ChainId; subgraphName?: string }) => {
+const useSubgraphHealth = ({ chainId, subgraph }: { chainId: ChainId; subgraph?: string }) => {
   const { data: initialBlockBN = 0 } = useInitialBlockNumber({
     chainId,
   })
 
   const initialBlock = useMemo(() => Number(initialBlockBN), [initialBlockBN])
+
+  const [deploymentId, setDeploymentId] = useState<string | undefined>()
+
+  useEffect(() => {
+    let unmounted = false
+    const unmount = () => {
+      unmounted = true
+    }
+    if (!subgraph) {
+      return unmount
+    }
+
+    const fetchDeploymentId = async () => {
+      const {
+        _meta: { deployment },
+      } = await request(
+        subgraph,
+        gql`
+          query MyQuery {
+            _meta {
+              deployment
+            }
+          }
+        `,
+      )
+
+      if (unmounted) {
+        return
+      }
+      setDeploymentId(deployment)
+    }
+
+    fetchDeploymentId()
+    return unmount
+  }, [subgraph])
 
   const { data: currentBlockNumber = 0 } = useQuery<number>({
     queryKey: [SLOW_INTERVAL, 'blockNumber', chainId],
@@ -40,9 +75,9 @@ const useSubgraphHealth = ({ chainId, subgraphName }: { chainId: ChainId; subgra
   })
 
   const { data: sgHealth } = useQuery<SubgraphHealthState>({
-    queryKey: ['sgHealth', chainId, subgraphName, currentBlockNumber || initialBlock],
+    queryKey: ['sgHealth', chainId, subgraph, deploymentId, currentBlockNumber || initialBlock],
     placeholderData: (prev) => {
-      if (!prev || prev.chainId !== chainId || prev.subgraphName !== subgraphName) {
+      if (!prev || prev.chainId !== chainId || prev.subgraph !== subgraph) {
         return {
           status: SubgraphStatus.UNKNOWN,
           currentBlock: 0,
@@ -50,7 +85,7 @@ const useSubgraphHealth = ({ chainId, subgraphName }: { chainId: ChainId; subgra
           latestBlock: 0,
           blockDifference: 0,
           chainId: chainId!,
-          subgraphName: subgraphName!,
+          subgraph: subgraph!,
         }
       }
       return prev
@@ -58,15 +93,35 @@ const useSubgraphHealth = ({ chainId, subgraphName }: { chainId: ChainId; subgra
     gcTime: SLOW_INTERVAL,
     queryFn: async () => {
       try {
-        const [{ indexingStatusForCurrentVersion }, currentBlock] = await Promise.all([
+        const [{ indexingStatuses }, currentBlock] = await Promise.all([
           request(
             GRAPH_HEALTH,
-            gql`
-            query getSubgraphHealth {
-              indexingStatusForCurrentVersion(subgraphName: "${subgraphName}") {
+            gql`query getSubgraphHealth {
+              indexingStatuses(
+                subgraphs: ["${deploymentId}"]
+              ) {
+                subgraph
+                synced
                 health
+                entityCount
+                fatalError {
+                  handler
+                  message
+                  deterministic
+                  block {
+                    hash
+                    number
+                  }
+                }
+                nonFatalErrors{
+                  message
+                  block{number}
+                }
                 chains {
                   chainHeadBlock {
+                    number
+                  }
+                  earliestBlock {
                     number
                   }
                   latestBlock {
@@ -79,6 +134,8 @@ const useSubgraphHealth = ({ chainId, subgraphName }: { chainId: ChainId; subgra
           ),
           currentBlockNumber ? Promise.resolve(currentBlockNumber) : Promise.resolve(initialBlock),
         ])
+
+        const [indexingStatusForCurrentVersion] = indexingStatuses
 
         const isHealthy = indexingStatusForCurrentVersion?.health === 'healthy'
         const chainHeadBlock = parseInt(indexingStatusForCurrentVersion?.chains[0]?.chainHeadBlock.number)
@@ -93,7 +150,7 @@ const useSubgraphHealth = ({ chainId, subgraphName }: { chainId: ChainId; subgra
           latestBlock,
           blockDifference,
           chainId: chainId!,
-          subgraphName: subgraphName!,
+          subgraph: subgraph!,
         }
         if (
           !isHealthy ||
@@ -116,7 +173,7 @@ const useSubgraphHealth = ({ chainId, subgraphName }: { chainId: ChainId; subgra
           ...sgHealthData,
         }
       } catch (error) {
-        console.error(`Failed to perform health check for ${subgraphName} subgraph`, error)
+        console.error(`Failed to perform health check for ${subgraph} subgraph`, error)
         return {
           status: SubgraphStatus.DOWN,
           currentBlock: -1,
@@ -124,11 +181,11 @@ const useSubgraphHealth = ({ chainId, subgraphName }: { chainId: ChainId; subgra
           latestBlock: -1,
           blockDifference: 0,
           chainId: chainId!,
-          subgraphName: subgraphName!,
+          subgraph: subgraph!,
         }
       }
     },
-    enabled: Boolean(initialBlock && chainId && subgraphName),
+    enabled: Boolean(initialBlock && chainId && subgraph && deploymentId),
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   })
