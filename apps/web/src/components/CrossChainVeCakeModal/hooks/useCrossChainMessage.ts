@@ -8,10 +8,10 @@ export const useCrossChianMessage = (targetChainId?: ChainId, txHash?: string) =
   const { data, isLoading } = useQuery({
     queryKey: ['crossChainMessage', targetChainId, txHash],
     queryFn: () => {
-      if (!txHash || !targetChainId) return undefined
+      if (!txHash || !targetChainId) throw new Error('txHash and targetChainId are required')
       return getCrossChainMessage({ chainId: targetChainId, txHash })
     },
-    enabled: !!txHash,
+    enabled: !!txHash && Boolean(targetChainId),
     refetchInterval: FAST_INTERVAL,
   })
   return { data, isLoading }
