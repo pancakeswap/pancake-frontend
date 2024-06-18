@@ -4,10 +4,11 @@ import { ChainId } from '@pancakeswap/chains'
 import { Currency, Native } from '@pancakeswap/sdk'
 import { Address, Hex } from 'viem'
 
-export const DEFAULT_PAYMASTER_TOKEN = Native.onChain(ChainId.ZKSYNC)
+// export const DEFAULT_PAYMASTER_TOKEN = Native.onChain(ChainId.ZKSYNC)
 
 export const paymasterTokens: Currency[] = [
-  DEFAULT_PAYMASTER_TOKEN,
+  // DEFAULT_PAYMASTER_TOKEN,
+  Native.onChain(ChainId.ZKSYNC),
   zksyncTokens.wbtc,
   zksyncTokens.dai,
   zksyncTokens.usdc,
@@ -24,6 +25,8 @@ export const paymasterTokens: Currency[] = [
   zksyncTokens.hold,
   zksyncTokens.zk,
 ]
+
+export const DEFAULT_PAYMASTER_TOKEN = paymasterTokens[4]
 
 export const paymasterInfo: { [gasTokenAddress: Address]: { discount: `-${number}%` | 'FREE' } } = {
   [zksyncTokens.wbtc.address]: {
