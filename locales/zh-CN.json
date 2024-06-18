@@ -3146,7 +3146,6 @@
   "Reset approval on USDT.": "重置 USDT 的授权",
   "Revoke transaction filled, but Approval not reset to 0. Please try again.": "交易撤销已完成，但批准额度未重置为 0。请重试。",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "从您符合 Merkl 奖励资格的所有持仓中获得的 %symbol% 奖励总数。",
-  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "要在 Merkl 上赚取奖励，请将此持仓从 PancakeSwap 农场中解除质押。",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "此 Merkl 活动不会为超出范围的流动性提供奖励。要赚取奖励，请调整您的持仓。",
   "This liquidity position is currently earning rewards on Merkl.": "此流动性持仓目前正在 Merkl 上赚取奖励。",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "由于此流动性持仓的总价值小于 20 美元，不会在 Merkl 上赚取任何奖励。",
