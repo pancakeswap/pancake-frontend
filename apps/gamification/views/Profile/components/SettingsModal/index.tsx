@@ -14,20 +14,24 @@ import {
   Text,
   TwitterIcon,
 } from '@pancakeswap/uikit'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import useAuth from 'hooks/useAuth'
 import { useConnectDiscord } from 'views/Profile/hooks/settingsModal/useConnectDiscord'
 import { useConnectTelegram } from 'views/Profile/hooks/settingsModal/useConnectTelegram'
 import { useConnectTwitter } from 'views/Profile/hooks/settingsModal/useConnectTwitter'
 import { UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+import { useAccount } from 'wagmi'
 
 interface SocialComponentProps {
   icon: JSX.Element
   name: string
+  disabled: boolean
   connected?: boolean
   connect?: () => void
   disconnect?: () => void
 }
 
-const SocialComponent: React.FC<SocialComponentProps> = ({ icon, name, connected, connect, disconnect }) => {
+const SocialComponent: React.FC<SocialComponentProps> = ({ icon, disabled, name, connected, connect, disconnect }) => {
   const { t } = useTranslation()
   return (
     <Flex>
@@ -38,7 +42,12 @@ const SocialComponent: React.FC<SocialComponentProps> = ({ icon, name, connected
         </Text>
       </Flex>
       <Flex>
-        <Button variant={connected ? 'subtle' : 'primary'} scale="sm" onClick={connected ? disconnect : connect}>
+        <Button
+          scale="sm"
+          disabled={disabled}
+          variant={connected ? 'subtle' : 'primary'}
+          onClick={connected ? disconnect : connect}
+        >
           {connected ? t('Disconnect') : t('Connect')}
         </Button>
         <DotIcon ml="8px" width={8} height={8} color={connected ? 'success' : 'textDisabled'} />
@@ -54,6 +63,9 @@ interface SettingsModalProps extends InjectedModalProps {
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ userInfo, refresh, onDismiss }) => {
   const { t } = useTranslation()
+  const { logout } = useAuth()
+  const { address: account } = useAccount()
+  const disabled = !account
   const { connect: connectDiscord, disconnect: disconnectDiscord } = useConnectDiscord({ userInfo, refresh })
   const { connect: connectTelegram, disconnect: disconnectTelegram } = useConnectTelegram({ userInfo, refresh })
   const { connect: connectTwitter, disconnect: disconnectTwitter } = useConnectTwitter({ userInfo, refresh })
@@ -73,6 +85,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ userInfo, refresh,
           <FlexGap width="100%" gap="12px" flexDirection="column">
             <SocialComponent
               name={t('X')}
+              disabled={disabled}
               icon={<TwitterIcon color="textSubtle" width={20} height={20} />}
               connected={Boolean(userInfo?.socialHubToSocialUserIdMap?.Twitter)}
               connect={connectTwitter}
@@ -81,6 +94,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ userInfo, refresh,
             <Box>
               <SocialComponent
                 name={t('Telegram')}
+                disabled={disabled}
                 icon={<TelegramIcon color="textSubtle" width={20} height={20} />}
                 connected={Boolean(userInfo?.socialHubToSocialUserIdMap?.Telegram)}
                 connect={connectTelegram}
@@ -89,6 +103,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ userInfo, refresh,
             </Box>
             <SocialComponent
               name={t('Discord')}
+              disabled={disabled}
               icon={<DiscordIcon color="textSubtle" width={20} height={20} />}
               connected={Boolean(userInfo?.socialHubToSocialUserIdMap?.Discord)}
               connect={connectDiscord}
@@ -96,23 +111,31 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ userInfo, refresh,
             />
             {/* <SocialComponent
               name={t('Youtube')}
+              disabled={disabled}
               icon={<YoutubeIcon color="textSubtle" width={20} height={20} />}
               connected={Boolean(userInfo?.socialHubToSocialUserIdMap?.Youtube)}
             />
             <SocialComponent
               name={t('Instagram')}
+              disabled={disabled}
               icon={<InstagramIcon color="textSubtle" width={20} height={20} />}
               connected={Boolean(userInfo?.socialHubToSocialUserIdMap?.Instagram)}
             /> */}
           </FlexGap>
         </Box>
         <Box width="100%" mt="12px">
-          <Text fontSize={12} bold color="textSubtle">
-            {t('Disconnect the wallet')}
-          </Text>
-          <Button width="100%" mt="12px">
-            {t('Disconnect')}
-          </Button>
+          {account ? (
+            <>
+              <Text fontSize={12} bold color="textSubtle">
+                {t('Disconnect the wallet')}
+              </Text>
+              <Button width="100%" mt="12px" onClick={logout}>
+                {t('Disconnect')}
+              </Button>
+            </>
+          ) : (
+            <ConnectWalletButton width="100%" />
+          )}
         </Box>
       </Flex>
     </Modal>
