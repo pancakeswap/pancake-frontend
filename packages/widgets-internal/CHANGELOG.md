@@ -1,5 +1,11 @@
 # @pancakeswap/widgets-internal
 
+## 0.2.2
+
+### Patch Changes
+
+- @pancakeswap/farms@1.0.68
+
 ## 0.2.1
 
 ### Patch Changes
