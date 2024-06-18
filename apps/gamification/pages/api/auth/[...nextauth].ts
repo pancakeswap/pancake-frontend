@@ -13,6 +13,9 @@ export default NextAuth({
       clientSecret: process.env.TWITTER_CONSUMER_SECRET ?? '',
     }),
   ],
+  session: {
+    maxAge: 1 * 60, // One minute
+  },
   // pages: {
   //   signIn: '/profile',
   // },

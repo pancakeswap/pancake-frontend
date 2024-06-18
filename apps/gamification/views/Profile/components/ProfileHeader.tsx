@@ -82,7 +82,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       }
     }
 
-    // if (!isFetched && session) {
+    // if (isFetched && session) {
     //   if (!userInfo.socialHubToSocialUserIdMap.Discord && (session as any).user?.discordId) {
     //     fetch((session as any).user?.discordId, SocialHubType.Discord)
     //   }
