@@ -3146,7 +3146,6 @@
   "Reset approval on USDT.": "USDTの承認をリセット",
   "Revoke transaction filled, but Approval not reset to 0. Please try again.": "取引の取り消しは完了しましたが、承認は0にリセットされませんでした。もう一度お試しください。",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Merkl報酬対象のすべてのポジションからの%symbol%の報酬の合計額です。",
-  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "Merklで報酬を獲得するには、PancakeSwapファームからこのポジションのステーキングを解除してください。",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "このMerklキャンペーンでは範囲外の流動性に対する報酬はありません。報酬を獲得するにはポジションを調整してください。",
   "This liquidity position is currently earning rewards on Merkl.": "この流動性ポジションは現在Merklで報酬を獲得中です。",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "この流動性ポジションは、USD合計額が$20未満であるためMerklで報酬を獲得しません。",
