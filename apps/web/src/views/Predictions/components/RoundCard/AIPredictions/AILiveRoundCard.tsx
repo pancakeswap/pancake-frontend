@@ -75,7 +75,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds, round.closePrice)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    config?.isAIPrediction
+    config?.ai
       ? t('Last price from Binance API')
       : config?.chainlinkOracleAddress
       ? t('Last price from Chainlink Oracle')

@@ -14,10 +14,12 @@ export const predictions: Record<string, PredictionConfig> = {
     tokenBackgroundColor: '#F0B90B',
     displayedDecimals: 4,
 
-    isAIPrediction: true,
     livePriceDecimals: 2, // Binance API for this pair provides price upto 2 decimals
-    AIPriceDecimals: 18,
     lockPriceDecimals: 18,
     closePriceDecimals: 18,
+
+    ai: {
+      aiPriceDecimals: 18,
+    },
   },
 }

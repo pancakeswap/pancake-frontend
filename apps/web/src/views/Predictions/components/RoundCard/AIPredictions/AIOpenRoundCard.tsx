@@ -96,13 +96,13 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
    * AI's Bet based on the round's AIPrice and live price.
    */
   const liveAIPosition: 'UP' | 'DOWN' | undefined = useMemo(() => {
-    const formattedAIPrice = parseFloat(formatBigInt(round.AIPrice ?? 0n, 8, config?.AIPriceDecimals))
+    const formattedAIPrice = parseFloat(formatBigInt(round.AIPrice ?? 0n, 8, config?.ai?.aiPriceDecimals))
 
     if (formattedAIPrice && livePrice)
       return formattedAIPrice === livePrice ? undefined : formattedAIPrice > livePrice ? 'UP' : 'DOWN'
 
     return undefined
-  }, [livePrice, round.AIPrice, config?.AIPriceDecimals])
+  }, [livePrice, round.AIPrice, config?.ai?.aiPriceDecimals])
 
   /**
    * User Position in AI Prediction Market

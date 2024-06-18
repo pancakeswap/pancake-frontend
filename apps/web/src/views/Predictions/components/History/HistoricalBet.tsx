@@ -192,7 +192,7 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
         )}
       </StyledBet>
       {isOpen &&
-        (config?.isAIPrediction ? (
+        (config?.ai ? (
           <AIBetDetails bet={bet} result={getRoundResult(bet, currentEpoch)} />
         ) : (
           <BetDetails bet={bet} result={getRoundResult(bet, currentEpoch)} />

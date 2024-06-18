@@ -34,8 +34,8 @@ export const Price: React.FC<React.PropsWithChildren<PriceProps>> = ({
   })
 
   const priceAsNumber = useMemo(
-    () => (config?.isAIPrediction ? aiLivePrice : parseFloat(formatBigIntToFixed(price, 4, 8))),
-    [price, aiLivePrice, config?.isAIPrediction],
+    () => (config?.ai ? aiLivePrice : parseFloat(formatBigIntToFixed(price, 4, 8))),
+    [price, aiLivePrice, config?.ai],
   )
 
   if (!Number.isFinite(priceAsNumber)) {

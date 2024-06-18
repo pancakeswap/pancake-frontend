@@ -98,7 +98,7 @@ export const fetchPredictionData = createAsyncThunk<
 
   // Round data
   const roundsResponse = await getRoundsData(epochs, extra.address, chainId, {
-    isAIPrediction: Boolean(extra.isAIPrediction),
+    isAIPrediction: Boolean(extra.ai),
   })
   const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
     const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse)
@@ -186,7 +186,7 @@ export const fetchNodeHistory = createAsyncThunk<
       ? parseFloat(formatUnits(round.closePrice, extra.closePriceDecimals ?? 8))
       : null
     const lockPrice = round.lockPrice ? parseFloat(formatUnits(round.lockPrice, extra.lockPriceDecimals ?? 8)) : null
-    const AIPrice = round.AIPrice ? parseFloat(formatUnits(round.AIPrice, extra.AIPriceDecimals ?? 8)) : null
+    const AIPrice = round.AIPrice ? parseFloat(formatUnits(round.AIPrice, extra.ai?.aiPriceDecimals ?? 8)) : null
 
     const getRoundPosition = () => {
       if (!closePrice) {
@@ -194,7 +194,7 @@ export const fetchNodeHistory = createAsyncThunk<
       }
 
       // If AI-based prediction
-      if (extra.isAIPrediction && round.AIPrice) {
+      if (extra.ai && round.AIPrice) {
         if (
           (round.closePrice > round.lockPrice && round.AIPrice > round.lockPrice) ||
           (round.closePrice < round.lockPrice && round.AIPrice < round.lockPrice) ||

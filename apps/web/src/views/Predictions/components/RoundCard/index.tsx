@@ -46,7 +46,7 @@ const RoundCard: React.FC<React.PropsWithChildren<RoundCardProps>> = ({ round, i
   // Next (open) round
   if (epoch === currentEpoch && lockPrice === null) {
     // AI-based predictions
-    if (config?.isAIPrediction) {
+    if (config?.ai) {
       return (
         <AIOpenRoundCard
           round={round}
@@ -74,7 +74,7 @@ const RoundCard: React.FC<React.PropsWithChildren<RoundCardProps>> = ({ round, i
 
   // Live round
   if (closePrice === null && epoch === currentEpoch - 1) {
-    if (config?.isAIPrediction) {
+    if (config?.ai) {
       return (
         <AILiveRoundCard
           betAmount={ledger?.amount}
@@ -99,7 +99,7 @@ const RoundCard: React.FC<React.PropsWithChildren<RoundCardProps>> = ({ round, i
     )
   }
 
-  if (config?.isAIPrediction) {
+  if (config?.ai) {
     return (
       <AIExpiredRoundCard
         isActive={isActive}

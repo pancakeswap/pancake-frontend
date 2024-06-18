@@ -29,6 +29,10 @@ export enum PredictionsChartView {
   Pyth = 'Pyth Oracle',
 }
 
+type AIPredictionConfig = {
+  aiPriceDecimals?: number
+}
+
 export interface PredictionConfig {
   isNativeToken: boolean
   address: Address
@@ -39,13 +43,12 @@ export interface PredictionConfig {
   token: Token
   tokenBackgroundColor: string // For selector svg token for prediction page.
 
-  isAIPrediction?: boolean // AI-based prediction market
-
   // Decimals to accommodate varying price sources
-  AIPriceDecimals?: number
   lockPriceDecimals?: number
   closePriceDecimals?: number
   livePriceDecimals?: number
+
+  ai?: AIPredictionConfig // AI-based prediction market
 }
 
 export type ContractAddresses<T extends ChainId = SupportedChainId> = {
