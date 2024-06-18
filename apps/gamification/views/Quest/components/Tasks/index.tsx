@@ -1,9 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
 import { Task } from 'views/Quest/components/Tasks/Task'
+// import { useVerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 
-export const Tasks = () => {
+interface TasksProps {
+  questId: string
+}
+
+export const Tasks: React.FC<TasksProps> = ({ questId }) => {
   const { t } = useTranslation()
+  // const { taskStatus } = useVerifyTaskStatus(questId)
 
   return (
     <Box mb="32px">

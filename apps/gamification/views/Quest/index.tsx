@@ -10,6 +10,7 @@ import {
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 import { Description } from 'views/Quest/components/Description'
 import { ExploreMore } from 'views/Quest/components/ExploreMore'
@@ -45,6 +46,8 @@ const StyledBackButton = styled(Link)`
 export const Quest = () => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
+  const { query } = useRouter()
+  const questId: string = (query.id as string) ?? ''
 
   return (
     <QuestContainer>
@@ -73,7 +76,7 @@ export const Quest = () => {
           <Text>0:700 Apr3 - 0:700 Apr 10 (UTC+00:00)</Text>
         </Flex>
         {!isDesktop && <Reward />}
-        <Tasks />
+        <Tasks questId={questId} />
         <Description />
         <RelatedQuest />
         <ExploreMore />
