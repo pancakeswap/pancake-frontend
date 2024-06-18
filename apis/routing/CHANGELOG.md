@@ -1,5 +1,11 @@
 # routing-api
 
+## 0.3.69
+
+### Patch Changes
+
+- @pancakeswap/farms@1.0.68
+
 ## 0.3.68
 
 ### Patch Changes
