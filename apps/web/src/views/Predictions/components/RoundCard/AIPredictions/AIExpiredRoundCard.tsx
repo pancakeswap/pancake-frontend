@@ -8,6 +8,7 @@ import { getHasRoundFailed } from 'state/predictions/helpers'
 import { useGetBufferSeconds } from 'state/predictions/hooks'
 import { NodeLedger, NodeRound } from 'state/types'
 import { styled } from 'styled-components'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { getRoundPosition } from '../../../helpers'
 import { RoundResult } from '../../RoundResult'
 import CanceledRoundCard from '../CanceledRoundCard'
@@ -51,6 +52,7 @@ export const AIExpiredRoundCard: React.FC<React.PropsWithChildren<AIExpiredRound
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
+  const config = useConfig()
   const { epoch, lockPrice, closePrice, AIPrice } = round
   const betPosition = getRoundPosition(lockPrice ?? 0n, closePrice ?? 0n) // Only need for UP/DOWN, not related to AI's bet
   const bufferSeconds = useGetBufferSeconds()
@@ -59,11 +61,11 @@ export const AIExpiredRoundCard: React.FC<React.PropsWithChildren<AIExpiredRound
   const aiPosition = useMemo(() => {
     if (!AIPrice || !lockPrice) return undefined
 
-    const formattedLockPrice = +formatBigInt(lockPrice, 8, 8) // note: lock price formatted with 8 decimals
-    const formattedAIPrice = +formatBigInt(AIPrice, 8, 18)
+    const formattedLockPrice = +formatBigInt(lockPrice, 8, config?.lockPriceDecimals ?? 18)
+    const formattedAIPrice = +formatBigInt(AIPrice, 8, config?.ai?.aiPriceDecimals ?? 18)
 
     return formattedAIPrice !== formattedLockPrice ? (formattedAIPrice > formattedLockPrice ? 'UP' : 'DOWN') : undefined
-  }, [AIPrice, lockPrice])
+  }, [AIPrice, lockPrice, config?.ai?.aiPriceDecimals, config?.lockPriceDecimals])
 
   const userPosition = useMemo(() => {
     // hasEnteredUp => Following AI

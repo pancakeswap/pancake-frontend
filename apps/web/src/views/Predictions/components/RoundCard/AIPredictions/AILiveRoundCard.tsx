@@ -87,11 +87,11 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   const aiPosition = useMemo(() => {
     if (!round.AIPrice || !round.lockPrice) return undefined
 
-    const formattedLockPrice = +formatBigInt(round.lockPrice, 8, 8) // note: lock price formatted with 8 decimals
-    const formattedAIPrice = +formatBigInt(round.AIPrice, 8, 18)
+    const formattedLockPrice = +formatBigInt(round.lockPrice, 8, config?.lockPriceDecimals ?? 18) // note: lock price formatted with 8 decimals
+    const formattedAIPrice = +formatBigInt(round.AIPrice, 8, config?.ai?.aiPriceDecimals ?? 18)
 
     return formattedAIPrice !== formattedLockPrice ? (formattedAIPrice > formattedLockPrice ? 'UP' : 'DOWN') : undefined
-  }, [round.AIPrice, round.lockPrice])
+  }, [round.AIPrice, round.lockPrice, config?.ai?.aiPriceDecimals, config?.lockPriceDecimals])
 
   const userPosition = useMemo(() => {
     if ((hasEnteredFor && aiPosition === 'UP') || (hasEnteredAgainst && aiPosition === 'DOWN')) return 'UP'
