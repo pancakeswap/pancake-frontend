@@ -5,7 +5,7 @@ import { MAX_BIN_STEP, MIN_BIN_STEP } from '../../constants'
 import { MAX_PROTOCOL_FEE, TEN_PERCENT_FEE } from '../../constants/fee'
 import type { BinTree } from '../../types'
 
-type ActiveId = number | `${number}`
+type ActiveId = number
 type Reserve = {
   reserveX: bigint
   reserveY: bigint
