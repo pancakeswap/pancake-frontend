@@ -111,6 +111,7 @@ const BasicChart = ({
         </Flex>
         <Box>
           <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm">
+            <ButtonMenuItem>{t('1H')}</ButtonMenuItem>
             <ButtonMenuItem>{t('24H')}</ButtonMenuItem>
             <ButtonMenuItem>{t('1W')}</ButtonMenuItem>
             <ButtonMenuItem>{t('1M')}</ButtonMenuItem>

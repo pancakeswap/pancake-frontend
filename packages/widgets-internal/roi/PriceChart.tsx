@@ -130,6 +130,10 @@ function TimeSpans({
   const SPAN = useMemo(
     () => [
       {
+        key: PairDataTimeWindowEnum.HOUR,
+        text: t("1H"),
+      },
+      {
         key: PairDataTimeWindowEnum.DAY,
         text: t("24H"),
       },
