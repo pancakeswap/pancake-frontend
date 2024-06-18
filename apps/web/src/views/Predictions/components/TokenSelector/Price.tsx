@@ -1,11 +1,11 @@
 import { Text, TextProps } from '@pancakeswap/uikit'
 import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
-import { usePrice } from 'hooks/usePrice'
 import { useMemo } from 'react'
 import CountUp from 'react-countup'
 import { Address } from 'viem'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import usePollOraclePrice from 'views/Predictions/hooks/usePollOraclePrice'
+import { usePredictionPrice } from 'views/Predictions/hooks/usePredictionPrice'
 
 interface PriceProps extends TextProps {
   displayedDecimals?: number
@@ -28,9 +28,9 @@ export const Price: React.FC<React.PropsWithChildren<PriceProps>> = ({
 
   const {
     data: { price: aiLivePrice },
-  } = usePrice({
-    // currencyA: config?.token.symbol || 'ETH'
-    currencyA: 'ETH', // testing on bsc testnet, later replace with config token on arbitrum
+  } = usePredictionPrice({
+    currencyA: config?.token.symbol,
+    enabled: Boolean(config?.ai),
   })
 
   const priceAsNumber = useMemo(

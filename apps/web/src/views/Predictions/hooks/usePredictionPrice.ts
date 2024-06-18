@@ -1,14 +1,17 @@
 import { useQuery } from '@tanstack/react-query'
 import { FAST_INTERVAL } from 'config/constants'
 
-interface UsePriceParameters {
-  currencyA: string
+interface UsePredictionPriceParameters {
+  /** Default: ETH */
+  currencyA?: string
 
   /** Default: USDT */
   currencyB?: string
 
   /** Default: 10,000 milliseconds */
   pollingInterval?: number
+
+  enabled?: boolean
 }
 
 interface PriceResponse {
@@ -20,7 +23,12 @@ interface PriceResponse {
 
 const PRICE_API = '/api/prediction/price'
 
-export const usePrice = ({ currencyA, currencyB = 'USDT', pollingInterval = FAST_INTERVAL }: UsePriceParameters) => {
+export const usePredictionPrice = ({
+  currencyA = 'ETH',
+  currencyB = 'USDT',
+  pollingInterval = FAST_INTERVAL,
+  enabled = true,
+}: UsePredictionPriceParameters) => {
   return useQuery<PriceResponse>({
     queryKey: ['price', currencyA, currencyB],
     queryFn: async () => fetch(`${PRICE_API}/?currencyA=${currencyA}&currencyB=${currencyB}`).then((res) => res.json()),
@@ -31,5 +39,6 @@ export const usePrice = ({ currencyA, currencyB = 'USDT', pollingInterval = FAST
       currencyA,
       currencyB,
     },
+    enabled,
   })
 }

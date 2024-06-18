@@ -16,7 +16,6 @@ import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { usePrice } from 'hooks/usePrice'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
 import { fetchLedgerData } from 'state/predictions'
@@ -24,6 +23,7 @@ import { NodeLedger, NodeRound } from 'state/types'
 import styled from 'styled-components'
 import { getNowInSeconds } from 'utils/getNowInSeconds'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
+import { usePredictionPrice } from 'views/Predictions/hooks/usePredictionPrice'
 import { useAccount } from 'wagmi'
 import { formatTokenv2 } from '../../../helpers'
 import CardFlip from '../../CardFlip'
@@ -86,9 +86,8 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
   // Fetch Live Price for AI Predictions Open and Live Round Cards
   const {
     data: { price: livePrice },
-  } = usePrice({
-    // currencyA: config?.token.symbol || 'ETH',
-    currencyA: 'ETH', // testing on bsc testnet, later replace with config token on arbitrum
+  } = usePredictionPrice({
+    currencyA: config?.token.symbol,
   })
 
   // AI Prediction Market

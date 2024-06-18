@@ -3,13 +3,13 @@ import { BetPosition } from '@pancakeswap/prediction'
 import { Card, CardBody, Flex, PlayCircleOutlineIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import RoundProgress from 'components/RoundProgress'
-import { usePrice } from 'hooks/usePrice'
 import { useEffect, useMemo, useState } from 'react'
 import { getHasRoundFailed } from 'state/predictions/helpers'
 import { useGetBufferSeconds } from 'state/predictions/hooks'
 import { NodeLedger, NodeRound } from 'state/types'
 import styled from 'styled-components'
 import { getNowInSeconds } from 'utils/getNowInSeconds'
+import { usePredictionPrice } from 'views/Predictions/hooks/usePredictionPrice'
 import { useConfig } from '../../../context/ConfigProvider'
 import PositionTag from '../../PositionTag'
 import { LockPriceRow, PrizePoolRow, RoundResultBox } from '../../RoundResult'
@@ -58,9 +58,8 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   const {
     data: { price },
     refetch,
-  } = usePrice({
-    // currencyA: config?.token.symbol || 'ETH',
-    currencyA: 'ETH', // testing on bsc testnet, later replace with config token on arbitrum
+  } = usePredictionPrice({
+    currencyA: config?.token.symbol,
   })
 
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
