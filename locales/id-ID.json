@@ -3146,7 +3146,6 @@
   "Reset approval on USDT.": "Reset persetujuan untuk USDT.",
   "Revoke transaction filled, but Approval not reset to 0. Please try again.": "Batalkan transaksi terisi, tetapi Persetujuan tidak reset ke 0. Silakan coba lagi.",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Jumlah gabungan hadiah dalam %symbol% dari SEMUA posisi Anda yang memenuhi syarat untuk hadiah Merkl.",
-  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "Untuk memperoleh hadiah dari Merkl, bongkar tumpukan posisi ini dari Farm PancakeSwap.",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "Kampanye Merkl ini TIDAK menghadiahkan likuiditas di luar rentang. Untuk memperoleh hadiah, sesuaikan posisi Anda.",
   "This liquidity position is currently earning rewards on Merkl.": "Posisi likuiditas ini sedang memperoleh hadiah dari Merkl.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Posisi likuiditas ini TIDAK akan memperoleh hadiah apa pun dari Merkl karena nilai total USD-nya kurang dari $20.",
