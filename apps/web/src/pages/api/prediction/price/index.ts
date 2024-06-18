@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'nodejs',
 }
 
 const handler = async (req: NextRequest) => {
