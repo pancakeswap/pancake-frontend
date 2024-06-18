@@ -64,7 +64,9 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
 
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
 
-  const isBull = Boolean(lockPrice && price > +formatBigInt(lockPrice, config?.displayedDecimals, 8))
+  const isBull = Boolean(
+    lockPrice && price > +formatBigInt(lockPrice, config?.displayedDecimals, config?.lockPriceDecimals ?? 8),
+  )
 
   const betPosition = isBull ? BetPosition.BULL : BetPosition.BEAR
 
