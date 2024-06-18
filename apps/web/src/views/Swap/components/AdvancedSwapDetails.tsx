@@ -41,6 +41,7 @@ export const TradeSummary = memo(function TradeSummary({
 
   return (
     <AutoColumn style={{ padding: '0 24px' }}>
+      {gasTokenSelector}
       <RowBetween>
         <RowFixed>
           <Text fontSize="14px" color="textSubtle">
@@ -180,8 +181,6 @@ export const TradeSummary = memo(function TradeSummary({
           <Text fontSize="14px">{`${formatAmount(realizedLPFee, 4)} ${inputAmount?.currency?.symbol}`}</Text>
         </RowBetween>
       )}
-
-      {gasTokenSelector}
     </AutoColumn>
   )
 })
