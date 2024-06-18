@@ -214,9 +214,9 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
               </Button>
             ))}
           </Flex>
-          {vestingInformation?.percentage && vestingInformation.percentage > 0 && (
+          {vestingInformation?.percentage && vestingInformation.percentage > 0 ? (
             <IfoHasVestingNotice url={articleUrl} />
-          )}
+          ) : null}
           <Text color="textSubtle" fontSize="12px" mb="24px">
             {t(
               'If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.',
