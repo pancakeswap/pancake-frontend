@@ -1,7 +1,5 @@
-import { INFO_GATEWAY_OLD_API } from 'config/constants/endpoints'
 import { gql } from 'graphql-request'
 import union from 'lodash/union'
-import { useCallback, useEffect, useState } from 'react'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import {
   MultiChainNameExtend,
@@ -10,7 +8,6 @@ import {
   multiChainTokenBlackList,
   multiChainTokenWhiteList,
 } from '../../constant'
-import { useGetChainName } from '../../hooks'
 
 interface TopTokensResponse {
   tokenDayDatas: {
@@ -30,12 +27,6 @@ interface StableSwapTopTokensResponse {
  * Note: dailyTxns_gt: 300 is there to prevent fetching incorrectly priced tokens with high dailyVolumeUSD
  */
 const fetchTopTokens = async (chainName: MultiChainNameExtend, timestamp24hAgo: number): Promise<string[]> => {
-  if (chainName === 'BSC' && !checkIsStableSwap()) {
-    const resp = await fetch(`${INFO_GATEWAY_OLD_API}/v0/top-tokens/bsc`)
-    const result = await resp.json()
-    return union(result.tokenDayDatas.map((t) => t.id.split('-')[0]))
-  }
-
   const whereCondition =
     chainName === 'ETH'
       ? `where: { date_gt: ${timestamp24hAgo}, token_not_in: $blacklist, dailyVolumeUSD_gt:2000 }`
