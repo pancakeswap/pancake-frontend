@@ -4,20 +4,20 @@ import { Block } from 'state/info/types'
 import { getPercentChange } from 'utils/infoDataHelpers'
 import { explorerApiClient } from 'state/info/api/client'
 import { components } from 'state/info/api/schema'
+import { multiQuery } from 'utils/infoQueryHelpers'
 import { get2DayChange } from '../../utils/data'
 import { fetchEthPrices } from '../../utils/getEthPrices'
 
 import { TokenData } from '../../types'
 
-export const TOKENS_BULK = (block: number | undefined, tokens: string[]) => {
+const TOKENS_BULK = (block: number | undefined, tokens: string[]) => {
   let tokenString = `[`
   tokens.forEach((address) => {
     tokenString = `${tokenString}"${address}",`
   })
   tokenString += ']'
   const queryString = `
-    query tokens {
-      tokens(where: {id_in: ${tokenString}},
+      ${block ? `t${block}` : 'current'}:tokens(where: {id_in: ${tokenString}},
     ${block ? `block: {number: ${block}} ,` : ''}
      orderBy: totalValueLockedUSD, orderDirection: desc) {
         id
@@ -32,11 +32,8 @@ export const TOKENS_BULK = (block: number | undefined, tokens: string[]) => {
         feesUSD
         totalValueLockedUSD
       }
-    }
     `
-  return gql`
-    ${queryString}
-  `
+  return queryString
 }
 
 interface TokenFields {
@@ -51,13 +48,6 @@ interface TokenFields {
   totalValueLocked: string
   totalValueLockedUSD: string
   decimals: string
-}
-
-interface TokenDataResponse {
-  tokens: TokenFields[]
-  bundles: {
-    ethPriceUSD: string
-  }[]
 }
 
 export async function fetchedTokenData(
@@ -163,13 +153,6 @@ export async function fetchedTokenDatas(
   try {
     const { data: ethPrices } = await fetchEthPrices(dataClient, blocks)
 
-    const data = await dataClient.request<TokenDataResponse>(TOKENS_BULK(undefined, tokenAddresses))
-
-    const data24 = await dataClient.request<TokenDataResponse>(TOKENS_BULK(block24?.number, tokenAddresses))
-
-    const data48 = await dataClient.request<TokenDataResponse>(TOKENS_BULK(block48?.number, tokenAddresses))
-
-    const dataWeek = await dataClient.request<TokenDataResponse>(TOKENS_BULK(blockWeek?.number, tokenAddresses))
     if (!ethPrices) {
       return {
         error: false,
@@ -177,29 +160,58 @@ export async function fetchedTokenDatas(
       }
     }
 
-    const parsed = data?.tokens
-      ? data.tokens.reduce((accum: { [address: string]: TokenFields }, poolData) => {
+    const result = (await multiQuery(
+      (subqueries) => gql`
+      query tokens {
+        ${subqueries}
+      }
+    `,
+      [
+        TOKENS_BULK(undefined, tokenAddresses),
+        TOKENS_BULK(block24?.number, tokenAddresses),
+        TOKENS_BULK(block48?.number, tokenAddresses),
+        TOKENS_BULK(blockWeek?.number, tokenAddresses),
+      ],
+      dataClient,
+    )) as {
+      [key: string]: TokenFields[]
+    } | null
+
+    if (!result) {
+      return {
+        error: false,
+        data: undefined,
+      }
+    }
+
+    const data = result.current
+    const data24 = result[`t${block24?.number}`]
+    const data48 = result[`t${block48?.number}`]
+    const dataWeek = result[`t${blockWeek?.number}`]
+
+    const parsed = data
+      ? data.reduce((accum: { [address: string]: TokenFields }, poolData) => {
           // eslint-disable-next-line no-param-reassign
           accum[poolData.id] = poolData
           return accum
         }, {})
       : {}
-    const parsed24 = data24?.tokens
-      ? data24.tokens.reduce((accum: { [address: string]: TokenFields }, poolData) => {
+    const parsed24 = data24
+      ? data24.reduce((accum: { [address: string]: TokenFields }, poolData) => {
           // eslint-disable-next-line no-param-reassign
           accum[poolData.id] = poolData
           return accum
         }, {})
       : {}
-    const parsed48 = data48?.tokens
-      ? data48.tokens.reduce((accum: { [address: string]: TokenFields }, poolData) => {
+    const parsed48 = data48
+      ? data48.reduce((accum: { [address: string]: TokenFields }, poolData) => {
           // eslint-disable-next-line no-param-reassign
           accum[poolData.id] = poolData
           return accum
         }, {})
       : {}
-    const parsedWeek = dataWeek?.tokens
-      ? dataWeek.tokens.reduce((accum: { [address: string]: TokenFields }, poolData) => {
+    const parsedWeek = dataWeek
+      ? dataWeek.reduce((accum: { [address: string]: TokenFields }, poolData) => {
           // eslint-disable-next-line no-param-reassign
           accum[poolData.id] = poolData
           return accum
@@ -228,8 +240,8 @@ export async function fetchedTokenDatas(
           : 0
       const tvlUSD = current ? parseFloat(current.totalValueLockedUSD) : 0
       const tvlUSDChange = getPercentChange(
-        parseFloat(current?.totalValueLockedUSD),
-        parseFloat(oneDay?.totalValueLockedUSD),
+        parseFloat(current?.totalValueLockedUSD ?? '0'),
+        parseFloat(oneDay?.totalValueLockedUSD ?? '0'),
       )
       const decimals = current ? parseFloat(current.decimals) : 0
       const tvlToken = current ? parseFloat(current.totalValueLocked) : 0
