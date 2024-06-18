@@ -4,7 +4,7 @@ import { AutoRenewIcon, Box, Button, Flex, Message, MessageText, Text } from '@p
 import { getBalanceAmount, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import BigNumber from 'bignumber.js'
-import _noop from 'lodash/noop'
+import noop from 'lodash/noop'
 import dynamic from 'next/dynamic'
 import { useEffect, useMemo, useState } from 'react'
 import { useIfoCeiling } from 'state/pools/hooks'
@@ -24,7 +24,7 @@ const ExtendEnable = dynamic(() => import('./ExtendEnable'), { ssr: false })
 const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType>> = ({
   stakingToken,
   stakingTokenPrice = 0,
-  onDismiss = () => {},
+  onDismiss = noop,
   lockedAmount,
   currentBalance,
   currentDuration,
@@ -132,7 +132,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
       ) : customLockWeekInSeconds ? null : (
         <Overview
           isValidDuration={isValidDuration}
-          openCalculator={_noop}
+          openCalculator={noop}
           duration={duration}
           lockedAmount={lockedAmount?.toNumber()}
           usdValueStaked={usdValueStaked}

@@ -5,6 +5,7 @@ import { Flex, Spinner } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { useMemo } from 'react'
 import { styled } from 'styled-components'
+import noop from 'lodash/noop'
 import EmptyText from '../MigrationTable/EmptyText'
 import TableStyle from '../MigrationTable/StyledTable'
 import TableHeader from '../MigrationTable/TableHeader'
@@ -61,8 +62,8 @@ export const PosManagerMigrationFarmTable: React.FC<React.PropsWithChildren<ITab
         bCakeWrapperAddress: d.bCakeWrapperAddress ?? '0x',
         earningToken: d.earningToken.wrapped,
       },
-      onStake: () => {},
-      onUnStake: () => {},
+      onStake: noop,
+      onUnStake: noop,
     }
   })
 
