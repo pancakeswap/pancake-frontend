@@ -6,6 +6,7 @@ import BigNumber from 'bignumber.js'
 import { usePositionManagerAdapterContract } from 'hooks/useContract'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { memo, useEffect, useMemo } from 'react'
+import { useChainId } from 'wagmi'
 import { DuoTokenVaultCard } from '../components'
 import {
   AprData,
@@ -19,6 +20,7 @@ import {
   useTotalStakedInUsd,
 } from '../hooks'
 import { TIME_WINDOW_DEFAULT, TIME_WINDOW_FALLBACK } from '../hooks/useFetchApr'
+import { useRor } from '../hooks/useRor'
 
 interface Props {
   config: PCSDuoTokenVaultConfig
@@ -56,7 +58,21 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     aprTimeWindow,
     bCakeWrapperAddress,
     minDepositUSD,
+    vaultAddress,
   } = vault
+
+  const chainId = useChainId()
+  const { data: rorData } = useRor({ vault: vaultAddress, chainId })
+  const { data: currencyAUsdPrice } = useCurrencyUsdPrice(currencyA)
+  const { data: currencyBUsdPrice } = useCurrencyUsdPrice(currencyB)
+
+  const ror = useMemo(() => {
+    if (!rorData || !currencyAUsdPrice || !currencyBUsdPrice) return 0
+    return (
+      (Number(rorData[0].token0PerShare) * Number(rorData[0].usd)) / currencyA.decimals +
+      (Number(rorData[0].token1PerShare) * Number(rorData[0].usd)) / currencyB.decimals
+    )
+  }, [currencyAUsdPrice, currencyBUsdPrice, rorData, currencyA, currencyB])
 
   const adapterContract = usePositionManagerAdapterContract(adapterAddress ?? '0x')
   const tokenRatio = useQuery({
@@ -227,6 +243,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
       minDepositUSD={minDepositUSD}
       boosterMultiplier={info?.boosterMultiplier}
       boosterContractAddress={info?.boosterContractAddress}
+      ror={ror}
     >
       {id}
     </DuoTokenVaultCard>

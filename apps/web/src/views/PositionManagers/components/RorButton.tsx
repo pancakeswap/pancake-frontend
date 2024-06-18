@@ -11,6 +11,7 @@ interface Props {
   rewardToken?: Currency
   isBooster?: boolean
   boosterMultiplier?: number
+  ror?: number
 }
 
 const AprText = styled(Text)`
@@ -25,6 +26,7 @@ export const RorButton = memo(function YieldInfo({
   rewardToken,
   isBooster,
   boosterMultiplier = 3,
+  ror,
 }: Props) {
   const { t } = useTranslation()
 
@@ -40,7 +42,7 @@ export const RorButton = memo(function YieldInfo({
       <Text>
         {t('ROR (Rate Of Return)')}:
         <Text ml="3px" style={{ display: 'inline-block' }} bold>
-          {`${combinedAPR}%`}
+          {`${ror / 10 ** 18}%`}
         </Text>
       </Text>
       <ul>
@@ -54,7 +56,7 @@ export const RorButton = memo(function YieldInfo({
                   display="inline-block"
                   style={{ textDecoration: isBooster ? 'line-through' : 'none', fontWeight: 800 }}
                 >
-                  {cakeAPR.toFixed(2)}%
+                  {ror.toFixed(2)}%
                 </Text>
               </b>
             </li>

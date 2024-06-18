@@ -86,6 +86,7 @@ interface Props {
   minDepositUSD?: number
   boosterMultiplier?: number
   boosterContractAddress?: Address
+  ror?: number
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -133,6 +134,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   minDepositUSD,
   boosterMultiplier,
   boosterContractAddress,
+  ror,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -191,6 +193,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           rewardPerSec={tokenPerSecond}
           isBooster={isBoosterWhiteList}
           boosterMultiplier={boosterMultiplier}
+          ror={ror}
         />
         <ManagerInfo
           mt="1.5em"

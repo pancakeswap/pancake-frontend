@@ -27,6 +27,7 @@ interface Props {
   rewardPerSec?: number
   isBooster?: boolean
   boosterMultiplier?: number
+  ror?: number
 }
 
 export const YieldInfo = memo(function YieldInfo({
@@ -46,6 +47,7 @@ export const YieldInfo = memo(function YieldInfo({
   rewardPerSec,
   isBooster,
   boosterMultiplier,
+  ror,
 }: Props) {
   const { t } = useTranslation()
   const earning = useMemo(
@@ -78,6 +80,7 @@ export const YieldInfo = memo(function YieldInfo({
       <RowBetween>
         <Text>{t('ROR')}:</Text>
         <RorButton
+          ror={ror}
           id={id}
           apr={apr}
           isAprLoading={isAprLoading}
