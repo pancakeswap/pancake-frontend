@@ -2,4 +2,4 @@
 '@pancakeswap/pcsx-sdk': patch
 ---
 
-update address
+add input and outputs decay
