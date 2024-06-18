@@ -168,15 +168,19 @@ export const RoundResultBox: React.FC<React.PropsWithChildren<RoundResultBoxProp
 interface RoundPriceProps {
   lockPrice: bigint | null
   closePrice: bigint | null
+  AIPrice?: bigint | null
 }
 
-export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({ lockPrice, closePrice }) => {
+export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({ lockPrice, closePrice, AIPrice }) => {
   const config = useConfig()
-  const betPosition = getRoundPosition(lockPrice, closePrice) // Only need to show UP/DOWN and not related to AI bet
   const priceDifference = getPriceDifference(closePrice, lockPrice)
+  const betPosition = getRoundPosition(lockPrice, closePrice) // To show UP/DOWN only and not related to AI bet
+  const betPositionAI = getRoundPosition(lockPrice, closePrice, AIPrice) // In case of House win, display color according to AI won or lost
+
+  const finalBetPosition = AIPrice && betPosition === BetPosition.HOUSE ? betPositionAI : betPosition
 
   const textColor = useMemo(() => {
-    switch (betPosition) {
+    switch (finalBetPosition) {
       case BetPosition.BULL:
         return 'success'
       case BetPosition.BEAR:
@@ -185,7 +189,7 @@ export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({
       default:
         return 'textDisabled'
     }
-  }, [betPosition])
+  }, [finalBetPosition])
 
   return (
     <Flex alignItems="center" justifyContent="space-between" mb="16px">
@@ -199,8 +203,8 @@ export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({
       ) : (
         <Skeleton height="34px" my="1px" />
       )}
-      {betPosition && (
-        <PositionTag betPosition={betPosition}>
+      {finalBetPosition && (
+        <PositionTag betPosition={finalBetPosition}>
           {formatUsd(
             Number(formatBigInt(priceDifference, 8, config?.closePriceDecimals ?? 8)), // Ideally both closePriceDecimals and lockPriceDecimals should be same
             config?.livePriceDecimals ?? config?.displayedDecimals ?? 0,
