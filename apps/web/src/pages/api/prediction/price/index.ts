@@ -1,15 +1,12 @@
-import type { NextRequest } from 'next/server'
-import { NextResponse } from 'next/server'
+import { NextApiHandler } from 'next'
 
 export const config = {
   runtime: 'nodejs',
 }
 
-const handler = async (req: NextRequest) => {
+const handler: NextApiHandler = async (req, res) => {
   try {
-    const { searchParams } = new URL(req.url)
-    const currencyA = searchParams.get('currencyA')
-    const currencyB = searchParams.get('currencyB')
+    const { currencyA, currencyB } = req.query
 
     const symbol = `${currencyA}${currencyB}` // According to Binance API Spec
 
@@ -20,24 +17,17 @@ const handler = async (req: NextRequest) => {
       price: string
     } = await response.json()
 
-    return NextResponse.json(
-      {
-        currencyA,
-        currencyB,
-        price: parseFloat(data.price),
-      },
-      {
-        status: response.status,
-        statusText: response.statusText,
-        headers: {
-          'CDN-Cache-Control': 'max-age=10',
-          'Vercel-CDN-Cache-Control': 'max-age=10',
-          'Cache-Control': 's-maxage=10, stale-while-revalidate=10',
-        },
-      },
-    )
+    res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate=10')
+    res.setHeader('Vercel-CDN-Cache-Control', 'max-age=10')
+    res.setHeader('CDN-Cache-Control', 'max-age=10')
+
+    return res.status(response.status).json({
+      currencyA,
+      currencyB,
+      price: parseFloat(data.price),
+    })
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 })
+    return res.status(500).json({ error })
   }
 }
 
