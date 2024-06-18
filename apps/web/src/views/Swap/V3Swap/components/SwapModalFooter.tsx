@@ -108,11 +108,12 @@ export const SwapModalFooter = memo(function SwapModalFooter({
     () =>
       isPaymasterAvailable &&
       isPaymasterTokenActive &&
+      gasTokenInfo?.discount !== 'FREE' &&
       inputAmount.currency?.wrapped.address &&
       !inputAmount.currency.isNative &&
       gasToken.isToken &&
       inputAmount.currency.wrapped.address === gasToken.wrapped.address,
-    [inputAmount, gasToken, isPaymasterAvailable, isPaymasterTokenActive],
+    [inputAmount, gasToken, isPaymasterAvailable, isPaymasterTokenActive, gasTokenInfo],
   )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(

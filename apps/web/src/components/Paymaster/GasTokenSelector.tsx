@@ -149,12 +149,13 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
 
   const showSameTokenWarning = useMemo(
     () =>
+      gasTokenInfo?.discount !== 'FREE' &&
       inputCurrency?.wrapped.address &&
       // Check if input token is native ETH to avoid conflicts when WETH is selected as gas token
       !inputCurrency.isNative &&
       gasToken.isToken &&
       inputCurrency.wrapped.address === gasToken.wrapped.address,
-    [inputCurrency, gasToken],
+    [inputCurrency, gasToken, gasTokenInfo],
   )
 
   // Reset fee token if account changes, connects or disconnects
