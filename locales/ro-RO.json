@@ -3146,7 +3146,6 @@
   "Reset approval on USDT.": "Resetează aprobarea la USDT.",
   "Revoke transaction filled, but Approval not reset to 0. Please try again.": "Revocarea tranzacției completată, dar aprobarea nu este resetată la 0. Încearcă din nou.",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Numărul combinat de recompense în %symbol% din TOATE POZIȚIILE tale care sunt eligibile pentru recompense Merkl.",
-  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "Pentru a câștiga recompense la Merkl, anulează stakingul acestei poziții din fermele PancakeSwap.",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "Această campanie Merkl nu recompensează lichiditatea din afara intervalului. Pentru a câștiga recompense, ajustează-ți poziția.",
   "This liquidity position is currently earning rewards on Merkl.": "Această poziție de lichiditate câștigă momentan recompense pe Merkl.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Această poziție de lichiditate NU va câștiga recompense pe Merkl deoarece valoarea sa totală în USD este de sub 20 $.",
