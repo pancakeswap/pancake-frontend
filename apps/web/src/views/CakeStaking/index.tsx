@@ -1,7 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Grid, Heading, ModalV2, PageHeader, QuestionHelper, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Button, Grid, Heading, ModalV2, PageHeader, QuestionHelper, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
+import { CrossChainVeCakeModal } from 'components/CrossChainVeCakeModal'
+import { CROSS_CHIAN_CONFIG } from 'components/CrossChainVeCakeModal/constants'
 import Page from 'components/Layout/Page'
 import { useCakeDistributed } from 'hooks/useCakeDistributed'
 import useTheme from 'hooks/useTheme'
@@ -26,6 +28,7 @@ const CakeStaking = () => {
   const { isDesktop, isMobile } = useMatchBreakpoints()
   const { theme } = useTheme()
   const handleDismiss = useCallback(() => setCakeRewardModalVisible(false), [])
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
@@ -81,7 +84,30 @@ const CakeStaking = () => {
       </StyledPageHeader>
       <Page title={t('CAKE Staking')}>
         <Heading scale="xl" mb={['24px', '24px', '48px']} mt={['16px', '16px', 0]}>
-          {t('And So Much More...')}
+          {t('Enjoy on Every Chains')}
+        </Heading>
+        <Grid maxWidth="820px" gridGap="24px" gridTemplateColumns="1fr" alignItems="center" mx="auto">
+          <BenefitCard
+            type="crossChain"
+            dataText={`${Object.keys(CROSS_CHIAN_CONFIG).length + 1}`}
+            onClick={() => {
+              setIsOpen(true)
+            }}
+            buttonSlot={
+              <Button
+                variant="secondary"
+                width="100%"
+                onClick={() => {
+                  window.open('https://twitter.com/pancakeswap', '_blank', 'noopener noreferrer')
+                }}
+              >
+                {t('Learn More')}
+              </Button>
+            }
+          />
+        </Grid>
+        <Heading scale="xl" mb={['24px', '24px', '48px']} mt={['16px', '16px', '32px']}>
+          {t('Enjoy These Benefits')}
         </Heading>
         <Grid
           maxWidth="820px"
@@ -135,6 +161,7 @@ const CakeStaking = () => {
           <BenefitCard type="more" />
         </Grid>
       </Page>
+      <CrossChainVeCakeModal isOpen={isOpen} setIsOpen={setIsOpen} onDismiss={() => setIsOpen(false)} />
     </>
   )
 }

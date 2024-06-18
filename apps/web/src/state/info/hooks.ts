@@ -5,10 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
-import fetchPoolTransactions from 'state/info/queries/pools/transactions'
-import { fetchGlobalChartData } from 'state/info/queries/protocol/chart'
 import { fetchAllTokenData, fetchAllTokenDataByAddresses } from 'state/info/queries/tokens/tokenData'
-import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import { Block, Transaction, TransactionType, TvlChartEntry, VolumeChartEntry } from 'state/info/types'
 import { getAprsForStableFarm } from 'utils/getAprsForStableFarm'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
@@ -18,8 +15,7 @@ import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimest
 import { explorerApiClient } from './api/client'
 import { useExplorerChainNameByQuery } from './api/hooks'
 import { MultiChainName, MultiChainNameExtend, checkIsStableSwap, multiChainId } from './constant'
-import fetchTopTransactions from './queries/protocol/transactions'
-import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
+import { PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 
 dayjs.extend(duration)
 
@@ -172,38 +168,12 @@ export const useProtocolChartDataVolumeQuery = (): VolumeChartEntry[] | undefine
   return chartData ?? undefined
 }
 
-export const useProtocolChartDataQuery = (): ChartEntry[] | undefined => {
-  const chainName = useChainNameByQuery()
-  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data: chartData } = useQuery({
-    queryKey: [`info/protocol/updateProtocolChartData/${type}`, chainName],
-    queryFn: () => fetchGlobalChartData(chainName),
-    ...QUERY_SETTINGS_IMMUTABLE,
-    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
-  })
-  return chartData ?? undefined
-}
-
-export const useProtocolTransactionsQueryOld = (): Transaction[] | undefined => {
-  const chainName = useChainNameByQuery()
-  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data: transactions } = useQuery({
-    queryKey: [`info/protocol/updateProtocolTransactionsData/${type}`, chainName],
-    queryFn: () => fetchTopTransactions(chainName),
-    ...QUERY_SETTINGS_IMMUTABLE,
-
-    // update latest Transactions per 15s
-    ...QUERY_SETTINGS_INTERVAL_REFETCH,
-  })
-  return transactions ?? undefined
-}
-
 export const useProtocolTransactionsQuery = (): Transaction[] | undefined => {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data: transactions } = useQuery({
     queryKey: [`info/protocol/updateProtocolTransactionsData2/${type}`, chainName],
-    queryFn: ({ signal }) => {
+    queryFn: async ({ signal }) => {
       if (!chainName) {
         throw new Error('No chain name')
       }
@@ -264,7 +234,7 @@ export const useAllPoolDataQuery = () => {
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useQuery({
     queryKey: [`info/pools2/data/${type}`, chainName],
-    queryFn: () => {
+    queryFn: async () => {
       if (!chainName) {
         throw new Error('No chain name')
       }
@@ -397,6 +367,7 @@ export function usePoolDataQuery(poolAddress: string): PoolData | undefined {
 
       return {
         address: data_.id,
+        lpAddress: data_.lpAddress,
         timestamp: dayjs(data_.createdAtTimestamp as string).unix(),
         token0: {
           address: data_.token0.id,
@@ -505,24 +476,12 @@ export const usePoolChartVolumeDataQuery = (address: string): VolumeChartEntry[]
   return data ?? undefined
 }
 
-export const usePoolTransactionsQueryOld = (address: string): Transaction[] | undefined => {
-  const chainName = useChainNameByQuery()
-  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery({
-    queryKey: [`info/pool/transactionsData/${address}/${type}`, chainName],
-    queryFn: () => fetchPoolTransactions(chainName, address),
-    ...QUERY_SETTINGS_IMMUTABLE,
-    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
-  })
-  return data?.data ?? undefined
-}
-
 export const usePoolTransactionsQuery = (address: string): Transaction[] | undefined => {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useQuery({
     queryKey: [`info/pool/transactionsData2/${address}/${type}`, chainName],
-    queryFn: ({ signal }) => {
+    queryFn: async ({ signal }) => {
       if (!chainName) {
         throw new Error('No chain name')
       }
@@ -973,7 +932,7 @@ export const useTokenPriceDataQuery = (
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useQuery({
     queryKey: [`info/token/priceData2/${address}/${type}`, chainName],
-    queryFn: ({ signal }) => {
+    queryFn: async ({ signal }) => {
       if (!chainName) {
         throw new Error('No chain name')
       }
@@ -1009,24 +968,12 @@ export const useTokenPriceDataQuery = (
   return data ?? undefined
 }
 
-export const useTokenTransactionsQueryOld = (address: string): Transaction[] | undefined => {
-  const chainName = useChainNameByQuery()
-  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useQuery({
-    queryKey: [`info/token/transactionsData/${address}/${type}`, chainName],
-    queryFn: () => fetchTokenTransactions(chainName, address),
-    ...QUERY_SETTINGS_IMMUTABLE,
-    ...QUERY_SETTINGS_INTERVAL_REFETCH,
-  })
-  return data?.data ?? undefined
-}
-
 export const useTokenTransactionsQuery = (address: string): Transaction[] | undefined => {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useQuery({
     queryKey: [`info/token/transactionsData/${address}/${type}`, chainName],
-    queryFn: ({ signal }) => {
+    queryFn: async ({ signal }) => {
       if (!chainName) {
         throw new Error('No chain name')
       }

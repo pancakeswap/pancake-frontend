@@ -82,6 +82,10 @@ const BasicChart = ({
     return <NoChartAvailable token0Address={token0Address} token1Address={token1Address} isMobile={isMobile} />
   }
 
+  const changeText = isMobile
+    ? `${isChangePositive ? '+' : ''}${changePercentage}%`
+    : `${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`
+
   return (
     <>
       <Flex
@@ -98,7 +102,7 @@ const BasicChart = ({
             outputSymbol={outputCurrency?.symbol}
           >
             <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" ml="4px" bold>
-              {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
+              {changeText}
             </Text>
           </PairPriceDisplay>
           <Text small color="secondary">

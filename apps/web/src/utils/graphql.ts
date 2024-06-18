@@ -41,8 +41,6 @@ export const infoStableSwapClients = {
   [ChainId.ARBITRUM_ONE]: new GraphQLClient(STABLESWAP_SUBGRAPHS_URLS[ChainId.ARBITRUM_ONE]),
 }
 
-export const stableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPHS_URLS[ChainId.BSC])
-
 export const bitQueryServerClient = new GraphQLClient(BIT_QUERY, {
   headers: {
     // only server, no `NEXT_PUBLIC` not going to expose in client

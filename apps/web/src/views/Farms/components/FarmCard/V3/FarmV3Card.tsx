@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMerklInfo } from 'hooks/useMerkl'
+import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import { styled } from 'styled-components'
@@ -96,7 +97,8 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
   )
   const { tokenIds } = useUserBoostedPoolsTokenId()
   const { isBoosted } = useIsSomePositionBoosted(farm.stakedPositions, tokenIds)
-
+  const router = useRouter()
+  const isHistory = useMemo(() => router.pathname.includes('history'), [router])
   const addLiquidityModal = useModalV2()
 
   return (
@@ -134,7 +136,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
           <Text>{t('Earn')}:</Text>
           <Text>{earnLabel}</Text>
         </Flex>
-        {!account && farm.boosted && (
+        {!account && farm.boosted && !isHistory && (
           <Box mt="24px" mb="16px">
             <StatusView status={boostStatus} />
           </Box>

@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useReadContract } from '@pancakeswap/wagmi'
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -38,15 +39,17 @@ export type VeCakeUserInfo = {
   withdrawFlag: CakePoolLockStatus
 }
 
-export const useVeCakeUserInfo = (): {
+export const useVeCakeUserInfo = (
+  targetChain?: ChainId,
+): {
   data?: VeCakeUserInfo
   refetch: () => void
 } => {
-  const veCakeContract = useVeCakeContract()
+  const veCakeContract = useVeCakeContract(targetChain)
   const { account } = useAccountActiveChain()
 
   const { data, refetch } = useReadContract({
-    chainId: veCakeContract?.chain?.id,
+    chainId: targetChain ?? veCakeContract?.chain?.id,
     abi: veCakeContract.abi,
     address: veCakeContract.address,
     functionName: 'getUserInfo',
@@ -54,7 +57,6 @@ export const useVeCakeUserInfo = (): {
       enabled: Boolean(veCakeContract?.address && account),
       select: (d) => {
         if (!d) return undefined
-
         const [amount, end, cakePoolProxy, cakeAmount, lockEndTime, migrationTime, cakePoolType, withdrawFlag] = d
         return {
           amount,
@@ -78,7 +80,9 @@ export const useVeCakeUserInfo = (): {
   }
 }
 
-export const useCakeLockStatus = (): {
+export const useCakeLockStatus = (
+  targetChain?: ChainId,
+): {
   status: CakeLockStatus
   shouldMigrate: boolean
   cakeLockedAmount: bigint
@@ -93,9 +97,9 @@ export const useCakeLockStatus = (): {
   delegated: boolean
 } => {
   const currentTimestamp = useCurrentBlockTimestamp()
-  const { data: userInfo } = useVeCakeUserInfo()
+  const { data: userInfo } = useVeCakeUserInfo(targetChain)
   // if user locked at cakePool before, should migrate
-  const cakePoolLockInfo = useCakePoolLockInfo()
+  const cakePoolLockInfo = useCakePoolLockInfo(targetChain)
 
   const isAllowMigrate = useCheckIsUserAllowMigrate(String(cakePoolLockInfo.lockEndTime))
 

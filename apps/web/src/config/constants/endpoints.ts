@@ -30,14 +30,6 @@ const BLOCKS_SUBGRAPH_URLS = {
   [ChainId.OPBNB]: `${THE_GRAPH_PROXY_API}/blocks-opbnb`,
 }
 
-export const BLOCKS_CLIENT = BLOCKS_SUBGRAPH_URLS[ChainId.BSC]
-export const BLOCKS_CLIENT_ETH = BLOCKS_SUBGRAPH_URLS[ChainId.ETHEREUM]
-export const BLOCKS_CLIENT_POLYGON_ZKEVM = BLOCKS_SUBGRAPH_URLS[ChainId.POLYGON_ZKEVM]
-export const BLOCKS_CLIENT_ZKSYNC = BLOCKS_SUBGRAPH_URLS[ChainId.ZKSYNC]
-export const BLOCKS_CLIENT_LINEA = BLOCKS_SUBGRAPH_URLS[ChainId.LINEA]
-export const BLOCKS_CLIENT_BASE = BLOCKS_SUBGRAPH_URLS[ChainId.BASE]
-export const BLOCKS_CLIENT_OPBNB = BLOCKS_SUBGRAPH_URLS[ChainId.OPBNB]
-
 export const GRAPH_API_NFTMARKET = `${THE_GRAPH_PROXY_API}/nft-marketplace-bsc`
 export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
 
@@ -49,8 +41,6 @@ export const BIT_QUERY = 'https://graphql.bitquery.io'
 export const ACCESS_RISK_API = 'https://red.alert.pancakeswap.com/red-api'
 
 export const CELER_API = 'https://api.celerscan.com/scan'
-
-export const INFO_GATEWAY_OLD_API = 'https://info-gateway.pancakeswap.com'
 
 export const V2_SUBGRAPH_URLS = {
   ...V2_SUBGRAPHS,

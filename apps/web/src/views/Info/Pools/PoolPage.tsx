@@ -92,15 +92,12 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
     {},
   )
 
-  // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
-  const address = routeAddress.toLowerCase()
-
-  const poolData = usePoolDataQuery(address)
+  const poolData = usePoolDataQuery(routeAddress)
   // const chartData = usePoolChartDataQuery(address)
-  const tvlChartData = usePoolChartTvlDataQuery(address)
-  const volumeChartData = usePoolChartVolumeDataQuery(address)
+  const tvlChartData = usePoolChartTvlDataQuery(routeAddress)
+  const volumeChartData = usePoolChartVolumeDataQuery(routeAddress)
 
-  const transactions = usePoolTransactionsQuery(address)
+  const transactions = usePoolTransactionsQuery(routeAddress)
   const chainId = useChainIdByQuery()
   const [poolSymbol, symbol0, symbol1] = useMemo(() => {
     const s0 = getTokenSymbolAlias(poolData?.token0.address, chainId, poolData?.token0.symbol)
@@ -111,7 +108,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const chainPath = useMultiChainPath()
   const infoTypeParam = useStableSwapPath()
   const isStableSwap = checkIsStableSwap()
-  const stableAPR = useStableSwapAPR(isStableSwap ? address : undefined)
+  const stableAPR = useStableSwapAPR(isStableSwap ? poolData?.lpAddress : undefined)
   const { data: farmConfig } = useQuery({
     queryKey: [`info/getFarmConfig/${chainId}`],
     queryFn: () => getFarmConfig(chainId),
@@ -124,13 +121,14 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const feeDisplay = useMemo(() => {
     if (isStableSwap && farmConfig) {
       const stableLpFee =
-        farmConfig?.default?.find((d: any) => d.stableSwapAddress?.toLowerCase() === address)?.stableLpFee ?? 0
+        farmConfig?.default?.find((d: any) => d.stableSwapAddress?.toLowerCase() === routeAddress.toLowerCase())
+          ?.stableLpFee ?? 0
       return new BigNumber(stableLpFee)
-        .times((showWeeklyData ? poolData?.volumeOutUSDWeek : poolData?.volumeOutUSD) ?? 0)
+        .times((showWeeklyData ? poolData?.volumeUSDWeek : poolData?.volumeUSD) ?? 0)
         .toNumber()
     }
     return showWeeklyData ? poolData?.lpFees7d : poolData?.lpFees24h
-  }, [poolData, isStableSwap, farmConfig, showWeeklyData, address])
+  }, [poolData, isStableSwap, farmConfig, showWeeklyData, routeAddress])
   const stableTotalFee = useMemo(
     () => (isStableSwap && feeDisplay ? new BigNumber(feeDisplay).times(2).toNumber() : 0),
     [isStableSwap, feeDisplay],
@@ -161,11 +159,11 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
               <ScanLink
                 useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
                 mr="8px"
-                href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
+                href={getBlockExploreLink(routeAddress, 'address', multiChainId[chainName])}
               >
                 {t('View on %site%', { site: multiChainScan[chainName] })}
               </ScanLink>
-              <CopyButton ml="4px" text={address} tooltipMessage={t('Token address copied')} />
+              <CopyButton ml="4px" text={routeAddress} tooltipMessage={t('Token address copied')} />
             </Flex>
           </Flex>
           <Flex flexDirection="column">
