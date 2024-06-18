@@ -3146,7 +3146,6 @@
   "Reset approval on USDT.": "Återställ godkännande på USDT.",
   "Revoke transaction filled, but Approval not reset to 0. Please try again.": "Överföringen återkallades, men Godkännande återställdes inte till 0. Försök igen.",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Kombinerat antal belöningar i %symbol% från ALLA dina positioner som är berättigade till Merkl-belöningar.",
-  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "För att tjäna belöningar på Merkl, lösgör denna position från PancakeSwap-farmar.",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "Denna Merkl-kampanj belönar INTE likviditet utanför räckvidd. För att få belöningar, justera din position.",
   "This liquidity position is currently earning rewards on Merkl.": "Denna likviditetsposition ger för närvarande avkastning på Merkl.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Denna likviditetsposition kommer INTE att ge några belöningar på Merkl på grund av att dess totala USD-värde är mindre än $20.",
