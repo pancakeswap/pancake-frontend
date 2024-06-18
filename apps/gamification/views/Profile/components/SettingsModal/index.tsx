@@ -54,9 +54,9 @@ interface SettingsModalProps extends InjectedModalProps {
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ userInfo, refresh, onDismiss }) => {
   const { t } = useTranslation()
-  const { connect: connectDiscord, disconnect: disconnectDiscord } = useConnectDiscord({ refresh })
-  const { connect: connectTelegram, disconnect: disconnectTelegram } = useConnectTelegram({ refresh })
-  const { connect: connectTwitter, disconnect: disconnectTwitter } = useConnectTwitter({ refresh })
+  const { connect: connectDiscord, disconnect: disconnectDiscord } = useConnectDiscord({ userInfo, refresh })
+  const { connect: connectTelegram, disconnect: disconnectTelegram } = useConnectTelegram({ userInfo, refresh })
+  const { connect: connectTwitter, disconnect: disconnectTwitter } = useConnectTwitter({ userInfo, refresh })
 
   return (
     <Modal title={t('Settings')} onDismiss={() => onDismiss}>
@@ -74,7 +74,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ userInfo, refresh,
             <SocialComponent
               name={t('X')}
               icon={<TwitterIcon color="textSubtle" width={20} height={20} />}
-              connected={Boolean(userInfo.socialHubToSocialUserIdMap.Twitter)}
+              connected={Boolean(userInfo?.socialHubToSocialUserIdMap?.Twitter)}
               connect={connectTwitter}
               disconnect={disconnectTwitter}
             />
@@ -82,7 +82,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ userInfo, refresh,
               <SocialComponent
                 name={t('Telegram')}
                 icon={<TelegramIcon color="textSubtle" width={20} height={20} />}
-                connected={Boolean(userInfo.socialHubToSocialUserIdMap.Telegram)}
+                connected={Boolean(userInfo?.socialHubToSocialUserIdMap?.Telegram)}
                 connect={connectTelegram}
                 disconnect={disconnectTelegram}
               />
@@ -90,19 +90,19 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ userInfo, refresh,
             <SocialComponent
               name={t('Discord')}
               icon={<DiscordIcon color="textSubtle" width={20} height={20} />}
-              connected={Boolean(userInfo.socialHubToSocialUserIdMap.Discord)}
+              connected={Boolean(userInfo?.socialHubToSocialUserIdMap?.Discord)}
               connect={connectDiscord}
               disconnect={disconnectDiscord}
             />
             {/* <SocialComponent
               name={t('Youtube')}
               icon={<YoutubeIcon color="textSubtle" width={20} height={20} />}
-              connected={Boolean(userInfo.socialHubToSocialUserIdMap.Youtube)}
+              connected={Boolean(userInfo?.socialHubToSocialUserIdMap?.Youtube)}
             />
             <SocialComponent
               name={t('Instagram')}
               icon={<InstagramIcon color="textSubtle" width={20} height={20} />}
-              connected={Boolean(userInfo.socialHubToSocialUserIdMap.Instagram)}
+              connected={Boolean(userInfo?.socialHubToSocialUserIdMap?.Instagram)}
             /> */}
           </FlexGap>
         </Box>

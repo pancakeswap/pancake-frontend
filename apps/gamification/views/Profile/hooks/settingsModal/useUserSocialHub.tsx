@@ -12,21 +12,15 @@ export enum SocialHubType {
 }
 
 export interface UserInfo {
-  userId: string
-  socialHubToSocialUserIdMap: { [key in SocialHubType]: string }
-  questIds: Array<string>
+  userId: null | string
+  socialHubToSocialUserIdMap: null | { [key in SocialHubType]: string }
+  questIds: null | Array<string>
 }
 
 const initialData: UserInfo = {
-  userId: '',
-  socialHubToSocialUserIdMap: {
-    Twitter: '',
-    Telegram: '',
-    Discord: '',
-    Youtube: '',
-    Instagram: '',
-  },
-  questIds: [],
+  userId: null,
+  socialHubToSocialUserIdMap: null,
+  questIds: null,
 }
 
 export const useUserSocialHub = () => {

@@ -1,14 +1,20 @@
 import { GAMIFICATION_API } from 'config/constants/endpoints'
 import { Address } from 'viem'
-import { SocialHubType } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 
 interface DisconnectSocialProps {
   account: Address
+  userInfo: UserInfo
   type: SocialHubType
   callback: () => void
 }
 
-export const disconnectSocial = async ({ account, type, callback }: DisconnectSocialProps) => {
+export const disconnectSocial = async ({ account, userInfo, type, callback }: DisconnectSocialProps) => {
+  const socialHubToSocialUserIdMap = {
+    ...(userInfo.socialHubToSocialUserIdMap ?? {}),
+    [type]: '',
+  }
+
   const response = await fetch(`${GAMIFICATION_API}/userInfo/v1/updateUserInfo`, {
     method: 'PUT',
     headers: {
@@ -16,9 +22,7 @@ export const disconnectSocial = async ({ account, type, callback }: DisconnectSo
     },
     body: JSON.stringify({
       userId: account,
-      socialHubToSocialUserIdMap: {
-        [type]: '',
-      },
+      socialHubToSocialUserIdMap,
     }),
   })
 

@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { useEffect } from 'react'
-import { SocialHubType } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { connectSocial } from 'views/Profile/utils/connectSocial'
 import { disconnectSocial } from 'views/Profile/utils/disconnectSocial'
 import { useAccount } from 'wagmi'
@@ -18,10 +18,11 @@ interface TelegramResponse {
 // https://api.telegram.org/botYOUR_BOT_TOKEN/getMe
 
 interface UseConnectTelegramProps {
+  userInfo: UserInfo
   refresh: () => void
 }
 
-export const useConnectTelegram = ({ refresh }: UseConnectTelegramProps) => {
+export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProps) => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
@@ -50,6 +51,7 @@ export const useConnectTelegram = ({ refresh }: UseConnectTelegramProps) => {
           try {
             await connectSocial({
               account,
+              userInfo,
               id: user.id.toString(),
               type: SocialHubType.Telegram,
               callback: () => {
@@ -74,6 +76,7 @@ export const useConnectTelegram = ({ refresh }: UseConnectTelegramProps) => {
       if (account) {
         await disconnectSocial({
           account,
+          userInfo,
           type: SocialHubType.Telegram,
           callback: () => {
             toastSuccess(t('%social% Disconnected', { social: SocialHubType.Telegram }))

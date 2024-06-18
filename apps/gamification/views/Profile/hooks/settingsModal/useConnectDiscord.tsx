@@ -1,15 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { signIn } from 'next-auth/react'
-import { SocialHubType } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { disconnectSocial } from 'views/Profile/utils/disconnectSocial'
 import { useAccount } from 'wagmi'
 
 interface UseConnectDiscordProps {
+  userInfo: UserInfo
   refresh: () => void
 }
 
-export const useConnectDiscord = ({ refresh }: UseConnectDiscordProps) => {
+export const useConnectDiscord = ({ userInfo, refresh }: UseConnectDiscordProps) => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
@@ -23,6 +24,7 @@ export const useConnectDiscord = ({ refresh }: UseConnectDiscordProps) => {
       if (account) {
         await disconnectSocial({
           account,
+          userInfo,
           type: SocialHubType.Discord,
           callback: () => {
             toastSuccess(t('%social% Disconnected', { social: SocialHubType.Discord }))

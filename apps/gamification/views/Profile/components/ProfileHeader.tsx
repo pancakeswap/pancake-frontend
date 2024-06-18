@@ -69,6 +69,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
           await connectSocial({
             account,
             id,
+            userInfo,
             type: social,
             callback: () => {
               toastSuccess(t('%social% Connected', { social }))
