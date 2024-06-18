@@ -3146,7 +3146,6 @@
   "Reset approval on USDT.": "Restablecer la aprobación en USDT.",
   "Revoke transaction filled, but Approval not reset to 0. Please try again.": "Transacción de revocación completada, pero la Aprobación no se restableció a 0. Intenta de nuevo.",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Número combinado de recompensas en %symbol% de TODAS tus posiciones que pueden optar o no a las recompensas de Merkl.",
-  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "Para ganar recompensas en Merkl, desvincula esta posición de las granjas de PancakeSwap.",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "Esta campaña de Merkl NO recompensa la liquidez fuera del alcance. Para obtener recompensas, ajusta tu posición.",
   "This liquidity position is currently earning rewards on Merkl.": "Esta posición de liquidez está actualmente ganando recompensas en Merkl.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Esta posición de liquidez NO obtendrá ninguna recompensa en Merkl debido a que su valor total en USD es inferior a $20.",
