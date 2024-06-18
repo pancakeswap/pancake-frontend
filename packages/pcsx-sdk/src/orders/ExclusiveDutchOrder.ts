@@ -244,4 +244,37 @@ export class ExclusiveDutchOrder extends Order {
       witnessType: EXCLUSIVE_DUTCH_ORDER_TYPES,
     }
   }
+
+  decayInput(timestamp: bigint): DutchInput & { currentAmount: bigint } {
+    return {
+      ...this.info.input,
+      currentAmount: this.decay(this.info.input.startAmount, this.info.input.endAmount, timestamp),
+    }
+  }
+
+  decayOutputs(timestamp: bigint): (DutchOutput & { currentAmount: bigint })[] {
+    return this.info.outputs.map((output) => {
+      return {
+        ...output,
+        currentAmount: this.decay(output.startAmount, output.endAmount, timestamp),
+      }
+    })
+  }
+
+  private decay(startAmount: bigint, endAmount: bigint, compareTime: bigint): bigint {
+    switch (true) {
+      case this.info.decayEndTime < compareTime:
+        return endAmount
+      case this.info.decayStartTime > compareTime:
+        return startAmount
+      default: {
+        const elapsed = compareTime - this.info.decayStartTime
+        const duration = this.info.decayEndTime - this.info.decayStartTime
+        if (endAmount < startAmount) {
+          return startAmount - ((startAmount - endAmount) * elapsed) / duration
+        }
+        return startAmount + ((endAmount - startAmount) * elapsed) / duration
+      }
+    }
+  }
 }
