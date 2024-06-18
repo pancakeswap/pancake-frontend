@@ -3146,7 +3146,6 @@
   "Reset approval on USDT.": "USDTல் ஒப்புதலை மீட்டமைக்கவும்.",
   "Revoke transaction filled, but Approval not reset to 0. Please try again.": "பரிவர்த்தனையை ரத்துசெய்தல் நிறைவேறியது, ஆனால் ஒப்புதல் 0 க்கு மீட்டமைக்கப்படவில்லை. மீண்டும் முயற்சித்திடுங்கள்.",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Merkl வெகுமதிகளுக்குத் தகுதியான உங்கள் எல்லா நிலைகளிலிருந்தும் %symbol% இல் உள்ள வெகுமதிகளின் ஒருங்கிணைந்த எண்ணிக்கை.",
-  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "Merklல் வெகுமதிகளைப் பெற, PancakeSwap ஃபார்ம்களிலிருந்து இந்த நிலையை அன்ஸ்டேக் செய்யவும்.",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "இந்த Merkl பிரச்சாரம் வரம்பிற்கு வெளியிலான லிக்விடிட்டியை வெகுமதி அளிக்கவில்லை. வெகுமதிகளைப் பெற, உங்கள் நிலையைச் சரிசெய்யவும்.",
   "This liquidity position is currently earning rewards on Merkl.": "இந்த லிக்விடிட்டி நிலை தற்போது Merklல் வெகுமதிகளை ஈட்டுகிறது.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "இந்த லிக்விடிட்டி நிலை Merklல் அதன் மொத்த USD மதிப்பு $20க்கும் குறைவாக இருப்பதால் எந்த வெகுமதியையும் ஈட்டாது.",
