@@ -69,7 +69,7 @@ export const paymasterInfo: { [gasTokenAddress: Address]: { discount: `-${number
     discount: '-20%',
   },
   [zksyncTokens.zk.address]: {
-    discount: 'FREE',
+    discount: '-20%',
   },
 }
 
