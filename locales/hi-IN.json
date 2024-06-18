@@ -3146,7 +3146,6 @@
   "Reset approval on USDT.": "USDT पर मंज़ूरी रीसेट करें।",
   "Revoke transaction filled, but Approval not reset to 0. Please try again.": "लेनदेन निरस्त करना पूरा हो गया है, पर मंज़ूरी को 0 पर रीसेट नहीं किया गया है। कृपया फिर कोशिश करें।",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Merkl पुरस्कार की पात्रता रखने वाली आपकी सभी पोजीशन से, पुरस्कारों की संयुक्त संख्या %symbol% में।",
-  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "Merkl पर पुरस्कार जीतने के लिए, PancakeSwap फार्म से इस पोजीशन को स्टेक से हटाएं।",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "यह Merkl कैंपेन, रेंज से बाहर वाली लिक्विडिटी को पुरस्कार के तौर पर नहीं देता। पुरस्कार जीतने के लिए, अपनी पोजीशन एडजस्ट करें।",
   "This liquidity position is currently earning rewards on Merkl.": "यह लिक्विडिटी पोजीशन फ़िलहाल Merkl पर पुरस्कार हासिल कर रही है।",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "यह लिक्विडिटी पोजीशन Merkl पर कोई पुरस्कार हासिल नहीं करेगी क्योंकि इसकी कुल USD वैल्यू $20 से कम है।",
