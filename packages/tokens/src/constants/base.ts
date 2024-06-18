@@ -93,6 +93,4 @@ export const baseTokens = {
     'OVN',
     'https://overnight.fi/',
   ),
-
-  // WETH: 0x4200000000000000000000000000000000000006
 }
