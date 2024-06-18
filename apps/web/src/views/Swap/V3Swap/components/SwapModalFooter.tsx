@@ -296,7 +296,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
                   ref={targetRef}
                   style={{ fontSize: '12px', fontWeight: 600, padding: '3px 5px', marginLeft: '4px' }}
                 >
-                  ⛽️ {gasTokenInfo.discount}
+                  ⛽️ {gasTokenInfo.discountLabel ?? gasTokenInfo.discount}
                 </Badge>
               )}
               {tooltipVisible && tooltip}
