@@ -3146,7 +3146,6 @@
   "Reset approval on USDT.": "إعادة تعيين الموافقة على USDT.",
   "Revoke transaction filled, but Approval not reset to 0. Please try again.": "تم ملء معاملة الرفض، ولكن لم تتم إعادة تعيين الموافقة إلى 0. برجاء إعادة المحاولة.",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "عدد المكافآت المجمعة بعملة %symbol% من جميع مراكزك والمؤهلة لمكافآت Merkl.",
-  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "لربح المكافآت على Merkl، قم بفك رهن هذا المركز من مزارع PancakeSwap.",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "حملة Merkl لا تكافئ بسيولة خارج النطاق. لربح المكافآت، عليك تعديل مركزك.",
   "This liquidity position is currently earning rewards on Merkl.": "مركز السيولة هذا يربح حاليًا مكافآت على Merkl.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "مركز السيولة هذا لا يربح أي مكافآت على Merkl نظرًا لأن قيمته الإجمالية بالدولار الأمريكي أقل من 20 دولار.",
