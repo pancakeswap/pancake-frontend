@@ -6,7 +6,7 @@ export type PoolType = 'CL' | 'Bin'
 
 /**
  * PoolKey is a unique identifier for a pool
- *
+ * @todo move to type
  * @see PoolKey
  */
 export type PoolKey<T extends PoolType = never> = {

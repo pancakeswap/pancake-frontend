@@ -1,3 +1,7 @@
+export const convertBinIdsToRelative = (binIds: bigint[], activeId: bigint): bigint[] => {
+  return binIds.map((binId) => binId - activeId)
+}
+
 /**
  * Generate list of BinIds.
  *
@@ -5,7 +9,7 @@
  * given activeId = 100, numBins = 3, returns [99, 100, 101]
  * given activeId = 100, numBins = 4, returns [98, 99, 100, 101]
  */
-export const getBinIds = (activeId: bigint, numBins: bigint): bigint[] => {
+export const getBinIds = (activeId: bigint, numBins: bigint, relative = false): bigint[] => {
   let startId = activeId - numBins / 2n
   const binIds: bigint[] = []
 
@@ -14,5 +18,5 @@ export const getBinIds = (activeId: bigint, numBins: bigint): bigint[] => {
     startId++
   }
 
-  return binIds
+  return relative ? convertBinIdsToRelative(binIds, activeId) : binIds
 }
