@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { FAST_INTERVAL } from 'config/constants'
 
 interface UsePriceParameters {
   currencyA: string
@@ -6,7 +7,7 @@ interface UsePriceParameters {
   /** Default: USDT */
   currencyB?: string
 
-  /** Default: 10 seconds */
+  /** Default: 10,000 milliseconds */
   pollingInterval?: number
 }
 
@@ -17,13 +18,13 @@ interface PriceResponse {
   currencyB: string
 }
 
-const PRICE_API = '/api/price'
+const PRICE_API = '/api/prediction/price'
 
-export const usePrice = ({ currencyA, currencyB = 'USDT', pollingInterval = 10 }: UsePriceParameters) => {
+export const usePrice = ({ currencyA, currencyB = 'USDT', pollingInterval = FAST_INTERVAL }: UsePriceParameters) => {
   return useQuery<PriceResponse>({
     queryKey: ['price', currencyA, currencyB],
     queryFn: async () => fetch(`${PRICE_API}/?currencyA=${currencyA}&currencyB=${currencyB}`).then((res) => res.json()),
-    refetchInterval: pollingInterval * 1000,
+    refetchInterval: pollingInterval,
     retry: 2,
     initialData: {
       price: 0,
