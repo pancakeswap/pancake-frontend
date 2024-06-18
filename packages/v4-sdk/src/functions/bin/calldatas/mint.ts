@@ -1,7 +1,8 @@
 import invariant from 'tiny-invariant'
 import { Address, encodeFunctionData, Hex, toHex } from 'viem'
 import { BinPoolManager } from '../../../abis/BinPoolManager'
-import { parsePoolKey, PoolKey } from '../../../utils'
+import { PoolKey } from '../../../types'
+import { encodePoolKey } from '../../../utils'
 import { encodeLiquidityConfig, LiquidityConfig } from '../liquidityConfigs'
 
 export type BinPoolMintParams = {
@@ -29,7 +30,7 @@ export const binPoolMintCalldata = <THookData extends Hex>(
     abi: BinPoolManager,
     functionName: 'mint',
     args: [
-      parsePoolKey(key),
+      encodePoolKey(key),
       {
         ...params,
         // eslint-disable-next-line no-bitwise

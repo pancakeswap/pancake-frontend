@@ -1,6 +1,7 @@
 import { Address, parseEther, zeroAddress } from 'viem'
 import { describe, expect, test } from 'vitest'
-import { getBinIds, PoolKey } from '../../../utils'
+import { PoolKey } from '../../../types'
+import { getBinIds } from '../../../utils'
 import { getBinLiquidityConfigs } from '../getBinLiquidityConfigs'
 import {
   AddBinLiquidityParams,

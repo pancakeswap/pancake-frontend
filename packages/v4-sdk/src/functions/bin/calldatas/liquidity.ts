@@ -1,6 +1,7 @@
 import { Address, encodeFunctionData } from 'viem'
 import { BinFungiblePositionManagerAbi } from '../../../abis/BinFungiblePositionManager'
-import { PoolKey, parsePoolKey } from '../../../utils/poolKey'
+import { PoolKey } from '../../../types'
+import { encodePoolKey } from '../../../utils/encodePoolKey'
 
 export type AddBinLiquidityParams = {
   poolKey: PoolKey<'Bin'>
@@ -24,7 +25,7 @@ export const binPoolAddLiquidityCalldata = (params: AddBinLiquidityParams) => {
     args: [
       {
         ...params,
-        poolKey: parsePoolKey(params.poolKey),
+        poolKey: encodePoolKey(params.poolKey),
       },
     ],
   })
@@ -48,7 +49,7 @@ export const binPoolRemoveLiquidityCalldata = (params: RemoveBinLiquidityParams)
     args: [
       {
         ...params,
-        poolKey: parsePoolKey(params.poolKey),
+        poolKey: encodePoolKey(params.poolKey),
       },
     ],
   })

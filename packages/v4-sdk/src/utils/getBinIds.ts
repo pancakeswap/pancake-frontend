@@ -1,6 +1,4 @@
-export const convertBinIdsToRelative = (binIds: bigint[], activeId: bigint): bigint[] => {
-  return binIds.map((binId) => binId - activeId)
-}
+import { convertBinIdsToRelative } from './convertBinIdsToRelative'
 
 /**
  * Generate list of BinIds.

@@ -1,7 +1,7 @@
 import { zeroAddress } from 'viem'
 import { expect, test } from 'vitest'
+import { PoolKey } from '../types'
 import { getPoolId } from './getPoolId'
-import { PoolKey } from './poolKey'
 
 test('BinPoolKey getPoolId', () => {
   const binPoolKey: PoolKey<'Bin'> = {
