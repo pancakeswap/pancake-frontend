@@ -4,14 +4,17 @@ import { explorerApiClient } from 'state/info/api/client'
 import { getPercentChange } from '../../utils/data'
 import { ProtocolData } from '../../types'
 
-export async function fetchProtocolData(chainName: components['schemas']['ChainName']): Promise<{
+export async function fetchProtocolData(
+  chainName: components['schemas']['ChainName'],
+  signal: AbortSignal,
+): Promise<{
   error: boolean
   data: ProtocolData | undefined
 }> {
   try {
     const data = await explorerApiClient
       .GET('/cached/protocol/{protocol}/{chainName}/stats', {
-        signal: null,
+        signal,
         params: {
           path: {
             chainName,

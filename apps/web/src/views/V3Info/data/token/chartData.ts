@@ -12,13 +12,14 @@ export async function fetchTokenChartData(
   protocol: 'v2' | 'v3' | 'stable',
   chainName: components['schemas']['ChainName'],
   address: string,
+  signal: AbortSignal,
 ) {
   let error = false
 
   try {
     const rawTvlResults = await explorerApiClient
       .GET('/cached/tokens/chart/{chainName}/{address}/{protocol}/tvl', {
-        signal: null,
+        signal,
         params: {
           path: {
             protocol,
@@ -34,7 +35,7 @@ export async function fetchTokenChartData(
 
     const rawVolumeResults = await explorerApiClient
       .GET('/cached/tokens/chart/{chainName}/{address}/{protocol}/volume', {
-        signal: null,
+        signal,
         params: {
           path: {
             protocol,

@@ -388,7 +388,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       lpRewardsApr={lpRewardsApr}
       onConfirm={handleStake}
       handleApprove={handleApprove}
-      isBooster={isBoosterAndRewardInRange && chainId === ChainId.BSC}
+      isBooster={isBoosterAndRewardInRange}
       boosterMultiplier={
         isBoosterAndRewardInRange
           ? bCakeUserData?.boosterMultiplier === 0 || bCakeUserData?.stakedBalance.eq(0) || !locked

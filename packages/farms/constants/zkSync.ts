@@ -51,6 +51,48 @@ const v3TopFixedLps: FarmConfigV3[] = [
 export const farmsV3 = defineFarmV3Configs([
   ...v3TopFixedLps,
   {
+    pid: 33,
+    lpAddress: '0xBc30878378FCb442E6dE822329d87714AFe43557',
+    token0: zksyncTokens.usdcNative,
+    token1: zksyncTokens.zk,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 32,
+    lpAddress: '0x1fE7E46AA40Ea3b051348A58eE3c9135C1F9AEb3',
+    token0: zksyncTokens.usdcNative,
+    token1: zksyncTokens.zk,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 31,
+    lpAddress: '0x2c39aB1C4e5376F03A7FF5947e842719Fb267f6e',
+    token0: zksyncTokens.usdc,
+    token1: zksyncTokens.zk,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 30,
+    lpAddress: '0x3bF35ac7BF2E4aaF98e007c9C3e0d214562A3DBB',
+    token0: zksyncTokens.usdc,
+    token1: zksyncTokens.zk,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 29,
+    lpAddress: '0xC081eACC77c75CE1f39a43c04b53D90ADaD35fFd',
+    token0: zksyncTokens.zk,
+    token1: zksyncTokens.weth,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 28,
+    lpAddress: '0x96d33cF093857AC8C7a5f2183f405A0FCcC42444',
+    token0: zksyncTokens.zk,
+    token1: zksyncTokens.weth,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
     pid: 27,
     lpAddress: '0xEE53B979d0C4B2A40279287965b918BD2a4B760D',
     token0: zksyncTokens.usdcNative,

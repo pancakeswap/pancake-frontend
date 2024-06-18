@@ -8,7 +8,6 @@ import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import first from 'lodash/first'
 import React from 'react'
 
-import { bscTokens } from '@pancakeswap/tokens'
 import { PoolGroup, StakedPosition } from '../type'
 import { FixedStakingCardBody } from './FixedStakingCardBody'
 import { FixedStakingModal } from './FixedStakingModal'
@@ -82,7 +81,7 @@ export function FixedStakingCard({ pool, stakedPositions }: { pool: PoolGroup; s
                 >
                   {(openModal, hideStakeButton) =>
                     hideStakeButton ? null : (
-                      <Button disabled={pool.token.equals(bscTokens.cake)} onClick={openModal}>
+                      <Button disabled onClick={openModal}>
                         {t('Stake')}
                       </Button>
                     )

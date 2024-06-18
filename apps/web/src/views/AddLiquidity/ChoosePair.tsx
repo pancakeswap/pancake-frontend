@@ -29,7 +29,7 @@ export function ChoosePair({
   const isValid = !error
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
   const [, pair] = useV2Pair(currencyA, currencyB)
-  const poolData = useLPApr(pair)
+  const poolData = useLPApr('v2', pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(`Based on last 7 days' performance. Does not account for impermanent loss`),
     {

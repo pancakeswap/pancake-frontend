@@ -9,6 +9,7 @@ import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useFarmsV3 } from 'state/farmsV3/hooks'
 import { useQuery } from '@tanstack/react-query'
+import { fetchV3FarmsAvgInfo } from 'queries/farms'
 
 const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   const dispatch = useAppDispatch()
@@ -40,6 +41,25 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
     refetchOnWindowFocus: false,
   })
 
+  const { data: farmsV3Aprs } = useQuery({
+    queryKey: [chainId, 'farmsV3Apr'],
+
+    queryFn: async () => {
+      if (!chainId) return undefined
+      const farmAvgInfo = await fetchV3FarmsAvgInfo(chainId)
+      return Object.keys(farmAvgInfo).reduce((acc, key) => {
+        const tokenData = farmAvgInfo[key]
+        // eslint-disable-next-line no-param-reassign
+        acc[key] = parseFloat(tokenData.apr7d.toFixed(2))
+        return acc
+      }, {} as Record<string, number>)
+    },
+
+    enabled: Boolean(isIntersecting && chainId),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
+
   useEffect(() => {
     if (fetchStatus === 'success' && farms?.length > 0 && !isLoading) {
       const farmsWithPrices = farms.filter(
@@ -61,6 +81,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
           totalLiquidity,
           farm.lpAddress,
           regularCakePerBlock,
+          farm.lpRewardsApr,
         )
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, version: 2 as const }
       })
@@ -70,8 +91,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
         .map((f) => ({
           ...f,
           apr: f.cakeApr ? +f.cakeApr : Number.NaN,
-          // lpRewardsApr missing
-          lpRewardsApr: 0,
+          lpRewardsApr: farmsV3Aprs?.[f.lpAddress] ?? 0,
           version: 3 as const,
         }))
 
@@ -82,7 +102,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
       )
       setTopFarms(sortedByApr.slice(0, 5))
     }
-  }, [cakePriceBusd, chainId, farms, farmsV3.farmsWithPrice, fetchStatus, isLoading, regularCakePerBlock])
+  }, [cakePriceBusd, chainId, farms, farmsV3.farmsWithPrice, fetchStatus, isLoading, regularCakePerBlock, farmsV3Aprs])
   return { topFarms, fetched: fetchStatus === 'success' && !isFetching, chainId }
 }
 

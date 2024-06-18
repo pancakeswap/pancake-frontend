@@ -240,6 +240,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 totalLiquidity,
                 farm.lpAddress,
                 regularCakePerBlock,
+                farm.lpRewardsApr,
               )
             : { cakeRewardsApr: 0, lpRewardsApr: 0 }
 

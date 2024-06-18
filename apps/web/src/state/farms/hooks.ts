@@ -1,5 +1,6 @@
 import { DeserializedFarmsState, DeserializedFarmUserData, supportedChainIdV2 } from '@pancakeswap/farms'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
+import { fetchV3FarmsAvgInfo } from 'queries/farms'
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -10,12 +11,6 @@ import { getMasterChefContract } from 'utils/contractHelpers'
 import { useBCakeProxyContractAddress } from 'hooks/useBCakeProxyContractAddress'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { v3Clients } from 'utils/graphql'
-import { gql } from 'graphql-request'
-import { averageArray } from 'hooks/usePoolAvgInfo'
-import { multiQuery } from 'utils/infoQueryHelpers'
-import mapKeys from 'lodash/mapKeys'
-import mapValues from 'lodash/mapValues'
 import { V2FarmWithoutStakedValue, V3FarmWithoutStakedValue } from 'state/farms/types'
 import {
   farmSelector,
@@ -87,46 +82,22 @@ export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2F
     },
     queryFn: async () => {
       if (!chainId) return undefined
-      const client = v3Clients[chainId]
-      if (!client) {
-        console.error('[Failed] Trading volume', chainId)
-        return {}
-      }
 
       const addresses = activeFarms.map((farm) => farm.lpAddress?.toLowerCase())
 
-      const rawResult: any | undefined = await multiQuery(
-        (subqueries) => gql`
-      query getVolume {
-        ${subqueries}
-      }
-    `,
-        addresses.map(
-          (tokenAddress) => `
-          t${tokenAddress}:poolDayDatas(first: 7, orderBy: date, orderDirection: desc, where: { pool: "${tokenAddress.toLowerCase()}"}) {
-            volumeUSD
-            tvlUSD
-            feesUSD
-            protocolFeesUSD
-          }
-    `,
-        ),
-        client,
-      )
+      const farmAvgInfo = await fetchV3FarmsAvgInfo(chainId)
 
-      const results = mapKeys(rawResult, (_, key) => key.substring(1, key.length))
-
-      return mapValues(results, (value) => {
-        const volumes = value.map((d: { volumeUSD: string }) => Number(d.volumeUSD))
-        const feeUSDs = value.map(
-          (d: { feesUSD: string; protocolFeesUSD: string }) => Number(d.feesUSD) - Number(d.protocolFeesUSD),
-        )
-        return {
-          volumeUSD: averageArray(volumes),
-          tvlUSD: parseFloat(value[0]?.tvlUSD) || 0,
-          feeUSD: averageArray(feeUSDs),
+      const info: { [key: string]: { volumeUSD: number; tvlUSD: number; feeUSD: number; apr: number } } = {}
+      for (const addr of addresses) {
+        const farmInfo = farmAvgInfo[addr]
+        info[addr] = {
+          volumeUSD: farmInfo?.volumeUSD7d.div(7).decimalPlaces(2).toNumber(),
+          tvlUSD: 0,
+          feeUSD: 0,
+          apr: farmInfo?.apr7d.times(100).decimalPlaces(5).toNumber(),
         }
-      })
+      }
+      return info
     },
 
     enabled: Boolean(chainId && activeFarms?.length),

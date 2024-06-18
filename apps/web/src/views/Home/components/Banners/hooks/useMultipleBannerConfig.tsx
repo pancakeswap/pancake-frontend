@@ -10,7 +10,6 @@ import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
 import { OptionsBanner } from '../OptionsBanner'
 import { PaymasterBanner } from '../PaymasterBanner'
 import PerpetualBanner from '../PerpetualBanner'
-import { TopTraderBanner } from '../TopTraderBanner'
 import UserBanner from '../UserBanner'
 import { V4InfoBanner } from '../V4InfoBanner'
 import { VeCakeBanner } from '../VeCakeBanner'
@@ -73,10 +72,6 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: true,
         banner: <NemesisDownfallBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <TopTraderBanner />,
       },
     ]
 

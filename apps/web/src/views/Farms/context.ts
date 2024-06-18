@@ -8,7 +8,7 @@ export const FarmsContext = createContext<{ chosenFarmsMemoized: FarmWithStakedV
 
 export const FarmsV3Context = createContext<{
   chosenFarmsMemoized: V2StakeValueAndV3Farm[]
-  farmsAvgInfo: { [p: string]: { volumeUSD: number; tvlUSD: number; feeUSD: number } } | undefined
+  farmsAvgInfo: { [p: string]: { volumeUSD: number; tvlUSD: number; feeUSD: number; apr: number } } | undefined
 }>({
   chosenFarmsMemoized: [],
   farmsAvgInfo: undefined,

@@ -51,7 +51,7 @@ export const fetchTicksSurroundingPrice = async (
   try {
     const poolData = await explorerApiClient
       .GET('/cached/pools/v3/{chainName}/{address}', {
-        signal: null,
+        signal,
         params: {
           path: {
             chainName,

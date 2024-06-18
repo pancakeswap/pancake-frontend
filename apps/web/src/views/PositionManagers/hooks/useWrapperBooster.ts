@@ -8,7 +8,7 @@ import { Address } from 'viem'
 const SHOULD_UPDATE_THRESHOLD = 1.1
 
 export const useWrapperBooster = (bCakeBoosterAddress: Address, boostMultiplier: number, wrapperAddress?: Address) => {
-  const bCakeFarmWrapperBoosterVeCakeContract = useBCakeFarmWrapperBoosterVeCakeContract(bCakeBoosterAddress)
+  const bCakeFarmWrapperBoosterVeCakeContract = useBCakeFarmWrapperBoosterVeCakeContract()
   const { account } = useActiveWeb3React()
   const { data, refetch } = useQuery({
     queryKey: ['useWrapperBooster', bCakeBoosterAddress, account, wrapperAddress],
@@ -47,7 +47,7 @@ export const useWrapperBooster = (bCakeBoosterAddress: Address, boostMultiplier:
 }
 
 export const useIsWrapperWhiteList = (bCakeBoosterAddress?: Address, wrapperAddress?: Address) => {
-  const bCakeFarmWrapperBoosterVeCakeContract = useBCakeFarmWrapperBoosterVeCakeContract(bCakeBoosterAddress ?? `0x`)
+  const bCakeFarmWrapperBoosterVeCakeContract = useBCakeFarmWrapperBoosterVeCakeContract()
   const { data } = useQuery({
     queryKey: ['useIsWrapperWhiteList', bCakeBoosterAddress, wrapperAddress],
     queryFn: () => bCakeFarmWrapperBoosterVeCakeContract.read.whiteListWrapper([wrapperAddress ?? '0x']),

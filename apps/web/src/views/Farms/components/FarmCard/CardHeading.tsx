@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import {
@@ -43,6 +42,7 @@ type ExpandableSectionProps = {
   farmCakePerSecond?: string
   totalMultipliers?: string
   merklLink?: string
+  merklUserLink?: string
   hasBothFarmAndMerkl?: boolean
   isBoosted?: boolean
   lpAddress?: Address
@@ -73,6 +73,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   farmCakePerSecond,
   totalMultipliers,
   merklLink,
+  merklUserLink,
   hasBothFarmAndMerkl,
   merklApr,
   lpAddress,
@@ -113,6 +114,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
                   merklLink={merklLink}
                   hasFarm={hasBothFarmAndMerkl}
                   merklApr={merklApr}
+                  merklUserLink={merklUserLink}
                 />
               </Box>
             ) : null}
@@ -164,7 +166,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
           ) : (
             <Skeleton ml="4px" width={42} height={28} />
           )}
-          {isReady && isBooster && chainId === ChainId.BSC && <BoostedTag mr="-4px" />}
+          {isReady && isBooster && <BoostedTag mr="-4px" />}
         </AutoRow>
       </Flex>
     </Wrapper>

@@ -1,7 +1,8 @@
-import { useState, useCallback, ReactNode } from 'react'
+import { useState, useCallback, ReactNode, CSSProperties } from 'react'
 import {
   ModalContainer,
   ModalBody,
+  ModalProps,
   Text,
   Button,
   Flex,
@@ -22,6 +23,9 @@ export interface CheckType {
 }
 
 interface RiskDisclaimerProps extends InjectedModalProps {
+  style?: CSSProperties
+  bodyMaxHeight?: CSSProperties['maxHeight']
+  bodyMaxWidth?: ModalProps['maxWidth']
   onSuccess: () => void
   checks: CheckType[]
   header: ReactNode
@@ -55,6 +59,9 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
   footer,
   headerStyle,
   footerStyle,
+  style,
+  bodyMaxWidth,
+  bodyMaxHeight,
 }) => {
   const [checkState, setCheckState] = useState(checks || [])
   const { t } = useTranslation()
@@ -80,14 +87,14 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
   }, [onSuccess, onDismiss])
 
   return (
-    <ModalContainer title={modalHeader || t('Welcome!')} style={{ minWidth: '320px' }} id={id}>
+    <ModalContainer title={modalHeader || t('Welcome!')} style={{ minWidth: '320px', ...style }} id={id}>
       <GradientModalHeader>
         <ModalTitle>
           <Heading scale="lg">{modalHeader || t('Welcome!')}</Heading>
         </ModalTitle>
       </GradientModalHeader>
-      <ModalBody p="24px" maxWidth={['100%', '100%', '100%', '400px']}>
-        <Box maxHeight="300px" overflowY="auto">
+      <ModalBody p="24px" maxWidth={bodyMaxWidth ?? ['100%', '100%', '100%', '400px']}>
+        <Box maxHeight={bodyMaxHeight || '300px'} overflowY="auto">
           <Heading as="h3" mb="24px" style={headerStyle}>
             {header}
           </Heading>
@@ -103,7 +110,7 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
               style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}
             >
               <Flex alignItems="center">
-                <div style={{ flex: 'none', alignSelf: 'flex-start', paddingTop: '8px' }}>
+                <div style={{ flex: 'none', alignSelf: 'flex-start' }}>
                   <Checkbox
                     id={check.key}
                     scale="sm"

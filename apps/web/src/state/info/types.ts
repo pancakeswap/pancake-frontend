@@ -75,6 +75,7 @@ export interface ProtocolState {
 
 export interface PoolData {
   address: string
+  lpAddress?: string
   timestamp: number
 
   token0: {

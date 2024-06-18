@@ -27,6 +27,7 @@ import { FormattedSlippage } from 'views/AddLiquidity/AddStableLiquidity/compone
 import { RowFixed } from 'components/Layout/Row'
 
 import { ReactElement } from 'react'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 
 export default function StableFormView({
@@ -49,6 +50,7 @@ export default function StableFormView({
   pair,
   reserves,
   stableLpFee,
+  stableAPR,
   executionSlippage,
   loading,
   infoLoading,
@@ -247,6 +249,12 @@ export default function StableFormView({
               <Text color="textSubtle">{t('Fee rate')}: </Text>
 
               <Text>{stableLpFee ? BIG_ONE_HUNDRED.times(stableLpFee).toNumber() : '-'}%</Text>
+            </AutoRow>
+
+            <AutoRow justifyContent="space-between" mb="4px">
+              <Text color="textSubtle">{t('LP reward APR')}: </Text>
+
+              <Text>{stableAPR ? formatAmount(stableAPR) : '-'}%</Text>
             </AutoRow>
 
             <AutoRow justifyContent="space-between" mb="16px">

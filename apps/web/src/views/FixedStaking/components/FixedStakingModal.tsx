@@ -58,6 +58,7 @@ export function FixedStakingModal({
       {children(stakeModal.onOpen, hideStakeButton)}
       <ModalV2 {...stakeModal} onDismiss={handleDismiss} closeOnOverlayClick>
         <StakingModalTemplate
+          hideStakeButton
           useNative
           stakingToken={stakingToken}
           pools={pools}

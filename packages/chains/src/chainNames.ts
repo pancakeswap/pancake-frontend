@@ -23,6 +23,51 @@ export const chainNames: Record<ChainId, string> = {
   [ChainId.BASE_SEPOLIA]: 'baseSepolia',
 }
 
+export const chainNamesInKebabCase = {
+  [ChainId.ETHEREUM]: 'ethereum',
+  [ChainId.GOERLI]: 'goerli',
+  [ChainId.BSC]: 'bsc',
+  [ChainId.BSC_TESTNET]: 'bsc-testnet',
+  [ChainId.ARBITRUM_ONE]: 'arbitrum',
+  [ChainId.ARBITRUM_GOERLI]: 'arbitrum-goerli',
+  [ChainId.POLYGON_ZKEVM]: 'polygon-zkevm',
+  [ChainId.POLYGON_ZKEVM_TESTNET]: 'polygon-zkevm-testnet',
+  [ChainId.ZKSYNC]: 'zksync',
+  [ChainId.ZKSYNC_TESTNET]: 'zksync-testnet',
+  [ChainId.LINEA]: 'linea',
+  [ChainId.LINEA_TESTNET]: 'linea-testnet',
+  [ChainId.OPBNB]: 'opbnb',
+  [ChainId.OPBNB_TESTNET]: 'opbnb-testnet',
+  [ChainId.BASE]: 'base',
+  [ChainId.BASE_TESTNET]: 'base-testnet',
+  [ChainId.SCROLL_SEPOLIA]: 'scroll-sepolia',
+  [ChainId.SEPOLIA]: 'sepolia',
+  [ChainId.ARBITRUM_SEPOLIA]: 'arbitrum-sepolia',
+  [ChainId.BASE_SEPOLIA]: 'base-sepolia',
+} as const
+
+export const mainnetChainNamesInKebabCase = {
+  [ChainId.ETHEREUM]: 'ethereum',
+  [ChainId.GOERLI]: 'ethereum',
+  [ChainId.BSC]: 'bsc',
+  [ChainId.BSC_TESTNET]: 'bsc',
+  [ChainId.ARBITRUM_ONE]: 'arbitrum',
+  [ChainId.ARBITRUM_GOERLI]: 'arbitrum',
+  [ChainId.POLYGON_ZKEVM]: 'polygon-zkevm',
+  [ChainId.POLYGON_ZKEVM_TESTNET]: 'polygon-zkevm',
+  [ChainId.ZKSYNC]: 'zksync',
+  [ChainId.ZKSYNC_TESTNET]: 'zksync',
+  [ChainId.LINEA]: 'linea',
+  [ChainId.LINEA_TESTNET]: 'linea',
+  [ChainId.OPBNB]: 'opbnb',
+  [ChainId.OPBNB_TESTNET]: 'opbnb',
+  [ChainId.BASE]: 'base',
+  [ChainId.BASE_TESTNET]: 'base',
+  [ChainId.SEPOLIA]: 'ethereum',
+  [ChainId.ARBITRUM_SEPOLIA]: 'arbitrum',
+  [ChainId.BASE_SEPOLIA]: 'base',
+} as const
+
 export const chainNameToChainId = Object.entries(chainNames).reduce((acc, [chainId, chainName]) => {
   return {
     [chainName]: chainId as unknown as ChainId,

@@ -6,11 +6,12 @@ import { Transaction, TransactionType } from '../../types'
 export async function fetchPoolTransactions(
   address: string,
   chainName: components['schemas']['ChainName'],
+  signal: AbortSignal,
 ): Promise<{ data: Transaction[] | undefined; error: boolean }> {
   try {
     const data = await explorerApiClient
       .GET('/cached/tx/v3/{chainName}/recent', {
-        signal: null,
+        signal,
         params: {
           path: {
             chainName,

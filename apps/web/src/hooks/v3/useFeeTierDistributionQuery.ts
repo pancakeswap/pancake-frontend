@@ -11,12 +11,16 @@ export function useFeeTierDistributionQuery(token0: string | undefined, token1: 
 
     queryFn: async ({ signal }) => {
       if (!chainId || !t0 || !t1) return undefined
+      const chainName = chainIdToExplorerInfoChainName[chainId]
+
+      if (!chainName) throw new Error(`Unknown chainId: ${chainId}`)
+
       return explorerApiClient
         .GET('/cached/pools/v3/{chainName}/list/simple', {
           signal,
           params: {
             path: {
-              chainName: chainIdToExplorerInfoChainName[chainId],
+              chainName,
             },
             query: {
               token0: t0,

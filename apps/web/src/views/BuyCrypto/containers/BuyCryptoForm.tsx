@@ -77,7 +77,7 @@ export function BuyCryptoForm() {
     unit,
   })
 
-  const { data, isFetching, isError, refetch } = useOnRampQuotes({
+  const { data, isLoading, isError, refetch } = useOnRampQuotes({
     cryptoCurrency: cryptoCurrency?.symbol,
     fiatCurrency: fiatCurrency?.symbol,
     network: cryptoCurrency?.chainId,
@@ -142,7 +142,7 @@ export function BuyCryptoForm() {
         selectedQuote={selectedQuote}
         isError={isError}
         inputError={inputError}
-        isFetching={isFetching}
+        isFetching={isLoading}
         setSelectedQuote={setSelectedQuote}
         setShowProvidersPopOver={setShowProvidersPopOver}
         showProivdersPopOver={showProivdersPopOver}
@@ -172,6 +172,7 @@ export function BuyCryptoForm() {
           value={outputValue ?? ''}
           disableInput
           unit={unit}
+          inputLoading={Boolean(isLoading || inputError || quotesError)}
         />
         <BitcoinAddressInput
           isBtc={isBtc}
@@ -183,7 +184,7 @@ export function BuyCryptoForm() {
           id="provider-select"
           onQuoteSelect={setShowProvidersPopOver}
           selectedQuote={selectedQuote || bestQuoteRef.current}
-          quoteLoading={Boolean(isFetching || inputError || quotesError)}
+          quoteLoading={Boolean(isLoading || inputError || quotesError)}
           quotes={quotes}
         />
 
@@ -201,7 +202,7 @@ export function BuyCryptoForm() {
             cryptoCurrency={cryptoCurrency}
             selectedQuote={selectedQuote}
             disabled={Boolean(isError || quotesError || inputError || btcError)}
-            loading={Boolean(quotesError || isFetching)}
+            loading={Boolean(quotesError || isLoading)}
             resetBuyCryptoState={resetBuyCryptoState}
             btcAddress={debouncedQuery}
             errorText={amountError}

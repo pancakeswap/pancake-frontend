@@ -14,9 +14,11 @@ import {
   PencilIcon,
   Slider,
   Text,
+  TooltipText,
   useMatchBreakpoints,
   useModal,
   useToast,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { CommitButton } from 'components/CommitButton'
@@ -45,6 +47,8 @@ import { Field } from 'state/burn/actions'
 import { useRemoveLiquidityV2FormState } from 'state/burn/reducer'
 import { useGasPrice } from 'state/user/hooks'
 import { isUserRejected, logError } from 'utils/sentry'
+import { useLPApr } from 'state/swap/useLPApr'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import { RemoveLiquidityLayout } from '..'
 import ConnectWalletButton from '../../../components/ConnectWalletButton'
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
@@ -83,6 +87,13 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
 
   const { pair, parsedAmounts, error } = useStableDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
 
+  const poolData = useLPApr('stable', pair)
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
+    {
+      placement: 'bottom',
+    },
+  )
   const { onUserInput: _onUserInput } = useBurnActionHandlers()
   const isValid = !error
 
@@ -536,6 +547,17 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
             {allowedSlippage / 100}%
           </Text>
         </RowBetween>
+        {poolData && (
+          <RowBetween mt="16px">
+            <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
+              {t('LP reward APR')}
+            </TooltipText>
+            {tooltipVisible && tooltip}
+            <Text bold color="primary">
+              {formatAmount(poolData.lpApr7d)}%
+            </Text>
+          </RowBetween>
+        )}
 
         <Box position="relative" mt="16px">
           {!account ? (

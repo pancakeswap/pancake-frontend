@@ -3181,4 +3181,12 @@ export const bscTokens = {
     'Lista DAO',
     'https://lista.org/',
   ),
+  axlSTARS: new ERC20Token(
+    ChainId.BSC,
+    '0xC3CAC4AE38cCf6985EF9039ACC1abBc874DdcBB0',
+    6,
+    'axlSTARS',
+    'Axelar Wrapped STARS',
+    'https://www.stargaze.zone/',
+  ),
 }

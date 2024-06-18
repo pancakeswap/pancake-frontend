@@ -1,5 +1,32 @@
 # @pancakeswap/price-api-sdk
 
+## 1.2.15
+
+### Patch Changes
+
+- Updated dependencies [42be6fc]
+  - @pancakeswap/pcsx-sdk@0.0.11
+
+## 1.2.14
+
+### Patch Changes
+
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/pcsx-sdk@0.0.10
+  - @pancakeswap/permit2-sdk@1.0.9
+  - @pancakeswap/smart-router@6.0.13
+
+## 1.2.13
+
+### Patch Changes
+
+- Updated dependencies [b9c91d1]
+  - @pancakeswap/chains@0.4.5
+  - @pancakeswap/pcsx-sdk@0.0.9
+  - @pancakeswap/permit2-sdk@1.0.8
+  - @pancakeswap/smart-router@6.0.12
+
 ## 1.2.12
 
 ### Patch Changes

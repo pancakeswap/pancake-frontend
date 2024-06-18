@@ -94,12 +94,6 @@ it("renders correctly", () => {
       display: flex;
     }
 
-    .c7 {
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 1.1;
-    }
-
     .c4 {
       align-items: center;
       background: transparent;
@@ -135,6 +129,12 @@ it("renders correctly", () => {
       min-height: 300px;
     }
 
+    .c7 {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
     @supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
       .c10 {
         filter: none!important;
@@ -144,12 +144,6 @@ it("renders correctly", () => {
     @media (hover: hover) {
       .c8:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
         opacity: 0.65;
-      }
-    }
-
-    @media screen and (min-width: 968px) {
-      .c7 {
-        font-size: 20px;
       }
     }
 
@@ -173,6 +167,12 @@ it("renders correctly", () => {
         bottom: auto;
         border-radius: 32px;
         max-height: 100vh;
+      }
+    }
+
+    @media screen and (min-width: 968px) {
+      .c7 {
+        font-size: 20px;
       }
     }
 

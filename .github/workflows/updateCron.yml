@@ -98,6 +98,7 @@ jobs:
         run: pnpm updateLPsAPR
         env:
           NEXT_PUBLIC_NODE_REAL_HEADER: ${{ secrets.NODE_REAL_HEADER }}
+          NEXT_PUBLIC_EXPLORE_API_ENDPOINT: ${{ vars.NEXT_PUBLIC_EXPLORE_API_ENDPOINT }}
 
       - name: Format
         run: pnpm prettier --write "apps/web/src/config/constants/lpAprs/*.{ts,json}"

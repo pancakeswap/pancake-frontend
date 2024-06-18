@@ -238,7 +238,7 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
       <FixedHeightRow style={style} onClick={() => !disabled && onTokenSelected(item)} $disabled={disabled}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           <Flex alignItems="center">
-            <CurrencyLogo currency={item} />
+            <CurrencyLogo currency={item} useTrustWalletUrl={false} />
             <Column marginLeft="12px">
               <Text bold>
                 {item.symbol} &nbsp;
@@ -313,7 +313,7 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
         >
           <Flex alignItems="center">
             <div style={{ position: 'relative' }}>
-              <CurrencyLogo currency={gasToken} size="20px" />
+              <CurrencyLogo currency={gasToken} useTrustWalletUrl={false} size="20px" />
               <p style={{ position: 'absolute', bottom: '-2px', right: '-6px', fontSize: '14px' }}>⛽️</p>
             </div>
 

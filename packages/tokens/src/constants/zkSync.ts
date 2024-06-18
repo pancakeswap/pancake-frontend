@@ -90,7 +90,7 @@ export const zksyncTokens = {
   usdtPlus: new ERC20Token(
     ChainId.ZKSYNC,
     '0xBb8D60008A08b1828E02120F1a952D295036eF3d',
-    7,
+    6,
     'USDT+',
     'USDT+',
     'https://overnight.fi/',
@@ -102,5 +102,13 @@ export const zksyncTokens = {
     'HOLD',
     'Holdstation',
     'https://holdstation.com/',
+  ),
+  zk: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E',
+    18,
+    'ZK',
+    'zkSync',
+    'https://zksync.io/',
   ),
 }

@@ -21,6 +21,9 @@ import { FAST_INTERVAL } from 'config/constants'
 import { FARMS_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
+
+import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
+import BN from 'bignumber.js'
 import { useBCakeFarmBoosterVeCakeContract, useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import toLower from 'lodash/toLower'
@@ -354,10 +357,15 @@ export function useFarmsV3WithPositionsAndBooster(options: UseFarmsOptions = {})
 } {
   const { data, error: _error, isLoading } = useFarmsV3(options)
   const { data: boosterWhitelist } = useV3BoostedFarm(data?.farmsWithPrice?.map((f) => f.pid))
+  const { data: boosterliquidityX } = useV3BoostedLiquidityX(data?.farmsWithPrice?.map((f) => f.pid))
 
   return {
     ...usePositionsByUserFarms(
-      data.farmsWithPrice?.map((d, index) => ({ ...d, boosted: boosterWhitelist?.[index]?.boosted })),
+      data.farmsWithPrice?.map((d, index) => ({
+        ...d,
+        boosted: boosterWhitelist?.[index]?.boosted,
+        boosterliquidityX: boosterliquidityX?.[index]?.boosterliquidityX,
+      })),
     ),
     poolLength: data.poolLength,
     cakePerSecond: data.cakePerSecond,
@@ -375,6 +383,27 @@ const useV3BoostedFarm = (pids?: number[]) => {
     queryFn: () =>
       getV3FarmBoosterWhiteList({
         farmBoosterContract: farmBoosterVeCakeContract,
+        chainId: chainId ?? -1,
+        pids: pids ?? [],
+      }),
+
+    enabled: Boolean(chainId && pids && pids.length > 0 && bCakeSupportedChainId.includes(chainId)),
+    retry: 3,
+    retryDelay: 3000,
+  })
+  return { data }
+}
+
+const useV3BoostedLiquidityX = (pids?: number[]) => {
+  const { chainId } = useActiveChainId()
+  const masterChefV3Contract = useMasterchefV3()
+
+  const { data } = useQuery({
+    queryKey: ['v3/getV3BoosterAPRLiquidityX', chainId, pids?.join('-')],
+
+    queryFn: () =>
+      getV3BoosterAPRLiquidityX({
+        masterChefV3Contract,
         chainId: chainId ?? -1,
         pids: pids ?? [],
       }),
@@ -409,4 +438,35 @@ export async function getV3FarmBoosterWhiteList({
 
   if (!whiteList || whiteList?.length !== pids?.length) return []
   return pids?.map((d, index) => ({ pid: d, boosted: whiteList[index].result ?? false }))
+}
+
+export async function getV3BoosterAPRLiquidityX({
+  masterChefV3Contract,
+  chainId,
+  pids,
+}: {
+  masterChefV3Contract: ReturnType<typeof useMasterchefV3>
+  chainId: ChainId
+  pids: number[]
+}): Promise<{ pid: number; boosterliquidityX: number }[]> {
+  const contracts = pids?.map((pid) => {
+    return {
+      address: masterChefV3Contract?.address ?? '0x',
+      functionName: 'poolInfo',
+      abi: masterChefV3ABI,
+      args: [BigInt(pid)],
+    } as const
+  })
+  const data = await publicClient({ chainId }).multicall({
+    contracts,
+  })
+
+  if (!data || data?.length !== pids?.length) return []
+
+  return pids?.map((d, index) => ({
+    pid: d,
+    boosterliquidityX:
+      new BN(data?.[index]?.result?.[6]?.toString() ?? 1).div(data?.[index]?.result?.[5]?.toString() ?? 1).toNumber() ??
+      1,
+  }))
 }

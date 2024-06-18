@@ -2,7 +2,7 @@ import { Trans, useTranslation } from '@pancakeswap/localization'
 import { Button, Card, Flex, FlexGap, Heading, Link, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
-type BenefitCardType = 'earnCake' | 'gaugesVoting' | 'farmBoost' | 'snapshotVoting' | 'ifo' | 'more'
+type BenefitCardType = 'earnCake' | 'gaugesVoting' | 'farmBoost' | 'snapshotVoting' | 'ifo' | 'more' | 'crossChain'
 
 type BenefitItem = {
   headImg: string
@@ -15,6 +15,17 @@ type BenefitItem = {
 }
 
 export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
+  crossChain: {
+    headImg: '/images/cake-staking/cross-chain.png',
+    title: <Trans>veCAKE Sync</Trans>,
+    subTitle: <Trans>Number of Chains with veCAKE</Trans>,
+    btnText: <Trans>View Details</Trans>,
+    desc: [
+      <Trans>Enjoy the same veCAKE benefits on other networks.</Trans>,
+      <Trans>Explorer other PancakeSwap benefits.</Trans>,
+    ],
+    key: 'cross-chain-veCake',
+  },
   earnCake: {
     headImg: '/images/cake-staking/benefit-earn-cake.png',
     title: <Trans>Earn CAKE</Trans>,
@@ -96,7 +107,8 @@ export const BenefitCard: React.FC<{
   onClick?: () => void
   comingSoon?: boolean
   headSlot?: React.ReactNode
-}> = ({ type, onClick, dataText, headSlot, comingSoon }) => {
+  buttonSlot?: React.ReactNode
+}> = ({ type, onClick, dataText, headSlot, comingSoon, buttonSlot }) => {
   const { t } = useTranslation()
   const info = BENEFITS[type] as BenefitItem
 
@@ -150,12 +162,15 @@ export const BenefitCard: React.FC<{
             </StyleUl>
           </Text>
         </div>
-        {button && info.link ? (
-          <Link href={info.link} style={{ width: '100%' }}>
-            {button}
-          </Link>
-        ) : null}
-        {button && !info.link && onClick ? button : null}
+        <Flex style={{ gap: 10 }}>
+          {button && info.link ? (
+            <Link href={info.link} style={{ width: '100%' }}>
+              {button}
+            </Link>
+          ) : null}
+          {button && !info.link && onClick ? button : null}
+          {buttonSlot && buttonSlot}
+        </Flex>
       </FlexGap>
     </StyledCard>
   )

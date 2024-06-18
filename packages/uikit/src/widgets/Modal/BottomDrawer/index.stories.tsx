@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import Box from "../Box/Box";
-import Button from "../Button/Button";
-import Text from "../Text/Text";
+import { Box, Button, Text } from "../../../components";
 import BottomDrawer from "./BottomDrawer";
 
 export default {

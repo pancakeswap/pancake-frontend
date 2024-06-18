@@ -66,7 +66,7 @@ export const VeCakeBanner = () => {
   const stakeCakeLinkAction = (
     <LinkExternalAction href={stakeCakeLink} color="black" externalIcon="arrowForward">
       <Flex color="black" alignItems="center" style={{ whiteSpace: 'nowrap' }}>
-        {t('Stake CAKE')}
+        {t('Stake %symbol%', { symbol: 'CAKE' })}
       </Flex>
     </LinkExternalAction>
   )

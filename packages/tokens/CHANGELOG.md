@@ -1,5 +1,25 @@
 # @pancakeswap/tokens
 
+## 0.6.21
+
+### Patch Changes
+
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/sdk@5.8.7
+  - @pancakeswap/token-lists@0.0.11
+
+## 0.6.20
+
+### Patch Changes
+
+- 5fa28e0: Add Holdstation(HOLD) token on zkSync
+- 95cfa0c: fix zkSync USDT+ decimals
+- Updated dependencies [b9c91d1]
+  - @pancakeswap/chains@0.4.5
+  - @pancakeswap/sdk@5.8.6
+  - @pancakeswap/token-lists@0.0.11
+
 ## 0.6.19
 
 ### Patch Changes
