@@ -17,13 +17,15 @@ describe('swaps', () => {
   let nativePool: PoolState
 
   beforeEach(() => {
+    const sqrtRatioX96 = encodeSqrtRatioX96(1, 1)
     erc20Pool = {
       currency0: USDC,
       currency1: DAI,
       fee: FeeAmount.LOW,
-      sqrtRatioX96: encodeSqrtRatioX96(1, 1),
+      sqrtRatioX96,
       liquidity: ONE_ETHER,
-      tick: 0,
+      tickSpacing: TICK_SPACINGS[FeeAmount.LOW],
+      tickCurrent: TickMath.getTickAtSqrtRatio(sqrtRatioX96),
       tickDataProvider: new TickListDataProvider([
         {
           index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[FeeAmount.LOW]),
@@ -42,9 +44,10 @@ describe('swaps', () => {
       currency0: NativeToken,
       currency1: DAI,
       fee: FeeAmount.LOW,
-      sqrtRatioX96: encodeSqrtRatioX96(1, 1),
+      sqrtRatioX96,
       liquidity: ONE_ETHER,
-      tick: 0,
+      tickCurrent: TickMath.getTickAtSqrtRatio(sqrtRatioX96),
+      tickSpacing: TICK_SPACINGS[FeeAmount.LOW],
       tickDataProvider: new TickListDataProvider([
         {
           index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[FeeAmount.LOW]),
@@ -141,7 +144,8 @@ describe('#bigNums', () => {
       fee: FeeAmount.LOW,
       sqrtRatioX96: encodeSqrtRatioX96(bigNum1, bigNum2),
       liquidity: ONE_ETHER,
-      tick: 0,
+      tickSpacing: TICK_SPACINGS[FeeAmount.LOW],
+      tickCurrent: TickMath.getTickAtSqrtRatio(encodeSqrtRatioX96(bigNum1, bigNum2)),
       tickDataProvider: new TickListDataProvider([
         {
           index: nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[FeeAmount.LOW]),
