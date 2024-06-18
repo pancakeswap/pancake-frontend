@@ -1,6 +1,5 @@
 export * from './createBinPool'
 export * from './getAmounts'
-export * from './getBase'
 export * from './getExternalFeeAmt'
 export * from './getFeeAmount'
 export * from './getFeeAmountFrom'

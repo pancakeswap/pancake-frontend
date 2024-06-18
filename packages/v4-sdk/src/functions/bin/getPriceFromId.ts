@@ -1,7 +1,17 @@
 import invariant from 'tiny-invariant'
 import { maxUint128, maxUint256 } from 'viem'
-import { REAL_ID_SHIFT, SCALE } from '../../constants/binPool'
-import { getBase } from './getBase'
+import { BASIS_POINT_MAX, REAL_ID_SHIFT, SCALE, SCALE_OFFSET } from '../../constants/binPool'
+
+/**
+ * Calculates the base from the bin step, which is `1 + binStep / BASIS_POINT_MAX`
+ */
+const getBase = (binStep: bigint): bigint => {
+  // eslint-disable-next-line no-bitwise
+  return SCALE + (binStep << SCALE_OFFSET) / BASIS_POINT_MAX
+}
+
+const Q128 = 2n ** 128n
+const Q20 = 2n ** 20n
 
 /**
  * Calculates the price from the given activeId and binStep
@@ -24,7 +34,7 @@ export const getPriceFromId = (activeId: bigint, binStep: bigint): bigint => {
     invert = true
   }
 
-  invariant(exponent < 2n ** 20n, 'EXPONENT')
+  invariant(exponent < Q20, 'EXPONENT')
 
   let squared = base
   let result = SCALE
@@ -36,9 +46,9 @@ export const getPriceFromId = (activeId: bigint, binStep: bigint): bigint => {
   for (let i = 0; i < 20; i++) {
     // eslint-disable-next-line no-bitwise
     if (exponent & (2n ** BigInt(i))) {
-      result = (result * squared) / 2n ** 128n
+      result = (result * squared) / Q128
     }
-    squared = (squared * squared) / 2n ** 128n
+    squared = (squared * squared) / Q128
   }
 
   return invert ? maxUint256 / result : result
