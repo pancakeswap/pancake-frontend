@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, SubMenuItems } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useIsValidDashboardUser } from 'views/Dashboard/hooks/useIsValidDashboardUser'
 import { useAccount } from 'wagmi'
 
@@ -9,18 +9,13 @@ export const DashboardLayout: React.FC<React.PropsWithChildren> = ({ children })
   const { t } = useTranslation()
   const { pathname, push } = useRouter()
   const { address: account } = useAccount()
-  const [isFirstTime, setIsFirstTime] = useState(true)
-  const showDashboardNav = useIsValidDashboardUser()
+  const { isValidLoginToDashboard, isFetched } = useIsValidDashboardUser()
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsFirstTime(false), 1000)
-
-    if (showDashboardNav === false && !isFirstTime) {
+    if (isFetched && !isValidLoginToDashboard) {
       push('/')
     }
-
-    return () => clearTimeout(timer)
-  }, [isFirstTime, push, showDashboardNav])
+  }, [isFetched, isValidLoginToDashboard, push])
 
   const subMenuItems = useMemo(() => {
     const menu = [
@@ -45,7 +40,7 @@ export const DashboardLayout: React.FC<React.PropsWithChildren> = ({ children })
     return '/dashboard'
   }, [pathname])
 
-  if (!showDashboardNav || (!isFirstTime && !account)) {
+  if (!isFetched || !isValidLoginToDashboard || !account) {
     return null
   }
 

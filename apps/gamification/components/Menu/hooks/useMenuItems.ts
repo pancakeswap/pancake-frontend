@@ -10,13 +10,13 @@ export const useMenuItems = (): ConfigMenuItemsType[] => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const menuItemsStatus = useMenuItemsStatus()
-  const showDashboardNav = useIsValidDashboardUser()
+  const { isValidLoginToDashboard } = useIsValidDashboardUser()
 
   const menuItems = useMemo(() => {
     const forkConfig = [...config(t, chainId)]
     const removeDashboardNav = forkConfig.slice(1, forkConfig.length)
-    return showDashboardNav ? config(t, chainId) : removeDashboardNav
-  }, [t, chainId, showDashboardNav])
+    return isValidLoginToDashboard ? config(t, chainId) : removeDashboardNav
+  }, [t, chainId, isValidLoginToDashboard])
 
   return useMemo(() => {
     if (menuItemsStatus && Object.keys(menuItemsStatus).length) {
