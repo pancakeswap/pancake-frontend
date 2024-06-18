@@ -3146,7 +3146,6 @@
   "Reset approval on USDT.": "USDT-এ পুনরায় অনুমোদন সেট করুন।",
   "Revoke transaction filled, but Approval not reset to 0. Please try again.": "লেনদেন প্রত্যাহার পূরণ করা হয়েছে, তবে অনুমোদন 0-এ রিসেট হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Merkl পুরস্কারের জন্য যোগ্য আপনার সমস্ত অবস্থান থেকে %symbol%-এ পুরস্কারের সম্মিলিত সংখ্যা।",
-  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "Merkl-এ পুরস্কার পেতে PancakeSwap Farms থেকে এই অবস্থান আনস্টেক করুন।",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "এই Merkl প্রচারাভিযান পরিসরের বাইরের তারল্যকে পুরস্কৃত করে না। পুরস্কার পেতে আপনার অবস্থান সমন্বয় করুন।",
   "This liquidity position is currently earning rewards on Merkl.": "এই তারল্য অবস্থান বর্তমানে Merkl-এ পুরস্কার উপার্জন করছে।",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "মোট USD মূল্য $20-এর কম হওয়ার কারণে এই তারল্য অবস্থান Merkl-এ কোনো পুরস্কার অর্জন করবে না।",
