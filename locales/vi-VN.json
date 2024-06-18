@@ -3146,7 +3146,6 @@
   "Reset approval on USDT.": "Đặt lại việc phê duyệt trên USDT.",
   "Revoke transaction filled, but Approval not reset to 0. Please try again.": "Giao dịch thu hồi đã được lấp đầy, nhưng Phê duyệt chưa được đặt về 0. Vui lòng thử lại.",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Tất cả các phần thưởng trong %symbol% từ TẤT CẢ vị thế của bạn đủ tiêu chuẩn nhận phần thưởng Merkl.",
-  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "Để nhận phần thưởng trên Merkl, hãy hủy cọc vị thế này từ các Trang trại PancakeSwap.",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "Chiến dịch Merkl này KHÔNG thưởng cho thanh khoản ngoài phạm vi. Để nhận phần thưởng, hãy điều chỉnh vị thế của bạn.",
   "This liquidity position is currently earning rewards on Merkl.": "Vị thế thanh khoản này đang nhận phần thưởng trên Merkl.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Vị thế thanh khoản này sẽ KHÔNG nhận bất kỳ phần thưởng nào trên Merkl bởi tổng giá trị USD của nó thấp hơn $20.",
