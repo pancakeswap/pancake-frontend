@@ -1,7 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
-import { GAMIFICATION_API } from 'config/constants/endpoints'
 import { useEffect } from 'react'
+import { SocialHubType } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+import { connectSocial } from 'views/Profile/utils/connectSocial'
+import { disconnectSocial } from 'views/Profile/utils/disconnectSocial'
 import { useAccount } from 'wagmi'
 
 interface TelegramResponse {
@@ -43,13 +45,22 @@ export const useConnectTelegram = ({ refresh }: UseConnectTelegramProps) => {
         bot_id: process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN, // Replace with your bot's ID
         request_access: true,
       },
-      (user: TelegramResponse) => {
-        if (user) {
-          // Handle the authenticated user information
-          // You can send it to your backend server
-          console.log(user.id)
-
-          // refresh?.()
+      async (user: TelegramResponse) => {
+        if (user && account) {
+          try {
+            await connectSocial({
+              account,
+              id: user.id.toString(),
+              type: SocialHubType.Telegram,
+              callback: () => {
+                toastSuccess(t('%social% Connected', { social: SocialHubType.Telegram }))
+                refresh?.()
+              },
+            })
+          } catch (error) {
+            console.error(`Connect ${SocialHubType.Telegram} error: `, error)
+            toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
+          }
         } else {
           // User cancelled authentication, redirect to /profile
           window.location.href = '/profile'
@@ -60,25 +71,18 @@ export const useConnectTelegram = ({ refresh }: UseConnectTelegramProps) => {
 
   const disconnect = async () => {
     try {
-      const response = await fetch(`${GAMIFICATION_API}/userInfo/v1/updateUserInfo`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: account,
-          socialHubToSocialUserIdMap: {
-            Telegram: '',
+      if (account) {
+        await disconnectSocial({
+          account,
+          type: SocialHubType.Telegram,
+          callback: () => {
+            toastSuccess(t('%social% Disconnected', { social: SocialHubType.Telegram }))
+            refresh?.()
           },
-        }),
-      })
-
-      if (response.ok) {
-        toastSuccess(t('Twitter Disconnected'))
-        refresh?.()
+        })
       }
     } catch (error) {
-      console.error('Disconnect telegram error: ', error)
+      console.error(`Disconnect ${SocialHubType.Telegram} error: `, error)
       toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
     }
   }

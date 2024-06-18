@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
-import { GAMIFICATION_API } from 'config/constants/endpoints'
 import { signIn } from 'next-auth/react'
+import { SocialHubType } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+import { disconnectSocial } from 'views/Profile/utils/disconnectSocial'
 import { useAccount } from 'wagmi'
 
 interface UseConnectTwitterProps {
@@ -19,25 +20,18 @@ export const useConnectTwitter = ({ refresh }: UseConnectTwitterProps) => {
 
   const disconnect = async () => {
     try {
-      const response = await fetch(`${GAMIFICATION_API}/userInfo/v1/updateUserInfo`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: account,
-          socialHubToSocialUserIdMap: {
-            Twitter: '',
+      if (account) {
+        await disconnectSocial({
+          account,
+          type: SocialHubType.Twitter,
+          callback: () => {
+            toastSuccess(t('%social% Disconnected', { social: SocialHubType.Twitter }))
+            refresh?.()
           },
-        }),
-      })
-
-      if (response.ok) {
-        toastSuccess(t('Twitter Disconnected'))
-        refresh?.()
+        })
       }
     } catch (error) {
-      console.error('Disconnect twitter error: ', error)
+      console.error(`Disconnect ${SocialHubType.Twitter} error: `, error)
       toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
     }
   }

@@ -11,6 +11,7 @@ import {
   VisibilityOff,
   VisibilityOn,
   useModal,
+  useToast,
 } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -21,9 +22,10 @@ import { useDomainNameForAddress } from 'hooks/useDomain'
 import { Profile } from 'hooks/useProfile/type'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
 import { useSession } from 'next-auth/react'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { getBlockExploreLink, safeGetAddress } from 'utils'
-import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+import { SocialHubType, useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+import { connectSocial } from 'views/Profile/utils/connectSocial'
 import { useAccount } from 'wagmi'
 import AvatarImage from './AvatarImage'
 import { BannerHeader } from './BannerHeader'
@@ -56,9 +58,40 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { userInfo, refresh } = useUserSocialHub()
+  const { userInfo, refresh, isFetched } = useUserSocialHub()
   const { data: session } = useSession()
-  console.log('session', session)
+  const { toastSuccess, toastError } = useToast()
+
+  useEffect(() => {
+    const fetch = async (id: string, social: SocialHubType) => {
+      if (account) {
+        try {
+          await connectSocial({
+            account,
+            id,
+            type: social,
+            callback: () => {
+              toastSuccess(t('%social% Connected', { social }))
+              refresh?.()
+            },
+          })
+        } catch (error) {
+          console.error(`Connect ${social} error: `, error)
+          toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
+        }
+      }
+    }
+
+    // if (!isFetched && session) {
+    //   if (!userInfo.socialHubToSocialUserIdMap.Discord && (session as any).user?.discordId) {
+    //     fetch((session as any).user?.discordId, SocialHubType.Discord)
+    //   }
+
+    //   if (!userInfo.socialHubToSocialUserIdMap.Twitter && (session as any).user?.twitterId) {
+    //     fetch((session as any).user?.twitterId, SocialHubType.Twitter)
+    //   }
+    // }
+  }, [account, isFetched, refresh, session, t, toastError, toastSuccess, userInfo])
 
   const { domainName, avatar: avatarFromDomain } = useDomainNameForAddress(accountPath)
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
