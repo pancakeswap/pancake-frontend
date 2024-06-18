@@ -1,24 +1,7 @@
-import { gql } from 'graphql-request'
 import orderBy from 'lodash/orderBy'
-import { multiChainBlocksClient, multiChainName, MultiChainNameExtend } from 'state/info/constant'
-import { ChainId, getLlamaChainName } from '@pancakeswap/chains'
+import { explorerApiClient } from 'state/info/api/client'
+import { MultiChainNameExtend, infoChainNameToExplorerChainName } from 'state/info/constant'
 import { Block } from 'state/info/types'
-import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
-
-const getBlockSubqueries = (timestamps: number[]) =>
-  timestamps.map((timestamp) => {
-    return `t${timestamp}:blocks(first: 1, orderBy: timestamp, orderDirection: desc, where: { timestamp_gt: ${timestamp}, timestamp_lt: ${
-      timestamp + 600
-    } }) {
-      number
-    }`
-  })
-
-const blocksQueryConstructor = (subqueries: string[]) => {
-  return gql`query blocks {
-    ${subqueries}
-  }`
-}
 
 /**
  * @notice Fetches block objects for an array of timestamps.
@@ -37,47 +20,34 @@ export const getBlocksFromTimestamps = async (
     return []
   }
 
-  if (chainName === 'ZKSYNC') {
-    const chainId = Object.entries(multiChainName).find(([, value]) => value === chainName)?.[0]
-    const llamaChainName = chainId && getLlamaChainName(chainId as unknown as ChainId)
-    const blocks = await timestamps.reduce(async (accumP, timestamp) => {
-      const acc = await accumP
-      try {
-        const response = await fetch(`https://coins.llama.fi/block/${llamaChainName}/${timestamp}`)
-        const height = await response.json().then((data) => data.height)
-        if (height) {
-          acc.push({
-            timestamp: timestamp.toString(),
-            number: parseInt(height, 10),
-          })
-        }
-      } catch (error) {
-        console.error('Unable to fetch data:', error)
-      }
-      return acc
-    }, Promise.resolve([] as Block[]))
-    return orderBy(blocks, (block) => block.number, sortDirection)
-  }
-  const fetchedData: any = await multiQuery(
-    blocksQueryConstructor,
-    getBlockSubqueries(timestamps),
-    multiChainBlocksClient[chainName],
-    skipCount,
-  )
+  const explorerChainName = infoChainNameToExplorerChainName[chainName]
 
-  const blocks: Block[] = []
-  if (fetchedData) {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const key of Object.keys(fetchedData)) {
-      if (fetchedData[key].length > 0) {
-        blocks.push({
-          timestamp: key.split('t')[1],
-          number: parseInt(fetchedData[key][0].number, 10),
+  if (!explorerChainName) {
+    throw new Error('Invalid chain name')
+  }
+
+  const blocks = await timestamps.reduce(async (accumP, timestamp) => {
+    const acc = await accumP
+    try {
+      const response = await explorerApiClient.GET('/cached/block/{chainName}/{timestamp}', {
+        params: {
+          path: {
+            chainName: explorerChainName,
+            timestamp,
+          },
+        },
+      })
+      const height = response.data?.height
+      if (height) {
+        acc.push({
+          timestamp: timestamp.toString(),
+          number: height,
         })
       }
+    } catch (error) {
+      console.error('Unable to fetch data:', error)
     }
-    // graphql-request does not guarantee same ordering of batched requests subqueries, hence manual sorting
-    return orderBy(blocks, (block) => block.number, sortDirection)
-  }
-  return blocks
+    return acc
+  }, Promise.resolve([] as Block[]))
+  return orderBy(blocks, (block) => block.number, sortDirection)
 }

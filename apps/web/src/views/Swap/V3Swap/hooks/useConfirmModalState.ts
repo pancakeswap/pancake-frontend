@@ -1,183 +1,447 @@
-import { ChainId } from '@pancakeswap/chains'
-import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
-import { ethereumTokens } from '@pancakeswap/tokens'
-import { ApprovalState } from 'hooks/useApproveCallback'
-import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
-import { useCallback, useEffect, useState } from 'react'
-import { Hex } from 'viem'
-import { ConfirmModalStateV1, PendingConfirmModalStateV1 } from 'views/Swap/V3Swap/types'
-import { TransactionRejectedError } from './useSendSwapTransaction'
+import { usePreviousValue } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { getPermit2Address } from '@pancakeswap/permit2-sdk'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
+import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@pancakeswap/swap-sdk-core'
+import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
+import { ConfirmModalState, useAsyncConfirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
+import { ALLOWED_PRICE_IMPACT_HIGH, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from 'config/constants/exchange'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { usePermit2 } from 'hooks/usePermit2'
+import { usePermit2Requires } from 'hooks/usePermit2Requires'
+import { useSafeTxHashTransformer } from 'hooks/useSafeTxHashTransformer'
+import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { RetryableError, retry } from 'state/multicall/retry'
+import { UserUnexpectedTxError } from 'utils/errors'
+import { publicClient } from 'utils/wagmi'
+import {
+  Address,
+  Hex,
+  TransactionNotFoundError,
+  TransactionReceipt,
+  TransactionReceiptNotFoundError,
+  erc20Abi,
+} from 'viem'
+import { computeTradePriceBreakdown } from '../utils/exchange'
+import { userRejectedError } from './useSendSwapTransaction'
+import { useSwapCallback } from './useSwapCallback'
 
-interface UseConfirmModalStateProps<SendTransactionReturnType> {
-  txHash?: string
-  chainId?: ChainId
-  approval: ApprovalState
-  approvalToken?: Currency
-  isPendingError: boolean
-  isExpertMode: boolean
-  currentAllowance?: CurrencyAmount<Currency>
-  onConfirm: () => Promise<void>
-  approveCallback: () => Promise<SendTransactionReturnType>
-  revokeCallback: () => Promise<SendTransactionReturnType>
+export type ConfirmAction = {
+  step: ConfirmModalState
+  action: (nextStep?: ConfirmModalState) => Promise<void>
+  showIndicator: boolean
 }
 
-function isInApprovalPhase(confirmModalState: ConfirmModalStateV1) {
-  return (
-    confirmModalState === ConfirmModalStateV1.APPROVING_TOKEN ||
-    confirmModalState === ConfirmModalStateV1.APPROVE_PENDING
-  )
-}
-export const useConfirmModalState = <SendTransactionReturnType>({
+const getTokenAllowance = ({
   chainId,
-  txHash,
-  approval,
-  approvalToken,
-  isPendingError,
-  currentAllowance,
-  onConfirm,
-  approveCallback,
-  revokeCallback,
-}: UseConfirmModalStateProps<SendTransactionReturnType>) => {
-  const { waitForTransaction } = usePublicNodeWaitForTransaction()
-  const [confirmModalState, setConfirmModalState] = useState<ConfirmModalStateV1>(ConfirmModalStateV1.REVIEWING)
-  const [pendingModalSteps, setPendingModalSteps] = useState<PendingConfirmModalStateV1[]>([])
-  const [previouslyPending, setPreviouslyPending] = useState<boolean>(false)
-  const [resettingApproval, setResettingApproval] = useState<boolean>(false)
+  address,
+  inputs,
+}: {
+  chainId: number
+  address: Address
+  inputs: [`0x${string}`, `0x${string}`]
+}) => {
+  const client = publicClient({ chainId })
 
-  const generateRequiredSteps = useCallback(() => {
-    const steps: PendingConfirmModalStateV1[] = []
+  return client.readContract({
+    abi: erc20Abi,
+    address,
+    functionName: 'allowance',
+    args: inputs,
+  })
+}
 
-    // Any existing USDT allowance needs to be reset before we can approve the new amount (mainnet only).
-    // See the `approve` function here: https://etherscan.io/address/0xdAC17F958D2ee523a2206206994597C13D831ec7#code
-    if (
-      approval === ApprovalState.NOT_APPROVED &&
-      currentAllowance?.greaterThan(0) &&
-      approvalToken &&
-      approvalToken.chainId === ethereumTokens.usdt.chainId &&
-      approvalToken.wrapped.address.toLowerCase() === ethereumTokens.usdt.address.toLowerCase()
-    ) {
-      steps.push(ConfirmModalStateV1.RESETTING_APPROVAL)
+const useCreateConfirmSteps = (amountToApprove: CurrencyAmount<Token> | undefined, spender: Address | undefined) => {
+  const { requireApprove, requirePermit, requireRevoke } = usePermit2Requires(amountToApprove, spender)
+
+  return useCallback(() => {
+    const steps: ConfirmModalState[] = []
+    if (requireRevoke) {
+      steps.push(ConfirmModalState.RESETTING_APPROVAL)
     }
-
-    if (approval === ApprovalState.NOT_APPROVED) {
-      setPreviouslyPending(false)
-      steps.push(ConfirmModalStateV1.APPROVING_TOKEN, ConfirmModalStateV1.APPROVE_PENDING)
+    if (requireApprove) {
+      steps.push(ConfirmModalState.APPROVING_TOKEN)
     }
-
-    steps.push(ConfirmModalStateV1.PENDING_CONFIRMATION)
+    if (requirePermit) {
+      steps.push(ConfirmModalState.PERMITTING)
+    }
+    steps.push(ConfirmModalState.PENDING_CONFIRMATION)
     return steps
-  }, [approval, approvalToken, currentAllowance])
+  }, [requireRevoke, requireApprove, requirePermit])
+}
 
-  const onCancel = useCallback(() => {
-    setConfirmModalState(ConfirmModalStateV1.REVIEWING)
-    setPreviouslyPending(false)
+// define the actions of each step
+const useConfirmActions = (
+  trade: SmartRouterTrade<TradeType> | undefined,
+  amountToApprove: CurrencyAmount<Token> | undefined,
+  spender: Address | undefined,
+) => {
+  const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
+  const [deadline] = useTransactionDeadline()
+  const safeTxHashTransformer = useSafeTxHashTransformer()
+  const { revoke, permit, approve } = usePermit2(amountToApprove, spender, {
+    enablePaymaster: true,
+  })
+  const { account } = useAccountActiveChain()
+  const getAllowanceArgs = useMemo(() => {
+    if (!chainId) return undefined
+    const inputs = [account, getPermit2Address(chainId)] as [`0x${string}`, `0x${string}`]
+    return {
+      chainId,
+      address: amountToApprove?.currency.address as Address,
+      inputs,
+    }
+  }, [chainId, amountToApprove?.currency.address, account])
+  const [permit2Signature, setPermit2Signature] = useState<Permit2Signature | undefined>(undefined)
+  const { callback: swap, error: swapError } = useSwapCallback({
+    trade,
+    deadline,
+    permitSignature: permit2Signature,
+  })
+  const [confirmState, setConfirmState] = useState<ConfirmModalState>(ConfirmModalState.REVIEWING)
+  const [txHash, setTxHash] = useState<Hex | undefined>(undefined)
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
+
+  const resetState = useCallback(() => {
+    setConfirmState(ConfirmModalState.REVIEWING)
+    setTxHash(undefined)
+    setErrorMessage(undefined)
+    setPermit2Signature(undefined)
   }, [])
 
-  const resetSwapFlow = useCallback(() => {
-    setConfirmModalState(ConfirmModalStateV1.REVIEWING)
-    setPendingModalSteps([])
-    setPreviouslyPending(false)
-    setResettingApproval(false)
+  const showError = useCallback((error: string) => {
+    setErrorMessage(error)
+    setTxHash(undefined)
+    setPermit2Signature(undefined)
   }, [])
+
+  const retryWaitForTransaction = useCallback(
+    async ({ hash }: { hash: Hex | undefined }) => {
+      if (hash && chainId) {
+        let retryTimes = 0
+        const getReceipt = async () => {
+          console.info('retryWaitForTransaction', hash, retryTimes++)
+          try {
+            return await publicClient({ chainId }).waitForTransactionReceipt({ hash })
+          } catch (error) {
+            if (error instanceof TransactionReceiptNotFoundError || error instanceof TransactionNotFoundError) {
+              throw new RetryableError()
+            }
+            throw error
+          }
+        }
+        const { promise } = retry<TransactionReceipt>(getReceipt, {
+          n: 6,
+          minWait: 2000,
+          maxWait: 5000,
+        })
+        return promise
+      }
+      return undefined
+    },
+    [chainId],
+  )
+
+  // define the action of each step
+  const revokeStep = useMemo(() => {
+    const action = async (nextState?: ConfirmModalState) => {
+      setTxHash(undefined)
+      setConfirmState(ConfirmModalState.RESETTING_APPROVAL)
+      try {
+        const result = await revoke()
+        if (result?.hash) {
+          const hash = await safeTxHashTransformer(result.hash)
+          setTxHash(hash)
+
+          await retryWaitForTransaction({ hash })
+        }
+
+        let newAllowanceRaw: bigint = 0n
+
+        try {
+          // check if user really reset the approval to 0
+          // const { data } = await refetch()
+          if (getAllowanceArgs) {
+            const data = await getTokenAllowance(getAllowanceArgs)
+            newAllowanceRaw = data ?? 0n
+          }
+        } catch (error) {
+          // assume the approval reset is successful, if we can't check the allowance
+          console.error('check allowance after revoke failed: ', error)
+        }
+
+        const newAllowance = CurrencyAmount.fromRawAmount(amountToApprove?.currency as Currency, newAllowanceRaw ?? 0n)
+        if (!newAllowance.equalTo(0)) {
+          throw new UserUnexpectedTxError({
+            expectedData: 0,
+            actualData: newAllowanceRaw.toString(),
+          })
+        }
+
+        setConfirmState(nextState ?? ConfirmModalState.APPROVING_TOKEN)
+      } catch (error) {
+        console.error('revoke error', error)
+        if (userRejectedError(error)) {
+          showError(t('Transaction rejected'))
+        } else if (error instanceof UserUnexpectedTxError) {
+          showError(t('Revoke transaction filled, but Approval not reset to 0. Please try again.'))
+        } else {
+          showError(typeof error === 'string' ? error : (error as any)?.message)
+        }
+      }
+    }
+    return {
+      step: ConfirmModalState.RESETTING_APPROVAL,
+      action,
+      showIndicator: true,
+    }
+  }, [
+    amountToApprove?.currency,
+    getAllowanceArgs,
+    retryWaitForTransaction,
+    revoke,
+    safeTxHashTransformer,
+    showError,
+    t,
+  ])
+
+  const permitStep = useMemo(() => {
+    return {
+      step: ConfirmModalState.PERMITTING,
+      action: async (nextState?: ConfirmModalState) => {
+        setConfirmState(ConfirmModalState.PERMITTING)
+        try {
+          const { tx, ...result } = (await permit()) ?? {}
+          if (tx) {
+            const hash = await safeTxHashTransformer(tx)
+            retryWaitForTransaction({ hash })
+            // use transferAllowance, no need to use permit signature
+            setPermit2Signature(undefined)
+          } else {
+            setPermit2Signature(result)
+          }
+          setConfirmState(nextState ?? ConfirmModalState.PENDING_CONFIRMATION)
+        } catch (error) {
+          if (userRejectedError(error)) {
+            showError('Transaction rejected')
+          } else {
+            showError(typeof error === 'string' ? error : (error as any)?.message)
+          }
+        }
+      },
+      showIndicator: true,
+    }
+  }, [permit, retryWaitForTransaction, safeTxHashTransformer, showError])
+
+  const approveStep = useMemo(() => {
+    return {
+      step: ConfirmModalState.APPROVING_TOKEN,
+      action: async (nextState?: ConfirmModalState) => {
+        setTxHash(undefined)
+        setConfirmState(ConfirmModalState.APPROVING_TOKEN)
+        try {
+          const result = await approve()
+          if (result?.hash && chainId) {
+            const hash = await safeTxHashTransformer(result.hash)
+            setTxHash(hash)
+            await retryWaitForTransaction({ hash })
+          }
+          let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
+          // check if user really approved the amount trade needs
+          try {
+            if (getAllowanceArgs) {
+              const data = await getTokenAllowance(getAllowanceArgs)
+              newAllowanceRaw = data ?? 0n
+            }
+          } catch (error) {
+            // assume the approval is successful, if we can't check the allowance
+            console.error('check allowance after approve failed: ', error)
+          }
+          const newAllowance = CurrencyAmount.fromRawAmount(
+            amountToApprove?.currency as Currency,
+            newAllowanceRaw ?? 0n,
+          )
+          if (amountToApprove && newAllowance && newAllowance.lessThan(amountToApprove)) {
+            throw new UserUnexpectedTxError({
+              expectedData: amountToApprove.quotient.toString(),
+              actualData: newAllowanceRaw.toString(),
+            })
+          }
+
+          setConfirmState(nextState ?? ConfirmModalState.PERMITTING)
+        } catch (error) {
+          console.error('approve error', error)
+          if (userRejectedError(error)) {
+            showError(t('Transaction rejected'))
+          } else if (error instanceof UserUnexpectedTxError) {
+            showError(
+              t('Approve transaction filled, but Approval still not enough to fill current trade. Please try again.'),
+            )
+          } else {
+            showError(typeof error === 'string' ? error : (error as any)?.message)
+          }
+        }
+      },
+      showIndicator: true,
+    }
+  }, [
+    amountToApprove,
+    approve,
+    chainId,
+    getAllowanceArgs,
+    retryWaitForTransaction,
+    safeTxHashTransformer,
+    showError,
+    t,
+  ])
+
+  const swapStep = useMemo(() => {
+    return {
+      step: ConfirmModalState.PENDING_CONFIRMATION,
+      action: async () => {
+        setTxHash(undefined)
+        setConfirmState(ConfirmModalState.PENDING_CONFIRMATION)
+
+        if (!swap) {
+          resetState()
+          return
+        }
+
+        if (swapError) {
+          showError(swapError)
+          return
+        }
+
+        try {
+          const result = await swap()
+          if (result?.hash) {
+            const hash = await safeTxHashTransformer(result.hash)
+            setTxHash(hash)
+
+            await retryWaitForTransaction({ hash })
+          }
+          setConfirmState(ConfirmModalState.COMPLETED)
+        } catch (error: any) {
+          console.error('swap error', error)
+          if (userRejectedError(error)) {
+            showError('Transaction rejected')
+          } else {
+            showError(typeof error === 'string' ? error : (error as any)?.message)
+          }
+        }
+      },
+      showIndicator: false,
+    }
+  }, [resetState, retryWaitForTransaction, safeTxHashTransformer, showError, swap, swapError])
+
+  const actions = useMemo(() => {
+    return {
+      [ConfirmModalState.RESETTING_APPROVAL]: revokeStep,
+      [ConfirmModalState.PERMITTING]: permitStep,
+      [ConfirmModalState.APPROVING_TOKEN]: approveStep,
+      [ConfirmModalState.PENDING_CONFIRMATION]: swapStep,
+    } as { [k in ConfirmModalState]: ConfirmAction }
+  }, [approveStep, permitStep, revokeStep, swapStep])
+
+  return {
+    txHash,
+    actions,
+
+    confirmState,
+    resetState,
+    errorMessage,
+  }
+}
+
+export const useConfirmModalState = (
+  trade: SmartRouterTrade<TradeType> | undefined,
+  amountToApprove: CurrencyAmount<Token> | undefined,
+  spender: Address | undefined,
+) => {
+  const { actions, confirmState, txHash, errorMessage, resetState } = useConfirmActions(trade, amountToApprove, spender)
+  const preConfirmState = usePreviousValue(confirmState)
+  const [confirmSteps, setConfirmSteps] = useState<ConfirmModalState[]>()
+  const tradePriceBreakdown = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const confirmPriceImpactWithoutFee = useAsyncConfirmPriceImpactWithoutFee(
+    tradePriceBreakdown?.priceImpactWithoutFee as Percent,
+    PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
+    ALLOWED_PRICE_IMPACT_HIGH,
+  )
+  const swapPreflightCheck = useCallback(async () => {
+    if (tradePriceBreakdown) {
+      const confirmed = await confirmPriceImpactWithoutFee()
+      if (!confirmed) {
+        return false
+      }
+    }
+    return true
+  }, [confirmPriceImpactWithoutFee, tradePriceBreakdown])
+
+  const createSteps = useCreateConfirmSteps(amountToApprove, spender)
+  const confirmActions = useMemo(() => {
+    return confirmSteps?.map((step) => actions[step])
+  }, [confirmSteps, actions])
 
   const performStep = useCallback(
-    async (step: ConfirmModalStateV1) => {
-      switch (step) {
-        case ConfirmModalStateV1.RESETTING_APPROVAL:
-          setConfirmModalState(ConfirmModalStateV1.RESETTING_APPROVAL)
-          revokeCallback()
-            .then(() => setResettingApproval(true))
-            .catch(() => onCancel())
-          break
-        case ConfirmModalStateV1.APPROVING_TOKEN:
-          setConfirmModalState(ConfirmModalStateV1.APPROVING_TOKEN)
-          approveCallback()
-            .then(() => setConfirmModalState(ConfirmModalStateV1.APPROVE_PENDING))
-            .catch(() => onCancel())
-          break
-        case ConfirmModalStateV1.PENDING_CONFIRMATION:
-          setConfirmModalState(ConfirmModalStateV1.PENDING_CONFIRMATION)
-          try {
-            await onConfirm()
-          } catch (error) {
-            if (error instanceof TransactionRejectedError) {
-              resetSwapFlow()
-            }
-          }
-          break
-        case ConfirmModalStateV1.COMPLETED:
-          setConfirmModalState(ConfirmModalStateV1.COMPLETED)
-          break
-        default:
-          setConfirmModalState(ConfirmModalStateV1.REVIEWING)
-          break
+    async ({
+      nextStep,
+      stepActions,
+      state,
+    }: {
+      nextStep?: ConfirmModalState
+      stepActions: ConfirmAction[]
+      state: ConfirmModalState
+    }) => {
+      if (!stepActions) {
+        return
       }
+
+      const step = stepActions.find((s) => s.step === state) ?? stepActions[0]
+
+      await step.action(nextStep)
     },
-    [approveCallback, revokeCallback, onConfirm, onCancel, resetSwapFlow],
+    [],
   )
 
-  const startSwapFlow = useCallback(() => {
-    const steps = generateRequiredSteps()
-    setPendingModalSteps(steps)
-    performStep(steps[0])
-  }, [generateRequiredSteps, performStep])
+  const callToAction = useCallback(async () => {
+    const steps = createSteps()
+    setConfirmSteps(steps)
+    const stepActions = steps.map((step) => actions[step])
+    const nextStep = steps[1] ?? undefined
 
-  const checkHashIsReceipted = useCallback(
-    async (hash: `0x${string}`) => {
-      const receipt: any = await waitForTransaction({ hash, chainId })
-      if (receipt.status === 'success') {
-        performStep(ConfirmModalStateV1.COMPLETED)
-      }
-    },
-    [performStep, waitForTransaction, chainId],
-  )
-
-  useEffect(() => {
-    if (approval === ApprovalState.NOT_APPROVED && resettingApproval) {
-      startSwapFlow()
-      setResettingApproval(false)
+    if (!(await swapPreflightCheck())) {
+      return
     }
-  }, [approval, resettingApproval, performStep, startSwapFlow])
 
-  useEffect(() => {
-    if (approval === ApprovalState.PENDING && confirmModalState === ConfirmModalStateV1.APPROVE_PENDING) {
-      setPreviouslyPending(true)
-    }
-  }, [approval, confirmModalState])
+    performStep({
+      nextStep,
+      stepActions,
+      state: steps[0],
+    })
+  }, [actions, createSteps, performStep, swapPreflightCheck])
 
-  // Submit Approve but after submit find out still not enough.
+  // auto perform the next step
   useEffect(() => {
     if (
-      previouslyPending &&
-      approval === ApprovalState.NOT_APPROVED &&
-      confirmModalState === ConfirmModalStateV1.APPROVE_PENDING
+      preConfirmState !== confirmState &&
+      preConfirmState !== ConfirmModalState.REVIEWING &&
+      confirmActions?.some((step) => step.step === confirmState)
     ) {
-      onCancel()
+      const nextStep = confirmActions.findIndex((step) => step.step === confirmState)
+      const nextStepState = confirmActions[nextStep + 1]?.step ?? ConfirmModalState.PENDING_CONFIRMATION
+      performStep({ nextStep: nextStepState, stepActions: confirmActions, state: confirmState })
     }
-  }, [approval, confirmModalState, previouslyPending, onCancel])
+  }, [confirmActions, confirmState, performStep, preConfirmState])
 
-  // Submit Approve, get error when submit approve.
-  useEffect(() => {
-    if (isPendingError && confirmModalState === ConfirmModalStateV1.APPROVE_PENDING) {
-      onCancel()
-    }
-  }, [isPendingError, confirmModalState, previouslyPending, onCancel])
-
-  useEffect(() => {
-    if (isInApprovalPhase(confirmModalState) && approval === ApprovalState.APPROVED) {
-      performStep(ConfirmModalStateV1.PENDING_CONFIRMATION)
-    }
-  }, [approval, confirmModalState, performStep])
-
-  useEffect(() => {
-    if (
-      txHash &&
-      confirmModalState === ConfirmModalStateV1.PENDING_CONFIRMATION &&
-      approval === ApprovalState.APPROVED
-    ) {
-      checkHashIsReceipted(txHash as Hex)
-    }
-  }, [approval, txHash, confirmModalState, checkHashIsReceipted, performStep])
-
-  return { confirmModalState, pendingModalSteps, startSwapFlow, resetSwapFlow }
+  return {
+    callToAction,
+    errorMessage,
+    confirmState,
+    resetState,
+    txHash,
+    confirmActions,
+  }
 }

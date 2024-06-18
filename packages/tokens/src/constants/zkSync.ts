@@ -7,6 +7,13 @@ export const zksyncTokens = {
   usdc: USDC[ChainId.ZKSYNC],
   usdt: USDT[ChainId.ZKSYNC],
   cake: CAKE[ChainId.ZKSYNC],
+  usdcNative: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x1d17CBcF0D6D143135aE902365D2E5e2A16538D4',
+    6,
+    'USDC',
+    'USD Coin (Native)',
+  ),
   tes: new ERC20Token(
     ChainId.ZKSYNC,
     '0xCab3F741Fa54e79E34753B95717b23018332b8AC',
@@ -83,9 +90,25 @@ export const zksyncTokens = {
   usdtPlus: new ERC20Token(
     ChainId.ZKSYNC,
     '0xBb8D60008A08b1828E02120F1a952D295036eF3d',
-    7,
+    6,
     'USDT+',
     'USDT+',
     'https://overnight.fi/',
+  ),
+  hold: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0xed4040fD47629e7c8FBB7DA76bb50B3e7695F0f2',
+    18,
+    'HOLD',
+    'Holdstation',
+    'https://holdstation.com/',
+  ),
+  zk: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E',
+    18,
+    'ZK',
+    'zkSync',
+    'https://zksync.io/',
   ),
 }

@@ -1,97 +1,71 @@
 import BigNumber from 'bignumber.js'
-import { gql, GraphQLClient } from 'graphql-request'
-import { Block } from 'state/info/types'
-import { ProtocolData } from '../../types'
+import type { components } from 'state/info/api/schema'
+import { explorerApiClient } from 'state/info/api/client'
 import { getPercentChange } from '../../utils/data'
-
-export const GLOBAL_DATA = (block?: string | number) => {
-  const queryString = ` query pancakeFactories {
-      factories(
-       ${block !== undefined ? `block: { number: ${block}}` : ``} 
-       first: 1) {
-        txCount
-        totalVolumeUSD
-        totalFeesUSD
-        totalValueLockedUSD
-        totalProtocolFeesUSD
-      }
-    }`
-  return gql`
-    ${queryString}
-  `
-}
-
-interface GlobalResponse {
-  factories: {
-    txCount: string
-    totalVolumeUSD: string
-    totalFeesUSD: string
-    totalValueLockedUSD: string
-    totalProtocolFeesUSD: string
-  }[]
-}
+import { ProtocolData } from '../../types'
 
 export async function fetchProtocolData(
-  dataClient: GraphQLClient,
-  blocks?: Block[],
+  chainName: components['schemas']['ChainName'],
+  signal: AbortSignal,
 ): Promise<{
   error: boolean
   data: ProtocolData | undefined
 }> {
   try {
-    const [block24, block48] = blocks ?? []
+    const data = await explorerApiClient
+      .GET('/cached/protocol/{protocol}/{chainName}/stats', {
+        signal,
+        params: {
+          path: {
+            chainName,
+            protocol: 'v3',
+          },
+        },
+      })
+      .then((res) => res.data)
 
-    // fetch all data
-    const data = await dataClient.request<GlobalResponse>(GLOBAL_DATA())
-
-    const data24 = await dataClient.request<GlobalResponse>(GLOBAL_DATA(block24?.number ?? 0))
-
-    const data48 = await dataClient.request<GlobalResponse>(GLOBAL_DATA(block48?.number ?? 0))
-
-    const parsed = data?.factories?.[0]
-    const parsed24 = data24?.factories?.[0]
-    const parsed48 = data48?.factories?.[0]
+    if (!data) {
+      return {
+        error: false,
+        data: undefined,
+      }
+    }
 
     // volume data
-    const volumeUSD =
-      parsed && parsed24
-        ? parseFloat(parsed.totalVolumeUSD) - parseFloat(parsed24.totalVolumeUSD)
-        : parseFloat(parsed.totalVolumeUSD)
+    const volumeUSD = data.volumeUSD24h ? parseFloat(data.volumeUSD24h) : 0
 
     const volumeOneWindowAgo =
-      parsed24?.totalVolumeUSD && parsed48?.totalVolumeUSD
-        ? parseFloat(parsed24.totalVolumeUSD) - parseFloat(parsed48.totalVolumeUSD)
-        : undefined
+      data.volumeUSD24h && data.volumeUSD48h ? parseFloat(data.volumeUSD48h) - parseFloat(data.volumeUSD24h) : undefined
 
     const volumeUSDChange =
-      volumeUSD && volumeOneWindowAgo ? ((volumeUSD - volumeOneWindowAgo) / volumeOneWindowAgo) * 100 : 0
+      volumeUSD && volumeOneWindowAgo
+        ? getPercentChange(volumeUSD.toString(), volumeOneWindowAgo.toString())
+        : undefined
 
     // total value locked
-    const tvlUSDChange = getPercentChange(parsed?.totalValueLockedUSD, parsed24?.totalValueLockedUSD)
+    const tvlUSDChange = getPercentChange(data.tvlUSD, data.tvlUSD24h)
 
     // 24H transactions
-    const txCount =
-      parsed && parsed24 ? parseFloat(parsed.txCount) - parseFloat(parsed24.txCount) : parseFloat(parsed.txCount)
+    const txCount = data.txCount24h
 
-    const txCountOneWindowAgo =
-      parsed24 && parsed48 ? parseFloat(parsed24.txCount) - parseFloat(parsed48.txCount) : undefined
+    const txCountOneWindowAgo = data.txCount24h && data.txCount48h ? data.txCount48h - data.txCount24h : undefined
 
     const txCountChange =
       txCount && txCountOneWindowAgo ? getPercentChange(txCount.toString(), txCountOneWindowAgo.toString()) : 0
 
     const feesOneWindowAgo =
-      parsed24 && parsed48
-        ? new BigNumber(parsed24.totalFeesUSD)
-            .minus(parsed24.totalProtocolFeesUSD)
-            .minus(new BigNumber(parsed48.totalFeesUSD).minus(parsed48.totalProtocolFeesUSD))
+      data.totalFeeUSD48h && data.totalProtocolFeeUSD48h && data.totalFeeUSD24h && data.totalProtocolFeeUSD24h
+        ? new BigNumber(data.totalFeeUSD24h)
+            .minus(data.totalProtocolFeeUSD24h)
+            .minus(new BigNumber(data.totalFeeUSD48h).minus(data.totalProtocolFeeUSD48h))
         : undefined
 
     const feesUSD =
-      parsed && parsed24
-        ? new BigNumber(parsed.totalFeesUSD)
-            .minus(parsed.totalProtocolFeesUSD)
-            .minus(new BigNumber(parsed24.totalFeesUSD).minus(parsed24.totalProtocolFeesUSD))
-        : new BigNumber(parsed.totalFeesUSD).minus(parsed.totalProtocolFeesUSD)
+      data.totalFeeUSD && data.totalProtocolFeeUSD && data.totalFeeUSD24h && data.totalProtocolFeeUSD24h
+        ? new BigNumber(data.totalFeeUSD)
+            .minus(data.totalProtocolFeeUSD)
+            .minus(new BigNumber(data.totalFeeUSD24h).minus(data.totalProtocolFeeUSD24h))
+        : new BigNumber(data.totalFeeUSD).minus(data.totalProtocolFeeUSD)
 
     const feeChange =
       feesUSD && feesOneWindowAgo ? getPercentChange(feesUSD.toString(), feesOneWindowAgo.toString()) : 0
@@ -99,7 +73,7 @@ export async function fetchProtocolData(
     const formattedData = {
       volumeUSD,
       volumeUSDChange: typeof volumeUSDChange === 'number' ? volumeUSDChange : 0,
-      tvlUSD: parseFloat(parsed?.totalValueLockedUSD),
+      tvlUSD: parseFloat(data.tvlUSD),
       tvlUSDChange,
       feesUSD: feesUSD.toNumber(),
       feeChange,

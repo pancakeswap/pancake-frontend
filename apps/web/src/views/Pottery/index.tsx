@@ -6,6 +6,10 @@ import Banner from 'views/Pottery/components/Banner/index'
 import Pot from 'views/Pottery/components/Pot/index'
 import { useTranslation } from '@pancakeswap/localization'
 import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
+import { ChainId } from '@pancakeswap/chains'
+
+import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
+
 import FinishedRounds from './components/FinishedRounds'
 import HowToPlay from './components/HowToPlay'
 import PrizeFunds from './components/PrizeFunds'
@@ -52,7 +56,7 @@ const Pottery: React.FC<React.PropsWithChildren> = () => {
       <FAQ />
       {createPortal(
         <>
-          <SubgraphHealthIndicator subgraphName="pancakeswap/pottery" />
+          <SubgraphHealthIndicator chainId={ChainId.BSC} subgraph={GRAPH_API_POTTERY} />
         </>,
         document.body,
       )}

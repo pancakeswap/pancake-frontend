@@ -19,7 +19,7 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { RoiCalculatorModalV2, useRoi } from '@pancakeswap/widgets-internal/roi'
 import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
-import { useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 
 import { Bound } from 'config/constants/types'
@@ -32,6 +32,8 @@ import { Field } from 'state/mint/actions'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 import { V3Farm } from 'views/Farms/FarmsV3'
+import { FarmsV3Context } from 'views/Farms'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { USER_ESTIMATED_MULTIPLIER, useUserPositionInfo } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { BoostStatus, useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { getDisplayApr } from '../../getDisplayApr'
@@ -59,6 +61,7 @@ export function FarmV3ApyButton(props: FarmV3ApyButtonProps) {
 }
 
 function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }: FarmV3ApyButtonProps) {
+  const { farmsAvgInfo } = useContext(FarmsV3Context)
   const { token: baseCurrency, quoteToken: quoteCurrency, feeAmount, lpAddress } = farm
   const { t } = useTranslation()
   const roiModal = useModalV2()
@@ -66,7 +69,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
   const [priceTimeWindow, setPriceTimeWindow] = useState(0)
   const prices = usePairTokensPrice(lpAddress, priceTimeWindow, baseCurrency?.chainId, roiModal.isOpen)
 
-  const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
+  const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount, roiModal.isOpen)
 
   const formState = useV3FormState()
 
@@ -92,21 +95,25 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
 
   const { status: boostedStatus } = useBoostStatus(farm.pid, tokenId)
 
-  const {
-    volumeUSD: volume24H,
-    feeUSD,
-    tvlUSD,
-  } = usePoolAvgInfo({
+  const poolAvgInfo = usePoolAvgInfo({
     address: farm.lpAddress,
     chainId: farm.token.chainId,
+    enabled: isUndefinedOrNull(farmsAvgInfo),
   })
+
+  const globalLpApr = !isUndefinedOrNull(farmsAvgInfo) ? farmsAvgInfo?.[farm.lpAddress?.toLowerCase()]?.apr ?? 0 : 0
+  const { volumeUSD: volume24H } = !isUndefinedOrNull(farmsAvgInfo)
+    ? farmsAvgInfo?.[farm.lpAddress?.toLowerCase()] || {
+        volumeUSD: 0,
+        tvlUSD: 0,
+        feeUSD: 0,
+      }
+    : poolAvgInfo
 
   const balanceA =
     (isSorted ? existingPosition?.amount0 : existingPosition?.amount1) ?? currencyBalances[Field.CURRENCY_A]
   const balanceB =
     (isSorted ? existingPosition?.amount1 : existingPosition?.amount0) ?? currencyBalances[Field.CURRENCY_B]
-
-  const globalLpApr = useMemo(() => (tvlUSD ? (100 * feeUSD * 365) / tvlUSD : 0), [feeUSD, tvlUSD])
 
   const depositUsdAsBN = useMemo(
     () =>

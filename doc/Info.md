@@ -7,7 +7,7 @@ A brief overview how Info part of PancakeSwap website works.
 In terms of React components Info section is just another view (located in [apps/web/src/views/Info](../apps/web/src/views/Info)) that is assigned route (in [pages](../apps/web/src/pages)).
 There are also some Info-related components inside [apps/web/src/components](../apps/web/src/components) (InfoNav, InfoCharts, InfoTables and InfoSearch at the time of writing).
 
-There are helper functions to handle data formatting and requests - [apps/web/src/views/Info/utils/infoDataHelpers.ts](../apps/web/src/views/Info/utils/infoDataHelpers.ts) and [apps/web/src/views/Info/utils/infoQueryHelpers.ts](../apps/web/src/views/Info/utils/infoQueryHelpers.ts)
+There are helper functions to handle data formatting and requests - [apps/web/src/views/Info/utils/infoDataHelpers.ts](../apps/web/src/utils/infoDataHelpers.ts) and [apps/web/src/views/Info/utils/infoQueryHelpers.ts](../apps/web/src/utils/infoQueryHelpers.ts)
 
 Info section has it's own reducer in Redux store - [apps/web/src/state/info](../apps/web/src/state/info). It handles all data about pools, tokens and overall protocol. The only exception is token/pool watchlist that is stored under [src/state/user](../apps/web/src/state/user) reducer.
 

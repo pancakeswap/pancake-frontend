@@ -6,7 +6,6 @@ import BN from 'bignumber.js'
 import { formatUnits } from 'viem'
 import { farmFetcher } from './helper'
 import { FarmKV, FarmResult } from './kv'
-import { updateLPsAPR } from './lpApr'
 import { bscClient, bscTestnetClient } from './provider'
 
 // copy from src/config, should merge them later
@@ -121,12 +120,10 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
     })
 
     const cakeBusdPrice = await getCakePrice(isTestnet)
-    const lpAprs = await handleLpAprs(chainId, farmsConfig)
 
     const finalFarm = farmsWithPrice.map((f) => {
       return {
         ...f,
-        lpApr: lpAprs?.[f.lpAddress.toLowerCase()] || 0,
         cakeApr: getFarmCakeRewardApr(f, new BN(cakeBusdPrice.toSignificant(3)), regularCakePerBlock),
       }
     }) as FarmResult
@@ -145,35 +142,6 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
     console.error('[ERROR] fetching farms', error)
     throw error
   }
-}
-
-export async function handleLpAprs(chainId: number, farmsConfig?: SerializedFarmConfig[]) {
-  let lpAprs = await FarmKV.getApr(chainId)
-  if (!lpAprs) {
-    lpAprs = await saveLPsAPR(chainId, farmsConfig)
-  }
-  return lpAprs || {}
-}
-
-export async function saveLPsAPR(chainId: number, farmsConfig?: SerializedFarmConfig[]) {
-  // TODO: add other chains
-  if (chainId === 56) {
-    let data = farmsConfig
-    if (!data) {
-      const value = await FarmKV.getFarms(chainId)
-      if (value && value.data) {
-        // eslint-disable-next-line prefer-destructuring
-        data = value.data
-      }
-    }
-    if (data) {
-      const aprMap = (await updateLPsAPR(chainId, data)) || null
-      FarmKV.saveApr(chainId, aprMap)
-      return aprMap || null
-    }
-    return null
-  }
-  return null
 }
 
 const chainlinkAbi = [

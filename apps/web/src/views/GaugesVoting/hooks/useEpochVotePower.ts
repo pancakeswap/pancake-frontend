@@ -11,7 +11,7 @@ export const useEpochVotePower = () => {
   const { account } = useAccountActiveChain()
   const { data: userInfo } = useVeCakeUserInfo()
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['epochVotePower', nextEpoch, contract.address, contract.chain?.id],
 
     queryFn: async () => {
@@ -30,5 +30,5 @@ export const useEpochVotePower = () => {
     enabled: !!nextEpoch && !!contract.address && !!account,
   })
 
-  return data ?? 0n
+  return { data: data ?? 0n, isLoading }
 }

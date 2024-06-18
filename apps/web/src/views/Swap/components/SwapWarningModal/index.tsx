@@ -5,9 +5,11 @@ import { Box, Heading, Message, ModalBody, ModalContainer, ModalHeader } from '@
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
-import ETH_WARNING_LIST from './1'
-import BSC_WARNING_LIST from './56'
 import Acknowledgement from './Acknowledgement'
+import BASE_WARNING_LIST from './base'
+import BSC_WARNING_LIST from './bsc'
+import ETH_WARNING_LIST from './mainnet'
+import ZKSYNC_WARNING_LIST from './zksync'
 
 const StyledModalContainer = styled(ModalContainer)`
   max-width: 440px;
@@ -31,6 +33,8 @@ const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>>
   const TOKEN_WARNINGS = {
     [ChainId.ETHEREUM]: ETH_WARNING_LIST,
     [ChainId.BSC]: BSC_WARNING_LIST,
+    [ChainId.ZKSYNC]: ZKSYNC_WARNING_LIST,
+    [ChainId.BASE]: BASE_WARNING_LIST,
   }
 
   const SWAP_WARNING = chainId ? TOKEN_WARNINGS?.[chainId]?.[swapCurrency.address] : undefined

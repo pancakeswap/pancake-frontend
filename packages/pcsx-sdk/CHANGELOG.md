@@ -1,5 +1,52 @@
 # @pancakeswap/pcsx-sdk
 
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/permit2-sdk@1.0.9
+
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies [b9c91d1]
+  - @pancakeswap/chains@0.4.5
+  - @pancakeswap/permit2-sdk@1.0.8
+
+## 0.0.8
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/permit2-sdk@1.0.7
+
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies [edf4640]
+  - @pancakeswap/chains@0.4.4
+  - @pancakeswap/permit2-sdk@1.0.6
+
+## 0.0.6
+
+### Patch Changes
+
+- @pancakeswap/permit2-sdk@1.0.5
+
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [0f4281c]
+- Updated dependencies [63a63d8]
+  - @pancakeswap/chains@0.4.3
+  - @pancakeswap/permit2-sdk@1.0.4
+
 ## 0.0.4
 
 ### Patch Changes

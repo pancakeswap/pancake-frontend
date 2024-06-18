@@ -1,5 +1,6 @@
 import { DeserializedFarmsState, DeserializedFarmUserData, supportedChainIdV2 } from '@pancakeswap/farms'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
+import { fetchV3FarmsAvgInfo } from 'queries/farms'
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -7,21 +8,22 @@ import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { getMasterChefContract } from 'utils/contractHelpers'
-import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
+import { useBCakeProxyContractAddress } from 'hooks/useBCakeProxyContractAddress'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import {
-  fetchBCakeWrapperDataAsync,
-  fetchBCakeWrapperUserDataAsync,
-  fetchFarmsPublicDataAsync,
-  fetchFarmUserDataAsync,
-} from '.'
+import { V2FarmWithoutStakedValue, V3FarmWithoutStakedValue } from 'state/farms/types'
 import {
   farmSelector,
   makeFarmFromPidSelector,
   makeLpTokenPriceFromLpSymbolSelector,
   makeUserFarmFromPidSelector,
 } from './selectors'
+import {
+  fetchBCakeWrapperDataAsync,
+  fetchBCakeWrapperUserDataAsync,
+  fetchFarmsPublicDataAsync,
+  fetchFarmUserDataAsync,
+} from '.'
 
 export function useFarmsLength() {
   const { chainId } = useActiveChainId()
@@ -61,6 +63,50 @@ export function useFarmV2PublicAPI() {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   })
+}
+
+export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2FarmWithoutStakedValue)[]) => {
+  const { chainId } = useAccountActiveChain()
+
+  const activeFarmAddresses = useMemo(() => {
+    return activeFarms.map((farm) => farm.lpAddress).sort()
+  }, [activeFarms])
+
+  const { data } = useQuery({
+    queryKey: ['farmsAvgInfo', chainId, activeFarmAddresses],
+    placeholderData: (prev) => {
+      if (!prev) {
+        return {}
+      }
+      return prev
+    },
+    queryFn: async () => {
+      if (!chainId) return undefined
+
+      const addresses = activeFarms.map((farm) => farm.lpAddress?.toLowerCase())
+
+      const farmAvgInfo = await fetchV3FarmsAvgInfo(chainId)
+
+      const info: { [key: string]: { volumeUSD: number; tvlUSD: number; feeUSD: number; apr: number } } = {}
+      for (const addr of addresses) {
+        const farmInfo = farmAvgInfo[addr]
+        info[addr] = {
+          volumeUSD: farmInfo?.volumeUSD7d.div(7).decimalPlaces(2).toNumber(),
+          tvlUSD: 0,
+          feeUSD: 0,
+          apr: farmInfo?.apr7d.times(100).decimalPlaces(5).toNumber(),
+        }
+      }
+      return info
+    },
+
+    enabled: Boolean(chainId && activeFarms?.length),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
+
+  return data
 }
 
 export const usePollFarmsWithUserData = () => {

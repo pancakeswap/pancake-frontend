@@ -1,11 +1,3 @@
-import {
-  BLOCKS_CLIENT,
-  BLOCKS_CLIENT_BASE,
-  BLOCKS_CLIENT_ETH,
-  BLOCKS_CLIENT_LINEA,
-  BLOCKS_CLIENT_OPBNB,
-  BLOCKS_CLIENT_ZKSYNC,
-} from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
 import { infoStableSwapClients, v2Clients } from 'utils/graphql'
 
@@ -52,19 +44,6 @@ export const multiChainQueryMainToken: Record<MultiChainName, string> = {
   OPBNB: 'ETH',
 }
 
-export const multiChainBlocksClient: Record<MultiChainNameExtend, string> = {
-  BSC: BLOCKS_CLIENT,
-  ETH: BLOCKS_CLIENT_ETH,
-  BSC_TESTNET: 'https://api.thegraph.com/subgraphs/name/lengocphuc99/bsc_testnet-blocks',
-  POLYGON_ZKEVM: 'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest',
-  ZKSYNC_TESTNET: 'https://api.studio.thegraph.com/query/45376/blocks-zksync-testnet/version/latest',
-  ZKSYNC: BLOCKS_CLIENT_ZKSYNC,
-  ARB: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
-  LINEA: BLOCKS_CLIENT_LINEA,
-  BASE: BLOCKS_CLIENT_BASE,
-  OPBNB: BLOCKS_CLIENT_OPBNB,
-}
-
 export const multiChainStartTime = {
   BSC: PCS_V2_START,
   ETH: PCS_ETH_START,
@@ -102,6 +81,17 @@ export const multiChainQueryStableClient = {
   BSC: infoStableSwapClients[ChainId.BSC],
   ARB: infoStableSwapClients[ChainId.ARBITRUM_ONE],
 }
+
+export const infoChainNameToExplorerChainName = {
+  BSC: 'bsc',
+  ETH: 'ethereum',
+  POLYGON_ZKEVM: 'polygon-zkevm',
+  ZKSYNC: 'zkync',
+  ARB: 'arbitrum',
+  LINEA: 'linea',
+  BASE: 'base',
+  OPBNB: 'opbnb',
+} as const
 
 export const STABLESWAP_SUBGRAPHS_START_BLOCK = {
   ARB: 169319653,

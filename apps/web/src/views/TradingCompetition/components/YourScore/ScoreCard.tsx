@@ -17,6 +17,7 @@ import { CLAIM, OVER } from 'config/constants/trading-competition/phases'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/chains'
 import ClaimModal from '../ClaimModal'
 import CardUserInfo from './CardUserInfo'
 import ShareImageModal from '../ShareImageModal'
@@ -56,7 +57,7 @@ interface ScoreCardProps extends YourScoreProps {
   stormShareImage: StaticImageData
   cakersShareImage: StaticImageData
   extraUserRankBox?: ReactNode
-  subgraphName?: string
+  subgraph?: string
 }
 
 const ScoreCard: React.FC<React.PropsWithChildren<ScoreCardProps>> = ({
@@ -76,7 +77,7 @@ const ScoreCard: React.FC<React.PropsWithChildren<ScoreCardProps>> = ({
   finishedAndPrizesClaimed,
   finishedAndNothingToClaim,
   onClaimSuccess,
-  subgraphName,
+  subgraph,
 }) => {
   const { t } = useTranslation()
   const [onPresentClaimModal] = useModal(
@@ -148,10 +149,11 @@ const ScoreCard: React.FC<React.PropsWithChildren<ScoreCardProps>> = ({
           <LaurelRightIcon />
         </StyledCardFooter>
       )}
-      {subgraphName && hasRegistered && (
+      {subgraph && hasRegistered && (
         <Flex p="16px" justifyContent="flex-end">
           <SubgraphHealthIndicator
-            subgraphName={subgraphName}
+            chainId={ChainId.BSC}
+            subgraph={subgraph}
             inline
             obeyGlobalSetting={false}
             customDescriptions={{

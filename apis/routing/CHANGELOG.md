@@ -1,5 +1,80 @@
 # routing-api
 
+## 0.3.68
+
+### Patch Changes
+
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/farms@1.0.67
+  - @pancakeswap/smart-router@6.0.13
+  - @pancakeswap/sdk@5.8.7
+  - @pancakeswap/v3-sdk@3.8.8
+
+## 0.3.67
+
+### Patch Changes
+
+- Updated dependencies [b9c91d1]
+  - @pancakeswap/chains@0.4.5
+  - @pancakeswap/farms@1.0.66
+  - @pancakeswap/smart-router@6.0.12
+  - @pancakeswap/sdk@5.8.6
+  - @pancakeswap/v3-sdk@3.8.7
+
+## 0.3.66
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/smart-router@6.0.11
+  - @pancakeswap/sdk@5.8.5
+  - @pancakeswap/v3-sdk@3.8.6
+  - @pancakeswap/farms@1.0.65
+
+## 0.3.65
+
+### Patch Changes
+
+- Updated dependencies [edf4640]
+  - @pancakeswap/chains@0.4.4
+  - @pancakeswap/farms@1.0.64
+  - @pancakeswap/smart-router@6.0.10
+  - @pancakeswap/sdk@5.8.4
+  - @pancakeswap/v3-sdk@3.8.5
+
+## 0.3.64
+
+### Patch Changes
+
+- Updated dependencies [e99c216]
+- Updated dependencies [755bb18]
+- Updated dependencies [502d961]
+  - @pancakeswap/sdk@5.8.3
+  - @pancakeswap/farms@1.0.63
+  - @pancakeswap/smart-router@6.0.9
+  - @pancakeswap/v3-sdk@3.8.4
+
+## 0.3.63
+
+### Patch Changes
+
+- @pancakeswap/farms@1.0.62
+- @pancakeswap/smart-router@6.0.8
+
+## 0.3.62
+
+### Patch Changes
+
+- Updated dependencies [0f4281c]
+- Updated dependencies [63a63d8]
+  - @pancakeswap/chains@0.4.3
+  - @pancakeswap/farms@1.0.61
+  - @pancakeswap/smart-router@6.0.7
+  - @pancakeswap/sdk@5.8.2
+  - @pancakeswap/v3-sdk@3.8.3
+
 ## 0.3.61
 
 ### Patch Changes

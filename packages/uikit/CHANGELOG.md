@@ -1,5 +1,39 @@
 # Change Log
 
+## 0.66.1
+
+### Patch Changes
+
+- @pancakeswap/hooks@0.0.31
+
+## 0.66.0
+
+### Minor Changes
+
+- 54f0f82: Added confirm and prompt webUI & hooks to replace window.confirm & window.prompt
+
+### Patch Changes
+
+- @pancakeswap/hooks@0.0.30
+
+## 0.65.10
+
+### Patch Changes
+
+- @pancakeswap/hooks@0.0.29
+
+## 0.65.9
+
+### Patch Changes
+
+- @pancakeswap/hooks@0.0.28
+
+## 0.65.8
+
+### Patch Changes
+
+- @pancakeswap/hooks@0.0.27
+
 ## 0.65.7
 
 ### Patch Changes

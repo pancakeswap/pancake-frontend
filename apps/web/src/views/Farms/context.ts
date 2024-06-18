@@ -6,6 +6,10 @@ export const FarmsContext = createContext<{ chosenFarmsMemoized: FarmWithStakedV
   chosenFarmsMemoized: [],
 })
 
-export const FarmsV3Context = createContext<{ chosenFarmsMemoized: V2StakeValueAndV3Farm[] }>({
+export const FarmsV3Context = createContext<{
+  chosenFarmsMemoized: V2StakeValueAndV3Farm[]
+  farmsAvgInfo: { [p: string]: { volumeUSD: number; tvlUSD: number; feeUSD: number; apr: number } } | undefined
+}>({
   chosenFarmsMemoized: [],
+  farmsAvgInfo: undefined,
 })

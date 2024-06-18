@@ -1,17 +1,25 @@
-import { Currency } from '@pancakeswap/sdk'
+import { Currency, TradeType } from '@pancakeswap/sdk'
+import { SmartRouterTrade } from '@pancakeswap/smart-router'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import { useCurrency } from 'hooks/Tokens'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
-import { memo, useEffect, useMemo, useState } from 'react'
+import { memo, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { MMSwapCommitButton } from 'views/Swap/MMLinkPools/components/MMCommitButton'
 import { useAccount } from 'wagmi'
+import { CommitButtonProps, MMCommitTrade } from '../types'
 
-function MMCommitButtonComp({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemainingSec, mmTradeInfo }) {
+const MMCommitButtonComp: React.FC<MMCommitTrade<SmartRouterTrade<TradeType>> & CommitButtonProps> = ({
+  mmOrderBookTrade,
+  mmRFQTrade,
+  mmQuoteExpiryRemainingSec,
+  mmTradeInfo,
+  beforeCommit,
+  afterCommit,
+}) => {
   const {
     typedValue,
     recipient,
@@ -19,14 +27,14 @@ function MMCommitButtonComp({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemaini
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
 
-  const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
+  const inputCurrency = useCurrency(inputCurrencyId) ?? undefined
+  const outputCurrency = useCurrency(outputCurrencyId) ?? undefined
   const { address: account } = useAccount()
   const [isExpertMode] = useExpertMode()
   const currencies: { [field in Field]?: Currency } = useMemo(
     () => ({
-      [Field.INPUT]: inputCurrency ?? undefined,
-      [Field.OUTPUT]: outputCurrency ?? undefined,
+      [Field.INPUT]: inputCurrency,
+      [Field.OUTPUT]: outputCurrency,
     }),
     [inputCurrency, outputCurrency],
   )
@@ -38,51 +46,28 @@ function MMCommitButtonComp({ mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemaini
     inputError: wrapInputError,
   } = useWrapCallback(inputCurrency, outputCurrency, typedValue)
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
-
-  const { approvalState, approveCallback, revokeCallback, currentAllowance, isPendingError } = useApproveCallback(
-    mmTradeInfo?.slippageAdjustedAmounts[Field.INPUT],
-    mmTradeInfo?.routerAddress,
-  )
-
-  // check if user has gone through approval process, used to show two step buttons, reset on token change
-  const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
-
-  // Reset approval flow if input currency changed
-  useEffect(() => {
-    setApprovalSubmitted(false)
-  }, [inputCurrencyId])
-
-  // mark when a user has submitted an approval, reset onTokenSelection for input field
-  useEffect(() => {
-    if (approvalState === ApprovalState.PENDING) {
-      setApprovalSubmitted(true)
-    }
-  }, [approvalState, approvalSubmitted])
-
   const { onUserInput } = useSwapActionHandlers()
 
   return (
     <MMSwapCommitButton
+      beforeCommit={beforeCommit}
+      afterCommit={afterCommit}
+      mmTradeInfo={mmTradeInfo}
       showWrap={showWrap}
-      approval={approvalState}
       swapIsUnsupported={swapIsUnsupported}
       account={account}
-      approvalSubmitted={approvalSubmitted}
       onWrap={onWrap}
-      approveCallback={approveCallback}
-      revokeCallback={revokeCallback}
       currencies={currencies}
       currencyBalances={mmOrderBookTrade?.currencyBalances}
       isExpertMode={isExpertMode}
       mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
       rfqTrade={mmRFQTrade}
-      swapInputError={mmOrderBookTrade?.swapInputError}
+      swapInputError={mmOrderBookTrade?.inputError}
       wrapType={wrapType}
       wrapInputError={wrapInputError}
       recipient={recipient}
       onUserInput={onUserInput}
-      isPendingError={isPendingError}
-      currentAllowance={currentAllowance}
+      // isPendingError={isPendingError}
     />
   )
 }

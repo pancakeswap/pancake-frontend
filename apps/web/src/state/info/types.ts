@@ -11,6 +11,16 @@ export interface ChartEntry {
   liquidityUSD: number
 }
 
+export interface TvlChartEntry {
+  date: number
+  liquidityUSD: number
+}
+
+export interface VolumeChartEntry {
+  date: number
+  volumeUSD: number
+}
+
 /**
  * Formatted type for Candlestick charts
  */
@@ -65,6 +75,7 @@ export interface ProtocolState {
 
 export interface PoolData {
   address: string
+  lpAddress?: string
   timestamp: number
 
   token0: {

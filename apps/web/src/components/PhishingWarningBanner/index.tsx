@@ -1,16 +1,19 @@
 import { CloseIcon, Flex, IconButton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
-import { ASSET_CDN } from 'config/constants/endpoints'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { Countdown } from './Countdown'
+import { FeeRefund } from './FeeRefund'
 import { Step1 } from './Step1'
 import { Step2 } from './Step2'
 
-const Container = styled(Flex)`
+const Container = styled(Flex).withConfig({ shouldForwardProp: (prop) => !['$background'].includes(prop) })<{
+  $background?: string
+}>`
   overflow: hidden;
   height: 100%;
   padding: 12px;
@@ -20,6 +23,7 @@ const Container = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.md} {
     padding: 0px;
     background: #7a6eaa;
+    ${({ $background }) => $background && `background: ${$background};`}
   }
 `
 
@@ -83,6 +87,38 @@ const AnimationContainer = styled(Flex)<{ $showAnimation?: boolean }>`
 
 const DISPLAY_TIMER = 13000
 
+type BannerConfig = {
+  component: React.FC
+  stripeImage: string
+  stripeImageWidth: string | number
+  stripeImageAlt: string
+  background?: string
+  customStyle?: CSSProperties
+}
+
+const CONFIG: BannerConfig[] = [
+  {
+    component: Step1,
+    stripeImage: `${ASSET_CDN}/web/phishing-warning/phishing-warning-bunny-1.png`,
+    stripeImageWidth: '92px',
+    stripeImageAlt: 'Phishing Warning',
+  },
+  {
+    component: Step2,
+    stripeImage: `${ASSET_CDN}/web/phishing-warning/phishing-warning-bunny-2.png`,
+    stripeImageWidth: '92px',
+    stripeImageAlt: 'Phishing Warning',
+  },
+  {
+    component: FeeRefund,
+    stripeImage: FeeRefund.stripeImage,
+    stripeImageWidth: FeeRefund.stripeImageWidth,
+    stripeImageAlt: FeeRefund.stripeImageAlt,
+    background: FeeRefund.background,
+    customStyle: { position: 'relative', transform: 'scale(1.25) translateX(-10px)' },
+  },
+]
+
 const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const [, hideBanner] = usePhishingBanner()
   const { isDesktop, isLg } = useMatchBreakpoints()
@@ -92,11 +128,9 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const timer = useRef<number | null>(null)
   const [showAnimation, setShowAnimation] = useState(true)
   const [remainingTimer, setRemainingTimer] = useState(DISPLAY_TIMER)
+  const banner = useMemo(() => CONFIG[step], [step])
 
-  const configList = useMemo(() => [<Step1 />, <Step2 />], [])
-  const isCampaignStep = step === 2
-
-  const nextItem = useMemo(() => (step < configList.length - 1 ? step + 1 : 0), [step, configList])
+  const nextItem = useMemo(() => (step < CONFIG.length - 1 ? step + 1 : 0), [step])
   useEffect(() => {
     const startCountdown = () => {
       // Clear previous interval
@@ -142,27 +176,21 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   }
 
   return (
-    <Container className="warning-banner">
+    <Container className="warning-banner" $background={banner.background}>
       <AnimationContainer $showAnimation={showAnimation}>
         <Flex justifyContent="center" alignItems="center">
           {showInBigDevice && (
             <img
-              style={
-                isCampaignStep
-                  ? { position: 'relative', transform: 'scale(1.25) translateY(6px) translateX(-10px)' }
-                  : undefined
-              }
-              width={!isCampaignStep ? '92px' : '120px'}
-              alt="phishing-warning"
-              src={
-                !isCampaignStep
-                  ? `${ASSET_CDN}/web/phishing-warning/phishing-warning-bunny-${step + 1}.png`
-                  : `${ASSET_CDN}/web/banners/masa-trading-competition/bg-stripe.png`
-              }
+              style={banner.customStyle}
+              width={banner.stripeImageWidth}
+              alt={banner.stripeImageAlt}
+              src={banner.stripeImage}
             />
           )}
           <SpeechBubble>
-            <InnerContainer>{configList[step]}</InnerContainer>
+            <InnerContainer>
+              <banner.component />
+            </InnerContainer>
             <Countdown percentage={percentage} onClick={handleClickNext} />
           </SpeechBubble>
         </Flex>

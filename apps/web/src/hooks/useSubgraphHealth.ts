@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { request, gql } from 'graphql-request'
 import { GRAPH_HEALTH } from 'config/constants/endpoints'
 import { publicClient } from 'utils/wagmi'
@@ -24,7 +24,7 @@ export type SubgraphHealthState = {
 const NOT_OK_BLOCK_DIFFERENCE = 200 // ~15 minutes delay
 const WARNING_BLOCK_DIFFERENCE = 50 // ~2.5 minute delay
 
-const useSubgraphHealth = (chainId?: ChainId, subgraphName?: string) => {
+const useSubgraphHealth = ({ chainId, subgraph }: { chainId: ChainId; subgraph?: string }) => {
   const [sgHealth, setSgHealth] = useState<SubgraphHealthState>({
     status: SubgraphStatus.UNKNOWN,
     currentBlock: 0,
@@ -32,20 +32,78 @@ const useSubgraphHealth = (chainId?: ChainId, subgraphName?: string) => {
     latestBlock: 0,
     blockDifference: 0,
   })
+  const [deploymentId, setDeploymentId] = useState<string | undefined>()
+
+  useEffect(() => {
+    let unmounted = false
+    const unmount = () => {
+      unmounted = true
+    }
+    if (!subgraph) {
+      return unmount
+    }
+
+    const fetchDeploymentId = async () => {
+      const {
+        _meta: { deployment },
+      } = await request(
+        subgraph,
+        gql`
+          query MyQuery {
+            _meta {
+              deployment
+            }
+          }
+        `,
+      )
+
+      if (unmounted) {
+        return
+      }
+      setDeploymentId(deployment)
+    }
+
+    fetchDeploymentId()
+    return unmount
+  }, [subgraph])
 
   useSlowRefreshEffect(
     (currentBlockNumber) => {
+      if (!deploymentId) {
+        return
+      }
       const getSubgraphHealth = async () => {
         try {
-          const [{ indexingStatusForCurrentVersion }, currentBlock] = await Promise.all([
+          const [{ indexingStatuses }, currentBlock] = await Promise.all([
             request(
               GRAPH_HEALTH,
               gql`
             query getSubgraphHealth {
-              indexingStatusForCurrentVersion(subgraphName: "${subgraphName}") {
+              indexingStatuses(
+                subgraphs: ["${deploymentId}"]
+              ) {
+                subgraph
+                synced
                 health
+                entityCount
+                fatalError {
+                  handler
+                  message
+                  deterministic
+                  block {
+                    hash
+                    number
+                  }
+                }
+                nonFatalErrors{
+                  message
+                  block{number}
+                }
                 chains {
                   chainHeadBlock {
+                    number
+                  }
+                  earliestBlock {
                     number
                   }
                   latestBlock {
@@ -62,6 +120,8 @@ const useSubgraphHealth = (chainId?: ChainId, subgraphName?: string) => {
                   ?.getBlockNumber()
                   .then((blockNumber) => Number(blockNumber)),
           ])
+
+          const [indexingStatusForCurrentVersion] = indexingStatuses
 
           const isHealthy = indexingStatusForCurrentVersion?.health === 'healthy'
           const chainHeadBlock = parseInt(indexingStatusForCurrentVersion?.chains[0]?.chainHeadBlock.number)
@@ -85,7 +145,7 @@ const useSubgraphHealth = (chainId?: ChainId, subgraphName?: string) => {
             setSgHealth({ status: SubgraphStatus.OK, currentBlock, chainHeadBlock, latestBlock, blockDifference })
           }
         } catch (error) {
-          console.error(`Failed to perform health check for ${subgraphName} subgraph`, error)
+          console.error(`Failed to perform health check for ${subgraph}(deployment: ${deploymentId}) subgraph`, error)
           setSgHealth({
             status: SubgraphStatus.DOWN,
             currentBlock: -1,
@@ -95,11 +155,11 @@ const useSubgraphHealth = (chainId?: ChainId, subgraphName?: string) => {
           })
         }
       }
-      if (subgraphName) {
+      if (deploymentId) {
         getSubgraphHealth()
       }
     },
-    [subgraphName, chainId],
+    [subgraph, deploymentId, chainId],
   )
 
   return sgHealth

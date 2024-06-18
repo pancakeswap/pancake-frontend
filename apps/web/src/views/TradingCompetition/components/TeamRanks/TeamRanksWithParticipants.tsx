@@ -66,7 +66,7 @@ const TotalParticipantsCloud = styled(Flex)`
 interface TeamRanksWithParticipantsProps extends TeamRanksProps {
   image: StaticImageData
   participantSubgraphAddress: string
-  subgraphName: string
+  subgraph: string
 }
 
 const TeamRanksWithParticipants: React.FC<React.PropsWithChildren<TeamRanksWithParticipantsProps>> = ({
@@ -76,7 +76,7 @@ const TeamRanksWithParticipants: React.FC<React.PropsWithChildren<TeamRanksWithP
   team3LeaderboardInformation,
   globalLeaderboardInformation,
   participantSubgraphAddress,
-  subgraphName,
+  subgraph,
 }) => {
   const { t } = useTranslation()
   const participants = useGetParticipants(participantSubgraphAddress)
@@ -129,7 +129,7 @@ const TeamRanksWithParticipants: React.FC<React.PropsWithChildren<TeamRanksWithP
           team3LeaderboardInformation={team3LeaderboardInformation}
           globalLeaderboardInformation={globalLeaderboardInformation}
           isGlobalLeaderboardDataComplete={isGlobalLeaderboardDataComplete}
-          subgraphName={subgraphName}
+          subgraph={subgraph}
         />
       </StyledTopTradersWrapper>
     </Wrapper>

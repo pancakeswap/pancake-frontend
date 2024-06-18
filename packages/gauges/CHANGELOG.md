@@ -1,5 +1,73 @@
 # @pancakeswap/gauges
 
+## 1.2.9
+
+### Patch Changes
+
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/tokens@0.6.21
+  - @pancakeswap/v3-sdk@3.8.8
+
+## 1.2.8
+
+### Patch Changes
+
+- Updated dependencies [b9c91d1]
+- Updated dependencies [5fa28e0]
+- Updated dependencies [95cfa0c]
+  - @pancakeswap/chains@0.4.5
+  - @pancakeswap/tokens@0.6.20
+  - @pancakeswap/v3-sdk@3.8.7
+
+## 1.2.7
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/v3-sdk@3.8.6
+  - @pancakeswap/tokens@0.6.19
+
+## 1.2.6
+
+### Patch Changes
+
+- Updated dependencies [edf4640]
+  - @pancakeswap/chains@0.4.4
+  - @pancakeswap/tokens@0.6.18
+  - @pancakeswap/v3-sdk@3.8.5
+
+## 1.2.5
+
+### Patch Changes
+
+- 755bb18: New FURY Token. 2 BSC Farms. 3 zkSync Farms. New Gauges.
+- 502d961: Add MNT and mETH tokens with their farms and gauges on Ethereum
+- Updated dependencies [b57fd91]
+- Updated dependencies [755bb18]
+- Updated dependencies [502d961]
+  - @pancakeswap/tokens@0.6.17
+  - @pancakeswap/v3-sdk@3.8.4
+
+## 1.2.4
+
+### Patch Changes
+
+- Updated dependencies [b20f210]
+- Updated dependencies [9bef4cd]
+  - @pancakeswap/tokens@0.6.16
+
+## 1.2.3
+
+### Patch Changes
+
+- Updated dependencies [0f4281c]
+- Updated dependencies [63a63d8]
+  - @pancakeswap/chains@0.4.3
+  - @pancakeswap/tokens@0.6.15
+  - @pancakeswap/v3-sdk@3.8.3
+
 ## 1.2.2
 
 ### Patch Changes

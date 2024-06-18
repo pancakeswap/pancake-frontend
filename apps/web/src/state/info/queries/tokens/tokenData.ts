@@ -2,12 +2,13 @@
 import { gql } from 'graphql-request'
 import { Block, TokenData } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
-import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
+import { getAmountChange, getPercentChange } from 'utils/infoDataHelpers'
 import {
   MultiChainNameExtend,
   STABLESWAP_SUBGRAPHS_START_BLOCK,
   checkIsStableSwap,
   getMultiChainQueryEndPointWithStableSwap,
+  multiChainQueryMainToken,
 } from '../../constant'
 import { fetchTokenAddresses } from './topTokens'
 
@@ -62,7 +63,7 @@ const TOKEN_AT_BLOCK = (chainName: MultiChainNameExtend, block: number | undefin
       symbol
       name
       decimals
-      derivedETH
+      derived${multiChainQueryMainToken[chainName]}
       derivedUSD
       tradeVolumeUSD
       totalTransactions

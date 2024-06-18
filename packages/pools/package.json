@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/pools",
-  "version": "5.1.20",
+  "version": "5.1.27",
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
@@ -22,7 +22,7 @@
     "@pancakeswap/tokens": "workspace:*",
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.21",
-    "viem": "2.9.19"
+    "viem": "2.13.3"
   },
   "devDependencies": {
     "@pancakeswap/tsconfig": "workspace:*",

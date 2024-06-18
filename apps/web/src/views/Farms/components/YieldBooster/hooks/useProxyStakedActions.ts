@@ -6,7 +6,7 @@ import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useGasPrice } from 'state/user/hooks'
 import { MasterChefContractType, harvestFarm, stakeFarm, unstakeFarm } from 'utils/calls/farms'
-import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
+import { useBCakeProxyContractAddress } from 'hooks/useBCakeProxyContractAddress'
 import { useApproveBoostProxyFarm } from '../../../hooks/useApproveFarm'
 import useProxyCAKEBalance from './useProxyCAKEBalance'
 

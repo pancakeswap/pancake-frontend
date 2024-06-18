@@ -1,5 +1,80 @@
 # @pancakeswap/prediction
 
+## 1.0.16
+
+### Patch Changes
+
+- Updated dependencies [7235e91]
+- Updated dependencies [9a16780]
+  - @pancakeswap/pools@5.1.27
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/sdk@5.8.7
+  - @pancakeswap/tokens@0.6.21
+
+## 1.0.15
+
+### Patch Changes
+
+- Updated dependencies [b9c91d1]
+- Updated dependencies [5fa28e0]
+- Updated dependencies [95cfa0c]
+  - @pancakeswap/chains@0.4.5
+  - @pancakeswap/tokens@0.6.20
+  - @pancakeswap/pools@5.1.26
+  - @pancakeswap/sdk@5.8.6
+
+## 1.0.14
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/sdk@5.8.5
+  - @pancakeswap/pools@5.1.25
+  - @pancakeswap/tokens@0.6.19
+
+## 1.0.13
+
+### Patch Changes
+
+- Updated dependencies [edf4640]
+  - @pancakeswap/chains@0.4.4
+  - @pancakeswap/pools@5.1.24
+  - @pancakeswap/sdk@5.8.4
+  - @pancakeswap/tokens@0.6.18
+
+## 1.0.12
+
+### Patch Changes
+
+- Updated dependencies [b57fd91]
+- Updated dependencies [e99c216]
+- Updated dependencies [755bb18]
+- Updated dependencies [502d961]
+  - @pancakeswap/tokens@0.6.17
+  - @pancakeswap/sdk@5.8.3
+  - @pancakeswap/pools@5.1.23
+
+## 1.0.11
+
+### Patch Changes
+
+- Updated dependencies [b20f210]
+- Updated dependencies [9bef4cd]
+  - @pancakeswap/tokens@0.6.16
+  - @pancakeswap/pools@5.1.22
+
+## 1.0.10
+
+### Patch Changes
+
+- Updated dependencies [0f4281c]
+- Updated dependencies [63a63d8]
+  - @pancakeswap/chains@0.4.3
+  - @pancakeswap/pools@5.1.21
+  - @pancakeswap/sdk@5.8.2
+  - @pancakeswap/tokens@0.6.15
+
 ## 1.0.9
 
 ### Patch Changes

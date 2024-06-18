@@ -14,16 +14,16 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
+import NextLink from 'next/link'
 import { PropsWithChildren } from 'react'
 import styled from 'styled-components'
-import NextLink from 'next/link'
 import { CurrentEpoch } from './components/CurrentEpoch'
 import { FilterFieldByType, FilterFieldInput, FilterFieldSort } from './components/GaugesFilter'
 import { MyVeCakeBalance } from './components/MyVeCakeBalance'
 import { GaugesList, GaugesTable, VoteTable } from './components/Table'
 import { WeightsPieChart } from './components/WeightsPieChart'
 import { useGauges } from './hooks/useGauges'
-import { useGaugesFilter } from './hooks/useGaugesFilter'
+import { useGaugesQueryFilter } from './hooks/useGaugesFilter'
 import { useGaugesTotalWeight } from './hooks/useGaugesTotalWeight'
 
 const InlineLink = styled(LinkExternal)`
@@ -77,7 +77,7 @@ const GaugesVoting = () => {
   const totalGaugesWeight = useGaugesTotalWeight()
   const { isDesktop, isMobile, isXl, isXs } = useMatchBreakpoints()
   const { data: gauges, isLoading } = useGauges()
-  const { filterGauges, setSearchText, filter, onFilterChange, sort, setSort } = useGaugesFilter(gauges)
+  const { filterGauges, setSearchText, searchText, filter, setFilter, sort, setSort } = useGaugesQueryFilter(gauges)
 
   return (
     <StyledGaugesVotingPage>
@@ -144,16 +144,16 @@ const GaugesVoting = () => {
               </Box>
               {!isMobile && !isXl ? (
                 <Grid gridTemplateColumns="1fr 1fr" gridGap="32px">
-                  <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
-                  <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
+                  <FilterFieldByType onFilterChange={setFilter} value={filter} />
+                  <FilterFieldInput initialValue={searchText} placeholder={t('Search')} onChange={setSearchText} />
                 </Grid>
               ) : null}
             </Grid>
             {/* for tablet fit */}
             {isXl ? (
               <Grid gridTemplateColumns="1fr 1fr">
-                <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
-                <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
+                <FilterFieldByType onFilterChange={setFilter} value={filter} />
+                <FilterFieldInput initialValue={searchText} placeholder={t('Search')} onChange={setSearchText} />
               </Grid>
             ) : null}
             {/* for mobile sticky, make it redundancy */}
@@ -168,20 +168,20 @@ const GaugesVoting = () => {
                 top="0"
               >
                 {isXs ? (
-                  <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                  <FilterFieldByType onFilterChange={setFilter} value={filter} />
                 ) : (
                   <Grid gridTemplateColumns="2fr 1fr" gridGap="8px">
-                    <FilterFieldByType onFilterChange={onFilterChange} value={filter} />
+                    <FilterFieldByType onFilterChange={setFilter} value={filter} />
                     <FilterFieldSort onChange={setSort} />
                   </Grid>
                 )}
                 {isXs ? (
                   <Grid gridTemplateColumns="2fr 1fr" gridGap="8px">
-                    <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
+                    <FilterFieldInput placeholder={t('Search')} initialValue={searchText} onChange={setSearchText} />
                     <FilterFieldSort onChange={setSort} />
                   </Grid>
                 ) : (
-                  <FilterFieldInput placeholder={t('Search')} onChange={setSearchText} />
+                  <FilterFieldInput placeholder={t('Search')} initialValue={searchText} onChange={setSearchText} />
                 )}
               </Grid>
             ) : null}

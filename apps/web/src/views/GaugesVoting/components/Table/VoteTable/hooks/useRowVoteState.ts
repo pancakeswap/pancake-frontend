@@ -16,10 +16,10 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
   const { balance: veCakeBalance } = useVeCakeBalance()
   const { balance: proxyVeCakeBalance } = useProxyVeCakeBalance()
   const currentTimestamp = useCurrentBlockTimestamp()
-  const epochVotePower = useEpochVotePower()
+  const { data: epochVotePower, isLoading: isLoadingEpochVotePower } = useEpochVotePower()
   const willUnlock = useMemo(
     () => epochVotePower === 0n && Boolean(userVote?.slope && userVote?.slope > 0),
-    [userVote?.slope, epochVotePower],
+    [epochVotePower, userVote?.slope],
   )
   // const nextEpochStart = useNextEpochStart()
   const currentVoteWeightAmount = useMemo(() => {
@@ -84,23 +84,19 @@ export const useRowVoteState = ({ data, vote, onChange }: RowProps) => {
   const changeHighlight = useMemo(() => {
     const prev = getBalanceNumber(new BN(currentVoteWeightAmount.toString())).toPrecision(2)
     const current = previewVoteWeightAmount.toPrecision(2)
-    console.debug('debug amount', {
-      prev,
-      current,
-    })
     return prev !== current
   }, [currentVoteWeightAmount, previewVoteWeightAmount])
 
   // init vote value if still default
   useEffect(() => {
-    if (userVote?.hash && (!vote?.hash || vote?.hash === '0x')) {
+    if (!isLoadingEpochVotePower && userVote?.hash && (!vote?.hash || vote?.hash === '0x')) {
       onChange({
         hash: userVote.hash as Hex,
         power: voteValue,
         locked: voteLocked,
       })
     }
-  }, [onChange, userVote?.hash, vote, voteLocked, voteValue])
+  }, [isLoadingEpochVotePower, onChange, userVote?.hash, vote, voteLocked, voteValue])
 
   return {
     currentVoteWeight,

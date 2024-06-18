@@ -248,7 +248,7 @@ const MoboxCompetition = () => {
                 team3LeaderboardInformation={team3LeaderboardInformation as any}
                 globalLeaderboardInformation={globalLeaderboardInformation as any}
                 participantSubgraphAddress={TC_MOBOX_SUBGRAPH}
-                subgraphName="pancakeswap/trading-competition-v3"
+                subgraph={TC_MOBOX_SUBGRAPH}
               />
             </Box>
           </PageSection>

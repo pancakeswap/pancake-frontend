@@ -1,5 +1,69 @@
 # @pancakeswap/tokens
 
+## 0.6.21
+
+### Patch Changes
+
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/sdk@5.8.7
+  - @pancakeswap/token-lists@0.0.11
+
+## 0.6.20
+
+### Patch Changes
+
+- 5fa28e0: Add Holdstation(HOLD) token on zkSync
+- 95cfa0c: fix zkSync USDT+ decimals
+- Updated dependencies [b9c91d1]
+  - @pancakeswap/chains@0.4.5
+  - @pancakeswap/sdk@5.8.6
+  - @pancakeswap/token-lists@0.0.11
+
+## 0.6.19
+
+### Patch Changes
+
+- Updated dependencies [edc3f30]
+  - @pancakeswap/sdk@5.8.5
+  - @pancakeswap/token-lists@0.0.11
+
+## 0.6.18
+
+### Patch Changes
+
+- Updated dependencies [edf4640]
+  - @pancakeswap/chains@0.4.4
+  - @pancakeswap/sdk@5.8.4
+  - @pancakeswap/token-lists@0.0.11
+
+## 0.6.17
+
+### Patch Changes
+
+- b57fd91: Add ONEPUNCH token on Linea
+- 755bb18: New FURY Token. 2 BSC Farms. 3 zkSync Farms. New Gauges.
+- 502d961: Add MNT and mETH tokens with their farms and gauges on Ethereum
+- Updated dependencies [e99c216]
+  - @pancakeswap/sdk@5.8.3
+
+## 0.6.16
+
+### Patch Changes
+
+- b20f210: Correction of $MAGIC token name from "Magic Internet Money" to "MAGIC"
+- 9bef4cd: Add Native USDC on zkSync
+
+## 0.6.15
+
+### Patch Changes
+
+- Updated dependencies [0f4281c]
+- Updated dependencies [63a63d8]
+  - @pancakeswap/chains@0.4.3
+  - @pancakeswap/sdk@5.8.2
+  - @pancakeswap/token-lists@0.0.11
+
 ## 0.6.14
 
 ### Patch Changes

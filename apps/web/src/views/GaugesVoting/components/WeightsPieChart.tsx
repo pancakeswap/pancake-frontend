@@ -85,20 +85,23 @@ export const WeightsPieChart: React.FC<{
   const [topGaugesAndOthers, othersIndex] = useMemo(() => {
     const maxCount = 10
     const tops = sortedGauge.slice(0, maxCount)
-    const others = sortedGauge.slice(maxCount).reduce(
-      (prev, curr) => {
-        return {
-          ...prev,
-          weight: curr.weight + (prev?.weight || 0n),
-        }
-      },
-      {
-        hash: OTHERS_GAUGES as Hash,
-        pairName: `Other|${sortedGauge.length - maxCount}`,
-      } as Gauge,
-    )
+    const others =
+      sortedGauge.length < maxCount
+        ? []
+        : sortedGauge.slice(maxCount).reduce(
+            (prev, curr) => {
+              return {
+                ...prev,
+                weight: curr.weight + (prev?.weight || 0n),
+              }
+            },
+            {
+              hash: OTHERS_GAUGES as Hash,
+              pairName: `Other|${sortedGauge.length - maxCount}`,
+            } as Gauge,
+          )
 
-    const _topGaugesAndOthers = [...tops, others].sort((a, b) => (a.weight < b.weight ? 1 : -1)) ?? []
+    const _topGaugesAndOthers = tops.concat(others).sort((a, b) => (a.weight < b.weight ? 1 : -1)) ?? []
     const _othersIndex = _topGaugesAndOthers.findIndex((a) => a.hash === OTHERS_GAUGES)
     return [_topGaugesAndOthers, _othersIndex]
   }, [sortedGauge])

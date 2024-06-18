@@ -122,7 +122,7 @@ export async function createGasModel({
     const tickGasUse = COST_PER_INIT_TICK(chainId) * totalInitializedTicksCrossed
     const uninitializedTickGasUse = COST_PER_UNINIT_TICK * 0n
 
-    // base estimate gas used based on chainId estimates for hops and ticks gas useage
+    // base estimate gas used based on chainId estimates for hops and ticks gas usage
     baseGasUse = baseGasUse + tickGasUse + uninitializedTickGasUse
 
     const baseGasCostWei = gasPrice * baseGasUse

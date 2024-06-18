@@ -1,6 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
+
+import { TC_MOD_SUBGRAPH } from 'config/constants/endpoints'
+
 import { LIVE } from '../../../../../config/constants/trading-competition/phases'
 import RibbonWithImage from '../../../components/RibbonWithImage'
 import ScoreCard from '../../../components/YourScore/ScoreCard'
@@ -55,7 +58,7 @@ const ModYourScore: React.FC<React.PropsWithChildren<MoDYourScoreProps>> = ({
         </RibbonWithImage>
       )}
       <ScoreCard
-        subgraphName="pancakeswap/trading-competition-v4"
+        subgraph={TC_MOD_SUBGRAPH}
         userPrizeGrid={<ModUserPrizeGrid userTradingInformation={userTradingInformation} />}
         extraUserRankBox={
           <UserRankBox

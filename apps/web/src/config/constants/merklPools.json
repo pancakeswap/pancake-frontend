@@ -1,1 +1,197 @@
-[]
+[
+  {
+    "chainId": 42161,
+    "address": "0x7fCDC35463E3770c2fB992716Cd070B63540b947",
+    "link": "https://merkl.angle.money/?status=live&search=0x7fCDC35463E3770c2fB992716Cd070B63540b947&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x060d8a5a7C03882e33AcA8FC304BabE869e21Ee9",
+    "link": "https://merkl.angle.money/?status=live&search=0x060d8a5a7C03882e33AcA8FC304BabE869e21Ee9&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x93CCe474015007B38dA0eceA96671EE4dc3d40Ad",
+    "link": "https://merkl.angle.money/?status=live&search=0x93CCe474015007B38dA0eceA96671EE4dc3d40Ad&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x3a63E393726640B33A78A3cac5e57fa6f35B69Ed",
+    "link": "https://merkl.angle.money/?status=live&search=0x3a63E393726640B33A78A3cac5e57fa6f35B69Ed&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x81D1cc282e9a097115E59F67B9D81d4d1d00AC51",
+    "link": "https://merkl.angle.money/?status=live&search=0x81D1cc282e9a097115E59F67B9D81d4d1d00AC51&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x11d53EC50bc8F54B9357fbFe2A7dE034FC00f8b3",
+    "link": "https://merkl.angle.money/?status=live&search=0x11d53EC50bc8F54B9357fbFe2A7dE034FC00f8b3&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xb0C6Be7b6aaB831092A3c7ef3Fe2Ab4F48B80b6A",
+    "link": "https://merkl.angle.money/?status=live&search=0xb0C6Be7b6aaB831092A3c7ef3Fe2Ab4F48B80b6A&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xE8BB56ee968333bf18f9CBbE8eEef350540F9607",
+    "link": "https://merkl.angle.money/?status=live&search=0xE8BB56ee968333bf18f9CBbE8eEef350540F9607&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x7e928afb59f5dE9D2f4d162f754C6eB40c88aA8E",
+    "link": "https://merkl.angle.money/?status=live&search=0x7e928afb59f5dE9D2f4d162f754C6eB40c88aA8E&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x4bfc22A4dA7f31F8a912a79A7e44a822398b4390",
+    "link": "https://merkl.angle.money/?status=live&search=0x4bfc22A4dA7f31F8a912a79A7e44a822398b4390&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x5A17cbf5F866BDe11C28861a2742764Fac0Eba4B",
+    "link": "https://merkl.angle.money/?status=live&search=0x5A17cbf5F866BDe11C28861a2742764Fac0Eba4B&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xd9e2a1a61B6E61b275cEc326465d417e52C1b95c",
+    "link": "https://merkl.angle.money/?status=live&search=0xd9e2a1a61B6E61b275cEc326465d417e52C1b95c&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x4fC7aC44DAe553464d92c049175133239A8705C1",
+    "link": "https://merkl.angle.money/?status=live&search=0x4fC7aC44DAe553464d92c049175133239A8705C1&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x389938CF14Be379217570D8e4619E51fBDafaa21",
+    "link": "https://merkl.angle.money/?status=live&search=0x389938CF14Be379217570D8e4619E51fBDafaa21&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x0BaCc7a9717e70EA0DA5Ac075889Bd87d4C81197",
+    "link": "https://merkl.angle.money/?status=live&search=0x0BaCc7a9717e70EA0DA5Ac075889Bd87d4C81197&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x1D2031Fa0dA6fb4bDA57E377C7273c22eab930D6",
+    "link": "https://merkl.angle.money/?status=live&search=0x1D2031Fa0dA6fb4bDA57E377C7273c22eab930D6&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x1Cb2892038867aDFa78CCfc6C3fB89b1dA558243",
+    "link": "https://merkl.angle.money/?status=live&search=0x1Cb2892038867aDFa78CCfc6C3fB89b1dA558243&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x64dae6685725Dbd0a0e63fE522c9134d0EaA7258",
+    "link": "https://merkl.angle.money/?status=live&search=0x64dae6685725Dbd0a0e63fE522c9134d0EaA7258&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x3ABBbBb4C254b9327F1a0580BdbCcb51B0b5Fb08",
+    "link": "https://merkl.angle.money/?status=live&search=0x3ABBbBb4C254b9327F1a0580BdbCcb51B0b5Fb08&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xF5BFda16f9E57F0B7a67C57b42407C33C31349B6",
+    "link": "https://merkl.angle.money/?status=live&search=0xF5BFda16f9E57F0B7a67C57b42407C33C31349B6&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x5255a4115Bf7B98cc5cb037f24A8F12527c04e45",
+    "link": "https://merkl.angle.money/?status=live&search=0x5255a4115Bf7B98cc5cb037f24A8F12527c04e45&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x38437dBfd1D6a147A50CD0991A9581Ac8f996892",
+    "link": "https://merkl.angle.money/?status=live&search=0x38437dBfd1D6a147A50CD0991A9581Ac8f996892&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xb18eA0b56E46D4F890dC729425184fD1EF25dbFf",
+    "link": "https://merkl.angle.money/?status=live&search=0xb18eA0b56E46D4F890dC729425184fD1EF25dbFf&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xbd536591E3D2FBa81Adb8Dff970a43A8A0d382EC",
+    "link": "https://merkl.angle.money/?status=live&search=0xbd536591E3D2FBa81Adb8Dff970a43A8A0d382EC&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xfeb104864f3aD0C75E6B1bB4A0EDB3f89e562e6e",
+    "link": "https://merkl.angle.money/?status=live&search=0xfeb104864f3aD0C75E6B1bB4A0EDB3f89e562e6e&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x0CAA927059CB8db37CEefcB9e18c4FC7Efef9655",
+    "link": "https://merkl.angle.money/?status=live&search=0x0CAA927059CB8db37CEefcB9e18c4FC7Efef9655&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x667ED8FCa4fc042B8425AA3547E3271d9E6E9bB4",
+    "link": "https://merkl.angle.money/?status=live&search=0x667ED8FCa4fc042B8425AA3547E3271d9E6E9bB4&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x9BC7abdfaEfA730d63A904acCEC61DD9083AA638",
+    "link": "https://merkl.angle.money/?status=live&search=0x9BC7abdfaEfA730d63A904acCEC61DD9083AA638&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xC75908421566eA77A73B14D9cD0479C568f2B7A7",
+    "link": "https://merkl.angle.money/?status=live&search=0xC75908421566eA77A73B14D9cD0479C568f2B7A7&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xB27fdE8d172bb146186Bac819Ceb12fE4FA9262A",
+    "link": "https://merkl.angle.money/?status=live&search=0xB27fdE8d172bb146186Bac819Ceb12fE4FA9262A&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xF5Fac36c2429e1Cf84D4aBACdB18477Ef32589c9",
+    "link": "https://merkl.angle.money/?status=live&search=0xF5Fac36c2429e1Cf84D4aBACdB18477Ef32589c9&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x5e3C3a063cc9A4AEB5310C7faDc2A98aEbDD245d",
+    "link": "https://merkl.angle.money/?status=live&search=0x5e3C3a063cc9A4AEB5310C7faDc2A98aEbDD245d&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xD58522653D3F368D76d453Bc4C80CD7Fb36AC786",
+    "link": "https://merkl.angle.money/?status=live&search=0xD58522653D3F368D76d453Bc4C80CD7Fb36AC786&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x753bA05488Cac9B3f7D59Ff7D3f13F31bB5eDf22",
+    "link": "https://merkl.angle.money/?status=live&search=0x753bA05488Cac9B3f7D59Ff7D3f13F31bB5eDf22&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xe37304F7489ed253b2A46A1d9DabDcA3d311D22E",
+    "link": "https://merkl.angle.money/?status=live&search=0xe37304F7489ed253b2A46A1d9DabDcA3d311D22E&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xf92768916015b5eBd9fa54D6BA10dA5864e24914",
+    "link": "https://merkl.angle.money/?status=live&search=0xf92768916015b5eBd9fa54D6BA10dA5864e24914&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x4573ef50dbb79769eF66B1b16dcDB60652884ba6",
+    "link": "https://merkl.angle.money/?status=live&search=0x4573ef50dbb79769eF66B1b16dcDB60652884ba6&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0x4B89179dAfe5c36AE611208B5590FEf9153b7daa",
+    "link": "https://merkl.angle.money/?status=live&search=0x4B89179dAfe5c36AE611208B5590FEf9153b7daa&chain=42161%2C"
+  },
+  {
+    "chainId": 42161,
+    "address": "0xe2d9b612446180334D56e10e82Dc78E3dEe814B0",
+    "link": "https://merkl.angle.money/?status=live&search=0xe2d9b612446180334D56e10e82Dc78E3dEe814B0&chain=42161%2C"
+  }
+]

@@ -69,6 +69,41 @@ export const farmsV3 = defineFarmV3Configs([
   // new lps should follow after the top fixed lps
   // latest first
   {
+    pid: 71,
+    lpAddress: '0x05dF8F9fCFf0b6a6FDE7166706a52693906C9936',
+    token0: ethereumTokens.taiko,
+    token1: ethereumTokens.weth,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 70,
+    lpAddress: '0x6FD5029Ba47BA8dBee130DA71e2546b5c96b4B12',
+    token0: ethereumTokens.blb,
+    token1: ethereumTokens.weth,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 69,
+    lpAddress: '0xfcc3B8959d99f1154F0B1ac0252aa7e0F0617BCC',
+    token0: ethereumTokens.weth,
+    token1: ethereumTokens.mETH,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 68,
+    lpAddress: '0x5bF7C2C688b058f3C89aa667e4698349D062c813',
+    token0: ethereumTokens.weth,
+    token1: ethereumTokens.mETH,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 67,
+    lpAddress: '0x11b544C90EE643ca0256696F43b4512A4eD2D049',
+    token0: ethereumTokens.mnt,
+    token1: ethereumTokens.mETH,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
     pid: 66,
     lpAddress: '0x021E6270091a926D08d43681978d65F9A9b024ca',
     token0: ethereumTokens.masa,

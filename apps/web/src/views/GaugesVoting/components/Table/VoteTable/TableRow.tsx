@@ -10,6 +10,7 @@ import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 import { getPositionManagerName } from 'views/GaugesVoting/utils'
 import { feeTierPercent } from 'views/V3Info/utils'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
 import { PositionManagerLogo } from '../../PositionManagerLogo'
@@ -18,17 +19,19 @@ import { PercentInput } from './PercentInput'
 import { useRowVoteState } from './hooks/useRowVoteState'
 import { DEFAULT_VOTE, RowProps } from './types'
 
+dayjs.extend(relativeTime)
+
 const debugFormat = (unix?: bigint | number) => {
   if (!unix) return ''
   return dayjs.unix(Number(unix)).format('YYYY-MM-DD HH:mm:ss')
 }
 
-export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE }, onChange }) => {
+export const TableRow: React.FC<RowProps> = ({ data, submitted, vote = { ...DEFAULT_VOTE }, onChange }) => {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
   const { cakeLockedAmount } = useCakeLockStatus()
   const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
-  const userVote = useUserVote(data)
+  const userVote = useUserVote(data, submitted)
   const {
     currentVoteWeight,
     currentVotePercent,
@@ -48,7 +51,7 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
   }
 
   return (
-    <VRow>
+    <VRow data-gauge-hash={data.hash}>
       <FlexGap alignItems="center" gap="13px">
         <DebugTooltips
           content={
@@ -64,6 +67,9 @@ export const TableRow: React.FC<RowProps> = ({ data, vote = { ...DEFAULT_VOTE },
                   proxyEnd: debugFormat(userVote?.proxyEnd),
                   nativeEnd: debugFormat(userVote?.nativeEnd),
                   proxyVeCakeBalance: proxyVeCakeBalance?.toString(),
+                  willUnlock,
+                  voteLocked,
+                  cakeLocked,
                 },
                 undefined,
                 2,

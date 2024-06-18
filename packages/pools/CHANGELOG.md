@@ -1,5 +1,70 @@
 # @pancakeswap/pools
 
+## 5.1.27
+
+### Patch Changes
+
+- 7235e91: Update ALP pool
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/tokens@0.6.21
+  - @pancakeswap/token-lists@0.0.11
+
+## 5.1.26
+
+### Patch Changes
+
+- Updated dependencies [b9c91d1]
+- Updated dependencies [5fa28e0]
+- Updated dependencies [95cfa0c]
+  - @pancakeswap/chains@0.4.5
+  - @pancakeswap/tokens@0.6.20
+  - @pancakeswap/token-lists@0.0.11
+
+## 5.1.25
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+  - @pancakeswap/tokens@0.6.19
+  - @pancakeswap/token-lists@0.0.11
+
+## 5.1.24
+
+### Patch Changes
+
+- Updated dependencies [edf4640]
+  - @pancakeswap/chains@0.4.4
+  - @pancakeswap/tokens@0.6.18
+  - @pancakeswap/token-lists@0.0.11
+
+## 5.1.23
+
+### Patch Changes
+
+- Updated dependencies [b57fd91]
+- Updated dependencies [755bb18]
+- Updated dependencies [502d961]
+  - @pancakeswap/tokens@0.6.17
+
+## 5.1.22
+
+### Patch Changes
+
+- Updated dependencies [b20f210]
+- Updated dependencies [9bef4cd]
+  - @pancakeswap/tokens@0.6.16
+
+## 5.1.21
+
+### Patch Changes
+
+- Updated dependencies [0f4281c]
+- Updated dependencies [63a63d8]
+  - @pancakeswap/chains@0.4.3
+  - @pancakeswap/tokens@0.6.15
+  - @pancakeswap/token-lists@0.0.11
+
 ## 5.1.20
 
 ### Patch Changes

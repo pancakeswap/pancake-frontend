@@ -1,5 +1,30 @@
 # @pancakeswap/chains
 
+## 0.4.6
+
+### Patch Changes
+
+- 9a16780: add helper for chainname in mainnet
+
+## 0.4.5
+
+### Patch Changes
+
+- b9c91d1: Migrate subgraph endpoints to internal proxies
+
+## 0.4.4
+
+### Patch Changes
+
+- edf4640: Migrate base subgraphs to the graph studio
+
+## 0.4.3
+
+### Patch Changes
+
+- 0f4281c: Migrate polygon zkevm subgraphs
+- 63a63d8: Replace proxy endpoint with studio endpoint
+
 ## 0.4.2
 
 ### Patch Changes

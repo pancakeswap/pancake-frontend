@@ -1,10 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { zksyncTokens } from '@pancakeswap/tokens'
 import { Box, Flex, Link, Text } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { GiftTooltip } from 'components/GiftTooltip/GiftTooltip'
+import { SwellTooltip } from 'components/SwellTooltip/SwellTooltip'
 import { TokenPairImage } from 'components/TokenImage'
+import { USDPlusWarningTooltip } from 'components/USDPlusWarningTooltip'
+import { useHasSwellReward } from 'hooks/useHasSwellReward'
+import { useMemo } from 'react'
 import { Address, isAddressEqual } from 'viem'
 import { bsc } from 'viem/chains'
+import { useHasCustomFarmLpTooltips } from 'views/Farms/hooks/useHasCustomFarmLpTooltips'
 
 const { FarmTokenInfo } = FarmWidget.FarmTable
 
@@ -22,8 +28,16 @@ export const FarmCell: React.FunctionComponent<
   merklApr,
   lpAddress,
   chainId,
+  merklUserLink,
 }) => {
   const { t } = useTranslation()
+  const hasSwellReward = useHasSwellReward(lpAddress)
+  const customTooltips = useHasCustomFarmLpTooltips(lpAddress)
+
+  const hasUsdPlusWarning = useMemo(() => {
+    return zksyncTokens.usdPlus.equals(token) || zksyncTokens.usdPlus.equals(quoteToken)
+  }, [token, quoteToken])
+
   return (
     <Flex alignItems="center">
       <FarmTokenInfo
@@ -34,6 +48,7 @@ export const FarmCell: React.FunctionComponent<
         isReady={isReady}
         isStaking={isStaking}
         merklLink={merklLink}
+        merklUserLink={merklUserLink}
         hasBothFarmAndMerkl={hasBothFarmAndMerkl}
         merklApr={merklApr}
       >
@@ -60,6 +75,13 @@ export const FarmCell: React.FunctionComponent<
           </Box>
         </GiftTooltip>
       ) : null}
+      {hasSwellReward && (
+        <Box marginLeft={1}>
+          <SwellTooltip />
+        </Box>
+      )}
+      {customTooltips && <Box marginLeft={1}>{customTooltips.tooltips}</Box>}
+      {hasUsdPlusWarning ? <USDPlusWarningTooltip /> : null}
     </Flex>
   )
 }

@@ -34,7 +34,7 @@ const USCitizenConfirmModal: React.FC<React.PropsWithChildren<USCitizenConfirmMo
       window.open(href, '_blank', 'noopener noreferrer')
     }
     onDismiss?.()
-  }, [id, setHasAcceptedRisk, onDismiss, href])
+  }, [setHasAcceptedRisk, onDismiss, href])
 
   useEffect(() => {
     if (previousPathname && pathname !== previousPathname) {

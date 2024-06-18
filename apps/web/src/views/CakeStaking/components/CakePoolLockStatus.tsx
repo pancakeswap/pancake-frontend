@@ -21,10 +21,13 @@ import dayjs from 'dayjs'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
 import { formatTime } from 'utils/formatTime'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { useCakePoolLockInfo } from '../hooks/useCakePoolLockInfo'
 import { useWriteMigrateCallback } from '../hooks/useContractWrite/useWriteMigrateCallback'
 import { useCurrentBlockTimestamp } from '../hooks/useCurrentBlockTimestamp'
 import { StyledLockedCard } from './styled'
+
+dayjs.extend(relativeTime)
 
 export const CakePoolLockInfo = () => {
   const { t } = useTranslation()

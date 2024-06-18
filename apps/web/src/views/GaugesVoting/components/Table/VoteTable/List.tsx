@@ -8,10 +8,13 @@ import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { GaugeIdentifierDetails } from '../GaugesTable/List'
 import { PercentInput } from './PercentInput'
 import { useRowVoteState } from './hooks/useRowVoteState'
 import { DEFAULT_VOTE, RowProps } from './types'
+
+dayjs.extend(relativeTime)
 
 const ListItemContainer = styled(FlexGap)<{ borderBottom?: boolean }>`
   border-bottom: ${({ borderBottom = true, theme }) =>
@@ -22,10 +25,10 @@ type Props = {
   style?: CSSProperties
 } & RowProps
 
-export function VoteListItem({ style, data, vote = { ...DEFAULT_VOTE }, onChange, ...props }: Props) {
+export function VoteListItem({ style, data, submitted, vote = { ...DEFAULT_VOTE }, onChange, ...props }: Props) {
   const { t } = useTranslation()
   const currentTimestamp = useCurrentBlockTimestamp()
-  const userVote = useUserVote(data)
+  const userVote = useUserVote(data, submitted)
   const { cakeLockedAmount } = useCakeLockStatus()
   const cakeLocked = useMemo(() => cakeLockedAmount > 0n, [cakeLockedAmount])
   const { currentVoteWeight, previewVoteWeight, voteValue, voteLocked, willUnlock, changeHighlight } = useRowVoteState({

@@ -1,5 +1,60 @@
 # games
 
+## 0.1.15
+
+### Patch Changes
+
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/games@0.0.9
+  - @pancakeswap/uikit@0.66.1
+  - @pancakeswap/utils@6.0.9
+  - @pancakeswap/hooks@0.0.31
+
+## 0.1.14
+
+### Patch Changes
+
+- Updated dependencies [b9c91d1]
+- Updated dependencies [54f0f82]
+  - @pancakeswap/chains@0.4.5
+  - @pancakeswap/uikit@0.66.0
+  - @pancakeswap/games@0.0.8
+  - @pancakeswap/utils@6.0.8
+  - @pancakeswap/hooks@0.0.30
+
+## 0.1.13
+
+### Patch Changes
+
+- Updated dependencies [edc3f30]
+  - @pancakeswap/utils@6.0.7
+  - @pancakeswap/hooks@0.0.29
+  - @pancakeswap/uikit@0.65.10
+
+## 0.1.12
+
+### Patch Changes
+
+- Updated dependencies [edf4640]
+  - @pancakeswap/chains@0.4.4
+  - @pancakeswap/games@0.0.7
+  - @pancakeswap/uikit@0.65.9
+  - @pancakeswap/utils@6.0.6
+  - @pancakeswap/hooks@0.0.28
+
+## 0.1.11
+
+### Patch Changes
+
+- Updated dependencies [0f4281c]
+- Updated dependencies [63a63d8]
+  - @pancakeswap/chains@0.4.3
+  - @pancakeswap/games@0.0.6
+  - @pancakeswap/uikit@0.65.8
+  - @pancakeswap/utils@6.0.5
+  - @pancakeswap/hooks@0.0.27
+
 ## 0.1.10
 
 ### Patch Changes

@@ -1,13 +1,16 @@
 import { Gauge } from '@pancakeswap/gauges'
+import { usePreviousValue } from '@pancakeswap/hooks'
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGaugesVotingContract } from 'hooks/useContract'
+import { useEffect, useMemo } from 'react'
+import { publicClient as getPublicClient } from 'utils/viem'
 import { Address, Hex, isAddressEqual, zeroAddress } from 'viem'
 import { useCurrentBlockTimestamp } from 'views/CakeStaking/hooks/useCurrentBlockTimestamp'
 import { useVeCakeUserInfo } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
-import { usePublicClient } from 'wagmi'
-import { useNextEpochStart } from './useEpochTime'
+import { CakePoolType } from 'views/CakeStaking/types'
+import { useCurrentEpochStart, useNextEpochStart } from './useEpochTime'
 
 export type VotedSlope = {
   hash: string
@@ -37,19 +40,23 @@ export type VotedSlope = {
 const max = (a: bigint, b: bigint) => (a > b ? a : b)
 const sum = (a: bigint, b: bigint) => a + b
 
-export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
+export const useUserVote = (gauge: Gauge | undefined, submitted?: boolean, useProxyPool: boolean = true) => {
   const { account, chainId } = useAccountActiveChain()
-  const publicClient = usePublicClient({ chainId })
   const contract = useGaugesVotingContract()
   const { data: userInfo } = useVeCakeUserInfo()
   const currentTimestamp = useCurrentBlockTimestamp()
+  const currentEpochStart = useCurrentEpochStart()
   const nextEpochStart = useNextEpochStart()
+  const publicClient = useMemo(() => getPublicClient({ chainId }), [chainId])
+  const prevSubmittedStatus = usePreviousValue(submitted)
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['/vecake/userVoteSlopes', contract.address, gauge?.hash, account],
 
     queryFn: async (): Promise<VotedSlope> => {
-      const hasProxy = useProxyPool && userInfo?.cakePoolProxy && !isAddressEqual(userInfo?.cakePoolProxy, zeroAddress)
+      const delegated = userInfo?.cakePoolType === CakePoolType.DELEGATED
+      const hasProxy =
+        useProxyPool && userInfo?.cakePoolProxy && !isAddressEqual(userInfo?.cakePoolProxy, zeroAddress) && !delegated
       const calls = [
         {
           ...contract,
@@ -62,6 +69,7 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
           args: [account!, gauge?.hash as Hex],
         },
       ] as const
+
       const callsWithProxy = [
         {
           ...contract,
@@ -76,12 +84,10 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
         ...calls,
       ] as const
       if (hasProxy) {
-        const response = publicClient
-          ? await publicClient.multicall({
-              contracts: callsWithProxy,
-              allowFailure: false,
-            })
-          : []
+        const response = await publicClient.multicall({
+          contracts: callsWithProxy,
+          allowFailure: false,
+        })
 
         const [
           [_proxySlope, _proxyPower, proxyEnd],
@@ -98,15 +104,32 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
           .add(10, 'day')
           .isAfter(dayjs.unix(currentTimestamp))
         let [nativeSlope, nativePower, proxySlope, proxyPower] = [_nativeSlope, _nativePower, _proxySlope, _proxyPower]
+        if (!proxyEnd) {
+          return {
+            hash: gauge?.hash as Hex,
+            nativeSlope,
+            nativePower,
+            nativeEnd,
+            nativeLastVoteTime,
+            nativeVoteLocked,
+            slope: nativeSlope,
+            power: nativePower,
+            end: nativeEnd,
+            lastVoteTime: nativeLastVoteTime,
+            voteLocked: nativeVoteLocked,
+          }
+        }
         let ignoredSlope = 0n
         let ignoredPower = 0n
         let ignoredSide: 'native' | 'proxy' | undefined
-        const nativeExpired = nativeEnd > 0n && nativeEnd < nextEpochStart
-        const proxyExpired = proxyEnd > 0n && proxyEnd < nextEpochStart
+        const nativeExpired = nativeEnd > 0n && nativeEnd < currentEpochStart
+        const proxyExpired = proxyEnd > 0n && proxyEnd < currentEpochStart
+        const nativeWillExpire = nativeEnd > 0n && nativeEnd > currentEpochStart && nativeEnd < nextEpochStart
+        const proxyWillExpire = proxyEnd > 0n && proxyEnd > currentEpochStart && proxyEnd < nextEpochStart
 
         // when native slope will expire before current epochEnd
         // use proxy slope only
-        if (nativeExpired && !proxyExpired) {
+        if ((nativeWillExpire && !proxyWillExpire) || (nativeExpired && !proxyExpired)) {
           ignoredSlope = nativeSlope
           ignoredPower = nativePower
           ignoredSide = 'native'
@@ -115,7 +138,7 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
         }
         // when proxy slope will expire before current epochEnd
         // use native slope only
-        if (proxyExpired && !nativeExpired) {
+        if ((proxyWillExpire && !nativeWillExpire) || (proxyExpired && !nativeExpired)) {
           ignoredSlope = proxySlope
           ignoredPower = proxyPower
           ignoredSide = 'proxy'
@@ -125,7 +148,7 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
 
         // when both slopes will expire before current epochEnd
         // use max of both slopes
-        if (nativeExpired && proxyExpired) {
+        if (nativeWillExpire && proxyWillExpire) {
           const nativeWeight = _nativeSlope * (nativeEnd - BigInt(currentTimestamp))
           const proxyWeight = _proxySlope * (proxyEnd - BigInt(currentTimestamp))
           if (nativeWeight > proxyWeight) {
@@ -191,7 +214,14 @@ export const useUserVote = (gauge?: Gauge, useProxyPool: boolean = true) => {
       }
     },
 
-    enabled: !!account && Boolean(gauge?.hash),
+    enabled: !!account && publicClient && Boolean(gauge?.hash),
   })
+
+  useEffect(() => {
+    if (submitted && !prevSubmittedStatus && typeof prevSubmittedStatus !== 'undefined') {
+      refetch()
+    }
+  }, [submitted, prevSubmittedStatus, refetch])
+
   return data
 }

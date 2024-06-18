@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, ButtonMenu, ButtonMenuItem, Flex, SwapLineChart, Text } from '@pancakeswap/uikit'
 import { memo, useMemo, useState } from 'react'
-import { useFetchPairPricesV3 } from 'state/swap/hooks'
+import { usePairRate } from 'state/swap/hooks'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
 import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 import NoChartAvailable from './NoChartAvailable'
@@ -18,7 +18,7 @@ const BasicChart = ({
 }) => {
   const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
 
-  const { data: pairPrices = [] } = useFetchPairPricesV3({
+  const { data: pairPrices = [] } = usePairRate({
     token0Address,
     token1Address,
     timeWindow,
@@ -82,6 +82,10 @@ const BasicChart = ({
     return <NoChartAvailable token0Address={token0Address} token1Address={token1Address} isMobile={isMobile} />
   }
 
+  const changeText = isMobile
+    ? `${isChangePositive ? '+' : ''}${changePercentage}%`
+    : `${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`
+
   return (
     <>
       <Flex
@@ -98,7 +102,7 @@ const BasicChart = ({
             outputSymbol={outputCurrency?.symbol}
           >
             <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" ml="4px" bold>
-              {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
+              {changeText}
             </Text>
           </PairPriceDisplay>
           <Text small color="secondary">
