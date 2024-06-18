@@ -1,6 +1,8 @@
 import { Box, BoxProps, Flex, Text } from '@pancakeswap/uikit'
 import Lottie from 'lottie-react'
+import { useTheme } from 'styled-components'
 import MeterJSON from '../../../../../../public/images/predictions-temp/meter.json'
+import MeterDarkJSON from '../../../../../../public/images/predictions-temp/meter_dark.json'
 
 interface PayoutMeterProps extends BoxProps {
   bearMultiplier?: string
@@ -8,9 +10,10 @@ interface PayoutMeterProps extends BoxProps {
 }
 
 const AnimatedMeter = (props: BoxProps) => {
+  const { isDark } = useTheme()
   return (
     <Box position="relative" {...props}>
-      <Lottie animationData={MeterJSON} style={{ width: '110px' }} />
+      <Lottie animationData={isDark ? MeterDarkJSON : MeterJSON} style={{ width: '110px' }} />
     </Box>
   )
 }
