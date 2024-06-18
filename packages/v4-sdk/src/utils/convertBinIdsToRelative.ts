@@ -9,5 +9,5 @@
  * @param activeId
  */
 export const convertBinIdsToRelative = (absoluteIds: bigint[], activeId: bigint): bigint[] => {
-  return absoluteIds.map((id) => activeId - id)
+  return absoluteIds.map((id) => id - activeId)
 }
