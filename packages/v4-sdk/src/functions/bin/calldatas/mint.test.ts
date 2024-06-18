@@ -1,6 +1,6 @@
 import { stringToBytes, toHex, zeroAddress } from 'viem'
 import { describe, expect, test } from 'vitest'
-import type { PoolKey } from '../../../utils/poolKey'
+import { PoolKey } from '../../../types'
 import { getBinLiquidityConfigs } from '../getBinLiquidityConfigs'
 import { binPoolMintCalldata } from './mint'
 

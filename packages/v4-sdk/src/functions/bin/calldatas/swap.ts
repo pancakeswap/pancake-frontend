@@ -1,6 +1,7 @@
 import { Hex, encodeFunctionData } from 'viem'
 import { BinPoolManager } from '../../../abis/BinPoolManager'
-import { PoolKey, parsePoolKey } from '../../../utils/poolKey'
+import { PoolKey } from '../../../types'
+import { encodePoolKey } from '../../../utils/encodePoolKey'
 
 export const binPoolSwapCalldata = (
   poolKey: PoolKey<'Bin'>,
@@ -11,6 +12,6 @@ export const binPoolSwapCalldata = (
   return encodeFunctionData({
     abi: BinPoolManager,
     functionName: 'swap',
-    args: [parsePoolKey(poolKey), swapForY, amountIn, hookData],
+    args: [encodePoolKey(poolKey), swapForY, amountIn, hookData],
   })
 }
