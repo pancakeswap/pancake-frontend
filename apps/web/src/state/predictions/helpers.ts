@@ -451,10 +451,7 @@ export const makeLedgerData = (account: string, ledgers: PredictionsLedgerRespon
 /**
  * Serializes the return from the "rounds" call for redux
  */
-export const serializePredictionsRoundsResponse = (
-  response: PredictionsRoundsResponse,
-  chainId: ChainId,
-): ReduxNodeRound => {
+export const serializePredictionsRoundsResponse = (response: PredictionsRoundsResponse): ReduxNodeRound => {
   const {
     epoch,
     startTimestamp,

@@ -101,7 +101,7 @@ export const fetchPredictionData = createAsyncThunk<
     isAIPrediction: Boolean(extra.isAIPrediction),
   })
   const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
-    const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse, chainId)
+    const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse)
     return {
       ...accum,
       [roundResponse.epoch.toString()]: reduxNodeRound,
