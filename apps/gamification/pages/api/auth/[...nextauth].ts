@@ -14,7 +14,7 @@ export default NextAuth({
     }),
   ],
   session: {
-    maxAge: 1 * 60, // One minute
+    maxAge: 3, // 3 sec
   },
   // pages: {
   //   signIn: '/profile',

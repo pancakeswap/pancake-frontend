@@ -22,7 +22,7 @@ import { useDomainNameForAddress } from 'hooks/useDomain'
 import { Profile } from 'hooks/useProfile/type'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
 import { useSession } from 'next-auth/react'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { SocialHubType, useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { connectSocial } from 'views/Profile/utils/connectSocial'
@@ -61,10 +61,12 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const { userInfo, refresh, isFetched } = useUserSocialHub()
   const { data: session } = useSession()
   const { toastSuccess, toastError } = useToast()
+  const [isFetchingApi, setIsFetchingApi] = useState(false)
 
   useEffect(() => {
     const fetch = async (id: string, social: SocialHubType) => {
-      if (account) {
+      if (account && !isFetchingApi) {
+        setIsFetchingApi(true)
         try {
           await connectSocial({
             account,
@@ -79,20 +81,22 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
         } catch (error) {
           console.error(`Connect ${social} error: `, error)
           toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
+        } finally {
+          setTimeout(() => setIsFetchingApi(false), 1000)
         }
       }
     }
 
-    // if (isFetched && session) {
-    //   if (!userInfo.socialHubToSocialUserIdMap.Discord && (session as any).user?.discordId) {
-    //     fetch((session as any).user?.discordId, SocialHubType.Discord)
-    //   }
+    if (isFetched && session && new Date(session?.expires).getTime() > new Date().getTime()) {
+      if (!userInfo?.socialHubToSocialUserIdMap?.Discord && (session as any).user?.discordId) {
+        fetch((session as any).user?.discordId, SocialHubType.Discord)
+      }
 
-    //   if (!userInfo.socialHubToSocialUserIdMap.Twitter && (session as any).user?.twitterId) {
-    //     fetch((session as any).user?.twitterId, SocialHubType.Twitter)
-    //   }
-    // }
-  }, [account, isFetched, refresh, session, t, toastError, toastSuccess, userInfo])
+      if (!userInfo?.socialHubToSocialUserIdMap?.Twitter && (session as any).user?.twitterId) {
+        fetch((session as any).user?.twitterId, SocialHubType.Twitter)
+      }
+    }
+  }, [account, isFetched, isFetchingApi, refresh, session, t, toastError, toastSuccess, userInfo])
 
   const { domainName, avatar: avatarFromDomain } = useDomainNameForAddress(accountPath)
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
@@ -108,7 +112,12 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     false,
   )
 
-  const [onPressSettingsModal] = useModal(<SettingsModal userInfo={userInfo} refresh={refresh} />)
+  const [onPressSettingsModal] = useModal(
+    <SettingsModal userInfo={userInfo} refresh={refresh} />,
+    true,
+    true,
+    'socialHubModal',
+  )
 
   const isConnectedAccount = safeGetAddress(account) === safeGetAddress(accountPath)
   const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0) : '-') : null

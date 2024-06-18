@@ -71,7 +71,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ userInfo, refresh,
   const { connect: connectTwitter, disconnect: disconnectTwitter } = useConnectTwitter({ userInfo, refresh })
 
   return (
-    <Modal title={t('Settings')} onDismiss={() => onDismiss}>
+    <Modal title={t('Settings')} onDismiss={onDismiss}>
       <Flex
         flexDirection="column"
         alignItems="center"
