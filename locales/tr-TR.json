@@ -3146,7 +3146,6 @@
   "Reset approval on USDT.": "USDT'de onayın sıfırlanması.",
   "Revoke transaction filled, but Approval not reset to 0. Please try again.": "İptal işlemi tamamlandı ama Onay, 0'a sıfırlanmadı. Lütfen tekrar deneyin.",
   "Combined number of rewards in %symbol% from ALL your positions which are eligible for Merkl rewards.": "Merkl ödülleri için uygun olan TÜM pozisyonlarınızdan %symbol% cinsinden toplam ödül sayısı.",
-  "To earn rewards on Merkl, unstake this position from PancakeSwap Farms.": "Merkl'de ödül kazanmak için PancakeSwap Farm’larında bu pozisyonu unstake edin.",
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "Bu Merkl kampanyası aralık dışında kalan likiditeyi ödül olarak VERMİYOR. Ödül kazanmak için pozisyonunuzda düzenleme yapın.",
   "This liquidity position is currently earning rewards on Merkl.": "Bu likidite pozisyonu şu anda Merkl'de ödüller kazandırıyor.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "Bu likidite pozisyonu; toplam ABD doları değeri, 20 ABD dolarından az olduğu için Merkl'de herhangi bir ödül KAZANDIRMAYACAK.",
