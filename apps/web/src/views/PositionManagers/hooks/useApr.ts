@@ -6,7 +6,9 @@ import { YEAR_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
 import BigNumber from 'bignumber.js'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { useMemo } from 'react'
+import { Address } from 'viem'
 import { useTotalStakedInUsd } from 'views/PositionManagers/hooks/useTotalStakedInUsd'
+import { useBoosterLiquidityX } from './useBoostedLiquidityX'
 
 interface AprProps {
   currencyA: Currency
@@ -22,6 +24,8 @@ interface AprProps {
   rewardEndTime: number
   rewardStartTime: number
   farmRewardAmount?: number
+  adapterAddress?: Address
+  bCakeWrapperAddress?: Address
 }
 
 export interface AprResult {
@@ -47,8 +51,11 @@ export const useApr = ({
   rewardEndTime,
   rewardStartTime,
   farmRewardAmount,
+  adapterAddress,
+  bCakeWrapperAddress,
 }: AprProps): AprResult => {
   const { data: rewardUsdPrice } = useCurrencyUsdPrice(earningToken ?? undefined)
+  const { boostedLiquidityX } = useBoosterLiquidityX(bCakeWrapperAddress, adapterAddress)
 
   const isInCakeRewardDateRange = useMemo(
     // () =>  true // mock cake in range to see the booster changes
@@ -63,6 +70,7 @@ export const useApr = ({
     poolToken1Amount,
     token0PriceUSD,
     token1PriceUSD,
+    boostedLiquidityX,
   })
 
   const totalLpApr = useMemo(() => {

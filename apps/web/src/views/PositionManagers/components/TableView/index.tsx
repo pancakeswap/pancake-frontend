@@ -194,6 +194,8 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     rewardEndTime: info.endTimestamp,
     rewardStartTime: info.startTimestamp,
     farmRewardAmount: aprDataInfo?.info?.rewardAmount ?? 0,
+    adapterAddress,
+    bCakeWrapperAddress,
   })
 
   const staked0Amount = info?.userToken0Amounts
@@ -463,6 +465,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
               aprTimeWindow={aprDataInfo.timeWindow}
               bCakeWrapper={bCakeWrapperAddress}
               minDepositUSD={minDepositUSD}
+              adapterAddress={adapterAddress}
               isBooster={isBoosterWhiteList}
               boosterContractAddress={info?.boosterContractAddress}
             />

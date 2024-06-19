@@ -1,6 +1,6 @@
-import { useMemo } from 'react'
-import BigNumber from 'bignumber.js'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import BigNumber from 'bignumber.js'
+import { useMemo } from 'react'
 
 interface TotalStakedInUsdProps {
   currencyA: Currency
@@ -9,6 +9,7 @@ interface TotalStakedInUsdProps {
   poolToken1Amount?: bigint
   token0PriceUSD?: number
   token1PriceUSD?: number
+  boostedLiquidityX?: number
 }
 
 export const useTotalStakedInUsd = ({
@@ -18,6 +19,7 @@ export const useTotalStakedInUsd = ({
   poolToken1Amount,
   token0PriceUSD,
   token1PriceUSD,
+  boostedLiquidityX = 1,
 }: TotalStakedInUsdProps): number => {
   const pool0Amount = poolToken0Amount ? CurrencyAmount.fromRawAmount(currencyA, poolToken0Amount) : undefined
   const pool1Amount = poolToken1Amount ? CurrencyAmount.fromRawAmount(currencyB, poolToken1Amount) : undefined
@@ -28,5 +30,5 @@ export const useTotalStakedInUsd = ({
     return totalPoolToken0Usd.plus(totalPoolToken1Usd).toNumber()
   }, [pool0Amount, pool1Amount, token0PriceUSD, token1PriceUSD])
 
-  return totalStakedInUsd ?? 0
+  return totalStakedInUsd * boostedLiquidityX ?? 0
 }
