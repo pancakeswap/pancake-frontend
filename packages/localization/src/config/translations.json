@@ -3426,5 +3426,9 @@
   "Stake CAKE to obtain bCAKE – to boost farm yields.": "Stake CAKE to obtain bCAKE – to boost farm yields.",
   "Switch chain to continue": "Switch chain to continue",
   "Lock Cake to get veCAKE on BSC to activate yield booster.": "Lock Cake to get veCAKE on BSC to activate yield booster.",
-  "Sync veCAKE again to update yield booster": "Sync veCAKE again to update yield booster"
+  "Sync veCAKE again to update yield booster": "Sync veCAKE again to update yield booster",
+  "ROR (Rate Of Return)": "ROR (Rate Of Return)",
+  "1 Week": "1 Week",
+  "1 Month": "1 Month",
+  "ROR Calculated based on historical snapshots factoring inhistorical price of the underlying tokens": "ROR Calculated based on historical snapshots factoring inhistorical price of the underlying tokens"
 }
