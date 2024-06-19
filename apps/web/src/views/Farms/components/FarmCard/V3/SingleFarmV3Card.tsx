@@ -26,6 +26,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
 import Image from 'next/image'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
@@ -187,6 +188,9 @@ const SingleFarmV3Card: React.FunctionComponent<
     return new BigNumber(totalEarnings).times(cakePrice.toString()).toNumber()
   }, [cakePrice, totalEarnings])
 
+  const router = useRouter()
+  const isHistory = useMemo(() => router.pathname.includes('history'), [router])
+
   return (
     <AtomBox {...atomBoxProps}>
       <ActionContainer bg="background" flexDirection={direction}>
@@ -335,7 +339,7 @@ const SingleFarmV3Card: React.FunctionComponent<
             </RowBetween>
           </>
         )}
-        {farmCanBoost && (
+        {farmCanBoost && !isHistory && (
           <>
             <AtomBox
               width={{

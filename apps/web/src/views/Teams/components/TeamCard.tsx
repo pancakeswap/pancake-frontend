@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Card, CardBody, CardHeader, CommunityIcon, Heading, PrizeIcon, Skeleton, Text } from '@pancakeswap/uikit'
 import { useQuery } from '@tanstack/react-query'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { getTeam } from 'state/teams/helpers'
 import { styled } from 'styled-components'
 import ComingSoon from './ComingSoon'
@@ -85,9 +86,9 @@ const TeamCard: React.FC<React.PropsWithChildren<TeamCardProps>> = ({ id }) => {
   return (
     <Wrapper>
       <StyledCard>
-        <StyledCardHeader bg={`/images/teams/${team.background}`}>
+        <StyledCardHeader bg={`${ASSET_CDN}/web/teams/${team.background}`}>
           <AvatarWrap>
-            <Avatar src={`/images/teams/${team.images.md}`} alt="team avatar" />
+            <Avatar src={`${ASSET_CDN}/web/teams/${team.images.md}`} alt="team avatar" />
           </AvatarWrap>
           <TeamName color={team.textColor}>{team.name}</TeamName>
           <Text as="p" color={team.textColor}>

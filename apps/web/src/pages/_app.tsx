@@ -1,4 +1,5 @@
 import 'core-js/features/string/replace-all'
+import 'core-js/features/array/to-sorted'
 import { ResetCSS, ScrollToTopButtonV2, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { SentryErrorBoundary } from 'components/ErrorBoundary'
@@ -23,6 +24,7 @@ import Script from 'next/script'
 import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { V4CakeIcon } from 'views/Home/components/V4CakeIcon'
+import { AffiliateExpiredModal } from 'components/Modal/AffiliateExpiredModal'
 
 import { useDataDogRUM } from 'hooks/useDataDogRUM'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
@@ -177,6 +179,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
       {shouldScreenWallet && <Blocklist />}
       {isShowV4IconButton && <V4CakeIcon />}
+      <AffiliateExpiredModal />
       <VercelToolbar />
     </ProductionErrorBoundary>
   )

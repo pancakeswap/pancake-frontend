@@ -1,5 +1,5 @@
-import { createAction } from '@reduxjs/toolkit'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
+import { createAction } from '@reduxjs/toolkit'
 
 export interface SerializedPair {
   token0: SerializedWrappedToken
@@ -49,7 +49,13 @@ export const updateUserUsernameVisibility = createAction<{ userUsernameVisibilit
 )
 export const updateGasPrice = createAction<{ gasPrice: string }>('user/updateGasPrice')
 
+/**
+ * @deprecated
+ */
 export const addWatchlistToken = createAction<{ address: string }>('user/addWatchlistToken')
+/**
+ * @deprecated
+ */
 export const addWatchlistPool = createAction<{ address: string }>('user/addWatchlistPool')
 
 export const setSubgraphHealthIndicatorDisplayed = createAction<boolean>('user/setSubgraphHealthIndicatorDisplayed')

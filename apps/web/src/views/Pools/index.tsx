@@ -10,7 +10,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Page from 'components/Layout/Page'
-import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { TokenPairImage } from 'components/TokenImage'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { usePoolsPageFetch, usePoolsWithVault } from 'state/pools/hooks'
@@ -159,7 +158,6 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
             </>
           )}
         </PoolControls>
-        <V3SubgraphHealthIndicator />
       </Page>
     </>
   )

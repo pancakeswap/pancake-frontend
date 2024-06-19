@@ -55,6 +55,7 @@ export const cardConfig = (
     needQualifiedPoints?: boolean
     needQualifiedNFT?: boolean
     saleType?: number
+    additionalClaimingFee?: boolean
   },
 ): CardConfigReturn => {
   switch (poolId) {
@@ -104,7 +105,9 @@ export const cardConfig = (
       return {
         title: meta?.version >= 3.1 ? t('Public Sale') : t('Unlimited Sale'),
         variant: 'violet',
-        tooltip: t('No limits on the amount you can commit. Additional fee applies when claiming.'),
+        tooltip: meta.additionalClaimingFee
+          ? t('No limits on the amount you can commit. Additional fee applies when claiming.')
+          : t('No limits on the amount you can commit.'),
       }
 
     default:
@@ -142,6 +145,7 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
     needQualifiedNFT,
     needQualifiedPoints,
     saleType,
+    additionalClaimingFee: ifo[poolId]?.additionalClaimingFee,
   })
 
   const { hasActiveProfile, isLoading: isProfileLoading } = useProfile()

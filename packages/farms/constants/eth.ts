@@ -69,6 +69,20 @@ export const farmsV3 = defineFarmV3Configs([
   // new lps should follow after the top fixed lps
   // latest first
   {
+    pid: 71,
+    lpAddress: '0x05dF8F9fCFf0b6a6FDE7166706a52693906C9936',
+    token0: ethereumTokens.taiko,
+    token1: ethereumTokens.weth,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 70,
+    lpAddress: '0x6FD5029Ba47BA8dBee130DA71e2546b5c96b4B12',
+    token0: ethereumTokens.blb,
+    token1: ethereumTokens.weth,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
     pid: 69,
     lpAddress: '0xfcc3B8959d99f1154F0B1ac0252aa7e0F0617BCC',
     token0: ethereumTokens.weth,

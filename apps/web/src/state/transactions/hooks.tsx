@@ -10,12 +10,13 @@ import { useSelector } from 'react-redux'
 import { AppState, useAppDispatch } from 'state'
 import { useAccount } from 'wagmi'
 
-import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { Hash } from 'viem'
 
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useSafeTxHashTransformer } from 'hooks/useSafeTxHashTransformer'
 import {
   FarmTransactionStatus,
   NonBscFarmStepType,
@@ -52,9 +53,10 @@ export function useTransactionAdder(): (
 ) => void {
   const { account, chainId } = useAccountActiveChain()
   const dispatch = useAppDispatch()
+  const safeTxHashTransformer = useSafeTxHashTransformer()
 
   return useCallback(
-    (
+    async (
       response,
       {
         summary,
@@ -89,6 +91,13 @@ export function useTransactionAdder(): (
       if (!hash) {
         throw Error('No transaction hash found.')
       }
+
+      try {
+        hash = await safeTxHashTransformer(hash as Hash)
+      } catch (e) {
+        console.error('Failed to get transaction hash from Safe', e)
+      }
+
       dispatch(
         addTransaction({
           hash,
@@ -104,7 +113,7 @@ export function useTransactionAdder(): (
         }),
       )
     },
-    [dispatch, chainId, account],
+    [account, chainId, safeTxHashTransformer, dispatch],
   )
 }
 

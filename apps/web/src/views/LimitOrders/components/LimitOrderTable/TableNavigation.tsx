@@ -2,8 +2,6 @@ import { useState, useMemo, useCallback, ReactElement, memo, useEffect } from 'r
 import { Text, Flex, Box, Grid, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
-import { ChainId } from '@pancakeswap/chains'
 import NoOrdersMessage from './NoOrdersMessage'
 import { ORDER_CATEGORY } from '../../types'
 import LoadingTable from './LoadingTable'
@@ -85,9 +83,6 @@ const TableNavigation: React.FC<TableNavigationProps> = ({
           <Arrow onClick={onPageNext}>
             <ArrowForwardIcon color={currentPage === maxPage ? 'textDisabled' : 'primary'} />
           </Arrow>
-        </Flex>
-        <Flex width="100%" justifyContent={['center', null, null, null, 'flex-end']}>
-          <SubgraphHealthIndicator chainId={ChainId.BSC} subgraphName="gelatodigital/limit-orders-bsc" inline />
         </Flex>
       </Grid>
     </>

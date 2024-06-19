@@ -167,7 +167,7 @@ export default function AddStableLiquidity({
   )
 
   const { stableSwapContract, stableSwapConfig } = useContext(StableConfigContext) || {}
-  const stableAPR = useStableSwapAPR(stableSwapContract?.address)
+  const stableAPR = useStableSwapAPR(stableSwapConfig?.liquidityToken.address)
 
   const needWrapped = currencyA?.isNative || currencyB?.isNative
 

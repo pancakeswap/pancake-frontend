@@ -63,6 +63,7 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
           totalLiquidity,
           farm.lpAddress,
           CAKE_PER_YEAR,
+          farm.lpRewardsApr,
         )
         return { ...farm, apr: cakeRewardsApr ?? undefined, lpRewardsApr, liquidity: totalLiquidity }
       })

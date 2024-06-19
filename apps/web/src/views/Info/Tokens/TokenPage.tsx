@@ -17,7 +17,6 @@ import {
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
-import useInfoUserSavedTokensAndPools from 'hooks/useInfoUserSavedTokensAndPoolsList'
 import { NextSeo } from 'next-seo'
 
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -26,16 +25,15 @@ import { CHAIN_QUERY_NAME } from 'config/chains'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
-import { useMemo } from 'react'
 import { ChainLinkSupportChains, multiChainId, multiChainScan } from 'state/info/constant'
 import {
   useChainIdByQuery,
   useChainNameByQuery,
   useMultiChainPath,
-  usePoolDatasQuery,
-  usePoolsForTokenQuery,
+  usePoolsForTokenDataQuery,
   useStableSwapPath,
-  useTokenChartDataQuery,
+  useTokenChartTvlDataQuery,
+  useTokenChartVolumeDataQuery,
   useTokenDataQuery,
   useTokenPriceDataQuery,
   useTokenTransactionsQuery,
@@ -49,7 +47,6 @@ import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import Percent from 'views/Info/components/Percent'
-import SaveIcon from 'views/Info/components/SaveIcon'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
 
 dayjs.extend(duration)
@@ -80,7 +77,6 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
   const chainId = useChainIdByQuery()
-  const { savedTokens, addToken } = useInfoUserSavedTokensAndPools(chainId)
 
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
@@ -88,29 +84,14 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
   const cmcLink = useCMCLink(address)
 
   const tokenData = useTokenDataQuery(address)
-  const poolsForToken = usePoolsForTokenQuery(address)
-  const poolDatas = usePoolDatasQuery(useMemo(() => poolsForToken ?? [], [poolsForToken]))
+  const poolDatas = usePoolsForTokenDataQuery(address)
   const transactions = useTokenTransactionsQuery(address)
-  const chartData = useTokenChartDataQuery(address)
+  // const chartData = useTokenChartDataQuery(address)
+  const volumeChartData = useTokenChartVolumeDataQuery(address)
+  const tvlChartData = useTokenChartTvlDataQuery(address)
 
   // pricing data
   const priceData = useTokenPriceDataQuery(address, ONE_HOUR_SECONDS, DEFAULT_TIME_WINDOW)
-  const adjustedPriceData = useMemo(() => {
-    // Include latest available price
-    if (priceData && tokenData && priceData.length > 0) {
-      return [
-        ...priceData,
-        {
-          time: Date.now() / 1000,
-          open: priceData[priceData.length - 1].close,
-          close: tokenData?.priceUSD,
-          high: tokenData?.priceUSD,
-          low: priceData[priceData.length - 1].close,
-        },
-      ]
-    }
-    return undefined
-  }, [priceData, tokenData])
 
   const chainPath = useMultiChainPath()
   const chainName = useChainNameByQuery()
@@ -168,7 +149,10 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                     <Image src="/images/CMC-logo.svg" height={22} width={22} alt={t('View token on CoinMarketCap')} />
                   </StyledCMCLink>
                 )}
-                <SaveIcon fill={savedTokens.includes(address)} onClick={() => addToken(address)} />
+                {/* <SaveIcon
+                  fill={savedTokens.includes(address)}
+                  onClick={() => (savedTokens.includes(address) ? removeToken(address) : addToken(address))}
+                /> */}
                 <CopyButton ml="4px" text={address} tooltipMessage={t('Token address copied')} />
               </Flex>
             </Flex>
@@ -246,9 +230,10 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
               {/* charts card */}
               <ChartCard
                 variant="token"
-                chartData={chartData}
+                volumeChartData={volumeChartData}
+                tvlChartData={tvlChartData}
                 tokenData={tokenData}
-                tokenPriceData={adjustedPriceData}
+                tokenPriceData={priceData}
               />
             </ContentLayout>
 

@@ -161,7 +161,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
             abi: ifoV8ABI,
             address,
             functionName: 'addresses',
-            args: [4n],
+            args: [5n],
           },
           {
             abi: ifoV8ABI,

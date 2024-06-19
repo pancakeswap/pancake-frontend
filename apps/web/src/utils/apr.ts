@@ -59,6 +59,7 @@ export const getFarmApr = (
   poolLiquidityUsd: BigNumber | null | undefined,
   farmAddress: string | null,
   regularCakePerBlock: number,
+  lpRewardsApr?: number,
   cakePerSecFromBCake?: number,
 ): { cakeRewardsApr: number | null; lpRewardsApr: number } => {
   const yearlyCakeRewardAllocation = cakePerSecFromBCake
@@ -74,10 +75,10 @@ export const getFarmApr = (
   if (!cakeRewardsApr.isNaN() && cakeRewardsApr.isFinite()) {
     cakeRewardsAprAsNumber = cakeRewardsApr.toNumber()
   }
-  const lpRewardsApr = farmAddress
-    ? (getLpApr(chainId)[farmAddress?.toLowerCase()] || getLpApr(chainId)[farmAddress]) ?? 0
-    : 0 // can get both checksummed or lowercase
-  return { cakeRewardsApr: cakeRewardsAprAsNumber, lpRewardsApr }
+  const lpApr =
+    lpRewardsApr ??
+    (farmAddress ? (getLpApr(chainId)[farmAddress?.toLowerCase()] || getLpApr(chainId)[farmAddress]) ?? 0 : 0) // can get both checksummed or lowercase
+  return { cakeRewardsApr: cakeRewardsAprAsNumber, lpRewardsApr: lpApr }
 }
 
 export default null

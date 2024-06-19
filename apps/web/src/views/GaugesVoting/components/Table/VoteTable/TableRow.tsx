@@ -10,6 +10,7 @@ import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
 import { getPositionManagerName } from 'views/GaugesVoting/utils'
 import { feeTierPercent } from 'views/V3Info/utils'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { GaugeTokenImage } from '../../GaugeTokenImage'
 import { NetworkBadge } from '../../NetworkBadge'
 import { PositionManagerLogo } from '../../PositionManagerLogo'
@@ -17,6 +18,8 @@ import { VRow } from '../styled'
 import { PercentInput } from './PercentInput'
 import { useRowVoteState } from './hooks/useRowVoteState'
 import { DEFAULT_VOTE, RowProps } from './types'
+
+dayjs.extend(relativeTime)
 
 const debugFormat = (unix?: bigint | number) => {
   if (!unix) return ''

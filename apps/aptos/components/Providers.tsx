@@ -1,6 +1,6 @@
 import { AwgmiConfig } from '@pancakeswap/awgmi'
 import { LanguageProvider } from '@pancakeswap/localization'
-import { ModalProvider, UIKitProvider, dark, light } from '@pancakeswap/uikit'
+import { DialogProvider, ModalProvider, UIKitProvider, dark, light } from '@pancakeswap/uikit'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 import { client } from '../client'
@@ -35,7 +35,7 @@ const Providers: React.FC<React.PropsWithChildren<{ children: React.ReactNode }>
         <NextThemeProvider>
           <StyledUIKitProvider>
             <LanguageProvider>
-              <ModalProvider>{children}</ModalProvider>
+              <ModalProvider portalProvider={DialogProvider}>{children}</ModalProvider>
             </LanguageProvider>
           </StyledUIKitProvider>
         </NextThemeProvider>

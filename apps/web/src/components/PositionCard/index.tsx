@@ -134,7 +134,7 @@ function MinimalPositionCardView({
   const isStableLP = useContext(StableConfigContext)
 
   const { t } = useTranslation()
-  const poolData = useLPApr(pair)
+  const poolData = useLPApr('v2', pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(`Based on last 7 days' performance. Does not account for impermanent loss`),
     {

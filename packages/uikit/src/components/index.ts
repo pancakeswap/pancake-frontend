@@ -4,7 +4,6 @@ export * from "./AtomBox";
 export * from "./Balance";
 export * from "./BalanceInput";
 export * from "./BaseMenu";
-export * from "./BottomDrawer";
 export * from "./Box";
 export * from "./Breadcrumbs";
 export * from "./BunnyKnownPlaceholder";

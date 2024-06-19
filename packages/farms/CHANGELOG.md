@@ -1,5 +1,65 @@
 # @pancakeswap/farms
 
+## 1.0.68
+
+### Patch Changes
+
+- @pancakeswap/price-api-sdk@1.2.15
+
+## 1.0.67
+
+### Patch Changes
+
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/price-api-sdk@1.2.14
+  - @pancakeswap/sdk@5.8.7
+  - @pancakeswap/tokens@0.6.21
+  - @pancakeswap/utils@6.0.9
+  - @pancakeswap/v3-sdk@3.8.8
+  - @pancakeswap/token-lists@0.0.11
+
+## 1.0.66
+
+### Patch Changes
+
+- Updated dependencies [b9c91d1]
+- Updated dependencies [5fa28e0]
+- Updated dependencies [95cfa0c]
+  - @pancakeswap/chains@0.4.5
+  - @pancakeswap/tokens@0.6.20
+  - @pancakeswap/price-api-sdk@1.2.13
+  - @pancakeswap/sdk@5.8.6
+  - @pancakeswap/utils@6.0.8
+  - @pancakeswap/v3-sdk@3.8.7
+  - @pancakeswap/token-lists@0.0.11
+
+## 1.0.65
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/sdk@5.8.5
+  - @pancakeswap/v3-sdk@3.8.6
+  - @pancakeswap/utils@6.0.7
+  - @pancakeswap/price-api-sdk@1.2.12
+  - @pancakeswap/tokens@0.6.19
+  - @pancakeswap/token-lists@0.0.11
+
+## 1.0.64
+
+### Patch Changes
+
+- Updated dependencies [edf4640]
+  - @pancakeswap/chains@0.4.4
+  - @pancakeswap/price-api-sdk@1.2.11
+  - @pancakeswap/sdk@5.8.4
+  - @pancakeswap/tokens@0.6.18
+  - @pancakeswap/utils@6.0.6
+  - @pancakeswap/v3-sdk@3.8.5
+  - @pancakeswap/token-lists@0.0.11
+
 ## 1.0.63
 
 ### Patch Changes

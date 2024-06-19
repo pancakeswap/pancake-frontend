@@ -32,6 +32,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
   hasBothFarmAndMerkl,
   children,
   merklApr,
+  merklUserLink,
 }) => {
   const { t } = useTranslation();
 
@@ -66,7 +67,12 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
         <Row gap="sm">
           <Text bold>{label}</Text>
           {merklLink ? (
-            <MerklNotice.WithTooltip hasFarm={hasBothFarmAndMerkl} merklLink={merklLink} merklApr={merklApr} />
+            <MerklNotice.WithTooltip
+              hasFarm={hasBothFarmAndMerkl}
+              merklLink={merklLink}
+              merklApr={merklApr}
+              merklUserLink={merklUserLink}
+            />
           ) : null}
         </Row>
       </div>

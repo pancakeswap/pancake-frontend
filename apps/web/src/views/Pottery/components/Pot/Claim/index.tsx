@@ -8,6 +8,9 @@ import { BIG_ONE } from '@pancakeswap/utils/bigNumber'
 import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import { useAccount } from 'wagmi'
 import { ChainId } from '@pancakeswap/chains'
+
+import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
+
 import YourDeposit from '../YourDeposit'
 import WalletNotConnected from './WalletNotConnected'
 import AvailableWithdraw from './AvailableWithdraw'
@@ -41,7 +44,7 @@ const Claim: React.FC<React.PropsWithChildren> = () => {
       {account ? (
         <Container>
           <GreyCard>
-            <SubgraphHealthIndicator inline chainId={ChainId.BSC} subgraphName="pancakeswap/pottery" />
+            <SubgraphHealthIndicator inline chainId={ChainId.BSC} subgraph={GRAPH_API_POTTERY} />
             <Flex justifyContent="space-between" mb="20px">
               <YourDeposit depositBalance={allDeposit} />
             </Flex>

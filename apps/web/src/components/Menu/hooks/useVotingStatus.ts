@@ -1,22 +1,40 @@
 import { useQuery } from '@tanstack/react-query'
-import { ProposalState, Proposal } from 'state/types'
-import request, { gql } from 'graphql-request'
+import { Proposal, ProposalState } from 'state/types'
+import { gql } from 'graphql-request'
 import { SNAPSHOT_API } from 'config/constants/endpoints'
-import { PANCAKE_SPACE, ADMINS } from 'views/Voting/config'
+import { ADMINS, PANCAKE_SPACE } from 'views/Voting/config'
+import { multiQuery } from 'utils/infoQueryHelpers'
 
-export const getCoreProposal = async (type: ProposalState): Promise<Proposal[]> => {
-  const response = await request(
-    SNAPSHOT_API,
-    gql`
-      query getProposals($first: Int!, $skip: Int!, $state: String!, $admins: [String]!) {
-        proposals(first: $first, skip: $skip, where: { author_in: $admins, space_in: "${PANCAKE_SPACE}", state: $state }) {
-          id
-        }
+type Proposals = Partial<{
+  [key in ProposalState]: Proposal[]
+}>
+
+export const getCoreProposal = async (types: ProposalState[]): Promise<Proposals> => {
+  return (
+    (await multiQuery(
+      (subqueries) => gql`
+      query getProposals {
+        ${subqueries}
       }
     `,
-    { first: 1, skip: 0, state: type, admins: ADMINS },
+      types.map(
+        (type) => `
+          ${type}:proposals(first: 1, skip: 0, where: { author_in: ${JSON.stringify(
+          ADMINS,
+        )}, space_in: "${PANCAKE_SPACE}", state: "${type}" }) {
+          id
+        }
+    `,
+      ),
+      SNAPSHOT_API,
+    )) ||
+    types.reduce((defaultProposals, state) => {
+      return {
+        ...defaultProposals,
+        [state]: [],
+      }
+    }, {} as Proposals)
   )
-  return response.proposals
 }
 
 export const useVotingStatus = () => {
@@ -24,12 +42,11 @@ export const useVotingStatus = () => {
     queryKey: ['anyActiveSoonCoreProposals'],
 
     queryFn: async () => {
-      const activeProposals = await getCoreProposal(ProposalState.ACTIVE)
-      if (activeProposals.length) {
+      const proposals = await getCoreProposal([ProposalState.ACTIVE, ProposalState.PENDING])
+      if (proposals?.active?.length) {
         return 'vote_now'
       }
-      const soonProposals = await getCoreProposal(ProposalState.PENDING)
-      if (soonProposals.length) {
+      if (proposals?.pending?.length) {
         return 'soon'
       }
       return null

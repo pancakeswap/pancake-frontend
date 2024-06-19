@@ -1,14 +1,13 @@
 import { Currency, Token } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
-import { useCurrentBlock } from 'state/block/hooks'
 import { PoolState } from './types'
-import useFeeTierDistributionQuery from './useFeeTierDistributionQuery'
+import { useFeeTierDistributionQuery } from './useFeeTierDistributionQuery'
 
 import { usePool } from './usePools'
 
 // maximum number of blocks past which we consider the data stale
-const MAX_DATA_BLOCK_AGE = 20
+// const MAX_DATA_BLOCK_AGE = 20
 
 interface FeeTierDistribution {
   isPending: boolean
@@ -76,27 +75,15 @@ export function useFeeTierDistribution(
 }
 
 function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
-  const latestBlock = useCurrentBlock()
   const { isPending, error, data } = useFeeTierDistributionQuery(token0?.address, token1?.address, 30000)
 
-  const { asToken0, asToken1, _meta } = data ?? {}
-
   return useMemo(() => {
-    if (!latestBlock || !_meta || !asToken0 || !asToken1) {
-      return {
-        isPending,
-        error,
-      }
-    }
-
-    if (latestBlock - (_meta?.block?.number ?? 0) > MAX_DATA_BLOCK_AGE) {
-      return {
-        isPending,
-        error,
-      }
-    }
-
-    const all = asToken0.concat(asToken1)
+    const all =
+      data?.map((t) => ({
+        feeTier: t.feeTier,
+        totalValueLockedToken0: +t.tvlToken0,
+        totalValueLockedToken1: +t.tvlToken1,
+      })) ?? []
 
     // sum tvl for token0 and token1 by fee tier
     const tvlByFeeTier = all.reduce(
@@ -161,5 +148,5 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
       distributions,
       tvlByFeeTier,
     }
-  }, [_meta, asToken0, asToken1, isPending, error, latestBlock])
+  }, [data, isPending, error])
 }

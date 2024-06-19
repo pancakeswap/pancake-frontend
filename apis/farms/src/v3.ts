@@ -1,10 +1,9 @@
 /* eslint-disable no-param-reassign, no-await-in-loop */
-import { ChainId, getV3Subgraphs } from '@pancakeswap/chains'
-import { FarmV3SupportedChainId, masterChefV3Addresses } from '@pancakeswap/farms'
+import { ChainId, getMainnetChainNameInKebabCase } from '@pancakeswap/chains'
+import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { ERC20Token } from '@pancakeswap/sdk'
 import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { PositionMath } from '@pancakeswap/v3-sdk'
-import { GraphQLClient, gql } from 'graphql-request'
 import { Request } from 'itty-router'
 import { error, json } from 'itty-router-extras'
 import { Address } from 'viem'
@@ -17,8 +16,6 @@ export const V3_SUBGRAPH_CLIENTS_CHAIN_IDS = [
   ChainId.ETHEREUM,
   ChainId.GOERLI,
   ChainId.BSC,
-  ChainId.BSC_TESTNET,
-  ChainId.ZKSYNC_TESTNET,
   ChainId.POLYGON_ZKEVM,
   ChainId.ZKSYNC,
   ChainId.ARBITRUM_ONE,
@@ -28,15 +25,6 @@ export const V3_SUBGRAPH_CLIENTS_CHAIN_IDS = [
 ] as const
 
 type SupportChainId = (typeof V3_SUBGRAPH_CLIENTS_CHAIN_IDS)[number]
-
-const V3_SUBGRAPHS = getV3Subgraphs({
-  noderealApiKey: NODE_REAL_SUBGRAPH_API_KEY,
-})
-
-export const V3_SUBGRAPH_CLIENTS = V3_SUBGRAPH_CLIENTS_CHAIN_IDS.reduce((acc, chainId) => {
-  acc[chainId] = new GraphQLClient(V3_SUBGRAPHS[chainId], { fetch })
-  return acc
-}, {} as Record<Exclude<FarmV3SupportedChainId, ChainId.POLYGON_ZKEVM_TESTNET | ChainId.OPBNB_TESTNET>, GraphQLClient>)
 
 const zChainId = z.enum(V3_SUBGRAPH_CLIENTS_CHAIN_IDS.map((chainId) => String(chainId)) as [string, ...string[]])
 
@@ -249,7 +237,7 @@ const handler_ = async (req: Request, event: FetchEvent) => {
 
     const resultTimeout = await Promise.race([
       timeout(20),
-      fetchLiquidityFromSubgraph(chainId, address, masterChefV3Address, tick, sqrtPriceX96),
+      fetchLiquidityFromExplorer(chainId, address, masterChefV3Address, tick, sqrtPriceX96),
     ])
 
     if (!resultTimeout) {
@@ -318,8 +306,8 @@ const handler_ = async (req: Request, event: FetchEvent) => {
   }
 }
 
-async function fetchLiquidityFromSubgraph(
-  chainId: keyof typeof V3_SUBGRAPH_CLIENTS,
+async function fetchLiquidityFromExplorer(
+  chainId: (typeof V3_SUBGRAPH_CLIENTS_CHAIN_IDS)[number],
   address: string,
   masterChefV3Address: string,
   tick: number,
@@ -328,71 +316,54 @@ async function fetchLiquidityFromSubgraph(
   const updatedAt = new Date().toISOString()
   let allActivePositions: any[] = []
 
-  const poolTokens = await V3_SUBGRAPH_CLIENTS[chainId].request(
-    gql`
-      query pool($poolAddress: String!) {
-        pool(id: $poolAddress) {
-          token0 {
-            id
-            decimals
-          }
-          token1 {
-            id
-            decimals
-          }
-        }
-      }
-    `,
-    {
-      poolAddress: address,
+  const chainName = getMainnetChainNameInKebabCase(chainId)
+  const pool: {
+    token0: {
+      id: Address
+      decimals: number
+    }
+    token1: {
+      id: Address
+      decimals: number
+    }
+  } = await fetch(`${EXPLORER_URL}/cached/pools/v3/${chainName}/${address}`, {
+    headers: {
+      'x-api-key': EXPLORER_API_KEY,
+      'Content-Type': 'application/json',
     },
-  )
+  }).then((res) => {
+    return res.json()
+  })
 
-  // eslint-disable-next-line no-inner-declarations
-  async function fetchPositionByMasterChefId(posId_ = '0') {
-    const resp = await V3_SUBGRAPH_CLIENTS[chainId].request(
-      gql`
-        query tvl($poolAddress: String!, $owner: String!, $posId: String!, $currentTick: String!) {
-          positions(
-            where: { pool: $poolAddress, liquidity_gt: "0", owner: $owner, id_gt: $posId }
-            first: 1000
-            orderBy: id
-            tickLower_: { tickIdx_lte: currentTick }
-            tickUpper_: { tickIdx_gt: currentTick }
-          ) {
-            liquidity
-            id
-            tickUpper {
-              tickIdx
-            }
-            tickLower {
-              tickIdx
-            }
-          }
-        }
-      `,
-      {
-        poolAddress: address,
-        owner: masterChefV3Address.toLowerCase(),
-        currentTick: tick.toString(),
-        posId: posId_,
-      },
-    )
-
-    return resp.positions
+  if (!pool) {
+    throw new Error('Pool not found')
   }
 
-  let posId = '0'
+  let hasNextPage = true
+  let cursor: string | undefined
 
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
+  while (hasNextPage) {
     // eslint-disable-next-line no-await-in-loop
-    const pos = await fetchPositionByMasterChefId(posId)
-    allActivePositions = [...allActivePositions, ...pos]
-    if (pos.length < 1000) {
-      break
-    }
-    posId = pos[pos.length - 1].id
+    const positions: any = await getPositionByMasterChefId(cursor)
+    allActivePositions = [...allActivePositions, ...positions.rows]
+    // eslint-disable-next-line prefer-destructuring
+    hasNextPage = positions.hasNextPage
+    // eslint-disable-next-line prefer-destructuring
+    cursor = positions.endCursor
+  }
+
+  async function getPositionByMasterChefId(after?: string) {
+    return fetch(
+      `${EXPLORER_URL}/cached/pools/positions/v3/${chainName}/${address}?owner=${masterChefV3Address.toLowerCase()}${
+        after ? `&after=${after}` : ''
+      }`,
+      {
+        headers: {
+          'x-api-key': EXPLORER_API_KEY,
+          'Content-Type': 'application/json',
+        },
+      },
+    ).then((res) => res.json())
   }
 
   console.info('fetching farms active liquidity', {
@@ -415,20 +386,20 @@ async function fetchLiquidityFromSubgraph(
 
   for (const position of allActivePositions.filter(
     // double check that the position is within the current tick range
-    (p) => +p.tickLower.tickIdx <= currentTick && +p.tickUpper.tickIdx > currentTick,
+    (p) => +p.lowerTickIdx <= currentTick && +p.upperTickIdx > currentTick,
   )) {
     const token0 = PositionMath.getToken0Amount(
       currentTick,
-      +position.tickLower.tickIdx,
-      +position.tickUpper.tickIdx,
+      +position.lowerTickIdx,
+      +position.upperTickIdx,
       sqrtRatio,
       BigInt(position.liquidity),
     )
 
     const token1 = PositionMath.getToken1Amount(
       currentTick,
-      +position.tickLower.tickIdx,
-      +position.tickUpper.tickIdx,
+      +position.lowerTickIdx,
+      +position.upperTickIdx,
       sqrtRatio,
       BigInt(position.liquidity),
     )
@@ -437,11 +408,11 @@ async function fetchLiquidityFromSubgraph(
   }
 
   const curr0 = CurrencyAmount.fromRawAmount(
-    new ERC20Token(+chainId, poolTokens.pool.token0.id, +poolTokens.pool.token0.decimals, '0'),
+    new ERC20Token(+chainId, pool.token0.id, +pool.token0.decimals, '0'),
     totalToken0.toString(),
   ).toExact()
   const curr1 = CurrencyAmount.fromRawAmount(
-    new ERC20Token(+chainId, poolTokens.pool.token1.id, +poolTokens.pool.token1.decimals, '1'),
+    new ERC20Token(+chainId, pool.token1.id, +pool.token1.decimals, '1'),
     totalToken1.toString(),
   ).toExact()
 

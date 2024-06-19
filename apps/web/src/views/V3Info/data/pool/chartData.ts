@@ -1,137 +1,142 @@
 import dayjs from 'dayjs'
-import BigNumber from 'bignumber.js'
 import utc from 'dayjs/plugin/utc'
-import weekOfYear from 'dayjs/plugin/weekOfYear'
 
-import { gql, GraphQLClient } from 'graphql-request'
+import { explorerApiClient } from 'state/info/api/client'
+import type { components } from 'state/info/api/schema'
 import { PoolChartEntry } from '../../types'
 
 // format dayjs with the libraries that we need
 dayjs.extend(utc)
-dayjs.extend(weekOfYear)
-const ONE_DAY_UNIX = 24 * 60 * 60
 
-const POOL_CHART = gql`
-  query poolDayDatas($startTime: Int!, $skip: Int!, $address: Bytes!) {
-    poolDayDatas(
-      first: 1000
-      skip: $skip
-      where: { pool: $address, date_gt: $startTime }
-      orderBy: date
-      orderDirection: asc
-    ) {
-      date
-      volumeUSD
-      tvlUSD
-      feesUSD
-      protocolFeesUSD
-      pool {
-        feeTier
-      }
-    }
-  }
-`
-
-interface ChartResults {
-  poolDayDatas: {
-    date: number
-    volumeUSD: string
-    tvlUSD: string
-    feesUSD: string
-    protocolFeesUSD: string
-    pool: {
-      feeTier: string
-    }
-  }[]
-}
-
-export async function fetchPoolChartData(address: string, client: GraphQLClient) {
-  let data: {
-    date: number
-    volumeUSD: string
-    tvlUSD: string
-    feesUSD: string
-    protocolFeesUSD: string
-    pool: {
-      feeTier: string
-    }
-  }[] = []
-  const startTimestamp = 1619170975
-  const endTimestamp = dayjs.utc().unix()
-
+export async function fetchPoolChartData(
+  protocol: 'v2' | 'v3' | 'stable',
+  chainName: components['schemas']['ChainName'],
+  address: string,
+  signal?: AbortSignal,
+) {
   let error = false
-  let skip = 0
-  let allFound = false
 
   try {
-    while (!allFound) {
-      // eslint-disable-next-line no-await-in-loop
-      const chartData = await client.request<ChartResults>(POOL_CHART, {
-        address,
-        startTime: startTimestamp,
-        skip,
+    const rawFeeResults = await explorerApiClient
+      .GET('/cached/pools/chart/v3/{chainName}/{address}/fees', {
+        signal,
+        params: {
+          path: {
+            chainName,
+            address,
+          },
+        },
       })
-      if (chartData.poolDayDatas.length > 0) {
-        skip += 1000
-        if (chartData.poolDayDatas.length < 1000 || error) {
-          allFound = true
-        }
-        if (chartData.poolDayDatas) {
-          data = data.concat(chartData.poolDayDatas)
-        }
+      .then((res) => res.data)
+
+    const rawTvlResults = await explorerApiClient
+      .GET('/cached/pools/chart/{protocol}/{chainName}/{address}/tvl', {
+        signal,
+        params: {
+          path: {
+            protocol,
+            chainName,
+            address,
+          },
+          query: {
+            period: '1Y',
+          },
+        },
+      })
+      .then((res) => res.data)
+
+    const rawVolumeResults = await explorerApiClient
+      .GET('/cached/pools/chart/{protocol}/{chainName}/{address}/volume', {
+        signal,
+        params: {
+          path: {
+            protocol,
+            chainName,
+            address,
+          },
+          query: {
+            period: '1Y',
+          },
+        },
+      })
+      .then((res) => res.data)
+
+    if (rawTvlResults || rawVolumeResults || rawFeeResults) {
+      const volumeResults = rawVolumeResults?.reduce(
+        (acc, item) => {
+          const unixDate = dayjs(item.bucket as string).unix()
+          // eslint-disable-next-line no-param-reassign
+          acc[unixDate] = {
+            volumeUSD: parseFloat(item.volumeUSD ?? '0'),
+            date: unixDate,
+          }
+          return acc
+        },
+        {} as {
+          [unixDate: number]: {
+            volumeUSD: number
+            date: number
+          }
+        },
+      )
+
+      const tvlResults = rawTvlResults?.reduce(
+        (acc, item) => {
+          const unixDate = dayjs(item.bucket as string).unix()
+          // eslint-disable-next-line no-param-reassign
+          acc[unixDate] = {
+            totalValueLockedUSD: parseFloat(item.tvlUSD ?? '0'),
+            date: unixDate,
+          }
+          return acc
+        },
+        {} as {
+          [unixDate: number]: {
+            totalValueLockedUSD: number
+            date: number
+          }
+        },
+      )
+
+      const feeResults = rawFeeResults?.reduce(
+        (acc, item) => {
+          const unixDate = dayjs(item.bucket as string).unix()
+          // eslint-disable-next-line no-param-reassign
+          acc[unixDate] = {
+            feesUSD: parseFloat(item.feeUSD ?? '0'),
+            date: unixDate,
+          }
+          return acc
+        },
+        {} as {
+          [unixDate: number]: {
+            feesUSD: number
+            date: number
+          }
+        },
+      )
+
+      const keys = [...new Set([...Object.keys(volumeResults ?? {}), ...Object.keys(tvlResults ?? {})])]
+
+      const results = keys.reduce((acc, key) => {
+        const volumeData = volumeResults?.[key] ?? { volumeUSD: 0, date: key }
+        const tvlData = tvlResults?.[key] ?? { totalValueLockedUSD: 0, date: key }
+        const feeData = feeResults?.[key] ?? { feesUSD: 0, date: key }
+
+        // eslint-disable-next-line no-param-reassign
+        acc[key] = { ...volumeData, ...tvlData, ...feeData }
+        return acc
+      }, {} as { [p: number]: PoolChartEntry })
+
+      return {
+        data: Object.values(results),
+        error: false,
       }
     }
-  } catch (e) {
-    console.error(e)
+  } catch {
     error = true
   }
 
-  if (data) {
-    const formattedExisting = data.reduce((accum: { [date: number]: PoolChartEntry }, dayData) => {
-      const roundedDate = parseInt((dayData.date / ONE_DAY_UNIX).toFixed(0))
-      const feePercent = parseFloat(dayData.pool.feeTier) / 10000
-      const tvlAdjust = dayData?.volumeUSD ? parseFloat(dayData.volumeUSD) * feePercent : 0
-
-      // eslint-disable-next-line no-param-reassign
-      accum[roundedDate] = {
-        date: dayData.date,
-        volumeUSD: parseFloat(dayData.volumeUSD),
-        totalValueLockedUSD: parseFloat(dayData.tvlUSD) - tvlAdjust,
-        feesUSD: new BigNumber(dayData.feesUSD).minus(dayData.protocolFeesUSD).toNumber(),
-      }
-      return accum
-    }, {})
-
-    const firstEntry = formattedExisting[parseInt(Object.keys(formattedExisting)[0])]
-
-    // fill in empty days ( there will be no day datas if no trades made that day )
-    let timestamp = firstEntry?.date ?? startTimestamp
-    let latestTvl = firstEntry?.totalValueLockedUSD ?? 0
-    while (timestamp < endTimestamp - ONE_DAY_UNIX) {
-      const nextDay = timestamp + ONE_DAY_UNIX
-      const currentDayIndex = parseInt((nextDay / ONE_DAY_UNIX).toFixed(0))
-      if (!Object.keys(formattedExisting).includes(currentDayIndex.toString())) {
-        formattedExisting[currentDayIndex] = {
-          date: nextDay,
-          volumeUSD: 0,
-          totalValueLockedUSD: latestTvl,
-          feesUSD: 0,
-        }
-      } else {
-        latestTvl = formattedExisting[currentDayIndex].totalValueLockedUSD
-      }
-      timestamp = nextDay
-    }
-
-    const dateMap = Object.keys(formattedExisting).map((key) => {
-      return formattedExisting[parseInt(key)]
-    })
-
-    return {
-      data: dateMap,
-      error: false,
-    }
-  }
   return {
     data: undefined,
     error,

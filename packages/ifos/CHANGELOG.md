@@ -1,5 +1,47 @@
 # @pancakeswap/ifos
 
+## 3.0.14
+
+### Patch Changes
+
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/sdk@5.8.7
+  - @pancakeswap/tokens@0.6.21
+  - @pancakeswap/utils@6.0.9
+
+## 3.0.13
+
+### Patch Changes
+
+- Updated dependencies [b9c91d1]
+- Updated dependencies [5fa28e0]
+- Updated dependencies [95cfa0c]
+  - @pancakeswap/chains@0.4.5
+  - @pancakeswap/tokens@0.6.20
+  - @pancakeswap/sdk@5.8.6
+  - @pancakeswap/utils@6.0.8
+
+## 3.0.12
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+- Updated dependencies [edc3f30]
+  - @pancakeswap/sdk@5.8.5
+  - @pancakeswap/utils@6.0.7
+  - @pancakeswap/tokens@0.6.19
+
+## 3.0.11
+
+### Patch Changes
+
+- Updated dependencies [edf4640]
+  - @pancakeswap/chains@0.4.4
+  - @pancakeswap/sdk@5.8.4
+  - @pancakeswap/tokens@0.6.18
+  - @pancakeswap/utils@6.0.6
+
 ## 3.0.10
 
 ### Patch Changes

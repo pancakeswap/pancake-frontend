@@ -16,6 +16,7 @@ export default {
       control: {
         type: "select",
         options: [
+          PairDataTimeWindowEnum.HOUR,
           PairDataTimeWindowEnum.DAY,
           PairDataTimeWindowEnum.WEEK,
           PairDataTimeWindowEnum.MONTH,

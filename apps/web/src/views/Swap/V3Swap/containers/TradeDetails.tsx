@@ -7,6 +7,8 @@ import { memo, useMemo } from 'react'
 import { AdvancedSwapDetails, TradeSummary } from 'views/Swap/components/AdvancedSwapDetails'
 import { AdvancedDetailsFooter } from 'views/Swap/components/AdvancedSwapDetailsDropdown'
 
+import { GasTokenSelector } from 'components/Paymaster/GasTokenSelector'
+import { usePaymaster } from 'hooks/usePaymaster'
 import { MMTradeInfo } from 'views/Swap/MMLinkPools/hooks'
 import { RouteDisplayEssentials, RoutesBreakdown } from '../components'
 import { useIsWrapping, useSlippageAdjustedAmounts } from '../hooks'
@@ -61,6 +63,8 @@ export const TradeDetails = memo(function TradeDetails({ loaded, trade }: Props)
     [trade],
   )
 
+  const { isPaymasterAvailable } = usePaymaster()
+
   if (isWrapping || !loaded || !trade || !slippageAdjustedAmounts) {
     return null
   }
@@ -78,6 +82,7 @@ export const TradeDetails = memo(function TradeDetails({ loaded, trade }: Props)
           priceImpactWithoutFee={priceImpactWithoutFee ?? undefined}
           realizedLPFee={lpFeeAmount ?? undefined}
           hasStablePair={hasStablePool}
+          gasTokenSelector={isPaymasterAvailable && <GasTokenSelector trade={trade} />}
         />
         <RoutesBreakdown routes={routes} />
       </AutoColumn>

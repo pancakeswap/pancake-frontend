@@ -3,7 +3,7 @@ import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { Permit2Signature } from '@pancakeswap/universal-router-sdk'
 import { QueryObserverResult } from '@tanstack/react-query'
 import { useCallback, useMemo, useState } from 'react'
-import { Address } from 'viem'
+import { Address, Hash } from 'viem'
 import useAccountActiveChain from './useAccountActiveChain'
 import { useApproveCallback } from './useApproveCallback'
 import { Permit2Details, usePermit2Details } from './usePermit2Details'
@@ -24,7 +24,7 @@ type Permit2HookState = {
 }
 
 type Permit2HookCallback = {
-  permit: () => Promise<Permit2Signature>
+  permit: () => Promise<Permit2Signature & { tx?: Hash }>
   approve: () => Promise<{ hash: Address } | undefined>
   revoke: () => Promise<{ hash: Address } | undefined>
 
@@ -36,6 +36,11 @@ type UsePermit2ReturnType = Permit2HookState & Permit2HookCallback
 export const usePermit2 = (
   amount: CurrencyAmount<Token> | undefined,
   spender: Address | undefined,
+  {
+    enablePaymaster = false,
+  }: {
+    enablePaymaster?: boolean
+  } = {},
 ): UsePermit2ReturnType => {
   const { account, chainId } = useAccountActiveChain()
   const approveTarget = useMemo(() => getPermit2Address(chainId), [chainId])
@@ -54,7 +59,9 @@ export const usePermit2 = (
   const [isApproving, setIsApproving] = useState(false)
 
   const writePermit = useWritePermit(amount?.currency, spender, permit2Details?.nonce)
-  const { approveNoCheck, revokeNoCheck } = useApproveCallback(amount, approveTarget)
+  const { approveNoCheck, revokeNoCheck } = useApproveCallback(amount, approveTarget, {
+    enablePaymaster,
+  })
 
   const permit = useCallback(async () => {
     setIsPermitting(true)
