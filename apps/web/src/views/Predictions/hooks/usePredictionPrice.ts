@@ -28,7 +28,7 @@ export const usePredictionPrice = ({
   currencyB = 'USDT',
   pollingInterval = FAST_INTERVAL,
   enabled = true,
-}: UsePredictionPriceParameters) => {
+}: UsePredictionPriceParameters = {}) => {
   return useQuery<PriceResponse>({
     queryKey: ['price', currencyA, currencyB],
     queryFn: async () => fetch(`${PRICE_API}/?currencyA=${currencyA}&currencyB=${currencyB}`).then((res) => res.json()),

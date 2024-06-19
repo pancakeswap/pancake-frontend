@@ -55,7 +55,7 @@ export const AIBetResult: React.FC<React.PropsWithChildren<AIBetResultProps>> = 
   const returned = payout + bet.amount
 
   const tokenSymbol = useMemo(() => config?.token?.symbol ?? '', [config])
-  const displayedDecimals = useMemo(() => config?.displayedDecimals ?? 4, [config])
+  const displayedDecimals = useMemo(() => config?.balanceDecimals ?? config?.displayedDecimals ?? 4, [config])
 
   const headerColor = useMemo(() => {
     switch (result) {

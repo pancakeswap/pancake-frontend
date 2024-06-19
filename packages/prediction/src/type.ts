@@ -46,7 +46,7 @@ export interface PredictionConfig {
   // Decimals to accommodate varying price sources
   lockPriceDecimals?: number
   closePriceDecimals?: number
-  livePriceDecimals?: number
+  balanceDecimals?: number
 
   ai?: AIPredictionConfig // AI-based prediction market
 }

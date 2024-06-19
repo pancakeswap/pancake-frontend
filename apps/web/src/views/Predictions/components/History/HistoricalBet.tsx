@@ -146,7 +146,7 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
               </Flex>
             </>
           ) : (
-            `${resultTextPrefix}${formatBnb(payout, config?.displayedDecimals ?? 4)}`
+            `${resultTextPrefix}${formatBnb(payout, config?.balanceDecimals ?? config?.displayedDecimals ?? 4)}`
           )}
         </Text>
       </>
@@ -192,11 +192,7 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
         )}
       </StyledBet>
       {isOpen &&
-        (config?.ai ? (
-          <AIBetDetails bet={bet} result={getRoundResult(bet, currentEpoch)} />
-        ) : (
-          <BetDetails bet={bet} result={getRoundResult(bet, currentEpoch)} />
-        ))}
+        (config?.ai ? <AIBetDetails bet={bet} result={roundResult} /> : <BetDetails bet={bet} result={roundResult} />)}
     </>
   )
 }

@@ -161,11 +161,11 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
               <LiveRoundPrice
                 betPosition={betPosition}
                 price={price}
-                displayedDecimals={config?.livePriceDecimals ?? config?.displayedDecimals ?? 4}
+                displayedDecimals={config?.displayedDecimals ?? 4}
               />
             </div>
             <PositionTag betPosition={betPosition}>
-              ${formatNumber(priceDifference, config?.livePriceDecimals ?? config?.displayedDecimals ?? 4, 4)}
+              ${formatNumber(priceDifference, config?.displayedDecimals ?? 4, 4)}
             </PositionTag>
           </Flex>
           {lockPrice ? lockPrice?.toString() && <LockPriceRow lockPrice={lockPrice} /> : null}

@@ -40,14 +40,20 @@ export const AIRoundResultHistory: React.FC<React.PropsWithChildren<AIRoundResul
       ) : (
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text color={isPositionUp ? 'success' : 'failure'} bold fontSize="24px">
-            {formatUsd(closePrice, config?.livePriceDecimals ?? config?.displayedDecimals ?? 0)}
+            {formatUsd(closePrice, config?.displayedDecimals ?? 0)}
           </Text>
           <PositionTag betPosition={betPosition}>
-            {formatUsd(priceDifference, config?.livePriceDecimals ?? config?.displayedDecimals ?? 0)}
+            {formatUsd(priceDifference, config?.displayedDecimals ?? 0)}
           </PositionTag>
         </Flex>
       )}
       {lockPrice && <LockPriceHistoryRow lockPrice={lockPrice} />}
+      {AIPrice && (
+        <Flex justifyContent="space-between" alignItems="center">
+          <Text small>{t('AI Predicted Price:')}</Text>
+          <Text small>{formatUsd(AIPrice, config?.displayedDecimals ?? 0)}</Text>
+        </Flex>
+      )}
       <PrizePoolHistoryRow totalAmount={totalAmount} />
       <Flex justifyContent="space-between" alignItems="center">
         <Text>{t('Result:')}</Text>

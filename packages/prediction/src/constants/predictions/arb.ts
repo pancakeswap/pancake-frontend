@@ -9,11 +9,11 @@ export const predictions: Record<string, PredictionConfig> = {
     isNativeToken: true,
     address: predictionsETH[ChainId.ARBITRUM_ONE],
     api: GRAPH_API_PREDICTION_ETH[ChainId.ARBITRUM_ONE],
-    displayedDecimals: 4,
     token: Native.onChain(ChainId.ARBITRUM_ONE),
     tokenBackgroundColor: '#647ceb',
 
-    livePriceDecimals: 2, // Binance API for this pair provides price upto 2 decimals
+    displayedDecimals: 2,
+    balanceDecimals: 4,
     lockPriceDecimals: 18,
     closePriceDecimals: 18,
 

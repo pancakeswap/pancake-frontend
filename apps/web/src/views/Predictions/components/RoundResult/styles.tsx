@@ -42,9 +42,11 @@ export const PrizePoolRow: React.FC<React.PropsWithChildren<PrizePoolRowProps>> 
   return (
     <Row {...props}>
       <Text bold>{t('Prize Pool')}:</Text>
-      <Text bold>{`${getPrizePoolAmount(totalAmount, config?.token?.decimals ?? 0, config?.displayedDecimals ?? 0)} ${
-        config?.token?.symbol
-      }`}</Text>
+      <Text bold>{`${getPrizePoolAmount(
+        totalAmount,
+        config?.token?.decimals ?? 0,
+        config?.balanceDecimals ?? config?.displayedDecimals ?? 0,
+      )} ${config?.token?.symbol}`}</Text>
     </Row>
   )
 }
@@ -197,7 +199,7 @@ export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({
         <Text color={textColor} bold fontSize="24px">
           {formatUsd(
             Number(formatBigInt(closePrice, 8, config?.closePriceDecimals ?? 8)),
-            config?.livePriceDecimals ?? config?.displayedDecimals ?? 0,
+            config?.displayedDecimals ?? 0,
           )}
         </Text>
       ) : (
@@ -207,7 +209,7 @@ export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({
         <PositionTag betPosition={finalBetPosition}>
           {formatUsd(
             Number(formatBigInt(priceDifference, 8, config?.closePriceDecimals ?? 8)), // Ideally both closePriceDecimals and lockPriceDecimals should be same
-            config?.livePriceDecimals ?? config?.displayedDecimals ?? 0,
+            config?.displayedDecimals ?? 0,
           )}
         </PositionTag>
       )}
@@ -242,9 +244,10 @@ export const PrizePoolHistoryRow: React.FC<React.PropsWithChildren<PrizePoolHist
   return (
     <Row {...props}>
       <Text bold>{t('Prize Pool')}:</Text>
-      <Text bold>{`${getPrizePoolAmountHistory(totalAmount, config?.displayedDecimals ?? 0)} ${
-        config?.token?.symbol
-      }`}</Text>
+      <Text bold>{`${getPrizePoolAmountHistory(
+        totalAmount,
+        config?.balanceDecimals ?? config?.displayedDecimals ?? 0,
+      )} ${config?.token?.symbol}`}</Text>
     </Row>
   )
 }
@@ -263,7 +266,7 @@ export const LockPriceHistoryRow: React.FC<React.PropsWithChildren<LockPriceHist
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsd(lockPrice, config?.livePriceDecimals ?? config?.displayedDecimals ?? 0)}</Text>
+      <Text fontSize="14px">{formatUsd(lockPrice, config?.displayedDecimals ?? 0)}</Text>
     </Row>
   )
 }
