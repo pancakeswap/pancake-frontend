@@ -16,11 +16,13 @@ export enum ChainId {
   LINEA_TESTNET = 59140,
   BASE = 8453,
   BASE_TESTNET = 84531,
+  FRAX_TESTNET = 2522,
 }
 
 export const testnetChainIds = [
   ChainId.GOERLI,
   ChainId.BSC_TESTNET,
+  ChainId.FRAX_TESTNET,
   ChainId.ZKSYNC_TESTNET,
   ChainId.OPBNB_TESTNET,
   ChainId.POLYGON_ZKEVM_TESTNET,

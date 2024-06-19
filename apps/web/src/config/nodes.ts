@@ -76,6 +76,7 @@ export const SERVER_NODES = {
   ],
   [ChainId.BASE_TESTNET]: baseGoerli.rpcUrls.public.http,
   [ChainId.SCROLL_SEPOLIA]: scrollSepolia.rpcUrls.public.http,
+  [ChainId.FRAX_TESTNET]: ['https://rpc.testnet.frax.com'],
 } satisfies Record<ChainId, readonly string[]>
 
 export const PUBLIC_NODES = {
@@ -145,4 +146,5 @@ export const PUBLIC_NODES = {
   ].filter(Boolean),
   [ChainId.BASE_TESTNET]: baseGoerli.rpcUrls.public.http,
   [ChainId.SCROLL_SEPOLIA]: scrollSepolia.rpcUrls.public.http,
+  [ChainId.FRAX_TESTNET]: ['https://rpc.testnet.frax.com'],
 } satisfies Record<ChainId, readonly string[]>
