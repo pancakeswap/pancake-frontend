@@ -4,43 +4,60 @@ import { useMemo } from 'react'
 import type { Address } from 'viem'
 import { useChainId } from 'wagmi'
 import { floorToUTC00 } from '../utils/floorCurrentTimestamp'
-import { useFetchVaultHistory } from './useFetchVaultHistory'
+import { useFetchVaultHistory, type VaultData } from './useFetchVaultHistory'
 
 interface RorProps {
   vault: Address | undefined
   totalStakedInUsd: number
+  startTimestamp: number | undefined
 }
 
 export interface RorResult {
   sevenDayRor: number
   thirtyDayRor: number
+  earliestDayRor: number
   isRorLoading: boolean
 }
 
-export const useRor = ({ vault, totalStakedInUsd }: RorProps): RorResult => {
-  const chainId = useChainId()
-  const { data: rorData, isLoading } = useFetchVaultHistory({ vault, chainId })
+function createVaultHistorySubArray(array: VaultData[], target: number): VaultData[] {
+  const startIndex = array.findIndex((element) => element.timestamp > target)
+  if (startIndex === -1) return []
+  return array.slice(startIndex)
+}
 
-  // console.log(rorData)
+export const useRor = ({ vault, totalStakedInUsd, startTimestamp }: RorProps): RorResult => {
+  const chainId = useChainId()
+  const { data: rorData, isLoading } = useFetchVaultHistory({ vault, chainId, earliest: startTimestamp })
+
   const rorHistorySnapshotData = useMemo(() => {
-    if (!rorData || !totalStakedInUsd) return { sevenDayRor: 0, thirtyDayRor: 0, isRorLoading: isLoading }
+    if (!rorData || !totalStakedInUsd)
+      return { sevenDayRor: 0, thirtyDayRor: 0, earliestDayRor: 0, isRorLoading: isLoading }
 
     const today = floorToUTC00(Date.now())
     const sevenDay = floorToUTC00(today - 7 * ONE_DAY_MILLISECONDS)
+    const thirtyDay = floorToUTC00(today - 30 * ONE_DAY_MILLISECONDS)
 
-    const vaultThirdyDayHistory = rorData
-    const vaultSevenDayHistory = [rorData.find((data) => sevenDay / 1000 < data.timestamp)]
+    const earliestCuttoffTimestamp = rorData
+    const sevenDayCuttoffTimestamp = createVaultHistorySubArray(rorData, sevenDay / 1000)
+    const thirtyDayCuttoffTimestamp = createVaultHistorySubArray(rorData, thirtyDay / 1000)
 
-    const totalThirtyDayUsd = vaultThirdyDayHistory.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
-    const averageThirtyDayUsd = new BigNumber(totalThirtyDayUsd / vaultThirdyDayHistory.length)
+    const totalThirtyDayUsd = thirtyDayCuttoffTimestamp.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
+    const averageThirtyDayUsd = new BigNumber(totalThirtyDayUsd / thirtyDayCuttoffTimestamp.length)
 
-    const totalSevenDayUsd = vaultSevenDayHistory?.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
-    const averageSevenDayUsd = new BigNumber(totalSevenDayUsd / vaultSevenDayHistory.length)
+    const totalSevenDayUsd = sevenDayCuttoffTimestamp?.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
+    const averageSevenDayUsd = new BigNumber(totalSevenDayUsd / sevenDayCuttoffTimestamp.length)
+
+    const earliestDayUsd = earliestCuttoffTimestamp?.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
+    const averageEarliestDayUsd = new BigNumber(earliestDayUsd / earliestCuttoffTimestamp.length)
 
     const sevenDayRor = new BigNumber(totalStakedInUsd).minus(averageSevenDayUsd).div(averageSevenDayUsd).toNumber()
     const thirtyDayRor = new BigNumber(totalStakedInUsd).minus(averageThirtyDayUsd).div(averageThirtyDayUsd).toNumber()
+    const earliestDayRor = new BigNumber(totalStakedInUsd)
+      .minus(averageEarliestDayUsd)
+      .div(averageEarliestDayUsd)
+      .toNumber()
 
-    return { sevenDayRor, thirtyDayRor, isRorLoading: isLoading }
+    return { sevenDayRor, thirtyDayRor, earliestDayRor, isRorLoading: isLoading }
   }, [rorData, totalStakedInUsd, isLoading])
 
   return rorHistorySnapshotData

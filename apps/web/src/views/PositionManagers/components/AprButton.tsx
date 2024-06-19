@@ -163,6 +163,21 @@ export const AprButton = memo(function YieldInfo({
             </SkeletonText>
           </b>
         </li>
+        <li style={{ display: 'flex' }}>
+          <span style={{ paddingRight: '6px' }}>{`${t('Since Launched')}`}: </span>
+          <b>
+            <SkeletonText
+              loading={Boolean(isRorLoading)}
+              display="inline-block"
+              color={ror?.earliestDayRor && ror?.earliestDayRor > 0 ? theme.colors.success : theme.colors.failure}
+              initialWidth={75}
+              fontWeight={800}
+              isDark={Boolean(theme.isDark)}
+            >
+              {ror?.earliestDayRor?.toFixed(2)}%
+            </SkeletonText>
+          </b>
+        </li>
       </ul>
       <Text lineHeight="120%" mt="20px">
         {t('ROR Calculated based on historical snapshots factoring inhistorical price of the underlying tokens')}

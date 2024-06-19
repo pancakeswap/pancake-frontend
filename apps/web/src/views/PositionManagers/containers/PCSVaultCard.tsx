@@ -135,8 +135,8 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     token1PriceUSD: tokensPriceUSD?.token1,
   })
 
-  const ror = useRor({ vault: vaultAddress, totalStakedInUsd })
-  // console.log(ror)
+  const ror = useRor({ vault: vaultAddress, totalStakedInUsd, startTimestamp: info.startTimestamp })
+
   const apr = useApr({
     currencyA,
     currencyB,

@@ -2,7 +2,6 @@ import type { ChainId } from '@pancakeswap/chains'
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import type { Evaluate } from '@wagmi/core/internal'
 import { VAULT_API_ENDPOINT } from 'config/constants/endpoints'
-import { ONE_DAY_MILLISECONDS } from 'config/constants/info'
 import type { Address, ExactPartial } from 'viem'
 import type { UseQueryParameters } from 'wagmi/query'
 import { floorToUTC00 } from '../utils/floorCurrentTimestamp'
@@ -10,6 +9,7 @@ import { floorToUTC00 } from '../utils/floorCurrentTimestamp'
 type RORPayload = {
   vault: Address | undefined
   chainId: ChainId
+  earliest: number | undefined
 }
 type RecursiveDeps<deps extends readonly unknown[]> = deps extends [infer dep, ...infer rest]
   ? [dep] | [dep, ...RecursiveDeps<rest>]
@@ -41,7 +41,7 @@ export type UseRorParameters<selectData = RateOfReturnReturnType> = Evaluate<
 >
 
 export const useFetchVaultHistory = <selectData = RateOfReturnReturnType>(parameters: UseRorParameters<selectData>) => {
-  const { vault, chainId, ...query } = parameters
+  const { vault, chainId, earliest, ...query } = parameters
 
   return useQuery({
     ...query,
@@ -51,20 +51,18 @@ export const useFetchVaultHistory = <selectData = RateOfReturnReturnType>(parame
         chainId,
       },
     ]),
-    queryFn: async ({ queryKey }) => {
-      const { vault: qVault, chainId: qChainId } = queryKey[1]
-
-      if (!qVault || !qChainId) {
+    queryFn: async () => {
+      if (!vault || !chainId || !earliest) {
         throw new Error('Missing vault history params')
       }
 
       const today = floorToUTC00(Date.now())
-      const thirtyDay = floorToUTC00(today - 30 * ONE_DAY_MILLISECONDS)
+      const earliestTimestamp = floorToUTC00(earliest)
 
       const providerQuotes = await fetchVaultHistory({
-        vault: qVault,
-        chainId: qChainId,
-        startTimestamp: thirtyDay / 1000,
+        vault,
+        chainId,
+        startTimestamp: earliestTimestamp / 1000,
         endTimestamp: today / 1000,
       })
 
