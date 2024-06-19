@@ -5,6 +5,7 @@ import { VAULT_API_ENDPOINT } from 'config/constants/endpoints'
 import { ONE_DAY_MILLISECONDS } from 'config/constants/info'
 import type { Address, ExactPartial } from 'viem'
 import type { UseQueryParameters } from 'wagmi/query'
+import { floorToUTC00 } from '../utils/floorCurrentTimestamp'
 
 type RORPayload = {
   vault: Address | undefined
@@ -39,12 +40,6 @@ export type UseRorParameters<selectData = RateOfReturnReturnType> = Evaluate<
   RORPayload & UseQueryParameters<Evaluate<RateOfReturnReturnType>, Error, selectData, GetVaultsQueryKey>
 >
 
-function floorToUTC00(timestamp: number): number {
-  const date = new Date(timestamp)
-  date.setUTCHours(0, 0, 0, 0)
-  return date.getTime()
-}
-
 export const useFetchVaultHistory = <selectData = RateOfReturnReturnType>(parameters: UseRorParameters<selectData>) => {
   const { vault, chainId, ...query } = parameters
 
@@ -63,8 +58,7 @@ export const useFetchVaultHistory = <selectData = RateOfReturnReturnType>(parame
         throw new Error('Missing vault history params')
       }
 
-      const now = Date.now()
-      const today = floorToUTC00(now)
+      const today = floorToUTC00(Date.now())
       const thirtyDay = floorToUTC00(today - 30 * ONE_DAY_MILLISECONDS)
 
       const providerQuotes = await fetchVaultHistory({

@@ -139,7 +139,7 @@ export const AprButton = memo(function YieldInfo({
             <SkeletonText
               loading={Boolean(isRorLoading)}
               color={ror?.sevenDayRor && ror?.sevenDayRor > 0 ? theme.colors.success : theme.colors.failure}
-              // initialWidth={75}
+              initialWidth={75}
               fontWeight={800}
               isDark={Boolean(theme.isDark)}
             >

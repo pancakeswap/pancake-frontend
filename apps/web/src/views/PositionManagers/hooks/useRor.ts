@@ -3,6 +3,7 @@ import { ONE_DAY_MILLISECONDS } from 'config/constants/info'
 import { useMemo } from 'react'
 import type { Address } from 'viem'
 import { useChainId } from 'wagmi'
+import { floorToUTC00 } from '../utils/floorCurrentTimestamp'
 import { AprResult } from './useApr'
 import { useFetchVaultHistory } from './useFetchVaultHistory'
 
@@ -17,12 +18,6 @@ export interface RorResult {
   isRorLaoding: boolean
 }
 
-const floorToUTC00 = (timestamp: number): number => {
-  const date = new Date(timestamp)
-  date.setUTCHours(0, 0, 0, 0)
-  return date.getTime()
-}
-
 export const useRor = ({ vault, totalStakedInUsd }: RorProps): AprResult => {
   const chainId = useChainId()
   const { data: rorData, isLoading } = useFetchVaultHistory({ vault, chainId })
@@ -31,8 +26,7 @@ export const useRor = ({ vault, totalStakedInUsd }: RorProps): AprResult => {
   const rorHistorySnapshotData = useMemo(() => {
     if (!rorData || !totalStakedInUsd) return { sevenDayRor: 0, thirtyDayRor: 0, isRorLoading: isLoading }
 
-    const now = Date.now()
-    const today = floorToUTC00(now)
+    const today = floorToUTC00(Date.now())
     const sevenDay = floorToUTC00(today - 7 * ONE_DAY_MILLISECONDS)
 
     const vaultThirdyDayHistory = rorData
