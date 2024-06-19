@@ -6,24 +6,6 @@ export default {
   component: Select,
 };
 
-const mockData = [
-  {
-    value: "All Networks",
-    title: "All Networks",
-    children: [
-      {
-        value: "bsc",
-        title: "BNB Chain",
-        icon: "https://assets.pancakeswap.finance/web/chains/56.png",
-      },
-      {
-        value: "Ethereum",
-        title: "Ethereum",
-        icon: "https://assets.pancakeswap.finance/web/chains/1.png",
-      },
-    ],
-  },
-];
 const countries = [
   { name: "Australia", code: "AU" },
   { name: "Brazil", code: "BR" },
