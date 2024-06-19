@@ -93,7 +93,7 @@ export const useProtocolTransactionData = (): Transaction[] | undefined => {
 // this is for the swap page and ROI calculator
 export const usePairPriceChartTokenData = (
   address?: string,
-  duration?: 'day' | 'week' | 'month' | 'year',
+  duration?: 'hour' | 'day' | 'week' | 'month' | 'year',
   targetChainId?: ChainId,
   enabled = true,
 ): { data: PriceChartEntry[] | undefined; maxPrice?: number; minPrice?: number; averagePrice?: number } => {

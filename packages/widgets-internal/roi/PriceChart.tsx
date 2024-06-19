@@ -36,7 +36,7 @@ interface Props {
 export const PriceChart = memo(function PriceChart({
   prices,
   onSpanChange,
-  span = 0,
+  span = 1,
   priceUpper,
   priceLower,
   priceCurrent,
@@ -129,6 +129,10 @@ function TimeSpans({
   const { t } = useTranslation();
   const SPAN = useMemo(
     () => [
+      {
+        key: PairDataTimeWindowEnum.HOUR,
+        text: t("1H"),
+      },
       {
         key: PairDataTimeWindowEnum.DAY,
         text: t("24H"),

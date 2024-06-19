@@ -1,8 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, ButtonMenu, ButtonMenuItem, Flex, SwapLineChart, Text } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, PairDataTimeWindowEnum, SwapLineChart, Text } from '@pancakeswap/uikit'
 import { memo, useMemo, useState } from 'react'
 import { usePairRate } from 'state/swap/hooks'
-import { PairDataTimeWindowEnum } from 'state/swap/types'
 import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 import NoChartAvailable from './NoChartAvailable'
 import { getTimeWindowChange } from './utils'
@@ -16,7 +15,7 @@ const BasicChart = ({
   isMobile,
   currentSwapPrice,
 }) => {
-  const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
+  const [timeWindow, setTimeWindow] = useState(PairDataTimeWindowEnum.DAY)
 
   const { data: pairPrices = [] } = usePairRate({
     token0Address,
@@ -111,6 +110,7 @@ const BasicChart = ({
         </Flex>
         <Box>
           <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm">
+            <ButtonMenuItem>{t('1H')}</ButtonMenuItem>
             <ButtonMenuItem>{t('24H')}</ButtonMenuItem>
             <ButtonMenuItem>{t('1W')}</ButtonMenuItem>
             <ButtonMenuItem>{t('1M')}</ButtonMenuItem>

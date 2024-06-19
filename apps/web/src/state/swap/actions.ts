@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
-import { DerivedPairDataNormalized, PairDataNormalized, PairDataTimeWindowEnum } from './types'
+import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { DerivedPairDataNormalized, PairDataNormalized } from './types'
 
 export enum Field {
   INPUT = 'INPUT',
