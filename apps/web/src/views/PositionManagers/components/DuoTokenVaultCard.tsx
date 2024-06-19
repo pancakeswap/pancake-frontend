@@ -1,5 +1,5 @@
 import type { MANAGER, Strategy } from '@pancakeswap/position-managers'
-import { CurrencyAmount, type Currency } from '@pancakeswap/sdk'
+import { CurrencyAmount, type Currency, type Percent } from '@pancakeswap/sdk'
 import { Card, CardBody } from '@pancakeswap/uikit'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import type { FeeAmount } from '@pancakeswap/v3-sdk'
