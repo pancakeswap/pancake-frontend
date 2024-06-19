@@ -1,5 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
+import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { Task } from 'views/Quest/components/Tasks/Task'
 // import { useVerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 
@@ -9,7 +11,12 @@ interface TasksProps {
 
 export const Tasks: React.FC<TasksProps> = ({ questId }) => {
   const { t } = useTranslation()
+  const { userInfo } = useUserSocialHub()
   // const { taskStatus } = useVerifyTaskStatus(questId)
+  const hasIdRegister = useMemo(
+    () => userInfo.questIds?.map((i) => i.toLowerCase())?.includes(questId.toLowerCase()),
+    [questId, userInfo.questIds],
+  )
 
   return (
     <Box mb="32px">
