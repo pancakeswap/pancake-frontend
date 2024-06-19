@@ -103,4 +103,12 @@ export const zksyncTokens = {
     'Holdstation',
     'https://holdstation.com/',
   ),
+  zk: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E',
+    18,
+    'ZK',
+    'zkSync',
+    'https://zksync.io/',
+  ),
 }

@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
 import {
@@ -167,7 +166,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
           ) : (
             <Skeleton ml="4px" width={42} height={28} />
           )}
-          {isReady && isBooster && chainId === ChainId.BSC && <BoostedTag mr="-4px" />}
+          {isReady && isBooster && <BoostedTag mr="-4px" />}
         </AutoRow>
       </Flex>
     </Wrapper>

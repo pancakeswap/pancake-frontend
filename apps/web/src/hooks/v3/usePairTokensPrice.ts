@@ -12,6 +12,8 @@ export const usePairTokensPrice = (
 ) => {
   const priceTimeWindow = useMemo(() => {
     switch (duration) {
+      case PairDataTimeWindowEnum.HOUR:
+        return 'hour'
       case PairDataTimeWindowEnum.DAY:
         return 'day'
       case PairDataTimeWindowEnum.WEEK:

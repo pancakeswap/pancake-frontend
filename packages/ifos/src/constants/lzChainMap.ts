@@ -13,10 +13,22 @@ export const LZ_CHAIN_MAP = {
   [ChainId.GOERLI]: 10121,
 } as const
 
-export const LZ_MAP_REVERSE = Object.keys(LZ_CHAIN_MAP).reduce<Record<number, ChainId>>(
+export const LZ_CHAIN_MAP_V2 = {
+  [ChainId.ETHEREUM]: 30101,
+  [ChainId.BSC]: 30102,
+  [ChainId.POLYGON_ZKEVM]: 30158,
+  [ChainId.ZKSYNC]: 30165,
+  [ChainId.ARBITRUM_ONE]: 30110,
+
+  // Testnets
+  [ChainId.BSC_TESTNET]: 10102,
+  [ChainId.GOERLI]: 10121,
+} as const
+
+export const LZ_MAP_REVERSE = Object.keys(LZ_CHAIN_MAP_V2).reduce<Record<number, ChainId>>(
   (acc, cur) => ({
     ...acc,
-    [(LZ_CHAIN_MAP as Record<string, number>)[cur]]: Number(cur) as ChainId,
+    [(LZ_CHAIN_MAP_V2 as Record<string, number>)[cur]]: Number(cur) as ChainId,
   }),
   {},
 )

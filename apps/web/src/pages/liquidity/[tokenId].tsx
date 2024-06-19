@@ -356,7 +356,7 @@ export default function PoolPage() {
 
     getViemClients({ chainId })
       ?.estimateGas(txn)
-      .then((estimate) => {
+      .then(async (estimate) => {
         const newTxn = {
           ...txn,
           gas: calculateGasMargin(estimate),

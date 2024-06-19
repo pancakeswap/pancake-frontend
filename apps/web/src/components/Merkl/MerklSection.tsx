@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AutoRow,
-  Box,
   Button,
+  Column,
   Flex,
   Link,
   Message,
@@ -71,8 +71,8 @@ export function MerklSection({
   )
 
   return (
-    <Box width="100%" ml={[0, 0, 0, '16px']} mt="24px">
-      <AutoRow justifyContent="space-between" mb="8px">
+    <Column justifyContent="space-between" gap="8px" width="100%" ml={['0px', '0px', '16px', '16px']} mt="24px">
+      <AutoRow justifyContent="space-between">
         <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
           {t('Merkl Rewards')}
         </Text>
@@ -88,11 +88,10 @@ export function MerklSection({
         mr="4px"
         style={{
           padding: '16px 8px',
-          marginBottom: '8px',
         }}
       >
         {rewardsPerToken.map((tokenAmount) => (
-          <AutoRow justifyContent="space-between" mb="8px">
+          <AutoRow justifyContent="space-between">
             <Flex>
               <CurrencyLogo currency={tokenAmount.currency} />
               <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
@@ -106,15 +105,7 @@ export function MerklSection({
         ))}
       </LightGreyCard>
 
-      {isStakedInMCv3 ? (
-        <Message variant="warning">
-          <MessageText color="textSubtle">
-            {t('To earn rewards on Merkl, unstake this position from PancakeSwap Farms.')}
-            <br />
-            {learnMoreComp}
-          </MessageText>
-        </Message>
-      ) : outRange ? (
+      {outRange ? (
         <Message variant="warning">
           <MessageText color="textSubtle">
             {t('This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.')}
@@ -145,6 +136,6 @@ export function MerklSection({
           </MessageText>
         </Message>
       ) : null}
-    </Box>
+    </Column>
   )
 }

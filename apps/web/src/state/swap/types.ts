@@ -19,13 +19,6 @@ export type PairPricesNormalized = {
   value: number
 }[]
 
-export enum PairDataTimeWindowEnum {
-  DAY,
-  WEEK,
-  MONTH,
-  YEAR,
-}
-
 export enum TradeState {
   INVALID,
   LOADING,

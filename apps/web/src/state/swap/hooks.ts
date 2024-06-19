@@ -20,10 +20,10 @@ import { safeGetAddress } from 'utils'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
 import { useAccount } from 'wagmi'
+import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState } from './actions'
 import { SwapState, swapReducerAtom } from './reducer'
-import { PairDataTimeWindowEnum } from './types'
 
 export function useSwapState() {
   return useAtomValue(swapReducerAtom)
@@ -293,6 +293,8 @@ type useFetchPairPricesParams = {
 
 const timeWindowToPeriod = (timeWindow: PairDataTimeWindowEnum): ChartPeriod => {
   switch (timeWindow) {
+    case PairDataTimeWindowEnum.HOUR:
+      return '1H'
     case PairDataTimeWindowEnum.DAY:
       return '1D'
     case PairDataTimeWindowEnum.WEEK:

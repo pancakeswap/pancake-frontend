@@ -6,6 +6,7 @@ import { useTheme } from "styled-components";
 import LineChartLoader from "./LineChartLoaderSVG";
 
 export enum PairDataTimeWindowEnum {
+  HOUR,
   DAY,
   WEEK,
   MONTH,
@@ -29,6 +30,7 @@ const getChartColors = ({ isChangePositive }: { isChangePositive: boolean }) => 
 };
 
 const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
+  [PairDataTimeWindowEnum.HOUR]: "h:mm a",
   [PairDataTimeWindowEnum.DAY]: "h:mm a",
   [PairDataTimeWindowEnum.WEEK]: "MMM dd",
   [PairDataTimeWindowEnum.MONTH]: "MMM dd",
@@ -195,7 +197,11 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
   return (
     <>
       {!chartCreated && <LineChartLoader />}
-      <div style={{ display: "flex", flex: 1, height: "100%" }} onMouseLeave={handleMouseLeave}>
+      <div
+        onPointerDownCapture={(event) => event.stopPropagation()}
+        style={{ display: "flex", flex: 1, height: "100%" }}
+        onMouseLeave={handleMouseLeave}
+      >
         <div style={{ flex: 1, maxWidth: "100%" }} ref={chartRef} id="swap-line-chart" {...rest} />
       </div>
     </>

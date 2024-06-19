@@ -1368,6 +1368,7 @@ export interface operations {
             tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
+            lpAddress: string
             virtualPrice: string
             virtualPrice24h: null | string
             virtualPrice48h: null | string
@@ -1629,6 +1630,7 @@ export interface operations {
             tvlUSD7d: string
             /** @description Pool created at timestamp */
             createdAtTimestamp: Record<string, never> | string
+            lpAddress: string
             virtualPrice: string
             virtualPrice24h: null | string
             virtualPrice48h: null | string

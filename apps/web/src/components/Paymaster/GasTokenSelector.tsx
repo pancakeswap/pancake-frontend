@@ -149,12 +149,13 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
 
   const showSameTokenWarning = useMemo(
     () =>
+      gasTokenInfo?.discount !== 'FREE' &&
       inputCurrency?.wrapped.address &&
       // Check if input token is native ETH to avoid conflicts when WETH is selected as gas token
       !inputCurrency.isNative &&
       gasToken.isToken &&
       inputCurrency.wrapped.address === gasToken.wrapped.address,
-    [inputCurrency, gasToken],
+    [inputCurrency, gasToken, gasTokenInfo],
   )
 
   // Reset fee token if account changes, connects or disconnects
@@ -300,7 +301,7 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
           />
           {gasTokenInfo && gasTokenInfo.discount && (
             <Badge ref={targetRef} style={{ fontSize: '12px', fontWeight: 600, padding: '3px 5px', marginLeft: '4px' }}>
-              ⛽️ {gasTokenInfo.discount}
+              ⛽️ {gasTokenInfo.discountLabel ?? gasTokenInfo.discount}
             </Badge>
           )}
           {tooltipVisible && tooltip}
@@ -313,7 +314,7 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
         >
           <Flex alignItems="center">
             <div style={{ position: 'relative' }}>
-              <CurrencyLogo currency={gasToken} size="20px" />
+              <CurrencyLogo currency={gasToken} useTrustWalletUrl={false} size="20px" />
               <p style={{ position: 'absolute', bottom: '-2px', right: '-6px', fontSize: '14px' }}>⛽️</p>
             </div>
 
