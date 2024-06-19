@@ -293,6 +293,8 @@ type useFetchPairPricesParams = {
 
 const timeWindowToPeriod = (timeWindow: PairDataTimeWindowEnum): ChartPeriod => {
   switch (timeWindow) {
+    case PairDataTimeWindowEnum.HOUR:
+      return '1H'
     case PairDataTimeWindowEnum.DAY:
       return '1D'
     case PairDataTimeWindowEnum.WEEK:
