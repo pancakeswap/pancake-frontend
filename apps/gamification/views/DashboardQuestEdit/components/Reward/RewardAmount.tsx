@@ -14,16 +14,22 @@ const RewardContainer = styled(Flex)`
 `
 
 interface RewardAmountProps {
-  amountPerWinner: string
+  totalRewardAmount: number
+  amountOfWinners: number
   setAmountPerWinner: (value: string) => void
 }
 
-export const RewardAmount: React.FC<RewardAmountProps> = ({ amountPerWinner, setAmountPerWinner }) => {
+export const RewardAmount: React.FC<RewardAmountProps> = ({
+  totalRewardAmount,
+  amountOfWinners,
+  setAmountPerWinner,
+}) => {
   const { t } = useTranslation()
   const token = bscTokens.usdt
-  const rewardAmount = 1000
 
-  const [onPresentWithdrawRewardModal] = useModal(<WithdrawRewardModal token={token} rewardAmount={rewardAmount} />)
+  const [onPresentWithdrawRewardModal] = useModal(
+    <WithdrawRewardModal token={token} rewardAmount={totalRewardAmount} />,
+  )
 
   const handleInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +46,7 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({ amountPerWinner, set
         <TokenImage token={token} width={64} height={64} />
         <Box m="8px 0 10px 0">
           <Text as="span" bold fontSize="24px" lineHeight="28px">
-            {rewardAmount}
+            {totalRewardAmount}
           </Text>
           <Text as="span" bold ml="4px" fontSize="20px" lineHeight="24px">
             {token.symbol}
@@ -56,10 +62,10 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({ amountPerWinner, set
         </Button>
         <Flex>
           <Text style={{ alignSelf: 'center' }} fontSize="14px" color="textSubtle" mr="8px">
-            {t('%token% per winner:', { token: token.symbol })}
+            {t('Amount of winners')}
           </Text>
           <Box width="80px">
-            <Input pattern="^[0-9]+$" inputMode="numeric" value={amountPerWinner} onChange={handleInput} />
+            <Input pattern="^[0-9]+$" inputMode="numeric" value={amountOfWinners} onChange={handleInput} />
           </Box>
         </Flex>
       </RewardContainer>

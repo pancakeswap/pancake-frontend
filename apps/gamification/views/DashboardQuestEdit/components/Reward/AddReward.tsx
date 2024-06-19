@@ -10,7 +10,9 @@ const AddRewardContainer = styled(Flex)`
   border-bottom: solid 1px ${({ theme }) => theme.colors.cardBorder};
 `
 
-export const AddReward = () => {
+interface AddRewardProps {}
+
+export const AddReward: React.FC<AddRewardProps> = () => {
   const { t } = useTranslation()
   const [onPresentAddRewardModal] = useModal(<AddRewardModal />)
 

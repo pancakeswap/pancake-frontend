@@ -1,5 +1,5 @@
 import { createContext, useCallback, useMemo, useState } from 'react'
-import { TaskConfigType } from 'views/DashboardQuestEdit/context/types'
+import { QuestRewardType, TaskConfigType } from 'views/DashboardQuestEdit/context/types'
 
 export interface StateType {
   title: string
@@ -9,12 +9,13 @@ export interface StateType {
   startTime: null | Date
   endDate: null | Date
   endTime: null | Date
+  reward: undefined
 }
 
 interface EditQuestContextType {
   state: StateType
   tasks: TaskConfigType[]
-  updateValue: (key: string, value: string | Date) => void
+  updateValue: (key: string, value: string | Date | QuestRewardType) => void
   onTasksChange: (task: TaskConfigType[]) => void
   deleteTask: (value: string) => void
 }
@@ -31,9 +32,10 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
     startTime: null,
     endDate: null,
     endTime: null,
+    reward: undefined,
   }))
 
-  const updateValue = useCallback((key: string, value: string | Date) => {
+  const updateValue = useCallback((key: string, value: string | Date | QuestRewardType) => {
     setState((prevState) => ({
       ...prevState,
       [key]: value,

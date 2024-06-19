@@ -3,7 +3,9 @@ import { Box, Card, Text } from '@pancakeswap/uikit'
 import { useCallback } from 'react'
 import { styled } from 'styled-components'
 import { AddReward } from 'views/DashboardQuestEdit/components/Reward/AddReward'
-// import { RewardAmount } from 'views/DashboardQuestEdit/components/Reward/RewardAmount'
+import { RewardAmount } from 'views/DashboardQuestEdit/components/Reward/RewardAmount'
+import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
+import { RewardType } from 'views/DashboardQuestEdit/type'
 
 const RewardContainer = styled(Box)`
   width: 100%;
@@ -18,20 +20,51 @@ const RewardContainer = styled(Box)`
 `
 
 interface RewardProps {
-  amountPerWinner: string
+  reward: undefined | QuestRewardType
   actionComponent?: JSX.Element
-  updateValue: (key: string, value: string) => void
+  updateValue: (key: string, value: string | QuestRewardType) => void
 }
 
-export const Reward: React.FC<RewardProps> = ({ amountPerWinner, actionComponent, updateValue }) => {
+export const Reward: React.FC<RewardProps> = ({ reward, actionComponent, updateValue }) => {
   const { t } = useTranslation()
 
   const handleRewardPerWin = useCallback(
     (value: string) => {
-      updateValue('amountPerWinner', value)
+      if (reward) {
+        updateValue('reward', {
+          ...reward,
+          amountOfWinners: Number(value),
+        })
+      }
     },
-    [updateValue],
+    [reward, updateValue],
   )
+
+  const handlePickedRewardToken = () => {
+    let rewardData: QuestRewardType = {
+      title: '',
+      description: '',
+      rewardType: RewardType.TOKEN,
+      currency: {
+        address: '0x',
+        network: 56,
+      },
+      amountOfWinners: 0,
+      totalRewardAmount: 0,
+    }
+
+    if (reward) {
+      rewardData = {
+        ...reward,
+        currency: {
+          address: '0x',
+          network: 56,
+        },
+      }
+    }
+
+    updateValue('reward', rewardData)
+  }
 
   return (
     <RewardContainer>
@@ -40,8 +73,15 @@ export const Reward: React.FC<RewardProps> = ({ amountPerWinner, actionComponent
           <Text fontSize={['24px']} bold mb={['24px']}>
             {t('Reward')}
           </Text>
-          <AddReward />
-          {/* <RewardAmount amountPerWinner={amountPerWinner} setAmountPerWinner={handleRewardPerWin} /> */}
+          {reward ? (
+            <RewardAmount
+              totalRewardAmount={reward?.totalRewardAmount}
+              amountOfWinners={reward?.amountOfWinners}
+              setAmountPerWinner={handleRewardPerWin}
+            />
+          ) : (
+            <AddReward />
+          )}
           {actionComponent}
         </Box>
       </Card>

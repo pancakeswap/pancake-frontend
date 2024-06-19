@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Currency } from '@pancakeswap/sdk'
-import { TaskType } from 'views/DashboardQuestEdit/type'
+import { Address } from 'viem'
+import { RewardType, TaskType } from 'views/DashboardQuestEdit/type'
 
 export interface TaskBaseConfig {
   sid: string
@@ -64,3 +65,15 @@ export type TaskConfigType =
   | TaskLiquidityConfig
   | TaskSocialConfig
   | TaskBlogPostConfig
+
+export interface QuestRewardType {
+  title: string
+  description: string
+  rewardType: RewardType
+  currency: {
+    address: Address
+    network: ChainId
+  }
+  amountOfWinners: number
+  totalRewardAmount: number
+}
