@@ -15,6 +15,7 @@ const Spacer = styled.div<{ isPastSpacer?: boolean }>`
 `;
 
 interface IfoProgressStepperProps {
+  salesEndTime?: number;
   vestingStartTime: number;
   cliff: number;
   duration: number;
@@ -22,6 +23,7 @@ interface IfoProgressStepperProps {
 }
 
 const IfoProgressStepper: React.FC<React.PropsWithChildren<IfoProgressStepperProps>> = ({
+  salesEndTime = 0,
   vestingStartTime,
   cliff,
   duration,
@@ -33,7 +35,7 @@ const IfoProgressStepper: React.FC<React.PropsWithChildren<IfoProgressStepperPro
 
   useEffect(() => {
     const currentTimeStamp = getNow();
-    const timeSalesEnded = vestingStartTime * 1000;
+    const timeSalesEnded = salesEndTime * 1000;
     const timeCliff = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + cliff) * 1000;
     const timeVestingEnd = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + duration) * 1000;
 
@@ -58,7 +60,7 @@ const IfoProgressStepper: React.FC<React.PropsWithChildren<IfoProgressStepperPro
       },
       { key: "endVesting", text: t("Vesting end"), timeStamp: timeVestingEnd },
     ]);
-  }, [t, cliff, duration, vestingStartTime, getNow]);
+  }, [t, cliff, duration, vestingStartTime, getNow, salesEndTime]);
 
   return (
     <Flex>

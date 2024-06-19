@@ -57,7 +57,8 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
   const releaseRate = useMemo(() => {
     const rate = new BigNumber(userPool?.vestingAmountTotal || BIG_ZERO).div(vestingInformation?.duration || BIG_ONE)
     const rateBalance = getFullDisplayBalance(rate, token.decimals, 5)
-    return new BigNumber(rateBalance).gte(0.00001) ? rateBalance : '< 0.00001'
+    const rateBalanceBN = new BigNumber(rateBalance)
+    return rateBalanceBN.eq(0) ? undefined : rateBalanceBN.gte(0.00001) ? rateBalance : '< 0.00001'
   }, [vestingInformation, userPool, token])
 
   const claimButton = !userPool?.isVestingInitialized ? (
@@ -76,6 +77,7 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
     <Flex flexDirection="column">
       <Box>
         <IfoProgressStepper
+          salesEndTime={publicIfoData.endTimestamp}
           vestingStartTime={publicIfoData.vestingStartTime || 0}
           cliff={vestingInformation?.cliff || 0}
           duration={vestingInformation?.duration || 0}

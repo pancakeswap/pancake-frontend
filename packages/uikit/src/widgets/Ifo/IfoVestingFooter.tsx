@@ -37,7 +37,7 @@ const FooterEntry: React.FC<React.PropsWithChildren<FooterEntryProps>> = ({ labe
 interface IfoVestingFooterProps {
   duration: number;
   vestingStartTime: number | undefined;
-  releaseRate: string;
+  releaseRate?: string;
   getNow: () => number;
 }
 
@@ -57,7 +57,9 @@ const IfoVestingFooter: React.FC<React.PropsWithChildren<IfoVestingFooterProps>>
 
   return (
     <StyledIfoVestingFooter flexDirection="column">
-      <FooterEntry label={t("Release rate")} value={t("%releaseRate% per second", { releaseRate })} />
+      {releaseRate ? (
+        <FooterEntry label={t("Release rate")} value={t("%releaseRate% per second", { releaseRate })} />
+      ) : null}
       <FooterEntry label={t("Fully released date")} value={releaseDate} />
     </StyledIfoVestingFooter>
   );
