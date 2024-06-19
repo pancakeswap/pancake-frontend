@@ -308,15 +308,15 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
             <Label>{t('%symbol% to receive', { symbol: token.symbol })}</Label>
             {offeringAmountInToken ? <Value value={getBalanceAmount(offeringAmountInToken, token.decimals)} /> : null}
             {version >= 3.2 &&
-              publicPoolCharacteristics?.vestingInformation?.percentage &&
-              publicPoolCharacteristics.vestingInformation.percentage > 0 && (
-                <IfoVestingAvailableToClaim
-                  amountToReceive={offeringAmountInToken || BIG_ZERO}
-                  percentage={publicPoolCharacteristics.vestingInformation.percentage}
-                  decimals={token.decimals}
-                  displayDecimals={2}
-                />
-              )}
+            publicPoolCharacteristics?.vestingInformation?.percentage &&
+            publicPoolCharacteristics.vestingInformation.percentage > 0 ? (
+              <IfoVestingAvailableToClaim
+                amountToReceive={offeringAmountInToken || BIG_ZERO}
+                percentage={publicPoolCharacteristics.vestingInformation.percentage}
+                decimals={token.decimals}
+                displayDecimals={2}
+              />
+            ) : null}
           </TokenSection>
           {message}
         </>

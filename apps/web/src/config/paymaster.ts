@@ -4,10 +4,11 @@ import { ChainId } from '@pancakeswap/chains'
 import { Currency, Native } from '@pancakeswap/sdk'
 import { Address, Hex } from 'viem'
 
-export const DEFAULT_PAYMASTER_TOKEN = Native.onChain(ChainId.ZKSYNC)
+// export const DEFAULT_PAYMASTER_TOKEN = Native.onChain(ChainId.ZKSYNC)
 
 export const paymasterTokens: Currency[] = [
-  DEFAULT_PAYMASTER_TOKEN,
+  // DEFAULT_PAYMASTER_TOKEN,
+  Native.onChain(ChainId.ZKSYNC),
   zksyncTokens.wbtc,
   zksyncTokens.dai,
   zksyncTokens.usdc,
@@ -22,50 +23,73 @@ export const paymasterTokens: Currency[] = [
   zksyncTokens.weth,
   zksyncTokens.wethe,
   zksyncTokens.hold,
+  zksyncTokens.zk,
 ]
 
-export const paymasterInfo: { [gasTokenAddress: Address]: { discount: `-${number}%` | 'FREE' } } = {
+export const DEFAULT_PAYMASTER_TOKEN = paymasterTokens[4]
+
+export const paymasterInfo: {
+  [gasTokenAddress: Address]: { discount: `-${number}%` | 'FREE'; discountLabel?: string }
+} = {
   [zksyncTokens.wbtc.address]: {
     discount: 'FREE', // Example: -20%, FREE
+    discountLabel: 'FREE SWAP',
   },
   [zksyncTokens.dai.address]: {
     discount: 'FREE',
+    discountLabel: 'FREE SWAP',
   },
   [zksyncTokens.usdc.address]: {
     discount: 'FREE',
+    discountLabel: 'FREE SWAP',
   },
   [zksyncTokens.usdcNative.address]: {
     discount: 'FREE',
+    discountLabel: 'FREE SWAP',
   },
   [zksyncTokens.usdt.address]: {
     discount: 'FREE',
+    discountLabel: 'FREE SWAP',
   },
   [zksyncTokens.grai.address]: {
     discount: 'FREE',
+    discountLabel: 'FREE SWAP',
   },
   [zksyncTokens.tes.address]: {
     discount: 'FREE',
+    discountLabel: 'FREE SWAP',
   },
   [zksyncTokens.busd.address]: {
     discount: 'FREE',
+    discountLabel: 'FREE SWAP',
   },
   [zksyncTokens.reth.address]: {
     discount: 'FREE',
+    discountLabel: 'FREE SWAP',
   },
   [zksyncTokens.wstETH.address]: {
     discount: 'FREE',
+    discountLabel: 'FREE SWAP',
   },
   [zksyncTokens.meow.address]: {
     discount: 'FREE',
+    discountLabel: 'FREE SWAP',
   },
   [zksyncTokens.weth.address]: {
     discount: 'FREE',
+    discountLabel: 'FREE SWAP',
   },
   [zksyncTokens.wethe.address]: {
     discount: 'FREE',
+    discountLabel: 'FREE SWAP',
   },
   [zksyncTokens.hold.address]: {
     discount: 'FREE',
+    discountLabel: 'FREE SWAP',
+  },
+  [zksyncTokens.zk.address]: {
+    discount: 'FREE',
+    discountLabel: 'FREE SWAP',
   },
 }
 
