@@ -75,7 +75,7 @@ export const YieldInfo = memo(function YieldInfo({
           rewardToken={rewardToken}
           isBooster={isBooster && apr?.isInCakeRewardDateRange}
           boosterMultiplier={totalAssetsInUsd === 0 || !locked ? 3 : boosterMultiplier === 0 ? 3 : boosterMultiplier}
-          isRorLoading={ror?.isRorLaoding}
+          isRorLoading={ror?.isRorLoading}
           ror={ror}
         />
       </RowBetween>
