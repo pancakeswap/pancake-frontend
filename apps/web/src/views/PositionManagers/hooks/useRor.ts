@@ -37,17 +37,17 @@ export const useRor = ({ vault, totalStakedInUsd, startTimestamp }: RorProps): R
     const sevenDayFlooredUnix = floorToUTC00(todayFlooredUnix - 7 * ONE_DAY_MILLISECONDS)
     const thirtyDayFlooredUnix = floorToUTC00(todayFlooredUnix - 30 * ONE_DAY_MILLISECONDS)
 
-    const earliestCuttoffTimestamp = rorData
-    const sevenDayCuttoffTimestamp = createVaultHistorySubArray(rorData, sevenDayFlooredUnix / 1000)
-    const thirtyDayCuttoffTimestamp = createVaultHistorySubArray(rorData, thirtyDayFlooredUnix / 1000)
+    const allTimeVaultData = rorData
+    const sevenDayVaultData = createVaultHistorySubArray(rorData, sevenDayFlooredUnix / 1000)
+    const thirtyDayVaultData = createVaultHistorySubArray(rorData, thirtyDayFlooredUnix / 1000)
 
-    const totalSevenDayUsd = sevenDayCuttoffTimestamp?.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
-    const totalThirtyDayUsd = thirtyDayCuttoffTimestamp.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
-    const earliestDayUsd = earliestCuttoffTimestamp?.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
+    const totalSevenDayUsd = sevenDayVaultData?.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
+    const totalThirtyDayUsd = thirtyDayVaultData.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
+    const earliestDayUsd = allTimeVaultData?.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
 
-    const averageSevenDayUsd = new BigNumber(totalSevenDayUsd / sevenDayCuttoffTimestamp.length)
-    const averageThirtyDayUsd = new BigNumber(totalThirtyDayUsd / thirtyDayCuttoffTimestamp.length)
-    const averageEarliestDayUsd = new BigNumber(earliestDayUsd / earliestCuttoffTimestamp.length)
+    const averageSevenDayUsd = new BigNumber(totalSevenDayUsd / sevenDayVaultData.length)
+    const averageThirtyDayUsd = new BigNumber(totalThirtyDayUsd / thirtyDayVaultData.length)
+    const averageEarliestDayUsd = new BigNumber(earliestDayUsd / allTimeVaultData.length)
 
     const sevenDayRor = new BigNumber(totalStakedInUsd).minus(averageSevenDayUsd).div(averageSevenDayUsd).toNumber()
     const thirtyDayRor = new BigNumber(totalStakedInUsd).minus(averageThirtyDayUsd).div(averageThirtyDayUsd).toNumber()
