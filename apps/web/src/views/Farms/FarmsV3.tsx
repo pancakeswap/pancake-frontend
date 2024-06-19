@@ -14,7 +14,6 @@ import {
   Button,
   Flex,
   FlexLayout,
-  Heading,
   Image,
   Link,
   Loading,
@@ -53,6 +52,7 @@ import Table from './components/FarmTable/FarmTable'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { BCakeBoosterCard } from './components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 import { FarmsV3Context } from './context'
+import { FarmFlexWrapper, FarmH1, FarmH2 } from './styled'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -69,29 +69,6 @@ const ControlContainer = styled.div`
     flex-wrap: wrap;
     padding: 16px 32px;
     margin-bottom: 0;
-  }
-`
-
-const FarmFlexWrapper = styled(Flex)`
-  flex-wrap: wrap;
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-wrap: nowrap;
-  }
-`
-const FarmH1 = styled(Heading)`
-  font-size: 32px;
-  margin-bottom: 8px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 64px;
-    margin-bottom: 24px;
-  }
-`
-const FarmH2 = styled(Heading)`
-  font-size: 16px;
-  margin-bottom: 8px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 24px;
-    margin-bottom: 18px;
   }
 `
 
@@ -436,7 +413,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           <BCakeMigrationBanner />
         </Box>
         <Flex flexDirection="column">
-          <FarmFlexWrapper justifyContent="space-between">
+          <FarmFlexWrapper>
             <Box style={{ flex: '1 1 100%' }}>
               <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">
                 {t('Farms')}
