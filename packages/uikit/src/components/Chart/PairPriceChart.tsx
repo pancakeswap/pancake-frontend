@@ -6,6 +6,7 @@ import { useTheme } from "styled-components";
 import LineChartLoader from "./LineChartLoaderSVG";
 
 export enum PairDataTimeWindowEnum {
+  HOUR,
   DAY,
   WEEK,
   MONTH,
@@ -29,6 +30,7 @@ const getChartColors = ({ isChangePositive }: { isChangePositive: boolean }) => 
 };
 
 const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
+  [PairDataTimeWindowEnum.HOUR]: "h:mm a",
   [PairDataTimeWindowEnum.DAY]: "h:mm a",
   [PairDataTimeWindowEnum.WEEK]: "MMM dd",
   [PairDataTimeWindowEnum.MONTH]: "MMM dd",
