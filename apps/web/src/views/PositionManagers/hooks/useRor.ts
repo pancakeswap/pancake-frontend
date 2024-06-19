@@ -4,7 +4,6 @@ import { useMemo } from 'react'
 import type { Address } from 'viem'
 import { useChainId } from 'wagmi'
 import { floorToUTC00 } from '../utils/floorCurrentTimestamp'
-import { AprResult } from './useApr'
 import { useFetchVaultHistory } from './useFetchVaultHistory'
 
 interface RorProps {
@@ -15,10 +14,10 @@ interface RorProps {
 export interface RorResult {
   sevenDayRor: number
   thirtyDayRor: number
-  isRorLaoding: boolean
+  isRorLoading: boolean
 }
 
-export const useRor = ({ vault, totalStakedInUsd }: RorProps): AprResult => {
+export const useRor = ({ vault, totalStakedInUsd }: RorProps): RorResult => {
   const chainId = useChainId()
   const { data: rorData, isLoading } = useFetchVaultHistory({ vault, chainId })
 
