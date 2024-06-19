@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Box, Button, Column, LinkExternal, PageHeader, Text } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Box, Button, Column, LinkExternal, PageHeader, Row, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import Page from 'components/Layout/Page'
 import { PropsWithChildren } from 'react'
 import { FarmFlexWrapper, FarmH1, FarmH2 } from './styled'
 
@@ -19,28 +20,35 @@ export const V4PageLayout: React.FC<PropsWithChildren> = ({ children }) => {
               <FarmH2 scale="lg" color="text">
                 {t('Liquidity Pools & Farms')}
               </FarmH2>
-              {/* @todo @ChefJerry update to real link */}
-              <LinkExternal href="https://blog.pancakeswap.finance/">
-                <Button p="0" variant="text">
-                  <Text color="primary" bold fontSize="16px" mr="4px">
-                    {t('Learn How')}
-                  </Text>
-                  <ArrowForwardIcon color="primary" />
-                </Button>
-              </LinkExternal>
-              <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
-                <Button p="0" variant="text">
-                  <Text color="primary" bold fontSize="16px" mr="4px">
-                    {t('Community Auctions')}
-                  </Text>
-                  <ArrowForwardIcon color="primary" />
-                </Button>
-              </NextLinkFromReactRouter>
+              <Row flexWrap="wrap">
+                {/* @todo @ChefJerry update to real link */}
+                <LinkExternal href="https://blog.pancakeswap.finance/" showExternalIcon={false} mr="20px">
+                  <Button p="0" variant="text">
+                    <Text color="primary" bold fontSize="16px" mr="4px">
+                      {t('Learn How')}
+                    </Text>
+                    <ArrowForwardIcon color="primary" />
+                  </Button>
+                </LinkExternal>
+                <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
+                  <Button p="0" variant="text">
+                    <Text color="primary" bold fontSize="16px" mr="4px">
+                      {t('Community Auctions')}
+                    </Text>
+                    <ArrowForwardIcon color="primary" />
+                  </Button>
+                </NextLinkFromReactRouter>
+              </Row>
+            </Box>
+            <Box>
+              {/* @todo @ChefJerry replace image url when ready */}
+              {/* @todo @ChefJerry mobile position */}
+              <img src="/images/cake-staking/new-staking-bunny.png" alt="new-staking-bunny" width="138px" />
             </Box>
           </FarmFlexWrapper>
         </Column>
       </PageHeader>
-      {children}
+      <Page>{children}</Page>
     </>
   )
 }
