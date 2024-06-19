@@ -29,7 +29,7 @@ export const useRor = ({ vault, totalStakedInUsd, startTimestamp }: RorProps): R
   const chainId = useChainId()
   const { data: rorData, isLoading } = useFetchVaultHistory({ vault, chainId, earliest: startTimestamp })
 
-  const rorHistorySnapshotData = useMemo(() => {
+  return useMemo(() => {
     if (!rorData || !totalStakedInUsd)
       return { sevenDayRor: 0, thirtyDayRor: 0, earliestDayRor: 0, isRorLoading: isLoading }
 
@@ -58,6 +58,4 @@ export const useRor = ({ vault, totalStakedInUsd, startTimestamp }: RorProps): R
 
     return { sevenDayRor, thirtyDayRor, earliestDayRor, isRorLoading: isLoading }
   }, [rorData, totalStakedInUsd, isLoading])
-
-  return rorHistorySnapshotData
 }
