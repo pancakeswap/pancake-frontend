@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { Flex, Skeleton, Text, useTooltip } from '@pancakeswap/uikit'
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import { styled } from 'styled-components'
 import type { AprResult } from '../hooks'
 
@@ -9,8 +9,6 @@ interface Props {
   apr: AprResult
   isAprLoading: boolean
   rewardToken?: Currency
-  isBooster?: boolean
-  boosterMultiplier?: number
   ror?: number
 }
 
@@ -20,22 +18,8 @@ const AprText = styled(Text)`
   cursor: pointer;
 `
 
-export const RorButton = memo(function YieldInfo({
-  apr,
-  isAprLoading,
-  rewardToken,
-  isBooster,
-  boosterMultiplier = 3,
-  ror,
-}: Props) {
+export const RorButton = memo(function YieldInfo({ apr, isAprLoading, rewardToken, ror }: Props) {
   const { t } = useTranslation()
-
-  const cakeAPR = useMemo(() => parseFloat(apr?.cakeYieldApr ?? '0'), [apr])
-  const lpAPR = useMemo(() => parseFloat(apr?.lpApr ?? '0'), [apr])
-  const combinedAPR = useMemo(
-    () => (isBooster ? (cakeAPR * boosterMultiplier + lpAPR).toFixed(2) : apr.combinedApr),
-    [apr.combinedApr, boosterMultiplier, cakeAPR, isBooster, lpAPR],
-  )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
@@ -51,11 +35,7 @@ export const RorButton = memo(function YieldInfo({
             <li>
               {`${rewardToken?.symbol ?? ''} ${t('1 Week')}`}:{' '}
               <b>
-                {isBooster && <>{(boosterMultiplier * cakeAPR).toFixed(2)}% </>}
-                <Text
-                  display="inline-block"
-                  style={{ textDecoration: isBooster ? 'line-through' : 'none', fontWeight: 800 }}
-                >
+                <Text display="inline-block" style={{ fontWeight: 800 }}>
                   {ror.toFixed(2)}%
                 </Text>
               </b>
@@ -85,7 +65,7 @@ export const RorButton = memo(function YieldInfo({
           <Text display="flex" mx="6px" style={{ gap: 3, whiteSpace: 'nowrap' }}>
             <AprText display="flex" style={{ gap: 3 }}>
               <Text color="success" bold onClick={() => null}>
-                {`${combinedAPR}%`}
+                {`${ror}%`}
               </Text>
             </AprText>
             {tooltipVisible && tooltip}

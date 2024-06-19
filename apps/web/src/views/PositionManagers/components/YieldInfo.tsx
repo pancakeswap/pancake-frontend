@@ -79,23 +79,7 @@ export const YieldInfo = memo(function YieldInfo({
       </RowBetween>
       <RowBetween>
         <Text>{t('ROR')}:</Text>
-        <RorButton
-          ror={ror}
-          id={id}
-          apr={apr}
-          isAprLoading={isAprLoading}
-          lpSymbol={lpSymbol}
-          totalAssetsInUsd={totalAssetsInUsd}
-          totalSupplyAmounts={totalSupplyAmounts}
-          totalStakedInUsd={totalStakedInUsd}
-          userLpAmounts={userLpAmounts}
-          precision={precision}
-          lpTokenDecimals={lpTokenDecimals}
-          aprTimeWindow={aprTimeWindow}
-          rewardToken={rewardToken}
-          isBooster={isBooster && apr?.isInCakeRewardDateRange}
-          boosterMultiplier={totalAssetsInUsd === 0 || !locked ? 3 : boosterMultiplier === 0 ? 3 : boosterMultiplier}
-        />
+        <RorButton ror={ror} apr={apr} isAprLoading={isAprLoading} rewardToken={rewardToken} />
       </RowBetween>
       <RowBetween>
         <Text>{t('Earn')}:</Text>
