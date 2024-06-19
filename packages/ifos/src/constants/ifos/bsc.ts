@@ -28,7 +28,6 @@ export const ifos: BaseIfoConfig[] = [
     twitterUrl: 'https://x.com/lista_dao',
     description:
       '[Lista DAO](https://lista.org/) is a liquid staking and decentralized stablecoin protocol. Users can liquid stake their BNB to receive slisBNB, and borrow lisUSD against accepted collateral assets.',
-    vestingTitle: `LISTA is Lista DAO's governance token that unlocks the following utility: governance, protocol incentivization, gauge voting, and fee sharing.`,
   },
   {
     id: 'cakepie',

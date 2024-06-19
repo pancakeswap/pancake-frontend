@@ -222,7 +222,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
         <>
           {tokenEntry}
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId]?.raiseAmount} />
-          {raisingTokenToBurn && <FooterEntry label={t('CAKE to burn:')} value={raisingTokenToBurn} />}
+          {raisingTokenToBurn ? <FooterEntry label={t('CAKE to burn:')} value={raisingTokenToBurn} /> : null}
           <FooterEntry
             label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
             value={`$${ifo.tokenOfferingPrice}`}
@@ -249,33 +249,33 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
           )}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId]?.raiseAmount} />
-          {raisingTokenToBurn && <FooterEntry label={t('CAKE to burn:')} value={raisingTokenToBurn} />}
+          {raisingTokenToBurn ? <FooterEntry label={t('CAKE to burn:')} value={raisingTokenToBurn} /> : null}
           {ifo.version >= 3.2 &&
-            poolCharacteristic?.vestingInformation?.percentage &&
-            poolCharacteristic.vestingInformation.percentage > 0 && (
-              <>
-                <FooterEntry
-                  label={t('Vested percentage:')}
-                  value={`${poolCharacteristic.vestingInformation.percentage}%`}
-                  tooltipContent={t(
-                    '%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.',
-                    {
-                      percentageVested: poolCharacteristic.vestingInformation.percentage,
-                      percentageTgeRelease: BIG_ONE_HUNDRED.minus(
-                        poolCharacteristic.vestingInformation.percentage,
-                      ).toString(),
-                    },
-                  )}
-                />
-                <FooterEntry
-                  label={t('Vesting schedule:')}
-                  value={`${vestingDays} days`}
-                  tooltipContent={t('The vested tokens will be released linearly over a period of %days% days.', {
-                    days: vestingDays,
-                  })}
-                />
-              </>
-            )}
+          poolCharacteristic?.vestingInformation?.percentage &&
+          poolCharacteristic.vestingInformation.percentage > 0 ? (
+            <>
+              <FooterEntry
+                label={t('Vested percentage:')}
+                value={`${poolCharacteristic.vestingInformation.percentage}%`}
+                tooltipContent={t(
+                  '%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.',
+                  {
+                    percentageVested: poolCharacteristic.vestingInformation.percentage,
+                    percentageTgeRelease: BIG_ONE_HUNDRED.minus(
+                      poolCharacteristic.vestingInformation.percentage,
+                    ).toString(),
+                  },
+                )}
+              />
+              <FooterEntry
+                label={t('Vesting schedule:')}
+                value={`${vestingDays} days`}
+                tooltipContent={t('The vested tokens will be released linearly over a period of %days% days.', {
+                  days: vestingDays,
+                })}
+              />
+            </>
+          ) : null}
         </>
       )
     }
@@ -287,19 +287,19 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
           {hasTax && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId]?.raiseAmount} />
-          {raisingTokenToBurn && <FooterEntry label={t('CAKE to burn:')} value={raisingTokenToBurn} />}
-          {ifo.version > 1 && (
+          {raisingTokenToBurn ? <FooterEntry label={t('CAKE to burn:')} value={raisingTokenToBurn} /> : null}
+          {ifo.version > 1 ? (
             <FooterEntry
               label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
               value={`$${ifo.tokenOfferingPrice ? ifo.tokenOfferingPrice : '?'}`}
             />
-          )}
-          {ifo.version > 1 && hasTax && (
+          ) : null}
+          {ifo.version > 1 && hasTax ? (
             <FooterEntry
               label={t('Price per %symbol% with fee:', { symbol: ifo.token.symbol })}
               value={pricePerTokenWithFee}
             />
-          )}
+          ) : null}
         </StyledIfoCardDetails>
       )
     }
