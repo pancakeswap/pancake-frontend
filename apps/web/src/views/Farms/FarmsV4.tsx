@@ -1,54 +1,26 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Box, Button, Column, LinkExternal, PageHeader, Row, Text } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { Card, Tab, TabMenu } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { PropsWithChildren } from 'react'
-import { FarmFlexWrapper, FarmH1, FarmH2 } from './styled'
+import { PropsWithChildren, useState } from 'react'
+import { Header } from './v4/components/Header'
 
-export const V4PageLayout: React.FC<PropsWithChildren> = ({ children }) => {
+export const FarmsV4: React.FC<PropsWithChildren> = () => {
   const { t } = useTranslation()
+  const [tab, setTab] = useState(0)
+  const onTabClick = (index: number) => setTab(index)
 
   return (
     <>
-      <PageHeader>
-        <Column>
-          <FarmFlexWrapper>
-            <Box style={{ flex: '1 1 100%' }}>
-              <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">
-                {t('Earn from LP')}
-              </FarmH1>
-              <FarmH2 scale="lg" color="text">
-                {t('Liquidity Pools & Farms')}
-              </FarmH2>
-              <Row flexWrap="wrap">
-                {/* @todo @ChefJerry update to real link */}
-                <LinkExternal href="https://blog.pancakeswap.finance/" showExternalIcon={false} mr="20px">
-                  <Button p="0" variant="text">
-                    <Text color="primary" bold fontSize="16px" mr="4px">
-                      {t('Learn How')}
-                    </Text>
-                    <ArrowForwardIcon color="primary" />
-                  </Button>
-                </LinkExternal>
-                <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
-                  <Button p="0" variant="text">
-                    <Text color="primary" bold fontSize="16px" mr="4px">
-                      {t('Community Auctions')}
-                    </Text>
-                    <ArrowForwardIcon color="primary" />
-                  </Button>
-                </NextLinkFromReactRouter>
-              </Row>
-            </Box>
-            <Box>
-              {/* @todo @ChefJerry replace image url when ready */}
-              {/* @todo @ChefJerry mobile position */}
-              <img src="/images/cake-staking/new-staking-bunny.png" alt="new-staking-bunny" width="138px" />
-            </Box>
-          </FarmFlexWrapper>
-        </Column>
-      </PageHeader>
-      <Page>{children}</Page>
+      <Header />
+
+      <Page>
+        <TabMenu activeIndex={tab} onItemClick={onTabClick} isShowBorderBottom={false}>
+          <Tab>{t('All Pools (%counts%)', { counts: 1 })}</Tab>
+          <Tab>{t('My Positions (%counts%)', { counts: 1 })}</Tab>
+          <Tab>{t('History')}</Tab>
+        </TabMenu>
+        <Card>1</Card>
+      </Page>
     </>
   )
 }
