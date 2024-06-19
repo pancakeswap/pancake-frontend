@@ -50,7 +50,7 @@ export const AIRoundResultHistory: React.FC<React.PropsWithChildren<AIRoundResul
       {lockPrice && <LockPriceHistoryRow lockPrice={lockPrice} />}
       {AIPrice && (
         <Flex justifyContent="space-between" alignItems="center">
-          <Text small>{t('AI Predicted Price:')}</Text>
+          <Text small>{t('AI-Predicted Price')}:</Text>
           <Text small>{formatUsd(AIPrice, config?.displayedDecimals ?? 0)}</Text>
         </Flex>
       )}
