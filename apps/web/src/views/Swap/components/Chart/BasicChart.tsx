@@ -15,7 +15,7 @@ const BasicChart = ({
   isMobile,
   currentSwapPrice,
 }) => {
-  const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
+  const [timeWindow, setTimeWindow] = useState(PairDataTimeWindowEnum.DAY)
 
   const { data: pairPrices = [] } = usePairRate({
     token0Address,
