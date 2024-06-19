@@ -11,6 +11,7 @@ export const PCS_V2_START = 1619136000 // April 23, 2021, 12:00:00 AM
 export const PCS_ETH_START = 1664130827 // Sep 23, 2022, 02:33:47 AM
 export const ONE_DAY_UNIX = 86400 // 24h * 60m * 60s
 export const ONE_HOUR_SECONDS = 3600
+export const ONE_DAY_MILLISECONDS = 86400000
 
 export const ITEMS_PER_INFO_TABLE_PAGE = 10
 

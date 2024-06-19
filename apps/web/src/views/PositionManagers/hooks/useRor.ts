@@ -1,92 +1,54 @@
-import type { ChainId } from '@pancakeswap/chains'
-import { useQuery, type UseQueryResult } from '@tanstack/react-query'
-import type { Evaluate } from '@wagmi/core/internal'
-import { VAULT_API_ENDPOINT } from 'config/constants/endpoints'
-import type { Address, ExactPartial } from 'viem'
-import type { UseQueryParameters } from 'wagmi/query'
+import BigNumber from 'bignumber.js'
+import { ONE_DAY_MILLISECONDS } from 'config/constants/info'
+import { useMemo } from 'react'
+import type { Address } from 'viem'
+import { useChainId } from 'wagmi'
+import { AprResult } from './useApr'
+import { useFetchVaultHistory } from './useFetchVaultHistory'
 
-type RORPayload = {
+interface RorProps {
   vault: Address | undefined
-  chainId: ChainId
-}
-type RecursiveDeps<deps extends readonly unknown[]> = deps extends [infer dep, ...infer rest]
-  ? [dep] | [dep, ...RecursiveDeps<rest>]
-  : []
-
-export function createQueryKey<key extends string, deps extends readonly unknown[]>(id: key) {
-  return (deps?: RecursiveDeps<deps>) => [id, ...(deps || [])] as unknown as [key, ...deps]
+  totalStakedInUsd: number
 }
 
-const getVaultsQueryKey = createQueryKey<'rate-of-return', [ExactPartial<RORPayload>]>('rate-of-return')
-
-type GetVaultsQueryKey = ReturnType<typeof getVaultsQueryKey>
-
-interface VaultData {
-  earliest: number
-  timestamp: number
-  token0PerShare: string
-  token1PerShare: string
-  usd: string
-  vault: string
+export interface RorResult {
+  sevenDayRor: number
+  thirtyDayRor: number
+  isRorLaoding: boolean
 }
 
-type VaultDataArray = VaultData[]
-type RateOfReturnReturnType = VaultDataArray
-
-export type UseRorReturnType<selectData = RateOfReturnReturnType> = UseQueryResult<selectData, Error>
-
-export type UseRorParameters<selectData = RateOfReturnReturnType> = Evaluate<
-  RORPayload & UseQueryParameters<Evaluate<RateOfReturnReturnType>, Error, selectData, GetVaultsQueryKey>
->
-
-export const useRor = <selectData = RateOfReturnReturnType>(parameters: UseRorParameters<selectData>) => {
-  const { vault, chainId, ...query } = parameters
-
-  return useQuery({
-    ...query,
-    queryKey: getVaultsQueryKey([
-      {
-        vault,
-        chainId,
-      },
-    ]),
-    queryFn: async ({ queryKey }) => {
-      const { vault: qVault, chainId: qChainId } = queryKey[1]
-
-      if (!qVault || !qChainId) {
-        throw new Error('Missing vault history params')
-      }
-      const providerQuotes = await fetchVaultHistory({
-        vault: qVault,
-        chainId: qChainId,
-        startTimestamp: 1711915200,
-        endTimestamp: 1718664640,
-      })
-
-      return providerQuotes
-    },
-    refetchInterval: 20 * 1_000,
-    enabled: Boolean(vault && chainId),
-  })
+const floorToUTC00 = (timestamp: number): number => {
+  const date = new Date(timestamp)
+  date.setUTCHours(0, 0, 0, 0)
+  return date.getTime()
 }
 
-async function fetchVaultHistory(payload: {
-  vault: Address
-  startTimestamp: number
-  endTimestamp: number
-  chainId: ChainId
-}): Promise<VaultData[]> {
-  const response = await fetch(
-    `${VAULT_API_ENDPOINT}/api/history?vault=${payload.vault.toLowerCase()}&startTimestamp=${
-      payload.startTimestamp
-    }&endTimestamp=${payload.endTimestamp}&chainId=${payload.chainId}`,
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    },
-  )
-  const result = await response.json()
-  return result
+export const useRor = ({ vault, totalStakedInUsd }: RorProps): AprResult => {
+  const chainId = useChainId()
+  const { data: rorData, isLoading } = useFetchVaultHistory({ vault, chainId })
+
+  // console.log(rorData)
+  const rorHistorySnapshotData = useMemo(() => {
+    if (!rorData || !totalStakedInUsd) return { sevenDayRor: 0, thirtyDayRor: 0, isRorLoading: isLoading }
+
+    const now = Date.now()
+    const today = floorToUTC00(now)
+    const sevenDay = floorToUTC00(today - 7 * ONE_DAY_MILLISECONDS)
+
+    const vaultThirdyDayHistory = rorData
+    const vaultSevenDayHistory = [rorData.find((data) => sevenDay / 1000 < data.timestamp)]
+
+    const totalThirtyDayUsd = vaultThirdyDayHistory.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
+    const averageThirtyDayUsd = new BigNumber(totalThirtyDayUsd / vaultThirdyDayHistory.length)
+
+    const totalSevenDayUsd = vaultSevenDayHistory?.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
+    const averageSevenDayUsd = new BigNumber(totalSevenDayUsd / vaultSevenDayHistory.length)
+
+    const sevenDayRor = new BigNumber(totalStakedInUsd).minus(averageSevenDayUsd).div(averageSevenDayUsd).toNumber()
+    const thirtyDayRor = new BigNumber(totalStakedInUsd).minus(averageThirtyDayUsd).div(averageThirtyDayUsd).toNumber()
+
+    return { sevenDayRor, thirtyDayRor, isRorLoading: isLoading }
+  }, [rorData, totalStakedInUsd, isLoading])
+
+  return rorHistorySnapshotData
 }

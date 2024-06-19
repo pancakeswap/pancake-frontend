@@ -5,9 +5,10 @@ import { TextProps } from "./types";
 
 type SkeletonTextProps = {
   loading: boolean;
-  initialWidth: number;
+  initialWidth?: number;
   initialHeight?: number;
   color?: string;
+  isDark?: boolean;
   children: ReactNode;
 };
 
@@ -16,6 +17,7 @@ const SkeletonText = ({
   initialWidth,
   initialHeight = 16,
   children,
+  isDark = true,
   ...props
 }: TextProps & SkeletonTextProps) => {
   const textRef = useRef<HTMLDivElement>(null);
@@ -23,7 +25,7 @@ const SkeletonText = ({
     <>
       {loading ? (
         <Skeleton
-          isDark
+          isDark={isDark}
           width={textRef.current?.clientWidth || initialWidth}
           height={textRef.current?.clientHeight || initialHeight}
         />

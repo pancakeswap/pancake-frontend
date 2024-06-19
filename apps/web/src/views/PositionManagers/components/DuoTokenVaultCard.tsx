@@ -1,5 +1,5 @@
 import { MANAGER, Strategy } from '@pancakeswap/position-managers'
-import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Card, CardBody } from '@pancakeswap/uikit'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -86,7 +86,7 @@ interface Props {
   minDepositUSD?: number
   boosterMultiplier?: number
   boosterContractAddress?: Address
-  ror?: number
+  ror?: RorResult
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({

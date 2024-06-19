@@ -7,6 +7,7 @@ import {
   RocketIcon,
   RoiCalculatorModal,
   Skeleton,
+  SkeletonText,
   Text,
   useModal,
   useTooltip,
@@ -14,9 +15,10 @@ import {
 import BigNumber from 'bignumber.js'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { memo, useMemo } from 'react'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { AprResult } from '../hooks'
+import { RorResult } from '../hooks/useRor'
 
 interface Props {
   id: number | string
@@ -33,6 +35,8 @@ interface Props {
   rewardToken?: Currency
   isBooster?: boolean
   boosterMultiplier?: number
+  isRorLoading?: boolean
+  ror?: RorResult
 }
 
 const AprText = styled(Text)`
@@ -55,8 +59,11 @@ export const AprButton = memo(function YieldInfo({
   rewardToken,
   isBooster,
   boosterMultiplier = 3,
+  isRorLoading,
+  ror,
 }: Props) {
   const { t } = useTranslation()
+  const theme = useTheme()
   const { address: account } = useAccount()
   const { data: rewardUsdPrice } = useCurrencyUsdPrice(rewardToken)
   const tokenBalanceMultiplier = useMemo(() => new BigNumber(10).pow(lpTokenDecimals), [lpTokenDecimals])
@@ -123,6 +130,42 @@ export const AprButton = memo(function YieldInfo({
         {aprTimeWindow > 0
           ? t(`Calculated based on previous %days% days average data.`, { days: aprTimeWindow })
           : t('Calculated based average data since vault inception.')}
+      </Text>
+      <Text marginTop="16px">{t('ROR (Rate Of Return)')}</Text>
+      <ul>
+        <li style={{ display: 'flex' }}>
+          <span style={{ paddingRight: '6px' }}>{`${t('1 Week')}`}: </span>
+          <b>
+            <SkeletonText
+              loading={Boolean(isRorLoading)}
+              color={ror?.sevenDayRor && ror?.sevenDayRor > 0 ? theme.colors.success : theme.colors.failure}
+              // initialWidth={75}
+              fontWeight={800}
+              isDark={Boolean(theme.isDark)}
+            >
+              {ror?.sevenDayRor?.toFixed(2)}%
+            </SkeletonText>
+          </b>
+        </li>
+
+        <li style={{ display: 'flex' }}>
+          <span style={{ paddingRight: '6px' }}>{`${t('1 Month')}`}: </span>
+          <b>
+            <SkeletonText
+              loading={Boolean(isRorLoading)}
+              display="inline-block"
+              color={ror?.thirtyDayRor && ror?.thirtyDayRor > 0 ? theme.colors.success : theme.colors.failure}
+              initialWidth={75}
+              fontWeight={800}
+              isDark={Boolean(theme.isDark)}
+            >
+              {ror?.thirtyDayRor?.toFixed(2)}%
+            </SkeletonText>
+          </b>
+        </li>
+      </ul>
+      <Text lineHeight="120%" mt="20px">
+        {t('ROR Calculated based on historical snapshots factoring inhistorical price of the underlying tokens')}
       </Text>
     </>,
     {
