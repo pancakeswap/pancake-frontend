@@ -1,8 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, ButtonMenu, ButtonMenuItem, Flex, SwapLineChart, Text } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, PairDataTimeWindowEnum, SwapLineChart, Text } from '@pancakeswap/uikit'
 import { memo, useMemo, useState } from 'react'
 import { usePairRate } from 'state/swap/hooks'
-import { PairDataTimeWindowEnum } from 'state/swap/types'
 import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 import NoChartAvailable from './NoChartAvailable'
 import { getTimeWindowChange } from './utils'
@@ -16,7 +15,7 @@ const BasicChart = ({
   isMobile,
   currentSwapPrice,
 }) => {
-  const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
+  const [timeWindow, setTimeWindow] = useState(PairDataTimeWindowEnum.DAY)
 
   const { data: pairPrices = [] } = usePairRate({
     token0Address,
@@ -82,6 +81,10 @@ const BasicChart = ({
     return <NoChartAvailable token0Address={token0Address} token1Address={token1Address} isMobile={isMobile} />
   }
 
+  const changeText = isMobile
+    ? `${isChangePositive ? '+' : ''}${changePercentage}%`
+    : `${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`
+
   return (
     <>
       <Flex
@@ -98,7 +101,7 @@ const BasicChart = ({
             outputSymbol={outputCurrency?.symbol}
           >
             <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" ml="4px" bold>
-              {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
+              {changeText}
             </Text>
           </PairPriceDisplay>
           <Text small color="secondary">
@@ -107,6 +110,7 @@ const BasicChart = ({
         </Flex>
         <Box>
           <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm">
+            <ButtonMenuItem>{t('1H')}</ButtonMenuItem>
             <ButtonMenuItem>{t('24H')}</ButtonMenuItem>
             <ButtonMenuItem>{t('1W')}</ButtonMenuItem>
             <ButtonMenuItem>{t('1M')}</ButtonMenuItem>

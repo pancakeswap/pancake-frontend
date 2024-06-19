@@ -12,6 +12,7 @@ import {
   QuestionHelper,
   Text,
   WarningIcon,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { CurrencyLogo as CurrencyLogoWidget } from '@pancakeswap/widgets-internal'
@@ -25,6 +26,7 @@ import { styled } from 'styled-components'
 import { warningSeverity } from 'utils/exchange'
 import { formatExecutionPrice as mmFormatExecutionPrice } from 'views/Swap/MMLinkPools/utils/exchange'
 
+import { paymasterInfo } from 'config/paymaster'
 import { usePaymaster } from 'hooks/usePaymaster'
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
@@ -50,6 +52,15 @@ const SameTokenWarningBox = styled(Box)`
 
 const StyledWarningIcon = styled(WarningIcon)`
   fill: ${({ theme }) => theme.colors.yellow};
+`
+
+const Badge = styled.span`
+  font-size: 14px;
+  padding: 1px 6px;
+  user-select: none;
+  border-radius: ${({ theme }) => theme.radii['32px']};
+  color: ${({ theme }) => theme.colors.invertedContrast};
+  background-color: ${({ theme }) => theme.colors.success};
 `
 
 export const SwapModalFooter = memo(function SwapModalFooter({
@@ -91,16 +102,25 @@ export const SwapModalFooter = memo(function SwapModalFooter({
 
   const [gasToken] = useGasToken()
   const { isPaymasterAvailable, isPaymasterTokenActive } = usePaymaster()
+  const gasTokenInfo = paymasterInfo[gasToken.isToken ? gasToken?.wrapped.address : '']
 
   const showSameTokenWarning = useMemo(
     () =>
       isPaymasterAvailable &&
       isPaymasterTokenActive &&
+      gasTokenInfo?.discount !== 'FREE' &&
       inputAmount.currency?.wrapped.address &&
       !inputAmount.currency.isNative &&
       gasToken.isToken &&
       inputAmount.currency.wrapped.address === gasToken.wrapped.address,
-    [inputAmount, gasToken, isPaymasterAvailable, isPaymasterTokenActive],
+    [inputAmount, gasToken, isPaymasterAvailable, isPaymasterTokenActive, gasTokenInfo],
+  )
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    gasTokenInfo?.discount &&
+      (gasTokenInfo.discount === 'FREE'
+        ? t('Gas fees is fully sponsored')
+        : t('%discount% discount on this gas fee token', { discount: gasTokenInfo.discount })),
   )
 
   const severity = warningSeverity(priceImpactWithoutFee)
@@ -271,6 +291,15 @@ export const SwapModalFooter = memo(function SwapModalFooter({
           <RowBetween mt="8px">
             <RowFixed>
               <Text fontSize="14px">{t('Gas Token')}</Text>
+              {gasTokenInfo && gasTokenInfo.discount && (
+                <Badge
+                  ref={targetRef}
+                  style={{ fontSize: '12px', fontWeight: 600, padding: '3px 5px', marginLeft: '4px' }}
+                >
+                  ⛽️ {gasTokenInfo.discountLabel ?? gasTokenInfo.discount}
+                </Badge>
+              )}
+              {tooltipVisible && tooltip}
             </RowFixed>
 
             <Flex alignItems="center">

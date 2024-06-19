@@ -1,5 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
-import { bCakeFarmBoosterV3Address, bCakeFarmBoosterVeCakeAddress } from '@pancakeswap/farms/constants/v3'
+import {
+  bCakeFarmBoosterV3Address,
+  bCakeFarmBoosterV3VeCakeAddress,
+  bCakeFarmWrapperBoosterVeCakeAddress,
+} from '@pancakeswap/farms/constants/v3'
 import addresses from 'config/constants/contracts'
 import { VaultKey } from 'state/types'
 import { Address } from 'viem'
@@ -28,6 +32,10 @@ export const getLotteryV2Address = () => {
 export const getPancakeProfileAddress = () => {
   return getAddressFromMap(addresses.pancakeProfile)
 }
+export const getPancakeProfileProxyAddress = (chainId: number) => {
+  return getAddressFromMap(addresses.pancakeProfileProxy, chainId)
+}
+
 export const getPancakeBunniesAddress = () => {
   return getAddressFromMap(addresses.pancakeBunnies)
 }
@@ -100,7 +108,11 @@ export const getBCakeFarmBoosterV3Address = (chainId?: number) => {
 }
 
 export const getBCakeFarmBoosterVeCakeAddress = (chainId?: number) => {
-  return getAddressFromMap(bCakeFarmBoosterVeCakeAddress, chainId)
+  return getAddressFromMap(bCakeFarmBoosterV3VeCakeAddress, chainId)
+}
+
+export const getBCakeFarmWrapperBoosterVeCakeAddress = (chainId?: number) => {
+  return getAddressFromMap(bCakeFarmWrapperBoosterVeCakeAddress, chainId)
 }
 
 export const getBCakeFarmBoosterProxyFactoryAddress = () => {
@@ -165,6 +177,10 @@ export const getFixedStakingAddress = (chainId?: number) => {
 
 export const getVeCakeAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.veCake, chainId)
+}
+
+export const getPancakeVeSenderV2Address = (chainId?: number) => {
+  return getAddressFromMap(addresses.pancakeVeSenderV2, chainId)
 }
 
 export const getVeCakeAddressNoFallback = (chainId?: number) => {

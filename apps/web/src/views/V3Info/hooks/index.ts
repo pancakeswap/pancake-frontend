@@ -93,7 +93,7 @@ export const useProtocolTransactionData = (): Transaction[] | undefined => {
 // this is for the swap page and ROI calculator
 export const usePairPriceChartTokenData = (
   address?: string,
-  duration?: 'day' | 'week' | 'month' | 'year',
+  duration?: 'hour' | 'day' | 'week' | 'month' | 'year',
   targetChainId?: ChainId,
   enabled = true,
 ): { data: PriceChartEntry[] | undefined; maxPrice?: number; minPrice?: number; averagePrice?: number } => {
@@ -392,8 +392,8 @@ export const usePoolsDataForToken = (address: string): PoolData[] | undefined =>
   const { data } = useQuery({
     queryKey: [`v3/info/pool/poolsDataForToken/${chainName}/${address}`],
 
-    queryFn: () => {
-      return fetchPoolsForToken(address, explorerChainName!)
+    queryFn: ({ signal }) => {
+      return fetchPoolsForToken(address, explorerChainName!, signal)
     },
     enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
@@ -465,8 +465,8 @@ export const useSearchData = (searchValue: string, enabled = true) => {
   const { data, status, error } = useQuery({
     queryKey: [`v3/info/pool/searchData/${chainName}/${searchValue}`, chainName],
 
-    queryFn: () => {
-      return fetchSearchResults(explorerChainName!, searchValue)
+    queryFn: ({ signal }) => {
+      return fetchSearchResults(explorerChainName!, searchValue, signal)
     },
 
     enabled: Boolean(explorerChainName && searchValue && enabled),

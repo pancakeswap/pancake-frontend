@@ -1,5 +1,11 @@
 import { ChainId } from '@pancakeswap/chains'
-import { FarmWithStakedValue, filterFarmsByQuery, supportedChainIdV2, supportedChainIdV3 } from '@pancakeswap/farms'
+import {
+  FarmWithStakedValue,
+  bCakeSupportedChainId,
+  filterFarmsByQuery,
+  supportedChainIdV2,
+  supportedChainIdV3,
+} from '@pancakeswap/farms'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import {
@@ -276,6 +282,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         if (!farm.quoteTokenAmountTotal || !farm.quoteTokenPriceBusd) {
           return farm
         }
+
         const totalLiquidityFromLp = new BigNumber(farm?.lpTotalInQuoteToken ?? 0).times(farm.quoteTokenPriceBusd)
         // Mock 1$ tvl if the farm doesn't have lp staked
         const totalLiquidity = totalLiquidityFromLp.eq(BIG_ZERO) && mockApr ? BIG_ONE : totalLiquidityFromLp
@@ -288,6 +295,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 totalLiquidity,
                 farm.lpAddress,
                 regularCakePerBlock,
+                farm.lpRewardsApr,
                 farm.bCakePublicData?.rewardPerSecond,
               )
             : { cakeRewardsApr: 0, lpRewardsApr: 0 }
@@ -318,7 +326,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         (farm) =>
           (v3FarmOnly && farm.version === 3) ||
           (v2FarmOnly && farm.version === 2 && !farm.isStable) ||
-          (boostedOnly && farm.boosted && farm.version === 3) ||
+          (boostedOnly && ((farm.boosted && farm.version === 3) || (farm.version === 2 && farm.bCakeWrapperAddress))) ||
           (stableSwapOnly && farm.version === 2 && farm.isStable),
       )
 
@@ -439,12 +447,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 </Button>
               </NextLinkFromReactRouter>
             </Box>
-
-            {(chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET) && (
-              <Box>
-                <BCakeBoosterCard />
-              </Box>
-            )}
+            <Box>{bCakeSupportedChainId.includes(chainId) && <BCakeBoosterCard />}</Box>
           </FarmFlexWrapper>
         </Flex>
       </PageHeader>

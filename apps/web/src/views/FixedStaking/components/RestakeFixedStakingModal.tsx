@@ -1,17 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ModalV2, useModalV2, Text, Box, PreTitle, Flex, Message, MessageText } from '@pancakeswap/uikit'
-import { ReactNode } from 'react'
-import { CurrencyAmount, Currency } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { Box, Flex, Message, MessageText, ModalV2, PreTitle, Text, useModalV2 } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
+import { ReactNode } from 'react'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 import { FixedStakingPool, StakedPosition } from '../type'
+import { AmountWithUSDSub } from './AmountWithUSDSub'
+import { FixedStakingCalculator } from './FixedStakingCalculator'
 import FixedStakingOverview from './FixedStakingOverview'
 import { StakingModalTemplate } from './StakingModalTemplate'
-import { FixedStakingCalculator } from './FixedStakingCalculator'
-import { AmountWithUSDSub } from './AmountWithUSDSub'
 import WithdrawalMessage from './WithdrawalMessage'
 
 export function FixedRestakingModal({
@@ -50,6 +50,7 @@ export function FixedRestakingModal({
         closeOnOverlayClick
       >
         <StakingModalTemplate
+          hideStakeButton
           useNative
           stakedPositions={stakedPositions}
           stakingToken={stakingToken}

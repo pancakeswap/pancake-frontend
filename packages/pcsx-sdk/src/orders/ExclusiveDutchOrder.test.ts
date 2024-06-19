@@ -78,4 +78,23 @@ describe('ExclusiveDutchOrder', () => {
 
     expect(order.hash()).toMatchInlineSnapshot(`"0x7cef8eb26ac11e086c2784eb12d93cb9a4a68b3f04ce56b0858ff59829a13f0a"`)
   })
+
+  it('decay', () => {
+    const now = BigInt(Math.floor(new Date().getTime() / 1000) + 500)
+    const order = new ExclusiveDutchOrder(getOrderInfo({}), 97)
+
+    const decayInput = order.decayInput(now)
+    const decayOutputs = order.decayOutputs(now)
+
+    expect(decayInput).toEqual({
+      ...order.info.input,
+      currentAmount: 1000000n,
+    })
+    expect(decayOutputs).toEqual([
+      {
+        ...order.info.outputs[0],
+        currentAmount: 950000000000000000n,
+      },
+    ])
+  })
 })

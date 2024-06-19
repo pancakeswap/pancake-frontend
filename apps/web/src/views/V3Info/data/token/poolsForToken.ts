@@ -8,12 +8,11 @@ import { PoolData } from 'views/V3Info/types'
 export async function fetchPoolsForToken(
   address: string,
   chainName: components['schemas']['ChainName'],
-): Promise<{
-  error: boolean
-  data: PoolData[]
-}> {
+  signal: AbortSignal,
+): Promise<{ error: boolean; data: PoolData[] }> {
   try {
     const data = await explorerApiClient.GET('/cached/pools/v3/{chainName}/list/top', {
+      signal,
       params: {
         path: {
           chainName,

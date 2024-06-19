@@ -1,8 +1,9 @@
 import noop from "lodash/noop";
 import React, { useState } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { BrowserRouter, Link, MemoryRouter } from "react-router-dom";
 import { Language } from "@pancakeswap/localization";
+import { BrowserRouter, Link, MemoryRouter } from "react-router-dom";
+import { SubMenuItemsType } from "../../components";
 import Box from "../../components/Box/Box";
 import Flex from "../../components/Box/Flex";
 import Button from "../../components/Button/Button";
@@ -13,14 +14,12 @@ import Heading from "../../components/Heading/Heading";
 import Input from "../../components/Input/Input";
 import { CogIcon, LanguageCurrencyIcon } from "../../components/Svg";
 import Text from "../../components/Text/Text";
-import { Modal, ModalProps, useModal } from "../Modal";
+import { BottomDrawer, Modal, ModalProps, useModal } from "../Modal";
+import Menu from "./Menu";
 import UserMenu from "./components/UserMenu";
 import { Variant, variants } from "./components/UserMenu/types";
-import Menu from "./Menu";
-import { NavProps } from "./types";
-import BottomDrawer from "../../components/BottomDrawer/BottomDrawer";
-import { SubMenuItemsType } from "../../components";
 import { links, userMenulinks } from "./testConfig";
+import { NavProps } from "./types";
 
 export default {
   title: "Widgets/Menu",

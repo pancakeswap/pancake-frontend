@@ -73,7 +73,7 @@ export async function fetchTokenPriceData(
 export async function fetchPairPriceChartTokenData(
   address: string,
   chainName: components['schemas']['ChainName'],
-  duration: 'day' | 'week' | 'month' | 'year',
+  duration: 'hour' | 'day' | 'week' | 'month' | 'year',
   signal: AbortSignal,
 ): Promise<{
   data: PriceChartEntry[]
@@ -97,7 +97,9 @@ export async function fetchPairPriceChartTokenData(
           },
           query: {
             period:
-              duration === 'day'
+              duration === 'hour'
+                ? '1H'
+                : duration === 'day'
                 ? '1D'
                 : duration === 'week'
                 ? '1W'

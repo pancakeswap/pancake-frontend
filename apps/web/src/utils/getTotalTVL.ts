@@ -101,14 +101,24 @@ export const getTotalTvl = async () => {
   return results
 }
 
+type StatsRes = {
+  tvlUSD: string
+  txCount30d: number
+}
+
 const getStats = async (type: 'v2' | 'v3' | 'stable', chainIds: number[]) => {
-  const rawResults: any[] = (
+  const abortController = new AbortController()
+  setTimeout(() => {
+    abortController.abort()
+  }, 10 * 1000)
+
+  const rawResults = (
     await Promise.all(
       chainIds.map(async (chainId) => {
-        let result
+        let result: { data?: StatsRes } | undefined
         try {
           result = await explorerApiClient.GET('/cached/protocol/{protocol}/{chainName}/stats', {
-            signal: null,
+            signal: abortController.signal,
             params: {
               path: {
                 protocol: type,
@@ -117,6 +127,7 @@ const getStats = async (type: 'v2' | 'v3' | 'stable', chainIds: number[]) => {
             },
           })
         } catch (error) {
+          console.error(error)
           if (process.env.NODE_ENV === 'production') {
             console.error('Error when fetching tvl stats', error)
           }
@@ -127,7 +138,7 @@ const getStats = async (type: 'v2' | 'v3' | 'stable', chainIds: number[]) => {
   ).filter(Boolean)
 
   return {
-    totalTvl: rawResults.reduce((acc, tvlString) => acc + parseFloat(tvlString?.data?.tvlUSD), 0),
-    txCount30d: rawResults.reduce((acc, tvlString) => acc + parseFloat(tvlString?.data?.txCount30d), 0),
+    totalTvl: rawResults.reduce((acc, tvlString) => acc + parseFloat(tvlString?.data?.tvlUSD || '0'), 0),
+    txCount30d: rawResults.reduce((acc, tvlString) => acc + (tvlString?.data?.txCount30d ?? 0), 0),
   }
 }

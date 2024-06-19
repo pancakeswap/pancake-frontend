@@ -1,5 +1,13 @@
 # @pancakeswap/multicall
 
+## 3.5.7
+
+### Patch Changes
+
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/sdk@5.8.7
+
 ## 3.5.6
 
 ### Patch Changes

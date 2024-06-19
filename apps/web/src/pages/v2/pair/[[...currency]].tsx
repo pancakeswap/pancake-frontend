@@ -86,7 +86,7 @@ export default function PoolV2Page() {
 
   const { isMobile } = useMatchBreakpoints()
 
-  const poolData = useLPApr(pair)
+  const poolData = useLPApr('v2', pair)
 
   return (
     <Page>

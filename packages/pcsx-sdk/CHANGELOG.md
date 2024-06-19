@@ -1,5 +1,19 @@
 # @pancakeswap/pcsx-sdk
 
+## 0.0.11
+
+### Patch Changes
+
+- 42be6fc: add input and outputs decay
+
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+  - @pancakeswap/permit2-sdk@1.0.9
+
 ## 0.0.9
 
 ### Patch Changes
