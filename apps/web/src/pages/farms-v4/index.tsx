@@ -24,7 +24,7 @@ const FarmsPage = () => {
   )
 }
 
-FarmsPage.layout = V4PageLayout
+FarmsPage.Layout = V4PageLayout
 
 FarmsPage.chains = SUPPORT_FARMS
 
