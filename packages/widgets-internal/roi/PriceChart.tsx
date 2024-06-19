@@ -36,7 +36,7 @@ interface Props {
 export const PriceChart = memo(function PriceChart({
   prices,
   onSpanChange,
-  span = 0,
+  span = 1,
   priceUpper,
   priceLower,
   priceCurrent,
