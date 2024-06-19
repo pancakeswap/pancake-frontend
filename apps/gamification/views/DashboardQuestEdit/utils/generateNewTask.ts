@@ -77,7 +77,6 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         isCompleted: false,
         taskType,
         socialLink: '',
-        accountId: '',
         isOptional: false,
       }
     default:

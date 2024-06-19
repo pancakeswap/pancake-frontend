@@ -50,7 +50,6 @@ export interface TaskSocialConfig extends TaskBaseConfig {
     | TaskType.IG_COMMENT_POST
     | TaskType.IG_FOLLOW_ACCOUNT
   socialLink: string
-  accountId: string
 }
 
 export interface TaskBlogPostConfig extends TaskBaseConfig {

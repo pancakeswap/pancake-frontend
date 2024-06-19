@@ -18,13 +18,11 @@ import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/Styl
 import { TaskSocialConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
-import { validateIsNotEmpty, validateUrl } from 'views/DashboardQuestEdit/utils/validateTask'
+import { validateUrl } from 'views/DashboardQuestEdit/utils/validateTask'
 
 interface SocialTaskProps {
   task: TaskSocialConfig
 }
-
-type SocialInputType = 'socialLink' | 'accountId'
 
 export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
   const { t } = useTranslation()
@@ -45,16 +43,12 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
     window.open(task.socialLink, '_blank', 'noopener noreferrer')
   }
 
-  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>, type: SocialInputType) => {
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsFirst(false)
 
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskSocialConfig) => i.sid === task.sid)
-    if (type === 'socialLink') {
-      forkTasks[indexToUpdate].socialLink = e.target.value
-    } else {
-      forkTasks[indexToUpdate].accountId = e.target.value
-    }
+    forkTasks[indexToUpdate].socialLink = e.target.value
 
     onTasksChange([...forkTasks])
   }
@@ -68,7 +62,6 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
   }
 
   const isUrlError = useMemo(() => !isFirst && validateUrl(task.socialLink), [isFirst, task?.socialLink])
-  const isAccountError = useMemo(() => !isFirst && validateIsNotEmpty(task.accountId), [isFirst, task?.accountId])
 
   return (
     <Flex flexDirection="column">
@@ -91,7 +84,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
             />
           )}
         </Flex>
-        <Flex alignSelf="center" width={['100%']} flexDirection={['column', 'column', 'row']}>
+        <Flex width={['100%', '100%', 'fit-content']} m={['8px 0 0 0', '8px 0 0 0', '0 0 0 auto']} alignSelf="center">
           <InputGroup
             m={['8px 0', '8px 0', '0 8px 0 0']}
             endIcon={
@@ -110,19 +103,12 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
               isError={isUrlError}
               style={{ borderRadius: '24px' }}
               placeholder={taskInputPlaceholder(social)}
-              onChange={(e) => handleUrlChange(e, 'socialLink')}
+              onChange={(e) => handleUrlChange(e)}
             />
           </InputGroup>
-          <StyledInput
-            value={task.accountId}
-            isError={isAccountError}
-            style={{ borderRadius: '24px' }}
-            placeholder={t('Account ID')}
-            onChange={(e) => handleUrlChange(e, 'accountId')}
-          />
           {!isMobile && (
             <DropdownList
-              m="auto auto auto 8px"
+              m="auto"
               id={task.sid}
               isOptional={task.isOptional}
               onClickDelete={onPresentDeleteModal}
@@ -132,7 +118,6 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
         </Flex>
       </Flex>
       {isUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
-      {isAccountError && <InputErrorText errorText={t('Enter Account Id')} />}
     </Flex>
   )
 }
