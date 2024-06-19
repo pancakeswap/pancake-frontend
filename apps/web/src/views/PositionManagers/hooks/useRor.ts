@@ -1,6 +1,7 @@
 import type { ChainId } from '@pancakeswap/chains'
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import type { Evaluate } from '@wagmi/core/internal'
+import { VAULT_API_ENDPOINT } from 'config/constants/endpoints'
 import type { Address, ExactPartial } from 'viem'
 import type { UseQueryParameters } from 'wagmi/query'
 
@@ -49,24 +50,24 @@ export const useRor = <selectData = RateOfReturnReturnType>(parameters: UseRorPa
         chainId,
       },
     ]),
-    refetchInterval: 40 * 1_000,
-    staleTime: 40 * 1_000,
-    enabled: Boolean(vault && chainId),
     queryFn: async ({ queryKey }) => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { vault, chainId } = queryKey[1]
-      if (!vault || !chainId) {
+      const { vault: qVault, chainId: qChainId } = queryKey[1]
+
+      if (!qVault || !qChainId) {
         throw new Error('Missing vault history params')
       }
       const providerQuotes = await fetchVaultHistory({
-        vault,
-        chainId,
+        vault: qVault,
+        chainId: qChainId,
         startTimestamp: 1711915200,
         endTimestamp: 1718664640,
       })
 
       return providerQuotes
     },
+    refetchInterval: 40 * 1_000,
+    staleTime: 40 * 1_000,
+    enabled: Boolean(vault && chainId),
   })
 }
 
@@ -77,8 +78,7 @@ async function fetchVaultHistory(payload: {
   chainId: ChainId
 }): Promise<VaultData[]> {
   const response = await fetch(
-    // TO UPDATE
-    `https://vault.pancakeswap.com/api/history?vault=${payload.vault.toLowerCase()}&startTimestamp=${
+    `${VAULT_API_ENDPOINT}/api/history?vault=${payload.vault.toLowerCase()}&startTimestamp=${
       payload.startTimestamp
     }&endTimestamp=${payload.endTimestamp}&chainId=${payload.chainId}`,
     {
