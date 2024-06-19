@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { CAKE } from '@pancakeswap/tokens'
+import { CAKE, getTokensByChain } from '@pancakeswap/tokens'
 import { Box, Button, Flex, InjectedModalProps, Modal } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { BigNumber } from 'bignumber.js'
@@ -8,7 +8,8 @@ import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import { CurrencySearch } from 'components/SearchModal/CurrencySearch'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTokenBalance from 'hooks/useTokenBalance'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
 
 export enum CurrencyModalView {
   search,
@@ -20,15 +21,28 @@ interface ModalConfig {
   onBack: () => void
 }
 
-interface AddRewardModalProps extends InjectedModalProps {}
+interface AddRewardModalProps extends InjectedModalProps {
+  reward: undefined | QuestRewardType
+  handlePickedRewardToken: (value: Currency, totalRewardAmount: number) => void
+}
 
-export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProps>> = ({ onDismiss }) => {
+export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProps>> = ({
+  reward,
+  handlePickedRewardToken,
+  onDismiss,
+}) => {
   const { t } = useTranslation()
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.currencyInput)
-  const { account, chainId } = useActiveWeb3React()
-  const defaultInputCurrency = (CAKE as any)?.[chainId]
+  const { chainId } = useActiveWeb3React()
+
+  const defaultInputCurrency = useMemo((): Currency => {
+    const list = getTokensByChain(reward?.currency?.network)
+    const findToken = list.find((i) => i.address.toLowerCase() === reward?.currency?.address?.toLowerCase())
+    return findToken || (CAKE as any)?.[chainId]
+  }, [chainId, reward])
+
   const [inputCurrency, setInputCurrency] = useState<Currency>(defaultInputCurrency)
-  const [stakeAmount, setStakeAmount] = useState('')
+  const [stakeAmount, setStakeAmount] = useState(reward?.totalRewardAmount?.toString() ?? '')
   const { balance: currencyBalance } = useTokenBalance(inputCurrency?.wrapped?.address)
 
   const config = {
@@ -58,6 +72,11 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     setModalView(CurrencyModalView.currencyInput)
   }, [])
 
+  const handleContinue = () => {
+    handlePickedRewardToken(inputCurrency, Number(stakeAmount))
+    onDismiss?.()
+  }
+
   return (
     <Modal title={config[modalView].title} onDismiss={config[modalView].onBack}>
       <Flex
@@ -84,7 +103,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
                 onPressCustomModal={() => setModalView(CurrencyModalView.search)}
               />
             </Box>
-            <Button width="100%" mt="24px">
+            <Button width="100%" mt="24px" disabled={Boolean(!inputCurrency || !stakeAmount)} onClick={handleContinue}>
               {t('Continue')}
             </Button>
           </>

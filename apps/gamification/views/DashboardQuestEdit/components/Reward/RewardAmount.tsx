@@ -1,10 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { bscTokens } from '@pancakeswap/tokens'
+import { Currency } from '@pancakeswap/sdk'
+import { CAKE, getTokensByChain } from '@pancakeswap/tokens'
 import { ArrowUpIcon, Box, Button, Flex, Input, Text, useModal } from '@pancakeswap/uikit'
 import { TokenImage } from 'components/TokenImage'
-import { useCallback } from 'react'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
+import { AddRewardModal } from 'views/DashboardQuestEdit/components/Reward/AddRewardModal'
 import { WithdrawRewardModal } from 'views/DashboardQuestEdit/components/Reward/WithdrawRewardModal'
+import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
 
 const RewardContainer = styled(Flex)`
   flex-direction: column;
@@ -14,21 +18,30 @@ const RewardContainer = styled(Flex)`
 `
 
 interface RewardAmountProps {
-  totalRewardAmount: number
-  amountOfWinners: number
+  reward: undefined | QuestRewardType
+  handlePickedRewardToken: (value: Currency, totalRewardAmount: number) => void
   setAmountPerWinner: (value: string) => void
 }
 
-export const RewardAmount: React.FC<RewardAmountProps> = ({
-  totalRewardAmount,
-  amountOfWinners,
-  setAmountPerWinner,
-}) => {
+export const RewardAmount: React.FC<RewardAmountProps> = ({ reward, handlePickedRewardToken, setAmountPerWinner }) => {
   const { t } = useTranslation()
-  const token = bscTokens.usdt
+  const { chainId } = useActiveWeb3React()
+
+  const token = useMemo((): Currency => {
+    const list = getTokensByChain(reward?.currency?.network)
+    const findToken = list.find((i) => i.address.toLowerCase() === reward?.currency?.address?.toLowerCase())
+    return findToken || (CAKE as any)?.[chainId]
+  }, [chainId, reward])
 
   const [onPresentWithdrawRewardModal] = useModal(
-    <WithdrawRewardModal token={token} rewardAmount={totalRewardAmount} />,
+    <WithdrawRewardModal token={token} rewardAmount={Number(reward?.totalRewardAmount)} />,
+  )
+
+  const [onPresentAddRewardModal] = useModal(
+    <AddRewardModal reward={reward} handlePickedRewardToken={handlePickedRewardToken} />,
+    true,
+    true,
+    'add-reward-modal',
   )
 
   const handleInput = useCallback(
@@ -43,14 +56,16 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({
   return (
     <Box>
       <RewardContainer>
-        <TokenImage token={token} width={64} height={64} />
-        <Box m="8px 0 10px 0">
-          <Text as="span" bold fontSize="24px" lineHeight="28px">
-            {totalRewardAmount}
-          </Text>
-          <Text as="span" bold ml="4px" fontSize="20px" lineHeight="24px">
-            {token.symbol}
-          </Text>
+        <Box style={{ cursor: 'pointer' }} onClick={onPresentAddRewardModal}>
+          <TokenImage margin="auto" token={token} width={64} height={64} />
+          <Box m="8px 0 10px 0">
+            <Text as="span" bold fontSize="24px" lineHeight="28px">
+              {Number(reward?.totalRewardAmount)}
+            </Text>
+            <Text as="span" bold ml="4px" fontSize="20px" lineHeight="24px">
+              {token.symbol}
+            </Text>
+          </Box>
         </Box>
         <Button
           onClick={onPresentWithdrawRewardModal}
@@ -65,7 +80,12 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({
             {t('Amount of winners')}
           </Text>
           <Box width="80px">
-            <Input pattern="^[0-9]+$" inputMode="numeric" value={amountOfWinners} onChange={handleInput} />
+            <Input
+              pattern="^[0-9]+$"
+              inputMode="numeric"
+              value={Number(reward?.amountOfWinners)}
+              onChange={handleInput}
+            />
           </Box>
         </Flex>
       </RewardContainer>

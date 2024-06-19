@@ -1,10 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Token } from '@pancakeswap/swap-sdk-core'
+import { Currency } from '@pancakeswap/sdk'
 import { Box, Button, Flex, InjectedModalProps, Modal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { TokenImage } from 'components/TokenImage'
 
 interface WithdrawRewardModalProps extends InjectedModalProps {
-  token: Token
+  token: Currency
   rewardAmount: number
 }
 

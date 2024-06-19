@@ -11,7 +11,7 @@ export const DashboardQuests = () => {
 
   return (
     <RecordTemplate
-      title={t('Guests')}
+      title={t('Quests')}
       createLink="/dashboard/quest/edit"
       createButtonText={t('Create')}
       statusButtonIndex={statusButtonIndex}

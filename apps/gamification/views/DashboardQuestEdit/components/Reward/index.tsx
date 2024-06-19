@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency } from '@pancakeswap/sdk'
 import { Box, Card, Text } from '@pancakeswap/uikit'
 import { useCallback } from 'react'
 import { styled } from 'styled-components'
@@ -40,25 +41,29 @@ export const Reward: React.FC<RewardProps> = ({ reward, actionComponent, updateV
     [reward, updateValue],
   )
 
-  const handlePickedRewardToken = () => {
+  const handlePickedRewardToken = (currency: Currency, totalRewardAmount: number) => {
+    const tokenAddress = currency?.isNative ? currency?.wrapped?.address : currency?.address
+    const tokenChainId = currency?.chainId
+
     let rewardData: QuestRewardType = {
       title: '',
       description: '',
       rewardType: RewardType.TOKEN,
       currency: {
-        address: '0x',
-        network: 56,
+        address: tokenAddress,
+        network: tokenChainId,
       },
       amountOfWinners: 0,
-      totalRewardAmount: 0,
+      totalRewardAmount,
     }
 
     if (reward) {
       rewardData = {
         ...reward,
+        totalRewardAmount,
         currency: {
-          address: '0x',
-          network: 56,
+          address: tokenAddress,
+          network: tokenChainId,
         },
       }
     }
@@ -75,12 +80,12 @@ export const Reward: React.FC<RewardProps> = ({ reward, actionComponent, updateV
           </Text>
           {reward ? (
             <RewardAmount
-              totalRewardAmount={reward?.totalRewardAmount}
-              amountOfWinners={reward?.amountOfWinners}
+              reward={reward}
+              handlePickedRewardToken={handlePickedRewardToken}
               setAmountPerWinner={handleRewardPerWin}
             />
           ) : (
-            <AddReward />
+            <AddReward reward={reward} handlePickedRewardToken={handlePickedRewardToken} />
           )}
           {actionComponent}
         </Box>
