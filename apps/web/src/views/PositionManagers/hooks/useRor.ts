@@ -65,8 +65,7 @@ export const useRor = <selectData = RateOfReturnReturnType>(parameters: UseRorPa
 
       return providerQuotes
     },
-    refetchInterval: 40 * 1_000,
-    staleTime: 40 * 1_000,
+    refetchInterval: 20 * 1_000,
     enabled: Boolean(vault && chainId),
   })
 }
