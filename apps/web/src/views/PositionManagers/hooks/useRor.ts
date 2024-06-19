@@ -42,12 +42,11 @@ export const useRor = ({ vault, totalStakedInUsd, startTimestamp }: RorProps): R
     const thirtyDayCuttoffTimestamp = createVaultHistorySubArray(rorData, thirtyDay / 1000)
 
     const totalThirtyDayUsd = thirtyDayCuttoffTimestamp.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
-    const averageThirtyDayUsd = new BigNumber(totalThirtyDayUsd / thirtyDayCuttoffTimestamp.length)
-
     const totalSevenDayUsd = sevenDayCuttoffTimestamp?.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
-    const averageSevenDayUsd = new BigNumber(totalSevenDayUsd / sevenDayCuttoffTimestamp.length)
-
     const earliestDayUsd = earliestCuttoffTimestamp?.reduce((sum, entry) => sum + Number(entry?.usd), 0) ?? 0
+
+    const averageThirtyDayUsd = new BigNumber(totalThirtyDayUsd / thirtyDayCuttoffTimestamp.length)
+    const averageSevenDayUsd = new BigNumber(totalSevenDayUsd / sevenDayCuttoffTimestamp.length)
     const averageEarliestDayUsd = new BigNumber(earliestDayUsd / earliestCuttoffTimestamp.length)
 
     const sevenDayRor = new BigNumber(totalStakedInUsd).minus(averageSevenDayUsd).div(averageSevenDayUsd).toNumber()
