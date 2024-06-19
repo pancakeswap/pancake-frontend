@@ -22,6 +22,7 @@ export const useFetchProviderAvailabilities = () => {
       MoonPay: true,
       Mercuryo: true,
       Transak: true,
+      Paymonade: true,
       Topper: true,
     },
   })

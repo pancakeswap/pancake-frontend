@@ -65,8 +65,8 @@ export const PROVIDER_ICONS = {
   [ONRAMP_PROVIDERS.MoonPay]: `${ASSET_CDN}/web/onramp/moonpay.svg`,
   [ONRAMP_PROVIDERS.Mercuryo]: `${ASSET_CDN}/web/onramp/mercuryo.svg`,
   [ONRAMP_PROVIDERS.Transak]: `${ASSET_CDN}/web/onramp/transak.svg`,
-  [ONRAMP_PROVIDERS.Topper]: `${ASSET_CDN}/web/onramp/transak.svg`,
-  [ONRAMP_PROVIDERS.Paymonade]: `${ASSET_CDN}/web/onramp/transak.svg`,
+  [ONRAMP_PROVIDERS.Topper]: `${ASSET_CDN}/web/onramp/topper.png`,
+  [ONRAMP_PROVIDERS.Paymonade]: `${ASSET_CDN}/web/onramp/paymonade.png`,
 } satisfies Record<keyof typeof ONRAMP_PROVIDERS, string>
 
 export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: FeeTypes[] } = {

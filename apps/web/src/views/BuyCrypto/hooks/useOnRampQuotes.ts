@@ -44,9 +44,7 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
     refetchInterval: 40 * 1_000,
     staleTime: 40 * 1_000,
     enabled: Boolean(enabled),
-    queryFn: async ({ queryKey }) => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { cryptoCurrency, fiatAmount, fiatCurrency, network, onRampUnit } = queryKey[1]
+    queryFn: async () => {
       if (!cryptoCurrency || !fiatAmount || !fiatCurrency || !onRampUnit) {
         throw new Error('Missing buy-crypto fetch-provider-quotes params')
       }
