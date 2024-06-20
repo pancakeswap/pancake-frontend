@@ -58,7 +58,6 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     setActionPanelExpanded(!actionPanelExpanded)
   }, [actionPanelExpanded])
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
-
   useEffect(() => {
     setActionPanelExpanded(hasStakedAmount)
   }, [hasStakedAmount])
@@ -102,18 +101,25 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
 
   const hasSwellReward = useHasSwellReward(address)
   const adapterContract = usePositionManagerAdapterContract(adapterAddress ?? '0x')
+  const tokenRatio = useQuery({
+    queryKey: ['adapterAddress', adapterAddress, id],
+
+    queryFn: async () => {
+      const result = await adapterContract.read.tokenPerShare()
+      return new BigNumber(result[0].toString())
+        .div(new BigNumber(10).pow(currencyA.decimals))
+        .div(new BigNumber(result[1].toString()).div(new BigNumber(10).pow(currencyB.decimals)))
+        .toNumber()
+    },
+
+    enabled: !!adapterContract,
+    refetchInterval: 6000,
+    staleTime: 6000,
+    gcTime: 6000,
+  }).data
 
   const vaultName = useMemo(() => getVaultName(idByManager, name), [name, idByManager])
   const info = usePositionInfo(bCakeWrapperAddress ?? address, adapterAddress ?? '0x', Boolean(bCakeWrapperAddress))
-
-  const totalStakedInUsd = useTotalStakedInUsd({
-    currencyA,
-    currencyB,
-    poolToken0Amount: info?.poolToken0Amounts,
-    poolToken1Amount: info?.poolToken1Amounts,
-    token0PriceUSD: token0USDPrice,
-    token1PriceUSD: token1USDPrice,
-  })
 
   const token0Usd = useCurrencyUsdPrice(currencyA, {
     enabled: !priceFromV3FarmPid,
@@ -146,23 +152,6 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     token1USDPrice,
     startTimestamp: info.startTimestamp,
   })
-
-  const tokenRatio = useQuery({
-    queryKey: ['adapterAddress', adapterAddress, id],
-
-    queryFn: async () => {
-      const result = await adapterContract.read.tokenPerShare()
-      return new BigNumber(result[0].toString())
-        .div(new BigNumber(10).pow(currencyA.decimals))
-        .div(new BigNumber(result[1].toString()).div(new BigNumber(10).pow(currencyB.decimals)))
-        .toNumber()
-    },
-
-    enabled: !!adapterContract,
-    refetchInterval: 6000,
-    staleTime: 6000,
-    gcTime: 6000,
-  }).data
 
   useEffect(() => {
     if (info?.userToken0Amounts > 0n || info?.userToken1Amounts > 0n) {
@@ -199,6 +188,15 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
   }, [aprDataList, aprTimeWindow, info.vaultAddress])
 
   const { earningUsdValue } = useEarningTokenPriceInfo(earningToken, info?.pendingReward)
+
+  const totalStakedInUsd = useTotalStakedInUsd({
+    currencyA,
+    currencyB,
+    poolToken0Amount: info?.poolToken0Amounts,
+    poolToken1Amount: info?.poolToken1Amounts,
+    token0PriceUSD: token0USDPrice,
+    token1PriceUSD: token1USDPrice,
+  })
 
   const apr = useApr({
     currencyA,
