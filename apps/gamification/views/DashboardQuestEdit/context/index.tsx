@@ -17,6 +17,7 @@ export const QuestEditContext = createContext<EditQuestContextType | undefined>(
 export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [tasks, setTasks] = useState<TaskConfigType[]>([])
   const [state, setState] = useState<StateType>(() => ({
+    orgId: '',
     chainId: ChainId.BSC,
     completionStatus: CompletionStatus.DRAFTED,
     title: '',

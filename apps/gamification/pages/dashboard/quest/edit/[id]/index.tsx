@@ -15,12 +15,13 @@ const SingleDashboardQuestEditPage = () => {
 
   useEffect(() => {
     if (!showPage && isFetched && questData) {
-      const { chainId, completionStatus, title, description, reward, startDateTime, endDateTime } = questData
+      const { orgId, chainId, completionStatus, title, description, reward, startDateTime, endDateTime } = questData
       const startDateConvert = startDateTime ? new Date(convertDateAndTime(startDateTime)) : null
       const endDateConvert = startDateTime ? new Date(convertDateAndTime(endDateTime)) : null
 
       updateAllState({
         chainId,
+        orgId,
         completionStatus,
         title,
         description,

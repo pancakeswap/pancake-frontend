@@ -4,6 +4,7 @@ import { Address } from 'viem'
 import { CompletionStatus, RewardType, TaskType } from 'views/DashboardQuestEdit/type'
 
 export interface StateType {
+  orgId: string
   chainId: ChainId
   completionStatus: CompletionStatus
   title: string
