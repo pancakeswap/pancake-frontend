@@ -141,7 +141,6 @@ export const AprButton = memo(function YieldInfo({
             loading={Boolean(isRorLoading)}
             display="inline-block"
             color={ror?.sevenDayRor && ror?.sevenDayRor > 0 ? theme.colors.success : theme.colors.failure}
-            initialWidth={75}
             fontWeight={800}
             isDark={Boolean(theme.isDark)}
           >
@@ -156,7 +155,6 @@ export const AprButton = memo(function YieldInfo({
               loading={Boolean(isRorLoading)}
               display="inline-block"
               color={ror?.thirtyDayRor && ror?.thirtyDayRor > 0 ? theme.colors.success : theme.colors.failure}
-              initialWidth={75}
               fontWeight={800}
               isDark={Boolean(theme.isDark)}
             >
@@ -171,7 +169,6 @@ export const AprButton = memo(function YieldInfo({
               loading={Boolean(isRorLoading)}
               display="inline-block"
               color={ror?.earliestDayRor && ror?.earliestDayRor > 0 ? theme.colors.success : theme.colors.failure}
-              initialWidth={75}
               fontWeight={800}
               isDark={Boolean(theme.isDark)}
             >
