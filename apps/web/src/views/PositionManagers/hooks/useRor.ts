@@ -44,16 +44,15 @@ export const useRor = ({
     queryKey: ['adapterAddress', adapterAddress, vault, token0USDPrice, token1USDPrice],
 
     queryFn: async () => {
-      if (!token1USDPrice || !token0USDPrice) {
-        throw new Error('Price needs to be defined')
-      }
+      if (!token1USDPrice || !token0USDPrice) throw new Error('token Prices needs to be defined')
       const [token0PerShare, token1PerShare] = await adapterContract.read.tokenPerShare()
-      const token0USDPerShare = new BigNumber(token0PerShare.toString()).div(
-        new BigNumber(10).pow(currencyA.decimals).multipliedBy(token0USDPrice),
-      )
-      const token1USDPerShare = new BigNumber(token1PerShare.toString()).div(
-        new BigNumber(10).pow(currencyB.decimals).multipliedBy(token1USDPrice),
-      )
+
+      const expA = new BigNumber(10).pow(currencyA.decimals)
+      const expB = new BigNumber(10).pow(currencyB.decimals)
+
+      const token0USDPerShare = new BigNumber(token0PerShare.toString()).div(expA.multipliedBy(token0USDPrice))
+      const token1USDPerShare = new BigNumber(token1PerShare.toString()).div(expB.multipliedBy(token1USDPrice))
+
       return token0USDPerShare.plus(token1USDPerShare).toNumber()
     },
     enabled: Boolean(adapterContract && token0USDPrice && token1USDPrice),
