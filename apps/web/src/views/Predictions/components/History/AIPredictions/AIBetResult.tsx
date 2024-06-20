@@ -57,6 +57,18 @@ export const AIBetResult: React.FC<React.PropsWithChildren<AIBetResultProps>> = 
   const tokenSymbol = useMemo(() => config?.token?.symbol ?? '', [config])
   const displayedDecimals = useMemo(() => config?.balanceDecimals ?? config?.displayedDecimals ?? 4, [config])
 
+  const getRoundPrefix = () => {
+    if (result === Result.LOSE) {
+      return '-'
+    }
+
+    if (result === Result.WIN && payout >= 0) {
+      return '+'
+    }
+
+    return ''
+  }
+
   const headerColor = useMemo(() => {
     switch (result) {
       case Result.WIN:
@@ -160,10 +172,9 @@ export const AIBetResult: React.FC<React.PropsWithChildren<AIBetResultProps>> = 
         <Flex alignItems="start" justifyContent="space-between">
           <Text bold>{isWinner ? t('Your winnings') : t('Your Result')}:</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text bold color={resultColor}>{`${isWinner ? '+' : '-'}${formatBnb(
-              payout,
-              displayedDecimals,
-            )} ${tokenSymbol}`}</Text>
+            <Text bold color={resultColor}>
+              {getRoundPrefix()}${formatBnb(payout, displayedDecimals)} ${tokenSymbol}
+            </Text>
             <Text fontSize="12px" color="textSubtle">
               {`~$${totalPayout.toFixed(2)}`}
             </Text>

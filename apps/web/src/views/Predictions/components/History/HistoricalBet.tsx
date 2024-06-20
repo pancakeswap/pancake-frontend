@@ -85,26 +85,26 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
     }
   }
 
-  const getRoundPrefix = (result) => {
-    if (result === Result.LOSE) {
-      return '-'
-    }
-
-    if (result === Result.WIN) {
-      return '+'
-    }
-
-    return ''
-  }
-
   const roundResult = getRoundResult(bet, currentEpoch)
   const resultTextColor = getRoundColor(roundResult)
-  const resultTextPrefix = getRoundPrefix(roundResult)
   const isOpenRound = round?.epoch === currentEpoch
   const isLiveRound = status === PredictionStatus.LIVE && round?.epoch === currentEpoch - 1
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
   const payout = roundResult === Result.WIN ? getNetPayout(bet, REWARD_RATE) : amount
+
+  const getRoundPrefix = (result) => {
+    if (result === Result.LOSE) {
+      return '-'
+    }
+
+    if (result === Result.WIN && payout >= 0) {
+      return '+'
+    }
+
+    return ''
+  }
+  const resultTextPrefix = getRoundPrefix(roundResult)
 
   const renderBetLabel = () => {
     if (isOpenRound) {
