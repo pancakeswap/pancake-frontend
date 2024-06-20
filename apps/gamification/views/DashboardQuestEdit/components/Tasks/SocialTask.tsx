@@ -3,10 +3,10 @@ import {
   Box,
   ErrorFillIcon,
   Flex,
+  FlexGap,
   InputGroup,
   OpenNewIcon,
   Text,
-  useMatchBreakpoints,
   useModal,
   useTooltip,
 } from '@pancakeswap/uikit'
@@ -24,9 +24,10 @@ interface SocialTaskProps {
   task: TaskSocialConfig
 }
 
+type SocialKeyType = 'socialLink' | 'title' | 'description'
+
 export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
   const [isFirst, setIsFirst] = useState(true)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
@@ -43,12 +44,12 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
     window.open(task.socialLink, '_blank', 'noopener noreferrer')
   }
 
-  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>, socialKeyType: SocialKeyType) => {
     setIsFirst(false)
 
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskSocialConfig) => i.sid === task.sid)
-    forkTasks[indexToUpdate].socialLink = e.target.value
+    forkTasks[indexToUpdate][socialKeyType] = e.target.value
 
     onTasksChange([...forkTasks])
   }
@@ -61,11 +62,12 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
     onTasksChange([...forkTasks])
   }
 
+  const isTitleError = useMemo(() => !isFirst && !task.title, [isFirst, task.title])
   const isUrlError = useMemo(() => !isFirst && validateUrl(task.socialLink), [isFirst, task?.socialLink])
 
   return (
     <Flex flexDirection="column">
-      <Flex flexDirection={['column', 'column', 'row']}>
+      <Flex flexDirection={['row']}>
         <Flex minWidth="200px">
           <Flex mr="8px" alignSelf="center" position="relative">
             {taskIcon(social)}
@@ -74,49 +76,55 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
           <Text style={{ alignSelf: 'center' }} bold>
             {taskNaming(social)}
           </Text>
-          {isMobile && (
-            <DropdownList
-              m="auto 0px auto auto"
-              id={task.sid}
-              isOptional={task.isOptional}
-              onClickDelete={onPresentDeleteModal}
-              onClickOptional={onClickOptional}
-            />
-          )}
         </Flex>
-        <Flex width={['100%', '100%', 'fit-content']} m={['8px 0 0 0', '8px 0 0 0', '0 0 0 auto']} alignSelf="center">
-          <InputGroup
-            m={['8px 0', '8px 0', '0 8px 0 0']}
-            endIcon={
-              isUrlError ? (
-                <ErrorFillIcon color="failure" width={16} height={16} />
-              ) : (
-                <Box ref={targetRef} onClick={onclickOpenNewIcon}>
-                  <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
-                  {tooltipVisible && tooltip}
-                </Box>
-              )
-            }
-          >
-            <StyledInput
-              value={task.socialLink}
-              isError={isUrlError}
-              style={{ borderRadius: '24px' }}
-              placeholder={taskInputPlaceholder(social)}
-              onChange={(e) => handleUrlChange(e)}
-            />
-          </InputGroup>
-          {!isMobile && (
-            <DropdownList
-              m="auto"
-              id={task.sid}
-              isOptional={task.isOptional}
-              onClickDelete={onPresentDeleteModal}
-              onClickOptional={onClickOptional}
-            />
-          )}
+        <Flex width={['fit-content']} m={['0 0 0 auto']} alignSelf="center">
+          <DropdownList
+            m="auto"
+            id={task.sid}
+            isOptional={task.isOptional}
+            onClickDelete={onPresentDeleteModal}
+            onClickOptional={onClickOptional}
+          />
         </Flex>
       </Flex>
+      <FlexGap gap="8px" flexDirection="column" mt="8px">
+        <InputGroup endIcon={isTitleError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>
+          <StyledInput
+            value={task.title}
+            isError={isTitleError}
+            style={{ borderRadius: '24px' }}
+            placeholder={t('Title')}
+            onChange={(e) => handleUrlChange(e, 'title')}
+          />
+        </InputGroup>
+        <StyledInput
+          placeholder={t('Description (Optional)')}
+          value={task.description}
+          style={{ borderRadius: '24px' }}
+          onChange={(e) => handleUrlChange(e, 'description')}
+        />
+        <InputGroup
+          endIcon={
+            isUrlError ? (
+              <ErrorFillIcon color="failure" width={16} height={16} />
+            ) : (
+              <Box ref={targetRef} onClick={onclickOpenNewIcon}>
+                <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
+                {tooltipVisible && tooltip}
+              </Box>
+            )
+          }
+        >
+          <StyledInput
+            value={task.socialLink}
+            isError={isUrlError}
+            style={{ borderRadius: '24px' }}
+            placeholder={taskInputPlaceholder(social)}
+            onChange={(e) => handleUrlChange(e, 'socialLink')}
+          />
+        </InputGroup>
+      </FlexGap>
+      {isTitleError && <InputErrorText errorText={t('Title is empty')} />}
       {isUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
     </Flex>
   )

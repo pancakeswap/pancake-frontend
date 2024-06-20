@@ -12,7 +12,7 @@ export const DashboardQuests = () => {
   return (
     <RecordTemplate
       title={t('Quests')}
-      createLink="/dashboard/quest/edit"
+      createLink="/dashboard/quest/create"
       createButtonText={t('Create')}
       statusButtonIndex={statusButtonIndex}
       pickMultiSelect={pickMultiSelect}
