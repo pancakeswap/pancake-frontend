@@ -6,7 +6,7 @@ import { SpaceProps } from "styled-system";
 import {
   Flex,
   ButtonMenuItem,
-  SwapLineChart,
+  PairPriceChart,
   PairDataTimeWindowEnum,
   Box,
   Text,
@@ -64,7 +64,7 @@ export const PriceChart = memo(function PriceChart({
   const chart =
     prices && prices.length ? (
       <Box mt="0.5em" width="100%" height="200px">
-        <SwapLineChart
+        <PairPriceChart
           data={prices}
           isChangePositive
           isChartExpanded={false}

@@ -1,12 +1,22 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, ButtonMenu, ButtonMenuItem, Flex, PairDataTimeWindowEnum, SwapLineChart, Text } from '@pancakeswap/uikit'
+import {
+  Box,
+  ButtonMenu,
+  ButtonMenuItem,
+  Flex,
+  PairDataTimeWindowEnum,
+  PairPriceChart,
+  PairPriceChartType,
+  Text,
+} from '@pancakeswap/uikit'
 import { memo, useMemo, useState } from 'react'
 import { usePairRate } from 'state/swap/hooks'
 import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 import NoChartAvailable from './NoChartAvailable'
 import { getTimeWindowChange } from './utils'
 
-const BasicChart = ({
+const SwapChart = ({
+  type,
   token0Address,
   token1Address,
   isChartExpanded,
@@ -119,8 +129,9 @@ const BasicChart = ({
         </Box>
       </Flex>
       <Box height={isMobile ? '100%' : chartHeight} p={isMobile ? '0px' : '16px'} width="100%">
-        <SwapLineChart
-          data={pairPrices}
+        <PairPriceChart
+          type={type}
+          data={type === PairPriceChartType.LINE ? pairPrices : pairPrices.slice(0, pairPrices.length - 1)}
           setHoverValue={setHoverValue}
           setHoverDate={setHoverDate}
           isChangePositive={isChangePositiveToCurrent}
@@ -132,8 +143,9 @@ const BasicChart = ({
   )
 }
 
-export default memo(BasicChart, (prev, next) => {
+export default memo(SwapChart, (prev, next) => {
   return (
+    prev.type === next.type &&
     prev.token0Address === next.token0Address &&
     prev.token1Address === next.token1Address &&
     prev.isChartExpanded === next.isChartExpanded &&
