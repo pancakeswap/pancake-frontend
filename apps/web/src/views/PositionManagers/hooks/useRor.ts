@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import { usePositionManagerAdapterContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import type { Address } from 'viem'
-import { RorUSDMap, VaultHistorySnapshots } from './useFetchVaultHistory'
+import { VaultHistorySnapshots } from './useFetchVaultHistory'
 
 interface RorProps {
   vault: Address | undefined
@@ -34,16 +34,6 @@ export const useRor = ({
 }: RorProps): RorResult => {
   const adapterContract = usePositionManagerAdapterContract(adapterAddress ?? '0x')
 
-  const vaultSnapshots = useMemo((): RorUSDMap => {
-    const vaultRorData = vaultHistorySnapshots.rorData.filter((vaultData) => {
-      return vaultData.vault === vault?.toLowerCase()
-    })
-    return vaultRorData.reduce((vaultUsdValues, item) => {
-      vaultUsdValues[item.period] = item.usd
-      return vaultUsdValues
-    }, {} as RorUSDMap)
-  }, [vaultHistorySnapshots, vault])
-
   const { data: liveUsdPerShare } = useQuery({
     queryKey: ['adapterAddress', adapterAddress, vault, token0USDPrice, token1USDPrice],
 
@@ -65,14 +55,17 @@ export const useRor = ({
   })
 
   return useMemo(() => {
-    const sevenDayUsd = new BigNumber(vaultSnapshots?.SEVENTH_DAY ?? 0)
-    const thirtyDayUsd = new BigNumber(vaultSnapshots?.THIRTY_DAY ?? 0)
-    const earliestDayUsd = new BigNumber(vaultSnapshots?.INCEPTION_DAY)
+    const vaultRorData = vaultHistorySnapshots.rorData.filter((vaultData) => {
+      return vaultData.vault === vault?.toLowerCase()
+    })
+    const sevenDayUsd = new BigNumber(vaultRorData[0]?.usd ?? 0)
+    const thirtyDayUsd = new BigNumber(vaultRorData[1]?.usd ?? 0)
+    const earliestDayUsd = new BigNumber(vaultRorData[2]?.usd ?? 0)
 
     const sevenDayRor = new BigNumber(liveUsdPerShare).minus(sevenDayUsd).div(sevenDayUsd).toNumber()
     const thirtyDayRor = new BigNumber(liveUsdPerShare).minus(thirtyDayUsd).div(thirtyDayUsd).toNumber()
     const earliestDayRor = new BigNumber(liveUsdPerShare).minus(earliestDayUsd).div(earliestDayUsd).toNumber()
 
     return { sevenDayRor, thirtyDayRor, earliestDayRor }
-  }, [vaultSnapshots, liveUsdPerShare])
+  }, [vaultHistorySnapshots, liveUsdPerShare, vault])
 }
