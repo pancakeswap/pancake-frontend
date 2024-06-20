@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { GAMIFICATION_API } from 'config/constants/endpoints'
+import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { FetchStatus } from 'config/constants/types'
 import { useAccount } from 'wagmi'
 
@@ -30,7 +30,7 @@ export const useUserSocialHub = () => {
     queryKey: [account, 'userSocial'],
     queryFn: async () => {
       try {
-        const response = await fetch(`${GAMIFICATION_API}/userInfo/v1/getUserInfo/${account}`)
+        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/getUserInfo/${account}`)
         const result = await response.json()
         const userSocialHubData: UserInfo = result
         return userSocialHubData

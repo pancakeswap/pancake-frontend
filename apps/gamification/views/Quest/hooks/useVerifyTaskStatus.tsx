@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
-import { GAMIFICATION_API } from 'config/constants/endpoints'
+import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { useAccount } from 'wagmi'
 
@@ -41,7 +41,9 @@ export const useVerifyTaskStatus = (questId: string) => {
     queryKey: [account, questId, 'verify-user-task-status'],
     queryFn: async () => {
       try {
-        const response = await fetch(`${GAMIFICATION_API}/userInfo/v1/getVerificationStatus/${account}/${questId}`)
+        const response = await fetch(
+          `${GAMIFICATION_PUBLIC_API}/userInfo/v1/getVerificationStatus/${account}/${questId}`,
+        )
         const result = await response.json()
         const userSocialHubData: VerifyTaskStatus = result
         return userSocialHubData

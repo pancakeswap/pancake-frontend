@@ -59,23 +59,23 @@ export const SubmitAction = () => {
       const startDateTime = combineDateAndTime(startDate, startTime) || 0
       const endDateTime = combineDateAndTime(endDate, endTime) || 0
 
-      // const response = await fetch(url, {
-      //   method,
-      //   headers: { 'Content-Type': 'application/json', 'x-secure-token': FAKE_TOKEN },
-      //   body: JSON.stringify({
-      //     ...state,
-      //     tasks,
-      //     chainId: apiChainId,
-      //     startDateTime,
-      //     endDateTime,
-      //     completionStatus,
-      //   }),
-      // })
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json', 'x-secure-token': FAKE_TOKEN },
+        body: JSON.stringify({
+          ...state,
+          tasks,
+          chainId: apiChainId,
+          startDateTime,
+          endDateTime,
+          completionStatus,
+        }),
+      })
 
-      // if (response.ok) {
-      //   // toastSuccess(t('Deleted!'))
-      //   // push('/dashboard')
-      // }
+      if (response.ok) {
+        toastSuccess(t('Submit Successfully!'))
+        // push('/dashboard')
+      }
     } catch (error) {
       console.error('Submit quest  error: ', error)
     }
@@ -133,7 +133,7 @@ export const SubmitAction = () => {
           <Button
             width="100%"
             endIcon={<PencilIcon color="invertedContrast" width={14} height={14} />}
-            onClick={() => handleSave(false, query.id ? state.completionStatus : CompletionStatus.DRAFTED)}
+            onClick={() => handleSave(Boolean(!query.id), query.id ? state.completionStatus : CompletionStatus.DRAFTED)}
           >
             {query.id ? t('Save the edits') : t('Save to the drafts')}
           </Button>
