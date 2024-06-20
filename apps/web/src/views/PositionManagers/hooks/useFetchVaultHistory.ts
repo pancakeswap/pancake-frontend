@@ -32,44 +32,42 @@ export interface VaultData {
   vault: string
 }
 
-export type RateOfReturnReturnType = VaultData[]
+export type UseRorReturnType<selectData = VaultData[]> = UseQueryResult<selectData, Error>
 
-export type UseRorReturnType<selectData = RateOfReturnReturnType> = UseQueryResult<selectData, Error>
-
-export type UseRorParameters<selectData = RateOfReturnReturnType> = Evaluate<
-  RORPayload & UseQueryParameters<Evaluate<RateOfReturnReturnType>, Error, selectData, GetVaultsQueryKey>
+export type UseRorParameters<selectData = VaultData[]> = Evaluate<
+  RORPayload & UseQueryParameters<Evaluate<VaultData[]>, Error, selectData, GetVaultsQueryKey>
 >
 
-export const useFetchVaultHistory = <selectData = RateOfReturnReturnType>(parameters: UseRorParameters<selectData>) => {
+export const useFetchVaultHistory = <selectData = VaultData[]>(parameters: UseRorParameters<selectData>) => {
   const { vault, chainId, earliest, ...query } = parameters
 
   return useQuery({
     ...query,
-    queryKey: getVaultsQueryKey([
-      {
-        vault,
-        chainId,
-      },
-    ]),
+    queryKey: getVaultsQueryKey([{ vault, chainId }]),
+
     queryFn: async () => {
-      if (!vault || !chainId || !earliest) {
-        throw new Error('Missing vault history params')
+      if (!vault || !earliest) throw new Error('Missing vault history params')
+
+      const today = floorToUTC00(Date.now()) / 1000
+      const earliestTimestamp = floorToUTC00(earliest) / 1000
+
+      try {
+        const providerQuotes = await fetchVaultHistory({
+          vault,
+          chainId,
+          startTimestamp: earliestTimestamp,
+          endTimestamp: today,
+        })
+
+        return providerQuotes
+      } catch (error) {
+        console.error(`Fetch fetch Vault Histrory API Error: ${error}`)
+        return []
       }
-
-      const today = floorToUTC00(Date.now())
-      const earliestTimestamp = floorToUTC00(earliest)
-
-      const providerQuotes = await fetchVaultHistory({
-        vault,
-        chainId,
-        startTimestamp: earliestTimestamp / 1000,
-        endTimestamp: today / 1000,
-      })
-
-      return providerQuotes
     },
     refetchInterval: 20 * 1_000,
     enabled: Boolean(vault && chainId),
+    initialData: [],
   })
 }
 

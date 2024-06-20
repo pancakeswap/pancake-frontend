@@ -7,7 +7,7 @@ import { useMemo } from 'react'
 import type { Address } from 'viem'
 import { useChainId } from 'wagmi'
 import { floorToUTC00 } from '../utils/floorCurrentTimestamp'
-import { useFetchVaultHistory, type VaultData } from './useFetchVaultHistory'
+import { useFetchVaultHistory } from './useFetchVaultHistory'
 
 interface RorProps {
   vault: Address | undefined
@@ -56,22 +56,20 @@ export const useRor = ({
       return token0USDPerShare.plus(token1USDPerShare).toNumber()
     },
     enabled: Boolean(adapterContract && token0USDPrice && token1USDPrice),
+    initialData: 0,
     refetchInterval: 6000,
     staleTime: 6000,
     gcTime: 6000,
   })
 
   return useMemo(() => {
-    if (!rorData || !liveUsdPerShare)
-      return { sevenDayRor: 0, thirtyDayRor: 0, earliestDayRor: 0, isRorLoading: isLoading }
-
     const todayFlooredUnix = floorToUTC00(Date.now())
-    const sevenDayFlooredUnix = floorToUTC00(todayFlooredUnix - 7 * ONE_DAY_MILLISECONDS)
-    const thirtyDayFlooredUnix = floorToUTC00(todayFlooredUnix - 30 * ONE_DAY_MILLISECONDS)
+    const sevenDayFlooredUnix = floorToUTC00(todayFlooredUnix - 7 * ONE_DAY_MILLISECONDS) / 1000
+    const thirtyDayFlooredUnix = floorToUTC00(todayFlooredUnix - 30 * ONE_DAY_MILLISECONDS) / 1000
 
-    const allTimeVaultData = rorData[rorData.length - 1] as VaultData
-    const sevenDayVaultData = rorData.find((element) => element.timestamp > sevenDayFlooredUnix / 1000)
-    const thirtyDayVaultData = rorData.find((element) => element.timestamp > thirtyDayFlooredUnix / 1000)
+    const allTimeVaultData = rorData[rorData.length - 1]
+    const sevenDayVaultData = rorData.find((element) => element.timestamp > sevenDayFlooredUnix)
+    const thirtyDayVaultData = rorData.find((element) => element.timestamp > thirtyDayFlooredUnix)
 
     const sevenDayUsd = new BigNumber(sevenDayVaultData?.usd ?? 0)
     const thirtyDayUsd = new BigNumber(thirtyDayVaultData?.usd ?? 0)
