@@ -36,7 +36,7 @@ interface Props {
   rewardToken?: Currency
   isBooster?: boolean
   boosterMultiplier?: number
-  isRorLoading?: boolean
+  isVaultLoading?: boolean
   ror?: RorResult
 }
 
@@ -60,7 +60,7 @@ export const AprButton = memo(function YieldInfo({
   rewardToken,
   isBooster,
   boosterMultiplier = 3,
-  isRorLoading,
+  isVaultLoading,
   ror,
 }: Props) {
   const { t } = useTranslation()
@@ -138,7 +138,7 @@ export const AprButton = memo(function YieldInfo({
           <span style={{ paddingRight: '6px' }}>{`${t('1 Week')}`}: </span>
 
           <SkeletonText
-            loading={Boolean(isRorLoading)}
+            loading={Boolean(isVaultLoading)}
             display="inline-block"
             color={ror?.sevenDayRor && ror?.sevenDayRor > 0 ? theme.colors.success : theme.colors.failure}
             fontWeight={800}
@@ -152,7 +152,7 @@ export const AprButton = memo(function YieldInfo({
           <span style={{ paddingRight: '6px' }}>{`${t('1 Month')}`}: </span>
           <b>
             <SkeletonText
-              loading={Boolean(isRorLoading)}
+              loading={Boolean(isVaultLoading)}
               display="inline-block"
               color={ror?.thirtyDayRor && ror?.thirtyDayRor > 0 ? theme.colors.success : theme.colors.failure}
               fontWeight={800}
@@ -166,7 +166,7 @@ export const AprButton = memo(function YieldInfo({
           <span style={{ paddingRight: '6px' }}>{`${t('Since Launched')}`}: </span>
           <b>
             <SkeletonText
-              loading={Boolean(isRorLoading)}
+              loading={Boolean(isVaultLoading)}
               display="inline-block"
               color={ror?.earliestDayRor && ror?.earliestDayRor > 0 ? theme.colors.success : theme.colors.failure}
               fontWeight={800}

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
 import { PCSDuoTokenVaultConfig } from '@pancakeswap/position-managers'
 import { CurrencyAmount } from '@pancakeswap/sdk'
@@ -19,6 +20,7 @@ import {
   useTotalStakedInUsd,
 } from '../hooks'
 import { TIME_WINDOW_DEFAULT, TIME_WINDOW_FALLBACK } from '../hooks/useFetchApr'
+import type { VaultHistorySnapshots } from '../hooks/useFetchVaultHistory'
 import { useRor } from '../hooks/useRor'
 
 interface Props {
@@ -26,12 +28,14 @@ interface Props {
   farmsV3: FarmV3DataWithPriceAndUserInfo[]
   aprDataList: AprData
   updatePositionMangerDetailsData: (id: number, newData: PositionManagerDetailsData) => void
+  vaultHistorySnapshots: VaultHistorySnapshots
 }
 
 export const ThirdPartyVaultCard = memo(function PCSVaultCard({
   config,
   aprDataList,
   updatePositionMangerDetailsData,
+  vaultHistorySnapshots,
 }: Props) {
   const { vault } = usePCSVault({ config })
   const {
@@ -137,12 +141,12 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
 
   const ror = useRor({
     vault: vaultAddress,
+    vaultHistorySnapshots,
     adapterAddress,
     currencyA,
     currencyB,
     token0USDPrice,
     token1USDPrice,
-    startTimestamp: info.startTimestamp,
   })
 
   const apr = useApr({
@@ -239,6 +243,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
       minDepositUSD={minDepositUSD}
       boosterMultiplier={info?.boosterMultiplier}
       boosterContractAddress={info?.boosterContractAddress}
+      isVaultLoading={vaultHistorySnapshots.isVaultDaraLoading}
       ror={ror}
     >
       {id}

@@ -27,6 +27,7 @@ interface Props {
   rewardPerSec?: number
   isBooster?: boolean
   boosterMultiplier?: number
+  isVaultLoading: boolean
   ror?: RorResult
 }
 
@@ -47,6 +48,7 @@ export const YieldInfo = memo(function YieldInfo({
   rewardPerSec,
   isBooster,
   boosterMultiplier,
+  isVaultLoading,
   ror,
 }: Props) {
   const { t } = useTranslation()
@@ -75,7 +77,7 @@ export const YieldInfo = memo(function YieldInfo({
           rewardToken={rewardToken}
           isBooster={isBooster && apr?.isInCakeRewardDateRange}
           boosterMultiplier={totalAssetsInUsd === 0 || !locked ? 3 : boosterMultiplier === 0 ? 3 : boosterMultiplier}
-          isRorLoading={ror?.isRorLoading}
+          isVaultLoading={isVaultLoading}
           ror={ror}
         />
       </RowBetween>

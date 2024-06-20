@@ -15,6 +15,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { VaultHistorySnapshots } from 'views/PositionManagers/hooks/useFetchVaultHistory'
 import { useRor } from 'views/PositionManagers/hooks/useRor'
 import { useIsWrapperWhiteList } from '../../hooks/useWrapperBooster'
 import { ActionPanel } from './ActionPanel'
@@ -46,9 +47,16 @@ interface Props {
   farmsV3: FarmV3DataWithPriceAndUserInfo[]
   aprDataList: AprData
   updatePositionMangerDetailsData: (id: number, newData: PositionManagerDetailsData) => void
+  vaultHistorySnapshots: VaultHistorySnapshots
 }
 
-export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, updatePositionMangerDetailsData }) => {
+export const TableRow: React.FC<Props> = ({
+  config,
+  farmsV3,
+  aprDataList,
+  updatePositionMangerDetailsData,
+  vaultHistorySnapshots,
+}) => {
   const hasStakedAmount = false
   const { locked } = useBCakeBoostLimitAndLockInfo()
   const { t } = useTranslation()
@@ -150,7 +158,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     currencyB,
     token0USDPrice,
     token1USDPrice,
-    startTimestamp: info.startTimestamp,
+    vaultHistorySnapshots,
   })
 
   useEffect(() => {
@@ -328,7 +336,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                               : info?.boosterMultiplier
                           }
                           ror={ror}
-                          isRorLoading={ror.isRorLoading}
+                          isVaultLoading={vaultHistorySnapshots.isRorLoading}
                         />
                       </CellLayout>
                     </CellInner>

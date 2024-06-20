@@ -1,16 +1,26 @@
 import type { ChainId } from '@pancakeswap/chains'
-import { useQuery, type UseQueryResult } from '@tanstack/react-query'
-import type { Evaluate } from '@wagmi/core/internal'
+import { useQuery } from '@tanstack/react-query'
 import { VAULT_API_ENDPOINT } from 'config/constants/endpoints'
-import type { Address, ExactPartial } from 'viem'
-import type { UseQueryParameters } from 'wagmi/query'
-import { floorToUTC00 } from '../utils/floorCurrentTimestamp'
+import type { ExactPartial } from 'viem'
+import { useChainId } from 'wagmi'
+
+enum SnapShotIntervals {
+  SEVENTH_DAY = 'SEVENTH_DAY',
+  THIRTY_DAY = 'THIRTY_DAY',
+  INCEPTION_DAY = 'INCEPTION_DAY',
+}
 
 type RORPayload = {
-  vault: Address | undefined
   chainId: ChainId
-  earliest: number | undefined
 }
+
+export type VaultHistorySnapshots = {
+  rorData: VaultData[]
+  isVaultDaraLoading: false
+}
+
+export type RorUSDMap = { [interval in SnapShotIntervals]: string }
+
 type RecursiveDeps<deps extends readonly unknown[]> = deps extends [infer dep, ...infer rest]
   ? [dep] | [dep, ...RecursiveDeps<rest>]
   : []
@@ -21,10 +31,9 @@ export function createQueryKey<key extends string, deps extends readonly unknown
 
 const getVaultsQueryKey = createQueryKey<'rate-of-return', [ExactPartial<RORPayload>]>('rate-of-return')
 
-type GetVaultsQueryKey = ReturnType<typeof getVaultsQueryKey>
-
 export interface VaultData {
   earliest: number
+  period: SnapShotIntervals
   timestamp: number
   token0PerShare: string
   token1PerShare: string
@@ -32,32 +41,14 @@ export interface VaultData {
   vault: string
 }
 
-export type UseRorReturnType<selectData = VaultData[]> = UseQueryResult<selectData, Error>
-
-export type UseRorParameters<selectData = VaultData[]> = Evaluate<
-  RORPayload & UseQueryParameters<Evaluate<VaultData[]>, Error, selectData, GetVaultsQueryKey>
->
-
-export const useFetchVaultHistory = <selectData = VaultData[]>(parameters: UseRorParameters<selectData>) => {
-  const { vault, chainId, earliest, ...query } = parameters
-
+export const useFetchVaultHistory = () => {
+  const chainId = useChainId()
   return useQuery({
-    ...query,
-    queryKey: getVaultsQueryKey([{ vault, chainId }]),
+    queryKey: getVaultsQueryKey([{ chainId }]),
 
     queryFn: async () => {
-      if (!vault || !earliest) throw new Error('Missing vault history params')
-
-      const today = floorToUTC00(Date.now()) / 1000
-      const earliestTimestamp = floorToUTC00(earliest) / 1000
-
       try {
-        const providerQuotes = await fetchVaultHistory({
-          vault,
-          chainId,
-          startTimestamp: earliestTimestamp,
-          endTimestamp: today,
-        })
+        const providerQuotes = await fetchVaultHistory({ chainId })
 
         return providerQuotes
       } catch (error) {
@@ -66,28 +57,18 @@ export const useFetchVaultHistory = <selectData = VaultData[]>(parameters: UseRo
       }
     },
     refetchInterval: 20 * 1_000,
-    enabled: Boolean(vault && chainId),
+    enabled: Boolean(chainId),
     initialData: [],
   })
 }
 
-async function fetchVaultHistory(payload: {
-  vault: Address
-  startTimestamp: number
-  endTimestamp: number
-  chainId: ChainId
-}): Promise<VaultData[]> {
-  const response = await fetch(
-    `${VAULT_API_ENDPOINT}/api/history?vault=${payload.vault.toLowerCase()}&startTimestamp=${
-      payload.startTimestamp
-    }&endTimestamp=${payload.endTimestamp}&chainId=${payload.chainId}`,
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+async function fetchVaultHistory(payload: { chainId: ChainId }): Promise<VaultData[]> {
+  const response = await fetch(`${VAULT_API_ENDPOINT}/api/history?chainId=${payload.chainId}`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
-  )
+  })
   const result = await response.json()
   return result
 }
