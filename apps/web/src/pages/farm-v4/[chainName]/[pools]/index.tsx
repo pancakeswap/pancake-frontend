@@ -1,5 +1,5 @@
 import { SUPPORT_FARMS } from 'config/constants/supportChains'
-import { FarmPoolDetail } from 'views/Farms/FarmPoolDetail'
+import { FarmPoolDetail } from 'views/FarmPoolDetail'
 
 const FarmPoolDetailsPage = () => {
   return <FarmPoolDetail />
