@@ -63,5 +63,6 @@ export const deserializeFarmBCakePublicData = (farm?: SerializedFarm): Deseriali
     startTimestamp: farm?.bCakePublicData?.startTimestamp,
     endTimestamp: farm?.bCakePublicData?.endTimestamp,
     isRewardInRange: Boolean(isRewardInRange),
+    totalLiquidityX: farm?.bCakePublicData?.totalLiquidityX ?? 1,
   }
 }
