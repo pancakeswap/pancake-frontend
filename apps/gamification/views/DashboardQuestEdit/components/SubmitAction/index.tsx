@@ -33,7 +33,7 @@ export const SubmitAction = () => {
 
   const handleClickDelete = async () => {
     try {
-      const response = await fetch(`${GAMIFICATION_API}quests/${query.id}/delete`, {
+      const response = await fetch(`${GAMIFICATION_API}/quests/${query.id}/delete`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-secure-token': FAKE_TOKEN },
       })
@@ -51,7 +51,7 @@ export const SubmitAction = () => {
 
   const handleSave = async (isCreate: boolean, completionStatus: CompletionStatus) => {
     try {
-      const url = isCreate ? `${GAMIFICATION_API}quests/create` : `${GAMIFICATION_API}quests/${query.id}`
+      const url = isCreate ? `${GAMIFICATION_API}/quests/create` : `${GAMIFICATION_API}/quests/${query.id}`
       const method = isCreate ? 'POST' : 'PUT'
 
       const apiChainId = isCreate ? chainId : state.chainId
