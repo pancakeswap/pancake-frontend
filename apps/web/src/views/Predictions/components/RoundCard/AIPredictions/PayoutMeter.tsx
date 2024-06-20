@@ -1,8 +1,8 @@
 import { Box, BoxProps, Flex, Text } from '@pancakeswap/uikit'
 import Lottie from 'lottie-react'
 import { useTheme } from 'styled-components'
-import MeterJSON from '../../../../../../public/images/predictions-temp/meter.json'
-import MeterDarkJSON from '../../../../../../public/images/predictions-temp/meter_dark.json'
+import MeterJSON from '../../../../../../public/images/predictions/meter.json'
+import MeterDarkJSON from '../../../../../../public/images/predictions/meter_dark.json'
 
 interface PayoutMeterProps extends BoxProps {
   bearMultiplier?: string

@@ -14,6 +14,7 @@ import {
 } from '@pancakeswap/uikit'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
@@ -234,7 +235,7 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
                     <Flex>
                       {t('Powered by Allora')}
                       <img
-                        src="/images/predictions-temp/allora.svg"
+                        src={`${ASSET_CDN}/web/game/predictions/allora.svg`}
                         alt="Allora Logo"
                         width={20}
                         height={20}
