@@ -3,14 +3,15 @@ import { Button, CalenderIcon, DeleteOutlineIcon, Flex, PencilIcon, useModal, us
 import { GAMIFICATION_API } from 'config/constants/endpoints'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { ActionModal } from 'views/DashboardQuestEdit/components/SubmitAction/ActionModal'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { combineDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
-// import { verifyTask } from 'views/DashboardQuestEdit/utils/verifyTask'
+import { validateIsNotEmpty } from 'views/DashboardQuestEdit/utils/validateFormat'
+import { verifyTask } from 'views/DashboardQuestEdit/utils/verifyTask'
 
 const StyledDeleteButton = styled(Button)`
   color: ${({ theme }) => theme.colors.failure};
@@ -82,6 +83,30 @@ export const SubmitAction = () => {
     }
   }
 
+  const isTaskValid = useMemo(() => {
+    if (tasks.length > 0) {
+      return tasks.map((i) => verifyTask(i)).every((element) => element === true)
+    }
+
+    return true
+  }, [tasks])
+
+  const isAbleToSchedule = useMemo(() => {
+    const { title, description, startDate, startTime, endDate, endTime, reward } = state
+    return (
+      !validateIsNotEmpty(title) &&
+      !validateIsNotEmpty(description) &&
+      startDate &&
+      startTime &&
+      endDate &&
+      endTime &&
+      reward &&
+      reward?.amountOfWinners > 0 &&
+      reward?.totalRewardAmount > 0 &&
+      isTaskValid
+    )
+  }, [state, isTaskValid])
+
   return (
     <Flex flexDirection="column" mt="30px">
       {openModal && (
@@ -114,6 +139,7 @@ export const SubmitAction = () => {
                   mb="8px"
                   width="100%"
                   variant="secondary"
+                  disabled={!isTaskValid}
                   onClick={() => handleSave(false, CompletionStatus.DRAFTED)}
                 >
                   {t('Move to the drafts')}
@@ -123,7 +149,10 @@ export const SubmitAction = () => {
                   mb="8px"
                   width="100%"
                   variant="secondary"
-                  endIcon={<CalenderIcon color="primary" width={20} height={20} />}
+                  disabled={!isAbleToSchedule}
+                  endIcon={
+                    <CalenderIcon color={isAbleToSchedule ? 'primary' : 'textDisabled'} width={20} height={20} />
+                  }
                   onClick={handleClick}
                 >
                   {t('Save and schedule')}
@@ -133,7 +162,8 @@ export const SubmitAction = () => {
           )}
           <Button
             width="100%"
-            endIcon={<PencilIcon color="invertedContrast" width={14} height={14} />}
+            disabled={!isTaskValid}
+            endIcon={<PencilIcon color={isTaskValid ? 'invertedContrast' : 'textDisabled'} width={14} height={14} />}
             onClick={() => handleSave(Boolean(!query.id), query.id ? state.completionStatus : CompletionStatus.DRAFTED)}
           >
             {query.id ? t('Save the edits') : t('Save to the drafts')}
