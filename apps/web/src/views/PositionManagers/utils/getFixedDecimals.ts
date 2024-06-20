@@ -7,7 +7,11 @@ export const getFixedDecimals = (value?: number): number | undefined => {
   let decimalPlaces: number
   const absoluteValue = Math.abs(value)
 
-  if (absoluteValue < 0.00000001) {
+  if (absoluteValue < 0.0000000001) {
+    decimalPlaces = 12
+  } else if (absoluteValue < 0.000000001) {
+    decimalPlaces = 11
+  } else if (absoluteValue < 0.00000001) {
     decimalPlaces = 10
   } else if (absoluteValue < 0.0000001) {
     decimalPlaces = 9
