@@ -26,22 +26,13 @@ export const PayoutMeter = ({ bearMultiplier = '0', bullMultiplier = '0', ...pro
       <Flex justifyContent="center">
         <AnimatedMeter />
       </Flex>
-      <Flex mt="-3px" justifyContent={isRoundEmpty ? 'center' : 'space-between'} mx="50px" position="relative">
+      <Flex mt="-3px" justifyContent="center" mx="50px">
         {!isRoundEmpty && (
           <Text small bold>
             {Math.min(+bearMultiplier, +bullMultiplier)}x
           </Text>
         )}
-        <Text
-          color="textSubtle"
-          style={{
-            position: !isRoundEmpty ? 'absolute' : undefined,
-            left: '30%',
-            bottom: '0',
-          }}
-          bold
-          small
-        >
+        <Text color="textSubtle" mx="13px" bold small>
           Payout
         </Text>
         {!isRoundEmpty && (
