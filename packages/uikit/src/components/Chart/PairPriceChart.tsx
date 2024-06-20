@@ -39,6 +39,7 @@ const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
 };
 
 const getHandler = (
+  transformedData: { time: UTCTimestamp; value: any }[],
   chart: IChartApi,
   newSeries: ISeriesApi<"Area">,
   locale: string,
@@ -50,6 +51,12 @@ const getHandler = (
     if (newSeries && param) {
       const timestamp = param.time as number;
       if (!timestamp) return;
+      const lastItem = transformedData.length > 0 ? transformedData[transformedData.length - 1] : undefined;
+      if (lastItem?.time === param.time) {
+        if (setHoverValue) setHoverValue(undefined);
+        if (setHoverDate) setHoverDate(undefined);
+        return;
+      }
       const now = new Date(timestamp * 1000);
       const time = `${now.toLocaleString(locale, {
         year: "numeric",
@@ -57,8 +64,7 @@ const getHandler = (
         day: "numeric",
         hour: "numeric",
         minute: "2-digit",
-        timeZone: "UTC",
-      })} (UTC)`;
+      })}`;
       // @ts-ignore
       const parsed = (param.seriesData.get(newSeries)?.value ?? 0) as number | undefined;
       if (parsed && param.time && isMobile) {
@@ -188,9 +194,13 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
     chart.timeScale().fitContent();
 
     if (isMobile) {
-      chart.subscribeClick(getHandler(chart, newSeries, locale, setHoverValue, setHoverDate, isMobile));
+      chart.subscribeClick(
+        getHandler(transformedData, chart, newSeries, locale, setHoverValue, setHoverDate, isMobile)
+      );
     } else {
-      chart.subscribeCrosshairMove(getHandler(chart, newSeries, locale, setHoverValue, setHoverDate, isMobile));
+      chart.subscribeCrosshairMove(
+        getHandler(transformedData, chart, newSeries, locale, setHoverValue, setHoverDate, isMobile)
+      );
     }
 
     // eslint-disable-next-line consistent-return
