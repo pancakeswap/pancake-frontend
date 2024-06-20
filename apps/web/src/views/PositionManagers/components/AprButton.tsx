@@ -19,6 +19,7 @@ import { styled, useTheme } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { AprResult } from '../hooks'
 import { RorResult } from '../hooks/useRor'
+import { getFixedDecimals } from '../utils/getFixedDecimals'
 
 interface Props {
   id: number | string
@@ -144,7 +145,7 @@ export const AprButton = memo(function YieldInfo({
             fontWeight={800}
             isDark={Boolean(theme.isDark)}
           >
-            {ror?.sevenDayRor?.toFixed(2)}%
+            {getFixedDecimals(ror?.sevenDayRor)}%
           </SkeletonText>
         </li>
 
@@ -159,7 +160,7 @@ export const AprButton = memo(function YieldInfo({
               fontWeight={800}
               isDark={Boolean(theme.isDark)}
             >
-              {ror?.thirtyDayRor?.toFixed(2)}%
+              {getFixedDecimals(ror?.thirtyDayRor)}%
             </SkeletonText>
           </b>
         </li>
@@ -174,7 +175,7 @@ export const AprButton = memo(function YieldInfo({
               fontWeight={800}
               isDark={Boolean(theme.isDark)}
             >
-              {ror?.earliestDayRor?.toFixed(2)}%
+              {getFixedDecimals(ror?.earliestDayRor)}%
             </SkeletonText>
           </b>
         </li>

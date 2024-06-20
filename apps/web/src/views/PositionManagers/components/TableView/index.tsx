@@ -137,7 +137,15 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     }
   }, [farmsV3, token0Usd.data, token1Usd.data, currencyB, priceFromV3FarmPid])
 
-  const ror = useRor({ vault: vaultAddress, totalStakedInUsd, startTimestamp: info.startTimestamp })
+  const ror = useRor({
+    vault: vaultAddress,
+    adapterAddress,
+    currencyA,
+    currencyB,
+    token0USDPrice,
+    token1USDPrice,
+    startTimestamp: info.startTimestamp,
+  })
 
   const tokenRatio = useQuery({
     queryKey: ['adapterAddress', adapterAddress, id],
