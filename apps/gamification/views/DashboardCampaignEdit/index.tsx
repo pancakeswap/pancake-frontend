@@ -31,18 +31,10 @@ export const DashboardCampaignEdit = () => {
         updateValue={updateValue}
         uploadImageComponent={<ImageUpload />}
       >
-        {!isDesktop && (
-          <Reward
-            amountPerWinner={state.amountPerWinner}
-            updateValue={updateValue}
-            actionComponent={<SubmitAction />}
-          />
-        )}
+        {!isDesktop && <Reward reward={state.reward} updateValue={updateValue} actionComponent={<SubmitAction />} />}
         <Quests />
       </EditTemplate>
-      {isDesktop && (
-        <Reward amountPerWinner={state.amountPerWinner} updateValue={updateValue} actionComponent={<SubmitAction />} />
-      )}
+      {isDesktop && <Reward reward={state.reward} updateValue={updateValue} actionComponent={<SubmitAction />} />}
     </DashboardCampaignEditContainer>
   )
 }

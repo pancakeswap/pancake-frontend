@@ -12,7 +12,7 @@ export interface StateType {
   startTime: null | Date
   endDate: null | Date
   endTime: null | Date
-  reward: undefined
+  reward: undefined | QuestRewardType
 }
 
 export interface TaskBaseConfig {

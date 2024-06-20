@@ -1,41 +1,31 @@
+import { ChainId } from '@pancakeswap/chains'
 import { createContext, useCallback, useMemo, useState } from 'react'
-
-export interface StateType {
-  title: string
-  body: string
-  amountPerWinner: string
-  startDate: null | Date
-  startTime: null | Date
-  endDate: null | Date
-  endTime: null | Date
-  pickedQuests: Array<string>
-  thumbnail: {
-    id: string
-    url: string
-  }
-}
+import { CampaignRewardType, CampaignStateType } from 'views/DashboardCampaignEdit/context/type'
+import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 
 interface EditCampaignContextType {
-  state: StateType
-  updateValue: (key: string, value: string | Date | any) => void
+  state: CampaignStateType
+  updateValue: (key: string, value: string | Date | CampaignRewardType | any) => void
 }
 
 export const CampaignEditContext = createContext<EditCampaignContextType | undefined>(undefined)
 
 export const CampaignEditProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [state, setState] = useState<StateType>(() => ({
+  const [state, setState] = useState<CampaignStateType>(() => ({
+    chainId: ChainId.BSC,
+    completionStatus: CompletionStatus.DRAFTED,
     title: '',
-    body: '',
+    description: '',
     thumbnail: {
       id: '',
       url: '',
     },
-    amountPerWinner: '',
     startDate: null,
     startTime: null,
     endDate: null,
     endTime: null,
     pickedQuests: [],
+    reward: undefined,
   }))
 
   const updateValue = useCallback((key: string, value: string | Date | any) => {
