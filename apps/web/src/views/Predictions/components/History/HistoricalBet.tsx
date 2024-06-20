@@ -192,6 +192,8 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
         )}
       </StyledBet>
       {isOpen &&
+        !isLiveRound &&
+        !isOpenRound &&
         (config?.ai ? <AIBetDetails bet={bet} result={roundResult} /> : <BetDetails bet={bet} result={roundResult} />)}
     </>
   )
