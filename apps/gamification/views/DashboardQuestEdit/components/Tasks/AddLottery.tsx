@@ -9,7 +9,7 @@ import { TaskLotteryConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
-import { validateNumber } from 'views/DashboardQuestEdit/utils/validateTask'
+import { validateNumber } from 'views/DashboardQuestEdit/utils/validateFormat'
 
 interface AddLotteryProps {
   task: TaskLotteryConfig

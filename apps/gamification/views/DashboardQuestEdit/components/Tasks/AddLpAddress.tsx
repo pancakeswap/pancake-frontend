@@ -13,7 +13,7 @@ import { TaskLiquidityConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
-import { validateLpAddress, validateNumber } from 'views/DashboardQuestEdit/utils/validateTask'
+import { validateLpAddress, validateNumber } from 'views/DashboardQuestEdit/utils/validateFormat'
 
 const StyleSelector = styled(Button)`
   position: absolute;

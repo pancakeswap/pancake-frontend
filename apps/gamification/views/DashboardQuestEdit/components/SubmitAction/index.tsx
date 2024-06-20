@@ -10,6 +10,7 @@ import { ActionModal } from 'views/DashboardQuestEdit/components/SubmitAction/Ac
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { combineDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
+// import { verifyTask } from 'views/DashboardQuestEdit/utils/verifyTask'
 
 const StyledDeleteButton = styled(Button)`
   color: ${({ theme }) => theme.colors.failure};

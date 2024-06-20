@@ -19,7 +19,7 @@ import { TaskBlogPostConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
-import { validateUrl } from 'views/DashboardQuestEdit/utils/validateTask'
+import { validateUrl } from 'views/DashboardQuestEdit/utils/validateFormat'
 
 interface AddBlogPostProps {
   task: TaskBlogPostConfig

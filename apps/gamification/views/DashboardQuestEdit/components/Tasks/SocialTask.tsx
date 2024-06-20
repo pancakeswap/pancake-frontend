@@ -18,7 +18,7 @@ import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/Styl
 import { TaskSocialConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
-import { validateUrl } from 'views/DashboardQuestEdit/utils/validateTask'
+import { validateIsNotEmpty, validateUrl } from 'views/DashboardQuestEdit/utils/validateFormat'
 
 interface SocialTaskProps {
   task: TaskSocialConfig
@@ -62,7 +62,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
     onTasksChange([...forkTasks])
   }
 
-  const isTitleError = useMemo(() => !isFirst && !task.title, [isFirst, task.title])
+  const isTitleError = useMemo(() => !isFirst && validateIsNotEmpty(task.title), [isFirst, task.title])
   const isUrlError = useMemo(() => !isFirst && validateUrl(task.socialLink), [isFirst, task?.socialLink])
 
   return (
@@ -90,10 +90,10 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
       <FlexGap gap="8px" flexDirection="column" mt="8px">
         <InputGroup endIcon={isTitleError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>
           <StyledInput
+            placeholder={t('Title')}
             value={task.title}
             isError={isTitleError}
             style={{ borderRadius: '24px' }}
-            placeholder={t('Title')}
             onChange={(e) => handleUrlChange(e, 'title')}
           />
         </InputGroup>
