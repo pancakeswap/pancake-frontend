@@ -106,9 +106,10 @@ export const useFarmsV3Public = () => {
 interface UseFarmsOptions {
   // mock apr when tvl is 0
   mockApr?: boolean
+  boosterLiquidityX?: Record<number, number>
 }
 
-export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
+export const useFarmsV3 = ({ mockApr = false, boosterLiquidityX = {} }: UseFarmsOptions = {}) => {
   const { chainId } = useActiveChainId()
 
   const farmV3 = useFarmsV3Public()
@@ -162,6 +163,7 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
           tvl,
           cakePrice.toString(),
           farmV3.data.cakePerSecond,
+          boosterLiquidityX?.[f.pid] ?? 1,
         )
 
         return {
@@ -178,7 +180,7 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
       }
     },
 
-    enabled: Boolean(farmV3.data.farmsWithPrice.length > 0),
+    enabled: Boolean(farmV3.data.farmsWithPrice.length > 0) && Object.keys(boosterLiquidityX ?? {}).length > 0,
     refetchInterval: FAST_INTERVAL * 3,
     staleTime: FAST_INTERVAL,
   })
@@ -355,16 +357,15 @@ export function useFarmsV3WithPositionsAndBooster(options: UseFarmsOptions = {})
   poolLength: number
   isLoading: boolean
 } {
-  const { data, error: _error, isLoading } = useFarmsV3(options)
+  const { data: boosterLiquidityX } = useV3BoostedLiquidityX()
+  const { data, error: _error, isLoading } = useFarmsV3({ ...options, boosterLiquidityX })
   const { data: boosterWhitelist } = useV3BoostedFarm(data?.farmsWithPrice?.map((f) => f.pid))
-  const { data: boosterliquidityX } = useV3BoostedLiquidityX(data?.farmsWithPrice?.map((f) => f.pid))
 
   return {
     ...usePositionsByUserFarms(
       data.farmsWithPrice?.map((d, index) => ({
         ...d,
         boosted: boosterWhitelist?.[index]?.boosted,
-        boosterliquidityX: boosterliquidityX?.[index]?.boosterliquidityX,
       })),
     ),
     poolLength: data.poolLength,
@@ -394,7 +395,9 @@ const useV3BoostedFarm = (pids?: number[]) => {
   return { data }
 }
 
-const useV3BoostedLiquidityX = (pids?: number[]) => {
+const useV3BoostedLiquidityX = (): { data: Record<number, number> } => {
+  const farmV3 = useFarmsV3Public()
+  const pids = farmV3.data?.farmsWithPrice?.map((f) => f.pid)
   const { chainId } = useActiveChainId()
   const masterChefV3Contract = useMasterchefV3()
 
@@ -412,7 +415,17 @@ const useV3BoostedLiquidityX = (pids?: number[]) => {
     retry: 3,
     retryDelay: 3000,
   })
-  return { data }
+
+  const result = useMemo(() => {
+    const dataMap = data?.reduce((acc, d) => {
+      const updatedAcc = { ...acc }
+      updatedAcc[d.pid] = Number.isNaN(d.boosterliquidityX) ? 1 : d.boosterliquidityX
+      return updatedAcc
+    }, {})
+    return dataMap
+  }, [data])
+
+  return { data: result ?? {} }
 }
 
 export async function getV3FarmBoosterWhiteList({
