@@ -15,19 +15,20 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useRor } from 'views/PositionManagers/hooks/useRor'
 import { useIsWrapperWhiteList } from '../../hooks/useWrapperBooster'
 import { ActionPanel } from './ActionPanel'
 
 import {
-  AprData,
-  AprDataInfo,
-  PositionManagerDetailsData,
   useApr,
   useEarningTokenPriceInfo,
   usePCSVault,
   usePositionInfo,
   useTotalAssetInUsd,
   useTotalStakedInUsd,
+  type AprData,
+  type AprDataInfo,
+  type PositionManagerDetailsData,
 } from '../../hooks'
 import { RewardPerDay } from '../RewardPerDay'
 
@@ -52,10 +53,12 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
   const { locked } = useBCakeBoostLimitAndLockInfo()
   const { t } = useTranslation()
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
+
   const toggleActionPanel = useCallback(() => {
     setActionPanelExpanded(!actionPanelExpanded)
   }, [actionPanelExpanded])
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
+
   useEffect(() => {
     setActionPanelExpanded(hasStakedAmount)
   }, [hasStakedAmount])
@@ -91,10 +94,51 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     aprTimeWindow,
     bCakeWrapperAddress,
     autoCompound,
+    vaultAddress,
   } = vault
+
+  const { data: token0USDPrice } = useCurrencyUsdPrice(currencyA)
+  const { data: token1USDPrice } = useCurrencyUsdPrice(currencyB)
 
   const hasSwellReward = useHasSwellReward(address)
   const adapterContract = usePositionManagerAdapterContract(adapterAddress ?? '0x')
+
+  const vaultName = useMemo(() => getVaultName(idByManager, name), [name, idByManager])
+  const info = usePositionInfo(bCakeWrapperAddress ?? address, adapterAddress ?? '0x', Boolean(bCakeWrapperAddress))
+
+  const totalStakedInUsd = useTotalStakedInUsd({
+    currencyA,
+    currencyB,
+    poolToken0Amount: info?.poolToken0Amounts,
+    poolToken1Amount: info?.poolToken1Amounts,
+    token0PriceUSD: token0USDPrice,
+    token1PriceUSD: token1USDPrice,
+  })
+
+  const token0Usd = useCurrencyUsdPrice(currencyA, {
+    enabled: !priceFromV3FarmPid,
+  })
+  const token1Usd = useCurrencyUsdPrice(currencyB, {
+    enabled: !priceFromV3FarmPid,
+  })
+
+  const tokensPriceUSD = useMemo(() => {
+    const farm = farmsV3.find((d) => d.pid === priceFromV3FarmPid)
+    if (!farm)
+      return {
+        token0: token0Usd.data ?? 0,
+        token1: token1Usd.data ?? 0,
+      }
+    const isToken0And1Reversed =
+      farm.token.address.toLowerCase() === (currencyB.isToken ? currencyB.address.toLowerCase() : '')
+    return {
+      token0: Number(isToken0And1Reversed ? farm.quoteTokenPriceBusd : farm.tokenPriceBusd),
+      token1: Number(isToken0And1Reversed ? farm.tokenPriceBusd : farm.quoteTokenPriceBusd),
+    }
+  }, [farmsV3, token0Usd.data, token1Usd.data, currencyB, priceFromV3FarmPid])
+
+  const ror = useRor({ vault: vaultAddress, totalStakedInUsd, startTimestamp: info.startTimestamp })
+
   const tokenRatio = useQuery({
     queryKey: ['adapterAddress', adapterAddress, id],
 
@@ -112,35 +156,12 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     gcTime: 6000,
   }).data
 
-  const token0Usd = useCurrencyUsdPrice(currencyA, {
-    enabled: !priceFromV3FarmPid,
-  })
-  const token1Usd = useCurrencyUsdPrice(currencyB, {
-    enabled: !priceFromV3FarmPid,
-  })
-  const vaultName = useMemo(() => getVaultName(idByManager, name), [name, idByManager])
-  const info = usePositionInfo(bCakeWrapperAddress ?? address, adapterAddress ?? '0x', Boolean(bCakeWrapperAddress))
-
-  const tokensPriceUSD = useMemo(() => {
-    const farm = farmsV3.find((d) => d.pid === priceFromV3FarmPid)
-    if (!farm)
-      return {
-        token0: token0Usd.data ?? 0,
-        token1: token1Usd.data ?? 0,
-      }
-    const isToken0And1Reversed =
-      farm.token.address.toLowerCase() === (currencyB.isToken ? currencyB.address.toLowerCase() : '')
-    return {
-      token0: Number(isToken0And1Reversed ? farm.quoteTokenPriceBusd : farm.tokenPriceBusd),
-      token1: Number(isToken0And1Reversed ? farm.tokenPriceBusd : farm.quoteTokenPriceBusd),
-    }
-  }, [farmsV3, token0Usd.data, token1Usd.data, currencyB, priceFromV3FarmPid])
-
   useEffect(() => {
     if (info?.userToken0Amounts > 0n || info?.userToken1Amounts > 0n) {
       setActionPanelExpanded(true)
     }
   }, [info?.userToken0Amounts, info?.userToken1Amounts])
+
   const aprDataInfo = useMemo(() => {
     const { isLoading, data, fallbackData, specificData } = aprDataList
     let timeWindow = TIME_WINDOW_FALLBACK
@@ -170,15 +191,6 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
   }, [aprDataList, aprTimeWindow, info.vaultAddress])
 
   const { earningUsdValue } = useEarningTokenPriceInfo(earningToken, info?.pendingReward)
-
-  const totalStakedInUsd = useTotalStakedInUsd({
-    currencyA,
-    currencyB,
-    poolToken0Amount: info?.poolToken0Amounts,
-    poolToken1Amount: info?.poolToken1Amounts,
-    token0PriceUSD: tokensPriceUSD?.token0,
-    token1PriceUSD: tokensPriceUSD?.token1,
-  })
 
   const apr = useApr({
     currencyA,
@@ -309,6 +321,8 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                               ? 3
                               : info?.boosterMultiplier
                           }
+                          ror={ror}
+                          isRorLoading={ror.isRorLoading}
                         />
                       </CellLayout>
                     </CellInner>
