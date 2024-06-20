@@ -24,7 +24,7 @@ export enum QuestEditModalState {
 
 interface ActionModalProps {
   openModal: boolean
-  handleSave: () => void
+  handleSave: () => Promise<void>
   setOpenModal: (val: boolean) => void
 }
 
@@ -39,11 +39,12 @@ export const ActionModal: React.FC<ActionModalProps> = ({ openModal, handleSave,
     setOpenModal(false)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setModalView(QuestEditModalState.LOADING)
-    handleSave()
+    await handleSave()
 
     setTimeout(() => {
+      // setModalView(QuestEditModalState.FAILED)
       setModalView(QuestEditModalState.FINISHED)
     }, 3000)
   }
@@ -75,6 +76,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({ openModal, handleSave,
     },
     [QuestEditModalState.FINISHED]: {
       title: t('The quest has been scheduled'),
+      hideCloseButton: true,
       closeOnOverlayClick: true,
       component: (
         <Finished title={t('The quest has been successfully scheduled!')} closeModal={handleFinished}>

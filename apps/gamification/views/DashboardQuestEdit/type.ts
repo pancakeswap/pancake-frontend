@@ -30,10 +30,8 @@ export const SUPPORT_ADD_TASK = [
 ]
 
 export enum CompletionStatus {
-  UPCOMING = 'UPCOMING',
   ONGOING = 'ONGOING',
   FINISHED = 'FINISHED',
-  COMPLETED = 'COMPLETED',
   DRAFTED = 'DRAFTED',
   SCHEDULED = 'SCHEDULED',
 }
