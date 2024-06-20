@@ -1,14 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  BarChartIcon,
-  Box,
-  EllipsisIcon,
-  Flex,
-  LogoRoundIcon,
-  PencilIcon,
-  Text,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { Box, EllipsisIcon, Flex, LogoRoundIcon, PencilIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { MouseEvent, useRef, useState } from 'react'
 import { styled } from 'styled-components'
@@ -111,23 +102,25 @@ export const Row: React.FC<RowProps> = ({ statusButtonIndex }) => {
         </StyledCell>
       )}
       <StyledCell role="cell" onClick={(e: MouseEvent) => openMoreButton(e)}>
-        <Box position="relative" style={{ cursor: 'pointer' }}>
-          <EllipsisIcon color="primary" width="12px" height="12px" />
-          {isOpen && (
-            <StyledDropdown setIsOpen={setIsOpen} dropdownRef={dropdownRef}>
-              <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/campaigns')}>
-                <BarChartIcon color="primary" width="20px" height="20px" />
-                <Text ml="8px">{t('Statistics')}</Text>
-              </Flex>
-              {statusButtonIndex !== StateType.FINISHED && (
+        {statusButtonIndex !== StateType.FINISHED && (
+          <Box position="relative" style={{ cursor: 'pointer' }}>
+            <EllipsisIcon color="primary" width="12px" height="12px" />
+            {isOpen && (
+              <StyledDropdown setIsOpen={setIsOpen} dropdownRef={dropdownRef}>
+                {/* <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/campaigns')}>
+                  <BarChartIcon color="primary" width="20px" height="20px" />
+                  <Text ml="8px">{t('Statistics')}</Text>
+                </Flex> */}
+
+                {/* When has "Statistics" need hide "Edit" when statusButtonIndex !== StateType.FINISHED */}
                 <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/quest/edit?id=123')}>
                   <PencilIcon color="primary" width="14px" height="14px" />
                   <Text ml="14px">{t('Edit')}</Text>
                 </Flex>
-              )}
-            </StyledDropdown>
-          )}
-        </Box>
+              </StyledDropdown>
+            )}
+          </Box>
+        )}
       </StyledCell>
     </StyledRow>
   )
