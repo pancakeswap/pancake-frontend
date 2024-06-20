@@ -133,22 +133,22 @@ export const AprButton = memo(function YieldInfo({
       </Text>
       <Text marginTop="16px">{t('ROR (Rate Of Return)')}</Text>
       <ul>
-        <li style={{ display: 'flex' }}>
+        <li>
           <span style={{ paddingRight: '6px' }}>{`${t('1 Week')}`}: </span>
-          <b>
-            <SkeletonText
-              loading={Boolean(isRorLoading)}
-              color={ror?.sevenDayRor && ror?.sevenDayRor > 0 ? theme.colors.success : theme.colors.failure}
-              initialWidth={75}
-              fontWeight={800}
-              isDark={Boolean(theme.isDark)}
-            >
-              {ror?.sevenDayRor?.toFixed(2)}%
-            </SkeletonText>
-          </b>
+
+          <SkeletonText
+            loading={Boolean(isRorLoading)}
+            display="inline-block"
+            color={ror?.sevenDayRor && ror?.sevenDayRor > 0 ? theme.colors.success : theme.colors.failure}
+            initialWidth={75}
+            fontWeight={800}
+            isDark={Boolean(theme.isDark)}
+          >
+            {ror?.sevenDayRor?.toFixed(2)}%
+          </SkeletonText>
         </li>
 
-        <li style={{ display: 'flex' }}>
+        <li>
           <span style={{ paddingRight: '6px' }}>{`${t('1 Month')}`}: </span>
           <b>
             <SkeletonText
@@ -163,7 +163,7 @@ export const AprButton = memo(function YieldInfo({
             </SkeletonText>
           </b>
         </li>
-        <li style={{ display: 'flex' }}>
+        <li>
           <span style={{ paddingRight: '6px' }}>{`${t('Since Launched')}`}: </span>
           <b>
             <SkeletonText
