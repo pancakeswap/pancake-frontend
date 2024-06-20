@@ -1,3 +1,4 @@
+import { BINANCE_DATA_API } from 'config/constants/endpoints'
 import { NextApiHandler } from 'next'
 
 export const config = {
@@ -11,7 +12,7 @@ const handler: NextApiHandler = async (req, res) => {
     const symbol = `${currencyA}${currencyB}` // According to Binance API Spec
 
     // Fetch price from Binance API
-    const response = await fetch(`https://data-api.binance.vision/api/v3/ticker/price?symbol=${symbol}`)
+    const response = await fetch(`${BINANCE_DATA_API}/v3/ticker/price?symbol=${symbol}`)
     const data: {
       symbol: string
       price: string
