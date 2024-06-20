@@ -1,16 +1,7 @@
+import { ChainId } from '@pancakeswap/chains'
 import { createContext, useCallback, useMemo, useState } from 'react'
-import { QuestRewardType, TaskConfigType } from 'views/DashboardQuestEdit/context/types'
-
-export interface StateType {
-  title: string
-  body: string
-  amountPerWinner: string
-  startDate: null | Date
-  startTime: null | Date
-  endDate: null | Date
-  endTime: null | Date
-  reward: undefined
-}
+import { QuestRewardType, StateType, TaskConfigType } from 'views/DashboardQuestEdit/context/types'
+import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 
 interface EditQuestContextType {
   state: StateType
@@ -25,9 +16,10 @@ export const QuestEditContext = createContext<EditQuestContextType | undefined>(
 export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [tasks, setTasks] = useState<TaskConfigType[]>([])
   const [state, setState] = useState<StateType>(() => ({
+    chainId: ChainId.BSC,
+    completionStatus: CompletionStatus.DRAFTED,
     title: '',
-    body: '',
-    amountPerWinner: '',
+    description: '',
     startDate: null,
     startTime: null,
     endDate: null,

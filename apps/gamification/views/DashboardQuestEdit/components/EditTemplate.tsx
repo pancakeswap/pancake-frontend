@@ -4,6 +4,7 @@ import { DatePicker, DatePickerPortal, TimePicker } from 'components/DatePicker'
 import dynamic from 'next/dynamic'
 import React from 'react'
 import { styled } from 'styled-components'
+import { StateType } from 'views/DashboardQuestEdit/context/types'
 
 const TimelineGroup = styled(Flex)`
   flex-wrap: wrap;
@@ -28,16 +29,6 @@ const EasyMde = dynamic(() => import('components/EasyMde'), {
   ssr: false,
 })
 
-export interface StateType {
-  title: string
-  body: string
-  amountPerWinner: string
-  startDate: null | Date
-  startTime: null | Date
-  endDate: null | Date
-  endTime: null | Date
-}
-
 interface EditTemplateProps {
   titleText: string
   state: StateType
@@ -53,7 +44,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
   children,
 }) => {
   const { t } = useTranslation()
-  const { title, body, startDate, startTime, endDate, endTime } = state
+  const { title, description, startDate, startTime, endDate, endTime } = state
 
   return (
     <FlexGap
@@ -123,7 +114,13 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
         <Text color="textSubtle" mb="8px">
           {t('Tip: write in Markdown!')}
         </Text>
-        <EasyMde id="body" name="body" required value={body} onTextChange={(value) => updateValue('body', value)} />
+        <EasyMde
+          id="body"
+          name="body"
+          required
+          value={description}
+          onTextChange={(value) => updateValue('description', value)}
+        />
       </Box>
     </FlexGap>
   )

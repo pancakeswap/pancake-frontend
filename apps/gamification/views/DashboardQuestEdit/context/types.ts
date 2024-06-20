@@ -1,7 +1,19 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Currency } from '@pancakeswap/sdk'
 import { Address } from 'viem'
-import { RewardType, TaskType } from 'views/DashboardQuestEdit/type'
+import { CompletionStatus, RewardType, TaskType } from 'views/DashboardQuestEdit/type'
+
+export interface StateType {
+  chainId: ChainId
+  completionStatus: CompletionStatus
+  title: string
+  description: string
+  startDate: null | Date
+  startTime: null | Date
+  endDate: null | Date
+  endTime: null | Date
+  reward: undefined
+}
 
 export interface TaskBaseConfig {
   sid: string
