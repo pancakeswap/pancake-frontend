@@ -113,7 +113,7 @@ export const Row: React.FC<RowProps> = ({ statusButtonIndex }) => {
                 </Flex> */}
 
                 {/* When has "Statistics" need hide "Edit" when statusButtonIndex !== StateType.FINISHED */}
-                <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/quest/edit?id=123')}>
+                <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/quest/edit/123')}>
                   <PencilIcon color="primary" width="14px" height="14px" />
                   <Text ml="14px">{t('Edit')}</Text>
                 </Flex>

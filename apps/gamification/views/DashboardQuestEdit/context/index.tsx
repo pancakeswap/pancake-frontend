@@ -6,6 +6,7 @@ import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 interface EditQuestContextType {
   state: StateType
   tasks: TaskConfigType[]
+  updateAllState: (value: StateType) => void
   updateValue: (key: string, value: string | Date | QuestRewardType) => void
   onTasksChange: (task: TaskConfigType[]) => void
   deleteTask: (value: string) => void
@@ -25,7 +26,15 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
     endDate: null,
     endTime: null,
     reward: undefined,
+
+    // For api return
+    startDateTime: 0,
+    endDateTime: 0,
   }))
+
+  const updateAllState = useCallback((stateData: StateType) => {
+    setState(stateData)
+  }, [])
 
   const updateValue = useCallback((key: string, value: string | Date | QuestRewardType) => {
     setState((prevState) => ({
@@ -35,9 +44,9 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
   }, [])
 
   // Task
-  const onTasksChange = (newTasks: TaskConfigType[]) => {
+  const onTasksChange = useCallback((newTasks: TaskConfigType[]) => {
     setTasks(newTasks)
-  }
+  }, [])
 
   const deleteTask = useCallback(
     (id: string) => {
@@ -46,7 +55,7 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
       forkTasks.splice(indexToRemove, 1)
       onTasksChange([...forkTasks])
     },
-    [tasks],
+    [onTasksChange, tasks],
   )
 
   const providerValue = useMemo(
@@ -54,10 +63,11 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
       state,
       tasks,
       updateValue,
+      updateAllState,
       onTasksChange,
       deleteTask,
     }),
-    [state, tasks, deleteTask, updateValue],
+    [state, tasks, updateValue, updateAllState, onTasksChange, deleteTask],
   )
 
   return <QuestEditContext.Provider value={providerValue}>{children}</QuestEditContext.Provider>

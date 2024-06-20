@@ -13,6 +13,10 @@ export interface StateType {
   endDate: null | Date
   endTime: null | Date
   reward: undefined | QuestRewardType
+
+  // For api return
+  startDateTime: number
+  endDateTime: number
 }
 
 export interface TaskBaseConfig {
