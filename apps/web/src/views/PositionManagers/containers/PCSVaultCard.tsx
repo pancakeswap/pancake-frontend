@@ -243,7 +243,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
       minDepositUSD={minDepositUSD}
       boosterMultiplier={info?.boosterMultiplier}
       boosterContractAddress={info?.boosterContractAddress}
-      isVaultLoading={vaultHistorySnapshots.isVaultDaraLoading}
+      isVaultLoading={vaultHistorySnapshots.isVaultDataLoading}
       ror={ror}
     >
       {id}

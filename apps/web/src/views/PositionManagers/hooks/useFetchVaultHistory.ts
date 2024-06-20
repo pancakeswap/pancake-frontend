@@ -16,7 +16,7 @@ type RORPayload = {
 
 export type VaultHistorySnapshots = {
   rorData: VaultData[]
-  isVaultDaraLoading: false
+  isVaultDataLoading: boolean
 }
 
 export type RorUSDMap = { [interval in SnapShotIntervals]: string }

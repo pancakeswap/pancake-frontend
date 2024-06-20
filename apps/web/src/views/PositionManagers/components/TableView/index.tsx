@@ -336,7 +336,7 @@ export const TableRow: React.FC<Props> = ({
                               : info?.boosterMultiplier
                           }
                           ror={ror}
-                          isVaultLoading={vaultHistorySnapshots.isRorLoading}
+                          isVaultLoading={vaultHistorySnapshots.isVaultDataLoading}
                         />
                       </CellLayout>
                     </CellInner>
