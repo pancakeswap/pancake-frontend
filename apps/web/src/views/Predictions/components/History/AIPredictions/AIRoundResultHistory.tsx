@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BetPosition } from '@pancakeswap/prediction'
-import { BoxProps, Flex, Text } from '@pancakeswap/uikit'
-import { GlassGlobeIcon } from 'components/Svg/GlassGlobeIcon'
+import { BoxProps, Flex, GlassGlobeIcon, Text } from '@pancakeswap/uikit'
 import { Round } from 'state/types'
 import styled from 'styled-components'
 import { getRoundPosition } from 'views/Predictions/helpers'

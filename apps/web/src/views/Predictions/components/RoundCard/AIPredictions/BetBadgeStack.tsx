@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, CheckmarkCircleFillIcon, useTooltip } from '@pancakeswap/uikit'
-import { GlassGlobeIcon } from 'components/Svg/GlassGlobeIcon'
+import { Box, CheckmarkCircleFillIcon, GlassGlobeIcon, useTooltip } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 const BetBadge = styled(Box)<{ $variant?: 'primary' | 'secondary'; $type?: 'UP' | 'DOWN'; $position?: string }>`

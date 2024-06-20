@@ -69,6 +69,7 @@ export { default as ExpandIcon } from "./Icons/Expand";
 export { default as FarmIcon } from "./Icons/Farm";
 export { default as FavoriteBorderIcon } from "./Icons/FavoriteBorder";
 export { default as GithubIcon } from "./Icons/Github";
+export { default as GlassGlobeIcon } from "./Icons/GlassGlobe";
 export { default as GovernanceIcon } from "./Icons/Governance";
 export { default as GroupsIcon } from "./Icons/Groups";
 export { default as HamburgerIcon } from "./Icons/Hamburger";
