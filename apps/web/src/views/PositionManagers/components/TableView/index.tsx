@@ -194,8 +194,8 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     currencyB,
     poolToken0Amount: info?.poolToken0Amounts,
     poolToken1Amount: info?.poolToken1Amounts,
-    token0PriceUSD: token0USDPrice,
-    token1PriceUSD: token1USDPrice,
+    token0PriceUSD: tokensPriceUSD?.token0,
+    token1PriceUSD: tokensPriceUSD?.token1,
   })
 
   const apr = useApr({
