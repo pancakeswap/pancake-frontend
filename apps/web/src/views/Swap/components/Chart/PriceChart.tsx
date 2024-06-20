@@ -5,6 +5,7 @@ import {
   Flex,
   IconButton,
   LineGraphIcon,
+  CandleGraphIcon,
   PairPriceChartType,
   ShrinkIcon,
   SyncAltIcon,
@@ -62,8 +63,8 @@ const PriceChart = ({
             <SyncAltIcon ml="6px" color="primary" />
           </IconButton>
           <ButtonMenu scale="sm" activeIndex={chartType} onItemClick={setChartType} variant="primary">
-            <ButtonMenuItem>{isDesktop ? t('Basic') : <LineGraphIcon color="primary" />}</ButtonMenuItem>
-            <ButtonMenuItem>{isDesktop ? t('Candlestick') : <LineGraphIcon color="primary" />}</ButtonMenuItem>
+            <ButtonMenuItem>{isDesktop ? t('Basic') : <LineGraphIcon color="text" />}</ButtonMenuItem>
+            <ButtonMenuItem>{isDesktop ? t('Candlestick') : <CandleGraphIcon color="text" />}</ButtonMenuItem>
           </ButtonMenu>
         </Flex>
         {!isMobile && (
