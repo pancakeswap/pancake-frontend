@@ -99,3 +99,5 @@ export const MERCURYO_WIDGET_URL =
 export const WALLET_API = 'https://wallet-api.pancakeswap.com'
 
 export const BINANCE_DATA_API = 'https://data-api.binance.vision/api'
+
+export const PREDICTION_PRICE_API = '/api/prediction/price'
