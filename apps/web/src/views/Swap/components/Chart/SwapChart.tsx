@@ -87,6 +87,10 @@ const SwapChart = ({
     [pairPrices],
   )
 
+  const chartData = useMemo(() => {
+    return type === PairPriceChartType.LINE ? pairPrices : pairPrices?.slice(0, pairPrices.length - 1)
+  }, [type, pairPrices])
+
   if (isBadData) {
     return <NoChartAvailable token0Address={token0Address} token1Address={token1Address} isMobile={isMobile} />
   }
@@ -131,7 +135,7 @@ const SwapChart = ({
       <Box height={isMobile ? '100%' : chartHeight} p={isMobile ? '0px' : '16px'} width="100%">
         <PairPriceChart
           type={type}
-          data={type === PairPriceChartType.LINE ? pairPrices : pairPrices.slice(0, pairPrices.length - 1)}
+          data={chartData}
           setHoverValue={setHoverValue}
           setHoverDate={setHoverDate}
           isChangePositive={isChangePositiveToCurrent}

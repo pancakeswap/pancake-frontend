@@ -112,7 +112,7 @@ export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
   }, [isChangePositive]);
   const [chartCreated, setChart] = useState<IChartApi | undefined>();
 
-  const handleMouseLeave = useCallback(() => {
+  const handleResetValue = useCallback(() => {
     if (setHoverValue) setHoverValue(undefined);
     if (setHoverDate) setHoverDate(undefined);
   }, [setHoverValue, setHoverDate]);
@@ -222,7 +222,7 @@ export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
 
     // eslint-disable-next-line consistent-return
     return () => {
-      handleMouseLeave();
+      handleResetValue();
       chart.remove();
     };
   }, [
@@ -237,7 +237,7 @@ export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
     setHoverDate,
     setHoverValue,
     priceLineData,
-    handleMouseLeave,
+    handleResetValue,
   ]);
 
   return (
@@ -246,7 +246,7 @@ export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
       <div
         onPointerDownCapture={(event) => event.stopPropagation()}
         style={{ display: "flex", flex: 1, height: "100%" }}
-        onMouseLeave={handleMouseLeave}
+        onMouseLeave={handleResetValue}
       >
         <div style={{ flex: 1, maxWidth: "100%" }} ref={chartRef} id="pair-price-chart" {...rest} />
       </div>
