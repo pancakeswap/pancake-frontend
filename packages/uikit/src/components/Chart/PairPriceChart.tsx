@@ -212,9 +212,8 @@ export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
 
     if (isMobile) {
       chart.subscribeClick(getHandler(chart, newSeries, locale, setHoverValue, setHoverDate, isMobile));
-    } else {
-      chart.subscribeCrosshairMove(getHandler(chart, newSeries, locale, setHoverValue, setHoverDate, isMobile));
     }
+    chart.subscribeCrosshairMove(getHandler(chart, newSeries, locale, setHoverValue, setHoverDate, isMobile));
 
     // eslint-disable-next-line consistent-return
     return () => {
