@@ -112,6 +112,11 @@ export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
   }, [isChangePositive]);
   const [chartCreated, setChart] = useState<IChartApi | undefined>();
 
+  const handleMouseLeave = useCallback(() => {
+    if (setHoverValue) setHoverValue(undefined);
+    if (setHoverDate) setHoverDate(undefined);
+  }, [setHoverValue, setHoverDate]);
+
   useEffect(() => {
     if (!chartRef?.current) return;
 
@@ -217,6 +222,7 @@ export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
 
     // eslint-disable-next-line consistent-return
     return () => {
+      handleMouseLeave();
       chart.remove();
     };
   }, [
@@ -231,13 +237,8 @@ export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
     setHoverDate,
     setHoverValue,
     priceLineData,
+    handleMouseLeave,
   ]);
-
-  const handleMouseLeave = useCallback(() => {
-    if (setHoverValue) setHoverValue(undefined);
-    if (setHoverDate) setHoverDate(undefined);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setHoverValue, setHoverDate, timeWindow, type]);
 
   return (
     <>
