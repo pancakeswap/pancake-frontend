@@ -25,6 +25,7 @@ export const usdGasTokensByChain = {
   [ChainId.GOERLI]: [goerliTestnetTokens.usdc],
   [ChainId.BSC]: [bscTokens.usdt],
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.usdt],
+  [ChainId.FRAX_TESTNET]: [bscTestnetTokens.usdt], // ToDo:: change to the valid one
   [ChainId.ARBITRUM_ONE]: [arbitrumTokens.usdc],
   [ChainId.ARBITRUM_GOERLI]: [arbitrumGoerliTokens.usdc],
   [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.usdt],

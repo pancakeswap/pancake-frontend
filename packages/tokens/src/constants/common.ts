@@ -307,6 +307,13 @@ export const USDC = {
 export const USDT = {
   [ChainId.BSC]: USDT_BSC,
   [ChainId.ETHEREUM]: USDT_ETH,
+  [ChainId.FRAX_TESTNET]: new ERC20Token(
+    ChainId.FRAX_TESTNET,
+    '0xFC00000000000000000000000000000000000006',
+    18,
+    'WRAPPED FRAX',
+    'WFRax',
+  ),
   [ChainId.ARBITRUM_ONE]: new ERC20Token(
     ChainId.ARBITRUM_ONE,
     '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
@@ -365,6 +372,7 @@ export const STABLE_COIN = {
   [ChainId.GOERLI]: USDC[ChainId.GOERLI],
   [ChainId.BSC]: USDT[ChainId.BSC],
   [ChainId.BSC_TESTNET]: BUSD[ChainId.BSC_TESTNET],
+  [ChainId.FRAX_TESTNET]: USDT[ChainId.FRAX_TESTNET], // ToDo:: change to valid one
   [ChainId.ARBITRUM_ONE]: USDC[ChainId.ARBITRUM_ONE],
   [ChainId.ARBITRUM_GOERLI]: USDC[ChainId.ARBITRUM_GOERLI],
   [ChainId.ZKSYNC]: USDC[ChainId.ZKSYNC],

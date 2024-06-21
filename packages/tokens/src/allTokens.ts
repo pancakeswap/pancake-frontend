@@ -22,6 +22,7 @@ export const allTokens = {
   [ChainId.GOERLI]: goerliTestnetTokens,
   [ChainId.BSC]: bscTokens,
   [ChainId.BSC_TESTNET]: bscTestnetTokens,
+  [ChainId.FRAX_TESTNET]: bscTestnetTokens, // ToDo:: change to the valid one
   [ChainId.ETHEREUM]: ethereumTokens,
   [ChainId.ARBITRUM_ONE]: arbitrumTokens,
   [ChainId.POLYGON_ZKEVM]: polygonZkEvmTokens,

@@ -15,6 +15,7 @@ export const FACTORY_ADDRESS_MAP = {
   [ChainId.GOERLI]: FACTORY_ADDRESS_ETH,
   [ChainId.BSC]: FACTORY_ADDRESS,
   [ChainId.BSC_TESTNET]: '0x6725F303b657a9451d8BA641348b6761A6CC7a17',
+  [ChainId.FRAX_TESTNET]: FACTORY_ADDRESS_ETH, // ToDo: Add valid Factory Address
   [ChainId.ARBITRUM_ONE]: '0x02a84c1b3BBD7401a5f7fa98a384EBC70bB5749E',
   [ChainId.ARBITRUM_GOERLI]: '0x333EAE459075b1d7dE8eb57997b5d4eee5F1070a',
   [ChainId.POLYGON_ZKEVM]: '0x02a84c1b3BBD7401a5f7fa98a384EBC70bB5749E',
@@ -38,6 +39,7 @@ export const INIT_CODE_HASH_MAP = {
   [ChainId.GOERLI]: INIT_CODE_HASH_ETH,
   [ChainId.BSC]: INIT_CODE_HASH,
   [ChainId.BSC_TESTNET]: '0xd0d4c4cd0848c93cb4fd1f498d7013ee6bfb25783ea21593d5834f5d250ece66',
+  [ChainId.FRAX_TESTNET]: '0xd0d4c4cd0848c93cb4fd1f498d7013ee6bfb25783ea21593d5834f5d250ece66',
   [ChainId.ARBITRUM_ONE]: INIT_CODE_HASH_ETH,
   [ChainId.ARBITRUM_GOERLI]: INIT_CODE_HASH_ETH,
   [ChainId.POLYGON_ZKEVM]: INIT_CODE_HASH_ETH,
@@ -85,6 +87,14 @@ export const WETH9 = {
     'ETH',
     'ETH',
     'https://ethereum.org'
+  ),
+  [ChainId.FRAX_TESTNET]: new ERC20Token(
+    ChainId.FRAX_TESTNET,
+    '0x4200000000000000000000000000000000000006',
+    18,
+    'FRXETH',
+    'Frax ETH',
+    'https://frax.finance'
   ),
   [ChainId.ARBITRUM_ONE]: new ERC20Token(
     ChainId.ARBITRUM_ONE,
@@ -240,6 +250,7 @@ export const WNATIVE = {
   [ChainId.GOERLI]: WETH9[ChainId.GOERLI],
   [ChainId.BSC]: WBNB[ChainId.BSC],
   [ChainId.BSC_TESTNET]: WBNB[ChainId.BSC_TESTNET],
+  [ChainId.FRAX_TESTNET]: WETH9[ChainId.FRAX_TESTNET],
   [ChainId.ARBITRUM_ONE]: WETH9[ChainId.ARBITRUM_ONE],
   [ChainId.ARBITRUM_GOERLI]: WETH9[ChainId.ARBITRUM_GOERLI],
   [ChainId.POLYGON_ZKEVM]: WETH9[ChainId.POLYGON_ZKEVM],
@@ -262,6 +273,12 @@ const BNB = {
   decimals: 18,
 } as const
 
+const FRXETH = {
+  name: 'Frax ETH',
+  symbol: 'FRXETH',
+  decimals: 18,
+} as const
+
 export const NATIVE = {
   [ChainId.ETHEREUM]: ETHER,
   [ChainId.GOERLI]: { name: 'Goerli Ether', symbol: 'GOR', decimals: 18 },
@@ -271,6 +288,7 @@ export const NATIVE = {
     symbol: 'tBNB',
     decimals: 18,
   },
+  [ChainId.FRAX_TESTNET]: FRXETH,
   [ChainId.ARBITRUM_ONE]: ETHER,
   [ChainId.ARBITRUM_GOERLI]: {
     name: 'Arbitrum Goerli Ether',

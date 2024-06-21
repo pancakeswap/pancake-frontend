@@ -3,6 +3,7 @@ import { ChainId } from '@pancakeswap/chains'
 export const AVERAGE_CHAIN_BLOCK_TIMES = {
   [ChainId.BSC]: 3,
   [ChainId.BSC_TESTNET]: 3,
+  [ChainId.FRAX_TESTNET]: 3,
   [ChainId.OPBNB]: 1,
   [ChainId.OPBNB_TESTNET]: 1,
   [ChainId.ETHEREUM]: 12,

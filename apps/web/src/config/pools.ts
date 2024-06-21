@@ -6,6 +6,7 @@ export const POOLS_FAST_REVALIDATE = {
   [ChainId.BSC]: 10_000,
   [ChainId.ETHEREUM]: 20_000,
   [ChainId.GOERLI]: 20_000,
+  [ChainId.FRAX_TESTNET]: 10_000,
   [ChainId.ARBITRUM_ONE]: 10_000,
   [ChainId.ARBITRUM_GOERLI]: 10_000,
   [ChainId.POLYGON_ZKEVM]: 15_000,
