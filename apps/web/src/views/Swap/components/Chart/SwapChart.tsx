@@ -67,8 +67,8 @@ const SwapChart = ({
       return new Date().toLocaleString(locale, {
         year: 'numeric',
         month: 'short',
-        day: '2-digit',
-        hour: '2-digit',
+        day: 'numeric',
+        hour: 'numeric',
         minute: '2-digit',
       })
     }
