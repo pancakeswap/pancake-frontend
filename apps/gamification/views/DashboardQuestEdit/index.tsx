@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { EditTemplate } from 'views/DashboardQuestEdit/components/EditTemplate'
@@ -7,7 +8,11 @@ import { Reward } from 'views/DashboardQuestEdit/components/Reward'
 import { SubmitAction } from 'views/DashboardQuestEdit/components/SubmitAction'
 import { Tasks } from 'views/DashboardQuestEdit/components/Tasks'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
-import { useGetSingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
+import {
+  SingleQuestData,
+  SingleQuestDataError,
+  useGetSingleQuestData,
+} from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { convertDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 
 const DashboardQuestEditContainer = styled(Flex)`
@@ -22,49 +27,54 @@ const DashboardQuestEditContainer = styled(Flex)`
 
 export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
   const { t } = useTranslation()
+  const router = useRouter()
   const [showPage, setShowPage] = useState(false)
   const { isDesktop } = useMatchBreakpoints()
   const { state, updateValue, onTasksChange, updateAllState } = useQuestEdit()
-
   const { questData, isFetched } = useGetSingleQuestData(questId ?? '')
 
   useEffect(() => {
     if (!showPage && isFetched && questData) {
-      const {
-        orgId,
-        chainId,
-        completionStatus,
-        title,
-        description,
-        reward,
-        startDateTime,
-        endDateTime,
-        rewardSCAddress,
-        ownerAddress,
-      } = questData
-      const startDateConvert = startDateTime ? new Date(convertDateAndTime(startDateTime)) : null
-      const endDateConvert = startDateTime ? new Date(convertDateAndTime(endDateTime)) : null
+      if ((questData as SingleQuestDataError).error) {
+        router.push('/dashboard')
+      } else {
+        const {
+          orgId,
+          chainId,
+          completionStatus,
+          title,
+          description,
+          reward,
+          startDateTime,
+          endDateTime,
+          rewardSCAddress,
+          ownerAddress,
+          task,
+        } = questData as SingleQuestData
+        const startDateConvert = startDateTime ? new Date(convertDateAndTime(startDateTime)) : null
+        const endDateConvert = startDateTime ? new Date(convertDateAndTime(endDateTime)) : null
 
-      updateAllState({
-        chainId,
-        orgId,
-        completionStatus,
-        title,
-        description,
-        startDate: startDateConvert,
-        startTime: startDateConvert,
-        endDate: endDateConvert,
-        endTime: endDateConvert,
-        reward,
-        startDateTime,
-        endDateTime,
-        rewardSCAddress,
-        ownerAddress,
-      })
-      onTasksChange(questData.task)
-      setShowPage(false)
+        updateAllState({
+          chainId,
+          orgId,
+          completionStatus,
+          title,
+          description,
+          startDate: startDateConvert,
+          startTime: startDateConvert,
+          endDate: endDateConvert,
+          endTime: endDateConvert,
+          reward,
+          startDateTime,
+          endDateTime,
+          rewardSCAddress,
+          ownerAddress,
+        })
+        onTasksChange(task)
+        setShowPage(false)
+      }
     }
-  }, [isFetched, showPage, questData, onTasksChange, updateAllState])
+  }, [isFetched, showPage, questData, onTasksChange, updateAllState, router])
 
   if (questId && !showPage) {
     return null

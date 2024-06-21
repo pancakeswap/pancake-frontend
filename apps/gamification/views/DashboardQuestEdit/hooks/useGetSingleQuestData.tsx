@@ -3,10 +3,14 @@ import { GAMIFICATION_API } from 'config/constants/endpoints'
 import { FetchStatus } from 'config/constants/types'
 import { StateType, TaskConfigType } from 'views/DashboardQuestEdit/context/types'
 
-const FAKE_TOKEN = 'test-secret-key'
+const FAKE_TOKEN = '"test-secret-key"'
 
-interface SingleQuestData extends StateType {
+export interface SingleQuestData extends StateType {
   task: TaskConfigType[]
+}
+
+export interface SingleQuestDataError {
+  error: string
 }
 
 export const useGetSingleQuestData = (id: string) => {
@@ -19,11 +23,11 @@ export const useGetSingleQuestData = (id: string) => {
           headers: { 'Content-Type': 'application/json', 'x-secure-token': FAKE_TOKEN },
         })
         const result = await response.json()
-        const questData: SingleQuestData = result
+        const questData: SingleQuestData | SingleQuestDataError = result
         return questData
       } catch (error) {
         console.error(`Fetch Single dashboard quest error: ${error}`)
-        return null
+        throw error
       }
     },
     enabled: Boolean(id),

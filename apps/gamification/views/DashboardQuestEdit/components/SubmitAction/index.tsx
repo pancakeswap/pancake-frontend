@@ -18,7 +18,7 @@ const StyledDeleteButton = styled(Button)`
   border-color: ${({ theme }) => theme.colors.failure};
 `
 
-const FAKE_TOKEN = 'test-secret-key'
+const FAKE_TOKEN = '"test-secret-key"'
 
 export const SubmitAction = () => {
   const { t } = useTranslation()
