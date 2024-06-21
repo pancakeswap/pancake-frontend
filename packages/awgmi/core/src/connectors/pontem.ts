@@ -1,4 +1,5 @@
-import { Types } from 'aptos'
+import { Aptos, InputGenerateTransactionOptions, InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk'
+
 import { Chain } from '../chain'
 import { ConnectorNotFoundError, UserRejectedRequestError } from '../errors'
 import { Address } from '../types'
@@ -18,16 +19,19 @@ declare global {
       account(): Promise<Address>
       publicKey(): Promise<string>
       signAndSubmit(
-        transaction: Types.TransactionPayload,
+        transaction: InputGenerateTransactionPayloadData,
         options?: any,
       ): Promise<{
         success: boolean
         result: {
-          hash: Types.HexEncodedBytes
+          hash: string
         }
       }>
       isConnected(): Promise<boolean>
-      signTransaction(transaction: Types.TransactionPayload, options?: any): Promise<Uint8Array>
+      signTransaction(
+        transaction: InputGenerateTransactionPayloadData,
+        options?: any,
+      ): Promise<ReturnType<Aptos['transaction']['sign']>>
       signMessage(message: SignMessagePayload): Promise<{
         success: boolean
         result: SignMessageResponse
@@ -115,7 +119,10 @@ export class PontemConnector extends Connector<Window['pontem']> {
     }
   }
 
-  async signAndSubmitTransaction(payload: Types.TransactionPayload, options?: Types.SubmitTransactionRequest) {
+  async signAndSubmitTransaction(
+    payload: InputGenerateTransactionPayloadData,
+    options?: Partial<InputGenerateTransactionOptions>,
+  ) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
 
@@ -135,7 +142,7 @@ export class PontemConnector extends Connector<Window['pontem']> {
     return response.result
   }
 
-  async signTransaction(payload: Types.TransactionPayload) {
+  async signTransaction(payload: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     return provider.signTransaction(payload)

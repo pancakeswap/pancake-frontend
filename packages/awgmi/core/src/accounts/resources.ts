@@ -1,4 +1,5 @@
-import { HexString, TxnBuilderTypes, Types, TypeTagParser } from 'aptos'
+import { MoveResource, Hex } from '@aptos-labs/ts-sdk'
+import { TxnBuilderTypes, TypeTagParser } from 'aptos'
 import { CoinStoreResult, COIN_STORE_TYPE_PREFIX } from '../coins/coinStore'
 import { getProvider } from '../providers'
 
@@ -9,7 +10,7 @@ export type FetchAccountResourcesArgs = {
   networkName?: string
 }
 
-export type FetchAccountResourcesResult = Types.MoveResource[]
+export type FetchAccountResourcesResult = MoveResource[]
 
 export async function fetchAccountResources({
   address,
@@ -17,7 +18,9 @@ export async function fetchAccountResources({
 }: FetchAccountResourcesArgs): Promise<FetchAccountResourcesResult> {
   const provider = getProvider({ networkName })
 
-  const resources = await provider.getAccountResources(address)
+  const resources = await provider.getAccountResources({
+    accountAddress: address,
+  })
 
   return resources
 }
@@ -29,11 +32,7 @@ const typeTagFilter = ({ address, moduleName, name }: TypeTagFilter) => {
   const filter = (data: FetchAccountResourcesResult[number]) => {
     const parsed = new TypeTagParser(data.type).parseTypeTag()
     if (parsed instanceof TxnBuilderTypes.TypeTagStruct) {
-      if (
-        address &&
-        HexString.fromUint8Array(parsed.value.address.address).toShortString() !==
-          HexString.ensure(address).toShortString()
-      )
+      if (address && new Hex(parsed.value.address.address).toString() !== Hex.fromHexInput(address).toString())
         return false
 
       if (moduleName && parsed.value.module_name.value !== moduleName) return false
@@ -47,7 +46,7 @@ const typeTagFilter = ({ address, moduleName, name }: TypeTagFilter) => {
   return filter
 }
 
-export function createAccountResourceFilter<T extends Types.MoveResource>(query: string | TypeTagFilter) {
+export function createAccountResourceFilter<T extends MoveResource>(query: string | TypeTagFilter) {
   const typeTagFilterFn = typeof query !== 'string' && typeTagFilter(query)
   const filter = (data: FetchAccountResourcesResult[number]): data is T => {
     if (typeof query === 'string') {
@@ -69,7 +68,7 @@ export type CoinStoreResource<T extends string = string> = {
 
 const coinStoreTypeTag = TxnBuilderTypes.StructTag.fromString(COIN_STORE_TYPE_PREFIX)
 export const coinStoreResourcesFilter = createAccountResourceFilter<CoinStoreResource>({
-  address: HexString.fromUint8Array(coinStoreTypeTag.address.address).toShortString(),
+  address: new Hex(coinStoreTypeTag.address.address).toString(),
   moduleName: coinStoreTypeTag.module_name.value,
   name: coinStoreTypeTag.name.value,
 })

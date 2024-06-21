@@ -1,15 +1,16 @@
-import { Types } from 'aptos'
+import { ViewFunctionJsonPayload } from '@aptos-labs/ts-sdk'
+
 import { getProvider } from '../providers'
 
 export type FetchAptosViewArgs = {
   /** Network to use for provider */
   networkName?: string
-  params: Types.TransactionPayload_EntryFunctionPayload
+  params: ViewFunctionJsonPayload
 }
 
 export const fetchAptosView = async ({ networkName, params }: FetchAptosViewArgs): Promise<any> => {
   const provider = getProvider({ networkName })
-  const url = `${provider.nodeUrl}/view`
+  const url = `${provider.config.fullnode}/view`
   const options = {
     method: 'POST',
     headers: {

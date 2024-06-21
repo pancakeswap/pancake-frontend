@@ -1,4 +1,12 @@
-import { HexString, TxnBuilderTypes, Types } from 'aptos'
+import {
+  Hex,
+  Ed25519PublicKey,
+  InputGenerateTransactionPayloadData,
+  InputSimulateTransactionOptions,
+  InputSimulateTransactionData,
+  UserTransactionResponse,
+} from '@aptos-labs/ts-sdk'
+
 import { getAccount } from '../accounts/account'
 import { getClient } from '../client'
 import { SimulateTransactionError, WalletProviderError } from '../errors'
@@ -8,16 +16,12 @@ export type SimulateTransactionArgs = {
   /** Network name used to validate if the signer is connected to the target chain */
   networkName?: string
   throwOnError?: boolean
-  payload: Types.EntryFunctionPayload
-  options?: Partial<Omit<Types.SubmitTransactionRequest, 'payload' | 'signature'>>
-  query?: {
-    estimateGasUnitPrice?: boolean
-    estimateMaxGasAmount?: boolean
-    estimatePrioritizedGasUnitPrice: boolean
-  }
+  payload: InputGenerateTransactionPayloadData
+  options?: Partial<Omit<InputSimulateTransactionData, 'transaction' | 'options'>>
+  query?: InputSimulateTransactionOptions
 }
 
-export type SimulateTransactionResult = Types.UserTransaction[]
+export type SimulateTransactionResult = UserTransactionResponse[]
 
 export async function simulateTransaction({
   networkName,
@@ -46,20 +50,17 @@ export async function simulateTransaction({
     throw new Error('Multi sig not supported')
   }
 
-  const rawTransaction = await provider.generateTransaction(account.address, payload, {
-    ...options,
+  const rawTransaction = await provider.transaction.build.simple({
+    sender: account.address,
+    data: payload,
   })
 
-  const simulatedUserTransactions = await provider.simulateTransaction(
-    new TxnBuilderTypes.Ed25519PublicKey(HexString.ensure(publicKey).toUint8Array()),
-    rawTransaction,
-    {
-      estimateGasUnitPrice: true,
-      estimateMaxGasAmount: true,
-      estimatePrioritizedGasUnitPrice: false,
-      ...query,
-    },
-  )
+  const simulatedUserTransactions = await provider.transaction.simulate.simple({
+    signerPublicKey: new Ed25519PublicKey(Hex.fromHexInput(publicKey).toUint8Array()),
+    transaction: rawTransaction,
+    options: query,
+    ...options,
+  })
 
   if (throwOnError) {
     const foundError = simulatedUserTransactions.find((simulatedTx) => !simulatedTx.success)

@@ -1,5 +1,6 @@
 import type { MSafeWallet } from '@msafe/aptos-wallet'
-import { HexString, Types } from 'aptos'
+import { Aptos, InputGenerateTransactionPayloadData, Hex } from '@aptos-labs/ts-sdk'
+
 import {
   ChainNotConfiguredError,
   ConnectorNotFoundError,
@@ -104,12 +105,14 @@ export class MsafeConnector extends Connector<MSafeWallet, MSafeWalletOptions> {
     }
   }
 
-  async signAndSubmitTransaction(transaction?: Types.TransactionPayload): Promise<ConnectorTransactionResponse> {
+  async signAndSubmitTransaction(
+    transaction?: InputGenerateTransactionPayloadData,
+  ): Promise<ConnectorTransactionResponse> {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     try {
       const response = await provider.signAndSubmit(transaction as any)
-      return { hash: HexString.fromUint8Array(response).hex() }
+      return { hash: new Hex(response).toString() }
     } catch (error) {
       // TODO: what's the reject error code?
       if ((error as any)?.message === 'User declined to send the transaction') {
@@ -120,7 +123,9 @@ export class MsafeConnector extends Connector<MSafeWallet, MSafeWalletOptions> {
     }
   }
 
-  async signTransaction(_transaction?: Types.TransactionPayload): Promise<Uint8Array> {
+  async signTransaction(
+    _transaction?: InputGenerateTransactionPayloadData,
+  ): Promise<ReturnType<Aptos['transaction']['sign']>> {
     throw new Error('Method not implemented.')
   }
 

@@ -1,4 +1,5 @@
-import { Types } from 'aptos'
+import { InputGenerateTransactionOptions, InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk'
+
 import { Chain } from '../chain'
 import { Connector } from './base'
 import { ConnectorNotFoundError, UserRejectedRequestError } from '../errors'
@@ -95,7 +96,10 @@ export class MartianConnector extends Connector<Window['martian'], MartianConnec
     }
   }
 
-  async signAndSubmitTransaction(payload: Types.TransactionPayload, options?: Types.SubmitTransactionRequest) {
+  async signAndSubmitTransaction(
+    payload: InputGenerateTransactionPayloadData,
+    options?: Partial<InputGenerateTransactionOptions>,
+  ) {
     const provider = await this.getProvider()
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()
@@ -122,7 +126,7 @@ export class MartianConnector extends Connector<Window['martian'], MartianConnec
     }
   }
 
-  async signTransaction(payload: Types.TransactionPayload) {
+  async signTransaction(payload: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()

@@ -44,7 +44,10 @@ export async function fetchCoin({ networkName, coin }: FetchCoinArgs): Promise<F
   if (coin && !isHexStringEquals(coin, APTOS_COIN)) {
     const [coinAccountAddress] = coin.split('::')
     if (isAccountAddress(coinAccountAddress)) {
-      const coinResource = await provider.getAccountResource(coinAccountAddress, wrapCoinInfoTypeTag(coin))
+      const coinResource = await provider.getAccountResource({
+        accountAddress: coinAccountAddress,
+        resourceType: wrapCoinInfoTypeTag(coin),
+      })
 
       const { decimals = 18, symbol, name, supply: _supply } = coinResource.data as CoinResourceResponse
 
