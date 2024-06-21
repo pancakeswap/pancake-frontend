@@ -46,6 +46,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "rm -rf dist && tsup",
+    "test:u": "vitest -u --run",
     "test": "vitest --run"
   },
   "exports": {

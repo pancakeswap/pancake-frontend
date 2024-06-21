@@ -1,10 +1,11 @@
 import { Hex, AccountAddress } from '@aptos-labs/ts-sdk'
+import { HexString } from 'aptos'
 
 import { Address } from './types'
 
 export const isAccountAddress = (addr: string): addr is Address => {
   try {
-    return Boolean(addr.startsWith('0x') && AccountAddress.fromStringStrict(addr) ? (addr as Address) : undefined)
+    return Boolean(addr.startsWith('0x') && AccountAddress.fromString(addr) ? (addr as Address) : undefined)
   } catch (error) {
     return false
   }
@@ -51,7 +52,7 @@ export const unwrapTypeArgFromString = (type: string) => {
 }
 
 export function isHexStringEquals(hexString0: string, hexString1: string) {
-  return Hex.fromHexString(hexString0).toString() === Hex.fromHexString(hexString1).toString()
+  return HexString.ensure(hexString0).toShortString() === HexString.ensure(hexString1).toShortString()
 }
 
 export function parseVmStatusError(vmStatus: string) {

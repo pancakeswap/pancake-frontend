@@ -25,6 +25,5 @@ export async function fetchAccountResource<T>({
     resourceType,
   })
 
-  // @ts-ignore
-  return resource as FetchAccountResourceResult
+  return { type: resourceType, data: resource }
 }
