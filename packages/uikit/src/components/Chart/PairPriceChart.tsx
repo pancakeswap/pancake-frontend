@@ -238,7 +238,7 @@ export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
     if (setHoverValue) setHoverValue(undefined);
     if (setHoverDate) setHoverDate(undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setHoverValue, setHoverDate, timeWindow]);
+  }, [setHoverValue, setHoverDate, timeWindow, type]);
 
   return (
     <>
