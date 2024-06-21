@@ -30,7 +30,18 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
 
   useEffect(() => {
     if (!showPage && isFetched && questData) {
-      const { orgId, chainId, completionStatus, title, description, reward, startDateTime, endDateTime } = questData
+      const {
+        orgId,
+        chainId,
+        completionStatus,
+        title,
+        description,
+        reward,
+        startDateTime,
+        endDateTime,
+        rewardSCAddress,
+        ownerAddress,
+      } = questData
       const startDateConvert = startDateTime ? new Date(convertDateAndTime(startDateTime)) : null
       const endDateConvert = startDateTime ? new Date(convertDateAndTime(endDateTime)) : null
 
@@ -47,6 +58,8 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
         reward,
         startDateTime,
         endDateTime,
+        rewardSCAddress,
+        ownerAddress,
       })
       onTasksChange(questData.task)
       setShowPage(false)

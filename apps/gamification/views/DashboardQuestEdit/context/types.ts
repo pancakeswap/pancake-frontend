@@ -14,6 +14,8 @@ export interface StateType {
   endDate: null | Date
   endTime: null | Date
   reward: undefined | QuestRewardType
+  rewardSCAddress: string
+  ownerAddress: string
 
   // For api return
   startDateTime: number

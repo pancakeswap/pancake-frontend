@@ -5,7 +5,7 @@ import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 export interface CampaignRewardType extends QuestRewardType {}
 
 export interface CampaignStateType {
-  chainId: ChainId.BSC
+  chainId: ChainId
   completionStatus: CompletionStatus.DRAFTED
   title: string
   description: string

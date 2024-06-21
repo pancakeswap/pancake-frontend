@@ -29,6 +29,8 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
     endDate: null,
     endTime: null,
     reward: undefined,
+    rewardSCAddress: '',
+    ownerAddress: '',
 
     // For api return
     startDateTime: 0,
