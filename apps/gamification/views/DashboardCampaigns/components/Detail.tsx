@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { Row } from 'views/DashboardCampaigns/components/Row'
-import { StateType } from 'views/DashboardQuests/components/RecordTemplate'
+import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
 
 const DetailContainer = styled(Box)`
   padding: 16px;
@@ -24,7 +24,7 @@ const StyledRows = styled(Box)`
   }
 `
 interface DetailProps {
-  statusButtonIndex: StateType
+  statusButtonIndex: CompletionStatusIndex
 }
 
 export const Detail: React.FC<DetailProps> = ({ statusButtonIndex }) => {

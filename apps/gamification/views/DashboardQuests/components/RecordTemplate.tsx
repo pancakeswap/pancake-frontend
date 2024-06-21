@@ -91,13 +91,6 @@ const MultiSelectorStyled = styled(MultiSelector)<{ $hasOptionsPicked: boolean }
   }
 `
 
-export enum StateType {
-  ON_GOING = 0,
-  SCHEDULED = 1,
-  FINISHED = 2,
-  DRAFTED = 3,
-}
-
 interface RecordTemplateProps {
   title: string
   createButtonText: string

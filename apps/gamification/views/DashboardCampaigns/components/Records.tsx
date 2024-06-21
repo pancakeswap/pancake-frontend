@@ -2,7 +2,7 @@ import { Box, Card, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { TableHeader } from 'views/DashboardCampaigns/components/TableHeader'
 import { TableRow } from 'views/DashboardCampaigns/components/TableRow'
-import { StateType } from 'views/DashboardQuests/components/RecordTemplate'
+import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
 
 const StyledRows = styled(Box)`
   > div {
@@ -19,7 +19,7 @@ const StyledRows = styled(Box)`
 `
 
 interface RecordsProps {
-  statusButtonIndex: StateType
+  statusButtonIndex: CompletionStatusIndex
 }
 
 export const Records: React.FC<RecordsProps> = ({ statusButtonIndex }) => {

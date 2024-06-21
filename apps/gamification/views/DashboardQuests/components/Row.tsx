@@ -5,7 +5,7 @@ import { MouseEvent, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
 import { StyledCell } from 'views/DashboardCampaigns/components/TableStyle'
-import { StateType } from 'views/DashboardQuests/components/RecordTemplate'
+import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
 
 const StyledRow = styled.div`
   background-color: transparent;
@@ -43,7 +43,7 @@ const StyledDropdown = styled(Dropdown)`
 `
 
 interface RowProps {
-  statusButtonIndex: StateType
+  statusButtonIndex: CompletionStatusIndex
 }
 
 export const Row: React.FC<RowProps> = ({ statusButtonIndex }) => {
@@ -102,7 +102,7 @@ export const Row: React.FC<RowProps> = ({ statusButtonIndex }) => {
         </StyledCell>
       )}
       <StyledCell role="cell" onClick={(e: MouseEvent) => openMoreButton(e)}>
-        {statusButtonIndex !== StateType.FINISHED && (
+        {statusButtonIndex !== CompletionStatusIndex.FINISHED && (
           <Box position="relative" style={{ cursor: 'pointer' }}>
             <EllipsisIcon color="primary" width="12px" height="12px" />
             {isOpen && (

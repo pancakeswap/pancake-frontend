@@ -3,10 +3,10 @@ import { Box } from '@pancakeswap/uikit'
 import { useCallback, useState } from 'react'
 import { Detail } from 'views/DashboardCampaigns/components/Detail'
 import { Row } from 'views/DashboardCampaigns/components/Row'
-import { StateType } from 'views/DashboardQuests/components/RecordTemplate'
+import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
 
 interface TableRowProps {
-  statusButtonIndex: StateType
+  statusButtonIndex: CompletionStatusIndex
 }
 
 export const TableRow: React.FC<TableRowProps> = ({ statusButtonIndex }) => {

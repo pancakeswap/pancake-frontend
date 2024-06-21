@@ -15,7 +15,7 @@ import { MouseEvent, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
 import { StyledCell } from 'views/DashboardCampaigns/components/TableStyle'
-import { StateType } from 'views/DashboardQuests/components/RecordTemplate'
+import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
 
 const StyledRow = styled.div`
   background-color: transparent;
@@ -59,7 +59,7 @@ const StyledDropdown = styled(Dropdown)`
 `
 
 interface RowProps {
-  statusButtonIndex: StateType
+  statusButtonIndex: CompletionStatusIndex
   expanded?: boolean
   toggleExpanded?: () => void
 }
@@ -129,7 +129,7 @@ export const Row: React.FC<RowProps> = ({ statusButtonIndex, expanded, toggleExp
                 <BarChartIcon color="primary" width="20px" height="20px" />
                 <Text ml="8px">{t('Statistics')}</Text>
               </Flex>
-              {statusButtonIndex !== StateType.FINISHED && (
+              {statusButtonIndex !== CompletionStatusIndex.FINISHED && (
                 <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/campaign/edit?id=123')}>
                   <PencilIcon color="primary" width="14px" height="14px" />
                   <Text ml="14px">{t('Edit')}</Text>

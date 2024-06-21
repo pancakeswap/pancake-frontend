@@ -36,6 +36,13 @@ export enum CompletionStatus {
   SCHEDULED = 'SCHEDULED',
 }
 
+export enum CompletionStatusIndex {
+  ONGOING = 0,
+  SCHEDULED = 1,
+  FINISHED = 2,
+  DRAFTED = 3,
+}
+
 export enum RewardType {
   TOKEN = 'TOKEN',
   NFT = 'NFT',
