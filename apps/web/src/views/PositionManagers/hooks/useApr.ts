@@ -70,7 +70,6 @@ export const useApr = ({
     poolToken1Amount,
     token0PriceUSD,
     token1PriceUSD,
-    boostedLiquidityX,
   })
 
   const totalLpApr = useMemo(() => {
@@ -104,9 +103,9 @@ export const useApr = ({
     return getBalanceAmount(new BigNumber(rewardPerSecond), earningToken.decimals)
       .times(YEAR_IN_SECONDS)
       .times(rewardUsdPrice ?? 0)
-      .div(totalStakedInUsd)
+      .div(totalStakedInUsd * (boostedLiquidityX ?? 1))
       .times(100)
-  }, [isInCakeRewardDateRange, earningToken, rewardPerSecond, rewardUsdPrice, totalStakedInUsd])
+  }, [isInCakeRewardDateRange, earningToken, rewardPerSecond, rewardUsdPrice, totalStakedInUsd, boostedLiquidityX])
 
   const totalApr = useMemo(() => cakeYieldApr.plus(totalLpApr), [cakeYieldApr, totalLpApr])
 
