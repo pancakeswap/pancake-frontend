@@ -15,6 +15,7 @@
     "node": ">=18.20.0"
   },
   "dependencies": {
+    "@aptos-labs/ts-sdk": "^1.20.0",
     "@ethersproject/bignumber": "^5.7.0",
     "@ethersproject/keccak256": "^5.7.0",
     "@pancakeswap/aptos-swap-sdk": "workspace:*",

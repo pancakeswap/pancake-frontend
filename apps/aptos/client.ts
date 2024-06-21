@@ -7,7 +7,7 @@ import { PetraConnector } from '@pancakeswap/awgmi/connectors/petra'
 import { PontemConnector } from '@pancakeswap/awgmi/connectors/pontem'
 import { RiseConnector } from '@pancakeswap/awgmi/connectors/rise'
 import { SafePalConnector } from '@pancakeswap/awgmi/connectors/safePal'
-import { AptosClient } from 'aptos'
+import { Aptos, AptosConfig } from '@aptos-labs/ts-sdk'
 import { chains, defaultChain } from 'config/chains'
 
 const NODE_REAL_API = process.env.NEXT_PUBLIC_NODE_REAL_API
@@ -42,15 +42,28 @@ export const client = createClient({
       const foundChain = chains.find((c) => c.network === networkNameLowerCase)
       if (foundChain) {
         if (foundChain.nodeUrls.nodeReal && nodeReal[networkNameLowerCase]) {
-          return new AptosClient(`${foundChain.nodeUrls.nodeReal}/${nodeReal[networkNameLowerCase]}`, {
-            WITH_CREDENTIALS: false,
-          })
+          return new Aptos(
+            new AptosConfig({
+              fullnode: `${foundChain.nodeUrls.nodeReal}/${nodeReal[networkNameLowerCase]}`,
+              clientConfig: {
+                WITH_CREDENTIALS: false,
+              },
+            }),
+          )
         }
-        return new AptosClient(foundChain.nodeUrls.default)
+        return new Aptos(
+          new AptosConfig({
+            fullnode: foundChain.nodeUrls.default,
+          }),
+        )
       }
     }
 
-    return new AptosClient(defaultChain.nodeUrls.default)
+    return new Aptos(
+      new AptosConfig({
+        fullnode: defaultChain.nodeUrls.default,
+      }),
+    )
   },
   autoConnect: false,
 })
