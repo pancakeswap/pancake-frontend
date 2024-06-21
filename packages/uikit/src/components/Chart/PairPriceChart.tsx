@@ -94,6 +94,9 @@ export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
   priceLineData,
   ...rest
 }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation();
   const { isDark } = useTheme();
   const { isMobile } = useMatchBreakpoints();
   const transformedData = useMemo(() => {
@@ -103,9 +106,6 @@ export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
       }) || []
     );
   }, [data]);
-  const {
-    currentLanguage: { locale },
-  } = useTranslation();
   const chartRef = useRef<HTMLDivElement>(null);
   const colors = useMemo(() => {
     return getChartColors({ isChangePositive });
