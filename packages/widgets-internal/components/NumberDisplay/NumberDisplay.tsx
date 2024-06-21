@@ -17,15 +17,17 @@ export const NumberDisplay = memo(function NumberDisplay({
   style,
   ...props
 }: NumberDisplayProps) {
-  const valueDisplayInFullDigits = useMemo(() => {
-    // const valueInBN = new BigNumber(value)
-    return value
-      ? formatNumber(value, {
-          roundingMode,
-          maximumSignificantDigits: 12,
-        })
-      : "";
-  }, [value, roundingMode]);
+  const valueDisplayInFullDigits = useMemo(
+    () =>
+      value
+        ? formatNumber(value, {
+            roundingMode,
+            maximumSignificantDigits: 12,
+          })
+        : "",
+    [value, roundingMode]
+  );
+
   const valueDisplay = useMemo(
     () =>
       value
