@@ -88,7 +88,20 @@ const SwapChart = ({
   )
 
   const chartData = useMemo(() => {
-    return type === PairPriceChartType.LINE ? pairPrices : pairPrices?.slice(0, pairPrices.length - 1)
+    if (type === PairPriceChartType.CANDLE) {
+      if (pairPrices?.length > 0) {
+        const price = pairPrices[pairPrices.length - 1] as {
+          open: number
+          close: number
+          low: number
+          high: number
+        }
+        if (!price.open || !price.close || !price.high || !price.low) {
+          return pairPrices?.slice(0, pairPrices.length - 1)
+        }
+      }
+    }
+    return pairPrices
   }, [type, pairPrices])
 
   if (isBadData) {
