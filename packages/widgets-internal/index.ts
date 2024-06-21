@@ -1,7 +1,6 @@
 export * from "./components/Banner";
 export * from "./components/ClientOnly";
 export * from "./components/CurrencyLogo";
-export * from "./components/FiatNumberDisplay";
 export * from "./components/NextLink";
 export * from "./components/NumberDisplay";
 export * from "./components/PoweredBy";
