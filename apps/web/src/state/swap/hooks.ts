@@ -349,9 +349,10 @@ export const usePairRate = ({
         const formatted = data_.map((d) => ({
           time: dayjs(d.bucket as string).toDate(),
           open: d.open ? +d.open : 0,
-          value: d.close ? +d.close : 0,
+          close: d.close ? +d.close : 0,
           low: d.low ? +d.low : 0,
           high: d.high ? +d.high : 0,
+          value: d.close ? +d.close : 0,
         }))
         if (hasSwapPrice) {
           return [...formatted, { time: new Date(), value: currentSwapPrice[token0Address] }]

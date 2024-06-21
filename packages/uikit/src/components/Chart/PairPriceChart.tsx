@@ -98,8 +98,8 @@ export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
   const { isMobile } = useMatchBreakpoints();
   const transformedData = useMemo(() => {
     return (
-      data?.map(({ time, value, ...restValues }) => {
-        return { time: Math.floor(time.getTime() / 1000) as UTCTimestamp, value, close: value, ...restValues };
+      data?.map(({ time, ...restValues }) => {
+        return { time: Math.floor(time.getTime() / 1000) as UTCTimestamp, ...restValues };
       }) || []
     );
   }, [data]);
