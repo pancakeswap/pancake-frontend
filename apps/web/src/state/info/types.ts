@@ -67,12 +67,14 @@ export interface PoolData {
     name: string
     symbol: string
     address: string
+    decimals: number
   }
 
   token1: {
     name: string
     symbol: string
     address: string
+    decimals: number
   }
 
   volumeUSD: number

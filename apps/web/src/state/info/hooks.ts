@@ -468,11 +468,13 @@ export function usePoolDataQueryV2(
             address: data.token0.id,
             symbol: data.token0.symbol,
             name: data.token0.name,
+            decimals: data.token0.decimals,
           },
           token1: {
             address: data.token1.id,
             symbol: data.token1.symbol,
             name: data.token1.name,
+            decimals: data.token1.decimals,
           },
           volumeUSD: +data.volumeUSD24h,
           volumeUSDChange: 0,

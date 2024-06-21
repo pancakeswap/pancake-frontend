@@ -1,7 +1,15 @@
+import { AutoColumn } from '@pancakeswap/uikit'
+import Page from 'components/Layout/Page'
+import { BreadcrumbNav } from './components/BreadcrumbNav'
+import { PoolInfo } from './components/PoolInfo'
+
 export const FarmPoolDetail: React.FC = () => {
   return (
-    <div>
-      <h1>Farm Pool Detail</h1>
-    </div>
+    <Page>
+      <AutoColumn gap="48px">
+        <BreadcrumbNav />
+        <PoolInfo />
+      </AutoColumn>
+    </Page>
   )
 }
