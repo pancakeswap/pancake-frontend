@@ -121,7 +121,10 @@ export const LiquidityManagement = memo(function LiquidityManagement({
     <>
       {hasStaked ? (
         <AtomBox>
-          <ActionContainer flexDirection={!isDesktop ? 'column' : 'row'}>
+          <ActionContainer
+            flexDirection={!isDesktop ? 'column' : 'row'}
+            style={{ flexWrap: isDesktop ? 'nowrap' : 'wrap' }}
+          >
             <Flex flexDirection="column" flexBasis="50%">
               <StakedAssets
                 currencyA={currencyA}
