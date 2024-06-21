@@ -25,7 +25,7 @@ export const SubmitAction = () => {
   const { chainId } = useActiveWeb3React()
   const { query, push } = useRouter()
   const { toastSuccess } = useToast()
-  const { state, tasks } = useQuestEdit()
+  const { state, tasks, isChanged } = useQuestEdit()
   const [openModal, setOpenModal] = useState(false)
   const completionStatusToString = state.completionStatus.toString()
 
@@ -37,7 +37,11 @@ export const SubmitAction = () => {
     try {
       const response = await fetch(`${GAMIFICATION_API}/quests/${query.id}/delete`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-secure-token': FAKE_TOKEN },
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'x-secure-token': FAKE_TOKEN,
+        },
       })
 
       if (response.ok) {
@@ -63,7 +67,11 @@ export const SubmitAction = () => {
 
       const response = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json', 'x-secure-token': FAKE_TOKEN },
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'x-secure-token': FAKE_TOKEN,
+        },
         body: JSON.stringify({
           ...state,
           tasks,
@@ -91,6 +99,8 @@ export const SubmitAction = () => {
     return true
   }, [tasks])
 
+  const isAbleToSave = useMemo(() => isChanged && isTaskValid, [isChanged, isTaskValid])
+
   const isAbleToSchedule = useMemo(() => {
     const { title, description, startDate, startTime, endDate, endTime, reward } = state
     return (
@@ -103,9 +113,9 @@ export const SubmitAction = () => {
       reward &&
       reward?.amountOfWinners > 0 &&
       reward?.totalRewardAmount > 0 &&
-      isTaskValid
+      isAbleToSave
     )
-  }, [state, isTaskValid])
+  }, [state, isAbleToSave])
 
   return (
     <Flex flexDirection="column" mt="30px">
@@ -139,7 +149,7 @@ export const SubmitAction = () => {
                   mb="8px"
                   width="100%"
                   variant="secondary"
-                  disabled={!isTaskValid}
+                  disabled={!isAbleToSave}
                   onClick={() => handleSave(false, CompletionStatus.DRAFTED)}
                 >
                   {t('Move to the drafts')}
@@ -162,8 +172,8 @@ export const SubmitAction = () => {
           )}
           <Button
             width="100%"
-            disabled={!isTaskValid}
-            endIcon={<PencilIcon color={isTaskValid ? 'invertedContrast' : 'textDisabled'} width={14} height={14} />}
+            disabled={!isAbleToSave}
+            endIcon={<PencilIcon color={isAbleToSave ? 'invertedContrast' : 'textDisabled'} width={14} height={14} />}
             onClick={() => handleSave(Boolean(!query.id), query.id ? state.completionStatus : CompletionStatus.DRAFTED)}
           >
             {query.id ? t('Save the edits') : t('Save to the drafts')}

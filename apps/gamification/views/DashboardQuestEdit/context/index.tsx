@@ -4,6 +4,7 @@ import { QuestRewardType, StateType, TaskConfigType } from 'views/DashboardQuest
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 
 interface EditQuestContextType {
+  isChanged: boolean
   state: StateType
   tasks: TaskConfigType[]
   updateAllState: (value: StateType) => void
@@ -15,6 +16,7 @@ interface EditQuestContextType {
 export const QuestEditContext = createContext<EditQuestContextType | undefined>(undefined)
 
 export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const [isChanged, setIsChanged] = useState<boolean>(false)
   const [tasks, setTasks] = useState<TaskConfigType[]>([])
   const [state, setState] = useState<StateType>(() => ({
     orgId: '',
@@ -38,6 +40,7 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
   }, [])
 
   const updateValue = useCallback((key: string, value: string | Date | QuestRewardType) => {
+    setIsChanged(true)
     setState((prevState) => ({
       ...prevState,
       [key]: value,
@@ -46,6 +49,7 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
 
   // Task
   const onTasksChange = useCallback((newTasks: TaskConfigType[]) => {
+    setIsChanged(true)
     setTasks(newTasks)
   }, [])
 
@@ -63,12 +67,13 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
     () => ({
       state,
       tasks,
+      isChanged,
       updateValue,
       updateAllState,
       onTasksChange,
       deleteTask,
     }),
-    [state, tasks, updateValue, updateAllState, onTasksChange, deleteTask],
+    [state, tasks, isChanged, updateValue, updateAllState, onTasksChange, deleteTask],
   )
 
   return <QuestEditContext.Provider value={providerValue}>{children}</QuestEditContext.Provider>

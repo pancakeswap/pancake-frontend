@@ -63,7 +63,6 @@ export const Quests = () => {
           onItemClick={onStatusButtonChange}
         >
           <ButtonMenuItem>{t('Ongoing')}</ButtonMenuItem>
-          <ButtonMenuItem>{t('Upcoming')}</ButtonMenuItem>
           <ButtonMenuItem>{t('Finished')}</ButtonMenuItem>
         </ButtonMenu>
       </Flex>
