@@ -10,7 +10,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
   let randomId: string = nanoid(20)
 
   const allSid: any = tasks?.map((task) => task.sid)
-  if (allSid.includes[randomId]) {
+  if (allSid?.includes[randomId]) {
     randomId = nanoid(20)
   }
 

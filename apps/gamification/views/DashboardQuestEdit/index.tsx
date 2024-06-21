@@ -34,7 +34,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
   const { questData, isFetched } = useGetSingleQuestData(questId ?? '')
 
   useEffect(() => {
-    if (!showPage && isFetched && questData) {
+    if (!showPage && questId && isFetched && questData) {
       if ((questData as SingleQuestDataError).error) {
         router.push('/dashboard')
       } else {
@@ -70,13 +70,14 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
           rewardSCAddress,
           ownerAddress,
         })
+
         onTasksChange(task)
-        setShowPage(false)
+        setShowPage(true)
       }
     }
-  }, [isFetched, showPage, questData, onTasksChange, updateAllState, router])
+  }, [questId, isFetched, showPage, questData, onTasksChange, updateAllState, router])
 
-  if (questId && !showPage) {
+  if (!showPage && questId) {
     return null
   }
 

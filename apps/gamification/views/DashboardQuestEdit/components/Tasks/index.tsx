@@ -83,7 +83,7 @@ export const Tasks = () => {
           {isOpen && <AddTaskList dropdownRef={dropdownRef} setIsOpen={setIsOpen} />}
         </Box>
       </Flex>
-      {tasks.length ? (
+      {tasks?.length ? (
         <Flex flexDirection="column">
           <DraggableList
             itemKey="sid"

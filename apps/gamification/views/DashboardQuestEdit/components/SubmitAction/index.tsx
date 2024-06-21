@@ -22,7 +22,7 @@ const FAKE_TOKEN = '"test-secret-key"'
 
 export const SubmitAction = () => {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
+  const { chainId, account } = useActiveWeb3React()
   const { query, push } = useRouter()
   const { toastSuccess } = useToast()
   const { state, tasks, isChanged } = useQuestEdit()
@@ -36,7 +36,7 @@ export const SubmitAction = () => {
   const handleClickDelete = async () => {
     try {
       const response = await fetch(`${GAMIFICATION_API}/quests/${query.id}/delete`, {
-        method: 'POST',
+        method: 'DELETE',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export const SubmitAction = () => {
 
   const handleSave = async (isCreate: boolean, completionStatus: CompletionStatus) => {
     try {
-      const url = isCreate ? `${GAMIFICATION_API}/quests/create` : `${GAMIFICATION_API}/quests/${query.id}`
+      const url = isCreate ? `${GAMIFICATION_API}/quests/create` : `${GAMIFICATION_API}/quests/${query.id}/update`
       const method = isCreate ? 'POST' : 'PUT'
 
       const apiChainId = isCreate ? chainId : state.chainId
@@ -74,7 +74,8 @@ export const SubmitAction = () => {
         },
         body: JSON.stringify({
           ...state,
-          tasks,
+          orgId: account?.toLowerCase(),
+          tasks: tasks?.length > 0 ? tasks : [],
           chainId: apiChainId,
           startDateTime,
           endDateTime,
@@ -84,7 +85,7 @@ export const SubmitAction = () => {
 
       if (response.ok) {
         toastSuccess(t('Submit Successfully!'))
-        // push('/dashboard')
+        push('/dashboard')
       }
     } catch (error) {
       console.error('Submit quest  error: ', error)
@@ -92,7 +93,7 @@ export const SubmitAction = () => {
   }
 
   const isTaskValid = useMemo(() => {
-    if (tasks.length > 0) {
+    if (tasks?.length > 0) {
       return tasks.map((i) => verifyTask(i)).every((element) => element === true)
     }
 

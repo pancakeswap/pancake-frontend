@@ -25,7 +25,7 @@ export const AddTaskList: React.FC<AddTaskListProps> = ({ setIsOpen, dropdownRef
   const closeDropdown = (taskType: TaskType) => {
     const newTask = generateNewTask(tasks, taskType)
     if (newTask) {
-      const newTasks = [newTask, ...tasks]
+      const newTasks = tasks ? [newTask, ...tasks] : [newTask]
       onTasksChange(newTasks)
     }
 
