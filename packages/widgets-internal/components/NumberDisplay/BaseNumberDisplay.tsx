@@ -26,11 +26,11 @@ export const BaseNumberDisplay = ({
   const tooltipVal = useMemo(() => {
     if (!value) return "";
 
-    const options = { roundingMode, maximumSignificantDigits: 12 };
-    const formatted = formatNumber(value, options);
-
     // extract index of 1st non interger value (currency code if exists)
+
+    const formatted = formatNumber(value, { roundingMode, maximumSignificantDigits: 12 });
     const symbolIdx = valueDisplay.match(/\d/)?.index ?? 0;
+
     const doesSymbolExist = Boolean(isFiat && symbolIdx > 0);
     const currencyCode = doesSymbolExist ? valueDisplay[symbolIdx - 1] : "";
 
