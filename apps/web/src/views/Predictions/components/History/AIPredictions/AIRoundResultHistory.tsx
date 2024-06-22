@@ -53,18 +53,22 @@ export const AIRoundResultHistory: React.FC<React.PropsWithChildren<AIRoundResul
           <Text small>{formatUsd(AIPrice, config?.displayedDecimals ?? 0)}</Text>
         </Flex>
       )}
-      <PrizePoolHistoryRow totalAmount={totalAmount} />
-      <Flex justifyContent="space-between" alignItems="center">
-        <Text>{t('Result:')}</Text>
-        <Flex alignItems="center">
-          <StyledGlassGlobeIcon width={16} mr="3px" />
-          <Text bold>
-            {t('AI %result%', {
-              result: getRoundPosition(lockPrice, closePrice, AIPrice) === BetPosition.BULL ? t('Won') : t('Lost'),
-            })}
-          </Text>
+
+      {!round.failed && (
+        <Flex justifyContent="space-between" alignItems="center">
+          <Text>{t('Result:')}</Text>
+          <Flex alignItems="center">
+            <StyledGlassGlobeIcon width={16} mr="3px" />
+            <Text bold>
+              {t('AI %result%', {
+                result: getRoundPosition(lockPrice, closePrice, AIPrice) === BetPosition.BULL ? t('Won') : t('Lost'),
+              })}
+            </Text>
+          </Flex>
         </Flex>
-      </Flex>
+      )}
+
+      <PrizePoolHistoryRow totalAmount={totalAmount} />
       {children}
     </RoundResultBox>
   )

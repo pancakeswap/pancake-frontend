@@ -13,10 +13,10 @@ import { usePredictionPrice } from 'views/Predictions/hooks/usePredictionPrice'
 import { useConfig } from '../../../context/ConfigProvider'
 import PositionTag from '../../PositionTag'
 import { LockPriceRow, PrizePoolRow, RoundResultBox } from '../../RoundResult'
-import CalculatingCard from '../CalculatingCard'
 import CanceledRoundCard from '../CanceledRoundCard'
 import LiveRoundPrice from '../LiveRoundPrice'
 import MultiplierArrow from '../MultiplierArrow'
+import { AICalculatingCard } from './AICalculatingCard'
 import { AICardHeader } from './AICardHeader'
 import { BetBadgeStack } from './BetBadgeStack'
 
@@ -131,8 +131,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   }
 
   if (isCalculatingPhase) {
-    // TODO: Think about AI prediction logic here
-    return <CalculatingCard round={round} hasEnteredDown={hasEnteredAgainst} hasEnteredUp={hasEnteredFor} />
+    return <AICalculatingCard round={round} />
   }
 
   return (
