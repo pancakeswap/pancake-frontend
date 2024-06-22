@@ -7,6 +7,7 @@ export type CommonNumberDisplayProps = {
   suffix?: ReactNode;
   value?: string | number | BigNumber;
   showFullDigitsTooltip?: boolean;
+  roundingMode?: BigNumber.RoundingMode;
   as?: ElementType;
   style?: CSSProperties;
 } & TextProps;

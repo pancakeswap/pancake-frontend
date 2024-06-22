@@ -41,26 +41,5 @@ export const FiatNumberDisplay = memo(function FiatNumberDisplay({
       : "";
   }, [value, currencyFormatOptions, useFullDigits, currencyCode, locale, groupSize]);
 
-  const valueDisplayInFullDigits = useMemo(() => {
-    return value
-      ? formatFiatNumber({
-          value,
-          locale,
-          useFullDigits: true,
-          fiatCurrencyCode: currencyCode,
-          options: currencyFormatOptions,
-          groupSize,
-        })
-      : "";
-  }, [value, currencyCode, currencyFormatOptions, locale, groupSize]);
-
-  return (
-    <BaseNumberDisplay
-      value={value}
-      valueDisplay={valueDisplay}
-      valueDisplayInFullDigits={valueDisplayInFullDigits}
-      {...props}
-      style={style}
-    />
-  );
+  return <BaseNumberDisplay value={value} valueDisplay={valueDisplay} isFiat {...props} style={style} />;
 });
