@@ -5,8 +5,6 @@ import BigNumber from "bignumber.js";
 import { useMemo } from "react";
 import type { CommonNumberDisplayProps } from "./types";
 
-const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
 export type BaseNumberDisplayProps = {
   isFiat?: boolean;
   valueDisplay: string;
@@ -25,30 +23,26 @@ export const BaseNumberDisplay = ({
 }: BaseNumberDisplayProps) => {
   const { t } = useTranslation();
 
-  const fullDigitDisplay = useMemo(() => {
-    if (!value) return { fullDigitValue: "", currencyCode: "" };
+  const tooltipVal = useMemo(() => {
+    if (!value) return "";
 
-    const formatted = formatNumber(value, {
-      roundingMode,
-      maximumSignificantDigits: 12,
-    });
+    const options = { roundingMode, maximumSignificantDigits: 12 };
+    const formatted = formatNumber(value, options);
 
-    const formattedRaw = valueDisplay.match(/\d/)?.index;
-    const currencyCode = isFiat && formattedRaw ? valueDisplay[formattedRaw - 1] : "";
-    const fullDigitValue = `${currencyCode}${formatted}`;
+    const formattedRaw = valueDisplay.match(/\d/)?.index ?? 1;
+    const currencyCode = isFiat ? valueDisplay[formattedRaw - 1] : "";
 
-    return { fullDigitValue, currencyCode };
+    return `${currencyCode}${formatted}`;
   }, [value, roundingMode, isFiat, valueDisplay]);
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t("Exact number: %numberWithFullDigits%", {
-      numberWithFullDigits: fullDigitDisplay.fullDigitValue,
-    }),
+    t("Exact number: %numberWithFullDigits%", { numberWithFullDigits: tooltipVal }),
     {
       placement: "top-end",
     }
   );
-  const showTooltip = value && showFullDigitsTooltip && valueDisplay !== fullDigitDisplay.fullDigitValue;
+
+  const showTooltip = value && showFullDigitsTooltip && valueDisplay !== tooltipVal;
 
   return (
     <>

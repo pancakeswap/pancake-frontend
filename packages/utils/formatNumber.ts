@@ -42,21 +42,21 @@ function getDigits(value: BigNumber) {
   return [getIntegerDigits(value), value.decimalPlaces() ?? 0]
 }
 
-function formatLargeFiatValue(numericValue: number, currencySymbol: string, fractionDigits: number): string {
+function formatLargeFiatValue(numericValue: number, symbol: string, fractionDigits: number): string {
   const valueInBN = new BigNumber(numericValue)
   const formattedValue = valueInBN.toFormat(fractionDigits, BigNumber.ROUND_UP)
 
   if (valueInBN.gt(BigNumber(1_000_000))) {
-    return `> ${currencySymbol}${valueInBN.div(1_000_000).toFixed(0)}M`
+    return `> ${symbol}${valueInBN.div(1_000_000).toFixed(0)}M`
   }
   if (valueInBN.gt(BigNumber(10_000))) {
-    return `> ${currencySymbol}${valueInBN.div(1000).toFixed(0)}K`
+    return `> ${symbol}${valueInBN.div(1000).toFixed(0)}K`
   }
   if (valueInBN.lt(BigNumber(0.01))) {
-    return `< ${currencySymbol}${BigNumber(0.01)}`
+    return `< ${symbol}${BigNumber(0.01)}`
   }
 
-  return `${currencySymbol}${formattedValue}`
+  return `${symbol}${formattedValue}`
 }
 
 type Options = {
