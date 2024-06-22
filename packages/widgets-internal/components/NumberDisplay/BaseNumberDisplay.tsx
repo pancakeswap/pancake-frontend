@@ -29,8 +29,10 @@ export const BaseNumberDisplay = ({
     const options = { roundingMode, maximumSignificantDigits: 12 };
     const formatted = formatNumber(value, options);
 
-    const formattedRaw = valueDisplay.match(/\d/)?.index ?? 1;
-    const currencyCode = isFiat ? valueDisplay[formattedRaw - 1] : "";
+    // extract index of 1st non interger value (currency code if exists)
+    const symbolIdx = valueDisplay.match(/\d/)?.index ?? 0;
+    const doesSymbolExist = Boolean(isFiat && symbolIdx > 0);
+    const currencyCode = doesSymbolExist ? valueDisplay[symbolIdx - 1] : "";
 
     return `${currencyCode}${formatted}`;
   }, [value, roundingMode, isFiat, valueDisplay]);
