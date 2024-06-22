@@ -33,6 +33,7 @@ export * from "./Loading";
 export * from "./LoadingDot";
 export * from "./Message";
 export * from "./MultiSelector";
+export * from "./MultiSelect";
 export * from "./NotFound";
 export * from "./NotificationDot";
 export * from "./Overlay";
