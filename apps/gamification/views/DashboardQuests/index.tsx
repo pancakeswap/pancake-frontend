@@ -4,14 +4,17 @@ import { useState } from 'react'
 import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
 import { RecordTemplate } from 'views/DashboardQuests/components/RecordTemplate'
 import { Records } from 'views/DashboardQuests/components/Records'
-// import { convertIndexToStatus } from 'views/DashboardQuests/utils/convertIndexToStatus'
+import { useFetchAllQuests } from 'views/DashboardQuests/hooks/useFetchAllQuests'
+import { convertIndexToStatus } from 'views/DashboardQuests/utils/convertIndexToStatus'
 
 export const DashboardQuests = () => {
   const { t } = useTranslation()
   const [statusButtonIndex, setStatusButtonIndex] = useState(CompletionStatusIndex.ONGOING)
   const [pickMultiSelect, setPickMultiSelect] = useState<Array<ChainId>>([])
 
-  // console.log('test', convertIndexToStatus(statusButtonIndex))
+  const { questsData, isFetching } = useFetchAllQuests({
+    completionStatus: convertIndexToStatus(statusButtonIndex),
+  })
 
   return (
     <RecordTemplate
@@ -23,7 +26,7 @@ export const DashboardQuests = () => {
       setPickMultiSelect={setPickMultiSelect}
       setStatusButtonIndex={setStatusButtonIndex}
     >
-      <Records statusButtonIndex={statusButtonIndex} />
+      <Records isFetching={isFetching} questsData={questsData.quests} statusButtonIndex={statusButtonIndex} />
     </RecordTemplate>
   )
 }

@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, SubMenuItems } from '@pancakeswap/uikit'
+import { Box } from '@pancakeswap/uikit'
+// import { Box, SubMenuItems } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
 import { useIsValidDashboardUser } from 'views/Dashboard/hooks/useIsValidDashboardUser'
@@ -46,7 +47,7 @@ export const DashboardLayout: React.FC<React.PropsWithChildren> = ({ children })
 
   return (
     <Box>
-      <SubMenuItems items={subMenuItems} activeItem={activeSubItem} />
+      {/* <SubMenuItems items={subMenuItems} activeItem={activeSubItem} /> */}
       {children}
     </Box>
   )

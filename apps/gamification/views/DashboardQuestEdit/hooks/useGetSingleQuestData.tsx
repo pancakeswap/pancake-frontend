@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query'
 import { GAMIFICATION_API } from 'config/constants/endpoints'
 import { FetchStatus } from 'config/constants/types'
 import { StateType, TaskConfigType } from 'views/DashboardQuestEdit/context/types'
-
-const FAKE_TOKEN = '"test-secret-key"'
+import { FAKE_TOKEN } from 'views/DashboardQuestEdit/utils/FAKE_TOKEN'
 
 export interface SingleQuestData extends StateType {
+  id: string
   task: TaskConfigType[]
 }
 

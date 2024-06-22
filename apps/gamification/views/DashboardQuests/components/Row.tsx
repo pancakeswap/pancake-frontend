@@ -1,11 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, EllipsisIcon, Flex, LogoRoundIcon, PencilIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { ChainId, Currency } from '@pancakeswap/sdk'
+import { CAKE, getTokensByChain } from '@pancakeswap/tokens'
+import { Box, EllipsisIcon, Flex, PencilIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { TokenWithChain } from 'components/TokenWithChain'
 import { useRouter } from 'next/router'
-import { MouseEvent, useRef, useState } from 'react'
+import { MouseEvent, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
 import { StyledCell } from 'views/DashboardCampaigns/components/TableStyle'
 import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
+import { convertTimestampToDate } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
+import { AllSingleQuestData } from 'views/DashboardQuests/type'
 
 const StyledRow = styled.div`
   background-color: transparent;
@@ -43,10 +48,11 @@ const StyledDropdown = styled(Dropdown)`
 `
 
 interface RowProps {
+  quest: AllSingleQuestData
   statusButtonIndex: CompletionStatusIndex
 }
 
-export const Row: React.FC<RowProps> = ({ statusButtonIndex }) => {
+export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -65,6 +71,13 @@ export const Row: React.FC<RowProps> = ({ statusButtonIndex }) => {
     router.push(sourceUrl)
   }
 
+  const currency = useMemo((): Currency => {
+    const reward = quest?.reward
+    const list = getTokensByChain(reward?.currency?.network)
+    const findToken = list.find((i) => i.address.toLowerCase() === reward?.currency?.address?.toLowerCase())
+    return findToken || (CAKE as any)?.[ChainId.BSC]
+  }, [quest])
+
   return (
     <StyledRow role="row">
       <StyledCell role="cell">
@@ -79,7 +92,7 @@ export const Row: React.FC<RowProps> = ({ statusButtonIndex }) => {
               WebkitBoxOrient: 'vertical',
             }}
           >
-            PancakeSwap Multichain Celebration - zkSync Era 123 123123 12312
+            {quest.title ?? '-'}
           </Text>
         </Flex>
       </StyledCell>
@@ -87,18 +100,30 @@ export const Row: React.FC<RowProps> = ({ statusButtonIndex }) => {
         <>
           <StyledCell role="cell">
             <Flex>
-              <LogoRoundIcon width="20px" />
-              <Text ml="8px">400 CAKE</Text>
+              {quest.reward ? (
+                <>
+                  <TokenWithChain currency={currency} width={20} height={20} />
+                  <Text ml="8px">{`${quest.reward.totalRewardAmount} ${currency.symbol}`}</Text>
+                </>
+              ) : (
+                <Text ml="8px">-</Text>
+              )}
             </Flex>
           </StyledCell>
           <StyledCell role="cell">
-            <Text ml="auto">2400</Text>
+            <Text ml="auto">{quest?.numberOfParticipants ?? 0}</Text>
           </StyledCell>
         </>
       )}
       {isDesktop && (
         <StyledCell role="cell">
-          <Text ml="auto">12/12/2024 03:30 - 12/12/2024 03:30</Text>
+          {quest.startDateTime && quest.endDateTime ? (
+            <Text ml="auto">{`${convertTimestampToDate(quest.startDateTime)} - ${convertTimestampToDate(
+              quest.endDateTime,
+            )}`}</Text>
+          ) : (
+            <Text ml="auto">-</Text>
+          )}
         </StyledCell>
       )}
       <StyledCell role="cell" onClick={(e: MouseEvent) => openMoreButton(e)}>
@@ -107,13 +132,13 @@ export const Row: React.FC<RowProps> = ({ statusButtonIndex }) => {
             <EllipsisIcon color="primary" width="12px" height="12px" />
             {isOpen && (
               <StyledDropdown setIsOpen={setIsOpen} dropdownRef={dropdownRef}>
-                {/* <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/campaigns')}>
+                {/* <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/quest/statistics')}>
                   <BarChartIcon color="primary" width="20px" height="20px" />
                   <Text ml="8px">{t('Statistics')}</Text>
                 </Flex> */}
 
-                {/* When has "Statistics" need hide "Edit" when statusButtonIndex !== StateType.FINISHED */}
-                <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/quest/edit/123')}>
+                {/* When has "Statistics" need hide "Edit" when statusButtonIndex !== CompletionStatusIndex.FINISHED */}
+                <Flex onClick={(e: MouseEvent) => redirectUrl(e, `/dashboard/quest/edit/${quest.id}`)}>
                   <PencilIcon color="primary" width="14px" height="14px" />
                   <Text ml="14px">{t('Edit')}</Text>
                 </Flex>

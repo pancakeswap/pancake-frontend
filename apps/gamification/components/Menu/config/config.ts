@@ -1,7 +1,7 @@
 import { ContextApi } from '@pancakeswap/localization'
 import {
   AllBlogIcon,
-  CalenderIcon,
+  // CalenderIcon,
   DropdownMenuItems,
   MenuItemsType,
   TrophyFillIcon,
@@ -41,12 +41,12 @@ const config: (t: ContextApi['t'], chainId?: number) => ConfigMenuItemsType[] = 
       icon: TrophyIcon,
       fillIcon: TrophyFillIcon,
     },
-    {
-      label: t('Campaigns'),
-      href: '/campaigns',
-      items: [],
-      icon: CalenderIcon,
-    },
+    // {
+    //   label: t('Campaigns'),
+    //   href: '/campaigns',
+    //   items: [],
+    //   icon: CalenderIcon,
+    // },
   ].map((item) => addMenuItemSupported(item, chainId))
 
 export default config

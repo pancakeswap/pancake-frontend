@@ -18,3 +18,9 @@ export const convertDateAndTime = (timestamp: number) => {
   const dateStr = time.format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)')
   return dateStr
 }
+
+export const convertTimestampToDate = (timestamp: number, format?: string) => {
+  const time = dayjs(timestamp)
+  const dateStr = time.format(format ?? 'YYYY/MM/DD HH:mm')
+  return dateStr
+}

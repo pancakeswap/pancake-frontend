@@ -9,6 +9,7 @@ import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmD
 import { ActionModal } from 'views/DashboardQuestEdit/components/SubmitAction/ActionModal'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
+import { FAKE_TOKEN } from 'views/DashboardQuestEdit/utils/FAKE_TOKEN'
 import { combineDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 import { validateIsNotEmpty } from 'views/DashboardQuestEdit/utils/validateFormat'
 import { verifyTask } from 'views/DashboardQuestEdit/utils/verifyTask'
@@ -17,8 +18,6 @@ const StyledDeleteButton = styled(Button)`
   color: ${({ theme }) => theme.colors.failure};
   border-color: ${({ theme }) => theme.colors.failure};
 `
-
-const FAKE_TOKEN = '"test-secret-key"'
 
 export const SubmitAction = () => {
   const { t } = useTranslation()

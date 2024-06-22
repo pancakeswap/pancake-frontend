@@ -1,12 +1,13 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+// import { useTranslation } from '@pancakeswap/localization'
+// import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
-import { ImageUpload } from 'views/DashboardCampaignEdit/components/ImageUpload'
-import { Quests } from 'views/DashboardCampaignEdit/components/Quests/index'
-import { SubmitAction } from 'views/DashboardCampaignEdit/components/SubmitAction'
-import { useCampaignEdit } from 'views/DashboardCampaignEdit/context/useCampaignEdit'
-import { EditTemplate } from 'views/DashboardQuestEdit/components/EditTemplate'
-import { Reward } from 'views/DashboardQuestEdit/components/Reward'
+// import { ImageUpload } from 'views/DashboardCampaignEdit/components/ImageUpload'
+// import { Quests } from 'views/DashboardCampaignEdit/components/Quests/index'
+// import { SubmitAction } from 'views/DashboardCampaignEdit/components/SubmitAction'
+// import { useCampaignEdit } from 'views/DashboardCampaignEdit/context/useCampaignEdit'
+// import { EditTemplate } from 'views/DashboardQuestEdit/components/EditTemplate'
+// import { Reward } from 'views/DashboardQuestEdit/components/Reward'
 
 const DashboardCampaignEditContainer = styled(Flex)`
   padding: 16px;
@@ -19,13 +20,13 @@ const DashboardCampaignEditContainer = styled(Flex)`
 `
 
 export const DashboardCampaignEdit = () => {
-  const { t } = useTranslation()
-  const { isDesktop } = useMatchBreakpoints()
-  const { state, updateValue } = useCampaignEdit()
+  // const { t } = useTranslation()
+  // const { isDesktop } = useMatchBreakpoints()
+  // const { state, updateValue } = useCampaignEdit()
 
   return (
     <DashboardCampaignEditContainer>
-      <EditTemplate
+      {/* <EditTemplate
         titleText={t('Campaign title')}
         state={state}
         updateValue={updateValue}
@@ -34,7 +35,7 @@ export const DashboardCampaignEdit = () => {
         {!isDesktop && <Reward reward={state.reward} updateValue={updateValue} actionComponent={<SubmitAction />} />}
         <Quests />
       </EditTemplate>
-      {isDesktop && <Reward reward={state.reward} updateValue={updateValue} actionComponent={<SubmitAction />} />}
+      {isDesktop && <Reward reward={state.reward} updateValue={updateValue} actionComponent={<SubmitAction />} />} */}
     </DashboardCampaignEditContainer>
   )
 }
