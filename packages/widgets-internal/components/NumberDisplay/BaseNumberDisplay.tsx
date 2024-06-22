@@ -27,8 +27,8 @@ export const BaseNumberDisplay = ({
     if (!value) return "";
 
     // extract index of 1st non interger value (currency code if exists)
-
-    const formatted = formatNumber(value, { roundingMode, maximumSignificantDigits: 12 });
+    const options = { roundingMode, maximumSignificantDigits: 12 };
+    const formatted = formatNumber(value, options);
     const symbolIdx = valueDisplay.match(/\d/)?.index ?? 0;
 
     const doesSymbolExist = Boolean(isFiat && symbolIdx > 0);
