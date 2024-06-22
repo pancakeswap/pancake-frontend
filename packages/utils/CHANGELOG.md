@@ -1,5 +1,32 @@
 # @pancakeswap/utils
 
+## 6.0.9
+
+### Patch Changes
+
+- Updated dependencies [9a16780]
+  - @pancakeswap/chains@0.4.6
+
+## 6.0.8
+
+### Patch Changes
+
+- Updated dependencies [b9c91d1]
+  - @pancakeswap/chains@0.4.5
+
+## 6.0.7
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+
+## 6.0.6
+
+### Patch Changes
+
+- Updated dependencies [edf4640]
+  - @pancakeswap/chains@0.4.4
+
 ## 6.0.5
 
 ### Patch Changes

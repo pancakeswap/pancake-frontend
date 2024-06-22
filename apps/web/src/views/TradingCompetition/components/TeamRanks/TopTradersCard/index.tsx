@@ -17,13 +17,13 @@ import { ChainId } from '@pancakeswap/chains'
 import { LeaderboardDataItem, TeamRanksProps } from '../../../types'
 import TopTradersGrid from './TopTradersGrid'
 
-const TopTradersCard: React.FC<React.PropsWithChildren<TeamRanksProps & { subgraphName?: string }>> = ({
+const TopTradersCard: React.FC<React.PropsWithChildren<TeamRanksProps & { subgraph?: string }>> = ({
   team1LeaderboardInformation,
   team2LeaderboardInformation,
   team3LeaderboardInformation,
   globalLeaderboardInformation,
   isGlobalLeaderboardDataComplete,
-  subgraphName,
+  subgraph,
 }) => {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState(0)
@@ -76,10 +76,10 @@ const TopTradersCard: React.FC<React.PropsWithChildren<TeamRanksProps & { subgra
                 {t('Since start of the competition')}
               </Text>
             </Flex>
-            {subgraphName && (
+            {subgraph && (
               <SubgraphHealthIndicator
                 chainId={ChainId.BSC}
-                subgraphName={subgraphName}
+                subgraph={subgraph}
                 inline
                 obeyGlobalSetting={false}
                 customDescriptions={{

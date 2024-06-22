@@ -1,16 +1,15 @@
-import { useCountdown } from '@pancakeswap/hooks'
 import shuffle from 'lodash/shuffle'
 import { ReactElement, useMemo } from 'react'
 import CompetitionBanner from '../CompetitionBanner'
 import { FeeRefundBanner } from '../FeeRefundBanner'
 import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import GameBanner from '../GameBanner'
+import { ListaIFOBanner } from '../ListaIFOBanner'
 import { MultiChainBanner } from '../MultichainBanner'
 import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
-import NewIFOBanner from '../NewIFOBanner'
 import { OptionsBanner } from '../OptionsBanner'
+import { PaymasterBanner } from '../PaymasterBanner'
 import PerpetualBanner from '../PerpetualBanner'
-import { TopTraderBanner } from '../TopTraderBanner'
 import UserBanner from '../UserBanner'
 import { V4InfoBanner } from '../V4InfoBanner'
 import { VeCakeBanner } from '../VeCakeBanner'
@@ -38,17 +37,21 @@ interface IBannerConfig {
  */
 
 export const useMultipleBannerConfig = () => {
-  const isRenderIFOBanner = useIsRenderIfoBanner()
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
   const isRenderUserBanner = useIsRenderUserBanner()
-  const countdown = useCountdown(1704369600)
+  const shouldRenderIfoBanner = useIsRenderIfoBanner()
+
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
       },
-      { shouldRender: isRenderIFOBanner || Boolean(countdown), banner: <NewIFOBanner /> },
+      { shouldRender: shouldRenderIfoBanner, banner: <ListaIFOBanner /> },
+      {
+        shouldRender: true,
+        banner: <PaymasterBanner />,
+      },
       {
         shouldRender: true,
         banner: <FeeRefundBanner />,
@@ -69,10 +72,6 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: true,
         banner: <NemesisDownfallBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <TopTraderBanner />,
       },
     ]
 
@@ -101,9 +100,8 @@ export const useMultipleBannerConfig = () => {
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)
   }, [
-    countdown,
+    shouldRenderIfoBanner,
     isRenderCompetitionBanner,
-    isRenderIFOBanner,
     isRenderUserBanner.isEarningsBusdZero,
     isRenderUserBanner.shouldRender,
   ])

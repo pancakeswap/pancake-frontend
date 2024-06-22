@@ -6,6 +6,8 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import Image from 'next/image'
 import { styled } from 'styled-components'
+import { ASSET_CDN } from 'config/constants/endpoints'
+
 import { modPrizes } from '../../../../config/constants/trading-competition/prizes'
 import { getRewardGroupAchievements, useModCompetitionRewards } from '../../helpers'
 import MoDAllBunnies from '../../pngs/MoD-hero-bunnies.png'
@@ -65,7 +67,7 @@ const ClaimModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
         <Flex mt="16px" alignItems="center">
           {/* achievements */}
           <Image
-            src={`/images/achievements/${achievement?.image}`}
+            src={`${ASSET_CDN}/web/achievements/${achievement?.image}`}
             alt="achievement-claim-image"
             width={25}
             height={25}

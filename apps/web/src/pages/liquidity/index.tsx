@@ -22,7 +22,6 @@ import { Liquidity } from '@pancakeswap/widgets-internal'
 import { AppBody, AppHeader } from 'components/App'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import { RangeTag } from 'components/RangeTag'
-import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useV2PairsByAccount from 'hooks/useV2Pairs'
@@ -30,7 +29,7 @@ import { useV3Positions } from 'hooks/v3/useV3Positions'
 import { useAtom } from 'jotai'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import React, { ReactNode, useMemo, useState } from 'react'
+import React, { ReactNode, useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { CHAIN_IDS } from 'utils/wagmi'
@@ -119,7 +118,10 @@ export default function PoolListPage() {
       [[], []],
     ) ?? [[], []]
 
-    const filteredPositions = [...openPositions, ...(hideClosedPositions ? [] : closedPositions)]
+    const filteredPositions = [
+      ...openPositions,
+      ...(hideClosedPositions ? [] : closedPositions.sort((p1, p2) => Number(p2.tokenId - p1.tokenId))),
+    ]
 
     return filteredPositions.map((p) => {
       return (
@@ -236,7 +238,7 @@ export default function PoolListPage() {
   ])
 
   const mainSection = useMemo(() => {
-    let resultSection: null | ReactNode | (ReactNode[] | null | undefined)[] = null
+    let resultSection: null | ReactNode | (ReactNode[] | null | undefined)[]
     if (v3Loading || v2Loading) {
       resultSection = (
         <Text color="textSubtle" textAlign="center">
@@ -273,14 +275,13 @@ export default function PoolListPage() {
 
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
 
-  const handleClickShowAllPositions = () => {
+  const handleClickShowAllPositions = useCallback(() => {
     setShowAllPositionWithQuery(true)
-
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     })
-  }
+  }, [])
 
   return (
     <Page>
@@ -332,17 +333,15 @@ export default function PoolListPage() {
         <Body>
           {mainSection}
           {selectedTypeIndex === FILTER.V2 ? (
-            <>
-              <Liquidity.FindOtherLP>
-                {chainId && V3_MIGRATION_SUPPORTED_CHAINS.includes(chainId) && (
-                  <Link style={{ marginTop: '8px' }} href="/migration">
-                    <Button id="migration-link" variant="secondary" scale="sm">
-                      {t('Migrate to V3')}
-                    </Button>
-                  </Link>
-                )}
-              </Liquidity.FindOtherLP>
-            </>
+            <Liquidity.FindOtherLP>
+              {chainId && V3_MIGRATION_SUPPORTED_CHAINS.includes(chainId) && (
+                <Link style={{ marginTop: '8px' }} href="/migration">
+                  <Button id="migration-link" variant="secondary" scale="sm">
+                    {t('Migrate to V3')}
+                  </Button>
+                </Link>
+              )}
+            </Liquidity.FindOtherLP>
           ) : null}
           {showAllPositionButton && (
             <Flex alignItems="center" flexDirection="column">
@@ -362,7 +361,6 @@ export default function PoolListPage() {
             </Button>
           </NextLink>
         </CardFooter>
-        <V3SubgraphHealthIndicator />
       </AppBody>
     </Page>
   )

@@ -89,7 +89,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   // burn state
   const { independentField, typedValue } = useRemoveLiquidityV2FormState()
   const { pair, parsedAmounts, error } = useDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
-  const poolData = useLPApr(pair)
+  const poolData = useLPApr('v2', pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(`Based on last 7 days' performance. Does not account for impermanent loss`),
     {

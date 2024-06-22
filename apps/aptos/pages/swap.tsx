@@ -25,7 +25,7 @@ import {
   Text,
   useModal,
 } from '@pancakeswap/uikit'
-import { Swap as SwapUI, confirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
+import { Swap as SwapUI, useAsyncConfirmPriceImpactWithoutFee } from '@pancakeswap/widgets-internal'
 import { useQuery } from '@tanstack/react-query'
 
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
@@ -251,19 +251,18 @@ const SwapPage = () => {
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
+  const confirmPriceImpactWithoutFee = useAsyncConfirmPriceImpactWithoutFee(
+    priceImpactWithoutFee,
+    PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
+    ALLOWED_PRICE_IMPACT_HIGH,
+  )
 
-  const handleSwap = useCallback(() => {
-    if (
-      priceImpactWithoutFee &&
-      !confirmPriceImpactWithoutFee(
-        priceImpactWithoutFee,
-        PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
-        ALLOWED_PRICE_IMPACT_HIGH,
-        t,
-      )
-    ) {
-      return
+  const handleSwap = useCallback(async () => {
+    if (priceImpactWithoutFee) {
+      const confirmed = await confirmPriceImpactWithoutFee()
+      if (!confirmed) return
     }
+
     if (!swapCallback) return
 
     setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
@@ -286,7 +285,7 @@ const SwapPage = () => {
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, t, swapCallback, tradeToConfirm])
+  }, [confirmPriceImpactWithoutFee, priceImpactWithoutFee, swapCallback, tradeToConfirm])
 
   const handleInputSelect = useCallback(
     (currency: Currency) => {

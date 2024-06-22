@@ -4,9 +4,9 @@ import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurity
 import smartRouterPkgs from '@pancakeswap/smart-router/package.json' with { type: 'json' }
 import { withSentryConfig } from '@sentry/nextjs'
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
+import vercelToolbarPlugin from '@vercel/toolbar/plugins/next'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import vercelToolbarPlugin from '@vercel/toolbar/plugins/next'
 
 const withVercelToolbar = vercelToolbarPlugin()
 
@@ -66,6 +66,7 @@ const config = {
     '@pancakeswap/utils',
     '@pancakeswap/widgets-internal',
     '@pancakeswap/ifos',
+    '@pancakeswap/uikit',
     // https://github.com/TanStack/query/issues/6560#issuecomment-1975771676
     '@tanstack/query-core',
   ],

@@ -1,8 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { multiChainId, multiChainName, MultiChainNameExtend } from 'state/info/constant'
+import { MultiChainNameExtend, multiChainId, multiChainName } from 'state/info/constant'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { Block } from 'state/info/types'
-import { useQuery } from '@tanstack/react-query'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 
 /**
@@ -29,7 +29,7 @@ export const useBlocksFromTimestamps = (
   useEffect(() => {
     const fetchData = async () => {
       const timestampsArray = JSON.parse(timestampsString)
-      const result = await getBlocksFromTimestamps(timestampsArray, sortDirection, skipCount, chainName)
+      const result = await getBlocksFromTimestamps(timestampsArray, sortDirection, chainName)
       if (result.length === 0) {
         setError(true)
       } else {
@@ -61,7 +61,7 @@ export const useBlockFromTimeStampQuery = (
   const timestampsArray = JSON.parse(timestampsString)
   const { data } = useQuery({
     queryKey: [`info/blocks/${timestampsString}/${chainId}`, multiChainName[chainId] ?? chainName],
-    queryFn: () => getBlocksFromTimestamps(timestampsArray, sortDirection, skipCount, chainName),
+    queryFn: () => getBlocksFromTimestamps(timestampsArray, sortDirection, chainName),
     refetchOnReconnect: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,

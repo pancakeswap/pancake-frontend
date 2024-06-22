@@ -122,12 +122,14 @@ export const useUserVote = (gauge: Gauge | undefined, submitted?: boolean, usePr
         let ignoredSlope = 0n
         let ignoredPower = 0n
         let ignoredSide: 'native' | 'proxy' | undefined
+        const nativeExpired = nativeEnd > 0n && nativeEnd < currentEpochStart
+        const proxyExpired = proxyEnd > 0n && proxyEnd < currentEpochStart
         const nativeWillExpire = nativeEnd > 0n && nativeEnd > currentEpochStart && nativeEnd < nextEpochStart
         const proxyWillExpire = proxyEnd > 0n && proxyEnd > currentEpochStart && proxyEnd < nextEpochStart
 
         // when native slope will expire before current epochEnd
         // use proxy slope only
-        if (nativeWillExpire && !proxyWillExpire) {
+        if ((nativeWillExpire && !proxyWillExpire) || (nativeExpired && !proxyExpired)) {
           ignoredSlope = nativeSlope
           ignoredPower = nativePower
           ignoredSide = 'native'
@@ -136,7 +138,7 @@ export const useUserVote = (gauge: Gauge | undefined, submitted?: boolean, usePr
         }
         // when proxy slope will expire before current epochEnd
         // use native slope only
-        if (proxyWillExpire && !nativeWillExpire) {
+        if ((proxyWillExpire && !nativeWillExpire) || (proxyExpired && !nativeExpired)) {
           ignoredSlope = proxySlope
           ignoredPower = proxyPower
           ignoredSide = 'proxy'

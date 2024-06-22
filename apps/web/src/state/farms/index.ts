@@ -16,6 +16,7 @@ import { getViemClients } from 'utils/viem'
 import { chains } from 'utils/wagmi'
 import { Address } from 'viem'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
+import { fetchStableFarmsAvgInfo, fetchV2FarmsAvgInfo } from 'queries/farms'
 import { resetUserState } from '../global/actions'
 import {
   fetchFarmBCakeWrapperUserAllowances,
@@ -34,7 +35,7 @@ const fetchFarmPublicDataPkg = async ({
   pids,
   chainId,
   chain,
-}): Promise<[SerializedFarm[], number, number, string]> => {
+}): Promise<[SerializedFarm[], number, number, string, Record<string, number>]> => {
   const farmsConfig = await getFarmConfig(chainId)
   const farmsCanFetch = farmsConfig?.filter((farmConfig) => pids.includes(farmConfig.pid)) ?? []
   const priceHelperLpsConfig = getFarmsPriceHelperLpFiles(chainId)
@@ -44,7 +45,23 @@ const fetchFarmPublicDataPkg = async ({
     isTestnet: chain.testnet,
     farms: farmsCanFetch.concat(priceHelperLpsConfig),
   })
-  return [farmsWithPrice, poolLength, regularCakePerBlock, totalRegularAllocPoint]
+  const farmAprs: Record<string, number> = {}
+  try {
+    const [farmsV2AvgInfo, farmsStableAvgInfo] = await Promise.all([
+      fetchV2FarmsAvgInfo(chainId),
+      fetchStableFarmsAvgInfo(chainId),
+    ])
+
+    const mergedFarmsAvgInfo = { ...farmsV2AvgInfo, ...farmsStableAvgInfo }
+
+    Object.keys(mergedFarmsAvgInfo).forEach((key) => {
+      const tokenData = mergedFarmsAvgInfo[key]
+      farmAprs[key] = parseFloat(tokenData.apr7d.multipliedBy(100).toFixed(2))
+    })
+  } catch (e) {
+    console.error(e)
+  }
+  return [farmsWithPrice, poolLength, regularCakePerBlock, totalRegularAllocPoint, farmAprs]
 }
 
 export const farmFetcher = createFarmFetcher(getViemClients)
@@ -85,7 +102,7 @@ export const fetchInitialFarmsData = createAsyncThunk<
 })
 
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
-  [SerializedFarm[], number, number, string],
+  [SerializedFarm[], number, number, string, Record<string, number>],
   { pids: number[]; chainId: number },
   {
     state: AppState
@@ -419,12 +436,16 @@ export const farmsSlice = createSlice({
 
     // Update farms with live data
     builder.addCase(fetchFarmsPublicDataAsync.fulfilled, (state, action) => {
-      const [farmPayload, poolLength, regularCakePerBlock, totalRegularAllocPoint] = action.payload
+      const [farmPayload, poolLength, regularCakePerBlock, totalRegularAllocPoint, farmAprs] = action.payload
       const farmPayloadPidMap = keyBy(farmPayload, 'pid')
 
       state.data = state.data.map((farm) => {
         const liveFarmData = farmPayloadPidMap[farm.pid]
-        return { ...farm, ...liveFarmData }
+        return {
+          ...farm,
+          ...liveFarmData,
+          ...(farmAprs[farm.lpAddress.toLowerCase()] && { lpRewardsApr: farmAprs[farm.lpAddress.toLowerCase()] }),
+        }
       })
       state.poolLength = poolLength
       state.regularCakePerBlock = regularCakePerBlock

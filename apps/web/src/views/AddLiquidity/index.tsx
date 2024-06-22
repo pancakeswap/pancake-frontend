@@ -115,7 +115,7 @@ export default function AddLiquidity({
     isOneWeiAttack,
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
 
-  const poolData = useLPApr(pair)
+  const poolData = useLPApr('v2', pair)
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
 

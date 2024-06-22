@@ -1,11 +1,13 @@
 import { useTranslation } from "@pancakeswap/localization";
 import dayjs from "dayjs";
-import { createChart, IChartApi, LineStyle, UTCTimestamp } from "lightweight-charts";
+import { createChart, IChartApi, ISeriesApi, LineStyle, MouseEventParams, UTCTimestamp } from "lightweight-charts";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import LineChartLoader from "./LineChartLoaderSVG";
+import { useMatchBreakpoints } from "../../contexts";
 
 export enum PairDataTimeWindowEnum {
+  HOUR,
   DAY,
   WEEK,
   MONTH,
@@ -29,10 +31,52 @@ const getChartColors = ({ isChangePositive }: { isChangePositive: boolean }) => 
 };
 
 const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
+  [PairDataTimeWindowEnum.HOUR]: "h:mm a",
   [PairDataTimeWindowEnum.DAY]: "h:mm a",
   [PairDataTimeWindowEnum.WEEK]: "MMM dd",
   [PairDataTimeWindowEnum.MONTH]: "MMM dd",
   [PairDataTimeWindowEnum.YEAR]: "MMM dd",
+};
+
+const getHandler = (
+  transformedData: { time: UTCTimestamp; value: any }[],
+  chart: IChartApi,
+  newSeries: ISeriesApi<"Area">,
+  locale: string,
+  setHoverValue: Dispatch<SetStateAction<number | undefined>> | undefined,
+  setHoverDate: Dispatch<SetStateAction<string | undefined>> | undefined,
+  isMobile: boolean
+) => {
+  return (param: MouseEventParams) => {
+    if (newSeries && param) {
+      const timestamp = param.time as number;
+      if (!timestamp) return;
+      const lastItem = transformedData.length > 0 ? transformedData[transformedData.length - 1] : undefined;
+      if (lastItem?.time === param.time) {
+        if (setHoverValue) setHoverValue(undefined);
+        if (setHoverDate) setHoverDate(undefined);
+        return;
+      }
+      const now = new Date(timestamp * 1000);
+      const time = `${now.toLocaleString(locale, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      })}`;
+      // @ts-ignore
+      const parsed = (param.seriesData.get(newSeries)?.value ?? 0) as number | undefined;
+      if (parsed && param.time && isMobile) {
+        chart.setCrosshairPosition(parsed, param.time, newSeries);
+      }
+      if (setHoverValue) setHoverValue(parsed);
+      if (setHoverDate) setHoverDate(time);
+    } else {
+      if (setHoverValue) setHoverValue(undefined);
+      if (setHoverDate) setHoverDate(undefined);
+    }
+  };
 };
 
 export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
@@ -46,6 +90,7 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
   ...rest
 }) => {
   const { isDark } = useTheme();
+  const { isMobile } = useMatchBreakpoints();
   const transformedData = useMemo(() => {
     return (
       data?.map(({ time, value }) => {
@@ -148,28 +193,15 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
 
     chart.timeScale().fitContent();
 
-    chart.subscribeCrosshairMove((param) => {
-      if (newSeries && param) {
-        const timestamp = param.time as number;
-        if (!timestamp) return;
-        const now = new Date(timestamp * 1000);
-        const time = `${now.toLocaleString(locale, {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-          hour: "numeric",
-          minute: "2-digit",
-          timeZone: "UTC",
-        })} (UTC)`;
-        // @ts-ignore
-        const parsed = (param.seriesData.get(newSeries)?.value ?? 0) as number | undefined;
-        if (setHoverValue) setHoverValue(parsed);
-        if (setHoverDate) setHoverDate(time);
-      } else {
-        if (setHoverValue) setHoverValue(undefined);
-        if (setHoverDate) setHoverDate(undefined);
-      }
-    });
+    if (isMobile) {
+      chart.subscribeClick(
+        getHandler(transformedData, chart, newSeries, locale, setHoverValue, setHoverDate, isMobile)
+      );
+    } else {
+      chart.subscribeCrosshairMove(
+        getHandler(transformedData, chart, newSeries, locale, setHoverValue, setHoverDate, isMobile)
+      );
+    }
 
     // eslint-disable-next-line consistent-return
     return () => {
@@ -179,6 +211,7 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
     transformedData,
     isDark,
     colors,
+    isMobile,
     isChartExpanded,
     locale,
     timeWindow,
@@ -195,7 +228,11 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
   return (
     <>
       {!chartCreated && <LineChartLoader />}
-      <div style={{ display: "flex", flex: 1, height: "100%" }} onMouseLeave={handleMouseLeave}>
+      <div
+        onPointerDownCapture={(event) => event.stopPropagation()}
+        style={{ display: "flex", flex: 1, height: "100%" }}
+        onMouseLeave={handleMouseLeave}
+      >
         <div style={{ flex: 1, maxWidth: "100%" }} ref={chartRef} id="swap-line-chart" {...rest} />
       </div>
     </>

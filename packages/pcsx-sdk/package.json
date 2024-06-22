@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/pcsx-sdk",
-  "version": "0.0.6",
+  "version": "0.0.11",
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
@@ -20,7 +20,7 @@
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/permit2-sdk": "workspace:*",
     "dayjs": "^1.11.10",
-    "viem": "2.9.19"
+    "viem": "2.13.3"
   },
   "devDependencies": {
     "tsup": "^6.7.0"

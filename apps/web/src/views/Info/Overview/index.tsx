@@ -4,7 +4,8 @@ import Page from 'components/Layout/Page'
 import { useMemo } from 'react'
 import {
   useAllTokenDataQuery,
-  useProtocolChartDataQuery,
+  useProtocolChartDataTvlQuery,
+  useProtocolChartDataVolumeQuery,
   useProtocolDataQuery,
   useProtocolTransactionsQuery,
 } from 'state/info/hooks'
@@ -41,7 +42,8 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
   } = useTranslation()
 
   const protocolData = useProtocolDataQuery()
-  const chartData = useProtocolChartDataQuery()
+  const volumeChartData = useProtocolChartDataVolumeQuery()
+  const tvlChartData = useProtocolChartDataTvlQuery()
   const transactions = useProtocolTransactionsQuery()
 
   const currentDate = useMemo(
@@ -71,7 +73,8 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
       <ChartCardsContainer>
         <Card>
           <HoverableChart
-            chartData={chartData}
+            volumeChartData={volumeChartData}
+            tvlChartData={tvlChartData}
             protocolData={protocolData}
             currentDate={currentDate}
             valueProperty="liquidityUSD"
@@ -81,7 +84,8 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
         </Card>
         <Card>
           <HoverableChart
-            chartData={chartData}
+            volumeChartData={volumeChartData}
+            tvlChartData={tvlChartData}
             protocolData={protocolData}
             currentDate={currentDate}
             valueProperty="volumeUSD"

@@ -1,14 +1,16 @@
 import { BLOCKS_SUBGRAPHS, ChainId, STABLESWAP_SUBGRAPHS, V2_SUBGRAPHS, V3_SUBGRAPHS } from '@pancakeswap/chains'
 
-export const GRAPH_API_PROFILE = 'https://api.thegraph.com/subgraphs/name/pancakeswap/profile'
+export const THE_GRAPH_PROXY_API = 'https://thegraph.pancakeswap.com'
 
-export const GRAPH_API_LOTTERY = 'https://api.thegraph.com/subgraphs/name/pancakeswap/lottery'
+export const GRAPH_API_PROFILE = `${THE_GRAPH_PROXY_API}/profile`
+
+export const GRAPH_API_LOTTERY = `${THE_GRAPH_PROXY_API}/lottery-bsc`
 export const SNAPSHOT_BASE_URL = process.env.NEXT_PUBLIC_SNAPSHOT_BASE_URL
 export const API_PROFILE = 'https://profile.pancakeswap.com'
 export const API_NFT = 'https://nft.pancakeswap.com/api/v1'
 export const SNAPSHOT_API = `${SNAPSHOT_BASE_URL}/graphql`
 export const SNAPSHOT_HUB_API = `${SNAPSHOT_BASE_URL}/api/message`
-export const GRAPH_API_POTTERY = 'https://api.thegraph.com/subgraphs/name/pancakeswap/pottery'
+export const GRAPH_API_POTTERY = `${THE_GRAPH_PROXY_API}/pottery`
 // export const ONRAMP_API_BASE_URL = 'https://pcs-onramp-api.com'
 export const ONRAMP_API_BASE_URL = 'https://onramp2-api.pancakeswap.com'
 export const TRANSAK_API_BASE_URL = 'https://api-stg.transak.com/api/v1'
@@ -17,26 +19,22 @@ export const NOTIFICATION_HUB_BASE_URL = 'https://notification-hub.pancakeswap.c
 /**
  * V1 will be deprecated but is still used to claim old rounds
  */
-export const GRAPH_API_PREDICTION_V1 = 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction'
+export const GRAPH_API_PREDICTION_V1 = `${THE_GRAPH_PROXY_API}/prediction-v1-bsc`
 
 export const V3_BSC_INFO_CLIENT = `https://open-platform.nodereal.io/${
   process.env.NEXT_PUBLIC_NODE_REAL_API_INFO || process.env.NEXT_PUBLIC_NODE_REAL_API_ETH
 }/pancakeswap-v3/graphql`
 
-export const INFO_CLIENT_ETH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth'
-export const BLOCKS_CLIENT = BLOCKS_SUBGRAPHS[ChainId.BSC]
-export const BLOCKS_CLIENT_ETH = BLOCKS_SUBGRAPHS[ChainId.ETHEREUM]
-export const BLOCKS_CLIENT_POLYGON_ZKEVM = BLOCKS_SUBGRAPHS[ChainId.POLYGON_ZKEVM]
-export const BLOCKS_CLIENT_ZKSYNC = BLOCKS_SUBGRAPHS[ChainId.ZKSYNC]
-export const BLOCKS_CLIENT_LINEA = BLOCKS_SUBGRAPHS[ChainId.LINEA]
-export const BLOCKS_CLIENT_BASE = BLOCKS_SUBGRAPHS[ChainId.BASE]
-export const BLOCKS_CLIENT_OPBNB = BLOCKS_SUBGRAPHS[ChainId.OPBNB]
+const BLOCKS_SUBGRAPH_URLS = {
+  ...BLOCKS_SUBGRAPHS,
+  [ChainId.OPBNB]: `${THE_GRAPH_PROXY_API}/blocks-opbnb`,
+}
 
-export const GRAPH_API_NFTMARKET = 'https://api.thegraph.com/subgraphs/name/pancakeswap/nft-market'
+export const GRAPH_API_NFTMARKET = `${THE_GRAPH_PROXY_API}/nft-marketplace-bsc`
 export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
 
-export const TC_MOBOX_SUBGRAPH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/trading-competition-v3'
-export const TC_MOD_SUBGRAPH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/trading-competition-v4'
+export const TC_MOBOX_SUBGRAPH = `${THE_GRAPH_PROXY_API}/trading-competition-v3`
+export const TC_MOD_SUBGRAPH = `${THE_GRAPH_PROXY_API}/trading-competition-v4`
 
 export const BIT_QUERY = 'https://graphql.bitquery.io'
 
@@ -44,28 +42,39 @@ export const ACCESS_RISK_API = 'https://red.alert.pancakeswap.com/red-api'
 
 export const CELER_API = 'https://api.celerscan.com/scan'
 
-export const EXPLORER_API = 'https://info-gateway.pancakeswap.com'
-
-export const THE_GRAPH_PROXY_API = 'https://thegraph.pancakeswap.com'
-
 export const V2_SUBGRAPH_URLS = {
   ...V2_SUBGRAPHS,
-  [ChainId.BSC]: `${EXPLORER_API}/subgraphs/v2/bsc/graphql`,
   [ChainId.POLYGON_ZKEVM]: `${THE_GRAPH_PROXY_API}/exchange-v2-polygon-zkevm`,
+  [ChainId.BASE]: `${THE_GRAPH_PROXY_API}/exchange-v2-base`,
+  [ChainId.ETHEREUM]: `${THE_GRAPH_PROXY_API}/exchange-v2-eth`,
+  [ChainId.BSC]: `${THE_GRAPH_PROXY_API}/exchange-v2-bsc`,
+  [ChainId.ARBITRUM_ONE]: `${THE_GRAPH_PROXY_API}/exchange-v2-arb`,
+  [ChainId.ZKSYNC]: `${THE_GRAPH_PROXY_API}/exchange-v2-zksync`,
+  [ChainId.LINEA]: `${THE_GRAPH_PROXY_API}/exchange-v2-linea`,
+  [ChainId.OPBNB]: `${THE_GRAPH_PROXY_API}/exchange-v2-opbnb`,
 }
+export const INFO_CLIENT_ETH = V2_SUBGRAPH_URLS[ChainId.ETHEREUM]
 
-export const BLOCKS_CLIENT_WITH_CHAIN = BLOCKS_SUBGRAPHS
+export const BLOCKS_CLIENT_WITH_CHAIN = BLOCKS_SUBGRAPH_URLS
 
 export const ASSET_CDN = 'https://assets.pancakeswap.finance'
 
 export const V3_SUBGRAPH_URLS = {
   ...V3_SUBGRAPHS,
   [ChainId.POLYGON_ZKEVM]: `${THE_GRAPH_PROXY_API}/exchange-v3-polygon-zkevm`,
+  [ChainId.BASE]: `${THE_GRAPH_PROXY_API}/exchange-v3-base`,
+  [ChainId.ETHEREUM]: `${THE_GRAPH_PROXY_API}/exchange-v3-eth`,
+  [ChainId.BSC]: `${THE_GRAPH_PROXY_API}/exchange-v3-bsc`,
+  [ChainId.ARBITRUM_ONE]: `${THE_GRAPH_PROXY_API}/exchange-v3-arb`,
+  [ChainId.ZKSYNC]: `${THE_GRAPH_PROXY_API}/exchange-v3-zksync`,
+  [ChainId.LINEA]: `${THE_GRAPH_PROXY_API}/exchange-v3-linea`,
+  [ChainId.OPBNB]: `${THE_GRAPH_PROXY_API}/exchange-v3-opbnb`,
 }
 
 export const STABLESWAP_SUBGRAPHS_URLS = {
   ...STABLESWAP_SUBGRAPHS,
-  [ChainId.BSC]: `${EXPLORER_API}/subgraphs/stable/bsc/graphql`,
+  [ChainId.BSC]: `${THE_GRAPH_PROXY_API}/exchange-stableswap-bsc`,
+  [ChainId.ARBITRUM_ONE]: `${THE_GRAPH_PROXY_API}/exchange-stableswap-arb`,
 }
 
 export const TRADING_REWARD_API = 'https://trading-reward.pancakeswap.com/api/v1'

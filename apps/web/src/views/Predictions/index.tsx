@@ -1,6 +1,5 @@
 import { PredictionsChartView } from '@pancakeswap/prediction'
 import { useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
-import { PredictionSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener'
 import { useEffect, useRef } from 'react'
 import { useChartView, useIsChartPaneOpen } from 'state/predictions/hooks'
@@ -63,7 +62,6 @@ const Predictions = () => {
           <CollectWinningsPopup />
         </Container>
       </SwiperProvider>
-      <PredictionSubgraphHealthIndicator />
     </>
   )
 }

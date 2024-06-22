@@ -3,12 +3,13 @@ import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { useToast } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
+import { usePaymaster } from 'hooks/usePaymaster'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHasPendingApproval, useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
 import { getViemErrorMessage } from 'utils/errors'
 import { isUserRejected, logError } from 'utils/sentry'
-import { Address } from 'viem'
+import { Address, SendTransactionReturnType, encodeFunctionData, parseAbi } from 'viem'
 import { useAccount } from 'wagmi'
 import useGelatoLimitOrdersLib from './limitOrders/useGelatoLimitOrdersLib'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
@@ -26,14 +27,21 @@ export enum ApprovalState {
 export function useApproveCallback(
   amountToApprove?: CurrencyAmount<Currency>,
   spender?: string,
-  options: {
-    addToTransaction
+  {
+    addToTransaction = true,
+    targetAmount,
+
+    /**
+     * Use paymaster if available.
+     * Enable only if Gas Token Selector is present on the interface.
+     */
+    enablePaymaster = false,
+  }: {
+    addToTransaction?: boolean
     targetAmount?: bigint
-  } = {
-    addToTransaction: true,
-  },
+    enablePaymaster?: boolean
+  } = {},
 ) {
-  const { addToTransaction = true, targetAmount } = options
   const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
@@ -41,6 +49,8 @@ export function useApproveCallback(
   const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
   const { allowance: currentAllowance, refetch } = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
+  const { isPaymasterAvailable, isPaymasterTokenActive, sendPaymasterTransaction } = usePaymaster()
+
   const [pending, setPending] = useState<boolean>(pendingApproval)
   const [isPendingError, setIsPendingError] = useState<boolean>(false)
 
@@ -140,22 +150,46 @@ export function useApproveCallback(
       if (!estimatedGas) return undefined
       const finalAmount =
         overrideAmountApprove ?? (useExact ? amountToApprove?.quotient ?? targetAmount ?? MaxUint256 : MaxUint256)
-      const res = callWithGasPrice(tokenContract, 'approve' as const, [spender as Address, finalAmount], {
-        gas: calculateGasMargin(estimatedGas),
-      })
+
+      let sendTxResult: Promise<SendTransactionReturnType> | undefined
+
+      if (enablePaymaster && isPaymasterAvailable && isPaymasterTokenActive) {
+        const calldata = encodeFunctionData({
+          abi: parseAbi(['function approve(address spender, uint256 amount) public returns (bool)']),
+          functionName: 'approve',
+          args: [spender as Address, finalAmount],
+        })
+
+        const call = {
+          address: tokenContract.address,
+          gas: estimatedGas,
+          calldata,
+        }
+
+        sendTxResult = sendPaymasterTransaction(call, account)
+      } else {
+        sendTxResult = callWithGasPrice(tokenContract, 'approve' as const, [spender as Address, finalAmount], {
+          gas: calculateGasMargin(estimatedGas),
+        }).then((response) => response.hash)
+      }
+
+      return sendTxResult
         .then((response) => {
           if (addToTransaction && token) {
-            addTransaction(response, {
-              summary: `Approve ${overrideAmountApprove ?? amountToApprove?.currency?.symbol}`,
-              translatableSummary: {
-                text: 'Approve %symbol%',
-                data: { symbol: overrideAmountApprove?.toString() ?? amountToApprove?.currency?.symbol },
+            addTransaction(
+              { hash: response },
+              {
+                summary: `Approve ${overrideAmountApprove ?? amountToApprove?.currency?.symbol}`,
+                translatableSummary: {
+                  text: 'Approve %symbol%',
+                  data: { symbol: overrideAmountApprove?.toString() ?? amountToApprove?.currency?.symbol },
+                },
+                approval: { tokenAddress: token.address, spender, amount: finalAmount.toString() },
+                type: 'approve',
               },
-              approval: { tokenAddress: token.address, spender, amount: finalAmount.toString() },
-              type: 'approve',
-            })
+            )
           }
-          return response
+          return { hash: response }
         })
         .catch((error: any) => {
           logError(error)
@@ -165,8 +199,6 @@ export function useApproveCallback(
           }
           throw error
         })
-
-      return res
     },
     [
       approvalState,
@@ -180,6 +212,11 @@ export function useApproveCallback(
       t,
       addToTransaction,
       addTransaction,
+      account,
+      isPaymasterAvailable,
+      isPaymasterTokenActive,
+      sendPaymasterTransaction,
+      enablePaymaster,
     ],
   )
 

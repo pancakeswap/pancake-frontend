@@ -2,25 +2,27 @@ import { TranslateFunction, useTranslation } from "@pancakeswap/localization";
 import { HelpIcon, Skeleton, Text, TooltipRefs, useTooltip } from "@pancakeswap/uikit";
 import getTimePeriods from "@pancakeswap/utils/getTimePeriods";
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import { styled } from "styled-components";
 import { FarmTableLiquidityProps } from "../../types";
 
-dayjs.extend(relativeTime);
-
 const distanceToNow = (t: TranslateFunction, timeInMilliSeconds: number) => {
-  const time = new Date(timeInMilliSeconds);
+  if (!Number.isFinite(timeInMilliSeconds)) return t("Now");
 
-  const secondsRemaining = dayjs(time).diff(dayjs(), "seconds");
+  const time = dayjs(timeInMilliSeconds);
+  const now = dayjs();
+
+  if (time.isAfter(now)) return t("Now");
+
+  const secondsRemaining = time.diff(now, "seconds");
   const { days, hours, minutes, seconds } = getTimePeriods(secondsRemaining);
 
   let toNowString = "";
-  if (days !== 0) toNowString += `${days} ${t("d")}`;
-  if (hours !== 0) toNowString += `${hours} ${t("h")}`;
-  if (minutes !== 0) toNowString += `${minutes} ${t("m")}`;
-  if (seconds !== 0) toNowString += `${seconds} ${t("s")}`;
+  if (days !== 0) toNowString += `${days}${t("d")} `;
+  if (hours !== 0) toNowString += `${hours}${t("h")} `;
+  if (minutes !== 0) toNowString += `${minutes}${t("m")} `;
+  if (seconds !== 0) toNowString += `${seconds}${t("s")} `;
 
-  return time > new Date() || !Number.isFinite(timeInMilliSeconds) ? t("Now") : toNowString;
+  return toNowString.trim();
 };
 
 const ReferenceElement = styled.div`
@@ -53,11 +55,7 @@ export const StakedLiquidity: React.FunctionComponent<React.PropsWithChildren<Fa
   const tooltip = useTooltip(
     <>
       <Text>{t("Total active (in-range) liquidity staked in the farm.")}</Text>
-      {updatedAt && (
-        <Text>
-          {t("Updated")} {distanceToNow(t, updatedAt)}
-        </Text>
-      )}
+      {updatedAt && <Text>{t("Updated %dateUpdated% ago", { dateUpdated: distanceToNow(t, updatedAt) })}</Text>}
     </>,
     {
       placement: "top-end",

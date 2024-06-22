@@ -8,6 +8,7 @@ import {
   STABLESWAP_SUBGRAPHS_START_BLOCK,
   checkIsStableSwap,
   getMultiChainQueryEndPointWithStableSwap,
+  multiChainQueryMainToken,
 } from '../../constant'
 import { fetchTokenAddresses } from './topTokens'
 
@@ -62,7 +63,7 @@ const TOKEN_AT_BLOCK = (chainName: MultiChainNameExtend, block: number | undefin
       symbol
       name
       decimals
-      derivedETH
+      derived${multiChainQueryMainToken[chainName]}
       derivedUSD
       tradeVolumeUSD
       totalTransactions

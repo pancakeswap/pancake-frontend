@@ -151,6 +151,7 @@ const trade = await SmartRouter.getBestTrade(amount, swapTo, TradeType.EXACT_INP
 4. Build the swap transaction from trade
 
 ```typescript
+import { Percent } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { SmartRouter, SMART_ROUTER_ADDRESSES, SwapRouter } from '@pancakeswap/smart-router'
 import { hexToBigInt } from 'viem'

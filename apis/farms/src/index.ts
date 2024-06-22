@@ -10,14 +10,14 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+import { CORS_ALLOW, handleCors, wrapCorsHeader } from '@pancakeswap/worker-utils'
+import BigNumber from 'bignumber.js'
 import { Router } from 'itty-router'
 import { error, json, missing } from 'itty-router-extras'
-import { wrapCorsHeader, handleCors, CORS_ALLOW } from '@pancakeswap/worker-utils'
-import BigNumber from 'bignumber.js'
-import { fetchCakePrice, saveFarms, saveLPsAPR } from './handler'
-import { farmFetcher, requireChainId } from './helper'
-import { handler as v3Handler } from './v3'
+import { fetchCakePrice, saveFarms } from './handler'
+import { requireChainId } from './helper'
 import { FarmKV } from './kv'
+import { handler as v3Handler } from './v3'
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -47,18 +47,6 @@ router.get('/price/cake', async (_, event) => {
   }
 
   return response
-})
-
-router.get('/apr', async ({ query }) => {
-  if (typeof query?.key === 'string' && query.key === FORCE_UPDATE_KEY) {
-    try {
-      const result = await Promise.allSettled(farmFetcher.supportedChainId.map((id) => saveLPsAPR(id)))
-      return json(result.map((r) => r))
-    } catch (err) {
-      error(500, { err })
-    }
-  }
-  return error(400, 'no key provided')
 })
 
 router.get('/:chainId', async ({ params }, event) => {
@@ -106,26 +94,3 @@ addEventListener('fetch', (event) =>
       .then((res) => wrapCorsHeader(event.request, res, { allowedOrigin: CORS_ALLOW })),
   ),
 )
-
-addEventListener('scheduled', (event) => {
-  event.waitUntil(handleScheduled(event))
-})
-
-// eslint-disable-next-line consistent-return
-async function handleScheduled(event: ScheduledEvent) {
-  switch (event.cron) {
-    case '*/1 * * * *':
-    case '*/2 * * * *': {
-      const result = await Promise.allSettled(farmFetcher.supportedChainId.map((id) => saveFarms(id, event)))
-      console.log(result.map((r) => r))
-      return result
-    }
-    case '0 0 * * *': {
-      const result = await Promise.allSettled(farmFetcher.supportedChainId.map((id) => saveLPsAPR(id)))
-      console.log(result.map((r) => r))
-      return result
-    }
-    default:
-      break
-  }
-}

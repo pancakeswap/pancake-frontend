@@ -1,6 +1,5 @@
 import { RowBetween } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import useTheme from 'hooks/useTheme'
 import { ColorType, createChart, IChartApi } from 'lightweight-charts'
 import React, { Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
@@ -8,8 +7,6 @@ import { styled } from 'styled-components'
 import usePrevious from '../../hooks/usePrevious'
 import { formatDollarAmount } from '../../utils/numbers'
 import Card from '../Card'
-
-dayjs.extend(utc)
 
 const Wrapper = styled(Card)`
   width: 100%;

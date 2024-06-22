@@ -1,5 +1,11 @@
 # @pancakeswap/wagmi
 
+## 3.0.2
+
+### Patch Changes
+
+- edc3f30: Upgrade viem and wagmi
+
 ## 3.0.1
 
 ### Patch Changes

@@ -39,6 +39,7 @@ export interface FarmTableFarmTokenInfoProps {
   lpAddress?: Address;
   merklApr?: number;
   rewardCakePerSecond?: number;
+  merklUserLink?: string;
 }
 
 export type ColumnsDefTypes = {

@@ -2,6 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { ERC20Token, Pair } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
+import { useFeeData } from '@pancakeswap/wagmi'
 import { useQuery } from '@tanstack/react-query'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
@@ -14,7 +15,6 @@ import { AppState, useAppDispatch } from 'state'
 import { safeGetAddress } from 'utils'
 import { Hex, hexToBigInt } from 'viem'
 import { useWalletClient } from 'wagmi'
-import { useFeeData } from '@pancakeswap/wagmi'
 import { GAS_PRICE_GWEI } from '../../types'
 import {
   FarmStakedOnly,
@@ -447,6 +447,9 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
   }, [combinedList])
 }
 
+/**
+ * @deprecated
+ */
 export const useWatchlistTokens = (): [string[], (address: string) => void] => {
   const dispatch = useAppDispatch()
   const savedTokensFromSelector = useSelector((state: AppState) => state.user.watchlistTokens)
@@ -462,6 +465,9 @@ export const useWatchlistTokens = (): [string[], (address: string) => void] => {
   return [savedTokens, updatedSavedTokens]
 }
 
+/**
+ * @deprecated
+ */
 export const useWatchlistPools = (): [string[], (address: string) => void] => {
   const dispatch = useAppDispatch()
   const savedPoolsFromSelector = useSelector((state: AppState) => state.user.watchlistPools)

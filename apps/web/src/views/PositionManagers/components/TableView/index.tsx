@@ -12,7 +12,8 @@ import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBoost
 /* eslint-disable no-case-declarations */
 import { useDelayedUnmount } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useIsWrapperWhiteList } from '../../hooks/useWrapperBooster'
 import { ActionPanel } from './ActionPanel'
@@ -25,7 +26,6 @@ import {
   useEarningTokenPriceInfo,
   usePCSVault,
   usePositionInfo,
-  useTokenPriceFromSubgraph,
   useTotalAssetInUsd,
   useTotalStakedInUsd,
 } from '../../hooks'
@@ -111,23 +111,30 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     staleTime: 6000,
     gcTime: 6000,
   }).data
-  const priceFromSubgraph = useTokenPriceFromSubgraph(
-    priceFromV3FarmPid ? undefined : currencyA.isToken ? currencyA.address.toLowerCase() : undefined,
-    priceFromV3FarmPid ? undefined : currencyB.isToken ? currencyB.address.toLowerCase() : undefined,
-  )
+
+  const token0Usd = useCurrencyUsdPrice(currencyA, {
+    enabled: !priceFromV3FarmPid,
+  })
+  const token1Usd = useCurrencyUsdPrice(currencyB, {
+    enabled: !priceFromV3FarmPid,
+  })
   const vaultName = useMemo(() => getVaultName(idByManager, name), [name, idByManager])
   const info = usePositionInfo(bCakeWrapperAddress ?? address, adapterAddress ?? '0x', Boolean(bCakeWrapperAddress))
 
   const tokensPriceUSD = useMemo(() => {
     const farm = farmsV3.find((d) => d.pid === priceFromV3FarmPid)
-    if (!farm) return priceFromSubgraph
+    if (!farm)
+      return {
+        token0: token0Usd.data ?? 0,
+        token1: token1Usd.data ?? 0,
+      }
     const isToken0And1Reversed =
       farm.token.address.toLowerCase() === (currencyB.isToken ? currencyB.address.toLowerCase() : '')
     return {
       token0: Number(isToken0And1Reversed ? farm.quoteTokenPriceBusd : farm.tokenPriceBusd),
       token1: Number(isToken0And1Reversed ? farm.tokenPriceBusd : farm.quoteTokenPriceBusd),
     }
-  }, [farmsV3, priceFromV3FarmPid, priceFromSubgraph, currencyB])
+  }, [farmsV3, token0Usd.data, token1Usd.data, currencyB, priceFromV3FarmPid])
 
   useEffect(() => {
     if (info?.userToken0Amounts > 0n || info?.userToken1Amounts > 0n) {
@@ -355,7 +362,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
         <>
           <tr style={{ cursor: 'pointer' }} onClick={toggleActionPanel}>
             <FarmMobileCell colSpan={3}>
-              <Flex justifyContent="flex-start" alignItems="center">
+              <Flex justifyContent="flex-start" alignItems="center" position="relative">
                 <FarmCell
                   currencyA={currencyA}
                   currencyB={currencyB}
@@ -367,7 +374,11 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                   allowDepositToken1={allowDepositToken1 ?? false}
                   isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
                 />
-                {hasSwellReward ? <SwellTooltip /> : null}
+                {hasSwellReward ? (
+                  <Box position="absolute" right="10px">
+                    <SwellTooltip />
+                  </Box>
+                ) : null}
               </Flex>
             </FarmMobileCell>
           </tr>

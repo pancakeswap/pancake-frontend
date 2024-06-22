@@ -4,10 +4,8 @@ import useSubgraphHealth, { SubgraphStatus } from 'hooks/useSubgraphHealth'
 
 const useShowWarningMessage = () => {
   const { chainId } = useActiveChainId()
-  const subgraphName = chainId
-    ? V3_SUBGRAPH_URLS[chainId]?.replace('https://api.thegraph.com/subgraphs/name/', '') || ''
-    : ''
-  const { status } = useSubgraphHealth({ chainId, subgraphName })
+  const subgraph = chainId ? V3_SUBGRAPH_URLS[chainId] || '' : ''
+  const { status } = useSubgraphHealth({ chainId, subgraph })
 
   return status === SubgraphStatus.DOWN
 }

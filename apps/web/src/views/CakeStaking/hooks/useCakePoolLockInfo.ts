@@ -17,13 +17,14 @@ export type CakePoolInfo = {
   lockedAmount: bigint
 }
 
-export const useCakePoolLockInfo = () => {
+export const useCakePoolLockInfo = (targetChain?: ChainId) => {
   const { chainId, account } = useAccountActiveChain()
-  const cakeVaultContract = useCakeVaultContract()
+  const cakeVaultContract = useCakeVaultContract(targetChain)
   const currentTimestamp = useCurrentBlockTimestamp()
+  const chainIdTarget = targetChain || chainId
 
   const { data: info } = useQuery({
-    queryKey: ['cakePoolLockInfo', cakeVaultContract.address, chainId, account],
+    queryKey: ['cakePoolLockInfo', cakeVaultContract.address, chainIdTarget, account],
 
     queryFn: async (): Promise<CakePoolInfo> => {
       if (!account) return {} as CakePoolInfo
