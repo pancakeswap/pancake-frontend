@@ -1,13 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import { FAST_INTERVAL } from 'config/constants'
 import { PREDICTION_PRICE_API } from 'config/constants/endpoints'
+import { PriceApiWhitelistedCurrency } from 'config/constants/prediction/price'
 
 interface UsePredictionPriceParameters {
   /** Default: ETH */
-  currencyA?: string
+  currencyA?: PriceApiWhitelistedCurrency | (string & NonNullable<unknown>)
 
   /** Default: USDT */
-  currencyB?: string
+  currencyB?: PriceApiWhitelistedCurrency | (string & NonNullable<unknown>)
 
   /** Default: 10,000 milliseconds */
   pollingInterval?: number
@@ -18,8 +19,8 @@ interface UsePredictionPriceParameters {
 interface PriceResponse {
   price: number
 
-  currencyA: string
-  currencyB: string
+  currencyA: PriceApiWhitelistedCurrency | (string & NonNullable<unknown>)
+  currencyB: PriceApiWhitelistedCurrency | (string & NonNullable<unknown>)
 }
 
 export const usePredictionPrice = ({

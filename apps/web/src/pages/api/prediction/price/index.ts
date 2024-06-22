@@ -1,4 +1,5 @@
 import { BINANCE_DATA_API } from 'config/constants/endpoints'
+import { PRICE_API_WHITELISTED_CURRENCIES, PriceApiWhitelistedCurrency } from 'config/constants/prediction/price'
 import { NextApiHandler } from 'next'
 
 export const config = {
@@ -8,6 +9,14 @@ export const config = {
 const handler: NextApiHandler = async (req, res) => {
   try {
     const { currencyA, currencyB } = req.query
+
+    // Token Whitelist Check
+    if (
+      !PRICE_API_WHITELISTED_CURRENCIES.includes(currencyA as PriceApiWhitelistedCurrency) ||
+      !PRICE_API_WHITELISTED_CURRENCIES.includes(currencyB as PriceApiWhitelistedCurrency)
+    ) {
+      return res.status(400).json({ error: `Currency is not whitelisted` })
+    }
 
     const symbol = `${currencyA}${currencyB}` // According to Binance API Spec
 
