@@ -36,7 +36,7 @@ const StyledFlexGap = styled(FlexGap)`
   }
 `
 
-export const Quests = () => {
+export const JoinedQuests = () => {
   const { t } = useTranslation()
   const [statusButtonIndex, setStatusButtonIndex] = useState(0)
   const [pickMultiSelect, setPickMultiSelect] = useState<Array<ChainId>>([])
@@ -85,6 +85,7 @@ export const Quests = () => {
           setPickMultiSelect={setPickMultiSelect}
         />
       </Flex>
+
       <StyledFlexGap>
         <Quest />
         <Quest />

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { NftProfileLayout } from 'views/Profile'
 import { AchievementsPage } from 'views/Profile/components/Achievements/AchievementsPage'
+import { JoinedQuests } from 'views/Profile/components/JoinedQuests'
 import { NftPage } from 'views/Profile/components/NftPage'
 import { ProfileUrlType } from 'views/Profile/components/TabMenu'
 import { useAccount } from 'wagmi'
@@ -23,7 +24,7 @@ const ProfilePage = () => {
     <>
       {hasProfile && (
         <>
-          {router.asPath === ProfileUrlType.HOME_PAGE && <>Coming Soon</>}
+          {router.asPath === ProfileUrlType.HOME_PAGE && <JoinedQuests />}
           {router.asPath === ProfileUrlType.NFT && <NftPage />}
           {router.asPath === ProfileUrlType.ACHIEVEMENT && <AchievementsPage />}
         </>
