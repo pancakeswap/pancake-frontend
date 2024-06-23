@@ -188,7 +188,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
     const bnbBusdFarms =
       activePriceHelperLpsConfig.length > 0
         ? [...orderBy(farmsV3Data, 'lmPoolLiquidity', 'desc'), ...farmsV2Data].filter(
-            (farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB',
+            (farm) => farm.token.symbol === 'USDT' && farm.quoteToken.symbol === 'WBNB',
           )
         : []
     const farmsWithPricesOfDifferentTokenPools =

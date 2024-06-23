@@ -1342,7 +1342,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 177,
-    lpSymbol: 'CKP-mCAKE  LP',
+    lpSymbol: 'CKP-mCAKE LP',
     lpAddress: '0xdb92AD18eD18752a194b9D831413B09976B34AE1',
     token: bscTokens.ckp,
     quoteToken: bscTokens.mcake,
@@ -1350,7 +1350,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 176,
-    lpSymbol: 'RDP-BNB  LP',
+    lpSymbol: 'RDP-BNB LP',
     lpAddress: '0xc9B415b8331e1Fb0d2f3442Ac8413E279304090f',
     token: bscTokens.rdp,
     quoteToken: bscTokens.wbnb,
@@ -1358,7 +1358,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 175,
-    lpSymbol: 'BNB-HZN  LP',
+    lpSymbol: 'BNB-HZN LP',
     lpAddress: '0xDc9a574b9B341D4a98cE29005b614e1E27430E74',
     token: bscTokens.wbnb,
     quoteToken: bscTokens.hzn,
