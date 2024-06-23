@@ -185,15 +185,17 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
     const totalStakingsSousIdMap = keyBy(totalStakings, 'sousId')
 
     const farmsV2Data = getState().farms.data
-    const bnbBusdFarms =
+    const nativeStableFarms =
       activePriceHelperLpsConfig.length > 0
         ? [...orderBy(farmsV3Data, 'lmPoolLiquidity', 'desc'), ...farmsV2Data].filter(
-            (farm) => farm.token.symbol === 'USDT' && farm.quoteToken.symbol === 'WBNB',
+            (farm) =>
+              farm.token.symbol === nativeStableLpMap[chainId]?.stable &&
+              farm.quoteToken.symbol === nativeStableLpMap[chainId]?.wNative,
           )
         : []
     const farmsWithPricesOfDifferentTokenPools =
-      bnbBusdFarms.length > 0
-        ? getFarmsPrices([...bnbBusdFarms, ...poolsWithDifferentFarmToken], nativeStableLpMap[chainId], 18)
+      nativeStableFarms.length > 0
+        ? getFarmsPrices([...nativeStableFarms, ...poolsWithDifferentFarmToken], nativeStableLpMap[chainId], 18)
         : []
 
     const prices = getTokenPricesFromFarm([...farmsV2Data, ...farmsV3Data, ...farmsWithPricesOfDifferentTokenPools])

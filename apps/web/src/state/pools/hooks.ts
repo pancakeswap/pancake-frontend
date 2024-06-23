@@ -14,6 +14,7 @@ import { useAccount } from 'wagmi'
 import { useQuery } from '@tanstack/react-query'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { nativeStableLpMap } from 'state/farms/getFarmsPrices'
 import {
   fetchCakeFlexibleSideVaultFees,
   fetchCakeFlexibleSideVaultPublicData,
@@ -59,7 +60,8 @@ const getActiveFarms = async (chainId: number) => {
       ({ token, pid, quoteToken }) =>
         pid !== 0 &&
         ((token.symbol === 'CAKE' && quoteToken.symbol === 'WBNB') ||
-          (token.symbol === 'USDT' && quoteToken.symbol === 'WBNB') ||
+          (token.symbol === nativeStableLpMap[chainId]?.stable &&
+            quoteToken.symbol === nativeStableLpMap[chainId]?.wNative) ||
           lPoolAddresses.find((poolAddress) => poolAddress === token.address)),
     )
     .map((farm) => farm.pid)
