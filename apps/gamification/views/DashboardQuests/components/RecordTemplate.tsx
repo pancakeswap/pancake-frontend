@@ -1,10 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { AddIcon, Box, Button, ButtonMenu, ButtonMenuItem, Flex, MultiSelector, Text } from '@pancakeswap/uikit'
-import { SHORT_SYMBOL } from 'components/NetworkSwitcher'
-import { SUPPORTED_CHAIN } from 'config/supportedChain'
+import { AddIcon, Box, Button, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
+import { MultiSelectorUI } from 'components/MultiSelectorUI'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
 import { styled } from 'styled-components'
 
 const Container = styled(Box)`
@@ -52,45 +50,6 @@ const StyledButtonMenu = styled(ButtonMenu)`
   }
 `
 
-const MultiSelectorStyled = styled(MultiSelector)<{ $hasOptionsPicked: boolean }>`
-  height: 36px !important;
-  margin: 24px 0 0 0;
-
-  > div {
-    height: 36px;
-    background-color: ${({ theme, $hasOptionsPicked }) =>
-      $hasOptionsPicked ? theme.colors.primary : theme.colors.backgroundAlt};
-    border-color: ${({ theme, $hasOptionsPicked }) =>
-      $hasOptionsPicked ? 'transparent' : theme.colors.cardBorder} !important;
-
-    > div {
-      color: ${({ theme, $hasOptionsPicked }) => ($hasOptionsPicked ? theme.colors.white : theme.colors.text)};
-    }
-  }
-
-  > div:nth-child(2) {
-    border-color: ${({ theme }) => theme.colors.cardBorder};
-    background-color: ${({ theme }) => theme.colors.backgroundAlt};
-
-    input {
-      &:checked {
-        border: 0;
-        background-color: ${({ theme }) => theme.colors.primary};
-      }
-    }
-  }
-
-  svg {
-    fill: ${({ theme, $hasOptionsPicked }) => ($hasOptionsPicked ? theme.colors.white : theme.colors.text)};
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin: 0 auto 0 0;
-    min-width: 130px;
-    max-width: 160px;
-  }
-`
-
 interface RecordTemplateProps {
   title: string
   createButtonText: string
@@ -119,27 +78,6 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({
     router.push(createLink)
   }
 
-  const options = useMemo(() => {
-    return SUPPORTED_CHAIN.map((chain, index) => ({
-      id: index + 1,
-      label: SHORT_SYMBOL[chain],
-      value: chain,
-    }))
-  }, [])
-
-  const hasOptionsPicked = useMemo(() => {
-    if (pickMultiSelect.length > 0) {
-      const hasIndex = options.filter((i) => pickMultiSelect.includes(i.id))
-      return hasIndex.length > 0
-    }
-
-    return false
-  }, [options, pickMultiSelect])
-
-  const customPlaceHolderText = useMemo(() => {
-    return pickMultiSelect.length === 0 || pickMultiSelect.length === options.length ? t('All Network') : ''
-  }, [options.length, pickMultiSelect.length, t])
-
   return (
     <Flex flexDirection="column">
       <Container>
@@ -164,13 +102,11 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({
                 <ButtonMenuItem>{t('Finished')}</ButtonMenuItem>
                 <ButtonMenuItem>{t('Drafted')}</ButtonMenuItem>
               </StyledButtonMenu>
-              <MultiSelectorStyled
-                options={options}
-                placeHolderText={customPlaceHolderText}
-                $hasOptionsPicked={hasOptionsPicked}
+              <MultiSelectorUI
+                maxWidth={['100%', '100%', '100%', '160px']}
+                margin={['24px 0 0 0', '24px 0 0 0', '24px 0 0 0', ' 0 auto 0 0']}
                 pickMultiSelect={pickMultiSelect}
-                closeDropdownWhenClickOption={false}
-                onOptionChange={setPickMultiSelect}
+                setPickMultiSelect={setPickMultiSelect}
               />
             </Flex>
             <Button

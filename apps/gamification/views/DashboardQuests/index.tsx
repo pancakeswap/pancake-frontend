@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { useState } from 'react'
+import { options } from 'components/MultiSelectorUI'
+import { useMemo, useState } from 'react'
 import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
 import { RecordTemplate } from 'views/DashboardQuests/components/RecordTemplate'
 import { Records } from 'views/DashboardQuests/components/Records'
@@ -11,6 +12,14 @@ export const DashboardQuests = () => {
   const { t } = useTranslation()
   const [statusButtonIndex, setStatusButtonIndex] = useState(CompletionStatusIndex.ONGOING)
   const [pickMultiSelect, setPickMultiSelect] = useState<Array<ChainId>>([])
+
+  const chainValuePicked = useMemo(() => {
+    return pickMultiSelect.map((id) => {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      const option = options.find((option) => option.id === id)
+      return option ? option.value : null
+    })
+  }, [pickMultiSelect])
 
   const { questsData, isFetching } = useFetchAllQuests({
     completionStatus: convertIndexToStatus(statusButtonIndex),

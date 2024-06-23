@@ -1,6 +1,8 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap } from '@pancakeswap/uikit'
-import { useState } from 'react'
+import { MultiSelectorUI, options } from 'components/MultiSelectorUI'
+import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { Quest } from 'views/Quests/components/Quest'
 
@@ -37,6 +39,15 @@ const StyledFlexGap = styled(FlexGap)`
 export const Quests = () => {
   const { t } = useTranslation()
   const [statusButtonIndex, setStatusButtonIndex] = useState(0)
+  const [pickMultiSelect, setPickMultiSelect] = useState<Array<ChainId>>([])
+
+  const chainValuePicked = useMemo(() => {
+    return pickMultiSelect.map((id) => {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      const option = options.find((option) => option.id === id)
+      return option ? option.value : null
+    })
+  }, [pickMultiSelect])
 
   const onStatusButtonChange = (newIndex: number) => {
     setStatusButtonIndex(newIndex)
@@ -54,17 +65,25 @@ export const Quests = () => {
       ]}
       padding={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
     >
-      <Flex flexDirection={['column', 'column', 'row']} mb={['16px', '16px', '24px']}>
-        <ButtonMenu
-          scale="sm"
-          variant="subtle"
-          m={['16px 0 0 0', '16px 0 0 0', '0']}
-          activeIndex={statusButtonIndex}
-          onItemClick={onStatusButtonChange}
-        >
-          <ButtonMenuItem>{t('Ongoing')}</ButtonMenuItem>
-          <ButtonMenuItem>{t('Finished')}</ButtonMenuItem>
-        </ButtonMenu>
+      <Flex width="100%" flexDirection={['column', 'column', 'row']}>
+        <Flex flexDirection={['column', 'column', 'row']} mb={['16px', '16px', '24px']}>
+          <ButtonMenu
+            scale="sm"
+            variant="subtle"
+            m={['16px 0 0 0', '16px 0 0 0', '0']}
+            activeIndex={statusButtonIndex}
+            onItemClick={onStatusButtonChange}
+          >
+            <ButtonMenuItem>{t('Ongoing')}</ButtonMenuItem>
+            <ButtonMenuItem>{t('Finished')}</ButtonMenuItem>
+          </ButtonMenu>
+        </Flex>
+        <MultiSelectorUI
+          maxWidth={['100%', '100%', '160px']}
+          margin={['0 0 16px 0', '0 0 16px 0', '0 0 0 auto']}
+          pickMultiSelect={pickMultiSelect}
+          setPickMultiSelect={setPickMultiSelect}
+        />
       </Flex>
 
       <StyledFlexGap>
