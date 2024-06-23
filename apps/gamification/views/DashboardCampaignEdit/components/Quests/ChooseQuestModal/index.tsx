@@ -3,7 +3,7 @@ import { Box, Button, Flex, FlexGap, InjectedModalProps, Modal, ModalBody, Text 
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { CheckedIcon } from 'views/DashboardCampaignEdit/components/Quests/ChooseQuestModal/CheckedIcon'
-import { Quest } from 'views/Quests/components/Quest'
+// import { Quest } from 'views/Quests/components/Quest'
 
 const Container = styled(Box)`
   position: relative;
@@ -191,7 +191,7 @@ export const ChooseQuestModal: React.FC<ChooseQuestProps> = ({ pickedQuests, upd
                   onClick={() => handleSelectQuest(quest.id)}
                 >
                   <StyledCheckedIcon width={48} height={48} />
-                  <Quest isDraft hideClick />
+                  {/* <Quest quest={quest} hideClick /> */}
                 </OutlineContainer>
               ))}
             </StyledFlexGap>

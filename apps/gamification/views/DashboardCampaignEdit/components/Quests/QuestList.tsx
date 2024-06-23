@@ -1,5 +1,6 @@
 import { FlexGap } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
+import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { Quest } from 'views/Quests/components/Quest'
 
 const StyledFlexGap = styled(FlexGap)`
@@ -21,14 +22,14 @@ const StyledFlexGap = styled(FlexGap)`
 `
 
 interface QuestListProps {
-  pickedQuests: any
+  pickedQuests: SingleQuestData[]
 }
 
 export const QuestList: React.FC<QuestListProps> = ({ pickedQuests }) => {
   return (
     <StyledFlexGap>
-      {pickedQuests.map((quest: any) => (
-        <Quest key={quest} isDraft hideClick />
+      {pickedQuests.map((quest: SingleQuestData) => (
+        <Quest key={quest.id} quest={quest} hideClick />
       ))}
     </StyledFlexGap>
   )

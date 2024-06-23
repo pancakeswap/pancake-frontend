@@ -4,8 +4,8 @@ import { MultiSelectorUI, options } from 'components/MultiSelectorUI'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { Quest } from 'views/Quests/components/Quest'
-// import { usePublicQuests } from 'views/Quests/hooks/usePublicQuests'
-// import { publicConvertIndexToStatus } from 'views/Quests/utils/publicConvertIndexToStatus'
+import { usePublicQuests } from 'views/Quests/hooks/usePublicQuests'
+import { publicConvertIndexToStatus } from 'views/Quests/utils/publicConvertIndexToStatus'
 
 const StyledFlexGap = styled(FlexGap)`
   flex-wrap: wrap;
@@ -43,18 +43,23 @@ export const Quests = () => {
   const [pickMultiSelect, setPickMultiSelect] = useState<Array<number>>([])
 
   const chainsValuePicked = useMemo(() => {
-    return pickMultiSelect.map((id) => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const option = options.find((option) => option.id === id)
-      return option ? option.value : null
-    })
+    return pickMultiSelect
+      .map((id) => {
+        // eslint-disable-next-line @typescript-eslint/no-shadow
+        const option = options.find((option) => option.id === id)
+        return option ? option.value : null
+      })
+      .filter((value): value is number => value !== null)
   }, [pickMultiSelect])
 
   const onStatusButtonChange = (newIndex: number) => {
     setStatusButtonIndex(newIndex)
   }
 
-  // usePublicQuests({ chains:chainsValuePicked, completionStatus: publicConvertIndexToStatus(statusButtonIndex) })
+  const { data } = usePublicQuests({
+    chains: chainsValuePicked ?? [],
+    completionStatus: publicConvertIndexToStatus(statusButtonIndex),
+  })
 
   return (
     <Box
@@ -89,13 +94,9 @@ export const Quests = () => {
         />
       </Flex>
       <StyledFlexGap>
-        <Quest />
-        <Quest />
-        <Quest />
-        <Quest />
-        <Quest />
-        <Quest />
-        <Quest />
+        {data?.quests?.map((quest) => (
+          <Quest key={quest.id} quest={quest} />
+        ))}
       </StyledFlexGap>
     </Box>
   )

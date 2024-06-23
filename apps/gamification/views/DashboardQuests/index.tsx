@@ -13,11 +13,13 @@ export const DashboardQuests = () => {
   const [pickMultiSelect, setPickMultiSelect] = useState<Array<number>>([])
 
   const chainsValuePicked = useMemo(() => {
-    return pickMultiSelect.map((id) => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const option = options.find((option) => option.id === id)
-      return option ? option.value : null
-    })
+    return pickMultiSelect
+      .map((id) => {
+        // eslint-disable-next-line @typescript-eslint/no-shadow
+        const option = options.find((option) => option.id === id)
+        return option ? option.value : null
+      })
+      .filter((value): value is number => value !== null)
   }, [pickMultiSelect])
 
   const { questsData, isFetching } = useFetchAllQuests({

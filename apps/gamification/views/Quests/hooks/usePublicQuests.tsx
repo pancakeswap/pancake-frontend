@@ -12,7 +12,7 @@ const initialData: AllDashboardQuestsType = {
 }
 
 interface UsePublicQuestsProps {
-  chains: Array<ChainId>
+  chains: ChainId[]
   completionStatus: CompletionStatus
 }
 
