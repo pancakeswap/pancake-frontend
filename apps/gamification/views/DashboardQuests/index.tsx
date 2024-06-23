@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { options } from 'components/MultiSelectorUI'
 import { useMemo, useState } from 'react'
@@ -11,9 +10,9 @@ import { convertIndexToStatus } from 'views/DashboardQuests/utils/convertIndexTo
 export const DashboardQuests = () => {
   const { t } = useTranslation()
   const [statusButtonIndex, setStatusButtonIndex] = useState(CompletionStatusIndex.ONGOING)
-  const [pickMultiSelect, setPickMultiSelect] = useState<Array<ChainId>>([])
+  const [pickMultiSelect, setPickMultiSelect] = useState<Array<number>>([])
 
-  const chainValuePicked = useMemo(() => {
+  const chainsValuePicked = useMemo(() => {
     return pickMultiSelect.map((id) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
       const option = options.find((option) => option.id === id)

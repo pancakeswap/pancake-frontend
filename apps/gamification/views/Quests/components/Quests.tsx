@@ -1,10 +1,11 @@
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap } from '@pancakeswap/uikit'
 import { MultiSelectorUI, options } from 'components/MultiSelectorUI'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { Quest } from 'views/Quests/components/Quest'
+// import { usePublicQuests } from 'views/Quests/hooks/usePublicQuests'
+// import { publicConvertIndexToStatus } from 'views/Quests/utils/publicConvertIndexToStatus'
 
 const StyledFlexGap = styled(FlexGap)`
   flex-wrap: wrap;
@@ -39,9 +40,9 @@ const StyledFlexGap = styled(FlexGap)`
 export const Quests = () => {
   const { t } = useTranslation()
   const [statusButtonIndex, setStatusButtonIndex] = useState(0)
-  const [pickMultiSelect, setPickMultiSelect] = useState<Array<ChainId>>([])
+  const [pickMultiSelect, setPickMultiSelect] = useState<Array<number>>([])
 
-  const chainValuePicked = useMemo(() => {
+  const chainsValuePicked = useMemo(() => {
     return pickMultiSelect.map((id) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
       const option = options.find((option) => option.id === id)
@@ -52,6 +53,8 @@ export const Quests = () => {
   const onStatusButtonChange = (newIndex: number) => {
     setStatusButtonIndex(newIndex)
   }
+
+  // usePublicQuests({ chains:chainsValuePicked, completionStatus: publicConvertIndexToStatus(statusButtonIndex) })
 
   return (
     <Box

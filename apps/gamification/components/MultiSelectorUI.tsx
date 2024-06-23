@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { BoxProps, MultiSelector } from '@pancakeswap/uikit'
 import { SHORT_SYMBOL } from 'components/NetworkSwitcher'
@@ -7,8 +6,8 @@ import { useMemo } from 'react'
 import { styled } from 'styled-components'
 
 interface MultiSelectorUIProps extends BoxProps {
-  pickMultiSelect: Array<ChainId>
-  setPickMultiSelect: (chains: Array<ChainId>) => void
+  pickMultiSelect: Array<number>
+  setPickMultiSelect: (chains: Array<number>) => void
 }
 
 const MultiSelectorStyled = styled(MultiSelector)<{ $hasOptionsPicked: boolean }>`
