@@ -18,6 +18,7 @@ const StyledLogo = styled(TokenLogo)<{ size: string }>`
 
 export const CHAIN_NAME_TO_PATH = {
   ARB: 'arbitrum',
+  POLYGON_ZKEVM: 'polygon-zkevm',
 }
 
 const chainNameToPath = (chainName: MultiChainName) => {
@@ -43,11 +44,7 @@ export const CurrencyLogo: React.FC<
   const srcFromPCS = checkedsummedAddress
     ? `https://tokens.pancakeswap.finance/images/${imagePath}${checkedsummedAddress}.png`
     : ''
-  if (
-    address === '0xe80772eaf6e2e18b651f160bc9158b2a5cafca65' ||
-    address === '0xe80772Eaf6e2E18B651F160Bc9158b2A5caFCA65'
-  )
-    console.log({ src, srcFromPCS })
+
   return (
     <StyledLogo size={size} srcs={src ? [srcFromPCS, src] : [srcFromPCS]} alt="token logo" useFilledIcon {...rest} />
   )
