@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
-import { Currency } from '@pancakeswap/swap-sdk-core'
+import type { Currency } from '@pancakeswap/swap-sdk-core'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { usePositionManagerAdapterContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import type { Address } from 'viem'
-import { VaultHistorySnapshots } from './useFetchVaultHistory'
+import type { VaultHistorySnapshots } from './useFetchVaultHistory'
 
 interface RorProps {
   vault: Address | undefined
@@ -31,7 +31,7 @@ export const useRor = ({
   token0USDPrice,
   token1USDPrice,
   vaultHistorySnapshots,
-}: RorProps): RorResult => {
+}: RorProps): RorResult | undefined => {
   const adapterContract = usePositionManagerAdapterContract(adapterAddress ?? '0x')
 
   const { data: liveUsdPerShare } = useQuery({
@@ -58,6 +58,8 @@ export const useRor = ({
     const vaultRorData = vaultHistorySnapshots.rorData.filter((vaultData) => {
       return vaultData.vault === vault?.toLowerCase()
     })
+    if (vaultRorData.length === 0) return undefined
+
     const sevenDayUsd = new BigNumber(vaultRorData[0]?.usd ?? 0)
     const thirtyDayUsd = new BigNumber(vaultRorData[1]?.usd ?? 0)
     const earliestDayUsd = new BigNumber(vaultRorData[2]?.usd ?? 0)

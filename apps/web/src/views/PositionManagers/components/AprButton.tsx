@@ -7,7 +7,6 @@ import {
   RocketIcon,
   RoiCalculatorModal,
   Skeleton,
-  SkeletonText,
   Text,
   useModal,
   useTooltip,
@@ -88,6 +87,8 @@ export const AprButton = memo(function YieldInfo({
     [apr.combinedApr, boosterMultiplier, cakeAPR, isBooster, lpAPR],
   )
 
+  const doesVaultHaveROR = ror?.sevenDayRor && ror?.earliestDayRor && ror?.earliestDayRor
+
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text>
@@ -132,54 +133,56 @@ export const AprButton = memo(function YieldInfo({
           ? t(`Calculated based on previous %days% days average data.`, { days: aprTimeWindow })
           : t('Calculated based average data since vault inception.')}
       </Text>
-      <Text marginTop="16px">{t('ROR (Rate Of Return)')}</Text>
+      {doesVaultHaveROR && <Text marginTop="16px">{t('ROR (Rate Of Return)')}</Text>}
       <ul>
-        <li>
-          <span style={{ paddingRight: '6px' }}>{`${t('1 Week')}`}: </span>
+        {ror?.sevenDayRor && (
+          <li>
+            <span style={{ paddingRight: '6px' }}>{`${t('1 Week')}`}: </span>
 
-          <SkeletonText
-            loading={Boolean(isVaultLoading)}
-            display="inline-block"
-            color={ror?.sevenDayRor && ror?.sevenDayRor > 0 ? theme.colors.success : theme.colors.failure}
-            fontWeight={800}
-            isDark={Boolean(theme.isDark)}
-          >
-            {getFixedDecimals(ror?.sevenDayRor)}%
-          </SkeletonText>
-        </li>
+            <Text
+              display="inline-block"
+              style={{ fontWeight: 800 }}
+              color={ror?.sevenDayRor && ror?.sevenDayRor > 0 ? theme.colors.success : theme.colors.failure}
+            >
+              {getFixedDecimals(ror?.sevenDayRor)}%
+            </Text>
+          </li>
+        )}
 
-        <li>
-          <span style={{ paddingRight: '6px' }}>{`${t('1 Month')}`}: </span>
-          <b>
-            <SkeletonText
-              loading={Boolean(isVaultLoading)}
-              display="inline-block"
-              color={ror?.thirtyDayRor && ror?.thirtyDayRor > 0 ? theme.colors.success : theme.colors.failure}
-              fontWeight={800}
-              isDark={Boolean(theme.isDark)}
-            >
-              {getFixedDecimals(ror?.thirtyDayRor)}%
-            </SkeletonText>
-          </b>
-        </li>
-        <li>
-          <span style={{ paddingRight: '6px' }}>{`${t('Since Launched')}`}: </span>
-          <b>
-            <SkeletonText
-              loading={Boolean(isVaultLoading)}
-              display="inline-block"
-              color={ror?.earliestDayRor && ror?.earliestDayRor > 0 ? theme.colors.success : theme.colors.failure}
-              fontWeight={800}
-              isDark={Boolean(theme.isDark)}
-            >
-              {getFixedDecimals(ror?.earliestDayRor)}%
-            </SkeletonText>
-          </b>
-        </li>
+        {ror?.thirtyDayRor && (
+          <li>
+            <span style={{ paddingRight: '6px' }}>{`${t('1 Month')}`}: </span>
+            <b>
+              <Text
+                display="inline-block"
+                style={{ fontWeight: 800 }}
+                color={ror?.sevenDayRor && ror?.sevenDayRor > 0 ? theme.colors.success : theme.colors.failure}
+              >
+                {getFixedDecimals(ror?.thirtyDayRor)}%
+              </Text>
+            </b>
+          </li>
+        )}
+        {ror?.earliestDayRor && (
+          <li>
+            <span style={{ paddingRight: '6px' }}>{`${t('Since Launched')}`}: </span>
+            <b>
+              <Text
+                display="inline-block"
+                style={{ fontWeight: 800 }}
+                color={ror?.sevenDayRor && ror?.sevenDayRor > 0 ? theme.colors.success : theme.colors.failure}
+              >
+                {getFixedDecimals(ror?.earliestDayRor)}%
+              </Text>
+            </b>
+          </li>
+        )}
       </ul>
-      <Text lineHeight="120%" mt="20px">
-        {t('ROR Calculated based on historical snapshots factoring inhistorical price of the underlying tokens')}
-      </Text>
+      {doesVaultHaveROR && (
+        <Text lineHeight="120%" mt="20px">
+          {t('ROR Calculated based on historical snapshots factoring inhistorical price of the underlying tokens')}
+        </Text>
+      )}
     </>,
     {
       placement: 'top',
@@ -215,7 +218,7 @@ export const AprButton = memo(function YieldInfo({
         onPresentApyModal()
       }}
     >
-      {apr && !isAprLoading ? (
+      {apr && !isAprLoading && !isVaultLoading ? (
         <>
           <Text ref={targetRef} display="flex" style={{ gap: 3, whiteSpace: 'nowrap' }}>
             {isBooster && <RocketIcon color="success" />}
