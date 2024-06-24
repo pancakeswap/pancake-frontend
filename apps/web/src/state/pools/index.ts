@@ -45,7 +45,6 @@ import {
   SerializedVaultUser,
 } from 'state/types'
 import { safeGetAddress } from 'utils'
-import { fetchTokenAplPrice, isAlpToken } from 'utils/fetchTokenAplPrice'
 import { getViemClients } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 import { Address, erc20Abi } from 'viem'
@@ -208,19 +207,17 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
       const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
 
       const stakingTokenAddress = safeGetAddress(pool.stakingToken.address)
-      let stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
-      if (stakingTokenAddress && !prices[stakingTokenAddress] && !isPoolFinished) {
-        // TODO: Remove this when fetchTokenUSDValue can get APL USD Price
-        const isAlpTokenValid = isAlpToken({ chainId, tokenAddress: stakingTokenAddress })
-        if (isAlpTokenValid) {
-          // eslint-disable-next-line no-await-in-loop
-          stakingTokenPrice = await fetchTokenAplPrice()
+      let stakingTokenPrice: number
+      if (stakingTokenAddress) {
+        if (prices[stakingTokenAddress]) {
+          stakingTokenPrice = prices[stakingTokenAddress]
         } else {
           // eslint-disable-next-line no-await-in-loop
           stakingTokenPrice = await getCurrencyUsdPrice({ chainId, address: stakingTokenAddress })
         }
+      } else {
+        stakingTokenPrice = 0
       }
-
       const earningTokenAddress = safeGetAddress(pool.earningToken.address)
       let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
       if (earningTokenAddress && !prices[earningTokenAddress] && !isPoolFinished) {
