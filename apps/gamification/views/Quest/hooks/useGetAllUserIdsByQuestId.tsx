@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
-// import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
+import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 
 interface AllUserIdsByQuestId {
-  totalAmount: 0
+  questId: string
+  users: Array<string>
 }
 
 const initialData: AllUserIdsByQuestId = {
-  totalAmount: 0,
+  questId: '',
+  users: [],
 }
 
 export const useGetAllUserIdsByQuestId = (questId: string) => {
@@ -14,11 +16,10 @@ export const useGetAllUserIdsByQuestId = (questId: string) => {
     queryKey: [questId, 'get-all-user-ids-by-quest'],
     queryFn: async () => {
       try {
-        // const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/getAllUserIdsByQuestId/${questId}`)
-        // const result = await response.json()
-        // const userSocialHubData: VerifyTaskStatus = result
-        // return userSocialHubData
-        return initialData
+        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/getAllUserIdsByQuestId/${questId}`)
+        const result = await response.json()
+        const allUserIdsByQuestId: AllUserIdsByQuestId = result
+        return allUserIdsByQuestId
       } catch (error) {
         console.error(`Fetch all user ids by quest error: ${error}`)
         return initialData

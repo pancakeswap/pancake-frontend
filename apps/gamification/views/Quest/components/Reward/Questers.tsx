@@ -3,6 +3,7 @@ import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useCallback, useMemo } from 'react'
 import Jazzicon from 'react-jazzicon'
 import styled from 'styled-components'
+import { useGetAllUserIdsByQuestId } from 'views/Quest/hooks/useGetAllUserIdsByQuestId'
 
 const TextBlock = styled(Flex)`
   position: absolute;
@@ -33,18 +34,11 @@ const AssetSetContainer = styled(Box)`
 const TOTAL = 20
 const SIZE = 26
 
-export const Questers = () => {
+export const Questers = ({ questId }: { questId: string }) => {
   const { t } = useTranslation()
+  const { allUserIdsByQuestId } = useGetAllUserIdsByQuestId(questId)
 
-  const total = useMemo(() => {
-    const array: number[] = []
-    for (let i = 0; i < TOTAL; i++) {
-      array.push(i)
-    }
-    return array
-  }, [])
-
-  const totalLength = total.length
+  const totalLength = allUserIdsByQuestId.users.length
   const width = useMemo(() => SIZE * totalLength, [totalLength])
 
   const leftOffsetFor = useCallback(
@@ -57,28 +51,32 @@ export const Questers = () => {
     [totalLength, width],
   )
 
+  if (totalLength === 0) {
+    return null
+  }
+
   return (
     <Flex position="relative" overflow="hidden">
       <Flex padding="12px">
         <AssetSetContainer>
-          {total.map((i) => (
+          {allUserIdsByQuestId.users.map((user, index) => (
             <Box
-              key={i}
+              key={user}
               width={SIZE}
               height={SIZE}
               position="absolute"
               style={{
-                left: `${leftOffsetFor(i)}px`,
-                zIndex: `${i - totalLength}`,
+                left: `${leftOffsetFor(index)}px`,
+                zIndex: `${index - totalLength}`,
               }}
             >
-              <Jazzicon seed={i} diameter={SIZE} />
+              <Jazzicon seed={index} diameter={SIZE} />
             </Box>
           ))}
         </AssetSetContainer>
 
         <TextBlock m="auto">
-          <Text bold>{t('%total%+ questers', { total: TOTAL })}</Text>
+          <Text bold>{t('%total%+ questers', { total: totalLength })}</Text>
         </TextBlock>
       </Flex>
     </Flex>

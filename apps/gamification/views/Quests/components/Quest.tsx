@@ -74,7 +74,7 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...p
             )}
             <Flex>
               <CalenderIcon color="textSubtle" mr="8px" />
-              {quest?.startDateTime && quest?.endDateTime ? (
+              {quest?.startDateTime > 0 && quest?.endDateTime > 0 ? (
                 <Text style={{ alignSelf: 'center' }} color="textSubtle" fontSize={['14px']}>
                   {`${convertTimestampToDate(quest.startDateTime, 'YYYY/MM/DD')} - ${convertTimestampToDate(
                     quest.endDateTime,
@@ -96,7 +96,7 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...p
                   <TokenWithChain currency={currency} width={20} height={20} />
                   <Flex ml="8px">
                     <Text bold fontSize="20px" lineHeight="24px">
-                      {quest.reward.totalRewardAmount.toFixed(2)}
+                      {quest.reward.totalRewardAmount.toFixed(0)}
                     </Text>
                     <Text bold fontSize="14px" style={{ alignSelf: 'flex-end' }} ml="2px">
                       {currency.symbol}

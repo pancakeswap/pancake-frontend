@@ -4,6 +4,7 @@ interface Pagination {
   page: number
   pageSize: number
   total: number
+  dataInPage: number
 }
 
 export interface AllSingleQuestData extends SingleQuestData {

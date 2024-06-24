@@ -12,12 +12,15 @@ import {
 } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
+import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { Description } from 'views/Quest/components/Description'
-import { ExploreMore } from 'views/Quest/components/ExploreMore'
-import { RelatedQuest } from 'views/Quest/components/RelatedQuest'
+// import { ExploreMore } from 'views/Quest/components/ExploreMore'
+// import { RelatedQuest } from 'views/Quest/components/RelatedQuest'
+import { convertTimestampToDate } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 import { Reward } from 'views/Quest/components/Reward'
 import { Share } from 'views/Quest/components/Share'
 import { Tasks } from 'views/Quest/components/Tasks'
+import { useGetQuestInfo } from 'views/Quest/hooks/useGetQuestInfo'
 
 const QuestContainer = styled(Flex)`
   padding: 16px;
@@ -48,6 +51,8 @@ export const Quest = () => {
   const { isDesktop } = useMatchBreakpoints()
   const { query } = useRouter()
   const questId: string = (query.id as string) ?? ''
+  const { quest } = useGetQuestInfo(questId)
+  // TODO: Need redirect when is error
 
   return (
     <QuestContainer>
@@ -64,24 +69,27 @@ export const Quest = () => {
           <Share />
         </Flex>
         <Box mt="16px">
-          <Tag variant="success">{t('Ongoing')}</Tag>
-          {/* <Tag variant="secondary">{t('Upcoming')}</Tag>
-            <Tag variant="textDisabled">{t('Finished')}</Tag> */}
+          {quest.completionStatus === CompletionStatus.ONGOING && <Tag variant="success">{t('Ongoing')}</Tag>}
+          {quest.completionStatus === CompletionStatus.FINISHED && <Tag variant="textDisabled">{t('Finished')}</Tag>}
         </Box>
         <StyledHeading m="16px 0" as="h1">
-          PancakeSwap Multichain Celebration - Base
+          {quest?.title}
         </StyledHeading>
-        <Flex mb="32px">
-          <CalenderIcon mr="8px" />
-          <Text>0:700 Apr3 - 0:700 Apr 10 (UTC+00:00)</Text>
-        </Flex>
-        {!isDesktop && <Reward />}
+        {quest?.startDateTime > 0 && quest?.endDateTime > 0 && (
+          <Flex mb="32px">
+            <CalenderIcon mr="8px" />
+            <Text>{`${convertTimestampToDate(quest.startDateTime)} - ${convertTimestampToDate(
+              quest.endDateTime,
+            )}`}</Text>
+          </Flex>
+        )}
+        {!isDesktop && <Reward quest={quest} />}
         <Tasks questId={questId} />
-        <Description />
-        <RelatedQuest />
-        <ExploreMore />
+        <Description description={quest?.description} />
+        {/* <RelatedQuest /> */}
+        {/* <ExploreMore /> */}
       </Box>
-      {isDesktop && <Reward />}
+      {isDesktop && <Reward quest={quest} />}
     </QuestContainer>
   )
 }

@@ -1,5 +1,7 @@
+import { useCountdown } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
 import { styled } from 'styled-components'
 
 const CountdownContainer = styled(Flex)`
@@ -12,7 +14,7 @@ const CountdownContainer = styled(Flex)`
   }
 `
 
-export const Countdown = () => {
+export const Countdown = ({ endDateTime }: { endDateTime: number }) => {
   const { t } = useTranslation()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -24,11 +26,24 @@ export const Countdown = () => {
     },
   )
 
+  const countdown = useCountdown(endDateTime)
+
+  const isTimeEnd = useMemo(() => new Date().getTime() >= endDateTime, [endDateTime])
+
+  if (!countdown) {
+    return null
+  }
+
+  const days = isTimeEnd ? '0' : `0${countdown?.days}`
+  const hours = isTimeEnd ? '0' : countdown?.hours < 10 ? `0${countdown?.hours}` : countdown?.hours
+  const minutes = isTimeEnd ? '0' : countdown?.minutes < 10 ? `0${countdown?.minutes}` : countdown?.minutes
+  const seconds = isTimeEnd ? '0' : countdown?.seconds < 10 ? `0${countdown?.seconds}` : countdown?.seconds
+
   return (
     <CountdownContainer>
       <Flex m="auto" ref={targetRef}>
         <Text bold mr="4px">
-          Lucky Draw
+          {t('Lucky Draw')}
         </Text>
         <InfoIcon color="textSubtle" style={{ alignSelf: 'center' }} />
       </Flex>
@@ -36,10 +51,10 @@ export const Countdown = () => {
       <Flex justifyContent="center">
         <Flex width="40px" flexDirection="column" alignItems="center">
           <Text fontSize={['28px']} bold line-height="32px">
-            01
+            {days}
           </Text>
           <Text fontSize={['12px']} color="textSubtle" bold line-height="14px">
-            Days
+            {t('Days')}
           </Text>
         </Flex>
         <Text fontSize={['28px']} m="0 8px" color="textSubtle" bold>
@@ -47,10 +62,10 @@ export const Countdown = () => {
         </Text>
         <Flex width="40px" flexDirection="column" alignItems="center">
           <Text fontSize={['28px']} bold line-height="32px">
-            01
+            {hours}
           </Text>
           <Text fontSize={['12px']} color="textSubtle" bold line-height="14px">
-            Hours
+            {t('Hours')}
           </Text>
         </Flex>
         <Text fontSize={['28px']} m="0 8px" color="textSubtle" bold>
@@ -58,10 +73,10 @@ export const Countdown = () => {
         </Text>
         <Flex width="40px" flexDirection="column" alignItems="center">
           <Text fontSize={['28px']} bold line-height="32px">
-            01
+            {minutes}
           </Text>
           <Text fontSize={['12px']} color="textSubtle" bold line-height="14px">
-            Minutes
+            {t('Minutes')}
           </Text>
         </Flex>
         <Text fontSize={['28px']} m="0 8px" color="textSubtle" bold>
@@ -69,10 +84,10 @@ export const Countdown = () => {
         </Text>
         <Flex width="40px" flexDirection="column" alignItems="center">
           <Text fontSize={['28px']} bold line-height="32px">
-            01
+            {seconds}
           </Text>
           <Text fontSize={['12px']} color="textSubtle" bold line-height="14px">
-            Seconds
+            {t('Seconds')}
           </Text>
         </Flex>
       </Flex>

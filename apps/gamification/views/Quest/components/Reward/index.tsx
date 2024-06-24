@@ -1,14 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, Text } from '@pancakeswap/uikit'
+import React from 'react'
 import { styled } from 'styled-components'
+import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { ClaimButton } from 'views/Quest/components/Reward/ClaimButton'
 import { Countdown } from 'views/Quest/components/Reward/Countdown'
 import { Questers } from 'views/Quest/components/Reward/Questers'
 import { RemainMessage } from 'views/Quest/components/Reward/RemainMessage'
 import { RewardAmount } from 'views/Quest/components/Reward/RewardAmount'
 import { SuccessMessage } from 'views/Quest/components/Reward/SuccessMessage'
-import { TotalRewards } from 'views/Quest/components/Reward/TotalRewards'
-import { Winners } from 'views/Quest/components/Reward/Winners'
+// import { TotalRewards } from 'views/Quest/components/Reward/TotalRewards'
+// import { Winners } from 'views/Quest/components/Reward/Winners'
 
 const RewardContainer = styled(Box)`
   width: 100%;
@@ -22,7 +24,11 @@ const RewardContainer = styled(Box)`
   }
 `
 
-export const Reward = () => {
+interface RewardProps {
+  quest: SingleQuestData
+}
+
+export const Reward: React.FC<RewardProps> = ({ quest }) => {
   const { t } = useTranslation()
 
   return (
@@ -32,14 +38,15 @@ export const Reward = () => {
           <Text fontSize={['24px']} bold mb={['24px', '24px', '40px']}>
             {t('Reward')}
           </Text>
-          <RewardAmount />
-          <Countdown />
-          <TotalRewards />
-          <Questers />
+          <RewardAmount reward={quest?.reward} />
+          <Countdown endDateTime={quest?.endDateTime ?? 0} />
+          {/* <TotalRewards /> */}
+          <Questers questId="06583d9d-9596-41eb-9c60-6433fb333d0f" />
+          {/* <Questers questId={quest?.id} /> */}
           <ClaimButton />
           <RemainMessage />
           <SuccessMessage />
-          <Winners />
+          {/* <Winners /> */}
         </Box>
       </Card>
     </RewardContainer>

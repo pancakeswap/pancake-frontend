@@ -8,7 +8,7 @@ const PAGE_SIZE = 50
 
 const initialData: AllDashboardQuestsType = {
   quests: [],
-  pagination: { page: 1, pageSize: PAGE_SIZE, total: 0 },
+  pagination: { page: 1, pageSize: PAGE_SIZE, total: 0, dataInPage: 0 },
 }
 
 interface UsePublicQuestsProps {

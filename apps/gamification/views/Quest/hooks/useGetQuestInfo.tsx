@@ -32,7 +32,6 @@ export const useGetQuestInfo = (questId: string) => {
         const result = await response.json()
         const info: SingleQuestData = result
         return info
-        return initialData
       } catch (error) {
         console.error(`Fetch quest info error: ${error}`)
         return initialData
