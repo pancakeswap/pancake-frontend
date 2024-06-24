@@ -318,7 +318,6 @@ const InfoBox = () => {
 }
 
 const BinanceChainCard = () => {
-  const { t } = useTranslation()
   const { balance } = useVeCakeBalance(ChainId.BSC)
   return (
     <VeCakeChainBox>
@@ -346,7 +345,7 @@ const OtherChainsCard: React.FC<{
   const { balance } = useVeCakeBalance(chainId)
   const { t } = useTranslation()
   const { isSynced, isLoading } = useProfileProxyWellSynced(chainId)
-  const { isVeCakeWillSync, isLoading: isVeCakeSyncLoading } = useMultichainVeCakeWellSynced(chainId)
+  const { isVeCakeWillSync } = useMultichainVeCakeWellSynced(chainId)
   const { data: crossChainMessage, isLoading: isCrossChainLoading } = useCrossChianMessage(chainId, hash)
   const { address: account } = useAccount()
   const isLayerZeroHashProcessing = useMemo(() => {
