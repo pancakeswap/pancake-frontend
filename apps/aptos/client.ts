@@ -44,7 +44,7 @@ export const client = createClient({
         if (foundChain.nodeUrls.nodeReal && nodeReal[networkNameLowerCase]) {
           return new Aptos(
             new AptosConfig({
-              fullnode: `${foundChain.nodeUrls.nodeReal}/${nodeReal[networkNameLowerCase]}`,
+              fullnode: `${foundChain.nodeUrls.nodeReal}/${nodeReal[networkNameLowerCase]}/v1`,
               clientConfig: {
                 WITH_CREDENTIALS: false,
               },
