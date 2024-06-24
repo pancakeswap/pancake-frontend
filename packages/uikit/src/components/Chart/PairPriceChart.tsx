@@ -184,11 +184,11 @@ export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
       });
     } else {
       newSeries = chart.addCandlestickSeries({
-        upColor: "#26a69a",
-        downColor: "#ef5350",
+        upColor: "#31D0AA",
+        downColor: "#ED4B9E",
         borderVisible: false,
-        wickUpColor: "#26a69a",
-        wickDownColor: "#ef5350",
+        wickUpColor: "#31D0AA",
+        wickDownColor: "#ED4B9E",
       });
     }
 
