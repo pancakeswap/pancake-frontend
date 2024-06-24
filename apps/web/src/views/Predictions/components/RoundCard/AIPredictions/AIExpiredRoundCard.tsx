@@ -16,6 +16,7 @@ import CardHeader, { getBorderBackground } from '../CardHeader'
 import CollectWinningsOverlay from '../CollectWinningsOverlay'
 import MultiplierArrow from '../MultiplierArrow'
 import { AICalculatingCard } from './AICalculatingCard'
+import { AIEnteredTag } from './AIEnteredTag'
 import { BetBadgeStack } from './BetBadgeStack'
 
 interface AIExpiredRoundCardProps {
@@ -37,6 +38,12 @@ const StyledExpiredRoundCard = styled(Card)`
   &:hover {
     opacity: 1;
   }
+`
+
+const EnteredTagWrapper = styled.div`
+  position: absolute;
+  left: 20px;
+  z-index: 1;
 `
 
 export const AIExpiredRoundCard: React.FC<React.PropsWithChildren<AIExpiredRoundCardProps>> = ({
@@ -109,11 +116,19 @@ export const AIExpiredRoundCard: React.FC<React.PropsWithChildren<AIExpiredRound
         />
         <CardBody p="16px" style={{ position: 'relative' }}>
           <BetBadgeStack aiBetType={aiPosition} userBetType={userPosition} />
+          {(hasClaimedUp || hasClaimedDown) && (
+            <EnteredTagWrapper style={userPosition === 'UP' ? { top: '20px' } : { bottom: '20px' }}>
+              <AIEnteredTag
+                amount={betAmount}
+                multiplier={userPosition === aiPosition ? bullMultiplier : bearMultiplier}
+                hasClaimed
+              />
+            </EnteredTagWrapper>
+          )}
           <MultiplierArrow
             betAmount={betAmount}
             multiplier={bullMultiplier}
             isActive={betPosition === BetPosition.BULL}
-            hasClaimed={hasClaimedUp}
             isHouse={betPosition === BetPosition.HOUSE}
           />
           <RoundResult round={round} hasFailed={hasRoundFailed} />
@@ -122,7 +137,6 @@ export const AIExpiredRoundCard: React.FC<React.PropsWithChildren<AIExpiredRound
             multiplier={bearMultiplier}
             betPosition={BetPosition.BEAR}
             isActive={betPosition === BetPosition.BEAR}
-            hasClaimed={hasClaimedDown}
             isHouse={betPosition === BetPosition.HOUSE}
           />
         </CardBody>
