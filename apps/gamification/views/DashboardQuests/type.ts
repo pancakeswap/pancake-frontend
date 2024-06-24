@@ -1,6 +1,6 @@
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 
-interface Pagination {
+export interface Pagination {
   page: number
   pageSize: number
   total: number

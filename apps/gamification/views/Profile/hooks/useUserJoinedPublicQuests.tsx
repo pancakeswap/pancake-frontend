@@ -2,14 +2,9 @@ import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
-import { AllDashboardQuestsType, AllSingleQuestData, Pagination } from 'views/DashboardQuests/type'
-
-export const PAGE_SIZE = 100
-
-export interface FetchAllPublicQuestDataResponse {
-  data: AllSingleQuestData[]
-  pagination: Pagination
-}
+import { AllDashboardQuestsType } from 'views/DashboardQuests/type'
+import { FetchAllPublicQuestDataResponse, PAGE_SIZE } from 'views/Quests/hooks/usePublicQuests'
+import { useAccount } from 'wagmi'
 
 export const initialData: AllDashboardQuestsType = {
   quests: [],
@@ -21,9 +16,11 @@ interface UsePublicQuestsProps {
   completionStatus: CompletionStatus
 }
 
-export const usePublicQuests = ({ chainIdList, completionStatus }: UsePublicQuestsProps) => {
+export const useUserJoinedPublicQuests = ({ chainIdList, completionStatus }: UsePublicQuestsProps) => {
+  const { address: account } = useAccount()
+
   const { data, refetch, isFetching } = useQuery({
-    queryKey: [completionStatus, chainIdList, 'fetch-all-public-quest-data'],
+    queryKey: [account, completionStatus, chainIdList, 'fetch-user-all-public-quest-data'],
     queryFn: async () => {
       try {
         const url = `${GAMIFICATION_PUBLIC_API}/questInfo/v1/questInfoList`
@@ -35,6 +32,7 @@ export const usePublicQuests = ({ chainIdList, completionStatus }: UsePublicQues
             size: PAGE_SIZE,
             chainIdList,
             completionStatus,
+            userId: account?.toLowerCase(),
           }),
         })
         const result = await response.json()
@@ -48,7 +46,7 @@ export const usePublicQuests = ({ chainIdList, completionStatus }: UsePublicQues
         return initialData
       }
     },
-    enabled: Boolean(completionStatus),
+    enabled: Boolean(account && completionStatus),
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

@@ -3,8 +3,10 @@ import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap } from '@pancakeswap/uik
 import { MultiSelectorUI, options } from 'components/MultiSelectorUI'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
+import { useUserJoinedPublicQuests } from 'views/Profile/hooks/useUserJoinedPublicQuests'
+import { EmptyQuest } from 'views/Quests/components/EmptyQuest'
 import { Quest } from 'views/Quests/components/Quest'
-// import { publicConvertIndexToStatus } from 'views/Quests/utils/publicConvertIndexToStatus'
+import { publicConvertIndexToStatus } from 'views/Quests/utils/publicConvertIndexToStatus'
 
 const StyledFlexGap = styled(FlexGap)`
   flex-wrap: wrap;
@@ -41,7 +43,7 @@ export const JoinedQuests = () => {
   const [statusButtonIndex, setStatusButtonIndex] = useState(0)
   const [pickMultiSelect, setPickMultiSelect] = useState<Array<number>>([])
 
-  const chainsValuePicked = useMemo(() => {
+  const chainIdList = useMemo(() => {
     return pickMultiSelect
       .map((id) => {
         // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -55,7 +57,10 @@ export const JoinedQuests = () => {
     setStatusButtonIndex(newIndex)
   }
 
-  // publicConvertIndexToStatus(statusButtonIndex)
+  const { data, isFetching } = useUserJoinedPublicQuests({
+    chainIdList: chainIdList ?? [],
+    completionStatus: publicConvertIndexToStatus(statusButtonIndex),
+  })
 
   return (
     <Box
@@ -89,16 +94,22 @@ export const JoinedQuests = () => {
           setPickMultiSelect={setPickMultiSelect}
         />
       </Flex>
-
-      <StyledFlexGap>
-        <Quest />
-        <Quest />
-        <Quest />
-        <Quest />
-        <Quest />
-        <Quest />
-        <Quest />
-      </StyledFlexGap>
+      <>
+        {!isFetching && data?.quests?.length === 0 ? (
+          <EmptyQuest
+            title={t('There is nothing here, yet')}
+            subTitle={t('Earn by contributing to the community')}
+            showQuestLink
+            // showCampaignLink
+          />
+        ) : (
+          <StyledFlexGap>
+            {data?.quests?.map((quest) => (
+              <Quest key={quest.id} quest={quest} />
+            ))}
+          </StyledFlexGap>
+        )}
+      </>
     </Box>
   )
 }

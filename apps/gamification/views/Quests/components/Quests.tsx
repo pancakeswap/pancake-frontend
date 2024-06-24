@@ -3,6 +3,7 @@ import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap } from '@pancakeswap/uik
 import { MultiSelectorUI, options } from 'components/MultiSelectorUI'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
+import { EmptyQuest } from 'views/Quests/components/EmptyQuest'
 import { Quest } from 'views/Quests/components/Quest'
 import { usePublicQuests } from 'views/Quests/hooks/usePublicQuests'
 import { publicConvertIndexToStatus } from 'views/Quests/utils/publicConvertIndexToStatus'
@@ -42,7 +43,7 @@ export const Quests = () => {
   const [statusButtonIndex, setStatusButtonIndex] = useState(0)
   const [pickMultiSelect, setPickMultiSelect] = useState<Array<number>>([])
 
-  const chainsValuePicked = useMemo(() => {
+  const chainIdList = useMemo(() => {
     return pickMultiSelect
       .map((id) => {
         // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -56,8 +57,8 @@ export const Quests = () => {
     setStatusButtonIndex(newIndex)
   }
 
-  const { data } = usePublicQuests({
-    chains: chainsValuePicked ?? [],
+  const { data, isFetching } = usePublicQuests({
+    chainIdList: chainIdList ?? [],
     completionStatus: publicConvertIndexToStatus(statusButtonIndex),
   })
 
@@ -93,11 +94,20 @@ export const Quests = () => {
           setPickMultiSelect={setPickMultiSelect}
         />
       </Flex>
-      <StyledFlexGap>
-        {data?.quests?.map((quest) => (
-          <Quest key={quest.id} quest={quest} />
-        ))}
-      </StyledFlexGap>
+      <>
+        {!isFetching && data?.quests?.length === 0 ? (
+          <EmptyQuest
+            title={t('There is nothing here, yet')}
+            subTitle={t('Follow our social media to keep up to date with our next quests!')}
+          />
+        ) : (
+          <StyledFlexGap>
+            {data?.quests?.map((quest) => (
+              <Quest key={quest.id} quest={quest} />
+            ))}
+          </StyledFlexGap>
+        )}
+      </>
     </Box>
   )
 }

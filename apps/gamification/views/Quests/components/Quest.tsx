@@ -116,7 +116,7 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...p
             </Detail>
             <Detail>
               <Text fontSize="12px" color="textSubtle">
-                {t('%total% rewards', { total: quest?.reward?.totalRewardAmount?.toFixed(2) ?? 0 })}
+                {t('%total% rewards', { total: quest?.reward?.totalRewardAmount?.toFixed(0) ?? 0 })}
               </Text>
               <InfoIcon ml="2px" width="14px" height="14px" color="textSubtle" style={{ alignSelf: 'center' }} />
             </Detail>
