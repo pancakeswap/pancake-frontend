@@ -122,7 +122,6 @@ export function formatFiatNumber({
   const valueToDisplay = formatNumber(currencyNumberValue, { formatConfig })
   if (useFullDigits) return `${currencySymbol}${valueToDisplay}`
 
-  console.log(currencyNumberValue)
   const largeValueToDisplay = formatLargeFiatValue(currencyNumberValue, currencySymbol, fractionDigits)
   return largeValueToDisplay
 }
