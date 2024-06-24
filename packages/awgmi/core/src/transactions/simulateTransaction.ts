@@ -1,9 +1,10 @@
 import {
-  Hex,
   Ed25519PublicKey,
+  Hex,
+  InputGenerateTransactionOptions,
   InputGenerateTransactionPayloadData,
-  InputSimulateTransactionOptions,
   InputSimulateTransactionData,
+  InputSimulateTransactionOptions,
   UserTransactionResponse,
 } from '@aptos-labs/ts-sdk'
 
@@ -17,6 +18,7 @@ export type SimulateTransactionArgs = {
   networkName?: string
   throwOnError?: boolean
   payload: InputGenerateTransactionPayloadData
+  transactionBuildOptions?: InputGenerateTransactionOptions
   options?: Partial<Omit<InputSimulateTransactionData, 'transaction' | 'options'>>
   query?: InputSimulateTransactionOptions
 }
@@ -27,6 +29,7 @@ export async function simulateTransaction({
   networkName,
   payload,
   throwOnError = true,
+  transactionBuildOptions,
   options,
   query,
 }: SimulateTransactionArgs): Promise<SimulateTransactionResult> {
@@ -53,6 +56,7 @@ export async function simulateTransaction({
   const rawTransaction = await provider.transaction.build.simple({
     sender: account.address,
     data: payload,
+    options: transactionBuildOptions,
   })
 
   const simulatedUserTransactions = await provider.transaction.simulate.simple({

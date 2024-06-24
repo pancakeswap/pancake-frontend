@@ -1,12 +1,12 @@
-import { createAction } from '@reduxjs/toolkit'
-import { Types } from 'aptos'
+import { TransactionPayloadResponse } from '@aptos-labs/ts-sdk'
 import { ChainId } from '@pancakeswap/aptos-swap-sdk'
+import { createAction } from '@reduxjs/toolkit'
 
 export type TransactionType = 'approve' | 'swap' | 'add-liquidity' | 'remove-liquidity'
 
 export interface TransactionReceipt {
   from: string
-  payload: Types.TransactionPayload
+  payload: TransactionPayloadResponse
   sequenceNumber: string
   blockNumber: string
   success: boolean

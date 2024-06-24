@@ -32,7 +32,7 @@ export default function Updater(): null {
             return {
               enabled: Boolean(chainId && provider),
               queryFn: async () => {
-                const receipt = await provider.waitForTransactionWithResult(hash)
+                const receipt = await provider.waitForTransaction({ transactionHash: hash })
                 if (receipt && isUserTransaction(receipt)) {
                   dispatch(
                     finalizeTransaction({

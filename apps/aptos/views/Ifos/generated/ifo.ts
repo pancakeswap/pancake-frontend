@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { Types } from 'aptos'
+import { EntryFunctionPayloadResponse } from '@aptos-labs/ts-sdk'
 
 export const ADDRESS = '0x488c277a7dabb9dca5352c573a441f3a41f473f664e469465924af22eb3fd4bd' as const
 
@@ -7,10 +7,7 @@ export const IFO_MODULE_NAME = 'IFO' as const
 
 export type IfoDepositArgs = [bigint | string]
 
-export const ifoDeposit = (
-  args: IfoDepositArgs,
-  typeArgs: [string, string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
+export const ifoDeposit = (args: IfoDepositArgs, typeArgs: [string, string, string]): EntryFunctionPayloadResponse => {
   return {
     type: 'entry_function_payload',
     type_arguments: typeArgs,
@@ -24,7 +21,7 @@ export type IfoDepositOfferingCoinArgs = [bigint | string]
 export const ifoDepositOfferingCoin = (
   args: IfoDepositOfferingCoinArgs,
   typeArgs: [string, string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
+): EntryFunctionPayloadResponse => {
   return {
     type: 'entry_function_payload',
     type_arguments: typeArgs,
@@ -38,7 +35,7 @@ export type IfoFinalWithdrawArgs = [bigint | string, bigint | string]
 export const ifoFinalWithdraw = (
   args: IfoFinalWithdrawArgs,
   typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
+): EntryFunctionPayloadResponse => {
   return {
     type: 'entry_function_payload',
     type_arguments: typeArgs,
@@ -47,7 +44,7 @@ export const ifoFinalWithdraw = (
   }
 }
 
-export const ifoHarvestPool = (typeArgs: [string, string, string]): Types.TransactionPayload_EntryFunctionPayload => {
+export const ifoHarvestPool = (typeArgs: [string, string, string]): EntryFunctionPayloadResponse => {
   return {
     type: 'entry_function_payload',
     type_arguments: typeArgs,
@@ -61,7 +58,7 @@ export type IfoInitializePoolArgs = [bigint | string, bigint | string]
 export const ifoInitializePool = (
   args: IfoInitializePoolArgs,
   typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
+): EntryFunctionPayloadResponse => {
   return {
     type: 'entry_function_payload',
     type_arguments: typeArgs,
@@ -72,10 +69,7 @@ export const ifoInitializePool = (
 
 export type IfoReleaseArgs = [number[] | Uint8Array]
 
-export const ifoRelease = (
-  args: IfoReleaseArgs,
-  typeArgs: [string, string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
+export const ifoRelease = (args: IfoReleaseArgs, typeArgs: [string, string, string]): EntryFunctionPayloadResponse => {
   return {
     type: 'entry_function_payload',
     type_arguments: typeArgs,
@@ -84,7 +78,7 @@ export const ifoRelease = (
   }
 }
 
-export const ifoRevoke = (typeArgs: [string, string]): Types.TransactionPayload_EntryFunctionPayload => {
+export const ifoRevoke = (typeArgs: [string, string]): EntryFunctionPayloadResponse => {
   return {
     type: 'entry_function_payload',
     type_arguments: typeArgs,
@@ -95,7 +89,7 @@ export const ifoRevoke = (typeArgs: [string, string]): Types.TransactionPayload_
 
 export type IfoSetAdminArgs = [string]
 
-export const ifoSetAdmin = (args: IfoSetAdminArgs): Types.TransactionPayload_EntryFunctionPayload => {
+export const ifoSetAdmin = (args: IfoSetAdminArgs): EntryFunctionPayloadResponse => {
   return {
     type: 'entry_function_payload',
     type_arguments: [],
@@ -106,7 +100,7 @@ export const ifoSetAdmin = (args: IfoSetAdminArgs): Types.TransactionPayload_Ent
 
 export type IfoSetMaxBufferTimeArgs = [bigint | string]
 
-export const ifoSetMaxBufferTime = (args: IfoSetMaxBufferTimeArgs): Types.TransactionPayload_EntryFunctionPayload => {
+export const ifoSetMaxBufferTime = (args: IfoSetMaxBufferTimeArgs): EntryFunctionPayloadResponse => {
   return {
     type: 'entry_function_payload',
     type_arguments: [],
@@ -117,7 +111,7 @@ export const ifoSetMaxBufferTime = (args: IfoSetMaxBufferTimeArgs): Types.Transa
 
 export type IfoSetNumPoolsArgs = [bigint | string]
 
-export const ifoSetNumPools = (args: IfoSetNumPoolsArgs): Types.TransactionPayload_EntryFunctionPayload => {
+export const ifoSetNumPools = (args: IfoSetNumPoolsArgs): EntryFunctionPayloadResponse => {
   return {
     type: 'entry_function_payload',
     type_arguments: [],
@@ -137,10 +131,7 @@ export type IfoSetPoolArgs = [
   bigint | string,
 ]
 
-export const ifoSetPool = (
-  args: IfoSetPoolArgs,
-  typeArgs: [string, string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
+export const ifoSetPool = (args: IfoSetPoolArgs, typeArgs: [string, string, string]): EntryFunctionPayloadResponse => {
   return {
     type: 'entry_function_payload',
     type_arguments: typeArgs,
@@ -154,7 +145,7 @@ export type IfoUpdateStartAndEndTimeArgs = [bigint | string, bigint | string]
 export const ifoUpdateStartAndEndTime = (
   args: IfoUpdateStartAndEndTimeArgs,
   typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
+): EntryFunctionPayloadResponse => {
   return {
     type: 'entry_function_payload',
     type_arguments: typeArgs,
@@ -165,7 +156,7 @@ export const ifoUpdateStartAndEndTime = (
 
 export type IfoUpgradeArgs = [number[] | Uint8Array, number[] | Uint8Array]
 
-export const ifoUpgrade = (args: IfoUpgradeArgs): Types.TransactionPayload_EntryFunctionPayload => {
+export const ifoUpgrade = (args: IfoUpgradeArgs): EntryFunctionPayloadResponse => {
   return {
     type: 'entry_function_payload',
     type_arguments: [],

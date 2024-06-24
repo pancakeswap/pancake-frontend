@@ -48,6 +48,7 @@ export const useIfoResourcesListByUserInfoType = (userInfoTypes?: string[]) => {
 
         if (foundType) {
           const parsedTypeTag = new TypeTagParser(it.type).parseTypeTag() as TxnBuilderTypes.TypeTagStruct
+          parsedTypeTag.toString()
 
           const key = parsedTypeTag.value.name.value
 
