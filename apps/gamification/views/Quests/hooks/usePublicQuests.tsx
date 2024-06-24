@@ -28,7 +28,7 @@ export const usePublicQuests = ({ chains, completionStatus }: UsePublicQuestsPro
           body: JSON.stringify({
             page: 1,
             size: PAGE_SIZE,
-            chainId: 56,
+            chainId: chains,
             completionStatus,
             // userId: 123,
           }),

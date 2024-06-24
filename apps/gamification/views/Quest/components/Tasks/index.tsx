@@ -45,35 +45,40 @@ export const Tasks: React.FC<TasksProps> = ({ questId }) => {
           {t('Tasks')}
         </Text>
         <Box style={{ alignSelf: 'center' }}>
-          <Tag variant="secondary" outline>
-            1/6 completed
-          </Tag>
-          <Tag variant="textDisabled" outline>
-            6
-          </Tag>
-          <Tag variant="success" outline>
-            {t('Completed')}
-          </Tag>
+          {account ? (
+            <>
+              <Tag variant="secondary" outline>
+                1/6 completed
+              </Tag>
+              {/* <Tag variant="success" outline>
+                {t('Completed')}
+              </Tag> */}
+            </>
+          ) : (
+            <Tag variant="textDisabled" outline>
+              6
+            </Tag>
+          )}
         </Box>
       </Flex>
       <FlexGap flexDirection="column" gap="12px">
         <Task />
       </FlexGap>
       <Box>
-        <Text bold as="span">
+        <Text bold as="span" color="textSubtle">
           {t('Tasks marked with the')}
         </Text>
-        <OptionIcon />
-        <Text bold as="span">
+        <OptionIcon m="0 4px -5px 4px" color="textSubtle" width={28} />
+        <Text bold as="span" color="textSubtle">
           {t('badge are optional.')}
         </Text>
-        <Text bold as="span">
+        <Text bold as="span" color="textSubtle">
           {t('But your chances of winning will be increased if you complete all the tasks!')}
         </Text>
       </Box>
       {!hasIdRegister && (
-        <Flex>
-          <Text bold fontSize="12px" color="textSubtle">
+        <Flex flexDirection="column">
+          <Text bold fontSize="12px" textAlign="center" color="textSubtle">
             {t('Start the quest to get access to the tasks')}
           </Text>
           <Button onClick={handleLinkUserToQuest}>{t('Start the Quest')}</Button>

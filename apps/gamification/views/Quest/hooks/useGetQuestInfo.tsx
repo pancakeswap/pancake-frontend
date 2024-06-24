@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
+import { useState } from 'react'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 
@@ -24,11 +25,20 @@ const initialData: SingleQuestData = {
 }
 
 export const useGetQuestInfo = (questId: string) => {
-  const { data, refetch, isFetching } = useQuery({
+  const [isError, setIsError] = useState(false)
+
+  const { data, refetch, isFetched } = useQuery({
     queryKey: [questId, 'get-quest-info'],
+    // eslint-disable-next-line consistent-return
     queryFn: async () => {
       try {
+        setIsError(false)
         const response = await fetch(`${GAMIFICATION_PUBLIC_API}/questInfo/v1/getQuestInfo/${questId}`)
+        if (!response.ok) {
+          setIsError(true)
+          return initialData
+        }
+
         const result = await response.json()
         const info: SingleQuestData = result
         return info
@@ -44,8 +54,9 @@ export const useGetQuestInfo = (questId: string) => {
   })
 
   return {
+    isError,
     quest: data ?? initialData,
-    isFetching,
+    isFetched,
     refresh: refetch,
   }
 }

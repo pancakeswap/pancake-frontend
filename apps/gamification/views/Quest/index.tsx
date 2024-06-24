@@ -16,6 +16,7 @@ import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { Description } from 'views/Quest/components/Description'
 // import { ExploreMore } from 'views/Quest/components/ExploreMore'
 // import { RelatedQuest } from 'views/Quest/components/RelatedQuest'
+import { useEffect } from 'react'
 import { convertTimestampToDate } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 import { Reward } from 'views/Quest/components/Reward'
 import { Share } from 'views/Quest/components/Share'
@@ -49,10 +50,19 @@ const StyledBackButton = styled(Link)`
 export const Quest = () => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
-  const { query } = useRouter()
+  const { query, push } = useRouter()
   const questId: string = (query.id as string) ?? ''
-  const { quest } = useGetQuestInfo(questId)
-  // TODO: Need redirect when is error
+  const { quest, isError, isFetched } = useGetQuestInfo(questId)
+
+  useEffect(() => {
+    if (isError) {
+      push('/quests')
+    }
+  }, [isError, push])
+
+  if (!isFetched || isError) {
+    return null
+  }
 
   return (
     <QuestContainer>

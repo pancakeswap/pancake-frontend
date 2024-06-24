@@ -41,8 +41,7 @@ export const Reward: React.FC<RewardProps> = ({ quest }) => {
           <RewardAmount reward={quest?.reward} />
           <Countdown endDateTime={quest?.endDateTime ?? 0} />
           {/* <TotalRewards /> */}
-          <Questers questId="06583d9d-9596-41eb-9c60-6433fb333d0f" />
-          {/* <Questers questId={quest?.id} /> */}
+          <Questers questId={quest?.id} />
           <ClaimButton />
           <RemainMessage />
           <SuccessMessage />
