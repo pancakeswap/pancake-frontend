@@ -32,7 +32,7 @@ export const useUserJoinedPublicQuests = ({ chainIdList, completionStatus }: Use
             size: PAGE_SIZE,
             chainIdList,
             completionStatus,
-            userId: account?.toLowerCase(),
+            userId: account,
           }),
         })
         const result = await response.json()

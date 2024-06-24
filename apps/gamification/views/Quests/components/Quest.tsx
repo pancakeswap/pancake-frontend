@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { CAKE, getTokensByChain } from '@pancakeswap/tokens'
-import { Box, BoxProps, CalenderIcon, Card, Flex, InfoIcon, Tag, Text } from '@pancakeswap/uikit'
+import { Box, BoxProps, CalenderIcon, Card, Flex, InfoIcon, Tag, Text, useTooltip } from '@pancakeswap/uikit'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
@@ -42,6 +42,30 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...p
   const handleClick = () => {
     router.push(`/quests/${quest.id}`)
   }
+
+  const {
+    targetRef: rewardTargetRef,
+    tooltip: rewardTooltip,
+    tooltipVisible: rewardTooltipVisible,
+  } = useTooltip(
+    t('When the Quest time expires, the users who are eligible to get the reward will be randomly drawn'),
+    {
+      placement: 'top',
+    },
+  )
+
+  const {
+    targetRef: rewardTypeTargetRef,
+    tooltip: rewardTypeTooltip,
+    tooltipVisible: rewardTypeTooltipVisible,
+  } = useTooltip(
+    t(
+      'The total rewards to be distributed will depend on the eligible questers selected by {Distribution}. Eligible questers are those who have completed all the tasks.',
+    ),
+    {
+      placement: 'top',
+    },
+  )
 
   const currency = useMemo((): Currency => {
     const reward = quest?.reward
@@ -118,13 +142,19 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...p
               <Text fontSize="12px" color="textSubtle">
                 {t('%total% rewards', { total: quest?.reward?.totalRewardAmount?.toFixed(0) ?? 0 })}
               </Text>
-              <InfoIcon ml="2px" width="14px" height="14px" color="textSubtle" style={{ alignSelf: 'center' }} />
+              <Box mt="2px" ref={rewardTargetRef}>
+                <InfoIcon ml="2px" width="14px" height="14px" color="textSubtle" style={{ alignSelf: 'center' }} />
+              </Box>
+              {rewardTooltipVisible && rewardTooltip}
             </Detail>
             <Detail>
               <Text fontSize="12px" color="textSubtle">
                 {t('Lucky Draw')}
               </Text>
-              <InfoIcon ml="2px" width="14px" height="14px" color="textSubtle" style={{ alignSelf: 'center' }} />
+              <Box mt="2px" ref={rewardTypeTargetRef}>
+                <InfoIcon ml="2px" width="14px" height="14px" color="textSubtle" style={{ alignSelf: 'center' }} />
+              </Box>
+              {rewardTypeTooltipVisible && rewardTypeTooltip}
             </Detail>
           </DetailContainer>
         </Flex>
