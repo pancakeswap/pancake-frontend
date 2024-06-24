@@ -1,5 +1,6 @@
 import { Token } from '@pancakeswap/sdk'
 import { TokenLogo } from '@pancakeswap/uikit'
+import { chainName as CHAIN_PATH } from '@pancakeswap/widgets-internal/components/CurrencyLogo'
 import { useMemo } from 'react'
 import { multiChainId, MultiChainName } from 'state/info/constant'
 import { styled } from 'styled-components'
@@ -16,14 +17,9 @@ const StyledLogo = styled(TokenLogo)<{ size: string }>`
   color: ${({ theme }) => theme.colors.text};
 `
 
-export const CHAIN_NAME_TO_PATH = {
-  ARB: 'arbitrum',
-  POLYGON_ZKEVM: 'polygon-zkevm',
-}
-
 const chainNameToPath = (chainName: MultiChainName) => {
   if (chainName === 'BSC') return ''
-  if (CHAIN_NAME_TO_PATH[chainName]) return `${CHAIN_NAME_TO_PATH[chainName]}/`
+  if (CHAIN_PATH[multiChainId[chainName]]) return `${CHAIN_PATH[multiChainId[chainName]]}/`
   return `${chainName.toLowerCase()}/`
 }
 
