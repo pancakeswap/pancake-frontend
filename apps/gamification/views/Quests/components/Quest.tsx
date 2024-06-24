@@ -60,7 +60,7 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...p
     tooltipVisible: rewardTypeTooltipVisible,
   } = useTooltip(
     t(
-      'The total rewards to be distributed will depend on the eligible questers selected by {Distribution}. Eligible questers are those who have completed all the tasks.',
+      'The total rewards to be distributed will depend on the eligible questers selected at random. Eligible questers are those who have completed all the tasks.',
     ),
     {
       placement: 'top',
