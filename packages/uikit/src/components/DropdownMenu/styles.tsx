@@ -1,4 +1,4 @@
-import { styled, DefaultTheme } from "styled-components";
+import { DefaultTheme, styled } from "styled-components";
 import { Colors } from "../../theme";
 import { Text } from "../Text";
 import { StyledDropdownMenuItemProps } from "./types";
@@ -11,7 +11,7 @@ const getTextColor = ({
   if (disabled) return theme.colors.textDisabled;
   if ($isActive) return theme.colors.secondary;
 
-  return theme.colors.textSubtle;
+  return theme.colors.contrast;
 };
 
 export const DropdownMenuItem = styled("button").withConfig({

@@ -1,20 +1,18 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import useTheme from 'hooks/useTheme'
 import { useLayoutEffect, useRef } from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { useDrawCanvas } from '../hooks/useDrawCanvas'
 import { useDrawSequenceImages } from '../hooks/useDrawSequence'
-import { checkIsIOS, useIsIOS } from '../hooks/useIsIOS'
+import { checkIsIOS } from '../hooks/useIsIOS'
 import { SlideSvgDark, SlideSvgLight } from './SlideSvg'
 
 const BgWrapper = styled.div`
-  z-index: -1;
+  z-index: 1;
   overflow: hidden;
   position: absolute;
   width: 100%;
@@ -29,72 +27,17 @@ const InnerWrapper = styled.div`
   bottom: -3px;
 `
 
-const BunnyWrapper = styled.div`
-  width: 100%;
-  > span {
-    overflow: visible !important; // make sure the next-image pre-build blur image not be cropped
-  }
-`
-
-const CakeBox = styled.div`
-  width: 300px;
-  height: 300px;
-  > canvas {
-    transform: scale(0.33) translate(-50%, -50%);
-    transform-origin: top left;
-    &.is-ios {
-      transform: scale(0.75) translate(-50%, -50%);
-    }
-  }
-
+const StyledText1 = styled(Text)`
+  font-size: 24px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    width: 500px;
-    height: 500px;
-    > canvas {
-      transform: scale(0.45) translate(-50%, -50%);
-      &.is-ios {
-        transform: scale(1) translate(-50%, -50%);
-      }
-    }
-    transform-origin: center center;
+    font-size: 48px;
   }
+`
+
+const StyledText2 = styled(Text)`
   ${({ theme }) => theme.mediaQueries.md} {
-    > canvas {
-      transform: scale(0.6) translate(-50%, -50%);
-      transform-origin: top left;
-      &.is-ios {
-        transform: scale(1) translate(-50%, -50%);
-      }
-    }
-    ${({ theme }) => theme.mediaQueries.lg} {
-      > canvas {
-        &.is-ios {
-          transform: scale(1.45) translate(-50%, -52%);
-        }
-      }
-    }
-    position: relative;
-    width: 605px;
-    height: 736px;
-    overflow: hidden;
-    margin-bottom: -100px;
-    margin-right: -100px;
+    max-width: 600px;
   }
-`
-const VideoWrapper = styled.div`
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-`
-
-const CakeVideo = styled.video``
-
-const CakeCanvas = styled.canvas`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: transparent;
 `
 
 const StyledText = styled(Text)`
@@ -116,7 +59,6 @@ const height = 1080
 const Hero = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { theme } = useTheme()
   const { isMobile, isXs, isMd } = useMatchBreakpoints()
   const videoRef = useRef<HTMLVideoElement>(null)
   const starVideoRef = useRef<HTMLVideoElement>(null)
@@ -127,7 +69,6 @@ const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const internalRef = useRef(0)
   const seqInternalRef = useRef(0)
-  const { isIOS } = useIsIOS()
   const { drawImage, isVideoPlaying } = useDrawCanvas(
     videoRef,
     canvasRef,
@@ -217,9 +158,9 @@ const Hero = () => {
       >
         <Flex flex="1" flexDirection="column">
           <Text textAlign={isMobile || isMd ? 'center' : 'left'} pr={isMobile ? 0 : '10px'} mb="16px">
-            <StyledText display="inline-block" lineHeight="110%" fontWeight={600} color="text" mr="8px">
-              {t("Everyone's")}
-            </StyledText>
+            <StyledText1 display="inline-block" lineHeight="110%" fontWeight={600} color="contrast" mr="8px">
+              {t('All-in-one DEX With')}
+            </StyledText1>
             <StyledText
               display="inline-block"
               fontWeight={600}
@@ -227,77 +168,26 @@ const Hero = () => {
               color="secondary"
               mr={isMobile ? 0 : '8px'}
             >
-              {t('Favorite')}
+              {t('Permissionless Pools')}
             </StyledText>
-            {isMobile && <br />}
-            <StyledText display="inline-block" lineHeight="110%" fontWeight={600} color="text">
-              {t('DEX')}
+            <br />
+            <StyledText display="inline-block" lineHeight="110%" fontWeight={600} color="contrast">
+              {t('on')}
             </StyledText>
           </Text>
-          <Text
+          <StyledText2
             mb="24px"
-            color={theme.isDark ? '#B8ADD2' : '#7A6EAA'}
-            maxWidth={600}
+            color="contrast"
             fontSize={['20px', '20px', null, '24px']}
-            textAlign={isMobile ? 'center' : 'left'}
+            textAlign={isMobile || isMd ? 'center' : 'left'}
             lineHeight="110%"
             fontWeight={600}
           >
-            {t('Trade, earn, and own crypto on the all-in-one multichain DEX')}
-          </Text>
-
+            {t('Trade, earn, and own various crypto in a trustworthy environment with user-friendly interface.')}
+          </StyledText2>
           <Flex justifyContent={isMobile || isMd ? 'center' : 'start'}>
             {!account && <ConnectWalletButton style={{ borderRadius: isXs ? 12 : undefined }} scale="md" mr="8px" />}
-            <NextLinkFromReactRouter to="/swap">
-              <Button
-                scale="md"
-                style={{ borderRadius: isXs ? 12 : undefined }}
-                variant={!account ? 'secondary' : 'primary'}
-              >
-                {t('Trade Now')}
-              </Button>
-            </NextLinkFromReactRouter>
           </Flex>
-        </Flex>
-        <Flex
-          height={['100%', null, null, '100%']}
-          width={['100%', null, null, '100%']}
-          flex={[null, null, null, '1']}
-          mb={['24px', null, null, '0']}
-          position="relative"
-        >
-          <BunnyWrapper>
-            <CakeBox>
-              <CakeCanvas
-                className={isIOS || isMobile ? 'is-ios' : undefined}
-                width={isIOS || isMobile ? 500 : width}
-                height={isIOS || isMobile ? 500 : height}
-                ref={canvasRef}
-              />
-              {!(isIOS || isMobile) && (
-                <VideoWrapper>
-                  <CakeVideo ref={videoRef} width={width} autoPlay muted playsInline>
-                    <source src={`${ASSET_CDN}/web/landing/bunnyv2.webm`} type="video/webm" />
-                  </CakeVideo>
-                  <CakeVideo ref={starVideoRef} width={width} autoPlay loop muted playsInline>
-                    <source src={`${ASSET_CDN}/web/landing/star.webm`} type="video/webm" />
-                  </CakeVideo>
-                  <CakeVideo ref={cakeVideoRef} width={width} autoPlay loop muted playsInline>
-                    <source src={`${ASSET_CDN}/web/landing/hero-cake.webm`} type="video/webm" />
-                  </CakeVideo>
-                  <CakeVideo ref={rock01VideoRef} width={width} autoPlay loop muted playsInline>
-                    <source src={`${ASSET_CDN}/web/landing/rock01.webm`} type="video/webm" />
-                  </CakeVideo>
-                  <CakeVideo ref={rock02VideoRef} width={width} autoPlay loop muted playsInline>
-                    <source src={`${ASSET_CDN}/web/landing/rock02.webm`} type="video/webm" />
-                  </CakeVideo>
-                  <CakeVideo ref={rock03VideoRef} width={width} autoPlay loop muted playsInline>
-                    <source src={`${ASSET_CDN}/web/landing/rock03.webm`} type="video/webm" />
-                  </CakeVideo>
-                </VideoWrapper>
-              )}
-            </CakeBox>
-          </BunnyWrapper>
         </Flex>
       </Flex>
     </>
