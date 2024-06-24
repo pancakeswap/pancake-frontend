@@ -47,7 +47,6 @@ export const useVerifyTaskStatus = (questId: string) => {
         const result = await response.json()
         const userSocialHubData: VerifyTaskStatus = result
         return userSocialHubData
-        return initialData
       } catch (error) {
         console.error(`Fetch user verify task status Error: ${error}`)
         return initialData

@@ -29,7 +29,7 @@ export const usePublicQuests = ({ chains, completionStatus }: UsePublicQuestsPro
             page: 1,
             size: PAGE_SIZE,
             chainId: 56,
-            completionStatus: 'ONGOING',
+            completionStatus,
             // userId: 123,
           }),
         })
@@ -37,7 +37,7 @@ export const usePublicQuests = ({ chains, completionStatus }: UsePublicQuestsPro
         const questsData: AllDashboardQuestsType = result
         return questsData
       } catch (error) {
-        console.error(`Fetch All quest dashboard data error: ${error}`)
+        console.error(`Fetch all public quests data error: ${error}`)
         return initialData
       }
     },

@@ -87,11 +87,11 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...p
             </Flex>
           </Flex>
           <Text ellipsis bold fontSize={['20px']} lineHeight={['24px']}>
-            {quest.title}
+            {quest?.title}
           </Text>
           <Card isActive style={{ width: 'fit-content', padding: '2px', marginTop: '16px' }}>
             <Flex padding="8px">
-              {quest.reward ? (
+              {quest?.reward ? (
                 <>
                   <TokenWithChain currency={currency} width={20} height={20} />
                   <Flex ml="8px">
