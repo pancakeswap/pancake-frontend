@@ -170,8 +170,9 @@ export const fetchNodeHistory = createAsyncThunk<
   }
 
   const epochs = Object.keys(userRounds).map((epochStr) => Number(epochStr))
+
   const [roundData, claimableStatuses] = await Promise.all([
-    getRoundsData(epochs, extra.address, chainId),
+    getRoundsData(epochs, extra.address, chainId, { isAIPrediction: Boolean(extra.ai) }),
     getClaimStatuses(account, chainId, epochs, extra.address),
   ])
 
