@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
-import { ConnectWalletButton } from 'components/ConnectWalletButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useMemo } from 'react'
 import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
