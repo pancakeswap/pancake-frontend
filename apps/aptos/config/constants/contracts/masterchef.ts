@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { MoveStructId, ViewFunctionJsonPayload } from '@aptos-labs/ts-sdk'
+import { MoveStructId, InputViewFunctionData } from '@aptos-labs/ts-sdk'
 
 export const ADDRESS = '0x7968a225eba6c99f5f1070aeec1b405757dee939eabcfda43ba91588bf5fccf3' as const
 
@@ -7,7 +7,7 @@ export const MASTERCHEF_MODULE_NAME = 'masterchef' as const
 
 export type MasterchefAddPoolArgs = [bigint | string, boolean, boolean]
 
-export const masterchefAddPool = (args: MasterchefAddPoolArgs, typeArgs: [string]): ViewFunctionJsonPayload => {
+export const masterchefAddPool = (args: MasterchefAddPoolArgs, typeArgs: [string]): InputViewFunctionData => {
   return {
     typeArguments: typeArgs as [MoveStructId],
     functionArguments: args,
@@ -17,7 +17,7 @@ export const masterchefAddPool = (args: MasterchefAddPoolArgs, typeArgs: [string
 
 export type MasterchefCloseAptIncentiveArgs = [boolean]
 
-export const masterchefCloseAptIncentive = (args: MasterchefCloseAptIncentiveArgs): ViewFunctionJsonPayload => {
+export const masterchefCloseAptIncentive = (args: MasterchefCloseAptIncentiveArgs): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: args,
@@ -27,7 +27,7 @@ export const masterchefCloseAptIncentive = (args: MasterchefCloseAptIncentiveArg
 
 export type MasterchefDepositArgs = [bigint | string]
 
-export const masterchefDeposit = (args: MasterchefDepositArgs, typeArgs: [string]): ViewFunctionJsonPayload => {
+export const masterchefDeposit = (args: MasterchefDepositArgs, typeArgs: [string]): InputViewFunctionData => {
   return {
     typeArguments: typeArgs as [MoveStructId],
     functionArguments: args,
@@ -35,7 +35,7 @@ export const masterchefDeposit = (args: MasterchefDepositArgs, typeArgs: [string
   }
 }
 
-export const masterchefEmergencyWithdraw = (typeArgs: [string]): ViewFunctionJsonPayload => {
+export const masterchefEmergencyWithdraw = (typeArgs: [string]): InputViewFunctionData => {
   return {
     typeArguments: typeArgs as [MoveStructId],
     functionArguments: [],
@@ -43,7 +43,7 @@ export const masterchefEmergencyWithdraw = (typeArgs: [string]): ViewFunctionJso
   }
 }
 
-export const masterchefGetAptIncentiveInfo = (): ViewFunctionJsonPayload => {
+export const masterchefGetAptIncentiveInfo = (): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: [],
@@ -55,7 +55,7 @@ export type MasterchefGetAptIncentivePoolInfoArgs = [bigint | string]
 
 export const masterchefGetAptIncentivePoolInfo = (
   args: MasterchefGetAptIncentivePoolInfoArgs,
-): ViewFunctionJsonPayload => {
+): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: args,
@@ -68,7 +68,7 @@ export type MasterchefGetPendingAptArgs = [string]
 export const masterchefGetPendingApt = (
   args: MasterchefGetPendingAptArgs,
   typeArgs: [string],
-): ViewFunctionJsonPayload => {
+): InputViewFunctionData => {
   return {
     typeArguments: typeArgs as [MoveStructId],
     functionArguments: args,
@@ -78,7 +78,7 @@ export const masterchefGetPendingApt = (
 
 export type MasterchefInitAptIncentiveArgs = [bigint | string, boolean]
 
-export const masterchefInitAptIncentive = (args: MasterchefInitAptIncentiveArgs): ViewFunctionJsonPayload => {
+export const masterchefInitAptIncentive = (args: MasterchefInitAptIncentiveArgs): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: args,
@@ -86,7 +86,7 @@ export const masterchefInitAptIncentive = (args: MasterchefInitAptIncentiveArgs)
   }
 }
 
-export const masterchefMassUpdatePools = (): ViewFunctionJsonPayload => {
+export const masterchefMassUpdatePools = (): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: [],
@@ -96,7 +96,7 @@ export const masterchefMassUpdatePools = (): ViewFunctionJsonPayload => {
 
 export type MasterchefPendingCakeArgs = [bigint | string, string]
 
-export const masterchefPendingCake = (args: MasterchefPendingCakeArgs): ViewFunctionJsonPayload => {
+export const masterchefPendingCake = (args: MasterchefPendingCakeArgs): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: args,
@@ -104,7 +104,7 @@ export const masterchefPendingCake = (args: MasterchefPendingCakeArgs): ViewFunc
   }
 }
 
-export const masterchefPoolLength = (): ViewFunctionJsonPayload => {
+export const masterchefPoolLength = (): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: [],
@@ -114,7 +114,7 @@ export const masterchefPoolLength = (): ViewFunctionJsonPayload => {
 
 export type MasterchefSetAdminArgs = [string]
 
-export const masterchefSetAdmin = (args: MasterchefSetAdminArgs): ViewFunctionJsonPayload => {
+export const masterchefSetAdmin = (args: MasterchefSetAdminArgs): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: args,
@@ -124,7 +124,7 @@ export const masterchefSetAdmin = (args: MasterchefSetAdminArgs): ViewFunctionJs
 
 export type MasterchefSetPoolArgs = [bigint | string, bigint | string, boolean]
 
-export const masterchefSetPool = (args: MasterchefSetPoolArgs): ViewFunctionJsonPayload => {
+export const masterchefSetPool = (args: MasterchefSetPoolArgs): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: args,
@@ -134,7 +134,7 @@ export const masterchefSetPool = (args: MasterchefSetPoolArgs): ViewFunctionJson
 
 export type MasterchefSetUpkeepAdminArgs = [string]
 
-export const masterchefSetUpkeepAdmin = (args: MasterchefSetUpkeepAdminArgs): ViewFunctionJsonPayload => {
+export const masterchefSetUpkeepAdmin = (args: MasterchefSetUpkeepAdminArgs): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: args,
@@ -144,7 +144,7 @@ export const masterchefSetUpkeepAdmin = (args: MasterchefSetUpkeepAdminArgs): Vi
 
 export type MasterchefUpdateCakeRateArgs = [bigint | string, bigint | string, boolean]
 
-export const masterchefUpdateCakeRate = (args: MasterchefUpdateCakeRateArgs): ViewFunctionJsonPayload => {
+export const masterchefUpdateCakeRate = (args: MasterchefUpdateCakeRateArgs): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: args,
@@ -154,7 +154,7 @@ export const masterchefUpdateCakeRate = (args: MasterchefUpdateCakeRateArgs): Vi
 
 export type MasterchefUpdatePoolArgs = [bigint | string]
 
-export const masterchefUpdatePool = (args: MasterchefUpdatePoolArgs): ViewFunctionJsonPayload => {
+export const masterchefUpdatePool = (args: MasterchefUpdatePoolArgs): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: args,
@@ -164,7 +164,7 @@ export const masterchefUpdatePool = (args: MasterchefUpdatePoolArgs): ViewFuncti
 
 export type MasterchefUpgradeMasterchefArgs = [number[] | Uint8Array, number[] | Uint8Array]
 
-export const masterchefUpgradeMasterchef = (args: MasterchefUpgradeMasterchefArgs): ViewFunctionJsonPayload => {
+export const masterchefUpgradeMasterchef = (args: MasterchefUpgradeMasterchefArgs): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: args,
@@ -174,7 +174,7 @@ export const masterchefUpgradeMasterchef = (args: MasterchefUpgradeMasterchefArg
 
 export type MasterchefUpkeepArgs = [bigint | string, bigint | string, boolean]
 
-export const masterchefUpkeep = (args: MasterchefUpkeepArgs): ViewFunctionJsonPayload => {
+export const masterchefUpkeep = (args: MasterchefUpkeepArgs): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: args,
@@ -184,7 +184,7 @@ export const masterchefUpkeep = (args: MasterchefUpkeepArgs): ViewFunctionJsonPa
 
 export type MasterchefWithdrawArgs = [bigint | string]
 
-export const masterchefWithdraw = (args: MasterchefWithdrawArgs, typeArgs: [string]): ViewFunctionJsonPayload => {
+export const masterchefWithdraw = (args: MasterchefWithdrawArgs, typeArgs: [string]): InputViewFunctionData => {
   return {
     typeArguments: typeArgs as [MoveStructId],
     functionArguments: args,
@@ -192,7 +192,7 @@ export const masterchefWithdraw = (args: MasterchefWithdrawArgs, typeArgs: [stri
   }
 }
 
-export const masterchefWithdrawAllApt = (): ViewFunctionJsonPayload => {
+export const masterchefWithdrawAllApt = (): InputViewFunctionData => {
   return {
     typeArguments: [],
     functionArguments: [],
