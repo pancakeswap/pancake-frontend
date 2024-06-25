@@ -40,7 +40,7 @@ export const getTokenLogoURLByAddress = memoize(
   (address, chainId) => `${chainId}#${address}`
 );
 
-const chainName: { [key: number]: string } = {
+export const chainName: { [key: number]: string } = {
   [ChainId.BSC]: "",
   [ChainId.ETHEREUM]: "eth",
   [ChainId.POLYGON_ZKEVM]: "polygon-zkevm",
