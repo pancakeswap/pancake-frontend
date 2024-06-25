@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, FlexGap, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Image from 'next/legacy/image'
 import {
   BackgroundGraphic,
@@ -13,6 +13,7 @@ import {
   GraphicDetail,
   LinkExternalAction,
   PancakeSwapBadge,
+  VerticalDivider,
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
@@ -34,48 +35,36 @@ const bgXsVariant: GraphicDetail = {
   height: 182,
 }
 
-const Divider = styled.div`
-  background: #fff;
-  width: 1px;
-  height: 1rem;
-  margin: auto 8px;
-  opacity: 0.4;
-`
-
-// todo: will replace after the new URL ready
-const playNowLink =
-  'https://pancakeswap.games/?utm_source=nemesis%20FE%20banner&utm_medium=Banner&utm_campaign=nemesis%20FE%20banner&utm_id=nemesis%20FE%20banner'
+const StartTradingLink =
+  'https://perp.pancakeswap.finance/en/futures/v2/BTCUSD?utm_source=homepagebanner&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives'
 const learnMoreLink =
-  'https://blog.pancakeswap.finance/articles/introducing-nemesis-downfall-pancake-swap-s-latest-game-fi-release'
+  'https://blog.pancakeswap.finance/articles/trade-on-arbitrum-pancake-swap-perpetual-v2-to-win-300-000-arb?utm_source=homepagebanner&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives'
 
 const StyledFlexContainer = styled(FlexGap)`
   align-items: center;
   color: white;
   ${({ theme }) => theme.mediaQueries.md} {
-    min-width: 430px;
+    min-width: 450px;
   }
   ${({ theme }) => theme.mediaQueries.sm} {
-    min-width: 430px;
+    min-width: 450px;
   }
 `
 
 export const PerpetualSeasonalBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isTablet } = useMatchBreakpoints()
+  const { isMobile, isTablet, isMd } = useMatchBreakpoints()
 
   return (
     <BannerContainer>
       <BannerMain
         badges={
-          <StyledFlexContainer>
+          <StyledFlexContainer gap="8px">
             <PancakeSwapBadge whiteText />
-            {!isMobile ? <Box style={{ fontWeight: 600 }}>{t('Perpetual v2')}</Box> : null}
-            <Image src={arbSimplifiedLogo} alt="arbSimplifiedLogo" width={68} height={25} />
-            {!isMobile ? (
-              <FlexGap gap="6px">
-                <Image src={apolloXCampaignLogo} alt="apolloXCampaignLogo" width={12} height={12} />
-                <Box style={{ fontWeight: 600 }}>{t('APX Finance')}</Box>
-              </FlexGap>
+            {!(isMobile || isMd) ? <Text bold>Perpetual v2</Text> : null}
+            <Image src={arbSimplifiedLogo} alt="arbSimplifiedLogo" width={95} height={24} />
+            {!(isMobile || isMd) ? (
+              <Image src={apolloXCampaignLogo} alt="apolloXCampaignLogo" width={105} height={25} />
             ) : null}
           </StyledFlexContainer>
         }
@@ -85,28 +74,38 @@ export const PerpetualSeasonalBanner = () => {
               color: '#FFB237',
               strokeColor: '',
               strokeSize: 0,
-              fontSize: 28,
+              fontSize: isTablet ? 24 : 26,
               lineHeight: 30,
               fontWeight: 800,
             }}
           >
-            {isMobile ? t('Until 2 SEP, trade Perpetuals, win 300k $ARB') : t('🏆 Trade Perpetuals, Win 300,000 $ARB!')}
+            {isMobile
+              ? t('Trade $5,000 on Perps v2 to Win from 300,000 ARB')
+              : t('Trade on Perpetuals v2 to Win 300,000 ARB')}
           </BannerTitle>
         }
-        desc={<BannerDesc color="#EECD39">{!isMobile ? t('📅 18 June 2024 to 2 September 2024') : null}</BannerDesc>}
+        desc={
+          <BannerDesc color="#EECD39">
+            {!isMobile ? t('Trade at least $5,000 on perps v2 to win guaranteed reward') : null}
+          </BannerDesc>
+        }
         actions={
           <BannerActionContainer>
-            <LinkExternalAction color="white" href={playNowLink} externalIcon="arrowForward">
-              {t('Start Trading')}
-            </LinkExternalAction>
-            {!isMobile ? (
+            {isMobile ? (
+              <LinkExternalAction color="white" href={learnMoreLink} externalIcon="arrowForward">
+                {t('Learn More')}
+              </LinkExternalAction>
+            ) : (
               <>
-                <Divider />
+                <LinkExternalAction color="white" href={StartTradingLink} externalIcon="arrowForward">
+                  {t('Start Trading')}
+                </LinkExternalAction>
+                <VerticalDivider />
                 <LinkExternalAction color="white" href={learnMoreLink}>
-                  {t('Leaderboard')}
+                  {t('Learn More')}
                 </LinkExternalAction>
               </>
-            ) : null}
+            )}
           </BannerActionContainer>
         }
       />
