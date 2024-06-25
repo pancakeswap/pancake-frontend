@@ -40,17 +40,16 @@ export enum ONRAMP_PROVIDERS {
   Topper = 'Topper',
 }
 
-export enum WidgetTheme {
-  Dark = 'dark',
-  Light = 'light',
-}
-
 export enum FeeTypes {
   NetworkingFees = 'Networking Fees',
   ProviderFees = 'Provider Fees',
   ProviderRate = 'Rate',
 }
 
+export enum WidgetTheme {
+  Dark = 'dark',
+  Light = 'light',
+}
 const MOONPAY_FEE_TYPES = [FeeTypes.NetworkingFees, FeeTypes.ProviderFees, FeeTypes.ProviderRate]
 const MERCURYO_FEE_TYPES = [FeeTypes.ProviderFees, FeeTypes.ProviderRate]
 

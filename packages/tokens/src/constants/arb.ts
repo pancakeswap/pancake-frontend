@@ -335,4 +335,12 @@ export const arbitrumTokens = {
     'Fluid USDC',
     'https://fluidity.money/',
   ),
+  zro: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x6985884C4392D348587B19cb9eAAf157F13271cd',
+    18,
+    'ZRO',
+    'LayerZero',
+    'https://www.layerzero.foundation/',
+  ),
 }
