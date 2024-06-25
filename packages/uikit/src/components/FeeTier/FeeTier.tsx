@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { useMemo } from "react";
+import { forwardRef, useMemo } from "react";
 import styled from "styled-components";
 
 export type FeeTierProps = {
@@ -9,21 +9,23 @@ export type FeeTierProps = {
   dynamic?: boolean;
 };
 
-export const FeeTier: React.FC<FeeTierProps> = ({ type, fee, denominator = 10_000, dynamic }) => {
-  const percent = useMemo(() => {
-    return new BigNumber(fee).div(denominator).times(100).toNumber();
-  }, [fee, denominator]);
-  return (
-    <StyledFeeTier>
-      <span>{type}</span>
-      <span style={{ opacity: 0.5 }}>|</span>
-      <span>
-        {dynamic ? <span style={{ marginRight: "2px" }}>↕️</span> : ""}
-        {Number(percent.toFixed(2))}%
-      </span>
-    </StyledFeeTier>
-  );
-};
+export const FeeTier = forwardRef<HTMLSpanElement, FeeTierProps>(
+  ({ type, fee, denominator = 10_000, dynamic }, ref) => {
+    const percent = useMemo(() => {
+      return new BigNumber(fee).div(denominator).times(100).toNumber();
+    }, [fee, denominator]);
+    return (
+      <StyledFeeTier ref={ref}>
+        <span>{type}</span>
+        <span style={{ opacity: 0.5 }}>|</span>
+        <span>
+          {dynamic ? <span style={{ marginRight: "2px" }}>↕️</span> : ""}
+          {Number(percent.toFixed(2))}%
+        </span>
+      </StyledFeeTier>
+    );
+  }
+);
 
 const StyledFeeTier = styled.span`
   display: inline-flex;
