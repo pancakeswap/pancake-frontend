@@ -149,7 +149,11 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
         closeTimestamp={closeTimestamp ?? 0}
       />
       <StyledCardBody>
-        <BetBadgeStack aiBetType={aiPosition} userBetType={userPosition} />
+        <BetBadgeStack
+          aiBetType={aiPosition}
+          userBetType={userPosition}
+          betAmount={formatBigInt(betAmount ?? 0n, config?.displayedDecimals ?? 4, 18)}
+        />
         <MultiplierArrow betAmount={betAmount} multiplier={bullMultiplier} isActive={isBull} />
         <RoundResultBox betPosition={betPosition}>
           <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">

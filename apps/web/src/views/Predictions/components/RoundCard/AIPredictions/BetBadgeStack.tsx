@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, CheckmarkCircleFillIcon, GlassGlobeIcon, useTooltip } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 
 const BetBadge = styled(Box)<{ $variant?: 'primary' | 'secondary'; $type?: 'UP' | 'DOWN'; $position?: string }>`
   position: absolute;
@@ -77,6 +78,8 @@ interface BetBadgeStackProps {
 
   userBetType?: 'UP' | 'DOWN'
   userBetPosition?: string
+
+  betAmount?: string | number
 }
 
 export const BetBadgeStack = ({
@@ -84,8 +87,10 @@ export const BetBadgeStack = ({
   userBetPosition = '20px',
   aiBetType,
   userBetType,
+  betAmount,
 }: BetBadgeStackProps) => {
   const { t } = useTranslation()
+  const config = useConfig()
 
   const {
     tooltip: aiTooltip,
@@ -97,7 +102,17 @@ export const BetBadgeStack = ({
     tooltip: userTooltip,
     tooltipVisible: userTooltipVisible,
     targetRef: userTargetRef,
-  } = useTooltip(t('My position: %position% AI', { position: userBetType === aiBetType ? t('Follow') : t('Against') }))
+  } = useTooltip(
+    <>
+      {t('My position: %position% AI', { position: userBetType === aiBetType ? t('Follow') : t('Against') })}
+      <br />
+      {betAmount && (
+        <>
+          ({betAmount} {config?.token.symbol})
+        </>
+      )}
+    </>,
+  )
 
   return (
     <>
