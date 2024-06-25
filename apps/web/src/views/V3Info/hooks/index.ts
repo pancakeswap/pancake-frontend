@@ -7,7 +7,7 @@ import { Block } from 'state/info/types'
 import { getChainName } from 'state/info/utils'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { v3InfoClients } from 'utils/graphql'
-import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 import { useQuery } from '@tanstack/react-query'
 import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
@@ -215,7 +215,7 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
   const chainName = useChainNameByQuery()
   const chainId = targetChainId ?? multiChainId[chainName]
   const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d], undefined, undefined, getChainName(chainId))
+  const { blocks } = useBlocksFromTimestamps([t24, t48, t7d], undefined, getChainName(chainId))
 
   const { data } = useQuery({
     queryKey: [`v3/info/token/tokensData/${targetChainId}/${addresses?.join()}`, chainId],
