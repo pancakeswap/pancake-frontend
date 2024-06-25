@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
-import { Quest } from 'views/Quests/components/Quest'
+// import { Quest } from 'views/Quests/components/Quest'
 
 const StyledFlexGap = styled(FlexGap)`
   flex-wrap: wrap;
@@ -42,12 +42,9 @@ export const QuestList = () => {
           </Tag>
         </Box>
       </Flex>
-      <StyledFlexGap>
+      {/* <StyledFlexGap>
         <Quest />
-        <Quest />
-        <Quest />
-        <Quest />
-      </StyledFlexGap>
+      </StyledFlexGap> */}
     </Box>
   )
 }

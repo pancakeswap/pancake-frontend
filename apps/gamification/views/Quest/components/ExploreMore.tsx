@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, FlexGap, Link, OpenNewIcon, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
-import { Quest } from 'views/Quests/components/Quest'
+// import { Quest } from 'views/Quests/components/Quest'
 
 const StyledFlexGap = styled(FlexGap)`
   flex-wrap: wrap;
@@ -37,13 +37,13 @@ export const ExploreMore = () => {
       </Text>
       <Box width="100%">
         <StyledFlexGap>
-          <Quest showStatus />
+          {/* <Quest showStatus />
           <Quest />
           <Quest />
           <Quest />
           <Quest />
           <Quest />
-          <Quest />
+          <Quest /> */}
         </StyledFlexGap>
         <StyledLink external href="/quests" display="flex" margin="120px auto 0 auto">
           <Button endIcon={<OpenNewIcon width="20px" height="20px" color="invertedContrast" />}>
