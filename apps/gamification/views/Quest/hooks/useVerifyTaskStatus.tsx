@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
+import { useMemo } from 'react'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { useAccount } from 'wagmi'
 
@@ -34,8 +35,14 @@ const initialData: VerifyTaskStatus = {
   message: null,
 }
 
-export const useVerifyTaskStatus = (questId: string) => {
+interface UseVerifyTaskStatus {
+  questId: string
+  endDateTime: number
+}
+
+export const useVerifyTaskStatus = ({ questId, endDateTime }: UseVerifyTaskStatus) => {
   const { address: account } = useAccount()
+  const isQuestFinished = useMemo(() => new Date().getTime() >= endDateTime, [endDateTime])
 
   const { data, refetch, isFetching } = useQuery({
     queryKey: [account, questId, 'verify-user-task-status'],
@@ -53,7 +60,7 @@ export const useVerifyTaskStatus = (questId: string) => {
       }
     },
     enabled: Boolean(account && questId),
-    refetchInterval: SLOW_INTERVAL,
+    refetchInterval: isQuestFinished ? false : SLOW_INTERVAL,
   })
 
   return {

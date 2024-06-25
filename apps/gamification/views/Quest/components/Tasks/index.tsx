@@ -1,22 +1,27 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
+import { ConnectWalletButton } from 'components/ConnectWalletButton'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useMemo } from 'react'
 import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
+import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { Task } from 'views/Quest/components/Tasks/Task'
+import { useVerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { useAccount } from 'wagmi'
-// import { useVerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 
 interface TasksProps {
   questId: string
+  endDateTime: number
+  completionStatus: CompletionStatus
 }
 
-export const Tasks: React.FC<TasksProps> = ({ questId }) => {
+export const Tasks: React.FC<TasksProps> = ({ questId, completionStatus, endDateTime }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { userInfo, refresh } = useUserSocialHub()
-  // const { taskStatus } = useVerifyTaskStatus(questId)
+  const { taskStatus } = useVerifyTaskStatus({ questId, endDateTime })
+
   const hasIdRegister = useMemo(
     () => userInfo.questIds?.map((i) => i.toLowerCase())?.includes(questId.toLowerCase()),
     [questId, userInfo.questIds],
@@ -28,13 +33,15 @@ export const Tasks: React.FC<TasksProps> = ({ questId }) => {
   // 3) If account not yet connect social need direct to /profile let user connect it.
 
   const handleLinkUserToQuest = async () => {
-    try {
-      const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/linkUserToQuest/${account}/${questId}`)
-      if (response.ok) {
-        refresh()
+    if (account) {
+      try {
+        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/linkUserToQuest/${account}/${questId}`)
+        if (response.ok) {
+          refresh()
+        }
+      } catch (error) {
+        console.error(`Submit link user to quest error: ${error}`)
       }
-    } catch (error) {
-      console.error(`Submit link user to quest error: ${error}`)
     }
   }
 
@@ -76,14 +83,22 @@ export const Tasks: React.FC<TasksProps> = ({ questId }) => {
           {t('But your chances of winning will be increased if you complete all the tasks!')}
         </Text>
       </Box>
-      {!hasIdRegister && (
-        <Flex flexDirection="column">
-          <Text bold fontSize="12px" textAlign="center" color="textSubtle">
-            {t('Start the quest to get access to the tasks')}
-          </Text>
-          <Button onClick={handleLinkUserToQuest}>{t('Start the Quest')}</Button>
-        </Flex>
-      )}
+      <>
+        {account ? (
+          <>
+            {!hasIdRegister && (
+              <Flex flexDirection="column">
+                <Text bold fontSize="12px" textAlign="center" color="textSubtle">
+                  {t('Start the quest to get access to the tasks')}
+                </Text>
+                <Button onClick={handleLinkUserToQuest}>{t('Start the Quest')}</Button>
+              </Flex>
+            )}
+          </>
+        ) : (
+          <ConnectWalletButton />
+        )}
+      </>
     </Box>
   )
 }

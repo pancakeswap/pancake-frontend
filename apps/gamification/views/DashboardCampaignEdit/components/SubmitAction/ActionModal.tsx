@@ -6,7 +6,7 @@ import { Default } from 'views/DashboardCampaignEdit/components/SubmitAction/Def
 import { Fail } from 'views/DashboardQuestEdit/components/SubmitAction/Fail'
 import { Finished } from 'views/DashboardQuestEdit/components/SubmitAction/Finished'
 import { Loading } from 'views/DashboardQuestEdit/components/SubmitAction/Loading'
-import { Quest } from 'views/Quests/components/Quest'
+// import { Quest } from 'views/Quests/components/Quest'
 
 interface ModalConfig {
   title: string
@@ -32,7 +32,8 @@ export const ActionModal: React.FC<ActionModalProps> = ({ openModal, setOpenModa
   const router = useRouter()
   const [modalView, setModalView] = useState<EditModalState>(EditModalState.DEFAULT)
 
-  const component = <Quest mb="24px" width="100%" showStatus hideClick />
+  const component = null
+  // const component = <Quest mb="24px" width="100%" showStatus hideClick />
 
   const closeModal = () => {
     setOpenModal(false)

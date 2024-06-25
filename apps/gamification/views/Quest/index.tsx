@@ -79,8 +79,8 @@ export const Quest = () => {
           <Share />
         </Flex>
         <Box mt="16px">
-          {quest.completionStatus === CompletionStatus.ONGOING && <Tag variant="success">{t('Ongoing')}</Tag>}
-          {quest.completionStatus === CompletionStatus.FINISHED && <Tag variant="textDisabled">{t('Finished')}</Tag>}
+          {quest?.completionStatus === CompletionStatus.ONGOING && <Tag variant="success">{t('Ongoing')}</Tag>}
+          {quest?.completionStatus === CompletionStatus.FINISHED && <Tag variant="textDisabled">{t('Finished')}</Tag>}
         </Box>
         <StyledHeading m="16px 0" as="h1">
           {quest?.title}
@@ -94,7 +94,7 @@ export const Quest = () => {
           </Flex>
         )}
         {!isDesktop && <Reward quest={quest} />}
-        <Tasks questId={questId} />
+        <Tasks questId={questId} completionStatus={quest?.completionStatus} endDateTime={quest.endDateTime} />
         <Description description={quest?.description} />
         {/* <RelatedQuest /> */}
         {/* <ExploreMore /> */}
