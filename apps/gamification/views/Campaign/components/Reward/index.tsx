@@ -2,10 +2,10 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { ClaimButton } from 'views/Campaign/components/Reward/ClaimButton'
-import { Countdown } from 'views/Quest/components/Reward/Countdown'
-import { Questers } from 'views/Quest/components/Reward/Questers'
+// import { Countdown } from 'views/Quest/components/Reward/Countdown'
+// import { Questers } from 'views/Quest/components/Reward/Questers'
 import { RemainMessage } from 'views/Quest/components/Reward/RemainMessage'
-import { RewardAmount } from 'views/Quest/components/Reward/RewardAmount'
+// import { RewardAmount } from 'views/Quest/components/Reward/RewardAmount'
 import { SuccessMessage } from 'views/Quest/components/Reward/SuccessMessage'
 import { TotalRewards } from 'views/Quest/components/Reward/TotalRewards'
 import { Winners } from 'views/Quest/components/Reward/Winners'
@@ -32,10 +32,10 @@ export const Reward = () => {
           <Text fontSize={['24px']} bold mb={['24px', '24px', '40px']}>
             {t('Reward')}
           </Text>
-          <RewardAmount />
-          <Countdown />
+          {/* <RewardAmount /> */}
+          {/* <Countdown /> */}
           <TotalRewards />
-          <Questers />
+          {/* <Questers /> */}
           <ClaimButton />
           <RemainMessage />
           <SuccessMessage />
