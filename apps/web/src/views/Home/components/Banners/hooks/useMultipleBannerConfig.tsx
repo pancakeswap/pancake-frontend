@@ -9,7 +9,7 @@ import { MultiChainBanner } from '../MultichainBanner'
 import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
 import { OptionsBanner } from '../OptionsBanner'
 import { PaymasterBanner } from '../PaymasterBanner'
-import PerpetualBanner from '../PerpetualBanner'
+import { PerpetualSeasonalBanner } from '../PerpetualSeasonalBanner'
 import UserBanner from '../UserBanner'
 import { V4InfoBanner } from '../V4InfoBanner'
 import { VeCakeBanner } from '../VeCakeBanner'
@@ -85,7 +85,7 @@ export const useMultipleBannerConfig = () => {
       },
       {
         shouldRender: true,
-        banner: <PerpetualBanner />,
+        banner: <PerpetualSeasonalBanner />,
       },
     ]
     return [
