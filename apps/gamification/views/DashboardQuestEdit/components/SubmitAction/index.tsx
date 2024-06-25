@@ -35,22 +35,24 @@ export const SubmitAction = () => {
   }
 
   const handleClickDelete = async () => {
-    try {
-      const response = await fetch(`${GAMIFICATION_API}/quests/${query.id}/delete`, {
-        method: 'DELETE',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'x-secure-token': FAKE_TOKEN,
-        },
-      })
+    if (query?.id) {
+      try {
+        const response = await fetch(`${GAMIFICATION_API}/quests/${query?.id}/delete`, {
+          method: 'DELETE',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'x-secure-token': FAKE_TOKEN,
+          },
+        })
 
-      if (response.ok) {
-        toastSuccess(t('Deleted!'))
-        push('/dashboard')
+        if (response.ok) {
+          toastSuccess(t('Deleted!'))
+          push('/dashboard')
+        }
+      } catch (error) {
+        console.error('Delete quest error: ', error)
       }
-    } catch (error) {
-      console.error('Delete quest error: ', error)
     }
   }
 

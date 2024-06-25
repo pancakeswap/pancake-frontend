@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Box, Button, Flex, PencilIcon, Text, useModal } from '@pancakeswap/uikit'
 import { ChooseQuestModal } from 'views/DashboardCampaignEdit/components/Quests/ChooseQuestModal'
-import { EmptyQuest } from 'views/DashboardCampaignEdit/components/Quests/EmptyQuest'
-import { QuestList } from 'views/DashboardCampaignEdit/components/Quests/QuestList'
+// import { EmptyQuest } from 'views/DashboardCampaignEdit/components/Quests/EmptyQuest'
+// import { QuestList } from 'views/DashboardCampaignEdit/components/Quests/QuestList'
 import { useCampaignEdit } from 'views/DashboardCampaignEdit/context/useCampaignEdit'
 
 export const Quests = () => {
@@ -43,7 +43,7 @@ export const Quests = () => {
           </Button>
         )}
       </Flex>
-      {pickedQuests.length ? <QuestList pickedQuests={pickedQuests} /> : <EmptyQuest />}
+      {/* {pickedQuests.length ? <QuestList pickedQuests={pickedQuests} /> : <EmptyQuest />} */}
     </Box>
   )
 }
