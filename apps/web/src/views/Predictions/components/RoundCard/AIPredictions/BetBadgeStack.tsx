@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, CheckmarkCircleFillIcon, GlassGlobeIcon, useTooltip } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
+import { formatTokenv2 } from 'views/Predictions/helpers'
 
 const BetBadge = styled(Box)<{ $variant?: 'primary' | 'secondary'; $type?: 'UP' | 'DOWN'; $position?: string }>`
   position: absolute;
@@ -79,7 +80,7 @@ interface BetBadgeStackProps {
   userBetType?: 'UP' | 'DOWN'
   userBetPosition?: string
 
-  betAmount?: string | number
+  betAmount?: bigint
 }
 
 export const BetBadgeStack = ({
@@ -108,7 +109,8 @@ export const BetBadgeStack = ({
       <br />
       {betAmount && (
         <>
-          ({betAmount} {config?.token.symbol})
+          ({formatTokenv2(betAmount, config?.token?.decimals ?? 0, config?.displayedDecimals ?? 4)}{' '}
+          {config?.token.symbol})
         </>
       )}
     </>,

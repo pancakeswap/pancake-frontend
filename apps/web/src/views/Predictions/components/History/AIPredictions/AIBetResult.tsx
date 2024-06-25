@@ -173,7 +173,8 @@ export const AIBetResult: React.FC<React.PropsWithChildren<AIBetResultProps>> = 
           <Text bold>{isWinner ? t('Your winnings') : t('Your Result')}:</Text>
           <Box style={{ textAlign: 'right' }}>
             <Text bold color={resultColor}>
-              {getRoundPrefix()}${formatBnb(payout, displayedDecimals)} {tokenSymbol}
+              {getRoundPrefix()}
+              {formatBnb(payout, displayedDecimals)} {tokenSymbol}
             </Text>
             <Text fontSize="12px" color="textSubtle">
               {`~$${totalPayout.toFixed(2)}`}

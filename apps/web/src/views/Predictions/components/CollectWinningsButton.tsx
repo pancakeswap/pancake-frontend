@@ -9,6 +9,11 @@ import CollectRoundWinningsModal from './CollectRoundWinningsModal'
 
 interface CollectWinningsButtonProps extends ButtonProps {
   hasClaimed: boolean
+
+  /**
+   * Success Callback.
+   * Note: fetchNodeHistory is called after this callback to refetch the history
+   */
   onSuccess?: () => Promise<void>
 }
 

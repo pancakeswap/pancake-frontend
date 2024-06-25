@@ -115,11 +115,7 @@ export const AIExpiredRoundCard: React.FC<React.PropsWithChildren<AIExpiredRound
           epoch={round.epoch}
         />
         <CardBody p="16px" style={{ position: 'relative' }}>
-          <BetBadgeStack
-            aiBetType={aiPosition}
-            userBetType={userPosition}
-            betAmount={formatBigInt(betAmount ?? 0n, config?.displayedDecimals ?? 4, 18)}
-          />
+          <BetBadgeStack aiBetType={aiPosition} userBetType={userPosition} betAmount={betAmount} />
           {(hasClaimedUp || hasClaimedDown) && (
             <EnteredTagWrapper style={userPosition === 'UP' ? { top: '20px' } : { bottom: '20px' }}>
               <AIEnteredTag
