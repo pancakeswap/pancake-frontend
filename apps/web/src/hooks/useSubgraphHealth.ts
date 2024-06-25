@@ -5,17 +5,10 @@ import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useInitialBlockNumber } from '@pancakeswap/wagmi'
 import { useEffect, useMemo, useState } from 'react'
-
-export enum SubgraphStatus {
-  OK,
-  WARNING,
-  NOT_OK,
-  UNKNOWN,
-  DOWN,
-}
+import { ApiStatus } from 'hooks/types'
 
 export type SubgraphHealthState = {
-  status: SubgraphStatus
+  status: ApiStatus
   chainId: number
   subgraph: string
   currentBlock: number
@@ -79,7 +72,7 @@ const useSubgraphHealth = ({ chainId, subgraph }: { chainId: ChainId; subgraph?:
     placeholderData: (prev) => {
       if (!prev || prev.chainId !== chainId || prev.subgraph !== subgraph) {
         return {
-          status: SubgraphStatus.UNKNOWN,
+          status: ApiStatus.UNKNOWN,
           currentBlock: 0,
           chainHeadBlock: 0,
           latestBlock: 0,
@@ -158,24 +151,24 @@ const useSubgraphHealth = ({ chainId, subgraph }: { chainId: ChainId; subgraph?:
           chainHeadBlockDifference > NOT_OK_BLOCK_DIFFERENCE
         ) {
           return {
-            status: SubgraphStatus.NOT_OK,
+            status: ApiStatus.NOT_OK,
             ...sgHealthData,
           }
         }
         if (blockDifference > WARNING_BLOCK_DIFFERENCE || chainHeadBlockDifference > WARNING_BLOCK_DIFFERENCE) {
           return {
-            status: SubgraphStatus.WARNING,
+            status: ApiStatus.WARNING,
             ...sgHealthData,
           }
         }
         return {
-          status: SubgraphStatus.OK,
+          status: ApiStatus.OK,
           ...sgHealthData,
         }
       } catch (error) {
         console.error(`Failed to perform health check for ${subgraph} subgraph`, error)
         return {
-          status: SubgraphStatus.DOWN,
+          status: ApiStatus.DOWN,
           currentBlock: -1,
           chainHeadBlock: 0,
           latestBlock: -1,

@@ -5,6 +5,7 @@ import Benefits from 'views/AffiliatesProgram/components/Overview/Benefits'
 import HowItWork from 'views/AffiliatesProgram/components/Overview/HowItWork'
 import Question from 'views/AffiliatesProgram/components/Overview/Question'
 import RewardCalculate from 'views/AffiliatesProgram/components/Overview/RewardCalculate'
+import { FloatingExplorerHealthIndicator } from 'components/ApiHealthIndicator/FloatingExplorerHealthIndicator'
 // import AffiliateModal from 'views/AffiliatesProgram/components/Dashboard/AffiliateModal'
 
 const AffiliatesProgram = () => {
@@ -17,6 +18,7 @@ const AffiliatesProgram = () => {
       <RewardCalculate />
       <Benefits />
       <Question />
+      <FloatingExplorerHealthIndicator protocol="v3" />
     </AffiliatesProgramLayout>
   )
 }

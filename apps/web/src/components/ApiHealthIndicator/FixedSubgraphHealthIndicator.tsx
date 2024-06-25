@@ -4,7 +4,7 @@ import { ChainId } from '@pancakeswap/chains'
 
 import { GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
 
-const SubgraphHealthIndicator = dynamic(() => import('components/SubgraphHealthIndicator'), { ssr: false })
+const SubgraphHealthIndicator = dynamic(() => import('components/ApiHealthIndicator'), { ssr: false })
 
 export const FixedSubgraphHealthIndicator = () => {
   const { pathname } = useRouter()

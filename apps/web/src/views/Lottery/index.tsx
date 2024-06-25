@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Heading, PageSection, Skeleton } from '@pancakeswap/uikit'
-import { LotterySubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
+import { LotterySubgraphHealthIndicator } from 'components/ApiHealthIndicator'
 import { LotteryStatus } from 'config/constants/types'
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'

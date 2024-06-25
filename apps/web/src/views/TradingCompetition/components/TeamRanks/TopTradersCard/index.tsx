@@ -11,7 +11,7 @@ import {
   Flex,
   ExpandableLabel,
 } from '@pancakeswap/uikit'
-import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
+import SubgraphHealthIndicator from 'components/ApiHealthIndicator'
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
 import { LeaderboardDataItem, TeamRanksProps } from '../../../types'

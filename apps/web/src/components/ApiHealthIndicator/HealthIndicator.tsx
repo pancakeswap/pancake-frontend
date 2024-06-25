@@ -2,10 +2,12 @@ import { useTranslation, TranslateFunction } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
 import { Card, Flex, Box, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { useSubgraphHealthIndicatorManager } from 'state/user/hooks'
-import useSubgraphHealth, { SubgraphStatus } from 'hooks/useSubgraphHealth'
+import useSubgraphHealth from 'hooks/useSubgraphHealth'
 import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
 import { ChainId, chainNames, getChainName } from '@pancakeswap/chains'
 import { useMemo } from 'react'
+import useExplorerHealth from 'hooks/useExplorerHealth'
+import { ApiStatus } from 'hooks/types'
 
 const StyledCard = styled(Card)`
   border-radius: 8px;
@@ -71,16 +73,16 @@ const indicator = (t: TranslateFunction, chainName: string, customDescriptions?:
 
 type Indicator = keyof ReturnType<typeof indicator>
 
-const getIndicator = (sgStatus: SubgraphStatus): Indicator => {
-  if (sgStatus === SubgraphStatus.NOT_OK) {
+const getIndicator = (apiStatus: ApiStatus): Indicator => {
+  if (apiStatus === ApiStatus.NOT_OK) {
     return 'delayed'
   }
 
-  if (sgStatus === SubgraphStatus.WARNING) {
+  if (apiStatus === ApiStatus.WARNING) {
     return 'slow'
   }
 
-  if (sgStatus === SubgraphStatus.DOWN) {
+  if (apiStatus === ApiStatus.DOWN) {
     return 'down'
   }
 
@@ -93,26 +95,74 @@ export interface BlockResponse {
   }[]
 }
 
-export type SubgraphHealthIndicatorProps = React.PropsWithChildren<{
+export type HealthIndicatorProps = React.PropsWithChildren<{
   chainId: ChainId
-  subgraph: string
   inline?: boolean
   customDescriptions?: CustomDescriptions
   obeyGlobalSetting?: boolean
 }>
 
-export const SubgraphHealthIndicator: React.FC<SubgraphHealthIndicatorProps> = ({
+export type SubgraphHealthIndicatorProps = HealthIndicatorProps & {
+  subgraph: string
+}
+
+export type ExplorerHealthIndicatorProps = HealthIndicatorProps & {
+  protocol: 'v2' | 'v3' | 'stable'
+}
+
+export type BaseHealthIndicatorProps = React.PropsWithChildren<{
+  chainId: ChainId
+  status: ApiStatus
+  currentBlock: number
+  blockDifference: number
+  latestBlock: number
+  inline?: boolean
+  customDescriptions?: CustomDescriptions
+  obeyGlobalSetting?: boolean
+}>
+
+export const SubgraphHealthIndicator: React.FC<SubgraphHealthIndicatorProps> = ({ chainId, subgraph, ...props }) => {
+  const { status, currentBlock, blockDifference, latestBlock } = useSubgraphHealth({ chainId, subgraph })
+  return (
+    <HealthIndicator
+      chainId={chainId}
+      status={status}
+      currentBlock={currentBlock}
+      blockDifference={blockDifference}
+      latestBlock={latestBlock}
+      {...props}
+    />
+  )
+}
+
+export const ExplorerHealthIndicator: React.FC<ExplorerHealthIndicatorProps> = ({ chainId, protocol, ...props }) => {
+  const { status, currentBlock, blockDifference, latestBlock } = useExplorerHealth({ chainId, protocol })
+  console.info(status)
+  return (
+    <HealthIndicator
+      chainId={chainId}
+      status={status}
+      currentBlock={currentBlock}
+      blockDifference={blockDifference}
+      latestBlock={latestBlock}
+      {...props}
+    />
+  )
+}
+
+export const HealthIndicator: React.FC<BaseHealthIndicatorProps> = ({
   chainId,
-  subgraph,
+  status,
+  currentBlock,
+  blockDifference,
+  latestBlock,
   inline,
   customDescriptions,
   obeyGlobalSetting = true,
 }) => {
   const { t } = useTranslation()
-  const { status, currentBlock, blockDifference, latestBlock } = useSubgraphHealth({ chainId, subgraph })
   const [alwaysShowIndicator] = useSubgraphHealthIndicatorManager()
-  const forceIndicatorDisplay =
-    status === SubgraphStatus.WARNING || status === SubgraphStatus.NOT_OK || status === SubgraphStatus.DOWN
+  const forceIndicatorDisplay = status === ApiStatus.WARNING || status === ApiStatus.NOT_OK || status === ApiStatus.DOWN
   const showIndicator = (obeyGlobalSetting && alwaysShowIndicator) || forceIndicatorDisplay
   const chainName = useMemo(
     () =>
@@ -134,7 +184,7 @@ export const SubgraphHealthIndicator: React.FC<SubgraphHealthIndicatorProps> = (
       currentBlock={currentBlock}
       secondRemainingBlockSync={secondRemainingBlockSync}
       blockNumberFromSubgraph={latestBlock}
-      showBlockInfo={status !== SubgraphStatus.DOWN}
+      showBlockInfo={status !== ApiStatus.DOWN}
       {...current}
     />,
     {

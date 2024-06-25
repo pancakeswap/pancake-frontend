@@ -10,6 +10,7 @@ import { AddLiquidityV3Layout, UniversalAddLiquidity } from 'views/AddLiquidityV
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { useCurrencyParams } from 'views/AddLiquidityV3/hooks/useCurrencyParams'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
+import { FloatingExplorerHealthIndicator } from 'components/ApiHealthIndicator/FloatingExplorerHealthIndicator'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
@@ -78,6 +79,7 @@ const AddLiquidityPage = () => {
             preferredSelectType={!feeAmount ? preferFarmType?.type : undefined}
             preferredFeeAmount={!feeAmount ? preferFarmType?.feeAmount : undefined}
           />
+          <FloatingExplorerHealthIndicator protocol="v3" />
         </AddLiquidityV3Layout>
       </LiquidityFormProvider>
     </AddLiquidityV2FormProvider>
