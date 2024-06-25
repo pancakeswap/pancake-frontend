@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { Pair } from '@pancakeswap/aptos-swap-sdk'
 import { parseTypeTag } from '@aptos-labs/ts-sdk'
-import { HexString } from 'aptos'
+import { HexString } from '@pancakeswap/awgmi'
 import _get from 'lodash/get'
 
 export default function splitTypeTag(resourceType) {

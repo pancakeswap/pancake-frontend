@@ -64,6 +64,7 @@ test('exports', () => {
       "isHexStringEquals",
       "parseVmStatusError",
       "fetchAptosView",
+      "HexString",
     ]
   `)
 })

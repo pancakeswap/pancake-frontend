@@ -1,6 +1,6 @@
-import { Hex, AccountAddress } from '@aptos-labs/ts-sdk'
-import { HexString } from 'aptos'
+import { AccountAddress } from '@aptos-labs/ts-sdk'
 
+import { HexString } from './hexString'
 import { Address } from './types'
 
 export const isAccountAddress = (addr: string): addr is Address => {
