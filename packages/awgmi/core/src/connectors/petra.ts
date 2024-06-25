@@ -4,6 +4,7 @@ import { Chain } from '../chain'
 import { ConnectorNotFoundError } from '../errors'
 import { Connector } from './base'
 import { Aptos, Account, SignMessagePayload, SignMessageResponse } from './types'
+import { convertTransactionPayloadToOldFormat } from '../transactions/payloadTransformer'
 
 declare global {
   interface Window {
@@ -98,13 +99,13 @@ export class PetraConnector extends Connector<Window['aptos'], PetraConnectorOpt
   async signAndSubmitTransaction(tx: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signAndSubmitTransaction(tx)
+    return provider.signAndSubmitTransaction(convertTransactionPayloadToOldFormat(tx) as any)
   }
 
   async signTransaction(tx: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signTransaction(tx)
+    return provider.signTransaction(convertTransactionPayloadToOldFormat(tx) as any)
   }
 
   async signMessage(message: SignMessagePayload): Promise<SignMessageResponse> {
