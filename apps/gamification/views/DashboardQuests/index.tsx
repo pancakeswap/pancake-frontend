@@ -23,6 +23,7 @@ export const DashboardQuests = () => {
   }, [pickMultiSelect])
 
   const { questsData, isFetching } = useFetchAllQuests({
+    chainIdList: chainsValuePicked,
     completionStatus: convertIndexToStatus(statusButtonIndex),
   })
 

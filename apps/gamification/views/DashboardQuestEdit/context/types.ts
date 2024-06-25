@@ -4,6 +4,7 @@ import { Address } from 'viem'
 import { CompletionStatus, RewardType, TaskType } from 'views/DashboardQuestEdit/type'
 
 export interface StateType {
+  id: string
   orgId: string
   chainId: ChainId
   completionStatus: CompletionStatus
@@ -20,6 +21,7 @@ export interface StateType {
   // For api return
   startDateTime: number
   endDateTime: number
+  numberOfParticipants: number
 }
 
 export interface TaskBaseConfig {

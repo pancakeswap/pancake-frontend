@@ -26,9 +26,11 @@ export const SubmitAction = () => {
   const { toastSuccess } = useToast()
   const { state, tasks, isChanged } = useQuestEdit()
   const [openModal, setOpenModal] = useState(false)
+  const [isSubmitError, setIsSubmitError] = useState(false)
   const completionStatusToString = state.completionStatus.toString()
 
   const handleClick = () => {
+    setIsSubmitError(false)
     setOpenModal(true)
   }
 
@@ -56,6 +58,7 @@ export const SubmitAction = () => {
 
   const handleSave = async (isCreate: boolean, completionStatus: CompletionStatus) => {
     try {
+      setIsSubmitError(false)
       const url = isCreate ? `${GAMIFICATION_API}/quests/create` : `${GAMIFICATION_API}/quests/${query.id}/update`
       const method = isCreate ? 'POST' : 'PUT'
 
@@ -87,6 +90,7 @@ export const SubmitAction = () => {
         push('/dashboard')
       }
     } catch (error) {
+      setIsSubmitError(true)
       console.error('Submit quest  error: ', error)
     }
   }
@@ -121,9 +125,14 @@ export const SubmitAction = () => {
     <Flex flexDirection="column" mt="30px">
       {openModal && (
         <ActionModal
+          quest={{
+            ...state,
+            task: tasks,
+          }}
+          isSubmitError={isSubmitError}
           openModal={openModal}
           setOpenModal={setOpenModal}
-          handleSave={() => handleSave(Boolean(query.id), CompletionStatus.SCHEDULED)}
+          handleSave={() => handleSave(Boolean(!query.id), CompletionStatus.SCHEDULED)}
         />
       )}
       {query.id &&

@@ -1,10 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
+import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
 import { Row } from 'views/DashboardQuests/components/Row'
 import { TableHeader } from 'views/DashboardQuests/components/TableHeader'
-import { AllSingleQuestData } from 'views/DashboardQuests/type'
 
 const StyledRows = styled(Box)`
   > div {
@@ -22,7 +22,7 @@ const StyledRows = styled(Box)`
 
 interface RecordsProps {
   isFetching: boolean
-  questsData: AllSingleQuestData[]
+  questsData: SingleQuestData[]
   statusButtonIndex: CompletionStatusIndex
 }
 

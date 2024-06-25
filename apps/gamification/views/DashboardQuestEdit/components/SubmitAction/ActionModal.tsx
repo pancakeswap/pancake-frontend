@@ -6,6 +6,7 @@ import { Default } from 'views/DashboardQuestEdit/components/SubmitAction/Defaul
 import { Fail } from 'views/DashboardQuestEdit/components/SubmitAction/Fail'
 import { Finished } from 'views/DashboardQuestEdit/components/SubmitAction/Finished'
 import { Loading } from 'views/DashboardQuestEdit/components/SubmitAction/Loading'
+import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { Quest } from 'views/Quests/components/Quest'
 
 interface ModalConfig {
@@ -24,16 +25,24 @@ export enum QuestEditModalState {
 
 interface ActionModalProps {
   openModal: boolean
+  isSubmitError: boolean
+  quest: SingleQuestData
   handleSave: () => Promise<void>
   setOpenModal: (val: boolean) => void
 }
 
-export const ActionModal: React.FC<ActionModalProps> = ({ openModal, handleSave, setOpenModal }) => {
+export const ActionModal: React.FC<ActionModalProps> = ({
+  quest,
+  isSubmitError,
+  openModal,
+  handleSave,
+  setOpenModal,
+}) => {
   const { t } = useTranslation()
   const router = useRouter()
   const [modalView, setModalView] = useState<QuestEditModalState>(QuestEditModalState.DEFAULT)
 
-  const questComponent = <Quest mb="24px" width="100%" showStatus hideClick />
+  const questComponent = <Quest mb="24px" width="100%" quest={quest} showStatus hideClick />
 
   const closeModal = () => {
     setOpenModal(false)
@@ -43,10 +52,11 @@ export const ActionModal: React.FC<ActionModalProps> = ({ openModal, handleSave,
     setModalView(QuestEditModalState.LOADING)
     await handleSave()
 
-    setTimeout(() => {
-      // setModalView(QuestEditModalState.FAILED)
+    if (isSubmitError) {
+      setModalView(QuestEditModalState.FAILED)
+    } else {
       setModalView(QuestEditModalState.FINISHED)
-    }, 3000)
+    }
   }
 
   const handleFinished = () => {

@@ -81,15 +81,15 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...p
           <Flex mb="16px">
             {showStatus && (
               <Tag variant="textDisabled" outline mr="auto">
-                {quest.completionStatus === CompletionStatus.DRAFTED && (
+                {quest?.completionStatus === CompletionStatus.DRAFTED && (
                   <Tag variant="textDisabled">{t('Drafted')}</Tag>
                 )}
-                {quest.completionStatus === CompletionStatus.ONGOING && (
+                {quest?.completionStatus === CompletionStatus.ONGOING && (
                   <Text bold color="secondary">
                     {t('Ongoing')}
                   </Text>
                 )}
-                {quest.completionStatus === CompletionStatus.FINISHED && (
+                {quest?.completionStatus === CompletionStatus.FINISHED && (
                   <Text bold color="textDisabled">
                     {t('Finished')}
                   </Text>

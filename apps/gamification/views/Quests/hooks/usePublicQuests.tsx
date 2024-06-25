@@ -1,13 +1,14 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
+import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
-import { AllDashboardQuestsType, AllSingleQuestData, Pagination } from 'views/DashboardQuests/type'
+import { AllDashboardQuestsType, Pagination } from 'views/DashboardQuests/type'
 
 export const PAGE_SIZE = 100
 
 export interface FetchAllPublicQuestDataResponse {
-  data: AllSingleQuestData[]
+  data: SingleQuestData[]
   pagination: Pagination
 }
 

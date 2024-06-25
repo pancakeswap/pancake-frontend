@@ -7,11 +7,7 @@ export interface Pagination {
   dataInPage: number
 }
 
-export interface AllSingleQuestData extends SingleQuestData {
-  numberOfParticipants: number
-}
-
 export interface AllDashboardQuestsType {
-  quests: AllSingleQuestData[]
+  quests: SingleQuestData[]
   pagination: Pagination
 }

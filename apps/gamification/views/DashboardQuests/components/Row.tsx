@@ -8,9 +8,9 @@ import { MouseEvent, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
 import { StyledCell } from 'views/DashboardCampaigns/components/TableStyle'
+import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
 import { convertTimestampToDate } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
-import { AllSingleQuestData } from 'views/DashboardQuests/type'
 
 const StyledRow = styled.div`
   background-color: transparent;
@@ -48,7 +48,7 @@ const StyledDropdown = styled(Dropdown)`
 `
 
 interface RowProps {
-  quest: AllSingleQuestData
+  quest: SingleQuestData
   statusButtonIndex: CompletionStatusIndex
 }
 

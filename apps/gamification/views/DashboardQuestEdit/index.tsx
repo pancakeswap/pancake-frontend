@@ -39,6 +39,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
         router.push('/dashboard')
       } else {
         const {
+          id,
           orgId,
           chainId,
           completionStatus,
@@ -50,11 +51,13 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
           rewardSCAddress,
           ownerAddress,
           task,
+          numberOfParticipants,
         } = questData as SingleQuestData
         const startDateConvert = startDateTime ? new Date(convertDateAndTime(startDateTime)) : null
         const endDateConvert = startDateTime ? new Date(convertDateAndTime(endDateTime)) : null
 
         updateAllState({
+          id,
           chainId,
           orgId,
           completionStatus,
@@ -69,6 +72,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
           endDateTime,
           rewardSCAddress,
           ownerAddress,
+          numberOfParticipants,
         })
 
         onTasksChange(task)

@@ -19,6 +19,7 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
   const [isChanged, setIsChanged] = useState<boolean>(false)
   const [tasks, setTasks] = useState<TaskConfigType[]>([])
   const [state, setState] = useState<StateType>(() => ({
+    id: '',
     orgId: '',
     chainId: ChainId.BSC,
     completionStatus: CompletionStatus.DRAFTED,
@@ -35,6 +36,7 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
     // For api return
     startDateTime: 0,
     endDateTime: 0,
+    numberOfParticipants: 0,
   }))
 
   const updateAllState = useCallback((stateData: StateType) => {

@@ -5,7 +5,6 @@ import { StateType, TaskConfigType } from 'views/DashboardQuestEdit/context/type
 import { FAKE_TOKEN } from 'views/DashboardQuestEdit/utils/FAKE_TOKEN'
 
 export interface SingleQuestData extends StateType {
-  id: string
   task: TaskConfigType[]
 }
 
