@@ -32,7 +32,7 @@ export async function fetchFormattedBalance({
     resourceType: wrapCoinStoreTypeTag(coin || APTOS_COIN),
   })
 
-  const { value } = (resource.data as CoinStoreResult).coin
+  const { value } = (resource as CoinStoreResult).coin
 
   const { decimals, symbol } = await fetchCoin({ networkName, coin })
 

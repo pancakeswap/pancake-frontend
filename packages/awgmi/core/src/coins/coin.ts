@@ -49,7 +49,7 @@ export async function fetchCoin({ networkName, coin }: FetchCoinArgs): Promise<F
         resourceType: wrapCoinInfoTypeTag(coin),
       })
 
-      const { decimals = 18, symbol, name, supply: _supply } = coinResource.data as CoinResourceResponse
+      const { decimals = 18, symbol, name, supply: _supply } = coinResource as CoinResourceResponse
 
       let supply: string | undefined
 
