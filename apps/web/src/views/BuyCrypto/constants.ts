@@ -38,7 +38,6 @@ export enum ONRAMP_PROVIDERS {
   Mercuryo = 'Mercuryo',
   Transak = 'Transak',
   Topper = 'Topper',
-  Paymonade = 'Paymonade',
 }
 
 export enum WidgetTheme {
@@ -66,7 +65,6 @@ export const PROVIDER_ICONS = {
   [ONRAMP_PROVIDERS.Mercuryo]: `${ASSET_CDN}/web/onramp/mercuryo.svg`,
   [ONRAMP_PROVIDERS.Transak]: `${ASSET_CDN}/web/onramp/transak.svg`,
   [ONRAMP_PROVIDERS.Topper]: `${ASSET_CDN}/web/onramp/topper.png`,
-  [ONRAMP_PROVIDERS.Paymonade]: `${ASSET_CDN}/web/onramp/paymonade.png`,
 } satisfies Record<keyof typeof ONRAMP_PROVIDERS, string>
 
 export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: FeeTypes[] } = {
@@ -74,7 +72,6 @@ export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: FeeTypes[] } = 
   [ONRAMP_PROVIDERS.Mercuryo]: MERCURYO_FEE_TYPES,
   [ONRAMP_PROVIDERS.Transak]: MOONPAY_FEE_TYPES,
   [ONRAMP_PROVIDERS.Topper]: MOONPAY_FEE_TYPES,
-  [ONRAMP_PROVIDERS.Paymonade]: MERCURYO_FEE_TYPES,
 }
 
 export const getNetworkDisplay = (chainId: number | undefined): string => {
@@ -169,7 +166,6 @@ export const combinedNetworkIdMap: {
   [ONRAMP_PROVIDERS.Mercuryo]: chainIdToMercuryoNetworkId,
   [ONRAMP_PROVIDERS.Transak]: chainIdToTransakNetworkId,
   [ONRAMP_PROVIDERS.Topper]: chainIdToTopperNetworkId,
-  [ONRAMP_PROVIDERS.Paymonade]: chainIdToTopperNetworkId,
 }
 
 export const selectCurrencyField = (unit: OnRampUnit, mode: string) => {
