@@ -1,8 +1,6 @@
+import { MiscellaneousIcon, Text, useTooltip } from "@pancakeswap/uikit";
 import { forwardRef, useMemo } from "react";
 import styled from "styled-components";
-import { useTooltip } from "../../hooks";
-import { MiscellaneousIcon } from "../Svg";
-import { Text } from "../Text";
 
 export type FeatureStackProps = {
   features: React.ReactNode[];
