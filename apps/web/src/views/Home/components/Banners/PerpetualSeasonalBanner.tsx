@@ -25,7 +25,7 @@ const bgMobile = `${ASSET_CDN}/web/banners/perpetual-season-banner/bunny-bg-mobi
 const bgDesktop = `${ASSET_CDN}/web/banners/perpetual-season-banner/bunny-bg.png`
 const floatingAsset = `${ASSET_CDN}/web/banners/perpetual-season-banner/floating.png`
 const arbLogo = `${ASSET_CDN}/web/banners/perpetual-season-banner/arbSimplifiedLogo.png`
-const apxLogo = `${ASSET_CDN}/web/banners/perpetual-season-banner/apolloXCampaignLogo.png`
+const apxLogo = `${ASSET_CDN}/web/banners/perpetual-season-banner/ApolloXCampaignLogo.png`
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,
