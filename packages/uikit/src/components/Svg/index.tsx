@@ -34,6 +34,7 @@ export { default as BunnyPlaceholderIcon } from "./Icons/BunnyPlaceholder";
 export { default as CalculateIcon } from "./Icons/Calculate";
 export { default as CalenderIcon } from "./Icons/Calender";
 export { default as CameraIcon } from "./Icons/Camera";
+export { default as CandleGraphIcon } from "./Icons/CandleGraph";
 export { default as CardViewIcon } from "./Icons/CardView";
 export { default as Cards } from "./Icons/Cards";
 export { default as ChartIcon } from "./Icons/Chart";

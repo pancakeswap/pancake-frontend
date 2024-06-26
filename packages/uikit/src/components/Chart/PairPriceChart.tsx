@@ -14,8 +14,17 @@ export enum PairDataTimeWindowEnum {
   YEAR,
 }
 
-export type SwapLineChartNewProps = {
-  data?: any[] | { time: Date; value: number }[];
+export enum PairPriceChartType {
+  LINE,
+  CANDLE,
+}
+
+export type PairPriceChartNewProps = {
+  data?:
+    | any[]
+    | { time: Date; value: number }[]
+    | { time: Date; open: number; low: number; high: number; value: number }[];
+  type?: PairPriceChartType;
   setHoverValue?: Dispatch<SetStateAction<number | undefined>>; // used for value on hover
   setHoverDate?: Dispatch<SetStateAction<string | undefined>>; // used for value label on hover
   isChangePositive: boolean;
@@ -39,9 +48,8 @@ const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
 };
 
 const getHandler = (
-  transformedData: { time: UTCTimestamp; value: any }[],
   chart: IChartApi,
-  newSeries: ISeriesApi<"Area">,
+  newSeries: ISeriesApi<"Area"> | ISeriesApi<"Candlestick">,
   locale: string,
   setHoverValue: Dispatch<SetStateAction<number | undefined>> | undefined,
   setHoverDate: Dispatch<SetStateAction<string | undefined>> | undefined,
@@ -51,12 +59,6 @@ const getHandler = (
     if (newSeries && param) {
       const timestamp = param.time as number;
       if (!timestamp) return;
-      const lastItem = transformedData.length > 0 ? transformedData[transformedData.length - 1] : undefined;
-      if (lastItem?.time === param.time) {
-        if (setHoverValue) setHoverValue(undefined);
-        if (setHoverDate) setHoverDate(undefined);
-        return;
-      }
       const now = new Date(timestamp * 1000);
       const time = `${now.toLocaleString(locale, {
         year: "numeric",
@@ -66,7 +68,9 @@ const getHandler = (
         minute: "2-digit",
       })}`;
       // @ts-ignore
-      const parsed = (param.seriesData.get(newSeries)?.value ?? 0) as number | undefined;
+      const parsed = (param.seriesData.get(newSeries)?.value ?? param.seriesData.get(newSeries)?.close ?? 0) as
+        | number
+        | undefined;
       if (parsed && param.time && isMobile) {
         chart.setCrosshairPosition(parsed, param.time, newSeries);
       }
@@ -79,8 +83,9 @@ const getHandler = (
   };
 };
 
-export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
+export const PairPriceChart: React.FC<PairPriceChartNewProps> = ({
   data,
+  type = PairPriceChartType.LINE,
   setHoverValue,
   setHoverDate,
   isChangePositive,
@@ -89,23 +94,28 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
   priceLineData,
   ...rest
 }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation();
   const { isDark } = useTheme();
   const { isMobile } = useMatchBreakpoints();
   const transformedData = useMemo(() => {
     return (
-      data?.map(({ time, value }) => {
-        return { time: Math.floor(time.getTime() / 1000) as UTCTimestamp, value };
+      data?.map(({ time, ...restValues }) => {
+        return { time: Math.floor(time.getTime() / 1000) as UTCTimestamp, ...restValues };
       }) || []
     );
   }, [data]);
-  const {
-    currentLanguage: { locale },
-  } = useTranslation();
   const chartRef = useRef<HTMLDivElement>(null);
   const colors = useMemo(() => {
     return getChartColors({ isChangePositive });
   }, [isChangePositive]);
   const [chartCreated, setChart] = useState<IChartApi | undefined>();
+
+  const handleResetValue = useCallback(() => {
+    if (setHoverValue) setHoverValue(undefined);
+    if (setHoverDate) setHoverDate(undefined);
+  }, [setHoverValue, setHoverDate]);
 
   useEffect(() => {
     if (!chartRef?.current) return;
@@ -163,13 +173,25 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
         ?.price?.toString()
         ?.split(".")?.[1]?.length ?? 2;
 
-    const newSeries = chart.addAreaSeries({
-      lineWidth: 2,
-      lineColor: colors.gradient1,
-      topColor: colors.gradient1,
-      bottomColor: isDark ? "#3c3742" : "white",
-      priceFormat: { type: "price", precision, minMove: 1 / 10 ** precision },
-    });
+    let newSeries: ISeriesApi<"Area"> | ISeriesApi<"Candlestick">;
+    if (type === PairPriceChartType.LINE) {
+      newSeries = chart.addAreaSeries({
+        lineWidth: 2,
+        lineColor: colors.gradient1,
+        topColor: colors.gradient1,
+        bottomColor: isDark ? "#3c3742" : "white",
+        priceFormat: { type: "price", precision, minMove: 1 / 10 ** precision },
+      });
+    } else {
+      newSeries = chart.addCandlestickSeries({
+        upColor: "#31D0AA",
+        downColor: "#ED4B9E",
+        borderVisible: false,
+        wickUpColor: "#31D0AA",
+        wickDownColor: "#ED4B9E",
+      });
+    }
+
     newSeries.applyOptions({
       priceFormat: {
         type: "price",
@@ -194,17 +216,13 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
     chart.timeScale().fitContent();
 
     if (isMobile) {
-      chart.subscribeClick(
-        getHandler(transformedData, chart, newSeries, locale, setHoverValue, setHoverDate, isMobile)
-      );
-    } else {
-      chart.subscribeCrosshairMove(
-        getHandler(transformedData, chart, newSeries, locale, setHoverValue, setHoverDate, isMobile)
-      );
+      chart.subscribeClick(getHandler(chart, newSeries, locale, setHoverValue, setHoverDate, isMobile));
     }
+    chart.subscribeCrosshairMove(getHandler(chart, newSeries, locale, setHoverValue, setHoverDate, isMobile));
 
     // eslint-disable-next-line consistent-return
     return () => {
+      handleResetValue();
       chart.remove();
     };
   }, [
@@ -214,16 +232,13 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
     isMobile,
     isChartExpanded,
     locale,
+    type,
     timeWindow,
     setHoverDate,
     setHoverValue,
     priceLineData,
+    handleResetValue,
   ]);
-
-  const handleMouseLeave = useCallback(() => {
-    if (setHoverValue) setHoverValue(undefined);
-    if (setHoverDate) setHoverDate(undefined);
-  }, [setHoverValue, setHoverDate]);
 
   return (
     <>
@@ -231,12 +246,12 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
       <div
         onPointerDownCapture={(event) => event.stopPropagation()}
         style={{ display: "flex", flex: 1, height: "100%" }}
-        onMouseLeave={handleMouseLeave}
+        onMouseLeave={handleResetValue}
       >
-        <div style={{ flex: 1, maxWidth: "100%" }} ref={chartRef} id="swap-line-chart" {...rest} />
+        <div style={{ flex: 1, maxWidth: "100%" }} ref={chartRef} id="pair-price-chart" {...rest} />
       </div>
     </>
   );
 };
 
-export default SwapLineChart;
+export default PairPriceChart;

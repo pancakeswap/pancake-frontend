@@ -3425,5 +3425,7 @@
   "Stake CAKE to obtain bCAKE – to boost farm yields.": "Stake CAKE to obtain bCAKE – to boost farm yields.",
   "Switch chain to continue": "Switch chain to continue",
   "Lock Cake to get veCAKE on BSC to activate yield booster.": "Lock Cake to get veCAKE on BSC to activate yield booster.",
-  "Sync veCAKE again to update yield booster": "Sync veCAKE again to update yield booster"
+  "Sync veCAKE again to update yield booster": "Sync veCAKE again to update yield booster",
+  "Basic": "Basic",
+  "Candlestick": "Candlestick"
 }
