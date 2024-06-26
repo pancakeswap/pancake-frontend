@@ -50,6 +50,10 @@ export const useMultipleBannerConfig = () => {
       { shouldRender: shouldRenderIfoBanner, banner: <ListaIFOBanner /> },
       {
         shouldRender: true,
+        banner: <PerpetualSeasonalBanner />,
+      },
+      {
+        shouldRender: true,
         banner: <PaymasterBanner />,
       },
       {
@@ -82,10 +86,6 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: isRenderCompetitionBanner,
         banner: <CompetitionBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <PerpetualSeasonalBanner />,
       },
     ]
     return [

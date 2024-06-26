@@ -3,7 +3,6 @@ import apolloXCampaignBgMobile from './ApolloXCampaignBgMobile.png'
 import apolloXCampaignBunny from './ApolloXCampaignBunny.png'
 import apolloXCampaignBunnyMobile from './ApolloXCampaignBunnyMobile.png'
 import apolloXCampaignTitle from './ApolloXCampaignTitle.png'
-import apolloXCampaignLogo from './ApolloXCampaignLogo.png'
 import Aptos from './Aptos.png'
 import AptosXPancakeSwap from './AptosXPancakeSwap.png'
 import ETHBunny from './ETHBunny.png'
@@ -42,7 +41,6 @@ import arbBg from './arbBg.png'
 import arbBgMobile from './arbBgMobile.png'
 import arbBunny from './arbBunny.png'
 import arbLogo from './arbLogo.png'
-import arbSimplifiedLogo from './arbSimplifiedLogo.png'
 import baseBgMobile from './base-bg-mobile.png'
 import baseBg from './base-bg.png'
 import baseBunny from './base-bunny.png'
@@ -92,12 +90,10 @@ export {
   apolloXCampaignBunny,
   apolloXCampaignBunnyMobile,
   apolloXCampaignTitle,
-  apolloXCampaignLogo,
   arbBg,
   arbBgMobile,
   arbBunny,
   arbLogo,
-  arbSimplifiedLogo,
   baseBg,
   baseBgMobile,
   baseBunny,

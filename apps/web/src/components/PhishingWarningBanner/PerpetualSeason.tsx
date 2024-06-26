@@ -3,6 +3,8 @@ import { ArrowForwardIcon, Box, Column, Flex, FlexGap, Link, Text, useMatchBreak
 import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
 import { VerticalDivider } from '@pancakeswap/widgets-internal'
+import { getPerpetualUrl } from 'utils/getPerpetualUrl'
+import { useTheme } from '@pancakeswap/hooks'
 import { ICampaignBanner } from './ICampaignBanner'
 
 const MobileImage = styled.img`
@@ -15,6 +17,8 @@ const MobileImage = styled.img`
 export const PerpetualSeason: ICampaignBanner = () => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
+  const { isDark } = useTheme()
+  const { currentLanguage } = useTranslation()
 
   const content = (
     <Box>
@@ -61,8 +65,11 @@ export const PerpetualSeason: ICampaignBanner = () => {
           color="primary"
           fontSize={['12px', '12px', '14px']}
           style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}
-          data-dd-action-name="stripe-InterfacefeeRefund"
-          href="https://perp.pancakeswap.finance/en/futures/v2/BTCUSD?utm_source=infostripe&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives"
+          href={`${getPerpetualUrl({
+            chainId: 42161,
+            languageCode: currentLanguage.code,
+            isDark,
+          })}&utm_source=infostripe&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives`}
         >
           {t('Start Trading')}
           <ArrowForwardIcon width="14px" color="primary" style={{ marginRight: '-8px' }} />
@@ -81,7 +88,7 @@ export const PerpetualSeason: ICampaignBanner = () => {
   )
 }
 
-PerpetualSeason.stripeImage = `${ASSET_CDN}/web/banners/perpetual-season-banner/stripe.png`
+PerpetualSeason.stripeImage = `${ASSET_CDN} /web/banners/perpetual-season-banner/stripe.png`
 PerpetualSeason.stripeImageWidth = '120px'
 PerpetualSeason.stripeImageAlt = 'Perpetual Season'
 PerpetualSeason.background = 'rgba(118, 69, 217, 1)'

@@ -17,11 +17,15 @@ import {
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
-import { arbSimplifiedLogo, apolloXCampaignLogo } from './images'
+import { useTheme } from '@pancakeswap/hooks'
+import { getPerpetualUrl } from 'utils/getPerpetualUrl'
+import { useMemo } from 'react'
 
 const bgMobile = `${ASSET_CDN}/web/banners/perpetual-season-banner/bunny-bg-mobile.png`
 const bgDesktop = `${ASSET_CDN}/web/banners/perpetual-season-banner/bunny-bg.png`
 const floatingAsset = `${ASSET_CDN}/web/banners/perpetual-season-banner/floating.png`
+const arbLogo = `${ASSET_CDN}/web/banners/perpetual-season-banner/arbSimplifiedLogo.png`
+const apxLogo = `${ASSET_CDN}/web/banners/perpetual-season-banner/apolloXCampaignLogo.png`
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,
@@ -35,8 +39,6 @@ const bgXsVariant: GraphicDetail = {
   height: 182,
 }
 
-const StartTradingLink =
-  'https://perp.pancakeswap.finance/en/futures/v2/BTCUSD?utm_source=homepagebanner&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives'
 const learnMoreLink =
   'https://blog.pancakeswap.finance/articles/trade-on-arbitrum-pancake-swap-perpetual-v2-to-win-300-000-arb?utm_source=homepagebanner&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives'
 
@@ -54,6 +56,18 @@ const StyledFlexContainer = styled(FlexGap)`
 export const PerpetualSeasonalBanner = () => {
   const { t } = useTranslation()
   const { isMobile, isTablet, isMd } = useMatchBreakpoints()
+  const { isDark } = useTheme()
+  const { currentLanguage } = useTranslation()
+
+  const startTradingLink = useMemo(
+    () =>
+      `${getPerpetualUrl({
+        chainId: 42161,
+        languageCode: currentLanguage.code,
+        isDark,
+      })}&utm_source=infostripe&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives`,
+    [currentLanguage, isDark],
+  )
 
   return (
     <BannerContainer>
@@ -61,11 +75,13 @@ export const PerpetualSeasonalBanner = () => {
         badges={
           <StyledFlexContainer gap="8px">
             <PancakeSwapBadge whiteText />
-            {!(isMobile || isMd) ? <Text bold>Perpetual v2</Text> : null}
-            <Image src={arbSimplifiedLogo} alt="arbSimplifiedLogo" width={95} height={24} />
             {!(isMobile || isMd) ? (
-              <Image src={apolloXCampaignLogo} alt="apolloXCampaignLogo" width={105} height={25} />
+              <Text bold color="white">
+                Perpetual v2
+              </Text>
             ) : null}
+            <Image src={arbLogo} alt="arbLogo" width={95} height={24} />
+            {!(isMobile || isMd) ? <Image src={apxLogo} alt="apxLogo" width={105} height={25} /> : null}
           </StyledFlexContainer>
         }
         title={
@@ -97,7 +113,7 @@ export const PerpetualSeasonalBanner = () => {
               </LinkExternalAction>
             ) : (
               <>
-                <LinkExternalAction color="white" href={StartTradingLink} externalIcon="arrowForward">
+                <LinkExternalAction color="white" href={startTradingLink} externalIcon="arrowForward">
                   {t('Start Trading')}
                 </LinkExternalAction>
                 <VerticalDivider />
