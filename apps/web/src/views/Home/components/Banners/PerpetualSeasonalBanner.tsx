@@ -65,7 +65,7 @@ export const PerpetualSeasonalBanner = () => {
         chainId: 42161,
         languageCode: currentLanguage.code,
         isDark,
-      })}&utm_source=infostripe&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives`,
+      })}&utm_source=homepagebanner&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives`,
     [currentLanguage, isDark],
   )
 
