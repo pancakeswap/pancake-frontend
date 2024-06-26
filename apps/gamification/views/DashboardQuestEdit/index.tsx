@@ -30,7 +30,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
   const router = useRouter()
   const [showPage, setShowPage] = useState(false)
   const { isDesktop } = useMatchBreakpoints()
-  const { state, tasks: stateTasks, updateValue, onTasksChange, updateAllState } = useQuestEdit()
+  const { state, updateValue, onTasksChange, updateAllState } = useQuestEdit()
   const { questData, isFetched } = useGetSingleQuestData(questId as string)
 
   useEffect(() => {

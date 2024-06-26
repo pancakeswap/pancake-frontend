@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, CalenderIcon, DeleteOutlineIcon, Flex, PencilIcon, useModal, useToast } from '@pancakeswap/uikit'
+import { useQueryClient } from '@tanstack/react-query'
 import { GAMIFICATION_API } from 'config/constants/endpoints'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
@@ -28,6 +29,7 @@ export const SubmitAction = () => {
   const [openModal, setOpenModal] = useState(false)
   const [isSubmitError, setIsSubmitError] = useState(false)
   const completionStatusToString = state.completionStatus.toString()
+  const queryClient = useQueryClient()
 
   const handleClick = () => {
     setIsSubmitError(false)
@@ -88,6 +90,9 @@ export const SubmitAction = () => {
       })
 
       if (response.ok) {
+        queryClient.invalidateQueries({
+          queryKey: ['fetch-single-quest-dashboard-data', query.id],
+        })
         toastSuccess(t('Submit Successfully!'))
         push('/dashboard')
       }
