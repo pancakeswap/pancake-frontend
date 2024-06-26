@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { CAKE, getTokensByChain } from '@pancakeswap/tokens'
-import { Box, Button, Flex, InjectedModalProps, Modal } from '@pancakeswap/uikit'
+import { Box, Button, Flex, InjectedModalProps, Input, Modal, Text } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { BigNumber } from 'bignumber.js'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
@@ -23,16 +23,19 @@ interface ModalConfig {
 
 interface AddRewardModalProps extends InjectedModalProps {
   reward: undefined | QuestRewardType
-  handlePickedRewardToken: (value: Currency, totalRewardAmount: number) => void
+  amountOfWinners: number
+  handlePickedRewardToken: (value: Currency, totalRewardAmount: number, amountOfWinnersInModal: number) => void
 }
 
 export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProps>> = ({
   reward,
+  amountOfWinners,
   handlePickedRewardToken,
   onDismiss,
 }) => {
   const { t } = useTranslation()
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.currencyInput)
+  const [amountOfWinnersInModal, setAmountOfWinnersInModal] = useState(0)
   const { chainId } = useActiveWeb3React()
 
   const defaultInputCurrency = useMemo((): Currency => {
@@ -40,6 +43,11 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     const findToken = list.find((i) => i.address.toLowerCase() === reward?.currency?.address?.toLowerCase())
     return findToken || (CAKE as any)?.[chainId]
   }, [chainId, reward])
+
+  const displayAmountOfWinnersInModal = useMemo(
+    () => amountOfWinnersInModal || amountOfWinners || 0,
+    [amountOfWinners, amountOfWinnersInModal],
+  )
 
   const [inputCurrency, setInputCurrency] = useState<Currency>(defaultInputCurrency)
   const [stakeAmount, setStakeAmount] = useState(reward?.totalRewardAmount?.toString() ?? '')
@@ -72,8 +80,14 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     setModalView(CurrencyModalView.currencyInput)
   }, [])
 
+  const handleInputAmount = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.validity.valid) {
+      setAmountOfWinnersInModal(Number(e.target.value))
+    }
+  }, [])
+
   const handleContinue = () => {
-    handlePickedRewardToken(inputCurrency, Number(stakeAmount))
+    handlePickedRewardToken(inputCurrency, Number(stakeAmount), displayAmountOfWinnersInModal)
     onDismiss?.()
   }
 
@@ -102,8 +116,26 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
                 onCurrencySelect={handleInputSelect}
                 onPressCustomModal={() => setModalView(CurrencyModalView.search)}
               />
+              <Flex justifyContent="center" mt="32px">
+                <Text style={{ alignSelf: 'center' }} fontSize="14px" color="textSubtle" mr="8px">
+                  {t('Choose amount of winners:')}
+                </Text>
+                <Box width="80px">
+                  <Input
+                    pattern="^[0-9]+$"
+                    inputMode="numeric"
+                    value={displayAmountOfWinnersInModal}
+                    onChange={handleInputAmount}
+                  />
+                </Box>
+              </Flex>
             </Box>
-            <Button width="100%" mt="24px" disabled={Boolean(!inputCurrency || !stakeAmount)} onClick={handleContinue}>
+            <Button
+              width="100%"
+              mt="24px"
+              disabled={Boolean(!inputCurrency || !stakeAmount || !displayAmountOfWinnersInModal)}
+              onClick={handleContinue}
+            >
               {t('Continue')}
             </Button>
           </>

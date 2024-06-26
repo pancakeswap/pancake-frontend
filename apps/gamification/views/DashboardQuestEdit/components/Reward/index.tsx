@@ -29,19 +29,7 @@ interface RewardProps {
 export const Reward: React.FC<RewardProps> = ({ reward, actionComponent, updateValue }) => {
   const { t } = useTranslation()
 
-  const handleRewardPerWin = useCallback(
-    (value: string) => {
-      if (reward) {
-        updateValue('reward', {
-          ...reward,
-          amountOfWinners: Number(value),
-        })
-      }
-    },
-    [reward, updateValue],
-  )
-
-  const handlePickedRewardToken = (currency: Currency, totalRewardAmount: number) => {
+  const handlePickedRewardToken = (currency: Currency, totalRewardAmount: number, amountOfWinners: number) => {
     const tokenAddress = currency?.isNative ? currency?.wrapped?.address : currency?.address
     const tokenChainId = currency?.chainId
 
@@ -53,7 +41,7 @@ export const Reward: React.FC<RewardProps> = ({ reward, actionComponent, updateV
         address: tokenAddress,
         network: tokenChainId,
       },
-      amountOfWinners: 0,
+      amountOfWinners,
       totalRewardAmount,
     }
 
@@ -61,6 +49,7 @@ export const Reward: React.FC<RewardProps> = ({ reward, actionComponent, updateV
       rewardData = {
         ...reward,
         totalRewardAmount,
+        amountOfWinners,
         currency: {
           address: tokenAddress,
           network: tokenChainId,
@@ -70,6 +59,18 @@ export const Reward: React.FC<RewardProps> = ({ reward, actionComponent, updateV
 
     updateValue('reward', rewardData)
   }
+
+  const handleInput = useCallback(
+    (amount: number) => {
+      if (amount && reward) {
+        updateValue('reward', {
+          ...reward,
+          amountOfWinners: amount,
+        })
+      }
+    },
+    [reward, updateValue],
+  )
 
   return (
     <RewardContainer>
@@ -81,11 +82,12 @@ export const Reward: React.FC<RewardProps> = ({ reward, actionComponent, updateV
           {reward ? (
             <RewardAmount
               reward={reward}
+              amountOfWinners={reward?.amountOfWinners}
+              handleInput={handleInput}
               handlePickedRewardToken={handlePickedRewardToken}
-              setAmountPerWinner={handleRewardPerWin}
             />
           ) : (
-            <AddReward reward={reward} handlePickedRewardToken={handlePickedRewardToken} />
+            <AddReward reward={reward} amountOfWinners={0} handlePickedRewardToken={handlePickedRewardToken} />
           )}
           {actionComponent}
         </Box>

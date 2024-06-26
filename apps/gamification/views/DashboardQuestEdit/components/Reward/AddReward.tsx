@@ -14,13 +14,18 @@ const AddRewardContainer = styled(Flex)`
 
 interface AddRewardProps {
   reward: undefined | QuestRewardType
-  handlePickedRewardToken: (value: Currency, totalRewardAmount: number) => void
+  amountOfWinners: number
+  handlePickedRewardToken: (value: Currency, totalRewardAmount: number, amountOfWinnersInModal: number) => void
 }
 
-export const AddReward: React.FC<AddRewardProps> = ({ reward, handlePickedRewardToken }) => {
+export const AddReward: React.FC<AddRewardProps> = ({ reward, amountOfWinners, handlePickedRewardToken }) => {
   const { t } = useTranslation()
   const [onPresentAddRewardModal] = useModal(
-    <AddRewardModal reward={reward} handlePickedRewardToken={handlePickedRewardToken} />,
+    <AddRewardModal
+      reward={reward}
+      amountOfWinners={amountOfWinners}
+      handlePickedRewardToken={handlePickedRewardToken}
+    />,
     true,
     true,
     'add-reward-modal',
