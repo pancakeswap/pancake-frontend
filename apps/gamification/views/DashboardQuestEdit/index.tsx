@@ -30,7 +30,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
   const router = useRouter()
   const [showPage, setShowPage] = useState(false)
   const { isDesktop } = useMatchBreakpoints()
-  const { state, updateValue, onTasksChange, updateAllState } = useQuestEdit()
+  const { state, tasks: stateTasks, updateValue, onTasksChange, updateAllState } = useQuestEdit()
   const { questData, isFetched } = useGetSingleQuestData(questId as string)
 
   useEffect(() => {
@@ -50,32 +50,34 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
           endDateTime,
           rewardSCAddress,
           ownerAddress,
-          task,
+          tasks,
           numberOfParticipants,
         } = questData as SingleQuestData
         const startDateConvert = startDateTime > 0 ? new Date(convertDateAndTime(startDateTime)) : null
         const endDateConvert = startDateTime > 0 ? new Date(convertDateAndTime(endDateTime)) : null
 
-        updateAllState({
-          id,
-          chainId,
-          orgId,
-          completionStatus,
-          title,
-          description,
-          startDate: startDateConvert,
-          startTime: startDateConvert,
-          endDate: endDateConvert,
-          endTime: endDateConvert,
-          reward,
-          startDateTime,
-          endDateTime,
-          rewardSCAddress,
-          ownerAddress,
-          numberOfParticipants,
-        })
+        updateAllState(
+          {
+            id,
+            chainId,
+            orgId,
+            completionStatus,
+            title,
+            description,
+            startDate: startDateConvert,
+            startTime: startDateConvert,
+            endDate: endDateConvert,
+            endTime: endDateConvert,
+            reward,
+            startDateTime,
+            endDateTime,
+            rewardSCAddress,
+            ownerAddress,
+            numberOfParticipants,
+          },
+          tasks,
+        )
 
-        onTasksChange(task)
         setShowPage(true)
       }
     }

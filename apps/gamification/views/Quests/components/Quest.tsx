@@ -135,7 +135,7 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...p
           <DetailContainer>
             <Detail>
               <Text fontSize="12px" color="textSubtle">
-                {t('%total% Tasks', { total: quest?.task?.length ?? 0 })}
+                {t('%total% Tasks', { total: quest?.tasks?.length ?? 0 })}
               </Text>
             </Detail>
             <Detail>

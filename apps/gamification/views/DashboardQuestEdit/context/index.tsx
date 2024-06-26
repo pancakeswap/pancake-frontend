@@ -7,7 +7,7 @@ interface EditQuestContextType {
   isChanged: boolean
   state: StateType
   tasks: TaskConfigType[]
-  updateAllState: (value: StateType) => void
+  updateAllState: (value: StateType, task: TaskConfigType[]) => void
   updateValue: (key: string, value: string | Date | QuestRewardType) => void
   onTasksChange: (task: TaskConfigType[]) => void
   deleteTask: (value: string) => void
@@ -39,8 +39,9 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
     numberOfParticipants: 0,
   }))
 
-  const updateAllState = useCallback((stateData: StateType) => {
+  const updateAllState = useCallback((stateData: StateType, task: TaskConfigType[]) => {
     setState(stateData)
+    setTasks(task)
   }, [])
 
   const updateValue = useCallback((key: string, value: string | Date | QuestRewardType) => {
