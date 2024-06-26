@@ -14,7 +14,7 @@ export interface SingleQuestDataError {
 
 export const useGetSingleQuestData = (id: string) => {
   const { data, refetch, isFetching, status } = useQuery<SingleQuestData | SingleQuestDataError>({
-    queryKey: ['/fetch-single-quest-dashboard-data', id],
+    queryKey: ['fetch-single-quest-dashboard-data', id],
     queryFn: async () => {
       const response = await fetch(`${GAMIFICATION_API}/quests/${id}`, {
         method: 'GET',
@@ -33,7 +33,6 @@ export const useGetSingleQuestData = (id: string) => {
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
-    gcTime: 0,
   })
 
   return {
