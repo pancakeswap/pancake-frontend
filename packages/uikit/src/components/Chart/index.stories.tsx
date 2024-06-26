@@ -3,11 +3,11 @@ import { Meta, Story } from "@storybook/react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from "react";
 import { Box } from "../Box";
-import { PairDataTimeWindowEnum, SwapLineChart, SwapLineChartNewProps } from "./PairPriceChart";
+import { PairDataTimeWindowEnum, PairPriceChart, PairPriceChartNewProps } from "./PairPriceChart";
 
 export default {
   title: "Components/SwapLineChart",
-  component: SwapLineChart,
+  component: PairPriceChart,
   argTypes: {
     data: { control: "array" },
     isChangePositive: { control: "boolean" },
@@ -34,10 +34,10 @@ export default {
   },
 } as Meta;
 
-const Template: Story<SwapLineChartNewProps> = (props) => (
+const Template: Story<PairPriceChartNewProps> = (props) => (
   <LanguageProvider>
     <Box width="500px" height="300px">
-      <SwapLineChart {...props} />
+      <PairPriceChart {...props} />
     </Box>
   </LanguageProvider>
 );

@@ -83,6 +83,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   boosterMultiplier,
   isBooster,
   boosterContractAddress,
+  adapterAddress,
 }: LiquidityManagementProps) {
   const { colors } = useTheme()
   const { t } = useTranslation()
@@ -121,7 +122,10 @@ export const LiquidityManagement = memo(function LiquidityManagement({
     <>
       {hasStaked ? (
         <AtomBox>
-          <ActionContainer flexDirection={!isDesktop ? 'column' : 'row'}>
+          <ActionContainer
+            flexDirection={!isDesktop ? 'column' : 'row'}
+            style={{ flexWrap: isDesktop ? 'nowrap' : 'wrap' }}
+          >
             <Flex flexDirection="column" flexBasis="50%">
               <StakedAssets
                 currencyA={currencyA}
@@ -283,6 +287,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         isBooster={isBooster}
         onStake={onStake}
         isTxLoading={isTxLoading}
+        adapterAddress={adapterAddress}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

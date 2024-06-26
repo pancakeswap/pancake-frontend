@@ -10,13 +10,13 @@ import type {
 import { getFarmsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
 import stringify from 'fast-json-stable-stringify'
 import keyBy from 'lodash/keyBy'
+import { fetchStableFarmsAvgInfo, fetchV2FarmsAvgInfo } from 'queries/farms'
 import type { AppState } from 'state'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { getViemClients } from 'utils/viem'
 import { chains } from 'utils/wagmi'
 import { Address } from 'viem'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
-import { fetchStableFarmsAvgInfo, fetchV2FarmsAvgInfo } from 'queries/farms'
 import { resetUserState } from '../global/actions'
 import {
   fetchFarmBCakeWrapperUserAllowances,
@@ -233,10 +233,11 @@ async function getBCakeWrapperFarmsStakeValue(farms, account, chainId) {
 }
 
 async function getBCakeWrapperFarmsData(farms, chainId) {
-  const [{ boosterContractAddress, startTimestamp, endTimestamp }, { rewardPerSec }] = await Promise.all([
-    fetchFarmUserBCakeWrapperConstants(farms, chainId),
-    fetchFarmUserBCakeWrapperRewardPerSec(farms, chainId),
-  ])
+  const [{ boosterContractAddress, startTimestamp, endTimestamp, totalLiquidityX }, { rewardPerSec }] =
+    await Promise.all([
+      fetchFarmUserBCakeWrapperConstants(farms, chainId),
+      fetchFarmUserBCakeWrapperRewardPerSec(farms, chainId),
+    ])
 
   const normalFarmAllowances = farms.map((_, index) => {
     return {
@@ -245,6 +246,7 @@ async function getBCakeWrapperFarmsData(farms, chainId) {
       rewardPerSecond: rewardPerSec[index],
       startTimestamp: startTimestamp[index],
       endTimestamp: endTimestamp[index],
+      totalLiquidityX: totalLiquidityX[index],
     }
   })
 

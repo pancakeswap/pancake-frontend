@@ -5,12 +5,6 @@ export interface Block {
   timestamp: string
 }
 
-export interface ChartEntry {
-  date: number
-  volumeUSD: number
-  liquidityUSD: number
-}
-
 export interface TvlChartEntry {
   date: number
   liquidityUSD: number
@@ -62,15 +56,6 @@ export interface ProtocolData {
   txCount: number
   txCountChange: number
 }
-
-export interface ProtocolState {
-  readonly overview?: ProtocolData
-
-  readonly chartData?: ChartEntry[]
-
-  readonly transactions?: Transaction[]
-}
-
 // POOLS
 
 export interface PoolData {
@@ -112,17 +97,6 @@ export interface PoolData {
   liquidityToken0: number
   liquidityToken1: number
 }
-
-export interface PoolsState {
-  byAddress: {
-    [address: string]: {
-      data?: PoolData
-      chartData?: ChartEntry[]
-      transactions?: Transaction[]
-    }
-  }
-}
-
 // TOKENS
 
 export type TokenData = {
@@ -149,29 +123,6 @@ export type TokenData = {
   campaignId?: string
   pairs?: ComputedFarmConfigV3[]
 }
-
-export interface TokensState {
-  byAddress: {
-    [address: string]: {
-      data?: TokenData
-      poolAddresses?: string[]
-      chartData?: ChartEntry[]
-      priceData: {
-        oldestFetchedTimestamp?: number
-        [secondsInterval: number]: PriceChartEntry[] | undefined
-      }
-      transactions?: Transaction[]
-    }
-  }
-}
-
-// Info redux state
-export interface InfoState {
-  protocol: ProtocolState
-  pools: PoolsState
-  tokens: TokensState
-}
-
 export enum InfoDataSource {
   V3,
   V2,

@@ -7,13 +7,11 @@ import { Block } from 'state/info/types'
  * @notice Fetches block objects for an array of timestamps.
  * @param {Array} timestamps
  * @param sortDirection The direction to sort the retrieved blocks. Defaults to 'desc'
- * @param skipCount How many subqueries to fire at a time
  * @param chainName The name of the blockchain to retrieve blocks from. Defaults to 'BSC'
  */
 export const getBlocksFromTimestamps = async (
   timestamps: number[],
   sortDirection: 'asc' | 'desc' | undefined = 'desc',
-  skipCount: number | undefined = 500,
   chainName: MultiChainNameExtend | undefined = 'BSC',
 ): Promise<Block[]> => {
   if (timestamps?.length === 0) {

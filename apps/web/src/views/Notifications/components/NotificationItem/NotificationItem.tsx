@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, ChevronDownIcon, ChevronUpIcon, Flex, FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { NotifyClientTypes } from '@walletconnect/notify-client'
+import type { NotifyClientTypes } from '@walletconnect/notify-client'
 import { useNotificationTypes } from '@web3inbox/react'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -28,6 +28,7 @@ interface INotificationprops {
   url: string | null
   id: string
   subscriptionId: string
+  type: SubsctiptionType
   image?: string | undefined
 }
 
@@ -37,7 +38,7 @@ interface INotificationContainerProps {
   importantAlertsOnly: boolean
 }
 
-const NotificationItem = ({ title, description, date, image, url, subscriptionId, id }: INotificationprops) => {
+const NotificationItem = ({ title, description, date, image, url, subscriptionId, id, type }: INotificationprops) => {
   const [show, setShow] = useState<boolean>(false)
   const [elementHeight, setElementHeight] = useState<number>(0)
   const { t } = useTranslation()
@@ -49,7 +50,7 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
 
   const formattedDate = formatTime(Math.floor(date / 1000).toString())
   const formatedDescription = formatStringWithNewlines(description, isMobile)
-  const linkText = getLinkText(title, t)
+  const linkText = getLinkText(type, t)
 
   const handleExpandClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -76,17 +77,17 @@ const NotificationItem = ({ title, description, date, image, url, subscriptionId
       <ContentsContainer>
         <Flex flexDirection="column" width="100%">
           <Flex justifyContent="space-between" width="100%">
-            <NotificationImage image={image} title={title} message={description} />
+            <NotificationImage image={image} message={description} type={type} />
             <Flex flexDirection="column" width="100%">
               <Text fontWeight={600} marginBottom="2px">
-                {title.includes('Update POLYGON_ZKEVM') ? 'Farms APR Update ZKEVM' : title}
+                {title}
               </Text>
               <FlexGap alignItems="center" gap="6px" width="100%">
                 {!hasUnread && <Dot show color="success" className="dot" />}
                 <Text fontSize="13px" color="textSubtle">
                   {formattedDate}
                 </Text>
-                <NotificationBadge title={title} message={description} />
+                <NotificationBadge message={description} type={type} />
               </FlexGap>
             </Flex>
             {url ? (
@@ -166,6 +167,7 @@ const NotificationContainer = ({ notifications, subscriptionId, importantAlertsO
               image={types?.[notification.type]?.imageUrls.md}
               id={notification.id}
               subscriptionId={subscriptionId}
+              type={notification.type as SubsctiptionType}
             />
           )
         })}

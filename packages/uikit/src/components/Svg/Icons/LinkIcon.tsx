@@ -25,3 +25,5 @@ export const LinkIcon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => 
     </Svg>
   );
 };
+
+export default LinkIcon;

@@ -4482,4 +4482,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: zksyncTokens.zk.address,
     token1Address: zksyncTokens.usdcNative.address,
   },
+  {
+    gid: 453,
+    pairName: 'LISTA-BNB',
+    address: '0x976241c208CC07505a620d768ee7251d47AcB2a0',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    feeTier: FeeAmount.HIGH,
+    token0Address: bscTokens.wbnb.address,
+    token1Address: bscTokens.lista.address,
+  },
 ]

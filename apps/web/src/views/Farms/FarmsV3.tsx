@@ -292,7 +292,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 chainId,
                 new BigNumber(farm?.poolWeight ?? 0),
                 cakePrice,
-                totalLiquidity,
+                totalLiquidity.times(farm.bCakePublicData?.totalLiquidityX ?? 1),
                 farm.lpAddress,
                 regularCakePerBlock,
                 farm.lpRewardsApr,

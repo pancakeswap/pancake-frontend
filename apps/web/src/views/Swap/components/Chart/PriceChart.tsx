@@ -1,6 +1,21 @@
-import { ExpandIcon, Flex, IconButton, ShrinkIcon, SyncAltIcon, Text } from '@pancakeswap/uikit'
+import {
+  ButtonMenu,
+  ButtonMenuItem,
+  ExpandIcon,
+  Flex,
+  IconButton,
+  LineGraphIcon,
+  CandleGraphIcon,
+  PairPriceChartType,
+  ShrinkIcon,
+  SyncAltIcon,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
-import BasicChart from './BasicChart'
+import { useTranslation } from '@pancakeswap/localization'
+import { useCallback, useState } from 'react'
+import SwapChart from './SwapChart'
 import { StyledPriceChart } from './styles'
 
 const PriceChart = ({
@@ -16,7 +31,13 @@ const PriceChart = ({
   token1Address,
   currentSwapPrice,
 }) => {
-  const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
+  const { t } = useTranslation()
+  const { isDesktop } = useMatchBreakpoints()
+  const [chartType, setChartType] = useState(PairPriceChartType.LINE)
+  const toggleExpanded = useCallback(
+    () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded),
+    [setIsChartExpanded],
+  )
 
   return (
     <StyledPriceChart
@@ -41,6 +62,10 @@ const PriceChart = ({
           <IconButton variant="text" onClick={onSwitchTokens}>
             <SyncAltIcon ml="6px" color="primary" />
           </IconButton>
+          <ButtonMenu scale="sm" activeIndex={chartType} onItemClick={setChartType} variant="primary">
+            <ButtonMenuItem>{isDesktop ? t('Basic') : <LineGraphIcon color="text" />}</ButtonMenuItem>
+            <ButtonMenuItem>{isDesktop ? t('Candlestick') : <CandleGraphIcon color="text" />}</ButtonMenuItem>
+          </ButtonMenu>
         </Flex>
         {!isMobile && (
           <Flex>
@@ -50,7 +75,8 @@ const PriceChart = ({
           </Flex>
         )}
       </Flex>
-      <BasicChart
+      <SwapChart
+        type={chartType}
         token0Address={token0Address}
         token1Address={token1Address}
         isChartExpanded={isChartExpanded}
