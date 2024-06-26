@@ -3431,5 +3431,11 @@
   "Fees are lower for Stable LP": "Fees are lower for Stable LP",
   "Dynamic fee: ↕️ %p%% Fee may vary based on several conditions": "Dynamic fee: ↕️ %p%% Fee may vary based on several conditions",
   "Static Fee: %p%%": "Static Fee: %p%%",
-  "%p%% Fee Tier": "%p%% Fee Tier"
+  "%p%% Fee Tier": "%p%% Fee Tier",
+  "Trade and Win": "Trade and Win",
+  "300,000 $ARB": "300,000 $ARB",
+  "on PancakeSwap Perpetuals v2!": "on PancakeSwap Perpetuals v2!",
+  "Trade on Perpetuals v2 to Win 300,000 ARB": "Trade on Perpetuals v2 to Win 300,000 ARB",
+  "Trade $5,000 on Perps v2 to Win from 300,000 ARB": "Trade $5,000 on Perps v2 to Win from 300,000 ARB",
+  "Trade at least $5,000 on perps v2 to win guaranteed reward": "Trade at least $5,000 on perps v2 to win guaranteed reward"
 }

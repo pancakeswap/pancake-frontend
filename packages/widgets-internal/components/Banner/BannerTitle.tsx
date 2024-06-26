@@ -5,7 +5,7 @@ import styled from "styled-components";
 type VariantTypes = "purple" | "orange" | "yellow" | "listaBlue";
 
 type Props = {
-  variant: VariantTypes;
+  variant: VariantTypes | Variant;
   fontSize?: number;
   lineHeight?: number;
   strokeColor?: string;
@@ -127,7 +127,8 @@ export function BannerTitle({
   color: defaultColor,
   ...props
 }: PropsWithChildren<Omit<TextProps, "fontSize" | "lineHeight"> & Props>) {
-  const { color, fontSize, fontWeight, strokeSize, strokeColor, lineHeight } = variants[variant];
+  const variantData = typeof variant === "string" ? variants[variant] : variant;
+  const { color, fontSize, fontWeight, strokeSize, strokeColor, lineHeight } = variantData;
   return (
     <FancyText
       color={color ?? defaultColor}
