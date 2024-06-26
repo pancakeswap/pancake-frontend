@@ -11,6 +11,7 @@ import {
 import { Address } from '../types'
 import { Connector, ConnectorData, ConnectorTransactionResponse } from './base'
 import { Account, SignMessagePayload, SignMessageResponse } from './types'
+import { convertTransactionPayloadToOldFormat } from '../transactions/payloadTransformer'
 
 declare global {
   interface Window {
@@ -96,7 +97,7 @@ export class BloctoConnector extends Connector<AptosProviderInterface, Partial<A
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     try {
-      const response = await provider.signAndSubmitTransaction(transaction)
+      const response = await provider.signAndSubmitTransaction(convertTransactionPayloadToOldFormat(transaction))
       return response
     } catch (error) {
       if ((error as any)?.message === 'User declined to send the transaction') {
@@ -112,7 +113,7 @@ export class BloctoConnector extends Connector<AptosProviderInterface, Partial<A
   ): Promise<ReturnType<Aptos['transaction']['sign']>> {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signTransaction(transaction)
+    return provider.signTransaction(convertTransactionPayloadToOldFormat(transaction))
   }
 
   async signMessage(message: SignMessagePayload): Promise<SignMessageResponse> {

@@ -5,6 +5,7 @@ import { ConnectorNotFoundError, UserRejectedRequestError } from '../errors'
 import { Address } from '../types'
 import { Connector } from './base'
 import { SignMessagePayload, SignMessageResponse } from './types'
+import { convertTransactionPayloadToOldFormat } from '../transactions/payloadTransformer'
 
 type NetworkInfo = {
   api: string
@@ -129,7 +130,7 @@ export class PontemConnector extends Connector<Window['pontem']> {
     let response
 
     try {
-      response = await provider.signAndSubmit(payload, options)
+      response = await provider.signAndSubmit(convertTransactionPayloadToOldFormat(payload) as any, options)
     } catch (error) {
       if ((error as any)?.code === 1002) {
         throw new UserRejectedRequestError(error)
@@ -145,7 +146,7 @@ export class PontemConnector extends Connector<Window['pontem']> {
   async signTransaction(payload: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signTransaction(payload)
+    return provider.signTransaction(convertTransactionPayloadToOldFormat(payload) as any)
   }
 
   async signMessage(message: SignMessagePayload): Promise<SignMessageResponse> {

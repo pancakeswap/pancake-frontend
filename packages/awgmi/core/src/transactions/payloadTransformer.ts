@@ -19,8 +19,11 @@ function isInputMultiSigData(data: InputGenerateTransactionPayloadData): data is
 }
 
 export function convertTransactionPayloadToOldFormat(
-  payload: InputGenerateTransactionPayloadData,
-): Types.TransactionPayload {
+  payload?: InputGenerateTransactionPayloadData,
+): Types.TransactionPayload | undefined {
+  if (!payload) {
+    return undefined
+  }
   if (isInputMultiSigData(payload)) {
     return {
       type: 'multisig_payload',

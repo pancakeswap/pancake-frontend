@@ -5,6 +5,7 @@ import { ConnectorNotFoundError } from '../errors'
 import { Address } from '../types'
 import { Connector } from './base'
 import { NetworkInfo, SignMessagePayload, SignMessageResponse } from './types'
+import { convertTransactionPayloadToOldFormat } from '../transactions/payloadTransformer'
 
 interface RiseAccount {
   address: Address
@@ -118,13 +119,13 @@ export class RiseConnector extends Connector<Window['rise'], any> {
   async signAndSubmitTransaction(tx: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signAndSubmitTransaction(tx)
+    return provider.signAndSubmitTransaction(convertTransactionPayloadToOldFormat(tx))
   }
 
   async signTransaction(tx: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signTransaction(tx)
+    return provider.signTransaction(convertTransactionPayloadToOldFormat(tx))
   }
 
   async signMessage(message: SignMessagePayload): Promise<SignMessageResponse> {

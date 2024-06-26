@@ -11,6 +11,7 @@ import { Address } from '../types'
 import { Connector, ConnectorData, ConnectorTransactionResponse } from './base'
 import { Account, SignMessagePayload, SignMessageResponse } from './types'
 import { Chain } from '../chain'
+import { convertTransactionPayloadToOldFormat } from '../transactions/payloadTransformer'
 
 declare const MSafeOrigins: {
   mainnet: string
@@ -111,7 +112,7 @@ export class MsafeConnector extends Connector<MSafeWallet, MSafeWalletOptions> {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     try {
-      const response = await provider.signAndSubmit(transaction as any)
+      const response = await provider.signAndSubmit(convertTransactionPayloadToOldFormat(transaction) as any)
       return { hash: new Hex(response).toString() }
     } catch (error) {
       // TODO: what's the reject error code?
