@@ -240,6 +240,7 @@ const TooltipContent = ({
   blockNumberFromSubgraph,
 }) => {
   const { t } = useTranslation()
+  const delayDiff = currentBlock - blockNumberFromSubgraph
   return (
     <Box>
       <IndicatorWrapper alignItems="center" pb="10px">
@@ -256,7 +257,7 @@ const TooltipContent = ({
             <strong>{t('Latest Subgraph Block')}:</strong> {blockNumberFromSubgraph}
           </Text>
           <Text>
-            <strong>{t('Delay')}:</strong> {currentBlock - blockNumberFromSubgraph} ({secondRemainingBlockSync}s)
+            <strong>{t('Delay')}:</strong> {Math.max(delayDiff, 0)} ({delayDiff < 0 ? 0 : secondRemainingBlockSync}s)
           </Text>
         </>
       ) : null}
