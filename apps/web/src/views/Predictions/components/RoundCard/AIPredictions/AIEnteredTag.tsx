@@ -42,7 +42,14 @@ export const AIEnteredTag: React.FC<React.PropsWithChildren<AIEnteredTagProps>> 
 
   return (
     <>
-      <span ref={targetRef}>
+      <span
+        ref={targetRef}
+        style={{
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          MozUserSelect: 'none',
+        }}
+      >
         {hasClaimed ? (
           <Tag
             variant="secondary"

@@ -1,6 +1,6 @@
-import { Box, BoxProps, Flex, Text } from '@pancakeswap/uikit'
+import { Box, BoxProps, Flex, Grid, Text } from '@pancakeswap/uikit'
 import Lottie from 'lottie-react'
-import { useTheme } from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import MeterJSON from '../../../../../../public/images/predictions/meter.json'
 import MeterDarkJSON from '../../../../../../public/images/predictions/meter_dark.json'
 
@@ -18,6 +18,11 @@ const AnimatedMeter = (props: BoxProps) => {
   )
 }
 
+const StyledGrid = styled(Grid)`
+  margin-top: -3px;
+  grid-template-columns: 1fr 1fr 1fr;
+`
+
 export const PayoutMeter = ({ bearMultiplier = '0', bullMultiplier = '0', ...props }: PayoutMeterProps) => {
   const isRoundEmpty = bearMultiplier === '0' && bullMultiplier === '0'
 
@@ -26,13 +31,15 @@ export const PayoutMeter = ({ bearMultiplier = '0', bullMultiplier = '0', ...pro
       <Flex justifyContent="center">
         <AnimatedMeter />
       </Flex>
-      <Flex mt="-3px" justifyContent="center" mx="50px">
-        {!isRoundEmpty && (
-          <Text small bold>
+      <StyledGrid>
+        {!isRoundEmpty ? (
+          <Text small bold textAlign="right">
             {Math.min(+bearMultiplier, +bullMultiplier)}x
           </Text>
+        ) : (
+          <div />
         )}
-        <Text color="textSubtle" mx="13px" bold small>
+        <Text color="textSubtle" textAlign="center" bold small>
           Payout
         </Text>
         {!isRoundEmpty && (
@@ -40,7 +47,7 @@ export const PayoutMeter = ({ bearMultiplier = '0', bullMultiplier = '0', ...pro
             {Math.max(+bearMultiplier, +bullMultiplier)}x
           </Text>
         )}
-      </Flex>
+      </StyledGrid>
     </Box>
   )
 }
