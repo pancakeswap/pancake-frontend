@@ -17,9 +17,6 @@ import {
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
-import { useTheme } from '@pancakeswap/hooks'
-import { getPerpetualUrl } from 'utils/getPerpetualUrl'
-import { useMemo } from 'react'
 
 const bgMobile = `${ASSET_CDN}/web/banners/perpetual-season-banner/bunny-bg-mobile.png`
 const bgDesktop = `${ASSET_CDN}/web/banners/perpetual-season-banner/bunny-bg.png`
@@ -39,6 +36,8 @@ const bgXsVariant: GraphicDetail = {
   height: 182,
 }
 
+const startTradingLink =
+  'https://perp.pancakeswap.finance/en/futures/v2/BTCUSD?chain=Arbitrum&utm_source=homepagebanner&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives'
 const learnMoreLink =
   'https://blog.pancakeswap.finance/articles/trade-on-arbitrum-pancake-swap-perpetual-v2-to-win-300-000-arb?utm_source=homepagebanner&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives'
 
@@ -56,18 +55,6 @@ const StyledFlexContainer = styled(FlexGap)`
 export const PerpetualSeasonalBanner = () => {
   const { t } = useTranslation()
   const { isMobile, isTablet, isMd } = useMatchBreakpoints()
-  const { isDark } = useTheme()
-  const { currentLanguage } = useTranslation()
-
-  const startTradingLink = useMemo(
-    () =>
-      `${getPerpetualUrl({
-        chainId: 42161,
-        languageCode: currentLanguage.code,
-        isDark,
-      })}&utm_source=homepagebanner&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives`,
-    [currentLanguage, isDark],
-  )
 
   return (
     <BannerContainer>
