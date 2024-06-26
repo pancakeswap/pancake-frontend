@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Link, OpenNewIcon, Text } from '@pancakeswap/uikit'
-import Image from 'next/image'
-import React from 'react'
+import { Box, Flex, Image, Link, OpenNewIcon, Text } from '@pancakeswap/uikit'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { styled } from 'styled-components'
 import { GradientBox } from 'views/Campaigns/components/GradientBox'
 
@@ -81,10 +80,15 @@ export const EmptyQuest: React.FC<EmptyQuestProps> = ({ title, subTitle, showQue
         <GradientBox />
         <GradientBox />
       </Container>
-      <Flex mt="-100px" width="100%">
+      <Flex position="relative" zIndex="1" mt="-100px" width="100%">
         <Flex flexDirection="column" width="100%">
-          <Box margin="auto">
-            <Image src="/images/empty-quest-icon.png" width={116} height={91} alt="empty-quest-icon" />
+          <Box margin="auto" width={116} height={91}>
+            <Image
+              width={116}
+              height={91}
+              alt="empty-quest-icon"
+              src={`${ASSET_CDN}/gamification/images/empty-quest-icon.png`}
+            />
           </Box>
           <Text m="8px 0" textAlign="center" bold fontSize={['16px', '16px', '20px']}>
             {title}
