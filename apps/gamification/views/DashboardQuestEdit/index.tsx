@@ -31,7 +31,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
   const [showPage, setShowPage] = useState(false)
   const { isDesktop } = useMatchBreakpoints()
   const { state, updateValue, onTasksChange, updateAllState } = useQuestEdit()
-  const { questData, isFetched } = useGetSingleQuestData(questId ?? '')
+  const { questData, isFetched } = useGetSingleQuestData(questId as string)
 
   useEffect(() => {
     if (!showPage && questId && isFetched && questData) {

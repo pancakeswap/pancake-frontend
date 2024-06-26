@@ -24,7 +24,7 @@ interface UsePublicQuestsProps {
 
 export const usePublicQuests = ({ chainIdList, completionStatus }: UsePublicQuestsProps) => {
   const { data, refetch, isFetching } = useQuery({
-    queryKey: [completionStatus, chainIdList, 'fetch-all-public-quest-data'],
+    queryKey: ['fetch-all-public-quest-data', completionStatus, chainIdList],
     queryFn: async () => {
       try {
         const url = `${GAMIFICATION_PUBLIC_API}/questInfo/v1/questInfoList`

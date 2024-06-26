@@ -45,7 +45,7 @@ export const useVerifyTaskStatus = ({ questId, endDateTime }: UseVerifyTaskStatu
   const isQuestFinished = useMemo(() => new Date().getTime() >= endDateTime, [endDateTime])
 
   const { data, refetch, isFetching } = useQuery({
-    queryKey: [account, questId, 'verify-user-task-status'],
+    queryKey: ['verify-user-task-status', account, questId],
     queryFn: async () => {
       try {
         const response = await fetch(

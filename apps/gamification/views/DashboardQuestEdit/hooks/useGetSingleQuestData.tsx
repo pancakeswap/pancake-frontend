@@ -13,26 +13,26 @@ export interface SingleQuestDataError {
 }
 
 export const useGetSingleQuestData = (id: string) => {
-  const { data, refetch, isFetching, status } = useQuery({
-    queryKey: [id, 'fetch-single-quest-dashboard-data'],
+  const { data, refetch, isFetching, status } = useQuery<SingleQuestData | SingleQuestDataError>({
+    queryKey: ['/fetch-single-quest-dashboard-data', id],
     queryFn: async () => {
-      try {
-        const response = await fetch(`${GAMIFICATION_API}/quests/${id}`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json', 'x-secure-token': FAKE_TOKEN },
-        })
-        const result = await response.json()
-        const questData: SingleQuestData | SingleQuestDataError = result
-        return questData
-      } catch (error) {
-        console.error(`Fetch Single dashboard quest error: ${error}`)
-        throw error
+      const response = await fetch(`${GAMIFICATION_API}/quests/${id}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', 'x-secure-token': FAKE_TOKEN },
+      })
+
+      if (!response.ok) {
+        const errorData: SingleQuestDataError = await response.json()
+        throw new Error(errorData.error)
       }
+
+      const questData: SingleQuestData = await response.json()
+      return questData
     },
     enabled: Boolean(id),
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
+    // refetchOnMount: false,
+    // refetchOnReconnect: false,
+    // refetchOnWindowFocus: false,
   })
 
   return {

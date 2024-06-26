@@ -20,7 +20,7 @@ export const useUserJoinedPublicQuests = ({ chainIdList, completionStatus }: Use
   const { address: account } = useAccount()
 
   const { data, refetch, isFetching } = useQuery({
-    queryKey: [account, completionStatus, chainIdList, 'fetch-user-all-public-quest-data'],
+    queryKey: ['fetch-user-all-public-quest-data', account, completionStatus, chainIdList],
     queryFn: async () => {
       try {
         const url = `${GAMIFICATION_PUBLIC_API}/questInfo/v1/questInfoList`

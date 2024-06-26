@@ -13,7 +13,7 @@ const initialData: AllUserIdsByQuestId = {
 
 export const useGetAllUserIdsByQuestId = (questId: string) => {
   const { data, refetch, isFetching } = useQuery({
-    queryKey: [questId, 'get-all-user-ids-by-quest'],
+    queryKey: ['get-all-user-ids-by-quest', questId],
     queryFn: async () => {
       try {
         const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/getAllUserIdsByQuestId/${questId}`)

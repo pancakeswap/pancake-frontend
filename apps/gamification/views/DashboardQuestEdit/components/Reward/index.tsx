@@ -79,7 +79,7 @@ export const Reward: React.FC<RewardProps> = ({ reward, actionComponent, updateV
           <Text fontSize={['24px']} bold mb={['24px']}>
             {t('Reward')}
           </Text>
-          {reward ? (
+          {reward?.currency?.address ? (
             <RewardAmount
               reward={reward}
               amountOfWinners={reward?.amountOfWinners}

@@ -100,7 +100,7 @@ export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
         <>
           <StyledCell role="cell">
             <Flex>
-              {quest.reward ? (
+              {quest?.reward?.currency?.address ? (
                 <>
                   <TokenWithChain currency={currency} width={20} height={20} />
                   <Text ml="8px">{`${quest.reward.totalRewardAmount} ${currency.symbol}`}</Text>
@@ -117,10 +117,10 @@ export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
       )}
       {isDesktop && (
         <StyledCell role="cell">
-          {quest.startDateTime && quest.endDateTime ? (
-            <Text ml="auto">{`${convertTimestampToDate(quest.startDateTime)} - ${convertTimestampToDate(
-              quest.endDateTime,
-            )}`}</Text>
+          {quest.startDateTime || quest.endDateTime ? (
+            <Text ml="auto">{`${quest.startDateTime ? convertTimestampToDate(quest.startDateTime) : ''} - ${
+              quest.endDateTime ? convertTimestampToDate(quest.endDateTime) : ''
+            }`}</Text>
           ) : (
             <Text ml="auto">-</Text>
           )}

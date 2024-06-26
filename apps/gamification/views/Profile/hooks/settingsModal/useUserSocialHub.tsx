@@ -27,7 +27,7 @@ export const useUserSocialHub = () => {
   const { address: account } = useAccount()
 
   const { data, refetch, isFetching, status } = useQuery({
-    queryKey: [account, 'userSocial'],
+    queryKey: ['userSocial', account],
     queryFn: async () => {
       try {
         const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/getUserInfo/${account}`)

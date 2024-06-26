@@ -29,7 +29,7 @@ export const useGetQuestInfo = (questId: string) => {
   const [isError, setIsError] = useState(false)
 
   const { data, refetch, isFetched } = useQuery({
-    queryKey: [questId, 'get-quest-info'],
+    queryKey: ['get-quest-info', questId],
     // eslint-disable-next-line consistent-return
     queryFn: async () => {
       try {

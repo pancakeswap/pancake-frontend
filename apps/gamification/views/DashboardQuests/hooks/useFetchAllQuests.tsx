@@ -22,7 +22,7 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
   const { address: account } = useAccount()
 
   const { data, refetch, isFetching } = useQuery({
-    queryKey: [account, chainIdList, completionStatus, 'fetch-all-quest-dashboard-data'],
+    queryKey: ['fetch-all-quest-dashboard-data', account, chainIdList, completionStatus],
     queryFn: async () => {
       try {
         const url = `${GAMIFICATION_API}/quests/org/${account?.toLowerCase()}?completionStatus=${completionStatus}&chainId=${chainIdList}&page=1&pageSize=${PAGE_SIZE}`
