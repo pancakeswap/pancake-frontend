@@ -16,8 +16,9 @@ const stripeImage = `${ASSET_CDN}/web/banners/ai-prediction/info-strip-logo.png`
 const stripeImageAlt = 'AI Predictions'
 
 const ctaLink =
-  '/prediction?token=ETH&chain=arb&utm_source=homepagebanner&utm_medium=website&utm_campaign=Arbitrum&utm_id=PredictionLaunch'
-const learnMoreLink = ''
+  '/prediction?token=ETH&chain=arb&utm_source=infostripe&utm_medium=website&utm_campaign=Arbitrum&utm_id=PredictionLaunch'
+const learnMoreLink =
+  'https://blog.pancakeswap.finance/articles/pancake-swap-introduces-ai-powered-prediction-market-on-arbitrum-up-to-100-fund-protection-and-launching-60-000-arb-campaign?utm_source=infostripe&utm_medium=website&utm_campaign=Arbitrum&utm_id=PredictionLaunch'
 
 export const AIPrediction: ICampaignBanner = () => {
   const { t } = useTranslation()

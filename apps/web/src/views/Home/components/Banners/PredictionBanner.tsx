@@ -21,7 +21,8 @@ const floatingAsset = `${ASSET_CDN}/web/banners/ai-prediction/floating.png`
 
 const startTradeLink =
   '/prediction?token=ETH&chain=arb&utm_source=homepagebanner&utm_medium=website&utm_campaign=Arbitrum&utm_id=PredictionLaunch'
-const learnMoreLink = ''
+const learnMoreLink =
+  'https://blog.pancakeswap.finance/articles/pancake-swap-introduces-ai-powered-prediction-market-on-arbitrum-up-to-100-fund-protection-and-launching-60-000-arb-campaign?utm_source=homepagebanner&utm_medium=website&utm_campaign=Arbitrum&utm_id=PredictionLaunch'
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,
