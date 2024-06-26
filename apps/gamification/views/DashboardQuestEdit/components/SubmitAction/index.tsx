@@ -134,7 +134,7 @@ export const SubmitAction = () => {
         <ActionModal
           quest={{
             ...state,
-            task: tasks,
+            tasks,
           }}
           isSubmitError={isSubmitError}
           openModal={openModal}
