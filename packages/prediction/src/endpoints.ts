@@ -17,7 +17,7 @@ export const GRAPH_API_PREDICTION_CAKE = {
 export const GRAPH_API_PREDICTION_ETH = {
   [ChainId.BSC]: '',
   [ChainId.ZKSYNC]: 'https://api.studio.thegraph.com/query/48759/prediction-v2-zksync-era/version/latest',
-  [ChainId.ARBITRUM_ONE]: 'https://api.studio.thegraph.com/query/30127/huan-prediction-v3-ai-arb/version/latest',
+  [ChainId.ARBITRUM_ONE]: 'https://thegraph.pancakeswap.com/prediction-v3-ai-arb',
 } as const satisfies EndPointType<SupportedChainId>
 
 export const GRAPH_API_PREDICTION_WBTC = {
