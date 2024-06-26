@@ -20,9 +20,8 @@ const coBrand = `${ASSET_CDN}/web/banners/ai-prediction/arbitrum.png`
 const floatingAsset = `${ASSET_CDN}/web/banners/ai-prediction/floating.png`
 
 const startTradeLink =
-  '/swap?chain=zkSync&utm_source=homepagebanner&utm_medium=paymaster&utm_campaign=paymaster&utm_id=abc.123'
-const learnMoreLink =
-  'https://blog.pancakeswap.finance/articles/pancake-swap-integrates-zyfi-on-zk-sync-era-enabling-gas-fee-payments-with-10-erc-20-tokens'
+  '/prediction?token=ETH&chain=arb&utm_source=homepagebanner&utm_medium=website&utm_campaign=Arbitrum&utm_id=PredictionLaunch'
+const learnMoreLink = ''
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,
