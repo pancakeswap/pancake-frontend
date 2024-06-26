@@ -117,7 +117,7 @@ export const useFarmsV3 = ({ mockApr = false, boosterLiquidityX = {} }: UseFarms
   const cakePrice = useCakePrice()
 
   const { data } = useQuery({
-    queryKey: [chainId, 'cake-apr-tvl', Object.keys(boosterLiquidityX).join('-')],
+    queryKey: [chainId, 'cake-apr-tvl', boosterLiquidityX],
 
     queryFn: async ({ signal }) => {
       if (chainId !== farmV3?.data.chainId) {
