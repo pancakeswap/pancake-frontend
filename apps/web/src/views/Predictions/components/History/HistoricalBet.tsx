@@ -9,14 +9,14 @@ import {
   InfoIcon,
   PlayCircleOutlineIcon,
   Text,
-  useTooltip,
   WaitIcon,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useState } from 'react'
 import { fetchLedgerData, markAsCollected } from 'state/predictions'
-import { getRoundResult, Result } from 'state/predictions/helpers'
+import { Result, getRoundResult } from 'state/predictions/helpers'
 import { useGetCurrentEpoch, useGetIsClaimable, useGetPredictionsStatus } from 'state/predictions/hooks'
 import { Bet } from 'state/types'
 import { styled } from 'styled-components'
@@ -24,6 +24,7 @@ import { useAccount } from 'wagmi'
 import { useConfig } from '../../context/ConfigProvider'
 import CollectWinningsButton from '../CollectWinningsButton'
 import ReclaimPositionButton from '../ReclaimPositionButton'
+import { AIBetDetails } from './AIPredictions/AIBetDetails'
 import BetDetails from './BetDetails'
 import { formatBnb, getNetPayout } from './helpers'
 
@@ -84,26 +85,26 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
     }
   }
 
-  const getRoundPrefix = (result) => {
-    if (result === Result.LOSE) {
-      return '-'
-    }
-
-    if (result === Result.WIN) {
-      return '+'
-    }
-
-    return ''
-  }
-
   const roundResult = getRoundResult(bet, currentEpoch)
   const resultTextColor = getRoundColor(roundResult)
-  const resultTextPrefix = getRoundPrefix(roundResult)
   const isOpenRound = round?.epoch === currentEpoch
   const isLiveRound = status === PredictionStatus.LIVE && round?.epoch === currentEpoch - 1
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
   const payout = roundResult === Result.WIN ? getNetPayout(bet, REWARD_RATE) : amount
+
+  const getRoundPrefix = (result) => {
+    if (result === Result.LOSE) {
+      return '-'
+    }
+
+    if (result === Result.WIN && payout >= 0) {
+      return '+'
+    }
+
+    return ''
+  }
+  const resultTextPrefix = getRoundPrefix(roundResult)
 
   const renderBetLabel = () => {
     if (isOpenRound) {
@@ -145,7 +146,7 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
               </Flex>
             </>
           ) : (
-            `${resultTextPrefix}${formatBnb(payout, config?.displayedDecimals ?? 4)}`
+            `${resultTextPrefix}${formatBnb(payout, config?.balanceDecimals ?? config?.displayedDecimals ?? 4)}`
           )}
         </Text>
       </>
@@ -190,7 +191,10 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
           </IconButton>
         )}
       </StyledBet>
-      {isOpen && <BetDetails bet={bet} result={getRoundResult(bet, currentEpoch)} />}
+      {isOpen &&
+        !isLiveRound &&
+        !isOpenRound &&
+        (config?.ai ? <AIBetDetails bet={bet} result={roundResult} /> : <BetDetails bet={bet} result={roundResult} />)}
     </>
   )
 }

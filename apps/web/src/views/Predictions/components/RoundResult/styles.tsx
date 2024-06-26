@@ -42,9 +42,11 @@ export const PrizePoolRow: React.FC<React.PropsWithChildren<PrizePoolRowProps>> 
   return (
     <Row {...props}>
       <Text bold>{t('Prize Pool')}:</Text>
-      <Text bold>{`${getPrizePoolAmount(totalAmount, config?.token?.decimals ?? 0, config?.displayedDecimals ?? 0)} ${
-        config?.token?.symbol
-      }`}</Text>
+      <Text bold>{`${getPrizePoolAmount(
+        totalAmount,
+        config?.token?.decimals ?? 0,
+        config?.balanceDecimals ?? config?.displayedDecimals ?? 0,
+      )} ${config?.token?.symbol}`}</Text>
     </Row>
   )
 }
@@ -94,7 +96,9 @@ export const LockPriceRow: React.FC<React.PropsWithChildren<LockPriceRowProps>> 
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsd(Number(formatBigInt(lockPrice, 8, 8)), config?.displayedDecimals ?? 0)}</Text>
+      <Text fontSize="14px">
+        {formatUsd(Number(formatBigInt(lockPrice, 8, config?.lockPriceDecimals ?? 8)), config?.displayedDecimals ?? 0)}
+      </Text>
     </Row>
   )
 }
@@ -105,6 +109,8 @@ interface RoundResultBoxProps {
   isNext?: boolean
   isLive?: boolean
   hasEntered?: boolean
+
+  innerPadding?: string | null
 }
 
 const getBackgroundColor = ({
@@ -140,22 +146,23 @@ const Background = styled(Box)<RoundResultBoxProps>`
   padding: 2px;
 `
 
-const StyledRoundResultBox = styled.div`
+const StyledRoundResultBox = styled.div<{ $padding?: string }>`
   background: ${({ theme }) => theme.card.background};
   border-radius: 14px;
-  padding: 16px;
+  padding: ${({ $padding }) => $padding || '16px'};
 `
 
 export const RoundResultBox: React.FC<React.PropsWithChildren<RoundResultBoxProps>> = ({
   isNext = false,
   hasEntered = false,
   isLive = false,
+  innerPadding = '',
   children,
   ...props
 }) => {
   return (
     <Background isNext={isNext} hasEntered={hasEntered} isLive={isLive} {...props}>
-      <StyledRoundResultBox>{children}</StyledRoundResultBox>
+      <StyledRoundResultBox $padding={innerPadding || ''}>{children}</StyledRoundResultBox>
     </Background>
   )
 }
@@ -163,15 +170,19 @@ export const RoundResultBox: React.FC<React.PropsWithChildren<RoundResultBoxProp
 interface RoundPriceProps {
   lockPrice: bigint | null
   closePrice: bigint | null
+  AIPrice?: bigint | null
 }
 
-export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({ lockPrice, closePrice }) => {
+export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({ lockPrice, closePrice, AIPrice }) => {
   const config = useConfig()
-  const betPosition = getRoundPosition(lockPrice, closePrice)
   const priceDifference = getPriceDifference(closePrice, lockPrice)
+  const betPosition = getRoundPosition(lockPrice, closePrice) // To show UP/DOWN only and not related to AI bet
+  const betPositionAI = getRoundPosition(lockPrice, closePrice, AIPrice) // In case of House win, display color according to AI won or lost
+
+  const finalBetPosition = AIPrice && betPosition === BetPosition.HOUSE ? betPositionAI : betPosition
 
   const textColor = useMemo(() => {
-    switch (betPosition) {
+    switch (finalBetPosition) {
       case BetPosition.BULL:
         return 'success'
       case BetPosition.BEAR:
@@ -180,20 +191,26 @@ export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({
       default:
         return 'textDisabled'
     }
-  }, [betPosition])
+  }, [finalBetPosition])
 
   return (
     <Flex alignItems="center" justifyContent="space-between" mb="16px">
       {closePrice ? (
         <Text color={textColor} bold fontSize="24px">
-          {formatUsd(Number(formatBigInt(closePrice, 8, 8)), config?.displayedDecimals ?? 0)}
+          {formatUsd(
+            Number(formatBigInt(closePrice, 8, config?.closePriceDecimals ?? 8)),
+            config?.displayedDecimals ?? 0,
+          )}
         </Text>
       ) : (
         <Skeleton height="34px" my="1px" />
       )}
-      {betPosition && (
-        <PositionTag betPosition={betPosition}>
-          {formatUsd(Number(formatBigInt(priceDifference, 8, 8)), config?.displayedDecimals ?? 0)}
+      {finalBetPosition && (
+        <PositionTag betPosition={finalBetPosition}>
+          {formatUsd(
+            Number(formatBigInt(priceDifference, 8, config?.closePriceDecimals ?? 8)), // Ideally both closePriceDecimals and lockPriceDecimals should be same
+            config?.displayedDecimals ?? 0,
+          )}
         </PositionTag>
       )}
     </Flex>
@@ -227,9 +244,10 @@ export const PrizePoolHistoryRow: React.FC<React.PropsWithChildren<PrizePoolHist
   return (
     <Row {...props}>
       <Text bold>{t('Prize Pool')}:</Text>
-      <Text bold>{`${getPrizePoolAmountHistory(totalAmount, config?.displayedDecimals ?? 0)} ${
-        config?.token?.symbol
-      }`}</Text>
+      <Text bold>{`${getPrizePoolAmountHistory(
+        totalAmount,
+        config?.balanceDecimals ?? config?.displayedDecimals ?? 0,
+      )} ${config?.token?.symbol}`}</Text>
     </Row>
   )
 }

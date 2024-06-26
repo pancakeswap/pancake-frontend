@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowForwardIcon, Box, Column, Flex, FlexGap, Link, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { VerticalDivider } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
-import { VerticalDivider } from '@pancakeswap/widgets-internal'
 import { ICampaignBanner } from './ICampaignBanner'
 
 const MobileImage = styled.img`
@@ -43,7 +43,7 @@ export const PerpetualSeason: ICampaignBanner = () => {
             external
             fontSize={['12px', '12px', '14px']}
             style={{ display: 'inline-flex', alignItems: 'center', whiteSpace: 'nowrap' }}
-            href="https://blog.pancakeswap.finance/articles/get-your-uniswap-interface-fees-refunded-on-pancake-swap-up-to-8-m?utm_source=infostripe&utm_medium=Ethereum&utm_campaign=Swap&utm_id=InterfacefeeRefund"
+            href="https://blog.pancakeswap.finance/articles/trade-on-arbitrum-pancake-swap-perpetual-v2-to-win-300-000-arb?utm_source=infostripe&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives"
           >
             {t('Learn More')}
             <ArrowForwardIcon width="14px" mt="2px" color="primary" />

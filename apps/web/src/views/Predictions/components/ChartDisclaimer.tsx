@@ -1,19 +1,20 @@
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  ModalWrapper,
-  ModalBody,
-  Text,
+  Box,
   Button,
+  Checkbox,
+  Flex,
+  Heading,
+  Image,
   InjectedModalProps,
   LinkExternal,
-  Flex,
-  Image,
-  Heading,
-  Checkbox,
-  Box,
+  ModalBody,
+  ModalWrapper,
+  Text,
 } from '@pancakeswap/uikit'
-import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
 import { useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
+import { styled } from 'styled-components'
+import { useConfig } from '../context/ConfigProvider'
 
 const Ul = styled.ul`
   color: ${({ theme }) => theme.colors.textSubtle};
@@ -28,6 +29,8 @@ const Ul = styled.ul`
 
 const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const [showDisclaimer, setShowDisclaimer] = useUserPredictionChartDisclaimerShow()
+
+  const config = useConfig()
   const { t } = useTranslation()
 
   const handleConfirm = () => {
@@ -50,11 +53,13 @@ const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = (
           {t('The price you see come from difference places')}:
         </Text>
         <Ul>
-          <li>{t('Prices on cards come from Chainlink’s verifiable price oracle.')}</li>
+          {config?.chainlinkOracleAddress && (
+            <li>{t('Prices on cards come from Chainlink’s verifiable price oracle.')}</li>
+          )}
           <li>{t("Prices on charts come from Binance.com. Chart's are provided for your reference only.")}</li>
         </Ul>
         <Text as="p" mb="16px" fontSize="14px" color="textSubtle">
-          {t("Only the price from Chainlink (shown on the cards) determines the round's result.")}
+          {t("Only the price shown on the cards determines the round's result.")}
         </Text>
         <LinkExternal
           href="https://docs.pancakeswap.finance/products/prediction/prediction-faq#what-are-you-using-for-your-price-feed"
