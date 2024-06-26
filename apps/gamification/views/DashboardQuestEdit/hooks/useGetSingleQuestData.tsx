@@ -30,9 +30,10 @@ export const useGetSingleQuestData = (id: string) => {
       return questData
     },
     enabled: Boolean(id),
-    // refetchOnMount: false,
-    // refetchOnReconnect: false,
-    // refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    gcTime: 0,
   })
 
   return {

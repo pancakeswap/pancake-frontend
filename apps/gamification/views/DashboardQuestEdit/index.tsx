@@ -53,8 +53,8 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
           task,
           numberOfParticipants,
         } = questData as SingleQuestData
-        const startDateConvert = startDateTime ? new Date(convertDateAndTime(startDateTime)) : null
-        const endDateConvert = startDateTime ? new Date(convertDateAndTime(endDateTime)) : null
+        const startDateConvert = startDateTime > 0 ? new Date(convertDateAndTime(startDateTime)) : null
+        const endDateConvert = startDateTime > 0 ? new Date(convertDateAndTime(endDateTime)) : null
 
         updateAllState({
           id,
