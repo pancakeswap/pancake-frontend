@@ -1,5 +1,19 @@
 import BigNumber from 'bignumber.js'
 
+type ModifiedLocalNumberOptions = Omit<
+  Intl.NumberFormatOptions,
+  'currency' | 'style' | 'minimumFractionDigits' | 'maximumFractionDigits'
+>
+
+type FiatCurrencyNumberDisplayOptions = {
+  value: string | number | BigNumber
+  locale: string | undefined
+  fiatCurrencyCode: string
+  useFullDigits?: boolean
+  groupSize?: number
+  options?: ModifiedLocalNumberOptions
+}
+
 const ZERO = new BigNumber(0)
 const ONE = new BigNumber(1)
 const TEN = new BigNumber(10)
@@ -28,14 +42,32 @@ function getDigits(value: BigNumber) {
   return [getIntegerDigits(value), value.decimalPlaces() ?? 0]
 }
 
+function formatLargeFiatValue(numericValue: number, symbol: string, fractionDigits: number): string {
+  const valueInBN = new BigNumber(numericValue)
+  const formattedValue = valueInBN.toFormat(fractionDigits, BigNumber.ROUND_UP)
+
+  if (valueInBN.gt(BigNumber(1_000_000))) {
+    return `> ${symbol}${valueInBN.div(1_000_000).toFixed(0)}M`
+  }
+  if (valueInBN.gt(BigNumber(10_000))) {
+    return `> ${symbol}${valueInBN.div(1000).toFixed(0)}K`
+  }
+  if (valueInBN.lt(BigNumber(0.01))) {
+    return `< ${symbol}${BigNumber(0.01)}`
+  }
+
+  return `${symbol}${formattedValue}`
+}
+
 type Options = {
   maximumSignificantDigits?: number
   roundingMode?: BigNumber.RoundingMode
+  formatConfig?: BigNumber.Format
 }
 
 export function formatNumber(
   value: string | number | BigNumber,
-  { maximumSignificantDigits = 12, roundingMode = BigNumber.ROUND_DOWN }: Options = {},
+  { maximumSignificantDigits = 12, roundingMode = BigNumber.ROUND_DOWN, formatConfig = undefined }: Options = {},
 ) {
   const valueInBN = new BigNumber(value)
   if (valueInBN.eq(ZERO)) {
@@ -53,9 +85,45 @@ export function formatNumber(
   const bnToDisplay = isGreaterThanMax ? max : isLessThanMin ? min : valueInBN
   const digitsAvailable = maxDigits - integerDigits
   const decimalDisplayDigits = digitsAvailable < 0 ? 0 : digitsAvailable
-  const valueToDisplay = bnToDisplay.toFormat(decimalDisplayDigits, roundingMode, DEFAULT_FORMAT_CONFIG)
+
+  const formatOptions = formatConfig ?? DEFAULT_FORMAT_CONFIG
+  const valueToDisplay = bnToDisplay.toFormat(decimalDisplayDigits, roundingMode, formatOptions)
   const limitIndicator = isGreaterThanMax ? '>' : isLessThanMin ? '<' : ''
   return `${limitIndicator}${valueToDisplay}`
+}
+
+export function formatFiatNumber({
+  value,
+  locale,
+  fiatCurrencyCode,
+  useFullDigits = false,
+  groupSize = 3,
+  options = {},
+}: FiatCurrencyNumberDisplayOptions) {
+  const numericValue = new BigNumber(value)
+  const [, decimalDigits] = getDigits(numericValue)
+
+  const fractionDigits = numericValue.lt(0.01) ? (useFullDigits ? 12 : decimalDigits) : 2
+  const numberString = Number.parseFloat(numericValue.toFixed(fractionDigits))
+
+  const formattedNumber = numberString.toLocaleString(locale, {
+    ...options,
+    style: 'currency',
+    currency: fiatCurrencyCode.toUpperCase(),
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+    useGrouping: false,
+  })
+
+  const currencySymbol = formattedNumber[0]
+  const currencyNumberValue = Number.parseFloat(formattedNumber.slice(1))
+
+  const formatConfig = { ...DEFAULT_FORMAT_CONFIG, groupSize }
+  const valueToDisplay = formatNumber(currencyNumberValue, { formatConfig })
+  if (useFullDigits) return `${currencySymbol}${valueToDisplay}`
+
+  const largeValueToDisplay = formatLargeFiatValue(currencyNumberValue, currencySymbol, fractionDigits)
+  return largeValueToDisplay
 }
 
 export function formatNumberWithFullDigits(
