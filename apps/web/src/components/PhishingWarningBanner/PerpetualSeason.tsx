@@ -88,7 +88,7 @@ export const PerpetualSeason: ICampaignBanner = () => {
   )
 }
 
-PerpetualSeason.stripeImage = `${ASSET_CDN} /web/banners/perpetual-season-banner/stripe.png`
+PerpetualSeason.stripeImage = `${ASSET_CDN}/web/banners/perpetual-season-banner/stripe.png`
 PerpetualSeason.stripeImageWidth = '120px'
 PerpetualSeason.stripeImageAlt = 'Perpetual Season'
 PerpetualSeason.background = 'rgba(118, 69, 217, 1)'
