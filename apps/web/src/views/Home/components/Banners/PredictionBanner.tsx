@@ -6,10 +6,10 @@ import {
   BannerContainer,
   BannerGraphics,
   BannerMain,
-  CoBrandBadge,
   FloatingGraphic,
   GraphicDetail,
   LinkExternalAction,
+  PancakeSwapBadge,
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
@@ -104,8 +104,9 @@ export const PredictionBanner = () => {
     <BannerContainer background="linear-gradient(0deg, #213147 0%, #213147 100%), #000">
       <BannerMain
         badges={
-          <Flex>
-            <CoBrandBadge coBrand={coBrand} coBrandLogo={coBrand} cHeight={24} cWidth={100} whiteText />
+          <Flex alignItems="center">
+            <PancakeSwapBadge whiteText />
+            <img src={coBrand} alt="Arbitrum" width={90} height={20} style={{ margin: '1px 0 0 6px' }} />
           </Flex>
         }
         desc={isMobile ? null : <Desc />}
