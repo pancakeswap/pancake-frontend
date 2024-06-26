@@ -64,6 +64,66 @@ export const inputVariants = recipe({
   },
 });
 
+export const inputVariantsSwap = recipe({
+  base: {
+    width: 0,
+    position: "relative",
+    fontWeight: 500,
+    outline: "none",
+    border: "none",
+    flex: "1 1 auto",
+    backgroundColor: "transparent",
+    fontSize: 16,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    padding: 0,
+    WebkitAppearance: "textfield",
+    color: vars.colors.secondary,
+    selectors: {
+      "&::-webkit-search-decoration": {
+        WebkitAppearance: "none",
+      },
+      '&[type="number"]': {
+        MozAppearance: "textfield",
+      },
+      "&::-webkit-outer-spin-button, &::-webkit-inner-spin-button": {
+        WebkitAppearance: "none",
+      },
+      "&::placeholder": {
+        color: vars.colors.textSubtle,
+      },
+    },
+  },
+  variants: {
+    error: {
+      true: {
+        color: vars.colors.failure,
+      },
+    },
+    loading: {
+      true: {
+        color: vars.colors.textDisabled,
+      },
+    },
+    align: {
+      left: {
+        textAlign: "left",
+      },
+      center: {
+        textAlign: "center",
+      },
+      right: {
+        textAlign: "right",
+      },
+    },
+  },
+  defaultVariants: {
+    align: "right",
+    error: false,
+  },
+});
+
 export type InputVariants = RecipeVariants<typeof inputVariants>;
 
 export const inputContainerVariants = recipe({

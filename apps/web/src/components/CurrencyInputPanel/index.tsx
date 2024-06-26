@@ -1,32 +1,32 @@
-import { useMemo, memo, useCallback } from 'react'
-import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
+import { useTranslation } from '@pancakeswap/localization'
+import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
+import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { zksyncTokens } from '@pancakeswap/tokens'
 import {
-  Button,
-  Text,
-  useModal,
-  Flex,
+  ArrowDropDownIcon,
   Box,
+  Button,
   CopyButton,
+  Flex,
+  LinkExternal,
   Loading,
   Skeleton,
-  ArrowDropDownIcon,
-  LinkExternal,
+  Text,
+  useModal,
 } from '@pancakeswap/uikit'
-import { Swap as SwapUI, CurrencyLogo, DoubleCurrencyLogo } from '@pancakeswap/widgets-internal'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import { CurrencyLogo, DoubleCurrencyLogo, Swap as SwapUI } from '@pancakeswap/widgets-internal'
+import { memo, useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
-import { useTranslation } from '@pancakeswap/localization'
-import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import { formatAmount } from '@pancakeswap/utils/formatFractions'
 
-import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 
 import { FiatLogo } from 'components/Logo/CurrencyLogo'
-import { useAccount } from 'wagmi'
 import { useCurrencyBalance } from 'state/wallet/hooks'
+import { useAccount } from 'wagmi'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 
 import AddToWalletButton from '../AddToWallet/AddToWalletButton'
@@ -193,11 +193,11 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                   <Skeleton width="24px" height="24px" variant="circle" />
                 ) : null}
                 {currencyLoading ? null : pair ? (
-                  <Text id="pair" bold>
+                  <Text id="pair" bold color="contrast">
                     {pair?.token0.symbol}:{pair?.token1.symbol}
                   </Text>
                 ) : (
-                  <Text id="pair" bold>
+                  <Text id="pair" bold color="contrast">
                     {(currency && currency.symbol && currency.symbol.length > 10
                       ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
                           currency.symbol.length - 5,
@@ -206,7 +206,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                       : currency?.symbol) || t('Select a currency')}
                   </Text>
                 )}
-                {!currencyLoading && !disableCurrencySelect && <ArrowDropDownIcon />}
+                {!currencyLoading && !disableCurrencySelect && <ArrowDropDownIcon color="contrast" />}
               </Flex>
             </CurrencySelectButton>
             {token && tokenAddress ? (

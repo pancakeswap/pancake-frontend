@@ -1,15 +1,15 @@
-import { darkColors, lightColors } from "../../theme/colors";
 import { vars } from "../../css/vars.css";
+import { darkColors, lightColors } from "../../theme/colors";
 import { TooltipTheme } from "./types";
 
 export const light: TooltipTheme = {
-  background: lightColors.backgroundAlt,
-  text: lightColors.text,
+  background: lightColors.contrast,
+  text: lightColors.background,
   boxShadow: vars.shadows.tooltip,
 };
 
 export const dark: TooltipTheme = {
-  background: darkColors.backgroundAlt,
-  text: darkColors.text,
+  background: darkColors.contrast,
+  text: darkColors.background,
   boxShadow: vars.shadows.tooltip,
 };
