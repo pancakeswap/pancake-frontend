@@ -1,6 +1,5 @@
-import { MoveResource, Hex } from '@aptos-labs/ts-sdk'
-import { TxnBuilderTypes, TypeTagParser } from 'aptos'
-import { CoinStoreResult, COIN_STORE_TYPE_PREFIX } from '../coins/coinStore'
+import { Hex, MoveResource, TypeTagStruct, parseTypeTag } from '@aptos-labs/ts-sdk'
+import { COIN_STORE_TYPE_PREFIX, CoinStoreResult } from '../coins/coinStore'
 import { getProvider } from '../providers'
 
 export type FetchAccountResourcesArgs = {
@@ -30,13 +29,17 @@ type TypeTagFilter = { address?: string; moduleName?: string; name?: string }
 
 const typeTagFilter = ({ address, moduleName, name }: TypeTagFilter) => {
   const filter = (data: FetchAccountResourcesResult[number]) => {
-    const parsed = new TypeTagParser(data.type).parseTypeTag()
-    if (parsed instanceof TxnBuilderTypes.TypeTagStruct) {
-      if (address && new Hex(parsed.value.address.address).toString() !== Hex.fromHexInput(address).toString())
+    const parsed = parseTypeTag(data.type)
+    if (parsed.isStruct()) {
+      if (
+        address &&
+        parsed.isAddress() &&
+        new Hex(parsed.value.address.data).toString() !== Hex.fromHexInput(address).toString()
+      )
         return false
 
-      if (moduleName && parsed.value.module_name.value !== moduleName) return false
-      if (name && parsed.value.name.value !== name) return false
+      if (moduleName && parsed.value.moduleName.identifier !== moduleName) return false
+      if (name && parsed.value.name.identifier !== name) return false
 
       return true
     }
@@ -66,9 +69,9 @@ export type CoinStoreResource<T extends string = string> = {
   data: CoinStoreResult
 }
 
-const coinStoreTypeTag = TxnBuilderTypes.StructTag.fromString(COIN_STORE_TYPE_PREFIX)
+const coinStoreTypeTag = parseTypeTag(COIN_STORE_TYPE_PREFIX) as TypeTagStruct
 export const coinStoreResourcesFilter = createAccountResourceFilter<CoinStoreResource>({
-  address: new Hex(coinStoreTypeTag.address.address).toString(),
-  moduleName: coinStoreTypeTag.module_name.value,
-  name: coinStoreTypeTag.name.value,
+  address: new Hex(coinStoreTypeTag.value.address.data).toString(),
+  moduleName: coinStoreTypeTag.value.moduleName.identifier,
+  name: coinStoreTypeTag.value.name.identifier,
 })

@@ -4,7 +4,7 @@ import {
   InputMultiSigData,
   InputScriptData,
 } from '@aptos-labs/ts-sdk'
-import { Types } from 'aptos'
+import type { Types } from 'aptos'
 
 function isInputEntryFunctionData(data: InputGenerateTransactionPayloadData): data is InputEntryFunctionData {
   return Boolean((data as InputEntryFunctionData).function)
