@@ -51,7 +51,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
     [questId, userInfo.questIds],
   )
 
-  const hasOptionsInTasks = useMemo(() => tasks.find((i) => i.isOptional === true), [tasks])
+  const hasOptionsInTasks = useMemo(() => tasks?.find((i) => i.isOptional === true), [tasks])
 
   const handleLinkUserToQuest = async () => {
     if (account) {
@@ -97,53 +97,55 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
           )}
         </Box>
       </Flex>
-      <Box position="relative">
-        <FlexGap flexDirection="column" gap="12px">
-          {tasks.map((task) => (
-            <Task
-              key={task?.id}
-              questId={questId}
-              task={task}
-              taskStatus={taskStatus}
-              isQuestFinished={isQuestFinished}
-            />
-          ))}
-        </FlexGap>
-        {hasOptionsInTasks && (
-          <Box>
-            <Text bold as="span" color="textSubtle">
-              {t('Tasks marked with the')}
-            </Text>
-            <OptionIcon m="0 4px -5px 4px" color="textSubtle" width={28} />
-            <Text bold as="span" color="textSubtle">
-              {t('badge are optional.')}
-            </Text>
-            <Text bold as="span" color="textSubtle">
-              {t('But your chances of winning will be increased if you complete all the tasks!')}
-            </Text>
-          </Box>
-        )}
-        {(!account || (isFetched && !hasIdRegister)) && (
-          <OverlapContainer>
-            {account ? (
-              <>
-                {!hasIdRegister && (
-                  <Flex flexDirection="column">
-                    <Text bold fontSize="12px" textAlign="center" color="textSubtle">
-                      {t('Start the quest to get access to the tasks')}
-                    </Text>
-                    <Button onClick={handleLinkUserToQuest}>{t('Start the Quest')}</Button>
-                  </Flex>
-                )}
-              </>
-            ) : (
-              <Box>
-                <ConnectWalletButton />
-              </Box>
-            )}
-          </OverlapContainer>
-        )}
-      </Box>
+      {tasks?.length && (
+        <Box position="relative">
+          <FlexGap flexDirection="column" gap="12px">
+            {tasks?.map((task) => (
+              <Task
+                key={task?.id}
+                questId={questId}
+                task={task}
+                taskStatus={taskStatus}
+                isQuestFinished={isQuestFinished}
+              />
+            ))}
+          </FlexGap>
+          {hasOptionsInTasks && (
+            <Box>
+              <Text bold as="span" color="textSubtle">
+                {t('Tasks marked with the')}
+              </Text>
+              <OptionIcon m="0 4px -5px 4px" color="textSubtle" width={28} />
+              <Text bold as="span" color="textSubtle">
+                {t('badge are optional.')}
+              </Text>
+              <Text bold as="span" color="textSubtle">
+                {t('But your chances of winning will be increased if you complete all the tasks!')}
+              </Text>
+            </Box>
+          )}
+          {(!account || (isFetched && !hasIdRegister)) && (
+            <OverlapContainer>
+              {account ? (
+                <>
+                  {!hasIdRegister && (
+                    <Flex flexDirection="column">
+                      <Text bold fontSize="12px" textAlign="center" color="textSubtle">
+                        {t('Start the quest to get access to the tasks')}
+                      </Text>
+                      <Button onClick={handleLinkUserToQuest}>{t('Start the Quest')}</Button>
+                    </Flex>
+                  )}
+                </>
+              ) : (
+                <Box>
+                  <ConnectWalletButton />
+                </Box>
+              )}
+            </OverlapContainer>
+          )}
+        </Box>
+      )}
     </Box>
   )
 }
