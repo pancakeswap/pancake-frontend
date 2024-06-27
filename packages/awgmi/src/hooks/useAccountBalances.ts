@@ -1,18 +1,18 @@
 import { formatUnits } from '@ethersproject/units'
 import {
   CoinStoreResource,
-  coinStoreResourcesFilter,
-  FetchAccountResourcesResult,
+  fetchBalances,
   FetchCoinResult,
   isHexStringEquals,
   unwrapTypeFromString,
   wrapCoinStoreTypeTag,
 } from '@pancakeswap/awgmi/core'
-import { UseQueryResult } from '@tanstack/react-query'
+import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { useCallback, useMemo } from 'react'
+import { GetAccountCoinsDataResponse, MoveStructId } from '@aptos-labs/ts-sdk'
 
 import { QueryConfig } from '../types'
-import { useAccountResources, UseAccountResourcesArgs, UseAccountResourcesConfig } from './useAccountResources'
+import { UseAccountResourcesArgs, UseAccountResourcesConfig } from './useAccountResources'
 import { useCoins } from './useCoins'
 import { useNetwork } from './useNetwork'
 
@@ -25,8 +25,8 @@ type UseAccountBalancesSelect<TData> = Pick<UseAccountBalances<TData>, 'select'>
 export type UseAccountBalancesConfig<TData> = Omit<UseAccountResourcesConfig, 'select'> &
   UseAccountBalancesSelect<TData>
 
-const accountCoinStoreResourceSelect = (resource: FetchAccountResourcesResult) => {
-  return resource.filter(coinStoreResourcesFilter)
+function getTokenMetadataIdentifier({ name, decimals, symbol }: { name?: string; decimals?: number; symbol?: string }) {
+  return [name, decimals, symbol].join('_')
 }
 
 export function useAccountBalances<TData = unknown>({
@@ -38,20 +38,99 @@ export function useAccountBalances<TData = unknown>({
   staleTime,
   watch,
   coinFilter,
-  ...query
 }: UseAccountResourcesArgs & { coinFilter?: string } & UseAccountBalancesConfig<TData>) {
   const { chain } = useNetwork()
   const networkName = networkName_ ?? chain?.network
 
-  const { data } = useAccountResources({
-    ...query,
-    address,
+  const { data } = useQuery({
+    queryKey: ['useAccountBalances', networkName, address],
+    queryFn: async () => {
+      if (!address) throw new Error('Invalid address')
+      const balances = await fetchBalances({ address })
+      const [v1Balances, v2Balances] = balances.reduce<[GetAccountCoinsDataResponse, GetAccountCoinsDataResponse]>(
+        (acc, cur) => {
+          const [v1, v2] = acc
+          if (cur.token_standard === 'v1') {
+            v1.push(cur)
+          }
+          if (cur.token_standard === 'v2') {
+            v2.push(cur)
+          }
+          return acc
+        },
+        [[], []],
+      )
+      const balanceMap = new Map<
+        MoveStructId,
+        {
+          type: MoveStructId
+          data: {
+            coin: {
+              value: string
+            }
+          }
+        }
+      >()
+      const tokenIdentifierToBalance = new Map<
+        string,
+        {
+          type: MoveStructId
+          amount: number
+        }
+      >()
+      for (const b of v1Balances) {
+        const id = getTokenMetadataIdentifier({
+          name: b.metadata?.name,
+          symbol: b.metadata?.symbol,
+          decimals: b.metadata?.decimals,
+        })
+        if (tokenIdentifierToBalance.get(id)) {
+          console.warn('Duplicate identifier for token', id)
+        }
+        tokenIdentifierToBalance.set(id, {
+          type: b.asset_type as MoveStructId,
+          amount: b.amount,
+        })
+        balanceMap.set(b.asset_type as MoveStructId, {
+          type: b.asset_type as MoveStructId,
+          data: {
+            coin: {
+              value: String(b.amount),
+            },
+          },
+        })
+      }
+      for (const b of v2Balances) {
+        const id = getTokenMetadataIdentifier({
+          name: b.metadata?.name,
+          symbol: b.metadata?.symbol,
+          decimals: b.metadata?.decimals,
+        })
+        const sameAsset = tokenIdentifierToBalance.get(id)
+        if (!sameAsset) {
+          continue
+        }
+        balanceMap.set(sameAsset.type, {
+          type: sameAsset.type,
+          data: {
+            coin: {
+              value: String(b.amount + sameAsset.amount),
+            },
+          },
+        })
+      }
+      return Array.from(balanceMap.values()).map((b) => ({
+        ...b,
+        type: wrapCoinStoreTypeTag(b.type),
+      }))
+    },
     gcTime,
-    enabled,
-    networkName,
+    enabled: Boolean(networkName && address) && enabled,
     staleTime,
-    watch,
-    select: accountCoinStoreResourceSelect,
+    refetchInterval: (d) => {
+      if (!d) return 6_000
+      return watch ? 3_000 : 0
+    },
   })
 
   const coinStoreResourceMap = useMemo(() => {
@@ -60,7 +139,7 @@ export function useAccountBalances<TData = unknown>({
         ...prev,
         [curr.type]: curr,
       }
-    }, {} as Record<string, CoinStoreResource>)
+    }, {} as Record<MoveStructId, CoinStoreResource>)
   }, [data])
 
   const coinInfoSelect = useCallback(

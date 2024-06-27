@@ -1,6 +1,7 @@
-import { MoveStructId } from '@aptos-labs/ts-sdk'
+import { MoveStructId, GetAccountCoinsDataResponse } from '@aptos-labs/ts-sdk'
 
 import { fetchAptosView } from '../view/fetchAptosView'
+import { getProvider } from '../providers'
 
 export type FetchBalanceArgs = {
   /** Address */
@@ -25,4 +26,11 @@ export async function fetchBalance({ address, networkName, coin }: FetchBalanceA
     },
   })
   return { value: balance }
+}
+
+export async function fetchBalances({ address, networkName }: FetchBalanceArgs): Promise<GetAccountCoinsDataResponse> {
+  const provider = getProvider({ networkName })
+  return provider.getAccountCoinsData({
+    accountAddress: address,
+  })
 }
