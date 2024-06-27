@@ -45,7 +45,7 @@ const BalanceInput: React.FC<React.PropsWithChildren<BalanceInputProps>> = ({
               {unit && <UnitContainer>{unit}</UnitContainer>}
             </Flex>
             {currencyValue && (
-              <Text fontSize="12px" textAlign="right" color="textSubtle">
+              <Text fontSize="12px" textAlign="right" color="textSubtle" ellipsis>
                 {currencyValue}
               </Text>
             )}
