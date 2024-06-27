@@ -1,6 +1,7 @@
 export * from "./components/Banner";
 export * from "./components/ClientOnly";
 export * from "./components/CurrencyLogo";
+export * from "./components/FeeTierTooltip";
 export * from "./components/FeatureStack";
 export * from "./components/NextLink";
 export * from "./components/NumberDisplay";
