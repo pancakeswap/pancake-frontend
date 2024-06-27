@@ -22,7 +22,7 @@ export default function useLPPairsHaveBalance(): LPPairsResponse {
   const balances = useAccountBalances({
     watch: true,
     address: account?.address,
-    select: (balance) => (balance.address.includes(PAIR_LP_TYPE_TAG) ? balance : null),
+    select: (balance) => (balance.address.includes(PAIR_LP_TYPE_TAG) && balance.value !== '0' ? balance : null),
   })
   const isPending = useMemo(() => balances.some((b) => b.isPending), [balances])
   const mmV2PairsBalances = useMemo(
