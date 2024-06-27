@@ -7,5 +7,5 @@ export const scales = {
 export type Scales = (typeof scales)[keyof typeof scales];
 
 export interface CheckboxProps {
-  scale?: Scales;
+  scale?: Scales | string;
 }
