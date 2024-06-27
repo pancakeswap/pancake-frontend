@@ -4,29 +4,30 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useMemo } from 'react'
 import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
-import { CompletionStatus } from 'views/DashboardQuestEdit/type'
+// import { CompletionStatus } from 'views/DashboardQuestEdit/type'
+import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { Task } from 'views/Quest/components/Tasks/Task'
 import { useVerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { useAccount } from 'wagmi'
 
 interface TasksProps {
-  questId: string
-  endDateTime: number
-  completionStatus: CompletionStatus
+  quest: SingleQuestData
 }
 
-export const Tasks: React.FC<TasksProps> = ({ questId, completionStatus, endDateTime }) => {
+export const Tasks: React.FC<TasksProps> = ({ quest }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const { id: questId, completionStatus, endDateTime, tasks } = quest
   const { userInfo, refresh } = useUserSocialHub()
-  const { taskStatus } = useVerifyTaskStatus({ questId, endDateTime })
+  const isQuestFinished = useMemo(() => new Date().getTime() >= endDateTime, [endDateTime])
+
+  const { taskStatus } = useVerifyTaskStatus({ questId, isQuestFinished })
 
   const hasIdRegister = useMemo(
     () => userInfo.questIds?.map((i) => i.toLowerCase())?.includes(questId.toLowerCase()),
     [questId, userInfo.questIds],
   )
-
   // TODO
   // 1) If not hasIdRegister should call userLinkUserToQuest
   // 2) If status finished no need to call action
@@ -55,7 +56,10 @@ export const Tasks: React.FC<TasksProps> = ({ questId, completionStatus, endDate
           {account ? (
             <>
               <Tag variant="secondary" outline>
-                1/6 completed
+                {t('%completed%/%totalTask% completed', {
+                  completed: 0,
+                  totalTask: tasks?.length,
+                })}
               </Tag>
               {/* <Tag variant="success" outline>
                 {t('Completed')}
@@ -63,13 +67,15 @@ export const Tasks: React.FC<TasksProps> = ({ questId, completionStatus, endDate
             </>
           ) : (
             <Tag variant="textDisabled" outline>
-              6
+              {tasks?.length}
             </Tag>
           )}
         </Box>
       </Flex>
       <FlexGap flexDirection="column" gap="12px">
-        <Task />
+        {tasks.map((task) => (
+          <Task key={task?.id} task={task} isQuestFinished={isQuestFinished} completionStatus={completionStatus} />
+        ))}
       </FlexGap>
       <Box>
         <Text bold as="span" color="textSubtle">

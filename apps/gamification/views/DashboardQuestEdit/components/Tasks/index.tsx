@@ -43,7 +43,7 @@ const Item = ({ item, dragHandleProps }: { item: TaskConfigType; dragHandleProps
             item.taskType === TaskType.X_FOLLOW_ACCOUNT ||
             item.taskType === TaskType.X_REPOST_POST ||
             item.taskType === TaskType.TELEGRAM_JOIN_GROUP ||
-            item.taskType === TaskType.DISCORD_JOIN_SERVICE ||
+            item.taskType === TaskType.DISCORD_JOIN_SERVER ||
             item.taskType === TaskType.YOUTUBE_SUBSCRIBE ||
             item.taskType === TaskType.IG_LIKE_POST ||
             item.taskType === TaskType.IG_COMMENT_POST ||

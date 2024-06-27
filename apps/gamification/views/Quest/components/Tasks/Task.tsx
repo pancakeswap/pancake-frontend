@@ -10,13 +10,20 @@ import {
   OpenNewIcon,
   Text,
 } from '@pancakeswap/uikit'
+import { TaskConfigType } from 'views/DashboardQuestEdit/context/types'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
-import { TaskType } from 'views/DashboardQuestEdit/type'
+import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 
-export const Task = () => {
+interface TaskProps {
+  task: TaskConfigType
+  completionStatus: CompletionStatus
+  isQuestFinished: boolean
+}
+
+export const Task: React.FC<TaskProps> = ({ task, completionStatus, isQuestFinished }) => {
   const { t } = useTranslation()
   const isVerified = true
-  const taskType = TaskType.TELEGRAM_JOIN_GROUP
+  const { taskType, title, description } = task
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
 
   return (
@@ -26,7 +33,7 @@ export const Task = () => {
           <Flex mr="auto">
             {taskIcon(taskType)}
             <Text ml="16px" bold>
-              {taskNaming(taskType)}
+              {title ?? taskNaming(taskType)}
             </Text>
           </Flex>
           <Flex alignSelf="center">
@@ -38,9 +45,11 @@ export const Task = () => {
           </Flex>
         </Flex>
         <Box>
-          <Text bold m="8px 0 16px 0">
-            description
-          </Text>
+          {description && (
+            <Text bold m="8px 0 16px 0">
+              {description}
+            </Text>
+          )}
           <FlexGap gap="8px">
             {!isVerified ? (
               <Button width="100%" scale="sm" endIcon={<OpenNewIcon color="invertedContrast" />}>

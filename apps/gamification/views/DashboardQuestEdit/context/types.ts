@@ -25,7 +25,8 @@ export interface StateType {
 }
 
 export interface TaskBaseConfig {
-  sid: string
+  id?: string // Id from BE
+  sid: string // Sid is for FE easy to edit / delete task
   title: string
   description: string
   taskType: TaskType
@@ -65,7 +66,7 @@ export interface TaskSocialConfig extends TaskBaseConfig {
     | TaskType.X_FOLLOW_ACCOUNT
     | TaskType.X_REPOST_POST
     | TaskType.TELEGRAM_JOIN_GROUP
-    | TaskType.DISCORD_JOIN_SERVICE
+    | TaskType.DISCORD_JOIN_SERVER
     | TaskType.YOUTUBE_SUBSCRIBE
     | TaskType.IG_LIKE_POST
     | TaskType.IG_COMMENT_POST

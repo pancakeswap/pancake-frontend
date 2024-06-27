@@ -19,7 +19,7 @@ export const verifyTask = (task: TaskConfigType) => {
     case TaskType.X_REPOST_POST:
     case TaskType.X_FOLLOW_ACCOUNT:
     case TaskType.TELEGRAM_JOIN_GROUP:
-    case TaskType.DISCORD_JOIN_SERVICE:
+    case TaskType.DISCORD_JOIN_SERVER:
     case TaskType.YOUTUBE_SUBSCRIBE:
     case TaskType.IG_LIKE_POST:
     case TaskType.IG_COMMENT_POST:

@@ -31,7 +31,7 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
           return <TwitterIcon color={color} width={size} height={size} />
         case TaskType.TELEGRAM_JOIN_GROUP:
           return <TelegramIcon color={color} width={size} height={size} />
-        case TaskType.DISCORD_JOIN_SERVICE:
+        case TaskType.DISCORD_JOIN_SERVER:
           return <DiscordIcon color={color} width={size} height={size} />
         case TaskType.YOUTUBE_SUBSCRIBE:
           return <YoutubeIcon color={color} width={size} height={size} />
@@ -71,7 +71,7 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
           return t('Repost the post')
         case TaskType.TELEGRAM_JOIN_GROUP:
           return t('Join the group')
-        case TaskType.DISCORD_JOIN_SERVICE:
+        case TaskType.DISCORD_JOIN_SERVER:
           return t('Join the server')
         case TaskType.YOUTUBE_SUBSCRIBE:
           return t('Subscribe to the channel')
@@ -96,7 +96,7 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
           return t('X account link')
         case TaskType.TELEGRAM_JOIN_GROUP:
           return t('Telegram group link')
-        case TaskType.DISCORD_JOIN_SERVICE:
+        case TaskType.DISCORD_JOIN_SERVER:
           return t('Discord server link')
         case TaskType.YOUTUBE_SUBSCRIBE:
           return t('YouTube channel link')

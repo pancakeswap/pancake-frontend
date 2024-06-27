@@ -63,7 +63,7 @@ export const Quest = () => {
   if (!isFetched || isError) {
     return null
   }
-
+  console.log('quest', quest)
   return (
     <QuestContainer>
       <Box width="100%" p={['0 0 150px 0', '0 0 150px 0', '0 0 150px 0', '0 0 150px 0', '0 40px 200px 40px']}>
@@ -94,7 +94,7 @@ export const Quest = () => {
           </Flex>
         )}
         {!isDesktop && <Reward quest={quest} />}
-        <Tasks questId={questId} completionStatus={quest?.completionStatus} endDateTime={quest.endDateTime} />
+        <Tasks quest={quest} />
         <Description description={quest?.description} />
         {/* <RelatedQuest /> */}
         {/* <ExploreMore /> */}
