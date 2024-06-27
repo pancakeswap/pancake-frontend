@@ -144,9 +144,10 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
   )
 
   const tradePriceBreakdown = useMemo(
-    () => computeTradePriceBreakdown(isXOrder(order) ? order.ammTrade : order?.trade),
+    () => computeTradePriceBreakdown(isXOrder(order) ? undefined : order?.trade),
     [order],
   )
+
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(
     tradePriceBreakdown ? tradePriceBreakdown.priceImpactWithoutFee : undefined,
