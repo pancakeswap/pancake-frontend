@@ -239,7 +239,7 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
                         alt="Allora Logo"
                         width={20}
                         height={20}
-                        style={{ marginLeft: '5px' }}
+                        style={{ marginLeft: '5px', filter: theme.isDark ? 'invert(1)' : '' }}
                       />
                     </Flex>
                   </>
