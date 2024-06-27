@@ -31,7 +31,7 @@ export enum ProfileUrlType {
 
 export const list = [
   {
-    title: <Trans>Quests & Campaigns</Trans>,
+    title: <Trans>Quests</Trans>,
     url: ProfileUrlType.HOME_PAGE,
   },
   {

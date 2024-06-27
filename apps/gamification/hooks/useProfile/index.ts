@@ -21,7 +21,7 @@ export const useProfileForAddress = (
   refresh: () => Promise<QueryObserverResult<GetProfileResponse | null>>
 } => {
   const { data, status, refetch, isFetching } = useQuery({
-    queryKey: ['profile', address],
+    queryKey: [address, 'profile'],
     queryFn: () => getProfile(address),
     enabled: Boolean(address),
     refetchOnMount: fetchConfiguration.revalidateIfStale,
@@ -44,7 +44,7 @@ export const useAchievementsForAddress = (address: string) => {
   const { t } = useTranslation()
 
   const { data, status, refetch } = useQuery({
-    queryKey: ['achievements', address],
+    queryKey: [address, 'achievements'],
     queryFn: () => getAchievements(address, t),
     enabled: Boolean(address),
     refetchOnMount: false,
@@ -63,7 +63,7 @@ export const useProfile = () => {
   const { address: account } = useAccount()
   const enabled = Boolean(account)
   const { data, status, refetch } = useQuery({
-    queryKey: ['profile', account],
+    queryKey: [account, 'profile'],
     queryFn: () => {
       if (!account) return undefined
       return getProfile(account)
