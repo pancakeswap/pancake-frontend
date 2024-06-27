@@ -83,6 +83,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   boosterMultiplier,
   isBooster,
   boosterContractAddress,
+  adapterAddress,
 }: LiquidityManagementProps) {
   const { colors } = useTheme()
   const { t } = useTranslation()
@@ -286,6 +287,7 @@ export const LiquidityManagement = memo(function LiquidityManagement({
         isBooster={isBooster}
         onStake={onStake}
         isTxLoading={isTxLoading}
+        adapterAddress={adapterAddress}
       />
       <RemoveLiquidity
         isOpen={removeLiquidityModalOpen}

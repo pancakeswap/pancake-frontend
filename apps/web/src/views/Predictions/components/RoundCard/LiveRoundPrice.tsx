@@ -7,7 +7,7 @@ import CountUp from 'react-countup'
 interface LiveRoundPriceProps {
   displayedDecimals: number
   betPosition: BetPosition
-  price: bigint
+  price: bigint | number
 }
 
 const LiveRoundPrice: React.FC<React.PropsWithChildren<LiveRoundPriceProps>> = ({
@@ -15,7 +15,10 @@ const LiveRoundPrice: React.FC<React.PropsWithChildren<LiveRoundPriceProps>> = (
   betPosition,
   price,
 }) => {
-  const priceAsNumber = useMemo(() => parseFloat(formatBigIntToFixed(price, 4, 8)), [price])
+  const priceAsNumber = useMemo(
+    () => (price ? (typeof price === 'number' ? price : parseFloat(formatBigIntToFixed(price, 4, 8))) : 0),
+    [price],
+  )
 
   const priceColor = useMemo(() => {
     switch (betPosition) {
@@ -33,6 +36,7 @@ const LiveRoundPrice: React.FC<React.PropsWithChildren<LiveRoundPriceProps>> = (
     return null
   }
 
+  //  also works if price is a number
   if (price < 0n) {
     return <Skeleton height="36px" width="94px" />
   }

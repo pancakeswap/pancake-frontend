@@ -200,6 +200,8 @@ export interface Round {
   bearBets: number
   bearAmount: number
   bets?: Bet[]
+
+  AIPrice?: number
 }
 
 export interface Market {
@@ -284,8 +286,13 @@ export interface ReduxNodeRound {
   rewardBaseCalAmount: string
   rewardAmount: string
   oracleCalled: boolean
-  lockOracleId: string | null
-  closeOracleId: string | null
+
+  // PredictionsV2
+  lockOracleId?: string | null
+  closeOracleId?: string | null
+
+  // AI Predictions
+  AIPrice?: string | null
 }
 
 export interface NodeRound {
@@ -301,8 +308,13 @@ export interface NodeRound {
   rewardBaseCalAmount: bigint | null
   rewardAmount: bigint | null
   oracleCalled: boolean
-  closeOracleId: string | null
-  lockOracleId: string | null
+
+  // PredictionsV2
+  lockOracleId?: string | null
+  closeOracleId?: string | null
+
+  // AI Predictions
+  AIPrice?: bigint | null
 }
 
 export type LeaderboardFilterTimePeriod = '1d' | '7d' | '1m' | 'all'

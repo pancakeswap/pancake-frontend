@@ -3,8 +3,9 @@ import {
   BetPosition,
   PredictionStatus,
   PredictionSupportedSymbol,
-  predictionsV2ABI,
   ROUNDS_PER_PAGE,
+  aiPredictionsABI,
+  predictionsV2ABI,
 } from '@pancakeswap/prediction'
 import { gql, request } from 'graphql-request'
 import {
@@ -40,6 +41,7 @@ export const deserializeRound = (round: ReduxNodeRound): NodeRound => ({
   closePrice: convertBigInt(round.closePrice),
   rewardBaseCalAmount: convertBigInt(round.rewardBaseCalAmount),
   rewardAmount: convertBigInt(round.rewardAmount),
+  AIPrice: convertBigInt(round.AIPrice || null),
 })
 
 export enum Result {
@@ -86,11 +88,32 @@ export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
     return Result.LIVE
   }
 
+  // House Win would not occur in AI-based predictions, only in normal prediction feature
   if (bet?.round?.position === BetPosition.HOUSE) {
     return Result.HOUSE
   }
 
-  const roundResultPosition = Number(round?.closePrice) > Number(round?.lockPrice) ? BetPosition.BULL : BetPosition.BEAR
+  let roundResultPosition: BetPosition
+
+  // If AI-based prediction.
+  if (round?.AIPrice) {
+    if (
+      // Result: UP, AI Voted: UP => AI Win
+      (Number(round?.closePrice) > Number(round?.lockPrice) && Number(round.AIPrice) > Number(round.lockPrice)) ||
+      // Result: DOWN, AI Voted: DOWN => AI Win
+      (Number(round?.closePrice) < Number(round?.lockPrice) && Number(round.AIPrice) < Number(round.lockPrice)) ||
+      // Result: SAME, AI Voted: SAME => AI Win
+      (Number(round?.closePrice) === Number(round?.lockPrice) && Number(round.AIPrice) === Number(round.lockPrice))
+    ) {
+      // Follow AI wins
+      roundResultPosition = BetPosition.BULL
+    } else {
+      // Against AI wins
+      roundResultPosition = BetPosition.BEAR
+    }
+  } else {
+    roundResultPosition = Number(round?.closePrice) > Number(round?.lockPrice) ? BetPosition.BULL : BetPosition.BEAR
+  }
 
   return bet.position === roundResultPosition ? Result.WIN : Result.LOSE
 }
@@ -192,8 +215,9 @@ export const getHasRoundFailed = (
     return true
   }
 
-  if (!oracleCalled && !closeTimestamp) {
+  if (!oracleCalled || !closeTimestamp) {
     const closeTimestampMs = (Number(closeTimestamp) + buffer) * 1000
+
     if (Number.isFinite(closeTimestampMs)) {
       return Date.now() > closeTimestampMs
     }
@@ -314,14 +338,16 @@ export const getRoundsData = async (
   epochs: number[],
   address: Address,
   chainId: ChainId,
+  { isAIPrediction = true }: { isAIPrediction?: boolean } = {},
 ): Promise<PredictionsRoundsResponse[]> => {
   const client = publicClient({ chainId })
+
   const response = await client.multicall({
     contracts: epochs.map(
       (epoch) =>
         ({
           address,
-          abi: predictionsV2ABI,
+          abi: isAIPrediction ? aiPredictionsABI : predictionsV2ABI,
           functionName: 'rounds',
           args: [BigInt(epoch)] as const,
         } as const),
@@ -329,22 +355,40 @@ export const getRoundsData = async (
     allowFailure: false,
   })
 
-  return response.map((r) => ({
-    epoch: r[0],
-    startTimestamp: r[1],
-    lockTimestamp: r[2],
-    closeTimestamp: r[3],
-    lockPrice: r[4],
-    closePrice: r[5],
-    lockOracleId: r[6],
-    closeOracleId: r[7],
-    totalAmount: r[8],
-    bullAmount: r[9],
-    bearAmount: r[10],
-    rewardBaseCalAmount: r[11],
-    rewardAmount: r[12],
-    oracleCalled: r[13],
-  }))
+  return response.map((r, i) =>
+    isAIPrediction
+      ? {
+          epoch: BigInt(epochs[i]), // Should be in same order according to viem multicall docs
+          startTimestamp: BigInt(r[0]),
+          lockTimestamp: BigInt(r[1]),
+          closeTimestamp: BigInt(r[2]),
+          AIPrice: r[3],
+          lockPrice: r[4],
+          closePrice: r[5],
+          totalAmount: r[6],
+          bullAmount: r[7],
+          bearAmount: r[8],
+          rewardBaseCalAmount: r[9],
+          rewardAmount: r[10],
+          oracleCalled: Boolean(r[11]),
+        }
+      : {
+          epoch: BigInt(r[0]),
+          startTimestamp: BigInt(r[1]),
+          lockTimestamp: BigInt(r[2]),
+          closeTimestamp: BigInt(r[3]),
+          lockPrice: r[4],
+          closePrice: r[5],
+          lockOracleId: r[6],
+          closeOracleId: r[7],
+          totalAmount: r[8],
+          bullAmount: r[9],
+          bearAmount: r[10],
+          rewardBaseCalAmount: BigInt(r[11]),
+          rewardAmount: r[12] || 0n,
+          oracleCalled: Boolean(r[13]),
+        },
+  )
 }
 
 export const makeFutureRoundResponse = (epoch: number, startTimestamp: number): ReduxNodeRound => {
@@ -407,10 +451,7 @@ export const makeLedgerData = (account: string, ledgers: PredictionsLedgerRespon
 /**
  * Serializes the return from the "rounds" call for redux
  */
-export const serializePredictionsRoundsResponse = (
-  response: PredictionsRoundsResponse,
-  chainId: ChainId,
-): ReduxNodeRound => {
+export const serializePredictionsRoundsResponse = (response: PredictionsRoundsResponse): ReduxNodeRound => {
   const {
     epoch,
     startTimestamp,
@@ -426,16 +467,11 @@ export const serializePredictionsRoundsResponse = (
     oracleCalled,
     lockOracleId,
     closeOracleId,
+    AIPrice,
   } = response
 
-  let lockPriceAmount = lockPrice === 0n ? null : lockPrice.toString()
-  let closePriceAmount = closePrice === 0n ? null : closePrice.toString()
-
-  // Chainlink in ARBITRUM lockPrice & closePrice will return 18 decimals, other chain is return 8 decimals.
-  if (chainId === ChainId.ARBITRUM_ONE) {
-    lockPriceAmount = lockPrice === 0n ? null : (Number(lockPrice) / Number(1e10)).toFixed()
-    closePriceAmount = closePrice === 0n ? null : (Number(closePrice) / Number(1e10)).toFixed()
-  }
+  const lockPriceAmount = lockPrice === 0n ? null : lockPrice.toString()
+  const closePriceAmount = closePrice === 0n ? null : closePrice.toString()
 
   return {
     oracleCalled,
@@ -450,8 +486,13 @@ export const serializePredictionsRoundsResponse = (
     bearAmount: bearAmount.toString(),
     rewardBaseCalAmount: rewardBaseCalAmount.toString(),
     rewardAmount: rewardAmount.toString(),
-    lockOracleId: lockOracleId.toString(),
-    closeOracleId: closeOracleId.toString(),
+
+    // PredictionsV2
+    lockOracleId: lockOracleId?.toString(),
+    closeOracleId: closeOracleId?.toString(),
+
+    // AI Predictions
+    AIPrice: AIPrice?.toString(),
   }
 }
 

@@ -6,8 +6,10 @@ import 'swiper/css'
 import 'swiper/css/effect-fade'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
+import { AIPrediction } from './AIPredictionStripe'
 import { Countdown } from './Countdown'
 import { FeeRefund } from './FeeRefund'
+import { PerpetualSeason } from './PerpetualSeason'
 import { Step1 } from './Step1'
 import { Step2 } from './Step2'
 
@@ -115,6 +117,22 @@ const CONFIG: BannerConfig[] = [
     stripeImageWidth: FeeRefund.stripeImageWidth,
     stripeImageAlt: FeeRefund.stripeImageAlt,
     background: FeeRefund.background,
+    customStyle: { position: 'relative', transform: 'scale(1.25) translateX(-10px)' },
+  },
+  {
+    component: PerpetualSeason,
+    stripeImage: PerpetualSeason.stripeImage,
+    stripeImageWidth: PerpetualSeason.stripeImageWidth,
+    stripeImageAlt: PerpetualSeason.stripeImageAlt,
+    background: PerpetualSeason.background,
+    customStyle: { position: 'relative', transform: 'scale(1.25) translateX(-10px)' },
+  },
+  {
+    component: AIPrediction,
+    stripeImage: AIPrediction.stripeImage,
+    stripeImageWidth: AIPrediction.stripeImageWidth,
+    stripeImageAlt: AIPrediction.stripeImageAlt,
+    background: AIPrediction.background,
     customStyle: { position: 'relative', transform: 'scale(1.25) translateX(-10px)' },
   },
 ]

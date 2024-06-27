@@ -1,11 +1,19 @@
 import { Button, ButtonProps, useModal } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { fetchNodeHistory } from 'state/predictions'
 import { useCollectWinningModalProps } from 'state/predictions/hooks'
+import { useAccount } from 'wagmi'
 import { useConfig } from '../context/ConfigProvider'
 import CollectRoundWinningsModal from './CollectRoundWinningsModal'
 
 interface CollectWinningsButtonProps extends ButtonProps {
   hasClaimed: boolean
+
+  /**
+   * Success Callback.
+   * Note: fetchNodeHistory is called after this callback to refetch the history
+   */
   onSuccess?: () => Promise<void>
 }
 
@@ -15,6 +23,8 @@ const CollectWinningsButton: React.FC<React.PropsWithChildren<CollectWinningsBut
   children,
   ...props
 }) => {
+  const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const { history, isLoadingHistory } = useCollectWinningModalProps()
   const dispatch = useLocalDispatch()
   const config = useConfig()
@@ -26,7 +36,10 @@ const CollectWinningsButton: React.FC<React.PropsWithChildren<CollectWinningsBut
       dispatch={dispatch}
       history={history}
       isLoadingHistory={isLoadingHistory}
-      onSuccess={onSuccess}
+      onSuccess={async () => {
+        await onSuccess?.()
+        if (account) dispatch(fetchNodeHistory({ account, chainId }))
+      }}
       predictionsAddress={predictionsAddress}
       token={config?.token}
       isNativeToken={isNativeToken}

@@ -177,10 +177,37 @@ export const fetchFarmUserBCakeWrapperConstants = async (farmsToFetch: Serialize
     allowFailure: false,
   })
 
+  const totalBoostedShare = await publicClient({ chainId }).multicall({
+    contracts: farmsToFetch.map((farm) => {
+      return {
+        abi: v2BCakeWrapperABI,
+        address: farm?.bCakeWrapperAddress ?? '0x',
+        functionName: 'totalBoostedShare',
+      } as const
+    }),
+    allowFailure: false,
+  })
+  const lpBalanceOf = await publicClient({ chainId }).multicall({
+    contracts: farmsToFetch.map((farm) => {
+      return {
+        abi: erc20Abi,
+        address: farm?.lpAddress ?? '0x',
+        functionName: 'balanceOf',
+        args: [farm?.bCakeWrapperAddress ?? '0x'],
+      } as const
+    }),
+    allowFailure: false,
+  })
+  const totalLiquidityX = totalBoostedShare.map((share, index) => {
+    if (!share || !lpBalanceOf[index]) return 1
+    return new BigNumber(share.toString()).div(lpBalanceOf[index].toString()).toNumber()
+  })
+
   return {
     boosterContractAddress,
     startTimestamp: startTimestamp.map((d) => Number(d)),
     endTimestamp: endTimestamp.map((d) => Number(d)),
+    totalLiquidityX,
   }
 }
 

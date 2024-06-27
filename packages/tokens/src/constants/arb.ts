@@ -343,4 +343,20 @@ export const arbitrumTokens = {
     'LayerZero',
     'https://www.layerzero.foundation/',
   ),
+  solvBTCena: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xaFAfd68AFe3fe65d376eEC9Eab1802616cFacCb8',
+    18,
+    'SolvBTC.ENA',
+    'SolvBTC Ethena',
+    'https://solv.finance/',
+  ),
+  solvBTC: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x3647c54c4c2C65bC7a2D63c0Da2809B399DBBDC0',
+    18,
+    'SolvBTC',
+    'Solv BTC',
+    'https://solv.finance/',
+  ),
 }

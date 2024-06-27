@@ -84,11 +84,8 @@ export function createExplorerQuery<
 }
 
 export const chartPeriodRange = ['1H', '1D', '1W', '1M', '1Y'] as const
+
 export type ChartPeriod = (typeof chartPeriodRange)[number]
-
-export const chartGroupBy = ['1D', '1W', '1M'] as const
-
-export type ChartGroupBy = (typeof chartGroupBy)[number]
 
 export const chainIdToExplorerInfoChainName = {
   [ChainId.BSC]: 'bsc',
