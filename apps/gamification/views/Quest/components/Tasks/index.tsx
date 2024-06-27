@@ -5,11 +5,29 @@ import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useMemo } from 'react'
 import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
 // import { CompletionStatus } from 'views/DashboardQuestEdit/type'
+import { styled } from 'styled-components'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { Task } from 'views/Quest/components/Tasks/Task'
-import { useVerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
+// import { useVerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { useAccount } from 'wagmi'
+
+const OverlapContainer = styled(Box)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left 0;
+  background: ${({ theme }) => `${theme.isDark ? 'rgba(32, 28, 41, 0.7)' : 'rgba(255, 255, 255, 0.7)'}`};
+
+  > div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0 12px;
+  }
+`
 
 interface TasksProps {
   quest: SingleQuestData
@@ -19,24 +37,27 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { id: questId, completionStatus, endDateTime, tasks } = quest
-  const { userInfo, refresh } = useUserSocialHub()
+  const { userInfo, isFetched, refresh } = useUserSocialHub()
   const isQuestFinished = useMemo(() => new Date().getTime() >= endDateTime, [endDateTime])
 
-  const { taskStatus } = useVerifyTaskStatus({ questId, isQuestFinished })
+  // const { taskStatus } = useVerifyTaskStatus({ questId, isQuestFinished })
 
   const hasIdRegister = useMemo(
     () => userInfo.questIds?.map((i) => i.toLowerCase())?.includes(questId.toLowerCase()),
     [questId, userInfo.questIds],
   )
-  // TODO
-  // 1) If not hasIdRegister should call userLinkUserToQuest
-  // 2) If status finished no need to call action
-  // 3) If account not yet connect social need direct to /profile let user connect it.
+
+  const hasOptionsInTasks = useMemo(() => tasks.find((i) => i.isOptional === true), [tasks])
 
   const handleLinkUserToQuest = async () => {
     if (account) {
       try {
-        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/linkUserToQuest/${account}/${questId}`)
+        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/linkUserToQuest/${account}/${questId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
         if (response.ok) {
           refresh()
         }
@@ -72,39 +93,47 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
           )}
         </Box>
       </Flex>
-      <FlexGap flexDirection="column" gap="12px">
-        {tasks.map((task) => (
-          <Task key={task?.id} task={task} isQuestFinished={isQuestFinished} completionStatus={completionStatus} />
-        ))}
-      </FlexGap>
-      <Box>
-        <Text bold as="span" color="textSubtle">
-          {t('Tasks marked with the')}
-        </Text>
-        <OptionIcon m="0 4px -5px 4px" color="textSubtle" width={28} />
-        <Text bold as="span" color="textSubtle">
-          {t('badge are optional.')}
-        </Text>
-        <Text bold as="span" color="textSubtle">
-          {t('But your chances of winning will be increased if you complete all the tasks!')}
-        </Text>
-      </Box>
-      <>
-        {account ? (
-          <>
-            {!hasIdRegister && (
-              <Flex flexDirection="column">
-                <Text bold fontSize="12px" textAlign="center" color="textSubtle">
-                  {t('Start the quest to get access to the tasks')}
-                </Text>
-                <Button onClick={handleLinkUserToQuest}>{t('Start the Quest')}</Button>
-              </Flex>
-            )}
-          </>
-        ) : (
-          <ConnectWalletButton />
+      <Box position="relative">
+        <FlexGap flexDirection="column" gap="12px">
+          {tasks.map((task) => (
+            <Task key={task?.id} task={task} isQuestFinished={isQuestFinished} completionStatus={completionStatus} />
+          ))}
+        </FlexGap>
+        {hasOptionsInTasks && (
+          <Box>
+            <Text bold as="span" color="textSubtle">
+              {t('Tasks marked with the')}
+            </Text>
+            <OptionIcon m="0 4px -5px 4px" color="textSubtle" width={28} />
+            <Text bold as="span" color="textSubtle">
+              {t('badge are optional.')}
+            </Text>
+            <Text bold as="span" color="textSubtle">
+              {t('But your chances of winning will be increased if you complete all the tasks!')}
+            </Text>
+          </Box>
         )}
-      </>
+        {(!account || (isFetched && !hasIdRegister)) && (
+          <OverlapContainer>
+            {account ? (
+              <>
+                {!hasIdRegister && (
+                  <Flex flexDirection="column">
+                    <Text bold fontSize="12px" textAlign="center" color="textSubtle">
+                      {t('Start the quest to get access to the tasks')}
+                    </Text>
+                    <Button onClick={handleLinkUserToQuest}>{t('Start the Quest')}</Button>
+                  </Flex>
+                )}
+              </>
+            ) : (
+              <Box>
+                <ConnectWalletButton />
+              </Box>
+            )}
+          </OverlapContainer>
+        )}
+      </Box>
     </Box>
   )
 }
