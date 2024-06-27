@@ -31,11 +31,6 @@ export const SubmitAction = () => {
   const completionStatusToString = state.completionStatus.toString()
   const queryClient = useQueryClient()
 
-  const handleClick = () => {
-    setIsSubmitError(false)
-    setOpenModal(true)
-  }
-
   const handleClickDelete = async () => {
     if (query?.id) {
       try {
@@ -60,6 +55,7 @@ export const SubmitAction = () => {
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={handleClickDelete} />)
 
+  // eslint-disable-next-line consistent-return
   const handleSave = async (isCreate: boolean, completionStatus: CompletionStatus) => {
     try {
       setIsSubmitError(false)
@@ -89,11 +85,16 @@ export const SubmitAction = () => {
         }),
       })
 
-      if (response.ok) {
-        queryClient.invalidateQueries({
-          queryKey: ['fetch-single-quest-dashboard-data', query.id],
-        })
-        toastSuccess(t('Submit Successfully!'))
+      if (!response.ok) {
+        return setIsSubmitError(true)
+      }
+
+      queryClient.invalidateQueries({
+        queryKey: ['fetch-single-quest-dashboard-data', query.id],
+      })
+      toastSuccess(t('Submit Successfully!'))
+
+      if (state.completionStatus === CompletionStatus.SCHEDULED || completionStatus !== CompletionStatus.SCHEDULED) {
         push('/dashboard')
       }
     } catch (error) {
@@ -124,9 +125,9 @@ export const SubmitAction = () => {
       reward &&
       reward?.amountOfWinners > 0 &&
       reward?.totalRewardAmount > 0 &&
-      isAbleToSave
+      isTaskValid
     )
-  }, [state, isAbleToSave])
+  }, [state, isTaskValid])
 
   return (
     <Flex flexDirection="column" mt="30px">
@@ -165,7 +166,7 @@ export const SubmitAction = () => {
                   mb="8px"
                   width="100%"
                   variant="secondary"
-                  disabled={!isAbleToSave}
+                  disabled={!isAbleToSchedule}
                   onClick={() => handleSave(false, CompletionStatus.DRAFTED)}
                 >
                   {t('Move to the drafts')}
@@ -179,7 +180,7 @@ export const SubmitAction = () => {
                   endIcon={
                     <CalenderIcon color={isAbleToSchedule ? 'primary' : 'textDisabled'} width={20} height={20} />
                   }
-                  onClick={handleClick}
+                  onClick={() => setOpenModal(true)}
                 >
                   {t('Save and schedule')}
                 </Button>

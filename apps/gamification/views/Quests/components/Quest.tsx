@@ -80,9 +80,11 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...p
         <Flex flexDirection="column" padding="16px">
           <Flex mb="16px">
             {showStatus && (
-              <Tag variant="textDisabled" outline mr="auto">
+              <Box mr="auto">
                 {quest?.completionStatus === CompletionStatus.DRAFTED && (
-                  <Tag variant="textDisabled">{t('Drafted')}</Tag>
+                  <Tag outline variant="textDisabled">
+                    {t('Drafted')}
+                  </Tag>
                 )}
                 {quest?.completionStatus === CompletionStatus.ONGOING && (
                   <Text bold color="secondary">
@@ -94,7 +96,7 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...p
                     {t('Finished')}
                   </Text>
                 )}
-              </Tag>
+              </Box>
             )}
             <Flex>
               <CalenderIcon color="textSubtle" mr="8px" />

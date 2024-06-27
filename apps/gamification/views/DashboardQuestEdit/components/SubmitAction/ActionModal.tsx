@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Modal, ModalV2 } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Default } from 'views/DashboardQuestEdit/components/SubmitAction/Default'
 import { Fail } from 'views/DashboardQuestEdit/components/SubmitAction/Fail'
 import { Finished } from 'views/DashboardQuestEdit/components/SubmitAction/Finished'
@@ -48,7 +48,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({
     setOpenModal(false)
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     setModalView(QuestEditModalState.LOADING)
     await handleSave()
 
@@ -57,7 +57,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({
     } else {
       setModalView(QuestEditModalState.FINISHED)
     }
-  }
+  }, [handleSave, isSubmitError])
 
   const handleFinished = () => {
     closeModal()
@@ -87,7 +87,6 @@ export const ActionModal: React.FC<ActionModalProps> = ({
     [QuestEditModalState.FINISHED]: {
       title: t('The quest has been scheduled'),
       hideCloseButton: true,
-      closeOnOverlayClick: true,
       component: (
         <Finished title={t('The quest has been successfully scheduled!')} closeModal={handleFinished}>
           {questComponent}
