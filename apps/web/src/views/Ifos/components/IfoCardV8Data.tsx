@@ -9,7 +9,7 @@ interface Props {
   ifo: Ifo
 }
 
-export const IfoCardV7Data: React.FC<React.PropsWithChildren<Props>> = ({ ifo }) => {
+export const IfoCardV8Data: React.FC<React.PropsWithChildren<Props>> = ({ ifo }) => {
   const publicIfoData = useGetPublicIfoV8Data(ifo)
   const walletIfoData = useGetWalletIfoV8Data(ifo)
 
