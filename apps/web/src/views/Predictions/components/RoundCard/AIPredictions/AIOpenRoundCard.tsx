@@ -244,6 +244,7 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
                     </Flex>
                   </>
                 }
+                placement="bottom"
                 color="white"
                 size="18px"
                 ml="3px"
