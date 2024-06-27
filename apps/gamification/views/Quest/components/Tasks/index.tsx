@@ -3,13 +3,13 @@ import { Box, Button, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useMemo } from 'react'
-import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
-// import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { styled } from 'styled-components'
+import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
+import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { Task } from 'views/Quest/components/Tasks/Task'
-// import { useVerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
+import { useVerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { useAccount } from 'wagmi'
 
 const OverlapContainer = styled(Box)`
@@ -38,9 +38,12 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
   const { address: account } = useAccount()
   const { id: questId, completionStatus, endDateTime, tasks } = quest
   const { userInfo, isFetched, refresh } = useUserSocialHub()
-  const isQuestFinished = useMemo(() => new Date().getTime() >= endDateTime, [endDateTime])
+  const isQuestFinished = useMemo(
+    () => new Date().getTime() >= endDateTime || completionStatus === CompletionStatus.FINISHED,
+    [completionStatus, endDateTime],
+  )
 
-  // const { taskStatus } = useVerifyTaskStatus({ questId, isQuestFinished })
+  const { taskStatus } = useVerifyTaskStatus({ questId, isQuestFinished })
 
   const hasIdRegister = useMemo(
     () => userInfo.questIds?.map((i) => i.toLowerCase())?.includes(questId.toLowerCase()),
@@ -96,7 +99,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
       <Box position="relative">
         <FlexGap flexDirection="column" gap="12px">
           {tasks.map((task) => (
-            <Task key={task?.id} task={task} isQuestFinished={isQuestFinished} completionStatus={completionStatus} />
+            <Task key={task?.id} task={task} taskStatus={taskStatus} isQuestFinished={isQuestFinished} />
           ))}
         </FlexGap>
         {hasOptionsInTasks && (

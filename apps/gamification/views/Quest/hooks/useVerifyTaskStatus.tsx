@@ -4,33 +4,17 @@ import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { useAccount } from 'wagmi'
 
-interface VerifyTaskStatus {
+export interface VerifyTaskStatus {
   userId: string
   questId: string
-  verificationStatusBySocialMedia: { [key in TaskType]: boolean }
+  verificationStatusBySocialMedia: null | { [key in TaskType]: boolean }
   message: null | string
 }
 
 const initialData: VerifyTaskStatus = {
   userId: '',
   questId: '',
-  verificationStatusBySocialMedia: {
-    [TaskType.MAKE_A_SWAP]: false,
-    [TaskType.HOLD_A_TOKEN]: false,
-    [TaskType.ADD_LIQUIDITY]: false,
-    [TaskType.PARTICIPATE_LOTTERY]: false,
-    [TaskType.ADD_BLOG_POST]: false,
-    [TaskType.MAKE_PREDICTION]: false,
-    [TaskType.X_LINK_POST]: false,
-    [TaskType.X_FOLLOW_ACCOUNT]: false,
-    [TaskType.X_REPOST_POST]: false,
-    [TaskType.TELEGRAM_JOIN_GROUP]: false,
-    [TaskType.DISCORD_JOIN_SERVER]: false,
-    [TaskType.YOUTUBE_SUBSCRIBE]: false,
-    [TaskType.IG_LIKE_POST]: false,
-    [TaskType.IG_COMMENT_POST]: false,
-    [TaskType.IG_FOLLOW_ACCOUNT]: false,
-  },
+  verificationStatusBySocialMedia: null,
   message: null,
 }
 
