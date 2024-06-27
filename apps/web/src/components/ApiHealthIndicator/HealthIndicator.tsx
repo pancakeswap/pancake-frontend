@@ -137,7 +137,6 @@ export const SubgraphHealthIndicator: React.FC<SubgraphHealthIndicatorProps> = (
 
 export const ExplorerHealthIndicator: React.FC<ExplorerHealthIndicatorProps> = ({ chainId, protocol, ...props }) => {
   const { status, currentBlock, blockDifference, latestBlock } = useExplorerHealth({ chainId, protocol })
-  console.info(status)
   return (
     <HealthIndicator
       chainId={chainId}
@@ -254,7 +253,7 @@ const TooltipContent = ({
             <strong>{t('Chain Head Block')}:</strong> {currentBlock}
           </Text>
           <Text>
-            <strong>{t('Latest Subgraph Block')}:</strong> {blockNumberFromSubgraph}
+            <strong>{t('Latest Sync Block')}:</strong> {blockNumberFromSubgraph}
           </Text>
           <Text>
             <strong>{t('Delay')}:</strong> {Math.max(delayDiff, 0)} ({delayDiff < 0 ? 0 : secondRemainingBlockSync}s)
