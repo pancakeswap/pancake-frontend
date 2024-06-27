@@ -5,7 +5,6 @@ import { FeeRefundBanner } from '../FeeRefundBanner'
 import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import GameBanner from '../GameBanner'
 import { ListaIFOBanner } from '../ListaIFOBanner'
-import { MultiChainBanner } from '../MultichainBanner'
 import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
 import { OptionsBanner } from '../OptionsBanner'
 import { PaymasterBanner } from '../PaymasterBanner'
@@ -55,10 +54,6 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: true,
         banner: <FeeRefundBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <MultiChainBanner />,
       },
       {
         shouldRender: true,
