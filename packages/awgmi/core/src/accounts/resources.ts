@@ -31,11 +31,7 @@ const typeTagFilter = ({ address, moduleName, name }: TypeTagFilter) => {
   const filter = (data: FetchAccountResourcesResult[number]) => {
     const parsed = parseTypeTag(data.type)
     if (parsed.isStruct()) {
-      if (
-        address &&
-        parsed.isAddress() &&
-        new Hex(parsed.value.address.data).toString() !== Hex.fromHexInput(address).toString()
-      )
+      if (address && new Hex(parsed.value.address.data).toString() !== Hex.fromHexInput(address).toString())
         return false
 
       if (moduleName && parsed.value.moduleName.identifier !== moduleName) return false

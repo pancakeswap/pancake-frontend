@@ -7,6 +7,7 @@ test('exports', () => {
       "getAccount",
       "watchAccount",
       "fetchBalance",
+      "fetchBalances",
       "connect",
       "disconnect",
       "fetchFormattedBalance",
