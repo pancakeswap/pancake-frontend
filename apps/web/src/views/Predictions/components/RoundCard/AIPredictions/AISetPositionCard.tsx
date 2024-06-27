@@ -238,7 +238,13 @@ export const AISetPositionCard: React.FC<React.PropsWithChildren<AISetPositionCa
         </Flex>
         <BalanceInput
           value={value}
-          currencyValue={usdValue}
+          currencyValue={
+            usdValue && (
+              <Text fontSize="12px" textAlign="right" color="textSubtle" ellipsis>
+                {usdValue}
+              </Text>
+            )
+          }
           onUserInput={handleInputChange}
           isWarning={showFieldWarning}
           inputProps={{ disabled: !account || isTxPending }}
