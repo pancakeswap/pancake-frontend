@@ -19,7 +19,7 @@ const initialData: SingleQuestData = {
   startTime: null,
   endDate: null,
   endTime: null,
-  task: [],
+  tasks: [],
   rewardSCAddress: '',
   ownerAddress: '',
   numberOfParticipants: 0,
