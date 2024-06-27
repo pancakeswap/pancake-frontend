@@ -14,7 +14,7 @@ const chains = [
   { label: "Arbitrum One", value: "Arbitrum One", icon: "https://assets.pancakeswap.finance/web/chains/42161.png" },
   { label: "Linea", value: "Linea", icon: "https://assets.pancakeswap.finance/web/chains/59144.png" },
   { label: "Base", value: "Base", icon: "https://assets.pancakeswap.finance/web/chains/8453.png" },
-  { label: "opBNB", value: "Aptos", icon: "https://assets.pancakeswap.finance/web/chains/204.png" },
+  { label: "opBNB", value: "opbnb", icon: "https://assets.pancakeswap.finance/web/chains/204.png" },
   { label: "Aptos", value: "Aptos", icon: "https://aptos.pancakeswap.finance/images/apt.png" },
 ];
 
