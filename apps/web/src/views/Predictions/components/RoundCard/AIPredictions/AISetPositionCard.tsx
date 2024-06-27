@@ -117,14 +117,15 @@ export const AISetPositionCard: React.FC<React.PropsWithChildren<AISetPositionCa
   const valueAsBn = getValueAsEthersBn(value)
   const showFieldWarning = account && valueAsBn > 0n && errorMessage !== null
 
-  const { data: tokenPrice, isError } = useCurrencyUsdPrice(config?.token)
+  const { data: tokenPrice } = useCurrencyUsdPrice(config?.token)
   const usdValue = useMemo(() => {
-    if (isError || !tokenPrice || !Number(value)) {
-      return ''
-    }
+    if (!tokenPrice || !Number(value)) return ''
 
-    return `~$${formatNumber(parseFloat(value) * tokenPrice, 2, 4)}`
-  }, [isError, tokenPrice, value])
+    const rawUsdValue = new BN(value).times(tokenPrice)
+    if (rawUsdValue.isNaN()) return ''
+
+    return `~$${formatNumber(rawUsdValue.toNumber(), 2, 4)}`
+  }, [tokenPrice, value])
 
   // Native Token prediction doesn't need approval
   const doesCakeApprovePrediction = isNativeToken || allowance.gte(valueAsBn.toString())
