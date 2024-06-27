@@ -5,6 +5,7 @@ import {
   Card,
   CheckmarkCircleFillIcon,
   ChevronDownIcon,
+  ChevronUpIcon,
   Flex,
   FlexGap,
   OpenNewIcon,
@@ -59,7 +60,13 @@ export const Task: React.FC<TaskProps> = ({ task, taskStatus, isQuestFinished })
             {isVerified ? (
               <CheckmarkCircleFillIcon color="success" />
             ) : (
-              <ChevronDownIcon color="primary" width={20} height={20} />
+              <>
+                {actionPanelExpanded ? (
+                  <ChevronUpIcon color="primary" width={20} height={20} />
+                ) : (
+                  <ChevronDownIcon color="primary" width={20} height={20} />
+                )}
+              </>
             )}
           </Flex>
         </Flex>
