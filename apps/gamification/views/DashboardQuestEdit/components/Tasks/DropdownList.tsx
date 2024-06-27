@@ -55,7 +55,7 @@ export const DropdownList: React.FC<DropdownListProps> = (props) => {
   return (
     <Box {...props} width={20} id={id} height={20} style={{ cursor: 'pointer' }}>
       <EllipsisIcon style={{ pointerEvents: 'none' }} color="primary" width="12px" height="12px" />
-      <PopperWrapper target={id} initOpen ref={popperRef} placement="top" toggle="legacy">
+      <PopperWrapper target={id} ref={popperRef} placement="top" toggle="legacy">
         <StyledDropdown>
           <Flex onClick={onClickDelete}>
             <DeleteOutlineIcon width="28px" height="20px" color="primary" />
