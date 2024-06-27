@@ -57,7 +57,7 @@ export const PerpetualSeasonalBanner = () => {
   const { isMobile, isTablet, isMd } = useMatchBreakpoints()
 
   return (
-    <BannerContainer>
+    <BannerContainer background="linear-gradient(140deg, #7645d9 0%, #452a7a 100%)">
       <BannerMain
         badges={
           <StyledFlexContainer gap="8px">
