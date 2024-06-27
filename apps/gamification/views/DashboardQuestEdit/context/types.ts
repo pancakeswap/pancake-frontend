@@ -76,7 +76,7 @@ export interface TaskSocialConfig extends TaskBaseConfig {
 }
 
 export interface TaskBlogPostConfig extends TaskBaseConfig {
-  taskType: TaskType.ADD_BLOG_POST
+  taskType: TaskType.VISIT_BLOG_POST
   blogUrl: string
 }
 

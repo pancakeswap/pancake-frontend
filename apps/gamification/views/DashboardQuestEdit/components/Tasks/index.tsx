@@ -37,7 +37,7 @@ const Item = ({ item, dragHandleProps }: { item: TaskConfigType; dragHandleProps
           {item.taskType === TaskType.HOLD_A_TOKEN && <AddHoldToken task={item} />}
           {item.taskType === TaskType.PARTICIPATE_LOTTERY && <AddLottery task={item} />}
           {item.taskType === TaskType.ADD_LIQUIDITY && <AddLpAddress task={item} />}
-          {item.taskType === TaskType.ADD_BLOG_POST && <AddBlogPost task={item} />}
+          {item.taskType === TaskType.VISIT_BLOG_POST && <AddBlogPost task={item} />}
 
           {(item.taskType === TaskType.X_LINK_POST ||
             item.taskType === TaskType.X_FOLLOW_ACCOUNT ||

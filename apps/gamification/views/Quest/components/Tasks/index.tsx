@@ -38,6 +38,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
   const { address: account } = useAccount()
   const { id: questId, completionStatus, endDateTime, tasks } = quest
   const { userInfo, isFetched, refresh } = useUserSocialHub()
+
   const isQuestFinished = useMemo(
     () => new Date().getTime() >= endDateTime || completionStatus === CompletionStatus.FINISHED,
     [completionStatus, endDateTime],
@@ -99,7 +100,13 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
       <Box position="relative">
         <FlexGap flexDirection="column" gap="12px">
           {tasks.map((task) => (
-            <Task key={task?.id} task={task} taskStatus={taskStatus} isQuestFinished={isQuestFinished} />
+            <Task
+              key={task?.id}
+              questId={questId}
+              task={task}
+              taskStatus={taskStatus}
+              isQuestFinished={isQuestFinished}
+            />
           ))}
         </FlexGap>
         {hasOptionsInTasks && (

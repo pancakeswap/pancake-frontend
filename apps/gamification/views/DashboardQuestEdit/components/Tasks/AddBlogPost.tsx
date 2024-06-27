@@ -68,11 +68,11 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
       <Flex flexDirection={['column', 'column', 'row']}>
         <Flex>
           <Flex mr="8px" alignSelf="center" position="relative">
-            {taskIcon(TaskType.ADD_BLOG_POST)}
+            {taskIcon(TaskType.VISIT_BLOG_POST)}
             {task.isOptional && <StyledOptionIcon />}
           </Flex>
           <Text style={{ alignSelf: 'center' }} bold>
-            {taskNaming(TaskType.ADD_BLOG_POST)}
+            {taskNaming(TaskType.VISIT_BLOG_POST)}
           </Text>
           {isMobile && (
             <DropdownList
@@ -102,7 +102,7 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
               value={task.blogUrl}
               isError={isUrlError}
               style={{ borderRadius: '24px' }}
-              placeholder={taskInputPlaceholder(TaskType.ADD_BLOG_POST)}
+              placeholder={taskInputPlaceholder(TaskType.VISIT_BLOG_POST)}
               onChange={handleUrlChange}
             />
           </InputGroup>

@@ -12,19 +12,24 @@ import {
   Text,
   useToast,
 } from '@pancakeswap/uikit'
+import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useCallback, useState } from 'react'
-import { TaskConfigType } from 'views/DashboardQuestEdit/context/types'
+import { TaskBlogPostConfig, TaskConfigType, TaskSocialConfig } from 'views/DashboardQuestEdit/context/types'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
+import { TaskType } from 'views/DashboardQuestEdit/type'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
+import { useAccount } from 'wagmi'
 
 interface TaskProps {
+  questId: string
   task: TaskConfigType
   taskStatus: VerifyTaskStatus
   isQuestFinished: boolean
 }
 
-export const Task: React.FC<TaskProps> = ({ task, taskStatus, isQuestFinished }) => {
+export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFinished }) => {
   const { t } = useTranslation()
+  const { address: account } = useAccount()
   const isVerified = taskStatus?.verificationStatusBySocialMedia?.[task.taskType]
   const isUserConnectSocial = false
   const { taskType, title, description } = task
@@ -41,6 +46,50 @@ export const Task: React.FC<TaskProps> = ({ task, taskStatus, isQuestFinished })
       setActionPanelExpanded(!actionPanelExpanded)
     }
   }, [actionPanelExpanded, isQuestFinished, isUserConnectSocial, t, toastError])
+
+  const handleAddBlogPost = async () => {
+    if (account && questId) {
+      try {
+        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/markTaskStatus/${account}/${questId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            taskName: TaskType.VISIT_BLOG_POST,
+            isCompleted: true,
+          }),
+        })
+
+        if (response.ok) {
+          const url = (task as TaskBlogPostConfig).blogUrl
+          window.open(url, '_blank', 'noopener noreferrer')
+        }
+      } catch (error) {
+        console.error('Submit markTaskStatus error', error)
+      }
+    }
+  }
+
+  const handleSocial = () => {
+    const url = (task as TaskSocialConfig).socialLink
+    window.open(url, '_blank', 'noopener noreferrer')
+  }
+
+  const handleAction = () => {
+    switch (taskType as TaskType) {
+      case TaskType.VISIT_BLOG_POST:
+        return handleAddBlogPost()
+      case TaskType.X_LINK_POST:
+      case TaskType.X_FOLLOW_ACCOUNT:
+      case TaskType.X_REPOST_POST:
+      case TaskType.TELEGRAM_JOIN_GROUP:
+      case TaskType.DISCORD_JOIN_SERVER:
+        return handleSocial()
+      default:
+        return null
+    }
+  }
 
   return (
     <Card>
@@ -79,7 +128,12 @@ export const Task: React.FC<TaskProps> = ({ task, taskStatus, isQuestFinished })
             )}
             <FlexGap gap="8px">
               {!isVerified ? (
-                <Button width="100%" scale="sm" endIcon={<OpenNewIcon color="invertedContrast" />}>
+                <Button
+                  width="100%"
+                  scale="sm"
+                  endIcon={<OpenNewIcon color="invertedContrast" />}
+                  onClick={handleAction}
+                >
                   {t('Proceed to connect')}
                 </Button>
               ) : (

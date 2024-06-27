@@ -13,7 +13,7 @@ export const verifyTask = (task: TaskConfigType) => {
     case TaskType.MAKE_A_SWAP:
     case TaskType.HOLD_A_TOKEN:
       return validateNumber((task as TaskSwapConfig | TaskHoldTokenConfig).minAmount)
-    case TaskType.ADD_BLOG_POST:
+    case TaskType.VISIT_BLOG_POST:
       return !validateIsNotEmpty((task as TaskBlogPostConfig).blogUrl)
     case TaskType.X_LINK_POST:
     case TaskType.X_REPOST_POST:

@@ -54,7 +54,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         orderNumber: 0,
         isOptional: false,
       }
-    case TaskType.ADD_BLOG_POST:
+    case TaskType.VISIT_BLOG_POST:
       return {
         sid: randomId,
         title: 'Visit the blog post',
