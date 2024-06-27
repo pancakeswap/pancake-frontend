@@ -25,6 +25,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         isOptional: false,
         minAmount: '',
         taskType,
+        orderNumber: 0,
         currency: (CAKE as any)?.[DEFAULT_CHAIN],
       }
     case TaskType.PARTICIPATE_LOTTERY:
@@ -37,6 +38,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         minAmount: '',
         fromRound: '',
         toRound: '',
+        orderNumber: 0,
         isOptional: false,
       }
     case TaskType.ADD_LIQUIDITY:
@@ -49,6 +51,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         network: DEFAULT_CHAIN,
         minAmount: '',
         lpAddress: '',
+        orderNumber: 0,
         isOptional: false,
       }
     case TaskType.ADD_BLOG_POST:
@@ -59,6 +62,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         isCompleted: false,
         taskType,
         blogUrl: '',
+        orderNumber: 0,
         isOptional: false,
       }
     case TaskType.X_LINK_POST:
@@ -77,6 +81,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         isCompleted: false,
         taskType,
         socialLink: '',
+        orderNumber: 0,
         isOptional: false,
       }
     default:

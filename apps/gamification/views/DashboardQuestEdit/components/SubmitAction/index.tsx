@@ -77,7 +77,7 @@ export const SubmitAction = () => {
         body: JSON.stringify({
           ...state,
           orgId: account?.toLowerCase(),
-          tasks: tasks?.length > 0 ? tasks : [],
+          tasks: tasks?.length > 0 ? tasks.map((i, index) => ({ ...i, orderNumber: index })) : [],
           chainId: apiChainId,
           startDateTime,
           endDateTime,

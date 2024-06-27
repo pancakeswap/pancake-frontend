@@ -32,6 +32,7 @@ export interface TaskBaseConfig {
   taskType: TaskType
   isOptional: boolean
   isCompleted: boolean
+  orderNumber: number
 }
 
 export interface TaskSwapConfig extends TaskBaseConfig {
