@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { nanoid } from '@reduxjs/toolkit'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
@@ -55,6 +56,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
         } = questData as SingleQuestData
         const startDateConvert = startDateTime > 0 ? new Date(convertDateAndTime(startDateTime)) : null
         const endDateConvert = startDateTime > 0 ? new Date(convertDateAndTime(endDateTime)) : null
+        const newTasks = tasks.length > 0 ? tasks.map((i) => ({ ...i, sid: nanoid(100) })) : tasks
 
         updateAllState(
           {
@@ -75,7 +77,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
             ownerAddress,
             numberOfParticipants,
           },
-          tasks,
+          newTasks,
         )
 
         setShowPage(true)

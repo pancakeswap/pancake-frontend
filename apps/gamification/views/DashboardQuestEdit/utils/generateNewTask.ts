@@ -7,7 +7,7 @@ import { TaskType } from 'views/DashboardQuestEdit/type'
 const DEFAULT_CHAIN = ChainId.BSC
 
 export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): TaskConfigType | null => {
-  let randomId: string = nanoid(20)
+  let randomId: string = nanoid(100)
 
   const allSid: any = tasks?.map((task) => task.sid)
   if (allSid?.includes[randomId]) {
