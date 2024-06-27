@@ -15,7 +15,7 @@ import {
   Slider,
   Text,
 } from '@pancakeswap/uikit'
-import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt, formatNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BN from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { TokenImage } from 'components/TokenImage'
@@ -31,6 +31,7 @@ import { Address, parseUnits } from 'viem'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { useAccount } from 'wagmi'
 
+import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import FlexRow from '../FlexRow'
 import PositionTag from '../PositionTag'
 
@@ -115,6 +116,16 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
 
   const valueAsBn = getValueAsEthersBn(value)
   const showFieldWarning = account && valueAsBn > 0n && errorMessage !== null
+
+  const { data: tokenPrice } = useCurrencyUsdPrice(config?.token)
+  const usdValue = useMemo(() => {
+    if (!tokenPrice || !Number(value)) return ''
+
+    const rawUsdValue = new BN(value).times(tokenPrice)
+    if (rawUsdValue.isNaN()) return ''
+
+    return `~$${formatNumber(rawUsdValue.toNumber(), 2, 4)}`
+  }, [tokenPrice, value])
 
   // Native Token prediction doesn't need approval
   const doesCakeApprovePrediction = isNativeToken || allowance.gte(valueAsBn.toString())
@@ -227,6 +238,13 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
         </Flex>
         <BalanceInput
           value={value}
+          currencyValue={
+            usdValue && (
+              <Text fontSize="12px" textAlign="right" color="textSubtle" ellipsis>
+                {usdValue}
+              </Text>
+            )
+          }
           onUserInput={handleInputChange}
           isWarning={showFieldWarning}
           inputProps={{ disabled: !account || isTxPending }}
