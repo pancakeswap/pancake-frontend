@@ -1,22 +1,13 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { Box } from '@pancakeswap/uikit'
 import throttle from 'lodash/throttle'
 import { useMemo } from 'react'
-import { Box } from '@pancakeswap/uikit'
 
-import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
 import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
+import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
 
 import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
-import { useCheckInsufficientError } from './hooks/useCheckSufficient'
-import {
-  FormHeader,
-  FormMain,
-  MMTradeDetail,
-  PricingAndSlippage,
-  SwapCommitButton,
-  TradeDetails,
-  BuyCryptoLink,
-} from './containers'
+import { FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, SwapCommitButton, TradeDetails } from './containers'
 import { MMCommitButton } from './containers/MMCommitButton'
 import { useSwapBestTrade } from './hooks'
 
@@ -36,8 +27,6 @@ export function V3SwapForm() {
   const tradeLoaded = !isLoading
   const price = useMemo(() => trade && SmartRouter.getExecutionPrice(trade), [trade])
 
-  const insufficientFundCurrency = useCheckInsufficientError(trade)
-
   return (
     <>
       <FormHeader onRefresh={throttledHandleRefresh} refreshDisabled={!tradeLoaded || syncing || !isStale} />
@@ -54,8 +43,6 @@ export function V3SwapForm() {
           )
         }
       />
-
-      <BuyCryptoLink currency={insufficientFundCurrency} />
 
       {mm.isMMBetter ? (
         <MMTradeDetail loaded={!mm.mmOrderBookTrade.isLoading} mmTrade={mm.mmTradeInfo} />

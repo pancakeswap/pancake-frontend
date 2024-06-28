@@ -34,7 +34,7 @@ const PriceChart = ({
             inputCurrency && <CurrencyLogo currency={inputCurrency} size="24px" style={{ marginRight: '8px' }} />
           )}
           {inputCurrency && (
-            <Text color="text" bold>
+            <Text color="primary" bold>
               {outputCurrency ? `${inputCurrency.symbol}/${outputCurrency.symbol}` : inputCurrency.symbol}
             </Text>
           )}

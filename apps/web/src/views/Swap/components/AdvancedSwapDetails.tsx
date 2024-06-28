@@ -1,9 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
-import { Modal, ModalV2, QuestionHelper, SearchIcon, Text, Flex, Link, AutoColumn } from '@pancakeswap/uikit'
+import { AutoColumn, Flex, Link, Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
-import { useState, memo } from 'react'
+import { memo, useState } from 'react'
 
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
@@ -68,14 +68,14 @@ export const TradeSummary = memo(function TradeSummary({
             <QuestionHelper
               text={
                 <>
-                  <Text>
-                    <Text bold display="inline-block">
+                  <Text color="invertedContrast">
+                    <Text bold color="invertedContrast" display="inline-block">
                       {t('AMM')}
                     </Text>
                     {`: ${t('The difference between the market price and estimated price due to trade size.')}`}
                   </Text>
-                  <Text mt="10px">
-                    <Text bold display="inline-block">
+                  <Text mt="10px" color="invertedContrast">
+                    <Text bold color="invertedContrast" display="inline-block">
                       {t('MM')}
                     </Text>
                     {`: ${t('No slippage against quote from market maker')}`}
@@ -100,8 +100,8 @@ export const TradeSummary = memo(function TradeSummary({
             <QuestionHelper
               text={
                 <>
-                  <Text mb="12px">
-                    <Text bold display="inline-block">
+                  <Text mb="12px" color="invertedContrast">
+                    <Text bold display="inline-block" color="invertedContrast">
                       {t('AMM')}
                     </Text>
                     :{' '}
@@ -109,11 +109,12 @@ export const TradeSummary = memo(function TradeSummary({
                       'Fee ranging from 0.1% to 0.01% depending on the pool fee tier. You can check the fee tier by clicking the magnifier icon under the “Route” section.',
                     )}
                   </Text>
-                  <Text mt="12px">
+                  <Text mt="12px" color="invertedContrast">
                     <Link
                       style={{ display: 'inline' }}
                       ml="4px"
                       external
+                      color="invertedContrast"
                       href={
                         isMM
                           ? 'https://docs.pancakeswap.finance/products/pancakeswap-exchange/market-maker-integration#fees'
@@ -123,8 +124,8 @@ export const TradeSummary = memo(function TradeSummary({
                       {t('Fee Breakdown and Tokenomics')}
                     </Link>
                   </Text>
-                  <Text mt="10px">
-                    <Text bold display="inline-block">
+                  <Text mt="10px" color="invertedContrast">
+                    <Text bold display="inline-block" color="invertedContrast">
                       {t('MM')}
                     </Text>
                     :{' '}

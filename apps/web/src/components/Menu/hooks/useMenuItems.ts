@@ -1,8 +1,8 @@
 import { useTheme } from '@pancakeswap/hooks'
-import { useMatchBreakpoints, DropdownMenuItems } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { DropdownMenuItems, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { IdType, useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useMemo } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import config, { ConfigMenuItemsType } from '../config/config'
@@ -20,7 +20,7 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
 
   const menuItems = useMemo(() => {
     const mobileConfig = [...config(t, isDark, languageCode, chainId)]
-    mobileConfig.push(mobileConfig.splice(3, 1)[0])
+    // mobileConfig.push(mobileConfig.splice(3, 1)[0])
     return isMobile ? mobileConfig : config(t, isDark, languageCode, chainId)
   }, [t, isDark, languageCode, chainId, isMobile])
   const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.PERPETUALS)

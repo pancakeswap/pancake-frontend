@@ -1,5 +1,5 @@
-import React, { cloneElement, Children, ReactElement } from "react";
-import { styled, DefaultTheme } from "styled-components";
+import React, { Children, ReactElement, cloneElement } from "react";
+import { DefaultTheme, styled } from "styled-components";
 import { space } from "styled-system";
 import { scales, variants } from "../Button/types";
 import { ButtonMenuProps } from "./types";
@@ -13,7 +13,7 @@ const getBackgroundColor = ({ theme, variant }: StyledButtonMenuProps) => {
 };
 
 const getBorderColor = ({ theme, variant }: StyledButtonMenuProps) => {
-  return theme.colors[variant === variants.SUBTLE ? "inputSecondary" : "disabled"];
+  return theme.colors[variant === variants.SUBTLE ? "inputSecondary" : "tertiary"];
 };
 
 const StyledButtonMenu = styled.div.withConfig({

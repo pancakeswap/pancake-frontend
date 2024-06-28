@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Text, FlexGap, FlexGapProps } from '@pancakeswap/uikit'
+import { Flex, FlexGap, FlexGapProps, Skeleton, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { formatAmount, formatAmountNotation, tokenPrecisionStyle } from 'utils/formatInfoNumbers'
 
@@ -35,11 +35,11 @@ const PairPriceDisplay: React.FC<React.PropsWithChildren<TokenDisplayProps>> = (
   return value ? (
     <FlexGap alignItems="baseline" {...props}>
       <Flex alignItems="inherit">
-        <TextLabel mr="8px" bold>
+        <TextLabel mr="8px" bold color="primary">
           {format ? formatAmount(typeof value === 'string' ? parseFloat(value) ?? 0 : value, formatOptions) : value}
         </TextLabel>
         {inputSymbol && outputSymbol && (
-          <Text color="textSubtle" fontSize="20px" bold lineHeight={1.1}>
+          <Text color="secondary" fontSize="20px" bold lineHeight={1.1}>
             {`${inputSymbol}/${outputSymbol}`}
           </Text>
         )}

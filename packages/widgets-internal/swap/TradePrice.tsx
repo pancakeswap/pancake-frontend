@@ -1,7 +1,7 @@
-import { Price, Currency } from "@pancakeswap/swap-sdk-core";
+import { Currency, Price } from "@pancakeswap/swap-sdk-core";
+import { AtomBox, AutoRenewIcon, Loading, SwapCSS, SyncAltIcon, Text } from "@pancakeswap/uikit";
 import { formatPrice } from "@pancakeswap/utils/formatFractions";
 import { useState } from "react";
-import { AtomBox, SyncAltIcon, AutoRenewIcon, Text, Loading, SwapCSS } from "@pancakeswap/uikit";
 
 interface TradePriceProps {
   price?: Price<Currency, Currency>;
@@ -17,6 +17,7 @@ export function TradePrice({ price, loading }: TradePriceProps) {
   return (
     <Text
       fontSize="14px"
+      color="textSubtle"
       style={{ justifyContent: "center", alignItems: "center", display: "flex", opacity: loading ? 0.6 : 1 }}
     >
       {show ? (
@@ -30,7 +31,7 @@ export function TradePrice({ price, loading }: TradePriceProps) {
             </AtomBox>
           ) : (
             <AtomBox role="button" className={SwapCSS.iconButtonClass} onClick={() => setShowInverted(!showInverted)}>
-              <AutoRenewIcon width="14px" />
+              <AutoRenewIcon width="14px" color="textSubtle" />
             </AtomBox>
           )}
         </>

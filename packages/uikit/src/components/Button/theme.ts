@@ -1,5 +1,5 @@
-import { scales, variants } from "./types";
 import { vars } from "../../css/vars.css";
+import { scales, variants } from "./types";
 
 export const scaleVariants = {
   [scales.MD]: {
@@ -48,6 +48,10 @@ export const styleVariants = {
   [variants.SUCCESS]: {
     backgroundColor: "success",
     color: "white",
+  },
+  [variants.YELLOW]: {
+    backgroundColor: "secondary",
+    color: "dark",
   },
   [variants.TEXT]: {
     backgroundColor: "transparent",

@@ -1,16 +1,16 @@
 import React from "react";
+import useMatchBreakpoints from "../../../contexts/MatchBreakpoints/useMatchBreakpoints";
 import { FlexProps } from "../../Box";
 import Flex from "../../Box/Flex";
 import Dropdown from "../../Dropdown/Dropdown";
 import Link from "../../Link/Link";
 import { socials } from "../config";
-import useMatchBreakpoints from "../../../contexts/MatchBreakpoints/useMatchBreakpoints";
 
 const SocialLinks: React.FC<React.PropsWithChildren<FlexProps>> = ({ ...props }) => {
   const { isMobile } = useMatchBreakpoints();
 
   return (
-    <Flex {...props} data-theme="dark">
+    <Flex {...props} data-theme="dark" mb={[12]}>
       {socials.map((social, index) => {
         const iconProps = {
           width: "20px",
@@ -19,7 +19,7 @@ const SocialLinks: React.FC<React.PropsWithChildren<FlexProps>> = ({ ...props })
         };
         const Icon = social.icon;
         const mr = index < socials.length - 1 ? (isMobile ? "16px" : "24px") : 0;
-        if (social.items) {
+        if (social.items?.length) {
           return (
             <Dropdown key={social.label} position="top" target={<Icon {...iconProps} mr={mr} />}>
               {social.items.map((item) => (

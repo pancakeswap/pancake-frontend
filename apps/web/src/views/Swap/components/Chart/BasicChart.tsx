@@ -1,10 +1,11 @@
-import { Box, ButtonMenu, ButtonMenuItem, Flex, Text, SwapLineChart } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useState, memo, useMemo } from 'react'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, SwapLineChart, Text } from '@pancakeswap/uikit'
+import { variants } from '@pancakeswap/uikit/components/Button/types'
+import { memo, useMemo, useState } from 'react'
 import { useFetchPairPricesV3 } from 'state/swap/hooks'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
-import NoChartAvailable from './NoChartAvailable'
 import PairPriceDisplay from '../../../../components/PairPriceDisplay'
+import NoChartAvailable from './NoChartAvailable'
 import { getTimeWindowChange } from './utils'
 
 const BasicChart = ({
@@ -101,12 +102,12 @@ const BasicChart = ({
               {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
             </Text>
           </PairPriceDisplay>
-          <Text small color="secondary">
+          <Text small color="text">
             {hoverDate || currentDate}
           </Text>
         </Flex>
         <Box>
-          <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm">
+          <ButtonMenu activeIndex={timeWindow} variant={variants.YELLOW} onItemClick={setTimeWindow} scale="sm">
             <ButtonMenuItem>{t('24H')}</ButtonMenuItem>
             <ButtonMenuItem>{t('1W')}</ButtonMenuItem>
             <ButtonMenuItem>{t('1M')}</ButtonMenuItem>

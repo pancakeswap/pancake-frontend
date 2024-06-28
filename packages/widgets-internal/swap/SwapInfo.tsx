@@ -1,7 +1,7 @@
-import { useTranslation } from "@pancakeswap/localization";
 import { useIsMounted } from "@pancakeswap/hooks";
+import { useTranslation } from "@pancakeswap/localization";
+import { AutoColumn, IconButton, PencilIcon, RowBetween, Text, TextProps } from "@pancakeswap/uikit";
 import { PropsWithChildren, ReactNode } from "react";
-import { AutoColumn, RowBetween, Text, TextProps, IconButton, PencilIcon } from "@pancakeswap/uikit";
 
 type SwapInfoType = {
   price: ReactNode;
@@ -11,7 +11,7 @@ type SwapInfoType = {
 };
 
 export const SwapInfoLabel = (props: PropsWithChildren<TextProps>) => (
-  <Text fontSize="12px" bold color="secondary" {...props} />
+  <Text fontSize="12px" bold color="textSubtle" {...props} />
 );
 
 export const SwapInfo = ({ allowedSlippage, price, onSlippageClick, allowedSlippageSlot }: SwapInfoType) => {
@@ -19,7 +19,7 @@ export const SwapInfo = ({ allowedSlippage, price, onSlippageClick, allowedSlipp
   const isMounted = useIsMounted();
 
   return (
-    <AutoColumn gap="sm" py="0px" px="16px">
+    <AutoColumn gap="sm" py="0px" px="4px">
       <RowBetween alignItems="center">{price}</RowBetween>
       {typeof allowedSlippage === "number" && (
         <RowBetween alignItems="center">
@@ -38,7 +38,7 @@ export const SwapInfo = ({ allowedSlippage, price, onSlippageClick, allowedSlipp
           </SwapInfoLabel>
           {isMounted &&
             (allowedSlippageSlot ?? (
-              <Text bold color="primary">
+              <Text bold color="textSubtle">
                 {allowedSlippage / 100}%
               </Text>
             ))}
