@@ -1,8 +1,10 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { MultiSelect as PrimereactSelect, MultiSelectProps, MultiSelectChangeEvent } from "primereact/multiselect";
 import { SelectItem } from "primereact/selectitem";
 import { styled } from "styled-components";
 import { ArrowDropDownIcon } from "../Svg";
+import { Box } from "../Box";
+import { Checkbox } from "../Checkbox";
 
 const SelectContainer = styled.div<{ isShow: boolean }>`
   color: ${({ theme }) => theme.colors.text};
@@ -50,12 +52,12 @@ const SelectContainer = styled.div<{ isShow: boolean }>`
       height: 26px;
 
       .p-checkbox-box {
-        border: 2px solid #d1d5db;
+        transition: background-color 0.2s ease-in-out;
+        border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
         width: 26px;
         height: 26px;
         border-radius: 8px;
-        background-color: ${({ theme }) => theme.colors.input};
-        box-shadow: ${({ theme }) => theme.shadows.inset};
+        background-color: ${({ theme }) => theme.card.background};
       }
 
       &.p-highlight {
@@ -72,6 +74,11 @@ const SelectContainer = styled.div<{ isShow: boolean }>`
           margin: auto;
           transform: translateY(-50%);
           color: ${({ theme }) => theme.colors.white};
+          
+          path {
+            stroke: ${({ theme }) => theme.colors.white};
+            stroke-width: 1;
+          }
         }
       }
 
@@ -107,7 +114,7 @@ const ItemContainer = styled.div`
 
 type ISelectItem = SelectItem & { icon: string };
 
-type IOptionType = ISelectItem[] | any[];
+export type IOptionType = ISelectItem[] | any[];
 
 export interface IMultiSelectProps extends MultiSelectProps {
   style?: React.CSSProperties;
@@ -120,9 +127,16 @@ export interface IMultiSelectProps extends MultiSelectProps {
 }
 
 export const MultiSelect = (props: IMultiSelectProps) => {
-  const { style, panelStyle, onChange, onFocus, onHide, placeholder, defaultValue } = props;
+  const { style, panelStyle, onChange, onFocus, onHide, placeholder, defaultValue, value, options, selectAllLabel } =
+    props;
   const [selectedItems, setSelectedItems] = useState(defaultValue ?? null);
   const [isShow, setIsShow] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
+
+  const indeterminate = useMemo(
+    () => !!selectedItems?.length && selectedItems?.length !== options?.length,
+    [selectedItems, options]
+  );
 
   const itemTemplate = useCallback((option: ISelectItem) => {
     return (
@@ -132,6 +146,40 @@ export const MultiSelect = (props: IMultiSelectProps) => {
       </ItemContainer>
     );
   }, []);
+
+  const handleSelectAll = useCallback(() => {
+    setSelectAll(!selectAll);
+    if (!selectAll && options) {
+      setSelectedItems(options.map((i) => i.value));
+    } else {
+      setSelectedItems([]);
+    }
+  }, [selectAll, options]);
+
+  useEffect(() => {
+    setSelectAll(selectedItems?.length === options?.length);
+  }, [selectedItems, options]);
+
+  const panelHeaderTemplate = useCallback(
+    () => (
+      <Box className="p-multiselect-item" onClick={handleSelectAll}>
+        <span>{selectAllLabel ?? "Select All"}</span>
+        <Checkbox
+          scale="26px"
+          colors={{
+            background: "backgroundAlt",
+            checkedBackground: "primary",
+            border: "inputSecondary",
+          }}
+          style={{ margin: 0 }}
+          onChange={handleSelectAll}
+          checked={selectAll}
+          indeterminate={indeterminate}
+        />
+      </Box>
+    ),
+    [selectAll, handleSelectAll, selectAllLabel, indeterminate]
+  );
 
   const DropDownIcon = useMemo(
     () => (
@@ -176,10 +224,10 @@ export const MultiSelect = (props: IMultiSelectProps) => {
           width: panelStyle?.width ?? style?.width ?? "auto",
         }}
         appendTo={props.appendTo ?? "self"}
-        value={selectedItems}
+        value={value ?? selectedItems}
         placeholder={placeholder ?? "Select Something"}
         itemTemplate={props.itemTemplate ?? itemTemplate}
-        panelHeaderTemplate={props.panelHeaderTemplate ?? (() => <></>)}
+        panelHeaderTemplate={props.panelHeaderTemplate ?? panelHeaderTemplate}
         dropdownIcon={props.dropdownIcon ?? DropDownIcon}
         onChange={handleChange}
         onFocus={handleFocus}

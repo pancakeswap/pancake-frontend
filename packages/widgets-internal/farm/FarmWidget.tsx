@@ -10,6 +10,8 @@ import * as FarmV3Table from "./components/FarmV3Table";
 import * as FarmV3Card from "./components/FarmV3Card";
 import MerklNotice from "./components/MerklNotice";
 
+export { NetworkSelect } from "./components/NetworkSelect";
+
 export {
   FarmTabButtons,
   FarmApyButton,
