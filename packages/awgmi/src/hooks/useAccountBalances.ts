@@ -1,6 +1,7 @@
 import { formatUnits } from '@ethersproject/units'
 import {
   CoinStoreResource,
+  fetchAptosView,
   fetchBalances,
   FetchCoinResult,
   isHexStringEquals,
@@ -9,7 +10,7 @@ import {
 } from '@pancakeswap/awgmi/core'
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import { useCallback, useMemo } from 'react'
-import { GetAccountCoinsDataResponse, MoveStructId } from '@aptos-labs/ts-sdk'
+import { GetAccountCoinsDataResponse, MoveStructId, Hex } from '@aptos-labs/ts-sdk'
 
 import { QueryConfig } from '../types'
 import { UseAccountResourcesArgs, UseAccountResourcesConfig } from './useAccountResources'
@@ -27,6 +28,15 @@ export type UseAccountBalancesConfig<TData> = Omit<UseAccountResourcesConfig, 's
 
 function getTokenMetadataIdentifier({ name, decimals, symbol }: { name?: string; decimals?: number; symbol?: string }) {
   return [name, decimals, symbol].join('_')
+}
+
+function convertHexStringToAsciiString(str: string) {
+  const hex = Hex.fromHexInput(str).toStringWithoutPrefix()
+  let converted = ''
+  for (let i = 0; i < hex.length; i += 2) {
+    converted += String.fromCharCode(parseInt(hex.substring(i, i + 2), 16))
+  }
+  return converted
 }
 
 export function useAccountBalances<TData = unknown>({
@@ -60,24 +70,28 @@ export function useAccountBalances<TData = unknown>({
         },
         [[], []],
       )
-      const balanceMap = new Map<
-        MoveStructId,
-        {
-          type: MoveStructId
-          data: {
-            coin: {
-              value: string
-            }
-          }
-        }
-      >()
-      const tokenIdentifierToBalance = new Map<
-        string,
-        {
-          type: MoveStructId
-          amount: number
-        }
-      >()
+      const v2PairedCoins = await Promise.all(
+        v2Balances.map((b) =>
+          fetchAptosView({
+            networkName,
+            params: {
+              typeArguments: [],
+              function: '0x1::coin::paired_coin',
+              functionArguments: [b.asset_type],
+            },
+          }),
+        ),
+      )
+      const v2ToV1Map = new Map<string, string>()
+      for (const [index, paired] of v2PairedCoins.entries()) {
+        const pairedInfo = paired?.[0]?.vec?.[0]
+        if (!pairedInfo) continue
+        const moduleName = convertHexStringToAsciiString(pairedInfo.module_name)
+        const structName = convertHexStringToAsciiString(pairedInfo.struct_name)
+        v2ToV1Map.set(v2Balances[index].asset_type, [pairedInfo.account_address, moduleName, structName].join('::'))
+      }
+
+      const tokenIdentifierToBalance = new Map<string, number>()
       for (const b of v1Balances) {
         const id = getTokenMetadataIdentifier({
           name: b.metadata?.name,
@@ -87,41 +101,25 @@ export function useAccountBalances<TData = unknown>({
         if (tokenIdentifierToBalance.get(id)) {
           console.warn('Duplicate identifier for token', id)
         }
-        tokenIdentifierToBalance.set(id, {
-          type: b.asset_type as MoveStructId,
-          amount: b.amount,
-        })
-        balanceMap.set(b.asset_type as MoveStructId, {
-          type: b.asset_type as MoveStructId,
-          data: {
-            coin: {
-              value: String(b.amount),
-            },
-          },
-        })
+        tokenIdentifierToBalance.set(b.asset_type, b.amount)
       }
       for (const b of v2Balances) {
-        const id = getTokenMetadataIdentifier({
-          name: b.metadata?.name,
-          symbol: b.metadata?.symbol,
-          decimals: b.metadata?.decimals,
-        })
-        const sameAsset = tokenIdentifierToBalance.get(id)
-        if (!sameAsset) {
+        const v1AssetType = v2ToV1Map.get(b.asset_type)
+        if (!v1AssetType) {
+          console.warn('Could not find valid v1 asset type for v2 asset', b.asset_type)
           continue
         }
-        balanceMap.set(sameAsset.type, {
-          type: sameAsset.type,
-          data: {
-            coin: {
-              value: String(b.amount + sameAsset.amount),
-            },
-          },
-        })
+        const v1Amount = tokenIdentifierToBalance.get(v1AssetType) ?? 0
+        const finalAmount = v1Amount + b.amount
+        tokenIdentifierToBalance.set(v1AssetType, finalAmount)
       }
-      return Array.from(balanceMap.values()).map((b) => ({
-        ...b,
-        type: wrapCoinStoreTypeTag(b.type),
+      return Array.from(tokenIdentifierToBalance.keys()).map((key) => ({
+        type: wrapCoinStoreTypeTag(key),
+        data: {
+          coin: {
+            value: String(tokenIdentifierToBalance.get(key)),
+          },
+        },
       }))
     },
     gcTime,
