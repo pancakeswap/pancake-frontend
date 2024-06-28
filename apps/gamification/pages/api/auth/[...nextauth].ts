@@ -31,7 +31,7 @@ export default NextAuth({
             break
           case 'twitter':
             // eslint-disable-next-line no-param-reassign
-            token.twitterId = profile.id
+            token.twitterId = profile.id_str
             break
         }
       }
