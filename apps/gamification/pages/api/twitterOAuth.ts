@@ -13,11 +13,11 @@ interface OAuthParams {
 export function generateOAuthHeaders(
   method: string,
   url: string,
-  params: Record<string, string>,
   consumerKey: string,
   consumerSecret: string,
   token: string,
   tokenSecret: string,
+  params: Record<string, string> = {},
 ): string {
   const oauthParams: OAuthParams = {
     oauth_consumer_key: consumerKey,
