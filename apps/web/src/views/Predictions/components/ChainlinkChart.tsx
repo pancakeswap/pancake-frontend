@@ -10,7 +10,7 @@ import {
   lightColors,
 } from '@pancakeswap/uikit'
 import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
 import { LineChartLoader } from 'components/ChartLoaders'
 import PairPriceDisplay from 'components/PairPriceDisplay'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
@@ -73,6 +73,7 @@ function useChainlinkRoundDataSet() {
       }),
     query: {
       enabled: !!lastRound,
+      placeholderData: keepPreviousData,
     },
   })
 
