@@ -11,6 +11,7 @@ import ChainlinkChartDisclaimer from './components/ChainlinkChartDisclaimer'
 import ChartDisclaimer from './components/ChartDisclaimer'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
 import Container from './components/Container'
+import { InPageBanner } from './components/InPageBanner'
 import RiskDisclaimer from './components/RiskDisclaimer'
 import { useConfig } from './context/ConfigProvider'
 import SwiperProvider from './context/SwiperProvider'
@@ -71,6 +72,7 @@ const Predictions = () => {
       <RiskDisclaimer />
       <SwiperProvider>
         <Container>
+          <InPageBanner />
           {isDesktop ? <Desktop /> : <Mobile />}
           <CollectWinningsPopup />
         </Container>

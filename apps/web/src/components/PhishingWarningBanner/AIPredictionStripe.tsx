@@ -3,7 +3,6 @@ import { ArrowForwardIcon, Box, Column, Flex, FlexGap, Link, Text, useMatchBreak
 import { VerticalDivider } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
-import { ICampaignBanner } from './ICampaignBanner'
 
 const MobileImage = styled.img`
   height: auto;
@@ -15,12 +14,20 @@ const MobileImage = styled.img`
 const stripeImage = `${ASSET_CDN}/web/banners/ai-prediction/info-strip-logo.png`
 const stripeImageAlt = 'AI Predictions'
 
-const ctaLink =
+const defaultCtaLink =
   '/prediction?token=ETH&chain=arb&utm_source=infostripe&utm_medium=website&utm_campaign=Arbitrum&utm_id=PredictionLaunch'
-const learnMoreLink =
+const defaultLearnMoreLink =
   'https://blog.pancakeswap.finance/articles/pancake-swap-introduces-ai-powered-prediction-market-on-arbitrum-up-to-100-fund-protection-and-launching-60-000-arb-campaign?utm_source=infostripe&utm_medium=website&utm_campaign=Arbitrum&utm_id=PredictionLaunch'
 
-export const AIPrediction: ICampaignBanner = () => {
+interface AIPredictionStripeProps {
+  ctaLink?: string
+  learnMoreLink?: string
+}
+
+export const AIPrediction = ({
+  ctaLink = defaultCtaLink,
+  learnMoreLink = defaultLearnMoreLink,
+}: AIPredictionStripeProps) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
