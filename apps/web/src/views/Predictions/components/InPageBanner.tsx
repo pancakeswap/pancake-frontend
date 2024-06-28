@@ -1,7 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { SUPPORTED_CHAIN_IDS } from '@pancakeswap/prediction'
 import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { AIPrediction } from 'components/PhishingWarningBanner/AIPredictionStripe'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
@@ -72,11 +71,7 @@ export const InPageBanner = () => {
   const { isDesktop, isLg } = useMatchBreakpoints()
   const showInBigDevice = isDesktop || isLg
 
-  const [isInfoStripeActive] = usePhishingBanner()
-  const showBanner = useMemo(
-    () => !isInfoStripeActive && chainId !== ChainId.ARBITRUM_ONE && SUPPORTED_CHAIN_IDS.includes(chainId),
-    [isInfoStripeActive, chainId],
-  )
+  const showBanner = useMemo(() => chainId !== ChainId.ARBITRUM_ONE && SUPPORTED_CHAIN_IDS.includes(chainId), [chainId])
 
   if (!showBanner) return <></>
 
