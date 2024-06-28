@@ -57,6 +57,7 @@ export { default as CopyIcon } from "./Icons/Copy";
 export { default as CrossIcon } from "./Icons/Cross";
 export { default as CrownIcon } from "./Icons/Crown";
 export { default as CurrencyIcon } from "./Icons/Currency";
+export { default as DefaultTokenIcon } from "./Icons/DefaultToken";
 export { default as DeleteOutlineIcon } from "./Icons/DeleteOutline";
 export { default as DiscordIcon } from "./Icons/Discord";
 export { default as DonateIcon } from "./Icons/Donate";
