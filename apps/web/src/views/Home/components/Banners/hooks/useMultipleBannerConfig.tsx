@@ -2,7 +2,6 @@ import shuffle from 'lodash/shuffle'
 import { useMemo, type ReactElement } from 'react'
 import CompetitionBanner from '../CompetitionBanner'
 import { FeeRefundBanner } from '../FeeRefundBanner'
-import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import GameBanner from '../GameBanner'
 import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
 import { OptionsBanner } from '../OptionsBanner'
@@ -76,7 +75,6 @@ export const useMultipleBannerConfig = () => {
     ]
 
     const SHUFFLE_BANNERS: IBannerConfig[] = [
-      { shouldRender: true, banner: <GalxeTraverseBanner /> },
       { shouldRender: true, banner: <WebNotificationBanner /> },
       { shouldRender: true, banner: <GameBanner /> },
       {
