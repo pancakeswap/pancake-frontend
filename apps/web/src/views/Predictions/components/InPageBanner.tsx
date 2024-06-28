@@ -81,26 +81,20 @@ export const InPageBanner = () => {
   if (!showBanner) return <></>
 
   return (
-    <>
-      <Container className="warning-banner" $background={AIPrediction.background}>
-        <Flex justifyContent="center" alignItems="center">
-          {showInBigDevice && (
-            <img
-              width={AIPrediction.stripeImageWidth}
-              alt={AIPrediction.stripeImageAlt}
-              src={AIPrediction.stripeImage}
+    <Container className="warning-banner" $background={AIPrediction.background}>
+      <Flex justifyContent="center" alignItems="center">
+        {showInBigDevice && (
+          <img width={AIPrediction.stripeImageWidth} alt={AIPrediction.stripeImageAlt} src={AIPrediction.stripeImage} />
+        )}
+        <SpeechBubble>
+          <InnerContainer>
+            <AIPrediction
+              ctaLink="/prediction?token=ETH&chain=arb&utm_source=PredictionPage&utm_medium=website&utm_campaign=Arbitrum&utm_id=PredictionLaunch"
+              learnMoreLink="https://blog.pancakeswap.finance/articles/pancake-swap-introduces-ai-powered-prediction-market-on-arbitrum-up-to-100-fund-protection-and-launching-60-000-arb-campaign?utm_source=PredictionPage&utm_medium=website&utm_campaign=Arbitrum&utm_id=PredictionLaunch"
             />
-          )}
-          <SpeechBubble>
-            <InnerContainer>
-              <AIPrediction
-                ctaLink="/prediction?token=ETH&chain=arb&utm_source=PredictionPage&utm_medium=website&utm_campaign=Arbitrum&utm_id=PredictionLaunch"
-                learnMoreLink="https://blog.pancakeswap.finance/articles/pancake-swap-introduces-ai-powered-prediction-market-on-arbitrum-up-to-100-fund-protection-and-launching-60-000-arb-campaign?utm_source=PredictionPage&utm_medium=website&utm_campaign=Arbitrum&utm_id=PredictionLaunch"
-              />
-            </InnerContainer>
-          </SpeechBubble>
-        </Flex>
-      </Container>
-    </>
+          </InnerContainer>
+        </SpeechBubble>
+      </Flex>
+    </Container>
   )
 }
