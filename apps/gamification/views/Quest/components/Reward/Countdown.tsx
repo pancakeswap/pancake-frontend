@@ -26,7 +26,7 @@ export const Countdown = ({ endDateTime }: { endDateTime: number }) => {
     },
   )
 
-  const countdown = useCountdown(endDateTime)
+  const countdown = useCountdown(endDateTime / 1000)
 
   const isTimeEnd = useMemo(() => new Date().getTime() >= endDateTime, [endDateTime])
 
