@@ -77,25 +77,27 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
         <Text fontSize={['24px']} bold mr="8px">
           {t('Tasks')}
         </Text>
-        <Box style={{ alignSelf: 'center' }}>
-          {account ? (
-            <>
-              <Tag variant="secondary" outline>
-                {t('%completed%/%totalTask% completed', {
-                  completed: 0,
-                  totalTask: tasks?.length,
-                })}
-              </Tag>
-              {/* <Tag variant="success" outline>
+        {tasks && (
+          <Box style={{ alignSelf: 'center' }}>
+            {account ? (
+              <>
+                <Tag variant="secondary" outline>
+                  {t('%completed%/%totalTask% completed', {
+                    completed: 0,
+                    totalTask: tasks?.length,
+                  })}
+                </Tag>
+                {/* <Tag variant="success" outline>
                 {t('Completed')}
               </Tag> */}
-            </>
-          ) : (
-            <Tag variant="textDisabled" outline>
-              {tasks?.length}
-            </Tag>
-          )}
-        </Box>
+              </>
+            ) : (
+              <Tag variant="textDisabled" outline>
+                {tasks?.length}
+              </Tag>
+            )}
+          </Box>
+        )}
       </Flex>
       {tasks?.length && (
         <Box position="relative">
