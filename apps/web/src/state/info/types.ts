@@ -58,9 +58,12 @@ export interface ProtocolData {
 }
 // POOLS
 
+export type PoolProtocol = 'v2' | 'v3' | 'stable'
+
 export interface PoolData {
   address: string
   lpAddress?: string
+  protocol?: PoolProtocol
   timestamp: number
 
   token0: {

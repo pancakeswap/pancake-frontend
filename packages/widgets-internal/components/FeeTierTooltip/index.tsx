@@ -3,7 +3,7 @@ import { Percent } from "@pancakeswap/swap-sdk-core";
 import { FeeTier, LinkExternal, useTooltip } from "@pancakeswap/uikit";
 import { useMemo } from "react";
 
-export type FeeTierType = "V2" | "V3" | "V4" | "Stable";
+export type FeeTierType = "v2" | "v3" | "v4" | "stable" | string;
 
 export type FeeTierTooltipProps = {
   type: FeeTierType;
@@ -16,9 +16,9 @@ const FeeTooltips: React.FC<FeeTierTooltipProps> = ({ type, dynamic, percent }) 
   const p = useMemo(() => percent.toSignificant(2), [percent]);
 
   switch (type) {
-    case "Stable":
+    case "stable":
       return t("Fees are lower for Stable LP");
-    case "V4": {
+    case "v4": {
       if (dynamic) {
         return (
           <>
@@ -30,8 +30,8 @@ const FeeTooltips: React.FC<FeeTierTooltipProps> = ({ type, dynamic, percent }) 
       }
       return t("Static Fee: %p%%", { p });
     }
-    case "V3":
-    case "V2":
+    case "v3":
+    case "v2":
     default:
       return t("%p%% Fee Tier", { p });
   }

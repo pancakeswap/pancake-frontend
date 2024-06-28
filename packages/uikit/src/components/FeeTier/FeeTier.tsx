@@ -16,7 +16,7 @@ export const FeeTier = forwardRef<HTMLSpanElement, FeeTierProps>(
     }, [fee, denominator]);
     return (
       <StyledFeeTier ref={ref}>
-        <span>{type}</span>
+        <span style={{ textTransform: "capitalize" }}>{type}</span>
         <span style={{ opacity: 0.5 }}>|</span>
         <span>
           {dynamic ? <span style={{ marginRight: "2px" }}>↕️</span> : ""}
