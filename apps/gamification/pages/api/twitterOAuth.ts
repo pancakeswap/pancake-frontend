@@ -21,10 +21,10 @@ export function generateOAuthHeaders(
 ): string {
   const oauthParams: OAuthParams = {
     oauth_consumer_key: consumerKey,
-    oauth_token: token,
+    oauth_nonce: Math.random().toString(36).substring(7),
     oauth_signature_method: 'HMAC-SHA1',
     oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
-    oauth_nonce: Math.random().toString(36).substring(7),
+    oauth_token: token,
     oauth_version: '1.0',
   }
 
