@@ -62,7 +62,12 @@ export async function simulateTransaction({
   const simulatedUserTransactions = await provider.transaction.simulate.simple({
     signerPublicKey: new Ed25519PublicKey(Hex.fromHexInput(publicKey).toUint8Array()),
     transaction: rawTransaction,
-    options: query,
+    options: {
+      estimateGasUnitPrice: true,
+      estimateMaxGasAmount: true,
+      estimatePrioritizedGasUnitPrice: false,
+      ...query,
+    },
     ...options,
   })
 
