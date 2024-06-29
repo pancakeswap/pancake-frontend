@@ -8,16 +8,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
-  const { token, tokenSecret } = req.method === 'GET' ? req.query : req.body
+  const { token, tokenSecret, userId } = req.method === 'GET' ? req.query : req.body
 
   if (!token || !tokenSecret) {
     res.status(400).json({ message: 'Missing required parameters: token and tokenSecret' })
     return
   }
 
-  const url = 'https://api.twitter.com/1.1/followers/ids.json'
+  const url = 'https://api.twitter.com/1.1/friendships/show.json'
   const params = {
-    screen_name: 'PancakeSwap',
+    source_id: userId,
+    target_screen_name: 'PancakeSwap',
   }
 
   const method = 'GET'

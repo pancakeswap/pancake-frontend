@@ -13,7 +13,8 @@ export const QuestsView = () => {
       try {
         const token = 'token'
         const tokenSecret = 'token-secret'
-        const queryString = new URLSearchParams({ token, tokenSecret }).toString()
+        const userId = 'userId'
+        const queryString = new URLSearchParams({ token, tokenSecret, userId }).toString()
         const requestUrl = `/api/twitter?${queryString}`
         await fetch(requestUrl)
           .then((response) => {
