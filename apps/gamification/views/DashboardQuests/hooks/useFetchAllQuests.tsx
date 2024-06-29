@@ -1,8 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
-import { GAMIFICATION_API } from 'config/constants/endpoints'
+import qs from 'qs'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
-import { FAKE_TOKEN } from 'views/DashboardQuestEdit/utils/FAKE_TOKEN'
 import { AllDashboardQuestsType } from 'views/DashboardQuests/type'
 import { useAccount } from 'wagmi'
 
@@ -25,11 +24,18 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
     queryKey: ['fetch-all-quest-dashboard-data', account, chainIdList, completionStatus],
     queryFn: async () => {
       try {
-        const url = `${GAMIFICATION_API}/quests/org/${account?.toLowerCase()}?completionStatus=${completionStatus}&chainId=${chainIdList}&page=1&pageSize=${PAGE_SIZE}`
-        const response = await fetch(url, {
+        const urlParamsObject = {
+          address: account?.toLowerCase(),
+          chainId: chainIdList,
+          completionStatus,
+          page: 1,
+          pageSize: PAGE_SIZE,
+        }
+        const queryString = qs.stringify(urlParamsObject)
+        const response = await fetch(`/api/dashboard/all-quests-info?${queryString}`, {
           method: 'GET',
-          headers: { 'Content-Type': 'application/json', 'x-secure-token': FAKE_TOKEN },
         })
+
         const result = await response.json()
         const questsData: AllDashboardQuestsType = result
         return questsData

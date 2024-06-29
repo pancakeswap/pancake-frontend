@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { GAMIFICATION_API } from 'config/constants/endpoints'
 import { FetchStatus } from 'config/constants/types'
 import { StateType, TaskConfigType } from 'views/DashboardQuestEdit/context/types'
-import { FAKE_TOKEN } from 'views/DashboardQuestEdit/utils/FAKE_TOKEN'
 
 export interface SingleQuestData extends StateType {
   tasks: TaskConfigType[]
@@ -16,9 +14,8 @@ export const useGetSingleQuestData = (id: string) => {
   const { data, refetch, isFetching, status } = useQuery<SingleQuestData | SingleQuestDataError>({
     queryKey: ['fetch-single-quest-dashboard-data', id],
     queryFn: async () => {
-      const response = await fetch(`${GAMIFICATION_API}/quests/${id}`, {
+      const response = await fetch(`/api/dashboard/quest-info?id=${id}`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json', 'x-secure-token': FAKE_TOKEN },
       })
 
       if (!response.ok) {

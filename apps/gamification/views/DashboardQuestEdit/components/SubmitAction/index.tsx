@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, CalenderIcon, DeleteOutlineIcon, Flex, PencilIcon, useModal, useToast } from '@pancakeswap/uikit'
 import { useQueryClient } from '@tanstack/react-query'
-import { GAMIFICATION_API } from 'config/constants/endpoints'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
@@ -10,7 +9,6 @@ import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmD
 import { ActionModal } from 'views/DashboardQuestEdit/components/SubmitAction/ActionModal'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
-import { FAKE_TOKEN } from 'views/DashboardQuestEdit/utils/FAKE_TOKEN'
 import { combineDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 import { validateIsNotEmpty } from 'views/DashboardQuestEdit/utils/validateFormat'
 import { verifyTask } from 'views/DashboardQuestEdit/utils/verifyTask'
@@ -34,14 +32,7 @@ export const SubmitAction = () => {
   const handleClickDelete = async () => {
     if (query?.id) {
       try {
-        const response = await fetch(`${GAMIFICATION_API}/quests/${query?.id}/delete`, {
-          method: 'DELETE',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'x-secure-token': FAKE_TOKEN,
-          },
-        })
+        const response = await fetch(`/api/dashboard/quest-delete?id=${query?.id}`, { method: 'DELETE' })
 
         if (response.ok) {
           toastSuccess(t('Deleted!'))
@@ -59,7 +50,7 @@ export const SubmitAction = () => {
   const handleSave = async (isCreate: boolean, completionStatus: CompletionStatus) => {
     try {
       setIsSubmitError(false)
-      const url = isCreate ? `${GAMIFICATION_API}/quests/create` : `${GAMIFICATION_API}/quests/${query.id}/update`
+      const url = isCreate ? `/api/dashboard/quest-create` : `/api/dashboard/quest-update?id=${query?.id}`
       const method = isCreate ? 'POST' : 'PUT'
 
       const apiChainId = isCreate ? chainId : state.chainId
@@ -69,11 +60,6 @@ export const SubmitAction = () => {
 
       const response = await fetch(url, {
         method,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'x-secure-token': FAKE_TOKEN,
-        },
         body: JSON.stringify({
           ...state,
           orgId: account?.toLowerCase(),
