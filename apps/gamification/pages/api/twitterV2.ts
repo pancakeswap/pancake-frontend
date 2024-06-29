@@ -7,14 +7,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
-  const { accessToken } = req.method === 'GET' ? req.query : req.body
-
-  if (!accessToken) {
-    res.status(400).json({ message: 'Missing required parameters: accessToken' })
-    return
-  }
-
   const method = 'GET'
+
+  const bearerToken = process.env.TWITTER_BEARER_TOKEN as string
 
   const requestUrl = `https://api.twitter.com/2/users/1305349277422477313/followers`
 
@@ -22,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const response = await fetch(requestUrl, {
       method,
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${bearerToken}`,
       },
     })
 
