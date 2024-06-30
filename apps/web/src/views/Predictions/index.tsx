@@ -70,9 +70,9 @@ const Predictions = () => {
     <>
       <Warnings />
       <RiskDisclaimer />
+      <InPageBanner />
       <SwiperProvider>
         <Container>
-          <InPageBanner />
           {isDesktop ? <Desktop /> : <Mobile />}
           <CollectWinningsPopup />
         </Container>
