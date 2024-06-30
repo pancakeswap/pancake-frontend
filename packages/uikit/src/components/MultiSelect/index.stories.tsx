@@ -24,15 +24,12 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
       style={{
         width: "273px",
         margin: "20px",
-        backgroundColor: "var(--colors-input)",
-      }}
-      panelStyle={{
-        backgroundColor: "var(--colors-input)",
       }}
       scrollHeight="400px"
       options={chains}
       defaultValue={[chains[0].value, chains[2].value]}
       checkAllLabel="All networks"
+      isFilter
     />
   );
 };
