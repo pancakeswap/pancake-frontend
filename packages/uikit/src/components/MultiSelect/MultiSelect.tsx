@@ -1,101 +1,110 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { MultiSelect as PrimereactSelect, MultiSelectProps, MultiSelectChangeEvent } from "primereact/multiselect";
-import { SelectItem } from "primereact/selectitem";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { MultiSelect as PrimereactSelect, MultiSelectChangeEvent } from "primereact/multiselect";
 import { styled } from "styled-components";
 import { ArrowDropDownIcon } from "../Svg";
-import { Box } from "../Box";
+import { Box, Flex } from "../Box";
 import { Checkbox } from "../Checkbox";
+import { Column } from "../Column";
+import { BORDER_RADIUS, IAdaptiveInputForwardProps, SearchBox } from "./SearchBox";
+import { IMultiSelectProps, ISelectItem } from "./types";
 
-const SelectContainer = styled.div<{ isShow: boolean }>`
+const CHECKBOX_WIDTH = "26px";
+
+const SelectContainer = styled.div`
   color: ${({ theme }) => theme.colors.text};
   font-weight: 400;
   .p-multiselect {
     position: relative;
+    height: 0px;
+  }
+  .p-multiselect-label-container,
+  .p-multiselect-trigger {
+    display: none;
+  }
+
+  .p-multiselect-panel {
+    min-width: auto;
     border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-    border-radius: 16px 16px ${(props) => (props.isShow ? "0 0" : "16px")};
-    box-shadow: 0 0 1px ${({ theme }) => theme.shadows.inset};
-    padding: 8px 8px 8px 16px;
+    box-shadow: 0 0 3px ${({ theme }) => theme.shadows.inset};
+    border-radius: ${BORDER_RADIUS};
+  }
 
-    .p-multiselect-panel {
-      min-width: auto;
+  .p-multiselect-label {
+    line-height: 24px;
+    &.p-placeholder {
+      color: ${({ theme }) => theme.colors.textDisabled};
+    }
+  }
+
+  .p-multiselect-empty-message {
+    list-style-type: none;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .p-multiselect-item {
+    justify-content: space-between;
+    width: 100%;
+    height: 42px;
+    padding: 8px 16px;
+
+    .p-multiselect-checkbox {
+      order: 1;
+    }
+  }
+
+  .p-checkbox {
+    position: relative;
+    display: inline-flex;
+    user-select: none;
+    vertical-align: bottom;
+    width: ${CHECKBOX_WIDTH};
+    height: ${CHECKBOX_WIDTH};
+
+    .p-checkbox-box {
+      transition: background-color 0.2s ease-in-out;
       border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-      border-top: 0;
-      box-shadow: 0 0 3px ${({ theme }) => theme.shadows.inset};
-      border-radius: 0 0 16px 16px;
-      margin: -1px 0 0 -1px;
+      width: ${CHECKBOX_WIDTH};
+      height: ${CHECKBOX_WIDTH};
+      border-radius: 8px;
+      background-color: ${({ theme }) => theme.card.background};
     }
 
-    .p-multiselect-label {
-      line-height: 24px;
-      &.p-placeholder {
-        color: ${({ theme }) => theme.colors.textDisabled};
-      }
-    }
-
-    .p-multiselect-item {
-      justify-content: space-between;
-      width: 100%;
-      height: 42px;
-      padding: 8px 16px;
-
-      .p-multiselect-checkbox {
-        order: 1;
-      }
-    }
-
-    .p-checkbox {
-      position: relative;
-      display: inline-flex;
-      user-select: none;
-      vertical-align: bottom;
-      width: 26px;
-      height: 26px;
-
+    &.p-highlight {
       .p-checkbox-box {
-        transition: background-color 0.2s ease-in-out;
-        border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-        width: 26px;
-        height: 26px;
-        border-radius: 8px;
-        background-color: ${({ theme }) => theme.card.background};
+        border-color: ${({ theme }) => theme.colors.primary};
+        background-color: ${({ theme }) => theme.colors.primary};
       }
 
-      &.p-highlight {
-        .p-checkbox-box {
-          border-color: ${({ theme }) => theme.colors.primary};
-          background-color: ${({ theme }) => theme.colors.primary};
-        }
-
-        .p-checkbox-icon.p-icon {
-          position: absolute;
-          top: 50%;
-          left: 0;
-          right: 0;
-          margin: auto;
-          transform: translateY(-50%);
-          color: ${({ theme }) => theme.colors.white};
-          
-          path {
-            stroke: ${({ theme }) => theme.colors.white};
-            stroke-width: 1;
-          }
-        }
-      }
-
-      .p-checkbox-input {
-        appearance: none;
+      .p-checkbox-icon.p-icon {
         position: absolute;
-        top: 0;
+        top: 50%;
         left: 0;
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        margin: 0;
-        opacity: 0;
-        z-index: 1;
-        outline: 0 none;
-        cursor: pointer;
+        right: 0;
+        margin: auto;
+        transform: translateY(-50%);
+        color: ${({ theme }) => theme.colors.white};
+        
+        path {
+          stroke: ${({ theme }) => theme.colors.white};
+          stroke-width: 1;
+        }
       }
+    }
+
+    .p-checkbox-input {
+      appearance: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      opacity: 0;
+      z-index: 1;
+      outline: 0 none;
+      cursor: pointer;
     }
   }
 }
@@ -112,26 +121,45 @@ const ItemContainer = styled.div`
   align-items: center;
 `;
 
-type ISelectItem = SelectItem & { icon: string };
-
-export type IOptionType = ISelectItem[] | any[];
-
-export interface IMultiSelectProps extends MultiSelectProps {
-  style?: React.CSSProperties;
-  panelStyle?: React.CSSProperties;
-  scrollHeight?: string;
-  options?: IOptionType;
-  placeholder?: string;
-  defaultValue?: string[];
-  checkAllLabel?: string;
-}
+const SelectInputContainer = styled(Flex)`
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+  border-radius: ${BORDER_RADIUS};
+  box-shadow: 0 0 1px ${({ theme }) => theme.shadows.inset};
+  padding: 8px 8px 8px 16px;
+  user-select: none;
+  cursor: pointer;
+`;
 
 export const MultiSelect = (props: IMultiSelectProps) => {
-  const { style, panelStyle, onChange, onFocus, onHide, placeholder, defaultValue, value, options, selectAllLabel } =
-    props;
+  const {
+    style,
+    panelStyle,
+    onChange,
+    onShow,
+    onHide,
+    placeholder,
+    defaultValue,
+    value,
+    options,
+    selectAllLabel,
+    isSelectAll,
+    isFilter,
+  } = props;
   const [selectedItems, setSelectedItems] = useState(defaultValue ?? null);
   const [isShow, setIsShow] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
+  const primereactSelectRef = useRef<PrimereactSelect>(null);
+  const searchInputRef = useRef<IAdaptiveInputForwardProps>(null);
+
+  const list = useMemo(
+    () => options?.filter((op) => op.value.toLowerCase().includes(searchText)),
+    [options, searchText]
+  );
 
   const indeterminate = useMemo(
     () => !!selectedItems?.length && selectedItems?.length !== options?.length,
@@ -147,6 +175,13 @@ export const MultiSelect = (props: IMultiSelectProps) => {
     );
   }, []);
 
+  const selectedOptions = useMemo(() => {
+    if (!selectedItems?.length || !options?.length) {
+      return [];
+    }
+    return selectedItems.map((item) => options.find((op) => op.value === item) ?? { value: item, label: item });
+  }, [selectedItems, options]);
+
   const handleSelectAll = useCallback(() => {
     setSelectAll(!selectAll);
     if (!selectAll && options) {
@@ -156,82 +191,111 @@ export const MultiSelect = (props: IMultiSelectProps) => {
     }
   }, [selectAll, options]);
 
-  useEffect(() => {
-    setSelectAll(selectedItems?.length === options?.length);
-  }, [selectedItems, options]);
+  const handleFilter = (text: string) => {
+    setSearchText(text);
+  };
 
-  const panelHeaderTemplate = useCallback(
+  const panelHeaderTemplate = useMemo(
     () => (
-      <Box className="p-multiselect-item" onClick={handleSelectAll}>
-        <span>{selectAllLabel ?? "Select All"}</span>
-        <Checkbox
-          scale="26px"
-          colors={{
-            background: "backgroundAlt",
-            checkedBackground: "primary",
-            border: "inputSecondary",
-          }}
-          style={{ margin: 0 }}
-          onChange={handleSelectAll}
-          checked={selectAll}
-          indeterminate={indeterminate}
-        />
-      </Box>
+      <>
+        {isFilter && <SearchBox selectedItems={selectedOptions} ref={searchInputRef} onFilter={handleFilter} />}
+        {isSelectAll && (
+          <Box className="p-multiselect-item" onClick={handleSelectAll}>
+            <span>{selectAllLabel ?? "Select All"}</span>
+            <Checkbox
+              scale={CHECKBOX_WIDTH}
+              colors={{
+                background: "backgroundAlt",
+                checkedBackground: "primary",
+                border: "inputSecondary",
+              }}
+              style={{ margin: 0 }}
+              onChange={handleSelectAll}
+              checked={selectAll}
+              indeterminate={indeterminate}
+            />
+          </Box>
+        )}
+      </>
     ),
-    [selectAll, handleSelectAll, selectAllLabel, indeterminate]
-  );
-
-  const DropDownIcon = useMemo(
-    () => (
-      <ArrowDropDownIcon
-        color="text"
-        style={{
-          ...(isShow ? { transform: `rotate(180deg)` } : {}),
-          transition: `transform 0.1s ease`,
-        }}
-      />
-    ),
-    [isShow]
+    [handleSelectAll, indeterminate, selectAll, selectAllLabel, selectedOptions, isFilter, isSelectAll]
   );
 
   const handleChange = useCallback(
     (e: MultiSelectChangeEvent) => {
       setSelectedItems(e.value);
+      searchInputRef.current?.clear();
+      searchInputRef.current?.focus();
       onChange?.(e);
     },
     [onChange]
   );
 
-  const handleFocus = useCallback(
-    (e: React.FocusEvent<HTMLInputElement>) => {
-      setIsShow(true);
-      onFocus?.(e);
-    },
-    [onFocus]
-  );
+  const handleShow = useCallback(() => {
+    setIsShow(true);
+    onShow?.();
+  }, [onShow]);
 
   const handleHide = useCallback(() => {
     setIsShow(false);
     onHide?.();
   }, [onHide]);
 
+  useEffect(() => {
+    setSelectAll(selectedItems?.length === options?.length);
+  }, [selectedItems, options]);
+
   return (
-    <SelectContainer isShow={isShow}>
+    <SelectContainer style={style}>
+      <SelectInputContainer
+        onClick={(e: React.MouseEvent) => {
+          if (!isShow) {
+            e.preventDefault();
+            primereactSelectRef.current?.show();
+            setTimeout(() => searchInputRef.current?.focus());
+          }
+        }}
+      >
+        <Column>
+          {selectedItems?.map((item, idx) => (
+            <>
+              <span key={item}>{options?.find((op) => op.value === item)?.label}</span>
+              {idx < selectedItems.length - 1 && <span>, </span>}
+            </>
+          ))}
+        </Column>
+        <Column>
+          <ArrowDropDownIcon
+            color="text"
+            style={{
+              ...(isShow ? { transform: `rotate(180deg)` } : {}),
+              transition: `transform 0.1s ease`,
+            }}
+          />
+        </Column>
+      </SelectInputContainer>
+
       <PrimereactSelect
         {...props}
+        ref={primereactSelectRef}
+        style={{
+          width: style?.width ?? "auto",
+        }}
         panelStyle={{
           ...(panelStyle ?? {}),
           width: panelStyle?.width ?? style?.width ?? "auto",
         }}
         appendTo={props.appendTo ?? "self"}
         value={value ?? selectedItems}
+        options={list}
         placeholder={placeholder ?? "Select Something"}
         itemTemplate={props.itemTemplate ?? itemTemplate}
         panelHeaderTemplate={props.panelHeaderTemplate ?? panelHeaderTemplate}
-        dropdownIcon={props.dropdownIcon ?? DropDownIcon}
+        emptyMessage={props.emptyMessage ?? "No data"}
         onChange={handleChange}
-        onFocus={handleFocus}
+        onShow={handleShow}
         onHide={handleHide}
+        onKeyDown={() => {}}
       />
     </SelectContainer>
   );
