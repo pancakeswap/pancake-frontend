@@ -3,6 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { NodeRound } from 'state/types'
 import { BetPosition } from '@pancakeswap/prediction'
 import useTheme from 'hooks/useTheme'
+import { useCallback } from 'react'
 import ReclaimPositionButton from '../ReclaimPositionButton'
 import useIsRefundable from '../../hooks/useIsRefundable'
 import { RoundResultBox } from '../RoundResult'
@@ -19,9 +20,9 @@ const CanceledRoundCard: React.FC<React.PropsWithChildren<CanceledRoundCardProps
   const { isRefundable, setIsRefundable } = useIsRefundable(round.epoch)
   const { epoch } = round
 
-  const handleSuccess = async () => {
+  const handleSuccess = useCallback(async () => {
     setIsRefundable(false)
-  }
+  }, [setIsRefundable])
 
   return (
     <Card borderBackground={getBorderBackground(theme, 'canceled')}>

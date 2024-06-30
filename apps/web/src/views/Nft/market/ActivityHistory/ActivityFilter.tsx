@@ -1,6 +1,7 @@
 import { styled } from 'styled-components'
 import { Box, Button, Flex, IconButton, CloseIcon } from '@pancakeswap/uikit'
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
+import { useCallback } from 'react'
 import { MarketEvent } from '../../../../state/nftMarket/types'
 import { useNftStorage } from '../../../../state/nftMarket/storage'
 
@@ -51,15 +52,15 @@ export const ActivityFilter: React.FC<React.PropsWithChildren<ActivityFilterProp
 
   const isEventSelected = nftActivityFilters.typeFilters.some((nftActivityFilter) => nftActivityFilter === eventType)
 
-  const handleMenuClick = () => {
+  const handleMenuClick = useCallback(() => {
     if (!isEventSelected) {
       addActivityTypeFilters({ collection: collectionAddress, field: eventType })
     }
-  }
+  }, [isEventSelected, addActivityTypeFilters, collectionAddress, eventType])
 
-  const handleClearItem = () => {
+  const handleClearItem = useCallback(() => {
     removeActivityTypeFilters({ collection: collectionAddress, field: eventType })
-  }
+  }, [removeActivityTypeFilters, collectionAddress, eventType])
 
   return (
     <Flex alignItems="center" mr="4px" mb="4px">

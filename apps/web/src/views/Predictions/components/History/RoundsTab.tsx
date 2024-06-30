@@ -13,6 +13,7 @@ import {
 import { Bet, HistoryFilter } from 'state/types'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { useAccount } from 'wagmi'
+import { useCallback } from 'react'
 import V1ClaimCheck from '../v1/V1ClaimCheck'
 import HistoricalBet from './HistoricalBet'
 
@@ -32,11 +33,11 @@ const RoundsTab: React.FC<React.PropsWithChildren<RoundsTabProps>> = ({ hasBetHi
   const isFetchingHistory = useGetIsFetchingHistory()
   const config = useConfig()
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (account && chainId) {
       dispatch(fetchNodeHistory({ account, chainId, page: currentHistoryPage + 1 }))
     }
-  }
+  }, [dispatch, account, chainId, currentHistoryPage])
 
   const v1Claim = config?.token?.symbol === 'BNB' ? <V1ClaimCheck /> : null
 

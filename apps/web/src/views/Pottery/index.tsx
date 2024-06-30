@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { Box, Message, MessageText, Text, Link } from '@pancakeswap/uikit'
 import { usePotteryFetch } from 'state/pottery/hook'
@@ -21,12 +21,12 @@ const Pottery: React.FC<React.PropsWithChildren> = () => {
   usePotteryFetch()
   const potWrapperEl = useRef<HTMLDivElement>(null)
 
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     window.scrollTo({
       top: potWrapperEl?.current?.offsetTop,
       behavior: 'smooth',
     })
-  }
+  }, [potWrapperEl])
 
   return (
     <Box position="relative">

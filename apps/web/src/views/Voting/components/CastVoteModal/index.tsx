@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Modal, useToast } from '@pancakeswap/uikit'
 import snapshot from '@snapshot-labs/snapshot.js'
 import useTheme from 'hooks/useTheme'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { PANCAKE_SPACE } from 'views/Voting/config'
 import { VECAKE_VOTING_POWER_BLOCK } from 'views/Voting/helpers'
 import { useAccount, useWalletClient } from 'wagmi'
@@ -52,26 +52,25 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
     [ConfirmVoteView.DETAILS]: t('Voting Power'),
   }
 
-  const handleDismiss = () => {
+  const handleDismiss = useCallback(() => {
     onDismiss?.()
-  }
+  }, [onDismiss])
 
-  const handleConfirmVote = async () => {
+  const handleConfirmVote = useCallback(async () => {
     try {
       setIsPending(true)
+
       const web3 = {
-        getSigner: () => {
-          return {
-            _signTypedData: (domain, types, message) =>
-              signer?.signTypedData({
-                account,
-                domain,
-                types,
-                message,
-                primaryType: 'Vote',
-              }),
-          }
-        },
+        getSigner: () => ({
+          _signTypedData: (domain, types, message) =>
+            signer?.signTypedData({
+              account,
+              domain,
+              types,
+              message,
+              primaryType: 'Vote',
+            }),
+        }),
       }
 
       if (!account) {
@@ -96,7 +95,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
     } finally {
       setIsPending(false)
     }
-  }
+  }, [setIsPending, signer, account, vote.value, onSuccess, handleDismiss, proposalId, t, toastError])
 
   return (
     <Modal

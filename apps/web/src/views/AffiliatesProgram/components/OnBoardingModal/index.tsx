@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useMatchBreakpoints, ModalV2, useToast } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
@@ -36,7 +36,7 @@ const OnBoardingModal = () => {
     }
   }, [router])
 
-  const handleStartNow = async () => {
+  const handleStartNow = useCallback(async () => {
     try {
       setIsLoading(true)
 
@@ -67,11 +67,11 @@ const OnBoardingModal = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [address, router.query.ref, setCurrentView, signMessageAsync, t, toastSuccess, toastError, setIsLoading])
 
-  const onDismiss = () => {
+  const onDismiss = useCallback(() => {
     setIsOpen(false)
-  }
+  }, [])
 
   return (
     <ModalV2 isOpen={isOpen} closeOnOverlayClick onDismiss={onDismiss}>

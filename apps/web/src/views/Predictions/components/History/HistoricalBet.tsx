@@ -14,7 +14,7 @@ import {
 } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { fetchLedgerData, markAsCollected } from 'state/predictions'
 import { Result, getRoundResult } from 'state/predictions/helpers'
 import { useGetCurrentEpoch, useGetIsClaimable, useGetPredictionsStatus } from 'state/predictions/hooks'
@@ -153,13 +153,13 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
     )
   }
 
-  const handleSuccess = async () => {
+  const handleSuccess = useCallback(async () => {
     if (account && chainId && bet?.round?.epoch) {
       // We have to mark the bet as claimed immediately because it does not update fast enough
       dispatch(markAsCollected({ [bet.round.epoch]: true }))
       dispatch(fetchLedgerData({ account, chainId, epochs: [bet.round.epoch] }))
     }
-  }
+  }, [account, chainId, bet, dispatch])
 
   return (
     <>

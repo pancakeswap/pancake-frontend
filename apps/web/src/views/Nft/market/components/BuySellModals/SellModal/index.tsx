@@ -5,7 +5,7 @@ import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useErc721CollectionContract, useNftMarketContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { NftToken } from 'state/nftMarket/types'
 import { Address, isAddress, parseUnits } from 'viem'
 import { useGetLowestPriceFromNft } from 'views/Nft/market/hooks/useGetLowestPrice'
@@ -97,7 +97,7 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
 
   const { lowestPrice } = useGetLowestPriceFromNft(nftToSell)
 
-  const goBack = () => {
+  const goBack = useCallback(() => {
     switch (stage) {
       case SellingStage.SET_PRICE:
         setStage(SellingStage.SELL)
@@ -127,9 +127,9 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
       default:
         break
     }
-  }
+  }, [stage, nftToSell?.marketData?.currentAskPrice])
 
-  const continueToNextStage = () => {
+  const continueToNextStage = useCallback(() => {
     switch (stage) {
       case SellingStage.SELL:
         setStage(SellingStage.SET_PRICE)
@@ -152,15 +152,15 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
       default:
         break
     }
-  }
+  }, [stage])
 
-  const continueToRemoveFromMarketStage = () => {
+  const continueToRemoveFromMarketStage = useCallback(() => {
     setStage(SellingStage.REMOVE_FROM_MARKET)
-  }
+  }, [])
 
-  const continueToTransferStage = () => {
+  const continueToTransferStage = useCallback(() => {
     setStage(SellingStage.TRANSFER)
-  }
+  }, [])
 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {

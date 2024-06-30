@@ -12,7 +12,7 @@ import {
   Text,
 } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { useGetCollections } from 'state/nftMarket/hooks'
 import { useNftStorage } from 'state/nftMarket/storage'
 import { Collection, MarketEvent } from 'state/nftMarket/types'
@@ -51,40 +51,49 @@ export const ListCollectionFilter: React.FC<React.PropsWithChildren<ListCollecti
     return { ...item, isSelected: isItemSelected }
   })
 
-  const handleClearFilter = () => {
+  const handleClearFilter = useCallback(() => {
     removeAllActivityCollectionFilters()
-  }
+  }, [removeAllActivityCollectionFilters])
 
-  const handleMenuClick = () => setIsOpen(!isOpen)
+  const handleMenuClick = useCallback(() => {
+    setIsOpen((prevIsOpen) => !prevIsOpen)
+  }, [])
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
     const { value } = evt.target
     setQuery(value)
-  }
+  }, [])
 
-  const handleItemClick = (evt: ChangeEvent<HTMLInputElement>, collection: Collection) => {
-    if (evt.target.checked) {
-      addActivityCollectionFilters({ collection: collection.address.toLowerCase() })
-    } else {
-      removeActivityCollectionFilters({ collection: collection.address.toLowerCase() })
-    }
-  }
+  const handleItemClick = useCallback(
+    (evt: ChangeEvent<HTMLInputElement>, collection: Collection) => {
+      const { checked } = evt.target
+      if (checked) {
+        addActivityCollectionFilters({ collection: collection.address.toLowerCase() })
+      } else {
+        removeActivityCollectionFilters({ collection: collection.address.toLowerCase() })
+      }
+    },
+    [addActivityCollectionFilters, removeActivityCollectionFilters],
+  )
 
-  const toggleSort = (newOrderKey: string) => () => {
-    setOrderState((prevOrderDir) => {
-      if (prevOrderDir.orderKey !== newOrderKey) {
+  const toggleSort = useCallback(
+    (newOrderKey: string) => () => {
+      setOrderState((prevOrderDir) => {
+        if (prevOrderDir.orderKey !== newOrderKey) {
+          return {
+            orderKey: newOrderKey,
+            orderDir: 'asc',
+          }
+        }
+
         return {
           orderKey: newOrderKey,
-          orderDir: 'asc',
+          orderDir: prevOrderDir.orderDir === 'asc' ? 'desc' : 'asc',
         }
-      }
-
-      return {
-        orderKey: newOrderKey,
-        orderDir: prevOrderDir.orderDir === 'asc' ? 'desc' : 'asc',
-      }
-    })
-  }
+      })
+    },
+    [],
+  )
 
   // @TODO Fix this in the Toolkit
   // This is a fix to ensure the "isOpen" value is aligned with the menus's (to avoid a double click)

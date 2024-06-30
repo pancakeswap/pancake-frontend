@@ -130,16 +130,19 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
   const getTokenLink = stakingToken.address ? `/swap?outputCurrency=${stakingToken.address}` : '/swap'
   const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
 
-  const handleStakeInputChange = (input: string) => {
-    if (input) {
-      const convertedInput = new BigNumber(input).multipliedBy(getFullDecimalMultiplier(stakingToken.decimals))
-      const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
-      setPercent(percentage > 100 ? 100 : percentage)
-    } else {
-      setPercent(0)
-    }
-    setStakeAmount(input)
-  }
+  const handleStakeInputChange = useCallback(
+    (input: string) => {
+      if (input) {
+        const convertedInput = new BigNumber(input).multipliedBy(getFullDecimalMultiplier(stakingToken.decimals))
+        const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
+        setPercent(percentage > 100 ? 100 : percentage)
+      } else {
+        setPercent(0)
+      }
+      setStakeAmount(input)
+    },
+    [stakingToken.decimals, stakingMax],
+  )
 
   const handleChangePercent = useCallback(
     (sliderPercent: number) => {
@@ -159,7 +162,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
     [stakingMax, stakingToken.decimals],
   )
 
-  const handleWithdrawal = async () => {
+  const handleWithdrawal = useCallback(async () => {
     // trigger withdrawAll function if the withdrawal will leave 0.00001 CAKE or less
     const isWithdrawingAll = stakingMax.minus(convertedStakeAmount).lte(MIN_LOCK_AMOUNT)
 
@@ -190,40 +193,71 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
         dispatch(fetchCakeVaultUserData({ account, chainId }))
       }
     }
-  }
+  }, [
+    stakingMax,
+    convertedStakeAmount,
+    callWithGasPrice,
+    vaultPoolContract,
+    callOptions,
+    pool,
+    pricePerFullShare,
+    toastSuccess,
+    t,
+    onDismiss,
+    account,
+    chainId,
+    dispatch,
+    fetchWithCatchTxError,
+  ])
 
-  const handleDeposit = async (lockDuration = 0) => {
-    const receipt = await fetchWithCatchTxError(() => {
-      // .toString() being called to fix a BigNumber error in prod
-      // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      const extraArgs = pool.vaultKey === VaultKey.CakeVault ? [lockDuration.toString()] : []
-      const methodArgs = [convertedStakeAmount.toString(), ...extraArgs]
-      return callWithGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
-    })
+  const handleDeposit = useCallback(
+    async (lockDuration = 0) => {
+      const receipt = await fetchWithCatchTxError(() => {
+        // .toString() being called to fix a BigNumber error in prod
+        // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
+        const extraArgs = pool.vaultKey === VaultKey.CakeVault ? [lockDuration.toString()] : []
+        const methodArgs = [convertedStakeAmount.toString(), ...extraArgs]
+        return callWithGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
+      })
 
-    if (receipt?.status) {
-      toastSuccess(
-        t('Staked!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('Your funds have been staked in the pool')}
-        </ToastDescriptionWithTx>,
-      )
-      onDismiss?.()
-      if (account && chainId) {
-        dispatch(fetchCakeVaultUserData({ account, chainId }))
+      if (receipt?.status) {
+        toastSuccess(
+          t('Staked!'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your funds have been staked in the pool')}
+          </ToastDescriptionWithTx>,
+        )
+        onDismiss?.()
+        if (account && chainId) {
+          dispatch(fetchCakeVaultUserData({ account, chainId }))
+        }
       }
-    }
-  }
+    },
+    [
+      pool.vaultKey,
+      convertedStakeAmount,
+      callWithGasPrice,
+      vaultPoolContract,
+      callOptions,
+      toastSuccess,
+      t,
+      onDismiss,
+      account,
+      chainId,
+      dispatch,
+      fetchWithCatchTxError,
+    ],
+  )
 
-  const handleConfirmClick = async () => {
+  const handleConfirmClick = useCallback(async () => {
     if (isRemovingStake) {
       // unstaking
-      handleWithdrawal()
+      await handleWithdrawal()
     } else {
       // staking
-      handleDeposit()
+      await handleDeposit()
     }
-  }
+  }, [isRemovingStake, handleWithdrawal, handleDeposit])
 
   if (showRoiCalculator) {
     return (

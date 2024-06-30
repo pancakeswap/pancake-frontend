@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
@@ -88,115 +88,125 @@ const TicketContainer: React.FC<
 
   const { t } = useTranslation()
 
-  const digitRefs = [digit1, digit2, digit3, digit4, digit5, digit6]
+  const digitRefs = useMemo(
+    () => [digit1, digit2, digit3, digit4, digit5, digit6],
+    [digit1, digit2, digit3, digit4, digit5, digit6],
+  )
 
-  const scrollInputIntoView = () => {
+  const scrollInputIntoView = useCallback(() => {
     if (containerRef.current) {
       containerRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' })
     }
-  }
+  }, [containerRef])
 
-  const onPasteHandler = (e: React.ClipboardEvent) => {
-    e.preventDefault()
-    const pasteContent = e.clipboardData.getData('Text')
-    if (pasteContent.length <= 6 && /^\d+$/.test(pasteContent)) {
-      const filler = Array(6 - pasteContent.length).fill('')
-      updateTicket(ticket.id, [...pasteContent.split(''), ...filler])
-    }
-  }
+  const onPasteHandler = useCallback(
+    (e: React.ClipboardEvent) => {
+      e.preventDefault()
+      const pasteContent = e.clipboardData.getData('Text')
+      if (pasteContent.length <= 6 && /^\d+$/.test(pasteContent)) {
+        const filler = Array(6 - pasteContent.length).fill('')
+        updateTicket(ticket.id, [...pasteContent.split(''), ...filler])
+      }
+    },
+    [ticket.id, updateTicket],
+  )
 
-  const onFocusHandler = () => {
+  const onFocusHandler = useCallback(() => {
     scrollInputIntoView()
     setFocused(true)
-  }
+  }, [scrollInputIntoView])
 
-  const onBlurHandler = () => {
+  const onBlurHandler = useCallback(() => {
     setFocused(false)
-  }
+  }, [])
 
-  const onChangeHandler = (event: React.KeyboardEvent, digitId: number) => {
-    const currentKey = parseInt(event.key, 10)
+  const onChangeHandler = useCallback(
+    (event: React.KeyboardEvent, digitId: number) => {
+      const currentKey = parseInt(event.key, 10)
 
-    if (['e', 'E', '.', ',', '-', 'Unidentified'].includes(event.key)) {
-      event.preventDefault()
-      return
-    }
-
-    // Handling numeric inputs
-    if (currentKey >= 0 && currentKey <= 9) {
-      event.preventDefault()
-      const newNumbers = [...ticket.numbers]
-      newNumbers[digitId] = `${currentKey}`
-      updateTicket(ticket.id, newNumbers)
-      const nextDigitId = digitId + 1
-      // if we're not on the last digit - auto-tab
-      const nextInput = digitRefs[nextDigitId]
-      if (nextDigitId !== 6 && nextInput.current) {
-        nextInput.current.focus()
+      if (['e', 'E', '.', ',', '-', 'Unidentified'].includes(event.key)) {
+        event.preventDefault()
+        return
       }
-    }
 
-    if (event.key === 'Backspace') {
-      event.preventDefault()
-      // If some number is there - delete the number
-      if (ticket.numbers[digitId]) {
+      // Handling numeric inputs
+      if (currentKey >= 0 && currentKey <= 9) {
+        event.preventDefault()
         const newNumbers = [...ticket.numbers]
-        newNumbers[digitId] = ''
+        newNumbers[digitId] = `${currentKey}`
         updateTicket(ticket.id, newNumbers)
-      } else {
-        // if the cell is empty and user presses backspace - remove previous
+        const nextDigitId = digitId + 1
+        // if we're not on the last digit - auto-tab
+        const nextInput = digitRefs[nextDigitId]
+        if (nextDigitId !== 6 && nextInput.current) {
+          nextInput.current.focus()
+        }
+      }
+
+      if (event.key === 'Backspace') {
+        event.preventDefault()
+        // If some number is there - delete the number
+        if (ticket.numbers[digitId]) {
+          const newNumbers = [...ticket.numbers]
+          newNumbers[digitId] = ''
+          updateTicket(ticket.id, newNumbers)
+        } else {
+          // if the cell is empty and user presses backspace - remove previous
+          const prevDigitId = digitId - 1
+          const nextInput = digitRefs[prevDigitId]
+          // prevent focusing on non-existent input
+          if (prevDigitId !== -1 && nextInput.current) {
+            nextInput.current.focus()
+            const newNumbers = [...ticket.numbers]
+            newNumbers[prevDigitId] = ''
+            updateTicket(ticket.id, newNumbers)
+          }
+        }
+      }
+
+      if (event.key === 'Delete') {
+        event.preventDefault()
+        if (ticket.numbers[digitId]) {
+          const newNumbers = [...ticket.numbers]
+          newNumbers[digitId] = ''
+          updateTicket(ticket.id, newNumbers)
+        } else {
+          // if the cell is empty and user presses delete - remove next
+          const nextDigitId = digitId + 1
+          const nextInput = digitRefs[nextDigitId]
+          // prevent focusing on non-existent input
+          if (nextDigitId !== 6 && nextInput.current) {
+            nextInput.current.focus()
+            const newNumbers = [...ticket.numbers]
+            newNumbers[nextDigitId] = ''
+            updateTicket(ticket.id, newNumbers)
+          }
+        }
+      }
+
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault()
         const prevDigitId = digitId - 1
         const nextInput = digitRefs[prevDigitId]
         // prevent focusing on non-existent input
         if (prevDigitId !== -1 && nextInput.current) {
           nextInput.current.focus()
-          const newNumbers = [...ticket.numbers]
-          newNumbers[prevDigitId] = ''
-          updateTicket(ticket.id, newNumbers)
         }
       }
-    }
 
-    if (event.key === 'Delete') {
-      event.preventDefault()
-      if (ticket.numbers[digitId]) {
-        const newNumbers = [...ticket.numbers]
-        newNumbers[digitId] = ''
-        updateTicket(ticket.id, newNumbers)
-      } else {
-        // if the cell is empty and user presses delete - remove next
+      if (event.key === 'ArrowRight') {
+        event.preventDefault()
         const nextDigitId = digitId + 1
         const nextInput = digitRefs[nextDigitId]
         // prevent focusing on non-existent input
         if (nextDigitId !== 6 && nextInput.current) {
           nextInput.current.focus()
-          const newNumbers = [...ticket.numbers]
-          newNumbers[nextDigitId] = ''
-          updateTicket(ticket.id, newNumbers)
         }
       }
-    }
+    },
+    [ticket.id, ticket.numbers, updateTicket, digitRefs],
+  )
 
-    if (event.key === 'ArrowLeft') {
-      event.preventDefault()
-      const prevDigitId = digitId - 1
-      const nextInput = digitRefs[prevDigitId]
-      // prevent focusing on non-existent input
-      if (prevDigitId !== -1 && nextInput.current) {
-        nextInput.current.focus()
-      }
-    }
-
-    if (event.key === 'ArrowRight') {
-      event.preventDefault()
-      const nextDigitId = digitId + 1
-      const nextInput = digitRefs[nextDigitId]
-      // prevent focusing on non-existent input
-      if (nextDigitId !== 6 && nextInput.current) {
-        nextInput.current.focus()
-      }
-    }
-  }
   return (
     <>
       <Flex justifyContent="space-between">

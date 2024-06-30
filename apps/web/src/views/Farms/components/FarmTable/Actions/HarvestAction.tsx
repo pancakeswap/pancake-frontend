@@ -95,15 +95,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
     displayBalance = earnings.toFixed(5, BigNumber.ROUND_DOWN)
   }
 
-  const onClickHarvestButton = () => {
-    if (vaultPid) {
-      onPresentCrossChainHarvestModal()
-    } else {
-      handleHarvest()
-    }
-  }
-
-  const handleHarvest = async () => {
+  const handleHarvest = useCallback(async () => {
     const receipt = await fetchWithCatchTxError((): any => onReward?.())
     if (receipt?.status) {
       toastSuccess(
@@ -114,7 +106,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
       )
       onDone?.()
     }
-  }
+  }, [onReward, t, toastSuccess, onDone, fetchWithCatchTxError])
 
   const [onPresentCrossChainHarvestModal] = useModal(
     <MultiChainHarvestModal
@@ -126,6 +118,14 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
       earningsBusd={earningsBusd}
     />,
   )
+
+  const onClickHarvestButton = useCallback(() => {
+    if (vaultPid) {
+        onPresentCrossChainHarvestModal()
+    } else {
+      handleHarvest()
+    }
+  }, [vaultPid, onPresentNonBscHarvestModal, handleHarvest])
 
   return (
     <FarmTableHarvestAction

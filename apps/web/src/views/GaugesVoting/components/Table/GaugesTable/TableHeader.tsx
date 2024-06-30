@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, SortArrowIcon, Text, Th } from '@pancakeswap/uikit'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { SortButton } from 'views/V3Info/components/SortButton'
 import { THeader } from '../styled'
@@ -38,20 +38,21 @@ export const TableHeader: React.FC<{
   const [voteSort, setVoteSort] = useState<SortBy | undefined>()
   const [boostSort, setBoostSort] = useState<SortBy | undefined>()
 
-  const onVoteSort = () => {
+  const onVoteSort = useCallback(() => {
     setBoostSort(undefined)
     const newSort = !voteSort ? SortBy.Desc : voteSort === SortBy.Asc ? SortBy.Desc : SortBy.Asc
 
     setVoteSort(newSort)
     onSort?.(SortField.Votes, newSort)
-  }
-  const onBoostSort = () => {
+  }, [voteSort, onSort])
+
+  const onBoostSort = useCallback(() => {
     setVoteSort(undefined)
     const newSort = !boostSort ? SortBy.Desc : boostSort === SortBy.Asc ? SortBy.Desc : SortBy.Asc
 
     setBoostSort(newSort)
     onSort?.(SortField.Boost, newSort)
-  }
+  }, [boostSort, onSort])
 
   return (
     <THeader>

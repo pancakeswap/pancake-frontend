@@ -13,6 +13,7 @@ import {
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { useUserPredictionChainlinkChartDisclaimerShow } from 'state/user/hooks'
+import { useCallback } from 'react'
 
 const Ul = styled.ul`
   color: ${({ theme }) => theme.colors.textSubtle};
@@ -29,9 +30,9 @@ const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = (
   const [showDisclaimer, setShowDisclaimer] = useUserPredictionChainlinkChartDisclaimerShow()
   const { t } = useTranslation()
 
-  const handleConfirm = () => {
+  const handleConfirm = useCallback(() => {
     onDismiss?.()
-  }
+  }, [onDismiss])
 
   return (
     <ModalWrapper minWidth="320px">

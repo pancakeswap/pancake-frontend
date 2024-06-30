@@ -18,7 +18,7 @@ import { useQuery } from '@tanstack/react-query'
 import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 import { ACCESS_TOKEN_SUPPORT_CHAIN_IDS } from 'components/AccessRisk/config/supportedChains'
 import { fetchRiskToken } from 'components/AccessRisk/utils/fetchTokenRisk'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAllLists } from 'state/lists/hooks'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { styled } from 'styled-components'
@@ -56,12 +56,12 @@ function RetryRisk({ onClick }: { onClick: () => void }) {
   const [retry, setRetry] = useState(false)
   const { t } = useTranslation()
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
-  const displayTooltip = () => {
+  const displayTooltip = useCallback(() => {
     setIsTooltipDisplayed(true)
     setTimeout(() => {
       setIsTooltipDisplayed(false)
     }, 1000)
-  }
+  }, [])
   const retryTooltip = useTooltip(
     <>
       {t('Risk scanning failed.')} {!retry && t('Press the button to retry.')}

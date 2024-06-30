@@ -18,7 +18,7 @@ import { useERC20 } from 'hooks/useContract'
 import { useIsWindowVisible } from '@pancakeswap/hooks'
 import { FAST_INTERVAL } from 'config/constants'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, useState, useMemo } from 'react'
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { styled } from 'styled-components'
 import { requiresApproval } from 'utils/requiresApproval'
@@ -265,11 +265,12 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
     }
   }, [account, isWalletDataInitialized, resetWalletIfoData])
 
-  const handleApprove = async () => {
+  const handleApprove = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       setEnableStatus(EnableStatus.IS_ENABLING)
       return onApprove() as any
     })
+
     if (receipt?.status) {
       toastSuccess(
         t('Successfully Enabled!'),
@@ -281,7 +282,7 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
     } else {
       setEnableStatus(EnableStatus.DISABLED)
     }
-  }
+  }, [onApprove, t, toastSuccess, fetchWithCatchTxError, ifo.token.symbol])
 
   useEffect(() => {
     const checkAllowance = async () => {

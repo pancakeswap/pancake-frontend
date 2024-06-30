@@ -135,12 +135,12 @@ const StakeModalContainer = ({
     return false
   }, [singlePool, amount, pendingTx, isRemovingStake, stakingToken.decimals])
 
-  const handleEnableApprove = async () => {
+  const handleEnableApprove = useCallback(async () => {
     if (account && chainId) {
       await handleApprove()
       dispatch(updateUserAllowance({ sousId, account, chainId }))
     }
-  }
+  }, [account, chainId, handleApprove, dispatch, sousId])
 
   const totalApr = useMemo(() => {
     let finalApr = apr ?? 0

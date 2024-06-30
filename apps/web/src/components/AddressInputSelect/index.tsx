@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect } from 'react'
+import { ChangeEvent, useState, useEffect, useCallback } from 'react'
 import { Box, BoxProps, Text, Input } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { isAddress } from 'viem'
@@ -74,10 +74,10 @@ const AddressInputSelect: React.FC<React.PropsWithChildren<AddressInputSelectPro
     }))
   }
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     setState(initialState)
     onAddressClick(state.value)
-  }
+  }, [onAddressClick, state.value])
 
   // When we have a valid address fetch the data
   useEffect(() => {

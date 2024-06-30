@@ -14,7 +14,7 @@ import {
 import Page from 'components/Layout/Page'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { usePollFarmsWithUserData } from 'state/farms/hooks'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { farmV3MigrationBunny, farmV3MigrationBunnyFull } from 'views/Home/components/Banners/images'
@@ -77,34 +77,35 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
 
   usePollFarmsWithUserData()
 
-  const scrollToTop = (): void => {
+  const scrollToTop = useCallback(() => {
     if (tableWrapperEl.current) {
       window.scrollTo({
         top: tableWrapperEl.current.offsetTop,
         behavior: 'smooth',
       })
     }
-  }
+  }, [tableWrapperEl])
 
-  const handleMigrationStickyClick = () => {
+  const handleMigrationStickyClick = useCallback(() => {
     if (steps[step + 1]) {
+      const nextStep = step + 1
       router.replace(
         {
           pathname: router.pathname,
           query: {
             ...router.query,
-            step: step + 2,
+            step: nextStep + 1,
           },
         },
         undefined,
         { shallow: true },
       )
-      setStep((s) => s + 1)
+      setStep(nextStep)
       scrollToTop()
     } else {
       router.push('/farms')
     }
-  }
+  }, [step, router, scrollToTop])
 
   return (
     <div ref={tableWrapperEl}>

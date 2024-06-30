@@ -314,7 +314,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
 
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
 
-  const onClickLoadingIcon = () => {
+  const onClickLoadingIcon = useCallback(() => {
     const { length } = pendingFarm
     if (length) {
       if (length > 1) {
@@ -323,7 +323,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
         dispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid, chainId: chainId! }))
       }
     }
-  }
+  }, [pendingFarm, onPresentTransactionModal, dispatch, chainId])
 
   // TODO: Move this out to prevent unnecessary re-rendered
   if (!isApproved && stakedBalance?.eq(0)) {

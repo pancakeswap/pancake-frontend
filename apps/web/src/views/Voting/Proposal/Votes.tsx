@@ -12,7 +12,7 @@ import {
 } from '@pancakeswap/uikit'
 import { FetchStatus, TFetchStatus } from 'config/constants/types'
 import orderBy from 'lodash/orderBy'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Vote } from 'state/types'
 import { useAccount } from 'wagmi'
 import VoteRow from '../components/Proposal/VoteRow'
@@ -41,9 +41,9 @@ const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoad
   const displayVotes = showAll ? orderedVotes : orderedVotes.slice(0, VOTES_PER_VIEW)
   const isFetched = votesLoadingStatus === FetchStatus.Fetched
 
-  const handleClick = () => {
-    setShowAll(!showAll)
-  }
+  const handleClick = useCallback(() => {
+    setShowAll((prevShowAll) => !prevShowAll)
+  }, [])
 
   return (
     <Card>

@@ -25,7 +25,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePredictionsContract } from 'hooks/useContract'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { fetchNodeHistory, markAsCollected } from 'state/predictions'
 import { Bet } from 'state/types'
 import { styled } from 'styled-components'
@@ -116,10 +116,11 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
     }
   }, [account, history, dispatch, isV1Claim, chainId])
 
-  const handleClick = async () => {
+  const handleClick = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       return callWithGasPrice(predictionsContract as any, 'claim', [epochs])
     })
+
     if (receipt?.status) {
       if (!isV1Claim) {
         // Immediately mark rounds as claimed
@@ -140,9 +141,21 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
           {t('Your prizes have been sent to your wallet')}
         </ToastDescriptionWithTx>,
       )
+
       onDismiss?.()
     }
-  }
+  }, [
+    epochs,
+    callWithGasPrice,
+    t,
+    isV1Claim,
+    onSuccess,
+    dispatch,
+    predictionsContract,
+    toastSuccess,
+    fetchWithCatchTxError,
+    onDismiss,
+  ])
 
   return (
     <Modal minWidth="288px" position="relative" mt="124px">

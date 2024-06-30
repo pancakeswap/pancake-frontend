@@ -12,7 +12,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useERC20, useNftMarketContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { NftToken } from 'state/nftMarket/types'
 import { requiresApproval } from 'utils/requiresApproval'
 import { formatEther, parseUnits } from 'viem'
@@ -123,17 +123,17 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
     },
   })
 
-  const continueToNextStage = () => {
+  const continueToNextStage = useCallback(() => {
     if (paymentCurrency === PaymentCurrency.WBNB && !isApproved) {
       setStage(BuyingStage.APPROVE_AND_CONFIRM)
     } else {
       setStage(BuyingStage.CONFIRM)
     }
-  }
+  }, [paymentCurrency, isApproved])
 
-  const goBack = () => {
+  const goBack = useCallback(() => {
     setStage(BuyingStage.REVIEW)
-  }
+  }, [])
 
   const showBackButton = stage === BuyingStage.CONFIRM || stage === BuyingStage.APPROVE_AND_CONFIRM
 

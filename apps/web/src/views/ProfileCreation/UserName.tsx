@@ -22,7 +22,7 @@ import { FetchStatus } from 'config/constants/types'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useBSCCakeBalance } from 'hooks/useTokenBalance'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import fetchWithTimeout from 'utils/fetchWithTimeout'
 import { formatUnits } from 'viem'
@@ -128,13 +128,16 @@ const UserName: React.FC<React.PropsWithChildren> = () => {
     fetchUsernameToCheck(fetchAbortSignal.current.signal)
   }, [debouncedUsernameToCheck, t])
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-    actions.setUserName(value)
-    setUsernameToCheck(value)
-  }
+  const handleChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target
+      actions.setUserName(value)
+      setUsernameToCheck(value)
+    },
+    [actions, setUsernameToCheck],
+  )
 
-  const handleConfirm = async () => {
+  const handleConfirm = useCallback(async () => {
     try {
       setIsLoading(true)
 
@@ -162,9 +165,9 @@ const UserName: React.FC<React.PropsWithChildren> = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [userName, account, signMessageAsync, setExistingUserState, toastError, t])
 
-  const handleAcknowledge = () => setIsAcknowledged(!isAcknowledged)
+  const handleAcknowledge = useCallback(() => setIsAcknowledged((prevState) => !prevState), [])
 
   // Perform an initial check to see if the wallet has already created a username
   useEffect(() => {

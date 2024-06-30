@@ -78,7 +78,7 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
     onDismiss?.()
   }, [onDismiss])
 
-  const handleSwitchNetwork = () => {
+  const handleSwitchNetwork = useCallback(() => {
     if (window.ethereum?.isTokenPocket === true) {
       Cookie.set(
         'multiChainHarvestModal',
@@ -86,7 +86,7 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
       )
     }
     switchNetworkAsync(network)
-  }
+  }, [pid, token, lpSymbol, quoteToken, earningsBigNumber, earningsBusd, network, switchNetworkAsync])
 
   const handleHarvest = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => onReward())

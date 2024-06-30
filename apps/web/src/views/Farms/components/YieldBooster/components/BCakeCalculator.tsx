@@ -16,7 +16,7 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import _toNumber from 'lodash/toNumber'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { useBCakeTooltipContent } from 'views/Farms/components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
@@ -60,9 +60,9 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
     )
   const { editingCurrency } = state.controls
   const { principalAsUSD, principalAsToken } = state.data
-  const onBalanceFocus = () => {
+  const onBalanceFocus = useCallback(() => {
     setCalculatorMode(CalculatorMode.ROI_BASED_ON_PRINCIPAL)
-  }
+  }, [setCalculatorMode])
   const userBalanceInFarm = useMemo(
     () => new BigNumber(targetInputBalance).multipliedBy(DEFAULT_TOKEN_DECIMAL),
     [targetInputBalance],

@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 import { styled } from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Box, Flex, Text, ChevronDownIcon, BalanceWithLoading } from '@pancakeswap/uikit'
@@ -41,9 +41,9 @@ const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({
     }
   }, [index])
 
-  const toggleExpanded = () => {
+  const toggleExpanded = useCallback(() => {
     setExpanded((prev) => !prev)
-  }
+  }, [])
 
   const amountAvailable = useMemo(() => {
     const totalReleaseAmount = new BigNumber(vestingComputeReleasableAmount).plus(basicReleaseAmount)

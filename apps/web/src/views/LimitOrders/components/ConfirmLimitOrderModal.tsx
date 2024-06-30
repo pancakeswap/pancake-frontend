@@ -17,7 +17,7 @@ import { CurrencyLogo } from 'components/Logo'
 import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import { styled } from 'styled-components'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import LimitOrderDisclaimer from './LimitOrderDisclaimer'
@@ -73,12 +73,13 @@ export const ConfirmLimitOrderModal: React.FC<React.PropsWithChildren<ConfirmLim
   const wrappedOutput = wrappedCurrency(currencies.output, chainId)
   const { isMobile } = useMatchBreakpoints()
 
-  const handleDismiss = () => {
+  const handleDismiss = useCallback(() => {
     if (customOnDismiss) {
       customOnDismiss()
     }
     onDismiss?.()
-  }
+  }, [customOnDismiss, onDismiss])
+
   return (
     <Modal
       title={t('Confirm Limit Order')}

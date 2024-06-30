@@ -77,9 +77,9 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
       useContext(SwapFeaturesContext)
     const [expertMode] = useExpertMode()
     const [isRoutingSettingChange] = useRoutingSettingChanged()
-    const toggleChartDisplayed = () => {
+    const toggleChartDisplayed = useCallback(() => {
       setIsChartDisplayed?.((currentIsChartDisplayed) => !currentIsChartDisplayed)
-    }
+    }, [setIsChartDisplayed])
     const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
     const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
 

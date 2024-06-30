@@ -17,7 +17,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useBCakeProxyContract, useERC20 } from 'hooks/useContract'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { useBCakeProxyContractAddress } from '../../../hooks/useBCakeProxyContractAddress'
 import useProxyStakedActions from './YieldBooster/hooks/useProxyStakedActions'
@@ -192,7 +192,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
     })
   }, [lpContract, bCakeProxy])
 
-  const onStepChange = async () => {
+  const onStepChange = useCallback(async () => {
     if (activatedState === Steps.Unstake) {
       setIsLoading(true)
       onUnStack(fullBalance, () => {
@@ -229,7 +229,20 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
         setIsLoading(false)
       }
     }
-  }
+  }, [
+    activatedState,
+    fullBalance,
+    isApproved,
+    onApprove,
+    onUnStack,
+    onStake,
+    t,
+    toastSuccess,
+    onDone,
+    onDismiss,
+    fetchWithCatchTxError,
+  ])
+
   return (
     <Modal title={t('Migrate your stakings')} width="420px" onDismiss={onDismiss}>
       {tooltipVisible && tooltip}

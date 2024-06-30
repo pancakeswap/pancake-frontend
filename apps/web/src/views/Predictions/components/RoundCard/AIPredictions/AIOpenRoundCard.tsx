@@ -18,7 +18,7 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { fetchLedgerData } from 'state/predictions'
 import { NodeLedger, NodeRound } from 'state/types'
 import styled from 'styled-components'
@@ -161,44 +161,49 @@ export const AIOpenRoundCard: React.FC<React.PropsWithChildren<AIOpenRoundCardPr
 
   const canEnterPosition = getHasEnteredPosition()
 
-  const handleBack = () =>
-    setState((prevState) => ({
-      ...prevState,
-      isSettingPosition: false,
-    }))
+  const handleBack = useCallback(
+    () =>
+      setState((prevState) => ({
+        ...prevState,
+        isSettingPosition: false,
+      })),
+    [],
+  )
 
-  const handleSetPosition = (newPosition: BetPosition) => {
+  const handleSetPosition = useCallback((newPosition) => {
     setState((prevState) => ({
       ...prevState,
       isSettingPosition: true,
       position: newPosition,
     }))
-  }
+  }, [])
 
-  const togglePosition = () => {
+  const togglePosition = useCallback(() => {
     setState((prevState) => ({
       ...prevState,
       position: prevState.position === BetPosition.BULL ? BetPosition.BEAR : BetPosition.BULL,
     }))
-  }
+  }, [])
 
-  const handleSuccess = async (hash: string) => {
-    if (account && chainId) {
-      await dispatch(fetchLedgerData({ account, chainId, epochs: [round.epoch] }))
+  const handleSuccess = useCallback(
+    async (hash) => {
+      if (account && chainId) {
+        await dispatch(fetchLedgerData({ account, chainId, epochs: [round.epoch] }))
 
-      handleBack()
+        handleBack()
 
-      toastSuccess(
-        t('Success!'),
-        <ToastDescriptionWithTx txHash={hash}>
-          {t('You are %positionMessage% prediction!', {
-            // TODO: test reactivity of this by going BULL (following AI) and see if position is up to date
-            positionMessage: position === BetPosition.BULL ? t("following AI's") : t("going against AI's"),
-          })}
-        </ToastDescriptionWithTx>,
-      )
-    }
-  }
+        toastSuccess(
+          t('Success!'),
+          <ToastDescriptionWithTx txHash={hash}>
+            {t('You are %positionMessage% prediction!', {
+              positionMessage: position === BetPosition.BULL ? t("following AI's") : t("going against AI's"),
+            })}
+          </ToastDescriptionWithTx>,
+        )
+      }
+    },
+    [account, chainId, dispatch, handleBack, round.epoch, t, position, toastSuccess],
+  )
 
   return (
     <CardFlip isFlipped={isSettingPosition} height="404px">

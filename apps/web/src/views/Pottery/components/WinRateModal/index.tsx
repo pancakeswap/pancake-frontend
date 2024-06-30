@@ -3,7 +3,7 @@ import { BalanceInput, Box, Flex, Modal, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useVaultApy } from 'hooks/useVaultApy'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { styled } from 'styled-components'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
 import useWinRateCalculator from 'views/Pottery/hooks/useWinRateCalculator'
@@ -75,9 +75,9 @@ const WinRateModal: React.FC<React.PropsWithChildren<WinRateModalProps>> = ({
     }
   }, [])
 
-  const onBalanceFocus = () => {
+  const onBalanceFocus = useCallback(() => {
     setCalculatorMode(CalculatorMode.WIN_RATE_BASED_ON_PRINCIPAL)
-  }
+  }, [setCalculatorMode])
 
   const editingUnit = editingCurrency === EditingCurrency.TOKEN ? 'CAKE' : 'USD'
   const editingValue = editingCurrency === EditingCurrency.TOKEN ? principalAsToken : principalAsUSD

@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text, Input, CheckmarkIcon, PencilIcon, IconButton } from '@pancakeswap/uikit'
@@ -57,11 +57,11 @@ const WinRateCard: React.FC<React.PropsWithChildren<WinRateCardProps>> = ({
     }
   }, [mode])
 
-  const onEnterEditing = () => {
+  const onEnterEditing = useCallback(() => {
     setCalculatorMode(CalculatorMode.PRINCIPAL_BASED_ON_WIN_RATE)
-  }
+  }, [setCalculatorMode])
 
-  const onExitWinRateEditing = () => {
+  const onExitWinRateEditing = useCallback(() => {
     setCalculatorMode(CalculatorMode.WIN_RATE_BASED_ON_PRINCIPAL)
     setExpectedWinRate(
       winRate.toLocaleString('en', {
@@ -69,16 +69,19 @@ const WinRateCard: React.FC<React.PropsWithChildren<WinRateCardProps>> = ({
         maximumFractionDigits: 2,
       }),
     )
-  }
+  }, [winRate, setCalculatorMode])
 
-  const handleExpectedWinRateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.currentTarget.validity.valid) {
-      const winRateAsString = event.target.value.replace(/,/g, '.')
-      const percentage = Number(winRateAsString) >= 100 ? '100' : winRateAsString
-      setTargetWinRate(percentage)
-      setExpectedWinRate(percentage)
-    }
-  }
+  const handleExpectedWinRateChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.currentTarget.validity.valid) {
+        const winRateAsString = event.target.value.replace(/,/g, '.')
+        const percentage = Number(winRateAsString) >= 100 ? '100' : winRateAsString
+        setTargetWinRate(percentage)
+        setExpectedWinRate(percentage)
+      }
+    },
+    [setTargetWinRate],
+  )
 
   return (
     <WinRateWrapper>

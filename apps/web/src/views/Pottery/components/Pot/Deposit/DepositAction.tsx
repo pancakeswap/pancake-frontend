@@ -1,6 +1,6 @@
 import { Box, Button, Flex, HelpIcon, InputProps, LogoRoundIcon, Skeleton, Text, useTooltip } from '@pancakeswap/uikit'
 import { NumericalInput } from '@pancakeswap/widgets-internal'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
@@ -59,15 +59,16 @@ const DepositAction: React.FC<React.PropsWithChildren<DepositActionProps>> = ({ 
     },
   )
 
-  const onClickMax = () => {
-    const userCakeBalance = userCake.dividedBy(DEFAULT_TOKEN_DECIMAL).toString()
+  const onClickMax = useCallback(() => {
+    const userCakeBalance = new BigNumber(userCake).dividedBy(DEFAULT_TOKEN_DECIMAL)
+    const maxAmountToDeposit = new BigNumber(remainingCakeCanStake)
 
-    if (new BigNumber(userCakeBalance).gte(remainingCakeCanStake)) {
-      setDepositAmount(remainingCakeCanStake)
+    if (userCakeBalance.gte(maxAmountToDeposit)) {
+      setDepositAmount(maxAmountToDeposit.toString())
     } else {
-      setDepositAmount(userCakeBalance)
+      setDepositAmount(userCakeBalance.toString())
     }
-  }
+  }, [userCake, remainingCakeCanStake])
 
   const showMaxButton = useMemo(
     () => new BigNumber(depositAmount).multipliedBy(DEFAULT_TOKEN_DECIMAL).eq(userCake),

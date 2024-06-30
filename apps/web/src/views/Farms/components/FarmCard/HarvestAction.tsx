@@ -13,6 +13,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useCakePrice } from 'hooks/useCakePrice'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
+import { useCallback } from 'react'
 
 interface FarmCardActionsProps {
   pid?: number
@@ -65,18 +66,11 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
     },
   )
 
-  const onClickHarvestButton = () => {
-    if (vaultPid) {
-      onPresentCrossChainHarvestModal()
-    } else {
-      handleHarvest()
-    }
-  }
-
-  const handleHarvest = async () => {
+  const handleHarvest = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       return onReward()
     })
+
     if (receipt?.status) {
       toastSuccess(
         `${t('Harvested')}!`,
@@ -86,7 +80,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
       )
       onDone?.()
     }
-  }
+  }, [onReward, fetchWithCatchTxError, toastSuccess, t, onDone])
 
   const [onPresentCrossChainHarvestModal] = useModal(
     pid && token && lpSymbol && quoteToken ? (
@@ -100,6 +94,14 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
       />
     ) : null,
   )
+
+  const onClickHarvestButton = useCallback(() => {
+    if (vaultPid) {
+        onPresentCrossChainHarvestModal()
+    } else {
+      handleHarvest()
+    }
+  }, [vaultPid, onPresentNonBscHarvestModal, handleHarvest])
 
   return (
     <Flex mb="8px" justifyContent="space-between" alignItems="center" width="100%">

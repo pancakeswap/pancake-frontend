@@ -6,7 +6,7 @@ import Container from 'components/Layout/Container'
 import { getImageUrlFromToken } from 'components/TokenImage'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { setLeaderboardFilter } from 'state/predictions'
 import { styled } from 'styled-components'
 import AddressSearch from '../AddressSearch'
@@ -99,20 +99,26 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
   }, [predictionConfigs])
 
   // When switch network / token make sure order set to default
-  const resetOrder = () => {
+  const resetOrder = useCallback(() => {
     setPickedOrder(DEFAULT_ORDER)
     dispatch(setLeaderboardFilter({ orderBy: DEFAULT_ORDER }))
-  }
+  }, [setPickedOrder, dispatch])
 
-  const handleSwitchNetwork = (option: OptionProps) => {
-    resetOrder()
-    setPickedChainId(option?.value)
-  }
+  const handleSwitchNetwork = useCallback(
+    (option: OptionProps) => {
+      resetOrder()
+      setPickedChainId(option?.value)
+    },
+    [resetOrder, setPickedChainId],
+  )
 
-  const handleTokenChange = (option: OptionProps) => {
-    resetOrder()
-    setPickedTokenSymbol(option?.value)
-  }
+  const handleTokenChange = useCallback(
+    (option: OptionProps) => {
+      resetOrder()
+      setPickedTokenSymbol(option?.value)
+    },
+    [resetOrder, setPickedTokenSymbol],
+  )
 
   const orderSelectedIndex = useMemo(() => {
     const index = orderByOptions.findIndex((option) => option.value === pickedOrder)

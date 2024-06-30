@@ -46,9 +46,9 @@ export const TableRow: React.FC<RowProps> = ({ data, submitted, vote = { ...DEFA
     vote,
     onChange,
   })
-  const onMax = () => {
+  const onMax = useCallback(() => {
     onChange(vote, true)
-  }
+  }, [onChange, vote])
 
   return (
     <VRow data-gauge-hash={data.hash}>

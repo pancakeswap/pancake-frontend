@@ -10,6 +10,7 @@ import { Address } from 'viem'
 import AchievementAvatar from 'views/Profile/components/Achievements/AchievementAvatar'
 import AchievementDescription from 'views/Profile/components/Achievements/AchievementDescription'
 import AchievementTitle from 'views/Profile/components/Achievements/AchievementTitle'
+import { useCallback } from 'react'
 import PointsLabel from './PointsLabel'
 
 interface AchievementRowProps {
@@ -58,7 +59,7 @@ const AchievementRow: React.FC<React.PropsWithChildren<AchievementRowProps>> = (
   const { fetchWithCatchTxError, loading: isCollecting } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
 
-  const handleCollectPoints = async () => {
+  const handleCollectPoints = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       return callWithGasPrice(pointCenterContract, 'getPoints', [achievement.address as Address])
     })
@@ -66,7 +67,7 @@ const AchievementRow: React.FC<React.PropsWithChildren<AchievementRowProps>> = (
       onCollectSuccess?.(achievement)
       toastSuccess(t('Points Collected!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
     }
-  }
+  }, [achievement, pointCenterContract, onCollectSuccess, t, callWithGasPrice, fetchWithCatchTxError, toastSuccess])
 
   return (
     <StyledAchievementRow>

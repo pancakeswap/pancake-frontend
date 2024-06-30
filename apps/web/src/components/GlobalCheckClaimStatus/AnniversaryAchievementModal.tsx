@@ -114,18 +114,18 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
     closeOnceAnniversaryModal()
   }, [closeOnceAnniversaryModal])
 
-  const handleClick = async () => {
+  const handleClick = useCallback(async () => {
     setIsLoading(true)
 
     try {
       const receipt =
         account &&
-        (await fetchWithCatchTxError(() =>
-          contract.write.claimAnniversaryPoints({
+        (await fetchWithCatchTxError(() => {
+          return contract.write.claimAnniversaryPoints({
             account,
             chain: contract.chain,
-          }),
-        ))
+          })
+        }))
 
       if (receipt?.status) {
         toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
@@ -141,7 +141,7 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
       setShow(false)
       setIsLoading(false)
     }
-  }
+  }, [account, contract, router, t, closeOnceAnniversaryModal, fetchWithCatchTxError, toastError, toastSuccess])
 
   return (
     <ModalV2 isOpen={show} onDismiss={handleCloseModal} closeOnOverlayClick>

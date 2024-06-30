@@ -7,6 +7,7 @@ import { useCake } from 'hooks/useContract'
 import { useProfile } from 'state/profile/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
+import { useCallback } from 'react'
 import { UseEditProfileResponse } from './reducer'
 
 interface ApproveCakePageProps extends InjectedModalProps {
@@ -23,13 +24,9 @@ const ApproveCakePage: React.FC<React.PropsWithChildren<ApproveCakePageProps>> =
   } = useGetProfileCosts()
   const cakeContract = useCake()
 
-  if (!profile) {
-    return null
-  }
+  const cost = profile?.isActive ? numberCakeToUpdate : numberCakeToReactivate
 
-  const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
-
-  const handleApprove = async () => {
+  const handleApprove = useCallback(async () => {
     if (!account || !cakeContract) return
 
     const receipt = await fetchWithCatchTxError(() => {
@@ -41,6 +38,10 @@ const ApproveCakePage: React.FC<React.PropsWithChildren<ApproveCakePageProps>> =
     if (receipt?.status) {
       goToChange()
     }
+  }, [account, cakeContract, cost, chain, fetchWithCatchTxError, goToChange])
+
+  if (!profile) {
+    return null
   }
 
   return (

@@ -1,6 +1,6 @@
 import { CloseIcon, Flex, IconButton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { usePhishingBanner } from '@pancakeswap/utils/user'
-import { CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
+import { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
@@ -184,14 +184,14 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
     }
   }, [remainingTimer, showAnimation, step, nextItem])
 
-  const handleClickNext = () => {
+  const handleClickNext = useCallback(() => {
     setTimeout(() => {
       setStep(nextItem)
       setPerCentage(0)
       setRemainingTimer(DISPLAY_TIMER)
       setShowAnimation(true)
     }, 600)
-  }
+  }, [nextItem])
 
   return (
     <Container className="warning-banner" $background={banner.background}>
