@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { BoxProps, Flex } from "../../components/Box";
 import { Button } from "../../components/Button";
@@ -39,7 +39,8 @@ export const Dialog: React.FC<DialogProps> = ({
     if (useInput) return t("Warning");
     return t("Confirm");
   }, [t, title, useInput]);
-  const handleOk = () => {
+
+  const handleOk = useCallback(() => {
     if (!useInput) {
       const confirm = onConfirm as (value: boolean) => void;
       confirm(true);
@@ -49,8 +50,9 @@ export const Dialog: React.FC<DialogProps> = ({
       setValue(defaultValue ?? "");
     }
     onDismiss?.();
-  };
-  const handleCancel = () => {
+  }, [useInput, onConfirm, value, defaultValue, onDismiss]);
+
+  const handleCancel = useCallback(() => {
     if (!useInput) {
       const confirm = onConfirm as (value: boolean) => void;
       confirm(false);
@@ -58,12 +60,16 @@ export const Dialog: React.FC<DialogProps> = ({
       setValue(defaultValue ?? "");
     }
     onDismiss?.();
-  };
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleOk();
-    }
-  };
+  }, [useInput, onConfirm, defaultValue, onDismiss]);
+
+  const onKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        handleOk();
+      }
+    },
+    [handleOk]
+  );
 
   return (
     <StyledModalV2 onDismiss={onDismiss} {...props}>
