@@ -54,19 +54,6 @@ import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { BCakeBoosterCard } from './components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 import { FarmsV3Context } from './context'
 
-// mock data for test
-const chains = [
-  { label: 'BNB', value: 'bnb', icon: 'https://assets.pancakeswap.finance/web/chains/56.png' },
-  { label: 'Ethereum', value: 'ethereum', icon: 'https://assets.pancakeswap.finance/web/chains/1.png' },
-  { label: 'Polygon zkEVM', value: 'polygon zkEVM', icon: 'https://assets.pancakeswap.finance/web/chains/1101.png' },
-  { label: 'zkSync Era', value: 'zksync Era', icon: 'https://assets.pancakeswap.finance/web/chains/324.png' },
-  { label: 'Arbitrum One', value: 'arbitrum One', icon: 'https://assets.pancakeswap.finance/web/chains/42161.png' },
-  { label: 'Linea', value: 'linea', icon: 'https://assets.pancakeswap.finance/web/chains/59144.png' },
-  { label: 'Base', value: 'base', icon: 'https://assets.pancakeswap.finance/web/chains/8453.png' },
-  { label: 'opBNB', value: 'opbnb', icon: 'https://assets.pancakeswap.finance/web/chains/204.png' },
-  { label: 'Aptos', value: 'aptos', icon: 'https://aptos.pancakeswap.finance/images/apt.png' },
-]
-
 const ControlContainer = styled.div`
   display: flex;
   width: 100%;
@@ -484,7 +471,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 farmTypesEnableCount={farmTypesEnableCount}
                 handleSetFarmTypesEnableCount={setFarmTypesEnableCount}
               />
-              <FarmWidget.NetworkSelect data={chains} />
               <ToggleWrapper>
                 <Toggle
                   id="staked-only-farms"
