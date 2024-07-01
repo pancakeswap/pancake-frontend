@@ -210,6 +210,9 @@ const fetchPoolInfos = async (
   masterChefAddress: Address,
 ) => {
   try {
+    console.log(
+      `Fetching MasterChef Pool info data for chainId: ${chainId} and address of master chef v3 ${masterChefAddress}`,
+    )
     const calls = farms.map(
       (farm) =>
         ({
@@ -219,7 +222,7 @@ const fetchPoolInfos = async (
           args: [BigInt(farm.pid)] as const,
         } as const),
     )
-
+    console.log('here?1232')
     const masterChefMultiCallResult = await provider({ chainId }).multicall({
       contracts: calls,
       allowFailure: false,

@@ -3,6 +3,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { bscTokens } from './constants/bsc'
 import { goerliTestnetTokens } from './constants/goerli'
 import { bscTestnetTokens } from './constants/bscTestnet'
+import { fraxTestnetTokens } from './constants/fraxTestnet'
 import { ethereumTokens } from './constants/eth'
 import { arbitrumTokens } from './constants/arb'
 import { polygonZkEvmTokens } from './constants/polygonZkEVM'
@@ -22,7 +23,7 @@ export const allTokens = {
   [ChainId.GOERLI]: goerliTestnetTokens,
   [ChainId.BSC]: bscTokens,
   [ChainId.BSC_TESTNET]: bscTestnetTokens,
-  [ChainId.FRAX_TESTNET]: bscTestnetTokens, // ToDo:: change to the valid one
+  [ChainId.FRAX_TESTNET]: fraxTestnetTokens, // ToDo:: check validity
   [ChainId.ETHEREUM]: ethereumTokens,
   [ChainId.ARBITRUM_ONE]: arbitrumTokens,
   [ChainId.POLYGON_ZKEVM]: polygonZkEvmTokens,

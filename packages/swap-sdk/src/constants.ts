@@ -90,10 +90,10 @@ export const WETH9 = {
   ),
   [ChainId.FRAX_TESTNET]: new ERC20Token(
     ChainId.FRAX_TESTNET,
-    '0x4200000000000000000000000000000000000006',
+    '0xFC00000000000000000000000000000000000006',
     18,
-    'FRXETH',
-    'Frax ETH',
+    'WFRXETH',
+    'Wrapped Frax ETH',
     'https://frax.finance'
   ),
   [ChainId.ARBITRUM_ONE]: new ERC20Token(

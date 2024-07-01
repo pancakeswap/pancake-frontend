@@ -89,12 +89,13 @@ export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number })
     }
 
     try {
+      console.log(`fetchFarms: ${chainId} 1212 `)
       const { poolLength, totalAllocPoint, latestPeriodCakePerSecond } = await fetchMasterChefV3Data({
         provider,
         masterChefAddress,
         chainId,
       })
-
+      console.log(`totalAllocPoint: ${totalAllocPoint}`)
       const cakePerSecond = new BigNumber(latestPeriodCakePerSecond.toString()).div(1e18).div(1e12).toString()
 
       const farmsWithPrice = await farmV3FetchFarms({

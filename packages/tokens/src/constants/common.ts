@@ -242,6 +242,13 @@ export const USDC = {
   [ChainId.BSC]: USDC_BSC,
   [ChainId.BSC_TESTNET]: USDC_TESTNET,
   [ChainId.ETHEREUM]: USDC_ETH,
+  [ChainId.FRAX_TESTNET]: new ERC20Token(
+    ChainId.FRAX_TESTNET,
+    '0x54D2E2661c5a9381e17c89e564cbC0d456703f1b',
+    18,
+    'TUSDC',
+    'Test USDC',
+  ),
   [ChainId.GOERLI]: USDC_GOERLI,
   [ChainId.ZKSYNC]: new ERC20Token(ChainId.ZKSYNC, '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4', 6, 'USDC', 'USD Coin'),
   [ChainId.ZKSYNC_TESTNET]: new ERC20Token(
@@ -309,10 +316,10 @@ export const USDT = {
   [ChainId.ETHEREUM]: USDT_ETH,
   [ChainId.FRAX_TESTNET]: new ERC20Token(
     ChainId.FRAX_TESTNET,
-    '0xFC00000000000000000000000000000000000006',
+    '0x876FfDc5F2aa8C4927A0AEA52b150e112f6ddfF6',
     18,
-    'WRAPPED FRAX',
-    'WFRax',
+    'TUSDT',
+    'Test USDT',
   ),
   [ChainId.ARBITRUM_ONE]: new ERC20Token(
     ChainId.ARBITRUM_ONE,
