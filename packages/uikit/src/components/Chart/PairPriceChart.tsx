@@ -66,13 +66,14 @@ const getOHLC = (candleData: BarData) => {
   const { open, high, low, close } = candleData;
 
   const diff = close - open;
+  const percentageChange = Math.abs((diff / open) * 100);
 
   const openFormatted = formatAmount(open, formatOptions);
   const highFormatted = formatAmount(high, formatOptions);
   const lowFormatted = formatAmount(low, formatOptions);
   const closeFormatted = formatAmount(close, formatOptions);
   const diffFormatted = formatAmount(Math.abs(diff), formatOptions);
-  const percentageChangeFormatted = `${formatAmount(Math.abs((diff / open) * 100), formatOptions)} %`;
+  const percentageChangeFormatted = `${formatAmount(percentageChange, formatOptions)} %`;
 
   const color = diff > 0 ? "#31D0AA" : "#ED4B9E";
 
