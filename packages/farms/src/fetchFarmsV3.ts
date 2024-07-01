@@ -222,7 +222,7 @@ const fetchPoolInfos = async (
           args: [BigInt(farm.pid)] as const,
         } as const),
     )
-    console.log('here?1232')
+
     const masterChefMultiCallResult = await provider({ chainId }).multicall({
       contracts: calls,
       allowFailure: false,
