@@ -26,7 +26,8 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         minAmount: '',
         taskType,
         orderNumber: 0,
-        currency: (CAKE as any)?.[DEFAULT_CHAIN],
+        network: DEFAULT_CHAIN,
+        tokenAddress: (CAKE as any)?.[DEFAULT_CHAIN]?.address,
       }
     case TaskType.PARTICIPATE_LOTTERY:
       return {
@@ -45,7 +46,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
       return {
         sid: randomId,
         taskType,
-        title: '',
+        title: 'Add liquidity',
         description: '',
         isCompleted: false,
         network: DEFAULT_CHAIN,

@@ -2,17 +2,28 @@ import {
   TaskBlogPostConfig,
   TaskConfigType,
   TaskHoldTokenConfig,
+  TaskLiquidityConfig,
   TaskSocialConfig,
   TaskSwapConfig,
 } from 'views/DashboardQuestEdit/context/types'
 import { TaskType } from 'views/DashboardQuestEdit/type'
-import { validateIsNotEmpty, validateNumber, validateUrl } from 'views/DashboardQuestEdit/utils/validateFormat'
+import {
+  validateIsNotEmpty,
+  validateLpAddress,
+  validateNumber,
+  validateUrl,
+} from 'views/DashboardQuestEdit/utils/validateFormat'
 
 export const verifyTask = (task: TaskConfigType) => {
   switch (task.taskType as TaskType) {
     case TaskType.MAKE_A_SWAP:
     case TaskType.HOLD_A_TOKEN:
       return validateNumber((task as TaskSwapConfig | TaskHoldTokenConfig).minAmount)
+    case TaskType.ADD_LIQUIDITY:
+      return (
+        !validateLpAddress((task as TaskLiquidityConfig).lpAddress) &&
+        !validateNumber((task as TaskSwapConfig | TaskHoldTokenConfig).minAmount)
+      )
     case TaskType.VISIT_BLOG_POST:
       return !validateIsNotEmpty((task as TaskBlogPostConfig).blogUrl)
     case TaskType.X_LINK_POST:

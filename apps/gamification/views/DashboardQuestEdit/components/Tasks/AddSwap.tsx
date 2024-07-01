@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
+import { CAKE, getTokensByChain } from '@pancakeswap/tokens'
 import { Button, ChevronDownIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
 import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
 import { TokenWithChain } from 'components/TokenWithChain'
@@ -42,15 +43,22 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
 
       const forkTasks = Object.assign(tasks)
       const indexToUpdate = forkTasks.findIndex((i: TaskSwapConfig) => i.sid === task.sid)
-      forkTasks[indexToUpdate].currency = currency
+      forkTasks[indexToUpdate].network = currency.chainId
+      forkTasks[indexToUpdate].tokenAddress = currency.isNative ? currency.wrapped.address : currency.address
 
       onTasksChange([...forkTasks])
     },
     [onTasksChange, task.sid, tasks],
   )
 
+  const selectedCurrency = useMemo((): Currency => {
+    const list = getTokensByChain(task.network)
+    const findToken = list.find((i) => i.address.toLowerCase() === task?.tokenAddress?.toLowerCase())
+    return findToken || (CAKE as any)?.[task.network]
+  }, [task.network, task?.tokenAddress])
+
   const [onPresentCurrencyModal] = useModal(
-    <CurrencySearchModal selectedCurrency={task.currency} onCurrencySelect={handleCurrencySelect} />,
+    <CurrencySearchModal selectedCurrency={selectedCurrency} onCurrencySelect={handleCurrencySelect} />,
   )
 
   const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +103,7 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
         <Flex flexDirection="column">
           <Flex>
             <Flex position="relative" paddingRight="45px" onClick={onPresentCurrencyModal}>
-              <TokenWithChain width={32} height={32} currency={task.currency} />
+              <TokenWithChain width={32} height={32} currency={selectedCurrency} />
               <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
             </Flex>
             <StyledInputGroup endIcon={isError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>

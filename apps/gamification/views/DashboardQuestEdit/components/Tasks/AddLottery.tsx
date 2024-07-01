@@ -15,6 +15,8 @@ interface AddLotteryProps {
   task: TaskLotteryConfig
 }
 
+type KeyFillType = 'minAmount' | 'fromRound' | 'toRound'
+
 export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
   const { t } = useTranslation()
   const [isFirst, setIsFirst] = useState(true)
@@ -23,32 +25,12 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
-  const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>, socialKeyType: KeyFillType) => {
     setIsFirst(false)
 
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskLotteryConfig) => i.sid === task.sid)
-    forkTasks[indexToUpdate].minAmount = e.target.value
-
-    onTasksChange([...forkTasks])
-  }
-
-  const handleStartRoundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsFirst(false)
-
-    const forkTasks = Object.assign(tasks)
-    const indexToUpdate = forkTasks.findIndex((i: TaskLotteryConfig) => i.sid === task.sid)
-    forkTasks[indexToUpdate].fromRound = e.target.value
-
-    onTasksChange([...forkTasks])
-  }
-
-  const handleEndRoundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsFirst(false)
-
-    const forkTasks = Object.assign(tasks)
-    const indexToUpdate = forkTasks.findIndex((i: TaskLotteryConfig) => i.sid === task.sid)
-    forkTasks[indexToUpdate].toRound = e.target.value
+    forkTasks[indexToUpdate][socialKeyType] = e.target.value
 
     onTasksChange([...forkTasks])
   }
@@ -92,7 +74,7 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
               value={task.minAmount}
               isError={isMinAmountError}
               placeholder={t('Min. ticket’s amount')}
-              onChange={handleTotalChange}
+              onChange={(e) => handleNumberChange(e, 'minAmount')}
             />
           </StyledInputGroup>
           {isMinAmountError && <InputErrorText errorText={t('Cannot be 0')} />}
@@ -109,7 +91,7 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
                 placeholder={t('From')}
                 value={task.fromRound}
                 isError={isFromRoundError}
-                onChange={handleStartRoundChange}
+                onChange={(e) => handleNumberChange(e, 'fromRound')}
               />
             </StyledInputGroup>
             <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" m="0 8px 0 0">
@@ -122,7 +104,7 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
                 placeholder={t('To')}
                 value={task.toRound}
                 isError={isToRoundError}
-                onChange={handleEndRoundChange}
+                onChange={(e) => handleNumberChange(e, 'toRound')}
               />
             </StyledInputGroup>
           </Flex>

@@ -21,6 +21,7 @@ export enum TaskType {
 export const SUPPORT_ADD_TASK = [
   TaskType.MAKE_A_SWAP,
   TaskType.HOLD_A_TOKEN,
+  TaskType.ADD_LIQUIDITY,
   TaskType.VISIT_BLOG_POST,
   TaskType.X_LINK_POST,
   TaskType.X_FOLLOW_ACCOUNT,

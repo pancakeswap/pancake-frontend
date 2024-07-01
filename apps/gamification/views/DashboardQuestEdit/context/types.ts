@@ -1,5 +1,4 @@
 import { ChainId } from '@pancakeswap/chains'
-import { Currency } from '@pancakeswap/sdk'
 import { Address } from 'viem'
 import { CompletionStatus, RewardType, TaskType } from 'views/DashboardQuestEdit/type'
 
@@ -38,13 +37,15 @@ export interface TaskBaseConfig {
 export interface TaskSwapConfig extends TaskBaseConfig {
   taskType: TaskType.MAKE_A_SWAP
   minAmount: string
-  currency: Currency
+  network: ChainId
+  tokenAddress: Address
 }
 
 export interface TaskHoldTokenConfig extends TaskBaseConfig {
   taskType: TaskType.HOLD_A_TOKEN
   minAmount: string
-  currency: Currency
+  network: ChainId
+  tokenAddress: Address
 }
 
 export interface TaskLotteryConfig extends TaskBaseConfig {
