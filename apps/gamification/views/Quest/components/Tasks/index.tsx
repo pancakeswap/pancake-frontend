@@ -70,6 +70,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
       }
     }
   }
+
   const totalTaskCompleted = useMemo(() => {
     const { verificationStatusBySocialMedia } = taskStatus
 

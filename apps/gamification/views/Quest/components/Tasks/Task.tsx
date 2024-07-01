@@ -10,13 +10,16 @@ import {
   FlexGap,
   OpenNewIcon,
   Text,
+  useModal,
   useToast,
 } from '@pancakeswap/uikit'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useCallback, useState } from 'react'
+import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
 import { TaskBlogPostConfig, TaskConfigType, TaskSocialConfig } from 'views/DashboardQuestEdit/context/types'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
+import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { useAccount } from 'wagmi'
 
@@ -37,15 +40,18 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
   const [actionPanelExpanded, setActionPanelExpanded] = useState(false)
   const { toastError } = useToast()
 
+  const [onPresentConnectSocialAccountModal] = useModal(<ConnectSocialAccountModal socialName="Telegram" />) // Todo change the socialName
+
   const toggleActionPanel = useCallback(() => {
+    onPresentConnectSocialAccountModal()
     if (isQuestFinished) {
       toastError(t('This quest has expired.'))
     } else if (isUserConnectSocial) {
-      console.log('User should connect social redirect to profile page')
+      onPresentConnectSocialAccountModal()
     } else {
       setActionPanelExpanded(!actionPanelExpanded)
     }
-  }, [actionPanelExpanded, isQuestFinished, isUserConnectSocial, t, toastError])
+  }, [actionPanelExpanded, isQuestFinished, isUserConnectSocial, t, toastError, onPresentConnectSocialAccountModal])
 
   const handleAddBlogPost = async () => {
     if (account && questId) {
@@ -100,7 +106,10 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
           onClick={toggleActionPanel}
         >
           <Flex mr="auto">
-            {taskIcon(taskType)}
+            <Flex position="relative">
+              {taskIcon(taskType)}
+              {task.isOptional && <StyledOptionIcon />}
+            </Flex>
             <Text ml="16px" bold>
               {title ?? taskNaming(taskType)}
             </Text>

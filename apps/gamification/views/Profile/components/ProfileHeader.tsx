@@ -22,6 +22,7 @@ import { useDomainNameForAddress } from 'hooks/useDomain'
 import { Profile } from 'hooks/useProfile/type'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { SocialHubType, useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
@@ -62,6 +63,15 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const { data: session } = useSession()
   const { toastSuccess, toastError } = useToast()
   const [isFetchingApi, setIsFetchingApi] = useState(false)
+  const { query } = useRouter()
+
+  useEffect(() => {
+    if (query.openSettingModal && query.openSettingModal === 'true') {
+      const newURL = `${window.location.origin}${window.location.pathname}`
+      window.history.pushState({}, '', newURL)
+      onPressSettingsModal()
+    }
+  }, [])
 
   useEffect(() => {
     const fetch = async (id: string, social: SocialHubType) => {
