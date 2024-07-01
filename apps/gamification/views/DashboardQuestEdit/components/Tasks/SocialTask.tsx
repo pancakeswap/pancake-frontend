@@ -24,7 +24,7 @@ interface SocialTaskProps {
   task: TaskSocialConfig
 }
 
-type SocialKeyType = 'socialLink' | 'title' | 'description'
+type SocialKeyType = 'title' | 'description' | 'accountId' | 'socialLink'
 
 export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
   const { t } = useTranslation()
@@ -63,6 +63,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
   }
 
   const isTitleError = useMemo(() => !isFirst && validateIsNotEmpty(task.title), [isFirst, task.title])
+  const isAccountIdError = useMemo(() => !isFirst && validateIsNotEmpty(task.accountId), [isFirst, task.accountId])
   const isUrlError = useMemo(() => !isFirst && validateUrl(task.socialLink), [isFirst, task?.socialLink])
 
   return (
@@ -105,6 +106,26 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
         />
         <InputGroup
           endIcon={
+            isAccountIdError ? (
+              <ErrorFillIcon color="failure" width={16} height={16} />
+            ) : (
+              <Box ref={targetRef} onClick={onclickOpenNewIcon}>
+                <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
+                {tooltipVisible && tooltip}
+              </Box>
+            )
+          }
+        >
+          <StyledInput
+            value={task.accountId}
+            isError={isAccountIdError}
+            style={{ borderRadius: '24px' }}
+            placeholder={t('Account Id')}
+            onChange={(e) => handleUrlChange(e, 'accountId')}
+          />
+        </InputGroup>
+        <InputGroup
+          endIcon={
             isUrlError ? (
               <ErrorFillIcon color="failure" width={16} height={16} />
             ) : (
@@ -125,6 +146,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
         </InputGroup>
       </FlexGap>
       {isTitleError && <InputErrorText errorText={t('Title is empty')} />}
+      {isAccountIdError && <InputErrorText errorText={t('Account id is empty')} />}
       {isUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
     </Flex>
   )

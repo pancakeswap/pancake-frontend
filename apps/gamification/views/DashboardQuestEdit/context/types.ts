@@ -73,6 +73,7 @@ export interface TaskSocialConfig extends TaskBaseConfig {
     | TaskType.IG_LIKE_POST
     | TaskType.IG_COMMENT_POST
     | TaskType.IG_FOLLOW_ACCOUNT
+  accountId: string
   socialLink: string
 }
 

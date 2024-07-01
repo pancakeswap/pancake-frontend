@@ -35,7 +35,11 @@ export const verifyTask = (task: TaskConfigType) => {
     case TaskType.IG_LIKE_POST:
     case TaskType.IG_COMMENT_POST:
     case TaskType.IG_FOLLOW_ACCOUNT:
-      return !validateIsNotEmpty(task.title) && !validateUrl((task as TaskSocialConfig).socialLink)
+      return (
+        !validateIsNotEmpty(task.title) &&
+        !validateIsNotEmpty((task as TaskSocialConfig).accountId) &&
+        !validateUrl((task as TaskSocialConfig).socialLink)
+      )
     default:
       return true
   }
