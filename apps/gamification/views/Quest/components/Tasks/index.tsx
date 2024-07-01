@@ -70,6 +70,11 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
       }
     }
   }
+  const totalTaskCompleted = useMemo(() => {
+    const { verificationStatusBySocialMedia } = taskStatus
+
+    return quest.tasks.reduce((acc, { taskType }) => acc + (verificationStatusBySocialMedia?.[taskType] ? 1 : 0), 0)
+  }, [quest.tasks, taskStatus])
 
   return (
     <Box mb="32px">
@@ -81,15 +86,18 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
           <Box style={{ alignSelf: 'center' }}>
             {account ? (
               <>
-                <Tag variant="secondary" outline>
-                  {t('%completed%/%totalTask% completed', {
-                    completed: 0,
-                    totalTask: tasks?.length,
-                  })}
-                </Tag>
-                {/* <Tag variant="success" outline>
-                {t('Completed')}
-              </Tag> */}
+                {totalTaskCompleted === tasks?.length ? (
+                  <Tag variant="success" outline>
+                    {t('Completed')}
+                  </Tag>
+                ) : (
+                  <Tag variant="secondary" outline>
+                    {t('%completed%/%totalTask% completed', {
+                      completed: totalTaskCompleted,
+                      totalTask: tasks?.length,
+                    })}
+                  </Tag>
+                )}
               </>
             ) : (
               <Tag variant="textDisabled" outline>
