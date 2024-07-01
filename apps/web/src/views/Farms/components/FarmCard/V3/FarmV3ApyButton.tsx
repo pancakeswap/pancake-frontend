@@ -47,6 +47,25 @@ const ApyLabelContainer = styled(Flex)`
   }
 `
 
+const StyledLi = styled.li`
+  flex-wrap: nowrap;
+  display: flex;
+  gap: 5px;
+  position: relative;
+  padding-left: 22px;
+  &::before {
+    content: '';
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    border-radius: 50%;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    background: ${({ theme }) => theme.colors.text};
+  }
+`
+
 type FarmV3ApyButtonProps = {
   farm: V3Farm
   existingPosition?: Position
@@ -243,12 +262,14 @@ function FarmV3ApyButton_({
           {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>
         </li>
         {additionAprInfo && (
-          <li style={{ whiteSpace: 'nowrap', display: 'flex', flexWrap: 'nowrap', alignItems: 'center', gap: 5 }}>
-            {additionAprInfo.aprTitle}: <b>{additionalAprDisplay}%</b>
-            <LinkExternal display="inline-block" href={additionAprInfo.aprLink}>
-              {t('Check')}
-            </LinkExternal>
-          </li>
+          <StyledLi>
+            <Flex style={{ flexWrap: 'nowrap', alignItems: 'center', gap: 5 }}>
+              {additionAprInfo.aprTitle}: <b>{additionalAprDisplay}%</b>
+              <LinkExternal display="inline-block" href={additionAprInfo.aprLink}>
+                {t('Check')}
+              </LinkExternal>
+            </Flex>
+          </StyledLi>
         )}
       </ul>
       <br />
@@ -286,12 +307,12 @@ function FarmV3ApyButton_({
           {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>
         </li>
         {additionAprInfo && (
-          <li style={{ whiteSpace: 'nowrap', display: 'flex', flexWrap: 'nowrap', alignItems: 'center', gap: 5 }}>
+          <StyledLi style={{ whiteSpace: 'nowrap', display: 'flex', flexWrap: 'nowrap', alignItems: 'center', gap: 5 }}>
             {additionAprInfo.aprTitle}: <b>{additionalAprDisplay}%</b>
             <LinkExternal display="inline-block" href={additionAprInfo.aprLink}>
               {t('Check')}
             </LinkExternal>
-          </li>
+          </StyledLi>
         )}
       </ul>
     </>,
