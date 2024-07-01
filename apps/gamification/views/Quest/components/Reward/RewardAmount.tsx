@@ -31,10 +31,12 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({ reward }) => {
       <Flex width="fit-content" margin="auto">
         {reward && (
           <>
-            <TokenWithChain currency={currency} width={64} height={64} />
+            <Box margin="auto" width="64px">
+              <TokenWithChain currency={currency} width={64} height={64} />
+            </Box>
             <Box ml={['16px']}>
               <Text fontSize={['40px']} bold as="span">
-                {reward.totalRewardAmount.toFixed(0)}
+                {reward?.totalRewardAmount?.toFixed?.(0)}
               </Text>
               <Text textTransform="uppercase" fontSize={['24px']} bold as="span" ml="4px">
                 {currency.symbol}

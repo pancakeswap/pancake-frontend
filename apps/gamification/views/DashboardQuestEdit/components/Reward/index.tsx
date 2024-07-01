@@ -21,12 +21,13 @@ const RewardContainer = styled(Box)`
 `
 
 interface RewardProps {
+  isFinished: boolean
   reward: undefined | QuestRewardType
   actionComponent?: JSX.Element
   updateValue: (key: string, value: string | QuestRewardType) => void
 }
 
-export const Reward: React.FC<RewardProps> = ({ reward, actionComponent, updateValue }) => {
+export const Reward: React.FC<RewardProps> = ({ reward, isFinished, actionComponent, updateValue }) => {
   const { t } = useTranslation()
 
   const handlePickedRewardToken = (currency: Currency, totalRewardAmount: number, amountOfWinners: number) => {
@@ -82,6 +83,7 @@ export const Reward: React.FC<RewardProps> = ({ reward, actionComponent, updateV
           {reward?.currency?.address ? (
             <RewardAmount
               reward={reward}
+              isFinished={isFinished}
               amountOfWinners={reward?.amountOfWinners}
               handleInput={handleInput}
               handlePickedRewardToken={handlePickedRewardToken}

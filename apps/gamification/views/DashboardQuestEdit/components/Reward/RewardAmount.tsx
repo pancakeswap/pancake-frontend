@@ -19,6 +19,7 @@ const RewardContainer = styled(Flex)`
 
 interface RewardAmountProps {
   reward: undefined | QuestRewardType
+  isFinished: boolean
   amountOfWinners: number
   handleInput: (amount: number) => void
   handlePickedRewardToken: (value: Currency, totalRewardAmount: number, amountOfWinnersInModal: number) => void
@@ -26,6 +27,7 @@ interface RewardAmountProps {
 
 export const RewardAmount: React.FC<RewardAmountProps> = ({
   reward,
+  isFinished,
   amountOfWinners,
   handleInput,
   handlePickedRewardToken,
@@ -58,7 +60,7 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({
     <Box>
       <RewardContainer>
         <Box style={{ cursor: 'pointer' }} onClick={onPresentAddRewardModal}>
-          <Box margin="auto">
+          <Box margin="auto" width="64px">
             <TokenWithChain currency={token} width={64} height={64} />
           </Box>
           <Box m="8px 0 10px 0">
@@ -70,14 +72,16 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({
             </Text>
           </Box>
         </Box>
-        <Button
-          onClick={onPresentWithdrawRewardModal}
-          mb="5px"
-          variant="text"
-          endIcon={<ArrowUpIcon color="primary" />}
-        >
-          {t('WIthdraw the reward')}
-        </Button>
+        {isFinished && (
+          <Button
+            onClick={onPresentWithdrawRewardModal}
+            mb="5px"
+            variant="text"
+            endIcon={<ArrowUpIcon color="primary" />}
+          >
+            {t('Withdraw the reward')}
+          </Button>
+        )}
         <Flex>
           <Text style={{ alignSelf: 'center' }} fontSize="14px" color="textSubtle" mr="8px">
             {t('Amount of winners')}
