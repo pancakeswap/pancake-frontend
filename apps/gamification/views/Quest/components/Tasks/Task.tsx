@@ -14,11 +14,12 @@ import {
   useToast,
 } from '@pancakeswap/uikit'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
 import { TaskBlogPostConfig, TaskConfigType, TaskSocialConfig } from 'views/DashboardQuestEdit/context/types'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
+import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { useAccount } from 'wagmi'
@@ -32,26 +33,59 @@ interface TaskProps {
 
 export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFinished }) => {
   const { t } = useTranslation()
+  const { toastError } = useToast()
   const { address: account } = useAccount()
-  const isVerified = taskStatus?.verificationStatusBySocialMedia?.[task.taskType]
-  const isUserConnectSocial = false
   const { taskType, title, description } = task
+  const isVerified = taskStatus?.verificationStatusBySocialMedia?.[taskType]
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
   const [actionPanelExpanded, setActionPanelExpanded] = useState(false)
-  const { toastError } = useToast()
+  const { userInfo } = useUserSocialHub()
+  const [socialName, setSocialName] = useState('')
 
-  const [onPresentConnectSocialAccountModal] = useModal(<ConnectSocialAccountModal socialName="Telegram" />) // Todo change the socialName
+  const [onPresentConnectSocialAccountModal] = useModal(<ConnectSocialAccountModal socialName={socialName} />)
+
+  const isUserConnectSocialConnected = useMemo(() => {
+    switch (taskType as TaskType) {
+      case TaskType.YOUTUBE_SUBSCRIBE:
+        setSocialName('Youtube')
+        return Boolean(userInfo.socialHubToSocialUserIdMap?.Youtube)
+      case TaskType.TELEGRAM_JOIN_GROUP:
+        setSocialName('Telegram')
+        return Boolean(userInfo.socialHubToSocialUserIdMap?.Telegram)
+      case TaskType.DISCORD_JOIN_SERVER:
+        setSocialName('Discord')
+        return Boolean(userInfo.socialHubToSocialUserIdMap?.Discord)
+      case TaskType.IG_COMMENT_POST:
+      case TaskType.IG_LIKE_POST:
+      case TaskType.IG_FOLLOW_ACCOUNT:
+        setSocialName('Instagram')
+        return Boolean(userInfo.socialHubToSocialUserIdMap?.Instagram)
+      case TaskType.X_FOLLOW_ACCOUNT:
+      case TaskType.X_LINK_POST:
+      case TaskType.X_REPOST_POST:
+        setSocialName('X')
+        return Boolean(userInfo.socialHubToSocialUserIdMap?.Twitter)
+      default:
+        return true
+    }
+  }, [taskType, userInfo.socialHubToSocialUserIdMap])
 
   const toggleActionPanel = useCallback(() => {
-    onPresentConnectSocialAccountModal()
     if (isQuestFinished) {
       toastError(t('This quest has expired.'))
-    } else if (isUserConnectSocial) {
+    } else if (!isUserConnectSocialConnected) {
       onPresentConnectSocialAccountModal()
     } else {
       setActionPanelExpanded(!actionPanelExpanded)
     }
-  }, [actionPanelExpanded, isQuestFinished, isUserConnectSocial, t, toastError, onPresentConnectSocialAccountModal])
+  }, [
+    isQuestFinished,
+    actionPanelExpanded,
+    isUserConnectSocialConnected,
+    t,
+    toastError,
+    onPresentConnectSocialAccountModal,
+  ])
 
   const handleAddBlogPost = async () => {
     if (account && questId) {
