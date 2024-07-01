@@ -4,7 +4,7 @@ import { AllArticleType } from 'views/LandingV4/config/types'
 import { staticThirdPartyNews } from '../config/blog/staticThirdPartyNews'
 
 const LIMIT = 50
-const FEATURED_IDS = [2505, 2506]
+const FEATURED_IDS = [2505, 2506, 2509]
 const FEATURED_STATIC_NEWS_ID = -2
 
 export const useV4Featured = (): AllArticleType => {
