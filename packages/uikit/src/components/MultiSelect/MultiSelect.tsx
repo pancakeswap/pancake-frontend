@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MultiSelect as PrimereactSelect, MultiSelectChangeEvent } from "primereact/multiselect";
 import { styled } from "styled-components";
+import { useTheme } from "@pancakeswap/hooks";
 import { ArrowDropDownIcon } from "../Svg";
 import { Box, Flex } from "../Box";
 import { Checkbox } from "../Checkbox";
@@ -13,6 +14,7 @@ const CHECKBOX_WIDTH = "26px";
 const SelectContainer = styled.div`
   color: ${({ theme }) => theme.colors.text};
   font-weight: 400;
+
   .p-multiselect {
     position: relative;
     height: 0px;
@@ -133,6 +135,13 @@ const SelectInputContainer = styled(Flex)`
   cursor: pointer;
 `;
 
+const SelectedItemsContainer = styled.div`
+  flex: 1;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+  overflow: hidden;
+`;
+
 export const MultiSelect = (props: IMultiSelectProps) => {
   const {
     style,
@@ -156,6 +165,7 @@ export const MultiSelect = (props: IMultiSelectProps) => {
   const primereactSelectRef = useRef<PrimereactSelect>(null);
   const searchInputRef = useRef<IAdaptiveInputForwardProps>(null);
 
+  const theme = useTheme();
   const list = useMemo(
     () => options?.filter((op) => op.value.toLowerCase().includes(searchText)),
     [options, searchText]
@@ -246,8 +256,13 @@ export const MultiSelect = (props: IMultiSelectProps) => {
   }, [selectedItems, options]);
 
   return (
-    <SelectContainer style={style}>
+    <SelectContainer
+      style={{
+        width: style?.width ?? "auto",
+      }}
+    >
       <SelectInputContainer
+        style={style}
         onClick={(e: React.MouseEvent) => {
           if (!isShow) {
             e.preventDefault();
@@ -256,14 +271,14 @@ export const MultiSelect = (props: IMultiSelectProps) => {
           }
         }}
       >
-        <Column>
+        <SelectedItemsContainer>
           {selectedItems?.map((item, idx) => (
-            <>
-              <span key={item}>{options?.find((op) => op.value === item)?.label}</span>
+            <React.Fragment key={item}>
+              <span>{options?.find((op) => op.value === item)?.label}</span>
               {idx < selectedItems.length - 1 && <span>, </span>}
-            </>
+            </React.Fragment>
           ))}
-        </Column>
+        </SelectedItemsContainer>
         <Column>
           <ArrowDropDownIcon
             color="text"
@@ -284,6 +299,7 @@ export const MultiSelect = (props: IMultiSelectProps) => {
         panelStyle={{
           ...(panelStyle ?? {}),
           width: panelStyle?.width ?? style?.width ?? "auto",
+          backgroundColor: panelStyle?.backgroundColor ?? theme.theme.colors.background,
         }}
         appendTo={props.appendTo ?? "self"}
         value={value ?? selectedItems}

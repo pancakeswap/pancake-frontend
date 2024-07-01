@@ -4,12 +4,11 @@ export interface INetworkProps {
   data?: IOptionType;
 }
 
-export const NetworkSelect: React.FC<INetworkProps> = ({ data = [] }: INetworkProps) => {
+export const NetworkFilter: React.FC<INetworkProps> = ({ data = [] }: INetworkProps) => {
   return (
     <MultiSelect
       style={{
         width: "273px",
-        margin: "20px",
         backgroundColor: "var(--colors-input)",
       }}
       panelStyle={{
@@ -17,6 +16,7 @@ export const NetworkSelect: React.FC<INetworkProps> = ({ data = [] }: INetworkPr
       }}
       scrollHeight="400px"
       options={data}
+      isSelectAll
       selectAllLabel="All networks"
     />
   );

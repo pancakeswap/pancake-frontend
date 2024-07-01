@@ -26,6 +26,20 @@ it("renders correctly", () => {
       box-shadow: var(--shadows-inset);
     }
 
+    .c0:before {
+      content: "";
+      position: absolute;
+      border-top: 2px solid;
+      border-color: transparent;
+      top: 50%;
+      left: 50%;
+      width: 33%;
+      height: 0;
+      margin: auto;
+      transform: translate(-50%, -50%);
+      transition: border-color 0.2s ease-in-out;
+    }
+
     .c0:after {
       content: "";
       position: absolute;

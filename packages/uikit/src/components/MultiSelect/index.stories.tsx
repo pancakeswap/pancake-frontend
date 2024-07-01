@@ -1,5 +1,8 @@
 import React from "react";
+import { styled } from "styled-components";
 import { MultiSelect } from "./index";
+import { Column } from "../Column";
+import { Flex } from "../Box";
 
 export default {
   title: "Components/MultiSelect",
@@ -18,18 +21,44 @@ const chains = [
   { label: "Aptos", value: "Aptos", icon: "https://aptos.pancakeswap.finance/images/apt.png" },
 ];
 
+const Title = styled.div`
+  margin-bottom: 20px;
+`;
+
 export const Default: React.FC<React.PropsWithChildren> = () => {
   return (
-    <MultiSelect
+    <Flex
       style={{
-        width: "273px",
-        margin: "20px",
+        padding: "32px",
+        alignItems: "center",
+        gap: "50px",
       }}
-      scrollHeight="400px"
-      options={chains}
-      defaultValue={[chains[0].value, chains[2].value]}
-      checkAllLabel="All networks"
-      isFilter
-    />
+    >
+      <Column>
+        <Title>MultiSelect with filter:</Title>
+        <MultiSelect
+          style={{
+            width: "273px",
+          }}
+          scrollHeight="400px"
+          options={chains}
+          defaultValue={[chains[0].value, chains[2].value]}
+          isFilter
+        />
+      </Column>
+      <Column>
+        <Title>MultiSelect with selectAll:</Title>
+        <MultiSelect
+          style={{
+            width: "273px",
+          }}
+          scrollHeight="400px"
+          options={chains}
+          defaultValue={[chains[0].value, chains[2].value]}
+          isSelectAll
+          checkAllLabel="All networks"
+        />
+      </Column>
+    </Flex>
   );
 };
