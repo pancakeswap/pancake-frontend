@@ -23,6 +23,7 @@ import { useCakePrice } from 'hooks/useCakePrice'
 import { useContext, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { Bound } from 'config/constants/types'
 import { usePoolAvgInfo } from 'hooks/usePoolAvgInfo'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
@@ -32,9 +33,8 @@ import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { Field } from 'state/mint/actions'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
-import { V3Farm } from 'views/Farms/FarmsV3'
 import { FarmsV3Context } from 'views/Farms'
-import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
+import { V3Farm } from 'views/Farms/FarmsV3'
 import { USER_ESTIMATED_MULTIPLIER, useUserPositionInfo } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { BoostStatus, useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { getDisplayApr } from '../../getDisplayApr'
@@ -51,6 +51,11 @@ type FarmV3ApyButtonProps = {
   existingPosition?: Position
   isPositionStaked?: boolean
   tokenId?: string
+  additionAprInfo?: {
+    aprValue: number
+    aprTitle: string
+    aprLink: string
+  }
 }
 
 export function FarmV3ApyButton(props: FarmV3ApyButtonProps) {
@@ -61,7 +66,13 @@ export function FarmV3ApyButton(props: FarmV3ApyButtonProps) {
   )
 }
 
-function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }: FarmV3ApyButtonProps) {
+function FarmV3ApyButton_({
+  farm,
+  existingPosition,
+  isPositionStaked,
+  tokenId,
+  additionAprInfo,
+}: FarmV3ApyButtonProps) {
   const { farmsAvgInfo } = useContext(FarmsV3Context)
   const { token: baseCurrency, quoteToken: quoteCurrency, feeAmount, lpAddress } = farm
   const { t } = useTranslation()
@@ -182,24 +193,32 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
   const lpApr = existingPosition ? +apr.toFixed(2) : globalLpApr
   const cakeApr = +(farm.cakeApr ?? 0)
 
-  const displayApr = getDisplayApr(cakeApr, lpApr)
+  const displayApr = getDisplayApr(cakeApr, lpApr, additionAprInfo?.aprValue)
   const cakeAprDisplay = cakeApr.toFixed(2)
   const positionCakeAprDisplay = positionCakeApr.toFixed(2)
   const lpAprDisplay = lpApr.toFixed(2)
+  const additionalAprDisplay = (additionAprInfo?.aprValue ?? 0).toFixed(2)
   const { isDesktop } = useMatchBreakpoints()
   const {
     data: { boostMultiplier },
   } = useUserPositionInfo(tokenId ?? '-1')
 
   const estimatedAPR = useMemo(() => {
-    return (parseFloat(cakeAprDisplay) * USER_ESTIMATED_MULTIPLIER + parseFloat(lpAprDisplay)).toLocaleString('en-US', {
+    return (
+      parseFloat(cakeAprDisplay) * USER_ESTIMATED_MULTIPLIER +
+      parseFloat(lpAprDisplay) +
+      (additionAprInfo?.aprValue ?? 0)
+    ).toLocaleString('en-US', {
       maximumFractionDigits: 2,
     })
-  }, [cakeAprDisplay, lpAprDisplay])
+  }, [cakeAprDisplay, lpAprDisplay, additionAprInfo])
   const canBoosted = useMemo(() => boostedStatus !== BoostStatus.CanNotBoost, [boostedStatus])
   const isBoosted = useMemo(() => boostedStatus === BoostStatus.Boosted, [boostedStatus])
   const positionDisplayApr = getDisplayApr(+positionCakeApr, lpApr)
   const positionBoostedDisplayApr = getDisplayApr(boostMultiplier * positionCakeApr, lpApr)
+  const cakeAprAndAdditionalDisplay = (cakeApr + (additionAprInfo?.aprValue ?? 0)).toFixed(2)
+
+  console.log({ cakeApr, displayApr, cakeAprAndAdditionalDisplay, additionAprInfo })
 
   const aprTooltip = useTooltip(
     <>
@@ -222,6 +241,11 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
         <li>
           {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>
         </li>
+        {additionAprInfo && (
+          <li>
+            {additionAprInfo.aprTitle}: <b>{additionalAprDisplay}%</b>
+          </li>
+        )}
       </ul>
       <br />
       <Text>
@@ -257,6 +281,11 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
         <li>
           {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>
         </li>
+        {additionAprInfo && (
+          <li>
+            {additionAprInfo.aprTitle}: <b>{additionalAprDisplay}%</b>
+          </li>
+        )}
       </ul>
     </>,
   )

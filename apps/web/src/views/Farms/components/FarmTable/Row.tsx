@@ -148,6 +148,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   const merklUserLink = useMerklUserLink()
 
   const { merklApr } = useMerklInfo(farm?.merklLink ? props.details.lpAddress : null)
+
   return (
     <>
       {!isMobile ? (
@@ -202,7 +203,14 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     <td key={key}>
                       <CellInner>
                         <CellLayout label={t('APR')}>
-                          <FarmV3ApyButton farm={props.details} />
+                          <FarmV3ApyButton
+                            farm={props.details}
+                            additionAprInfo={
+                              merklApr && farm.merklLink
+                                ? { aprTitle: t('Merkl APR'), aprValue: merklApr, aprLink: farm.merklLink }
+                                : undefined
+                            }
+                          />
                         </CellLayout>
                       </CellInner>
                     </td>
@@ -348,7 +356,14 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               <AprMobileCell>
                 <CellLayout label={t('APR')}>
                   {props.type === 'v3' ? (
-                    <FarmV3ApyButton farm={props.details} />
+                    <FarmV3ApyButton
+                      farm={props.details}
+                      additionAprInfo={
+                        merklApr && farm.merklLink
+                          ? { aprTitle: t('Merkl APR'), aprValue: merklApr, aprLink: farm.merklLink }
+                          : undefined
+                      }
+                    />
                   ) : (
                     <>
                       <Apr

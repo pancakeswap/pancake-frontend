@@ -128,7 +128,14 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
             <TooltipText ref={aprTooltip.targetRef}>{t('APR')}:</TooltipText>
             {aprTooltip.tooltipVisible && aprTooltip.tooltip}
             <Text style={{ display: 'flex', alignItems: 'center' }}>
-              <FarmV3ApyButton farm={farm} />
+              <FarmV3ApyButton
+                farm={farm}
+                additionAprInfo={
+                  merklApr && merklLink
+                    ? { aprTitle: t('Merkl APR'), aprValue: merklApr, aprLink: merklLink }
+                    : undefined
+                }
+              />
             </Text>
           </Flex>
         )}
