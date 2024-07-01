@@ -5,6 +5,7 @@ import {
   CalculateIcon,
   Flex,
   IconButton,
+  LinkExternal,
   PairDataTimeWindowEnum,
   RocketIcon,
   Skeleton,
@@ -242,8 +243,11 @@ function FarmV3ApyButton_({
           {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>
         </li>
         {additionAprInfo && (
-          <li>
+          <li style={{ whiteSpace: 'nowrap', display: 'flex', flexWrap: 'nowrap', alignItems: 'center', gap: 5 }}>
             {additionAprInfo.aprTitle}: <b>{additionalAprDisplay}%</b>
+            <LinkExternal display="inline-block" href={additionAprInfo.aprLink}>
+              {t('Check')}
+            </LinkExternal>
           </li>
         )}
       </ul>
@@ -282,8 +286,11 @@ function FarmV3ApyButton_({
           {t('LP Fee APR')}: <b>{lpAprDisplay}%</b>
         </li>
         {additionAprInfo && (
-          <li>
+          <li style={{ whiteSpace: 'nowrap', display: 'flex', flexWrap: 'nowrap', alignItems: 'center', gap: 5 }}>
             {additionAprInfo.aprTitle}: <b>{additionalAprDisplay}%</b>
+            <LinkExternal display="inline-block" href={additionAprInfo.aprLink}>
+              {t('Check')}
+            </LinkExternal>
           </li>
         )}
       </ul>
