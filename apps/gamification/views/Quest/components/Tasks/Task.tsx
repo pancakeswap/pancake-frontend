@@ -122,11 +122,11 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
         {actionPanelExpanded && (
           <Box padding="0 16px 16px 16px">
             {description && (
-              <Text bold m="8px 0 16px 0">
+              <Text bold mt="8px">
                 {description}
               </Text>
             )}
-            <FlexGap gap="8px">
+            <FlexGap gap="8px" mt="16px">
               {!isVerified ? (
                 <Button
                   width="100%"
