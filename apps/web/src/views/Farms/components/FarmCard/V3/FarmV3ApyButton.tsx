@@ -391,6 +391,7 @@ function FarmV3ApyButton_({
           prices={prices}
           priceSpan={priceTimeWindow}
           onPriceSpanChange={setPriceTimeWindow}
+          additionalApr={additionAprInfo?.aprValue}
         />
       )}
     </>

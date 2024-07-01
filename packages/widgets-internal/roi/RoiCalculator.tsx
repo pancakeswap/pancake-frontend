@@ -77,6 +77,7 @@ export type RoiCalculatorProps = {
   volume24H?: number;
   max?: string;
   maxLabel?: string;
+  additionalApr?: number;
 } & (RoiCalculatorFarmProps | RoiCalculatorLPProps);
 
 type RoiCalculatorLPProps = {
@@ -114,6 +115,7 @@ export function RoiCalculator({
   onPriceSpanChange,
   allowApply = false,
   onApply,
+  additionalApr,
   ...props
 }: RoiCalculatorProps) {
   const { isMobile } = useMatchBreakpoints();
@@ -298,8 +300,8 @@ export function RoiCalculator({
     compoundEvery: compoundingIndexToFrequency[compoundIndex],
     stakeFor: spanIndexToSpan[spanIndex],
     compoundOn,
-    cakeApr: farmingRewardsEnabled && derivedCakeApr ? derivedCakeApr.toNumber() : undefined,
-    editCakeApr: farmingRewardsEnabled && editedCakeApr ? editedCakeApr.toNumber() : undefined,
+    cakeApr: farmingRewardsEnabled && derivedCakeApr ? derivedCakeApr.plus(additionalApr ?? 0).toNumber() : undefined,
+    editCakeApr: farmingRewardsEnabled && editedCakeApr ? editedCakeApr.plus(additionalApr ?? 0).toNumber() : undefined,
   });
 
   const handleApply = useCallback(
