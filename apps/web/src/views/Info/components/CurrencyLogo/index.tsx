@@ -12,9 +12,6 @@ const StyledLogo = styled(TokenLogo)<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
   border-radius: ${({ size }) => size};
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
-  background-color: #faf9fa;
-  color: ${({ theme }) => theme.colors.text};
 `
 
 const chainNameToPath = (chainName: MultiChainName) => {
@@ -41,9 +38,7 @@ export const CurrencyLogo: React.FC<
     ? `https://tokens.pancakeswap.finance/images/${imagePath}${checkedsummedAddress}.png`
     : ''
 
-  return (
-    <StyledLogo size={size} srcs={src ? [srcFromPCS, src] : [srcFromPCS]} alt="token logo" useFilledIcon {...rest} />
-  )
+  return <StyledLogo size={size} srcs={src ? [srcFromPCS, src] : [srcFromPCS]} alt="token logo" {...rest} />
 }
 
 const DoubleCurrencyWrapper = styled.div`
