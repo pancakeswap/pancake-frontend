@@ -8,21 +8,32 @@ import {
   ChevronUpIcon,
   Flex,
   FlexGap,
+  Loading,
   OpenNewIcon,
   Text,
   useModal,
   useToast,
 } from '@pancakeswap/uikit'
-import { useCallback, useMemo, useState } from 'react'
+import Cookie from 'js-cookie'
+import { useSession } from 'next-auth/react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { styled } from 'styled-components'
 import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
 import { TaskBlogPostConfig, TaskConfigType, TaskSocialConfig } from 'views/DashboardQuestEdit/context/types'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
+import { useConnectTwitter } from 'views/Profile/hooks/settingsModal/useConnectTwitter'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+import { getTwitterIdCookie } from 'views/Profile/utils/getTwitterIdCookie'
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { fetchBlogMarkTaskStatus } from 'views/Quest/utils/fetchBlogMarkTaskStatus'
+import { fetchVerifyTwitterFollow } from 'views/Quest/utils/fetchVerifyTwitterFollow'
 import { useAccount } from 'wagmi'
+
+const VerifyButton = styled(Button)`
+  background-color: ${({ theme }) => theme.colors.secondary};
+`
 
 interface TaskProps {
   questId: string
@@ -36,13 +47,71 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
   const { t } = useTranslation()
   const { toastError } = useToast()
   const { address: account } = useAccount()
+  const { data: session } = useSession()
   const { taskType, title, description } = task
   const isVerified = taskStatus?.verificationStatusBySocialMedia?.[taskType]
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
-  const [actionPanelExpanded, setActionPanelExpanded] = useState(false)
-  const { userInfo } = useUserSocialHub()
+  const { userInfo, isFetched: isSocialHubFetched } = useUserSocialHub()
+  const { connect: connectTwitter } = useConnectTwitter({ userInfo })
+
   const [socialName, setSocialName] = useState('')
   const [isPending, setIsPending] = useState(false)
+  const [actionPanelExpanded, setActionPanelExpanded] = useState(true)
+
+  const handleVerifyTwitterAccount = useCallback(async () => {
+    if (isPending) {
+      return
+    }
+
+    setIsPending(true)
+    const twitterId = userInfo?.socialHubToSocialUserIdMap?.Twitter
+
+    if (twitterId) {
+      const cookieId = getTwitterIdCookie(twitterId)
+      const getTokenData = Cookie.get(cookieId)
+      const tokenData = getTokenData ? JSON.parse(getTokenData) : null
+      const token = tokenData?.token ?? (session as any)?.user?.twitter?.token
+      const tokenSecret = tokenData?.tokenSecret ?? (session as any)?.user?.twitter?.tokenSecret
+
+      if (token && tokenSecret) {
+        if ((session as any)?.user?.twitter) {
+          Cookie.set(cookieId, JSON.stringify({ token, tokenSecret }))
+        }
+
+        setActionPanelExpanded(false)
+        await fetchVerifyTwitterFollow({
+          userId: twitterId,
+          token,
+          tokenSecret,
+          targetUserId: (task as TaskSocialConfig).accountId,
+          callback: () => {
+            refresh()
+          },
+        })
+
+        setIsPending(false)
+      } else {
+        connectTwitter()
+      }
+    }
+  }, [connectTwitter, isPending, refresh, session, task, userInfo?.socialHubToSocialUserIdMap?.Twitter])
+
+  useEffect(() => {
+    const fetchApi = async () => {
+      await handleVerifyTwitterAccount()
+    }
+
+    if (
+      session &&
+      isSocialHubFetched &&
+      taskType === TaskType.X_FOLLOW_ACCOUNT &&
+      new Date(session?.expires).getTime() > new Date().getTime()
+    ) {
+      if ((session as any)?.user?.twitter?.token && (session as any)?.user?.twitter?.tokenSecret) {
+        fetchApi()
+      }
+    }
+  }, [handleVerifyTwitterAccount, isSocialHubFetched, session, taskType])
 
   const [onPresentConnectSocialAccountModal] = useModal(<ConnectSocialAccountModal socialName={socialName} />)
 
@@ -141,10 +210,16 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
               <CheckmarkCircleFillIcon color="success" />
             ) : (
               <>
-                {actionPanelExpanded ? (
-                  <ChevronUpIcon color="primary" width={20} height={20} />
+                {taskType === TaskType.X_FOLLOW_ACCOUNT && isPending ? (
+                  <Loading margin="auto" width={16} height={16} color="secondary" />
                 ) : (
-                  <ChevronDownIcon color="primary" width={20} height={20} />
+                  <>
+                    {actionPanelExpanded ? (
+                      <ChevronUpIcon color="primary" width={20} height={20} />
+                    ) : (
+                      <ChevronDownIcon color="primary" width={20} height={20} />
+                    )}
+                  </>
                 )}
               </>
             )}
@@ -159,14 +234,26 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
             )}
             <FlexGap gap="8px" mt="16px">
               {!isVerified ? (
-                <Button
-                  width="100%"
-                  scale="sm"
-                  endIcon={<OpenNewIcon color="invertedContrast" />}
-                  onClick={handleAction}
-                >
-                  {t('Proceed to connect')}
-                </Button>
+                <FlexGap gap="8px" width="100%">
+                  <Button
+                    width="100%"
+                    scale="sm"
+                    endIcon={<OpenNewIcon color="invertedContrast" />}
+                    onClick={handleAction}
+                  >
+                    {t('Proceed to connect')}
+                  </Button>
+                  {taskType === TaskType.X_FOLLOW_ACCOUNT && (
+                    <VerifyButton
+                      scale="sm"
+                      width="100%"
+                      endIcon={isPending && <Loading width={16} height={16} />}
+                      onClick={handleVerifyTwitterAccount}
+                    >
+                      {t('Verify')}
+                    </VerifyButton>
+                  )}
+                </FlexGap>
               ) : (
                 <Button
                   variant="success"

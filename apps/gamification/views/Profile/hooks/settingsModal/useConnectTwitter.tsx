@@ -7,7 +7,7 @@ import { useAccount } from 'wagmi'
 
 interface UseConnectTwitterProps {
   userInfo: UserInfo
-  refresh: () => void
+  refresh?: () => void
 }
 
 export const useConnectTwitter = ({ userInfo, refresh }: UseConnectTwitterProps) => {
