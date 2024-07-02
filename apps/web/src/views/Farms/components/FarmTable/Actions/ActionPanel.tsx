@@ -17,6 +17,7 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useMerklInfo } from 'hooks/useMerkl'
 import useTheme from 'hooks/useTheme'
 import { useRouter } from 'next/router'
 import { FC, useContext, useMemo } from 'react'
@@ -252,6 +253,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   )
 
   const addLiquidityModal = useModalV2()
+  const { merklApr } = useMerklInfo(merklLink ? details.lpAddress : null)
 
   return (
     <>
@@ -270,7 +272,14 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
               <>
                 <ValueWrapper>
                   <Text>{t('APR')}</Text>
-                  <FarmV3ApyButton farm={farm} />
+                  <FarmV3ApyButton
+                    farm={farm}
+                    additionAprInfo={
+                      merklApr && merklLink
+                        ? { aprTitle: t('Merkl APR'), aprValue: merklApr, aprLink: merklLink }
+                        : undefined
+                    }
+                  />
                 </ValueWrapper>
                 <ValueWrapper>
                   <Text>{t('Multiplier')}</Text>
