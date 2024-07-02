@@ -72,18 +72,15 @@ export const useTweetsData = () => {
   return useMemo(() => {
     return [
       {
-        tweet: `📢Say hello to PancakeSwap v4
-🪝Hooks
-🔗Custom Pool Types & Donate
-⛽️Gas Optimization via Singleton & Flash Accounting
-🧑‍💻Codebase Open-Source Licensing
-➡️Coming to Ethereum and BNB Chain in Q3
-📚Read more: https://bit.ly/48QgtgN
+        tweet: `Get Your Uniswap Interface Fees Refunded on PancakeSwap, up to $8M!
+
+Match your Ethereum Uniswap volume 1:1 on Ethereum PancakeSwap, and we’ll refund ALL your interface fees paid.
+Trade now: https://pancakeswap.finance/swap?chain=eth&utm_source=twitter&utm_medium=Ethereum&utm_campaign=Swap&utm_id=InterfacefeeRefund
 `,
-        link: 'https://x.com/PancakeSwap/status/1768623187959672871?s=20',
-        date: 'Mar 15',
-        like: '0.5k',
-        impression: '54k',
+        link: 'https://x.com/PancakeSwap/status/1791076335462314097',
+        date: 'May 16',
+        like: '1k',
+        impression: '295.5k',
       },
     ]
   }, [])
