@@ -56,7 +56,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
 
   const [socialName, setSocialName] = useState('')
   const [isPending, setIsPending] = useState(false)
-  const [actionPanelExpanded, setActionPanelExpanded] = useState(true)
+  const [actionPanelExpanded, setActionPanelExpanded] = useState(false)
 
   const handleVerifyTwitterAccount = useCallback(async () => {
     if (isPending) {
