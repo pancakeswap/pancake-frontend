@@ -16,9 +16,9 @@ export default NextAuth({
   session: {
     maxAge: 3, // 3 sec
   },
-  // pages: {
-  //   signIn: '/profile',
-  // },
+  pages: {
+    signIn: '/profile',
+  },
   callbacks: {
     async jwt({ token, account, profile }: any) {
       // Initial sign-in
@@ -31,7 +31,12 @@ export default NextAuth({
             break
           case 'twitter':
             // eslint-disable-next-line no-param-reassign
-            token.twitterId = profile.id_str
+            token.twitter = {
+              twitterId: profile.id_str,
+              token: account.oauth_token,
+              tokenSecret: account.oauth_token_secret,
+            }
+
             break
         }
       }
@@ -41,7 +46,7 @@ export default NextAuth({
       // eslint-disable-next-line no-param-reassign
       ;(session as any).user.discordId = token.discordId || null
       // eslint-disable-next-line no-param-reassign
-      ;(session as any).user.twitterId = token.twitterId || null
+      ;(session as any).user.twitter = token.twitter || null
       return session
     },
 

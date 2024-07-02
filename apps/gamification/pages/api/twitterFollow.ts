@@ -25,8 +25,8 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       const { token, tokenSecret, userId, targetUserId } = req.query
-      if (!token || !tokenSecret) {
-        res.status(400).json({ message: 'Missing required parameters: token and tokenSecret' })
+      if (!token || !tokenSecret || !userId || !targetUserId) {
+        res.status(400).json({ message: 'Missing required parameters: token, tokenSecret, userId, targetUserId' })
         return
       }
       const url = `https://api.twitter.com/2/users/${userId}/following`

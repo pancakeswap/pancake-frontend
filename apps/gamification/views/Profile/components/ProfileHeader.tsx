@@ -21,12 +21,14 @@ import { Achievement } from 'config/constants/types'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { Profile } from 'hooks/useProfile/type'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
+import Cookie from 'js-cookie'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { SocialHubType, useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { connectSocial } from 'views/Profile/utils/connectSocial'
+import { getTwitterIdCookie } from 'views/Profile/utils/getTwitterIdCookie'
 import { useAccount } from 'wagmi'
 import AvatarImage from './AvatarImage'
 import { BannerHeader } from './BannerHeader'
@@ -73,6 +75,15 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     }
   }, [])
 
+  // Handle when Oauth callback fail
+  useEffect(() => {
+    if (query.error && query.error === 'Callback') {
+      const newURL = `${window.location.origin}${window.location.pathname}`
+      window.history.pushState({}, '', newURL)
+      toastError(t('Connected Fail'))
+    }
+  }, [])
+
   useEffect(() => {
     const fetch = async (id: string, social: SocialHubType) => {
       if (account && !isFetchingApi) {
@@ -102,8 +113,12 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
         fetch((session as any).user?.discordId, SocialHubType.Discord)
       }
 
-      if (!userInfo?.socialHubToSocialUserIdMap?.Twitter && (session as any).user?.twitterId) {
-        fetch((session as any).user?.twitterId, SocialHubType.Twitter)
+      if (!userInfo?.socialHubToSocialUserIdMap?.Twitter && (session as any).user?.twitter) {
+        const { twitterId, token, tokenSecret } = (session as any).user?.twitter
+        const cookieId = getTwitterIdCookie(twitterId)
+        Cookie.set(cookieId, JSON.stringify({ token, tokenSecret }))
+
+        fetch(twitterId, SocialHubType.Twitter)
       }
     }
   }, [account, isFetched, isFetchingApi, refresh, session, t, toastError, toastSuccess, userInfo])
