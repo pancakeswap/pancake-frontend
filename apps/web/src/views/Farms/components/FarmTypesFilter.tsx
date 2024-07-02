@@ -1,18 +1,18 @@
-import { useEffect, useState, useRef } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Button,
-  RocketIcon,
   CurrencyIcon,
-  Flex,
-  Text,
-  InlineMenu,
-  Toggle,
   FarmIcon,
+  Flex,
+  InlineMenu,
+  RocketIcon,
+  Text,
+  Toggle,
   TradeIcon,
 } from '@pancakeswap/uikit'
+import { useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
 
 interface FarmTypesFilterProps {
   boostedOnly: boolean
@@ -28,7 +28,7 @@ interface FarmTypesFilterProps {
 }
 
 export const FarmTypesWrapper = styled(Flex)`
-  background: ${({ theme }) => theme.colors.dropdown};
+  background: ${({ theme }) => theme.colors.dark};
   border-radius: 24px 24px 0 0;
 `
 
@@ -101,14 +101,14 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
           >
             <Box width={['100%', '345px']} ref={menuRef}>
               <FarmTypesWrapper alignItems="center" p="16px">
-                <Text fontSize={20} bold color="text" display="inline-block" ml="8px">
+                <Text fontSize={20} bold color="primary" display="inline-block" ml="8px">
                   {t('Farm Types')}
                 </Text>
               </FarmTypesWrapper>
               <Box height="240px" overflowY="auto">
                 <StyledItemRow alignItems="center" px="16px" py="8px" ml="8px" mt="8px">
-                  <TradeIcon />
-                  <Text fontSize={16} ml="10px" style={{ flex: 1 }} bold>
+                  <TradeIcon color="primary" />
+                  <Text fontSize={16} ml="10px" color="primary" style={{ flex: 1 }} bold>
                     {t('V3 Farms')}
                   </Text>
                   <ToggleWrapper>
@@ -126,8 +126,8 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                   </ToggleWrapper>
                 </StyledItemRow>
                 <StyledItemRow alignItems="center" px="16px" py="8px" ml="8px" mt="8px">
-                  <FarmIcon />
-                  <Text fontSize={16} ml="10px" style={{ flex: 1 }} bold>
+                  <FarmIcon color="primary" />
+                  <Text fontSize={16} ml="10px" color="primary" style={{ flex: 1 }} bold>
                     {t('V2 Farms')}
                   </Text>
                   <ToggleWrapper>
@@ -145,8 +145,8 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                   </ToggleWrapper>
                 </StyledItemRow>
                 <StyledItemRow alignItems="center" px="16px" py="8px" ml="8px" mt="8px">
-                  <RocketIcon />
-                  <Text fontSize={16} ml="10px" style={{ flex: 1 }} bold>
+                  <RocketIcon color="primary" />
+                  <Text fontSize={16} ml="10px" color="primary" style={{ flex: 1 }} bold>
                     {t('Booster Available')}
                   </Text>
                   <ToggleWrapper>
@@ -163,8 +163,8 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                   </ToggleWrapper>
                 </StyledItemRow>
                 <StyledItemRow alignItems="center" px="16px" py="8px" ml="8px" mt="8px">
-                  <CurrencyIcon />
-                  <Text fontSize={16} ml="10px" style={{ flex: 1 }} bold>
+                  <CurrencyIcon color="primary" />
+                  <Text fontSize={16} ml="10px" color="primary" style={{ flex: 1 }} bold>
                     {t('StableSwap')}
                   </Text>
                   <ToggleWrapper>

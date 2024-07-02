@@ -1,9 +1,10 @@
+import { AtomBox } from '@pancakeswap/uikit'
 import { ConnectorNames } from 'config/wallet'
 import { ExtendEthereum } from 'global'
 import { useAccount, useNetwork } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
-import { FarmsContext, FarmsV3Context } from './context'
 import FarmsV3 from './FarmsV3'
+import { FarmsContext, FarmsV3Context } from './context'
 
 export function useIsBloctoETH() {
   const { chain } = useNetwork()
@@ -18,7 +19,11 @@ export function useIsBloctoETH() {
 }
 
 export const FarmsV3PageLayout: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
-  return <FarmsV3>{children}</FarmsV3>
+  return (
+    <AtomBox background="farmPageBackground">
+      <FarmsV3>{children}</FarmsV3>
+    </AtomBox>
+  )
 }
 
 export { FarmsContext, FarmsV3Context }

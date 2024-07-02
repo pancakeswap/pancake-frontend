@@ -6,7 +6,6 @@ import React, { createContext, useMemo, useState } from 'react'
 import { useExchangeChartManager } from 'state/user/hooks'
 
 export const SwapFeaturesContext = createContext<{
-  isHotTokenSupported: boolean
   isChartSupported: boolean
   isStableSupported: boolean
   isAccessTokenSupported: boolean
@@ -15,7 +14,6 @@ export const SwapFeaturesContext = createContext<{
   setIsChartExpanded: React.Dispatch<React.SetStateAction<boolean>> | null
   setIsChartDisplayed: React.Dispatch<React.SetStateAction<boolean>> | null
 }>({
-  isHotTokenSupported: false,
   isChartSupported: false,
   isStableSupported: false,
   isAccessTokenSupported: false,
@@ -31,7 +29,6 @@ const CHART_SUPPORT_CHAIN_IDS = [
   // ChainId.ETHEREUM
 ]
 const STABLE_SUPPORT_CHAIN_IDS = [ChainId.BSC_TESTNET, ChainId.BSC]
-const HOT_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC, ChainId.ETHEREUM]
 
 export const SwapFeaturesProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { isMobile } = useMatchBreakpoints()
@@ -53,14 +50,8 @@ export const SwapFeaturesProvider: React.FC<React.PropsWithChildren> = ({ childr
     [chainId],
   )
 
-  const isHotTokenSupported = useMemo(
-    () => Boolean(chainId && HOT_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId)),
-    [chainId],
-  )
-
   const value = useMemo(() => {
     return {
-      isHotTokenSupported,
       isChartSupported,
       isStableSupported,
       isAccessTokenSupported,
@@ -70,7 +61,6 @@ export const SwapFeaturesProvider: React.FC<React.PropsWithChildren> = ({ childr
       setIsChartExpanded,
     }
   }, [
-    isHotTokenSupported,
     isChartSupported,
     isStableSupported,
     isAccessTokenSupported,

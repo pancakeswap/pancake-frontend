@@ -1,23 +1,23 @@
-import { useState, useEffect } from 'react'
-import { styled } from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { Modal, Text, Flex, BalanceInput, Box, Button, LogoRoundIcon, useToast } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
+import { CAKE, bscTokens } from '@pancakeswap/tokens'
+import { BalanceInput, Box, Button, Flex, LogoRoundIcon, Modal, Text, useToast } from '@pancakeswap/uikit'
 import { formatNumber, getBalanceAmount, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import useTheme from 'hooks/useTheme'
-import useTokenBalance from 'hooks/useTokenBalance'
-import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useFarmAuctionContract } from 'hooks/useContract'
-import { DEFAULT_TOKEN_DECIMAL } from 'config'
-import ConnectWalletButton from 'components/ConnectWalletButton'
+import BigNumber from 'bignumber.js'
 import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { ConnectedBidder, FetchStatus } from 'config/constants/types'
+import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { bscTokens, CAKE } from '@pancakeswap/tokens'
-import { ChainId } from '@pancakeswap/chains'
+import { useFarmAuctionContract } from 'hooks/useContract'
+import useTheme from 'hooks/useTheme'
+import useTokenBalance from 'hooks/useTokenBalance'
+import { useEffect, useState } from 'react'
+import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
 
 const StyledModal = styled(Modal)`
   & > div:nth-child(2) {
@@ -138,7 +138,7 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
     setBid(valueToSet.toString())
   }
   return (
-    <StyledModal title={t('Place a Bid')} onDismiss={onDismiss} headerBackground={theme.colors.gradientCardHeader}>
+    <StyledModal title={t('Place a Bid')} onDismiss={onDismiss} headerBackground={theme.colors.dark}>
       <ExistingInfo>
         <Flex justifyContent="space-between">
           <Text>{t('Your existing bid')}</Text>

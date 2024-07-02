@@ -1,11 +1,11 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, Input, Modal, OpenNewIcon, Spinner, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import truncateHash from '@pancakeswap/utils/truncateHash'
+import { FarmAuctionBidderConfig } from 'config/constants/types'
+import { useDomainNameForAddress } from 'hooks/useDomain'
+import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
 import { styled } from 'styled-components'
-import { Modal, Box, Text, Flex, Input, OpenNewIcon, Spinner, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
-import { FarmAuctionBidderConfig } from 'config/constants/types'
-import truncateHash from '@pancakeswap/utils/truncateHash'
-import { useDomainNameForAddress } from 'hooks/useDomain'
 import useWhitelistedAddresses from '../hooks/useWhitelistedAddresses'
 
 interface WhitelistedBiddersModalProps {
@@ -90,7 +90,7 @@ const WhitelistedBiddersModal: React.FC<React.PropsWithChildren<WhitelistedBidde
       p="0"
       title={t('All Whitelisted Project Wallets')}
       onDismiss={onDismiss}
-      headerBackground={theme.colors.gradientCardHeader}
+      headerBackground={theme.colors.dark}
     >
       <InputContainer py="16px" px="24px">
         <Input placeholder={t('Search address or token')} value={searchTerm} onChange={handleSearchChange} />

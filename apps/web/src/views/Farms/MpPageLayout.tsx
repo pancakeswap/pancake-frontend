@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
-import { listenOnBnMessage, useInterceptLink, useInjectI18n, useSystemInfo } from 'utils/mpBridge'
-import { useActiveHandle, getAccount } from 'hooks/useEagerConnect.bmp'
 import Navbar from 'components/Navbar.bmp'
+import { getAccount, useActiveHandle } from 'hooks/useEagerConnect.bmp'
 import { useTheme } from 'next-themes'
+import { useEffect } from 'react'
+import { listenOnBnMessage, useInjectI18n, useInterceptLink, useSystemInfo } from 'utils/mpBridge'
 import Farms from './Farms'
 
 listenOnBnMessage()

@@ -49,17 +49,11 @@ const config: (
       showItemsOnMobile: false,
     },
     {
-      label: t('Earn'),
-      href: '/farms',
+      label: t('Farms'),
       icon: EarnIcon,
       fillIcon: EarnFillIcon,
-      image: '/images/decorations/pe2.png',
-      items: [
-        {
-          label: t('Farms'),
-          href: '/farms',
-        },
-      ].map((item) => addMenuItemSupported(item, chainId)),
+      href: '/farms',
+      showItemsOnMobile: false,
     },
   ].map((item) => addMenuItemSupported(item, chainId))
 

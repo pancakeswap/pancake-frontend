@@ -7,7 +7,6 @@ import {
   CardFooter,
   Flex,
   HelpIcon,
-  Link,
   RocketIcon,
   Text,
   useMatchBreakpoints,
@@ -68,16 +67,10 @@ export const useBCakeTooltipContent = () => {
   const { t } = useTranslation()
   const tooltipContent = (
     <>
-      <Box mb="20px">
+      <Box>
         {t(
           'Yield Boosters allow you to boost your farming yields by locking CAKE in the fixed-term staking CAKE pool. The more CAKE you lock, and the longer you lock them, the higher the boost you will receive.',
         )}
-      </Box>
-      <Box>
-        {t('To learn more, check out the')}
-        <Link target="_blank" href="https://medium.com/pancakeswap/introducing-bcake-farm-yield-boosters-b27b7a6f0f84">
-          {t('Medium Article')}
-        </Link>
       </Box>
     </>
   )
@@ -100,15 +93,15 @@ export const BCakeBoosterCard = () => {
       <ImageWrapper>
         <Image src={boosterCardImage} alt="boosterCardImage" width={99} height={191} placeholder="blur" />
       </ImageWrapper>
-      <Card p="0px" style={{ zIndex: 1 }}>
+      <Card background="#fff" p="0px" style={{ zIndex: 1 }}>
         <StyledCardBody style={{ padding: '15px 24px' }}>
-          <RocketIcon />
-          <Text fontSize={22} bold color="text" marginBottom="-12px" display="inline-block" ml="7px">
+          <RocketIcon color="dark" />
+          <Text fontSize={22} bold color="dark" marginBottom="-12px" display="inline-block" ml="7px">
             {t('Yield Booster')}
           </Text>
           {tooltipVisible && tooltip}
           <Box ref={targetRef} style={{ float: 'right', position: 'relative', top: '6px' }}>
-            <HelpIcon color={theme.colors.textSubtle} />
+            <HelpIcon color={theme.colors.dark} />
           </Box>
         </StyledCardBody>
         <StyledCardFooter>
@@ -128,26 +121,26 @@ const CardContent: React.FC = () => {
   if (!account)
     return (
       <Box>
-        <Text color="textSubtle" fontSize={12} bold>
+        <Text color="dark" fontSize={12} bold>
           {t('Connect wallet to view booster')}
         </Text>
-        <Text color="textSubtle" fontSize={12} mb="16px">
+        <Text color="dark" fontSize={12} mb="16px">
           {t('An active veCAKE staking position is required for activating farm yield boosters.')}
         </Text>
-        <ConnectWalletButton width="100%" style={{ backgroundColor: theme.colors.textSubtle }} />
+        <ConnectWalletButton width="100%" style={{ color: theme.colors.primary, backgroundColor: theme.colors.dark }} />
       </Box>
     )
   if (!locked)
     return (
       <Box width="100%">
-        <Text color="textSubtle" fontSize={12} bold>
-          {t('No CAKE locked')}
+        <Text color="dark" fontSize={12} bold>
+          {t('Connect will to view booster')}
         </Text>
-        <Text color="textSubtle" fontSize={12} mb="16px">
+        <Text color="dark" fontSize={12} mb="16px">
           {t('An active veCAKE staking position is required for activating farm yield boosters.')}
         </Text>
         <NextLink href="/cake-staking" passHref>
-          <Button width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
+          <Button width="100%" style={{ color: theme.colors.primary, backgroundColor: theme.colors.dark }}>
             {t('Go to CAKE Staking')}
           </Button>
         </NextLink>
@@ -161,13 +154,13 @@ const CardContent: React.FC = () => {
           {t('Yield booster active')}
         </Text>
       </Flex>
-      <Text color="textSubtle" fontSize={12} mb="10px">
+      <Text color="dark" fontSize={12} mb="10px">
         {t(
           'Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.',
         )}
       </Text>
       <NextLink href="/cake-staking" passHref>
-        <Button width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
+        <Button width="100%" style={{ color: theme.colors.primary, backgroundColor: theme.colors.dark }}>
           {t('Go to CAKE Staking')}
         </Button>
       </NextLink>
