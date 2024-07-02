@@ -126,7 +126,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
   const config = useConfig()
 
   useEffect(() => {
-    if (config?.galetoOracleAddress) {
+    if (config?.galetoOracleAddress || config?.ai) {
       dispatch(setChartPaneState(false))
       dispatch(setChartView(PredictionsChartView.TradingView))
     }

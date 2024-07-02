@@ -12,7 +12,7 @@ import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBoost
 /* eslint-disable no-case-declarations */
 import { useDelayedUnmount } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { VaultHistorySnapshots } from 'views/PositionManagers/hooks/useFetchVaultHistory'
@@ -220,6 +220,8 @@ export const TableRow: React.FC<Props> = ({
     rewardEndTime: info.endTimestamp,
     rewardStartTime: info.startTimestamp,
     farmRewardAmount: aprDataInfo?.info?.rewardAmount ?? 0,
+    adapterAddress,
+    bCakeWrapperAddress,
   })
 
   const staked0Amount = info?.userToken0Amounts
@@ -390,7 +392,7 @@ export const TableRow: React.FC<Props> = ({
         <>
           <tr style={{ cursor: 'pointer' }} onClick={toggleActionPanel}>
             <FarmMobileCell colSpan={3}>
-              <Flex justifyContent="flex-start" alignItems="center">
+              <Flex justifyContent="flex-start" alignItems="center" position="relative">
                 <FarmCell
                   currencyA={currencyA}
                   currencyB={currencyB}
@@ -402,7 +404,11 @@ export const TableRow: React.FC<Props> = ({
                   allowDepositToken1={allowDepositToken1 ?? false}
                   isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
                 />
-                {hasSwellReward ? <SwellTooltip /> : null}
+                {hasSwellReward ? (
+                  <Box position="absolute" right="10px">
+                    <SwellTooltip />
+                  </Box>
+                ) : null}
               </Flex>
             </FarmMobileCell>
           </tr>
@@ -491,6 +497,7 @@ export const TableRow: React.FC<Props> = ({
               aprTimeWindow={aprDataInfo.timeWindow}
               bCakeWrapper={bCakeWrapperAddress}
               minDepositUSD={minDepositUSD}
+              adapterAddress={adapterAddress}
               isBooster={isBoosterWhiteList}
               boosterContractAddress={info?.boosterContractAddress}
             />

@@ -163,6 +163,8 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     rewardEndTime: info.endTimestamp,
     rewardStartTime: info.startTimestamp,
     farmRewardAmount: aprDataInfo?.info?.rewardAmount ?? 0,
+    adapterAddress,
+    bCakeWrapperAddress,
   })
 
   const staked0Amount = info?.userToken0Amounts
@@ -245,6 +247,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
       boosterContractAddress={info?.boosterContractAddress}
       isVaultLoading={vaultHistorySnapshots.isVaultDataLoading}
       ror={ror}
+      adapterAddress={adapterAddress}
     >
       {id}
     </DuoTokenVaultCard>

@@ -168,6 +168,7 @@ export interface SerializedBCakeUserData {
   rewardPerSecond?: number
   startTimestamp?: number
   endTimestamp?: number
+  totalLiquidityX?: number
 }
 
 export interface SerializedFarm extends SerializedFarmPublicData {
@@ -227,6 +228,7 @@ export interface DeserializedBCakeWrapperUserData {
   startTimestamp?: number
   endTimestamp?: number
   isRewardInRange?: boolean
+  totalLiquidityX?: number
 }
 
 export interface DeserializedFarm extends DeserializedFarmConfig {

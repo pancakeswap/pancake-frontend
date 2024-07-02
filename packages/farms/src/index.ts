@@ -119,13 +119,19 @@ export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number })
     }
   }
 
-  const getCakeAprAndTVL = (farm: FarmV3DataWithPrice, lpTVL: LPTvl, cakePrice: string, cakePerSecond: string) => {
+  const getCakeAprAndTVL = (
+    farm: FarmV3DataWithPrice,
+    lpTVL: LPTvl,
+    cakePrice: string,
+    cakePerSecond: string,
+    boosterLiquidityX?: number,
+  ) => {
     const [token0Price, token1Price] = farm.token.sortsBefore(farm.quoteToken)
       ? [farm.tokenPriceBusd, farm.quoteTokenPriceBusd]
       : [farm.quoteTokenPriceBusd, farm.tokenPriceBusd]
     const tvl = new BigNumber(token0Price).times(lpTVL.token0).plus(new BigNumber(token1Price).times(lpTVL.token1))
 
-    const cakeApr = getCakeApr(farm.poolWeight, tvl, cakePrice, cakePerSecond)
+    const cakeApr = getCakeApr(farm.poolWeight, tvl.times(boosterLiquidityX ?? 1), cakePrice, cakePerSecond)
 
     return {
       activeTvlUSD: tvl.toString(),

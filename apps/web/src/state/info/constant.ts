@@ -44,17 +44,6 @@ export const multiChainQueryMainToken: Record<MultiChainName, string> = {
   OPBNB: 'ETH',
 }
 
-export const multiChainStartTime = {
-  BSC: PCS_V2_START,
-  ETH: PCS_ETH_START,
-  POLYGON_ZKEVM: 1686236845,
-  ZKSYNC: 1690462800, // Thu Jul 27 2023 13:00:00 UTC+0000
-  ARB: 1686732526,
-  LINEA: 1692878400,
-  BASE: 1693483200,
-  OPBNB: 1695945600,
-}
-
 export const multiChainId: Record<MultiChainName, ChainId> = {
   BSC: ChainId.BSC,
   ETH: ChainId.ETHEREUM,

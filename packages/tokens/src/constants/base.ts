@@ -93,4 +93,12 @@ export const baseTokens = {
     'OVN',
     'https://overnight.fi/',
   ),
+  zro: new ERC20Token(
+    ChainId.BASE,
+    '0x6985884C4392D348587B19cb9eAAf157F13271cd',
+    18,
+    'ZRO',
+    'LayerZero',
+    'https://www.layerzero.foundation/',
+  ),
 }

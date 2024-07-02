@@ -89,6 +89,7 @@ interface Props {
   boosterContractAddress?: Address
   isVaultLoading: boolean
   ror?: RorResult
+  adapterAddress?: Address
 }
 
 export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
@@ -138,6 +139,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   boosterContractAddress,
   isVaultLoading,
   ror,
+  adapterAddress,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
     currencyA,
@@ -153,6 +155,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
     farmRewardAmount: aprDataInfo?.info?.rewardAmount ?? 0,
     rewardEndTime,
     rewardStartTime,
+    adapterAddress,
+    bCakeWrapperAddress: bCakeWrapper,
   })
 
   const vaultName = useMemo(() => getVaultName(idByManager, name), [name, idByManager])
@@ -246,6 +250,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           minDepositUSD={minDepositUSD}
           isBooster={isBoosterWhiteList && apr?.isInCakeRewardDateRange}
           boosterContractAddress={boosterContractAddress}
+          adapterAddress={adapterAddress}
         />
         <ExpandableSection mt="1.5em">
           <VaultInfo

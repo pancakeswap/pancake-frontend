@@ -31,7 +31,7 @@ export const getTokenAddress = (chainId: number | undefined, tokenAddress: strin
   const nativeToken = NATIVE[chainId]
   const nativeSymbol = nativeToken?.symbol?.toLowerCase() || ''
   if (lowerCaseAddress === nativeSymbol) {
-    return WNATIVE[chainId].address
+    return WNATIVE[chainId].address.toLowerCase()
   }
 
   return lowerCaseAddress

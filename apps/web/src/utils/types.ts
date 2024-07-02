@@ -16,14 +16,19 @@ export interface PredictionsRoundsResponse {
   closeTimestamp: bigint
   lockPrice: bigint
   closePrice: bigint
-  lockOracleId: bigint
-  closeOracleId: bigint
   totalAmount: bigint
   bullAmount: bigint
   bearAmount: bigint
   rewardBaseCalAmount: bigint
   rewardAmount: bigint
   oracleCalled: boolean
+
+  // PredictionsV2
+  lockOracleId?: bigint
+  closeOracleId?: bigint
+
+  // AI Predictions
+  AIPrice?: bigint
 }
 
 // [rounds, ledgers, count]

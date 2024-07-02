@@ -90,16 +90,18 @@ export const fetchPredictionData = createAsyncThunk<
 >('predictions/fetchPredictionData', async ({ account, chainId }, { extra }) => {
   // Static values
   const marketData = await getPredictionData(extra.address, chainId)
+
   const epochs =
     marketData.currentEpoch > PAST_ROUND_COUNT
       ? range(marketData.currentEpoch, marketData.currentEpoch - PAST_ROUND_COUNT)
       : [marketData.currentEpoch]
 
   // Round data
-  const roundsResponse = await getRoundsData(epochs, extra.address, chainId)
+  const roundsResponse = await getRoundsData(epochs, extra.address, chainId, {
+    isAIPrediction: Boolean(extra.ai),
+  })
   const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
-    const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse, chainId)
-
+    const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse)
     return {
       ...accum,
       [roundResponse.epoch.toString()]: reduxNodeRound,
@@ -168,8 +170,9 @@ export const fetchNodeHistory = createAsyncThunk<
   }
 
   const epochs = Object.keys(userRounds).map((epochStr) => Number(epochStr))
+
   const [roundData, claimableStatuses] = await Promise.all([
-    getRoundsData(epochs, extra.address, chainId),
+    getRoundsData(epochs, extra.address, chainId, { isAIPrediction: Boolean(extra.ai) }),
     getClaimStatuses(account, chainId, epochs, extra.address),
   ])
 
@@ -180,20 +183,31 @@ export const fetchNodeHistory = createAsyncThunk<
   const bets: Bet[] = roundData.reduce((accum: any, round: PredictionsRoundsResponse) => {
     const ledger = userRounds[Number(round.epoch)]
     const ledgerAmount = BigInt(ledger.amount)
-    let closePrice = round.closePrice ? parseFloat(formatUnits(round.closePrice, 8)) : null
-    let lockPrice = round.lockPrice ? parseFloat(formatUnits(round.lockPrice, 8)) : null
-
-    // Chainlink in ARBITRUM lockPrice & closePrice will return 18 decimals, other chain is return 8 decimals.
-    if (chainId === ChainId.ARBITRUM_ONE && (round.closePrice || round.lockPrice)) {
-      closePrice = parseFloat(formatUnits(round.closePrice, 18))
-      lockPrice = parseFloat(formatUnits(round.lockPrice, 18))
-    }
+    const closePrice = round.closePrice
+      ? parseFloat(formatUnits(round.closePrice, extra.closePriceDecimals ?? 8))
+      : null
+    const lockPrice = round.lockPrice ? parseFloat(formatUnits(round.lockPrice, extra.lockPriceDecimals ?? 8)) : null
+    const AIPrice = round.AIPrice ? parseFloat(formatUnits(round.AIPrice, extra.ai?.aiPriceDecimals ?? 8)) : null
 
     const getRoundPosition = () => {
       if (!closePrice) {
         return null
       }
 
+      // If AI-based prediction
+      if (extra.ai && round.AIPrice) {
+        if (
+          (round.closePrice > round.lockPrice && round.AIPrice > round.lockPrice) ||
+          (round.closePrice < round.lockPrice && round.AIPrice < round.lockPrice) ||
+          (round.closePrice === round.lockPrice && round.AIPrice === round.lockPrice)
+        ) {
+          return BetPosition.BULL
+        }
+
+        return BetPosition.BEAR
+      }
+
+      // If not AI-based prediction
       if (round.closePrice === round.lockPrice) {
         return BetPosition.HOUSE
       }
@@ -245,6 +259,8 @@ export const fetchNodeHistory = createAsyncThunk<
           bearBets: 0,
           bearAmount: parseFloat(formatUnits(round.bearAmount, 18)),
           position: getRoundPosition(),
+
+          AIPrice,
         },
       },
     ]

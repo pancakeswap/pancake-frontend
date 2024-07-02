@@ -70,6 +70,7 @@ interface Props {
   lpTokenDecimals?: number
   aprTimeWindow?: number
   bCakeWrapper?: Address
+  adapterAddress?: Address
   minDepositUSD?: number
   boosterMultiplier?: number
   isBooster?: boolean
@@ -127,6 +128,7 @@ export const AddLiquidity = memo(function AddLiquidity({
   boosterMultiplier,
   onStake,
   isTxLoading,
+  adapterAddress,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -228,6 +230,8 @@ export const AddLiquidity = memo(function AddLiquidity({
     farmRewardAmount: aprDataInfo?.info?.rewardAmount ?? 0,
     rewardEndTime,
     rewardStartTime,
+    bCakeWrapperAddress: bCakeWrapper,
+    adapterAddress,
   })
 
   const displayBalanceText = useCallback(

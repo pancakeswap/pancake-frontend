@@ -11,7 +11,7 @@ import { getAprsForStableFarm } from 'utils/getAprsForStableFarm'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { getPercentChange } from 'utils/infoDataHelpers'
-import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { explorerApiClient } from './api/client'
 import { useExplorerChainNameByQuery } from './api/hooks'
 import { MultiChainName, MultiChainNameExtend, checkIsStableSwap, multiChainId } from './constant'
@@ -555,7 +555,7 @@ export const useAllTokenHighLight = ({
   const chainNameByQuery = useChainNameByQuery()
   const chainName = targetChainName ?? chainNameByQuery
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d], undefined, undefined, chainName)
+  const { blocks } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d], undefined, chainName)
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data, isPending } = useQuery({
     queryKey: [`info/token/data/${type}`, chainName],
@@ -667,7 +667,7 @@ export const useTokenDatasQuery = (addresses?: string[], withSettings = true): T
   const name = addresses?.join('')
   const chainName = useChainNameByQuery()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24h, t48h, t7d, t14d])
+  const { blocks } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data, isPending } = useQuery({
     queryKey: [`info/token/data/${name}/${type}`, chainName],

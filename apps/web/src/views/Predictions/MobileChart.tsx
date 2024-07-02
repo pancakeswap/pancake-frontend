@@ -39,7 +39,7 @@ const MobileChart = () => {
   const config = useConfig()
 
   useEffect(() => {
-    if (config?.galetoOracleAddress) {
+    if (config?.galetoOracleAddress || config?.ai) {
       dispatch(setChartView(PredictionsChartView.TradingView))
     }
   }, [config, dispatch])

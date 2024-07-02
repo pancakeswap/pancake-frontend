@@ -5,6 +5,7 @@ import {
   CalculateIcon,
   Flex,
   IconButton,
+  PairDataTimeWindowEnum,
   RocketIcon,
   Skeleton,
   Text,
@@ -66,7 +67,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
   const { t } = useTranslation()
   const roiModal = useModalV2()
 
-  const [priceTimeWindow, setPriceTimeWindow] = useState(0)
+  const [priceTimeWindow, setPriceTimeWindow] = useState(PairDataTimeWindowEnum.DAY)
   const prices = usePairTokensPrice(lpAddress, priceTimeWindow, baseCurrency?.chainId, roiModal.isOpen)
 
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount, roiModal.isOpen)

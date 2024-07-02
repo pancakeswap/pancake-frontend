@@ -11,7 +11,9 @@ import ChainlinkChartDisclaimer from './components/ChainlinkChartDisclaimer'
 import ChartDisclaimer from './components/ChartDisclaimer'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
 import Container from './components/Container'
+import { InPageBanner } from './components/InPageBanner'
 import RiskDisclaimer from './components/RiskDisclaimer'
+import { useConfig } from './context/ConfigProvider'
 import SwiperProvider from './context/SwiperProvider'
 import usePollPredictions from './hooks/usePollPredictions'
 
@@ -20,6 +22,7 @@ function Warnings() {
   const [showChainlinkDisclaimer] = useUserPredictionChainlinkChartDisclaimerShow()
   const isChartPaneOpen = useIsChartPaneOpen()
   const chartView = useChartView()
+  const config = useConfig()
 
   const [onPresentChartDisclaimer] = useModal(<ChartDisclaimer />, false)
   const [onPresentChainlinkChartDisclaimer] = useModal(<ChainlinkChartDisclaimer />, false)
@@ -37,10 +40,21 @@ function Warnings() {
 
   // Chainlink Disclaimer
   useEffect(() => {
-    if (isChartPaneOpen && showChainlinkDisclaimer && chartView === PredictionsChartView.Chainlink) {
+    if (
+      isChartPaneOpen &&
+      showChainlinkDisclaimer &&
+      chartView === PredictionsChartView.Chainlink &&
+      config?.chainlinkOracleAddress
+    ) {
       onPresentChainlinkChartDisclaimerRef.current()
     }
-  }, [onPresentChainlinkChartDisclaimerRef, isChartPaneOpen, showChainlinkDisclaimer, chartView])
+  }, [
+    onPresentChainlinkChartDisclaimerRef,
+    isChartPaneOpen,
+    showChainlinkDisclaimer,
+    chartView,
+    config?.chainlinkOracleAddress,
+  ])
 
   return null
 }
@@ -56,6 +70,7 @@ const Predictions = () => {
     <>
       <Warnings />
       <RiskDisclaimer />
+      <InPageBanner />
       <SwiperProvider>
         <Container>
           {isDesktop ? <Desktop /> : <Mobile />}

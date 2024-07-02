@@ -111,4 +111,20 @@ export const zksyncTokens = {
     'zkSync',
     'https://zksync.io/',
   ),
+  zke: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x7b3e1236c39ddD2e61cF6Da6ac6D11193238ccB0',
+    18,
+    'ZKE',
+    'ZKE',
+    'https://zkera.fi/',
+  ),
+  rf: new ERC20Token(
+    ChainId.ZKSYNC,
+    '0x5f7CBcb391d33988DAD74D6Fd683AadDA1123E4D',
+    18,
+    'RF',
+    'ReactorFusion',
+    'https://reactorfusion.xyz/',
+  ),
 }
