@@ -13,7 +13,6 @@ import {
   useModal,
   useToast,
 } from '@pancakeswap/uikit'
-import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useCallback, useMemo, useState } from 'react'
 import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
 import { TaskBlogPostConfig, TaskConfigType, TaskSocialConfig } from 'views/DashboardQuestEdit/context/types'
@@ -22,6 +21,7 @@ import { TaskType } from 'views/DashboardQuestEdit/type'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
+import { fetchBlogMarkTaskStatus } from 'views/Quest/utils/fetchBlogMarkTaskStatus'
 import { useAccount } from 'wagmi'
 
 interface TaskProps {
@@ -29,9 +29,10 @@ interface TaskProps {
   task: TaskConfigType
   taskStatus: VerifyTaskStatus
   isQuestFinished: boolean
+  refresh: () => void
 }
 
-export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFinished }) => {
+export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFinished, refresh }) => {
   const { t } = useTranslation()
   const { toastError } = useToast()
   const { address: account } = useAccount()
@@ -41,6 +42,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
   const [actionPanelExpanded, setActionPanelExpanded] = useState(false)
   const { userInfo } = useUserSocialHub()
   const [socialName, setSocialName] = useState('')
+  const [isPending, setIsPending] = useState(false)
 
   const [onPresentConnectSocialAccountModal] = useModal(<ConnectSocialAccountModal socialName={socialName} />)
 
@@ -88,26 +90,12 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
   ])
 
   const handleAddBlogPost = async () => {
-    if (account && questId) {
-      try {
-        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/markTaskStatus/${account}/${questId}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            taskName: TaskType.VISIT_BLOG_POST,
-            isCompleted: true,
-          }),
-        })
+    const response = await fetchBlogMarkTaskStatus(account ?? '', questId)
 
-        if (response.ok) {
-          const url = (task as TaskBlogPostConfig).blogUrl
-          window.open(url, '_blank', 'noopener noreferrer')
-        }
-      } catch (error) {
-        console.error('Submit markTaskStatus error', error)
-      }
+    if (response.ok) {
+      const url = (task as TaskBlogPostConfig).blogUrl
+      window.open(url, '_blank', 'noopener noreferrer')
+      refresh()
     }
   }
 

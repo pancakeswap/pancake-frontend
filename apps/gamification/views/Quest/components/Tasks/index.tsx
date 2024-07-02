@@ -118,6 +118,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
                 task={task}
                 taskStatus={taskStatus}
                 isQuestFinished={isQuestFinished}
+                refresh={refresh}
               />
             ))}
           </FlexGap>
