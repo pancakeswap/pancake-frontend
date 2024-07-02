@@ -1,9 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, SortArrowIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { StyledCell } from 'views/DashboardCampaigns/components/TableStyle'
-import { SortButton, SortBy, Touchable, getSortClassName } from 'views/DashboardQuests/components/SortButton'
+import { SortBy, Touchable } from 'views/DashboardQuests/components/SortButton'
+// import { Box, SortArrowIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+// import { SortButton, SortBy, Touchable, getSortClassName } from 'views/DashboardQuests/components/SortButton'
 
 const StyledRow = styled('div')`
   background-color: transparent;
@@ -83,9 +85,9 @@ export const TableHeader = () => {
                 >
                   {t('total reward pool')}
                 </Text>
-                <SortButton scale="sm" variant="subtle" className={getSortClassName(rewardPoolSort)}>
+                {/* <SortButton scale="sm" variant="subtle" className={getSortClassName(rewardPoolSort)}>
                   <SortArrowIcon />
-                </SortButton>
+                </SortButton> */}
               </Touchable>
             </StyledCell>
             <StyledCell role="cell">
@@ -100,9 +102,9 @@ export const TableHeader = () => {
             <Text bold fontSize="12px" textAlign="right" lineHeight="24px" color="secondary" textTransform="uppercase">
               {t('Timeline')}
             </Text>
-            <SortButton scale="sm" variant="subtle" className={getSortClassName(timelineSort)}>
+            {/* <SortButton scale="sm" variant="subtle" className={getSortClassName(timelineSort)}>
               <SortArrowIcon />
-            </SortButton>
+            </SortButton> */}
           </Touchable>
         </StyledCell>
         <StyledCell role="cell" />
