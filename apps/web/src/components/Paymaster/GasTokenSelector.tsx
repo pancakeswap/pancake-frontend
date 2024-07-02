@@ -171,7 +171,7 @@ export const GasTokenSelector = ({ trade }: GasTokenSelectorProps) => {
 
   const onSelectorButtonClick = useCallback(() => {
     setIsOpen(true)
-  }, [])
+  }, [setIsOpen])
 
   const onTokenSelected = useCallback(
     (token: Currency) => {

@@ -218,7 +218,7 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
           </Tag>
         </div>
         <RetryRisk
-          onClick={() => refetch()}
+          onClick={refetch}
           // key for resetting retry state
           key={token.chainId + token.address}
         />

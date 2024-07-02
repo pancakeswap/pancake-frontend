@@ -94,7 +94,7 @@ function OnRampCurrencyRow({
       <MenuItem
         style={style}
         className={`token-item-${key}`}
-        onClick={() => (disabled ? null : onSelect())}
+        onClick={disabled ? undefined : onSelect}
         disabled={disabled}
         selected={otherSelected}
       >
