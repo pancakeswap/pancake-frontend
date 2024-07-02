@@ -75,7 +75,7 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
       () =>
         isMMOrder(order)
           ? mmComputeTradePriceBreakdownWithSmartRouter(order.trade)
-          : computeTradePriceBreakdownWithSmartRouter(isXOrder(order) ? order.ammTrade : order?.trade),
+          : computeTradePriceBreakdownWithSmartRouter(isXOrder(order) ? undefined : order?.trade),
       [order],
     )
 
