@@ -87,7 +87,7 @@ export const AprButton = memo(function YieldInfo({
     [apr.combinedApr, boosterMultiplier, cakeAPR, isBooster, lpAPR],
   )
 
-  const doesVaultHaveROR = ror?.sevenDayRor && ror?.earliestDayRor && ror?.earliestDayRor
+  const doesVaultHaveROR = ror?.sevenDayRor || ror?.earliestDayRor || ror?.earliestDayRor
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
@@ -156,7 +156,7 @@ export const AprButton = memo(function YieldInfo({
               <Text
                 display="inline-block"
                 style={{ fontWeight: 800 }}
-                color={ror?.sevenDayRor && ror?.sevenDayRor > 0 ? theme.colors.success : theme.colors.failure}
+                color={ror?.thirtyDayRor && ror?.thirtyDayRor > 0 ? theme.colors.success : theme.colors.failure}
               >
                 {getFixedDecimals(ror?.thirtyDayRor)}%
               </Text>
@@ -170,7 +170,7 @@ export const AprButton = memo(function YieldInfo({
               <Text
                 display="inline-block"
                 style={{ fontWeight: 800 }}
-                color={ror?.sevenDayRor && ror?.sevenDayRor > 0 ? theme.colors.success : theme.colors.failure}
+                color={ror?.earliestDayRor && ror?.earliestDayRor > 0 ? theme.colors.success : theme.colors.failure}
               >
                 {getFixedDecimals(ror?.earliestDayRor)}%
               </Text>
