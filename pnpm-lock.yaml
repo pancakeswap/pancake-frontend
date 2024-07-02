@@ -974,9 +974,6 @@ importers:
       core-js:
         specifier: ^3.37.0
         version: 3.37.0
-      crypto-js:
-        specifier: ^4.2.0
-        version: 4.2.0
       d3:
         specifier: ^7.8.2
         version: 7.8.5
@@ -18342,10 +18339,6 @@ packages:
       randombytes: 2.1.0
       randomfill: 1.0.4
     dev: true
-
-  /crypto-js@4.2.0:
-    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
-    dev: false
 
   /crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
