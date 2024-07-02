@@ -1,4 +1,4 @@
-import crypto from 'crypto-js'
+import crypto from 'crypto'
 import OAuth from 'oauth-1.0a'
 
 const getOAuthHeader = (
@@ -13,7 +13,7 @@ const getOAuthHeader = (
     consumer: { key: consumerKey, secret: consumerSecret },
     signature_method: 'HMAC-SHA1',
     hash_function(baseString: string, key: string) {
-      return crypto.HmacSHA1(baseString, key).toString(crypto.enc.Base64)
+      return crypto.createHmac('sha1', key).update(baseString).digest('base64')
     },
   })
 
