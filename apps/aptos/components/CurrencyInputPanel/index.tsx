@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useAccountBalance } from '@pancakeswap/awgmi'
+import { useAccount, useAccountBalance, useBalance } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { useCurrencyBalance } from 'hooks/Balances'
 import useStablePrice from 'hooks/useStablePrice'
@@ -74,7 +74,7 @@ export const CurrencyInputPanel = ({
   const isMounted = useIsMounted()
   const { t } = useTranslation()
 
-  const { data, isLoading } = useAccountBalance({
+  const { data, isLoading } = useBalance({
     address: account?.address,
     coin: currency?.wrapped?.address,
     enabled: !!currency,

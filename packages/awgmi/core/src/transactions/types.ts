@@ -1,13 +1,16 @@
 /* eslint-disable camelcase */
-import { Types } from 'aptos'
+import {
+  isUserTransactionResponse,
+  isPendingTransactionResponse,
+  Aptos,
+  WaitForTransactionOptions,
+} from '@aptos-labs/ts-sdk'
 import { ConnectorTransactionResponse } from '../connectors/index'
 
-export const isUserTransaction = (tx: Types.Transaction): tx is Types.Transaction_UserTransaction =>
-  tx.type === 'user_transaction'
+export const isUserTransaction = isUserTransactionResponse
 
-export const isPendingTransaction = (tx: Types.Transaction): tx is Types.Transaction_PendingTransaction =>
-  tx.type === 'pending_transaction'
+export const isPendingTransaction = isPendingTransactionResponse
 
 export interface TransactionResponse extends ConnectorTransactionResponse {
-  wait(opts?: { timeoutSecs?: number; checkSuccess?: boolean }): Promise<Types.Transaction>
+  wait(opts?: WaitForTransactionOptions): ReturnType<Aptos['transaction']['waitForTransaction']>
 }

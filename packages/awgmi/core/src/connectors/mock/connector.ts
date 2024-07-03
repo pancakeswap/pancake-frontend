@@ -1,7 +1,8 @@
-import { Types } from 'aptos'
+import { InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk'
+
 import { Chain } from '../../chain'
 import { Connector, ConnectorData } from '../base'
-import { Account } from '../types'
+import { Account, SignMessagePayload, SignMessageResponse } from '../types'
 import { MockProvider, MockProviderOptions } from './provider'
 
 export class MockConnector extends Connector {
@@ -22,7 +23,7 @@ export class MockConnector extends Connector {
     const provider = await this.getProvider()
 
     if (provider.onAccountChange) provider.onAccountChange(this.onAccountsChanged)
-    if (provider.onNetworkChange) provider.onNetworkChange(this.onNetworkChanged)
+    if (provider.onNetworkChange) provider.onNetworkChange(({ networkName }) => this.onNetworkChanged(networkName))
     if (provider.onDisconnect) provider.onDisconnect(this.onDisconnect)
 
     this.emit('message', { type: 'connecting' })
@@ -66,16 +67,21 @@ export class MockConnector extends Connector {
     return this.provider
   }
 
-  async signAndSubmitTransaction(transaction?: Types.TransactionPayload) {
+  async signAndSubmitTransaction(transaction?: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     if (!transaction) throw new Error('missing transaction')
     return provider?.signAndSubmitTransaction(transaction)
   }
 
-  async signTransaction(transaction?: Types.TransactionPayload): Promise<Uint8Array> {
+  async signTransaction(transaction?: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     if (!transaction) throw new Error('missing transaction')
     return provider?.signTransaction(transaction)
+  }
+
+  async signMessage(payload: SignMessagePayload): Promise<SignMessageResponse> {
+    const provider = await this.getProvider()
+    return provider?.signMessage(payload)
   }
 
   public isChainUnsupported(_networkName: string): boolean {

@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
-import { HexString } from 'aptos'
+import { HexString } from '@pancakeswap/awgmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { PoolIds } from 'config/constants/types'
 import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'

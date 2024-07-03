@@ -1,4 +1,4 @@
-import { useAccountBalance } from '@pancakeswap/awgmi'
+import { useBalance } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { RoiCalculatorModal, Text, TooltipText, useModal, useTooltip } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -51,7 +51,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const { data: userInfo } = useFarmUserInfoCache(String(pid))
-  const { data: tokenBalance = BIG_ZERO } = useAccountBalance({
+  const { data: tokenBalance = BIG_ZERO } = useBalance({
     watch: true,
     address: account,
     coin: lpAddress,

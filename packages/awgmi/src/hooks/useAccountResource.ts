@@ -1,3 +1,4 @@
+import { MoveStructId } from '@aptos-labs/ts-sdk'
 import { fetchAccountResource, FetchAccountResourceArgs, FetchAccountResourceResult } from '@pancakeswap/awgmi/core'
 import { QueryFunction, useQuery } from '@tanstack/react-query'
 // import { QueryConfig, QueryFunctionArgs } from '../types'
@@ -23,7 +24,7 @@ export const queryKey = ({
 }: {
   networkName?: string
   address?: string
-  resourceType?: string
+  resourceType?: MoveStructId
 }) => [{ entity: 'accountResource', networkName, address, resourceType }] as const
 
 type QueryKey = ReturnType<typeof queryKey>

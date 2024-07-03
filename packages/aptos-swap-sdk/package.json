@@ -34,9 +34,10 @@
     "toformat": "^2.0.0"
   },
   "peerDependencies": {
-    "aptos": "1.x"
+    "@aptos-labs/ts-sdk": "1.x"
   },
   "devDependencies": {
+    "@aptos-labs/ts-sdk": "1.12.2",
     "@types/big.js": "^4.0.5",
     "tsup": "^6.7.0"
   },

@@ -1,7 +1,7 @@
 // most of the code is duplicated, let's refactor it later
 
 import { ChainId } from '@pancakeswap/aptos-swap-sdk'
-import { HexString } from 'aptos'
+import { HexString } from '@pancakeswap/awgmi'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS, WARNING_LIST_URLS } from 'config/constants/lists'
 import { atom, useAtomValue } from 'jotai'
 import fromPairs from 'lodash/fromPairs'

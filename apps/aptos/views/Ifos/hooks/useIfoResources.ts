@@ -1,5 +1,5 @@
 import { useAccountResources } from '@pancakeswap/awgmi'
-import { TxnBuilderTypes, TypeTagParser } from 'aptos'
+import { parseTypeTag } from '@aptos-labs/ts-sdk'
 import splitTypeTag from 'utils/splitTypeTag'
 import {
   IFO_ADDRESS,
@@ -47,18 +47,19 @@ export const useIfoResourcesListByUserInfoType = (userInfoTypes?: string[]) => {
         })
 
         if (foundType) {
-          const parsedTypeTag = new TypeTagParser(it.type).parseTypeTag() as TxnBuilderTypes.TypeTagStruct
+          const parsedTypeTag = parseTypeTag(it.type)
+          if (parsedTypeTag.isStruct()) {
+            const key = parsedTypeTag.value.name.identifier
 
-          const key = parsedTypeTag.value.name.value
+            res[key] = it
 
-          res[key] = it
-
-          resourcesList = {
-            ...resourcesList,
-            [foundType]: {
-              ...resourcesList[foundType],
-              [key]: it,
-            },
+            resourcesList = {
+              ...resourcesList,
+              [foundType]: {
+                ...resourcesList[foundType],
+                [key]: it,
+              },
+            }
           }
         }
       }
@@ -91,9 +92,11 @@ export const useIfoResources = (ifo: Ifo | undefined) => {
         if (ifoRaisingCoin === raisingCoin && ifoOfferingCoin === offeringCoin) {
           if (uid && uid !== ifoUid) break
 
-          const parsedTypeTag = new TypeTagParser(it.type).parseTypeTag() as TxnBuilderTypes.TypeTagStruct
+          const parsedTypeTag = parseTypeTag(it.type)
 
-          res[parsedTypeTag.value.name.value] = it
+          if (parsedTypeTag.isStruct()) {
+            res[parsedTypeTag.value.name.identifier] = it
+          }
         }
       }
 
