@@ -1,9 +1,9 @@
-import { Theme } from './types'
+import type { WormholeConnectTheme } from '@wormhole-foundation/wormhole-connect'
 
 function darkenColor(color: string, factor: number) {
   const match = color.match(/\w\w/g)
   if (!match) return color
-  const [r, g, b] = match.map((x) => parseInt(x, 16))
+  const [r, g, b] = match.map((x) => Number.parseInt(x, 16))
   const newR = Math.max(0, Math.min(255, Math.round(r * factor)))
   const newG = Math.max(0, Math.min(255, Math.round(g * factor)))
   const newB = Math.max(0, Math.min(255, Math.round(b * factor)))
@@ -14,14 +14,14 @@ function darkenColor(color: string, factor: number) {
 function lightenColor(color: string, factor: number) {
   const match = color.match(/\w\w/g)
   if (!match) return color
-  const [r, g, b] = match.map((x) => parseInt(x, 16))
+  const [r, g, b] = match.map((x) => Number.parseInt(x, 16))
   const newR = Math.max(0, Math.min(255, Math.round(r + (255 - r) * factor)))
   const newG = Math.max(0, Math.min(255, Math.round(g + (255 - g) * factor)))
   const newB = Math.max(0, Math.min(255, Math.round(b + (255 - b) * factor)))
   return `#${newR.toString(16)}${newG.toString(16)}${newB.toString(16)}`
 }
 
-export const wormHoleDarkTheme = {
+export const wormHoleDarkTheme: WormholeConnectTheme = {
   primary: {
     '50': lightenColor('#27262c', 0.9),
     '100': lightenColor('#27262c', 0.8),
@@ -55,7 +55,7 @@ export const wormHoleDarkTheme = {
     A700: lightenColor('#372f46', 0.2),
   },
   divider: '#383241',
-  background: { default: 'rgb(53,54,88)', paper: '27262c' },
+  background: { default: 'rgb(53,54,88)' },
   text: { primary: '#ffffff', secondary: '#b8acd2' },
   error: {
     '50': lightenColor('#ED4B9E', 0.9),
@@ -130,14 +130,15 @@ export const wormHoleDarkTheme = {
     actionText: '#27262c',
     hover: '#53DEE9',
   },
-  options: { hover: '#3c3742', select: '#372f46' },
-  card: { background: '#27262c', secondary: '#372f46', elevation: '5px 5px 15px 5px rgb(33,34,68)' },
+  options: { hover: '#3c3742', select: 'rgb(83,84,118, 0.3)' },
+  card: { background: '#27262c', secondary: 'rgb(93,94,128, 0.3)', elevation: '5px 5px 15px 5px rgb(33,34,68)' },
   popover: { background: '#27262c', secondary: '#372f46', elevation: '5px 5px 15px 5px rgb(33,34,68)' },
   modal: { background: 'rgb(53,54,88)' },
   font: { primary: 'Kanit', header: 'Kanit' },
+  mode: 'dark',
 }
 
-export const wormHoleLightTheme = {
+export const wormHoleLightTheme: WormholeConnectTheme = {
   primary: {
     '50': '#161718',
     '100': '#2d2e30',
@@ -171,7 +172,7 @@ export const wormHoleLightTheme = {
     A700: lightenColor('#edeaf4', 0.2),
   },
   divider: '#E7E3EB',
-  background: { default: 'rgb(233,247,255)', paper: 'rgb(53,54,88)' },
+  background: { default: 'rgb(233,247,255)' },
   text: { primary: '#280D5F', secondary: '#7A6EAA' },
   error: {
     '50': lightenColor('#ED4B9E', 0.9),
@@ -246,11 +247,12 @@ export const wormHoleLightTheme = {
     actionText: '#ffffff',
     hover: '#53DEE9',
   },
-  options: { hover: '#edeaf4', select: '#ffffff' },
+  options: { hover: '#edeaf4', select: 'rgb(193,207,215, 0.3)' },
   card: { background: '#edeaf4', secondary: '#ffffff', elevation: '5px 5px 10px 5px #CCD2E7' },
   popover: { background: '#edeaf4', secondary: '#ffffff', elevation: '5px 5px 10px 5px #CCD2E7' },
   modal: { background: 'rgb(233,247,255)' },
   font: { primary: 'Kanit', header: 'Kanit' },
+  mode: 'light',
 }
 
 enum Modes {
@@ -258,13 +260,7 @@ enum Modes {
   dark = 'dark',
 }
 
-export const Themes: { [mode in Modes]: { mode: 'light' | 'dark'; customTheme: Theme } } = {
-  light: {
-    mode: 'light',
-    customTheme: wormHoleLightTheme,
-  },
-  dark: {
-    mode: 'dark',
-    customTheme: wormHoleDarkTheme,
-  },
+export const Themes: { [mode in Modes]: WormholeConnectTheme } = {
+  light: wormHoleLightTheme,
+  dark: wormHoleDarkTheme,
 }

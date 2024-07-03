@@ -1,4 +1,4 @@
-import { Box, BoxProps } from '@pancakeswap/uikit'
+import { Box, type BoxProps } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 
 export const Container: React.FC<React.PropsWithChildren<BoxProps>> = ({ children, ...props }) => (

@@ -1,37 +1,32 @@
-import { WormholeChainIds } from '../../components/WormHole/chains'
+import { ChainId } from '@pancakeswap/chains'
 
 export const getNodeRealUrl = (chainId: number, key?: string) => {
   let host: string | null = null
 
   switch (chainId) {
-    case WormholeChainIds.ETHEREUM:
+    case ChainId.ETHEREUM:
       if (key) {
         host = `eth-mainnet.nodereal.io/v1/${key}`
       }
       break
-    case WormholeChainIds.GOERLI:
+    case ChainId.GOERLI:
       if (key) {
         host = `eth-goerli.nodereal.io/v1/${key}`
       }
       break
-    case WormholeChainIds.BSC:
+    case ChainId.BSC:
       if (key) {
         host = `bsc-mainnet.nodereal.io/v1/${key}`
       }
       break
-    case WormholeChainIds.ARBITRUM_ONE:
+    case ChainId.ARBITRUM_ONE:
       if (key) {
         host = `open-platform.nodereal.io/${key}/arbitrum-nitro`
       }
       break
-    case WormholeChainIds.BASE:
+    case ChainId.BASE:
       if (key) {
         host = `open-platform.nodereal.io/${key}/base`
-      }
-      break
-    case WormholeChainIds.SOLANA: //  sol mainnet
-      if (key) {
-        host = `open-platform.nodereal.io/${key}/solana/`
       }
       break
     default:
