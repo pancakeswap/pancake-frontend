@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Button, FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
   BannerActionContainer,
@@ -95,9 +95,13 @@ export const ZksyncAirDropBanner = () => {
                 </LinkExternalAction>
               ) : (
                 <>
-                  <LinkExternalAction color="white" href={startTradingLink} externalIcon="arrowForward">
-                    {t('Start Trading')}
-                  </LinkExternalAction>
+                  <Button
+                    onClick={() => {
+                      setIsOpen(true)
+                    }}
+                  >
+                    {t('Claim')}
+                  </Button>
                   <VerticalDivider />
                   <LinkExternalAction color="white" href={learnMoreLink}>
                     {t('Learn More')}
