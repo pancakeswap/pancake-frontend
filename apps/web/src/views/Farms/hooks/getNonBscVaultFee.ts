@@ -2,6 +2,8 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { getCrossFarmingSenderContract, getNonBscVaultContract } from 'utils/contractHelpers'
 import { Address } from 'viem'
+import { estimateFeesPerGas } from 'viem/actions'
+import { publicClient as getPublicClient } from 'utils/viem'
 
 export enum MessageTypes {
   Deposit = 0,
@@ -79,8 +81,14 @@ export const getNonBscVaultContractFee = async ({
         userAddress as Address,
         messageType,
       ])
+      const publicClient = getPublicClient({ chainId })
+      const { maxFeePerGas } = await estimateFeesPerGas(publicClient)
+      const evmGasPrice = maxFeePerGas?.toString()
+      if (!evmGasPrice) {
+        throw new Error('Missing evm gasPrice')
+      }
       const fee = msgBusFee.times(exchangeRate).div(ORACLE_PRECISION)
-      const total = new BigNumber(gasPrice).times(estimateEvmGaslimit.toString()).plus(fee)
+      const total = new BigNumber(evmGasPrice).times(estimateEvmGaslimit.toString()).plus(fee)
       return totalFee.plus(total).times(WITHDRAW_BUFFER).toFixed(0)
     }
 
