@@ -1,6 +1,6 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
 import {
   AtomBox,
   AutoRow,
@@ -18,7 +18,6 @@ import { AppBody, AppHeader } from 'components/App'
 import { LightGreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { LiquidityCardRow } from 'views/AddLiquidity/components/LiquidityCardRow'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import { RangeTag } from 'components/RangeTag'
 import { useToken } from 'hooks/Tokens'
@@ -29,8 +28,9 @@ import { useAtom } from 'jotai'
 import Image from 'next/image'
 import { useState } from 'react'
 import { unwrappedToken } from 'utils/wrappedCurrency'
-import PositionListItem from 'views/AddLiquidityV3/formViews/V3FormView/components/PoolListItem'
+import { LiquidityCardRow } from 'views/AddLiquidity/components/LiquidityCardRow'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
+import PositionListItem from 'views/AddLiquidityV3/formViews/V3FormView/components/PoolListItem'
 import { useAccount } from 'wagmi'
 import { removedPairsAtom } from './Step2'
 
@@ -107,7 +107,7 @@ export function Step4() {
         )}
       </AtomBox>
       <ModalV2 isOpen={open} closeOnOverlayClick onDismiss={() => setOpen(false)}>
-        <Modal title={t('List of removed v2 liquidity')} onDismiss={() => setOpen(false)}>
+        <Modal title={t('List of removed v2 liquidity')} headerBackground="dark" onDismiss={() => setOpen(false)}>
           <PreTitle mb="12px">{t('Previous LP')}</PreTitle>
           {removedPairsCurrentChainAsArray.map((tokenAddresses) => (
             <Flex key={tokenAddresses} alignItems="center" justifyContent="space-between" mb="8px">

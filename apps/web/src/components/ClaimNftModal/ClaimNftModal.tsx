@@ -1,7 +1,7 @@
-import { Flex, Text, Button, Modal, InjectedModalProps, useToast } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Button, Flex, InjectedModalProps, Modal, Text, useToast } from '@pancakeswap/uikit'
 import confetti from 'canvas-confetti'
 import delay from 'lodash/delay'
-import { useTranslation } from '@pancakeswap/localization'
 import { useEffect, useState } from 'react'
 
 const showConfetti = () => {
@@ -40,7 +40,7 @@ const ClaimNftModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
     delay(showConfetti, 100)
   }, [])
   return (
-    <Modal title={t('Congratulations!')} onDismiss={onDismiss}>
+    <Modal title={t('Congratulations!')} onDismiss={onDismiss} headerBackground="dark">
       <Flex flexDirection="column" alignItems="center" justifyContent="center" maxWidth="320px">
         <img
           src="/images/nfts/christmas-2021.png"

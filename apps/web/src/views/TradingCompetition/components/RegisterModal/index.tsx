@@ -1,7 +1,7 @@
-import { styled } from 'styled-components'
-import { Modal, Button, NoProfileAvatarIcon, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Button, Flex, Modal, NoProfileAvatarIcon } from '@pancakeswap/uikit'
 import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
+import { styled } from 'styled-components'
 import { CompetitionProps } from '../../types'
 import MakeProfile from './MakeProfile'
 import ReactivateProfile from './ReactivateProfile'
@@ -41,7 +41,7 @@ const RegisterModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
   }
 
   return (
-    <Modal title={t('Register')} onDismiss={onDismiss}>
+    <Modal title={t('Register')} onDismiss={onDismiss} headerBackground="dark">
       <Flex flexDirection="column" alignItems="center" maxWidth="400px">
         <AvatarWrapper>
           {profile ? <ProfileAvatarWithTeam profile={profile} /> : <StyledNoProfileAvatarIcon />}

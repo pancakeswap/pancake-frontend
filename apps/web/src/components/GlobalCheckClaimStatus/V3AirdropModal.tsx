@@ -170,7 +170,7 @@ const V3AirdropModal: React.FC = () => {
 
   return (
     <ModalV2 isOpen={show} onDismiss={() => handleCloseModal()} closeOnOverlayClick>
-      <Modal title={t('Congratulations!')}>
+      <Modal title={t('Congratulations!')} headerBackground="dark">
         <Flex
           flexDirection="column"
           alignItems="center"

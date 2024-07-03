@@ -1,12 +1,12 @@
-import { parseEther, parseUnits } from 'viem'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useTranslation } from '@pancakeswap/localization'
 import { CAKE } from '@pancakeswap/tokens'
-import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import {
   BalanceInput,
   Box,
   Button,
   Flex,
+  IfoHasVestingNotice,
   Image,
   Link,
   Modal,
@@ -15,16 +15,16 @@ import {
   TooltipText,
   useToast,
   useTooltip,
-  IfoHasVestingNotice,
 } from '@pancakeswap/uikit'
+import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useMemo, useState } from 'react'
-import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { parseEther, parseUnits } from 'viem'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
 interface Props {
@@ -143,7 +143,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
     valueWithTokenDecimals.isGreaterThan(maximumTokenEntry || new BigNumber(0))
 
   return (
-    <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
+    <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} headerBackground="dark" onDismiss={onDismiss}>
       <ModalBody maxWidth="360px">
         <Box p="2px">
           <Flex justifyContent="space-between" mb="16px">

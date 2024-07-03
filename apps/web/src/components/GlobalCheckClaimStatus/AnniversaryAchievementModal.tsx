@@ -1,18 +1,18 @@
-import { AutoRenewIcon, Box, Button, Flex, Modal, Text, ModalV2, useToast } from '@pancakeswap/uikit'
-import confetti from 'canvas-confetti'
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import delay from 'lodash/delay'
-import React, { useRef, useEffect, useState } from 'react'
-import { styled } from 'styled-components'
+import { AutoRenewIcon, Box, Button, Flex, Modal, ModalV2, Text, useToast } from '@pancakeswap/uikit'
+import confetti from 'canvas-confetti'
 import Dots from 'components/Loader/Dots'
-import { useRouter } from 'next/router'
-import { useAccount } from 'wagmi'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useAnniversaryAchievementContract } from 'hooks/useContract'
-import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useAnniversaryAchievementContract } from 'hooks/useContract'
 import { useShowOnceAnniversaryModal } from 'hooks/useShowOnceAnniversaryModal'
+import delay from 'lodash/delay'
+import { useRouter } from 'next/router'
+import React, { useEffect, useRef, useState } from 'react'
+import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
 
 const AnniversaryImage = styled.img`
   border-radius: 50%;
@@ -137,7 +137,7 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
 
   return (
     <ModalV2 isOpen={show} onDismiss={() => handleCloseModal()} closeOnOverlayClick>
-      <Modal title={t('Congratulations!')}>
+      <Modal title={t('Congratulations!')} headerBackground="dark">
         <Flex flexDirection="column" alignItems="center" justifyContent="center" maxWidth="450px">
           <Box>
             <AnniversaryImage src="/images/achievements/3-year.svg" />

@@ -25,7 +25,7 @@ export const UnsupportedModal: React.FC<React.PropsWithChildren<Props>> = ({ cur
   const unsupportedTokens: { [address: string]: Token } = useUnsupportedTokens()
 
   return (
-    <Modal title={t('Unsupported Assets')} onDismiss={onDismiss}>
+    <Modal title={t('Unsupported Assets')} headerBackground="dark" onDismiss={onDismiss}>
       <AutoColumn gap="lg">
         {tokens.map((token) => {
           return (

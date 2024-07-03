@@ -4,24 +4,24 @@ import {
   Box,
   Button,
   Flex,
+  IfoHasVestingNotice,
   Image,
   Link,
   Modal,
   ModalBody,
   Text,
-  IfoHasVestingNotice,
 } from '@pancakeswap/uikit'
 import { formatNumber, getBalanceAmount, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ConfirmButton } from 'components/ConfirmButton'
-import splitTypeTag from 'utils/splitTypeTag'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useConfirmTransaction } from 'hooks/useConfirmTransaction'
+import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 import { useMemo, useState } from 'react'
+import splitTypeTag from 'utils/splitTypeTag'
 import { ifoDeposit } from 'views/Ifos/generated/ifo'
 import { useIfoPool } from 'views/Ifos/hooks/useIfoPool'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 
 interface Props {
   poolId: PoolIds
@@ -100,7 +100,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   }, [isConfirmed, isWarning, pool, valueWithTokenDecimals])
 
   return (
-    <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
+    <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} headerBackground="dark" onDismiss={onDismiss}>
       <ModalBody maxWidth={['100%', '100%', '100%', '360px']}>
         <Box p="2px">
           {hasLimit && (

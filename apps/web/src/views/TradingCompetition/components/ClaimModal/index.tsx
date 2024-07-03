@@ -1,6 +1,6 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, Flex, Heading, Modal, Text, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useTranslation } from '@pancakeswap/localization'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
@@ -53,7 +53,7 @@ const ClaimModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
   }
 
   return (
-    <Modal title={t('Collect Winnings')} onDismiss={onDismiss}>
+    <Modal title={t('Collect Winnings')} onDismiss={onDismiss} headerBackground="dark">
       <Flex width="100%" flexDirection="column" alignItems="center" justifyContent="center" maxWidth="360px">
         <Text color="secondary" bold>
           {t('Congratulations! You won')}:

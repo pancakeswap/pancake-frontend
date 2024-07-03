@@ -11,14 +11,14 @@ import {
   useToast,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useBCakeProxyContract, useERC20 } from 'hooks/useContract'
 import { useEffect, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
-import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
 import useProxyStakedActions from './YieldBooster/hooks/useProxyStakedActions'
 
@@ -229,7 +229,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
     }
   }
   return (
-    <Modal title={t('Migrate your stakings')} width="420px" onDismiss={onDismiss}>
+    <Modal title={t('Migrate your stakings')} headerBackground="dark" width="420px" onDismiss={onDismiss}>
       {tooltipVisible && tooltip}
       <InfoBox ref={targetRef}>
         <InfoText>{t('You will need to migrate your stakings before activating yield booster for a farm')}</InfoText>

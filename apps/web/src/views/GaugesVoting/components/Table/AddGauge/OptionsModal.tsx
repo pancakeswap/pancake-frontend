@@ -193,7 +193,7 @@ export const OptionsModal: React.FC<{
 
   return (
     <ModalV2 isOpen={isOpen} onDismiss={onDismiss}>
-      <Modal title={OPTIONS[type].title} headerBackground="gradientCardHeader">
+      <Modal title={OPTIONS[type].title} headerBackground="dark">
         <FlexGap flexDirection="column" gap="8px">
           {OPTIONS[type].options.map((option) => {
             const checked = allChecks.includes(option)

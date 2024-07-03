@@ -1,6 +1,6 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
-import { ArrowForwardIcon, Button, Grid, Message, MessageText, Modal, Text, FlexGap } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { ArrowForwardIcon, Button, FlexGap, Grid, Message, MessageText, Modal, Text } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import useAuth from 'hooks/useAuth'
 import { useSessionChainId } from 'hooks/useSessionChainId'
@@ -22,7 +22,7 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
   const switchText = t('Switch to %network%', { network: currentChain.name })
 
   return (
-    <Modal title={t('You are in wrong network')} headerBackground="gradientCardHeader" onDismiss={onDismiss}>
+    <Modal title={t('You are in wrong network')} headerBackground="dark" onDismiss={onDismiss}>
       <Grid style={{ gap: '16px' }} maxWidth="336px">
         <Text>{t('This page is located for %network%.', { network: currentChain.name })}</Text>
         <Text>

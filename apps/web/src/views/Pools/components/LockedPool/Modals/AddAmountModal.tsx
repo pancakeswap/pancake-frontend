@@ -1,16 +1,16 @@
-import { useState, useCallback, useMemo, useEffect } from 'react'
-import dayjs from 'dayjs'
-import { convertTimeToMilliseconds } from 'utils/timeHelper'
-import { Modal, Box, MessageText, Message, Checkbox, Flex, Text } from '@pancakeswap/uikit'
-import _noop from 'lodash/noop'
 import { useTranslation } from '@pancakeswap/localization'
+import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
+import { Box, Checkbox, Flex, Message, MessageText, Modal, Text } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getBalanceAmount, getBalanceNumber, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import dayjs from 'dayjs'
+import useTheme from 'hooks/useTheme'
+import _noop from 'lodash/noop'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useIfoCeiling } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
-import useTheme from 'hooks/useTheme'
-import { getBalanceNumber, getDecimalAmount, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { ONE_WEEK_DEFAULT } from '@pancakeswap/pools'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { convertTimeToMilliseconds } from 'utils/timeHelper'
 import { useCheckVaultApprovalStatus } from '../../../hooks/useApprove'
 
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
@@ -147,7 +147,7 @@ const AddAmountModal: React.FC<React.PropsWithChildren<AddAmountModalProps>> = (
 
   return (
     <RoiCalculatorModalProvider lockedAmount={lockedAmount}>
-      <Modal title={t('Add CAKE')} onDismiss={onDismiss} headerBackground={theme.colors.gradientCardHeader}>
+      <Modal title={t('Add CAKE')} onDismiss={onDismiss} headerBackground={theme.colors.dark}>
         <Box mb="16px">
           <BalanceField
             stakingAddress={stakingToken.address}

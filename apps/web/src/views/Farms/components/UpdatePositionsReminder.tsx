@@ -209,7 +209,7 @@ export function UpdatePositionsReminder_() {
 
   return (
     <ModalV2 {...modal} closeOnOverlayClick>
-      <Modal title={t('Update Positions')}>
+      <Modal title={t('Update Positions')} headerBackground="dark">
         <AtomBox textAlign="center">
           <Text>
             <Trans>The followings farming positions require updates to continue earning</Trans>:

@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
-import { ModalV2, Modal, Flex, Text, Checkbox, Button, Link } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import { useAtom } from 'jotai'
 import { useTranslation } from '@pancakeswap/localization'
-import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliateExist'
+import { Button, Checkbox, Flex, Link, Modal, ModalV2, Text } from '@pancakeswap/uikit'
+import { useAtom } from 'jotai'
+import { useCallback, useEffect, useState } from 'react'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
+import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliateExist'
 import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
+import { useAccount } from 'wagmi'
 
 const showNonAffiliateModalAtom = atomWithStorageWithErrorCatch('pcs::showNonAffiliateModalAtom', true)
 
@@ -31,7 +31,12 @@ const NonAffiliateModal = () => {
 
   return (
     <ModalV2 isOpen={isOpen} closeOnOverlayClick={false}>
-      <Modal title={t('Affiliate Program Update')} maxWidth={['100%', '100%', '100%', '480px']} hideCloseButton>
+      <Modal
+        title={t('Affiliate Program Update')}
+        headerBackground="dark"
+        maxWidth={['100%', '100%', '100%', '480px']}
+        hideCloseButton
+      >
         <Flex flexDirection="column">
           <Text mb="24px">
             <Text as="span">

@@ -1,12 +1,12 @@
-import { useRef, useState, useEffect } from 'react'
-import { Modal, Flex, Button, Text, Skeleton, Box } from '@pancakeswap/uikit'
-import { StaticImageData } from 'next/dist/client/legacy/image'
-import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import MedalGold from '../pngs/medals/medal-gold.png'
-import MedalSilver from '../pngs/medals/medal-silver.png'
+import { Box, Button, Flex, Modal, Skeleton, Text } from '@pancakeswap/uikit'
+import { StaticImageData } from 'next/dist/client/legacy/image'
+import { useEffect, useRef, useState } from 'react'
+import { styled } from 'styled-components'
 import MedalBronze from '../pngs/medals/medal-bronze.png'
+import MedalGold from '../pngs/medals/medal-gold.png'
 import MedalPurple from '../pngs/medals/medal-purple.png'
+import MedalSilver from '../pngs/medals/medal-silver.png'
 import MedalTeal from '../pngs/medals/medal-teal.png'
 
 import { localiseTradingVolume } from '../helpers'
@@ -129,7 +129,7 @@ const ShareImageModal: React.FC<React.PropsWithChildren<ShareImageModalProps>> =
   }
 
   return (
-    <Modal title={t('Share Your Score')} onDismiss={onDismiss} minWidth="280px">
+    <Modal title={t('Share Your Score')} headerBackground="dark" onDismiss={onDismiss} minWidth="280px">
       <Flex flexDirection="column" alignItems="center" maxWidth="460px">
         {bgImage && profileImage ? (
           <Flex alignItems="center" justifyContent="center" minHeight="258px">
