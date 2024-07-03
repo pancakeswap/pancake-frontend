@@ -10,7 +10,10 @@ export const TokenFilter: React.FC<ITokenProps> = ({ data = [] }) => {
       style={{
         width: "273px",
       }}
-      scrollHeight="400px"
+      panelStyle={{
+        minHeight: "500px",
+      }}
+      scrollHeight="200px"
       options={data}
       isFilter
     />
