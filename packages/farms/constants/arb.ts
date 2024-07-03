@@ -40,8 +40,8 @@ export const farmsV3 = defineFarmV3Configs([
   {
     pid: 73,
     lpAddress: '0x04a35D7920f2f2fF9fAA447fF8cFaD47fc7cED2b',
-    token0: arbitrumTokens.solvBTCena,
-    token1: arbitrumTokens.solvBTC,
+    token0: arbitrumTokens.solvBTC,
+    token1: arbitrumTokens.solvBTCena,
     feeAmount: FeeAmount.LOW,
   },
   {
