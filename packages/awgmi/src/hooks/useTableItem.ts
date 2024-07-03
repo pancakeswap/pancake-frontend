@@ -1,13 +1,13 @@
 /* eslint-disable camelcase */
 import { FetchTableItemArgs, fetchTableItem } from '@pancakeswap/awgmi/core'
 import { QueryFunction, useQueries, useQuery } from '@tanstack/react-query'
-import { Types } from 'aptos'
+import { MoveResource } from '@aptos-labs/ts-sdk'
 import { useMemo } from 'react'
 
 import { QueryConfig } from '../types'
 import { useNetwork } from './useNetwork'
 
-export type FetchTableItemResult = Types.MoveResource[]
+export type FetchTableItemResult = MoveResource[]
 
 export type UseTableItemConfig<TData = unknown> = QueryConfig<FetchTableItemResult, Error, TData, QueryKey>
 
@@ -16,7 +16,9 @@ type QueryKey = ReturnType<typeof queryKey>
 export const queryKey = (params: { networkName?: string } & Partial<FetchTableItemArgs>) =>
   [{ entity: 'tableItem', ...params }] as const
 
-const queryFn: QueryFunction<FetchTableItemResult, QueryKey> = ({ queryKey: [{ networkName, handle, data }] }) => {
+const queryFn: QueryFunction<FetchTableItemResult, QueryKey> = ({
+  queryKey: [{ networkName, handle, data }],
+}): Promise<FetchTableItemResult> => {
   if (!handle || !data) throw new Error('Handle and data are required.')
 
   return fetchTableItem({ networkName, handle, data })

@@ -1,5 +1,6 @@
 import type { AptosProviderInterface, AptosProviderConfig } from '@blocto/sdk'
-import { Types } from 'aptos'
+import { Aptos, InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk'
+
 import { Chain } from '../chain'
 import {
   ChainNotConfiguredError,
@@ -10,6 +11,7 @@ import {
 import { Address } from '../types'
 import { Connector, ConnectorData, ConnectorTransactionResponse } from './base'
 import { Account, SignMessagePayload, SignMessageResponse } from './types'
+import { convertTransactionPayloadToOldFormat } from '../transactions/payloadTransformer'
 
 declare global {
   interface Window {
@@ -89,11 +91,13 @@ export class BloctoConnector extends Connector<AptosProviderInterface, Partial<A
     }
   }
 
-  async signAndSubmitTransaction(transaction?: Types.TransactionPayload): Promise<ConnectorTransactionResponse> {
+  async signAndSubmitTransaction(
+    transaction?: InputGenerateTransactionPayloadData,
+  ): Promise<ConnectorTransactionResponse> {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     try {
-      const response = await provider.signAndSubmitTransaction(transaction)
+      const response = await provider.signAndSubmitTransaction(convertTransactionPayloadToOldFormat(transaction))
       return response
     } catch (error) {
       if ((error as any)?.message === 'User declined to send the transaction') {
@@ -104,10 +108,12 @@ export class BloctoConnector extends Connector<AptosProviderInterface, Partial<A
     }
   }
 
-  async signTransaction(transaction?: Types.TransactionPayload): Promise<Uint8Array> {
+  async signTransaction(
+    transaction?: InputGenerateTransactionPayloadData,
+  ): Promise<ReturnType<Aptos['transaction']['sign']>> {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signTransaction(transaction)
+    return provider.signTransaction(convertTransactionPayloadToOldFormat(transaction))
   }
 
   async signMessage(message: SignMessagePayload): Promise<SignMessageResponse> {

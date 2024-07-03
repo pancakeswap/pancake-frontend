@@ -3,7 +3,9 @@ import { formatBigIntToFixed } from '@pancakeswap/utils/formatBalance'
 import { useMemo } from 'react'
 import CountUp from 'react-countup'
 import { Address } from 'viem'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import usePollOraclePrice from 'views/Predictions/hooks/usePollOraclePrice'
+import { usePredictionPrice } from 'views/Predictions/hooks/usePredictionPrice'
 
 interface PriceProps extends TextProps {
   displayedDecimals?: number
@@ -17,12 +19,24 @@ export const Price: React.FC<React.PropsWithChildren<PriceProps>> = ({
   galetoOracleAddress,
   ...props
 }) => {
+  const config = useConfig()
+
   const { price } = usePollOraclePrice({
     chainlinkOracleAddress,
     galetoOracleAddress,
   })
 
-  const priceAsNumber = useMemo(() => parseFloat(formatBigIntToFixed(price, 4, 8)), [price])
+  const {
+    data: { price: aiLivePrice },
+  } = usePredictionPrice({
+    currencyA: config?.token.symbol,
+    enabled: Boolean(config?.ai),
+  })
+
+  const priceAsNumber = useMemo(
+    () => (config?.ai ? aiLivePrice : parseFloat(formatBigIntToFixed(price, 4, 8))),
+    [price, aiLivePrice, config?.ai],
+  )
 
   if (!Number.isFinite(priceAsNumber)) {
     return null

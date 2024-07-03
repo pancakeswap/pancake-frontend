@@ -1,14 +1,9 @@
 import { Pair, PAIR_LP_TYPE_TAG, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useAccountResources } from '@pancakeswap/awgmi'
-import {
-  COIN_STORE_TYPE_PREFIX,
-  CoinStoreResource,
-  createAccountResourceFilter,
-  FetchAccountResourcesResult,
-  unwrapTypeFromString,
-} from '@pancakeswap/awgmi/core'
-import { PairState, usePairsFromAddresses } from 'hooks/usePairs'
+import { useAccount, useAccountBalances } from '@pancakeswap/awgmi'
+import { unwrapTypeFromString } from '@pancakeswap/awgmi/core'
 import { useMemo } from 'react'
+
+import { PairState, usePairsFromAddresses } from 'hooks/usePairs'
 
 function filterPair(v2Pairs): Pair[] {
   return v2Pairs?.length
@@ -21,29 +16,23 @@ interface LPPairsResponse {
   loading: boolean
 }
 
-const coinStoreLPfilter = createAccountResourceFilter<CoinStoreResource<typeof PAIR_LP_TYPE_TAG>>(
-  `${COIN_STORE_TYPE_PREFIX}<${PAIR_LP_TYPE_TAG}`,
-)
-
-const selector = (resource: FetchAccountResourcesResult) => {
-  return resource.filter(coinStoreLPfilter).filter(({ data }) => data.coin.value !== '0')
-}
-
 export default function useLPPairsHaveBalance(): LPPairsResponse {
   const { account } = useAccount()
 
-  const { data: v2PairsBalances, isPending } = useAccountResources({
+  const balances = useAccountBalances({
     watch: true,
     address: account?.address,
-    select: selector,
+    select: (balance) => (balance.address.includes(PAIR_LP_TYPE_TAG) && balance.value !== '0' ? balance : null),
   })
-
+  const isPending = useMemo(() => balances.some((b) => b.isPending), [balances])
   const mmV2PairsBalances = useMemo(
     () =>
-      (v2PairsBalances
-        ?.map((p) => `${PAIR_RESERVE_TYPE_TAG}<${unwrapTypeFromString(unwrapTypeFromString(p.type)!)}>`)
+      (balances
+        .map((b) =>
+          b.isSuccess && b.data ? `${PAIR_RESERVE_TYPE_TAG}<${unwrapTypeFromString(b.data.address)}>` : undefined,
+        )
         .filter(Boolean) as string[]) ?? [],
-    [v2PairsBalances],
+    [balances],
   )
 
   const v2Pairs = usePairsFromAddresses(mmV2PairsBalances)

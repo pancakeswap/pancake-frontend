@@ -194,6 +194,7 @@ export function BuyCryptoForm() {
           independentField={independentField}
           inputError={inputError}
           quotesError={quotesError}
+          loading={isLoading}
         />
 
         <Box>

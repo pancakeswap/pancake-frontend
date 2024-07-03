@@ -7,6 +7,7 @@ test('exports', () => {
       "getAccount",
       "watchAccount",
       "fetchBalance",
+      "fetchBalances",
       "connect",
       "disconnect",
       "fetchFormattedBalance",
@@ -64,6 +65,7 @@ test('exports', () => {
       "isHexStringEquals",
       "parseVmStatusError",
       "fetchAptosView",
+      "HexString",
     ]
   `)
 })

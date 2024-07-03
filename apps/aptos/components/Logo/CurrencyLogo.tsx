@@ -1,11 +1,11 @@
-import { Currency, Token, ChainId } from '@pancakeswap/aptos-swap-sdk'
+import { ChainId, Currency, Token } from '@pancakeswap/aptos-swap-sdk'
 import { APTOS_COIN } from '@pancakeswap/awgmi'
-import memoize from 'lodash/memoize'
 import { useHttpLocations } from '@pancakeswap/hooks'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import { TokenLogo } from '@pancakeswap/uikit'
+import memoize from 'lodash/memoize'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
-import { TokenLogo } from '@pancakeswap/uikit'
 import { aptosLogoClass } from './CurrencyLogo.css'
 
 const getTokenLogoURL = memoize(
@@ -70,5 +70,5 @@ export function CurrencyLogo({
     return <AptosCoinLogo size={size} style={style} />
   }
 
-  return <StyledLogo useFilledIcon size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
+  return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
 }

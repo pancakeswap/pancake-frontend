@@ -1,9 +1,11 @@
-import { Types } from 'aptos'
+import { InputGenerateTransactionOptions, InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk'
+
 import { Chain } from '../chain'
 import { Connector } from './base'
 import { ConnectorNotFoundError, UserRejectedRequestError } from '../errors'
 import { Address } from '../types'
 import { SignMessagePayload, SignMessageResponse } from './types'
+import { convertTransactionPayloadToOldFormat } from '../transactions/payloadTransformer'
 
 declare global {
   interface Window {
@@ -95,7 +97,10 @@ export class MartianConnector extends Connector<Window['martian'], MartianConnec
     }
   }
 
-  async signAndSubmitTransaction(payload: Types.TransactionPayload, options?: Types.SubmitTransactionRequest) {
+  async signAndSubmitTransaction(
+    payload: InputGenerateTransactionPayloadData,
+    options?: Partial<InputGenerateTransactionOptions>,
+  ) {
     const provider = await this.getProvider()
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()
@@ -106,7 +111,11 @@ export class MartianConnector extends Connector<Window['martian'], MartianConnec
       //
     }
 
-    const transaction = await provider.generateTransaction(account?.address || '', payload, options)
+    const transaction = await provider.generateTransaction(
+      account?.address || '',
+      convertTransactionPayloadToOldFormat(payload),
+      options,
+    )
 
     if (!transaction) throw new Error('Failed to generate transaction')
 
@@ -122,11 +131,14 @@ export class MartianConnector extends Connector<Window['martian'], MartianConnec
     }
   }
 
-  async signTransaction(payload: Types.TransactionPayload) {
+  async signTransaction(payload: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()
-    const transaction = await provider.generateTransaction(account?.address || '', payload)
+    const transaction = await provider.generateTransaction(
+      account?.address || '',
+      convertTransactionPayloadToOldFormat(payload),
+    )
     return provider.signTransaction(transaction)
   }
 

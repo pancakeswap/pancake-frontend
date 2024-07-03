@@ -2,13 +2,13 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { atomWithStorage, createJSONStorage, useReducerAtom } from 'jotai/utils'
 import {
+  TransactionReceipt,
+  TransactionType,
   addTransaction,
   checkedTransaction,
   clearAllChainTransactions,
   clearAllTransactions,
   finalizeTransaction,
-  TransactionReceipt,
-  TransactionType,
 } from './actions'
 
 const now = () => Date.now()

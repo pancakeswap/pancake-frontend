@@ -1,4 +1,4 @@
-import { useAccount, useAccountBalance, APTOS_COIN } from '@pancakeswap/awgmi'
+import { useAccount, useBalance, APTOS_COIN } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import {
@@ -30,7 +30,7 @@ const UserMenuItems = () => {
   const { hasPendingTransactions } = usePendingTransactions()
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
   const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
-  const { data } = useAccountBalance({ address: account?.address, coin: APTOS_COIN })
+  const { data } = useBalance({ address: account?.address, coin: APTOS_COIN })
   const hasLowNativeBalance = data?.formatted && Number(data.formatted) <= LOW_APT
 
   return (

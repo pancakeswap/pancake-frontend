@@ -15,8 +15,8 @@ const RoundResult: React.FC<React.PropsWithChildren<RoundResultProps>> = ({
   children,
   ...props
 }) => {
-  const { lockPrice, closePrice, totalAmount } = round
-  const betPosition = getRoundPosition(lockPrice, closePrice)
+  const { lockPrice, closePrice, AIPrice, totalAmount } = round
+  const betPosition = getRoundPosition(lockPrice, closePrice) // Need to show UP/DOWN and not related to AI's bet
   const { t } = useTranslation()
 
   return (
@@ -29,7 +29,7 @@ const RoundResult: React.FC<React.PropsWithChildren<RoundResultProps>> = ({
           {t('Cancelled')}
         </Text>
       ) : (
-        <RoundPrice lockPrice={lockPrice} closePrice={closePrice} />
+        <RoundPrice lockPrice={lockPrice} closePrice={closePrice} AIPrice={AIPrice} />
       )}
       {lockPrice ? <LockPriceRow lockPrice={lockPrice} /> : null}
       <PrizePoolRow totalAmount={totalAmount} />

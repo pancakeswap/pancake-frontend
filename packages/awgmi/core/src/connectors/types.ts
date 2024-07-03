@@ -1,4 +1,9 @@
-import { AptosClient, Types } from 'aptos'
+import {
+  Aptos as AptosSDK,
+  InputGenerateTransactionOptions,
+  InputGenerateTransactionPayloadData,
+} from '@aptos-labs/ts-sdk'
+
 import { Address } from '../types'
 
 // https://aptos.dev/guides/building-your-own-wallet/#dapp-api
@@ -35,11 +40,13 @@ export interface Aptos {
   isConnected(): Promise<boolean>
   network(): Promise<string>
   signAndSubmitTransaction(
-    transaction: Types.TransactionPayload,
-    options?: Partial<Types.SubmitTransactionRequest>,
-  ): ReturnType<AptosClient['submitTransaction']>
+    transaction: InputGenerateTransactionPayloadData,
+    options?: Partial<InputGenerateTransactionOptions>,
+  ): ReturnType<AptosSDK['signAndSubmitTransaction']>
   signMessage(message?: SignMessagePayload): Promise<SignMessageResponse>
-  signTransaction(transaction: Types.TransactionPayload): ReturnType<AptosClient['signTransaction']>
+  signTransaction(
+    transaction: InputGenerateTransactionPayloadData,
+  ): Promise<ReturnType<AptosSDK['transaction']['sign']>>
   on?: any
   onAccountChange?(listener: (account: Account) => void): void
   onNetworkChange?(listener: (network: { networkName: string }) => void): void

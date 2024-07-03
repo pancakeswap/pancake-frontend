@@ -2,6 +2,7 @@ import { wrapCoinInfoTypeTag } from './coinInfo'
 import { getProvider } from '../providers'
 import { APT, APTOS_COIN } from '../constants'
 import { isAccountAddress, isHexStringEquals } from '../utils'
+import { fetchAptosView } from '../view/fetchAptosView'
 
 export type FetchCoinArgs = {
   /** Network name to use for provider */
@@ -44,14 +45,27 @@ export async function fetchCoin({ networkName, coin }: FetchCoinArgs): Promise<F
   if (coin && !isHexStringEquals(coin, APTOS_COIN)) {
     const [coinAccountAddress] = coin.split('::')
     if (isAccountAddress(coinAccountAddress)) {
-      const coinResource = await provider.getAccountResource(coinAccountAddress, wrapCoinInfoTypeTag(coin))
+      const [coinResource, coinSupply] = await Promise.all([
+        provider.getAccountResource({
+          accountAddress: coinAccountAddress,
+          resourceType: wrapCoinInfoTypeTag(coin),
+        }),
+        fetchAptosView({
+          networkName,
+          params: {
+            typeArguments: [coin],
+            function: '0x1::coin::supply',
+            functionArguments: [],
+          },
+        }),
+      ])
 
-      const { decimals = 18, symbol, name, supply: _supply } = coinResource.data as CoinResourceResponse
+      const { decimals = 18, symbol, name } = coinResource as CoinResourceResponse
 
       let supply: string | undefined
 
-      if (_supply?.vec?.[0]?.integer?.vec?.[0]?.value) {
-        supply = _supply?.vec?.[0]?.integer?.vec?.[0]?.value
+      if (coinSupply?.[0]?.vec?.[0]) {
+        supply = coinSupply?.[0]?.vec?.[0]
       }
 
       return {

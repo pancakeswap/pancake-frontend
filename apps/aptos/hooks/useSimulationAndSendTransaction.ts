@@ -20,9 +20,9 @@ export default function useSimulationAndSendTransaction() {
       try {
         results = await simulateTransactionAsync({
           payload,
-          options: {
+          transactionBuildOptions: {
             // only use for simulation
-            expiration_timestamp_secs: Math.floor(getNow() / 1000 + 5000).toString(),
+            expireTimestamp: Math.floor(getNow() / 1000 + 5000),
           },
         })
       } catch (error) {

@@ -7,7 +7,7 @@ export const ifos: BaseIfoConfig[] = [
   {
     id: 'lista',
     address: '0x232c577a3A9c4ecbeeb213E1eb5519cB0C2FDb0F',
-    isActive: true,
+    isActive: false,
     cIFO: false,
     name: 'LISTA',
     plannedStartTime: 1718789400, // 19 June 09:30 UTC

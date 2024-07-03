@@ -133,6 +133,7 @@
     "framer-motion": "10.16.4",
     "lightweight-charts": "^4.0.1",
     "lodash": "^4.17.20",
+    "primereact": "^10.6.6",
     "react-popper": "^2.3.0",
     "sonner": "^1.2.4",
     "styled-system": "^5.1.5",

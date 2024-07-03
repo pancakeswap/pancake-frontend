@@ -1,9 +1,11 @@
-import { Types } from 'aptos'
+import { Aptos, InputGenerateTransactionOptions, InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk'
+
 import { Chain } from '../chain'
 import { ConnectorNotFoundError, UserRejectedRequestError } from '../errors'
 import { Address } from '../types'
 import { Connector } from './base'
 import { SignMessagePayload, SignMessageResponse } from './types'
+import { convertTransactionPayloadToOldFormat } from '../transactions/payloadTransformer'
 
 type NetworkInfo = {
   api: string
@@ -18,16 +20,19 @@ declare global {
       account(): Promise<Address>
       publicKey(): Promise<string>
       signAndSubmit(
-        transaction: Types.TransactionPayload,
+        transaction: InputGenerateTransactionPayloadData,
         options?: any,
       ): Promise<{
         success: boolean
         result: {
-          hash: Types.HexEncodedBytes
+          hash: string
         }
       }>
       isConnected(): Promise<boolean>
-      signTransaction(transaction: Types.TransactionPayload, options?: any): Promise<Uint8Array>
+      signTransaction(
+        transaction: InputGenerateTransactionPayloadData,
+        options?: any,
+      ): Promise<ReturnType<Aptos['transaction']['sign']>>
       signMessage(message: SignMessagePayload): Promise<{
         success: boolean
         result: SignMessageResponse
@@ -115,14 +120,17 @@ export class PontemConnector extends Connector<Window['pontem']> {
     }
   }
 
-  async signAndSubmitTransaction(payload: Types.TransactionPayload, options?: Types.SubmitTransactionRequest) {
+  async signAndSubmitTransaction(
+    payload: InputGenerateTransactionPayloadData,
+    options?: Partial<InputGenerateTransactionOptions>,
+  ) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
 
     let response
 
     try {
-      response = await provider.signAndSubmit(payload, options)
+      response = await provider.signAndSubmit(convertTransactionPayloadToOldFormat(payload) as any, options)
     } catch (error) {
       if ((error as any)?.code === 1002) {
         throw new UserRejectedRequestError(error)
@@ -135,10 +143,10 @@ export class PontemConnector extends Connector<Window['pontem']> {
     return response.result
   }
 
-  async signTransaction(payload: Types.TransactionPayload) {
+  async signTransaction(payload: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signTransaction(payload)
+    return provider.signTransaction(convertTransactionPayloadToOldFormat(payload) as any)
   }
 
   async signMessage(message: SignMessagePayload): Promise<SignMessageResponse> {

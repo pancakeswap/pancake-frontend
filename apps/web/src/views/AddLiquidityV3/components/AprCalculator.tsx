@@ -1,6 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Price, Token, ZERO } from '@pancakeswap/sdk'
-import { CalculateIcon, Flex, IconButton, QuestionHelper, RocketIcon, Text, TooltipText } from '@pancakeswap/uikit'
+import {
+  CalculateIcon,
+  Flex,
+  IconButton,
+  PairDataTimeWindowEnum,
+  QuestionHelper,
+  RocketIcon,
+  Text,
+  TooltipText,
+} from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { formatPrice } from '@pancakeswap/utils/formatFractions'
 import { FeeCalculator, Pool, encodeSqrtRatioX96, isPoolTickInRange, parseProtocolFees } from '@pancakeswap/v3-sdk'
@@ -72,7 +81,7 @@ export function AprCalculator({
 }: Props) {
   const { t } = useTranslation()
   const [isOpen, setOpen] = useState(false)
-  const [priceSpan, setPriceSpan] = useState(0)
+  const [priceSpan, setPriceSpan] = useState(PairDataTimeWindowEnum.DAY)
   const { data: farm } = useFarm({ currencyA: baseCurrency, currencyB: quoteCurrency, feeAmount })
   const cakePrice = useCakePrice()
 

@@ -21,6 +21,7 @@ test('exports', () => {
       "isStructTag",
       "isUserTransaction",
       "parseVmStatusError",
+      "HexString",
       "createClient",
       "Context",
       "AwgmiConfig",

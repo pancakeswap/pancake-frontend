@@ -5,6 +5,7 @@ import { staticThirdPartyNews } from '../config/blog/staticThirdPartyNews'
 
 const LIMIT = 50
 const FEATURED_IDS = [2505, 2506, 2509]
+const FEATURED_STATIC_NEWS_ID = -2
 
 export const useV4Featured = (): AllArticleType => {
   const { data: articlesData, isPending } = useQuery({
@@ -43,17 +44,20 @@ export const useV4Featured = (): AllArticleType => {
     refetchOnReconnect: false,
   })
 
+  const staticNewsItem = staticThirdPartyNews.find((item) => item.id === FEATURED_STATIC_NEWS_ID)
+  const finalArticlesData = {
+    data: [...(staticNewsItem ? [staticNewsItem] : []), ...(articlesData?.data || [])],
+    pagination: articlesData?.pagination || {
+      page: 0,
+      pageSize: 0,
+      pageCount: 0,
+      total: 0,
+    },
+  }
+
   return {
     isFetching: isPending,
-    articlesData: articlesData ?? {
-      data: [],
-      pagination: {
-        page: 0,
-        pageSize: 0,
-        pageCount: 0,
-        total: 0,
-      },
-    },
+    articlesData: finalArticlesData,
   }
 }
 

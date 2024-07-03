@@ -1,8 +1,10 @@
-import { Types } from 'aptos'
+import { InputGenerateTransactionOptions, InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk'
+
 import { Chain } from '../chain'
 import { ConnectorNotFoundError, ConnectorUnauthorizedError, UserRejectedRequestError } from '../errors'
 import { Connector, ConnectorTransactionResponse } from './base'
 import { SignMessagePayload, SignMessageResponse } from './types'
+import { convertTransactionPayloadToOldFormat } from '../transactions/payloadTransformer'
 
 declare global {
   interface Window {
@@ -97,23 +99,26 @@ export class FewchaConnector extends Connector {
   }
 
   async signAndSubmitTransaction(
-    payload: Types.TransactionPayload,
-    options?: Types.SubmitTransactionRequest,
+    payload: InputGenerateTransactionPayloadData,
+    options?: Partial<InputGenerateTransactionOptions>,
   ): Promise<ConnectorTransactionResponse> {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
 
-    const generatedTx = await methodWrapper(provider.generateTransaction)(payload, options)
+    const generatedTx = await methodWrapper(provider.generateTransaction)(
+      convertTransactionPayloadToOldFormat(payload),
+      options,
+    )
 
     const hash = await methodWrapper(provider.signAndSubmitTransaction)(generatedTx)
 
     return { hash }
   }
 
-  async signTransaction(payload: Types.TransactionPayload) {
+  async signTransaction(payload: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    const transaction = await methodWrapper(provider.generateTransaction)(payload)
+    const transaction = await methodWrapper(provider.generateTransaction)(convertTransactionPayloadToOldFormat(payload))
     return provider.signTransaction(transaction)
   }
 
