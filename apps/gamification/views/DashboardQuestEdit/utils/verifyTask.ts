@@ -18,7 +18,7 @@ export const verifyTask = (task: TaskConfigType) => {
   switch (task.taskType as TaskType) {
     case TaskType.MAKE_A_SWAP:
     case TaskType.HOLD_A_TOKEN:
-      return validateNumber((task as TaskSwapConfig | TaskHoldTokenConfig).minAmount)
+      return !validateNumber((task as TaskSwapConfig | TaskHoldTokenConfig).minAmount)
     case TaskType.ADD_LIQUIDITY:
       return (
         !validateLpAddress((task as TaskLiquidityConfig).lpAddress) &&
