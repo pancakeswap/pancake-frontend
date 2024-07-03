@@ -13,7 +13,9 @@ export const SNAPSHOT_HUB_API = `${SNAPSHOT_BASE_URL}/api/message`
 export const GRAPH_API_POTTERY = `${THE_GRAPH_PROXY_API}/pottery`
 // export const ONRAMP_API_BASE_URL = 'https://pcs-onramp-api.com'
 // export const ONRAMP_API_BASE_URL = 'https://onramp2-api.pancakeswap.com'
-export const ONRAMP_API_BASE_URL = 'https://monkfish-app-s4mda.ondigitalocean.app'
+// export const ONRAMP_API_BASE_URL = 'https://monkfish-app-s4mda.ondigitalocean.app'
+export const ONRAMP_API_BASE_URL = 'http://localhost:8083'
+
 export const TRANSAK_API_BASE_URL = 'https://api-stg.transak.com/api/v1'
 export const MOONPAY_BASE_URL = 'https://api.moonpay.com'
 export const NOTIFICATION_HUB_BASE_URL = 'https://notification-hub.pancakeswap.com'
@@ -98,7 +100,3 @@ export const MERCURYO_WIDGET_URL =
     : 'https://widget.mercuryo.io/embed.2.0.js'
 
 export const WALLET_API = 'https://wallet-api.pancakeswap.com'
-
-export const BINANCE_DATA_API = 'https://data-api.binance.vision/api'
-
-export const PREDICTION_PRICE_API = '/api/prediction/price'

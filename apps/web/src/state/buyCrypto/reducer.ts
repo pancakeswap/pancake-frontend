@@ -1,16 +1,25 @@
 import { createReducer, type ActionReducerMapBuilder } from '@reduxjs/toolkit'
 import { atomWithReducer } from 'jotai/utils'
+import type { ONRAMP_PROVIDERS } from 'views/BuyCrypto/constants'
 import {
   Field,
   replaceBuyCryptoState,
   resetBuyCryptoState,
   selectCurrency,
+  setBlockedProviders,
   switchCurrencies,
   typeInput,
 } from './actions'
 
+export type ProviderAvailabilities = { [provider in keyof typeof ONRAMP_PROVIDERS]: boolean }
+
+export interface ProviderAvailabilititProps {
+  providerAvailabilities: ProviderAvailabilities
+}
+
 export interface BuyCryptoState {
   readonly typedValue: string | undefined
+  readonly blockedProviders: ProviderAvailabilities
   readonly independentField: Field
   readonly [Field.INPUT]: {
     readonly currencyId: string | undefined
@@ -23,7 +32,7 @@ export interface BuyCryptoState {
 const initialState: BuyCryptoState = {
   typedValue: '',
   independentField: Field.INPUT,
-
+  blockedProviders: {} as ProviderAvailabilities,
   [Field.INPUT]: {
     currencyId: '',
   },
@@ -62,11 +71,15 @@ export const reducer = createReducer<BuyCryptoState>(
           [field]: { currencyId },
         }
       })
-      .addCase(replaceBuyCryptoState, (state, { payload: { typedValue, inputCurrencyId, outputCurrencyId } }) => {
-        state[Field.INPUT].currencyId = inputCurrencyId
-        state[Field.OUTPUT].currencyId = outputCurrencyId
-        state.typedValue = typedValue
-      })
+      .addCase(
+        replaceBuyCryptoState,
+        (state, { payload: { typedValue, inputCurrencyId, outputCurrencyId, blockedProviders } }) => {
+          state[Field.INPUT].currencyId = inputCurrencyId
+          state[Field.OUTPUT].currencyId = outputCurrencyId
+          state.typedValue = typedValue
+          state.blockedProviders = blockedProviders
+        },
+      )
       .addCase(switchCurrencies, (state) => {
         return {
           ...state,
@@ -74,6 +87,12 @@ export const reducer = createReducer<BuyCryptoState>(
           independentField: state.independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT,
           [Field.INPUT]: { currencyId: state[Field.OUTPUT].currencyId },
           [Field.OUTPUT]: { currencyId: state[Field.INPUT].currencyId },
+        }
+      })
+      .addCase(setBlockedProviders, (state, { payload: { providers } }) => {
+        return {
+          ...state,
+          blockedProviders: providers,
         }
       })
   },

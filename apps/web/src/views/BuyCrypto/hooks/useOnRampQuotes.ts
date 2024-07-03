@@ -1,6 +1,6 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import { getNetworkDisplay, type ONRAMP_PROVIDERS } from '../constants'
+import { useBuyCryptoState } from 'state/buyCrypto/hooks'
 import {
   createQueryKey,
   type Evaluate,
@@ -16,7 +16,7 @@ const getOnRampQuotesQueryKey = createQueryKey<'fetch-onramp-quotes', [ExactPart
 
 type GetOnRampQuotesQueryKey = ReturnType<typeof getOnRampQuotesQueryKey>
 
-type GetOnRampQuoteReturnType = { quotes: OnRampProviderQuote[]; quotesError: string | undefined }
+type GetOnRampQuoteReturnType = { quotes: OnRampProviderQuote[] }
 
 export type UseOnRampQuotesReturnType<selectData = GetOnRampQuoteReturnType> = UseQueryResult<selectData, Error>
 
@@ -29,7 +29,7 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
   parameters: UseOnRampQuotesParameters<selectData>,
 ) => {
   const { fiatAmount, enabled, cryptoCurrency, fiatCurrency, network, onRampUnit, ...query } = parameters
-
+  const { blockedProviders } = useBuyCryptoState()
   return useQuery({
     ...query,
     queryKey: getOnRampQuotesQueryKey([
@@ -55,12 +55,8 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         network,
         onRampUnit,
       })
-      const quotes = providerQuotes.filter((q) => Boolean(q.quote !== 0)).sort((a, b) => b.quote - a.quote)
-
-      const networkDisplay = getNetworkDisplay(network)
-      const error =
-        providerQuotes.length === 0 ? `No quotes available for ${cryptoCurrency} on ${networkDisplay}` : undefined
-      return { quotes, quotesError: error }
+      const quotes = providerQuotes.filter((q) => blockedProviders[q.provider])
+      return { quotes }
     },
   })
 }
@@ -78,19 +74,6 @@ async function fetchProviderQuotes(payload: OnRampQuotesPayload): Promise<OnRamp
       body: JSON.stringify(payload),
     },
   )
-  const result = await response.json()
-  return result.result
-}
-
-export async function fetchProviderAvailabilities(): Promise<{ [provider in keyof typeof ONRAMP_PROVIDERS]: boolean }> {
-  // Fetch data from endpoint 1
-  const response = await fetch(`${ONRAMP_API_BASE_URL}/fetch-provider-availability`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-  })
   const result = await response.json()
   return result.result
 }
