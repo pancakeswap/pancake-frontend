@@ -12,7 +12,7 @@ import { checkIsIOS } from '../hooks/useIsIOS'
 import { SlideSvgDark, SlideSvgLight } from './SlideSvg'
 
 const BgWrapper = styled.div`
-  z-index: 1;
+  z-index: 0;
   overflow: hidden;
   position: absolute;
   width: 100%;
