@@ -34,7 +34,7 @@ export const Countdown = ({ endDateTime }: { endDateTime: number }) => {
     return null
   }
 
-  const days = isTimeEnd ? '0' : `0${countdown?.days}`
+  const days = isTimeEnd ? '0' : countdown?.days < 10 ? `0${countdown?.days}` : countdown?.days
   const hours = isTimeEnd ? '0' : countdown?.hours < 10 ? `0${countdown?.hours}` : countdown?.hours
   const minutes = isTimeEnd ? '0' : countdown?.minutes < 10 ? `0${countdown?.minutes}` : countdown?.minutes
   const seconds = isTimeEnd ? '0' : countdown?.seconds < 10 ? `0${countdown?.seconds}` : countdown?.seconds
