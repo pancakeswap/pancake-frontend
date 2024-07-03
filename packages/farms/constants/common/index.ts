@@ -58,7 +58,7 @@ export const priceHelperTokens = {
     list: [opBnbTokens.wbnb, opBnbTokens.usdt],
   },
   [ChainId.FRAX_TESTNET]: {
-    chain: 'fraxtal_testnet',
+    chain: 'holesky',
     list: [fraxTestnetTokens.wfrxeth, fraxTestnetTokens.usdc, fraxTestnetTokens.usdt],
   },
 } satisfies Record<number, PriceHelper>

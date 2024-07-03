@@ -1,8 +1,8 @@
 import { ChainId, getV3Subgraphs } from '@pancakeswap/chains'
 import { OnChainProvider, SubgraphProvider } from '@pancakeswap/smart-router/evm'
+import { GraphQLClient } from 'graphql-request'
 import { createPublicClient, http } from 'viem'
 import { bsc, bscTestnet, goerli, mainnet } from 'viem/chains'
-import { GraphQLClient } from 'graphql-request'
 
 import { SupportedChainId } from './constants'
 
@@ -67,6 +67,7 @@ export const v3SubgraphClients: Record<SupportedChainId, GraphQLClient> = {
   [ChainId.BASE_TESTNET]: new GraphQLClient(V3_SUBGRAPHS[ChainId.BASE_TESTNET], { fetch }),
   [ChainId.BASE]: new GraphQLClient(V3_SUBGRAPHS[ChainId.BASE], { fetch }),
   [ChainId.OPBNB]: new GraphQLClient(V3_SUBGRAPHS[ChainId.OPBNB], { fetch }),
+  [ChainId.FRAX_TESTNET]: new GraphQLClient(V3_SUBGRAPHS[ChainId.FRAX_TESTNET], { fetch }),
 } as const
 
 export const v3SubgraphProvider: SubgraphProvider = ({ chainId = ChainId.BSC }: { chainId?: ChainId }) => {

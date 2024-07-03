@@ -316,7 +316,7 @@ export const USDT = {
   [ChainId.ETHEREUM]: USDT_ETH,
   [ChainId.FRAX_TESTNET]: new ERC20Token(
     ChainId.FRAX_TESTNET,
-    '0x876FfDc5F2aa8C4927A0AEA52b150e112f6ddfF6',
+    '0x876ffdc5f2aa8c4927a0aea52b150e112f6ddff6',
     18,
     'TUSDT',
     'Test USDT',
