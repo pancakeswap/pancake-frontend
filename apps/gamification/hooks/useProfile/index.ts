@@ -59,15 +59,24 @@ export const useAchievementsForAddress = (address: string) => {
   }
 }
 
-export const useProfile = () => {
+export const useProfile = (): {
+  profile?: Profile
+  hasProfile: boolean
+  hasActiveProfile: boolean
+  isInitialized: boolean
+  isLoading: boolean
+  refresh: () => Promise<QueryObserverResult<GetProfileResponse | undefined | null>>
+} => {
   const { address: account } = useAccount()
   const enabled = Boolean(account)
   const { data, status, refetch } = useQuery({
-    queryKey: [account, 'profile'],
+    queryKey: [account, 'user-profile'],
+
     queryFn: () => {
       if (!account) return undefined
       return getProfile(account)
     },
+
     enabled,
     refetchOnMount: false,
     refetchOnReconnect: false,
