@@ -5,7 +5,7 @@ export const chainNames: Record<ChainId, string> = {
   [ChainId.GOERLI]: 'goerli',
   [ChainId.BSC]: 'bsc',
   [ChainId.BSC_TESTNET]: 'bscTestnet',
-  [ChainId.FRAX_TESTNET]: 'frxTestnet',
+  [ChainId.FRAX_TESTNET]: 'fraxTestnet',
   [ChainId.ARBITRUM_ONE]: 'arb',
   [ChainId.ARBITRUM_GOERLI]: 'arbGoerli',
   [ChainId.POLYGON_ZKEVM]: 'polygonZkEVM',

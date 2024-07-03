@@ -59,7 +59,7 @@ export const priceHelperTokens = {
   },
   [ChainId.FRAX_TESTNET]: {
     chain: 'fraxtal_testnet',
-    list: [fraxTestnetTokens.usdc, fraxTestnetTokens.usdt],
+    list: [fraxTestnetTokens.wfrxeth, fraxTestnetTokens.usdc, fraxTestnetTokens.usdt],
   },
 } satisfies Record<number, PriceHelper>
 

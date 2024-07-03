@@ -31,7 +31,7 @@ export const SMART_ROUTER_ADDRESSES = {
   [ChainId.GOERLI]: '0x9a489505a00cE272eAa5e07Dba6491314CaE3796',
   [ChainId.BSC]: '0x13f4EA83D0bd40E75C8222255bc855a974568Dd4',
   [ChainId.BSC_TESTNET]: '0x9a489505a00cE272eAa5e07Dba6491314CaE3796',
-  [ChainId.FRAX_TESTNET]: '0xA5b74435bA17D4BdA982a8dEbD2908226F0da5D8',
+  [ChainId.FRAX_TESTNET]: '0xA5b74435bA17D4BdA982a8dEbD2908226F0da5D8', // SmartRouter
   [ChainId.ARBITRUM_ONE]: '0x32226588378236Fd0c7c4053999F88aC0e5cAc77',
   [ChainId.ARBITRUM_GOERLI]: '0xBee35e9Cbd9595355Eaf5DE2055EF525adB41bE6',
   [ChainId.POLYGON_ZKEVM]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
@@ -103,7 +103,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     bscTokens.usdc,
   ],
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.cake, bscTestnetTokens.busd],
-  [ChainId.FRAX_TESTNET]: [fraxTestnetTokens.usdt, fraxTestnetTokens.usdc],
+  [ChainId.FRAX_TESTNET]: [fraxTestnetTokens.wfrxeth, fraxTestnetTokens.usdt, fraxTestnetTokens.usdc],
   [ChainId.ARBITRUM_ONE]: [arbitrumTokens.weth, arbitrumTokens.usdt, arbitrumTokens.usdc],
   [ChainId.ARBITRUM_GOERLI]: [arbitrumGoerliTokens.weth, arbitrumGoerliTokens.usdc],
   [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.weth, polygonZkEvmTokens.usdt, polygonZkEvmTokens.usdc],
