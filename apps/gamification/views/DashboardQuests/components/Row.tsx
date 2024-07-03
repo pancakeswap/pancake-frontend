@@ -103,7 +103,9 @@ export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
               {quest?.reward?.currency?.address ? (
                 <>
                   <TokenWithChain currency={currency} width={20} height={20} />
-                  <Text ml="8px">{`${quest.reward.totalRewardAmount} ${currency.symbol}`}</Text>
+                  <Text ml="8px">{`${Number(quest?.reward?.totalRewardAmount).toLocaleString('en-US', {
+                    maximumFractionDigits: 2,
+                  })} ${currency.symbol}`}</Text>
                 </>
               ) : (
                 <Text ml="8px">-</Text>

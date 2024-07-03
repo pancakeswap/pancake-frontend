@@ -65,7 +65,9 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({
           </Box>
           <Box m="8px 0 10px 0">
             <Text as="span" bold fontSize="24px" lineHeight="28px">
-              {Number(reward?.totalRewardAmount)}
+              {Number(reward?.totalRewardAmount).toLocaleString('en-US', {
+                maximumFractionDigits: 2,
+              })}
             </Text>
             <Text as="span" bold ml="4px" fontSize="20px" lineHeight="24px">
               {token.symbol}

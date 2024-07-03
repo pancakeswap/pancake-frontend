@@ -122,7 +122,9 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...p
                   <TokenWithChain currency={currency} width={20} height={20} />
                   <Flex ml="8px">
                     <Text bold fontSize="20px" lineHeight="24px">
-                      {quest.reward.totalRewardAmount.toFixed(0)}
+                      {Number(quest?.reward?.totalRewardAmount).toLocaleString('en-US', {
+                        maximumFractionDigits: 2,
+                      })}
                     </Text>
                     <Text bold fontSize="14px" style={{ alignSelf: 'flex-end' }} ml="2px">
                       {currency.symbol}

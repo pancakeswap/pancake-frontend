@@ -104,18 +104,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
           style={{ borderRadius: '24px' }}
           onChange={(e) => handleUrlChange(e, 'description')}
         />
-        <InputGroup
-          endIcon={
-            isAccountIdError ? (
-              <ErrorFillIcon color="failure" width={16} height={16} />
-            ) : (
-              <Box ref={targetRef} onClick={onclickOpenNewIcon}>
-                <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
-                {tooltipVisible && tooltip}
-              </Box>
-            )
-          }
-        >
+        <InputGroup endIcon={isAccountIdError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>
           <StyledInput
             value={task.accountId}
             isError={isAccountIdError}

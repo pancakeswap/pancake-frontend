@@ -36,7 +36,9 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({ reward }) => {
             </Box>
             <Box ml={['16px']}>
               <Text fontSize={['40px']} bold as="span">
-                {reward?.totalRewardAmount?.toFixed?.(0)}
+                {Number(reward?.totalRewardAmount).toLocaleString('en-US', {
+                  maximumFractionDigits: 2,
+                })}
               </Text>
               <Text textTransform="uppercase" fontSize={['24px']} bold as="span" ml="4px">
                 {currency.symbol}
