@@ -12,7 +12,7 @@ import MigrationFarmTable from '../MigrationFarmTable'
 import { V3Step1DesktopColumnSchema } from '../types'
 import { PosManagerMigrationFarmTable } from './PositionManagerTable'
 
-const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
+const MigrationFarmStep: React.FC<React.PropsWithChildren<{ step: number }>> = ({ step }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { data: farmsLP, userDataLoaded } = useFarms()
@@ -24,20 +24,18 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
 
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  const farms = farmsLP
-    .filter((farm) => farm.pid !== 0)
-    .filter((farm) => {
-      return Boolean(farm?.bCakeWrapperAddress)
-    })
+  const stakedOrHasTokenBalance = useMemo(() => {
+    const farms = farmsLP.filter((farm) => farm.pid !== 0).filter((farm) => Boolean(farm?.bCakeWrapperAddress))
 
-  const stakedOrHasTokenBalance = farms.filter((farm) => {
-    return (
-      (farm.userData &&
-        (new BigNumber(farm.userData.stakedBalance).isGreaterThan(-1) ||
-          new BigNumber(farm.userData.tokenBalance).isGreaterThan(-1))) ||
-      new BigNumber(farm.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(-1)
-    )
-  })
+    return farms.filter((farm) => {
+      return (
+        (farm.userData &&
+          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(-1) ||
+            new BigNumber(farm.userData.tokenBalance).isGreaterThan(-1))) ||
+        new BigNumber(farm.userData?.proxy?.stakedBalance ?? 0).isGreaterThan(-1)
+      )
+    })
+  }, [farmsLP])
 
   const farmsList = useCallback(
     (farmsToDisplay: DeserializedFarm[]): FarmWithStakedValue[] => {
@@ -76,7 +74,7 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
         columnSchema={V3Step1DesktopColumnSchema}
         farms={chosenFarmsMemoized}
         userDataReady={userDataReady}
-        step={2}
+        step={step}
       />
       <PosManagerMigrationFarmTable
         title={t('Position Managers')}
@@ -85,10 +83,10 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
         columnSchema={V3Step1DesktopColumnSchema}
         farms={chosenFarmsMemoized}
         userDataReady={userDataReady}
-        step={2}
+        step={step}
       />
     </>
   )
 }
 
-export default OldFarmStep1
+export default MigrationFarmStep
