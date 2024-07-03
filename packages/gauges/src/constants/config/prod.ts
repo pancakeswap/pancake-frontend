@@ -4532,4 +4532,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: ethereumTokens.blb.address,
     token1Address: ethereumTokens.weth.address,
   },
+  {
+    gid: 458,
+    pairName: 'SolvBTC.ena-SolvBTC',
+    address: '0x7C6CC4D67C920e4b86d46EA125f69b410afdaF61',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    feeTier: FeeAmount.LOW,
+    token0Address: bscTokens.solvbtc.address,
+    token1Address: bscTokens.solvBTCena.address,
+  },
 ]
