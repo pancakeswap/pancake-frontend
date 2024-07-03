@@ -19,7 +19,7 @@ const MAX_PER_PAGE = 8
 const ActivityHistory = () => {
   const { address: account } = useAccount()
   const dispatch = useAppDispatch()
-  const accountAddress = account as string
+  const accountAddress = account?.toLowerCase() as string
   const { theme } = useTheme()
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)

@@ -56,7 +56,7 @@ const ItemsConfig = [
 export const NftPage = () => {
   const [showMenu, setShowMenu] = useState(NftMenuType.Items)
   const { address: account } = useAccount()
-  const accountAddress = account as string
+  const accountAddress = account?.toLowerCase() as string
 
   const {
     profile,

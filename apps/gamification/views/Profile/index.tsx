@@ -26,7 +26,7 @@ const TabMenuWrapper = styled(Box)`
 
 const NftProfile: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   const { address: account } = useAccount()
-  const accountAddress = account as string
+  const accountAddress = account?.toLowerCase() as string
   const { t } = useTranslation()
 
   const invalidAddress = !accountAddress || safeGetAddress(accountAddress) === undefined

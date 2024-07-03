@@ -4,7 +4,7 @@ import { useAccount } from 'wagmi'
 
 export const AchievementsPage = () => {
   const { address: account } = useAccount()
-  const accountAddress = account as string
+  const accountAddress = account?.toLowerCase() as string
   const { profile } = useProfileForAddress(accountAddress)
   const { achievements, isFetching: isAchievementFetching, refresh } = useAchievementsForAddress(accountAddress)
 
