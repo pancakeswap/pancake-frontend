@@ -1,8 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency } from '@pancakeswap/sdk'
-import { CAKE, getTokensByChain } from '@pancakeswap/tokens'
+import { CAKE } from '@pancakeswap/tokens'
 import { Box, BoxProps, CalenderIcon, Card, Flex, InfoIcon, Tag, Text, useTooltip } from '@pancakeswap/uikit'
 import { TokenWithChain } from 'components/TokenWithChain'
+import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
@@ -38,6 +39,7 @@ interface QuestProps extends BoxProps {
 export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...props }) => {
   const { t } = useTranslation()
   const router = useRouter()
+  const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(quest?.reward?.currency?.network as ChainId)
 
   const handleClick = () => {
     router.push(`/quests/${quest.id}`)
@@ -69,10 +71,13 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...p
 
   const currency = useMemo((): Currency => {
     const reward = quest?.reward
-    const list = getTokensByChain(reward?.currency?.network)
-    const findToken = list.find((i) => i.address.toLowerCase() === reward?.currency?.address?.toLowerCase())
+    const findToken = tokensByChainWithNativeToken.find((i) =>
+      i.isNative
+        ? i.wrapped.address.toLowerCase() === reward?.currency?.address?.toLowerCase()
+        : i.address.toLowerCase() === reward?.currency?.address?.toLowerCase(),
+    )
     return findToken || (CAKE as any)?.[ChainId.BSC]
-  }, [quest])
+  }, [quest, tokensByChainWithNativeToken])
 
   return (
     <Box {...props} style={{ cursor: hideClick ? 'initial' : 'pointer' }} onClick={hideClick ? undefined : handleClick}>

@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency } from '@pancakeswap/sdk'
-import { CAKE, getTokensByChain } from '@pancakeswap/tokens'
+import { CAKE } from '@pancakeswap/tokens'
 import { Box, EllipsisIcon, Flex, PencilIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { TokenWithChain } from 'components/TokenWithChain'
+import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
 import { useRouter } from 'next/router'
 import { MouseEvent, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
@@ -59,6 +60,7 @@ export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const { isXxl, isDesktop } = useMatchBreakpoints()
   const [isOpen, setIsOpen] = useState(false)
+  const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(quest?.reward?.currency?.network as ChainId)
 
   const openMoreButton = (e: MouseEvent) => {
     e.preventDefault()
@@ -74,10 +76,13 @@ export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
 
   const currency = useMemo((): Currency => {
     const reward = quest?.reward
-    const list = getTokensByChain(reward?.currency?.network)
-    const findToken = list.find((i) => i.address.toLowerCase() === reward?.currency?.address?.toLowerCase())
+    const findToken = tokensByChainWithNativeToken.find((i) =>
+      i.isNative
+        ? i.wrapped.address.toLowerCase() === reward?.currency?.address?.toLowerCase()
+        : i.address.toLowerCase() === reward?.currency?.address?.toLowerCase(),
+    )
     return findToken || (CAKE as any)?.[ChainId.BSC]
-  }, [quest])
+  }, [quest, tokensByChainWithNativeToken])
 
   return (
     <StyledRow role="row">

@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
-import { CAKE, getTokensByChain } from '@pancakeswap/tokens'
+import { ChainId, Currency } from '@pancakeswap/sdk'
+import { CAKE } from '@pancakeswap/tokens'
 import { ArrowUpIcon, Box, Button, Flex, Input, Text, useModal } from '@pancakeswap/uikit'
 import { TokenWithChain } from 'components/TokenWithChain'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { AddRewardModal } from 'views/DashboardQuestEdit/components/Reward/AddRewardModal'
@@ -34,12 +35,16 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
+  const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(reward?.currency?.network as ChainId)
 
   const token = useMemo((): Currency => {
-    const list = getTokensByChain(reward?.currency?.network)
-    const findToken = list.find((i) => i.address.toLowerCase() === reward?.currency?.address?.toLowerCase())
+    const findToken = tokensByChainWithNativeToken.find((i) =>
+      i.isNative
+        ? i.wrapped.address.toLowerCase() === reward?.currency?.address?.toLowerCase()
+        : i.address.toLowerCase() === reward?.currency?.address?.toLowerCase(),
+    )
     return findToken || (CAKE as any)?.[chainId]
-  }, [chainId, reward])
+  }, [chainId, reward, tokensByChainWithNativeToken])
 
   const [onPresentWithdrawRewardModal] = useModal(
     <WithdrawRewardModal token={token} rewardAmount={Number(reward?.totalRewardAmount)} />,

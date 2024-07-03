@@ -1,7 +1,8 @@
 import { ChainId, Currency } from '@pancakeswap/sdk'
-import { CAKE, getTokensByChain } from '@pancakeswap/tokens'
+import { CAKE } from '@pancakeswap/tokens'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { TokenWithChain } from 'components/TokenWithChain'
+import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
@@ -20,11 +21,16 @@ interface RewardAmountProps {
 }
 
 export const RewardAmount: React.FC<RewardAmountProps> = ({ reward }) => {
+  const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(reward?.currency?.network as ChainId)
+
   const currency = useMemo((): Currency => {
-    const list = getTokensByChain(reward?.currency?.network)
-    const findToken = list.find((i) => i.address.toLowerCase() === reward?.currency?.address?.toLowerCase())
+    const findToken = tokensByChainWithNativeToken.find((i) =>
+      i.isNative
+        ? i.wrapped.address.toLowerCase() === reward?.currency?.address?.toLowerCase()
+        : i.address.toLowerCase() === reward?.currency?.address?.toLowerCase(),
+    )
     return findToken || (CAKE as any)?.[ChainId.BSC]
-  }, [reward])
+  }, [reward, tokensByChainWithNativeToken])
 
   return (
     <RewardAmountContainer>

@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
-import { CAKE, getTokensByChain } from '@pancakeswap/tokens'
+import { ChainId, Currency } from '@pancakeswap/sdk'
+import { CAKE } from '@pancakeswap/tokens'
 import { Box, Button, Flex, InjectedModalProps, Input, Modal, Text } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { BigNumber } from 'bignumber.js'
@@ -8,6 +8,7 @@ import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import { CurrencySearch } from 'components/SearchModal/CurrencySearch'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTokenBalance from 'hooks/useTokenBalance'
+import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
 import { useCallback, useMemo, useState } from 'react'
 import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
 
@@ -37,12 +38,16 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.currencyInput)
   const [amountOfWinnersInModal, setAmountOfWinnersInModal] = useState(0)
   const { chainId } = useActiveWeb3React()
+  const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(reward?.currency?.network as ChainId)
 
   const defaultInputCurrency = useMemo((): Currency => {
-    const list = getTokensByChain(reward?.currency?.network)
-    const findToken = list.find((i) => i.address.toLowerCase() === reward?.currency?.address?.toLowerCase())
+    const findToken = tokensByChainWithNativeToken.find((i) =>
+      i.isNative
+        ? i.wrapped.address.toLowerCase() === reward?.currency?.address?.toLowerCase()
+        : i.address.toLowerCase() === reward?.currency?.address?.toLowerCase(),
+    )
     return findToken || (CAKE as any)?.[chainId]
-  }, [chainId, reward])
+  }, [chainId, reward, tokensByChainWithNativeToken])
 
   const displayAmountOfWinnersInModal = useMemo(
     () => amountOfWinnersInModal || amountOfWinners || 0,

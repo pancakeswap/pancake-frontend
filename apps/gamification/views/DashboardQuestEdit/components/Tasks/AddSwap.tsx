@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
-import { CAKE, getTokensByChain } from '@pancakeswap/tokens'
+import { ChainId, Currency } from '@pancakeswap/sdk'
+import { CAKE } from '@pancakeswap/tokens'
 import { Button, ChevronDownIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
 import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
 import { TokenWithChain } from 'components/TokenWithChain'
+import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
 import { useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
@@ -51,11 +52,16 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
     [onTasksChange, task.sid, tasks],
   )
 
+  const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(task?.network as ChainId)
+
   const selectedCurrency = useMemo((): Currency => {
-    const list = getTokensByChain(task.network)
-    const findToken = list.find((i) => i.address.toLowerCase() === task?.tokenAddress?.toLowerCase())
+    const findToken = tokensByChainWithNativeToken.find((i) =>
+      i.isNative
+        ? i.wrapped.address.toLowerCase() === task?.tokenAddress?.toLowerCase()
+        : i.address.toLowerCase() === task?.tokenAddress?.toLowerCase(),
+    )
     return findToken || (CAKE as any)?.[task.network]
-  }, [task.network, task?.tokenAddress])
+  }, [task, tokensByChainWithNativeToken])
 
   const [onPresentCurrencyModal] = useModal(
     <CurrencySearchModal selectedCurrency={selectedCurrency} onCurrencySelect={handleCurrencySelect} />,
