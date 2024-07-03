@@ -19,6 +19,10 @@ const chains = [
   { label: "Base", value: "Base", icon: "https://assets.pancakeswap.finance/web/chains/8453.png" },
   { label: "opBNB", value: "opbnb", icon: "https://assets.pancakeswap.finance/web/chains/204.png" },
   { label: "Aptos", value: "Aptos", icon: "https://aptos.pancakeswap.finance/images/apt.png" },
+  { label: "BNB", value: "BNB", icon: "https://assets.pancakeswap.finance/web/chains/56.png" },
+  { label: "Ethereum", value: "Ethereum", icon: "https://assets.pancakeswap.finance/web/chains/1.png" },
+  { label: "Polygon zkEVM", value: "Polygon zkEVM", icon: "https://assets.pancakeswap.finance/web/chains/1101.png" },
+  { label: "zkSync Era", value: "zkSync Era", icon: "https://assets.pancakeswap.finance/web/chains/324.png" },
 ];
 
 const Title = styled.div`
@@ -38,12 +42,16 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
         <Title>MultiSelect with filter:</Title>
         <MultiSelect
           style={{
-            width: "273px",
+            width: "328px",
           }}
-          scrollHeight="400px"
+          panelStyle={{
+            minHeight: "382px",
+          }}
+          scrollHeight="382px"
           options={chains}
           defaultValue={[chains[0].value, chains[2].value]}
           isFilter
+          panelFooterTemplate={() => <span>Don’t see expected tokens?</span>}
         />
       </Column>
       <Column>
