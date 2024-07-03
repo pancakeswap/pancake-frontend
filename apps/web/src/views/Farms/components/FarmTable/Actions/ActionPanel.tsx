@@ -90,7 +90,7 @@ const Container = styled.div<{ expanded; isLastFarm }>`
           ${collapseAnimation} 300ms linear forwards
         `};
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.dropdown};
+  background: ${({ theme }) => theme.colors.farmPageBackground};
   display: flex;
   width: 100%;
   flex-direction: column-reverse;

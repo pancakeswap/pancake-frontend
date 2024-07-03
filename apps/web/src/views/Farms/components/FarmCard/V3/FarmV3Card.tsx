@@ -83,13 +83,13 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
   }, [])
   const aprTooltip = useTooltip(
     <>
-      <Text>
+      <Text color="dark">
         {t(
           'Global APR calculated using the total amount of active & staked liquidity with the pool CAKE reward emissions.',
         )}
       </Text>
       <br />
-      <Text>{t('APRs for individual positions may vary depend on their price range settings.')}</Text>
+      <Text color="dark">{t('APRs for individual positions may vary depend on their price range settings.')}</Text>
     </>,
   )
   const { tokenIds } = useUserBoostedPoolsTokenId()
@@ -127,7 +127,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
 
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>
-          <Text>{earnLabel}</Text>
+          <Text color="primary">{earnLabel}</Text>
         </Flex>
         {!account && farm.boosted && (
           <Box mt="24px" mb="16px">

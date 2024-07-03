@@ -91,8 +91,8 @@ const MerklNotice: React.FC<MerklNoticeProps> = ({
   return (
     <>
       <TooltipText ref={targetRef} display="inline">
-        <Text lineHeight={0}>
-          <InfoFilledIcon color="#6532CD" width={size} height={size} />
+        <Text color="dark" lineHeight={0}>
+          <InfoFilledIcon color="#000" width={size} height={size} />
         </Text>
       </TooltipText>
       {tooltipVisible ? tooltip : null}

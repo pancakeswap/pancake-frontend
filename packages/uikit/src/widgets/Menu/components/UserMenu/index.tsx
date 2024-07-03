@@ -3,9 +3,9 @@ import { usePopper } from "react-popper";
 import { styled } from "styled-components";
 import { Box, Flex } from "../../../../components/Box";
 import { ChevronDownIcon } from "../../../../components/Svg";
-import { UserMenuProps, variants } from "./types";
 import MenuIcon from "./MenuIcon";
 import { UserMenuItem } from "./styles";
+import { UserMenuProps, variants } from "./types";
 
 export const StyledUserMenu = styled(Flex)`
   align-items: center;
@@ -25,7 +25,7 @@ export const StyledUserMenu = styled(Flex)`
 `;
 
 export const LabelText = styled.div`
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme }) => theme.colors.primary};
   display: none;
   font-weight: 600;
 
@@ -126,7 +126,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         <LabelText title={typeof text === "string" ? text || account : account}>
           {text || (ellipsis ? accountEllipsis : account)}
         </LabelText>
-        {!disabled && <ChevronDownIcon color="text" width="24px" />}
+        {!disabled && <ChevronDownIcon color="primary" width="24px" />}
       </StyledUserMenu>
       {!disabled && (
         <Menu style={styles.popper} ref={setTooltipRef} {...attributes.popper} $isOpen={isOpen}>

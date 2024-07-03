@@ -1,45 +1,36 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/chains'
 import {
   Box,
   Flex,
   LogoutIcon,
   RefreshIcon,
-  useModal,
   UserMenu as UIKitUserMenu,
   UserMenuDivider,
   UserMenuItem,
   UserMenuVariant,
+  useModal,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Trans from 'components/Trans'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useAuth from 'hooks/useAuth'
-import NextLink from 'next/link'
-import { useEffect, useState, useCallback } from 'react'
+import { useDomainNameForAddress } from 'hooks/useDomain'
+import { useCallback, useEffect, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { usePendingTransactions } from 'state/transactions/hooks'
 import { useAccount } from 'wagmi'
-import { useDomainNameForAddress } from 'hooks/useDomain'
-import useAirdropModalStatus from 'components/GlobalCheckClaimStatus/hooks/useAirdropModalStatus'
-import ProfileUserMenuItem from './ProfileUserMenuItem'
 import WalletModal, { WalletView } from './WalletModal'
 import WalletUserMenuItem from './WalletUserMenuItem'
-import ClaimYourNFT from './ClaimYourNFT'
 
 const UserMenuItems = () => {
   const { t } = useTranslation()
-  const { chainId, isWrongNetwork } = useActiveChainId()
+  const { isWrongNetwork } = useActiveChainId()
   const { logout } = useAuth()
-  const { address: account } = useAccount()
   const { hasPendingTransactions } = usePendingTransactions()
-  const { isInitialized, isLoading, profile } = useProfile()
-  const { shouldShowModal } = useAirdropModalStatus()
 
   const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
   const [onPresentWrongNetworkModal] = useModal(<WalletModal initialView={WalletView.WRONG_NETWORK} />)
-  const hasProfile = isInitialized && !!profile
 
   const onClickWalletMenu = useCallback((): void => {
     if (isWrongNetwork) {
@@ -57,20 +48,10 @@ const UserMenuItems = () => {
         {hasPendingTransactions && <RefreshIcon spin />}
       </UserMenuItem>
       <UserMenuDivider />
-      <NextLink href={`/profile/${account?.toLowerCase()}`} passHref>
-        <UserMenuItem disabled={isWrongNetwork || chainId !== ChainId.BSC}>{t('Your NFTs')}</UserMenuItem>
-      </NextLink>
-      {shouldShowModal && <ClaimYourNFT />}
-      <ProfileUserMenuItem
-        isLoading={isLoading}
-        hasProfile={hasProfile}
-        disabled={isWrongNetwork || chainId !== ChainId.BSC}
-      />
-      <UserMenuDivider />
       <UserMenuItem as="button" onClick={logout}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           {t('Disconnect')}
-          <LogoutIcon />
+          <LogoutIcon color="primary" />
         </Flex>
       </UserMenuItem>
     </>

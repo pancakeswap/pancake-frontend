@@ -1,17 +1,17 @@
-import { ReactElement } from "react";
+import { ChainId } from "@pancakeswap/chains";
 import { useTranslation } from "@pancakeswap/localization";
-import { styled } from "styled-components";
 import {
+  FarmMultiplierInfo,
   Flex,
+  HelpIcon,
   LinkExternal,
   ScanLink,
   Skeleton,
   Text,
-  HelpIcon,
   useTooltip,
-  FarmMultiplierInfo,
 } from "@pancakeswap/uikit";
-import { ChainId } from "@pancakeswap/chains";
+import { ReactElement } from "react";
+import { styled } from "styled-components";
 
 export interface ExpandableSectionProps {
   scanAddress?: { link: string; chainId?: number; icon?: ReactElement };
@@ -93,16 +93,16 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
       )}
       <Flex justifyContent="space-between">
         <Text>{totalValueLabel || t("Staked Liquidity")}:</Text>
-        {totalValueFormatted ? <Text>{totalValueFormatted}</Text> : <Skeleton width={75} height={25} />}
+        {totalValueFormatted ? <Text color="primary">{totalValueFormatted}</Text> : <Skeleton width={75} height={25} />}
       </Flex>
       <Flex justifyContent="space-between">
         <Text>{t("Multiplier")}:</Text>
         {multiplier ? (
           <Flex>
-            <Text>{multiplier}</Text>
+            <Text color="primary">{multiplier}</Text>
             {tooltipVisible && tooltip}
             <Flex ref={targetRef}>
-              <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+              <HelpIcon ml="4px" width="20px" height="20px" color="primary" />
             </Flex>
           </Flex>
         ) : (

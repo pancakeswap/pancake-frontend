@@ -63,7 +63,9 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
       <div>
         {handleRenderFarming}
         <Row gap="sm">
-          <Text bold>{label}</Text>
+          <Text bold color="primary">
+            {label}
+          </Text>
           {merklLink ? <MerklNotice.WithTooltip hasFarm={hasBothFarmAndMerkl} merklLink={merklLink} /> : null}
         </Row>
       </div>

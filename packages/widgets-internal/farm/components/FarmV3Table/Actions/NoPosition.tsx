@@ -1,9 +1,9 @@
-import { ReactNode } from "react";
 import { useTranslation } from "@pancakeswap/localization";
+import { Button, Flex, Text } from "@pancakeswap/uikit";
+import { ReactNode } from "react";
 import { styled } from "styled-components";
-import { Text, Button, Flex } from "@pancakeswap/uikit";
 
-import { ActionTitles, ActionContent } from "./styles";
+import { ActionContent, ActionTitles } from "./styles";
 
 const ActionContainer = styled.div`
   padding: 16px;
@@ -50,7 +50,7 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<WalletNotConne
       {account && hasNoPosition ? (
         <ActionContainer>
           <ActionTitles>
-            <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+            <Text bold textTransform="uppercase" color="primary" fontSize="12px">
               {t("no position found")}
             </Text>
           </ActionTitles>

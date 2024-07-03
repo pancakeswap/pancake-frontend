@@ -1,4 +1,4 @@
-import { parseEther } from 'viem'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   ButtonMenu,
   ButtonMenuItem,
@@ -7,14 +7,14 @@ import {
   IconButton,
   InjectedModalProps,
   ModalBody,
+  ModalTitle,
   ModalWrapper,
   ModalHeader as UIKitModalHeader,
-  ModalTitle,
 } from '@pancakeswap/uikit'
-import { useAccount, useBalance } from 'wagmi'
-import { useState, useCallback } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
+import { useCallback, useState } from 'react'
 import { styled } from 'styled-components'
+import { parseEther } from 'viem'
+import { useAccount, useBalance } from 'wagmi'
 import WalletInfo from './WalletInfo'
 import WalletTransactions from './WalletTransactions'
 import WalletWrongNetwork from './WalletWrongNetwork'
@@ -32,11 +32,11 @@ interface WalletModalProps extends InjectedModalProps {
 export const LOW_NATIVE_BALANCE = parseEther('0.002', 'wei')
 
 const ModalHeader = styled(UIKitModalHeader)`
-  background: ${({ theme }) => theme.colors.gradientBubblegum};
+  background: ${({ theme }) => theme.colors.dark};
 `
 
 const Tabs = styled.div`
-  background-color: ${({ theme }) => theme.colors.dropdown};
+  background-color: ${({ theme }) => theme.colors.dark};
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   padding: 16px 24px;
 `
@@ -51,7 +51,7 @@ const TabsComponent: React.FC<React.PropsWithChildren<TabsComponentProps>> = ({ 
 
   return (
     <Tabs>
-      <ButtonMenu scale="sm" variant="subtle" onItemClick={handleClick} activeIndex={view} fullWidth>
+      <ButtonMenu scale="sm" variant="yellow" onItemClick={handleClick} activeIndex={view} fullWidth>
         <ButtonMenuItem>{t('Wallet')}</ButtonMenuItem>
         <ButtonMenuItem>{t('Transactions')}</ButtonMenuItem>
       </ButtonMenu>
@@ -77,7 +77,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
     <ModalWrapper minWidth="360px">
       <ModalHeader>
         <ModalTitle>
-          <Heading>{t('Your Wallet')}</Heading>
+          <Heading color="secondary">{t('Your Wallet')}</Heading>
         </ModalTitle>
         <IconButton variant="text" onClick={onDismiss}>
           <CloseIcon width="24px" color="text" />

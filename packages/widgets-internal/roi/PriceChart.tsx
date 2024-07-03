@@ -1,24 +1,24 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useMemo, memo } from "react";
+import { memo, useMemo } from "react";
 import { styled } from "styled-components";
 import { SpaceProps } from "styled-system";
 
 import {
-  Flex,
-  ButtonMenuItem,
-  SwapLineChart,
-  PairDataTimeWindowEnum,
   Box,
-  Text,
   BunnyKnownPlaceholder,
+  ButtonMenuItem,
+  Flex,
+  PairDataTimeWindowEnum,
+  SwapLineChart,
+  Text,
 } from "@pancakeswap/uikit";
-import { PriceData } from "./types";
 import { FullWidthButtonMenu } from "./FullWidthButtonMenu";
+import { PriceData } from "./types";
 
 const PriceDisplayContainer = styled(Flex)`
   padding: 0.25em 0.5em;
   border-radius: 16px;
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.input};
 `;
 
 interface Props {
@@ -110,7 +110,9 @@ function PriceDisplay({ title, value, ...rest }: { title?: string; value?: strin
       <Text color="secondary" textTransform="uppercase" small>
         {title}
       </Text>
-      <Text small>{value}</Text>
+      <Text small color="primary">
+        {value}
+      </Text>
     </PriceDisplayContainer>
   );
 }

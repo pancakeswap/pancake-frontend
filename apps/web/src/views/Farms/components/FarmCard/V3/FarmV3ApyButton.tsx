@@ -195,7 +195,7 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
 
   const aprTooltip = useTooltip(
     <>
-      <Text>
+      <Text color="dark">
         {t('Combined APR')}: <b>{canBoosted ? estimatedAPR : displayApr}%</b>
       </Text>
       <ul>
@@ -216,15 +216,17 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
         </li>
       </ul>
       <br />
-      <Text>
+      <Text color="dark">
         {t('Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.')}
       </Text>
       {canBoosted && (
-        <Text mt="15px">
+        <Text mt="15px" color="dark">
           {t('bCAKE only boosts Farm APR. Actual boost multiplier is subject to farm and pool conditions.')}
         </Text>
       )}
-      <Text mt="15px">{t('APRs for individual positions may vary depending on the configs.')}</Text>
+      <Text mt="15px" color="dark">
+        {t('APRs for individual positions may vary depending on the configs.')}
+      </Text>
     </>,
   )
   const existingPositionAprTooltip = useTooltip(
@@ -320,7 +322,9 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
                     </Text>
                   </>
                 )}
-                <Text style={{ textDecoration: canBoosted ? 'line-through' : 'none' }}>{displayApr}%</Text>
+                <Text style={{ textDecoration: canBoosted ? 'line-through' : 'none' }} color="primary">
+                  {displayApr}%
+                </Text>
               </Flex>
             </TooltipText>
           </FarmWidget.FarmApyButton>

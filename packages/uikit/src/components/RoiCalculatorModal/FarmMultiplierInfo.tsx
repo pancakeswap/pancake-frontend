@@ -1,5 +1,5 @@
-import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
+import { styled } from "styled-components";
 import { Link } from "../Link";
 import { Text } from "../Text";
 
@@ -25,23 +25,23 @@ export const FarmMultiplierInfo: React.FC<React.PropsWithChildren<FarmMultiplier
 
   return (
     <>
-      <Text bold>
+      <Text bold color="dark">
         {t("Farm’s CAKE Per Second:")}
         <InlineText marginLeft={2}>{farmCakePerSecond}</InlineText>
       </Text>
-      <Text bold>
+      <Text bold color="dark">
         {t("Total Multipliers:")}
         <InlineText marginLeft={2}>{totalMultipliers}</InlineText>
       </Text>
-      <Text my="24px">
+      <Text my="24px" color="dark">
         {t(
           "The Farm Multiplier represents the proportion of CAKE rewards each farm receives as a proportion of its farm group."
         )}
       </Text>
-      <Text my="24px">
+      <Text my="24px" color="dark">
         {t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
       </Text>
-      <Text>
+      <Text color="dark">
         {t("Different farm groups have different sets of multipliers.")}
         <InlineLink
           mt="8px"

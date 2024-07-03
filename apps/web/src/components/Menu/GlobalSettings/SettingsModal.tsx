@@ -342,7 +342,7 @@ function RoutingSettings() {
               <QuestionHelper
                 text={
                   <Flex>
-                    <Text mr="5px">
+                    <Text mr="5px" color="dark">
                       {t(
                         'V3 offers concentrated liquidity to provide deeper liquidity for traders with the same amount of capital, offering lower slippage and more flexible trading fee tiers.',
                       )}
@@ -366,10 +366,10 @@ function RoutingSettings() {
               <QuestionHelper
                 text={
                   <Flex flexDirection="column">
-                    <Text mr="5px">
+                    <Text mr="5px" color="dark">
                       {t('The previous V2 exchange is where a number of iconic, popular assets are traded.')}
                     </Text>
-                    <Text mr="5px" mt="1em">
+                    <Text mr="5px" mt="1em" color="dark">
                       {t('Recommend leaving this on to ensure backward compatibility.')}
                     </Text>
                   </Flex>
@@ -391,7 +391,7 @@ function RoutingSettings() {
               <QuestionHelper
                 text={
                   <Flex flexDirection="column">
-                    <Text mr="5px">
+                    <Text mr="5px" color="dark">
                       {t(
                         'StableSwap provides higher efficiency for stable or pegged assets and lower fees for trades.',
                       )}
@@ -418,8 +418,10 @@ function RoutingSettings() {
               <QuestionHelper
                 text={
                   <Flex flexDirection="column">
-                    <Text mr="5px">{t('Trade through the market makers if they provide better deal')}</Text>
-                    <Text mr="5px" mt="1em">
+                    <Text mr="5px" color="dark">
+                      {t('Trade through the market makers if they provide better deal')}
+                    </Text>
+                    <Text mr="5px" mt="1em" color="dark">
                       {t(
                         'If a trade is going through market makers, it will no longer route through any traditional AMM DEX pools.',
                       )}
@@ -462,12 +464,12 @@ function RoutingSettings() {
             <QuestionHelper
               text={
                 <Flex flexDirection="column">
-                  <Text mr="5px">
+                  <Text mr="5px" color="dark">
                     {t(
                       'Multihops enables token swaps through multiple hops between several pools to achieve the best deal.',
                     )}
                   </Text>
-                  <Text mr="5px" mt="1em">
+                  <Text mr="5px" mt="1em" color="dark">
                     {t(
                       'Turning this off will only allow direct swap, which may cause higher slippage or even fund loss.',
                     )}
@@ -493,10 +495,10 @@ function RoutingSettings() {
             <QuestionHelper
               text={
                 <Flex flexDirection="column">
-                  <Text mr="5px">
+                  <Text mr="5px" color="dark">
                     {t('Split routing enables token swaps to be broken into multiple routes to achieve the best deal.')}
                   </Text>
-                  <Text mr="5px" mt="1em">
+                  <Text mr="5px" mt="1em" color="dark">
                     {t(
                       'Turning this off will only allow a single route, which may result in low efficiency or higher slippage.',
                     )}

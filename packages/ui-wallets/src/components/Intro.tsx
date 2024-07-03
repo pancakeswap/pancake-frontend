@@ -1,11 +1,11 @@
 import { Trans } from '@pancakeswap/localization'
 import { AtomBox, Button, Heading, Image, LinkExternal, Text } from '@pancakeswap/uikit'
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import 'swiper/css'
 import 'swiper/css/autoplay'
+import { Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperClass } from 'swiper/types'
-import { Autoplay } from 'swiper/modules'
 
 const IntroSteps = [
   {
@@ -100,7 +100,7 @@ const StepIntro = ({ docLink, docText }: { docLink: string; docText: string }) =
         <StepDot place="left" active={step === 0} onClick={handleStepClick(0)} />
         <StepDot place="right" active={step === 1} onClick={handleStepClick(1)} />
       </AtomBox>
-      <Button minHeight={40} variant="subtle" external as={LinkExternal} color="backgroundAlt" href={docLink}>
+      <Button minHeight={40} color="dark" variant="primary" external as={LinkExternal} href={docLink}>
         {docText}
       </Button>
     </AtomBox>

@@ -7,7 +7,7 @@ const ReferenceElement = styled.div`
 `;
 
 const MultiplierWrapper = styled.div`
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme }) => theme.colors.primary};
   text-align: right;
   margin-right: 4px;
 
@@ -42,7 +42,7 @@ const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMulti
     <Container>
       <MultiplierWrapper>{displayMultiplier}</MultiplierWrapper>
       <ReferenceElement ref={targetRef}>
-        <HelpIcon color="textSubtle" />
+        <HelpIcon color="primary" />
       </ReferenceElement>
       {tooltipVisible && tooltip}
     </Container>

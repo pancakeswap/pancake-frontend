@@ -1,6 +1,6 @@
-import { styled } from "styled-components";
-import type {} from "csstype";
 import { Box } from "@pancakeswap/uikit";
+import type {} from "csstype";
+import { styled } from "styled-components";
 
 export const Card = styled(Box)<{
   width?: string;
@@ -17,5 +17,5 @@ export const Card = styled(Box)<{
 
 export const LightGreyCard = styled(Card)`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.input};
 `;

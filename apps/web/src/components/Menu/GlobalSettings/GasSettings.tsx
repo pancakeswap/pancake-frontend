@@ -1,7 +1,7 @@
-import { Flex, Button, Text, QuestionHelper } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Button, Flex, QuestionHelper, Text } from '@pancakeswap/uikit'
+import { GAS_PRICE, GAS_PRICE_GWEI } from 'state/types'
 import { useGasPriceManager } from 'state/user/hooks'
-import { GAS_PRICE_GWEI, GAS_PRICE } from 'state/types'
 
 const GasSettings = () => {
   const { t } = useTranslation()
@@ -14,12 +14,14 @@ const GasSettings = () => {
         <QuestionHelper
           text={
             <Flex flexDirection="column">
-              <Text>
+              <Text color="dark">
                 {t(
                   'Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.',
                 )}
               </Text>
-              <Text mt="8px">{t('Choose “Default” to use the settings from your current blockchain RPC node.')}</Text>
+              <Text mt="8px" color="dark">
+                {t('Choose “Default” to use the settings from your current blockchain RPC node.')}
+              </Text>
             </Flex>
           }
           placement="top"

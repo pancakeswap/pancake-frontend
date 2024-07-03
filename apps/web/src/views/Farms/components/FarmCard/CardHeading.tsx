@@ -71,7 +71,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
       )}
       <Flex flexDirection="column" alignItems="flex-end" width="100%">
         {isReady ? (
-          <Heading mb="4px" display="inline-flex">
+          <Heading mb="4px" display="inline-flex" color="primary">
             {lpLabel?.split(' ')?.[0] ?? ''}
             {merklLink ? (
               <Box mr="-4px" ml="4px">

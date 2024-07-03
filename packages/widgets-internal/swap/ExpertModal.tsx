@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { useTranslation } from "@pancakeswap/localization";
-import { Button, Text, Flex, Checkbox, InjectedModalProps, Modal, Message } from "@pancakeswap/uikit";
+import { Button, Checkbox, Flex, InjectedModalProps, Message, Modal, Text } from "@pancakeswap/uikit";
+import { useState } from "react";
 
 interface ExpertModalProps extends InjectedModalProps {
   setShowConfirmExpertModal: (show: boolean) => void;
@@ -22,7 +22,7 @@ export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = 
       title={t("Expert Mode")}
       onBack={() => setShowConfirmExpertModal(false)}
       onDismiss={() => setShowConfirmExpertModal(false)}
-      headerBackground="gradientCardHeader"
+      headerBackground="dark"
       width={["100%", "100%", "100%", "436px"]}
     >
       <Message variant="warning" mb="24px">

@@ -90,7 +90,7 @@ const TabContainer = ({ children, docLink, docText }: PropsWithChildren<{ docLin
       <AtomBox
         display="flex"
         position="relative"
-        background="gradientCardHeader"
+        background="tertiary"
         borderRadius="card"
         borderBottomRadius={{
           xs: '0',
@@ -328,10 +328,10 @@ function DesktopModal<T>({
         className={desktopWalletSelectionClass}
       >
         <AtomBox px="48px">
-          <Heading color="color" as="h4">
+          <Heading color="secondary" as="h4">
             {t('Connect Wallet')}
           </Heading>
-          <Text color="textSubtle" small pt="24px" pb="32px">
+          <Text color="text" small pt="24px" pb="32px">
             {t(
               'Start by connecting with one of the wallets below. Be sure to store your private keys or seed phrase securely. Never share them with anyone.',
             )}
@@ -460,8 +460,7 @@ const Intro = ({ docLink, docText }: { docLink: string; docText: string }) => {
       <Heading as="h1" fontSize="20px" color="secondary">
         {t('Haven’t got a wallet yet?')}
       </Heading>
-      <Image src="https://cdn.pancakeswap.com/wallets/wallet_intro.png" width={198} height={178} />
-      <Button as={LinkExternal} color="backgroundAlt" variant="subtle" href={docLink}>
+      <Button as={LinkExternal} color="dark" variant="primary" href={docLink}>
         {docText}
       </Button>
     </>

@@ -1,8 +1,8 @@
 import { useTranslation } from "@pancakeswap/localization";
+import { HelpIcon, Skeleton, Text, TooltipRefs, useTooltip } from "@pancakeswap/uikit";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { styled } from "styled-components";
-import { Skeleton, HelpIcon, Text, TooltipRefs, useTooltip } from "@pancakeswap/uikit";
 import { FarmTableLiquidityProps } from "../../types";
 
 dayjs.extend(relativeTime);
@@ -40,8 +40,8 @@ export const StakedLiquidity: React.FunctionComponent<React.PropsWithChildren<Fa
   const { t } = useTranslation();
   const tooltip = useTooltip(
     <>
-      <Text>{t("Total active (in-range) liquidity staked in the farm.")}</Text>
-      {updatedAt && <Text>Updated {distanceToNow(updatedAt)}</Text>}
+      <Text color="dark">{t("Total active (in-range) liquidity staked in the farm.")}</Text>
+      {updatedAt && <Text color="dark">Updated {distanceToNow(updatedAt)}</Text>}
     </>,
     {
       placement: "top-end",
@@ -73,10 +73,10 @@ const LiquidityComp = ({
   return (
     <Container>
       <LiquidityWrapper>
-        <Text>{displayLiquidity}</Text>
+        <Text color="primary">{displayLiquidity}</Text>
       </LiquidityWrapper>
       <ReferenceElement ref={targetRef}>
-        <HelpIcon color="textSubtle" />
+        <HelpIcon color="primary" />
       </ReferenceElement>
       {tooltipVisible && tooltip}
     </Container>

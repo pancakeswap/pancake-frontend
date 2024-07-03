@@ -1,7 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { FeeAmount } from "@pancakeswap/v3-sdk";
-import { ReactNode, useCallback, useEffect, useState, memo } from "react";
 import { AddCircleIcon, AutoColumn, AutoRow, IconButton, RemoveIcon } from "@pancakeswap/uikit";
+import { FeeAmount } from "@pancakeswap/v3-sdk";
+import { ReactNode, memo, useCallback, useEffect, useState } from "react";
 
 import { NumericalInput } from "../swap/NumericalInput";
 import { LightGreyCard } from "./Card";
@@ -87,7 +87,15 @@ export const StepCounter = memo(
 
     return (
       <LightGreyCard padding="0">
-        <AutoColumn py="16px" textAlign="center" gap="8px" width="100%" onFocus={handleOnFocus} onBlur={handleOnBlur}>
+        <AutoColumn
+          py="16px"
+          textAlign="center"
+          color="text"
+          gap="8px"
+          width="100%"
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
+        >
           {title}
           <AutoRow>
             {!locked && (

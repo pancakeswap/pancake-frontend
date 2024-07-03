@@ -4,10 +4,12 @@ import { SpaceProps } from "styled-system";
 import { ChevronDownIcon, ChevronUpIcon } from "../Svg";
 import Button from "./Button";
 import IconButton from "./IconButton";
+import { Variant } from "./types";
 
 interface Props extends SpaceProps {
   onClick?: () => void;
   expanded?: boolean;
+  variant?: Variant;
 }
 
 export const ExpandableButton: React.FC<React.PropsWithChildren<Props>> = ({

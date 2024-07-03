@@ -66,7 +66,7 @@ export const StatusView: React.FC<{
             </Text>
           </Flex>
         ) : (
-          <Text fontSize={16} lineHeight="120%" bold color="textSubtle">
+          <Text fontSize={16} lineHeight="120%" bold color="primary">
             {(status === BoostStatus.Boosted || (status === BoostStatus.farmCanBoostButNot && isFarmStaking)) &&
             locked &&
             !isLockEnd
