@@ -46,7 +46,7 @@ export const Records: React.FC<RecordsProps> = ({ isFetching, questsData, status
               </Text>
             ) : (
               <>
-                {questsData.length === 0 ? (
+                {questsData?.length === 0 ? (
                   <Text padding="8px" textAlign="center">
                     {t('No results')}
                   </Text>

@@ -26,12 +26,12 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
       try {
         const urlParamsObject = {
           address: account?.toLowerCase(),
-          chainId: chainIdList,
+          chainId: chainIdList?.length ? chainIdList.join(',') : '',
           completionStatus,
           page: 1,
           pageSize: PAGE_SIZE,
         }
-        const queryString = qs.stringify(urlParamsObject)
+        const queryString = qs.stringify(urlParamsObject, { arrayFormat: 'comma' })
         const response = await fetch(`/api/dashboard/all-quests-info?${queryString}`, {
           method: 'GET',
         })
