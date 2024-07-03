@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { CAKE, getTokensByChain } from '@pancakeswap/tokens'
 import { Box, EllipsisIcon, Flex, PencilIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { ChainLogo } from 'components/Logo/ChainLogo'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { useRouter } from 'next/router'
 import { MouseEvent, useMemo, useRef, useState } from 'react'
@@ -82,6 +83,7 @@ export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
     <StyledRow role="row">
       <StyledCell role="cell">
         <Flex>
+          <ChainLogo chainId={quest.chainId} />
           <Text
             bold
             overflow="hidden"
@@ -91,6 +93,7 @@ export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
               WebkitLineClamp: 1,
               WebkitBoxOrient: 'vertical',
             }}
+            ml={['8px', '8px', '8px', '8px', '16px']}
           >
             {quest.title ?? '-'}
           </Text>
