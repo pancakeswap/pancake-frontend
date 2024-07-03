@@ -1,5 +1,5 @@
-import { Percent } from '@pancakeswap/swap-sdk-core'
 import { ChainId } from '@pancakeswap/chains'
+import { Percent } from '@pancakeswap/swap-sdk-core'
 import { Address, Hash } from 'viem'
 import { ERC20Token } from './entities/token'
 
@@ -15,7 +15,7 @@ export const FACTORY_ADDRESS_MAP = {
   [ChainId.GOERLI]: FACTORY_ADDRESS_ETH,
   [ChainId.BSC]: FACTORY_ADDRESS,
   [ChainId.BSC_TESTNET]: '0x6725F303b657a9451d8BA641348b6761A6CC7a17',
-  [ChainId.FRAX_TESTNET]: FACTORY_ADDRESS_ETH, // ToDo: Add valid Factory Address
+  [ChainId.FRAX_TESTNET]: '0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865',
   [ChainId.ARBITRUM_ONE]: '0x02a84c1b3BBD7401a5f7fa98a384EBC70bB5749E',
   [ChainId.ARBITRUM_GOERLI]: '0x333EAE459075b1d7dE8eb57997b5d4eee5F1070a',
   [ChainId.POLYGON_ZKEVM]: '0x02a84c1b3BBD7401a5f7fa98a384EBC70bB5749E',
@@ -275,7 +275,7 @@ const BNB = {
 
 const FRXETH = {
   name: 'Frax ETH',
-  symbol: 'FRXETH',
+  symbol: 'frxETH',
   decimals: 18,
 } as const
 

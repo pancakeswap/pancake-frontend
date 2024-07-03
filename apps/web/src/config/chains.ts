@@ -50,9 +50,9 @@ const bsc = {
   },
 } satisfies Chain
 
-const fraxTestNet = {
+export const fraxTestnet = {
   id: 2522,
-  name: 'Frax Testnet',
+  name: 'Fraxtal Testnet L2',
   network: 'holesky',
   nativeCurrency: {
     name: 'FraxEther',
@@ -79,10 +79,11 @@ const fraxTestNet = {
   },
   contracts: {
     multicall3: {
-      address: '0xca11bde05977b3631167028862be2a173976ca11',
-      blockCreated: 7654707,
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 0,
     },
   },
+  testnet: true,
 } satisfies Chain
 
 /**
@@ -102,13 +103,14 @@ export const L2_CHAIN_IDS: ChainId[] = [
   ChainId.BASE_TESTNET,
   ChainId.OPBNB,
   ChainId.OPBNB_TESTNET,
+  ChainId.FRAX_TESTNET,
 ]
 
 export const CHAINS = [
   bsc,
   mainnet,
   bscTestnet,
-  fraxTestNet,
+  fraxTestnet,
   goerli,
   polygonZkEvm,
   polygonZkEvmTestnet,

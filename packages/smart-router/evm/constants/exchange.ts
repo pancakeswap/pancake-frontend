@@ -1,26 +1,27 @@
-import { ERC20Token, Token, WNATIVE } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { ERC20Token, Token, WNATIVE } from '@pancakeswap/sdk'
 import {
-  bscTokens,
-  bscTestnetTokens,
   BUSD,
   USDC,
   USDT,
   WBTC_ETH,
-  arbitrumTokens,
   arbitrumGoerliTokens,
-  ethereumTokens,
-  polygonZkEvmTokens,
-  polygonZkEvmTestnetTokens,
-  zksyncTokens,
-  zkSyncTestnetTokens,
-  lineaTestnetTokens,
-  baseTokens,
+  arbitrumTokens,
   baseTestnetTokens,
-  opBnbTokens,
-  opBnbTestnetTokens,
-  scrollSepoliaTokens,
+  baseTokens,
+  bscTestnetTokens,
+  bscTokens,
+  ethereumTokens,
+  fraxTestnetTokens,
+  lineaTestnetTokens,
   lineaTokens,
+  opBnbTestnetTokens,
+  opBnbTokens,
+  polygonZkEvmTestnetTokens,
+  polygonZkEvmTokens,
+  scrollSepoliaTokens,
+  zkSyncTestnetTokens,
+  zksyncTokens,
 } from '@pancakeswap/tokens'
 
 import { ChainMap, ChainTokenList } from '../types'
@@ -102,7 +103,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     bscTokens.usdc,
   ],
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.cake, bscTestnetTokens.busd],
-  [ChainId.FRAX_TESTNET]: [], // ToDo:: add valid tokens
+  [ChainId.FRAX_TESTNET]: [fraxTestnetTokens.usdt, fraxTestnetTokens.usdc],
   [ChainId.ARBITRUM_ONE]: [arbitrumTokens.weth, arbitrumTokens.usdt, arbitrumTokens.usdc],
   [ChainId.ARBITRUM_GOERLI]: [arbitrumGoerliTokens.weth, arbitrumGoerliTokens.usdc],
   [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.weth, polygonZkEvmTokens.usdt, polygonZkEvmTokens.usdc],

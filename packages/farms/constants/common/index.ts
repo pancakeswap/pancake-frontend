@@ -6,6 +6,7 @@ import {
   bscTestnetTokens,
   bscTokens,
   ethereumTokens,
+  fraxTestnetTokens,
   goerliTestnetTokens,
   lineaTokens,
   opBnbTokens,
@@ -56,6 +57,10 @@ export const priceHelperTokens = {
     chain: 'opbnb',
     list: [opBnbTokens.wbnb, opBnbTokens.usdt],
   },
+  [ChainId.FRAX_TESTNET]: {
+    chain: 'fraxtal_testnet',
+    list: [fraxTestnetTokens.usdc, fraxTestnetTokens.usdt],
+  },
 } satisfies Record<number, PriceHelper>
 
 // for testing purposes
@@ -82,4 +87,8 @@ export const DEFAULT_COMMON_PRICE: Record<FarmV3SupportedChainId, CommonPrice> =
   [ChainId.BASE]: {},
   [ChainId.OPBNB_TESTNET]: {},
   [ChainId.OPBNB]: {},
+  [ChainId.FRAX_TESTNET]: {
+    [fraxTestnetTokens.usdt.address]: '1',
+    [fraxTestnetTokens.usdc.address]: '1',
+  },
 }

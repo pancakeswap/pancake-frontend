@@ -16,6 +16,8 @@ import {
   zkSyncTestnet,
 } from 'wagmi/chains'
 
+import { fraxTestnet } from './chains'
+
 const ARBITRUM_NODES = [
   ...arbitrum.rpcUrls.public.http,
   'https://arbitrum-one.publicnode.com',
@@ -76,7 +78,7 @@ export const SERVER_NODES = {
   ],
   [ChainId.BASE_TESTNET]: baseGoerli.rpcUrls.public.http,
   [ChainId.SCROLL_SEPOLIA]: scrollSepolia.rpcUrls.public.http,
-  [ChainId.FRAX_TESTNET]: ['https://rpc.testnet.frax.com'],
+  [ChainId.FRAX_TESTNET]: fraxTestnet.rpcUrls.public.http,
 } satisfies Record<ChainId, readonly string[]>
 
 export const PUBLIC_NODES = {
@@ -146,5 +148,5 @@ export const PUBLIC_NODES = {
   ].filter(Boolean),
   [ChainId.BASE_TESTNET]: baseGoerli.rpcUrls.public.http,
   [ChainId.SCROLL_SEPOLIA]: scrollSepolia.rpcUrls.public.http,
-  [ChainId.FRAX_TESTNET]: ['https://rpc.testnet.frax.com'],
+  [ChainId.FRAX_TESTNET]: fraxTestnet.rpcUrls.public.http,
 } satisfies Record<ChainId, readonly string[]>

@@ -1,33 +1,34 @@
-import { Percent, Token, WNATIVE } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { Percent, Token, WNATIVE } from '@pancakeswap/sdk'
 import {
-  bscTokens,
-  bscTestnetTokens,
+  BUSD,
   USDC,
   USDT,
-  BUSD,
   WBTC_ETH,
-  arbitrumTokens,
-  polygonZkEvmTokens,
-  polygonZkEvmTestnetTokens,
-  zksyncTokens,
-  zkSyncTestnetTokens,
-  lineaTestnetTokens,
   arbitrumGoerliTokens,
-  opBnbTokens,
-  opBnbTestnetTokens,
-  baseTokens,
+  arbitrumTokens,
   baseTestnetTokens,
-  scrollSepoliaTokens,
+  baseTokens,
+  bscTestnetTokens,
+  bscTokens,
+  fraxTestnetTokens,
+  lineaTestnetTokens,
   lineaTokens,
+  opBnbTestnetTokens,
+  opBnbTokens,
+  polygonZkEvmTestnetTokens,
+  polygonZkEvmTokens,
+  scrollSepoliaTokens,
+  zkSyncTestnetTokens,
+  zksyncTokens,
 } from '@pancakeswap/tokens'
 import { ChainTokenList } from './types'
 
 export {
   ADDITIONAL_BASES,
-  V2_ROUTER_ADDRESS,
   BASES_TO_CHECK_TRADES_AGAINST,
   CUSTOM_BASES,
+  V2_ROUTER_ADDRESS,
 } from '@pancakeswap/smart-router/evm'
 
 export const CHAIN_REFRESH_TIME = {
@@ -35,7 +36,7 @@ export const CHAIN_REFRESH_TIME = {
   [ChainId.GOERLI]: 12_000,
   [ChainId.BSC]: 6_000,
   [ChainId.BSC_TESTNET]: 6_000,
-  [ChainId.FRAX_TESTNET]: 10_000,
+  [ChainId.FRAX_TESTNET]: 4_000,
   [ChainId.ARBITRUM_ONE]: 10_000,
   [ChainId.ARBITRUM_GOERLI]: 10_000,
   [ChainId.POLYGON_ZKEVM]: 7_000,
@@ -75,6 +76,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.BASE]: [baseTokens.usdc, baseTokens.weth],
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
+  [ChainId.FRAX_TESTNET]: [fraxTestnetTokens.usdc, fraxTestnetTokens.usdt],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -96,6 +98,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.BASE]: [baseTokens.usdc, baseTokens.weth],
   [ChainId.BASE_TESTNET]: [baseTestnetTokens.usdc, baseTestnetTokens.weth],
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
+  [ChainId.FRAX_TESTNET]: [fraxTestnetTokens.usdc, fraxTestnetTokens.usdt],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -124,6 +127,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
   [ChainId.BASE]: [[baseTokens.usdc, baseTokens.weth]],
   [ChainId.BASE_TESTNET]: [[baseTestnetTokens.usdc, baseTestnetTokens.weth]],
   [ChainId.SCROLL_SEPOLIA]: [[scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth]],
+  [ChainId.FRAX_TESTNET]: [[fraxTestnetTokens.usdc, fraxTestnetTokens.usdt]],
 }
 
 export const BIG_INT_ZERO = 0n

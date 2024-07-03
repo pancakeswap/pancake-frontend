@@ -1,10 +1,10 @@
 /* eslint-disable no-restricted-syntax */
 import { ChainId } from '@pancakeswap/chains'
-import chunk from 'lodash/chunk'
-import BigNumber from 'bignumber.js'
-import { gql, GraphQLClient } from 'graphql-request'
-import dayjs from 'dayjs'
 import { AprMap } from '@pancakeswap/farms'
+import BigNumber from 'bignumber.js'
+import dayjs from 'dayjs'
+import { gql, GraphQLClient } from 'graphql-request'
+import chunk from 'lodash/chunk'
 import _toLower from 'lodash/toLower'
 
 interface BlockResponse {
@@ -21,7 +21,7 @@ const WEEKS_IN_A_YEAR = 52.1429
 const BLOCKS_CLIENT_WITH_CHAIN = {
   [ChainId.BSC]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks',
   [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
-  [ChainId.FRAX_TESTNET]: '',
+  [ChainId.FRAX_TESTNET]: 'https://goldsky.blocks',
   [ChainId.BSC_TESTNET]: '',
   [ChainId.GOERLI]: '',
   [ChainId.POLYGON_ZKEVM]: 'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest',
@@ -35,7 +35,8 @@ const INFO_CLIENT_WITH_CHAIN = {
   [ChainId.BSC]: 'https://proxy-worker-api.pancakeswap.com/bsc-exchange',
   [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth',
   [ChainId.BSC_TESTNET]: '',
-  [ChainId.FRAX_TESTNET]: '',
+  [ChainId.FRAX_TESTNET]:
+    'https://api.goldsky.com/api/public/project_clx3suhr5yhy501tw9xhidr71/subgraphs/fraxcake-subgraph/0.0.2/gn',
   [ChainId.GOERLI]: '',
 }
 

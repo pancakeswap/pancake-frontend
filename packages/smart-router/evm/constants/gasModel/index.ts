@@ -1,23 +1,24 @@
-import { Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { Token } from '@pancakeswap/sdk'
 import {
-  ethereumTokens,
-  bscTokens,
-  bscTestnetTokens,
-  goerliTestnetTokens,
-  polygonZkEvmTokens,
-  polygonZkEvmTestnetTokens,
-  zkSyncTestnetTokens,
-  zksyncTokens,
-  lineaTokens,
-  lineaTestnetTokens,
   arbitrumGoerliTokens,
   arbitrumTokens,
-  baseTokens,
   baseTestnetTokens,
-  opBnbTokens,
+  baseTokens,
+  bscTestnetTokens,
+  bscTokens,
+  ethereumTokens,
+  fraxTestnetTokens,
+  goerliTestnetTokens,
+  lineaTestnetTokens,
+  lineaTokens,
   opBnbTestnetTokens,
+  opBnbTokens,
+  polygonZkEvmTestnetTokens,
+  polygonZkEvmTokens,
   scrollSepoliaTokens,
+  zkSyncTestnetTokens,
+  zksyncTokens,
 } from '@pancakeswap/tokens'
 
 export const usdGasTokensByChain = {
@@ -25,7 +26,7 @@ export const usdGasTokensByChain = {
   [ChainId.GOERLI]: [goerliTestnetTokens.usdc],
   [ChainId.BSC]: [bscTokens.usdt],
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.usdt],
-  [ChainId.FRAX_TESTNET]: [bscTestnetTokens.usdt], // ToDo:: change to the valid one
+  [ChainId.FRAX_TESTNET]: [fraxTestnetTokens.usdt],
   [ChainId.ARBITRUM_ONE]: [arbitrumTokens.usdc],
   [ChainId.ARBITRUM_GOERLI]: [arbitrumGoerliTokens.usdc],
   [ChainId.POLYGON_ZKEVM]: [polygonZkEvmTokens.usdt],
@@ -41,6 +42,6 @@ export const usdGasTokensByChain = {
   [ChainId.SCROLL_SEPOLIA]: [scrollSepoliaTokens.usdc],
 } satisfies Record<ChainId, Token[]>
 
+export * from './stableSwap'
 export * from './v2'
 export * from './v3'
-export * from './stableSwap'

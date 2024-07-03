@@ -6,7 +6,7 @@ export const POOLS_FAST_REVALIDATE = {
   [ChainId.BSC]: 10_000,
   [ChainId.ETHEREUM]: 20_000,
   [ChainId.GOERLI]: 20_000,
-  [ChainId.FRAX_TESTNET]: 10_000,
+  [ChainId.FRAX_TESTNET]: 4_000,
   [ChainId.ARBITRUM_ONE]: 10_000,
   [ChainId.ARBITRUM_GOERLI]: 10_000,
   [ChainId.POLYGON_ZKEVM]: 15_000,
@@ -41,6 +41,7 @@ export const POOLS_NORMAL_REVALIDATE = {
   [ChainId.BASE]: 15_000,
   [ChainId.BASE_TESTNET]: 15_000,
   [ChainId.SCROLL_SEPOLIA]: 15_000,
+  [ChainId.FRAX_TESTNET]: 4_000,
 } as const satisfies Record<ChainId, number>
 
 export const POOLS_SLOW_REVALIDATE = {
@@ -61,4 +62,5 @@ export const POOLS_SLOW_REVALIDATE = {
   [ChainId.BASE]: 20_000,
   [ChainId.BASE_TESTNET]: 20_000,
   [ChainId.SCROLL_SEPOLIA]: 20_000,
+  [ChainId.FRAX_TESTNET]: 4_000,
 } as const satisfies Record<ChainId, number>
