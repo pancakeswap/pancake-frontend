@@ -13,6 +13,7 @@ const SingleDashboardQuestEditPage = () => {
   )
 }
 
+SingleDashboardQuestEditPage.chains = []
 SingleDashboardQuestEditPage.Layout = DashboardLayout
 
 export default SingleDashboardQuestEditPage

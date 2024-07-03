@@ -4,4 +4,5 @@ const QuestsPage = () => {
   return <QuestsView />
 }
 
+QuestsPage.chains = []
 export default QuestsPage
