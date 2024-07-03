@@ -12,6 +12,7 @@ const WHITE_LIST_WALLET_ADDRESS = [
   '0x586ca92c4AB530f9F9b686aD754e1274702C037f', // Chef Brie
   '0x273B863F7234804DEE624726A69EC228eb01E3d2', // Chef Cannoli
   '0xee867c4d0D4A530D7551B57Ef097d1D7ceDA5879', // Chef Honey
+  '0x4634fC1462B7974dB96B700E9aBe915f0884e60a', // Chef Gyoza
 ].map((i) => i.toLowerCase())
 
 export const useIsValidDashboardUser = () => {
