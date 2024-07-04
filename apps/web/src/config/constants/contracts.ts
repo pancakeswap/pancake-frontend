@@ -252,4 +252,8 @@ export default {
     [ChainId.BSC]: '0x011f2a82846a4E9c62C2FC4Fd6fDbad19147D94A',
     [ChainId.BSC_TESTNET]: '0x946273012ED616410F698536F1BF2513417BF8Ec',
   },
+  zkSyncAirDrop: {
+    [ChainId.ZKSYNC_TESTNET]: '0xbfcCF87Ee5cd03d4550Cc1526Bf152cc2EE1C7AB',
+    [ChainId.ZKSYNC]: '0xbfcCF87Ee5cd03d4550Cc1526Bf152cc2EE1C7AB',
+  },
 } as const satisfies Record<string, Record<number, `0x${string}`>>

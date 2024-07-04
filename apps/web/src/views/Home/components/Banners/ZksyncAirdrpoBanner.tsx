@@ -15,9 +15,10 @@ import {
   VerticalDivider,
 } from '@pancakeswap/widgets-internal'
 import { ClaimZksyncAirdropModal } from 'components/ClaimZksyncAirdropModal'
+import { useUserWhiteListData } from 'components/ClaimZksyncAirdropModal/hooks'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const bgMobile = `${ASSET_CDN}/web/banners/zksync-airdrop-banner/bunny-bg-mobile.png`
@@ -57,9 +58,17 @@ export const ZksyncAirDropBanner = () => {
   const { t } = useTranslation()
   const { isMobile, isTablet, isMd } = useMatchBreakpoints()
   const [isOpen, setIsOpen] = useState(false)
+  const whitelistData = useUserWhiteListData()
+
+  useEffect(() => {
+    if (whitelistData?.account && whitelistData?.amount && whitelistData?.proof) {
+      setIsOpen(true)
+    }
+  }, [whitelistData])
+
   return (
     <>
-      <BannerContainer background="linear-gradient(140deg, #7645d9 0%, #452a7a 100%)">
+      <BannerContainer background="linear-gradient(180deg, rgba(39, 78, 234, 0.88) 74.72%, rgba(48, 90, 235, 0.88) 85.09%, rgba(74, 127, 239, 0.88) 94.31%, rgba(149, 231, 249, 0.88) 100%), linear-gradient(180deg, rgba(32, 68, 197, 0.20) 0%, rgba(65, 57, 168, 0.00) 100%), linear-gradient(0deg, #264FED 0%, #264FED 100%), linear-gradient(180deg, #CCA382 0%, #9DC38F 49.77%, #9FCCCF 100%);">
         <BannerMain
           badges={
             <StyledFlexContainer gap="8px">
