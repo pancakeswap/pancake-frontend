@@ -26,7 +26,7 @@ import { paymasterInfo, paymasterTokens } from 'config/paymaster'
 import { useGasToken } from 'hooks/useGasToken'
 import { usePaymaster } from 'hooks/usePaymaster'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { useClaimZksyncAirdrop, useUserWhiteListData, useZksyncAirDropData } from './hooks'
@@ -66,6 +66,9 @@ export const ClaimZksyncAirdropModal: React.FC<{
 
   const { targetRef: tooltipTargetRef, tooltip, tooltipVisible } = useTooltip(t('Gas fees is fully sponsored'))
   const zksyncAirdropData = useZksyncAirDropData(whiteListData?.proof)
+  const userCanClaim = useMemo(() => {
+    return zksyncAirdropData?.claimedAmount === 0n && (whiteListData?.amount ?? 0n) > 0n
+  }, [whiteListData?.amount, zksyncAirdropData?.claimedAmount])
 
   useEffect(() => {
     // Set default gas token to USDC (full sponsorship)
@@ -99,21 +102,21 @@ export const ClaimZksyncAirdropModal: React.FC<{
               style={{ backgroundImage: `url(${asset})`, backgroundSize: 'cover' }}
             />
             <Text bold>
-              {zksyncAirdropData?.canClaim
+              {userCanClaim
                 ? t('%amount% %token% available to claim!', {
                     amount: formatNumber(getBalanceNumber(new BN(whiteListData?.amount?.toString() ?? 0))),
                     token: zksyncTokens.zk.symbol,
                   })
                 : t('Not eligible')}
             </Text>
-            {zksyncAirdropData?.canClaim && isPaymasterAvailable && isPaymasterTokenActive && (
+            {userCanClaim && isPaymasterAvailable && isPaymasterTokenActive && (
               <>
                 <Badge ref={tooltipTargetRef}>⛽️ {t('GAS FREE')}</Badge>
                 {tooltipVisible && tooltip}
               </>
             )}
             <Text mt="16px" mb="8px">
-              {zksyncAirdropData?.canClaim
+              {userCanClaim
                 ? t('Congratulations! You are eligible to claim from the zkSync token airdrop campaign!')
                 : t('Unfortunately, the connected wallet %account% is not eligible for the airdrop campaign.', {
                     account: account ?? '',
