@@ -55,8 +55,8 @@ export const SubmitAction = () => {
 
       const apiChainId = isCreate ? chainId : state.chainId
       const { startDate, startTime, endDate, endTime } = state
-      const startDateTime = combineDateAndTime(startDate, startTime) || 0
-      const endDateTime = combineDateAndTime(endDate, endTime) || 0
+      const startDateTime = startDate && startTime ? combineDateAndTime(startDate, startTime) : 0
+      const endDateTime = endDate && endTime ? combineDateAndTime(endDate, endTime) : 0
 
       const response = await fetch(url, {
         method,
