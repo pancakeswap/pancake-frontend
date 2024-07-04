@@ -5,10 +5,12 @@ import { useCallback } from 'react'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { bCakeStakeFarm, nonBscStakeFarm, stakeFarm } from 'utils/calls'
 import { useOraclePrice } from 'views/Farms/hooks/useFetchOraclePrice'
+import { ChainId } from '@pancakeswap/chains'
 
 const useStakeFarms = (pid: number, vaultPid?: number) => {
   const { account, chainId } = useAccountActiveChain()
   const { gasPrice } = useFeeDataWithGasPrice()
+  const { gasPrice: bnbGasPrice } = useFeeDataWithGasPrice(ChainId.BSC)
 
   const oraclePrice = useOraclePrice(chainId ?? 0)
   const masterChefContract = useMasterchef()
@@ -23,9 +25,9 @@ const useStakeFarms = (pid: number, vaultPid?: number) => {
 
   const handleStakeNonBsc = useCallback(
     async (amount: string) => {
-      return nonBscStakeFarm(nonBscVaultContract, vaultPid, amount, gasPrice, account, oraclePrice, chainId)
+      return nonBscStakeFarm(nonBscVaultContract, vaultPid, amount, bnbGasPrice, account, oraclePrice, chainId)
     },
-    [nonBscVaultContract, vaultPid, gasPrice, account, oraclePrice, chainId],
+    [nonBscVaultContract, vaultPid, bnbGasPrice, account, oraclePrice, chainId],
   )
 
   return { onStake: vaultPid ? handleStakeNonBsc : handleStake }
