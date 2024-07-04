@@ -24,8 +24,8 @@ interface TransactionFeeDetailsProps {
   currency: Currency
   independentField: Field
   inputError: string | undefined
-  quotesError: string | undefined
   loading: boolean | undefined
+  quotes: OnRampProviderQuote[] | undefined
 }
 
 export const TransactionFeeDetails = ({
@@ -33,8 +33,8 @@ export const TransactionFeeDetails = ({
   currency,
   independentField,
   inputError,
-  quotesError,
   loading,
+  quotes,
 }: TransactionFeeDetailsProps) => {
   const [elementHeight, setElementHeight] = useState<number>(51)
   const [show, setShow] = useState<boolean>(false)
@@ -47,17 +47,17 @@ export const TransactionFeeDetails = ({
   } = useTranslation()
 
   const handleExpandClick = useCallback(() => setShow(!show), [show])
-
+  const noQuotesError = Boolean(quotes?.length === 0)
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const elRef = contentRef.current
     if (elRef) setElementHeight(elRef.scrollHeight)
 
-    if (inputError || quotesError) {
+    if (inputError || noQuotesError) {
       setShow(false)
       setElementHeight(0)
     }
-  }, [selectedQuote, inputError, quotesError])
+  }, [selectedQuote, inputError, noQuotesError])
 
   return (
     <Flex flexDirection="column">
@@ -72,15 +72,11 @@ export const TransactionFeeDetails = ({
         </StyledFeesContainer3>
       </Flex>
 
-      <StyledFeesContainer
-        width="100%"
-        onClick={handleExpandClick}
-        disabled={Boolean(loading || quotesError || inputError)}
-      >
+      <StyledFeesContainer width="100%" onClick={handleExpandClick} disabled={Boolean(loading || inputError)}>
         <StyledArrowHead />
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
-            {selectedQuote && !quotesError ? (
+            {selectedQuote && !noQuotesError ? (
               <>
                 <Text fontWeight="600" fontSize="14px" px="2px">
                   {t('Est total fees:')}
@@ -97,14 +93,16 @@ export const TransactionFeeDetails = ({
               </>
             ) : (
               <Text fontWeight="600" fontSize="14px" px="2px">
-                {quotesError}
+                {t('No quotes available for %cryptoCurrency$ right now.', {
+                  cryptoCurrency: selectedQuote?.cryptoCurrency,
+                })}
               </Text>
             )}
             <BuyCryptoTooltip
               opacity={0.7}
               iconSize="17px"
               tooltipText={
-                quotesError
+                noQuotesError
                   ? t(
                       'Quotes may be unavailable for some assets based on market conditions and provider availability in your region.',
                     )
@@ -113,7 +111,7 @@ export const TransactionFeeDetails = ({
             />
           </Flex>
 
-          {!quotesError && (
+          {!noQuotesError && (
             <Flex alignItems="center" justifyContent="center">
               <Text color="primary" fontWeight="600" fontSize="14px">
                 {!show ? t('Show details') : t('Hide Details')}

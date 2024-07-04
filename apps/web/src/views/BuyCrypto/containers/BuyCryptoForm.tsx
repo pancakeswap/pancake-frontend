@@ -87,14 +87,13 @@ export function BuyCryptoForm() {
   })
 
   const quotes = useMemo(() => data?.quotes, [data?.quotes])
-  const quotesError = useMemo(() => data?.quotesError, [data?.quotesError])
 
   const outputValue = useMemo((): string | undefined => {
-    if (inputError || quotesError || !selectedQuote) return undefined
+    if (inputError || !selectedQuote) return undefined
     const { amount, quote } = selectedQuote
     const output = isFiat(unit) ? quote : amount
     return formatQuoteDecimals(output, unit)
-  }, [unit, selectedQuote, inputError, quotesError])
+  }, [unit, selectedQuote, inputError])
 
   const handleTypeInput = useCallback((value: string) => onUserInput(Field.INPUT, value), [onUserInput])
   const handleAddressInput = useCallback((event: InputEvent) => setSearchQuery(event.target.value), [])
@@ -172,7 +171,7 @@ export function BuyCryptoForm() {
           value={outputValue ?? ''}
           disableInput
           unit={unit}
-          inputLoading={Boolean(isLoading || inputError || quotesError)}
+          inputLoading={Boolean(isLoading || inputError)}
         />
         <BitcoinAddressInput
           isBtc={isBtc}
@@ -184,7 +183,7 @@ export function BuyCryptoForm() {
           id="provider-select"
           onQuoteSelect={setShowProvidersPopOver}
           selectedQuote={selectedQuote || bestQuoteRef.current}
-          quoteLoading={Boolean(isLoading || inputError || quotesError)}
+          quoteLoading={Boolean(isLoading || inputError)}
           quotes={quotes}
         />
 
@@ -193,8 +192,8 @@ export function BuyCryptoForm() {
           currency={cryptoCurrency}
           independentField={independentField}
           inputError={inputError}
-          quotesError={quotesError}
           loading={isLoading}
+          quotes={quotes}
         />
 
         <Box>
@@ -202,8 +201,8 @@ export function BuyCryptoForm() {
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={cryptoCurrency}
             selectedQuote={selectedQuote}
-            disabled={Boolean(isError || quotesError || inputError || btcError)}
-            loading={Boolean(quotesError || isLoading)}
+            disabled={Boolean(isError || inputError || btcError)}
+            loading={isLoading}
             resetBuyCryptoState={resetBuyCryptoState}
             btcAddress={debouncedQuery}
             errorText={amountError}
