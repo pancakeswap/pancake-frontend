@@ -196,15 +196,25 @@ export const useClaimZksyncAirdrop = () => {
     }
     const receipt = await fetchWithCatchTxError(async () => {
       if (isPaymasterAvailable && isPaymasterTokenActive) {
+        // Estimate Gas
+        const estimatedGas = await zkSyncAirDropContract.estimateGas.claim(
+          [account, whiteListData.amount, whiteListData.proof],
+          {
+            account,
+          },
+        )
+
         const calldata = encodeFunctionData({
           abi: zkSyncAirDropContract.abi,
           functionName: 'claim',
           args: [account, whiteListData.amount, whiteListData.proof],
         })
 
+        // Construct call for paymaster
         const call = {
           address: zkSyncAirDropContract.address,
           calldata,
+          gas: estimatedGas,
         }
 
         return sendPaymasterTransaction(call, account)
