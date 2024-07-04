@@ -106,7 +106,7 @@ export const ClaimZksyncAirdropModal: React.FC<{
                   })
                 : t('Not eligible')}
             </Text>
-            {isPaymasterAvailable && isPaymasterTokenActive && (
+            {zksyncAirdropData?.canClaim && isPaymasterAvailable && isPaymasterTokenActive && (
               <>
                 <Badge ref={tooltipTargetRef}>⛽️ {t('GAS FREE')}</Badge>
                 {tooltipVisible && tooltip}
