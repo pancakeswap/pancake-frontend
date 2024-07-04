@@ -98,7 +98,7 @@ export const useClaimZksyncAirdrop = () => {
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>{t('ZK AirDrop Claimed')}</ToastDescriptionWithTx>,
       )
     }
-  }, [account, chain, fetchWithCatchTxError, toastSuccess, whiteListData, zkSyncAirDropContract])
+  }, [account, chain, fetchWithCatchTxError, t, toastSuccess, whiteListData, zkSyncAirDropContract])
 
   // eslint-disable-next-line consistent-return
   return { claimAirDrop, pendingTx }
