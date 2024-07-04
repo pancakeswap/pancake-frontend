@@ -6,10 +6,11 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { zkSyncAirDropABI } from 'config/abi/zksyncAirdrop'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useZksyncAirDropContract } from 'hooks/useContract'
+import { usePaymaster } from 'hooks/usePaymaster'
 import { useCallback } from 'react'
 import { getZkSyncAirDropAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
-import { Address } from 'viem'
+import { Address, encodeFunctionData } from 'viem'
 import { useAccount } from 'wagmi'
 
 interface ZksyncAirDropWhiteListData {
@@ -83,10 +84,26 @@ export const useClaimZksyncAirdrop = () => {
   const { toastSuccess } = useToast()
   const zkSyncAirDropContract = useZksyncAirDropContract()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const { isPaymasterAvailable, isPaymasterTokenActive, sendPaymasterTransaction } = usePaymaster()
 
   const claimAirDrop = useCallback(async () => {
     if (!whiteListData || !zkSyncAirDropContract || !account) return
     const receipt = await fetchWithCatchTxError(async () => {
+      if (isPaymasterAvailable && isPaymasterTokenActive) {
+        const calldata = encodeFunctionData({
+          abi: zkSyncAirDropContract.abi,
+          functionName: 'claim',
+          args: [account, whiteListData.amount, whiteListData.proof],
+        })
+
+        const call = {
+          address: zkSyncAirDropContract.address,
+          calldata,
+        }
+
+        return sendPaymasterTransaction(call, account)
+      }
+
       return zkSyncAirDropContract.write.claim([account, whiteListData.amount, whiteListData.proof], {
         account,
         chain,
@@ -98,7 +115,18 @@ export const useClaimZksyncAirdrop = () => {
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>{t('ZK AirDrop Claimed')}</ToastDescriptionWithTx>,
       )
     }
-  }, [account, chain, fetchWithCatchTxError, t, toastSuccess, whiteListData, zkSyncAirDropContract])
+  }, [
+    account,
+    chain,
+    fetchWithCatchTxError,
+    t,
+    toastSuccess,
+    whiteListData,
+    zkSyncAirDropContract,
+    isPaymasterAvailable,
+    isPaymasterTokenActive,
+    sendPaymasterTransaction,
+  ])
 
   // eslint-disable-next-line consistent-return
   return { claimAirDrop, pendingTx }
