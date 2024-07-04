@@ -136,7 +136,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
               </Text>
             </Box>
           )}
-          {(!account || (isFetched && !hasIdRegister)) && (
+          {(!account || (isFetched && !hasIdRegister)) && !isQuestFinished && (
             <OverlapContainer>
               {account ? (
                 <>
