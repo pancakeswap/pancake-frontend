@@ -9,11 +9,14 @@ interface NetworkMultiSelectorProps extends BoxProps {
   setPickMultiSelect: (chains: Array<ChainId>) => void
 }
 
-export const options = SUPPORTED_CHAIN.map((chain) => ({
+const options = SUPPORTED_CHAIN.map((chain) => ({
   label: SHORT_SYMBOL[chain],
   value: chain.toString(),
   icon: `${ASSET_CDN}/web/chains/${chain}.png`,
 }))
+
+const defaultValue = options.map((i) => i.value)
+export const defaultValueChains = options.map((i) => Number(i.value) as ChainId)
 
 export const NetworkMultiSelector: React.FC<NetworkMultiSelectorProps> = (props) => {
   const theme = useTheme()
@@ -34,7 +37,7 @@ export const NetworkMultiSelector: React.FC<NetworkMultiSelectorProps> = (props)
         scrollHeight="400px"
         options={options}
         onChange={onChange}
-        defaultValue={options.map((i) => i.value)}
+        defaultValue={defaultValue}
       />
     </Box>
   )

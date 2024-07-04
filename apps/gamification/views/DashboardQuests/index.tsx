@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { useQueryClient } from '@tanstack/react-query'
+import { defaultValueChains } from 'components/NetworkMultiSelector'
 import { useEffect, useState } from 'react'
 import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
 import { RecordTemplate } from 'views/DashboardQuests/components/RecordTemplate'
@@ -14,7 +15,7 @@ export const DashboardQuests = () => {
   const { address: account } = useAccount()
   const queryClient = useQueryClient()
   const [statusButtonIndex, setStatusButtonIndex] = useState(CompletionStatusIndex.ONGOING)
-  const [pickMultiSelect, setPickMultiSelect] = useState<Array<ChainId>>([])
+  const [pickMultiSelect, setPickMultiSelect] = useState<Array<ChainId>>(defaultValueChains)
 
   useEffect(() => {
     return () => {

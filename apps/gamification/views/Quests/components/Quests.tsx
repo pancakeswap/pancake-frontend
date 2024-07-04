@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap } from '@pancakeswap/uikit'
-import { NetworkMultiSelector } from 'components/NetworkMultiSelector'
+import { NetworkMultiSelector, defaultValueChains } from 'components/NetworkMultiSelector'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import { EmptyQuest } from 'views/Quests/components/EmptyQuest'
@@ -42,7 +42,7 @@ const StyledFlexGap = styled(FlexGap)`
 export const Quests = () => {
   const { t } = useTranslation()
   const [statusButtonIndex, setStatusButtonIndex] = useState(0)
-  const [pickMultiSelect, setPickMultiSelect] = useState<Array<ChainId>>([])
+  const [pickMultiSelect, setPickMultiSelect] = useState<Array<ChainId>>(defaultValueChains)
 
   const onStatusButtonChange = (newIndex: number) => {
     setStatusButtonIndex(newIndex)

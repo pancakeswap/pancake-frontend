@@ -27,6 +27,10 @@ export const usePublicQuests = ({ chainIdList, completionStatus }: UsePublicQues
     queryKey: ['fetch-all-public-quest-data', completionStatus, chainIdList],
     queryFn: async () => {
       try {
+        if (chainIdList.length === 0) {
+          return initialData
+        }
+
         const url = `${GAMIFICATION_PUBLIC_API}/questInfo/v1/questInfoList`
         const response = await fetch(url, {
           method: 'POST',

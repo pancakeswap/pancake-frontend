@@ -24,9 +24,13 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
     queryKey: ['fetch-all-quest-dashboard-data', account, chainIdList, completionStatus],
     queryFn: async () => {
       try {
+        if (chainIdList.length === 0) {
+          return initialData
+        }
+
         const urlParamsObject = {
           address: account?.toLowerCase(),
-          chainId: chainIdList?.length ? chainIdList.join(',') : '',
+          chainId: chainIdList.join(','),
           completionStatus,
           page: 1,
           pageSize: PAGE_SIZE,
