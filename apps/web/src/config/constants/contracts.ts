@@ -254,6 +254,6 @@ export default {
   },
   zkSyncAirDrop: {
     [ChainId.ZKSYNC_TESTNET]: '0xbfcCF87Ee5cd03d4550Cc1526Bf152cc2EE1C7AB',
-    [ChainId.ZKSYNC]: '0xbfcCF87Ee5cd03d4550Cc1526Bf152cc2EE1C7AB',
+    [ChainId.ZKSYNC]: '0x30Ec38Cb6665c92f010519D6b78635C1725C28CC',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
