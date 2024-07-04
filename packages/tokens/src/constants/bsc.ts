@@ -3197,4 +3197,12 @@ export const bscTokens = {
     'LayerZero',
     'https://www.layerzero.foundation/',
   ),
+  solvBTCena: new ERC20Token(
+    ChainId.BSC,
+    '0x53E63a31fD1077f949204b94F431bCaB98F72BCE',
+    18,
+    'SolvBTC.ENA',
+    'SolvBTC Ethena',
+    'https://solv.finance/',
+  ),
 }

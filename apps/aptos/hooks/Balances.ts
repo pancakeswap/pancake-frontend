@@ -1,5 +1,5 @@
 import { AptosCoin, Coin, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
-import { APTOS_COIN, isHexStringEquals, useAccount, useAccountBalance } from '@pancakeswap/awgmi'
+import { APTOS_COIN, isHexStringEquals, useAccount, useBalance } from '@pancakeswap/awgmi'
 import { UseAccountBalancesResult } from '@pancakeswap/awgmi/src/hooks/useAccountBalances'
 import { useCallback } from 'react'
 import { useAllTokens } from './Tokens'
@@ -27,7 +27,7 @@ export function useCurrencyBalance(coinId?: string): CurrencyAmount<Token | Apto
     [allTokens, chainId, coinId, native],
   )
 
-  const { data } = useAccountBalance({
+  const { data } = useBalance({
     enabled: Boolean(coinId),
     address: account?.address,
     coin: coinId,

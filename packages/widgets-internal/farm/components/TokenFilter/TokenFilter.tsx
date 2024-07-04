@@ -13,7 +13,7 @@ export const TokenFilter: React.FC<ITokenProps> = ({ data = [] }) => {
       panelStyle={{
         minHeight: "500px",
       }}
-      scrollHeight="200px"
+      scrollHeight="400px"
       options={data}
       isFilter
     />

@@ -1,4 +1,4 @@
-import { AptosClient } from 'aptos'
+import { Aptos, AptosConfig } from '@aptos-labs/ts-sdk'
 import { defaultChains, defaultChain } from './chain'
 import { getClient } from './client'
 
@@ -7,9 +7,9 @@ export type GetProviderArgs = {
   networkName?: string
 }
 
-export type GetProviderResult<TProvider extends AptosClient = AptosClient> = TProvider
+export type GetProviderResult<TProvider extends Aptos = Aptos> = TProvider
 
-export function getProvider<TProvider extends AptosClient = AptosClient>({
+export function getProvider<TProvider extends Aptos = Aptos>({
   networkName,
 }: GetProviderArgs = {}): GetProviderResult<TProvider> {
   const client = getClient<TProvider>()
@@ -17,11 +17,9 @@ export function getProvider<TProvider extends AptosClient = AptosClient>({
   return client.provider
 }
 
-export type WatchProviderCallback<TProvider extends AptosClient = AptosClient> = (
-  provider: GetProviderResult<TProvider>,
-) => void
+export type WatchProviderCallback<TProvider extends Aptos = Aptos> = (provider: GetProviderResult<TProvider>) => void
 
-export function watchProvider<TProvider extends AptosClient = AptosClient>(
+export function watchProvider<TProvider extends Aptos = Aptos>(
   args: GetProviderArgs,
   callback: WatchProviderCallback<TProvider>,
 ) {
@@ -35,8 +33,8 @@ export function getDefaultProviders({ networkName }: { networkName?: string }) {
   if (networkName) {
     const foundChain = defaultChains.find((c) => c.network === networkName.toLowerCase())
     if (foundChain) {
-      return new AptosClient(foundChain.nodeUrls.default)
+      return new Aptos(new AptosConfig({ fullnode: foundChain.nodeUrls.default }))
     }
   }
-  return new AptosClient(defaultChain.nodeUrls.default)
+  return new Aptos(new AptosConfig({ fullnode: defaultChain.nodeUrls.default }))
 }

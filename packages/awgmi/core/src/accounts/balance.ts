@@ -1,5 +1,6 @@
-import { CoinStoreResult, wrapCoinStoreTypeTag } from '../coins/coinStore'
-import { APTOS_COIN } from '../constants'
+import { MoveStructId, GetAccountCoinsDataResponse } from '@aptos-labs/ts-sdk'
+
+import { fetchAptosView } from '../view/fetchAptosView'
 import { getProvider } from '../providers'
 
 export type FetchBalanceArgs = {
@@ -16,13 +17,20 @@ export type FetchBalanceResult = {
 }
 
 export async function fetchBalance({ address, networkName, coin }: FetchBalanceArgs): Promise<FetchBalanceResult> {
+  const [balance] = await fetchAptosView({
+    networkName,
+    params: {
+      function: '0x1::coin::balance',
+      functionArguments: [address],
+      typeArguments: [coin as MoveStructId],
+    },
+  })
+  return { value: balance }
+}
+
+export async function fetchBalances({ address, networkName }: FetchBalanceArgs): Promise<GetAccountCoinsDataResponse> {
   const provider = getProvider({ networkName })
-
-  const resource = await provider.getAccountResource(address, wrapCoinStoreTypeTag(coin || APTOS_COIN))
-
-  const { value } = (resource.data as CoinStoreResult).coin
-
-  return {
-    value,
-  }
+  return provider.getAccountCoinsData({
+    accountAddress: address,
+  })
 }

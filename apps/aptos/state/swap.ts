@@ -1,6 +1,6 @@
 import { APTOS_COIN } from '@pancakeswap/awgmi'
 import { createAction, createReducer } from '@reduxjs/toolkit'
-import { TxnBuilderTypes } from 'aptos'
+import { parseTypeTag } from '@aptos-labs/ts-sdk'
 import { CAKE } from 'config/coins'
 import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
@@ -103,7 +103,7 @@ function parseCurrencyFromURLParameter(urlParam: any): string {
   if (typeof urlParam === 'string') {
     let valid: boolean | undefined
     try {
-      TxnBuilderTypes.StructTag.fromString(decodeURIComponent(urlParam))
+      parseTypeTag(decodeURIComponent(urlParam))
       valid = true
     } catch (error) {
       //
