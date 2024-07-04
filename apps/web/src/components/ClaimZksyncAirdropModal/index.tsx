@@ -29,7 +29,7 @@ import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useEffect } from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
-import { useClaimZksyncAirdrop, useUserWhiteListData } from './hooks'
+import { useClaimZksyncAirdrop, useUserWhiteListData, useZksyncAirDropData } from './hooks'
 
 const StyledModalHeader = styled(ModalHeader)`
   padding: 0;
@@ -65,6 +65,7 @@ export const ClaimZksyncAirdropModal: React.FC<{
   const [, setGasToken] = useGasToken()
 
   const { targetRef: tooltipTargetRef, tooltip, tooltipVisible } = useTooltip(t('Gas fees is fully sponsored'))
+  const zksyncAirdropData = useZksyncAirDropData(whiteListData?.proof)
 
   useEffect(() => {
     // Set default gas token to USDC (full sponsorship)
@@ -98,10 +99,12 @@ export const ClaimZksyncAirdropModal: React.FC<{
               style={{ backgroundImage: `url(${asset})`, backgroundSize: 'cover' }}
             />
             <Text bold>
-              {t('%amount% %token% available to claim!', {
-                amount: formatNumber(getBalanceNumber(new BN(whiteListData?.amount?.toString() ?? 0))),
-                token: zksyncTokens.zk.symbol,
-              })}
+              {zksyncAirdropData?.canClaim
+                ? t('%amount% %token% available to claim!', {
+                    amount: formatNumber(getBalanceNumber(new BN(whiteListData?.amount?.toString() ?? 0))),
+                    token: zksyncTokens.zk.symbol,
+                  })
+                : t('Not eligible')}
             </Text>
             {isPaymasterAvailable && isPaymasterTokenActive && (
               <>
@@ -110,9 +113,15 @@ export const ClaimZksyncAirdropModal: React.FC<{
               </>
             )}
             <Text mt="16px" mb="8px">
-              {t('Congratulations! You are eligible to claim from the zkSync token airdrop campaign!')}
+              {zksyncAirdropData?.canClaim
+                ? t('Congratulations! You are eligible to claim from the zkSync token airdrop campaign!')
+                : t('Unfortunately, the connected wallet %account% is not eligible for the airdrop campaign.', {
+                    account: account ?? '',
+                  })}
             </Text>
-            <Link href="/">{t('Learn more about the campaign')}</Link>
+            <Link href=" https://blog.pancakeswap.finance/articles/pancake-swap-airdrops-2-4-million-zk-tokens-to-the-community">
+              {t('Learn more about the campaign')}
+            </Link>
             {account ? (
               chainId === ChainId.ZKSYNC ? (
                 <Button mt="24px" isLoading={pendingTx} onClick={claimAirDrop}>
@@ -120,7 +129,7 @@ export const ClaimZksyncAirdropModal: React.FC<{
                 </Button>
               ) : (
                 <Button mt="24px" onClick={() => switchNetwork(ChainId.ZKSYNC)}>
-                  {t('Switch network to Zksync for claiming')}
+                  {t('Switch network to ZKsync for claiming')}
                 </Button>
               )
             ) : (
