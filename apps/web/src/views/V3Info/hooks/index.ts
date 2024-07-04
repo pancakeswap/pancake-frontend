@@ -14,6 +14,8 @@ import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/ap
 import { useExplorerChainNameByQuery } from 'state/info/api/hooks'
 import { components } from 'state/info/api/schema'
 import { getPercentChange } from 'views/V3Info/utils/data'
+import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { timeWindowToPeriod } from 'utils/timeWindowToPeriod'
 import { SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchedPoolData } from '../data/pool/poolData'
@@ -260,14 +262,17 @@ export const useTokenData = (address: string): TokenData | undefined => {
   return data?.data
 }
 
-export const useTokenChartData = (address: string): TokenChartEntry[] | undefined => {
+export const useTokenChartData = (
+  address: string,
+  timeWindow: PairDataTimeWindowEnum,
+): TokenChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
   const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/token/tokenChartData/${chainId}/${address}`, chainId],
-    queryFn: ({ signal }) => fetchTokenChartData('v3', explorerChainName!, address, signal),
+    queryKey: [`v3/info/token/tokenChartData/${chainId}/${address}/${timeWindow}`, chainId],
+    queryFn: ({ signal }) => fetchTokenChartData('v3', explorerChainName!, address, timeWindow, signal),
     enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
@@ -276,16 +281,16 @@ export const useTokenChartData = (address: string): TokenChartEntry[] | undefine
 
 export const useTokenPriceData = (
   address: string,
-  duration: 'day' | 'week' | 'month' | 'year',
+  timeWindow: PairDataTimeWindowEnum,
 ): PriceChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
   const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/token/tokenPriceData/${chainId}/${address}/${duration}`, chainId],
+    queryKey: [`v3/info/token/tokenPriceData/${chainId}/${address}/${timeWindow}`, chainId],
 
-    queryFn: ({ signal }) => fetchTokenPriceData(address, 'v3', duration, explorerChainName!, signal),
+    queryFn: ({ signal }) => fetchTokenPriceData(address, 'v3', timeWindow, explorerChainName!, signal),
 
     enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
@@ -414,14 +419,14 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
   return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0) ?? undefined, [data])
 }
 
-export const usePoolChartData = (address: string): PoolChartEntry[] | undefined => {
+export const usePoolChartData = (address: string, timeWindow: PairDataTimeWindowEnum): PoolChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
   const explorerChainName = useExplorerChainNameByQuery()
 
   const { data } = useQuery({
-    queryKey: [`v3/info/pool/poolChartData/${chainId}/${address}`, chainId],
-    queryFn: ({ signal }) => fetchPoolChartData('v3', explorerChainName!, address, signal),
+    queryKey: [`v3/info/pool/poolChartData/${chainId}/${address}/${timeWindow}`, chainId],
+    queryFn: ({ signal }) => fetchPoolChartData('v3', explorerChainName!, address, timeWindow, signal),
     enabled: Boolean(explorerChainName && address && address !== 'undefined'),
     ...QUERY_SETTINGS_IMMUTABLE,
   })

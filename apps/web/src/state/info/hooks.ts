@@ -12,6 +12,8 @@ import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { getPercentChange } from 'utils/infoDataHelpers'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { timeWindowToPeriod } from 'utils/timeWindowToPeriod'
 import { explorerApiClient } from './api/client'
 import { useExplorerChainNameByQuery } from './api/hooks'
 import { MultiChainName, MultiChainNameExtend, checkIsStableSwap, multiChainId } from './constant'
@@ -403,7 +405,10 @@ export function usePoolDataQuery(poolAddress: string): PoolData | undefined {
   return data
 }
 
-export const usePoolChartTvlDataQuery = (address: string): TvlChartEntry[] | undefined => {
+export const usePoolChartTvlDataQuery = (
+  address: string,
+  timeWindow: PairDataTimeWindowEnum,
+): TvlChartEntry[] | undefined => {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useQuery({
@@ -422,7 +427,7 @@ export const usePoolChartTvlDataQuery = (address: string): TvlChartEntry[] | und
               protocol: type === 'stableSwap' ? 'stable' : 'v2',
             },
             query: {
-              period: '1Y',
+              period: timeWindowToPeriod(timeWindow),
             },
           },
         })
@@ -439,7 +444,10 @@ export const usePoolChartTvlDataQuery = (address: string): TvlChartEntry[] | und
   })
   return data ?? undefined
 }
-export const usePoolChartVolumeDataQuery = (address: string): VolumeChartEntry[] | undefined => {
+export const usePoolChartVolumeDataQuery = (
+  address: string,
+  timeWindow: PairDataTimeWindowEnum,
+): VolumeChartEntry[] | undefined => {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useQuery({
@@ -458,7 +466,7 @@ export const usePoolChartVolumeDataQuery = (address: string): VolumeChartEntry[]
               protocol: type === 'stableSwap' ? 'stable' : 'v2',
             },
             query: {
-              period: '1Y',
+              period: timeWindowToPeriod(timeWindow),
             },
           },
         })
@@ -850,11 +858,14 @@ export function usePoolsForTokenDataQuery(address: string): (PoolData | undefine
   return data ?? []
 }
 
-export const useTokenChartTvlDataQuery = (address: string): TvlChartEntry[] | undefined => {
+export const useTokenChartTvlDataQuery = (
+  address: string,
+  timeWindow: PairDataTimeWindowEnum,
+): TvlChartEntry[] | undefined => {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useQuery({
-    queryKey: [`info/token/chartData/tvl/${address}/${type}`, chainName],
+    queryKey: [`info/token/chartData/tvl/${address}/${type}/${timeWindow}`, chainName],
     queryFn: async ({ signal }) => {
       if (!chainName) {
         throw new Error('No chain name')
@@ -869,7 +880,7 @@ export const useTokenChartTvlDataQuery = (address: string): TvlChartEntry[] | un
               protocol: type === 'stableSwap' ? 'stable' : 'v2',
             },
             query: {
-              period: '1Y',
+              period: timeWindowToPeriod(timeWindow),
             },
           },
         })
@@ -886,11 +897,14 @@ export const useTokenChartTvlDataQuery = (address: string): TvlChartEntry[] | un
   })
   return data ?? undefined
 }
-export const useTokenChartVolumeDataQuery = (address: string): VolumeChartEntry[] | undefined => {
+export const useTokenChartVolumeDataQuery = (
+  address: string,
+  timeWindow: PairDataTimeWindowEnum,
+): VolumeChartEntry[] | undefined => {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useQuery({
-    queryKey: [`info/token/chartData/volume/${address}/${type}`, chainName],
+    queryKey: [`info/token/chartData/volume/${address}/${type}/${timeWindow}`, chainName],
     queryFn: async ({ signal }) => {
       if (!chainName) {
         throw new Error('No chain name')
@@ -905,7 +919,7 @@ export const useTokenChartVolumeDataQuery = (address: string): VolumeChartEntry[
               protocol: type === 'stableSwap' ? 'stable' : 'v2',
             },
             query: {
-              period: '1Y',
+              period: timeWindowToPeriod(timeWindow),
             },
           },
         })
@@ -925,13 +939,12 @@ export const useTokenChartVolumeDataQuery = (address: string): VolumeChartEntry[
 
 export const useTokenPriceDataQuery = (
   address: string,
-  _interval: number,
-  _timeWindow: duration.Duration,
+  timeWindow: PairDataTimeWindowEnum,
 ): PriceChartEntry[] | undefined => {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useQuery({
-    queryKey: [`info/token/priceData2/${address}/${type}`, chainName],
+    queryKey: [`info/token/priceData2/${address}/${type}/${timeWindow}`, chainName],
     queryFn: async ({ signal }) => {
       if (!chainName) {
         throw new Error('No chain name')
@@ -946,7 +959,7 @@ export const useTokenPriceDataQuery = (
               protocol: type === 'stableSwap' ? 'stable' : 'v2',
             },
             query: {
-              period: '1M',
+              period: timeWindowToPeriod(timeWindow),
             },
           },
         })

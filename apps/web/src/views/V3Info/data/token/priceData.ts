@@ -2,6 +2,8 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import { explorerApiClient } from 'state/info/api/client'
 import { components } from 'state/info/api/schema'
+import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { timeWindowToPeriod } from 'utils/timeWindowToPeriod'
 import { PriceChartEntry } from '../../types'
 
 // format dayjs with the libraries that we need
@@ -10,7 +12,7 @@ dayjs.extend(utc)
 export async function fetchTokenPriceData(
   address: string,
   protocol: 'v2' | 'v3' | 'stable',
-  duration: 'day' | 'week' | 'month' | 'year',
+  timeWindow: PairDataTimeWindowEnum,
   chainName: components['schemas']['ChainName'],
   signal: AbortSignal,
 ): Promise<{ data: PriceChartEntry[]; error: boolean }> {
@@ -25,16 +27,7 @@ export async function fetchTokenPriceData(
             address,
           },
           query: {
-            period:
-              duration === 'day'
-                ? '1D'
-                : duration === 'week'
-                ? '1W'
-                : duration === 'month'
-                ? '1M'
-                : duration === 'year'
-                ? '1Y'
-                : '1D',
+            period: timeWindowToPeriod(timeWindow),
           },
         },
       })

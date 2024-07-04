@@ -4,6 +4,8 @@ import {
   Box,
   Breadcrumbs,
   Button,
+  ButtonMenu,
+  ButtonMenuItem,
   Card,
   CopyButton,
   Flex,
@@ -11,6 +13,7 @@ import {
   Image,
   Message,
   MessageText,
+  PairDataTimeWindowEnum,
   ScanLink,
   Spinner,
   Text,
@@ -80,6 +83,8 @@ enum ChartView {
   PRICE,
 }
 
+const DEFAULT_TIME_WINDOW = PairDataTimeWindowEnum.WEEK
+
 const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const { isXs, isSm } = useMatchBreakpoints()
   // const { chainId } = useActiveChainId()
@@ -93,10 +98,13 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
     window.scrollTo(0, 0)
   }, [])
   const { t } = useTranslation()
+
+  const [timeWindow, setTimeWindow] = useState(DEFAULT_TIME_WINDOW)
+
   const tokenData = useTokenData(address)
   const poolDatas = usePoolsDataForToken(address)
   const transactions = useTokenTransactions(address)
-  const chartData = useTokenChartData(address)
+  const chartData = useTokenChartData(address, timeWindow)
   const formatPoolData = useMemo(() => {
     return poolDatas?.filter((pool) => !isUndefinedOrNull(pool)) ?? []
   }, [poolDatas])
@@ -131,7 +139,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const [valueLabel, setValueLabel] = useState<string | undefined>()
 
   // pricing data
-  const priceData = useTokenPriceData(address, 'week')
+  const priceData = useTokenPriceData(address, timeWindow)
   const adjustedToCurrent = useMemo(() => {
     if (priceData && tokenData && priceData.length > 0) {
       const adjusted = [...priceData]
@@ -298,21 +306,32 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     <Text>{t('Price')}</Text>
                   </TabToggle>
                 </TabToggleGroup>
-                <Flex flexDirection="column" px="24px" pt="24px">
-                  {latestValue
-                    ? formatDollarAmount(latestValue, 2)
-                    : view === ChartView.VOL
-                    ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
-                    : view === ChartView.TVL
-                    ? formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
-                    : formatDollarAmount(tokenData.priceUSD, 2)}
-                  <Text small color="secondary">
-                    {valueLabel ? (
-                      <MonoSpace>{valueLabel}</MonoSpace>
-                    ) : (
-                      <MonoSpace>{dayjs.utc().format('MMM D, YYYY')}</MonoSpace>
-                    )}
-                  </Text>
+                <Flex justifyContent="space-between" px="24px" pt="24px">
+                  <Flex flexDirection="column">
+                    {latestValue
+                      ? formatDollarAmount(latestValue, 2)
+                      : view === ChartView.VOL
+                      ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
+                      : view === ChartView.TVL
+                      ? formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
+                      : formatDollarAmount(tokenData.priceUSD, 2)}
+                    <Text small color="secondary">
+                      {valueLabel ? (
+                        <MonoSpace>{valueLabel}</MonoSpace>
+                      ) : (
+                        <MonoSpace>{dayjs.utc().format('MMM D, YYYY')}</MonoSpace>
+                      )}
+                    </Text>
+                  </Flex>
+                  <Flex alignItems="center">
+                    <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm">
+                      <ButtonMenuItem>{t('1H')}</ButtonMenuItem>
+                      <ButtonMenuItem>{t('24H')}</ButtonMenuItem>
+                      <ButtonMenuItem>{t('1W')}</ButtonMenuItem>
+                      <ButtonMenuItem>{t('1M')}</ButtonMenuItem>
+                      <ButtonMenuItem>{t('1Y')}</ButtonMenuItem>
+                    </ButtonMenu>
+                  </Flex>
                 </Flex>
                 <Box height="320px">
                   {view === ChartView.TVL ? (
@@ -336,7 +355,12 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                       setLabel={setValueLabel}
                     />
                   ) : view === ChartView.PRICE ? (
-                    <CandleChart data={adjustedToCurrent} setValue={setLatestValue} setLabel={setValueLabel} />
+                    <CandleChart
+                      data={adjustedToCurrent}
+                      timeWindow={timeWindow}
+                      setValue={setLatestValue}
+                      setLabel={setValueLabel}
+                    />
                   ) : null}
                 </Box>
               </Card>

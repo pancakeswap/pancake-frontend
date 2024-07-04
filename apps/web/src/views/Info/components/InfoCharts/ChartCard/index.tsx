@@ -1,9 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Card, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Card, Flex, PairDataTimeWindowEnum, Skeleton, Text } from '@pancakeswap/uikit'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import dayjs from 'dayjs'
 import dynamic from 'next/dynamic'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { PriceChartEntry, TokenData, TvlChartEntry, VolumeChartEntry } from 'state/info/types'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import BarChart from 'views/Info/components/InfoCharts/BarChart'
@@ -21,6 +21,8 @@ enum ChartView {
 
 interface ChartCardProps {
   variant: 'pool' | 'token'
+  timeWindow: PairDataTimeWindowEnum
+  setTimeWindow: (timeWindow: PairDataTimeWindowEnum) => void
   volumeChartData: VolumeChartEntry[] | undefined
   tvlChartData: TvlChartEntry[] | undefined
   tokenData?: TokenData
@@ -29,6 +31,8 @@ interface ChartCardProps {
 
 const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
   variant,
+  timeWindow,
+  setTimeWindow,
   volumeChartData,
   tvlChartData,
   tokenData,
@@ -67,38 +71,45 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
     return []
   }, [volumeChartData])
 
-  const getLatestValueDisplay = () => {
-    let valueToDisplay: string | undefined = ''
+  const valueToDisplay = useMemo(() => {
     if (hoverValue) {
-      valueToDisplay = formatAmount(hoverValue)
-    } else if (view === ChartView.VOLUME && formattedVolumeData.length > 0) {
-      valueToDisplay = formatAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
-    } else if (view === ChartView.LIQUIDITY && formattedTvlData.length > 0) {
-      valueToDisplay = formatAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
-    } else if ((view === ChartView.PRICE && tokenData?.priceUSD) || tokenData?.priceUSD === 0) {
-      valueToDisplay = formatAmount(tokenData.priceUSD, { notation: 'standard' })
+      return formatAmount(hoverValue)
     }
+    if (view === ChartView.VOLUME && formattedVolumeData.length > 0) {
+      return formatAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
+    }
+    if (view === ChartView.LIQUIDITY && formattedTvlData.length > 0) {
+      return formatAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
+    }
+    if ((view === ChartView.PRICE && tokenData?.priceUSD) || tokenData?.priceUSD === 0) {
+      return formatAmount(tokenData.priceUSD, { notation: 'standard' })
+    }
+    return undefined
+  }, [hoverValue, view, formattedVolumeData, formattedTvlData, tokenData])
 
-    return valueToDisplay ? (
-      <Text fontSize="24px" bold>
-        ${valueToDisplay}
-      </Text>
-    ) : (
-      <Skeleton height="36px" width="128px" />
-    )
-  }
+  const handleVolumeClick = useCallback(() => {
+    setView(ChartView.VOLUME)
+  }, [setView])
+
+  const handleLiquidityClick = useCallback(() => {
+    setView(ChartView.LIQUIDITY)
+  }, [setView])
+
+  const handlePriceClick = useCallback(() => {
+    setView(ChartView.PRICE)
+  }, [setView])
 
   return (
     <Card>
       <TabToggleGroup>
-        <TabToggle isActive={view === ChartView.VOLUME} onClick={() => setView(ChartView.VOLUME)}>
+        <TabToggle isActive={view === ChartView.VOLUME} onClick={handleVolumeClick}>
           <Text>{t('Volume')}</Text>
         </TabToggle>
-        <TabToggle isActive={view === ChartView.LIQUIDITY} onClick={() => setView(ChartView.LIQUIDITY)}>
+        <TabToggle isActive={view === ChartView.LIQUIDITY} onClick={handleLiquidityClick}>
           <Text>{t('Liquidity')}</Text>
         </TabToggle>
         {variant === 'token' ? (
-          <TabToggle isActive={view === ChartView.PRICE} onClick={() => setView(ChartView.PRICE)}>
+          <TabToggle isActive={view === ChartView.PRICE} onClick={handlePriceClick}>
             <Text>{t('Price')}</Text>
           </TabToggle>
         ) : (
@@ -106,11 +117,28 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
         )}
       </TabToggleGroup>
 
-      <Flex flexDirection="column" px="24px" pt="24px">
-        {getLatestValueDisplay()}
-        <Text small color="secondary">
-          {hoverDate || currentDate}
-        </Text>
+      <Flex justifyContent="space-between" px="24px" pt="24px">
+        <Flex flexDirection="column">
+          {valueToDisplay ? (
+            <Text fontSize="24px" bold>
+              ${valueToDisplay}
+            </Text>
+          ) : (
+            <Skeleton height="36px" width="128px" />
+          )}
+          <Text small color="secondary">
+            {hoverDate || currentDate}
+          </Text>
+        </Flex>
+        <Flex alignItems="center">
+          <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm">
+            <ButtonMenuItem>{t('1H')}</ButtonMenuItem>
+            <ButtonMenuItem>{t('24H')}</ButtonMenuItem>
+            <ButtonMenuItem>{t('1W')}</ButtonMenuItem>
+            <ButtonMenuItem>{t('1M')}</ButtonMenuItem>
+            <ButtonMenuItem>{t('1Y')}</ButtonMenuItem>
+          </ButtonMenu>
+        </Flex>
       </Flex>
 
       <Box px="24px" height={variant === 'token' ? '250px' : '335px'}>
@@ -119,7 +147,7 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
         ) : view === ChartView.VOLUME ? (
           <BarChart data={formattedVolumeData} setHoverValue={setHoverValue} setHoverDate={setHoverDate} />
         ) : view === ChartView.PRICE ? (
-          <CandleChart data={tokenPriceData} setValue={setHoverValue} setLabel={setHoverDate} />
+          <CandleChart data={tokenPriceData} timeWindow={timeWindow} setValue={setHoverValue} setLabel={setHoverDate} />
         ) : null}
       </Box>
     </Card>

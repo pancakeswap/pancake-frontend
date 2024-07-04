@@ -11,6 +11,7 @@ import {
   Flex,
   Heading,
   HelpIcon,
+  PairDataTimeWindowEnum,
   ScanLink,
   Spinner,
   Text,
@@ -92,10 +93,12 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
     {},
   )
 
+  const [timeWindow, setTimeWindow] = useState(PairDataTimeWindowEnum.YEAR)
+
   const poolData = usePoolDataQuery(routeAddress)
   // const chartData = usePoolChartDataQuery(address)
-  const tvlChartData = usePoolChartTvlDataQuery(routeAddress)
-  const volumeChartData = usePoolChartVolumeDataQuery(routeAddress)
+  const tvlChartData = usePoolChartTvlDataQuery(routeAddress, timeWindow)
+  const volumeChartData = usePoolChartVolumeDataQuery(routeAddress, timeWindow)
 
   const transactions = usePoolTransactionsQuery(routeAddress)
   const chainId = useChainIdByQuery()
@@ -321,7 +324,13 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                 </Flex>
               </Card>
             </Box>
-            <ChartCard variant="pool" volumeChartData={volumeChartData} tvlChartData={tvlChartData} />
+            <ChartCard
+              variant="pool"
+              setTimeWindow={setTimeWindow}
+              timeWindow={timeWindow}
+              volumeChartData={volumeChartData}
+              tvlChartData={tvlChartData}
+            />
           </ContentLayout>
           <Heading mb="16px" mt="40px" scale="lg">
             {t('Transactions')}

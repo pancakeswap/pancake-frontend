@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Box, Button, Card, Heading, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Box, Button, Card, Heading, PairDataTimeWindowEnum, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -23,7 +23,6 @@ import {
   useTopTokensData,
 } from './hooks'
 import { useTransformedVolumeData } from './hooks/chart'
-import { VolumeWindow } from './types'
 import { unixToDate } from './utils/date'
 import { formatDollarAmount } from './utils/numbers'
 
@@ -85,7 +84,7 @@ export default function Home() {
 
   const weeklyVolumeData = useTransformedVolumeData(chartData, 'week')
   const monthlyVolumeData = useTransformedVolumeData(chartData, 'month')
-  const [volumeWindow, setVolumeWindow] = useState(VolumeWindow.daily)
+  const [timeWindow, setTimeWindow] = useState(PairDataTimeWindowEnum.DAY)
 
   const formattedTokens = useMemo(() => {
     if (topTokensData)
@@ -142,9 +141,9 @@ export default function Home() {
             height={200}
             minHeight={332}
             data={
-              volumeWindow === VolumeWindow.monthly
+              timeWindow === PairDataTimeWindowEnum.MONTH
                 ? monthlyVolumeData
-                : volumeWindow === VolumeWindow.weekly
+                : timeWindow === PairDataTimeWindowEnum.WEEK
                 ? weeklyVolumeData
                 : formattedVolumeData
             }
@@ -153,29 +152,29 @@ export default function Home() {
             setLabel={setRightLabel}
             value={volumeHover}
             label={rightLabel}
-            activeWindow={volumeWindow}
+            timeWindow={timeWindow}
             topRight={
               <RowFixed style={{ marginLeft: '-40px', marginTop: '8px' }}>
                 <Button
                   scale="sm"
-                  variant={volumeWindow === VolumeWindow.daily ? 'primary' : 'bubblegum'}
-                  onClick={() => setVolumeWindow(VolumeWindow.daily)}
+                  variant={timeWindow === PairDataTimeWindowEnum.DAY ? 'primary' : 'bubblegum'}
+                  onClick={() => setTimeWindow(PairDataTimeWindowEnum.DAY)}
                 >
                   D
                 </Button>
                 <Button
                   scale="sm"
-                  variant={volumeWindow === VolumeWindow.weekly ? 'primary' : 'bubblegum'}
+                  variant={timeWindow === PairDataTimeWindowEnum.WEEK ? 'primary' : 'bubblegum'}
                   style={{ marginLeft: '8px' }}
-                  onClick={() => setVolumeWindow(VolumeWindow.weekly)}
+                  onClick={() => setTimeWindow(PairDataTimeWindowEnum.WEEK)}
                 >
                   W
                 </Button>
                 <Button
-                  variant={volumeWindow === VolumeWindow.monthly ? 'primary' : 'bubblegum'}
+                  variant={timeWindow === PairDataTimeWindowEnum.MONTH ? 'primary' : 'bubblegum'}
                   scale="sm"
                   style={{ marginLeft: '8px' }}
-                  onClick={() => setVolumeWindow(VolumeWindow.monthly)}
+                  onClick={() => setTimeWindow(PairDataTimeWindowEnum.MONTH)}
                 >
                   M
                 </Button>

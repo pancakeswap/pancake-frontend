@@ -1,6 +1,6 @@
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { baseColors, darkColors, lightColors } from '@pancakeswap/uikit'
+import { baseColors, darkColors, lightColors, PairDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { CandleChartLoader } from 'components/ChartLoaders'
 import dayjs from 'dayjs'
 import { ColorType, IChartApi, createChart } from 'lightweight-charts'
@@ -10,12 +10,21 @@ const CANDLE_CHART_HEIGHT = 250
 
 export type LineChartProps = {
   data: any[] | undefined
+  timeWindow: PairDataTimeWindowEnum
   setValue?: Dispatch<SetStateAction<number | undefined>> // used for value on hover
   setLabel?: Dispatch<SetStateAction<string | undefined>> // used for value label on hover
 } & React.HTMLAttributes<HTMLDivElement>
 
-const CandleChart = ({ data, setValue, setLabel }: LineChartProps) => {
-  const { theme } = useTheme()
+const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
+  [PairDataTimeWindowEnum.HOUR]: 'h:mm a',
+  [PairDataTimeWindowEnum.DAY]: 'h:mm a',
+  [PairDataTimeWindowEnum.WEEK]: 'MMM dd',
+  [PairDataTimeWindowEnum.MONTH]: 'MMM dd',
+  [PairDataTimeWindowEnum.YEAR]: 'MMM dd',
+}
+
+const CandleChart = ({ data, timeWindow, setValue, setLabel }: LineChartProps) => {
+  const { theme, isDark } = useTheme()
   const {
     currentLanguage: { locale },
   } = useTranslation()
@@ -35,7 +44,7 @@ const CandleChart = ({ data, setValue, setLabel }: LineChartProps) => {
           color: 'transparent',
         },
         textColor: theme.colors.textSubtle,
-        fontFamily: 'Kanit, sans-serif',
+        fontFamily: "'Kanit', sans-serif",
         fontSize: 12,
       },
       rightPriceScale: {
@@ -49,11 +58,8 @@ const CandleChart = ({ data, setValue, setLabel }: LineChartProps) => {
         borderVisible: false,
         secondsVisible: true,
         tickMarkFormatter: (unixTime: number) => {
-          return dayjs.unix(unixTime).format('MM/DD h:mm a')
+          return dayjs.unix(unixTime).format(dateFormattingByTimewindow[timeWindow])
         },
-      },
-      watermark: {
-        visible: false,
       },
       grid: {
         horzLines: {
@@ -65,8 +71,8 @@ const CandleChart = ({ data, setValue, setLabel }: LineChartProps) => {
       },
       crosshair: {
         horzLine: {
-          visible: false,
-          labelVisible: false,
+          visible: true,
+          labelVisible: true,
         },
         mode: 1,
         vertLine: {
@@ -74,7 +80,7 @@ const CandleChart = ({ data, setValue, setLabel }: LineChartProps) => {
           labelVisible: false,
           style: 3,
           width: 1,
-          color: theme.colors.textSubtle,
+          color: isDark ? darkColors.textSubtle : lightColors.textSubtle,
           labelBackgroundColor: theme.colors.primary,
         },
       },
@@ -127,8 +133,8 @@ const CandleChart = ({ data, setValue, setLabel }: LineChartProps) => {
           minute: '2-digit',
           timeZone: 'UTC',
         })} (UTC)`
-        const parsed = param.seriesData.get(series) as { open: number } | undefined
-        if (setValue) setValue(parsed?.open)
+        const parsed = param.seriesData.get(series) as { close: number } | undefined
+        if (setValue) setValue(parsed?.close)
         if (setLabel) setLabel(time)
       }
     })
@@ -140,7 +146,7 @@ const CandleChart = ({ data, setValue, setLabel }: LineChartProps) => {
         setChart(undefined)
       }
     }
-  }, [data, locale, setLabel, setValue, theme.colors.primary, theme.colors.textSubtle, theme.isDark])
+  }, [data, locale, setLabel, setValue, theme.colors.primary, theme.colors.textSubtle, isDark, timeWindow])
 
   return (
     <>

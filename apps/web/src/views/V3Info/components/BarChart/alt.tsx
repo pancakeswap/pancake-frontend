@@ -1,11 +1,10 @@
 import Card from 'components/Card'
 import dayjs from 'dayjs'
-import { RowBetween } from '@pancakeswap/uikit'
+import { PairDataTimeWindowEnum, RowBetween } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { styled } from 'styled-components'
-import { VolumeWindow } from '../../types'
 import { LoadingRows } from '../Loader'
 
 const DEFAULT_HEIGHT = 300
@@ -31,7 +30,7 @@ export type LineChartProps = {
   setLabel?: Dispatch<SetStateAction<string | undefined>> // used for label of value
   value?: number
   label?: string
-  activeWindow?: VolumeWindow
+  timeWindow?: PairDataTimeWindowEnum
   topLeft?: ReactNode | undefined
   topRight?: ReactNode | undefined
   bottomLeft?: ReactNode | undefined
@@ -65,7 +64,7 @@ const Chart = ({
   setLabel,
   value,
   label,
-  activeWindow,
+  timeWindow,
   topLeft,
   topRight,
   bottomLeft,
@@ -111,7 +110,9 @@ const Chart = ({
               dataKey="time"
               axisLine={false}
               tickLine={false}
-              tickFormatter={(time) => dayjs(time).format(activeWindow === VolumeWindow.monthly ? 'MMM' : 'DD')}
+              tickFormatter={(time) =>
+                dayjs(time).format(timeWindow ? (timeWindow >= PairDataTimeWindowEnum.WEEK ? 'MMM' : 'DD') : 'DD')
+              }
               minTickGap={10}
             />
             <Tooltip
@@ -127,14 +128,14 @@ const Chart = ({
                 const formattedTimePlusMonth = dayjs(props.payload.time).add(1, 'month')
 
                 if (setLabel && label !== formattedTime) {
-                  if (activeWindow === VolumeWindow.weekly) {
+                  if (timeWindow === PairDataTimeWindowEnum.WEEK) {
                     const isCurrent = formattedTimePlusWeek.isAfter(now)
                     setLabel(
                       `${formattedTime}-${
                         isCurrent ? now.format('MMM D, YYYY') : formattedTimePlusWeek.format('MMM D, YYYY')
                       }`,
                     )
-                  } else if (activeWindow === VolumeWindow.monthly) {
+                  } else if (timeWindow === PairDataTimeWindowEnum.MONTH) {
                     const isCurrent = formattedTimePlusMonth.isAfter(now)
                     setLabel(
                       `${formattedTime}-${

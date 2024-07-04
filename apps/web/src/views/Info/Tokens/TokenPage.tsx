@@ -14,6 +14,7 @@ import {
   Text,
   Link as UIKitLink,
   useMatchBreakpoints,
+  PairDataTimeWindowEnum,
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
@@ -22,7 +23,6 @@ import { NextSeo } from 'next-seo'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import Page from 'components/Layout/Page'
 import { CHAIN_QUERY_NAME } from 'config/chains'
-import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import { ChainLinkSupportChains, multiChainId, multiChainScan } from 'state/info/constant'
@@ -48,6 +48,7 @@ import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import Percent from 'views/Info/components/Percent'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
+import { useState } from 'react'
 
 dayjs.extend(duration)
 
@@ -71,7 +72,7 @@ const StyledCMCLink = styled(UIKitLink)`
     opacity: 0.8;
   }
 `
-const DEFAULT_TIME_WINDOW = dayjs.duration(1, 'weeks')
+const DEFAULT_TIME_WINDOW = PairDataTimeWindowEnum.MONTH
 
 const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = ({ routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpoints()
@@ -83,15 +84,17 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
 
   const cmcLink = useCMCLink(address)
 
+  const [timeWindow, setTimeWindow] = useState(DEFAULT_TIME_WINDOW)
+
   const tokenData = useTokenDataQuery(address)
   const poolDatas = usePoolsForTokenDataQuery(address)
   const transactions = useTokenTransactionsQuery(address)
   // const chartData = useTokenChartDataQuery(address)
-  const volumeChartData = useTokenChartVolumeDataQuery(address)
-  const tvlChartData = useTokenChartTvlDataQuery(address)
+  const volumeChartData = useTokenChartVolumeDataQuery(address, timeWindow)
+  const tvlChartData = useTokenChartTvlDataQuery(address, timeWindow)
 
   // pricing data
-  const priceData = useTokenPriceDataQuery(address, ONE_HOUR_SECONDS, DEFAULT_TIME_WINDOW)
+  const priceData = useTokenPriceDataQuery(address, timeWindow)
 
   const chainPath = useMultiChainPath()
   const chainName = useChainNameByQuery()
@@ -230,6 +233,8 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
               {/* charts card */}
               <ChartCard
                 variant="token"
+                timeWindow={timeWindow}
+                setTimeWindow={setTimeWindow}
                 volumeChartData={volumeChartData}
                 tvlChartData={tvlChartData}
                 tokenData={tokenData}
