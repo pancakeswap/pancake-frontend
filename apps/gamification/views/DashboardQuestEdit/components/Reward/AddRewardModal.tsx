@@ -7,6 +7,7 @@ import { BigNumber } from 'bignumber.js'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import { CurrencySearch } from 'components/SearchModal/CurrencySearch'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
 import { useCallback, useMemo, useState } from 'react'
@@ -35,6 +36,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   onDismiss,
 }) => {
   const { t } = useTranslation()
+  const { switchNetworkAsync } = useSwitchNetwork()
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.currencyInput)
   const [amountOfWinnersInModal, setAmountOfWinnersInModal] = useState(0)
   const { chainId } = useActiveWeb3React()
@@ -96,6 +98,12 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     onDismiss?.()
   }
 
+  const isNetworkWrong = useMemo(() => chainId !== inputCurrency?.chainId, [chainId, inputCurrency])
+
+  const handleSwitchNetwork = async (): Promise<void> => {
+    await switchNetworkAsync(inputCurrency?.chainId)
+  }
+
   return (
     <Modal title={config[modalView].title} onDismiss={config[modalView].onBack}>
       <Flex
@@ -135,14 +143,20 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
                 </Box>
               </Flex>
             </Box>
-            <Button
-              width="100%"
-              mt="24px"
-              disabled={Boolean(!inputCurrency || !stakeAmount || !displayAmountOfWinnersInModal)}
-              onClick={handleContinue}
-            >
-              {t('Continue')}
-            </Button>
+            {isNetworkWrong ? (
+              <Button width="100%" mt="24px" onClick={handleSwitchNetwork}>
+                {t('Switch Network')}
+              </Button>
+            ) : (
+              <Button
+                width="100%"
+                mt="24px"
+                disabled={Boolean(!inputCurrency || !stakeAmount || !displayAmountOfWinnersInModal)}
+                onClick={handleContinue}
+              >
+                {t('Continue')}
+              </Button>
+            )}
           </>
         )}
         {modalView === CurrencyModalView.search && (
