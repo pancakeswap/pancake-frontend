@@ -9,6 +9,7 @@ import { useZksyncAirDropContract } from 'hooks/useContract'
 import { usePaymaster } from 'hooks/usePaymaster'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useCallback } from 'react'
+import { calculateGasMargin } from 'utils'
 import { getZkSyncAirDropAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
 import { Address, encodeFunctionData } from 'viem'
@@ -214,7 +215,7 @@ export const useClaimZksyncAirdrop = () => {
         const call = {
           address: zkSyncAirDropContract.address,
           calldata,
-          gas: estimatedGas,
+          gas: calculateGasMargin(estimatedGas),
         }
 
         return sendPaymasterTransaction(call, account)
