@@ -1,4 +1,3 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { Box, PageSection, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { MENU_HEIGHT } from '@pancakeswap/uikit/widgets/Menu/config'
 import useTheme from 'hooks/useTheme'
@@ -39,7 +38,6 @@ const TestImageForBunnyWithChair = styled.img`
 const Home: React.FC<React.PropsWithChildren> = () => {
   const { theme } = useTheme()
   const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px', padding: '0px 16px' }
-  const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
   return (

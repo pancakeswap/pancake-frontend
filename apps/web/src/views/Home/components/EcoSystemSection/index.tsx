@@ -191,25 +191,21 @@ const useFeaturesData = () => {
     return [
       {
         title: t('Swap/Trade'),
-        description: t(
-          'Lets users trade without the need to go through a Centralized Exchange — all transactions are routed directly through your wallet; all are decentralized!',
-        ),
+        description: t('Trade crypto instantly in a Decentralized Exchange with simple and intuitive user experience!'),
         image: '/images/home/icons-3d/swap.png',
         path: '/swap',
       },
       {
         title: t('Liquidity Pools'),
         description: t(
-          'Lets users trade without the need to go through a Centralized Exchange — all transactions are routed directly through your wallet; all are decentralized!',
+          'Fund liquidity pools and earn trading fees! Integration of Frax assets with Pancakeswap liquidity via PCSX',
         ),
         image: '/images/home/icons-3d/liquidity-pool01.png',
         path: '/liquidity',
       },
       {
-        title: t('Earn-cake'),
-        description: t(
-          'Lets users trade without the need to go through a Centralized Exchange — all transactions are routed directly through your wallet; all are decentralized!',
-        ),
+        title: t('Build'),
+        description: t('Open source approach. Empowering developers to innovate, customize & collaborate'),
         image: '/images/home/icons-3d/farm02.png',
         path: '/farms',
       },
@@ -248,7 +244,7 @@ const EcoSystemSection: React.FC = () => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const featuresBlockData = useFeaturesData()
-  const { isMobile, isMd } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
 
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column" pt={isMobile ? '24px' : '60px'}>
