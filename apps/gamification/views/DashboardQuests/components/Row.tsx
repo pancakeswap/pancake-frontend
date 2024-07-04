@@ -4,6 +4,8 @@ import { CAKE } from '@pancakeswap/tokens'
 import { Box, EllipsisIcon, Flex, PencilIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { TokenWithChain } from 'components/TokenWithChain'
+import { CHAIN_QUERY_NAME } from 'config/chains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
 import { useRouter } from 'next/router'
 import { MouseEvent, useMemo, useRef, useState } from 'react'
@@ -57,6 +59,7 @@ interface RowProps {
 export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
   const { t } = useTranslation()
   const router = useRouter()
+  const { chainId } = useActiveChainId()
   const dropdownRef = useRef<HTMLDivElement>(null)
   const { isXxl, isDesktop } = useMatchBreakpoints()
   const [isOpen, setIsOpen] = useState(false)
@@ -148,7 +151,11 @@ export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
                 </Flex> */}
 
                 {/* When has "Statistics" need hide "Edit" when statusButtonIndex !== CompletionStatusIndex.FINISHED */}
-                <Flex onClick={(e: MouseEvent) => redirectUrl(e, `/dashboard/quest/edit/${quest.id}`)}>
+                <Flex
+                  onClick={(e: MouseEvent) =>
+                    redirectUrl(e, `/dashboard/quest/edit/${quest.id}?chain=${CHAIN_QUERY_NAME[chainId]}`)
+                  }
+                >
                   <PencilIcon color="primary" width="14px" height="14px" />
                   <Text ml="14px">{t('Edit')}</Text>
                 </Flex>

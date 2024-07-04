@@ -60,7 +60,7 @@ export const Quest = () => {
     }
   }, [isError, push])
 
-  if (!isFetched || isError) {
+  if (!isFetched || isError || !questId) {
     return null
   }
 
