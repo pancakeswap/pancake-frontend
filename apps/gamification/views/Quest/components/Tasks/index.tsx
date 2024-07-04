@@ -44,12 +44,12 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
     [completionStatus, endDateTime],
   )
 
-  const { taskStatus } = useVerifyTaskStatus({ questId, isQuestFinished })
+  const hasIdRegister = useMemo(() => {
+    const registered = userInfo.questIds?.map((i) => i.toLowerCase())?.includes(questId.toLowerCase())
+    return Boolean(registered)
+  }, [questId, userInfo.questIds])
 
-  const hasIdRegister = useMemo(
-    () => userInfo.questIds?.map((i) => i.toLowerCase())?.includes(questId.toLowerCase()),
-    [questId, userInfo.questIds],
-  )
+  const { taskStatus } = useVerifyTaskStatus({ questId, isQuestFinished, hasIdRegister })
 
   const hasOptionsInTasks = useMemo(() => tasks?.find((i) => i.isOptional === true), [tasks])
 

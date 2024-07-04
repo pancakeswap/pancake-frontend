@@ -21,9 +21,10 @@ const initialData: VerifyTaskStatus = {
 interface UseVerifyTaskStatus {
   questId: string
   isQuestFinished: boolean
+  hasIdRegister: boolean
 }
 
-export const useVerifyTaskStatus = ({ questId, isQuestFinished }: UseVerifyTaskStatus) => {
+export const useVerifyTaskStatus = ({ questId, hasIdRegister, isQuestFinished }: UseVerifyTaskStatus) => {
   const { address: account } = useAccount()
 
   const { data, refetch, isFetching } = useQuery({
@@ -41,7 +42,7 @@ export const useVerifyTaskStatus = ({ questId, isQuestFinished }: UseVerifyTaskS
         return initialData
       }
     },
-    enabled: Boolean(account && questId),
+    enabled: Boolean(account && questId && hasIdRegister),
     refetchInterval: isQuestFinished ? false : SLOW_INTERVAL,
   })
 
