@@ -131,8 +131,7 @@ const CandleChart = ({ data, timeWindow, setValue, setLabel }: LineChartProps) =
           day: 'numeric',
           hour: 'numeric',
           minute: '2-digit',
-          timeZone: 'UTC',
-        })} (UTC)`
+        })}`
         const parsed = param.seriesData.get(series) as { close: number } | undefined
         if (setValue) setValue(parsed?.close)
         if (setLabel) setLabel(time)

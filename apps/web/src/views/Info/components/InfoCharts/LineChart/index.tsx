@@ -120,8 +120,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
           day: 'numeric',
           hour: 'numeric',
           minute: '2-digit',
-          timeZone: 'UTC',
-        })} (UTC)`
+        })}`
         // @ts-ignore
         const parsed = (param.seriesData.get(newSeries)?.value ?? 0) as number | undefined
         if (setHoverValue) setHoverValue(parsed)
