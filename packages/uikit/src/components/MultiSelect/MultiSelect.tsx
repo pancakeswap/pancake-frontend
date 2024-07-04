@@ -88,8 +88,8 @@ const SelectContainer = styled.div`
 
     &.p-highlight {
       .p-checkbox-box {
-        border-color: ${({ theme }) => theme.colors.primary};
-        background-color: ${({ theme }) => theme.colors.primary};
+        border-color: ${({ theme }) => theme.colors.success};
+        background-color: ${({ theme }) => theme.colors.success};
       }
 
       .p-checkbox-icon.p-icon {
@@ -99,10 +99,10 @@ const SelectContainer = styled.div`
         right: 0;
         margin: auto;
         transform: translateY(-50%);
-        color: ${({ theme }) => theme.colors.white};
+        color: ${({ theme }) => theme.colors.backgroundAlt};
         
         path {
-          stroke: ${({ theme }) => theme.colors.white};
+          stroke: ${({ theme }) => theme.colors.backgroundAlt};
           stroke-width: 1;
         }
       }
@@ -257,7 +257,6 @@ export const MultiSelect = (props: IMultiSelectProps) => {
               scale={CHECKBOX_WIDTH}
               colors={{
                 background: "input",
-                checkedBackground: "primary",
                 border: "inputSecondary",
               }}
               style={{ margin: 0 }}
