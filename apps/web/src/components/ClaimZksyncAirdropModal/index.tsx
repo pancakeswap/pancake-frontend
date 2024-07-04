@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { zksyncTokens } from '@pancakeswap/tokens'
 import {
@@ -24,6 +25,7 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import { paymasterTokens } from 'config/paymaster'
 import { useGasToken } from 'hooks/useGasToken'
 import { usePaymaster } from 'hooks/usePaymaster'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useEffect } from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
@@ -52,11 +54,12 @@ export const ClaimZksyncAirdropModal: React.FC<{
   onDismiss?: () => void
   isOpen?: boolean
 }> = ({ onDismiss, isOpen }) => {
+  const { switchNetwork } = useSwitchNetwork()
   const { isDesktop } = useMatchBreakpoints()
   const { t } = useTranslation()
   const whiteListData = useUserWhiteListData()
   const { claimAirDrop, pendingTx } = useClaimZksyncAirdrop()
-  const { address: account } = useAccount()
+  const { address: account, chainId } = useAccount()
 
   const { isPaymasterAvailable, isPaymasterTokenActive } = usePaymaster()
   const [, setGasToken] = useGasToken()
@@ -110,9 +113,15 @@ export const ClaimZksyncAirdropModal: React.FC<{
             </Text>
             <Link href="/">{t('Learn more about the campaign')}</Link>
             {account ? (
-              <Button mt="24px" isLoading={pendingTx} onClick={claimAirDrop}>
-                {t('Claim now')}
-              </Button>
+              chainId === ChainId.ZKSYNC ? (
+                <Button mt="24px" isLoading={pendingTx} onClick={claimAirDrop}>
+                  {t('Claim now')}
+                </Button>
+              ) : (
+                <Button mt="24px" onClick={() => switchNetwork(ChainId.ZKSYNC)}>
+                  {t('Switch network to Zksync for claiming')}
+                </Button>
+              )
             ) : (
               <ConnectWalletButton mt="24px" />
             )}

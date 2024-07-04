@@ -7,11 +7,12 @@ import { zkSyncAirDropABI } from 'config/abi/zksyncAirdrop'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useZksyncAirDropContract } from 'hooks/useContract'
 import { usePaymaster } from 'hooks/usePaymaster'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useCallback } from 'react'
 import { getZkSyncAirDropAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
 import { Address, encodeFunctionData } from 'viem'
-import { useAccount } from 'wagmi'
+import { useAccount, useConfig } from 'wagmi'
 
 interface ZksyncAirDropWhiteListData {
   address: Address
@@ -79,15 +80,23 @@ export const useUserWhiteListData = () => {
 
 export const useClaimZksyncAirdrop = () => {
   const { t } = useTranslation()
-  const { address: account, chain } = useAccount()
+  const { address: account, chainId } = useAccount()
   const whiteListData = useUserWhiteListData()
   const { toastSuccess } = useToast()
   const zkSyncAirDropContract = useZksyncAirDropContract()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { isPaymasterAvailable, isPaymasterTokenActive, sendPaymasterTransaction } = usePaymaster()
+  const chainConfig = useConfig()
+  const chain = chainConfig.chains[ChainId.ZKSYNC]
+  const { switchNetwork } = useSwitchNetwork()
 
   const claimAirDrop = useCallback(async () => {
-    if (!whiteListData || !zkSyncAirDropContract || !account) return
+    if (!whiteListData || !zkSyncAirDropContract || !account || chainId !== ChainId.ZKSYNC) {
+      if (chainId !== ChainId.ZKSYNC) {
+        switchNetwork(ChainId.ZKSYNC)
+      }
+      return
+    }
     const receipt = await fetchWithCatchTxError(async () => {
       if (isPaymasterAvailable && isPaymasterTokenActive) {
         const calldata = encodeFunctionData({
@@ -116,16 +125,16 @@ export const useClaimZksyncAirdrop = () => {
       )
     }
   }, [
-    account,
-    chain,
-    fetchWithCatchTxError,
-    t,
-    toastSuccess,
     whiteListData,
     zkSyncAirDropContract,
+    account,
+    fetchWithCatchTxError,
     isPaymasterAvailable,
     isPaymasterTokenActive,
+    chain,
     sendPaymasterTransaction,
+    toastSuccess,
+    t,
   ])
 
   // eslint-disable-next-line consistent-return

@@ -18,7 +18,7 @@ import { ClaimZksyncAirdropModal } from 'components/ClaimZksyncAirdropModal'
 import { useUserWhiteListData } from 'components/ClaimZksyncAirdropModal/hooks'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 const bgMobile = `${ASSET_CDN}/web/banners/zksync-airdrop-banner/bunny-bg-mobile.png`
@@ -59,10 +59,12 @@ export const ZksyncAirDropBanner = () => {
   const { isMobile, isTablet, isMd } = useMatchBreakpoints()
   const [isOpen, setIsOpen] = useState(false)
   const whitelistData = useUserWhiteListData()
+  const isModalOpened = useRef(false)
 
   useEffect(() => {
-    if (whitelistData?.account && whitelistData?.amount && whitelistData?.proof) {
+    if (whitelistData?.account && whitelistData?.amount && whitelistData?.proof && isModalOpened.current === false) {
       setIsOpen(true)
+      isModalOpened.current = true
     }
   }, [whitelistData])
 
