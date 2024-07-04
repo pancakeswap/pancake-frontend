@@ -1,7 +1,7 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { useQueryClient } from '@tanstack/react-query'
-import { options } from 'components/MultiSelectorUI'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
 import { RecordTemplate } from 'views/DashboardQuests/components/RecordTemplate'
 import { Records } from 'views/DashboardQuests/components/Records'
@@ -14,33 +14,18 @@ export const DashboardQuests = () => {
   const { address: account } = useAccount()
   const queryClient = useQueryClient()
   const [statusButtonIndex, setStatusButtonIndex] = useState(CompletionStatusIndex.ONGOING)
-  const [pickMultiSelect, setPickMultiSelect] = useState<Array<number>>([])
-
-  const chainsValuePicked = useMemo(() => {
-    return pickMultiSelect
-      .map((id) => {
-        // eslint-disable-next-line @typescript-eslint/no-shadow
-        const option = options.find((option) => option.id === id)
-        return option ? option.value : null
-      })
-      .filter((value): value is number => value !== null)
-  }, [pickMultiSelect])
+  const [pickMultiSelect, setPickMultiSelect] = useState<Array<ChainId>>([])
 
   useEffect(() => {
     return () => {
       queryClient.invalidateQueries({
-        queryKey: [
-          'fetch-all-quest-dashboard-data',
-          account,
-          chainsValuePicked,
-          convertIndexToStatus(statusButtonIndex),
-        ],
+        queryKey: ['fetch-all-quest-dashboard-data', account, pickMultiSelect, convertIndexToStatus(statusButtonIndex)],
       })
     }
   }, [])
 
   const { questsData, isFetching } = useFetchAllQuests({
-    chainIdList: chainsValuePicked,
+    chainIdList: pickMultiSelect,
     completionStatus: convertIndexToStatus(statusButtonIndex),
   })
 
@@ -50,7 +35,6 @@ export const DashboardQuests = () => {
       createLink="/dashboard/quest/create"
       createButtonText={t('Create')}
       statusButtonIndex={statusButtonIndex}
-      pickMultiSelect={pickMultiSelect}
       setPickMultiSelect={setPickMultiSelect}
       setStatusButtonIndex={setStatusButtonIndex}
     >

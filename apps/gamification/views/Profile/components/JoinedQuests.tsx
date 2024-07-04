@@ -1,7 +1,8 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap } from '@pancakeswap/uikit'
-import { MultiSelectorUI, options } from 'components/MultiSelectorUI'
-import { useMemo, useState } from 'react'
+import { NetworkMultiSelector } from 'components/NetworkMultiSelector'
+import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useUserJoinedPublicQuests } from 'views/Profile/hooks/useUserJoinedPublicQuests'
 import { EmptyQuest } from 'views/Quests/components/EmptyQuest'
@@ -41,24 +42,14 @@ const StyledFlexGap = styled(FlexGap)`
 export const JoinedQuests = () => {
   const { t } = useTranslation()
   const [statusButtonIndex, setStatusButtonIndex] = useState(0)
-  const [pickMultiSelect, setPickMultiSelect] = useState<Array<number>>([])
-
-  const chainIdList = useMemo(() => {
-    return pickMultiSelect
-      .map((id) => {
-        // eslint-disable-next-line @typescript-eslint/no-shadow
-        const option = options.find((option) => option.id === id)
-        return option ? option.value : null
-      })
-      .filter((value): value is number => value !== null)
-  }, [pickMultiSelect])
+  const [pickMultiSelect, setPickMultiSelect] = useState<Array<ChainId>>([])
 
   const onStatusButtonChange = (newIndex: number) => {
     setStatusButtonIndex(newIndex)
   }
 
   const { data, isFetching } = useUserJoinedPublicQuests({
-    chainIdList: chainIdList ?? [],
+    chainIdList: pickMultiSelect,
     completionStatus: publicConvertIndexToStatus(statusButtonIndex),
   })
 
@@ -87,10 +78,9 @@ export const JoinedQuests = () => {
             <ButtonMenuItem>{t('Finished')}</ButtonMenuItem>
           </ButtonMenu>
         </Flex>
-        <MultiSelectorUI
+        <NetworkMultiSelector
           maxWidth={['100%', '100%', '160px']}
           margin={['0 0 16px 0', '0 0 16px 0', '0 0 0 auto']}
-          pickMultiSelect={pickMultiSelect}
           setPickMultiSelect={setPickMultiSelect}
         />
       </Flex>

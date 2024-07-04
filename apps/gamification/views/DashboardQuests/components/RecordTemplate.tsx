@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Box, Button, ButtonMenu, ButtonMenuItem, Flex, Text } from '@pancakeswap/uikit'
-import { MultiSelectorUI } from 'components/MultiSelectorUI'
+import { NetworkMultiSelector } from 'components/NetworkMultiSelector'
 import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
 
@@ -55,7 +55,6 @@ interface RecordTemplateProps {
   createButtonText: string
   createLink: string
   statusButtonIndex: number
-  pickMultiSelect: Array<ChainId>
   setPickMultiSelect: (chains: Array<ChainId>) => void
   setStatusButtonIndex: (newIndex: number) => void
   children?: React.ReactNode
@@ -66,7 +65,6 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({
   createButtonText,
   createLink,
   statusButtonIndex,
-  pickMultiSelect,
   setPickMultiSelect,
   setStatusButtonIndex,
   children,
@@ -102,10 +100,11 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({
                 <ButtonMenuItem>{t('Finished')}</ButtonMenuItem>
                 <ButtonMenuItem>{t('Drafted')}</ButtonMenuItem>
               </StyledButtonMenu>
-              <MultiSelectorUI
+              <NetworkMultiSelector
+                height="36px"
+                width={['100%', '100%', '100%', '160px']}
                 maxWidth={['100%', '100%', '100%', '160px']}
                 margin={['24px 0 0 0', '24px 0 0 0', '24px 0 0 0', ' 0 auto 0 0']}
-                pickMultiSelect={pickMultiSelect}
                 setPickMultiSelect={setPickMultiSelect}
               />
             </Flex>
