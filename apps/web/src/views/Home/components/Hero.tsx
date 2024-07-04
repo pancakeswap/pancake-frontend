@@ -159,7 +159,7 @@ const Hero = () => {
         <Flex flex="1" flexDirection="column">
           <Text textAlign={isMobile || isMd ? 'center' : 'left'} pr={isMobile ? 0 : '10px'} mb="16px">
             <StyledText1 display="inline-block" lineHeight="110%" fontWeight={600} color="contrast" mr="8px">
-              {t('V4 to Fraxtal')}
+              {t('All-in-one DEX With')}
             </StyledText1>
             <br />
             <StyledText
@@ -169,7 +169,7 @@ const Hero = () => {
               color="secondary"
               mr={isMobile ? 0 : '8px'}
             >
-              {t('Permissionless Pools')}
+              {t('V4 to Fraxtal')}
             </StyledText>
           </Text>
           <StyledText2
