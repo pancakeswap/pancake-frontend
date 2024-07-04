@@ -22,7 +22,7 @@ import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance
 import BN from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { paymasterTokens } from 'config/paymaster'
+import { paymasterInfo, paymasterTokens } from 'config/paymaster'
 import { useGasToken } from 'hooks/useGasToken'
 import { usePaymaster } from 'hooks/usePaymaster'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
@@ -68,7 +68,8 @@ export const ClaimZksyncAirdropModal: React.FC<{
 
   useEffect(() => {
     // Set default gas token to USDC (full sponsorship)
-    if (isPaymasterAvailable) setGasToken(paymasterTokens[4])
+    if (isPaymasterAvailable && paymasterInfo[paymasterTokens[4].wrapped.address].discount === 'FREE')
+      setGasToken(paymasterTokens[4])
   }, [isPaymasterAvailable, setGasToken])
 
   return (
