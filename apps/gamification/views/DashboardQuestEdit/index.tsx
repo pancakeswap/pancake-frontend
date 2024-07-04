@@ -56,7 +56,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
           numberOfParticipants,
         } = questData as SingleQuestData
         const startDateConvert = startDateTime > 0 ? new Date(convertDateAndTime(startDateTime)) : null
-        const endDateConvert = startDateTime > 0 ? new Date(convertDateAndTime(endDateTime)) : null
+        const endDateConvert = endDateTime > 0 ? new Date(convertDateAndTime(endDateTime)) : null
         const newTasks = tasks.length > 0 ? tasks.map((i) => ({ ...i, sid: nanoid(100) })) : tasks
 
         updateAllState(
