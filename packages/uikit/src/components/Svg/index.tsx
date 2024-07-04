@@ -65,7 +65,6 @@ export { default as EarnIcon } from "./Icons/Earn";
 export { default as EarnFillIcon } from "./Icons/EarnFill";
 export { default as EarnFilledIcon } from "./Icons/EarnFilled";
 export { default as EllipsisIcon } from "./Icons/Ellipsis";
-export { default as Empty } from "./Icons/Empty";
 export { default as ErrorIcon } from "./Icons/Error";
 export { default as EthChainIcon } from "./Icons/EthChain";
 export { default as ExpandIcon } from "./Icons/Expand";
