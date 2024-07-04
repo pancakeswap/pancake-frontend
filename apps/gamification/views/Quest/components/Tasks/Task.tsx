@@ -27,8 +27,8 @@ import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocia
 import { getTwitterIdCookie } from 'views/Profile/utils/getTwitterIdCookie'
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
-import { fetchBlogMarkTaskStatus } from 'views/Quest/utils/fetchBlogMarkTaskStatus'
-import { fetchVerifyTwitterFollow } from 'views/Quest/utils/fetchVerifyTwitterFollow'
+import { fetchMarkTaskStatus } from 'views/Quest/utils/fetchMarkTaskStatus'
+import { TwitterFollowResponse, fetchVerifyTwitterFollow } from 'views/Quest/utils/fetchVerifyTwitterFollow'
 import { useAccount } from 'wagmi'
 
 const VerifyButton = styled(Button)`
@@ -66,7 +66,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
     setIsPending(true)
     const twitterId = userInfo?.socialHubToSocialUserIdMap?.Twitter
 
-    if (twitterId) {
+    if (twitterId && account) {
       const cookieId = getTwitterIdCookie(twitterId)
       const getTokenData = Cookie.get(cookieId)
       const tokenData = getTokenData ? JSON.parse(getTokenData) : null
@@ -78,23 +78,36 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
           Cookie.set(cookieId, JSON.stringify({ token, tokenSecret }))
         }
 
-        setActionPanelExpanded(false)
-        await fetchVerifyTwitterFollow({
-          userId: twitterId,
-          token,
-          tokenSecret,
-          targetUserId: (task as TaskSocialConfig).accountId,
-          callback: () => {
-            refresh()
-          },
-        })
+        try {
+          setActionPanelExpanded(false)
+          const responseFetchVerifyTwitterFollow = await fetchVerifyTwitterFollow({
+            userId: twitterId,
+            token,
+            tokenSecret,
+            targetUserId: (task as TaskSocialConfig).accountId,
+          })
 
-        setIsPending(false)
+          if (responseFetchVerifyTwitterFollow.ok) {
+            const followResult = await responseFetchVerifyTwitterFollow.json()
+            const followData: TwitterFollowResponse = followResult.data
+
+            if (followData?.following) {
+              const responseMarkTaskStatus = await fetchMarkTaskStatus(account, questId, TaskType.X_FOLLOW_ACCOUNT)
+              if (responseMarkTaskStatus.ok) {
+                refresh()
+              }
+            }
+          }
+        } catch (error) {
+          toastError('Verify Twitter Fail: ')
+        } finally {
+          setIsPending(false)
+        }
       } else {
         connectTwitter()
       }
     }
-  }, [connectTwitter, isPending, refresh, session, task, userInfo?.socialHubToSocialUserIdMap?.Twitter])
+  }, [isPending, userInfo, account, session, task, questId, refresh, toastError, connectTwitter])
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -159,7 +172,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
   ])
 
   const handleAddBlogPost = async () => {
-    const response = await fetchBlogMarkTaskStatus(account ?? '', questId)
+    const response = await fetchMarkTaskStatus(account ?? '', questId, TaskType.VISIT_BLOG_POST)
 
     if (response.ok) {
       const url = (task as TaskBlogPostConfig).blogUrl
