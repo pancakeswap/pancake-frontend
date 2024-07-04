@@ -1,4 +1,9 @@
-import { ZYFI_SPONSORED_PAYMASTER_URL, ZYFI_PAYMASTER_URL, paymasterInfo } from 'config/paymaster'
+import {
+  PAYMASTER_CONTRACT_WHITELIST,
+  ZYFI_PAYMASTER_URL,
+  ZYFI_SPONSORED_PAYMASTER_URL,
+  paymasterInfo,
+} from 'config/paymaster'
 import stringify from 'fast-json-stable-stringify'
 import { NextApiHandler } from 'next'
 
@@ -8,6 +13,11 @@ const handler: NextApiHandler = async (req, res) => {
   const { call, account, gasTokenAddress } = req.body
 
   try {
+    // Contract Whitelist
+    if (!PAYMASTER_CONTRACT_WHITELIST.includes(call.address.toLowerCase())) {
+      return res.status(400).json({ error: 'Contract not whitelisted for Paymaster' })
+    }
+
     const gasTokenInfo = paymasterInfo[gasTokenAddress]
     const isSponsored = gasTokenInfo?.discount === 'FREE'
 

@@ -2,6 +2,9 @@ import { zksyncTokens } from '@pancakeswap/tokens'
 
 import { ChainId } from '@pancakeswap/chains'
 import { Currency, Native } from '@pancakeswap/sdk'
+import { getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
+import addresses from 'config/constants/contracts'
+import { getAddressFromMap } from 'utils/addressHelpers'
 import { Address, Hex } from 'viem'
 
 // export const DEFAULT_PAYMASTER_TOKEN = Native.onChain(ChainId.ZKSYNC)
@@ -92,6 +95,17 @@ export const paymasterInfo: {
     discountLabel: 'FREE SWAP',
   },
 }
+
+/**
+ * Contracts that the paymaster is allowed to interact with
+ */
+export const PAYMASTER_CONTRACT_WHITELIST = [
+  getUniversalRouterAddress(ChainId.ZKSYNC), // Universal Router on zkSync
+  getAddressFromMap(addresses.zkSyncAirDrop, ChainId.ZKSYNC), // ZKSync AirDrop
+
+  // Token addresses for Approval
+  ...paymasterTokens.map((token) => token.wrapped.address),
+].map((address) => address.toLowerCase())
 
 // Zyfi
 export const ZYFI_PAYMASTER_URL = 'https://api.zyfi.org/api/erc20_paymaster/v1'
