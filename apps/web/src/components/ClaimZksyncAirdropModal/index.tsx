@@ -127,7 +127,7 @@ export const ClaimZksyncAirdropModal: React.FC<{
             </Link>
             {account ? (
               chainId === ChainId.ZKSYNC ? (
-                <Button mt="24px" isLoading={pendingTx} onClick={claimAirDrop}>
+                <Button mt="24px" isLoading={pendingTx} disabled={!userCanClaim} onClick={claimAirDrop}>
                   {t('Claim now')}
                 </Button>
               ) : (
