@@ -97,14 +97,12 @@ export const paymasterInfo: {
 }
 
 /**
- * Contracts that the paymaster is allowed to interact with
+ * Contracts that the paymaster is allowed to interact with.
+ * In addition, ERC20 Approve transactions are allowed.
  */
 export const PAYMASTER_CONTRACT_WHITELIST = [
   getUniversalRouterAddress(ChainId.ZKSYNC), // Universal Router on zkSync
   getAddressFromMap(addresses.zkSyncAirDrop, ChainId.ZKSYNC), // ZKSync AirDrop
-
-  // Token addresses for Approval
-  ...paymasterTokens.map((token) => token.wrapped.address),
 ].map((address) => address.toLowerCase())
 
 // Zyfi
