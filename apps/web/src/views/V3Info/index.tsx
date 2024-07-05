@@ -116,6 +116,7 @@ export default function Home() {
         <Card>
           <LineChart
             data={formattedTvlData}
+            timeWindow={PairDataTimeWindowEnum.DAY}
             height={220}
             minHeight={332}
             // color={theme.colors.primary}

@@ -373,6 +373,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                 ) : view === ChartView.FEES ? (
                   <BarChart
                     data={formattedFeesUSD}
+                    timeWindow={timeWindow}
                     color={backgroundColor}
                     minHeight={340}
                     setValue={setLatestValue}
@@ -383,6 +384,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                 ) : view === ChartView.TVL ? (
                   <LineChart
                     data={formattedTvlData}
+                    timeWindow={timeWindow}
                     minHeight={340}
                     setValue={setLatestValue}
                     setLabel={setValueLabel}

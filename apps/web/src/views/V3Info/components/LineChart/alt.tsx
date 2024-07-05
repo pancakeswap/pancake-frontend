@@ -5,6 +5,7 @@ import { darken } from 'polished'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { styled } from 'styled-components'
+import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { LoadingRows } from '../Loader'
 import { RowBetween } from '../Row'
 
@@ -24,6 +25,7 @@ const Wrapper = styled(Card)`
 
 export type LineChartProps = {
   data: any[]
+  timeWindow: PairDataTimeWindowEnum
   color?: string | undefined
   height?: number | undefined
   minHeight?: number
@@ -37,8 +39,17 @@ export type LineChartProps = {
   bottomRight?: ReactNode | undefined
 } & React.HTMLAttributes<HTMLDivElement>
 
+const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
+  [PairDataTimeWindowEnum.HOUR]: 'h:mm a',
+  [PairDataTimeWindowEnum.DAY]: 'h:mm a',
+  [PairDataTimeWindowEnum.WEEK]: 'MMM dd',
+  [PairDataTimeWindowEnum.MONTH]: 'MMM dd',
+  [PairDataTimeWindowEnum.YEAR]: 'MMM dd',
+}
+
 const Chart = ({
   data,
+  timeWindow,
   color = '#1FC7D4',
   value,
   label,
@@ -93,7 +104,7 @@ const Chart = ({
               dataKey="time"
               axisLine={false}
               tickLine={false}
-              tickFormatter={(time) => dayjs(time).format('DD')}
+              tickFormatter={(time) => dayjs(time).format(dateFormattingByTimewindow[timeWindow])}
               minTickGap={10}
             />
             <Tooltip
@@ -103,7 +114,7 @@ const Chart = ({
                 if (setValue && parsedValue !== props.payload.value) {
                   setValue(props.payload.value)
                 }
-                const formattedTime = dayjs(props.payload.time).format('MMM D, YYYY')
+                const formattedTime = dayjs(props.payload.time).format('MMM D h:mm a, YYYY')
                 if (setLabel && label !== formattedTime) setLabel(formattedTime)
                 return null as any
               }}

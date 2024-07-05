@@ -113,7 +113,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: unixToDate(day.date),
+          time: dayjs.unix(day.date).toDate(),
           value: day.totalValueLockedUSD,
         }
       })
@@ -125,7 +125,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: unixToDate(day.date),
+          time: dayjs.unix(day.date).toDate(),
           value: day.volumeUSD,
         }
       })
@@ -319,7 +319,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                       {valueLabel ? (
                         <MonoSpace>{valueLabel}</MonoSpace>
                       ) : (
-                        <MonoSpace>{dayjs.utc().format('MMM D, YYYY')}</MonoSpace>
+                        <MonoSpace>{dayjs().format('MMM D h:mm a, YYYY')}</MonoSpace>
                       )}
                     </Text>
                   </Flex>
@@ -337,6 +337,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                   {view === ChartView.TVL ? (
                     <LineChart
                       data={formattedTvlData}
+                      timeWindow={timeWindow}
                       color={isDark ? '#9A6AFF' : '#7A6EAA'}
                       minHeight={340}
                       value={latestValue}
@@ -347,6 +348,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                   ) : view === ChartView.VOL ? (
                     <BarChart
                       data={formattedVolumeData}
+                      timeWindow={timeWindow}
                       color="#1FC7D4"
                       minHeight={340}
                       value={latestValue}

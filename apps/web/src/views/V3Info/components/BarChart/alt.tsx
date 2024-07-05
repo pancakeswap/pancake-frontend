@@ -21,8 +21,17 @@ const Wrapper = styled(Card)`
   }
 `
 
+const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
+  [PairDataTimeWindowEnum.HOUR]: 'h:mm a',
+  [PairDataTimeWindowEnum.DAY]: 'h:mm a',
+  [PairDataTimeWindowEnum.WEEK]: 'MMM dd',
+  [PairDataTimeWindowEnum.MONTH]: 'MMM dd',
+  [PairDataTimeWindowEnum.YEAR]: 'MMM dd',
+}
+
 export type LineChartProps = {
   data: any[]
+  timeWindow: PairDataTimeWindowEnum
   color?: string | undefined
   height?: number | undefined
   minHeight?: number
@@ -30,7 +39,6 @@ export type LineChartProps = {
   setLabel?: Dispatch<SetStateAction<string | undefined>> // used for label of value
   value?: number
   label?: string
-  timeWindow?: PairDataTimeWindowEnum
   topLeft?: ReactNode | undefined
   topRight?: ReactNode | undefined
   bottomLeft?: ReactNode | undefined
@@ -59,12 +67,12 @@ const CustomBar = ({
 
 const Chart = ({
   data,
+  timeWindow,
   color = '#1FC7D4',
   setValue,
   setLabel,
   value,
   label,
-  timeWindow,
   topLeft,
   topRight,
   bottomLeft,
@@ -74,8 +82,6 @@ const Chart = ({
 }: LineChartProps) => {
   const { theme } = useTheme()
   const parsedValue = value
-
-  const now = dayjs()
 
   return (
     <Wrapper minHeight={minHeight} {...rest}>
@@ -110,9 +116,7 @@ const Chart = ({
               dataKey="time"
               axisLine={false}
               tickLine={false}
-              tickFormatter={(time) =>
-                dayjs(time).format(timeWindow ? (timeWindow >= PairDataTimeWindowEnum.WEEK ? 'MMM' : 'DD') : 'DD')
-              }
+              tickFormatter={(time) => dayjs(time).format(dateFormattingByTimewindow[timeWindow])}
               minTickGap={10}
             />
             <Tooltip
@@ -122,29 +126,8 @@ const Chart = ({
                 if (setValue && parsedValue !== props.payload.value) {
                   setValue(props.payload.value)
                 }
-                const formattedTime = dayjs(props.payload.time).format('MMM D')
-                const formattedTimeDaily = dayjs(props.payload.time).format('MMM D, YYYY')
-                const formattedTimePlusWeek = dayjs(props.payload.time).add(1, 'week')
-                const formattedTimePlusMonth = dayjs(props.payload.time).add(1, 'month')
-
-                if (setLabel && label !== formattedTime) {
-                  if (timeWindow === PairDataTimeWindowEnum.WEEK) {
-                    const isCurrent = formattedTimePlusWeek.isAfter(now)
-                    setLabel(
-                      `${formattedTime}-${
-                        isCurrent ? now.format('MMM D, YYYY') : formattedTimePlusWeek.format('MMM D, YYYY')
-                      }`,
-                    )
-                  } else if (timeWindow === PairDataTimeWindowEnum.MONTH) {
-                    const isCurrent = formattedTimePlusMonth.isAfter(now)
-                    setLabel(
-                      `${formattedTime}-${
-                        isCurrent ? now.format('MMM D, YYYY') : formattedTimePlusMonth.format('MMM D, YYYY')
-                      }`,
-                    )
-                  } else {
-                    setLabel(formattedTimeDaily)
-                  }
+                if (setLabel && parsedValue !== props.payload.value) {
+                  setLabel(dayjs(props.payload.time).format('MMM D hh:mm a, YYYY'))
                 }
                 return null as any
               }}
