@@ -60,7 +60,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
         borderVisible: false,
         secondsVisible: false,
         tickMarkFormatter: (unixTime: number) => {
-          return dayjs.unix(unixTime).format('h:mm a')
+          return dayjs(unixTime).format('h:mm a')
         },
       },
       grid: {

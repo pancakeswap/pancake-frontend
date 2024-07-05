@@ -5,17 +5,26 @@ import { BarChartLoader } from 'components/ChartLoaders'
 import { createChart, IChartApi } from 'lightweight-charts'
 import { useTranslation } from '@pancakeswap/localization'
 import dayjs from 'dayjs'
-import { lightColors, darkColors } from '@pancakeswap/uikit'
+import { lightColors, darkColors, PairDataTimeWindowEnum } from '@pancakeswap/uikit'
 
 export type LineChartProps = {
   data: any[]
   height?: string
   chartHeight?: string
+  timeWindow: PairDataTimeWindowEnum
   setHoverValue: Dispatch<SetStateAction<number | undefined>> // used for value on hover
   setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of value
 } & React.HTMLAttributes<HTMLDivElement>
 
-const Chart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
+const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
+  [PairDataTimeWindowEnum.HOUR]: 'h:mm a',
+  [PairDataTimeWindowEnum.DAY]: 'h:mm a',
+  [PairDataTimeWindowEnum.WEEK]: 'MMM dd',
+  [PairDataTimeWindowEnum.MONTH]: 'MMM dd',
+  [PairDataTimeWindowEnum.YEAR]: 'MMM dd',
+}
+
+const Chart = ({ data, timeWindow, setHoverValue, setHoverDate }: LineChartProps) => {
   const { isDark } = useTheme()
   const {
     currentLanguage: { locale },
@@ -58,7 +67,7 @@ const Chart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
         borderVisible: false,
         secondsVisible: false,
         tickMarkFormatter: (unixTime: number) => {
-          return dayjs.unix(unixTime).format('MM')
+          return dayjs(unixTime).format(dateFormattingByTimewindow[timeWindow])
         },
       },
       grid: {

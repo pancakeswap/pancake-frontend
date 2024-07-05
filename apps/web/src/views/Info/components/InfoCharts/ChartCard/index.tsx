@@ -145,7 +145,12 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
         {view === ChartView.LIQUIDITY ? (
           <LineChart data={formattedTvlData} setHoverValue={setHoverValue} setHoverDate={setHoverDate} />
         ) : view === ChartView.VOLUME ? (
-          <BarChart data={formattedVolumeData} setHoverValue={setHoverValue} setHoverDate={setHoverDate} />
+          <BarChart
+            data={formattedVolumeData}
+            timeWindow={timeWindow}
+            setHoverValue={setHoverValue}
+            setHoverDate={setHoverDate}
+          />
         ) : view === ChartView.PRICE ? (
           <CandleChart data={tokenPriceData} timeWindow={timeWindow} setValue={setHoverValue} setLabel={setHoverDate} />
         ) : null}
