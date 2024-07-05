@@ -193,6 +193,7 @@ const CandleChart = ({
     // eslint-disable-next-line consistent-return
     return () => {
       chart.remove()
+      setChart(undefined)
     }
   }, [color, data, height, setValue, textColor, theme, isDark, setLabel, timeWindow])
 
