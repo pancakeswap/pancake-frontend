@@ -125,9 +125,13 @@ export const ZksyncAirDropBanner = () => {
             </BannerActionContainer>
           }
         />
-        <BannerGraphics mb={['20px', '10px', '10px', '10px', '0']}>
+        <BannerGraphics
+          mb={['20px', '10px', '10px', '10px', '0']}
+          style={{ zIndex: 3 }}
+          paintBoardProps={{ style: { overflow: 'visible' } }}
+        >
           <BackgroundGraphic src={bgDesktop} width={468} height={224} sm={bgSmVariant} xs={bgXsVariant} />
-          <FloatingGraphic src={floatingAsset} width={100} height={100} />
+          <FloatingGraphic src={floatingAsset} width={isMobile ? 100 : 80} height={isMobile ? 100 : 80} />
         </BannerGraphics>
       </BannerContainer>
       <ClaimZksyncAirdropModal
