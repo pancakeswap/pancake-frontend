@@ -46,6 +46,7 @@ import {
   getV3MigratorAddress,
   getVCakeAddress,
   getVeCakeAddress,
+  getZkSyncAirDropAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -103,6 +104,7 @@ import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { v3MigratorABI } from 'config/abi/v3Migrator'
 import { vCakeABI } from 'config/abi/vCake'
 import { veCakeABI } from 'config/abi/veCake'
+import { zkSyncAirDropABI } from 'config/abi/zksyncAirdrop'
 import { getViemClients, viemClients } from 'utils/viem'
 import {
   Abi,
@@ -288,6 +290,15 @@ export const getBCakeFarmWrapperBoosterVeCakeContract = (signer?: WalletClient, 
   return getContract({
     abi: bCakeFarmWrapperBoosterVeCakeABI,
     address: getBCakeFarmWrapperBoosterVeCakeAddress(chainId),
+    signer,
+    chainId,
+  })
+}
+
+export const getZksyncAirDropContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: zkSyncAirDropABI,
+    address: getZkSyncAirDropAddress(chainId),
     signer,
     chainId,
   })
