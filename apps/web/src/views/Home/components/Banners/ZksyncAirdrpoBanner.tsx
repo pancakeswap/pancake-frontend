@@ -15,7 +15,7 @@ import {
   VerticalDivider,
 } from '@pancakeswap/widgets-internal'
 import { ClaimZksyncAirdropModal } from 'components/ClaimZksyncAirdropModal'
-import { useUserWhiteListData } from 'components/ClaimZksyncAirdropModal/hooks'
+import { useUserWhiteListData, useZksyncAirDropData } from 'components/ClaimZksyncAirdropModal/hooks'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { useEffect, useRef, useState } from 'react'
@@ -38,10 +38,8 @@ const bgXsVariant: GraphicDetail = {
   height: 182,
 }
 
-const startTradingLink =
-  'https://perp.pancakeswap.finance/en/futures/v2/BTCUSD?chain=Arbitrum&utm_source=homepagebanner&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives'
 const learnMoreLink =
-  'https://blog.pancakeswap.finance/articles/trade-on-arbitrum-pancake-swap-perpetual-v2-to-win-300-000-arb?utm_source=homepagebanner&utm_medium=website&utm_campaign=PerpARBIncentives&utm_id=ARBincentives'
+  'https://blog.pancakeswap.finance/articles/pancake-swap-airdrops-2-4-million-zk-tokens-to-the-community'
 
 const StyledFlexContainer = styled(FlexGap)`
   align-items: center;
@@ -59,14 +57,21 @@ export const ZksyncAirDropBanner = () => {
   const { isMobile, isTablet, isMd } = useMatchBreakpoints()
   const [isOpen, setIsOpen] = useState(false)
   const whitelistData = useUserWhiteListData()
+  const airdropData = useZksyncAirDropData(whitelistData?.proof)
   const isModalOpened = useRef(false)
 
   useEffect(() => {
-    if (whitelistData?.account && whitelistData?.amount && whitelistData?.proof && isModalOpened.current === false) {
+    if (
+      whitelistData?.account &&
+      whitelistData?.amount &&
+      whitelistData?.proof &&
+      isModalOpened.current === false &&
+      airdropData?.claimedAmount === 0n
+    ) {
       setIsOpen(true)
       isModalOpened.current = true
     }
-  }, [whitelistData])
+  }, [whitelistData, airdropData])
 
   return (
     <>

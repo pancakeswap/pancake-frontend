@@ -69,6 +69,10 @@ export const ClaimZksyncAirdropModal: React.FC<{
   const userCanClaim = useMemo(() => {
     return zksyncAirdropData?.claimedAmount === 0n && (whiteListData?.amount ?? 0n) > 0n
   }, [whiteListData?.amount, zksyncAirdropData?.claimedAmount])
+  const isUserClaimed = useMemo(
+    () => zksyncAirdropData?.claimedAmount === whiteListData?.amount || (zksyncAirdropData?.claimedAmount ?? 0n) > 0n,
+    [whiteListData?.amount, zksyncAirdropData?.claimedAmount],
+  )
 
   useEffect(() => {
     // Set default gas token to USDC (full sponsorship)
@@ -102,7 +106,12 @@ export const ClaimZksyncAirdropModal: React.FC<{
               style={{ backgroundImage: `url(${asset})`, backgroundSize: 'cover' }}
             />
             <Text bold>
-              {userCanClaim
+              {isUserClaimed
+                ? t('%amount% %token% claimed!', {
+                    amount: formatNumber(getBalanceNumber(new BN(zksyncAirdropData?.claimedAmount?.toString() ?? 0))),
+                    token: zksyncTokens.zk.symbol,
+                  })
+                : userCanClaim
                 ? t('%amount% %token% available to claim!', {
                     amount: formatNumber(getBalanceNumber(new BN(whiteListData?.amount?.toString() ?? 0))),
                     token: zksyncTokens.zk.symbol,
@@ -116,19 +125,27 @@ export const ClaimZksyncAirdropModal: React.FC<{
               </>
             )}
             <Text mt="16px" mb="8px">
-              {userCanClaim
+              {isUserClaimed
+                ? t('You have successfully claimed from the zkSync token airdrop campaign!')
+                : userCanClaim
                 ? t('Congratulations! You are eligible to claim from the zkSync token airdrop campaign!')
                 : t('Unfortunately, the connected wallet %account% is not eligible for the airdrop campaign.', {
                     account: account ?? '',
                   })}
             </Text>
-            <Link href=" https://blog.pancakeswap.finance/articles/pancake-swap-airdrops-2-4-million-zk-tokens-to-the-community">
+            <Link href="https://blog.pancakeswap.finance/articles/pancake-swap-airdrops-2-4-million-zk-tokens-to-the-community">
               {t('Learn more about the campaign')}
             </Link>
             {account ? (
               chainId === ChainId.ZKSYNC ? (
-                <Button mt="24px" isLoading={pendingTx} disabled={!userCanClaim} onClick={claimAirDrop}>
-                  {t('Claim now')}
+                <Button
+                  variant={isUserClaimed ? 'secondary' : undefined}
+                  mt="24px"
+                  isLoading={pendingTx}
+                  disabled={!userCanClaim}
+                  onClick={isUserClaimed ? onDismiss : claimAirDrop}
+                >
+                  {pendingTx ? t('Claiming') : isUserClaimed ? t('Close') : t('Claim now')}
                 </Button>
               ) : (
                 <Button mt="24px" onClick={() => switchNetwork(ChainId.ZKSYNC)}>
