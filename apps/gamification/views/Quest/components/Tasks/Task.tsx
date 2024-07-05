@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
@@ -14,12 +15,20 @@ import {
   useModal,
   useToast,
 } from '@pancakeswap/uikit'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 import Cookie from 'js-cookie'
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
-import { TaskBlogPostConfig, TaskConfigType, TaskSocialConfig } from 'views/DashboardQuestEdit/context/types'
+import {
+  TaskBlogPostConfig,
+  TaskConfigType,
+  TaskHoldTokenConfig,
+  TaskLiquidityConfig,
+  TaskSocialConfig,
+  TaskSwapConfig,
+} from 'views/DashboardQuestEdit/context/types'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { useConnectTwitter } from 'views/Profile/hooks/settingsModal/useConnectTwitter'
@@ -186,8 +195,31 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
     window.open(url, '_blank', 'noopener noreferrer')
   }
 
+  const handleRedirectSwap = () => {
+    const { network, tokenAddress } = task as TaskSwapConfig | TaskHoldTokenConfig
+    if (network && tokenAddress) {
+      const url = `https://pancakeswap.finance/swap?chain=${CHAIN_QUERY_NAME[network]}&inputCurrency=${tokenAddress}`
+      window.open(url, '_blank', 'noopener noreferrer')
+    }
+  }
+
+  const handleRedirectLiquidity = () => {
+    const { network, lpAddress, minAmount } = task as TaskLiquidityConfig
+    if (network && lpAddress) {
+      // TODO: Confirm liquidity url
+      const symbol = network === ChainId.BSC ? 'BNB' : 'ETH'
+      const v3Url = `https://pancakeswap.finance/add/$${symbol}/${lpAddress}?chain=${CHAIN_QUERY_NAME[network]}&minPrice=${minAmount}`
+      window.open(v3Url, '_blank', 'noopener noreferrer')
+    }
+  }
+
   const handleAction = () => {
     switch (taskType as TaskType) {
+      case TaskType.MAKE_A_SWAP:
+      case TaskType.HOLD_A_TOKEN:
+        return handleRedirectSwap()
+      case TaskType.ADD_LIQUIDITY:
+        return handleRedirectLiquidity()
       case TaskType.VISIT_BLOG_POST:
         return handleAddBlogPost()
       case TaskType.X_LINK_POST:
