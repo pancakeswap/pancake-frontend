@@ -17,9 +17,17 @@ import {
 import { ClaimZksyncAirdropModal } from 'components/ClaimZksyncAirdropModal'
 import { useUserWhiteListData, useZksyncAirDropData } from 'components/ClaimZksyncAirdropModal/hooks'
 import { ASSET_CDN } from 'config/constants/endpoints'
+import { useAtom } from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
 import Image from 'next/legacy/image'
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+
+const zksyncAutoPopup = atomWithStorage<boolean>('pcs:zksync-airdrop-auto-popup', true)
+
+const useAutoPopup = () => {
+  return useAtom(zksyncAutoPopup)
+}
 
 const bgMobile = `${ASSET_CDN}/web/banners/zksync-airdrop-banner/bunny-bg-mobile.png`
 const bgDesktop = `${ASSET_CDN}/web/banners/zksync-airdrop-banner/bunny-bg.png`
@@ -59,6 +67,7 @@ export const ZksyncAirDropBanner = () => {
   const whitelistData = useUserWhiteListData()
   const { zksyncAirdropData } = useZksyncAirDropData(whitelistData?.proof)
   const isModalOpened = useRef(false)
+  const [autoPopup, setAutoPopup] = useAutoPopup()
 
   useEffect(() => {
     if (
@@ -66,12 +75,14 @@ export const ZksyncAirDropBanner = () => {
       whitelistData?.amount &&
       whitelistData?.proof &&
       isModalOpened.current === false &&
+      autoPopup &&
       zksyncAirdropData?.claimedAmount === 0n
     ) {
       setIsOpen(true)
       isModalOpened.current = true
+      setAutoPopup(false)
     }
-  }, [whitelistData, zksyncAirdropData])
+  }, [whitelistData, zksyncAirdropData, autoPopup, setAutoPopup])
 
   return (
     <>
