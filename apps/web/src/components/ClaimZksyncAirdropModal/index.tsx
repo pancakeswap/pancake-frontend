@@ -70,7 +70,9 @@ export const ClaimZksyncAirdropModal: React.FC<{
     return zksyncAirdropData?.claimedAmount === 0n && (whiteListData?.amount ?? 0n) > 0n
   }, [whiteListData?.amount, zksyncAirdropData?.claimedAmount])
   const isUserClaimed = useMemo(
-    () => zksyncAirdropData?.claimedAmount === whiteListData?.amount || (zksyncAirdropData?.claimedAmount ?? 0n) > 0n,
+    () =>
+      (zksyncAirdropData?.claimedAmount === whiteListData?.amount && (whiteListData?.amount ?? 0n) > 0n) ||
+      (zksyncAirdropData?.claimedAmount ?? 0n) > 0n,
     [whiteListData?.amount, zksyncAirdropData?.claimedAmount],
   )
 
