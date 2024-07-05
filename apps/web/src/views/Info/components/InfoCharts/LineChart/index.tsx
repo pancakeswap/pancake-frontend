@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { darkColors, lightColors, PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { darkColors, dateFormattingByTimewindow, lightColors, ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { LineChartLoader } from 'components/ChartLoaders'
 import dayjs from 'dayjs'
 import useTheme from 'hooks/useTheme'
@@ -10,18 +10,10 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 
 export type LineChartProps = {
   data: any[]
-  timeWindow: PairDataTimeWindowEnum
+  timeWindow: ChartDataTimeWindowEnum
   setHoverValue: Dispatch<SetStateAction<number | undefined>> // used for value on hover
   setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of value
 } & React.HTMLAttributes<HTMLDivElement>
-
-const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
-  [PairDataTimeWindowEnum.HOUR]: 'h:mm a',
-  [PairDataTimeWindowEnum.DAY]: 'h:mm a',
-  [PairDataTimeWindowEnum.WEEK]: 'MMM dd',
-  [PairDataTimeWindowEnum.MONTH]: 'MMM dd',
-  [PairDataTimeWindowEnum.YEAR]: 'MMM dd',
-}
 
 /**
  * Note: remember that it needs to be mounted inside the container with fixed height
@@ -144,7 +136,7 @@ const LineChart = ({ data, timeWindow, setHoverValue, setHoverDate }: LineChartP
     return () => {
       chart.remove()
     }
-  }, [isDark, locale, transformedData, setHoverValue, setHoverDate])
+  }, [isDark, locale, transformedData, setHoverValue, setHoverDate, timeWindow])
 
   return (
     <>

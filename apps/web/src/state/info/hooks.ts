@@ -12,7 +12,7 @@ import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { getPercentChange } from 'utils/infoDataHelpers'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
-import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { timeWindowToPeriod } from 'utils/timeWindowToPeriod'
 import { explorerApiClient } from './api/client'
 import { useExplorerChainNameByQuery } from './api/hooks'
@@ -407,7 +407,7 @@ export function usePoolDataQuery(poolAddress: string): PoolData | undefined {
 
 export const usePoolChartTvlDataQuery = (
   address: string,
-  timeWindow: PairDataTimeWindowEnum,
+  timeWindow: ChartDataTimeWindowEnum,
 ): TvlChartEntry[] | undefined => {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
@@ -446,7 +446,7 @@ export const usePoolChartTvlDataQuery = (
 }
 export const usePoolChartVolumeDataQuery = (
   address: string,
-  timeWindow: PairDataTimeWindowEnum,
+  timeWindow: ChartDataTimeWindowEnum,
 ): VolumeChartEntry[] | undefined => {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
@@ -860,7 +860,7 @@ export function usePoolsForTokenDataQuery(address: string): (PoolData | undefine
 
 export const useTokenChartTvlDataQuery = (
   address: string,
-  timeWindow: PairDataTimeWindowEnum,
+  timeWindow: ChartDataTimeWindowEnum,
 ): TvlChartEntry[] | undefined => {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
@@ -899,7 +899,7 @@ export const useTokenChartTvlDataQuery = (
 }
 export const useTokenChartVolumeDataQuery = (
   address: string,
-  timeWindow: PairDataTimeWindowEnum,
+  timeWindow: ChartDataTimeWindowEnum,
 ): VolumeChartEntry[] | undefined => {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
@@ -939,7 +939,7 @@ export const useTokenChartVolumeDataQuery = (
 
 export const useTokenPriceDataQuery = (
   address: string,
-  timeWindow: PairDataTimeWindowEnum,
+  timeWindow: ChartDataTimeWindowEnum,
 ): PriceChartEntry[] | undefined => {
   const chainName = useExplorerChainNameByQuery()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'

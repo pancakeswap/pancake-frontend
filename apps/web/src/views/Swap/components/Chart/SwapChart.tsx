@@ -4,7 +4,7 @@ import {
   ButtonMenu,
   ButtonMenuItem,
   Flex,
-  PairDataTimeWindowEnum,
+  ChartDataTimeWindowEnum,
   PairPriceChart,
   PairPriceChartType,
   Text,
@@ -25,7 +25,7 @@ const SwapChart = ({
   isMobile,
   currentSwapPrice,
 }) => {
-  const [timeWindow, setTimeWindow] = useState(PairDataTimeWindowEnum.DAY)
+  const [timeWindow, setTimeWindow] = useState(ChartDataTimeWindowEnum.DAY)
 
   const { data: pairPrices = [] } = usePairRate({
     token0Address,

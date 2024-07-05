@@ -4,7 +4,7 @@ import {
   CalculateIcon,
   Flex,
   IconButton,
-  PairDataTimeWindowEnum,
+  ChartDataTimeWindowEnum,
   QuestionHelper,
   RocketIcon,
   Text,
@@ -81,7 +81,7 @@ export function AprCalculator({
 }: Props) {
   const { t } = useTranslation()
   const [isOpen, setOpen] = useState(false)
-  const [priceSpan, setPriceSpan] = useState(PairDataTimeWindowEnum.DAY)
+  const [priceSpan, setPriceSpan] = useState(ChartDataTimeWindowEnum.DAY)
   const { data: farm } = useFarm({ currencyA: baseCurrency, currencyB: quoteCurrency, feeAmount })
   const cakePrice = useCakePrice()
 

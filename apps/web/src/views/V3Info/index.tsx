@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Box, Button, Card, Heading, PairDataTimeWindowEnum, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Box, Button, Card, Heading, ChartDataTimeWindowEnum, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -84,7 +84,7 @@ export default function Home() {
 
   const weeklyVolumeData = useTransformedVolumeData(chartData, 'week')
   const monthlyVolumeData = useTransformedVolumeData(chartData, 'month')
-  const [timeWindow, setTimeWindow] = useState(PairDataTimeWindowEnum.DAY)
+  const [timeWindow, setTimeWindow] = useState(ChartDataTimeWindowEnum.DAY)
 
   const formattedTokens = useMemo(() => {
     if (topTokensData)
@@ -116,7 +116,7 @@ export default function Home() {
         <Card>
           <LineChart
             data={formattedTvlData}
-            timeWindow={PairDataTimeWindowEnum.DAY}
+            timeWindow={ChartDataTimeWindowEnum.DAY}
             height={220}
             minHeight={332}
             // color={theme.colors.primary}
@@ -142,9 +142,9 @@ export default function Home() {
             height={200}
             minHeight={332}
             data={
-              timeWindow === PairDataTimeWindowEnum.MONTH
+              timeWindow === ChartDataTimeWindowEnum.MONTH
                 ? monthlyVolumeData
-                : timeWindow === PairDataTimeWindowEnum.WEEK
+                : timeWindow === ChartDataTimeWindowEnum.WEEK
                 ? weeklyVolumeData
                 : formattedVolumeData
             }
@@ -158,24 +158,24 @@ export default function Home() {
               <RowFixed style={{ marginLeft: '-40px', marginTop: '8px' }}>
                 <Button
                   scale="sm"
-                  variant={timeWindow === PairDataTimeWindowEnum.DAY ? 'primary' : 'bubblegum'}
-                  onClick={() => setTimeWindow(PairDataTimeWindowEnum.DAY)}
+                  variant={timeWindow === ChartDataTimeWindowEnum.DAY ? 'primary' : 'bubblegum'}
+                  onClick={() => setTimeWindow(ChartDataTimeWindowEnum.DAY)}
                 >
                   D
                 </Button>
                 <Button
                   scale="sm"
-                  variant={timeWindow === PairDataTimeWindowEnum.WEEK ? 'primary' : 'bubblegum'}
+                  variant={timeWindow === ChartDataTimeWindowEnum.WEEK ? 'primary' : 'bubblegum'}
                   style={{ marginLeft: '8px' }}
-                  onClick={() => setTimeWindow(PairDataTimeWindowEnum.WEEK)}
+                  onClick={() => setTimeWindow(ChartDataTimeWindowEnum.WEEK)}
                 >
                   W
                 </Button>
                 <Button
-                  variant={timeWindow === PairDataTimeWindowEnum.MONTH ? 'primary' : 'bubblegum'}
+                  variant={timeWindow === ChartDataTimeWindowEnum.MONTH ? 'primary' : 'bubblegum'}
                   scale="sm"
                   style={{ marginLeft: '8px' }}
-                  onClick={() => setTimeWindow(PairDataTimeWindowEnum.MONTH)}
+                  onClick={() => setTimeWindow(ChartDataTimeWindowEnum.MONTH)}
                 >
                   M
                 </Button>

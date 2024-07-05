@@ -10,7 +10,7 @@ import {
   CopyButton,
   Flex,
   Heading,
-  PairDataTimeWindowEnum,
+  ChartDataTimeWindowEnum,
   ScanLink,
   Spinner,
   Text,
@@ -75,7 +75,7 @@ enum ChartView {
   TVL,
 }
 
-const DEFAULT_TIME_WINDOW = PairDataTimeWindowEnum.WEEK
+const DEFAULT_TIME_WINDOW = ChartDataTimeWindowEnum.WEEK
 
 const PoolPage: React.FC<{ address: string }> = ({ address }) => {
   // const { chainId } = useActiveChainId()

@@ -5,24 +5,16 @@ import { BarChartLoader } from 'components/ChartLoaders'
 import { createChart, IChartApi } from 'lightweight-charts'
 import { useTranslation } from '@pancakeswap/localization'
 import dayjs from 'dayjs'
-import { lightColors, darkColors, PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { lightColors, darkColors, ChartDataTimeWindowEnum, dateFormattingByTimewindow } from '@pancakeswap/uikit'
 
 export type LineChartProps = {
   data: any[]
   height?: string
   chartHeight?: string
-  timeWindow: PairDataTimeWindowEnum
+  timeWindow: ChartDataTimeWindowEnum
   setHoverValue: Dispatch<SetStateAction<number | undefined>> // used for value on hover
   setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of value
 } & React.HTMLAttributes<HTMLDivElement>
-
-const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
-  [PairDataTimeWindowEnum.HOUR]: 'h:mm a',
-  [PairDataTimeWindowEnum.DAY]: 'h:mm a',
-  [PairDataTimeWindowEnum.WEEK]: 'MMM dd',
-  [PairDataTimeWindowEnum.MONTH]: 'MMM dd',
-  [PairDataTimeWindowEnum.YEAR]: 'MMM dd',
-}
 
 const Chart = ({ data, timeWindow, setHoverValue, setHoverDate }: LineChartProps) => {
   const { isDark } = useTheme()
@@ -134,7 +126,7 @@ const Chart = ({ data, timeWindow, setHoverValue, setHoverDate }: LineChartProps
     return () => {
       chart.remove()
     }
-  }, [isDark, locale, transformedData, setHoverValue, setHoverDate])
+  }, [isDark, locale, transformedData, setHoverValue, setHoverDate, timeWindow])
 
   return (
     <>

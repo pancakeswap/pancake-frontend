@@ -20,7 +20,7 @@ import { safeGetAddress } from 'utils'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
 import { useAccount } from 'wagmi'
-import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { timeWindowToPeriod } from 'utils/timeWindowToPeriod'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState } from './actions'
@@ -286,7 +286,7 @@ export function useDefaultsFromURLSearch():
 type useFetchPairPricesParams = {
   token0Address: string
   token1Address: string
-  timeWindow: PairDataTimeWindowEnum
+  timeWindow: ChartDataTimeWindowEnum
   currentSwapPrice: {
     [key: string]: number
   }

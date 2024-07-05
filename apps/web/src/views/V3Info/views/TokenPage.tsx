@@ -13,7 +13,7 @@ import {
   Image,
   Message,
   MessageText,
-  PairDataTimeWindowEnum,
+  ChartDataTimeWindowEnum,
   ScanLink,
   Spinner,
   Text,
@@ -55,7 +55,6 @@ import {
   useTokenTransactions,
 } from '../hooks'
 import { currentTimestamp } from '../utils'
-import { unixToDate } from '../utils/date'
 import { formatDollarAmount } from '../utils/numbers'
 
 const CandleChart = dynamic(() => import('../components/CandleChart'), {
@@ -83,7 +82,7 @@ enum ChartView {
   PRICE,
 }
 
-const DEFAULT_TIME_WINDOW = PairDataTimeWindowEnum.WEEK
+const DEFAULT_TIME_WINDOW = ChartDataTimeWindowEnum.WEEK
 
 const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const { isXs, isSm } = useMatchBreakpoints()

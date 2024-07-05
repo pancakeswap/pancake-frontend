@@ -1,6 +1,12 @@
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { baseColors, darkColors, lightColors, PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import {
+  baseColors,
+  darkColors,
+  dateFormattingByTimewindow,
+  lightColors,
+  ChartDataTimeWindowEnum,
+} from '@pancakeswap/uikit'
 import { CandleChartLoader } from 'components/ChartLoaders'
 import dayjs from 'dayjs'
 import { ColorType, IChartApi, createChart } from 'lightweight-charts'
@@ -10,18 +16,10 @@ const CANDLE_CHART_HEIGHT = 250
 
 export type LineChartProps = {
   data: any[] | undefined
-  timeWindow: PairDataTimeWindowEnum
+  timeWindow: ChartDataTimeWindowEnum
   setValue?: Dispatch<SetStateAction<number | undefined>> // used for value on hover
   setLabel?: Dispatch<SetStateAction<string | undefined>> // used for value label on hover
 } & React.HTMLAttributes<HTMLDivElement>
-
-const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
-  [PairDataTimeWindowEnum.HOUR]: 'h:mm a',
-  [PairDataTimeWindowEnum.DAY]: 'h:mm a',
-  [PairDataTimeWindowEnum.WEEK]: 'MMM dd',
-  [PairDataTimeWindowEnum.MONTH]: 'MMM dd',
-  [PairDataTimeWindowEnum.YEAR]: 'MMM dd',
-}
 
 const CandleChart = ({ data, timeWindow, setValue, setLabel }: LineChartProps) => {
   const { theme, isDark } = useTheme()
@@ -104,7 +102,7 @@ const CandleChart = ({ data, timeWindow, setValue, setLabel }: LineChartProps) =
 
     chart.applyOptions({
       layout: {
-        textColor: theme.isDark ? darkColors.textSubtle : lightColors.textSubtle,
+        textColor: isDark ? darkColors.textSubtle : lightColors.textSubtle,
       },
     })
 

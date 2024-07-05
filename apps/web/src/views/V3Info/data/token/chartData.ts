@@ -3,7 +3,7 @@ import utc from 'dayjs/plugin/utc'
 
 import { explorerApiClient } from 'state/info/api/client'
 import type { components } from 'state/info/api/schema'
-import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { timeWindowToPeriod } from 'utils/timeWindowToPeriod'
 import { TokenChartEntry } from '../../types'
 
@@ -14,7 +14,7 @@ export async function fetchTokenChartData(
   protocol: 'v2' | 'v3' | 'stable',
   chainName: components['schemas']['ChainName'],
   address: string,
-  timeWindow: PairDataTimeWindowEnum,
+  timeWindow: ChartDataTimeWindowEnum,
   signal: AbortSignal,
 ) {
   let error = false

@@ -1,5 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, ButtonMenu, ButtonMenuItem, Card, Flex, PairDataTimeWindowEnum, Skeleton, Text } from '@pancakeswap/uikit'
+import {
+  Box,
+  ButtonMenu,
+  ButtonMenuItem,
+  Card,
+  Flex,
+  ChartDataTimeWindowEnum,
+  Skeleton,
+  Text,
+} from '@pancakeswap/uikit'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import dayjs from 'dayjs'
 import dynamic from 'next/dynamic'
@@ -21,8 +30,8 @@ enum ChartView {
 
 interface ChartCardProps {
   variant: 'pool' | 'token'
-  timeWindow: PairDataTimeWindowEnum
-  setTimeWindow: (timeWindow: PairDataTimeWindowEnum) => void
+  timeWindow: ChartDataTimeWindowEnum
+  setTimeWindow: (timeWindow: ChartDataTimeWindowEnum) => void
   volumeChartData: VolumeChartEntry[] | undefined
   tvlChartData: TvlChartEntry[] | undefined
   tokenData?: TokenData

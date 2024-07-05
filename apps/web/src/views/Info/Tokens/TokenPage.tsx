@@ -14,7 +14,7 @@ import {
   Text,
   Link as UIKitLink,
   useMatchBreakpoints,
-  PairDataTimeWindowEnum,
+  ChartDataTimeWindowEnum,
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
@@ -72,7 +72,7 @@ const StyledCMCLink = styled(UIKitLink)`
     opacity: 0.8;
   }
 `
-const DEFAULT_TIME_WINDOW = PairDataTimeWindowEnum.MONTH
+const DEFAULT_TIME_WINDOW = ChartDataTimeWindowEnum.MONTH
 
 const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = ({ routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpoints()

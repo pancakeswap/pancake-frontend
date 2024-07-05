@@ -1,4 +1,11 @@
-import { baseColors, darkColors, lightColors, PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import {
+  baseColors,
+  darkColors,
+  dateFormattingByTimewindow,
+  lightColors,
+  ChartDataTimeWindowEnum,
+  dateFormattingByTimewindow,
+} from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import useTheme from 'hooks/useTheme'
@@ -38,18 +45,10 @@ export type LineChartProps = {
   setLabel?: Dispatch<SetStateAction<string | undefined>> // used for value label on hover
   topLeft?: ReactNode | undefined
   topRight?: ReactNode | undefined
-  timeWindow: PairDataTimeWindowEnum
+  timeWindow: ChartDataTimeWindowEnum
   bottomLeft?: ReactNode | undefined
   bottomRight?: ReactNode | undefined
 } & React.HTMLAttributes<HTMLDivElement>
-
-const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
-  [PairDataTimeWindowEnum.HOUR]: 'h:mm a',
-  [PairDataTimeWindowEnum.DAY]: 'h:mm a',
-  [PairDataTimeWindowEnum.WEEK]: 'MMM dd',
-  [PairDataTimeWindowEnum.MONTH]: 'MMM dd',
-  [PairDataTimeWindowEnum.YEAR]: 'MMM dd',
-}
 
 const CandleChart = ({
   data,

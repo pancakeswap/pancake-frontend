@@ -11,7 +11,7 @@ import {
   Flex,
   Heading,
   HelpIcon,
-  PairDataTimeWindowEnum,
+  ChartDataTimeWindowEnum,
   ScanLink,
   Spinner,
   Text,
@@ -93,7 +93,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
     {},
   )
 
-  const [timeWindow, setTimeWindow] = useState(PairDataTimeWindowEnum.YEAR)
+  const [timeWindow, setTimeWindow] = useState(ChartDataTimeWindowEnum.YEAR)
 
   const poolData = usePoolDataQuery(routeAddress)
   // const chartData = usePoolChartDataQuery(address)

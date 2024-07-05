@@ -5,7 +5,7 @@ import { darken } from 'polished'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { styled } from 'styled-components'
-import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { dateFormattingByTimewindow, ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { LoadingRows } from '../Loader'
 import { RowBetween } from '../Row'
 
@@ -25,7 +25,7 @@ const Wrapper = styled(Card)`
 
 export type LineChartProps = {
   data: any[]
-  timeWindow: PairDataTimeWindowEnum
+  timeWindow: ChartDataTimeWindowEnum
   color?: string | undefined
   height?: number | undefined
   minHeight?: number
@@ -38,14 +38,6 @@ export type LineChartProps = {
   bottomLeft?: ReactNode | undefined
   bottomRight?: ReactNode | undefined
 } & React.HTMLAttributes<HTMLDivElement>
-
-const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
-  [PairDataTimeWindowEnum.HOUR]: 'h:mm a',
-  [PairDataTimeWindowEnum.DAY]: 'h:mm a',
-  [PairDataTimeWindowEnum.WEEK]: 'MMM dd',
-  [PairDataTimeWindowEnum.MONTH]: 'MMM dd',
-  [PairDataTimeWindowEnum.YEAR]: 'MMM dd',
-}
 
 const Chart = ({
   data,

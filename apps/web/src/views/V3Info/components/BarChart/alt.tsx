@@ -1,6 +1,6 @@
 import Card from 'components/Card'
 import dayjs from 'dayjs'
-import { PairDataTimeWindowEnum, RowBetween } from '@pancakeswap/uikit'
+import { dateFormattingByTimewindow, ChartDataTimeWindowEnum, RowBetween } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
@@ -21,17 +21,9 @@ const Wrapper = styled(Card)`
   }
 `
 
-const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
-  [PairDataTimeWindowEnum.HOUR]: 'h:mm a',
-  [PairDataTimeWindowEnum.DAY]: 'h:mm a',
-  [PairDataTimeWindowEnum.WEEK]: 'MMM dd',
-  [PairDataTimeWindowEnum.MONTH]: 'MMM dd',
-  [PairDataTimeWindowEnum.YEAR]: 'MMM dd',
-}
-
 export type LineChartProps = {
   data: any[]
-  timeWindow: PairDataTimeWindowEnum
+  timeWindow: ChartDataTimeWindowEnum
   color?: string | undefined
   height?: number | undefined
   minHeight?: number

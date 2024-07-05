@@ -14,8 +14,7 @@ import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/ap
 import { useExplorerChainNameByQuery } from 'state/info/api/hooks'
 import { components } from 'state/info/api/schema'
 import { getPercentChange } from 'views/V3Info/utils/data'
-import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
-import { timeWindowToPeriod } from 'utils/timeWindowToPeriod'
+import { ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchedPoolData } from '../data/pool/poolData'
@@ -264,7 +263,7 @@ export const useTokenData = (address: string): TokenData | undefined => {
 
 export const useTokenChartData = (
   address: string,
-  timeWindow: PairDataTimeWindowEnum,
+  timeWindow: ChartDataTimeWindowEnum,
 ): TokenChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
@@ -281,7 +280,7 @@ export const useTokenChartData = (
 
 export const useTokenPriceData = (
   address: string,
-  timeWindow: PairDataTimeWindowEnum,
+  timeWindow: ChartDataTimeWindowEnum,
 ): PriceChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
@@ -419,7 +418,10 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
   return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0) ?? undefined, [data])
 }
 
-export const usePoolChartData = (address: string, timeWindow: PairDataTimeWindowEnum): PoolChartEntry[] | undefined => {
+export const usePoolChartData = (
+  address: string,
+  timeWindow: ChartDataTimeWindowEnum,
+): PoolChartEntry[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
   const explorerChainName = useExplorerChainNameByQuery()

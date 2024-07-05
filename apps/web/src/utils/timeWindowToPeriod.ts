@@ -1,17 +1,17 @@
-import { PairDataTimeWindowEnum } from '@pancakeswap/uikit'
+import { ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { ChartPeriod } from 'state/info/api/client'
 
-export const timeWindowToPeriod = (timeWindow: PairDataTimeWindowEnum): ChartPeriod => {
+export const timeWindowToPeriod = (timeWindow: ChartDataTimeWindowEnum): ChartPeriod => {
   switch (timeWindow) {
-    case PairDataTimeWindowEnum.HOUR:
+    case ChartDataTimeWindowEnum.HOUR:
       return '1H'
-    case PairDataTimeWindowEnum.DAY:
+    case ChartDataTimeWindowEnum.DAY:
       return '1D'
-    case PairDataTimeWindowEnum.WEEK:
+    case ChartDataTimeWindowEnum.WEEK:
       return '1W'
-    case PairDataTimeWindowEnum.MONTH:
+    case ChartDataTimeWindowEnum.MONTH:
       return '1M'
-    case PairDataTimeWindowEnum.YEAR:
+    case ChartDataTimeWindowEnum.YEAR:
       return '1Y'
     default:
       throw new Error('Invalid time window')
