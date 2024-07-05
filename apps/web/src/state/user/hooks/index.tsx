@@ -76,11 +76,10 @@ export function useUserFarmStakedOnly(isActive: boolean): [boolean, (stakedOnly:
     [dispatch],
   )
 
-  const toggleUserFarmStakedOnly = useCallback(() => {
-    const booleanStakedOnly =
-      userFarmStakedOnly === FarmStakedOnly.ON_FINISHED ? !isActive : userFarmStakedOnly === FarmStakedOnly.TRUE
-    setUserFarmStakedOnly(!booleanStakedOnly)
-  }, [setUserFarmStakedOnly, userFarmStakedOnly, isActive])
+  const toggleUserFarmStakedOnly = useCallback(
+    () => setUserFarmStakedOnly(!userFarmStakedOnly),
+    [setUserFarmStakedOnly, userFarmStakedOnly],
+  )
 
   return [
     userFarmStakedOnly === FarmStakedOnly.ON_FINISHED ? !isActive : userFarmStakedOnly === FarmStakedOnly.TRUE,
