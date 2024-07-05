@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { FlexGap, useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
   BannerActionContainer,
@@ -54,7 +54,7 @@ const StyledFlexContainer = styled(FlexGap)`
 
 export const ZksyncAirDropBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isTablet, isMd } = useMatchBreakpoints()
+  const { isMobile, isTablet, isMd, isXs, isSm } = useMatchBreakpoints()
   const [isOpen, setIsOpen] = useState(false)
   const whitelistData = useUserWhiteListData()
   const { zksyncAirdropData } = useZksyncAirDropData(whitelistData?.proof)
@@ -80,11 +80,6 @@ export const ZksyncAirDropBanner = () => {
           badges={
             <StyledFlexContainer gap="8px">
               <PancakeSwapBadge whiteText />
-              {!(isMobile || isMd) ? (
-                <Text bold color="white">
-                  Perpetual v2
-                </Text>
-              ) : null}
               <Image src={zksyncLogo} alt="arbLogo" width={108} height={24} />
             </StyledFlexContainer>
           }
@@ -128,7 +123,7 @@ export const ZksyncAirDropBanner = () => {
         <BannerGraphics
           mb={['20px', '10px', '10px', '10px', '0']}
           style={{ zIndex: 3 }}
-          paintBoardProps={{ style: { overflow: 'visible' } }}
+          paintBoardProps={{ style: { overflow: isXs ? 'hidden' : 'visible' } }}
         >
           <BackgroundGraphic src={bgDesktop} width={468} height={224} sm={bgSmVariant} xs={bgXsVariant} />
           <FloatingGraphic src={floatingAsset} width={isMobile ? 100 : 80} height={isMobile ? 100 : 80} />
