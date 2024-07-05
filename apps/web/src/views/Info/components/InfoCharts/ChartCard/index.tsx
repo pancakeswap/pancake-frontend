@@ -10,7 +10,6 @@ import {
   Text,
 } from '@pancakeswap/uikit'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
-import dayjs from 'dayjs'
 import dynamic from 'next/dynamic'
 import { useCallback, useMemo, useState } from 'react'
 import { PriceChartEntry, TokenData, TvlChartEntry, VolumeChartEntry } from 'state/info/types'
@@ -61,7 +60,7 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
     if (tvlChartData) {
       return tvlChartData.map((day) => {
         return {
-          time: dayjs.unix(day.date).toDate(),
+          time: day.date,
           value: day.liquidityUSD,
         }
       })
@@ -72,7 +71,7 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
     if (volumeChartData) {
       return volumeChartData.map((day) => {
         return {
-          time: dayjs.unix(day.date).toDate(),
+          time: day.date,
           value: day.volumeUSD,
         }
       })

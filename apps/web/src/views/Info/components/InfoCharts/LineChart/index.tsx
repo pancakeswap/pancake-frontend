@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 import useTheme from 'hooks/useTheme'
 import { IChartApi, createChart } from 'lightweight-charts'
 import { darken } from 'polished'
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { formatAmount } from 'utils/formatInfoNumbers'
 
 export type LineChartProps = {
@@ -26,20 +26,8 @@ const LineChart = ({ data, timeWindow, setHoverValue, setHoverDate }: LineChartP
   const chartRef = useRef<HTMLDivElement>(null)
   const [chartCreated, setChart] = useState<IChartApi | undefined>()
 
-  const transformedData = useMemo(() => {
-    if (data) {
-      return data.map(({ time, value }) => {
-        return {
-          time: time.getTime(),
-          value,
-        }
-      })
-    }
-    return []
-  }, [data])
-
   useEffect(() => {
-    if (!chartRef?.current || !transformedData || transformedData.length === 0) return
+    if (!chartRef?.current || !data || data.length === 0) return
 
     const chart = createChart(chartRef?.current, {
       layout: {
@@ -106,7 +94,7 @@ const LineChart = ({ data, timeWindow, setHoverValue, setHoverDate }: LineChartP
       },
     })
     setChart(chart)
-    newSeries.setData(transformedData)
+    newSeries.setData(data)
 
     chart.timeScale().fitContent()
 
@@ -136,7 +124,7 @@ const LineChart = ({ data, timeWindow, setHoverValue, setHoverDate }: LineChartP
     return () => {
       chart.remove()
     }
-  }, [isDark, locale, transformedData, setHoverValue, setHoverDate, timeWindow])
+  }, [isDark, locale, data, setHoverValue, setHoverDate, timeWindow])
 
   return (
     <>

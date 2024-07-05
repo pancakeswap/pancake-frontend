@@ -44,7 +44,7 @@ const HoverableChart = ({
     if (data) {
       return data.map((day) => {
         return {
-          time: dayjs.unix(day.date).toDate(),
+          time: day.date,
           value: day[valueProperty],
         }
       })

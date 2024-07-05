@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import useTheme from 'hooks/useTheme'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { BarChartLoader } from 'components/ChartLoaders'
@@ -24,20 +24,8 @@ const Chart = ({ data, timeWindow, setHoverValue, setHoverDate }: LineChartProps
   const chartRef = useRef<HTMLDivElement>(null)
   const [chartCreated, setChart] = useState<IChartApi | undefined>()
 
-  const transformedData = useMemo(() => {
-    if (data) {
-      return data.map(({ time, value }) => {
-        return {
-          time: time.getTime(),
-          value,
-        }
-      })
-    }
-    return []
-  }, [data])
-
   useEffect(() => {
-    if (!chartRef?.current || !transformedData || transformedData.length === 0) return
+    if (!chartRef?.current || !data || data.length === 0) return
 
     const chart = createChart(chartRef?.current, {
       layout: {
@@ -96,7 +84,7 @@ const Chart = ({ data, timeWindow, setHoverValue, setHoverDate }: LineChartProps
       color: isDark ? darkColors.primary : lightColors.primary,
     })
     setChart(chart)
-    newSeries.setData(transformedData)
+    newSeries.setData(data)
 
     chart.timeScale().fitContent()
 
@@ -126,7 +114,7 @@ const Chart = ({ data, timeWindow, setHoverValue, setHoverDate }: LineChartProps
     return () => {
       chart.remove()
     }
-  }, [isDark, locale, transformedData, setHoverValue, setHoverDate, timeWindow])
+  }, [isDark, locale, data, setHoverValue, setHoverDate, timeWindow])
 
   return (
     <>
