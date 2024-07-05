@@ -54,12 +54,12 @@ export const fetchZksyncAirDropData = async (account: Address, address: Address,
 export const useZksyncAirDropData = (proof?: any[]) => {
   const address = getZkSyncAirDropAddress(ChainId.ZKSYNC)
   const { address: account } = useAccount()
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['zksyncAirdrop', account, address, proof],
     queryFn: () => fetchZksyncAirDropData(account!, address, proof!),
     enabled: Boolean(account) && Boolean(address) && Boolean(proof),
   })
-  return data
+  return { zksyncAirdropData: data, refetch }
 }
 
 export const useUserWhiteListData = () => {
@@ -79,7 +79,7 @@ export const useUserWhiteListData = () => {
     : undefined
 }
 
-export const useClaimZksyncAirdrop = () => {
+export const useClaimZksyncAirdrop = (onDone?: () => void) => {
   const { t } = useTranslation()
   const { address: account, chainId } = useAccount()
   const whiteListData = useUserWhiteListData()
@@ -130,6 +130,7 @@ export const useClaimZksyncAirdrop = () => {
       })
     })
     if (receipt?.status) {
+      onDone?.()
       toastSuccess(
         `${t('AirDrop Claimed!')}`,
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>{t('ZK AirDrop Claimed')}</ToastDescriptionWithTx>,
@@ -148,6 +149,7 @@ export const useClaimZksyncAirdrop = () => {
     sendPaymasterTransaction,
     toastSuccess,
     t,
+    onDone,
   ])
 
   // eslint-disable-next-line consistent-return

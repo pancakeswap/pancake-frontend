@@ -58,14 +58,15 @@ export const ClaimZksyncAirdropModal: React.FC<{
   const { isDesktop } = useMatchBreakpoints()
   const { t } = useTranslation()
   const whiteListData = useUserWhiteListData()
-  const { claimAirDrop, pendingTx } = useClaimZksyncAirdrop()
+
   const { address: account, chainId } = useAccount()
 
   const { isPaymasterAvailable, isPaymasterTokenActive } = usePaymaster()
   const [, setGasToken] = useGasToken()
 
   const { targetRef: tooltipTargetRef, tooltip, tooltipVisible } = useTooltip(t('Gas fees is fully sponsored'))
-  const zksyncAirdropData = useZksyncAirDropData(whiteListData?.proof)
+  const { zksyncAirdropData, refetch } = useZksyncAirDropData(whiteListData?.proof)
+  const { claimAirDrop, pendingTx } = useClaimZksyncAirdrop(refetch)
   const userCanClaim = useMemo(() => {
     return zksyncAirdropData?.claimedAmount === 0n && (whiteListData?.amount ?? 0n) > 0n
   }, [whiteListData?.amount, zksyncAirdropData?.claimedAmount])
@@ -128,9 +129,9 @@ export const ClaimZksyncAirdropModal: React.FC<{
             )}
             <Text mt="16px" mb="8px">
               {isUserClaimed
-                ? t('You have successfully claimed from the zkSync token airdrop campaign!')
+                ? t('You have successfully claimed from the ZKSync token airdrop campaign!')
                 : userCanClaim
-                ? t('Congratulations! You are eligible to claim from the zkSync token airdrop campaign!')
+                ? t('Congratulations! You are eligible to claim from the ZKSync token airdrop campaign!')
                 : t('Unfortunately, the connected wallet %account% is not eligible for the airdrop campaign.', {
                     account: account ?? '',
                   })}
@@ -150,8 +151,8 @@ export const ClaimZksyncAirdropModal: React.FC<{
                   {pendingTx ? t('Claiming') : isUserClaimed ? t('Close') : t('Claim now')}
                 </Button>
               ) : (
-                <Button mt="24px" onClick={() => switchNetwork(ChainId.ZKSYNC)}>
-                  {t('Switch network to ZKsync for claiming')}
+                <Button mt="24px" disabled={!userCanClaim} onClick={() => switchNetwork(ChainId.ZKSYNC)}>
+                  {userCanClaim ? t('Switch network to ZKsync for claiming') : t('Claim now')}
                 </Button>
               )
             ) : (

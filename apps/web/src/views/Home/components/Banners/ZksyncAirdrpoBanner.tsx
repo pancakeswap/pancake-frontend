@@ -57,7 +57,7 @@ export const ZksyncAirDropBanner = () => {
   const { isMobile, isTablet, isMd } = useMatchBreakpoints()
   const [isOpen, setIsOpen] = useState(false)
   const whitelistData = useUserWhiteListData()
-  const airdropData = useZksyncAirDropData(whitelistData?.proof)
+  const { zksyncAirdropData } = useZksyncAirDropData(whitelistData?.proof)
   const isModalOpened = useRef(false)
 
   useEffect(() => {
@@ -66,12 +66,12 @@ export const ZksyncAirDropBanner = () => {
       whitelistData?.amount &&
       whitelistData?.proof &&
       isModalOpened.current === false &&
-      airdropData?.claimedAmount === 0n
+      zksyncAirdropData?.claimedAmount === 0n
     ) {
       setIsOpen(true)
       isModalOpened.current = true
     }
-  }, [whitelistData, airdropData])
+  }, [whitelistData, zksyncAirdropData])
 
   return (
     <>
