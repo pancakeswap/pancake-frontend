@@ -22,7 +22,6 @@ import {
   useTopPoolsData,
   useTopTokensData,
 } from './hooks'
-import { useTransformedVolumeData } from './hooks/chart'
 import { formatDollarAmount } from './utils/numbers'
 
 export default function Home() {
@@ -32,11 +31,13 @@ export default function Home() {
 
   const { theme } = useTheme()
 
+  const [timeWindow, setTimeWindow] = useState(ChartDataTimeWindowEnum.DAY)
+
   const protocolData = useProtocolData()
   const transactionData = useProtocolTransactionData()
   const topTokensData = useTopTokensData()
   const topPoolsData = useTopPoolsData()
-  const chartData = useProtocolChartData()
+  const chartData = useProtocolChartData(timeWindow)
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
 
@@ -80,10 +81,6 @@ export default function Home() {
     }
     return []
   }, [chartData])
-
-  const weeklyVolumeData = useTransformedVolumeData(chartData, 'week')
-  const monthlyVolumeData = useTransformedVolumeData(chartData, 'month')
-  const [timeWindow, setTimeWindow] = useState(ChartDataTimeWindowEnum.DAY)
 
   const formattedTokens = useMemo(() => {
     if (topTokensData)
@@ -130,7 +127,7 @@ export default function Home() {
                   <MonoSpace>{tvlValue}</MonoSpace>
                 </Text>
                 <Text fontSize="12px" height="14px">
-                  <MonoSpace>{leftLabel ?? now.format('MMM D, YYYY')} (UTC)</MonoSpace>
+                  <MonoSpace>{leftLabel ?? now.format('MMM D, YYYY')}</MonoSpace>
                 </Text>
               </AutoColumn>
             }
@@ -140,13 +137,7 @@ export default function Home() {
           <BarChart
             height={200}
             minHeight={332}
-            data={
-              timeWindow === ChartDataTimeWindowEnum.MONTH
-                ? monthlyVolumeData
-                : timeWindow === ChartDataTimeWindowEnum.WEEK
-                ? weeklyVolumeData
-                : formattedVolumeData
-            }
+            data={formattedVolumeData}
             color={theme.colors.primary}
             setValue={setVolumeHover}
             setLabel={setRightLabel}
@@ -191,7 +182,7 @@ export default function Home() {
                   </MonoSpace>
                 </Text>
                 <Text fontSize="12px" height="14px">
-                  <MonoSpace>{rightLabel ?? now.format('MMM D, YYYY')} (UTC)</MonoSpace>
+                  <MonoSpace>{rightLabel ?? now.format('MMM D, YYYY')}</MonoSpace>
                 </Text>
               </AutoColumn>
             }

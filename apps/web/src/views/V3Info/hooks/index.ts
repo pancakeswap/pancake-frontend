@@ -50,14 +50,14 @@ const QUERY_SETTINGS_IMMUTABLE = {
   refetchOnWindowFocus: false,
 }
 
-export const useProtocolChartData = (): ChartDayData[] | undefined => {
+export const useProtocolChartData = (timeWindow: ChartDataTimeWindowEnum): ChartDayData[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
   const explorerChainName = useExplorerChainNameByQuery()
 
   const { data: chartData } = useQuery({
-    queryKey: [`v3/info/protocol/ProtocolChartData/${chainId}`, chainId],
-    queryFn: ({ signal }) => fetchChartData('v3', explorerChainName!, signal),
+    queryKey: [`v3/info/protocol/ProtocolChartData/${chainId}/${timeWindow}`, chainId],
+    queryFn: ({ signal }) => fetchChartData('v3', explorerChainName!, timeWindow, signal),
     enabled: Boolean(explorerChainName),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
