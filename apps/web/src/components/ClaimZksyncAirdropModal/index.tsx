@@ -23,7 +23,7 @@ import BN from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { paymasterInfo, paymasterTokens } from 'config/paymaster'
-import { useGasSponsorship } from 'hooks/useGasSponsorship'
+import { useGasSponsorshipBalance } from 'hooks/useGasSponsorshipBalance'
 import { useGasToken } from 'hooks/useGasToken'
 import { usePaymaster } from 'hooks/usePaymaster'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
@@ -66,7 +66,7 @@ export const ClaimZksyncAirdropModal: React.FC<{
   const [, setGasToken] = useGasToken()
   const {
     data: { isEnoughGasBalance },
-  } = useGasSponsorship({ enabled: isPaymasterAvailable && isPaymasterTokenActive })
+  } = useGasSponsorshipBalance({ enabled: isPaymasterAvailable && isPaymasterTokenActive })
 
   const { targetRef: tooltipTargetRef, tooltip, tooltipVisible } = useTooltip(t('Gas fees is fully sponsored'))
   const { zksyncAirdropData, refetch } = useZksyncAirDropData(whiteListData?.proof)

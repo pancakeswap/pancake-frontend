@@ -4,7 +4,7 @@ import { getGasSponsorship } from 'utils/paymaster'
 
 interface UseGasSponsorshipProps extends Pick<UseQueryOptions, 'enabled'> {}
 
-export const useGasSponsorship = ({ enabled }: UseGasSponsorshipProps = {}) => {
+export const useGasSponsorshipBalance = ({ enabled }: UseGasSponsorshipProps = {}) => {
   return useQuery<{
     balance: bigint
     formattedBalance: string
