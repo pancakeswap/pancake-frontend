@@ -143,7 +143,12 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
 
       <Box px="24px" height={variant === 'token' ? '250px' : '335px'}>
         {view === ChartView.LIQUIDITY ? (
-          <LineChart data={formattedTvlData} setHoverValue={setHoverValue} setHoverDate={setHoverDate} />
+          <LineChart
+            data={formattedTvlData}
+            timeWindow={timeWindow}
+            setHoverValue={setHoverValue}
+            setHoverDate={setHoverDate}
+          />
         ) : view === ChartView.VOLUME ? (
           <BarChart
             data={formattedVolumeData}
