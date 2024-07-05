@@ -194,7 +194,7 @@ const CandleChart = ({
     return () => {
       chart.remove()
     }
-  }, [color, chartCreated, data, height, setValue, textColor, theme, isDark, setLabel, timeWindow])
+  }, [color, data, height, setValue, textColor, theme, isDark, setLabel, timeWindow])
 
   return (
     <Wrapper minHeight={minHeight}>
