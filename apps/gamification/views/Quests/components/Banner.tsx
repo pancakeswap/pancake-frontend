@@ -1,5 +1,4 @@
-import { Box, Flex, Text } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import { Box, Flex, Image, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 
 const Container = styled(Box)`

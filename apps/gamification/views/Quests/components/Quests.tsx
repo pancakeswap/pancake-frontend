@@ -79,8 +79,8 @@ export const Quests = () => {
           </ButtonMenu>
         </Flex>
         <NetworkMultiSelector
-          width={['100%', '100%', '160px']}
-          maxWidth={['100%', '100%', '160px']}
+          width={['100%', '100%', '320px']}
+          maxWidth={['100%', '100%', '320px']}
           margin={['0 0 16px 0', '0 0 16px 0', '0 0 0 auto']}
           setPickMultiSelect={setPickMultiSelect}
         />
