@@ -215,7 +215,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
               {task.isOptional && <StyledOptionIcon />}
             </Flex>
             <Text ml="16px" bold>
-              {title ?? taskNaming(taskType)}
+              {title || taskNaming(taskType)}
             </Text>
           </Flex>
           <Flex alignSelf="center">
