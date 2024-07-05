@@ -134,9 +134,9 @@ export const ClaimZksyncAirdropModal: React.FC<{
             )}
             <Text mt="16px" mb="8px">
               {isUserClaimed
-                ? t('You have successfully claimed from the ZKSync token airdrop campaign!')
+                ? t('You have successfully claimed from the ZKsync token airdrop campaign!')
                 : userCanClaim
-                ? t('Congratulations! You are eligible to claim from the ZKSync token airdrop campaign!')
+                ? t('Congratulations! You are eligible to claim from the ZKsync token airdrop campaign!')
                 : t('Unfortunately, the connected wallet %account% is not eligible for the airdrop campaign.', {
                     account: account ?? '',
                   })}
@@ -157,7 +157,7 @@ export const ClaimZksyncAirdropModal: React.FC<{
                 </Button>
               ) : (
                 <Button mt="24px" disabled={!userCanClaim} onClick={() => switchNetwork(ChainId.ZKSYNC)}>
-                  {userCanClaim ? t('Switch network to ZKSync for claiming') : t('Claim now')}
+                  {userCanClaim ? t('Switch network to ZKsync for claiming') : t('Claim now')}
                 </Button>
               )
             ) : (
