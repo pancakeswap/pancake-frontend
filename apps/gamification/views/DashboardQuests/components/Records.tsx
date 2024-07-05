@@ -3,7 +3,6 @@ import { Box, Card, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
-import { EmptyRecord } from 'views/DashboardQuests/components/EmptyRecord'
 import { Row } from 'views/DashboardQuests/components/Row'
 import { TableHeader } from 'views/DashboardQuests/components/TableHeader'
 
@@ -47,15 +46,9 @@ export const Records: React.FC<RecordsProps> = ({ isFetching, questsData, status
               </Text>
             ) : (
               <>
-                {questsData?.length === 0 ? (
-                  <EmptyRecord />
-                ) : (
-                  <>
-                    {questsData?.map((quest) => (
-                      <Row key={quest.id} quest={quest} statusButtonIndex={statusButtonIndex} />
-                    ))}
-                  </>
-                )}
+                {questsData?.map((quest) => (
+                  <Row key={quest.id} quest={quest} statusButtonIndex={statusButtonIndex} />
+                ))}
               </>
             )}
           </StyledRows>
