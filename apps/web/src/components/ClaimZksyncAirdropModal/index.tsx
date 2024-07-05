@@ -144,7 +144,7 @@ export const ClaimZksyncAirdropModal: React.FC<{
                   variant={isUserClaimed ? 'secondary' : undefined}
                   mt="24px"
                   isLoading={pendingTx}
-                  disabled={!userCanClaim}
+                  disabled={isUserClaimed ? false : !userCanClaim}
                   onClick={isUserClaimed ? onDismiss : claimAirDrop}
                 >
                   {pendingTx ? t('Claiming') : isUserClaimed ? t('Close') : t('Claim now')}
