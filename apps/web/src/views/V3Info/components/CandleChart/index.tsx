@@ -4,7 +4,6 @@ import {
   dateFormattingByTimewindow,
   lightColors,
   ChartDataTimeWindowEnum,
-  dateFormattingByTimewindow,
 } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
