@@ -23,7 +23,7 @@ export const DashboardQuests = () => {
         queryKey: ['fetch-all-quest-dashboard-data', account, pickMultiSelect, convertIndexToStatus(statusButtonIndex)],
       })
     }
-  }, [])
+  }, [account, pickMultiSelect, queryClient, statusButtonIndex])
 
   const { questsData, isFetching } = useFetchAllQuests({
     chainIdList: pickMultiSelect,

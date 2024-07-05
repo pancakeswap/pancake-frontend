@@ -102,8 +102,8 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({
               </StyledButtonMenu>
               <NetworkMultiSelector
                 height="36px"
-                width={['100%', '100%', '100%', '160px']}
-                maxWidth={['100%', '100%', '100%', '160px']}
+                width={['100%', '100%', '100%', '120px', '120px', '264px']}
+                maxWidth={['100%', '100%', '100%', '120px', '120px', '264px']}
                 margin={['24px 0 0 0', '24px 0 0 0', '24px 0 0 0', ' 0 auto 0 0']}
                 setPickMultiSelect={setPickMultiSelect}
               />
