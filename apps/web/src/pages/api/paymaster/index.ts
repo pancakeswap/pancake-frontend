@@ -28,7 +28,6 @@ const handler: NextApiHandler = async (req, res) => {
       // do nothing. must be another type of transaction if decoding failed
     }
 
-    // Paymaster Transaction Whitelist
     if (!isTransactionWhitelisted) {
       return res.status(400).json({ error: 'Transaction type not whitelisted for Paymaster' })
     }

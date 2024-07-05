@@ -23,6 +23,7 @@ import BN from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { paymasterInfo, paymasterTokens } from 'config/paymaster'
+import { useGasSponsorship } from 'hooks/useGasSponsorship'
 import { useGasToken } from 'hooks/useGasToken'
 import { usePaymaster } from 'hooks/usePaymaster'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
@@ -63,6 +64,9 @@ export const ClaimZksyncAirdropModal: React.FC<{
 
   const { isPaymasterAvailable, isPaymasterTokenActive } = usePaymaster()
   const [, setGasToken] = useGasToken()
+  const {
+    data: { isEnoughGasBalance },
+  } = useGasSponsorship({ enabled: isPaymasterAvailable && isPaymasterTokenActive })
 
   const { targetRef: tooltipTargetRef, tooltip, tooltipVisible } = useTooltip(t('Gas fees is fully sponsored'))
   const { zksyncAirdropData, refetch } = useZksyncAirDropData(whiteListData?.proof)
@@ -108,6 +112,7 @@ export const ClaimZksyncAirdropModal: React.FC<{
               mb="24px"
               style={{ backgroundImage: `url(${asset})`, backgroundSize: 'cover' }}
             />
+
             <Text bold>
               {isUserClaimed
                 ? t('%amount% %token% claimed!', {
@@ -121,7 +126,7 @@ export const ClaimZksyncAirdropModal: React.FC<{
                   })
                 : t('Not eligible')}
             </Text>
-            {userCanClaim && isPaymasterAvailable && isPaymasterTokenActive && (
+            {userCanClaim && isPaymasterAvailable && isPaymasterTokenActive && isEnoughGasBalance && (
               <>
                 <Badge ref={tooltipTargetRef}>⛽️ {t('GAS FREE')}</Badge>
                 {tooltipVisible && tooltip}

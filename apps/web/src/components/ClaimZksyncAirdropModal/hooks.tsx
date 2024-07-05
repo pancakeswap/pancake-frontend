@@ -11,6 +11,7 @@ import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useCallback } from 'react'
 import { calculateGasMargin } from 'utils'
 import { getZkSyncAirDropAddress } from 'utils/addressHelpers'
+import { getGasSponsorship } from 'utils/paymaster'
 import { publicClient } from 'utils/wagmi'
 import { Address, encodeFunctionData } from 'viem'
 import { useAccount, useConfig } from 'wagmi'
@@ -100,28 +101,32 @@ export const useClaimZksyncAirdrop = (onDone?: () => void) => {
     }
     const receipt = await fetchWithCatchTxError(async () => {
       if (isPaymasterAvailable && isPaymasterTokenActive) {
-        // Estimate Gas
-        const estimatedGas = await zkSyncAirDropContract.estimateGas.claim(
-          [account, whiteListData.amount, whiteListData.proof],
-          {
-            account,
-          },
-        )
+        // Check gas balance
+        const { isEnoughGasBalance } = await getGasSponsorship()
 
-        const calldata = encodeFunctionData({
-          abi: zkSyncAirDropContract.abi,
-          functionName: 'claim',
-          args: [account, whiteListData.amount, whiteListData.proof],
-        })
+        if (isEnoughGasBalance) {
+          const estimatedGas = await zkSyncAirDropContract.estimateGas.claim(
+            [account, whiteListData.amount, whiteListData.proof],
+            {
+              account,
+            },
+          )
 
-        // Construct call for paymaster
-        const call = {
-          address: zkSyncAirDropContract.address,
-          calldata,
-          gas: calculateGasMargin(estimatedGas),
+          const calldata = encodeFunctionData({
+            abi: zkSyncAirDropContract.abi,
+            functionName: 'claim',
+            args: [account, whiteListData.amount, whiteListData.proof],
+          })
+
+          const call = {
+            address: zkSyncAirDropContract.address,
+            calldata,
+            gas: calculateGasMargin(estimatedGas),
+          }
+
+          return sendPaymasterTransaction(call, account)
         }
-
-        return sendPaymasterTransaction(call, account)
+        // If not enough gas balance, continue to normal claim
       }
 
       return zkSyncAirDropContract.write.claim([account, whiteListData.amount, whiteListData.proof], {
