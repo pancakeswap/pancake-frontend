@@ -69,3 +69,4 @@ export * from "./Timeline";
 export * from "./Toggle";
 export * from "./ToggleView";
 export * from "./TokenLogo";
+export * from "./TreeSelect";
