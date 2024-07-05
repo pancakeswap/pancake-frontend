@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
   BannerActionContainer,
@@ -91,7 +91,7 @@ export const ZksyncAirDropBanner = () => {
           title={
             <BannerTitle
               variant={{
-                color: '#FFB237',
+                color: '#FFEB37',
                 strokeColor: '',
                 strokeSize: 0,
                 fontSize: isTablet ? 24 : 26,
@@ -105,21 +105,19 @@ export const ZksyncAirDropBanner = () => {
           desc={<BannerDesc color="white">{!isMobile ? t('2.4 Million $ZK available to claim') : null}</BannerDesc>}
           actions={
             <BannerActionContainer>
-              {isMobile ? (
-                <LinkExternalAction color="white" href={learnMoreLink} externalIcon="arrowForward">
-                  {t('Learn More')}
-                </LinkExternalAction>
-              ) : (
+              <LinkExternalAction
+                onClick={() => {
+                  setIsOpen(true)
+                }}
+                color="#FFE238"
+                externalIcon="arrowForward"
+              >
+                {t('Check Eligibility')}
+              </LinkExternalAction>
+              {!isMobile && (
                 <>
-                  <Button
-                    onClick={() => {
-                      setIsOpen(true)
-                    }}
-                  >
-                    {t('Claim')}
-                  </Button>
                   <VerticalDivider />
-                  <LinkExternalAction color="white" href={learnMoreLink}>
+                  <LinkExternalAction color="#FFE238" href={learnMoreLink}>
                     {t('Learn More')}
                   </LinkExternalAction>
                 </>
