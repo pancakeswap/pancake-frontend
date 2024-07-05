@@ -49,7 +49,7 @@ const LineChart = ({ data, timeWindow, setHoverValue, setHoverDate }: LineChartP
         borderVisible: false,
         secondsVisible: false,
         tickMarkFormatter: (unixTime: number) => {
-          return dayjs(unixTime).format(dateFormattingByTimewindow[timeWindow])
+          return dayjs.unix(unixTime).format(dateFormattingByTimewindow[timeWindow])
         },
       },
       grid: {
@@ -102,7 +102,7 @@ const LineChart = ({ data, timeWindow, setHoverValue, setHoverDate }: LineChartP
       if (newSeries && param) {
         const timestamp = param.time as number
         if (!timestamp) return
-        const now = new Date(timestamp)
+        const now = new Date(timestamp * 1000)
         const time = `${now.toLocaleString(locale, {
           year: 'numeric',
           month: 'short',
