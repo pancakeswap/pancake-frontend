@@ -359,4 +359,12 @@ export const arbitrumTokens = {
     'Solv BTC',
     'https://solv.finance/',
   ),
+  sqd: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x1337420dED5ADb9980CFc35f8f2B054ea86f8aB1',
+    18,
+    'SQD',
+    'Subsquid',
+    'https://subsquid.io/',
+  ),
 }
