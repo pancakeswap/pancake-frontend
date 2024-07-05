@@ -54,7 +54,7 @@ const StyledFlexContainer = styled(FlexGap)`
 
 export const ZksyncAirDropBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isTablet, isMd, isXs, isSm } = useMatchBreakpoints()
+  const { isMobile, isTablet, isXs } = useMatchBreakpoints()
   const [isOpen, setIsOpen] = useState(false)
   const whitelistData = useUserWhiteListData()
   const { zksyncAirdropData } = useZksyncAirDropData(whitelistData?.proof)

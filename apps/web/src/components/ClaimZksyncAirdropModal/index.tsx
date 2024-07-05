@@ -152,7 +152,7 @@ export const ClaimZksyncAirdropModal: React.FC<{
                 </Button>
               ) : (
                 <Button mt="24px" disabled={!userCanClaim} onClick={() => switchNetwork(ChainId.ZKSYNC)}>
-                  {userCanClaim ? t('Switch network to ZKsync for claiming') : t('Claim now')}
+                  {userCanClaim ? t('Switch network to ZKSync for claiming') : t('Claim now')}
                 </Button>
               )
             ) : (
