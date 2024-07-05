@@ -44,7 +44,6 @@ import TransactionTable from '../components/TransactionsTable'
 import { v3InfoPath } from '../constants'
 import { usePoolChartData, usePoolData, usePoolTransactions } from '../hooks'
 import { feeTierPercent } from '../utils'
-import { unixToDate } from '../utils/date'
 import { formatDollarAmount } from '../utils/numbers'
 
 const ContentLayout = styled.div`
@@ -110,7 +109,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: unixToDate(day.date),
+          time: day.date,
           value: day.totalValueLockedUSD,
         }
       })
@@ -122,7 +121,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: unixToDate(day.date),
+          time: day.date,
           value: day.volumeUSD,
         }
       })
@@ -134,7 +133,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: unixToDate(day.date),
+          time: day.date,
           value: day.feesUSD,
         }
       })

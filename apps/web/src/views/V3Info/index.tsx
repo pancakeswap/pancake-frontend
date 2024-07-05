@@ -23,7 +23,6 @@ import {
   useTopTokensData,
 } from './hooks'
 import { useTransformedVolumeData } from './hooks/chart'
-import { unixToDate } from './utils/date'
 import { formatDollarAmount } from './utils/numbers'
 
 export default function Home() {
@@ -62,7 +61,7 @@ export default function Home() {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: unixToDate(day.date),
+          time: day.date,
           value: day.tvlUSD,
         }
       })
@@ -74,7 +73,7 @@ export default function Home() {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: unixToDate(day.date),
+          time: day.date,
           value: day.volumeUSD,
         }
       })

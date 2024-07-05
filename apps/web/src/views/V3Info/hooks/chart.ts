@@ -3,7 +3,6 @@ import { useMemo } from 'react'
 import dayjs from 'dayjs'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import { ChartDayData, GenericChartEntry, PoolChartEntry, TokenChartEntry } from '../types'
-import { unixToDate } from '../utils/date'
 
 dayjs.extend(weekOfYear)
 
@@ -39,7 +38,7 @@ export function useTransformedVolumeData(
           data[group].value += volumeUSD
         } else {
           data[group] = {
-            time: unixToDate(date),
+            time: date,
             value: volumeUSD,
           }
         }

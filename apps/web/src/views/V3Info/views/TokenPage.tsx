@@ -112,7 +112,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: dayjs.unix(day.date).toDate(),
+          time: day.date,
           value: day.totalValueLockedUSD,
         }
       })
@@ -124,7 +124,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
     if (chartData) {
       return chartData.map((day) => {
         return {
-          time: dayjs.unix(day.date).toDate(),
+          time: day.date,
           value: day.volumeUSD,
         }
       })

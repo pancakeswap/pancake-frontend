@@ -108,7 +108,7 @@ const Chart = ({
               dataKey="time"
               axisLine={false}
               tickLine={false}
-              tickFormatter={(time) => dayjs(time).format(dateFormattingByTimewindow[timeWindow])}
+              tickFormatter={(time) => dayjs.unix(time).format(dateFormattingByTimewindow[timeWindow])}
               minTickGap={10}
             />
             <Tooltip
@@ -119,7 +119,7 @@ const Chart = ({
                   setValue(props.payload.value)
                 }
                 if (setLabel && parsedValue !== props.payload.value) {
-                  setLabel(dayjs(props.payload.time).format('MMM D hh:mm a, YYYY'))
+                  setLabel(dayjs.unix(props.payload.time).format('MMM D hh:mm a, YYYY'))
                 }
                 return null as any
               }}

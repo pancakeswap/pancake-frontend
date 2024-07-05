@@ -195,7 +195,7 @@ export interface PoolData {
 }
 
 export interface GenericChartEntry {
-  time: string
+  time: number
   value: number
 }
 
