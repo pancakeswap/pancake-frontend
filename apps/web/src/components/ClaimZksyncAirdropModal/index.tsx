@@ -68,7 +68,17 @@ export const ClaimZksyncAirdropModal: React.FC<{
     data: { isEnoughGasBalance },
   } = useGasSponsorshipBalance({ enabled: isPaymasterAvailable && isPaymasterTokenActive })
 
-  const { targetRef: tooltipTargetRef, tooltip, tooltipVisible } = useTooltip(t('Gas fees is fully sponsored'))
+  const {
+    targetRef: tooltipTargetRef,
+    tooltip,
+    tooltipVisible,
+  } = useTooltip(
+    <>
+      {t('Gas fees is fully sponsored')}
+      <br />
+      <span style={{ fontSize: '14px' }}>{t('Powered by Zyfi Paymaster')}</span>
+    </>,
+  )
   const { zksyncAirdropData, refetch } = useZksyncAirDropData(whiteListData?.proof)
   const { claimAirDrop, pendingTx } = useClaimZksyncAirdrop(refetch)
   const userCanClaim = useMemo(() => {
