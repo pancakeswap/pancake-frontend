@@ -101,7 +101,7 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
     <Modal
       title={isBscNetwork ? t('Harvest now!') : t('Switch chain to harvest')}
       style={{ maxWidth: '340px' }}
-      onDismiss={handleCancel}
+      onDismiss={onDismiss}
     >
       <Flex flexDirection="column">
         <Flex justifyContent="space-between" mb="16px">
