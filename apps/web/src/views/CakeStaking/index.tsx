@@ -28,8 +28,13 @@ const CakeStaking = () => {
   const totalIFOSold = useTotalIFOSold()
   const { isDesktop, isMobile } = useMatchBreakpoints()
   const { theme } = useTheme()
-  const handleDismiss = useCallback(() => setCakeRewardModalVisible(false), [])
   const [isOpen, setIsOpen] = useState(false)
+
+  const handleDismiss = useCallback(() => setCakeRewardModalVisible(false), [])
+
+  const handleOnDismiss = useCallback(() => {
+    setIsOpen(false)
+  }, [])
 
   return (
     <>
@@ -166,7 +171,7 @@ const CakeStaking = () => {
           <BenefitCard type="more" />
         </Grid>
       </Page>
-      <CrossChainVeCakeModal isOpen={isOpen} setIsOpen={setIsOpen} onDismiss={() => setIsOpen(false)} />
+      <CrossChainVeCakeModal isOpen={isOpen} setIsOpen={setIsOpen} onDismiss={handleOnDismiss} />
     </>
   )
 }

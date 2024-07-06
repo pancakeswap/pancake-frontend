@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Button, FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { FilterModal } from './FilterModal'
 import { Filter, FilterValue, OptionsType } from './type'
@@ -22,6 +22,10 @@ export const FilterFieldByType: React.FC<FilterButtonGroupProps> = ({ onFilterCh
   const [option, setOption] = useState<OptionsType | null>(null)
   const { isSm } = useMatchBreakpoints()
 
+  const handleOnDismiss = useCallback(() => {
+    setOption(null)
+  }, [])
+
   return (
     <>
       <AutoColumn gap="4px">
@@ -42,7 +46,7 @@ export const FilterFieldByType: React.FC<FilterButtonGroupProps> = ({ onFilterCh
       </AutoColumn>
       <FilterModal
         isOpen={Boolean(option)}
-        onDismiss={() => setOption(null)}
+        onDismiss={handleOnDismiss}
         type={option}
         options={value}
         onChange={onFilterChange}

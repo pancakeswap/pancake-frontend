@@ -6,7 +6,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useAuth from 'hooks/useAuth'
 
 import { ChainId } from '@pancakeswap/chains'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { logGTMWalletConnectEvent } from 'utils/customGTMEventTracking'
 import { useConnect } from 'wagmi'
 import Trans from './Trans'
@@ -25,6 +25,10 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
 
   const wallets = useMemo(() => createWallets(chainId || ChainId.BSC, connectAsync), [chainId, connectAsync])
 
+  const handleOnDismiss = useCallback(() => {
+    setOpen(false)
+  }, [])
+
   return (
     <>
       <Button onClick={() => setOpen(true)} {...props}>
@@ -42,7 +46,7 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
         isOpen={open}
         wallets={wallets}
         login={login}
-        onDismiss={() => setOpen(false)}
+        onDismiss={handleOnDismiss}
         onWalletConnectCallBack={logGTMWalletConnectEvent}
       />
     </>

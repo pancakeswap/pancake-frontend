@@ -104,11 +104,12 @@ SwapCommitButtonPropsType & CommitButtonProps) {
   // Modals
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
 
+  const handleOnDismiss = useCallback(() => {
+    setIndirectlyOpenConfirmModalState(true)
+  }, [])
+
   const [onPresentSettingsModal] = useModal(
-    <SettingsModalWithCustomDismiss
-      customOnDismiss={() => setIndirectlyOpenConfirmModalState(true)}
-      mode={SettingsMode.SWAP_LIQUIDITY}
-    />,
+    <SettingsModalWithCustomDismiss customOnDismiss={handleOnDismiss} mode={SettingsMode.SWAP_LIQUIDITY} />,
   )
 
   const onConfirm = useCallback(() => {

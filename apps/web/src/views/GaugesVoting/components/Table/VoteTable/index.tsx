@@ -247,15 +247,14 @@ export const VoteTable = () => {
     }
   }, [rows, rows?.length, votes])
 
+  const handleOnDismiss = useCallback(() => {
+    setOpen(false)
+  }, [])
+
   return (
     <>
       <RemainingVotePower votedPercent={lockedPowerPercent} />
-      <AddGaugeModal
-        selectRows={rowsWithLock}
-        onGaugeAdd={onRowSelect}
-        isOpen={isOpen}
-        onDismiss={() => setIsOpen(false)}
-      />
+      <AddGaugeModal selectRows={rowsWithLock} onGaugeAdd={onRowSelect} isOpen={isOpen} onDismiss={handleOnDismiss} />
       <ResponsiveCard>
         {gaugesTable}
 

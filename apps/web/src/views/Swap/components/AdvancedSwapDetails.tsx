@@ -3,7 +3,7 @@ import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
 import { AutoColumn, Flex, Link, Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
 import { formatAmount, formatFraction } from '@pancakeswap/utils/formatFractions'
-import React, { memo, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 
 import { NumberDisplay } from '@pancakeswap/widgets-internal'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
@@ -213,6 +213,12 @@ export const AdvancedSwapDetails = memo(function AdvancedSwapDetails({
   const { t } = useTranslation()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const showRoute = Boolean(path && path.length > 1)
+  const handleOnDismiss = useCallback(() => {
+    setIsModalOpen(false)
+  }, [])
+  const handleOnClick = useCallback(() => {
+    setIsModalOpen(true)
+  }, [])
   return (
     <AutoColumn gap="0px">
       {inputAmount && (
@@ -243,8 +249,8 @@ export const AdvancedSwapDetails = memo(function AdvancedSwapDetails({
                   />
                 </span>
                 {path ? <SwapRoute path={path} /> : null}
-                <SearchIcon style={{ cursor: 'pointer' }} onClick={() => setIsModalOpen(true)} />
-                <ModalV2 closeOnOverlayClick isOpen={isModalOpen} onDismiss={() => setIsModalOpen(false)}>
+                <SearchIcon style={{ cursor: 'pointer' }} onClick={handleOnClick} />
+                <ModalV2 closeOnOverlayClick isOpen={isModalOpen} onDismiss={handleOnDismiss}>
                   <Modal
                     title={
                       <Flex justifyContent="center">
@@ -258,7 +264,7 @@ export const AdvancedSwapDetails = memo(function AdvancedSwapDetails({
                         />
                       </Flex>
                     }
-                    onDismiss={() => setIsModalOpen(false)}
+                    onDismiss={handleOnDismiss}
                   >
                     <RouterViewer
                       isMM={isMM}
