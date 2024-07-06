@@ -248,7 +248,7 @@ export const VoteTable = () => {
   }, [rows, rows?.length, votes])
 
   const handleOnDismiss = useCallback(() => {
-    setOpen(false)
+    setIsOpen(false)
   }, [])
 
   return (
