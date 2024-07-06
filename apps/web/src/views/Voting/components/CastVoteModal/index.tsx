@@ -113,7 +113,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
               isError={isError}
               veCakeBalance={veCakeBalance}
               onConfirm={handleConfirmVote}
-              onDismiss={handleDismiss}
+              onDismiss={onDismiss}
             />
           ) : (
             <MainView
@@ -126,7 +126,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
               lockedEndTime={Number(lockedEndTime)}
               onConfirm={handleConfirmVote}
               onViewDetails={handleViewDetails}
-              onDismiss={handleDismiss}
+              onDismiss={onDismiss}
             />
           ))}
         {view === ConfirmVoteView.DETAILS && block && (
