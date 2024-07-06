@@ -314,9 +314,7 @@ const Header = ({
             <Swap.CurrencyInputHeaderTitle>{limit ? 'LIMIT' : 'TWAP'}</Swap.CurrencyInputHeaderTitle>
             {isChartSupported && (
               <ColoredIconButton
-                onClick={() => {
-                  toggleChartDisplayed()
-                }}
+                onClick={toggleChartDisplayed}
                 variant="text"
                 scale="sm"
                 data-dd-action-name="Price chart button"
