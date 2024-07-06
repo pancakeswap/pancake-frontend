@@ -1,13 +1,9 @@
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import { explorerApiClient } from 'state/info/api/client'
 import type { components } from 'state/info/api/schema'
 import { ChartDataTimeWindowEnum } from '@pancakeswap/uikit'
 import { timeWindowToPeriod } from 'utils/timeWindowToPeriod'
 import { ChartDayData } from '../../types'
-
-// format dayjs with the libraries that we need
-dayjs.extend(utc)
 
 export async function fetchChartData(
   protocol: 'v2' | 'v3' | 'stable',
