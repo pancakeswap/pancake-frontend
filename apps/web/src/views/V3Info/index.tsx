@@ -31,7 +31,9 @@ export default function Home() {
 
   const { theme } = useTheme()
 
-  const [timeWindow, setTimeWindow] = useState(ChartDataTimeWindowEnum.DAY)
+  const [timeWindow, setTimeWindow] = useState<
+    ChartDataTimeWindowEnum.DAY | ChartDataTimeWindowEnum.WEEK | ChartDataTimeWindowEnum.MONTH
+  >(ChartDataTimeWindowEnum.DAY)
 
   const protocolData = useProtocolData()
   const transactionData = useProtocolTransactionData()

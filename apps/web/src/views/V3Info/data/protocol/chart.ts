@@ -8,7 +8,8 @@ import { ChartDayData } from '../../types'
 export async function fetchChartData(
   protocol: 'v2' | 'v3' | 'stable',
   chainName: components['schemas']['ChainName'],
-  timeWindow: ChartDataTimeWindowEnum,
+  timeWindow: Exclude<ChartDataTimeWindowEnum, ChartDataTimeWindowEnum.HOUR> &
+    Exclude<ChartDataTimeWindowEnum, ChartDataTimeWindowEnum.YEAR>,
   signal: AbortSignal,
 ) {
   let error = false

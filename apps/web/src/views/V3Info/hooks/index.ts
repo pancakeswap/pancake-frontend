@@ -50,7 +50,10 @@ const QUERY_SETTINGS_IMMUTABLE = {
   refetchOnWindowFocus: false,
 }
 
-export const useProtocolChartData = (timeWindow: ChartDataTimeWindowEnum): ChartDayData[] | undefined => {
+export const useProtocolChartData = (
+  timeWindow: Exclude<ChartDataTimeWindowEnum, ChartDataTimeWindowEnum.HOUR> &
+    Exclude<ChartDataTimeWindowEnum, ChartDataTimeWindowEnum.YEAR>,
+): ChartDayData[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
   const explorerChainName = useExplorerChainNameByQuery()
