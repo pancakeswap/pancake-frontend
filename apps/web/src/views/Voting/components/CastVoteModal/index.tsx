@@ -52,10 +52,6 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
     [ConfirmVoteView.DETAILS]: t('Voting Power'),
   }
 
-  const handleDismiss = useCallback(() => {
-    onDismiss?.()
-  }, [onDismiss])
-
   const handleConfirmVote = useCallback(async () => {
     try {
       setIsPending(true)
@@ -88,14 +84,14 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
 
       await onSuccess()
 
-      handleDismiss()
+      onDismiss?.()
     } catch (error) {
       toastError(t('Error'), (error as Error)?.message ?? t('Error occurred, please try again'))
       console.error(error)
     } finally {
       setIsPending(false)
     }
-  }, [setIsPending, signer, account, vote.value, onSuccess, handleDismiss, proposalId, t, toastError])
+  }, [setIsPending, signer, account, vote.value, onSuccess, onDismiss, proposalId, t, toastError])
 
   return (
     <Modal

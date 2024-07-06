@@ -74,10 +74,6 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
   const network = isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC
   const isBscNetwork = useMemo(() => chainId === network, [chainId, network])
 
-  const handleCancel = useCallback(() => {
-    onDismiss?.()
-  }, [onDismiss])
-
   const handleSwitchNetwork = useCallback(() => {
     if (window.ethereum?.isTokenPocket === true) {
       Cookie.set(
@@ -97,9 +93,9 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
           {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
         </ToastDescriptionWithTx>,
       )
-      handleCancel()
+      onDismiss?.()
     }
-  }, [t, onReward, fetchWithCatchTxError, toastSuccess, handleCancel])
+  }, [t, onReward, fetchWithCatchTxError, toastSuccess, onDismiss])
 
   return (
     <Modal

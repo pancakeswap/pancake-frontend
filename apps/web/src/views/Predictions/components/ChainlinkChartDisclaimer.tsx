@@ -13,7 +13,6 @@ import {
 import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { useUserPredictionChainlinkChartDisclaimerShow } from 'state/user/hooks'
-import { useCallback } from 'react'
 
 const Ul = styled.ul`
   color: ${({ theme }) => theme.colors.textSubtle};
@@ -29,10 +28,6 @@ const Ul = styled.ul`
 const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const [showDisclaimer, setShowDisclaimer] = useUserPredictionChainlinkChartDisclaimerShow()
   const { t } = useTranslation()
-
-  const handleConfirm = useCallback(() => {
-    onDismiss?.()
-  }, [onDismiss])
 
   return (
     <ModalWrapper minWidth="320px">
@@ -51,7 +46,7 @@ const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = (
           <li>{t('When compared to TradingView chart. This chart refreshes slower and with fewer features.')}</li>
         </Ul>
         <Box>
-          <Button width="100%" variant="primary" onClick={handleConfirm} my="16px">
+          <Button width="100%" variant="primary" onClick={onDismiss} my="16px">
             {t('I understand')}
           </Button>
         </Box>

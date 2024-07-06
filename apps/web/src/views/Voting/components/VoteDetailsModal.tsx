@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, InjectedModalProps, Modal, Spinner } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import { useCallback } from 'react'
 import { VECAKE_VOTING_POWER_BLOCK } from '../helpers'
 import useGetVotingPower from '../hooks/useGetVotingPower'
 import DetailsView from './CastVoteModal/DetailsView'
@@ -28,12 +27,8 @@ const VoteDetailsModal: React.FC<React.PropsWithChildren<VoteDetailsModalProps>>
   } = useGetVotingPower(block)
   const { theme } = useTheme()
 
-  const handleDismiss = useCallback(() => {
-    onDismiss?.()
-  }, [onDismiss])
-
   return (
-    <Modal title={t('Voting Power')} onDismiss={handleDismiss} headerBackground={theme.colors.gradientCardHeader}>
+    <Modal title={t('Voting Power')} onDismiss={onDismiss} headerBackground={theme.colors.gradientCardHeader}>
       <Box mb="24px" width={['100%', '100%', '100%', '320px']}>
         {isLoading ? (
           <Flex height="450px" alignItems="center" justifyContent="center">

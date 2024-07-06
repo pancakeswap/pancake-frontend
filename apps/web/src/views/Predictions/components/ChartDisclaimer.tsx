@@ -14,7 +14,6 @@ import {
 } from '@pancakeswap/uikit'
 import { useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
 import { styled } from 'styled-components'
-import { useCallback } from 'react'
 import { useConfig } from '../context/ConfigProvider'
 
 const Ul = styled.ul`
@@ -33,10 +32,6 @@ const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = (
 
   const config = useConfig()
   const { t } = useTranslation()
-
-  const handleConfirm = useCallback(() => {
-    onDismiss?.()
-  }, [onDismiss])
 
   return (
     <ModalWrapper minWidth="320px">
@@ -70,7 +65,7 @@ const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = (
           {t('Learn More')}
         </LinkExternal>
         <Box>
-          <Button width="100%" onClick={handleConfirm} mb="16px">
+          <Button width="100%" onClick={onDismiss} mb="16px">
             {t('I understand')}
           </Button>
         </Box>
