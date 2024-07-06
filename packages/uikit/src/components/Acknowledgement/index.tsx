@@ -1,12 +1,12 @@
-import { useState } from "react";
 import { useTranslation } from "@pancakeswap/localization";
+import { useState } from "react";
 import { Flex } from "../Box";
+import { Button } from "../Button";
 import { Checkbox } from "../Checkbox";
 import { Text } from "../Text";
-import { Button } from "../Button";
 
 interface AcknowledgementProps {
-  handleContinueClick: () => void;
+  handleContinueClick?: () => void;
 }
 
 export const Acknowledgement: React.FC<React.PropsWithChildren<AcknowledgementProps>> = ({ handleContinueClick }) => {
