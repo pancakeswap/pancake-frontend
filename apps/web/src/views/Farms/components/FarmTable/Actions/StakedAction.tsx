@@ -21,8 +21,8 @@ import { useCallback, useContext, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchBCakeWrapperUserDataAsync, fetchFarmUserDataAsync } from 'state/farms'
 import { pickFarmTransactionTx } from 'state/global/actions'
-import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
-import { useNonBscFarmPendingTransaction, useTransactionAdder } from 'state/transactions/hooks'
+import { FarmTransactionStatus, CrossChainFarmStepType } from 'state/transactions/actions'
+import { useCrossChainFarmPendingTransaction, useTransactionAdder } from 'state/transactions/hooks'
 import { styled } from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { Hash } from 'viem'
@@ -182,7 +182,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const native = useNativeCurrency()
 
   const { locked } = useBCakeBoostLimitAndLockInfo()
-  const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
+  const pendingFarm = useCrossChainFarmPendingTransaction(lpAddress)
   const { boosterState } = useContext(YieldBoosterStateContext)
   const { isFirstTime, refresh: refreshFirstTime } = useFirstTimeCrossFarming(vaultPid)
   const { t } = useTranslation()
@@ -245,13 +245,13 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
     if (receipt && chainId) {
       addTransaction(receipt, {
-        type: 'non-bsc-farm',
+        type: 'cross-chain-farm',
         translatableSummary: {
           text: 'Stake %amount% %lpSymbol% Token',
           data: { amount, lpSymbol },
         },
-        nonBscFarm: {
-          type: NonBscFarmStepType.STAKE,
+        crossChainFarm: {
+          type: CrossChainFarmStepType.STAKE,
           status: FarmTransactionStatus.PENDING,
           amount,
           lpSymbol,
@@ -305,13 +305,13 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
     if (receipt && chainId) {
       addTransaction(receipt, {
-        type: 'non-bsc-farm',
+        type: 'cross-chain-farm',
         translatableSummary: {
           text: 'Unstake %amount% %lpSymbol% Token',
           data: { amount, lpSymbol },
         },
-        nonBscFarm: {
-          type: NonBscFarmStepType.UNSTAKE,
+        crossChainFarm: {
+          type: CrossChainFarmStepType.UNSTAKE,
           status: FarmTransactionStatus.PENDING,
           amount,
           lpSymbol,

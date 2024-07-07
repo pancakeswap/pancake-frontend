@@ -6,7 +6,7 @@ import { Hash } from 'viem'
 import { resetUserState } from '../global/actions'
 import {
   FarmTransactionStatus,
-  NonBscFarmTransactionType,
+  CrossChainFarmTransactionType,
   SerializableTransactionReceipt,
   TransactionType,
   addTransaction,
@@ -31,7 +31,7 @@ export interface TransactionDetails {
   addedTime: number
   confirmedTime?: number
   from: string
-  nonBscFarm?: NonBscFarmTransactionType
+  crossChainFarm?: CrossChainFarmTransactionType
 }
 
 export interface TransactionState {
@@ -48,7 +48,9 @@ export default createReducer(initialState, (builder) =>
       addTransaction,
       (
         transactions,
-        { payload: { chainId, from, hash, approval, summary, translatableSummary, claim, type, order, nonBscFarm } },
+        {
+          payload: { chainId, from, hash, approval, summary, translatableSummary, claim, type, order, crossChainFarm },
+        },
       ) => {
         if (transactions[chainId]?.[hash]) {
           throw Error('Attempted to add existing transaction.')
@@ -64,7 +66,7 @@ export default createReducer(initialState, (builder) =>
           addedTime: now(),
           type,
           order,
-          nonBscFarm,
+          crossChainFarm,
         }
         transactions[chainId] = txs
         if (order) saveOrder(chainId, from, order, true)
@@ -88,7 +90,7 @@ export default createReducer(initialState, (builder) =>
         tx.lastCheckedBlockNumber = Math.max(blockNumber, tx.lastCheckedBlockNumber)
       }
     })
-    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt, nonBscFarm } }) => {
+    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt, crossChainFarm } }) => {
       const tx = transactions[chainId]?.[hash]
       if (!tx) {
         return
@@ -100,18 +102,18 @@ export default createReducer(initialState, (builder) =>
         confirmOrderSubmission(chainId, receipt.from, hash, receipt.status !== 0)
       } else if (tx.type === 'limit-order-cancellation') {
         confirmOrderCancellation(chainId, receipt.from, hash, receipt.status !== 0)
-      } else if (tx.type === 'non-bsc-farm') {
-        if (tx.nonBscFarm?.steps[0].status === FarmTransactionStatus.PENDING) {
+      } else if (tx.type === 'cross-chain-farm') {
+        if (tx.crossChainFarm?.steps[0].status === FarmTransactionStatus.PENDING) {
           if (receipt.status === FarmTransactionStatus.FAIL) {
-            tx.nonBscFarm = { ...tx.nonBscFarm, status: receipt.status }
+            tx.crossChainFarm = { ...tx.crossChainFarm, status: receipt.status }
           }
 
-          tx.nonBscFarm.steps[0] = {
-            ...tx.nonBscFarm.steps[0],
+          tx.crossChainFarm.steps[0] = {
+            ...tx.crossChainFarm.steps[0],
             status: receipt.status ?? FarmTransactionStatus.PENDING,
           }
         } else {
-          tx.nonBscFarm = nonBscFarm
+          tx.crossChainFarm = crossChainFarm
         }
       }
     })
