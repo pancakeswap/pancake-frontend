@@ -67,7 +67,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
 
   const onClickHarvestButton = () => {
     if (vaultPid) {
-      onPresentNonBscHarvestModal()
+      onPresentCrossChainHarvestModal()
     } else {
       handleHarvest()
     }
@@ -88,7 +88,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
     }
   }
 
-  const [onPresentNonBscHarvestModal] = useModal(
+  const [onPresentCrossChainHarvestModal] = useModal(
     pid && token && lpSymbol && quoteToken ? (
       <MultiChainHarvestModal
         pid={pid}

@@ -15,7 +15,7 @@ const useMultiChainHarvestModal = () => {
     earningsBusd: number
   }>()
 
-  const [onPresentNonBscHarvestModal] = useModal(
+  const [onPresentCrossChainHarvestModal] = useModal(
     harvestModalParams ? (
       <MultiChainHarvestModal
         pid={harvestModalParams.pid}
@@ -30,7 +30,7 @@ const useMultiChainHarvestModal = () => {
 
   useEffect(() => {
     if (harvestModalParams) {
-      onPresentNonBscHarvestModal()
+      onPresentCrossChainHarvestModal()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [harvestModalParams])

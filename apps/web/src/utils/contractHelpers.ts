@@ -24,7 +24,7 @@ import {
   getMasterChefV3Address,
   getNftMarketAddress,
   getNftSaleAddress,
-  getNonBscVaultAddress,
+  getCrossFarmingVaultAddress,
   getPancakeProfileAddress,
   getPancakeSquadAddress,
   getPancakeVeSenderV2Address,
@@ -54,7 +54,7 @@ import { predictionsV1ABI, predictionsV2ABI, predictionsV3ABI } from '@pancakesw
 import { crossFarmingProxyABI } from 'config/abi/crossFarmingProxy'
 import { crossFarmingSenderABI } from 'config/abi/crossFarmingSender'
 import { nftSaleABI } from 'config/abi/nftSale'
-import { nonBscVaultABI } from 'config/abi/nonBscVault'
+import { crossFarmingVaultABI } from 'config/abi/crossFarmingVault'
 import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
 import { stableSwapNativeHelperABI } from 'config/abi/stableSwapNativeHelper'
 
@@ -352,8 +352,8 @@ export const getBCakeProxyContract = (proxyContractAddress: Address, signer?: Wa
   return getContract({ abi: bCakeProxyABI, address: proxyContractAddress, signer })
 }
 
-export const getNonBscVaultContract = (signer?: WalletClient, chainId?: number) => {
-  return getContract({ abi: nonBscVaultABI, address: getNonBscVaultAddress(chainId), chainId, signer })
+export const getCrossFarmingVaultContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({ abi: crossFarmingVaultABI, address: getCrossFarmingVaultAddress(chainId), chainId, signer })
 }
 
 export const getSidContract = (address: Address, chainId: number) => {

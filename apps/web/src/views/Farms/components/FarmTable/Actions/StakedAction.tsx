@@ -221,7 +221,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   const handleStake = async (amount: string) => {
     if (vaultPid) {
-      await handleNonBscStake(amount)
+      await handleCrossChainStake(amount)
       refreshFirstTime()
     } else {
       const receipt = await fetchWithCatchTxError(() => onStake(amount))
@@ -238,7 +238,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     }
   }
 
-  const handleNonBscStake = async (amountValue: string) => {
+  const handleCrossChainStake = async (amountValue: string) => {
     const receipt = await fetchTxResponse(() => onStake(amountValue))
     const amountAsBigNumber = new BigNumber(amountValue).times(DEFAULT_TOKEN_DECIMAL)
     const amount = formatLpBalance(new BigNumber(amountAsBigNumber), 18)
@@ -283,7 +283,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   const handleUnstake = async (amount: string) => {
     if (vaultPid) {
-      await handleNonBscUnStake(amount)
+      await handleCrossChainUnStake(amount)
     } else {
       const receipt = await fetchWithCatchTxError(() => onUnstake(amount))
       if (receipt?.status) {
@@ -298,7 +298,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     }
   }
 
-  const handleNonBscUnStake = async (amountValue: string) => {
+  const handleCrossChainUnStake = async (amountValue: string) => {
     const receipt = await fetchTxResponse(() => onUnstake(amountValue))
     const amountAsBigNumber = new BigNumber(amountValue).times(DEFAULT_TOKEN_DECIMAL)
     const amount = formatLpBalance(new BigNumber(amountAsBigNumber), 18)

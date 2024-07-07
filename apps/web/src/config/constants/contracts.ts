@@ -150,7 +150,7 @@ export default {
     [ChainId.BSC]: '0x2C36221bF724c60E9FEE3dd44e2da8017a8EF3BA',
     [ChainId.BSC_TESTNET]: '0x',
   },
-  nonBscVault: {
+  crossFarmingVault: {
     [ChainId.ETHEREUM]: '0x2e71B2688019ebdFDdE5A45e6921aaebb15b25fb',
     [ChainId.GOERLI]: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841',
   },
