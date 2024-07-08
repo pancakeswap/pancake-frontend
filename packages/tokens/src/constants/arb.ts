@@ -309,7 +309,7 @@ export const arbitrumTokens = {
     6,
     'TIA.n',
     'TIA',
-    ' https://celestia.org/',
+    'https://celestia.org/',
   ),
   woo: new ERC20Token(
     ChainId.ARBITRUM_ONE,
