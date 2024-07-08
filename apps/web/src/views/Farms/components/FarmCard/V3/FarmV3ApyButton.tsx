@@ -30,12 +30,12 @@ import { usePoolAvgInfo } from 'hooks/usePoolAvgInfo'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
+import { type V3Farm } from 'state/farms/types'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { Field } from 'state/mint/actions'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 import { FarmsV3Context } from 'views/Farms'
-import { V3Farm } from 'views/Farms/FarmsV3'
 import { USER_ESTIMATED_MULTIPLIER, useUserPositionInfo } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { BoostStatus, useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { getDisplayApr } from '../../getDisplayApr'
@@ -236,9 +236,6 @@ function FarmV3ApyButton_({
   const isBoosted = useMemo(() => boostedStatus === BoostStatus.Boosted, [boostedStatus])
   const positionDisplayApr = getDisplayApr(+positionCakeApr, lpApr)
   const positionBoostedDisplayApr = getDisplayApr(boostMultiplier * positionCakeApr, lpApr)
-  const cakeAprAndAdditionalDisplay = (cakeApr + (additionAprInfo?.aprValue ?? 0)).toFixed(2)
-
-  console.log({ cakeApr, displayApr, cakeAprAndAdditionalDisplay, additionAprInfo })
 
   const aprTooltip = useTooltip(
     <>

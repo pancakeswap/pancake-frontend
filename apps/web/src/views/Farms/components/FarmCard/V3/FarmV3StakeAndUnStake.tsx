@@ -21,9 +21,9 @@ import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import NextLink from 'next/link'
 import { useMemo, useState } from 'react'
+import { type V3Farm } from 'state/farms/types'
 import { styled } from 'styled-components'
 import { unwrappedToken } from 'utils/wrappedCurrency'
-import { V3Farm } from 'views/Farms/FarmsV3'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
 
 const StyledInitialLink = styled(StyledLink)`
