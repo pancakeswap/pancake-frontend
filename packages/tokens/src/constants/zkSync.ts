@@ -13,6 +13,7 @@ export const zksyncTokens = {
     6,
     'USDC',
     'USD Coin (Native)',
+    'https://www.centre.io/usdc',
   ),
   tes: new ERC20Token(
     ChainId.ZKSYNC,

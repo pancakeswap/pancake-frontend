@@ -43,6 +43,7 @@ export const USDC_ETH = new ERC20Token(
   6,
   'USDC',
   'USD Coin',
+  'https://www.centre.io/usdc',
 )
 
 export const USDC_GOERLI = new ERC20Token(
@@ -118,6 +119,7 @@ export const BUSD = {
     18,
     'BUSD',
     'Binance USD',
+    'https://www.paxos.com/busd/',
   ),
 }
 
@@ -249,6 +251,7 @@ export const USDC = {
     6,
     'USDC.e',
     'Bridged USDC',
+    'https://www.centre.io/usdc',
   ),
   [ChainId.ZKSYNC_TESTNET]: new ERC20Token(
     ChainId.ZKSYNC_TESTNET,
@@ -256,6 +259,7 @@ export const USDC = {
     6,
     'USDC',
     'USD Coin',
+    'https://www.centre.io/usdc',
   ),
   [ChainId.ARBITRUM_ONE]: new ERC20Token(
     ChainId.ARBITRUM_ONE,
@@ -263,6 +267,7 @@ export const USDC = {
     6,
     'USDC',
     'USD Coin',
+    'https://www.centre.io/usdc',
   ),
   [ChainId.ARBITRUM_GOERLI]: new ERC20Token(
     ChainId.ARBITRUM_GOERLI,
@@ -270,6 +275,7 @@ export const USDC = {
     6,
     'USDC',
     'USD Coin',
+    'https://www.centre.io/usdc',
   ),
   [ChainId.POLYGON_ZKEVM]: new ERC20Token(
     ChainId.POLYGON_ZKEVM,
@@ -277,6 +283,7 @@ export const USDC = {
     6,
     'USDC',
     'USD Coin',
+    'https://www.centre.io/usdc',
   ),
   [ChainId.LINEA]: new ERC20Token(ChainId.LINEA, '0x176211869cA2b568f2A7D4EE941E073a821EE1ff', 6, 'USDC', 'USD Coin'),
   [ChainId.LINEA_TESTNET]: new ERC20Token(
@@ -285,6 +292,7 @@ export const USDC = {
     6,
     'USDC',
     'USD Coin',
+    'https://www.centre.io/usdc',
   ),
   [ChainId.BASE_TESTNET]: new ERC20Token(
     ChainId.BASE_TESTNET,
@@ -292,6 +300,7 @@ export const USDC = {
     6,
     'USDC',
     'USD Coin',
+    'https://www.centre.io/usdc',
   ),
   [ChainId.BASE]: new ERC20Token(ChainId.BASE, '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', 6, 'USDC', 'USD Coin'),
   [ChainId.OPBNB_TESTNET]: new ERC20Token(
@@ -300,6 +309,7 @@ export const USDC = {
     6,
     'USDC',
     'USD Coin',
+    'https://www.centre.io/usdc',
   ),
   [ChainId.SCROLL_SEPOLIA]: new ERC20Token(
     ChainId.SCROLL_SEPOLIA,
@@ -307,6 +317,7 @@ export const USDC = {
     6,
     'USDC',
     'USD Coin',
+    'https://www.centre.io/usdc',
   ),
   [ChainId.SEPOLIA]: new ERC20Token(
     ChainId.SEPOLIA,
@@ -314,6 +325,7 @@ export const USDC = {
     6,
     'USDC',
     'USD Coin',
+    'https://www.centre.io/usdc',
   ),
   [ChainId.ARBITRUM_SEPOLIA]: new ERC20Token(
     ChainId.ARBITRUM_SEPOLIA,
@@ -321,6 +333,7 @@ export const USDC = {
     6,
     'USDC',
     'USD Coin',
+    'https://www.centre.io/usdc',
   ),
   [ChainId.BASE_SEPOLIA]: new ERC20Token(
     ChainId.BASE_SEPOLIA,
@@ -328,6 +341,7 @@ export const USDC = {
     6,
     'USDC',
     'USD Coin',
+    'https://www.centre.io/usdc',
   ),
 }
 
@@ -340,6 +354,7 @@ export const USDT = {
     6,
     'USDT',
     'Tether USD',
+    'https://tether.to/',
   ),
   [ChainId.POLYGON_ZKEVM]: new ERC20Token(
     ChainId.POLYGON_ZKEVM,
@@ -347,6 +362,7 @@ export const USDT = {
     6,
     'USDT',
     'Tether USD',
+    'https://tether.to/',
   ),
   [ChainId.POLYGON_ZKEVM_TESTNET]: new ERC20Token(
     ChainId.POLYGON_ZKEVM_TESTNET,
@@ -354,6 +370,7 @@ export const USDT = {
     6,
     'USDT',
     'Tether USD',
+    'https://tether.to/',
   ),
   [ChainId.ZKSYNC]: new ERC20Token(
     ChainId.ZKSYNC,
@@ -361,6 +378,7 @@ export const USDT = {
     6,
     'USDT',
     'Tether USD',
+    'https://tether.to/',
   ),
   [ChainId.OPBNB_TESTNET]: new ERC20Token(
     ChainId.OPBNB_TESTNET,
@@ -368,6 +386,7 @@ export const USDT = {
     6,
     'USDT',
     'Tether USD',
+    'https://tether.to/',
   ),
   [ChainId.OPBNB]: new ERC20Token(
     ChainId.OPBNB,
@@ -375,8 +394,16 @@ export const USDT = {
     18,
     'USDT',
     'Tether USD',
+    'https://tether.to/',
   ),
-  [ChainId.LINEA]: new ERC20Token(ChainId.LINEA, '0xA219439258ca9da29E9Cc4cE5596924745e12B93', 6, 'USDT', 'Tether USD'),
+  [ChainId.LINEA]: new ERC20Token(
+    ChainId.LINEA,
+    '0xA219439258ca9da29E9Cc4cE5596924745e12B93',
+    6,
+    'USDT',
+    'Tether USD',
+    'https://tether.to/',
+  ),
 }
 
 export const DAI = {
@@ -444,6 +471,7 @@ export const WBTC_ETH = new ERC20Token(
   8,
   'WBTC',
   'Wrapped BTC',
+  'https://bitcoin.org/',
 )
 
 export const STABLE_COIN = {
