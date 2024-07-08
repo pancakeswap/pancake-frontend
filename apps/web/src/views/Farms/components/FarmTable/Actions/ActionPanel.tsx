@@ -17,9 +17,11 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useMerklInfo } from 'hooks/useMerkl'
 import useTheme from 'hooks/useTheme'
 import { useRouter } from 'next/router'
 import { FC, useContext, useMemo } from 'react'
+import { type V3Farm } from 'state/farms/types'
 import { ChainLinkSupportChains, multiChainPaths } from 'state/info/constant'
 import { css, keyframes, styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
@@ -28,7 +30,7 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import { isAddressEqual } from 'viem'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
-import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
+import { V2Farm } from 'views/Farms/FarmsV3'
 import { StatusView } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusView'
 import { StatusViewButtons } from 'views/Farms/components/YieldBooster/components/bCakeV3/StatusViewButtons'
 import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
@@ -252,6 +254,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   )
 
   const addLiquidityModal = useModalV2()
+  const { merklApr } = useMerklInfo(merklLink ? details.lpAddress : null)
 
   return (
     <>
@@ -270,7 +273,14 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
               <>
                 <ValueWrapper>
                   <Text>{t('APR')}</Text>
-                  <FarmV3ApyButton farm={farm} />
+                  <FarmV3ApyButton
+                    farm={farm}
+                    additionAprInfo={
+                      merklApr && merklLink
+                        ? { aprTitle: t('Merkl APR'), aprValue: merklApr, aprLink: merklLink }
+                        : undefined
+                    }
+                  />
                 </ValueWrapper>
                 <ValueWrapper>
                   <Text>{t('Multiplier')}</Text>
