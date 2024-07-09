@@ -15,7 +15,7 @@ export const vaults: VaultConfig[] = [
     currencyA: arbitrumTokens.wstETH,
     currencyB: arbitrumTokens.mstETH,
     earningToken: arbitrumTokens.cake,
-    feeTier: FeeAmount.MEDIUM,
+    feeTier: FeeAmount.LOW,
     strategy: Strategy.ALO,
     manager: MANAGER.DEFIEDGE,
     isSingleDepositToken: false,
