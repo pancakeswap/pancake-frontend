@@ -28,6 +28,10 @@ const StyledDeleteButton = styled(Button)`
   border-color: ${({ theme }) => theme.colors.failure};
 `
 
+const StyledOutlineButton = styled(Button)`
+  background-color: transparent !important;
+`
+
 export const SubmitAction = () => {
   const { t } = useTranslation()
   const { chainId, account } = useActiveWeb3React()
@@ -178,7 +182,7 @@ export const SubmitAction = () => {
                   {t('Move to the drafts')}
                 </Button>
               ) : (
-                <Button
+                <StyledOutlineButton
                   mb="8px"
                   width="100%"
                   variant="secondary"
@@ -189,7 +193,7 @@ export const SubmitAction = () => {
                   onClick={() => setOpenModal(true)}
                 >
                   {t('Save and schedule')}
-                </Button>
+                </StyledOutlineButton>
               )}
             </>
             <Button
