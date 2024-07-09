@@ -63,6 +63,7 @@ import {
   getV3MigratorContract,
   getVCakeContract,
   getVeCakeContract,
+  getZksyncAirDropContract,
 } from 'utils/contractHelpers'
 
 import { ChainId } from '@pancakeswap/chains'
@@ -351,6 +352,11 @@ export function useBCakeFarmWrapperBoosterVeCakeContract() {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(() => getBCakeFarmWrapperBoosterVeCakeContract(signer ?? undefined, chainId), [signer, chainId])
+}
+
+export const useZksyncAirDropContract = () => {
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getZksyncAirDropContract(signer ?? undefined, ChainId.ZKSYNC), [signer])
 }
 
 export function usePositionManagerWrapperContract(address: Address) {

@@ -12,6 +12,7 @@ import MerklNotice from "./components/MerklNotice";
 
 export { NetworkFilter } from "./components/NetworkFilter";
 export { TokenFilter } from "./components/TokenFilter";
+export { PoolsTypeFilter } from "./components/PoolsTypeFilter";
 
 export {
   FarmTabButtons,

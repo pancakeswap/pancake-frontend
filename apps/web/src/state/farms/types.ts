@@ -7,3 +7,7 @@ export interface V3FarmWithoutStakedValue extends FarmV3DataWithPriceAndUserInfo
 export interface V2FarmWithoutStakedValue extends DeserializedFarm {
   version: 2
 }
+
+export interface V3Farm extends V3FarmWithoutStakedValue {
+  version: 3
+}

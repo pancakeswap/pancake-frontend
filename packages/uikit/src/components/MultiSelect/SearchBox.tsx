@@ -1,12 +1,18 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
-import { IOptionType } from "./types";
+import { useTheme } from "@pancakeswap/hooks";
+import { IOptionType, ISelectItem } from "./types";
 import { Box } from "../Box";
+import { CrossIcon } from "../Svg";
 
 export const BORDER_RADIUS = "16px";
 
 const StyledBox = styled(Box)`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+  background-color: ${({ theme }) => theme.colors.input};
   border-radius: ${BORDER_RADIUS};
   line-height: 24px;
   margin: 16px;
@@ -77,38 +83,60 @@ const AdaptiveInput = forwardRef<IAdaptiveInputForwardProps, IAdaptiveInputProps
 });
 
 const SelectedLabel = styled.span`
-  display: inline-block;
-  margin: 2px;
-  padding: 2px 8px;
+  display: inline-flex;
+  padding: 2px;
   border-radius: ${BORDER_RADIUS};
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
   background-color: ${({ theme }) => theme.colors.textSubtle};
-  color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.card.background};
+  gap: 4px;
+`;
+
+const ItemIcon = styled.img`
+  width: 24px;
+  height: 24px;
 `;
 
 export interface ISearchBoxProps {
   selectedItems: IOptionType;
   onFilter?: (text: string) => void;
+  handleLabelDelete: (item: ISelectItem) => void;
 }
 
-export const SearchBox = forwardRef<IAdaptiveInputForwardProps, ISearchBoxProps>(({ onFilter, selectedItems }, ref) => {
-  const inputRef = useRef<IAdaptiveInputForwardProps>(null);
+export const SearchBox = forwardRef<IAdaptiveInputForwardProps, ISearchBoxProps>(
+  ({ onFilter, selectedItems, handleLabelDelete }, ref) => {
+    const inputRef = useRef<IAdaptiveInputForwardProps>(null);
+    const { theme } = useTheme();
 
-  useImperativeHandle(ref, () => ({
-    clear() {
-      inputRef.current?.clear();
-    },
-    focus() {
-      inputRef.current?.focus();
-    },
-  }));
+    useImperativeHandle(ref, () => ({
+      clear() {
+        inputRef.current?.clear();
+      },
+      focus() {
+        inputRef.current?.focus();
+      },
+    }));
 
-  return (
-    <StyledBox onClick={() => inputRef.current?.focus()}>
-      {selectedItems?.map((item) => (
-        <SelectedLabel>{item.label}</SelectedLabel>
-      ))}
-      <AdaptiveInput ref={inputRef} onChange={onFilter} />
-    </StyledBox>
-  );
-});
+    const handleCrossIconClick = useCallback(
+      (e: React.MouseEvent<HTMLOrSVGElement>, item: ISelectItem) => {
+        // prevent bubble to StyledBox
+        e.stopPropagation();
+        handleLabelDelete(item);
+      },
+      [handleLabelDelete]
+    );
+
+    return (
+      <StyledBox onClick={() => inputRef.current?.focus()}>
+        {selectedItems?.map((item) => (
+          <SelectedLabel>
+            {item.icon ? <ItemIcon alt={item.label} src={item.icon} /> : null}
+            <span>{item.label}</span>
+            <CrossIcon color={theme.card.background} onClick={(e) => handleCrossIconClick(e, item)} />
+          </SelectedLabel>
+        ))}
+        <AdaptiveInput ref={inputRef} onChange={onFilter} />
+      </StyledBox>
+    );
+  }
+);

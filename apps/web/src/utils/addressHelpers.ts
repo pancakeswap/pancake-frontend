@@ -4,6 +4,7 @@ import {
   bCakeFarmBoosterV3VeCakeAddress,
   bCakeFarmWrapperBoosterVeCakeAddress,
 } from '@pancakeswap/farms/constants/v3'
+
 import addresses from 'config/constants/contracts'
 import { VaultKey } from 'state/types'
 import { Address } from 'viem'
@@ -117,6 +118,10 @@ export const getBCakeFarmWrapperBoosterVeCakeAddress = (chainId?: number) => {
 
 export const getBCakeFarmBoosterProxyFactoryAddress = () => {
   return getAddressFromMap(addresses.bCakeFarmBoosterProxyFactory)
+}
+
+export const getZkSyncAirDropAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.zkSyncAirDrop, chainId)
 }
 
 export const getNonBscVaultAddress = (chainId?: number) => {

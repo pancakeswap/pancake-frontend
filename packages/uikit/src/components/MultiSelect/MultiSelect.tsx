@@ -8,6 +8,7 @@ import { Checkbox } from "../Checkbox";
 import { Column } from "../Column";
 import { BORDER_RADIUS, IAdaptiveInputForwardProps, SearchBox } from "./SearchBox";
 import { IMultiSelectProps, ISelectItem } from "./types";
+import { EmptyMessage } from "./EmptyMessage";
 
 const CHECKBOX_WIDTH = "26px";
 
@@ -26,7 +27,7 @@ const SelectContainer = styled.div`
 
   .p-multiselect-panel {
     min-width: auto;
-    border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+    border: 1px solid ${({ theme }) => theme.colors.cardBorder};
     box-shadow: 0 0 3px ${({ theme }) => theme.shadows.inset};
     border-radius: ${BORDER_RADIUS};
   }
@@ -39,6 +40,11 @@ const SelectContainer = styled.div`
   }
 
   .p-multiselect-empty-message {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     list-style-type: none;
     text-align: center;
     padding: 10px;
@@ -55,6 +61,14 @@ const SelectContainer = styled.div`
     }
   }
 
+  .p-multiselect-footer {
+    padding: 8px 16px;
+    text-align: center;
+    line-height: 24px;
+    font-size: 12px;
+    border-top: 1px solid var(--colors-cardBorder);
+  }
+
   .p-checkbox {
     position: relative;
     display: inline-flex;
@@ -69,13 +83,13 @@ const SelectContainer = styled.div`
       width: ${CHECKBOX_WIDTH};
       height: ${CHECKBOX_WIDTH};
       border-radius: 8px;
-      background-color: ${({ theme }) => theme.card.background};
+      background-color: ${({ theme }) => theme.colors.input};
     }
 
     &.p-highlight {
       .p-checkbox-box {
-        border-color: ${({ theme }) => theme.colors.primary};
-        background-color: ${({ theme }) => theme.colors.primary};
+        border-color: ${({ theme }) => theme.colors.success};
+        background-color: ${({ theme }) => theme.colors.success};
       }
 
       .p-checkbox-icon.p-icon {
@@ -85,10 +99,10 @@ const SelectContainer = styled.div`
         right: 0;
         margin: auto;
         transform: translateY(-50%);
-        color: ${({ theme }) => theme.colors.white};
+        color: ${({ theme }) => theme.colors.backgroundAlt};
         
         path {
-          stroke: ${({ theme }) => theme.colors.white};
+          stroke: ${({ theme }) => theme.colors.backgroundAlt};
           stroke-width: 1;
         }
       }
@@ -110,6 +124,16 @@ const SelectContainer = styled.div`
     }
   }
 }
+`;
+
+const PrimereactSelectContainer = styled.div<{ scrollHeight?: string }>`
+  .p-multiselect-items-wrapper {
+    border-top: 1px solid var(--colors-cardBorder);
+    height: ${({ scrollHeight }) => scrollHeight ?? "auto"};
+  }
+  .p-multiselect-items {
+    height: 100%;
+  }
 `;
 
 const ItemIcon = styled.img`
@@ -201,22 +225,38 @@ export const MultiSelect = (props: IMultiSelectProps) => {
     }
   }, [selectAll, options]);
 
-  const handleFilter = (text: string) => {
+  const handleFilter = useCallback((text: string) => {
     setSearchText(text);
-  };
+  }, []);
+
+  const handleLabelDelete = useCallback(
+    (item: ISelectItem) => {
+      if (!selectedItems?.length) {
+        return;
+      }
+      setSelectedItems(selectedItems.filter((i) => i !== item.value));
+    },
+    [selectedItems]
+  );
 
   const panelHeaderTemplate = useMemo(
     () => (
       <>
-        {isFilter && <SearchBox selectedItems={selectedOptions} ref={searchInputRef} onFilter={handleFilter} />}
+        {isFilter && (
+          <SearchBox
+            selectedItems={selectedOptions}
+            ref={searchInputRef}
+            onFilter={handleFilter}
+            handleLabelDelete={handleLabelDelete}
+          />
+        )}
         {isSelectAll && (
           <Box className="p-multiselect-item" onClick={handleSelectAll}>
             <span>{selectAllLabel ?? "Select All"}</span>
             <Checkbox
               scale={CHECKBOX_WIDTH}
               colors={{
-                background: "backgroundAlt",
-                checkedBackground: "primary",
+                background: "input",
                 border: "inputSecondary",
               }}
               style={{ margin: 0 }}
@@ -228,7 +268,17 @@ export const MultiSelect = (props: IMultiSelectProps) => {
         )}
       </>
     ),
-    [handleSelectAll, indeterminate, selectAll, selectAllLabel, selectedOptions, isFilter, isSelectAll]
+    [
+      handleSelectAll,
+      indeterminate,
+      selectAll,
+      selectAllLabel,
+      selectedOptions,
+      isFilter,
+      isSelectAll,
+      handleFilter,
+      handleLabelDelete,
+    ]
   );
 
   const handleChange = useCallback(
@@ -290,29 +340,31 @@ export const MultiSelect = (props: IMultiSelectProps) => {
         </Column>
       </SelectInputContainer>
 
-      <PrimereactSelect
-        {...props}
-        ref={primereactSelectRef}
-        style={{
-          width: style?.width ?? "auto",
-        }}
-        panelStyle={{
-          ...(panelStyle ?? {}),
-          width: panelStyle?.width ?? style?.width ?? "auto",
-          backgroundColor: panelStyle?.backgroundColor ?? theme.theme.colors.background,
-        }}
-        appendTo={props.appendTo ?? "self"}
-        value={value ?? selectedItems}
-        options={list}
-        placeholder={placeholder ?? "Select Something"}
-        itemTemplate={props.itemTemplate ?? itemTemplate}
-        panelHeaderTemplate={props.panelHeaderTemplate ?? panelHeaderTemplate}
-        emptyMessage={props.emptyMessage ?? "No data"}
-        onChange={handleChange}
-        onShow={handleShow}
-        onHide={handleHide}
-        onKeyDown={() => {}}
-      />
+      <PrimereactSelectContainer scrollHeight={props.scrollHeight}>
+        <PrimereactSelect
+          {...props}
+          ref={primereactSelectRef}
+          style={{
+            width: style?.width ?? "auto",
+          }}
+          panelStyle={{
+            ...(panelStyle ?? {}),
+            width: panelStyle?.width ?? style?.width ?? "auto",
+            backgroundColor: panelStyle?.backgroundColor ?? theme.theme.card.background,
+          }}
+          appendTo={props.appendTo ?? "self"}
+          value={value ?? selectedItems}
+          options={list}
+          placeholder={placeholder ?? "Select Something"}
+          itemTemplate={props.itemTemplate ?? itemTemplate}
+          panelHeaderTemplate={props.panelHeaderTemplate ?? panelHeaderTemplate}
+          emptyMessage={props.emptyMessage ?? ((<EmptyMessage />) as unknown as string)}
+          onChange={handleChange}
+          onShow={handleShow}
+          onHide={handleHide}
+          onKeyDown={() => {}}
+        />
+      </PrimereactSelectContainer>
     </SelectContainer>
   );
 };

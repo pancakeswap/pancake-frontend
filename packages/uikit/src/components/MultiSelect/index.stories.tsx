@@ -38,12 +38,16 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
         <Title>MultiSelect with filter:</Title>
         <MultiSelect
           style={{
-            width: "273px",
+            width: "328px",
           }}
-          scrollHeight="400px"
+          panelStyle={{
+            minHeight: "382px",
+          }}
+          scrollHeight="382px"
           options={chains}
           defaultValue={[chains[0].value, chains[2].value]}
           isFilter
+          panelFooterTemplate={() => <span>Don’t see expected tokens?</span>}
         />
       </Column>
       <Column>
