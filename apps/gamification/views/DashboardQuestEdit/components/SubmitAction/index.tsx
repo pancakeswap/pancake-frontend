@@ -32,7 +32,7 @@ export const SubmitAction = () => {
   const { t } = useTranslation()
   const { chainId, account } = useActiveWeb3React()
   const { query, push } = useRouter()
-  const { toastSuccess } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const { state, tasks, isChanged } = useQuestEdit()
   const [openModal, setOpenModal] = useState(false)
   const [isSubmitError, setIsSubmitError] = useState(false)
@@ -67,8 +67,14 @@ export const SubmitAction = () => {
 
       const apiChainId = isCreate ? chainId : state.chainId
       const { startDate, startTime, endDate, endTime } = state
-      const startDateTime = startDate && startTime ? combineDateAndTime(startDate, startTime) : 0
-      const endDateTime = endDate && endTime ? combineDateAndTime(endDate, endTime) : 0
+      const startDateTime = startDate && startTime ? combineDateAndTime(startDate, startTime) ?? 0 : 0
+      const endDateTime = endDate && endTime ? combineDateAndTime(endDate, endTime) ?? 0 : 0
+
+      if (startDateTime > 0 && endDateTime > 0 && startDateTime > endDateTime) {
+        setOpenModal(false)
+        toastError(t('The end time must be longer than the start time.'))
+        return undefined
+      }
 
       const response = await fetch(url, {
         method,
