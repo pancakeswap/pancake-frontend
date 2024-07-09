@@ -9,7 +9,7 @@ import { useGetBufferSeconds } from 'state/predictions/hooks'
 import { NodeLedger, NodeRound } from 'state/types'
 import styled from 'styled-components'
 import { getNowInSeconds } from 'utils/getNowInSeconds'
-import { usePredictionPrice, usePredictionPriceMutation } from 'views/Predictions/hooks/usePredictionPrice'
+import { usePredictionPrice, usePredictionPriceUpdate } from 'views/Predictions/hooks/usePredictionPrice'
 import { useConfig } from '../../../context/ConfigProvider'
 import PositionTag from '../../PositionTag'
 import { LockPriceRow, PrizePoolRow, RoundResultBox } from '../../RoundResult'
@@ -60,7 +60,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
   } = usePredictionPrice({
     currencyA: config?.token.symbol,
   })
-  const { mutateAsync } = usePredictionPriceMutation()
+  const { updatePriceFromSource } = usePredictionPriceUpdate()
 
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
 
@@ -111,7 +111,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
     const secondsToClose = closeTimestamp ? closeTimestamp - getNowInSeconds() : 0
     if (secondsToClose > 0) {
       const refreshPriceTimeout = setTimeout(() => {
-        mutateAsync({
+        updatePriceFromSource({
           currencyA: config?.token.symbol,
         })
       }, (secondsToClose - REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE) * 1000)
@@ -126,7 +126,7 @@ export const AILiveRoundCard: React.FC<React.PropsWithChildren<AILiveRoundCardPr
       }
     }
     return undefined
-  }, [closeTimestamp, config?.token.symbol, mutateAsync])
+  }, [closeTimestamp, config?.token.symbol, updatePriceFromSource])
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
