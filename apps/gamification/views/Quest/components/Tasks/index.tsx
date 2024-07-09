@@ -83,7 +83,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
         <Text fontSize={['24px']} bold mr="8px">
           {t('Tasks')}
         </Text>
-        {tasks && (
+        {tasks?.length > 0 && (
           <Box style={{ alignSelf: 'center' }}>
             {account ? (
               <>
@@ -108,7 +108,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
           </Box>
         )}
       </Flex>
-      {tasks?.length && (
+      {tasks?.length > 0 && (
         <Box position="relative">
           <FlexGap flexDirection="column" gap="12px">
             {tasks?.map((task) => (
