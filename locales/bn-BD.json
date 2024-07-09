@@ -3465,5 +3465,20 @@
   "in rewards and up to 100% Fund Protection.": "in rewards and up to 100% Fund Protection.",
   "Predict ETH Price on Arbitrum & Win": "Predict ETH Price on Arbitrum & Win",
   "60,000 $ARB": "60,000 $ARB",
-  "Reward!": "Reward!"
+  "Reward!": "Reward!",
+  "%amount% %token% available to claim!": "%amount% %token% available to claim!",
+  "AirDrop Claimed!": "AirDrop Claimed!",
+  "ZK AirDrop Claimed": "ZK AirDrop Claimed",
+  "AirDrop Claiming": "AirDrop Claiming",
+  "%amount% %token% claimed!": "%amount% %token% claimed!",
+  "GAS FREE": "GAS FREE",
+  "You have successfully claimed from the ZKsync token airdrop campaign!": "You have successfully claimed from the ZKsync token airdrop campaign!",
+  "Congratulations! You are eligible to claim from the ZKsync token airdrop campaign!": "Congratulations! You are eligible to claim from the ZKsync token airdrop campaign!",
+  "Unfortunately, the connected wallet %account% is not eligible for the airdrop campaign.": "Unfortunately, the connected wallet %account% is not eligible for the airdrop campaign.",
+  "Learn more about the campaign": "Learn more about the campaign",
+  "Switch network to ZKsync for claiming": "Switch network to ZKsync for claiming",
+  "Claim Your $ZK Airdrop Rewards!": "Claim Your $ZK Airdrop Rewards!",
+  "2.4 Million $ZK available to claim": "2.4 Million $ZK available to claim",
+  "Check Eligibility": "Check Eligibility",
+  "Check": "Check"
 }
