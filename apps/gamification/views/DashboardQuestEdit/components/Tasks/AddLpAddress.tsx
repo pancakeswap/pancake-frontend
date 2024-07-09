@@ -13,7 +13,7 @@ import { TaskLiquidityConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
-import { validateLpAddress, validateNumber } from 'views/DashboardQuestEdit/utils/validateFormat'
+import { validateLpAddress, validateNumber, validateUrl } from 'views/DashboardQuestEdit/utils/validateFormat'
 
 const StyleSelector = styled(Button)`
   position: absolute;
@@ -38,6 +38,8 @@ interface AddLpAddressProps {
   task: TaskLiquidityConfig
 }
 
+type SocialKeyType = 'title' | 'description' | 'minAmount' | 'lpAddressLink'
+
 export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
@@ -60,12 +62,12 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
-  const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, socialKeyType: SocialKeyType) => {
     setIsFirst(false)
 
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskLiquidityConfig) => i.sid === task.sid)
-    forkTasks[indexToUpdate].minAmount = e.target.value
+    forkTasks[indexToUpdate][socialKeyType] = e.target.value
 
     onTasksChange([...forkTasks])
   }
@@ -90,6 +92,7 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
 
   const isMinAmountError = useMemo(() => !isFirst && validateNumber(task.minAmount), [isFirst, task?.minAmount])
   const isLpAddressError = useMemo(() => !isFirst && validateLpAddress(task.lpAddress), [isFirst, task?.lpAddress])
+  const isLpAddressUrlError = useMemo(() => !isFirst && validateUrl(task.lpAddressLink), [isFirst, task?.lpAddressLink])
 
   return (
     <Flex flexDirection={['column']}>
@@ -127,13 +130,40 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
               <StyledInput
                 isError={isLpAddressError}
                 value={task.lpAddress}
-                placeholder={t('LP address link')}
+                placeholder={t('LP address')}
                 pattern="^(0x[a-fA-F0-9]{40})$"
                 onChange={handleLpAddressChange}
               />
             </StyledInputGroup>
           </Flex>
-          {isLpAddressError && <InputErrorText errorText={t('This is not an LP address link')} />}
+          {isLpAddressError && <InputErrorText errorText={t('This is not an LP address')} />}
+        </Flex>
+        <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
+          <StyledInputGroup>
+            <StyledInput placeholder={t('Title')} value={task.title} onChange={(e) => handleInputChange(e, 'title')} />
+          </StyledInputGroup>
+        </Flex>
+        <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
+          <StyledInputGroup>
+            <StyledInput
+              placeholder={t('Description (Optional)')}
+              value={task.description}
+              onChange={(e) => handleInputChange(e, 'description')}
+            />
+          </StyledInputGroup>
+        </Flex>
+        <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
+          <StyledInputGroup
+            endIcon={isLpAddressUrlError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+          >
+            <StyledInput
+              placeholder={t('Lp Address Link')}
+              isError={isLpAddressUrlError}
+              value={task.lpAddressLink}
+              onChange={(e) => handleInputChange(e, 'lpAddressLink')}
+            />
+          </StyledInputGroup>
+          {isLpAddressUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
         </Flex>
         <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
           <StyledInputGroup
@@ -143,7 +173,7 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
               value={task.minAmount}
               isError={isMinAmountError}
               placeholder={t('Min. amount in $')}
-              onChange={handleTotalChange}
+              onChange={(e) => handleInputChange(e, 'minAmount')}
             />
           </StyledInputGroup>
           {isMinAmountError && <InputErrorText errorText={t('Cannot be 0')} />}

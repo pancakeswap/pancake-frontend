@@ -54,6 +54,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         lpAddress: '',
         orderNumber: 0,
         isOptional: false,
+        lpAddressLink: '',
       }
     case TaskType.VISIT_BLOG_POST:
       return {

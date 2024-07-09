@@ -60,6 +60,7 @@ export interface TaskLiquidityConfig extends TaskBaseConfig {
   network: ChainId
   minAmount: string
   lpAddress: string
+  lpAddressLink: string
 }
 
 export interface TaskSocialConfig extends TaskBaseConfig {

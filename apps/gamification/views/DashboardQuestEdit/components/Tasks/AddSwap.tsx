@@ -116,19 +116,24 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
       </Flex>
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flexDirection="column">
-          <Flex>
-            <Flex position="relative" paddingRight="45px" onClick={onPresentCurrencyModal}>
-              <TokenWithChain width={32} height={32} currency={selectedCurrency} />
-              <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
+          <Flex flexDirection="column">
+            <Flex>
+              <Flex position="relative" paddingRight="45px" onClick={onPresentCurrencyModal}>
+                <TokenWithChain width={32} height={32} currency={selectedCurrency} />
+                <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
+              </Flex>
+              <StyledInputGroup
+                endIcon={isError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+              >
+                <StyledInput
+                  isError={isError}
+                  value={task.minAmount}
+                  placeholder={t('Min. amount in $')}
+                  onChange={(e) => handleInputChange(e, 'minAmount')}
+                />
+              </StyledInputGroup>
             </Flex>
-            <StyledInputGroup endIcon={isError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>
-              <StyledInput
-                isError={isError}
-                value={task.minAmount}
-                placeholder={t('Min. amount in $')}
-                onChange={(e) => handleInputChange(e, 'minAmount')}
-              />
-            </StyledInputGroup>
+            {isError && <InputErrorText errorText={t('Cannot be 0')} />}
           </Flex>
           <FlexGap gap="8px" flexDirection="column" mt="8px">
             <InputGroup>
@@ -146,7 +151,6 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
               onChange={(e) => handleInputChange(e, 'description')}
             />
           </FlexGap>
-          {isError && <InputErrorText errorText={t('Cannot be 0')} />}
         </Flex>
       </Flex>
     </Flex>

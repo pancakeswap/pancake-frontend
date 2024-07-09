@@ -22,7 +22,8 @@ export const verifyTask = (task: TaskConfigType) => {
     case TaskType.ADD_LIQUIDITY:
       return (
         !validateLpAddress((task as TaskLiquidityConfig).lpAddress) &&
-        !validateNumber((task as TaskSwapConfig | TaskHoldTokenConfig).minAmount)
+        !validateNumber((task as TaskLiquidityConfig).minAmount) &&
+        !validateUrl((task as TaskLiquidityConfig).lpAddressLink)
       )
     case TaskType.VISIT_BLOG_POST:
       return !validateIsNotEmpty((task as TaskBlogPostConfig).blogUrl)
