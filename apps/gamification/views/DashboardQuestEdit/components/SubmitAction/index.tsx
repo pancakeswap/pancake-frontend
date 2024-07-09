@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  Box,
   Button,
   CalenderIcon,
   DeleteOutlineIcon,
@@ -57,6 +58,7 @@ export const SubmitAction = () => {
       }
     }
   }
+  console.log(state?.reward)
 
   const [onPresentDeleteModal] = useModal(
     <LongPressDeleteModal targetTitle={t('quest')} handleDelete={handleClickDelete} />,
@@ -209,10 +211,32 @@ export const SubmitAction = () => {
           </>
         )}
 
-      {isAbleToSchedule && completionStatusToString === CompletionStatus.DRAFTED && (
-        <Message variant="success" mt={['16px']}>
-          <MessageText>{t('You have everything ready to be scheduled!')}</MessageText>
-        </Message>
+      {completionStatusToString === CompletionStatus.DRAFTED && (
+        <Box mt="16px">
+          {isAbleToSchedule ? (
+            <Message variant="success">
+              <MessageText>{t('You have everything ready to be scheduled!')}</MessageText>
+            </Message>
+          ) : (
+            <Message variant="primary">
+              <MessageText>
+                {t('To fill the page:')}
+                <ul>
+                  {validateIsNotEmpty(state.title) && <li>{t('Enter title')}</li>}
+                  {validateIsNotEmpty(state.description) && <li>{t('Enter description')}</li>}
+                  {(!state.startDate || !state.startTime || !state.endDate || !state.endTime) && (
+                    <li>{t('Select timeline')}</li>
+                  )}
+                  {(state?.reward === undefined ||
+                    state?.reward?.amountOfWinners === 0 ||
+                    state?.reward?.totalRewardAmount === 0) && <li>{t('Add reward')}</li>}
+                  {tasks?.length === 0 && <li>{t('Add at least 1 task')}</li>}
+                  {tasks?.length > 0 && !isTaskValid && <li>{t('Fill all tasks')}</li>}
+                </ul>
+              </MessageText>
+            </Message>
+          )}
+        </Box>
       )}
     </Flex>
   )
