@@ -14,7 +14,6 @@ import {
   SingleQuestDataError,
   useGetSingleQuestData,
 } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
-import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { convertDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 
 const DashboardQuestEditContainer = styled(Flex)`
@@ -96,8 +95,8 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
         {!isDesktop && (
           <Reward
             reward={state.reward}
+            completionStatus={state.completionStatus}
             actionComponent={<SubmitAction />}
-            isFinished={state.completionStatus === CompletionStatus.FINISHED}
             updateValue={updateValue}
           />
         )}
@@ -107,7 +106,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
         <Reward
           reward={state.reward}
           actionComponent={<SubmitAction />}
-          isFinished={state.completionStatus === CompletionStatus.FINISHED}
+          completionStatus={state.completionStatus}
           updateValue={updateValue}
         />
       )}

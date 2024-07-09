@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
-import { Button, ChevronDownIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
+import { Button, ChevronDownIcon, ErrorFillIcon, Flex, FlexGap, InputGroup, Text, useModal } from '@pancakeswap/uikit'
 import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
@@ -30,6 +30,8 @@ interface AddSwapProps {
   task: TaskSwapConfig
 }
 
+type SocialKeyType = 'description' | 'minAmount'
+
 export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
@@ -46,10 +48,11 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
       const indexToUpdate = forkTasks.findIndex((i: TaskSwapConfig) => i.sid === task.sid)
       forkTasks[indexToUpdate].network = currency.chainId
       forkTasks[indexToUpdate].tokenAddress = currency.isNative ? currency.wrapped.address : currency.address
+      forkTasks[indexToUpdate].title = `Make a swap at least ${task?.minAmount ?? 0} USD of ${currency?.symbol}`
 
       onTasksChange([...forkTasks])
     },
-    [onTasksChange, task.sid, tasks],
+    [onTasksChange, task, tasks],
   )
 
   const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(task?.network as ChainId)
@@ -67,12 +70,18 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
     <CurrencySearchModal selectedCurrency={selectedCurrency} onCurrencySelect={handleCurrencySelect} />,
   )
 
-  const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, socialKeyType: SocialKeyType) => {
     setIsFirst(false)
 
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskSwapConfig) => i.sid === task.sid)
-    forkTasks[indexToUpdate].minAmount = e.target.value
+
+    forkTasks[indexToUpdate][socialKeyType] = e.target.value
+    if (socialKeyType === 'minAmount') {
+      forkTasks[indexToUpdate].title = `Make a swap at least ${e?.target?.value ?? 0} USD of ${
+        selectedCurrency?.symbol
+      }`
+    }
 
     onTasksChange([...forkTasks])
   }
@@ -117,10 +126,21 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
                 isError={isError}
                 value={task.minAmount}
                 placeholder={t('Min. amount in $')}
-                onChange={handleTotalChange}
+                onChange={(e) => handleInputChange(e, 'minAmount')}
               />
             </StyledInputGroup>
           </Flex>
+          <FlexGap gap="8px" flexDirection="column" mt="8px">
+            <InputGroup>
+              <StyledInput disabled placeholder={t('Title')} value={task.title} style={{ borderRadius: '24px' }} />
+            </InputGroup>
+            <StyledInput
+              placeholder={t('Description (Optional)')}
+              value={task.description}
+              style={{ borderRadius: '24px' }}
+              onChange={(e) => handleInputChange(e, 'description')}
+            />
+          </FlexGap>
           {isError && <InputErrorText errorText={t('Cannot be 0')} />}
         </Flex>
       </Flex>

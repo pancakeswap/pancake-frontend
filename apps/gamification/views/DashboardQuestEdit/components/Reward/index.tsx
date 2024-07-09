@@ -1,12 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { Box, Card, Text } from '@pancakeswap/uikit'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { AddReward } from 'views/DashboardQuestEdit/components/Reward/AddReward'
 import { RewardAmount } from 'views/DashboardQuestEdit/components/Reward/RewardAmount'
 import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
-import { RewardType } from 'views/DashboardQuestEdit/type'
+import { CompletionStatus, RewardType } from 'views/DashboardQuestEdit/type'
 
 const RewardContainer = styled(Box)`
   width: 100%;
@@ -21,13 +21,13 @@ const RewardContainer = styled(Box)`
 `
 
 interface RewardProps {
-  isFinished: boolean
   reward: undefined | QuestRewardType
+  completionStatus: CompletionStatus
   actionComponent?: JSX.Element
   updateValue: (key: string, value: string | QuestRewardType) => void
 }
 
-export const Reward: React.FC<RewardProps> = ({ reward, isFinished, actionComponent, updateValue }) => {
+export const Reward: React.FC<RewardProps> = ({ reward, completionStatus, actionComponent, updateValue }) => {
   const { t } = useTranslation()
 
   const handlePickedRewardToken = (currency: Currency, totalRewardAmount: number, amountOfWinners: number) => {
@@ -73,6 +73,8 @@ export const Reward: React.FC<RewardProps> = ({ reward, isFinished, actionCompon
     [reward, updateValue],
   )
 
+  const isFinished = useMemo(() => completionStatus === CompletionStatus.FINISHED, [completionStatus])
+
   return (
     <RewardContainer>
       <Card>
@@ -84,6 +86,7 @@ export const Reward: React.FC<RewardProps> = ({ reward, isFinished, actionCompon
             <RewardAmount
               reward={reward}
               isFinished={isFinished}
+              completionStatus={completionStatus}
               amountOfWinners={reward?.amountOfWinners}
               handleInput={handleInput}
               handlePickedRewardToken={handlePickedRewardToken}

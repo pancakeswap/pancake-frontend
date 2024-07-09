@@ -1,5 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, CalenderIcon, DeleteOutlineIcon, Flex, PencilIcon, useModal, useToast } from '@pancakeswap/uikit'
+import {
+  Button,
+  CalenderIcon,
+  DeleteOutlineIcon,
+  Flex,
+  Message,
+  MessageText,
+  PencilIcon,
+  useModal,
+  useToast,
+} from '@pancakeswap/uikit'
 import { useQueryClient } from '@tanstack/react-query'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
@@ -184,6 +194,12 @@ export const SubmitAction = () => {
             </Button>
           </>
         )}
+
+      {isAbleToSchedule && (
+        <Message variant="success" mt={['16px']}>
+          <MessageText>{t('You have everything ready to be scheduled!')}</MessageText>
+        </Message>
+      )}
     </Flex>
   )
 }

@@ -10,6 +10,7 @@ import { styled } from 'styled-components'
 import { AddRewardModal } from 'views/DashboardQuestEdit/components/Reward/AddRewardModal'
 import { WithdrawRewardModal } from 'views/DashboardQuestEdit/components/Reward/WithdrawRewardModal'
 import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
+import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 
 const RewardContainer = styled(Flex)`
   flex-direction: column;
@@ -21,6 +22,7 @@ const RewardContainer = styled(Flex)`
 interface RewardAmountProps {
   reward: undefined | QuestRewardType
   isFinished: boolean
+  completionStatus: CompletionStatus
   amountOfWinners: number
   handleInput: (amount: number) => void
   handlePickedRewardToken: (value: Currency, totalRewardAmount: number, amountOfWinnersInModal: number) => void
@@ -28,6 +30,7 @@ interface RewardAmountProps {
 
 export const RewardAmount: React.FC<RewardAmountProps> = ({
   reward,
+  completionStatus,
   isFinished,
   amountOfWinners,
   handleInput,
@@ -61,10 +64,17 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({
     'add-reward-modal',
   )
 
+  const openRewardModal = () => {
+    const status = completionStatus.toString()
+    if (status === CompletionStatus.DRAFTED || status === CompletionStatus.SCHEDULED) {
+      onPresentAddRewardModal()
+    }
+  }
+
   return (
     <Box>
       <RewardContainer>
-        <Box style={{ cursor: 'pointer' }} onClick={onPresentAddRewardModal}>
+        <Box style={{ cursor: 'pointer' }} onClick={openRewardModal}>
           <Box margin="auto" width="64px">
             <TokenWithChain currency={token} width={64} height={64} />
           </Box>
