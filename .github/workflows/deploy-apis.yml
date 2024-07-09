@@ -36,7 +36,7 @@ jobs:
           fetch-depth: 2
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v2.2.4
+        uses: pnpm/action-setup@v4
       - name: Set up node@18
         uses: actions/setup-node@v3
         with:

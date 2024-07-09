@@ -4,7 +4,7 @@
   "version": {
     "major": 1,
     "minor": 0,
-    "patch": 0
+    "patch": 1
   },
   "tags": {},
   "logoURI": "ipfs://QmNa8mQkrNKp1WEEeGjFezDmDeodkWRevGFN8JCV7b4Xir",
@@ -16,6 +16,13 @@
       "address": "0xB1A1D06d42A43a8FCfDC7FDcd744f7eF03e8ad1a",
       "chainId": 56,
       "decimals": 18
+    },
+    {
+      "name": "invesco",
+      "symbol": "iso",
+      "address": "0xa7192e74A09Ccae2284a5FbD71c983948A6075a6",
+      "chainId": 56,
+      "decimals": 9
     }
   ]
 }

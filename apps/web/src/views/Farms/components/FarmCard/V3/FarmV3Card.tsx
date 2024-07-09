@@ -7,6 +7,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMerklInfo } from 'hooks/useMerkl'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
+import { type V3Farm } from 'state/farms/types'
 import { multiChainPaths } from 'state/info/constant'
 import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
@@ -14,7 +15,6 @@ import { getMerklLink, useMerklUserLink } from 'utils/getMerklLink'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { isAddressEqual } from 'viem'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
-import { V3Farm } from 'views/Farms/FarmsV3'
 import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
 import { StatusView } from '../../YieldBooster/components/bCakeV3/StatusView'
 import { useUserBoostedPoolsTokenId } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
@@ -128,7 +128,14 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
             <TooltipText ref={aprTooltip.targetRef}>{t('APR')}:</TooltipText>
             {aprTooltip.tooltipVisible && aprTooltip.tooltip}
             <Text style={{ display: 'flex', alignItems: 'center' }}>
-              <FarmV3ApyButton farm={farm} />
+              <FarmV3ApyButton
+                farm={farm}
+                additionAprInfo={
+                  merklApr && merklLink
+                    ? { aprTitle: t('Merkl APR'), aprValue: merklApr, aprLink: merklLink }
+                    : undefined
+                }
+              />
             </Text>
           </Flex>
         )}

@@ -39,7 +39,7 @@ import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFarms, usePollFarmsAvgInfo, usePollFarmsWithUserData } from 'state/farms/hooks'
-import { V2FarmWithoutStakedValue, V3FarmWithoutStakedValue } from 'state/farms/types'
+import { V2FarmWithoutStakedValue, V3FarmWithoutStakedValue, type V3Farm } from 'state/farms/types'
 import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
 import { useCakeVaultUserData } from 'state/pools/hooks'
 import { ViewMode } from 'state/user/actions'
@@ -164,10 +164,6 @@ const FinishedTextLink = styled(Link)`
 `
 
 const NUMBER_OF_FARMS_VISIBLE = 12
-
-export interface V3Farm extends V3FarmWithoutStakedValue {
-  version: 3
-}
 
 export interface V2Farm extends FarmWithStakedValue {
   version: 2

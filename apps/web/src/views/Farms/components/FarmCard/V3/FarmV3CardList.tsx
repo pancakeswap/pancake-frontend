@@ -4,7 +4,7 @@ import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
 import { usePool } from 'hooks/v3/usePools'
 import partition_ from 'lodash/partition'
 import { useCallback } from 'react'
-import { V3Farm } from 'views/Farms/FarmsV3'
+import { type V3Farm } from 'state/farms/types'
 import SingleFarmV3Card from 'views/Farms/components/FarmCard/V3/SingleFarmV3Card'
 import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
 

@@ -1,4 +1,4 @@
-export const nonBscVaultABI = [
+export const crossFarmingVaultABI = [
   {
     inputs: [
       { internalType: 'address', name: '_operator', type: 'address' },

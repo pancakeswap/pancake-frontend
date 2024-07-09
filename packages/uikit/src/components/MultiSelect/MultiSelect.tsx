@@ -27,7 +27,7 @@ const SelectContainer = styled.div`
 
   .p-multiselect-panel {
     min-width: auto;
-    border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+    border: 1px solid ${({ theme }) => theme.colors.cardBorder};
     box-shadow: 0 0 3px ${({ theme }) => theme.shadows.inset};
     border-radius: ${BORDER_RADIUS};
   }

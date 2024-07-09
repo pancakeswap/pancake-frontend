@@ -13,6 +13,7 @@ export const zksyncTokens = {
     6,
     'USDC',
     'USD Coin (Native)',
+    'https://www.centre.io/usdc',
   ),
   tes: new ERC20Token(
     ChainId.ZKSYNC,
@@ -37,7 +38,7 @@ export const zksyncTokens = {
     18,
     'rETH',
     'Rocket Pool ETH',
-    'https://www.paxos.com/busd/',
+    'https://rocketpool.net/',
   ),
   usdPlus: new ERC20Token(
     ChainId.ZKSYNC,
@@ -45,7 +46,7 @@ export const zksyncTokens = {
     6,
     'USD+',
     'USD Plus',
-    'http://usdplus.co',
+    'https://overnight.fi/',
   ),
   wstETH: new ERC20Token(
     ChainId.ZKSYNC,

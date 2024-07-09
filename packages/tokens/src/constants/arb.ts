@@ -309,7 +309,7 @@ export const arbitrumTokens = {
     6,
     'TIA.n',
     'TIA',
-    ' https://celestia.org/',
+    'https://celestia.org/',
   ),
   woo: new ERC20Token(
     ChainId.ARBITRUM_ONE,
@@ -358,5 +358,13 @@ export const arbitrumTokens = {
     'SolvBTC',
     'Solv BTC',
     'https://solv.finance/',
+  ),
+  sqd: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x1337420dED5ADb9980CFc35f8f2B054ea86f8aB1',
+    18,
+    'SQD',
+    'Subsquid',
+    'https://subsquid.io/',
   ),
 }
