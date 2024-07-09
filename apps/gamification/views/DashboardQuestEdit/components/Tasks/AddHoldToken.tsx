@@ -30,7 +30,7 @@ interface AddHoldTokenProps {
   task: TaskHoldTokenConfig
 }
 
-type SocialKeyType = 'description' | 'minAmount'
+type SocialKeyType = 'title' | 'description' | 'minAmount'
 
 export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task }) => {
   const { t } = useTranslation()
@@ -129,7 +129,12 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task }) => {
           </Flex>
           <FlexGap gap="8px" flexDirection="column" mt="8px">
             <InputGroup>
-              <StyledInput disabled placeholder={t('Title')} value={task.title} style={{ borderRadius: '24px' }} />
+              <StyledInput
+                placeholder={t('Title')}
+                value={task.title}
+                style={{ borderRadius: '24px' }}
+                onChange={(e) => handleInputChange(e, 'title')}
+              />
             </InputGroup>
             <StyledInput
               placeholder={t('Description (Optional)')}
