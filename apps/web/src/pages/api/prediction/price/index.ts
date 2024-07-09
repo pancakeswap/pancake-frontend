@@ -27,9 +27,9 @@ const handler: NextApiHandler = async (req, res) => {
       price: string
     } = await response.json()
 
-    res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate=10')
-    res.setHeader('Vercel-CDN-Cache-Control', 'max-age=10')
-    res.setHeader('CDN-Cache-Control', 'max-age=10')
+    res.setHeader('Cache-Control', 's-maxage=5, stale-while-revalidate=5')
+    res.setHeader('Vercel-CDN-Cache-Control', 'max-age=5')
+    res.setHeader('CDN-Cache-Control', 'max-age=5')
 
     return res.status(response.status).json({
       currencyA,
