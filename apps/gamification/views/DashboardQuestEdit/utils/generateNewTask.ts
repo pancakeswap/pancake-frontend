@@ -46,7 +46,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
       return {
         sid: randomId,
         taskType,
-        title: 'Add liquidity',
+        title: '',
         description: '',
         isCompleted: false,
         network: DEFAULT_CHAIN,
