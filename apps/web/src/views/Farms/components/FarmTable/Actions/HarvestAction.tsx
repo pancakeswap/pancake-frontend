@@ -121,7 +121,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
 
   const onClickHarvestButton = useCallback(() => {
     if (vaultPid) {
-        onPresentCrossChainHarvestModal()
+      onPresentCrossChainHarvestModal()
     } else {
       handleHarvest()
     }

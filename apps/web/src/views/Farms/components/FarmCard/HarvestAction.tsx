@@ -97,7 +97,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
 
   const onClickHarvestButton = useCallback(() => {
     if (vaultPid) {
-        onPresentCrossChainHarvestModal()
+      onPresentCrossChainHarvestModal()
     } else {
       handleHarvest()
     }
