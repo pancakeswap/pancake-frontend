@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, FlexGap, Input, Text } from '@pancakeswap/uikit'
+import { Box, Card, CardBody, CardHeader, Flex, FlexGap, Heading, Input, ReactMarkdown, Text } from '@pancakeswap/uikit'
 import { DatePicker, DatePickerPortal, TimePicker } from 'components/DatePicker'
 import dynamic from 'next/dynamic'
 import React from 'react'
@@ -122,6 +122,21 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
           onTextChange={(value) => updateValue('description', value)}
         />
       </Box>
+
+      {description && (
+        <Box mb="24px">
+          <Card>
+            <CardHeader>
+              <Heading as="h3" scale="md">
+                {t('Preview')}
+              </Heading>
+            </CardHeader>
+            <CardBody p="0" px="24px">
+              <ReactMarkdown>{description}</ReactMarkdown>
+            </CardBody>
+          </Card>
+        </Box>
+      )}
     </FlexGap>
   )
 }
