@@ -20,4 +20,22 @@ export const staticThirdPartyNews: V4ArticleDataType[] = [
     location: 'London, UK',
     eventStartToEndTime: '15 Mar 2024 - 17 Mar 2024',
   },
+  {
+    id: -2,
+    title: 'ETHBrussels',
+    description:
+      'PancakeSwap is the official partner of ETHGlobal Brussel 2024, hosting a hackathon with $20,000 in prizes.',
+    createAt: '2024-07-1',
+    categories: [],
+    content: '',
+    gamesCategories: [],
+    imgUrl: `${ASSET_CDN}/web/v4-landing/ethbrussels-thumbnail.jpeg`,
+    locale: 'en',
+    newsFromPlatform: 'ETHGlobal',
+    newsOutBoundLink: 'https://ethglobal.com/events/brussels/prizes/pancakeswap',
+    publishedAt: '2024-07-01T04:23:22.553Z',
+    slug: 'eth-global-brussels',
+    location: 'Brussels, Belgium',
+    eventStartToEndTime: '12 July 2024 - 14 July 2024',
+  },
 ]

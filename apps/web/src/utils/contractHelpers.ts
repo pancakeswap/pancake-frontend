@@ -24,7 +24,7 @@ import {
   getMasterChefV3Address,
   getNftMarketAddress,
   getNftSaleAddress,
-  getNonBscVaultAddress,
+  getCrossFarmingVaultAddress,
   getPancakeProfileAddress,
   getPancakeSquadAddress,
   getPancakeVeSenderV2Address,
@@ -46,6 +46,7 @@ import {
   getV3MigratorAddress,
   getVCakeAddress,
   getVeCakeAddress,
+  getZkSyncAirDropAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -53,7 +54,7 @@ import { predictionsV1ABI, predictionsV2ABI, predictionsV3ABI } from '@pancakesw
 import { crossFarmingProxyABI } from 'config/abi/crossFarmingProxy'
 import { crossFarmingSenderABI } from 'config/abi/crossFarmingSender'
 import { nftSaleABI } from 'config/abi/nftSale'
-import { nonBscVaultABI } from 'config/abi/nonBscVault'
+import { crossFarmingVaultABI } from 'config/abi/crossFarmingVault'
 import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
 import { stableSwapNativeHelperABI } from 'config/abi/stableSwapNativeHelper'
 
@@ -103,6 +104,7 @@ import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { v3MigratorABI } from 'config/abi/v3Migrator'
 import { vCakeABI } from 'config/abi/vCake'
 import { veCakeABI } from 'config/abi/veCake'
+import { zkSyncAirDropABI } from 'config/abi/zksyncAirdrop'
 import { getViemClients, viemClients } from 'utils/viem'
 import {
   Abi,
@@ -293,6 +295,15 @@ export const getBCakeFarmWrapperBoosterVeCakeContract = (signer?: WalletClient, 
   })
 }
 
+export const getZksyncAirDropContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: zkSyncAirDropABI,
+    address: getZkSyncAirDropAddress(chainId),
+    signer,
+    chainId,
+  })
+}
+
 export const getPositionManagerWrapperContract = (address: `0x${string}`, signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: positionManagerWrapperABI,
@@ -341,8 +352,8 @@ export const getBCakeProxyContract = (proxyContractAddress: Address, signer?: Wa
   return getContract({ abi: bCakeProxyABI, address: proxyContractAddress, signer })
 }
 
-export const getNonBscVaultContract = (signer?: WalletClient, chainId?: number) => {
-  return getContract({ abi: nonBscVaultABI, address: getNonBscVaultAddress(chainId), chainId, signer })
+export const getCrossFarmingVaultContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({ abi: crossFarmingVaultABI, address: getCrossFarmingVaultAddress(chainId), chainId, signer })
 }
 
 export const getSidContract = (address: Address, chainId: number) => {

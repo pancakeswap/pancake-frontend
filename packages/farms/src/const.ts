@@ -55,7 +55,7 @@ export const masterChefV3Addresses = {
   [ChainId.OPBNB_TESTNET]: '0x236e713bFF45adb30e25D1c29A887aBCb0Ea7E21',
 } as const satisfies Record<FarmV3SupportedChainId, string>
 
-export const nonBSCVaultAddresses = {
+export const crossFarmingVaultAddresses = {
   [ChainId.ETHEREUM]: '0x2e71B2688019ebdFDdE5A45e6921aaebb15b25fb',
   [ChainId.GOERLI]: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841',
 } as const

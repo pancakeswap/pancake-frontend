@@ -33,7 +33,7 @@ import {
   getMasterChefV3Contract,
   getNftMarketContract,
   getNftSaleContract,
-  getNonBscVaultContract,
+  getCrossFarmingVaultContract,
   getPancakeVeSenderV2Contract,
   getPointCenterIfoContract,
   getPositionManagerAdapterContract,
@@ -63,6 +63,7 @@ import {
   getV3MigratorContract,
   getVCakeContract,
   getVeCakeContract,
+  getZksyncAirDropContract,
 } from 'utils/contractHelpers'
 
 import { ChainId } from '@pancakeswap/chains'
@@ -353,6 +354,11 @@ export function useBCakeFarmWrapperBoosterVeCakeContract() {
   return useMemo(() => getBCakeFarmWrapperBoosterVeCakeContract(signer ?? undefined, chainId), [signer, chainId])
 }
 
+export const useZksyncAirDropContract = () => {
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getZksyncAirDropContract(signer ?? undefined, ChainId.ZKSYNC), [signer])
+}
+
 export function usePositionManagerWrapperContract(address: Address) {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
@@ -399,10 +405,10 @@ export function useBCakeProxyContract(proxyContractAddress: Address) {
   )
 }
 
-export const useNonBscVault = () => {
+export const useCrossFarmingVault = () => {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
-  return useMemo(() => getNonBscVaultContract(signer ?? undefined, chainId), [signer, chainId])
+  return useMemo(() => getCrossFarmingVaultContract(signer ?? undefined, chainId), [signer, chainId])
 }
 
 export const useSIDContract = (address, chainId) => {

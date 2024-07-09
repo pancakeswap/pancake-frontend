@@ -15,6 +15,7 @@
     "node": ">=18.20.0"
   },
   "dependencies": {
+    "@aptos-labs/ts-sdk": "1.12.2",
     "@ethersproject/bignumber": "^5.7.0",
     "@ethersproject/keccak256": "^5.7.0",
     "@pancakeswap/aptos-swap-sdk": "workspace:*",
@@ -34,7 +35,6 @@
     "@vanilla-extract/css": "^1.13.0",
     "@vanilla-extract/next-plugin": "^2.3.0",
     "@vanilla-extract/recipes": "^0.5.0",
-    "aptos": "1.21.0",
     "bignumber.js": "^9.0.0",
     "dayjs": "^1.11.10",
     "jotai": "^2.4.3",

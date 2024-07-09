@@ -300,7 +300,7 @@ export function useFarmsPendingAptosReward(farmConfig: SerializedFarmConfig[]) {
           },
         ],
         queryFn: async () => {
-          const params = await masterchefGetPendingApt([account?.address ?? ''], [farm.lpAddress])
+          const params = masterchefGetPendingApt([account?.address ?? ''], [farm.lpAddress])
           const response = await fetchAptosView({ networkName, params })
           const amount = response?.[0] ?? 0
           return { pid: farm.pid, amount }
@@ -321,7 +321,7 @@ export function useGetAptIncentiveInfo() {
   const { data: aptIncentiveInfo } = useQuery({
     queryKey: ['apt-incentive-info', networkName],
     queryFn: async () => {
-      const params = await masterchefGetAptIncentiveInfo()
+      const params = masterchefGetAptIncentiveInfo()
       const response = await fetchAptosView({ networkName, params })
       // if(rate == 0 ) it means not start ,
       // if(rate > 0 && close == false) it means start , not closed yet

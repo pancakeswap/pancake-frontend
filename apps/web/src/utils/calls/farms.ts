@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js'
 import { BOOSTED_FARM_GAS_LIMIT, DEFAULT_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from 'config'
-import { getMasterChefContract, getNonBscVaultContract, getV2SSBCakeWrapperContract } from 'utils/contractHelpers'
+import { getMasterChefContract, getCrossFarmingVaultContract, getV2SSBCakeWrapperContract } from 'utils/contractHelpers'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
-import { MessageTypes, getNonBscVaultContractFee } from 'views/Farms/hooks/getNonBscVaultFee'
+import { MessageTypes, getCrossFarmingVaultContractFee } from 'views/Farms/hooks/getCrossFarmingVaultFee'
 
 export type MasterChefContractType = ReturnType<typeof getMasterChefContract>
 type V2SSBCakeContractType = ReturnType<typeof getV2SSBCakeWrapperContract>
@@ -93,8 +93,8 @@ export const bCakeHarvestFarm = async (v2SSContract: V2SSBCakeContractType, gasP
   })
 }
 
-export const nonBscStakeFarm = async (
-  contract: ReturnType<typeof getNonBscVaultContract>,
+export const crossChainStakeFarm = async (
+  contract: ReturnType<typeof getCrossFarmingVaultContract>,
   pid,
   amount,
   gasPrice,
@@ -105,7 +105,7 @@ export const nonBscStakeFarm = async (
   if (!contract.account) return undefined
 
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
-  const totalFee = await getNonBscVaultContractFee({
+  const totalFee = await getCrossFarmingVaultContractFee({
     pid,
     chainId,
     gasPrice,
@@ -123,8 +123,8 @@ export const nonBscStakeFarm = async (
   })
 }
 
-export const nonBscUnstakeFarm = async (
-  contract: ReturnType<typeof getNonBscVaultContract>,
+export const crossChainUnstakeFarm = async (
+  contract: ReturnType<typeof getCrossFarmingVaultContract>,
   pid,
   amount,
   gasPrice,
@@ -135,7 +135,7 @@ export const nonBscUnstakeFarm = async (
   if (!contract.account) return undefined
 
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
-  const totalFee = await getNonBscVaultContractFee({
+  const totalFee = await getCrossFarmingVaultContractFee({
     pid,
     chainId,
     gasPrice,

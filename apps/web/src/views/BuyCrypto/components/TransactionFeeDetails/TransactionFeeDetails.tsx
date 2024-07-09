@@ -25,6 +25,7 @@ interface TransactionFeeDetailsProps {
   independentField: Field
   inputError: string | undefined
   quotesError: string | undefined
+  loading: boolean | undefined
 }
 
 export const TransactionFeeDetails = ({
@@ -33,6 +34,7 @@ export const TransactionFeeDetails = ({
   independentField,
   inputError,
   quotesError,
+  loading,
 }: TransactionFeeDetailsProps) => {
   const [elementHeight, setElementHeight] = useState<number>(51)
   const [show, setShow] = useState<boolean>(false)
@@ -70,7 +72,11 @@ export const TransactionFeeDetails = ({
         </StyledFeesContainer3>
       </Flex>
 
-      <StyledFeesContainer width="100%" onClick={handleExpandClick} disabled={Boolean(quotesError || inputError)}>
+      <StyledFeesContainer
+        width="100%"
+        onClick={handleExpandClick}
+        disabled={Boolean(loading || quotesError || inputError)}
+      >
         <StyledArrowHead />
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
@@ -79,7 +85,7 @@ export const TransactionFeeDetails = ({
                 <Text fontWeight="600" fontSize="14px" px="2px">
                   {t('Est total fees:')}
                 </Text>
-                <SkeletonText loading={Boolean(inputError)} initialWidth={40} fontSize="14px">
+                <SkeletonText loading={Boolean(loading || inputError)} initialWidth={40} fontSize="14px">
                   {t('%fees%', {
                     fees: formatLocaleNumber({
                       number: Number((selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2)),

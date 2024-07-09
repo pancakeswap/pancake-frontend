@@ -23,6 +23,7 @@ export const bscTestnetTokens = {
     18,
     'USDC',
     'Binance-Peg USD Coin',
+    'https://www.centre.io/usdc',
   ),
   usdt: new ERC20Token(ChainId.BSC_TESTNET, '0x0fB5D7c73FA349A90392f873a4FA1eCf6a3d0a96', 18, 'USDT', 'Tether USD'),
   mockBusd: new ERC20Token(
@@ -31,6 +32,7 @@ export const bscTestnetTokens = {
     18,
     'BUSD',
     'Binance USD',
+    'https://www.paxos.com/busd/',
   ),
   mockB: new ERC20Token(ChainId.BSC_TESTNET, '0x828E3FC56dD48E072e3B6F3C4FD4DDB4733c2C5e', 18, 'MOCK B', 'MOCK B'),
   mockA: new ERC20Token(ChainId.BSC_TESTNET, '0xc1eD9955C11585F47d0d6BfBC29034349A746a81', 18, 'MOCK A', 'MOCK A'),

@@ -1,7 +1,9 @@
+import { MoveResource } from '@aptos-labs/ts-sdk'
 import { describe, expect, it } from 'vitest'
+
 import { coinStoreResourcesFilter, createAccountResourceFilter } from './resources'
 
-const mockResources = [
+const mockResources: MoveResource[] = [
   {
     type: '0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>',
     data: {

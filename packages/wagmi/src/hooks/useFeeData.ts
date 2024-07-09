@@ -1,5 +1,5 @@
 import {
-  useBalance as useWagmiBalance,
+  useFeeData as useWagmiFeeData,
   ResolvedRegister,
   Config,
   UseEstimateFeesPerGasParameters,
@@ -23,7 +23,7 @@ export function useFeeData<
   const queryClient = useQueryClient()
   const { data: blockNumber } = useBlockNumber({ watch, chainId: parameters.chainId })
 
-  const readContractResult = useWagmiBalance(queryParameters as any)
+  const readContractResult = useWagmiFeeData(queryParameters as any)
 
   useDidMountEffect(() => {
     if (watch) {

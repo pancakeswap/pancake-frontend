@@ -1,4 +1,4 @@
-import { Types } from 'aptos'
+import { UserTransactionResponse } from '@aptos-labs/ts-sdk'
 import { parseVmStatusError } from './utils'
 
 export class ConnectorAlreadyConnectedError extends Error {
@@ -32,10 +32,10 @@ export class ConnectorUnauthorizedError extends Error {
 
 export class SimulateTransactionError extends Error {
   name = 'SimulateTransactionError'
-  tx: Types.UserTransaction
+  tx: UserTransactionResponse
   parsedError?: ReturnType<typeof parseVmStatusError>
 
-  constructor(tx: Types.UserTransaction) {
+  constructor(tx: UserTransactionResponse) {
     const parseError = parseVmStatusError(tx?.vm_status ?? '')
     super(`Simulate Transaction Error: ${parseError?.message || parseError?.reason || tx.vm_status}`)
     this.parsedError = parseError

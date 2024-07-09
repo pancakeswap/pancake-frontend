@@ -30,7 +30,7 @@ import { useCallback, useMemo } from 'react'
 import { farmFetcher } from 'state/farms'
 import { styled } from 'styled-components'
 import { useFarmCProxyAddress } from 'views/Farms/hooks/useFarmCProxyAddress'
-import useNonBscHarvestFarm from 'views/Farms/hooks/useNonBscHarvestFarm'
+import useCrossChainHarvestFarm from 'views/Farms/hooks/useCrossChainHarvestFarm'
 
 const TokenWrapper = styled.div`
   padding-right: 8px;
@@ -64,7 +64,7 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
   const { switchNetworkAsync } = useSwitchNetwork()
   const { cProxyAddress } = useFarmCProxyAddress(account, chainId)
-  const { onReward } = useNonBscHarvestFarm(pid, cProxyAddress)
+  const { onReward } = useCrossChainHarvestFarm(pid, cProxyAddress)
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
   const earnings = getBalanceAmount(earningsBigNumber)

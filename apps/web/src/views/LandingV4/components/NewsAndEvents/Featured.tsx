@@ -9,21 +9,23 @@ const FeaturedBlog = styled(Flex)`
   justify-content: space-between;
   align-self: stretch;
 
-  > a, >div {
+  > a,
+  > div {
     display: -webkit-inline-box !important;
     width: 100%;
     margin-bottom: 24px;
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    > a, >div {
+    > a,
+    > div {
       width: calc(50% - 12px);
       margin-bottom: 24px;
     }
 
-    >a: first-child, >div: first-child, {
-      width: 100%;
-    }
+    // >a: first-child, >div: first-child, {
+    //   width: 100%;
+    // }
   }
 `
 
@@ -42,10 +44,10 @@ export const Featured = () => {
       </Flex>
       <FeaturedBlog>
         {!isFetching &&
-          articlesData?.data?.map((article, index) => (
+          articlesData?.data?.map((article) => (
             <BlogCard
               key={article.id}
-              isSpecialLayout={index === 0}
+              // isSpecialLayout={index === 0}
               article={article}
               imgUrl={article.imgUrl}
               slug={article.slug}

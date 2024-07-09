@@ -1,11 +1,12 @@
-import { HexString, TypeTagParser } from 'aptos'
+import { parseTypeTag } from '@aptos-labs/ts-sdk'
+import { HexString } from '@pancakeswap/awgmi'
 import _get from 'lodash/get'
 
 export default function getContactAddress(resourceType: any) {
   if (!resourceType) return null
 
   try {
-    const parsedTypeTag = new TypeTagParser(resourceType).parseTypeTag()
+    const parsedTypeTag = parseTypeTag(resourceType)
     const contractAddress = _get(parsedTypeTag, 'value.address', '')
 
     // @ts-ignore
