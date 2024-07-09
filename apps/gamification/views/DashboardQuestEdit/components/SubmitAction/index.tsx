@@ -199,7 +199,7 @@ export const SubmitAction = () => {
           </>
         )}
 
-      {isAbleToSchedule && (
+      {isAbleToSchedule && completionStatusToString === CompletionStatus.DRAFTED && (
         <Message variant="success" mt={['16px']}>
           <MessageText>{t('You have everything ready to be scheduled!')}</MessageText>
         </Message>
