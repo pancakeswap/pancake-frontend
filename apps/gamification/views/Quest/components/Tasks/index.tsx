@@ -115,6 +115,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
               <Task
                 key={task?.id}
                 questId={questId}
+                hasIdRegister={hasIdRegister}
                 task={task}
                 taskStatus={taskStatus}
                 isQuestFinished={isQuestFinished}
