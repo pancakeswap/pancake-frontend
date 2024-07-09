@@ -12,7 +12,7 @@ import UserBanner from '../UserBanner'
 import { V4InfoBanner } from '../V4InfoBanner'
 import { VeCakeBanner } from '../VeCakeBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
-import { ZksyncAirDropBanner } from '../ZksyncAirdrpoBanner'
+import { ZksyncAirDropBanner } from '../ZksyncAirdropBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
 

@@ -58,7 +58,7 @@ export const ClaimZksyncAirdropModal: React.FC<{
   const { switchNetwork } = useSwitchNetwork()
   const { isDesktop } = useMatchBreakpoints()
   const { t } = useTranslation()
-  const whiteListData = useUserWhiteListData()
+  const whiteListData = useUserWhiteListData(isOpen ?? false)
 
   const { address: account, chainId } = useAccount()
 
@@ -80,7 +80,7 @@ export const ClaimZksyncAirdropModal: React.FC<{
     </>,
   )
   const { zksyncAirdropData, refetch } = useZksyncAirDropData(whiteListData?.proof)
-  const { claimAirDrop, pendingTx } = useClaimZksyncAirdrop(refetch)
+  const { claimAirDrop, pendingTx } = useClaimZksyncAirdrop(isOpen, refetch)
   const userCanClaim = useMemo(() => {
     return zksyncAirdropData?.claimedAmount === 0n && (whiteListData?.amount ?? 0n) > 0n
   }, [whiteListData?.amount, zksyncAirdropData?.claimedAmount])
