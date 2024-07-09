@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { BINANCE_DATA_API, PREDICTION_PRICE_API } from 'config/constants/endpoints'
 import { PriceApiWhitelistedCurrency } from 'config/constants/prediction/price'
+import { useCallback } from 'react'
 
 interface UsePredictionPriceParameters {
   /** Default: ETH */
@@ -33,21 +34,21 @@ const DEFAULT_POLLING_INTERVAL = 5_000
 export const usePredictionPriceUpdate = () => {
   const queryClient = useQueryClient()
 
-  const updatePriceFromSource = async ({
-    currencyA = DEFAULT_CURRENCY_A,
-    currencyB = DEFAULT_CURRENCY_B,
-  }: UsePredictionPriceParameters) =>
-    fetch(`${BINANCE_DATA_API}/v3/ticker/price?symbol=${currencyA}${currencyB}`)
-      .then((res) => res.json())
-      .then((result) => ({
-        price: parseFloat(result.price),
-        currencyA,
-        currencyB,
-      }))
-      .then((data) => {
-        queryClient.setQueryData(['price', currencyA, currencyB], data)
-        return data
-      })
+  const updatePriceFromSource = useCallback(
+    async ({ currencyA = DEFAULT_CURRENCY_A, currencyB = DEFAULT_CURRENCY_B }: UsePredictionPriceParameters) =>
+      fetch(`${BINANCE_DATA_API}/v3/ticker/price?symbol=${currencyA}${currencyB}`)
+        .then((res) => res.json())
+        .then((result) => ({
+          price: parseFloat(result.price),
+          currencyA,
+          currencyB,
+        }))
+        .then((data) => {
+          queryClient.setQueryData(['price', currencyA, currencyB], data)
+          return data
+        }),
+    [queryClient],
+  )
 
   return { updatePriceFromSource }
 }
