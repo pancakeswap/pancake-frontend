@@ -38,7 +38,7 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
           address: account?.toLowerCase(),
           chainId: chainIdList.join(','),
           completionStatus,
-          page: 1,
+          page,
           pageSize: PAGE_SIZE,
         }
         const queryString = qs.stringify(urlParamsObject, { arrayFormat: 'comma' })
@@ -88,5 +88,6 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
     loadMore,
     isFetching,
     hasNextPage,
+    page,
   }
 }

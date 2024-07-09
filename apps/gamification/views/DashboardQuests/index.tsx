@@ -20,18 +20,24 @@ export const DashboardQuests = () => {
   const [statusButtonIndex, setStatusButtonIndex] = useState(CompletionStatusIndex.ONGOING)
   const [pickMultiSelect, setPickMultiSelect] = useState<Array<ChainId>>(defaultValueChains)
 
-  useEffect(() => {
-    return () => {
-      queryClient.invalidateQueries({
-        queryKey: ['fetch-all-quest-dashboard-data', account, pickMultiSelect, convertIndexToStatus(statusButtonIndex)],
-      })
-    }
-  }, [account, pickMultiSelect, queryClient, statusButtonIndex])
-
-  const { quests, loadMore, isFetching, hasNextPage } = useFetchAllQuests({
+  const { quests, page, loadMore, isFetching, hasNextPage } = useFetchAllQuests({
     chainIdList: pickMultiSelect,
     completionStatus: convertIndexToStatus(statusButtonIndex),
   })
+
+  useEffect(() => {
+    return () => {
+      queryClient.invalidateQueries({
+        queryKey: [
+          'fetch-all-quest-dashboard-data',
+          page,
+          account,
+          pickMultiSelect,
+          convertIndexToStatus(statusButtonIndex),
+        ],
+      })
+    }
+  }, [page, account, pickMultiSelect, queryClient, statusButtonIndex])
 
   const [sentryRef] = useInfiniteScroll({
     loading: isFetching,
