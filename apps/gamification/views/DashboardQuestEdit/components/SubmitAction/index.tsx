@@ -143,9 +143,9 @@ export const SubmitAction = () => {
           </StyledDeleteButton>
         )}
 
-      {completionStatusToString !== CompletionStatus.FINISHED && (
-        <>
-          {completionStatusToString !== CompletionStatus.ONGOING && (
+      {completionStatusToString !== CompletionStatus.FINISHED &&
+        completionStatusToString !== CompletionStatus.ONGOING && (
+          <>
             <>
               {completionStatusToString === CompletionStatus.SCHEDULED ? (
                 <Button
@@ -172,17 +172,18 @@ export const SubmitAction = () => {
                 </Button>
               )}
             </>
-          )}
-          <Button
-            width="100%"
-            disabled={!isAbleToSave}
-            endIcon={<PencilIcon color={isAbleToSave ? 'invertedContrast' : 'textDisabled'} width={14} height={14} />}
-            onClick={() => handleSave(Boolean(!query.id), query.id ? state.completionStatus : CompletionStatus.DRAFTED)}
-          >
-            {query.id ? t('Save the edits') : t('Save to the drafts')}
-          </Button>
-        </>
-      )}
+            <Button
+              width="100%"
+              disabled={!isAbleToSave}
+              endIcon={<PencilIcon color={isAbleToSave ? 'invertedContrast' : 'textDisabled'} width={14} height={14} />}
+              onClick={() =>
+                handleSave(Boolean(!query.id), query.id ? state.completionStatus : CompletionStatus.DRAFTED)
+              }
+            >
+              {query.id ? t('Save the edits') : t('Save to the drafts')}
+            </Button>
+          </>
+        )}
     </Flex>
   )
 }
