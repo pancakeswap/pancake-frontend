@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import chunk from 'lodash/chunk'
 import { Address, PublicClient } from 'viem'
-import { nonBSCVaultAddresses } from '../const'
+import { crossFarmingVaultAddresses } from '../const'
 import { SerializedFarmConfig, SerializedFarmPublicData } from '../types'
 
 const abi = [
@@ -81,7 +81,11 @@ export const fetchPublicFarmsData = async (
 ) => {
   try {
     const farmCalls = farms.flatMap((farm) =>
-      fetchFarmCalls(farm, masterChefAddress, nonBSCVaultAddresses[chainId as keyof typeof nonBSCVaultAddresses]),
+      fetchFarmCalls(
+        farm,
+        masterChefAddress,
+        crossFarmingVaultAddresses[chainId as keyof typeof crossFarmingVaultAddresses],
+      ),
     )
     const chunkSize = farmCalls.length / farms.length
     const farmMultiCallResult = await provider({ chainId }).multicall({ contracts: farmCalls, allowFailure: false })

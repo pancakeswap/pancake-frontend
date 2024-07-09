@@ -124,8 +124,8 @@ export const getZkSyncAirDropAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.zkSyncAirDrop, chainId)
 }
 
-export const getNonBscVaultAddress = (chainId?: number) => {
-  return getAddressFromMap(addresses.nonBscVault, chainId)
+export const getCrossFarmingVaultAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.crossFarmingVault, chainId)
 }
 
 export const getCrossFarmingSenderAddress = (chainId?: number) => {

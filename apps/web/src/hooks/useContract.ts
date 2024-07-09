@@ -33,7 +33,7 @@ import {
   getMasterChefV3Contract,
   getNftMarketContract,
   getNftSaleContract,
-  getNonBscVaultContract,
+  getCrossFarmingVaultContract,
   getPancakeVeSenderV2Contract,
   getPointCenterIfoContract,
   getPositionManagerAdapterContract,
@@ -405,10 +405,10 @@ export function useBCakeProxyContract(proxyContractAddress: Address) {
   )
 }
 
-export const useNonBscVault = () => {
+export const useCrossFarmingVault = () => {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
-  return useMemo(() => getNonBscVaultContract(signer ?? undefined, chainId), [signer, chainId])
+  return useMemo(() => getCrossFarmingVaultContract(signer ?? undefined, chainId), [signer, chainId])
 }
 
 export const useSIDContract = (address, chainId) => {
