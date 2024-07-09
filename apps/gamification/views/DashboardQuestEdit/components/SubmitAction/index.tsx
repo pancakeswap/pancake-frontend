@@ -132,6 +132,8 @@ export const SubmitAction = () => {
           quest={{
             ...state,
             tasks,
+            startDateTime: combineDateAndTime(state.startDate, state.startTime) ?? 0,
+            endDateTime: combineDateAndTime(state.endDate, state.endTime) ?? 0,
           }}
           isSubmitError={isSubmitError}
           openModal={openModal}
