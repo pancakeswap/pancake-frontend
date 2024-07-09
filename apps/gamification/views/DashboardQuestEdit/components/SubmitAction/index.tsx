@@ -15,8 +15,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
-import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { ActionModal } from 'views/DashboardQuestEdit/components/SubmitAction/ActionModal'
+import { LongPressDeleteModal } from 'views/DashboardQuestEdit/components/SubmitAction/LongPressDeleteModal'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { combineDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
@@ -54,7 +54,9 @@ export const SubmitAction = () => {
     }
   }
 
-  const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={handleClickDelete} />)
+  const [onPresentDeleteModal] = useModal(
+    <LongPressDeleteModal targetTitle={t('quest')} handleDelete={handleClickDelete} />,
+  )
 
   // eslint-disable-next-line consistent-return
   const handleSave = async (isCreate: boolean, completionStatus: CompletionStatus) => {
