@@ -300,12 +300,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, isQuestFi
                   )}
                 </FlexGap>
               ) : (
-                <Button
-                  variant="success"
-                  scale="sm"
-                  width="100%"
-                  endIcon={<CheckmarkCircleFillIcon color="invertedContrast" />}
-                >
+                <Button variant="success" scale="sm" width="100%" endIcon={<CheckmarkCircleFillIcon color="white" />}>
                   {t('Completed')}
                 </Button>
               )}
