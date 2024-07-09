@@ -3469,5 +3469,5 @@
   "Predict ETH Price on Arbitrum & Win": "Predict ETH Price on Arbitrum & Win",
   "60,000 $ARB": "60,000 $ARB",
   "Reward!": "Reward!",
-  "No quotes available for %cryptoCurrency$ right now.": "No quotes available for %cryptoCurrency$ right now."
+  "No quotes available for %cryptoCurrency% right now.": "No quotes available for %cryptoCurrency% right now."
 }

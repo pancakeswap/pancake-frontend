@@ -47,7 +47,7 @@ export const TransactionFeeDetails = ({
   } = useTranslation()
 
   const handleExpandClick = useCallback(() => setShow(!show), [show])
-  const noQuotesError = Boolean(quotes?.length === 0)
+  const noQuotesError = Boolean(quotes && quotes?.length === 0)
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const elRef = contentRef.current
@@ -76,7 +76,7 @@ export const TransactionFeeDetails = ({
         <StyledArrowHead />
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
-            {selectedQuote && !noQuotesError ? (
+            {selectedQuote && (
               <>
                 <Text fontWeight="600" fontSize="14px" px="2px">
                   {t('Est total fees:')}
@@ -91,13 +91,15 @@ export const TransactionFeeDetails = ({
                   })}
                 </SkeletonText>
               </>
-            ) : (
+            )}
+            {noQuotesError && (
               <Text fontWeight="600" fontSize="14px" px="2px">
-                {t('No quotes available for %cryptoCurrency$ right now.', {
+                {t('No quotes available for %cryptoCurrency% right now.', {
                   cryptoCurrency: selectedQuote?.cryptoCurrency,
                 })}
               </Text>
             )}
+
             <BuyCryptoTooltip
               opacity={0.7}
               iconSize="17px"
