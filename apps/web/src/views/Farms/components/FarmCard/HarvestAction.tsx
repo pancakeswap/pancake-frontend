@@ -101,7 +101,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
     } else {
       handleHarvest()
     }
-  }, [vaultPid, onPresentNonBscHarvestModal, handleHarvest])
+  }, [vaultPid, onPresentCrossChainHarvestModal, handleHarvest])
 
   return (
     <Flex mb="8px" justifyContent="space-between" alignItems="center" width="100%">
