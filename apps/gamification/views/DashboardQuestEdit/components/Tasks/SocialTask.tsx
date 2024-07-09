@@ -89,54 +89,60 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
         </Flex>
       </Flex>
       <FlexGap gap="8px" flexDirection="column" mt="8px">
-        <InputGroup endIcon={isTitleError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>
-          <StyledInput
-            placeholder={t('Title')}
-            value={task.title}
-            isError={isTitleError}
-            style={{ borderRadius: '24px' }}
-            onChange={(e) => handleUrlChange(e, 'title')}
-          />
-        </InputGroup>
+        <Flex flexDirection="column">
+          <InputGroup endIcon={isTitleError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>
+            <StyledInput
+              placeholder={t('Title')}
+              value={task.title}
+              isError={isTitleError}
+              style={{ borderRadius: '24px' }}
+              onChange={(e) => handleUrlChange(e, 'title')}
+            />
+          </InputGroup>
+          {isTitleError && <InputErrorText errorText={t('Title is empty')} />}
+        </Flex>
         <StyledInput
           placeholder={t('Description (Optional)')}
           value={task.description}
           style={{ borderRadius: '24px' }}
           onChange={(e) => handleUrlChange(e, 'description')}
         />
-        <InputGroup endIcon={isAccountIdError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>
-          <StyledInput
-            value={task.accountId}
-            isError={isAccountIdError}
-            style={{ borderRadius: '24px' }}
-            placeholder={t('Account Id')}
-            onChange={(e) => handleUrlChange(e, 'accountId')}
-          />
-        </InputGroup>
-        <InputGroup
-          endIcon={
-            isUrlError ? (
-              <ErrorFillIcon color="failure" width={16} height={16} />
-            ) : (
-              <Box ref={targetRef} onClick={onclickOpenNewIcon}>
-                <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
-                {tooltipVisible && tooltip}
-              </Box>
-            )
-          }
-        >
-          <StyledInput
-            value={task.socialLink}
-            isError={isUrlError}
-            style={{ borderRadius: '24px' }}
-            placeholder={taskInputPlaceholder(social)}
-            onChange={(e) => handleUrlChange(e, 'socialLink')}
-          />
-        </InputGroup>
+        <Flex flexDirection="column">
+          <InputGroup endIcon={isAccountIdError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>
+            <StyledInput
+              value={task.accountId}
+              isError={isAccountIdError}
+              style={{ borderRadius: '24px' }}
+              placeholder={t('Account Id')}
+              onChange={(e) => handleUrlChange(e, 'accountId')}
+            />
+          </InputGroup>
+          {isAccountIdError && <InputErrorText errorText={t('Account id is empty')} />}
+        </Flex>
+        <Flex flexDirection="column">
+          <InputGroup
+            endIcon={
+              isUrlError ? (
+                <ErrorFillIcon color="failure" width={16} height={16} />
+              ) : (
+                <Box ref={targetRef} onClick={onclickOpenNewIcon}>
+                  <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
+                  {tooltipVisible && tooltip}
+                </Box>
+              )
+            }
+          >
+            <StyledInput
+              value={task.socialLink}
+              isError={isUrlError}
+              style={{ borderRadius: '24px' }}
+              placeholder={taskInputPlaceholder(social)}
+              onChange={(e) => handleUrlChange(e, 'socialLink')}
+            />
+          </InputGroup>
+          {isUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
+        </Flex>
       </FlexGap>
-      {isTitleError && <InputErrorText errorText={t('Title is empty')} />}
-      {isAccountIdError && <InputErrorText errorText={t('Account id is empty')} />}
-      {isUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
     </Flex>
   )
 }
