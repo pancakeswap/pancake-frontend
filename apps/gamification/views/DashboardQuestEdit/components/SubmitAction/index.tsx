@@ -58,7 +58,6 @@ export const SubmitAction = () => {
       }
     }
   }
-  console.log(state?.reward)
 
   const [onPresentDeleteModal] = useModal(
     <LongPressDeleteModal targetTitle={t('quest')} handleDelete={handleClickDelete} />,
