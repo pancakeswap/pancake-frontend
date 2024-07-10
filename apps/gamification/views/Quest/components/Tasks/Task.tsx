@@ -342,6 +342,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
                     <VerifyButton
                       scale="sm"
                       width="100%"
+                      disabled={isPending}
                       endIcon={isPending && <Loading width={16} height={16} />}
                       onClick={handleVerifyTwitterAccount}
                     >
