@@ -30,6 +30,7 @@ const SelectContainer = styled.div`
     border: 1px solid ${({ theme }) => theme.colors.cardBorder};
     box-shadow: ${({ theme }) => theme.card.boxShadow};
     border-radius: ${BORDER_RADIUS};
+    padding: 8px 0;
   }
 
   .p-multiselect-label {
