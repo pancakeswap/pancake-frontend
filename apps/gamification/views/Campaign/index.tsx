@@ -65,7 +65,7 @@ export const Campaign = () => {
               </Text>
             </Flex>
           </StyledBackButton>
-          <Share />
+          <Share title="" />
         </Flex>
         <Box mt="16px">
           <Tag variant="success">{t('Ongoing')}</Tag>
