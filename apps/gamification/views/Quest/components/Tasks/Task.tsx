@@ -1,5 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
+import { Native } from '@pancakeswap/sdk'
 import {
   Box,
   Button,
@@ -248,7 +249,12 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const handleRedirectSwap = () => {
     const { network, tokenAddress } = task as TaskSwapConfig | TaskHoldTokenConfig
     if (network && tokenAddress) {
-      const url = `https://pancakeswap.finance/swap?chain=${CHAIN_QUERY_NAME[network]}&inputCurrency=${tokenAddress}`
+      const nativeToken = Native.onChain(network)
+      const isNativeToken = nativeToken?.wrapped?.address?.toLowerCase() === tokenAddress.toLowerCase()
+
+      const url = isNativeToken
+        ? `https://pancakeswap.finance/swap?chain=${CHAIN_QUERY_NAME[network]}&inputCurrency=${nativeToken.symbol}`
+        : `https://pancakeswap.finance/swap?chain=${CHAIN_QUERY_NAME[network]}&inputCurrency=${tokenAddress}`
       window.open(url, '_blank', 'noopener noreferrer')
     }
   }
