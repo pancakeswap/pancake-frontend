@@ -135,7 +135,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
           if (followData?.following) {
             const responseMarkTaskStatus = await fetchMarkTaskStatus(account, questId, TaskType.X_FOLLOW_ACCOUNT)
             if (responseMarkTaskStatus.ok) {
-              refresh()
+              await refresh()
             }
           }
         }
