@@ -11,8 +11,17 @@ import { useAccount } from 'wagmi'
 const ProfilePage = () => {
   const { address: account } = useAccount()
   const router = useRouter()
+  const { asPath } = router
   const { isInitialized, isLoading, profile } = useProfile()
   const hasProfile = isInitialized && !!profile
+
+  // Extract the path without query parameters and hash fragment
+  const [pathWithoutQuery] = asPath.split('?')
+  const [pathWithoutHash] = pathWithoutQuery.split('#')
+  // Extract hash fragment if it exists
+  const hashFragment = asPath.includes('#') ? asPath.split('#')[1].split('?')[0] : ''
+  // Reconstruct the full path including hash fragment if it exists
+  const fullPath = hashFragment ? `${pathWithoutHash}#${hashFragment}` : pathWithoutHash
 
   useEffect(() => {
     if (account && !isLoading && !hasProfile) {
@@ -24,9 +33,9 @@ const ProfilePage = () => {
     <>
       {hasProfile && (
         <>
-          {router.asPath === ProfileUrlType.HOME_PAGE && <JoinedQuests />}
-          {router.asPath === ProfileUrlType.NFT && <NftPage />}
-          {router.asPath === ProfileUrlType.ACHIEVEMENT && <AchievementsPage />}
+          {fullPath === ProfileUrlType.HOME_PAGE && <JoinedQuests />}
+          {fullPath === ProfileUrlType.NFT && <NftPage />}
+          {fullPath === ProfileUrlType.ACHIEVEMENT && <AchievementsPage />}
         </>
       )}
     </>

@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, LogoutIcon, UserMenu as UIKitUserMenu, UserMenuItem, useModal } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -35,11 +34,7 @@ const UserMenuItems = () => {
   return (
     <>
       <WalletUserMenuItem isWrongNetwork={isWrongNetwork} onPresentWalletModal={onClickWalletMenu} />
-      <ProfileUserMenuItem
-        isLoading={isLoading}
-        hasProfile={hasProfile}
-        disabled={isWrongNetwork || chainId !== ChainId.BSC}
-      />
+      <ProfileUserMenuItem isLoading={isLoading} hasProfile={hasProfile} disabled={isWrongNetwork} />
       <UserMenuItem as="button" onClick={logout}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           {t('Disconnect')}

@@ -47,10 +47,18 @@ export const list = [
 const TabMenu = () => {
   const { asPath } = useRouter()
 
+  // Extract the path without query parameters and hash fragment
+  const [pathWithoutQuery] = asPath.split('?')
+  const [pathWithoutHash] = pathWithoutQuery.split('#')
+  // Extract hash fragment if it exists
+  const hashFragment = asPath.includes('#') ? asPath.split('#')[1].split('?')[0] : ''
+  // Reconstruct the full path including hash fragment if it exists
+  const fullPath = hashFragment ? `${pathWithoutHash}#${hashFragment}` : pathWithoutHash
+
   return (
     <Flex>
       {list.map((menu) => (
-        <Tab key={menu.url} $active={menu.url === asPath} as={NextLinkFromReactRouter} to={menu.url}>
+        <Tab key={menu.url} $active={menu.url === fullPath} as={NextLinkFromReactRouter} to={menu.url}>
           {menu.title}
         </Tab>
       ))}
