@@ -54,7 +54,7 @@ const Wrapper = styled.div`
 const defaultOptions: EasyMde.Options = {
   autofocus: false,
   status: false,
-  hideIcons: ['guide', 'fullscreen', 'preview', 'side-by-side'],
+  hideIcons: ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
   spellChecker: false,
   styleSelectedText: false,
 }
