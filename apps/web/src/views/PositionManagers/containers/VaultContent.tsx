@@ -31,7 +31,6 @@ export const VaultContent = memo(function VaultContent() {
   const { mode } = useViewMode()
   const { data: rorData, isLoading: isVaultDataLoading } = useFetchVaultHistory()
 
-  // console.log(vaultHistorySnapshots)
   const vaultHistorySnapshots = useMemo(
     (): VaultHistorySnapshots => ({ rorData, isVaultDataLoading }),
     [rorData, isVaultDataLoading],
