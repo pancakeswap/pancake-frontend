@@ -8,19 +8,19 @@ import type { Address } from 'viem'
 import type { VaultHistorySnapshots } from './useFetchVaultHistory'
 
 interface RorProps {
-  vault: Address | undefined
-  adapterAddress: Address | undefined
+  vault?: Address
+  adapterAddress?: Address
   vaultHistorySnapshots: VaultHistorySnapshots
   currencyA: Currency
   currencyB: Currency
-  token0USDPrice: number | undefined
-  token1USDPrice: number | undefined
+  token0USDPrice?: number
+  token1USDPrice?: number
 }
 
 export interface RorResult {
-  sevenDayRor: number | undefined
-  thirtyDayRor: number | undefined
-  earliestDayRor: number | undefined
+  sevenDayRor?: number
+  thirtyDayRor?: number
+  earliestDayRor?: number
 }
 
 export const useRor = ({
