@@ -30,6 +30,7 @@ const SelectContainer = styled.div`
     border: 1px solid ${({ theme }) => theme.colors.cardBorder};
     box-shadow: 0 0 3px ${({ theme }) => theme.shadows.inset};
     border-radius: ${BORDER_RADIUS};
+    padding: 8px 0;
   }
 
   .p-multiselect-label {
@@ -53,7 +54,7 @@ const SelectContainer = styled.div`
   .p-multiselect-item {
     justify-content: space-between;
     width: 100%;
-    height: 42px;
+    height: 40px;
     padding: 8px 16px;
 
     .p-multiselect-checkbox {
@@ -134,7 +135,6 @@ const SelectContainer = styled.div`
 
 const PrimereactSelectContainer = styled.div<{ scrollHeight?: string }>`
   .p-multiselect-items-wrapper {
-    border-top: 1px solid var(--colors-cardBorder);
     height: ${({ scrollHeight }) => scrollHeight ?? "auto"};
   }
   .p-multiselect-items {
@@ -160,7 +160,7 @@ const SelectInputContainer = styled(Flex)`
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
   border-radius: ${BORDER_RADIUS};
   box-shadow: 0 0 1px ${({ theme }) => theme.shadows.inset};
-  padding: 8px 8px 8px 16px;
+  padding: 7px 8px 7px 16px;
   user-select: none;
   cursor: pointer;
 `;
@@ -218,8 +218,8 @@ export const MultiSelect = (props: IMultiSelectProps) => {
     value,
     options,
     selectAllLabel,
-    isSelectAll,
-    isFilter,
+    isShowSelectAll,
+    isShowFilter,
   } = props;
   const [selectedItems, setSelectedItems] = useState(defaultValue ?? null);
   const [isShow, setIsShow] = useState(false);
@@ -256,14 +256,24 @@ export const MultiSelect = (props: IMultiSelectProps) => {
     return selectedItems.map((item) => options.find((op) => op.value === item) ?? { value: item, label: item });
   }, [selectedItems, options]);
 
-  const handleSelectAll = useCallback(() => {
-    setSelectAll(!selectAll);
-    if (!selectAll && options) {
-      setSelectedItems(options.map((i) => i.value));
-    } else {
-      setSelectedItems([]);
-    }
-  }, [selectAll, options]);
+  const handleSelectAll = useCallback(
+    (e: React.ChangeEvent | React.MouseEvent) => {
+      const result = !selectAll && options ? options.map((i) => i.value) : [];
+      if (onChange) {
+        onChange({
+          value: result,
+          originalEvent: e,
+          stopPropagation: e.stopPropagation,
+          preventDefault: e.preventDefault,
+          target: { name: selectAllLabel ?? "Select All", value: "0", id: "0" },
+        });
+      } else {
+        setSelectAll(!selectAll);
+        setSelectedItems(result);
+      }
+    },
+    [selectAll, options, onChange, selectAllLabel]
+  );
 
   const handleFilter = useCallback((text: string) => {
     setSearchText(text);
@@ -282,7 +292,7 @@ export const MultiSelect = (props: IMultiSelectProps) => {
   const panelHeaderTemplate = useMemo(
     () => (
       <>
-        {isFilter && (
+        {isShowFilter && (
           <SearchBox
             selectedItems={selectedOptions}
             ref={searchInputRef}
@@ -290,7 +300,7 @@ export const MultiSelect = (props: IMultiSelectProps) => {
             handleLabelDelete={handleLabelDelete}
           />
         )}
-        {isSelectAll && (
+        {isShowSelectAll && (
           <Box className="p-multiselect-item" onClick={handleSelectAll}>
             <span>{selectAllLabel ?? "Select All"}</span>
             <Checkbox
@@ -314,8 +324,8 @@ export const MultiSelect = (props: IMultiSelectProps) => {
       selectAll,
       selectAllLabel,
       selectedOptions,
-      isFilter,
-      isSelectAll,
+      isShowFilter,
+      isShowSelectAll,
       handleFilter,
       handleLabelDelete,
     ]
@@ -323,10 +333,13 @@ export const MultiSelect = (props: IMultiSelectProps) => {
 
   const handleChange = useCallback(
     (e: MultiSelectChangeEvent) => {
-      setSelectedItems(e.value);
+      if (onChange) {
+        onChange?.(e);
+      } else {
+        setSelectedItems(e.value);
+      }
       searchInputRef.current?.clear();
       searchInputRef.current?.focus();
-      onChange?.(e);
     },
     [onChange]
   );
@@ -345,6 +358,10 @@ export const MultiSelect = (props: IMultiSelectProps) => {
     setSelectAll(selectedItems?.length === options?.length);
   }, [selectedItems, options]);
 
+  useEffect(() => {
+    setSelectedItems(value);
+  }, [value]);
+
   return (
     <SelectContainer
       style={{
@@ -352,6 +369,7 @@ export const MultiSelect = (props: IMultiSelectProps) => {
       }}
     >
       <SelectInputContainer
+        className="select-input-container"
         style={style}
         onClick={(e: React.MouseEvent) => {
           if (!isShow) {

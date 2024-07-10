@@ -1,5 +1,7 @@
 import { SelectItem } from "primereact/selectitem";
-import { MultiSelectProps } from "primereact/multiselect";
+import { MultiSelectProps, MultiSelectChangeEvent } from "primereact/multiselect";
+
+export type { MultiSelectChangeEvent };
 
 export interface ISelectItem extends SelectItem {
   icon?: string;
@@ -16,6 +18,6 @@ export interface IMultiSelectProps extends MultiSelectProps {
   options?: IOptionType;
   placeholder?: string;
   defaultValue?: string[];
-  isFilter?: boolean;
-  isSelectAll?: boolean;
+  isShowFilter?: boolean;
+  isShowSelectAll?: boolean;
 }
