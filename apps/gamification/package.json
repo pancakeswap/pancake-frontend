@@ -11,6 +11,22 @@
   "engines": {
     "node": ">=18.20.0"
   },
+  "browserslist": {
+    "production": [
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 14"
+    ],
+    "development": [
+      ">0.2%",
+      "not ie <= 99",
+      "not android <= 4.4.4",
+      "not dead",
+      "not op_mini all"
+    ]
+  },
   "dependencies": {
     "@binance/w3w-wagmi-connector-v2": "^1.2.3",
     "@cyberlab/cyber-app-sdk": "v3.0.0-beta.5",
@@ -46,6 +62,7 @@
     "jotai": "^2.4.3",
     "lodash": "^4.17.21",
     "next": "14.2.3",
+    "oauth": "0.10.0",
     "next-seo": "^5.15.0",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
