@@ -16,7 +16,6 @@ export interface IMultiSelectProps extends MultiSelectProps {
   options?: IOptionType;
   placeholder?: string;
   defaultValue?: string[];
-  checkAllLabel?: string;
   isFilter?: boolean;
   isSelectAll?: boolean;
 }

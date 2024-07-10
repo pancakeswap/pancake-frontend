@@ -14,8 +14,8 @@ import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useFarmFromPid, useFarmUser } from 'state/farms/hooks'
 import { pickFarmTransactionTx } from 'state/global/actions'
-import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
-import { useNonBscFarmPendingTransaction, useTransactionAdder } from 'state/transactions/hooks'
+import { FarmTransactionStatus, CrossChainFarmStepType } from 'state/transactions/actions'
+import { useCrossChainFarmPendingTransaction, useTransactionAdder } from 'state/transactions/hooks'
 import { TransactionReceipt } from 'viem'
 import { YieldBoosterStateContext } from 'views/Farms/components/YieldBooster/components/ProxyFarmContainer'
 import useProxyStakedActions from 'views/Farms/components/YieldBooster/hooks/useProxyStakedActions'
@@ -48,7 +48,7 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
 
   const { onUnstake: onUnstakeProxyFarm, onDone } = useProxyStakedActions(pid, lpContract)
 
-  const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
+  const pendingFarm = useCrossChainFarmPendingTransaction(lpAddress)
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
 
   // eslint-disable-next-line consistent-return
@@ -67,13 +67,13 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
         if (receipt && chainId) {
           const amount = getFullDisplayBalance(stakedBalance)
           addTransaction(receipt, {
-            type: 'non-bsc-farm',
+            type: 'cross-chain-farm',
             translatableSummary: {
               text: 'Unstake %amount% %lpSymbol% Token',
               data: { amount, lpSymbol: farm?.lpSymbol },
             },
-            nonBscFarm: {
-              type: NonBscFarmStepType.UNSTAKE,
+            crossChainFarm: {
+              type: CrossChainFarmStepType.UNSTAKE,
               status: FarmTransactionStatus.PENDING,
               amount,
               lpSymbol: farm?.lpSymbol ?? t('Unknown'),

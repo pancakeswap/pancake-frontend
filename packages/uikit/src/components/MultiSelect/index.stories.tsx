@@ -60,7 +60,7 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
           options={chains}
           defaultValue={[chains[0].value, chains[2].value]}
           isSelectAll
-          checkAllLabel="All networks"
+          selectAllLabel="All networks"
         />
       </Column>
     </Flex>

@@ -8,7 +8,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useZksyncAirDropContract } from 'hooks/useContract'
 import { usePaymaster } from 'hooks/usePaymaster'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { calculateGasMargin } from 'utils'
 import { getZkSyncAirDropAddress } from 'utils/addressHelpers'
 import { getGasSponsorship } from 'utils/paymaster'
@@ -59,31 +59,51 @@ export const useZksyncAirDropData = (proof?: any[]) => {
     queryKey: ['zksyncAirdrop', account, address, proof],
     queryFn: () => fetchZksyncAirDropData(account!, address, proof!),
     enabled: Boolean(account) && Boolean(address) && Boolean(proof),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
   })
   return { zksyncAirdropData: data, refetch }
 }
 
-export const useUserWhiteListData = () => {
+export const useUserWhiteListData = (enable: boolean) => {
   const { address: account } = useAccount()
   const { data } = useQuery({
     queryKey: ['zksyncAirdropWhiteList', account],
-    queryFn: () => fetchZksyncAirDropWhitelist(account!),
-    enabled: Boolean(account),
+    queryFn: async () => {
+      try {
+        return await fetchZksyncAirDropWhitelist(account!)
+      } catch (error) {
+        return {
+          address: account!,
+          amount: undefined,
+          proof: undefined,
+        }
+      }
+    },
+    enabled: Boolean(account && enable),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
   })
 
-  return data
-    ? {
-        account: data.address,
-        amount: BigInt(data.amount),
-        proof: data?.proof,
-      }
-    : undefined
+  return useMemo(
+    () =>
+      data
+        ? {
+            account: data.address,
+            amount: data?.amount ? BigInt(data.amount) : undefined,
+            proof: data?.proof,
+          }
+        : undefined,
+    [data],
+  )
 }
 
-export const useClaimZksyncAirdrop = (onDone?: () => void) => {
+export const useClaimZksyncAirdrop = (enable: boolean | undefined, onDone?: () => void) => {
   const { t } = useTranslation()
   const { address: account, chainId } = useAccount()
-  const whiteListData = useUserWhiteListData()
+  const whiteListData = useUserWhiteListData(enable ?? false)
   const { toastSuccess } = useToast()
   const zkSyncAirDropContract = useZksyncAirDropContract()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
@@ -93,7 +113,14 @@ export const useClaimZksyncAirdrop = (onDone?: () => void) => {
   const { switchNetwork } = useSwitchNetwork()
 
   const claimAirDrop = useCallback(async () => {
-    if (!whiteListData || !zkSyncAirDropContract || !account || chainId !== ChainId.ZKSYNC) {
+    if (
+      !whiteListData ||
+      !whiteListData.amount ||
+      !whiteListData.proof ||
+      !zkSyncAirDropContract ||
+      !account ||
+      chainId !== ChainId.ZKSYNC
+    ) {
       if (chainId !== ChainId.ZKSYNC) {
         switchNetwork(ChainId.ZKSYNC)
       }
@@ -106,7 +133,7 @@ export const useClaimZksyncAirdrop = (onDone?: () => void) => {
 
         if (isEnoughGasBalance) {
           const estimatedGas = await zkSyncAirDropContract.estimateGas.claim(
-            [account, whiteListData.amount, whiteListData.proof],
+            [account, whiteListData.amount!, whiteListData.proof!],
             {
               account,
             },
@@ -115,7 +142,7 @@ export const useClaimZksyncAirdrop = (onDone?: () => void) => {
           const calldata = encodeFunctionData({
             abi: zkSyncAirDropContract.abi,
             functionName: 'claim',
-            args: [account, whiteListData.amount, whiteListData.proof],
+            args: [account, whiteListData.amount!, whiteListData.proof!],
           })
 
           const call = {
@@ -129,7 +156,7 @@ export const useClaimZksyncAirdrop = (onDone?: () => void) => {
         // If not enough gas balance, continue to normal claim
       }
 
-      return zkSyncAirDropContract.write.claim([account, whiteListData.amount, whiteListData.proof], {
+      return zkSyncAirDropContract.write.claim([account, whiteListData.amount!, whiteListData.proof!], {
         account,
         chain,
       })

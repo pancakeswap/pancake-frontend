@@ -77,6 +77,12 @@ const SelectContainer = styled.div`
     width: ${CHECKBOX_WIDTH};
     height: ${CHECKBOX_WIDTH};
 
+    &:hover {
+      .p-checkbox-box {
+        box-shadow: ${({ theme }) => theme.shadows.focus};
+      }
+    }
+
     .p-checkbox-box {
       transition: background-color 0.2s ease-in-out;
       border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
@@ -159,11 +165,45 @@ const SelectInputContainer = styled(Flex)`
   cursor: pointer;
 `;
 
-const SelectedItemsContainer = styled.div`
+const SelectedInputItemsContainer = styled.div`
   flex: 1;
   text-overflow: ellipsis;
   text-wrap: nowrap;
   overflow: hidden;
+`;
+
+const SelectedInputIconsContainer = styled.div`
+  display: flex;
+  height: 24px;
+  & > :not(:first-child) {
+    margin-left: -12px;
+  }
+`;
+
+const SelectedInputIcon = styled.img`
+  width: 24px;
+  height: 24px;
+  border: 2px solid ${({ theme }) => theme.colors.input};
+  border-radius: 50%;
+`;
+
+const SelectedInputFakeIcon = styled.span`
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: ${({ theme }) => theme.colors.inputSecondary};
+  color: ${({ theme }) => theme.colors.secondary};
+  border: 2px solid ${({ theme }) => theme.colors.input};
+  border-radius: 50%;
+  text-align: center;
+  align-content: center;
+  font-size: 14px;
+  font-weight: 600;
+`;
+
+const SelectInputPlaceholder = styled.div`
+  width: 100%;
+  color: ${({ theme }) => theme.colors.textDisabled};
 `;
 
 export const MultiSelect = (props: IMultiSelectProps) => {
@@ -321,14 +361,34 @@ export const MultiSelect = (props: IMultiSelectProps) => {
           }
         }}
       >
-        <SelectedItemsContainer>
-          {selectedItems?.map((item, idx) => (
-            <React.Fragment key={item}>
-              <span>{options?.find((op) => op.value === item)?.label}</span>
-              {idx < selectedItems.length - 1 && <span>, </span>}
-            </React.Fragment>
-          ))}
-        </SelectedItemsContainer>
+        <SelectedInputIconsContainer>
+          {selectedItems ? (
+            <>
+              {selectedItems.slice(0, 3).map((item) => {
+                const option = options?.find((op) => op.value === item);
+                return option?.icon ? <SelectedInputIcon key={item} src={option.icon} /> : null;
+              })}
+              {selectedItems.length > 3 ? (
+                <SelectedInputFakeIcon>{`+${selectedItems.length - 3}`}</SelectedInputFakeIcon>
+              ) : null}
+            </>
+          ) : null}
+        </SelectedInputIconsContainer>
+        <SelectedInputItemsContainer>
+          {selectedItems
+            ? selectedItems.length === options?.length && selectAllLabel
+              ? selectAllLabel
+              : selectedItems.map((item, idx) => (
+                  <React.Fragment key={item}>
+                    <span>{options?.find((op) => op.value === item)?.label}</span>
+                    {idx < selectedItems.length - 1 && <span>, </span>}
+                  </React.Fragment>
+                ))
+            : null}
+        </SelectedInputItemsContainer>
+        {!selectedItems?.length ? (
+          <SelectInputPlaceholder>{props.placeholder ?? "Select something"}</SelectInputPlaceholder>
+        ) : null}
         <Column>
           <ArrowDropDownIcon
             color="text"
