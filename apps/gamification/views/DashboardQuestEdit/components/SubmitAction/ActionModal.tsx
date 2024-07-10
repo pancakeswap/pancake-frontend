@@ -7,6 +7,7 @@ import { Fail } from 'views/DashboardQuestEdit/components/SubmitAction/Fail'
 import { Finished } from 'views/DashboardQuestEdit/components/SubmitAction/Finished'
 import { Loading } from 'views/DashboardQuestEdit/components/SubmitAction/Loading'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
+import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { Quest } from 'views/Quests/components/Quest'
 
 interface ModalConfig {
@@ -42,7 +43,12 @@ export const ActionModal: React.FC<ActionModalProps> = ({
   const router = useRouter()
   const [modalView, setModalView] = useState<QuestEditModalState>(QuestEditModalState.DEFAULT)
 
+  const finishedQuest: SingleQuestData = {
+    ...quest,
+    completionStatus: CompletionStatus.FINISHED,
+  }
   const questComponent = <Quest mb="24px" width="100%" quest={quest} showStatus hideClick />
+  const finishedComponent = <Quest mb="24px" width="100%" quest={finishedQuest} showStatus hideClick />
 
   const closeModal = () => {
     setOpenModal(false)
@@ -89,7 +95,7 @@ export const ActionModal: React.FC<ActionModalProps> = ({
       hideCloseButton: true,
       component: (
         <Finished title={t('The quest has been successfully scheduled!')} closeModal={handleFinished}>
-          {questComponent}
+          {finishedComponent}
         </Finished>
       ),
     },

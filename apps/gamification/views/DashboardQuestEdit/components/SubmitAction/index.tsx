@@ -134,9 +134,10 @@ export const SubmitAction = () => {
       reward &&
       reward?.amountOfWinners > 0 &&
       reward?.totalRewardAmount > 0 &&
-      isTaskValid
+      isTaskValid &&
+      tasks?.length > 0
     )
-  }, [state, isTaskValid])
+  }, [state, tasks, isTaskValid])
 
   return (
     <Flex flexDirection="column" mt="30px">
