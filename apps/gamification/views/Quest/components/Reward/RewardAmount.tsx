@@ -1,13 +1,24 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Card, Flex, LogoRoundIcon, Text } from '@pancakeswap/uikit'
+import { Box, Flex, LogoRoundIcon, Text } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
+
+const RewardAmountContainer = styled(Box)`
+  padding-bottom: 24px;
+  border-bottom: solid 1px ${({ theme }) => theme.colors.cardBorder};
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-bottom: 40px;
+  }
+`
 
 export const RewardAmount = () => {
   const { t } = useTranslation()
+
   return (
-    <Card style={{ width: '100%' }} marginBottom={['16px']}>
-      <Flex padding="24px 29.5px">
+    <RewardAmountContainer>
+      <Flex width="fit-content" margin="auto">
         <LogoRoundIcon width={64} height={64} />
-        <Box ml="auto">
+        <Box ml={['16px']}>
           <Text fontSize={['40px']} bold as="span">
             999
           </Text>
@@ -16,6 +27,6 @@ export const RewardAmount = () => {
           </Text>
         </Box>
       </Flex>
-    </Card>
+    </RewardAmountContainer>
   )
 }

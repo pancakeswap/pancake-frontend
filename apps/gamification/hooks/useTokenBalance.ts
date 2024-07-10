@@ -1,11 +1,13 @@
 import { ChainId } from '@pancakeswap/chains'
+import { Currency } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { useBalance, useReadContract } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useMemo } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useAccount } from 'wagmi'
-import { useBalance, useReadContract } from '@pancakeswap/wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
 const useTokenBalance = (tokenAddress: Address, forceBSC?: boolean) => {
@@ -23,7 +25,7 @@ export const useTokenBalanceByChain = (tokenAddress: Address, chainIdOverride?: 
     functionName: 'balanceOf',
     args: [account || '0x'],
     query: {
-      enabled: !!account,
+      enabled: Boolean(!!account && tokenAddress),
     },
     watch: true,
   })
@@ -71,6 +73,22 @@ export const useBSCCakeBalance = () => {
   const { balance, fetchStatus } = useTokenBalance(CAKE[ChainId.BSC]?.address, true)
 
   return { balance: BigInt(balance.toString()), fetchStatus }
+}
+
+export const useCurrencyBalance = (currency: Currency | null | undefined) => {
+  const native = useNativeCurrency()
+  const isNativeToken = currency?.symbol === native?.symbol && currency.chainId === native.chainId
+
+  const { balance: tokenBalance } = useTokenBalanceByChain(
+    (currency?.isNative ? currency?.wrapped?.address : currency?.address) ?? '0x',
+  )
+  const { balance: nativeTokenBalance } = useGetNativeTokenBalance()
+
+  if (!currency) {
+    return BIG_ZERO
+  }
+
+  return isNativeToken ? new BigNumber(nativeTokenBalance.toString()) : tokenBalance
 }
 
 export default useTokenBalance

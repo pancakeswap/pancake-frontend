@@ -1,20 +1,47 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, Flex, InfoIcon, Text } from '@pancakeswap/uikit'
+import { Flex, InfoIcon, Text } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
 import { AssetSet } from 'views/Quest/components/Reward/AssetSet'
 
+const TotalRewardContainer = styled(Flex)`
+  position: relative;
+  overflow: hidden;
+  border-bottom: solid 1px ${({ theme }) => theme.colors.cardBorder};
+`
+
+const TextBlock = styled(Flex)`
+  position: absolute;
+  top: calc(50% - 1px);
+  right: 0px;
+  z-index: 2;
+  padding: 2px 12px 2px 0;
+  transform: translateY(-50%);
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: -28px;
+    width: 28px;
+    height: 100%;
+    background: ${({ theme }) =>
+      `linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, ${theme.colors.backgroundAlt} 100%)`};
+  }
+`
+
 export const TotalRewards = () => {
-  const { t } = useTranslation()
   return (
-    <Card style={{ width: '100%' }} marginBottom={['8px']}>
-      <Flex padding="16px">
+    <TotalRewardContainer>
+      <Flex padding="12px">
         <AssetSet size={28} />
-        <Flex m="auto">
+        <TextBlock m="auto">
           <Text bold mr="4px">
             999 rewards
           </Text>
           <InfoIcon color="textSubtle" style={{ alignSelf: 'center' }} />
-        </Flex>
+        </TextBlock>
       </Flex>
-    </Card>
+    </TotalRewardContainer>
   )
 }

@@ -31,18 +31,18 @@ export const AssetSet: React.FC<React.PropsWithChildren<AssetSetProps>> = ({ siz
     bscTokens.csix,
     bscTokens.chat,
   ]
-  const addresses = tokens.length
+  const totalLength = tokens.length
 
-  const width = useMemo(() => imageSize * addresses, [addresses, imageSize])
+  const width = useMemo(() => imageSize * totalLength, [totalLength, imageSize])
 
   const leftOffsetFor = useCallback(
     (i: number): number => {
       const maxCount = 10
       const radius = imageSize / 1.8
-      const spacer = (maxCount / addresses - 1) * (radius * 1.8)
+      const spacer = (maxCount / totalLength - 1) * (radius * 1.8)
       return ((width - radius * 1.8 + spacer) / (maxCount - 1)) * i
     },
-    [addresses, imageSize, width],
+    [totalLength, imageSize, width],
   )
 
   return (
@@ -52,7 +52,7 @@ export const AssetSet: React.FC<React.PropsWithChildren<AssetSetProps>> = ({ siz
           key={token.address}
           width={imageSize}
           height={imageSize}
-          style={{ left: `${leftOffsetFor(i)}px`, zIndex: `${i - 20}` }}
+          style={{ left: `${leftOffsetFor(i)}px`, zIndex: `${i - totalLength}` }}
         >
           <TokenImage token={token} width={imageSize} height={imageSize} />
         </Circle>

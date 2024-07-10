@@ -27,15 +27,15 @@ const StyledInputGroup = styled(Box)<{ scale: Scales; hasStartIcon: boolean; has
   }
 `;
 
-const InputIcon = styled.div<{ scale: Scales; isEndIcon?: boolean }>`
+const InputIcon = styled.div<{ scale: Scales; $isEndIcon?: boolean }>`
   align-items: center;
   display: flex;
   height: 100%;
   position: absolute;
   top: 0;
 
-  ${({ isEndIcon, scale }) =>
-    isEndIcon
+  ${({ $isEndIcon, scale }) =>
+    $isEndIcon
       ? `
     right: ${scale === scales.SM ? "8px" : "16px"};
   `
@@ -56,7 +56,7 @@ const InputGroup = ({ scale = scales.MD, startIcon, endIcon, children, ...props 
     {startIcon && <InputIcon scale={scale}>{startIcon}</InputIcon>}
     {cloneElement(children, { scale })}
     {endIcon && (
-      <InputIcon scale={scale} isEndIcon>
+      <InputIcon scale={scale} $isEndIcon>
         {endIcon}
       </InputIcon>
     )}
