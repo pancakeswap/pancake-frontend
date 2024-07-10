@@ -10,8 +10,22 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { styled } from 'styled-components'
+import { LongPressSvg } from 'views/DashboardQuestEdit/components/SubmitAction/LongPressSvg'
 import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
+import { WarningInfo } from './WarningInfo'
+
+const YellowButton = styled(Button)`
+  color: white;
+  background-color: ${({ theme }) => theme.colors.warning};
+
+  &:disabled {
+    svg {
+      opacity: 0.2;
+    }
+  }
+`
 
 export enum CurrencyModalView {
   search,
@@ -29,6 +43,8 @@ interface AddRewardModalProps extends InjectedModalProps {
   handlePickedRewardToken: (value: Currency, totalRewardAmount: number, amountOfWinnersInModal: number) => void
 }
 
+const DURATION = 3000 // 3s
+
 export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProps>> = ({
   reward,
   amountOfWinners,
@@ -41,6 +57,53 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   const [amountOfWinnersInModal, setAmountOfWinnersInModal] = useState(0)
   const { chainId } = useActiveWeb3React()
   const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(reward?.currency?.network as ChainId)
+  const [progress, setProgress] = useState(0)
+  const timerRef = useRef<number | null>(null)
+  const animationFrameRef = useRef<number | null>(null)
+
+  const startLongPress = () => {
+    timerRef.current = window.setTimeout(() => {
+      setProgress(100)
+      handleContinue()
+    }, DURATION)
+
+    let start: number | null = null
+    const animate = (timestamp: number) => {
+      if (!start) start = timestamp
+      const elapsed = timestamp - start
+      const percentage = Math.min((elapsed / DURATION) * 100, 100)
+      setProgress(percentage)
+
+      if (elapsed < DURATION) {
+        animationFrameRef.current = requestAnimationFrame(animate)
+      }
+    }
+
+    animationFrameRef.current = requestAnimationFrame(animate)
+  }
+
+  const endLongPress = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+      timerRef.current = null
+    }
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current)
+      animationFrameRef.current = null
+    }
+    setProgress(0)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current)
+      }
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+    }
+  }, [])
 
   const defaultInputCurrency = useMemo((): Currency => {
     const findToken = tokensByChainWithNativeToken.find((i) =>
@@ -115,6 +178,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
         {modalView === CurrencyModalView.currencyInput && (
           <>
             <Box width="100%">
+              <WarningInfo />
               <CurrencyInputPanel
                 id="currency-input"
                 showMaxButton
@@ -148,14 +212,19 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
                 {t('Switch Network')}
               </Button>
             ) : (
-              <Button
+              <YellowButton
                 width="100%"
                 mt="24px"
+                onMouseDown={startLongPress}
+                onTouchStart={startLongPress}
+                onMouseUp={endLongPress}
+                onMouseLeave={endLongPress}
+                onTouchEnd={endLongPress}
+                endIcon={<LongPressSvg progress={progress} />}
                 disabled={Boolean(!inputCurrency || !stakeAmount || !displayAmountOfWinnersInModal)}
-                onClick={handleContinue}
               >
-                {t('Continue')}
-              </Button>
+                {t('Hold to deposit')}
+              </YellowButton>
             )}
           </>
         )}
