@@ -44,8 +44,8 @@
     "styled-components": "6.0.7",
     "swiper": "^11.0.5",
     "trustWallet": "link:@pancakeswap/wagmi/connectors/trustWallet",
-    "viem": "2.13.3",
-    "wagmi": "2.9.8"
+    "viem": "catalog:",
+    "wagmi": "catalog:"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "14.2.3",

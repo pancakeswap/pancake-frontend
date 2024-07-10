@@ -12,7 +12,7 @@
     "graphql-request": "5.0.0",
     "itty-router": "^2.6.1",
     "itty-router-extras": "^0.4.2",
-    "viem": "2.13.3"
+    "viem": "catalog:"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^3.10.0",

@@ -44,8 +44,8 @@
     "react-dom": "^18.2.0",
     "styled-components": "6.0.7",
     "styled-jsx": "5.1.1",
-    "viem": "2.13.3",
-    "wagmi": "2.9.8"
+    "viem": "catalog:",
+    "wagmi": "catalog:"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "14.2.3",

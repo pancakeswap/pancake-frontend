@@ -4,3 +4,8 @@ packages:
   - 'apis/*'
   - 'examples/*'
   - 'scripts'
+
+catalog:
+  viem: ^2.17.3
+  wagmi: ^2.10.10
+
