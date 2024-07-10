@@ -66,6 +66,13 @@ export const PROVIDER_ICONS = {
   [ONRAMP_PROVIDERS.Topper]: `${ASSET_CDN}/web/onramp/topper.png`,
 } satisfies Record<keyof typeof ONRAMP_PROVIDERS, string>
 
+export const ALT_PROVIDER_ICONS = {
+  [ONRAMP_PROVIDERS.MoonPay]: `${ASSET_CDN}/web/onramp/moonpay.svg`,
+  [ONRAMP_PROVIDERS.Mercuryo]: `${ASSET_CDN}/web/onramp/mercuryo.svg`,
+  [ONRAMP_PROVIDERS.Transak]: `${ASSET_CDN}/web/onramp/transak.svg`,
+  [ONRAMP_PROVIDERS.Topper]: `${ASSET_CDN}/web/onramp/topper-logo-alt.png`,
+} satisfies Record<keyof typeof ONRAMP_PROVIDERS, string>
+
 export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: FeeTypes[] } = {
   [ONRAMP_PROVIDERS.MoonPay]: MOONPAY_FEE_TYPES,
   [ONRAMP_PROVIDERS.Mercuryo]: MERCURYO_FEE_TYPES,

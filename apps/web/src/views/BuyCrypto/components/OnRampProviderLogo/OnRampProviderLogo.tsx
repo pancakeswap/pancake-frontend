@@ -4,20 +4,21 @@ import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { getImageUrlFromToken } from 'components/TokenImage'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/image'
-import { ONRAMP_PROVIDERS, PROVIDER_ICONS, isNativeBtc } from 'views/BuyCrypto/constants'
+import { ALT_PROVIDER_ICONS, ONRAMP_PROVIDERS, PROVIDER_ICONS, isNativeBtc } from 'views/BuyCrypto/constants'
 import { OnRampIconCircleWrapper, OnRampIconContainer } from 'views/BuyCrypto/styles'
 
 type ProviderLogoProps = {
   provider: keyof typeof ONRAMP_PROVIDERS | undefined
   size?: number
   loading?: boolean
+  alt?: boolean
 }
 
-const OnRampProviderLogo = ({ provider, size = 35, loading = false }: ProviderLogoProps) => {
+const OnRampProviderLogo = ({ provider, size = 35, loading = false, alt = false }: ProviderLogoProps) => {
   const defaultProvider = provider ?? ONRAMP_PROVIDERS.MoonPay
   const isLoading = Boolean(loading || !provider)
   const showBorder = Boolean(defaultProvider === ONRAMP_PROVIDERS.Mercuryo)
-  const icon = PROVIDER_ICONS[defaultProvider]
+  const icon = alt ? ALT_PROVIDER_ICONS[defaultProvider] : PROVIDER_ICONS[defaultProvider]
   return (
     <OnRampIconContainer width={size} height={size}>
       <Skeleton isDark width={size} height={size} borderRadius="50%" display={!isLoading ? 'none' : 'block'} />
