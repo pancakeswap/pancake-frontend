@@ -309,7 +309,7 @@ export const arbitrumTokens = {
     6,
     'TIA.n',
     'TIA',
-    ' https://celestia.org/',
+    'https://celestia.org/',
   ),
   woo: new ERC20Token(
     ChainId.ARBITRUM_ONE,
@@ -358,5 +358,21 @@ export const arbitrumTokens = {
     'SolvBTC',
     'Solv BTC',
     'https://solv.finance/',
+  ),
+  sqd: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x1337420dED5ADb9980CFc35f8f2B054ea86f8aB1',
+    18,
+    'SQD',
+    'Subsquid',
+    'https://subsquid.io/',
+  ),
+  mstETH: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0xE367d4b1b9bB40e34aDCE448e1edb0141Fc6a8AC',
+    18,
+    'Bridged mstETH',
+    'Bridged mstETH',
+    'https://www.eigenlayer.magpiexyz.io/restake',
   ),
 }

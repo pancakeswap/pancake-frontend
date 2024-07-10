@@ -30,6 +30,7 @@ test('exports', () => {
       "_9975",
       "computePriceImpact",
       "getTokenComparator",
+      "sortCurrencies",
       "sortedInsert",
       "sqrt",
       "validateVMTypeInstance",

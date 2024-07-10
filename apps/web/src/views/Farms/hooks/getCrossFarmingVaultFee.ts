@@ -1,7 +1,9 @@
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
-import { getCrossFarmingSenderContract, getNonBscVaultContract } from 'utils/contractHelpers'
+import { getCrossFarmingSenderContract, getCrossFarmingVaultContract } from 'utils/contractHelpers'
 import { Address } from 'viem'
+import { estimateFeesPerGas } from 'viem/actions'
+import { publicClient as getPublicClient } from 'utils/viem'
 
 export enum MessageTypes {
   Deposit = 0,
@@ -31,7 +33,7 @@ const BNB_CHANGE = 5000000000000000
 const BUFFER = 1.3
 const WITHDRAW_BUFFER = 1.4
 
-export const getNonBscVaultContractFee = async ({
+export const getCrossFarmingVaultContractFee = async ({
   pid,
   amount,
   chainId,
@@ -41,14 +43,14 @@ export const getNonBscVaultContractFee = async ({
   gasPrice,
 }: CalculateTotalFeeProps) => {
   try {
-    const nonBscVaultContract = getNonBscVaultContract(undefined, chainId)
+    const crossFarmingVaultContract = getCrossFarmingVaultContract(undefined, chainId)
     const crossFarmingAddress = getCrossFarmingSenderContract(undefined, chainId)
     const exchangeRate = new BigNumber(ORACLE_PRECISION).div(oraclePrice).times(ORACLE_PRECISION) // invert into BNB/ETH price
 
     const getNonce = await crossFarmingAddress.read.nonces([userAddress as Address, BigInt(pid)])
     const nonce = new BigNumber(getNonce.toString()).toJSON()
     const [encodeMessage, hasFirstTime, estimateGaslimit] = await Promise.all([
-      nonBscVaultContract.read.encodeMessage([
+      crossFarmingVaultContract.read.encodeMessage([
         userAddress as Address,
         BigInt(pid),
         BigInt(amount),
@@ -58,7 +60,7 @@ export const getNonBscVaultContractFee = async ({
       crossFarmingAddress.read.is1st([userAddress as Address]),
       crossFarmingAddress.read.estimateGaslimit([Chains.BSC, userAddress as Address, messageType]),
     ])
-    const calcFee = await nonBscVaultContract.read.calcFee([encodeMessage])
+    const calcFee = await crossFarmingVaultContract.read.calcFee([encodeMessage])
 
     const msgBusFee = new BigNumber(calcFee.toString())
     const destTxFee = new BigNumber(gasPrice)
@@ -79,8 +81,14 @@ export const getNonBscVaultContractFee = async ({
         userAddress as Address,
         messageType,
       ])
+      const publicClient = getPublicClient({ chainId })
+      const { maxFeePerGas } = await estimateFeesPerGas(publicClient)
+      const evmGasPrice = maxFeePerGas?.toString()
+      if (!evmGasPrice) {
+        throw new Error('Missing evm gasPrice')
+      }
       const fee = msgBusFee.times(exchangeRate).div(ORACLE_PRECISION)
-      const total = new BigNumber(gasPrice).times(estimateEvmGaslimit.toString()).plus(fee)
+      const total = new BigNumber(evmGasPrice).times(estimateEvmGaslimit.toString()).plus(fee)
       return totalFee.plus(total).times(WITHDRAW_BUFFER).toFixed(0)
     }
 

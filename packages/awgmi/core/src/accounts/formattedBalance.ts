@@ -27,9 +27,12 @@ export async function fetchFormattedBalance({
 }: FetchFormattedBalanceArgs): Promise<FetchFormattedBalanceResult> {
   const provider = getProvider({ networkName })
 
-  const resource = await provider.getAccountResource(address, wrapCoinStoreTypeTag(coin || APTOS_COIN))
+  const resource = await provider.getAccountResource({
+    accountAddress: address,
+    resourceType: wrapCoinStoreTypeTag(coin || APTOS_COIN),
+  })
 
-  const { value } = (resource.data as CoinStoreResult).coin
+  const { value } = (resource as CoinStoreResult).coin
 
   const { decimals, symbol } = await fetchCoin({ networkName, coin })
 

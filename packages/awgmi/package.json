@@ -18,13 +18,14 @@
     "wallets"
   ],
   "peerDependencies": {
+    "@aptos-labs/ts-sdk": "1.x",
     "@blocto/sdk": "^0.5.4",
     "@msafe/aptos-wallet": "^3.0.6",
     "@tanstack/react-query": "5.x",
-    "aptos": "1.x",
     "react": "^18.2.0"
   },
   "devDependencies": {
+    "@aptos-labs/ts-sdk": "1.12.2",
     "@blocto/sdk": "^0.5.4",
     "@msafe/aptos-wallet": "^3.0.6",
     "@pancakeswap/tsconfig": "workspace:*",
@@ -44,6 +45,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "rm -rf dist && tsup",
+    "test:u": "vitest -u --run",
     "test": "vitest --run"
   },
   "exports": {

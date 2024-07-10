@@ -39,12 +39,12 @@ const TxnLink = styled.div`
 `
 
 const renderIcon = (txn: TransactionDetails) => {
-  const { receipt, nonBscFarm } = txn
-  if (!txn.receipt || nonBscFarm?.status === FarmTransactionStatus.PENDING) {
+  const { receipt, crossChainFarm } = txn
+  if (!txn.receipt || crossChainFarm?.status === FarmTransactionStatus.PENDING) {
     return <RefreshIcon spin width="24px" />
   }
 
-  const isFarmStatusSuccess = nonBscFarm ? nonBscFarm.status === FarmTransactionStatus.SUCCESS : true
+  const isFarmStatusSuccess = crossChainFarm ? crossChainFarm.status === FarmTransactionStatus.SUCCESS : true
   return (receipt?.status === 1 && isFarmStatusSuccess) || typeof receipt?.status === 'undefined' ? (
     <CheckmarkCircleIcon color="success" width="24px" />
   ) : (
@@ -57,7 +57,7 @@ const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = (
   const dispatch = useAppDispatch()
 
   const onClickTransaction = () => {
-    if (type === 'non-bsc-farm') {
+    if (type === 'cross-chain-farm') {
       onDismiss()
       dispatch(pickFarmTransactionTx({ tx: txn.hash, chainId }))
     } else {

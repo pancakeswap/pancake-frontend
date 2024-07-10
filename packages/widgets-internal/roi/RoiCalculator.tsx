@@ -77,6 +77,7 @@ export type RoiCalculatorProps = {
   volume24H?: number;
   max?: string;
   maxLabel?: string;
+  additionalApr?: number;
 } & (RoiCalculatorFarmProps | RoiCalculatorLPProps);
 
 type RoiCalculatorLPProps = {

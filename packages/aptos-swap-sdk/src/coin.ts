@@ -1,5 +1,6 @@
 import { Token } from '@pancakeswap/swap-sdk-core'
-import { HexString } from 'aptos'
+
+import { HexString } from './hexString'
 import { Currency } from './currency'
 
 export class Coin extends Token {

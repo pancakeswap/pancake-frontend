@@ -25,9 +25,8 @@ export function CoinRegisterButton({ currency }: { currency: Currency }) {
             fetchWithCatchTxError(() =>
               sendTransactionAsync({
                 payload: {
-                  type: 'entry_function_payload',
-                  type_arguments: [currency.address],
-                  arguments: [],
+                  typeArguments: [currency.address],
+                  functionArguments: [],
                   function: `0x1::managed_coin::register`,
                 },
               }),

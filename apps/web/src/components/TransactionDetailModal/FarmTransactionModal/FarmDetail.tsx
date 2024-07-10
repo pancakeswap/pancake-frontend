@@ -3,13 +3,13 @@ import { Box, Flex, RefreshIcon, ScanLink, Text, WarningIcon } from '@pancakeswa
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { useMemo } from 'react'
 import { ChainLinkSupportChains } from 'state/info/constant'
-import { FarmTransactionStatus, NonBscFarmTransactionStep } from 'state/transactions/actions'
+import { FarmTransactionStatus, CrossChainFarmTransactionStep } from 'state/transactions/actions'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { chains } from 'utils/wagmi'
 
 interface HarvestDetailProps {
   status?: FarmTransactionStatus
-  step: NonBscFarmTransactionStep
+  step: CrossChainFarmTransactionStep
 }
 
 const FarmDetail: React.FC<React.PropsWithChildren<HarvestDetailProps>> = ({ step, status }) => {

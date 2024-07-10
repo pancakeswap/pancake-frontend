@@ -2,9 +2,11 @@
 import { Currency, CurrencyAmount, Pair, SWAP_ADDRESS } from '@pancakeswap/aptos-swap-sdk'
 import { accountResourceQueryKey } from '@pancakeswap/awgmi'
 import { fetchAccountResource } from '@pancakeswap/awgmi/core'
+import { MoveStructId } from '@aptos-labs/ts-sdk'
 import { UseQueryResult, useQueries } from '@tanstack/react-query'
 import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
+
 import { useCoins } from './Tokens'
 import { useActiveNetwork } from './useNetwork'
 
@@ -64,9 +66,17 @@ export function usePairReservesQueries(pairReservesAddresses: (string | undefine
           enabled: Boolean(pairAddress),
           queryFn: () => {
             if (!pairAddress) throw new Error('No pair address')
-            return fetchAccountResource({ address: SWAP_ADDRESS, resourceType: pairAddress, networkName })
+            return fetchAccountResource({
+              address: SWAP_ADDRESS,
+              resourceType: pairAddress as MoveStructId,
+              networkName,
+            })
           },
-          queryKey: accountResourceQueryKey({ address: SWAP_ADDRESS, resourceType: pairAddress, networkName }),
+          queryKey: accountResourceQueryKey({
+            address: SWAP_ADDRESS,
+            resourceType: pairAddress as MoveStructId,
+            networkName,
+          }),
           staleTime: Infinity,
           refetchInterval: 3_000,
         })),

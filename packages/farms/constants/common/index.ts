@@ -27,7 +27,7 @@ export const priceHelperTokens = {
     list: [ethereumTokens.weth, ethereumTokens.usdc, ethereumTokens.usdt],
   },
   [ChainId.BSC]: {
-    list: [bscTokens.wbnb, bscTokens.usdt, bscTokens.busd, bscTokens.eth],
+    list: [bscTokens.wbnb, bscTokens.usdt, bscTokens.busd, bscTokens.eth, bscTokens.solvbtc, bscTokens.solvBTCena],
   },
   [ChainId.POLYGON_ZKEVM]: {
     list: [polygonZkEvmTokens.weth, polygonZkEvmTokens.usdc, polygonZkEvmTokens.usdt, polygonZkEvmTokens.matic],
@@ -36,7 +36,15 @@ export const priceHelperTokens = {
     list: [zksyncTokens.weth, zksyncTokens.usdc, zksyncTokens.usdt],
   },
   [ChainId.ARBITRUM_ONE]: {
-    list: [arbitrumTokens.weth, arbitrumTokens.usdc, arbitrumTokens.usdt, arbitrumTokens.arb, arbitrumTokens.usdplus],
+    list: [
+      arbitrumTokens.weth,
+      arbitrumTokens.usdc,
+      arbitrumTokens.usdt,
+      arbitrumTokens.arb,
+      arbitrumTokens.usdplus,
+      arbitrumTokens.solvBTC,
+      arbitrumTokens.solvBTCena,
+    ],
   },
   [ChainId.LINEA]: {
     list: [lineaTokens.weth, lineaTokens.usdc, lineaTokens.usdt, lineaTokens.wbtc, lineaTokens.dai],

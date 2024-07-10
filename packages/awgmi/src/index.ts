@@ -16,6 +16,7 @@ export {
   isStructTag,
   isUserTransaction,
   parseVmStatusError,
+  HexString,
 } from '@pancakeswap/awgmi/core'
 
 export * from './client'

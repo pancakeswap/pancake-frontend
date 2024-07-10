@@ -2,6 +2,9 @@ import { zksyncTokens } from '@pancakeswap/tokens'
 
 import { ChainId } from '@pancakeswap/chains'
 import { Currency, Native } from '@pancakeswap/sdk'
+import { getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
+import addresses from 'config/constants/contracts'
+import { getAddressFromMap } from 'utils/addressHelpers'
 import { Address, Hex } from 'viem'
 
 // export const DEFAULT_PAYMASTER_TOKEN = Native.onChain(ChainId.ZKSYNC)
@@ -93,9 +96,21 @@ export const paymasterInfo: {
   },
 }
 
+/**
+ * Contracts that the paymaster is allowed to interact with.
+ * In addition, ERC20 Approve transactions are allowed.
+ */
+export const PAYMASTER_CONTRACT_WHITELIST = [
+  getUniversalRouterAddress(ChainId.ZKSYNC), // Universal Router on zkSync
+  getAddressFromMap(addresses.zkSyncAirDrop, ChainId.ZKSYNC), // ZKSync AirDrop
+].map((address) => address.toLowerCase())
+
 // Zyfi
 export const ZYFI_PAYMASTER_URL = 'https://api.zyfi.org/api/erc20_paymaster/v1'
 export const ZYFI_SPONSORED_PAYMASTER_URL = 'https://api.zyfi.org/api/erc20_sponsored_paymaster/v1'
+
+export const ZYFI_VAULT: Address = '0x32faBA244AB815A5cb3E09D55c941464DBe31496'
+export const PCS_ACCOUNT_IN_ZYFI_VAULT: Address = '0xf8d936A86a3844084Eb82b57E2107B1fEDFb1DD7'
 
 export interface ZyfiResponse {
   txData: TxData

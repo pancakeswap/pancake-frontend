@@ -41,11 +41,11 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
               </InlineLink>
             </p>
             <br />
-            {merklApr && (
+            {/* {merklApr && (
               <InlineLink color={linkColor} external display="inline" href={merklLink}>
                 {t("Merkl APR")}: {merklApr?.toFixed(2)}%
               </InlineLink>
-            )}
+            )} */}
             <br />
             <br />
             {t("To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.")}
@@ -60,7 +60,7 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
         <Text display="inline" color="currentColor">
           <p>{t("Incentives can now be earned on BOTH Merkl and Farms at the same time.")}</p>
           <br />
-          {merklApr && (
+          {/* {merklApr && (
             <>
               <InlineLink color={linkColor} external display="inline" href={merklLink}>
                 {t("Merkl APR")}: {merklApr?.toFixed(2)}%
@@ -68,7 +68,7 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
               <br />
               <br />
             </>
-          )}
+          )} */}
           {t("Stake your LP token in the Farm and accrue both Merkl and Farm rewards.")}
           <br />
           <br />

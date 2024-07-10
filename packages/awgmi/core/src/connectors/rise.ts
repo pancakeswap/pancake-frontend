@@ -1,14 +1,16 @@
-import { MaybeHexString, Types } from 'aptos'
+import { Aptos, HexInput, InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk'
+
 import { Chain } from '../chain'
 import { ConnectorNotFoundError } from '../errors'
 import { Address } from '../types'
 import { Connector } from './base'
 import { NetworkInfo, SignMessagePayload, SignMessageResponse } from './types'
+import { convertTransactionPayloadToOldFormat } from '../transactions/payloadTransformer'
 
 interface RiseAccount {
   address: Address
-  publicKey: MaybeHexString
-  authKey: MaybeHexString
+  publicKey: HexInput
+  authKey: HexInput
   isConnected: boolean
 }
 
@@ -18,8 +20,8 @@ interface IRiseWallet {
   connect: () => Promise<AddressInfo>
   account(): Promise<RiseAccount>
   isConnected: () => Promise<boolean>
-  signAndSubmitTransaction(transaction: any): Promise<{ hash: Types.HexEncodedBytes }>
-  signTransaction(transaction: any, options?: any): Promise<Uint8Array>
+  signAndSubmitTransaction(transaction: any): Promise<{ hash: string }>
+  signTransaction(transaction: any, options?: any): Promise<ReturnType<Aptos['transaction']['sign']>>
   signMessage(message: SignMessagePayload): Promise<SignMessageResponse>
   disconnect(): Promise<void>
   network(): Promise<NetworkInfo>
@@ -114,16 +116,16 @@ export class RiseConnector extends Connector<Window['rise'], any> {
     }
   }
 
-  async signAndSubmitTransaction(tx: Types.TransactionPayload) {
+  async signAndSubmitTransaction(tx: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signAndSubmitTransaction(tx)
+    return provider.signAndSubmitTransaction(convertTransactionPayloadToOldFormat(tx))
   }
 
-  async signTransaction(tx: Types.TransactionPayload) {
+  async signTransaction(tx: InputGenerateTransactionPayloadData) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signTransaction(tx)
+    return provider.signTransaction(convertTransactionPayloadToOldFormat(tx))
   }
 
   async signMessage(message: SignMessagePayload): Promise<SignMessageResponse> {

@@ -189,7 +189,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   // Connected users should see loading indicator until first userData has loaded
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
+  const [stakedOnly, , toggleStakedOnly] = useUserFarmStakedOnly(isActive)
   const [boostedOnly, setBoostedOnly] = useState(false)
   const [stableSwapOnly, setStableSwapOnly] = useState(false)
   const [farmTypesEnableCount, setFarmTypesEnableCount] = useState(0)
@@ -395,12 +395,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 handleSetFarmTypesEnableCount={setFarmTypesEnableCount}
               />
               <ToggleWrapper>
-                <Toggle
-                  id="staked-only-farms"
-                  checked={stakedOnly}
-                  onChange={() => setStakedOnly(!stakedOnly)}
-                  scale="sm"
-                />
+                <Toggle id="staked-only-farms" checked={stakedOnly} onChange={toggleStakedOnly} scale="sm" />
                 <Text> {t('Staked only')}</Text>
               </ToggleWrapper>
             </Flex>

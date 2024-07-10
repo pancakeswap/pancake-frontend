@@ -1,5 +1,11 @@
-import { AptosAccount, AptosClient, Types } from 'aptos'
+import {
+  Account as AptosAccount,
+  AptosConfig,
+  Aptos as AptosSDK,
+  InputGenerateTransactionPayloadData,
+} from '@aptos-labs/ts-sdk'
 import EventEmitter from 'eventemitter3'
+
 import { devnet } from '../../chain'
 import { UserRejectedRequestError } from '../../errors'
 import { Address } from '../../types'
@@ -18,12 +24,12 @@ export type MockProviderOptions = {
 
 const aptosAccountToAccount = (acc: AptosAccount): Account => {
   return {
-    address: acc.address().toShortString() as Address,
-    publicKey: acc.pubKey().toShortString(),
+    address: acc.accountAddress.toString() as Address,
+    publicKey: acc.publicKey.toString(),
   }
 }
 
-const client = new AptosClient(devnet.nodeUrls.default)
+const client = new AptosSDK(new AptosConfig({ fullnode: devnet.nodeUrls.default }))
 
 type Events = {
   accountChange(account: Account): void
@@ -49,21 +55,34 @@ export class MockProvider implements Aptos {
     return devnet.network
   }
 
-  async signTransaction(transaction: Types.TransactionPayload): Promise<Uint8Array> {
+  async signTransaction(
+    transaction: InputGenerateTransactionPayloadData,
+  ): Promise<ReturnType<AptosSDK['transaction']['sign']>> {
     if (!this._account) throw new UserRejectedRequestError(new Error())
-    const txnRequest = await client.generateTransaction(this._account.address(), transaction)
-    const signedTxn = await client.signTransaction(this._account, txnRequest)
-    return signedTxn
+    const txnRequest = await client.transaction.build.simple({
+      sender: this._account.accountAddress,
+      data: transaction,
+    })
+    return client.transaction.sign({
+      signer: this._account,
+      transaction: txnRequest,
+    })
   }
 
-  async signAndSubmitTransaction(transaction: Types.TransactionPayload): ReturnType<AptosClient['submitTransaction']> {
+  async signAndSubmitTransaction(
+    transaction: InputGenerateTransactionPayloadData,
+  ): ReturnType<AptosSDK['signAndSubmitTransaction']> {
     if (!this._account) throw new UserRejectedRequestError(new Error())
 
-    const rawTxn = await client.generateTransaction(this._account.address(), transaction)
+    const rawTxn = await client.transaction.build.simple({
+      sender: this._account.accountAddress,
+      data: transaction,
+    })
 
-    const bcsTxn = AptosClient.generateBCSSimulation(this._account, rawTxn)
-
-    return client.submitTransaction(bcsTxn)
+    return client.transaction.signAndSubmitTransaction({
+      signer: this._account,
+      transaction: rawTxn,
+    })
   }
 
   async signMessage(message?: SignMessagePayload | undefined): Promise<SignMessageResponse> {
@@ -82,7 +101,7 @@ export class MockProvider implements Aptos {
 
     const fullMessage = [
       prefix,
-      message.address ? `address: ${this._account.address}` : '',
+      message.address ? `address: ${this._account.accountAddress}` : '',
       message.application ? `application: ${application}` : '',
       message.chainId ? `chainId: ${chainId}` : '',
       `message: ${message.message}`,
@@ -92,7 +111,7 @@ export class MockProvider implements Aptos {
       .join('\n')
 
     return {
-      address: this._account.address().toShortString() as Address,
+      address: this._account.accountAddress.toString() as Address,
       application,
       chainId,
       fullMessage,

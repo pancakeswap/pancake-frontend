@@ -1,4 +1,4 @@
-import { useAccountBalance } from '@pancakeswap/awgmi'
+import { useBalance } from '@pancakeswap/awgmi'
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import type { DeserializedFarmUserData } from '@pancakeswap/farms'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
@@ -44,7 +44,7 @@ export function useStakedActions(tokenType) {
 export const StakedContainer = ({ children, ...props }) => {
   const { onStake, onUnstake } = useStakedActions(props.lpAddress)
   const { account } = useActiveWeb3React()
-  const { data: tokenBalance = BIG_ZERO } = useAccountBalance({
+  const { data: tokenBalance = BIG_ZERO } = useBalance({
     watch: true,
     address: account,
     coin: props.lpAddress,

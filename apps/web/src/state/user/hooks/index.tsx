@@ -62,7 +62,7 @@ export function useSubgraphHealthIndicatorManager() {
   return [isSubgraphHealthIndicatorDisplayed, setSubgraphHealthIndicatorDisplayedPreference] as const
 }
 
-export function useUserFarmStakedOnly(isActive: boolean): [boolean, (stakedOnly: boolean) => void] {
+export function useUserFarmStakedOnly(isActive: boolean): [boolean, (stakedOnly: boolean) => void, () => void] {
   const dispatch = useAppDispatch()
   const userFarmStakedOnly = useSelector<AppState, AppState['user']['userFarmStakedOnly']>((state) => {
     return state.user.userFarmStakedOnly
@@ -76,10 +76,15 @@ export function useUserFarmStakedOnly(isActive: boolean): [boolean, (stakedOnly:
     [dispatch],
   )
 
-  return [
-    userFarmStakedOnly === FarmStakedOnly.ON_FINISHED ? !isActive : userFarmStakedOnly === FarmStakedOnly.TRUE,
-    setUserFarmStakedOnly,
-  ]
+  const booleanUserFarmStakedOnly =
+    userFarmStakedOnly === FarmStakedOnly.ON_FINISHED ? !isActive : userFarmStakedOnly === FarmStakedOnly.TRUE
+
+  const toggleUserFarmStakedOnly = useCallback(
+    () => setUserFarmStakedOnly(!booleanUserFarmStakedOnly),
+    [setUserFarmStakedOnly, booleanUserFarmStakedOnly],
+  )
+
+  return [booleanUserFarmStakedOnly, setUserFarmStakedOnly, toggleUserFarmStakedOnly]
 }
 
 export function useUserPoolStakedOnly(): [boolean, (stakedOnly: boolean) => void] {
