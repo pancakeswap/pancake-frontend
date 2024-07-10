@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { AllDashboardQuestsType } from 'views/DashboardQuests/type'
@@ -23,12 +23,22 @@ export const useUserJoinedPublicQuests = ({ chainIdList, completionStatus }: Use
   const [page, setPage] = useState(1)
   const [quests, setQuests] = useState<SingleQuestData[]>([])
   const [hasNextPage, setHasNextPage] = useState<boolean>(true)
-  const isFetchingRef = useRef(false)
+  const [prevData, setPrevData] = useState<string>('')
 
   const { refetch, isFetching } = useQuery({
     queryKey: ['fetch-user-all-public-quest-data', account, page, completionStatus, chainIdList],
     queryFn: async () => {
       try {
+        if (chainIdList.length === 0) {
+          return initialData
+        }
+
+        const prevDataSting = `${account}-${page}-${chainIdList}-${completionStatus}`
+        if (prevData === prevDataSting) {
+          return undefined
+        }
+        setPrevData(prevDataSting)
+
         const url = `${GAMIFICATION_PUBLIC_API}/questInfo/v1/questInfoList`
         const response = await fetch(url, {
           method: 'POST',
@@ -65,19 +75,11 @@ export const useUserJoinedPublicQuests = ({ chainIdList, completionStatus }: Use
   useEffect(() => {
     setPage(1)
     setQuests([])
-    isFetchingRef.current = true
-    refetch().then(() => {
-      isFetchingRef.current = false
-    })
   }, [completionStatus, chainIdList, refetch])
 
   const loadMore = () => {
-    if (!isFetching && hasNextPage && !isFetchingRef.current) {
+    if (!isFetching && hasNextPage) {
       setPage((prevPage) => prevPage + 1)
-      isFetchingRef.current = true
-      refetch().then(() => {
-        isFetchingRef.current = false
-      })
     }
   }
 
