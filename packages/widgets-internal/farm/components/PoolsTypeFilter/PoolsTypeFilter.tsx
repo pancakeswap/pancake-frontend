@@ -51,7 +51,7 @@ export const PoolsTypeFilter: React.FC<IPoolsTypeFilterProps> = ({ data }) => {
   }, []);
 
   return (
-    <Container margin="30px" width="272px" isShow={isShow}>
+    <Container width="272px" isShow={isShow}>
       <TreeSelect
         data={data}
         style={{
@@ -61,6 +61,7 @@ export const PoolsTypeFilter: React.FC<IPoolsTypeFilterProps> = ({ data }) => {
           backgroundColor: theme.colors.input,
         }}
         value={selectedNodeKey}
+        placeholder="All pools"
         onShow={() => setIsShow(true)}
         onHide={() => setIsShow(false)}
         onChange={handleTreeSelectChange}

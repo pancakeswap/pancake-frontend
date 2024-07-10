@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { MultiSelect as PrimereactSelect, MultiSelectChangeEvent } from "primereact/multiselect";
 import { styled } from "styled-components";
 import { useTheme } from "@pancakeswap/hooks";
-import { ArrowDropDownIcon } from "../Svg";
+import { ArrowDropDownIcon, SearchIcon } from "../Svg";
 import { Box, Flex } from "../Box";
 import { Checkbox } from "../Checkbox";
 import { Column } from "../Column";
-import { BORDER_RADIUS, IAdaptiveInputForwardProps, SearchBox } from "./SearchBox";
-import { IMultiSelectProps, ISelectItem } from "./types";
+import SearchBox, { BORDER_RADIUS, IAdaptiveInputForwardProps } from "./SearchBox";
+import { IMultiSelectProps, IOptionType, ISelectItem } from "./types";
 import { EmptyMessage } from "./EmptyMessage";
 
 const CHECKBOX_WIDTH = "26px";
@@ -28,9 +28,8 @@ const SelectContainer = styled.div`
   .p-multiselect-panel {
     min-width: auto;
     border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-    box-shadow: 0 0 3px ${({ theme }) => theme.shadows.inset};
+    box-shadow: ${({ theme }) => theme.card.boxShadow};
     border-radius: ${BORDER_RADIUS};
-    padding: 8px 0;
   }
 
   .p-multiselect-label {
@@ -134,6 +133,7 @@ const SelectContainer = styled.div`
 `;
 
 const PrimereactSelectContainer = styled.div<{ scrollHeight?: string }>`
+  height: 0;
   .p-multiselect-items-wrapper {
     height: ${({ scrollHeight }) => scrollHeight ?? "auto"};
   }
@@ -163,6 +163,7 @@ const SelectInputContainer = styled(Flex)`
   padding: 7px 8px 7px 16px;
   user-select: none;
   cursor: pointer;
+  gap: 8px;
 `;
 
 const SelectedInputItemsContainer = styled.div`
@@ -178,13 +179,13 @@ const SelectedInputIconsContainer = styled.div`
   & > :not(:first-child) {
     margin-left: -12px;
   }
-`;
 
-const SelectedInputIcon = styled.img`
-  width: 24px;
-  height: 24px;
-  border: 2px solid ${({ theme }) => theme.colors.input};
-  border-radius: 50%;
+  & > img {
+    width: 24px;
+    height: 24px;
+    border: 2px solid ${({ theme }) => theme.colors.input};
+    border-radius: 50%;
+  }
 `;
 
 const SelectedInputFakeIcon = styled.span`
@@ -203,10 +204,10 @@ const SelectedInputFakeIcon = styled.span`
 
 const SelectInputPlaceholder = styled.div`
   width: 100%;
-  color: ${({ theme }) => theme.colors.textDisabled};
+  color: ${({ theme }) => theme.colors.textSubtle};
 `;
 
-export const MultiSelect = (props: IMultiSelectProps) => {
+export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<T>) => {
   const {
     style,
     panelStyle,
@@ -214,14 +215,13 @@ export const MultiSelect = (props: IMultiSelectProps) => {
     onShow,
     onHide,
     placeholder,
-    defaultValue,
     value,
     options,
     selectAllLabel,
     isShowSelectAll,
     isShowFilter,
   } = props;
-  const [selectedItems, setSelectedItems] = useState(defaultValue ?? null);
+  const [selectedItems, setSelectedItems] = useState<T[]>();
   const [isShow, setIsShow] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -231,7 +231,7 @@ export const MultiSelect = (props: IMultiSelectProps) => {
 
   const theme = useTheme();
   const list = useMemo(
-    () => options?.filter((op) => op.value.toLowerCase().includes(searchText)),
+    () => options?.filter((op) => op.label.toLowerCase().includes(searchText)),
     [options, searchText]
   );
 
@@ -240,10 +240,16 @@ export const MultiSelect = (props: IMultiSelectProps) => {
     [selectedItems, options]
   );
 
-  const itemTemplate = useCallback((option: ISelectItem) => {
+  const itemTemplate = useCallback((option: ISelectItem<T>) => {
     return (
       <ItemContainer>
-        {option.icon ? <ItemIcon alt={option.label} src={option.icon} /> : null}
+        {option.icon ? (
+          typeof option.icon === "string" ? (
+            <ItemIcon alt={option.label} src={option.icon} />
+          ) : (
+            option.icon
+          )
+        ) : null}
         <span>{option.label}</span>
       </ItemContainer>
     );
@@ -253,7 +259,7 @@ export const MultiSelect = (props: IMultiSelectProps) => {
     if (!selectedItems?.length || !options?.length) {
       return [];
     }
-    return selectedItems.map((item) => options.find((op) => op.value === item) ?? { value: item, label: item });
+    return selectedItems.map((item) => options.find((op) => op.value === item)).filter(Boolean) as IOptionType<T>;
   }, [selectedItems, options]);
 
   const handleSelectAll = useCallback(
@@ -280,7 +286,7 @@ export const MultiSelect = (props: IMultiSelectProps) => {
   }, []);
 
   const handleLabelDelete = useCallback(
-    (item: ISelectItem) => {
+    (item: ISelectItem<T>) => {
       if (!selectedItems?.length) {
         return;
       }
@@ -308,6 +314,7 @@ export const MultiSelect = (props: IMultiSelectProps) => {
               colors={{
                 background: "input",
                 border: "inputSecondary",
+                checkedColor: "backgroundAlt",
               }}
               style={{ margin: 0 }}
               onChange={handleSelectAll}
@@ -379,12 +386,22 @@ export const MultiSelect = (props: IMultiSelectProps) => {
           }
         }}
       >
+        {isShowFilter && !selectedItems?.length ? <SearchIcon color={theme.theme.colors.textSubtle} /> : null}
+        {!selectedItems?.length ? (
+          <SelectInputPlaceholder>{props.placeholder ?? "Select something"}</SelectInputPlaceholder>
+        ) : null}
         <SelectedInputIconsContainer>
           {selectedItems ? (
             <>
               {selectedItems.slice(0, 3).map((item) => {
                 const option = options?.find((op) => op.value === item);
-                return option?.icon ? <SelectedInputIcon key={item} src={option.icon} /> : null;
+                return option?.icon ? (
+                  typeof option.icon === "string" ? (
+                    <img alt={item.toString()} key={item} src={option.icon} />
+                  ) : (
+                    option.icon
+                  )
+                ) : null;
               })}
               {selectedItems.length > 3 ? (
                 <SelectedInputFakeIcon>{`+${selectedItems.length - 3}`}</SelectedInputFakeIcon>
@@ -398,15 +415,12 @@ export const MultiSelect = (props: IMultiSelectProps) => {
               ? selectAllLabel
               : selectedItems.map((item, idx) => (
                   <React.Fragment key={item}>
+                    {idx > 0 && <span>, </span>}
                     <span>{options?.find((op) => op.value === item)?.label}</span>
-                    {idx < selectedItems.length - 1 && <span>, </span>}
                   </React.Fragment>
                 ))
             : null}
         </SelectedInputItemsContainer>
-        {!selectedItems?.length ? (
-          <SelectInputPlaceholder>{props.placeholder ?? "Select something"}</SelectInputPlaceholder>
-        ) : null}
         <Column>
           <ArrowDropDownIcon
             color="text"

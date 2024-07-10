@@ -17,7 +17,7 @@ import {
 } from 'state/lists/hooks'
 import { safeGetAddress } from 'utils'
 import { useToken as useToken_ } from 'wagmi'
-import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
+import useUserAddedTokens, { useUserAddedTokensByChainIds } from '../state/user/hooks/useUserAddedTokens'
 import { useActiveChainId } from './useActiveChainId'
 import useNativeCurrency from './useNativeCurrency'
 
@@ -44,7 +44,7 @@ const mapWithoutUrlsBySymbol = (tokenMap?: TokenAddressMap<ChainId>, chainId?: n
 }
 
 /**
- * Returns all tokens that are from active urls and user added tokens
+ * Returns all tokens of activeChain that are from active urls and user added tokens
  */
 export function useAllTokens(): { [address: string]: ERC20Token } {
   const { chainId } = useActiveChainId()
@@ -70,6 +70,32 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
         )
     )
   }, [userAddedTokens, tokenMap, chainId])
+}
+
+/**
+ * Returns all tokens that are from active urls and user added tokens
+ */
+export function useAllTokensByChainIds(chainIds: number[]): { [address: string]: ERC20Token } {
+  const tokenMap = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
+  const userAddedTokenMap = useUserAddedTokensByChainIds(chainIds)
+  return useMemo(() => {
+    return chainIds.reduce<{ [address: string]: ERC20Token }>((tokenMap_, chainId) => {
+      userAddedTokenMap[chainId].forEach((token) => {
+        const checksumAddress = safeGetAddress(token.address)
+        if (checksumAddress) {
+          tokenMap_[checksumAddress] = token
+        }
+      })
+      Object.keys(tokenMap[chainId] || {}).forEach((address) => {
+        const checksumAddress = safeGetAddress(address)
+        if (checksumAddress && !tokenMap_[checksumAddress]) {
+          tokenMap_[checksumAddress] = tokenMap[chainId][address].token
+        }
+      })
+
+      return tokenMap_
+    }, {})
+  }, [userAddedTokenMap, tokenMap, chainIds])
 }
 
 export function useAllOnRampTokens(): { [address: string]: Currency } {
