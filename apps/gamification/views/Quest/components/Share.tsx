@@ -36,7 +36,7 @@ const Container = styled(Box)`
   }
 `
 
-export const Share = () => {
+export const Share = ({ title }: { title: string }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const openShareIconRef = useRef<HTMLDivElement>(null)
@@ -82,7 +82,7 @@ export const Share = () => {
                 {t('Copy the link')}
               </Text>
             </Flex>
-            <Link href={`https://twitter.com/intent/post?text=HelloWorld.&url=${window?.location?.href}`} external>
+            <Link href={`https://twitter.com/intent/post?text=${title}&url=${window?.location?.href}`} external>
               <Flex>
                 <Flex alignSelf="flex-start">
                   <TwitterIcon color="primary" width="20px" height="20px" />
@@ -92,7 +92,7 @@ export const Share = () => {
                 </Text>
               </Flex>
             </Link>
-            <Link href={`https://telegram.me/share/url?text=HelloWorld.&url=${window?.location?.href}`} external>
+            <Link href={`https://telegram.me/share/url?text=${title}&url=${window?.location?.href}`} external>
               <Flex>
                 <Flex alignSelf="flex-start">
                   <TelegramIcon color="primary" width="20px" height="20px" />

@@ -15,7 +15,6 @@ const UserMenuItems = () => {
   const { t } = useTranslation()
   const { isWrongNetwork } = useActiveChainId()
   const { logout } = useAuth()
-  const { chainId } = useAccount()
   const { isInitialized, isLoading, profile } = useProfile()
 
   const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)

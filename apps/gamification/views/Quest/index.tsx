@@ -76,7 +76,7 @@ export const Quest = () => {
               </Text>
             </Flex>
           </StyledBackButton>
-          <Share />
+          <Share title={quest.title} />
         </Flex>
         <Box mt="16px">
           {quest?.completionStatus === CompletionStatus.ONGOING && <Tag variant="success">{t('Ongoing')}</Tag>}
