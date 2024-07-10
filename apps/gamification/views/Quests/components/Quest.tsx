@@ -4,7 +4,6 @@ import { CAKE } from '@pancakeswap/tokens'
 import { Box, BoxProps, CalenderIcon, Card, Flex, InfoIcon, Tag, Text, useTooltip } from '@pancakeswap/uikit'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { CHAIN_QUERY_NAME } from 'config/chains'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
@@ -36,16 +35,16 @@ interface QuestProps extends BoxProps {
   showStatus?: boolean
   hideClick?: boolean
   quest: SingleQuestData
+  customRedirectUrl?: string
 }
 
-export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, ...props }) => {
+export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, customRedirectUrl, ...props }) => {
   const { t } = useTranslation()
   const router = useRouter()
-  const { chainId } = useActiveChainId()
   const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(quest?.reward?.currency?.network as ChainId)
 
   const handleClick = () => {
-    router.push(`/quests/${quest.id}?chain=${CHAIN_QUERY_NAME[chainId]}`)
+    router.push(customRedirectUrl || `/quests/${quest.id}?chain=${CHAIN_QUERY_NAME[quest.chainId]}`)
   }
 
   const {

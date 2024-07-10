@@ -2,6 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap, Spinner } from '@pancakeswap/uikit'
 import { NetworkMultiSelector, defaultValueChains } from 'components/NetworkMultiSelector'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useState } from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import { styled } from 'styled-components'
@@ -104,7 +105,11 @@ export const JoinedQuests = () => {
           <>
             <StyledFlexGap>
               {quests?.map((quest) => (
-                <Quest key={quest.id} quest={quest} />
+                <Quest
+                  key={quest.id}
+                  quest={quest}
+                  customRedirectUrl={`/quests/${quest.id}?chain=${CHAIN_QUERY_NAME[quest.chainId]}&backToProfile=true`}
+                />
               ))}
             </StyledFlexGap>
             <Flex justifyContent="center" ref={hasNextPage ? sentryRef : undefined}>

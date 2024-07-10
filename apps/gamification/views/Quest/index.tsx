@@ -16,7 +16,7 @@ import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { Description } from 'views/Quest/components/Description'
 // import { ExploreMore } from 'views/Quest/components/ExploreMore'
 // import { RelatedQuest } from 'views/Quest/components/RelatedQuest'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { convertTimestampToDate } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 import { Reward } from 'views/Quest/components/Reward'
 import { Share } from 'views/Quest/components/Share'
@@ -52,6 +52,7 @@ export const Quest = () => {
   const { isDesktop } = useMatchBreakpoints()
   const { query, push } = useRouter()
   const questId: string = (query.id as string) ?? ''
+  const backToProfile: boolean = (query?.backToProfile as string) === 'true'
   const { quest, isError, isFetched } = useGetQuestInfo(questId)
 
   useEffect(() => {
@@ -59,6 +60,8 @@ export const Quest = () => {
       push('/quests')
     }
   }, [isError, push])
+
+  const backUrl = useMemo(() => (backToProfile ? '/profile' : '/quests'), [backToProfile])
 
   if (!isFetched || isError || !questId) {
     return null
@@ -68,7 +71,7 @@ export const Quest = () => {
     <QuestContainer>
       <Box width="100%" p={['0 0 150px 0', '0 0 150px 0', '0 0 150px 0', '0 0 150px 0', '0 40px 200px 40px']}>
         <Flex mt={['16px', '16px', '16px', '16px', '40px']}>
-          <StyledBackButton href="/quests">
+          <StyledBackButton href={backUrl}>
             <Flex>
               <ArrowBackIcon color="primary" />
               <Text ml="6px" color="primary" bold>
