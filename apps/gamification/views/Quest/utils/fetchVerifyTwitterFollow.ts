@@ -18,7 +18,10 @@ export const fetchVerifyTwitterFollow = async ({
 }: FetchVerifyTwitterFollowProps) => {
   const queryString = new URLSearchParams({ token, tokenSecret, userId, targetUserId }).toString()
 
-  const response = await fetch(`/api/twitterFollow?${queryString}`)
-
-  return response
+  try {
+    const response = await fetch(`/api/twitterFollow?${queryString}`)
+    return response
+  } catch (error: any) {
+    throw Error(error.message as string)
+  }
 }

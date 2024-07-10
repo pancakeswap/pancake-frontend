@@ -47,7 +47,7 @@ export default async function handler(req, res) {
 
       const result = await response.json()
       if (!response.ok) {
-        throw new Error(result.error || 'Something went wrong')
+        res.status(500).json({ message: result.title })
       }
 
       res.status(200).json(result)

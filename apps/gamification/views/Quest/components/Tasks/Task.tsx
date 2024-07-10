@@ -38,7 +38,7 @@ import { getSingleTaskTwitterIdCookie, getTwitterIdCookie } from 'views/Profile/
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { fetchMarkTaskStatus } from 'views/Quest/utils/fetchMarkTaskStatus'
-import { TwitterFollowResponse, fetchVerifyTwitterFollow } from 'views/Quest/utils/fetchVerifyTwitterFollow'
+import { fetchVerifyTwitterFollow, TwitterFollowResponse } from 'views/Quest/utils/fetchVerifyTwitterFollow'
 import { useAccount } from 'wagmi'
 
 const VerifyButton = styled(Button)`
@@ -123,9 +123,13 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
           tokenSecret,
           targetUserId: (task as TaskSocialConfig).accountId,
         })
+        const followResult = await responseFetchVerifyTwitterFollow.json()
+
+        if (followResult.message && !responseFetchVerifyTwitterFollow.ok) {
+          toastError(followResult.message)
+        }
 
         if (responseFetchVerifyTwitterFollow.ok) {
-          const followResult = await responseFetchVerifyTwitterFollow.json()
           const followData: TwitterFollowResponse = followResult.data
 
           if (followData?.following) {
