@@ -1,8 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap, Spinner } from '@pancakeswap/uikit'
 import { NetworkMultiSelector, defaultValueChains } from 'components/NetworkMultiSelector'
 import { useState } from 'react'
+import useInfiniteScroll from 'react-infinite-scroll-hook'
 import { styled } from 'styled-components'
 import { EmptyQuest } from 'views/Quests/components/EmptyQuest'
 import { Quest } from 'views/Quests/components/Quest'
@@ -48,9 +49,15 @@ export const Quests = () => {
     setStatusButtonIndex(newIndex)
   }
 
-  const { data, isFetching } = usePublicQuests({
+  const { quests, loadMore, isFetching, hasNextPage } = usePublicQuests({
     chainIdList: pickMultiSelect,
     completionStatus: publicConvertIndexToStatus(statusButtonIndex),
+  })
+
+  const [sentryRef] = useInfiniteScroll({
+    loading: isFetching,
+    hasNextPage,
+    onLoadMore: loadMore,
   })
 
   return (
@@ -86,17 +93,22 @@ export const Quests = () => {
         />
       </Flex>
       <>
-        {!isFetching && data?.quests?.length === 0 ? (
+        {!isFetching && quests?.length === 0 ? (
           <EmptyQuest
             title={t('There is nothing here, yet')}
             subTitle={t('Follow our social media to keep up to date with our next quests!')}
           />
         ) : (
-          <StyledFlexGap>
-            {data?.quests?.map((quest) => (
-              <Quest key={quest.id} quest={quest} />
-            ))}
-          </StyledFlexGap>
+          <>
+            <StyledFlexGap>
+              {quests?.map((quest) => (
+                <Quest key={quest.id} quest={quest} />
+              ))}
+            </StyledFlexGap>
+            <Flex justifyContent="center" ref={hasNextPage ? sentryRef : undefined}>
+              {isFetching && <Spinner size={100} />}
+            </Flex>
+          </>
         )}
       </>
     </Box>

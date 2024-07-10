@@ -1,8 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap } from '@pancakeswap/uikit'
+import { Box, ButtonMenu, ButtonMenuItem, Flex, FlexGap, Spinner } from '@pancakeswap/uikit'
 import { NetworkMultiSelector, defaultValueChains } from 'components/NetworkMultiSelector'
 import { useState } from 'react'
+import useInfiniteScroll from 'react-infinite-scroll-hook'
 import { styled } from 'styled-components'
 import { useUserJoinedPublicQuests } from 'views/Profile/hooks/useUserJoinedPublicQuests'
 import { EmptyQuest } from 'views/Quests/components/EmptyQuest'
@@ -48,9 +49,15 @@ export const JoinedQuests = () => {
     setStatusButtonIndex(newIndex)
   }
 
-  const { data, isFetching } = useUserJoinedPublicQuests({
+  const { quests, loadMore, isFetching, hasNextPage } = useUserJoinedPublicQuests({
     chainIdList: pickMultiSelect,
     completionStatus: publicConvertIndexToStatus(statusButtonIndex),
+  })
+
+  const [sentryRef] = useInfiniteScroll({
+    loading: isFetching,
+    hasNextPage,
+    onLoadMore: loadMore,
   })
 
   return (
@@ -86,7 +93,7 @@ export const JoinedQuests = () => {
         />
       </Flex>
       <>
-        {!isFetching && data?.quests?.length === 0 ? (
+        {!isFetching && quests?.length === 0 ? (
           <EmptyQuest
             title={t('There is nothing here, yet')}
             subTitle={t('Earn by contributing to the community')}
@@ -94,11 +101,16 @@ export const JoinedQuests = () => {
             // showCampaignLink
           />
         ) : (
-          <StyledFlexGap>
-            {data?.quests?.map((quest) => (
-              <Quest key={quest.id} quest={quest} />
-            ))}
-          </StyledFlexGap>
+          <>
+            <StyledFlexGap>
+              {quests?.map((quest) => (
+                <Quest key={quest.id} quest={quest} />
+              ))}
+            </StyledFlexGap>
+            <Flex justifyContent="center" ref={hasNextPage ? sentryRef : undefined}>
+              {isFetching && <Spinner size={100} />}
+            </Flex>
+          </>
         )}
       </>
     </Box>

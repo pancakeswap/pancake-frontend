@@ -72,6 +72,7 @@
     "react-dom": "^18.2.0",
     "react-draggable-list": "4.0.4",
     "react-images-uploading": "^3.1.7",
+    "react-infinite-scroll-hook": "^4.1.1",
     "react-jazzicon": "^1.0.4",
     "react-popper": "^2.3.0",
     "react-redux": "^8.0.5",

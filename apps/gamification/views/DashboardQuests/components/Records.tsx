@@ -1,5 +1,4 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Box, Card, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Card, Flex, Spinner, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
@@ -21,14 +20,21 @@ const StyledRows = styled(Box)`
 `
 
 interface RecordsProps {
+  hasNextPage: boolean
+  sentryRef: any
   isFetching: boolean
   questsData: SingleQuestData[]
   statusButtonIndex: CompletionStatusIndex
 }
 
-export const Records: React.FC<RecordsProps> = ({ isFetching, questsData, statusButtonIndex }) => {
+export const Records: React.FC<RecordsProps> = ({
+  hasNextPage,
+  sentryRef,
+  isFetching,
+  questsData,
+  statusButtonIndex,
+}) => {
   const { isDesktop } = useMatchBreakpoints()
-  const { t } = useTranslation()
 
   return (
     <Box
@@ -38,22 +44,15 @@ export const Records: React.FC<RecordsProps> = ({ isFetching, questsData, status
     >
       <Card style={{ width: '100%', overflow: 'inherit' }}>
         {isDesktop && <TableHeader />}
-        {!isFetching && (
-          <StyledRows>
-            {isFetching ? (
-              <Text padding="8px" textAlign="center">
-                {t('Loading...')}
-              </Text>
-            ) : (
-              <>
-                {questsData?.map((quest) => (
-                  <Row key={quest.id} quest={quest} statusButtonIndex={statusButtonIndex} />
-                ))}
-              </>
-            )}
-          </StyledRows>
-        )}
+        <StyledRows>
+          {questsData?.map((quest) => (
+            <Row key={quest.id} quest={quest} statusButtonIndex={statusButtonIndex} />
+          ))}
+        </StyledRows>
       </Card>
+      <Flex justifyContent="center" ref={hasNextPage ? sentryRef : undefined} pb="20px">
+        {isFetching && <Spinner size={100} />}
+      </Flex>
     </Box>
   )
 }

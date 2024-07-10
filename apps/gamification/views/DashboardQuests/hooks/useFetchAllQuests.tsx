@@ -1,6 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
 import qs from 'qs'
+import { useEffect, useRef, useState } from 'react'
+import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { AllDashboardQuestsType } from 'views/DashboardQuests/type'
 import { useAccount } from 'wagmi'
@@ -10,7 +12,7 @@ export interface UseFetchAllQuestsProps {
   completionStatus: CompletionStatus
 }
 
-const PAGE_SIZE = 100
+const PAGE_SIZE = 50
 
 const initialData: AllDashboardQuestsType = {
   quests: [],
@@ -19,9 +21,13 @@ const initialData: AllDashboardQuestsType = {
 
 export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
   const { address: account } = useAccount()
+  const [page, setPage] = useState(1)
+  const [quests, setQuests] = useState<SingleQuestData[]>([])
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true)
+  const isFetchingRef = useRef(false)
 
-  const { data, refetch, isFetching } = useQuery({
-    queryKey: ['fetch-all-quest-dashboard-data', account, chainIdList, completionStatus],
+  const { refetch, isFetching } = useQuery({
+    queryKey: ['fetch-all-quest-dashboard-data', page, account, chainIdList, completionStatus],
     queryFn: async () => {
       try {
         if (chainIdList.length === 0) {
@@ -42,6 +48,10 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
 
         const result = await response.json()
         const questsData: AllDashboardQuestsType = result
+
+        setQuests((prev) => (page === 1 ? questsData.quests : [...prev, ...questsData.quests]))
+        setHasNextPage(questsData.pagination.page * PAGE_SIZE < questsData.pagination.total)
+
         return questsData
       } catch (error) {
         console.error(`Fetch All quest dashboard data error: ${error}`)
@@ -54,9 +64,29 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
     refetchOnWindowFocus: false,
   })
 
+  useEffect(() => {
+    setPage(1)
+    setQuests([])
+    isFetchingRef.current = true
+    refetch().then(() => {
+      isFetchingRef.current = false
+    })
+  }, [completionStatus, chainIdList, refetch])
+
+  const loadMore = () => {
+    if (!isFetching && hasNextPage && !isFetchingRef.current) {
+      setPage((prevPage) => prevPage + 1)
+      isFetchingRef.current = true
+      refetch().then(() => {
+        isFetchingRef.current = false
+      })
+    }
+  }
+
   return {
-    questsData: data || initialData,
+    quests,
+    loadMore,
     isFetching,
-    refresh: refetch,
+    hasNextPage,
   }
 }

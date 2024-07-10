@@ -1,6 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
+import { useEffect, useRef, useState } from 'react'
+import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { AllDashboardQuestsType } from 'views/DashboardQuests/type'
 import { FetchAllPublicQuestDataResponse, PAGE_SIZE } from 'views/Quests/hooks/usePublicQuests'
@@ -18,9 +20,13 @@ interface UsePublicQuestsProps {
 
 export const useUserJoinedPublicQuests = ({ chainIdList, completionStatus }: UsePublicQuestsProps) => {
   const { address: account } = useAccount()
+  const [page, setPage] = useState(1)
+  const [quests, setQuests] = useState<SingleQuestData[]>([])
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true)
+  const isFetchingRef = useRef(false)
 
-  const { data, refetch, isFetching } = useQuery({
-    queryKey: ['fetch-user-all-public-quest-data', account, completionStatus, chainIdList],
+  const { refetch, isFetching } = useQuery({
+    queryKey: ['fetch-user-all-public-quest-data', account, page, completionStatus, chainIdList],
     queryFn: async () => {
       try {
         const url = `${GAMIFICATION_PUBLIC_API}/questInfo/v1/questInfoList`
@@ -28,7 +34,7 @@ export const useUserJoinedPublicQuests = ({ chainIdList, completionStatus }: Use
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            page: 1,
+            page,
             size: PAGE_SIZE,
             chainIdList,
             completionStatus,
@@ -37,6 +43,10 @@ export const useUserJoinedPublicQuests = ({ chainIdList, completionStatus }: Use
         })
         const result = await response.json()
         const questsData: FetchAllPublicQuestDataResponse = result
+
+        setQuests((prev) => (page === 1 ? questsData.data : [...prev, ...questsData.data]))
+        setHasNextPage(questsData.pagination.page < questsData.pagination.total)
+
         return {
           quests: questsData.data,
           pagination: questsData.pagination,
@@ -52,9 +62,29 @@ export const useUserJoinedPublicQuests = ({ chainIdList, completionStatus }: Use
     refetchOnWindowFocus: false,
   })
 
+  useEffect(() => {
+    setPage(1)
+    setQuests([])
+    isFetchingRef.current = true
+    refetch().then(() => {
+      isFetchingRef.current = false
+    })
+  }, [completionStatus, chainIdList, refetch])
+
+  const loadMore = () => {
+    if (!isFetching && hasNextPage && !isFetchingRef.current) {
+      setPage((prevPage) => prevPage + 1)
+      isFetchingRef.current = true
+      refetch().then(() => {
+        isFetchingRef.current = false
+      })
+    }
+  }
+
   return {
-    data: data ?? initialData,
+    quests,
+    loadMore,
     isFetching,
-    refetch,
+    hasNextPage,
   }
 }

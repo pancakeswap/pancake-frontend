@@ -4,6 +4,7 @@ import { Box } from '@pancakeswap/uikit'
 import { useQueryClient } from '@tanstack/react-query'
 import { defaultValueChains } from 'components/NetworkMultiSelector'
 import { useEffect, useState } from 'react'
+import useInfiniteScroll from 'react-infinite-scroll-hook'
 import { CompletionStatusIndex } from 'views/DashboardQuestEdit/type'
 import { RecordTemplate } from 'views/DashboardQuests/components/RecordTemplate'
 import { Records } from 'views/DashboardQuests/components/Records'
@@ -27,9 +28,15 @@ export const DashboardQuests = () => {
     }
   }, [account, pickMultiSelect, queryClient, statusButtonIndex])
 
-  const { questsData, isFetching } = useFetchAllQuests({
+  const { quests, loadMore, isFetching, hasNextPage } = useFetchAllQuests({
     chainIdList: pickMultiSelect,
     completionStatus: convertIndexToStatus(statusButtonIndex),
+  })
+
+  const [sentryRef] = useInfiniteScroll({
+    loading: isFetching,
+    hasNextPage,
+    onLoadMore: loadMore,
   })
 
   return (
@@ -41,7 +48,7 @@ export const DashboardQuests = () => {
       setPickMultiSelect={setPickMultiSelect}
       setStatusButtonIndex={setStatusButtonIndex}
     >
-      {!isFetching && questsData.quests?.length === 0 ? (
+      {!isFetching && quests?.length === 0 ? (
         <Box
           width={['100%', '100%', '100%', '100%', '100%', '100%', '1200px']}
           margin={[
@@ -58,7 +65,13 @@ export const DashboardQuests = () => {
           <EmptyQuest title={t('There is nothing here, yet')} subTitle={t('Start by creating a quest!')} />
         </Box>
       ) : (
-        <Records isFetching={isFetching} questsData={questsData.quests} statusButtonIndex={statusButtonIndex} />
+        <Records
+          sentryRef={sentryRef}
+          questsData={quests}
+          isFetching={isFetching}
+          hasNextPage={hasNextPage}
+          statusButtonIndex={statusButtonIndex}
+        />
       )}
     </RecordTemplate>
   )
