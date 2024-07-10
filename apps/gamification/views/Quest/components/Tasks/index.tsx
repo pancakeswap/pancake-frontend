@@ -49,7 +49,11 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
     return Boolean(registered)
   }, [questId, userInfo.questIds])
 
-  const { taskStatus } = useVerifyTaskStatus({ questId, isQuestFinished, hasIdRegister })
+  const { taskStatus, refresh: refreshVerifyTaskStatus } = useVerifyTaskStatus({
+    questId,
+    isQuestFinished,
+    hasIdRegister,
+  })
 
   const hasOptionsInTasks = useMemo(() => tasks?.find((i) => i.isOptional === true), [tasks])
 
@@ -119,7 +123,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
                 task={task}
                 taskStatus={taskStatus}
                 isQuestFinished={isQuestFinished}
-                refresh={refresh}
+                refresh={refreshVerifyTaskStatus}
               />
             ))}
           </FlexGap>
