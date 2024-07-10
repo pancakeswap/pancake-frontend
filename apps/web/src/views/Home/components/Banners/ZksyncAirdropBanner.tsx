@@ -20,13 +20,33 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import { useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import Image from 'next/legacy/image'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+import { useAccount } from 'wagmi'
 
-const zksyncAutoPopup = atomWithStorage<boolean>('pcs:zksync-airdrop-auto-popup', true)
+const zksyncAutoPopup = atomWithStorage<{ [account: string]: boolean }>(
+  'pcs:zksync-airdrop-auto-popup-v2',
+  {},
+  undefined,
+  { unstable_getOnInit: true },
+)
 
-const useAutoPopup = () => {
-  return useAtom(zksyncAutoPopup)
+const useAutoPopup = (): [boolean, (value: boolean) => void] => {
+  const { address } = useAccount()
+  const [autoPopup, setAutoPopup] = useAtom(zksyncAutoPopup)
+
+  const setPopupState = useCallback(
+    (value: boolean) => {
+      if (!address) return
+      setAutoPopup((prev) => ({
+        ...prev,
+        [address]: value,
+      }))
+    },
+    [address, setAutoPopup],
+  )
+
+  return [address ? autoPopup[address] ?? true : false, setPopupState]
 }
 
 const bgMobile = `${ASSET_CDN}/web/banners/zksync-airdrop-banner/bunny-bg-mobile.png`
@@ -64,25 +84,32 @@ export const ZksyncAirDropBanner = () => {
   const { t } = useTranslation()
   const { isMobile, isTablet, isXs } = useMatchBreakpoints()
   const [isOpen, setIsOpen] = useState(false)
-  const whitelistData = useUserWhiteListData()
+  const [autoPopup, setAutoPopup] = useAutoPopup()
+  const whitelistData = useUserWhiteListData(autoPopup || isOpen)
   const { zksyncAirdropData } = useZksyncAirDropData(whitelistData?.proof)
   const isModalOpened = useRef(false)
-  const [autoPopup, setAutoPopup] = useAutoPopup()
 
   useEffect(() => {
-    if (
-      whitelistData?.account &&
-      whitelistData?.amount &&
-      whitelistData?.proof &&
-      isModalOpened.current === false &&
-      autoPopup &&
-      zksyncAirdropData?.claimedAmount === 0n
-    ) {
-      setIsOpen(true)
-      isModalOpened.current = true
-      setAutoPopup(false)
+    if (whitelistData?.account) {
+      if (!whitelistData?.amount && !whitelistData?.proof) {
+        setAutoPopup(false)
+      } else if (
+        whitelistData?.amount &&
+        whitelistData?.proof &&
+        isModalOpened.current === false &&
+        autoPopup &&
+        zksyncAirdropData?.claimedAmount === 0n
+      ) {
+        setIsOpen(true)
+        isModalOpened.current = true
+        setAutoPopup(false)
+      }
     }
   }, [whitelistData, zksyncAirdropData, autoPopup, setAutoPopup])
+
+  const handleDismiss = useCallback(() => {
+    setIsOpen(false)
+  }, [])
 
   return (
     <>
@@ -91,7 +118,7 @@ export const ZksyncAirDropBanner = () => {
           badges={
             <StyledFlexContainer gap="8px">
               <PancakeSwapBadge whiteText />
-              <Image src={zksyncLogo} alt="arbLogo" width={108} height={24} />
+              <Image src={zksyncLogo} alt="zkLogo" width={108} height={24} />
             </StyledFlexContainer>
           }
           title={
@@ -140,12 +167,7 @@ export const ZksyncAirDropBanner = () => {
           <FloatingGraphic src={floatingAsset} width={isMobile ? 100 : 80} height={isMobile ? 100 : 80} />
         </BannerGraphics>
       </BannerContainer>
-      <ClaimZksyncAirdropModal
-        isOpen={isOpen}
-        onDismiss={() => {
-          setIsOpen(false)
-        }}
-      />
+      <ClaimZksyncAirdropModal isOpen={isOpen} onDismiss={handleDismiss} />
     </>
   )
 }
