@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { AllDashboardQuestsType, Pagination } from 'views/DashboardQuests/type'
@@ -28,6 +28,7 @@ export const usePublicQuests = ({ chainIdList, completionStatus }: UsePublicQues
   const [quests, setQuests] = useState<SingleQuestData[]>([])
   const [hasNextPage, setHasNextPage] = useState<boolean>(true)
   const [prevData, setPrevData] = useState<string>('')
+  const isFetchingRef = useRef(false)
 
   const { refetch, isFetching } = useQuery({
     queryKey: ['fetch-all-public-quest-data', page, completionStatus, chainIdList],
@@ -77,11 +78,19 @@ export const usePublicQuests = ({ chainIdList, completionStatus }: UsePublicQues
   useEffect(() => {
     setPage(1)
     setQuests([])
+    isFetchingRef.current = true
+    refetch().then(() => {
+      isFetchingRef.current = false
+    })
   }, [completionStatus, chainIdList, refetch])
 
   const loadMore = () => {
-    if (!isFetching && hasNextPage) {
+    if (!isFetching && hasNextPage && !isFetchingRef.current) {
       setPage((prevPage) => prevPage + 1)
+      isFetchingRef.current = true
+      refetch().then(() => {
+        isFetchingRef.current = false
+      })
     }
   }
 

@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
 import qs from 'qs'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { AllDashboardQuestsType } from 'views/DashboardQuests/type'
@@ -25,6 +25,7 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
   const [quests, setQuests] = useState<SingleQuestData[]>([])
   const [hasNextPage, setHasNextPage] = useState<boolean>(true)
   const [prevData, setPrevData] = useState<string>('')
+  const isFetchingRef = useRef(false)
 
   const { refetch, isFetching } = useQuery({
     queryKey: ['fetch-all-quest-dashboard-data', page, account, chainIdList, completionStatus],
@@ -38,7 +39,6 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
         if (prevData === prevDataSting) {
           return undefined
         }
-
         setPrevData(prevDataSting)
 
         const urlParamsObject = {
@@ -74,11 +74,19 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
   useEffect(() => {
     setPage(1)
     setQuests([])
+    isFetchingRef.current = true
+    refetch().then(() => {
+      isFetchingRef.current = false
+    })
   }, [completionStatus, chainIdList, refetch])
 
   const loadMore = () => {
-    if (!isFetching && hasNextPage) {
+    if (!isFetching && hasNextPage && !isFetchingRef.current) {
       setPage((prevPage) => prevPage + 1)
+      isFetchingRef.current = true
+      refetch().then(() => {
+        isFetchingRef.current = false
+      })
     }
   }
 
