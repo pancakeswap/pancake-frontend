@@ -125,7 +125,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
     } else {
       handleHarvest()
     }
-  }, [vaultPid, onPresentNonBscHarvestModal, handleHarvest])
+  }, [vaultPid, onPresentCrossChainHarvestModal, handleHarvest])
 
   return (
     <FarmTableHarvestAction
