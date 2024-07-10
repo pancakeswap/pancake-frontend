@@ -1,37 +1,55 @@
-import { generateOAuthHeaders } from './twitterOAuth'
+import crypto from 'crypto-js'
+import OAuth from 'oauth-1.0a'
+
+const getOAuthHeader = (
+  url: string,
+  method: string,
+  consumerKey: string,
+  consumerSecret: string,
+  token: string,
+  tokenSecret: string,
+): { Authorization: string } => {
+  const oauth = new OAuth({
+    consumer: { key: consumerKey, secret: consumerSecret },
+    signature_method: 'HMAC-SHA1',
+    hash_function(baseString: string, key: string) {
+      return crypto.HmacSHA1(baseString, key).toString(crypto.enc.Base64)
+    },
+  })
+
+  const requestData = { url, method }
+  return oauth.toHeader(oauth.authorize(requestData, { key: token, secret: tokenSecret }))
+}
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
+  if (req.method === 'GET') {
     try {
-      const { token, tokenSecret, userId } = req.method === 'GET' ? req.query : req.body
-
+      const { token, tokenSecret, userId, targetUserId } = req.query
       if (!token || !tokenSecret) {
         res.status(400).json({ message: 'Missing required parameters: token and tokenSecret' })
         return
       }
-
       const url = `https://api.twitter.com/2/users/${userId}/following`
       const method = 'POST'
-
       const consumerKey = process.env.TWITTER_CONSUMER_KEY as string
       const consumerSecret = process.env.TWITTER_CONSUMER_SECRET as string
 
       const response = await fetch(url, {
         method,
         headers: {
-          Authorization: generateOAuthHeaders(method, url, consumerKey, consumerSecret, token, tokenSecret),
+          ...getOAuthHeader(url, method, consumerKey, consumerSecret, token, tokenSecret),
           'Content-Type': 'application/json',
         },
-        // PCS Twitter Id
-        body: JSON.stringify({ target_user_id: '1305349277422477313' }),
+        // Exp PCS Twitter Id
+        body: JSON.stringify({ target_user_id: targetUserId }),
       })
 
+      const result = await response.json()
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || 'Something went wrong')
+        throw new Error(result.error || 'Something went wrong')
       }
 
-      res.status(200).json(response.json())
+      res.status(200).json(result)
     } catch (error) {
       res.status(500).json({ message: (error as Error).message })
     }
