@@ -32,7 +32,7 @@ export const Default: React.FC<React.PropsWithChildren<DefaultProps>> = ({ handl
       <Button
         width="100%"
         variant="secondary"
-        endIcon={<CalenderIcon color="invertedContrast" width={20} height={20} />}
+        endIcon={<CalenderIcon color="primary" width={20} height={20} />}
         onClick={handleSubmit}
       >
         {t('Schedule')}

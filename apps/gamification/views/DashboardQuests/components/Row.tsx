@@ -140,29 +140,25 @@ export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
         </StyledCell>
       )}
       <StyledCell role="cell" onClick={(e: MouseEvent) => openMoreButton(e)}>
-        {statusButtonIndex !== CompletionStatusIndex.FINISHED && (
-          <Box position="relative" style={{ cursor: 'pointer' }}>
-            <EllipsisIcon color="primary" width="12px" height="12px" />
-            {isOpen && (
-              <StyledDropdown setIsOpen={setIsOpen} dropdownRef={dropdownRef}>
-                {/* <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/quest/statistics')}>
+        <Box position="relative" style={{ cursor: 'pointer' }}>
+          <EllipsisIcon color="primary" width="12px" height="12px" />
+          {isOpen && (
+            <StyledDropdown setIsOpen={setIsOpen} dropdownRef={dropdownRef}>
+              {/* <Flex onClick={(e: MouseEvent) => redirectUrl(e, '/dashboard/quest/statistics')}>
                   <BarChartIcon color="primary" width="20px" height="20px" />
                   <Text ml="8px">{t('Statistics')}</Text>
                 </Flex> */}
-
-                {/* When has "Statistics" need hide "Edit" when statusButtonIndex !== CompletionStatusIndex.FINISHED */}
-                <Flex
-                  onClick={(e: MouseEvent) =>
-                    redirectUrl(e, `/dashboard/quest/edit/${quest.id}?chain=${CHAIN_QUERY_NAME[chainId]}`)
-                  }
-                >
-                  <PencilIcon color="primary" width="14px" height="14px" />
-                  <Text ml="14px">{t('Edit')}</Text>
-                </Flex>
-              </StyledDropdown>
-            )}
-          </Box>
-        )}
+              <Flex
+                onClick={(e: MouseEvent) =>
+                  redirectUrl(e, `/dashboard/quest/edit/${quest.id}?chain=${CHAIN_QUERY_NAME[chainId]}`)
+                }
+              >
+                <PencilIcon color="primary" width="14px" height="14px" />
+                <Text ml="14px">{statusButtonIndex === CompletionStatusIndex.FINISHED ? t('View') : t('Edit')}</Text>
+              </Flex>
+            </StyledDropdown>
+          )}
+        </Box>
       </StyledCell>
     </StyledRow>
   )
