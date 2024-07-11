@@ -61,6 +61,12 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   const timerRef = useRef<number | null>(null)
   const animationFrameRef = useRef<number | null>(null)
 
+  useEffect(() => {
+    if (amountOfWinners) {
+      setAmountOfWinnersInModal(amountOfWinners)
+    }
+  }, [])
+
   const startLongPress = () => {
     timerRef.current = window.setTimeout(() => {
       setProgress(100)
@@ -114,10 +120,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     return findToken || (CAKE as any)?.[chainId]
   }, [chainId, reward, tokensByChainWithNativeToken])
 
-  const displayAmountOfWinnersInModal = useMemo(
-    () => amountOfWinnersInModal || amountOfWinners || 0,
-    [amountOfWinners, amountOfWinnersInModal],
-  )
+  const displayAmountOfWinnersInModal = useMemo(() => amountOfWinnersInModal || 0, [amountOfWinnersInModal])
 
   const [inputCurrency, setInputCurrency] = useState<Currency>(defaultInputCurrency)
   const [stakeAmount, setStakeAmount] = useState(reward?.totalRewardAmount?.toString() ?? '')
@@ -167,14 +170,23 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     await switchNetworkAsync(inputCurrency?.chainId)
   }
 
+  const isRewardDistribution = useMemo(
+    () => new BigNumber(stakeAmount).modulo(new BigNumber(amountOfWinnersInModal)).isEqualTo(0),
+    [amountOfWinnersInModal, stakeAmount],
+  )
+
   const isAbleToSubmit = useMemo(() => {
     const userBalance = new BigNumber(getFullDisplayBalance(currencyBalance, inputCurrency.decimals))
     const isInputLowerThanBalance = new BigNumber(stakeAmount).lte(userBalance)
 
     return Boolean(
-      !inputCurrency || new BigNumber(stakeAmount).lte(0) || !displayAmountOfWinnersInModal || !isInputLowerThanBalance,
+      !inputCurrency ||
+        new BigNumber(stakeAmount).lte(0) ||
+        !displayAmountOfWinnersInModal ||
+        !isInputLowerThanBalance ||
+        !isRewardDistribution,
     )
-  }, [currencyBalance, displayAmountOfWinnersInModal, inputCurrency, stakeAmount])
+  }, [currencyBalance, displayAmountOfWinnersInModal, inputCurrency, stakeAmount, isRewardDistribution])
 
   return (
     <Modal title={config[modalView].title} onDismiss={config[modalView].onBack}>
@@ -216,6 +228,11 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
                 </Box>
               </Flex>
             </Box>
+            {!isRewardDistribution && (
+              <Text mt="8px" fontSize="14px" color="failure">
+                {t('The reward cannot be distributed evenly.')}
+              </Text>
+            )}
             {isNetworkWrong ? (
               <Button width="100%" mt="24px" onClick={handleSwitchNetwork}>
                 {t('Switch Network')}

@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
-import { ArrowUpIcon, Box, Button, Flex, Input, Text, useModal } from '@pancakeswap/uikit'
+import { ArrowUpIcon, Box, Button, Flex, Text, useModal } from '@pancakeswap/uikit'
 import { TokenWithChain } from 'components/TokenWithChain'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
@@ -24,7 +24,6 @@ interface RewardAmountProps {
   isFinished: boolean
   completionStatus: CompletionStatus
   amountOfWinners: number
-  handleInput: (amount: number) => void
   handlePickedRewardToken: (value: Currency, totalRewardAmount: number, amountOfWinnersInModal: number) => void
 }
 
@@ -33,7 +32,6 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({
   completionStatus,
   isFinished,
   amountOfWinners,
-  handleInput,
   handlePickedRewardToken,
 }) => {
   const { t } = useTranslation()
@@ -101,16 +99,8 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({
         )}
         <Flex>
           <Text style={{ alignSelf: 'center' }} fontSize="14px" color="textSubtle" mr="8px">
-            {t('Select Number of Winners')}
+            {`${t('Number of Winners:')} ${Number(reward?.amountOfWinners)}`}
           </Text>
-          <Box width="80px">
-            <Input
-              pattern="^[0-9]+$"
-              inputMode="numeric"
-              value={Number(reward?.amountOfWinners)}
-              onChange={(e) => handleInput(Number(e.target.value))}
-            />
-          </Box>
         </Flex>
       </RewardContainer>
     </Box>
