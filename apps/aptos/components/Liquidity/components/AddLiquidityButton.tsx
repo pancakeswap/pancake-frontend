@@ -1,9 +1,10 @@
 import { Coin, Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, useModal } from '@pancakeswap/uikit'
+import { useIsExpertMode } from '@pancakeswap/utils/user/expertMode'
 import { CommitButton } from 'components/CommitButton'
 import { useCallback, useContext } from 'react'
-import { useIsExpertMode } from '@pancakeswap/utils/user/expertMode'
+import { logGTMClickAddLiquidityEvent } from 'utils/customGTMEventTracking'
 import useAddLiquidityHandler from '../hooks/useAddLiquidityHandler'
 import { CurrencySelectorContext } from '../hooks/useCurrencySelectRoute'
 import { Field } from '../type'
@@ -85,6 +86,7 @@ export default function AddLiquidityButton({
             })
             onPresentAddLiquidityModal()
           }
+          logGTMClickAddLiquidityEvent()
         }}
         disabled={Boolean(errorText)}
       >
