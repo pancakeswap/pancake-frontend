@@ -3,6 +3,7 @@ import { ModalProvider, PancakeTheme, ResetCSS, ToastListener, UIKitProvider, da
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
 import { NextPage } from 'next'
+import { SessionProvider } from 'next-auth/react'
 import { DefaultSeo } from 'next-seo'
 import { SEO } from 'next-seo.config'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
@@ -90,32 +91,34 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
       <DefaultSeo {...SEO} />
       <WagmiProvider reconnectOnMount config={wagmiConfig}>
-        <QueryClientProvider client={queryClient}>
-          <HydrationBoundary state={pageProps.dehydratedState}>
-            <Provider store={store}>
-              <NextThemeProvider>
-                <StyledThemeProvider>
-                  <LanguageProvider>
-                    <ModalProvider>
-                      <ResetCSS />
-                      <GlobalStyle />
-                      <GlobalHooks />
-                      <Menu>
-                        <Layout>
-                          <WrapBalancerProvider>
-                            <Component {...pageProps} />
-                          </WrapBalancerProvider>
-                        </Layout>
-                      </Menu>
-                      <ToastListener />
-                      {Component?.CustomComponent}
-                    </ModalProvider>
-                  </LanguageProvider>
-                </StyledThemeProvider>
-              </NextThemeProvider>
-            </Provider>
-          </HydrationBoundary>
-        </QueryClientProvider>
+        <SessionProvider session={pageProps.session}>
+          <QueryClientProvider client={queryClient}>
+            <HydrationBoundary state={pageProps.dehydratedState}>
+              <Provider store={store}>
+                <NextThemeProvider>
+                  <StyledThemeProvider>
+                    <LanguageProvider>
+                      <ModalProvider>
+                        <ResetCSS />
+                        <GlobalStyle />
+                        <GlobalHooks />
+                        <Menu>
+                          <Layout>
+                            <WrapBalancerProvider>
+                              <Component {...pageProps} />
+                            </WrapBalancerProvider>
+                          </Layout>
+                        </Menu>
+                        <ToastListener />
+                        {Component?.CustomComponent}
+                      </ModalProvider>
+                    </LanguageProvider>
+                  </StyledThemeProvider>
+                </NextThemeProvider>
+              </Provider>
+            </HydrationBoundary>
+          </QueryClientProvider>
+        </SessionProvider>
       </WagmiProvider>
       <Script
         strategy="afterInteractive"
