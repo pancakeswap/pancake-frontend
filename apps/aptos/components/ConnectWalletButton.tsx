@@ -4,6 +4,7 @@ import { Trans, useTranslation } from '@pancakeswap/localization'
 import { useState } from 'react'
 import { useAuth } from 'hooks/useAuth'
 import { wallets } from 'config/wallets'
+import { logGTMWalletConnectEvent } from 'utils/customGTMEventTracking'
 
 export const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
   const [open, setOpen] = useState(false)
@@ -26,6 +27,7 @@ export const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
         wallets={wallets}
         login={login}
         onDismiss={() => setOpen(false)}
+        onWalletConnectCallBack={logGTMWalletConnectEvent}
       />
     </>
   )
