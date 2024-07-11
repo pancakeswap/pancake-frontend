@@ -77,7 +77,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 
   // Handle when Oauth callback fail
   useEffect(() => {
-    if (query.error && query.error === 'Callback') {
+    if (query.error) {
       const newURL = `${window.location.origin}${window.location.pathname}`
       window.history.pushState({}, '', newURL)
       toastError(t('Connected Fail'))
