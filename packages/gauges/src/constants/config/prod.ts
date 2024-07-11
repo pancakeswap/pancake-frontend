@@ -4601,4 +4601,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: bscTokens.weEth.address,
     token1Address: bscTokens.eth.address,
   },
+  {
+    gid: 465,
+    pairName: 'SQD-WETH',
+    address: '0xc24B560c7f8a1A50c2336cd8917Af61B5E14984F',
+    chainId: ChainId.ARBITRUM_ONE,
+    type: GaugeType.V3,
+    feeTier: FeeAmount.HIGH,
+    token0Address: arbitrumTokens.sqd.address,
+    token1Address: arbitrumTokens.weth.address,
+  },
 ]
