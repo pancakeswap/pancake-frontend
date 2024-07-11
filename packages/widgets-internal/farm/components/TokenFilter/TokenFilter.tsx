@@ -20,6 +20,7 @@ const Container = styled.div`
   .p-multiselect-panel {
     top: 0 !important;
     left: -27px !important;
+    transform-origin: center top !important;
   }
 `;
 const ItemContainer = styled.div`
