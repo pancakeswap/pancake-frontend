@@ -31,9 +31,9 @@ import { useCallback, useMemo, useState } from 'react'
 import { useLPApr } from 'state/swap/useLPApr'
 import { styled } from 'styled-components'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import { useSignTypedData } from 'wagmi'
 // import { splitSignature } from 'utils/splitSignature'
 import { Hash } from 'viem'
+import { useSignTypedData } from 'wagmi'
 
 import { LightGreyCard } from 'components/Card'
 import { RowBetween } from 'components/Layout/Row'
@@ -53,6 +53,7 @@ import { CommonBasesType } from 'components/SearchModal/types'
 import { Field } from 'state/burn/actions'
 import { useRemoveLiquidityV2FormState } from 'state/burn/reducer'
 import { useGasPrice } from 'state/user/hooks'
+import { logGTMClickRemoveLiquidityEvent } from 'utils/customGTMEventTracking'
 import { isUserRejected, logError } from 'utils/sentry'
 import { AppBody, AppHeader } from '../../components/App'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
@@ -721,6 +722,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
                   txHash: undefined,
                 })
                 onPresentRemoveLiquidity()
+                logGTMClickRemoveLiquidityEvent()
               }}
               width="100%"
               disabled={!isValid || (signatureData === null && approvalState !== ApprovalState.APPROVED)}

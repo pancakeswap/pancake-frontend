@@ -2,7 +2,9 @@ export enum GTMEvent {
   EventTracking = 'eventTracking',
   Swap = 'swap',
   AddLiquidity = 'addLiquidity',
+  RemoveLiquidity = 'removeLiquidity',
   Farm = 'stakeFarm',
+  UnStakeFarm = 'unStakeFarm',
   WalletConnect = 'walletConnect',
   Web3WalletView = 'Web3WalletView',
 }
@@ -11,7 +13,9 @@ export enum GTMCategory {
   TokenHighlight = 'TokenHighlight',
   Swap = 'Swap',
   AddLiquidity = 'AddLiquidity',
+  RemoveLiquidity = 'RemoveLiquidity',
   Farm = 'Farm',
+  UnStakeFarm = 'unStakeFarm',
   WalletConnect = 'WalletConnect',
   Web3WalletView = 'Web3WalletView',
 }
@@ -20,7 +24,9 @@ export enum GTMAction {
   ClickTradeButton = 'Click Trade Button',
   ClickSwapButton = 'Click Swap Button',
   ClickAddLiquidityButton = 'Click Add Liquidity Button',
+  ClickRemoveLiquidityButton = 'Click Remove Liquidity Button',
   ClickStakeButton = 'Click Stake Button',
+  ClickUnStakeButton = 'Click UnStake Button',
   ClickWalletConnectButton = 'Click Wallet Connect and Connected',
   Web3WalletView = 'Web3 Wallet Page View',
 }
@@ -69,12 +75,30 @@ export const logGTMClickStakeFarmEvent = () => {
   })
 }
 
+export const logGTMClickUnStakeFarmEvent = () => {
+  console.info('---UnStake---')
+  window?.dataLayer?.push({
+    event: GTMEvent.UnStakeFarm,
+    action: GTMAction.ClickUnStakeButton,
+    category: GTMCategory.UnStakeFarm,
+  })
+}
+
 export const logGTMClickAddLiquidityEvent = () => {
   console.info('---AddLiquidity---')
   window?.dataLayer?.push({
     event: GTMEvent.AddLiquidity,
     action: GTMAction.ClickAddLiquidityButton,
     category: GTMCategory.AddLiquidity,
+  })
+}
+
+export const logGTMClickRemoveLiquidityEvent = () => {
+  console.info('---RemoveLiquidity---')
+  window?.dataLayer?.push({
+    event: GTMEvent.RemoveLiquidity,
+    action: GTMAction.ClickRemoveLiquidityButton,
+    category: GTMCategory.RemoveLiquidity,
   })
 }
 

@@ -4,6 +4,7 @@ export enum GTMEvent {
   AddLiquidity = 'addLiquidity',
   RemoveLiquidity = 'removeLiquidity',
   Farm = 'stakeFarm',
+  UnStakeFarm = 'unStakeFarm',
   WalletConnect = 'walletConnect',
 }
 
@@ -12,6 +13,7 @@ export enum GTMCategory {
   AddLiquidity = 'AddLiquidity',
   RemoveLiquidity = 'RemoveLiquidity',
   Farm = 'Farm',
+  UnStakeFarm = 'UnStakeFarm',
   WalletConnect = 'WalletConnect',
 }
 
@@ -62,9 +64,9 @@ export const logGTMClickStakeFarmEvent = () => {
 export const logGTMClickUnStakeFarmEvent = () => {
   console.info('---UnStake---')
   window?.dataLayer?.push({
-    event: GTMEvent.Farm,
+    event: GTMEvent.UnStakeFarm,
     action: GTMAction.ClickUnStakeButton,
-    category: GTMCategory.Farm,
+    category: GTMCategory.UnStakeFarm,
   })
 }
 
