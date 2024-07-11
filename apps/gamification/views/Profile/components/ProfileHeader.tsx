@@ -82,7 +82,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       window.history.pushState({}, '', newURL)
       toastError(t('Connected Fail'))
     }
-  }, [])
+  }, [query, t, toastError])
 
   useEffect(() => {
     const fetch = async (id: string, social: SocialHubType) => {
