@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Native } from '@pancakeswap/sdk'
 import {
@@ -204,12 +203,9 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   }
 
   const handleRedirectLiquidity = () => {
-    const { network, lpAddress, minAmount } = task as TaskLiquidityConfig
-    if (network && lpAddress) {
-      // TODO: Confirm liquidity url
-      const symbol = network === ChainId.BSC ? 'BNB' : 'ETH'
-      const v3Url = `https://pancakeswap.finance/add/$${symbol}/${lpAddress}?chain=${CHAIN_QUERY_NAME[network]}&minPrice=${minAmount}`
-      window.open(v3Url, '_blank', 'noopener noreferrer')
+    const { lpAddressLink } = task as TaskLiquidityConfig
+    if (lpAddressLink) {
+      window.open(lpAddressLink, '_blank', 'noopener noreferrer')
     }
   }
 
