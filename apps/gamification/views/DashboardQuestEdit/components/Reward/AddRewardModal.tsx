@@ -170,10 +170,12 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     await switchNetworkAsync(inputCurrency?.chainId)
   }
 
-  const isRewardDistribution = useMemo(
-    () => new BigNumber(stakeAmount).modulo(new BigNumber(amountOfWinnersInModal)).isEqualTo(0),
-    [amountOfWinnersInModal, stakeAmount],
-  )
+  const isRewardDistribution = useMemo(() => {
+    const rewardAmount = new BigNumber(stakeAmount)
+    const totalWinners = new BigNumber(amountOfWinnersInModal)
+    const perUserWin = rewardAmount.div(totalWinners)
+    return rewardAmount.eq(perUserWin.times(totalWinners))
+  }, [amountOfWinnersInModal, stakeAmount])
 
   const isAbleToSubmit = useMemo(() => {
     const userBalance = new BigNumber(getFullDisplayBalance(currencyBalance, inputCurrency.decimals))
