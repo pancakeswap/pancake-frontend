@@ -17,8 +17,6 @@ import {
   useToast,
 } from '@pancakeswap/uikit'
 import { CHAIN_QUERY_NAME } from 'config/chains'
-import dayjs from 'dayjs'
-import Cookie from 'js-cookie'
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
@@ -35,7 +33,6 @@ import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { useConnectTwitter } from 'views/Profile/hooks/settingsModal/useConnectTwitter'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
-import { getSingleTaskTwitterIdCookie, getTwitterIdCookie } from 'views/Profile/utils/getTwitterIdCookie'
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { fetchMarkTaskStatus } from 'views/Quest/utils/fetchMarkTaskStatus'
@@ -46,11 +43,6 @@ const VerifyButton = styled(Button)`
   background-color: ${({ theme }) => theme.colors.secondary};
 `
 
-interface SingleCookieData {
-  fetchTime: number
-  expiredDate: number
-}
-
 interface TaskProps {
   questId: string
   task: TaskConfigType
@@ -59,8 +51,6 @@ interface TaskProps {
   isQuestFinished: boolean
   refresh: () => void
 }
-
-const MAX_LIMIT_IN_15_MIN = 5
 
 export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegister, isQuestFinished, refresh }) => {
   const { t } = useTranslation()
@@ -77,45 +67,18 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const [actionPanelExpanded, setActionPanelExpanded] = useState(false)
 
   const twitterId = userInfo?.socialHubToSocialUserIdMap?.Twitter ?? ''
-  const cookieId = getTwitterIdCookie(twitterId)
-  const singleTaskTwitterIdCookie = getSingleTaskTwitterIdCookie(twitterId, task?.id ?? '')
-  const getSingleTwitterTokenData = Cookie.get(singleTaskTwitterIdCookie)
-  const singleTokenData: SingleCookieData | null = getSingleTwitterTokenData
-    ? JSON.parse(getSingleTwitterTokenData)
-    : null
-
-  const handleSingleTwitterCookieSetup = useCallback(() => {
-    const fetchTime = Number(singleTokenData?.fetchTime) > 0 ? Number(singleTokenData?.fetchTime) + 1 : 1
-    const expiredDate = fetchTime === 1 ? dayjs().add(15, 'm').unix() : singleTokenData?.expiredDate
-
-    Cookie.set(singleTaskTwitterIdCookie, JSON.stringify({ fetchTime, expiredDate }))
-  }, [singleTaskTwitterIdCookie, singleTokenData])
 
   const handleVerifyTwitterAccount = useCallback(async () => {
     if (isPending || !hasIdRegister || !account || !twitterId) {
       return
     }
 
-    if (
-      singleTokenData &&
-      Number(singleTokenData.fetchTime) > MAX_LIMIT_IN_15_MIN &&
-      dayjs().unix() < Number(singleTokenData.expiredDate)
-    ) {
-      return
-    }
-
     setIsPending(true)
 
-    const getTokenData = Cookie.get(cookieId)
-    const tokenData = getTokenData ? JSON.parse(getTokenData) : null
-    const token = tokenData?.token ?? (session as any)?.user?.twitter?.token
-    const tokenSecret = tokenData?.tokenSecret ?? (session as any)?.user?.twitter?.tokenSecret
+    const token = (session as any)?.user?.twitter?.token
+    const tokenSecret = (session as any)?.user?.twitter?.tokenSecret
 
     if (token && tokenSecret) {
-      if ((session as any)?.user?.twitter) {
-        Cookie.set(cookieId, JSON.stringify({ token, tokenSecret }))
-      }
-
       try {
         setActionPanelExpanded(false)
         const responseFetchVerifyTwitterFollow = await fetchVerifyTwitterFollow({
@@ -146,24 +109,9 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
         setIsPending(false)
       }
     } else {
-      handleSingleTwitterCookieSetup()
       connectTwitter()
     }
-  }, [
-    isPending,
-    account,
-    twitterId,
-    singleTokenData,
-    cookieId,
-    session,
-    task,
-    questId,
-    hasIdRegister,
-    refresh,
-    toastError,
-    handleSingleTwitterCookieSetup,
-    connectTwitter,
-  ])
+  }, [isPending, account, twitterId, session, task, questId, hasIdRegister, refresh, toastError, connectTwitter])
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -176,15 +124,11 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
       taskType === TaskType.X_FOLLOW_ACCOUNT &&
       new Date(session?.expires).getTime() > new Date().getTime()
     ) {
-      if (
-        (session as any)?.user?.twitter?.token &&
-        (session as any)?.user?.twitter?.tokenSecret &&
-        singleTokenData !== null
-      ) {
+      if ((session as any)?.user?.twitter?.token && (session as any)?.user?.twitter?.tokenSecret) {
         fetchApi()
       }
     }
-  }, [handleVerifyTwitterAccount, isSocialHubFetched, session, taskType, singleTokenData])
+  }, [handleVerifyTwitterAccount, isSocialHubFetched, session, taskType])
 
   const [onPresentConnectSocialAccountModal] = useModal(<ConnectSocialAccountModal socialName={socialName} />)
 
