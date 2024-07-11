@@ -61,6 +61,7 @@ export interface TaskLiquidityConfig extends TaskBaseConfig {
   minAmount: string
   lpAddress: string
   lpAddressLink: string
+  feeTier: string
 }
 
 export interface TaskSocialConfig extends TaskBaseConfig {

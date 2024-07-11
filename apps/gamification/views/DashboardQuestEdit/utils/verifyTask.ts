@@ -23,7 +23,8 @@ export const verifyTask = (task: TaskConfigType) => {
       return (
         !validateLpAddress((task as TaskLiquidityConfig).lpAddress) &&
         !validateNumber((task as TaskLiquidityConfig).minAmount) &&
-        !validateUrl((task as TaskLiquidityConfig).lpAddressLink)
+        !validateUrl((task as TaskLiquidityConfig).lpAddressLink) &&
+        !validateIsNotEmpty((task as TaskLiquidityConfig).feeTier)
       )
     case TaskType.VISIT_BLOG_POST:
       return !validateIsNotEmpty((task as TaskBlogPostConfig).blogUrl)

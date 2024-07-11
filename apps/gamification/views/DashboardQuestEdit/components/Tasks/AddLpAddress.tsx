@@ -13,7 +13,12 @@ import { TaskLiquidityConfig } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
-import { validateLpAddress, validateNumber, validateUrl } from 'views/DashboardQuestEdit/utils/validateFormat'
+import {
+  validateIsNotEmpty,
+  validateLpAddress,
+  validateNumber,
+  validateUrl,
+} from 'views/DashboardQuestEdit/utils/validateFormat'
 
 const StyleSelector = styled(Button)`
   position: absolute;
@@ -38,7 +43,7 @@ interface AddLpAddressProps {
   task: TaskLiquidityConfig
 }
 
-type SocialKeyType = 'title' | 'description' | 'minAmount' | 'lpAddressLink'
+type SocialKeyType = 'title' | 'description' | 'minAmount' | 'lpAddressLink' | 'feeTier' | 'lpAddress'
 
 export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
   const { t } = useTranslation()
@@ -65,21 +70,13 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, socialKeyType: SocialKeyType) => {
     setIsFirst(false)
 
-    const forkTasks = Object.assign(tasks)
-    const indexToUpdate = forkTasks.findIndex((i: TaskLiquidityConfig) => i.sid === task.sid)
-    forkTasks[indexToUpdate][socialKeyType] = e.target.value
+    if (e.currentTarget.validity.valid) {
+      const forkTasks = Object.assign(tasks)
+      const indexToUpdate = forkTasks.findIndex((i: TaskLiquidityConfig) => i.sid === task.sid)
+      forkTasks[indexToUpdate][socialKeyType] = e.target.value
 
-    onTasksChange([...forkTasks])
-  }
-
-  const handleLpAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsFirst(false)
-
-    const forkTasks = Object.assign(tasks)
-    const indexToUpdate = forkTasks.findIndex((i: TaskLiquidityConfig) => i.sid === task.sid)
-    forkTasks[indexToUpdate].lpAddress = e.target.value
-
-    onTasksChange([...forkTasks])
+      onTasksChange([...forkTasks])
+    }
   }
 
   const onClickOptional = () => {
@@ -93,6 +90,7 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
   const isMinAmountError = useMemo(() => !isFirst && validateNumber(task.minAmount), [isFirst, task?.minAmount])
   const isLpAddressError = useMemo(() => !isFirst && validateLpAddress(task.lpAddress), [isFirst, task?.lpAddress])
   const isLpAddressUrlError = useMemo(() => !isFirst && validateUrl(task.lpAddressLink), [isFirst, task?.lpAddressLink])
+  const isFeeTierError = useMemo(() => !isFirst && validateIsNotEmpty(task.feeTier), [isFirst, task?.feeTier])
 
   return (
     <Flex flexDirection={['column']}>
@@ -131,8 +129,7 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
                 isError={isLpAddressError}
                 value={task.lpAddress}
                 placeholder={t('LP address')}
-                pattern="^(0x[a-fA-F0-9]{40})$"
-                onChange={handleLpAddressChange}
+                onChange={(e) => handleInputChange(e, 'lpAddress')}
               />
             </StyledInputGroup>
           </Flex>
@@ -167,9 +164,26 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
         </Flex>
         <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
           <StyledInputGroup
+            endIcon={isFeeTierError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+          >
+            <StyledInput
+              pattern="^[0-9]+$"
+              inputMode="numeric"
+              placeholder={t('Fee Tier 100,500,2500,10000')}
+              isError={isFeeTierError}
+              value={task.feeTier}
+              onChange={(e) => handleInputChange(e, 'feeTier')}
+            />
+          </StyledInputGroup>
+          {isFeeTierError && <InputErrorText errorText={t('Cannot be 0')} />}
+        </Flex>
+        <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
+          <StyledInputGroup
             endIcon={isMinAmountError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
           >
             <StyledInput
+              pattern="^[0-9]+$"
+              inputMode="numeric"
               value={task.minAmount}
               isError={isMinAmountError}
               placeholder={t('Min. amount in $')}
