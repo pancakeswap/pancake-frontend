@@ -15,7 +15,6 @@ interface RewardAssetsProps {
   bCakeWrapper?: Address
   earningToken: Currency
   pendingReward: bigint | undefined
-  isInCakeRewardDateRange: boolean
   refetch?: () => void
 }
 
@@ -24,7 +23,6 @@ export const RewardAssets: React.FC<RewardAssetsProps> = ({
   pendingReward,
   earningToken,
   refetch,
-  isInCakeRewardDateRange,
   bCakeWrapper,
 }) => {
   const { t } = useTranslation()

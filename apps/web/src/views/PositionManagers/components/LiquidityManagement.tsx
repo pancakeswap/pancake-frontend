@@ -130,7 +130,6 @@ export const LiquidityManagement = memo(function LiquidityManagement({
   userLpAmounts,
   totalSupplyAmounts,
   precision,
-  isInCakeRewardDateRange,
   totalStakedInUsd,
   strategyInfoUrl,
   learnMoreAboutUrl,
@@ -207,7 +206,6 @@ export const LiquidityManagement = memo(function LiquidityManagement({
                 bCakeWrapper={bCakeWrapper}
                 pendingReward={pendingReward}
                 earningToken={earningToken}
-                isInCakeRewardDateRange={isInCakeRewardDateRange}
                 refetch={refetch}
               />
             </RowBetween>
