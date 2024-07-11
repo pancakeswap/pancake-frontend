@@ -10,4 +10,11 @@ export const tradingRewardLineaV3Pair = defineFarmV3Configs([
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOW,
   },
+  {
+    pid: null as any,
+    lpAddress: '0x4cCb40a93d1529FAA48e8dB2cE3634D73D9feeB5',
+    token0: lineaTokens.ezETH,
+    token1: lineaTokens.weth,
+    feeAmount: FeeAmount.LOWEST,
+  },
 ])
