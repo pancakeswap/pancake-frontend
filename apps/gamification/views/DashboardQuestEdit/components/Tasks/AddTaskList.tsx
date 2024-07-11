@@ -10,7 +10,7 @@ const StyledDropdown = styled(Dropdown)`
   width: 280px;
   top: 30px;
   right: 0px;
-  z-index: 10;
+  z-index: 100;
 `
 
 interface AddTaskListProps {
