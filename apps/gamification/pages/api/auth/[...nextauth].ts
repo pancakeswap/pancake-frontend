@@ -1,11 +1,16 @@
 import NextAuth from 'next-auth'
 import DiscordProvider from 'next-auth/providers/discord'
+import TwitterProvider from 'next-auth/providers/twitter'
 
 export default NextAuth({
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID ?? '',
       clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
+    }),
+    TwitterProvider({
+      clientId: process.env.TWITTER_CONSUMER_KEY ?? '',
+      clientSecret: process.env.TWITTER_CONSUMER_SECRET ?? '',
     }),
   ],
   callbacks: {
@@ -18,10 +23,10 @@ export default NextAuth({
             // eslint-disable-next-line no-param-reassign
             token.discordId = profile.id
             break
-          // case 'telegram':
-          //   // eslint-disable-next-line no-param-reassign
-          //   token.telegramId = profile.id
-          //   break
+          case 'twitter':
+            // eslint-disable-next-line no-param-reassign
+            token.twitterId = profile.id
+            break
         }
       }
       return token
@@ -30,7 +35,7 @@ export default NextAuth({
       // eslint-disable-next-line no-param-reassign
       ;(session as any).user.discordId = token.discordId || null
       // eslint-disable-next-line no-param-reassign
-      // ;(session as any).user.telegramId = token.telegramId || null
+      ;(session as any).user.twitterId = token.twitterId || null
       return session
     },
     async redirect({ url, baseUrl }) {
