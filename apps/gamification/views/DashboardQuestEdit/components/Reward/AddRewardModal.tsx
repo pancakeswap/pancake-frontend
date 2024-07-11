@@ -8,7 +8,7 @@ import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import { CurrencySearch } from 'components/SearchModal/CurrencySearch'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
-import useTokenBalance from 'hooks/useTokenBalance'
+import { useCurrencyBalance } from 'hooks/useTokenBalance'
 import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
@@ -124,7 +124,8 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
 
   const [inputCurrency, setInputCurrency] = useState<Currency>(defaultInputCurrency)
   const [stakeAmount, setStakeAmount] = useState(reward?.totalRewardAmount?.toString() ?? '')
-  const { balance: currencyBalance } = useTokenBalance(inputCurrency?.wrapped?.address)
+
+  const currencyBalance = useCurrencyBalance(inputCurrency)
 
   const config = {
     [CurrencyModalView.currencyInput]: { title: t('Add a reward'), onBack: onDismiss },

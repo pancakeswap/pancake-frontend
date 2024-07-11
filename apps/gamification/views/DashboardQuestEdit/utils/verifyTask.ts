@@ -28,7 +28,7 @@ export const verifyTask = (task: TaskConfigType) => {
       )
     case TaskType.VISIT_BLOG_POST:
       return !validateIsNotEmpty((task as TaskBlogPostConfig).blogUrl)
-    case TaskType.X_LINK_POST:
+    case TaskType.X_LIKE_POST:
     case TaskType.X_REPOST_POST:
     case TaskType.X_FOLLOW_ACCOUNT:
     case TaskType.TELEGRAM_JOIN_GROUP:

@@ -39,7 +39,7 @@ const Item = ({ item, dragHandleProps }: { item: TaskConfigType; dragHandleProps
           {item.taskType === TaskType.ADD_LIQUIDITY && <AddLpAddress task={item} />}
           {item.taskType === TaskType.VISIT_BLOG_POST && <AddBlogPost task={item} />}
 
-          {(item.taskType === TaskType.X_LINK_POST ||
+          {(item.taskType === TaskType.X_LIKE_POST ||
             item.taskType === TaskType.X_FOLLOW_ACCOUNT ||
             item.taskType === TaskType.X_REPOST_POST ||
             item.taskType === TaskType.TELEGRAM_JOIN_GROUP ||

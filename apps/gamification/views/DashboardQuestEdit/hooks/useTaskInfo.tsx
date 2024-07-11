@@ -25,7 +25,7 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
         case TaskType.HOLD_A_TOKEN:
         case TaskType.MAKE_PREDICTION:
           return <BunnyFillIcon color={color} width={size} height={size} />
-        case TaskType.X_LINK_POST:
+        case TaskType.X_LIKE_POST:
         case TaskType.X_FOLLOW_ACCOUNT:
         case TaskType.X_REPOST_POST:
           return <TwitterIcon color={color} width={size} height={size} />
@@ -61,7 +61,7 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
           return t('Participate in a lottery')
         case TaskType.MAKE_PREDICTION:
           return t('Make a prediction')
-        case TaskType.X_LINK_POST:
+        case TaskType.X_LIKE_POST:
         case TaskType.IG_LIKE_POST:
           return t('Like the post')
         case TaskType.X_FOLLOW_ACCOUNT:
@@ -89,7 +89,7 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
   const taskInputPlaceholder = useCallback(
     (social: TaskType) => {
       switch (social) {
-        case TaskType.X_LINK_POST:
+        case TaskType.X_LIKE_POST:
         case TaskType.X_REPOST_POST:
           return t('X post link')
         case TaskType.X_FOLLOW_ACCOUNT:

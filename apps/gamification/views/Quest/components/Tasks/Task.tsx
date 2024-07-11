@@ -148,7 +148,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
         setSocialName('Instagram')
         return Boolean(userInfo.socialHubToSocialUserIdMap?.Instagram)
       case TaskType.X_FOLLOW_ACCOUNT:
-      case TaskType.X_LINK_POST:
+      case TaskType.X_LIKE_POST:
       case TaskType.X_REPOST_POST:
         setSocialName('X')
         return Boolean(userInfo.socialHubToSocialUserIdMap?.Twitter)
@@ -218,7 +218,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
         return handleRedirectLiquidity()
       case TaskType.VISIT_BLOG_POST:
         return handleAddBlogPost()
-      case TaskType.X_LINK_POST:
+      case TaskType.X_LIKE_POST:
       case TaskType.X_FOLLOW_ACCOUNT:
       case TaskType.X_REPOST_POST:
       case TaskType.TELEGRAM_JOIN_GROUP:

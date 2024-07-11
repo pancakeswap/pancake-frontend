@@ -68,7 +68,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         orderNumber: 0,
         isOptional: false,
       }
-    case TaskType.X_LINK_POST:
+    case TaskType.X_LIKE_POST:
     case TaskType.X_REPOST_POST:
     case TaskType.X_FOLLOW_ACCOUNT:
     case TaskType.TELEGRAM_JOIN_GROUP:

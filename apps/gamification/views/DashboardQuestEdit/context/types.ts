@@ -66,7 +66,7 @@ export interface TaskLiquidityConfig extends TaskBaseConfig {
 
 export interface TaskSocialConfig extends TaskBaseConfig {
   taskType:
-    | TaskType.X_LINK_POST
+    | TaskType.X_LIKE_POST
     | TaskType.X_FOLLOW_ACCOUNT
     | TaskType.X_REPOST_POST
     | TaskType.TELEGRAM_JOIN_GROUP
