@@ -41,6 +41,9 @@ const SelectContainer = styled.div`
       line-height: 24px;
       padding: 0 8px;
     }
+    .p-placeholder {
+      color: ${({ theme }) => theme.colors.textSubtle};
+    }
   }
   .p-treeselect-header {
     display: none;
@@ -204,7 +207,7 @@ export const TreeSelect = (props: ITreeSelectProps) => {
         value={props.onChange ? props.value : selectedNodeKey}
         onChange={props.onChange ?? handleTreeSelectChange}
         options={data}
-        placeholder="Select Item"
+        placeholder={props.placeholder ?? "Select Item"}
         selectionMode="checkbox"
         expandedKeys={expandedKeys}
         dropdownIcon={DropDownIcon}
