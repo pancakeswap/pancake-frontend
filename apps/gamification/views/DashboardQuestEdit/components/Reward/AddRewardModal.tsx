@@ -120,7 +120,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     return findToken || (CAKE as any)?.[chainId]
   }, [chainId, reward, tokensByChainWithNativeToken])
 
-  const displayAmountOfWinnersInModal = useMemo(() => amountOfWinnersInModal || 0, [amountOfWinnersInModal])
+  const displayAmountOfWinnersInModal = useMemo(() => amountOfWinnersInModal || '', [amountOfWinnersInModal])
 
   const [inputCurrency, setInputCurrency] = useState<Currency>(defaultInputCurrency)
   const [stakeAmount, setStakeAmount] = useState(reward?.totalRewardAmount?.toString() ?? '')
@@ -160,7 +160,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   }, [])
 
   const handleContinue = () => {
-    handlePickedRewardToken(inputCurrency, Number(stakeAmount), displayAmountOfWinnersInModal)
+    handlePickedRewardToken(inputCurrency, Number(stakeAmount), displayAmountOfWinnersInModal || 0)
     onDismiss?.()
   }
 

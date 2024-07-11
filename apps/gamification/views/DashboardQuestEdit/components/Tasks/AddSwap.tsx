@@ -73,17 +73,19 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, socialKeyType: SocialKeyType) => {
     setIsFirst(false)
 
-    const forkTasks = Object.assign(tasks)
-    const indexToUpdate = forkTasks.findIndex((i: TaskSwapConfig) => i.sid === task.sid)
+    if (e.currentTarget.validity.valid) {
+      const forkTasks = Object.assign(tasks)
+      const indexToUpdate = forkTasks.findIndex((i: TaskSwapConfig) => i.sid === task.sid)
 
-    forkTasks[indexToUpdate][socialKeyType] = e.target.value
-    if (socialKeyType === 'minAmount') {
-      forkTasks[indexToUpdate].title = `Make a swap at least ${e?.target?.value ?? 0} USD of ${
-        selectedCurrency?.symbol
-      }`
+      forkTasks[indexToUpdate][socialKeyType] = e.target.value
+      if (socialKeyType === 'minAmount') {
+        forkTasks[indexToUpdate].title = `Make a swap at least ${e?.target?.value ?? 0} USD of ${
+          selectedCurrency?.symbol
+        }`
+      }
+
+      onTasksChange([...forkTasks])
     }
-
-    onTasksChange([...forkTasks])
   }
 
   const onClickOptional = () => {
@@ -126,6 +128,8 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
                 endIcon={isError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
               >
                 <StyledInput
+                  pattern="^[0-9]+$"
+                  inputMode="numeric"
                   isError={isError}
                   value={task.minAmount}
                   placeholder={t('Min. amount in $')}
