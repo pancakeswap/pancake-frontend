@@ -174,7 +174,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     const rewardAmount = new BigNumber(stakeAmount)
     const totalWinners = new BigNumber(amountOfWinnersInModal)
     const perUserWin = rewardAmount.div(totalWinners)
-    return totalWinners.eq(1) || rewardAmount.eq(perUserWin.times(totalWinners))
+    return (rewardAmount.gt(0) && totalWinners.eq(1)) || rewardAmount.eq(perUserWin.times(totalWinners))
   }, [amountOfWinnersInModal, stakeAmount])
 
   const isAbleToSubmit = useMemo(() => {
