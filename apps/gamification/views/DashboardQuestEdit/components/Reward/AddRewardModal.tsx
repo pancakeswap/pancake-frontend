@@ -167,6 +167,14 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     await switchNetworkAsync(inputCurrency?.chainId)
   }
 
+  const isAbleToSubmit = useMemo(() => {
+    const isInputLowerThanBalance = new BigNumber(stakeAmount).lte(
+      new BigNumber(getFullDisplayBalance(currencyBalance, inputCurrency.decimals)),
+    )
+
+    return Boolean(!inputCurrency || !displayAmountOfWinnersInModal || !isInputLowerThanBalance)
+  }, [currencyBalance, displayAmountOfWinnersInModal, inputCurrency, stakeAmount])
+
   return (
     <Modal title={config[modalView].title} onDismiss={config[modalView].onBack}>
       <Flex
@@ -221,7 +229,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
                 onMouseLeave={endLongPress}
                 onTouchEnd={endLongPress}
                 endIcon={<LongPressSvg progress={progress} />}
-                disabled={Boolean(!inputCurrency || !stakeAmount || !displayAmountOfWinnersInModal)}
+                disabled={isAbleToSubmit}
               >
                 {t('Hold to deposit')}
               </YellowButton>

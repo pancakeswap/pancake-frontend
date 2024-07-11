@@ -11,7 +11,7 @@ export const useTokensByChainWithNativeToken = (chainId: ChainId) => {
   const filterTokens = useMemo(() => {
     if (chainId === ChainId.BSC) {
       // BSC token list has one token same as native token.
-      return tokens.filter((i) => !i.isNative && nativeToken.symbol !== i.symbol)
+      return tokens.filter((i) => !i.isNative || (i.isNative && nativeToken.symbol !== i.symbol))
     }
     return tokens
   }, [chainId, nativeToken, tokens])
