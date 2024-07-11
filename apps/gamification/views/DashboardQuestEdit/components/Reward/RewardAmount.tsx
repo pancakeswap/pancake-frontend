@@ -101,7 +101,7 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({
         )}
         <Flex>
           <Text style={{ alignSelf: 'center' }} fontSize="14px" color="textSubtle" mr="8px">
-            {t('Amount of winners')}
+            {t('Select Number of Winners')}
           </Text>
           <Box width="80px">
             <Input

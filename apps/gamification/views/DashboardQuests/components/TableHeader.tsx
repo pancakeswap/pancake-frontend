@@ -22,11 +22,11 @@ const StyledRow = styled('div')`
     }
 
     &:nth-child(2) {
-      flex: 20%;
+      flex: 15%;
     }
 
     &:nth-child(3) {
-      flex: 10%;
+      flex: 15%;
     }
 
     &:nth-child(4) {
@@ -83,7 +83,7 @@ export const TableHeader = () => {
                   color="secondary"
                   textTransform="uppercase"
                 >
-                  {t('total reward pool')}
+                  {t('Total reward')}
                 </Text>
                 {/* <SortButton scale="sm" variant="subtle" className={getSortClassName(rewardPoolSort)}>
                   <SortArrowIcon />
@@ -91,8 +91,8 @@ export const TableHeader = () => {
               </Touchable>
             </StyledCell>
             <StyledCell role="cell">
-              <Text fontSize="12px" bold textTransform="uppercase" color="secondary" ml="auto">
-                {t('questers')}
+              <Text textAlign="right" fontSize="12px" bold textTransform="uppercase" color="secondary">
+                {t('Number of Participants')}
               </Text>
             </StyledCell>
           </>

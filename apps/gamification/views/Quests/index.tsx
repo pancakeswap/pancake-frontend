@@ -11,7 +11,7 @@ export const QuestsView = () => {
     <Box pb="200px">
       <Banner
         title={t('Explore Quests')}
-        subTitle={t('Earn by contributing to the community')}
+        subTitle={t('Join Quests and Build Your Profile')}
         bannerImageUrl={`${ASSET_CDN}/gamification/images/quest-banner-image.png`}
       />
       <Quests />

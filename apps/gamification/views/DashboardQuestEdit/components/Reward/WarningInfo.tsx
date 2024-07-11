@@ -20,7 +20,7 @@ export const WarningInfo = () => {
         <Text bold>{t('No withdraw allowed')}</Text>
         <StyledLineClamp line={isExpanded ? 0 : 3} ellipsis lineHeight="150%">
           {t(
-            `You won't be able to withdraw the reward at any point. Please make absolutely sure the amount you're sending is the one you're satisfied with. We designed the reward distribution smart contract this way so that all users can be confident they will receive the reward they are eligible for.`,
+            `Once submitted, rewards cannot be withdrawn. Please verify the amount before sending, as it cannot be adjusted later. Our smart contract ensures accurate reward distribution, providing confidence to all users in receiving their eligible rewards.`,
           )}
         </StyledLineClamp>
         <Flex mt="4px" onClick={() => setIsExpanded(!isExpanded)}>

@@ -27,11 +27,11 @@ const StyledRow = styled.div`
     }
 
     &:nth-child(2) {
-      flex: 20%;
+      flex: 15%;
     }
 
     &:nth-child(3) {
-      flex: 10%;
+      flex: 15%;
     }
 
     &:nth-child(4) {

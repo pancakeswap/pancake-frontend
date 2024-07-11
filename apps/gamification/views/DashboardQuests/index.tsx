@@ -68,7 +68,7 @@ export const DashboardQuests = () => {
           ]}
           padding={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
         >
-          <EmptyQuest title={t('There is nothing here, yet')} subTitle={t('Start by creating a quest!')} />
+          <EmptyQuest title={t('There is nothing here, yet')} subTitle={t('Get started by creating your quest')} />
         </Box>
       ) : (
         <Records

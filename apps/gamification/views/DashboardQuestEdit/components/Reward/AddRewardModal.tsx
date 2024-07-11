@@ -168,11 +168,12 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   }
 
   const isAbleToSubmit = useMemo(() => {
-    const isInputLowerThanBalance = new BigNumber(stakeAmount).lte(
-      new BigNumber(getFullDisplayBalance(currencyBalance, inputCurrency.decimals)),
-    )
+    const userBalance = new BigNumber(getFullDisplayBalance(currencyBalance, inputCurrency.decimals))
+    const isInputLowerThanBalance = new BigNumber(stakeAmount).lte(userBalance)
 
-    return Boolean(!inputCurrency || !displayAmountOfWinnersInModal || !isInputLowerThanBalance)
+    return Boolean(
+      !inputCurrency || new BigNumber(stakeAmount).lte(0) || !displayAmountOfWinnersInModal || !isInputLowerThanBalance,
+    )
   }, [currencyBalance, displayAmountOfWinnersInModal, inputCurrency, stakeAmount])
 
   return (
@@ -203,7 +204,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
               />
               <Flex justifyContent="center" mt="32px">
                 <Text style={{ alignSelf: 'center' }} fontSize="14px" color="textSubtle" mr="8px">
-                  {t('Choose amount of winners:')}
+                  {t('Select Number of Winners:')}
                 </Text>
                 <Box width="80px">
                   <Input

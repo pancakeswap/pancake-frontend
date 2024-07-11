@@ -77,7 +77,7 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({
   }
 
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" mb="80px">
       <Container>
         <Flex maxWidth={['1200px']} margin="auto" flexDirection={['column', 'column', 'column', 'column', 'row']}>
           <Flex>
