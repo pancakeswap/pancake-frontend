@@ -40,7 +40,9 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
   })
 
   const onclickOpenNewIcon = () => {
-    window.open(task.blogUrl, '_blank', 'noopener noreferrer')
+    if (task.blogUrl) {
+      window.open(task.blogUrl, '_blank', 'noopener noreferrer')
+    }
   }
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,6 +1,16 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, ChevronDownIcon, ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
+import {
+  Box,
+  Button,
+  ChevronDownIcon,
+  ErrorFillIcon,
+  Flex,
+  OpenNewIcon,
+  Text,
+  useModal,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import { NetworkSelectorModal } from 'components/NetworkSelectorModal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useMemo, useState } from 'react'
@@ -51,6 +61,10 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
   const [isFirst, setIsFirst] = useState(true)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Open in new tab'), {
+    placement: 'top',
+  })
+
   const handlePickedChainId = (pickedChainId: ChainId) => {
     setIsFirst(false)
 
@@ -85,6 +99,12 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
     forkTasks[indexToUpdate].isOptional = !forkTasks[indexToUpdate].isOptional
 
     onTasksChange([...forkTasks])
+  }
+
+  const onclickOpenNewIcon = () => {
+    if (task.lpAddressLink) {
+      window.open(task.lpAddressLink, '_blank', 'noopener noreferrer')
+    }
   }
 
   const isMinAmountError = useMemo(() => !isFirst && validateNumber(task.minAmount), [isFirst, task?.minAmount])
@@ -151,10 +171,19 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
         </Flex>
         <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
           <StyledInputGroup
-            endIcon={isLpAddressUrlError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+            endIcon={
+              isLpAddressUrlError ? (
+                <ErrorFillIcon color="failure" width={16} height={16} />
+              ) : (
+                <Box ref={targetRef} onClick={onclickOpenNewIcon}>
+                  <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
+                  {tooltipVisible && tooltip}
+                </Box>
+              )
+            }
           >
             <StyledInput
-              placeholder={t('Lp Address Link')}
+              placeholder={t('LP Address Link')}
               isError={isLpAddressUrlError}
               value={task.lpAddressLink}
               onChange={(e) => handleInputChange(e, 'lpAddressLink')}

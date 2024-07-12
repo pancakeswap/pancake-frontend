@@ -41,7 +41,9 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
   })
 
   const onclickOpenNewIcon = () => {
-    window.open(task.socialLink, '_blank', 'noopener noreferrer')
+    if (task.socialLink) {
+      window.open(task.socialLink, '_blank', 'noopener noreferrer')
+    }
   }
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>, socialKeyType: SocialKeyType) => {
