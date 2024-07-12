@@ -156,8 +156,16 @@ export async function farmV2FetchFarms({
       }
       const tokenKey = getCurrencyKey(f.token)
       const quoteTokenKey = getCurrencyKey(f.quoteToken)
-      const tokenPrice = new BN(tokenKey ? prices[tokenKey] ?? 0 : 0)
-      const quoteTokenPrice = new BN(quoteTokenKey ? prices[quoteTokenKey] ?? 0 : 0)
+      const tokenVsQuote = new BN(f.tokenPriceVsQuote)
+      let tokenPrice = new BN(tokenKey ? prices[tokenKey] ?? 0 : 0)
+      let quoteTokenPrice = new BN(quoteTokenKey ? prices[quoteTokenKey] ?? 0 : 0)
+      if (tokenVsQuote.gt(0)) {
+        if (tokenPrice.eq(0) && quoteTokenPrice.gt(0)) {
+          tokenPrice = quoteTokenPrice.div(tokenVsQuote)
+        } else if (quoteTokenPrice.eq(0) && tokenPrice.gt(0)) {
+          quoteTokenPrice = tokenPrice.times(tokenVsQuote)
+        }
+      }
       const lpTokenPrice = getFarmLpTokenPrice(f, tokenPrice, quoteTokenPrice, decimals)
       return {
         ...f,

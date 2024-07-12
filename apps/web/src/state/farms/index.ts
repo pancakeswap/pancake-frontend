@@ -17,6 +17,8 @@ import { getViemClients } from 'utils/viem'
 import { chains } from 'utils/wagmi'
 import { Address } from 'viem'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
+import BigNumber from 'bignumber.js'
+import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
 import { resetUserState } from '../global/actions'
 import {
   fetchFarmBCakeWrapperUserAllowances,
@@ -45,6 +47,38 @@ const fetchFarmPublicDataPkg = async ({
     isTestnet: chain.testnet,
     farms: farmsCanFetch.concat(priceHelperLpsConfig),
   })
+
+  const farmsWithPriceWithFallback = await Promise.all(
+    farmsWithPrice.map(async (farm) => {
+      const tokenPriceVsQuoteBn = new BigNumber(farm.tokenPriceVsQuote)
+      if (tokenPriceVsQuoteBn.gt(0)) {
+        const quoteTokenPriceStable = new BigNumber(farm.quoteTokenPriceBusd)
+        if (quoteTokenPriceStable.eq(0)) {
+          try {
+            const data = await explorerApiClient
+              .GET('/cached/tokens/{chainName}/{address}/price', {
+                signal: null,
+                params: {
+                  path: {
+                    address: farm.quoteToken.address,
+                    chainName: chainIdToExplorerInfoChainName[chainId],
+                  },
+                },
+              })
+              .then((resp) => resp.data)
+            if (data) {
+              // eslint-disable-next-line no-param-reassign
+              farm.quoteTokenPriceBusd = data.priceUSD
+            }
+          } catch (error) {
+            console.error('Get price from api', error)
+          }
+        }
+      }
+      return farm
+    }),
+  )
+
   const farmAprs: Record<string, number> = {}
   try {
     const [farmsV2AvgInfo, farmsStableAvgInfo] = await Promise.all([
@@ -61,7 +95,7 @@ const fetchFarmPublicDataPkg = async ({
   } catch (e) {
     console.error(e)
   }
-  return [farmsWithPrice, poolLength, regularCakePerBlock, totalRegularAllocPoint, farmAprs]
+  return [farmsWithPriceWithFallback, poolLength, regularCakePerBlock, totalRegularAllocPoint, farmAprs]
 }
 
 export const farmFetcher = createFarmFetcher(getViemClients)
