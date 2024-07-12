@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { useMemo } from 'react'
+import { useRouter } from 'next/router'
 import {
   Button,
   Card,
@@ -9,16 +10,23 @@ import {
   SubMenu,
   ITableViewProps,
   TableView,
+  FeeTier,
 } from '@pancakeswap/uikit'
+import { TokenPairImage } from 'components/TokenImage'
 import { useTranslation } from '@pancakeswap/localization'
+import { ERC20Token } from '@pancakeswap/sdk'
+import { TokenOverview } from '@pancakeswap/widgets-internal'
+import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
 import { PoolsFilterPanel } from './PoolsFilterPanel'
 
 interface IDataType {
   name: string
-  feeTier: number
-  apr: number
-  tvl: number
+  feeAmount: number
+  cakeApr: number
+  activeTvlUSD: number
   vol: number
+  token0: ERC20Token
+  token1: ERC20Token
 }
 
 const PoolsContent = styled.div`
@@ -63,23 +71,6 @@ const PoolListItemAction = (_, _poolInfo: IDataType) => {
     </SubMenu>
   )
 }
-// todo:@eric replace with real data
-const data: ITableViewProps<IDataType>['data'] = [
-  {
-    name: 'Token1 / Token2',
-    feeTier: 0.99,
-    apr: 99.99,
-    tvl: 999999,
-    vol: 999999,
-  },
-  {
-    name: 'Token3 / Token4',
-    feeTier: 0.99,
-    apr: 99.99,
-    tvl: 999999,
-    vol: 999999,
-  },
-]
 
 const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
   const { t } = useTranslation()
@@ -89,26 +80,45 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
         title: t('All Pools'),
         dataIndex: 'name',
         key: 'name',
+        render: (_, item) => (
+          <TokenOverview
+            isReady
+            token={item.token0}
+            quoteToken={item.token1}
+            icon={
+              <TokenPairImage
+                width={40}
+                height={40}
+                variant="inverted"
+                primaryToken={item.token0}
+                secondaryToken={item.token1}
+              />
+            }
+          />
+        ),
       },
       {
         title: t('Fee Tier'),
-        dataIndex: 'feeTier',
+        dataIndex: 'feeAmount',
         key: 'feeTier',
+        render: (fee) => <FeeTier type="v2" fee={fee} />,
       },
       {
         title: t('APR'),
-        dataIndex: 'apr',
+        dataIndex: 'cakeApr',
         key: 'apr',
       },
       {
         title: t('TVL'),
-        dataIndex: 'tvl',
+        dataIndex: 'activeTvlUSD',
         key: 'tvl',
+        render: (value) => (value ? <>${(Number(value) / 1000).toFixed(3)}k</> : '-'),
       },
       {
         title: t('Volume 24H'),
-        dataIndex: 'vol',
+        dataIndex: 'activeTvlUSD',
         key: 'vol',
+        render: (value) => (value ? <>${(Number(value) / 1000).toFixed(3)}k</> : '-'),
       },
       {
         title: '',
@@ -121,8 +131,13 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
   )
 }
 
-export const Pools = () => {
+export const PoolsPage = () => {
   const columns = useColumnConfig()
+  const { query: urlQuery } = useRouter()
+  const mockApr = Boolean(urlQuery.mockApr)
+  // todo:@eric mock data
+  const { farmsWithPositions: farmsV3 } = useFarmsV3WithPositionsAndBooster({ mockApr })
+
   return (
     <Card>
       <CardHeader>
@@ -130,7 +145,7 @@ export const Pools = () => {
       </CardHeader>
       <CardBody>
         <PoolsContent>
-          <TableView columns={columns} data={data} />
+          <TableView columns={columns} data={farmsV3 as any} />
         </PoolsContent>
       </CardBody>
     </Card>

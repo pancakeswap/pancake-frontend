@@ -1,5 +1,5 @@
-import { ButtonMenu, ButtonMenuItem, Flex } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
+import { Flex } from '@pancakeswap/uikit'
+import { NetworkFilter, PoolTypeMenu, TokenFilter } from '@pancakeswap/widgets-internal'
 import styled from 'styled-components'
 import { CHAINS } from 'config/chains'
 import { ASSET_CDN } from 'config/constants/endpoints'
@@ -23,30 +23,13 @@ const chains = CHAINS.filter((chain) => {
   label: chain.name,
 }))
 
-interface IPoolTypeMenuProps {
-  activeIndex: number
-  onChange: (index: number) => void
-}
-
-export const PoolTypeMenu: React.FC<IPoolTypeMenuProps> = ({ activeIndex, onChange }) => {
-  const { t } = useTranslation()
-  const poolTypes = useMemo(() => [t('All'), 'V3', 'V2', t('StableSwap')], [t])
-
-  return (
-    <ButtonMenu scale="sm" activeIndex={activeIndex} onItemClick={onChange} variant="subtle">
-      {poolTypes.map((type) => (
-        <ButtonMenuItem key={type} height="38px">
-          {type}
-        </ButtonMenuItem>
-      ))}
-    </ButtonMenu>
-  )
-}
-
 export const PoolsFilterPanel = () => {
   const [selectedTypeIndex, setSelectedTypeIndex] = useState(0)
   const [selectedNetwork, setSelectedNetwork] = useState(chains.map((i) => i.value))
   const [selectedTokens, setSelectedTokens] = useState()
+
+  const { t } = useTranslation()
+  const poolTypes = useMemo(() => [t('All'), 'V3', 'V2', t('StableSwap')], [t])
 
   const allTokens = useAllTokensByChainIds(selectedNetwork)
   const sortedTokens = useMemo(
@@ -58,9 +41,9 @@ export const PoolsFilterPanel = () => {
 
   return (
     <PoolsFilterContainer>
-      <FarmWidget.NetworkFilter data={chains} value={selectedNetwork} onChange={setSelectedNetwork} />
-      <FarmWidget.TokenFilter data={sortedTokens} value={selectedTokens} onChange={(e) => setSelectedTokens(e.value)} />
-      <PoolTypeMenu activeIndex={selectedTypeIndex} onChange={setSelectedTypeIndex} />
+      <NetworkFilter data={chains} value={selectedNetwork} onChange={setSelectedNetwork} />
+      <TokenFilter data={sortedTokens} value={selectedTokens} onChange={(e) => setSelectedTokens(e.value)} />
+      <PoolTypeMenu data={poolTypes} activeIndex={selectedTypeIndex} onChange={setSelectedTypeIndex} />
     </PoolsFilterContainer>
   )
 }
