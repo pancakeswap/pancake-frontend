@@ -10,6 +10,8 @@ import {
   baseSepolia,
   bscTestnet,
   bsc as bsc_,
+  goerli,
+  mainnet,
   zkSync,
 } from 'wagmi/chains'
 
@@ -66,8 +68,8 @@ export const L2_CHAIN_IDS: ChainId[] = [
 export const CHAINS: [Chain, ...Chain[]] = [
   bsc,
   bscTestnet,
-  // mainnet,
-  // goerli,
+  mainnet,
+  goerli,
   // sepolia,
   // polygonZkEvm,
   // polygonZkEvmTestnet,

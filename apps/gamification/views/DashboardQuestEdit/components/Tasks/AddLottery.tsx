@@ -71,6 +71,8 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
             endIcon={isMinAmountError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
           >
             <StyledInput
+              inputMode="numeric"
+              pattern="^[0-9]*[.,]?[0-9]*$"
               value={task.minAmount}
               isError={isMinAmountError}
               placeholder={t('Min. ticket’s amount')}

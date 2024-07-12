@@ -125,8 +125,8 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task }) => {
                 endIcon={isError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
               >
                 <StyledInput
-                  pattern="^[0-9]+$"
                   inputMode="numeric"
+                  pattern="^[0-9]*[.,]?[0-9]*$"
                   isError={isError}
                   value={task.minAmount}
                   placeholder={t('Min. amount in $')}
