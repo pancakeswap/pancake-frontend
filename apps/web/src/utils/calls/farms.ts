@@ -52,9 +52,8 @@ export const unstakeFarm = async (
   gasLimit?: bigint,
 ) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
-  logGTMClickUnStakeFarmEvent()
   if (!masterChefContract?.account) return undefined
-
+  logGTMClickUnStakeFarmEvent()
   return masterChefContract.write.withdraw([pid, BigInt(value)], {
     gas: gasLimit || DEFAULT_GAS_LIMIT,
     gasPrice,
