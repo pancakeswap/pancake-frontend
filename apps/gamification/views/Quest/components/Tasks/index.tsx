@@ -81,6 +81,21 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
     return quest.tasks.reduce((acc, { taskType }) => acc + (verificationStatusBySocialMedia?.[taskType] ? 1 : 0), 0)
   }, [quest.tasks, taskStatus])
 
+  const isCompleted = useMemo(() => {
+    const allRequestTaskTotal = quest.tasks.filter((i) => !i.isOptional)
+
+    if (hasOptionsInTasks) {
+      const { verificationStatusBySocialMedia } = taskStatus
+      const totalRequestComplete = allRequestTaskTotal.reduce(
+        (acc, { taskType }) => acc + (verificationStatusBySocialMedia?.[taskType] ? 1 : 0),
+        0,
+      )
+      return allRequestTaskTotal.length === totalRequestComplete
+    }
+
+    return totalTaskCompleted === tasks?.length
+  }, [hasOptionsInTasks, quest, taskStatus, tasks, totalTaskCompleted])
+
   return (
     <Box mb="32px">
       <Flex mb="16px">
@@ -91,7 +106,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
           <Box style={{ alignSelf: 'center' }}>
             {account ? (
               <>
-                {totalTaskCompleted === tasks?.length ? (
+                {isCompleted ? (
                   <Tag variant="success" outline>
                     {t('Completed')}
                   </Tag>
