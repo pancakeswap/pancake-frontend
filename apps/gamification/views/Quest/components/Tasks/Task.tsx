@@ -203,9 +203,15 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   }
 
   const handleRedirectLiquidity = () => {
-    const { lpAddressLink } = task as TaskLiquidityConfig
-    if (lpAddressLink) {
-      window.open(lpAddressLink, '_blank', 'noopener noreferrer')
+    const { network, lpAddressLink } = task as TaskLiquidityConfig
+    if (lpAddressLink && network) {
+      const url = new URL(lpAddressLink)
+
+      if (!url.searchParams.has('chain')) {
+        url.searchParams.set('chain', CHAIN_QUERY_NAME[network])
+      }
+
+      window.open(url.href, '_blank', 'noopener noreferrer')
     }
   }
 
