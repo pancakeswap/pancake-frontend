@@ -19,24 +19,20 @@ const AccountNotConnect = ({
           {t("Start Farming")}
         </Text>
       </ActionTitles>
-      <div
+      <ActionContent
         style={
           bCakeInfoSlot
             ? {
-                display: "flex",
                 gap: 16,
-                alignItems: "center",
                 flexDirection: isMobile ? "column" : "row",
                 minHeight: isMobile ? "auto" : undefined,
               }
             : undefined
         }
       >
-        <ActionContent style={bCakeInfoSlot ? { flexGrow: 1, width: isMobile ? "100%" : "50%" } : undefined}>
-          {children}
-        </ActionContent>
+        <div style={bCakeInfoSlot ? { width: isMobile ? "100%" : "50%" } : undefined}>{children}</div>
         {bCakeInfoSlot}
-      </div>
+      </ActionContent>
     </StyledActionContainer>
   );
 };
