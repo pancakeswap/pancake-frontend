@@ -12,19 +12,35 @@ export const Default: React.FC<React.PropsWithChildren<DefaultProps>> = ({ handl
     <Flex width="100%" flexDirection="column">
       <Box>
         <Box mb="24px">
-          <Text as="span" bold color="textSubtle">
-            {t('The quest will be set as “Scheduled” and be only visible to you,')}
+          <Text as="span" color="textSubtle">
+            {t('The quest will be scheduled and set to')}
+          </Text>
+          <Text as="span" bold color="textSubtle" ml="4px">
+            {t("'Scheduled,'")}
           </Text>
           <Text as="span" color="textSubtle" ml="4px">
-            {t('because the dates you entered when creating the quest are in the future. You can change or cancel it.')}
+            {t('which will be visible only to')}
+          </Text>
+          <Text as="span" bold color="textSubtle" ml="4px">
+            {t("'You',")}
+          </Text>
+          <Text as="span" color="textSubtle" ml="4px">
+            {t(
+              'as the dates entered for the quest are in the future. You will have the option to modify or cancel it before the scheduled start date.',
+            )}
           </Text>
         </Box>
         <Box mb="24px">
-          <Text as="span" bold color="textSubtle">
-            {t('When the dates will be met, the quest will be set as "Ongoing".')}
+          <Text as="span" color="textSubtle">
+            {t('Once the scheduled time arrives, the quest will transition to')}
           </Text>
-          <Text as="span" bold color="warning">
-            {t('You won’t be able to cancel the quest and withdraw the reward back once it is set as “Ongoing”.')}
+          <Text as="span" bold color="textSubtle" ml="4px">
+            {t("'Ongoing.'")}
+          </Text>
+          <Text as="span" bold color="warning" ml="4px">
+            {t(
+              "Please note that once the quest is active, the quest can't be canceled, and rewards can't be withdrawn.",
+            )}
           </Text>
         </Box>
       </Box>
