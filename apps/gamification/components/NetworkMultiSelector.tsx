@@ -37,6 +37,7 @@ export const NetworkMultiSelector: React.FC<NetworkMultiSelectorProps> = (props)
         scrollHeight="400px"
         options={options}
         onChange={onChange}
+        // isSelectAll
         defaultValue={defaultValue}
       />
     </Box>
