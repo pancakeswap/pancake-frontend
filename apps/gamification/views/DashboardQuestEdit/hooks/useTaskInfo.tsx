@@ -70,9 +70,9 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
         case TaskType.X_REPOST_POST:
           return t('Repost the post')
         case TaskType.TELEGRAM_JOIN_GROUP:
-          return t('Join the group')
+          return t('Join Telegram Group')
         case TaskType.DISCORD_JOIN_SERVER:
-          return t('Join the server')
+          return t('Join Discord Server')
         case TaskType.YOUTUBE_SUBSCRIBE:
           return t('Subscribe to the channel')
         case TaskType.IG_COMMENT_POST:

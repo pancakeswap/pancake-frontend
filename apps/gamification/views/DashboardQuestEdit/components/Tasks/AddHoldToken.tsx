@@ -129,7 +129,7 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task }) => {
                   pattern="^[0-9]*[.,]?[0-9]*$"
                   isError={isError}
                   value={task.minAmount}
-                  placeholder={t('Min. amount in $')}
+                  placeholder={t('Minimum number of token')}
                   onChange={(e) => handleInputChange(e, 'minAmount')}
                 />
               </StyledInputGroup>
