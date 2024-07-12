@@ -1,15 +1,10 @@
 import { ChainId, Pair } from '@pancakeswap/sdk'
 import { Pool } from '@pancakeswap/v3-sdk'
 import groupBy from 'lodash/groupBy'
-import { createPublicClient, http, parseAbiItem } from 'viem'
+import { Address, createPublicClient, http, isAddressEqual, parseAbiItem } from 'viem'
 import { arbitrum, bsc } from 'viem/chains'
 import { describe, expect, test } from 'vitest'
-import { FarmConfigV3, UNIVERSAL_FARMS } from './config'
-
-const STABLE_SWAP_LP_FACTORY = {
-  [ChainId.BSC]: '0x1179ADfa22dD0e5050C1c00C9f8543A77F75A2c0',
-  [ChainId.ARBITRUM_ONE]: '0x5D5fBB19572c4A89846198c3DBEdB2B6eF58a77a',
-} as const
+import { BCakeWrapperFarmConfig, FarmConfigV3, UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS } from './config'
 
 const bscClient = createPublicClient({
   chain: bsc,
@@ -20,7 +15,7 @@ const arbClient = createPublicClient({
   transport: http(),
 })
 
-describe('Universal Farms config', () => {
+describe.concurrent('Universal Farms config', () => {
   test('pid/lpAddress should be unique', () => {
     const configByChains = groupBy(UNIVERSAL_FARMS, 'chainId')
 
@@ -49,8 +44,6 @@ describe('Universal Farms config', () => {
     )
 
     for await (const [chainId, farms] of Object.entries(ssFarms)) {
-      const factory = STABLE_SWAP_LP_FACTORY[chainId as unknown as keyof typeof STABLE_SWAP_LP_FACTORY]
-      expect(factory, `Missing stableswap factory for chain ${chainId}`).toBeDefined()
       const client = Number(chainId) === ChainId.BSC ? bscClient : arbClient
 
       const minterCalls = farms.map((farm) => ({
@@ -129,5 +122,52 @@ token1: ${farm.token1.address}
         `,
       ).toBe(true)
     }
+  })
+})
+
+describe('Universal bCakeWrapper farms config', () => {
+  const getMatchedFarmConfig = (bCakeFarmConfig: BCakeWrapperFarmConfig) => {
+    return UNIVERSAL_FARMS.find((farm) => {
+      return farm.chainId === bCakeFarmConfig.chainId && farm.lpAddress === bCakeFarmConfig.lpAddress
+    })
+  }
+
+  test('bCakeWrapper farms should match with v2/ss farms', async () => {
+    const configByChainId = groupBy(UNIVERSAL_BCAKEWRAPPER_FARMS, 'chainId')
+    const tokens: Address[] = []
+    for await (const [chainId, farms] of Object.entries(configByChainId)) {
+      const client = Number(chainId) === ChainId.BSC ? bscClient : arbClient
+
+      const tokensCalls = farms.reduce((calls, farm) => {
+        return [
+          ...calls,
+          // {
+          //   address: farm.bCakeWrapperAddress,
+          //   functionName: 'rewardToken',
+          //   abi: [parseAbiItem('function rewardToken() view returns (address)')],
+          // },
+          {
+            address: farm.bCakeWrapperAddress,
+            functionName: 'stakedToken',
+            abi: [parseAbiItem('function stakedToken() view returns (address)')],
+          },
+        ]
+      }, [] as unknown[])
+
+      tokens.push(
+        ...((await client.multicall({
+          contracts: tokensCalls as any,
+          allowFailure: false,
+        })) as Address[]),
+      )
+    }
+
+    UNIVERSAL_BCAKEWRAPPER_FARMS.forEach((bCakeFarmConfig, index) => {
+      const matchedFarmConfig = getMatchedFarmConfig(bCakeFarmConfig)
+      expect(matchedFarmConfig, `No matched farm config for bCakeWrapper farm ${bCakeFarmConfig.pid}`).toBeDefined()
+      const stakingToken = tokens[index]
+
+      expect(isAddressEqual(stakingToken, matchedFarmConfig!.lpAddress)).toBe(true)
+    })
   })
 })
