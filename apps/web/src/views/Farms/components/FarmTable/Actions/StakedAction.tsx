@@ -431,7 +431,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   if (!account) {
     return (
       <FarmWidget.FarmTable.AccountNotConnect>
-        <ConnectWalletButton width={bCakeInfoSlot ? '50%' : '100%'} />
+        <ConnectWalletButton style={{ flexGrow: '1' }} />
         {bCakeInfoSlot}
       </FarmWidget.FarmTable.AccountNotConnect>
     )

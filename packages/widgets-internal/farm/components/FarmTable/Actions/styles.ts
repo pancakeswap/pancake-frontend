@@ -41,7 +41,7 @@ export const StyledActionContainer = styled(ActionContainer)`
   &:nth-child(3) {
     flex-basis: 100%;
   }
-  min-height: 124.5px;
+  min-height: min-content;
   ${({ theme }) => theme.mediaQueries.sm} {
     &:nth-child(3) {
       margin-top: 16px;
