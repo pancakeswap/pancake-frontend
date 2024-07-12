@@ -17,6 +17,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { usePriceCakeUsdc } from 'hooks/useStablePrice'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
+import { logGTMClickStakeFarmEvent, logGTMClickUnStakeFarmEvent } from 'utils/customGTMEventTracking'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
@@ -120,6 +121,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         </ToastDescriptionWithTx>,
       )
     }
+    logGTMClickStakeFarmEvent()
   }
 
   const handleUnstake = async (amount: string) => {
@@ -132,6 +134,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         </ToastDescriptionWithTx>,
       )
     }
+    logGTMClickUnStakeFarmEvent()
   }
 
   const combineApr = useMemo(() => {

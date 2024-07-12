@@ -6,18 +6,15 @@ export enum GTMEvent {
   Farm = 'stakeFarm',
   UnStakeFarm = 'unStakeFarm',
   WalletConnect = 'walletConnect',
-  Web3WalletView = 'Web3WalletView',
 }
 
 export enum GTMCategory {
-  TokenHighlight = 'TokenHighlight',
   Swap = 'Swap',
   AddLiquidity = 'AddLiquidity',
   RemoveLiquidity = 'RemoveLiquidity',
   Farm = 'Farm',
-  UnStakeFarm = 'unStakeFarm',
+  UnStakeFarm = 'UnStakeFarm',
   WalletConnect = 'WalletConnect',
-  Web3WalletView = 'Web3WalletView',
 }
 
 export enum GTMAction {
@@ -28,13 +25,12 @@ export enum GTMAction {
   ClickStakeButton = 'Click Stake Button',
   ClickUnStakeButton = 'Click UnStake Button',
   ClickWalletConnectButton = 'Click Wallet Connect and Connected',
-  Web3WalletView = 'Web3 Wallet Page View',
 }
 
 interface CustomGTMDataLayer {
   event: GTMEvent
-  category: GTMCategory
-  action: GTMAction
+  category?: GTMCategory
+  action?: GTMAction
   label?: string
 }
 
@@ -46,16 +42,6 @@ declare const window: WindowWithDataLayer
 
 export const customGTMEvent: WindowWithDataLayer['dataLayer'] =
   typeof window !== 'undefined' ? window?.dataLayer : undefined
-
-export const logGTMClickTokenHighLightTradeEvent = (label?: string) => {
-  console.info('---TokenHeightLightTrade---')
-  window?.dataLayer?.push({
-    event: GTMEvent.EventTracking,
-    action: GTMAction.ClickTradeButton,
-    category: GTMCategory.TokenHighlight,
-    label,
-  })
-}
 
 export const logGTMClickSwapEvent = () => {
   console.info('---Swap---')
@@ -106,17 +92,6 @@ export const logGTMWalletConnectEvent = (walletTitle?: string) => {
   console.info('---WalletConnect---')
   window?.dataLayer?.push({
     event: GTMEvent.WalletConnect,
-    action: GTMAction.ClickWalletConnectButton,
-    category: GTMCategory.WalletConnect,
     label: walletTitle,
-  })
-}
-
-export const logWeb3WalletViews = () => {
-  console.info('---web3WalletView---')
-  window?.dataLayer?.push({
-    event: GTMEvent.Web3WalletView,
-    action: GTMAction.Web3WalletView,
-    category: GTMCategory.Web3WalletView,
   })
 }

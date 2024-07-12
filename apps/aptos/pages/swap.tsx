@@ -53,6 +53,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Field, selectCurrency, switchCurrencies, typeInput, useDefaultsFromURLSearch, useSwapState } from 'state/swap'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import currencyId from 'utils/currencyId'
+import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import {
   basisPointsToPercent,
   computeSlippageAdjustedAmounts,
@@ -527,6 +528,7 @@ const SwapPage = () => {
                     txHash: undefined,
                   })
                   onPresentConfirmModal()
+                  logGTMClickSwapEvent()
                 }
               }}
             >
