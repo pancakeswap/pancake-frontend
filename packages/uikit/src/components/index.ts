@@ -61,6 +61,7 @@ export * from "./Stepper";
 export * from "./SubMenuItems";
 export * from "./Svg";
 export * from "./Table";
+export * from "./TableView";
 export * from "./TabMenu";
 export * from "./Tag";
 export * from "./Text";

@@ -158,9 +158,10 @@ const SelectInputContainer = styled(Flex)`
   align-items: center;
   position: relative;
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+  border-bottom-width: 2px;
   border-radius: ${BORDER_RADIUS};
   box-shadow: 0 0 1px ${({ theme }) => theme.shadows.inset};
-  padding: 7px 8px 7px 16px;
+  padding: 7px 8px 6px 16px;
   user-select: none;
   cursor: pointer;
   gap: 8px;

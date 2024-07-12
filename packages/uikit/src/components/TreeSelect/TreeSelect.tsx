@@ -32,6 +32,7 @@ const SelectContainer = styled.div`
     align-items: center;
     position: relative;
     border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+    border-bottom-width: 2px;
     border-radius: ${BORDER_RADIUS};
     box-shadow: 0 0 1px ${({ theme }) => theme.shadows.inset};
     padding: 8px;
