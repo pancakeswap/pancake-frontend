@@ -2,7 +2,13 @@ import { useTranslation } from "@pancakeswap/localization";
 import { Text, useMatchBreakpoints } from "@pancakeswap/uikit";
 import { ActionContent, ActionTitles, StyledActionContainer } from "./styles";
 
-const AccountNotConnect = ({ children }: { children: React.ReactNode }) => {
+const AccountNotConnect = ({
+  children,
+  bCakeInfoSlot,
+}: {
+  children: React.ReactNode;
+  bCakeInfoSlot?: React.ReactElement;
+}) => {
   const { t } = useTranslation();
   const { isMobile } = useMatchBreakpoints();
 
@@ -13,7 +19,24 @@ const AccountNotConnect = ({ children }: { children: React.ReactNode }) => {
           {t("Start Farming")}
         </Text>
       </ActionTitles>
-      <ActionContent style={{ flexDirection: isMobile ? "column" : "row", gap: 16 }}>{children}</ActionContent>
+      <div
+        style={
+          bCakeInfoSlot
+            ? {
+                display: "flex",
+                gap: 16,
+                alignItems: "center",
+                flexDirection: isMobile ? "column" : "row",
+                minHeight: isMobile ? "auto" : undefined,
+              }
+            : undefined
+        }
+      >
+        <ActionContent style={bCakeInfoSlot ? { flexGrow: 1, width: isMobile ? "100%" : "50%" } : undefined}>
+          {children}
+        </ActionContent>
+        {bCakeInfoSlot}
+      </div>
     </StyledActionContainer>
   );
 };
