@@ -25,9 +25,7 @@ export const useBoostStatus = (pid: number, tokenId?: string) => {
 
   return {
     status,
-    updateStatus: () => {
-      updateUserPositionInfo()
-    },
+    updateStatus: updateUserPositionInfo,
   }
 }
 
