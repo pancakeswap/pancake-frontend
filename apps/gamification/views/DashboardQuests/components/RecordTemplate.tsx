@@ -55,6 +55,7 @@ interface RecordTemplateProps {
   createButtonText: string
   createLink: string
   statusButtonIndex: number
+  pickMultiSelect: Array<ChainId>
   setPickMultiSelect: (chains: Array<ChainId>) => void
   setStatusButtonIndex: (newIndex: number) => void
   children?: React.ReactNode
@@ -65,6 +66,7 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({
   createButtonText,
   createLink,
   statusButtonIndex,
+  pickMultiSelect,
   setPickMultiSelect,
   setStatusButtonIndex,
   children,
@@ -105,6 +107,7 @@ export const RecordTemplate: React.FC<RecordTemplateProps> = ({
                 width={['100%', '100%', '100%', '120px', '120px', '264px']}
                 maxWidth={['100%', '100%', '100%', '120px', '120px', '264px']}
                 margin={['24px 0 0 0', '24px 0 0 0', '24px 0 0 0', ' 0 auto 0 0']}
+                pickMultiSelect={pickMultiSelect}
                 setPickMultiSelect={setPickMultiSelect}
               />
             </Flex>

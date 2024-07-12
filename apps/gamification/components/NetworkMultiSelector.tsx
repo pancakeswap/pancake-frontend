@@ -1,25 +1,27 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Box, BoxProps, MultiSelect } from '@pancakeswap/uikit'
-import { SHORT_SYMBOL } from 'components/NetworkSwitcher'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { SUPPORTED_CHAIN } from 'config/supportedChain'
+import { targetChains } from 'config/supportedChain'
+import { useMemo } from 'react'
 import { useTheme } from 'styled-components'
 
 interface NetworkMultiSelectorProps extends BoxProps {
+  pickMultiSelect: Array<ChainId>
   setPickMultiSelect: (chains: Array<ChainId>) => void
 }
 
-const options = SUPPORTED_CHAIN.map((chain) => ({
-  label: SHORT_SYMBOL[chain],
-  value: chain.toString(),
-  icon: `${ASSET_CDN}/web/chains/${chain}.png`,
+const options = targetChains.map((chain) => ({
+  label: chain.name,
+  value: chain.id.toString(),
+  icon: `${ASSET_CDN}/web/chains/${chain.id}.png`,
 }))
 
-const defaultValue = options.map((i) => i.value)
 export const defaultValueChains = options.map((i) => Number(i.value) as ChainId)
 
 export const NetworkMultiSelector: React.FC<NetworkMultiSelectorProps> = (props) => {
   const theme = useTheme()
+
+  const convertValueToString = useMemo(() => props.pickMultiSelect.map((i) => i.toString()), [props])
 
   const onChange = (e) => {
     const chains = e.value.map((chain) => Number(chain) as ChainId)
@@ -35,10 +37,10 @@ export const NetworkMultiSelector: React.FC<NetworkMultiSelectorProps> = (props)
           backgroundColor: theme.colors.backgroundAlt,
         }}
         scrollHeight="400px"
+        isShowSelectAll
         options={options}
+        value={convertValueToString}
         onChange={onChange}
-        // isSelectAll
-        defaultValue={defaultValue}
       />
     </Box>
   )

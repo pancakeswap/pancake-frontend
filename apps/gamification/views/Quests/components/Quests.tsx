@@ -89,6 +89,7 @@ export const Quests = () => {
           width={['100%', '100%', '320px']}
           maxWidth={['100%', '100%', '320px']}
           margin={['0 0 16px 0', '0 0 16px 0', '0 0 0 auto']}
+          pickMultiSelect={pickMultiSelect}
           setPickMultiSelect={setPickMultiSelect}
         />
       </Flex>

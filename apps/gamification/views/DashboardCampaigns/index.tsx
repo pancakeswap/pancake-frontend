@@ -17,6 +17,7 @@ export const DashboardCampaigns = () => {
       createLink="/dashboard/campaign/edit"
       createButtonText={t('Create')}
       statusButtonIndex={statusButtonIndex}
+      pickMultiSelect={pickMultiSelect}
       setPickMultiSelect={setPickMultiSelect}
       setStatusButtonIndex={setStatusButtonIndex}
     >

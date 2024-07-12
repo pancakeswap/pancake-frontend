@@ -50,6 +50,7 @@ export const DashboardQuests = () => {
       title={t('Quests')}
       createLink="/dashboard/quest/create"
       createButtonText={t('Create')}
+      pickMultiSelect={pickMultiSelect}
       statusButtonIndex={statusButtonIndex}
       setPickMultiSelect={setPickMultiSelect}
       setStatusButtonIndex={setStatusButtonIndex}
