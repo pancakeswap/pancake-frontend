@@ -10,7 +10,7 @@ import {
   BETTER_TRADE_LESS_HOPS_THRESHOLD,
   CUSTOM_BASES,
 } from 'config/constants/exchange'
-import { wrappedCurrency } from '../utils/wrappedCurrency'
+import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { PairState, useV2Pairs } from './usePairs'
 
 import { useUnsupportedTokens, useWarningTokens } from './Tokens'

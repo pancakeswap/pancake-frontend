@@ -6,7 +6,7 @@ import { CurrencyLogo } from 'components/Logo'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { getBlockExploreLink } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
-import { useUnsupportedTokens } from '../hooks/Tokens'
+import { useUnsupportedTokens } from 'hooks/Tokens'
 
 interface Props extends InjectedModalProps {
   currencies: (Currency | undefined)[]

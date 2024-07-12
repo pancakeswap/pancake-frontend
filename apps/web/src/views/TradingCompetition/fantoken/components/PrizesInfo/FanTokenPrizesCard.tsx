@@ -1,8 +1,8 @@
 import { styled } from 'styled-components'
 import { Card, CardHeader, Box, Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { fanTokenPrizes } from 'config/constants/trading-competition/prizes'
 import PrizesGrid from '../../../components/PrizesInfo/PrizesGrid/PrizesGrid'
-import { fanTokenPrizes } from '../../../../../config/constants/trading-competition/prizes'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.md} {

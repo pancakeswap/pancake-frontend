@@ -14,7 +14,7 @@ import { StableTrade } from 'config/constants/types'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useContract } from 'hooks/useContract'
-import { Field } from '../state/swap/actions'
+import { Field } from 'state/swap/actions'
 
 // converts a basis points value to a sdk percent
 export function basisPointsToPercent(num: number): Percent {

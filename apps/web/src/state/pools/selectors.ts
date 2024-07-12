@@ -1,7 +1,7 @@
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { createSelector } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
-import { VaultPosition, getVaultPosition } from '../../utils/cakePool'
+import { VaultPosition, getVaultPosition } from 'utils/cakePool'
 import { State, VaultKey } from '../types'
 import { transformPool, transformVault } from './helpers'
 import { initialPoolVaultState } from './index'

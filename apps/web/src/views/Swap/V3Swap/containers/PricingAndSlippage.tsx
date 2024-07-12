@@ -6,8 +6,8 @@ import { Price, Currency } from '@pancakeswap/sdk'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { memo } from 'react'
 
+import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
-import { SettingsMode } from '../../../../components/Menu/GlobalSettings/types'
 import { useIsWrapping } from '../hooks'
 
 interface Props {

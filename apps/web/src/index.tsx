@@ -4,10 +4,10 @@ import { useQuery } from '@tanstack/react-query'
 import { WALLET_API } from 'config/constants/endpoints'
 import { UpdatePositionsReminder } from 'views/Farms/components/UpdatePositionsReminder'
 import { useAccount } from 'wagmi'
+import { chains } from 'utils/wagmi'
 import ListsUpdater from './state/lists/updater'
 import MulticallUpdater from './state/multicall/updater'
 import TransactionUpdater from './state/transactions/updater'
-import { chains } from './utils/wagmi'
 
 export function Updaters() {
   return (

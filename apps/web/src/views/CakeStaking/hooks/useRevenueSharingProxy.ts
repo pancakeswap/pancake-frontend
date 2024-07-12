@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useInitialBlockTimestamp } from 'state/block/hooks'
 import { publicClient } from 'utils/wagmi'
-import { useRevenueSharingCakePoolContract, useRevenueSharingVeCakeContract } from '../../../hooks/useContract'
+import { useRevenueSharingCakePoolContract, useRevenueSharingVeCakeContract } from 'hooks/useContract'
 import { useCurrentBlockTimestamp } from './useCurrentBlockTimestamp'
 
 interface RevenueSharingPool {

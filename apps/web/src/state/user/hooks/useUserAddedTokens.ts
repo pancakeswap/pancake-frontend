@@ -4,7 +4,7 @@ import { createSelector } from '@reduxjs/toolkit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { AppState } from '../../index'
+import { AppState } from 'state'
 
 const selectUserTokens = ({ user: { tokens } }: AppState) => tokens
 

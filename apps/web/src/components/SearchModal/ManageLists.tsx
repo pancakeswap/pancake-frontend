@@ -31,7 +31,7 @@ import { useListState } from 'state/lists/lists'
 import { styled } from 'styled-components'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from '../../state/lists/hooks'
+import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from 'state/lists/hooks'
 
 import Row, { RowBetween, RowFixed } from '../Layout/Row'
 import { CurrencyModalView } from './types'

@@ -1,10 +1,9 @@
 import { ChainId } from '@pancakeswap/chains'
-import { SerializedFarm } from '@pancakeswap/farms'
+import { SerializedFarm, SerializedFarmConfig } from '@pancakeswap/farms'
 import chunk from 'lodash/chunk'
 import { getMasterChefV2Address } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
 import { erc20Abi } from 'viem'
-import { SerializedFarmConfig } from '../../config/constants/types'
 
 const fetchFarmCalls = (farm: SerializedFarm, chainId: number) => {
   const { lpAddress, token, quoteToken } = farm

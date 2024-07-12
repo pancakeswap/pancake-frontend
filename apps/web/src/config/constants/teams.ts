@@ -1,4 +1,4 @@
-import { IPFS_GATEWAY } from '../index'
+import { IPFS_GATEWAY } from 'config'
 import { Team } from './types'
 
 const teams: Team[] = [

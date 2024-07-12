@@ -4,7 +4,7 @@ import { styled } from 'styled-components'
 
 import { TC_MOBOX_SUBGRAPH } from 'config/constants/endpoints'
 
-import { LIVE } from '../../../../../config/constants/trading-competition/phases'
+import { LIVE } from 'config/constants/trading-competition/phases'
 import RibbonWithImage from '../../../components/RibbonWithImage'
 import ScoreCard from '../../../components/YourScore/ScoreCard'
 import ScoreHeader from '../../../components/YourScore/ScoreHeader'

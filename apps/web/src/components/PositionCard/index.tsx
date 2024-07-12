@@ -12,7 +12,7 @@ import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 
 import { useLPApr } from 'state/swap/useLPApr'
 import { useTokenBalance } from 'state/wallet/hooks'
-import { unwrappedToken } from '../../utils/wrappedCurrency'
+import { unwrappedToken } from '@pancakeswap/tokens'
 
 import { LightCard } from '../Card'
 import { DoubleCurrencyLogo } from '../Logo'

@@ -6,7 +6,7 @@ import { ConnectorNames } from 'config/wallet'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
 import { ConnectorNotFoundError, SwitchChainNotSupportedError, useAccount, useConnect, useDisconnect } from 'wagmi'
-import { clearUserStates } from '../utils/clearUserStates'
+import { clearUserStates } from 'utils/clearUserStates'
 import { useActiveChainId } from './useActiveChainId'
 import { useSessionChainId } from './useSessionChainId'
 
