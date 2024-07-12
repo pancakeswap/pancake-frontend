@@ -38,7 +38,7 @@ import { useAccount } from 'wagmi'
 import { useMultichainVeCakeWellSynced } from './hooks/useMultichainVeCakeWellSynced'
 import { useProfileProxyWellSynced } from './hooks/useProfileProxyWellSynced'
 
-import { ArbitrumIcon, BinanceIcon, EthereumIcon } from './ChainLogos'
+import { ArbitrumIcon, BinanceIcon, EthereumIcon, ZKsyncIcon } from './ChainLogos'
 import { NetWorkUpdateToDateDisplay } from './components/NetworkUpdateToDate'
 import { CROSS_CHIAN_CONFIG } from './constants'
 import { useCrossChianMessage } from './hooks/useCrossChainMessage'
@@ -257,6 +257,15 @@ export const CrossChainVeCakeModal: React.FC<{
                   isSelected={selectChainId === ChainId.ETHEREUM}
                   veCakeOnBsc={veCakeOnBsc}
                   hash={txByChain[ChainId.ETHEREUM]}
+                />
+                <OtherChainsCard
+                  chainName="ZKsync"
+                  chainId={ChainId.ZKSYNC}
+                  onSelected={setSelectChainId}
+                  Icon={<ZKsyncIcon width={16} />}
+                  isSelected={selectChainId === ChainId.ZKSYNC}
+                  veCakeOnBsc={veCakeOnBsc}
+                  hash={txByChain[ChainId.ZKSYNC]}
                 />
               </Flex>
               <InfoBox />

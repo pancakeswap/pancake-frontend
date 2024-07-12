@@ -53,7 +53,7 @@ export const ArbitrumIcon: React.FC<SvgProps> = (props) => {
   )
 }
 
-export const ZkSyncIcon: React.FC<SvgProps> = (props) => {
+export const ZKsyncIcon: React.FC<SvgProps> = (props) => {
   return (
     <Svg viewBox="0 0 20 21" {...props}>
       <path d="M11.4348 8.22901L5.73913 12.3015V16.5L0 10.958L5.65217 5.5V8.22901H11.4348Z" fill="white" />
