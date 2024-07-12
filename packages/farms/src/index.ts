@@ -33,6 +33,8 @@ export {
   type FarmV3SupportedChainId,
 }
 
+export * from './config'
+
 export function createFarmFetcher(provider: ({ chainId }: { chainId: FarmV2SupportedChainId }) => PublicClient) {
   const fetchFarms = async (
     params: {
