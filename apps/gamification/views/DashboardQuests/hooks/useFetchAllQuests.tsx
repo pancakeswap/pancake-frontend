@@ -31,15 +31,15 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
     queryKey: ['fetch-all-quest-dashboard-data', page, account, chainIdList, completionStatus],
     queryFn: async () => {
       try {
-        if (chainIdList.length === 0) {
-          return initialData
-        }
-
         const prevDataSting = `${account}-${page}-${chainIdList}-${completionStatus}`
         if (prevData === prevDataSting) {
           return undefined
         }
         setPrevData(prevDataSting)
+
+        if (chainIdList.length === 0) {
+          return initialData
+        }
 
         const urlParamsObject = {
           address: account?.toLowerCase(),

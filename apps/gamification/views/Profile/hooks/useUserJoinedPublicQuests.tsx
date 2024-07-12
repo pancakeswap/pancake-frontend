@@ -30,15 +30,15 @@ export const useUserJoinedPublicQuests = ({ chainIdList, completionStatus }: Use
     queryKey: ['fetch-user-all-public-quest-data', account, page, completionStatus, chainIdList],
     queryFn: async () => {
       try {
-        if (chainIdList.length === 0) {
-          return initialData
-        }
-
         const prevDataSting = `${account}-${page}-${chainIdList}-${completionStatus}`
         if (prevData === prevDataSting) {
           return undefined
         }
+
         setPrevData(prevDataSting)
+        if (chainIdList.length === 0) {
+          return initialData
+        }
 
         const url = `${GAMIFICATION_PUBLIC_API}/questInfo/v1/questInfoList`
         const response = await fetch(url, {
