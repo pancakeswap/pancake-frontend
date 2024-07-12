@@ -7,16 +7,23 @@ import { CrossIcon } from "../Svg";
 
 export const BORDER_RADIUS = "16px";
 
-const StyledBox = styled(Box)`
+const Container = styled.div`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
+`;
+
+const StyledBox = styled(Box)<{ isFocus: boolean }>`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  gap: 4px;
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
   background-color: ${({ theme }) => theme.colors.input};
   border-radius: ${BORDER_RADIUS};
   line-height: 24px;
   margin: 16px;
   padding: 5px 8px;
+  min-height: 42px;
+  ${({ isFocus }) => isFocus && `box-shadow: 0px 0px 0px 4px #7645D933, 0px 0px 0px 1px #7645D9;`}
 `;
 
 const StyledHiddenInput = styled.input`
@@ -36,6 +43,8 @@ const StyledHiddenInput = styled.input`
 
 interface IAdaptiveInputProps {
   onChange?: (text: string) => void;
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
 
 export interface IAdaptiveInputForwardProps {
@@ -43,44 +52,55 @@ export interface IAdaptiveInputForwardProps {
   focus: () => void;
 }
 
-const AdaptiveInput = forwardRef<IAdaptiveInputForwardProps, IAdaptiveInputProps>(({ onChange }, ref) => {
-  const [value, setValue] = useState<string>("");
-  const [width, setWidth] = useState<number>(4);
-  const spanRef = useRef<HTMLSpanElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+const AdaptiveInput = forwardRef<IAdaptiveInputForwardProps, IAdaptiveInputProps>(
+  ({ onChange, onFocus, onBlur }, ref) => {
+    const [value, setValue] = useState<string>("");
+    const [width, setWidth] = useState<number>(4);
+    const spanRef = useRef<HTMLSpanElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
-  useLayoutEffect(() => {
-    const span = spanRef.current;
-    if (span) {
-      span.textContent = value;
-      setWidth(span.offsetWidth);
-    }
-  }, [value]);
+    useLayoutEffect(() => {
+      const span = spanRef.current;
+      if (span) {
+        span.textContent = value;
+        setWidth(span.offsetWidth);
+      }
+    }, [value]);
 
-  useImperativeHandle(ref, () => ({
-    clear() {
-      setValue("");
-    },
-    focus() {
-      inputRef.current?.focus();
-    },
-  }));
+    useImperativeHandle(ref, () => ({
+      clear() {
+        setValue("");
+      },
+      focus() {
+        inputRef.current?.focus();
+      },
+    }));
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  }, []);
+    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+      setValue(e.target.value);
+    }, []);
 
-  useEffect(() => {
-    onChange?.(value);
-  }, [value, onChange]);
+    useEffect(() => {
+      onChange?.(value);
+    }, [value, onChange]);
 
-  return (
-    <>
-      <StyledHiddenInput value={value} onChange={handleChange} style={{ width: `${width}px` }} ref={inputRef} />
-      <span style={{ visibility: "hidden", position: "absolute", whiteSpace: "pre" }} ref={spanRef} />
-    </>
-  );
-});
+    return (
+      <>
+        <StyledHiddenInput
+          value={value}
+          onChange={handleChange}
+          style={{
+            width: `${width}px`,
+          }}
+          ref={inputRef}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
+        <span style={{ visibility: "hidden", position: "absolute", whiteSpace: "pre" }} ref={spanRef} />
+      </>
+    );
+  }
+);
 
 const SelectedLabel = styled.span`
   display: inline-flex;
@@ -97,46 +117,64 @@ const ItemIcon = styled.img`
   height: 24px;
 `;
 
-export interface ISearchBoxProps {
-  selectedItems: IOptionType;
+export interface ISearchBoxProps<T extends number | string> {
+  selectedItems: IOptionType<T>;
   onFilter?: (text: string) => void;
-  handleLabelDelete: (item: ISelectItem) => void;
+  handleLabelDelete: (item: ISelectItem<T>) => void;
 }
 
-export const SearchBox = forwardRef<IAdaptiveInputForwardProps, ISearchBoxProps>(
-  ({ onFilter, selectedItems, handleLabelDelete }, ref) => {
-    const inputRef = useRef<IAdaptiveInputForwardProps>(null);
-    const { theme } = useTheme();
+const SearchBox = <T extends number | string>(
+  { onFilter, selectedItems, handleLabelDelete }: ISearchBoxProps<T>,
+  ref: React.Ref<IAdaptiveInputForwardProps>
+) => {
+  const inputRef = useRef<IAdaptiveInputForwardProps>(null);
+  const { theme } = useTheme();
+  const [isFocus, setIsFocus] = useState(false);
 
-    useImperativeHandle(ref, () => ({
-      clear() {
-        inputRef.current?.clear();
-      },
-      focus() {
-        inputRef.current?.focus();
-      },
-    }));
+  useImperativeHandle(ref, () => ({
+    clear() {
+      inputRef.current?.clear();
+    },
+    focus() {
+      inputRef.current?.focus();
+    },
+  }));
 
-    const handleCrossIconClick = useCallback(
-      (e: React.MouseEvent<HTMLOrSVGElement>, item: ISelectItem) => {
-        // prevent bubble to StyledBox
-        e.stopPropagation();
-        handleLabelDelete(item);
-      },
-      [handleLabelDelete]
-    );
+  const handleCrossIconClick = useCallback(
+    (e: React.MouseEvent<HTMLOrSVGElement>, item: ISelectItem<T>) => {
+      // prevent bubble to StyledBox
+      e.stopPropagation();
+      handleLabelDelete(item);
+    },
+    [handleLabelDelete]
+  );
 
-    return (
-      <StyledBox onClick={() => inputRef.current?.focus()}>
+  return (
+    <Container>
+      <StyledBox onClick={() => inputRef.current?.focus()} isFocus={isFocus}>
         {selectedItems?.map((item) => (
           <SelectedLabel>
-            {item.icon ? <ItemIcon alt={item.label} src={item.icon} /> : null}
+            {item.icon ? (
+              typeof item.icon === "string" ? (
+                <ItemIcon alt={item.label} src={item.icon} />
+              ) : (
+                item.icon
+              )
+            ) : null}
             <span>{item.label}</span>
             <CrossIcon color={theme.card.background} onClick={(e) => handleCrossIconClick(e, item)} />
           </SelectedLabel>
         ))}
-        <AdaptiveInput ref={inputRef} onChange={onFilter} />
+        <AdaptiveInput
+          ref={inputRef}
+          onChange={onFilter}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+        />
       </StyledBox>
-    );
-  }
-);
+    </Container>
+  );
+};
+export default forwardRef(SearchBox) as <T extends string | number>(
+  props: ISearchBoxProps<T> & { ref?: React.Ref<IAdaptiveInputForwardProps> }
+) => ReturnType<typeof SearchBox>;

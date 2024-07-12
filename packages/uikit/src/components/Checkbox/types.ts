@@ -13,6 +13,7 @@ export interface CheckboxProps {
   colors?: {
     background?: keyof PancakeTheme["colors"];
     checkedBackground?: keyof PancakeTheme["colors"];
+    checkedColor?: keyof PancakeTheme["colors"];
     border?: keyof PancakeTheme["colors"];
   };
   indeterminate?: boolean;
