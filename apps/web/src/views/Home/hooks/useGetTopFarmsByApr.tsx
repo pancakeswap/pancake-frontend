@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react'
-import { useFarms } from 'state/farms/hooks'
+import { getFarmConfig } from '@pancakeswap/farms/constants'
+import { useQuery } from '@tanstack/react-query'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
+import orderBy from 'lodash/orderBy'
+import { fetchV3FarmsAvgInfo } from 'queries/farms'
+import { useEffect, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmsPublicDataAsync } from 'state/farms'
-import { getFarmApr } from 'utils/apr'
-import orderBy from 'lodash/orderBy'
-import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useFarms } from 'state/farms/hooks'
 import { useFarmsV3 } from 'state/farmsV3/hooks'
-import { useQuery } from '@tanstack/react-query'
-import { fetchV3FarmsAvgInfo } from 'queries/farms'
+import { getFarmApr } from 'utils/apr'
 
 const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   const dispatch = useAppDispatch()

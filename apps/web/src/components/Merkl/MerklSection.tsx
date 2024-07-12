@@ -42,7 +42,6 @@ function TextWarning({ tokenAmount }: { tokenAmount: CurrencyAmount<Currency> })
 export function MerklSection({
   poolAddress,
   notEnoughLiquidity,
-  isStakedInMCv3,
   outRange,
   disabled,
 }: {
@@ -50,7 +49,6 @@ export function MerklSection({
   disabled: boolean
   poolAddress: string | null
   notEnoughLiquidity: boolean
-  isStakedInMCv3: boolean
 }) {
   const { t } = useTranslation()
 

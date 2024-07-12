@@ -1,22 +1,18 @@
 import { Currency } from '@pancakeswap/sdk'
 import { BottomDrawer, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
-import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
 import { useRouter } from 'next/router'
-import { useCallback, useContext, useEffect, useState } from 'react'
-import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
-import { currencyId } from 'utils/currencyId'
+import { useContext, useEffect, useState } from 'react'
 
 import { useCurrency } from 'hooks/Tokens'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { Field } from 'state/swap/actions'
-import { useDefaultsFromURLSearch, useSingleTokenSwapInfo, useSwapState } from 'state/swap/hooks'
+import { useSingleTokenSwapInfo, useSwapState } from 'state/swap/hooks'
 import Page from '../Page'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
 import { V3SwapForm } from './V3Swap'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 import { SwapSelection } from './components/SwapSelection'
-import useWarningImport from './hooks/useWarningImport'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import { SwapType } from './types'
 
@@ -65,24 +61,6 @@ export default function Swap() {
     outputCurrencyId,
     outputCurrency,
     isChartSupported,
-  )
-  const warningSwapHandler = useWarningImport()
-  useDefaultsFromURLSearch()
-  const { onCurrencySelection } = useSwapActionHandlers()
-
-  const handleOutputSelect = useCallback(
-    (newCurrencyOutput: Currency) => {
-      onCurrencySelection(Field.OUTPUT, newCurrencyOutput)
-      warningSwapHandler(newCurrencyOutput)
-
-      const newCurrencyOutputId = currencyId(newCurrencyOutput)
-      if (newCurrencyOutputId === inputCurrencyId) {
-        replaceBrowserHistory('inputCurrency', outputCurrencyId)
-      }
-      replaceBrowserHistory('outputCurrency', newCurrencyOutputId)
-    },
-
-    [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
   )
 
   return (

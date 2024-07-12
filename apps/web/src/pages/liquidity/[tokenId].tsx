@@ -252,16 +252,6 @@ export default function PoolPage() {
   const currencyQuote = inverted ? currency0 : currency1
   const currencyBase = inverted ? currency1 : currency0
 
-  // const ratio = useMemo(() => {
-  //   return priceLower && pool && priceUpper
-  //     ? getRatio(
-  //         inverted ? priceUpper.invert() : priceLower,
-  //         pool.token0Price,
-  //         inverted ? priceLower.invert() : priceUpper,
-  //       )
-  //     : undefined
-  // }, [inverted, pool, priceLower, priceUpper])
-
   // fees
   const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, receiveWNATIVE)
 
@@ -810,7 +800,6 @@ export default function PoolPage() {
                 <MerklSection
                   disabled={!isOwnNFT}
                   outRange={!inRange}
-                  isStakedInMCv3={Boolean(isStakedInMCv3)}
                   notEnoughLiquidity={Boolean(
                     fiatValueOfLiquidity
                       ? fiatValueOfLiquidity.lessThan(

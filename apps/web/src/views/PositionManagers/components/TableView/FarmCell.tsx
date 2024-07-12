@@ -14,7 +14,6 @@ interface Props {
   feeTier: FeeAmount
   isSingleDepositToken: boolean
   allowDepositToken1: boolean
-  autoFarm?: boolean
   autoCompound?: boolean
   isBooster?: boolean
 }
@@ -25,7 +24,6 @@ export const FarmCell = memo(function CardTitle({
   vaultName,
   feeTier,
   isSingleDepositToken,
-  autoFarm,
   autoCompound,
   allowDepositToken1,
   isBooster,
