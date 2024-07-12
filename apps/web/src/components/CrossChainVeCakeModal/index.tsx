@@ -52,6 +52,7 @@ const ChainLogoMap = {
   [ChainId.BSC]: <BinanceIcon />,
   [ChainId.ETHEREUM]: <EthereumIcon width={16} />,
   [ChainId.ARBITRUM_ONE]: <ArbitrumIcon width={20} height={20} />,
+  [ChainId.ZKSYNC]: <ZKsyncIcon width={16} />,
 }
 
 const StyleUl = styled.ul`
