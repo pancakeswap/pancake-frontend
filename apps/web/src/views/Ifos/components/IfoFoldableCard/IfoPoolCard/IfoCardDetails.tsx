@@ -129,11 +129,11 @@ const MaxTokenEntry = ({
         }
         value={
           <Text small textAlign="right" color={maxToken > 0 ? 'text' : 'failure'}>
-            {`${formatNumber(maxToken, 3, 3)} ${!isCurrencyCake ? ifo.currency.symbol : ''} ${` ~($${formatNumber(
+            {`${formatNumber(maxToken, 3, 3)} ${!isCurrencyCake ? ifo.currency.symbol : ''}  ~($${formatNumber(
               dollarValueOfToken,
               0,
               0,
-            )})`}`}
+            )})`}
           </Text>
         }
       />
