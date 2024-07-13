@@ -1,6 +1,6 @@
-import { UsdvWidget } from '@pancakeswap/widgets-internal'
 import { useDebounce, useSortedTokensByQuery } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
+import { UsdvWidget } from '@pancakeswap/widgets-internal'
 /* eslint-disable no-restricted-syntax */
 import { Currency, Token } from '@pancakeswap/sdk'
 import { WrappedTokenInfo, createFilterToken } from '@pancakeswap/token-lists'
@@ -10,19 +10,19 @@ import { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useS
 import { FixedSizeList } from 'react-window'
 import { isAddress } from 'viem'
 
-import { safeGetAddress } from 'utils'
-import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useUsdvMintAvailable } from 'hooks/useUsdvMintAvailable'
+import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
+import { safeGetAddress } from 'utils'
 
+import { useTokenComparator } from 'hooks/useTokenComparator'
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
-import useTokenComparator from './sorting'
-import { getSwapSound } from './swapSound'
 import ImportRow from './ImportRow'
+import { getSwapSound } from './swapSound'
 
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
