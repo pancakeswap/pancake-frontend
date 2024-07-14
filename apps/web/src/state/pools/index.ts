@@ -17,6 +17,7 @@ import {
   fetchVaultUser,
   getCakeFlexibleSideVaultAddress,
   getCakeVaultAddress,
+  getLivePoolsConfig,
   getPoolAprByTokenPerBlock,
   getPoolAprByTokenPerSecond,
   getPoolsConfig,
@@ -25,7 +26,7 @@ import {
 import { bscTokens } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { getCurrencyUsdPrice } from '@pancakeswap/price-api-sdk'
+import { getCurrencyListUsdPrice } from '@pancakeswap/price-api-sdk'
 import { PayloadAction, createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import keyBy from 'lodash/keyBy'
@@ -50,10 +51,61 @@ import { getViemClients } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 import { Address, erc20Abi } from 'viem'
 
-import fetchFarms from '../farms/fetchFarms'
-import { nativeStableLpMap } from '../farms/getFarmsPrices'
-import { resetUserState } from '../global/actions'
+import flatMap from 'lodash/flatMap'
+import uniq from 'lodash/uniq'
+import mapKeys from 'lodash/mapKeys'
+import assign from 'lodash/assign'
+import { fetchFarmsPublicDataAsync } from 'state/actions'
+import { getFarmConfig } from '@pancakeswap/farms/constants'
+import pickBy from 'lodash/pickBy'
+import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
 import { getTokenPricesFromFarm } from './helpers'
+import { resetUserState } from '../global/actions'
+import { nativeStableLpMap } from '../farms/getFarmsPrices'
+import fetchFarms from '../farms/fetchFarms'
+
+// Only fetch farms for live pools
+const getActiveFarms = async (chainId: number) => {
+  const farmsConfig = (await getFarmConfig(chainId)) || []
+  const livePools = getLivePoolsConfig(chainId) || []
+  const lPoolAddresses = livePools
+    .filter(({ sousId }) => sousId !== 0)
+    .map(({ earningToken, stakingToken }) => {
+      if (earningToken.symbol === 'CAKE') {
+        return stakingToken.address
+      }
+      return earningToken.address
+    })
+
+  return farmsConfig
+    .filter(
+      ({ token, pid, quoteToken }) =>
+        pid !== 0 &&
+        ((token.symbol === 'CAKE' && quoteToken.symbol === 'WBNB') ||
+          (token.symbol === 'BUSD' && quoteToken.symbol === 'WBNB') ||
+          (token.symbol === 'USDT' && quoteToken.symbol === 'BUSD') ||
+          lPoolAddresses.find((poolAddress) => poolAddress === token.address)),
+    )
+    .map((farm) => farm.pid)
+}
+
+const getInfoTokenPrice = async (chainId: number, tokenAddress: string): Promise<number> => {
+  try {
+    const res = await explorerApiClient.GET('/cached/tokens/{chainName}/{address}/price', {
+      params: {
+        path: {
+          chainName: chainIdToExplorerInfoChainName[chainId],
+          address: tokenAddress,
+        },
+      },
+    })
+
+    return res.data?.priceUSD ? new BigNumber(res.data?.priceUSD).toNumber() : 0
+  } catch (error) {
+    console.error('Error fetching token price:', error)
+    return 0
+  }
+}
 
 export const initialPoolVaultState = Object.freeze({
   totalShares: null,
@@ -148,13 +200,39 @@ export const fetchCakePoolUserDataAsync =
 
 export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, getState) => {
   try {
-    const [block, timeLimits] = await Promise.all([
+    const [block, timeLimits, totalStakings, profileRequirements] = await Promise.all([
       getViemClients({ chainId })?.getBlock({ blockTag: 'latest' }),
       fetchPoolsTimeLimits(chainId, getViemClients),
+      fetchPoolsTotalStaking(chainId, getViemClients),
+      fetchPoolsProfileRequirement(chainId, getViemClients),
     ])
+
     const timeLimitsSousIdMap = keyBy(timeLimits, 'sousId')
-    const priceHelperLpsConfig = getPoolsPriceHelperLpFiles(chainId)
     const poolsConfig = getPoolsConfig(chainId) || []
+    const totalStakingsSousIdMap = keyBy(totalStakings, 'sousId')
+    const liveData: any[] = []
+
+    const distinctAddresses = uniq(
+      flatMap(
+        poolsConfig.filter((pool) => {
+          const timeLimit = timeLimitsSousIdMap[pool.sousId]
+          const isPoolEndBlockExceeded =
+            block.timestamp > 0 && timeLimit ? block.timestamp > Number(timeLimit.endTimestamp) : false
+          const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
+          return !isPoolFinished
+        }),
+        (pool) => [pool.stakingToken.address, pool.earningToken.address],
+      ),
+    ).map((address) => ({
+      chainId,
+      address,
+    }))
+
+    const prices = mapKeys(await getCurrencyListUsdPrice(distinctAddresses), (_, key) =>
+      safeGetAddress(key.split(':')[1]),
+    )
+
+    const priceHelperLpsConfig = getPoolsPriceHelperLpFiles(chainId)
     const activePriceHelperLpsConfig = priceHelperLpsConfig.filter((priceHelperLpConfig) => {
       return (
         poolsConfig
@@ -169,36 +247,39 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
       )
     })
 
-    const fetchFarmV3Promise = farmV3ApiFetch(chainId)
-      .then((result) => result?.farmsWithPrice || [])
-      .catch(() => {
-        return []
-      })
+    if (activePriceHelperLpsConfig.length > 0) {
+      const activeFarms = await getActiveFarms(chainId)
+      await dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms, chainId }))
 
-    const [totalStakings, profileRequirements, poolsWithDifferentFarmToken, farmsV3Data] = await Promise.all([
-      fetchPoolsTotalStaking(chainId, getViemClients),
-      fetchPoolsProfileRequirement(chainId, getViemClients),
-      activePriceHelperLpsConfig.length > 0 ? fetchFarms(priceHelperLpsConfig, chainId) : Promise.resolve([]),
-      fetchFarmV3Promise,
-    ])
+      const fetchFarmV3Promise = farmV3ApiFetch(chainId)
+        .then((result) => result?.farmsWithPrice || [])
+        .catch(() => [])
 
-    const totalStakingsSousIdMap = keyBy(totalStakings, 'sousId')
+      const [poolsWithDifferentFarmToken, farmsV3Data] = await Promise.all([
+        activePriceHelperLpsConfig.length > 0 ? fetchFarms(priceHelperLpsConfig, chainId) : Promise.resolve([]),
+        fetchFarmV3Promise,
+      ])
 
-    const farmsV2Data = getState().farms.data
-    const bnbBusdFarms =
-      activePriceHelperLpsConfig.length > 0
-        ? [...orderBy(farmsV3Data, 'lmPoolLiquidity', 'desc'), ...farmsV2Data].filter(
-            (farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB',
-          )
-        : []
-    const farmsWithPricesOfDifferentTokenPools =
-      bnbBusdFarms.length > 0
-        ? getFarmsPrices([...bnbBusdFarms, ...poolsWithDifferentFarmToken], nativeStableLpMap[chainId], 18)
-        : []
+      const farmsV2Data = getState().farms.data
 
-    const prices = getTokenPricesFromFarm([...farmsV2Data, ...farmsV3Data, ...farmsWithPricesOfDifferentTokenPools])
+      const bnbBusdFarms =
+        activePriceHelperLpsConfig.length > 0
+          ? [...orderBy(farmsV3Data, 'lmPoolLiquidity', 'desc'), ...farmsV2Data].filter(
+              (farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB',
+            )
+          : []
 
-    const liveData: any[] = []
+      const farmsWithPricesOfDifferentTokenPools =
+        bnbBusdFarms.length > 0
+          ? getFarmsPrices([...bnbBusdFarms, ...poolsWithDifferentFarmToken], nativeStableLpMap[chainId], 18)
+          : []
+
+      const updates = getTokenPricesFromFarm([...farmsV2Data, ...farmsV3Data, ...farmsWithPricesOfDifferentTokenPools])
+      assign(
+        prices,
+        pickBy(updates, (_value, key) => !(key in prices)),
+      )
+    }
 
     for (const pool of poolsConfig) {
       const timeLimit = timeLimitsSousIdMap[pool.sousId]
@@ -217,7 +298,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
           stakingTokenPrice = await fetchTokenAplPrice()
         } else {
           // eslint-disable-next-line no-await-in-loop
-          stakingTokenPrice = await getCurrencyUsdPrice({ chainId, address: stakingTokenAddress })
+          stakingTokenPrice = await getInfoTokenPrice(chainId, stakingTokenAddress)
         }
       }
 
@@ -225,7 +306,7 @@ export const fetchPoolsPublicDataAsync = (chainId: number) => async (dispatch, g
       let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
       if (earningTokenAddress && !prices[earningTokenAddress] && !isPoolFinished) {
         // eslint-disable-next-line no-await-in-loop
-        earningTokenPrice = await getCurrencyUsdPrice({ chainId, address: earningTokenAddress })
+        earningTokenPrice = await getInfoTokenPrice(chainId, earningTokenAddress)
       }
       const totalStaked = getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals)
       const apr = !isPoolFinished
