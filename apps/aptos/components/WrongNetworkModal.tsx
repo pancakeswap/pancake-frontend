@@ -3,6 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, HelpIcon, Link, Message, MessageText, Modal, ModalV2, Text } from '@pancakeswap/uikit'
 import { useActiveNetwork } from 'hooks/useNetwork'
 import { styled } from 'styled-components'
+import { useCallback } from 'react'
 
 const StyledLink = styled(Link)`
   width: 100%;
@@ -15,6 +16,10 @@ export const WrongNetworkModal: React.FC = () => {
   const { t } = useTranslation()
   const { isWrongNetwork } = useActiveNetwork()
   const { disconnect } = useDisconnect()
+
+  const handleOnClick = useCallback(() => {
+    return disconnect()
+  }, [disconnect])
 
   return (
     <ModalV2 isOpen={isWrongNetwork}>
@@ -35,7 +40,7 @@ export const WrongNetworkModal: React.FC = () => {
             <HelpIcon color="primary" ml="6px" />
           </Button>
         </StyledLink>
-        <Button mt="24px" onClick={disconnect}>
+        <Button mt="24px" onClick={handleOnClick}>
           {t('Disconnect Wallet')}
         </Button>
       </Modal>
