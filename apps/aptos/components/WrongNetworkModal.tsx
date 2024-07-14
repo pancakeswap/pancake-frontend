@@ -35,7 +35,7 @@ export const WrongNetworkModal: React.FC = () => {
             <HelpIcon color="primary" ml="6px" />
           </Button>
         </StyledLink>
-        <Button mt="24px" onClick={() => disconnect()}>
+        <Button mt="24px" onClick={disconnect}>
           {t('Disconnect Wallet')}
         </Button>
       </Modal>
