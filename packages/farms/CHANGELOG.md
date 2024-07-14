@@ -1,5 +1,15 @@
 # @pancakeswap/farms
 
+## 1.0.69
+
+### Patch Changes
+
+- 4628ab7: Add Subsquid (SQD) token and SQD-ETH farm on Arbitrum
+- Updated dependencies [4628ab7]
+- Updated dependencies [8f573cf]
+  - @pancakeswap/tokens@0.6.22
+  - @pancakeswap/price-api-sdk@1.2.16
+
 ## 1.0.68
 
 ### Patch Changes

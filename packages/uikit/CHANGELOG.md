@@ -1,5 +1,20 @@
 # Change Log
 
+## 0.67.0
+
+### Minor Changes
+
+- 4e3ed54: Add MultiSelect Component
+- c9c6c44: Added MiscellaneousIcon
+- 57bac78: Added DefaultTokenIcon and apply it as default token logo
+- 42dfc77: new UIKit: TreeSelect
+- a3ca679: Added FeeTierTooltip component
+
+### Patch Changes
+
+- 6eac78f: update MultiSelect UIKit
+- 76f049e: Add GlassGlobeIcon SVG
+
 ## 0.66.1
 
 ### Patch Changes
