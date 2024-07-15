@@ -3213,4 +3213,12 @@ export const bscTokens = {
     'DAO Maker',
     'https://app.daomaker.com/',
   ),
+  boxy: new ERC20Token(
+    ChainId.BSC,
+    '0xe2cB548594fb8FbcF04B8EfddFB2EFaB1bA5A6e7',
+    18,
+    'BOXY',
+    'BOXY',
+    'https://boxy.lol/',
+  )
 }
