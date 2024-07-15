@@ -15,6 +15,7 @@ import {
 import { MouseEvent, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
+// import { getBlockExploreLink } from 'utils'
 
 const StyledDropdown = styled(Dropdown)`
   width: 200px;
@@ -116,6 +117,7 @@ export const Share = ({ title }: { title: string }) => {
         </Flex>
         {isOpenMoreIcon && (
           <StyledDropdown setIsOpen={setIsOpenMoreIcon} dropdownRef={openMoreIconRef}>
+            {/* <Link href={getBlockExploreLink(lpAddress, 'address', chainId)} external> */}
             <Link href="/" external>
               <Flex>
                 <Flex alignSelf="flex-start">
