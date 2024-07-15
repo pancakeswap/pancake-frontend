@@ -10,10 +10,6 @@ import * as FarmV3Table from "./components/FarmV3Table";
 import * as FarmV3Card from "./components/FarmV3Card";
 import MerklNotice from "./components/MerklNotice";
 
-export { NetworkFilter } from "./components/NetworkFilter";
-export { TokenFilter } from "./components/TokenFilter";
-export { PoolsTypeFilter } from "./components/PoolsTypeFilter";
-
 export {
   FarmTabButtons,
   FarmApyButton,
