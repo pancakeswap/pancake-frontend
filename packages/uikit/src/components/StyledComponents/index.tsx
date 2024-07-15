@@ -1,7 +1,8 @@
 import { styled } from "styled-components";
+import { Flex } from "../Box";
 import { Button } from "../Button";
 
-export const DropDownHeader = styled.div`
+export const DropDownHeader = styled(Flex)`
   width: 100%;
   height: 40px;
   display: flex;

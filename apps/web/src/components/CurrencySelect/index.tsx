@@ -56,11 +56,7 @@ export const CurrencySelect = ({
   return (
     <Box width="100%" {...props}>
       <DropDownContainer p={0} onClick={onPresentCurrencyModal}>
-        <DropDownHeader
-          style={{
-            alignItems: 'center',
-          }}
-        >
+        <DropDownHeader justifyContent="space-between">
           <Text id="pair" color={!selectedCurrency ? 'text' : undefined}>
             {!selectedCurrency ? (
               <>{t('Select')}</>
