@@ -57,6 +57,7 @@ const v3TopFixedFarms: FarmConfigV3[] = [
 
 export const farmsV3 = defineFarmV3Configs([
   ...v3TopFixedFarms,
+
   {
     pid: 26,
     lpAddress: '0x20CB8f872ae894F7c9e32e621C186e5AFCe82Fd0',
