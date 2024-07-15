@@ -14,7 +14,7 @@ import { styled } from 'styled-components'
 import { Description } from 'views/Campaign/components/Description'
 import { QuestList } from 'views/Campaign/components/QuestList'
 import { Reward } from 'views/Campaign/components/Reward'
-import { Share } from 'views/Quest/components/Share'
+// import { Share } from 'views/Quest/components/Share'
 
 const QuestContainer = styled(Flex)`
   padding: 16px;
@@ -65,7 +65,7 @@ export const Campaign = () => {
               </Text>
             </Flex>
           </StyledBackButton>
-          <Share title="" />
+          {/* <Share title="" /> */}
         </Flex>
         <Box mt="16px">
           <Tag variant="success">{t('Ongoing')}</Tag>
