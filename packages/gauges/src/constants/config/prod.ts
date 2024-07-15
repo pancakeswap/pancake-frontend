@@ -4642,7 +4642,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: baseTokens.usdc.address,
   },
   {
-    gid: 468,
+    gid: 469,
     pairName: 'ETH-DEGEN',
     address: '0x54D281c7cc029a9Dd71F9ACb7487dd95B1EecF5a',
     chainId: ChainId.BASE,
@@ -4652,7 +4652,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token1Address: baseTokens.degen.address,
   },
   {
-    gid: 469,
+    gid: 470,
     pairName: 'ETH-AERO',
     address: '0x20CB8f872ae894F7c9e32e621C186e5AFCe82Fd0',
     chainId: ChainId.BASE,
@@ -4661,5 +4661,4 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: baseTokens.weth.address,
     token1Address: baseTokens.aero.address,
   },
-
 ]
