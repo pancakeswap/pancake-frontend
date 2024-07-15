@@ -4,6 +4,7 @@ import { Box, Flex, RowBetween, Text } from '@pancakeswap/uikit'
 import { memo, useMemo } from 'react'
 import { useBCakeBoostLimitAndLockInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { AprResult } from '../hooks'
+import { RorResult } from '../hooks/useRor'
 import { AprButton } from './AprButton'
 import { RewardPerDay } from './RewardPerDay'
 import { AutoCompoundTag } from './Tags'
@@ -26,6 +27,8 @@ interface Props {
   rewardPerSec?: number
   isBooster?: boolean
   boosterMultiplier?: number
+  isVaultLoading: boolean
+  ror?: RorResult
 }
 
 export const YieldInfo = memo(function YieldInfo({
@@ -45,6 +48,8 @@ export const YieldInfo = memo(function YieldInfo({
   rewardPerSec,
   isBooster,
   boosterMultiplier,
+  isVaultLoading,
+  ror,
 }: Props) {
   const { t } = useTranslation()
   const earning = useMemo(
@@ -72,6 +77,8 @@ export const YieldInfo = memo(function YieldInfo({
           rewardToken={rewardToken}
           isBooster={isBooster && apr?.isInCakeRewardDateRange}
           boosterMultiplier={totalAssetsInUsd === 0 || !locked ? 3 : boosterMultiplier === 0 ? 3 : boosterMultiplier}
+          isVaultLoading={isVaultLoading}
+          ror={ror}
         />
       </RowBetween>
       <RowBetween>

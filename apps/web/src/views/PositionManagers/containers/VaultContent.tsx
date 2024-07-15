@@ -18,6 +18,7 @@ import {
   useVaultConfigs,
   useViewMode,
 } from '../hooks'
+import { useFetchVaultHistory, type VaultHistorySnapshots } from '../hooks/useFetchVaultHistory'
 import { ThirdPartyVaultCard } from './PCSVaultCard'
 
 export const VaultContent = memo(function VaultContent() {
@@ -28,6 +29,12 @@ export const VaultContent = memo(function VaultContent() {
   const [stakeOnly] = useStakeOnly()
   const [isPreview] = usePreview()
   const { mode } = useViewMode()
+  const { data: rorData, isLoading: isVaultDataLoading } = useFetchVaultHistory()
+
+  const vaultHistorySnapshots = useMemo(
+    (): VaultHistorySnapshots => ({ rorData, isVaultDataLoading }),
+    [rorData, isVaultDataLoading],
+  )
 
   const { data: positionMangerDetailsData, updateData: updatePositionMangerDetailsData } =
     usePositionManagerDetailsData()
@@ -99,6 +106,7 @@ export const VaultContent = memo(function VaultContent() {
           farmsV3={farmsV3}
           aprDataList={aprDataList}
           updatePositionMangerDetailsData={updatePositionMangerDetailsData}
+          vaultHistorySnapshots={vaultHistorySnapshots}
         />
       )
     }
@@ -114,6 +122,7 @@ export const VaultContent = memo(function VaultContent() {
           farmsV3={farmsV3}
           aprDataList={aprDataList}
           updatePositionMangerDetailsData={updatePositionMangerDetailsData}
+          vaultHistorySnapshots={vaultHistorySnapshots}
         />
       )
     }

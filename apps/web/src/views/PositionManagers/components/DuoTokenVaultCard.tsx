@@ -1,16 +1,17 @@
-import { MANAGER, Strategy } from '@pancakeswap/position-managers'
-import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
+import type { MANAGER, Strategy } from '@pancakeswap/position-managers'
+import { CurrencyAmount, type Currency, type Percent } from '@pancakeswap/sdk'
 import { Card, CardBody } from '@pancakeswap/uikit'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { FeeAmount } from '@pancakeswap/v3-sdk'
+import type { FeeAmount } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
 import { SwellTooltip } from 'components/SwellTooltip/SwellTooltip'
 import { useHasSwellReward } from 'hooks/useHasSwellReward'
-import { PropsWithChildren, ReactNode, memo, useMemo } from 'react'
+import { memo, useMemo, type PropsWithChildren, type ReactNode } from 'react'
 import { styled } from 'styled-components'
-import { Address } from 'viem'
+import type { Address } from 'viem'
 import { useApr } from 'views/PositionManagers/hooks/useApr'
-import { AprDataInfo } from '../hooks'
+import type { AprDataInfo } from '../hooks'
+import type { RorResult } from '../hooks/useRor'
 import { useIsWrapperWhiteList } from '../hooks/useWrapperBooster'
 import { getVaultName } from '../utils'
 import { CardTitle } from './CardTitle'
@@ -86,6 +87,8 @@ interface Props {
   minDepositUSD?: number
   boosterMultiplier?: number
   boosterContractAddress?: Address
+  isVaultLoading: boolean
+  ror?: RorResult
   adapterAddress?: Address
 }
 
@@ -134,6 +137,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   minDepositUSD,
   boosterMultiplier,
   boosterContractAddress,
+  isVaultLoading,
+  ror,
   adapterAddress,
 }: PropsWithChildren<Props>) {
   const apr = useApr({
@@ -195,6 +200,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           rewardPerSec={tokenPerSecond}
           isBooster={isBoosterWhiteList}
           boosterMultiplier={boosterMultiplier}
+          isVaultLoading={isVaultLoading}
+          ror={ror}
         />
         <ManagerInfo
           mt="1.5em"

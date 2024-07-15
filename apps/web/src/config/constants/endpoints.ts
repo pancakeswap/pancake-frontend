@@ -11,6 +11,7 @@ export const API_NFT = 'https://nft.pancakeswap.com/api/v1'
 export const SNAPSHOT_API = `${SNAPSHOT_BASE_URL}/graphql`
 export const SNAPSHOT_HUB_API = `${SNAPSHOT_BASE_URL}/api/message`
 export const GRAPH_API_POTTERY = `${THE_GRAPH_PROXY_API}/pottery`
+export const VAULT_API_ENDPOINT = 'https://vault.pancakeswap.com'
 // export const ONRAMP_API_BASE_URL = 'https://pcs-onramp-api.com'
 export const ONRAMP_API_BASE_URL = 'https://onramp2-api.pancakeswap.com'
 export const TRANSAK_API_BASE_URL = 'https://api-stg.transak.com/api/v1'

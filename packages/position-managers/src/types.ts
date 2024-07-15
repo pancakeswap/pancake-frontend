@@ -127,6 +127,7 @@ export interface DuoTokenVault {
   aprTimeWindow?: number
   bCakeWrapperAddress?: Address
   minDepositUSD?: number
+  vaultAddress?: Address
 }
 
 export interface PCSDuoTokenVault extends DuoTokenVault {

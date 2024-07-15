@@ -15,19 +15,21 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { VaultHistorySnapshots } from 'views/PositionManagers/hooks/useFetchVaultHistory'
+import { useRor } from 'views/PositionManagers/hooks/useRor'
 import { useIsWrapperWhiteList } from '../../hooks/useWrapperBooster'
 import { ActionPanel } from './ActionPanel'
 
 import {
-  AprData,
-  AprDataInfo,
-  PositionManagerDetailsData,
   useApr,
   useEarningTokenPriceInfo,
   usePCSVault,
   usePositionInfo,
   useTotalAssetInUsd,
   useTotalStakedInUsd,
+  type AprData,
+  type AprDataInfo,
+  type PositionManagerDetailsData,
 } from '../../hooks'
 import { RewardPerDay } from '../RewardPerDay'
 
@@ -45,13 +47,21 @@ interface Props {
   farmsV3: FarmV3DataWithPriceAndUserInfo[]
   aprDataList: AprData
   updatePositionMangerDetailsData: (id: number, newData: PositionManagerDetailsData) => void
+  vaultHistorySnapshots: VaultHistorySnapshots
 }
 
-export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, updatePositionMangerDetailsData }) => {
+export const TableRow: React.FC<Props> = ({
+  config,
+  farmsV3,
+  aprDataList,
+  updatePositionMangerDetailsData,
+  vaultHistorySnapshots,
+}) => {
   const hasStakedAmount = false
   const { locked } = useBCakeBoostLimitAndLockInfo()
   const { t } = useTranslation()
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
+
   const toggleActionPanel = useCallback(() => {
     setActionPanelExpanded(!actionPanelExpanded)
   }, [actionPanelExpanded])
@@ -90,7 +100,11 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     aprTimeWindow,
     bCakeWrapperAddress,
     autoCompound,
+    vaultAddress,
   } = vault
+
+  const { data: token0USDPrice } = useCurrencyUsdPrice(currencyA)
+  const { data: token1USDPrice } = useCurrencyUsdPrice(currencyB)
 
   const hasSwellReward = useHasSwellReward(address)
   const adapterContract = usePositionManagerAdapterContract(adapterAddress ?? '0x')
@@ -117,6 +131,7 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
   const token1Usd = useCurrencyUsdPrice(currencyB, {
     enabled: !priceFromV3FarmPid,
   })
+
   const vaultName = useMemo(() => getVaultName(idByManager, name), [name, idByManager])
   const info = usePositionInfo(bCakeWrapperAddress ?? address, adapterAddress ?? '0x', Boolean(bCakeWrapperAddress))
 
@@ -135,11 +150,22 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     }
   }, [farmsV3, token0Usd.data, token1Usd.data, currencyB, priceFromV3FarmPid])
 
+  const ror = useRor({
+    vault: vaultAddress,
+    adapterAddress,
+    currencyA,
+    currencyB,
+    token0USDPrice,
+    token1USDPrice,
+    vaultHistorySnapshots,
+  })
+
   useEffect(() => {
     if (info?.userToken0Amounts > 0n || info?.userToken1Amounts > 0n) {
       setActionPanelExpanded(true)
     }
   }, [info?.userToken0Amounts, info?.userToken1Amounts])
+
   const aprDataInfo = useMemo(() => {
     const { isLoading, data, fallbackData, specificData } = aprDataList
     let timeWindow = TIME_WINDOW_FALLBACK
@@ -309,6 +335,8 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                               ? 3
                               : info?.boosterMultiplier
                           }
+                          ror={ror}
+                          isVaultLoading={vaultHistorySnapshots.isVaultDataLoading}
                         />
                       </CellLayout>
                     </CellInner>

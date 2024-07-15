@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
 import { PCSDuoTokenVaultConfig } from '@pancakeswap/position-managers'
 import { CurrencyAmount } from '@pancakeswap/sdk'
@@ -19,18 +20,22 @@ import {
   useTotalStakedInUsd,
 } from '../hooks'
 import { TIME_WINDOW_DEFAULT, TIME_WINDOW_FALLBACK } from '../hooks/useFetchApr'
+import type { VaultHistorySnapshots } from '../hooks/useFetchVaultHistory'
+import { useRor } from '../hooks/useRor'
 
 interface Props {
   config: PCSDuoTokenVaultConfig
   farmsV3: FarmV3DataWithPriceAndUserInfo[]
   aprDataList: AprData
   updatePositionMangerDetailsData: (id: number, newData: PositionManagerDetailsData) => void
+  vaultHistorySnapshots: VaultHistorySnapshots
 }
 
 export const ThirdPartyVaultCard = memo(function PCSVaultCard({
   config,
   aprDataList,
   updatePositionMangerDetailsData,
+  vaultHistorySnapshots,
 }: Props) {
   const { vault } = usePCSVault({ config })
   const {
@@ -56,6 +61,7 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     aprTimeWindow,
     bCakeWrapperAddress,
     minDepositUSD,
+    vaultAddress,
   } = vault
 
   const adapterContract = usePositionManagerAdapterContract(adapterAddress ?? '0x')
@@ -131,6 +137,16 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
     poolToken1Amount: info?.poolToken1Amounts,
     token0PriceUSD: tokensPriceUSD?.token0,
     token1PriceUSD: tokensPriceUSD?.token1,
+  })
+
+  const ror = useRor({
+    vault: vaultAddress,
+    vaultHistorySnapshots,
+    adapterAddress,
+    currencyA,
+    currencyB,
+    token0USDPrice,
+    token1USDPrice,
   })
 
   const apr = useApr({
@@ -229,6 +245,8 @@ export const ThirdPartyVaultCard = memo(function PCSVaultCard({
       minDepositUSD={minDepositUSD}
       boosterMultiplier={info?.boosterMultiplier}
       boosterContractAddress={info?.boosterContractAddress}
+      isVaultLoading={vaultHistorySnapshots.isVaultDataLoading}
+      ror={ror}
       adapterAddress={adapterAddress}
     >
       {id}
