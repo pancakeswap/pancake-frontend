@@ -3215,7 +3215,7 @@ export const bscTokens = {
   ),
   boxy: new ERC20Token(
     ChainId.BSC,
-    '0xe2cB548594fb8FbcF04B8EfddFB2EFaB1bA5A6e7',
+    '0x9F5d4479b783327b61718fa13B3a0583869a80c1',
     18,
     'BOXY',
     'BOXY',
