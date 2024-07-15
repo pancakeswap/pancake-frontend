@@ -4618,8 +4618,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
     chainId: ChainId.BSC,
     type: GaugeType.V3,
     feeTier: FeeAmount.LOWEST,
-    token0Address: bscTokens.boxy.address,
-    token1Address: bscTokens.dexe.address,
+    token0Address: bscTokens.dexe.address,
+    token1Address: bscTokens.boxy.address,
   },
   {
     gid: 467,
