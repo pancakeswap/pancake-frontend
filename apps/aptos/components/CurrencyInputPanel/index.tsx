@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useAccountBalance, useBalance } from '@pancakeswap/awgmi'
+import { useAccount, useBalance } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { useCurrencyBalance } from 'hooks/Balances'
 import useStablePrice from 'hooks/useStablePrice'

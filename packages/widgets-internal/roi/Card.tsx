@@ -1,5 +1,4 @@
 import { styled } from "styled-components";
-import type {} from "csstype";
 import { Box } from "@pancakeswap/uikit";
 
 export const Card = styled(Box)<{
