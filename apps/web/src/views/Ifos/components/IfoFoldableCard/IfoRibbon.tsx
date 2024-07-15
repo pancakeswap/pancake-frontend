@@ -82,7 +82,7 @@ export const IfoRibbon = ({
   const bannerUrl = useMemo(() => ifoId && getBannerUrl(ifoId), [ifoId])
   const { isDarkColor } = useImageColor({ url: bannerUrl })
 
-  let ribbon: ReactNode = null
+  let ribbon: ReactNode
   switch (status) {
     case 'finished':
       ribbon = <IfoRibbonEnd />

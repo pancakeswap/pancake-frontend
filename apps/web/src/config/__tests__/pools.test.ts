@@ -48,7 +48,7 @@ describe.concurrent(
       it.each<SerializedPool>(poolsToTest.filter((pool) => pool.stakingToken.symbol !== 'BNB'))(
         'Pool %p has the correct staking token',
         async (pool) => {
-          let stakingTokenAddress: null | Address = null
+          let stakingTokenAddress: null | Address
           try {
             const contract = getPoolContractBySousId({
               sousId: pool.sousId,

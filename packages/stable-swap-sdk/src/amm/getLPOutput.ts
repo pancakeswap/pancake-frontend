@@ -57,7 +57,6 @@ export function getLPOutput({
   const n = currentBalances.length
   const eachTokenFee = fee.multiply(n).divide(4 * (n - 1))
 
-  let d2 = d1
   for (const [i, b] of currentBalances.entries()) {
     const idealBalance = (d1 * b) / d0
     let diff = ZERO
@@ -70,7 +69,7 @@ export function getLPOutput({
     // eslint-disable-next-line operator-assignment
     newBalances[i] = newBalances[i] - feeAmount
   }
-  d2 = getD({ amplifier, balances: newBalances })
+  const d2 = getD({ amplifier, balances: newBalances })
 
   const expectedMintLP = (lpTotalSupply * (d2 - d0)) / d0
   return CurrencyAmount.fromRawAmount(totalSupply.currency, expectedMintLP)

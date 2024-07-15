@@ -78,7 +78,7 @@ export function V3SubmitButton({
     [approvalA, approvalB, isValid],
   )
 
-  let buttons: ReactNode = null
+  let buttons: ReactNode
   if (addIsUnsupported || addIsWarning) {
     buttons = (
       <Button disabled mb="4px">

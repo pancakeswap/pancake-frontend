@@ -79,7 +79,7 @@ function getFontSpecs({
   fontSize: number;
   lineHeight: number;
 }) {
-  let multiplier = 1;
+  let multiplier: number;
   switch (size) {
     case "sm":
       multiplier = 0.85714286;

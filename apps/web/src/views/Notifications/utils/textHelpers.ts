@@ -31,7 +31,7 @@ export const getOnBoardingButtonText = (
 }
 
 export const getSettingsButtonText = (isUnsubscribing: boolean, objectsAreEqual: boolean, t: TranslateFunction) => {
-  let buttonText: string = t('Unsubscribe')
+  let buttonText: string
   if (objectsAreEqual) {
     buttonText = isUnsubscribing ? t('Unsubscribing') : t('Unsubscribe')
   } else buttonText = isUnsubscribing ? t('Updating...') : t('Update Preferences')

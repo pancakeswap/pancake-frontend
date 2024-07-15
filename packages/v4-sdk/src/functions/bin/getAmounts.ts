@@ -33,8 +33,8 @@ export type AmountsChanged = {
  */
 export const getAmounts = (binPool: BinPoolState, swapForY: boolean, amountIn: bigint): AmountsChanged => {
   let amountInWithFee = amountIn
-  let amountOutOfBin = 0n
-  let totalFee = 0n
+  let amountOutOfBin: bigint
+  let totalFee: bigint
 
   const binReserves = binPool.reserveOfBin[Number(binPool.activeId)]
 

@@ -138,8 +138,8 @@ export default function OnRampCurrencyList({
     ({ data, index, style }) => {
       const currency: Currency = data[index]
 
-      let isSelected = false
-      let otherSelected = false
+      let isSelected: boolean
+      let otherSelected: boolean
 
       if (mode !== 'onramp-fiat') {
         isSelected = Boolean(selectedCurrency && currency && (selectedCurrency as Currency).equals(currency))

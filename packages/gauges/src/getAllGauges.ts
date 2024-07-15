@@ -30,7 +30,7 @@ export const getAllGauges = async (
   const allGaugeInfos = await fetchAllGauges(client, {
     blockNumber,
   })
-  let allActiveGaugeInfos = allGaugeInfos
+  let allActiveGaugeInfos: GaugeInfo[]
 
   allActiveGaugeInfos = await fetchAllKilledGauges(client, allGaugeInfos, { blockNumber })
 

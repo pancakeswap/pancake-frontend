@@ -26,7 +26,7 @@ export const useMenuItems = (): ConfigMenuItemsType[] => {
           const itemStatus = innerItem.href ? menuItemsStatus[innerItem.href] : undefined
 
           if (itemStatus) {
-            let itemMenuStatus: DropdownMenuItems['status'] | null = null
+            let itemMenuStatus: DropdownMenuItems['status'] | null
             if (itemStatus === 'soon') {
               itemMenuStatus = <DropdownMenuItems['status']>{ text: t('Soon'), color: 'warning' }
             } else if (itemStatus === 'live') {

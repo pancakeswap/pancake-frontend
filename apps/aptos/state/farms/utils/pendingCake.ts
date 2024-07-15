@@ -21,8 +21,8 @@ export function calcRewardCakePerShare(masterChef: MapFarmResource, pid: string 
     let accCakePerShare = Number(poolInfo.acc_cake_per_share)
 
     if (currentTimestamp > lastRewardTimestamp) {
-      let totalAllocPoint = 0
-      let cakeRate = 0
+      let totalAllocPoint: number
+      let cakeRate: number
 
       if (poolInfo.is_regular) {
         totalAllocPoint = Number(masterChef.total_regular_alloc_point)
@@ -33,7 +33,7 @@ export function calcRewardCakePerShare(masterChef: MapFarmResource, pid: string 
       }
 
       const supply = Number(poolInfo.total_amount)
-      let multiplier = 0
+      let multiplier: number
 
       if (endTimestamp <= lastRewardTimestamp) {
         multiplier = 0

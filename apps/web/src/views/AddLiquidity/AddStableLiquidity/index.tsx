@@ -345,11 +345,8 @@ export default function AddStableLiquidity({
     'addLiquidityModal',
   )
 
-  let isValid = !error
-  let errorText = error
-
-  isValid = !error && !addError
-  errorText = error ?? addError
+  const isValid = !error && !addError
+  const errorText = error ?? addError
 
   const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
 

@@ -52,7 +52,7 @@ export const noopStorage = {
 const PUBLIC_MAINNET = 'https://ethereum.publicnode.com'
 
 export const transports = chains.reduce((ts, chain) => {
-  let httpStrings: string[] | readonly string[] = []
+  let httpStrings: string[] | readonly string[]
 
   if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
     httpStrings = [PUBLIC_MAINNET]

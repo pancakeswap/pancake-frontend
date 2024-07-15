@@ -128,7 +128,7 @@ function getGraphicImageSpecs({
   $width: number;
   $height: number;
 }) {
-  let multiplier = 1;
+  let multiplier: number;
   switch (size) {
     case "md":
       multiplier = 0.9375;
