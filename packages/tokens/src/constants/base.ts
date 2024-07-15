@@ -101,4 +101,12 @@ export const baseTokens = {
     'LayerZero',
     'https://www.layerzero.foundation/',
   ),
+  usdt: new ERC20Token(
+    ChainId.BASE,
+    '0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2',
+    18,
+    'USDT',
+    'Tether USDT',
+    'https://tether.to/en/',
+  ),
 }
