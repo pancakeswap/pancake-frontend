@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   BarChartIcon,
@@ -14,8 +15,8 @@ import {
 } from '@pancakeswap/uikit'
 import { MouseEvent, useRef, useState } from 'react'
 import { styled } from 'styled-components'
+import { getBlockExploreLink } from 'utils'
 import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
-// import { getBlockExploreLink } from 'utils'
 
 const StyledDropdown = styled(Dropdown)`
   width: 200px;
@@ -37,7 +38,13 @@ const Container = styled(Box)`
   }
 `
 
-export const Share = ({ title }: { title: string }) => {
+interface ShareProps {
+  title: string
+  contractChainId: ChainId
+  contractAddress: string
+}
+
+export const Share: React.FC<ShareProps> = ({ title, contractChainId, contractAddress }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const openShareIconRef = useRef<HTMLDivElement>(null)
@@ -117,8 +124,7 @@ export const Share = ({ title }: { title: string }) => {
         </Flex>
         {isOpenMoreIcon && (
           <StyledDropdown setIsOpen={setIsOpenMoreIcon} dropdownRef={openMoreIconRef}>
-            {/* <Link href={getBlockExploreLink(lpAddress, 'address', chainId)} external> */}
-            <Link href="/" external>
+            <Link href={getBlockExploreLink(contractAddress, 'address', contractChainId)} external>
               <Flex>
                 <Flex alignSelf="flex-start">
                   <BarChartIcon color="primary" width="20px" height="20px" />

@@ -79,7 +79,7 @@ export const Quest = () => {
               </Text>
             </Flex>
           </StyledBackButton>
-          <Share title={quest.title} />
+          <Share title={quest.title} contractChainId={quest.chainId} contractAddress={quest.rewardSCAddress} />
         </Flex>
         <Box mt="16px">
           {quest?.completionStatus === CompletionStatus.ONGOING && <Tag variant="success">{t('Ongoing')}</Tag>}
