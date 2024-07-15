@@ -27,11 +27,8 @@ const Header: React.FC<React.PropsWithChildren> = () => {
         {t('Profile Setup')}
       </Heading>
       <Heading as="h2" scale="lg" mb="8px">
-        {t('Show off your stats and collectibles with your unique profile')}
+        {t('Show off your stats and participate in quests with your unique profile')}
       </Heading>
-      <Text color="textSubtle" mb="8px">
-        {t('Total cost: 1.5 CAKE')}
-      </Text>
       <Link href="/profile">
         <Button mb="24px" scale="sm" variant="secondary">
           {t('Back to profile')}
