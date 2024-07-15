@@ -3220,5 +3220,5 @@ export const bscTokens = {
     'BOXY',
     'BOXY',
     'https://boxy.lol/',
-  )
+  ),
 }

@@ -4648,7 +4648,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     chainId: ChainId.BASE,
     type: GaugeType.V3,
     feeTier: FeeAmount.LOW,
-    token0Address: baseTokens.degen.address,
+    token0Address: baseTokens.weth.address,
     token1Address: baseTokens.degen.address,
   },
   {
