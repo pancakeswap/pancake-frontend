@@ -110,25 +110,41 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
     return false
   }, [allowance, stakeAmount, isRemovingStake])
 
-  const callOptions = {
-    gas: pool.vaultKey ? vaultPoolConfig[pool.vaultKey].gasLimit : undefined,
-  }
+  const callOptions = useMemo(
+    () => ({
+      gas: pool.vaultKey ? vaultPoolConfig[pool.vaultKey].gasLimit : undefined,
+    }),
+    [pool.vaultKey],
+  )
 
-  const interestBreakdown = getInterestBreakdown({
-    principalInUSD: !usdValueStaked.isNaN() ? usdValueStaked.toNumber() : 0,
-    apr: flexibleApy !== undefined ? +flexibleApy : 0,
-    earningTokenPrice: earningTokenPrice || 0,
-    performanceFee,
-    compoundFrequency: 0,
-  })
+  const interestBreakdown = useMemo(
+    () =>
+      getInterestBreakdown({
+        principalInUSD: !usdValueStaked.isNaN() ? usdValueStaked.toNumber() : 0,
+        apr: flexibleApy !== undefined ? +flexibleApy : 0,
+        earningTokenPrice: earningTokenPrice || 0,
+        performanceFee,
+        compoundFrequency: 0,
+      }),
+    [usdValueStaked, flexibleApy, earningTokenPrice, performanceFee],
+  )
 
-  const annualRoi = pool.earningTokenPrice ? interestBreakdown[3] * pool.earningTokenPrice : undefined
-  const formattedAnnualRoi = annualRoi
-    ? formatNumber(annualRoi, annualRoi > 10000 ? 0 : 2, annualRoi > 10000 ? 0 : 2)
-    : undefined
+  const annualRoi = useMemo(
+    () => (pool.earningTokenPrice ? interestBreakdown[3] * pool.earningTokenPrice : undefined),
+    [pool.earningTokenPrice, interestBreakdown],
+  )
+
+  const formattedAnnualRoi = useMemo(
+    () => (annualRoi ? formatNumber(annualRoi, annualRoi > 10000 ? 0 : 2, annualRoi > 10000 ? 0 : 2) : undefined),
+    [annualRoi],
+  )
 
   const getTokenLink = stakingToken.address ? `/swap?outputCurrency=${stakingToken.address}` : '/swap'
-  const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
+
+  const convertedStakeAmount = useMemo(
+    () => getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals),
+    [stakeAmount, stakingToken.decimals],
+  )
 
   const handleStakeInputChange = useCallback(
     (input: string) => {
