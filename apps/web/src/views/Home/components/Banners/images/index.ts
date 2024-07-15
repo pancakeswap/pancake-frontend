@@ -37,6 +37,8 @@ import v3LaunchBunnyMobile from './v3LaunchBunnyMobile.png'
 import v3LaunchEth from './v3LaunchEth.png'
 import v3LaunchFlag from './v3LaunchFlag.png'
 
+import FourMemeBg from './FourMemeBg.png'
+import MbolieFourMemeBg from './MbolieFourMemeBg.png'
 import arbBg from './arbBg.png'
 import arbBgMobile from './arbBgMobile.png'
 import arbBunny from './arbBunny.png'
@@ -74,17 +76,19 @@ import opbnbBunny from './opbnb-bunny.png'
 import polygonZkBgMobile from './polygon-zk-bg-mobile.png'
 import polygonZkBg from './polygon-zk-bg.png'
 import polygonZkBunny from './polygon-zk-bunny.png'
+import testImg from './testImg.png'
 import zkSyncBg from './zkSyncBg.png'
 import zkSyncBgMobile from './zkSyncBgMobile.png'
-import zkSyncBunny from './zkSyncBunny.png'
 
 export {
   Aptos,
   AptosXPancakeSwap,
   ETHBunny,
   ETHXPancakeSwap,
+  FourMemeBg,
   IFOImage,
   IFOMobileImage,
+  MbolieFourMemeBg,
   apolloXCampaignBg,
   apolloXCampaignBgMobile,
   apolloXCampaignBunny,
@@ -139,6 +143,7 @@ export {
   polygonZkBg,
   polygonZkBgMobile,
   polygonZkBunny,
+  testImg,
   trustwalletBg,
   trustwalletBunny,
   v3AirdropBunny,
@@ -156,5 +161,4 @@ export {
   v3LaunchFlag,
   zkSyncBg,
   zkSyncBgMobile,
-  zkSyncBunny,
 }
