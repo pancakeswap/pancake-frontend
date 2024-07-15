@@ -1,4 +1,3 @@
-import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { Address } from 'viem'
 import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 
@@ -16,24 +15,19 @@ export const connectSocial = async ({ account, userInfo, id, type, callback }: C
     ...(userInfo.socialHubToSocialUserIdMap ?? {}),
     [type]: id,
   }
+
   // New Account
   if (userInfo.userId === null) {
-    response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/addUserInfo`, {
+    response = await fetch(`/api/userInfo/addUserInfo`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         userId: account,
         socialHubToSocialUserIdMap,
       }),
     })
   } else {
-    response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/updateUserInfo`, {
+    response = await fetch(`/api/userInfo/updateUserInfo`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         userId: account,
         socialHubToSocialUserIdMap,
