@@ -35,7 +35,6 @@ import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocia
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { fetchMarkTaskStatus } from 'views/Quest/utils/fetchMarkTaskStatus'
-import { fetchVerifyTwitterFollow, TwitterFollowResponse } from 'views/Quest/utils/fetchVerifyTwitterFollow'
 import { useAccount } from 'wagmi'
 
 const VerifyButton = styled(Button)`
@@ -80,27 +79,19 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     if (token && tokenSecret) {
       try {
         setActionPanelExpanded(false)
-        const responseFetchVerifyTwitterFollow = await fetchVerifyTwitterFollow({
-          userId: twitterId,
+
+        const queryString = new URLSearchParams({
+          account,
+          questId,
           token,
           tokenSecret,
+          userId: twitterId,
           targetUserId: (task as TaskSocialConfig).accountId,
-        })
-        const followResult = await responseFetchVerifyTwitterFollow.json()
+        }).toString()
+        const response = await fetch(`/api/twitterFollow?${queryString}`)
 
-        if (followResult.message && !responseFetchVerifyTwitterFollow.ok) {
-          toastError(followResult.message)
-        }
-
-        if (responseFetchVerifyTwitterFollow.ok) {
-          const followData: TwitterFollowResponse = followResult.data
-
-          if (followData?.following) {
-            const responseMarkTaskStatus = await fetchMarkTaskStatus(account, questId, TaskType.X_FOLLOW_ACCOUNT)
-            if (responseMarkTaskStatus.ok) {
-              await refresh()
-            }
-          }
+        if (response.ok) {
+          await refresh()
         }
       } catch (error) {
         toastError(`Verify Twitter Fail: ${error}`)
@@ -110,7 +101,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     } else {
       connectTwitter()
     }
-  }, [isPending, account, twitterId, session, task, questId, hasIdRegister, refresh, toastError, connectTwitter])
+  }, [isPending, hasIdRegister, account, twitterId, session, questId, task, refresh, toastError, connectTwitter])
 
   useEffect(() => {
     const fetchApi = async () => {

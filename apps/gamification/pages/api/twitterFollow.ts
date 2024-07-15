@@ -1,4 +1,6 @@
+import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import crypto from 'crypto'
+import { TaskType } from 'views/DashboardQuestEdit/type'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const OAuth = require('oauth-1.0a')
 
@@ -25,7 +27,7 @@ const getOAuthHeader = (
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      const { token, tokenSecret, userId, targetUserId } = req.query
+      const { account, questId, token, tokenSecret, userId, targetUserId } = req.query
       if (!token || !tokenSecret || !userId || !targetUserId) {
         res.status(400).json({ message: 'Missing required parameters: token, tokenSecret, userId, targetUserId' })
         return
@@ -50,7 +52,25 @@ export default async function handler(req, res) {
         res.status(500).json({ message: result.title })
       }
 
-      res.status(200).json(result)
+      if (result.data.following) {
+        const responseMarkTask = await fetch(
+          `${GAMIFICATION_PUBLIC_API}/userInfo/v1/markTaskStatus/${account}/${questId}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              taskName: TaskType.X_FOLLOW_ACCOUNT,
+              isCompleted: true,
+            }),
+          },
+        )
+
+        if (responseMarkTask.ok) {
+          res.status(200).json(result)
+        }
+      }
     } catch (error) {
       res.status(500).json({ message: (error as Error).message })
     }
