@@ -1,5 +1,11 @@
 # @pancakeswap/v3-sdk
 
+## 3.8.10
+
+### Patch Changes
+
+- 911d107: Fix invalid assignment in max liquidity for amounts
+
 ## 3.8.9
 
 ### Patch Changes
