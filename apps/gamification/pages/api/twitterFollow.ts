@@ -63,13 +63,17 @@ export default async function handler(req, res) {
             body: JSON.stringify({
               taskName: TaskType.X_FOLLOW_ACCOUNT,
               isCompleted: true,
+              accessToken: token,
             }),
           },
         )
 
+        const responseMarkTaskResult = await response.json()
         if (responseMarkTask.ok) {
-          res.status(200).json(result)
+          res.status(200).json(responseMarkTaskResult)
         }
+
+        res.status(500).json({ message: responseMarkTaskResult.title })
       }
     } catch (error) {
       res.status(500).json({ message: (error as Error).message })
