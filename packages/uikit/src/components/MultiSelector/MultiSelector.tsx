@@ -2,21 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { css, styled } from "styled-components";
 import { Box } from "../Box";
 import { Checkbox } from "../Checkbox";
+import { DropDownHeader } from "../StyledComponents";
 import { ArrowDropDownIcon } from "../Svg";
 import { Text } from "../Text";
-
-const DropDownHeader = styled.div`
-  width: 100%;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  padding: 0px 16px;
-  box-shadow: ${({ theme }) => theme.shadows.inset};
-  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-  border-radius: 16px;
-  background: ${({ theme }) => theme.colors.input};
-  transition: border-radius 0.15s;
-`;
 
 const DropDownListContainer = styled.div`
   min-width: 100px;

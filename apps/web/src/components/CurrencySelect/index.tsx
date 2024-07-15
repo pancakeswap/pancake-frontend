@@ -1,51 +1,22 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowDropDownIcon, Box, BoxProps, Button, Flex, Text, useModal } from '@pancakeswap/uikit'
+import {
+  ArrowDropDownIcon,
+  Box,
+  BoxProps,
+  DropDownContainer,
+  DropDownHeader,
+  Flex,
+  Text,
+  useModal,
+} from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
 import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { useCurrencyBalance } from 'state/wallet/hooks'
-import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { AutoRow, RowBetween } from '../Layout/Row'
 import { CurrencyLogo } from '../Logo'
-
-const DropDownHeader = styled.div`
-  width: 100%;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0px 16px;
-  box-shadow: ${({ theme }) => theme.shadows.inset};
-  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-  border-radius: 16px;
-  background: ${({ theme }) => theme.colors.input};
-  transition: border-radius 0.15s;
-`
-
-const DropDownContainer = styled(Button)`
-  cursor: pointer;
-  width: 100%;
-  position: relative;
-  background: ${({ theme }) => theme.colors.input};
-  border-radius: 16px;
-  height: 40px;
-  min-width: 136px;
-  user-select: none;
-  z-index: 20;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    min-width: 168px;
-  }
-
-  .down-icon {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-`
 
 interface CurrencySelectProps extends CurrencySearchModalProps, BoxProps {
   hideBalance?: boolean
@@ -85,7 +56,7 @@ export const CurrencySelect = ({
   return (
     <Box width="100%" {...props}>
       <DropDownContainer p={0} onClick={onPresentCurrencyModal}>
-        <DropDownHeader>
+        <DropDownHeader justifyContent="space-between">
           <Text id="pair" color={!selectedCurrency ? 'text' : undefined}>
             {!selectedCurrency ? (
               <>{t('Select')}</>
