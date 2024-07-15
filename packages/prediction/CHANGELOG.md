@@ -1,5 +1,18 @@
 # @pancakeswap/prediction
 
+## 1.1.0
+
+### Minor Changes
+
+- 76f049e: Add AI Predictions on Arbitrum
+
+### Patch Changes
+
+- Updated dependencies [4628ab7]
+- Updated dependencies [8f573cf]
+  - @pancakeswap/tokens@0.6.22
+  - @pancakeswap/pools@5.1.28
+
 ## 1.0.16
 
 ### Patch Changes

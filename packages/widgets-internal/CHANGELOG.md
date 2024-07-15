@@ -1,5 +1,29 @@
 # @pancakeswap/widgets-internal
 
+## 0.3.0
+
+### Minor Changes
+
+- c9c6c44: Added FeatureStack component
+- 42dfc77: new UIKit: TreeSelect
+- a3ca679: Added FeeTierTooltip component
+
+### Patch Changes
+
+- Updated dependencies [4e3ed54]
+- Updated dependencies [4628ab7]
+- Updated dependencies [6eac78f]
+- Updated dependencies [76f049e]
+- Updated dependencies [c9c6c44]
+- Updated dependencies [8f573cf]
+- Updated dependencies [57bac78]
+- Updated dependencies [42dfc77]
+- Updated dependencies [a3ca679]
+  - @pancakeswap/uikit@0.67.0
+  - @pancakeswap/tokens@0.6.22
+  - @pancakeswap/farms@1.0.69
+  - @pancakeswap/pools@5.1.28
+
 ## 0.2.2
 
 ### Patch Changes
