@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { Box, Card, Text } from '@pancakeswap/uikit'
-import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { AddReward } from 'views/DashboardQuestEdit/components/Reward/AddReward'
 import { RewardAmount } from 'views/DashboardQuestEdit/components/Reward/RewardAmount'
@@ -61,8 +60,6 @@ export const Reward: React.FC<RewardProps> = ({ reward, completionStatus, action
     updateValue('reward', rewardData)
   }
 
-  const isFinished = useMemo(() => completionStatus === CompletionStatus.FINISHED, [completionStatus])
-
   return (
     <RewardContainer>
       <Card>
@@ -73,7 +70,6 @@ export const Reward: React.FC<RewardProps> = ({ reward, completionStatus, action
           {reward?.currency?.address ? (
             <RewardAmount
               reward={reward}
-              isFinished={isFinished}
               completionStatus={completionStatus}
               amountOfWinners={reward?.amountOfWinners}
               handlePickedRewardToken={handlePickedRewardToken}
