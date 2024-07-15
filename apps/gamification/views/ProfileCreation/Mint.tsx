@@ -46,7 +46,11 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
         }
         return undefined
       }).filter((nft) => nft !== undefined) as MintNftData[]
-      setStarterNfts(nfts)
+
+      const randomIndex = Math.floor(Math.random() * nfts.length)
+
+      setSelectedBunnyId(nfts?.[randomIndex]?.bunnyId ?? '')
+      setStarterNfts([nfts?.[randomIndex]])
     }
     if (starterNfts.length === 0) {
       getStarterNfts()
@@ -95,7 +99,7 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
           <Text as="p" mb="24px" color="textSubtle">
             {t('Cost: %num% CAKE', { num: formatUnits(MINT_COST, 18) })}
           </Text>
-          {starterNfts.map((nft) => {
+          {starterNfts?.map?.((nft) => {
             const handleChange = (value: string) => setSelectedBunnyId(value)
 
             return (
