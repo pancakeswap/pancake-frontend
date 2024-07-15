@@ -459,7 +459,7 @@ export const bscTokens = {
   ),
   dexe: new ERC20Token(
     ChainId.BSC,
-    '0x6E88056E8376Ae7709496Ba64d37fa2f8015ce3e',
+    '0x039cB485212f996A9DBb85A9a75d898F94d38dA6',
     18,
     'DEXE',
     'DeXe Token',
