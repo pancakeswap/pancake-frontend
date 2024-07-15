@@ -4,7 +4,7 @@ import { CONFIG_TESTNET } from './constants/config/testnet'
 import { fetchAllGauges } from './fetchAllGauges'
 import { fetchAllKilledGauges } from './fetchAllKilledGauges'
 import { fetchAllGaugesVoting } from './fetchGaugeVoting'
-import { Gauge, GaugeConfig, GaugeInfoConfig } from './types'
+import { Gauge, GaugeConfig, GaugeInfo, GaugeInfoConfig } from './types'
 
 export type getAllGaugesOptions = {
   testnet?: boolean
