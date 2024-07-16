@@ -1,5 +1,5 @@
 import isEmpty from "lodash/isEmpty";
-import { MultiSelect, MultiSelectChangeEvent, IMultiSelectProps } from "@pancakeswap/uikit";
+import { MultiSelect, IMultiSelectChangeEvent, IMultiSelectProps } from "@pancakeswap/uikit";
 import { useCallback, useState } from "react";
 import styled from "styled-components";
 
@@ -46,7 +46,7 @@ export const NetworkFilter: React.FC<INetworkProps> = ({ data, value, onChange }
   const [isShow, setIsShow] = useState(false);
 
   const handleSelectChange = useCallback(
-    (e: MultiSelectChangeEvent) => {
+    (e: IMultiSelectChangeEvent<number>) => {
       if (isEmpty(e.value)) {
         e.preventDefault();
         return;

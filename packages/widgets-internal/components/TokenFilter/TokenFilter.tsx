@@ -1,6 +1,6 @@
 import { useTheme } from "@pancakeswap/hooks";
 import { ERC20Token } from "@pancakeswap/sdk";
-import { Column, IMultiSelectProps, ISelectItem, MultiSelect, MultiSelectChangeEvent } from "@pancakeswap/uikit";
+import { Column, IMultiSelectProps, ISelectItem, MultiSelect, IMultiSelectChangeEvent } from "@pancakeswap/uikit";
 import { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { getChainName } from "@pancakeswap/chains";
@@ -9,7 +9,7 @@ import { CurrencyLogo } from "../CurrencyLogo";
 export interface ITokenProps {
   data?: ERC20Token[];
   value?: IMultiSelectProps<string>["value"];
-  onChange?: (e: MultiSelectChangeEvent) => void;
+  onChange?: (e: IMultiSelectChangeEvent) => void;
 }
 
 const Container = styled.div`
@@ -60,6 +60,8 @@ const ItemName = styled.span`
   font-weight: 400;
 `;
 
+export const toTokenValue = (t: ERC20Token) => `${t.chainId}:${t.address}`;
+
 export const TokenFilter: React.FC<ITokenProps> = ({ data = [], value, onChange }) => {
   const { theme } = useTheme();
 
@@ -68,7 +70,7 @@ export const TokenFilter: React.FC<ITokenProps> = ({ data = [], value, onChange 
       data.map((t) => ({
         ...t,
         icon: <CurrencyLogo currency={t} />,
-        value: t.symbol + t.chainId,
+        value: toTokenValue(t),
         label: t.symbol,
       })),
     [data]

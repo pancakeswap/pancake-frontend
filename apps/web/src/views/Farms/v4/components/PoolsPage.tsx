@@ -13,10 +13,10 @@ import {
   TableView,
   Image,
 } from '@pancakeswap/uikit'
-import { TokenOverview } from '@pancakeswap/widgets-internal'
-import { TokenPairImage } from 'components/TokenImage'
-import keyBy from 'lodash/keyBy'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import keyBy from 'lodash/keyBy'
+import { TokenPairImage } from 'components/TokenImage'
+import { TokenOverview, toTokenValue } from '@pancakeswap/widgets-internal'
 import { explorerApiClient } from 'state/info/api/client'
 import styled from 'styled-components'
 // import { PoolType } from '@pancakeswap/smart-router'
@@ -29,6 +29,7 @@ import {
   PoolsFilterPanel,
   useAllChainsName,
   usePoolTypes,
+  useSelectedPoolTypes,
 } from './PoolsFilterPanel'
 
 interface IDataType {
@@ -123,7 +124,7 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
         dataIndex: 'feeTier',
         key: 'feeTier',
         // todo:@eric 补充denominator
-        render: (fee) => <FeeTier type="v2" fee={fee ?? 0} />,
+        render: (fee, item) => <FeeTier type={item.protocol} fee={fee ?? 0} />,
       },
       {
         title: t('APR'),
@@ -247,9 +248,10 @@ export const PoolsPage = () => {
     selectedNetwork: MAINNET_CHAINS.map((chain) => chain.id),
     selectedTokens: [],
   })
-  const data = useFetchFarmingListFromAPI()
+  const farmingList = useFetchFarmingListFromAPI()
   const { observerRef, isIntersecting } = useIntersectionObserver({ rootMargin: '10px' })
   const [numberVisible, setNumberVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
+  const selectedPoolTypes = useSelectedPoolTypes(filters.selectedTypeIndex)
 
   const handleFilterChange: IPoolsFilterPanelProps['onChange'] = useCallback((newFilters) => {
     setFilters((prevFilters) => ({
@@ -261,13 +263,26 @@ export const PoolsPage = () => {
   useEffect(() => {
     if (isIntersecting) {
       setNumberVisible((numberCurrentlyVisible) => {
-        if (numberCurrentlyVisible <= data.length) {
+        if (numberCurrentlyVisible <= farmingList.length) {
           return numberCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE
         }
         return numberCurrentlyVisible
       })
     }
-  }, [isIntersecting, data])
+  }, [isIntersecting, farmingList])
+
+  const filteredData = useMemo(() => {
+    const { selectedNetwork, selectedTokens } = filters
+    return farmingList.filter(
+      (farm) =>
+        selectedNetwork.includes(farm.chainId) &&
+        (!selectedTokens?.length ||
+          selectedTokens?.find(
+            (token) => token === toTokenValue(farm.token0) || token === toTokenValue(farm.token1),
+          )) &&
+        selectedPoolTypes.includes(farm.protocol),
+    )
+  }, [farmingList, filters, selectedPoolTypes])
 
   return (
     <Card>
@@ -276,9 +291,9 @@ export const PoolsPage = () => {
       </CardHeader>
       <CardBody>
         <PoolsContent>
-          <TableView rowKey="lpAddress" columns={columns} data={data.slice(0, numberVisible) as any} />
+          <TableView rowKey="lpAddress" columns={columns} data={filteredData.slice(0, numberVisible) as any} />
         </PoolsContent>
-        {data.length > 0 && <div ref={observerRef} />}
+        {farmingList.length > 0 && <div ref={observerRef} />}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </CardBody>
     </Card>
