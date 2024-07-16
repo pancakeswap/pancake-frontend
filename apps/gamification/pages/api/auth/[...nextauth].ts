@@ -39,7 +39,6 @@ export default NextAuth({
               token: account.oauth_token,
               tokenSecret: account.oauth_token_secret,
             }
-
             break
         }
       }

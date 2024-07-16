@@ -1,4 +1,3 @@
-import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { Address } from 'viem'
 import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 
@@ -15,7 +14,7 @@ export const disconnectSocial = async ({ account, userInfo, type, callback }: Di
     [type]: '',
   }
 
-  const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/updateUserInfo`, {
+  const response = await fetch(`/api/userInfo/updateUserInfo`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
