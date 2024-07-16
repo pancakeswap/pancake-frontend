@@ -1,5 +1,5 @@
 import { safeGetAddress } from 'utils'
-import { PoolData } from '../types'
+import { PoolData, RawPoolData } from '../types'
 
 export function shortenAddress(address: string, chars = 4): string {
   const parsed = safeGetAddress(address)
@@ -14,9 +14,9 @@ export function feeTierPercent(fee: number): string {
 
 export const currentTimestamp = () => new Date().getTime()
 
-export function transformPoolData(item: any): PoolData {
+export function transformPoolData(item: RawPoolData): PoolData {
   return {
-    ...item,
+    feeTier: item.feeTier,
     address: item.id,
     volumeUSD: parseFloat(item.volumeUSD24h),
     volumeUSDWeek: parseFloat(item.volumeUSD7d),
