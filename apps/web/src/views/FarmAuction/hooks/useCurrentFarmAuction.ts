@@ -8,17 +8,14 @@ import { useEffect, useState } from 'react'
 import { Address } from 'viem'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { getFarmAuctionContract } from 'utils/contractHelpers'
-import { verifyBscNetwork } from 'utils/verifyBscNetwork'
-import { ChainId } from '@pancakeswap/chains'
 import { useFarmAuction } from './useFarmAuction'
 
 export const useCurrentFarmAuction = (account?: Address) => {
   const { chainId } = useActiveChainId()
-  const auctionChainId = verifyBscNetwork(chainId) ? chainId : ChainId.BSC
-  const farmAuctionContract = getFarmAuctionContract(undefined, auctionChainId)
+  const farmAuctionContract = getFarmAuctionContract(undefined, chainId)
 
   const { data: currentAuctionId = undefined } = useQuery({
-    queryKey: ['farmAuction', 'currentAuctionId', auctionChainId],
+    queryKey: ['farmAuction', 'currentAuctionId', chainId],
 
     queryFn: async () => {
       const auctionId = await farmAuctionContract.read.currentAuctionId()
