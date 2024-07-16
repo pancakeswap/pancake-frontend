@@ -16,7 +16,7 @@ import { ASSETS_CDN } from 'config'
 
 const bgDesktop = `${ASSETS_CDN}/web/banners/aptos-yield-farming/bunny-desktop.png`
 const bgMobile = `${ASSETS_CDN}/web/banners/aptos-yield-farming/bunny-mobile.png`
-const fourLogo = `${ASSETS_CDN}/web/banners/aptos-yield-farming/floating-coin.png`
+const floatingCoin = `${ASSETS_CDN}/web/banners/aptos-yield-farming/floating-coin.png`
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,
@@ -68,7 +68,7 @@ export const AptosYieldFarmingBanner = () => {
       />
       <BannerGraphics>
         <BackgroundGraphic src={bgDesktop} width={468} height={224} md={bgSmVariant} xs={bgXsVariant} />
-        <FloatingGraphic src={fourLogo} width={99} height={99} />
+        <FloatingGraphic src={floatingCoin} width={99} height={99} />
       </BannerGraphics>
     </BannerContainer>
   )
