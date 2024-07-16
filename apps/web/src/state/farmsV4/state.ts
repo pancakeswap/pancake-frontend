@@ -141,3 +141,5 @@ const farmPoolsAtom = atom(async (_, { signal }): Promise<PoolInfo[]> => {
 })
 
 export const asyncFarmPoolsAtom = loadable(farmPoolsAtom)
+
+export const extendPoolsAtom = atom<PoolInfo[]>([])
