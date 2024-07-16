@@ -1,13 +1,9 @@
-import { ChainId, chainNames, chainNameToChainId } from '@pancakeswap/chains'
-import { SerializedFarmConfig } from '@pancakeswap/farms'
-import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { ChainId } from '@pancakeswap/chains'
+import { UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { NextApiHandler } from 'next'
-import { stringify } from 'viem'
-import { enum as enum_, nativeEnum as zNativeEnum } from 'zod'
+import { nativeEnum, enum as zEnum } from 'zod'
 
-const allChainNames = Object.values(chainNames)
-const zChain = zNativeEnum(ChainId).or(enum_(allChainNames as [string, ...string[]]))
+const zChain = nativeEnum(ChainId).or(zEnum(Object.values(ChainId) as [string, ...string[]]))
 
 const handler: NextApiHandler = async (req, res) => {
   const isChainInt = !Number.isNaN(parseInt(req.query.chain as string, 10))
@@ -18,34 +14,20 @@ const handler: NextApiHandler = async (req, res) => {
     return res.status(400).json({ error: parsedChain.error })
   }
 
-  const chainId = isChainInt ? Number(parsedChain.data) : Number(chainNameToChainId[parsedChain.data])
+  const chainId = isChainInt ? Number(parsedChain.data) : Number(req.query.chain)
 
   if (!chainId) {
     return res.status(400).json({ error: 'Invalid chain' })
   }
 
   try {
-    let farms: Array<
-      SerializedFarmConfig & {
-        chainId: ChainId
-        version: 2 | 3
-      }
-    > = []
-
-    const v2FarmConfig = (await getFarmConfig(chainId)) ?? []
-    farms = farms.concat(v2FarmConfig.map((farm) => ({ ...farm, chainId, version: 2 })))
-    const v3FarmConfig = farmsV3ConfigChainMap[chainId as keyof typeof farmsV3ConfigChainMap] ?? []
-    farms = farms.concat(v3FarmConfig.map((farm) => ({ ...farm, chainId, version: 3 })))
-
-    // cache for long time, it should revalidate on every deployment
-    res.setHeader('Cache-Control', `max-age=10800, s-maxage=31536000`)
-
     return res.status(200).json({
-      data: JSON.parse(stringify(farms)),
+      data: JSON.parse(JSON.stringify(UNIVERSAL_FARMS.filter((farm) => farm.chainId === chainId))),
       lastUpdatedAt: new Date().toISOString(),
     })
   } catch (error) {
-    return res.status(500).json({ error: JSON.parse(stringify(error)) })
+    return res.status(500).json({ error: JSON.parse(JSON.stringify(error)) })
   }
 }
+
 export default handler

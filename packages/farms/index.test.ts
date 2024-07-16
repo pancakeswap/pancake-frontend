@@ -4,6 +4,8 @@ import * as namedExports from './index'
 test('exports', () => {
   expect(Object.keys(namedExports)).toMatchInlineSnapshot(`
     [
+      "UNIVERSAL_FARMS",
+      "UNIVERSAL_BCAKEWRAPPER_FARMS",
       "getFarmApr",
       "getPositionFarmApr",
       "getPositionFarmAprFactor",

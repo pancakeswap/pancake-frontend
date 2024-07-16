@@ -4,7 +4,7 @@ import groupBy from 'lodash/groupBy'
 import { Address, createPublicClient, http, isAddressEqual, parseAbiItem } from 'viem'
 import { arbitrum, bsc } from 'viem/chains'
 import { describe, expect, test } from 'vitest'
-import { BCakeWrapperFarmConfig, FarmConfigV3, UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS } from './config'
+import { BCakeWrapperFarmConfig, UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS, UniversalFarmConfigV3 } from './config'
 
 const bscClient = createPublicClient({
   chain: bsc,
@@ -100,7 +100,7 @@ describe.concurrent('Universal Farms config', () => {
         const lpAddress =
           protocol === 'v2'
             ? Pair.getAddress(farm.token0, farm.token1)
-            : Pool.getAddress(farm.token0, farm.token1, (farm as FarmConfigV3).feeAmount)
+            : Pool.getAddress(farm.token0, farm.token1, (farm as UniversalFarmConfigV3).feeAmount)
         expect(
           lpAddress,
           `Wrong lpAddress for farm ${farm.chainId}:${farm.pid}:${farm.protocol}:${farm.lpAddress}, expected ${lpAddress}`,
