@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
   BannerContainer,
@@ -68,7 +68,9 @@ export const AptosYieldFarmingBanner = () => {
       />
       <BannerGraphics>
         <BackgroundGraphic src={bgDesktop} width={468} height={224} md={bgSmVariant} xs={bgXsVariant} />
-        <FloatingGraphic src={floatingCoin} width={99} height={99} />
+        <Box position="absolute" width="100%">
+          <FloatingGraphic src={floatingCoin} width={99} height={99} />
+        </Box>
       </BannerGraphics>
     </BannerContainer>
   )
