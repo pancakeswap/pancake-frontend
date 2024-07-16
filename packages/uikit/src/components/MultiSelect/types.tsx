@@ -13,6 +13,7 @@ export interface ISelectItem<T extends string | number> extends SelectItem {
 export type IOptionType<T extends string | number> = ISelectItem<T>[];
 
 export interface IMultiSelectProps<T extends string | number> extends MultiSelectProps {
+  value?: T[];
   style?: React.CSSProperties;
   panelStyle?: React.CSSProperties;
   scrollHeight?: string;

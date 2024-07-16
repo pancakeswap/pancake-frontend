@@ -160,5 +160,6 @@ export * from './v2/deserializeFarmUserData'
 export type { FarmWithPrices } from './v2/farmPrices'
 export * from './v2/farmsPriceHelpers'
 export * from './v2/filterFarmsByQuery'
+export * from './config'
 
 export { fetchCommonTokenUSDValue, fetchTokenUSDValues, masterChefV3Addresses }
