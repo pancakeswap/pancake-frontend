@@ -26,8 +26,8 @@ const bgSmVariant: GraphicDetail = {
 
 const bgXsVariant: GraphicDetail = {
   src: bgMobile,
-  width: 221,
-  height: 182,
+  width: 180,
+  height: 145,
 }
 
 const Desc = () => {
