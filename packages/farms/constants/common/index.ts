@@ -27,7 +27,15 @@ export const priceHelperTokens = {
     list: [ethereumTokens.weth, ethereumTokens.usdc, ethereumTokens.usdt],
   },
   [ChainId.BSC]: {
-    list: [bscTokens.wbnb, bscTokens.usdt, bscTokens.busd, bscTokens.eth, bscTokens.solvbtc, bscTokens.solvBTCena],
+    list: [
+      bscTokens.wbnb,
+      bscTokens.usdt,
+      bscTokens.busd,
+      bscTokens.eth,
+      bscTokens.solvbtc,
+      bscTokens.solvBTCena,
+      bscTokens.boxy,
+    ],
   },
   [ChainId.POLYGON_ZKEVM]: {
     list: [polygonZkEvmTokens.weth, polygonZkEvmTokens.usdc, polygonZkEvmTokens.usdt, polygonZkEvmTokens.matic],
