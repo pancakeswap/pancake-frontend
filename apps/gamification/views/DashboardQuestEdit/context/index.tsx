@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/chains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { createContext, useCallback, useMemo, useState } from 'react'
 import { QuestRewardType, StateType, TaskConfigType } from 'views/DashboardQuestEdit/context/types'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
@@ -16,12 +16,13 @@ interface EditQuestContextType {
 export const QuestEditContext = createContext<EditQuestContextType | undefined>(undefined)
 
 export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const { chainId } = useActiveChainId()
   const [isChanged, setIsChanged] = useState<boolean>(false)
   const [tasks, setTasks] = useState<TaskConfigType[]>([])
   const [state, setState] = useState<StateType>(() => ({
     id: '',
     orgId: '',
-    chainId: ChainId.BSC,
+    chainId,
     completionStatus: CompletionStatus.DRAFTED,
     title: '',
     description: '',
