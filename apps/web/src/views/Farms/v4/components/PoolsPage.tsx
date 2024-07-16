@@ -11,6 +11,7 @@ import {
   CardHeader as RawCardHeader,
   SubMenu,
   TableView,
+  Image,
 } from '@pancakeswap/uikit'
 import { TokenOverview } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
@@ -20,6 +21,7 @@ import { explorerApiClient } from 'state/info/api/client'
 import styled from 'styled-components'
 // import { PoolType } from '@pancakeswap/smart-router'
 import { Address } from 'viem/accounts'
+import { useIntersectionObserver } from '@pancakeswap/hooks'
 
 import {
   IPoolsFilterPanelProps,
@@ -60,6 +62,12 @@ const StyledButton = styled(Button)`
   padding: 8px 16px;
   line-height: 24px;
   height: auto;
+`
+
+const StyledImage = styled(Image)`
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 58px;
 `
 
 const PoolListItemAction = (_, _poolInfo: IDataType) => {
@@ -230,6 +238,8 @@ const useFetchFarmingListFromAPI = () => {
   return farmingList
 }
 
+const NUMBER_OF_FARMS_VISIBLE = 20
+
 export const PoolsPage = () => {
   const columns = useColumnConfig()
   const [filters, setFilters] = useState<IPoolsFilterPanelProps['value']>({
@@ -237,6 +247,9 @@ export const PoolsPage = () => {
     selectedNetwork: MAINNET_CHAINS.map((chain) => chain.id),
     selectedTokens: [],
   })
+  const data = useFetchFarmingListFromAPI()
+  const { observerRef, isIntersecting } = useIntersectionObserver({ rootMargin: '10px' })
+  const [numberVisible, setNumberVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
 
   const handleFilterChange: IPoolsFilterPanelProps['onChange'] = useCallback((newFilters) => {
     setFilters((prevFilters) => ({
@@ -245,7 +258,16 @@ export const PoolsPage = () => {
     }))
   }, [])
 
-  const data = useFetchFarmingListFromAPI()
+  useEffect(() => {
+    if (isIntersecting) {
+      setNumberVisible((numberCurrentlyVisible) => {
+        if (numberCurrentlyVisible <= data.length) {
+          return numberCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE
+        }
+        return numberCurrentlyVisible
+      })
+    }
+  }, [isIntersecting, data])
 
   return (
     <Card>
@@ -254,8 +276,10 @@ export const PoolsPage = () => {
       </CardHeader>
       <CardBody>
         <PoolsContent>
-          <TableView rowKey="lpAddress" columns={columns} data={data as any} />
+          <TableView rowKey="lpAddress" columns={columns} data={data.slice(0, numberVisible) as any} />
         </PoolsContent>
+        {data.length > 0 && <div ref={observerRef} />}
+        <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </CardBody>
     </Card>
   )
