@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { useMemo } from 'react'
-import { useRouter } from 'next/router'
+import keyBy from 'lodash/keyBy'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Button,
   Card,
@@ -16,15 +16,28 @@ import { TokenPairImage } from 'components/TokenImage'
 import { useTranslation } from '@pancakeswap/localization'
 import { ERC20Token } from '@pancakeswap/sdk'
 import { TokenOverview } from '@pancakeswap/widgets-internal'
-import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
-import { PoolsFilterPanel } from './PoolsFilterPanel'
+import { UniversalFarmConfig, UNIVERSAL_FARMS, Protocol } from '@pancakeswap/farms'
+import { explorerApiClient } from 'state/info/api/client'
+// import { PoolType } from '@pancakeswap/smart-router'
+import { Address } from 'viem/accounts'
+
+import {
+  IPoolsFilterPanelProps,
+  MAINNET_CHAINS,
+  PoolsFilterPanel,
+  useAllChainsName,
+  usePoolTypes,
+} from './PoolsFilterPanel'
 
 interface IDataType {
-  name: string
-  feeAmount: number
-  cakeApr: number
-  activeTvlUSD: number
-  vol: number
+  chainId: number
+  lpAddress: Address
+  protocol: Protocol
+  feeTier: bigint
+  apr24h: string
+  tvlUsd: string
+  vol24hUsd: string
+  // todo:@eric to Currency type
   token0: ERC20Token
   token1: ERC20Token
 }
@@ -78,7 +91,7 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
     () => [
       {
         title: t('All Pools'),
-        dataIndex: 'name',
+        dataIndex: null,
         key: 'name',
         render: (_, item) => (
           <TokenOverview
@@ -99,24 +112,26 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
       },
       {
         title: t('Fee Tier'),
-        dataIndex: 'feeAmount',
+        dataIndex: 'feeTier',
         key: 'feeTier',
-        render: (fee) => <FeeTier type="v2" fee={fee} />,
+        // todo:@eric 补充denominator
+        render: (fee) => <FeeTier type="v2" fee={fee ?? 0} />,
       },
       {
         title: t('APR'),
-        dataIndex: 'cakeApr',
+        dataIndex: 'apr24h',
         key: 'apr',
+        render: (value) => (value ? <>{(Number(value) * 100).toFixed(2)}%</> : '-'),
       },
       {
         title: t('TVL'),
-        dataIndex: 'activeTvlUSD',
+        dataIndex: 'tvlUsd',
         key: 'tvl',
         render: (value) => (value ? <>${(Number(value) / 1000).toFixed(3)}k</> : '-'),
       },
       {
         title: t('Volume 24H'),
-        dataIndex: 'activeTvlUSD',
+        dataIndex: 'vol24hUsd',
         key: 'vol',
         render: (value) => (value ? <>${(Number(value) / 1000).toFixed(3)}k</> : '-'),
       },
@@ -131,21 +146,113 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
   )
 }
 
+/* const fetchMissingFarms = ({
+  missingList,
+  protocols,
+  allChainsName
+}: {
+  missingList: UniversalFarmConfig[];
+  protocols: keyof typeof PoolType | (keyof typeof PoolType)[];
+  allChainsName: string[];
+}) => {
+  return explorerApiClient.GET('/cached/pools/list', {
+    params: {
+      query: {
+        protocols,
+        chains: allChainsName,
+        orderBy: 'volumeUSD24h',
+        pools: missingList.map(pool => `${pool.chainId}:${pool.lpAddress}`),
+      },
+    },
+  })
+} */
+
+const useFetchFarmingListFromAPI = () => {
+  const [farmingList, setFarmingList] = useState<UniversalFarmConfig[]>(UNIVERSAL_FARMS)
+  const protocols = usePoolTypes()
+    .slice(1)
+    .map((type) => type.value)
+  const allChainsName = useAllChainsName()
+
+  const mergeFarmList = useCallback((res) => {
+    if (!res.data) {
+      return farmingList
+    }
+    const farmListMap = keyBy(res.data, 'id')
+    const missingFarms: UniversalFarmConfig[] = []
+    return farmingList.map((farm) => {
+      const farmFromApi = farmListMap[farm.lpAddress.toLowerCase()]
+      if (!farmFromApi) {
+        missingFarms.push(farm)
+        return farm
+      }
+      return {
+        ...farm,
+        ...farmFromApi,
+        token0: farm.token0,
+        token1: farm.token1,
+        tvl: farmFromApi.tvlUSD,
+        vol24h: farmFromApi.volumeUSD24h,
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    explorerApiClient
+      // todo:@eric update the api schema
+      // @ts-ignore
+      .GET('/cached/pools/farming', {
+        params: {
+          query: {
+            protocols: protocols.join(','),
+            chains: allChainsName.join(','),
+          },
+        },
+      })
+      .then(mergeFarmList)
+      .then((data) => {
+        setFarmingList(data)
+        /* fetchMissingFarms({
+          missingList: missingFarms,
+          protocols,
+          allChainsName,
+        }).then(mergeFarmList) */
+      })
+    /*
+      - The farming list contains full data of farms.
+      - We just need to pull it once.
+      - Therefore, no dependencies are needed.
+      * */
+  }, [])
+
+  return farmingList
+}
+
 export const PoolsPage = () => {
   const columns = useColumnConfig()
-  const { query: urlQuery } = useRouter()
-  const mockApr = Boolean(urlQuery.mockApr)
-  // todo:@eric mock data
-  const { farmsWithPositions: farmsV3 } = useFarmsV3WithPositionsAndBooster({ mockApr })
+  const [filters, setFilters] = useState<IPoolsFilterPanelProps['value']>({
+    selectedTypeIndex: 0,
+    selectedNetwork: MAINNET_CHAINS.map((chain) => chain.id),
+    selectedTokens: [],
+  })
+
+  const handleFilterChange: IPoolsFilterPanelProps['onChange'] = useCallback((newFilters) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      ...newFilters,
+    }))
+  }, [])
+
+  const data = useFetchFarmingListFromAPI()
 
   return (
     <Card>
       <CardHeader>
-        <PoolsFilterPanel />
+        <PoolsFilterPanel onChange={handleFilterChange} value={filters} />
       </CardHeader>
       <CardBody>
         <PoolsContent>
-          <TableView columns={columns} data={farmsV3 as any} />
+          <TableView rowKey="lpAddress" columns={columns} data={data as any} />
         </PoolsContent>
       </CardBody>
     </Card>

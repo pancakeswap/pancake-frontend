@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import styled from "styled-components";
 
 export interface BasicDataType {
@@ -12,6 +13,7 @@ export interface IColumnsType<T extends BasicDataType> {
 }
 
 export interface ITableViewProps<T extends BasicDataType> {
+  rowKey?: string;
   columns: IColumnsType<T>[];
   data: T[];
 }
@@ -47,7 +49,12 @@ const Row = styled.tr`
 
 const Cell = styled.td``;
 
-export const TableView = <T extends BasicDataType>({ columns, data }: ITableViewProps<T>) => {
+export const TableView = <T extends BasicDataType>({ columns, data, rowKey }: ITableViewProps<T>) => {
+  const getRowKey = useCallback(
+    (rowData: T) => (rowKey ? rowData[rowKey] : rowData.key ?? Object.values(rowData).slice(0, 2).join("-")),
+    [rowKey]
+  );
+
   return (
     <Table>
       <TableHeader>
@@ -65,7 +72,7 @@ export const TableView = <T extends BasicDataType>({ columns, data }: ITableView
       </TableHeader>
       <TableBody>
         {data.map((item) => (
-          <Row key={item.key ?? Object.values(item).slice(0, 2).join("-")}>
+          <Row key={getRowKey(item)}>
             {columns.map((col, idx) => (
               <Cell key={col.key}>
                 {col.render
