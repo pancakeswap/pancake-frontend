@@ -3,21 +3,29 @@ import { useQuery } from '@tanstack/react-query'
 import { FAST_INTERVAL } from 'config/constants'
 import { getBidderInfo } from 'config/constants/farmAuctions'
 import { Bidder, ConnectedBidder } from 'config/constants/types'
-import { useFarmAuctionContract } from 'hooks/useContract'
 import isEqual from 'lodash/isEqual'
 import { useEffect, useState } from 'react'
 import { Address } from 'viem'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { getFarmAuctionContract } from 'utils/contractHelpers'
 import { useFarmAuction } from './useFarmAuction'
 
 export const useCurrentFarmAuction = (account?: Address) => {
-  const farmAuctionContract = useFarmAuctionContract()
+  const { chainId } = useActiveChainId()
+  const farmAuctionContract = getFarmAuctionContract(undefined, chainId)
 
   const { data: currentAuctionId = undefined } = useQuery({
-    queryKey: ['farmAuction', 'currentAuctionId'],
+    queryKey: ['farmAuction', 'currentAuctionId', chainId],
 
     queryFn: async () => {
-      const auctionId = await farmAuctionContract.read.currentAuctionId()
-      return Number(auctionId)
+      try {
+        const auctionId = await farmAuctionContract.read.currentAuctionId()
+        console.info(auctionId)
+        return Number(auctionId)
+      } catch (error) {
+        console.info(error)
+        return undefined
+      }
     },
 
     refetchInterval: FAST_INTERVAL,

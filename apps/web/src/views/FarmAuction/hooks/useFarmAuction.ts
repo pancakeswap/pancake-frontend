@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
 import { AUCTION_BIDDERS_TO_FETCH } from 'config'
 import { FAST_INTERVAL } from 'config/constants'
-import { useFarmAuctionContract } from 'hooks/useContract'
+import { getFarmAuctionContract } from 'utils/contractHelpers'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { processAuctionData, sortAuctionBidders } from '../helpers'
 
 export const useFarmAuction = (auctionId: number | undefined, watch?: boolean) => {
-  const farmAuctionContract = useFarmAuctionContract()
+  const { chainId } = useActiveChainId()
+  const farmAuctionContract = getFarmAuctionContract(undefined, chainId)
 
   const {
     data = {
@@ -14,7 +16,7 @@ export const useFarmAuction = (auctionId: number | undefined, watch?: boolean) =
     },
     refetch,
   } = useQuery({
-    queryKey: ['farmAuction', auctionId],
+    queryKey: ['farmAuction', auctionId, chainId],
 
     queryFn: async () => {
       if (!auctionId) return { auction: null, bidders: null }
@@ -36,7 +38,7 @@ export const useFarmAuction = (auctionId: number | undefined, watch?: boolean) =
       return { auction: processedAuction, bidders: sortAuctionBidders(currentAuctionBidders, processedAuction) }
     },
 
-    enabled: Boolean(auctionId && Number.isFinite(auctionId) && auctionId > 0),
+    enabled: Boolean(auctionId && Number.isFinite(auctionId) && auctionId > 0 && chainId),
     refetchInterval: watch ? FAST_INTERVAL : false,
   })
 
