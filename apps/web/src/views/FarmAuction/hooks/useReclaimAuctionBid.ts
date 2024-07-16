@@ -1,9 +1,10 @@
 import BigNumber from 'bignumber.js'
 import { RECLAIM_AUCTIONS_TO_FETCH } from 'config'
 import { BidderAuction } from 'config/constants/types'
-import { useFarmAuctionContract } from 'hooks/useContract'
 import { useEffect, useReducer } from 'react'
 import { useAccount } from 'wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { getFarmAuctionContract } from 'utils/contractHelpers'
 import { processBidderAuctions, sortAuctionBidders } from '../helpers'
 
 interface ReclaimableAuction {
@@ -83,7 +84,8 @@ const useReclaimAuctionBid = (): [ReclaimableAuction | null, () => void] => {
 
   const [state, dispatch] = useReducer(reclaimReducer, initialState)
 
-  const farmAuctionContract = useFarmAuctionContract()
+  const { chainId } = useActiveChainId()
+  const farmAuctionContract = getFarmAuctionContract(undefined, chainId)
 
   const checkNextAuction = () => {
     dispatch({ type: 'checkNextAuction' })

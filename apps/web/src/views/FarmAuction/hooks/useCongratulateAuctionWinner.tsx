@@ -1,7 +1,8 @@
 import { Auction, AuctionStatus, Bidder } from 'config/constants/types'
-import { useFarmAuctionContract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { getFarmAuctionContract } from 'utils/contractHelpers'
 import { processAuctionData, sortAuctionBidders } from '../helpers'
 
 interface WonAuction {
@@ -14,7 +15,8 @@ const useCongratulateAuctionWinner = (currentAuction: Auction, bidders: Bidder[]
 
   const { address: account } = useAccount()
 
-  const farmAuctionContract = useFarmAuctionContract()
+  const { chainId } = useActiveChainId()
+  const farmAuctionContract = getFarmAuctionContract(undefined, chainId)
 
   useEffect(() => {
     const checkIfWonPreviousAuction = async (previousAuctionId: number) => {

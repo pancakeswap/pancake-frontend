@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Text, Flex, Skeleton, Image, Balance } from '@pancakeswap/uikit'
-import { useFarmAuctionContract } from 'hooks/useContract'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { styled } from 'styled-components'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { getFarmAuctionContract } from 'utils/contractHelpers'
 
 const BurnedText = styled(Text)`
   font-size: 52px;
@@ -19,7 +20,8 @@ const BurnedText = styled(Text)`
 const AuctionCakeBurn: React.FC<React.PropsWithChildren> = () => {
   const [burnedCakeAmount, setBurnedCakeAmount] = useState(0)
   const { t } = useTranslation()
-  const farmAuctionContract = useFarmAuctionContract()
+  const { chainId } = useActiveChainId()
+  const farmAuctionContract = getFarmAuctionContract(undefined, chainId)
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const cakePriceBusd = useCakePrice()
 

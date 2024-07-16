@@ -18,14 +18,8 @@ export const useCurrentFarmAuction = (account?: Address) => {
     queryKey: ['farmAuction', 'currentAuctionId', chainId],
 
     queryFn: async () => {
-      try {
-        const auctionId = await farmAuctionContract.read.currentAuctionId()
-        console.info(auctionId)
-        return Number(auctionId)
-      } catch (error) {
-        console.info(error)
-        return undefined
-      }
+      const auctionId = await farmAuctionContract.read.currentAuctionId()
+      return Number(auctionId)
     },
 
     refetchInterval: FAST_INTERVAL,
