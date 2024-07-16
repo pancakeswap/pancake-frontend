@@ -95,7 +95,7 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, cust
                 )}
                 {quest?.completionStatus === CompletionStatus.SCHEDULED && (
                   <Tag outline variant="secondary">
-                    {t('Scheduled')}
+                    {t('Schedule')}
                   </Tag>
                 )}
                 {quest?.completionStatus === CompletionStatus.ONGOING && (
