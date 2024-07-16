@@ -48,6 +48,7 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
       },
       async (user: TelegramResponse) => {
         if (user && account) {
+          console.log('user data', user)
           try {
             await connectSocial({
               account,
