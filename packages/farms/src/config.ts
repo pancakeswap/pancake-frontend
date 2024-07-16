@@ -26,11 +26,11 @@ type FarmBaseConfig = {
   token1: Token
 }
 
-export type FarmConfigV2AndStableSwap = {
+export type UniversalFarmConfigV2AndStableSwap = {
   protocol: 'v2' | 'stableswap'
 } & FarmBaseConfig
 
-export type FarmConfigV3 = {
+export type UniversalFarmConfigV3 = {
   protocol: 'v3'
   feeAmount: FeeAmount
 } & FarmBaseConfig
@@ -38,7 +38,7 @@ export type FarmConfigV3 = {
 /**
  * minimal pool info for a farm
  */
-type FarmConfig = FarmConfigV2AndStableSwap | FarmConfigV3
+export type UniversalFarmConfig = UniversalFarmConfigV2AndStableSwap | UniversalFarmConfigV3
 
 // only v2/ss farms have bCakeWrapperAddress
 export type BCakeWrapperFarmConfig = {
@@ -46,7 +46,7 @@ export type BCakeWrapperFarmConfig = {
   lpAddress: Address
   bCakeWrapperAddress: Address
 }
-const bscFarmConfig: FarmConfig[] = [
+const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 137,
     chainId: ChainId.BSC,
@@ -1727,7 +1727,7 @@ const bscFarmConfig: FarmConfig[] = [
   },
 ]
 
-const ethereumFarmConfig: FarmConfig[] = [
+const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 1,
     chainId: ChainId.ETHEREUM,
@@ -2368,7 +2368,7 @@ const ethereumFarmConfig: FarmConfig[] = [
     lpAddress: Pool.getAddress(ethereumTokens.usdc, ethereumTokens.stg, FeeAmount.MEDIUM),
   },
 ]
-const polygonFarmConfig: FarmConfig[] = [
+const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 15,
     chainId: ChainId.POLYGON_ZKEVM,
@@ -2569,7 +2569,7 @@ const polygonFarmConfig: FarmConfig[] = [
     lpAddress: Pool.getAddress(polygonZkEvmTokens.weth, polygonZkEvmTokens.wbtc, FeeAmount.LOW),
   },
 ]
-const zksyncFarmConfig: FarmConfig[] = [
+const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 8,
     chainId: ChainId.ZKSYNC,
@@ -2879,7 +2879,7 @@ const zksyncFarmConfig: FarmConfig[] = [
     lpAddress: Pool.getAddress(zksyncTokens.busd, zksyncTokens.usdc, FeeAmount.LOWEST),
   },
 ]
-const arbitrumFarmConfig: FarmConfig[] = [
+const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 43,
     chainId: ChainId.ARBITRUM_ONE,
@@ -3563,7 +3563,7 @@ const arbitrumFarmConfig: FarmConfig[] = [
     lpAddress: '0x1A2329546f11e4fE55b853D98Bba2c4678E3105A',
   },
 ]
-const lineaFarmConfig: FarmConfig[] = [
+const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 9,
     chainId: ChainId.LINEA,
@@ -3695,7 +3695,7 @@ const lineaFarmConfig: FarmConfig[] = [
     lpAddress: Pool.getAddress(lineaTokens.usdc, lineaTokens.axlusdc, FeeAmount.LOWEST),
   },
 ]
-const baseFarmConfig: FarmConfig[] = [
+const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 10,
     chainId: ChainId.BASE,
@@ -3898,7 +3898,7 @@ const baseFarmConfig: FarmConfig[] = [
     lpAddress: Pool.getAddress(baseTokens.dai, baseTokens.usdbc, FeeAmount.LOWEST),
   },
 ]
-const opBNBFarmConfig: FarmConfig[] = [
+const opBNBFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 4,
     chainId: ChainId.OPBNB,
@@ -3937,7 +3937,7 @@ const opBNBFarmConfig: FarmConfig[] = [
   },
 ]
 
-export const UNIVERSAL_FARMS: FarmConfig[] = [
+export const UNIVERSAL_FARMS: UniversalFarmConfig[] = [
   // alway on top
 
   // @todo add some farms here
