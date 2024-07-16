@@ -67,8 +67,10 @@ export const AptosYieldFarmingBanner = () => {
         actions={startTradeAction}
       />
       <BannerGraphics>
-        <BackgroundGraphic src={bgDesktop} width={468} height={224} md={bgSmVariant} xs={bgXsVariant} />
-        <Box position="absolute" width="100%">
+        <Box position="absolute" width="100%" top="100%" left={isTablet && !isMobile ? '5%' : '0%'}>
+          <BackgroundGraphic src={bgDesktop} width={468} height={224} md={bgSmVariant} xs={bgXsVariant} />
+        </Box>
+        <Box position="absolute" width="100%" left={isMobile ? '10%' : '-10%'}>
           <FloatingGraphic src={floatingCoin} width={99} height={99} />
         </Box>
       </BannerGraphics>
