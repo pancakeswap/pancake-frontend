@@ -16,9 +16,6 @@ export const disconnectSocial = async ({ account, userInfo, type, callback }: Di
 
   const response = await fetch(`/api/userInfo/updateUserInfo`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify({
       userId: account,
       socialHubToSocialUserIdMap,
