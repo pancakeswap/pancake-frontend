@@ -4,6 +4,7 @@ import { supportedChainIdV4, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { Currency, Token } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { atom } from 'jotai'
+import { loadable } from 'jotai/utils'
 import type { Address } from 'viem'
 import { safeGetAddress } from '../../utils'
 import { explorerApiClient } from '../info/api/client'
@@ -34,8 +35,9 @@ const parseFarmPools = (
         pool.token1.symbol,
         pool.token1.name,
       ),
-      tvlUsd: pool.tvlUSD,
-      vol24hUsd: pool.volumeUSD24h,
+      lpApr: pool.apr24h as `${number}`,
+      tvlUsd: pool.tvlUSD as `${number}`,
+      vol24hUsd: pool.volumeUSD24h as `${number}`,
       feeTier: BigInt(pool.feeTier),
       // @todo @ChefJerry get by protocols
       feeTierBase: 1_000_000n,
@@ -81,8 +83,9 @@ export const fetchFarmPools = async (
     protocols: DEFAULT_PROTOCOLS,
     chainId: DEFAULT_CHAINS,
   },
+  signal?: AbortSignal,
 ) => {
-  const remotePools = await fetchExplorerFarmPools(args)
+  const remotePools = await fetchExplorerFarmPools(args, signal)
   const localPools = UNIVERSAL_FARMS.filter((farm) => {
     return (
       args.protocols?.includes(farm.protocol) &&
@@ -133,4 +136,8 @@ export type PoolInfo = {
   feeTierBase: bigint
 }
 
-export const farmPoolsAtom = atom<PoolInfo[]>([])
+const farmPoolsAtom = atom(async (_, { signal }): Promise<PoolInfo[]> => {
+  return fetchFarmPools({ protocols: DEFAULT_PROTOCOLS, chainId: DEFAULT_CHAINS }, signal)
+})
+
+export const asyncFarmPoolsAtom = loadable(farmPoolsAtom)
