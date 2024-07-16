@@ -84,8 +84,8 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
   const symbol = multiChainShortName[foundChain?.id ?? -1] ?? foundChain?.nativeCurrency?.symbol
   const router = useRouter()
   const switchNetwork = useCallback(
-    (chianId: number) => {
-      const chainPath = multiChainPaths[chianId]
+    (chainId: number) => {
+      const chainPath = multiChainPaths[chainId]
       if (activeIndex === 0) router.push(`/${v3InfoPath}${chainPath}`)
       if (activeIndex === 1) router.push(`/${v3InfoPath}${chainPath}/pairs`)
       if (activeIndex === 2) router.push(`/${v3InfoPath}${chainPath}/tokens`)
