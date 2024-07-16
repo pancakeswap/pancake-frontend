@@ -13,4 +13,7 @@ export type PoolInfo = {
   vol24hUsd?: `${number}`
   feeTier: bigint
   feeTierBase: bigint
+  // @todo @ChefJerry add whitelist field
 }
+
+export type ChainIdAddressKey = `${number}:${Address}`
