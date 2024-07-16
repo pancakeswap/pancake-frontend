@@ -39,7 +39,7 @@ describe.concurrent('Universal Farms config', () => {
 
   test('stable lpAddress should be correct', async () => {
     const ssFarms = groupBy(
-      UNIVERSAL_FARMS.filter((farm) => farm.protocol === 'stableswap'),
+      UNIVERSAL_FARMS.filter((farm) => farm.protocol === 'stable'),
       'chainId',
     )
 
@@ -92,7 +92,7 @@ describe.concurrent('Universal Farms config', () => {
 
   test('v2/v3 lpAddress should be correct', async () => {
     const othersFarms = groupBy(
-      UNIVERSAL_FARMS.filter((farm) => farm.protocol !== 'stableswap'),
+      UNIVERSAL_FARMS.filter((farm) => farm.protocol !== 'stable'),
       'protocol',
     )
     for (const [protocol, config] of Object.entries(othersFarms)) {

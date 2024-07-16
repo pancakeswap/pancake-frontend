@@ -4,9 +4,9 @@ import { useCallback, useState } from "react";
 import styled from "styled-components";
 
 export interface INetworkProps {
-  data?: IMultiSelectProps<number>["options"];
-  value?: IMultiSelectProps<number>["value"];
-  onChange?: (value: number[]) => void;
+  data: IMultiSelectProps<number>["options"];
+  value: number[];
+  onChange: (value: INetworkProps["value"]) => void;
 }
 
 const Container = styled.div<{ isShow: boolean }>`
@@ -42,9 +42,8 @@ const Container = styled.div<{ isShow: boolean }>`
  `}
 `;
 
-export const NetworkFilter: React.FC<INetworkProps> = ({ data = [], value, onChange }: INetworkProps) => {
+export const NetworkFilter: React.FC<INetworkProps> = ({ data, value, onChange }: INetworkProps) => {
   const [isShow, setIsShow] = useState(false);
-  const [selectedItems, setSelectedItems] = useState(value);
 
   const handleSelectChange = useCallback(
     (e: MultiSelectChangeEvent) => {
@@ -52,11 +51,7 @@ export const NetworkFilter: React.FC<INetworkProps> = ({ data = [], value, onCha
         e.preventDefault();
         return;
       }
-      if (onChange) {
-        onChange(e.value);
-      } else {
-        setSelectedItems(e.value);
-      }
+      onChange(e.value);
     },
     [onChange]
   );
@@ -75,7 +70,7 @@ export const NetworkFilter: React.FC<INetworkProps> = ({ data = [], value, onCha
         options={data}
         isShowSelectAll
         selectAllLabel="All networks"
-        value={value ?? selectedItems}
+        value={value}
         onShow={() => setIsShow(true)}
         onHide={() => setIsShow(false)}
         onChange={handleSelectChange}
