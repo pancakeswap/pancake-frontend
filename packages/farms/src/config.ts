@@ -14,9 +14,9 @@ import {
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { Address } from 'viem'
 
-type Protocol = 'v2' | 'v3' | 'stableswap'
+export type Protocol = 'v2' | 'v3' | 'stable'
 
-type FarmBaseConfig = {
+export type FarmBaseConfig = {
   protocol: Protocol
   chainId: number
   pid: number
@@ -27,7 +27,7 @@ type FarmBaseConfig = {
 }
 
 export type UniversalFarmConfigV2AndStableSwap = {
-  protocol: 'v2' | 'stableswap'
+  protocol: 'v2' | 'stable'
 } & FarmBaseConfig
 
 export type UniversalFarmConfigV3 = {
@@ -1624,7 +1624,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 182,
     chainId: ChainId.BSC,
-    protocol: 'stableswap',
+    protocol: 'stable',
     lpAddress: '0x4cBEa76B4A1c42C356B4c52B0314A98313fFE9df',
     token0: bscTokens.mwbeth,
     token1: bscTokens.wbeth,
@@ -1648,7 +1648,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 179,
     chainId: ChainId.BSC,
-    protocol: 'stableswap',
+    protocol: 'stable',
     token0: bscTokens.mdlp,
     token1: bscTokens.dlp,
     lpAddress: '0xA2915ae3bc8C6C03f59496B6Dd26aa6a4335b788',
@@ -1656,7 +1656,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 178,
     chainId: ChainId.BSC,
-    protocol: 'stableswap',
+    protocol: 'stable',
     token0: bscTokens.mpendle,
     token1: bscTokens.pendle,
     lpAddress: '0x183F325b33d190597D80d1B46D865d0250fD9BF2',
@@ -1688,7 +1688,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 173,
     chainId: ChainId.BSC,
-    protocol: 'stableswap',
+    protocol: 'stable',
     lpAddress: '0xB1D54d76E2cB9425Ec9c018538cc531440b55dbB',
     token0: bscTokens.cake,
     token1: bscTokens.sdcake,
@@ -1696,7 +1696,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 174,
     chainId: ChainId.BSC,
-    protocol: 'stableswap',
+    protocol: 'stable',
     lpAddress: '0xb9dC6396AcFFD24E0f69Dfd3231fDaeB31514D02',
     token0: bscTokens.cake,
     token1: bscTokens.mcake,
@@ -1704,7 +1704,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 163,
     chainId: ChainId.BSC,
-    protocol: 'stableswap',
+    protocol: 'stable',
     lpAddress: '0xB2Aa63f363196caba3154D4187949283F085a488',
     token0: bscTokens.hay,
     token1: bscTokens.usdt,
@@ -3549,7 +3549,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 2,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: 'stableswap',
+    protocol: 'stable',
     token0: arbitrumTokens.dlp,
     token1: arbitrumTokens.mdlp,
     lpAddress: '0x0db5e247ab73FBaE16d9301f2977f974EC0AA336',
@@ -3557,7 +3557,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 178,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: 'stableswap',
+    protocol: 'stable',
     token0: arbitrumTokens.pendle,
     token1: arbitrumTokens.mpendle,
     lpAddress: '0x1A2329546f11e4fE55b853D98Bba2c4678E3105A',
