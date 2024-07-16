@@ -22,7 +22,7 @@ export const useFarmAuction = (auctionId: number | undefined, watch?: boolean) =
       if (!auctionId) return { auction: null, bidders: null }
 
       const auctionData = await farmAuctionContract.read.auctions([BigInt(auctionId)])
-      const processedAuction = await processAuctionData(auctionId, {
+      const processedAuction = await processAuctionData(auctionId, chainId, {
         status: auctionData[0],
         startBlock: auctionData[1],
         endBlock: auctionData[2],

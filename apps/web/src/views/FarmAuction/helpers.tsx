@@ -6,9 +6,13 @@ import { getBidderInfo } from 'config/constants/farmAuctions'
 import { Auction, AuctionStatus, Bidder, BidderAuction } from 'config/constants/types'
 import dayjs from 'dayjs'
 import orderBy from 'lodash/orderBy'
+import sample from 'lodash/sample'
 import { AuctionsResponse, BidsPerAuction, FarmAuctionContractStatus } from 'utils/types'
 import { publicClient } from 'utils/wagmi'
-import { AbiStateMutability, ContractFunctionReturnType } from 'viem'
+import { AbiStateMutability, ContractFunctionReturnType, createPublicClient, http } from 'viem'
+import { PUBLIC_NODES } from 'config/nodes'
+import { CHAINS } from 'config/chains'
+import { CLIENT_CONFIG } from 'utils/viem'
 
 export const FORM_ADDRESS =
   'https://docs.google.com/forms/d/e/1FAIpQLSfQNsAfh98SAfcqJKR3is2hdvMRdnvfd2F3Hql96vXHgIi3Bw/viewform'
@@ -81,12 +85,24 @@ const getAuctionStatus = (
   return AuctionStatus.ToBeAnnounced
 }
 
-const getDateForBlock = async (currentBlock: number, block: number) => {
+const getDateForBlock = async (chainId: ChainId, currentBlock: number, block: number) => {
   // if block already happened we can get timestamp via .getBlock(block)
   if (currentBlock > block) {
     try {
-      const { timestamp } = await publicClient({ chainId: ChainId.BSC }).getBlock({ blockNumber: BigInt(block) })
+      const { timestamp } = await publicClient({ chainId }).getBlock({ blockNumber: BigInt(block) })
       return dayjs.unix(Number(timestamp)).toDate()
+    } catch (error) {
+      // BSC Prod default public node won't return data for old blocks
+      if (chainId === ChainId.BSC) {
+        const randomNode = sample(
+          PUBLIC_NODES[chainId].filter((node) => node !== process.env.NEXT_PUBLIC_NODE_PRODUCTION),
+        )
+        const chain = CHAINS.find((c) => c.id === chainId)
+        const publicFallbackClient = createPublicClient({ chain, transport: http(randomNode), ...CLIENT_CONFIG })
+        const { timestamp } = await publicFallbackClient.getBlock({ blockNumber: BigInt(block) })
+        return dayjs.unix(Number(timestamp)).toDate()
+      }
+      throw error
     } finally {
       // Use logic below
     }
@@ -99,6 +115,7 @@ const getDateForBlock = async (currentBlock: number, block: number) => {
 // Get additional auction information based on the date received from smart contract
 export const processAuctionData = async (
   auctionId: number,
+  chainId: ChainId,
   auctionResponse: AuctionsResponse,
   currentBlockNumber?: number,
 ): Promise<Auction> => {
@@ -112,10 +129,10 @@ export const processAuctionData = async (
   }
 
   // Get all required data and blocks
-  const currentBlock = currentBlockNumber || Number(await publicClient({ chainId: ChainId.BSC }).getBlockNumber())
+  const currentBlock = currentBlockNumber || Number(await publicClient({ chainId }).getBlockNumber())
   const [startDate, endDate] = await Promise.all([
-    getDateForBlock(currentBlock, processedAuctionData.startBlock),
-    getDateForBlock(currentBlock, processedAuctionData.endBlock),
+    getDateForBlock(chainId, currentBlock, processedAuctionData.startBlock),
+    getDateForBlock(chainId, currentBlock, processedAuctionData.endBlock),
   ])
 
   const auctionStatus = getAuctionStatus(

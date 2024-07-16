@@ -21,7 +21,7 @@ const useCongratulateAuctionWinner = (currentAuction: Auction, bidders: Bidder[]
   useEffect(() => {
     const checkIfWonPreviousAuction = async (previousAuctionId: number) => {
       const auctionData = await farmAuctionContract.read.auctions([BigInt(previousAuctionId)])
-      const processedAuctionData = await processAuctionData(previousAuctionId, {
+      const processedAuctionData = await processAuctionData(previousAuctionId, chainId, {
         status: auctionData[0],
         startBlock: auctionData[1],
         endBlock: auctionData[2],
@@ -57,7 +57,7 @@ const useCongratulateAuctionWinner = (currentAuction: Auction, bidders: Bidder[]
     } else if (previousAuctionId > 0) {
       checkIfWonPreviousAuction(previousAuctionId)
     }
-  }, [currentAuction, bidders, account, farmAuctionContract])
+  }, [currentAuction, bidders, account, farmAuctionContract, chainId])
 
   return wonAuction
 }
