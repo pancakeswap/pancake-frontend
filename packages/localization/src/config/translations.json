@@ -1009,6 +1009,9 @@
   "Farm Auctions": "Farm Auctions",
   "auction bunny": "auction bunny",
   "Burnt CAKE": "Burnt CAKE",
+  "Stake %stakingSymbol% - Earn %earningSymbol%": "Stake %stakingSymbol% - Earn %earningSymbol%",
+  "Top Farms": "Top Farms",
+  "Top Syrup Pools": "Top Syrup Pools",
   "Expert Mode": "Expert Mode",
   "Don’t show this again": "Don’t show this again",
   "Global": "Global",
@@ -3480,6 +3483,10 @@
   "Claim Your $ZK Airdrop Rewards!": "Claim Your $ZK Airdrop Rewards!",
   "2.4 Million $ZK available to claim": "2.4 Million $ZK available to claim",
   "Check Eligibility": "Check Eligibility",
-  "Rocker launching your meme career": "Rocker launching your meme career",
-  "Check": "Check"
+  "Check": "Check",
+  "No quotes available for %cryptoCurrency% right now.": "No quotes available for %cryptoCurrency% right now.",
+  "Earn Cake and APT with up to 50% apr on 15+ Pools": "Earn Cake and APT with up to 50% apr on 15+ Pools",
+  "Earn Dual Incentives with Yield Farming on Aptos PancakeSwap": "Earn Dual Incentives with Yield Farming on Aptos PancakeSwap",
+  "Stake LP Tokens to Earn Cake and APT": "Stake LP Tokens to Earn Cake and APT",
+  "Read The Guide": "Read The Guide"
 }
