@@ -13,6 +13,7 @@ import { AbiStateMutability, ContractFunctionReturnType, createPublicClient, htt
 import { PUBLIC_NODES } from 'config/nodes'
 import { CHAINS } from 'config/chains'
 import { CLIENT_CONFIG } from 'utils/viem'
+import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 
 export const FORM_ADDRESS =
   'https://docs.google.com/forms/d/e/1FAIpQLSfQNsAfh98SAfcqJKR3is2hdvMRdnvfd2F3Hql96vXHgIi3Bw/viewform'
@@ -119,6 +120,8 @@ export const processAuctionData = async (
   auctionResponse: AuctionsResponse,
   currentBlockNumber?: number,
 ): Promise<Auction> => {
+  const isBscNetwork = verifyBscNetwork(chainId)
+  const auctionChainId = isBscNetwork ? chainId : ChainId.BSC
   const processedAuctionData = {
     ...auctionResponse,
     topLeaderboard: Number(auctionResponse.leaderboard),
@@ -129,10 +132,10 @@ export const processAuctionData = async (
   }
 
   // Get all required data and blocks
-  const currentBlock = currentBlockNumber || Number(await publicClient({ chainId }).getBlockNumber())
+  const currentBlock = currentBlockNumber || Number(await publicClient({ chainId: auctionChainId }).getBlockNumber())
   const [startDate, endDate] = await Promise.all([
-    getDateForBlock(chainId, currentBlock, processedAuctionData.startBlock),
-    getDateForBlock(chainId, currentBlock, processedAuctionData.endBlock),
+    getDateForBlock(auctionChainId, currentBlock, processedAuctionData.startBlock),
+    getDateForBlock(auctionChainId, currentBlock, processedAuctionData.endBlock),
   ])
 
   const auctionStatus = getAuctionStatus(
