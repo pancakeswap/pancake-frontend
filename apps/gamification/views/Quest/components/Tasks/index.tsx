@@ -1,13 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, FlexGap, Tag, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, FlexGap, Tag, Text, useModal } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
+import { useProfile } from 'hooks/useProfile'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+import { MakeProfileModal } from 'views/Quest/components/MakeProfileModal'
 import { Task } from 'views/Quest/components/Tasks/Task'
 import { useVerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { useAccount } from 'wagmi'
@@ -38,6 +40,10 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
   const { address: account } = useAccount()
   const { id: questId, completionStatus, endDateTime, tasks } = quest
   const { userInfo, isFetched, refresh } = useUserSocialHub()
+
+  const { isInitialized, profile } = useProfile()
+  const hasProfile = isInitialized && !!profile
+  const [onPressMakeProfileModal] = useModal(<MakeProfileModal type={t('quest')} />)
 
   const isQuestFinished = useMemo(
     () => new Date().getTime() >= endDateTime || completionStatus === CompletionStatus.FINISHED,
@@ -72,6 +78,14 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
       } catch (error) {
         console.error(`Submit link user to quest error: ${error}`)
       }
+    }
+  }
+
+  const handleStartQuest = () => {
+    if (!hasProfile) {
+      onPressMakeProfileModal()
+    } else {
+      handleLinkUserToQuest()
     }
   }
 
@@ -165,7 +179,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
                       <Text bold fontSize="12px" textAlign="center" color="textSubtle">
                         {t('Start the quest to get access to the tasks')}
                       </Text>
-                      <Button onClick={handleLinkUserToQuest}>{t('Start the Quest')}</Button>
+                      <Button onClick={handleStartQuest}>{t('Start the Quest')}</Button>
                     </Flex>
                   )}
                 </>
