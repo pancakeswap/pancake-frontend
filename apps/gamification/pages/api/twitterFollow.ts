@@ -2,19 +2,21 @@ import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { getOAuthHeader } from 'utils/getOAuthHeader'
+import { TWITTER_CONSUMER_KEY } from 'views/Profile/utils/verifyTwitterFollowersIds'
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      const { account, questId, token, tokenSecret, userId, targetUserId } = req.query
+      const { account, questId, token, tokenSecret, userId, targetUserId, providerId } = req.query
       if (!token || !tokenSecret || !userId || !targetUserId) {
         res.status(400).json({ message: 'Missing required parameters: token, tokenSecret, userId, targetUserId' })
         return
       }
+
       const url = `https://api.twitter.com/2/users/${userId}/following`
       const method = 'POST'
-      const consumerKey = process.env.TWITTER_CONSUMER_KEY as string
-      const consumerSecret = process.env.TWITTER_CONSUMER_SECRET as string
+      const consumerKey = TWITTER_CONSUMER_KEY[providerId][0] as string
+      const consumerSecret = TWITTER_CONSUMER_KEY[providerId][1] as string
 
       const response = await fetch(url, {
         method,

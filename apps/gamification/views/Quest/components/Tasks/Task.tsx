@@ -32,6 +32,7 @@ import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { useConnectTwitter } from 'views/Profile/hooks/settingsModal/useConnectTwitter'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+import { TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { fetchMarkTaskStatus } from 'views/Quest/utils/fetchMarkTaskStatus'
@@ -59,7 +60,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const isVerified = taskStatus?.verificationStatusBySocialMedia?.[taskType]
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
   const { userInfo, isFetched: isSocialHubFetched } = useUserSocialHub()
-  const { connect: connectTwitter } = useConnectTwitter({ userInfo })
+  const { randomConnect: connectTwitter } = useConnectTwitter({ userInfo })
   const [socialName, setSocialName] = useState('')
   const [isPending, setIsPending] = useState(false)
   const [actionPanelExpanded, setActionPanelExpanded] = useState(false)
@@ -71,25 +72,23 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
       return
     }
 
-    setIsPending(true)
-
+    const providerId = (session as any)?.user?.twitter?.providerId
     const token = (session as any)?.user?.twitter?.token
     const tokenSecret = (session as any)?.user?.twitter?.tokenSecret
-
-    if (token && tokenSecret) {
+    if (providerId && token && tokenSecret) {
       try {
+        setIsPending(true)
         setActionPanelExpanded(false)
-
         const queryString = new URLSearchParams({
           account,
           questId,
           token,
           tokenSecret,
           userId: twitterId,
+          providerId: providerId as TwitterFollowersId,
           targetUserId: (task as TaskSocialConfig).accountId,
         }).toString()
         const response = await fetch(`/api/twitterFollow?${queryString}`)
-
         if (response.ok) {
           await refresh()
         }
@@ -98,10 +97,8 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
       } finally {
         setIsPending(false)
       }
-    } else {
-      connectTwitter()
     }
-  }, [isPending, hasIdRegister, account, twitterId, session, questId, task, refresh, toastError, connectTwitter])
+  }, [account, hasIdRegister, isPending, questId, refresh, session, task, toastError, twitterId])
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -114,9 +111,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
       taskType === TaskType.X_FOLLOW_ACCOUNT &&
       new Date(session?.expires).getTime() > new Date().getTime()
     ) {
-      if ((session as any)?.user?.twitter?.token && (session as any)?.user?.twitter?.tokenSecret) {
-        fetchApi()
-      }
+      fetchApi()
     }
   }, [handleVerifyTwitterAccount, isSocialHubFetched, session, taskType])
 
@@ -206,6 +201,12 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     }
   }
 
+  const handleVerifyButton = () => {
+    setIsPending(true)
+    setActionPanelExpanded(false)
+    connectTwitter()
+  }
+
   const handleAction = () => {
     switch (taskType as TaskType) {
       case TaskType.MAKE_A_SWAP:
@@ -287,7 +288,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
                       width="100%"
                       disabled={isPending}
                       endIcon={isPending && <Loading width={16} height={16} />}
-                      onClick={handleVerifyTwitterAccount}
+                      onClick={handleVerifyButton}
                     >
                       {t('Verify')}
                     </VerifyButton>

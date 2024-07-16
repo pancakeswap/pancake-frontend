@@ -3,6 +3,7 @@ import { useToast } from '@pancakeswap/uikit'
 import { signIn } from 'next-auth/react'
 import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { disconnectSocial } from 'views/Profile/utils/disconnectSocial'
+import { verifyTwitterFollowersIds } from 'views/Profile/utils/verifyTwitterFollowersIds'
 import { useAccount } from 'wagmi'
 
 interface UseConnectTwitterProps {
@@ -17,6 +18,11 @@ export const useConnectTwitter = ({ userInfo, refresh }: UseConnectTwitterProps)
 
   const connect = async () => {
     signIn('twitter')
+  }
+
+  const randomConnect = async () => {
+    const randomIndex = Math.floor(Math.random() * verifyTwitterFollowersIds.length)
+    signIn(verifyTwitterFollowersIds[randomIndex])
   }
 
   const disconnect = async () => {
@@ -40,6 +46,7 @@ export const useConnectTwitter = ({ userInfo, refresh }: UseConnectTwitterProps)
 
   return {
     connect,
+    randomConnect,
     disconnect,
   }
 }
