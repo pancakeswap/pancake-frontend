@@ -2,7 +2,7 @@ import { Flex, Text, Button, Modal, InjectedModalProps, useToast } from '@pancak
 import confetti from 'canvas-confetti'
 import delay from 'lodash/delay'
 import { useTranslation } from '@pancakeswap/localization'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 const showConfetti = () => {
   confetti({
@@ -22,10 +22,10 @@ const ClaimNftModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [isClaiming, setIsClaiming] = useState(false)
   const { toastSuccess, toastError } = useToast()
 
-  const claimNft = async () => {
+  const claimNft = useCallback(async () => {
     try {
       setIsClaiming(true)
-      // await bunnyXmasContract.mintNFT()
+      // await bunnyXmasContract.mintNFT();
       toastSuccess(t('Your NFT has been sent to your wallet'))
       onDismiss?.()
     } catch (error: any) {
@@ -34,7 +34,7 @@ const ClaimNftModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
     } finally {
       setIsClaiming(false)
     }
-  }
+  }, [onDismiss, t, toastError, toastSuccess])
 
   useEffect(() => {
     delay(showConfetti, 100)

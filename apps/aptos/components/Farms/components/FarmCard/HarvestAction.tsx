@@ -14,7 +14,7 @@ import { CAKE } from 'config/coins'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useActiveChainId } from 'hooks/useNetwork'
 import { usePriceCakeUsdc, useTokenUsdcPrice } from 'hooks/useStablePrice'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 interface FarmCardActionsProps {
   isTableView?: boolean
@@ -59,8 +59,8 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   const dualTokenPrice = useTokenUsdcPrice(dual?.token)
   const dualTokenUsdc = dualTokenDisplayBalance ? dualEarningsBalance.times(dualTokenPrice ?? 0).toNumber() : 0
 
-  const handleHarvest = async () => {
-    const receipt = await fetchWithCatchTxError(() => onReward())
+  const handleHarvest = useCallback(async () => {
+    const receipt = await fetchWithCatchTxError(onReward)
 
     if (receipt?.status) {
       const displaySymbol = dual?.token ? `CAKE + ${dual?.token?.symbol}` : 'CAKE'
@@ -72,7 +72,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
       )
       onDone?.()
     }
-  }
+  }, [dual?.token, onReward, onDone, t])
 
   const showCustomTableCss = useMemo(() => isTableView && (isDesktop || isTablet), [isDesktop, isTablet, isTableView])
 
