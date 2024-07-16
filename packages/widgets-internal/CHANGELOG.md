@@ -1,5 +1,12 @@
 # @pancakeswap/widgets-internal
 
+## 0.3.3
+
+### Patch Changes
+
+- Updated dependencies [bf07bfa]
+  - @pancakeswap/pools@5.1.29
+
 ## 0.3.2
 
 ### Patch Changes

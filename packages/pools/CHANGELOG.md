@@ -1,5 +1,11 @@
 # @pancakeswap/pools
 
+## 5.1.29
+
+### Patch Changes
+
+- bf07bfa: List aitech syrup pool
+
 ## 5.1.28
 
 ### Patch Changes
