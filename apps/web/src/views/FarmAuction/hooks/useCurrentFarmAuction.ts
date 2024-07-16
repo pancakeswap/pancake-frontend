@@ -14,11 +14,11 @@ import { useFarmAuction } from './useFarmAuction'
 
 export const useCurrentFarmAuction = (account?: Address) => {
   const { chainId } = useActiveChainId()
-  const isBscNetwork = verifyBscNetwork(chainId)
-  const farmAuctionContract = getFarmAuctionContract(undefined, isBscNetwork ? chainId : ChainId.BSC)
+  const auctionChainId = verifyBscNetwork(chainId) ? chainId : ChainId.BSC
+  const farmAuctionContract = getFarmAuctionContract(undefined, auctionChainId)
 
   const { data: currentAuctionId = undefined } = useQuery({
-    queryKey: ['farmAuction', 'currentAuctionId'],
+    queryKey: ['farmAuction', 'currentAuctionId', auctionChainId],
 
     queryFn: async () => {
       const auctionId = await farmAuctionContract.read.currentAuctionId()
