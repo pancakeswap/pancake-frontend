@@ -103,8 +103,8 @@ export const fetchFarmPools = async (
     // @todo @ChefJerry fetch on-chain with default data
     return {
       ...farm,
-      tvlUsd: '0', // simple keep it 0 as default
-      vol24hUsd: '0', // simple keep it 0 as default
+      tvlUsd: undefined,
+      vol24hUsd: undefined,
       feeTier:
         farm.protocol === 'v3' ? BigInt(farm.feeAmount) : farm.protocol === 'v2' ? BigInt(FeeAmount.MEDIUM) : 100n, // @todo @ChefJerry add stable fee
       // @todo @ChefJerry get by protocols
@@ -126,8 +126,9 @@ export type PoolInfo = {
   protocol: PoolProtocol
   token0: Currency
   token1: Token
-  tvlUsd: string
-  vol24hUsd: string
+  lpApr?: `${number}`
+  tvlUsd?: `${number}`
+  vol24hUsd?: `${number}`
   feeTier: bigint
   feeTierBase: bigint
 }
