@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { styled } from 'styled-components'
@@ -28,20 +28,13 @@ const BoxContainer = styled(Flex)`
 `
 
 interface RewardProps {
-  questChainId: ChainId
   reward: undefined | QuestRewardType
   completionStatus: CompletionStatus
   actionComponent?: JSX.Element
   updateValue: (key: string, value: string | QuestRewardType) => void
 }
 
-export const Reward: React.FC<RewardProps> = ({
-  questChainId,
-  reward,
-  completionStatus,
-  actionComponent,
-  updateValue,
-}) => {
+export const Reward: React.FC<RewardProps> = ({ reward, completionStatus, actionComponent, updateValue }) => {
   const { t } = useTranslation()
 
   const handlePickedRewardToken = (currency: Currency, totalRewardAmount: number, amountOfWinners: number) => {
@@ -75,7 +68,7 @@ export const Reward: React.FC<RewardProps> = ({
     updateValue('reward', rewardData)
   }
 
-  const localChainName = chains.find((c) => c.id === questChainId)?.name ?? 'BSC'
+  const localChainName = chains.find((c) => c.id === reward?.currency?.network)?.name ?? 'BSC'
 
   return (
     <RewardContainer>
@@ -95,12 +88,14 @@ export const Reward: React.FC<RewardProps> = ({
             ) : (
               <AddReward reward={reward} amountOfWinners={0} handlePickedRewardToken={handlePickedRewardToken} />
             )}
-            <Flex justifyContent="center">
-              <ChainLogo chainId={questChainId} />
-              <Text bold color="text" ml="8px">
-                {localChainName}
-              </Text>
-            </Flex>
+            {reward?.currency?.network && (
+              <Flex justifyContent="center">
+                <ChainLogo chainId={reward?.currency?.network} />
+                <Text bold color="text" ml="8px">
+                  {localChainName}
+                </Text>
+              </Flex>
+            )}
           </BoxContainer>
           {actionComponent}
         </Box>

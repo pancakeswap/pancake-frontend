@@ -32,7 +32,7 @@ interface RewardProps {
 
 export const Reward: React.FC<RewardProps> = ({ quest }) => {
   const { t } = useTranslation()
-  const localChainName = chains.find((c) => c.id === quest.chainId)?.name ?? 'BSC'
+  const localChainName = chains.find((c) => c.id === quest?.reward?.currency?.network)?.name ?? 'BSC'
 
   return (
     <RewardContainer>
@@ -42,12 +42,14 @@ export const Reward: React.FC<RewardProps> = ({ quest }) => {
             <Text fontSize={['24px']} bold>
               {t('Reward')}
             </Text>
-            <Flex ml="auto" alignSelf="center">
-              <Text bold color="text" mr="8px">
-                {localChainName}
-              </Text>
-              <ChainLogo chainId={quest.chainId} />
-            </Flex>
+            {quest?.reward && (
+              <Flex ml="auto" alignSelf="center">
+                <Text bold color="text" mr="8px">
+                  {localChainName}
+                </Text>
+                <ChainLogo chainId={quest?.reward?.currency?.network} />
+              </Flex>
+            )}
           </Flex>
           <RewardAmount reward={quest?.reward} />
           <Countdown endDateTime={quest?.endDateTime ?? 0} />
