@@ -1,16 +1,15 @@
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
-import type { FarmV4SupportedChainId } from '@pancakeswap/farms'
-import { supportedChainIdV4, UNIVERSAL_FARMS } from '@pancakeswap/farms'
-import { Currency, Token } from '@pancakeswap/sdk'
+import { FarmV4SupportedChainId, Protocol, supportedChainIdV4, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { Token } from '@pancakeswap/swap-sdk-core'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
-import type { Address } from 'viem'
-import { safeGetAddress } from '../../utils'
-import { explorerApiClient } from '../info/api/client'
-import { paths } from '../info/api/schema'
+import { explorerApiClient } from 'state/info/api/client'
+import { paths } from 'state/info/api/schema'
+import { safeGetAddress } from 'utils'
+import { PoolInfo } from './type'
 
-const DEFAULT_PROTOCOLS: PoolProtocol[] = ['v3', 'v2', 'stable']
+const DEFAULT_PROTOCOLS: Protocol[] = ['v3', 'v2', 'stable']
 const DEFAULT_CHAINS: FarmV4SupportedChainId[] = Object.values(supportedChainIdV4)
 
 const parseFarmPools = (
@@ -47,7 +46,7 @@ const parseFarmPools = (
 
 const fetchExplorerFarmPools = async (
   args: {
-    protocols?: PoolProtocol[] // after v4 starts to be used, we can add 'v4Bin'
+    protocols?: Protocol[] // after v4 starts to be used, we can add 'v4Bin'
     chainId?: FarmV4SupportedChainId | FarmV4SupportedChainId[]
   } = {
     protocols: DEFAULT_PROTOCOLS,
@@ -75,9 +74,9 @@ const fetchExplorerFarmPools = async (
   return parseFarmPools(resp.data)
 }
 
-export const fetchFarmPools = async (
+const fetchFarmPools = async (
   args: {
-    protocols?: PoolProtocol[] // after v4 starts to be used, we can add 'v4Bin'
+    protocols?: Protocol[] // after v4 starts to be used, we can add 'v4Bin'
     chainId?: FarmV4SupportedChainId | FarmV4SupportedChainId[]
   } = {
     protocols: DEFAULT_PROTOCOLS,
@@ -121,25 +120,9 @@ export const fetchFarmPools = async (
   return finalPools
 }
 
-export type PoolProtocol = 'v2' | 'stable' | 'v3' | 'v4bin'
-
-export type PoolInfo = {
-  chainId: number
-  lpAddress: Address
-  protocol: PoolProtocol
-  token0: Currency
-  token1: Token
-  lpApr?: `${number}`
-  tvlUsd?: `${number}`
-  vol24hUsd?: `${number}`
-  feeTier: bigint
-  feeTierBase: bigint
-}
-
-const farmPoolsAtom = atom(async (_, { signal }): Promise<PoolInfo[]> => {
+// @todo @ChefJerry support args
+export const farmPoolsAtom = atom(async (_, { signal }): Promise<PoolInfo[]> => {
   return fetchFarmPools({ protocols: DEFAULT_PROTOCOLS, chainId: DEFAULT_CHAINS }, signal)
 })
 
 export const asyncFarmPoolsAtom = loadable(farmPoolsAtom)
-
-export const extendPoolsAtom = atom<PoolInfo[]>([])
