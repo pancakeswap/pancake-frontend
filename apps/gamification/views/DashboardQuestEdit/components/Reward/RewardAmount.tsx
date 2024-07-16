@@ -14,8 +14,7 @@ import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 const RewardContainer = styled(Flex)`
   flex-direction: column;
   align-items: center;
-  padding-bottom: 24px;
-  border-bottom: solid 1px ${({ theme }) => theme.colors.cardBorder};
+  padding-bottom: 16px;
 `
 
 interface RewardAmountProps {

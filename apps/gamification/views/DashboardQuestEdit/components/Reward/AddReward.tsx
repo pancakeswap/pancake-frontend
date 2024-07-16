@@ -8,8 +8,7 @@ import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
 const AddRewardContainer = styled(Flex)`
   flex-direction: column;
   align-items: center;
-  padding-bottom: 28px;
-  border-bottom: solid 1px ${({ theme }) => theme.colors.cardBorder};
+  padding-bottom: 16px;
 `
 
 interface AddRewardProps {

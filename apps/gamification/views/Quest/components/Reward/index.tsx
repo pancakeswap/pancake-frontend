@@ -1,7 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Card, Text } from '@pancakeswap/uikit'
+import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
+import { ChainLogo } from 'components/Logo/ChainLogo'
 import React from 'react'
 import { styled } from 'styled-components'
+import { chains } from 'utils/wagmi'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { ClaimButton } from 'views/Quest/components/Reward/ClaimButton'
 import { Countdown } from 'views/Quest/components/Reward/Countdown'
@@ -30,14 +32,23 @@ interface RewardProps {
 
 export const Reward: React.FC<RewardProps> = ({ quest }) => {
   const { t } = useTranslation()
+  const localChainName = chains.find((c) => c.id === quest.chainId)?.name ?? 'BSC'
 
   return (
     <RewardContainer>
       <Card>
         <Box padding="24px">
-          <Text fontSize={['24px']} bold mb={['24px', '24px', '40px']}>
-            {t('Reward')}
-          </Text>
+          <Flex mb={['24px', '24px', '40px']}>
+            <Text fontSize={['24px']} bold>
+              {t('Reward')}
+            </Text>
+            <Flex ml="auto" alignSelf="center">
+              <Text bold color="text" mr="8px">
+                {localChainName}
+              </Text>
+              <ChainLogo chainId={quest.chainId} />
+            </Flex>
+          </Flex>
           <RewardAmount reward={quest?.reward} />
           <Countdown endDateTime={quest?.endDateTime ?? 0} />
           {/* <TotalRewards /> */}
