@@ -66,15 +66,15 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const [actionPanelExpanded, setActionPanelExpanded] = useState(false)
 
   const twitterId = userInfo?.socialHubToSocialUserIdMap?.Twitter ?? ''
+  const providerId = (session as any)?.user?.twitter?.providerId
+  const token = (session as any)?.user?.twitter?.token
+  const tokenSecret = (session as any)?.user?.twitter?.tokenSecret
 
   const handleVerifyTwitterAccount = useCallback(async () => {
     if (isPending || !hasIdRegister || !account || !twitterId) {
       return
     }
 
-    const providerId = (session as any)?.user?.twitter?.providerId
-    const token = (session as any)?.user?.twitter?.token
-    const tokenSecret = (session as any)?.user?.twitter?.tokenSecret
     if (providerId && token && tokenSecret) {
       try {
         setIsPending(true)
@@ -98,7 +98,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
         setIsPending(false)
       }
     }
-  }, [account, hasIdRegister, isPending, questId, refresh, session, task, toastError, twitterId])
+  }, [account, hasIdRegister, isPending, providerId, questId, refresh, task, toastError, token, tokenSecret, twitterId])
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -204,7 +204,12 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const handleVerifyButton = () => {
     setIsPending(true)
     setActionPanelExpanded(false)
-    connectTwitter()
+
+    if (providerId && token && tokenSecret) {
+      handleVerifyTwitterAccount()
+    } else {
+      connectTwitter()
+    }
   }
 
   const handleAction = () => {
