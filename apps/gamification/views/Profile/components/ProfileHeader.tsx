@@ -109,8 +109,8 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     }
 
     if (isFetched && session && new Date(session?.expires).getTime() > new Date().getTime()) {
-      if (!userInfo?.socialHubToSocialUserIdMap?.Discord && (session as any).user?.discordId) {
-        fetch((session as any).user?.discordId, SocialHubType.Discord)
+      if (!userInfo?.socialHubToSocialUserIdMap?.Discord && (session as any).user?.discord) {
+        fetch((session as any).user?.discord?.discordId, SocialHubType.Discord)
       }
 
       if (!userInfo?.socialHubToSocialUserIdMap?.Twitter && (session as any).user?.twitter) {

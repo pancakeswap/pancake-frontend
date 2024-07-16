@@ -27,7 +27,10 @@ export default NextAuth({
         switch (account.provider) {
           case 'discord':
             // eslint-disable-next-line no-param-reassign
-            token.discordId = profile.id
+            token.discord = {
+              discordId: profile.id,
+              token: profile.access_token,
+            }
             break
           case 'twitter':
             // eslint-disable-next-line no-param-reassign
@@ -44,7 +47,7 @@ export default NextAuth({
     },
     async session({ session, token }) {
       // eslint-disable-next-line no-param-reassign
-      ;(session as any).user.discordId = token.discordId || null
+      ;(session as any).user.discord = token.discord || null
       // eslint-disable-next-line no-param-reassign
       ;(session as any).user.twitter = token.twitter || null
       return session
