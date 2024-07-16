@@ -12,11 +12,11 @@ import {
   PancakeSwapBadge,
   type GraphicDetail,
 } from '@pancakeswap/widgets-internal'
-import { ASSET_CDN } from 'config/constants/endpoints'
+import { ASSETS_CDN } from 'config'
 
-const bgDesktop = `${ASSET_CDN}/web/banners/aptos-yield-farming/bunny-desktop.png`
-const bgMobile = `${ASSET_CDN}/web/banners/aptos-yield-farming/bunny-mobile.png`
-const fourLogo = `${ASSET_CDN}/web/banners/aptos-yield-farming/floating-coin.png`
+const bgDesktop = `${ASSETS_CDN}/web/banners/aptos-yield-farming/bunny-desktop.png`
+const bgMobile = `${ASSETS_CDN}/web/banners/aptos-yield-farming/bunny-mobile.png`
+const fourLogo = `${ASSETS_CDN}/web/banners/aptos-yield-farming/floating-coin.png`
 
 const bgSmVariant: GraphicDetail = {
   src: bgMobile,
@@ -49,7 +49,7 @@ export const AptosYieldFarmingBanner = () => {
     </LinkExternalAction>
   )
   return (
-    <BannerContainer background={`url(${ASSET_CDN}/web/banners/aptos-yield-farming/aptos-bg.png)`}>
+    <BannerContainer background={`url(${ASSETS_CDN}/web/banners/aptos-yield-farming/aptos-bg.png)`}>
       <BannerMain
         badges={
           <Flex alignItems="center">
