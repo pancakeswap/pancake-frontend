@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Text, Flex, Skeleton, Image, Balance } from '@pancakeswap/uikit'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
@@ -21,7 +21,7 @@ const AuctionCakeBurn: React.FC<React.PropsWithChildren> = () => {
   const [burnedCakeAmount, setBurnedCakeAmount] = useState(0)
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const farmAuctionContract = getFarmAuctionContract(undefined, chainId)
+  const farmAuctionContract = useMemo(() => getFarmAuctionContract(undefined, chainId), [chainId])
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const cakePriceBusd = useCakePrice()
 

@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { RECLAIM_AUCTIONS_TO_FETCH } from 'config'
 import { BidderAuction } from 'config/constants/types'
-import { useEffect, useReducer } from 'react'
+import { useCallback, useEffect, useMemo, useReducer } from 'react'
 import { useAccount } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { getFarmAuctionContract } from 'utils/contractHelpers'
@@ -85,11 +85,11 @@ const useReclaimAuctionBid = (): [ReclaimableAuction | null, () => void] => {
   const [state, dispatch] = useReducer(reclaimReducer, initialState)
 
   const { chainId } = useActiveChainId()
-  const farmAuctionContract = getFarmAuctionContract(undefined, chainId)
+  const farmAuctionContract = useMemo(() => getFarmAuctionContract(undefined, chainId), [chainId])
 
-  const checkNextAuction = () => {
+  const checkNextAuction = useCallback(() => {
     dispatch({ type: 'checkNextAuction' })
-  }
+  }, [dispatch])
 
   // Reset checking if account was switched
   useEffect(() => {

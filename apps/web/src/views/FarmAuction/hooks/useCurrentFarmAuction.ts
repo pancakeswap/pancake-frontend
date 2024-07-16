@@ -4,7 +4,7 @@ import { FAST_INTERVAL } from 'config/constants'
 import { getBidderInfo } from 'config/constants/farmAuctions'
 import { Bidder, ConnectedBidder } from 'config/constants/types'
 import isEqual from 'lodash/isEqual'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Address } from 'viem'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { getFarmAuctionContract } from 'utils/contractHelpers'
@@ -12,7 +12,7 @@ import { useFarmAuction } from './useFarmAuction'
 
 export const useCurrentFarmAuction = (account?: Address) => {
   const { chainId } = useActiveChainId()
-  const farmAuctionContract = getFarmAuctionContract(undefined, chainId)
+  const farmAuctionContract = useMemo(() => getFarmAuctionContract(undefined, chainId), [chainId])
 
   const { data: currentAuctionId = undefined } = useQuery({
     queryKey: ['farmAuction', 'currentAuctionId', chainId],

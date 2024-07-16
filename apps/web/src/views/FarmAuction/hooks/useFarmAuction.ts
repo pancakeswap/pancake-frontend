@@ -3,11 +3,12 @@ import { AUCTION_BIDDERS_TO_FETCH } from 'config'
 import { FAST_INTERVAL } from 'config/constants'
 import { getFarmAuctionContract } from 'utils/contractHelpers'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useMemo } from 'react'
 import { processAuctionData, sortAuctionBidders } from '../helpers'
 
 export const useFarmAuction = (auctionId: number | undefined, watch?: boolean) => {
   const { chainId } = useActiveChainId()
-  const farmAuctionContract = getFarmAuctionContract(undefined, chainId)
+  const farmAuctionContract = useMemo(() => getFarmAuctionContract(undefined, chainId), [chainId])
 
   const {
     data = {
