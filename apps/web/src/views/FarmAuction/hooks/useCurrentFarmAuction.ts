@@ -3,14 +3,19 @@ import { useQuery } from '@tanstack/react-query'
 import { FAST_INTERVAL } from 'config/constants'
 import { getBidderInfo } from 'config/constants/farmAuctions'
 import { Bidder, ConnectedBidder } from 'config/constants/types'
-import { useFarmAuctionContract } from 'hooks/useContract'
 import isEqual from 'lodash/isEqual'
 import { useEffect, useState } from 'react'
 import { Address } from 'viem'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { getFarmAuctionContract } from 'utils/contractHelpers'
+import { verifyBscNetwork } from 'utils/verifyBscNetwork'
+import { ChainId } from '@pancakeswap/chains'
 import { useFarmAuction } from './useFarmAuction'
 
 export const useCurrentFarmAuction = (account?: Address) => {
-  const farmAuctionContract = useFarmAuctionContract()
+  const { chainId } = useActiveChainId()
+  const isBscNetwork = verifyBscNetwork(chainId)
+  const farmAuctionContract = getFarmAuctionContract(undefined, isBscNetwork ? chainId : ChainId.BSC)
 
   const { data: currentAuctionId = undefined } = useQuery({
     queryKey: ['farmAuction', 'currentAuctionId'],
