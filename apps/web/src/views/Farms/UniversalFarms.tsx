@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Card, Tab, TabMenu } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { PropsWithChildren, useMemo, useState } from 'react'
-import { PoolsPage, PoolsBanner } from './v4/components'
+import { PoolsBanner, PoolsPage } from './v4/components'
 
 export const UniversalFarms: React.FC<PropsWithChildren> = () => {
   const { t } = useTranslation()
