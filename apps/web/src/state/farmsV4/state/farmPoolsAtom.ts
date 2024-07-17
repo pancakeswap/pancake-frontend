@@ -50,7 +50,12 @@ const fetchFarmPools = async (
   },
   signal?: AbortSignal,
 ) => {
-  const remotePools = await fetchExplorerFarmPools(args, signal)
+  let remotePools: PoolInfo[]
+  try {
+    remotePools = await fetchExplorerFarmPools(args, signal)
+  } catch (error) {
+    console.error('Failed to fetch remote pools', error)
+  }
   const localPools = UNIVERSAL_FARMS.filter((farm) => {
     return (
       args.protocols?.includes(farm.protocol) &&
@@ -88,7 +93,7 @@ const fetchFarmPools = async (
 
 // @todo @ChefJerry support args
 export const farmPoolsAtom = atom(async (_, { signal }): Promise<PoolInfo[]> => {
-  return fetchFarmPools({ protocols: DEFAULT_PROTOCOLS, chainId: DEFAULT_CHAINS }, signal)
+  return fetchFarmPools({ protocols: DEFAULT_PROTOCOLS, chainId: DEFAULT_CHAINS })
 })
 
 export const asyncFarmPoolsAtom = loadable(farmPoolsAtom)
