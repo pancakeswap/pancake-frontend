@@ -46,7 +46,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
   const [onPressMakeProfileModal] = useModal(<MakeProfileModal type={t('quest')} />)
 
   const isQuestFinished = useMemo(
-    () => new Date().getTime() >= endDateTime || completionStatus === CompletionStatus.FINISHED,
+    () => new Date().getTime() / 1000 >= endDateTime || completionStatus === CompletionStatus.FINISHED,
     [completionStatus, endDateTime],
   )
 
