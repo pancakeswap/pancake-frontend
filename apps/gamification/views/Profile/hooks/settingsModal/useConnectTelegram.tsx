@@ -27,6 +27,54 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
 
+  const validateAuth = async (authData: any) => {
+    const { auth_date: authDate, first_name: firstName, hash, id, username } = authData as any
+    // Step 1: Create data_check_string
+    const dataCheckString = `auth_date=${authDate}\nfirst_name=${firstName}\nid=${id}\nusername=${username}`
+
+    // Step 2: Generate secret_key
+    const botTokenHash = await crypto.subtle.digest(
+      'SHA-256',
+      new TextEncoder().encode(process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN),
+    )
+    const secretKey = Array.from(new Uint8Array(botTokenHash))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('')
+
+    // Step 3: Generate HMAC-SHA-256 signature
+    const key = await crypto.subtle.importKey(
+      'raw',
+      new TextEncoder().encode(secretKey),
+      { name: 'HMAC', hash: { name: 'SHA-256' } },
+      false,
+      ['sign'],
+    )
+
+    const signature = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(dataCheckString))
+
+    const hmac = Array.from(new Uint8Array(signature))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('')
+
+    // Step 4: Compare the generated HMAC with the received hash
+    if (hmac === hash) {
+      console.log('Data is from Telegram')
+    } else {
+      console.log('Data validation failed')
+    }
+
+    // Step 5: Verify the timestamp to prevent outdated data usage
+    const currentTime = Math.floor(Date.now() / 1000)
+    const timeDiff = currentTime - authDate
+    const maxTimeDiff = 86400 // 24 hours in seconds
+
+    if (timeDiff > maxTimeDiff) {
+      console.log('Auth data is outdated')
+    } else {
+      console.log('Auth data is within valid time frame')
+    }
+  }
+
   useEffect(() => {
     // Load the Telegram Login Widget script
     const script = document.createElement('script')
@@ -49,6 +97,8 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
       async (user: TelegramResponse) => {
         if (user && account) {
           try {
+            console.log(user)
+            validateAuth(user)
             await connectSocial({
               account,
               userInfo,
