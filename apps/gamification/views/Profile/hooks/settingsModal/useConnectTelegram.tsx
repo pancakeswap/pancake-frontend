@@ -34,7 +34,8 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
     const dataCheckString = `auth_date=${authDate}\nfirst_name=${firstName}\nid=${id}\nusername=${username}`
 
     // Step 2: Generate secret_key
-    const secretKey = CryptoJS.SHA256(process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN).toString(CryptoJS.enc.Hex)
+    const botToken = '7140457343:AAFWaqWpI2gvLjmMB-Lp9slsAbd0T5NW_Pg'
+    const secretKey = CryptoJS.SHA256(botToken).toString(CryptoJS.enc.Hex)
 
     // Step 3: Generate HMAC-SHA-256 signature
     const hmac = CryptoJS.HmacSHA256(dataCheckString, secretKey).toString(CryptoJS.enc.Hex)
