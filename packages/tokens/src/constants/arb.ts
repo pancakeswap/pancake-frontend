@@ -375,4 +375,28 @@ export const arbitrumTokens = {
     'Bridged mstETH',
     'https://www.eigenlayer.magpiexyz.io/restake',
   ),
+  usde: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34',
+    18,
+    'USDe',
+    'USDe',
+    'https://arbitrum.io/',
+  ),
+  tap: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x2C650dAb03A59332e2E0C0C4A7F726913e5028C1',
+    18,
+    'Tap',
+    'TapToken',
+    'https://www.tapioca.xyz/',
+  ),
+  grt: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x9623063377AD1B27544C965cCd7342f7EA7e88C7',
+    18,
+    'GRT',
+    'Graph Token',
+    'https://thegraph.com/',
+  ),
 }
