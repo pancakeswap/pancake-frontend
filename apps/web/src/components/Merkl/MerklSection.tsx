@@ -39,6 +39,16 @@ function TextWarning({ tokenAmount }: { tokenAmount: CurrencyAmount<Currency> })
   )
 }
 
+const LearnMoreLink = () => {
+  const { t } = useTranslation()
+
+  return (
+    <Link color="currentColor" fontSize="md" external style={{ display: 'inline-flex' }} href="https://docs.merkl.xyz/">
+      {t('Learn more about Merkl')}
+    </Link>
+  )
+}
+
 export function MerklSection({
   poolAddress,
   notEnoughLiquidity,
@@ -55,18 +65,6 @@ export function MerklSection({
   const { claimTokenReward, isClaiming, rewardsPerToken, hasMerkl } = useMerkl(poolAddress)
 
   if (!rewardsPerToken.length || (!hasMerkl && rewardsPerToken.every((r) => r.equalTo('0')))) return null
-
-  const learnMoreComp = (
-    <Link
-      color="currentColor"
-      fontSize="md"
-      external
-      style={{ display: 'inline-flex' }}
-      href="https://docs.angle.money/merkl/introduction"
-    >
-      {t('Learn more about Merkl')}
-    </Link>
-  )
 
   return (
     <Column justifyContent="space-between" gap="8px" width="100%" ml={['0px', '0px', '16px', '16px']} mt="24px">
@@ -108,7 +106,7 @@ export function MerklSection({
           <MessageText color="textSubtle">
             {t('This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.')}
             <br />
-            {learnMoreComp}
+            <LearnMoreLink />
           </MessageText>
         </Message>
       ) : hasMerkl ? (
@@ -130,7 +128,7 @@ export function MerklSection({
               {t('here')}
             </Link>{' '}
             <br />
-            {learnMoreComp}
+            <LearnMoreLink />
           </MessageText>
         </Message>
       ) : null}
