@@ -33,6 +33,28 @@ export enum TransactionType {
   BURN,
 }
 
+export type ApiTransaction = {
+  type: 'mint' | 'burn' | 'swap'
+  transactionHash: string
+  timestamp: Record<string, never> | string
+  origin: null | string
+  token0: {
+    id: string
+    symbol: string
+    name: string
+    decimals: number
+  }
+  token1: {
+    id: string
+    symbol: string
+    name: string
+    decimals: number
+  }
+  amountUSD: string
+  amount0: string
+  amount1: string
+}
+
 export type Transaction = {
   type: TransactionType
   hash: string
@@ -97,7 +119,7 @@ export type PoolChartEntry = {
   feesUSD: number
 }
 
-export interface RawPoolData {
+export interface ApiPoolData {
   feeTier: number
   id: string
   volumeUSD24h: string
