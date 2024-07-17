@@ -14,7 +14,7 @@ import {
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { Address } from 'viem'
 
-export type Protocol = 'v2' | 'v3' | 'stable'
+export type Protocol = 'v2' | 'v3' | 'stable' | 'v4bin'
 
 export type FarmBaseConfig = {
   protocol: Protocol
