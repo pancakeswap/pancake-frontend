@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import type { ONRAMP_PROVIDERS } from '../constants'
 
 export type ProviderAvailabilities = { [provider in keyof typeof ONRAMP_PROVIDERS]: boolean }
@@ -11,7 +12,7 @@ export const useProviderAvailabilities = () => {
   return useQuery({
     queryKey: ['providerAvailabilities'],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:8083/fetch-provider-availability`, {
+      const response = await fetch(`${ONRAMP_API_BASE_URL}{/fetch-provider-availability`, {
         method: 'POST',
         body: JSON.stringify({}),
         headers: {
