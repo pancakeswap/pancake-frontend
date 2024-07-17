@@ -12,6 +12,7 @@ import {
   getNftMarketContract,
   getPointCenterIfoContract,
   getProfileContract,
+  getQuestRewardContract,
 } from 'utils/contractHelpers'
 
 import { erc721CollectionABI } from 'config/abi/erc721collection'
@@ -96,4 +97,9 @@ export const useErc721CollectionContract = (collectionAddress: Address | undefin
 export function useMulticallContract() {
   const { chainId } = useActiveChainId()
   return useContract(getMulticallAddress(chainId), multicallABI)
+}
+
+export function useQuestRewardContract(chainId: ChainId) {
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getQuestRewardContract(chainId, signer ?? undefined), [chainId, signer])
 }

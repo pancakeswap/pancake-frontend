@@ -33,3 +33,7 @@ export const getPointCenterIfoAddress = () => {
 export const getMulticallAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.multiCall, chainId)
 }
+
+export const getQuestRewardAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.questReward, chainId)
+}

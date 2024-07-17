@@ -37,4 +37,8 @@ export default {
     [ChainId.BSC]: '0x3C6919b132462C1FEc572c6300E83191f4F0012a',
     [ChainId.BSC_TESTNET]: '0xd2Ac1B1728Bb1C11ae02AB6e75B76Ae41A2997e3',
   },
+  questReward: {
+    [ChainId.BSC]: '0x7DD6Fe51D6e39F0dabdEAb8B2EDbD473613Dc542',
+    [ChainId.BSC_TESTNET]: '0x',
+  },
 } as const satisfies Record<string, Record<number, `0x${string}`>>

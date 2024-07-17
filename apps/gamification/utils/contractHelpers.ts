@@ -4,6 +4,7 @@ import {
   getNftMarketAddress,
   getPancakeProfileAddress,
   getPointCenterIfoAddress,
+  getQuestRewardAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -12,6 +13,7 @@ import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
 import { nftMarketABI } from 'config/abi/nftMarket'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
+import { questRewardAbi } from 'config/abi/questRewardAbi'
 import { viemClients } from 'utils/viem'
 import {
   Abi,
@@ -74,4 +76,8 @@ export const getNftMarketContract = (signer?: WalletClient) => {
 
 export const getPointCenterIfoContract = (signer?: WalletClient) => {
   return getContract({ abi: pointCenterIfoABI, address: getPointCenterIfoAddress(), signer })
+}
+
+export const getQuestRewardContract = (chainId: ChainId, signer?: WalletClient) => {
+  return getContract({ abi: questRewardAbi, address: getQuestRewardAddress(chainId), signer })
 }
