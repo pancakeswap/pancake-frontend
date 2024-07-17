@@ -14,6 +14,7 @@ export type PoolInfo = {
   feeTier: bigint
   feeTierBase: bigint
   // @todo @ChefJerry add whitelist field
+  whitelist?: boolean
 }
 
 export type ChainIdAddressKey = `${number}:${Address}`

@@ -33,6 +33,8 @@ export const parseFarmPools = (
       feeTier: BigInt(pool.feeTier),
       // @todo @ChefJerry get by protocols
       feeTierBase: 1_000_000n,
+      // @todo @ChefJerry implement whitelist
+      whitelist: false,
     } satisfies PoolInfo
   })
 }
