@@ -80,12 +80,7 @@ export function MerklSection({
           {isClaiming ? t('Claiming...') : t('Claim')}
         </Button>
       </AutoRow>
-      <LightGreyCard
-        mr="4px"
-        style={{
-          padding: '16px 8px',
-        }}
-      >
+      <LightGreyCard mr="4px" padding="16px 8px">
         {rewardsPerToken.map((tokenAmount) => (
           <AutoRow justifyContent="space-between">
             <Flex>
@@ -123,10 +118,10 @@ export function MerklSection({
               external
               color="currentColor"
               style={{ display: 'inline-flex' }}
-              href="https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=PancakeSwap"
+              href="https://merkl.angle.money/?search=PancakeSwap&status=live%2Csoon"
             >
               {t('here')}
-            </Link>{' '}
+            </Link>
             <br />
             <LearnMoreLink />
           </MessageText>
