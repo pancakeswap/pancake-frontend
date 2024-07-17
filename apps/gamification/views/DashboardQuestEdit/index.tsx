@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { nanoid } from '@reduxjs/toolkit'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { EditTemplate } from 'views/DashboardQuestEdit/components/EditTemplate'
 import { Reward } from 'views/DashboardQuestEdit/components/Reward'
@@ -31,7 +31,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
   const router = useRouter()
   const [showPage, setShowPage] = useState(false)
   const { isDesktop } = useMatchBreakpoints()
-  const { state, updateValue, onTasksChange, updateAllState } = useQuestEdit()
+  const { state, tasks: tasksData, updateValue, onTasksChange, updateAllState } = useQuestEdit()
   const { questData, isFetched } = useGetSingleQuestData(questId as string)
 
   useEffect(() => {
@@ -85,6 +85,8 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
     }
   }, [questId, isFetched, showPage, questData, onTasksChange, updateAllState, router])
 
+  const hasTask = useMemo(() => tasksData?.length > 0, [tasksData])
+
   if (!showPage && questId) {
     return null
   }
@@ -92,10 +94,14 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
   return (
     <DashboardQuestEditContainer>
       <EditTemplate titleText={t('Quest title')} state={state} updateValue={updateValue}>
-        {!isDesktop && <Reward state={state} actionComponent={<SubmitAction />} updateValue={updateValue} />}
+        {!isDesktop && (
+          <Reward state={state} hasTask={hasTask} actionComponent={<SubmitAction />} updateValue={updateValue} />
+        )}
         <Tasks />
       </EditTemplate>
-      {isDesktop && <Reward state={state} actionComponent={<SubmitAction />} updateValue={updateValue} />}
+      {isDesktop && (
+        <Reward state={state} hasTask={hasTask} actionComponent={<SubmitAction />} updateValue={updateValue} />
+      )}
     </DashboardQuestEditContainer>
   )
 }

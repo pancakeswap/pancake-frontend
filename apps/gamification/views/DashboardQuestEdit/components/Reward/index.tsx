@@ -29,11 +29,12 @@ const BoxContainer = styled(Flex)`
 
 interface RewardProps {
   state: StateType
+  hasTask: boolean
   actionComponent?: JSX.Element
   updateValue: (key: string, value: string | QuestRewardType) => void
 }
 
-export const Reward: React.FC<RewardProps> = ({ state, actionComponent, updateValue }) => {
+export const Reward: React.FC<RewardProps> = ({ state, hasTask, actionComponent, updateValue }) => {
   const { t } = useTranslation()
   const { reward, completionStatus } = state
 
@@ -88,6 +89,7 @@ export const Reward: React.FC<RewardProps> = ({ state, actionComponent, updateVa
             ) : (
               <AddReward
                 state={state}
+                hasTask={hasTask}
                 reward={reward}
                 amountOfWinners={0}
                 handlePickedRewardToken={handlePickedRewardToken}

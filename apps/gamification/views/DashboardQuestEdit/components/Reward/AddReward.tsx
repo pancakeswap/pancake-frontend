@@ -14,12 +14,19 @@ const AddRewardContainer = styled(Flex)`
 
 interface AddRewardProps {
   state: StateType
+  hasTask: boolean
   reward: undefined | QuestRewardType
   amountOfWinners: number
   handlePickedRewardToken: (value: Currency, totalRewardAmount: number, amountOfWinnersInModal: number) => void
 }
 
-export const AddReward: React.FC<AddRewardProps> = ({ state, reward, amountOfWinners, handlePickedRewardToken }) => {
+export const AddReward: React.FC<AddRewardProps> = ({
+  state,
+  hasTask,
+  reward,
+  amountOfWinners,
+  handlePickedRewardToken,
+}) => {
   const { t } = useTranslation()
   const { toastError } = useToast()
   const [onPresentAddRewardModal] = useModal(
@@ -40,6 +47,8 @@ export const AddReward: React.FC<AddRewardProps> = ({ state, reward, amountOfWin
       toastError(t('Only available for Draft status'))
     } else if (endDateTime <= 0) {
       toastError(t('Please setup end time'))
+    } else if (!hasTask) {
+      toastError(t('Please create at least 1 task'))
     } else {
       onPresentAddRewardModal()
     }
