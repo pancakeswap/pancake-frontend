@@ -211,7 +211,7 @@ export const SubmitAction = () => {
                 width="100%"
                 variant="secondary"
                 disabled={!isAbleToSave}
-                endIcon={<CalenderIcon color={isAbleToSave ? 'primary' : 'textDisabled'} width={20} height={20} />}
+                endIcon={<PencilIcon color={isAbleToSave ? 'primary' : 'textDisabled'} width={20} height={20} />}
                 onClick={() => handleSave(Boolean(!query.id), CompletionStatus.DRAFTED, true)}
               >
                 {t('Save and Add Reward')}
