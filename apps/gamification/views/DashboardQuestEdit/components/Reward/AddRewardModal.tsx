@@ -2,11 +2,12 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { Box, Button, Flex, InjectedModalProps, Input, Modal, Text } from '@pancakeswap/uikit'
-import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { BigNumber } from 'bignumber.js'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import { CurrencySearch } from 'components/SearchModal/CurrencySearch'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useCurrencyBalance } from 'hooks/useTokenBalance'
 import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
@@ -14,6 +15,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import { LongPressSvg } from 'views/DashboardQuestEdit/components/SubmitAction/LongPressSvg'
 import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
+import { useQuestRewardApprovalStatus } from 'views/DashboardQuestEdit/hooks/useQuestRewardApprovalStatus'
+import { EnableButton } from './EnableButton'
 import { WarningInfo } from './WarningInfo'
 
 const YellowButton = styled(Button)`
@@ -124,6 +127,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
 
   const [inputCurrency, setInputCurrency] = useState<Currency>(defaultInputCurrency)
   const [stakeAmount, setStakeAmount] = useState(reward?.totalRewardAmount?.toString() ?? '')
+  const nativeToken = useNativeCurrency(inputCurrency.chainId)
 
   const currencyBalance = useCurrencyBalance(inputCurrency)
 
@@ -191,6 +195,18 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     )
   }, [currencyBalance, displayAmountOfWinnersInModal, inputCurrency, stakeAmount, isRewardDistribution])
 
+  // Approve
+  const tokenAddress = inputCurrency.isNative ? inputCurrency.wrapped.address : inputCurrency.address
+  const { allowance, setLastUpdated } = useQuestRewardApprovalStatus(tokenAddress, inputCurrency.chainId)
+
+  const needEnable = useMemo(() => {
+    if (!inputCurrency.isNative && nativeToken.wrapped.address.toLowerCase() !== tokenAddress.toLowerCase()) {
+      const amount = getDecimalAmount(new BigNumber(stakeAmount), inputCurrency.decimals)
+      return amount.gt(allowance)
+    }
+    return false
+  }, [allowance, inputCurrency, tokenAddress, nativeToken, stakeAmount])
+
   return (
     <Modal title={config[modalView].title} onDismiss={config[modalView].onBack}>
       <Flex
@@ -240,6 +256,8 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
               <Button width="100%" mt="24px" onClick={handleSwitchNetwork}>
                 {t('Switch Network')}
               </Button>
+            ) : needEnable ? (
+              <EnableButton currency={inputCurrency} setLastUpdated={setLastUpdated} />
             ) : (
               <YellowButton
                 width="100%"

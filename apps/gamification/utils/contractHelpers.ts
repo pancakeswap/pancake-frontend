@@ -21,6 +21,7 @@ import {
   GetContractReturnType,
   PublicClient,
   WalletClient,
+  erc20Abi,
   erc721Abi,
   getContract as viemGetContract,
 } from 'viem'
@@ -52,6 +53,10 @@ export const getContract = <TAbi extends Abi | readonly unknown[], TWalletClient
     account: signer?.account,
     chain: signer?.chain,
   }
+}
+
+export const getBep20Contract = (address: Address, signer?: WalletClient) => {
+  return getContract({ abi: erc20Abi, address, signer })
 }
 
 export const getErc721Contract = (address: Address, walletClient?: WalletClient) => {

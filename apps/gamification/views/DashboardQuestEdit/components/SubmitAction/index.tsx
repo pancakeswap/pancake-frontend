@@ -103,6 +103,8 @@ export const SubmitAction = () => {
       })
       toastSuccess(t('Submit Successfully!'))
 
+      // const result = await response.json()
+      // push(`/dashboard/quest/edit/${result.data.id}`)
       if (state.completionStatus === CompletionStatus.SCHEDULED || completionStatus !== CompletionStatus.SCHEDULED) {
         push('/dashboard')
       }
@@ -168,11 +170,6 @@ export const SubmitAction = () => {
             {t('Delete')}
           </StyledDeleteButton>
         )}
-      <Button
-        onClick={() => handleSave(Boolean(!query.id), query.id ? state.completionStatus : CompletionStatus.DRAFTED)}
-      >
-        SAVE BUTTON FOR RUBY
-      </Button>
       {completionStatusToString !== CompletionStatus.FINISHED &&
         completionStatusToString !== CompletionStatus.ONGOING && (
           <>
@@ -242,6 +239,12 @@ export const SubmitAction = () => {
           )}
         </Box>
       )}
+      <Button
+        mt="24px"
+        onClick={() => handleSave(Boolean(!query.id), query.id ? state.completionStatus : CompletionStatus.DRAFTED)}
+      >
+        SAVE BUTTON FOR RUBY
+      </Button>
     </Flex>
   )
 }
