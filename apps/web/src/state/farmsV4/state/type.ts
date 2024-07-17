@@ -3,6 +3,7 @@ import { Currency, Token } from '@pancakeswap/swap-sdk-core'
 import { Address } from 'viem'
 
 export type PoolInfo = {
+  pid?: number
   chainId: number
   lpAddress: Address
   protocol: Protocol
@@ -15,6 +16,18 @@ export type PoolInfo = {
   feeTierBase: number
   // @todo @ChefJerry add whitelist field
   whitelist?: boolean
+}
+
+export type V3PoolInfo = PoolInfo & {
+  protocol: 'v3'
+}
+
+export type V2PoolInfo = PoolInfo & {
+  protocol: 'v2'
+}
+
+export type StablePoolInfo = PoolInfo & {
+  protocol: 'stable'
 }
 
 export type ChainIdAddressKey = `${number}:${Address}`
