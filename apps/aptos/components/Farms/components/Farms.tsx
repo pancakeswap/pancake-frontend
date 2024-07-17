@@ -20,6 +20,7 @@ import {
 } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
+import { AptosYieldFarmingBanner } from 'components/Banner/AptosYieldFarmingBanner'
 import useLpRewardsAprs from 'components/Farms/hooks/useLpRewardsAprs'
 import Page from 'components/Layout/Page'
 import NoSSR from 'components/NoSSR'
@@ -310,6 +311,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <FarmsContext.Provider value={providerValue}>
       <PageHeader>
+        <Box mb="32px" mt="16px">
+          <AptosYieldFarmingBanner />
+        </Box>
         <FarmFlexWrapper justifyContent="space-between">
           <Box>
             <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">

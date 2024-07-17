@@ -38,6 +38,7 @@ import {
   TokenData,
   Transaction,
 } from '../types'
+import { transformPoolData } from '../utils'
 
 const QUERY_SETTINGS_IMMUTABLE = {
   retry: 3,
@@ -327,27 +328,10 @@ export async function fetchTopPools(chainName: components['schemas']['ChainName'
     return {
       data: data.reduce(
         (acc, item) => {
-          // eslint-disable-next-line no-param-reassign
-          acc[item.id] = {
-            ...item,
-            address: item.id,
-            volumeUSD: parseFloat(item.volumeUSD24h),
-            volumeUSDWeek: parseFloat(item.volumeUSD7d),
-            token0: { ...item.token0, address: item.token0.id, derivedETH: 0 },
-            token1: { ...item.token1, address: item.token1.id, derivedETH: 0 },
-            feeUSD: item.totalFeeUSD,
-            liquidity: parseFloat(item.liquidity),
-            sqrtPrice: parseFloat(item.sqrtPrice),
-            tick: item.tick ?? 0,
-            tvlUSD: parseFloat(item.tvlUSD),
-            token0Price: parseFloat(item.token0Price),
-            token1Price: parseFloat(item.token1Price),
-            tvlToken0: parseFloat(item.tvlToken0),
-            tvlToken1: parseFloat(item.tvlToken1),
-            volumeUSDChange: 0,
-            tvlUSDChange: 0,
+          return {
+            ...acc,
+            [item.id]: transformPoolData(item),
           }
-          return acc
         },
         {} as {
           [address: string]: PoolData
