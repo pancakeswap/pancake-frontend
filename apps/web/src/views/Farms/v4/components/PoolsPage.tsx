@@ -1,24 +1,26 @@
-import { Protocol, UNIVERSAL_FARMS, UniversalFarmConfig } from '@pancakeswap/farms'
-import { useTranslation } from '@pancakeswap/localization'
-import { ERC20Token } from '@pancakeswap/sdk'
+import styled from 'styled-components'
+import keyBy from 'lodash/keyBy'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Button,
   Card,
-  FeeTier,
-  ITableViewProps,
   MoreIcon,
   CardBody as RawCardBody,
   CardHeader as RawCardHeader,
   SubMenu,
+  ITableViewProps,
   TableView,
+  FeeTier,
   Image,
+  ISortOrder,
+  SORT_ORDER,
 } from '@pancakeswap/uikit'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import keyBy from 'lodash/keyBy'
 import { TokenPairImage } from 'components/TokenImage'
+import { useTranslation } from '@pancakeswap/localization'
+import { ERC20Token } from '@pancakeswap/sdk'
 import { TokenOverview, toTokenValue } from '@pancakeswap/widgets-internal'
+import { UniversalFarmConfig, UNIVERSAL_FARMS, Protocol } from '@pancakeswap/farms'
 import { explorerApiClient } from 'state/info/api/client'
-import styled from 'styled-components'
 // import { PoolType } from '@pancakeswap/smart-router'
 import { Address } from 'viem/accounts'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
@@ -123,25 +125,28 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
         title: t('Fee Tier'),
         dataIndex: 'feeTier',
         key: 'feeTier',
-        // todo:@eric 补充denominator
+        // todo:@eric add denominator
         render: (fee, item) => <FeeTier type={item.protocol} fee={fee ?? 0} />,
       },
       {
         title: t('APR'),
         dataIndex: 'apr24h',
         key: 'apr',
+        sorter: true,
         render: (value) => (value ? <>{(Number(value) * 100).toFixed(2)}%</> : '-'),
       },
       {
         title: t('TVL'),
         dataIndex: 'tvlUsd',
         key: 'tvl',
+        sorter: true,
         render: (value) => (value ? <>${(Number(value) / 1000).toFixed(3)}k</> : '-'),
       },
       {
         title: t('Volume 24H'),
         dataIndex: 'vol24hUsd',
         key: 'vol',
+        sorter: true,
         render: (value) => (value ? <>${(Number(value) / 1000).toFixed(3)}k</> : '-'),
       },
       {
@@ -213,9 +218,7 @@ const useFetchFarmingListFromAPI = () => {
       .GET('/cached/pools/farming', {
         params: {
           query: {
-            // @ts-ignore
             protocols: protocols.join(','),
-            // @ts-ignore
             chains: allChainsName.join(','),
           },
         },
@@ -249,9 +252,11 @@ export const PoolsPage = () => {
     selectedTokens: [],
   })
   const farmingList = useFetchFarmingListFromAPI()
+  const selectedPoolTypes = useSelectedPoolTypes(filters.selectedTypeIndex)
   const { observerRef, isIntersecting } = useIntersectionObserver({ rootMargin: '10px' })
   const [numberVisible, setNumberVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
-  const selectedPoolTypes = useSelectedPoolTypes(filters.selectedTypeIndex)
+  const [sortOrder, setSortOrder] = useState<ISortOrder>(SORT_ORDER.NULL)
+  const [sortField, setSortField] = useState<keyof IDataType | null>(null)
 
   const handleFilterChange: IPoolsFilterPanelProps['onChange'] = useCallback((newFilters) => {
     setFilters((prevFilters) => ({
@@ -284,6 +289,13 @@ export const PoolsPage = () => {
     )
   }, [farmingList, filters, selectedPoolTypes])
 
+  const sortedData = useMemo(() => {
+    if (sortField === null) {
+      return filteredData
+    }
+    return [...filteredData].sort((a, b) => sortOrder * a[sortField] + -1 * sortOrder * b[sortField])
+  }, [sortOrder, sortField, filteredData])
+
   return (
     <Card>
       <CardHeader>
@@ -291,7 +303,17 @@ export const PoolsPage = () => {
       </CardHeader>
       <CardBody>
         <PoolsContent>
-          <TableView rowKey="lpAddress" columns={columns} data={filteredData.slice(0, numberVisible) as any} />
+          <TableView
+            rowKey="lpAddress"
+            columns={columns}
+            data={sortedData.slice(0, numberVisible) as any}
+            onSort={({ order, dataIndex }) => {
+              setSortOrder(order)
+              setSortField(dataIndex)
+            }}
+            sortOrder={sortOrder}
+            sortField={sortField}
+          />
         </PoolsContent>
         {farmingList.length > 0 && <div ref={observerRef} />}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
