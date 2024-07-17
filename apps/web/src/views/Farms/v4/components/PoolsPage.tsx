@@ -1,23 +1,23 @@
-import styled from 'styled-components'
-import keyBy from 'lodash/keyBy'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Protocol, UNIVERSAL_FARMS, UniversalFarmConfig } from '@pancakeswap/farms'
+import { useTranslation } from '@pancakeswap/localization'
+import { ERC20Token } from '@pancakeswap/sdk'
 import {
   Button,
   Card,
+  FeeTier,
+  ITableViewProps,
   MoreIcon,
   CardBody as RawCardBody,
   CardHeader as RawCardHeader,
   SubMenu,
-  ITableViewProps,
   TableView,
-  FeeTier,
 } from '@pancakeswap/uikit'
-import { TokenPairImage } from 'components/TokenImage'
-import { useTranslation } from '@pancakeswap/localization'
-import { ERC20Token } from '@pancakeswap/sdk'
 import { TokenOverview } from '@pancakeswap/widgets-internal'
-import { UniversalFarmConfig, UNIVERSAL_FARMS, Protocol } from '@pancakeswap/farms'
+import { TokenPairImage } from 'components/TokenImage'
+import keyBy from 'lodash/keyBy'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { explorerApiClient } from 'state/info/api/client'
+import styled from 'styled-components'
 // import { PoolType } from '@pancakeswap/smart-router'
 import { Address } from 'viem/accounts'
 
@@ -204,7 +204,9 @@ const useFetchFarmingListFromAPI = () => {
       .GET('/cached/pools/farming', {
         params: {
           query: {
+            // @ts-ignore
             protocols: protocols.join(','),
+            // @ts-ignore
             chains: allChainsName.join(','),
           },
         },
