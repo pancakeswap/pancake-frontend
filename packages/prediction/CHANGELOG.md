@@ -1,5 +1,12 @@
 # @pancakeswap/prediction
 
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies [bf07bfa]
+  - @pancakeswap/pools@5.1.29
+
 ## 1.1.0
 
 ### Minor Changes
