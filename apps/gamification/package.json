@@ -55,7 +55,6 @@
     "@wagmi/core": "2.10.5",
     "bignumber.js": "^9.1.2",
     "blocto": "link:@pancakeswap/wagmi/connectors/blocto",
-    "crypto-js": "^4.2.0",
     "dayjs": "^1.11.10",
     "easymde": "2.16.1",
     "graphql": "^16.8.1",

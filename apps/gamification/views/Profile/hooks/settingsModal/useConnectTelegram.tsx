@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
-import CryptoJS from 'crypto-js'
 import { useEffect } from 'react'
 import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { connectSocial } from 'views/Profile/utils/connectSocial'
@@ -28,37 +27,6 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
 
-  const validateAuth = async (authData: any) => {
-    const { auth_date: authDate, first_name: firstName, hash, id, username } = authData as any
-    // Step 1: Create data_check_string
-    const dataCheckString = `auth_date=${authDate}\nfirst_name=${firstName}\nid=${id}\nusername=${username}`
-
-    // Step 2: Generate secret_key
-    const botToken = '7140457343:AAFWaqWpI2gvLjmMB-Lp9slsAbd0T5NW_Pg'
-    const secretKey = CryptoJS.SHA256(botToken).toString(CryptoJS.enc.Hex)
-
-    // Step 3: Generate HMAC-SHA-256 signature
-    const hmac = CryptoJS.HmacSHA256(dataCheckString, secretKey).toString(CryptoJS.enc.Hex)
-
-    // Step 4: Compare the generated HMAC with the received hash
-    if (hmac === hash) {
-      console.log('Data is from Telegram')
-    } else {
-      console.log('Data validation failed')
-    }
-
-    // Step 5: Verify the timestamp to prevent outdated data usage
-    const currentTime = Math.floor(Date.now() / 1000)
-    const timeDiff = currentTime - authDate
-    const maxTimeDiff = 86400 // 24 hours in seconds
-
-    if (timeDiff > maxTimeDiff) {
-      console.log('Auth data is outdated')
-    } else {
-      console.log('Auth data is within valid time frame')
-    }
-  }
-
   useEffect(() => {
     // Load the Telegram Login Widget script
     const script = document.createElement('script')
@@ -81,8 +49,6 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
       async (user: TelegramResponse) => {
         if (user && account) {
           try {
-            console.log(user)
-            validateAuth(user)
             await connectSocial({
               account,
               userInfo,
