@@ -52,6 +52,7 @@ import { formatRawAmount } from 'utils/formatCurrencyAmount'
 import { getViemClients } from 'utils/viem'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { logGTMClickRemoveLiquidityEvent } from 'utils/customGTMEventTracking'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useBurnV3ActionHandlers } from './form/hooks'
@@ -544,7 +545,10 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
           <Button
             disabled={attemptingTxn || removed || Boolean(error)}
             width="100%"
-            onClick={onPresentRemoveLiquidityModal}
+            onClick={() => {
+              onPresentRemoveLiquidityModal()
+              logGTMClickRemoveLiquidityEvent()
+            }}
           >
             {removed ? t('Closed') : error ?? t('Remove')}
           </Button>

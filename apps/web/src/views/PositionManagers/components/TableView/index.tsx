@@ -75,7 +75,6 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
     name,
     strategy,
     feeTier,
-    autoFarm,
     manager,
     address,
     adapterAddress,
@@ -260,7 +259,6 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                         currencyB={currencyB}
                         vaultName={vaultName}
                         feeTier={feeTier}
-                        autoFarm={autoFarm}
                         autoCompound={autoCompound}
                         isSingleDepositToken={isSingleDepositToken}
                         allowDepositToken1={allowDepositToken1 ?? false}
@@ -370,7 +368,6 @@ export const TableRow: React.FC<Props> = ({ config, farmsV3, aprDataList, update
                   currencyB={currencyB}
                   vaultName={vaultName}
                   feeTier={feeTier}
-                  autoFarm={autoFarm}
                   autoCompound={autoCompound}
                   isSingleDepositToken={isSingleDepositToken}
                   allowDepositToken1={allowDepositToken1 ?? false}

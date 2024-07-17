@@ -2,14 +2,7 @@ import { GraphQLClient } from 'graphql-request'
 import { infoStableSwapClients, v2Clients } from 'utils/graphql'
 
 import { ChainId } from '@pancakeswap/chains'
-import {
-  BSC_TOKEN_WHITELIST,
-  ETH_TOKEN_BLACKLIST,
-  ETH_TOKEN_WHITELIST,
-  PCS_ETH_START,
-  PCS_V2_START,
-  TOKEN_BLACKLIST,
-} from 'config/constants/info'
+import { BSC_TOKEN_WHITELIST, ETH_TOKEN_BLACKLIST, ETH_TOKEN_WHITELIST, TOKEN_BLACKLIST } from 'config/constants/info'
 import mapValues from 'lodash/mapValues'
 import { arbitrum, base, bsc, linea, mainnet, opBNB, polygonZkEvm, zkSync } from 'wagmi/chains'
 

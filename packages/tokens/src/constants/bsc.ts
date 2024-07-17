@@ -3205,4 +3205,12 @@ export const bscTokens = {
     'SolvBTC Ethena',
     'https://solv.finance/',
   ),
+  dao: new ERC20Token(
+    ChainId.BSC,
+    '0x4d2d32d8652058Bf98c772953E1Df5c5c85D9F45',
+    18,
+    'DAO',
+    'DAO Maker',
+    'https://app.daomaker.com/',
+  ),
 }

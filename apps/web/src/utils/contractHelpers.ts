@@ -243,8 +243,8 @@ export const getChainlinkOracleContract = (address: Address, signer?: WalletClie
   return getContract({ abi: chainlinkOracleABI, address, signer, chainId })
 }
 
-export const getFarmAuctionContract = (signer?: WalletClient) => {
-  return getContract({ abi: farmAuctionABI, address: getFarmAuctionAddress(), signer })
+export const getFarmAuctionContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({ abi: farmAuctionABI, address: getFarmAuctionAddress(chainId), signer })
 }
 
 export const getNftMarketContract = (signer?: WalletClient) => {

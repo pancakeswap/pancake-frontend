@@ -45,10 +45,11 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { CommonBasesType } from 'components/SearchModal/types'
 import { Field } from 'state/burn/actions'
 import { useRemoveLiquidityV2FormState } from 'state/burn/reducer'
-import { useGasPrice } from 'state/user/hooks'
-import { isUserRejected, logError } from 'utils/sentry'
 import { useLPApr } from 'state/swap/useLPApr'
+import { useGasPrice } from 'state/user/hooks'
+import { logGTMClickRemoveLiquidityEvent } from 'utils/customGTMEventTracking'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { isUserRejected, logError } from 'utils/sentry'
 import { RemoveLiquidityLayout } from '..'
 import ConnectWalletButton from '../../../components/ConnectWalletButton'
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
@@ -594,6 +595,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
                     txHash: undefined,
                   })
                   onPresentRemoveLiquidity()
+                  logGTMClickRemoveLiquidityEvent()
                 }}
                 width="100%"
                 disabled={!isValid || approvalState !== ApprovalState.APPROVED}

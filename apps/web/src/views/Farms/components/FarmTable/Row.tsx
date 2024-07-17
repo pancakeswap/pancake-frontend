@@ -6,7 +6,6 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { createElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMerklInfo } from 'hooks/useMerkl'
 import { type V3Farm } from 'state/farms/types'
 import { useMerklUserLink } from 'utils/getMerklLink'
@@ -123,7 +122,6 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   const { tokenIds } = useUserBoostedPoolsTokenId()
   const { isBoosted } = useIsSomePositionBoosted(props.type === 'v3' ? props?.details?.stakedPositions : [], tokenIds)
   const { locked } = useBCakeBoostLimitAndLockInfo()
-  const { chainId } = useActiveChainId()
   const toggleActionPanel = useCallback(() => {
     setActionPanelExpanded(!actionPanelExpanded)
   }, [actionPanelExpanded])

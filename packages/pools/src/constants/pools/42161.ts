@@ -5,6 +5,15 @@ import { PoolCategory, SerializedPool } from '../../types'
 
 export const livePools: SerializedPool[] = [
   {
+    sousId: 5,
+    stakingToken: arbitrumTokens.alp,
+    earningToken: arbitrumTokens.arb,
+    contractAddress: '0xD2e71125ec0313874d578454E28086fba7444c0c',
+    poolCategory: PoolCategory.CORE,
+    tokenPerSecond: '0.0310019841',
+    version: 3,
+  },
+  {
     sousId: 4,
     stakingToken: arbitrumTokens.alp,
     earningToken: arbitrumTokens.arb,

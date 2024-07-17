@@ -28,8 +28,7 @@ export abstract class SqrtPriceMath {
     roundUp: boolean
   ): bigint {
     if (sqrtRatioAX96 > sqrtRatioBX96) {
-      sqrtRatioAX96 = sqrtRatioBX96
-      sqrtRatioBX96 = sqrtRatioAX96
+      ;[sqrtRatioAX96, sqrtRatioBX96] = [sqrtRatioBX96, sqrtRatioAX96]
     }
 
     const numerator1 = liquidity << 96n
@@ -47,8 +46,7 @@ export abstract class SqrtPriceMath {
     roundUp: boolean
   ): bigint {
     if (sqrtRatioAX96 > sqrtRatioBX96) {
-      sqrtRatioAX96 = sqrtRatioBX96
-      sqrtRatioBX96 = sqrtRatioAX96
+      ;[sqrtRatioAX96, sqrtRatioBX96] = [sqrtRatioBX96, sqrtRatioAX96]
     }
 
     return roundUp

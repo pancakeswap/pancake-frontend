@@ -1,21 +1,23 @@
 import { SelectItem } from "primereact/selectitem";
-import { MultiSelectProps } from "primereact/multiselect";
+import { MultiSelectProps, MultiSelectChangeEvent } from "primereact/multiselect";
 
-export interface ISelectItem extends SelectItem {
-  icon?: string;
-  value: string;
+export type { MultiSelectChangeEvent };
+
+export interface ISelectItem<T extends string | number> extends SelectItem {
+  icon?: string | JSX.Element;
+  value: T;
   label: string;
+  [k: string]: any;
 }
 
-export type IOptionType = ISelectItem[];
+export type IOptionType<T extends string | number> = ISelectItem<T>[];
 
-export interface IMultiSelectProps extends MultiSelectProps {
+export interface IMultiSelectProps<T extends string | number> extends MultiSelectProps {
   style?: React.CSSProperties;
   panelStyle?: React.CSSProperties;
   scrollHeight?: string;
-  options?: IOptionType;
+  options?: IOptionType<T>;
   placeholder?: string;
-  defaultValue?: string[];
-  isFilter?: boolean;
-  isSelectAll?: boolean;
+  isShowFilter?: boolean;
+  isShowSelectAll?: boolean;
 }

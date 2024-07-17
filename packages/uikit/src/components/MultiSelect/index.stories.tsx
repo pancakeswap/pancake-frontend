@@ -46,7 +46,7 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
           scrollHeight="382px"
           options={chains}
           defaultValue={[chains[0].value, chains[2].value]}
-          isFilter
+          isShowFilter
           panelFooterTemplate={() => <span>Don’t see expected tokens?</span>}
         />
       </Column>
@@ -59,7 +59,7 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
           scrollHeight="400px"
           options={chains}
           defaultValue={[chains[0].value, chains[2].value]}
-          isSelectAll
+          isShowSelectAll
           selectAllLabel="All networks"
         />
       </Column>

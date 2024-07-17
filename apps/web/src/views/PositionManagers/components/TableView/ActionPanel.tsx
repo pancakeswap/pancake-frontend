@@ -26,7 +26,6 @@ export const ActionPanel: React.FC<
   earningToken,
   isInCakeRewardDateRange,
   manager,
-  vaultAddress,
   managerAddress,
   managerInfoUrl,
   strategyInfoUrl,

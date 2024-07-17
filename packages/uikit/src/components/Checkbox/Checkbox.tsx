@@ -74,7 +74,7 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
     border: 0;
     background-color: ${theme.colors[colors?.checkedBackground ?? "success"]};
     &:before {
-      border-color: white;
+      border-color: ${theme.colors.backgroundAlt};
     }
     `}
 
@@ -91,7 +91,7 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
     border: 0;
     background-color: ${({ theme, colors }) => theme.colors[colors?.checkedBackground ?? "success"]};
     &:after {
-      border-color: white;
+      border-color: ${({ theme, colors }) => (colors?.checkedColor ? theme.colors[colors?.checkedColor] : "white")};
     }
   }
 

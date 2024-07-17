@@ -1,8 +1,8 @@
 import { Token, getTokenComparator } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
-import { useAllTokenBalances } from 'state/wallet/hooks'
+import { useAllTokenBalances } from '../state/wallet/hooks'
 
-function useTokenComparator(inverted: boolean): (tokenA: Token, tokenB: Token) => number {
+export function useTokenComparator(inverted: boolean): (tokenA: Token, tokenB: Token) => number {
   const balances = useAllTokenBalances()
   const comparator = useMemo(() => getTokenComparator(balances ?? {}), [balances])
   return useMemo(() => {
@@ -12,5 +12,3 @@ function useTokenComparator(inverted: boolean): (tokenA: Token, tokenB: Token) =
     return comparator
   }, [inverted, comparator])
 }
-
-export default useTokenComparator
