@@ -16,6 +16,7 @@ import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { Description } from 'views/Quest/components/Description'
 // import { ExploreMore } from 'views/Quest/components/ExploreMore'
 // import { RelatedQuest } from 'views/Quest/components/RelatedQuest'
+import { ChainId } from '@pancakeswap/chains'
 import { useEffect, useMemo } from 'react'
 import { convertTimestampToDate } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 import { Reward } from 'views/Quest/components/Reward'
@@ -79,7 +80,11 @@ export const Quest = () => {
               </Text>
             </Flex>
           </StyledBackButton>
-          <Share title={quest.title} contractChainId={quest.chainId} contractAddress={quest.rewardSCAddress} />
+          <Share
+            title={quest.title}
+            contractChainId={quest.reward?.currency?.network as ChainId}
+            contractAddress={quest.rewardSCAddress}
+          />
         </Flex>
         <Box mt="16px">
           {quest?.completionStatus === CompletionStatus.ONGOING && <Tag variant="success">{t('Ongoing')}</Tag>}
