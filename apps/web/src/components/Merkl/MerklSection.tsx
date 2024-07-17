@@ -80,12 +80,7 @@ export function MerklSection({
           {isClaiming ? t('Claiming...') : t('Claim')}
         </Button>
       </AutoRow>
-      <LightGreyCard
-        mr="4px"
-        style={{
-          padding: '16px 8px',
-        }}
-      >
+      <LightGreyCard mr="4px" padding="16px 8px">
         {rewardsPerToken.map((tokenAmount) => (
           <AutoRow justifyContent="space-between">
             <Flex>
@@ -116,8 +111,8 @@ export function MerklSection({
               ? t(
                   'This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.',
                 )
-              : t('This liquidity position is currently earning rewards on Merkl.')}{' '}
-            {t('Details')}{' '}
+              : t('This liquidity position is currently earning rewards on Merkl.')}
+            {t('Details')}
             <Link
               fontSize="md"
               external
@@ -126,7 +121,7 @@ export function MerklSection({
               href="https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=PancakeSwap"
             >
               {t('here')}
-            </Link>{' '}
+            </Link>
             <br />
             <LearnMoreLink />
           </MessageText>
