@@ -4,11 +4,11 @@ import * as namedExports from './index'
 test('exports', () => {
   expect(Object.keys(namedExports)).toMatchInlineSnapshot(`
     [
-      "UNIVERSAL_FARMS",
-      "UNIVERSAL_BCAKEWRAPPER_FARMS",
       "getFarmApr",
       "getPositionFarmApr",
       "getPositionFarmAprFactor",
+      "UNIVERSAL_FARMS",
+      "UNIVERSAL_BCAKEWRAPPER_FARMS",
       "FARM_AUCTION_HOSTING_IN_SECONDS",
       "isStableFarm",
       "isActiveV3Farm",
@@ -22,6 +22,7 @@ test('exports', () => {
       "supportedChainId",
       "supportedChainIdV2",
       "supportedChainIdV3",
+      "supportedChainIdV4",
       "createFarmFetcher",
       "createFarmFetcherV3",
       "fetchCommonTokenUSDValue",
