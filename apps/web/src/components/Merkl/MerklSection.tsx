@@ -111,14 +111,14 @@ export function MerklSection({
               ? t(
                   'This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.',
                 )
-              : t('This liquidity position is currently earning rewards on Merkl.')}
-            {t('Details')}
+              : t('This liquidity position is currently earning rewards on Merkl.')}{' '}
+            {t('Details')}{' '}
             <Link
               fontSize="md"
               external
               color="currentColor"
               style={{ display: 'inline-flex' }}
-              href="https://merkl.angle.money/?times=active%2Cfuture%2C&phrase=PancakeSwap"
+              href="https://merkl.angle.money/?search=PancakeSwap&status=live%2Csoon"
             >
               {t('here')}
             </Link>
