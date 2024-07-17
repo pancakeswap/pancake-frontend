@@ -72,5 +72,5 @@ const fetchExplorerPoolsList = async (query: Required<ExtendPoolsQuery>, signal?
     return []
   }
 
-  return parseFarmPools(resp.data)
+  return parseFarmPools(resp.data.rows)
 }

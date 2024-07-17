@@ -6,7 +6,7 @@ import { PoolInfo } from './type'
 export const parseFarmPools = (
   data:
     | paths['/cached/pools/farming']['get']['responses']['200']['content']['application/json']
-    | paths['/cached/pools/list']['get']['responses']['200']['content']['application/json'],
+    | paths['/cached/pools/list']['get']['responses']['200']['content']['application/json']['rows'],
 ): PoolInfo[] => {
   return data.map((pool) => {
     return {
