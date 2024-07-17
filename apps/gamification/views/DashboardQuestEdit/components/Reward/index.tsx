@@ -80,12 +80,7 @@ export const Reward: React.FC<RewardProps> = ({ state, hasTask, actionComponent,
           </Text>
           <BoxContainer>
             {reward?.currency?.address ? (
-              <RewardAmount
-                reward={reward}
-                completionStatus={completionStatus}
-                amountOfWinners={reward?.amountOfWinners}
-                handlePickedRewardToken={handlePickedRewardToken}
-              />
+              <RewardAmount reward={reward} />
             ) : (
               <AddReward
                 state={state}
