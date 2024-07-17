@@ -30,9 +30,9 @@ export const parseFarmPools = (
       lpApr: pool.apr24h as `${number}`,
       tvlUsd: pool.tvlUSD as `${number}`,
       vol24hUsd: pool.volumeUSD24h as `${number}`,
-      feeTier: BigInt(pool.feeTier),
+      feeTier: Number(pool.feeTier),
       // @todo @ChefJerry get by protocols
-      feeTierBase: 1_000_000n,
+      feeTierBase: 1_000_000,
       // @todo @ChefJerry implement whitelist
       whitelist: false,
     } satisfies PoolInfo

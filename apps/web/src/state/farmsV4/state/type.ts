@@ -11,8 +11,8 @@ export type PoolInfo = {
   lpApr?: `${number}`
   tvlUsd?: `${number}`
   vol24hUsd?: `${number}`
-  feeTier: bigint
-  feeTierBase: bigint
+  feeTier: number
+  feeTierBase: number
   // @todo @ChefJerry add whitelist field
   whitelist?: boolean
 }

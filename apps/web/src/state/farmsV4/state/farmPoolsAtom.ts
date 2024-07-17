@@ -78,10 +78,9 @@ const fetchFarmPools = async (
       ...farm,
       tvlUsd: undefined,
       vol24hUsd: undefined,
-      feeTier:
-        farm.protocol === 'v3' ? BigInt(farm.feeAmount) : farm.protocol === 'v2' ? BigInt(FeeAmount.MEDIUM) : 100n, // @todo @ChefJerry add stable fee
+      feeTier: farm.protocol === 'v3' ? Number(farm.feeAmount) : farm.protocol === 'v2' ? FeeAmount.MEDIUM : 100, // @todo @ChefJerry add stable fee
       // @todo @ChefJerry get by protocols
-      feeTierBase: 1_000_000n,
+      feeTierBase: 1_000_000,
     } satisfies PoolInfo
   })
 
