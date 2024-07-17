@@ -381,7 +381,7 @@ export const arbitrumTokens = {
     18,
     'USDe',
     'USDe',
-    'https://arbitrum.io/',
+    'https://ethena.fi/',
   ),
   tap: new ERC20Token(
     ChainId.ARBITRUM_ONE,
@@ -398,5 +398,13 @@ export const arbitrumTokens = {
     'GRT',
     'Graph Token',
     'https://thegraph.com/',
+  ),
+  ethPlus: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x18C14C2D707b2212e17d1579789Fc06010cfca23',
+    18,
+    'ETH+',
+    'ETHPlus',
+    'https://app.reserve.org/',
   ),
 }
