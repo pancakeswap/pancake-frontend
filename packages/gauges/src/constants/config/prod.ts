@@ -4683,7 +4683,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 473,
-    pairName: 'wstETH-USDCe',
+    pairName: 'wstETH-USDC.e',
     address: '0xDC0CBC0e581730F0f9c110181582873eb4e116CB',
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.V3,
@@ -4743,7 +4743,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
   },
   {
     gid: 479,
-    pairName: 'WBTC-USDT',
+    pairName: 'ETH-GRT',
     address: '0x7cFa96FEc24C3Ea23dE73F9C91f612319847e3D0',
     chainId: ChainId.ARBITRUM_ONE,
     type: GaugeType.V3,
