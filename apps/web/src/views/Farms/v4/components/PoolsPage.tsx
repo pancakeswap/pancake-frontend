@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import keyBy from 'lodash/keyBy'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Button,
@@ -17,38 +16,29 @@ import {
 } from '@pancakeswap/uikit'
 import { TokenPairImage } from 'components/TokenImage'
 import { useTranslation } from '@pancakeswap/localization'
-import { ERC20Token } from '@pancakeswap/sdk'
 import { TokenOverview, toTokenValue } from '@pancakeswap/widgets-internal'
-import { UniversalFarmConfig, UNIVERSAL_FARMS, Protocol } from '@pancakeswap/farms'
-import { explorerApiClient } from 'state/info/api/client'
-// import { PoolType } from '@pancakeswap/smart-router'
-import { Address } from 'viem/accounts'
+import { UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
+import { useExtendPools, useFarmPools } from 'state/farmsV4/hooks'
+import { PoolInfo } from 'state/farmsV4/state/type'
+import { PoolSortBy } from 'state/farmsV4/state/extendPoolsAtom'
 
 import {
   IPoolsFilterPanelProps,
   MAINNET_CHAINS,
   PoolsFilterPanel,
-  useAllChainsName,
-  usePoolTypes,
+  useSelectedChainsName,
   useSelectedPoolTypes,
 } from './PoolsFilterPanel'
 
-interface IDataType {
-  chainId: number
-  lpAddress: Address
-  protocol: Protocol
-  feeTier: bigint
-  apr24h: string
-  tvlUsd: string
-  vol24hUsd: string
-  // todo:@eric to Currency type
-  token0: ERC20Token
-  token1: ERC20Token
-}
+interface IDataType extends PoolInfo {}
 
 const PoolsContent = styled.div`
   min-height: calc(100vh - 64px - 56px);
+
+  table th:first-child {
+    width: 300px;
+  }
 `
 
 const CardHeader = styled(RawCardHeader)`
@@ -73,7 +63,7 @@ const StyledImage = styled(Image)`
   margin-top: 58px;
 `
 
-const PoolListItemAction = (_, _poolInfo: IDataType) => {
+const PoolListItemAction = (_: string, _poolInfo: IDataType) => {
   const { t } = useTranslation()
   return (
     <SubMenu
@@ -125,29 +115,31 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
         title: t('Fee Tier'),
         dataIndex: 'feeTier',
         key: 'feeTier',
-        // todo:@eric add denominator
-        render: (fee, item) => <FeeTier type={item.protocol} fee={fee ?? 0} />,
+        render: (fee, item) => <FeeTier type={item.protocol} fee={fee ?? 0} denominator={item.feeTierBase} />,
       },
       {
         title: t('APR'),
-        dataIndex: 'apr24h',
+        dataIndex: 'lpApr',
         key: 'apr',
         sorter: true,
-        render: (value) => (value ? <>{(Number(value) * 100).toFixed(2)}%</> : '-'),
+        render: (value) =>
+          value ? <>{(Number(value) * 100).toLocaleString(undefined, { maximumFractionDigits: 2 })}%</> : '-',
       },
       {
         title: t('TVL'),
         dataIndex: 'tvlUsd',
         key: 'tvl',
         sorter: true,
-        render: (value) => (value ? <>${(Number(value) / 1000).toFixed(3)}k</> : '-'),
+        render: (value) =>
+          value ? <>${Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}</> : '-',
       },
       {
         title: t('Volume 24H'),
         dataIndex: 'vol24hUsd',
         key: 'vol',
         sorter: true,
-        render: (value) => (value ? <>${(Number(value) / 1000).toFixed(3)}k</> : '-'),
+        render: (value) =>
+          value ? <>${Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}</> : '-',
       },
       {
         title: '',
@@ -160,88 +152,6 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
   )
 }
 
-/* const fetchMissingFarms = ({
-  missingList,
-  protocols,
-  allChainsName
-}: {
-  missingList: UniversalFarmConfig[];
-  protocols: keyof typeof PoolType | (keyof typeof PoolType)[];
-  allChainsName: string[];
-}) => {
-  return explorerApiClient.GET('/cached/pools/list', {
-    params: {
-      query: {
-        protocols,
-        chains: allChainsName,
-        orderBy: 'volumeUSD24h',
-        pools: missingList.map(pool => `${pool.chainId}:${pool.lpAddress}`),
-      },
-    },
-  })
-} */
-
-const useFetchFarmingListFromAPI = () => {
-  const [farmingList, setFarmingList] = useState<UniversalFarmConfig[]>(UNIVERSAL_FARMS)
-  const protocols = usePoolTypes()
-    .slice(1)
-    .map((type) => type.value)
-  const allChainsName = useAllChainsName()
-
-  const mergeFarmList = useCallback((res) => {
-    if (!res.data) {
-      return farmingList
-    }
-    const farmListMap = keyBy(res.data, 'id')
-    const missingFarms: UniversalFarmConfig[] = []
-    return farmingList.map((farm) => {
-      const farmFromApi = farmListMap[farm.lpAddress.toLowerCase()]
-      if (!farmFromApi) {
-        missingFarms.push(farm)
-        return farm
-      }
-      return {
-        ...farm,
-        ...farmFromApi,
-        token0: farm.token0,
-        token1: farm.token1,
-        tvl: farmFromApi.tvlUSD,
-        vol24h: farmFromApi.volumeUSD24h,
-      }
-    })
-  }, [])
-
-  useEffect(() => {
-    explorerApiClient
-      // todo:@eric update the api schema
-      // @ts-ignore
-      .GET('/cached/pools/farming', {
-        params: {
-          query: {
-            protocols: protocols.join(','),
-            chains: allChainsName.join(','),
-          },
-        },
-      })
-      .then(mergeFarmList)
-      .then((data) => {
-        setFarmingList(data)
-        /* fetchMissingFarms({
-          missingList: missingFarms,
-          protocols,
-          allChainsName,
-        }).then(mergeFarmList) */
-      })
-    /*
-      - The farming list contains full data of farms.
-      - We just need to pull it once.
-      - Therefore, no dependencies are needed.
-      * */
-  }, [])
-
-  return farmingList
-}
-
 const NUMBER_OF_FARMS_VISIBLE = 20
 
 export const PoolsPage = () => {
@@ -251,12 +161,45 @@ export const PoolsPage = () => {
     selectedNetwork: MAINNET_CHAINS.map((chain) => chain.id),
     selectedTokens: [],
   })
-  const farmingList = useFetchFarmingListFromAPI()
   const selectedPoolTypes = useSelectedPoolTypes(filters.selectedTypeIndex)
-  const { observerRef, isIntersecting } = useIntersectionObserver({ rootMargin: '10px' })
+  const { observerRef, isIntersecting } = useIntersectionObserver({
+    rootMargin: '100px',
+  })
   const [numberVisible, setNumberVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   const [sortOrder, setSortOrder] = useState<ISortOrder>(SORT_ORDER.NULL)
   const [sortField, setSortField] = useState<keyof IDataType | null>(null)
+  // data source
+  const farmPools = useFarmPools()
+  const [extendPools, fetchExtendPools] = useExtendPools()
+
+  const poolList = useMemo(
+    () => (farmPools.state !== 'hasData' ? UNIVERSAL_FARMS : [...farmPools.data, ...extendPools]),
+    [farmPools, extendPools],
+  )
+
+  useEffect(() => {
+    if (isIntersecting) {
+      setNumberVisible((numberCurrentlyVisible) => {
+        if (numberCurrentlyVisible <= poolList.length) {
+          return Math.min(numberCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE, poolList.length)
+        }
+        return numberCurrentlyVisible
+      })
+    }
+  }, [isIntersecting, poolList])
+
+  useEffect(() => {
+    // if consumed, fetch from pool/list
+    if (numberVisible >= poolList.length) {
+      fetchExtendPools({
+        chains: filters.selectedNetwork,
+        protocols: selectedPoolTypes,
+        orderBy: PoolSortBy.VOL,
+        before: '',
+        after: '',
+      })
+    }
+  }, [numberVisible, poolList, fetchExtendPools, filters, selectedPoolTypes])
 
   const handleFilterChange: IPoolsFilterPanelProps['onChange'] = useCallback((newFilters) => {
     setFilters((prevFilters) => ({
@@ -265,20 +208,9 @@ export const PoolsPage = () => {
     }))
   }, [])
 
-  useEffect(() => {
-    if (isIntersecting) {
-      setNumberVisible((numberCurrentlyVisible) => {
-        if (numberCurrentlyVisible <= farmingList.length) {
-          return numberCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE
-        }
-        return numberCurrentlyVisible
-      })
-    }
-  }, [isIntersecting, farmingList])
-
   const filteredData = useMemo(() => {
     const { selectedNetwork, selectedTokens } = filters
-    return farmingList.filter(
+    return poolList.filter(
       (farm) =>
         selectedNetwork.includes(farm.chainId) &&
         (!selectedTokens?.length ||
@@ -287,7 +219,7 @@ export const PoolsPage = () => {
           )) &&
         selectedPoolTypes.includes(farm.protocol),
     )
-  }, [farmingList, filters, selectedPoolTypes])
+  }, [poolList, filters, selectedPoolTypes])
 
   const sortedData = useMemo(() => {
     if (sortField === null) {
@@ -315,7 +247,7 @@ export const PoolsPage = () => {
             sortField={sortField}
           />
         </PoolsContent>
-        {farmingList.length > 0 && <div ref={observerRef} />}
+        {poolList.length > 0 && <div ref={observerRef} />}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </CardBody>
     </Card>

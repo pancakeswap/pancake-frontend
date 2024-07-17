@@ -14,6 +14,8 @@ import { useAllTokensByChainIds } from 'hooks/Tokens'
 import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
+import { Protocol } from '@pancakeswap/farms'
+import { ProtocolEnum } from '@pancakeswap/farms/constants/common'
 
 const PoolsFilterContainer = styled(Flex)`
   flex-wrap: wrap;
@@ -27,8 +29,8 @@ export const MAINNET_CHAINS = CHAINS.filter((chain) => {
   return true
 })
 
-export const useAllChainsName = () => {
-  return useMemo(() => MAINNET_CHAINS.map((chain) => getChainNameInKebabCase(chain.id)), [])
+export const useSelectedChainsName = (chainIds: number[]) => {
+  return useMemo(() => chainIds.map((id) => getChainNameInKebabCase(id)), [chainIds])
 }
 
 const chainsOpts = MAINNET_CHAINS.map((chain) => ({
@@ -43,32 +45,32 @@ export const usePoolTypes = () => {
     () => [
       {
         label: t('All'),
-        value: '',
+        value: null,
       },
       {
         label: 'V3',
-        value: 'v3',
+        value: ProtocolEnum.V3,
       },
       {
         label: 'V2',
-        value: 'v2',
+        value: ProtocolEnum.V2,
       },
       {
         label: t('StableSwap'),
-        value: 'stable',
+        value: ProtocolEnum.STABLE,
       },
     ],
     [t],
   )
 }
 
-export const useSelectedPoolTypes = (selectedIndex: number) => {
+export const useSelectedPoolTypes = (selectedIndex: number): Protocol[] => {
   const allTypes = usePoolTypes()
   return useMemo(() => {
     if (selectedIndex === 0) {
-      return allTypes.slice(1).map((t) => t.value)
+      return allTypes.slice(1).map((t) => t.value) as unknown as Protocol[]
     }
-    return [allTypes[selectedIndex].value]
+    return [allTypes[selectedIndex].value] as unknown as Protocol[]
   }, [selectedIndex, allTypes])
 }
 

@@ -82,3 +82,10 @@ export const DEFAULT_COMMON_PRICE: Record<FarmV3SupportedChainId, CommonPrice> =
   [ChainId.OPBNB_TESTNET]: {},
   [ChainId.OPBNB]: {},
 }
+
+export enum ProtocolEnum {
+  V2 = 'v2',
+  V3 = 'v3',
+  STABLE = 'stable',
+  V4 = 'v4bin',
+}

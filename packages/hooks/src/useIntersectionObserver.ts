@@ -4,7 +4,7 @@ export const useIsomorphicEffect = typeof window === 'undefined' ? useEffect : u
 
 interface IIntersectionProps {
   rootMargin?: string
-  threshold?: number
+  threshold?: number | number[]
 }
 const useIntersectionObserver = ({ rootMargin = '0px', threshold = 1 }: IIntersectionProps = {}) => {
   const [observerRefElement, setObserverRefElement] = useState<HTMLElement | null>(null)

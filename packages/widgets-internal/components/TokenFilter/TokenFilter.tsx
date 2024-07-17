@@ -1,5 +1,6 @@
+import { zeroAddress } from "viem";
 import { useTheme } from "@pancakeswap/hooks";
-import { ERC20Token } from "@pancakeswap/sdk";
+import { Currency, ERC20Token, Token } from "@pancakeswap/sdk";
 import { Column, IMultiSelectProps, ISelectItem, MultiSelect, IMultiSelectChangeEvent } from "@pancakeswap/uikit";
 import { useCallback, useMemo } from "react";
 import styled from "styled-components";
@@ -60,7 +61,7 @@ const ItemName = styled.span`
   font-weight: 400;
 `;
 
-export const toTokenValue = (t: ERC20Token) => `${t.chainId}:${t.address}`;
+export const toTokenValue = (t: Currency) => `${t.chainId}:${t instanceof Token ? t.address : zeroAddress}`;
 
 export const TokenFilter: React.FC<ITokenProps> = ({ data = [], value, onChange }) => {
   const { theme } = useTheme();

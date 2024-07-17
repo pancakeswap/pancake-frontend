@@ -1,12 +1,13 @@
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
 import { FarmV4SupportedChainId, Protocol, supportedChainIdV4, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { ProtocolEnum } from '@pancakeswap/farms/constants/common'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { explorerApiClient } from 'state/info/api/client'
 import { isAddressEqual } from 'viem'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
 
-const DEFAULT_PROTOCOLS: Protocol[] = ['v3', 'v2', 'stable']
+const DEFAULT_PROTOCOLS: Protocol[] = [ProtocolEnum.V3, ProtocolEnum.V2, ProtocolEnum.STABLE]
 const DEFAULT_CHAINS: FarmV4SupportedChainId[] = Object.values(supportedChainIdV4)
 
 export const fetchExplorerFarmPools = async (
@@ -83,7 +84,12 @@ export const fetchFarmPools = async (
       pid: farm.pid,
       tvlUsd: undefined,
       vol24hUsd: undefined,
-      feeTier: farm.protocol === 'v3' ? Number(farm.feeAmount) : farm.protocol === 'v2' ? FeeAmount.MEDIUM : 100, // @todo @ChefJerry add stable fee
+      feeTier:
+        farm.protocol === ProtocolEnum.V3
+          ? Number(farm.feeAmount)
+          : farm.protocol === ProtocolEnum.V2
+          ? FeeAmount.MEDIUM
+          : 100, // @todo @ChefJerry add stable fee
       // @todo @ChefJerry get by protocols
       feeTierBase: 1_000_000,
     } satisfies PoolInfo
