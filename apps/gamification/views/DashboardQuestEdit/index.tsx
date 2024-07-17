@@ -92,24 +92,10 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
   return (
     <DashboardQuestEditContainer>
       <EditTemplate titleText={t('Quest title')} state={state} updateValue={updateValue}>
-        {!isDesktop && (
-          <Reward
-            reward={state.reward}
-            completionStatus={state.completionStatus}
-            actionComponent={<SubmitAction />}
-            updateValue={updateValue}
-          />
-        )}
+        {!isDesktop && <Reward state={state} actionComponent={<SubmitAction />} updateValue={updateValue} />}
         <Tasks />
       </EditTemplate>
-      {isDesktop && (
-        <Reward
-          reward={state.reward}
-          actionComponent={<SubmitAction />}
-          completionStatus={state.completionStatus}
-          updateValue={updateValue}
-        />
-      )}
+      {isDesktop && <Reward state={state} actionComponent={<SubmitAction />} updateValue={updateValue} />}
     </DashboardQuestEditContainer>
   )
 }

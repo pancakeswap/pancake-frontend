@@ -6,8 +6,8 @@ import { styled } from 'styled-components'
 import { chains } from 'utils/wagmi'
 import { AddReward } from 'views/DashboardQuestEdit/components/Reward/AddReward'
 import { RewardAmount } from 'views/DashboardQuestEdit/components/Reward/RewardAmount'
-import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
-import { CompletionStatus, RewardType } from 'views/DashboardQuestEdit/type'
+import { QuestRewardType, StateType } from 'views/DashboardQuestEdit/context/types'
+import { RewardType } from 'views/DashboardQuestEdit/type'
 
 const RewardContainer = styled(Box)`
   width: 100%;
@@ -28,14 +28,14 @@ const BoxContainer = styled(Flex)`
 `
 
 interface RewardProps {
-  reward: undefined | QuestRewardType
-  completionStatus: CompletionStatus
+  state: StateType
   actionComponent?: JSX.Element
   updateValue: (key: string, value: string | QuestRewardType) => void
 }
 
-export const Reward: React.FC<RewardProps> = ({ reward, completionStatus, actionComponent, updateValue }) => {
+export const Reward: React.FC<RewardProps> = ({ state, actionComponent, updateValue }) => {
   const { t } = useTranslation()
+  const { reward, completionStatus } = state
 
   const handlePickedRewardToken = (currency: Currency, totalRewardAmount: number, amountOfWinners: number) => {
     const tokenAddress = currency?.isNative ? currency?.wrapped?.address : currency?.address
@@ -86,7 +86,12 @@ export const Reward: React.FC<RewardProps> = ({ reward, completionStatus, action
                 handlePickedRewardToken={handlePickedRewardToken}
               />
             ) : (
-              <AddReward reward={reward} amountOfWinners={0} handlePickedRewardToken={handlePickedRewardToken} />
+              <AddReward
+                state={state}
+                reward={reward}
+                amountOfWinners={0}
+                handlePickedRewardToken={handlePickedRewardToken}
+              />
             )}
             {reward?.currency?.network && (
               <Flex justifyContent="center">
