@@ -97,6 +97,34 @@ export type PoolChartEntry = {
   feesUSD: number
 }
 
+export interface RawPoolData {
+  feeTier: number
+  id: string
+  volumeUSD24h: string
+  volumeUSD7d: string
+  token0: {
+    id: string
+    symbol: string
+    name: string
+    decimals: number
+  }
+  token1: {
+    id: string
+    symbol: string
+    name: string
+    decimals: number
+  }
+  totalFeeUSD: any
+  liquidity: string
+  sqrtPrice: string
+  tick: number | null
+  tvlUSD: string
+  token0Price: string
+  token1Price: string
+  tvlToken0: string
+  tvlToken1: string
+}
+
 export interface PoolData {
   // basic token info
   address: string
