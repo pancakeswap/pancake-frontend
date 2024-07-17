@@ -6,7 +6,6 @@ export enum Field {
 }
 
 export const selectCurrency = createAction<{ field: Field; currencyId: string }>('buyCrypto/selectCurrency')
-
 export const typeInput = createAction<{ field: Field; typedValue: string }>('buyCrypto/typeInput')
 export const resetBuyCryptoState = createAction<void>('buyCrypto/resetbuyCryptoState')
 export const replaceBuyCryptoState = createAction<{

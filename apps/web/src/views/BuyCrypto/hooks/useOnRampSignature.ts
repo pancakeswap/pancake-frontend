@@ -3,7 +3,6 @@ import type { UseQueryResult } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import qs from 'qs'
-import type { ExactPartial } from 'viem'
 import { useAccount } from 'wagmi'
 import {
   ONRAMP_PROVIDERS,
@@ -15,6 +14,7 @@ import {
 import {
   createQueryKey,
   type Evaluate,
+  type ExactPartial,
   type OnRampProviderQuote,
   type OnRampUnit,
   type UseQueryParameters,

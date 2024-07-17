@@ -12,7 +12,7 @@ export const useProviderAvailabilities = () => {
   return useQuery({
     queryKey: ['providerAvailabilities'],
     queryFn: async () => {
-      const response = await fetch(`${ONRAMP_API_BASE_URL}{/fetch-provider-availability`, {
+      const response = await fetch(`${ONRAMP_API_BASE_URL}/fetch-provider-availability`, {
         method: 'POST',
         body: JSON.stringify({}),
         headers: {

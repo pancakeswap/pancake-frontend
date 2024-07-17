@@ -23,6 +23,7 @@ export interface BuyCryptoState {
 const initialState: BuyCryptoState = {
   typedValue: '',
   independentField: Field.INPUT,
+
   [Field.INPUT]: {
     currencyId: '',
   },

@@ -20,12 +20,12 @@ import BuyCryptoTooltip from '../Tooltip/Tooltip'
 
 type FeeComponents = { providerFee: number; networkFee: number; price: number }
 interface TransactionFeeDetailsProps {
-  selectedQuote: OnRampProviderQuote | undefined
+  selectedQuote?: OnRampProviderQuote
   currency: Currency
   independentField: Field
-  inputError: string | undefined
-  loading: boolean | undefined
-  quotes: OnRampProviderQuote[] | undefined
+  inputError?: string
+  loading?: boolean
+  quotesError?: boolean
 }
 
 export const TransactionFeeDetails = ({
@@ -34,7 +34,7 @@ export const TransactionFeeDetails = ({
   independentField,
   inputError,
   loading,
-  quotes,
+  quotesError,
 }: TransactionFeeDetailsProps) => {
   const [elementHeight, setElementHeight] = useState<number>(51)
   const [show, setShow] = useState<boolean>(false)
@@ -47,17 +47,16 @@ export const TransactionFeeDetails = ({
   } = useTranslation()
 
   const handleExpandClick = useCallback(() => setShow(!show), [show])
-  const noQuotesError = Boolean(quotes && quotes?.length === 0)
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+
   useEffect(() => {
     const elRef = contentRef.current
     if (elRef) setElementHeight(elRef.scrollHeight)
 
-    if (inputError || noQuotesError) {
+    if (inputError || quotesError) {
       setShow(false)
       setElementHeight(0)
     }
-  }, [selectedQuote, inputError, noQuotesError])
+  }, [selectedQuote, inputError, quotesError])
 
   return (
     <Flex flexDirection="column">
@@ -92,7 +91,7 @@ export const TransactionFeeDetails = ({
                 </SkeletonText>
               </>
             )}
-            {noQuotesError && (
+            {quotesError && (
               <Text fontWeight="600" fontSize="14px" px="2px" color="textSubtle">
                 {t('No quotes available for %cryptoCurrency% right now.', {
                   cryptoCurrency: currency?.symbol,
@@ -104,7 +103,7 @@ export const TransactionFeeDetails = ({
               opacity={0.7}
               iconSize="17px"
               tooltipText={
-                noQuotesError
+                quotesError
                   ? t(
                       'Quotes may be unavailable for some assets based on market conditions and provider availability in your region.',
                     )
@@ -113,7 +112,7 @@ export const TransactionFeeDetails = ({
             />
           </Flex>
 
-          {!noQuotesError && (
+          {!quotesError && (
             <Flex alignItems="center" justifyContent="center">
               <Text color="primary" fontWeight="600" fontSize="14px">
                 {!show ? t('Show details') : t('Hide Details')}
