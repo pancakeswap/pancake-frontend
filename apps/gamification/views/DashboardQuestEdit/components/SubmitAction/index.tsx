@@ -64,7 +64,7 @@ export const SubmitAction = () => {
   )
 
   // eslint-disable-next-line consistent-return
-  const handleSave = async (isCreate: boolean, completionStatus: CompletionStatus) => {
+  const handleSave = async (isCreate: boolean, completionStatus: CompletionStatus, isSaveAndAddReward?: boolean) => {
     try {
       setIsSubmitError(false)
       const url = isCreate ? `/api/dashboard/quest-create` : `/api/dashboard/quest-update?id=${query?.id}`
@@ -103,9 +103,15 @@ export const SubmitAction = () => {
       })
       toastSuccess(t('Submit Successfully!'))
 
-      // const result = await response.json()
-      // push(`/dashboard/quest/edit/${result.data.id}`)
-      if (state.completionStatus === CompletionStatus.SCHEDULED || completionStatus !== CompletionStatus.SCHEDULED) {
+      if (isSaveAndAddReward) {
+        const result = await response.json()
+        push(`/dashboard/quest/edit/${result.id}`)
+      }
+
+      if (
+        !isSaveAndAddReward &&
+        (state.completionStatus === CompletionStatus.SCHEDULED || completionStatus !== CompletionStatus.SCHEDULED)
+      ) {
         push('/dashboard')
       }
     } catch (error) {
@@ -199,6 +205,18 @@ export const SubmitAction = () => {
                 </StyledOutlineButton>
               )}
             </>
+            {Boolean(!query.id) && (
+              <StyledOutlineButton
+                mb="8px"
+                width="100%"
+                variant="secondary"
+                disabled={!isAbleToSave}
+                endIcon={<CalenderIcon color={isAbleToSave ? 'primary' : 'textDisabled'} width={20} height={20} />}
+                onClick={() => handleSave(Boolean(!query.id), CompletionStatus.DRAFTED, true)}
+              >
+                {t('Save and Add Reward')}
+              </StyledOutlineButton>
+            )}
             <Button
               width="100%"
               disabled={!isAbleToSave}
