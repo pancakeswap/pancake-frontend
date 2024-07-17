@@ -36,7 +36,7 @@ interface RewardProps {
 
 export const Reward: React.FC<RewardProps> = ({ state, hasTask, actionComponent, updateValue }) => {
   const { t } = useTranslation()
-  const { reward, completionStatus } = state
+  const { reward } = state
 
   const handlePickedRewardToken = (currency: Currency, totalRewardAmount: number, amountOfWinners: number) => {
     const tokenAddress = currency?.isNative ? currency?.wrapped?.address : currency?.address
