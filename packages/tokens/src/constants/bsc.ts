@@ -3221,4 +3221,12 @@ export const bscTokens = {
     'BOXY',
     'https://boxy.lol/',
   ),
+  dexe2: new ERC20Token(
+    ChainId.BSC,
+    '0x6E88056E8376Ae7709496Ba64d37fa2f8015ce3e',
+    18,
+    'DEXE',
+    'DeXe Token',
+    'https://dexe.network/',
+  ),
 }
