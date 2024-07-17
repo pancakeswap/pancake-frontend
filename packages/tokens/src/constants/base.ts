@@ -1,9 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
 import { ERC20Token, WETH9 } from '@pancakeswap/sdk'
-import { CAKE, USDC } from './common'
+import { CAKE, USDC, USDT } from './common'
 
 export const baseTokens = {
   weth: WETH9[ChainId.BASE],
+  usdt: USDT[ChainId.BASE],
   usdc: USDC[ChainId.BASE],
   cake: CAKE[ChainId.BASE],
   cbETH: new ERC20Token(
@@ -100,13 +101,5 @@ export const baseTokens = {
     'ZRO',
     'LayerZero',
     'https://www.layerzero.foundation/',
-  ),
-  usdt: new ERC20Token(
-    ChainId.BASE,
-    '0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2',
-    6,
-    'USDT',
-    'Tether USDT',
-    'https://tether.to/',
   ),
 }
