@@ -129,7 +129,6 @@ export const ProviderSelector = ({
           className="open-currency-select-button"
           selected={!!selectedQuote}
           onClick={() => onQuoteSelect?.(true)}
-          disabled={quoteLoading}
         >
           <Flex alignItems="center" width="100%">
             <OnRampProviderLogo size={32} provider={selectedQuote?.provider} loading={quoteLoading} />

@@ -32,6 +32,7 @@ import { useIsBtc } from '../hooks/useIsBtc'
 import { useOnRampCurrencyOrder } from '../hooks/useOnRampCurrencyOrder'
 import { useLimitsAndInputError } from '../hooks/useOnRampInputError'
 import { useOnRampQuotes } from '../hooks/useOnRampQuotes'
+import type { ProviderAvailabilities } from '../hooks/useProviderAvailabilities'
 import InputExtended, { StyledVerticalLine } from '../styles'
 import { FormContainer } from './FormContainer'
 import { FormHeader } from './FormHeader'
@@ -48,7 +49,7 @@ interface OnRampCurrencySelectPopOverProps {
 }
 type InputEvent = ChangeEvent<HTMLInputElement>
 
-export function BuyCryptoForm() {
+export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabilities: ProviderAvailabilities }) {
   const { typedValue, independentField } = useBuyCryptoState()
 
   const { t } = useTranslation()
@@ -86,7 +87,10 @@ export function BuyCryptoForm() {
     enabled: Boolean(!inputError),
   })
 
-  const quotes = useMemo(() => data?.quotes, [data?.quotes])
+  const quotes = useMemo(
+    () => data?.quotes.filter((q) => providerAvailabilities[q.provider]),
+    [data?.quotes, providerAvailabilities],
+  )
 
   const outputValue = useMemo((): string | undefined => {
     if (inputError || !selectedQuote) return undefined
@@ -183,7 +187,7 @@ export function BuyCryptoForm() {
           id="provider-select"
           onQuoteSelect={setShowProvidersPopOver}
           selectedQuote={selectedQuote || bestQuoteRef.current}
-          quoteLoading={Boolean(isLoading || inputError)}
+          quoteLoading={Boolean(isLoading || inputError || quotes?.length === 0)}
           quotes={quotes}
         />
 
@@ -201,11 +205,11 @@ export function BuyCryptoForm() {
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={cryptoCurrency}
             selectedQuote={selectedQuote}
-            disabled={Boolean(isError || inputError || btcError)}
+            disabled={Boolean(isError || inputError || btcError || quotes?.length === 0)}
             loading={isLoading}
             resetBuyCryptoState={resetBuyCryptoState}
             btcAddress={debouncedQuery}
-            errorText={amountError}
+            errorText={quotes?.length === 0 ? t('No Quotes') : amountError}
             onRampUnit={unit}
           />
           <Flex alignItems="center" justifyContent="center">

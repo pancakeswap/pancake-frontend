@@ -1,6 +1,5 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
-import { useBuyCryptoState } from 'state/buyCrypto/hooks'
 import {
   createQueryKey,
   type Evaluate,
@@ -29,7 +28,6 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
   parameters: UseOnRampQuotesParameters<selectData>,
 ) => {
   const { fiatAmount, enabled, cryptoCurrency, fiatCurrency, network, onRampUnit, ...query } = parameters
-  const { blockedProviders } = useBuyCryptoState()
   return useQuery({
     ...query,
     queryKey: getOnRampQuotesQueryKey([
@@ -48,14 +46,14 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
       if (!cryptoCurrency || !fiatAmount || !fiatCurrency || !onRampUnit) {
         throw new Error('Missing buy-crypto fetch-provider-quotes params')
       }
-      const providerQuotes = await fetchProviderQuotes({
+      const quotes = await fetchProviderQuotes({
         cryptoCurrency,
         fiatAmount,
         fiatCurrency,
         network,
         onRampUnit,
       })
-      const quotes = providerQuotes.filter((q) => blockedProviders[q.provider])
+
       return { quotes }
     },
   })

@@ -1,19 +1,20 @@
 import { useDefaultsFromURLSearch } from 'state/buyCrypto/hooks'
-import type { ProviderAvailabilititProps } from 'state/buyCrypto/reducer'
 import { useAccount } from 'wagmi'
 import Page from '../Page'
 import { OnRampFaqs } from './components/FAQ'
 import { BuyCryptoForm } from './containers/BuyCryptoForm'
+import { useProviderAvailabilities } from './hooks/useProviderAvailabilities'
 import { StyledAppBody } from './styles'
 
-export default function BuyCrypto({ providerAvailabilities }: ProviderAvailabilititProps) {
+export default function BuyCrypto() {
   const { address } = useAccount()
-  useDefaultsFromURLSearch(address, providerAvailabilities)
+  useDefaultsFromURLSearch(address)
 
+  const { data: providerAvailabilities } = useProviderAvailabilities()
   return (
     <Page>
       <StyledAppBody mb="24px">
-        <BuyCryptoForm />
+        <BuyCryptoForm providerAvailabilities={providerAvailabilities} />
       </StyledAppBody>
       <StyledAppBody>
         <OnRampFaqs />

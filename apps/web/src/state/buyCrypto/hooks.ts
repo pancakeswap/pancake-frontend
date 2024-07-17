@@ -4,19 +4,12 @@ import { atomWithStorage } from 'jotai/utils'
 import { useRouter } from 'next/router'
 import type { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
-import type { BuyCryptoState, ProviderAvailabilities } from 'state/buyCrypto/reducer'
+import type { BuyCryptoState } from 'state/buyCrypto/reducer'
 import { buyCryptoReducerAtom } from 'state/buyCrypto/reducer'
 
 import { OnRampChainId as ChainId, type OnRampCurrency as Currency } from 'views/BuyCrypto/constants'
 import { useAccount } from 'wagmi'
-import {
-  Field,
-  replaceBuyCryptoState,
-  selectCurrency,
-  setBlockedProviders,
-  switchCurrencies,
-  typeInput,
-} from './actions'
+import { Field, replaceBuyCryptoState, selectCurrency, switchCurrencies, typeInput } from './actions'
 
 const useEnableBtcPurchases = atomWithStorage<boolean>('pcs:enable-buy-btc-native', false)
 
@@ -36,7 +29,6 @@ export function useBuyCryptoActionHandlers(): {
   onCurrencySelection: (field: Field, currency: Currency) => void
   onSwitchTokens: () => void
   onUserInput: (field: Field, typedValue: string | number) => void
-  onBlockProviders: (providers: ProviderAvailabilities) => void
 } {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
 
@@ -63,25 +55,17 @@ export function useBuyCryptoActionHandlers(): {
     [dispatch],
   )
 
-  const onBlockProviders = useCallback(
-    (providers: ProviderAvailabilities) => {
-      dispatch(setBlockedProviders({ providers }))
-    },
-    [dispatch],
-  )
-
   return {
     onCurrencySelection,
     onSwitchTokens,
     onUserInput,
-    onBlockProviders,
   }
 }
 
 export async function queryParametersToBuyCryptoState(
   parsedQs: ParsedUrlQuery,
   chainId: ChainId,
-): Promise<Omit<BuyCryptoState, 'blockedProviders'>> {
+): Promise<BuyCryptoState> {
   const DEFAULT_FIAT_CURRENCY = [ChainId.BASE, ChainId.LINEA].includes(chainId) ? 'EUR' : 'USD'
   return {
     [Field.INPUT]: {
@@ -95,7 +79,7 @@ export async function queryParametersToBuyCryptoState(
   }
 }
 
-export function useDefaultsFromURLSearch(account: string | undefined, blockedProviders: ProviderAvailabilities) {
+export function useDefaultsFromURLSearch(account?: string) {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
   const { chainId } = useActiveChainId()
   const { address } = useAccount()
@@ -113,10 +97,9 @@ export function useDefaultsFromURLSearch(account: string | undefined, blockedPro
           inputCurrencyId: parsed[Field.OUTPUT].currencyId,
           outputCurrencyId: parsed[Field.INPUT].currencyId,
           recipient: undefined,
-          blockedProviders,
         }),
       )
     }
     fetchData()
-  }, [dispatch, query, isReady, account, chainId, address, blockedProviders])
+  }, [dispatch, query, isReady, account, chainId, address])
 }

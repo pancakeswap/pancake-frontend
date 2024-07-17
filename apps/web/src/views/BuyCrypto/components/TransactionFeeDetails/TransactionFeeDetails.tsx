@@ -93,9 +93,9 @@ export const TransactionFeeDetails = ({
               </>
             )}
             {noQuotesError && (
-              <Text fontWeight="600" fontSize="14px" px="2px">
+              <Text fontWeight="600" fontSize="14px" px="2px" color="textSubtle">
                 {t('No quotes available for %cryptoCurrency% right now.', {
-                  cryptoCurrency: selectedQuote?.cryptoCurrency,
+                  cryptoCurrency: currency?.symbol,
                 })}
               </Text>
             )}
