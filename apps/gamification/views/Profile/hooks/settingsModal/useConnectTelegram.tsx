@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
+import CryptoJS from 'crypto-js'
 import { useEffect } from 'react'
 import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { connectSocial } from 'views/Profile/utils/connectSocial'
@@ -33,28 +34,10 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
     const dataCheckString = `auth_date=${authDate}\nfirst_name=${firstName}\nid=${id}\nusername=${username}`
 
     // Step 2: Generate secret_key
-    const botTokenHash = await crypto.subtle.digest(
-      'SHA-256',
-      new TextEncoder().encode(process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN),
-    )
-    const secretKey = Array.from(new Uint8Array(botTokenHash))
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join('')
+    const secretKey = CryptoJS.SHA256(process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN).toString(CryptoJS.enc.Hex)
 
     // Step 3: Generate HMAC-SHA-256 signature
-    const key = await crypto.subtle.importKey(
-      'raw',
-      new TextEncoder().encode(secretKey),
-      { name: 'HMAC', hash: { name: 'SHA-256' } },
-      false,
-      ['sign'],
-    )
-
-    const signature = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(dataCheckString))
-
-    const hmac = Array.from(new Uint8Array(signature))
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join('')
+    const hmac = CryptoJS.HmacSHA256(dataCheckString, secretKey).toString(CryptoJS.enc.Hex)
 
     // Step 4: Compare the generated HMAC with the received hash
     if (hmac === hash) {
