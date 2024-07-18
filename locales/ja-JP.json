@@ -3451,7 +3451,7 @@
   "on PancakeSwap Perpetuals v2!": "獲得しましょう！",
   "Trade on Perpetuals v2 to Win 300,000 ARB": "Perpetualsv2でトレードして300,000ARBを獲得しましょう",
   "Trade $5,000 on Perps v2 to Win from 300,000 ARB": "Perpsv 2で5,000米ドルをトレードして300,000ARBを獲得しましょう",
-  "Trade at least $5,000 on perps v2 to win guaranteed reward": "最低5,000米ドルをperpsv2でトレードすると、必ず報酬が当たります",
+  "Trade at least $5,000 on perps v2 to win guaranteed reward": "最低5,000米ドルをperpsv2でトレードすると、もれなく報酬が当たります",
   "60,000 ARB in rewards and up to 100% Fund Protection": "60,000ARBの報酬と最大100%の資金保護",
   "Predict to win 60,000 ARB in rewards and up to 100% Fund Protection": "予測して、60,000ARBの報酬と最大100%の資金保護を獲得",
   "Start Prediction": "予測を開始",
@@ -3477,6 +3477,10 @@
   "Claim Your $ZK Airdrop Rewards!": "$ZKエアドロップ報酬を回収しましょう！",
   "2.4 Million $ZK available to claim": "240万$ZKを回収可能",
   "Check Eligibility": "回収できるかどうかを確認する",
+  "Check": "確認する",
   "Rocker launching your meme career": "ミームのキャリアを開始しましょう",
-  "Check": "確認する"
+  "Stake LP Tokens to Earn Cake and APT": "LPトークンをステーキングしてCAKEとAPTを獲得",
+  "Read The Guide": "ガイドを読む",
+  "Earn Cake and APT with up to 50% apr on 15+ Pools": "15以上のプールで最大50%の年利でCakeとAPTを獲得",
+  "Earn Dual Incentives with Yield Farming on Aptos PancakeSwap": "Aptos PancakeSwapの利回りファーミングで二重のインセンティブを獲得"
 }
