@@ -1,37 +1,15 @@
 import { UNIVERSAL_BCAKEWRAPPER_FARMS } from '@pancakeswap/farms'
 import BigNumber from 'bignumber.js'
 import { SECONDS_PER_YEAR } from 'config'
-import { atom } from 'jotai'
 import { getMasterChefV3Contract, getV2SSBCakeWrapperContract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/wagmi'
-import { isAddressEqual } from 'viem/_types/utils/address/isAddressEqual'
-import { ChainIdAddressKey, PoolInfo, StablePoolInfo, V2PoolInfo, V3PoolInfo } from './type'
+import { isAddressEqual } from 'viem'
+import { PoolInfo, StablePoolInfo, V2PoolInfo, V3PoolInfo } from '../type'
 
-export type PoolAprDetail = {
-  lpApr: {
-    value: `${number}`
-  }
-  cakeApr: {
-    // default apr
-    value: `${number}`
-    // apr with boost, not related to user account
-    boost?: `${number}`
-  }
-  // @todo @ChefJerry implement merklApr
-  merklApr: {
-    value: `${number}`
-  }
-}
-
-export type PoolApr = Record<ChainIdAddressKey, PoolAprDetail>
-
-export const poolAprAtom = atom<PoolApr>({} as PoolApr)
-
-export const poolAprSetterAtom = atom(null, (get, set, update: PoolApr) => {
-  set(poolAprAtom, { ...get(poolAprAtom), ...update })
-})
-
-export const getCakeApr = (pool: V2PoolInfo | V3PoolInfo | StablePoolInfo, cakePrice: BigNumber) => {
+export const getCakeApr = (
+  pool: PoolInfo,
+  cakePrice: BigNumber,
+): Promise<{ value: `${number}`; boost?: `${number}` }> => {
   switch (pool.protocol) {
     case 'v3':
       return getV3PoolCakeApr(pool, cakePrice)
@@ -39,9 +17,9 @@ export const getCakeApr = (pool: V2PoolInfo | V3PoolInfo | StablePoolInfo, cakeP
     case 'stable':
       return getV2PoolCakeApr(pool, cakePrice)
     default:
-      return {
+      return Promise.resolve({
         value: '0',
-      }
+      })
   }
 }
 
@@ -54,7 +32,11 @@ const masterChefV3CacheMap = new Map<
   }
 >()
 
-export const getV3PoolCakeApr = async (pool: V3PoolInfo, cakePrice: BigNumber) => {
+// @todo refactor to batch fetch
+export const getV3PoolCakeApr = async (
+  pool: V3PoolInfo,
+  cakePrice: BigNumber,
+): Promise<{ value: `${number}`; boost?: `${number}` }> => {
   const { tvlUsd } = pool
   const client = publicClient({ chainId: pool.chainId })
   const masterChefV3 = getMasterChefV3Contract(undefined, pool.chainId)
@@ -67,8 +49,7 @@ export const getV3PoolCakeApr = async (pool: V3PoolInfo, cakePrice: BigNumber) =
 
   const hasCache = masterChefV3CacheMap.has(pool.chainId)
 
-  const [poolWeight, totalAllocPoint, latestPeriodCakePerSecond, poolInfo] = await Promise.all([
-    masterChefV3.read.poolInfo([BigInt(pool.pid)]),
+  const [totalAllocPoint, latestPeriodCakePerSecond, poolInfo] = await Promise.all([
     hasCache ? masterChefV3CacheMap.get(pool.chainId)!.totalAllocPoint : masterChefV3.read.totalAllocPoint(),
     hasCache
       ? masterChefV3CacheMap.get(pool.chainId)!.latestPeriodCakePerSecond
@@ -78,19 +59,20 @@ export const getV3PoolCakeApr = async (pool: V3PoolInfo, cakePrice: BigNumber) =
 
   if (!hasCache) masterChefV3CacheMap.set(pool.chainId, { totalAllocPoint, latestPeriodCakePerSecond, poolInfo })
 
-  const cakePerSecond = latestPeriodCakePerSecond / BigInt(1e18) / BigInt(1e12)
-  const cakePerYearUsd = cakePrice.times((cakePerSecond * BigInt(SECONDS_PER_YEAR)).toString())
-  const [, , , , , totalLiquidity, totalBoostLiquidity] = poolInfo
+  const cakePerYear = (BigInt(SECONDS_PER_YEAR) * latestPeriodCakePerSecond) / BigInt(1e18) / BigInt(1e12)
+  const cakePerYearUsd = cakePrice.times(cakePerYear.toString())
+  const [allocPoint, , , , , totalLiquidity, totalBoostLiquidity] = poolInfo
+  const poolWeight = new BigNumber(allocPoint.toString()).dividedBy(totalAllocPoint.toString())
 
   const baseApr = cakePerYearUsd
-    .times(poolWeight.toString())
+    .times(poolWeight)
     .dividedBy(pool.tvlUsd ?? 1)
     .times(totalLiquidity.toString())
     .dividedBy(totalBoostLiquidity.toString())
 
   return {
-    value: baseApr.toString(),
-    boost: baseApr.times(2).toString(),
+    value: baseApr.toString() as `${number}`,
+    boost: baseApr.times(2).toString() as `${number}`, //
   }
 }
 
@@ -102,7 +84,10 @@ export const getUniversalBCakeWrapperForPool = (pool: PoolInfo) => {
   return config
 }
 
-export const getV2PoolCakeApr = async (pool: V2PoolInfo | StablePoolInfo, cakePrice: BigNumber) => {
+export const getV2PoolCakeApr = async (
+  pool: V2PoolInfo | StablePoolInfo,
+  cakePrice: BigNumber,
+): Promise<{ value: `${number}`; boost?: `${number}` }> => {
   const config = getUniversalBCakeWrapperForPool(pool)
   const client = publicClient({ chainId: pool.chainId })
   if (!config || !client) {
@@ -120,7 +105,7 @@ export const getV2PoolCakeApr = async (pool: V2PoolInfo | StablePoolInfo, cakePr
   const baseApr = cakeOneYearUsd.dividedBy(pool.tvlUsd ?? 1)
 
   return {
-    value: baseApr.toString(),
-    boost: baseApr.times(2.5).toString(),
+    value: baseApr.toString() as `${number}`,
+    boost: baseApr.times(2.5).toString() as `${number}`,
   }
 }
