@@ -1,21 +1,27 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
-import { Box, Button, Flex, InjectedModalProps, Input, Modal, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, InjectedModalProps, Input, Loading, Modal, Text, useToast } from '@pancakeswap/uikit'
 import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { BigNumber } from 'bignumber.js'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import { CurrencySearch } from 'components/SearchModal/CurrencySearch'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import { ADDRESS_ZERO } from 'config/constants/index'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useQuestRewardContract } from 'hooks/useContract'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useCurrencyBalance } from 'hooks/useTokenBalance'
 import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
+import { toHex } from 'viem'
 import { LongPressSvg } from 'views/DashboardQuestEdit/components/SubmitAction/LongPressSvg'
-import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
+import { StateType } from 'views/DashboardQuestEdit/context/types'
 import { useQuestRewardApprovalStatus } from 'views/DashboardQuestEdit/hooks/useQuestRewardApprovalStatus'
+import { combineDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 import { EnableButton } from './EnableButton'
 import { WarningInfo } from './WarningInfo'
 
@@ -41,16 +47,14 @@ interface ModalConfig {
 }
 
 interface AddRewardModalProps extends InjectedModalProps {
-  reward: undefined | QuestRewardType
-  amountOfWinners: number
+  state: StateType
   handlePickedRewardToken: (value: Currency, totalRewardAmount: number, amountOfWinnersInModal: number) => void
 }
 
 const DURATION = 3000 // 3s
 
 export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProps>> = ({
-  reward,
-  amountOfWinners,
+  state,
   handlePickedRewardToken,
   onDismiss,
 }) => {
@@ -58,15 +62,105 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   const { switchNetworkAsync } = useSwitchNetwork()
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.currencyInput)
   const [amountOfWinnersInModal, setAmountOfWinnersInModal] = useState(0)
-  const { chainId } = useActiveWeb3React()
-  const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(reward?.currency?.network as ChainId)
+  const { account, chainId } = useActiveWeb3React()
+  const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(state?.reward?.currency?.network as ChainId)
   const [progress, setProgress] = useState(0)
   const timerRef = useRef<number | null>(null)
   const animationFrameRef = useRef<number | null>(null)
 
+  const { toastSuccess, toastError } = useToast()
+  const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
+
   useEffect(() => {
-    if (amountOfWinners) {
-      setAmountOfWinnersInModal(amountOfWinners)
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current)
+      }
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+    }
+  }, [])
+
+  const defaultInputCurrency = useMemo((): Currency => {
+    const findToken = tokensByChainWithNativeToken.find((i) =>
+      i.isNative
+        ? i.wrapped.address.toLowerCase() === state?.reward?.currency?.address?.toLowerCase()
+        : i.address.toLowerCase() === state?.reward?.currency?.address?.toLowerCase(),
+    )
+    return findToken || (CAKE as any)?.[chainId]
+  }, [state, chainId, tokensByChainWithNativeToken])
+
+  const displayAmountOfWinnersInModal = useMemo(() => amountOfWinnersInModal || '', [amountOfWinnersInModal])
+
+  const [inputCurrency, setInputCurrency] = useState<Currency>(defaultInputCurrency)
+  const [stakeAmount, setStakeAmount] = useState(state?.reward?.totalRewardAmount?.toString() ?? '')
+  const nativeToken = useNativeCurrency(inputCurrency.chainId)
+  const currencyBalance = useCurrencyBalance(inputCurrency)
+  const config = {
+    [CurrencyModalView.currencyInput]: { title: t('Add a reward'), onBack: onDismiss },
+    [CurrencyModalView.search]: {
+      title: 'Select a Token',
+      onBack: () => setModalView(CurrencyModalView.currencyInput),
+    },
+  } as { [key in number]: ModalConfig }
+
+  const isNetworkWrong = useMemo(() => chainId !== inputCurrency?.chainId, [chainId, inputCurrency])
+
+  const isRewardDistribution = useMemo(() => {
+    const rewardAmount = new BigNumber(stakeAmount)
+    const totalWinners = new BigNumber(amountOfWinnersInModal)
+    const perUserWin = rewardAmount.div(totalWinners)
+    return (rewardAmount.gt(0) && totalWinners.eq(1)) || rewardAmount.eq(perUserWin.times(totalWinners))
+  }, [amountOfWinnersInModal, stakeAmount])
+
+  const isAbleToSubmit = useMemo(() => {
+    const userBalance = new BigNumber(getFullDisplayBalance(currencyBalance, inputCurrency.decimals))
+    const isInputLowerThanBalance = new BigNumber(stakeAmount).lte(userBalance)
+
+    return Boolean(
+      !inputCurrency ||
+        new BigNumber(stakeAmount).lte(0) ||
+        !displayAmountOfWinnersInModal ||
+        !isInputLowerThanBalance ||
+        !isRewardDistribution,
+    )
+  }, [currencyBalance, displayAmountOfWinnersInModal, inputCurrency, stakeAmount, isRewardDistribution])
+
+  // Approve
+  const tokenAddress = inputCurrency.isNative ? inputCurrency.wrapped.address : inputCurrency.address
+  const { allowance, setLastUpdated } = useQuestRewardApprovalStatus(tokenAddress, inputCurrency.chainId)
+
+  const needEnable = useMemo(() => {
+    if (!inputCurrency.isNative && nativeToken.wrapped.address.toLowerCase() !== tokenAddress.toLowerCase()) {
+      const amount = getDecimalAmount(new BigNumber(stakeAmount), inputCurrency.decimals)
+      return amount.gt(allowance)
+    }
+    return false
+  }, [allowance, inputCurrency, tokenAddress, nativeToken, stakeAmount])
+
+  const handleMaxInput = useCallback(() => {
+    const newBalanceAmount = getFullDisplayBalance(currencyBalance, inputCurrency.decimals).toString()
+    setStakeAmount(newBalanceAmount)
+  }, [currencyBalance, inputCurrency])
+
+  const handlePercentButton = useCallback(
+    (percent: number) => {
+      const amount = currencyBalance.multipliedBy(new BigNumber(percent).div(100))
+      const newBalanceAmount = getFullDisplayBalance(amount, inputCurrency.decimals).toString()
+      setStakeAmount(newBalanceAmount)
+    },
+    [currencyBalance, inputCurrency.decimals],
+  )
+
+  const handleInputSelect = useCallback((newCurrency: Currency) => {
+    setInputCurrency(newCurrency)
+    setModalView(CurrencyModalView.currencyInput)
+  }, [])
+
+  const handleInputAmount = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.validity.valid) {
+      setAmountOfWinnersInModal(Number(e.target.value))
     }
   }, [])
 
@@ -103,109 +197,53 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     setProgress(0)
   }
 
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current)
+  const rewardContract = useQuestRewardContract(inputCurrency.chainId)
+  const handleContinue = useCallback(async () => {
+    try {
+      const { id, endDate, endTime } = state
+      const _id = toHex(id)
+      const claimTime = endDate && endTime ? combineDateAndTime(endDate, endTime) ?? 0 : 0 // in seconds
+      const totalWinners = Number(displayAmountOfWinnersInModal)
+      const rewardToken =
+        nativeToken.wrapped.address.toLowerCase() === tokenAddress.toLowerCase() ? ADDRESS_ZERO : tokenAddress
+      const totalReward = BigInt(getDecimalAmount(new BigNumber(stakeAmount), inputCurrency.decimals).toString())
+      const receipt = await fetchWithCatchTxError(() =>
+        rewardContract.write.createQuest([_id, claimTime, totalWinners, rewardToken, totalReward], {
+          account,
+          chainId,
+        } as any),
+      )
+
+      if (receipt?.status) {
+        toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+        handlePickedRewardToken(inputCurrency, Number(stakeAmount), displayAmountOfWinnersInModal || 0)
+        onDismiss?.()
       }
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current)
-      }
+    } catch (error) {
+      console.error('[ERROR] Submit Create Quest Reward: ', error)
+      toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
     }
-  }, [])
-
-  const defaultInputCurrency = useMemo((): Currency => {
-    const findToken = tokensByChainWithNativeToken.find((i) =>
-      i.isNative
-        ? i.wrapped.address.toLowerCase() === reward?.currency?.address?.toLowerCase()
-        : i.address.toLowerCase() === reward?.currency?.address?.toLowerCase(),
-    )
-    return findToken || (CAKE as any)?.[chainId]
-  }, [chainId, reward, tokensByChainWithNativeToken])
-
-  const displayAmountOfWinnersInModal = useMemo(() => amountOfWinnersInModal || '', [amountOfWinnersInModal])
-
-  const [inputCurrency, setInputCurrency] = useState<Currency>(defaultInputCurrency)
-  const [stakeAmount, setStakeAmount] = useState(reward?.totalRewardAmount?.toString() ?? '')
-  const nativeToken = useNativeCurrency(inputCurrency.chainId)
-
-  const currencyBalance = useCurrencyBalance(inputCurrency)
-
-  const config = {
-    [CurrencyModalView.currencyInput]: { title: t('Add a reward'), onBack: onDismiss },
-    [CurrencyModalView.search]: {
-      title: 'Select a Token',
-      onBack: () => setModalView(CurrencyModalView.currencyInput),
-    },
-  } as { [key in number]: ModalConfig }
-
-  const handleMaxInput = useCallback(() => {
-    const newBalanceAmount = getFullDisplayBalance(currencyBalance, inputCurrency.decimals).toString()
-    setStakeAmount(newBalanceAmount)
-  }, [currencyBalance, inputCurrency])
-
-  const handlePercentButton = useCallback(
-    (percent: number) => {
-      const amount = currencyBalance.multipliedBy(new BigNumber(percent).div(100))
-      const newBalanceAmount = getFullDisplayBalance(amount, inputCurrency.decimals).toString()
-      setStakeAmount(newBalanceAmount)
-    },
-    [currencyBalance, inputCurrency.decimals],
-  )
-
-  const handleInputSelect = useCallback((newCurrency: Currency) => {
-    setInputCurrency(newCurrency)
-    setModalView(CurrencyModalView.currencyInput)
-  }, [])
-
-  const handleInputAmount = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.validity.valid) {
-      setAmountOfWinnersInModal(Number(e.target.value))
-    }
-  }, [])
-
-  const handleContinue = () => {
-    handlePickedRewardToken(inputCurrency, Number(stakeAmount), displayAmountOfWinnersInModal || 0)
-    onDismiss?.()
-  }
-
-  const isNetworkWrong = useMemo(() => chainId !== inputCurrency?.chainId, [chainId, inputCurrency])
+  }, [
+    state,
+    account,
+    chainId,
+    nativeToken,
+    stakeAmount,
+    tokenAddress,
+    inputCurrency,
+    rewardContract,
+    displayAmountOfWinnersInModal,
+    t,
+    onDismiss,
+    toastError,
+    toastSuccess,
+    fetchWithCatchTxError,
+    handlePickedRewardToken,
+  ])
 
   const handleSwitchNetwork = async (): Promise<void> => {
     await switchNetworkAsync(inputCurrency?.chainId)
   }
-
-  const isRewardDistribution = useMemo(() => {
-    const rewardAmount = new BigNumber(stakeAmount)
-    const totalWinners = new BigNumber(amountOfWinnersInModal)
-    const perUserWin = rewardAmount.div(totalWinners)
-    return (rewardAmount.gt(0) && totalWinners.eq(1)) || rewardAmount.eq(perUserWin.times(totalWinners))
-  }, [amountOfWinnersInModal, stakeAmount])
-
-  const isAbleToSubmit = useMemo(() => {
-    const userBalance = new BigNumber(getFullDisplayBalance(currencyBalance, inputCurrency.decimals))
-    const isInputLowerThanBalance = new BigNumber(stakeAmount).lte(userBalance)
-
-    return Boolean(
-      !inputCurrency ||
-        new BigNumber(stakeAmount).lte(0) ||
-        !displayAmountOfWinnersInModal ||
-        !isInputLowerThanBalance ||
-        !isRewardDistribution,
-    )
-  }, [currencyBalance, displayAmountOfWinnersInModal, inputCurrency, stakeAmount, isRewardDistribution])
-
-  // Approve
-  const tokenAddress = inputCurrency.isNative ? inputCurrency.wrapped.address : inputCurrency.address
-  const { allowance, setLastUpdated } = useQuestRewardApprovalStatus(tokenAddress, inputCurrency.chainId)
-
-  const needEnable = useMemo(() => {
-    if (!inputCurrency.isNative && nativeToken.wrapped.address.toLowerCase() !== tokenAddress.toLowerCase()) {
-      const amount = getDecimalAmount(new BigNumber(stakeAmount), inputCurrency.decimals)
-      return amount.gt(allowance)
-    }
-    return false
-  }, [allowance, inputCurrency, tokenAddress, nativeToken, stakeAmount])
 
   return (
     <Modal title={config[modalView].title} onDismiss={config[modalView].onBack}>
@@ -267,10 +305,10 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
                 onMouseUp={endLongPress}
                 onMouseLeave={endLongPress}
                 onTouchEnd={endLongPress}
-                endIcon={<LongPressSvg progress={progress} />}
-                disabled={isAbleToSubmit}
+                endIcon={isPending ? <Loading /> : <LongPressSvg progress={progress} />}
+                disabled={isAbleToSubmit || isPending}
               >
-                {t('Hold to deposit')}
+                {!isPending ? t('Hold to deposit') : ''}
               </YellowButton>
             )}
           </>

@@ -3,7 +3,7 @@ import { Currency } from '@pancakeswap/sdk'
 import { AddIcon, Button, EmptyRewardIcon, Flex, useModal, useToast } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { AddRewardModal } from 'views/DashboardQuestEdit/components/Reward/AddRewardModal'
-import { QuestRewardType, StateType } from 'views/DashboardQuestEdit/context/types'
+import { StateType } from 'views/DashboardQuestEdit/context/types'
 import { combineDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 
 const AddRewardContainer = styled(Flex)`
@@ -15,26 +15,14 @@ const AddRewardContainer = styled(Flex)`
 interface AddRewardProps {
   state: StateType
   hasTask: boolean
-  reward: undefined | QuestRewardType
-  amountOfWinners: number
   handlePickedRewardToken: (value: Currency, totalRewardAmount: number, amountOfWinnersInModal: number) => void
 }
 
-export const AddReward: React.FC<AddRewardProps> = ({
-  state,
-  hasTask,
-  reward,
-  amountOfWinners,
-  handlePickedRewardToken,
-}) => {
+export const AddReward: React.FC<AddRewardProps> = ({ state, hasTask, handlePickedRewardToken }) => {
   const { t } = useTranslation()
   const { toastError } = useToast()
   const [onPresentAddRewardModal] = useModal(
-    <AddRewardModal
-      reward={reward}
-      amountOfWinners={amountOfWinners}
-      handlePickedRewardToken={handlePickedRewardToken}
-    />,
+    <AddRewardModal state={state} handlePickedRewardToken={handlePickedRewardToken} />,
     true,
     true,
     'add-reward-modal',

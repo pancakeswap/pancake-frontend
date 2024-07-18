@@ -82,13 +82,7 @@ export const Reward: React.FC<RewardProps> = ({ state, hasTask, actionComponent,
             {reward?.currency?.address ? (
               <RewardAmount reward={reward} />
             ) : (
-              <AddReward
-                state={state}
-                hasTask={hasTask}
-                reward={reward}
-                amountOfWinners={0}
-                handlePickedRewardToken={handlePickedRewardToken}
-              />
+              <AddReward state={state} hasTask={hasTask} handlePickedRewardToken={handlePickedRewardToken} />
             )}
             {reward?.currency?.network && (
               <Flex justifyContent="center">
