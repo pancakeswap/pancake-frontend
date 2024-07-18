@@ -12,6 +12,8 @@ export interface IColumnsType<T extends BasicDataType> {
   key: React.Key;
   render?: (value: any, record: T, index: number) => React.ReactNode;
   sorter?: boolean;
+  minWidth?: string;
+  display?: boolean;
 }
 
 export interface ITableViewProps<T extends BasicDataType> {
@@ -84,7 +86,13 @@ export const TableView = <T extends BasicDataType>({
       <TableHeader>
         <Row>
           {columns.map((col) => (
-            <th key={col.key}>
+            <th
+              key={col.key}
+              style={{
+                minWidth: col.minWidth ?? "auto",
+                display: col.display === false ? "none" : "table-cell",
+              }}
+            >
               {typeof col.title === "function"
                 ? col.title()
                 : typeof col.title === "string"
@@ -105,7 +113,12 @@ export const TableView = <T extends BasicDataType>({
         {data.map((item) => (
           <Row key={getRowKey(item)}>
             {columns.map((col, idx) => (
-              <Cell key={col.key}>
+              <Cell
+                key={col.key}
+                style={{
+                  display: col.display === false ? "none" : "table-cell",
+                }}
+              >
                 {col.render
                   ? col.render(col.dataIndex ? item[col.dataIndex] : item, item, idx)
                   : col.dataIndex

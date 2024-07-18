@@ -13,9 +13,13 @@ import {
 } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import { Address } from 'viem'
-import { ProtocolEnum } from '../constants/common'
 
-export type Protocol = ProtocolEnum.V2 | ProtocolEnum.V3 | ProtocolEnum.STABLE | ProtocolEnum.V4
+export enum Protocol {
+  V2 = 'v2',
+  V3 = 'v3',
+  STABLE = 'stable',
+  V4BIN = 'v4bin',
+}
 
 export type FarmBaseConfig = {
   protocol: Protocol
@@ -28,11 +32,11 @@ export type FarmBaseConfig = {
 }
 
 export type UniversalFarmConfigV2AndStableSwap = {
-  protocol: ProtocolEnum.V2 | ProtocolEnum.STABLE
+  protocol: Protocol.V2 | Protocol.STABLE
 } & FarmBaseConfig
 
 export type UniversalFarmConfigV3 = {
-  protocol: ProtocolEnum.V3
+  protocol: Protocol.V3
   feeAmount: FeeAmount
 } & FarmBaseConfig
 
@@ -51,7 +55,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 137,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(bscTokens.wbnb, bscTokens.usdt, FeeAmount.LOWEST),
     token0: bscTokens.usdt,
     token1: bscTokens.wbnb,
@@ -60,7 +64,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 5,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.wbnb,
     lpAddress: Pool.getAddress(bscTokens.usdt, bscTokens.wbnb, FeeAmount.LOW),
@@ -69,7 +73,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 149,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(bscTokens.usdc, bscTokens.wbnb, FeeAmount.LOWEST),
     token0: bscTokens.usdc,
     token1: bscTokens.wbnb,
@@ -78,7 +82,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 148,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(bscTokens.usdc, bscTokens.wbnb, FeeAmount.LOW),
     token0: bscTokens.usdc,
     token1: bscTokens.wbnb,
@@ -87,7 +91,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 7,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.btcb,
     lpAddress: Pool.getAddress(bscTokens.usdt, bscTokens.btcb, FeeAmount.LOW),
@@ -96,7 +100,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 54,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eth,
     token1: bscTokens.wbnb,
     lpAddress: Pool.getAddress(bscTokens.eth, bscTokens.wbnb, FeeAmount.LOW),
@@ -105,7 +109,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 97,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(bscTokens.eth, bscTokens.usdt, FeeAmount.LOW),
     token0: bscTokens.eth,
     token1: bscTokens.usdt,
@@ -114,7 +118,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 1,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.cake,
     token1: bscTokens.wbnb,
     lpAddress: Pool.getAddress(bscTokens.cake, bscTokens.wbnb, FeeAmount.MEDIUM),
@@ -123,7 +127,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 4,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.busd,
     lpAddress: Pool.getAddress(bscTokens.wbnb, bscTokens.busd, FeeAmount.LOW),
@@ -132,7 +136,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 172,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(bscTokens.solvbtc, bscTokens.solvBTCena, FeeAmount.LOW),
     token0: bscTokens.solvbtc,
     token1: bscTokens.solvBTCena,
@@ -141,7 +145,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 171,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(bscTokens.usdt, bscTokens.lista, FeeAmount.MEDIUM),
     token0: bscTokens.usdt,
     token1: bscTokens.lista,
@@ -150,7 +154,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 170,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(bscTokens.zro, bscTokens.wbnb, FeeAmount.HIGH),
     token0: bscTokens.zro,
     token1: bscTokens.wbnb,
@@ -159,7 +163,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 169,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.lista,
     feeAmount: FeeAmount.HIGH,
@@ -168,7 +172,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 168,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.axlSTARS,
     feeAmount: FeeAmount.HIGH,
@@ -177,7 +181,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 167,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.fury,
     token1: bscTokens.usdt,
     lpAddress: Pool.getAddress(bscTokens.fury, bscTokens.usdt, FeeAmount.LOW),
@@ -186,7 +190,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 166,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.bnb,
     token1: bscTokens.busd,
     feeAmount: FeeAmount.LOWEST,
@@ -195,7 +199,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 165,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eth,
     token1: bscTokens.stone,
     lpAddress: Pool.getAddress(bscTokens.eth, bscTokens.stone, FeeAmount.LOW),
@@ -204,7 +208,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 164,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.solvbtc,
     token1: bscTokens.btcb,
     feeAmount: FeeAmount.LOW,
@@ -213,7 +217,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 163,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.weEth,
     token1: bscTokens.eth,
     feeAmount: FeeAmount.LOWEST,
@@ -222,7 +226,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 162,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.masa,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -231,7 +235,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 161,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.sdt,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -240,7 +244,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 160,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.nmt,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.HIGH,
@@ -249,7 +253,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 2,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.cake,
     token1: bscTokens.busd,
     feeAmount: FeeAmount.MEDIUM,
@@ -258,7 +262,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 3,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.cake,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.MEDIUM,
@@ -267,7 +271,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 159,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.ego,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.MEDIUM,
@@ -276,7 +280,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 158,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.mc,
     feeAmount: FeeAmount.MEDIUM,
@@ -285,7 +289,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 157,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.mb4,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -294,7 +298,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 156,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.chat,
     feeAmount: FeeAmount.HIGH,
@@ -303,7 +307,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 155,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.pepe,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.HIGH,
@@ -312,7 +316,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 154,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.octavia,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.MEDIUM,
@@ -321,7 +325,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 153,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eth,
     token1: bscTokens.pxETH,
     feeAmount: FeeAmount.LOW,
@@ -330,7 +334,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 152,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eth,
     token1: bscTokens.ezETH,
     feeAmount: FeeAmount.LOW,
@@ -339,7 +343,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 151,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.fil,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -348,7 +352,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 150,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.trump,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -357,7 +361,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 147,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.fet,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.HIGH,
@@ -366,7 +370,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 146,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eth,
     token1: bscTokens.pxETH,
     feeAmount: FeeAmount.LOWEST,
@@ -375,7 +379,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 145,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.bnx,
     feeAmount: FeeAmount.LOW,
@@ -384,7 +388,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 144,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.osak,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.HIGH,
@@ -393,7 +397,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 143,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.xrgb,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.HIGH,
@@ -402,7 +406,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 142,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.dmail,
     feeAmount: FeeAmount.HIGH,
@@ -411,7 +415,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 141,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.sol,
     feeAmount: FeeAmount.MEDIUM,
@@ -420,7 +424,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 140,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.sol,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -429,7 +433,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 139,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.gtai,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.MEDIUM,
@@ -438,7 +442,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 138,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.aitech,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.MEDIUM,
@@ -447,7 +451,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 136,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.rbnb,
     feeAmount: FeeAmount.LOWEST,
@@ -456,7 +460,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 135,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.manta,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -465,7 +469,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 134,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.ovn,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.HIGH,
@@ -474,7 +478,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 133,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.wrose,
     feeAmount: FeeAmount.LOW,
@@ -483,7 +487,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 132,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.anyInu,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.HIGH,
@@ -492,7 +496,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 131,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.huahua,
     feeAmount: FeeAmount.HIGH,
@@ -501,7 +505,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 130,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.irl,
     feeAmount: FeeAmount.HIGH,
@@ -510,7 +514,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 129,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdc,
     token1: bscTokens.fdusd,
     feeAmount: FeeAmount.LOWEST,
@@ -519,7 +523,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 128,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.bnb,
     token1: bscTokens.fdusd,
     feeAmount: FeeAmount.LOW,
@@ -528,7 +532,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 127,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.cake,
     token1: bscTokens.fdusd,
     feeAmount: FeeAmount.MEDIUM,
@@ -537,7 +541,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 126,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eth,
     token1: bscTokens.fdusd,
     feeAmount: FeeAmount.LOW,
@@ -546,7 +550,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 125,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.btcb,
     token1: bscTokens.fdusd,
     feeAmount: FeeAmount.LOW,
@@ -555,7 +559,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 124,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.insp,
     token1: bscTokens.bnb,
     feeAmount: FeeAmount.HIGH,
@@ -564,7 +568,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 123,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.wrose,
     feeAmount: FeeAmount.MEDIUM,
@@ -573,7 +577,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 122,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.cgpt,
     feeAmount: FeeAmount.LOW,
@@ -582,7 +586,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 121,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.ckp,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -591,7 +595,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 120,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.pnp,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -600,7 +604,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 119,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.cake,
     token1: bscTokens.sdcake,
     feeAmount: FeeAmount.MEDIUM,
@@ -609,7 +613,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 118,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.mubi,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -618,7 +622,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 117,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.ordi,
     feeAmount: FeeAmount.MEDIUM,
@@ -627,7 +631,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 116,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.nfp,
     feeAmount: FeeAmount.MEDIUM,
@@ -636,7 +640,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 115,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.mubi,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.HIGH,
@@ -645,7 +649,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 114,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.ordi,
     feeAmount: FeeAmount.HIGH,
@@ -654,7 +658,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 113,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.sats,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -663,7 +667,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 112,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.rdp,
     token1: bscTokens.bnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -672,7 +676,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 111,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.vai,
     token1: bscTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -681,7 +685,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 110,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.vai,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -690,7 +694,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 109,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.stg,
     feeAmount: FeeAmount.MEDIUM,
@@ -699,7 +703,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 108,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.stg,
     token1: bscTokens.busd,
     feeAmount: FeeAmount.MEDIUM,
@@ -708,7 +712,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 107,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdv,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -717,7 +721,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 106,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdv,
     token1: bscTokens.bnb,
     feeAmount: FeeAmount.LOW,
@@ -726,7 +730,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 105,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.esRDNT,
     token1: bscTokens.rdnt,
     feeAmount: FeeAmount.MEDIUM,
@@ -735,7 +739,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 104,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.ace,
     feeAmount: FeeAmount.MEDIUM,
@@ -744,7 +748,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 103,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.aioz,
     token1: bscTokens.bnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -753,7 +757,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 102,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.bonk,
     token1: bscTokens.bnb,
     feeAmount: FeeAmount.HIGH,
@@ -762,7 +766,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 101,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.bonk,
     feeAmount: FeeAmount.HIGH,
@@ -771,7 +775,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 100,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.kuji,
     token1: bscTokens.bnb,
     feeAmount: FeeAmount.HIGH,
@@ -780,7 +784,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 99,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eth,
     token1: bscTokens.btcb,
     feeAmount: FeeAmount.LOW,
@@ -789,7 +793,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 98,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.fdusd,
     feeAmount: FeeAmount.LOWEST,
@@ -798,7 +802,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 96,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.twt,
     token1: bscTokens.bnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -807,7 +811,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 95,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.chess,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.HIGH,
@@ -816,7 +820,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 94,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.alpaca,
     feeAmount: FeeAmount.HIGH,
@@ -825,7 +829,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 93,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.btt,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.MEDIUM,
@@ -834,7 +838,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 92,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.bnb,
     token1: bscTokens.xvs,
     feeAmount: FeeAmount.MEDIUM,
@@ -843,7 +847,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 91,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.trxv2,
     feeAmount: FeeAmount.MEDIUM,
@@ -852,7 +856,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 90,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.axs,
     token1: bscTokens.bnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -861,7 +865,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 89,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.wom,
     feeAmount: FeeAmount.HIGH,
@@ -870,7 +874,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 87,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.rdnt,
     feeAmount: FeeAmount.MEDIUM,
@@ -879,7 +883,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 88,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.mbox,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -888,7 +892,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 86,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.ltc,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -897,7 +901,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 85,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.sfp,
     feeAmount: FeeAmount.MEDIUM,
@@ -906,7 +910,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 45,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.play,
     feeAmount: FeeAmount.HIGH,
@@ -915,7 +919,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 84,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.xcad,
     feeAmount: FeeAmount.MEDIUM,
@@ -924,7 +928,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 83,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.mbx,
     feeAmount: FeeAmount.HIGH,
@@ -933,7 +937,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 82,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.mbx,
     feeAmount: FeeAmount.HIGH,
@@ -942,7 +946,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 81,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wncg,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.HIGH,
@@ -951,7 +955,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 80,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.hay,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.LOW,
@@ -960,7 +964,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 79,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.chr,
     feeAmount: FeeAmount.HIGH,
@@ -969,7 +973,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 78,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.hft,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.HIGH,
@@ -978,7 +982,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 77,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.arv,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.HIGH,
@@ -987,7 +991,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 76,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.high,
     feeAmount: FeeAmount.HIGH,
@@ -996,7 +1000,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 75,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.raca,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.HIGH,
@@ -1005,7 +1009,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 74,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.sfund,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.HIGH,
@@ -1014,7 +1018,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 73,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.lvl,
     feeAmount: FeeAmount.HIGH,
@@ -1023,7 +1027,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 72,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.gmt,
     token1: bscTokens.usdc,
     feeAmount: FeeAmount.MEDIUM,
@@ -1032,7 +1036,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 71,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.cyber,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -1041,7 +1045,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 70,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.unshETH,
     token1: bscTokens.eth,
     feeAmount: FeeAmount.LOW,
@@ -1050,7 +1054,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 69,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.dar,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.HIGH,
@@ -1059,7 +1063,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 68,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.wmx,
     feeAmount: FeeAmount.HIGH,
@@ -1068,7 +1072,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 67,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.ole,
     feeAmount: FeeAmount.HIGH,
@@ -1077,7 +1081,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 66,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.doge,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -1086,7 +1090,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 65,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.dck,
     token1: bscTokens.busd,
     feeAmount: FeeAmount.MEDIUM,
@@ -1095,7 +1099,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 64,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.planet,
     feeAmount: FeeAmount.HIGH,
@@ -1104,7 +1108,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 63,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.snbnb,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.LOW,
@@ -1113,7 +1117,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 62,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.hay,
     token1: bscTokens.eth,
     feeAmount: FeeAmount.MEDIUM,
@@ -1122,7 +1126,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 61,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.hay,
     token1: bscTokens.btcb,
     feeAmount: FeeAmount.MEDIUM,
@@ -1131,7 +1135,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 60,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.hay,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -1140,7 +1144,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 59,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.tusd,
     token1: bscTokens.busd,
     feeAmount: FeeAmount.LOWEST,
@@ -1149,7 +1153,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 58,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.uni,
     feeAmount: FeeAmount.MEDIUM,
@@ -1158,7 +1162,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 57,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eth,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.MEDIUM,
@@ -1167,7 +1171,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 56,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.btcb,
     feeAmount: FeeAmount.MEDIUM,
@@ -1176,7 +1180,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 55,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.btcb,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.LOW,
@@ -1185,7 +1189,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 53,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eqb,
     token1: bscTokens.bnb,
     feeAmount: FeeAmount.HIGH,
@@ -1194,7 +1198,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 52,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.axlusdc,
     token1: bscTokens.usdt,
     lpAddress: Pool.getAddress(bscTokens.axlusdc, bscTokens.usdt, FeeAmount.LOWEST),
@@ -1203,7 +1207,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 51,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.pendle,
     token1: bscTokens.wbnb,
     lpAddress: Pool.getAddress(bscTokens.pendle, bscTokens.wbnb, FeeAmount.HIGH),
@@ -1212,7 +1216,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 50,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.xalgo,
     token1: bscTokens.wbnb,
     lpAddress: Pool.getAddress(bscTokens.xalgo, bscTokens.wbnb, FeeAmount.MEDIUM),
@@ -1221,7 +1225,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 49,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.cgpt,
     token1: bscTokens.busd,
     lpAddress: Pool.getAddress(bscTokens.cgpt, bscTokens.busd, FeeAmount.MEDIUM),
@@ -1230,7 +1234,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 48,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.tusd,
     token1: bscTokens.usdt,
     lpAddress: Pool.getAddress(bscTokens.tusd, bscTokens.usdt, FeeAmount.LOWEST),
@@ -1239,7 +1243,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 43,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.csix,
     token1: bscTokens.cake,
     lpAddress: Pool.getAddress(bscTokens.csix, bscTokens.cake, FeeAmount.MEDIUM),
@@ -1248,7 +1252,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 23,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.axl,
     feeAmount: FeeAmount.MEDIUM,
@@ -1257,7 +1261,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 46,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.aog,
     token1: bscTokens.busd,
     feeAmount: FeeAmount.HIGH,
@@ -1266,7 +1270,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 47,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.cgpt,
     token1: bscTokens.busd,
     feeAmount: FeeAmount.HIGH,
@@ -1275,7 +1279,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 44,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eura,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.LOW,
@@ -1284,7 +1288,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 42,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.pepe,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.MEDIUM,
@@ -1293,7 +1297,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 41,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.c98,
     token1: bscTokens.bnb,
     lpAddress: Pool.getAddress(bscTokens.c98, bscTokens.bnb, FeeAmount.MEDIUM),
@@ -1302,7 +1306,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 40,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.ush,
     token1: bscTokens.bnb,
     lpAddress: Pool.getAddress(bscTokens.ush, bscTokens.bnb, FeeAmount.HIGH),
@@ -1311,7 +1315,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 39,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.id,
     token1: bscTokens.usdt,
     lpAddress: Pool.getAddress(bscTokens.id, bscTokens.usdt, FeeAmount.MEDIUM),
@@ -1320,7 +1324,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 38,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.bnb,
     token1: bscTokens.gal,
     lpAddress: Pool.getAddress(bscTokens.gal, bscTokens.bnb, FeeAmount.MEDIUM),
@@ -1329,7 +1333,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 37,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.bnbx,
     token1: bscTokens.bnb,
     feeAmount: FeeAmount.LOW,
@@ -1338,7 +1342,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 36,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.peel,
     token1: bscTokens.busd,
     feeAmount: FeeAmount.MEDIUM,
@@ -1347,7 +1351,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 35,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.revv,
     token1: bscTokens.edu,
     feeAmount: FeeAmount.MEDIUM,
@@ -1356,7 +1360,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 34,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.edu,
     feeAmount: FeeAmount.MEDIUM,
@@ -1365,7 +1369,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 33,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.edu,
     feeAmount: FeeAmount.MEDIUM,
@@ -1374,7 +1378,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 32,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eth,
     token1: bscTokens.wbeth,
     lpAddress: Pool.getAddress(bscTokens.wbeth, bscTokens.eth, FeeAmount.LOW),
@@ -1383,7 +1387,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 31,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.cake,
     token1: bscTokens.zbc,
     feeAmount: FeeAmount.HIGH,
@@ -1392,7 +1396,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 30,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.champ,
     feeAmount: FeeAmount.HIGH,
@@ -1401,7 +1405,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 29,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.unshETH,
     token1: bscTokens.ush,
     feeAmount: FeeAmount.MEDIUM,
@@ -1410,7 +1414,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 28,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.unshETH,
     token1: bscTokens.usdt,
     feeAmount: FeeAmount.MEDIUM,
@@ -1419,7 +1423,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 27,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.cake,
     token1: bscTokens.pstake,
     lpAddress: Pool.getAddress(bscTokens.pstake, bscTokens.cake, FeeAmount.MEDIUM),
@@ -1428,7 +1432,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 26,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.stkbnb,
     lpAddress: Pool.getAddress(bscTokens.stkbnb, bscTokens.wbnb, FeeAmount.LOW),
@@ -1437,7 +1441,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 25,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.unw,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -1446,7 +1450,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 24,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.mgp,
     feeAmount: FeeAmount.MEDIUM,
@@ -1455,7 +1459,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 22,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.gq,
     feeAmount: FeeAmount.MEDIUM,
@@ -1464,7 +1468,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 20,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eth,
     token1: bscTokens.ankrETH,
     lpAddress: Pool.getAddress(bscTokens.eth, bscTokens.ankrETH, FeeAmount.LOW),
@@ -1473,7 +1477,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 21,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.ankrbnb,
     token1: bscTokens.bnb,
     feeAmount: FeeAmount.LOW,
@@ -1482,7 +1486,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 6,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.btcb,
     token1: bscTokens.busd,
     feeAmount: FeeAmount.LOW,
@@ -1491,7 +1495,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 8,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eth,
     token1: bscTokens.btcb,
     feeAmount: FeeAmount.MEDIUM,
@@ -1500,7 +1504,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 9,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.btcb,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -1509,7 +1513,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 10,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eth,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -1518,7 +1522,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 11,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.eth,
     token1: bscTokens.usdc,
     feeAmount: FeeAmount.LOW,
@@ -1527,7 +1531,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 12,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -1536,7 +1540,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 13,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdc,
     token1: bscTokens.busd,
     feeAmount: FeeAmount.LOWEST,
@@ -1545,7 +1549,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 14,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.usdt,
     token1: bscTokens.busd,
     feeAmount: FeeAmount.LOWEST,
@@ -1554,7 +1558,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 15,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.wbnb,
     token1: bscTokens.link,
     feeAmount: FeeAmount.MEDIUM,
@@ -1563,7 +1567,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 16,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.xrp,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -1572,7 +1576,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 17,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.trx,
     token1: bscTokens.busd,
     feeAmount: FeeAmount.MEDIUM,
@@ -1581,7 +1585,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 18,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.ada,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -1590,7 +1594,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 19,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: bscTokens.dot,
     token1: bscTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -1599,7 +1603,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 2,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V2,
+    protocol: Protocol.V2,
     token0: bscTokens.cake,
     token1: bscTokens.wbnb,
     lpAddress: Pair.getAddress(bscTokens.cake, bscTokens.wbnb),
@@ -1607,7 +1611,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 47,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V2,
+    protocol: Protocol.V2,
     token0: bscTokens.cake,
     token1: bscTokens.usdt,
     lpAddress: Pair.getAddress(bscTokens.cake, bscTokens.usdt),
@@ -1617,7 +1621,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 9,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V2,
+    protocol: Protocol.V2,
     token0: bscTokens.wbnb,
     token1: bscTokens.xvs,
     lpAddress: Pair.getAddress(bscTokens.wbnb, bscTokens.xvs),
@@ -1625,7 +1629,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 182,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.STABLE,
+    protocol: Protocol.STABLE,
     lpAddress: '0x4cBEa76B4A1c42C356B4c52B0314A98313fFE9df',
     token0: bscTokens.mwbeth,
     token1: bscTokens.wbeth,
@@ -1633,7 +1637,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 180,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V2,
+    protocol: Protocol.V2,
     token0: bscTokens.wbnb,
     token1: bscTokens.mgp,
     lpAddress: Pair.getAddress(bscTokens.wbnb, bscTokens.mgp),
@@ -1641,7 +1645,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 181,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V2,
+    protocol: Protocol.V2,
     token0: bscTokens.pnp,
     token1: bscTokens.wbnb,
     lpAddress: Pair.getAddress(bscTokens.pnp, bscTokens.wbnb),
@@ -1649,7 +1653,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 179,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.STABLE,
+    protocol: Protocol.STABLE,
     token0: bscTokens.mdlp,
     token1: bscTokens.dlp,
     lpAddress: '0xA2915ae3bc8C6C03f59496B6Dd26aa6a4335b788',
@@ -1657,7 +1661,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 178,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.STABLE,
+    protocol: Protocol.STABLE,
     token0: bscTokens.mpendle,
     token1: bscTokens.pendle,
     lpAddress: '0x183F325b33d190597D80d1B46D865d0250fD9BF2',
@@ -1665,7 +1669,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 177,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V2,
+    protocol: Protocol.V2,
     token0: bscTokens.ckp,
     token1: bscTokens.mcake,
     lpAddress: Pair.getAddress(bscTokens.ckp, bscTokens.mcake),
@@ -1673,7 +1677,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 176,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V2,
+    protocol: Protocol.V2,
     token0: bscTokens.rdp,
     token1: bscTokens.wbnb,
     lpAddress: Pair.getAddress(bscTokens.rdp, bscTokens.wbnb),
@@ -1681,7 +1685,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 175,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V2,
+    protocol: Protocol.V2,
     token0: bscTokens.wbnb,
     token1: bscTokens.hzn,
     lpAddress: Pair.getAddress(bscTokens.wbnb, bscTokens.hzn),
@@ -1689,7 +1693,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 173,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.STABLE,
+    protocol: Protocol.STABLE,
     lpAddress: '0xB1D54d76E2cB9425Ec9c018538cc531440b55dbB',
     token0: bscTokens.cake,
     token1: bscTokens.sdcake,
@@ -1697,7 +1701,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 174,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.STABLE,
+    protocol: Protocol.STABLE,
     lpAddress: '0xb9dC6396AcFFD24E0f69Dfd3231fDaeB31514D02',
     token0: bscTokens.cake,
     token1: bscTokens.mcake,
@@ -1705,7 +1709,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 163,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.STABLE,
+    protocol: Protocol.STABLE,
     lpAddress: '0xB2Aa63f363196caba3154D4187949283F085a488',
     token0: bscTokens.hay,
     token1: bscTokens.usdt,
@@ -1713,7 +1717,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 42,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V2,
+    protocol: Protocol.V2,
     token0: bscTokens.mbox,
     token1: bscTokens.wbnb,
     lpAddress: Pair.getAddress(bscTokens.mbox, bscTokens.wbnb),
@@ -1721,7 +1725,7 @@ const bscFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 8,
     chainId: ChainId.BSC,
-    protocol: ProtocolEnum.V2,
+    protocol: Protocol.V2,
     token0: bscTokens.twt,
     token1: bscTokens.wbnb,
     lpAddress: Pair.getAddress(bscTokens.twt, bscTokens.wbnb),
@@ -1732,7 +1736,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 1,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.usdc,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -1741,7 +1745,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 62,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.usdc,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -1750,7 +1754,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 63,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.weth,
     token1: ethereumTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -1759,7 +1763,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 2,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.weth,
     token1: ethereumTokens.usdt,
     feeAmount: FeeAmount.LOW,
@@ -1768,7 +1772,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 3,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.usdc,
     token1: ethereumTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -1777,7 +1781,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 4,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.wbtc,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -1786,7 +1790,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 5,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.cake,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -1795,7 +1799,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 6,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.cake,
     token1: ethereumTokens.usdc,
     feeAmount: FeeAmount.MEDIUM,
@@ -1804,7 +1808,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 72,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.zro,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -1813,7 +1817,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 71,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.taiko,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -1822,7 +1826,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 70,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.blb,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -1831,7 +1835,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 69,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.weth,
     token1: ethereumTokens.mETH,
     feeAmount: FeeAmount.LOWEST,
@@ -1840,7 +1844,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 68,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.weth,
     token1: ethereumTokens.mETH,
     feeAmount: FeeAmount.LOW,
@@ -1849,7 +1853,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 67,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.mnt,
     token1: ethereumTokens.mETH,
     feeAmount: FeeAmount.MEDIUM,
@@ -1858,7 +1862,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 66,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.masa,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -1867,7 +1871,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 65,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.weth,
     token1: ethereumTokens.rswETH,
     feeAmount: FeeAmount.LOW,
@@ -1876,7 +1880,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 64,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.nmt,
     token1: ethereumTokens.usdc,
     feeAmount: FeeAmount.MEDIUM,
@@ -1885,7 +1889,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 61,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.mstETH,
     token1: ethereumTokens.wstETH,
     feeAmount: FeeAmount.LOWEST,
@@ -1894,7 +1898,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 60,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.mswETH,
     token1: ethereumTokens.swETH,
     feeAmount: FeeAmount.LOWEST,
@@ -1903,7 +1907,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 59,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.xrgb,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -1912,7 +1916,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 58,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.pixel,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -1921,7 +1925,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 57,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.pandora,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -1930,7 +1934,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 56,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.weth,
     token1: ethereumTokens.weETH,
     feeAmount: FeeAmount.LOWEST,
@@ -1939,7 +1943,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 55,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.pxETH,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -1948,7 +1952,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 54,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.osak,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -1957,7 +1961,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 53,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.ords,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -1966,7 +1970,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 52,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.weth,
     token1: ethereumTokens.swETH,
     feeAmount: FeeAmount.LOW,
@@ -1975,7 +1979,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 51,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.eura,
     token1: ethereumTokens.usdc,
     feeAmount: FeeAmount.LOW,
@@ -1984,7 +1988,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 50,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.sdt,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -1993,7 +1997,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 49,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.weth,
     token1: ethereumTokens.btrfly,
     feeAmount: FeeAmount.MEDIUM,
@@ -2002,7 +2006,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 48,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.insp,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -2011,7 +2015,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 47,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.aioz,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -2020,7 +2024,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 46,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.id,
     token1: ethereumTokens.usdc,
     feeAmount: FeeAmount.MEDIUM,
@@ -2029,7 +2033,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 45,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.bonk,
     token1: ethereumTokens.usdt,
     feeAmount: FeeAmount.HIGH,
@@ -2038,7 +2042,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 44,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.insp,
     token1: ethereumTokens.usdt,
     feeAmount: FeeAmount.HIGH,
@@ -2047,7 +2051,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 43,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.wstETH,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -2056,7 +2060,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 42,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.meme,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -2065,7 +2069,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 41,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.ethx,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -2074,7 +2078,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 40,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.pyusd,
     token1: ethereumTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -2083,7 +2087,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 39,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.pyusd,
     token1: ethereumTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -2092,7 +2096,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 38,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.woo,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -2101,7 +2105,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 12,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.wstETH,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -2110,7 +2114,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 37,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.cyber,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -2119,7 +2123,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 36,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.wom, ethereumTokens.usdt, FeeAmount.HIGH),
     token0: ethereumTokens.wom,
     token1: ethereumTokens.usdt,
@@ -2128,7 +2132,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 35,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.wld, ethereumTokens.weth, FeeAmount.HIGH),
     token0: ethereumTokens.wld,
     token1: ethereumTokens.weth,
@@ -2137,7 +2141,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 34,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.pendle, ethereumTokens.weth, FeeAmount.HIGH),
     token0: ethereumTokens.pendle,
     token1: ethereumTokens.weth,
@@ -2146,7 +2150,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 33,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.canto, ethereumTokens.weth, FeeAmount.HIGH),
     token0: ethereumTokens.canto,
     token1: ethereumTokens.weth,
@@ -2155,7 +2159,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 32,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.tusd, ethereumTokens.usdt, FeeAmount.LOWEST),
     token0: ethereumTokens.tusd,
     token1: ethereumTokens.usdt,
@@ -2164,7 +2168,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 22,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.axl, ethereumTokens.usdc, FeeAmount.MEDIUM),
     token0: ethereumTokens.axl,
     token1: ethereumTokens.usdc,
@@ -2173,7 +2177,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 19,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.rETH, ethereumTokens.weth, FeeAmount.LOW),
     token0: ethereumTokens.rETH,
     token1: ethereumTokens.weth,
@@ -2182,7 +2186,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 31,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.wbtc, ethereumTokens.rETH, FeeAmount.MEDIUM),
     token0: ethereumTokens.wbtc,
     token1: ethereumTokens.rETH,
@@ -2191,7 +2195,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 30,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.fuse, ethereumTokens.weth, FeeAmount.MEDIUM),
     token0: ethereumTokens.fuse,
     token1: ethereumTokens.weth,
@@ -2200,7 +2204,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 29,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.weth,
     token1: ethereumTokens.ens,
     feeAmount: FeeAmount.MEDIUM,
@@ -2209,7 +2213,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 28,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.blur,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -2218,7 +2222,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 27,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.pepe,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -2227,7 +2231,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 26,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.wbeth, ethereumTokens.weth, FeeAmount.LOW),
     token0: ethereumTokens.wbeth,
     token1: ethereumTokens.weth,
@@ -2236,7 +2240,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 25,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.unshETH, ethereumTokens.usdc, FeeAmount.MEDIUM),
     token0: ethereumTokens.unshETH,
     token1: ethereumTokens.usdc,
@@ -2245,7 +2249,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 24,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.weth,
     token1: ethereumTokens.wncg,
     feeAmount: FeeAmount.MEDIUM,
@@ -2254,7 +2258,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 23,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.mask,
     token1: ethereumTokens.usdc,
     feeAmount: FeeAmount.MEDIUM,
@@ -2263,7 +2267,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 14,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.alETH, ethereumTokens.alcx, FeeAmount.MEDIUM),
     token0: ethereumTokens.alETH,
     token1: ethereumTokens.alcx,
@@ -2272,7 +2276,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 15,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.alETH, ethereumTokens.weth, FeeAmount.LOW),
     token0: ethereumTokens.alETH,
     token1: ethereumTokens.weth,
@@ -2281,7 +2285,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 16,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.fxs, ethereumTokens.weth, FeeAmount.MEDIUM),
     token0: ethereumTokens.fxs,
     token1: ethereumTokens.weth,
@@ -2290,7 +2294,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 17,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.frxETH, ethereumTokens.weth, FeeAmount.LOW),
     token0: ethereumTokens.frxETH,
     token1: ethereumTokens.weth,
@@ -2299,7 +2303,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 18,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.weth, ethereumTokens.rpl, FeeAmount.MEDIUM),
     token0: ethereumTokens.weth,
     token1: ethereumTokens.rpl,
@@ -2308,7 +2312,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 20,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.weth, ethereumTokens.ankrETH, FeeAmount.LOW),
     token0: ethereumTokens.weth,
     token1: ethereumTokens.ankrETH,
@@ -2317,7 +2321,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 21,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     lpAddress: Pool.getAddress(ethereumTokens.cbEth, ethereumTokens.weth, FeeAmount.LOW),
     token0: ethereumTokens.cbEth,
     token1: ethereumTokens.weth,
@@ -2326,7 +2330,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 7,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.dai,
     token1: ethereumTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -2335,7 +2339,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 8,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.ldo,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -2344,7 +2348,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 9,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.link,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -2353,7 +2357,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 10,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.matic,
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -2362,7 +2366,7 @@ const ethereumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 13,
     chainId: ChainId.ETHEREUM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: ethereumTokens.usdc,
     token1: ethereumTokens.stg,
     feeAmount: FeeAmount.MEDIUM,
@@ -2373,7 +2377,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 15,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -2382,7 +2386,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 1,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.usdc,
     feeAmount: FeeAmount.LOW,
@@ -2391,7 +2395,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 2,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.usdt,
     token1: polygonZkEvmTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -2400,7 +2404,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 3,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.usdt,
     token1: polygonZkEvmTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -2409,7 +2413,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 16,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.wbtc,
     feeAmount: FeeAmount.LOWEST,
@@ -2418,7 +2422,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 17,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.matic,
     feeAmount: FeeAmount.LOW,
@@ -2427,7 +2431,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 4,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.matic,
     feeAmount: FeeAmount.MEDIUM,
@@ -2436,7 +2440,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 22,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.usdc,
     token1: polygonZkEvmTokens.dai,
     feeAmount: FeeAmount.LOWEST,
@@ -2445,7 +2449,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 21,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.usdt,
     token1: polygonZkEvmTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -2454,7 +2458,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 20,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.usdce,
     token1: polygonZkEvmTokens.grai,
     feeAmount: FeeAmount.LOW,
@@ -2463,7 +2467,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 19,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.cake,
     token1: polygonZkEvmTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -2472,7 +2476,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 18,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.cake,
     token1: polygonZkEvmTokens.usdc,
     feeAmount: FeeAmount.HIGH,
@@ -2482,7 +2486,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 14,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.rsETH,
     feeAmount: FeeAmount.LOW,
@@ -2491,7 +2495,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 13,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.reth,
     feeAmount: FeeAmount.LOW,
@@ -2500,7 +2504,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 12,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.wstETH,
     feeAmount: FeeAmount.LOW,
@@ -2509,7 +2513,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 11,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.wstETH,
     token1: polygonZkEvmTokens.reth,
     feeAmount: FeeAmount.LOW,
@@ -2518,7 +2522,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 8,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.wstETH,
     feeAmount: FeeAmount.LOWEST,
@@ -2527,7 +2531,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 9,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.reth,
     feeAmount: FeeAmount.LOWEST,
@@ -2536,7 +2540,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 10,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.rsETH,
     feeAmount: FeeAmount.LOWEST,
@@ -2545,7 +2549,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 7,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.usdce,
     token1: polygonZkEvmTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -2554,7 +2558,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 5,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.usdc,
     token1: polygonZkEvmTokens.grai,
     feeAmount: FeeAmount.LOW,
@@ -2563,7 +2567,7 @@ const polygonFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 6,
     chainId: ChainId.POLYGON_ZKEVM,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: polygonZkEvmTokens.weth,
     token1: polygonZkEvmTokens.wbtc,
     feeAmount: FeeAmount.LOW,
@@ -2574,7 +2578,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 8,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdc,
     token1: zksyncTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -2583,7 +2587,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 1,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdc,
     token1: zksyncTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -2592,7 +2596,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 18,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdt,
     token1: zksyncTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -2601,7 +2605,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 12,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdt,
     token1: zksyncTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -2610,7 +2614,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 3,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdc,
     token1: zksyncTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -2619,7 +2623,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 6,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.weth,
     token1: zksyncTokens.wbtc,
     feeAmount: FeeAmount.LOW,
@@ -2628,7 +2632,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 34,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.weth,
     token1: zksyncTokens.rf,
     feeAmount: FeeAmount.HIGH,
@@ -2637,7 +2641,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 33,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdcNative,
     token1: zksyncTokens.zk,
     feeAmount: FeeAmount.MEDIUM,
@@ -2646,7 +2650,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 32,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdcNative,
     token1: zksyncTokens.zk,
     feeAmount: FeeAmount.HIGH,
@@ -2655,7 +2659,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 31,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdc,
     token1: zksyncTokens.zk,
     feeAmount: FeeAmount.MEDIUM,
@@ -2664,7 +2668,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 30,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdc,
     token1: zksyncTokens.zk,
     feeAmount: FeeAmount.HIGH,
@@ -2673,7 +2677,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 29,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.zk,
     token1: zksyncTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -2682,7 +2686,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 28,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.zk,
     token1: zksyncTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -2691,7 +2695,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 27,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdcNative,
     token1: zksyncTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -2700,7 +2704,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 26,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdcNative,
     token1: zksyncTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -2709,7 +2713,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 25,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdcNative,
     token1: zksyncTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -2718,7 +2722,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 24,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdt,
     token1: zksyncTokens.usdtPlus,
     feeAmount: FeeAmount.LOWEST,
@@ -2727,7 +2731,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 23,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdPlus,
     token1: zksyncTokens.usdtPlus,
     feeAmount: FeeAmount.LOWEST,
@@ -2736,7 +2740,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 22,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdc,
     token1: zksyncTokens.grai,
     feeAmount: FeeAmount.LOWEST,
@@ -2745,7 +2749,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 21,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdc,
     token1: zksyncTokens.grai,
     feeAmount: FeeAmount.LOW,
@@ -2754,7 +2758,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 20,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.weth,
     token1: zksyncTokens.wethe,
     feeAmount: FeeAmount.LOW,
@@ -2763,7 +2767,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 19,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.weth,
     token1: zksyncTokens.wbtc,
     feeAmount: FeeAmount.LOWEST,
@@ -2772,7 +2776,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 17,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdc,
     token1: zksyncTokens.dai,
     feeAmount: FeeAmount.LOWEST,
@@ -2781,7 +2785,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 16,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdt,
     token1: zksyncTokens.dai,
     feeAmount: FeeAmount.LOWEST,
@@ -2790,7 +2794,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 15,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.reth,
     token1: zksyncTokens.wstETH,
     feeAmount: FeeAmount.LOW,
@@ -2799,7 +2803,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 14,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdc,
     token1: zksyncTokens.wstETH,
     feeAmount: FeeAmount.LOW,
@@ -2808,7 +2812,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 13,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.weth,
     token1: zksyncTokens.wstETH,
     feeAmount: FeeAmount.LOW,
@@ -2818,7 +2822,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 11,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdc,
     token1: zksyncTokens.usdPlus,
     feeAmount: FeeAmount.LOWEST,
@@ -2827,7 +2831,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 10,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.reth,
     token1: zksyncTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -2836,7 +2840,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 9,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.busd,
     token1: zksyncTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -2845,7 +2849,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 2,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.usdc,
     token1: zksyncTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -2855,7 +2859,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 4,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.weth,
     token1: zksyncTokens.tes,
     feeAmount: FeeAmount.HIGH,
@@ -2864,7 +2868,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 5,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.cake,
     token1: zksyncTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -2873,7 +2877,7 @@ const zksyncFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 7,
     chainId: ChainId.ZKSYNC,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: zksyncTokens.busd,
     token1: zksyncTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -2884,7 +2888,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 43,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -2893,7 +2897,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 42,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -2902,7 +2906,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 2,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.usdt,
     feeAmount: FeeAmount.LOW,
@@ -2911,7 +2915,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 1,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.LOW,
@@ -2920,7 +2924,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 74,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.sqd,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -2929,7 +2933,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 73,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.solvBTC,
     token1: arbitrumTokens.solvBTCena,
     feeAmount: FeeAmount.LOW,
@@ -2938,7 +2942,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 72,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.zro,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -2947,7 +2951,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 71,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.fusdc,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -2956,7 +2960,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 70,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.usdce,
     feeAmount: FeeAmount.LOWEST,
@@ -2965,7 +2969,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 69,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.wbtc,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -2974,7 +2978,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 68,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdt,
     token1: arbitrumTokens.usdce,
     feeAmount: FeeAmount.LOWEST,
@@ -2983,7 +2987,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 67,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdc,
     token1: arbitrumTokens.usdce,
     feeAmount: FeeAmount.LOWEST,
@@ -2992,7 +2996,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 66,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.arb,
     token1: arbitrumTokens.usdce,
     feeAmount: FeeAmount.LOWEST,
@@ -3001,7 +3005,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 65,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdc,
     token1: arbitrumTokens.mim,
     feeAmount: FeeAmount.LOWEST,
@@ -3010,7 +3014,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 64,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.woo,
     feeAmount: FeeAmount.LOW,
@@ -3019,7 +3023,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 63,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.tia,
     feeAmount: FeeAmount.MEDIUM,
@@ -3028,7 +3032,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 62,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.magic,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -3037,7 +3041,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 61,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdv,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -3046,7 +3050,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 60,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.fly,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -3055,7 +3059,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 59,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.axlUSDC,
     token1: arbitrumTokens.usdce,
     feeAmount: FeeAmount.LOWEST,
@@ -3064,7 +3068,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 58,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weETH,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -3073,7 +3077,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 57,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.ezETH,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -3082,7 +3086,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 56,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.ethX,
     feeAmount: FeeAmount.LOWEST,
@@ -3091,7 +3095,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 55,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.rsETH,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -3100,7 +3104,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 54,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.grai,
     feeAmount: FeeAmount.MEDIUM,
@@ -3109,7 +3113,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 53,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdv,
     token1: arbitrumTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -3118,7 +3122,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 52,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdv,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -3127,7 +3131,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 51,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdc,
     token1: arbitrumTokens.usdplus,
     feeAmount: FeeAmount.LOWEST,
@@ -3136,7 +3140,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 50,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.arb,
     token1: arbitrumTokens.usdplus,
     feeAmount: FeeAmount.LOWEST,
@@ -3145,7 +3149,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 49,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.usdplus,
     feeAmount: FeeAmount.LOWEST,
@@ -3154,7 +3158,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 48,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.wbtc,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.LOW,
@@ -3163,7 +3167,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 47,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.arb,
     token1: arbitrumTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -3172,7 +3176,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 46,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.arb,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -3181,7 +3185,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 45,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.arb,
     feeAmount: FeeAmount.LOWEST,
@@ -3190,7 +3194,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 44,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.wbtc,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -3199,7 +3203,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 41,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdv,
     token1: arbitrumTokens.usdplus,
     feeAmount: FeeAmount.LOWEST,
@@ -3208,7 +3212,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 40,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdtplus,
     token1: arbitrumTokens.usdplus,
     feeAmount: FeeAmount.LOW,
@@ -3217,7 +3221,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 39,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdc,
     token1: arbitrumTokens.usdplus,
     feeAmount: FeeAmount.LOW,
@@ -3226,7 +3230,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 38,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.wbnb,
     feeAmount: FeeAmount.MEDIUM,
@@ -3235,7 +3239,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 37,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.ovn,
     token1: arbitrumTokens.usdplus,
     feeAmount: FeeAmount.HIGH,
@@ -3244,7 +3248,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 36,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.ethplus,
     feeAmount: FeeAmount.LOWEST,
@@ -3253,7 +3257,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 35,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdplus,
     token1: arbitrumTokens.usdce,
     feeAmount: FeeAmount.LOWEST,
@@ -3262,7 +3266,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 34,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.ethplus,
     token1: arbitrumTokens.usdplus,
     feeAmount: FeeAmount.MEDIUM,
@@ -3271,7 +3275,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 33,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdtplus,
     token1: arbitrumTokens.usdplus,
     feeAmount: FeeAmount.LOWEST,
@@ -3280,7 +3284,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 32,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.xai,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -3289,7 +3293,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 3,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.arb,
     feeAmount: FeeAmount.LOW,
@@ -3298,7 +3302,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 4,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdc,
     token1: arbitrumTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -3307,7 +3311,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 5,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.cake,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -3316,7 +3320,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 6,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.lvl,
     feeAmount: FeeAmount.MEDIUM,
@@ -3325,7 +3329,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 7,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.mgp,
     feeAmount: FeeAmount.MEDIUM,
@@ -3334,7 +3338,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 8,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.arb,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.LOW,
@@ -3343,7 +3347,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 9,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.arb,
     token1: arbitrumTokens.usdt,
     feeAmount: FeeAmount.LOW,
@@ -3352,7 +3356,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 10,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.pendle,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -3361,7 +3365,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 11,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.gmx,
     feeAmount: FeeAmount.MEDIUM,
@@ -3370,7 +3374,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 12,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.link,
     feeAmount: FeeAmount.MEDIUM,
@@ -3379,7 +3383,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 13,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.kuji,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -3388,7 +3392,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 14,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdc,
     token1: arbitrumTokens.link,
     feeAmount: FeeAmount.MEDIUM,
@@ -3397,7 +3401,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 15,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.eqb,
     feeAmount: FeeAmount.MEDIUM,
@@ -3406,7 +3410,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 16,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdc,
     token1: arbitrumTokens.axlUSDC,
     feeAmount: FeeAmount.LOWEST,
@@ -3415,7 +3419,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 17,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.wbtc,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -3424,7 +3428,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 18,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.usdc,
     token1: arbitrumTokens.dai,
     feeAmount: FeeAmount.LOWEST,
@@ -3433,7 +3437,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 19,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.axlUSDC,
     token1: arbitrumTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -3442,7 +3446,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 20,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.stg,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -3451,7 +3455,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 21,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.stg,
     token1: arbitrumTokens.arb,
     feeAmount: FeeAmount.MEDIUM,
@@ -3460,7 +3464,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 22,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.stg,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.MEDIUM,
@@ -3469,7 +3473,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 23,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.rdnt,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -3478,7 +3482,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 24,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.magic,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.MEDIUM,
@@ -3487,7 +3491,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 25,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.wstETH,
     token1: arbitrumTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -3496,7 +3500,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 26,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.rETH,
     feeAmount: FeeAmount.LOWEST,
@@ -3505,7 +3509,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 27,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.stEUR,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -3514,7 +3518,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 28,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.kuji,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.MEDIUM,
@@ -3523,7 +3527,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 29,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.dmt,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.MEDIUM,
@@ -3532,7 +3536,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 30,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.grai,
     token1: arbitrumTokens.usdc,
     feeAmount: FeeAmount.LOW,
@@ -3541,7 +3545,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 31,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: arbitrumTokens.weth,
     token1: arbitrumTokens.swETH,
     feeAmount: FeeAmount.LOWEST,
@@ -3550,7 +3554,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 2,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.STABLE,
+    protocol: Protocol.STABLE,
     token0: arbitrumTokens.dlp,
     token1: arbitrumTokens.mdlp,
     lpAddress: '0x0db5e247ab73FBaE16d9301f2977f974EC0AA336',
@@ -3558,7 +3562,7 @@ const arbitrumFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 178,
     chainId: ChainId.ARBITRUM_ONE,
-    protocol: ProtocolEnum.STABLE,
+    protocol: Protocol.STABLE,
     token0: arbitrumTokens.pendle,
     token1: arbitrumTokens.mpendle,
     lpAddress: '0x1A2329546f11e4fE55b853D98Bba2c4678E3105A',
@@ -3568,7 +3572,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 9,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdc,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -3577,7 +3581,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 12,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdt,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -3586,7 +3590,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 1,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdc,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -3595,7 +3599,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 8,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdt,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -3605,7 +3609,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 2,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdc,
     token1: lineaTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -3614,7 +3618,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 10,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.wbtc,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -3623,7 +3627,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 3,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.wbtc,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -3632,7 +3636,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 14,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.foxy,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -3641,7 +3645,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 13,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.ezETH,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -3651,7 +3655,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 11,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.cake,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -3661,7 +3665,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 7,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.wstETH,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -3670,7 +3674,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 6,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.wstETH,
     token1: lineaTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -3680,7 +3684,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 4,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdc,
     token1: lineaTokens.dai,
     feeAmount: FeeAmount.LOWEST,
@@ -3689,7 +3693,7 @@ const lineaFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 5,
     chainId: ChainId.LINEA,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: lineaTokens.usdc,
     token1: lineaTokens.axlusdc,
     feeAmount: FeeAmount.LOWEST,
@@ -3700,7 +3704,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 10,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.weth,
     token1: baseTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -3709,7 +3713,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 9,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.weth,
     token1: baseTokens.usdbc,
     feeAmount: FeeAmount.LOWEST,
@@ -3718,7 +3722,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 5,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.weth,
     token1: baseTokens.usdc,
     feeAmount: FeeAmount.LOW,
@@ -3727,7 +3731,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 1,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.weth,
     token1: baseTokens.usdbc,
     feeAmount: FeeAmount.LOW,
@@ -3736,7 +3740,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 6,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.usdc,
     token1: baseTokens.usdbc,
     feeAmount: FeeAmount.LOWEST,
@@ -3745,7 +3749,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 12,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.cbETH,
     token1: baseTokens.weth,
     feeAmount: FeeAmount.LOWEST,
@@ -3754,7 +3758,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 2,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.cbETH,
     token1: baseTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -3763,7 +3767,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 22,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.weth,
     token1: baseTokens.zro,
     feeAmount: FeeAmount.MEDIUM,
@@ -3772,7 +3776,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 15,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.weth,
     token1: baseTokens.usdPlus,
     feeAmount: FeeAmount.LOWEST,
@@ -3781,7 +3785,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 16,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.usdPlus,
     token1: baseTokens.wstETH,
     feeAmount: FeeAmount.LOWEST,
@@ -3790,7 +3794,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 17,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.cbETH,
     token1: baseTokens.usdPlus,
     feeAmount: FeeAmount.LOWEST,
@@ -3799,7 +3803,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 18,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.brett,
     token1: baseTokens.usdPlus,
     feeAmount: FeeAmount.LOW,
@@ -3808,7 +3812,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 19,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.degen,
     token1: baseTokens.usdPlus,
     feeAmount: FeeAmount.LOW,
@@ -3817,7 +3821,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 20,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.aero,
     token1: baseTokens.usdPlus,
     feeAmount: FeeAmount.LOW,
@@ -3826,7 +3830,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 21,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.weth,
     token1: baseTokens.ovn,
     feeAmount: FeeAmount.HIGH,
@@ -3835,7 +3839,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 14,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.weth,
     token1: baseTokens.wstETH,
     feeAmount: FeeAmount.LOWEST,
@@ -3844,7 +3848,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 13,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.cake,
     token1: baseTokens.weth,
     feeAmount: FeeAmount.HIGH,
@@ -3854,7 +3858,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 11,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.usdbc,
     token1: baseTokens.axlusdc,
     feeAmount: FeeAmount.LOWEST,
@@ -3864,7 +3868,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 8,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.tbtc,
     token1: baseTokens.weth,
     feeAmount: FeeAmount.LOW,
@@ -3873,7 +3877,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 7,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.dai,
     token1: baseTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
@@ -3883,7 +3887,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 4,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.weth,
     token1: baseTokens.dai,
     feeAmount: FeeAmount.LOW,
@@ -3892,7 +3896,7 @@ const baseFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 3,
     chainId: ChainId.BASE,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: baseTokens.dai,
     token1: baseTokens.usdbc,
     feeAmount: FeeAmount.LOWEST,
@@ -3903,7 +3907,7 @@ const opBNBFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 4,
     chainId: ChainId.OPBNB,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: opBnbTokens.usdt,
     token1: opBnbTokens.xcad,
     feeAmount: FeeAmount.HIGH,
@@ -3912,7 +3916,7 @@ const opBNBFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 3,
     chainId: ChainId.OPBNB,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: opBnbTokens.wbnb,
     token1: opBnbTokens.eth,
     feeAmount: FeeAmount.MEDIUM,
@@ -3921,7 +3925,7 @@ const opBNBFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 2,
     chainId: ChainId.OPBNB,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: opBnbTokens.fdusd,
     token1: opBnbTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
@@ -3930,7 +3934,7 @@ const opBNBFarmConfig: UniversalFarmConfig[] = [
   {
     pid: 1,
     chainId: ChainId.OPBNB,
-    protocol: ProtocolEnum.V3,
+    protocol: Protocol.V3,
     token0: opBnbTokens.wbnb,
     token1: opBnbTokens.usdt,
     feeAmount: FeeAmount.LOW,

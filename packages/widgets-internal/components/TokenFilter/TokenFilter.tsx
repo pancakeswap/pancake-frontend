@@ -14,13 +14,13 @@ export interface ITokenProps {
 }
 
 const Container = styled.div`
+  flex: 1;
   /* hack:
    * the primereact not support to custom the placement of panel
    * we need to place fixed to bottom
    * */
   .p-multiselect-panel {
     top: 0 !important;
-    left: -27px !important;
     transform-origin: center top !important;
   }
 `;
@@ -96,12 +96,11 @@ export const TokenFilter: React.FC<ITokenProps> = ({ data = [], value, onChange 
     <Container>
       <MultiSelect
         style={{
-          width: "273px",
           background: theme.colors.input,
         }}
         panelStyle={{
           minHeight: "382px",
-          width: "328px",
+          minWidth: "328px",
         }}
         scrollHeight="382px"
         options={tokenList}

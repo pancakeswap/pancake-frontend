@@ -13,6 +13,8 @@ import {
   Image,
   ISortOrder,
   SORT_ORDER,
+  Skeleton,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { TokenPairImage } from 'components/TokenImage'
 import { useTranslation } from '@pancakeswap/localization'
@@ -21,24 +23,14 @@ import { UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useExtendPools, useFarmPools } from 'state/farmsV4/hooks'
 import { PoolInfo } from 'state/farmsV4/state/type'
-import { PoolSortBy } from 'state/farmsV4/state/extendPoolsAtom'
+import { PoolSortBy } from 'state/farmsV4/atom'
 
-import {
-  IPoolsFilterPanelProps,
-  MAINNET_CHAINS,
-  PoolsFilterPanel,
-  useSelectedChainsName,
-  useSelectedPoolTypes,
-} from './PoolsFilterPanel'
+import { IPoolsFilterPanelProps, MAINNET_CHAINS, PoolsFilterPanel, useSelectedPoolTypes } from './PoolsFilterPanel'
 
-interface IDataType extends PoolInfo {}
+type IDataType = PoolInfo
 
 const PoolsContent = styled.div`
   min-height: calc(100vh - 64px - 56px);
-
-  table th:first-child {
-    width: 300px;
-  }
 `
 
 const CardHeader = styled(RawCardHeader)`
@@ -46,7 +38,7 @@ const CardHeader = styled(RawCardHeader)`
 `
 
 const CardBody = styled(RawCardBody)`
-  padding-top: 0;
+  padding: 0;
 `
 
 const StyledButton = styled(Button)`
@@ -88,12 +80,14 @@ const PoolListItemAction = (_: string, _poolInfo: IDataType) => {
 
 const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
   const { t } = useTranslation()
+  const mediaQueries = useMatchBreakpoints()
   return useMemo(
     () => [
       {
         title: t('All Pools'),
         dataIndex: null,
         key: 'name',
+        minWidth: '200px',
         render: (_, item) => (
           <TokenOverview
             isReady
@@ -115,6 +109,7 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
         title: t('Fee Tier'),
         dataIndex: 'feeTier',
         key: 'feeTier',
+        display: mediaQueries.isXl || mediaQueries.isXxl,
         render: (fee, item) => <FeeTier type={item.protocol} fee={fee ?? 0} denominator={item.feeTierBase} />,
       },
       {
@@ -123,23 +118,38 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
         key: 'apr',
         sorter: true,
         render: (value) =>
-          value ? <>{(Number(value) * 100).toLocaleString(undefined, { maximumFractionDigits: 2 })}%</> : '-',
+          value ? (
+            <>{(Number(value) * 100).toLocaleString(undefined, { maximumFractionDigits: 2 })}%</>
+          ) : (
+            <Skeleton width={60} />
+          ),
       },
       {
         title: t('TVL'),
         dataIndex: 'tvlUsd',
         key: 'tvl',
         sorter: true,
+        display: mediaQueries.isXl || mediaQueries.isXxl,
         render: (value) =>
-          value ? <>${Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}</> : '-',
+          value ? (
+            <>${Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}</>
+          ) : (
+            <Skeleton width={60} />
+          ),
       },
       {
         title: t('Volume 24H'),
         dataIndex: 'vol24hUsd',
         key: 'vol',
         sorter: true,
+        minWidth: '145px',
+        display: mediaQueries.isXl || mediaQueries.isXxl || mediaQueries.isLg,
         render: (value) =>
-          value ? <>${Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}</> : '-',
+          value ? (
+            <>${Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}</>
+          ) : (
+            <Skeleton width={60} />
+          ),
       },
       {
         title: '',
@@ -148,7 +158,7 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
         key: 'action',
       },
     ],
-    [t],
+    [t, mediaQueries],
   )
 }
 
@@ -165,21 +175,21 @@ export const PoolsPage = () => {
   const { observerRef, isIntersecting } = useIntersectionObserver({
     rootMargin: '100px',
   })
-  const [numberVisible, setNumberVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
+  const [cursorVisible, setCursorVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   const [sortOrder, setSortOrder] = useState<ISortOrder>(SORT_ORDER.NULL)
   const [sortField, setSortField] = useState<keyof IDataType | null>(null)
   // data source
   const farmPools = useFarmPools()
-  const [extendPools, fetchExtendPools] = useExtendPools()
+  const { extendPools, fetchPoolList, resetExtendPools } = useExtendPools()
 
   const poolList = useMemo(
-    () => (farmPools.state !== 'hasData' ? UNIVERSAL_FARMS : [...farmPools.data, ...extendPools]),
+    () => (!farmPools.loaded ? UNIVERSAL_FARMS : [...farmPools.data, ...extendPools]),
     [farmPools, extendPools],
   )
 
   useEffect(() => {
     if (isIntersecting) {
-      setNumberVisible((numberCurrentlyVisible) => {
+      setCursorVisible((numberCurrentlyVisible) => {
         if (numberCurrentlyVisible <= poolList.length) {
           return Math.min(numberCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE, poolList.length)
         }
@@ -190,23 +200,26 @@ export const PoolsPage = () => {
 
   useEffect(() => {
     // if consumed, fetch from pool/list
-    if (numberVisible >= poolList.length) {
-      fetchExtendPools({
+    if (cursorVisible >= poolList.length) {
+      // todo:@eric add some loading status to prevent multi fetch
+      fetchPoolList({
         chains: filters.selectedNetwork,
         protocols: selectedPoolTypes,
         orderBy: PoolSortBy.VOL,
-        before: '',
-        after: '',
       })
     }
-  }, [numberVisible, poolList, fetchExtendPools, filters, selectedPoolTypes])
+  }, [cursorVisible, poolList, fetchPoolList, filters, selectedPoolTypes])
 
-  const handleFilterChange: IPoolsFilterPanelProps['onChange'] = useCallback((newFilters) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      ...newFilters,
-    }))
-  }, [])
+  const handleFilterChange: IPoolsFilterPanelProps['onChange'] = useCallback(
+    (newFilters) => {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        ...newFilters,
+      }))
+      resetExtendPools()
+    },
+    [resetExtendPools],
+  )
 
   const filteredData = useMemo(() => {
     const { selectedNetwork, selectedTokens } = filters
@@ -238,7 +251,7 @@ export const PoolsPage = () => {
           <TableView
             rowKey="lpAddress"
             columns={columns}
-            data={sortedData.slice(0, numberVisible) as any}
+            data={sortedData.slice(0, cursorVisible) as any}
             onSort={({ order, dataIndex }) => {
               setSortOrder(order)
               setSortField(dataIndex)

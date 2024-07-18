@@ -19,6 +19,7 @@ const SelectContainer = styled.div`
   .p-multiselect {
     position: relative;
     height: 0px;
+    width: 100% !important;
   }
   .p-multiselect-label-container,
   .p-multiselect-trigger {
@@ -26,6 +27,7 @@ const SelectContainer = styled.div`
   }
 
   .p-multiselect-panel {
+    width: 100% !important;
     min-width: auto;
     border: 1px solid ${({ theme }) => theme.colors.cardBorder};
     box-shadow: ${({ theme }) => theme.card.boxShadow};

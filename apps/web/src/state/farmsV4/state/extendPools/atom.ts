@@ -21,15 +21,17 @@ export type ExtendPoolsQuery = {
   after: string
 }
 
-export const extendPoolsQueryAtom = atom<ExtendPoolsQuery>({
-  protocols: ['v2', 'v3', 'stable'],
+export const DEFAULT_QUERIES = {
+  protocols: [Protocol.V2, Protocol.V3, Protocol.STABLE],
   orderBy: PoolSortBy.VOL,
   chains: [...supportedChainIdV4],
   pools: [],
   tokens: [],
   before: '',
   after: '',
-})
+}
+
+export const extendPoolsQueryAtom = atom<ExtendPoolsQuery>(DEFAULT_QUERIES)
 
 export const extendPoolsAtom = atom([] as PoolInfo[], (get, set, values: PoolInfo[]) => {
   // remove duplicates pools with farmPoolsAtom

@@ -15,12 +15,43 @@ import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
 import { Protocol } from '@pancakeswap/farms'
-import { ProtocolEnum } from '@pancakeswap/farms/constants/common'
 
 const PoolsFilterContainer = styled(Flex)`
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 16px;
+
+  & > div {
+    flex: 1;
+    max-width: calc(33% - 16px);
+  }
+
+  @media (min-width: 1200px) {
+    & {
+      flex-wrap: nowrap;
+    }
+  }
+
+  @media (max-width: 1199px) {
+    & > div {
+      flex: 0 0 calc(50% - 16px);
+      max-width: calc(50% - 16px);
+    }
+  }
+
+  @media (max-width: 967px) {
+    & > div:nth-child(3) {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 575px) {
+    & > div {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
 `
 export const MAINNET_CHAINS = CHAINS.filter((chain) => {
   if ('testnet' in chain && chain.testnet) {
@@ -49,15 +80,15 @@ export const usePoolTypes = () => {
       },
       {
         label: 'V3',
-        value: ProtocolEnum.V3,
+        value: Protocol.V3,
       },
       {
         label: 'V2',
-        value: ProtocolEnum.V2,
+        value: Protocol.V2,
       },
       {
         label: t('StableSwap'),
-        value: ProtocolEnum.STABLE,
+        value: Protocol.STABLE,
       },
     ],
     [t],

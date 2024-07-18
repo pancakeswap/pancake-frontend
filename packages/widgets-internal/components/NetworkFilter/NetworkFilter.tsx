@@ -10,6 +10,8 @@ export interface INetworkProps {
 }
 
 const Container = styled.div<{ isShow: boolean }>`
+  flex: 1;
+
   .p-multiselect-panel {
     /* hack:
      * the primereact not support to custom the placement of panel
@@ -60,7 +62,6 @@ export const NetworkFilter: React.FC<INetworkProps> = ({ data, value, onChange }
     <Container isShow={isShow}>
       <MultiSelect
         style={{
-          width: "273px",
           backgroundColor: "var(--colors-input)",
         }}
         panelStyle={{
