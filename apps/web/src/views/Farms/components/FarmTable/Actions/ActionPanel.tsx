@@ -364,10 +364,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
 
   const { isDesktop, isMobile } = useMatchBreakpoints()
   const { locked } = useBCakeBoostLimitAndLockInfo()
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const isActive = farm.multiplier !== '0X'
   const lpLabel = useMemo(() => farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, ''), [farm.lpSymbol])
   const bsc = useMemo(
@@ -408,18 +405,6 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
         isLastFarm={isLastFarm}
         values={
           <>
-            {farm.isCommunity && farm.auctionHostingEndDate && (
-              <ValueWrapper>
-                <Text>{t('Auction Hosting Ends')}</Text>
-                <Text paddingLeft="4px">
-                  {new Date(farm.auctionHostingEndDate).toLocaleString(locale, {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })}
-                </Text>
-              </ValueWrapper>
-            )}
             {!isDesktop && (
               <>
                 <ValueWrapper>

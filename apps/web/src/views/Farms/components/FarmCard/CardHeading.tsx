@@ -25,13 +25,12 @@ import { useHasCustomFarmLpTooltips } from 'views/Farms/hooks/useHasCustomFarmLp
 import { useChainId } from 'wagmi'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
-const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmWidget.Tags
+const { StableFarmTag, V2Tag, V3FeeTag } = FarmWidget.Tags
 const { MerklNotice } = FarmWidget
 
 type ExpandableSectionProps = {
   lpLabel?: string
   multiplier?: string
-  isCommunityFarm?: boolean
   token: Token
   quoteToken: Token
   boosted?: boolean
@@ -64,7 +63,6 @@ const MultiplierTag = styled(Tag)`
 const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = ({
   lpLabel,
   multiplier,
-  isCommunityFarm,
   token,
   quoteToken,
   isStable,
@@ -155,7 +153,6 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
           {customTooltips && customTooltips.tooltips}
           {isReady && isStable ? <StableFarmTag /> : version === 2 ? <V2Tag /> : null}
           {isReady && version === 3 && <V3FeeTag feeAmount={feeAmount} />}
-          {isReady && isCommunityFarm && <FarmAuctionTag mr="-4px" />}
           {isReady ? (
             version !== 2 ? (
               <Flex ref={targetRef}>

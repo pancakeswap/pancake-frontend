@@ -218,7 +218,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
             farmCakePerSecond: farmV2Multiplier.getFarmCakePerSecond(farm.poolWeight ?? BIG_ZERO),
             totalMultipliers: farmV2Multiplier.totalMultipliers,
           },
-          type: farm.isCommunity ? 'community' : 'v2',
+          type: 'v2',
           details: farm,
           initialActivity,
         }
@@ -242,7 +242,6 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
           quoteToken: farm.quoteToken,
           isReady: farm.multiplier !== undefined,
           isStaking: farm.stakedPositions?.length > 0,
-          isCommunity: farm.isCommunity,
           merklLink,
           // @notice: this is a hack to make the merkl notice work for rETH-ETH
           hasBothFarmAndMerkl: Boolean(merklLink) && farm.lpAddress === '0x2201d2400d30BFD8172104B4ad046d019CA4E7bd',

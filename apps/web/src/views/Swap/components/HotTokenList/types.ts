@@ -14,7 +14,6 @@ export type ComputedFarmConfigV3 = {
 
   token0: Token
   token1: Token
-  isCommunity?: boolean
 }
 
 export type TokenHighlightData = {

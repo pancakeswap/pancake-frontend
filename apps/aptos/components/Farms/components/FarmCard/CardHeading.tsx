@@ -6,7 +6,7 @@ import { useIsAptRewardFarm } from 'components/Farms/hooks/useIsAptRewardFarm'
 import { TokenPairImage } from 'components/TokenImage'
 import { styled } from 'styled-components'
 
-const { FarmAuctionTag, CoreTag } = FarmWidget.Tags
+const { CoreTag } = FarmWidget.Tags
 
 export interface ExpandableSectionProps {
   lpLabel?: string
@@ -28,7 +28,6 @@ const Wrapper = styled(Flex)`
 const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = ({
   lpLabel,
   multiplier,
-  isCommunityFarm,
   token,
   quoteToken,
   lpAddress,
@@ -55,7 +54,11 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
           <Skeleton mb="4px" width={60} height={18} />
         )}
         <Flex justifyContent="center">
-          {isReady ? <Box>{isCommunityFarm ? <FarmAuctionTag /> : <CoreTag />}</Box> : null}
+          {isReady ? (
+            <Box>
+              <CoreTag />
+            </Box>
+          ) : null}
         </Flex>
       </Flex>
     </Wrapper>

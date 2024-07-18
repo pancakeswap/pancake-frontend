@@ -21,7 +21,6 @@ export interface ExpandableSectionProps {
   lpLabel: string;
   onAddLiquidity?: (() => void) | string;
   isCommunity?: boolean;
-  auctionHostingEndDate?: string;
   alignLinksToRight?: boolean;
   totalValueLabel?: string;
   multiplier?: string;
@@ -57,18 +56,13 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
   totalValueFormatted,
   lpLabel,
   onAddLiquidity,
-  isCommunity,
-  auctionHostingEndDate,
   alignLinksToRight = true,
   multiplier,
   farmCakePerSecond,
   totalMultipliers,
   isV2BCakeWrapperFarm,
 }) => {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation();
+  const { t } = useTranslation();
 
   const multiplierTooltipContent = FarmMultiplierInfo({
     farmCakePerSecond: farmCakePerSecond ?? "-",
@@ -81,18 +75,6 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
 
   return (
     <Wrapper>
-      {isCommunity && auctionHostingEndDate && (
-        <Flex justifyContent="space-between">
-          <Text>{t("Auction Hosting Ends")}:</Text>
-          <Text>
-            {new Date(auctionHostingEndDate).toLocaleString(locale, {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </Text>
-        </Flex>
-      )}
       <Flex justifyContent="space-between">
         <Text>{totalValueLabel || t("Staked Liquidity")}:</Text>
         {totalValueFormatted ? <Text>{totalValueFormatted}</Text> : <Skeleton width={75} height={25} />}

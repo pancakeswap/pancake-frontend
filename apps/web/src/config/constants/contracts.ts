@@ -113,10 +113,6 @@ export default {
     [ChainId.BSC]: '0x59EdDF3c21509dA3b0aCCd7c5ccc596d930f4783',
     [ChainId.BSC_TESTNET]: '0x',
   },
-  farmAuction: {
-    [ChainId.BSC]: '0xb92Ab7c1edcb273AbA24b0656cEb3681654805D2',
-    [ChainId.BSC_TESTNET]: '0x3F9602593b4f7C67ab045DB51BbDEa94E40fA9Fe',
-  },
   nftMarket: {
     [ChainId.BSC]: '0x17539cCa21C7933Df5c980172d22659B8C345C5A',
     [ChainId.BSC_TESTNET]: '0x7F9F37Ddcaa33893F9bEB3D8748c8D6BfbDE6AB2',

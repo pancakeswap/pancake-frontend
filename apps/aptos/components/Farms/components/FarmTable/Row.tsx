@@ -13,7 +13,7 @@ import Apr, { AprProps } from './Apr'
 import Farm from './Farm'
 
 const { MobileColumnSchema, DesktopColumnSchema } = FarmWidget
-const { FarmAuctionTag, CoreTag } = FarmWidget.Tags
+const { CoreTag } = FarmWidget.Tags
 const { CellLayout, Details, Multiplier, Liquidity } = FarmWidget.FarmTable
 
 export interface RowProps {
@@ -120,7 +120,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   <td key={key}>
                     {userDataReady ? (
                       <CellInner style={{ width: '140px' }}>
-                        {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
+                        <CoreTag scale="sm" />
                       </CellInner>
                     ) : (
                       <Skeleton width={60} height={24} />
@@ -174,13 +174,9 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <FarmMobileCell colSpan={3}>
             <Flex justifyContent="space-between" alignItems="center">
               <Farm {...props.farm} />
-              {props.type === 'community' ? (
-                <FarmAuctionTag marginRight="16px" scale="sm" />
-              ) : (
-                <Box style={{ marginRight: '16px' }}>
-                  <CoreTag scale="sm" />
-                </Box>
-              )}
+              <Box style={{ marginRight: '16px' }}>
+                <CoreTag scale="sm" />
+              </Box>
             </Flex>
           </FarmMobileCell>
         </tr>

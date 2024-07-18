@@ -1,9 +1,6 @@
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import BigNumber from 'bignumber.js'
-import dayjs from 'dayjs'
-import { FARM_AUCTION_HOSTING_IN_SECONDS } from '../const'
 import { DeserializedFarm, SerializedFarm } from '../types'
 import {
   deserializeFarmBCakePublicData,
@@ -11,10 +8,7 @@ import {
   deserializeFarmUserData,
 } from './deserializeFarmUserData'
 
-export const deserializeFarm = (
-  farm: SerializedFarm,
-  auctionHostingInSeconds: number = FARM_AUCTION_HOSTING_IN_SECONDS,
-): DeserializedFarm => {
+export const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
   const {
     lpAddress,
     lpRewardsApr,
@@ -35,22 +29,6 @@ export const deserializeFarm = (
     bCakeWrapperAddress,
   } = farm
 
-  const auctionHostingStartDate = !isUndefinedOrNull(auctionHostingStartSeconds)
-    ? new Date((auctionHostingStartSeconds as number) * 1000)
-    : null
-  const auctionHostingEndDate = auctionHostingStartDate
-    ? dayjs(auctionHostingStartDate).add(auctionHostingInSeconds, 'seconds').toDate()
-    : null
-  const now = Date.now()
-  const isFarmCommunity =
-    isCommunity ||
-    !!(
-      auctionHostingStartDate &&
-      auctionHostingEndDate &&
-      auctionHostingStartDate.getTime() < now &&
-      auctionHostingEndDate.getTime() > now
-    )
-
   const bCakeUserData = deserializeFarmBCakeUserData(farm)
   const bCakePublicData = deserializeFarmBCakePublicData(farm)
   return {
@@ -67,8 +45,6 @@ export const deserializeFarm = (
       },
     }),
     multiplier,
-    isCommunity: isFarmCommunity,
-    auctionHostingEndDate: auctionHostingEndDate?.toJSON(),
     quoteTokenPriceBusd,
     tokenPriceBusd,
     token: deserializeToken(farm.token),

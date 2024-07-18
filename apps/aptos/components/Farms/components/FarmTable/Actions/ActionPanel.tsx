@@ -141,18 +141,6 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
     <Container expanded={expanded} isLastFarm={isLastFarm}>
       <InfoContainer>
         <ValueContainer>
-          {farm.isCommunity && farm.auctionHostingEndDate && (
-            <ValueWrapper>
-              <Text>{t('Auction Hosting Ends')}</Text>
-              <Text paddingLeft="4px">
-                {new Date(farm.auctionHostingEndDate).toLocaleString(locale, {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric',
-                })}
-              </Text>
-            </ValueWrapper>
-          )}
           {!isDesktop && (
             <>
               <ValueWrapper>

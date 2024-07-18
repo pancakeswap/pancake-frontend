@@ -51,7 +51,6 @@ export interface FarmConfigBaseProps {
   multiplier?: string
   isCommunity?: boolean
   auctionHostingStartSeconds?: number
-  auctionHostingEndDate?: string
   dual?: {
     token: SerializedWrappedToken
     aptIncentiveInfo: number

@@ -115,7 +115,6 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
           feeAmount={farm.feeAmount}
           farmCakePerSecond={farmCakePerSecond}
           totalMultipliers={totalMultipliers}
-          isCommunityFarm={farm.isCommunity}
           boosted={boostStatus !== BoostStatus.CanNotBoost}
           isBoosted={isBoosted}
           lpAddress={lpAddress}
@@ -170,7 +169,6 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
               totalValueLabel={t('Staked Liquidity')}
               lpLabel={lpLabel}
               onAddLiquidity={addLiquidityModal.onOpen}
-              isCommunity={farm.isCommunity}
               multiplier={farm.multiplier}
               farmCakePerSecond={farmCakePerSecond}
               totalMultipliers={totalMultipliers}

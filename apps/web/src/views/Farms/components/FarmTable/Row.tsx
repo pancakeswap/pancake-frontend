@@ -19,7 +19,7 @@ import { ActionPanelV2, ActionPanelV3 } from './Actions/ActionPanel'
 import Apr, { AprProps } from './Apr'
 import { FarmCell } from './Farm'
 
-const { FarmAuctionTag, BoostedTag, StableFarmTag, V2Tag, V3FeeTag } = FarmWidget.Tags
+const { BoostedTag, StableFarmTag, V2Tag, V3FeeTag } = FarmWidget.Tags
 const { CellLayout, Details, Multiplier, Liquidity, Earned, LpAmount, StakedLiquidity } = FarmWidget.FarmTable
 const { DesktopColumnSchema, MobileColumnSchema, V3DesktopColumnSchema } = FarmWidget
 
@@ -27,7 +27,7 @@ export type RowProps = {
   earned: FarmWidget.FarmTableEarnedProps
   initialActivity?: boolean
   multiplier: FarmWidget.FarmTableMultiplierProps
-} & (V2RowProps | V3RowProps | CommunityRowProps)
+} & (V2RowProps | V3RowProps)
 
 export type V2RowProps = {
   type: 'v2'
@@ -36,10 +36,6 @@ export type V2RowProps = {
   apr: AprProps
   details: V2Farm
   rewardPerDay: Record<string, any>
-}
-
-export type CommunityRowProps = Omit<V2RowProps, 'type'> & {
-  type: 'community'
 }
 
 export type V3RowProps = {
@@ -163,7 +159,6 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                 return (
                   <td key={key}>
                     <CellInner style={{ minWidth: '120px', gap: '4px', paddingRight: isDesktop ? 24 : undefined }}>
-                      {(props[key] === 'community' || props?.farm?.isCommunity) && <FarmAuctionTag scale="sm" />}
                       {props.type === 'v2' ? (
                         props?.details?.isStable ? (
                           <StableFarmTag scale="sm" />
@@ -337,7 +332,6 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     <BoostedTag scale="sm" />
                   ) : null}
                   {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
-                  {props.type === 'community' || props?.farm?.isCommunity ? <FarmAuctionTag scale="sm" /> : null}
                   {isBoosted ? <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" /> : null}
                 </Flex>
               </Flex>

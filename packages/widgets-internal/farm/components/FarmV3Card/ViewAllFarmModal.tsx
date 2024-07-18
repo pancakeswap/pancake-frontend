@@ -20,7 +20,7 @@ import {
 } from "@pancakeswap/uikit";
 import Tags from "../Tags";
 
-const { BoostedTag, FarmAuctionTag, V3FeeTag } = Tags;
+const { BoostedTag, V3FeeTag } = Tags;
 
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
@@ -74,7 +74,6 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
               )}
               {isReady && feeAmount && <V3FeeTag mr="4px" feeAmount={feeAmount} />}
               {isReady && boosted && <BoostedTag mr="4px" />}
-              {isReady && isCommunityFarm && <FarmAuctionTag />}
             </AutoRow>
           </Flex>
           <ModalCloseButton onDismiss={onDismiss} />

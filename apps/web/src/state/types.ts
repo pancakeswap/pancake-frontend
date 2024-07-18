@@ -382,7 +382,6 @@ export enum SnapshotCommand {
 export enum ProposalType {
   ALL = 'all',
   CORE = 'core',
-  COMMUNITY = 'community',
 }
 
 export enum ProposalState {

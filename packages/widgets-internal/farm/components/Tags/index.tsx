@@ -42,30 +42,6 @@ const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   );
 };
 
-const FarmAuctionTagToolTipContent = memo(() => {
-  const { t } = useTranslation();
-  return <Text color="text">{t("Farm Auction Winner, add liquidity at your own risk.")}</Text>;
-});
-
-const FarmAuctionTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
-  const { t } = useTranslation();
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(<FarmAuctionTagToolTipContent />, { placement: "top" });
-  return (
-    <>
-      {tooltipVisible && tooltip}
-      <TooltipText
-        ref={targetRef}
-        display="flex"
-        style={{ textDecoration: "none", justifyContent: "center", alignSelf: "center" }}
-      >
-        <Tag variant="failure" outline startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />} {...props}>
-          {t("Farm Auction")}
-        </Tag>
-      </TooltipText>
-    </>
-  );
-};
-
 const StableFarmTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   const { targetRef, tooltip, tooltipVisible } = useTooltip("Fees are lower for stable LP", { placement: "top" });
@@ -288,7 +264,6 @@ const AlpBoostedTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 
 const Tags = {
   CoreTag,
-  FarmAuctionTag,
   DualTag,
   ManualPoolTag,
   CompoundingPoolTag,

@@ -16,7 +16,6 @@ import {
   getCalcGaugesVotingAddress,
   getCrossFarmingReceiverAddress,
   getCrossFarmingSenderAddress,
-  getFarmAuctionAddress,
   getFixedStakingAddress,
   getGaugesVotingAddress,
   getLotteryV2Address,
@@ -80,7 +79,6 @@ import { bCakeProxyABI } from 'config/abi/bCakeProxy'
 import { bunnyFactoryABI } from 'config/abi/bunnyFactory'
 import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import { crossFarmingReceiverABI } from 'config/abi/crossFarmingReceiver'
-import { farmAuctionABI } from 'config/abi/farmAuction'
 import { fixedStakingABI } from 'config/abi/fixedStaking'
 import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { lpTokenABI } from 'config/abi/lpTokenAbi'
@@ -241,10 +239,6 @@ export const getPredictionsV1Contract = (signer?: WalletClient) => {
 
 export const getChainlinkOracleContract = (address: Address, signer?: WalletClient, chainId?: number) => {
   return getContract({ abi: chainlinkOracleABI, address, signer, chainId })
-}
-
-export const getFarmAuctionContract = (signer?: WalletClient, chainId?: number) => {
-  return getContract({ abi: farmAuctionABI, address: getFarmAuctionAddress(chainId), signer })
 }
 
 export const getNftMarketContract = (signer?: WalletClient) => {
