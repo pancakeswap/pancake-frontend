@@ -12,8 +12,7 @@ export const SNAPSHOT_API = `${SNAPSHOT_BASE_URL}/graphql`
 export const SNAPSHOT_HUB_API = `${SNAPSHOT_BASE_URL}/api/message`
 export const GRAPH_API_POTTERY = `${THE_GRAPH_PROXY_API}/pottery`
 // export const ONRAMP_API_BASE_URL = 'https://pcs-onramp-api.com'
-// export const ONRAMP_API_BASE_URL = 'https://onramp2-api.pancakeswap.com'
-export const ONRAMP_API_BASE_URL = 'https://monkfish-app-s4mda.ondigitalocean.app'
+export const ONRAMP_API_BASE_URL = 'https://onramp2-api.pancakeswap.com'
 
 export const TRANSAK_API_BASE_URL = 'https://api-stg.transak.com/api/v1'
 export const MOONPAY_BASE_URL = 'https://api.moonpay.com'
