@@ -9,6 +9,7 @@ export const useExtendPools = () => {
   const [query, _setQuery] = useAtom(extendPoolsQueryAtom)
   const [extendPools, updateExtendPools] = useAtom(extendPoolsAtom)
   const [pageEnd, setPageEnd] = useState(false)
+  const [nextCursor, setNextCursor] = useState('')
   const setQuery = useCallback(
     async (newQuery: Partial<ExtendPoolsQuery>) => {
       const shouldReset = Object.keys(newQuery).some((k) => RESET_QUERY_KEYS.includes(k as keyof ExtendPoolsQuery))
@@ -28,12 +29,18 @@ export const useExtendPools = () => {
         updateExtendPools([])
       }
       updateExtendPools(pools)
-      _setQuery({ ...q, after: endCursor! })
+      _setQuery(q)
+      setNextCursor(endCursor ?? '')
 
       return hasNextPage
     },
     [_setQuery, pageEnd, query, updateExtendPools],
   )
+  const getNextPage = useCallback(() => {
+    if (pageEnd) return
+
+    setQuery({ after: nextCursor })
+  }, [nextCursor, pageEnd, setQuery])
 
   useEffect(() => {
     setQuery({ after: '' })
@@ -44,5 +51,6 @@ export const useExtendPools = () => {
     extendPools,
     query,
     setQuery,
+    getNextPage,
   }
 }

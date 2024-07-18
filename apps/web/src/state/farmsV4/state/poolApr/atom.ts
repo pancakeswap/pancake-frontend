@@ -1,7 +1,7 @@
 import { atom } from 'jotai'
 import { extendPoolsAtom } from '../extendPools/atom'
 import { farmPoolsAtom } from '../farmPools/atom'
-import { ChainIdAddressKey } from '../type'
+import { ChainIdAddressKey, PoolInfo } from '../type'
 
 export const poolsAtom = atom<PoolInfo[]>((get) => {
   const farmPools = get(farmPoolsAtom)
