@@ -3,15 +3,12 @@ import { Box, Button, Flex, FlexGap, Tag, Text, useModal } from '@pancakeswap/ui
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useProfile } from 'hooks/useProfile'
-import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
-import { CompletionStatus } from 'views/DashboardQuestEdit/type'
-import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { MakeProfileModal } from 'views/Quest/components/MakeProfileModal'
 import { Task } from 'views/Quest/components/Tasks/Task'
-import { useVerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
+import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { useAccount } from 'wagmi'
 
 const OverlapContainer = styled(Box)`
@@ -33,35 +30,35 @@ const OverlapContainer = styled(Box)`
 
 interface TasksProps {
   quest: SingleQuestData
+  hasIdRegister: boolean
+  taskStatus: VerifyTaskStatus
+  isQuestFinished: boolean
+  isTasksCompleted: boolean
+  isSocialHubFetched: boolean
+  totalTaskCompleted: number
+  hasOptionsInTasks: boolean
+  refreshSocialHub: () => void
+  refreshVerifyTaskStatus: () => void
 }
 
-export const Tasks: React.FC<TasksProps> = ({ quest }) => {
+export const Tasks: React.FC<TasksProps> = ({
+  quest,
+  taskStatus,
+  hasIdRegister,
+  totalTaskCompleted,
+  isQuestFinished,
+  isTasksCompleted,
+  isSocialHubFetched,
+  hasOptionsInTasks,
+  refreshSocialHub,
+  refreshVerifyTaskStatus,
+}) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { id: questId, completionStatus, endDateTime, tasks } = quest
-  const { userInfo, isFetched, refresh } = useUserSocialHub()
-
+  const { id: questId, tasks } = quest
   const { isInitialized, profile } = useProfile()
   const hasProfile = isInitialized && !!profile
   const [onPressMakeProfileModal] = useModal(<MakeProfileModal type={t('quest')} />)
-
-  const isQuestFinished = useMemo(
-    () => new Date().getTime() / 1000 >= endDateTime || completionStatus === CompletionStatus.FINISHED,
-    [completionStatus, endDateTime],
-  )
-
-  const hasIdRegister = useMemo(() => {
-    const registered = userInfo.questIds?.map((i) => i.toLowerCase())?.includes(questId.toLowerCase())
-    return Boolean(registered)
-  }, [questId, userInfo.questIds])
-
-  const { taskStatus, refresh: refreshVerifyTaskStatus } = useVerifyTaskStatus({
-    questId,
-    isQuestFinished,
-    hasIdRegister,
-  })
-
-  const hasOptionsInTasks = useMemo(() => tasks?.find((i) => i.isOptional === true), [tasks])
 
   const handleLinkUserToQuest = async () => {
     if (account) {
@@ -73,7 +70,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
           },
         })
         if (response.ok) {
-          refresh()
+          refreshSocialHub()
         }
       } catch (error) {
         console.error(`Submit link user to quest error: ${error}`)
@@ -89,27 +86,6 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
     }
   }
 
-  const totalTaskCompleted = useMemo(() => {
-    const { verificationStatusBySocialMedia } = taskStatus
-
-    return quest.tasks.reduce((acc, { taskType }) => acc + (verificationStatusBySocialMedia?.[taskType] ? 1 : 0), 0)
-  }, [quest.tasks, taskStatus])
-
-  const isCompleted = useMemo(() => {
-    const allRequestTaskTotal = quest.tasks.filter((i) => !i.isOptional)
-
-    if (hasOptionsInTasks) {
-      const { verificationStatusBySocialMedia } = taskStatus
-      const totalRequestComplete = allRequestTaskTotal.reduce(
-        (acc, { taskType }) => acc + (verificationStatusBySocialMedia?.[taskType] ? 1 : 0),
-        0,
-      )
-      return allRequestTaskTotal.length === totalRequestComplete
-    }
-
-    return totalTaskCompleted === tasks?.length
-  }, [hasOptionsInTasks, quest, taskStatus, tasks, totalTaskCompleted])
-
   return (
     <Box mb="32px">
       <Flex mb="16px">
@@ -120,7 +96,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
           <Box style={{ alignSelf: 'center' }}>
             {account ? (
               <>
-                {isCompleted ? (
+                {isTasksCompleted ? (
                   <Tag variant="success" outline>
                     {t('Completed')}
                   </Tag>
@@ -148,9 +124,9 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
               <Task
                 key={task?.id}
                 questId={questId}
-                hasIdRegister={hasIdRegister}
                 task={task}
                 taskStatus={taskStatus}
+                hasIdRegister={hasIdRegister}
                 isQuestFinished={isQuestFinished}
                 refresh={refreshVerifyTaskStatus}
               />
@@ -170,7 +146,7 @@ export const Tasks: React.FC<TasksProps> = ({ quest }) => {
               </Text>
             </Box>
           )}
-          {(!account || (isFetched && !hasIdRegister)) && !isQuestFinished && (
+          {(!account || (isSocialHubFetched && !hasIdRegister)) && !isQuestFinished && (
             <OverlapContainer>
               {account ? (
                 <>

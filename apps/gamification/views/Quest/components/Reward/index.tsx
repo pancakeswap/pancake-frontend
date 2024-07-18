@@ -8,9 +8,7 @@ import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQues
 import { ClaimButton } from 'views/Quest/components/Reward/ClaimButton'
 import { Countdown } from 'views/Quest/components/Reward/Countdown'
 import { Questers } from 'views/Quest/components/Reward/Questers'
-// import { RemainMessage } from 'views/Quest/components/Reward/RemainMessage'
 import { RewardAmount } from 'views/Quest/components/Reward/RewardAmount'
-// import { SuccessMessage } from 'views/Quest/components/Reward/SuccessMessage'
 // import { TotalRewards } from 'views/Quest/components/Reward/TotalRewards'
 // import { Winners } from 'views/Quest/components/Reward/Winners'
 
@@ -28,9 +26,11 @@ const RewardContainer = styled(Box)`
 
 interface RewardProps {
   quest: SingleQuestData
+  isTasksCompleted: boolean
+  isQuestFinished: boolean
 }
 
-export const Reward: React.FC<RewardProps> = ({ quest }) => {
+export const Reward: React.FC<RewardProps> = ({ quest, isTasksCompleted, isQuestFinished }) => {
   const { t } = useTranslation()
   const localChainName = chains.find((c) => c.id === quest?.reward?.currency?.network)?.name ?? 'BSC'
 
@@ -55,9 +55,7 @@ export const Reward: React.FC<RewardProps> = ({ quest }) => {
           <Countdown endDateTime={quest?.endDateTime ?? 0} />
           {/* <TotalRewards /> */}
           <Questers questId={quest?.id} />
-          <ClaimButton />
-          {/* <RemainMessage /> */}
-          {/* <SuccessMessage /> */}
+          <ClaimButton quest={quest} isTasksCompleted={isTasksCompleted} isQuestFinished={isQuestFinished} />
           {/* <Winners /> */}
         </Box>
       </Card>

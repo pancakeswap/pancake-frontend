@@ -19,10 +19,12 @@ import { Description } from 'views/Quest/components/Description'
 import { ChainId } from '@pancakeswap/chains'
 import { useEffect, useMemo } from 'react'
 import { convertTimestampToDate } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
+import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { Reward } from 'views/Quest/components/Reward'
 import { Share } from 'views/Quest/components/Share'
 import { Tasks } from 'views/Quest/components/Tasks'
 import { useGetQuestInfo } from 'views/Quest/hooks/useGetQuestInfo'
+import { useVerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 
 const QuestContainer = styled(Flex)`
   padding: 16px;
@@ -55,6 +57,7 @@ export const Quest = () => {
   const questId: string = (query.id as string) ?? ''
   const backToProfile: boolean = (query?.backToProfile as string) === 'true'
   const { quest, isError, isFetched } = useGetQuestInfo(questId)
+  const { userInfo, isFetched: isSocialHubFetched, refresh: refreshSocialHub } = useUserSocialHub()
 
   useEffect(() => {
     if (isError) {
@@ -63,6 +66,47 @@ export const Quest = () => {
   }, [isError, push])
 
   const backUrl = useMemo(() => (backToProfile ? '/profile' : '/quests'), [backToProfile])
+
+  const { id, completionStatus, endDateTime, tasks } = quest
+
+  const hasIdRegister = useMemo(() => {
+    const registered = userInfo.questIds?.map((i) => i.toLowerCase())?.includes(questId.toLowerCase())
+    return Boolean(registered)
+  }, [questId, userInfo.questIds])
+
+  const isQuestFinished = useMemo(
+    () => new Date().getTime() / 1000 >= endDateTime || completionStatus === CompletionStatus.FINISHED,
+    [completionStatus, endDateTime],
+  )
+
+  const { taskStatus, refresh: refreshVerifyTaskStatus } = useVerifyTaskStatus({
+    questId: id,
+    isQuestFinished,
+    hasIdRegister,
+  })
+
+  const hasOptionsInTasks = useMemo(() => tasks?.find((i) => i.isOptional === true), [tasks])
+
+  const totalTaskCompleted = useMemo(() => {
+    const { verificationStatusBySocialMedia } = taskStatus
+
+    return quest.tasks.reduce((acc, { taskType }) => acc + (verificationStatusBySocialMedia?.[taskType] ? 1 : 0), 0)
+  }, [quest.tasks, taskStatus])
+
+  const isTasksCompleted = useMemo(() => {
+    const allRequestTaskTotal = quest.tasks.filter((i) => !i.isOptional)
+
+    if (hasOptionsInTasks) {
+      const { verificationStatusBySocialMedia } = taskStatus
+      const totalRequestComplete = allRequestTaskTotal.reduce(
+        (acc, { taskType }) => acc + (verificationStatusBySocialMedia?.[taskType] ? 1 : 0),
+        0,
+      )
+      return allRequestTaskTotal.length === totalRequestComplete
+    }
+
+    return totalTaskCompleted === tasks?.length
+  }, [hasOptionsInTasks, quest, taskStatus, tasks, totalTaskCompleted])
 
   if (!isFetched || isError || !questId) {
     return null
@@ -101,13 +145,24 @@ export const Quest = () => {
             )}`}</Text>
           </Flex>
         )}
-        {!isDesktop && <Reward quest={quest} />}
-        <Tasks quest={quest} />
+        {!isDesktop && <Reward quest={quest} isTasksCompleted={isTasksCompleted} isQuestFinished={isQuestFinished} />}
+        <Tasks
+          quest={quest}
+          taskStatus={taskStatus}
+          hasIdRegister={hasIdRegister}
+          isQuestFinished={isQuestFinished}
+          isTasksCompleted={isTasksCompleted}
+          hasOptionsInTasks={Boolean(hasOptionsInTasks)}
+          totalTaskCompleted={totalTaskCompleted}
+          isSocialHubFetched={isSocialHubFetched}
+          refreshSocialHub={refreshSocialHub}
+          refreshVerifyTaskStatus={refreshVerifyTaskStatus}
+        />
         <Description description={quest?.description} />
         {/* <RelatedQuest /> */}
         {/* <ExploreMore /> */}
       </Box>
-      {isDesktop && <Reward quest={quest} />}
+      {isDesktop && <Reward quest={quest} isTasksCompleted={isTasksCompleted} isQuestFinished={isQuestFinished} />}
     </QuestContainer>
   )
 }

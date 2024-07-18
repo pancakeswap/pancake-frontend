@@ -207,6 +207,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
       const rewardToken =
         nativeToken.wrapped.address.toLowerCase() === tokenAddress.toLowerCase() ? ADDRESS_ZERO : tokenAddress
       const totalReward = BigInt(getDecimalAmount(new BigNumber(stakeAmount), inputCurrency.decimals).toString())
+
       const receipt = await fetchWithCatchTxError(() =>
         rewardContract.write.createQuest([_id, claimTime, totalWinners, rewardToken, totalReward], {
           account,
