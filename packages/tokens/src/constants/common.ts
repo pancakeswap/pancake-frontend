@@ -404,6 +404,14 @@ export const USDT = {
     'Tether USD',
     'https://tether.to/',
   ),
+  [ChainId.BASE]: new ERC20Token(
+    ChainId.BASE,
+    '0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2',
+    6,
+    'USDT',
+    'Tether USDT',
+    'https://tether.to/',
+  ),
 }
 
 export const DAI = {
