@@ -68,7 +68,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
         toastSuccess(
           t('Success!'),
           <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Funds sent to your wallet')}
+            {t('You have successfully claimed your rewards.')}
           </ToastDescriptionWithTx>,
         )
       }
