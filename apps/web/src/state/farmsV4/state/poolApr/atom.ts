@@ -1,6 +1,14 @@
 import { atom } from 'jotai'
-import { poolsAtom } from '../../atom'
+import { extendPoolsAtom } from '../extendPools/atom'
+import { farmPoolsAtom } from '../farmPools/atom'
 import { ChainIdAddressKey } from '../type'
+
+export const poolsAtom = atom<PoolInfo[]>((get) => {
+  const farmPools = get(farmPoolsAtom)
+  const extendPools = get(extendPoolsAtom)
+
+  return farmPools.concat(extendPools)
+})
 
 export type PoolAprDetail = {
   lpApr: {
@@ -21,7 +29,6 @@ export type PoolAprDetail = {
 export type PoolApr = Record<ChainIdAddressKey, PoolAprDetail>
 
 export const poolAprAtom = atom({} as PoolApr, (get, set, newValue: PoolApr) => {
-  console.debug('debug poolAprAtom', { newValue })
   set(poolAprAtom, { ...get(poolAprAtom), ...newValue })
 })
 
