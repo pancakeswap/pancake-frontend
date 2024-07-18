@@ -1,6 +1,3 @@
-import { useAtomValue } from 'jotai'
-import { asyncFarmPoolsAtom } from './state/farmPoolsAtom'
-
-export const useFarmPools = () => {
-  return useAtomValue(asyncFarmPoolsAtom)
-}
+export * from './state/extendPools/hooks'
+export * from './state/farmPools/hooks'
+export * from './state/poolApr/hooks'
