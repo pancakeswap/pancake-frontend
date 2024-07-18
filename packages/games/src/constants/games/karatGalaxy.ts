@@ -7,10 +7,15 @@ export const karatGalaxy: GameType = {
   subTitle: 'Embark on a Cosmic Karat Quest: Shoot, mine, win!', 
   description: 'Join an interstellar adventure where mining, NFTs, DeFi, and fun unite.  Power up with KARAT and turn CAKE tokens into gold coins, unlocking exciting in-game adventures. Enjoy exclusive bonuses with Pancake Squad and Bunny NFTs. Battle, mine, win, and conquer the cosmos.', 
   publishDate: 1698044972, // Timestamp in seconds 
- genre: GenreType.TowerDefense, 
- trendingTags: [ 
-    TrendingTagType.Strategy 
- ],
+  genre: GenreType.FPS,
+  trendingTags: [
+    TrendingTagType.FPS,
+    TrendingTagType.NFT,
+    TrendingTagType.PancakeSquadNFT,
+    TrendingTagType.PancakeBunniesNFT,
+    TrendingTagType.Multiplayer,
+    TrendingTagType.CakeToken,
+  ],
  // 1600px x 224px  
  headerImage: 'https://statics.karatgalaxy.io/pancakeswap-game-landing/header.jpg',
  headerIconImage: { 
@@ -31,7 +36,9 @@ export const karatGalaxy: GameType = {
     // 120px × 120px 
 	darkTheme: 'https://statics.karatgalaxy.io/pancakeswap-game-landing/circle-logo.png',
   }, 
-  gameLink: 'https://statics.karatgalaxy.io/', 
+  gameLink: {
+    playNowLink: 'https://statics.karatgalaxy.io/',
+  },
   posters: { 
     layout: PostersLayout.Horizontal, 
   // Layout horizontal ->  Recommend image size 1200px × 674px 
