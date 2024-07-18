@@ -1,16 +1,15 @@
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
 import { FarmV4SupportedChainId, Protocol, supportedChainIdV4, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { atom } from 'jotai'
-import { loadable } from 'jotai/utils'
 import { explorerApiClient } from 'state/info/api/client'
-import { PoolInfo } from './type'
-import { parseFarmPools } from './utils'
+import { isAddressEqual } from 'viem'
+import { PoolInfo } from '../type'
+import { parseFarmPools } from '../utils'
 
 const DEFAULT_PROTOCOLS: Protocol[] = ['v3', 'v2', 'stable']
 const DEFAULT_CHAINS: FarmV4SupportedChainId[] = Object.values(supportedChainIdV4)
 
-const fetchExplorerFarmPools = async (
+export const fetchExplorerFarmPools = async (
   args: {
     protocols?: Protocol[] // after v4 starts to be used, we can add 'v4Bin'
     chainId?: FarmV4SupportedChainId | FarmV4SupportedChainId[]
@@ -40,7 +39,7 @@ const fetchExplorerFarmPools = async (
   return parseFarmPools(resp.data)
 }
 
-const fetchFarmPools = async (
+export const fetchFarmPools = async (
   args: {
     protocols?: Protocol[] // after v4 starts to be used, we can add 'v4Bin'
     chainId?: FarmV4SupportedChainId | FarmV4SupportedChainId[]
@@ -66,16 +65,22 @@ const fetchFarmPools = async (
 
   const finalPools = localPools.map((farm, index) => {
     const pool = remotePools.find(
-      (p) => p.lpAddress === farm.lpAddress && p.chainId === farm.chainId && p.protocol === farm.protocol,
+      (p) => isAddressEqual(p.lpAddress, farm.lpAddress) && p.chainId === farm.chainId && p.protocol === farm.protocol,
     )
 
-    if (pool) return pool
+    if (pool)
+      return {
+        ...pool,
+        pid: farm.pid,
+        feeTierBase: 1_000_000,
+      } satisfies PoolInfo
 
     remoteMissedPoolsIndex.push(index)
 
     // @todo @ChefJerry fetch on-chain with default data
     return {
       ...farm,
+      pid: farm.pid,
       tvlUsd: undefined,
       vol24hUsd: undefined,
       feeTier: farm.protocol === 'v3' ? Number(farm.feeAmount) : farm.protocol === 'v2' ? FeeAmount.MEDIUM : 100, // @todo @ChefJerry add stable fee
@@ -89,10 +94,3 @@ const fetchFarmPools = async (
 
   return finalPools
 }
-
-// @todo @ChefJerry support args
-export const farmPoolsAtom = atom(async (_, { signal }): Promise<PoolInfo[]> => {
-  return fetchFarmPools({ protocols: DEFAULT_PROTOCOLS, chainId: DEFAULT_CHAINS })
-})
-
-export const asyncFarmPoolsAtom = loadable(farmPoolsAtom)
