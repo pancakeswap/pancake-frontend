@@ -13,8 +13,20 @@ export const verifyTwitterFollowersIds = [
 ]
 
 export const TWITTER_CONSUMER_KEY = {
-  [TwitterFollowersId.TWITTER_ID_1]: [process.env.TWITTER_CONSUMER_KEY_1, process.env.TWITTER_CONSUMER_SECRET_1],
-  [TwitterFollowersId.TWITTER_ID_2]: [process.env.TWITTER_CONSUMER_KEY_2, process.env.TWITTER_CONSUMER_SECRET_2],
-  [TwitterFollowersId.TWITTER_ID_3]: [process.env.TWITTER_CONSUMER_KEY_3, process.env.TWITTER_CONSUMER_SECRET_3],
-  [TwitterFollowersId.TWITTER_ID_4]: [process.env.TWITTER_CONSUMER_KEY_4, process.env.TWITTER_CONSUMER_SECRET_4],
+  [TwitterFollowersId.TWITTER_ID_1]: {
+    consumerKey: process.env.TWITTER_CONSUMER_KEY_1,
+    consumerKeySecret: process.env.TWITTER_CONSUMER_SECRET_1,
+  },
+  [TwitterFollowersId.TWITTER_ID_2]: {
+    consumerKey: process.env.TWITTER_CONSUMER_KEY_2,
+    consumerKeySecret: process.env.TWITTER_CONSUMER_SECRET_2,
+  },
+  [TwitterFollowersId.TWITTER_ID_3]: {
+    consumerKey: process.env.TWITTER_CONSUMER_KEY_3,
+    consumerKeySecret: process.env.TWITTER_CONSUMER_SECRET_3,
+  },
+  [TwitterFollowersId.TWITTER_ID_4]: {
+    consumerKey: process.env.TWITTER_CONSUMER_KEY_4,
+    consumerKeySecret: process.env.TWITTER_CONSUMER_SECRET_4,
+  },
 }

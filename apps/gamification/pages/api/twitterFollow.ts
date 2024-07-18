@@ -2,7 +2,7 @@ import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { getOAuthHeader } from 'utils/getOAuthHeader'
-import { TWITTER_CONSUMER_KEY } from 'views/Profile/utils/verifyTwitterFollowersIds'
+import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
@@ -15,8 +15,8 @@ export default async function handler(req, res) {
 
       const url = `https://api.twitter.com/2/users/${userId}/following`
       const method = 'POST'
-      const consumerKey = TWITTER_CONSUMER_KEY[providerId][0] as string
-      const consumerSecret = TWITTER_CONSUMER_KEY[providerId][1] as string
+      const consumerKey = TWITTER_CONSUMER_KEY[providerId as TwitterFollowersId].consumerKey as string
+      const consumerSecret = TWITTER_CONSUMER_KEY[providerId as TwitterFollowersId].consumerKeySecret as string
 
       const response = await fetch(url, {
         method,

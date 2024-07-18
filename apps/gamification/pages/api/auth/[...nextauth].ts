@@ -18,8 +18,8 @@ export default NextAuth({
     // For verify followers
     TwitterProvider({
       id: TwitterFollowersId.TWITTER_ID_1,
-      clientId: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_1][0] ?? '',
-      clientSecret: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_1][1] ?? '',
+      clientId: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_1].consumerKey ?? '',
+      clientSecret: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_1].consumerKeySecret ?? '',
     }),
   ],
   session: {
