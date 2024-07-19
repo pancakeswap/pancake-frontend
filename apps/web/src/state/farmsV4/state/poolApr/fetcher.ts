@@ -61,16 +61,16 @@ export const getV3PoolCakeApr = async (
 
   if (!hasCache) masterChefV3CacheMap.set(pool.chainId, { totalAllocPoint, latestPeriodCakePerSecond, poolInfo })
 
-  const cakePerYear = (BigInt(SECONDS_PER_YEAR) * latestPeriodCakePerSecond) / BigInt(1e18) / BigInt(1e12)
+  const cakePerYear = new BigNumber(SECONDS_PER_YEAR)
+    .times(latestPeriodCakePerSecond.toString())
+    .dividedBy(1e18)
+    .dividedBy(1e12)
   const cakePerYearUsd = cakePrice.times(cakePerYear.toString())
   const [allocPoint, , , , , totalLiquidity, totalBoostLiquidity] = poolInfo
   const poolWeight = new BigNumber(allocPoint.toString()).dividedBy(totalAllocPoint.toString())
+  const liquidityBooster = new BigNumber(totalBoostLiquidity.toString()).dividedBy(totalLiquidity.toString())
 
-  const baseApr = cakePerYearUsd
-    .times(poolWeight)
-    .dividedBy(pool.tvlUsd ?? 1)
-    .times(totalLiquidity.toString())
-    .dividedBy(totalBoostLiquidity.toString())
+  const baseApr = cakePerYearUsd.times(poolWeight).dividedBy(liquidityBooster.times(pool.tvlUsd ?? 1))
 
   return {
     value: baseApr.toString() as `${number}`,
