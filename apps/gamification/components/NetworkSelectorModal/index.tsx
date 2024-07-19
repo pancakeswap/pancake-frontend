@@ -4,6 +4,7 @@ import { Flex, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { targetChains } from 'config/supportedChain'
 import { styled } from 'styled-components'
+import { chainNameConverter } from 'utils/chainNameConverter'
 
 const StyledChainList = styled(Flex)`
   padding: 10px 20px;
@@ -45,7 +46,7 @@ export const NetworkSelectorModal: React.FC<React.PropsWithChildren<NetworkSelec
           <StyledChainList key={chain.id} onClick={() => onClickNetwork(chain.id)}>
             <ChainLogo chainId={chain.id} />
             <Text color={chain.id === pickedChainId ? 'secondary' : 'text'} bold={chain.id === pickedChainId} pl="12px">
-              {chain.name}
+              {chainNameConverter(chain.name)}
             </Text>
           </StyledChainList>
         ))}

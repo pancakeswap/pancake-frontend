@@ -4,6 +4,7 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 import { targetChains } from 'config/supportedChain'
 import { useMemo } from 'react'
 import { useTheme } from 'styled-components'
+import { chainNameConverter } from 'utils/chainNameConverter'
 
 interface NetworkMultiSelectorProps extends BoxProps {
   pickMultiSelect: Array<ChainId>
@@ -11,7 +12,7 @@ interface NetworkMultiSelectorProps extends BoxProps {
 }
 
 const options = targetChains.map((chain) => ({
-  label: chain.name,
+  label: chainNameConverter(chain.name),
   value: chain.id.toString(),
   icon: `${ASSET_CDN}/web/chains/${chain.id}.png`,
 }))
