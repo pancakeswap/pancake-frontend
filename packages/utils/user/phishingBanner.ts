@@ -1,8 +1,14 @@
 import dayjs from 'dayjs'
 import { atom, useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
+import { isClient } from './isClient'
 
-const phishingBannerAtom = atomWithStorage<number>('pcs:phishing-banner', 0, undefined, { unstable_getOnInit: true })
+const phishingBannerAtom = atomWithStorage<number>(
+  'pcs:phishing-banner',
+  0,
+  undefined,
+  isClient ? { unstable_getOnInit: true } : undefined,
+)
 
 const hidePhishingBannerAtom = atom(
   (get) => {
