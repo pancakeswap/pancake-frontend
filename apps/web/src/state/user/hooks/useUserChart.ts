@@ -1,7 +1,7 @@
 import { atom, useAtom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
+import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 
-const userChartAtom = atomWithStorage('pcs:user-chart', false, undefined, { unstable_getOnInit: true })
+const userChartAtom = atomWithStorageWithErrorCatch('pcs:user-chart', false)
 const mobileUserChartAtom = atom(false)
 
 export function useUserChart(isMobile: boolean) {

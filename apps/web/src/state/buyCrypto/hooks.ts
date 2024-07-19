@@ -1,17 +1,15 @@
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom, useAtomValue } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
 import { useRouter } from 'next/router'
 import type { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
 import { buyCryptoReducerAtom, type BuyCryptoState } from 'state/buyCrypto/reducer'
 
 import { OnRampChainId as ChainId, type OnRampCurrency as Currency } from 'views/BuyCrypto/constants'
+import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { Field, replaceBuyCryptoState, selectCurrency, switchCurrencies, typeInput } from './actions'
 
-const useEnableBtcPurchases = atomWithStorage('pcs:enable-buy-btc-native', false, undefined, {
-  unstable_getOnInit: true,
-})
+const useEnableBtcPurchases = atomWithStorageWithErrorCatch('pcs:enable-buy-btc-native', false)
 
 export function useAllowBtcPurchases() {
   return useAtom(useEnableBtcPurchases)

@@ -1,8 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 import { enumValues } from '@pancakeswap/utils/enumValues'
 import { useAtom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
 import { useMemo } from 'react'
+import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 
 type TokenAndPoolList = Record<ChainId, Record<'tokens' | 'pools', string[]>>
 
@@ -19,9 +19,7 @@ const createDefaultTokenAndPoolList = () => {
 
 const defaultTokenAndPoolList = createDefaultTokenAndPoolList()
 
-const tokensAtom = atomWithStorage('pcs:infoSavedTOkensAndPools', defaultTokenAndPoolList, undefined, {
-  unstable_getOnInit: true,
-})
+const tokensAtom = atomWithStorageWithErrorCatch('pcs:infoSavedTOkensAndPools', defaultTokenAndPoolList, undefined)
 
 /**
  * @deprecated

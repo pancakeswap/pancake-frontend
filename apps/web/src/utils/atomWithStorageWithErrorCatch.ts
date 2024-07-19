@@ -2,12 +2,13 @@ import { atomWithStorage } from 'jotai/utils'
 import { createJSONStorage } from 'jotai/vanilla/utils'
 import { logError } from './sentry'
 
+const isClient = typeof window !== 'undefined'
+
 export default function atomWithStorageWithErrorCatch<Value>(
   key: string,
   initialValue: Value,
   getStringStorage?: () => Storage,
 ) {
-  const isClient = typeof window !== 'undefined'
   const tryCatchStorage = createJSONStorage<Value>(() => {
     const getStorage = getStringStorage || (() => (isClient ? window.localStorage : (undefined as unknown as Storage)))
     const stringStorage = getStorage?.()

@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useAtom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
+import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 
-const anniversaryModal = atomWithStorage('pcs:third-anniversary-modal', {}, undefined, { unstable_getOnInit: true })
+const anniversaryModal = atomWithStorageWithErrorCatch('pcs:third-anniversary-modal', {})
 
 export function useShowOnceAnniversaryModal() {
   return useAtom(anniversaryModal)

@@ -1,17 +1,15 @@
 import { useAtom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
 import { useMemo } from 'react'
 
 import { L2_CHAIN_IDS } from 'config/chains'
 import { DEFAULT_DEADLINE_FROM_NOW, L2_DEADLINE_FROM_NOW } from 'config/constants'
 
+import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import useCurrentBlockTimestamp from './useCurrentBlockTimestamp'
 import { useActiveChainId } from './useActiveChainId'
 
 // deadline set by user in minutes, used in all txns
-const userTxTTLAtom = atomWithStorage<number | undefined>('pcs:user:tx-ttl', undefined, undefined, {
-  unstable_getOnInit: true,
-})
+const userTxTTLAtom = atomWithStorageWithErrorCatch<number | undefined>('pcs:user:tx-ttl', undefined, undefined)
 
 export function useUserTransactionTTL() {
   const { chainId } = useActiveChainId()
