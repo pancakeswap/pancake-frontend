@@ -9,7 +9,9 @@ import useCurrentBlockTimestamp from './useCurrentBlockTimestamp'
 import { useActiveChainId } from './useActiveChainId'
 
 // deadline set by user in minutes, used in all txns
-const userTxTTLAtom = atomWithStorage<number | undefined>('pcs:user:tx-ttl', undefined)
+const userTxTTLAtom = atomWithStorage<number | undefined>('pcs:user:tx-ttl', undefined, undefined, {
+  unstable_getOnInit: true,
+})
 
 export function useUserTransactionTTL() {
   const { chainId } = useActiveChainId()

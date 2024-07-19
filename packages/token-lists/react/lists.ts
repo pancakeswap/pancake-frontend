@@ -45,7 +45,9 @@ export const createListsAtom = (storeName: string, reducer: any, initialState: a
     return noopStorage
   }
 
-  const listsStorageAtom = atomWithStorage<ListsState | typeof EMPTY>('lists', EMPTY, IndexedDBStorage('lists'))
+  const listsStorageAtom = atomWithStorage<ListsState | typeof EMPTY>('lists', EMPTY, IndexedDBStorage('lists'), {
+    unstable_getOnInit: true,
+  })
 
   const defaultStateAtom = atom<ListsState, any, void>(
     (get) => {

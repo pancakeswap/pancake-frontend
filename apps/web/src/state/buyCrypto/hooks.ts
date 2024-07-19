@@ -9,7 +9,9 @@ import { buyCryptoReducerAtom, type BuyCryptoState } from 'state/buyCrypto/reduc
 import { OnRampChainId as ChainId, type OnRampCurrency as Currency } from 'views/BuyCrypto/constants'
 import { Field, replaceBuyCryptoState, selectCurrency, switchCurrencies, typeInput } from './actions'
 
-const useEnableBtcPurchases = atomWithStorage<boolean>('pcs:enable-buy-btc-native', false)
+const useEnableBtcPurchases = atomWithStorage<boolean>('pcs:enable-buy-btc-native', false, undefined, {
+  unstable_getOnInit: true,
+})
 
 export function useAllowBtcPurchases() {
   return useAtom(useEnableBtcPurchases)

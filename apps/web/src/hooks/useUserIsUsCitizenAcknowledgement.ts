@@ -9,10 +9,21 @@ export enum IdType {
   OPTIONS = 'options',
 }
 
-const perpetuals = atomWithStorage('pcs:NotUsCitizenAcknowledgement-perpetuals', false)
-const ifo = atomWithStorage<boolean>('pcs:NotUsCitizenAcknowledgement-ifo', false)
-const affiliateProgram = atomWithStorage<boolean>('pcs:NotUsCitizenAcknowledgement-affiliate-program', false)
-const options = atomWithStorage<boolean>('pcs:NotUsCitizenAcknowledgement-options', false)
+const perpetuals = atomWithStorage('pcs:NotUsCitizenAcknowledgement-perpetuals', false, undefined, {
+  unstable_getOnInit: true,
+})
+const ifo = atomWithStorage<boolean>('pcs:NotUsCitizenAcknowledgement-ifo', false, undefined, {
+  unstable_getOnInit: true,
+})
+const affiliateProgram = atomWithStorage<boolean>(
+  'pcs:NotUsCitizenAcknowledgement-affiliate-program',
+  false,
+  undefined,
+  { unstable_getOnInit: true },
+)
+const options = atomWithStorage<boolean>('pcs:NotUsCitizenAcknowledgement-options', false, undefined, {
+  unstable_getOnInit: true,
+})
 
 export function useUserNotUsCitizenAcknowledgement(id: IdType) {
   switch (id) {

@@ -7,10 +7,9 @@ export default function atomWithStorageWithErrorCatch<Value>(
   initialValue: Value,
   getStringStorage?: () => Storage,
 ) {
+  const isClient = typeof window !== 'undefined'
   const tryCatchStorage = createJSONStorage<Value>(() => {
-    const getStorage =
-      getStringStorage ||
-      (() => (typeof window !== 'undefined' ? window.localStorage : (undefined as unknown as Storage)))
+    const getStorage = getStringStorage || (() => (isClient ? window.localStorage : (undefined as unknown as Storage)))
     const stringStorage = getStorage?.()
     return stringStorage
       ? {
@@ -32,5 +31,5 @@ export default function atomWithStorageWithErrorCatch<Value>(
         }
       : stringStorage
   })
-  return atomWithStorage(key, initialValue, tryCatchStorage)
+  return atomWithStorage(key, initialValue, tryCatchStorage, isClient ? { unstable_getOnInit: true } : undefined)
 }

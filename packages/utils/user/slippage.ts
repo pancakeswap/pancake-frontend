@@ -4,7 +4,9 @@ import { atomWithStorage } from 'jotai/utils'
 
 export const INITIAL_ALLOWED_SLIPPAGE = 50
 
-const userSlippageAtom = atomWithStorage('pcs:slippage', INITIAL_ALLOWED_SLIPPAGE)
+const userSlippageAtom = atomWithStorage('pcs:slippage', INITIAL_ALLOWED_SLIPPAGE, undefined, {
+  unstable_getOnInit: true,
+})
 
 const userSlippageAtomWithLocalStorage = atom(
   (get) => get(userSlippageAtom),

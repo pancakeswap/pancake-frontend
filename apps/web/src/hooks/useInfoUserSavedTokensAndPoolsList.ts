@@ -19,7 +19,9 @@ const createDefaultTokenAndPoolList = () => {
 
 const defaultTokenAndPoolList = createDefaultTokenAndPoolList()
 
-const tokensAtom = atomWithStorage('pcs:infoSavedTOkensAndPools', defaultTokenAndPoolList)
+const tokensAtom = atomWithStorage('pcs:infoSavedTOkensAndPools', defaultTokenAndPoolList, undefined, {
+  unstable_getOnInit: true,
+})
 
 /**
  * @deprecated
