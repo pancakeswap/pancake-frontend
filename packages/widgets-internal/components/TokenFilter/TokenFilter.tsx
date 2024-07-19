@@ -1,6 +1,7 @@
+import { zeroAddress } from "viem";
 import { useTheme } from "@pancakeswap/hooks";
-import { ERC20Token } from "@pancakeswap/sdk";
-import { Column, IMultiSelectProps, ISelectItem, MultiSelect, MultiSelectChangeEvent } from "@pancakeswap/uikit";
+import { Currency, ERC20Token, Token } from "@pancakeswap/sdk";
+import { Column, IMultiSelectProps, ISelectItem, MultiSelect, IMultiSelectChangeEvent } from "@pancakeswap/uikit";
 import { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { getChainName } from "@pancakeswap/chains";
@@ -9,17 +10,17 @@ import { CurrencyLogo } from "../CurrencyLogo";
 export interface ITokenProps {
   data?: ERC20Token[];
   value?: IMultiSelectProps<string>["value"];
-  onChange?: (e: MultiSelectChangeEvent) => void;
+  onChange?: (e: IMultiSelectChangeEvent) => void;
 }
 
 const Container = styled.div`
+  flex: 1;
   /* hack:
    * the primereact not support to custom the placement of panel
    * we need to place fixed to bottom
    * */
   .p-multiselect-panel {
     top: 0 !important;
-    left: -27px !important;
     transform-origin: center top !important;
   }
 `;
@@ -60,6 +61,8 @@ const ItemName = styled.span`
   font-weight: 400;
 `;
 
+export const toTokenValue = (t: Currency) => `${t.chainId}:${t instanceof Token ? t.address : zeroAddress}`;
+
 export const TokenFilter: React.FC<ITokenProps> = ({ data = [], value, onChange }) => {
   const { theme } = useTheme();
 
@@ -68,7 +71,7 @@ export const TokenFilter: React.FC<ITokenProps> = ({ data = [], value, onChange 
       data.map((t) => ({
         ...t,
         icon: <CurrencyLogo currency={t} />,
-        value: t.symbol + t.chainId,
+        value: toTokenValue(t),
         label: t.symbol,
       })),
     [data]
@@ -93,12 +96,11 @@ export const TokenFilter: React.FC<ITokenProps> = ({ data = [], value, onChange 
     <Container>
       <MultiSelect
         style={{
-          width: "273px",
           background: theme.colors.input,
         }}
         panelStyle={{
           minHeight: "382px",
-          width: "328px",
+          minWidth: "328px",
         }}
         scrollHeight="382px"
         options={tokenList}

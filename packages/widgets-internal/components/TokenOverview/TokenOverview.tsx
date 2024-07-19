@@ -1,4 +1,4 @@
-import { Token } from "@pancakeswap/sdk";
+import { Currency, Token } from "@pancakeswap/sdk";
 import { Flex, Skeleton, Text } from "@pancakeswap/uikit";
 import { styled } from "styled-components";
 import { getChainName } from "@pancakeswap/chains";
@@ -10,7 +10,7 @@ export interface ITokenInfoProps {
   desc?: React.ReactNode;
   icon?: React.ReactNode;
   customContent?: React.ReactNode;
-  token: Token;
+  token: Currency;
   quoteToken: Token;
 }
 

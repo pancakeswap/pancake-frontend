@@ -1,4 +1,5 @@
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { Protocol } from '@pancakeswap/farms'
 import { paths } from 'state/info/api/schema'
 import { safeGetAddress } from 'utils'
 import { PoolInfo } from './type'
@@ -12,7 +13,7 @@ export const parseFarmPools = (
     return {
       chainId: pool.chainId,
       lpAddress: safeGetAddress(pool.id)!,
-      protocol: pool.protocol,
+      protocol: pool.protocol as Protocol,
       token0: new Token(
         pool.chainId,
         safeGetAddress(pool.token0.id)!,
