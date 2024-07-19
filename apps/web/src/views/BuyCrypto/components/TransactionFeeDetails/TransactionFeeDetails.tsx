@@ -20,12 +20,12 @@ import BuyCryptoTooltip from '../Tooltip/Tooltip'
 
 type FeeComponents = { providerFee: number; networkFee: number; price: number }
 interface TransactionFeeDetailsProps {
-  selectedQuote: OnRampProviderQuote | undefined
+  selectedQuote?: OnRampProviderQuote
   currency: Currency
   independentField: Field
-  inputError: string | undefined
-  quotesError: string | undefined
-  loading: boolean | undefined
+  inputError?: string
+  loading?: boolean
+  quotesError?: boolean
 }
 
 export const TransactionFeeDetails = ({
@@ -33,8 +33,8 @@ export const TransactionFeeDetails = ({
   currency,
   independentField,
   inputError,
-  quotesError,
   loading,
+  quotesError,
 }: TransactionFeeDetailsProps) => {
   const [elementHeight, setElementHeight] = useState<number>(51)
   const [show, setShow] = useState<boolean>(false)
@@ -48,7 +48,6 @@ export const TransactionFeeDetails = ({
 
   const handleExpandClick = useCallback(() => setShow(!show), [show])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const elRef = contentRef.current
     if (elRef) setElementHeight(elRef.scrollHeight)
@@ -72,15 +71,11 @@ export const TransactionFeeDetails = ({
         </StyledFeesContainer3>
       </Flex>
 
-      <StyledFeesContainer
-        width="100%"
-        onClick={handleExpandClick}
-        disabled={Boolean(loading || quotesError || inputError)}
-      >
+      <StyledFeesContainer width="100%" onClick={handleExpandClick} disabled={Boolean(loading || inputError)}>
         <StyledArrowHead />
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
-            {selectedQuote && !quotesError ? (
+            {selectedQuote && (
               <>
                 <Text fontWeight="600" fontSize="14px" px="2px">
                   {t('Est total fees:')}
@@ -95,11 +90,15 @@ export const TransactionFeeDetails = ({
                   })}
                 </SkeletonText>
               </>
-            ) : (
-              <Text fontWeight="600" fontSize="14px" px="2px">
-                {quotesError}
+            )}
+            {quotesError && (
+              <Text fontWeight="600" fontSize="14px" px="2px" color="textSubtle">
+                {t('No quotes available for %cryptoCurrency% right now.', {
+                  cryptoCurrency: currency?.symbol,
+                })}
               </Text>
             )}
+
             <BuyCryptoTooltip
               opacity={0.7}
               iconSize="17px"
