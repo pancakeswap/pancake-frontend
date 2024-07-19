@@ -85,6 +85,36 @@ export type WorkerEvent = WorkerGetBestTradeEvent | WorkerMultiChunkEvent | Abor
 // Manage the abort actions for each message
 const messageAbortControllers = new Map<number, AbortController>()
 
+function handleGetBestTradeEvent(
+  params: V4Router.APISchema.RouterPostParams,
+  router: typeof V4Router,
+  id: any,
+  cleanupAbortController: any,
+): V4Router.APISchema.RouterPostParams
+function handleGetBestTradeEvent(
+  params: SmartRouter.APISchema.RouterPostParams,
+  router: typeof SmartRouter,
+  id: any,
+  cleanupAbortController: any,
+): SmartRouter.APISchema.RouterPostParams
+
+function handleGetBestTradeEvent(params, router, id, cleanupAbortController) {
+  const parsed = router.APISchema.zRouterPostParams.safeParse(params)
+  if (parsed.success === false) {
+    postMessage([
+      id,
+      {
+        success: false,
+        error: parsed.error.message,
+      },
+    ])
+    cleanupAbortController()
+    return undefined
+  }
+
+  return parsed.data
+}
+
 // eslint-disable-next-line no-restricted-globals
 addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
   const { data } = event
@@ -135,18 +165,9 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
   }
 
   if (message.cmd === 'getBestTrade') {
-    const parsed = SmartRouter.APISchema.zRouterPostParams.safeParse(message.params)
-    if (parsed.success === false) {
-      postMessage([
-        id,
-        {
-          success: false,
-          error: parsed.error.message,
-        },
-      ])
-      cleanupAbortController()
-      return
-    }
+    const parsedData = handleGetBestTradeEvent(message.params, SmartRouter, id, cleanupAbortController)
+
+    if (!parsedData) return
 
     const {
       amount,
@@ -162,7 +183,7 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
       onChainQuoterGasLimit: gasLimit,
       nativeCurrencyUsdPrice,
       quoteCurrencyUsdPrice,
-    } = parsed.data
+    } = parsedData
     const onChainProvider = createViemPublicClientGetter({ transportSignal: abortController.signal })
     const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider, gasLimit })
     const currencyAAmount = parseCurrencyAmount(chainId, amount)
@@ -210,20 +231,11 @@ addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
   }
 
   if (message.cmd === 'getBestTradeOffchain') {
-    const parsed = V4Router.APISchema.zRouterPostParams.safeParse(message.params)
-    if (parsed.success === false) {
-      postMessage([
-        id,
-        {
-          success: false,
-          error: parsed.error.message,
-        },
-      ])
-      cleanupAbortController()
-      return
-    }
+    const parsedData = handleGetBestTradeEvent(message.params, V4Router, id, cleanupAbortController)
 
-    const { amount, chainId, currency, tradeType, gasPriceWei, maxHops, candidatePools, maxSplits } = parsed.data
+    if (!parsedData) return
+
+    const { amount, chainId, currency, tradeType, gasPriceWei, maxHops, candidatePools, maxSplits } = parsedData
     const onChainProvider = createViemPublicClientGetter({ transportSignal: abortController.signal })
     const currencyAAmount = parseCurrencyAmount(chainId, amount)
     const currencyB = parseCurrency(chainId, currency)
