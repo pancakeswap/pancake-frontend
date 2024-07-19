@@ -10,31 +10,58 @@ export const poolsAtom = atom<PoolInfo[]>((get) => {
   return farmPools.concat(extendPools)
 })
 
-export type PoolAprDetail = {
-  lpApr: {
-    value: `${number}`
-  }
-  cakeApr: {
-    // default apr
-    value: `${number}`
-    // apr with boost, not related to user account
-    boost?: `${number}`
-  }
-  // @todo @ChefJerry implement merklApr
-  merklApr: {
-    value: `${number}`
-  }
+export type AprValue = {
+  [key: ChainIdAddressKey]: `${number}`
 }
+export type MerklApr = AprValue
+export const merklAprAtom = atom<MerklApr>({})
 
-export type PoolApr = Record<ChainIdAddressKey, PoolAprDetail>
-
-export const poolAprAtom = atom({} as PoolApr, (get, set, newValue: PoolApr) => {
-  set(poolAprAtom, { ...get(poolAprAtom), ...newValue })
+export type LpApr = AprValue
+export const lpAprAtom = atom<LpApr>((get) => {
+  const pools = get(poolsAtom)
+  return pools.reduce((acc, pool) => {
+    return {
+      ...acc,
+      [`${pool.chainId}:${pool.lpAddress}`]: pool.lpApr ?? '0',
+    }
+  }, {} as LpApr)
 })
 
-export const emptyAprPoolsAtom = atom((get) => {
+export type CakeApr = Record<ChainIdAddressKey, { value: `${number}`; boost?: `${number}` }>
+export const cakeAprAtom = atom<CakeApr>({})
+
+export type PoolApr = Record<
+  ChainIdAddressKey,
+  {
+    lpApr: `${number}`
+    cakeApr: {
+      value: `${number}`
+      boost?: `${number}`
+    }
+    merklApr: `${number}`
+  }
+>
+
+export const poolAprAtom = atom<PoolApr>((get) => {
+  const lpAprs = get(lpAprAtom)
+  const cakeAprs = get(cakeAprAtom)
+  const merklAprs = get(merklAprAtom)
+
+  return Object.keys(lpAprs).reduce((acc, key) => {
+    return {
+      ...acc,
+      [key]: {
+        lpApr: lpAprs[key],
+        cakeApr: cakeAprs[key],
+        merklApr: merklAprs[key],
+      },
+    }
+  }, {} as PoolApr)
+})
+
+export const emptyCakeAprPoolsAtom = atom((get) => {
   const pools = get(poolsAtom)
-  const aprs = get(poolAprAtom)
+  const aprs = get(cakeAprAtom)
 
   return pools.filter((pool) => !aprs[`${pool.chainId}:${pool.lpAddress}`])
 })
