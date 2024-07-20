@@ -93,7 +93,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
 
   return (
     <DashboardQuestEditContainer>
-      <EditTemplate titleText={t('Quest title')} state={state} updateValue={updateValue}>
+      <EditTemplate titleText={t('Quest')} state={state} questId={questId} updateValue={updateValue}>
         {!isDesktop && (
           <Reward state={state} hasTask={hasTask} actionComponent={<SubmitAction />} updateValue={updateValue} />
         )}

@@ -1,10 +1,23 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Card, CardBody, CardHeader, Flex, FlexGap, Heading, Input, ReactMarkdown, Text } from '@pancakeswap/uikit'
+import {
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
+  FlexGap,
+  Heading,
+  Input,
+  ReactMarkdown,
+  Tag,
+  Text,
+} from '@pancakeswap/uikit'
 import { DatePicker, DatePickerPortal, TimePicker } from 'components/DatePicker'
 import dynamic from 'next/dynamic'
 import React from 'react'
 import { styled } from 'styled-components'
 import { StateType } from 'views/DashboardQuestEdit/context/types'
+import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 
 const TimelineGroup = styled(Flex)`
   flex-wrap: wrap;
@@ -32,6 +45,7 @@ const EasyMde = dynamic(() => import('components/EasyMde'), {
 interface EditTemplateProps {
   titleText: string
   state: StateType
+  questId?: string
   uploadImageComponent?: JSX.Element
   updateValue: (key: string, value: string | Date) => void
 }
@@ -39,12 +53,13 @@ interface EditTemplateProps {
 export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> = ({
   titleText,
   state,
+  questId,
   uploadImageComponent,
   updateValue,
   children,
 }) => {
   const { t } = useTranslation()
-  const { title, description, startDate, startTime, endDate, endTime } = state
+  const { title, description, startDate, startTime, endDate, endTime, completionStatus } = state
 
   return (
     <FlexGap
@@ -54,9 +69,17 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
       p={['0 0 150px 0', '0 0 150px 0', '0 0 150px 0', '0 0 150px 0', '40px 40px 200px 40px']}
     >
       <Box>
-        <Text bold fontSize="24px" lineHeight="28px" mb="8px">
-          {titleText}
-        </Text>
+        <Flex mb="8px">
+          <Text bold fontSize="24px" lineHeight="28px" mr="16px">
+            {titleText}
+          </Text>
+          {questId && (
+            <>
+              {completionStatus === CompletionStatus.DRAFTED && <Tag variant="textDisabled">{t('Drafted')}</Tag>}
+              {completionStatus === CompletionStatus.SCHEDULED && <Tag variant="textSubtle">{t('Schedule')}</Tag>}
+            </>
+          )}
+        </Flex>
         <Input value={title} onChange={(e) => updateValue('title', e.currentTarget.value)} />
       </Box>
       {uploadImageComponent}
