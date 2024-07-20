@@ -3482,5 +3482,7 @@
   "Stake LP Tokens to Earn Cake and APT": "Panosta LP-poletteja ansaitaksesi CAKEa ka APT:tä",
   "Read The Guide": "Lue opas",
   "Earn Cake and APT with up to 50% apr on 15+ Pools": "Ansaitse Cakea ja APT:tä jopa 50 %:n APR:llä yli 15 poolissa",
-  "Earn Dual Incentives with Yield Farming on Aptos PancakeSwap": "Ansaitse kaksoiskannustimia tuottoviljelyllä Aptos PancakeSwapissa"
+  "Earn Dual Incentives with Yield Farming on Aptos PancakeSwap": "Ansaitse kaksoiskannustimia tuottoviljelyllä Aptos PancakeSwapissa",
+  "No quotes available for %cryptoCurrency% right now.": "No quotes available for %cryptoCurrency% right now.",
+  "No Quotes": "No Quotes"
 }
