@@ -11,7 +11,7 @@ export const Loading: React.FC<React.PropsWithChildren<LoadingProps>> = ({ title
         <Spinner size={100} />
       </Box>
       {children}
-      <Text textAlign="center" bold color="textSubtle" mt="20px">
+      <Text textAlign="center" color="textSubtle" mt="20px">
         {title}
       </Text>
     </Flex>

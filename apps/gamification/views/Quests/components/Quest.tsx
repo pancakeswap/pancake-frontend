@@ -127,51 +127,52 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, cust
           <Text ellipsis bold fontSize={['20px']} lineHeight={['24px']}>
             {quest?.title}
           </Text>
-          <Card isActive style={{ width: 'fit-content', padding: '2px', marginTop: '16px' }}>
-            <Flex padding="8px">
-              {quest?.reward ? (
-                <>
-                  <TokenWithChain currency={currency} width={20} height={20} />
-                  <Flex ml="8px">
-                    <Text bold fontSize="20px" lineHeight="24px">
-                      {Number(quest?.reward?.totalRewardAmount).toLocaleString('en-US', {
-                        maximumFractionDigits: 2,
-                      })}
-                    </Text>
-                    <Text bold fontSize="14px" style={{ alignSelf: 'flex-end' }} ml="2px">
-                      {currency.symbol}
-                    </Text>
-                  </Flex>
-                </>
-              ) : (
-                <Text>-</Text>
-              )}
-            </Flex>
-          </Card>
+          {quest?.reward && (
+            <Card isActive style={{ width: 'fit-content', padding: '2px', marginTop: '16px' }}>
+              <Flex padding="8px">
+                <TokenWithChain currency={currency} width={20} height={20} />
+                <Flex ml="8px">
+                  <Text bold fontSize="20px" lineHeight="24px">
+                    {Number(quest?.reward?.totalRewardAmount).toLocaleString('en-US', {
+                      maximumFractionDigits: 2,
+                    })}
+                  </Text>
+                  <Text bold fontSize="14px" style={{ alignSelf: 'flex-end' }} ml="2px">
+                    {currency.symbol}
+                  </Text>
+                </Flex>
+                <></>
+              </Flex>
+            </Card>
+          )}
           <DetailContainer>
             <Detail>
               <Text fontSize="12px" color="textSubtle">
                 {t('%total% Tasks', { total: quest?.tasks?.length ?? 0 })}
               </Text>
             </Detail>
-            <Detail>
-              <Text fontSize="12px" color="textSubtle">
-                {t('%total% winners max.', { total: quest?.reward?.amountOfWinners?.toFixed(0) ?? 0 })}
-              </Text>
-              <Box mt="2px" ref={rewardTargetRef}>
-                <InfoIcon ml="2px" width="14px" height="14px" color="textSubtle" style={{ alignSelf: 'center' }} />
-              </Box>
-              {rewardTooltipVisible && rewardTooltip}
-            </Detail>
-            <Detail>
-              <Text fontSize="12px" color="textSubtle">
-                {t('Lucky Draw')}
-              </Text>
-              <Box mt="2px" ref={rewardTypeTargetRef}>
-                <InfoIcon ml="2px" width="14px" height="14px" color="textSubtle" style={{ alignSelf: 'center' }} />
-              </Box>
-              {rewardTypeTooltipVisible && rewardTypeTooltip}
-            </Detail>
+            {quest?.reward && (
+              <>
+                <Detail>
+                  <Text fontSize="12px" color="textSubtle">
+                    {t('%total% winners max.', { total: quest?.reward?.amountOfWinners?.toFixed(0) ?? 0 })}
+                  </Text>
+                  <Box mt="2px" ref={rewardTargetRef}>
+                    <InfoIcon ml="2px" width="14px" height="14px" color="textSubtle" style={{ alignSelf: 'center' }} />
+                  </Box>
+                  {rewardTooltipVisible && rewardTooltip}
+                </Detail>
+                <Detail>
+                  <Text fontSize="12px" color="textSubtle">
+                    {t('Lucky Draw')}
+                  </Text>
+                  <Box mt="2px" ref={rewardTypeTargetRef}>
+                    <InfoIcon ml="2px" width="14px" height="14px" color="textSubtle" style={{ alignSelf: 'center' }} />
+                  </Box>
+                  {rewardTypeTooltipVisible && rewardTypeTooltip}
+                </Detail>
+              </>
+            )}
           </DetailContainer>
         </Flex>
       </Card>

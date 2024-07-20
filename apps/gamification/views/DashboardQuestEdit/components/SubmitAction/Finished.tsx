@@ -13,7 +13,7 @@ export const Finished: React.FC<React.PropsWithChildren<FinishedProps>> = ({ tit
     <Flex width="100%" flexDirection="column">
       <CheckmarkCircleIcon width={64} height={64} color="primary" margin="auto auto 24px auto" />
       {children}
-      <Text textAlign="center" bold color="textSubtle" mt="20px">
+      <Text textAlign="center" color="textSubtle" mt="20px">
         {title}
       </Text>
       <Button mt="24px" width="100%" onClick={closeModal}>

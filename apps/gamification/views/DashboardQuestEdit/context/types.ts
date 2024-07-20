@@ -16,6 +16,7 @@ export interface StateType {
   reward: undefined | QuestRewardType
   rewardSCAddress: string
   ownerAddress: string
+  needAddReward: boolean
 
   // For api return
   startDateTime: number

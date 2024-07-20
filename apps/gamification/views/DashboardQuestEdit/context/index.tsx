@@ -8,7 +8,7 @@ interface EditQuestContextType {
   state: StateType
   tasks: TaskConfigType[]
   updateAllState: (value: StateType, task: TaskConfigType[]) => void
-  updateValue: (key: string, value: string | Date | QuestRewardType) => void
+  updateValue: (key: string, value: string | Date | QuestRewardType | boolean) => void
   onTasksChange: (task: TaskConfigType[]) => void
   deleteTask: (value: string) => void
 }
@@ -33,6 +33,7 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
     reward: undefined,
     rewardSCAddress: '',
     ownerAddress: '',
+    needAddReward: true,
 
     // For api return
     startDateTime: 0,
@@ -40,12 +41,15 @@ export const QuestEditProvider: React.FC<React.PropsWithChildren> = ({ children 
     numberOfParticipants: 0,
   }))
 
-  const updateAllState = useCallback((stateData: StateType, task: TaskConfigType[]) => {
-    setState(stateData)
-    setTasks(task)
-  }, [])
+  const updateAllState = useCallback(
+    (stateData: StateType, task: TaskConfigType[]) => {
+      setState({ ...state, ...stateData })
+      setTasks(task)
+    },
+    [state],
+  )
 
-  const updateValue = useCallback((key: string, value: string | Date | QuestRewardType) => {
+  const updateValue = useCallback((key: string, value: string | Date | QuestRewardType | boolean) => {
     setIsChanged(true)
     setState((prevState) => ({
       ...prevState,

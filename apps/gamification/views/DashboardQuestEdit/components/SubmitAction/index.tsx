@@ -5,6 +5,7 @@ import {
   CalenderIcon,
   DeleteOutlineIcon,
   Flex,
+  FlexGap,
   Message,
   MessageText,
   PencilIcon,
@@ -64,14 +65,14 @@ export const SubmitAction = () => {
   )
 
   // eslint-disable-next-line consistent-return
-  const handleSave = async (isCreate: boolean, completionStatus: CompletionStatus, isSaveAndAddReward?: boolean) => {
+  const handleSave = async (isCreate: boolean, completionStatus: CompletionStatus) => {
     try {
       setIsSubmitError(false)
       const url = isCreate ? `/api/dashboard/quest-create` : `/api/dashboard/quest-update?id=${query?.id}`
       const method = isCreate ? 'POST' : 'PUT'
 
       const apiChainId = isCreate ? chainId : state.chainId
-      const { startDate, startTime, endDate, endTime } = state
+      const { startDate, startTime, endDate, endTime, needAddReward } = state
       const startDateTime = startDate && startTime ? combineDateAndTime(startDate, startTime) ?? 0 : 0
       const endDateTime = endDate && endTime ? combineDateAndTime(endDate, endTime) ?? 0 : 0
 
@@ -103,6 +104,7 @@ export const SubmitAction = () => {
       })
       toastSuccess(t('Submit Successfully!'))
 
+      const isSaveAndAddReward = isCreate && completionStatus === CompletionStatus.DRAFTED && needAddReward
       if (isSaveAndAddReward) {
         const result = await response.json()
         push(`/dashboard/quest/edit/${result.id}`)
@@ -131,17 +133,15 @@ export const SubmitAction = () => {
   const isAbleToSave = useMemo(() => isChanged && isTaskValid, [isChanged, isTaskValid])
 
   const isAbleToSchedule = useMemo(() => {
-    const { title, description, startDate, startTime, endDate, endTime, reward } = state
+    const { id, title, description, startDate, startTime, endDate, endTime, needAddReward } = state
     return (
+      (needAddReward ? id !== '' : true) &&
       !validateIsNotEmpty(title) &&
       !validateIsNotEmpty(description) &&
       startDate &&
       startTime &&
       endDate &&
       endTime &&
-      reward &&
-      reward?.amountOfWinners > 0 &&
-      reward?.totalRewardAmount > 0 &&
       isTaskValid &&
       tasks?.length > 0
     )
@@ -157,78 +157,62 @@ export const SubmitAction = () => {
             startDateTime: combineDateAndTime(state.startDate, state.startTime) ?? 0,
             endDateTime: combineDateAndTime(state.endDate, state.endTime) ?? 0,
           }}
+          needAddReward={state.needAddReward}
           isSubmitError={isSubmitError}
           openModal={openModal}
           setOpenModal={setOpenModal}
           handleSave={() => handleSave(Boolean(!query.id), CompletionStatus.SCHEDULED)}
         />
       )}
-      {query.id &&
-        (completionStatusToString === CompletionStatus.DRAFTED ||
-          completionStatusToString === CompletionStatus.SCHEDULED) && (
-          <StyledDeleteButton
-            mb="8px"
+      <FlexGap gap="8px" mb="8px">
+        {query.id &&
+          (completionStatusToString === CompletionStatus.DRAFTED ||
+            completionStatusToString === CompletionStatus.SCHEDULED) && (
+            <StyledDeleteButton
+              width="100%"
+              variant="secondary"
+              endIcon={<DeleteOutlineIcon color="failure" width={20} height={20} />}
+              onClick={onPresentDeleteModal}
+            >
+              {t('Delete')}
+            </StyledDeleteButton>
+          )}
+        {completionStatusToString === CompletionStatus.DRAFTED && (
+          <StyledOutlineButton
             width="100%"
             variant="secondary"
-            endIcon={<DeleteOutlineIcon color="failure" width={20} height={20} />}
-            onClick={onPresentDeleteModal}
+            disabled={!isAbleToSave}
+            endIcon={<PencilIcon color={isAbleToSave ? 'primary' : 'textDisabled'} width={14} height={14} />}
+            onClick={() => handleSave(Boolean(!query.id), query.id ? state.completionStatus : CompletionStatus.DRAFTED)}
           >
-            {t('Delete')}
-          </StyledDeleteButton>
+            {t('Save')}
+          </StyledOutlineButton>
         )}
-      {completionStatusToString !== CompletionStatus.FINISHED &&
-        completionStatusToString !== CompletionStatus.ONGOING && (
-          <>
-            <>
-              {completionStatusToString === CompletionStatus.SCHEDULED ? (
-                <Button
-                  mb="8px"
-                  width="100%"
-                  variant="secondary"
-                  disabled={!isAbleToSchedule}
-                  onClick={() => handleSave(false, CompletionStatus.DRAFTED)}
-                >
-                  {t('Move to the drafts')}
-                </Button>
-              ) : (
-                <StyledOutlineButton
-                  mb="8px"
-                  width="100%"
-                  variant="secondary"
-                  disabled={!isAbleToSchedule}
-                  endIcon={
-                    <CalenderIcon color={isAbleToSchedule ? 'primary' : 'textDisabled'} width={20} height={20} />
-                  }
-                  onClick={() => setOpenModal(true)}
-                >
-                  {t('Save and schedule')}
-                </StyledOutlineButton>
-              )}
-            </>
-            {Boolean(!query.id) && (
-              <StyledOutlineButton
-                mb="8px"
-                width="100%"
-                variant="secondary"
-                disabled={!isAbleToSave}
-                endIcon={<PencilIcon color={isAbleToSave ? 'primary' : 'textDisabled'} width={20} height={20} />}
-                onClick={() => handleSave(Boolean(!query.id), CompletionStatus.DRAFTED, true)}
-              >
-                {t('Save and Add Reward')}
-              </StyledOutlineButton>
-            )}
-            <Button
-              width="100%"
-              disabled={!isAbleToSave}
-              endIcon={<PencilIcon color={isAbleToSave ? 'invertedContrast' : 'textDisabled'} width={14} height={14} />}
-              onClick={() =>
-                handleSave(Boolean(!query.id), query.id ? state.completionStatus : CompletionStatus.DRAFTED)
-              }
-            >
-              {query.id ? t('Save the edits') : t('Save to the drafts')}
-            </Button>
-          </>
-        )}
+      </FlexGap>
+      {completionStatusToString === CompletionStatus.DRAFTED && (
+        <Button
+          mb="8px"
+          width="100%"
+          disabled={!isAbleToSchedule}
+          endIcon={
+            <CalenderIcon color={isAbleToSchedule ? 'invertedContrast' : 'textDisabled'} width={20} height={20} />
+          }
+          onClick={() => setOpenModal(true)}
+        >
+          {t('Add a reward and schedule')}
+        </Button>
+      )}
+      {completionStatusToString === CompletionStatus.SCHEDULED && (
+        <Button
+          mb="8px"
+          width="100%"
+          disabled={!isAbleToSave}
+          endIcon={<PencilIcon color={isAbleToSave ? 'invertedContrast' : 'textDisabled'} width={14} height={14} />}
+          onClick={() => handleSave(Boolean(!query.id), state.completionStatus)}
+        >
+          {t('Save the edits')}
+        </Button>
+      )}
 
       {completionStatusToString === CompletionStatus.DRAFTED && (
         <Box mt="16px">
@@ -237,23 +221,31 @@ export const SubmitAction = () => {
               <MessageText>{t('You have everything ready to be scheduled!')}</MessageText>
             </Message>
           ) : (
-            <Message variant="primary">
-              <MessageText>
-                {t('To fill the page:')}
-                <ul>
-                  {validateIsNotEmpty(state.title) && <li>{t('Enter title')}</li>}
-                  {validateIsNotEmpty(state.description) && <li>{t('Enter description')}</li>}
-                  {(!state.startDate || !state.startTime || !state.endDate || !state.endTime) && (
-                    <li>{t('Select timeline')}</li>
-                  )}
-                  {(state?.reward === undefined ||
-                    state?.reward?.amountOfWinners === 0 ||
-                    state?.reward?.totalRewardAmount === 0) && <li>{t('Add reward')}</li>}
-                  {tasks?.length === 0 && <li>{t('Add at least 1 task')}</li>}
-                  {tasks?.length > 0 && !isTaskValid && <li>{t('Fill all tasks')}</li>}
-                </ul>
-              </MessageText>
-            </Message>
+            <>
+              {(validateIsNotEmpty(state.title) ||
+                validateIsNotEmpty(state.description) ||
+                !state.startDate ||
+                !state.startTime ||
+                !state.endDate ||
+                !state.endTime ||
+                tasks?.length === 0 ||
+                !isTaskValid) && (
+                <Message variant="primary">
+                  <MessageText>
+                    {t('To fill the page:')}
+                    <ul>
+                      {validateIsNotEmpty(state.title) && <li>{t('Enter title')}</li>}
+                      {validateIsNotEmpty(state.description) && <li>{t('Enter description')}</li>}
+                      {(!state.startDate || !state.startTime || !state.endDate || !state.endTime) && (
+                        <li>{t('Select timeline')}</li>
+                      )}
+                      {tasks?.length === 0 && <li>{t('Add at least 1 task')}</li>}
+                      {tasks?.length > 0 && !isTaskValid && <li>{t('Fill all tasks')}</li>}
+                    </ul>
+                  </MessageText>
+                </Message>
+              )}
+            </>
           )}
         </Box>
       )}
