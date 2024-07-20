@@ -51,11 +51,12 @@ const StyleNetwork = styled(Flex)`
 
 interface AddLpAddressProps {
   task: TaskLiquidityConfig
+  isDrafted: boolean
 }
 
 type SocialKeyType = 'title' | 'description' | 'minAmount' | 'lpAddressLink' | 'feeTier' | 'lpAddress'
 
-export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
+export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
   const [isFirst, setIsFirst] = useState(true)
@@ -122,13 +123,15 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task }) => {
         <Text style={{ alignSelf: 'center' }} bold>
           {taskNaming(TaskType.ADD_LIQUIDITY)}
         </Text>
-        <DropdownList
-          m="auto 0px auto auto"
-          id={task.sid}
-          isOptional={task.isOptional}
-          onClickDelete={onPresentDeleteModal}
-          onClickOptional={onClickOptional}
-        />
+        {isDrafted && (
+          <DropdownList
+            m="auto 0px auto auto"
+            id={task.sid}
+            isOptional={task.isOptional}
+            onClickDelete={onPresentDeleteModal}
+            onClickOptional={onClickOptional}
+          />
+        )}
       </Flex>
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flex="6" flexDirection="column">

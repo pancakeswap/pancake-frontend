@@ -28,11 +28,12 @@ const StyleSelector = styled(Button)`
 
 interface AddSwapProps {
   task: TaskSwapConfig
+  isDrafted: boolean
 }
 
 type SocialKeyType = 'title' | 'description' | 'minAmount'
 
-export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
+export const AddSwap: React.FC<AddSwapProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
   const [isFirst, setIsFirst] = useState(true)
@@ -108,13 +109,15 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task }) => {
         <Text bold style={{ alignSelf: 'center' }}>
           {taskNaming(TaskType.MAKE_A_SWAP)}
         </Text>
-        <DropdownList
-          m="auto 0px auto auto"
-          id={task.sid}
-          isOptional={task.isOptional}
-          onClickDelete={onPresentDeleteModal}
-          onClickOptional={onClickOptional}
-        />
+        {isDrafted && (
+          <DropdownList
+            m="auto 0px auto auto"
+            id={task.sid}
+            isOptional={task.isOptional}
+            onClickDelete={onPresentDeleteModal}
+            onClickOptional={onClickOptional}
+          />
+        )}
       </Flex>
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flexDirection="column">

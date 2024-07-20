@@ -28,11 +28,12 @@ const StyleSelector = styled(Button)`
 
 interface AddHoldTokenProps {
   task: TaskHoldTokenConfig
+  isDrafted: boolean
 }
 
 type SocialKeyType = 'title' | 'description' | 'minAmount'
 
-export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task }) => {
+export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
   const [isFirst, setIsFirst] = useState(true)
@@ -105,13 +106,15 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task }) => {
         <Text bold style={{ alignSelf: 'center' }}>
           {taskNaming(TaskType.HOLD_A_TOKEN)}
         </Text>
-        <DropdownList
-          m="auto 0px auto auto"
-          id={task.sid}
-          isOptional={task.isOptional}
-          onClickDelete={onPresentDeleteModal}
-          onClickOptional={onClickOptional}
-        />
+        {isDrafted && (
+          <DropdownList
+            m="auto 0px auto auto"
+            id={task.sid}
+            isOptional={task.isOptional}
+            onClickDelete={onPresentDeleteModal}
+            onClickOptional={onClickOptional}
+          />
+        )}
       </Flex>
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flexDirection="column">

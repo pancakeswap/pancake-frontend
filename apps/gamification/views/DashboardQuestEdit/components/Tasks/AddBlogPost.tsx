@@ -23,9 +23,10 @@ import { validateUrl } from 'views/DashboardQuestEdit/utils/validateFormat'
 
 interface AddBlogPostProps {
   task: TaskBlogPostConfig
+  isDrafted: boolean
 }
 
-export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
+export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const [isFirst, setIsFirst] = useState(true)
@@ -76,14 +77,18 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
           <Text style={{ alignSelf: 'center' }} bold>
             {taskNaming(TaskType.VISIT_BLOG_POST)}
           </Text>
-          {isMobile && (
-            <DropdownList
-              m="auto 0px auto auto"
-              id={task.sid}
-              isOptional={task.isOptional}
-              onClickDelete={onPresentDeleteModal}
-              onClickOptional={onClickOptional}
-            />
+          {isDrafted && (
+            <>
+              {isMobile && (
+                <DropdownList
+                  m="auto 0px auto auto"
+                  id={task.sid}
+                  isOptional={task.isOptional}
+                  onClickDelete={onPresentDeleteModal}
+                  onClickOptional={onClickOptional}
+                />
+              )}
+            </>
           )}
         </Flex>
         <Flex width={['100%', '100%', 'fit-content']} m={['8px 0 0 0', '8px 0 0 0', '0 0 0 auto']} alignSelf="center">
@@ -109,14 +114,18 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task }) => {
             />
           </InputGroup>
 
-          {!isMobile && (
-            <DropdownList
-              m="auto"
-              id={task.sid}
-              isOptional={task.isOptional}
-              onClickDelete={onPresentDeleteModal}
-              onClickOptional={onClickOptional}
-            />
+          {isDrafted && (
+            <>
+              {!isMobile && (
+                <DropdownList
+                  m="auto"
+                  id={task.sid}
+                  isOptional={task.isOptional}
+                  onClickDelete={onPresentDeleteModal}
+                  onClickOptional={onClickOptional}
+                />
+              )}
+            </>
           )}
         </Flex>
       </Flex>

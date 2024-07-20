@@ -22,11 +22,12 @@ import { validateIsNotEmpty, validateUrl } from 'views/DashboardQuestEdit/utils/
 
 interface SocialTaskProps {
   task: TaskSocialConfig
+  isDrafted: boolean
 }
 
 type SocialKeyType = 'title' | 'description' | 'accountId' | 'socialLink'
 
-export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
+export const SocialTask: React.FC<SocialTaskProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
   const [isFirst, setIsFirst] = useState(true)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
@@ -80,15 +81,17 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task }) => {
             {taskNaming(social)}
           </Text>
         </Flex>
-        <Flex width={['fit-content']} m={['0 0 0 auto']} alignSelf="center">
-          <DropdownList
-            m="auto"
-            id={task.sid}
-            isOptional={task.isOptional}
-            onClickDelete={onPresentDeleteModal}
-            onClickOptional={onClickOptional}
-          />
-        </Flex>
+        {isDrafted && (
+          <Flex width={['fit-content']} m={['0 0 0 auto']} alignSelf="center">
+            <DropdownList
+              m="auto"
+              id={task.sid}
+              isOptional={task.isOptional}
+              onClickDelete={onPresentDeleteModal}
+              onClickOptional={onClickOptional}
+            />
+          </Flex>
+        )}
       </Flex>
       <FlexGap gap="8px" flexDirection="column" mt="8px">
         <Flex flexDirection="column">

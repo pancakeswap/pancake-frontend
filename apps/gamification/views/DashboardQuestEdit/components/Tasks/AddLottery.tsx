@@ -13,11 +13,12 @@ import { validateNumber } from 'views/DashboardQuestEdit/utils/validateFormat'
 
 interface AddLotteryProps {
   task: TaskLotteryConfig
+  isDrafted: boolean
 }
 
 type KeyFillType = 'minAmount' | 'fromRound' | 'toRound'
 
-export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
+export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
   const [isFirst, setIsFirst] = useState(true)
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
@@ -57,13 +58,15 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task }) => {
         <Text style={{ alignSelf: 'center' }} bold>
           {taskNaming(TaskType.PARTICIPATE_LOTTERY)}
         </Text>
-        <DropdownList
-          m="auto 0px auto auto"
-          id={task.sid}
-          isOptional={task.isOptional}
-          onClickDelete={onPresentDeleteModal}
-          onClickOptional={onClickOptional}
-        />
+        {isDrafted && (
+          <DropdownList
+            m="auto 0px auto auto"
+            id={task.sid}
+            isOptional={task.isOptional}
+            onClickDelete={onPresentDeleteModal}
+            onClickOptional={onClickOptional}
+          />
+        )}
       </Flex>
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flex="6" flexDirection="column">
