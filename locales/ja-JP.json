@@ -3482,5 +3482,7 @@
   "Stake LP Tokens to Earn Cake and APT": "LPトークンをステーキングしてCAKEとAPTを獲得",
   "Read The Guide": "ガイドを読む",
   "Earn Cake and APT with up to 50% apr on 15+ Pools": "15以上のプールで最大50%の年利でCakeとAPTを獲得",
-  "Earn Dual Incentives with Yield Farming on Aptos PancakeSwap": "Aptos PancakeSwapの利回りファーミングで二重のインセンティブを獲得"
+  "Earn Dual Incentives with Yield Farming on Aptos PancakeSwap": "Aptos PancakeSwapの利回りファーミングで二重のインセンティブを獲得",
+  "No quotes available for %cryptoCurrency% right now.": "No quotes available for %cryptoCurrency% right now.",
+  "No Quotes": "No Quotes"
 }
