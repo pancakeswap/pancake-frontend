@@ -3482,5 +3482,7 @@
   "Stake LP Tokens to Earn Cake and APT": "Внесіть токени пулу ліквідності, щоб заробити CAKE й APT",
   "Read The Guide": "Прочитати посібник",
   "Earn Cake and APT with up to 50% apr on 15+ Pools": "Заробляйте CAKE й APT із РВС до 50% у понад 15 пулах",
-  "Earn Dual Incentives with Yield Farming on Aptos PancakeSwap": "Заробляйте подвійні заохочення завдяки виторгу від фармінгу на Aptos PancakeSwap"
+  "Earn Dual Incentives with Yield Farming on Aptos PancakeSwap": "Заробляйте подвійні заохочення завдяки виторгу від фармінгу на Aptos PancakeSwap",
+  "No quotes available for %cryptoCurrency% right now.": "No quotes available for %cryptoCurrency% right now.",
+  "No Quotes": "No Quotes"
 }
