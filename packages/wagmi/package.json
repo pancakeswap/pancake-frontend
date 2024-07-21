@@ -63,6 +63,6 @@
     }
   },
   "dependencies": {
-    "@walletconnect/ethereum-provider": "^2.11.3"
+    "@walletconnect/ethereum-provider": "^2.14.0"
   }
 }
