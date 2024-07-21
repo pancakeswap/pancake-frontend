@@ -118,8 +118,22 @@ export const AthleticsBanner = () => {
         }
         actions={
           <BannerActionContainer>
-            <Action href="" icon="arrowForward" display="flex" text="Join Now" color="#280D5F" />
-            <Action href="" icon="openNew" display={isMobile ? 'none' : 'flex'} text="Learn More" color="#280D5F" />
+            <Action
+              href={learnMoreLink}
+              icon="arrowForward"
+              display="flex"
+              alignItems="center"
+              text="Join Now"
+              color="#280D5F"
+            />
+            <Action
+              href={joinNowLink}
+              display={isMobile ? 'none' : 'flex'}
+              icon="openNew"
+              alignItems="center"
+              text="Learn More"
+              color="#280D5F"
+            />
           </BannerActionContainer>
         }
         desc={<BannerDesc style={{ whiteSpace: 'break-spaces' }}>{t(subTitleText)}</BannerDesc>}
