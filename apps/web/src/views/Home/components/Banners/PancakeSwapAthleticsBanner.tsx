@@ -1,4 +1,4 @@
-import { useTranslation } from '@pancakeswap/localization'
+import { TranslateFunction, useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
@@ -69,16 +69,16 @@ const titleVariant = {
   fontWeight: 800,
 }
 
-const Titles: { [bp in CustomBreakPoints]: string } = {
-  sm: 'PancakeSwap Athletic Games:',
-  md: 'PancakeSwap Games: Get Usdt, Merch, and NFTs',
-  lg: 'PancakeSwap Athletic Games: Get Usdt, Merch, special edition NFTs',
+const Titles: { [bp in CustomBreakPoints]: (t: TranslateFunction) => string } = {
+  sm: (t) => t('PancakeSwap Athletic Games:'),
+  md: (t) => t('PancakeSwap Games: Get Usdt, Merch, and NFTs'),
+  lg: (t) => t('PancakeSwap Athletic Games: Get Usdt, Merch, special edition NFTs'),
 }
 
-const SubTitles: { [bp in CustomBreakPoints]: string } = {
-  sm: 'Get NFTs, merch, and USDT',
-  md: 'Complete tasks for NFTs, merch, and USDT Prises!',
-  lg: 'Complete tasks for special edition NFTs, merch, and USDT Prises!',
+const SubTitles: { [bp in CustomBreakPoints]: (t: TranslateFunction) => string } = {
+  sm: (t) => t('Get NFTs, merch, and USDT'),
+  md: (t) => t('Complete tasks for NFTs, merch, and USDT Prises!'),
+  lg: (t) => t('Complete tasks for special edition NFTs, merch, and USDT Prises!'),
 }
 
 export const AthleticsBanner = () => {
@@ -87,16 +87,16 @@ export const AthleticsBanner = () => {
   const { isMobile } = useMatchBreakpoints()
 
   const titleText = useMemo(() => {
-    if (width < 800) return Titles.sm
-    if (width < 1040) return Titles.md
-    return Titles.lg
-  }, [width])
+    if (width < 800) return Titles.sm(t)
+    if (width < 1040) return Titles.md(t)
+    return Titles.lg(t)
+  }, [width, t])
 
   const subTitleText = useMemo(() => {
-    if (width < 800) return SubTitles.sm
-    if (width < 1040) return SubTitles.md
-    return SubTitles.lg
-  }, [width])
+    if (width < 800) return SubTitles.sm(t)
+    if (width < 1040) return SubTitles.md(t)
+    return SubTitles.lg(t)
+  }, [width, t])
 
   const Action = ({ href, icon, text, ...props }: IActions) => (
     <Box display={props.display}>
