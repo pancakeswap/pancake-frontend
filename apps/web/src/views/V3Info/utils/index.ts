@@ -1,5 +1,6 @@
+import dayjs from 'dayjs'
 import { safeGetAddress } from 'utils'
-import { PoolData, RawPoolData } from '../types'
+import { ApiPoolData, ApiTransaction, PoolData, Transaction, TransactionType } from '../types'
 
 export function shortenAddress(address: string, chars = 4): string {
   const parsed = safeGetAddress(address)
@@ -14,7 +15,7 @@ export function feeTierPercent(fee: number): string {
 
 export const currentTimestamp = () => new Date().getTime()
 
-export function transformPoolData(item: RawPoolData): PoolData {
+export function transformPoolData(item: ApiPoolData): PoolData {
   return {
     feeTier: item.feeTier,
     address: item.id,
@@ -33,5 +34,28 @@ export function transformPoolData(item: RawPoolData): PoolData {
     tvlToken1: parseFloat(item.tvlToken1),
     volumeUSDChange: 0,
     tvlUSDChange: 0,
+  }
+}
+
+export function transformTransaction(transaction: ApiTransaction): Transaction {
+  return {
+    type:
+      transaction.type === 'mint'
+        ? TransactionType.MINT
+        : transaction.type === 'burn'
+        ? TransactionType.BURN
+        : TransactionType.SWAP,
+    hash: transaction.transactionHash,
+    timestamp: dayjs(transaction.timestamp as string)
+      .unix()
+      .toString(),
+    sender: transaction.origin ?? '',
+    token0Symbol: transaction.token0.symbol,
+    token1Symbol: transaction.token1.symbol,
+    token0Address: transaction.token0.id,
+    token1Address: transaction.token1.id,
+    amountUSD: parseFloat(transaction.amountUSD),
+    amountToken0: parseFloat(transaction.amount0),
+    amountToken1: parseFloat(transaction.amount1),
   }
 }

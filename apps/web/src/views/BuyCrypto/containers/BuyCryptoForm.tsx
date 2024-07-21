@@ -11,7 +11,6 @@ import {
   useState,
   type ChangeEvent,
   type Dispatch,
-  type RefObject,
   type SetStateAction,
 } from 'react'
 import { useBuyCryptoActionHandlers, useBuyCryptoState } from 'state/buyCrypto/hooks'
@@ -32,6 +31,7 @@ import { useIsBtc } from '../hooks/useIsBtc'
 import { useOnRampCurrencyOrder } from '../hooks/useOnRampCurrencyOrder'
 import { useLimitsAndInputError } from '../hooks/useOnRampInputError'
 import { useOnRampQuotes } from '../hooks/useOnRampQuotes'
+import type { ProviderAvailabilities } from '../hooks/useProviderAvailabilities'
 import InputExtended, { StyledVerticalLine } from '../styles'
 import { FormContainer } from './FormContainer'
 import { FormHeader } from './FormHeader'
@@ -48,7 +48,7 @@ interface OnRampCurrencySelectPopOverProps {
 }
 type InputEvent = ChangeEvent<HTMLInputElement>
 
-export function BuyCryptoForm() {
+export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabilities: ProviderAvailabilities }) {
   const { typedValue, independentField } = useBuyCryptoState()
 
   const { t } = useTranslation()
@@ -86,15 +86,17 @@ export function BuyCryptoForm() {
     enabled: Boolean(!inputError),
   })
 
-  const quotes = useMemo(() => data?.quotes, [data?.quotes])
-  const quotesError = useMemo(() => data?.quotesError, [data?.quotesError])
+  const { quotes, quotesError } = useMemo(() => {
+    const filteredQuotes = data?.quotes.filter((q) => providerAvailabilities[q.provider])
+    return { quotes: filteredQuotes, quotesError: isError || data?.quotes.length === 0 }
+  }, [data?.quotes, providerAvailabilities, isError])
 
   const outputValue = useMemo((): string | undefined => {
-    if (inputError || quotesError || !selectedQuote) return undefined
+    if (inputError || !selectedQuote) return undefined
     const { amount, quote } = selectedQuote
     const output = isFiat(unit) ? quote : amount
     return formatQuoteDecimals(output, unit)
-  }, [unit, selectedQuote, inputError, quotesError])
+  }, [unit, selectedQuote, inputError])
 
   const handleTypeInput = useCallback((value: string) => onUserInput(Field.INPUT, value), [onUserInput])
   const handleAddressInput = useCallback((event: InputEvent) => setSearchQuery(event.target.value), [])
@@ -118,13 +120,12 @@ export function BuyCryptoForm() {
   }, [handleTypeInput, defaultAmt, unit, onFlip, searchQuery, onCurrencySelection])
 
   useEffect(() => {
-    if (!quotes || quotes?.length === 0) return
-    setSelectedQuote(quotes[0])
+    if (!quotes || quotesError) return
     if (bestQuoteRef.current !== quotes[0]) {
       bestQuoteRef.current = quotes[0]
       setSelectedQuote(quotes[0])
     }
-  }, [quotes])
+  }, [quotes, quotesError])
 
   useEffect(() => {
     if (!defaultAmt || !isFiat(unit)) return
@@ -140,7 +141,7 @@ export function BuyCryptoForm() {
       <OnRampCurrencySelectPopOver
         quotes={quotes}
         selectedQuote={selectedQuote}
-        isError={isError}
+        isError={quotesError}
         inputError={inputError}
         isFetching={isLoading}
         setSelectedQuote={setSelectedQuote}
@@ -166,13 +167,13 @@ export function BuyCryptoForm() {
         </Box>
         <BuyCryptoSelector
           id={isFiat(unit) ? 'onramp-crypto' : 'onramp-fiat'}
+          inputLoading={Boolean(isLoading || inputError || quotesError)}
           onCurrencySelect={onCurrencySelection}
           selectedCurrency={currencyIn}
           currencyLoading={Boolean(!currencyIn)}
-          value={outputValue ?? ''}
+          value={outputValue ?? '0.0'}
           disableInput
           unit={unit}
-          inputLoading={Boolean(isLoading || inputError || quotesError)}
         />
         <BitcoinAddressInput
           isBtc={isBtc}
@@ -193,8 +194,8 @@ export function BuyCryptoForm() {
           currency={cryptoCurrency}
           independentField={independentField}
           inputError={inputError}
-          quotesError={quotesError}
           loading={isLoading}
+          quotesError={quotesError}
         />
 
         <Box>
@@ -202,11 +203,11 @@ export function BuyCryptoForm() {
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={cryptoCurrency}
             selectedQuote={selectedQuote}
-            disabled={Boolean(isError || quotesError || inputError || btcError)}
-            loading={Boolean(quotesError || isLoading)}
+            disabled={Boolean(inputError || btcError || quotesError)}
+            loading={isLoading}
             resetBuyCryptoState={resetBuyCryptoState}
             btcAddress={debouncedQuery}
-            errorText={amountError}
+            errorText={quotesError ? t('No Quotes') : amountError}
             onRampUnit={unit}
           />
           <Flex alignItems="center" justifyContent="center">
@@ -294,7 +295,7 @@ const BitcoinAddressInput = ({
   validAddress: GetBtcAddrValidationReturnType | undefined
   handleInput: (event) => void
 }) => {
-  const inputRef = useRef<HTMLInputElement>()
+  const inputRef = useRef<HTMLInputElement>(null)
   const { isMobile } = useMatchBreakpoints()
   const { t } = useTranslation()
 
@@ -311,7 +312,7 @@ const BitcoinAddressInput = ({
         scale="lg"
         autoComplete="off"
         value={searchQuery}
-        ref={inputRef as RefObject<HTMLInputElement>}
+        ref={inputRef}
         onChange={handleInput}
         color="primary"
         isSuccess={Boolean(validAddress?.result)}

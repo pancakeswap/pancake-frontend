@@ -224,10 +224,10 @@ export const OnRampIconContainer = styled(Box)`
 export const OnRampIconCircleWrapper = styled(Box)<{ border: boolean }>`
   position: absolute;
   border-radius: 50%;
-  overflow: hidden;
   ${({ border }) =>
     border &&
     css`
+      overflow: hidden;
       border: solid 3px white;
     `}
 `

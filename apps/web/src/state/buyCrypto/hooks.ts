@@ -5,8 +5,8 @@ import { useRouter } from 'next/router'
 import type { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect } from 'react'
 import { buyCryptoReducerAtom, type BuyCryptoState } from 'state/buyCrypto/reducer'
+
 import { OnRampChainId as ChainId, type OnRampCurrency as Currency } from 'views/BuyCrypto/constants'
-import { useAccount } from 'wagmi'
 import { Field, replaceBuyCryptoState, selectCurrency, switchCurrencies, typeInput } from './actions'
 
 const useEnableBtcPurchases = atomWithStorage<boolean>('pcs:enable-buy-btc-native', false)
@@ -77,13 +77,11 @@ export async function queryParametersToBuyCryptoState(
   }
 }
 
-export function useDefaultsFromURLSearch(account: string | undefined) {
+export function useDefaultsFromURLSearch() {
   const [, dispatch] = useAtom(buyCryptoReducerAtom)
   const { chainId } = useActiveChainId()
-  const { address } = useAccount()
   const { query, isReady } = useRouter()
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const fetchData = async () => {
       if (!isReady || !chainId) return
@@ -99,5 +97,5 @@ export function useDefaultsFromURLSearch(account: string | undefined) {
       )
     }
     fetchData()
-  }, [dispatch, query, isReady, account, chainId, address])
+  }, [dispatch, query, isReady, chainId])
 }

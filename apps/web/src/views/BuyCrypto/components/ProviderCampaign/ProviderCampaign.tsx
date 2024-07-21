@@ -11,6 +11,7 @@ const activeCampaigns: { [provider in keyof typeof ONRAMP_PROVIDERS]: boolean } 
   [ONRAMP_PROVIDERS.Mercuryo]: false,
   [ONRAMP_PROVIDERS.MoonPay]: false,
   [ONRAMP_PROVIDERS.Transak]: false,
+  [ONRAMP_PROVIDERS.Topper]: false,
 }
 
 const ProviderCampaign = ({ provider }: { provider: keyof typeof ONRAMP_PROVIDERS }) => {

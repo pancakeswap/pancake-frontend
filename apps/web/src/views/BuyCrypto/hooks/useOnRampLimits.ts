@@ -50,10 +50,7 @@ export const useOnRampLimit = <selectData = GetOnRampLimitReturnType>(
         network,
       },
     ]),
-    queryFn: async ({ queryKey }) => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { fiatCurrency, cryptoCurrency, network } = queryKey[1]
-
+    queryFn: async () => {
       if (!fiatCurrency || !cryptoCurrency) {
         throw new Error('Invalid parameters')
       }

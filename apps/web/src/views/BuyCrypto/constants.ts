@@ -37,6 +37,7 @@ export enum ONRAMP_PROVIDERS {
   MoonPay = 'MoonPay',
   Mercuryo = 'Mercuryo',
   Transak = 'Transak',
+  Topper = 'Topper',
 }
 
 export enum FeeTypes {
@@ -62,12 +63,14 @@ export const PROVIDER_ICONS = {
   [ONRAMP_PROVIDERS.MoonPay]: `${ASSET_CDN}/web/onramp/moonpay.svg`,
   [ONRAMP_PROVIDERS.Mercuryo]: `${ASSET_CDN}/web/onramp/mercuryo.svg`,
   [ONRAMP_PROVIDERS.Transak]: `${ASSET_CDN}/web/onramp/transak.svg`,
+  [ONRAMP_PROVIDERS.Topper]: `${ASSET_CDN}/web/onramp/topper.png`,
 } satisfies Record<keyof typeof ONRAMP_PROVIDERS, string>
 
 export const providerFeeTypes: { [provider in ONRAMP_PROVIDERS]: FeeTypes[] } = {
   [ONRAMP_PROVIDERS.MoonPay]: MOONPAY_FEE_TYPES,
   [ONRAMP_PROVIDERS.Mercuryo]: MERCURYO_FEE_TYPES,
   [ONRAMP_PROVIDERS.Transak]: MOONPAY_FEE_TYPES,
+  [ONRAMP_PROVIDERS.Topper]: MOONPAY_FEE_TYPES,
 }
 
 export const getNetworkDisplay = (chainId: number | undefined): string => {
@@ -149,12 +152,19 @@ export const chainIdToTransakNetworkId: { [id: number]: string } = {
   [OnRampChainId.BTC]: 'mainnet',
 }
 
+export const chainIdToTopperNetworkId: { [id: number]: string } = {
+  [OnRampChainId.ETHEREUM]: 'ethereum',
+  [OnRampChainId.ARBITRUM_ONE]: 'arbitrum',
+  0: 'bitcoin',
+}
+
 export const combinedNetworkIdMap: {
   [provider in keyof typeof ONRAMP_PROVIDERS]: { [id: number]: string }
 } = {
   [ONRAMP_PROVIDERS.MoonPay]: chainIdToMoonPayNetworkId,
   [ONRAMP_PROVIDERS.Mercuryo]: chainIdToMercuryoNetworkId,
   [ONRAMP_PROVIDERS.Transak]: chainIdToTransakNetworkId,
+  [ONRAMP_PROVIDERS.Topper]: chainIdToTopperNetworkId,
 }
 
 export const selectCurrencyField = (unit: OnRampUnit, mode: string) => {
