@@ -10,7 +10,7 @@ import { useCakePrice } from 'hooks/useStablePrice'
 import orderBy from 'lodash/orderBy'
 import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { SettingsButton } from './Settings/SettingsButton'
 import UserMenu from './UserMenu'
 import { footerLinks } from './footerConfig'
@@ -58,8 +58,8 @@ export const Menu = (props) => {
 
   const isDark = resolvedTheme === 'dark'
 
-  const toggleTheme = useMemo(() => {
-    return () => setTheme(isDark ? 'light' : 'dark')
+  const toggleTheme = useCallback(() => {
+    setTheme(isDark ? 'light' : 'dark')
   }, [setTheme, isDark])
 
   const getFooterLinks = useMemo(() => {

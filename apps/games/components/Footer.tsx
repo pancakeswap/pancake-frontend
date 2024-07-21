@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { footerLinks } from '@pancakeswap/uikit'
 import Footer from '@pancakeswap/uikit/components/Footer'
 import { languageList, useTranslation } from '@pancakeswap/localization'
@@ -13,8 +13,8 @@ const FooterPage = () => {
 
   const isDark = resolvedTheme === 'dark'
 
-  const toggleTheme = useMemo(() => {
-    return () => setTheme(isDark ? 'light' : 'dark')
+  const toggleTheme = useCallback(() => {
+    setTheme(isDark ? 'light' : 'dark')
   }, [setTheme, isDark])
 
   const getFooterLinks = useMemo(() => {

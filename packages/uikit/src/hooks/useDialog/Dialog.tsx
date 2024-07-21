@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useCallback, useMemo, useState } from "react";
+import { ChangeEvent, useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { BoxProps, Flex } from "../../components/Box";
 import { Button } from "../../components/Button";
@@ -71,6 +71,13 @@ export const Dialog: React.FC<DialogProps> = ({
     [handleOk]
   );
 
+  const handleOnChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setValue(e.target.value);
+    },
+    [setValue]
+  );
+
   return (
     <StyledModalV2 onDismiss={onDismiss} {...props}>
       <Modal
@@ -83,12 +90,7 @@ export const Dialog: React.FC<DialogProps> = ({
         <FlexGap flexDirection="column" gap="20px" mt="auto">
           <Text>{message}</Text>
           {useInput ? (
-            <Input
-              value={value}
-              onKeyDown={onKeyDown}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder={placeholder}
-            />
+            <Input value={value} onKeyDown={onKeyDown} onChange={handleOnChange} placeholder={placeholder} />
           ) : null}
           <Flex>
             <Button onClick={handleCancel} ml="auto" variant="secondary">

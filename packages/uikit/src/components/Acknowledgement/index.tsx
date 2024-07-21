@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Flex } from "../Box";
 import { Button } from "../Button";
 import { Checkbox } from "../Checkbox";
@@ -13,6 +13,10 @@ export const Acknowledgement: React.FC<React.PropsWithChildren<AcknowledgementPr
   const { t } = useTranslation();
   const [isConfirmed, setIsConfirmed] = useState(false);
 
+  const handleOnChange = useCallback(() => {
+    setIsConfirmed((prevIsConfirmed) => !prevIsConfirmed);
+  }, [setIsConfirmed]);
+
   return (
     <>
       <Flex justifyContent="space-between">
@@ -23,7 +27,7 @@ export const Acknowledgement: React.FC<React.PropsWithChildren<AcknowledgementPr
               name="confirmed"
               type="checkbox"
               checked={isConfirmed}
-              onChange={() => setIsConfirmed(!isConfirmed)}
+              onChange={handleOnChange}
               scale="sm"
             />
             <Text ml="10px" style={{ userSelect: "none" }}>
