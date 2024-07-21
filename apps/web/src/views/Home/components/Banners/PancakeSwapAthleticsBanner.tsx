@@ -12,54 +12,50 @@ import {
   PancakeSwapBadge,
   type GraphicDetail,
 } from '@pancakeswap/widgets-internal'
+// import { ASSETS_CDN } from 'config'
 import { useViewport } from 'hooks/useViewport'
 import { useMemo } from 'react'
 import styled from 'styled-components'
-// import { ASSETS_CDN } from 'config'
 
-type IActions = { href: string; text: string; icon?: 'arrowForward' | 'openNew' } & Partial<CSSStyleDeclaration>
+type IActions = {
+  href: string
+  text: string
+  icon?: 'arrowForward' | 'openNew'
+} & Partial<CSSStyleDeclaration>
 
 enum CustomBreakPoints {
   sm = 'sm',
   md = 'md',
   lg = 'lg',
 }
-const bg = 'radial-gradient(70.49% 124.11% at 44.31% -24.11%, #FEC375 0%, #F68129 18.86%, #EC6357 66.24%, #D8464F 100%)'
 
 const StyledImage = styled.img<{ hidden?: boolean }>`
   display: ${({ hidden }) => (hidden ? 'none' : 'block')};
+  margin: 8px 0 4px 4px;
   width: 45px;
-  margin: 0 4px;
 `
+const bg = `
+  radial-gradient(
+    70.49% 124.11% at 44.31% -24.11%, 
+    #FEC375 0%, 
+    #F68129 18.86%, 
+    #EC6357 66.24%, 
+    #D8464F 100%
+)`
 
-const bgDesktop = `https://new-assets-for-athletic-bann.assets-agx.pages.dev/web/banners/athletics/athletics-bunnies-lg.png`
-const bgMobile = `https://new-assets-for-athletic-bann.assets-agx.pages.dev/web/banners/athletics/athletics-bunnies-md.png`
-const rings = `https://new-assets-for-athletic-bann.assets-agx.pages.dev/web/banners/athletics/athletics-top-logo.png`
-const ringsAlt = `https://new-assets-for-athletic-bann.assets-agx.pages.dev/web/banners/athletics/athletics-rings.png`
-
-const Titles: { [bp in CustomBreakPoints]: string } = {
-  sm: 'PancakeSwap Athletic Games:',
-  md: 'PancakeSwap Games: Get Usdt, Merch, and NFTs',
-  lg: 'PancakeSwap Athletic Games: Get Usdt, Merch, special edition NFTs',
-}
-
-const SubTitles: { [bp in CustomBreakPoints]: string } = {
-  sm: 'Get NFTs, merch, and USDT ',
-  md: 'Complete tasks for NFTs, merch, and USDT Prises!',
-  lg: 'Complete tasks for special edition NFTs, merch, and USDT Prises!',
-}
-
+const ASSETS_CDN = 'https://new-assets-for-athletic-bann.assets-agx.pages.dev'
+const ATHLETICS_PATH = `${ASSETS_CDN}/web/banners/athletics`
 const learnMoreLink = ''
 const joinNowLink = ''
 
 const bgSmVariant: GraphicDetail = {
-  src: bgMobile,
+  src: `${ATHLETICS_PATH}/athletics-bunnies-md.png`,
   width: 272,
   height: 224,
 }
 
 const bgXsVariant: GraphicDetail = {
-  src: bgMobile,
+  src: `${ATHLETICS_PATH}/athletics-bunnies-md.png`,
   width: 196,
   height: 164,
 }
@@ -71,6 +67,18 @@ const titleVariant = {
   fontSize: 28,
   lineHeight: 30,
   fontWeight: 800,
+}
+
+const Titles: { [bp in CustomBreakPoints]: string } = {
+  sm: 'PancakeSwap Athletic Games:',
+  md: 'PancakeSwap Games: Get Usdt, Merch, and NFTs',
+  lg: 'PancakeSwap Athletic Games: Get Usdt, Merch, special edition NFTs',
+}
+
+const SubTitles: { [bp in CustomBreakPoints]: string } = {
+  sm: 'Get NFTs, merch, and USDT',
+  md: 'Complete tasks for NFTs, merch, and USDT Prises!',
+  lg: 'Complete tasks for special edition NFTs, merch, and USDT Prises!',
 }
 
 export const AthleticsBanner = () => {
@@ -102,10 +110,10 @@ export const AthleticsBanner = () => {
     <BannerContainer background={bg}>
       <BannerMain
         badges={
-          <Flex alignItems="center" justifyContent="center">
+          <Flex alignItems="center" justifyContent="center" alignContent="center" height="20px">
             <PancakeSwapBadge compact={width < 450} />
-            <StyledImage src={ringsAlt} alt="rings-alt" hidden={isMobile} />
-            <StyledImage src={rings} alt="rings" />
+            <StyledImage src={`${ATHLETICS_PATH}/athletics-rings.png`} alt="rings-alt" hidden={isMobile} />
+            <StyledImage src={`${ATHLETICS_PATH}/athletics-top-logo.png`} alt="top-logo-alt" />
           </Flex>
         }
         actions={
@@ -115,10 +123,20 @@ export const AthleticsBanner = () => {
           </BannerActionContainer>
         }
         desc={<BannerDesc style={{ whiteSpace: 'break-spaces' }}>{t(subTitleText)}</BannerDesc>}
-        title={<BannerTitle variant={titleVariant}> {t(titleText)}</BannerTitle>}
+        title={
+          <BannerTitle variant={titleVariant} marginTop="-2px">
+            {t(titleText)}
+          </BannerTitle>
+        }
       />
       <BannerGraphics>
-        <BackgroundGraphic src={bgDesktop} width={444} height={224} sm={bgSmVariant} xs={bgXsVariant} />
+        <BackgroundGraphic
+          src={`${ATHLETICS_PATH}/athletics-bunnies-lg.png`}
+          sm={bgSmVariant}
+          xs={bgXsVariant}
+          width={469}
+          height={224}
+        />
       </BannerGraphics>
     </BannerContainer>
   )
