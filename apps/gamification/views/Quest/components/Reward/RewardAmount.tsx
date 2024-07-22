@@ -35,7 +35,7 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({ reward }) => {
   return (
     <RewardAmountContainer>
       <Flex width="fit-content" margin="auto">
-        {reward && (
+        {reward?.currency && (
           <>
             <Box margin="auto" width="64px">
               <TokenWithChain currency={currency} width={64} height={64} />

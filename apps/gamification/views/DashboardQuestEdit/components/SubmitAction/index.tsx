@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency } from '@pancakeswap/sdk'
 import {
   Box,
   Button,
@@ -17,10 +18,12 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
+import { AddRewardModal } from 'views/DashboardQuestEdit/components/Reward/AddRewardModal'
 import { ActionModal } from 'views/DashboardQuestEdit/components/SubmitAction/ActionModal'
 import { LongPressDeleteModal } from 'views/DashboardQuestEdit/components/SubmitAction/LongPressDeleteModal'
+import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
-import { CompletionStatus } from 'views/DashboardQuestEdit/type'
+import { CompletionStatus, RewardType } from 'views/DashboardQuestEdit/type'
 import { combineDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 import { validateIsNotEmpty } from 'views/DashboardQuestEdit/utils/validateFormat'
 import { verifyTask } from 'views/DashboardQuestEdit/utils/verifyTask'
@@ -39,11 +42,50 @@ export const SubmitAction = () => {
   const { chainId, account } = useActiveWeb3React()
   const { query, push } = useRouter()
   const { toastSuccess, toastError } = useToast()
-  const { state, tasks, isChanged } = useQuestEdit()
+  const { state, tasks, isChanged, updateValue } = useQuestEdit()
   const [openModal, setOpenModal] = useState(false)
   const [isSubmitError, setIsSubmitError] = useState(false)
   const completionStatusToString = state.completionStatus.toString()
   const queryClient = useQueryClient()
+
+  const handlePickedRewardToken = (currency: Currency, totalRewardAmount: number, amountOfWinners: number) => {
+    const tokenAddress = currency?.isNative ? currency?.wrapped?.address : currency?.address
+    const tokenChainId = currency?.chainId
+
+    let rewardData: QuestRewardType = {
+      title: '',
+      description: '',
+      rewardType: RewardType.TOKEN,
+      currency: {
+        address: tokenAddress,
+        network: tokenChainId,
+      },
+      amountOfWinners,
+      totalRewardAmount,
+    }
+
+    if (state.reward) {
+      rewardData = {
+        ...state.reward,
+        totalRewardAmount,
+        amountOfWinners,
+        currency: {
+          address: tokenAddress,
+          network: tokenChainId,
+        },
+      }
+    }
+
+    updateValue('reward', rewardData)
+    setOpenModal(true)
+  }
+
+  const [onPresentAddRewardModal] = useModal(
+    <AddRewardModal state={state} handlePickedRewardToken={handlePickedRewardToken} />,
+    true,
+    true,
+    'add-quest-reward-modal',
+  )
 
   const handleClickDelete = async () => {
     if (query?.id) {
@@ -72,7 +114,7 @@ export const SubmitAction = () => {
       const method = isCreate ? 'POST' : 'PUT'
 
       const apiChainId = isCreate ? chainId : state.chainId
-      const { startDate, startTime, endDate, endTime, needAddReward } = state
+      const { startDate, startTime, endDate, endTime, needAddReward, reward } = state
       const startDateTime = startDate && startTime ? combineDateAndTime(startDate, startTime) ?? 0 : 0
       const endDateTime = endDate && endTime ? combineDateAndTime(endDate, endTime) ?? 0 : 0
 
@@ -88,6 +130,7 @@ export const SubmitAction = () => {
           ...state,
           orgId: account?.toLowerCase(),
           tasks: tasks?.length > 0 ? tasks.map((i, index) => ({ ...i, orderNumber: index })) : [],
+          reward: reward || {},
           chainId: apiChainId,
           startDateTime,
           endDateTime,
@@ -147,6 +190,14 @@ export const SubmitAction = () => {
     )
   }, [state, tasks, isTaskValid])
 
+  const handleSchedule = () => {
+    if (state.needAddReward) {
+      onPresentAddRewardModal()
+    } else {
+      setOpenModal(true)
+    }
+  }
+
   return (
     <Flex flexDirection="column" mt="30px">
       {openModal && (
@@ -197,7 +248,7 @@ export const SubmitAction = () => {
           endIcon={
             <CalenderIcon color={isAbleToSchedule ? 'invertedContrast' : 'textDisabled'} width={20} height={20} />
           }
-          onClick={() => setOpenModal(true)}
+          onClick={handleSchedule}
         >
           {t('Add a reward and schedule')}
         </Button>

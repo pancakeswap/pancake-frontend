@@ -1,8 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Modal, ModalV2 } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
-import { useCallback, useState } from 'react'
-import { Default } from 'views/DashboardQuestEdit/components/SubmitAction/Default'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Fail } from 'views/DashboardQuestEdit/components/SubmitAction/Fail'
 import { Finished } from 'views/DashboardQuestEdit/components/SubmitAction/Finished'
 import { Loading } from 'views/DashboardQuestEdit/components/SubmitAction/Loading'
@@ -18,7 +17,6 @@ interface ModalConfig {
 }
 
 export enum QuestEditModalState {
-  DEFAULT,
   LOADING,
   FAILED,
   FINISHED,
@@ -27,6 +25,7 @@ export enum QuestEditModalState {
 interface ActionModalProps {
   openModal: boolean
   isSubmitError: boolean
+  needAddReward: boolean
   quest: SingleQuestData
   handleSave: () => Promise<void>
   setOpenModal: (val: boolean) => void
@@ -35,13 +34,26 @@ interface ActionModalProps {
 export const ActionModal: React.FC<ActionModalProps> = ({
   quest,
   isSubmitError,
+  needAddReward,
   openModal,
   handleSave,
   setOpenModal,
 }) => {
   const { t } = useTranslation()
   const router = useRouter()
-  const [modalView, setModalView] = useState<QuestEditModalState>(QuestEditModalState.DEFAULT)
+  const isFirstTimeRef = useRef(true)
+  const [modalView, setModalView] = useState<QuestEditModalState>(QuestEditModalState.LOADING)
+
+  useEffect(() => {
+    const fetchSubmit = async () => {
+      isFirstTimeRef.current = false
+      await handleSubmit()
+    }
+
+    if (isFirstTimeRef.current) {
+      fetchSubmit()
+    }
+  }, [])
 
   const finishedQuest: SingleQuestData = {
     ...quest,
@@ -70,16 +82,12 @@ export const ActionModal: React.FC<ActionModalProps> = ({
     router.push('/dashboard')
   }
 
+  const title = needAddReward ? t('Add a reward and schedule') : t('Schedule the quest')
   const config = {
-    [QuestEditModalState.DEFAULT]: {
-      title: t('Schedule the quest'),
-      closeOnOverlayClick: true,
-      component: <Default handleSubmit={handleSubmit}>{questComponent}</Default>,
-    },
     [QuestEditModalState.LOADING]: {
-      title: t('Scheduling the quest...'),
+      title,
       hideCloseButton: true,
-      component: <Loading title={t('Wait while the quest is being scheduled...')}>{questComponent}</Loading>,
+      component: <Loading title={t('Please wait...')} />,
     },
     [QuestEditModalState.FAILED]: {
       title: t('Scheduling failed'),
@@ -94,7 +102,14 @@ export const ActionModal: React.FC<ActionModalProps> = ({
       title: t('The quest has been scheduled'),
       hideCloseButton: true,
       component: (
-        <Finished title={t('The quest has been successfully scheduled!')} closeModal={handleFinished}>
+        <Finished
+          title={
+            needAddReward
+              ? t('The quest has been successfully scheduled and the reward has been added!')
+              : t('The quest has been successfully scheduled!')
+          }
+          closeModal={handleFinished}
+        >
           {finishedComponent}
         </Finished>
       ),

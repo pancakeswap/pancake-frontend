@@ -127,7 +127,7 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, cust
           <Text ellipsis bold fontSize={['20px']} lineHeight={['24px']}>
             {quest?.title}
           </Text>
-          {quest?.reward && (
+          {quest?.reward?.currency && (
             <Card isActive style={{ width: 'fit-content', padding: '2px', marginTop: '16px' }}>
               <Flex padding="8px">
                 <TokenWithChain currency={currency} width={20} height={20} />
@@ -151,7 +151,7 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, cust
                 {t('%total% Tasks', { total: quest?.tasks?.length ?? 0 })}
               </Text>
             </Detail>
-            {quest?.reward && (
+            {quest?.reward?.currency && (
               <>
                 <Detail>
                   <Text fontSize="12px" color="textSubtle">

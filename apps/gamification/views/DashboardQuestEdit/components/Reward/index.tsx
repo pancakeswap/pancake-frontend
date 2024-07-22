@@ -45,7 +45,7 @@ export const Reward: React.FC<RewardProps> = ({ state, actionComponent, updateVa
             <Text fontSize={['24px']} bold mr="auto">
               {t('Reward')}
             </Text>
-            {completionStatus === CompletionStatus.DRAFTED && !reward && (
+            {completionStatus === CompletionStatus.DRAFTED && !reward?.currency && (
               <Toggle
                 scale="md"
                 id="toggle-quest-reward"
@@ -55,7 +55,7 @@ export const Reward: React.FC<RewardProps> = ({ state, actionComponent, updateVa
             )}
           </Flex>
           <BoxContainer>
-            {reward ? (
+            {reward?.currency ? (
               <>
                 <RewardAmount reward={reward} />
                 {reward?.currency?.network && (

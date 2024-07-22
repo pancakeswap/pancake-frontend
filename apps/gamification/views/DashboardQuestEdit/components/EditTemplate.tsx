@@ -82,6 +82,8 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
             <>
               {completionStatus === CompletionStatus.DRAFTED && <Tag variant="textDisabled">{t('Drafted')}</Tag>}
               {completionStatus === CompletionStatus.SCHEDULED && <Tag variant="textSubtle">{t('Schedule')}</Tag>}
+              {completionStatus === CompletionStatus.ONGOING && <Tag variant="secondary">{t('Ongoing')}</Tag>}
+              {completionStatus === CompletionStatus.FINISHED && <Tag variant="textDisabled">{t('Finished')}</Tag>}
             </>
           )}
         </Flex>
