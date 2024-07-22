@@ -27,6 +27,7 @@ import { useGasSponsorshipBalance } from 'hooks/useGasSponsorshipBalance'
 import { useGasToken } from 'hooks/useGasToken'
 import { usePaymaster } from 'hooks/usePaymaster'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
+import { useZksyncAirDropAutoPopup } from 'hooks/useZksyncAirDropAutoPopup'
 import { useEffect, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
@@ -178,4 +179,9 @@ export const ClaimZksyncAirdropModal: React.FC<{
       </ModalContainer>
     </ModalV2>
   )
+}
+
+export const ZKSyncAirdropModalWithAutoPopup: React.FC = () => {
+  const { isOpen, onDismiss } = useZksyncAirDropAutoPopup()
+  return <ClaimZksyncAirdropModal isOpen={isOpen} onDismiss={onDismiss} />
 }
