@@ -28,9 +28,17 @@ const AssetSetContainer = styled(Box)`
   max-width: 100%;
 `
 
-const SIZE = 26
-
-export const Questers = ({ questId }: { questId: string }) => {
+export const Questers = ({
+  questId,
+  size,
+  fontSize,
+  bold,
+}: {
+  questId: string
+  size: number
+  fontSize: number
+  bold?: boolean
+}) => {
   const { t } = useTranslation()
   const { allUserIdsByQuestId } = useGetAllUserIdsByQuestId(questId)
 
@@ -47,7 +55,7 @@ export const Questers = ({ questId }: { questId: string }) => {
 
   return (
     <Container width="100%" flexWrap="nowrap" overflow="hidden">
-      <Text mr="8px" bold>
+      <Text fontSize={fontSize} bold={bold} mr="8px">
         {t('%total%+ questers', { total: totalLength })}
       </Text>
 
@@ -55,15 +63,15 @@ export const Questers = ({ questId }: { questId: string }) => {
         {allUserIdsByQuestId.users.map((user, index) => (
           <Box
             key={user}
-            width={SIZE}
-            height={SIZE}
+            width={size}
+            height={size}
             position="absolute"
             style={{
               left: `${leftOffsetFor(index)}px`,
               zIndex: `${index - totalLength}`,
             }}
           >
-            <Jazzicon seed={index} diameter={SIZE} />
+            <Jazzicon seed={index} diameter={size} />
           </Box>
         ))}
       </AssetSetContainer>

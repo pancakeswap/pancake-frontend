@@ -21,6 +21,7 @@ import { useEffect, useMemo } from 'react'
 import { convertTimestampToDate } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { Reward } from 'views/Quest/components/Reward'
+import { Questers } from 'views/Quest/components/Reward/Questers'
 import { Share } from 'views/Quest/components/Share'
 import { Tasks } from 'views/Quest/components/Tasks'
 import { useGetQuestInfo } from 'views/Quest/hooks/useGetQuestInfo'
@@ -137,14 +138,21 @@ export const Quest = () => {
         <StyledHeading m="16px 0" as="h1">
           {quest?.title}
         </StyledHeading>
-        {quest?.startDateTime > 0 && quest?.endDateTime > 0 && (
-          <Flex mb="32px">
-            <CalenderIcon mr="8px" />
-            <Text>{`${convertTimestampToDate(quest.startDateTime)} - ${convertTimestampToDate(
-              quest.endDateTime,
-            )}`}</Text>
-          </Flex>
-        )}
+        <Flex flexDirection={['column', 'column', 'column', 'column', 'column', 'row']} mb="32px" width="100%">
+          {quest?.startDateTime > 0 && quest?.endDateTime > 0 && (
+            <Flex width="100%" maxWidth="266px">
+              <CalenderIcon width={16} mr="8px" />
+              <Text mt="4px" fontSize="14px">{`${convertTimestampToDate(
+                quest.startDateTime,
+              )} - ${convertTimestampToDate(quest.endDateTime)}`}</Text>
+            </Flex>
+          )}
+          {!quest?.reward?.currency && (
+            <Box mt={['18px', '18px', '18px', '18px', '18px', '4px']} width="100%">
+              <Questers questId={questId} size={18} fontSize={14} />
+            </Box>
+          )}
+        </Flex>
         {!isDesktop && quest?.reward?.currency && (
           <Reward quest={quest} isTasksCompleted={isTasksCompleted} isQuestFinished={isQuestFinished} />
         )}

@@ -56,7 +56,7 @@ export const Reward: React.FC<RewardProps> = ({ quest, isTasksCompleted, isQuest
           {/* <TotalRewards /> */}
           <Winners totalWinners={Number(quest?.reward?.totalRewardAmount)} />
           <Box padding="12px">
-            <Questers questId={quest?.id} />
+            <Questers questId={quest?.id} size={26} fontSize={16} bold />
           </Box>
           <ClaimButton quest={quest} isTasksCompleted={isTasksCompleted} isQuestFinished={isQuestFinished} />
         </Box>
