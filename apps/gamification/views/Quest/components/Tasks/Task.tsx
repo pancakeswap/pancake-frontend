@@ -73,7 +73,8 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const tokenSecret = (session as any)?.user?.twitter?.tokenSecret
 
   const cookieId = getSingleTaskTwitterIdCookie(twitterId, questId)
-  const getCookie = JSON.parse(Cookie.get(cookieId)) as { taskType: TaskType }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getCookie: { taskType?: TaskType } = Cookie.get(cookieId) ? JSON?.parse?.(Cookie.get(cookieId)) : {}
 
   const handleVerifyTwitterAccount = useCallback(async () => {
     if (isPending || !hasIdRegister || !account || !twitterId) {
