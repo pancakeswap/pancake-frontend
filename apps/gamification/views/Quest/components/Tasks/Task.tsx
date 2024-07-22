@@ -16,6 +16,7 @@ import {
   useToast,
 } from '@pancakeswap/uikit'
 import { CHAIN_QUERY_NAME } from 'config/chains'
+import Cookie from 'js-cookie'
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
@@ -32,6 +33,7 @@ import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { useConnectTwitter } from 'views/Profile/hooks/settingsModal/useConnectTwitter'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+import { getSingleTaskTwitterIdCookie } from 'views/Profile/utils/getTwitterIdCookie'
 import { TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
@@ -70,6 +72,9 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const token = (session as any)?.user?.twitter?.token
   const tokenSecret = (session as any)?.user?.twitter?.tokenSecret
 
+  const cookieId = getSingleTaskTwitterIdCookie(twitterId, questId)
+  const getCookie = JSON.parse(Cookie.get(cookieId)) as { taskType: TaskType }
+
   const handleVerifyTwitterAccount = useCallback(async () => {
     if (isPending || !hasIdRegister || !account || !twitterId) {
       return
@@ -100,20 +105,41 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     }
   }, [account, hasIdRegister, isPending, providerId, questId, refresh, task, toastError, token, tokenSecret, twitterId])
 
+  const handleVerifyTwitterAccountLike = useCallback(async () => {}, [])
+
   useEffect(() => {
     const fetchApi = async () => {
-      await handleVerifyTwitterAccount()
+      Cookie.delete(cookieId)
+
+      switch (getCookie?.taskType as TaskType) {
+        case TaskType.X_FOLLOW_ACCOUNT:
+          await handleVerifyTwitterAccount()
+          break
+        case TaskType.X_LIKE_POST:
+          await handleVerifyTwitterAccountLike()
+          break
+        default:
+          break
+      }
     }
 
     if (
       session &&
       isSocialHubFetched &&
-      taskType === TaskType.X_FOLLOW_ACCOUNT &&
-      new Date(session?.expires).getTime() > new Date().getTime()
+      new Date(session?.expires).getTime() > new Date().getTime() &&
+      (getCookie?.taskType === TaskType.X_FOLLOW_ACCOUNT || getCookie?.taskType === TaskType.X_LIKE_POST)
     ) {
       fetchApi()
     }
-  }, [handleVerifyTwitterAccount, isSocialHubFetched, session, taskType])
+  }, [
+    cookieId,
+    getCookie,
+    isSocialHubFetched,
+    session,
+    taskType,
+    handleVerifyTwitterAccount,
+    handleVerifyTwitterAccountLike,
+  ])
 
   const [onPresentConnectSocialAccountModal] = useModal(<ConnectSocialAccountModal socialName={socialName} />)
 
@@ -208,6 +234,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     if (providerId && token && tokenSecret) {
       handleVerifyTwitterAccount()
     } else {
+      Cookie.set(cookieId, JSON.stringify({ taskType }))
       connectTwitter()
     }
   }
@@ -232,6 +259,11 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     }
   }
 
+  const shouldShowVerifyButton = useMemo(
+    () => taskType === TaskType.X_FOLLOW_ACCOUNT || taskType === TaskType.X_LIKE_POST,
+    [taskType],
+  )
+
   return (
     <Card>
       <Flex flexDirection="column">
@@ -254,7 +286,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
               <CheckmarkCircleFillIcon color="success" />
             ) : (
               <>
-                {taskType === TaskType.X_FOLLOW_ACCOUNT && isPending ? (
+                {shouldShowVerifyButton && isPending ? (
                   <Loading margin="auto" width={16} height={16} color="secondary" />
                 ) : (
                   <>
@@ -287,7 +319,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
                   >
                     {userActionButtonText(taskType)}
                   </Button>
-                  {taskType === TaskType.X_FOLLOW_ACCOUNT && (
+                  {shouldShowVerifyButton && (
                     <VerifyButton
                       scale="sm"
                       width="100%"

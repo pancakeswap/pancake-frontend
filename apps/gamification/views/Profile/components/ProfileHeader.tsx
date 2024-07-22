@@ -21,14 +21,12 @@ import { Achievement } from 'config/constants/types'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { Profile } from 'hooks/useProfile/type'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
-import Cookie from 'js-cookie'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { SocialHubType, useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { connectSocial } from 'views/Profile/utils/connectSocial'
-import { getTwitterIdCookie } from 'views/Profile/utils/getTwitterIdCookie'
 import { useAccount } from 'wagmi'
 import AvatarImage from './AvatarImage'
 import { BannerHeader } from './BannerHeader'
@@ -114,10 +112,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       }
 
       if (!userInfo?.socialHubToSocialUserIdMap?.Twitter && (session as any).user?.twitter) {
-        const { twitterId, token, tokenSecret } = (session as any).user?.twitter
-        const cookieId = getTwitterIdCookie(twitterId)
-        Cookie.set(cookieId, JSON.stringify({ token, tokenSecret }))
-
+        const { twitterId } = (session as any).user?.twitter
         fetch(twitterId, SocialHubType.Twitter)
       }
     }
