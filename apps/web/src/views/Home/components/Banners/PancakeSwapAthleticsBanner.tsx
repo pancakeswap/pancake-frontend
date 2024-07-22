@@ -109,8 +109,8 @@ export const AthleticsBanner = () => {
         desc={<BannerDesc style={{ whiteSpace: 'break-spaces' }}>{t(subTitleText)}</BannerDesc>}
         actions={
           <BannerActionContainer>
-            <LinkExternalAction href={learnMoreLink} externalIcon="openNew" color="#280D5F">
-              {t('Learn More')}
+            <LinkExternalAction href={learnMoreLink} externalIcon="arrowForward" color="#280D5F">
+              {t('Join Now')}
             </LinkExternalAction>
           </BannerActionContainer>
         }
