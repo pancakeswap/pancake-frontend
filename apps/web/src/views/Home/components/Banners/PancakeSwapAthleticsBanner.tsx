@@ -1,5 +1,5 @@
-import { TranslateFunction, useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useTranslation, type TranslateFunction } from '@pancakeswap/localization'
+import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import {
   BackgroundGraphic,
   BannerActionContainer,
@@ -12,16 +12,10 @@ import {
   PancakeSwapBadge,
   type GraphicDetail,
 } from '@pancakeswap/widgets-internal'
-// import { ASSETS_CDN } from 'config'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { useViewport } from 'hooks/useViewport'
 import { useMemo } from 'react'
 import styled from 'styled-components'
-
-type IActions = {
-  href: string
-  text: string
-  icon?: 'arrowForward' | 'openNew'
-} & Partial<CSSStyleDeclaration>
 
 enum CustomBreakPoints {
   sm = 'sm',
@@ -43,10 +37,9 @@ const bg = `
     #D8464F 100%
 )`
 
-const ASSETS_CDN = 'https://new-assets-for-athletic-bann.assets-agx.pages.dev'
-const ATHLETICS_PATH = `${ASSETS_CDN}/web/banners/athletics`
-const learnMoreLink = ''
-const joinNowLink = ''
+const ATHLETICS_PATH = `${ASSET_CDN}/web/banners/athletics`
+const learnMoreLink =
+  'https://blog.pancakeswap.finance/articles/join-the-pancakeswap-athletic-games-win-usdt-merch-and-special-nfts?utm_source=Homepage&utm_medium=Banner&utm_campaign=AthleticGames&utm_id=AthleticGames'
 
 const bgSmVariant: GraphicDetail = {
   src: `${ATHLETICS_PATH}/athletics-bunnies-md.png`,
@@ -98,14 +91,6 @@ export const AthleticsBanner = () => {
     return SubTitles.lg(t)
   }, [width, t])
 
-  const Action = ({ href, icon, text, ...props }: IActions) => (
-    <Box display={props.display}>
-      <LinkExternalAction href={href} externalIcon={icon} color={props.color}>
-        {t(text)}
-      </LinkExternalAction>
-    </Box>
-  )
-
   return (
     <BannerContainer background={bg}>
       <BannerMain
@@ -116,33 +101,21 @@ export const AthleticsBanner = () => {
             <StyledImage src={`${ATHLETICS_PATH}/athletics-top-logo.png`} alt="top-logo-alt" />
           </Flex>
         }
-        actions={
-          <BannerActionContainer>
-            <Action
-              href={learnMoreLink}
-              icon="arrowForward"
-              display="flex"
-              alignItems="center"
-              text="Join Now"
-              color="#280D5F"
-            />
-            <Action
-              href={joinNowLink}
-              display={isMobile ? 'none' : 'flex'}
-              icon="openNew"
-              alignItems="center"
-              text="Learn More"
-              color="#280D5F"
-            />
-          </BannerActionContainer>
-        }
-        desc={<BannerDesc style={{ whiteSpace: 'break-spaces' }}>{t(subTitleText)}</BannerDesc>}
         title={
           <BannerTitle variant={titleVariant} marginTop="-2px">
             {t(titleText)}
           </BannerTitle>
         }
+        desc={<BannerDesc style={{ whiteSpace: 'break-spaces' }}>{t(subTitleText)}</BannerDesc>}
+        actions={
+          <BannerActionContainer>
+            <LinkExternalAction href={learnMoreLink} externalIcon="openNew" color="#280D5F">
+              {t('Learn More')}
+            </LinkExternalAction>
+          </BannerActionContainer>
+        }
       />
+
       <BannerGraphics>
         <BackgroundGraphic
           src={`${ATHLETICS_PATH}/athletics-bunnies-lg.png`}
