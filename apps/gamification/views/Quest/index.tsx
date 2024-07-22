@@ -94,20 +94,17 @@ export const Quest = () => {
     return quest.tasks.reduce((acc, { taskType }) => acc + (verificationStatusBySocialMedia?.[taskType] ? 1 : 0), 0)
   }, [quest.tasks, taskStatus])
 
-  const isTasksCompleted = useMemo(() => {
+  const isEnoughCompleted = useMemo(() => {
     const allRequestTaskTotal = quest.tasks.filter((i) => !i.isOptional)
+    const { verificationStatusBySocialMedia } = taskStatus
+    const totalRequestComplete = allRequestTaskTotal.reduce(
+      (acc, { taskType }) => acc + (verificationStatusBySocialMedia?.[taskType] ? 1 : 0),
+      0,
+    )
+    return allRequestTaskTotal.length === totalRequestComplete
+  }, [quest.tasks, taskStatus])
 
-    if (hasOptionsInTasks) {
-      const { verificationStatusBySocialMedia } = taskStatus
-      const totalRequestComplete = allRequestTaskTotal.reduce(
-        (acc, { taskType }) => acc + (verificationStatusBySocialMedia?.[taskType] ? 1 : 0),
-        0,
-      )
-      return allRequestTaskTotal.length === totalRequestComplete
-    }
-
-    return totalTaskCompleted === tasks?.length
-  }, [hasOptionsInTasks, quest, taskStatus, tasks, totalTaskCompleted])
+  const isTasksCompleted = useMemo(() => totalTaskCompleted === tasks?.length, [tasks, totalTaskCompleted])
 
   if (!isFetched || isError || !questId) {
     return null
@@ -165,6 +162,7 @@ export const Quest = () => {
           hasOptionsInTasks={Boolean(hasOptionsInTasks)}
           totalTaskCompleted={totalTaskCompleted}
           isSocialHubFetched={isSocialHubFetched}
+          isEnoughCompleted={isEnoughCompleted}
           refreshSocialHub={refreshSocialHub}
           refreshVerifyTaskStatus={refreshVerifyTaskStatus}
         />

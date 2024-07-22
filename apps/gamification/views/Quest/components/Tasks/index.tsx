@@ -17,7 +17,8 @@ const OverlapContainer = styled(Box)`
   height: 100%;
   bottom: 0;
   left 0;
-  background: ${({ theme }) => `${theme.isDark ? 'rgba(32, 28, 41, 0.7)' : 'rgba(255, 255, 255, 0.7)'}`};
+  border-radius: 24px;
+  background: ${({ theme }) => `${theme.isDark ? 'rgba(32, 28, 41, 0.9)' : 'rgba(255, 255, 255, 0.9)'}`};
 
   > div {
     position: absolute;
@@ -37,6 +38,7 @@ interface TasksProps {
   isSocialHubFetched: boolean
   totalTaskCompleted: number
   hasOptionsInTasks: boolean
+  isEnoughCompleted: boolean
   refreshSocialHub: () => void
   refreshVerifyTaskStatus: () => void
 }
@@ -50,6 +52,7 @@ export const Tasks: React.FC<TasksProps> = ({
   isTasksCompleted,
   isSocialHubFetched,
   hasOptionsInTasks,
+  isEnoughCompleted,
   refreshSocialHub,
   refreshVerifyTaskStatus,
 }) => {
@@ -100,6 +103,10 @@ export const Tasks: React.FC<TasksProps> = ({
                   <Tag variant="success" outline>
                     {t('Completed')}
                   </Tag>
+                ) : isEnoughCompleted ? (
+                  <Tag variant="success" outline>
+                    {t('Enough completed')}
+                  </Tag>
                 ) : (
                   <Tag variant="secondary" outline>
                     {t('%completed%/%totalTask% completed', {
@@ -133,17 +140,25 @@ export const Tasks: React.FC<TasksProps> = ({
             ))}
           </FlexGap>
           {hasOptionsInTasks && (
-            <Box>
-              <Text bold as="span" color="textSubtle">
-                {t('Tasks marked with the')}
-              </Text>
-              <OptionIcon m="0 4px -5px 4px" color="textSubtle" width={28} />
-              <Text bold as="span" color="textSubtle">
-                {t('badge are optional.')}
-              </Text>
-              <Text bold as="span" color="textSubtle">
-                {t('But your chances of winning will be increased if you complete all the tasks!')}
-              </Text>
+            <Box ml="8px">
+              <Box>
+                <Text fontSize="12px" bold as="span" color="textSubtle">
+                  {t('Tasks marked with the')}
+                </Text>
+                <OptionIcon m="0 4px -5px 4px" color="textSubtle" width={28} />
+                <Text fontSize="12px" bold as="span" color="textSubtle">
+                  {t('badge are optional.')}
+                </Text>
+              </Box>
+              {isTasksCompleted ? (
+                <Text fontSize="12px" bold color="success">
+                  {t('Your chances of winning have increased!')}
+                </Text>
+              ) : (
+                <Text fontSize="12px" bold color="textSubtle">
+                  {t('But your chances of winning will be increased if you complete all the tasks!')}
+                </Text>
+              )}
             </Box>
           )}
           {(!account || (isSocialHubFetched && !hasIdRegister)) && !isQuestFinished && (
