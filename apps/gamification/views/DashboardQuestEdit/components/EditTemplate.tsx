@@ -14,7 +14,7 @@ import {
 } from '@pancakeswap/uikit'
 import { DatePicker, DatePickerPortal, TimePicker } from 'components/DatePicker'
 import dynamic from 'next/dynamic'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { StateType } from 'views/DashboardQuestEdit/context/types'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
@@ -59,7 +59,12 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
   children,
 }) => {
   const { t } = useTranslation()
-  const { title, description, startDate, startTime, endDate, endTime, completionStatus } = state
+  const { title, description, startDate, startTime, endDate, endTime, completionStatus, reward } = state
+
+  const disableInput = useMemo(
+    () => Boolean(completionStatus === CompletionStatus.SCHEDULED && reward),
+    [reward, completionStatus],
+  )
 
   return (
     <FlexGap
@@ -93,6 +98,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
             <DatePicker
               name="startDate"
               selected={startDate}
+              disabled={disableInput}
               placeholderText="YYYY/MM/DD"
               onChange={(value: Date) => updateValue('startDate', value)}
             />
@@ -102,6 +108,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
             <TimePicker
               name="startTime"
               selected={startTime}
+              disabled={disableInput}
               placeholderText="00:00"
               onChange={(value: Date) => updateValue('startTime', value)}
             />
@@ -111,6 +118,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
             <DatePicker
               name="endDate"
               selected={endDate}
+              disabled={disableInput}
               placeholderText="YYYY/MM/DD"
               onChange={(value: Date) => updateValue('endDate', value)}
             />
@@ -120,6 +128,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
             <TimePicker
               name="endTime"
               selected={endTime}
+              disabled={disableInput}
               placeholderText="00:00"
               onChange={(value: Date) => updateValue('endTime', value)}
             />

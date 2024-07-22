@@ -145,7 +145,9 @@ export const Quest = () => {
             )}`}</Text>
           </Flex>
         )}
-        {!isDesktop && <Reward quest={quest} isTasksCompleted={isTasksCompleted} isQuestFinished={isQuestFinished} />}
+        {!isDesktop && quest.reward && (
+          <Reward quest={quest} isTasksCompleted={isTasksCompleted} isQuestFinished={isQuestFinished} />
+        )}
         <Tasks
           quest={quest}
           taskStatus={taskStatus}
@@ -162,7 +164,9 @@ export const Quest = () => {
         {/* <RelatedQuest /> */}
         {/* <ExploreMore /> */}
       </Box>
-      {isDesktop && <Reward quest={quest} isTasksCompleted={isTasksCompleted} isQuestFinished={isQuestFinished} />}
+      {isDesktop && quest.reward && (
+        <Reward quest={quest} isTasksCompleted={isTasksCompleted} isQuestFinished={isQuestFinished} />
+      )}
     </QuestContainer>
   )
 }

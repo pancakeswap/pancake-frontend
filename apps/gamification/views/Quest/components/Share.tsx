@@ -114,29 +114,31 @@ export const Share: React.FC<ShareProps> = ({ title, contractChainId, contractAd
         )}
       </Container>
 
-      <Container
-        style={{ alignSelf: 'center' }}
-        onMouseEnter={() => setIsOpenMoreIcon(true)}
-        onMouseLeave={() => setIsOpenMoreIcon(false)}
-      >
-        <Flex onClick={(e: MouseEvent) => toggleMoreIcon(e)}>
-          <MoreIcon ml="6px" color="primary" />
-        </Flex>
-        {isOpenMoreIcon && (
-          <StyledDropdown setIsOpen={setIsOpenMoreIcon} dropdownRef={openMoreIconRef}>
-            <Link href={getBlockExploreLink(contractAddress, 'address', contractChainId)} external>
-              <Flex>
-                <Flex alignSelf="flex-start">
-                  <BarChartIcon color="primary" width="20px" height="20px" />
+      {contractAddress && contractChainId && (
+        <Container
+          style={{ alignSelf: 'center' }}
+          onMouseEnter={() => setIsOpenMoreIcon(true)}
+          onMouseLeave={() => setIsOpenMoreIcon(false)}
+        >
+          <Flex onClick={(e: MouseEvent) => toggleMoreIcon(e)}>
+            <MoreIcon ml="6px" color="primary" />
+          </Flex>
+          {isOpenMoreIcon && (
+            <StyledDropdown setIsOpen={setIsOpenMoreIcon} dropdownRef={openMoreIconRef}>
+              <Link href={getBlockExploreLink(contractAddress, 'address', contractChainId)} external>
+                <Flex>
+                  <Flex alignSelf="flex-start">
+                    <BarChartIcon color="primary" width="20px" height="20px" />
+                  </Flex>
+                  <Text ml="8px" lineHeight="20px">
+                    {t('See the executing smart contract')}
+                  </Text>
                 </Flex>
-                <Text ml="8px" lineHeight="20px">
-                  {t('See the executing smart contract')}
-                </Text>
-              </Flex>
-            </Link>
-          </StyledDropdown>
-        )}
-      </Container>
+              </Link>
+            </StyledDropdown>
+          )}
+        </Container>
+      )}
     </Flex>
   )
 }

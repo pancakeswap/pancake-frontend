@@ -25,9 +25,8 @@ import { combineDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAn
 import { EnableButton } from './EnableButton'
 import { WarningInfo } from './WarningInfo'
 
-const YellowButton = styled(Button)`
+const StyledButton = styled(Button)`
   color: white;
-  background-color: ${({ theme }) => theme.colors.warning};
 
   &:disabled {
     svg {
@@ -98,7 +97,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   const nativeToken = useNativeCurrency(inputCurrency.chainId)
   const currencyBalance = useCurrencyBalance(inputCurrency)
   const config = {
-    [CurrencyModalView.currencyInput]: { title: t('Add a reward'), onBack: onDismiss },
+    [CurrencyModalView.currencyInput]: { title: t('Add a reward and schedule'), onBack: onDismiss },
     [CurrencyModalView.search]: {
       title: 'Select a Token',
       onBack: () => setModalView(CurrencyModalView.currencyInput),
@@ -298,7 +297,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
             ) : needEnable ? (
               <EnableButton currency={inputCurrency} setLastUpdated={setLastUpdated} />
             ) : (
-              <YellowButton
+              <StyledButton
                 width="100%"
                 mt="24px"
                 onMouseDown={startLongPress}
@@ -310,7 +309,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
                 disabled={isAbleToSubmit || isPending}
               >
                 {!isPending ? t('Hold to deposit') : ''}
-              </YellowButton>
+              </StyledButton>
             )}
           </>
         )}
