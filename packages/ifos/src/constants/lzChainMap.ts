@@ -19,7 +19,6 @@ export const LZ_CHAIN_MAP_V2 = {
   [ChainId.POLYGON_ZKEVM]: 30158,
   [ChainId.ZKSYNC]: 30165,
   [ChainId.ARBITRUM_ONE]: 30110,
-
   // Testnets
   [ChainId.BSC_TESTNET]: 10102,
   [ChainId.GOERLI]: 10121,
