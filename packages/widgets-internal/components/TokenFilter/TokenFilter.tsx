@@ -1,6 +1,5 @@
-import { zeroAddress } from "viem";
 import { useTheme } from "@pancakeswap/hooks";
-import { Currency, ERC20Token, Token } from "@pancakeswap/sdk";
+import { Currency, ERC20Token } from "@pancakeswap/sdk";
 import { Column, IMultiSelectProps, ISelectItem, MultiSelect, IMultiSelectChangeEvent } from "@pancakeswap/uikit";
 import { useCallback, useMemo } from "react";
 import styled from "styled-components";
