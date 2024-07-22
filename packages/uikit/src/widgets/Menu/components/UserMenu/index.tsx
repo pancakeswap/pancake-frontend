@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePopper } from "react-popper";
 import { styled } from "styled-components";
 import { Box, Flex } from "../../../../components/Box";
@@ -86,7 +86,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
     modifiers: [{ name: "offset", options: { offset: [0, 0] } }],
   });
 
-  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
+  const accountEllipsis = useMemo(() => {
+    return account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
+  }, [account]);
 
   // recalculate the popover position
   useEffect(() => {
@@ -115,13 +117,17 @@ const UserMenu: React.FC<UserMenuProps> = ({
     };
   }, [targetRef, tooltipRef, setIsOpen]);
 
+  const handleTouchStart = useCallback(() => {
+    setIsOpen((s) => !s);
+  }, [setIsOpen]);
+
+  const handleClick = useCallback(() => {
+    setIsOpen(false);
+  }, [setIsOpen]);
+
   return (
     <Flex alignItems="center" height="100%" ref={setTargetRef} {...props}>
-      <StyledUserMenu
-        onTouchStart={() => {
-          setIsOpen((s) => !s);
-        }}
-      >
+      <StyledUserMenu onTouchStart={handleTouchStart}>
         <MenuIcon className={avatarClassName} avatarSrc={avatarSrc} variant={variant} />
         <LabelText title={typeof text === "string" ? text || account : account}>
           {text || (ellipsis ? accountEllipsis : account)}
@@ -130,7 +136,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
       </StyledUserMenu>
       {!disabled && (
         <Menu style={styles.popper} ref={setTooltipRef} {...attributes.popper} $isOpen={isOpen}>
-          <Box onClick={() => setIsOpen(false)}>{children?.({ isOpen })}</Box>
+          <Box onClick={handleClick}>{children?.({ isOpen })}</Box>
         </Menu>
       )}
     </Flex>

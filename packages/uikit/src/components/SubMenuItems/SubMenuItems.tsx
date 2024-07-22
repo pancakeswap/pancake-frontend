@@ -60,30 +60,27 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
   useIsomorphicLayoutEffect(() => {
     layerController();
   }, [layerController, items]);
+
+  const handleLeftClick = useCallback(() => {
+    if (!scrollLayerRef.current) return;
+    scrollLayerRef.current.scrollLeft -= SUBMENU_CHEVRON_CLICK_MOVE_PX;
+  }, []);
+
+  const handleRightClick = useCallback(() => {
+    if (!scrollLayerRef.current || !hasOverflowing) return;
+    scrollLayerRef.current.scrollLeft += SUBMENU_CHEVRON_CLICK_MOVE_PX;
+  }, [hasOverflowing]);
+
   return (
     <AtomBox display={{ xs: "none", sm: "block" }} asChild>
       <SubMenuItemWrapper $isMobileOnly={isMobileOnly} {...props}>
         <AtomBox display={{ xs: "block", md: "none" }} asChild>
-          <LeftMaskLayer
-            ref={chevronLeftRef}
-            className={leftClassName}
-            onClick={() => {
-              if (!scrollLayerRef.current) return;
-              scrollLayerRef.current.scrollLeft -= SUBMENU_CHEVRON_CLICK_MOVE_PX;
-            }}
-          >
+          <LeftMaskLayer ref={chevronLeftRef} className={leftClassName} onClick={handleLeftClick}>
             <ChevronLeftIcon />
           </LeftMaskLayer>
         </AtomBox>
         <AtomBox display={{ xs: "block", md: "none" }} asChild>
-          <RightMaskLayer
-            ref={chevronRightRef}
-            className={rightClassName}
-            onClick={() => {
-              if (!scrollLayerRef.current || !hasOverflowing) return;
-              scrollLayerRef.current.scrollLeft += SUBMENU_CHEVRON_CLICK_MOVE_PX;
-            }}
-          >
+          <RightMaskLayer ref={chevronRightRef} className={rightClassName} onClick={handleRightClick}>
             {hasOverflowing && (
               <NotificationDot show={hasHighlightedItem} color={highlightedItemColor}>
                 <ChevronRightIcon width="24px" height="24px" />

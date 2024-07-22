@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { DefaultTokenIcon } from "../Svg";
 
 const BAD_SRCS: { [imageSrc: string]: true } = {};
@@ -15,19 +15,14 @@ const TokenLogo: React.FC<React.PropsWithChildren<TokenLogoProps>> = ({ srcs, al
 
   const src: string | undefined = srcs.find((s) => !BAD_SRCS[s]);
 
+  const handleError = useCallback(() => {
+    // eslint-disable-next-line no-param-reassign
+    if (src) BAD_SRCS[src] = true;
+    refresh((i) => i + 1);
+  }, [src]);
+
   if (src) {
-    return (
-      <img
-        {...rest}
-        alt={alt}
-        src={src}
-        onError={() => {
-          // eslint-disable-next-line no-param-reassign
-          if (src) BAD_SRCS[src] = true;
-          refresh((i) => i + 1);
-        }}
-      />
-    );
+    return <img {...rest} alt={alt} src={src} onError={handleError} />;
   }
 
   return <DefaultTokenIcon color="disabled" {...rest} />;

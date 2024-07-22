@@ -82,15 +82,13 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
     }, [setIsOpen])
   );
 
+  const handlePointerDown = useCallback(() => {
+    setIsOpen((s) => !s);
+  }, []);
+
   return (
     <Box ref={setTargetRef} {...props}>
-      <Box
-        onPointerDown={() => {
-          setIsOpen((s) => !s);
-        }}
-      >
-        {children}
-      </Box>
+      <Box onPointerDown={handlePointerDown}>{children}</Box>
       {hasItems && (
         <StyledDropdownMenu
           style={styles.popper}
