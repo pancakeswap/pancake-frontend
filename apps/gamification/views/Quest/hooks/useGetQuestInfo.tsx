@@ -23,6 +23,7 @@ const initialData: SingleQuestData = {
   rewardSCAddress: '',
   ownerAddress: '',
   numberOfParticipants: 0,
+  needAddReward: true,
 }
 
 export const useGetQuestInfo = (questId: string) => {
