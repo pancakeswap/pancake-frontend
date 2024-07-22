@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useBCakeFarmWrapperBoosterVeCakeContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 
 const SHOULD_UPDATE_THRESHOLD = 1.1
 
 export const useWrapperBooster = (bCakeBoosterAddress: Address, boostMultiplier: number, wrapperAddress?: Address) => {
   const bCakeFarmWrapperBoosterVeCakeContract = useBCakeFarmWrapperBoosterVeCakeContract()
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const { data, refetch } = useQuery({
     queryKey: ['useWrapperBooster', bCakeBoosterAddress, account, wrapperAddress],
     queryFn: () =>

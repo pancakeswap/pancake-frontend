@@ -70,7 +70,7 @@ export function useFarmV2PublicAPI() {
 }
 
 export const usePollFarmsAvgInfo = (activeFarms: (V3FarmWithoutStakedValue | V2FarmWithoutStakedValue)[]) => {
-  const { chainId } = useAccountActiveChain()
+  const { chainId } = useActiveChainId()
 
   const activeFarmAddresses = useMemo(() => {
     return activeFarms.map((farm) => farm.lpAddress).sort()

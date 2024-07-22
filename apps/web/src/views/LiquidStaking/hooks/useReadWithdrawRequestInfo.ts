@@ -3,10 +3,10 @@ import BigNumber from 'bignumber.js'
 import { unwrappedEth } from 'config/abi/unwrappedEth'
 import { UNWRAPPED_ETH_ADDRESS } from 'config/constants/liquidStaking'
 import dayjs from 'dayjs'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useReadContract } from '@pancakeswap/wagmi'
 import { useMemo } from 'react'
 import { Address } from 'viem'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 interface UserWithdrawRequest {
   allocated: boolean
@@ -31,7 +31,7 @@ export function useReadWithdrawRequestInfo():
       claimableIndexes: ClaimableIndex[]
     }
   | undefined {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
 
   const { data } = useReadContract({
     chainId,

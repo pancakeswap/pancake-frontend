@@ -8,16 +8,16 @@ import shouldShowSwapWarning from 'utils/shouldShowSwapWarning'
 
 import ImportTokenWarningModal from 'components/ImportTokenWarningModal'
 import { useAllTokens, useCurrency } from 'hooks/Tokens'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { safeGetAddress } from 'utils'
 
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import SwapWarningModal from '../components/SwapWarningModal'
 
 export default function useWarningImport() {
   const router = useRouter()
-  const { chainId, isWrongNetwork } = useActiveWeb3React()
+  const { chainId, isWrongNetwork } = useActiveChainId()
   const {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },

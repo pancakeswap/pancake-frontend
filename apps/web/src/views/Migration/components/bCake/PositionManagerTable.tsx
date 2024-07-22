@@ -2,9 +2,9 @@ import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { VAULTS_CONFIG_BY_CHAIN, VaultConfig } from '@pancakeswap/position-managers'
 import { Flex, Spinner } from '@pancakeswap/uikit'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { useMemo } from 'react'
 import { styled } from 'styled-components'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import EmptyText from '../MigrationTable/EmptyText'
 import TableStyle from '../MigrationTable/StyledTable'
 import TableHeader from '../MigrationTable/TableHeader'
@@ -39,7 +39,7 @@ export const PosManagerMigrationFarmTable: React.FC<React.PropsWithChildren<ITab
   step,
 }) => {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   const needToMigrateList: VaultConfig[] = useMemo(() => {
     if (!chainId) return []

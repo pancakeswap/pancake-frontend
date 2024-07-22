@@ -1,10 +1,10 @@
 import { useAccountEffect } from 'wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useLocalDispatch from '../contexts/LocalRedux/useLocalDispatch'
 import { resetUserState } from '../state/global/actions'
-import useActiveWeb3React from './useActiveWeb3React'
 
 export const useAccountLocalEventListener = () => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const dispatch = useLocalDispatch()
 
   useAccountEffect({

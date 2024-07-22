@@ -1,10 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useVCakeContract } from 'hooks/useContract'
 import { useCallback } from 'react'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 interface JoinButtonProps {
   refresh?: () => void
@@ -14,7 +14,7 @@ interface JoinButtonProps {
 const JoinButton: React.FunctionComponent<React.PropsWithChildren<JoinButtonProps>> = ({ refresh, onDismiss }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { chainId } = useAccountActiveChain()
+  const { chainId } = useActiveChainId()
   const vCakeContract = useVCakeContract({ chainId })
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 

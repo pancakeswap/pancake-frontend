@@ -4,7 +4,6 @@ import { Button, CardBody, Flex, Message, MessageText, RowBetween, Text } from '
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useCurrency } from 'hooks/Tokens'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import useTokenBalance from 'hooks/useTokenBalance'
@@ -17,6 +16,7 @@ import { Address } from 'viem'
 import { NativeToken } from 'views/LiquidStaking/constants/types'
 import { useCallClaimContract } from 'views/LiquidStaking/hooks/useCallStakingContract'
 import { useReadWithdrawRequestInfo } from 'views/LiquidStaking/hooks/useReadWithdrawRequestInfo'
+import { useAccount } from 'wagmi'
 
 function passCheckNativeToken(currency: Token | NativeToken, native: NativeCurrency) {
   if (currency.symbol.toUpperCase() === native.symbol.toUpperCase()) return currency.symbol
@@ -45,7 +45,7 @@ function ClaimButton({ tokenAmount, claimIndex }: { tokenAmount?: CurrencyAmount
 
 export const WithdrawRequest = ({ selectedList }: { selectedList: OptionProps }) => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { address: account } = useAccount()
   const { balance: stakedTokenBalance } = useTokenBalance(selectedList.token1.address as Address)
   const userCakeDisplayBalance = getFullDisplayBalance(stakedTokenBalance, selectedList.token1.decimals, 6)
   const native = useNativeCurrency()

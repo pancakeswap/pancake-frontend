@@ -1,14 +1,19 @@
 import { getLegacyFarmConfig } from '@pancakeswap/farms'
 import { legacyFarmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { useQuery } from '@tanstack/react-query'
+import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
 import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
+import { getFarmConfig } from '@pancakeswap/farms/constants'
+import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { useQuery } from '@tanstack/react-query'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 
 const useIsRenderUserBanner = () => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useAccountActiveChain()
 
   const { earningsSum: farmEarningsSum } = useFarmsWithBalance()
   const cakePriceBusd = useCakePrice()
