@@ -44,7 +44,7 @@ export default async function handler(req, res) {
             body: JSON.stringify({
               taskName: TaskType.X_FOLLOW_ACCOUNT,
               isCompleted: true,
-              accessToken: token,
+              taskId: questId,
             }),
           },
         )

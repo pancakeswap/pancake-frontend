@@ -9,6 +9,7 @@ export const fetchMarkTaskStatus = async (account: string, questId: string, task
     },
     body: JSON.stringify({
       taskName,
+      taskId: questId,
       isCompleted: true,
     }),
   })
