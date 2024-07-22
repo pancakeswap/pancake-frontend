@@ -11,13 +11,12 @@ import { ADDRESS_ZERO } from 'config/constants/index'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useQuestRewardContract } from 'hooks/useContract'
-import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useFindTokens } from 'hooks/useFindTokens'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useCurrencyBalance } from 'hooks/useTokenBalance'
-import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { styled } from 'styled-components'
-import { toHex } from 'viem'
+import { Address, toHex } from 'viem'
 import { LongPressSvg } from 'views/DashboardQuestEdit/components/SubmitAction/LongPressSvg'
 import { StateType } from 'views/DashboardQuestEdit/context/types'
 import { useQuestRewardApprovalStatus } from 'views/DashboardQuestEdit/hooks/useQuestRewardApprovalStatus'
@@ -62,7 +61,6 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.currencyInput)
   const [amountOfWinnersInModal, setAmountOfWinnersInModal] = useState(0)
   const { account, chainId } = useActiveWeb3React()
-  const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(state?.reward?.currency?.network as ChainId)
   const [progress, setProgress] = useState(0)
   const timerRef = useRef<number | null>(null)
   const animationFrameRef = useRef<number | null>(null)
@@ -81,20 +79,15 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     }
   }, [])
 
-  const defaultInputCurrency = useMemo((): Currency => {
-    const findToken = tokensByChainWithNativeToken.find((i) =>
-      i.isNative
-        ? i.wrapped.address.toLowerCase() === state?.reward?.currency?.address?.toLowerCase()
-        : i.address.toLowerCase() === state?.reward?.currency?.address?.toLowerCase(),
-    )
-    return findToken || (CAKE as any)?.[chainId]
-  }, [state, chainId, tokensByChainWithNativeToken])
+  const defaultInputCurrency = useFindTokens(
+    state?.reward?.currency?.network as ChainId,
+    state?.reward?.currency?.address as Address,
+  )
 
   const displayAmountOfWinnersInModal = useMemo(() => amountOfWinnersInModal || '', [amountOfWinnersInModal])
 
-  const [inputCurrency, setInputCurrency] = useState<Currency>(defaultInputCurrency)
+  const [inputCurrency, setInputCurrency] = useState<Currency>(defaultInputCurrency ?? CAKE?.[chainId])
   const [stakeAmount, setStakeAmount] = useState(state?.reward?.totalRewardAmount?.toString() ?? '')
-  const nativeToken = useNativeCurrency(inputCurrency.chainId)
   const currencyBalance = useCurrencyBalance(inputCurrency)
   const config = {
     [CurrencyModalView.currencyInput]: { title: t('Add a reward and schedule'), onBack: onDismiss },
@@ -114,7 +107,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   }, [amountOfWinnersInModal, stakeAmount])
 
   const isAbleToSubmit = useMemo(() => {
-    const userBalance = new BigNumber(getFullDisplayBalance(currencyBalance, inputCurrency.decimals))
+    const userBalance = new BigNumber(getFullDisplayBalance(currencyBalance, inputCurrency?.decimals))
     const isInputLowerThanBalance = new BigNumber(stakeAmount).lte(userBalance)
 
     return Boolean(
@@ -127,29 +120,29 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   }, [currencyBalance, displayAmountOfWinnersInModal, inputCurrency, stakeAmount, isRewardDistribution])
 
   // Approve
-  const tokenAddress = inputCurrency.isNative ? inputCurrency.wrapped.address : inputCurrency.address
-  const { allowance, setLastUpdated } = useQuestRewardApprovalStatus(tokenAddress, inputCurrency.chainId)
+  const tokenAddress = inputCurrency?.isNative ? ADDRESS_ZERO : inputCurrency?.address
+  const { allowance, setLastUpdated } = useQuestRewardApprovalStatus(tokenAddress, inputCurrency?.chainId)
 
   const needEnable = useMemo(() => {
-    if (!inputCurrency.isNative && nativeToken.wrapped.address.toLowerCase() !== tokenAddress.toLowerCase()) {
-      const amount = getDecimalAmount(new BigNumber(stakeAmount), inputCurrency.decimals)
+    if (!inputCurrency?.isNative && ADDRESS_ZERO.toLowerCase() !== tokenAddress?.toLowerCase()) {
+      const amount = getDecimalAmount(new BigNumber(stakeAmount), inputCurrency?.decimals)
       return amount.gt(allowance)
     }
     return false
-  }, [allowance, inputCurrency, tokenAddress, nativeToken, stakeAmount])
+  }, [allowance, inputCurrency, tokenAddress, stakeAmount])
 
   const handleMaxInput = useCallback(() => {
-    const newBalanceAmount = getFullDisplayBalance(currencyBalance, inputCurrency.decimals).toString()
+    const newBalanceAmount = getFullDisplayBalance(currencyBalance, inputCurrency?.decimals).toString()
     setStakeAmount(newBalanceAmount)
   }, [currencyBalance, inputCurrency])
 
   const handlePercentButton = useCallback(
     (percent: number) => {
       const amount = currencyBalance.multipliedBy(new BigNumber(percent).div(100))
-      const newBalanceAmount = getFullDisplayBalance(amount, inputCurrency.decimals).toString()
+      const newBalanceAmount = getFullDisplayBalance(amount, inputCurrency?.decimals).toString()
       setStakeAmount(newBalanceAmount)
     },
-    [currencyBalance, inputCurrency.decimals],
+    [currencyBalance, inputCurrency],
   )
 
   const handleInputSelect = useCallback((newCurrency: Currency) => {
@@ -196,21 +189,23 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     setProgress(0)
   }
 
-  const rewardContract = useQuestRewardContract(inputCurrency.chainId)
+  const rewardContract = useQuestRewardContract(inputCurrency?.chainId)
   const handleContinue = useCallback(async () => {
     try {
       const { id, endDate, endTime } = state
       const _id = toHex(id)
       const claimTime = endDate && endTime ? combineDateAndTime(endDate, endTime) ?? 0 : 0 // in seconds
       const totalWinners = Number(displayAmountOfWinnersInModal)
-      const rewardToken =
-        nativeToken.wrapped.address.toLowerCase() === tokenAddress.toLowerCase() ? ADDRESS_ZERO : tokenAddress
-      const totalReward = BigInt(getDecimalAmount(new BigNumber(stakeAmount), inputCurrency.decimals).toString())
+      const rewardToken = tokenAddress
+      const totalReward = BigInt(getDecimalAmount(new BigNumber(stakeAmount), inputCurrency?.decimals).toString())
 
       const receipt = await fetchWithCatchTxError(() =>
         rewardContract.write.createQuest([_id, claimTime, totalWinners, rewardToken, totalReward], {
           account,
           chainId,
+          ...(inputCurrency?.isNative && {
+            value: totalReward,
+          }),
         } as any),
       )
 
@@ -227,7 +222,6 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     state,
     account,
     chainId,
-    nativeToken,
     stakeAmount,
     tokenAddress,
     inputCurrency,

@@ -1,12 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency } from '@pancakeswap/sdk'
-import { CAKE } from '@pancakeswap/tokens'
 import { Button, ChevronDownIcon, ErrorFillIcon, Flex, FlexGap, InputGroup, Text, useModal } from '@pancakeswap/uikit'
 import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
 import { TokenWithChain } from 'components/TokenWithChain'
-import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
+import { ADDRESS_ZERO } from 'config/constants'
+import { useFindTokens } from 'hooks/useFindTokens'
 import { useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
+import { Address } from 'viem'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { DropdownList } from 'views/DashboardQuestEdit/components/Tasks/DropdownList'
@@ -48,7 +49,7 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task, isDrafted }) => {
       const forkTasks = Object.assign(tasks)
       const indexToUpdate = forkTasks.findIndex((i: TaskSwapConfig) => i.sid === task.sid)
       forkTasks[indexToUpdate].network = currency.chainId
-      forkTasks[indexToUpdate].tokenAddress = currency.isNative ? currency.wrapped.address : currency.address
+      forkTasks[indexToUpdate].tokenAddress = currency.isNative ? ADDRESS_ZERO : currency.address
       forkTasks[indexToUpdate].title = `Make a swap at least ${task?.minAmount ?? 0} USD of ${currency?.symbol}`
 
       onTasksChange([...forkTasks])
@@ -56,16 +57,7 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task, isDrafted }) => {
     [onTasksChange, task, tasks],
   )
 
-  const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(task?.network as ChainId)
-
-  const selectedCurrency = useMemo((): Currency => {
-    const findToken = tokensByChainWithNativeToken.find((i) =>
-      i.isNative
-        ? i.wrapped.address.toLowerCase() === task?.tokenAddress?.toLowerCase()
-        : i.address.toLowerCase() === task?.tokenAddress?.toLowerCase(),
-    )
-    return findToken || (CAKE as any)?.[task.network]
-  }, [task, tokensByChainWithNativeToken])
+  const selectedCurrency = useFindTokens(task?.network as ChainId, task?.tokenAddress as Address)
 
   const [onPresentCurrencyModal] = useModal(
     <CurrencySearchModal selectedCurrency={selectedCurrency} onCurrencySelect={handleCurrencySelect} />,

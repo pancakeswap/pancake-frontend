@@ -6,15 +6,16 @@ import { useMemo } from 'react'
 export const useTokensByChainWithNativeToken = (chainId: ChainId) => {
   const list = getTokensByChain(chainId)
   const nativeToken = useNativeCurrency(chainId)
-  const tokens = useMemo(() => [nativeToken, ...list], [list, nativeToken])
 
   const filterTokens = useMemo(() => {
     if (chainId === ChainId.BSC) {
       // BSC token list has one token same as native token.
-      return tokens.filter((i) => !i.isNative || (i.isNative && nativeToken.symbol !== i.symbol))
+      return list.filter((i) => !i.isNative && i.symbol !== nativeToken.symbol)
     }
-    return tokens
-  }, [chainId, nativeToken, tokens])
+    return list
+  }, [chainId, list, nativeToken])
 
-  return filterTokens
+  const tokens = useMemo(() => [nativeToken, ...filterTokens], [filterTokens, nativeToken])
+
+  return tokens
 }

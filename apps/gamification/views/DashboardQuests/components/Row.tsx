@@ -1,15 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency } from '@pancakeswap/sdk'
-import { CAKE } from '@pancakeswap/tokens'
+import { ChainId } from '@pancakeswap/sdk'
 import { Box, EllipsisIcon, Flex, PencilIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
+import { useFindTokens } from 'hooks/useFindTokens'
 import { useRouter } from 'next/router'
-import { MouseEvent, useMemo, useRef, useState } from 'react'
+import { MouseEvent, useRef, useState } from 'react'
 import { styled } from 'styled-components'
+import { Address } from 'viem'
 import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
 import { StyledCell } from 'views/DashboardCampaigns/components/TableStyle'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
@@ -63,7 +63,6 @@ export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const { isXxl, isDesktop } = useMatchBreakpoints()
   const [isOpen, setIsOpen] = useState(false)
-  const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(quest?.reward?.currency?.network as ChainId)
 
   const openMoreButton = (e: MouseEvent) => {
     e.preventDefault()
@@ -77,15 +76,10 @@ export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
     router.push(sourceUrl)
   }
 
-  const currency = useMemo((): Currency => {
-    const reward = quest?.reward
-    const findToken = tokensByChainWithNativeToken.find((i) =>
-      i.isNative
-        ? i.wrapped.address.toLowerCase() === reward?.currency?.address?.toLowerCase()
-        : i.address.toLowerCase() === reward?.currency?.address?.toLowerCase(),
-    )
-    return findToken || (CAKE as any)?.[ChainId.BSC]
-  }, [quest, tokensByChainWithNativeToken])
+  const currency = useFindTokens(
+    quest?.reward?.currency?.network as ChainId,
+    quest?.reward?.currency?.address as Address,
+  )
 
   return (
     <StyledRow role="row">

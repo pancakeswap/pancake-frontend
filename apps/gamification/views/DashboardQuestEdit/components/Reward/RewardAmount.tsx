@@ -1,12 +1,10 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency } from '@pancakeswap/sdk'
-import { CAKE } from '@pancakeswap/tokens'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { TokenWithChain } from 'components/TokenWithChain'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
-import { useMemo } from 'react'
+import { useFindTokens } from 'hooks/useFindTokens'
 import { styled } from 'styled-components'
+import { Address } from 'viem'
 import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
 
 const RewardContainer = styled(Flex)`
@@ -21,17 +19,7 @@ interface RewardAmountProps {
 
 export const RewardAmount: React.FC<RewardAmountProps> = ({ reward }) => {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
-  const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(reward?.currency?.network as ChainId)
-
-  const token = useMemo((): Currency => {
-    const findToken = tokensByChainWithNativeToken.find((i) =>
-      i.isNative
-        ? i.wrapped.address.toLowerCase() === reward?.currency?.address?.toLowerCase()
-        : i.address.toLowerCase() === reward?.currency?.address?.toLowerCase(),
-    )
-    return findToken || (CAKE as any)?.[chainId]
-  }, [chainId, reward, tokensByChainWithNativeToken])
+  const token = useFindTokens(reward?.currency?.network as ChainId, reward?.currency?.address as Address)
 
   return (
     <Box>

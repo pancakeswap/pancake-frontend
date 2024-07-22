@@ -14,6 +14,7 @@ import {
   useToast,
 } from '@pancakeswap/uikit'
 import { useQueryClient } from '@tanstack/react-query'
+import { ADDRESS_ZERO } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
@@ -49,7 +50,7 @@ export const SubmitAction = () => {
   const queryClient = useQueryClient()
 
   const handlePickedRewardToken = (currency: Currency, totalRewardAmount: number, amountOfWinners: number) => {
-    const tokenAddress = currency?.isNative ? currency?.wrapped?.address : currency?.address
+    const tokenAddress = currency?.isNative ? ADDRESS_ZERO : currency?.address
     const tokenChainId = currency?.chainId
 
     let rewardData: QuestRewardType = {

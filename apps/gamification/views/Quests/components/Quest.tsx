@@ -1,13 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency } from '@pancakeswap/sdk'
-import { CAKE } from '@pancakeswap/tokens'
+import { ChainId } from '@pancakeswap/sdk'
 import { Box, BoxProps, CalenderIcon, Card, Flex, InfoIcon, Tag, Text, useTooltip } from '@pancakeswap/uikit'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { CHAIN_QUERY_NAME } from 'config/chains'
-import { useTokensByChainWithNativeToken } from 'hooks/useTokensByChainWithNativeToken'
+import { useFindTokens } from 'hooks/useFindTokens'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
 import { styled } from 'styled-components'
+import { Address } from 'viem'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { convertTimestampToDate } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
@@ -41,7 +40,6 @@ interface QuestProps extends BoxProps {
 export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, customRedirectUrl, ...props }) => {
   const { t } = useTranslation()
   const router = useRouter()
-  const tokensByChainWithNativeToken = useTokensByChainWithNativeToken(quest?.reward?.currency?.network as ChainId)
 
   const handleClick = () => {
     router.push(customRedirectUrl || `/quests/${quest.id}?chain=${CHAIN_QUERY_NAME[quest.chainId]}`)
@@ -71,15 +69,10 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, cust
     },
   )
 
-  const currency = useMemo((): Currency => {
-    const reward = quest?.reward
-    const findToken = tokensByChainWithNativeToken.find((i) =>
-      i.isNative
-        ? i.wrapped.address.toLowerCase() === reward?.currency?.address?.toLowerCase()
-        : i.address.toLowerCase() === reward?.currency?.address?.toLowerCase(),
-    )
-    return findToken || (CAKE as any)?.[ChainId.BSC]
-  }, [quest, tokensByChainWithNativeToken])
+  const currency = useFindTokens(
+    quest?.reward?.currency?.network as ChainId,
+    quest?.reward?.currency?.address as Address,
+  )
 
   return (
     <Box {...props} style={{ cursor: hideClick ? 'initial' : 'pointer' }} onClick={hideClick ? undefined : handleClick}>
