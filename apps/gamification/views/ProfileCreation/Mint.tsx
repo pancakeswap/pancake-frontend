@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { bscTokens } from '@pancakeswap/tokens'
-import { Card, CardBody, Heading, Text, useToast } from '@pancakeswap/uikit'
+import { Card, CardBody, Flex, Heading, Image, Text, useMatchBreakpoints, useToast } from '@pancakeswap/uikit'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { FetchStatus } from 'config/constants/types'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -9,7 +10,6 @@ import { useBunnyFactory } from 'hooks/useContract'
 import { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { useEffect, useState } from 'react'
 import { getBunnyFactoryAddress } from 'utils/addressHelpers'
-import { formatUnits } from 'viem'
 import { pancakeBunniesAddress } from 'views/ProfileCreation/Nft/constants'
 import { getNftsFromCollectionApi } from 'views/ProfileCreation/Nft/helpers'
 import { ApiSingleTokenData } from 'views/ProfileCreation/Nft/type'
@@ -28,6 +28,7 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
   const [starterNfts, setStarterNfts] = useState<MintNftData[]>([])
   const { actions, allowance } = useProfileCreation()
   const { toastSuccess } = useToast()
+  const { isMobile } = useMatchBreakpoints()
 
   const bunnyFactoryContract = useBunnyFactory()
   const { t } = useTranslation()
@@ -90,18 +91,26 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
       </Text>
       <Card mb="24px">
         <CardBody>
-          <Heading as="h4" scale="lg" mb="8px">
-            {t('Choose your Starter!')}
-          </Heading>
-          <Text as="p" color="textSubtle">
-            {t('Choose wisely: you can only ever make one starter collectible!')}
-          </Text>
-          <Text as="p" mb="24px" color="textSubtle">
-            {t('Cost: %num% CAKE', { num: formatUnits(MINT_COST, 18) })}
-          </Text>
+          <Flex padding="24px 0" flexDirection="column">
+            <Text fontSize={['24px']} bold textAlign="center" mb="24px">
+              {t('Get your Starter!')}
+            </Text>
+            <Image
+              alt="make-profile"
+              width={isMobile ? 240 : 288}
+              height={isMobile ? 80 : 100}
+              style={{
+                margin: 'auto',
+                minWidth: isMobile ? 240 : 288,
+              }}
+              src={`${ASSET_CDN}/gamification/images/make-profile.png`}
+            />
+            <Text mt="24px" textAlign="center">
+              {t('It’ll only cost a tiny bit for gas fees.')}
+            </Text>
+          </Flex>
           {starterNfts?.map?.((nft) => {
             const handleChange = (value: string) => setSelectedBunnyId(value)
-
             return (
               <SelectionCard
                 key={nft?.name}
@@ -116,11 +125,6 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
               </SelectionCard>
             )
           })}
-          {!hasMinimumCakeRequired && (
-            <Text color="failure" mb="16px">
-              {t('A minimum of %num% CAKE is required', { num: formatUnits(MINT_COST, 18) })}
-            </Text>
-          )}
           <ApproveConfirmButtons
             isApproveDisabled={selectedBunnyId === null || isConfirmed || isConfirming || isApproved}
             isApproving={isApproving}
