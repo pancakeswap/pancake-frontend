@@ -156,12 +156,7 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
         key: 'tvl',
         sorter: true,
         display: mediaQueries.isXl || mediaQueries.isXxl,
-        render: (value) =>
-          value ? (
-            <>${Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}</>
-          ) : (
-            <Skeleton width={60} />
-          ),
+        render: (value) => (value ? <FiatNumberDisplay value={value} prefix="$" /> : <Skeleton width={60} />),
       },
       {
         title: t('Volume 24H'),
@@ -170,12 +165,7 @@ const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
         sorter: true,
         minWidth: '145px',
         display: mediaQueries.isXl || mediaQueries.isXxl || mediaQueries.isLg,
-        render: (value) =>
-          value ? (
-            <>${Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}</>
-          ) : (
-            <Skeleton width={60} />
-          ),
+        render: (value) => (value ? <FiatNumberDisplay value={value} prefix="$" /> : <Skeleton width={60} />),
       },
       {
         title: '',
