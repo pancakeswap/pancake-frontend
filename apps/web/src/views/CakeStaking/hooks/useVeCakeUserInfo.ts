@@ -1,10 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useReadContract } from '@pancakeswap/wagmi'
 import dayjs from 'dayjs'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useVeCakeContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 import { CakeLockStatus, CakePoolType } from '../types'
 import { useCakePoolLockInfo } from './useCakePoolLockInfo'
 import { useCheckIsUserAllowMigrate } from './useCheckIsUserAllowMigrate'
@@ -46,7 +46,7 @@ export const useVeCakeUserInfo = (
   refetch: () => void
 } => {
   const veCakeContract = useVeCakeContract(targetChain)
-  const { account } = useAccountActiveChain()
+  const { address: account } = useAccount()
 
   const { data, refetch } = useReadContract({
     chainId: targetChain ?? veCakeContract?.chain?.id,

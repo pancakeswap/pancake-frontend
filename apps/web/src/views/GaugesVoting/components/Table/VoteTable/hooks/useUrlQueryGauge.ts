@@ -2,15 +2,14 @@ import { Gauge } from '@pancakeswap/gauges'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { watchAccount } from '@wagmi/core'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo } from 'react'
-import { useConfig } from 'wagmi'
+import { useAccount, useConfig } from 'wagmi'
 
 export const GAUGE_QUERY_KEY = 'gauge_hash'
 
 export const useUrlQueryGauge = (gauges: Gauge[] | undefined) => {
-  const { account } = useAccountActiveChain()
+  const { address: account } = useAccount()
   const router = useRouter()
   const { toastError } = useToast()
   const { t } = useTranslation()

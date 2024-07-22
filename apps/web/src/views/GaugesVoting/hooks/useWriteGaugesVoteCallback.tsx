@@ -2,16 +2,16 @@ import { Gauge } from '@pancakeswap/gauges'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useGaugesVotingContract } from 'hooks/useContract'
 import { useCallback } from 'react'
 import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 
 export const useWriteGaugesVoteCallback = () => {
   const { t } = useTranslation()
   const contract = useGaugesVotingContract()
-  const { account } = useAccountActiveChain()
+  const { address: account } = useAccount()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
