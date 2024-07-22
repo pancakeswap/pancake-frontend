@@ -121,6 +121,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
               name="endDate"
               selected={endDate}
               disabled={disableInput}
+              minDate={new Date()}
               placeholderText="YYYY/MM/DD"
               onChange={(value: Date) => updateValue('endDate', value)}
             />

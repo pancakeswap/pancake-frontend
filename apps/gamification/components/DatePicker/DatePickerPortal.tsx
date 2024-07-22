@@ -122,6 +122,11 @@ const StyledDatePickerPortal = styled.div`
     li.react-datepicker__time-list-item--selected {
     color: ${({ theme }) => theme.colors.text};
   }
+
+  .react-datepicker__day--disabled {
+    cursor: not-allowed;
+    opacity: 0.2;
+  }
 `
 
 const DatePickerPortal = () => {
