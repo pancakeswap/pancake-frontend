@@ -1,5 +1,14 @@
 # @pancakeswap/position-managers
 
+## 0.1.35
+
+### Patch Changes
+
+- @pancakeswap/sdk@5.8.8
+- @pancakeswap/token-lists@0.0.12
+- @pancakeswap/v3-sdk@3.8.11
+- @pancakeswap/tokens@0.6.23
+
 ## 0.1.34
 
 ### Patch Changes
