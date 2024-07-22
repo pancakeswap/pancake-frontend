@@ -1,5 +1,12 @@
 # @pancakeswap/gauges
 
+## 1.2.13
+
+### Patch Changes
+
+- @pancakeswap/v3-sdk@3.8.11
+- @pancakeswap/tokens@0.6.23
+
 ## 1.2.12
 
 ### Patch Changes

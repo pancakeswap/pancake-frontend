@@ -1,5 +1,13 @@
 # @pancakeswap/v3-sdk
 
+## 3.8.11
+
+### Patch Changes
+
+- Updated dependencies [f551e5e]
+  - @pancakeswap/swap-sdk-core@1.2.0
+  - @pancakeswap/sdk@5.8.8
+
 ## 3.8.10
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @pancakeswap/routing-sdk
 
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies [f551e5e]
+  - @pancakeswap/swap-sdk-core@1.2.0
+  - @pancakeswap/swap-sdk-evm@1.0.5
+
 ## 0.0.6
 
 ### Patch Changes

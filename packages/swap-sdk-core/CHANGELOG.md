@@ -1,5 +1,11 @@
 # @pancakeswap/swap-sdk-core
 
+## 1.2.0
+
+### Minor Changes
+
+- f551e5e: Add sortCurrencies utility function
+
 ## 1.1.0
 
 ### Minor Changes
