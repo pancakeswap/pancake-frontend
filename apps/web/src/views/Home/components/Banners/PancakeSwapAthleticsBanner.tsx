@@ -110,7 +110,7 @@ export const AthleticsBanner = () => {
         actions={
           <BannerActionContainer>
             <LinkExternalAction href={learnMoreLink} externalIcon="arrowForward" color="#280D5F">
-              {t('Join Now')}
+              {t('Join Now!')}
             </LinkExternalAction>
           </BannerActionContainer>
         }
