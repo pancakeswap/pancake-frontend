@@ -8,7 +8,7 @@ import { RemainMessage } from 'views/Quest/components/Reward/RemainMessage'
 // import { RewardAmount } from 'views/Quest/components/Reward/RewardAmount'
 import { SuccessMessage } from 'views/Quest/components/Reward/SuccessMessage'
 import { TotalRewards } from 'views/Quest/components/Reward/TotalRewards'
-import { Winners } from 'views/Quest/components/Reward/Winners'
+// import { Winners } from 'views/Quest/components/Reward/Winners'
 
 const RewardContainer = styled(Box)`
   width: 100%;
@@ -39,7 +39,7 @@ export const Reward = () => {
           <ClaimButton />
           <RemainMessage />
           <SuccessMessage />
-          <Winners />
+          {/* <Winners /> */}
         </Box>
       </Card>
     </RewardContainer>
