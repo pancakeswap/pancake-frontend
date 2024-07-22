@@ -13,4 +13,10 @@ export const CROSS_CHIAN_CONFIG: Record<number, { eid: number; dstGas: bigint; n
     name: 'Arbitrum',
     layerZeroFee: 262309998201766n,
   },
+  [ChainId.ZKSYNC]: {
+    eid: 30165,
+    dstGas: 850000n,
+    name: 'ZKsync',
+    layerZeroFee: 262309998201766n,
+  },
 }
