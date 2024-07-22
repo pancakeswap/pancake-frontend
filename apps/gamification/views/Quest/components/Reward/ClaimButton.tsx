@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, InfoIcon, useToast } from '@pancakeswap/uikit'
+import { Box, Button, InfoIcon, Text, useToast, useTooltip } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
@@ -34,6 +34,17 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
   const { toastSuccess, toastError } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
   const contract = useQuestRewardContract(quest.reward?.currency?.network as ChainId)
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <Text>
+      {t(
+        "Unfortunately, you're not eligible to receive the reward. This could be due to either not completing all the tasks or simply not being included in the winner pool, depending on the distribution type of the quest. For instance, with the Lucky Draw type, you might not have been selected because it's random.",
+      )}
+    </Text>,
+    {
+      placement: 'top',
+    },
+  )
 
   const { data: claimedRewardAmount } = useQuery({
     queryKey: ['/get-quest-claimed-reward', account, id],
@@ -80,7 +91,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
 
   return (
     <>
-      <Box>
+      <Box ref={targetRef}>
         <StyledButton
           isLoading={isPending}
           disabled={!ableToClaimReward || isPending}
@@ -89,6 +100,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
         >
           {ableToClaimReward ? t('Claim the reward') : t('Unavailable')}
         </StyledButton>
+        {!ableToClaimReward && tooltipVisible && tooltip}
       </Box>
       <MessageInfo ableToClaimReward={ableToClaimReward} isQuestFinished={isQuestFinished} />
     </>

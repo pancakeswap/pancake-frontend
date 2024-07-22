@@ -10,7 +10,7 @@ import { Countdown } from 'views/Quest/components/Reward/Countdown'
 import { Questers } from 'views/Quest/components/Reward/Questers'
 import { RewardAmount } from 'views/Quest/components/Reward/RewardAmount'
 // import { TotalRewards } from 'views/Quest/components/Reward/TotalRewards'
-// import { Winners } from 'views/Quest/components/Reward/Winners'
+import { Winners } from 'views/Quest/components/Reward/Winners'
 
 const RewardContainer = styled(Box)`
   width: 100%;
@@ -54,9 +54,11 @@ export const Reward: React.FC<RewardProps> = ({ quest, isTasksCompleted, isQuest
           <RewardAmount reward={quest?.reward} />
           <Countdown endDateTime={quest?.endDateTime ?? 0} />
           {/* <TotalRewards /> */}
-          <Questers questId={quest?.id} />
+          <Winners totalWinners={Number(quest?.reward?.totalRewardAmount)} />
+          <Box padding="12px">
+            <Questers questId={quest?.id} />
+          </Box>
           <ClaimButton quest={quest} isTasksCompleted={isTasksCompleted} isQuestFinished={isQuestFinished} />
-          {/* <Winners /> */}
         </Box>
       </Card>
     </RewardContainer>
