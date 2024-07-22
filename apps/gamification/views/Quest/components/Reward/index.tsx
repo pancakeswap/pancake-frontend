@@ -53,7 +53,7 @@ export const Reward: React.FC<RewardProps> = ({ quest, isTasksCompleted, isQuest
           <RewardAmount reward={quest?.reward} />
           <Countdown endDateTime={quest?.endDateTime ?? 0} />
           {/* <TotalRewards /> */}
-          <Winners totalWinners={Number(quest?.reward?.totalRewardAmount)} />
+          <Winners totalWinners={Number(quest?.reward?.amountOfWinners)} />
           <Box padding="12px">
             <Questers questId={quest?.id} size={26} fontSize={16} bold />
           </Box>

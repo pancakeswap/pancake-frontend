@@ -17,7 +17,7 @@ export const Winners: React.FC<WinnersProps> = ({ totalWinners }) => {
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text>
       {t(
-        'The total rewards to be distributed will depend on the eligible questers selected by {Distribution}. Eligible questers are those who have completed enough tasks.',
+        'The total rewards to be distributed will depend on the eligible questers selected at random. Eligible questers are those who have completed all the tasks.',
       )}
     </Text>,
     {
