@@ -61,7 +61,7 @@ const ItemName = styled.span`
   font-weight: 400;
 `;
 
-export const toTokenValue = (t: Currency) => `${t.chainId}:${t instanceof Token ? t.address : zeroAddress}`;
+export const toTokenValue = (t: Currency) => `${t.chainId}:${t.isNative ? t.wrapped.address : t.address}`;
 
 export const TokenFilter: React.FC<ITokenProps> = ({ data = [], value, onChange }) => {
   const { theme } = useTheme();
