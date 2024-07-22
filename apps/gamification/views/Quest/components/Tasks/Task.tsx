@@ -93,6 +93,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
           userId: twitterId,
           providerId: providerId as TwitterFollowersId,
           targetUserId: (task as TaskSocialConfig).accountId,
+          taskId: task?.id ?? '',
         }).toString()
         const response = await fetch(`/api/twitterFollow?${queryString}`)
         if (response.ok) {
@@ -188,7 +189,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   ])
 
   const handleAddBlogPost = async () => {
-    const response = await fetchMarkTaskStatus(account ?? '', questId, TaskType.VISIT_BLOG_POST)
+    const response = await fetchMarkTaskStatus(account ?? '', questId, TaskType.VISIT_BLOG_POST, task?.id ?? '')
 
     if (response.ok) {
       const url = (task as TaskBlogPostConfig).blogUrl

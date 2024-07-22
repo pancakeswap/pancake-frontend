@@ -7,7 +7,7 @@ import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/ve
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      const { account, questId, token, tokenSecret, userId, targetUserId, providerId } = req.query
+      const { account, questId, token, tokenSecret, userId, targetUserId, providerId, taskId } = req.query
       if (!token || !tokenSecret || !userId || !targetUserId) {
         res.status(400).json({ message: 'Missing required parameters: token, tokenSecret, userId, targetUserId' })
         return
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
             body: JSON.stringify({
               taskName: TaskType.X_FOLLOW_ACCOUNT,
               isCompleted: true,
-              taskId: questId,
+              taskId,
             }),
           },
         )
