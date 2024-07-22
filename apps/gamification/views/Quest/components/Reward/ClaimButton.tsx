@@ -33,7 +33,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
   const { account, chainId } = useActiveWeb3React()
   const { toastSuccess, toastError } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
-  const contract = useQuestRewardContract(quest.reward?.currency.network as ChainId)
+  const contract = useQuestRewardContract(quest.reward?.currency?.network as ChainId)
 
   const { data: claimedRewardAmount } = useQuery({
     queryKey: ['/get-quest-claimed-reward', account, id],

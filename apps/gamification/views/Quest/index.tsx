@@ -145,7 +145,7 @@ export const Quest = () => {
             )}`}</Text>
           </Flex>
         )}
-        {!isDesktop && quest.reward && (
+        {!isDesktop && quest?.reward?.currency && (
           <Reward quest={quest} isTasksCompleted={isTasksCompleted} isQuestFinished={isQuestFinished} />
         )}
         <Tasks
@@ -164,7 +164,7 @@ export const Quest = () => {
         {/* <RelatedQuest /> */}
         {/* <ExploreMore /> */}
       </Box>
-      {isDesktop && quest.reward && (
+      {isDesktop && quest?.reward?.currency && (
         <Reward quest={quest} isTasksCompleted={isTasksCompleted} isQuestFinished={isQuestFinished} />
       )}
     </QuestContainer>

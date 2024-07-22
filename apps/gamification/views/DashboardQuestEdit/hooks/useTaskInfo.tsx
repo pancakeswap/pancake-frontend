@@ -114,9 +114,43 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
     [t],
   )
 
+  const userActionButtonText = useCallback(
+    (social: TaskType) => {
+      switch (social) {
+        case TaskType.MAKE_A_SWAP:
+          return t('Swap')
+        case TaskType.HOLD_A_TOKEN:
+          return t('Get')
+        case TaskType.ADD_LIQUIDITY:
+          return t('Add')
+        case TaskType.X_LIKE_POST:
+        case TaskType.IG_LIKE_POST:
+          return t('Like')
+        case TaskType.X_REPOST_POST:
+          return t('Repost')
+        case TaskType.X_FOLLOW_ACCOUNT:
+        case TaskType.IG_FOLLOW_ACCOUNT:
+          return t('Follow')
+        case TaskType.TELEGRAM_JOIN_GROUP:
+        case TaskType.DISCORD_JOIN_SERVER:
+          return t('Join')
+        case TaskType.YOUTUBE_SUBSCRIBE:
+          return t('Subscribe')
+        case TaskType.IG_COMMENT_POST:
+          return t('Comment')
+        case TaskType.VISIT_BLOG_POST:
+          return t('Visit the post')
+        default:
+          return ''
+      }
+    },
+    [t],
+  )
+
   return {
     taskIcon,
     taskNaming,
     taskInputPlaceholder,
+    userActionButtonText,
   }
 }

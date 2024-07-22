@@ -58,7 +58,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const { data: session } = useSession()
   const { taskType, title, description } = task
   const isVerified = taskStatus?.verificationStatusBySocialMedia?.[taskType]
-  const { taskIcon, taskNaming } = useTaskInfo(false, 22)
+  const { taskIcon, taskNaming, userActionButtonText } = useTaskInfo(false, 22)
   const { userInfo, isFetched: isSocialHubFetched } = useUserSocialHub()
   const { randomConnect: connectTwitter } = useConnectTwitter({ userInfo })
   const [socialName, setSocialName] = useState('')
@@ -285,7 +285,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
                     endIcon={<OpenNewIcon color="invertedContrast" />}
                     onClick={handleAction}
                   >
-                    {t('Proceed to connect')}
+                    {userActionButtonText(taskType)}
                   </Button>
                   {taskType === TaskType.X_FOLLOW_ACCOUNT && (
                     <VerifyButton
@@ -301,7 +301,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
                 </FlexGap>
               ) : (
                 <Button variant="success" scale="sm" width="100%" endIcon={<CheckmarkCircleFillIcon color="white" />}>
-                  {t('Completed')}
+                  {t('Verified')}
                 </Button>
               )}
             </FlexGap>
