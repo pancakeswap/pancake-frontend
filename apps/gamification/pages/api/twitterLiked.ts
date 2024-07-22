@@ -6,9 +6,9 @@ import { getOAuthHeader } from 'utils/getOAuthHeader'
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      const { token, tokenSecret, twitterPostId, providerId } = req.query
-      if (!token || !tokenSecret || !twitterPostId || !providerId) {
-        res.status(400).json({ message: 'Missing required parameters: token, tokenSecret, twitterPostId, providerId' })
+      const { token, tokenSecret, userTwitterId, providerId } = req.query
+      if (!token || !tokenSecret || !userTwitterId || !providerId) {
+        res.status(400).json({ message: 'Missing required parameters: token, tokenSecret, userTwitterId, providerId' })
         return
       }
 
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
       // const bearerToken = getBearerToken.access_token
       // console.log('bearerToken', bearerToken)
 
-      const url = `https://api.twitter.com/2/users/${twitterPostId}/liked_tweets`
+      const url = `https://api.twitter.com/2/users/${userTwitterId}/liked_tweets`
       const method = 'GET'
       const response = await fetch(url, {
         method,
