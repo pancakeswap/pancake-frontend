@@ -4,10 +4,7 @@ import { styled } from 'styled-components'
 import { ClaimButton } from 'views/Campaign/components/Reward/ClaimButton'
 // import { Countdown } from 'views/Quest/components/Reward/Countdown'
 // import { Questers } from 'views/Quest/components/Reward/Questers'
-import { RemainMessage } from 'views/Quest/components/Reward/RemainMessage'
 // import { RewardAmount } from 'views/Quest/components/Reward/RewardAmount'
-import { SuccessMessage } from 'views/Quest/components/Reward/SuccessMessage'
-import { TotalRewards } from 'views/Quest/components/Reward/TotalRewards'
 // import { Winners } from 'views/Quest/components/Reward/Winners'
 
 const RewardContainer = styled(Box)`
@@ -34,12 +31,8 @@ export const Reward = () => {
           </Text>
           {/* <RewardAmount /> */}
           {/* <Countdown /> */}
-          <TotalRewards />
           {/* <Questers /> */}
           <ClaimButton />
-          <RemainMessage />
-          <SuccessMessage />
-          {/* <Winners /> */}
         </Box>
       </Card>
     </RewardContainer>

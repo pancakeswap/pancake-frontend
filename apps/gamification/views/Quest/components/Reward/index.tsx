@@ -9,7 +9,6 @@ import { ClaimButton } from 'views/Quest/components/Reward/ClaimButton'
 import { Countdown } from 'views/Quest/components/Reward/Countdown'
 import { Questers } from 'views/Quest/components/Reward/Questers'
 import { RewardAmount } from 'views/Quest/components/Reward/RewardAmount'
-// import { TotalRewards } from 'views/Quest/components/Reward/TotalRewards'
 import { Winners } from 'views/Quest/components/Reward/Winners'
 
 const RewardContainer = styled(Box)`
