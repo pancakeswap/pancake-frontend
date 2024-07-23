@@ -251,7 +251,7 @@ export const SubmitAction = () => {
           }
           onClick={handleSchedule}
         >
-          {t('Add a reward and schedule')}
+          {state.needAddReward ? t('Add a reward and schedule') : t('Save and schedule')}
         </Button>
       )}
       {completionStatusToString === CompletionStatus.SCHEDULED && (
