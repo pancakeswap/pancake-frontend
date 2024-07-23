@@ -6,7 +6,7 @@ import { getMasterChefV3Contract, getV2SSBCakeWrapperContract } from 'utils/cont
 import { publicClient } from 'utils/wagmi'
 import { isAddressEqual } from 'viem'
 import { PoolInfo, StablePoolInfo, V2PoolInfo, V3PoolInfo } from '../type'
-import { MerklApr } from './atom'
+import { CakeApr, MerklApr } from './atom'
 
 export const getCakeApr = (
   pool: PoolInfo,
@@ -35,10 +35,7 @@ const masterChefV3CacheMap = new Map<
 >()
 
 // @todo refactor to batch fetch
-export const getV3PoolCakeApr = async (
-  pool: V3PoolInfo,
-  cakePrice: BigNumber,
-): Promise<{ value: `${number}`; boost?: `${number}` }> => {
+export const getV3PoolCakeApr = async (pool: V3PoolInfo, cakePrice: BigNumber): Promise<CakeApr[keyof CakeApr]> => {
   const { tvlUsd } = pool
   const client = publicClient({ chainId: pool.chainId })
   const masterChefV3 = getMasterChefV3Contract(undefined, pool.chainId)
@@ -75,6 +72,8 @@ export const getV3PoolCakeApr = async (
   return {
     value: baseApr.toString() as `${number}`,
     boost: baseApr.times(2).toString() as `${number}`, //
+    cakePerYear,
+    poolWeight,
   }
 }
 

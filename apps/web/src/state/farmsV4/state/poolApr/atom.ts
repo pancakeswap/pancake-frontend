@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import { atom } from 'jotai'
 import { extendPoolsAtom } from '../extendPools/atom'
 import { farmPoolsAtom } from '../farmPools/atom'
@@ -27,7 +28,17 @@ export const lpAprAtom = atom<LpApr>((get) => {
   }, {} as LpApr)
 })
 
-export type CakeApr = Record<ChainIdAddressKey, { value: `${number}`; boost?: `${number}` }>
+export type CakeApr = Record<
+  ChainIdAddressKey,
+  {
+    // default apr
+    value: `${number}`
+    // boost apr
+    boost?: `${number}`
+    poolWeight?: BigNumber
+    cakePerYear?: BigNumber
+  }
+>
 export const cakeAprAtom = atom<CakeApr>({})
 
 export type PoolApr = Record<
