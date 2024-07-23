@@ -102,5 +102,5 @@ export interface QuestRewardType {
     network: ChainId
   }
   amountOfWinners: number
-  totalRewardAmount: number
+  totalRewardAmount: string
 }

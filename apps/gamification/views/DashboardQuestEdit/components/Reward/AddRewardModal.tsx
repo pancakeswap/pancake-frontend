@@ -47,7 +47,7 @@ interface ModalConfig {
 
 interface AddRewardModalProps extends InjectedModalProps {
   state: StateType
-  handlePickedRewardToken: (value: Currency, totalRewardAmount: number, amountOfWinnersInModal: number) => void
+  handlePickedRewardToken: (value: Currency, totalRewardAmount: string, amountOfWinnersInModal: number) => void
 }
 
 const DURATION = 3000 // 3s
@@ -231,7 +231,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
 
       if (receipt?.status) {
         toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-        handlePickedRewardToken(inputCurrency, Number(stakeAmount), displayAmountOfWinnersInModal || 0)
+        handlePickedRewardToken(inputCurrency, stakeAmount, displayAmountOfWinnersInModal || 0)
         onDismiss?.()
       }
     } catch (error) {

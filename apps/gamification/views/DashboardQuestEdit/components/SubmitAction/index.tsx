@@ -49,7 +49,7 @@ export const SubmitAction = () => {
   const completionStatusToString = state.completionStatus.toString()
   const queryClient = useQueryClient()
 
-  const handlePickedRewardToken = (currency: Currency, totalRewardAmount: number, amountOfWinners: number) => {
+  const handlePickedRewardToken = (currency: Currency, totalRewardAmount: string, amountOfWinners: number) => {
     const tokenAddress = currency?.isNative ? ADDRESS_ZERO : currency?.address
     const tokenChainId = currency?.chainId
 
