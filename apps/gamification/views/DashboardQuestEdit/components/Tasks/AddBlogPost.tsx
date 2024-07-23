@@ -3,10 +3,10 @@ import {
   Box,
   ErrorFillIcon,
   Flex,
+  FlexGap,
   InputGroup,
   OpenNewIcon,
   Text,
-  useMatchBreakpoints,
   useModal,
   useTooltip,
 } from '@pancakeswap/uikit'
@@ -26,9 +26,10 @@ interface AddBlogPostProps {
   isDrafted: boolean
 }
 
+type SocialKeyType = 'title' | 'description' | 'blogUrl'
+
 export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
   const [isFirst, setIsFirst] = useState(true)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
 
@@ -46,12 +47,12 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task, isDrafted }) => 
     }
   }
 
-  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>, socialKeyType: SocialKeyType) => {
     setIsFirst(false)
 
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskBlogPostConfig) => i.sid === task.sid)
-    forkTasks[indexToUpdate].blogUrl = e.target.value
+    forkTasks[indexToUpdate][socialKeyType] = e.target.value
 
     onTasksChange([...forkTasks])
   }
@@ -68,7 +69,7 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task, isDrafted }) => 
 
   return (
     <Flex flexDirection="column">
-      <Flex flexDirection={['column', 'column', 'row']}>
+      <Flex flexDirection={['row']}>
         <Flex>
           <Flex mr="8px" alignSelf="center" position="relative">
             {taskIcon(TaskType.VISIT_BLOG_POST)}
@@ -77,21 +78,21 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task, isDrafted }) => 
           <Text style={{ alignSelf: 'center' }} bold>
             {taskNaming(TaskType.VISIT_BLOG_POST)}
           </Text>
-          {isDrafted && (
-            <>
-              {isMobile && (
-                <DropdownList
-                  m="auto 0px auto auto"
-                  id={task.sid}
-                  isOptional={task.isOptional}
-                  onClickDelete={onPresentDeleteModal}
-                  onClickOptional={onClickOptional}
-                />
-              )}
-            </>
-          )}
         </Flex>
-        <Flex width={['100%', '100%', 'fit-content']} m={['8px 0 0 0', '8px 0 0 0', '0 0 0 auto']} alignSelf="center">
+        {isDrafted && (
+          <Flex width={['fit-content']} m={['0 0 0 auto']} alignSelf="center">
+            <DropdownList
+              m="auto"
+              id={task.sid}
+              isOptional={task.isOptional}
+              onClickDelete={onPresentDeleteModal}
+              onClickOptional={onClickOptional}
+            />
+          </Flex>
+        )}
+      </Flex>
+      <FlexGap gap="8px" flexDirection="column" mt="8px">
+        <Flex flexDirection="column">
           <InputGroup
             m={['8px 0', '8px 0', '0 8px 0 0']}
             endIcon={
@@ -110,26 +111,24 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task, isDrafted }) => 
               isError={isUrlError}
               style={{ borderRadius: '24px' }}
               placeholder={taskInputPlaceholder(TaskType.VISIT_BLOG_POST)}
-              onChange={handleUrlChange}
+              onChange={(e) => handleUrlChange(e, 'blogUrl')}
             />
           </InputGroup>
-
-          {isDrafted && (
-            <>
-              {!isMobile && (
-                <DropdownList
-                  m="auto"
-                  id={task.sid}
-                  isOptional={task.isOptional}
-                  onClickDelete={onPresentDeleteModal}
-                  onClickOptional={onClickOptional}
-                />
-              )}
-            </>
-          )}
+          {isUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
         </Flex>
-      </Flex>
-      {isUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
+        <StyledInput
+          placeholder={t('Title')}
+          value={task.title}
+          style={{ borderRadius: '24px' }}
+          onChange={(e) => handleUrlChange(e, 'title')}
+        />
+        <StyledInput
+          placeholder={t('Description (Optional)')}
+          value={task.description}
+          style={{ borderRadius: '24px' }}
+          onChange={(e) => handleUrlChange(e, 'description')}
+        />
+      </FlexGap>
     </Flex>
   )
 }
