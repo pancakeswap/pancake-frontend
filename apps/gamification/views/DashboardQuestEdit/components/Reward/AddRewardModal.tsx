@@ -3,7 +3,6 @@ import { ChainId, Currency } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { Box, Button, Flex, InjectedModalProps, Input, Loading, Modal, Text, useToast } from '@pancakeswap/uikit'
 import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
-import { trimTrailZero } from '@pancakeswap/utils/trimTrailZero'
 import { BigNumber } from 'bignumber.js'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import { CurrencySearch } from 'components/SearchModal/CurrencySearch'
@@ -154,9 +153,8 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
 
   const handlePercentButton = useCallback(
     (percent: number) => {
-      const amount = trimTrailZero(
-        currencyBalance.dividedBy(100).multipliedBy(percent).toNumber().toFixed(inputCurrency?.decimals),
-      )
+      const amount = (BigInt(currencyBalance.toString()) * BigInt(percent)) / BigInt(100)
+
       const newBalanceAmount = getFullDisplayBalance(
         new BigNumber(amount?.toString() ?? 0),
         inputCurrency?.decimals,

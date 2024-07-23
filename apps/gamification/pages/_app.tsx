@@ -1,6 +1,7 @@
 import { LanguageProvider } from '@pancakeswap/localization'
 import { ModalProvider, PancakeTheme, ResetCSS, ToastListener, UIKitProvider, dark, light } from '@pancakeswap/uikit'
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import BigNumber from 'bignumber.js'
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
 import { NextPage } from 'next'
 import { SessionProvider } from 'next-auth/react'
@@ -24,6 +25,11 @@ function GlobalHooks() {
   useAccountEventListener()
   return null
 }
+
+BigNumber.config({
+  EXPONENTIAL_AT: 1000,
+  DECIMAL_PLACES: 80,
+})
 
 // Create a client
 const queryClient = new QueryClient()

@@ -85,14 +85,19 @@ export const CurrencyInputPanel = memo(function CurrencyInputPanel({
     ),
   )
 
-  const percentAmount: any = useMemo(
-    () => ({
-      25: maxAmount ? maxAmount.multipliedBy(new BigNumber(25).div(100)).toString() : undefined,
-      50: maxAmount ? maxAmount.multipliedBy(new BigNumber(50).div(100)).toString() : undefined,
-      75: maxAmount ? maxAmount.multipliedBy(new BigNumber(75).div(100)).toString() : undefined,
-    }),
-    [maxAmount],
-  )
+  const percentAmount: any = useMemo(() => {
+    const getBalance = (percent: number) => {
+      const amount = (BigInt(maxAmount?.toString() ?? '0') * BigInt(percent)) / BigInt(100)
+      return getFullDisplayBalance(new BigNumber(amount?.toString() ?? 0), currency?.decimals).toString()
+    }
+
+    return {
+      25: maxAmount ? getBalance(25) : undefined,
+      50: maxAmount ? getBalance(50) : undefined,
+      75: maxAmount ? getBalance(75) : undefined,
+      100: maxAmount ? getBalance(100) : undefined,
+    }
+  }, [currency, maxAmount])
 
   const handleUserInput = useCallback(
     (val: string) => {
@@ -111,7 +116,7 @@ export const CurrencyInputPanel = memo(function CurrencyInputPanel({
     }
   }, [disableCurrencySelect, onPressCustomModal, onPresentCurrencyModal])
 
-  const isAtPercentMax = (maxAmount && value === maxAmount.toString()) || (lpPercent && lpPercent === '100')
+  const isAtPercentMax = (maxAmount && value === percentAmount[100]) || (lpPercent && lpPercent === '100')
 
   const balance =
     !hideBalance && !!currency ? getFullDisplayBalance(selectedCurrencyBalance, currency.decimals, 6) : undefined
