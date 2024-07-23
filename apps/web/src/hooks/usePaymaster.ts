@@ -5,8 +5,9 @@ import { Address, Hex, hexToBigInt, isAddress, stringify } from 'viem'
 
 import { ChainId } from '@pancakeswap/chains'
 import { ZyfiResponse } from 'config/paymaster'
+import { publicClient } from 'utils/viem'
 import { eip712WalletActions } from 'viem/zksync'
-import { useAccount, useWalletClient } from 'wagmi'
+import { useWalletClient } from 'wagmi'
 import { useGasToken } from './useGasToken'
 
 interface SwapCall {
@@ -22,17 +23,14 @@ export const usePaymaster = () => {
   const chain = useActiveChainId()
   const { data: walletClient } = useWalletClient()
 
-  const { connector } = useAccount()
-
   const [gasToken] = useGasToken()
 
   /**
    * Check if the Paymaster for zkSync is available
    */
   const isPaymasterAvailable = useMemo(() => {
-    // Disable connections via WalletConnect until it is fully supported
-    return chain && chain.chainId === ChainId.ZKSYNC && connector?.type !== 'walletConnect'
-  }, [chain, connector])
+    return chain && chain.chainId === ChainId.ZKSYNC
+  }, [chain])
 
   /**
    * Check if a paymaster token is selected.
@@ -86,9 +84,16 @@ export const usePaymaster = () => {
       throw new Error('Failed to execute paymaster transaction')
     }
 
-    // Extend Viem's zkSync utils
+    const zkPublicClient = publicClient({ chainId: ChainId.ZKSYNC })
     const client: any = walletClient.extend(eip712WalletActions() as any)
-    return client.sendTransaction(newTx)
+
+    const txReq = await client.prepareTransactionRequest(newTx)
+    const signature = await client.signTransaction(txReq)
+    const hash = await zkPublicClient.sendRawTransaction({
+      serializedTransaction: signature,
+    })
+
+    return hash
   }
 
   return {
