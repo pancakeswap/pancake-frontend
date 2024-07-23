@@ -1,4 +1,3 @@
-import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { getOAuthHeader } from 'utils/getOAuthHeader'
@@ -34,20 +33,14 @@ export default async function handler(req, res) {
       }
 
       if (result.data.following) {
-        const responseMarkTask = await fetch(
-          `${GAMIFICATION_PUBLIC_API}/userInfo/v1/markTaskStatus/${account}/${questId}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              taskName: TaskType.X_FOLLOW_ACCOUNT,
-              isCompleted: true,
-              taskId,
-            }),
-          },
-        )
+        const queryString = new URLSearchParams({
+          account,
+          questId,
+          taskId,
+          taskName: TaskType.X_FOLLOW_ACCOUNT,
+        }).toString()
+
+        const responseMarkTask = await fetch(`/api/userInfo/markTaskStatus?${queryString}`, { method: 'POST' })
 
         const responseMarkTaskResult = await response.json()
         if (responseMarkTask.ok) {

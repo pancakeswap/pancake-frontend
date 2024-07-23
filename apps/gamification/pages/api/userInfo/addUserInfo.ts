@@ -2,7 +2,7 @@ import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (!process.env.GAMIFICATION_DASHBOARD_API || !req.body || req.method !== 'POST') {
+  if (!GAMIFICATION_PUBLIC_API || !req.body || req.method !== 'POST') {
     return res.status(400).json({ message: 'API URL Empty / Method wrong' })
   }
 
