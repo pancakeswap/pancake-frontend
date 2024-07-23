@@ -41,11 +41,11 @@ export const FiatNumberDisplay = memo(function FiatNumberDisplay({
 
   const valueDisplay = useMemo(() => {
     const bnValue = new BigNumber(value);
-    const maximum = TEN.exponentiatedBy(maximumSignificantDigits).minus(1);
-    const minimum = ONE.div(new BigNumber(10).exponentiatedBy(maximumSignificantDigits - 1));
     if (bnValue.eq(0)) {
       return valueWithSymbol(0);
     }
+    const maximum = TEN.exponentiatedBy(maximumSignificantDigits).minus(1);
+    const minimum = ONE.div(new BigNumber(10).exponentiatedBy(maximumSignificantDigits - 1));
     // If less than minimum, just display <0.01
     if (bnValue.lt(minimum)) {
       return `<${valueWithSymbol("0.01")}`;

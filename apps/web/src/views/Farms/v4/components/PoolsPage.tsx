@@ -3,24 +3,18 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Button,
   Card as RawCard,
-  MoreIcon,
   CardBody as RawCardBody,
   CardHeader as RawCardHeader,
-  SubMenu,
-  ITableViewProps,
   TableView,
-  FeeTier,
   Image,
   ISortOrder,
   SORT_ORDER,
-  Skeleton,
   useMatchBreakpoints,
   CardFooter as RawCardFooter,
   InfoIcon,
 } from '@pancakeswap/uikit'
-import { TokenPairImage } from 'components/TokenImage'
 import { useTranslation } from '@pancakeswap/localization'
-import { FiatNumberDisplay, TokenOverview, toTokenValue } from '@pancakeswap/widgets-internal'
+import { toTokenValue } from '@pancakeswap/widgets-internal'
 import { UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
 import { useExtendPools, useFarmPools } from 'state/farmsV4/hooks'
@@ -29,6 +23,8 @@ import { PoolSortBy } from 'state/farmsV4/atom'
 import { useAllTokensByChainIds } from 'hooks/Tokens'
 
 import { IPoolsFilterPanelProps, MAINNET_CHAINS, PoolsFilterPanel, useSelectedPoolTypes } from './PoolsFilterPanel'
+import { ListView } from './PoolListView'
+import { useColumnConfig } from './useColumnConfig'
 
 type IDataType = PoolInfo
 
@@ -67,123 +63,20 @@ const CardFooter = styled(RawCardFooter)`
   padding: 12px 16px;
 `
 
-const StyledButton = styled(Button)`
-  color: ${({ theme }) => theme.colors.text};
-  font-weight: 400;
-  padding: 8px 16px;
-  line-height: 24px;
-  height: auto;
-`
-
 const StyledImage = styled(Image)`
   margin-left: auto;
   margin-right: auto;
   margin-top: 58px;
 `
 
-const PoolListItemAction = (_: string, _poolInfo: IDataType) => {
-  const { t } = useTranslation()
-  return (
-    <SubMenu
-      component={
-        <Button scale="xs" variant="text">
-          <MoreIcon />
-        </Button>
-      }
-    >
-      <StyledButton scale="sm" variant="text" as="a">
-        {t('View pool details')}
-      </StyledButton>
-      <StyledButton scale="sm" variant="text" as="a">
-        {t('Add Liquidity')}
-      </StyledButton>
-      <StyledButton scale="sm" variant="text" as="a">
-        {t('View info page')}
-      </StyledButton>
-    </SubMenu>
-  )
-}
-
-const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
-  const { t } = useTranslation()
-  const mediaQueries = useMatchBreakpoints()
-  return useMemo(
-    () => [
-      {
-        title: t('All Pools'),
-        dataIndex: null,
-        key: 'name',
-        minWidth: '200px',
-        render: (_, item) => (
-          <TokenOverview
-            isReady
-            token={item.token0}
-            quoteToken={item.token1}
-            icon={
-              <TokenPairImage
-                width={40}
-                height={40}
-                variant="inverted"
-                primaryToken={item.token0}
-                secondaryToken={item.token1}
-              />
-            }
-          />
-        ),
-      },
-      {
-        title: t('Fee Tier'),
-        dataIndex: 'feeTier',
-        key: 'feeTier',
-        display: mediaQueries.isXl || mediaQueries.isXxl,
-        render: (fee, item) => <FeeTier type={item.protocol} fee={fee ?? 0} denominator={item.feeTierBase} />,
-      },
-      {
-        title: t('APR'),
-        dataIndex: 'lpApr',
-        key: 'apr',
-        sorter: true,
-        render: (value) =>
-          value ? (
-            <>{(Number(value) * 100).toLocaleString(undefined, { maximumFractionDigits: 2 })}%</>
-          ) : (
-            <Skeleton width={60} />
-          ),
-      },
-      {
-        title: t('TVL'),
-        dataIndex: 'tvlUsd',
-        key: 'tvl',
-        sorter: true,
-        display: mediaQueries.isXl || mediaQueries.isXxl,
-        render: (value) => (value ? <FiatNumberDisplay value={value} /> : <Skeleton width={60} />),
-      },
-      {
-        title: t('Volume 24H'),
-        dataIndex: 'vol24hUsd',
-        key: 'vol',
-        sorter: true,
-        minWidth: '145px',
-        display: mediaQueries.isXl || mediaQueries.isXxl || mediaQueries.isLg,
-        render: (value) => (value ? <FiatNumberDisplay value={value} /> : <Skeleton width={60} />),
-      },
-      {
-        title: '',
-        render: PoolListItemAction,
-        dataIndex: null,
-        key: 'action',
-      },
-    ],
-    [t, mediaQueries],
-  )
-}
-
 const NUMBER_OF_FARMS_VISIBLE = 20
 
 export const PoolsPage = () => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const columns = useColumnConfig()
+  const { isMobile } = useMatchBreakpoints()
+
+  const columns = useColumnConfig<IDataType>()
   const allChainIds = useMemo(() => MAINNET_CHAINS.map((chain) => chain.id), [])
   const [filters, setFilters] = useState<IPoolsFilterPanelProps['value']>({
     selectedTypeIndex: 0,
@@ -277,7 +170,7 @@ export const PoolsPage = () => {
       return filteredData
     }
     return [...filteredData].sort((a, b) => sortOrder * a[sortField] + -1 * sortOrder * b[sortField])
-  }, [sortOrder, sortField, filteredData])
+  }, [sortOrder, sortField, filteredData]) as IDataType[]
 
   return (
     <Card>
@@ -286,26 +179,30 @@ export const PoolsPage = () => {
       </CardHeader>
       <CardBody>
         <PoolsContent>
-          <TableView
-            rowKey="lpAddress"
-            columns={columns}
-            data={sortedData.slice(0, cursorVisible) as any}
-            onSort={({ order, dataIndex }) => {
-              setSortOrder(order)
-              setSortField(dataIndex)
-            }}
-            sortOrder={sortOrder}
-            sortField={sortField}
-          />
+          {isMobile ? (
+            <ListView data={sortedData} />
+          ) : (
+            <TableView
+              rowKey="lpAddress"
+              columns={columns}
+              data={sortedData.slice(0, cursorVisible)}
+              onSort={({ order, dataIndex }) => {
+                setSortOrder(order)
+                setSortField(dataIndex)
+              }}
+              sortOrder={sortOrder}
+              sortField={sortField}
+            />
+          )}
         </PoolsContent>
         {poolList.length > 0 && <div ref={observerRef} />}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </CardBody>
       <CardFooter>
         {isPoolListExtended ? <InfoIcon width="18px" color={theme.colors.textSubtle} /> : null}
-        {t(isPoolListExtended ? 'Search has been extended' : 'Don’t see expected pools?')}
+        {isPoolListExtended ? t('Search has been extended') : t('Don’t see expected pools?')}
         <Button variant="text" scale="xs" onClick={handleToggleListExpand}>
-          {t(isPoolListExtended ? 'Reset' : 'Extend the search')}
+          {isPoolListExtended ? t('Reset') : t('Extend the search')}
         </Button>
       </CardFooter>
     </Card>

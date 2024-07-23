@@ -1,4 +1,5 @@
 import { useTheme } from "@pancakeswap/hooks";
+import { useTranslation } from "@pancakeswap/localization";
 import { Currency, ERC20Token } from "@pancakeswap/sdk";
 import { Column, IMultiSelectProps, ISelectItem, MultiSelect, IMultiSelectChangeEvent } from "@pancakeswap/uikit";
 import { useCallback, useMemo } from "react";
@@ -64,14 +65,15 @@ export const toTokenValue = (t: Currency) => `${t.chainId}:${t.isNative ? t.wrap
 
 export const TokenFilter: React.FC<ITokenProps> = ({ data = [], value, onChange }) => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
 
   const tokenList = useMemo(
     () =>
-      data.map((t) => ({
-        ...t,
-        icon: <CurrencyLogo currency={t} />,
-        value: toTokenValue(t),
-        label: t.symbol,
+      data.map((token) => ({
+        ...token,
+        icon: <CurrencyLogo currency={token} />,
+        value: toTokenValue(token),
+        label: token.symbol,
       })),
     [data]
   );
@@ -105,7 +107,7 @@ export const TokenFilter: React.FC<ITokenProps> = ({ data = [], value, onChange 
         options={tokenList}
         isShowFilter
         placeholder="All tokens"
-        panelFooterTemplate={() => <span>Don’t see expected tokens?</span>}
+        panelFooterTemplate={() => <span>{t("Don’t see expected tokens?")}</span>}
         virtualScrollerOptions={{ itemSize: 58 }}
         itemTemplate={itemTemplate}
         value={value}
