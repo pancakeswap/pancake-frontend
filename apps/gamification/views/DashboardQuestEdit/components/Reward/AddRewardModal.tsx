@@ -306,7 +306,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
             )}
             {!hasRewardContractAddress && (
               <Text mt="8px" fontSize="14px" color="failure">
-                {t('Quest Reward contract no support in this chain')}
+                {t('Quest reward contract no support in this chain')}
               </Text>
             )}
             {isNetworkWrong ? (
