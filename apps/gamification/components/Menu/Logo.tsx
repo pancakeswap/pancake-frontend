@@ -4,7 +4,7 @@ import { LogoText } from './LogoText'
 export const Logo = () => {
   return (
     <NextLink href="/" passHref style={{ display: 'block', margin: 'auto' }}>
-      <LogoText width="91px" height="24px" />
+      <LogoText width="119px" height="25px" />
     </NextLink>
   )
 }
