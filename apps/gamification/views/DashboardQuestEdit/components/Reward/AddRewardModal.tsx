@@ -112,10 +112,12 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     return (rewardAmount.gt(0) && totalWinners.eq(1)) || rewardAmount.eq(perUserWin.times(totalWinners))
   }, [amountOfWinnersInModal, stakeAmount])
 
-  const isAbleToSubmit = useMemo(() => {
+  const isInputLowerThanBalance = useMemo(() => {
     const userBalance = new BigNumber(getFullDisplayBalance(currencyBalance, inputCurrency?.decimals))
-    const isInputLowerThanBalance = new BigNumber(stakeAmount).lte(userBalance)
+    return new BigNumber(stakeAmount).lte(userBalance)
+  }, [currencyBalance, inputCurrency, stakeAmount])
 
+  const isAbleToSubmit = useMemo(() => {
     return Boolean(
       !inputCurrency ||
         new BigNumber(stakeAmount).lte(0) ||
@@ -125,10 +127,10 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
         !hasRewardContractAddress,
     )
   }, [
-    currencyBalance,
-    displayAmountOfWinnersInModal,
     inputCurrency,
     stakeAmount,
+    displayAmountOfWinnersInModal,
+    isInputLowerThanBalance,
     isRewardDistribution,
     hasRewardContractAddress,
   ])
@@ -314,7 +316,11 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
                 {t('Switch Network')}
               </Button>
             ) : needEnable ? (
-              <EnableButton currency={inputCurrency} setLastUpdated={setLastUpdated} />
+              <EnableButton
+                disabled={!isInputLowerThanBalance}
+                currency={inputCurrency}
+                setLastUpdated={setLastUpdated}
+              />
             ) : (
               <StyledButton
                 width="100%"

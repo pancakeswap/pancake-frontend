@@ -11,11 +11,16 @@ import { getBep20Contract } from 'utils/contractHelpers'
 import { Address } from 'viem'
 
 interface EnableButtonProps {
+  disabled: boolean
   currency: Currency
   setLastUpdated: () => void
 }
 
-export const EnableButton: React.FC<React.PropsWithChildren<EnableButtonProps>> = ({ currency, setLastUpdated }) => {
+export const EnableButton: React.FC<React.PropsWithChildren<EnableButtonProps>> = ({
+  disabled,
+  currency,
+  setLastUpdated,
+}) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
@@ -44,7 +49,7 @@ export const EnableButton: React.FC<React.PropsWithChildren<EnableButtonProps>> 
     <Button
       mt="24px"
       width="100%"
-      disabled={isPending}
+      disabled={disabled || isPending}
       endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : null}
       onClick={onApprove}
     >
