@@ -20,6 +20,7 @@ export interface ExtendEthereum extends WindowProvider {
 
 declare global {
   interface Window {
+    okxwallet?: WindowProvider
     coin98?: true
     mercuryoWidget?: any
     ethereum?: ExtendEthereum
