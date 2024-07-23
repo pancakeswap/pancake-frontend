@@ -16,7 +16,7 @@ export const WarningInfo = () => {
 
   return (
     <Box mb="24px">
-      <Message variant="success" icon={<ErrorIcon width="24px" color="success" />}>
+      <Message variant="success" icon={<ErrorIcon width="24px" color="primary" />}>
         <MessageText overflow="hidden">
           <Text bold>{t('No withdraw allowed')}</Text>
           <StyledLineClamp fontSize="14px" line={isExpanded ? 0 : 3} ellipsis lineHeight="150%">

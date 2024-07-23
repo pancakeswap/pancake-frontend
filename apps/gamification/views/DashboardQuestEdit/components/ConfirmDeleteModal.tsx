@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, InjectedModalProps, Modal, Text, WarningIcon } from '@pancakeswap/uikit'
+import { Box, Button, ErrorIcon, Flex, FlexGap, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
 
 interface ConfirmDeleteModalProps extends InjectedModalProps {
   handleDelete: () => void
@@ -14,26 +14,28 @@ export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({ handleDe
   }
 
   return (
-    <Modal title="" headerBorderColor="transparent" onDismiss={onDismiss}>
+    <Modal title={t('Remove the task')} headerBorderColor="transparent" onDismiss={onDismiss}>
       <Flex
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
         width={['100%', '100%', '100%', '380px']}
       >
-        <Box width="100%" mt="-30px">
-          <WarningIcon display="block" m="auto" width={50} height={50} color="failure" />
+        <Box width="100%">
+          <ErrorIcon display="block" m="auto" width={50} height={50} color="primary" />
           <Box mt="20px">
-            <Text textAlign="center" bold fontSize={20}>
-              {t('Confirm Delete?')}
-            </Text>
             <Text fontSize={14} mt="4px" textAlign="center" color="textSubtle">
-              {t('Are you sure you want to delete?')}
+              {t('Are you sure you want to remove the task?')}
             </Text>
           </Box>
-          <Button width="100%" mt="40px" onClick={handleClickDelete}>
-            {t('Confirm')}
-          </Button>
+          <FlexGap gap="8px" mt="40px">
+            <Button variant="secondary" width="100%" onClick={onDismiss}>
+              {t('Cancel')}
+            </Button>
+            <Button width="100%" onClick={handleClickDelete}>
+              {t('Confirm')}
+            </Button>
+          </FlexGap>
         </Box>
       </Flex>
     </Modal>
