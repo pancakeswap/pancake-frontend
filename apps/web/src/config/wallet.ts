@@ -116,6 +116,8 @@ const walletsConfig = <config extends Config = Config, context = unknown>({
         return typeof window !== 'undefined' && Boolean(window.okxwallet)
       },
       downloadLink: 'https://chromewebstore.google.com/detail/okx-wallet/mcohilncbfahbmgdjkbpemcciiolgcge',
+      deepLink:
+        'https://www.okx.com/download?deeplink=okx%3A%2F%2Fwallet%2Fdapp%2Furl%3FdappUrl%3Dhttps%253A%252F%252Fpancakeswap.finance',
       guide: {
         desktop: 'https://www.okx.com/web3',
         mobile: 'https://www.okx.com/web3',
