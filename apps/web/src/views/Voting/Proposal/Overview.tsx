@@ -1,14 +1,23 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowBackIcon, Box, Button, Flex, Heading, NotFound, ReactMarkdown } from '@pancakeswap/uikit'
-import { useQuery } from '@tanstack/react-query'
+import {
+  ArrowBackIcon,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  NotFound,
+  ReactMarkdown,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import Container from 'components/Layout/Container'
 import PageLoader from 'components/Loader/PageLoader'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useCallback, useState } from 'react'
 import { ProposalState } from 'state/types'
-import { getAllVotes, getProposal } from 'state/voting/helpers'
+import { getAllVotes, getNumberOfVotes, getProposal } from 'state/voting/helpers'
 import { useAccount } from 'wagmi'
 import Layout from '../components/Layout'
 import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
@@ -23,6 +32,9 @@ const Overview = () => {
   const id = query.id as string
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const [showAllVotes, setShowAllVotes] = useState(false)
+  const { isMobile } = useMatchBreakpoints()
+  const VOTES_PER_VIEW = isMobile ? 10 : 20
 
   const {
     status: proposalLoadingStatus,
@@ -39,25 +51,45 @@ const Overview = () => {
 
   const {
     status: votesLoadingStatus,
-    data,
+    data: votes = [],
     refetch,
   } = useQuery({
-    queryKey: ['voting', 'proposal', proposal, 'votes'],
+    queryKey: ['voting', 'proposal', proposal, showAllVotes ? 'allVotes' : 'overviewVotes'],
     queryFn: async () => {
       if (!proposal) {
         throw new Error('No proposal')
       }
-      return getAllVotes(proposal)
+      if (showAllVotes && proposal.votes > VOTES_PER_VIEW) {
+        return getAllVotes(proposal)
+      }
+      return getNumberOfVotes(proposal, VOTES_PER_VIEW)
     },
+    placeholderData: keepPreviousData,
     enabled: Boolean(proposal),
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   })
 
-  const votes = useMemo(() => data || [], [data])
+  const { data: accountVoteChoice, refetch: refetchAccountVoteChoice } = useQuery({
+    queryKey: ['voting', 'proposal', proposal, account, 'accountVoteChoice'],
+    queryFn: async () => {
+      if (!proposal) {
+        throw new Error('No proposal')
+      }
+      const voteInVotes = votes.filter((vote) => vote.voter.toLowerCase() === account?.toLowerCase())[0]
+      return voteInVotes?.choice ?? (await getNumberOfVotes(proposal, 1, account))[0]?.choice
+    },
+    enabled: Boolean(account && proposal && votesLoadingStatus === 'success'),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
 
-  const hasAccountVoted = account && votes && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
+  const handleSuccess = useCallback(() => {
+    refetch()
+    refetchAccountVoteChoice()
+  }, [refetch, refetchAccountVoteChoice])
 
   const isPageLoading = votesLoadingStatus === 'pending' || proposalLoadingStatus === 'pending'
 
@@ -96,18 +128,25 @@ const Overview = () => {
               <ReactMarkdown>{proposal.body}</ReactMarkdown>
             </Box>
           </Box>
-          {!isPageLoading && !hasAccountVoted && proposal.state === ProposalState.ACTIVE && (
-            <Vote proposal={proposal} onSuccess={refetch} mb="16px" />
+          {!isPageLoading && !accountVoteChoice && proposal.state === ProposalState.ACTIVE && (
+            <Vote proposal={proposal} onSuccess={handleSuccess} mb="16px" />
           )}
           <Votes
-            votes={votes || []}
-            totalVotes={votes?.length ?? proposal.votes}
+            votes={votes}
+            showAll={showAllVotes}
+            setShowAll={setShowAllVotes}
+            totalVotes={proposal.votes}
             votesLoadingStatus={votesLoadingStatus}
           />
         </Box>
         <Box position="sticky" top="60px">
           <Details proposal={proposal} />
-          <Results choices={proposal.choices} votes={votes || []} votesLoadingStatus={votesLoadingStatus} />
+          <Results
+            choices={proposal.choices}
+            accountVoteChoice={accountVoteChoice}
+            choiceVotesScores={proposal.scores}
+            totalVotesScores={proposal.scores_total}
+          />
         </Box>
       </Layout>
     </Container>

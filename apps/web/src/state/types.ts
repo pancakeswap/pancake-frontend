@@ -403,6 +403,8 @@ export interface Proposal {
   state: ProposalState
   title: string
   ipfs: string
+  scores: number[]
+  scores_total: number
 }
 
 export interface Vote {

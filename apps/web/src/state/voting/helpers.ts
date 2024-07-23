@@ -50,6 +50,8 @@ export const getProposal = async (id: string): Promise<Proposal> => {
           author
           votes
           ipfs
+          scores
+          scores_total
         }
       }
     `,
@@ -58,12 +60,25 @@ export const getProposal = async (id: string): Promise<Proposal> => {
   return response.proposal
 }
 
-export const getVotes = async (first: number, skip: number, where: VoteWhere): Promise<Vote[]> => {
+export const getVotes = async (
+  first: number,
+  skip: number,
+  where: VoteWhere,
+  orderby?: string,
+  orderdirection?: 'asc' | 'desc',
+): Promise<Vote[]> => {
+  const hasOrderBy = orderby !== undefined
+  const hasOrderDirection = orderdirection !== undefined
+
   const response: { votes: Vote[] } = await request(
     SNAPSHOT_API,
     gql`
-      query getVotes($first: Int, $skip: Int, $where: VoteWhere) {
-        votes(first: $first, skip: $skip, where: $where) {
+      query getVotes($first: Int, $skip: Int, $where: VoteWhere ${hasOrderBy ? ', $orderby: String' : ''} ${
+      hasOrderDirection ? ', $orderdirection: OrderDirection' : ''
+    }) {
+        votes(first: $first, skip: $skip, where: $where ${hasOrderBy ? ', orderBy: $orderby' : ''} ${
+      hasOrderDirection ? ', orderDirection: $orderdirection' : ''
+    }) {
           id
           voter
           created
@@ -76,19 +91,43 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
         }
       }
     `,
-    { first, skip, where },
+    {
+      first,
+      skip,
+      where,
+      ...(hasOrderBy && { orderby }),
+      ...(hasOrderDirection && { orderdirection }),
+    },
   )
   return response.votes
 }
 
-// TODO: lazy get all votes when user click load more
+export const getNumberOfVotes = async (
+  proposal: Proposal,
+  totalVotesToFetch: number,
+  voter?: `0x${string}`,
+): Promise<Vote[]> => {
+  try {
+    const votes = await getVotes(totalVotesToFetch, 0, { proposal: proposal.id, ...(voter && { voter }) }, 'vp', 'desc')
+
+    return votes.map((v) => ({
+      ...v,
+      metadata: {
+        votingPower: String(v.vp) || '0',
+      },
+    }))
+  } catch (error) {
+    throw new Error(`Failed to fetch votes: ${error}`)
+  }
+}
+
 export const getAllVotes = async (proposal: Proposal, votesPerChunk = 1000): Promise<Vote[]> => {
   const voters = await new Promise<Vote[]>((resolve, reject) => {
     let votes: Vote[] = []
 
     const fetchVoteChunk = async (newSkip: number) => {
       try {
-        const voteChunk = await getVotes(votesPerChunk, newSkip, { proposal: proposal.id })
+        const voteChunk = await getVotes(votesPerChunk, newSkip, { proposal: proposal.id }, 'vp', 'desc')
 
         if (voteChunk.length === 0) {
           resolve(votes)
