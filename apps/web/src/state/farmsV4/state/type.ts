@@ -15,6 +15,8 @@ export type BasePoolInfo = {
   protocol: Protocol
   token0: Currency
   token1: Token
+  token0Price?: `${number}`
+  token1Price?: `${number}`
   lpApr?: `${number}`
   tvlUsd?: `${number}`
   vol24hUsd?: `${number}`
