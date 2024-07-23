@@ -8,6 +8,7 @@ import { BigNumber } from 'bignumber.js'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import { CurrencySearch } from 'components/SearchModal/CurrencySearch'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import addresses from 'config/constants/contracts'
 import { ADDRESS_ZERO } from 'config/constants/index'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -98,6 +99,10 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
     },
   } as { [key in number]: ModalConfig }
 
+  const hasRewardContractAddress = useMemo(
+    () => Boolean(addresses.questReward?.[inputCurrency?.chainId]),
+    [inputCurrency],
+  )
   const isNetworkWrong = useMemo(() => chainId !== inputCurrency?.chainId, [chainId, inputCurrency])
 
   const isRewardDistribution = useMemo(() => {
@@ -116,9 +121,17 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
         new BigNumber(stakeAmount).lte(0) ||
         !displayAmountOfWinnersInModal ||
         !isInputLowerThanBalance ||
-        !isRewardDistribution,
+        !isRewardDistribution ||
+        !hasRewardContractAddress,
     )
-  }, [currencyBalance, displayAmountOfWinnersInModal, inputCurrency, stakeAmount, isRewardDistribution])
+  }, [
+    currencyBalance,
+    displayAmountOfWinnersInModal,
+    inputCurrency,
+    stakeAmount,
+    isRewardDistribution,
+    hasRewardContractAddress,
+  ])
 
   // Approve
   const tokenAddress = inputCurrency?.isNative ? ADDRESS_ZERO : inputCurrency?.address
@@ -289,6 +302,11 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
             {!isRewardDistribution && (
               <Text mt="8px" fontSize="14px" color="failure">
                 {t('The reward cannot be distributed evenly.')}
+              </Text>
+            )}
+            {!hasRewardContractAddress && (
+              <Text mt="8px" fontSize="14px" color="failure">
+                {t('Quest Reward contract no support in this chain')}
               </Text>
             )}
             {isNetworkWrong ? (

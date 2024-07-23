@@ -48,10 +48,8 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
         return undefined
       }).filter((nft) => nft !== undefined) as MintNftData[]
 
-      const randomIndex = Math.floor(Math.random() * nfts.length)
-
-      setSelectedBunnyId(nfts?.[randomIndex]?.bunnyId ?? '')
-      setStarterNfts([nfts?.[randomIndex]])
+      setStarterNfts(nfts)
+      setSelectedBunnyId(nfts?.[0]?.bunnyId ?? '')
     }
     if (starterNfts.length === 0) {
       getStarterNfts()
