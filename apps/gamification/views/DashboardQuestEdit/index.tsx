@@ -53,6 +53,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
           ownerAddress,
           tasks,
           numberOfParticipants,
+          needAddReward,
         } = questData as SingleQuestData
         const startDateConvert = startDateTime > 0 ? new Date(convertDateAndTime(startDateTime)) : null
         const endDateConvert = endDateTime > 0 ? new Date(convertDateAndTime(endDateTime)) : null
@@ -76,7 +77,7 @@ export const DashboardQuestEdit = ({ questId }: { questId?: string }) => {
             rewardSCAddress,
             ownerAddress,
             numberOfParticipants,
-            needAddReward: true,
+            needAddReward,
           },
           newTasks,
         )
