@@ -1,22 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { bscTokens } from '@pancakeswap/tokens'
-import { Card, CardBody, Flex, Heading, Image, Text, useMatchBreakpoints, useToast } from '@pancakeswap/uikit'
-import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
-import { ASSET_CDN } from 'config/constants/endpoints'
-import { FetchStatus } from 'config/constants/types'
+import { AutoRenewIcon, Box, Button, Card, CardBody, Flex, Heading, Image, Text, useToast } from '@pancakeswap/uikit'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useBunnyFactory } from 'hooks/useContract'
-import { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { useEffect, useState } from 'react'
-import { getBunnyFactoryAddress } from 'utils/addressHelpers'
 import { pancakeBunniesAddress } from 'views/ProfileCreation/Nft/constants'
 import { getNftsFromCollectionApi } from 'views/ProfileCreation/Nft/helpers'
 import { ApiSingleTokenData } from 'views/ProfileCreation/Nft/type'
 
 import NextStepButton from './NextStepButton'
-import SelectionCard from './SelectionCard'
-import { MINT_COST, STARTER_NFT_BUNNY_IDS } from './config'
+import { STARTER_NFT_BUNNY_IDS } from './config'
 import useProfileCreation from './contexts/hook'
 
 interface MintNftData extends ApiSingleTokenData {
@@ -26,14 +19,11 @@ interface MintNftData extends ApiSingleTokenData {
 const Mint: React.FC<React.PropsWithChildren> = () => {
   const [selectedBunnyId, setSelectedBunnyId] = useState<string>('')
   const [starterNfts, setStarterNfts] = useState<MintNftData[]>([])
-  const { actions, allowance } = useProfileCreation()
+  const { actions } = useProfileCreation()
   const { toastSuccess } = useToast()
-  const { isMobile } = useMatchBreakpoints()
 
   const bunnyFactoryContract = useBunnyFactory()
   const { t } = useTranslation()
-  const { balance: cakeBalance, fetchStatus } = useBSCCakeBalance()
-  const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance >= MINT_COST
   const { callWithGasPrice } = useCallWithGasPrice()
 
   useEffect(() => {
@@ -51,28 +41,21 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
       setStarterNfts(nfts)
       setSelectedBunnyId(nfts?.[0]?.bunnyId ?? '')
     }
+
     if (starterNfts.length === 0) {
       getStarterNfts()
     }
   }, [starterNfts])
 
-  const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
-    useApproveConfirmTransaction({
-      token: bscTokens.cake,
-      spender: getBunnyFactoryAddress(),
-      minAmount: MINT_COST,
-      targetAmount: allowance,
-      onConfirm: () => {
-        return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [Number(selectedBunnyId)])
-      },
-      onApproveSuccess: () => {
-        toastSuccess(t('Enabled'), t("Press 'confirm' to mint this NFT"))
-      },
-      onSuccess: () => {
-        toastSuccess(t('Success'), t('You have minted your starter NFT'))
-        actions.nextStep()
-      },
-    })
+  const { isConfirmed, isConfirming, handleConfirm } = useApproveConfirmTransaction({
+    onConfirm: () => {
+      return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [Number(selectedBunnyId)])
+    },
+    onSuccess: () => {
+      toastSuccess(t('Success'), t('You have minted your starter NFT'))
+      actions.nextStep()
+    },
+  })
 
   return (
     <>
@@ -93,44 +76,24 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
             <Text fontSize={['24px']} bold textAlign="center" mb="24px">
               {t('Get your Starter!')}
             </Text>
-            <Image
-              alt="make-profile"
-              width={isMobile ? 240 : 288}
-              height={isMobile ? 80 : 100}
-              style={{
-                margin: 'auto',
-                minWidth: isMobile ? 240 : 288,
-              }}
-              src={`${ASSET_CDN}/gamification/images/make-profile.png`}
-            />
+            <Box borderRadius="24px" overflow="hidden" width={88} height={88} margin="auto">
+              <Image alt="picked-new-profile" width={88} height={88} src={starterNfts?.[0]?.image.thumbnail} />
+            </Box>
             <Text mt="24px" textAlign="center">
-              {t('It’ll only cost a tiny bit for gas fees.')}
+              {t('Here is your starter, congratulations!')}
             </Text>
           </Flex>
-          {starterNfts?.map?.((nft) => {
-            const handleChange = (value: string) => setSelectedBunnyId(value)
-            return (
-              <SelectionCard
-                key={nft?.name}
-                name="mintStarter"
-                value={nft?.bunnyId}
-                image={nft?.image.thumbnail}
-                isChecked={selectedBunnyId === nft?.bunnyId}
-                onChange={handleChange}
-                disabled={isApproving || isConfirming || isConfirmed || !hasMinimumCakeRequired}
-              >
-                <Text bold>{nft?.name}</Text>
-              </SelectionCard>
-            )
-          })}
-          <ApproveConfirmButtons
-            isApproveDisabled={selectedBunnyId === null || isConfirmed || isConfirming || isApproved}
-            isApproving={isApproving}
-            isConfirmDisabled={!isApproved || isConfirmed || !hasMinimumCakeRequired}
-            isConfirming={isConfirming}
-            onApprove={handleApprove}
-            onConfirm={handleConfirm}
-          />
+
+          <Box width="fit-content" margin="auto">
+            <Button
+              disabled={isConfirmed}
+              isLoading={isConfirming}
+              endIcon={isConfirming ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+              onClick={handleConfirm}
+            >
+              {isConfirming ? t('Confirming') : t('Confirm')}
+            </Button>
+          </Box>
         </CardBody>
       </Card>
       <NextStepButton onClick={actions.nextStep} disabled={!isConfirmed}>

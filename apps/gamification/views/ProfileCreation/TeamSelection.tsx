@@ -61,7 +61,7 @@ const Team: React.FC<React.PropsWithChildren> = () => {
             })}
         </CardBody>
       </Card>
-      <NextStepButton onClick={actions.nextStep} disabled={currentTeamId === null}>
+      <NextStepButton onClick={actions.nextStep} disabled={!currentTeamId}>
         {t('Next Step')}
       </NextStepButton>
     </>

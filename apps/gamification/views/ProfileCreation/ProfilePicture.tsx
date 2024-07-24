@@ -183,7 +183,7 @@ const ProfilePicture: React.FC = () => {
           </Text>
           <Button
             isLoading={isApproving}
-            disabled={isApproved || isApproving || selectedNft.tokenId === null}
+            disabled={isApproved || isApproving || !selectedNft.tokenId}
             onClick={handleApprove}
             endIcon={isApproving ? <AutoRenewIcon spin color="currentColor" /> : undefined}
             id="approveStarterCollectible"
@@ -192,7 +192,7 @@ const ProfilePicture: React.FC = () => {
           </Button>
         </CardBody>
       </Card>
-      <NextStepButton onClick={actions.nextStep} disabled={selectedNft.tokenId === null || !isApproved || isApproving}>
+      <NextStepButton onClick={actions.nextStep} disabled={!selectedNft.tokenId || !isApproved || isApproving}>
         {t('Next Step')}
       </NextStepButton>
     </>
