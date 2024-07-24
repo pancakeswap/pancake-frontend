@@ -17,9 +17,7 @@ export const WrongNetworkModal: React.FC = () => {
   const { isWrongNetwork } = useActiveNetwork()
   const { disconnect } = useDisconnect()
 
-  const handleOnClick = useCallback(() => {
-    return disconnect()
-  }, [disconnect])
+  const handleOnClick = useCallback(() => disconnect(), [disconnect])
 
   return (
     <ModalV2 isOpen={isWrongNetwork}>
