@@ -40,6 +40,7 @@ const Overview = () => {
   const {
     status: proposalLoadingStatus,
     data: proposal,
+    refetch: refetchProposal,
     error,
   } = useQuery({
     queryKey: ['voting', 'proposal', id],
@@ -53,7 +54,7 @@ const Overview = () => {
   const {
     status: votesLoadingStatus,
     data: votes = [],
-    refetch,
+    refetch: refetchVotes,
   } = useQuery({
     queryKey: ['voting', 'proposal', proposal?.id, showAllVotes ? 'allVotes' : 'overviewVotes'],
     queryFn: async () => {
@@ -95,10 +96,11 @@ const Overview = () => {
     refetchOnMount: false,
   })
 
-  const handleSuccess = useCallback(() => {
-    refetch()
+  const handleSuccess = useCallback(async () => {
+    await refetchProposal()
+    await refetchVotes()
     refetchAccountVoteChoice()
-  }, [refetch, refetchAccountVoteChoice])
+  }, [refetchProposal, refetchVotes, refetchAccountVoteChoice])
 
   const isPageLoading = votesLoadingStatus === 'pending' || proposalLoadingStatus === 'pending'
 
