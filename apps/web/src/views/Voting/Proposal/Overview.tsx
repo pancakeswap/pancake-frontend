@@ -51,7 +51,11 @@ const Overview = () => {
     refetchOnMount: false,
   })
 
-  const { status: votesLoadingStatus, data: votes = [] } = useQuery({
+  const {
+    status: votesLoadingStatus,
+    data: votes = [],
+    isFetching: isVotesFetching,
+  } = useQuery({
     queryKey: ['voting', 'proposal', proposal, showAllVotes ? 'allVotes' : 'overviewVotes'],
     queryFn: async () => {
       if (!proposal) {
@@ -62,7 +66,7 @@ const Overview = () => {
           return getAllVotes(proposal)
         }
         const cachedOverviewVotes = queryClient.getQueryCache().find<VoteType[]>({
-          queryKey: ['voting', 'proposal', proposal?.id, 'overviewVotes'],
+          queryKey: ['voting', 'proposal', proposal, 'overviewVotes'],
         })?.state?.data
         if (cachedOverviewVotes) {
           return cachedOverviewVotes
@@ -86,7 +90,7 @@ const Overview = () => {
       const voteInVotes = votes.filter((vote) => vote.voter.toLowerCase() === account?.toLowerCase())[0]
       return voteInVotes?.choice ?? (await getNumberOfVotes(proposal, 1, account))[0]?.choice
     },
-    enabled: Boolean(account && proposal && votesLoadingStatus === 'success'),
+    enabled: Boolean(account && proposal && votesLoadingStatus === 'success' && !isVotesFetching),
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
