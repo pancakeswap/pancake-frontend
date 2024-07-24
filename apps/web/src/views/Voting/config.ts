@@ -8,6 +8,5 @@ export const ADMINS = [
   '0x4a7b8400AE131feffC42E5Bf39401A094Ed497CA', // CHILI cakevote.eth
 ].map((address) => address.toLowerCase())
 export const IPFS_GATEWAY = 'https://snapshot.4everland.link/ipfs'
-export const SNAPSHOT_VERSION = '0.1.3'
 export const PANCAKE_SPACE = 'cakevote.eth'
 export const VOTE_THRESHOLD = 10 * 1_000

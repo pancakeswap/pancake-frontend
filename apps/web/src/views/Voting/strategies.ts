@@ -4,34 +4,6 @@ export const votePowerAddress = {
   veCake: '0x67Dfbb197602FDB9A9D305cC7A43b95fB63a0A56',
 } as const
 
-export const veCakeBalanceStrategy = {
-  name: 'contract-call',
-  params: {
-    address: votePowerAddress.veCake,
-    decimals: 18,
-    args: ['%{address}'],
-    methodABI: {
-      inputs: [
-        {
-          internalType: 'address',
-          name: '_user',
-          type: 'address',
-        },
-      ],
-      name: 'getVotingPowerWithoutPool',
-      outputs: [
-        {
-          internalType: 'uint256',
-          name: '',
-          type: 'uint256',
-        },
-      ],
-      stateMutability: 'view',
-      type: 'function',
-    },
-  },
-}
-
 export const cakeBalanceStrategy = (version: 'v0' | 'v1') => ({
   name: 'contract-call',
   params: {
@@ -230,97 +202,6 @@ export function createTotalStrategy(poolAddress, version: 'v0' | 'v1') {
             type: 'uint256',
           },
         ],
-        stateMutability: 'view',
-        type: 'function',
-      },
-    },
-  }
-}
-
-export function lockedCakeUser(
-  cakeVaultAddress,
-  outputName: 'lockedAmount' | 'lockEndTime' | 'shares' | 'userBoostedShare',
-) {
-  return {
-    name: 'contract-call',
-    params: {
-      address: cakeVaultAddress,
-      decimals: 0,
-      output: outputName,
-      args: ['%{address}'],
-      methodABI: {
-        inputs: [
-          {
-            internalType: 'address',
-            name: '',
-            type: 'address',
-          },
-        ],
-        name: 'userInfo',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: 'shares',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'lastDepositedTime',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'cakeAtLastUserAction',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'lastUserActionTime',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'lockStartTime',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'lockEndTime',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'userBoostedShare',
-            type: 'uint256',
-          },
-          {
-            internalType: 'bool',
-            name: 'locked',
-            type: 'bool',
-          },
-          {
-            internalType: 'uint256',
-            name: 'lockedAmount',
-            type: 'uint256',
-          },
-        ],
-        stateMutability: 'view',
-        type: 'function',
-      },
-    },
-  }
-}
-
-export function lockedCakeShare(cakeVaultAddress) {
-  return {
-    name: 'contract-call',
-    params: {
-      address: cakeVaultAddress,
-      decimals: 0,
-      methodABI: {
-        inputs: [],
-        name: 'getPricePerFullShare',
-        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
         stateMutability: 'view',
         type: 'function',
       },
