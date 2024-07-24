@@ -82,7 +82,7 @@ const Overview = () => {
   })
 
   const { data: accountVoteChoice } = useQuery({
-    queryKey: ['voting', 'proposal', proposal, account, 'accountVoteChoice'],
+    queryKey: ['voting', 'proposal', proposal?.id, account, 'accountVoteChoice'],
     queryFn: async () => {
       if (!proposal) {
         throw new Error('No proposal')
