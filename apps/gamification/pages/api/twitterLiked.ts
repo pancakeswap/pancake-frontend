@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 import { getOAuthHeader } from 'utils/getOAuthHeader'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
@@ -21,23 +20,40 @@ export default async function handler(req, res) {
 
       const url = `https://api.twitter.com/2/users/${userId}/liked_tweets`
       const method = 'GET'
-      const response = await fetch(url, {
-        method,
-        headers: {
-          ...getOAuthHeader(url, method, consumerKey, consumerSecret, token, tokenSecret),
-          'Content-Type': 'application/json',
-        },
-      })
+      let nextToken = null
+      let tweetFound = false
 
-      const result = await response.json()
-      if (!response.ok) {
-        res.status(500).json({ message: result.title })
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        // eslint-disable-next-line no-await-in-loop
+        const response = await fetch(url + (nextToken ? `?pagination_token=${nextToken}` : ''), {
+          method,
+          headers: {
+            ...getOAuthHeader(url, method, consumerKey, consumerSecret, token, tokenSecret),
+            'Content-Type': 'application/json',
+          },
+        })
+
+        // eslint-disable-next-line no-await-in-loop
+        const result = await response.json()
+        if (!response.ok) {
+          res.status(500).json({ message: result.title })
+          return
+        }
+
+        const likedTweets = result.data
+        if (likedTweets.some((tweet) => tweet.id.toLowerCase() === twitterPostId.toLowerCase())) {
+          tweetFound = true
+          break
+        }
+
+        nextToken = result.meta.next_token
+        if (!nextToken) {
+          break
+        }
       }
 
-      const likedTweets = result.data
-      const liked = likedTweets.find((tweet) => tweet.id.toLowerCase() === twitterPostId.toLowerCase())
-
-      if (liked) {
+      if (tweetFound) {
         const queryString = new URLSearchParams({
           account,
           questId,
@@ -49,9 +65,9 @@ export default async function handler(req, res) {
         const responseMarkTaskResult = await responseMarkTask.json()
         if (responseMarkTask.ok) {
           res.status(200).json(responseMarkTaskResult)
+        } else {
+          res.status(500).json({ message: responseMarkTaskResult.title })
         }
-
-        res.status(500).json({ message: responseMarkTaskResult.title })
       }
     } catch (error) {
       res.status(500).json({ message: (error as Error).message })
