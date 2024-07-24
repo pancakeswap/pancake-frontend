@@ -53,9 +53,11 @@ export const NetworkFilter: React.FC<INetworkProps> = ({ data, value, onChange }
         e.preventDefault();
         return;
       }
-      onChange(e.value);
+      // keep the order with network list
+      const sortedValue = data ? data.filter((opt) => e.value.includes(opt.value)).map((opt) => opt.value) : e.value;
+      onChange(sortedValue);
     },
-    [onChange]
+    [onChange, data]
   );
 
   return (

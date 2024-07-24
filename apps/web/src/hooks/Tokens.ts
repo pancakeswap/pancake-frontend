@@ -2,6 +2,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { ERC20Token } from '@pancakeswap/sdk'
 import { Currency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
+import type { Address } from 'viem'
 
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { GELATO_NATIVE } from 'config/constants'
@@ -72,24 +73,31 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
   }, [userAddedTokens, tokenMap, chainId])
 }
 
+type TokenChainAddressMap<TChainId extends number = number> = {
+  [chainId in TChainId]: {
+    [tokenAddress: Address]: ERC20Token
+  }
+}
+
 /**
  * Returns all tokens that are from active urls and user added tokens
  */
-export function useAllTokensByChainIds(chainIds: number[]): { [address: string]: ERC20Token } {
+export function useAllTokensByChainIds(chainIds: number[]): TokenChainAddressMap {
   const tokenMap = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
   const userAddedTokenMap = useUserAddedTokensByChainIds(chainIds)
   return useMemo(() => {
-    return chainIds.reduce<{ [address: string]: ERC20Token }>((tokenMap_, chainId) => {
+    return chainIds.reduce<TokenChainAddressMap>((tokenMap_, chainId) => {
+      tokenMap_[chainId] = tokenMap_[chainId] || {}
       userAddedTokenMap[chainId].forEach((token) => {
         const checksumAddress = safeGetAddress(token.address)
         if (checksumAddress) {
-          tokenMap_[checksumAddress] = token
+          tokenMap_[chainId][checksumAddress] = token
         }
       })
       Object.keys(tokenMap[chainId] || {}).forEach((address) => {
         const checksumAddress = safeGetAddress(address)
-        if (checksumAddress && !tokenMap_[checksumAddress]) {
-          tokenMap_[checksumAddress] = tokenMap[chainId][address].token
+        if (checksumAddress && !tokenMap_[chainId][checksumAddress]) {
+          tokenMap_[chainId][checksumAddress] = tokenMap[chainId][address].token
         }
       })
 

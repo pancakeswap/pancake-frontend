@@ -1,6 +1,6 @@
-import { zeroAddress } from "viem";
 import { useTheme } from "@pancakeswap/hooks";
-import { Currency, ERC20Token, Token } from "@pancakeswap/sdk";
+import { useTranslation } from "@pancakeswap/localization";
+import { Currency, ERC20Token } from "@pancakeswap/sdk";
 import { Column, IMultiSelectProps, ISelectItem, MultiSelect, IMultiSelectChangeEvent } from "@pancakeswap/uikit";
 import { useCallback, useMemo } from "react";
 import styled from "styled-components";
@@ -61,18 +61,19 @@ const ItemName = styled.span`
   font-weight: 400;
 `;
 
-export const toTokenValue = (t: Currency) => `${t.chainId}:${t instanceof Token ? t.address : zeroAddress}`;
+export const toTokenValue = (t: Currency) => `${t.chainId}:${t.wrapped.address}`;
 
 export const TokenFilter: React.FC<ITokenProps> = ({ data = [], value, onChange }) => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
 
   const tokenList = useMemo(
     () =>
-      data.map((t) => ({
-        ...t,
-        icon: <CurrencyLogo currency={t} />,
-        value: toTokenValue(t),
-        label: t.symbol,
+      data.map((token) => ({
+        ...token,
+        icon: <CurrencyLogo currency={token} />,
+        value: toTokenValue(token),
+        label: token.symbol,
       })),
     [data]
   );
@@ -106,7 +107,7 @@ export const TokenFilter: React.FC<ITokenProps> = ({ data = [], value, onChange 
         options={tokenList}
         isShowFilter
         placeholder="All tokens"
-        panelFooterTemplate={() => <span>Don’t see expected tokens?</span>}
+        panelFooterTemplate={() => <span>{t("Don’t see expected tokens?")}</span>}
         virtualScrollerOptions={{ itemSize: 58 }}
         itemTemplate={itemTemplate}
         value={value}
