@@ -1,6 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { Box, EllipsisIcon, Flex, PencilIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -108,9 +110,11 @@ export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
               {quest?.reward?.currency?.address ? (
                 <>
                   <TokenWithChain currency={currency} width={20} height={20} />
-                  <Text ml="8px">{`${Number(quest?.reward?.totalRewardAmount).toLocaleString('en-US', {
-                    maximumFractionDigits: 2,
-                  })} ${currency.symbol}`}</Text>
+                  <Text ml="8px">{`${getFullDisplayBalance(
+                    new BigNumber(quest?.reward?.totalRewardAmount ?? 0),
+                    currency.decimals,
+                    2,
+                  )} ${currency.symbol}`}</Text>
                 </>
               ) : (
                 <Text ml="8px">-</Text>

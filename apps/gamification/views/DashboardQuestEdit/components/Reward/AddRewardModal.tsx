@@ -88,7 +88,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   const displayAmountOfWinnersInModal = useMemo(() => amountOfWinnersInModal || '', [amountOfWinnersInModal])
 
   const [inputCurrency, setInputCurrency] = useState<Currency>(defaultInputCurrency ?? CAKE?.[chainId])
-  const [stakeAmount, setStakeAmount] = useState(state?.reward?.totalRewardAmount?.toString() ?? '')
+  const [stakeAmount, setStakeAmount] = useState('')
   const currencyBalance = useCurrencyBalance(inputCurrency)
   const config = {
     [CurrencyModalView.currencyInput]: { title: t('Add a reward and schedule'), onBack: onDismiss },
@@ -231,7 +231,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
 
       if (receipt?.status) {
         toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-        handlePickedRewardToken(inputCurrency, stakeAmount, displayAmountOfWinnersInModal || 0)
+        handlePickedRewardToken(inputCurrency, totalReward.toString(), displayAmountOfWinnersInModal || 0)
         onDismiss?.()
       }
     } catch (error) {

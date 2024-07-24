@@ -1,6 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { Box, BoxProps, CalenderIcon, Card, Flex, InfoIcon, Tag, Text, useTooltip } from '@pancakeswap/uikit'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useFindTokens } from 'hooks/useFindTokens'
@@ -126,9 +128,7 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, cust
                 <TokenWithChain currency={currency} width={20} height={20} />
                 <Flex ml="8px">
                   <Text bold fontSize="20px" lineHeight="24px">
-                    {Number(quest?.reward?.totalRewardAmount).toLocaleString('en-US', {
-                      maximumFractionDigits: 2,
-                    })}
+                    {getFullDisplayBalance(new BigNumber(quest?.reward?.totalRewardAmount ?? 0), currency.decimals, 2)}
                   </Text>
                   <Text bold fontSize="14px" style={{ alignSelf: 'flex-end' }} ml="2px">
                     {currency.symbol}

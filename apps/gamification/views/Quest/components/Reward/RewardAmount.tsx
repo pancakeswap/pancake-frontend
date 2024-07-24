@@ -1,5 +1,7 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { useFindTokens } from 'hooks/useFindTokens'
 import { styled } from 'styled-components'
@@ -32,9 +34,7 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({ reward }) => {
             </Box>
             <Box ml={['16px']}>
               <Text fontSize={['40px']} bold as="span">
-                {Number(reward?.totalRewardAmount).toLocaleString('en-US', {
-                  maximumFractionDigits: 2,
-                })}
+                {getFullDisplayBalance(new BigNumber(reward?.totalRewardAmount ?? 0), currency.decimals, 2)}
               </Text>
               <Text textTransform="uppercase" fontSize={['24px']} bold as="span" ml="4px">
                 {currency.symbol}
