@@ -2,6 +2,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { ERC20Token } from '@pancakeswap/sdk'
 import { Currency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
+import type { Address } from 'viem'
 
 import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { GELATO_NATIVE } from 'config/constants'
@@ -74,7 +75,7 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
 
 type TokenChainAddressMap<TChainId extends number = number> = {
   [chainId in TChainId]: {
-    [tokenAddress: string]: ERC20Token
+    [tokenAddress: Address]: ERC20Token
   }
 }
 

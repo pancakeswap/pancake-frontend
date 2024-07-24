@@ -1,8 +1,5 @@
 import BigNumber from 'bignumber.js'
-
-export const ZERO = new BigNumber(0)
-export const ONE = new BigNumber(1)
-export const TEN = new BigNumber(10)
+import { BIG_ZERO, BIG_ONE, BIG_TEN } from './bigNumber'
 
 const DEFAULT_FORMAT_CONFIG = {
   prefix: '',
@@ -39,15 +36,15 @@ export function formatNumber(
   { maximumSignificantDigits = 12, roundingMode = BigNumber.ROUND_DOWN, maxDecimalDisplayDigits }: Options = {},
 ) {
   const valueInBN = new BigNumber(value)
-  if (valueInBN.eq(ZERO)) {
+  if (valueInBN.eq(BIG_ZERO)) {
     return valueInBN.toString()
   }
   const [integerDigits, decimalDigits] = getDigits(valueInBN)
   const totalDigits = integerDigits + decimalDigits
   const maxDigits = Math.min(totalDigits, maximumSignificantDigits)
   const { max, min } = {
-    max: TEN.exponentiatedBy(maximumSignificantDigits).minus(1),
-    min: ONE.div(TEN.exponentiatedBy(maximumSignificantDigits - 1)),
+    max: BIG_TEN.exponentiatedBy(maximumSignificantDigits).minus(1),
+    min: BIG_ONE.div(BIG_TEN.exponentiatedBy(maximumSignificantDigits - 1)),
   }
   const isGreaterThanMax = valueInBN.gt(max)
   const isLessThanMin = valueInBN.lt(min)

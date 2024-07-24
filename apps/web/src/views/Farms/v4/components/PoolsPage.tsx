@@ -99,17 +99,16 @@ export const PoolsPage = () => {
   const poolList = useMemo(
     () =>
       fetchFarmListLoaded && farmList.length
-        ? [
-            ...farmList,
-            ...(isPoolListExtended
+        ? farmList.concat(
+            isPoolListExtended
               ? extendPools
               : extendPools.filter(
                   (pool) =>
                     // non farming list need to do a whitelist filter
                     pool.token0.wrapped.address in allTokenMap[pool.chainId] &&
                     pool.token1.wrapped.address in allTokenMap[pool.chainId],
-                )),
-          ]
+                ),
+          )
         : UNIVERSAL_FARMS,
     [fetchFarmListLoaded, farmList, extendPools, allTokenMap, isPoolListExtended],
   )
@@ -152,6 +151,11 @@ export const PoolsPage = () => {
     setIsPoolListExtended(!isPoolListExtended)
   }, [isPoolListExtended])
 
+  const handleSort = useCallback(({ order, dataIndex }) => {
+    setSortOrder(order)
+    setSortField(dataIndex)
+  }, [])
+
   const filteredData = useMemo(() => {
     const { selectedNetwork, selectedTokens } = filters
     return poolList.filter(
@@ -172,6 +176,8 @@ export const PoolsPage = () => {
     return [...filteredData].sort((a, b) => sortOrder * a[sortField] + -1 * sortOrder * b[sortField])
   }, [sortOrder, sortField, filteredData]) as IDataType[]
 
+  const renderData = useMemo(() => sortedData.slice(0, cursorVisible), [cursorVisible, sortedData])
+
   return (
     <Card>
       <CardHeader>
@@ -185,11 +191,8 @@ export const PoolsPage = () => {
             <TableView
               rowKey="lpAddress"
               columns={columns}
-              data={sortedData.slice(0, cursorVisible)}
-              onSort={({ order, dataIndex }) => {
-                setSortOrder(order)
-                setSortField(dataIndex)
-              }}
+              data={renderData}
+              onSort={handleSort}
               sortOrder={sortOrder}
               sortField={sortField}
             />

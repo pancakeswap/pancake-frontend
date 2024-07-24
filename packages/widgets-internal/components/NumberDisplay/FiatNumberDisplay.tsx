@@ -1,7 +1,8 @@
 import BigNumber from "bignumber.js";
 import { Text, useTooltip, type TextProps } from "@pancakeswap/uikit";
-import { ONE, TEN, formatNumber, formatNumberWithFullDigits } from "@pancakeswap/utils/formatNumber";
-import { type ReactNode, memo, useMemo, type ElementType, CSSProperties, useCallback } from "react";
+import { formatNumberWithFullDigits } from "@pancakeswap/utils/formatNumber";
+import { formatFiatNumber, valueWithSymbol } from "@pancakeswap/utils/formatFiatNumber";
+import { type ReactNode, memo, useMemo, type ElementType, CSSProperties } from "react";
 import { useTranslation } from "@pancakeswap/localization";
 
 export type FiatNumberDisplayProps = {
@@ -29,8 +30,6 @@ export const FiatNumberDisplay = memo(function FiatNumberDisplay({
 }: FiatNumberDisplayProps) {
   const { t } = useTranslation();
 
-  const valueWithSymbol = useCallback((val: number | string) => `${fiatSymbol} ${val}`, [fiatSymbol]);
-
   const valueDisplayInFullDigits = useMemo(
     () =>
       formatNumberWithFullDigits(value, {
@@ -39,53 +38,23 @@ export const FiatNumberDisplay = memo(function FiatNumberDisplay({
     [value, roundingMode]
   );
 
-  const valueDisplay = useMemo(() => {
-    const bnValue = new BigNumber(value);
-    if (bnValue.eq(0)) {
-      return valueWithSymbol(0);
-    }
-    const maximum = TEN.exponentiatedBy(maximumSignificantDigits).minus(1);
-    const minimum = ONE.div(new BigNumber(10).exponentiatedBy(maximumSignificantDigits - 1));
-    // If less than minimum, just display <0.01
-    if (bnValue.lt(minimum)) {
-      return `<${valueWithSymbol("0.01")}`;
-    }
-    // If greater than maximum, format to shorthand
-    if (bnValue.gt(maximum)) {
-      const million = 1e6;
-      const billion = 1e9;
-      const trillion = 1e12;
-      if (bnValue.isGreaterThanOrEqualTo(trillion)) {
-        return `>${valueWithSymbol("999b")}`;
-      }
-      if (bnValue.isGreaterThanOrEqualTo(billion)) {
-        return valueWithSymbol(`${bnValue.dividedBy(billion).toFixed(0, BigNumber.ROUND_DOWN)}b`);
-      }
-      if (bnValue.isGreaterThanOrEqualTo(million)) {
-        return valueWithSymbol(`${bnValue.dividedBy(million).toFixed(0, BigNumber.ROUND_DOWN)}m`);
-      }
-    }
-    // If less than 1, keep as many decimal digits as possible
-    if (bnValue.lt(1)) {
-      return `${fiatSymbol} ${formatNumber(value, {
-        maximumSignificantDigits,
+  const valueDisplay = useMemo(
+    () =>
+      formatFiatNumber(value, fiatSymbol, {
         roundingMode,
-      })}`;
-    }
-    // Otherwise, keep more integers and 2 decimals
-    return `${fiatSymbol} ${formatNumber(value, {
-      maximumSignificantDigits,
-      roundingMode,
-      maxDecimalDisplayDigits: 2,
-    })}`;
-  }, [value, maximumSignificantDigits, roundingMode, fiatSymbol, valueWithSymbol]);
+        maximumSignificantDigits,
+      }),
+    [value, maximumSignificantDigits, roundingMode, fiatSymbol]
+  );
+
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t("Exact number: %numberWithFullDigits%", { numberWithFullDigits: valueDisplayInFullDigits }),
     {
       placement: "top-end",
     }
   );
-  const showTooltip = value && showFullDigitsTooltip && valueDisplay !== valueWithSymbol(valueDisplayInFullDigits);
+  const showTooltip =
+    value && showFullDigitsTooltip && valueDisplay !== valueWithSymbol(valueDisplayInFullDigits, fiatSymbol);
 
   return (
     <>

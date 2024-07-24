@@ -4,7 +4,7 @@ import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { BottomDrawer, Column, Button, MoreIcon, ChevronRightIcon } from '@pancakeswap/uikit'
-import { ReactNode, useCallback, useMemo, useState } from 'react'
+import { ReactNode, useCallback, memo, useState } from 'react'
 import { useColumnMobileConfig } from './useColumnConfig'
 
 const ListContainer = styled.ul``
@@ -31,8 +31,6 @@ export const ListView: React.FC<IPoolListViewProps> = ({ data }) => {
   const handleDrawerChange = useCallback((status: boolean) => {
     if (!status) setOpenItem(null)
   }, [])
-
-  const drawerContent = useMemo(() => <ListItemDetails data={openItem} />, [openItem])
 
   return (
     <ListContainer>
@@ -69,7 +67,7 @@ export const ListView: React.FC<IPoolListViewProps> = ({ data }) => {
         drawerContainerStyle={{ height: 'auto' }}
         isOpen={openItem !== null}
         setIsOpen={handleDrawerChange}
-        content={drawerContent}
+        content={<ListItemDetails data={openItem} />}
       />
     </ListContainer>
   )
@@ -133,7 +131,7 @@ export interface IListItemDetailsProps {
   data: PoolInfo | null
 }
 
-const ListItemDetails: React.FC<IListItemDetailsProps> = ({ data }) => {
+const ListItemDetails: React.FC<IListItemDetailsProps> = memo(({ data }) => {
   const { t } = useTranslation()
   const columns = useColumnMobileConfig<PoolInfo>()
 
@@ -162,26 +160,24 @@ const ListItemDetails: React.FC<IListItemDetailsProps> = ({ data }) => {
             />
           }
         />
-        {columns
-          .filter((col) => col.dataIndex !== null)
-          .map((col) => (
-            <ListItem key={col.key}>
-              <ListItemLabel>
-                {typeof col.title === 'function'
-                  ? col.title()
-                  : typeof col.title === 'string'
-                  ? col.title.toUpperCase()
-                  : col.title}
-              </ListItemLabel>
-              <Column>
-                {col.render
-                  ? col.render(col.dataIndex ? data[col.dataIndex] : data, data, 0)
-                  : col.dataIndex
-                  ? (data[col.dataIndex] as ReactNode)
-                  : null}
-              </Column>
-            </ListItem>
-          ))}
+        {columns.map((col) => (
+          <ListItem key={col.key}>
+            <ListItemLabel>
+              {typeof col.title === 'function'
+                ? col.title()
+                : typeof col.title === 'string'
+                ? col.title.toUpperCase()
+                : col.title}
+            </ListItemLabel>
+            <Column>
+              {col.render
+                ? col.render(col.dataIndex ? data[col.dataIndex] : data, data, 0)
+                : col.dataIndex
+                ? (data[col.dataIndex] as ReactNode)
+                : null}
+            </Column>
+          </ListItem>
+        ))}
       </ItemDetailBody>
       <ItemDetailFooter>
         <StyledButton scale="sm" variant="text" as="a">
@@ -199,4 +195,4 @@ const ListItemDetails: React.FC<IListItemDetailsProps> = ({ data }) => {
       </ItemDetailFooter>
     </ItemDetailContainer>
   )
-}
+})
