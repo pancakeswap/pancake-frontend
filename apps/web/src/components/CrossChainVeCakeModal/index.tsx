@@ -158,7 +158,10 @@ export const CrossChainVeCakeModal: React.FC<{
       if (!account || !veCakeSenderV2Contract || !chainId || !isInitialized) return
       setModalState('ready')
       let syncFee = BigInt(
-        new BigNumber(CROSS_CHIAN_CONFIG[chainId].layerZeroFee.toString()).times(1.1).toNumber().toFixed(0),
+        new BigNumber(CROSS_CHIAN_CONFIG[chainId].layerZeroFee.toString())
+          .times(CROSS_CHIAN_CONFIG[chainId].layerZeroDeeBufferTimes ?? 1.1)
+          .toNumber()
+          .toFixed(0),
       )
 
       try {
@@ -167,7 +170,12 @@ export const CrossChainVeCakeModal: React.FC<{
           { account },
         )
         if (feeData.nativeFee !== 0n) {
-          syncFee = BigInt(new BigNumber(feeData.nativeFee.toString()).times(1.1).toNumber().toFixed(0))
+          syncFee = BigInt(
+            new BigNumber(feeData.nativeFee.toString())
+              .times(CROSS_CHIAN_CONFIG[chainId].layerZeroDeeBufferTimes ?? 1.1)
+              .toNumber()
+              .toFixed(0),
+          )
         }
       } catch (e) {
         console.error({ e }, 'feeData error and use the cached value')

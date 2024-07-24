@@ -98,7 +98,11 @@ const CakeStaking = () => {
                 variant="secondary"
                 width="100%"
                 onClick={() => {
-                  window.open('https://twitter.com/pancakeswap', '_blank', 'noopener noreferrer')
+                  window.open(
+                    'https://docs.pancakeswap.finance/products/vecake/bridge-your-vecake',
+                    '_blank',
+                    'noopener noreferrer',
+                  )
                 }}
               >
                 {t('Learn More')}
