@@ -11,9 +11,11 @@ import {
   useModal,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import { NetworkSelectorModal } from 'components/NetworkSelectorModal'
 import { ASSET_CDN } from 'config/constants/endpoints'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
@@ -67,7 +69,14 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
   const { t } = useTranslation()
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
   const [isFirst, setIsFirst] = useState(true)
+  const [minAmount, setMinAmount] = useState('')
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
+
+  useEffect(() => {
+    if (task.minAmount) {
+      setMinAmount(getFullDisplayBalance(new BigNumber(task.minAmount), 18).toString())
+    }
+  }, [])
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Open in new tab'), {
     placement: 'top',
@@ -95,8 +104,15 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
     if (e.currentTarget.validity.valid) {
       const forkTasks = Object.assign(tasks)
       const indexToUpdate = forkTasks.findIndex((i: TaskLiquidityConfig) => i.sid === task.sid)
-      forkTasks[indexToUpdate][socialKeyType] =
-        socialKeyType === 'stakePeriodInDays' ? Number(e.target.value) : e.target.value
+
+      if (socialKeyType === 'minAmount') {
+        setMinAmount(e.target.value)
+        forkTasks[indexToUpdate][socialKeyType] = getDecimalAmount(new BigNumber(e.target.value), 18).toString()
+      } else if (socialKeyType === 'stakePeriodInDays') {
+        forkTasks[indexToUpdate][socialKeyType] = Number(e.target.value)
+      } else {
+        forkTasks[indexToUpdate][socialKeyType] = e.target.value
+      }
 
       onTasksChange([...forkTasks])
     }
@@ -224,7 +240,7 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
             <StyledInput
               inputMode="numeric"
               pattern="^[0-9]*[.,]?[0-9]*$"
-              value={task.minAmount}
+              value={minAmount}
               isError={isMinAmountError}
               placeholder={t('Minimum number of token')}
               onChange={(e) => handleInputChange(e, 'minAmount')}
