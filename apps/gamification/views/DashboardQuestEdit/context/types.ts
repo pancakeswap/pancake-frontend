@@ -63,6 +63,7 @@ export interface TaskLiquidityConfig extends TaskBaseConfig {
   lpAddress: string
   lpAddressLink: string
   feeTier: string
+  stakePeriodInDays: number
 }
 
 export interface TaskSocialConfig extends TaskBaseConfig {

@@ -56,6 +56,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         isOptional: false,
         lpAddressLink: '',
         feeTier: '',
+        stakePeriodInDays: 0,
       }
     case TaskType.VISIT_BLOG_POST:
       return {

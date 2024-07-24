@@ -54,7 +54,14 @@ interface AddLpAddressProps {
   isDrafted: boolean
 }
 
-type SocialKeyType = 'title' | 'description' | 'minAmount' | 'lpAddressLink' | 'feeTier' | 'lpAddress'
+type SocialKeyType =
+  | 'title'
+  | 'description'
+  | 'minAmount'
+  | 'lpAddressLink'
+  | 'feeTier'
+  | 'lpAddress'
+  | 'stakePeriodInDays'
 
 export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
@@ -88,7 +95,8 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
     if (e.currentTarget.validity.valid) {
       const forkTasks = Object.assign(tasks)
       const indexToUpdate = forkTasks.findIndex((i: TaskLiquidityConfig) => i.sid === task.sid)
-      forkTasks[indexToUpdate][socialKeyType] = e.target.value
+      forkTasks[indexToUpdate][socialKeyType] =
+        socialKeyType === 'stakePeriodInDays' ? Number(e.target.value) : e.target.value
 
       onTasksChange([...forkTasks])
     }
@@ -223,6 +231,15 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
             />
           </StyledInputGroup>
           {isMinAmountError && <InputErrorText errorText={t('Cannot be 0')} />}
+        </Flex>
+        <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
+          <StyledInput
+            inputMode="numeric"
+            pattern="^[0-9]+$"
+            placeholder={t('Days to hold')}
+            value={task?.stakePeriodInDays > 0 ? task?.stakePeriodInDays : ''}
+            onChange={(e) => handleInputChange(e, 'stakePeriodInDays')}
+          />
         </Flex>
       </Flex>
     </Flex>
