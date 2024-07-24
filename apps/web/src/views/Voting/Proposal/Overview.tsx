@@ -64,9 +64,12 @@ const Overview = () => {
         if (proposal.votes > VOTES_PER_VIEW) {
           return getAllVotes(proposal)
         }
-        return queryClient.getQueryCache().find<VoteType[]>({
+        const cachedOverviewVotes = queryClient.getQueryCache().find<VoteType[]>({
           queryKey: ['voting', 'proposal', proposal?.id, 'overviewVotes'],
         })?.state?.data
+        if (cachedOverviewVotes) {
+          return cachedOverviewVotes
+        }
       }
       return getNumberOfVotes(proposal, VOTES_PER_VIEW)
     },
