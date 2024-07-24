@@ -1,40 +1,25 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
-// import { TaskType } from 'views/DashboardQuestEdit/type'
 import { getOAuthHeader } from 'utils/getOAuthHeader'
+import { TaskType } from 'views/DashboardQuestEdit/type'
+import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      const { token, tokenSecret, userTwitterId, providerId } = req.query
-      if (!token || !tokenSecret || !userTwitterId || !providerId) {
-        res.status(400).json({ message: 'Missing required parameters: token, tokenSecret, userTwitterId, providerId' })
+      const { account, questId, taskId, token, tokenSecret, userId, providerId, twitterPostId } = req.query
+
+      if (!account || !questId || !token || !tokenSecret || !taskId || !userId || !providerId || !twitterPostId) {
+        res.status(400).json({
+          message:
+            'Missing required parameters: account, questId, taskId, token, tokenSecret, userId, providerId, twitterPostId',
+        })
         return
       }
 
-      // const consumerKey = process.env.TWITTER_CONSUMER_KEY as string
-      // const consumerSecret = process.env.TWITTER_CONSUMER_SECRET as string
       const consumerKey = TWITTER_CONSUMER_KEY[providerId as TwitterFollowersId].consumerKey as string
       const consumerSecret = TWITTER_CONSUMER_KEY[providerId as TwitterFollowersId].consumerKeySecret as string
 
-      // const credentials = `${consumerKey}:${consumerSecret}`
-      // const encodedCredentials = btoa(credentials)
-      // const params = new URLSearchParams()
-      // params.append('grant_type', 'client_credentials')
-
-      // const fetchBearerTokenResponse = await fetch('https://api.twitter.com/oauth2/token', {
-      //   method: 'POST',
-      //   headers: {
-      //     Authorization: `Basic ${encodedCredentials}`,
-      //     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      //   },
-      //   body: params,
-      // })
-      // const getBearerToken = await fetchBearerTokenResponse.json()
-      // const bearerToken = getBearerToken.access_token
-      // console.log('bearerToken', bearerToken)
-
-      const url = `https://api.twitter.com/2/users/${userTwitterId}/liked_tweets`
+      const url = `https://api.twitter.com/2/users/${userId}/liked_tweets`
       const method = 'GET'
       const response = await fetch(url, {
         method,
@@ -43,8 +28,31 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json',
         },
       })
-      // const result = await response.json()
-      // console.log('result', result)
+
+      const result = await response.json()
+      if (!response.ok) {
+        res.status(500).json({ message: result.title })
+      }
+
+      const likedTweets = result.data
+      const liked = likedTweets.find((tweet) => tweet.id.toLowerCase() === twitterPostId.toLowerCase())
+
+      if (liked) {
+        const queryString = new URLSearchParams({
+          account,
+          questId,
+          taskId,
+          taskName: TaskType.X_LIKE_POST,
+        }).toString()
+
+        const responseMarkTask = await fetch(`/api/userInfo/markTaskStatus?${queryString}`, { method: 'POST' })
+        const responseMarkTaskResult = await responseMarkTask.json()
+        if (responseMarkTask.ok) {
+          res.status(200).json(responseMarkTaskResult)
+        }
+
+        res.status(500).json({ message: responseMarkTaskResult.title })
+      }
     } catch (error) {
       res.status(500).json({ message: (error as Error).message })
     }

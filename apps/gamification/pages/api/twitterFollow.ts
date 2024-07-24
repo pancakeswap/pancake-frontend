@@ -42,7 +42,7 @@ export default async function handler(req, res) {
 
         const responseMarkTask = await fetch(`/api/userInfo/markTaskStatus?${queryString}`, { method: 'POST' })
 
-        const responseMarkTaskResult = await response.json()
+        const responseMarkTaskResult = await responseMarkTask.json()
         if (responseMarkTask.ok) {
           res.status(200).json(responseMarkTaskResult)
         }

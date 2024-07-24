@@ -100,18 +100,49 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
           await refresh()
         }
       } catch (error) {
-        toastError(`Verify Twitter Fail: ${error}`)
+        toastError(`Verify Twitter Followed Fail: ${error}`)
       } finally {
         setIsPending(false)
       }
     }
   }, [account, hasIdRegister, isPending, providerId, questId, refresh, task, toastError, token, tokenSecret, twitterId])
 
-  const handleVerifyTwitterAccountLike = useCallback(async () => {}, [])
+  const handleVerifyTwitterAccountLike = useCallback(async () => {
+    if (isPending || !hasIdRegister || !account || !twitterId) {
+      return
+    }
+
+    if (providerId && token && tokenSecret) {
+      try {
+        setIsPending(true)
+        setActionPanelExpanded(false)
+        const queryString = new URLSearchParams({
+          account,
+          questId,
+          token,
+          tokenSecret,
+          userId: twitterId,
+          taskId: task?.id ?? '',
+          providerId: providerId as TwitterFollowersId,
+          twitterPostId: (task as TaskSocialConfig).accountId,
+        }).toString()
+        const response = await fetch(`/api/twitterLiked?${queryString}`)
+        if (response.ok) {
+          await refresh()
+        }
+      } catch (error) {
+        toastError(`Verify Twitter Liked Fail: ${error}`)
+      } finally {
+        setIsPending(false)
+      }
+    }
+  }, [account, hasIdRegister, isPending, providerId, questId, refresh, task, toastError, token, tokenSecret, twitterId])
 
   useEffect(() => {
     const fetchApi = async () => {
-      Cookie.delete(cookieId)
+      if (cookieId) {
+        Cookie.remove(cookieId)
+      }
 
       switch (getCookie?.taskType as TaskType) {
         case TaskType.X_FOLLOW_ACCOUNT:
@@ -236,7 +267,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     if (providerId && token && tokenSecret) {
       handleVerifyTwitterAccount()
     } else {
-      Cookie.set(cookieId, JSON.stringify({ taskType }))
+      Cookie.set(cookieId, JSON.stringify({ taskType: TaskType.X_LIKE_POST }))
       connectTwitter()
     }
   }
