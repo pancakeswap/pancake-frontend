@@ -9,14 +9,14 @@ import {
   ReactMarkdown,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
 import Container from 'components/Layout/Container'
 import PageLoader from 'components/Loader/PageLoader'
 import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
-import { ProposalState } from 'state/types'
+import { ProposalState, Vote as VoteType } from 'state/types'
 import { getAllVotes, getNumberOfVotes, getProposal } from 'state/voting/helpers'
 import { useAccount } from 'wagmi'
 import Layout from '../components/Layout'
@@ -32,6 +32,7 @@ const Overview = () => {
   const id = query.id as string
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const queryClient = useQueryClient()
   const [showAllVotes, setShowAllVotes] = useState(false)
   const { isMobile } = useMatchBreakpoints()
   const VOTES_PER_VIEW = isMobile ? 10 : 20
@@ -54,13 +55,18 @@ const Overview = () => {
     data: votes = [],
     refetch,
   } = useQuery({
-    queryKey: ['voting', 'proposal', proposal, showAllVotes ? 'allVotes' : 'overviewVotes'],
+    queryKey: ['voting', 'proposal', proposal?.id, showAllVotes ? 'allVotes' : 'overviewVotes'],
     queryFn: async () => {
       if (!proposal) {
         throw new Error('No proposal')
       }
-      if (showAllVotes && proposal.votes > VOTES_PER_VIEW) {
-        return getAllVotes(proposal)
+      if (showAllVotes) {
+        if (proposal.votes > VOTES_PER_VIEW) {
+          return getAllVotes(proposal)
+        }
+        return queryClient.getQueryCache().find<VoteType[]>({
+          queryKey: ['voting', 'proposal', proposal?.id, 'overviewVotes'],
+        })?.state?.data
       }
       return getNumberOfVotes(proposal, VOTES_PER_VIEW)
     },
@@ -72,7 +78,7 @@ const Overview = () => {
   })
 
   const { data: accountVoteChoice, refetch: refetchAccountVoteChoice } = useQuery({
-    queryKey: ['voting', 'proposal', proposal, account, 'accountVoteChoice'],
+    queryKey: ['voting', 'proposal', proposal?.id, account, 'accountVoteChoice'],
     queryFn: async () => {
       if (!proposal) {
         throw new Error('No proposal')
@@ -80,7 +86,7 @@ const Overview = () => {
       const voteInVotes = votes.filter((vote) => vote.voter.toLowerCase() === account?.toLowerCase())[0]
       return voteInVotes?.choice ?? (await getNumberOfVotes(proposal, 1, account))[0]?.choice
     },
-    enabled: Boolean(account && proposal && votesLoadingStatus === 'success'),
+    enabled: Boolean(account && proposal && votes && votesLoadingStatus === 'success'),
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
