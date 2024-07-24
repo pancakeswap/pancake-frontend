@@ -16,6 +16,7 @@ export const getProposals = async (first = 5, skip = 0, state = ProposalState.AC
           orderDirection: $orderDirection
           where: { space_in: "cakevote.eth", state: $state }
         ) {
+          id
           title
           start
           end
