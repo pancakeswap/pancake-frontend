@@ -4769,4 +4769,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: arbitrumTokens.weth.address,
     token1Address: arbitrumTokens.grt.address,
   },
+  {
+    gid: 482,
+    pairName: 'weETH-ETH',
+    address: '0x302976A386fbb375033bE3Ac1E4112F76cf42ef7',
+    chainId: ChainId.BASE,
+    type: GaugeType.V3,
+    feeTier: FeeAmount.LOWEST,
+    token0Address: baseTokens.weeth.address,
+    token1Address: baseTokens.weth.address,
+  },
 ]
