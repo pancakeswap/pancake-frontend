@@ -1,49 +1,39 @@
-import { Protocol, UNIVERSAL_FARMS, UniversalFarmConfig } from '@pancakeswap/farms'
-import { useTranslation } from '@pancakeswap/localization'
-import { ERC20Token } from '@pancakeswap/sdk'
+import styled from 'styled-components'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Button,
-  Card,
-  FeeTier,
-  ITableViewProps,
-  MoreIcon,
+  Card as RawCard,
   CardBody as RawCardBody,
   CardHeader as RawCardHeader,
-  SubMenu,
   TableView,
+  Image,
+  ISortOrder,
+  SORT_ORDER,
+  useMatchBreakpoints,
+  CardFooter as RawCardFooter,
+  InfoIcon,
 } from '@pancakeswap/uikit'
-import { TokenOverview } from '@pancakeswap/widgets-internal'
-import { TokenPairImage } from 'components/TokenImage'
-import keyBy from 'lodash/keyBy'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { explorerApiClient } from 'state/info/api/client'
-import styled from 'styled-components'
-// import { PoolType } from '@pancakeswap/smart-router'
-import { Address } from 'viem/accounts'
+import { useTranslation } from '@pancakeswap/localization'
+import { toTokenValue } from '@pancakeswap/widgets-internal'
+import { UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
+import { useExtendPools, useFarmPools } from 'state/farmsV4/hooks'
+import { PoolInfo } from 'state/farmsV4/state/type'
+import { PoolSortBy } from 'state/farmsV4/atom'
+import { useAllTokensByChainIds } from 'hooks/Tokens'
 
-import {
-  IPoolsFilterPanelProps,
-  MAINNET_CHAINS,
-  PoolsFilterPanel,
-  useAllChainsName,
-  usePoolTypes,
-} from './PoolsFilterPanel'
+import { IPoolsFilterPanelProps, MAINNET_CHAINS, PoolsFilterPanel, useSelectedPoolTypes } from './PoolsFilterPanel'
+import { ListView } from './PoolListView'
+import { useColumnConfig } from './useColumnConfig'
 
-interface IDataType {
-  chainId: number
-  lpAddress: Address
-  protocol: Protocol
-  feeTier: bigint
-  apr24h: string
-  tvlUsd: string
-  vol24hUsd: string
-  // todo:@eric to Currency type
-  token0: ERC20Token
-  token1: ERC20Token
-}
+type IDataType = PoolInfo
 
 const PoolsContent = styled.div`
   min-height: calc(100vh - 64px - 56px);
+`
+
+const Card = styled(RawCard)`
+  overflow: initial;
 `
 
 const CardHeader = styled(RawCardHeader)`
@@ -51,201 +41,142 @@ const CardHeader = styled(RawCardHeader)`
 `
 
 const CardBody = styled(RawCardBody)`
-  padding-top: 0;
+  padding: 0;
 `
 
-const StyledButton = styled(Button)`
-  color: ${({ theme }) => theme.colors.text};
+const CardFooter = styled(RawCardFooter)`
+  position: sticky;
+  bottom: 0;
+  z-index: 50;
+  border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+  border-bottom-left-radius: ${({ theme }) => theme.radii.card};
+  background: ${({ theme }) => theme.card.background};
+  text-align: center;
+  font-size: 12px;
   font-weight: 400;
-  padding: 8px 16px;
-  line-height: 24px;
-  height: auto;
+  color: ${({ theme }) => theme.colors.textSubtle};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  line-height: 18px;
+  padding: 12px 16px;
 `
 
-const PoolListItemAction = (_, _poolInfo: IDataType) => {
-  const { t } = useTranslation()
-  return (
-    <SubMenu
-      component={
-        <Button scale="xs" variant="text">
-          <MoreIcon />
-        </Button>
-      }
-    >
-      <StyledButton scale="sm" variant="text" as="a">
-        {t('View pool details')}
-      </StyledButton>
-      <StyledButton scale="sm" variant="text" as="a">
-        {t('Add Liquidity')}
-      </StyledButton>
-      <StyledButton scale="sm" variant="text" as="a">
-        {t('View info page')}
-      </StyledButton>
-    </SubMenu>
-  )
-}
+const StyledImage = styled(Image)`
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 58px;
+`
 
-const useColumnConfig = (): ITableViewProps<IDataType>['columns'] => {
-  const { t } = useTranslation()
-  return useMemo(
-    () => [
-      {
-        title: t('All Pools'),
-        dataIndex: null,
-        key: 'name',
-        render: (_, item) => (
-          <TokenOverview
-            isReady
-            token={item.token0}
-            quoteToken={item.token1}
-            icon={
-              <TokenPairImage
-                width={40}
-                height={40}
-                variant="inverted"
-                primaryToken={item.token0}
-                secondaryToken={item.token1}
-              />
-            }
-          />
-        ),
-      },
-      {
-        title: t('Fee Tier'),
-        dataIndex: 'feeTier',
-        key: 'feeTier',
-        // todo:@eric 补充denominator
-        render: (fee) => <FeeTier type="v2" fee={fee ?? 0} />,
-      },
-      {
-        title: t('APR'),
-        dataIndex: 'apr24h',
-        key: 'apr',
-        render: (value) => (value ? <>{(Number(value) * 100).toFixed(2)}%</> : '-'),
-      },
-      {
-        title: t('TVL'),
-        dataIndex: 'tvlUsd',
-        key: 'tvl',
-        render: (value) => (value ? <>${(Number(value) / 1000).toFixed(3)}k</> : '-'),
-      },
-      {
-        title: t('Volume 24H'),
-        dataIndex: 'vol24hUsd',
-        key: 'vol',
-        render: (value) => (value ? <>${(Number(value) / 1000).toFixed(3)}k</> : '-'),
-      },
-      {
-        title: '',
-        render: PoolListItemAction,
-        dataIndex: null,
-        key: 'action',
-      },
-    ],
-    [t],
-  )
-}
-
-/* const fetchMissingFarms = ({
-  missingList,
-  protocols,
-  allChainsName
-}: {
-  missingList: UniversalFarmConfig[];
-  protocols: keyof typeof PoolType | (keyof typeof PoolType)[];
-  allChainsName: string[];
-}) => {
-  return explorerApiClient.GET('/cached/pools/list', {
-    params: {
-      query: {
-        protocols,
-        chains: allChainsName,
-        orderBy: 'volumeUSD24h',
-        pools: missingList.map(pool => `${pool.chainId}:${pool.lpAddress}`),
-      },
-    },
-  })
-} */
-
-const useFetchFarmingListFromAPI = () => {
-  const [farmingList, setFarmingList] = useState<UniversalFarmConfig[]>(UNIVERSAL_FARMS)
-  const protocols = usePoolTypes()
-    .slice(1)
-    .map((type) => type.value)
-  const allChainsName = useAllChainsName()
-
-  const mergeFarmList = useCallback((res) => {
-    if (!res.data) {
-      return farmingList
-    }
-    const farmListMap = keyBy(res.data, 'id')
-    const missingFarms: UniversalFarmConfig[] = []
-    return farmingList.map((farm) => {
-      const farmFromApi = farmListMap[farm.lpAddress.toLowerCase()]
-      if (!farmFromApi) {
-        missingFarms.push(farm)
-        return farm
-      }
-      return {
-        ...farm,
-        ...farmFromApi,
-        token0: farm.token0,
-        token1: farm.token1,
-        tvl: farmFromApi.tvlUSD,
-        vol24h: farmFromApi.volumeUSD24h,
-      }
-    })
-  }, [])
-
-  useEffect(() => {
-    explorerApiClient
-      // todo:@eric update the api schema
-      // @ts-ignore
-      .GET('/cached/pools/farming', {
-        params: {
-          query: {
-            // @ts-ignore
-            protocols: protocols.join(','),
-            // @ts-ignore
-            chains: allChainsName.join(','),
-          },
-        },
-      })
-      .then(mergeFarmList)
-      .then((data) => {
-        setFarmingList(data)
-        /* fetchMissingFarms({
-          missingList: missingFarms,
-          protocols,
-          allChainsName,
-        }).then(mergeFarmList) */
-      })
-    /*
-      - The farming list contains full data of farms.
-      - We just need to pull it once.
-      - Therefore, no dependencies are needed.
-      * */
-  }, [])
-
-  return farmingList
-}
+const NUMBER_OF_FARMS_VISIBLE = 20
 
 export const PoolsPage = () => {
-  const columns = useColumnConfig()
+  const { t } = useTranslation()
+  const { theme } = useTheme()
+  const { isMobile } = useMatchBreakpoints()
+
+  const columns = useColumnConfig<IDataType>()
+  const allChainIds = useMemo(() => MAINNET_CHAINS.map((chain) => chain.id), [])
   const [filters, setFilters] = useState<IPoolsFilterPanelProps['value']>({
     selectedTypeIndex: 0,
-    selectedNetwork: MAINNET_CHAINS.map((chain) => chain.id),
+    selectedNetwork: allChainIds,
     selectedTokens: [],
   })
+  const selectedPoolTypes = useSelectedPoolTypes(filters.selectedTypeIndex)
+  const { observerRef, isIntersecting } = useIntersectionObserver({
+    rootMargin: '100px',
+  })
+  const [cursorVisible, setCursorVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
+  const [sortOrder, setSortOrder] = useState<ISortOrder>(SORT_ORDER.NULL)
+  const [sortField, setSortField] = useState<keyof IDataType | null>(null)
+  const [isPoolListExtended, setIsPoolListExtended] = useState(false)
+  // data source
+  const { loaded: fetchFarmListLoaded, data: farmList } = useFarmPools()
+  const { extendPools, fetchPoolList, resetExtendPools } = useExtendPools()
+  const allTokenMap = useAllTokensByChainIds(allChainIds)
 
-  const handleFilterChange: IPoolsFilterPanelProps['onChange'] = useCallback((newFilters) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      ...newFilters,
-    }))
+  const poolList = useMemo(
+    () =>
+      fetchFarmListLoaded && farmList.length
+        ? farmList.concat(
+            isPoolListExtended
+              ? extendPools
+              : extendPools.filter(
+                  (pool) =>
+                    // non farming list need to do a whitelist filter
+                    pool.token0.wrapped.address in allTokenMap[pool.chainId] &&
+                    pool.token1.wrapped.address in allTokenMap[pool.chainId],
+                ),
+          )
+        : UNIVERSAL_FARMS,
+    [fetchFarmListLoaded, farmList, extendPools, allTokenMap, isPoolListExtended],
+  )
+
+  useEffect(() => {
+    if (isIntersecting) {
+      setCursorVisible((numberCurrentlyVisible) => {
+        if (numberCurrentlyVisible <= poolList.length) {
+          return Math.min(numberCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE, poolList.length)
+        }
+        return numberCurrentlyVisible
+      })
+    }
+  }, [isIntersecting, poolList])
+
+  useEffect(() => {
+    // if consumed, fetch from pool/list
+    if (cursorVisible >= poolList.length) {
+      // todo:@eric add some loading status to prevent multi fetch
+      fetchPoolList({
+        chains: filters.selectedNetwork,
+        protocols: selectedPoolTypes,
+        orderBy: PoolSortBy.VOL,
+      })
+    }
+  }, [cursorVisible, poolList, fetchPoolList, filters, selectedPoolTypes])
+
+  const handleFilterChange: IPoolsFilterPanelProps['onChange'] = useCallback(
+    (newFilters) => {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        ...newFilters,
+      }))
+      resetExtendPools()
+    },
+    [resetExtendPools],
+  )
+
+  const handleToggleListExpand = useCallback(() => {
+    setIsPoolListExtended(!isPoolListExtended)
+  }, [isPoolListExtended])
+
+  const handleSort = useCallback(({ order, dataIndex }) => {
+    setSortOrder(order)
+    setSortField(dataIndex)
   }, [])
 
-  const data = useFetchFarmingListFromAPI()
+  const filteredData = useMemo(() => {
+    const { selectedNetwork, selectedTokens } = filters
+    return poolList.filter(
+      (farm) =>
+        selectedNetwork.includes(farm.chainId) &&
+        (!selectedTokens?.length ||
+          selectedTokens?.find(
+            (token) => token === toTokenValue(farm.token0) || token === toTokenValue(farm.token1),
+          )) &&
+        selectedPoolTypes.includes(farm.protocol),
+    )
+  }, [poolList, filters, selectedPoolTypes])
+
+  const sortedData = useMemo(() => {
+    if (sortField === null) {
+      return filteredData
+    }
+    return [...filteredData].sort((a, b) => sortOrder * a[sortField] + -1 * sortOrder * b[sortField])
+  }, [sortOrder, sortField, filteredData]) as IDataType[]
+
+  const renderData = useMemo(() => sortedData.slice(0, cursorVisible), [cursorVisible, sortedData])
 
   return (
     <Card>
@@ -254,9 +185,29 @@ export const PoolsPage = () => {
       </CardHeader>
       <CardBody>
         <PoolsContent>
-          <TableView rowKey="lpAddress" columns={columns} data={data as any} />
+          {isMobile ? (
+            <ListView data={sortedData} />
+          ) : (
+            <TableView
+              rowKey="lpAddress"
+              columns={columns}
+              data={renderData}
+              onSort={handleSort}
+              sortOrder={sortOrder}
+              sortField={sortField}
+            />
+          )}
         </PoolsContent>
+        {poolList.length > 0 && <div ref={observerRef} />}
+        <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </CardBody>
+      <CardFooter>
+        {isPoolListExtended ? <InfoIcon width="18px" color={theme.colors.textSubtle} /> : null}
+        {isPoolListExtended ? t('Search has been extended') : t('Don’t see expected pools?')}
+        <Button variant="text" scale="xs" onClick={handleToggleListExpand}>
+          {isPoolListExtended ? t('Reset') : t('Extend the search')}
+        </Button>
+      </CardFooter>
     </Card>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { MultiSelect as PrimereactSelect, MultiSelectChangeEvent } from "primereact/multiselect";
+import { MultiSelect as PrimereactSelect } from "primereact/multiselect";
 import { styled } from "styled-components";
 import { useTheme } from "@pancakeswap/hooks";
 import { ArrowDropDownIcon, SearchIcon } from "../Svg";
@@ -7,7 +7,7 @@ import { Box, Flex } from "../Box";
 import { Checkbox } from "../Checkbox";
 import { Column } from "../Column";
 import SearchBox, { BORDER_RADIUS, IAdaptiveInputForwardProps } from "./SearchBox";
-import { IMultiSelectProps, IOptionType, ISelectItem } from "./types";
+import { IMultiSelectChangeEvent, IMultiSelectProps, IOptionType, ISelectItem } from "./types";
 import { EmptyMessage } from "./EmptyMessage";
 
 const CHECKBOX_WIDTH = "26px";
@@ -19,6 +19,7 @@ const SelectContainer = styled.div`
   .p-multiselect {
     position: relative;
     height: 0px;
+    width: 100% !important;
   }
   .p-multiselect-label-container,
   .p-multiselect-trigger {
@@ -26,6 +27,7 @@ const SelectContainer = styled.div`
   }
 
   .p-multiselect-panel {
+    width: 100% !important;
     min-width: auto;
     border: 1px solid ${({ theme }) => theme.colors.cardBorder};
     box-shadow: ${({ theme }) => theme.card.boxShadow};
@@ -222,7 +224,8 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
     isShowSelectAll,
     isShowFilter,
   } = props;
-  const [selectedItems, setSelectedItems] = useState<T[]>();
+  const [selectedItemsInner, setSelectedItems] = useState<T[]>();
+  const selectedItems = useMemo(() => value ?? selectedItemsInner, [value, selectedItemsInner]);
   const [isShow, setIsShow] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -272,14 +275,13 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
           originalEvent: e,
           stopPropagation: e.stopPropagation,
           preventDefault: e.preventDefault,
-          target: { name: selectAllLabel ?? "Select All", value: "0", id: "0" },
         });
       } else {
         setSelectAll(!selectAll);
         setSelectedItems(result);
       }
     },
-    [selectAll, options, onChange, selectAllLabel]
+    [selectAll, options, onChange]
   );
 
   const handleFilter = useCallback((text: string) => {
@@ -287,13 +289,23 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
   }, []);
 
   const handleLabelDelete = useCallback(
-    (item: ISelectItem<T>) => {
+    (e: React.MouseEvent<HTMLOrSVGElement>, item: ISelectItem<T>) => {
       if (!selectedItems?.length) {
         return;
       }
-      setSelectedItems(selectedItems.filter((i) => i !== item.value));
+      const result = selectedItems.filter((i) => i !== item.value);
+      if (onChange) {
+        onChange({
+          value: result,
+          stopPropagation: e.stopPropagation,
+          preventDefault: e.preventDefault,
+          target: item,
+        });
+      } else {
+        setSelectedItems(result);
+      }
     },
-    [selectedItems]
+    [selectedItems, onChange]
   );
 
   const panelHeaderTemplate = useMemo(
@@ -340,14 +352,14 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
   );
 
   const handleChange = useCallback(
-    (e: MultiSelectChangeEvent) => {
+    (e: IMultiSelectChangeEvent<T>) => {
       if (onChange) {
         onChange?.(e);
       } else {
         setSelectedItems(e.value);
       }
       searchInputRef.current?.clear();
-      searchInputRef.current?.focus();
+      // searchInputRef.current?.focus();
     },
     [onChange]
   );
@@ -365,10 +377,6 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
   useEffect(() => {
     setSelectAll(selectedItems?.length === options?.length);
   }, [selectedItems, options]);
-
-  useEffect(() => {
-    setSelectedItems(value);
-  }, [value]);
 
   return (
     <SelectContainer
@@ -452,7 +460,7 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
           itemTemplate={props.itemTemplate ?? itemTemplate}
           panelHeaderTemplate={props.panelHeaderTemplate ?? panelHeaderTemplate}
           emptyMessage={props.emptyMessage ?? ((<EmptyMessage />) as unknown as string)}
-          onChange={handleChange}
+          onChange={handleChange as any}
           onShow={handleShow}
           onHide={handleHide}
           onKeyDown={() => {}}

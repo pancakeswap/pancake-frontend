@@ -6,7 +6,7 @@ import { isAddressEqual } from 'viem'
 import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
 
-const DEFAULT_PROTOCOLS: Protocol[] = ['v3', 'v2', 'stable']
+const DEFAULT_PROTOCOLS: Protocol[] = [Protocol.V3, Protocol.V2, Protocol.STABLE]
 const DEFAULT_CHAINS: FarmV4SupportedChainId[] = Object.values(supportedChainIdV4)
 
 export const fetchExplorerFarmPools = async (
@@ -83,7 +83,8 @@ export const fetchFarmPools = async (
       pid: farm.pid,
       tvlUsd: undefined,
       vol24hUsd: undefined,
-      feeTier: farm.protocol === 'v3' ? Number(farm.feeAmount) : farm.protocol === 'v2' ? FeeAmount.MEDIUM : 100, // @todo @ChefJerry add stable fee
+      feeTier:
+        farm.protocol === Protocol.V3 ? Number(farm.feeAmount) : farm.protocol === Protocol.V2 ? FeeAmount.MEDIUM : 100, // @todo @ChefJerry add stable fee
       // @todo @ChefJerry get by protocols
       feeTierBase: 1_000_000,
     } satisfies PoolInfo
