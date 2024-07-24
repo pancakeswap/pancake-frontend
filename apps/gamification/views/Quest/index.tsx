@@ -80,7 +80,7 @@ export const Quest = () => {
     [completionStatus, endDateTime],
   )
 
-  const { taskStatus, refresh: refreshVerifyTaskStatus } = useVerifyTaskStatus({
+  const { taskStatus: data, refresh: refreshVerifyTaskStatus } = useVerifyTaskStatus({
     questId: id,
     isQuestFinished,
     hasIdRegister,
@@ -89,20 +89,18 @@ export const Quest = () => {
   const hasOptionsInTasks = useMemo(() => tasks?.find((i) => i.isOptional === true), [tasks])
 
   const totalTaskCompleted = useMemo(() => {
-    const { verificationStatusBySocialMedia } = taskStatus
-
-    return quest.tasks.reduce((acc, { taskType }) => acc + (verificationStatusBySocialMedia?.[taskType] ? 1 : 0), 0)
-  }, [quest.tasks, taskStatus])
+    const { taskStatus } = data
+    return taskStatus.reduce((acc, { completionStatus: isComplete }) => acc + (isComplete ? 1 : 0), 0)
+  }, [data])
 
   const isEnoughCompleted = useMemo(() => {
-    const allRequestTaskTotal = quest.tasks.filter((i) => !i.isOptional)
-    const { verificationStatusBySocialMedia } = taskStatus
+    const allRequestTaskTotal = data.taskStatus.filter((i) => !i.isOptional)
     const totalRequestComplete = allRequestTaskTotal.reduce(
-      (acc, { taskType }) => acc + (verificationStatusBySocialMedia?.[taskType] ? 1 : 0),
+      (acc, { completionStatus: isComplete }) => acc + (isComplete ? 1 : 0),
       0,
     )
     return allRequestTaskTotal.length === totalRequestComplete
-  }, [quest.tasks, taskStatus])
+  }, [data])
 
   const isTasksCompleted = useMemo(() => totalTaskCompleted === tasks?.length, [tasks, totalTaskCompleted])
 
@@ -155,7 +153,7 @@ export const Quest = () => {
         )}
         <Tasks
           quest={quest}
-          taskStatus={taskStatus}
+          taskStatus={data}
           hasIdRegister={hasIdRegister}
           isQuestFinished={isQuestFinished}
           isTasksCompleted={isTasksCompleted}

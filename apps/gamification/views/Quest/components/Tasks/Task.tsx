@@ -59,7 +59,10 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const { address: account } = useAccount()
   const { data: session } = useSession()
   const { taskType, title, description } = task
-  const isVerified = taskStatus?.verificationStatusBySocialMedia?.[taskType]
+  const isVerified = useMemo(
+    () => taskStatus.taskStatus.find((i) => i.taskId === task.id)?.completionStatus,
+    [task, taskStatus],
+  )
   const { taskIcon, taskNaming, userActionButtonText } = useTaskInfo(false, 22)
   const { userInfo, isFetched: isSocialHubFetched } = useUserSocialHub()
   const { randomConnect: connectTwitter } = useConnectTwitter({ userInfo })

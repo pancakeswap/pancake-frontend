@@ -4,18 +4,26 @@ import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { useAccount } from 'wagmi'
 
+export interface SingleTaskStatus {
+  taskId: string
+  taskType: TaskType
+  updateTimestamp: number
+  completionStatus: boolean
+  isOptional: boolean
+}
+
 export interface VerifyTaskStatus {
   userId: string
   questId: string
-  verificationStatusBySocialMedia: null | { [key in TaskType]: boolean }
   message: null | string
+  taskStatus: SingleTaskStatus[]
 }
 
 const initialData: VerifyTaskStatus = {
   userId: '',
   questId: '',
-  verificationStatusBySocialMedia: null,
   message: null,
+  taskStatus: [],
 }
 
 interface UseVerifyTaskStatus {
