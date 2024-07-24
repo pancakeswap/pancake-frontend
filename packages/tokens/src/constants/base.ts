@@ -102,4 +102,12 @@ export const baseTokens = {
     'LayerZero',
     'https://www.layerzero.foundation/',
   ),
+  weeth: new ERC20Token(
+    ChainId.BASE,
+    '0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A',
+    18,
+    'weETH',
+    'Wrapped weETH',
+    'https://www.ether.fi/',
+  ),
 }
