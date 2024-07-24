@@ -57,24 +57,29 @@ const useFarmV3Actions = ({
       chain: signer?.chain,
     }
 
-    const resp = await fetchWithCatchTxError(() => {
-      // Workaround for zksync smart wallets
-      if (isSC && chainId === ChainId.ZKSYNC) {
-        const newTxn = {
-          ...txn,
-          gas: BOOSTED_FARM_V3_GAS_LIMIT,
-        }
-        return sendTransactionAsync(newTxn)
-      }
-      return publicClient.estimateGas(txn).then((estimate) => {
-        const newTxn = {
-          ...txn,
-          gas: calculateGasMargin(estimate),
-        }
+    const resp = await fetchWithCatchTxError(() =>
+      publicClient
+        .estimateGas(txn)
+        .then((estimate) => {
+          const newTxn = {
+            ...txn,
+            gas: calculateGasMargin(estimate),
+          }
 
-        return sendTransactionAsync(newTxn)
-      })
-    })
+          return sendTransactionAsync(newTxn)
+        })
+        .catch((e) => {
+          // Workaround for zksync smart wallets
+          if (isSC && chainId === ChainId.ZKSYNC && e.shortMessage.includes('argent/forbidden-fallback')) {
+            const newTxn = {
+              ...txn,
+              gas: BOOSTED_FARM_V3_GAS_LIMIT,
+            }
+            return sendTransactionAsync(newTxn)
+          }
+          throw e
+        }),
+    )
     if (resp?.status) {
       onDone?.()
       toastSuccess(
