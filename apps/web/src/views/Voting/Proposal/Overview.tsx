@@ -89,7 +89,7 @@ const Overview = () => {
       const voteInVotes = votes.filter((vote) => vote.voter.toLowerCase() === account?.toLowerCase())[0]
       return voteInVotes?.choice ?? (await getNumberOfVotes(proposal, 1, account))[0]?.choice
     },
-    enabled: Boolean(account && proposal && votes && votesLoadingStatus === 'success'),
+    enabled: Boolean(account && proposal && votesLoadingStatus === 'success'),
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
