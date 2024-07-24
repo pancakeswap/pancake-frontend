@@ -13,6 +13,7 @@ import { getViemClients, viemClients } from 'utils/viem'
 import { Address, hexToBigInt } from 'viem'
 import { useAccount, useSendTransaction, useWalletClient } from 'wagmi'
 import { useIsSmartContract } from 'hooks/useIsSmartContract'
+import { BOOSTED_FARM_V3_GAS_LIMIT } from 'config'
 
 interface FarmV3ActionContainerChildrenProps {
   attemptingTxn: boolean
@@ -61,7 +62,7 @@ const useFarmV3Actions = ({
       if (isSC && chainId === ChainId.ZKSYNC) {
         const newTxn = {
           ...txn,
-          gas: 500000n,
+          gas: BOOSTED_FARM_V3_GAS_LIMIT,
         }
         return sendTransactionAsync(newTxn)
       }
