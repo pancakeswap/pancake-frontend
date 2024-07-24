@@ -1,6 +1,7 @@
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, MoreIcon, SubMenu } from '@pancakeswap/uikit'
+import { memo } from 'react'
 import styled from 'styled-components'
 
 export const StyledButton = styled(Button)`
@@ -11,7 +12,7 @@ export const StyledButton = styled(Button)`
   height: auto;
 `
 
-export const PoolListItemAction = () => {
+export const PoolListItemAction = memo(() => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   return (
@@ -37,4 +38,4 @@ export const PoolListItemAction = () => {
       </StyledButton>
     </SubMenu>
   )
-}
+})
