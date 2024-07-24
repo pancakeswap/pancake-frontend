@@ -20,6 +20,9 @@ export const useIsSmartContract = (address?: Address): boolean => {
       return code && code !== '0x'
     },
     enabled: !!address,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   })
 
   return !!data
