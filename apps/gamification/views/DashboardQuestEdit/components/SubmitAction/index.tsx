@@ -115,7 +115,20 @@ export const SubmitAction = () => {
       const method = isCreate ? 'POST' : 'PUT'
 
       const apiChainId = isCreate ? chainId : state.chainId
-      const { startDate, startTime, endDate, endTime, needAddReward, reward } = state
+      const {
+        id,
+        title,
+        description,
+        startDate,
+        startTime,
+        endDate,
+        endTime,
+        needAddReward,
+        reward,
+        ownerAddress,
+        rewardSCAddress,
+        numberOfParticipants,
+      } = state
       const startDateTime = startDate && startTime ? combineDateAndTime(startDate, startTime) ?? 0 : 0
       const endDateTime = endDate && endTime ? combineDateAndTime(endDate, endTime) ?? 0 : 0
 
@@ -128,18 +141,29 @@ export const SubmitAction = () => {
       const response = await fetch(url, {
         method,
         body: JSON.stringify({
-          ...state,
+          ...(!isCreate && { id }),
+          title,
+          description,
+          completionStatus,
           orgId: account?.toLowerCase(),
           tasks: tasks?.length > 0 ? tasks.map((i, index) => ({ ...i, orderNumber: index })) : [],
           reward: reward || {},
           chainId: apiChainId,
           startDateTime,
           endDateTime,
-          completionStatus,
+          numberOfParticipants,
+          needAddReward,
+          ownerAddress: isCreate ? account?.toLowerCase() : ownerAddress,
+          ...(rewardSCAddress && {
+            rewardSCAddress,
+          }),
         }),
       })
 
+      const result = await response.json()
+
       if (!response.ok) {
+        toastError(result.error)
         return setIsSubmitError(true)
       }
 
@@ -150,7 +174,6 @@ export const SubmitAction = () => {
 
       const isSaveAndAddReward = isCreate && completionStatus === CompletionStatus.DRAFTED && needAddReward
       if (isSaveAndAddReward) {
-        const result = await response.json()
         push(`/dashboard/quest/edit/${result.id}`)
       }
 
