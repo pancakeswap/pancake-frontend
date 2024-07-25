@@ -1,6 +1,6 @@
+import { CalculateIcon, Flex, IconButton } from "@pancakeswap/uikit";
 import { useCallback } from "react";
 import { styled } from "styled-components";
-import { Flex, CalculateIcon, IconButton } from "@pancakeswap/uikit";
 
 const ApyLabelContainer = styled(Flex)`
   cursor: pointer;
@@ -38,12 +38,12 @@ export const FarmApyButton: React.FC<React.PropsWithChildren<FarmApyButtonProps>
         style={{ textDecoration: strikethrough ? "line-through" : "initial" }}
         onClick={handleClick}
       >
-        {children}
         {variant === "text-and-button" && (
           <IconButton variant="text" scale="xs" ml="4px" style={{ height: "auto", padding: 0 }}>
             <CalculateIcon width="18px" color="textSubtle" />
           </IconButton>
         )}
+        {children}
       </ApyLabelContainer>
     </Flex>
   );
