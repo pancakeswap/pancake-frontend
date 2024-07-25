@@ -36,7 +36,7 @@ const GradientBlur = styled(BannerContainer)<{ width: number; left: number; top:
   background: #c6cbf2;
   filter: blur(${({ blur }) => blur}px);
 `
-const ATHLETICS_PATH = `${ASSET_CDN}/web/banners/oort`
+const OORT_PATH = `${ASSET_CDN}/web/banners/oort`
 const floatingAsset = `${ASSET_CDN}/web/banners/oort/oort-coin.png`
 
 const tradeNowLink =
@@ -45,13 +45,13 @@ const learnMoreLink =
   'https://blog.pancakeswap.finance/articles/join-the-oort-trading-competition-on-pancake-swap-to-win-50-000?utm_source=PCSWebsite&utm_medium=HomePageBanner&utm_campaign=SwapOORT&utm_id=OORTTradingCompetition'
 
 const bgSmVariant: GraphicDetail = {
-  src: `${ATHLETICS_PATH}/bunnies-md.png`,
+  src: `${OORT_PATH}/bunnies-md.png`,
   width: 272,
   height: 224,
 }
 
 const bgXsVariant: GraphicDetail = {
-  src: `${ATHLETICS_PATH}/bunnies-md.png`,
+  src: `${OORT_PATH}/bunnies-md.png`,
   width: 196,
   height: 164,
 }
@@ -83,7 +83,7 @@ export const OortTradingBanner = () => {
         badges={
           <Flex alignItems="center" justifyContent="center" alignContent="center" height="20px" minWidth="220px">
             <PancakeSwapBadge />
-            <StyledImage src={`${ATHLETICS_PATH}/oort-logo.png`} alt="top-logo-alt" />
+            <StyledImage src={`${OORT_PATH}/oort-logo.png`} alt="top-logo-alt" />
           </Flex>
         }
         title={
@@ -120,7 +120,7 @@ export const OortTradingBanner = () => {
 
       <BannerGraphics>
         <BackgroundGraphic
-          src={`${ATHLETICS_PATH}/bunnies-lg.png`}
+          src={`${OORT_PATH}/bunnies-lg.png`}
           sm={bgSmVariant}
           xs={bgXsVariant}
           width={469}
