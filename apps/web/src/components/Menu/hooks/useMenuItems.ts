@@ -35,7 +35,9 @@ export const useMenuItems = ({ onClick }: UseMenuItemsParams = {}): ConfigMenuIt
       return menuItems.map((item) => {
         const innerItems = item?.items?.map((currentItem) => {
           const onClickEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
-            logMenuClick(currentItem.href || '')
+            if (currentItem.href) {
+              logMenuClick(currentItem.href)
+            }
             currentItem.onClick?.(e)
             onClick?.(e, currentItem)
           }
@@ -73,7 +75,9 @@ export const useMenuItems = ({ onClick }: UseMenuItemsParams = {}): ConfigMenuIt
           return innerItem
         })
         const onItemClick: MouseEventHandler = (e) => {
-          logMenuClick(item.href || '')
+          if (item.href) {
+            logMenuClick(item.href)
+          }
           item.onClick?.(e)
         }
         return { ...item, items: innerItems, onClick: onItemClick }
