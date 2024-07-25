@@ -35,6 +35,7 @@ export enum CompletionStatus {
   FINISHED = 'FINISHED',
   DRAFTED = 'DRAFTED',
   SCHEDULED = 'SCHEDULED',
+  PENDING_REWARD = 'PENDING_REWARD',
 }
 
 export enum CompletionStatusIndex {

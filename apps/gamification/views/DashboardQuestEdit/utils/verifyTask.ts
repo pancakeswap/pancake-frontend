@@ -3,6 +3,7 @@ import {
   TaskConfigType,
   TaskHoldTokenConfig,
   TaskLiquidityConfig,
+  TaskLotteryConfig,
   TaskSocialConfig,
   TaskSwapConfig,
 } from 'views/DashboardQuestEdit/context/types'
@@ -19,6 +20,12 @@ export const verifyTask = (task: TaskConfigType) => {
     case TaskType.MAKE_A_SWAP:
     case TaskType.HOLD_A_TOKEN:
       return !validateNumber((task as TaskSwapConfig | TaskHoldTokenConfig).minAmount)
+    case TaskType.PARTICIPATE_LOTTERY:
+      return (
+        !validateNumber((task as TaskLotteryConfig).toRound.toString()) &&
+        !validateNumber((task as TaskLotteryConfig).fromRound.toString()) &&
+        !validateNumber((task as TaskLotteryConfig).minAmount.toString())
+      )
     case TaskType.ADD_LIQUIDITY:
       return (
         !validateLpAddress((task as TaskLiquidityConfig).lpAddress) &&

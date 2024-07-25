@@ -31,7 +31,7 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
 
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskLotteryConfig) => i.sid === task.sid)
-    forkTasks[indexToUpdate][socialKeyType] = e.target.value
+    forkTasks[indexToUpdate][socialKeyType] = Number(e.target.value)
 
     onTasksChange([...forkTasks])
   }
@@ -44,9 +44,15 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
     onTasksChange([...forkTasks])
   }
 
-  const isMinAmountError = useMemo(() => !isFirst && validateNumber(task.minAmount), [isFirst, task?.minAmount])
-  const isFromRoundError = useMemo(() => !isFirst && validateNumber(task.fromRound), [isFirst, task?.fromRound])
-  const isToRoundError = useMemo(() => !isFirst && validateNumber(task.toRound), [isFirst, task?.toRound])
+  const isMinAmountError = useMemo(
+    () => !isFirst && validateNumber(task?.minAmount?.toString()),
+    [isFirst, task?.minAmount],
+  )
+  const isFromRoundError = useMemo(
+    () => !isFirst && validateNumber(task?.fromRound?.toString()),
+    [isFirst, task?.fromRound],
+  )
+  const isToRoundError = useMemo(() => !isFirst && validateNumber(task?.toRound?.toString()), [isFirst, task?.toRound])
 
   return (
     <Flex flexDirection={['column']}>
@@ -74,8 +80,8 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
             endIcon={isMinAmountError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
           >
             <StyledInput
+              pattern="^[0-9]+$"
               inputMode="numeric"
-              pattern="^[0-9]*[.,]?[0-9]*$"
               value={task.minAmount}
               isError={isMinAmountError}
               placeholder={t('Min. ticket’s amount')}
@@ -94,6 +100,8 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
             >
               <StyledInput
                 placeholder={t('From')}
+                pattern="^[0-9]+$"
+                inputMode="numeric"
                 value={task.fromRound}
                 isError={isFromRoundError}
                 onChange={(e) => handleNumberChange(e, 'fromRound')}
@@ -107,6 +115,8 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
             >
               <StyledInput
                 placeholder={t('To')}
+                pattern="^[0-9]+$"
+                inputMode="numeric"
                 value={task.toRound}
                 isError={isToRoundError}
                 onChange={(e) => handleNumberChange(e, 'toRound')}

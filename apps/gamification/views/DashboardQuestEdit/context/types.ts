@@ -31,7 +31,6 @@ export interface TaskBaseConfig {
   description: string
   taskType: TaskType
   isOptional: boolean
-  isCompleted: boolean
   orderNumber: number
 }
 
@@ -51,9 +50,9 @@ export interface TaskHoldTokenConfig extends TaskBaseConfig {
 
 export interface TaskLotteryConfig extends TaskBaseConfig {
   taskType: TaskType.PARTICIPATE_LOTTERY
-  minAmount: string
-  fromRound: string
-  toRound: string
+  minAmount: number
+  fromRound: number
+  toRound: number
 }
 
 export interface TaskLiquidityConfig extends TaskBaseConfig {
