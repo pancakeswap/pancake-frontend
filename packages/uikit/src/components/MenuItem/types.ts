@@ -1,3 +1,5 @@
+import { MouseEventHandler } from "react";
+
 import { Colors } from "../../theme";
 
 export type MenuItemVariant = "default" | "subMenu";
@@ -9,6 +11,7 @@ export interface MenuItemProps {
   variant?: MenuItemVariant;
   statusColor?: keyof Colors;
   scrollLayerRef?: React.RefObject<HTMLDivElement>;
+  onClick?: MouseEventHandler;
 }
 
 export type StyledMenuItemProps = {

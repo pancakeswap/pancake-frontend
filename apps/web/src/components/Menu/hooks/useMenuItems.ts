@@ -3,8 +3,10 @@ import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { DropdownMenuItems, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import React, { useMemo } from 'react'
+import React, { MouseEventHandler, useMemo } from 'react'
 import { multiChainPaths } from 'state/info/constant'
+import { logMenuClick } from 'utils/customGTMEventTracking'
+
 import config, { ConfigMenuDropDownItemsType, ConfigMenuItemsType } from '../config/config'
 import { useMenuItemsStatus } from './useMenuItemsStatus'
 
@@ -33,6 +35,9 @@ export const useMenuItems = ({ onClick }: UseMenuItemsParams = {}): ConfigMenuIt
       return menuItems.map((item) => {
         const innerItems = item?.items?.map((currentItem) => {
           const onClickEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
+            if (currentItem.href) {
+              logMenuClick(currentItem.href)
+            }
             currentItem.onClick?.(e)
             onClick?.(e, currentItem)
           }
@@ -69,7 +74,13 @@ export const useMenuItems = ({ onClick }: UseMenuItemsParams = {}): ConfigMenuIt
 
           return innerItem
         })
-        return { ...item, items: innerItems }
+        const onItemClick: MouseEventHandler = (e) => {
+          if (item.href) {
+            logMenuClick(item.href)
+          }
+          item.onClick?.(e)
+        }
+        return { ...item, items: innerItems, onClick: onItemClick }
       })
     }
     return menuItems
