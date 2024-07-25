@@ -2,7 +2,7 @@ import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, IconButton, Text, useMatchB
 import { useQuery } from '@tanstack/react-query'
 import Trans from 'components/Trans'
 import shuffle from 'lodash/shuffle'
-import { ReactNode, useMemo, useState } from 'react'
+import { ReactNode, useCallback, useMemo, useState } from 'react'
 import { getMarketDataForTokenIds, getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'
 import { styled } from 'styled-components'
@@ -133,31 +133,39 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
     return [slides, maxPage]
   }, [isMd, isLg, nftsToShow?.length])
 
-  if (!nftsToShow || nftsToShow.length === 0) {
-    return null
-  }
-
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     if (activeIndex < maxPageIndex - 1) {
       setActiveIndex((index) => index + 1)
       swiperRef?.slideNext()
     }
-  }
+  }, [activeIndex, maxPageIndex, swiperRef])
 
-  const previousSlide = () => {
+  const previousSlide = useCallback(() => {
     if (activeIndex > 0) {
       setActiveIndex((index) => index - 1)
       swiperRef?.slidePrev()
     }
-  }
+  }, [activeIndex, swiperRef])
 
-  const goToSlide = (index: number) => {
-    setActiveIndex(index / slidesPerView)
-    swiperRef?.slideTo(index)
-  }
+  const goToSlide = useCallback(
+    (index: number) => {
+      setActiveIndex(index / slidesPerView)
+      swiperRef?.slideTo(index)
+    },
+    [slidesPerView, swiperRef],
+  )
 
-  const updateActiveIndex = ({ activeIndex: newActiveIndex }) => {
-    if (newActiveIndex !== undefined) setActiveIndex(Math.ceil(newActiveIndex / slidesPerView))
+  const updateActiveIndex = useCallback(
+    ({ activeIndex: newActiveIndex }) => {
+      if (newActiveIndex !== undefined) {
+        setActiveIndex(Math.ceil(newActiveIndex / slidesPerView))
+      }
+    },
+    [slidesPerView],
+  )
+
+  if (!nftsToShow || nftsToShow.length === 0) {
+    return null
   }
 
   return (

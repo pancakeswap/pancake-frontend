@@ -5,6 +5,7 @@ import { useAllSortedRecentTransactions } from 'state/transactions/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { clearAllTransactions } from 'state/transactions/actions'
 import isEmpty from 'lodash/isEmpty'
+import { useCallback } from 'react'
 import TransactionRow from './TransactionRow'
 import { chains } from '../../../utils/wagmi'
 
@@ -24,9 +25,9 @@ const WalletTransactions: React.FC<React.PropsWithChildren<WalletTransactionsPro
 
   const hasTransactions = !isEmpty(sortedTransactions)
 
-  const handleClearAll = () => {
+  const handleClearAll = useCallback(() => {
     dispatch(clearAllTransactions())
-  }
+  }, [dispatch])
 
   return (
     <Box minHeight="120px">

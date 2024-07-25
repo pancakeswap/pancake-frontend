@@ -7,7 +7,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useMasterchefV3 } from 'hooks/useContract'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { Hex, encodeFunctionData } from 'viem'
 import { useAccount, useReadContracts, useSendTransaction } from 'wagmi'
@@ -152,9 +152,11 @@ export function UpdatePositionsReminder_() {
   const [triggerOnce, setTriggerOnce] = useState(false)
 
   // eslint-disable-next-line consistent-return
-  const handleUpdateAll = async () => {
+  const handleUpdateAll = useCallback(async () => {
     if (!needRetrigger || !sendTransactionAsync) return null
+
     const calldata: (Hex | Hex[])[] = []
+
     needRetrigger.forEach((userInfo) => {
       if (userInfo.needReduce) {
         calldata.push(
@@ -173,6 +175,7 @@ export function UpdatePositionsReminder_() {
           }),
         )
       }
+
       calldata.push(
         MasterChefV3.encodeHarvest({
           to: account || '0x',
@@ -196,7 +199,17 @@ export function UpdatePositionsReminder_() {
       stakedUserInfos.refetch()
       modal.onDismiss()
     }
-  }
+  }, [
+    needRetrigger,
+    sendTransactionAsync,
+    masterChefV3Address,
+    deadline,
+    account,
+    stakedUserInfos,
+    modal,
+    toastSuccess,
+    fetchWithCatchTxError,
+  ])
 
   if (
     !triggerOnce &&

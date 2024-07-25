@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Percent, Price } from '@pancakeswap/sdk'
 import { AutoRenewIcon, Button, Flex, HelpIcon, Input, SyncAltIcon, Text, useTooltip } from '@pancakeswap/uikit'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Rate } from 'state/limitOrders/types'
 import { styled } from 'styled-components'
 import { escapeRegExp } from 'utils'
@@ -67,9 +67,9 @@ const LimitOrderPrice: React.FC<React.PropsWithChildren<LimitOrderPriceProps>> =
           assetB: outputCurrency?.symbol ?? '',
         })
 
-  const toggleRateType = () => {
+  const toggleRateType = useCallback(() => {
     handleRateType(rateType, price)
-  }
+  }, [handleRateType, rateType, price])
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>

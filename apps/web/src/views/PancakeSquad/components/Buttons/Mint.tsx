@@ -4,7 +4,7 @@ import { AutoRenewIcon, Button, useModal, useToast } from '@pancakeswap/uikit'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useNftSaleContract } from 'hooks/useContract'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { DefaultTheme } from 'styled-components'
 import { Hash } from 'viem'
 import { SaleStatusEnum } from '../../types'
@@ -33,9 +33,9 @@ const MintButton: React.FC<React.PropsWithChildren<PreEventProps>> = ({
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isLoading } = useCatchTxError()
 
-  const onConfirmClose = () => {
+  const onConfirmClose = useCallback(() => {
     setTxHashMintingResult(null)
-  }
+  }, [])
 
   const [onPresentConfirmModal, onDismiss] = useModal(
     <ConfirmModal
@@ -51,7 +51,7 @@ const MintButton: React.FC<React.PropsWithChildren<PreEventProps>> = ({
     false,
   )
 
-  const mintTokenCallBack = async () => {
+  const mintTokenCallBack = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(async () => {
       if (ticketsOfUser.length) return callWithGasPrice(nftSaleContract, 'mint', [ticketsOfUser])
 
@@ -63,7 +63,7 @@ const MintButton: React.FC<React.PropsWithChildren<PreEventProps>> = ({
     } else {
       onDismiss?.()
     }
-  }
+  }, [ticketsOfUser, callWithGasPrice, nftSaleContract, toastSuccess, onDismiss, t])
 
   useEffect(() => {
     if (txHashMintingResult && !isLoading) {

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useContext, useRef } from "react";
+import React, { PropsWithChildren, useCallback, useContext, useRef } from "react";
 import { useTheme } from "styled-components";
 import { Box } from "../../components/Box";
 import Heading from "../../components/Heading/Heading";
@@ -20,6 +20,12 @@ export const ModalWrapper = ({
   const { isMobile } = useMatchBreakpoints();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  const handleDragStart = useCallback(() => {
+    if (wrapperRef.current) {
+      wrapperRef.current.style.animation = "none";
+    }
+  }, [wrapperRef]);
+
   return (
     // @ts-ignore
     <ModalContainer
@@ -27,9 +33,7 @@ export const ModalWrapper = ({
       dragConstraints={{ top: 0, bottom: 600 }}
       dragElastic={{ top: 0 }}
       dragSnapToOrigin
-      onDragStart={() => {
-        if (wrapperRef.current) wrapperRef.current.style.animation = "none";
-      }}
+      onDragStart={handleDragStart}
       // @ts-ignore
       onDragEnd={(e, info) => {
         if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss();

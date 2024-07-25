@@ -50,15 +50,15 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       },
     }))
 
-  const setIsClaimed = () => {
+  const setIsClaimed = useCallback(() => {
     setState((prevState) => ({
       ...prevState,
       [PoolIds.poolUnlimited]: {
-        ...prevState.poolUnlimited,
+        ...prevState[PoolIds.poolUnlimited],
         hasClaimed: true,
       },
     }))
-  }
+  }, [])
 
   const fetchIfoData = useCallback(async () => {
     if (!account) {

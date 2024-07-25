@@ -148,31 +148,31 @@ const SingleFarmV3Card: React.FunctionComponent<
 
   const unstakedModal = useModalV2()
 
-  const handleStake = async () => {
+  const handleStake = useCallback(async () => {
     await onStake()
     if (!attemptingTxn) {
       onDismiss?.()
     }
     logGTMClickStakeFarmEvent()
-  }
+  }, [onStake, attemptingTxn, onDismiss])
 
-  const handleStakeInactivePosition = () => {
+  const handleStakeInactivePosition = useCallback(() => {
     unstakedModal.onOpen()
-  }
+  }, [unstakedModal])
 
-  const handleUnStake = async () => {
+  const handleUnStake = useCallback(async () => {
     await onUnstake()
     if (!attemptingTxn) {
       unstakedModal.onDismiss()
     }
-  }
+  }, [onUnstake, attemptingTxn, unstakedModal])
 
-  const handleHarvest = async () => {
+  const handleHarvest = useCallback(async () => {
     await onHarvest()
     if (!attemptingTxn) {
       onDismiss?.()
     }
-  }
+  }, [onHarvest, attemptingTxn, onDismiss])
 
   const dividerBorderStyle = useMemo(() => `1px solid ${colors.input}`, [colors.input])
 

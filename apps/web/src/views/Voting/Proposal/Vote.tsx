@@ -12,7 +12,7 @@ import {
   useToast,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Proposal } from 'state/types'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
@@ -56,10 +56,10 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, onSucces
   const { toastSuccess } = useToast()
   const { address: account } = useAccount()
 
-  const handleSuccess = async () => {
+  const handleSuccess = useCallback(async () => {
     toastSuccess(t('Vote cast!'))
     onSuccess?.()
-  }
+  }, [onSuccess, t, toastSuccess])
 
   const [presentCastVoteModal] = useModal(
     <CastVoteModal onSuccess={handleSuccess} proposalId={proposal.id} vote={vote} block={Number(proposal.snapshot)} />,

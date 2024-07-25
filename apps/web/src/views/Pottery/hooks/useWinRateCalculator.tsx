@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { CalculatorMode, EditingCurrency } from '../types'
@@ -53,58 +53,73 @@ const useWinRateCalculator = ({ cakePrice, totalSupply }: WinRateCalculatorProps
     return percentage >= 100 ? 100 : percentage
   }, [state, totalLockValue])
 
-  const setPrincipalFromTokenValue = (amount: string) => {
-    const principalAsUsdBN = new BigNumber(amount).times(cakePrice)
-    const principalAsUsdString = principalAsUsdBN.gt(0) ? principalAsUsdBN.toFixed(USD_PRECISION) : '0.00'
-    const data = {
-      ...state.data,
-      principalAsUSD: principalAsUsdString,
-      principalAsToken: amount,
-    }
-    setState({ ...state, data })
-  }
+  const setPrincipalFromTokenValue = useCallback(
+    (amount: string) => {
+      const principalAsUsdBN = new BigNumber(amount).times(cakePrice)
+      const principalAsUsdString = principalAsUsdBN.gt(0) ? principalAsUsdBN.toFixed(USD_PRECISION) : '0.00'
+      const data = {
+        ...state.data,
+        principalAsUSD: principalAsUsdString,
+        principalAsToken: amount,
+      }
+      setState((prevState) => ({ ...prevState, data }))
+    },
+    [state, cakePrice],
+  )
 
-  const setPrincipalFromUSDValue = (amount: string) => {
-    const principalAsTokenBN = new BigNumber(amount).div(cakePrice)
-    const principalAsToken = principalAsTokenBN.gt(0) ? principalAsTokenBN.toFixed(TOKEN_PRECISION) : '0.00'
-    const data = {
-      ...state.data,
-      principalAsUSD: amount,
-      principalAsToken,
-    }
-    setState({ ...state, data })
-  }
+  const setPrincipalFromUSDValue = useCallback(
+    (amount: string) => {
+      const principalAsTokenBN = new BigNumber(amount).div(cakePrice)
+      const principalAsToken = principalAsTokenBN.gt(0) ? principalAsTokenBN.toFixed(TOKEN_PRECISION) : '0.00'
+      const data = {
+        ...state.data,
+        principalAsUSD: amount,
+        principalAsToken,
+      }
+      setState((prevState) => ({ ...prevState, data }))
+    },
+    [state, cakePrice],
+  )
 
-  const toggleEditingCurrency = () => {
+  const toggleEditingCurrency = useCallback(() => {
     const currencyAfterChange =
       state.controls.editingCurrency === EditingCurrency.USD ? EditingCurrency.TOKEN : EditingCurrency.USD
     const controls = { ...state.controls, editingCurrency: currencyAfterChange }
-    setState({ ...state, controls })
-  }
+    setState((prevState) => ({ ...prevState, controls }))
+  }, [state])
 
-  const setMultiplyNumber = (multiplyNumber: number) => {
-    const controls = { ...state.controls, multiply: multiplyNumber }
-    setState({ ...state, controls })
-  }
+  const setMultiplyNumber = useCallback(
+    (multiplyNumber: number) => {
+      const controls = { ...state.controls, multiply: multiplyNumber }
+      setState((prevState) => ({ ...prevState, controls }))
+    },
+    [state],
+  )
 
-  const setCalculatorMode = (mode: CalculatorMode) => {
-    const controls = { ...state.controls, mode }
-    setState({ ...state, controls })
-  }
+  const setCalculatorMode = useCallback(
+    (mode: CalculatorMode) => {
+      const controls = { ...state.controls, mode }
+      setState((prevState) => ({ ...prevState, controls }))
+    },
+    [state],
+  )
 
-  const setTargetWinRate = (percentage: string) => {
-    const cakeAmount = new BigNumber(percentage).dividedBy(100).times(totalLockValue)
-    const principalAsToken = cakeAmount.gt(0) ? cakeAmount.toFixed(TOKEN_PRECISION) : '0.00'
-    const principalAsUsdBN = new BigNumber(cakeAmount).times(cakePrice)
-    const principalAsUsdString = principalAsUsdBN.gt(0) ? principalAsUsdBN.toFixed(USD_PRECISION) : '0.00'
+  const setTargetWinRate = useCallback(
+    (percentage: string) => {
+      const cakeAmount = new BigNumber(percentage).dividedBy(100).times(totalLockValue)
+      const principalAsToken = cakeAmount.gt(0) ? cakeAmount.toFixed(TOKEN_PRECISION) : '0.00'
+      const principalAsUsdBN = new BigNumber(cakeAmount).times(cakePrice)
+      const principalAsUsdString = principalAsUsdBN.gt(0) ? principalAsUsdBN.toFixed(USD_PRECISION) : '0.00'
 
-    const data = {
-      ...state.data,
-      principalAsToken,
-      principalAsUSD: principalAsUsdString,
-    }
-    setState({ ...state, data })
-  }
+      const data = {
+        ...state.data,
+        principalAsToken,
+        principalAsUSD: principalAsUsdString,
+      }
+      setState((prevState) => ({ ...prevState, data }))
+    },
+    [state, totalLockValue, cakePrice],
+  )
 
   return {
     state,

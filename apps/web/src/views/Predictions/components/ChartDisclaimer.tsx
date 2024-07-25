@@ -33,10 +33,6 @@ const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = (
   const config = useConfig()
   const { t } = useTranslation()
 
-  const handleConfirm = () => {
-    onDismiss?.()
-  }
-
   return (
     <ModalWrapper minWidth="320px">
       <ModalBody p="24px" maxWidth="400px">
@@ -69,7 +65,7 @@ const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = (
           {t('Learn More')}
         </LinkExternal>
         <Box>
-          <Button width="100%" onClick={handleConfirm} mb="16px">
+          <Button width="100%" onClick={onDismiss} mb="16px">
             {t('I understand')}
           </Button>
         </Box>

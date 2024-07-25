@@ -29,10 +29,6 @@ const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = (
   const [showDisclaimer, setShowDisclaimer] = useUserPredictionChainlinkChartDisclaimerShow()
   const { t } = useTranslation()
 
-  const handleConfirm = () => {
-    onDismiss?.()
-  }
-
   return (
     <ModalWrapper minWidth="320px">
       <ModalBody p="24px" maxWidth="400px">
@@ -50,7 +46,7 @@ const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = (
           <li>{t('When compared to TradingView chart. This chart refreshes slower and with fewer features.')}</li>
         </Ul>
         <Box>
-          <Button width="100%" variant="primary" onClick={handleConfirm} my="16px">
+          <Button width="100%" variant="primary" onClick={onDismiss} my="16px">
             {t('I understand')}
           </Button>
         </Box>

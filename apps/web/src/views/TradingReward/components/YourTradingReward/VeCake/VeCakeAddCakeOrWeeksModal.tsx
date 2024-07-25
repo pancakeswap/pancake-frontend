@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowUpDownIcon, Box, Flex, InjectedModalProps, Modal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { LockCakeForm } from 'views/CakeStaking/components/LockCakeForm'
 import { LockWeeksForm } from 'views/CakeStaking/components/LockWeeksForm'
@@ -43,13 +43,13 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
     }
   }, [viewMode])
 
-  const toggleViewMode = () => {
+  const toggleViewMode = useCallback(() => {
     const mode =
       modalViewMode === VeCakeModalView.CAKE_FORM_VIEW
         ? VeCakeModalView.WEEKS_FORM_VIEW
         : VeCakeModalView.CAKE_FORM_VIEW
     setModalViewMode(mode)
-  }
+  }, [modalViewMode, setModalViewMode])
 
   const customVeCakeCard = endTime ? (
     <Box mt="16px" width="100%">

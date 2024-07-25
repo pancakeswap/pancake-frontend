@@ -20,7 +20,7 @@ import { SwitchToBnbChainModal } from 'components/CrossChainVeCakeModal/componen
 import { useMultichainVeCakeWellSynced } from 'components/CrossChainVeCakeModal/hooks/useMultichainVeCakeWellSynced'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { useAccount } from 'wagmi'
 import boosterCardImage from '../../../../images/boosterCardImage.png'
@@ -136,6 +136,10 @@ const CardContent: React.FC<{ variants?: 'farm' | 'pm' }> = ({ variants }) => {
   const [isOpen, setIsOpen] = useState(false)
   const isBSC = useMemo(() => chainId === ChainId.BSC, [chainId])
 
+  const handleOnDismiss = useCallback(() => {
+    setIsOpen(false)
+  }, [])
+
   if (!account)
     return (
       <Box>
@@ -196,15 +200,9 @@ const CardContent: React.FC<{ variants?: 'farm' | 'pm' }> = ({ variants }) => {
         {t('Sync veCAKE')}
       </Button>
       {isBSC ? (
-        <CrossChainVeCakeModal
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          onDismiss={() => {
-            setIsOpen(false)
-          }}
-        />
+        <CrossChainVeCakeModal isOpen={isOpen} setIsOpen={setIsOpen} onDismiss={handleOnDismiss} />
       ) : (
-        <SwitchToBnbChainModal isOpen={isOpen} onDismiss={() => setIsOpen(false)} />
+        <SwitchToBnbChainModal isOpen={isOpen} onDismiss={handleOnDismiss} />
       )}
     </Box>
   )

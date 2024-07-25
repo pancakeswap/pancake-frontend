@@ -3,7 +3,7 @@ import { bscTokens } from '@pancakeswap/tokens'
 import { Box, ChevronRightIcon, Flex, Loading, Text, useModal } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { transformBetResponse } from 'state/predictions/helpers'
 import { Bet } from 'state/types'
 import { styled } from 'styled-components'
@@ -49,7 +49,7 @@ const ClaimCheck = () => {
 
   const [onPresentNothingToClaimModal] = useModal(<NothingToClaimModal />)
 
-  const handleClick = async () => {
+  const handleClick = useCallback(async () => {
     try {
       setIsFetching(true)
       const betHistory = await getAllV1History({ user: account?.toLowerCase(), claimed: false })
@@ -71,7 +71,7 @@ const ClaimCheck = () => {
     } finally {
       setIsFetching(false)
     }
-  }
+  }, [account, setIsFetching, chainId, setHistory, onPresentCollectWinningsModal, onPresentNothingToClaimModal])
 
   return (
     <StyledClaimCheck onClick={account ? handleClick : undefined}>

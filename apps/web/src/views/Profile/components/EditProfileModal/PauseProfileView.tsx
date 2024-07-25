@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text, useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
@@ -27,7 +27,7 @@ const PauseProfilePage: React.FC<React.PropsWithChildren<PauseProfilePageProps>>
 
   const handleChange = () => setIsAcknowledged(!isAcknowledged)
 
-  const handleDeactivateProfile = async () => {
+  const handleDeactivateProfile = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       return callWithGasPrice(pancakeProfileContract, 'pauseProfile')
     })
@@ -38,7 +38,16 @@ const PauseProfilePage: React.FC<React.PropsWithChildren<PauseProfilePageProps>>
       onSuccess?.()
       onDismiss?.()
     }
-  }
+  }, [
+    callWithGasPrice,
+    pancakeProfileContract,
+    fetchWithCatchTxError,
+    refreshProfile,
+    t,
+    toastSuccess,
+    onSuccess,
+    onDismiss,
+  ])
 
   if (!profile) {
     return null

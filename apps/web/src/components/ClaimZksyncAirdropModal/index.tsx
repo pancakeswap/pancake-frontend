@@ -99,13 +99,7 @@ export const ClaimZksyncAirdropModal: React.FC<{
   }, [isPaymasterAvailable, setGasToken])
 
   return (
-    <ModalV2
-      isOpen={isOpen}
-      onDismiss={() => {
-        onDismiss?.()
-      }}
-      closeOnOverlayClick
-    >
+    <ModalV2 isOpen={isOpen} onDismiss={onDismiss} closeOnOverlayClick>
       <ModalContainer style={{ minWidth: '360px', padding: isDesktop ? '24px' : '24px 24px 0 24px' }}>
         <AtomBox justifyContent="space-between" p="24px" maxWidth="420px" height="100%" style={{ margin: '-24px' }}>
           <StyledModalHeader headerBorderColor="transparent">

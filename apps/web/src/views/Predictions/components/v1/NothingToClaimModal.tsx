@@ -11,7 +11,7 @@ import {
   ModalTitle,
   Text,
 } from '@pancakeswap/uikit'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import { V1History, getAllV1History } from './helpers'
@@ -34,7 +34,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<InjectedModalP
   const { t } = useTranslation()
   const { address: account } = useAccount()
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     const header = [
       'Round',
       'Result',
@@ -80,7 +80,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<InjectedModalP
     document.body.appendChild(anchor)
     anchor.click()
     document.body.removeChild(anchor)
-  }
+  }, [history])
 
   useEffect(() => {
     const fetchAllHistory = async () => {

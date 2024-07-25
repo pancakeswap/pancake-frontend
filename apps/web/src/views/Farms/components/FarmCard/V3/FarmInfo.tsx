@@ -113,10 +113,10 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
           }
           onHarvestAll={hasEarningTokenIds.length > 1 ? () => onHarvestAll(hasEarningTokenIds) : undefined}
           harvesting={harvesting}
-          onDismiss={() => setShow(false)}
+          onDismiss={handleDismiss}
         >
           <Flex flexDirection="column">
-            <FarmV3CardList farm={farm} onDismiss={() => setShow(false)} harvesting={harvesting} />
+            <FarmV3CardList farm={farm} onDismiss={handleDismiss} harvesting={harvesting} />
           </Flex>
         </ViewAllFarmModal>
       </ModalV2>

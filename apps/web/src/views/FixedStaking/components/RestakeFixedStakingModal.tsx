@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Box, Flex, Message, MessageText, ModalV2, PreTitle, Text, useModalV2 } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
-import { ReactNode } from 'react'
+import { ReactNode, useCallback } from 'react'
 
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
@@ -38,17 +38,15 @@ export function FixedRestakingModal({
   const { t } = useTranslation()
   const stakeModal = useModalV2()
 
+  const handleOnDismiss = useCallback(() => {
+    if (setSelectedPeriodIndex) setSelectedPeriodIndex(null)
+    stakeModal.onDismiss()
+  }, [setSelectedPeriodIndex, stakeModal.onDismiss])
+
   return account ? (
     <>
       {children(stakeModal.onOpen)}
-      <ModalV2
-        {...stakeModal}
-        onDismiss={() => {
-          if (setSelectedPeriodIndex) setSelectedPeriodIndex(null)
-          stakeModal.onDismiss()
-        }}
-        closeOnOverlayClick
-      >
+      <ModalV2 {...stakeModal} onDismiss={handleOnDismiss} closeOnOverlayClick>
         <StakingModalTemplate
           hideStakeButton
           useNative

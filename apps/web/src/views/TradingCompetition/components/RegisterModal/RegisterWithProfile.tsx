@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { styled } from 'styled-components'
 import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon, useToast } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
@@ -30,7 +30,7 @@ const RegisterWithProfile: React.FC<React.PropsWithChildren<CompetitionProps>> =
   const { callWithGasPrice } = useCallWithGasPrice()
   const { usernameWithVisibility } = useGetUsernameWithVisibility(profile?.username || '')
 
-  const handleConfirmClick = async () => {
+  const handleConfirmClick = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       return callWithGasPrice(tradingCompetitionContract, 'register')
     })
@@ -42,7 +42,15 @@ const RegisterWithProfile: React.FC<React.PropsWithChildren<CompetitionProps>> =
       onDismiss?.()
       onRegisterSuccess?.()
     }
-  }
+  }, [
+    callWithGasPrice,
+    fetchWithCatchTxError,
+    onDismiss,
+    onRegisterSuccess,
+    t,
+    toastSuccess,
+    tradingCompetitionContract,
+  ])
 
   return (
     <>

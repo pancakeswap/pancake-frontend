@@ -14,7 +14,7 @@ import {
   Text,
 } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { useGetNftFilters } from 'state/nftMarket/hooks'
 import { useNftStorage } from 'state/nftMarket/storage'
 import { styled } from 'styled-components'
@@ -68,46 +68,51 @@ export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterPr
       ? items.filter((item) => item.label.toLowerCase().indexOf(query.toLowerCase()) !== -1)
       : items
 
-  const handleClearItem = () => {
+  const handleClearItem = useCallback(() => {
     const newFilters = { ...nftFilters }
-
     delete newFilters[traitType]
-
     updateItemFilters({
       collectionAddress,
       nftFilters: newFilters,
     })
-  }
+  }, [nftFilters, traitType, collectionAddress, updateItemFilters])
 
-  const handleMenuClick = () => setIsOpen(!isOpen)
+  const handleMenuClick = useCallback(() => {
+    setIsOpen((prevIsOpen) => !prevIsOpen)
+  }, [])
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
     const { value } = evt.target
     setQuery(value)
-  }
+  }, [])
 
-  const handleItemSelect = ({ attr }: Item) => {
-    updateItemFilters({
-      collectionAddress,
-      nftFilters: { ...nftFilters, [traitType]: attr },
-    })
-  }
+  const handleItemSelect = useCallback(
+    ({ attr }: Item) => {
+      updateItemFilters({
+        collectionAddress,
+        nftFilters: { ...nftFilters, [traitType]: attr },
+      })
+    },
+    [nftFilters, traitType, collectionAddress, updateItemFilters],
+  )
 
-  const toggleSort = (newOrderKey: string) => () => {
-    setOrderState((prevOrderDir) => {
-      if (prevOrderDir.orderKey !== newOrderKey) {
+  const toggleSort = useCallback(
+    (newOrderKey: string) => () => {
+      setOrderState((prevOrderDir) => {
+        if (prevOrderDir.orderKey !== newOrderKey) {
+          return {
+            orderKey: newOrderKey,
+            orderDir: 'asc',
+          }
+        }
         return {
           orderKey: newOrderKey,
-          orderDir: 'asc',
+          orderDir: prevOrderDir.orderDir === 'asc' ? 'desc' : 'asc',
         }
-      }
-
-      return {
-        orderKey: newOrderKey,
-        orderDir: prevOrderDir.orderDir === 'asc' ? 'desc' : 'asc',
-      }
-    })
-  }
+      })
+    },
+    [],
+  )
 
   // @TODO Fix this in the Toolkit
   // This is a fix to ensure the "isOpen" value is aligned with the menus's (to avoid a double click)

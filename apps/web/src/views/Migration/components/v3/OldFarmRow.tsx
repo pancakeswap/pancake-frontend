@@ -1,6 +1,6 @@
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useFarmUser } from 'state/farms/hooks'
 import { styled } from 'styled-components'
 import ProxyFarmContainer from 'views/Farms/components/YieldBooster/components/ProxyFarmContainer'
@@ -62,11 +62,11 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
 
   const { stakedBalance, proxy } = useFarmUser(farm.pid)
 
-  const toggleExpanded = () => {
+  const toggleExpanded = useCallback(() => {
     if (!isLargerScreen) {
       setExpanded((prev) => !prev)
     }
-  }
+  }, [isLargerScreen])
 
   return (
     <>

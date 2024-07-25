@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { RECLAIM_AUCTIONS_TO_FETCH } from 'config'
 import { BidderAuction } from 'config/constants/types'
 import { useFarmAuctionContract } from 'hooks/useContract'
-import { useEffect, useReducer } from 'react'
+import { useCallback, useEffect, useReducer } from 'react'
 import { useAccount } from 'wagmi'
 import { processBidderAuctions, sortAuctionBidders } from '../helpers'
 
@@ -85,9 +85,9 @@ const useReclaimAuctionBid = (): [ReclaimableAuction | null, () => void] => {
 
   const farmAuctionContract = useFarmAuctionContract()
 
-  const checkNextAuction = () => {
+  const checkNextAuction = useCallback(() => {
     dispatch({ type: 'checkNextAuction' })
-  }
+  }, [dispatch])
 
   // Reset checking if account was switched
   useEffect(() => {

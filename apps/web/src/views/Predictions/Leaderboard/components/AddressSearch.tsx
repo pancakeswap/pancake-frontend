@@ -19,9 +19,9 @@ const AddressSearch: React.FC<React.PropsWithChildren<AddressSearchProps>> = ({ 
     tokenSymbol: token?.symbol ?? '',
   })
 
-  const handleBeforeDismiss = () => {
+  const handleBeforeDismiss = useCallback(() => {
     dispatch(setSelectedAddress(''))
-  }
+  }, [dispatch])
 
   const [onPresentWalletStatsModal] = useModal(
     <WalletStatsModal

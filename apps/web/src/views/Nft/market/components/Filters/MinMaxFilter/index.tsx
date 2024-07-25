@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Box, BoxProps, Button, Grid, InlineMenu, TextField } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import FilterFooter from '../FilterFooter'
@@ -23,36 +23,35 @@ export const MinMaxFilter: React.FC<React.PropsWithChildren<MinMaxFilterProps>> 
   const [currentMin, setCurrentMin] = useState(min)
   const [isError, setIsError] = useState(min > max)
 
-  const handleMinChange = (newMin: string) => {
+  const handleMinChange = useCallback((newMin: string) => {
     setCurrentMin(newMin ? parseFloat(newMin) : 0)
-  }
+  }, [])
 
-  const handleMaxChange = (newMax: string) => {
+  const handleMaxChange = useCallback((newMax: string) => {
     setCurrentMax(parseFloat(newMax))
-  }
+  }, [])
 
-  const handleApply = () => {
+  const handleApply = useCallback(() => {
     onApply(currentMin, currentMax)
-  }
+  }, [currentMin, currentMax, onApply])
 
-  // TODO: circle back to this
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     setCurrentMax(max)
     setCurrentMin(min)
 
     if (onClear) {
       onClear()
     }
-  }
+  }, [max, min, onClear])
 
   // If a change comes down from the top update local state
   useEffect(() => {
     setCurrentMax(max)
-  }, [max, setCurrentMax])
+  }, [max])
 
   useEffect(() => {
     setCurrentMin(min)
-  }, [min, setCurrentMin])
+  }, [min])
 
   useEffect(() => {
     setIsError(currentMin > currentMax)

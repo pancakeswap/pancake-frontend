@@ -46,25 +46,22 @@ const Inner: React.FC<React.PropsWithChildren<{ isDefaultBnb: boolean; onTokenSw
     const [isBnb, setIsBnb] = useState(isDefaultBnb);
     const bnb2Cake = useMemo(() => bnb2CakeImages(), []);
     const cake2Bnb = useMemo(() => cake2BnbImages(), []);
+
+    const handlePlayFinishToFalse = useCallback(() => {
+      setIsBnb(false);
+    }, [setIsBnb]);
+
+    const handlePlayFinishToTrue = useCallback(() => {
+      setIsBnb(true);
+    }, [setIsBnb]);
+
     return (
       <CoinSwitcherWrapper>
         <SequenceWrapper className={!isBnb ? "hidden" : undefined}>
-          <SequencePlayer
-            images={bnb2Cake}
-            onPlayStart={onTokenSwitch}
-            onPlayFinish={() => {
-              setIsBnb(false);
-            }}
-          />
+          <SequencePlayer images={bnb2Cake} onPlayStart={onTokenSwitch} onPlayFinish={handlePlayFinishToFalse} />
         </SequenceWrapper>
         <SequenceWrapper className={isBnb ? "hidden" : undefined}>
-          <SequencePlayer
-            images={cake2Bnb}
-            onPlayStart={onTokenSwitch}
-            onPlayFinish={() => {
-              setIsBnb(true);
-            }}
-          />
+          <SequencePlayer images={cake2Bnb} onPlayStart={onTokenSwitch} onPlayFinish={handlePlayFinishToTrue} />
         </SequenceWrapper>
       </CoinSwitcherWrapper>
     );

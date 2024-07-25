@@ -14,7 +14,7 @@ import {
 import Page from 'components/Layout/Page'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { usePollFarmsWithUserData } from 'state/farms/hooks'
 import bCakeMigrationImage from 'views/Farms/images/bCakeMigration.png'
 import { farmV3MigrationBunnyFull } from 'views/Home/components/Banners/images'
@@ -55,16 +55,16 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
 
   usePollFarmsWithUserData()
 
-  const scrollToTop = (): void => {
+  const scrollToTop = useCallback((): void => {
     if (tableWrapperEl.current) {
       window.scrollTo({
         top: tableWrapperEl.current.offsetTop,
         behavior: 'smooth',
       })
     }
-  }
+  }, [tableWrapperEl])
 
-  const handleMigrationStickyClick = () => {
+  const handleMigrationStickyClick = useCallback(() => {
     if (steps[step + 1]) {
       router.replace(
         {
@@ -82,7 +82,7 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
     } else {
       router.push('/farms')
     }
-  }
+  }, [step, router, scrollToTop])
 
   return (
     <div ref={tableWrapperEl}>

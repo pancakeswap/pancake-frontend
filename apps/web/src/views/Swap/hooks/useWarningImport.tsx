@@ -50,9 +50,13 @@ export default function useWarningImport() {
       : []
   }, [chainId, defaultTokens, isWrongNetwork, loadedTokenList, urlLoadedTokens])
 
+  const handleOnCancel = useCallback(() => {
+    router.push('/swap')
+  }, [router])
+
   const [onPresentSwapWarningModal] = useModal(<SwapWarningModal swapCurrency={swapWarningCurrency} />, false)
   const [onPresentImportTokenWarningModal] = useModal(
-    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => router.push('/swap')} />,
+    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={handleOnCancel} />,
   )
 
   useEffect(() => {

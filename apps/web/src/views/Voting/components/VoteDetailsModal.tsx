@@ -27,12 +27,8 @@ const VoteDetailsModal: React.FC<React.PropsWithChildren<VoteDetailsModalProps>>
   } = useGetVotingPower(block)
   const { theme } = useTheme()
 
-  const handleDismiss = () => {
-    onDismiss?.()
-  }
-
   return (
-    <Modal title={t('Voting Power')} onDismiss={handleDismiss} headerBackground={theme.colors.gradientCardHeader}>
+    <Modal title={t('Voting Power')} onDismiss={onDismiss} headerBackground={theme.colors.gradientCardHeader}>
       <Box mb="24px" width={['100%', '100%', '100%', '320px']}>
         {isLoading ? (
           <Flex height="450px" alignItems="center" justifyContent="center">

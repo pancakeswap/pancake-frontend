@@ -5,7 +5,7 @@ import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { GreyCard } from 'components/Card'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { CakeLockStatus } from 'views/CakeStaking/types'
 import { Header } from 'views/TradingReward/components/YourTradingReward/VeCake/Header'
@@ -77,9 +77,9 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
     rewardTokenDecimal: currentRewardInfo?.rewardTokenDecimal ?? 0,
   })
 
-  const handleUnlockButton = () => {
+  const handleUnlockButton = useCallback(() => {
     router.push(`/cake-staking`)
-  }
+  }, [router])
 
   return (
     <Flex flexDirection={['column']}>

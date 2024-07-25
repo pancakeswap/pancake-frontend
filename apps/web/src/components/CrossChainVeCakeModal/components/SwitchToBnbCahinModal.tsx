@@ -13,6 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
 import { styled, useTheme } from 'styled-components'
+import { useCallback } from 'react'
 
 const BCakeInfoWrapper = styled.div`
   position: relative;
@@ -38,13 +39,7 @@ export const SwitchToBnbChainModal: React.FC<{
   const { t } = useTranslation()
   const theme = useTheme()
   return (
-    <ModalV2
-      isOpen={isOpen}
-      onDismiss={() => {
-        onDismiss?.()
-      }}
-      closeOnOverlayClick
-    >
+    <ModalV2 isOpen={isOpen} onDismiss={onDismiss} closeOnOverlayClick>
       <ModalContainer style={{ minHeight: 350 }}>
         <GradientModalHeader>
           <ModalTitle>

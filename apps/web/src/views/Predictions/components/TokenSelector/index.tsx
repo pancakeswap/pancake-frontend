@@ -54,17 +54,6 @@ export const TokenSelector = () => {
   const config = useConfig()
   const predictionConfigs = usePredictionConfigs()
 
-  useEffect(() => {
-    const handleClickOutside = () => {
-      onDismiss()
-    }
-
-    document.addEventListener('click', handleClickOutside)
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [])
-
   const tokenListData = useMemo(() => {
     return predictionConfigs
       ? Object.values(predictionConfigs).filter((i) => i.token.symbol !== config?.token?.symbol)
@@ -85,16 +74,30 @@ export const TokenSelector = () => {
     [router, isTokenListMoreThanOne],
   )
 
-  const onClickOpenSelector = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (isTokenListMoreThanOne) {
-      setIsOpen(!isOpen)
-      event.stopPropagation()
-    }
-  }
+  const onClickOpenSelector = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (isTokenListMoreThanOne) {
+        setIsOpen(!isOpen)
+        event.stopPropagation()
+      }
+    },
+    [isTokenListMoreThanOne, isOpen],
+  )
 
-  const onDismiss = () => {
+  const onDismiss = useCallback(() => {
     setIsOpen(false)
-  }
+  }, [])
+
+  useEffect(() => {
+    const handleClickOutside = () => {
+      onDismiss()
+    }
+
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [onDismiss])
 
   return (
     <Flex>

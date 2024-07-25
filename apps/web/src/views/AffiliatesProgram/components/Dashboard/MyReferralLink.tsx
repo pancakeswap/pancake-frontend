@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Flex, Text, Input, Box, Button, ArrowForwardIcon, useMatchBreakpoints, useToast } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 import { BIG_ONE_HUNDRED } from '@pancakeswap/utils/bigNumber'
@@ -106,7 +106,7 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
 
   const linkId = useMemo(() => note || defaultLinkId, [note, defaultLinkId])
 
-  const handleGenerateLink = async () => {
+  const handleGenerateLink = useCallback(async () => {
     try {
       setIsLoading(true)
 
@@ -147,15 +147,26 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [
+    address,
+    linkId,
+    percentage,
+    refreshAffiliateInfo,
+    refresh,
+    setNote,
+    signMessageAsync,
+    t,
+    toastSuccess,
+    toastError,
+  ])
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const textValue = e.target.value
     const reg = /^[a-zA-Z0-9]+$/
     if (reg.test(textValue) || textValue === '') {
       setNote(textValue)
     }
-  }
+  }, [])
 
   return (
     <Box>

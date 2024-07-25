@@ -83,13 +83,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
           </Text>
         </Flex>
         <Flex>
-          <IconButton
-            variant="secondary"
-            onClick={() => {
-              onPresentUnstake()
-            }}
-            mr="6px"
-          >
+          <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
             <MinusIcon color="primary" width="24px" />
           </IconButton>
           <IconButton

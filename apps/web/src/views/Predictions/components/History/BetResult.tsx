@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { BetPosition, REWARD_RATE } from '@pancakeswap/prediction'
 import { BlockIcon, Box, Flex, Heading, InfoIcon, PrizeIcon, ScanLink, Text, useTooltip } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { fetchLedgerData, markAsCollected } from 'state/predictions'
 import { Result } from 'state/predictions/helpers'
 import { useGetIsClaimable } from 'state/predictions/hooks'
@@ -112,13 +112,13 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
     }
   }, [result])
 
-  const handleSuccess = async () => {
+  const handleSuccess = useCallback(async () => {
     if (account && bet?.round?.epoch && config?.token?.chainId) {
       // We have to mark the bet as claimed immediately because it does not update fast enough
       dispatch(markAsCollected({ [bet.round.epoch]: true }))
-      dispatch(fetchLedgerData({ account, chainId: config?.token?.chainId, epochs: [bet.round.epoch] }))
+      dispatch(fetchLedgerData({ account, chainId: config.token.chainId, epochs: [bet.round.epoch] }))
     }
-  }
+  }, [account, bet, config, dispatch])
 
   return (
     <>

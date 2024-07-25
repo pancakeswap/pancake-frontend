@@ -1,6 +1,6 @@
 import { ChartDisableIcon, ChartIcon, Flex, Heading, HistoryIcon, IconButton, Text, useModal } from '@pancakeswap/uikit'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { styled } from 'styled-components'
 
 interface Props {
@@ -29,9 +29,10 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   setIsChartDisplayed,
   isChartDisplayed,
 }) => {
-  const toggleChartDisplayed = () => {
+  const toggleChartDisplayed = useCallback(() => {
     setIsChartDisplayed?.((currentIsChartDisplayed) => !currentIsChartDisplayed)
-  }
+  }, [setIsChartDisplayed])
+
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
 
   return (

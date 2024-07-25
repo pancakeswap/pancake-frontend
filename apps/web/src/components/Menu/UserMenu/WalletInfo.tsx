@@ -27,7 +27,7 @@ import useTokenBalance, { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import InternalLink from 'components/Links'
 import { useDomainNameForAddress } from 'hooks/useDomain'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { Address } from 'viem'
@@ -60,10 +60,11 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const { logout } = useAuth()
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     onDismiss?.()
     logout()
-  }
+  }, [onDismiss, logout])
+
   const {
     tooltip: buyCryptoTooltip,
     tooltipVisible: buyCryptoTooltipVisible,
@@ -77,7 +78,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
               currency: native?.symbol,
             })}
           </Text>
-          <InternalLink href="/buy-crypto" onClick={() => onDismiss?.()}>
+          <InternalLink href="/buy-crypto" onClick={onDismiss}>
             <Button height="30px">{t('Buy %currency%', { currency: native?.symbol })}</Button>
           </InternalLink>
         </FlexGap>
@@ -111,7 +112,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
                 currency: native.symbol,
               })}
             </Text>
-            <InternalLink href="/buy-crypto" onClick={() => onDismiss?.()}>
+            <InternalLink href="/buy-crypto" onClick={onDismiss}>
               <Text color="primary">
                 {t('You need %currency% for transaction fees.', {
                   currency: native.symbol,

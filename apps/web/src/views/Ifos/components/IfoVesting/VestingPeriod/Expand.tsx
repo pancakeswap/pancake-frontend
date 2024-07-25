@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { styled, keyframes, css } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text } from '@pancakeswap/uikit'
@@ -68,9 +68,9 @@ const Expand: React.FC<React.PropsWithChildren<ExpandProps>> = ({
   const ifoIsActive = useMemo(() => ifoConfig?.isActive, [ifoConfig])
   const router = useRouter()
 
-  const handleViewIfo = () => {
+  const handleViewIfo = useCallback(() => {
     router.push(`/ifo/history#${token.symbol.toLowerCase()}`)
-  }
+  }, [router, token.symbol])
 
   return (
     <StyledExpand expanded={expanded}>

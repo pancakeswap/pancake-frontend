@@ -2,7 +2,7 @@ import { MANAGER } from '@pancakeswap/position-managers'
 import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { Address } from 'viem'
 import {
@@ -71,11 +71,11 @@ export const PositionManagerFarmRow: React.FunctionComponent<React.PropsWithChil
   const { isMobile, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(true)
-  const toggleExpanded = () => {
+  const toggleExpanded = useCallback(() => {
     if (!isLargerScreen) {
       setExpanded((prev) => !prev)
     }
-  }
+  }, [isLargerScreen])
   const { wrapperAddress, adapterAddress, token, quoteToken, earningToken, label, bCakeWrapperAddress } = data
 
   const info = usePositionInfo(step === 1 ? wrapperAddress : bCakeWrapperAddress, adapterAddress, false)

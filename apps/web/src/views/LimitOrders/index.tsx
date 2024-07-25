@@ -70,8 +70,12 @@ const LimitOrders = () => {
     )
   }, [defaultTokens, urlLoadedTokens, chainId])
 
+  const handleOnCancel = useCallback(() => {
+    router.push('/limit-orders')
+  }, [router])
+
   const [onPresentImportTokenWarningModal] = useModal(
-    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => router.push('/limit-orders')} />,
+    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={handleOnCancel} />,
     false,
     false,
     'limitOrderTokenWarningModal',

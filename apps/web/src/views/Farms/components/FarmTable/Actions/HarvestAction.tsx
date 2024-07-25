@@ -13,7 +13,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCakePrice } from 'hooks/useCakePrice'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
 import useHarvestFarm, { useBCakeHarvestFarm } from '../../../hooks/useHarvestFarm'
 import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
@@ -80,30 +80,26 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const earningsBigNumber = bCakeWrapperAddress
-    ? new BigNumber(bCakeUserData?.earnings ?? 0)
-    : new BigNumber(userData?.earnings ?? 0)
   const cakePrice = useCakePrice()
-  let earnings = BIG_ZERO
-  let earningsBusd = 0
-  let displayBalance = userDataReady ? earnings.toFixed(5, BigNumber.ROUND_DOWN) : <Skeleton width={60} />
 
-  // If user didn't connect wallet default balance will be 0
-  if (!earningsBigNumber.isZero()) {
-    earnings = getBalanceAmount(earningsBigNumber)
-    earningsBusd = earnings.multipliedBy(cakePrice).toNumber()
-    displayBalance = earnings.toFixed(5, BigNumber.ROUND_DOWN)
-  }
+  const earningsBigNumber = useMemo(
+    () => (bCakeWrapperAddress ? new BigNumber(bCakeUserData?.earnings ?? 0) : new BigNumber(userData?.earnings ?? 0)),
+    [bCakeWrapperAddress, bCakeUserData, userData],
+  )
 
-  const onClickHarvestButton = () => {
-    if (vaultPid) {
-      onPresentCrossChainHarvestModal()
-    } else {
-      handleHarvest()
-    }
-  }
+  const earnings = useMemo(
+    () => (!earningsBigNumber.isZero() ? getBalanceAmount(earningsBigNumber) : BIG_ZERO),
+    [earningsBigNumber],
+  )
 
-  const handleHarvest = async () => {
+  const earningsBusd = useMemo(() => earnings.multipliedBy(cakePrice).toNumber(), [earnings, cakePrice])
+
+  const displayBalance = useMemo(
+    () => (userDataReady ? earnings.toFixed(5, BigNumber.ROUND_DOWN) : <Skeleton width={60} />),
+    [userDataReady, earnings],
+  )
+
+  const handleHarvest = useCallback(async () => {
     const receipt = await fetchWithCatchTxError((): any => onReward?.())
     if (receipt?.status) {
       toastSuccess(
@@ -114,7 +110,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
       )
       onDone?.()
     }
-  }
+  }, [onReward, t, toastSuccess, onDone, fetchWithCatchTxError])
 
   const [onPresentCrossChainHarvestModal] = useModal(
     <MultiChainHarvestModal
@@ -126,6 +122,14 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
       earningsBusd={earningsBusd}
     />,
   )
+
+  const onClickHarvestButton = useCallback(() => {
+    if (vaultPid) {
+      onPresentCrossChainHarvestModal()
+    } else {
+      handleHarvest()
+    }
+  }, [vaultPid, onPresentCrossChainHarvestModal, handleHarvest])
 
   return (
     <FarmTableHarvestAction

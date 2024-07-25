@@ -1,6 +1,7 @@
 import { Button, Card, CardBody, CardHeader, Heading } from '@pancakeswap/uikit'
 import uniqueId from 'lodash/uniqueId'
 import { useTranslation } from '@pancakeswap/localization'
+import { useCallback } from 'react'
 import Choice from './Choice'
 
 export interface ChoiceIdValue {
@@ -20,9 +21,9 @@ const Choices: React.FC<React.PropsWithChildren<ChoicesProps>> = ({ choices, onC
   const { t } = useTranslation()
   const hasMinimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
 
-  const addChoice = () => {
+  const addChoice = useCallback(() => {
     onChange([...choices, makeChoice()])
-  }
+  }, [onChange, choices])
 
   return (
     <Card>

@@ -22,6 +22,7 @@ import useTheme from 'hooks/useTheme'
 import { getBlockExploreLink } from 'utils'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useCallback } from 'react'
 
 type ConfirmModalProps = {
   isLoading: boolean
@@ -47,10 +48,10 @@ const ConfirmModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> = ({
   const { t } = useTranslation()
   const { theme } = useTheme()
 
-  const onCloseCallback = () => {
+  const onCloseCallback = useCallback(() => {
     onConfirmClose()
     onDismiss?.()
-  }
+  }, [onConfirmClose, onDismiss])
 
   return (
     <ModalWrapper minWidth="375px">

@@ -12,6 +12,7 @@ import {
   useGetLeaderboardResults,
   useGetLeaderboardSkip,
 } from 'state/predictions/hooks'
+import { useCallback } from 'react'
 import DesktopResults from './DesktopResults'
 import MobileResults from './MobileResults'
 import RankingCard from './RankingCard'
@@ -31,7 +32,7 @@ const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ token, api }
   const hasMoreResults = useGetLeaderboardHasMoreResults()
   const dispatch = useLocalDispatch()
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (api && token?.symbol && token?.chainId) {
       dispatch(
         filterNextPageLeaderboard({
@@ -42,7 +43,7 @@ const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ token, api }
         }),
       )
     }
-  }
+  }, [dispatch, api, token?.symbol, token?.chainId, currentSkip])
 
   return (
     <Box position="relative" style={{ zIndex: 1 }}>

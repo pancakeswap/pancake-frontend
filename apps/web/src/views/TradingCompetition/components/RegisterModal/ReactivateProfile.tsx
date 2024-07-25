@@ -3,16 +3,17 @@ import { Button, Heading, Text } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { CompetitionProps } from 'views/TradingCompetition/types'
 import { useAccount } from 'wagmi'
+import { useCallback } from 'react'
 
 const ReactivateProfile: React.FC<React.PropsWithChildren<CompetitionProps>> = ({ onDismiss }) => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
   const router = useRouter()
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     router.push(`/profile/${account?.toLowerCase()}`)
     onDismiss?.()
-  }
+  }, [router, onDismiss, account])
 
   return (
     <>

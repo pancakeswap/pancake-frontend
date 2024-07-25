@@ -3,7 +3,7 @@ import { Box, BoxProps, Button, Flex, Text, useMatchBreakpoints, useModal } from
 import { formatNumber, getBalanceAmount, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { GreyCard } from 'components/Card'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useVeCakeUserCreditWithTime } from 'views/CakeStaking/hooks/useVeCakeUserCreditWithTime'
 import { useCakeLockStatus } from 'views/CakeStaking/hooks/useVeCakeUserInfo'
 import { NoLockingCakeModal } from 'views/TradingReward/components/YourTradingReward/VeCake/NoLockingCakeModal'
@@ -73,14 +73,14 @@ export const VeCakePreviewTextInfo: React.FC<React.PropsWithChildren<VeCakePrevi
     [userCreditWithTime],
   )
 
-  const onClickModal = () => {
+  const onClickModal = useCallback(() => {
     // Migration status
     if (cakePoolLocked && !cakePoolLockExpired) {
       onPresentNoLockingCakeModal()
     } else {
       onPresentVeCakeAddCakeModal()
     }
-  }
+  }, [cakePoolLocked, cakePoolLockExpired, onPresentNoLockingCakeModal, onPresentVeCakeAddCakeModal])
 
   return (
     <Box {...props}>

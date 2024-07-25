@@ -41,10 +41,10 @@ export const GaugesTable: React.FC<
     return orderBy(uniqBy(data, 'hash'), [sortKey], [sortBy])
   }, [data, sortBy, sortKey])
 
-  const handleSort = (key: SortField, by: SortBy) => {
+  const handleSort = useCallback((key: SortField, by: SortBy) => {
     setSortKey(key)
     setSortBy(by)
-  }
+  }, [])
 
   const Row = useCallback(
     ({ data: rows, index, style }): ReactNode => {

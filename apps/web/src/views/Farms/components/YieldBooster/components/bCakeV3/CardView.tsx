@@ -69,9 +69,7 @@ export const BCakeV3CardView: React.FC<{
           updateButton={
             shouldUpdate && lockValidated ? (
               <Button
-                onClick={() => {
-                  updateLiquidity()
-                }}
+                onClick={updateLiquidity}
                 style={{
                   backgroundColor: 'transparent',
                   border: `2px solid ${theme.colors.primary}`,

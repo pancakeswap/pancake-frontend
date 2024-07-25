@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { SiweMessage } from 'siwe'
 import { useAccount } from 'wagmi'
 import { useSignMessage } from '@pancakeswap/wagmi'
@@ -17,7 +17,7 @@ const LoginButton = () => {
 
   const isReady = useMemo(() => address && chainId && !isLoading, [isLoading, address, chainId])
 
-  const handleLogin = async () => {
+  const handleLogin = useCallback(async () => {
     try {
       setIsLoading(true)
       const nonceResponse = await fetch('/api/affiliates-program/affiliate-nonce')
@@ -52,7 +52,7 @@ const LoginButton = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [address, chainId, queryClient, signMessageAsync])
 
   return (
     <Button display="block" m="40px auto" width={180} disabled={!isReady} onClick={handleLogin}>

@@ -282,6 +282,8 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
     [isConfirming, userNotEnoughCake, ticketsToBuy, getTicketsForPurchase],
   )
 
+  const handleOnDismiss = useCallback(() => setBuyingStage(BuyingStage.BUY), [])
+
   const isApproveDisabled = isApproved || disableBuying
 
   if (buyingStage === BuyingStage.EDIT) {
@@ -294,7 +296,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
         allComplete={allComplete}
         onConfirm={handleConfirm}
         isConfirming={isConfirming}
-        onDismiss={() => setBuyingStage(BuyingStage.BUY)}
+        onDismiss={handleOnDismiss}
       />
     )
   }

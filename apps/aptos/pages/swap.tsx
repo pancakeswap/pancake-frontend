@@ -484,11 +484,7 @@ const SwapPage = () => {
             </AtomBox>
           )}
           <AtomBox width="100%" textAlign="center">
-            <SwitchButton
-              onClick={() => {
-                handleSwitch()
-              }}
-            />
+            <SwitchButton onClick={handleSwitch} />
           </AtomBox>
           <CurrencyInputPanel
             showMaxButton={false}

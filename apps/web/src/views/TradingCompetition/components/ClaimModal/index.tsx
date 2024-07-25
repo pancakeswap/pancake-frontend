@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { styled } from 'styled-components'
 import { ASSET_CDN } from 'config/constants/endpoints'
 
+import { useCallback } from 'react'
 import { modPrizes } from '../../../../config/constants/trading-competition/prizes'
 import { getRewardGroupAchievements, useModCompetitionRewards } from '../../helpers'
 import MoDAllBunnies from '../../pngs/MoD-hero-bunnies.png'
@@ -47,7 +48,7 @@ const ClaimModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
   const achievement = getRewardGroupAchievements(modPrizes, userRewardGroup || '', userPointReward || '')
   const { callWithGasPrice } = useCallWithGasPrice()
 
-  const handleClaimClick = async () => {
+  const handleClaimClick = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       return callWithGasPrice(tradingCompetitionContract, 'claimReward')
     })
@@ -56,7 +57,7 @@ const ClaimModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
       onDismiss?.()
       onClaimSuccess?.()
     }
-  }
+  }, [callWithGasPrice, fetchWithCatchTxError, onClaimSuccess, onDismiss, t, toastSuccess, tradingCompetitionContract])
 
   return (
     <Modal title={t('Collect Winnings')} onDismiss={onDismiss}>

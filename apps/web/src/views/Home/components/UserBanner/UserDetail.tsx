@@ -18,6 +18,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
 import { useDomainNameForAddress } from 'hooks/useDomain'
+import { useCallback } from 'react'
 
 const Desktop = styled(Flex)`
   align-items: center;
@@ -57,9 +58,9 @@ const UserDetail = () => {
     profile?.username ?? '',
   )
 
-  const toggleUsernameVisibility = () => {
+  const toggleUsernameVisibility = useCallback(() => {
     setUserUsernameVisibility(!userUsernameVisibility)
-  }
+  }, [setUserUsernameVisibility, userUsernameVisibility])
 
   const Icon = userUsernameVisibility ? VisibilityOff : VisibilityOn
 

@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { Box, Flex } from "../Box";
 import { IconButton } from "../Button";
@@ -104,7 +104,7 @@ const RoiCard: React.FC<React.PropsWithChildren<RoiCardProps>> = ({
     }
   }, [mode]);
 
-  const onEnterEditing = () => {
+  const onEnterEditing = useCallback(() => {
     if (setCalculatorMode) setCalculatorMode(CalculatorMode.PRINCIPAL_BASED_ON_ROI);
     setExpectedRoi(
       roiUSD.toLocaleString("en", {
@@ -112,18 +112,23 @@ const RoiCard: React.FC<React.PropsWithChildren<RoiCardProps>> = ({
         maximumFractionDigits: roiUSD > MILLION ? 0 : 2,
       })
     );
-  };
+  }, [setCalculatorMode, roiUSD]);
 
-  const onExitRoiEditing = () => {
+  const onExitRoiEditing = useCallback(() => {
     if (setCalculatorMode) setCalculatorMode(CalculatorMode.ROI_BASED_ON_PRINCIPAL);
-  };
-  const handleExpectedRoiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.currentTarget.validity.valid) {
-      const roiAsString = event.target.value.replace(/,/g, ".");
-      if (setTargetRoi) setTargetRoi(roiAsString);
-      setExpectedRoi(roiAsString);
-    }
-  };
+  }, [setCalculatorMode]);
+
+  const handleExpectedRoiChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.currentTarget.validity.valid) {
+        const roiAsString = event.target.value.replace(/,/g, ".");
+        if (setTargetRoi) setTargetRoi(roiAsString);
+        setExpectedRoi(roiAsString);
+      }
+    },
+    [setTargetRoi]
+  );
+
   return (
     <RoiCardWrapper>
       <RoiCardInner>

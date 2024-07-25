@@ -5,6 +5,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCake } from 'hooks/useContract'
+import { useCallback } from 'react'
 
 const useCakeApprove = (setLastUpdated: () => void, spender, successMsg) => {
   const { t } = useTranslation()
@@ -13,7 +14,7 @@ const useCakeApprove = (setLastUpdated: () => void, spender, successMsg) => {
   const { callWithGasPrice } = useCallWithGasPrice()
   const cakeContract = useCake()
 
-  const handleApprove = async () => {
+  const handleApprove = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       return callWithGasPrice(cakeContract, 'approve', [spender, MaxUint256])
     })
@@ -24,7 +25,7 @@ const useCakeApprove = (setLastUpdated: () => void, spender, successMsg) => {
       )
       setLastUpdated()
     }
-  }
+  }, [cakeContract, spender, fetchWithCatchTxError, callWithGasPrice, t, toastSuccess, successMsg, setLastUpdated])
 
   return { handleApprove, pendingTx }
 }

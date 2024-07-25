@@ -10,6 +10,7 @@ import useTheme from 'hooks/useTheme'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useGauges } from 'views/GaugesVoting/hooks/useGauges'
+import noop from 'lodash/noop'
 import { BenefitCard } from './components/BenefitCard'
 import { CakeRewardsCard } from './components/CakeRewardsCard'
 import { LockCake } from './components/LockCake'
@@ -27,8 +28,13 @@ const CakeStaking = () => {
   const totalIFOSold = useTotalIFOSold()
   const { isDesktop, isMobile } = useMatchBreakpoints()
   const { theme } = useTheme()
-  const handleDismiss = useCallback(() => setCakeRewardModalVisible(false), [])
   const [isOpen, setIsOpen] = useState(false)
+
+  const handleDismiss = useCallback(() => setCakeRewardModalVisible(false), [])
+
+  const handleOnDismiss = useCallback(() => {
+    setIsOpen(false)
+  }, [])
 
   return (
     <>
@@ -78,7 +84,7 @@ const CakeStaking = () => {
             }
             type="gaugesVoting"
             dataText={`${gaugesVotingCount ?? 0}`}
-            onClick={() => {}}
+            onClick={noop}
           />
         </Grid>
       </StyledPageHeader>
@@ -165,7 +171,7 @@ const CakeStaking = () => {
           <BenefitCard type="more" />
         </Grid>
       </Page>
-      <CrossChainVeCakeModal isOpen={isOpen} setIsOpen={setIsOpen} onDismiss={() => setIsOpen(false)} />
+      <CrossChainVeCakeModal isOpen={isOpen} setIsOpen={setIsOpen} onDismiss={handleOnDismiss} />
     </>
   )
 }

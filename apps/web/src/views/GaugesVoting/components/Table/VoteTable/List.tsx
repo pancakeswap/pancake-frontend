@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ErrorIcon, Flex, FlexGap, Text } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
-import { CSSProperties, useMemo } from 'react'
+import { CSSProperties, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { Tooltips } from 'views/CakeStaking/components/Tooltips'
 import { useUserVote } from 'views/GaugesVoting/hooks/useUserVote'
@@ -37,9 +37,9 @@ export function VoteListItem({ style, data, submitted, vote = { ...DEFAULT_VOTE 
     onChange,
   })
 
-  const onMax = () => {
+  const onMax = useCallback(() => {
     onChange(vote, true)
-  }
+  }, [onChange, vote])
 
   return (
     <ListItemContainer gap="1em" flexDirection="column" padding="1em" style={style} {...props}>

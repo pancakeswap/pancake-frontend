@@ -3,7 +3,7 @@ import { bscTestnetTokens, ethereumTokens, goerliTestnetTokens } from '@pancakes
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useApproveCallback } from 'hooks/useApproveCallback'
 import useTokenAllowance from 'hooks/useTokenAllowance'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Address, isAddressEqual } from 'viem'
 
 export const useApproveRequires = (amount: CurrencyAmount<Token> | undefined, spender?: Address) => {
@@ -47,7 +47,7 @@ export const useApprove = (amount: CurrencyAmount<Token> | undefined, spender: A
   const [isRevoking, setIsRevoking] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
 
-  const approve = async () => {
+  const approve = useCallback(async () => {
     setIsApproving(true)
     try {
       const result = await approveNoCheck()
@@ -57,9 +57,9 @@ export const useApprove = (amount: CurrencyAmount<Token> | undefined, spender: A
       setIsApproving(false)
       throw error
     }
-  }
+  }, [approveNoCheck, setIsApproving])
 
-  const revoke = async () => {
+  const revoke = useCallback(async () => {
     setIsRevoking(true)
     try {
       const result = await revokeNoCheck()
@@ -69,7 +69,7 @@ export const useApprove = (amount: CurrencyAmount<Token> | undefined, spender: A
       setIsRevoking(false)
       throw error
     }
-  }
+  }, [revokeNoCheck, setIsRevoking])
 
   return {
     allowance,

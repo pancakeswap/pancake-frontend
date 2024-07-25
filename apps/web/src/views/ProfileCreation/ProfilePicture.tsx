@@ -6,7 +6,7 @@ import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { NftLocation, NftToken } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
 import { styled } from 'styled-components'
@@ -92,18 +92,28 @@ const ProfilePicture: React.FC = () => {
   const { callWithGasPrice } = useCallWithGasPrice()
   const { data: walletClient } = useWalletClient()
 
-  const handleApprove = async () => {
-    if (!walletClient) return
+  const handleApprove = useCallback(async () => {
+    if (!walletClient || !selectedNft.collectionAddress || !selectedNft.tokenId) return
 
-    const contract = getErc721Contract(selectedNft.collectionAddress!, walletClient)
+    const contract = getErc721Contract(selectedNft.collectionAddress, walletClient)
     const receipt = await fetchWithCatchTxError(() => {
       return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), BigInt(selectedNft.tokenId!)])
     })
+
     if (receipt?.status) {
       toastSuccess(t('Enabled'), t('Please progress to the next step.'))
       setIsApproved(true)
     }
-  }
+  }, [
+    walletClient,
+    selectedNft.collectionAddress,
+    selectedNft.tokenId,
+    fetchWithCatchTxError,
+    callWithGasPrice,
+    toastSuccess,
+    setIsApproved,
+    t,
+  ])
 
   if (!userProfileCreationNfts?.length && !isProfileNftsLoading) {
     return (

@@ -9,7 +9,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { PairState, useV2Pairs } from 'hooks/usePairs'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Field } from 'state/burn/actions'
 import { useBurnActionHandlers } from 'state/burn/hooks'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
@@ -171,6 +171,14 @@ const LPCard_ = ({
     }
   }, [setRemovedPairs, open, pair, chainId, account])
 
+  const handleOnDismiss = useCallback(() => {
+    setOpen(false)
+  }, [])
+
+  const handleOnClick = useCallback(() => {
+    setOpen(true)
+  }, [])
+
   return (
     <Card mb="8px">
       <Flex justifyContent="space-between" p="16px" flexWrap={['wrap', 'wrap', 'nowrap']}>
@@ -195,7 +203,7 @@ const LPCard_ = ({
           <Tag variant="textSubtle" outline mr="16px">
             {type} LP
           </Tag>
-          {!isMobile && <Button onClick={() => setOpen(true)}>Remove</Button>}
+          {!isMobile && <Button onClick={handleOnClick}>{t('Remove')}</Button>}
         </Flex>
         <ModalV2 isOpen={open}>
           <Modal
@@ -203,14 +211,14 @@ const LPCard_ = ({
               assetA: currency0?.symbol ?? '',
               assetB: currency1?.symbol ?? '',
             })}
-            onDismiss={() => setOpen(false)}
+            onDismiss={handleOnDismiss}
           >
             {children}
           </Modal>
         </ModalV2>
         {isMobile && (
-          <Button mt="8px" width="100%" onClick={() => setOpen(true)}>
-            Remove
+          <Button mt="8px" width="100%" onClick={handleOnClick}>
+            {t('Remove')}
           </Button>
         )}
       </Flex>

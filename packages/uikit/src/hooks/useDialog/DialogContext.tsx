@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import noop from "lodash/noop";
 import { useModalV2 } from "../../widgets/Modal/ModalV2";
 import { Dialog } from "./Dialog";
 
@@ -36,8 +37,8 @@ type DialogContext = {
   onDismiss: () => void;
 };
 const defaultContextValue: DialogContext = {
-  prompt: () => {},
-  confirm: () => {},
+  prompt: noop,
+  confirm: noop,
 
   options: {
     title: "",
@@ -46,13 +47,13 @@ const defaultContextValue: DialogContext = {
     placeholder: "",
     confirmText: "",
     cancelText: "",
-    onConfirm: () => {},
+    onConfirm: noop,
     useInput: false,
   },
 
   isOpen: false,
-  onOpen: () => {},
-  onDismiss: () => {},
+  onOpen: noop,
+  onDismiss: noop,
 };
 
 export const Context = createContext<DialogContext>(defaultContextValue);

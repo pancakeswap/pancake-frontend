@@ -217,15 +217,14 @@ export const CrossChainVeCakeModal: React.FC<{
       isInitialized,
     ],
   )
+
+  const handleOnDismiss = useCallback(() => {
+    onDismiss?.()
+    setModalState('list')
+  }, [onDismiss])
+
   return (
-    <ModalV2
-      isOpen={isOpen}
-      onDismiss={() => {
-        onDismiss?.()
-        setModalState('list')
-      }}
-      closeOnOverlayClick
-    >
+    <ModalV2 isOpen={isOpen} onDismiss={handleOnDismiss} closeOnOverlayClick>
       <ModalContainer style={{ minWidth: '375px', padding: isDesktop ? '24px' : '24px 24px 0 24px' }}>
         {modalState === 'list' ? (
           <AtomBox justifyContent="space-between" p="24px" maxWidth="420px" height="100%" style={{ margin: '-24px' }}>
@@ -238,7 +237,7 @@ export const CrossChainVeCakeModal: React.FC<{
                   </Text>
                 </Flex>
               </ModalTitle>
-              <ModalCloseButton onDismiss={onDismiss} />
+              <ModalCloseButton onDismiss={handleOnDismiss} />
             </StyledModalHeader>
             <ModalBody minHeight={450}>
               <Text fontSize={12} color="textSubtle" textTransform="uppercase" fontWeight={600} mb="8px">
@@ -309,7 +308,7 @@ export const CrossChainVeCakeModal: React.FC<{
           <>
             <StyledModalHeader headerBorderColor="transparent">
               <ModalTitle />
-              <ModalCloseButton onDismiss={() => setModalState('list')} />
+              <ModalCloseButton onDismiss={handleOnDismiss} />
             </StyledModalHeader>
             {modalState === 'ready' && selectChainId && (
               <ReadyToSyncView chainId={selectChainId} nativeFee={nativeFee} bnbBalance={bnbBalance} />

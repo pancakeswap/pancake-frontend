@@ -51,13 +51,21 @@ export function ModalV2({
 }: ModalV2Props & BoxProps & { disableOutsidePointerEvents?: boolean }) {
   const animationRef = useRef<HTMLDivElement>(null);
 
-  const handleOverlayDismiss = (e: any) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (closeOnOverlayClick) {
-      onDismiss?.();
-    }
-  };
+  const handleOverlayDismiss = useCallback(
+    (e: any) => {
+      e.stopPropagation();
+      e.preventDefault();
+      if (closeOnOverlayClick) {
+        onDismiss?.();
+      }
+    },
+    [closeOnOverlayClick, onDismiss]
+  );
+
+  const handleAnimationStart = useCallback(() => {
+    animationHandler(animationRef.current);
+  }, [animationRef]);
+
   const portal = getPortalRoot();
 
   const providerValue = useMemo(() => ({ onDismiss }), [onDismiss]);
@@ -76,7 +84,7 @@ export function ModalV2({
                 <StyledModalWrapper
                   ref={animationRef}
                   // @ts-ignore
-                  onAnimationStart={() => animationHandler(animationRef.current)}
+                  onAnimationStart={handleAnimationStart}
                   {...animationMap}
                   variants={animationVariants}
                   transition={{ duration: 0.3 }}

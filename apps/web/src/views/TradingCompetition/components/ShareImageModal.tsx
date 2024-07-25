@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import { Modal, Flex, Button, Text, Skeleton, Box } from '@pancakeswap/uikit'
 import { StaticImageData } from 'next/dist/client/legacy/image'
 import { styled } from 'styled-components'
@@ -121,12 +121,12 @@ const ShareImageModal: React.FC<React.PropsWithChildren<ShareImageModalProps>> =
     }
   }, [bgImage, profileImage, team, global, volume, profile, medalImage])
 
-  const downloadImage = () => {
+  const downloadImage = useCallback(() => {
     const link = document.createElement('a')
     link.download = `battle-${profile?.username}.png`
     link.href = imageFromCanvas ?? ''
     link.click()
-  }
+  }, [imageFromCanvas, profile?.username])
 
   return (
     <Modal title={t('Share Your Score')} onDismiss={onDismiss} minWidth="280px">

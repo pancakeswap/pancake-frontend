@@ -164,15 +164,15 @@ export const AISetPositionCard: React.FC<React.PropsWithChildren<AISetPositionCa
   )
 
   // Clear value
-  const handleGoBack = () => {
+  const handleGoBack = useCallback(() => {
     setValue('')
     setPercent(0)
     onBack()
-  }
+  }, [setValue, setPercent, onBack])
 
   const { key, disabled } = getButtonProps(valueAsBn, maxBalance, minBetAmount)
 
-  const handleEnterPosition = async () => {
+  const handleEnterPosition = useCallback(async () => {
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
     const callOptions = !isNativeToken
       ? {
@@ -186,10 +186,20 @@ export const AISetPositionCard: React.FC<React.PropsWithChildren<AISetPositionCa
     const receipt = await fetchWithCatchTxError(() => {
       return callWithGasPrice(predictionsContract as any, betMethod, args, callOptions)
     })
+
     if (receipt?.status) {
       onSuccess(receipt.transactionHash)
     }
-  }
+  }, [
+    position,
+    isNativeToken,
+    valueAsBn,
+    epoch,
+    fetchWithCatchTxError,
+    callWithGasPrice,
+    predictionsContract,
+    onSuccess,
+  ])
 
   // Warnings
   useEffect(() => {

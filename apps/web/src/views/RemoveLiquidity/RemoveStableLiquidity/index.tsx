@@ -569,7 +569,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
             <RowBetween>
               <Button
                 variant={approvalState === ApprovalState.APPROVED ? 'success' : 'primary'}
-                onClick={() => approveCallback()}
+                onClick={approveCallback}
                 disabled={approvalState !== ApprovalState.NOT_APPROVED}
                 width="100%"
                 mr="0.5rem"

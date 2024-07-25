@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, CloseIcon, IconButton, TrophyGoldIcon } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import { setHistoryPaneState } from 'state/predictions'
 import { getBetHistory } from 'state/predictions/helpers'
@@ -131,14 +131,14 @@ const CollectWinningsPopup = () => {
   const dispatch = useLocalDispatch()
   const config = useConfig()
 
-  const handleOpenHistory = () => {
+  const handleOpenHistory = useCallback(() => {
     dispatch(setHistoryPaneState(true))
-  }
+  }, [dispatch])
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     setIsOpen(false)
     clearInterval(timer)
-  }
+  }, [])
 
   // Check user's history for unclaimed winners
   useEffect(() => {

@@ -7,7 +7,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useNftSaleContract } from 'hooks/useContract'
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { DefaultTheme } from 'styled-components'
 import { Address, Hash } from 'viem'
 import { PancakeSquadContext } from 'views/PancakeSquad/context'
@@ -86,9 +86,9 @@ const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
       },
     })
 
-  const onConfirmClose = () => {
+  const onConfirmClose = useCallback(() => {
     setTxHashBuyingResult(null)
-  }
+  }, [])
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal
@@ -160,10 +160,10 @@ const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
     }
   }, [isApproved, setIsUserEnabled])
 
-  const handleEnableClick = () => {
+  const handleEnableClick = useCallback(() => {
     onPresentEnableModal()
     handleApprove()
-  }
+  }, [onPresentEnableModal, handleApprove])
 
   const canBuyTickets = (canClaimForGen0 || canBuySaleTicket) && isUserEnabled
   const buyButton = getBuyButton({

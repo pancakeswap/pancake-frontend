@@ -25,6 +25,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { FetchStatus, TFetchStatus } from 'config/constants/types'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { PredictionUser } from 'state/types'
+import { useCallback } from 'react'
 import MobileBetsTable from './MobileBetsTable'
 import DesktopBetsTable from './Results/DesktopBetsTable'
 import { NetWinningsView } from './Results/styles'
@@ -63,13 +64,13 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
   const isLoading = leaderboardLoadingState === FetchStatus.Fetching
   const { isDesktop } = useMatchBreakpoints()
 
-  const handleDismiss = () => {
+  const handleDismiss = useCallback(() => {
     if (onBeforeDismiss) {
       onBeforeDismiss()
     }
 
     onDismiss?.()
-  }
+  }, [onBeforeDismiss, onDismiss])
 
   return (
     <ModalWrapper minWidth="320px">

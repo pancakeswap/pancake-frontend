@@ -3,16 +3,19 @@ import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { CompetitionProps } from 'views/TradingCompetition/types'
 import { useRouter } from 'next/router'
+import { useCallback } from 'react'
 
 const MakeProfile: React.FC<React.PropsWithChildren<CompetitionProps>> = ({ onDismiss }) => {
   const { address: account } = useAccount()
   const { t } = useTranslation()
   const router = useRouter()
 
-  const handleClick = () => {
-    router.push(`/profile/${account?.toLowerCase()}`)
+  const handleClick = useCallback(() => {
+    if (account) {
+      router.push(`/profile/${account.toLowerCase()}`)
+    }
     onDismiss?.()
-  }
+  }, [router, onDismiss, account])
 
   return (
     <>

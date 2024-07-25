@@ -14,7 +14,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { fetchLedgerData } from 'state/predictions'
 import { NodeLedger, NodeRound } from 'state/types'
 import { getNowInSeconds } from 'utils/getNowInSeconds'
@@ -117,43 +117,47 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
 
   const canEnterPosition = getHasEnteredPosition()
 
-  const handleBack = () =>
+  const handleBack = useCallback(() => {
     setState((prevState) => ({
       ...prevState,
       isSettingPosition: false,
     }))
+  }, [])
 
-  const handleSetPosition = (newPosition: BetPosition) => {
+  const handleSetPosition = useCallback((newPosition: BetPosition) => {
     setState((prevState) => ({
       ...prevState,
       isSettingPosition: true,
       position: newPosition,
     }))
-  }
+  }, [])
 
-  const togglePosition = () => {
+  const togglePosition = useCallback(() => {
     setState((prevState) => ({
       ...prevState,
       position: prevState.position === BetPosition.BULL ? BetPosition.BEAR : BetPosition.BULL,
     }))
-  }
+  }, [])
 
-  const handleSuccess = async (hash: string) => {
-    if (account && chainId) {
-      await dispatch(fetchLedgerData({ account, chainId, epochs: [round.epoch] }))
+  const handleSuccess = useCallback(
+    async (hash: string) => {
+      if (account && chainId) {
+        await dispatch(fetchLedgerData({ account, chainId, epochs: [round.epoch] }))
 
-      handleBack()
+        handleBack()
 
-      toastSuccess(
-        t('Success!'),
-        <ToastDescriptionWithTx txHash={hash}>
-          {t('%position% position entered', {
-            position: positionDisplay,
-          })}
-        </ToastDescriptionWithTx>,
-      )
-    }
-  }
+        toastSuccess(
+          t('Success!'),
+          <ToastDescriptionWithTx txHash={hash}>
+            {t('%position% position entered', {
+              position: positionDisplay,
+            })}
+          </ToastDescriptionWithTx>,
+        )
+      }
+    },
+    [dispatch, account, chainId, round.epoch, handleBack, t, toastSuccess, positionDisplay],
+  )
 
   return (
     <CardFlip isFlipped={isSettingPosition} height="404px">

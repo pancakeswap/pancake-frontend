@@ -5,6 +5,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { PoolIds } from '@pancakeswap/ifos'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { WalletIfoData } from 'views/Ifos/types'
+import { useCallback } from 'react'
 
 interface Props {
   poolId: PoolIds
@@ -19,9 +20,14 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVers
   const { account, chain } = useWeb3React()
   const { fetchWithCatchTxError } = useCatchTxError()
 
-  const setPendingTx = (isPending: boolean) => walletIfoData.setPendingTx(isPending, poolId)
+  const setPendingTx = useCallback(
+    (isPending) => {
+      walletIfoData.setPendingTx(isPending, poolId)
+    },
+    [walletIfoData, poolId],
+  )
 
-  const handleClaim = async () => {
+  const handleClaim = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       setPendingTx(true)
       if (!walletIfoData?.contract || !account) {
@@ -48,7 +54,7 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVers
       )
     }
     setPendingTx(false)
-  }
+  }, [walletIfoData, account, chain, poolId, ifoVersion, t, toastSuccess, setPendingTx, fetchWithCatchTxError])
 
   return (
     <Button

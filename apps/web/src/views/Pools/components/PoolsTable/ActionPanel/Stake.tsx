@@ -36,6 +36,7 @@ import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 
 import { VeCakeButton } from 'views/CakeStaking/components/SyrupPool/VeCakeButton'
 import { useIsUserDelegated } from 'views/CakeStaking/hooks/useIsUserDelegated'
+import { useCallback } from 'react'
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
 import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
@@ -156,21 +157,21 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
 
-  const onStake = () => {
+  const onStake = useCallback(() => {
     if (vaultKey) {
       onPresentVaultStake()
     } else {
       onPresentStake()
     }
-  }
+  }, [vaultKey, onPresentVaultStake, onPresentStake])
 
-  const onUnstake = () => {
+  const onUnstake = useCallback(() => {
     if (vaultKey) {
       onPresentVaultUnstake()
     } else {
       onPresentUnstake()
     }
-  }
+  }, [vaultKey, onPresentVaultUnstake, onPresentUnstake])
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t("You've already staked the maximum amount you can stake in this pool!"),

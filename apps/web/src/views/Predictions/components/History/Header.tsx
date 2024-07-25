@@ -16,6 +16,7 @@ import { setHistoryFilter, setHistoryPaneState } from 'state/predictions'
 import { useGetHistoryFilter, useGetIsFetchingHistory } from 'state/predictions/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { styled } from 'styled-components'
+import { useCallback } from 'react'
 
 const Filter = styled.label`
   align-items: center;
@@ -59,20 +60,26 @@ const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({ activeTab, set
   const dispatch = useLocalDispatch()
   const { address: account } = useAccount()
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     dispatch(setHistoryPaneState(false))
-  }
+  }, [dispatch])
 
-  const handleChange = (newFilter: HistoryFilter) => async () => {
-    if (newFilter !== historyFilter) {
-      dispatch(setHistoryFilter(newFilter))
-    }
-  }
+  const handleChange = useCallback(
+    (newFilter: HistoryFilter) => async () => {
+      if (newFilter !== historyFilter) {
+        dispatch(setHistoryFilter(newFilter))
+      }
+    },
+    [dispatch, historyFilter],
+  )
 
-  const switchTab = async (tabIndex: number) => {
-    setActiveTab(tabIndex)
-    await handleChange(HistoryFilter.ALL)()
-  }
+  const switchTab = useCallback(
+    async (tabIndex: number) => {
+      setActiveTab(tabIndex)
+      await handleChange(HistoryFilter.ALL)()
+    },
+    [setActiveTab, handleChange],
+  )
 
   return (
     <StyledHeader>

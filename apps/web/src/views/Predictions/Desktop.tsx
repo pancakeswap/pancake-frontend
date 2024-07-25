@@ -7,7 +7,7 @@ import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
 import dynamic from 'next/dynamic'
-import { memo, useEffect, useMemo, useRef } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react'
 import Split, { SplitInstance } from 'split-grid'
 import { setChartPaneState, setChartView } from 'state/predictions'
 import {
@@ -132,7 +132,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
     }
   }, [config, dispatch])
 
-  const openChartPane = () => {
+  const openChartPane = useCallback(() => {
     if (splitWrapperRef.current) {
       splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
       splitWrapperRef.current.style.gridTemplateRows = GRID_TEMPLATE_ROW
@@ -147,7 +147,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
     }, 150)
 
     dispatch(setChartPaneState(true))
-  }
+  }, [dispatch, splitWrapperRef])
 
   const splitInstance = useRef<SplitInstance>()
 
@@ -227,7 +227,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
             )}
           </PositionPane>
 
-          <Gutter ref={gutterRef} $isChartPaneOpen={isChartPaneOpen} onClick={() => openChartPane()}>
+          <Gutter ref={gutterRef} $isChartPaneOpen={isChartPaneOpen} onClick={openChartPane}>
             {config?.chainlinkOracleAddress && (
               <PowerLinkStyle href="https://chain.link/" external>
                 <img src="/images/powered-by-chainlink.svg" alt="Powered by ChainLink" width="170px" height="48px" />

@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Modal, useToast } from '@pancakeswap/uikit'
 import snapshot from '@snapshot-labs/snapshot.js'
 import useTheme from 'hooks/useTheme'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { PANCAKE_SPACE } from 'views/Voting/config'
 import { VECAKE_VOTING_POWER_BLOCK } from 'views/Voting/helpers'
 import { useAccount, useWalletClient } from 'wagmi'
@@ -52,26 +52,21 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
     [ConfirmVoteView.DETAILS]: t('Voting Power'),
   }
 
-  const handleDismiss = () => {
-    onDismiss?.()
-  }
-
-  const handleConfirmVote = async () => {
+  const handleConfirmVote = useCallback(async () => {
     try {
       setIsPending(true)
+
       const web3 = {
-        getSigner: () => {
-          return {
-            _signTypedData: (domain, types, message) =>
-              signer?.signTypedData({
-                account,
-                domain,
-                types,
-                message,
-                primaryType: 'Vote',
-              }),
-          }
-        },
+        getSigner: () => ({
+          _signTypedData: (domain, types, message) =>
+            signer?.signTypedData({
+              account,
+              domain,
+              types,
+              message,
+              primaryType: 'Vote',
+            }),
+        }),
       }
 
       if (!account) {
@@ -89,14 +84,14 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
 
       await onSuccess()
 
-      handleDismiss()
+      onDismiss?.()
     } catch (error) {
       toastError(t('Error'), (error as Error)?.message ?? t('Error occurred, please try again'))
       console.error(error)
     } finally {
       setIsPending(false)
     }
-  }
+  }, [setIsPending, signer, account, vote.value, onSuccess, onDismiss, proposalId, t, toastError])
 
   return (
     <Modal
@@ -118,7 +113,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
               isError={isError}
               veCakeBalance={veCakeBalance}
               onConfirm={handleConfirmVote}
-              onDismiss={handleDismiss}
+              onDismiss={onDismiss}
             />
           ) : (
             <MainView
@@ -131,7 +126,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
               lockedEndTime={Number(lockedEndTime)}
               onConfirm={handleConfirmVote}
               onViewDetails={handleViewDetails}
-              onDismiss={handleDismiss}
+              onDismiss={onDismiss}
             />
           ))}
         {view === ConfirmVoteView.DETAILS && block && (

@@ -8,7 +8,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useV3AirdropContract } from 'hooks/useContract'
 import { useShowOnceAirdropModal } from 'hooks/useShowOnceAirdropModal'
 import delay from 'lodash/delay'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
 import useAirdropModalStatus from './hooks/useAirdropModalStatus'
@@ -91,15 +91,16 @@ const V3AirdropModal: React.FC = () => {
     }
   }, [account, shouldShowModal, showOnceAirdropModal, v3WhitelistAddress])
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     if (showOnceAirdropModal) {
-      setShowOnceAirdropModal(!showOnceAirdropModal)
+      setShowOnceAirdropModal((prevState) => !prevState)
     }
     setShow(false)
-  }
+  }, [showOnceAirdropModal, setShowOnceAirdropModal])
 
-  const handleClick = async () => {
+  const handleClick = useCallback(async () => {
     setIsLoading(true)
+
     try {
       let v3ForSCResponse = v3ForSC
       if (!v3ForSCResponse) {
@@ -111,7 +112,8 @@ const V3AirdropModal: React.FC = () => {
           })
           ?.setData(v3ForSCResponse)
       }
-      const { cakeAmountInWei, nft1, nft2 } = (account && v3ForSCResponse?.[account?.toLowerCase()]) || {}
+
+      const { cakeAmountInWei, nft1, nft2 } = (account && v3ForSCResponse?.[account.toLowerCase()]) || {}
       let v3MerkleProofsResponse = v3MerkleProofs as { merkleProofs: { [account: string]: any } }
       if (!v3MerkleProofsResponse) {
         v3MerkleProofsResponse = await (await fetch(`${GITHUB_ENDPOINT}/v3MerkleProofs.json`)).json()
@@ -121,24 +123,26 @@ const V3AirdropModal: React.FC = () => {
             queryKey: ['/airdrop-Merkle-json'],
           })
           ?.setData(v3MerkleProofsResponse)
-        const proof = account ? v3MerkleProofsResponse?.merkleProofs?.[account?.toLowerCase()] || {} : {}
-        const receipt = v3AirdropContract.account
-          ? await fetchWithCatchTxError(() =>
-              v3AirdropContract.write.claim([cakeAmountInWei, nft1, nft2, proof], {
-                account: v3AirdropContract.account!,
-                chain: v3AirdropContract.chain,
-              }),
-            )
-          : undefined
-        if (receipt?.status) {
-          if (showOnceAirdropModal) {
-            setShowOnceAirdropModal(!showOnceAirdropModal)
-          }
-          queryClient.invalidateQueries({
-            queryKey: [account, '/airdrop-claimed'],
-          })
-          toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+      }
+
+      const proof = account ? v3MerkleProofsResponse?.merkleProofs?.[account.toLowerCase()] || {} : {}
+      const receipt = v3AirdropContract.account
+        ? await fetchWithCatchTxError(() =>
+            v3AirdropContract.write.claim([cakeAmountInWei, nft1, nft2, proof], {
+              account: v3AirdropContract.account!,
+              chain: v3AirdropContract.chain,
+            }),
+          )
+        : undefined
+
+      if (receipt?.status) {
+        if (showOnceAirdropModal) {
+          setShowOnceAirdropModal((prevState) => !prevState)
         }
+        queryClient.invalidateQueries({
+          queryKey: [account, '/airdrop-claimed'],
+        })
+        toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
       }
     } catch (error: any) {
       const errorDescription = `${error.message} - ${error.data?.message}`
@@ -147,7 +151,19 @@ const V3AirdropModal: React.FC = () => {
       setShow(false)
       setIsLoading(false)
     }
-  }
+  }, [
+    account,
+    v3ForSC,
+    v3MerkleProofs,
+    v3AirdropContract,
+    queryClient,
+    showOnceAirdropModal,
+    setShowOnceAirdropModal,
+    toastSuccess,
+    toastError,
+    fetchWithCatchTxError,
+    t,
+  ])
 
   const hasPart1 = useMemo(() => (data ? Object.values(data.part1).find((i) => i !== null) : false), [data])
   const hasPart2 = useMemo(() => (data ? Object.values(data.part2).find((i) => i !== null) : false), [data])
