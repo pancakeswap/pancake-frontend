@@ -5,6 +5,7 @@ import { FeeRefundBanner } from '../FeeRefundBanner'
 import { FourMemeBanner } from '../FourMemeBanner'
 import GameBanner from '../GameBanner'
 import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
+import { OortTradingBanner } from '../OortTradingBanner'
 import { OptionsBanner } from '../OptionsBanner'
 import { AthleticsBanner } from '../PancakeSwapAthleticsBanner'
 import { PaymasterBanner } from '../PaymasterBanner'
@@ -45,6 +46,10 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
+      },
+      {
+        shouldRender: true,
+        banner: <OortTradingBanner />,
       },
       {
         shouldRender: true,
