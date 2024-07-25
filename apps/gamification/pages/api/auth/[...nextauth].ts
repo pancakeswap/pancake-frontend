@@ -17,9 +17,9 @@ export default NextAuth({
     }),
     // For verify followers
     TwitterProvider({
-      id: TwitterFollowersId.TWITTER_ID_1,
-      clientId: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_1].consumerKey ?? '',
-      clientSecret: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_1].consumerKeySecret ?? '',
+      id: TwitterFollowersId.TWITTER_ID_2,
+      clientId: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_2].consumerKey ?? '',
+      clientSecret: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_2].consumerKeySecret ?? '',
     }),
   ],
   session: {
@@ -42,10 +42,10 @@ export default NextAuth({
             }
             break
           case 'twitter':
-          case TwitterFollowersId.TWITTER_ID_1:
           case TwitterFollowersId.TWITTER_ID_2:
           case TwitterFollowersId.TWITTER_ID_3:
           case TwitterFollowersId.TWITTER_ID_4:
+          case TwitterFollowersId.TWITTER_ID_5:
             // eslint-disable-next-line no-param-reassign
             token.twitter = {
               providerId: account.provider,
