@@ -7,17 +7,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const { account, questId, taskName, taskId } = req.query
-  const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/markTaskStatus/${account}/${questId}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+
+  const response = await fetch(
+    `${GAMIFICATION_PUBLIC_API}/userInfo/v1/users/${account}/quests/${questId}/mark-task-status`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: process.env.TASK_STATUS_TOKEN as string,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        taskName,
+        taskId,
+        isCompleted: true,
+      }),
     },
-    body: JSON.stringify({
-      taskName,
-      taskId,
-      isCompleted: true,
-    }),
-  })
+  )
 
   if (!response.ok) {
     return res.status(400).json({ message: 'An error occurred please try again' })

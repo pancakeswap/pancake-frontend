@@ -5,6 +5,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useQuestRewardContract } from 'hooks/useContract'
@@ -58,7 +59,19 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
     refetchOnWindowFocus: false,
   })
 
-  const hasProof = false // Should call API
+  const { data: proof } = useQuery({
+    queryKey: ['/get-user-merkle-proof', account, id],
+    queryFn: async () => {
+      const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/users/${account}/quests/${id}/merkle-proof`)
+      return response.json() as Promise<Address[]>
+    },
+    enabled: Boolean(account && id),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
+
+  const hasProof = useMemo(() => Boolean(proof && proof?.length > 0), [proof])
 
   const ableToClaimReward = useMemo(
     () => isTasksCompleted && hasProof && new BigNumber(claimedRewardAmount ?? 0).eq(BIG_ZERO),
@@ -67,27 +80,28 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
 
   const handleClaimReward = useCallback(async () => {
     try {
-      const proof: Address[] = ['0x']
-      const receipt = await fetchWithCatchTxError(() =>
-        contract.write.claimReward([toHex(id), BigInt(claimedRewardAmount ?? '0'), proof], {
-          account,
-          chainId,
-        } as any),
-      )
-
-      if (receipt?.status) {
-        toastSuccess(
-          t('Success!'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('You have successfully claimed your rewards.')}
-          </ToastDescriptionWithTx>,
+      if (proof && proof?.length > 0) {
+        const receipt = await fetchWithCatchTxError(() =>
+          contract.write.claimReward([toHex(id), BigInt(claimedRewardAmount ?? '0'), proof], {
+            account,
+            chainId,
+          } as any),
         )
+
+        if (receipt?.status) {
+          toastSuccess(
+            t('Success!'),
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('You have successfully claimed your rewards.')}
+            </ToastDescriptionWithTx>,
+          )
+        }
       }
     } catch (error) {
       console.error('[ERROR] Submit Claim Quest Reward: ', error)
       toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
     }
-  }, [account, chainId, claimedRewardAmount, contract.write, fetchWithCatchTxError, id, t, toastError, toastSuccess])
+  }, [id, proof, account, chainId, claimedRewardAmount, contract, fetchWithCatchTxError, t, toastError, toastSuccess])
 
   return (
     <>
