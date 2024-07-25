@@ -5,6 +5,8 @@ import { DropdownMenuItems, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import React, { useMemo } from 'react'
 import { multiChainPaths } from 'state/info/constant'
+import { logMenuClick } from 'utils/customGTMEventTracking'
+
 import config, { ConfigMenuDropDownItemsType, ConfigMenuItemsType } from '../config/config'
 import { useMenuItemsStatus } from './useMenuItemsStatus'
 
@@ -33,6 +35,7 @@ export const useMenuItems = ({ onClick }: UseMenuItemsParams = {}): ConfigMenuIt
       return menuItems.map((item) => {
         const innerItems = item?.items?.map((currentItem) => {
           const onClickEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
+            logMenuClick(item.label)
             currentItem.onClick?.(e)
             onClick?.(e, currentItem)
           }

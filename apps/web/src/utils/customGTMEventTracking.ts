@@ -7,6 +7,7 @@ export enum GTMEvent {
   UnStakeFarm = 'unStakeFarm',
   WalletConnect = 'walletConnect',
   Web3WalletView = 'Web3WalletView',
+  MenuClick = 'menuClick',
 }
 
 export enum GTMCategory {
@@ -33,8 +34,8 @@ export enum GTMAction {
 
 interface CustomGTMDataLayer {
   event: GTMEvent
-  category: GTMCategory
-  action: GTMAction
+  category?: GTMCategory
+  action?: GTMAction
   label?: string
 }
 
@@ -118,5 +119,12 @@ export const logWeb3WalletViews = () => {
     event: GTMEvent.Web3WalletView,
     action: GTMAction.Web3WalletView,
     category: GTMCategory.Web3WalletView,
+  })
+}
+
+export const logMenuClick = (path: string) => {
+  window?.dataLayer?.push({
+    event: GTMEvent.MenuClick,
+    label: path,
   })
 }
