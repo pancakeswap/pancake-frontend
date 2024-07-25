@@ -36,6 +36,7 @@ interface GetMerkleProofResponse {
   claimed: boolean
   claimedError: string
   errorMessage: string
+  claimTransactionHash: string
 }
 
 export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksCompleted, isQuestFinished }) => {
