@@ -38,22 +38,14 @@ interface ConnectSocialProps {
 }
 
 export const connectSocial = async ({ userInfo, data, callback }: ConnectSocialProps) => {
-  let response
-
-  // New Account
   if (userInfo.socialHubToSocialUserIdMap === null || !userInfo.socialHubToSocialUserIdMap[data.socialMedia]) {
-    response = await fetch(`/api/userInfo/addUserInfo`, {
+    const response = await fetch(`/api/userInfo/addUserInfo`, {
       method: 'POST',
       body: JSON.stringify(data),
     })
-  } else {
-    response = await fetch(`/api/userInfo/updateUserInfo`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    })
-  }
 
-  if (response.ok) {
-    callback()
+    if (response.ok) {
+      callback()
+    }
   }
 }
