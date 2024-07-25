@@ -28,6 +28,16 @@ interface ClaimButtonProps {
   isQuestFinished: boolean
 }
 
+interface GetMerkleProofResponse {
+  userId: Address
+  questId: string
+  proofs: Address[]
+  rewardAmount: string
+  claimed: boolean
+  claimedError: string
+  errorMessage: string
+}
+
 export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksCompleted, isQuestFinished }) => {
   const { t } = useTranslation()
   const { id, completionStatus } = quest
@@ -59,11 +69,12 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
     refetchOnWindowFocus: false,
   })
 
-  const { data: proof } = useQuery({
+  const { data: proofData } = useQuery({
     queryKey: ['/get-user-merkle-proof', account, id],
     queryFn: async () => {
       const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/users/${account}/quests/${id}/merkle-proof`)
-      return response.json() as Promise<Address[]>
+      const result: GetMerkleProofResponse = await response.json()
+      return result
     },
     enabled: Boolean(account && id),
     refetchOnMount: false,
@@ -71,7 +82,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
     refetchOnWindowFocus: false,
   })
 
-  const hasProof = useMemo(() => Boolean(proof && proof?.length > 0), [proof])
+  const hasProof = useMemo(() => Boolean(proofData && proofData?.proofs?.length > 0), [proofData])
 
   const ableToClaimReward = useMemo(
     () => isTasksCompleted && hasProof && new BigNumber(claimedRewardAmount ?? 0).eq(BIG_ZERO),
@@ -80,9 +91,9 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
 
   const handleClaimReward = useCallback(async () => {
     try {
-      if (proof && proof?.length > 0) {
+      if (proofData && proofData?.proofs?.length > 0) {
         const receipt = await fetchWithCatchTxError(() =>
-          contract.write.claimReward([toHex(id), BigInt(claimedRewardAmount ?? '0'), proof], {
+          contract.write.claimReward([toHex(id), BigInt(proofData?.rewardAmount ?? '0'), proofData?.proofs], {
             account,
             chainId,
           } as any),
@@ -101,7 +112,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
       console.error('[ERROR] Submit Claim Quest Reward: ', error)
       toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
     }
-  }, [id, proof, account, chainId, claimedRewardAmount, contract, fetchWithCatchTxError, t, toastError, toastSuccess])
+  }, [proofData, contract, id, account, chainId, toastSuccess, t, toastError, fetchWithCatchTxError])
 
   return (
     <>
