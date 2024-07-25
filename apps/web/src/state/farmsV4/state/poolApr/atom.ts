@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js'
+import type { BigNumber } from 'bignumber.js'
 import { atom } from 'jotai'
 import { extendPoolsAtom } from '../extendPools/atom'
 import { farmPoolsAtom } from '../farmPools/atom'

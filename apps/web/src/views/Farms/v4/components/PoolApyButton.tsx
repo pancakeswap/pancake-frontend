@@ -48,13 +48,15 @@ const AprTooltip: React.FC<{
   const merklLink = useMemo(() => {
     return getMerklLink({ chainId: pool.chainId, lpAddress: pool.lpAddress })
   }, [pool.chainId, pool.lpAddress])
-
-  const roiModal = useModalV2()
+  const apr = useMemo(
+    () => displayApr(hasBoost ? combinedBoostedApr : combinedBaseApr),
+    [combinedBaseApr, combinedBoostedApr, hasBoost],
+  )
 
   return (
     <>
       <Text>
-        {t('Combined APR')}: <b>{displayApr(hasBoost ? combinedBoostedApr : combinedBaseApr)}%</b>
+        {t('Combined APR')}: <b>{apr}%</b>
       </Text>
       <ul>
         {cakeApr ? (
@@ -140,24 +142,22 @@ export const PoolApyButton: React.FC<{ pool: PoolInfo }> = ({ pool }) => {
         <TooltipText decorationColor="secondary" ref={aprTooltip.targetRef}>
           <Flex ml="4px" mr="5px" style={{ gap: 5 }}>
             {hasBoost && (
-              <>
-                <Text bold color="success" fontSize={16}>
-                  <>
-                    <Text bold color="success" fontSize={16} display="inline-block" mr="3px">
-                      🌿
-                      {t('Up to')}
-                    </Text>
-                    {`${displayApr(combinedBoostedApr)}%`}
-                  </>
-                </Text>
-              </>
+              <Text bold color="success" fontSize={16}>
+                <>
+                  <Text bold color="success" fontSize={16} display="inline-block" mr="3px">
+                    🌿
+                    {t('Up to')}
+                  </Text>
+                  {`${displayApr(combinedBoostedApr)}%`}
+                </>
+              </Text>
             )}
             <Text style={{ textDecoration: hasBoost ? 'line-through' : 'none' }}>{displayApr(combinedBaseApr)}%</Text>
           </Flex>
         </TooltipText>
       </FarmWidget.FarmApyButton>
       {aprTooltip.tooltipVisible && aprTooltip.tooltip}
-      {pool?.protocol === 'v3' ? <V3ApyRoiModal poolInfo={pool} cakeApr={cakeApr} modal={roiModal} /> : null}
+      {pool.protocol === 'v3' ? <V3ApyRoiModal poolInfo={pool} cakeApr={cakeApr} modal={roiModal} /> : null}
       {['v2', 'stable'].includes(pool.protocol) ? (
         <V2ApyRoiModal poolInfo={pool} cakeApr={cakeApr} modal={roiModal} />
       ) : null}
@@ -216,36 +216,34 @@ const V3ApyRoiModal: React.FC<{
   }, [cakeApr?.cakePerYear, cakeApr?.poolWeight, cakePrice, existingPosition, lmPoolLiquidity])
 
   return (
-    <>
-      <RoiCalculatorModalV2
-        {...modal}
-        isFarm={cakeApr?.value && Number(cakeApr?.value) > 0}
-        maxLabel={existingPosition ? t('My Position') : undefined}
-        closeOnOverlayClick={false}
-        depositAmountInUsd={depositUsdAsBN?.toString()}
-        max={depositUsdAsBN?.toString()}
-        balanceA={currencyBalances?.CURRENCY_A}
-        balanceB={currencyBalances?.CURRENCY_B}
-        price={price}
-        currencyA={poolInfo?.token0}
-        currencyB={poolInfo?.token1}
-        currencyAUsdPrice={token0PriceUsd ?? 0}
-        currencyBUsdPrice={token1PriceUsd ?? 0}
-        sqrtRatioX96={sqrtRatioX96}
-        liquidity={pool?.liquidity}
-        feeAmount={pool?.fee}
-        ticks={ticksData}
-        volume24H={Number(poolInfo?.vol24hUsd ?? 0)}
-        priceUpper={priceUpper}
-        priceLower={priceLower}
-        cakePrice={cakePrice.toFixed(3)}
-        cakeAprFactor={cakeAprFactor}
-        prices={prices}
-        priceSpan={priceTimeWindow}
-        onPriceSpanChange={setPriceTimeWindow}
-        // additionalApr={additionAprInfo?.aprValue}
-      />
-    </>
+    <RoiCalculatorModalV2
+      {...modal}
+      isFarm={cakeApr?.value && Number(cakeApr?.value) > 0}
+      maxLabel={existingPosition ? t('My Position') : undefined}
+      closeOnOverlayClick={false}
+      depositAmountInUsd={depositUsdAsBN?.toString()}
+      max={depositUsdAsBN?.toString()}
+      balanceA={currencyBalances?.CURRENCY_A}
+      balanceB={currencyBalances?.CURRENCY_B}
+      price={price}
+      currencyA={poolInfo?.token0}
+      currencyB={poolInfo?.token1}
+      currencyAUsdPrice={token0PriceUsd ?? 0}
+      currencyBUsdPrice={token1PriceUsd ?? 0}
+      sqrtRatioX96={sqrtRatioX96}
+      liquidity={pool?.liquidity}
+      feeAmount={pool?.fee}
+      ticks={ticksData}
+      volume24H={Number(poolInfo?.vol24hUsd ?? 0)}
+      priceUpper={priceUpper}
+      priceLower={priceLower}
+      cakePrice={cakePrice.toFixed(3)}
+      cakeAprFactor={cakeAprFactor}
+      prices={prices}
+      priceSpan={priceTimeWindow}
+      onPriceSpanChange={setPriceTimeWindow}
+      // additionalApr={additionAprInfo?.aprValue}
+    />
   )
 }
 

@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { publicClient } from 'utils/wagmi'
 import { Address, parseAbiItem } from 'viem'
 
+const lmPoolAbi = [parseAbiItem('function lmLiquidity() view returns (uint128)')]
 const fetchLmPoolLiquidity = async (lpAddress: Address, chainId: number): Promise<bigint> => {
   const client = publicClient({ chainId })
   if (!client) {
@@ -16,7 +17,7 @@ const fetchLmPoolLiquidity = async (lpAddress: Address, chainId: number): Promis
     })
     const lmPoolLiquidity = await client.readContract({
       address: lmPool,
-      abi: [parseAbiItem('function lmLiquidity() view returns (uint128)')],
+      abi: lmPoolAbi,
       functionName: 'lmLiquidity',
     })
 
