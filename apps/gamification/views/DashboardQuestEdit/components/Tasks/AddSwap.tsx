@@ -1,13 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, ErrorFillIcon, Flex, FlexGap, InputGroup, Text, useModal } from '@pancakeswap/uikit'
-import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
-import BigNumber from 'bignumber.js'
 import { CurrencySearchModal } from 'components/SearchModal/CurrencySearchModal'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { ADDRESS_ZERO } from 'config/constants'
 import { useFindTokens } from 'hooks/useFindTokens'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { Address } from 'viem'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
@@ -41,16 +39,9 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task, isDrafted }) => {
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
   const [isFirst, setIsFirst] = useState(true)
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
-  const [minAmount, setMinAmount] = useState('')
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const selectedCurrency = useFindTokens(task?.network as ChainId, task?.tokenAddress as Address)
-
-  useEffect(() => {
-    if (task.minAmount) {
-      setMinAmount(getFullDisplayBalance(new BigNumber(task.minAmount), selectedCurrency.decimals).toString())
-    }
-  }, [])
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
@@ -60,11 +51,11 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task, isDrafted }) => {
       const indexToUpdate = forkTasks.findIndex((i: TaskSwapConfig) => i.sid === task.sid)
       forkTasks[indexToUpdate].network = currency.chainId
       forkTasks[indexToUpdate].tokenAddress = currency.isNative ? ADDRESS_ZERO : currency.address
-      forkTasks[indexToUpdate].title = `Make a swap at least ${minAmount ?? 0} USD of ${currency?.symbol}`
+      forkTasks[indexToUpdate].title = `Make a swap at least ${task.minAmount ?? 0} USD of ${currency?.symbol}`
 
       onTasksChange([...forkTasks])
     },
-    [task, tasks, minAmount, onTasksChange],
+    [task, tasks, onTasksChange],
   )
 
   const [onPresentCurrencyModal] = useModal(
@@ -77,20 +68,12 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task, isDrafted }) => {
     if (e.currentTarget.validity.valid) {
       const forkTasks = Object.assign(tasks)
       const indexToUpdate = forkTasks.findIndex((i: TaskSwapConfig) => i.sid === task.sid)
+      forkTasks[indexToUpdate][socialKeyType] = e.target.value
 
       if (socialKeyType === 'minAmount') {
-        setMinAmount(e.target.value)
-
-        forkTasks[indexToUpdate][socialKeyType] = getDecimalAmount(
-          new BigNumber(e.target.value),
-          selectedCurrency.decimals,
-        ).toString()
-
         forkTasks[indexToUpdate].title = `Make a swap at least ${e.target.value ?? 0} USD of ${
           selectedCurrency?.symbol
         }`
-      } else {
-        forkTasks[indexToUpdate][socialKeyType] = e.target.value
       }
 
       onTasksChange([...forkTasks])
@@ -142,7 +125,7 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task, isDrafted }) => {
                   inputMode="numeric"
                   pattern="^[0-9]*[.,]?[0-9]*$"
                   isError={isError}
-                  value={minAmount}
+                  value={task.minAmount}
                   placeholder={t('Minimum number of token')}
                   onChange={(e) => handleInputChange(e, 'minAmount')}
                 />

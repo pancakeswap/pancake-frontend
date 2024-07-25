@@ -1,8 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
-import { getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
-import BigNumber from 'bignumber.js'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
 import { DropdownList } from 'views/DashboardQuestEdit/components/Tasks/DropdownList'
@@ -24,14 +22,7 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
   const [isFirst, setIsFirst] = useState(true)
   const { taskIcon, taskNaming } = useTaskInfo(false, 22)
-  const [minAmount, setMinAmount] = useState('')
   const { tasks, onTasksChange, deleteTask } = useQuestEdit()
-
-  useEffect(() => {
-    if (task.minAmount) {
-      setMinAmount(getFullDisplayBalance(new BigNumber(task.minAmount), 18).toString())
-    }
-  }, [])
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
@@ -40,13 +31,7 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
 
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskLotteryConfig) => i.sid === task.sid)
-
-    if (socialKeyType === 'minAmount') {
-      setMinAmount(e.target.value)
-      forkTasks[indexToUpdate][socialKeyType] = getDecimalAmount(new BigNumber(e.target.value), 18).toString()
-    } else {
-      forkTasks[indexToUpdate][socialKeyType] = e.target.value
-    }
+    forkTasks[indexToUpdate][socialKeyType] = e.target.value
 
     onTasksChange([...forkTasks])
   }
@@ -91,7 +76,7 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
             <StyledInput
               inputMode="numeric"
               pattern="^[0-9]*[.,]?[0-9]*$"
-              value={minAmount}
+              value={task.minAmount}
               isError={isMinAmountError}
               placeholder={t('Min. ticket’s amount')}
               onChange={(e) => handleNumberChange(e, 'minAmount')}
