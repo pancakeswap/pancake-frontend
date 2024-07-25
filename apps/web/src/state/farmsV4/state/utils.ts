@@ -21,6 +21,8 @@ export const parseFarmPools = (
         pool.token0.symbol,
         pool.token0.name,
       ),
+      token0Price: (pool.token0Price as `${number}`) ?? '0',
+      token1Price: (pool.token1Price as `${number}`) ?? '0',
       token1: new Token(
         pool.chainId,
         safeGetAddress(pool.token1.id)!,

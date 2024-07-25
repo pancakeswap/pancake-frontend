@@ -1,10 +1,9 @@
-import BigNumber from 'bignumber.js'
-import { useCakePrice } from 'hooks/useCakePrice'
+import { useQuery } from '@tanstack/react-query'
+import { SLOW_INTERVAL } from 'config/constants'
 import { useAtomValue, useSetAtom } from 'jotai'
-import chunk from 'lodash/chunk'
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import { ChainIdAddressKey, PoolInfo } from '../type'
-import { CakeApr, cakeAprAtom, emptyCakeAprPoolsAtom, merklAprAtom, poolAprAtom } from './atom'
+import { cakeAprSetterAtom, emptyCakeAprPoolsAtom, merklAprAtom, poolAprAtom } from './atom'
 import { getAllNetworkMerklApr, getCakeApr } from './fetcher'
 
 export const usePoolApr = (key: ChainIdAddressKey) => {
@@ -17,36 +16,39 @@ export const usePoolsApr = () => {
 
 export const usePoolAprUpdater = () => {
   const pools = useAtomValue(emptyCakeAprPoolsAtom)
-  const updateCakeApr = useSetAtom(cakeAprAtom)
-  const cakePrice = useCakePrice()
+  const updateCakeApr = useSetAtom(cakeAprSetterAtom)
   const updateMerklApr = useSetAtom(merklAprAtom)
   const fetchMerklApr = useCallback(async () => {
     const merklAprs = await getAllNetworkMerklApr()
     updateMerklApr(merklAprs)
   }, [updateMerklApr])
   const fetchCakeApr = useCallback(
-    async (fetchPools: PoolInfo[], _cakePrice: BigNumber) => {
-      if (fetchPools && fetchPools.length && !_cakePrice.isZero()) {
-        // @todo @ChefJerry refactor to multicall
-        const result = {} as CakeApr
-        const chunks = chunk(fetchPools, 100)
-        for await (const c of chunks) {
-          for await (const pool of c) {
-            const cakeApr = await getCakeApr(pool, _cakePrice)
-            result[`${pool.chainId}:${pool.lpAddress}`] = cakeApr
-          }
-        }
-        updateCakeApr(result)
+    async (newPools: PoolInfo[]) => {
+      if (newPools && newPools.length) {
+        newPools.forEach((pool) => {
+          getCakeApr(pool).then((apr) => {
+            updateCakeApr(apr)
+          })
+        })
       }
     },
     [updateCakeApr],
   )
 
-  useEffect(() => {
-    fetchMerklApr()
-  }, [fetchMerklApr])
+  useQuery({
+    queryKey: ['apr', 'merkl', fetchMerklApr],
+    queryFn: fetchMerklApr,
+    refetchInterval: SLOW_INTERVAL,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  })
 
-  useEffect(() => {
-    fetchCakeApr(pools, cakePrice)
-  }, [cakePrice, fetchCakeApr, pools])
+  useQuery({
+    queryKey: ['apr', 'cake', fetchCakeApr],
+    queryFn: () => fetchCakeApr(pools),
+    enabled: pools && pools.length > 0,
+    refetchInterval: SLOW_INTERVAL,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  })
 }
