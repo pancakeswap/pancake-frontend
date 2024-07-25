@@ -93,7 +93,7 @@ export const OortTradingBanner = () => {
         }
         desc={
           isMobile ? null : (
-            <BannerDesc style={{ whiteSpace: 'break-spaces' }}>{t('Trade Oort to win gauranteed prizes!')}</BannerDesc>
+            <BannerDesc style={{ whiteSpace: 'break-spaces' }}>{t('Trade OORT to win gauranteed prizes!')}</BannerDesc>
           )
         }
         actions={
