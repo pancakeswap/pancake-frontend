@@ -298,7 +298,7 @@ const getV2PoolsCakeAprByChainId = async (
     const bCakeWrapperAddress = getUniversalBCakeWrapperForPool(pool)?.bCakeWrapperAddress
     if (!bCakeWrapperAddress) return prev
     return [...prev, { ...pool, bCakeWrapperAddress }]
-  }, [] as (PoolInfo & { protocol: 'v2' | 'stable' } & { bCakeWrapperAddress: Address })[])
+  }, [] as (PoolInfo & { bCakeWrapperAddress: Address })[])
 
   const calls = validPools.map((pool) => {
     return {
@@ -319,7 +319,7 @@ const getV2PoolsCakeAprByChainId = async (
     return {
       ...acc,
       [`${chainId}:${safeGetAddress(pool.lpAddress)}`]: calcV2PoolApr({
-        pool,
+        pool: pool as V2PoolInfo | StablePoolInfo,
         cakePrice,
         cakePerSecond: result,
       }),
