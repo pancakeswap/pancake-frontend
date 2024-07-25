@@ -1,25 +1,22 @@
 import { Address } from 'viem'
-import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+import { SocialHubType } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
+
+export interface DisconnectUserSocialInfoConfig {
+  socialHub: SocialHubType
+  userId: Address
+  signedData: { walletAddress: Address; timestamp: number }
+  signature: string
+}
 
 interface DisconnectSocialProps {
-  account: Address
-  userInfo: UserInfo
-  type: SocialHubType
+  data: DisconnectUserSocialInfoConfig
   callback: () => void
 }
 
-export const disconnectSocial = async ({ account, userInfo, type, callback }: DisconnectSocialProps) => {
-  const socialHubToSocialUserIdMap = {
-    ...(userInfo.socialHubToSocialUserIdMap ?? {}),
-    [type]: '',
-  }
-
-  const response = await fetch(`/api/userInfo/updateUserInfo`, {
-    method: 'PUT',
-    body: JSON.stringify({
-      userId: account,
-      socialHubToSocialUserIdMap,
-    }),
+export const disconnectSocial = async ({ data, callback }: DisconnectSocialProps) => {
+  const response = await fetch(`/api/userInfo/emptyUserSocialInfo`, {
+    method: 'POST',
+    body: JSON.stringify(data),
   })
 
   if (response.ok) {

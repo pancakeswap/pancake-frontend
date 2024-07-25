@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { encodePacked, keccak256 } from 'viem'
 import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { connectSocial, VerificationTelegramConfig } from 'views/Profile/utils/connectSocial'
-import { disconnectSocial } from 'views/Profile/utils/disconnectSocial'
+import { disconnectSocial, DisconnectUserSocialInfoConfig } from 'views/Profile/utils/disconnectSocial'
 import { useAccount, useSignMessage } from 'wagmi'
 
 interface TelegramResponse {
@@ -90,10 +90,18 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
   const disconnect = async () => {
     try {
       if (account) {
+        const walletAddress = account
+        const timestamp = Math.floor(new Date().getTime() / 1000)
+        const message = keccak256(encodePacked(['address', 'uint256'], [walletAddress ?? '0x', BigInt(timestamp)]))
+        const signature = await signMessageAsync({ message })
+
         await disconnectSocial({
-          account,
-          userInfo,
-          type: SocialHubType.Telegram,
+          data: {
+            userId: walletAddress,
+            socialHub: SocialHubType.Telegram,
+            signedData: { walletAddress, timestamp },
+            signature,
+          } as DisconnectUserSocialInfoConfig,
           callback: () => {
             toastSuccess(t('%social% Disconnected', { social: SocialHubType.Telegram }))
             refresh?.()

@@ -66,9 +66,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ userInfo, refresh,
   const { logout } = useAuth()
   const { address: account } = useAccount()
   const disabled = !account
-  const { connect: connectDiscord, disconnect: disconnectDiscord } = useConnectDiscord({ userInfo, refresh })
+  const { connect: connectDiscord, disconnect: disconnectDiscord } = useConnectDiscord({ refresh })
   const { connect: connectTelegram, disconnect: disconnectTelegram } = useConnectTelegram({ userInfo, refresh })
-  const { connect: connectTwitter, disconnect: disconnectTwitter } = useConnectTwitter({ userInfo, refresh })
+  const { connect: connectTwitter, disconnect: disconnectTwitter } = useConnectTwitter({ refresh })
 
   return (
     <Modal title={t('Settings')} onDismiss={onDismiss}>

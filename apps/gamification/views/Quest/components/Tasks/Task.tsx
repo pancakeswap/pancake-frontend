@@ -65,7 +65,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   )
   const { taskIcon, taskNaming, userActionButtonText } = useTaskInfo(false, 22)
   const { userInfo, isFetched: isSocialHubFetched } = useUserSocialHub()
-  const { randomConnect: connectTwitter } = useConnectTwitter({ userInfo })
+  const { randomConnect: connectTwitter } = useConnectTwitter({})
   const [socialName, setSocialName] = useState('')
   const [isPending, setIsPending] = useState(false)
   const [actionPanelExpanded, setActionPanelExpanded] = useState(false)
