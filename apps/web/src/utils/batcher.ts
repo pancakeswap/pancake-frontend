@@ -1,5 +1,5 @@
 import { CurrencyParams, CurrencyUsdResult, getCurrencyKey, getCurrencyListUsdPrice } from '@pancakeswap/price-api-sdk'
-import { create, windowScheduler } from '@yornaath/batshit'
+import { create, windowedFiniteBatchScheduler } from '@yornaath/batshit'
 
 export const usdPriceBatcher = create<CurrencyUsdResult, CurrencyParams, number>({
   // The fetcher resolves the list of queries to one single api call.
@@ -13,5 +13,8 @@ export const usdPriceBatcher = create<CurrencyUsdResult, CurrencyParams, number>
     return items[key] ?? 0
   },
   // this will batch all calls to users.fetch that are made within 60 milliseconds.
-  scheduler: windowScheduler(60),
+  scheduler: windowedFiniteBatchScheduler({
+    windowMs: 60,
+    maxBatchSize: 100,
+  }),
 })

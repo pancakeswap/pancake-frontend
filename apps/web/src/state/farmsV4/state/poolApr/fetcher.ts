@@ -1,26 +1,32 @@
 import { supportedChainIdV4, UNIVERSAL_BCAKEWRAPPER_FARMS } from '@pancakeswap/farms'
+import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
+import { create, windowedFiniteBatchScheduler } from '@yornaath/batshit'
 import BigNumber from 'bignumber.js'
 import { SECONDS_PER_YEAR } from 'config'
+import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
+import { getCakePriceFromOracle } from 'hooks/useCakePrice'
+import assign from 'lodash/assign'
+import groupBy from 'lodash/groupBy'
+import set from 'lodash/set'
 import { safeGetAddress } from 'utils'
 import { getMasterChefV3Contract, getV2SSBCakeWrapperContract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/wagmi'
-import { isAddressEqual } from 'viem'
+import { Address, isAddressEqual } from 'viem'
 import { PoolInfo, StablePoolInfo, V2PoolInfo, V3PoolInfo } from '../type'
-import { MerklApr } from './atom'
+import { CakeApr, MerklApr } from './atom'
 
-export const getCakeApr = (
-  pool: PoolInfo,
-  cakePrice: BigNumber,
-): Promise<{ value: `${number}`; boost?: `${number}` }> => {
+export const getCakeApr = (pool: PoolInfo): Promise<CakeApr> => {
   switch (pool.protocol) {
     case 'v3':
-      return getV3PoolCakeApr(pool, cakePrice)
+      return v3PoolCakeAprBatcher.fetch(pool)
     case 'v2':
     case 'stable':
-      return getV2PoolCakeApr(pool, cakePrice)
+      return v2PoolCakeAprBatcher.fetch(pool)
     default:
       return Promise.resolve({
-        value: '0',
+        [`${pool.chainId}:${pool.lpAddress}`]: {
+          value: '0' as const,
+        },
       })
   }
 }
@@ -34,11 +40,7 @@ const masterChefV3CacheMap = new Map<
   }
 >()
 
-// @todo refactor to batch fetch
-export const getV3PoolCakeApr = async (
-  pool: V3PoolInfo,
-  cakePrice: BigNumber,
-): Promise<{ value: `${number}`; boost?: `${number}` }> => {
+export const getV3PoolCakeApr = async (pool: V3PoolInfo, cakePrice: BigNumber): Promise<CakeApr[keyof CakeApr]> => {
   const { tvlUsd } = pool
   const client = publicClient({ chainId: pool.chainId })
   const masterChefV3 = getMasterChefV3Contract(undefined, pool.chainId)
@@ -61,20 +63,54 @@ export const getV3PoolCakeApr = async (
 
   if (!hasCache) masterChefV3CacheMap.set(pool.chainId, { totalAllocPoint, latestPeriodCakePerSecond, poolInfo })
 
-  const cakePerYear = (BigInt(SECONDS_PER_YEAR) * latestPeriodCakePerSecond) / BigInt(1e18) / BigInt(1e12)
+  const cakePerYear = new BigNumber(SECONDS_PER_YEAR)
+    .times(latestPeriodCakePerSecond.toString())
+    .dividedBy(1e18)
+    .dividedBy(1e12)
   const cakePerYearUsd = cakePrice.times(cakePerYear.toString())
   const [allocPoint, , , , , totalLiquidity, totalBoostLiquidity] = poolInfo
   const poolWeight = new BigNumber(allocPoint.toString()).dividedBy(totalAllocPoint.toString())
+  const liquidityBooster = new BigNumber(totalBoostLiquidity.toString()).dividedBy(totalLiquidity.toString())
 
-  const baseApr = cakePerYearUsd
-    .times(poolWeight)
-    .dividedBy(pool.tvlUsd ?? 1)
-    .times(totalLiquidity.toString())
-    .dividedBy(totalBoostLiquidity.toString())
+  const baseApr = cakePerYearUsd.times(poolWeight).dividedBy(liquidityBooster.times(pool.tvlUsd ?? 1))
 
   return {
     value: baseApr.toString() as `${number}`,
     boost: baseApr.times(2).toString() as `${number}`, //
+    cakePerYear,
+    poolWeight,
+  }
+}
+
+const calcV3PoolApr = ({
+  pool,
+  cakePrice,
+  totalAllocPoint,
+  latestPeriodCakePerSecond,
+  poolInfo,
+}: {
+  pool: V3PoolInfo
+  cakePrice: BigNumber
+  totalAllocPoint: bigint
+  latestPeriodCakePerSecond: bigint
+  poolInfo: readonly [bigint, `0x${string}`, `0x${string}`, `0x${string}`, number, bigint, bigint]
+}) => {
+  const cakePerYear = new BigNumber(SECONDS_PER_YEAR)
+    .times(latestPeriodCakePerSecond.toString())
+    .dividedBy(1e18)
+    .dividedBy(1e12)
+  const cakePerYearUsd = cakePrice.times(cakePerYear.toString())
+  const [allocPoint, , , , , totalLiquidity, totalBoostLiquidity] = poolInfo
+  const poolWeight = new BigNumber(allocPoint.toString()).dividedBy(totalAllocPoint.toString())
+  const liquidityBooster = new BigNumber(totalBoostLiquidity.toString()).dividedBy(totalLiquidity.toString())
+
+  const baseApr = cakePerYearUsd.times(poolWeight).dividedBy(liquidityBooster.times(pool.tvlUsd ?? 1))
+
+  return {
+    value: baseApr.toString() as `${number}`,
+    boost: baseApr.times(2).toString() as `${number}`,
+    cakePerYear,
+    poolWeight,
   }
 }
 
@@ -102,7 +138,7 @@ export const getV2PoolCakeApr = async (
 
   const bCakeWrapperContract = getV2SSBCakeWrapperContract(bCakeWrapperAddress, undefined, pool.chainId)
   const cakePerSecond = await bCakeWrapperContract.read.rewardPerSecond()
-  const cakeOneYearUsd = cakePrice.times((cakePerSecond * BigInt(SECONDS_PER_YEAR)).toString())
+  const cakeOneYearUsd = cakePrice.times((cakePerSecond * BigInt(SECONDS_PER_YEAR)).toString()).dividedBy(1e18)
 
   const baseApr = cakeOneYearUsd.dividedBy(pool.tvlUsd ?? 1)
 
@@ -139,5 +175,165 @@ export const getMerklApr = async (chainId: number) => {
 
 export const getAllNetworkMerklApr = async () => {
   const aprs = await Promise.all(supportedChainIdV4.map((chainId) => getMerklApr(chainId)))
-  return aprs.reduce((acc, apr) => ({ ...acc, ...apr }), {})
+  return aprs.reduce((acc, apr) => assign(acc, apr), {})
 }
+
+const getV3PoolsCakeAprByChainId = async (pools: V3PoolInfo[], chainId: number, cakePrice: BigNumber) => {
+  const masterChefV3 = getMasterChefV3Contract(undefined, chainId)
+  const client = publicClient({ chainId })
+
+  if (!masterChefV3 || !client) return {}
+
+  const validPools = pools.filter((pool) => {
+    return pool.pid && pool.chainId === chainId
+  })
+
+  const masterChefV3Cache = masterChefV3CacheMap.get(chainId)
+  const [totalAllocPoint, latestPeriodCakePerSecond] = await Promise.all([
+    masterChefV3Cache ? masterChefV3Cache.totalAllocPoint : masterChefV3.read.totalAllocPoint(),
+    masterChefV3Cache ? masterChefV3Cache.latestPeriodCakePerSecond : masterChefV3.read.latestPeriodCakePerSecond(),
+    getCakePriceFromOracle(),
+  ])
+
+  const poolInfoCalls = validPools.map(
+    (pool) =>
+      ({
+        address: masterChefV3.address,
+        functionName: 'poolInfo',
+        abi: masterChefV3ABI,
+        args: [BigInt(pool.pid!)],
+      } as const),
+  )
+
+  const poolInfos = await client.multicall({
+    contracts: poolInfoCalls,
+    allowFailure: false,
+  })
+
+  return validPools.reduce((acc, pool, index) => {
+    const poolInfo = poolInfos[index]
+    if (!poolInfo) return acc
+    const key = `${chainId}:${safeGetAddress(pool.lpAddress)}`
+    set(acc, key, calcV3PoolApr({ pool, cakePrice, totalAllocPoint, latestPeriodCakePerSecond, poolInfo }))
+    return acc
+  }, {} as CakeApr)
+}
+
+const getV3PoolsCakeApr = async (pools: V3PoolInfo[]): Promise<CakeApr> => {
+  const cakePrice = await getCakePrice()
+  const poolsByChainId = groupBy(pools, 'chainId')
+  const aprs = await Promise.all(
+    Object.keys(poolsByChainId).map((chainId) =>
+      getV3PoolsCakeAprByChainId(poolsByChainId[Number(chainId)], Number(chainId), cakePrice),
+    ),
+  )
+  return aprs.reduce((acc, apr) => assign(acc, apr), {})
+}
+
+const v3PoolCakeAprBatcher = create<CakeApr, V3PoolInfo, CakeApr>({
+  fetcher: getV3PoolsCakeApr,
+  resolver: (items, query) => {
+    const key = `${query.chainId}:${query.lpAddress}`
+    return { [key]: items[key] }
+  },
+  scheduler: windowedFiniteBatchScheduler({
+    windowMs: 60,
+    maxBatchSize: 100,
+  }),
+})
+
+const calcV2PoolApr = ({
+  pool,
+  cakePrice,
+  cakePerSecond,
+}: {
+  pool: V2PoolInfo | StablePoolInfo
+  cakePrice: BigNumber
+  cakePerSecond: bigint
+}) => {
+  const cakeOneYearUsd = cakePrice.times((cakePerSecond * BigInt(SECONDS_PER_YEAR)).toString()).dividedBy(1e18)
+
+  const baseApr = cakeOneYearUsd.dividedBy(pool.tvlUsd ?? 1)
+
+  return {
+    value: baseApr.toString() as `${number}`,
+    boost: baseApr.times(2.5).toString() as `${number}`,
+  }
+}
+
+const cakePriceCache = {
+  value: new BigNumber(0),
+  timestamp: 0,
+}
+const getCakePrice = async () => {
+  const now = Date.now()
+  // cache for 10 minutes
+  if (now - cakePriceCache.timestamp < 1000 * 60 * 10) {
+    return cakePriceCache.value
+  }
+  return new BigNumber(await getCakePriceFromOracle())
+}
+const getV2PoolsCakeAprByChainId = async (
+  pools: Array<V2PoolInfo | StablePoolInfo>,
+  chainId: number,
+  cakePrice: BigNumber,
+) => {
+  const client = publicClient({ chainId })
+  const validPools = pools.reduce((prev, pool) => {
+    if (pool.chainId !== chainId) return prev
+    const bCakeWrapperAddress = getUniversalBCakeWrapperForPool(pool)?.bCakeWrapperAddress
+    if (!bCakeWrapperAddress) return prev
+    prev.push({ ...pool, bCakeWrapperAddress })
+    return prev
+  }, [] as (PoolInfo & { bCakeWrapperAddress: Address })[])
+
+  const calls = validPools.map((pool) => {
+    return {
+      address: pool.bCakeWrapperAddress,
+      functionName: 'rewardPerSecond',
+      abi: v2BCakeWrapperABI,
+    } as const
+  })
+
+  const results = await client.multicall({
+    contracts: calls,
+    allowFailure: false,
+  })
+
+  return validPools.reduce((acc, pool, index) => {
+    const result = results[index]
+    if (!result) return acc
+    const key = `${chainId}:${safeGetAddress(pool.lpAddress)}`
+    set(
+      acc,
+      key,
+      calcV2PoolApr({
+        pool: pool as V2PoolInfo | StablePoolInfo,
+        cakePrice,
+        cakePerSecond: result,
+      }),
+    )
+    return acc
+  }, {} as CakeApr)
+}
+const getV2PoolsCakeApr = async (pools: Array<V2PoolInfo | StablePoolInfo>): Promise<CakeApr> => {
+  const cakePrice = await getCakePrice()
+  const poolsByChainId = groupBy(pools, 'chainId')
+  const aprs = await Promise.all(
+    Object.keys(poolsByChainId).map((chainId) =>
+      getV2PoolsCakeAprByChainId(poolsByChainId[Number(chainId)], Number(chainId), cakePrice),
+    ),
+  )
+  return aprs.reduce((acc, apr) => assign(acc, apr), {})
+}
+const v2PoolCakeAprBatcher = create<CakeApr, V2PoolInfo | StablePoolInfo, CakeApr>({
+  fetcher: getV2PoolsCakeApr,
+  resolver: (items, query) => {
+    const key = `${query.chainId}:${query.lpAddress}`
+    return { [key]: items[key] }
+  },
+  scheduler: windowedFiniteBatchScheduler({
+    windowMs: 60,
+    maxBatchSize: 100,
+  }),
+})
