@@ -18,7 +18,6 @@ import { TvlMap, fetchCommonTokenUSDValue } from '@pancakeswap/farms/src/fetchFa
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { FAST_INTERVAL } from 'config/constants'
-import { FARMS_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
 
@@ -28,11 +27,12 @@ import { useBCakeFarmBoosterVeCakeContract, useMasterchefV3, useV3NFTPositionMan
 import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
-import fetchWithTimeout from 'utils/fetchWithTimeout'
 import { getViemClients } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 import { Hex, decodeFunctionResult, encodeFunctionData } from 'viem'
 import { useAccount } from 'wagmi'
+import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
+import keyBy from 'lodash/keyBy'
 
 export const farmV3ApiFetch = (chainId: number): Promise<FarmsV3Response> =>
   fetch(`/api/v3/${chainId}/farms`)
@@ -125,22 +125,28 @@ export const useFarmsV3 = ({ mockApr = false, boosterLiquidityX = {} }: UseFarms
       }
       const tvls: TvlMap = {}
       if (supportedChainIdV3.includes(chainId)) {
+        const chainName = chainIdToExplorerInfoChainName[chainId]
+        const results = await explorerApiClient
+          .GET('/cached/pools/farming', {
+            signal,
+            params: {
+              query: {
+                chains: chainName,
+                protocols: 'v3',
+              },
+            },
+          })
+          .then((res) => keyBy(res.data, 'id'))
+          .catch((err) => {
+            console.error(err)
+            throw err
+          })
+
         const farmsToFetch = farmV3.data.farmsWithPrice.filter((f) => f.poolWeight !== '0')
-        const results = await Promise.allSettled(
-          farmsToFetch.map((f) =>
-            fetchWithTimeout(`${FARMS_API}/v3/${chainId}/liquidity/${f.lpAddress}`, {
-              signal,
-            })
-              .then((r) => r.json())
-              .catch((err) => {
-                console.error(err)
-                throw err
-              }),
-          ),
-        )
-        results.forEach((r, i) => {
-          tvls[farmsToFetch[i].lpAddress] =
-            r.status === 'fulfilled' ? { ...r.value.formatted, updatedAt: r.value.updatedAt } : null
+        const now = new Date().toISOString()
+        farmsToFetch.forEach((farm) => {
+          const result = results[farm.lpAddress.toLowerCase()]
+          tvls[farm.lpAddress] = { token0: result.tvlToken0, token1: result.tvlToken1, updatedAt: now }
         })
       }
 
