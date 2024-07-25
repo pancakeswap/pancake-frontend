@@ -18,7 +18,7 @@ export interface VerificationTelegramConfig extends VerificationDataBaseConfig {
   hash?: string
   auth_date?: number
   first_name?: string
-  user_name?: string
+  username?: string
 }
 
 export type VerificationDataType = VerificationTwitterConfig | VerificationDiscordConfig | VerificationTelegramConfig
@@ -41,7 +41,7 @@ export const connectSocial = async ({ userInfo, data, callback }: ConnectSocialP
   let response
 
   // New Account
-  if (userInfo.userId === null) {
+  if (userInfo.socialHubToSocialUserIdMap === null || !userInfo.socialHubToSocialUserIdMap[data.socialMedia]) {
     response = await fetch(`/api/userInfo/addUserInfo`, {
       method: 'POST',
       body: JSON.stringify(data),
