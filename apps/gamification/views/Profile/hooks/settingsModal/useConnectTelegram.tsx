@@ -67,7 +67,7 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
                   hash: user.hash,
                   auth_date: user.auth_date,
                   first_name: user.first_name,
-                  user_name: user.username,
+                  username: user.username,
                 } as unknown as VerificationTelegramConfig,
                 signature,
               },
