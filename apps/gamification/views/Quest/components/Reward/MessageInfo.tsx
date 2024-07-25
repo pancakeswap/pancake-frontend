@@ -31,7 +31,7 @@ export const MessageInfo: React.FC<MessageInfoProps> = ({ ableToClaimReward, isQ
             <MessageText>
               <Text bold>{t('Congratulations, you won!')}</Text>
               <Text mt="4px" fontSize={['14px']} lineHeight={['20px']}>
-                {t('Please claim the reward until: %date%', { date: 'fake text 00:00, DD Month, YYYY, UTC+0' })}
+                {t('Please claim the reward')}
               </Text>
             </MessageText>
           ) : (

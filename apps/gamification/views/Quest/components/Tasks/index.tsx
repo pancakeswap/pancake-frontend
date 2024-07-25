@@ -141,7 +141,7 @@ export const Tasks: React.FC<TasksProps> = ({
           </FlexGap>
           {hasOptionsInTasks && (
             <Box ml="8px">
-              <Box>
+              <Box mt="16px">
                 <Text fontSize="12px" bold as="span" color="textSubtle">
                   {t('Tasks marked with the')}
                 </Text>

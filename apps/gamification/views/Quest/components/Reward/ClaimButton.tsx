@@ -16,10 +16,16 @@ import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQues
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { MessageInfo } from 'views/Quest/components/Reward/MessageInfo'
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(Button)<{ $outline?: boolean }>`
   width: 100%;
   margin: 8px 0;
   border-radius: 24px;
+
+  ${({ $outline }) =>
+    $outline &&
+    `
+      background-color: transparent !important;
+  `}
 `
 
 interface ClaimButtonProps {
@@ -119,8 +125,10 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
     <>
       <Box ref={targetRef}>
         <StyledButton
+          $outline={!ableToClaimReward}
           isLoading={isPending}
           disabled={!ableToClaimReward || isPending}
+          variant={ableToClaimReward ? 'primary' : 'secondary'}
           endIcon={!ableToClaimReward ? <InfoIcon color="textDisabled" /> : undefined}
           onClick={handleClaimReward}
         >
