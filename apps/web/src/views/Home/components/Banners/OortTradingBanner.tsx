@@ -88,7 +88,7 @@ export const OortTradingBanner = () => {
         }
         title={
           <BannerTitle variant={titleVariant} marginTop="-2px">
-            {t('Win $50,000in Oort Trading Competition!')}
+            {t('Win $50,000in OORT Trading Competition!')}
           </BannerTitle>
         }
         desc={
