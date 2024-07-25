@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ElementType } from "react";
+import { ElementType, MouseEventHandler } from "react";
 import { BoxProps } from "../Box";
 import { DropdownMenuItems } from "../DropdownMenu/types";
 
@@ -12,6 +12,7 @@ export type MenuItemsType = {
   disabled?: boolean;
   showOnMobile?: boolean;
   showItemsOnMobile?: boolean;
+  onClick?: MouseEventHandler;
 };
 
 export interface MenuItemsProps extends BoxProps {
