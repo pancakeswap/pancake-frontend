@@ -2,6 +2,7 @@ import { LanguageProvider } from '@pancakeswap/localization'
 import { ModalProvider, PancakeTheme, ResetCSS, ToastListener, UIKitProvider, dark, light } from '@pancakeswap/uikit'
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
+import { NetworkModal } from 'components/NetworkModal'
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
 import { NextPage } from 'next'
 import { SessionProvider } from 'next-auth/react'
@@ -73,6 +74,7 @@ type NextPageWithLayout = NextPage & {
   Layout?: React.FC<React.PropsWithChildren<unknown>>
   /** render component without all layouts */
   pure?: true
+  chains?: number[]
 
   CustomComponent?: ReactNode
 }
@@ -116,6 +118,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                           </Layout>
                         </Menu>
                         <ToastListener />
+                        <NetworkModal pageSupportedChains={Component.chains} />
                         {Component?.CustomComponent}
                       </ModalProvider>
                     </LanguageProvider>

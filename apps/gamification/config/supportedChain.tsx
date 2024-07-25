@@ -10,6 +10,8 @@ import {
   zkSync,
 } from 'wagmi/chains'
 
+export const SUPPORT_ONLY_BSC = [ChainId.BSC]
+
 export const targetChains = [
   ethereum,
   bsc,
