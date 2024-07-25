@@ -1,10 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { useEffect } from 'react'
+import { encodePacked, keccak256 } from 'viem'
 import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
-import { connectSocial } from 'views/Profile/utils/connectSocial'
+import { connectSocial, VerificationTelegramConfig } from 'views/Profile/utils/connectSocial'
 import { disconnectSocial } from 'views/Profile/utils/disconnectSocial'
-import { useAccount } from 'wagmi'
+import { useAccount, useSignMessage } from 'wagmi'
 
 interface TelegramResponse {
   auth_date: number
@@ -26,6 +27,7 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
   const { address: account } = useAccount()
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
+  const { signMessageAsync } = useSignMessage()
 
   useEffect(() => {
     // Load the Telegram Login Widget script
@@ -49,11 +51,26 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
       async (user: TelegramResponse) => {
         if (user && account) {
           try {
+            const walletAddress = account
+            const timestamp = Math.floor(new Date().getTime() / 1000)
+            const message = keccak256(encodePacked(['address', 'uint256'], [walletAddress ?? '0x', BigInt(timestamp)]))
+            const signature = await signMessageAsync({ message })
+
             await connectSocial({
-              account,
               userInfo,
-              id: user.id.toString(),
-              type: SocialHubType.Telegram,
+              data: {
+                socialMedia: SocialHubType.Telegram,
+                userId: walletAddress,
+                signedData: { walletAddress, timestamp },
+                verificationData: {
+                  id: user.id,
+                  hash: user.hash,
+                  auth_date: user.auth_date,
+                  first_name: user.first_name,
+                  user_name: user.username,
+                } as unknown as VerificationTelegramConfig,
+                signature,
+              },
               callback: () => {
                 toastSuccess(t('%social% Connected', { social: SocialHubType.Telegram }))
                 refresh?.()
@@ -61,7 +78,6 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
             })
           } catch (error) {
             console.error(`Connect ${SocialHubType.Telegram} error: `, error)
-            toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
           }
         } else {
           // User cancelled authentication, redirect to /profile
