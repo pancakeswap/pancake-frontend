@@ -38,7 +38,7 @@ export default NextAuth({
             // eslint-disable-next-line no-param-reassign
             token.discord = {
               discordId: profile.id,
-              token: profile.access_token,
+              token: account.access_token,
             }
             break
           case 'twitter':

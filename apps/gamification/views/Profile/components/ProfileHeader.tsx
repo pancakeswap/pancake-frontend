@@ -8,10 +8,10 @@ import {
   Heading,
   IconButton,
   ScanLink,
-  VisibilityOff,
-  VisibilityOn,
   useModal,
   useToast,
+  VisibilityOff,
+  VisibilityOn,
 } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -25,9 +25,15 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { getBlockExploreLink, safeGetAddress } from 'utils'
+import { encodePacked, keccak256 } from 'viem'
 import { SocialHubType, useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
-import { connectSocial } from 'views/Profile/utils/connectSocial'
-import { useAccount } from 'wagmi'
+import {
+  connectSocial,
+  VerificationDataBaseConfig,
+  VerificationDiscordConfig,
+  VerificationTwitterConfig,
+} from 'views/Profile/utils/connectSocial'
+import { useAccount, useSignMessage } from 'wagmi'
 import AvatarImage from './AvatarImage'
 import { BannerHeader } from './BannerHeader'
 import EditProfileAvatar from './EditProfileAvatar'
@@ -64,6 +70,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const { toastSuccess, toastError } = useToast()
   const [isFetchingApi, setIsFetchingApi] = useState(false)
   const { query } = useRouter()
+  const { signMessageAsync } = useSignMessage()
 
   useEffect(() => {
     if (query.openSettingModal && query.openSettingModal === 'true') {
@@ -83,23 +90,59 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   }, [query, t, toastError])
 
   useEffect(() => {
-    const fetch = async (id: string, social: SocialHubType) => {
+    const fetchSocial = async ({
+      social,
+      id,
+      token,
+      tokenSecret,
+    }: {
+      social: SocialHubType
+      id: string
+      token: string
+      tokenSecret?: string
+    }) => {
       if (account && !isFetchingApi) {
         setIsFetchingApi(true)
+
         try {
-          await connectSocial({
-            account,
-            id,
-            userInfo,
-            type: social,
-            callback: () => {
-              toastSuccess(t('%social% Connected', { social }))
-              refresh?.()
-            },
-          })
+          const walletAddress = account
+          const timestamp = Math.floor(new Date().getTime() / 1000)
+          const message = keccak256(encodePacked(['address', 'uint256'], [walletAddress ?? '0x', BigInt(timestamp)]))
+          const signature = await signMessageAsync({ message })
+
+          let verificationData: VerificationDataBaseConfig = { id }
+          if (social === SocialHubType.Twitter) {
+            verificationData = {
+              id,
+              oauth_token: token,
+              oauth_token_secret: tokenSecret,
+            } as VerificationTwitterConfig
+          }
+
+          if (social === SocialHubType.Discord) {
+            verificationData = {
+              id,
+              access_token: token,
+            } as VerificationDiscordConfig
+          }
+          if (signature) {
+            await connectSocial({
+              userInfo,
+              data: {
+                socialMedia: social,
+                userId: walletAddress,
+                signedData: { walletAddress, timestamp },
+                verificationData,
+                signature,
+              },
+              callback: () => {
+                toastSuccess(t('%social% Connected', { social }))
+                refresh?.()
+              },
+            })
+          }
         } catch (error) {
           console.error(`Connect ${social} error: `, error)
-          toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
         } finally {
           setTimeout(() => setIsFetchingApi(false), 1000)
         }
@@ -108,15 +151,16 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 
     if (isFetched && session && new Date(session?.expires).getTime() > new Date().getTime()) {
       if (!userInfo?.socialHubToSocialUserIdMap?.Discord && (session as any).user?.discord) {
-        fetch((session as any).user?.discord?.discordId, SocialHubType.Discord)
+        const { discordId, token } = (session as any).user?.discord
+        fetchSocial({ social: SocialHubType.Discord, id: discordId, token })
       }
 
       if (!userInfo?.socialHubToSocialUserIdMap?.Twitter && (session as any).user?.twitter) {
-        const { twitterId } = (session as any).user?.twitter
-        fetch(twitterId, SocialHubType.Twitter)
+        const { twitterId, token, tokenSecret } = (session as any).user?.twitter
+        fetchSocial({ social: SocialHubType.Twitter, id: twitterId, token, tokenSecret })
       }
     }
-  }, [account, isFetched, isFetchingApi, refresh, session, t, toastError, toastSuccess, userInfo])
+  }, [account, isFetched, isFetchingApi, session, t, refresh, toastError, toastSuccess, userInfo, signMessageAsync])
 
   const { domainName, avatar: avatarFromDomain } = useDomainNameForAddress(accountPath)
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
