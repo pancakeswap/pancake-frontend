@@ -1,3 +1,4 @@
+import { PositionDetails } from '@pancakeswap/farms'
 import { CurrencyAmount, ERC20Token, Pair } from '@pancakeswap/sdk'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { useQueries, UseQueryOptions } from '@tanstack/react-query'
@@ -7,7 +8,7 @@ import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from 'state'
 import { Address } from 'viem/accounts'
-import { getAccountV2LpBalance, getTrackedV2LpTokens } from './fetcher'
+import { getAccountV2LpBalance, getAccountV3Positions, getTrackedV2LpTokens } from './fetcher'
 
 /**
  * Given two tokens return the liquidity token that represents its liquidity shares
@@ -96,6 +97,33 @@ export const useAccountStableLpBalance = (chainIds: number[], account?: Address 
     combine: (results) => {
       return {
         data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as CurrencyAmount<ERC20Token>[]),
+        pending: results.some((result) => result.isPending),
+      }
+    },
+  })
+}
+
+export const useAccountV3Positions = (chainIds: number[], account?: Address | null) => {
+  const queries = useMemo(() => {
+    return chainIds.map((chainId) => {
+      return {
+        queryKey: ['accountV3Positions', account, chainId],
+        // @todo @ChefJerry add signal
+        queryFn: () => getAccountV3Positions(chainId, account!),
+        enabled: !!account && !!chainId,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchInterval: SLOW_INTERVAL,
+      } satisfies UseQueryOptions<PositionDetails[]>
+    })
+  }, [account, chainIds])
+
+  return useQueries({
+    queries,
+    combine: (results) => {
+      return {
+        data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as PositionDetails[]),
         pending: results.some((result) => result.isPending),
       }
     },

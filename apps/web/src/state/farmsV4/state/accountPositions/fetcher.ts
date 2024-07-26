@@ -120,6 +120,19 @@ export const getV3PositionsFromTokenId = async (chainId: number, tokenIds: bigin
   })
 }
 
+export const getAccountV3Positions = async (chainId: number, account: Address): Promise<PositionDetails[]> => {
+  const { farmingTokenIds, nonFarmTokenIds } = await getAccountV3TokenIds(chainId, account)
+
+  const positions = await getV3PositionsFromTokenId(chainId, farmingTokenIds.concat(nonFarmTokenIds))
+
+  const farmingTokenIdsLength = farmingTokenIds.length
+  positions.forEach((_, index) => {
+    positions[index].isStaked = index < farmingTokenIdsLength
+  })
+
+  return positions
+}
+
 export const getAccountV3FarmingPendingCakeReward = async (
   chainId: number,
   account: Address,
