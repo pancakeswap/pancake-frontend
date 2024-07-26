@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { account, questId, taskName, taskId } = req.query
 
   const response = await fetch(
-    `${GAMIFICATION_PUBLIC_API}/userInfo/v1/users/${account}/quests/${questId}/mark-task-status`,
+    `${GAMIFICATION_PUBLIC_API}/userInfo/v1/user/${account}/quest/${questId}/mark-task-status`,
     {
       method: 'POST',
       headers: {
