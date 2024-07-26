@@ -124,6 +124,10 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
   const isLpAddressError = useMemo(() => !isFirst && validateLpAddress(task.lpAddress), [isFirst, task?.lpAddress])
   const isLpAddressUrlError = useMemo(() => !isFirst && validateUrl(task.lpAddressLink), [isFirst, task?.lpAddressLink])
   const isFeeTierError = useMemo(() => !isFirst && validateIsNotEmpty(task.feeTier), [isFirst, task?.feeTier])
+  const isStakePeriodInDaysError = useMemo(
+    () => !isFirst && validateNumber(task.stakePeriodInDays.toString()),
+    [isFirst, task?.stakePeriodInDays],
+  )
 
   return (
     <Flex flexDirection={['column']}>
@@ -237,13 +241,18 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
           {isMinAmountError && <InputErrorText errorText={t('Cannot be 0')} />}
         </Flex>
         <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
-          <StyledInput
-            inputMode="numeric"
-            pattern="^[0-9]+$"
-            placeholder={t('Days to hold')}
-            value={task?.stakePeriodInDays > 0 ? task?.stakePeriodInDays : ''}
-            onChange={(e) => handleInputChange(e, 'stakePeriodInDays')}
-          />
+          <StyledInputGroup
+            endIcon={isStakePeriodInDaysError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+          >
+            <StyledInput
+              inputMode="numeric"
+              pattern="^[0-9]+$"
+              placeholder={t('Days to hold')}
+              value={task?.stakePeriodInDays > 0 ? task?.stakePeriodInDays : ''}
+              onChange={(e) => handleInputChange(e, 'stakePeriodInDays')}
+            />
+          </StyledInputGroup>
+          {isStakePeriodInDaysError && <InputErrorText errorText={t('Cannot be 0')} />}
         </Flex>
       </Flex>
     </Flex>
