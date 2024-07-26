@@ -14,8 +14,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     body: req.body,
   })
 
+  const result = await response.json()
   if (!response.ok) {
-    return res.status(400).json({ message: 'An error occurred please try again' })
+    return res.status(400).json(result)
   }
 
   return res.status(200).json(response)
