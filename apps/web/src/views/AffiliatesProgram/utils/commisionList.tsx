@@ -25,8 +25,8 @@ const commissionList: CommissionType[] = [
   },
   {
     id: 'perpetual',
-    title: <Trans>V1 Perpetual</Trans>,
-    percentage: '20%',
+    title: <Trans>Orderbook PerP</Trans>,
+    percentage: '5%',
     image: {
       width: 100,
       height: 148,
