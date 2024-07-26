@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { BCakeWrapperFarmConfig, PositionDetails, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { BCakeWrapperFarmConfig, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { CurrencyAmount, erc20Abi, ERC20Token } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { masterChefV3ABI, NFT_POSITION_MANAGER_ADDRESSES, nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
@@ -14,6 +14,7 @@ import { getMasterChefV3Contract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/viem'
 import { Address, decodeFunctionResult, encodeFunctionData, Hex } from 'viem'
 import { StablePoolInfo, V2PoolInfo } from '../type'
+import { PositionDetail } from './type'
 
 export const getAccountV3TokenIdsInContract = async (
   chainId: number,
@@ -65,7 +66,7 @@ export const getAccountV3TokenIds = async (chainId: number, account: Address) =>
   }
 }
 
-export const getV3PositionsFromTokenId = async (chainId: number, tokenIds: bigint[]): Promise<PositionDetails[]> => {
+export const getV3PositionsFromTokenId = async (chainId: number, tokenIds: bigint[]): Promise<PositionDetail[]> => {
   const nftPositionManagerAddress = NFT_POSITION_MANAGER_ADDRESSES[chainId]
   const client = publicClient({ chainId })
 
@@ -116,11 +117,12 @@ export const getV3PositionsFromTokenId = async (chainId: number, tokenIds: bigin
       feeGrowthInside1LastX128,
       tokensOwed0,
       tokensOwed1,
-    } satisfies PositionDetails
+      chainId,
+    } satisfies PositionDetail
   })
 }
 
-export const getAccountV3Positions = async (chainId: number, account: Address): Promise<PositionDetails[]> => {
+export const getAccountV3Positions = async (chainId: number, account: Address): Promise<PositionDetail[]> => {
   const { farmingTokenIds, nonFarmTokenIds } = await getAccountV3TokenIds(chainId, account)
 
   const positions = await getV3PositionsFromTokenId(chainId, farmingTokenIds.concat(nonFarmTokenIds))
