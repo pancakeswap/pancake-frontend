@@ -1,20 +1,8 @@
 import 'utils/workerPolyfill'
 
-import { SmartRouter, V4Router } from '@pancakeswap/smart-router'
-import { Call } from 'state/multicall/actions'
-import { fetchChunk } from 'state/multicall/fetchChunk'
 import { getLogger } from 'utils/datadog'
-import { createViemPublicClientGetter } from 'utils/viem'
-
-const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
-
-export type WorkerGetBestTradeEvent = [
-  id: number,
-  message: {
-    cmd: 'getBestTrade'
-    params: SmartRouter.APISchema.RouterPostParams
-  },
-]
+import { CommandFactory } from 'utils/quote-worker/factory'
+import { WorkerEvent } from 'utils/quote-worker/types'
 
 const fetch_ = fetch
 const logger = getLogger('quote-rpc', { forwardErrorsToLogs: false })
@@ -52,225 +40,30 @@ const fetchWithLogging = async (url: RequestInfo | URL, init?: RequestInit) => {
 
 globalThis.fetch = fetchWithLogging
 
-export type AbortEvent = [
-  id: number,
-  message: {
-    cmd: 'abort'
-    params: number
-  },
-]
-
-export type WorkerMultiChunkEvent = [
-  id: number,
-  message: {
-    cmd: 'multicallChunk'
-    params: {
-      chainId: number
-      chunk: Call[]
-      minBlockNumber: number
-    }
-  },
-]
-
-export type WorkerGetBestTradeOffchainEvent = [
-  id: number,
-  message: {
-    cmd: 'getBestTradeOffchain'
-    params: V4Router.APISchema.RouterPostParams
-  },
-]
-
-export type WorkerEvent = WorkerGetBestTradeEvent | WorkerMultiChunkEvent | AbortEvent | WorkerGetBestTradeOffchainEvent
-
 // Manage the abort actions for each message
 const messageAbortControllers = new Map<number, AbortController>()
 
-function handleGetBestTradeEvent(
-  params: V4Router.APISchema.RouterPostParams,
-  router: typeof V4Router,
-  id: any,
-  cleanupAbortController: any,
-): V4Router.APISchema.RouterPostParams
-function handleGetBestTradeEvent(
-  params: SmartRouter.APISchema.RouterPostParams,
-  router: typeof SmartRouter,
-  id: any,
-  cleanupAbortController: any,
-): SmartRouter.APISchema.RouterPostParams
-
-function handleGetBestTradeEvent(params, router, id, cleanupAbortController) {
-  const parsed = router.APISchema.zRouterPostParams.safeParse(params)
-  if (parsed.success === false) {
-    postMessage([
-      id,
-      {
-        success: false,
-        error: parsed.error.message,
-      },
-    ])
-    cleanupAbortController()
-    return undefined
-  }
-
-  return parsed.data
-}
-
 // eslint-disable-next-line no-restricted-globals
-addEventListener('message', (event: MessageEvent<WorkerEvent>) => {
-  const { data } = event
-  const [id, message] = data
+addEventListener('message', async (event: MessageEvent<WorkerEvent>) => {
+  const [id, message] = event.data
 
   const abortController = new AbortController()
   messageAbortControllers.set(id, abortController)
-  const cleanupAbortController = () => {
-    messageAbortControllers.delete(id)
-  }
 
-  if (message.cmd === 'abort') {
-    const ac = messageAbortControllers.get(message.params)
-    ac?.abort()
+  try {
+    const command = CommandFactory.createCommand(message, id, abortController)
+    const result = await command.execute(messageAbortControllers)
+
     postMessage([
       id,
       {
-        success: Boolean(ac),
-        result: ac ? undefined : new Error(`Abort controller not found for event id: ${id}`),
+        success: true,
+        result,
       },
     ])
-    cleanupAbortController()
-    return
-  }
-
-  if (message.cmd === 'multicallChunk') {
-    fetchChunk(message.params.chainId, message.params.chunk, message.params.minBlockNumber)
-      .then((res) => {
-        postMessage([
-          id,
-          {
-            success: true,
-            result: res,
-          },
-        ])
-      })
-      .catch((err) => {
-        postMessage([
-          id,
-          {
-            success: false,
-            error: err,
-          },
-        ])
-      })
-      .finally(cleanupAbortController)
-    return
-  }
-
-  if (message.cmd === 'getBestTrade') {
-    const parsedData = handleGetBestTradeEvent(message.params, SmartRouter, id, cleanupAbortController)
-
-    if (!parsedData) return
-
-    const {
-      amount,
-      chainId,
-      currency,
-      tradeType,
-      blockNumber,
-      gasPriceWei,
-      maxHops,
-      maxSplits,
-      poolTypes,
-      candidatePools,
-      onChainQuoterGasLimit: gasLimit,
-      nativeCurrencyUsdPrice,
-      quoteCurrencyUsdPrice,
-    } = parsedData
-    const onChainProvider = createViemPublicClientGetter({ transportSignal: abortController.signal })
-    const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider, gasLimit })
-    const currencyAAmount = parseCurrencyAmount(chainId, amount)
-
-    const currencyB = parseCurrency(chainId, currency)
-
-    const pools = candidatePools.map((pool) => parsePool(chainId, pool as any))
-
-    const gasPrice = gasPriceWei
-      ? BigInt(gasPriceWei)
-      : async () => BigInt((await onChainProvider({ chainId }).getGasPrice()).toString())
-
-    SmartRouter.getBestTrade(currencyAAmount, currencyB, tradeType, {
-      gasPriceWei: gasPrice,
-      poolProvider: SmartRouter.createStaticPoolProvider(pools),
-      quoteProvider: onChainQuoteProvider,
-      maxHops,
-      maxSplits,
-      blockNumber: blockNumber ? Number(blockNumber) : undefined,
-      allowedPoolTypes: poolTypes,
-      quoterOptimization: false,
-      quoteCurrencyUsdPrice,
-      nativeCurrencyUsdPrice,
-      signal: abortController.signal,
-    })
-      .then((res) => {
-        postMessage([
-          id,
-          {
-            success: true,
-            result: res && serializeTrade(res),
-          },
-        ])
-      })
-      .catch((err) => {
-        postMessage([
-          id,
-          {
-            success: false,
-            error: err.message,
-          },
-        ])
-      })
-      .finally(cleanupAbortController)
-  }
-
-  if (message.cmd === 'getBestTradeOffchain') {
-    const parsedData = handleGetBestTradeEvent(message.params, V4Router, id, cleanupAbortController)
-
-    if (!parsedData) return
-
-    const { amount, chainId, currency, tradeType, gasPriceWei, maxHops, candidatePools, maxSplits } = parsedData
-    const onChainProvider = createViemPublicClientGetter({ transportSignal: abortController.signal })
-    const currencyAAmount = parseCurrencyAmount(chainId, amount)
-    const currencyB = parseCurrency(chainId, currency)
-    // FIXME: typing issue
-    const pools = candidatePools.map((pool) => parsePool(chainId, pool as any))
-
-    const gasPrice = gasPriceWei
-      ? BigInt(gasPriceWei)
-      : async () => BigInt((await onChainProvider({ chainId }).getGasPrice()).toString())
-
-    V4Router.getBestTrade(currencyAAmount, currencyB, tradeType, {
-      gasPriceWei: gasPrice,
-      maxHops,
-      maxSplits,
-      candidatePools: pools,
-      signal: abortController.signal,
-    })
-      .then((res) => {
-        postMessage([
-          id,
-          {
-            success: true,
-            result: res && V4Router.Transformer.serializeTrade(res),
-          },
-        ])
-      })
-      .catch((err) => {
-        postMessage([
-          id,
-          {
-            success: false,
-            error: err.message,
-          },
-        ])
-      })
-      .finally(cleanupAbortController)
+  } catch (error: any) {
+    postMessage([id, { success: false, error: error?.message || error }])
+  } finally {
+    messageAbortControllers.delete(id)
   }
 })
