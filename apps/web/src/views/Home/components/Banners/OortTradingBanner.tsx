@@ -67,7 +67,7 @@ const titleVariant = {
 
 export const OortTradingBanner = () => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isDesktop } = useMatchBreakpoints()
 
   const Action = ({ href, icon, text, ...props }: IActions) => (
     <Box display={props.display}>
@@ -93,7 +93,11 @@ export const OortTradingBanner = () => {
         }
         desc={
           isMobile ? null : (
-            <BannerDesc style={{ whiteSpace: 'break-spaces' }}>{t('Trade OORT to win gauranteed prizes!')}</BannerDesc>
+            <BannerDesc style={{ whiteSpace: 'break-spaces' }}>
+              {isDesktop
+                ? t('Win guaranteed prize, leaderboard prize, and daily lucky draws')
+                : t('Trade OORT to win guaranteed prizes!')}
+            </BannerDesc>
           )
         }
         actions={
