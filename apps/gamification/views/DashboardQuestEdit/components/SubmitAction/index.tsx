@@ -162,7 +162,7 @@ export const SubmitAction = () => {
 
       const result = await response.json()
 
-      if (!response.ok) {
+      if (result.error) {
         toastError(result.error)
         return setIsSubmitError(true)
       }
