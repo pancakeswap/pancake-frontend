@@ -64,7 +64,7 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, cust
     tooltipVisible: rewardTypeTooltipVisible,
   } = useTooltip(
     t(
-      'The total rewards to be distributed will depend on the eligible questers selected at random. Eligible questers are those who have completed all the tasks.',
+      'Rewards will be distributed by randomly selecting a specified number of users who have completed the tasks. Only those who have finished the required tasks will be eligible for the lucky draw.',
     ),
     {
       placement: 'top',
