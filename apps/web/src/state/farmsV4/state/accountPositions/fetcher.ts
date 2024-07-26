@@ -1,14 +1,18 @@
 import { ChainId } from '@pancakeswap/chains'
-import { BCakeWrapperFarmConfig, PositionDetails } from '@pancakeswap/farms'
+import { BCakeWrapperFarmConfig, PositionDetails, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { CurrencyAmount, erc20Abi, ERC20Token } from '@pancakeswap/sdk'
+import { deserializeToken } from '@pancakeswap/token-lists'
 import { masterChefV3ABI, NFT_POSITION_MANAGER_ADDRESSES, nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
+import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
+import { AppState } from 'state'
+import { safeGetAddress } from 'utils'
 import { getCrossFarmingVaultAddress, getMasterChefV2Address, getMasterChefV3Address } from 'utils/addressHelpers'
 import { getMasterChefV3Contract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/viem'
-import { Address, encodeFunctionData, Hex } from 'viem'
-import { decodeFunctionResult } from 'viem/_types/utils/abi/decodeFunctionResult'
+import { Address, decodeFunctionResult, encodeFunctionData, Hex } from 'viem'
 import { StablePoolInfo, V2PoolInfo } from '../type'
 
 export const getAccountV3TokenIdsInContract = async (
@@ -253,5 +257,78 @@ export const getAccountV2FarmingBCakeWrapperEarning = async (
 
   return earnings.map((earning) => {
     return new BigNumber(earning.toString()).toString()
+  })
+}
+
+// for v2 pools, we cannot fetch all positions from one contract
+// so we simple get the most used pairs for fetch LP position
+export const getTrackedV2LpTokens = (
+  chainId: number,
+  presetTokens: { [address: Address]: ERC20Token },
+  userSavedPairs: AppState['user']['pairs'],
+): [ERC20Token, ERC20Token][] => {
+  const pairTokens = new Set<[ERC20Token, ERC20Token]>()
+  // from farms
+  UNIVERSAL_FARMS.filter((farm) => farm.protocol === 'v2' && farm.pid && farm.chainId === chainId).forEach((farm) => {
+    pairTokens.add(farm.token0.sortsBefore(farm.token1) ? [farm.token0, farm.token1] : [farm.token1, farm.token0])
+  })
+  // from pinned pairs
+  if (PINNED_PAIRS[chainId]) {
+    PINNED_PAIRS[chainId].forEach((tokens: [ERC20Token, ERC20Token]) => {
+      pairTokens.add(tokens)
+    })
+  }
+  // from preset tokens and base tokens
+  const baseTokens = BASES_TO_TRACK_LIQUIDITY_FOR[chainId]
+  Object.entries(presetTokens).forEach(([address, token]) => {
+    baseTokens.forEach((baseToken) => {
+      const baseAddress = safeGetAddress(baseToken.address)
+      if (baseAddress && safeGetAddress(address) !== baseAddress && token.chainId === chainId) {
+        pairTokens.add(baseToken.sortsBefore(token) ? [baseToken, token] : [token, baseToken])
+      }
+    })
+  })
+  // from user saved pairs
+  if (userSavedPairs[chainId]) {
+    Object.values(userSavedPairs[chainId]).forEach((pair) => {
+      const token0 = deserializeToken(pair.token0)
+      const token1 = deserializeToken(pair.token1)
+      pairTokens.add(token0.sortsBefore(token1) ? [token0, token1] : [token1, token0])
+    })
+  }
+
+  return Array.from(pairTokens)
+}
+
+export const getAccountV2LpBalance = async (
+  chainId: number,
+  account: Address,
+  lpTokens: ERC20Token[],
+): Promise<CurrencyAmount<ERC20Token>[]> => {
+  const client = publicClient({ chainId })
+  if (!account || !client || !lpTokens.length) return []
+
+  const validLpTokens = lpTokens.filter((token) => token.chainId === chainId)
+
+  const balanceCalls = lpTokens.map((token) => {
+    return {
+      abi: erc20Abi,
+      address: token.address,
+      functionName: 'balanceOf',
+      args: [account] as const,
+    } as const
+  })
+  const balances = await client.multicall({
+    contracts: balanceCalls,
+    allowFailure: false,
+  })
+
+  // return balances.reduce<Record<ChainIdAddressKey, CurrencyAmount<ERC20Token>>>((acc, balance, index) => {
+  //   const key = `${chainId}:${validLpTokens[index].address}`
+  //   set(acc, key, CurrencyAmount.fromRawAmount(validLpTokens[index], balance))
+  //   return acc
+  // }, {})
+  return balances.map((balance, index) => {
+    return CurrencyAmount.fromRawAmount(validLpTokens[index], balance)
   })
 }
