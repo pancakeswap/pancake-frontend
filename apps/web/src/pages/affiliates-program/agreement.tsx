@@ -1,4 +1,4 @@
-import { Text, Link } from '@pancakeswap/uikit'
+import { Link, Text } from '@pancakeswap/uikit'
 import { Container } from 'pages/terms-of-service'
 import AffiliatesProgramLayout from 'views/AffiliatesProgram/components/AffiliatesProgramLayout'
 
@@ -102,15 +102,15 @@ const Agreement = () => {
           trade is effectively executed) of less than 10%
         </Text>
 
-        <Text as="h3">3. Commissions for v1 perpetual trades</Text>
+        <Text as="h3">3. Commissions for v1 Orderbook trades</Text>
         <Text as="p">
           3.1 Subject to this Agreement (and especially Clause 6.2 ), you are eligible for commissions at a{' '}
-          <strong>20</strong>% rate on trading fees paid by your Referrals on v1 perpetual trades, limited to v1
-          perpetual trades on the BNB Smart Chain and Ethereum chain only.
+          <strong>20</strong>% rate on trading fees paid by your Referrals on Orderbook perpetual trades, limited to
+          Orderbook perpetual trades on the BNB Smart Chain and Ethereum chain only.
         </Text>
         <Text as="p">
-          3.2 For avoidance of doubt, the trading fees on v1 perpetual trades (or any Referral’s position which may
-          incur liquidation fees) do not include any liquidation fees for liquidating your Referrals’ position.
+          3.2 For avoidance of doubt, the trading fees on Orderbook perpetual trades (or any Referral’s position which
+          may incur liquidation fees) do not include any liquidation fees for liquidating your Referrals’ position.
         </Text>
 
         <Text as="h3">4. Determination and Calculation of Commissions</Text>
@@ -220,17 +220,18 @@ const Agreement = () => {
 
         <Text as="h3">7. Sharing your Commissions with your Referrals</Text>
         <Text as="p">
-          7.1 With respect to commissions received under Clause 2 (Commissions for swap trades), you may choose to offer
-          a share of your commissions to your Referrals, using the system provided by us. The Referral may receive up to
-          a maximum of 100% of the commissions that you have earnt from them.
+          7.1 With respect to commissions received under Clause 2 (Commissions for Orderbook trades), you may choose to
+          offer a share of your commissions to your Referrals, using the system provided by us. The Referral may receive
+          up to a maximum of 100% of the commissions that you have earnt from them.
         </Text>
         <Text as="p">
           7.2 With respect to commissions received under Clause 3 (Commissions for v1 perpetual trades):
         </Text>
         <Text as="p">(a) you may not offer a share of your commissions to your Referrals; and</Text>
         <Text as="p">
-          (b) Subject to this Agreement, the Referral is eligible to receive an equal amount of commissions that are
-          received by you. This is done automatically by our system and no action is required on your part.
+          (b) Subject to this Agreement, the Referral is eligible to receive a a 5% discount on trading fees paid on
+          Orderbook perpetual trades by the referral. This is done automatically by our system and no action is required
+          on your part.
         </Text>
         <Text as="p">
           7.3 You may not privately share (or make any arrangements to share) your commissions with your Referrals. Any
