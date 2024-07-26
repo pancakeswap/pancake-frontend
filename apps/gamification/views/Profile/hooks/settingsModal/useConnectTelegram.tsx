@@ -13,6 +13,7 @@ interface TelegramResponse {
   hash: string
   id: number
   username: string
+  photo_url?: string // Add photo_url to the interface
 }
 
 // const YOUR_BOT_TOKEN = get from telegram
@@ -69,6 +70,7 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
                   auth_date: user.auth_date,
                   first_name: user.first_name,
                   username: user.username,
+                  photo_url: user.photo_url,
                 } as unknown as VerificationTelegramConfig,
                 signature,
               },

@@ -19,6 +19,7 @@ export interface VerificationTelegramConfig extends VerificationDataBaseConfig {
   auth_date?: number
   first_name?: string
   username?: string
+  photo_url?: string
 }
 
 export type VerificationDataType = VerificationTwitterConfig | VerificationDiscordConfig | VerificationTelegramConfig
