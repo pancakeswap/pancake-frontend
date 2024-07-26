@@ -16,7 +16,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const result = await response.json()
   if (!response.ok) {
-    return res.status(400).json(result)
+    console.log('addUserInfo result: ', result)
+    return res.status(400).json(response)
+    // return res.status(400).json(result)
   }
 
   return res.status(200).json(response)
