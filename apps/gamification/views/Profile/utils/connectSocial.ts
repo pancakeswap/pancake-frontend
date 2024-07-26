@@ -42,7 +42,7 @@ export const connectSocial = async ({ userInfo, data, callback }: ConnectSocialP
   if (userInfo.socialHubToSocialUserIdMap === null || !userInfo.socialHubToSocialUserIdMap[data.socialMedia]) {
     const response = await fetch(`/api/userInfo/addUserInfo`, {
       method: 'POST',
-      body: data.socialMedia === SocialHubType.Telegram ? (data as any) : JSON.stringify(data),
+      body: JSON.stringify(data),
     })
 
     if (response.ok) {
