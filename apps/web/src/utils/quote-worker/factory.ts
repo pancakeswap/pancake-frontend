@@ -1,4 +1,7 @@
-import { AbortCommand, GetBestTradeCommand, GetBestTradeOffchainCommand, MulticallChunkCommand } from './commands'
+import { AbortCommand } from './commands/AbortCommand'
+import { GetBestTradeCommand } from './commands/GetBestTradeCommand'
+import { GetBestTradeOffchainCommand } from './commands/GetBestTradeOffchainCommand'
+import { MulticallChunkCommand } from './commands/MulticallChunkCommand'
 import { Command, CommandType, WorkerEvent } from './types'
 
 export class CommandFactory {
