@@ -42,6 +42,7 @@ const ProfilePage = () => {
   )
 }
 
+ProfilePage.chains = []
 ProfilePage.Layout = NftProfileLayout
 
 export default ProfilePage

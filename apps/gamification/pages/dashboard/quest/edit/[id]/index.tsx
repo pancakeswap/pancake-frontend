@@ -1,3 +1,4 @@
+import { SUPPORTED_CHAIN } from 'config/supportedChain'
 import { useRouter } from 'next/router'
 import { DashboardLayout } from 'views/Dashboard/components/DashboardLayout'
 import { QuestEditProvider } from 'views/DashboardQuestEdit/context/index'
@@ -13,7 +14,7 @@ const SingleDashboardQuestEditPage = () => {
   )
 }
 
-SingleDashboardQuestEditPage.chains = []
+SingleDashboardQuestEditPage.chains = SUPPORTED_CHAIN
 SingleDashboardQuestEditPage.Layout = DashboardLayout
 
 export default SingleDashboardQuestEditPage
