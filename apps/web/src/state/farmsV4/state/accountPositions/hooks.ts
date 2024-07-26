@@ -1,4 +1,5 @@
 import { CurrencyAmount, ERC20Token, Pair } from '@pancakeswap/sdk'
+import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { useQueries, UseQueryOptions } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
@@ -59,7 +60,43 @@ export const useAccountV2LpBalance = (chainIds: number[], account?: Address | nu
     combine: (results) => {
       return {
         data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as CurrencyAmount<ERC20Token>[]),
-        pending: results.some((result) => !result.isPending),
+        pending: results.some((result) => result.isPending),
+      }
+    },
+  })
+}
+
+export const useAccountStableLpBalance = (chainIds: number[], account?: Address | null) => {
+  const queries = useMemo(() => {
+    return chainIds.map((chainId) => {
+      const stablePairs = LegacyRouter.stableSwapPairsByChainId[chainId]
+      return {
+        queryKey: ['accountStableLpBalance', account, chainId],
+        // @todo @ChefJerry add signal
+        queryFn: () =>
+          getAccountV2LpBalance(
+            chainId,
+            account!,
+            stablePairs.map(({ liquidityToken }) => liquidityToken),
+          ),
+        enabled: !!account && stablePairs && stablePairs.length > 0,
+        select(data) {
+          return data.filter((d) => d.greaterThan('0'))
+        },
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchInterval: SLOW_INTERVAL,
+      } satisfies UseQueryOptions<CurrencyAmount<ERC20Token>[]>
+    })
+  }, [account, chainIds])
+
+  return useQueries({
+    queries,
+    combine: (results) => {
+      return {
+        data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as CurrencyAmount<ERC20Token>[]),
+        pending: results.some((result) => result.isPending),
       }
     },
   })
