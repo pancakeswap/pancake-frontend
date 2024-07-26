@@ -60,7 +60,7 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
             const message = keccak256(encodePacked(['address', 'uint256'], [walletAddress ?? '0x', BigInt(timestamp)]))
             const signature = await signMessageAsync({ message })
 
-            const data = JSON.stringify({
+            const data = {
               socialMedia: SocialHubType.Telegram,
               userId: walletAddress,
               signedData: { walletAddress, timestamp },
@@ -68,7 +68,7 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
                 ...user,
               } as unknown as VerificationTelegramConfig,
               signature,
-            })
+            }
             console.log('data to BE: ', data)
 
             await axios({
