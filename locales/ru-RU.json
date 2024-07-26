@@ -3483,14 +3483,15 @@
   "Read The Guide": "Прочитать руководство",
   "Earn Cake and APT with up to 50% apr on 15+ Pools": "Получайте Cake и APT с APR до 50% в 15 с лишним пулах",
   "Earn Dual Incentives with Yield Farming on Aptos PancakeSwap": "Получайте двойные поощрения с помощью фарминга выручки на Aptos PancakeSwap",
-  "Complete tasks for special edition NFTs, merch, and USDT Prises!": "Complete tasks for special edition NFTs, merch, and USDT Prises!",
-  "PancakeSwap Athletic Games:": "PancakeSwap Athletic Games:",
-  "PancakeSwap Games: Get Usdt, Merch, and NFTs": "PancakeSwap Games: Get Usdt, Merch, and NFTs",
-  "PancakeSwap Athletic Games: Get Usdt, Merch, special edition NFTs": "PancakeSwap Athletic Games: Get Usdt, Merch, special edition NFTs",
-  "Get NFTs, merch, and USDT": "Get NFTs, merch, and USDT",
-  "Complete tasks for NFTs, merch, and USDT Prises!": "Complete tasks for NFTs, merch, and USDT Prises!",
+  "Complete tasks for special edition NFTs, merch, and USDT Prises!": "Выполняйте задания и получайте специальные NFT, мерч и призы в USDT!",
+  "PancakeSwap Athletic Games:": "Спортивные игры PancakeSwap:",
+  "PancakeSwap Games: Get Usdt, Merch, and NFTs": "Игры PancakeSwap: получайте USDT, мерч и NFT",
+  "PancakeSwap Athletic Games: Get Usdt, Merch, special edition NFTs": "Спортивные игры PancakeSwap: получайте USDT, мерч и специальные NFT",
+  "Get NFTs, merch, and USDT": "Получайте NFT, мерч и USDT",
+  "Complete tasks for NFTs, merch, and USDT Prises!": "Выполняйте задания и получайте NFT, мерч и призы в USDT!",
   "No quotes available for %cryptoCurrency% right now.": "На данный момент котировок %cryptoCurrency% нет.",
   "No Quotes": "Котировок нет",
-  "Win $50,000 in OORT Trading Competition!": "Win $50,000 in OORT Trading Competition!",
-  "Trade OORT to win gauranteed prizes!": "Trade OORT to win gauranteed prizes!"
+  "Win $50,000 in OORT Trading Competition!": "Выиграйте 50 000 $ в соревновании по торговле OORT!",
+  "Trade OORT to win guaranteed prizes!": "Торгуйте OORT и получайте гарантированные призы!",
+  "Win guaranteed prize, leaderboard prize, and daily lucky draws": "Гарантированный приз, приз за место в рейтинговой таблице и ежедневные розыгрыши"
 }
