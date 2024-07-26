@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const result = await response.json()
   if (!response.ok) {
-    console.log('This is FE show Error: ', { result, response })
+    console.log('This is FE show Error: ', { result, response, body: req.body })
     return res.status(400).json(response)
     // return res.status(400).json(result)
   }
