@@ -2,6 +2,10 @@ import { Token } from '@pancakeswap/swap-sdk-core'
 import { Protocol } from '@pancakeswap/farms'
 import { paths } from 'state/info/api/schema'
 import { safeGetAddress } from 'utils'
+import find from 'lodash/find'
+import { getTokensByChain } from '@pancakeswap/tokens'
+import type { Address } from 'viem/accounts'
+import type { ChainId } from '@pancakeswap/chains'
 import { PoolInfo } from './type'
 
 export const parseFarmPools = (
@@ -40,4 +44,9 @@ export const parseFarmPools = (
       whitelist: false,
     } satisfies PoolInfo
   })
+}
+
+export default function getTokenByAddress(chainId: ChainId, address: Address) {
+  const tokens = getTokensByChain(chainId)
+  return find(tokens, (token) => token.address === address)
 }

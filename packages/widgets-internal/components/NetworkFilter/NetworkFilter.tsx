@@ -9,7 +9,7 @@ export interface INetworkProps {
   onChange: (value: INetworkProps["value"]) => void;
 }
 
-const Container = styled.div<{ isShow: boolean }>`
+const Container = styled.div<{ $isShow: boolean }>`
   flex: 1;
 
   .p-multiselect-panel {
@@ -24,8 +24,8 @@ const Container = styled.div<{ isShow: boolean }>`
     margin-top: -14px;
     padding: 8px 0;
   }
-  ${({ isShow, theme }) =>
-    isShow &&
+  ${({ $isShow, theme }) =>
+    $isShow &&
     `
   && .select-input-container {
      border: 1px solid ${theme.colors.secondary};
@@ -61,7 +61,7 @@ export const NetworkFilter: React.FC<INetworkProps> = ({ data, value, onChange }
   );
 
   return (
-    <Container isShow={isShow}>
+    <Container $isShow={isShow}>
       <MultiSelect
         style={{
           backgroundColor: "var(--colors-input)",

@@ -2,19 +2,19 @@ import { ERC20Token } from '@pancakeswap/sdk'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { unwrappedToken } from '@pancakeswap/tokens'
 import { Position } from '@pancakeswap/v3-sdk'
-import { useQueries, UseQueryOptions } from '@tanstack/react-query'
+import { useQueries, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useAllTokensByChainIds, useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePoolWithChainId } from 'hooks/v3/usePools'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from 'state'
 import { safeGetAddress } from 'utils'
 import { Address } from 'viem/accounts'
 import { getAccountV2LpDetails, getAccountV3Positions, getStablePairDetails, getTrackedV2LpTokens } from './fetcher'
-import { PositionDetail, StableLPDetail, V2LPDetail } from './type'
+import type { PositionDetail, StableLPDetail, V2LPDetail } from './type'
 
 export const useAccountV2LpDetails = (chainIds: number[], account?: Address | null) => {
   const tokens = useOfficialsAndUserAddedTokens()
@@ -42,19 +42,21 @@ export const useAccountV2LpDetails = (chainIds: number[], account?: Address | nu
         refetchOnMount: false,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
-        refetchInterval: SLOW_INTERVAL,
+        refetchInterval: false,
       } satisfies UseQueryOptions<V2LPDetail[]>
     })
   }, [account, lpTokensByChain])
 
+  const combine = useCallback((results: UseQueryResult<V2LPDetail[], Error>[]) => {
+    return {
+      data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as V2LPDetail[]),
+      pending: results.some((result) => result.isPending),
+    }
+  }, [])
+
   return useQueries({
     queries,
-    combine: (results) => {
-      return {
-        data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as V2LPDetail[]),
-        pending: results.some((result) => result.isPending),
-      }
-    },
+    combine,
   })
 }
 
@@ -78,14 +80,15 @@ export const useAccountStableLpDetails = (chainIds: number[], account?: Address 
     })
   }, [account, chainIds])
 
+  const combine = useCallback((results: UseQueryResult<StableLPDetail[], Error>[]) => {
+    return {
+      data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as StableLPDetail[]),
+      pending: results.some((result) => result.isPending),
+    }
+  }, [])
   return useQueries({
     queries,
-    combine: (results) => {
-      return {
-        data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as StableLPDetail[]),
-        pending: results.some((result) => result.isPending),
-      }
-    },
+    combine,
   })
 }
 
@@ -105,14 +108,15 @@ export const useAccountV3Positions = (chainIds: number[], account?: Address | nu
     })
   }, [account, chainIds])
 
+  const combine = useCallback((results: UseQueryResult<PositionDetail[], Error>[]) => {
+    return {
+      data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as PositionDetail[]),
+      pending: results.some((result) => result.isPending),
+    }
+  }, [])
   return useQueries({
     queries,
-    combine: (results) => {
-      return {
-        data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as PositionDetail[]),
-        pending: results.some((result) => result.isPending),
-      }
-    },
+    combine,
   })
 }
 
@@ -126,8 +130,8 @@ export const useTokenByChainId = (tokenAddress?: Address, chainId?: number) => {
 // @todo @ChefJerry consider merge to useAccountV3Positions
 export const useExtraV3PositionInfo = (positionDetail?: PositionDetail) => {
   const chainId = positionDetail?.chainId
-  const token0 = useTokenByChainId(positionDetail?.token0 as Address, chainId)
-  const token1 = useTokenByChainId(positionDetail?.token1 as Address, chainId)
+  const token0 = useTokenByChainId(positionDetail?.token0, chainId)
+  const token1 = useTokenByChainId(positionDetail?.token1, chainId)
   const currency0 = token0 ? unwrappedToken(token0) : undefined
   const currency1 = token1 ? unwrappedToken(token1) : undefined
 
