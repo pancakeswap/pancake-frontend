@@ -40,6 +40,7 @@ interface ConnectSocialProps {
 
 export const connectSocial = async ({ userInfo, data, callback }: ConnectSocialProps) => {
   if (userInfo.socialHubToSocialUserIdMap === null || !userInfo.socialHubToSocialUserIdMap[data.socialMedia]) {
+    console.log('data to BE', JSON.stringify(data))
     const response = await fetch(`/api/userInfo/addUserInfo`, {
       method: 'POST',
       body: JSON.stringify(data),
