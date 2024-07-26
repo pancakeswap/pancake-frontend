@@ -60,18 +60,21 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
             const message = keccak256(encodePacked(['address', 'uint256'], [walletAddress ?? '0x', BigInt(timestamp)]))
             const signature = await signMessageAsync({ message })
 
+            const data = JSON.stringify({
+              socialMedia: SocialHubType.Telegram,
+              userId: walletAddress,
+              signedData: { walletAddress, timestamp },
+              verificationData: {
+                ...user,
+              } as unknown as VerificationTelegramConfig,
+              signature,
+            })
+            console.log('data to BE: ', data)
+
             await axios({
               method: 'post',
               url: `${GAMIFICATION_PUBLIC_API}/userInfo/v1/addUserInfo`,
-              data: {
-                socialMedia: SocialHubType.Telegram,
-                userId: walletAddress,
-                signedData: { walletAddress, timestamp },
-                verificationData: {
-                  ...user,
-                } as unknown as VerificationTelegramConfig,
-                signature,
-              },
+              data,
             })
               .then((res) => {
                 console.log('hi', res)
