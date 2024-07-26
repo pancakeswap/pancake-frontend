@@ -71,7 +71,7 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
       },
       {
         title: '',
-        render: PoolListItemAction,
+        render: () => <PoolListItemAction />,
         dataIndex: null,
         key: 'action',
       },
