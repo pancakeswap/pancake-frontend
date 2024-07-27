@@ -27,7 +27,7 @@ export const ClickableRow = styled.tr`
 
   &:hover {
     td {
-      opacity: 0.65;
+      filter: brightness(1.25);
     }
   }
 `

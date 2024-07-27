@@ -70,12 +70,12 @@ const StyledButton = styled("button").withConfig({
 
   @media (hover: hover) {
     &:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-      opacity: 0.65;
+      filter: brightness(1.25);
     }
   }
 
   &:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-    opacity: 0.85;
+    filter: brightness(1.3);
     transform: translateY(1px);
     box-shadow: none;
   }

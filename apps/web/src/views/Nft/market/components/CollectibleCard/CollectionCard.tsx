@@ -22,7 +22,7 @@ export const CollectionAvatar = styled(ProfileAvatar)`
 const StyledCollectionCard = styled(Card)<{ disabled?: boolean }>`
   border-radius: 8px;
   border-bottom-left-radius: 56px;
-  transition: opacity 200ms;
+  transition: filter 200ms;
 
   & > div {
     border-radius: 8px;
@@ -36,7 +36,7 @@ const StyledCollectionCard = styled(Card)<{ disabled?: boolean }>`
         : css`
             &:hover {
               cursor: pointer;
-              opacity: 0.6;
+              filter: brightness(1.25);
             }
           `}
   }

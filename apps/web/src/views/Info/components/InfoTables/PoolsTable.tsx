@@ -54,7 +54,7 @@ const LinkWrapper = styled(NextLinkFromReactRouter)`
   text-decoration: none;
   &:hover {
     cursor: pointer;
-    opacity: 0.7;
+    filter: brightness(1.25);
   }
 `
 

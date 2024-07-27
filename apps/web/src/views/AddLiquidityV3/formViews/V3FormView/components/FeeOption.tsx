@@ -20,7 +20,7 @@ const FeeOptionContainer = styled.div<{ active: boolean }>`
   border-radius: 16px;
   padding: 2px 2px 4px 2px;
   &:hover {
-    opacity: 0.7;
+    filter: brightness(1.5);
   }
 `
 

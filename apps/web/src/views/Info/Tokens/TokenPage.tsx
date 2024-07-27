@@ -68,7 +68,7 @@ const StyledCMCLink = styled(UIKitLink)`
   margin-right: 8px;
 
   &:hover {
-    opacity: 0.8;
+    filter: brightness(1.25);
   }
 `
 const DEFAULT_TIME_WINDOW = dayjs.duration(1, 'weeks')

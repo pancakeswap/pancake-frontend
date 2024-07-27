@@ -12,7 +12,7 @@ import { VaultRoiCalculatorModal } from '../Vault/VaultRoiCalculatorModal'
 
 const AprLabelContainer = styled(Flex)`
   &:hover {
-    opacity: 0.5;
+    filter: brightness(1.25);
   }
 `
 

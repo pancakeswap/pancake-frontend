@@ -90,14 +90,14 @@ const HoverText = styled.div`
   margin-top: 16px;
   &:hover {
     cursor: pointer;
-    opacity: 0.6;
+    filter: brightness(1.25);
   }
 `
 
 const HoverRowLink = styled.div`
   &:hover {
     cursor: pointer;
-    opacity: 0.6;
+    filter: brightness(1.25);
   }
 `
 
@@ -114,7 +114,7 @@ const OptionButton = styled.div<{ enabled: boolean }>`
   background-color: ${({ theme, enabled }) => (enabled ? theme.colors.primary : 'transparent')};
   color: ${({ theme, enabled }) => (enabled ? theme.card.background : theme.colors.secondary)};
   &:hover {
-    opacity: 0.6;
+    filter: brightness(1.25);
     cursor: pointer;
   }
 `

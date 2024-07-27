@@ -46,7 +46,7 @@ export const CollectionLink = styled(NextLinkFromReactRouter)`
 
 export const CollectibleRowContainer = styled(Grid)`
   &:hover {
-    opacity: 0.5;
+    filter: brightness(1.25);
     cursor: pointer;
   }
 `

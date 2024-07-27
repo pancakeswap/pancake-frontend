@@ -84,7 +84,7 @@ export const StyledCMCLink = styled(Link)`
   margin-right: 8px;
 
   & :hover {
-    opacity: 0.8;
+    filter: brightness(1.25);
   }
 `
 

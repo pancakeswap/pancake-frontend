@@ -124,7 +124,7 @@ export const SellingNftTag: React.FC<React.PropsWithChildren<NftTagProps>> = (pr
 export const StyledCollectibleCard = styled(Card)`
   border-radius: 8px;
   max-width: 320px;
-  transition: opacity 200ms;
+  transition: filter 200ms;
 
   & > div {
     border-radius: 8px;
@@ -133,7 +133,7 @@ export const StyledCollectibleCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.lg} {
     &:hover {
       cursor: pointer;
-      opacity: 0.6;
+      filter: brightness(1.25);
     }
   }
 `
