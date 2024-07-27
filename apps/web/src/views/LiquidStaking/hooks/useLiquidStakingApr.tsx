@@ -23,13 +23,15 @@ export const useLiquidStakingApr = (): UseLiquidStakingAprType => {
 
     queryFn: async () => {
       try {
-        const result = await Promise.all(
+        const result = await Promise.allSettled(
           liquidStakingList.map(async (i) => {
             let apr: number | null = null
             const { data: responseData } = await fetch(i.aprUrl).then((res) => res.json())
 
             if (responseData?.annualInterestRate) {
               apr = responseData.annualInterestRate * 100
+            } else if (responseData?.apr) {
+              apr = responseData.apr * 100
             }
 
             return {
@@ -40,7 +42,9 @@ export const useLiquidStakingApr = (): UseLiquidStakingAprType => {
           }),
         )
 
-        return result as UseLiquidStakingAprDetail[]
+        return result
+          .filter((res): res is PromiseFulfilledResult<any> => res.status === 'fulfilled')
+          .map((res) => res.value) as UseLiquidStakingAprDetail[]
       } catch (error) {
         console.error('Cannot get liquid staking apr: ', error)
         return []

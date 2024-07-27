@@ -41,7 +41,7 @@ const liquidStaking: LiquidStakingList[] = [
     abi: snBnbABI as Abi,
     shouldCheckApproval: false,
     approveToken: null,
-    aprUrl: 'https://www.synclub.io/staas/v1/public/staking/snbnb/apy',
+    aprUrl: 'https://api.lista.org/v1/stakes/latest-apr',
     exchangeRateMultiCall: [
       {
         abi: snBnbABI as Abi,
