@@ -1,3 +1,6 @@
+import { ERC20Token, Pair } from '@pancakeswap/sdk'
+import { CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+
 export type PositionDetail = {
   // detail read from contract
   nonce: bigint
@@ -17,4 +20,12 @@ export type PositionDetail = {
   // additional detail
   isStaked?: boolean
   chainId: number
+}
+
+export type V2LPDetail = {
+  balance: CurrencyAmount<ERC20Token>
+  pair: Pair
+  totalSupply: CurrencyAmount<ERC20Token>
+  deposited0: CurrencyAmount<ERC20Token>
+  deposited1: CurrencyAmount<ERC20Token>
 }

@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { BCakeWrapperFarmConfig, UNIVERSAL_FARMS } from '@pancakeswap/farms'
-import { CurrencyAmount, erc20Abi, ERC20Token } from '@pancakeswap/sdk'
+import { CurrencyAmount, erc20Abi, ERC20Token, Pair, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { masterChefV3ABI, NFT_POSITION_MANAGER_ADDRESSES, nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
@@ -14,7 +14,22 @@ import { getMasterChefV3Contract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/viem'
 import { Address, decodeFunctionResult, encodeFunctionData, Hex } from 'viem'
 import { StablePoolInfo, V2PoolInfo } from '../type'
-import { PositionDetail } from './type'
+import { PositionDetail, V2LPDetail } from './type'
+
+/**
+ * Given two tokens return the liquidity token that represents its liquidity shares
+ * @param tokenA one of the two tokens
+ * @param tokenB the other token
+ */
+export function getV2LiquidityToken([tokenA, tokenB]: [ERC20Token, ERC20Token]): ERC20Token {
+  return new ERC20Token(
+    tokenA.chainId,
+    Pair.getAddress(tokenA, tokenB),
+    18,
+    `${tokenA.symbol}-${tokenB.symbol} V2 LP`,
+    'Pancake LPs',
+  )
+}
 
 export const getAccountV3TokenIdsInContract = async (
   chainId: number,
@@ -318,14 +333,16 @@ export const getTrackedV2LpTokens = (
 export const getAccountV2LpBalance = async (
   chainId: number,
   account: Address,
-  lpTokens: ERC20Token[],
-): Promise<CurrencyAmount<ERC20Token>[]> => {
+  reserveTokens: [ERC20Token, ERC20Token][],
+): Promise<V2LPDetail[]> => {
   const client = publicClient({ chainId })
+  const validReserveTokens = reserveTokens.filter((tokens) => tokens.every((token) => token.chainId === chainId))
+  const lpTokens = validReserveTokens.map((tokens) => getV2LiquidityToken(tokens))
   if (!account || !client || !lpTokens.length) return []
 
   const validLpTokens = lpTokens.filter((token) => token.chainId === chainId)
 
-  const balanceCalls = lpTokens.map((token) => {
+  const balanceCalls = validLpTokens.map((token) => {
     return {
       abi: erc20Abi,
       address: token.address,
@@ -333,17 +350,53 @@ export const getAccountV2LpBalance = async (
       args: [account] as const,
     } as const
   })
-  const balances = await client.multicall({
-    contracts: balanceCalls,
-    allowFailure: false,
+  const reserveCalls = validLpTokens.map((token) => {
+    return {
+      abi: pancakePairV2ABI,
+      address: token.address,
+      functionName: 'getReserves',
+    } as const
   })
+  const totalSupplyCalls = validLpTokens.map((token) => {
+    return {
+      abi: pancakePairV2ABI,
+      address: token.address,
+      functionName: 'totalSupply',
+    } as const
+  })
+  const [balances, reserves, totalSupplies] = await Promise.all([
+    client.multicall({
+      contracts: balanceCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: reserveCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: totalSupplyCalls,
+      allowFailure: false,
+    }),
+  ])
 
-  // return balances.reduce<Record<ChainIdAddressKey, CurrencyAmount<ERC20Token>>>((acc, balance, index) => {
-  //   const key = `${chainId}:${validLpTokens[index].address}`
-  //   set(acc, key, CurrencyAmount.fromRawAmount(validLpTokens[index], balance))
-  //   return acc
-  // }, {})
-  return balances.map((balance, index) => {
-    return CurrencyAmount.fromRawAmount(validLpTokens[index], balance)
+  return balances.map((_balance, index) => {
+    const balance = CurrencyAmount.fromRawAmount(validLpTokens[index], _balance)
+    const tokens = validReserveTokens[index]
+    const [token0, token1] = tokens[0].sortsBefore(tokens[1]) ? tokens : tokens.reverse()
+    const [reserve0, reserve1] = reserves[index]
+    const pair = new Pair(
+      CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
+      CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
+    )
+    const totalSupply = CurrencyAmount.fromRawAmount(validLpTokens[index], totalSupplies[index].toString())
+    const deposited0 = pair.getLiquidityValue(token0, totalSupply, balance, false)
+    const deposited1 = pair.getLiquidityValue(token1, totalSupply, balance, false)
+    return {
+      balance,
+      pair,
+      totalSupply,
+      deposited0,
+      deposited1,
+    }
   })
 }

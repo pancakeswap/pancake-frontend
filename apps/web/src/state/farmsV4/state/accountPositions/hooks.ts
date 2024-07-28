@@ -1,4 +1,4 @@
-import { CurrencyAmount, ERC20Token, Pair } from '@pancakeswap/sdk'
+import { CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { unwrappedToken } from '@pancakeswap/tokens'
 import { Position } from '@pancakeswap/v3-sdk'
@@ -13,25 +13,10 @@ import { useSelector } from 'react-redux'
 import { AppState } from 'state'
 import { safeGetAddress } from 'utils'
 import { Address } from 'viem/accounts'
-import { getAccountV2LpBalance, getAccountV3Positions, getTrackedV2LpTokens } from './fetcher'
-import { PositionDetail } from './type'
+import { getAccountV2LpBalance as getAccountV2LpDetails, getAccountV3Positions, getTrackedV2LpTokens } from './fetcher'
+import { PositionDetail, V2LPDetail } from './type'
 
-/**
- * Given two tokens return the liquidity token that represents its liquidity shares
- * @param tokenA one of the two tokens
- * @param tokenB the other token
- */
-export function getV2LiquidityToken([tokenA, tokenB]: [ERC20Token, ERC20Token]): ERC20Token {
-  return new ERC20Token(
-    tokenA.chainId,
-    Pair.getAddress(tokenA, tokenB),
-    18,
-    `${tokenA.symbol}-${tokenB.symbol} V2 LP`,
-    'Pancake LPs',
-  )
-}
-
-export const useAccountV2LpBalance = (chainIds: number[], account?: Address | null) => {
+export const useAccountV2LpDetails = (chainIds: number[], account?: Address | null) => {
   const tokens = useOfficialsAndUserAddedTokens()
   const userSavedPairs = useSelector<AppState, AppState['user']['pairs']>(({ user: { pairs } }) => pairs)
   const lpTokensByChain = useMemo(() => {
@@ -49,16 +34,16 @@ export const useAccountV2LpBalance = (chainIds: number[], account?: Address | nu
       return {
         queryKey: ['accountV2LpBalance', account, chainId],
         // @todo @ChefJerry add signal
-        queryFn: () => getAccountV2LpBalance(Number(chainId), account!, lpTokens.map(getV2LiquidityToken)),
+        queryFn: () => getAccountV2LpDetails(Number(chainId), account!, lpTokens),
         enabled: !!account && lpTokens && lpTokens.length > 0,
         select(data) {
-          return data.filter((d) => d.greaterThan('0'))
+          return data.filter((d) => d.balance.greaterThan('0'))
         },
         refetchOnMount: false,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchInterval: SLOW_INTERVAL,
-      } satisfies UseQueryOptions<CurrencyAmount<ERC20Token>[]>
+      } satisfies UseQueryOptions<V2LPDetail[]>
     })
   }, [account, lpTokensByChain])
 
@@ -66,7 +51,7 @@ export const useAccountV2LpBalance = (chainIds: number[], account?: Address | nu
     queries,
     combine: (results) => {
       return {
-        data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as CurrencyAmount<ERC20Token>[]),
+        data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as V2LPDetail[]),
         pending: results.some((result) => result.isPending),
       }
     },
@@ -81,7 +66,7 @@ export const useAccountStableLpBalance = (chainIds: number[], account?: Address 
         queryKey: ['accountStableLpBalance', account, chainId],
         // @todo @ChefJerry add signal
         queryFn: () =>
-          getAccountV2LpBalance(
+          getAccountV2LpDetails(
             chainId,
             account!,
             stablePairs.map(({ liquidityToken }) => liquidityToken),
