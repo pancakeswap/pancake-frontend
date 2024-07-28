@@ -65,17 +65,20 @@ const titleVariant = {
   fontWeight: 800,
 }
 
-export const OortTradingBanner = () => {
+const Action = ({ href, icon, text, ...props }: IActions) => {
   const { t } = useTranslation()
-  const { isMobile, isDesktop } = useMatchBreakpoints()
-
-  const Action = ({ href, icon, text, ...props }: IActions) => (
+  return (
     <Box display={props.display}>
       <LinkExternalAction href={href} externalIcon={icon} color={props.color}>
         {t(text)}
       </LinkExternalAction>
     </Box>
   )
+}
+
+export const OortTradingBanner = () => {
+  const { t } = useTranslation()
+  const { isMobile, isDesktop } = useMatchBreakpoints()
 
   return (
     <BannerContainer background={`url(${ASSET_CDN}/web/banners/oort/bg.png)`}>
@@ -93,7 +96,7 @@ export const OortTradingBanner = () => {
         }
         desc={
           isMobile ? null : (
-            <BannerDesc style={{ whiteSpace: 'break-spaces' }}>
+            <BannerDesc style={{ whiteSpace: 'break-spaces' }} color="secondary">
               {isDesktop
                 ? t('Win guaranteed prize, leaderboard prize, and daily lucky draws')
                 : t('Trade OORT to win guaranteed prizes!')}
