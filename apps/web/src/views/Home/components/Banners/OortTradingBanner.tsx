@@ -58,11 +58,10 @@ const titleVariant = {
 }
 
 const Action = ({ href, icon, text, ...props }: IActions) => {
-  const { t } = useTranslation()
   return (
     <Box display={props.display}>
       <LinkExternalAction href={href} externalIcon={icon} color={props.color}>
-        {t(text)}
+        {text}
       </LinkExternalAction>
     </Box>
   )
@@ -102,7 +101,7 @@ export const OortTradingBanner = () => {
               display={isMobile ? 'none' : 'flex'}
               icon="arrowForward"
               alignItems="center"
-              text="Trade Now"
+              text={t('Trade Now')}
               color="#280D5F"
             />
             <Action
@@ -110,7 +109,7 @@ export const OortTradingBanner = () => {
               icon="openNew"
               display="flex"
               alignItems="center"
-              text="Learn More"
+              text={t('Learn More')}
               color="#280D5F"
             />
           </BannerActionContainer>
