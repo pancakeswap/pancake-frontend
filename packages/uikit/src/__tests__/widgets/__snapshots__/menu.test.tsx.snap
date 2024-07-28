@@ -86,7 +86,7 @@ exports[`renders correctly 1`] = `
 }
 
 .c31:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-  opacity: 0.85;
+  filter: brightness(1.3);
   transform: translateY(1px);
   box-shadow: none;
 }
@@ -132,7 +132,7 @@ exports[`renders correctly 1`] = `
 }
 
 .c35:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-  opacity: 0.85;
+  filter: brightness(1.3);
   transform: translateY(1px);
   box-shadow: none;
 }
@@ -243,7 +243,7 @@ exports[`renders correctly 1`] = `
 }
 
 .c14:active:not(:disabled) {
-  opacity: 0.85;
+  filter: brightness(1.3);
   transform: translateY(1px);
 }
 
@@ -1690,7 +1690,7 @@ exports[`renders correctly 1`] = `
 }
 
 .c44:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-  opacity: 0.85;
+  filter: brightness(1.3);
   transform: translateY(1px);
   box-shadow: none;
 }
@@ -1734,7 +1734,7 @@ exports[`renders correctly 1`] = `
 }
 
 .c41:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-  opacity: 0.85;
+  filter: brightness(1.3);
   transform: translateY(1px);
   box-shadow: none;
 }
@@ -1777,7 +1777,7 @@ exports[`renders correctly 1`] = `
 }
 
 .c52:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-  opacity: 0.85;
+  filter: brightness(1.3);
   transform: translateY(1px);
   box-shadow: none;
 }
@@ -3432,7 +3432,7 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
 }
 
 .c16:active:not(:disabled) {
-  opacity: 0.85;
+  filter: brightness(1.3);
   transform: translateY(1px);
 }
 
