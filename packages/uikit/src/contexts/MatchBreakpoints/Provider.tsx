@@ -99,7 +99,7 @@ export const MatchBreakpointsProvider: React.FC<React.PropsWithChildren> = ({ ch
         };
 
         // Safari < 14 fix
-        if (mql.addEventListener) {
+        if (mql?.addEventListener) {
           mql.addEventListener("change", handler);
         }
       }
