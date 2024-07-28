@@ -3,8 +3,8 @@ import { type PoolData } from 'state/info/types'
 import { useRouterQuery } from './useRouterQuery'
 
 export const usePoolData = (): PoolData | undefined => {
-  const { pools, chainId } = useRouterQuery()
-  const { data: poolData } = usePoolDataQueryV2(pools as string, chainId)
+  const { id, chainId } = useRouterQuery()
+  const { data: poolData } = usePoolDataQueryV2(id, chainId)
 
   return poolData
 }

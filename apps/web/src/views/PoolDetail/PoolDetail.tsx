@@ -3,7 +3,7 @@ import Page from 'components/Layout/Page'
 import { BreadcrumbNav } from './components/BreadcrumbNav'
 import { PoolInfo } from './components/PoolInfo'
 
-export const FarmPoolDetail: React.FC = () => {
+export const PoolDetail: React.FC = () => {
   return (
     <Page>
       <AutoColumn gap="48px">

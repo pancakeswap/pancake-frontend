@@ -3,11 +3,11 @@ import { useChainIdByQuery } from 'state/info/hooks'
 
 export const useRouterQuery = () => {
   const router = useRouter()
-  const { pools } = router.query
+  const { id } = router.query
   const chainId = useChainIdByQuery()
 
   return {
-    pools: pools as string,
+    id: id as string,
     chainId,
   }
 }

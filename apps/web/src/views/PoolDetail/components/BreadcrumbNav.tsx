@@ -9,7 +9,7 @@ import { useRouterQuery } from '../hooks/useRouterQuery'
 
 export const BreadcrumbNav: React.FC = () => {
   const { t } = useTranslation()
-  const { pools } = useRouterQuery()
+  const { id } = useRouterQuery()
   const chainName = useChainNameByQuery()
   const { poolSymbol } = usePoolSymbol()
 
@@ -27,11 +27,11 @@ export const BreadcrumbNav: React.FC = () => {
         <ScanLink
           useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
           mr="8px"
-          href={getBlockExploreLink(pools, 'address', multiChainId[chainName])}
+          href={getBlockExploreLink(id, 'address', multiChainId[chainName])}
         >
           {t('View on %site%', { site: multiChainScan[chainName] })}
         </ScanLink>
-        <CopyButton ml="4px" text={pools} tooltipMessage={t('Token address copied')} />
+        <CopyButton ml="4px" text={id} tooltipMessage={t('Token address copied')} />
       </Flex>
     </Flex>
   )
