@@ -450,7 +450,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
 
     @media (hover: hover) {
       .c11:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-        opacity: 0.65;
+        filter: brightness(1.25);
       }
     }
 

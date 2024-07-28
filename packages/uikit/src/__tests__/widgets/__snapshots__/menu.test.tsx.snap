@@ -243,7 +243,7 @@ exports[`renders correctly 1`] = `
 }
 
 .c14:active:not(:disabled) {
-  filter: brightness(1.3);
+  opacity: 0.85;
   transform: translateY(1px);
 }
 
@@ -640,13 +640,13 @@ exports[`renders correctly 1`] = `
 
 @media (hover: hover) {
   .c31:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-    opacity: 0.65;
+    filter: brightness(1.25);
   }
 }
 
 @media (hover: hover) {
   .c35:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-    opacity: 0.65;
+    filter: brightness(1.25);
   }
 }
 
@@ -2122,19 +2122,19 @@ exports[`renders correctly 1`] = `
 
 @media (hover: hover) {
   .c44:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-    opacity: 0.65;
+    filter: brightness(1.25);
   }
 }
 
 @media (hover: hover) {
   .c41:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-    opacity: 0.65;
+    filter: brightness(1.25);
   }
 }
 
 @media (hover: hover) {
   .c52:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-    opacity: 0.65;
+    filter: brightness(1.25);
   }
 }
 
@@ -3432,7 +3432,7 @@ html[data-useragent*="TokenPocket_iOS"] .c1 {
 }
 
 .c16:active:not(:disabled) {
-  filter: brightness(1.3);
+  opacity: 0.85;
   transform: translateY(1px);
 }
 

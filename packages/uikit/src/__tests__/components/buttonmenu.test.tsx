@@ -91,7 +91,7 @@ it("renders correctly", () => {
 
     @media (hover: hover) {
       .c1:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-        opacity: 0.65;
+        filter: brightness(1.25);
       }
     }
 
