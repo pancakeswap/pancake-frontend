@@ -16,7 +16,7 @@ export const DashboardLayout: React.FC<React.PropsWithChildren> = ({ children })
     if (isFetched && !isValidLoginToDashboard) {
       replace('/')
     }
-  }, [isFetched, isValidLoginToDashboard, push])
+  }, [isFetched, isValidLoginToDashboard, replace])
 
   const subMenuItems = useMemo(() => {
     const menu = [
