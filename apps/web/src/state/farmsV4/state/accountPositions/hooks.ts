@@ -1,4 +1,4 @@
-import { CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
+import { ERC20Token } from '@pancakeswap/sdk'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { unwrappedToken } from '@pancakeswap/tokens'
 import { Position } from '@pancakeswap/v3-sdk'
@@ -13,8 +13,8 @@ import { useSelector } from 'react-redux'
 import { AppState } from 'state'
 import { safeGetAddress } from 'utils'
 import { Address } from 'viem/accounts'
-import { getAccountV2LpBalance as getAccountV2LpDetails, getAccountV3Positions, getTrackedV2LpTokens } from './fetcher'
-import { PositionDetail, V2LPDetail } from './type'
+import { getAccountV2LpDetails, getAccountV3Positions, getStablePairDetails, getTrackedV2LpTokens } from './fetcher'
+import { PositionDetail, StableLPDetail, V2LPDetail } from './type'
 
 export const useAccountV2LpDetails = (chainIds: number[], account?: Address | null) => {
   const tokens = useOfficialsAndUserAddedTokens()
@@ -58,28 +58,23 @@ export const useAccountV2LpDetails = (chainIds: number[], account?: Address | nu
   })
 }
 
-export const useAccountStableLpBalance = (chainIds: number[], account?: Address | null) => {
+export const useAccountStableLpDetails = (chainIds: number[], account?: Address | null) => {
   const queries = useMemo(() => {
     return chainIds.map((chainId) => {
       const stablePairs = LegacyRouter.stableSwapPairsByChainId[chainId]
       return {
         queryKey: ['accountStableLpBalance', account, chainId],
         // @todo @ChefJerry add signal
-        queryFn: () =>
-          getAccountV2LpDetails(
-            chainId,
-            account!,
-            stablePairs.map(({ liquidityToken }) => liquidityToken),
-          ),
+        queryFn: () => getStablePairDetails(chainId, account!, stablePairs),
         enabled: !!account && stablePairs && stablePairs.length > 0,
         select(data) {
-          return data.filter((d) => d.greaterThan('0'))
+          return data.filter((d) => d.balance.greaterThan('0'))
         },
         refetchOnMount: false,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchInterval: SLOW_INTERVAL,
-      } satisfies UseQueryOptions<CurrencyAmount<ERC20Token>[]>
+      } satisfies UseQueryOptions<StableLPDetail[]>
     })
   }, [account, chainIds])
 
@@ -87,7 +82,7 @@ export const useAccountStableLpBalance = (chainIds: number[], account?: Address 
     queries,
     combine: (results) => {
       return {
-        data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as CurrencyAmount<ERC20Token>[]),
+        data: results.reduce((acc, result) => acc.concat(result.data ?? []), [] as StableLPDetail[]),
         pending: results.some((result) => result.isPending),
       }
     },
@@ -127,6 +122,8 @@ export const useTokenByChainId = (tokenAddress?: Address, chainId?: number) => {
     return chainId && tokenAddress ? tokens[chainId][safeGetAddress(tokenAddress)!] : undefined
   }, [chainId, tokenAddress, tokens])
 }
+
+// @todo @ChefJerry consider merge to useAccountV3Positions
 export const useExtraV3PositionInfo = (positionDetail?: PositionDetail) => {
   const chainId = positionDetail?.chainId
   const token0 = useTokenByChainId(positionDetail?.token0 as Address, chainId)

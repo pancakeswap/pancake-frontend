@@ -1,9 +1,11 @@
 import { ChainId } from '@pancakeswap/chains'
 import { BCakeWrapperFarmConfig, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { CurrencyAmount, erc20Abi, ERC20Token, Pair, pancakePairV2ABI } from '@pancakeswap/sdk'
+import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { masterChefV3ABI, NFT_POSITION_MANAGER_ADDRESSES, nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
+import { infoStableSwapABI } from 'config/abi/infoStableSwap'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
 import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
@@ -14,7 +16,7 @@ import { getMasterChefV3Contract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/viem'
 import { Address, decodeFunctionResult, encodeFunctionData, Hex } from 'viem'
 import { StablePoolInfo, V2PoolInfo } from '../type'
-import { PositionDetail, V2LPDetail } from './type'
+import { PositionDetail, StableLPDetail, V2LPDetail } from './type'
 
 /**
  * Given two tokens return the liquidity token that represents its liquidity shares
@@ -330,7 +332,7 @@ export const getTrackedV2LpTokens = (
   return Array.from(pairTokens)
 }
 
-export const getAccountV2LpBalance = async (
+export const getAccountV2LpDetails = async (
   chainId: number,
   account: Address,
   reserveTokens: [ERC20Token, ERC20Token][],
@@ -395,6 +397,73 @@ export const getAccountV2LpBalance = async (
       balance,
       pair,
       totalSupply,
+      deposited0,
+      deposited1,
+    }
+  })
+}
+
+export const getStablePairDetails = async (
+  chainId: number,
+  account: Address,
+  stablePairs: LegacyStableSwapPair[],
+): Promise<StableLPDetail[]> => {
+  const client = publicClient({ chainId })
+  const validStablePairs = stablePairs.filter((pair) => pair.liquidityToken && pair.liquidityToken.chainId === chainId)
+
+  if (!account || !client || !validStablePairs.length) return []
+
+  const balanceCalls = validStablePairs.map((pair) => {
+    return {
+      abi: erc20Abi,
+      address: pair.liquidityToken.address,
+      functionName: 'balanceOf',
+      args: [account] as const,
+    } as const
+  })
+  const balances = await client.multicall({
+    contracts: balanceCalls,
+    allowFailure: false,
+  })
+  const validBalances = balances.reduce((acc, balance, index) => {
+    if (balance && balance > 0n) {
+      acc.push({
+        balance,
+        index,
+      })
+    }
+    return acc
+  }, [] as { balance: bigint; index: number }[])
+  const calcCoinsAmountCalls = validBalances.map(({ balance, index }) => {
+    const pair = validStablePairs[index]
+    return {
+      abi: infoStableSwapABI,
+      address: pair.infoStableSwapAddress,
+      functionName: 'calc_coins_amount',
+      args: [pair.stableSwapAddress, balance] as const,
+    } as const
+  })
+
+  const reserveResults = await client.multicall({
+    contracts: calcCoinsAmountCalls,
+    allowFailure: false,
+  })
+  let validIndex = 0
+  return validStablePairs.map((pair, index) => {
+    const balance = CurrencyAmount.fromRawAmount(pair.liquidityToken, balances[index])
+    let token0Amount = 0n
+    let token1Amount = 0n
+    if (balance.greaterThan(0)) {
+      ;[token0Amount, token1Amount] = reserveResults[validIndex]
+      validIndex++
+    }
+    const { token0, token1 } = pair
+
+    const deposited0 = CurrencyAmount.fromRawAmount(token0.wrapped, token0Amount.toString())
+    const deposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, token1Amount.toString())
+    return {
+      balance,
+      pair,
       deposited0,
       deposited1,
     }
