@@ -9,13 +9,19 @@ interface BottomDrawerProps {
   content: React.ReactNode;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void | null;
+  drawerContainerStyle?: React.CSSProperties;
 }
 
-const BottomDrawer: React.FC<React.PropsWithChildren<BottomDrawerProps>> = ({ content, isOpen, setIsOpen }) => {
+const BottomDrawer: React.FC<React.PropsWithChildren<BottomDrawerProps>> = ({
+  drawerContainerStyle = {},
+  content,
+  isOpen,
+  setIsOpen,
+}) => {
   return (
     <ModalV2 isOpen={isOpen} onDismiss={() => setIsOpen(false)}>
       <ModalWrapper onDismiss={() => setIsOpen(false)}>
-        <DrawerContainer>
+        <DrawerContainer style={drawerContainerStyle}>
           <Box position="absolute" right="24px" top="24px">
             <ModalCloseButton onDismiss={() => setIsOpen(false)} />
           </Box>

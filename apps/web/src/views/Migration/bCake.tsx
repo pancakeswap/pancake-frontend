@@ -20,8 +20,7 @@ import bCakeMigrationImage from 'views/Farms/images/bCakeMigration.png'
 import { farmV3MigrationBunnyFull } from 'views/Home/components/Banners/images'
 import MigrationSticky, { TEXT } from './components/MigrationSticky'
 import { MigrationProgressSteps, Step } from './components/ProgressSteps'
-import OldFarm from './components/bCake/Step1'
-import Step2 from './components/bCake/Step2'
+import MigrationFarmStep from './components/bCake/MigrationFarmStep'
 
 const steps: Step[] = [
   {
@@ -173,8 +172,8 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
             )
           }}
         />
-        {step === 0 && <OldFarm />}
-        {step === 1 && <Step2 />}
+        {step === 0 && <MigrationFarmStep step={1} />}
+        {step === 1 && <MigrationFarmStep step={2} />}
       </Page>
       <MigrationSticky version="bCake" step={step} handleClick={handleMigrationStickyClick} />
     </div>

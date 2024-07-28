@@ -1,6 +1,18 @@
 import { ChainId } from '@pancakeswap/chains'
 import uniq from 'lodash/uniq'
 
+// @todo remove all other v2/v3 and type definitions
+export const supportedChainIdV4 = [
+  ChainId.BSC,
+  ChainId.ETHEREUM,
+  ChainId.BASE,
+  ChainId.OPBNB,
+  ChainId.ZKSYNC,
+  ChainId.POLYGON_ZKEVM,
+  ChainId.LINEA,
+  ChainId.ARBITRUM_ONE,
+] as const
+
 export const supportedChainIdV2 = [
   ChainId.GOERLI,
   ChainId.BSC,
@@ -34,6 +46,8 @@ export type FarmV2SupportedChainId = (typeof supportedChainIdV2)[number]
 
 export type FarmV3SupportedChainId = (typeof supportedChainIdV3)[number]
 
+export type FarmV4SupportedChainId = (typeof supportedChainIdV4)[number]
+
 export const masterChefAddresses = {
   [ChainId.BSC_TESTNET]: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
   [ChainId.BSC]: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
@@ -55,7 +69,7 @@ export const masterChefV3Addresses = {
   [ChainId.OPBNB_TESTNET]: '0x236e713bFF45adb30e25D1c29A887aBCb0Ea7E21',
 } as const satisfies Record<FarmV3SupportedChainId, string>
 
-export const nonBSCVaultAddresses = {
+export const crossFarmingVaultAddresses = {
   [ChainId.ETHEREUM]: '0x2e71B2688019ebdFDdE5A45e6921aaebb15b25fb',
   [ChainId.GOERLI]: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841',
 } as const

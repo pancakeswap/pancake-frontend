@@ -19,8 +19,8 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useSafeTxHashTransformer } from 'hooks/useSafeTxHashTransformer'
 import {
   FarmTransactionStatus,
-  NonBscFarmStepType,
-  NonBscFarmTransactionType,
+  CrossChainFarmStepType,
+  CrossChainFarmTransactionType,
   TransactionType,
   addTransaction,
 } from './actions'
@@ -36,7 +36,7 @@ export function useTransactionAdder(): (
     claim?: { recipient: string }
     type?: TransactionType
     order?: Order
-    nonBscFarm?: NonBscFarmTransactionType
+    crossChainFarm?: CrossChainFarmTransactionType
     // add/remove pool
     baseCurrencyId?: string
     quoteCurrencyId?: string
@@ -65,7 +65,7 @@ export function useTransactionAdder(): (
         claim,
         type,
         order,
-        nonBscFarm,
+        crossChainFarm,
       }: {
         summary?: string
         translatableSummary?: { text: string; data?: Record<string, string | number | undefined> }
@@ -73,7 +73,7 @@ export function useTransactionAdder(): (
         approval?: { tokenAddress: string; spender: string }
         type?: TransactionType
         order?: Order
-        nonBscFarm?: NonBscFarmTransactionType
+        crossChainFarm?: CrossChainFarmTransactionType
       } = {},
     ) => {
       if (!account) return
@@ -109,7 +109,7 @@ export function useTransactionAdder(): (
           claim,
           type,
           order,
-          nonBscFarm,
+          crossChainFarm,
         }),
       )
     },
@@ -238,15 +238,15 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 }
 
 // calculate pending transactions
-interface NonBscPendingData {
+interface CrossChainPendingData {
   txid?: string
   lpAddress?: string
-  type?: NonBscFarmStepType
+  type?: CrossChainFarmStepType
 }
 export function usePendingTransactions(): {
   hasPendingTransactions: boolean
   pendingNumber: number
-  nonBscFarmPendingList: NonBscPendingData[]
+  crossChainFarmPendingList: CrossChainPendingData[]
 } {
   const allTransactions = useAllTransactions()
   const sortedRecentTransactions = useMemo(() => {
@@ -255,25 +255,25 @@ export function usePendingTransactions(): {
   }, [allTransactions])
 
   const pending = sortedRecentTransactions
-    .filter((tx) => !tx.receipt || tx?.nonBscFarm?.status === FarmTransactionStatus.PENDING)
+    .filter((tx) => !tx.receipt || tx?.crossChainFarm?.status === FarmTransactionStatus.PENDING)
     .map((tx) => tx.hash)
   const hasPendingTransactions = !!pending.length
 
-  const nonBscFarmPendingList = sortedRecentTransactions
-    .filter((tx) => pending.includes(tx.hash) && !!tx.nonBscFarm)
-    .map((tx) => ({ txid: tx?.hash, lpAddress: tx?.nonBscFarm?.lpAddress, type: tx?.nonBscFarm?.type }))
+  const crossChainFarmPendingList = sortedRecentTransactions
+    .filter((tx) => pending.includes(tx.hash) && !!tx.crossChainFarm)
+    .map((tx) => ({ txid: tx?.hash, lpAddress: tx?.crossChainFarm?.lpAddress, type: tx?.crossChainFarm?.type }))
 
   return {
     hasPendingTransactions,
-    nonBscFarmPendingList,
+    crossChainFarmPendingList,
     pendingNumber: pending.length,
   }
 }
 
-export function useNonBscFarmPendingTransaction(lpAddress?: string): NonBscPendingData[] {
-  const { nonBscFarmPendingList } = usePendingTransactions()
+export function useCrossChainFarmPendingTransaction(lpAddress?: string): CrossChainPendingData[] {
+  const { crossChainFarmPendingList } = usePendingTransactions()
   return useMemo(() => {
     if (!lpAddress) return []
-    return nonBscFarmPendingList.filter((tx) => tx?.lpAddress?.toLowerCase() === lpAddress.toLowerCase())
-  }, [lpAddress, nonBscFarmPendingList])
+    return crossChainFarmPendingList.filter((tx) => tx?.lpAddress?.toLowerCase() === lpAddress.toLowerCase())
+  }, [lpAddress, crossChainFarmPendingList])
 }

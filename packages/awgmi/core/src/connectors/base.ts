@@ -7,8 +7,9 @@
 // - `disconnect()`: Removes connection between dApp and wallet. Useful when the user wants to remove the connection.
 
 import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
-import { Types } from 'aptos'
 import EventEmitter from 'eventemitter3'
+import { Aptos, InputGenerateTransactionOptions, InputGenerateTransactionPayloadData } from '@aptos-labs/ts-sdk'
+
 import { Chain, defaultChains } from '../chain'
 import { Account, SignMessagePayload, SignMessageResponse } from './types'
 
@@ -54,11 +55,13 @@ export abstract class Connector<Provider = any, Options = any> extends EventEmit
   abstract getProvider(config?: { networkName?: string }): Promise<Provider>
 
   abstract signAndSubmitTransaction(
-    transaction: Types.TransactionPayload,
-    options?: Partial<Types.SubmitTransactionRequest>,
+    transaction: InputGenerateTransactionPayloadData,
+    options?: Partial<InputGenerateTransactionOptions>,
   ): Promise<ConnectorTransactionResponse>
 
-  abstract signTransaction(transaction: Types.TransactionPayload): Promise<Uint8Array>
+  abstract signTransaction(
+    transaction: InputGenerateTransactionPayloadData,
+  ): Promise<ReturnType<Aptos['transaction']['sign']>>
 
   abstract isConnected(): Promise<boolean>
   abstract signMessage(payload: SignMessagePayload): Promise<SignMessageResponse>

@@ -1,14 +1,14 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-continue */
 /* eslint-disable no-await-in-loop */
-import { AptosClient } from 'aptos'
+import { Aptos } from '@aptos-labs/ts-sdk'
 import { persist, subscribeWithSelector } from 'zustand/middleware'
 import create, { Mutate, StoreApi } from 'zustand/vanilla'
 
 import { Connector, ConnectorData, PetraConnector } from './connectors'
 import { ClientStorage, createStorage, noopStorage } from './storage'
 
-export type ClientConfig<TProvider extends AptosClient = AptosClient> = {
+export type ClientConfig<TProvider extends Aptos = Aptos> = {
   /** Enables reconnecting to last used connector on init */
   autoConnect?: boolean
   /**
@@ -26,7 +26,7 @@ export type ClientConfig<TProvider extends AptosClient = AptosClient> = {
 }
 
 export type Data = ConnectorData
-export type State<TProvider extends AptosClient = AptosClient> = {
+export type State<TProvider extends Aptos = Aptos> = {
   chains?: Connector['chains']
   connector?: Connector
   connectors: Connector[]
@@ -38,7 +38,7 @@ export type State<TProvider extends AptosClient = AptosClient> = {
 
 const storeKey = 'store'
 
-export class Client<TProvider extends AptosClient = AptosClient> {
+export class Client<TProvider extends Aptos = Aptos> {
   config: Partial<ClientConfig<TProvider>>
   storage: ClientStorage
   store: Mutate<
@@ -262,15 +262,15 @@ export class Client<TProvider extends AptosClient = AptosClient> {
 }
 
 // eslint-disable-next-line import/no-mutable-exports
-export let client: Client<AptosClient>
+export let client: Client<Aptos>
 
-export function createClient<TProvider extends AptosClient = AptosClient>(config: ClientConfig<TProvider>) {
+export function createClient<TProvider extends Aptos = Aptos>(config: ClientConfig<TProvider>) {
   const client_ = new Client<TProvider>(config)
-  client = client_ as unknown as Client<AptosClient>
+  client = client_ as unknown as Client<Aptos>
   return client_
 }
 
-export function getClient<TProvider extends AptosClient = AptosClient>() {
+export function getClient<TProvider extends Aptos = Aptos>() {
   if (!client) {
     throw new Error('No AptosReact client found')
   }

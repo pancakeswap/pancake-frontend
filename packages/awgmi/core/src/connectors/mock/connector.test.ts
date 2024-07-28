@@ -1,21 +1,21 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-import { AptosAccount } from 'aptos'
+import { Account, Ed25519PrivateKey } from '@aptos-labs/ts-sdk'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { MockConnector } from './connector'
 
 // default generated account for testing
 const accounts = [
   {
-    privateKeyHex: '0xd7238892323a3440282657b1ebe046c16357521333003783596da9c2cb26a485',
+    privateKey: new Ed25519PrivateKey('0xd7238892323a3440282657b1ebe046c16357521333003783596da9c2cb26a485'),
     address: '0x2cf744dc90acb87c3bbf5f034b37c3718ac10a56e5181c1b43923e5c3623b493',
   },
 ]
 
 describe('MockConnector', () => {
   let connector: MockConnector
-  let account: AptosAccount
+  let account: Account
   beforeEach(() => {
-    account = AptosAccount.fromAptosAccountObject(accounts[0])
+    account = Account.fromPrivateKeyAndAddress(accounts[0])
 
     connector = new MockConnector({
       options: { account },
@@ -36,7 +36,7 @@ describe('MockConnector', () => {
         {
           "account": {
             "address": "0x2cf744dc90acb87c3bbf5f034b37c3718ac10a56e5181c1b43923e5c3623b493",
-            "publicKey": "0x8ecf7d835b65f8a7252ec49563b84b37f37c76077962ccfef752fd0b8bb960",
+            "publicKey": "0x008ecf7d835b65f8a7252ec49563b84b37f37c76077962ccfef752fd0b8bb960",
           },
           "network": "devnet",
           "provider": "<MockProvider>",
@@ -74,7 +74,7 @@ describe('MockConnector', () => {
       expect(await connector.account()).toMatchInlineSnapshot(`
         {
           "address": "0x2cf744dc90acb87c3bbf5f034b37c3718ac10a56e5181c1b43923e5c3623b493",
-          "publicKey": "0x8ecf7d835b65f8a7252ec49563b84b37f37c76077962ccfef752fd0b8bb960",
+          "publicKey": "0x008ecf7d835b65f8a7252ec49563b84b37f37c76077962ccfef752fd0b8bb960",
         }
       `)
     })

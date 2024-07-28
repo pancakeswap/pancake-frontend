@@ -150,7 +150,7 @@ export default {
     [ChainId.BSC]: '0x2C36221bF724c60E9FEE3dd44e2da8017a8EF3BA',
     [ChainId.BSC_TESTNET]: '0x',
   },
-  nonBscVault: {
+  crossFarmingVault: {
     [ChainId.ETHEREUM]: '0x2e71B2688019ebdFDdE5A45e6921aaebb15b25fb',
     [ChainId.GOERLI]: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841',
   },
@@ -251,5 +251,9 @@ export default {
   revenueSharingPoolGateway: {
     [ChainId.BSC]: '0x011f2a82846a4E9c62C2FC4Fd6fDbad19147D94A',
     [ChainId.BSC_TESTNET]: '0x946273012ED616410F698536F1BF2513417BF8Ec',
+  },
+  zkSyncAirDrop: {
+    [ChainId.ZKSYNC_TESTNET]: '0xbfcCF87Ee5cd03d4550Cc1526Bf152cc2EE1C7AB',
+    [ChainId.ZKSYNC]: '0xB774c13bA5a665713037c42A12f0ED9De70585cB',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>

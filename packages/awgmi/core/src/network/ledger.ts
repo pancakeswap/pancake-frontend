@@ -1,4 +1,4 @@
-import { Types } from 'aptos'
+import { RoleType, LedgerInfo } from '@aptos-labs/ts-sdk'
 
 import { getProvider } from '../providers'
 
@@ -7,8 +7,8 @@ export type FetchLedgerArgs = {
 }
 
 // Return type of exported function has or is using name 'RoleType' from external module
-export type FetchLedgerResult = Omit<Types.IndexResponse, 'role'> & {
-  role: Types.RoleType
+export type FetchLedgerResult = Omit<LedgerInfo, 'role'> & {
+  role: RoleType
 }
 
 export async function fetchLedgerInfo({ networkName }: FetchLedgerArgs = {}): Promise<FetchLedgerResult> {

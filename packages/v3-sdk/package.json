@@ -34,7 +34,7 @@
     "tiny-invariant": "^1.3.0",
     "tiny-warning": "^1.0.3",
     "toformat": "^2.0.0",
-    "viem": "2.13.3"
+    "viem": "catalog:"
   },
   "devDependencies": {
     "@pancakeswap/utils": "workspace:*",

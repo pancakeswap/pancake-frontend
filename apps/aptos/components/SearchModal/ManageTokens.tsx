@@ -1,5 +1,5 @@
 import { Coin, PAIR_LP_TYPE_TAG, Token } from '@pancakeswap/aptos-swap-sdk'
-import { APTOS_COIN, isStructTag, useAccount, useAccountBalance, useAccountBalances } from '@pancakeswap/awgmi'
+import { APTOS_COIN, isStructTag, useAccount, useBalance, useAccountBalances } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AddCircleIcon,
@@ -52,7 +52,7 @@ const Footer = styled.div`
 
 function CoinRegisterButtonWithHooks({ token }: { token: Token }) {
   const { account } = useAccount()
-  const { data, isLoading } = useAccountBalance({
+  const { data, isLoading } = useBalance({
     address: account?.address,
     coin: token.address,
     enabled: !!token,

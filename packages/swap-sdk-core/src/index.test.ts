@@ -33,6 +33,7 @@ test('exports', () => {
       "sortedInsert",
       "computePriceImpact",
       "getTokenComparator",
+      "sortCurrencies",
     ]
   `)
 })
