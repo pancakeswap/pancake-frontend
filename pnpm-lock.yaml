@@ -733,9 +733,6 @@ importers:
       '@wagmi/core':
         specifier: 2.10.5
         version: 2.10.5(@tanstack/query-core@5.29.0)(@types/react@18.2.37)(bufferutil@4.0.8)(immer@9.0.21)(react@18.2.0)(typescript@5.2.2)(utf-8-validate@5.0.10)(viem@2.17.3(bufferutil@4.0.8)(typescript@5.2.2)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)
-      axios:
-        specifier: ^1.7.2
-        version: 1.7.2(debug@4.3.4)
       bignumber.js:
         specifier: ^9.1.2
         version: 9.1.2

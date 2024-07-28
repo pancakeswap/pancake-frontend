@@ -1,11 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
-import axios from 'axios'
-import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useEffect } from 'react'
 import { encodePacked, keccak256 } from 'viem'
 import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
-import { VerificationTelegramConfig } from 'views/Profile/utils/connectSocial'
+import { connectSocial, VerificationTelegramConfig } from 'views/Profile/utils/connectSocial'
 import { disconnectSocial, DisconnectUserSocialInfoConfig } from 'views/Profile/utils/disconnectSocial'
 import { useAccount, useSignMessage } from 'wagmi'
 
@@ -60,47 +58,22 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
             const message = keccak256(encodePacked(['address', 'uint256'], [walletAddress ?? '0x', BigInt(timestamp)]))
             const signature = await signMessageAsync({ message })
 
-            const data = {
-              socialMedia: SocialHubType.Telegram,
-              userId: walletAddress,
-              signedData: { walletAddress, timestamp },
-              verificationData: {
-                ...user,
-              } as unknown as VerificationTelegramConfig,
-              signature,
-            }
-            console.log('data to BE: ', data)
-
-            await axios({
-              method: 'post',
-              url: `${GAMIFICATION_PUBLIC_API}/userInfo/v1/addUserInfo`,
-              data,
-            })
-              .then((res) => {
-                console.log('hi', res)
+            await connectSocial({
+              userInfo,
+              data: {
+                socialMedia: SocialHubType.Telegram,
+                userId: walletAddress,
+                signedData: { walletAddress, timestamp },
+                verificationData: {
+                  ...user,
+                } as unknown as VerificationTelegramConfig,
+                signature,
+              },
+              callback: () => {
                 toastSuccess(t('%social% Connected', { social: SocialHubType.Telegram }))
                 refresh?.()
-              })
-              .catch((err) => {
-                console.log('Axios error: ', err)
-              })
-
-            // await connectSocial({
-            //   userInfo,
-            //   data: {
-            //     socialMedia: SocialHubType.Telegram,
-            //     userId: walletAddress,
-            //     signedData: { walletAddress, timestamp },
-            //     verificationData: {
-            //       ...user,
-            //     } as unknown as VerificationTelegramConfig,
-            //     signature,
-            //   },
-            //   callback: () => {
-            //     toastSuccess(t('%social% Connected', { social: SocialHubType.Telegram }))
-            //     refresh?.()
-            //   },
-            // })
+              },
+            })
           } catch (error) {
             console.error(`Connect ${SocialHubType.Telegram} error: `, error)
           }

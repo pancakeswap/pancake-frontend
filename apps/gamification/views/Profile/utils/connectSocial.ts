@@ -1,3 +1,4 @@
+import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { Address } from 'viem'
 import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 
@@ -40,9 +41,11 @@ interface ConnectSocialProps {
 
 export const connectSocial = async ({ userInfo, data, callback }: ConnectSocialProps) => {
   if (userInfo.socialHubToSocialUserIdMap === null || !userInfo.socialHubToSocialUserIdMap[data.socialMedia]) {
-    console.log('data to BE', JSON.stringify(data))
-    const response = await fetch(`/api/userInfo/addUserInfo`, {
+    const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/addUserInfo`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(data),
     })
 
