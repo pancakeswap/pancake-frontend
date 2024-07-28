@@ -41,6 +41,23 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/cached/tx/v4/{chainName}/recent': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get recent v4 transaction */
+    get: operations['getCachedTxV4ByChainNameRecent']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/cached/tx/v3/{chainName}/recent': {
     parameters: {
       query?: never
@@ -435,6 +452,23 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/cached/pools/apr/v4/{chainName}/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get v4 lp apr */
+    get: operations['getCachedPoolsAprV4ByChainNameById']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/cached/pools/apr/v2/{chainName}/{address}': {
     parameters: {
       query?: never
@@ -537,6 +571,23 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/cached/pools/{chainName}/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get pool data by id */
+    get: operations['getCachedPoolsByChainNameById']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/cached/pools/list': {
     parameters: {
       query?: never
@@ -554,15 +605,15 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/cached/pools/{chainName}/{id}': {
+  '/cached/pools/farming': {
     parameters: {
       query?: never
       header?: never
       path?: never
       cookie?: never
     }
-    /** Get pool data by id */
-    get: operations['getCachedPoolsByChainNameById']
+    /** Get farming pools */
+    get: operations['getCachedPoolsFarming']
     put?: never
     post?: never
     delete?: never
@@ -841,6 +892,22 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/webhooks/web-deployed': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations['postWebhooksWeb-deployed']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/doc/json': {
     parameters: {
       query?: never
@@ -865,13 +932,12 @@ export interface components {
      * @description Chain name
      * @enum {string}
      */
-    ChainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+    ChainName: 'bsc' | 'bsc-testnet' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
     /**
      * @description Protocol version
-     * @example v3
      * @enum {string}
      */
-    Protocol: 'v2' | 'v3' | 'stable'
+    Protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
     transactions: {
       id: string
       transactionHash: string
@@ -985,10 +1051,9 @@ export interface components {
       priceUSD: string
       /**
        * @description Protocol version
-       * @example v3
        * @enum {string}
        */
-      protocol: 'v2' | 'v3' | 'stable'
+      protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
       tvlUSD: string
       timestamp: Record<string, never> | string
     }
@@ -1011,7 +1076,7 @@ export interface components {
         price1: string
       }[]
     }
-    positions: {
+    CLPositions: {
       /** @description Cursor for pagination start */
       startCursor?: string
       /** @description Cursor for pagination end */
@@ -1034,14 +1099,18 @@ export interface components {
     }
     /**
      * @description Chart period
-     * @example 1D
      * @enum {string}
      */
     ChartPeriod: '1H' | '1D' | '1W' | '1M' | '1Y'
+    AprSchema: {
+      apr24h: string
+      apr7d: string
+      volumeUSD24h: string
+      volumeUSD7d: string
+    }
     ProtocolQuery: {
       /**
        * @description Chart group by
-       * @example 1D
        * @enum {string}
        */
       groupBy: '1D' | '1W' | '1M'
@@ -1070,12 +1139,6 @@ export interface operations {
         'application/json': {
           ids: string[]
         }
-        'multipart/form-data': {
-          ids: string[]
-        }
-        'text/plain': {
-          ids: string[]
-        }
       }
     }
     responses: {
@@ -1086,38 +1149,6 @@ export interface operations {
         }
         content: {
           'application/json': {
-            data: {
-              id: string
-              token0: {
-                symbol: string
-                amount: string
-                amountUSD: string
-              }
-              token1: {
-                symbol: string
-                amount: string
-                amountUSD: string
-              }
-              totalUSD: string
-            }[]
-          }
-          'multipart/form-data': {
-            data: {
-              id: string
-              token0: {
-                symbol: string
-                amount: string
-                amountUSD: string
-              }
-              token1: {
-                symbol: string
-                amount: string
-                amountUSD: string
-              }
-              totalUSD: string
-            }[]
-          }
-          'text/plain': {
             data: {
               id: string
               token0: {
@@ -1152,7 +1183,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
       }
       cookie?: never
     }
@@ -1266,6 +1306,42 @@ export interface operations {
       }
     }
   }
+  getCachedTxV4ByChainNameRecent: {
+    parameters: {
+      query?: {
+        /** @description Filter by token address */
+        token?: string
+        /** @description Filter by pool id */
+        pool?: string
+      }
+      header?: never
+      path: {
+        /** @description Chain name */
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['transactionsWithType']
+        }
+      }
+    }
+  }
   getCachedTxV3ByChainNameRecent: {
     parameters: {
       query?: {
@@ -1277,7 +1353,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
       }
       cookie?: never
     }
@@ -1304,7 +1389,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
       }
       cookie?: never
     }
@@ -1359,7 +1453,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
       }
       cookie?: never
     }
@@ -1390,9 +1493,18 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
         /** @description Ethereum address */
         address: string
       }
@@ -1425,7 +1537,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -1458,9 +1579,18 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
         /** @description Ethereum address */
         address: string
       }
@@ -1490,9 +1620,18 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
         /** @description Ethereum address */
         address: string
       }
@@ -1522,7 +1661,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -1570,12 +1718,21 @@ export interface operations {
       query?: {
         timestamp?: string | number
         /** @description Array of protocol versions */
-        protocols?: ('v2' | 'v3' | 'stable') | ('v2' | 'v3' | 'stable')[]
+        protocols?: ('v2' | 'v3' | 'v4bin' | 'stable') | ('v2' | 'v3' | 'v4bin' | 'stable')[]
       }
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -1607,7 +1764,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -1631,7 +1797,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -1678,7 +1853,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
       }
       cookie?: never
     }
@@ -1731,7 +1915,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
       }
       cookie?: never
     }
@@ -1833,7 +2026,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Pool address */
         pool: string
       }
@@ -1865,7 +2067,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Pool address */
         pool: string
       }
@@ -1878,7 +2089,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['positions']
+          'application/json': components['schemas']['CLPositions']
         }
       }
     }
@@ -1892,7 +2103,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -1922,7 +2142,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -1952,9 +2181,18 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
         /** @description Ethereum address */
         address: string
       }
@@ -1984,9 +2222,18 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
         /** @description Ethereum address */
         address: string
       }
@@ -2007,13 +2254,47 @@ export interface operations {
       }
     }
   }
+  getCachedPoolsAprV4ByChainNameById: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        chainName: 'bsc-testnet'
+        /** @description V4 pool ID */
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AprSchema']
+          'multipart/form-data': components['schemas']['AprSchema']
+          'text/plain': components['schemas']['AprSchema']
+        }
+      }
+    }
+  }
   getCachedPoolsAprV2ByChainNameByAddress: {
     parameters: {
       query?: never
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -2026,12 +2307,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': {
-            apr24h: string
-            apr7d: string
-            volumeUSD24h: string
-            volumeUSD7d: string
-          }
+          'application/json': components['schemas']['AprSchema']
         }
       }
     }
@@ -2042,7 +2318,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -2055,12 +2340,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': {
-            apr24h: string
-            apr7d: string
-            volumeUSD24h: string
-            volumeUSD7d: string
-          }
+          'application/json': components['schemas']['AprSchema']
         }
       }
     }
@@ -2100,7 +2380,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
       }
       cookie?: never
     }
@@ -2122,7 +2411,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
       }
       cookie?: never
     }
@@ -2144,7 +2442,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
       }
       cookie?: never
     }
@@ -2160,89 +2467,23 @@ export interface operations {
       }
     }
   }
-  getCachedPoolsList: {
-    parameters: {
-      query: {
-        orderBy: 'tvlUSD' | 'volumeUSD24h' | 'apr24h'
-        /** @description Array of protocol versions */
-        protocols: ('v2' | 'v3' | 'stable') | ('v2' | 'v3' | 'stable')[]
-        /** @description Array of chain names */
-        chains:
-          | ('bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum')
-          | ('bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum')[]
-        /** @description Filter by Pool address, should be use with chain filter */
-        pool?: string
-        /** @description Filter by token address, should be use with chain filter */
-        token?: string
-        /** @description Cursor for pagination before */
-        before?: string
-        /** @description Cursor for pagination after */
-        after?: string
-      }
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': {
-            /** @description Cursor for pagination start */
-            startCursor?: string
-            /** @description Cursor for pagination end */
-            endCursor?: string
-            /** @description Has next page */
-            hasNextPage?: boolean
-            /** @description Has previous page */
-            hasPrevPage?: boolean
-            rows: {
-              /** @description Pool id */
-              id: string
-              chainId: number
-              token0Price: string
-              token1Price: string
-              tvlToken0: string
-              tvlToken1: string
-              tvlUSD: string
-              volumeUSD24h: string
-              apr24h: string
-              /**
-               * @description Protocol version
-               * @example v3
-               * @enum {string}
-               */
-              protocol: 'v2' | 'v3' | 'stable'
-              feeTier: number
-              token0: {
-                id: string
-                symbol: string
-                name: string
-                decimals: number
-              }
-              token1: {
-                id: string
-                symbol: string
-                name: string
-                decimals: number
-              }
-            }[]
-          }
-        }
-      }
-    }
-  }
   getCachedPoolsByChainNameById: {
     parameters: {
       query?: never
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
-        /** @description Ethereum address */
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
+        /** @description Pool ID */
         id: string
       }
       cookie?: never
@@ -2302,6 +2543,71 @@ export interface operations {
                 liquidity: string
                 sqrtPrice: string
                 tick: null | number
+                /** @description Total fee in USD */
+                totalFeeUSD: string
+                /** @description Fee in USD in 24h */
+                feeUSD24h: string
+                /** @description Fee in USD in 24h */
+                feeUSD48h: string
+                /** @description Fee in USD in 7d */
+                feeUSD7d: string
+                /** @description Total protocol fee in USD */
+                totalProtocolFeeUSD: string
+                /** @description Protocol fee in USD in 24h */
+                protocolFeeUSD24h: string
+                /** @description Protocol fee in USD in 24h */
+                protocolFeeUSD48h: string
+                /** @description Protocol fee in USD in 7d */
+                protocolFeeUSD7d: string
+              }
+            | {
+                /** @constant */
+                protocol: 'v4bin'
+                /** @description Pool id */
+                id: string
+                token0: {
+                  id: string
+                  symbol: string
+                  name: string
+                  decimals: number
+                }
+                token1: {
+                  id: string
+                  symbol: string
+                  name: string
+                  decimals: number
+                }
+                /** @description Total volume in USD */
+                totalVolumeUSD: string
+                /** @description Token0 price to token1 */
+                token0Price: string
+                /** @description Token1 price to token0 */
+                token1Price: string
+                /** @description Total value locked in token0 */
+                tvlToken0: string
+                /** @description Total value locked in token1 */
+                tvlToken1: string
+                /** @description Volume in USD in 24h */
+                volumeUSD24h: string
+                /** @description Volume in USD in 24h */
+                volumeUSD48h: string
+                /** @description Volume in USD in 7d */
+                volumeUSD7d: string
+                /** @description Total value locked in USD */
+                tvlUSD: string
+                /** @description Total value locked in USD 24h ago */
+                tvlUSD24h: string
+                /** @description Total value locked in USD 24h ago */
+                tvlUSD48h: string
+                /** @description Total value locked in USD 7d ago */
+                tvlUSD7d: string
+                /** @description Pool created at timestamp */
+                createdAtTimestamp: Record<string, never> | string
+                feeTier: number
+                binStep: number
+                activeId: number
+                isDynamicFee: boolean
+                hookId: null | string
                 /** @description Total fee in USD */
                 totalFeeUSD: string
                 /** @description Fee in USD in 24h */
@@ -2479,6 +2785,71 @@ export interface operations {
               }
             | {
                 /** @constant */
+                protocol: 'v4bin'
+                /** @description Pool id */
+                id: string
+                token0: {
+                  id: string
+                  symbol: string
+                  name: string
+                  decimals: number
+                }
+                token1: {
+                  id: string
+                  symbol: string
+                  name: string
+                  decimals: number
+                }
+                /** @description Total volume in USD */
+                totalVolumeUSD: string
+                /** @description Token0 price to token1 */
+                token0Price: string
+                /** @description Token1 price to token0 */
+                token1Price: string
+                /** @description Total value locked in token0 */
+                tvlToken0: string
+                /** @description Total value locked in token1 */
+                tvlToken1: string
+                /** @description Volume in USD in 24h */
+                volumeUSD24h: string
+                /** @description Volume in USD in 24h */
+                volumeUSD48h: string
+                /** @description Volume in USD in 7d */
+                volumeUSD7d: string
+                /** @description Total value locked in USD */
+                tvlUSD: string
+                /** @description Total value locked in USD 24h ago */
+                tvlUSD24h: string
+                /** @description Total value locked in USD 24h ago */
+                tvlUSD48h: string
+                /** @description Total value locked in USD 7d ago */
+                tvlUSD7d: string
+                /** @description Pool created at timestamp */
+                createdAtTimestamp: Record<string, never> | string
+                feeTier: number
+                binStep: number
+                activeId: number
+                isDynamicFee: boolean
+                hookId: null | string
+                /** @description Total fee in USD */
+                totalFeeUSD: string
+                /** @description Fee in USD in 24h */
+                feeUSD24h: string
+                /** @description Fee in USD in 24h */
+                feeUSD48h: string
+                /** @description Fee in USD in 7d */
+                feeUSD7d: string
+                /** @description Total protocol fee in USD */
+                totalProtocolFeeUSD: string
+                /** @description Protocol fee in USD in 24h */
+                protocolFeeUSD24h: string
+                /** @description Protocol fee in USD in 24h */
+                protocolFeeUSD48h: string
+                /** @description Protocol fee in USD in 7d */
+                protocolFeeUSD7d: string
+              }
+            | {
+                /** @constant */
                 protocol: 'v2'
                 /** @description Pool id */
                 id: string
@@ -2637,6 +3008,71 @@ export interface operations {
               }
             | {
                 /** @constant */
+                protocol: 'v4bin'
+                /** @description Pool id */
+                id: string
+                token0: {
+                  id: string
+                  symbol: string
+                  name: string
+                  decimals: number
+                }
+                token1: {
+                  id: string
+                  symbol: string
+                  name: string
+                  decimals: number
+                }
+                /** @description Total volume in USD */
+                totalVolumeUSD: string
+                /** @description Token0 price to token1 */
+                token0Price: string
+                /** @description Token1 price to token0 */
+                token1Price: string
+                /** @description Total value locked in token0 */
+                tvlToken0: string
+                /** @description Total value locked in token1 */
+                tvlToken1: string
+                /** @description Volume in USD in 24h */
+                volumeUSD24h: string
+                /** @description Volume in USD in 24h */
+                volumeUSD48h: string
+                /** @description Volume in USD in 7d */
+                volumeUSD7d: string
+                /** @description Total value locked in USD */
+                tvlUSD: string
+                /** @description Total value locked in USD 24h ago */
+                tvlUSD24h: string
+                /** @description Total value locked in USD 24h ago */
+                tvlUSD48h: string
+                /** @description Total value locked in USD 7d ago */
+                tvlUSD7d: string
+                /** @description Pool created at timestamp */
+                createdAtTimestamp: Record<string, never> | string
+                feeTier: number
+                binStep: number
+                activeId: number
+                isDynamicFee: boolean
+                hookId: null | string
+                /** @description Total fee in USD */
+                totalFeeUSD: string
+                /** @description Fee in USD in 24h */
+                feeUSD24h: string
+                /** @description Fee in USD in 24h */
+                feeUSD48h: string
+                /** @description Fee in USD in 7d */
+                feeUSD7d: string
+                /** @description Total protocol fee in USD */
+                totalProtocolFeeUSD: string
+                /** @description Protocol fee in USD in 24h */
+                protocolFeeUSD24h: string
+                /** @description Protocol fee in USD in 24h */
+                protocolFeeUSD48h: string
+                /** @description Protocol fee in USD in 7d */
+                protocolFeeUSD7d: string
+              }
+            | {
+                /** @constant */
                 protocol: 'v2'
                 /** @description Pool id */
                 id: string
@@ -2732,13 +3168,171 @@ export interface operations {
       }
     }
   }
+  getCachedPoolsList: {
+    parameters: {
+      query: {
+        orderBy: 'tvlUSD' | 'volumeUSD24h' | 'apr24h'
+        /** @description Array of protocol versions */
+        protocols: ('v2' | 'v3' | 'v4bin' | 'stable') | ('v2' | 'v3' | 'v4bin' | 'stable')[]
+        /** @description Array of chain names */
+        chains:
+          | ('bsc' | 'bsc-testnet' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum')
+          | (
+              | 'bsc'
+              | 'bsc-testnet'
+              | 'ethereum'
+              | 'base'
+              | 'opbnb'
+              | 'zksync'
+              | 'polygon-zkevm'
+              | 'linea'
+              | 'arbitrum'
+            )[]
+        /** @description Filter by pool id with chain id prefix */
+        pools?: string | string[]
+        /** @description Filter by tokens with chain id prefix, has higher priority than chains */
+        tokens?: string | string[]
+        /** @description Cursor for pagination before */
+        before?: string
+        /** @description Cursor for pagination after */
+        after?: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            /** @description Cursor for pagination start */
+            startCursor?: string
+            /** @description Cursor for pagination end */
+            endCursor?: string
+            /** @description Has next page */
+            hasNextPage?: boolean
+            /** @description Has previous page */
+            hasPrevPage?: boolean
+            rows: {
+              /** @description Pool id */
+              id: string
+              chainId: number
+              token0Price: string
+              token1Price: string
+              tvlToken0: string
+              tvlToken1: string
+              tvlUSD: string
+              volumeUSD24h: string
+              apr24h: string
+              /**
+               * @description Protocol version
+               * @enum {string}
+               */
+              protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+              feeTier: number
+              token0: {
+                id: string
+                symbol: string
+                name: string
+                decimals: number
+              }
+              token1: {
+                id: string
+                symbol: string
+                name: string
+                decimals: number
+              }
+            }[]
+          }
+        }
+      }
+    }
+  }
+  getCachedPoolsFarming: {
+    parameters: {
+      query: {
+        /** @description Array of protocol versions */
+        protocols: ('v2' | 'v3' | 'v4bin' | 'stable') | ('v2' | 'v3' | 'v4bin' | 'stable')[]
+        /** @description Array of chain names */
+        chains:
+          | ('bsc' | 'bsc-testnet' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum')
+          | (
+              | 'bsc'
+              | 'bsc-testnet'
+              | 'ethereum'
+              | 'base'
+              | 'opbnb'
+              | 'zksync'
+              | 'polygon-zkevm'
+              | 'linea'
+              | 'arbitrum'
+            )[]
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': {
+            /** @description Pool id */
+            id: string
+            chainId: number
+            token0Price: string
+            token1Price: string
+            tvlToken0: string
+            tvlToken1: string
+            tvlUSD: string
+            volumeUSD24h: string
+            apr24h: string
+            /**
+             * @description Protocol version
+             * @enum {string}
+             */
+            protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
+            feeTier: number
+            token0: {
+              id: string
+              symbol: string
+              name: string
+              decimals: number
+            }
+            token1: {
+              id: string
+              symbol: string
+              name: string
+              decimals: number
+            }
+          }[]
+        }
+      }
+    }
+  }
   getCachedPoolsV3ByChainNameByAddress: {
     parameters: {
       query?: never
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -2823,7 +3417,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Ethereum address */
         address: string
       }
@@ -2966,7 +3569,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
       }
       cookie?: never
     }
@@ -3020,7 +3632,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
       }
       cookie?: never
     }
@@ -3106,7 +3727,16 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
       }
       cookie?: never
     }
@@ -3238,8 +3868,7 @@ export interface operations {
       query?: never
       header?: never
       path: {
-        /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName: 'bsc' | 'arbitrum' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea'
         timestamp: string | number
       }
       cookie?: never
@@ -3252,9 +3881,7 @@ export interface operations {
         }
         content: {
           'application/json': {
-            /** @example 11150916 */
             height: number
-            /** @example 1603964988 */
             timestamp: number
           }
         }
@@ -3300,9 +3927,18 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
       }
       cookie?: never
     }
@@ -3330,9 +3966,18 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
       }
       cookie?: never
     }
@@ -3359,9 +4004,18 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
       }
       cookie?: never
     }
@@ -3415,9 +4069,18 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
       }
       cookie?: never
     }
@@ -3477,9 +4140,18 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
       }
       cookie?: never
     }
@@ -3512,9 +4184,18 @@ export interface operations {
       header?: never
       path: {
         /** @description Chain name */
-        chainName: 'bsc' | 'ethereum' | 'base' | 'opbnb' | 'zksync' | 'polygon-zkevm' | 'linea' | 'arbitrum'
+        chainName:
+          | 'bsc'
+          | 'bsc-testnet'
+          | 'ethereum'
+          | 'base'
+          | 'opbnb'
+          | 'zksync'
+          | 'polygon-zkevm'
+          | 'linea'
+          | 'arbitrum'
         /** @description Protocol version */
-        protocol: 'v2' | 'v3' | 'stable'
+        protocol: 'v2' | 'v3' | 'v4bin' | 'stable'
       }
       cookie?: never
     }
@@ -3535,6 +4216,23 @@ export interface operations {
             height: number
           }
         }
+      }
+    }
+  }
+  'postWebhooksWeb-deployed': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
     }
   }
