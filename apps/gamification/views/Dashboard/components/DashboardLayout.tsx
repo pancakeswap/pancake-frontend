@@ -8,13 +8,13 @@ import { useAccount } from 'wagmi'
 
 export const DashboardLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
-  const { pathname, push } = useRouter()
+  const { pathname, replace } = useRouter()
   const { address: account } = useAccount()
   const { isValidLoginToDashboard, isFetched } = useIsValidDashboardUser()
 
   useEffect(() => {
     if (isFetched && !isValidLoginToDashboard) {
-      push('/')
+      replace('/')
     }
   }, [isFetched, isValidLoginToDashboard, push])
 
