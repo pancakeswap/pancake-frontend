@@ -1,4 +1,5 @@
 import { supportedChainIdV4, UNIVERSAL_BCAKEWRAPPER_FARMS } from '@pancakeswap/farms'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { create, windowedFiniteBatchScheduler } from '@yornaath/batshit'
 import BigNumber from 'bignumber.js'
@@ -102,9 +103,14 @@ const calcV3PoolApr = ({
   const cakePerYearUsd = cakePrice.times(cakePerYear.toString())
   const [allocPoint, , , , , totalLiquidity, totalBoostLiquidity] = poolInfo
   const poolWeight = new BigNumber(allocPoint.toString()).dividedBy(totalAllocPoint.toString())
-  const liquidityBooster = new BigNumber(totalBoostLiquidity.toString()).dividedBy(totalLiquidity.toString())
+  const liquidityBooster =
+    Number(totalLiquidity) === 0
+      ? BIG_ZERO
+      : new BigNumber(totalBoostLiquidity.toString()).dividedBy(totalLiquidity.toString())
 
-  const baseApr = cakePerYearUsd.times(poolWeight).dividedBy(liquidityBooster.times(pool.tvlUsd ?? 1))
+  const baseApr = liquidityBooster.isZero()
+    ? BIG_ZERO
+    : cakePerYearUsd.times(poolWeight).dividedBy(liquidityBooster.times(pool.tvlUsd ?? 1))
 
   return {
     value: baseApr.toString() as `${number}`,
