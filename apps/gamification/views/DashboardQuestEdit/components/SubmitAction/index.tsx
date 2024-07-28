@@ -1,7 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { createSiweMessage, generateSiweNonce } from 'viem/siwe'
-import { useSignMessage } from 'wagmi'
 import {
   Box,
   Button,
@@ -19,7 +17,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { ADDRESS_ZERO } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { AddRewardModal } from 'views/DashboardQuestEdit/components/Reward/AddRewardModal'
 import { ActionModal } from 'views/DashboardQuestEdit/components/SubmitAction/ActionModal'
@@ -30,6 +28,7 @@ import { CompletionStatus, RewardType } from 'views/DashboardQuestEdit/type'
 import { combineDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 import { validateIsNotEmpty } from 'views/DashboardQuestEdit/utils/validateFormat'
 import { verifyTask } from 'views/DashboardQuestEdit/utils/verifyTask'
+import { useSiwe } from 'hooks/useSiwe'
 
 const StyledDeleteButton = styled(Button)`
   color: ${({ theme }) => theme.colors.failure};
@@ -50,7 +49,7 @@ export const SubmitAction = () => {
   const [isSubmitError, setIsSubmitError] = useState(false)
   const completionStatusToString = state.completionStatus.toString()
   const queryClient = useQueryClient()
-  const { signMessageAsync } = useSignMessage()
+  const { signIn } = useSiwe()
 
   const handlePickedRewardToken = (currency: Currency, totalRewardAmount: string, amountOfWinners: number) => {
     const tokenAddress = currency?.isNative ? ADDRESS_ZERO : currency?.address
@@ -84,21 +83,6 @@ export const SubmitAction = () => {
     setOpenModal(true)
   }
 
-  const siweMessage = useMemo(
-    () =>
-      typeof window !== 'undefined' && account && chainId
-        ? createSiweMessage({
-            address: account,
-            chainId,
-            domain: window.location.host,
-            uri: window.location.origin,
-            nonce: generateSiweNonce(),
-            version: '1',
-          })
-        : undefined,
-    [account, chainId],
-  )
-
   const [onPresentAddRewardModal] = useModal(
     <AddRewardModal state={state} handlePickedRewardToken={handlePickedRewardToken} />,
     true,
@@ -109,16 +93,16 @@ export const SubmitAction = () => {
   const handleClickDelete = async () => {
     if (query?.id) {
       try {
-        if (!siweMessage || !account) {
+        if (!account) {
           throw new Error('Invalid message to sign')
         }
-        const signature = await signMessageAsync({
-          account,
-          message: siweMessage,
+        const { signature, message } = await signIn({
+          address: account,
+          chainId,
         })
         const response = await fetch(`/api/dashboard/quest-delete?id=${query?.id}`, {
           method: 'DELETE',
-          body: JSON.stringify({ siweMessage, signature }),
+          body: JSON.stringify({ siweMessage: message, signature }),
         })
 
         if (response.ok) {
@@ -139,12 +123,12 @@ export const SubmitAction = () => {
   const handleSave = async (isCreate: boolean, completionStatus: CompletionStatus) => {
     try {
       setIsSubmitError(false)
-      if (!siweMessage || !account) {
+      if (!account) {
         throw new Error('Invalid message to sign')
       }
-      const signature = await signMessageAsync({
-        account,
-        message: siweMessage,
+      const { message, signature } = await signIn({
+        address: account,
+        chainId,
       })
       const url = isCreate ? `/api/dashboard/quest-create` : `/api/dashboard/quest-update?id=${query?.id}`
       const method = isCreate ? 'POST' : 'PUT'
@@ -188,7 +172,7 @@ export const SubmitAction = () => {
           endDateTime,
           numberOfParticipants,
           needAddReward,
-          siweMessage,
+          siweMessage: message,
           signature,
           ownerAddress: isCreate ? account?.toLowerCase() : ownerAddress,
           ...(rewardSCAddress && {

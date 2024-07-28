@@ -1,5 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
+import { useSiwe } from 'hooks/useSiwe'
 import qs from 'qs'
 import { useEffect, useRef, useState } from 'react'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
@@ -20,7 +21,8 @@ const initialData: AllDashboardQuestsType = {
 }
 
 export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
-  const { address: account } = useAccount()
+  const { address: account, chainId } = useAccount()
+  const { signIn } = useSiwe()
   const [page, setPage] = useState(1)
   const [quests, setQuests] = useState<SingleQuestData[]>([])
   const [hasNextPage, setHasNextPage] = useState<boolean>(true)
@@ -28,8 +30,11 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
   const isFetchingRef = useRef(false)
 
   const { refetch, isFetching } = useQuery({
-    queryKey: ['fetch-all-quest-dashboard-data', page, account, chainIdList, completionStatus],
+    queryKey: ['fetch-all-quest-dashboard-data', page, account, chainId, chainIdList, completionStatus],
     queryFn: async () => {
+      if (!account || !chainId) {
+        throw new Error('Invalid account')
+      }
       try {
         const prevDataSting = `${account}-${page}-${chainIdList}-${completionStatus}`
         if (prevData === prevDataSting) {
@@ -49,8 +54,14 @@ export const useFetchAllQuests = ({ chainIdList, completionStatus }) => {
           pageSize: PAGE_SIZE,
         }
         const queryString = qs.stringify(urlParamsObject, { arrayFormat: 'comma' })
+        const { message, signature } = await signIn({ address: account, chainId })
         const response = await fetch(`/api/dashboard/all-quests-info?${queryString}`, {
           method: 'GET',
+          headers: {
+            'X-G-Siwe-Message': encodeURIComponent(message),
+            'X-G-Siwe-Signature': signature,
+            'X-G-Siwe-Chain-Id': String(chainId),
+          },
         })
 
         const result = await response.json()

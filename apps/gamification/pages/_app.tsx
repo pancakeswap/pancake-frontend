@@ -19,11 +19,13 @@ import { Provider as WrapBalancerProvider } from 'react-wrap-balancer'
 import { useStore } from 'state'
 import { createGlobalStyle } from 'styled-components'
 import { createWagmiConfig } from 'utils/wagmi'
+import { useAutoSiwe } from 'hooks/useSiwe'
 import { WagmiProvider } from 'wagmi'
 import Menu from '../components/Menu/index'
 
 function GlobalHooks() {
   useAccountEventListener()
+  useAutoSiwe()
   return null
 }
 

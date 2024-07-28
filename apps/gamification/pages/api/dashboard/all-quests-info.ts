@@ -1,6 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import qs from 'qs'
+import { parseSiweMessage, verifySiweMessage } from 'viem/siwe'
 import { z } from 'zod'
+
+import { getViemClients } from 'utils/viem.server'
+import { DASHBOARD_ALLOW_LIST } from 'config/constants/dashboardAllowList'
 
 const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
 const zChainIdOptional = z
@@ -37,6 +41,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (parsed.success === false) {
     return res.status(400).json({ message: 'Invalid query', reason: parsed.error })
+  }
+
+  const unauthorized = () => res.status(401).json({ message: 'Unauthorized' })
+  const encodedMessage = req.headers['x-g-siwe-message']
+  const signature = req.headers['x-g-siwe-signature']
+  const chainId = req.headers['x-g-siwe-chain-id']
+  if (
+    !encodedMessage ||
+    !signature ||
+    typeof encodedMessage !== 'string' ||
+    typeof signature !== 'string' ||
+    !chainId
+  ) {
+    return unauthorized()
+  }
+  const message = decodeURIComponent(encodedMessage)
+  const { address } = parseSiweMessage(message)
+  if (!address || !DASHBOARD_ALLOW_LIST.includes(address)) {
+    return unauthorized()
+  }
+  const client = getViemClients({ chainId: Number(chainId) })
+  const validSignature = await verifySiweMessage(client, {
+    message,
+    signature: signature as `0x{string}`,
+  })
+  if (!validSignature) {
+    return unauthorized()
   }
 
   const response = await fetch(
