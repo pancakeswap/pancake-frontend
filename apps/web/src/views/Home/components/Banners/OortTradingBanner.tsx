@@ -28,14 +28,6 @@ const StyledImage = styled.img<{ hidden?: boolean }>`
   width: 85px;
 `
 
-const GradientBlur = styled(BannerContainer)<{ width: number; left: number; top: number; blur: number }>`
-  width: ${({ width }) => width}%;
-  position: absolute;
-  left: ${({ left }) => left}%;
-  top: ${({ right }) => right}%;
-  background: #c6cbf2;
-  filter: blur(${({ blur }) => blur}px);
-`
 const OORT_PATH = `${ASSET_CDN}/web/banners/oort`
 const floatingAsset = `${ASSET_CDN}/web/banners/oort/oort-coin.png`
 
