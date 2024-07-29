@@ -11,7 +11,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useQuestRewardContract } from 'hooks/useContract'
 import { useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
-import { Address, toHex } from 'viem'
+import { Address, toHex, encodePacked, keccak256, getAddress } from 'viem'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { MessageInfo } from 'views/Quest/components/Reward/MessageInfo'
@@ -52,6 +52,13 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
   const { toastSuccess, toastError } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
   const contract = useQuestRewardContract(quest.reward?.currency?.network as ChainId)
+  const rewardClaimingId = useMemo(
+    () =>
+      id && quest.ownerAddress
+        ? keccak256(encodePacked(['bytes32', 'address'], [toHex(id), getAddress(quest.ownerAddress) as Address]))
+        : undefined,
+    [quest.ownerAddress, id],
+  )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text>
@@ -65,12 +72,13 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
   )
 
   const { data: claimedRewardAmount } = useQuery({
-    queryKey: ['/get-quest-claimed-reward', account, id],
+    queryKey: ['/get-quest-claimed-reward', account, rewardClaimingId],
     queryFn: async () => {
-      const amount = await contract.read.getClaimedReward([toHex(id), account as Address])
+      if (!rewardClaimingId) throw new Error('Invalid reward id to claim')
+      const amount = await contract.read.getClaimedReward([rewardClaimingId, account as Address])
       return amount?.toString() ?? '0'
     },
-    enabled: Boolean(account && id && completionStatus === CompletionStatus.FINISHED),
+    enabled: Boolean(account && rewardClaimingId && completionStatus === CompletionStatus.FINISHED),
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -98,9 +106,10 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
 
   const handleClaimReward = useCallback(async () => {
     try {
+      if (!rewardClaimingId) throw new Error('Invalid reward id to claim')
       if (proofData && proofData?.proofs?.length > 0) {
         const receipt = await fetchWithCatchTxError(() =>
-          contract.write.claimReward([toHex(id), BigInt(proofData?.rewardAmount ?? '0'), proofData?.proofs], {
+          contract.write.claimReward([rewardClaimingId, BigInt(proofData?.rewardAmount ?? '0'), proofData?.proofs], {
             account,
             chainId,
           } as any),
@@ -119,7 +128,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
       console.error('[ERROR] Submit Claim Quest Reward: ', error)
       toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
     }
-  }, [proofData, contract, id, account, chainId, toastSuccess, t, toastError, fetchWithCatchTxError])
+  }, [proofData, contract, rewardClaimingId, account, chainId, toastSuccess, t, toastError, fetchWithCatchTxError])
 
   return (
     <>
