@@ -79,7 +79,13 @@ export function usePools(
   poolKeys: [Currency | undefined | null, Currency | undefined | null, FeeAmount | undefined][],
 ): [PoolState, Pool | null][] {
   const { chainId } = useActiveChainId()
+  return usePoolsWithChainId(poolKeys, chainId)
+}
 
+export function usePoolsWithChainId(
+  poolKeys: [Currency | undefined | null, Currency | undefined | null, FeeAmount | undefined][],
+  chainId?: number,
+): [PoolState, Pool | null][] {
   const poolTokens: ([Token, Token, FeeAmount] | undefined)[] = useMemo(() => {
     if (!chainId) return new Array(poolKeys.length)
 
@@ -153,4 +159,17 @@ export function usePool(
   )
 
   return usePools(poolKeys)[0]
+}
+export function usePoolWithChainId(
+  currencyA: Currency | undefined | null,
+  currencyB: Currency | undefined | null,
+  feeAmount: FeeAmount | undefined,
+  chainId?: number,
+): [PoolState, Pool | null] {
+  const poolKeys: [Currency | undefined | null, Currency | undefined | null, FeeAmount | undefined][] = useMemo(
+    () => [[currencyA, currencyB, feeAmount]],
+    [currencyA, currencyB, feeAmount],
+  )
+
+  return usePoolsWithChainId(poolKeys, chainId)[0]
 }
