@@ -8,6 +8,7 @@ import { ApproveAndLockStatus, approveAndLockStatusAtom, cakeLockTxHashAtom } fr
 import { useLockCakeData } from 'state/vecake/hooks'
 import { calculateGasMargin } from 'utils'
 import { useAccount, useWalletClient } from 'wagmi'
+import { useGasPrice } from 'state/user/hooks'
 import { useRoundedUnlockTimestamp } from '../useRoundedUnlockTimestamp'
 
 // invoke the lock function on the vecake contract
@@ -20,6 +21,7 @@ export const useWriteLockCallback = () => {
   const { data: walletClient } = useWalletClient()
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
   const roundedUnlockTimestamp = useRoundedUnlockTimestamp()
+  const gasPrice = useGasPrice()
 
   const lockCake = useCallback(async () => {
     const week = Number(cakeLockWeeks)
@@ -30,6 +32,7 @@ export const useWriteLockCallback = () => {
       {
         account: account!,
         chain: veCakeContract.chain,
+        gasPrice,
       },
     )
 
@@ -61,6 +64,7 @@ export const useWriteLockCallback = () => {
     walletClient,
     setTxHash,
     waitForTransaction,
+    gasPrice,
   ])
 
   return lockCake

@@ -47,6 +47,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
 import { ResponsiveTwoColumns } from 'views/AddLiquidityV3'
 import { useInitialRange } from 'views/AddLiquidityV3/formViews/V3FormView/form/hooks/useInitialRange'
+import { useGasPrice } from 'state/user/hooks'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 import RangeSelector from './formViews/V3FormView/components/RangeSelector'
 import RateToggle from './formViews/V3FormView/components/RateToggle'
@@ -117,6 +118,7 @@ function V2PairMigrate({
     currentLanguage: { locale },
   } = useTranslation()
   const { account, chainId } = useAccountActiveChain()
+  const gasPrice = useGasPrice()
   const { balance: pairBalance } = useTokenBalance(v2PairAddress)
 
   const { reserve0, reserve1 } = pair
@@ -469,7 +471,13 @@ function V2PairMigrate({
       )
       .then((gasEstimate) => {
         return migrator.write
-          .multicall([data], { gas: calculateGasMargin(gasEstimate), account, chain: migrator.chain, value: 0n })
+          .multicall([data], {
+            gas: calculateGasMargin(gasEstimate),
+            gasPrice,
+            account,
+            chain: migrator.chain,
+            value: 0n,
+          })
           .then((response) => {
             addTransaction(
               {
@@ -510,6 +518,7 @@ function V2PairMigrate({
     pair,
     currency0,
     currency1,
+    gasPrice,
   ])
 
   const isSuccessfullyMigrated = useMemo(

@@ -55,6 +55,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { logGTMClickRemoveLiquidityEvent } from 'utils/customGTMEventTracking'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
+import { useGasPrice } from 'state/user/hooks'
 import { useBurnV3ActionHandlers } from './form/hooks'
 
 const BorderCard = styled.div`
@@ -94,6 +95,7 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
   const addTransaction = useTransactionAdder()
 
   const { data: walletClient } = useWalletClient()
+  const gasPrice = useGasPrice()
 
   const masterchefV3 = useMasterchefV3()
   const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(
@@ -191,6 +193,7 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
       sendTransactionAsync({
         ...txn,
         gas: calculateGasMargin(gas),
+        gasPrice,
         chainId,
       })
         .then((response) => {
@@ -236,6 +239,7 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
     walletClient,
     sendTransactionAsync,
     t,
+    gasPrice,
   ])
 
   const removed = position?.liquidity === 0n

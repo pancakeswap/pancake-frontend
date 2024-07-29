@@ -13,6 +13,7 @@ import { getViemClients } from 'utils/viem'
 import { encodeFunctionData } from 'viem'
 import { LiquidStakingList } from 'views/LiquidStaking/constants/types'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
+import { useGasPrice } from 'state/user/hooks'
 
 export const useCallStakingContract = (selectedList: LiquidStakingList | null) => {
   const contract = useContract(selectedList?.contract, selectedList?.abi)
@@ -50,6 +51,7 @@ export const useCallClaimContract = (claimedAmount?: CurrencyAmount<Currency>, i
   })
   const { account, chainId } = useAccountActiveChain()
   const addTransaction = useTransactionAdder()
+  const gasPrice = useGasPrice()
 
   const calldata = useMemo(() => {
     return indexNumber !== undefined
@@ -79,6 +81,7 @@ export const useCallClaimContract = (claimedAmount?: CurrencyAmount<Currency>, i
           data: calldata,
           gas: calculateGasMargin(gasLimit),
           chainId,
+          gasPrice,
         })
       })
       .then((hash) => {
@@ -90,7 +93,7 @@ export const useCallClaimContract = (claimedAmount?: CurrencyAmount<Currency>, i
           },
         )
       })
-  }, [account, addTransaction, calldata, chainId, claimedAmount, sendTransactionAsync])
+  }, [account, addTransaction, calldata, chainId, claimedAmount, sendTransactionAsync, gasPrice])
 
   return useMemo(
     () => ({

@@ -81,6 +81,7 @@ import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
 import { useSendTransaction, useWalletClient } from 'wagmi'
+import { useGasPrice } from 'state/user/hooks'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -186,6 +187,7 @@ export default function PoolPage() {
   const [receiveWNATIVE, setReceiveWNATIVE] = useState(false)
 
   const { data: signer } = useWalletClient()
+  const gasPrice = useGasPrice()
   const { sendTransactionAsync } = useSendTransaction()
 
   const { account, chainId } = useAccountActiveChain()
@@ -350,6 +352,7 @@ export default function PoolPage() {
         const newTxn = {
           ...txn,
           gas: calculateGasMargin(estimate),
+          gasPrice,
         }
 
         return sendTransactionAsync(newTxn).then((hash) => {

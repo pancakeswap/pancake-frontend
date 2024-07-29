@@ -27,6 +27,7 @@ import { useSendTransaction } from 'wagmi'
 import { usePaymaster } from 'hooks/usePaymaster'
 import { logger } from 'utils/datadog'
 import { viemClients } from 'utils/viem'
+import { useGasPrice } from 'state/user/hooks'
 import { isZero } from '../utils/isZero'
 
 interface SwapCall {
@@ -65,6 +66,7 @@ export default function useSendSwapTransaction(
 ) {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
+  const gasPrice = useGasPrice()
   const { sendTransactionAsync } = useSendTransaction()
   const publicClient = viemClients[chainId as ChainId]
   const [allowedSlippage] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
@@ -162,6 +164,7 @@ export default function useSendSwapTransaction(
             data: call.calldata,
             value: call.value && !isZero(call.value) ? hexToBigInt(call.value) : 0n,
             gas: call.gas,
+            gasPrice,
           })
         }
 

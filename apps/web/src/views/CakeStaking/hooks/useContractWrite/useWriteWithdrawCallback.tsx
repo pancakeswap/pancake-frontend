@@ -5,6 +5,7 @@ import { useSetAtom } from 'jotai'
 import { approveAndLockStatusAtom, cakeLockTxHashAtom, ApproveAndLockStatus } from 'state/vecake/atoms'
 import { usePublicNodeWaitForTransaction } from 'hooks/usePublicNodeWaitForTransaction'
 import { zeroAddress } from 'viem'
+import { useGasPrice } from 'state/user/hooks'
 
 // invoke the lock function on the vecake contract
 export const useWriteWithdrawCallback = () => {
@@ -13,12 +14,15 @@ export const useWriteWithdrawCallback = () => {
   const setStatus = useSetAtom(approveAndLockStatusAtom)
   const setTxHash = useSetAtom(cakeLockTxHashAtom)
   const { data: walletClient } = useWalletClient()
+  const gasPrice = useGasPrice()
+
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
 
   const withdraw = useCallback(async () => {
     const { request } = await veCakeContract.simulate.withdrawAll([zeroAddress], {
       account: account!,
       chain: veCakeContract.chain,
+      gasPrice,
     })
 
     setStatus(ApproveAndLockStatus.UNLOCK_CAKE)

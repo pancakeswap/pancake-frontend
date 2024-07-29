@@ -16,6 +16,7 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { viemClients } from 'utils/viem'
 import { Address, Hex, TransactionExecutionError, hexToBigInt } from 'viem'
 import { useSendTransaction } from 'wagmi'
+import { useGasPrice } from 'state/user/hooks'
 import { MMSwapCall } from './useSwapCallArguments'
 
 export enum SwapCallbackState {
@@ -82,6 +83,7 @@ const useSendMMTransaction = (
   expiredAt?: number,
 ) => {
   const { t } = useTranslation()
+  const gasPrice = useGasPrice()
   const addTransaction = useTransactionAdder()
   const { sendTransactionAsync } = useSendTransaction()
   const publicClient = viemClients[chainId as ChainId]
@@ -147,6 +149,7 @@ const useSendMMTransaction = (
           data: calldata,
           value: hexToBigInt(value),
           gas: calculateGasMargin(gasEstimate),
+          gasPrice,
         })
           .then((hash) => {
             const inputSymbol = trade.inputAmount.currency.symbol
@@ -246,5 +249,6 @@ const useSendMMTransaction = (
     swapCalls,
     t,
     trade,
+    gasPrice,
   ])
 }

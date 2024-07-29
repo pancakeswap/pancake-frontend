@@ -56,10 +56,8 @@ export function useCallWithGasPrice() {
         ...overrides_,
       } as unknown as WriteContractParameters)
 
-      const hash = res
-
       return {
-        hash,
+        hash: res,
       }
     },
     [chainId, gasPrice, walletClient],
