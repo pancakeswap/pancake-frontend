@@ -77,9 +77,30 @@ export function useSiwe() {
 
   const signOut = useCallback(() => setSiwe(undefined), [])
 
+  const fetchWithSiweAuth = useCallback<typeof fetch>(
+    async (input: RequestInfo | URL, init: RequestInit | undefined) => {
+      if (!currentAddress || !currentChainId) throw new Error('Invalid address or chain id')
+      const { message, signature } = await signIn({
+        address: currentAddress,
+        chainId: currentChainId,
+      })
+      return fetch(input, {
+        ...init,
+        headers: {
+          ...init?.headers,
+          'X-G-Siwe-Message': encodeURIComponent(message),
+          'X-G-Siwe-Signature': signature,
+          'X-G-Siwe-Chain-Id': String(currentChainId),
+        },
+      })
+    },
+    [signIn, currentChainId, currentAddress],
+  )
+
   return {
     siwe,
     signIn,
     signOut,
+    fetchWithSiweAuth,
   }
 }

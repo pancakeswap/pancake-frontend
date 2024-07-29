@@ -8,7 +8,7 @@ type ExtendedReq = NextApiRequest & {
 
 export type ExtendedApiHandler = (req: ExtendedReq, res: NextApiResponse) => ReturnType<NextApiHandler>
 
-export function withSiweAuth(handler: NextApiHandler | ExtendedApiHandler): ExtendedApiHandler {
+export function withSiweAuth(handler: ExtendedApiHandler): ExtendedApiHandler {
   return async (req, res) => {
     const unauthorized = () => res.status(401).json({ message: 'Unauthorized' })
     const encodedMessage = req.headers['x-g-siwe-message']

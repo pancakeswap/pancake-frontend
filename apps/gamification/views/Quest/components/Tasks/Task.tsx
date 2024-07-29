@@ -16,6 +16,7 @@ import {
   useToast,
 } from '@pancakeswap/uikit'
 import { CHAIN_QUERY_NAME } from 'config/chains'
+import { useSiwe } from 'hooks/useSiwe'
 import Cookie from 'js-cookie'
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -69,6 +70,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const [socialName, setSocialName] = useState('')
   const [isPending, setIsPending] = useState(false)
   const [actionPanelExpanded, setActionPanelExpanded] = useState(false)
+  const { fetchWithSiweAuth } = useSiwe()
 
   const twitterId = userInfo?.socialHubToSocialUserIdMap?.Twitter ?? ''
   const providerId = (session as any)?.user?.twitter?.providerId
@@ -223,7 +225,15 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   ])
 
   const handleAddBlogPost = async () => {
-    const response = await completeVisitingWebTask(account ?? '', questId, task?.id ?? '')
+    const queryString = new URLSearchParams({
+      account,
+      questId,
+      taskId: task?.id ?? '',
+      taskName: TaskType.VISIT_BLOG_POST,
+    }).toString()
+    const response = await fetchWithSiweAuth(`/api/task/completeVisitingWebTask?${queryString}`, {
+      method: 'POST',
+    })
 
     if (response.ok) {
       const url = (task as TaskBlogPostConfig).blogUrl
