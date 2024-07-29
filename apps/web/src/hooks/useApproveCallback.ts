@@ -11,6 +11,7 @@ import { getViemErrorMessage } from 'utils/errors'
 import { isUserRejected, logError } from 'utils/sentry'
 import { Address, SendTransactionReturnType, encodeFunctionData, parseAbi } from 'viem'
 import { useAccount } from 'wagmi'
+import { useGasPrice } from 'state/user/hooks'
 import useGelatoLimitOrdersLib from './limitOrders/useGelatoLimitOrdersLib'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
 import { useTokenContract } from './useContract'
@@ -44,6 +45,7 @@ export function useApproveCallback(
 ) {
   const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
+  const gasPrice = useGasPrice()
   const { t } = useTranslation()
   const { toastError } = useToast()
   const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
@@ -170,6 +172,7 @@ export function useApproveCallback(
       } else {
         sendTxResult = callWithGasPrice(tokenContract, 'approve' as const, [spender as Address, finalAmount], {
           gas: calculateGasMargin(estimatedGas),
+          gasPrice,
         }).then((response) => response.hash)
       }
 
@@ -217,6 +220,7 @@ export function useApproveCallback(
       isPaymasterTokenActive,
       sendPaymasterTransaction,
       enablePaymaster,
+      gasPrice,
     ],
   )
 
