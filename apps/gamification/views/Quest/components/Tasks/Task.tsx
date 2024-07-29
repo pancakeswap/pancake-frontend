@@ -226,7 +226,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
 
   const handleAddBlogPost = async () => {
     const queryString = new URLSearchParams({
-      account,
+      account: account ?? '',
       questId,
       taskId: task?.id ?? '',
       taskName: TaskType.VISIT_BLOG_POST,
