@@ -3229,4 +3229,12 @@ export const bscTokens = {
     'DeXe Token',
     'https://dexe.network/',
   ),
+  wsi: new ERC20Token(
+    ChainId.BSC,
+    '0x837A130aED114300Bab4f9f1F4f500682f7efd48',
+    18,
+    'WSI',
+    'WeSendit',
+    'https://wesendit.io/',
+  ),
 }
