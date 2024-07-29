@@ -38,7 +38,6 @@ import { getSingleTaskTwitterIdCookie } from 'views/Profile/utils/getTwitterIdCo
 import { TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
-import { completeVisitingWebTask } from 'views/Quest/utils/completeVisitingWebTask'
 import { useAccount } from 'wagmi'
 
 const VerifyButton = styled(Button)`
@@ -103,6 +102,9 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
         const response = await fetch(`/api/twitterFollow?${queryString}`)
         if (response.ok) {
           await refresh()
+        } else {
+          const { message } = await response.json()
+          throw new Error(message)
         }
       } catch (error) {
         toastError(`Verify Twitter Followed Fail: ${error}`)
@@ -134,6 +136,9 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
         const response = await fetch(`/api/twitterLiked?${queryString}`)
         if (response.ok) {
           await refresh()
+        } else {
+          const { message } = await response.json()
+          throw new Error(message)
         }
       } catch (error) {
         toastError(`Verify Twitter Liked Fail: ${error}`)

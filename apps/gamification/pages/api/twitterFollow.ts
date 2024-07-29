@@ -31,6 +31,7 @@ export default async function handler(req, res) {
       const result = await response.json()
       if (!response.ok) {
         res.status(500).json({ message: result.title })
+        return
       }
 
       if (result.data.following) {
@@ -53,6 +54,7 @@ export default async function handler(req, res) {
         const responseMarkTaskResult = await apiRes.json()
         if (apiRes.ok) {
           res.status(200).json(responseMarkTaskResult)
+          return
         }
 
         res.status(500).json({ message: responseMarkTaskResult.title })

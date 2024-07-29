@@ -26,11 +26,16 @@ export default async function handler(req, res) {
 
       // eslint-disable-next-line no-constant-condition
       while (true) {
+        const queryString = new URLSearchParams({
+          max_results: '100',
+        }).toString()
+        const requestUrl = `${url}?${queryString}`
+
         // eslint-disable-next-line no-await-in-loop
-        const response = await fetch(url + (nextToken ? `?pagination_token=${nextToken}` : ''), {
+        const response = await fetch(requestUrl, {
           method,
           headers: {
-            ...getOAuthHeader(url, method, consumerKey, consumerSecret, token, tokenSecret),
+            ...getOAuthHeader(requestUrl, method, consumerKey, consumerSecret, token, tokenSecret),
             'Content-Type': 'application/json',
           },
         })
@@ -48,10 +53,17 @@ export default async function handler(req, res) {
           break
         }
 
-        nextToken = result.meta.next_token
+        // Only check for the latest 100 tweets as the api is rate limited
+        // nextToken = result.meta.next_token
+        nextToken = null
         if (!nextToken) {
           break
         }
+      }
+
+      if (!tweetFound) {
+        res.status(400).json({ message: 'No tweet found' })
+        return
       }
 
       if (tweetFound) {
