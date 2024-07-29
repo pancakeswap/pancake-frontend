@@ -45,7 +45,6 @@ export function useApproveCallback(
 ) {
   const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const gasPrice = useGasPrice()
   const { t } = useTranslation()
   const { toastError } = useToast()
   const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
@@ -172,7 +171,6 @@ export function useApproveCallback(
       } else {
         sendTxResult = callWithGasPrice(tokenContract, 'approve' as const, [spender as Address, finalAmount], {
           gas: calculateGasMargin(estimatedGas),
-          gasPrice,
         }).then((response) => response.hash)
       }
 
@@ -220,7 +218,6 @@ export function useApproveCallback(
       isPaymasterTokenActive,
       sendPaymasterTransaction,
       enablePaymaster,
-      gasPrice,
     ],
   )
 
