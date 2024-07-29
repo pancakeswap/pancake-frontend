@@ -1,5 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { withSiweAuth } from 'middlewares/withSiwe'
