@@ -397,6 +397,7 @@ export default function PoolPage() {
     sendTransactionAsync,
     addTransaction,
     t,
+    gasPrice,
   ])
 
   const owner = useSingleCallResult({

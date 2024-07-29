@@ -79,6 +79,7 @@ export const useWriteIncreaseLockAmountCallback = () => {
     setTxHash,
     waitForTransaction,
     chainId,
+    gasPrice,
   ])
 
   return increaseLockAmount

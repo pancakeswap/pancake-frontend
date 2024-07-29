@@ -283,6 +283,7 @@ export default function useSendSwapTransaction(
     sendPaymasterTransaction,
     isPaymasterAvailable,
     isPaymasterTokenActive,
+    gasPrice,
   ])
 }
 

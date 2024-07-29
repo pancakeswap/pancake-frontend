@@ -40,7 +40,7 @@ export const useWriteMigrateCallback = () => {
         setStatus(ApproveAndLockStatus.ERROR)
       }
     }
-  }, [veCakeContract, account, setStatus, setTxHash, waitForTransaction, walletClient])
+  }, [veCakeContract, account, setStatus, setTxHash, waitForTransaction, walletClient, gasPrice])
 
   return lockCake
 }

@@ -161,6 +161,7 @@ const useFarmV3Actions = ({
     toastSuccess,
     tokenId,
     onDone,
+    gasPrice,
   ])
 
   const onHarvest = useCallback(async () => {
@@ -213,6 +214,7 @@ const useFarmV3Actions = ({
     toastSuccess,
     tokenId,
     queryClient,
+    gasPrice,
   ])
 
   return {
@@ -272,7 +274,17 @@ export function useFarmsV3BatchHarvest() {
         queryClient.invalidateQueries({ queryKey: ['mcv3-harvest'] })
       }
     },
-    [account, fetchWithCatchTxError, masterChefV3Address, sendTransactionAsync, signer, t, toastSuccess, queryClient],
+    [
+      account,
+      fetchWithCatchTxError,
+      masterChefV3Address,
+      sendTransactionAsync,
+      signer,
+      t,
+      toastSuccess,
+      queryClient,
+      gasPrice,
+    ],
   )
 
   return {

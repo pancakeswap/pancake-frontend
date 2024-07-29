@@ -95,6 +95,7 @@ export const useWriteIncreaseLockWeeksCallback = (onDismiss?: () => void) => {
     chainId,
     setCakeLockWeeks,
     onDismiss,
+    gasPrice,
   ])
 
   return increaseLockWeeks

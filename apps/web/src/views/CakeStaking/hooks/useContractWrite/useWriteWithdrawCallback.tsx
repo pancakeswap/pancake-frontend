@@ -41,7 +41,7 @@ export const useWriteWithdrawCallback = () => {
         setStatus(ApproveAndLockStatus.ERROR)
       }
     }
-  }, [veCakeContract, account, setStatus, setTxHash, waitForTransaction, walletClient])
+  }, [veCakeContract, account, setStatus, setTxHash, waitForTransaction, walletClient, gasPrice])
 
   return withdraw
 }
