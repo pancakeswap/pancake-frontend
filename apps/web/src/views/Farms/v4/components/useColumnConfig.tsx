@@ -3,6 +3,8 @@ import { BasicDataType, FeeTier, ITableViewProps, Skeleton, useMatchBreakpoints 
 import { FiatNumberDisplay, TokenOverview } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
 import { useMemo } from 'react'
+import { PoolInfo } from 'state/farmsV4/state/type'
+import { PoolApyButton } from './PoolApyButton'
 import { PoolListItemAction } from './PoolListItemAction'
 
 export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['columns'] => {
@@ -45,12 +47,8 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
         dataIndex: 'lpApr',
         key: 'apr',
         sorter: true,
-        render: (value) =>
-          value ? (
-            <>{(Number(value) * 100).toLocaleString(undefined, { maximumFractionDigits: 2 })}%</>
-          ) : (
-            <Skeleton width={60} />
-          ),
+        render: (value, info) =>
+          value ? <PoolApyButton pool={info as unknown as PoolInfo} /> : <Skeleton width={60} />,
       },
       {
         title: t('TVL'),
