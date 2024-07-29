@@ -210,6 +210,7 @@ export const SubmitAction = () => {
     } catch (error) {
       setIsSubmitError(true)
       console.error('Submit quest  error: ', error)
+      throw error
     }
   }
 

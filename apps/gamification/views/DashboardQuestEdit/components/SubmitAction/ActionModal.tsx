@@ -68,12 +68,15 @@ export const ActionModal: React.FC<ActionModalProps> = ({
 
   const handleSubmit = useCallback(async () => {
     setModalView(QuestEditModalState.LOADING)
-    await handleSave()
-
-    if (isSubmitError) {
+    try {
+      await handleSave()
+      if (isSubmitError) {
+        setModalView(QuestEditModalState.FAILED)
+      } else {
+        setModalView(QuestEditModalState.FINISHED)
+      }
+    } catch (e) {
       setModalView(QuestEditModalState.FAILED)
-    } else {
-      setModalView(QuestEditModalState.FINISHED)
     }
   }, [handleSave, isSubmitError])
 

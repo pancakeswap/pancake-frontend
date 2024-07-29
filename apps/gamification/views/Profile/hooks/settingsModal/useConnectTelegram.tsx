@@ -76,6 +76,11 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
             })
           } catch (error) {
             console.error(`Connect ${SocialHubType.Telegram} error: `, error)
+            toastError(
+              `Failed to connect ${SocialHubType.Telegram}: ${
+                error instanceof Error && error?.message ? error.message : JSON.stringify(error)
+              }`,
+            )
           }
         } else {
           // User cancelled authentication, redirect to /profile
