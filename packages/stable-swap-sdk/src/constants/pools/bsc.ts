@@ -2,6 +2,7 @@ import { bscTokens } from '@pancakeswap/tokens'
 
 import { StableSwapPool } from '../../types'
 
+// @todo @ChefJerry why there are two stable swap config apart from packages/farms
 export const pools: StableSwapPool[] = [
   {
     lpSymbol: 'lisUSD-BUSD LP',
