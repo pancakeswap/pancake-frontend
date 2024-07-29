@@ -21,6 +21,11 @@ export default NextAuth({
       clientId: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_2].consumerKey ?? '',
       clientSecret: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_2].consumerKeySecret ?? '',
     }),
+    TwitterProvider({
+      id: TwitterFollowersId.TWITTER_ID_3,
+      clientId: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_3].consumerKey ?? '',
+      clientSecret: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_3].consumerKeySecret ?? '',
+    }),
   ],
   session: {
     maxAge: 3, // 3 sec
@@ -29,7 +34,8 @@ export default NextAuth({
     signIn: '/profile',
   },
   callbacks: {
-    async jwt({ token, account, profile }: any) {
+    async jwt(params: any) {
+      const { token, account, profile } = params
       // Initial sign-in
       if (account && profile) {
         // eslint-disable-next-line default-case
@@ -58,7 +64,8 @@ export default NextAuth({
       }
       return token
     },
-    async session({ session, token }) {
+    async session(params) {
+      const { session, token } = params
       // eslint-disable-next-line no-param-reassign
       ;(session as any).user.discord = token.discord || null
       // eslint-disable-next-line no-param-reassign

@@ -7,8 +7,8 @@ export enum TwitterFollowersId {
 }
 
 export const verifyTwitterFollowersIds = [
-  TwitterFollowersId.TWITTER_ID_2,
-  // TwitterFollowersId.TWITTER_ID_3,
+  // TwitterFollowersId.TWITTER_ID_2,
+  TwitterFollowersId.TWITTER_ID_3,
   // TwitterFollowersId.TWITTER_ID_4,
   // TwitterFollowersId.TWITTER_ID_5,
 ]
