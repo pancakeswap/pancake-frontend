@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
 import { MasterChefV3, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { useQueryClient } from '@tanstack/react-query'
@@ -11,6 +12,8 @@ import { calculateGasMargin } from 'utils'
 import { getViemClients, viemClients } from 'utils/viem'
 import { Address, hexToBigInt } from 'viem'
 import { useAccount, useSendTransaction, useWalletClient } from 'wagmi'
+import { useIsSmartContract } from 'hooks/useIsSmartContract'
+import { BOOSTED_FARM_V3_GAS_LIMIT } from 'config'
 
 interface FarmV3ActionContainerChildrenProps {
   attemptingTxn: boolean
@@ -31,6 +34,7 @@ const useFarmV3Actions = ({
   const { address: account } = useAccount()
   const { data: signer } = useWalletClient()
   const { chainId } = useActiveChainId()
+  const isSC = useIsSmartContract(account)
   const { sendTransactionAsync } = useSendTransaction()
   const queryClient = useQueryClient()
   const publicClient = viemClients[chainId as keyof typeof viemClients]
@@ -54,14 +58,27 @@ const useFarmV3Actions = ({
     }
 
     const resp = await fetchWithCatchTxError(() =>
-      publicClient.estimateGas(txn).then((estimate) => {
-        const newTxn = {
-          ...txn,
-          gas: calculateGasMargin(estimate),
-        }
+      publicClient
+        .estimateGas(txn)
+        .then((estimate) => {
+          const newTxn = {
+            ...txn,
+            gas: calculateGasMargin(estimate),
+          }
 
-        return sendTransactionAsync(newTxn)
-      }),
+          return sendTransactionAsync(newTxn)
+        })
+        .catch((e) => {
+          // Workaround for zksync smart wallets
+          if (isSC && chainId === ChainId.ZKSYNC && e.shortMessage.includes('argent/forbidden-fallback')) {
+            const newTxn = {
+              ...txn,
+              gas: BOOSTED_FARM_V3_GAS_LIMIT,
+            }
+            return sendTransactionAsync(newTxn)
+          }
+          throw e
+        }),
     )
     if (resp?.status) {
       onDone?.()
@@ -76,6 +93,8 @@ const useFarmV3Actions = ({
     account,
     fetchWithCatchTxError,
     masterChefV3Address,
+    isSC,
+    chainId,
     publicClient,
     sendTransactionAsync,
     signer,
