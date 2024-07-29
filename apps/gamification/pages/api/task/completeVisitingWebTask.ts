@@ -1,5 +1,6 @@
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { TaskType } from 'views/DashboardQuestEdit/type'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!GAMIFICATION_PUBLIC_API || !req.query || req.method !== 'POST') {
@@ -7,6 +8,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const { account, questId, taskName, taskId } = req.query
+  if (taskName !== TaskType.VISIT_BLOG_POST) {
+    return res.status(400).json({ message: 'Invalid task' })
+  }
 
   const response = await fetch(
     `${GAMIFICATION_PUBLIC_API}/userInfo/v1/user/${account}/quest/${questId}/mark-task-status`,

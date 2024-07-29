@@ -1,3 +1,4 @@
+import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { getOAuthHeader } from 'utils/getOAuthHeader'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
@@ -54,16 +55,24 @@ export default async function handler(req, res) {
       }
 
       if (tweetFound) {
-        const queryString = new URLSearchParams({
-          account,
-          questId,
-          taskId,
-          taskName: TaskType.X_LIKE_POST,
-        }).toString()
+        const apiRes = await fetch(
+          `${GAMIFICATION_PUBLIC_API}/userInfo/v1/user/${account}/quest/${questId}/mark-task-status`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: process.env.TASK_STATUS_TOKEN as string,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              taskName: TaskType.X_LIKE_POST,
+              taskId,
+              isCompleted: true,
+            }),
+          },
+        )
 
-        const responseMarkTask = await fetch(`/api/userInfo/markTaskStatus?${queryString}`, { method: 'POST' })
-        const responseMarkTaskResult = await responseMarkTask.json()
-        if (responseMarkTask.ok) {
+        const responseMarkTaskResult = await apiRes.json()
+        if (apiRes.ok) {
           res.status(200).json(responseMarkTaskResult)
         } else {
           res.status(500).json({ message: responseMarkTaskResult.title })

@@ -37,7 +37,7 @@ import { getSingleTaskTwitterIdCookie } from 'views/Profile/utils/getTwitterIdCo
 import { TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
-import { fetchMarkTaskStatus } from 'views/Quest/utils/fetchMarkTaskStatus'
+import { completeVisitingWebTask } from 'views/Quest/utils/completeVisitingWebTask'
 import { useAccount } from 'wagmi'
 
 const VerifyButton = styled(Button)`
@@ -223,7 +223,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   ])
 
   const handleAddBlogPost = async () => {
-    const response = await fetchMarkTaskStatus(account ?? '', questId, TaskType.VISIT_BLOG_POST, task?.id ?? '')
+    const response = await completeVisitingWebTask(account ?? '', questId, task?.id ?? '')
 
     if (response.ok) {
       const url = (task as TaskBlogPostConfig).blogUrl

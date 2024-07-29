@@ -2,6 +2,7 @@ import { TaskType } from 'views/DashboardQuestEdit/type'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { getOAuthHeader } from 'utils/getOAuthHeader'
 import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
+import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
@@ -33,17 +34,24 @@ export default async function handler(req, res) {
       }
 
       if (result.data.following) {
-        const queryString = new URLSearchParams({
-          account,
-          questId,
-          taskId,
-          taskName: TaskType.X_FOLLOW_ACCOUNT,
-        }).toString()
+        const apiRes = await fetch(
+          `${GAMIFICATION_PUBLIC_API}/userInfo/v1/user/${account}/quest/${questId}/mark-task-status`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: process.env.TASK_STATUS_TOKEN as string,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              taskName: TaskType.X_FOLLOW_ACCOUNT,
+              taskId,
+              isCompleted: true,
+            }),
+          },
+        )
 
-        const responseMarkTask = await fetch(`/api/userInfo/markTaskStatus?${queryString}`, { method: 'POST' })
-
-        const responseMarkTaskResult = await responseMarkTask.json()
-        if (responseMarkTask.ok) {
+        const responseMarkTaskResult = await apiRes.json()
+        if (apiRes.ok) {
           res.status(200).json(responseMarkTaskResult)
         }
 
