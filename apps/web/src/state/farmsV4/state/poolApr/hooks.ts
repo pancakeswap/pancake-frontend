@@ -26,6 +26,7 @@ export const usePoolAprUpdater = () => {
     async (newPools: PoolInfo[]) => {
       if (newPools && newPools.length) {
         newPools.forEach((pool) => {
+          // @todo @ChefJerry ignore the ended farms
           getCakeApr(pool).then((apr) => {
             updateCakeApr(apr)
           })

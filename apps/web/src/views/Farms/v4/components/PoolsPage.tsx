@@ -1,29 +1,29 @@
-import styled from 'styled-components'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-  Button,
-  Card as RawCard,
-  CardBody as RawCardBody,
-  CardHeader as RawCardHeader,
-  TableView,
-  Image,
-  ISortOrder,
-  SORT_ORDER,
-  useMatchBreakpoints,
-  CardFooter as RawCardFooter,
-  InfoIcon,
-} from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { toTokenValue } from '@pancakeswap/widgets-internal'
 import { UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
-import { useExtendPools, useFarmPools } from 'state/farmsV4/hooks'
-import { PoolInfo } from 'state/farmsV4/state/type'
-import { PoolSortBy } from 'state/farmsV4/atom'
+import { useTranslation } from '@pancakeswap/localization'
+import {
+  Button,
+  Image,
+  InfoIcon,
+  ISortOrder,
+  Card as RawCard,
+  CardBody as RawCardBody,
+  CardFooter as RawCardFooter,
+  CardHeader as RawCardHeader,
+  SORT_ORDER,
+  TableView,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
+import { toTokenValue } from '@pancakeswap/widgets-internal'
 import { useAllTokensByChainIds } from 'hooks/Tokens'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { PoolSortBy } from 'state/farmsV4/atom'
+import { useExtendPools, useFarmPools, usePoolAprUpdater } from 'state/farmsV4/hooks'
+import { PoolInfo } from 'state/farmsV4/state/type'
+import styled from 'styled-components'
 
-import { IPoolsFilterPanelProps, MAINNET_CHAINS, PoolsFilterPanel, useSelectedPoolTypes } from './PoolsFilterPanel'
 import { ListView } from './PoolListView'
+import { IPoolsFilterPanelProps, MAINNET_CHAINS, PoolsFilterPanel, useSelectedPoolTypes } from './PoolsFilterPanel'
 import { useColumnConfig } from './useColumnConfig'
 
 type IDataType = PoolInfo
@@ -95,6 +95,7 @@ export const PoolsPage = () => {
   const { loaded: fetchFarmListLoaded, data: farmList } = useFarmPools()
   const { extendPools, fetchPoolList, resetExtendPools } = useExtendPools()
   const allTokenMap = useAllTokensByChainIds(allChainIds)
+  usePoolAprUpdater()
 
   const poolList = useMemo(
     () =>
