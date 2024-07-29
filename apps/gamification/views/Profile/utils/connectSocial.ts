@@ -51,6 +51,9 @@ export const connectSocial = async ({ userInfo, data, callback }: ConnectSocialP
 
     if (response.ok) {
       callback()
+    } else {
+      const error = await response.json()
+      throw new Error(error.message)
     }
   }
 }
