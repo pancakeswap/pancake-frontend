@@ -1,13 +1,20 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Message, MessageText, Text } from '@pancakeswap/uikit'
+import { GetMerkleProofResponse } from 'views/Quest/components/Reward'
 
 interface MessageInfoProps {
   ableToClaimReward: boolean
   isQuestFinished: boolean
   isTasksCompleted: boolean
+  proofData: null | GetMerkleProofResponse
 }
 
-export const MessageInfo: React.FC<MessageInfoProps> = ({ ableToClaimReward, isTasksCompleted, isQuestFinished }) => {
+export const MessageInfo: React.FC<MessageInfoProps> = ({
+  proofData,
+  ableToClaimReward,
+  isTasksCompleted,
+  isQuestFinished,
+}) => {
   const { t } = useTranslation()
   const isReachClaimTime = isQuestFinished
 
@@ -33,13 +40,13 @@ export const MessageInfo: React.FC<MessageInfoProps> = ({ ableToClaimReward, isT
           <MessageText>
             <Text bold>{t("You're eligible to participate!")}</Text>
             <Text mt="4px" fontSize={['14px']} lineHeight={['20px']}>
-              {t('Please wait until the Quest starts')}
+              {t('Please wait until the luck draw starts')}
             </Text>
           </MessageText>
         </Message>
       )}
 
-      {isQuestFinished && isTasksCompleted && !ableToClaimReward && (
+      {isQuestFinished && isTasksCompleted && !ableToClaimReward && proofData !== null && (
         <Message variant="success">
           <MessageText>
             <Text bold>{t('Quest is over')}</Text>
@@ -50,7 +57,7 @@ export const MessageInfo: React.FC<MessageInfoProps> = ({ ableToClaimReward, isT
         </Message>
       )}
 
-      {isQuestFinished && ableToClaimReward && (
+      {isQuestFinished && ableToClaimReward && proofData !== null && (
         <Message variant="success">
           <MessageText>
             <Text bold>{t('Congratulations, you won!')}</Text>

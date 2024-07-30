@@ -130,20 +130,35 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
       ) : (
         <>
           <Box>
-            {isQuestFinished && (!isTasksCompleted || (isTasksCompleted && !ableToClaimReward)) ? (
+            {(isQuestFinished || !isTasksCompleted) && (
               <Box ref={targetRef}>
                 <StyledButton $outline variant="secondary" disabled endIcon={<InfoIcon color="textDisabled" />}>
                   {t('Unavailable')}
                 </StyledButton>
                 {tooltipVisible && tooltip}
               </Box>
-            ) : (
+            )}
+
+            {isQuestFinished && isTasksCompleted && proofData === null && (
+              <StyledButton $outline variant="secondary" disabled>
+                {t('Finished')}
+              </StyledButton>
+            )}
+
+            {!isQuestFinished && isTasksCompleted && <StyledButton disabled>{t('Claim the reward')}</StyledButton>}
+
+            {isQuestFinished && isTasksCompleted && ableToClaimReward && proofData !== null && (
               <StyledButton disabled={!ableToClaimReward || isPending} onClick={handleClaimReward}>
                 {t('Claim the reward')}
               </StyledButton>
             )}
+
+            {isQuestFinished && isTasksCompleted && !ableToClaimReward && proofData !== null && (
+              <StyledButton disabled>{t('Claimed')}</StyledButton>
+            )}
           </Box>
           <MessageInfo
+            proofData={proofData}
             ableToClaimReward={ableToClaimReward}
             isTasksCompleted={isTasksCompleted}
             isQuestFinished={isQuestFinished}
