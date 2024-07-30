@@ -101,11 +101,11 @@ export const Tasks: React.FC<TasksProps> = ({
               <>
                 {isTasksCompleted ? (
                   <Tag variant="success" outline>
-                    {t('Completed')}
+                    {t('All completed')}
                   </Tag>
                 ) : hasOptionsInTasks && isEnoughCompleted ? (
                   <Tag variant="success" outline>
-                    {t('Enough completed')}
+                    {t('Completed required')}
                   </Tag>
                 ) : (
                   <Tag variant="secondary" outline>
