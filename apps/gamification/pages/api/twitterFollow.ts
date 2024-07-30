@@ -3,8 +3,9 @@ import { TaskType } from 'views/DashboardQuestEdit/type'
 import { getOAuthHeader } from 'utils/getOAuthHeader'
 import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
+import { withSiweAuth } from 'middlewares/withSiwe'
 
-export default async function handler(req, res) {
+const handler = withSiweAuth(async (req, res) => {
   if (req.method === 'GET') {
     try {
       const { account, questId, token, tokenSecret, userId, targetUserId, providerId, taskId } = req.query
@@ -21,7 +22,7 @@ export default async function handler(req, res) {
       const response = await fetch(url, {
         method,
         headers: {
-          ...getOAuthHeader(url, method, consumerKey, consumerSecret, token, tokenSecret),
+          ...getOAuthHeader(url, method, consumerKey, consumerSecret, token as string, tokenSecret as string),
           'Content-Type': 'application/json',
         },
         // Exp PCS Twitter Id
@@ -65,4 +66,6 @@ export default async function handler(req, res) {
   } else {
     res.status(405).json({ error: 'Method Not Allowed' })
   }
-}
+})
+
+export default handler

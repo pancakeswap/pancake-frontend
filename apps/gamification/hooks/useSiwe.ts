@@ -1,6 +1,6 @@
 import { useAccount, useAccountEffect, useSignMessage } from 'wagmi'
 import { useAtom } from 'jotai'
-import { atomWithStorage, createJSONStorage } from 'jotai/utils'
+import { atomWithStorage, createJSONStorage, RESET } from 'jotai/utils'
 import { createSiweMessage, generateSiweNonce, parseSiweMessage } from 'viem/siwe'
 import { useCallback, useEffect } from 'react'
 import { Address } from 'viem'
@@ -97,7 +97,7 @@ export function useSiwe() {
     [currentAddress, currentChainId, siwe, setSiwe, signMessageAsync],
   )
 
-  const signOut = useCallback(() => setSiwe(undefined), [setSiwe])
+  const signOut = useCallback(() => setSiwe(RESET), [setSiwe])
 
   const fetchWithSiweAuth = useCallback<typeof fetch>(
     async (input: RequestInfo | URL, init: RequestInit | undefined) => {

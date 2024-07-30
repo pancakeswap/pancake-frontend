@@ -1,9 +1,10 @@
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
+import { withSiweAuth } from 'middlewares/withSiwe'
 import { getOAuthHeader } from 'utils/getOAuthHeader'
 import { TaskType } from 'views/DashboardQuestEdit/type'
 import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
 
-export default async function handler(req, res) {
+const handler = withSiweAuth(async (req, res) => {
   if (req.method === 'GET') {
     try {
       const { account, questId, taskId, token, tokenSecret, userId, providerId, twitterPostId } = req.query
@@ -15,7 +16,7 @@ export default async function handler(req, res) {
         })
         return
       }
-      const isValidTwitterId = /^[0-9]{1,19}$/.test(twitterPostId)
+      const isValidTwitterId = /^[0-9]{1,19}$/.test(twitterPostId as string)
       if (!isValidTwitterId) {
         res.status(400).json({
           message: 'Invalid twitter id',
@@ -32,11 +33,11 @@ export default async function handler(req, res) {
       const response = await fetch(url, {
         method,
         headers: {
-          ...getOAuthHeader(url, method, consumerKey, consumerSecret, token, tokenSecret),
+          ...getOAuthHeader(url, method, consumerKey, consumerSecret, token as string, tokenSecret as string),
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          tweet_id: twitterPostId.toLowerCase(),
+          tweet_id: (twitterPostId as string).toLowerCase(),
         }),
       })
 
@@ -74,4 +75,6 @@ export default async function handler(req, res) {
   } else {
     res.status(405).json({ error: 'Method Not Allowed' })
   }
-}
+})
+
+export default handler
