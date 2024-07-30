@@ -7,10 +7,12 @@ import {
   CheckmarkCircleFillIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  ErrorFillIcon,
   Flex,
   FlexGap,
   Loading,
   OpenNewIcon,
+  RefreshIcon,
   Text,
   useModal,
   useToast,
@@ -74,6 +76,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const [isPending, setIsPending] = useState(false)
   const [actionPanelExpanded, setActionPanelExpanded] = useState(false)
   const { fetchWithSiweAuth } = useSiwe()
+  const [isError, setIsError] = useState(false)
 
   const twitterId = userInfo?.socialHubToSocialUserIdMap?.Twitter ?? ''
 
@@ -101,10 +104,12 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
           if (response.ok) {
             await refresh()
           } else {
+            setIsError(true)
             const { message } = await response.json()
             throw new Error(message)
           }
         } catch (error) {
+          setIsError(true)
           toastError(`Verify Twitter Followed Fail: ${error}`)
         } finally {
           setIsPending(false)
@@ -139,9 +144,11 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
             await refresh()
           } else {
             const { message } = await response.json()
+            setIsError(true)
             throw new Error(message)
           }
         } catch (error) {
+          setIsError(true)
           toastError(`Verify Twitter Liked Fail: ${error}`)
         } finally {
           setIsPending(false)
@@ -175,10 +182,12 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
           if (response.ok) {
             await refresh()
           } else {
+            setIsError(true)
             const { message } = await response.json()
             throw new Error(message)
           }
         } catch (error) {
+          setIsError(true)
           toastError(`Verify Twitter Retweet Fail: ${error}`)
         } finally {
           setIsPending(false)
@@ -196,6 +205,8 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     const connectedTwitterAccount = userInfo.socialHubToSocialUserIdMap?.Twitter
     const isCorrectTwitterAccount = () =>
       connectedTwitterAccount && (session as any).user.twitter.twitterId === connectedTwitterAccount
+
+    setIsError(true)
     switch (action) {
       case TaskType.X_LIKE_POST:
         if (isCorrectTwitterAccount()) {
@@ -414,7 +425,9 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
             </Text>
           </Flex>
           <Flex alignSelf="center">
-            {isVerified ? (
+            {isError ? (
+              <ErrorFillIcon color="failure" />
+            ) : isVerified ? (
               <CheckmarkCircleFillIcon color="success" />
             ) : (
               <>
@@ -440,6 +453,18 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
                 {description}
               </Text>
             )}
+            {isError && (
+              <Box mt="16px">
+                <Text fontSize="14px" color="failure" line-height="20px">
+                  {t(
+                    'It seems there may be an issue on our end. Please contact our support team promptly to resolve it.',
+                  )}
+                </Text>
+                <Text color="primary" fontSize="14px" bold line-height="20px">
+                  {t('Reach out to our support team')}
+                </Text>
+              </Box>
+            )}
             <FlexGap gap="8px" mt="16px">
               {!isVerified ? (
                 <FlexGap gap="8px" width="100%">
@@ -452,15 +477,37 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
                     {userActionButtonText(taskType)}
                   </Button>
                   {shouldShowVerifyButton && (
-                    <VerifyButton
-                      scale="sm"
-                      width="100%"
-                      disabled={isPending}
-                      endIcon={isPending && <Loading width={16} height={16} />}
-                      onClick={handleVerifyButton}
-                    >
-                      {t('Verify')}
-                    </VerifyButton>
+                    <>
+                      {isError ? (
+                        <Button
+                          scale="sm"
+                          width="100%"
+                          variant="danger"
+                          disabled={isPending}
+                          endIcon={
+                            <RefreshIcon
+                              color="white"
+                              width={20}
+                              height={20}
+                              style={{ transform: 'rotate(-180deg)' }}
+                            />
+                          }
+                          onClick={handleVerifyButton}
+                        >
+                          {t('Retry')}
+                        </Button>
+                      ) : (
+                        <VerifyButton
+                          scale="sm"
+                          width="100%"
+                          disabled={isPending}
+                          endIcon={isPending && <Loading width={16} height={16} />}
+                          onClick={handleVerifyButton}
+                        >
+                          {t('Verify')}
+                        </VerifyButton>
+                      )}
+                    </>
                   )}
                 </FlexGap>
               ) : (
