@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, InfoIcon, Text, useToast, useTooltip } from '@pancakeswap/uikit'
+import { Box, Button, InfoIcon, Text, useModal, useToast, useTooltip } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
@@ -16,6 +16,7 @@ import { Address, encodePacked, getAddress, keccak256, toHex } from 'viem'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { MessageInfo } from 'views/Quest/components/Reward/MessageInfo'
+import { SuccessClaimedModal } from 'views/Quest/components/Reward/SuccessClaimedModal'
 
 const StyledButton = styled(Button)<{ $outline?: boolean }>`
   width: 100%;
@@ -107,6 +108,10 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
     [claimedRewardAmount, hasProof, isTasksCompleted],
   )
 
+  const [openSuccessClaimedModal] = useModal(
+    <SuccessClaimedModal reward={quest.reward} rewardAmount={proofData?.rewardAmount} />,
+  )
+
   const handleClaimReward = useCallback(async () => {
     try {
       if (!rewardClaimingId) throw new Error('Invalid reward id to claim')
@@ -119,6 +124,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
         )
 
         if (receipt?.status) {
+          openSuccessClaimedModal()
           toastSuccess(
             t('Success!'),
             <ToastDescriptionWithTx txHash={receipt.transactionHash}>
@@ -131,7 +137,18 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
       console.error('[ERROR] Submit Claim Quest Reward: ', error)
       toastError(error instanceof Error && error?.message ? error.message : JSON.stringify(error))
     }
-  }, [proofData, contract, rewardClaimingId, account, chainId, toastSuccess, t, toastError, fetchWithCatchTxError])
+  }, [
+    proofData,
+    contract,
+    rewardClaimingId,
+    account,
+    chainId,
+    toastSuccess,
+    t,
+    toastError,
+    openSuccessClaimedModal,
+    fetchWithCatchTxError,
+  ])
 
   const handleSwitchNetwork = async (): Promise<void> => {
     if (quest?.reward?.currency?.network) {
@@ -156,7 +173,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
                 {tooltipVisible && tooltip}
               </Box>
             ) : (
-              <StyledButton disabled={!ableToClaimReward || !isPending} onClick={handleClaimReward}>
+              <StyledButton disabled={!ableToClaimReward || isPending} onClick={handleClaimReward}>
                 {t('Claim the reward')}
               </StyledButton>
             )}
