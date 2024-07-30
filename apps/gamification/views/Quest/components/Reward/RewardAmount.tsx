@@ -22,10 +22,10 @@ const RewardAmountContainer = styled(Box)`
 interface RewardAmountProps {
   reward: undefined | QuestRewardType
   proofData: null | GetMerkleProofResponse
-  ableToClaimReward: boolean
+  isQuestFinished: boolean
 }
 
-export const RewardAmount: React.FC<RewardAmountProps> = ({ reward, ableToClaimReward, proofData }) => {
+export const RewardAmount: React.FC<RewardAmountProps> = ({ reward, proofData, isQuestFinished }) => {
   const currency = useFindTokens(reward?.currency?.network as ChainId, reward?.currency?.address as Address)
 
   const amountDisplay = useMemo(() => {
@@ -45,7 +45,7 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({ reward, ableToClaimR
             </Box>
             <Box ml={['16px']}>
               <Text fontSize={['40px']} bold as="span">
-                {ableToClaimReward && proofData?.rewardAmount ? (
+                {isQuestFinished && proofData?.rewardAmount ? (
                   <>{amountDisplay}</>
                 ) : (
                   <>{getFullDisplayBalance(new BigNumber(reward?.totalRewardAmount ?? 0), currency.decimals, 2)}</>

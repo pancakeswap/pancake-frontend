@@ -89,7 +89,7 @@ export const Reward: React.FC<RewardProps> = ({ quest, isTasksCompleted, isQuest
             )}
           </Flex>
           <Box opacity={!isQuestFinished || ableToClaimReward ? '1' : '0.5'}>
-            <RewardAmount reward={quest?.reward} proofData={proofData ?? null} ableToClaimReward={ableToClaimReward} />
+            <RewardAmount reward={quest?.reward} isQuestFinished={isQuestFinished} proofData={proofData ?? null} />
           </Box>
           <Countdown endDateTime={quest?.endDateTime ?? 0} />
           {/* <TotalRewards /> */}
