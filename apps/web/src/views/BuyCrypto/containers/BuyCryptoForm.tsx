@@ -67,7 +67,10 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
   const { onUserInput, onCurrencySelection, onSwitchTokens } = useBuyCryptoActionHandlers()
 
   const { cryptoCurrency, fiatCurrency, currencyIn, currencyOut } = useOnRampCurrencyOrder(unit)
-  const { data: validAddress, isError: btcError } = useBtcAddressValidator({ address: searchQuery, enabled: isBtc })
+  const { data: validAddress, isError: btcQueryError } = useBtcAddressValidator({
+    address: searchQuery,
+    enabled: isBtc,
+  })
   const { fiatValue: defaultAmt } = useFiatCurrencyAmount({ currencyCode: fiatCurrency?.symbol, value_: 150 })
 
   const { inputError, amountError } = useLimitsAndInputError({
@@ -97,6 +100,10 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     const output = isFiat(unit) ? quote : amount
     return formatQuoteDecimals(output, unit)
   }, [unit, selectedQuote, inputError])
+
+  const btcError = useMemo(() => {
+    return Boolean(!validAddress?.result && !btcQueryError && isBtc)
+  }, [isBtc, btcQueryError, validAddress?.result])
 
   const handleTypeInput = useCallback((value: string) => onUserInput(Field.INPUT, value), [onUserInput])
   const handleAddressInput = useCallback((event: InputEvent) => setSearchQuery(event.target.value), [])
