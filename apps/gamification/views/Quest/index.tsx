@@ -127,7 +127,15 @@ export const Quest = () => {
           />
         </Flex>
         <Box mt="16px">
-          {quest?.completionStatus === CompletionStatus.ONGOING && <Tag variant="secondary">{t('Ongoing')}</Tag>}
+          {quest?.completionStatus === CompletionStatus.ONGOING ? (
+            <>
+              {isEnoughCompleted || isTasksCompleted ? (
+                <Tag variant="success">{t('Completed')}</Tag>
+              ) : (
+                <Tag variant="secondary">{t('Ongoing')}</Tag>
+              )}
+            </>
+          ) : null}
           {quest?.completionStatus === CompletionStatus.FINISHED && <Tag variant="textDisabled">{t('Finished')}</Tag>}
         </Box>
         <StyledHeading m="16px 0" as="h1">
