@@ -1,11 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, InfoIcon, Text, useModal, useToast, useTooltip } from '@pancakeswap/uikit'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { useQuery } from '@tanstack/react-query'
-import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useQuestRewardContract } from 'hooks/useContract'
@@ -14,7 +10,7 @@ import { useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { Address, encodePacked, getAddress, keccak256, toHex } from 'viem'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
-import { CompletionStatus } from 'views/DashboardQuestEdit/type'
+import { GetMerkleProofResponse } from 'views/Quest/components/Reward'
 import { MessageInfo } from 'views/Quest/components/Reward/MessageInfo'
 import { SuccessClaimedModal } from 'views/Quest/components/Reward/SuccessClaimedModal'
 
@@ -34,22 +30,19 @@ interface ClaimButtonProps {
   quest: SingleQuestData
   isTasksCompleted: boolean
   isQuestFinished: boolean
+  proofData: null | GetMerkleProofResponse
+  ableToClaimReward: boolean
 }
 
-interface GetMerkleProofResponse {
-  userId: Address
-  questId: string
-  proofs: Address[]
-  rewardAmount: string
-  claimed: boolean
-  claimedError: string
-  errorMessage: string
-  claimTransactionHash: string
-}
-
-export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksCompleted, isQuestFinished }) => {
+export const ClaimButton: React.FC<ClaimButtonProps> = ({
+  quest,
+  isTasksCompleted,
+  isQuestFinished,
+  proofData,
+  ableToClaimReward,
+}) => {
   const { t } = useTranslation()
-  const { id, completionStatus } = quest
+  const { id } = quest
   const { account, chainId } = useActiveWeb3React()
   const { toastSuccess, toastError } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
@@ -73,39 +66,6 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
     {
       placement: 'top',
     },
-  )
-
-  const { data: claimedRewardAmount } = useQuery({
-    queryKey: ['/get-quest-claimed-reward', account, rewardClaimingId],
-    queryFn: async () => {
-      if (!rewardClaimingId) throw new Error('Invalid reward id to claim')
-      const amount = await contract.read.getClaimedReward([rewardClaimingId, account as Address])
-      return amount?.toString() ?? '0'
-    },
-    enabled: Boolean(account && rewardClaimingId && completionStatus === CompletionStatus.FINISHED),
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-  })
-
-  const { data: proofData } = useQuery({
-    queryKey: ['/get-user-merkle-proof', account, id],
-    queryFn: async () => {
-      const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/users/${account}/quests/${id}/merkle-proof`)
-      const result: GetMerkleProofResponse = await response.json()
-      return result
-    },
-    enabled: Boolean(account && id && isTasksCompleted),
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-  })
-
-  const hasProof = useMemo(() => Boolean(proofData && proofData?.proofs?.length > 0), [proofData])
-
-  const ableToClaimReward = useMemo(
-    () => isTasksCompleted && hasProof && new BigNumber(claimedRewardAmount ?? 0).eq(BIG_ZERO),
-    [claimedRewardAmount, hasProof, isTasksCompleted],
   )
 
   const [openSuccessClaimedModal] = useModal(
