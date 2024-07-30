@@ -53,7 +53,7 @@ export const AlloraBanner = () => {
     <BannerContainer background="radial-gradient(63% 84% at 26% 23%, #CBD7EF 0%, #A3A9D5 72.82%, #9A9FD0 100%)">
       <BannerMain
         badges={
-          <Flex alignItems="center" justifyContent="center" height="32px" minWidth="200px">
+          <Flex alignItems="center" justifyContent="center" height="32px" minWidth={isMobile ? '200px' : '234px'}>
             <PancakeSwapBadge />
             <VerticalDivider bg="#9BA4BB" />
             <img src={isMobile ? logoSmall : logoLarge} width={isMobile ? 58 : 90} alt="allora-banner-logo-alt" />
@@ -93,7 +93,7 @@ export const AlloraBanner = () => {
         }
       />
 
-      <BannerGraphics mb={['20px', '10px', '10px', '10px', '0']}>
+      <BannerGraphics>
         <BackgroundGraphic
           src={`${ALLORA_PATH}/bg-lg.png`}
           sm={bgSmVariant}
