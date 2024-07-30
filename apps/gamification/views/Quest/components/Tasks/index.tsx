@@ -3,6 +3,7 @@ import { Box, Button, Flex, FlexGap, Tag, Text, useModal } from '@pancakeswap/ui
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { useProfile } from 'hooks/useProfile'
+import { useSiwe } from 'hooks/useSiwe'
 import { styled } from 'styled-components'
 import { OptionIcon } from 'views/DashboardQuestEdit/components/Tasks/OptionIcon'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
@@ -62,11 +63,12 @@ export const Tasks: React.FC<TasksProps> = ({
   const { isInitialized, profile } = useProfile()
   const hasProfile = isInitialized && !!profile
   const [onPressMakeProfileModal] = useModal(<MakeProfileModal type={t('quest')} />)
+  const { fetchWithSiweAuth } = useSiwe()
 
   const handleLinkUserToQuest = async () => {
     if (account) {
       try {
-        const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/linkUserToQuest/${account}/${questId}`, {
+        const response = await fetchWithSiweAuth(`/api/userInfo/${account}/quests/${questId}/start`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -74,6 +76,9 @@ export const Tasks: React.FC<TasksProps> = ({
         })
         if (response.ok) {
           refreshSocialHub()
+        } else {
+          const { message } = await response.json()
+          throw new Error(`Failed to start quest: ${message}`)
         }
       } catch (error) {
         console.error(`Submit link user to quest error: ${error}`)
