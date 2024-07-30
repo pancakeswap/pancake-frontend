@@ -2,7 +2,7 @@ import { useAccount, useAccountEffect, useSignMessage } from 'wagmi'
 import { useAtom } from 'jotai'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
 import { createSiweMessage, generateSiweNonce, parseSiweMessage } from 'viem/siwe'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { Address } from 'viem'
 import { ChainId } from '@pancakeswap/chains'
 
@@ -19,11 +19,31 @@ const siweAtom = atomWithStorage<
 )
 
 export function useAutoSiwe() {
+  const { address } = useAccount()
   const { signIn, signOut } = useSiwe()
 
+  const trySignIn = useCallback(
+    async ({ address: addr }: { address: Address }) => {
+      try {
+        signOut()
+        await signIn({ address: addr })
+      } catch (e) {
+        console.error('Failed to sign in', e)
+      }
+    },
+    [signIn, signOut],
+  )
+
+  useEffect(() => {
+    if (address) {
+      trySignIn({ address })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address])
+
   useAccountEffect({
-    onConnect({ address, chainId }) {
-      signIn({ address, chainId })
+    onConnect({ address: addr }) {
+      trySignIn({ address: addr })
     },
     onDisconnect() {
       signOut()
@@ -37,9 +57,12 @@ export function useSiwe() {
   const [siwe, setSiwe] = useAtom(siweAtom)
 
   const signIn = useCallback(
-    async ({ address, chainId }: { address: Address; chainId: ChainId }) => {
+    async ({ address, chainId = currentChainId }: { address: Address; chainId?: ChainId }) => {
       if (typeof window === 'undefined') {
         throw new Error('Unable to sign in outside of browser context')
+      }
+      if (!chainId) {
+        throw new Error(`Invalid chain ${chainId}`)
       }
       if (siwe) {
         const parsed = parseSiweMessage(siwe.message)
@@ -71,7 +94,7 @@ export function useSiwe() {
       setSiwe(siweMessage)
       return siweMessage
     },
-    [currentAddress, siwe, setSiwe, signMessageAsync],
+    [currentAddress, currentChainId, siwe, setSiwe, signMessageAsync],
   )
 
   const signOut = useCallback(() => setSiwe(undefined), [setSiwe])
