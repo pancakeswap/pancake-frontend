@@ -17,6 +17,7 @@ import { Description } from 'views/Quest/components/Description'
 // import { ExploreMore } from 'views/Quest/components/ExploreMore'
 // import { RelatedQuest } from 'views/Quest/components/RelatedQuest'
 import { ChainId } from '@pancakeswap/chains'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useEffect, useMemo } from 'react'
 import { convertTimestampToDate } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
@@ -55,6 +56,7 @@ export const Quest = () => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
   const { query, push } = useRouter()
+  const { account } = useActiveWeb3React()
   const questId: string = (query.id as string) ?? ''
   const backToProfile: boolean = (query?.backToProfile as string) === 'true'
   const { quest, isError, isFetched } = useGetQuestInfo(questId)
@@ -129,7 +131,7 @@ export const Quest = () => {
         <Box mt="16px">
           {quest?.completionStatus === CompletionStatus.ONGOING ? (
             <>
-              {isEnoughCompleted || isTasksCompleted ? (
+              {account && (isEnoughCompleted || isTasksCompleted) ? (
                 <Tag variant="success">{t('Completed')}</Tag>
               ) : (
                 <Tag variant="secondary">{t('Ongoing')}</Tag>
