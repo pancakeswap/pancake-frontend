@@ -49,7 +49,7 @@ export const Reward: React.FC<RewardProps> = ({ quest, isTasksCompleted, isQuest
   const { account } = useActiveWeb3React()
   const localChainName = chains.find((c) => c.id === quest?.reward?.currency?.network)?.name ?? 'BSC'
 
-  const { data: proofData } = useQuery({
+  const { data: proofData, refetch: refreshProofData } = useQuery({
     queryKey: ['/get-user-merkle-proof', account, quest.id],
     queryFn: async () => {
       const response = await fetch(
@@ -103,6 +103,7 @@ export const Reward: React.FC<RewardProps> = ({ quest, isTasksCompleted, isQuest
             isQuestFinished={isQuestFinished}
             proofData={proofData ?? null}
             ableToClaimReward={ableToClaimReward}
+            refreshProofData={refreshProofData}
           />
         </Box>
       </Card>

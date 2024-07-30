@@ -32,6 +32,7 @@ interface ClaimButtonProps {
   isQuestFinished: boolean
   proofData: null | GetMerkleProofResponse
   ableToClaimReward: boolean
+  refreshProofData: () => void
 }
 
 export const ClaimButton: React.FC<ClaimButtonProps> = ({
@@ -40,6 +41,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
   isQuestFinished,
   proofData,
   ableToClaimReward,
+  refreshProofData,
 }) => {
   const { t } = useTranslation()
   const { id } = quest
@@ -84,6 +86,8 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
         )
 
         if (receipt?.status) {
+          await refreshProofData()
+
           openSuccessClaimedModal()
           toastSuccess(
             t('Success!'),
@@ -106,6 +110,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
     toastSuccess,
     t,
     toastError,
+    refreshProofData,
     openSuccessClaimedModal,
     fetchWithCatchTxError,
   ])
