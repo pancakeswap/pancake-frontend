@@ -192,7 +192,7 @@ export const SubmitAction = () => {
       }
 
       queryClient.invalidateQueries({
-        queryKey: ['fetch-single-quest-dashboard-data', query.id],
+        queryKey: ['fetch-single-quest-dashboard-data', account, chainId, query.id],
       })
       toastSuccess(t('Submit Successfully!'))
 
