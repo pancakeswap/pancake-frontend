@@ -6,6 +6,8 @@ import { useCallback } from 'react'
 import { Address } from 'viem'
 import { ChainId } from '@pancakeswap/chains'
 
+const ONE_DAY_IN_MS = 60 * 60 * 24 * 1000
+
 const siweAtom = atomWithStorage<
   | {
       message: string
@@ -15,7 +17,7 @@ const siweAtom = atomWithStorage<
 >(
   'gamification-siwe',
   undefined,
-  createJSONStorage(() => sessionStorage),
+  createJSONStorage(() => localStorage),
 )
 
 export function useAutoSiwe() {
@@ -24,13 +26,12 @@ export function useAutoSiwe() {
   const trySignIn = useCallback(
     async ({ address: addr }: { address: Address }) => {
       try {
-        signOut()
         await signIn({ address: addr })
       } catch (e) {
         console.error('Failed to sign in', e)
       }
     },
-    [signIn, signOut],
+    [signIn],
   )
 
   useAccountEffect({
@@ -61,7 +62,8 @@ export function useSiwe() {
         if (
           parsed.address === currentAddress &&
           parsed.domain === window.location.host &&
-          parsed.uri === window.location.origin
+          parsed.uri === window.location.origin &&
+          parsed.expirationTime.getTime() > Date.now()
         ) {
           return siwe
         }
@@ -74,6 +76,7 @@ export function useSiwe() {
         uri: window.location.origin,
         nonce: generateSiweNonce(),
         version: '1',
+        expirationTime: new Date(Date.now() + ONE_DAY_IN_MS),
       })
       const signature = await signMessageAsync({
         account: address,

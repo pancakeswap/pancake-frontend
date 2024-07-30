@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 import { getViemClients } from 'utils/viem.server'
-import { parseSiweMessage, verifySiweMessage } from 'viem/siwe'
+import { parseSiweMessage, validateSiweMessage, verifySiweMessage } from 'viem/siwe'
 
 type ExtendedReq = NextApiRequest & {
   siwe: ReturnType<typeof parseSiweMessage>
@@ -19,7 +19,11 @@ export function withSiweAuth(handler: ExtendedApiHandler): ExtendedApiHandler {
     const message = decodeURIComponent(encodedMessage)
     const siweMessage = parseSiweMessage(message)
     const { address, chainId } = siweMessage
-    if (!address || !chainId) {
+    const isMessageValid = validateSiweMessage({
+      address,
+      message: siweMessage,
+    })
+    if (!address || !chainId || !isMessageValid) {
       return unauthorized()
     }
     const client = getViemClients({ chainId: Number(chainId) })
