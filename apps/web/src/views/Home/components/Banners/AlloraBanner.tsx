@@ -78,7 +78,7 @@ export const AlloraBanner = () => {
               display={isMobile ? 'none' : 'flex'}
               icon="arrowForward"
               alignItems="center"
-              text="Join Now"
+              text="Join Now!"
               color="#280D5F"
             />
             <Action

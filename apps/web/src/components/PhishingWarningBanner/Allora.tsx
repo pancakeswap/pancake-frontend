@@ -49,7 +49,7 @@ export const Allora: ICampaignBanner = () => {
           {mobileContent}
           <FlexGap mt="6px">
             <Link external fontSize={['12px', '12px', '14px']} style={{ color: 'white' }} href={joinNowLink}>
-              {t('Join Now')}
+              {t('Join Now!')}
               <ArrowForwardIcon width="14px" color="white" />
             </Link>
             <VerticalDivider />
@@ -69,7 +69,7 @@ export const Allora: ICampaignBanner = () => {
       {content}
       <NextLink href={joinNowLink} passHref>
         <Link href="replace" mx="6px" color="white" fontSize={['12px', '12px', '14px']}>
-          {t('Join Now')}
+          {t('Join Now!')}
         </Link>
       </NextLink>
       <Link external mx="6px" color="white" href={learnMoreLink} fontSize={['12px', '12px', '14px']}>
