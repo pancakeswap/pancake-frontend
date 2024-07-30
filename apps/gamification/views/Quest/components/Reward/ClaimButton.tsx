@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, InfoIcon, Text, useModal, useToast, useTooltip } from '@pancakeswap/uikit'
+import { useQuery } from '@tanstack/react-query'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -58,6 +59,19 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
         : undefined,
     [quest.ownerAddress, id],
   )
+
+  const { data: claimedRewardAmount } = useQuery({
+    queryKey: ['/get-quest-claimed-reward', account, rewardClaimingId],
+    queryFn: async () => {
+      if (!rewardClaimingId) throw new Error('Invalid reward id to claim')
+      const amount = await contract.read.getClaimedReward([rewardClaimingId, account as Address])
+      return amount?.toString() ?? '0'
+    },
+    enabled: Boolean(account && rewardClaimingId && isQuestFinished),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  })
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text>
@@ -148,7 +162,10 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
             {!isQuestFinished && isTasksCompleted && <StyledButton disabled>{t('Claim the reward')}</StyledButton>}
 
             {isQuestFinished && isTasksCompleted && ableToClaimReward && proofData !== null && (
-              <StyledButton disabled={!ableToClaimReward || isPending} onClick={handleClaimReward}>
+              <StyledButton
+                disabled={!ableToClaimReward || isPending || Number(claimedRewardAmount) > 0}
+                onClick={handleClaimReward}
+              >
                 {t('Claim the reward')}
               </StyledButton>
             )}
