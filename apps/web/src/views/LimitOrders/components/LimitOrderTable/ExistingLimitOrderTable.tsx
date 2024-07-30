@@ -1,5 +1,17 @@
 import { memo } from 'react'
-import { Table, Th, Text, Button, BscScanIcon, Link, Flex, Box, Td, useToast } from '@pancakeswap/uikit'
+import {
+  Table,
+  Th,
+  Text,
+  Button,
+  BscScanIcon,
+  Link,
+  Flex,
+  Box,
+  Td,
+  useToast,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { getBlockExploreLink } from 'utils'
 import { ChainId } from '@pancakeswap/chains'
@@ -10,6 +22,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { gelatoLimitABI } from 'config/abi/gelatoLimit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 
 const RowStyle = styled.tr`
   cursor: pointer;
@@ -21,6 +34,7 @@ const RowStyle = styled.tr`
 
 const ExistingLimitOrderTable = ({ orders }) => {
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
   const { address } = useAccount()
   const { chainId } = useActiveChainId()
   const publicClient = usePublicClient({ chainId })
@@ -54,7 +68,7 @@ const ExistingLimitOrderTable = ({ orders }) => {
                   <Box width="100%">
                     <Flex justifyContent="space-between">
                       <Link external small href={getBlockExploreLink(order[0], 'transaction', ChainId.BSC)}>
-                        {order[0]}
+                        {isMobile ? truncateHash(order[0]) : order[0]}
                         <BscScanIcon color="invertedContrast" ml="4px" />
                       </Link>
                     </Flex>

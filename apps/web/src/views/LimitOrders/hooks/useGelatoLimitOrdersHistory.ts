@@ -95,7 +95,9 @@ const useExistingOrders = (): [
       try {
         if (provider) {
           const response = await fetch(
-            `/api/query/transaction?sender=${account}&to=${gelatoLimitOrders?.contract.address}`,
+            `/api/query/transaction?sender=${'0x07389FEEFD37BBFF800ba0842AA62EEFDad91DA9'}&to=${
+              gelatoLimitOrders?.contract.address
+            }`,
           )
           const { hashes }: { hashes: `0x${string}`[] } = await response.json()
           const transactionDetails: Transaction[] = await Promise.all(
