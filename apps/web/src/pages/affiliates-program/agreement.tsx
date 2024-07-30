@@ -225,7 +225,7 @@ const Agreement = () => {
           up to a maximum of 100% of the commissions that you have earnt from them.
         </Text>
         <Text as="p">
-          7.2 With respect to commissions received under Clause 3 (Commissions for v1 perpetual trades):
+          7.2 With respect to commissions received under Clause 3 (Commissions for Orderbook perpetual trades):
         </Text>
         <Text as="p">(a) you may not offer a share of your commissions to your Referrals; and</Text>
         <Text as="p">
