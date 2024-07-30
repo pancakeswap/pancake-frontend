@@ -4,6 +4,7 @@ export enum ORDER_CATEGORY {
   Open = 0,
   Expired = 1,
   History = 2,
+  Existing = 3,
 }
 
 export enum LimitOrderStatus {

@@ -5,23 +5,16 @@ import useGelatoLimitOrdersHistory from '../../hooks/useGelatoLimitOrdersHistory
 
 import { ORDER_CATEGORY } from '../../types'
 
-import CompactLimitOrderTable from './CompactLimitOrderTable'
-import SpaciousLimitOrderTable from './SpaciousLimitOrderTable'
 import Navigation from './TableNavigation'
+import ExistingLimitOrderTable from './ExistingLimitOrderTable'
 
 const OrderTable: React.FC<React.PropsWithChildren<{ isCompact: boolean; orderCategory: ORDER_CATEGORY }>> = memo(
-  ({ orderCategory, isCompact }) => {
+  ({ orderCategory }) => {
     const orders = useGelatoLimitOrdersHistory(orderCategory)
 
     return (
       <Navigation data={orders} orderCategory={orderCategory}>
-        {({ paginatedData }) =>
-          isCompact ? (
-            <CompactLimitOrderTable orders={paginatedData} />
-          ) : (
-            <SpaciousLimitOrderTable orders={paginatedData} />
-          )
-        }
+        {({ paginatedData }) => <ExistingLimitOrderTable orders={paginatedData} />}
       </Navigation>
     )
   },
@@ -29,11 +22,14 @@ const OrderTable: React.FC<React.PropsWithChildren<{ isCompact: boolean; orderCa
 
 const LimitOrderTable: React.FC<React.PropsWithChildren<{ isCompact: boolean }>> = ({ isCompact }) => {
   const { t } = useTranslation()
-  const [activeTab, setIndex] = useState<ORDER_CATEGORY>(ORDER_CATEGORY.Open)
+  const [activeTab, setIndex] = useState<ORDER_CATEGORY>(ORDER_CATEGORY.Existing)
   const handleClick = useCallback((tabType: ORDER_CATEGORY) => setIndex(tabType), [])
   const tabMenuItems = useMemo(() => {
+    if (activeTab === ORDER_CATEGORY.Existing) {
+      return [t('Existing Orders')]
+    }
     return [t('Open Orders'), t('Expired Order'), t('Order History')]
-  }, [t])
+  }, [t, activeTab])
 
   return (
     <Flex flex="1" justifyContent="center" mb="24px">
