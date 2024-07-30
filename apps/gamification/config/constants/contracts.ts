@@ -39,6 +39,11 @@ export default {
   },
   questReward: {
     [ChainId.BSC]: '0x7DD6Fe51D6e39F0dabdEAb8B2EDbD473613Dc542',
+    [ChainId.ETHEREUM]: '0xb8555Ff5466b7c9BeCf8c59b6041DC5FfCAD76Ed',
+    [ChainId.ARBITRUM_ONE]: '0xb8555Ff5466b7c9BeCf8c59b6041DC5FfCAD76Ed',
+    [ChainId.POLYGON_ZKEVM]: '0xb8555Ff5466b7c9BeCf8c59b6041DC5FfCAD76Ed',
+    [ChainId.BASE]: '0xb8555Ff5466b7c9BeCf8c59b6041DC5FfCAD76Ed',
+    [ChainId.ZKSYNC]: '0x02829c262538d524af29d3970eE5396C790Db39a',
     [ChainId.BSC_TESTNET]: '0x',
   },
 } as const satisfies Record<string, Record<number, `0x${string}`>>
