@@ -78,8 +78,8 @@ export const karatGalaxy: GameType = {
   }, 
   playlist: [], 
   socialMedia: { 
-    telegram: 'https://t.me/PancakeSwap/',
-    discord: 'https://discord.gg/pancakeswap', 
+    telegram: 'https://t.me/PancakeSwap/3466527',
+    discord: 'https://discord.gg/UtgWsTqu', 
   }, 
 }
 
