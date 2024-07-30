@@ -141,7 +141,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
                 refresh?.()
               },
             })
-            isFetchingRef.current = true
+            isFetchingRef.current = false
           }
         } catch (error) {
           toastError(
@@ -157,6 +157,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     }
 
     if (isFetched && session && new Date(session?.expires).getTime() > new Date().getTime() && !isFetchingRef.current) {
+      isFetchingRef.current = true
       if (!userInfo?.socialHubToSocialUserIdMap?.Discord && (session as any).user?.discord) {
         const { discordId, token } = (session as any).user?.discord
         fetchSocial({ social: SocialHubType.Discord, id: discordId, token })
