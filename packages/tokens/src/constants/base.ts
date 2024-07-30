@@ -110,4 +110,12 @@ export const baseTokens = {
     'Wrapped weETH',
     'https://www.ether.fi/',
   ),
+  miggles: new ERC20Token(
+    ChainId.BASE,
+    '0xB1a03EdA10342529bBF8EB700a06C60441fEf25d',
+    18,
+    'MIGGLES',
+    'Master Miggles',
+    'https://mrmigglesbase.com/',
+  ),
 }
