@@ -15,80 +15,58 @@ export default async function handler(req, res) {
         })
         return
       }
+      const isValidTwitterId = /^[0-9]{1,19}$/.test(twitterPostId)
+      if (!isValidTwitterId) {
+        res.status(400).json({
+          message: 'Invalid twitter id',
+        })
+        return
+      }
 
       const consumerKey = TWITTER_CONSUMER_KEY[providerId as TwitterFollowersId].consumerKey as string
       const consumerSecret = TWITTER_CONSUMER_KEY[providerId as TwitterFollowersId].consumerKeySecret as string
 
-      const url = `https://api.twitter.com/2/users/${userId}/liked_tweets`
-      const method = 'GET'
-      let nextToken = null
-      let tweetFound = false
+      const url = `https://api.twitter.com/2/users/${userId}/likes`
+      const method = 'POST'
 
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const queryString = new URLSearchParams({
-          max_results: '100',
-        }).toString()
-        const requestUrl = `${url}?${queryString}`
+      const response = await fetch(url, {
+        method,
+        headers: {
+          ...getOAuthHeader(url, method, consumerKey, consumerSecret, token, tokenSecret),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tweet_id: twitterPostId.toLowerCase(),
+        }),
+      })
 
-        // eslint-disable-next-line no-await-in-loop
-        const response = await fetch(requestUrl, {
-          method,
-          headers: {
-            ...getOAuthHeader(requestUrl, method, consumerKey, consumerSecret, token, tokenSecret),
-            'Content-Type': 'application/json',
-          },
-        })
-
-        // eslint-disable-next-line no-await-in-loop
-        const result = await response.json()
-        if (!response.ok) {
-          res.status(500).json({ message: result.title })
-          return
-        }
-
-        const likedTweets = result.data
-        if (likedTweets.some((tweet) => tweet.id.toLowerCase() === twitterPostId.toLowerCase())) {
-          tweetFound = true
-          break
-        }
-
-        // Only check for the latest 100 tweets as the api is rate limited
-        // nextToken = result.meta.next_token
-        nextToken = null
-        if (!nextToken) {
-          break
-        }
-      }
-
-      if (!tweetFound) {
-        res.status(400).json({ message: 'No tweet found' })
+      const result = await response.json()
+      if (!response.ok) {
+        res.status(500).json({ message: result.title })
         return
       }
 
-      if (tweetFound) {
-        const apiRes = await fetch(
-          `${GAMIFICATION_PUBLIC_API}/userInfo/v1/user/${account}/quest/${questId}/mark-task-status`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: process.env.TASK_STATUS_TOKEN as string,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              taskName: TaskType.X_LIKE_POST,
-              taskId,
-              isCompleted: true,
-            }),
+      const apiRes = await fetch(
+        `${GAMIFICATION_PUBLIC_API}/userInfo/v1/user/${account}/quest/${questId}/mark-task-status`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: process.env.TASK_STATUS_TOKEN as string,
+            'Content-Type': 'application/json',
           },
-        )
+          body: JSON.stringify({
+            taskName: TaskType.X_LIKE_POST,
+            taskId,
+            isCompleted: true,
+          }),
+        },
+      )
 
-        const responseMarkTaskResult = await apiRes.json()
-        if (apiRes.ok) {
-          res.status(200).json(responseMarkTaskResult)
-        } else {
-          res.status(500).json({ message: responseMarkTaskResult.title })
-        }
+      const responseMarkTaskResult = await apiRes.json()
+      if (apiRes.ok) {
+        res.status(200).json(responseMarkTaskResult)
+      } else {
+        res.status(500).json({ message: responseMarkTaskResult.title })
       }
     } catch (error) {
       res.status(500).json({ message: (error as Error).message })
