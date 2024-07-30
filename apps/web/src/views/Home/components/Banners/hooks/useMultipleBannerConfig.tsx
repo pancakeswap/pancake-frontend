@@ -3,8 +3,6 @@ import { useMemo, type ReactElement } from 'react'
 import CompetitionBanner from '../CompetitionBanner'
 import { FeeRefundBanner } from '../FeeRefundBanner'
 import { FourMemeBanner } from '../FourMemeBanner'
-import GameBanner from '../GameBanner'
-import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
 import { OortTradingBanner } from '../OortTradingBanner'
 import { OptionsBanner } from '../OptionsBanner'
 import { AthleticsBanner } from '../PancakeSwapAthleticsBanner'
@@ -14,7 +12,6 @@ import { PredictionBanner } from '../PredictionBanner'
 import UserBanner from '../UserBanner'
 import { V4InfoBanner } from '../V4InfoBanner'
 import { VeCakeBanner } from '../VeCakeBanner'
-import WebNotificationBanner from '../WebNotificationBanner'
 import { ZksyncAirDropBanner } from '../ZksyncAirdropBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
@@ -88,15 +85,9 @@ export const useMultipleBannerConfig = () => {
         shouldRender: true,
         banner: <V4InfoBanner />,
       },
-      {
-        shouldRender: true,
-        banner: <NemesisDownfallBanner />,
-      },
     ]
 
     const SHUFFLE_BANNERS: IBannerConfig[] = [
-      { shouldRender: true, banner: <WebNotificationBanner /> },
-      { shouldRender: true, banner: <GameBanner /> },
       {
         shouldRender: isRenderCompetitionBanner,
         banner: <CompetitionBanner />,
