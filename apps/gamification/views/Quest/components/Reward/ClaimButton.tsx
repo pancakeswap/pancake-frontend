@@ -60,7 +60,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
     [quest.ownerAddress, id],
   )
 
-  const { data: claimedRewardAmount } = useQuery({
+  const { data: claimedRewardAmount, refetch: refetchClaimedRewardAmount } = useQuery({
     queryKey: ['/get-quest-claimed-reward', account, rewardClaimingId],
     queryFn: async () => {
       if (!rewardClaimingId) throw new Error('Invalid reward id to claim')
@@ -100,7 +100,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
         )
 
         if (receipt?.status) {
-          await refreshProofData()
+          await Promise.all([refreshProofData(), refetchClaimedRewardAmount()])
 
           openSuccessClaimedModal()
           toastSuccess(
@@ -126,6 +126,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
     toastError,
     refreshProofData,
     openSuccessClaimedModal,
+    refetchClaimedRewardAmount,
     fetchWithCatchTxError,
   ])
 
