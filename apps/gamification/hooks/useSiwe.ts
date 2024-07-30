@@ -63,7 +63,7 @@ export function useSiwe() {
           parsed.address === currentAddress &&
           parsed.domain === window.location.host &&
           parsed.uri === window.location.origin &&
-          (parsed as any)?.expirationTime?.getTime() > Date.now()
+          (parsed.expirationTime?.getTime() ?? 0) > Date.now()
         ) {
           return siwe
         }
