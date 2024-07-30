@@ -57,7 +57,7 @@ const handler = withSiweAuth(async (req, res) => {
 
       if (!response.ok) {
         if (result?.errors?.[0]?.message === 'You cannot retweet a Tweet that you have already retweeted.') {
-          fetchApiInfoBackend()
+          await fetchApiInfoBackend()
           return
         }
 
