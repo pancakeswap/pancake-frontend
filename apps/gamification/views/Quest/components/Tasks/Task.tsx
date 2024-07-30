@@ -40,6 +40,7 @@ import { TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersId
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { useAccount } from 'wagmi'
+import { ADDRESS_ZERO } from '../../../../../../packages/v3-sdk/dist'
 
 const VerifyButton = styled(Button)`
   background-color: ${({ theme }) => theme.colors.secondary};
@@ -323,7 +324,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     const { network, tokenAddress } = task as TaskSwapConfig | TaskHoldTokenConfig
     if (network && tokenAddress) {
       const nativeToken = Native.onChain(network)
-      const isNativeToken = nativeToken?.wrapped?.address?.toLowerCase() === tokenAddress.toLowerCase()
+      const isNativeToken = ADDRESS_ZERO.toLowerCase() === tokenAddress.toLowerCase()
 
       const url = isNativeToken
         ? `https://pancakeswap.finance/swap?chain=${CHAIN_QUERY_NAME[network]}&inputCurrency=${nativeToken.symbol}`
