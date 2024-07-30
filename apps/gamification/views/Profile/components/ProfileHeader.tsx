@@ -23,7 +23,7 @@ import { Profile } from 'hooks/useProfile/type'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { getBlockExploreLink, safeGetAddress } from 'utils'
 import { encodePacked, keccak256 } from 'viem'
 import { SocialHubType, useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
@@ -71,6 +71,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const [isFetchingApi, setIsFetchingApi] = useState(false)
   const { query } = useRouter()
   const { signMessageAsync } = useSignMessage()
+  const isFetchingRef = useRef(false)
 
   useEffect(() => {
     if (query.openSettingModal && query.openSettingModal === 'true') {
@@ -140,6 +141,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
                 refresh?.()
               },
             })
+            isFetchingRef.current = true
           }
         } catch (error) {
           toastError(
@@ -154,7 +156,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       }
     }
 
-    if (isFetched && session && new Date(session?.expires).getTime() > new Date().getTime()) {
+    if (isFetched && session && new Date(session?.expires).getTime() > new Date().getTime() && !isFetchingRef.current) {
       if (!userInfo?.socialHubToSocialUserIdMap?.Discord && (session as any).user?.discord) {
         const { discordId, token } = (session as any).user?.discord
         fetchSocial({ social: SocialHubType.Discord, id: discordId, token })
