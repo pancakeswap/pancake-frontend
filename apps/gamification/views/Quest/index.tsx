@@ -96,13 +96,13 @@ export const Quest = () => {
   }, [data])
 
   const isEnoughCompleted = useMemo(() => {
-    const allRequestTaskTotal = data.taskStatus.filter((i) => !i.isOptional)
-    const totalRequestComplete = allRequestTaskTotal.reduce(
-      (acc, { completionStatus: isComplete }) => acc + (isComplete ? 1 : 0),
-      0,
-    )
+    const allRequestTaskTotal = tasks.filter((i) => !i.isOptional)
+    const totalRequestComplete = data.taskStatus
+      .filter((i) => !i.isOptional)
+      .reduce((acc, { completionStatus: isComplete }) => acc + (isComplete ? 1 : 0), 0)
+
     return allRequestTaskTotal.length === totalRequestComplete && hasIdRegister
-  }, [data, hasIdRegister])
+  }, [data, tasks, hasIdRegister])
 
   const isTasksCompleted = useMemo(
     () => totalTaskCompleted === tasks?.length && hasIdRegister,
