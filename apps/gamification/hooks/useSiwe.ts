@@ -2,7 +2,7 @@ import { useAccount, useAccountEffect, useSignMessage } from 'wagmi'
 import { useAtom } from 'jotai'
 import { atomWithStorage, createJSONStorage, RESET } from 'jotai/utils'
 import { createSiweMessage, generateSiweNonce, parseSiweMessage } from 'viem/siwe'
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import { Address } from 'viem'
 import { ChainId } from '@pancakeswap/chains'
 
@@ -19,7 +19,6 @@ const siweAtom = atomWithStorage<
 )
 
 export function useAutoSiwe() {
-  const { address } = useAccount()
   const { signIn, signOut } = useSiwe()
 
   const trySignIn = useCallback(
@@ -33,13 +32,6 @@ export function useAutoSiwe() {
     },
     [signIn, signOut],
   )
-
-  useEffect(() => {
-    if (address) {
-      trySignIn({ address })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address])
 
   useAccountEffect({
     onConnect({ address: addr }) {
