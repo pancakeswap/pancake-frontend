@@ -101,7 +101,7 @@ export const AlloraBanner = () => {
           width={469}
           height={224}
         />
-        <Box position="absolute" width="100%" left={isTablet ? '-8%' : '2%'}>
+        <Box position="absolute" width="100%" left={isTablet ? '-8%' : '3%'}>
           <FloatingGraphic src={floatingAsset} width={99} height={99} />
         </Box>
       </BannerGraphics>
