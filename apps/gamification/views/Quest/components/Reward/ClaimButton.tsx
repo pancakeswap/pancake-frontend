@@ -11,7 +11,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useQuestRewardContract } from 'hooks/useContract'
 import { useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
-import { Address, toHex, encodePacked, keccak256, getAddress } from 'viem'
+import { Address, encodePacked, getAddress, keccak256, toHex } from 'viem'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 import { MessageInfo } from 'views/Quest/components/Reward/MessageInfo'
@@ -52,6 +52,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
   const { toastSuccess, toastError } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
   const contract = useQuestRewardContract(quest.reward?.currency?.network as ChainId)
+
   const rewardClaimingId = useMemo(
     () =>
       id && quest.ownerAddress
@@ -91,7 +92,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
       const result: GetMerkleProofResponse = await response.json()
       return result
     },
-    enabled: Boolean(account && id),
+    enabled: Boolean(account && id && isTasksCompleted),
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -132,18 +133,19 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
 
   return (
     <>
-      <Box ref={targetRef}>
-        <StyledButton
-          $outline={!ableToClaimReward}
-          isLoading={isPending}
-          disabled={!ableToClaimReward || isPending}
-          variant={ableToClaimReward ? 'primary' : 'secondary'}
-          endIcon={!ableToClaimReward ? <InfoIcon color="textDisabled" /> : undefined}
-          onClick={handleClaimReward}
-        >
-          {ableToClaimReward ? t('Claim the reward') : t('Unavailable')}
-        </StyledButton>
-        {!ableToClaimReward && tooltipVisible && tooltip}
+      <Box>
+        {isQuestFinished && (!isTasksCompleted || (isTasksCompleted && proofData?.claimed)) ? (
+          <Box ref={targetRef}>
+            <StyledButton $outline variant="secondary" disabled endIcon={<InfoIcon color="textDisabled" />}>
+              {t('Unavailable')}
+            </StyledButton>
+            {tooltipVisible && tooltip}
+          </Box>
+        ) : (
+          <StyledButton disabled={!ableToClaimReward} onClick={handleClaimReward}>
+            {t('Claim the reward')}
+          </StyledButton>
+        )}
       </Box>
       <MessageInfo ableToClaimReward={ableToClaimReward} isQuestFinished={isQuestFinished} />
     </>

@@ -177,7 +177,7 @@ export const SubmitAction = () => {
           needAddReward,
           siweMessage: message,
           signature,
-          ownerAddress: isCreate ? account?.toLowerCase() : ownerAddress,
+          ownerAddress: isCreate ? account : ownerAddress,
           ...(rewardSCAddress && {
             rewardSCAddress,
           }),
