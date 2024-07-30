@@ -9,6 +9,7 @@ import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useQuestRewardContract } from 'hooks/useContract'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
 import { Address, encodePacked, getAddress, keccak256, toHex } from 'viem'
@@ -52,6 +53,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
   const { toastSuccess, toastError } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
   const contract = useQuestRewardContract(quest.reward?.currency?.network as ChainId)
+  const { switchNetworkAsync } = useSwitchNetwork()
 
   const rewardClaimingId = useMemo(
     () =>
@@ -131,27 +133,41 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({ quest, isTasksComplete
     }
   }, [proofData, contract, rewardClaimingId, account, chainId, toastSuccess, t, toastError, fetchWithCatchTxError])
 
+  const handleSwitchNetwork = async (): Promise<void> => {
+    if (quest?.reward?.currency?.network) {
+      await switchNetworkAsync(quest?.reward?.currency?.network as ChainId)
+    }
+  }
+
   return (
     <>
-      <Box>
-        {isQuestFinished && (!isTasksCompleted || (isTasksCompleted && !ableToClaimReward)) ? (
-          <Box ref={targetRef}>
-            <StyledButton $outline variant="secondary" disabled endIcon={<InfoIcon color="textDisabled" />}>
-              {t('Unavailable')}
-            </StyledButton>
-            {tooltipVisible && tooltip}
+      {chainId !== quest?.reward?.currency?.network ? (
+        <Button width="100%" onClick={handleSwitchNetwork}>
+          {t('Switch Network')}
+        </Button>
+      ) : (
+        <>
+          <Box>
+            {isQuestFinished && (!isTasksCompleted || (isTasksCompleted && !ableToClaimReward)) ? (
+              <Box ref={targetRef}>
+                <StyledButton $outline variant="secondary" disabled endIcon={<InfoIcon color="textDisabled" />}>
+                  {t('Unavailable')}
+                </StyledButton>
+                {tooltipVisible && tooltip}
+              </Box>
+            ) : (
+              <StyledButton disabled={!ableToClaimReward || !isPending} onClick={handleClaimReward}>
+                {t('Claim the reward')}
+              </StyledButton>
+            )}
           </Box>
-        ) : (
-          <StyledButton disabled={!ableToClaimReward} onClick={handleClaimReward}>
-            {t('Claim the reward')}
-          </StyledButton>
-        )}
-      </Box>
-      <MessageInfo
-        ableToClaimReward={ableToClaimReward}
-        isTasksCompleted={isTasksCompleted}
-        isQuestFinished={isQuestFinished}
-      />
+          <MessageInfo
+            ableToClaimReward={ableToClaimReward}
+            isTasksCompleted={isTasksCompleted}
+            isQuestFinished={isQuestFinished}
+          />
+        </>
+      )}
     </>
   )
 }
