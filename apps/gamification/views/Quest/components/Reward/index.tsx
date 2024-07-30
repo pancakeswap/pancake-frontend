@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { chains } from 'utils/wagmi'
 import { Address } from 'viem'
@@ -89,7 +89,7 @@ export const Reward: React.FC<RewardProps> = ({ quest, isTasksCompleted, isQuest
             )}
           </Flex>
           <Box opacity={!isQuestFinished || ableToClaimReward ? '1' : '0.5'}>
-            <RewardAmount reward={quest?.reward} />
+            <RewardAmount reward={quest?.reward} proofData={proofData ?? null} ableToClaimReward={ableToClaimReward} />
           </Box>
           <Countdown endDateTime={quest?.endDateTime ?? 0} />
           {/* <TotalRewards /> */}

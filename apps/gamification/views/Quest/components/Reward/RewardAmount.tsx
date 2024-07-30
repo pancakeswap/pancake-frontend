@@ -1,12 +1,14 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
-import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { useFindTokens } from 'hooks/useFindTokens'
+import { useMemo } from 'react'
 import { styled } from 'styled-components'
 import { Address } from 'viem'
 import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
+import { GetMerkleProofResponse } from 'views/Quest/components/Reward'
 
 const RewardAmountContainer = styled(Box)`
   padding-bottom: 24px;
@@ -19,10 +21,19 @@ const RewardAmountContainer = styled(Box)`
 
 interface RewardAmountProps {
   reward: undefined | QuestRewardType
+  proofData: null | GetMerkleProofResponse
+  ableToClaimReward: boolean
 }
 
-export const RewardAmount: React.FC<RewardAmountProps> = ({ reward }) => {
+export const RewardAmount: React.FC<RewardAmountProps> = ({ reward, ableToClaimReward, proofData }) => {
   const currency = useFindTokens(reward?.currency?.network as ChainId, reward?.currency?.address as Address)
+
+  const amountDisplay = useMemo(() => {
+    const balance = getBalanceNumber(new BigNumber(proofData?.rewardAmount ?? 0), currency.decimals)
+    return new BigNumber(balance).lte(0.01)
+      ? '< 0.01'
+      : getFullDisplayBalance(new BigNumber(proofData?.rewardAmount ?? 0), currency.decimals, 2)
+  }, [currency, proofData])
 
   return (
     <RewardAmountContainer>
@@ -34,7 +45,11 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({ reward }) => {
             </Box>
             <Box ml={['16px']}>
               <Text fontSize={['40px']} bold as="span">
-                {getFullDisplayBalance(new BigNumber(reward?.totalRewardAmount ?? 0), currency.decimals, 2)}
+                {ableToClaimReward && proofData?.rewardAmount ? (
+                  <>{amountDisplay}</>
+                ) : (
+                  <>{getFullDisplayBalance(new BigNumber(reward?.totalRewardAmount ?? 0), currency.decimals, 2)}</>
+                )}
               </Text>
               <Text textTransform="uppercase" fontSize={['24px']} bold as="span" ml="4px">
                 {currency.symbol}

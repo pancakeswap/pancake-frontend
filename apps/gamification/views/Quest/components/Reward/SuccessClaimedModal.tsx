@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { Box, Button, Flex, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
-import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
-
+import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { TokenWithChain } from 'components/TokenWithChain'
 import { useFindTokens } from 'hooks/useFindTokens'
+import { useMemo } from 'react'
 import { Address } from 'viem'
 import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
 
@@ -18,6 +18,13 @@ export const SuccessClaimedModal: React.FC<SuccessClaimedModalProps> = ({ reward
   const { t } = useTranslation()
   const currency = useFindTokens(reward?.currency?.network as ChainId, reward?.currency?.address as Address)
 
+  const amountDisplay = useMemo(() => {
+    const balance = getBalanceNumber(new BigNumber(rewardAmount ?? 0), currency.decimals)
+    return new BigNumber(balance).lte(0.01)
+      ? '< 0.01'
+      : getFullDisplayBalance(new BigNumber(rewardAmount ?? 0), currency.decimals, 2)
+  }, [currency, rewardAmount])
+
   return (
     <Modal title="" headerBorderColor="transparent" onDismiss={onDismiss}>
       <Flex mt="-24px" flexDirection="column">
@@ -27,7 +34,7 @@ export const SuccessClaimedModal: React.FC<SuccessClaimedModalProps> = ({ reward
           </Box>
           <Flex mt="8px" justifyContent="center">
             <Text lineHeight="24px" fontSize="28px" bold>
-              {getFullDisplayBalance(new BigNumber(rewardAmount ?? 0), currency.decimals, 4)}
+              {amountDisplay}
             </Text>
             <Text style={{ alignSelf: 'flex-end' }} fontSize="20px" bold ml="4px">
               {currency.symbol}
