@@ -1,10 +1,10 @@
-import { useAccount, useAccountEffect, useSignMessage } from 'wagmi'
+import { ChainId } from '@pancakeswap/chains'
 import { useAtom } from 'jotai'
 import { atomWithStorage, createJSONStorage, RESET } from 'jotai/utils'
-import { createSiweMessage, generateSiweNonce, parseSiweMessage } from 'viem/siwe'
 import { useCallback } from 'react'
 import { Address } from 'viem'
-import { ChainId } from '@pancakeswap/chains'
+import { createSiweMessage, generateSiweNonce, parseSiweMessage } from 'viem/siwe'
+import { useAccount, useAccountEffect, useSignMessage } from 'wagmi'
 
 const ONE_DAY_IN_MS = 60 * 60 * 24 * 1000
 
@@ -63,7 +63,7 @@ export function useSiwe() {
           parsed.address === currentAddress &&
           parsed.domain === window.location.host &&
           parsed.uri === window.location.origin &&
-          parsed.expirationTime?.getTime() > Date.now()
+          (parsed as any)?.expirationTime?.getTime() > Date.now()
         ) {
           return siwe
         }
