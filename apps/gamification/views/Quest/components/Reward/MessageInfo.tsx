@@ -40,7 +40,7 @@ export const MessageInfo: React.FC<MessageInfoProps> = ({
           <MessageText>
             <Text bold>{t("You're eligible to participate!")}</Text>
             <Text mt="4px" fontSize={['14px']} lineHeight={['20px']}>
-              {t('Please wait until the luck draw starts')}
+              {t('Please wait until the lucky draw starts')}
             </Text>
           </MessageText>
         </Message>
