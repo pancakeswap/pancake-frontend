@@ -323,17 +323,6 @@ export const SubmitAction = () => {
           {state.needAddReward ? t('Add a reward and schedule') : t('Save and schedule')}
         </Button>
       )}
-      {completionStatusToString === CompletionStatus.SCHEDULED && (
-        <Button
-          mb="8px"
-          width="100%"
-          disabled={!isAbleToSave}
-          endIcon={<PencilIcon color={isAbleToSave ? 'invertedContrast' : 'textDisabled'} width={14} height={14} />}
-          onClick={() => handleSave(Boolean(!query.id), state.completionStatus)}
-        >
-          {t('Save the edits')}
-        </Button>
-      )}
 
       {completionStatusToString === CompletionStatus.DRAFTED && (
         <Box mt="16px">
