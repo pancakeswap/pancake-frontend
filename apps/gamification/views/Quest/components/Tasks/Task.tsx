@@ -206,7 +206,7 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     const isCorrectTwitterAccount = () =>
       connectedTwitterAccount && (session as any).user.twitter.twitterId === connectedTwitterAccount
 
-    setIsError(true)
+    setIsError(false)
     switch (action) {
       case TaskType.X_LIKE_POST:
         if (isCorrectTwitterAccount()) {
@@ -242,13 +242,16 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
 
   useEffect(() => {
     if (status !== 'authenticated' || !isSocialHubFetched) {
+      console.log('hi', status, isSocialHubFetched)
       return
     }
     if (!session?.expires || new Date(session.expires).getTime() <= new Date().getTime()) {
+      console.log('hi 2')
       return
     }
     const parsedAction = parseAction(Array.isArray(query.action) ? query.action[0] : query.action ?? '')
     if (!parsedAction || task.id !== parsedAction.taskId) {
+      console.log('hi 3')
       return
     }
     const newPath = updateQuery(asPath, { action: undefined })
