@@ -101,10 +101,13 @@ export const Quest = () => {
       (acc, { completionStatus: isComplete }) => acc + (isComplete ? 1 : 0),
       0,
     )
-    return allRequestTaskTotal.length === totalRequestComplete
-  }, [data])
+    return allRequestTaskTotal.length === totalRequestComplete && hasIdRegister
+  }, [data, hasIdRegister])
 
-  const isTasksCompleted = useMemo(() => totalTaskCompleted === tasks?.length, [tasks, totalTaskCompleted])
+  const isTasksCompleted = useMemo(
+    () => totalTaskCompleted === tasks?.length && hasIdRegister,
+    [hasIdRegister, tasks?.length, totalTaskCompleted],
+  )
 
   if (!isFetched || isError || !questId) {
     return null
@@ -131,7 +134,7 @@ export const Quest = () => {
         <Box mt="16px">
           {quest?.completionStatus === CompletionStatus.ONGOING ? (
             <>
-              {account && hasIdRegister && (isEnoughCompleted || isTasksCompleted) ? (
+              {account && (isEnoughCompleted || isTasksCompleted) ? (
                 <Tag variant="success">{t('Completed')}</Tag>
               ) : (
                 <Tag variant="secondary">{t('Ongoing')}</Tag>
