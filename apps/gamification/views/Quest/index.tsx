@@ -131,7 +131,7 @@ export const Quest = () => {
         <Box mt="16px">
           {quest?.completionStatus === CompletionStatus.ONGOING ? (
             <>
-              {account && (isEnoughCompleted || isTasksCompleted) ? (
+              {account && hasIdRegister && (isEnoughCompleted || isTasksCompleted) ? (
                 <Tag variant="success">{t('Completed')}</Tag>
               ) : (
                 <Tag variant="secondary">{t('Ongoing')}</Tag>
