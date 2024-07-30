@@ -1,8 +1,8 @@
-import { TaskType } from 'views/DashboardQuestEdit/type'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { withSiweAuth } from 'middlewares/withSiwe'
 import { getOAuthHeader } from 'utils/getOAuthHeader'
+import { TaskType } from 'views/DashboardQuestEdit/type'
 import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
 
 const handler = withSiweAuth(async (req, res) => {
@@ -15,7 +15,7 @@ const handler = withSiweAuth(async (req, res) => {
         return
       }
 
-      const url = `/2/users/${userId}/retweets`
+      const url = `https://api.twitter.com/2/users/${userId}/retweets`
       const method = 'POST'
       const consumerKey = TWITTER_CONSUMER_KEY[providerId as TwitterFollowersId].consumerKey as string
       const consumerSecret = TWITTER_CONSUMER_KEY[providerId as TwitterFollowersId].consumerKeySecret as string
@@ -30,12 +30,8 @@ const handler = withSiweAuth(async (req, res) => {
       })
 
       const result = await response.json()
-      if (!response.ok) {
-        res.status(500).json({ message: result.title })
-        return
-      }
 
-      if (result.data.following) {
+      const fetchApiInfoBackend = async () => {
         const apiRes = await fetch(
           `${GAMIFICATION_PUBLIC_API}/userInfo/v1/user/${account}/quest/${questId}/mark-task-status`,
           {
@@ -57,8 +53,20 @@ const handler = withSiweAuth(async (req, res) => {
           res.status(200).json(responseMarkTaskResult)
           return
         }
-
         res.status(500).json({ message: responseMarkTaskResult.title })
+      }
+
+      if (!response.ok) {
+        if (result?.errors?.[0]?.message === 'You cannot retweet a Tweet that you have already retweeted.') {
+          fetchApiInfoBackend()
+        }
+
+        res.status(500).json({ message: result.title })
+        return
+      }
+
+      if (result.data.retweeted) {
+        fetchApiInfoBackend()
       }
     } catch (error) {
       res.status(500).json({ message: (error as Error).message })
