@@ -13,20 +13,13 @@ export function withSiweAuth(handler: ExtendedApiHandler): ExtendedApiHandler {
     const unauthorized = () => res.status(401).json({ message: 'Unauthorized' })
     const encodedMessage = req.headers['x-g-siwe-message']
     const signature = req.headers['x-g-siwe-signature']
-    const chainId = req.headers['x-g-siwe-chain-id']
-    if (
-      !encodedMessage ||
-      !signature ||
-      typeof encodedMessage !== 'string' ||
-      typeof signature !== 'string' ||
-      !chainId
-    ) {
+    if (!encodedMessage || !signature || typeof encodedMessage !== 'string' || typeof signature !== 'string') {
       return unauthorized()
     }
     const message = decodeURIComponent(encodedMessage)
     const siweMessage = parseSiweMessage(message)
-    const { address } = siweMessage
-    if (!address) {
+    const { address, chainId } = siweMessage
+    if (!address || !chainId) {
       return unauthorized()
     }
     const client = getViemClients({ chainId: Number(chainId) })

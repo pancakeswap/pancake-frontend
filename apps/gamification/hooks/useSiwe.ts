@@ -45,7 +45,6 @@ export function useSiwe() {
         const parsed = parseSiweMessage(siwe.message)
         if (
           parsed.address === currentAddress &&
-          parsed.chainId === currentChainId &&
           parsed.domain === window.location.host &&
           parsed.uri === window.location.origin
         ) {
@@ -72,10 +71,10 @@ export function useSiwe() {
       setSiwe(siweMessage)
       return siweMessage
     },
-    [currentChainId, currentAddress, siwe],
+    [currentAddress, siwe, setSiwe, signMessageAsync],
   )
 
-  const signOut = useCallback(() => setSiwe(undefined), [])
+  const signOut = useCallback(() => setSiwe(undefined), [setSiwe])
 
   const fetchWithSiweAuth = useCallback<typeof fetch>(
     async (input: RequestInfo | URL, init: RequestInit | undefined) => {
@@ -90,7 +89,6 @@ export function useSiwe() {
           ...init?.headers,
           'X-G-Siwe-Message': encodeURIComponent(message),
           'X-G-Siwe-Signature': signature,
-          'X-G-Siwe-Chain-Id': String(currentChainId),
         },
       })
     },

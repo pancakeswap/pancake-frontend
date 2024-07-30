@@ -8,7 +8,7 @@ import { useQuestRewardContract } from 'hooks/useContract'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useCallback, useMemo } from 'react'
 import { styled } from 'styled-components'
-import { Address, encodePacked, getAddress, keccak256, toHex } from 'viem'
+import { Address, encodePacked, getAddress, isAddress, keccak256, toHex } from 'viem'
 import { SingleQuestData } from 'views/DashboardQuestEdit/hooks/useGetSingleQuestData'
 import { GetMerkleProofResponse } from 'views/Quest/components/Reward'
 import { MessageInfo } from 'views/Quest/components/Reward/MessageInfo'
@@ -53,7 +53,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
 
   const rewardClaimingId = useMemo(
     () =>
-      id && quest.ownerAddress
+      id && isAddress(quest.ownerAddress)
         ? keccak256(encodePacked(['bytes32', 'address'], [toHex(id), getAddress(quest.ownerAddress) as Address]))
         : undefined,
     [quest.ownerAddress, id],

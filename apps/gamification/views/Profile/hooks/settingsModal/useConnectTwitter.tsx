@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { signIn } from 'next-auth/react'
 import { encodePacked, keccak256 } from 'viem'
+import { TaskType } from 'views/DashboardQuestEdit/type'
 import { SocialHubType } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
 import { disconnectSocial, DisconnectUserSocialInfoConfig } from 'views/Profile/utils/disconnectSocial'
 import { verifyTwitterFollowersIds } from 'views/Profile/utils/verifyTwitterFollowersIds'
@@ -9,6 +10,39 @@ import { useAccount, useSignMessage } from 'wagmi'
 
 interface UseConnectTwitterProps {
   refresh?: () => void
+}
+
+type ActionType = TaskType.X_LIKE_POST | TaskType.X_FOLLOW_ACCOUNT
+
+type ActionAfterConnect = {
+  taskId?: string
+  action: ActionType
+}
+
+const ACTION_SERIALIZER_SEPARATOR = '__'
+
+export function serializeAction({ action, taskId }: ActionAfterConnect): string {
+  return [taskId, action].join(ACTION_SERIALIZER_SEPARATOR)
+}
+
+export function parseAction(serializedAction: string): ActionAfterConnect | undefined {
+  const [taskId, action] = serializedAction.split(ACTION_SERIALIZER_SEPARATOR)
+  if (!taskId || !action) {
+    return undefined
+  }
+
+  return {
+    taskId,
+    action: action as ActionType,
+  }
+}
+
+const getCallbackUrl = (callbackUrl: string, action?: ActionAfterConnect) => {
+  if (!action) return callbackUrl
+  const url = new URL(callbackUrl)
+
+  url.searchParams.set('action', serializeAction(action))
+  return url.toString()
 }
 
 export const useConnectTwitter = ({ refresh }: UseConnectTwitterProps) => {
@@ -21,9 +55,11 @@ export const useConnectTwitter = ({ refresh }: UseConnectTwitterProps) => {
     signIn('twitter')
   }
 
-  const randomConnect = async () => {
+  const randomConnect = async (action?: ActionAfterConnect) => {
     const randomIndex = Math.floor(Math.random() * verifyTwitterFollowersIds.length)
-    signIn(verifyTwitterFollowersIds[randomIndex])
+    signIn(verifyTwitterFollowersIds[randomIndex], {
+      callbackUrl: getCallbackUrl(window.location.href, action),
+    })
   }
 
   const disconnect = async () => {

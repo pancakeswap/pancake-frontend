@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { updateQuery } from '@pancakeswap/utils/clientRouter'
 import { Native } from '@pancakeswap/sdk'
 import {
   Box,
@@ -17,8 +18,8 @@ import {
 } from '@pancakeswap/uikit'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useSiwe } from 'hooks/useSiwe'
-import Cookie from 'js-cookie'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
 import { StyledOptionIcon } from 'views/DashboardQuestEdit/components/Tasks/StyledOptionIcon'
@@ -32,13 +33,13 @@ import {
 } from 'views/DashboardQuestEdit/context/types'
 import { useTaskInfo } from 'views/DashboardQuestEdit/hooks/useTaskInfo'
 import { TaskType } from 'views/DashboardQuestEdit/type'
-import { useConnectTwitter } from 'views/Profile/hooks/settingsModal/useConnectTwitter'
+import { parseAction, useConnectTwitter } from 'views/Profile/hooks/settingsModal/useConnectTwitter'
 import { useUserSocialHub } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
-import { getSingleTaskTwitterIdCookie } from 'views/Profile/utils/getTwitterIdCookie'
 import { TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { useAccount } from 'wagmi'
+import { useDebounceCallback } from 'hooks/useDebouncedCallback'
 
 const VerifyButton = styled(Button)`
   background-color: ${({ theme }) => theme.colors.secondary};
@@ -54,10 +55,12 @@ interface TaskProps {
 }
 
 export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegister, isQuestFinished, refresh }) => {
+  const { asPath, replace } = useRouter()
   const { t } = useTranslation()
   const { toastError } = useToast()
   const { address: account } = useAccount()
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
+  const { query } = useRouter()
   const { taskType, title, description } = task
   const isVerified = useMemo(
     () => taskStatus.taskStatus.find((i) => i.taskId === task.id)?.completionStatus,
@@ -72,117 +75,135 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   const { fetchWithSiweAuth } = useSiwe()
 
   const twitterId = userInfo?.socialHubToSocialUserIdMap?.Twitter ?? ''
-  const providerId = (session as any)?.user?.twitter?.providerId
-  const token = (session as any)?.user?.twitter?.token
-  const tokenSecret = (session as any)?.user?.twitter?.tokenSecret
 
-  const cookieId = getSingleTaskTwitterIdCookie(twitterId, questId)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const getCookie: { taskType?: TaskType } = Cookie.get(cookieId) ? JSON?.parse?.(Cookie.get(cookieId)) : {}
-
-  const handleVerifyTwitterAccount = useCallback(async () => {
-    if (isPending || !hasIdRegister || !account || !twitterId) {
-      return
-    }
-
-    if (providerId && token && tokenSecret) {
-      try {
-        setIsPending(true)
-        setActionPanelExpanded(false)
-        const queryString = new URLSearchParams({
-          account,
-          questId,
-          token,
-          tokenSecret,
-          userId: twitterId,
-          providerId: providerId as TwitterFollowersId,
-          targetUserId: (task as TaskSocialConfig).accountId,
-          taskId: task?.id ?? '',
-        }).toString()
-        const response = await fetch(`/api/twitterFollow?${queryString}`)
-        if (response.ok) {
-          await refresh()
-        } else {
-          const { message } = await response.json()
-          throw new Error(message)
-        }
-      } catch (error) {
-        toastError(`Verify Twitter Followed Fail: ${error}`)
-      } finally {
-        setIsPending(false)
+  const handleVerifyTwitterAccount = useDebounceCallback(
+    async ({ providerId, token, tokenSecret }: { providerId?: string; token?: string; tokenSecret?: string }) => {
+      if (isPending || !hasIdRegister || !account || !twitterId) {
+        return
       }
-    }
-  }, [account, hasIdRegister, isPending, providerId, questId, refresh, task, toastError, token, tokenSecret, twitterId])
 
-  const handleVerifyTwitterAccountLike = useCallback(async () => {
-    if (isPending || !hasIdRegister || !account || !twitterId) {
-      return
-    }
-
-    if (providerId && token && tokenSecret) {
-      try {
-        setIsPending(true)
-        setActionPanelExpanded(false)
-        const queryString = new URLSearchParams({
-          account,
-          questId,
-          token,
-          tokenSecret,
-          userId: twitterId,
-          taskId: task?.id ?? '',
-          providerId: providerId as TwitterFollowersId,
-          twitterPostId: (task as TaskSocialConfig).accountId,
-        }).toString()
-        const response = await fetch(`/api/twitterLiked?${queryString}`)
-        if (response.ok) {
-          await refresh()
-        } else {
-          const { message } = await response.json()
-          throw new Error(message)
+      if (providerId && token && tokenSecret) {
+        try {
+          setIsPending(true)
+          setActionPanelExpanded(false)
+          const queryString = new URLSearchParams({
+            account,
+            questId,
+            token,
+            tokenSecret,
+            userId: twitterId,
+            providerId: providerId as TwitterFollowersId,
+            targetUserId: (task as TaskSocialConfig).accountId,
+            taskId: task?.id ?? '',
+          }).toString()
+          const response = await fetch(`/api/twitterFollow?${queryString}`)
+          if (response.ok) {
+            await refresh()
+          } else {
+            const { message } = await response.json()
+            throw new Error(message)
+          }
+        } catch (error) {
+          toastError(`Verify Twitter Followed Fail: ${error}`)
+        } finally {
+          setIsPending(false)
         }
-      } catch (error) {
-        toastError(`Verify Twitter Liked Fail: ${error}`)
-      } finally {
-        setIsPending(false)
       }
+    },
+    500,
+  )
+
+  const handleVerifyTwitterAccountLike = useDebounceCallback(
+    async ({ providerId, token, tokenSecret }: { providerId?: string; token?: string; tokenSecret?: string }) => {
+      if (isPending || !hasIdRegister || !account || !twitterId) {
+        return
+      }
+
+      if (providerId && token && tokenSecret) {
+        try {
+          setIsPending(true)
+          setActionPanelExpanded(false)
+          const queryString = new URLSearchParams({
+            account,
+            questId,
+            token,
+            tokenSecret,
+            userId: twitterId,
+            taskId: task?.id ?? '',
+            providerId: providerId as TwitterFollowersId,
+            twitterPostId: (task as TaskSocialConfig).accountId,
+          }).toString()
+          const response = await fetch(`/api/twitterLiked?${queryString}`)
+          if (response.ok) {
+            await refresh()
+          } else {
+            const { message } = await response.json()
+            throw new Error(message)
+          }
+        } catch (error) {
+          toastError(`Verify Twitter Liked Fail: ${error}`)
+        } finally {
+          setIsPending(false)
+        }
+      }
+    },
+    500,
+  )
+
+  // eslint-disable-next-line consistent-return
+  async function handleTwitterActions(
+    action: TaskType,
+    { providerId, token, tokenSecret }: { providerId: string; token: string; tokenSecret: string },
+  ): Promise<any | void> {
+    const connectedTwitterAccount = userInfo.socialHubToSocialUserIdMap?.Twitter
+    const isCorrectTwitterAccount = () =>
+      connectedTwitterAccount && (session as any).user.twitter.twitterId === connectedTwitterAccount
+    switch (action) {
+      case TaskType.X_LIKE_POST:
+        if (isCorrectTwitterAccount()) {
+          return handleVerifyTwitterAccountLike({
+            providerId,
+            token,
+            tokenSecret,
+          })
+        }
+        break
+      case TaskType.X_FOLLOW_ACCOUNT:
+        if (isCorrectTwitterAccount()) {
+          return handleVerifyTwitterAccount({
+            providerId: (session as any)?.user?.twitter?.providerId,
+            token: (session as any)?.user?.twitter?.token,
+            tokenSecret: (session as any)?.user?.twitter?.tokenSecret,
+          })
+        }
+        break
+      default:
+        break
     }
-  }, [account, hasIdRegister, isPending, providerId, questId, refresh, task, toastError, token, tokenSecret, twitterId])
+  }
 
   useEffect(() => {
-    const fetchApi = async () => {
-      if (cookieId) {
-        Cookie.remove(cookieId)
-      }
-
-      switch (getCookie?.taskType as TaskType) {
-        case TaskType.X_FOLLOW_ACCOUNT:
-          await handleVerifyTwitterAccount()
-          break
-        case TaskType.X_LIKE_POST:
-          await handleVerifyTwitterAccountLike()
-          break
-        default:
-          break
-      }
+    if (status !== 'authenticated' || !isSocialHubFetched) {
+      return
     }
-
-    if (
-      session &&
-      isSocialHubFetched &&
-      new Date(session?.expires).getTime() > new Date().getTime() &&
-      (getCookie?.taskType === TaskType.X_FOLLOW_ACCOUNT || getCookie?.taskType === TaskType.X_LIKE_POST)
-    ) {
-      fetchApi()
+    if (!session?.expires || new Date(session.expires).getTime() <= new Date().getTime()) {
+      return
     }
-  }, [
-    cookieId,
-    getCookie,
-    isSocialHubFetched,
-    session,
-    taskType,
-    handleVerifyTwitterAccount,
-    handleVerifyTwitterAccountLike,
-  ])
+    const parsedAction = parseAction(Array.isArray(query.action) ? query.action[0] : query.action ?? '')
+    if (!parsedAction || task.id !== parsedAction.taskId) {
+      return
+    }
+    const newPath = updateQuery(asPath, { action: undefined })
+    replace(newPath, undefined, {
+      shallow: true,
+    })
+    handleTwitterActions(parsedAction.action, {
+      providerId: (session as any)?.user?.twitter?.providerId,
+      token: (session as any)?.user?.twitter?.token,
+      tokenSecret: (session as any)?.user?.twitter?.tokenSecret,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, isSocialHubFetched])
 
   const [onPresentConnectSocialAccountModal] = useModal(<ConnectSocialAccountModal socialName={socialName} />)
 
@@ -282,11 +303,17 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     setIsPending(true)
     setActionPanelExpanded(false)
 
+    const providerId = (session as any)?.user?.twitter?.providerId
+    const token = (session as any)?.user?.twitter?.token
+    const tokenSecret = (session as any)?.user?.twitter?.tokenSecret
     if (providerId && token && tokenSecret) {
-      handleVerifyTwitterAccount()
-    } else {
-      Cookie.set(cookieId, JSON.stringify({ taskType: TaskType.X_LIKE_POST }))
-      connectTwitter()
+      handleTwitterActions(taskType, {
+        providerId,
+        token,
+        tokenSecret,
+      })
+    } else if (taskType === TaskType.X_FOLLOW_ACCOUNT || taskType === TaskType.X_LIKE_POST) {
+      connectTwitter({ action: taskType, taskId: task?.id })
     }
   }
 
