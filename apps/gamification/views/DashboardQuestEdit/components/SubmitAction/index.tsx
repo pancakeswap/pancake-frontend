@@ -359,12 +359,6 @@ export const SubmitAction = () => {
           )}
         </Box>
       )}
-      <Button
-        mt="24px"
-        onClick={() => handleSave(Boolean(!query.id), query.id ? state.completionStatus : CompletionStatus.DRAFTED)}
-      >
-        SAVE BUTTON FOR RUBY
-      </Button>
     </Flex>
   )
 }
