@@ -1,5 +1,4 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { updateQuery } from '@pancakeswap/utils/clientRouter'
 import { Native } from '@pancakeswap/sdk'
 import {
   Box,
@@ -16,7 +15,9 @@ import {
   useModal,
   useToast,
 } from '@pancakeswap/uikit'
+import { updateQuery } from '@pancakeswap/utils/clientRouter'
 import { CHAIN_QUERY_NAME } from 'config/chains'
+import { useDebounceCallback } from 'hooks/useDebouncedCallback'
 import { useSiwe } from 'hooks/useSiwe'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
@@ -39,7 +40,6 @@ import { TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersId
 import { ConnectSocialAccountModal } from 'views/Quest/components/Tasks/ConnectSocialAccountModal'
 import { VerifyTaskStatus } from 'views/Quest/hooks/useVerifyTaskStatus'
 import { useAccount } from 'wagmi'
-import { useDebounceCallback } from 'hooks/useDebouncedCallback'
 
 const VerifyButton = styled(Button)`
   background-color: ${({ theme }) => theme.colors.secondary};
@@ -150,6 +150,43 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
     500,
   )
 
+  const handleVerifyTwitterAccountRetweet = useDebounceCallback(
+    async ({ providerId, token, tokenSecret }: { providerId?: string; token?: string; tokenSecret?: string }) => {
+      if (isPending || !hasIdRegister || !account || !twitterId) {
+        return
+      }
+
+      if (providerId && token && tokenSecret) {
+        try {
+          setIsPending(true)
+          setActionPanelExpanded(false)
+          const queryString = new URLSearchParams({
+            account,
+            questId,
+            token,
+            tokenSecret,
+            userId: twitterId,
+            taskId: task?.id ?? '',
+            providerId: providerId as TwitterFollowersId,
+            twitterPostId: (task as TaskSocialConfig).accountId,
+          }).toString()
+          const response = await fetchWithSiweAuth(`/api/twitterRetweet?${queryString}`)
+          if (response.ok) {
+            await refresh()
+          } else {
+            const { message } = await response.json()
+            throw new Error(message)
+          }
+        } catch (error) {
+          toastError(`Verify Twitter Retweet Fail: ${error}`)
+        } finally {
+          setIsPending(false)
+        }
+      }
+    },
+    500,
+  )
+
   // eslint-disable-next-line consistent-return
   async function handleTwitterActions(
     action: TaskType,
@@ -171,6 +208,15 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
       case TaskType.X_FOLLOW_ACCOUNT:
         if (isCorrectTwitterAccount()) {
           return handleVerifyTwitterAccount({
+            providerId: (session as any)?.user?.twitter?.providerId,
+            token: (session as any)?.user?.twitter?.token,
+            tokenSecret: (session as any)?.user?.twitter?.tokenSecret,
+          })
+        }
+        break
+      case TaskType.X_REPOST_POST:
+        if (isCorrectTwitterAccount()) {
+          return handleVerifyTwitterAccountRetweet({
             providerId: (session as any)?.user?.twitter?.providerId,
             token: (session as any)?.user?.twitter?.token,
             tokenSecret: (session as any)?.user?.twitter?.tokenSecret,
@@ -312,7 +358,11 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
         token,
         tokenSecret,
       })
-    } else if (taskType === TaskType.X_FOLLOW_ACCOUNT || taskType === TaskType.X_LIKE_POST) {
+    } else if (
+      taskType === TaskType.X_FOLLOW_ACCOUNT ||
+      taskType === TaskType.X_LIKE_POST ||
+      taskType === TaskType.X_REPOST_POST
+    ) {
       connectTwitter({ action: taskType, taskId: task?.id })
     }
   }
@@ -338,7 +388,10 @@ export const Task: React.FC<TaskProps> = ({ questId, task, taskStatus, hasIdRegi
   }
 
   const shouldShowVerifyButton = useMemo(
-    () => taskType === TaskType.X_FOLLOW_ACCOUNT || taskType === TaskType.X_LIKE_POST,
+    () =>
+      taskType === TaskType.X_FOLLOW_ACCOUNT ||
+      taskType === TaskType.X_LIKE_POST ||
+      taskType === TaskType.X_REPOST_POST,
     [taskType],
   )
 

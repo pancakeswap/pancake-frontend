@@ -12,7 +12,7 @@ interface UseConnectTwitterProps {
   refresh?: () => void
 }
 
-type ActionType = TaskType.X_LIKE_POST | TaskType.X_FOLLOW_ACCOUNT
+type ActionType = TaskType.X_LIKE_POST | TaskType.X_FOLLOW_ACCOUNT | TaskType.X_REPOST_POST
 
 type ActionAfterConnect = {
   taskId?: string
