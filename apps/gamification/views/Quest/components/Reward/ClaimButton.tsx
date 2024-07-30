@@ -145,7 +145,8 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
       ) : (
         <>
           <Box>
-            {isQuestFinished && !isTasksCompleted && (
+            {((isQuestFinished && !isTasksCompleted) ||
+              (isQuestFinished && isTasksCompleted && proofData?.rewardAmount === 'null')) && (
               <Box ref={targetRef}>
                 <StyledButton $outline variant="secondary" disabled endIcon={<InfoIcon color="textDisabled" />}>
                   {t('Unavailable')}
@@ -173,9 +174,11 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
               </StyledButton>
             )}
 
-            {isQuestFinished && isTasksCompleted && !ableToClaimReward && proofData !== null && (
-              <StyledButton disabled>{t('Claimed')}</StyledButton>
-            )}
+            {isQuestFinished &&
+              isTasksCompleted &&
+              !ableToClaimReward &&
+              proofData !== null &&
+              Number(proofData?.rewardAmount) > 0 && <StyledButton disabled>{t('Claimed')}</StyledButton>}
           </Box>
           <MessageInfo
             proofData={proofData}

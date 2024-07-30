@@ -45,7 +45,7 @@ export const RewardAmount: React.FC<RewardAmountProps> = ({ reward, proofData, i
             </Box>
             <Box ml={['16px']}>
               <Text fontSize={['40px']} bold as="span">
-                {isQuestFinished && proofData?.rewardAmount ? (
+                {isQuestFinished && Number(proofData?.rewardAmount) > 0 ? (
                   <>{amountDisplay}</>
                 ) : (
                   <>{getFullDisplayBalance(new BigNumber(reward?.totalRewardAmount ?? 0), currency.decimals, 2)}</>
