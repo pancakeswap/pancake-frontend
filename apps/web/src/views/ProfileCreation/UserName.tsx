@@ -20,14 +20,14 @@ import { useSignMessage } from '@pancakeswap/wagmi'
 import { API_PROFILE } from 'config/constants/endpoints'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import fetchWithTimeout from 'utils/fetchWithTimeout'
 import { useAccount } from 'wagmi'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import useCatchTxError from 'hooks/useCatchTxError'
 import { useProfileContract } from 'hooks/useContract'
 import { useProfile } from 'state/profile/hooks'
+import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from './config'
 import useProfileCreation from './contexts/hook'
 
@@ -72,30 +72,26 @@ const UserName: React.FC<React.PropsWithChildren> = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const fetchAbortSignal = useRef<AbortController | null>(null)
-  const { fetchWithCatchTxError } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
   const isUserCreated = existingUserState === ExistingUserState.CREATED
 
   const profileContract = useProfileContract()
-  const completeProfile = useCallback(
-    () =>
-      fetchWithCatchTxError(async () => {
-        if (!selectedNft.collectionAddress || !selectedNft.tokenId) {
-          throw new Error(
-            `Invalid nft to create profile. Collection: ${selectedNft.collectionAddress}, tokenId: ${selectedNft.tokenId}`,
-          )
-        }
-        const receipt = await callWithGasPrice(profileContract, 'createProfile', [
+  const { handleConfirm: completeProfile } = useApproveConfirmTransaction({
+    onConfirm: () => {
+      if (selectedNft.collectionAddress)
+        return callWithGasPrice(profileContract, 'createProfile', [
           teamId ? BigInt(teamId) : 0n,
           selectedNft.collectionAddress,
           BigInt(selectedNft.tokenId!),
         ])
-        await refreshProfile()
-        toastSuccess(t('Profile created!'), <ToastDescriptionWithTx txHash={receipt.hash} />)
-        return receipt
-      }),
-    [profileContract, selectedNft, teamId, callWithGasPrice, refreshProfile, toastSuccess, t],
-  )
+
+      return undefined
+    },
+    onSuccess: async ({ receipt }) => {
+      refreshProfile()
+      toastSuccess(t('Profile created!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+    },
+  })
 
   const [usernameToCheck, setUsernameToCheck] = useState<string | undefined>(undefined)
   const debouncedUsernameToCheck = useDebounce(usernameToCheck, 200)
