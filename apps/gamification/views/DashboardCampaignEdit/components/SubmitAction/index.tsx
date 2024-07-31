@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { styled } from 'styled-components'
 import { ActionModal } from 'views/DashboardCampaignEdit/components/SubmitAction/ActionModal'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
-import { CompletionStatus } from 'views/DashboardQuestEdit/type'
 
 // import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
 // import { combineDateAndTime, convertDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
@@ -23,8 +22,6 @@ export const SubmitAction = () => {
   const [openModal, setOpenModal] = useState(false)
 
   const handleClickDelete = () => {
-    console.log(query.id)
-
     setTimeout(() => {
       toastSuccess(t('Deleted!'))
       push('/dashboard/campaign')
@@ -34,7 +31,6 @@ export const SubmitAction = () => {
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={handleClickDelete} />)
 
   const handleClick = () => {
-    console.log('CompletionStatus', CompletionStatus.ONGOING)
     // const { startDate, startTime, endDate, endTime } = state
     // const startDateTime = combineDateAndTime(startDate, startTime) || 0
     // const endDateTime = combineDateAndTime(endDate, endTime) || 0

@@ -21,5 +21,8 @@ export const disconnectSocial = async ({ data, callback }: DisconnectSocialProps
 
   if (response.ok) {
     callback()
+  } else {
+    const error = await response.json()
+    throw new Error(error.message)
   }
 }

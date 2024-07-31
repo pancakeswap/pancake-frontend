@@ -52,7 +52,6 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
       async (user: TelegramResponse) => {
         if (user && account) {
           try {
-            console.log('user', user)
             const walletAddress = account
             const timestamp = Math.floor(new Date().getTime() / 1000)
             const message = keccak256(encodePacked(['address', 'uint256'], [walletAddress ?? '0x', BigInt(timestamp)]))
