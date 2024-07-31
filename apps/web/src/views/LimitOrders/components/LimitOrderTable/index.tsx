@@ -8,14 +8,25 @@ import { ORDER_CATEGORY } from '../../types'
 
 import Navigation from './TableNavigation'
 import ExistingLimitOrderTable from './ExistingLimitOrderTable'
+import SpaciousLimitOrderTable from './SpaciousLimitOrderTable'
+import CompactLimitOrderTable from './CompactLimitOrderTable'
 
 const OrderTable: React.FC<React.PropsWithChildren<{ isCompact: boolean; orderCategory: ORDER_CATEGORY }>> = memo(
-  ({ orderCategory }) => {
+  ({ orderCategory, isCompact }) => {
     const orders = useGelatoLimitOrdersHistory(orderCategory)
 
     return (
       <Navigation data={orders} orderCategory={orderCategory}>
-        {({ paginatedData }) => <ExistingLimitOrderTable orders={paginatedData} />}
+        {({ paginatedData }) => {
+          if (orderCategory === ORDER_CATEGORY.Existing) {
+            return <ExistingLimitOrderTable orders={paginatedData} />
+          }
+          return isCompact ? (
+            <CompactLimitOrderTable orders={paginatedData} />
+          ) : (
+            <SpaciousLimitOrderTable orders={paginatedData} />
+          )
+        }}
       </Navigation>
     )
   },

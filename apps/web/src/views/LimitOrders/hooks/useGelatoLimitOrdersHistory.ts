@@ -9,7 +9,9 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { usePublicClient } from 'wagmi'
 import { Transaction, decodeFunctionData } from 'viem'
 import { gelatoLimitABI } from 'config/abi/gelatoLimit'
-import { LimitOrderStatus, ORDER_CATEGORY } from '../types'
+import { useMemo } from 'react'
+import orderBy from 'lodash/orderBy'
+import { ExistingOrder, LimitOrderStatus, ORDER_CATEGORY } from '../types'
 
 export const EXISTING_ORDERS_QUERY_KEY = ['limitOrders', 'gelato', 'existingOrders']
 export const OPEN_ORDERS_QUERY_KEY = ['limitOrders', 'gelato', 'openOrders']
@@ -71,19 +73,14 @@ async function syncOrderToLocalStorage({
   })
 }
 
-const useExistingOrders = (): [
-  `0x${string}`,
-  `0x${string}`,
-  `0x${string}`,
-  `0x${string}`,
-  `0x${string}`,
-  `0x${string}`,
-][] => {
+const useExistingOrders = (turnOn: boolean): ExistingOrder[] => {
   const { account, chainId } = useAccountActiveChain()
 
   const gelatoLimitOrders = useGelatoLimitOrdersLib()
 
   const provider = usePublicClient({ chainId })
+
+  const startFetch = turnOn && gelatoLimitOrders && account && chainId
 
   const { data = [] } = useQuery({
     queryKey: [...EXISTING_ORDERS_QUERY_KEY, account],
@@ -104,7 +101,7 @@ const useExistingOrders = (): [
             hashes.map((hash) => provider.getTransaction({ hash })),
           )
 
-          const contractData = transactionDetails
+          const orders = transactionDetails
             .map((transaction) => {
               if (!transaction.input) return undefined
               const { args } = decodeFunctionData({
@@ -118,44 +115,38 @@ const useExistingOrders = (): [
                 const module_ = `0x${data_.substr(offset + 64 * 0 + 24, 40)}`
                 const inputToken = `0x${data_.substr(offset + 64 * 1 + 24, 40)}`
                 const witness = `0x${data_.substr(offset + 64 * 3 + 24, 40)}`
-                return [
-                  transaction.hash,
-                  module_,
+                return {
+                  transactionHash: transaction.hash,
+                  module: module_,
                   inputToken,
                   owner,
                   witness,
-                  `0x${data_.substr(offset + 64 * 7, 64 * 3)}`,
-                ]
+                  data: `0x${data_.substr(offset + 64 * 7, 64 * 3)}`,
+                }
               }
               return undefined
             })
-            .filter(Boolean) as [
-            `0x${string}`,
-            `0x${string}`,
-            `0x${string}`,
-            `0x${string}`,
-            `0x${string}`,
-            `0x${string}`,
-          ][]
+            .filter(Boolean) as ExistingOrder[]
 
           const existRoles = await provider.multicall({
-            contracts: contractData.map(([, ...args]) => {
+            contracts: orders.map((order) => {
               return {
                 abi: gelatoLimitABI,
                 address: gelatoLimitOrders.contract.address,
                 functionName: 'existOrder',
-                args,
+                args: [order.module, order.inputToken, order.owner, order.witness, order.data],
               }
             }) as any[],
             allowFailure: false,
           })
-          return contractData.filter((_, index) => existRoles[index])
+          return orders.filter((_, index) => existRoles[index])
         }
       } catch (e) {
         console.error('Error fetching open orders from subgraph', e)
       }
       return undefined
     },
+    enabled: Boolean(startFetch),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
@@ -307,27 +298,32 @@ const useExpiredOrders = (turnOn: boolean): Order[] => {
 }
 
 export default function useGelatoLimitOrdersHistory(orderCategory: ORDER_CATEGORY) {
-  // const historyOrders = useHistoryOrders(orderCategory === ORDER_CATEGORY.History)
-  // const openOrders = useOpenOrders(orderCategory === ORDER_CATEGORY.Open)
-  // const expiredOrders = useExpiredOrders(orderCategory === ORDER_CATEGORY.Expired)
+  const historyOrders = useHistoryOrders(orderCategory === ORDER_CATEGORY.History)
+  const openOrders = useOpenOrders(orderCategory === ORDER_CATEGORY.Open)
+  const expiredOrders = useExpiredOrders(orderCategory === ORDER_CATEGORY.Expired)
+  const existingOrders = useExistingOrders(orderCategory === ORDER_CATEGORY.Existing)
 
-  // const orders = useMemo(() => {
-  //   switch (orderCategory as ORDER_CATEGORY) {
-  //     case ORDER_CATEGORY.Open:
-  //       return openOrders
-  //     case ORDER_CATEGORY.History:
-  //       return historyOrders
-  //     case ORDER_CATEGORY.Expired:
-  //       return expiredOrders
-  //     default:
-  //       return []
-  //   }
-  // }, [orderCategory, openOrders, historyOrders, expiredOrders])
+  const orders = useMemo(() => {
+    switch (orderCategory as ORDER_CATEGORY) {
+      case ORDER_CATEGORY.Open:
+        return openOrders
+      case ORDER_CATEGORY.History:
+        return historyOrders
+      case ORDER_CATEGORY.Expired:
+        return expiredOrders
+      case ORDER_CATEGORY.Existing:
+        return existingOrders
+      default:
+        return []
+    }
+  }, [orderCategory, openOrders, historyOrders, expiredOrders, existingOrders])
 
-  return useExistingOrders()
-
-  // return useMemo(
-  //   () => (Array.isArray(orders) ? orderBy(orders, (order) => parseInt(order.createdAt), 'desc') : orders),
-  //   [orders],
-  // )
+  return useMemo(() => {
+    if (orderCategory === ORDER_CATEGORY.Existing) {
+      return orders
+    }
+    return Array.isArray(orders)
+      ? (orderBy(orders, (order: Order) => parseInt(order.createdAt), 'desc') as Order[])
+      : orders
+  }, [orders, orderCategory])
 }
