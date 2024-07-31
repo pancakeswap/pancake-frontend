@@ -4,7 +4,6 @@ import { Box, BoxProps, CalenderIcon, Card, Flex, InfoIcon, Tag, Text, useToolti
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { TokenWithChain } from 'components/TokenWithChain'
-import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useFindTokens } from 'hooks/useFindTokens'
 import { useRouter } from 'next/router'
 import { styled } from 'styled-components'
@@ -44,7 +43,7 @@ export const Quest: React.FC<QuestProps> = ({ quest, showStatus, hideClick, cust
   const router = useRouter()
 
   const handleClick = () => {
-    router.push(customRedirectUrl || `/quests/${quest.id}?chain=${CHAIN_QUERY_NAME[quest.chainId]}`)
+    router.push(customRedirectUrl || `/quests/${quest.id}`)
   }
 
   const {
