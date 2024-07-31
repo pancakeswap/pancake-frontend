@@ -13,22 +13,22 @@ import {
   Text,
   Input as UIKitInput,
   WarningIcon,
-  useModal,
   useToast,
 } from '@pancakeswap/uikit'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { useSignMessage } from '@pancakeswap/wagmi'
 import { API_PROFILE } from 'config/constants/endpoints'
-import { FetchStatus } from 'config/constants/types'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import fetchWithTimeout from 'utils/fetchWithTimeout'
-import { formatUnits } from 'viem'
 import { useAccount } from 'wagmi'
-import ConfirmProfileCreationModal from './ConfirmProfileCreationModal'
-import { REGISTER_COST, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from './config'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useProfileContract } from 'hooks/useContract'
+import { useProfile } from 'state/profile/hooks'
+import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
+import { USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from './config'
 import useProfileCreation from './contexts/hook'
 
 dayjs.extend(relativeTime)
@@ -61,23 +61,37 @@ const Indicator = styled(Flex)`
 
 const UserName: React.FC<React.PropsWithChildren> = () => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
-  const { teamId, selectedNft, userName, actions, allowance } = useProfileCreation()
+  const { refresh: refreshProfile } = useProfile()
+  const { teamId, selectedNft, userName, actions } = useProfileCreation()
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { toastError } = useToast()
+  const { toastError, toastSuccess } = useToast()
   const { signMessageAsync } = useSignMessage()
   const [existingUserState, setExistingUserState] = useState<ExistingUserState>(ExistingUserState.IDLE)
   const [isValid, setIsValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const fetchAbortSignal = useRef<AbortController | null>(null)
-  const { balance: cakeBalance, fetchStatus } = useBSCCakeBalance()
-  const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance >= REGISTER_COST
-  const [onPresentConfirmProfileCreation] = useModal(
-    <ConfirmProfileCreationModal userName={userName} selectedNft={selectedNft} teamId={teamId} allowance={allowance} />,
-    false,
-  )
+  const { callWithGasPrice } = useCallWithGasPrice()
   const isUserCreated = existingUserState === ExistingUserState.CREATED
+
+  const profileContract = useProfileContract()
+  const { handleConfirm: completeProfile } = useApproveConfirmTransaction({
+    onConfirm: () => {
+      if (selectedNft.collectionAddress)
+        return callWithGasPrice(profileContract, 'createProfile', [
+          teamId ? BigInt(teamId) : 0n,
+          selectedNft.collectionAddress,
+          BigInt(selectedNft.tokenId!),
+        ])
+
+      return undefined
+    },
+    onSuccess: async ({ receipt }) => {
+      refreshProfile()
+      toastSuccess(t('Profile created!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+    },
+  })
 
   const [usernameToCheck, setUsernameToCheck] = useState<string | undefined>(undefined)
   const debouncedUsernameToCheck = useDebounce(usernameToCheck, 200)
@@ -256,18 +270,9 @@ const UserName: React.FC<React.PropsWithChildren> = () => {
           </Button>
         </CardBody>
       </Card>
-      <Button
-        onClick={onPresentConfirmProfileCreation}
-        disabled={!isValid || !isUserCreated}
-        id="completeProfileCreation"
-      >
+      <Button onClick={completeProfile} disabled={!isValid || !isUserCreated} id="completeProfileCreation">
         {t('Complete Profile')}
       </Button>
-      {!hasMinimumCakeRequired && (
-        <Text color="failure" mt="16px">
-          {t('A minimum of %num% CAKE is required', { num: formatUnits(REGISTER_COST, 18) })}
-        </Text>
-      )}
     </>
   )
 }
