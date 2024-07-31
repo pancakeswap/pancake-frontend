@@ -49,10 +49,16 @@ const RowWrapper = styled.div`
 interface CurrencySearchProps {
   height?: number | undefined
   selectedCurrency: Currency
+  onlyAcceptChains?: ChainId
   onCurrencySelect: (value: Currency) => void
 }
 
-export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selectedCurrency, onCurrencySelect }) => {
+export const CurrencySearch: React.FC<CurrencySearchProps> = ({
+  height,
+  onlyAcceptChains,
+  selectedCurrency,
+  onCurrencySelect,
+}) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const showNetworkBases = true
@@ -92,6 +98,11 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selected
         )
   }, [searchQuery, tokenList])
 
+  const supportChainPicked = useMemo(
+    () => (onlyAcceptChains ? targetChains.filter((i) => i.id === onlyAcceptChains) : targetChains),
+    [onlyAcceptChains],
+  )
+
   const getCurrencyListRows = useCallback(() => {
     return filteredSortedTokens.length ? (
       <Box mx="-24px" my="24px" overflow="auto">
@@ -130,7 +141,7 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({ height, selected
             <Text fontSize="14px">{t('Select a Network')}</Text>
           </AutoRow>
           <RowWrapper>
-            {targetChains.map((chain) => (
+            {supportChainPicked.map((chain) => (
               <ButtonWrapper key={chain.id}>
                 <BaseWrapper onClick={() => setSelectedChainId(chain.id)} disable={chain.id === selectedChainId}>
                   <ChainLogo chainId={chain.id} />

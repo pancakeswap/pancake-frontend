@@ -16,16 +16,17 @@ import {
 import { useQueryClient } from '@tanstack/react-query'
 import { ADDRESS_ZERO } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useQuestRewardContract } from 'hooks/useContract'
 import { useSiwe } from 'hooks/useSiwe'
 import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
+import { Address, encodePacked, keccak256, toHex } from 'viem'
 import { AddRewardModal } from 'views/DashboardQuestEdit/components/Reward/AddRewardModal'
 import { ActionModal } from 'views/DashboardQuestEdit/components/SubmitAction/ActionModal'
 import { LongPressDeleteModal } from 'views/DashboardQuestEdit/components/SubmitAction/LongPressDeleteModal'
 import { QuestRewardType } from 'views/DashboardQuestEdit/context/types'
 import { useQuestEdit } from 'views/DashboardQuestEdit/context/useQuestEdit'
-import { useReadRewardContract } from 'views/DashboardQuestEdit/hooks/useReadRewardContract'
 import { CompletionStatus, RewardType } from 'views/DashboardQuestEdit/type'
 import { combineDateAndTime } from 'views/DashboardQuestEdit/utils/combineDateAndTime'
 import { validateIsNotEmpty } from 'views/DashboardQuestEdit/utils/validateFormat'
@@ -51,7 +52,7 @@ export const SubmitAction = () => {
   const completionStatusToString = state.completionStatus.toString()
   const queryClient = useQueryClient()
   const { signIn } = useSiwe()
-  const { data: rewardContractData } = useReadRewardContract({ id: state.id, ownerAddress: state.ownerAddress })
+  const rewardContract = useQuestRewardContract(state.chainId)
 
   const handlePickedRewardToken = (currency: Currency, totalRewardAmount: string, amountOfWinners: number) => {
     const tokenAddress = currency?.isNative ? ADDRESS_ZERO : currency?.address
@@ -246,18 +247,21 @@ export const SubmitAction = () => {
 
   const handleSchedule = async () => {
     if (state.needAddReward) {
-      const hasRewardInContract = rewardContractData.length > 0 ? rewardContractData?.[0] : null
-      if (hasRewardInContract && hasRewardInContract?.result?.[6] > 0) {
+      const id = keccak256(encodePacked(['bytes32', 'address'], [toHex(state.id), state.ownerAddress as Address]))
+      const questInfo = await rewardContract.read.quests([id]) // [root, claimTime, totalWinners, totalClaimedWinners, organizer, rewardToken, totalReward, totalClaimedReward]
+      const totalReward = questInfo[6]
+
+      if (totalReward > 0) {
         const rewardData: QuestRewardType = {
           title: '',
           description: '',
           rewardType: RewardType.TOKEN,
           currency: {
-            address: hasRewardInContract.result[5],
+            address: questInfo[5],
             network: state.chainId,
           },
-          amountOfWinners: hasRewardInContract.result?.[2],
-          totalRewardAmount: hasRewardInContract.result[6]?.toString(),
+          amountOfWinners: questInfo?.[2],
+          totalRewardAmount: totalReward?.toString(),
         }
 
         updateValue('reward', rewardData)
