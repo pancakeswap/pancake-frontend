@@ -15,6 +15,14 @@ const handler = withSiweAuth(async (req, res) => {
         return
       }
 
+      const isValidTwitterId = /^[0-9]{1,19}$/.test(twitterPostId as string)
+      if (!isValidTwitterId) {
+        res.status(400).json({
+          message: 'Invalid twitter id',
+        })
+        return
+      }
+
       const url = `https://api.twitter.com/2/users/${userId}/retweets`
       const method = 'POST'
       const consumerKey = TWITTER_CONSUMER_KEY[providerId as TwitterFollowersId].consumerKey as string
@@ -66,7 +74,7 @@ const handler = withSiweAuth(async (req, res) => {
       }
 
       if (result.data.retweeted) {
-        fetchApiInfoBackend()
+        await fetchApiInfoBackend()
       }
     } catch (error) {
       res.status(500).json({ message: (error as Error).message })
