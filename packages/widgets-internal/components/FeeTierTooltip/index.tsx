@@ -1,12 +1,11 @@
+import { Protocol } from "@pancakeswap/farms";
 import { useTranslation } from "@pancakeswap/localization";
 import { Percent } from "@pancakeswap/swap-sdk-core";
 import { FeeTier, LinkExternal, useTooltip } from "@pancakeswap/uikit";
 import { useMemo } from "react";
 
-export type FeeTierType = "v2" | "v3" | "v4" | "stable" | string;
-
 export type FeeTierTooltipProps = {
-  type: FeeTierType;
+  type: Protocol;
   dynamic?: boolean;
   percent: Percent;
 };
@@ -18,7 +17,7 @@ const FeeTooltips: React.FC<FeeTierTooltipProps> = ({ type, dynamic, percent }) 
   switch (type) {
     case "stable":
       return t("Fees are lower for Stable LP");
-    case "v4": {
+    case "v4bin": {
       if (dynamic) {
         return (
           <>

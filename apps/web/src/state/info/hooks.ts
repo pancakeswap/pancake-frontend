@@ -3,6 +3,7 @@ import duration from 'dayjs/plugin/duration'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { Protocol } from '@pancakeswap/farms'
 import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { SuccessResponseJSON } from 'openapi-typescript-helpers'
@@ -290,11 +291,13 @@ export const useAllPoolDataQuery = () => {
               address: d.token0.id,
               symbol: d.token0.symbol,
               name: d.token0.name,
+              decimals: d.token0.decimals,
             },
             token1: {
               address: d.token1.id,
               symbol: d.token1.symbol,
               name: d.token1.name,
+              decimals: d.token1.decimals,
             },
             volumeUSD: +d.volumeUSD24h,
             volumeUSDChange: 0,
@@ -376,11 +379,13 @@ export function usePoolDataQuery(poolAddress: string): PoolData | undefined {
           address: data_.token0.id,
           symbol: data_.token0.symbol,
           name: data_.token0.name,
+          decimals: data_.token0.decimals,
         },
         token1: {
           address: data_.token1.id,
           symbol: data_.token1.symbol,
           name: data_.token1.name,
+          decimals: data_.token1.decimals,
         },
         volumeUSD: +data_.volumeUSD24h,
         volumeUSDChange: 0,
@@ -441,7 +446,7 @@ export function usePoolDataQueryV2(poolAddress: string, chainId: number): UseQue
         address: originData.id,
         // @ts-ignore stable pool has lpAddress
         lpAddress: originData.lpAddress,
-        protocol: originData.protocol,
+        protocol: originData.protocol as Protocol,
         timestamp: dayjs(originData.createdAtTimestamp as string).unix(),
         token0: {
           address: originData.token0.id,

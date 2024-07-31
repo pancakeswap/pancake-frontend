@@ -1,4 +1,4 @@
-import { ComputedFarmConfigV3 } from '@pancakeswap/farms'
+import { ComputedFarmConfigV3, Protocol } from '@pancakeswap/farms'
 
 export interface Block {
   number: number
@@ -58,12 +58,10 @@ export interface ProtocolData {
 }
 // POOLS
 
-export type PoolProtocol = 'v2' | 'v3' | 'stable'
-
 export interface PoolData {
   address: string
   lpAddress?: string
-  protocol?: PoolProtocol
+  protocol?: Protocol
   timestamp: number
 
   token0: {

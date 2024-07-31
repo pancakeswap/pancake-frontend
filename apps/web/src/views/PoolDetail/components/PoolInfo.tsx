@@ -4,7 +4,6 @@ import { AutoColumn, Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
 import { ChainLogo, DoubleCurrencyLogo, FeatureStack, FeeTierTooltip } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
 import { useChainIdByQuery, useChainNameByQuery } from 'state/info/hooks'
-import { PoolProtocol } from 'state/info/types'
 import { multiChainNameConverter } from 'utils/chainNameConverter'
 import { Address, isAddressEqual, zeroAddress } from 'viem'
 import { usePoolData } from '../hooks/usePoolData'
@@ -26,7 +25,7 @@ export const PoolInfo = () => {
     const _currency1 = new ERC20Token(chainId, token1.address as Address, token1.decimals, token1.symbol, token1.name)
     return [_currency0, _currency1]
   }, [chainId, poolData])
-  const { fee } = usePoolFee(poolData?.address as Address, poolData?.protocol as PoolProtocol)
+  const { fee } = usePoolFee(poolData?.address as Address, poolData?.protocol)
 
   return (
     <Row justifyContent="space-between">
