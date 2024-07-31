@@ -8,6 +8,10 @@ export const WBETH: Record<number, Address> = {
   [ChainId.GOERLI]: '0xE7bCB9e341D546b66a46298f4893f5650a56e99E',
 }
 
+export const SWETH: Record<number, Address> = {
+  [ChainId.ETHEREUM]: '0xf951E335afb289353dc249e82926178EaC7DEd78',
+}
+
 export const SNBNB: Record<number, Address> = {
   [ChainId.BSC]: '0x1adB950d8bB3dA4bE104211D5AB038628e477fE6',
 }

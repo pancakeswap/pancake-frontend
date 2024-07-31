@@ -25,12 +25,13 @@ export const useLiquidStakingApr = (): UseLiquidStakingAprType => {
       try {
         const result = await Promise.all(
           liquidStakingList.map(async (i) => {
-            let apr: number | null = null
-            const { data: responseData } = await fetch(i.aprUrl).then((res) => res.json())
+            const response = await fetch(i.aprUrl).then((res) => res.json())
 
-            if (responseData?.annualInterestRate) {
-              apr = responseData.annualInterestRate * 100
-            }
+            const responseData = response?.data || response
+
+            const apr: number | null = responseData?.annualInterestRate
+              ? responseData?.annualInterestRate * 100
+              : responseData || null
 
             return {
               apr,

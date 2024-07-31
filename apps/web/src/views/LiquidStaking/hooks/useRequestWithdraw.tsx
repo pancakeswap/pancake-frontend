@@ -37,7 +37,7 @@ export function useRequestWithdraw({ inputCurrency, currentAmount, selectedList 
     if (!convertedWithdrawalAmount || !account) return
 
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(contract, selectedList?.requestWithdrawFn, [convertedWithdrawalAmount.toString()])
+      return callWithGasPrice(contract, selectedList.requestWithdrawFn!, [convertedWithdrawalAmount.toString()])
     })
 
     if (receipt?.status) {

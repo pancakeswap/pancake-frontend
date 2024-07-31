@@ -1,5 +1,4 @@
 import { AppBody } from 'components/App'
-import { SNBNB } from 'config/constants/liquidStaking'
 import { LIQUID_STAKING_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -61,11 +60,7 @@ const LiquidStakingPage = () => {
           />
         ) : null}
       </AppBody>
-      {selectedList &&
-      selectedList.token0 &&
-      selectedList.token1 &&
-      chainId &&
-      selectedList?.contract !== SNBNB[chainId] ? (
+      {selectedList && selectedList.token0 && selectedList.token1 && chainId && selectedList?.requestWithdrawFn ? (
         <AppBody mb="24px">
           <WithdrawRequest selectedList={selectedList} />
         </AppBody>
