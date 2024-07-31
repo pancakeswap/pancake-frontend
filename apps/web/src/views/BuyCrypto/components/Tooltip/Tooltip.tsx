@@ -1,42 +1,35 @@
-import { Box, Flex, InfoFilledIcon, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Box, Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { ReactNode } from 'react'
 import { isMobile } from 'react-device-detect'
 
 const BuyCryptoTooltip = ({
+  tooltipBody,
   tooltipHeading,
-  tooltipText,
-  iconSize,
-  iconColor = 'textSubtle',
-  opacity = 1,
+  tooltipContent,
 }: {
-  tooltipText: string
-  iconSize: string
+  tooltipBody: ReactNode
+  tooltipContent: ReactNode
   tooltipHeading?: string
-  iconColor?: string
-  opacity?: number
 }) => {
   const {
     tooltip: buyCryptoTooltip,
     tooltipVisible: buyCryptoTooltipVisible,
     targetRef: buyCryptoTargetRef,
-  } = useTooltip(
-    <Box maxWidth="150px">
-      <Text as="p">{tooltipText}</Text>
-    </Box>,
-    {
-      placement: isMobile ? 'top' : 'bottom',
-      trigger: isMobile ? 'focus' : 'hover',
-    },
-  )
+  } = useTooltip(<Box>{tooltipContent}</Box>, {
+    placement: 'top',
+
+    trigger: isMobile ? 'focus' : 'hover',
+  })
   return (
     <>
-      <TooltipText ref={buyCryptoTargetRef}>
+      <TooltipText ref={buyCryptoTargetRef} style={{ textDecoration: 'none' }}>
         <Flex alignItems="center" justifyContent="center">
           {tooltipHeading ? (
             <Text ml="4px" fontSize="15px" color="textSubtle" fontWeight="bold">
               {tooltipHeading}
             </Text>
           ) : null}
-          <InfoFilledIcon pl="4px" pt="2px" color={iconColor} width={iconSize} opacity={opacity} />
+          {tooltipBody}
         </Flex>
       </TooltipText>
       {buyCryptoTooltipVisible && buyCryptoTooltip}

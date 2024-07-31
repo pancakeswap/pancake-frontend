@@ -4,6 +4,8 @@ import { AutoColumn, AutoRow, Box, Flex, Link, Row, Text, useMatchBreakpoints } 
 import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
 import {
+  Suspense,
+  lazy,
   useCallback,
   useEffect,
   useMemo,
@@ -36,6 +38,10 @@ import InputExtended, { StyledVerticalLine } from '../styles'
 import { FormContainer } from './FormContainer'
 import { FormHeader } from './FormHeader'
 
+const EnableNotificationsTooltip = lazy(
+  () => import('../components/EnableNotificationTooltip/EnableNotificationsTooltip'),
+)
+
 interface OnRampCurrencySelectPopOverProps {
   quotes: OnRampProviderQuote[] | undefined
   selectedQuote: OnRampProviderQuote | undefined
@@ -50,6 +56,9 @@ type InputEvent = ChangeEvent<HTMLInputElement>
 
 export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabilities: ProviderAvailabilities }) {
   const { typedValue, independentField } = useBuyCryptoState()
+  // const { globalToggle, setGlobalToggle } = useNotificationMenuToggle()
+  // const { allowNotifications, isSubscribed, toggle } = useWebNotificationsToggle()
+  const ref = useRef<HTMLDivElement>(null)
 
   const { t } = useTranslation()
   const isBtc = useIsBtc()
@@ -119,6 +128,12 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     handleTypeInput(isFiat(unit) ? quoteAmount : fiatAmount)
   }, [onSwitchTokens, unit, selectedQuote, handleTypeInput])
 
+  // const toggleNotificationsMenu = useCallback(() => {
+  //   if (!allowNotifications) toggle()
+  //   setGlobalToggle(true)
+  // }, [setGlobalToggle, allowNotifications, toggle])
+
+  // console.log(globalToggle)
   const resetBuyCryptoState = useCallback(() => {
     if (searchQuery !== '') setSearchQuery('')
     if (unit === OnRampUnit.Crypto) onFlip()
@@ -139,9 +154,10 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     handleTypeInput(defaultAmt)
   }, [defaultAmt, handleTypeInput, unit])
 
+  // console.log(isSubscribed)
   return (
     <AutoColumn position="relative">
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex justifyContent="space-between" alignItems="center" ref={ref}>
         <FormHeader title={t('Buy Crypto')} subTitle={t('Buy crypto in just a few clicks')} />
         <OnRampFlipButton refetch={refetch} />
       </Flex>
@@ -205,7 +221,16 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           quotesError={quotesError}
         />
 
+        {/* <Button variant="secondary">
+        
+          {t('Enabled Notifications')}
+       
+        </Button> */}
+
         <Box>
+          <Suspense fallback={null}>
+            <EnableNotificationsTooltip />
+          </Suspense>
           <FiatOnRampModalButton
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={cryptoCurrency}

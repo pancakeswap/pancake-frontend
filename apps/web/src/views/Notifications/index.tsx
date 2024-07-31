@@ -1,9 +1,8 @@
 import { Box } from '@pancakeswap/uikit'
-import { initWeb3InboxClient, useSubscription, useWeb3InboxAccount, useWeb3InboxClient } from '@web3inbox/react'
+import { useSubscription, useWeb3InboxAccount, useWeb3InboxClient } from '@web3inbox/react'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
-import { APP_DOMAIN } from './constants'
 import NotificationSettings from './containers/NotificationSettings'
 import NotificationView from './containers/NotificationView'
 import OnBoardingView from './containers/OnBoardingView'
@@ -14,12 +13,6 @@ import { disableGlobalScroll, enableGlobalScroll } from './utils/toggleEnableScr
 interface INotificationWidget {
   isRegistered: boolean
 }
-
-initWeb3InboxClient({
-  projectId: 'e542ff314e26ff34de2d4fba98db70bb',
-  domain: APP_DOMAIN,
-  allApps: true,
-})
 
 const Notifications = () => {
   const { address } = useAccount()
@@ -49,6 +42,7 @@ const NotificationsWidget = memo(({ isRegistered }: INotificationWidget) => {
     },
     [setViewIndex, viewIndex],
   )
+  console.log(subscription, isSubscribed)
 
   useEffect(() => {
     if (!isSubscribed) setViewIndex(PAGE_VIEW.OnboardView)

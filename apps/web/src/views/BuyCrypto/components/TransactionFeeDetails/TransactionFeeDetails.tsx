@@ -1,6 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import type { Currency } from '@pancakeswap/swap-sdk-core'
-import { ArrowDropDownIcon, ArrowDropUpIcon, Box, Flex, RowBetween, SkeletonText, Text } from '@pancakeswap/uikit'
+import {
+  ArrowDropDownIcon,
+  ArrowDropUpIcon,
+  Box,
+  Flex,
+  InfoFilledIcon,
+  RowBetween,
+  SkeletonText,
+  Text,
+} from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Field } from 'state/buyCrypto/actions'
@@ -100,15 +109,16 @@ export const TransactionFeeDetails = ({
             )}
 
             <BuyCryptoTooltip
-              opacity={0.7}
-              iconSize="17px"
-              tooltipText={
-                quotesError
-                  ? t(
-                      'Quotes may be unavailable for some assets based on market conditions and provider availability in your region.',
-                    )
-                  : t('Note that Fees are just an estimation and may vary slightly when completing a purchase')
+              tooltipContent={
+                <Text as="p">
+                  {quotesError
+                    ? t(
+                        'Quotes may be unavailable for some assets based on market conditions and provider availability in your region.',
+                      )
+                    : t('Note that Fees are just an estimation and may vary slightly when completing a purchase')}
+                </Text>
               }
+              tooltipBody={<InfoFilledIcon pl="4px" pt="2px" width={17} opacity={0.7} />}
             />
           </Flex>
 

@@ -26,6 +26,7 @@ import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { V4CakeIcon } from 'views/Home/components/V4CakeIcon'
 
+import { initWeb3InboxClient } from '@web3inbox/react'
 import { ZKSyncAirdropModalWithAutoPopup } from 'components/ClaimZksyncAirdropModal'
 import { useDataDogRUM } from 'hooks/useDataDogRUM'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
@@ -34,6 +35,7 @@ import { useWeb3WalletView } from 'hooks/useWeb3WalletView'
 import { useInitGlobalWorker } from 'hooks/useWorker'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
+import { APP_DOMAIN } from 'views/Notifications/constants'
 import { Blocklist, Updaters } from '..'
 import { SEO } from '../../next-seo.config'
 import Providers from '../Providers'
@@ -61,6 +63,11 @@ function GlobalHooks() {
   useSentryUser()
   useThemeCookie()
   useLockedEndNotification()
+  initWeb3InboxClient({
+    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
+    domain: APP_DOMAIN,
+    allApps: true,
+  })
   return null
 }
 
