@@ -81,7 +81,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
   }, [])
 
   const defaultInputCurrency = useFindTokens(
-    state?.reward?.currency?.network as ChainId,
+    state?.chainId ?? (state?.reward?.currency?.network as ChainId),
     state?.reward?.currency?.address as Address,
   )
 

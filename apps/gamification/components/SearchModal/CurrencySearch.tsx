@@ -63,7 +63,9 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({
   const { isMobile } = useMatchBreakpoints()
   const showNetworkBases = true
   const [searchQuery, setSearchQuery] = useState<string>('')
-  const [selectedChainId, setSelectedChainId] = useState<ChainId>(selectedCurrency?.chainId ?? ChainId.BSC)
+  const [selectedChainId, setSelectedChainId] = useState<ChainId>(
+    onlyAcceptChains ?? selectedCurrency?.chainId ?? ChainId.BSC,
+  )
 
   // refs for fixed size lists
   const fixedList = useRef<FixedSizeList>()
@@ -74,12 +76,6 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({
   useEffect(() => {
     if (!isMobile) inputRef.current?.focus()
   }, [isMobile])
-
-  useEffect(() => {
-    if (onlyAcceptChains) {
-      setSelectedChainId(onlyAcceptChains)
-    }
-  }, [])
 
   const handleInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value
