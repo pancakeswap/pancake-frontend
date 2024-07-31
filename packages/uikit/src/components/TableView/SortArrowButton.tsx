@@ -48,7 +48,7 @@ type ISortArrowButton = ButtonProps & {
 };
 
 export const SortArrowButton = (props: ISortArrowButton) => {
-  const { onSort, sortOrder } = props;
+  const { onSort, sortOrder, ...rest } = props;
   const [sortOrderInner, setSortOrderInner] = useState<ISortOrder>(SORT_ORDER.NULL);
 
   const order = useMemo(() => (onSort ? sortOrder : sortOrderInner), [sortOrder, sortOrderInner, onSort]);
@@ -76,7 +76,7 @@ export const SortArrowButton = (props: ISortArrowButton) => {
     }
   }, [order]);
   return (
-    <SortButton {...props} onClick={handleClick} className={cls}>
+    <SortButton {...rest} onClick={handleClick} className={cls}>
       <SortArrow width={props.width} />
     </SortButton>
   );

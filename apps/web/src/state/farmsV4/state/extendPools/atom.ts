@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Protocol, supportedChainIdV4 } from '@pancakeswap/farms'
 import { atom } from 'jotai'
-import { isAddressEqual } from 'viem'
+import { isAddressEqual, type Address } from 'viem'
 import { farmPoolsAtom } from '../farmPools/atom'
 import { ChainIdAddressKey, PoolInfo } from '../type'
 
@@ -42,3 +42,8 @@ export const extendPoolsAtom = atom([] as PoolInfo[], (get, set, values: PoolInf
 
   set(extendPoolsAtom, [...get(extendPoolsAtom), ...newData])
 })
+
+interface PoolsOfPositionType {
+  [address: Address]: PoolInfo
+}
+export const poolsOfPositionAtom = atom({} as PoolsOfPositionType)

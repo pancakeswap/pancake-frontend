@@ -1,5 +1,5 @@
 import { SUPPORT_FARMS } from 'config/constants/supportChains'
-import { UniversalFarms } from 'views/Farms/UniversalFarms'
+import { UniversalFarms } from 'views/universalFarms'
 
 const FarmsPage = () => {
   return <UniversalFarms />

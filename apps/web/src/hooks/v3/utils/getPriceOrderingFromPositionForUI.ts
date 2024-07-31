@@ -1,5 +1,5 @@
 import { Price, Token } from '@pancakeswap/sdk'
-import { Position } from '@pancakeswap/v3-sdk'
+import { Position, tickToPrice } from '@pancakeswap/v3-sdk'
 
 export default function getPriceOrderingFromPositionForUI(position?: Position): {
   priceLower?: Price<Token, Token>
@@ -26,8 +26,8 @@ export default function getPriceOrderingFromPositionForUI(position?: Position): 
 
   // otherwise, just return the default
   return {
-    priceLower: position.token0PriceLower,
-    priceUpper: position.token0PriceUpper,
+    priceLower: tickToPrice(position.pool.token0, position.pool.token1, position.tickLower),
+    priceUpper: tickToPrice(position.pool.token0, position.pool.token1, position.tickUpper),
     quote: token1,
     base: token0,
   }

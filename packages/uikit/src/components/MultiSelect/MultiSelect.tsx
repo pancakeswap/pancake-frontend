@@ -134,10 +134,10 @@ const SelectContainer = styled.div`
 }
 `;
 
-const PrimereactSelectContainer = styled.div<{ scrollHeight?: string }>`
+const PrimereactSelectContainer = styled.div<{ $scrollHeight?: string }>`
   height: 0;
   .p-multiselect-items-wrapper {
-    height: ${({ scrollHeight }) => scrollHeight ?? "auto"};
+    height: ${({ $scrollHeight }) => $scrollHeight ?? "auto"};
   }
   .p-multiselect-items {
     height: 100%;
@@ -223,6 +223,7 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
     selectAllLabel,
     isShowSelectAll,
     isShowFilter,
+    ...restProps
   } = props;
   const [selectedItemsInner, setSelectedItems] = useState<T[]>();
   const selectedItems = useMemo(() => value ?? selectedItemsInner, [value, selectedItemsInner]);
@@ -441,9 +442,9 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
         </Column>
       </SelectInputContainer>
 
-      <PrimereactSelectContainer scrollHeight={props.scrollHeight}>
+      <PrimereactSelectContainer $scrollHeight={props.scrollHeight}>
         <PrimereactSelect
-          {...props}
+          {...restProps}
           ref={primereactSelectRef}
           style={{
             width: style?.width ?? "auto",

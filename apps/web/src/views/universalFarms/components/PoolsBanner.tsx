@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowForwardIcon, Box, Button, Column, LinkExternal, PageHeader, Row, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
-import { FarmFlexWrapper, FarmH1, FarmH2 } from '../../styled'
+import { FarmFlexWrapper, FarmH1, FarmH2 } from 'views/Farms/styled'
 
 export const PoolsBanner = () => {
   const { t } = useTranslation()

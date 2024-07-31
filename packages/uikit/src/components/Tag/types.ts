@@ -11,6 +11,10 @@ export const variants = {
   FAILURE: "failure",
   WARNING: "warning",
   GRADIENTBOLD: "gradientBold",
+  SUCCESS_LOW_CONTRAST: "successLowContrast",
+  FAILURE_LOW_CONTRAST: "failureLowContrast",
+  TERTIARY: "tertiary",
+  PRIMARY60: "primary60",
 } as const;
 
 export const scales = {
