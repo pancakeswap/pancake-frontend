@@ -3,18 +3,22 @@ import duration from 'dayjs/plugin/duration'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useQuery } from '@tanstack/react-query'
+import { Protocol } from '@pancakeswap/farms'
+import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
+import { SuccessResponseJSON } from 'openapi-typescript-helpers'
 import { fetchAllTokenData, fetchAllTokenDataByAddresses } from 'state/info/queries/tokens/tokenData'
 import { Block, Transaction, TransactionType, TvlChartEntry, VolumeChartEntry } from 'state/info/types'
 import { getAprsForStableFarm } from 'utils/getAprsForStableFarm'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { getPercentChange } from 'utils/infoDataHelpers'
+import { isAddress } from 'viem'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
-import { explorerApiClient } from './api/client'
+import { chainIdToExplorerInfoChainName, explorerApiClient } from './api/client'
 import { useExplorerChainNameByQuery } from './api/hooks'
-import { MultiChainName, MultiChainNameExtend, checkIsStableSwap, multiChainId } from './constant'
+import { paths } from './api/schema'
+import { checkIsStableSwap, multiChainId, MultiChainName, MultiChainNameExtend } from './constant'
 import { PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 
 dayjs.extend(duration)
@@ -287,11 +291,13 @@ export const useAllPoolDataQuery = () => {
               address: d.token0.id,
               symbol: d.token0.symbol,
               name: d.token0.name,
+              decimals: d.token0.decimals,
             },
             token1: {
               address: d.token1.id,
               symbol: d.token1.symbol,
               name: d.token1.name,
+              decimals: d.token1.decimals,
             },
             volumeUSD: +d.volumeUSD24h,
             volumeUSDChange: 0,
@@ -373,11 +379,13 @@ export function usePoolDataQuery(poolAddress: string): PoolData | undefined {
           address: data_.token0.id,
           symbol: data_.token0.symbol,
           name: data_.token0.name,
+          decimals: data_.token0.decimals,
         },
         token1: {
           address: data_.token1.id,
           symbol: data_.token1.symbol,
           name: data_.token1.name,
+          decimals: data_.token1.decimals,
         },
         volumeUSD: +data_.volumeUSD24h,
         volumeUSDChange: 0,
@@ -400,6 +408,86 @@ export function usePoolDataQuery(poolAddress: string): PoolData | undefined {
     ...QUERY_SETTINGS_IMMUTABLE,
     ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
   })
+  return data
+}
+
+export function usePoolDataQueryV2(poolAddress: string, chainId: number): UseQueryResult<PoolData | undefined> {
+  const chainName = useMemo(() => chainIdToExplorerInfoChainName[chainId], [chainId])
+  const enabled = useMemo(() => Boolean(chainName && poolAddress) && isAddress(poolAddress), [chainName, poolAddress])
+  const queryFn = useCallback(
+    async ({ signal }) => {
+      return explorerApiClient
+        .GET(`/cached/pools/{chainName}/{id}`, {
+          signal,
+          params: {
+            path: {
+              chainName,
+              id: poolAddress,
+            },
+          },
+        })
+        .then((res) => res.data as SuccessResponseJSON<paths['/cached/pools/{chainName}/{id}']['get']>)
+    },
+    [chainName, poolAddress],
+  )
+
+  const reselect = useCallback(
+    (originData: SuccessResponseJSON<paths['/cached/pools/{chainName}/{id}']['get']>): PoolData | undefined => {
+      if (!originData) {
+        throw new Error('No data')
+      }
+      const { totalFees24h, totalFees7d, lpFees24h, lpFees7d, lpApr7d } = getLpFeesAndApr(
+        +originData.volumeUSD24h,
+        +originData.volumeUSD7d,
+        +originData.tvlUSD,
+      )
+
+      return {
+        address: originData.id,
+        // @ts-ignore stable pool has lpAddress
+        lpAddress: originData.lpAddress,
+        protocol: originData.protocol as Protocol,
+        timestamp: dayjs(originData.createdAtTimestamp as string).unix(),
+        token0: {
+          address: originData.token0.id,
+          symbol: originData.token0.symbol,
+          name: originData.token0.name,
+          decimals: originData.token0.decimals,
+        },
+        token1: {
+          address: originData.token1.id,
+          symbol: originData.token1.symbol,
+          name: originData.token1.name,
+          decimals: originData.token1.decimals,
+        },
+        volumeUSD: +originData.volumeUSD24h,
+        volumeUSDChange: 0,
+        volumeUSDWeek: +originData.volumeUSD7d,
+        liquidityUSD: +originData.tvlUSD,
+        liquidityUSDChange: getPercentChange(+originData.tvlUSD, originData.tvlUSD24h ? +originData.tvlUSD24h : 0),
+        totalFees24h,
+        totalFees7d,
+        lpFees24h,
+        lpFees7d,
+        lpApr7d,
+        liquidityToken0: +originData.tvlToken0,
+        liquidityToken1: +originData.tvlToken1,
+        token0Price: +originData.token0Price,
+        token1Price: +originData.token1Price,
+        volumeUSDChangeWeek: 0,
+      }
+    },
+    [],
+  )
+  const data = useQuery({
+    queryKey: [`cached/pools/${chainName}`, poolAddress],
+    queryFn,
+    enabled,
+    select: reselect,
+    ...QUERY_SETTINGS_IMMUTABLE,
+    ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
+  })
+
   return data
 }
 
