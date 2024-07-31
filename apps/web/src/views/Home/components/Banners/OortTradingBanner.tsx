@@ -28,14 +28,6 @@ const StyledImage = styled.img<{ hidden?: boolean }>`
   width: 85px;
 `
 
-const GradientBlur = styled(BannerContainer)<{ width: number; left: number; top: number; blur: number }>`
-  width: ${({ width }) => width}%;
-  position: absolute;
-  left: ${({ left }) => left}%;
-  top: ${({ right }) => right}%;
-  background: #c6cbf2;
-  filter: blur(${({ blur }) => blur}px);
-`
 const OORT_PATH = `${ASSET_CDN}/web/banners/oort`
 const floatingAsset = `${ASSET_CDN}/web/banners/oort/oort-coin.png`
 
@@ -65,17 +57,19 @@ const titleVariant = {
   fontWeight: 800,
 }
 
-export const OortTradingBanner = () => {
-  const { t } = useTranslation()
-  const { isMobile, isDesktop } = useMatchBreakpoints()
-
-  const Action = ({ href, icon, text, ...props }: IActions) => (
+const Action = ({ href, icon, text, ...props }: IActions) => {
+  return (
     <Box display={props.display}>
       <LinkExternalAction href={href} externalIcon={icon} color={props.color}>
-        {t(text)}
+        {text}
       </LinkExternalAction>
     </Box>
   )
+}
+
+export const OortTradingBanner = () => {
+  const { t } = useTranslation()
+  const { isMobile, isDesktop } = useMatchBreakpoints()
 
   return (
     <BannerContainer background={`url(${ASSET_CDN}/web/banners/oort/bg.png)`}>
@@ -93,7 +87,7 @@ export const OortTradingBanner = () => {
         }
         desc={
           isMobile ? null : (
-            <BannerDesc style={{ whiteSpace: 'break-spaces' }}>
+            <BannerDesc style={{ whiteSpace: 'break-spaces' }} color="secondary">
               {isDesktop
                 ? t('Win guaranteed prize, leaderboard prize, and daily lucky draws')
                 : t('Trade OORT to win guaranteed prizes!')}
@@ -107,7 +101,7 @@ export const OortTradingBanner = () => {
               display={isMobile ? 'none' : 'flex'}
               icon="arrowForward"
               alignItems="center"
-              text="Trade Now"
+              text={t('Trade Now')}
               color="#280D5F"
             />
             <Action
@@ -115,7 +109,7 @@ export const OortTradingBanner = () => {
               icon="openNew"
               display="flex"
               alignItems="center"
-              text="Learn More"
+              text={t('Learn More')}
               color="#280D5F"
             />
           </BannerActionContainer>
