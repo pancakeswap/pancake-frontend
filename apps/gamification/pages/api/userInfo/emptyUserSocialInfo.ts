@@ -1,7 +1,7 @@
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
-import { withSiweAuth } from 'middlewares/withSiwe'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-const handler = withSiweAuth(async (req, res) => {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!GAMIFICATION_PUBLIC_API || !req.body || req.method !== 'POST') {
     return res.status(400).json({ message: 'API URL Empty / Method wrong' })
   }
@@ -19,6 +19,4 @@ const handler = withSiweAuth(async (req, res) => {
   }
 
   return res.status(200).json(response)
-})
-
-export default handler
+}
