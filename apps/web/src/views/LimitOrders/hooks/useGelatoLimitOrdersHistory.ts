@@ -104,10 +104,11 @@ const useExistingOrders = (turnOn: boolean): ExistingOrder[] => {
           const orders = transactionDetails
             .map((transaction) => {
               if (!transaction.input) return undefined
-              const { args } = decodeFunctionData({
+              const { functionName, args } = decodeFunctionData({
                 abi: gelatoLimitABI,
                 data: transaction.input,
               })
+              if (functionName !== 'depositEth') return undefined
               if (args && args.length > 0) {
                 const data_ = args[0] as string
                 const offset = data_.startsWith('0x') ? 2 : 0
