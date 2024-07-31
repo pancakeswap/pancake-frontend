@@ -3,7 +3,7 @@ import chunk from 'lodash/chunk'
 import { useAtom } from 'jotai'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Protocol } from '@pancakeswap/farms'
-import { DEPLOYER_ADDRESSES, computePoolAddress } from '@pancakeswap/v3-sdk'
+import { DEPLOYER_ADDRESSES, FeeAmount, computePoolAddress } from '@pancakeswap/v3-sdk'
 import { Address } from 'viem/accounts'
 import {
   DEFAULT_QUERIES,
@@ -16,7 +16,7 @@ import {
 import { fetchExplorerPoolsList } from './fetcher'
 import type { PositionDetail, StableLPDetail, V2LPDetail } from '../accountPositions/type'
 import getTokenByAddress from '../utils'
-import type { ChainIdAddressKey } from '../type'
+import type { ChainIdAddressKey, PoolInfo } from '../type'
 
 const RESET_QUERY_KEYS = ['protocols', 'orderBy', 'chains', 'pools', 'tokens'] as Array<keyof ExtendPoolsQuery>
 
@@ -77,8 +77,23 @@ export const useExtendPools = () => {
   }
 }
 
-export function getKeyForPools(chainId: number, token0Address: Address, token1Address: Address) {
-  return `${chainId}:${token0Address}-${token1Address}`
+export function getKeyForPools(chainId: number, poolAddress: Address | string) {
+  return `${chainId}:${poolAddress}`
+}
+
+export function getPoolAddressByToken(chainId: number, token0Address: Address, token1Address: Address, fee: FeeAmount) {
+  const deployerAddress = DEPLOYER_ADDRESSES[chainId]
+  const token0 = getTokenByAddress(chainId, token0Address)
+  const token1 = getTokenByAddress(chainId, token1Address)
+  if (!token0 || !token1) {
+    return null
+  }
+  return computePoolAddress({
+    deployerAddress,
+    tokenA: token0,
+    tokenB: token1,
+    fee,
+  })
 }
 
 export const usePoolsByV3Positions = (positions: PositionDetail[]) => {
@@ -91,36 +106,31 @@ export const usePoolsByV3Positions = (positions: PositionDetail[]) => {
 
   const protocols = useMemo(() => [Protocol.V3], [])
 
-  const poolsAddress = useMemo(
+  const poolsAddressMap = useMemo(
     () =>
-      positions
-        .map((pos) => {
-          const deployerAddress = DEPLOYER_ADDRESSES[pos.chainId]
-          const token0 = getTokenByAddress(pos.chainId, pos.token0)
-          const token1 = getTokenByAddress(pos.chainId, pos.token1)
-          if (!token0 || !token1) {
-            return null
-          }
-          const key = getKeyForPools(pos.chainId, token0.address, token1.address)
-          if (key in poolsMap) {
-            return null
-          }
-          const address = computePoolAddress({
-            deployerAddress,
-            tokenA: token0,
-            tokenB: token1,
-            fee: pos.fee,
-          })
-          return `${pos.chainId}:${address}`
-        })
-        .filter((pos): pos is NonNullable<ChainIdAddressKey> => pos !== null),
+      positions.reduce<{ [key: ChainIdAddressKey]: string }>((acc, pos) => {
+        const key = getKeyForPools(pos.chainId, pos.tokenId.toString())
+        if (key in poolsMap) {
+          return acc
+        }
+        const address = getPoolAddressByToken(pos.chainId, pos.token0, pos.token1, pos.fee)
+        // eslint-disable-next-line no-param-reassign
+        acc[`${pos.chainId}:${address}`] = key
+        return acc
+      }, {}),
     [positions],
   )
 
+  const getKey = useCallback(
+    (pool: PoolInfo) => poolsAddressMap[`${pool.chainId}:${pool.lpAddress}`],
+    [poolsAddressMap],
+  )
+
   useFetchPoolsListByPoolsAddress({
-    poolsAddress,
+    poolsAddress: Object.keys(poolsAddressMap) as ChainIdAddressKey[],
     chains,
     protocols,
+    getKey,
   })
   return { poolsMap }
 }
@@ -139,8 +149,8 @@ export const usePoolsByV2Positions = (positions: V2LPDetail[]) => {
     () =>
       positions
         .map((pos) => {
-          const { token0, token1, chainId, liquidityToken } = pos.pair
-          const key = getKeyForPools(chainId, token0.address, token1.address)
+          const { chainId, liquidityToken } = pos.pair
+          const key = getKeyForPools(chainId, liquidityToken.address)
           if (key in poolsMap) {
             return null
           }
@@ -173,12 +183,10 @@ export const usePoolsByStablePositions = (positions: StableLPDetail[]) => {
       positions
         .map((pos) => {
           const {
-            token0,
-            token1,
             liquidityToken: { chainId },
             stableSwapAddress,
           } = pos.pair
-          const key = getKeyForPools(chainId, token0.wrapped.address, token1.wrapped.address)
+          const key = getKeyForPools(chainId, stableSwapAddress)
           if (key in poolsMap) {
             return null
           }
@@ -200,17 +208,19 @@ const useFetchPoolsListByPoolsAddress = ({
   poolsAddress,
   chains,
   protocols,
+  getKey,
 }: {
   poolsAddress: ChainIdAddressKey[]
   chains: number[]
   protocols: Protocol[]
+  getKey?: (pool: PoolInfo) => string
 }) => {
   const [poolsMap, setPools] = useAtom(poolsOfPositionAtom)
   useEffect(() => {
     if (!poolsAddress.length) {
       return
     }
-    const chunkPoolsAddress = chunk(poolsAddress, 50)
+    const chunkPoolsAddress = chunk(poolsAddress, 20)
     for (const address of chunkPoolsAddress) {
       const query = {
         protocols,
@@ -224,7 +234,7 @@ const useFetchPoolsListByPoolsAddress = ({
       fetchExplorerPoolsList(query).then((res) => {
         const newPoolsMap = res.pools.reduce((acc, pool) => {
           // eslint-disable-next-line no-param-reassign
-          acc[getKeyForPools(pool.chainId, pool.token0.wrapped.address, pool.token1.wrapped.address)] = pool
+          acc[getKey ? getKey(pool) : getKeyForPools(pool.chainId, pool.lpAddress)] = pool
           return acc
         }, {})
         setPools(assign(newPoolsMap, poolsMap))

@@ -29,6 +29,11 @@ import {
 } from 'state/farmsV4/hooks'
 import { toTokenValue, toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
 
+import { usePoolsWithChainId } from 'hooks/v3/usePools'
+import getTokenByAddress from 'state/farmsV4/state/utils'
+import { Currency } from '@pancakeswap/swap-sdk-core'
+import { Pool } from '@pancakeswap/v3-sdk'
+import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
 import {
   Card,
   CardBody as StyledCardBody,
@@ -118,16 +123,52 @@ export const PositionPage = () => {
 
   const { address: account } = useAccount()
   const { data: v3Positions, pending: v3Loading } = useAccountV3Positions(filters.selectedNetwork, account)
+  const v3PoolKeys = useMemo(
+    () =>
+      v3Positions.map(
+        (pos) =>
+          [getTokenByAddress(pos.chainId, pos.token0), getTokenByAddress(pos.chainId, pos.token1), pos.fee] as [
+            Currency,
+            Currency,
+            number,
+          ],
+      ),
+    [v3Positions],
+  )
+  const pools = usePoolsWithChainId(v3PoolKeys)
+
   const { poolsMap: v3Pools } = usePoolsByV3Positions(v3Positions)
   const { data: v2Positions, pending: v2Loading } = useAccountV2LpDetails(filters.selectedNetwork, account)
   const { poolsMap: v2Pools } = usePoolsByV2Positions(v2Positions)
   const { data: stablePositions, pending: stableLoading } = useAccountStableLpDetails(filters.selectedNetwork, account)
   const { poolsMap: stablePools } = usePoolsByStablePositions(stablePositions)
 
+  const checkStatus = useCallback(
+    (pos: PositionDetail, pool: Pool | null) => {
+      switch (positionStatus) {
+        // all
+        case 0:
+          return true
+        // active
+        case 1:
+          return pool && pool.tickCurrent >= pos.tickLower && pool.tickCurrent < pos.tickUpper && pos.liquidity !== 0n
+        // inactive
+        case 2:
+          return pool && (pool.tickCurrent < pos.tickLower || pool.tickCurrent >= pos.tickUpper) && pos.liquidity !== 0n
+        // closed
+        case 3:
+          return pos.liquidity === 0n
+        default:
+          return true
+      }
+    },
+    [positionStatus],
+  )
+
   const filteredV3Positions = useMemo(
     () =>
       v3Positions.filter(
-        (pos) =>
+        (pos, idx) =>
           filters.selectedNetwork.includes(pos.chainId) &&
           selectedPoolTypes.includes(pos.protocol) &&
           (!filters.selectedTokens?.length ||
@@ -135,9 +176,10 @@ export const PositionPage = () => {
               (token) =>
                 token === toTokenValue({ chainId: pos.chainId, address: pos.token0 }) ||
                 token === toTokenValue({ chainId: pos.chainId, address: pos.token1 }),
-            )),
+            )) &&
+          checkStatus(pos, pools[idx][1]),
       ),
-    [filters.selectedNetwork, filters.selectedTokens, selectedPoolTypes, v3Positions],
+    [filters.selectedNetwork, filters.selectedTokens, selectedPoolTypes, v3Positions, checkStatus, pools],
   )
 
   const filteredV2Positions = useMemo(
@@ -149,9 +191,10 @@ export const PositionPage = () => {
           (!filters.selectedTokens?.length ||
             filters.selectedTokens.some(
               (token) => token === toTokenValue(pos.pair.token0) || token === toTokenValue(pos.pair.token1),
-            )),
+            )) &&
+          positionStatus === 0,
       ),
-    [filters.selectedNetwork, filters.selectedTokens, selectedPoolTypes, v2Positions],
+    [filters.selectedNetwork, filters.selectedTokens, selectedPoolTypes, v2Positions, positionStatus],
   )
 
   const filteredStablePositions = useMemo(
@@ -164,16 +207,16 @@ export const PositionPage = () => {
             filters.selectedTokens.some(
               (token) =>
                 token === toTokenValueByCurrency(pos.pair.token0) || token === toTokenValueByCurrency(pos.pair.token1),
-            )),
+            )) &&
+          positionStatus === 0,
       ),
-    [filters.selectedNetwork, filters.selectedTokens, selectedPoolTypes, stablePositions],
+    [filters.selectedNetwork, filters.selectedTokens, selectedPoolTypes, stablePositions, positionStatus],
   )
 
   const v3PositionList = useMemo(
     () =>
       filteredV3Positions.map((pos) => {
-        const { chainId, token0, token1 } = pos
-        const key = getKeyForPools(chainId, token0, token1)
+        const key = getKeyForPools(pos.chainId, pos.tokenId.toString())
         return <PositionV3Item key={key} data={pos} pool={v3Pools[key]} />
       }),
     [filteredV3Positions, v3Pools],
@@ -182,8 +225,11 @@ export const PositionPage = () => {
   const v2PositionList = useMemo(
     () =>
       filteredV2Positions.map((pos) => {
-        const { chainId, token0, token1 } = pos.pair
-        const key = getKeyForPools(chainId, token0.wrapped.address, token1.wrapped.address)
+        const {
+          chainId,
+          liquidityToken: { address },
+        } = pos.pair
+        const key = getKeyForPools(chainId, address)
         return <PositionV2Item key={key} data={pos} pool={v2Pools[key]} />
       }),
     [filteredV2Positions, v2Pools],
@@ -193,11 +239,9 @@ export const PositionPage = () => {
     () =>
       filteredStablePositions.map((pos) => {
         const {
-          token0,
-          token1,
-          liquidityToken: { chainId },
+          liquidityToken: { chainId, address },
         } = pos.pair
-        const key = getKeyForPools(chainId, token0.wrapped.address, token1.wrapped.address)
+        const key = getKeyForPools(chainId, address)
         return <PositionStableItem key={key} data={pos} pool={stablePools[key]} />
       }),
     [filteredStablePositions, stablePools],
