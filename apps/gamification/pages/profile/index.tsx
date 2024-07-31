@@ -1,4 +1,3 @@
-import { SUPPORT_ONLY_BSC } from 'config/supportedChain'
 import { useProfile } from 'hooks/useProfile'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -43,7 +42,7 @@ const ProfilePage = () => {
   )
 }
 
-ProfilePage.chains = SUPPORT_ONLY_BSC
+ProfilePage.chains = []
 ProfilePage.Layout = NftProfileLayout
 
 export default ProfilePage

@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import {
   Button,
   Flex,
@@ -10,7 +11,9 @@ import {
   Text,
   useModal,
 } from '@pancakeswap/uikit'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { NftToken } from 'hooks/useProfile/nft/types'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import useTheme from 'hooks/useTheme'
 import { styled } from 'styled-components'
 import { getBscScanLinkForNft, safeGetAddress } from 'utils'
@@ -37,11 +40,17 @@ const ProfileNftModal: React.FC<React.PropsWithChildren<ProfileNftModalProps>> =
   const [onEditProfileModal] = useModal(<EditProfileModal onSuccess={onSuccess} />, false)
   const { t } = useTranslation()
   const { theme } = useTheme()
+  const { chainId } = useActiveWeb3React()
+  const { switchNetworkAsync } = useSwitchNetwork()
 
   const itemPageUrlId =
     safeGetAddress(nft?.collectionAddress) === safeGetAddress(pancakeBunniesAddress)
       ? nft?.attributes?.[0].value
       : nft?.tokenId
+
+  const handleSwitchNetwork = async (): Promise<void> => {
+    await switchNetworkAsync(ChainId.BSC)
+  }
 
   return (
     <StyledModal title={t('Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradientCardHeader}>
@@ -88,9 +97,15 @@ const ProfileNftModal: React.FC<React.PropsWithChildren<ProfileNftModalProps>> =
           </Text>
         </TextWrapper>
         <Flex flexDirection="column" py="16px" px="16px">
-          <Button onClick={onEditProfileModal} width="100%" variant="secondary">
-            {t('Remove Profile Pic')}
-          </Button>
+          {chainId !== ChainId.BSC ? (
+            <Button width="100%" variant="secondary" onClick={handleSwitchNetwork}>
+              {t('Switch Network')}
+            </Button>
+          ) : (
+            <Button onClick={onEditProfileModal} width="100%" variant="secondary">
+              {t('Remove Profile Pic')}
+            </Button>
+          )}
         </Flex>
       </Flex>
     </StyledModal>

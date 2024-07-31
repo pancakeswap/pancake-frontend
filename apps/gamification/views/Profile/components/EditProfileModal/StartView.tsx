@@ -1,12 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import { Button, Flex, InjectedModalProps, Message, MessageText } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
 import { FetchStatus } from 'config/constants/types'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCakeEnable } from 'hooks/useCakeEnable'
 import { useCake } from 'hooks/useContract'
 import { useProfile } from 'hooks/useProfile'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
@@ -58,6 +61,8 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
   const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance >= minimumCakeRequired
   const { handleEnable, pendingEnableTx } = useCakeEnable(new BigNumber(minimumCakeRequired.toString()))
   const [showCakeRequireFlow, setShowCakeRequireFlow] = useState(false)
+  const { chainId } = useActiveWeb3React()
+  const { switchNetworkAsync } = useSwitchNetwork()
 
   useEffect(() => {
     if (!isProfileCostsLoading && !hasMinimumCakeRequired && !showCakeRequireFlow) {
@@ -85,6 +90,10 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
     }
   }, [account, minimumCakeRequired, setNeedsApproval, cakeContract, isProfileCostsLoading])
 
+  const handleSwitchNetwork = async (): Promise<void> => {
+    await switchNetworkAsync(ChainId.BSC)
+  }
+
   if (!profile) {
     return null
   }
@@ -103,31 +112,39 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
               )}
             </MessageText>
           </Message>
-          {showCakeRequireFlow ? (
-            <Flex mb="16px" pb="16px">
-              <ApproveConfirmButtons
-                isApproveDisabled={isProfileCostsLoading || hasMinimumCakeRequired}
-                isApproving={pendingEnableTx}
-                isConfirmDisabled={isProfileCostsLoading || !hasMinimumCakeRequired || needsApproval === null}
-                isConfirming={false}
-                onApprove={handleEnable}
-                onConfirm={needsApproval === true ? goToApprove : goToChange}
-                confirmLabel={t('Change Profile Pic')}
-              />
-            </Flex>
-          ) : (
-            <Button
-              width="100%"
-              mb="8px"
-              onClick={needsApproval === true ? goToApprove : goToChange}
-              disabled={isProfileCostsLoading || !hasMinimumCakeRequired || needsApproval === null}
-            >
-              {t('Change Profile Pic')}
+          {chainId !== ChainId.BSC ? (
+            <Button width="100%" variant="secondary" onClick={handleSwitchNetwork}>
+              {t('Switch Network')}
             </Button>
+          ) : (
+            <>
+              {showCakeRequireFlow ? (
+                <Flex mb="16px" pb="16px">
+                  <ApproveConfirmButtons
+                    isApproveDisabled={isProfileCostsLoading || hasMinimumCakeRequired}
+                    isApproving={pendingEnableTx}
+                    isConfirmDisabled={isProfileCostsLoading || !hasMinimumCakeRequired || needsApproval === null}
+                    isConfirming={false}
+                    onApprove={handleEnable}
+                    onConfirm={needsApproval === true ? goToApprove : goToChange}
+                    confirmLabel={t('Change Profile Pic')}
+                  />
+                </Flex>
+              ) : (
+                <Button
+                  width="100%"
+                  mb="8px"
+                  onClick={needsApproval === true ? goToApprove : goToChange}
+                  disabled={isProfileCostsLoading || !hasMinimumCakeRequired || needsApproval === null}
+                >
+                  {t('Change Profile Pic')}
+                </Button>
+              )}
+              <DangerOutline width="100%" onClick={goToRemove}>
+                {t('Remove Profile Pic')}
+              </DangerOutline>
+            </>
           )}
-          <DangerOutline width="100%" onClick={goToRemove}>
-            {t('Remove Profile Pic')}
-          </DangerOutline>
         </>
       ) : showCakeRequireFlow ? (
         <Flex mb="8px">
