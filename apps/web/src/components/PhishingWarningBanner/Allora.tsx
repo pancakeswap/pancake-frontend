@@ -1,11 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowForwardIcon, Box, Column, Flex, FlexGap, Link, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { VerticalDivider } from '@pancakeswap/widgets-internal'
-// import { ASSET_CDN } from 'config/constants/endpoints'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import NextLink from 'next/link'
 import { ICampaignBanner } from './ICampaignBanner'
 
-const ASSET_CDN = 'https://chore--allora-banner-assets.assets-agx.pages.dev'
 const ALLORA_PATH = `${ASSET_CDN}/web/banners/allora`
 
 const learnMoreLink = 'https://www.allora.network/blog/announcing-the-allora-x-pancakeswap-points-program'
@@ -18,10 +17,10 @@ export const Allora: ICampaignBanner = () => {
 
   const content = (
     <Box>
-      <Text bold as="span" color="white" fontSize={['12px', '12px', '14px']}>
+      <Text bold as="span" color="white" fontSize={['12px', '12px', '13px']}>
         {t('Earn Allora Points on PancakeSwap')}
       </Text>
-      <Text bold as="span" color="warning" fontSize={['12px', '12px', '14px']}>
+      <Text bold as="span" color="warning" fontSize={['12px', '12px', '13px']}>
         {t('Predict the ETH price on Arbitrum and participate in the Galxe campaign')}
       </Text>
     </Box>
@@ -29,13 +28,13 @@ export const Allora: ICampaignBanner = () => {
 
   const mobileContent = (
     <Box>
-      <Text bold as="span" color="warning" fontSize={['12px', '12px', '14px']}>
+      <Text bold as="span" color="warning" fontSize={['12px', '12px', '13px']}>
         {t('Earn Allora Points by')}
       </Text>
-      <Text bold as="span" color="white" fontSize={['12px', '12px', '14px']}>
+      <Text bold as="span" color="white" fontSize={['12px', '12px', '13px']}>
         {t('playing ARB predictions')}
       </Text>
-      <Text bold as="span" color="warning" fontSize={['12px', '12px', '14px']}>
+      <Text bold as="span" color="warning" fontSize={['12px', '12px', '13px']}>
         {t('and Galxe campaign!')}
       </Text>
     </Box>
@@ -49,7 +48,7 @@ export const Allora: ICampaignBanner = () => {
           {mobileContent}
           <FlexGap mt="6px">
             <Link external fontSize={['12px', '12px', '14px']} style={{ color: 'white' }} href={joinNowLink}>
-              {t('Join Now!')}
+              {t('Join now')}
               <ArrowForwardIcon width="14px" color="white" />
             </Link>
             <VerticalDivider />
@@ -67,14 +66,16 @@ export const Allora: ICampaignBanner = () => {
   return (
     <Flex mr={['6px']} alignItems="center" flexWrap="wrap">
       {content}
-      <NextLink href={joinNowLink} passHref>
-        <Link href="replace" mx="6px" color="white" fontSize={['12px', '12px', '14px']}>
-          {t('Join Now!')}
+      <FlexGap>
+        <NextLink href={joinNowLink} passHref>
+          <Link href="replace" color="white" fontSize={['12px', '12px', '14px']}>
+            {t('Join now')}
+          </Link>
+        </NextLink>
+        <Link external mx="6px" color="white" href={learnMoreLink} fontSize={['12px', '12px', '14px']}>
+          {t('Learn More')}
         </Link>
-      </NextLink>
-      <Link external mx="6px" color="white" href={learnMoreLink} fontSize={['12px', '12px', '14px']}>
-        {t('Learn More')}
-      </Link>
+      </FlexGap>
     </Flex>
   )
 }

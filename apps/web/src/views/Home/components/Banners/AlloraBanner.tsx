@@ -8,18 +8,16 @@ import {
   BannerGraphics,
   BannerMain,
   BannerTitle,
+  CoBrandBadge,
   FloatingGraphic,
   LinkExternalAction,
-  PancakeSwapBadge,
-  VerticalDivider,
   type GraphicDetail,
 } from '@pancakeswap/widgets-internal'
-// import { ASSET_CDN } from 'config/constants/endpoints'
+import { ASSET_CDN } from 'config/constants/endpoints'
 
 type ActionsType = { href: string; text: string; icon?: 'arrowForward' | 'openNew' }
 type IActions = ActionsType & Partial<CSSStyleDeclaration>
 
-const ASSET_CDN = 'https://chore--allora-banner-assets.assets-agx.pages.dev'
 const ALLORA_PATH = `${ASSET_CDN}/web/banners/allora`
 const floatingAsset = `${ALLORA_PATH}/floating-coin.png`
 const logoSmall = `${ALLORA_PATH}/logo-md.png`
@@ -53,10 +51,14 @@ export const AlloraBanner = () => {
     <BannerContainer background="radial-gradient(63% 84% at 26% 23%, #CBD7EF 0%, #A3A9D5 72.82%, #9A9FD0 100%)">
       <BannerMain
         badges={
-          <Flex alignItems="center" justifyContent="center" height="32px" minWidth={isMobile ? '200px' : '234px'}>
-            <PancakeSwapBadge />
-            <VerticalDivider bg="#9BA4BB" />
-            <img src={isMobile ? logoSmall : logoLarge} width={isMobile ? 58 : 90} alt="allora-banner-logo-alt" />
+          <Flex minWidth="max-content">
+            <CoBrandBadge
+              coBrand={isMobile ? logoSmall : logoLarge}
+              coBrandLogo={isMobile ? logoSmall : logoLarge}
+              cHeight={isMobile ? 22 : 32}
+              cWidth={isMobile ? 58 : 100}
+              dividerBg="#08080844"
+            />
           </Flex>
         }
         title={
@@ -65,11 +67,13 @@ export const AlloraBanner = () => {
           </BannerTitle>
         }
         desc={
-          <BannerDesc style={{ whiteSpace: 'break-spaces', display: isMobile ? 'none' : 'flex' }}>
-            {isDesktop
-              ? t('Predict the price of ETH on Arbitrum and join the Galxe campaign to earn Allora points')
-              : t('Predict the price of ETH & join the Galxe campaign')}
-          </BannerDesc>
+          !isMobile && (
+            <BannerDesc style={{ whiteSpace: 'break-spaces' }}>
+              {isDesktop
+                ? t('Predict the price of ETH on Arbitrum and join the Galxe campaign to earn Allora points')
+                : t('Predict the price of ETH & join the Galxe campaign')}
+            </BannerDesc>
+          )
         }
         actions={
           <BannerActionContainer>
@@ -78,7 +82,7 @@ export const AlloraBanner = () => {
               display={isMobile ? 'none' : 'flex'}
               icon="arrowForward"
               alignItems="center"
-              text="Join Now!"
+              text="Join now"
               color="#280D5F"
             />
             <Action
@@ -101,7 +105,7 @@ export const AlloraBanner = () => {
           width={469}
           height={224}
         />
-        <Box position="absolute" width="100%" left={isTablet ? '-8%' : '3%'}>
+        <Box position="absolute" width="100%" left="3%">
           <FloatingGraphic src={floatingAsset} width={99} height={99} />
         </Box>
       </BannerGraphics>
