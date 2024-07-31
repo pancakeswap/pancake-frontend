@@ -1,8 +1,8 @@
-import { ERC20Token } from '@pancakeswap/sdk'
+import { ERC20Token, Native } from '@pancakeswap/sdk'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { unwrappedToken } from '@pancakeswap/tokens'
 import { Position } from '@pancakeswap/v3-sdk'
-import { useQueries, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
+import { useQueries, useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useAllTokensByChainIds, useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
@@ -11,7 +11,9 @@ import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFr
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from 'state'
+import { PoolData } from 'state/info/types'
 import { safeGetAddress } from 'utils'
+import { isAddressEqual, zeroAddress } from 'viem'
 import { Address } from 'viem/accounts'
 import { getAccountV2LpDetails, getAccountV3Positions, getStablePairDetails, getTrackedV2LpTokens } from './fetcher'
 import type { PositionDetail, StableLPDetail, V2LPDetail } from './type'
@@ -186,4 +188,63 @@ export const useExtraV3PositionInfo = (positionDetail?: PositionDetail) => {
     currencyQuote,
     currencyBase,
   }
+}
+
+export const useAccountPositionDetailByPool = (chainId: number, account?: Address | null, poolData?: PoolData) => {
+  const [currency0, currency1] = useMemo(() => {
+    if (!poolData) return [undefined, undefined]
+    const { token0, token1 } = poolData
+    const _currency0 = isAddressEqual(token0.address as Address, zeroAddress)
+      ? Native.onChain(chainId)
+      : new ERC20Token(chainId, token0.address as Address, token0.decimals, token0.symbol, token0.name)
+    const _currency1 = new ERC20Token(chainId, token1.address as Address, token1.decimals, token1.symbol, token1.name)
+    return [_currency0, _currency1]
+  }, [chainId, poolData])
+  const protocol = useMemo(() => poolData?.protocol, [poolData])
+  const queryFn = useCallback(() => {
+    if (protocol === 'v2') {
+      return getAccountV2LpDetails(
+        chainId,
+        account!,
+        currency0 && currency1 ? [[currency0.wrapped, currency1.wrapped]] : [],
+      )
+    }
+    if (protocol === 'stable') {
+      const stablePair = LegacyRouter.stableSwapPairsByChainId[chainId].find((pair) => {
+        return isAddressEqual(pair.stableSwapAddress, poolData?.address as Address)
+      })
+      return getStablePairDetails(chainId, account!, stablePair ? [stablePair] : [])
+    }
+    if (protocol === 'v3') {
+      return getAccountV3Positions(chainId, account!)
+    }
+    return Promise.resolve([])
+  }, [account, chainId, currency0, currency1, poolData?.address, protocol])
+  const select = useCallback(
+    (data) => {
+      console.debug('debug data', data)
+      if (['v2', 'stable'].includes(protocol!)) {
+        return data?.[0] && data[0].balance.greaterThan('0') ? data[0] : undefined
+      }
+      // v3
+      const d = data.filter((position) => {
+        const { token0, token1, fee } = position as PositionDetail
+        return (
+          poolData?.token0.address &&
+          isAddressEqual(token0, poolData?.token0.address as Address) &&
+          poolData?.token1.address &&
+          isAddressEqual(token1, poolData?.token1.address as Address) &&
+          fee === poolData?.feeTier
+        )
+      })
+      return d
+    },
+    [poolData, protocol],
+  )
+  return useQuery({
+    queryKey: ['accountPosition', account, chainId, poolData?.address],
+    queryFn,
+    enabled: !!account && !!poolData?.address,
+    select,
+  })
 }

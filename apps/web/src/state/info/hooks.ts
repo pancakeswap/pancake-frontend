@@ -402,6 +402,7 @@ export function usePoolDataQuery(poolAddress: string): PoolData | undefined {
         token0Price: +data_.token0Price,
         token1Price: +data_.token1Price,
         volumeUSDChangeWeek: 0,
+        feeTier: data_.feeTier,
       }
     }, []),
     enabled: Boolean(chainName && poolAddress),
@@ -475,6 +476,7 @@ export function usePoolDataQueryV2(poolAddress: string, chainId: number): UseQue
         token0Price: +originData.token0Price,
         token1Price: +originData.token1Price,
         volumeUSDChangeWeek: 0,
+        feeTier: originData.feeTier,
       }
     },
     [],

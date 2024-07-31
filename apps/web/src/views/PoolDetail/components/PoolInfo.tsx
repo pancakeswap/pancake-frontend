@@ -1,11 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ERC20Token, Native } from '@pancakeswap/sdk'
-import { AutoColumn, Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Column, Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
 import { ChainLogo, DoubleCurrencyLogo, FeatureStack, FeeTierTooltip } from '@pancakeswap/widgets-internal'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
+import { useAccountPositionDetailByPool } from 'state/farmsV4/hooks'
 import { useChainIdByQuery, useChainNameByQuery } from 'state/info/hooks'
 import { multiChainNameConverter } from 'utils/chainNameConverter'
-import { Address, isAddressEqual, zeroAddress } from 'viem'
+import { Address, isAddressEqual, stringify, zeroAddress } from 'viem'
 import { usePoolData } from '../hooks/usePoolData'
 import { usePoolFee } from '../hooks/useStablePoolFee'
 
@@ -26,57 +28,62 @@ export const PoolInfo = () => {
     return [_currency0, _currency1]
   }, [chainId, poolData])
   const { fee } = usePoolFee(poolData?.address as Address, poolData?.protocol)
+  const { account } = useAccountActiveChain()
+  const data = useAccountPositionDetailByPool(chainId, account, poolData)
 
   return (
-    <Row justifyContent="space-between">
-      <Flex alignItems="center">
-        <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={48} innerMargin="-8px" />
-        <FlexGap gap="4px" ml="12px">
-          <Text bold fontSize={40}>
-            {currency0?.symbol}
-          </Text>
-          <Text color="textSubtle" bold fontSize={40}>
-            {' '}
-            /{' '}
-          </Text>
-          <Text bold fontSize={40}>
-            {currency1?.symbol}
-          </Text>
-        </FlexGap>
-      </Flex>
-      <FlexGap gap="16px">
-        {poolData?.protocol ? (
-          <AutoColumn rowGap="4px">
-            <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
-              {t('fee tier')}
+    <Column gap="24px">
+      <Row justifyContent="space-between">
+        <Flex alignItems="center">
+          <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={48} innerMargin="-8px" />
+          <FlexGap gap="4px" ml="12px">
+            <Text bold fontSize={40}>
+              {currency0?.symbol}
             </Text>
-            <FeeTierTooltip type={poolData.protocol} percent={fee} />
-          </AutoColumn>
-        ) : null}
-        <AutoColumn rowGap="4px">
-          <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
-            {t('network')}
-          </Text>
-          <FlexGap gap="4px">
-            <ChainLogo chainId={chainId} />
-            <Text fontSize={12} bold color="textSubtle" lineHeight="24px">
-              {multiChainNameConverter(networkName)}
+            <Text color="textSubtle" bold fontSize={40}>
+              {' '}
+              /{' '}
+            </Text>
+            <Text bold fontSize={40}>
+              {currency1?.symbol}
             </Text>
           </FlexGap>
-        </AutoColumn>
-        <AutoColumn rowGap="4px">
-          <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
-            {t('apr')}
-          </Text>
-          <Text>TODO</Text>
-        </AutoColumn>
-        <AutoColumn rowGap="4px">
-          <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
-            {t('pool type')}
-          </Text>
-          <FeatureStack features={[poolData?.protocol]} />
-        </AutoColumn>
-      </FlexGap>
-    </Row>
+        </Flex>
+        <FlexGap gap="16px">
+          {poolData?.protocol ? (
+            <AutoColumn rowGap="4px">
+              <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
+                {t('fee tier')}
+              </Text>
+              <FeeTierTooltip type={poolData.protocol} percent={fee} />
+            </AutoColumn>
+          ) : null}
+          <AutoColumn rowGap="4px">
+            <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
+              {t('network')}
+            </Text>
+            <FlexGap gap="4px">
+              <ChainLogo chainId={chainId} />
+              <Text fontSize={12} bold color="textSubtle" lineHeight="24px">
+                {multiChainNameConverter(networkName)}
+              </Text>
+            </FlexGap>
+          </AutoColumn>
+          <AutoColumn rowGap="4px">
+            <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
+              {t('apr')}
+            </Text>
+            <Text>TODO</Text>
+          </AutoColumn>
+          <AutoColumn rowGap="4px">
+            <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
+              {t('pool type')}
+            </Text>
+            <FeatureStack features={[poolData?.protocol]} />
+          </AutoColumn>
+        </FlexGap>
+      </Row>
+      <pre>{stringify(data, null, 2)}</pre>
+    </Column>
   )
 }
