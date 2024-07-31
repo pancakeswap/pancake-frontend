@@ -176,9 +176,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
           ableToClaimReward &&
           proofData !== null &&
           chainId !== quest?.reward?.currency?.network && (
-            <Button width="100%" onClick={handleSwitchNetwork}>
-              {t('Switch Network')}
-            </Button>
+            <StyledButton onClick={handleSwitchNetwork}>{t('Switch Network')}</StyledButton>
           )}
 
         {isQuestFinished &&
