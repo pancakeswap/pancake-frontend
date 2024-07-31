@@ -35,7 +35,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task, isDrafted }) => {
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
   const social = task.taskType
-  const { taskIcon, taskNaming, taskInputPlaceholder } = useTaskInfo(false, 22)
+  const { taskIcon, taskNaming, taskInputPlaceholder, socialAccountIdName } = useTaskInfo(false, 22)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Open in new tab'), {
     placement: 'top',
@@ -118,7 +118,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task, isDrafted }) => {
               value={task.accountId}
               isError={isAccountIdError}
               style={{ borderRadius: '24px' }}
-              placeholder={t('Account Id')}
+              placeholder={socialAccountIdName(task.taskType)}
               onChange={(e) => handleUrlChange(e, 'accountId')}
             />
           </InputGroup>

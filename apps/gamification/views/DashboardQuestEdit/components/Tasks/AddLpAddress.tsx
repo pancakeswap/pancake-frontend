@@ -234,7 +234,7 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
               pattern="^[0-9]*[.,]?[0-9]*$"
               value={task.minAmount}
               isError={isMinAmountError}
-              placeholder={t('Min. $ amount worth of liquidity')}
+              placeholder={t('Min. $ Amount worth of liquidity')}
               onChange={(e) => handleInputChange(e, 'minAmount')}
             />
           </StyledInputGroup>

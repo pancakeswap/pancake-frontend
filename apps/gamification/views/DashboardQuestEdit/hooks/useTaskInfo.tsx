@@ -114,6 +114,23 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
     [t],
   )
 
+  const socialAccountIdName = useCallback(
+    (social: TaskType) => {
+      switch (social) {
+        case TaskType.X_LIKE_POST:
+        case TaskType.X_REPOST_POST:
+          return t('Post Id')
+        case TaskType.DISCORD_JOIN_SERVER:
+          return t('Server Id')
+        case TaskType.TELEGRAM_JOIN_GROUP:
+          return t('Channel Id')
+        default:
+          return t('Account Id')
+      }
+    },
+    [t],
+  )
+
   const userActionButtonText = useCallback(
     (social: TaskType) => {
       switch (social) {
@@ -151,6 +168,7 @@ export const useTaskInfo = (primaryColor: boolean = false, iconSize: number = 20
     taskIcon,
     taskNaming,
     taskInputPlaceholder,
+    socialAccountIdName,
     userActionButtonText,
   }
 }
