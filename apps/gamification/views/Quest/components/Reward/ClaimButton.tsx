@@ -138,55 +138,61 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
 
   return (
     <>
-      {chainId !== quest?.reward?.currency?.network ? (
-        <Button width="100%" onClick={handleSwitchNetwork}>
-          {t('Switch Network')}
-        </Button>
-      ) : (
-        <>
-          <Box>
-            {isQuestFinished && !isTasksCompleted && (
-              <Box ref={targetRef}>
-                <StyledButton $outline variant="secondary" disabled endIcon={<InfoIcon color="textDisabled" />}>
-                  {t('Unavailable')}
-                </StyledButton>
-                {tooltipVisible && tooltip}
-              </Box>
-            )}
-
-            {isQuestFinished && isTasksCompleted && proofData?.rewardAmount === 'null' && (
-              <StyledButton $outline variant="secondary" disabled>
-                {t('Finished')}
-              </StyledButton>
-            )}
-
-            {((!isQuestFinished && !isTasksCompleted) || (!isQuestFinished && isTasksCompleted)) && (
-              <StyledButton disabled>{t('Claim the reward')}</StyledButton>
-            )}
-
-            {isQuestFinished && isTasksCompleted && ableToClaimReward && proofData !== null && (
-              <StyledButton
-                disabled={!ableToClaimReward || isPending || Number(claimedRewardAmount) > 0}
-                onClick={handleClaimReward}
-              >
-                {t('Claim the reward')}
-              </StyledButton>
-            )}
-
-            {isQuestFinished &&
-              isTasksCompleted &&
-              !ableToClaimReward &&
-              proofData !== null &&
-              Number(proofData?.rewardAmount) > 0 && <StyledButton disabled>{t('Claimed')}</StyledButton>}
+      <Box>
+        {isQuestFinished && !isTasksCompleted && (
+          <Box ref={targetRef}>
+            <StyledButton $outline variant="secondary" disabled endIcon={<InfoIcon color="textDisabled" />}>
+              {t('Unavailable')}
+            </StyledButton>
+            {tooltipVisible && tooltip}
           </Box>
-          <MessageInfo
-            proofData={proofData}
-            ableToClaimReward={ableToClaimReward}
-            isTasksCompleted={isTasksCompleted}
-            isQuestFinished={isQuestFinished}
-          />
-        </>
-      )}
+        )}
+
+        {isQuestFinished && isTasksCompleted && proofData?.rewardAmount === 'null' && (
+          <StyledButton $outline variant="secondary" disabled>
+            {t('Finished')}
+          </StyledButton>
+        )}
+
+        {((!isQuestFinished && !isTasksCompleted) || (!isQuestFinished && isTasksCompleted)) && (
+          <StyledButton disabled>{t('Claim the reward')}</StyledButton>
+        )}
+
+        {isQuestFinished &&
+          isTasksCompleted &&
+          ableToClaimReward &&
+          proofData !== null &&
+          chainId === quest?.reward?.currency?.network && (
+            <StyledButton
+              disabled={!ableToClaimReward || isPending || Number(claimedRewardAmount) > 0}
+              onClick={handleClaimReward}
+            >
+              {t('Claim the reward')}
+            </StyledButton>
+          )}
+
+        {isQuestFinished &&
+          isTasksCompleted &&
+          ableToClaimReward &&
+          proofData !== null &&
+          chainId !== quest?.reward?.currency?.network && (
+            <Button width="100%" onClick={handleSwitchNetwork}>
+              {t('Switch Network')}
+            </Button>
+          )}
+
+        {isQuestFinished &&
+          isTasksCompleted &&
+          !ableToClaimReward &&
+          proofData !== null &&
+          Number(proofData?.rewardAmount) > 0 && <StyledButton disabled>{t('Claimed')}</StyledButton>}
+      </Box>
+      <MessageInfo
+        proofData={proofData}
+        ableToClaimReward={ableToClaimReward}
+        isTasksCompleted={isTasksCompleted}
+        isQuestFinished={isQuestFinished}
+      />
     </>
   )
 }
