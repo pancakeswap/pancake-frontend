@@ -339,7 +339,7 @@ export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProp
         {modalView === CurrencyModalView.search && (
           <Box width="100%">
             <CurrencySearch
-              onlyAcceptChains={inputCurrency?.chainId}
+              onlyAcceptChains={state?.chainId}
               selectedCurrency={inputCurrency}
               onCurrencySelect={handleInputSelect}
             />
