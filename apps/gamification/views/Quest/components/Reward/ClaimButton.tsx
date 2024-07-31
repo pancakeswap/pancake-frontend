@@ -63,9 +63,14 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
   const { data: claimedRewardAmount, refetch: refetchClaimedRewardAmount } = useQuery({
     queryKey: ['/get-quest-claimed-reward', account, rewardClaimingId],
     queryFn: async () => {
-      if (!rewardClaimingId) throw new Error('Invalid reward id to claim')
-      const amount = await contract.read.getClaimedReward([rewardClaimingId, account as Address])
-      return amount?.toString() ?? '0'
+      try {
+        if (!rewardClaimingId) throw new Error('Invalid reward id to claim')
+        const amount = await contract.read.getClaimedReward([rewardClaimingId, account as Address])
+        return amount?.toString() ?? '0'
+      } catch (error) {
+        console.error('Get quest claimed error: ', error)
+        return '0'
+      }
     },
     enabled: Boolean(account && rewardClaimingId && isQuestFinished),
     refetchOnMount: false,
