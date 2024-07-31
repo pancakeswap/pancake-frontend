@@ -87,8 +87,8 @@ export const BnbSnbnbFaq = () => [
     description: (
       <>
         <Trans>Please visit</Trans>
-        <Link m="0 4px" external style={{ display: 'inline' }} href="https://www.synclub.io/en/liquid-staking/BNB">
-          https://www.synclub.io/en/liquid-staking/BNB
+        <Link m="0 4px" external style={{ display: 'inline' }} href="https://lista.org/liquid-staking/BNB">
+          https://lista.org/liquid-staking/BNB
         </Link>
         <Trans>
           to unstake your SnBNB. PancakeSwap is working to support a conversion contract on our liquid staking page to
