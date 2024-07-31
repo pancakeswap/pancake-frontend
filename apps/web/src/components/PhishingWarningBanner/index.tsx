@@ -7,6 +7,7 @@ import 'swiper/css/effect-fade'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { AIPrediction } from './AIPredictionStripe'
+import { Allora } from './Allora'
 import { Countdown } from './Countdown'
 import { FeeRefund } from './FeeRefund'
 import { PerpetualSeason } from './PerpetualSeason'
@@ -133,6 +134,14 @@ const CONFIG: BannerConfig[] = [
     stripeImageWidth: AIPrediction.stripeImageWidth,
     stripeImageAlt: AIPrediction.stripeImageAlt,
     background: AIPrediction.background,
+    customStyle: { position: 'relative', transform: 'scale(1.25) translateX(-10px)' },
+  },
+  {
+    component: Allora,
+    stripeImage: Allora.stripeImage,
+    stripeImageWidth: Allora.stripeImageWidth,
+    stripeImageAlt: Allora.stripeImageAlt,
+    background: Allora.background,
     customStyle: { position: 'relative', transform: 'scale(1.25) translateX(-10px)' },
   },
 ]
