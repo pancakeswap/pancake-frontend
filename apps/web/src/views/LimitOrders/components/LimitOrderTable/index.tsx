@@ -1,6 +1,7 @@
-import { useState, useCallback, memo, useMemo } from 'react'
+import { useState, memo, useMemo } from 'react'
 import { Flex, Card, ButtonTabMenu } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import noop from 'lodash/noop'
 import useGelatoLimitOrdersHistory from '../../hooks/useGelatoLimitOrdersHistory'
 
 import { ORDER_CATEGORY } from '../../types'
@@ -22,8 +23,7 @@ const OrderTable: React.FC<React.PropsWithChildren<{ isCompact: boolean; orderCa
 
 const LimitOrderTable: React.FC<React.PropsWithChildren<{ isCompact: boolean }>> = ({ isCompact }) => {
   const { t } = useTranslation()
-  const [activeTab, setIndex] = useState<ORDER_CATEGORY>(ORDER_CATEGORY.Existing)
-  const handleClick = useCallback((tabType: ORDER_CATEGORY) => setIndex(tabType), [])
+  const [activeTab] = useState<ORDER_CATEGORY>(ORDER_CATEGORY.Existing)
   const tabMenuItems = useMemo(() => {
     if (activeTab === ORDER_CATEGORY.Existing) {
       return [t('Existing Orders')]
@@ -34,7 +34,7 @@ const LimitOrderTable: React.FC<React.PropsWithChildren<{ isCompact: boolean }>>
   return (
     <Flex flex="1" justifyContent="center" mb="24px">
       <Card style={{ width: '100%', height: 'max-content' }}>
-        <ButtonTabMenu itemList={tabMenuItems} onItemClick={handleClick} activeIndex={activeTab} />
+        <ButtonTabMenu itemList={tabMenuItems} onItemClick={noop} activeIndex={activeTab} />
         <OrderTable orderCategory={activeTab} isCompact={isCompact} />
       </Card>
     </Flex>
