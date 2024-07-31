@@ -75,6 +75,12 @@ export const CurrencySearch: React.FC<CurrencySearchProps> = ({
     if (!isMobile) inputRef.current?.focus()
   }, [isMobile])
 
+  useEffect(() => {
+    if (onlyAcceptChains) {
+      setSelectedChainId(onlyAcceptChains)
+    }
+  }, [])
+
   const handleInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value
     const checksummedInput = safeGetAddress(input)
