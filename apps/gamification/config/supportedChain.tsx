@@ -29,7 +29,7 @@ export const SUPPORTED_CHAIN = [
   ChainId.ZKSYNC,
   ChainId.ARBITRUM_ONE,
   ChainId.BASE,
-  ChainId.LINEA,
+  ChainId.POLYGON_ZKEVM,
+  // ChainId.LINEA,
   // ChainId.OPBNB,
-  // ChainId.POLYGON_ZKEVM,
 ]
