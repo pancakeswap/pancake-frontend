@@ -70,7 +70,7 @@ export const JoinedQuests = () => {
         '24px auto auto auto',
         '40px auto auto auto',
       ]}
-      padding={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
+      padding={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px 80px 16px', '0 0 80px 0']}
     >
       <Flex width="100%" flexDirection={['column', 'column', 'row']}>
         <Flex flexDirection={['column', 'column', 'row']} mb={['16px', '16px', '24px']}>

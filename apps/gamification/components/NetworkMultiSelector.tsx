@@ -37,7 +37,7 @@ export const NetworkMultiSelector: React.FC<NetworkMultiSelectorProps> = (props)
           height: '100%',
           backgroundColor: theme.colors.backgroundAlt,
         }}
-        scrollHeight="330px"
+        scrollHeight="260px"
         isShowSelectAll
         options={options}
         value={convertValueToString}
