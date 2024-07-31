@@ -8,25 +8,47 @@ import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'
 import { Chain } from 'viem'
 import { useAccount } from 'wagmi'
+import * as allChains from 'viem/chains'
+import { useCallback } from 'react'
 import Dots from '../Loader/Dots'
+
+const getChain = (chainId: number | undefined) => {
+  const chain = chainId ? Object.values(allChains).find((c) => c.id === chainId) : undefined
+
+  return chain?.name || ''
+}
 
 // Where page network is not equal to wallet network
 export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: Chain; onDismiss: () => void }) {
   const { switchNetworkAsync, isLoading, canSwitch } = useSwitchNetwork()
   const { logout } = useAuth()
-  const { isConnected, chain } = useAccount()
+  const { isConnected, chain, chainId: walletChainId } = useAccount()
   const [, setSessionChainId] = useSessionChainId()
   const chainId = currentChain.id || ChainId.BSC
   const { t } = useTranslation()
 
   const switchText = t('Switch to %network%', { network: currentChain.name })
 
+  const handleSwitchNetwork = useCallback(() => {
+    if (canSwitch) {
+      switchNetworkAsync(chainId)
+    }
+  }, [canSwitch, chainId, switchNetworkAsync])
+
+  const handleLogout = useCallback(() => {
+    logout().then(() => {
+      setSessionChainId(chainId)
+    })
+  }, [chainId, logout, setSessionChainId])
+
   return (
     <Modal title={t('You are in wrong network')} headerBackground="gradientCardHeader" onDismiss={onDismiss}>
       <Grid style={{ gap: '16px' }} maxWidth="336px">
         <Text>{t('This page is located for %network%.', { network: currentChain.name })}</Text>
         <Text>
-          {t('You are under %network% now, please switch the network to continue.', { network: chain?.name ?? '' })}
+          {t('You are under %network% now, please switch the network to continue.', {
+            network: chain?.name ?? getChain(walletChainId) ?? '',
+          })}
         </Text>
         <div style={{ textAlign: 'center' }}>
           <Image width={184} height={140} src="/images/decorations/3d-pan-bunny.png" alt="check your network" />
@@ -43,7 +65,7 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
           </MessageText>
         </Message>
         {canSwitch ? (
-          <Button isLoading={isLoading} onClick={() => switchNetworkAsync(chainId)}>
+          <Button isLoading={isLoading} onClick={handleSwitchNetwork}>
             {isLoading ? <Dots>{switchText}</Dots> : switchText}
           </Button>
         ) : (
@@ -52,14 +74,7 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
           </Message>
         )}
         {isConnected && (
-          <Button
-            onClick={() =>
-              logout().then(() => {
-                setSessionChainId(chainId)
-              })
-            }
-            variant="secondary"
-          >
+          <Button onClick={handleLogout} variant="secondary">
             {t('Disconnect Wallet')}
           </Button>
         )}
