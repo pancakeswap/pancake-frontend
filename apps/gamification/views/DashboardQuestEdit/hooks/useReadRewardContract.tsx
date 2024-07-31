@@ -48,7 +48,7 @@ export const useReadRewardContract = ({ id, ownerAddress }: UseReadRewardContrac
         // Separate fulfilled and rejected promises
         const fulfilled = allChainContract.filter((promise) => promise.status === 'fulfilled')
         const findDataHaveAmount = fulfilled
-          .map((validData) => {
+          .map((validData: any) => {
             if (Number(validData?.value?.result?.[6]) > 0) {
               // totalReward
               return validData.value
