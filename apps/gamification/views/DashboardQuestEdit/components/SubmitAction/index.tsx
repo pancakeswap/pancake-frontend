@@ -248,26 +248,31 @@ export const SubmitAction = () => {
   const handleSchedule = async () => {
     if (state.needAddReward) {
       const id = keccak256(encodePacked(['bytes32', 'address'], [toHex(state.id), state.ownerAddress as Address]))
-      const questInfo = await rewardContract.read.quests([id]) // [root, claimTime, totalWinners, totalClaimedWinners, organizer, rewardToken, totalReward, totalClaimedReward]
-      const totalReward = questInfo[6]
+      try {
+        const questInfo = await rewardContract.read.quests([id]) // [root, claimTime, totalWinners, totalClaimedWinners, organizer, rewardToken, totalReward, totalClaimedReward]
+        const totalReward = questInfo?.[6] ?? 0
 
-      if (totalReward > 0) {
-        const rewardData: QuestRewardType = {
-          title: '',
-          description: '',
-          rewardType: RewardType.TOKEN,
-          currency: {
-            address: questInfo[5],
-            network: state.chainId,
-          },
-          amountOfWinners: questInfo?.[2],
-          totalRewardAmount: totalReward?.toString(),
+        if (totalReward > 0) {
+          const rewardData: QuestRewardType = {
+            title: '',
+            description: '',
+            rewardType: RewardType.TOKEN,
+            currency: {
+              address: questInfo[5],
+              network: state.chainId,
+            },
+            amountOfWinners: questInfo?.[2],
+            totalRewardAmount: totalReward?.toString(),
+          }
+
+          updateValue('reward', rewardData)
+          setOpenModal(true)
+        } else {
+          onPresentAddRewardModal()
         }
-
-        updateValue('reward', rewardData)
-        setOpenModal(true)
-      } else {
+      } catch (error) {
         onPresentAddRewardModal()
+        console.error('Error calling quests function:', error)
       }
     } else {
       setOpenModal(true)
