@@ -1,10 +1,13 @@
+import { Protocol } from '@pancakeswap/farms'
+import { computePoolAddress, DEPLOYER_ADDRESSES, FeeAmount } from '@pancakeswap/v3-sdk'
+import { useAtom } from 'jotai'
 import assign from 'lodash/assign'
 import chunk from 'lodash/chunk'
-import { useAtom } from 'jotai'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Protocol } from '@pancakeswap/farms'
-import { DEPLOYER_ADDRESSES, FeeAmount, computePoolAddress } from '@pancakeswap/v3-sdk'
 import { Address } from 'viem/accounts'
+import type { PositionDetail, StableLPDetail, V2LPDetail } from '../accountPositions/type'
+import type { ChainIdAddressKey, PoolInfo } from '../type'
+import getTokenByAddress from '../utils'
 import {
   DEFAULT_QUERIES,
   extendPoolsAtom,
@@ -14,9 +17,6 @@ import {
   PoolSortBy,
 } from './atom'
 import { fetchExplorerPoolsList } from './fetcher'
-import type { PositionDetail, StableLPDetail, V2LPDetail } from '../accountPositions/type'
-import getTokenByAddress from '../utils'
-import type { ChainIdAddressKey, PoolInfo } from '../type'
 
 const RESET_QUERY_KEYS = ['protocols', 'orderBy', 'chains', 'pools', 'tokens'] as Array<keyof ExtendPoolsQuery>
 
