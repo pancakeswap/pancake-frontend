@@ -1,5 +1,6 @@
 import { getChainNameInKebabCase } from '@pancakeswap/chains'
-import { explorerApiClient } from 'state/info/api/client'
+import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
+import { PoolInfo } from '../type'
 import { parseFarmPools } from '../utils'
 import { ExtendPoolsQuery } from './atom'
 
@@ -38,4 +39,30 @@ export const fetchExplorerPoolsList = async (query: Required<ExtendPoolsQuery>, 
     hasNextPage,
     hasPrevPage,
   }
+}
+
+export const fetchExplorerPoolInfo = async (
+  poolAddress: string,
+  chainId: number,
+  signal?: AbortSignal,
+): Promise<PoolInfo | null> => {
+  const chainName = chainIdToExplorerInfoChainName[chainId]
+  const resp = await explorerApiClient.GET('/cached/pools/{chainName}/{id}', {
+    signal,
+    params: {
+      path: {
+        chainName,
+        id: poolAddress,
+      },
+    },
+  })
+
+  console.debug('debug poolInfo resp.data', resp.data)
+  if (!resp.data) {
+    return null
+  }
+  // @ts-ignore
+  resp.data.chainId = chainId
+
+  return parseFarmPools([resp.data])[0]
 }

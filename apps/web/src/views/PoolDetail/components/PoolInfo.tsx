@@ -1,35 +1,26 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ERC20Token, Native } from '@pancakeswap/sdk'
 import { AutoColumn, Column, Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
 import { ChainLogo, DoubleCurrencyLogo, FeatureStack, FeeTierTooltip } from '@pancakeswap/widgets-internal'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
-import { useAccountPositionDetailByPool } from 'state/farmsV4/hooks'
 import { useChainIdByQuery, useChainNameByQuery } from 'state/info/hooks'
 import { multiChainNameConverter } from 'utils/chainNameConverter'
-import { Address, isAddressEqual, stringify, zeroAddress } from 'viem'
-import { usePoolData } from '../hooks/usePoolData'
+import { usePoolInfo } from '../hooks/usePoolInfo'
 import { usePoolFee } from '../hooks/useStablePoolFee'
-
-const FEE_TIER_DENOMINATOR_AMM = 1_000_000
+import { MyPositions } from './MyPositions'
 
 export const PoolInfo = () => {
   const { t } = useTranslation()
-  const poolData = usePoolData()
+  const poolInfo = usePoolInfo()
   const chainId = useChainIdByQuery()
   const networkName = useChainNameByQuery()
   const [currency0, currency1] = useMemo(() => {
-    if (!poolData) return [undefined, undefined]
-    const { token0, token1 } = poolData
-    const _currency0 = isAddressEqual(token0.address as Address, zeroAddress)
-      ? Native.onChain(chainId)
-      : new ERC20Token(chainId, token0.address as Address, token0.decimals, token0.symbol, token0.name)
-    const _currency1 = new ERC20Token(chainId, token1.address as Address, token1.decimals, token1.symbol, token1.name)
-    return [_currency0, _currency1]
-  }, [chainId, poolData])
-  const { fee } = usePoolFee(poolData?.address as Address, poolData?.protocol)
+    if (!poolInfo) return [undefined, undefined]
+    const { token0, token1 } = poolInfo
+    return [token0.wrapped, token1.wrapped]
+  }, [poolInfo])
+  const { fee } = usePoolFee(poolInfo?.lpAddress, poolInfo?.protocol)
   const { account } = useAccountActiveChain()
-  const data = useAccountPositionDetailByPool(chainId, account, poolData)
 
   return (
     <Column gap="24px">
@@ -50,12 +41,12 @@ export const PoolInfo = () => {
           </FlexGap>
         </Flex>
         <FlexGap gap="16px">
-          {poolData?.protocol ? (
+          {poolInfo?.protocol ? (
             <AutoColumn rowGap="4px">
               <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
                 {t('fee tier')}
               </Text>
-              <FeeTierTooltip type={poolData.protocol} percent={fee} />
+              <FeeTierTooltip type={poolInfo.protocol} percent={fee} />
             </AutoColumn>
           ) : null}
           <AutoColumn rowGap="4px">
@@ -79,11 +70,11 @@ export const PoolInfo = () => {
             <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
               {t('pool type')}
             </Text>
-            <FeatureStack features={[poolData?.protocol]} />
+            <FeatureStack features={[poolInfo?.protocol]} />
           </AutoColumn>
         </FlexGap>
       </Row>
-      <pre>{stringify(data, null, 2)}</pre>
+      {account && poolInfo ? <MyPositions poolInfo={poolInfo} /> : null}
     </Column>
   )
 }
