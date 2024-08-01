@@ -26,7 +26,7 @@ type PoolTokensProps = {
 export const PoolTokens: React.FC<PoolTokensProps> = ({ poolInfo }) => {
   const chainName = useChainNameByQuery()
   const [token0Tvl, token1Tvl] = useMemo(() => {
-    if (!poolInfo) return null
+    if (!poolInfo) return [0, 0]
     return [
       formatAmount(Number(poolInfo.tvlToken0 ?? 0), formatOptions),
       formatAmount(Number(poolInfo.tvlToken1 ?? 0), formatOptions),
