@@ -19,7 +19,6 @@ interface SellStageProps {
 const SellStage: React.FC<React.PropsWithChildren<SellStageProps>> = ({
   nftToSell,
   lowestPrice,
-  continueToNextStage,
   continueToTransferStage,
   onSuccessEditProfile,
 }) => {
@@ -81,9 +80,6 @@ const SellStage: React.FC<React.PropsWithChildren<SellStageProps>> = ({
       </Flex>
       <Divider />
       <Flex flexDirection="column" px="16px" pb="16px">
-        <Button mb="8px" onClick={continueToNextStage}>
-          {t('Sell')}
-        </Button>
         <Button mb="8px" variant="secondary" onClick={continueToTransferStage}>
           {t('Transfer')}
         </Button>
