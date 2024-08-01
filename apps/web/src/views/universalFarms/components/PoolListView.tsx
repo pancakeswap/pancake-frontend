@@ -2,10 +2,11 @@ import { TokenPairImage } from 'components/TokenImage'
 import { TokenOverview } from '@pancakeswap/widgets-internal'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
 import { BottomDrawer, Column, Button, MoreIcon, ChevronRightIcon } from '@pancakeswap/uikit'
 import { ReactNode, useCallback, memo, useState } from 'react'
 import { useColumnMobileConfig } from './useColumnConfig'
+import { ActionItems } from './PoolListItemAction'
+import { PoolApyButton } from './PoolApyButton'
 
 const ListContainer = styled.ul``
 
@@ -52,7 +53,7 @@ export const ListView: React.FC<IPoolListViewProps> = ({ data }) => {
                 />
               }
             />
-            <div>{(Number(item.lpApr) * 100).toLocaleString(undefined, { maximumFractionDigits: 2 })}%</div>
+            <PoolApyButton pool={item} />
           </Column>
 
           <Column>
@@ -90,17 +91,17 @@ const Grabber = styled.div`
 `
 const ItemDetailFooter = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.cardBorder};
-`
 
-export const StyledButton = styled(Button)`
-  display: flex;
-  padding: 12px 16px;
-  justify-content: space-between;
-  gap: 8px;
-  align-self: stretch;
-  color: ${({ theme }) => theme.colors.text};
-  font-weight: 400;
-  line-height: 24px;
+  && button {
+    display: flex;
+    padding: 12px 16px;
+    justify-content: space-between;
+    gap: 8px;
+    color: ${({ theme }) => theme.colors.text};
+    font-weight: 400;
+    line-height: 24px;
+    width: 100%;
+  }
 `
 
 const ItemDetailBody = styled.div`
@@ -132,7 +133,6 @@ export interface IListItemDetailsProps {
 }
 
 const ListItemDetails: React.FC<IListItemDetailsProps> = memo(({ data }) => {
-  const { t } = useTranslation()
   const columns = useColumnMobileConfig<PoolInfo>()
 
   if (!data) {
@@ -180,18 +180,7 @@ const ListItemDetails: React.FC<IListItemDetailsProps> = memo(({ data }) => {
         ))}
       </ItemDetailBody>
       <ItemDetailFooter>
-        <StyledButton scale="sm" variant="text" as="a">
-          {t('View pool details')}
-          <ChevronRightIcon />
-        </StyledButton>
-        <StyledButton scale="sm" variant="text" as="a">
-          {t('Add Liquidity')}
-          <ChevronRightIcon />
-        </StyledButton>
-        <StyledButton scale="sm" variant="text" as="a">
-          {t('View info page')}
-          <ChevronRightIcon />
-        </StyledButton>
+        <ActionItems pool={data} icon={<ChevronRightIcon />} />
       </ItemDetailFooter>
     </ItemDetailContainer>
   )
