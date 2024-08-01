@@ -106,13 +106,7 @@ const getPoolStatus = (pos: PositionDetail, pool: Pool | null) => {
   if (pos.liquidity === 0n) {
     return V3_STATUS.CLOSED
   }
-  if (!pool) {
-    return V3_STATUS.ACTIVE
-  }
-  if (pool.tickCurrent >= pos.tickLower && pool.tickCurrent < pos.tickUpper) {
-    return V3_STATUS.ACTIVE
-  }
-  if (pool.tickCurrent < pos.tickLower || pool.tickCurrent >= pos.tickUpper) {
+  if (pool && (pool.tickCurrent < pos.tickLower || pool.tickCurrent >= pos.tickUpper)) {
     return V3_STATUS.INACTIVE
   }
   return V3_STATUS.ACTIVE
@@ -128,7 +122,7 @@ const useV3Positions = ({
   positionStatus: V3_STATUS
 }) => {
   const { address: account } = useAccount()
-  const { data: v3Positions, pending: v3Loading } = useAccountV3Positions(selectedNetwork, account)
+  const { data: v3Positions, pending: v3Loading } = useAccountV3Positions(allChainIds, account)
   const v3PoolKeys = useMemo(
     () =>
       v3Positions.map(
@@ -201,7 +195,7 @@ const useV2Positions = ({
   positionStatus: V3_STATUS
 }) => {
   const { address: account } = useAccount()
-  const { data: v2Positions, pending: v2Loading } = useAccountV2LpDetails(selectedNetwork, account)
+  const { data: v2Positions, pending: v2Loading } = useAccountV2LpDetails(allChainIds, account)
   const { poolsMap: v2Pools } = usePoolsByV2Positions(v2Positions)
   const filteredV2Positions = useMemo(
     () =>
@@ -244,7 +238,7 @@ const useStablePositions = ({
   positionStatus: V3_STATUS
 }) => {
   const { address: account } = useAccount()
-  const { data: stablePositions, pending: stableLoading } = useAccountStableLpDetails(selectedNetwork, account)
+  const { data: stablePositions, pending: stableLoading } = useAccountStableLpDetails(allChainIds, account)
   const { poolsMap: stablePools } = usePoolsByStablePositions(stablePositions)
 
   const filteredStablePositions = useMemo(
@@ -279,11 +273,12 @@ const useStablePositions = ({
   }
 }
 
+const allChainIds = MAINNET_CHAINS.map((chain) => chain.id)
+
 export const PositionPage = () => {
   const { t } = useTranslation()
   const [expertMode] = useExpertMode()
 
-  const allChainIds = useMemo(() => MAINNET_CHAINS.map((chain) => chain.id), [])
   const [filters, setFilters] = useState<IPoolsFilterPanelProps['value']>({
     selectedTypeIndex: 0,
     selectedNetwork: allChainIds,

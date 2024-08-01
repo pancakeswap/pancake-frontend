@@ -172,10 +172,7 @@ export const useExtraV3PositionInfo = (positionDetail?: PositionDetail) => {
     return positionDetail ? positionDetail.liquidity === 0n : false
   }, [positionDetail])
 
-  const { priceLower, priceUpper, quote, base } = useMemo(() => getPriceOrderingFromPositionForUI(position), [position])
-
-  const currencyQuote = useMemo(() => (quote ? unwrappedToken(quote) : undefined), [quote])
-  const currencyBase = useMemo(() => (base ? unwrappedToken(base) : undefined), [base])
+  const { priceLower, priceUpper } = useMemo(() => getPriceOrderingFromPositionForUI(position), [position])
 
   return {
     pool,
@@ -185,8 +182,8 @@ export const useExtraV3PositionInfo = (positionDetail?: PositionDetail) => {
     removed,
     priceLower,
     priceUpper,
-    currencyQuote,
-    currencyBase,
+    currency0,
+    currency1,
   }
 }
 
