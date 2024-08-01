@@ -41,7 +41,7 @@ const SellStage: React.FC<React.PropsWithChildren<SellStageProps>> = ({
           <Text fontSize="12px" color="textSubtle" textAlign="right">
             {nftToSell?.collectionName}
           </Text>
-          {lowestPrice && (
+          {lowestPrice > 0 && (
             <>
               <Text small color="textSubtle">
                 {t('Lowest price')}

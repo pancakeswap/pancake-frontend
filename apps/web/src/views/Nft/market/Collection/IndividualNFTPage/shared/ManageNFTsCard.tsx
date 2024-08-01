@@ -76,7 +76,7 @@ const CollectibleRow: React.FC<React.PropsWithChildren<CollectibleRowProps>> = (
         <Text fontSize="12px" color="textSubtle" textAlign="right">
           {nft?.collectionName}
         </Text>
-        {lowestPrice && (
+        {lowestPrice && Number(lowestPrice) > 0 && (
           <>
             <Text small color="textSubtle">
               {t('Lowest price')}
