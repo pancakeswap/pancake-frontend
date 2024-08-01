@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, AutoRow, Column, Flex, FlexGap, Row, Text } from '@pancakeswap/uikit'
+import { AutoColumn, AutoRow, Column, Flex, FlexGap, Grid, Row, Text } from '@pancakeswap/uikit'
 import { ChainLogo, DoubleCurrencyLogo, FeatureStack, FeeTierTooltip } from '@pancakeswap/widgets-internal'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
@@ -9,6 +9,7 @@ import { usePoolInfo } from '../hooks/usePoolInfo'
 import { usePoolFee } from '../hooks/useStablePoolFee'
 import { MyPositions } from './MyPositions'
 import { PoolCurrencies } from './PoolCurrencies'
+import { PoolStatus } from './PoolStatus'
 
 export const PoolInfo = () => {
   const { t } = useTranslation()
@@ -83,6 +84,10 @@ export const PoolInfo = () => {
         </Text>
         <PoolCurrencies poolInfo={poolInfo} />
       </AutoRow>
+
+      <Grid>
+        <PoolStatus poolInfo={poolInfo} />
+      </Grid>
     </Column>
   )
 }

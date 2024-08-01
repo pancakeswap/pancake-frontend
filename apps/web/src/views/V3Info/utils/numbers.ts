@@ -10,6 +10,8 @@ export const formatDollarAmount = (num: number | undefined, digits = 2, round = 
     notation: round ? 'compact' : 'standard',
     minimumFractionDigits: num > 1000 ? 2 : digits,
     maximumFractionDigits: num > 1000 ? 2 : digits,
+    style: 'currency',
+    currency: 'USD',
   }).format(num)
 }
 
