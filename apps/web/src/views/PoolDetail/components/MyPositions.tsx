@@ -97,7 +97,7 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
             </Row>
             <Button>
               {t('Add Liquidity')}
-              <AddIcon ml="8px" color="--colors-invertedContrast" />
+              <AddIcon ml="8px" color="var(--colors-invertedContrast)" />
             </Button>
           </AutoColumn>
         </OverviewCard>

@@ -3499,5 +3499,13 @@
   "Extend the search": "Extend the search",
   "Search has been extended": "Search has been extended",
   "Farms only": "Farms only",
-  "of %assetA% per %assetB%": "of %assetA% per %assetB%"
+  "of %assetA% per %assetB%": "of %assetA% per %assetB%",
+  "overview": "overview",
+  "My Liquidity Value": "My Liquidity Value",
+  "My Total APR": "My Total APR",
+  "total earning": "total earning",
+  "positions": "positions",
+  "active": "active",
+  "inactive": "inactive",
+  "closed": "closed"
 }
