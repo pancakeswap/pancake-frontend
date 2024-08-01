@@ -1,17 +1,23 @@
 import { useMemo } from 'react'
 import { useChainIdByQuery } from 'state/info/hooks'
 import { getTokenSymbolAlias } from 'utils/getTokenAlias'
-import { usePoolData } from './usePoolData'
+import { usePoolInfo } from './usePoolInfo'
 
 export const usePoolSymbol = () => {
-  const poolData = usePoolData()
+  const poolInfo = usePoolInfo()
   const chainId = useChainIdByQuery()
 
   const [poolSymbol, symbol0, symbol1] = useMemo(() => {
-    const s0 = getTokenSymbolAlias(poolData?.token0.address, chainId, poolData?.token0.symbol) ?? ''
-    const s1 = getTokenSymbolAlias(poolData?.token1.address, chainId, poolData?.token1.symbol) ?? ''
+    const s0 = getTokenSymbolAlias(poolInfo?.token0.wrapped.address, chainId, poolInfo?.token0.wrapped.symbol) ?? ''
+    const s1 = getTokenSymbolAlias(poolInfo?.token1.wrapped.address, chainId, poolInfo?.token1.wrapped.symbol) ?? ''
     return [`${s0} / ${s1}`, s0, s1]
-  }, [chainId, poolData?.token0.address, poolData?.token0.symbol, poolData?.token1.address, poolData?.token1.symbol])
+  }, [
+    poolInfo?.token0.wrapped.address,
+    poolInfo?.token0.wrapped.symbol,
+    poolInfo?.token1.wrapped.address,
+    poolInfo?.token1.wrapped.symbol,
+    chainId,
+  ])
 
   return {
     poolSymbol,
