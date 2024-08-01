@@ -62,7 +62,6 @@ const ProfileNftModal: React.FC<React.PropsWithChildren<ProfileNftModalProps>> =
             <Text fontSize="12px" color="textSubtle" textAlign="right">
               {nft?.collectionName}
             </Text>
-            {/* TODO: Add lowestPrice when available */}
           </Grid>
         </Flex>
         <Flex justifyContent="space-between" px="16px" mb="16px">

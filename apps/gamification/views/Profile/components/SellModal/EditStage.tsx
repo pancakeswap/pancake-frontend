@@ -37,7 +37,7 @@ const EditStage: React.FC<React.PropsWithChildren<EditStageProps>> = ({
           <Text fontSize="12px" color="textSubtle" textAlign="right">
             {nftToSell?.collectionName}
           </Text>
-          {lowestPrice && (
+          {lowestPrice && lowestPrice > 0 && (
             <>
               <Text small color="textSubtle">
                 {t('Lowest price')}
