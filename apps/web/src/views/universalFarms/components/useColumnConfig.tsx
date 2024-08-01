@@ -69,7 +69,7 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
       },
       {
         title: '',
-        render: () => <PoolListItemAction />,
+        render: (value) => <PoolListItemAction pool={value} />,
         dataIndex: null,
         key: 'action',
       },
@@ -88,12 +88,8 @@ export const useColumnMobileConfig = <T extends BasicDataType>(): ITableViewProp
         dataIndex: 'lpApr',
         key: 'apr',
         sorter: true,
-        render: (value) =>
-          value ? (
-            <>{(Number(value) * 100).toLocaleString(undefined, { maximumFractionDigits: 2 })}%</>
-          ) : (
-            <Skeleton width={60} />
-          ),
+        render: (value, info) =>
+          value ? <PoolApyButton pool={info as unknown as PoolInfo} /> : <Skeleton width={60} />,
       },
       {
         title: t('Fee Tier'),
