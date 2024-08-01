@@ -96,7 +96,7 @@ export const ClaimButton: React.FC<ClaimButtonProps> = ({
   const handleClaimReward = useCallback(async () => {
     try {
       if (!rewardClaimingId) throw new Error('Invalid reward id to claim')
-      if (proofData && proofData?.proofs?.length > 0) {
+      if (proofData && Number(proofData?.rewardAmount) > 0 && !proofData.claimed) {
         const receipt = await fetchWithCatchTxError(() =>
           contract.write.claimReward([rewardClaimingId, BigInt(proofData?.rewardAmount ?? '0'), proofData?.proofs], {
             account,
