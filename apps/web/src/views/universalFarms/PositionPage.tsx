@@ -78,7 +78,7 @@ const CardHeader = styled(StyledCardHeader)`
   padding-bottom: 0;
 `
 
-const StyledButtonMenu = styled(ButtonMenu)<{ $positionStatus: number }>`
+const StyledButtonMenu = styled(ButtonMenu) <{ $positionStatus: number }>`
   & button[variant='text']:nth-child(${({ $positionStatus }) => $positionStatus + 1}) {
     color: ${({ theme }) => theme.colors.secondary};
   }

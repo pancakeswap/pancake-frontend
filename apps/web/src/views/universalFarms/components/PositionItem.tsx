@@ -11,7 +11,7 @@ import { TokenPairImage } from 'components/TokenImage'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import NextLink from 'next/link'
 import { memo, useCallback, useMemo, useState } from 'react'
-import { useExtraV3PositionInfo } from 'state/farmsV4/hooks'
+import { useExtraV3PositionInfo, useTokenByChainId } from 'state/farmsV4/hooks'
 import type { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { type PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
@@ -308,7 +308,7 @@ export const PositionItemDetail = ({
   const { theme } = useTheme()
   const { onStake, onHarvest, attemptingTxn } = useFarmV3Actions({
     tokenId: tokenId?.toString() ?? '',
-    onDone: () => {},
+    onDone: () => { },
   })
   const { isOpen, onDismiss, onOpen } = useModalV2()
 
