@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { useAchievementsForAddress, useProfileForAddress } from 'hooks/useProfile'
+import { useProfileForAddress } from 'hooks/useProfile'
 import { useCallback } from 'react'
 import { styled } from 'styled-components'
 import { safeGetAddress } from 'utils'
@@ -41,7 +41,7 @@ const NftProfile: React.FC<React.PropsWithChildren<unknown>> = ({ children }) =>
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
   })
-  const { achievements, isFetching: isAchievementsFetching } = useAchievementsForAddress(accountAddress)
+
   const {
     nfts: userNfts,
     isLoading: isNftLoading,
@@ -85,11 +85,11 @@ const NftProfile: React.FC<React.PropsWithChildren<unknown>> = ({ children }) =>
         <ProfileHeader
           accountPath={accountAddress}
           profile={profile || null}
-          achievements={achievements}
+          achievements={[]}
           nftCollected={userNfts.length}
           isProfileLoading={isProfileFetching}
           isNftLoading={isNftLoading}
-          isAchievementsLoading={isAchievementsFetching}
+          isAchievementsLoading={false}
           onSuccess={onSuccess}
         />
         <TabMenuWrapper>

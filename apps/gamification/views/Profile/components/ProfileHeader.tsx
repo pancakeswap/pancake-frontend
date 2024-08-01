@@ -345,7 +345,6 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
           <StatBox>
             <StatBoxItem title={t('NFT Collected')} stat={numNftCollected} />
             <StatBoxItem title={t('Points')} stat={numPoints} />
-            <StatBoxItem title={t('Achievements')} stat={numAchievements} />
           </StatBox>
         </Box>
       </Grid>

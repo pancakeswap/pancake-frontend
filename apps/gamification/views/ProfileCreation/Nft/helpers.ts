@@ -8,7 +8,6 @@ import { COLLECTIONS_WITH_WALLET_OF_OWNER } from 'config/constants/nftsCollectio
 import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
 import { gql, request } from 'graphql-request'
 import fromPairs from 'lodash/fromPairs'
-import groupBy from 'lodash/groupBy'
 import pickBy from 'lodash/pickBy'
 import range from 'lodash/range'
 import lodashSize from 'lodash/size'
@@ -91,7 +90,8 @@ const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promis
  */
 export const getCollections = async (): Promise<Record<string, Collection> | null> => {
   try {
-    const [collections, collectionsMarket] = await Promise.all([getCollectionsApi(), getCollectionsSg()])
+    const [collections] = await Promise.all([getCollectionsApi()])
+    const collectionsMarket = []
     const collectionApiData: ApiCollection[] = collections?.data ?? []
     let collectionsTotalSupply: any
     try {
@@ -615,41 +615,19 @@ export const getCompleteAccountNftData = async (
   // Add delist collections to allow user reclaim their NFTs
   const collectionsWithDelist = { ...collections, ...DELIST_COLLECTIONS }
 
-  const [walletNftIdsWithCollectionAddress, onChainForSaleNfts] = await Promise.all([
+  const onChainForSaleNfts = []
+  const [walletNftIdsWithCollectionAddress] = await Promise.all([
     fetchWalletTokenIdsForCollections(account, collectionsWithDelist),
-    getAccountNftsOnChainMarketData(collectionsWithDelist, account),
   ])
 
   if (profileNftWithCollectionAddress?.tokenId) {
     walletNftIdsWithCollectionAddress.unshift(profileNftWithCollectionAddress)
   }
 
-  const walletNftsByCollection = groupBy(
-    walletNftIdsWithCollectionAddress,
-    (walletNftId) => walletNftId.collectionAddress,
-  )
-
-  const walletMarketData = await fetchWalletMarketData(walletNftsByCollection)
-
-  const walletNftsWithMarketData = attachMarketDataToWalletNfts(walletNftIdsWithCollectionAddress, walletMarketData)
-
-  const walletTokenIds = walletNftIdsWithCollectionAddress
-    .filter((walletNft): walletNft is Required<TokenIdWithCollectionAddress> => {
-      // Profile Pic NFT is no longer wanted in this array, hence the filter
-      return profileNftWithCollectionAddress?.tokenId !== walletNft.tokenId && Boolean(walletNft.tokenId)
-    })
-    .map((nft) => nft.tokenId)
-
-  const tokenIdsForSale = onChainForSaleNfts.map((nft) => nft.tokenId)
-
-  const forSaleNftIds = onChainForSaleNfts.map((nft) => {
-    return { collectionAddress: nft.collection.id as Address, tokenId: nft.tokenId }
-  })
-
-  const metadataForAllNfts = await getNftsFromDifferentCollectionsApi([
-    ...forSaleNftIds,
-    ...walletNftIdsWithCollectionAddress,
-  ])
+  const walletNftsWithMarketData = []
+  const walletTokenIds = []
+  const tokenIdsForSale = []
+  const metadataForAllNfts = await getNftsFromDifferentCollectionsApi([...walletNftIdsWithCollectionAddress])
 
   const completeNftData = combineNftMarketAndMetadata(
     metadataForAllNfts,
