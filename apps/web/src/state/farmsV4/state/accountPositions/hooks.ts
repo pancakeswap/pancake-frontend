@@ -218,22 +218,22 @@ export const useAccountPositionDetailByPool = (chainId: number, account?: Addres
   }, [account, chainId, currency0, currency1, poolInfo?.lpAddress, protocol])
   const select = useCallback(
     (data) => {
-      console.debug('debug data', data)
-      if (['v2', 'stable'].includes(protocol!)) {
-        return data?.[0] && data[0].balance.greaterThan('0') ? data[0] : undefined
+      if (protocol === 'v3') {
+        // v3
+        const d = data.filter((position) => {
+          const { token0, token1, fee } = position as PositionDetail
+          return (
+            poolInfo?.token0.wrapped.address &&
+            isAddressEqual(token0, poolInfo?.token0.wrapped.address as Address) &&
+            poolInfo?.token1.address &&
+            isAddressEqual(token1, poolInfo?.token1.wrapped.address as Address) &&
+            fee === poolInfo?.feeTier
+          )
+        })
+        return d as PositionDetail[]
       }
-      // v3
-      const d = data.filter((position) => {
-        const { token0, token1, fee } = position as PositionDetail
-        return (
-          poolInfo?.token0.wrapped.address &&
-          isAddressEqual(token0, poolInfo?.token0.wrapped.address as Address) &&
-          poolInfo?.token1.address &&
-          isAddressEqual(token1, poolInfo?.token1.wrapped.address as Address) &&
-          fee === poolInfo?.feeTier
-        )
-      })
-      return d as PositionDetail[]
+
+      return data?.[0] && data[0].balance.greaterThan('0') ? data[0] : undefined
     },
     [poolInfo, protocol],
   )
