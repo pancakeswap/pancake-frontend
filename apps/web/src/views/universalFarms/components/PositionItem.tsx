@@ -522,7 +522,7 @@ const ActionPanel = ({
   const { t } = useTranslation()
   const { onStake, onUnstake, onHarvest, attemptingTxn } = useFarmV3Actions({
     tokenId: tokenId?.toString() ?? '',
-    onDone: () => {},
+    onDone: () => { },
   })
   const stakeModal = useModalV2()
   const addLiquidityModal = useModalV2()
@@ -635,7 +635,7 @@ const ActionPanel = ({
     return (
       <ActionPanelContainer onClick={preventDefault}>
         {!removed && (
-          <IconButton mr="6px" variant="secondary" onClick={() => {}}>
+          <IconButton mr="6px" variant="secondary" onClick={() => { }}>
             <MinusIcon color="primary" width="14px" />
           </IconButton>
         )}
