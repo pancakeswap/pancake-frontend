@@ -5,6 +5,8 @@ import { useCallback, useState } from 'react'
 import { getViemErrorMessage, parseViemError } from 'utils/errors'
 import { isUserRejected, logError } from 'utils/sentry'
 import { Address, Hash } from 'viem'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useFetchBlockData } from '@pancakeswap/wagmi'
 import { usePublicNodeWaitForTransaction } from './usePublicNodeWaitForTransaction'
 
 const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
@@ -21,6 +23,8 @@ export default function useCatchTxError(params?: Params) {
   const [loading, setLoading] = useState(false)
   const { waitForTransaction } = usePublicNodeWaitForTransaction()
   const [txResponseLoading, setTxResponseLoading] = useState(false)
+  const { chainId } = useActiveChainId()
+  const refetchBlockData = useFetchBlockData(chainId)
 
   const handleNormalError = useCallback(
     (error) => {
@@ -76,6 +80,7 @@ export default function useCatchTxError(params?: Params) {
           hash,
         })
         if (receipt?.status === 'success') {
+          refetchBlockData()
           return receipt
         }
         throw Error(t('Failed'))
@@ -98,7 +103,16 @@ export default function useCatchTxError(params?: Params) {
 
       return null
     },
-    [toastSuccess, t, waitForTransaction, throwUserRejectError, throwCustomError, handleNormalError, handleTxError],
+    [
+      toastSuccess,
+      t,
+      waitForTransaction,
+      throwUserRejectError,
+      throwCustomError,
+      handleNormalError,
+      handleTxError,
+      refetchBlockData,
+    ],
   )
 
   const fetchTxResponse = useCallback(
@@ -108,11 +122,6 @@ export default function useCatchTxError(params?: Params) {
       try {
         setTxResponseLoading(true)
 
-        /**
-         * https://github.com/vercel/swr/pull/1450
-         *
-         * wait for useSWRMutation finished, so we could apply SWR in case manually trigger tx call
-         */
         tx = await callTx()
 
         if (!tx) return null
