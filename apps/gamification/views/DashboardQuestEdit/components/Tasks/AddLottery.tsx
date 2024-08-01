@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ErrorFillIcon, Flex, Text, useModal } from '@pancakeswap/uikit'
+import { ErrorFillIcon, Flex, FlexGap, Text, useModal } from '@pancakeswap/uikit'
 import { useMemo, useState } from 'react'
 import { ConfirmDeleteModal } from 'views/DashboardQuestEdit/components/ConfirmDeleteModal'
 import { InputErrorText, StyledInput, StyledInputGroup } from 'views/DashboardQuestEdit/components/InputStyle'
@@ -16,7 +16,7 @@ interface AddLotteryProps {
   isDrafted: boolean
 }
 
-type KeyFillType = 'minAmount' | 'fromRound' | 'toRound'
+type KeyFillType = 'minAmount' | 'fromRound' | 'toRound' | 'title' | 'description'
 
 export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
@@ -26,12 +26,16 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
 
   const [onPresentDeleteModal] = useModal(<ConfirmDeleteModal handleDelete={() => deleteTask(task.sid)} />)
 
-  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>, socialKeyType: KeyFillType) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, socialKeyType: KeyFillType) => {
     setIsFirst(false)
 
     const forkTasks = Object.assign(tasks)
     const indexToUpdate = forkTasks.findIndex((i: TaskLotteryConfig) => i.sid === task.sid)
-    forkTasks[indexToUpdate][socialKeyType] = Number(e.target.value)
+    if (socialKeyType === 'title' || socialKeyType === 'description') {
+      forkTasks[indexToUpdate][socialKeyType] = e.target.value
+    } else {
+      forkTasks[indexToUpdate][socialKeyType] = Number(e.target.value)
+    }
 
     onTasksChange([...forkTasks])
   }
@@ -74,8 +78,8 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
           />
         )}
       </Flex>
-      <Flex flexDirection={['column']} width="100%" mt="12px">
-        <Flex flex="6" flexDirection="column">
+      <FlexGap gap="8px" flexDirection="column" mt="12px">
+        <Flex flexDirection="column">
           <StyledInputGroup
             endIcon={isMinAmountError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
           >
@@ -85,12 +89,12 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
               value={task.minAmount}
               isError={isMinAmountError}
               placeholder={t('Min. ticket’s amount')}
-              onChange={(e) => handleNumberChange(e, 'minAmount')}
+              onChange={(e) => handleInputChange(e, 'minAmount')}
             />
           </StyledInputGroup>
           {isMinAmountError && <InputErrorText errorText={t('Cannot be 0')} />}
         </Flex>
-        <Flex flex="4" m={['8px 0 0 0']} flexDirection="column">
+        <Flex flexDirection="column">
           <Flex>
             <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" mr="8px">
               {t('Rounds:')}
@@ -104,7 +108,7 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
                 inputMode="numeric"
                 value={task.fromRound}
                 isError={isFromRoundError}
-                onChange={(e) => handleNumberChange(e, 'fromRound')}
+                onChange={(e) => handleInputChange(e, 'fromRound')}
               />
             </StyledInputGroup>
             <Text fontSize={14} style={{ alignSelf: 'center' }} color="textSubtle" m="0 8px 0 0">
@@ -119,13 +123,25 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
                 inputMode="numeric"
                 value={task.toRound}
                 isError={isToRoundError}
-                onChange={(e) => handleNumberChange(e, 'toRound')}
+                onChange={(e) => handleInputChange(e, 'toRound')}
               />
             </StyledInputGroup>
           </Flex>
           {(isFromRoundError || isToRoundError) && <InputErrorText errorText={t('Wrong rounds numbers')} />}
         </Flex>
-      </Flex>
+        <StyledInput
+          placeholder={t('Title')}
+          value={task.description}
+          style={{ borderRadius: '24px' }}
+          onChange={(e) => handleInputChange(e, 'title')}
+        />
+        <StyledInput
+          placeholder={t('Description (Optional)')}
+          value={task.description}
+          style={{ borderRadius: '24px' }}
+          onChange={(e) => handleInputChange(e, 'description')}
+        />
+      </FlexGap>
     </Flex>
   )
 }

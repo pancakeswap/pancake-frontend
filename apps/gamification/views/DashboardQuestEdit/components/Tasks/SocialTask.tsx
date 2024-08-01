@@ -94,6 +94,45 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task, isDrafted }) => {
         )}
       </Flex>
       <FlexGap gap="8px" flexDirection="column" mt="8px">
+        <FlexGap gap="8px" flexDirection={['column', 'column', 'row']}>
+          <Flex width="100%" flexDirection="column">
+            <InputGroup
+              endIcon={
+                isUrlError ? (
+                  <ErrorFillIcon color="failure" width={16} height={16} />
+                ) : (
+                  <Box ref={targetRef} onClick={onclickOpenNewIcon}>
+                    <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
+                    {tooltipVisible && tooltip}
+                  </Box>
+                )
+              }
+            >
+              <StyledInput
+                value={task.socialLink}
+                isError={isUrlError}
+                style={{ borderRadius: '24px' }}
+                placeholder={taskInputPlaceholder(social)}
+                onChange={(e) => handleUrlChange(e, 'socialLink')}
+              />
+            </InputGroup>
+            {isUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
+          </Flex>
+          <Flex width="100%" flexDirection="column">
+            <InputGroup
+              endIcon={isAccountIdError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+            >
+              <StyledInput
+                value={task.accountId}
+                isError={isAccountIdError}
+                style={{ borderRadius: '24px' }}
+                placeholder={socialAccountIdName(task.taskType)}
+                onChange={(e) => handleUrlChange(e, 'accountId')}
+              />
+            </InputGroup>
+            {isAccountIdError && <InputErrorText errorText={t('Account id is empty')} />}
+          </Flex>
+        </FlexGap>
         <Flex flexDirection="column">
           <InputGroup endIcon={isTitleError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>
             <StyledInput
@@ -112,41 +151,6 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task, isDrafted }) => {
           style={{ borderRadius: '24px' }}
           onChange={(e) => handleUrlChange(e, 'description')}
         />
-        <Flex flexDirection="column">
-          <InputGroup endIcon={isAccountIdError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}>
-            <StyledInput
-              value={task.accountId}
-              isError={isAccountIdError}
-              style={{ borderRadius: '24px' }}
-              placeholder={socialAccountIdName(task.taskType)}
-              onChange={(e) => handleUrlChange(e, 'accountId')}
-            />
-          </InputGroup>
-          {isAccountIdError && <InputErrorText errorText={t('Account id is empty')} />}
-        </Flex>
-        <Flex flexDirection="column">
-          <InputGroup
-            endIcon={
-              isUrlError ? (
-                <ErrorFillIcon color="failure" width={16} height={16} />
-              ) : (
-                <Box ref={targetRef} onClick={onclickOpenNewIcon}>
-                  <OpenNewIcon style={{ cursor: 'pointer' }} color="primary" width="20px" />
-                  {tooltipVisible && tooltip}
-                </Box>
-              )
-            }
-          >
-            <StyledInput
-              value={task.socialLink}
-              isError={isUrlError}
-              style={{ borderRadius: '24px' }}
-              placeholder={taskInputPlaceholder(social)}
-              onChange={(e) => handleUrlChange(e, 'socialLink')}
-            />
-          </InputGroup>
-          {isUrlError && <InputErrorText errorText={t('Enter a valid website URL')} />}
-        </Flex>
       </FlexGap>
     </Flex>
   )
