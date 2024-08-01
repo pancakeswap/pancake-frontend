@@ -59,9 +59,11 @@ export const Tasks: React.FC<TasksProps> = ({
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { id: questId, tasks } = quest
-  const { isInitialized, profile } = useProfile()
-  const hasProfile = isInitialized && !!profile
-  const [onPressMakeProfileModal] = useModal(<MakeProfileModal type={t('quest')} />)
+  const { isInitialized, profile, hasActiveProfile } = useProfile()
+  const hasProfile = isInitialized && !!profile && hasActiveProfile
+  const [onPressMakeProfileModal] = useModal(
+    <MakeProfileModal type={t('quest')} profile={profile} hasActiveProfile={hasActiveProfile} />,
+  )
   const { fetchWithSiweAuth } = useSiwe()
 
   const handleLinkUserToQuest = async () => {
