@@ -1,12 +1,14 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Currency } from '@pancakeswap/sdk'
 import {
+  HelpIcon,
   ImageProps,
   TokenImage as UIKitTokenImage,
   TokenPairImage as UIKitTokenPairImage,
   TokenPairImageProps as UIKitTokenPairImageProps,
 } from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
+import { useState } from 'react'
 
 interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc' | 'secondarySrc'> {
   primaryToken: Currency
@@ -51,5 +53,11 @@ interface TokenImageProps extends ImageProps {
 }
 
 export const TokenImage: React.FC<React.PropsWithChildren<TokenImageProps>> = ({ token, ...props }) => {
-  return <UIKitTokenImage src={getImageUrlFromToken(token)} {...props} />
+  const [hasError, setHasError] = useState(false)
+
+  if (hasError) {
+    return <HelpIcon width={props?.width ?? 20} height={props?.height ?? 20} />
+  }
+
+  return <UIKitTokenImage src={getImageUrlFromToken(token)} onError={() => setHasError(true)} {...props} />
 }
