@@ -33,8 +33,8 @@ const Details: React.FC<React.PropsWithChildren<DetailsProps>> = ({ proposal }) 
       <CardBody>
         <Flex alignItems="center" mb="8px">
           <Text color="textSubtle">{t('Identifier')}</Text>
-          <LinkExternal href={`${IPFS_GATEWAY}/${proposal.id}`} ml="8px">
-            {proposal.id.slice(0, 8)}
+          <LinkExternal href={`${IPFS_GATEWAY}/${proposal.ipfs}`} ml="8px">
+            {proposal.ipfs.slice(0, 8)}
           </LinkExternal>
         </Flex>
         <Flex alignItems="center" mb="8px">

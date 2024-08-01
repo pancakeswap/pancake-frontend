@@ -49,6 +49,7 @@ export const getProposal = async (id: string): Promise<Proposal> => {
           state
           author
           votes
+          ipfs
         }
       }
     `,
@@ -71,6 +72,7 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
             choices
           }
           vp
+          ipfs
         }
       }
     `,

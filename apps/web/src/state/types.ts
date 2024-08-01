@@ -402,6 +402,7 @@ export interface Proposal {
   start: number
   state: ProposalState
   title: string
+  ipfs: string
 }
 
 export interface Vote {
@@ -416,6 +417,7 @@ export interface Vote {
     votingPower: string
   }
   vp: number
+  ipfs: string
 }
 
 export interface LotteryRoundUserTickets {

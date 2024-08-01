@@ -6,6 +6,7 @@ import { useSessionStorage } from 'hooks/useSessionStorage'
 import Link from 'next/link'
 import { ProposalState, ProposalType } from 'state/types'
 import { getProposals } from 'state/voting/helpers'
+import { useCallback, useMemo } from 'react'
 import { filterProposalsByState, filterProposalsByType } from '../../helpers'
 import Filters from './Filters'
 import ProposalRow from './ProposalRow'
@@ -19,12 +20,10 @@ interface State {
 
 const Proposals = () => {
   const { t } = useTranslation()
-  const [state, setState] = useSessionStorage<State>('proposals-filter', {
+  const [{ proposalType, filterState }, setState] = useSessionStorage<State>('proposals-filter', {
     proposalType: ProposalType.CORE,
     filterState: ProposalState.ACTIVE,
   })
-
-  const { proposalType, filterState } = state
 
   const { data, status } = useQuery({
     queryKey: ['voting', 'proposals', filterState],
@@ -32,21 +31,30 @@ const Proposals = () => {
     queryFn: async () => getProposals(1000, 0, filterState),
   })
 
-  const handleProposalTypeChange = (newProposalType: ProposalType) => {
-    setState((prevState: any) => ({
-      ...prevState,
-      proposalType: newProposalType,
-    }))
-  }
+  const handleProposalTypeChange = useCallback(
+    (newProposalType: ProposalType) => {
+      setState((prevState) => ({
+        ...prevState,
+        proposalType: newProposalType,
+      }))
+    },
+    [setState],
+  )
 
-  const handleFilterChange = (newFilterState: ProposalState) => {
-    setState((prevState: any) => ({
-      ...prevState,
-      filterState: newFilterState,
-    }))
-  }
+  const handleFilterChange = useCallback(
+    (newFilterState: ProposalState) => {
+      setState((prevState) => ({
+        ...prevState,
+        filterState: newFilterState,
+      }))
+    },
+    [setState],
+  )
 
-  const filteredProposals = filterProposalsByState(filterProposalsByType(data || [], proposalType), filterState)
+  const filteredProposals = useMemo(
+    () => filterProposalsByState(filterProposalsByType(data || [], proposalType), filterState),
+    [data, proposalType, filterState],
+  )
 
   return (
     <Container py="40px">
