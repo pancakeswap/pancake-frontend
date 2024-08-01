@@ -1,5 +1,5 @@
 import { Protocol } from '@pancakeswap/farms'
-import { useTheme } from '@pancakeswap/hooks'
+import { ERC20Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Price, Token } from '@pancakeswap/swap-sdk-core'
 import { unwrappedToken } from '@pancakeswap/tokens'
@@ -10,10 +10,12 @@ import { TokenPairImage } from 'components/TokenImage'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import NextLink from 'next/link'
 import { memo, useCallback, useMemo, useState } from 'react'
-import { useExtraV3PositionInfo } from 'state/farmsV4/hooks'
+import { useExtraV3PositionInfo, useTokenByChainId } from 'state/farmsV4/hooks'
 import type { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { type PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
+import { useTheme } from '@pancakeswap/hooks'
+import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { PoolApyButton } from './PoolApyButton'
 
 const Container = styled(Flex)`
@@ -34,8 +36,6 @@ const DetailsContainer = styled(Flex)`
   color: ${({ theme }) => theme.colors.textSubtle};
 `
 
-const ActionContainer = styled(Flex)``
-
 const TagCell = styled(Flex)`
   position: absolute;
   right: 0;
@@ -52,6 +52,31 @@ interface IPriceRangeProps {
     LOWER?: boolean
     UPPER?: boolean
   }
+}
+
+const useTotalPriceUSD = ({
+  currency0,
+  currency1,
+  amount0,
+  amount1,
+}: {
+  currency0: Currency | null | undefined
+  currency1: Currency | null | undefined
+  amount0?: CurrencyAmount<ERC20Token>
+  amount1?: CurrencyAmount<ERC20Token>
+}) => {
+  const { data: currency0PriceFromApi } = useCurrencyUsdPrice(currency0, {
+    enabled: true,
+  })
+  const { data: currency1PriceFromApi } = useCurrencyUsdPrice(currency1, {
+    enabled: true,
+  })
+  return useMemo(() => {
+    return (
+      Number(currency0PriceFromApi) * Number(amount0 ? amount0.toExact() : 0) +
+      Number(currency1PriceFromApi) * Number(amount1 ? amount1.toExact() : 0)
+    )
+  }, [amount0, amount1, currency0PriceFromApi, currency1PriceFromApi])
 }
 
 const PriceRange = memo(({ currencyBase, currencyQuote, priceLower, priceUpper, tickAtLimit }: IPriceRangeProps) => {
@@ -102,21 +127,17 @@ const PriceRange = memo(({ currencyBase, currencyQuote, priceLower, priceUpper, 
   ) : null
 })
 
-export const PositionV2Item = memo(({ data, pool }: { data: V2LPDetail; pool?: PoolInfo }) => {
+export const PositionV2Item = memo(({ data }: { data: V2LPDetail; pool?: PoolInfo }) => {
   const { pair, deposited0, deposited1 } = data
 
   const unwrappedToken0 = unwrappedToken(pair.token0)
   const unwrappedToken1 = unwrappedToken(pair.token1)
-
-  const totalPriceUSD = useMemo(() => {
-    if (!pool?.token0Price) {
-      return 0
-    }
-    return (
-      Number(pool.token0Price) * Number(deposited1.toExact()) +
-      Number(pool.token1Price) * Number(pool.token0Price) * Number(deposited0.toExact())
-    )
-  }, [pool?.token0Price, pool?.token1Price, deposited0, deposited1])
+  const totalPriceUSD = useTotalPriceUSD({
+    currency0: unwrappedToken0,
+    currency1: unwrappedToken1,
+    amount0: deposited0,
+    amount1: deposited1,
+  })
 
   return (
     <PositionItemDetail
@@ -134,18 +155,15 @@ export const PositionV2Item = memo(({ data, pool }: { data: V2LPDetail; pool?: P
   )
 })
 
-export const PositionStableItem = memo(({ data, pool }: { data: StableLPDetail; pool?: PoolInfo }) => {
+export const PositionStableItem = memo(({ data }: { data: StableLPDetail; pool?: PoolInfo }) => {
   const { pair, deposited0, deposited1 } = data
 
-  const totalPriceUSD = useMemo(() => {
-    if (!pool?.token0Price) {
-      return 0
-    }
-    return (
-      Number(pool.token0Price) * Number(deposited1.toExact()) +
-      Number(pool.token1Price) * Number(pool.token0Price) * Number(deposited0.toExact())
-    )
-  }, [pool?.token0Price, pool?.token1Price, deposited0, deposited1])
+  const totalPriceUSD = useTotalPriceUSD({
+    currency0: pair.token0,
+    currency1: pair.token1,
+    amount0: deposited0,
+    amount1: deposited1,
+  })
 
   return (
     <PositionItemDetail
@@ -169,15 +187,14 @@ export const PositionV3Item = memo(({ data, pool }: IPositionV3ItemProps) => {
   const { currencyBase, currencyQuote, removed, outOfRange, priceUpper, priceLower, tickAtLimit, position } =
     useExtraV3PositionInfo(data)
 
-  const totalPriceUSD = useMemo(() => {
-    if (!position || !pool) {
-      return 0
-    }
-    return (
-      Number(pool.token0Price) * Number(position.amount1.toExact()) +
-      Number(pool.token1Price) * Number(pool.token0Price) * Number(position.amount0.toExact())
-    )
-  }, [position, pool])
+  const currency0 = useTokenByChainId(data.token0, data.chainId)
+  const currency1 = useTokenByChainId(data.token1, data.chainId)
+  const totalPriceUSD = useTotalPriceUSD({
+    currency0,
+    currency1,
+    amount0: position?.amount0,
+    amount1: position?.amount1,
+  })
 
   const desc =
     currencyBase && currencyQuote ? (
