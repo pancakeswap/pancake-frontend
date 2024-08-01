@@ -6,6 +6,10 @@ type F = (...args: any[]) => any
 export const useThrottleFn = <T extends F>(fn: T, delay: number) => {
   const fnRef = useRef(fn)
 
+  useEffect(() => {
+    fnRef.current = fn
+  }, [fn])
+
   const throttled = useMemo(
     () =>
       throttle((...args: Parameters<T>): ReturnType<T> => {
@@ -18,7 +22,7 @@ export const useThrottleFn = <T extends F>(fn: T, delay: number) => {
     return () => {
       throttled.cancel()
     }
-  })
+  }, [throttled])
 
   return throttled
 }
