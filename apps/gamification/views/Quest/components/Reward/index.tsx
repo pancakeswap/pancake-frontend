@@ -64,17 +64,14 @@ export const Reward: React.FC<RewardProps> = ({ quest, isTasksCompleted, isQuest
     refetchOnWindowFocus: false,
   })
 
-  const hasProof = useMemo(() => Boolean(proofData && proofData?.proofs?.length > 0), [proofData])
-
   const ableToClaimReward = useMemo(
     () =>
       isQuestFinished &&
       isTasksCompleted &&
-      hasProof &&
       proofData?.rewardAmount !== 'null' &&
       Number(proofData?.rewardAmount) > 0 &&
       !proofData?.claimed,
-    [hasProof, proofData, isQuestFinished, isTasksCompleted],
+    [proofData, isQuestFinished, isTasksCompleted],
   )
 
   return (
