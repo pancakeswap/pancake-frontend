@@ -87,12 +87,12 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
     (e: Event) => {
       setVisible(true);
       if (trigger === "hover") {
-        // we dont need to make a inTooltipRef anymore, when we leave
+        // we don't need to make a inTooltipRef anymore, when we leave
         // the target, hide tooltip is called for leaving the target, but show tooltip
         // is called for entering the tooltip. since we enact a delay in hidetooltip,
-        // by the time the dylay is over lodash debounce will be cancelled until we leave the
-        // tooltip calling hidetooltip onece again to close. clever method jackson pointed me
-        // onto. saves a lot of nedless states and refs and listeners
+        // by the time the delay is over lodash debounce will be cancelled until we leave the
+        // tooltip calling hidetooltip once again to close. clever method jackson pointed me
+        // onto. saves a lot of needless states and refs and listeners
         debouncedHide.cancel();
       }
       if (!avoidToStopPropagation) {
