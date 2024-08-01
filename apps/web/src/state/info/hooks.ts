@@ -295,6 +295,7 @@ export const useAllPoolDataQuery = () => {
               name: d.token1.name,
               decimals: d.token1.decimals,
             },
+            feeTier: d.feeTier,
             volumeUSD: +d.volumeUSD24h,
             volumeUSDChange: 0,
             volumeUSDWeek: +d.volumeUSD7d,
