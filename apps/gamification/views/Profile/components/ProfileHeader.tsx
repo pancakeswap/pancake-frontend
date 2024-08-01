@@ -147,8 +147,8 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
           const errorMessage = error instanceof Error && error?.message ? error.message : JSON.stringify(error)
           if (errorMessage !== 'connection.connector.getChainId is not a function') {
             toastError(`Failed to connect ${social}: ${errorMessage}`)
-            console.error(`Connect ${social} error: `, error)
           }
+          console.error(`Connect ${social} error: `, error)
         } finally {
           setTimeout(() => setIsFetchingApi(false), 1000)
         }
