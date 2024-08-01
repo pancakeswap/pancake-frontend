@@ -126,7 +126,7 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task, isDrafted }) => {
                   pattern="^[0-9]*[.,]?[0-9]*$"
                   isError={isError}
                   value={task.minAmount}
-                  placeholder={t('Minimum number of token')}
+                  placeholder={t('Min Amount in USD')}
                   onChange={(e) => handleInputChange(e, 'minAmount')}
                 />
               </StyledInputGroup>
