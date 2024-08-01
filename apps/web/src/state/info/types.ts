@@ -64,6 +64,8 @@ export interface PoolData {
   protocol?: Protocol
   timestamp: number
 
+  feeTier: number
+
   token0: {
     name: string
     symbol: string
