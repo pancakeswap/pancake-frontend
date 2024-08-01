@@ -2,7 +2,6 @@ import { useProfile } from 'hooks/useProfile'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { NftProfileLayout } from 'views/Profile'
-import { AchievementsPage } from 'views/Profile/components/Achievements/AchievementsPage'
 import { JoinedQuests } from 'views/Profile/components/JoinedQuests'
 import { NftPage } from 'views/Profile/components/NftPage'
 import { ProfileUrlType } from 'views/Profile/components/TabMenu'
@@ -35,7 +34,6 @@ const ProfilePage = () => {
         <>
           {fullPath === ProfileUrlType.HOME_PAGE && <JoinedQuests />}
           {fullPath === ProfileUrlType.NFT && <NftPage />}
-          {fullPath === ProfileUrlType.ACHIEVEMENT && <AchievementsPage />}
         </>
       )}
     </>

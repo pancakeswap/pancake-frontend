@@ -47,10 +47,6 @@ const ItemsConfig = [
     label: <Trans>Items</Trans>,
     id: NftMenuType.Items,
   },
-  {
-    label: <Trans>Activity</Trans>,
-    id: NftMenuType.Activity,
-  },
 ]
 
 export const NftPage = () => {

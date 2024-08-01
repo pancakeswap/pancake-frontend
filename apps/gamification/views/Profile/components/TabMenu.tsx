@@ -26,7 +26,6 @@ const Tab = styled.button<{ $active: boolean }>`
 export enum ProfileUrlType {
   HOME_PAGE = '/profile',
   NFT = '/profile#nft',
-  ACHIEVEMENT = '/profile#achievements',
 }
 
 export const list = [
@@ -37,10 +36,6 @@ export const list = [
   {
     title: <Trans>NFTs</Trans>,
     url: ProfileUrlType.NFT,
-  },
-  {
-    title: <Trans>Achievements</Trans>,
-    url: ProfileUrlType.ACHIEVEMENT,
   },
 ]
 
