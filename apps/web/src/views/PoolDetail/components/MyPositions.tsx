@@ -21,7 +21,12 @@ import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { useChainIdByQuery } from 'state/info/hooks'
 import styled from 'styled-components'
-import { PositionItemSkeleton, PositionV3Item } from 'views/universalFarms/components'
+import {
+  PositionItemSkeleton,
+  PositionStableItem,
+  PositionV2Item,
+  PositionV3Item,
+} from 'views/universalFarms/components'
 
 export enum PositionFilter {
   All = 0,
@@ -115,6 +120,9 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
           <PositionCardBody>
             {poolInfo.protocol === 'v3' ? (
               <MyV3Positions poolInfo={poolInfo} filter={filter} setCount={setCount} />
+            ) : null}
+            {['v2', 'stable'].includes(poolInfo.protocol) ? (
+              <MyV2OrStablePositions poolInfo={poolInfo} setCount={setCount} />
             ) : null}
           </PositionCardBody>
         </PositionsCard>
@@ -219,6 +227,47 @@ const MyV3Positions: React.FC<{
           })}
         </AutoColumn>
       ) : null}
+    </AutoColumn>
+  )
+}
+
+const MyV2OrStablePositions: React.FC<{
+  poolInfo: PoolInfo
+  setCount: (count: number) => void
+}> = ({ poolInfo, setCount }) => {
+  const chainId = useChainIdByQuery()
+  const { account } = useAccountActiveChain()
+  const { data, isLoading } = useAccountPositionDetailByPool(chainId, account, poolInfo)
+
+  useEffect(() => {
+    setCount(data ? 1 : 0)
+  }, [data, setCount])
+
+  if (isLoading) {
+    return (
+      <>
+        <PositionItemSkeleton />
+        <PositionItemSkeleton />
+        <PositionItemSkeleton />
+      </>
+    )
+  }
+
+  if (!data) {
+    return null
+  }
+
+  return (
+    <AutoColumn gap="lg">
+      {poolInfo.protocol === 'v2' ? (
+        <PositionV2Item key={data.pair.liquidityToken.address} data={data} pool={poolInfo} />
+      ) : null}
+      {poolInfo.protocol === 'stable' ? (
+        <PositionStableItem key={data.pair.liquidityToken.address} data={data} pool={poolInfo} />
+      ) : null}
+      {/* {data.map((detail: V2LPDetail) => {
+        return <PositionV2Item key={detail.pair.liquidityToken.address} data={detail} pool={poolInfo} />
+      })} */}
     </AutoColumn>
   )
 }
