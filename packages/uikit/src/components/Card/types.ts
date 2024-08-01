@@ -20,6 +20,7 @@ export type CardTheme = {
     blue: string;
     bubblegum: string;
     violet: string;
+    pale: string;
   };
   dropShadow: string;
 };

@@ -7,7 +7,7 @@ import { cakeAprSetterAtom, emptyCakeAprPoolsAtom, merklAprAtom, poolAprAtom } f
 import { getAllNetworkMerklApr, getCakeApr } from './fetcher'
 
 export const usePoolApr = (key: ChainIdAddressKey) => {
-  return useAtomValue(poolAprAtom)[key]
+  return useAtomValue(poolAprAtom)[key] ?? { lpApr: '0', cakeApr: { value: '0' }, merklApr: '0' }
 }
 
 export const usePoolsApr = () => {

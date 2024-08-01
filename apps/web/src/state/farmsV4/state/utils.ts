@@ -1,17 +1,18 @@
-import { Token } from '@pancakeswap/swap-sdk-core'
+import type { ChainId } from '@pancakeswap/chains'
 import { Protocol } from '@pancakeswap/farms'
+import { Token } from '@pancakeswap/swap-sdk-core'
+import { getTokensByChain } from '@pancakeswap/tokens'
+import find from 'lodash/find'
 import { paths } from 'state/info/api/schema'
 import { safeGetAddress } from 'utils'
-import find from 'lodash/find'
-import { getTokensByChain } from '@pancakeswap/tokens'
 import type { Address } from 'viem/accounts'
-import type { ChainId } from '@pancakeswap/chains'
 import { PoolInfo } from './type'
 
 export const parseFarmPools = (
   data:
     | paths['/cached/pools/farming']['get']['responses']['200']['content']['application/json']
-    | paths['/cached/pools/list']['get']['responses']['200']['content']['application/json']['rows'],
+    | paths['/cached/pools/list']['get']['responses']['200']['content']['application/json']['rows']
+    | paths['/cached/pools/{chainName}/{id}']['get']['responses']['200']['content']['application/json'][],
 ): PoolInfo[] => {
   return data.map((pool) => {
     return {

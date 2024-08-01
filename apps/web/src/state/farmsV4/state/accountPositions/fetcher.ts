@@ -333,6 +333,7 @@ export const getTrackedV2LpTokens = (
   return Array.from(pairTokens)
 }
 
+// @todo @ChefJerry add getAccountV2FarmingStakedBalances result
 export const getAccountV2LpDetails = async (
   chainId: number,
   account: Address,

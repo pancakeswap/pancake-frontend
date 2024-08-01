@@ -1,19 +1,19 @@
-import styled from 'styled-components'
-import { TokenPairImage } from 'components/TokenImage'
-import { Column, FeeTier, Flex, Row, Skeleton, SortArrow, Tag, Text } from '@pancakeswap/uikit'
 import { Protocol } from '@pancakeswap/farms'
-import { Currency, CurrencyAmount, Price, Token } from '@pancakeswap/swap-sdk-core'
+import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { RangeTag } from 'components/RangeTag'
-import { memo, useCallback, useMemo, useState } from 'react'
-import NextLink from 'next/link'
-import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
+import { Currency, CurrencyAmount, Price, Token } from '@pancakeswap/swap-sdk-core'
+import { unwrappedToken } from '@pancakeswap/tokens'
+import { Column, FeeTier, Flex, Row, Skeleton, SortArrow, Tag, Text } from '@pancakeswap/uikit'
 import { Bound, FiatNumberDisplay } from '@pancakeswap/widgets-internal'
+import { RangeTag } from 'components/RangeTag'
+import { TokenPairImage } from 'components/TokenImage'
+import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
+import NextLink from 'next/link'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { useExtraV3PositionInfo } from 'state/farmsV4/hooks'
 import type { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
-import { unwrappedToken } from '@pancakeswap/tokens'
 import { type PoolInfo } from 'state/farmsV4/state/type'
-import { useTheme } from '@pancakeswap/hooks'
+import styled from 'styled-components'
 import { PoolApyButton } from './PoolApyButton'
 
 const Container = styled(Flex)`
@@ -227,6 +227,18 @@ interface IPositionItemDetailProps {
   pool?: PoolInfo
 }
 
+export const PositionItemSkeleton = () => {
+  return (
+    <Container>
+      <Skeleton width={48} height={48} variant="circle" />
+      <div>
+        <Skeleton width={40} height={10} mb="4px" />
+        <Skeleton width={60} height={24} />
+      </div>
+    </Container>
+  )
+}
+
 export const PositionItemDetail = ({
   link,
   currencyBase,
@@ -247,15 +259,7 @@ export const PositionItemDetail = ({
   const { theme } = useTheme()
 
   if (!(currencyBase && currencyQuote)) {
-    return (
-      <Container>
-        <Skeleton width={48} height={48} variant="circle" />
-        <div>
-          <Skeleton width={40} height={10} mb="4px" />
-          <Skeleton width={60} height={24} />
-        </div>
-      </Container>
-    )
+    return <PositionItemSkeleton />
   }
 
   const content = (
