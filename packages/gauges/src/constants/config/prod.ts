@@ -4849,4 +4849,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: baseTokens.usdc.address,
     token1Address: baseTokens.usdt.address,
   },
+  {
+    gid: 490,
+    pairName: 'USDe-USDT',
+    address: '0x027039bd4eA6Ac7f80fEf4be2d0C6B74bfA932F9',
+    chainId: ChainId.ETHEREUM,
+    type: GaugeType.V3,
+    feeTier: FeeAmount.LOWEST,
+    token0Address: ethereumTokens.usde.address,
+    token1Address: ethereumTokens.usdt.address,
+  },
 ]
