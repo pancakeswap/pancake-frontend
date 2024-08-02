@@ -17,11 +17,16 @@ export type BasePoolInfo = {
   token1: Token
   token0Price?: `${number}`
   token1Price?: `${number}`
+  tvlToken0?: `${number}`
+  tvlToken1?: `${number}`
   lpApr?: `${number}`
   tvlUsd?: `${number}`
+  tvlUsd24h?: `${number}`
   vol24hUsd?: `${number}`
+  vol48hUsd?: `${number}`
   feeTier: number
   feeTierBase: number
+  totalFeeUSD?: `${number}`
   // @todo @ChefJerry add whitelist field
   whitelist?: boolean
 }
