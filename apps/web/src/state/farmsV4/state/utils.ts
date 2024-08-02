@@ -28,6 +28,8 @@ export const parseFarmPools = (
       ),
       token0Price: (pool.token0Price as `${number}`) ?? '0',
       token1Price: (pool.token1Price as `${number}`) ?? '0',
+      tvlToken0: (pool.tvlToken0 as `${number}`) ?? '0',
+      tvlToken1: (pool.tvlToken1 as `${number}`) ?? '0',
       token1: new Token(
         pool.chainId,
         safeGetAddress(pool.token1.id)!,
@@ -37,7 +39,10 @@ export const parseFarmPools = (
       ),
       lpApr: pool.apr24h as `${number}`,
       tvlUsd: pool.tvlUSD as `${number}`,
+      tvlUsd24h: pool.tvlUSD24h as `${number}`,
       vol24hUsd: pool.volumeUSD24h as `${number}`,
+      vol48hUsd: pool.volumeUSD48h as `${number}`,
+      totalFeeUSD: pool.totalFeeUSD as `${number}`,
       feeTier: Number(pool.feeTier),
       // @todo @ChefJerry get by protocols
       feeTierBase: 1_000_000,
