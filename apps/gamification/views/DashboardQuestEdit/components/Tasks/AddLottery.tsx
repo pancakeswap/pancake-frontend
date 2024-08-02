@@ -48,6 +48,8 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
     onTasksChange([...forkTasks])
   }
 
+  const disableInput = useMemo(() => !isDrafted, [isDrafted])
+
   const isMinAmountError = useMemo(
     () => !isFirst && validateNumber(task?.minAmount?.toString()),
     [isFirst, task?.minAmount],
@@ -88,6 +90,7 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
               inputMode="numeric"
               value={task.minAmount}
               isError={isMinAmountError}
+              disabled={disableInput}
               placeholder={t('Min. ticket’s amount')}
               onChange={(e) => handleInputChange(e, 'minAmount')}
             />
@@ -107,6 +110,7 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
                 pattern="^[0-9]+$"
                 inputMode="numeric"
                 value={task.fromRound}
+                disabled={disableInput}
                 isError={isFromRoundError}
                 onChange={(e) => handleInputChange(e, 'fromRound')}
               />
@@ -123,6 +127,7 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
                 inputMode="numeric"
                 value={task.toRound}
                 isError={isToRoundError}
+                disabled={disableInput}
                 onChange={(e) => handleInputChange(e, 'toRound')}
               />
             </StyledInputGroup>
@@ -139,6 +144,7 @@ export const AddLottery: React.FC<AddLotteryProps> = ({ task, isDrafted }) => {
           placeholder={t('Description (Optional)')}
           value={task.description}
           style={{ borderRadius: '24px' }}
+          disabled={disableInput}
           onChange={(e) => handleInputChange(e, 'description')}
         />
       </FlexGap>

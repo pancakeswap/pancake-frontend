@@ -120,6 +120,8 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
     }
   }
 
+  const disableInput = useMemo(() => !isDrafted, [isDrafted])
+
   const isMinAmountError = useMemo(() => !isFirst && validateNumber(task.minAmount), [isFirst, task?.minAmount])
   const isLpAddressError = useMemo(() => !isFirst && validateLpAddress(task.lpAddress), [isFirst, task?.lpAddress])
   const isLpAddressUrlError = useMemo(() => !isFirst && validateUrl(task.lpAddressLink), [isFirst, task?.lpAddressLink])
@@ -168,6 +170,7 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
                 isError={isLpAddressError}
                 value={task.lpAddress}
                 placeholder={t('LP address')}
+                disabled={disableInput}
                 onChange={(e) => handleInputChange(e, 'lpAddress')}
               />
             </StyledInputGroup>
@@ -184,6 +187,7 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
             <StyledInput
               placeholder={t('Description (Optional)')}
               value={task.description}
+              disabled={disableInput}
               onChange={(e) => handleInputChange(e, 'description')}
             />
           </StyledInputGroup>
@@ -205,6 +209,7 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
               placeholder={t('LP Address Link')}
               isError={isLpAddressUrlError}
               value={task.lpAddressLink}
+              disabled={disableInput}
               onChange={(e) => handleInputChange(e, 'lpAddressLink')}
             />
           </StyledInputGroup>
@@ -219,6 +224,7 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
               inputMode="numeric"
               placeholder={t('Fee Tier 100,500,2500,10000')}
               isError={isFeeTierError}
+              disabled={disableInput}
               value={task.feeTier}
               onChange={(e) => handleInputChange(e, 'feeTier')}
             />
@@ -234,6 +240,7 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
               pattern="^[0-9]*[.,]?[0-9]*$"
               value={task.minAmount}
               isError={isMinAmountError}
+              disabled={disableInput}
               placeholder={t('Min. $ Amount worth of liquidity')}
               onChange={(e) => handleInputChange(e, 'minAmount')}
             />
@@ -248,6 +255,7 @@ export const AddLpAddress: React.FC<AddLpAddressProps> = ({ task, isDrafted }) =
               inputMode="numeric"
               pattern="^[0-9]+$"
               placeholder={t('Days to hold')}
+              disabled={disableInput}
               value={task?.stakePeriodInDays > 0 ? task?.stakePeriodInDays : ''}
               onChange={(e) => handleInputChange(e, 'stakePeriodInDays')}
             />

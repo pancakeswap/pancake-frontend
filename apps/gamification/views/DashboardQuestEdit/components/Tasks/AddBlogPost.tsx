@@ -65,6 +65,8 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task, isDrafted }) => 
     onTasksChange([...forkTasks])
   }
 
+  const disableInput = useMemo(() => !isDrafted, [isDrafted])
+
   const isUrlError = useMemo(() => !isFirst && validateUrl(task.blogUrl), [isFirst, task?.blogUrl])
 
   return (
@@ -110,6 +112,7 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task, isDrafted }) => 
               value={task.blogUrl}
               isError={isUrlError}
               style={{ borderRadius: '24px' }}
+              disabled={disableInput}
               placeholder={taskInputPlaceholder(TaskType.VISIT_BLOG_POST)}
               onChange={(e) => handleUrlChange(e, 'blogUrl')}
             />
@@ -120,12 +123,14 @@ export const AddBlogPost: React.FC<AddBlogPostProps> = ({ task, isDrafted }) => 
           placeholder={t('Title')}
           value={task.title}
           style={{ borderRadius: '24px' }}
+          disabled={disableInput}
           onChange={(e) => handleUrlChange(e, 'title')}
         />
         <StyledInput
           placeholder={t('Description (Optional)')}
           value={task.description}
           style={{ borderRadius: '24px' }}
+          disabled={disableInput}
           onChange={(e) => handleUrlChange(e, 'description')}
         />
       </FlexGap>

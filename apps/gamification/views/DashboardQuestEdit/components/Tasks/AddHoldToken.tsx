@@ -104,6 +104,8 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) =
     onTasksChange([...forkTasks])
   }
 
+  const disableInput = useMemo(() => !isDrafted, [isDrafted])
+
   const isError = useMemo(() => !isFirst && validateNumber(task.minAmount), [isFirst, task?.minAmount])
 
   return (
@@ -142,6 +144,7 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) =
                   pattern="^[0-9]*[.,]?[0-9]*$"
                   isError={isError}
                   value={minAmount}
+                  disabled={disableInput}
                   placeholder={t('Minimum no. of token')}
                   onChange={(e) => handleInputChange(e, 'minAmount')}
                 />
@@ -154,6 +157,7 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) =
               <StyledInput
                 placeholder={t('Title')}
                 value={task.title}
+                disabled={disableInput}
                 style={{ borderRadius: '24px' }}
                 onChange={(e) => handleInputChange(e, 'title')}
               />
@@ -161,6 +165,7 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) =
             <StyledInput
               placeholder={t('Description (Optional)')}
               value={task.description}
+              disabled={disableInput}
               style={{ borderRadius: '24px' }}
               onChange={(e) => handleInputChange(e, 'description')}
             />

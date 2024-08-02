@@ -88,6 +88,8 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task, isDrafted }) => {
     onTasksChange([...forkTasks])
   }
 
+  const disableInput = useMemo(() => !isDrafted, [isDrafted])
+
   const isError = useMemo(() => !isFirst && validateNumber(task.minAmount), [isFirst, task?.minAmount])
 
   return (
@@ -125,6 +127,7 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task, isDrafted }) => {
                   inputMode="numeric"
                   pattern="^[0-9]*[.,]?[0-9]*$"
                   isError={isError}
+                  disabled={disableInput}
                   value={task.minAmount}
                   placeholder={t('Min Amount in USD')}
                   onChange={(e) => handleInputChange(e, 'minAmount')}
@@ -139,6 +142,7 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task, isDrafted }) => {
                 placeholder={t('Title')}
                 value={task.title}
                 style={{ borderRadius: '24px' }}
+                disabled={disableInput}
                 onChange={(e) => handleInputChange(e, 'title')}
               />
             </InputGroup>
@@ -146,6 +150,7 @@ export const AddSwap: React.FC<AddSwapProps> = ({ task, isDrafted }) => {
               placeholder={t('Description (Optional)')}
               value={task.description}
               style={{ borderRadius: '24px' }}
+              disabled={disableInput}
               onChange={(e) => handleInputChange(e, 'description')}
             />
           </FlexGap>

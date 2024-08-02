@@ -65,6 +65,8 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task, isDrafted }) => {
     onTasksChange([...forkTasks])
   }
 
+  const disableInput = useMemo(() => !isDrafted, [isDrafted])
+
   const isTitleError = useMemo(() => !isFirst && validateIsNotEmpty(task.title), [isFirst, task.title])
   const isAccountIdError = useMemo(() => !isFirst && validateIsNotEmpty(task.accountId), [isFirst, task.accountId])
   const isUrlError = useMemo(() => !isFirst && validateUrl(task.socialLink), [isFirst, task?.socialLink])
@@ -112,6 +114,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task, isDrafted }) => {
                 value={task.socialLink}
                 isError={isUrlError}
                 style={{ borderRadius: '24px' }}
+                disabled={disableInput}
                 placeholder={taskInputPlaceholder(social)}
                 onChange={(e) => handleUrlChange(e, 'socialLink')}
               />
@@ -126,6 +129,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task, isDrafted }) => {
                 value={task.accountId}
                 isError={isAccountIdError}
                 style={{ borderRadius: '24px' }}
+                disabled={disableInput}
                 placeholder={socialAccountIdName(task.taskType)}
                 onChange={(e) => handleUrlChange(e, 'accountId')}
               />
@@ -139,6 +143,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task, isDrafted }) => {
               placeholder={t('Title')}
               value={task.title}
               isError={isTitleError}
+              disabled={disableInput}
               style={{ borderRadius: '24px' }}
               onChange={(e) => handleUrlChange(e, 'title')}
             />
@@ -149,6 +154,7 @@ export const SocialTask: React.FC<SocialTaskProps> = ({ task, isDrafted }) => {
           placeholder={t('Description (Optional)')}
           value={task.description}
           style={{ borderRadius: '24px' }}
+          disabled={disableInput}
           onChange={(e) => handleUrlChange(e, 'description')}
         />
       </FlexGap>
