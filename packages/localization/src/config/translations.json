@@ -3507,5 +3507,9 @@
   "positions": "positions",
   "active": "active",
   "inactive": "inactive",
-  "closed": "closed"
+  "closed": "closed",
+  "Pair info": "Pair info",
+  "total tokens locked (TVL)": "total tokens locked (TVL)",
+  "volume 24h": "volume 24h",
+  "fee": "fee"
 }
