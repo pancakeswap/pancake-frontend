@@ -1,21 +1,16 @@
-import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text, useToast } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
-import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useEffect, useState } from 'react'
-import { NftLocation, NftToken } from 'state/nftMarket/types'
-import { useProfile } from 'state/profile/hooks'
+import { useState } from 'react'
+import { NftLocation } from 'state/nftMarket/types'
 import { styled } from 'styled-components'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import { getErc721Contract, getProfileContract } from 'utils/contractHelpers'
-import { publicClient } from 'utils/wagmi'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
-import { useAccount, useWalletClient } from 'wagmi'
-import { useNftsForAddress } from '../Nft/market/hooks/useNftsForAddress'
+import { getErc721Contract } from 'utils/contractHelpers'
+import { useWalletClient } from 'wagmi'
+import { useUserProfileCreationNfts } from 'views/Nft/market/hooks/useUserProfileCreationNfts'
 import NextStepButton from './NextStepButton'
 import SelectionCard from './SelectionCard'
 import useProfileCreation from './contexts/hook'
@@ -29,62 +24,10 @@ const NftWrapper = styled.div`
 `
 
 const ProfilePicture: React.FC = () => {
-  const { address: account } = useAccount()
   const [isApproved, setIsApproved] = useState(false)
-  const [isProfileNftsLoading, setIsProfileNftsLoading] = useState(true)
-  const [userProfileCreationNfts, setUserProfileCreationNfts] = useState<NftToken[] | null>(null)
   const { selectedNft, actions } = useProfileCreation()
 
-  const { isLoading: isProfileFetching, profile } = useProfile()
-  const { nfts, isLoading: isUserNftLoading } = useNftsForAddress({
-    account: account || '',
-    profile,
-    isProfileFetching,
-  })
-
-  useEffect(() => {
-    const fetchUserPancakeCollectibles = async () => {
-      try {
-        const nftsByCollection = Array.from(
-          nfts.reduce((acc, value) => {
-            acc.add(value.collectionAddress)
-            return acc
-          }, new Set<string>()),
-        )
-
-        if (nftsByCollection.length > 0) {
-          const profileContract = getProfileContract()
-          const nftRole = await profileContract.read.NFT_ROLE()
-          const collectionRoles = await publicClient({ chainId: ChainId.BSC }).multicall({
-            contracts: nftsByCollection.map((collectionAddress) => {
-              return {
-                abi: pancakeProfileABI,
-                address: getPancakeProfileAddress(),
-                functionName: 'hasRole',
-                args: [nftRole, collectionAddress],
-              }
-            }),
-            allowFailure: false,
-          })
-
-          setUserProfileCreationNfts(
-            nfts.filter((nft) => collectionRoles[nftsByCollection.indexOf(nft.collectionAddress)]),
-          )
-        } else {
-          setUserProfileCreationNfts(null)
-        }
-      } catch (e) {
-        console.error(e)
-        setUserProfileCreationNfts(null)
-      } finally {
-        setIsProfileNftsLoading(false)
-      }
-    }
-    if (!isUserNftLoading) {
-      setIsProfileNftsLoading(true)
-      fetchUserPancakeCollectibles()
-    }
-  }, [nfts, isUserNftLoading])
+  const { userProfileCreationNfts, isLoading: isUserProfileCreationNftsLoading } = useUserProfileCreationNfts()
 
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
@@ -105,7 +48,7 @@ const ProfilePicture: React.FC = () => {
     }
   }
 
-  if (!userProfileCreationNfts?.length && !isProfileNftsLoading) {
+  if (!userProfileCreationNfts?.length && !isUserProfileCreationNftsLoading) {
     return (
       <>
         <Heading scale="xl" mb="24px">
@@ -116,7 +59,7 @@ const ProfilePicture: React.FC = () => {
         </Text>
         <Text as="p" mb="24px">
           {t('Only approved Pancake Collectibles can be used.')}
-          <Link to={`${nftsBaseUrl}/profile/pancake-collectibles`} style={{ marginLeft: '4px' }}>
+          <Link to="/profile/pancake-collectibles" style={{ marginLeft: '4px' }}>
             {t('See the list >')}
           </Link>
         </Text>
@@ -147,7 +90,7 @@ const ProfilePicture: React.FC = () => {
           </Text>
           <Text as="p" color="textSubtle" mb="24px">
             {t('Only approved Pancake Collectibles can be used.')}
-            <Link to={`${nftsBaseUrl}/collections`} style={{ marginLeft: '4px' }}>
+            <Link to="/profile/pancake-collectibles" style={{ marginLeft: '4px' }}>
               {t('See the list >')}
             </Link>
           </Text>

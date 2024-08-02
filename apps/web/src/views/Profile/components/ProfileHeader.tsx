@@ -55,14 +55,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
     profile?.username || '',
   )
-  const [onEditProfileModal] = useModal(
-    <EditProfileModal
-      onSuccess={() => {
-        onSuccess?.()
-      }}
-    />,
-    false,
-  )
+  const [onEditProfileModal] = useModal(<EditProfileModal onSuccess={onSuccess} />, false)
 
   const isConnectedAccount = safeGetAddress(account) === safeGetAddress(accountPath)
   const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0) : '-') : null

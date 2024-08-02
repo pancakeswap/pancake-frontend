@@ -16,6 +16,7 @@ const PancakeCollectibles = () => {
   const { t } = useTranslation()
   const { data: collections, status } = useQuery<Collection[]>({
     queryKey: ['pancakeCollectibles'],
+    enabled: false,
   })
 
   return (

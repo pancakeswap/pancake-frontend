@@ -1,5 +1,4 @@
 import { GetStaticProps } from 'next'
-// eslint-disable-next-line camelcase
 import { ChainId } from '@pancakeswap/chains'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
@@ -42,7 +41,7 @@ export const getStaticProps: GetStaticProps = async () => {
       allowFailure: false,
     })
 
-    const pancakeCollectibles = Object.values(fetchedCollections).filter((collection, index) => {
+    const pancakeCollectibles = Object.values(fetchedCollections).filter((_, index) => {
       return collectionRoles[index]
     })
 
