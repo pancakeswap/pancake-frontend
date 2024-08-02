@@ -3,7 +3,6 @@ import { Percent } from '@pancakeswap/swap-sdk-core'
 import { AutoColumn, AutoRow, Card, CardBody, Column, Text } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
-import { useChainNameByQuery } from 'state/info/hooks'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
 import { ChangePercent } from './ChangePercent'
 import { PoolTokens } from './PoolTokens'
@@ -13,19 +12,18 @@ type PoolStatusProps = {
 }
 export const PoolStatus: React.FC<PoolStatusProps> = ({ poolInfo }) => {
   const { t } = useTranslation()
-  const chainName = useChainNameByQuery()
   const tvlChange = useMemo(() => {
     if (!poolInfo) return null
     return new Percent(
       BigInt((Number(poolInfo.tvlUsd ?? 0) - Number(poolInfo.tvlUsd24h ?? 0)).toFixed(0)),
-      BigInt(Number(poolInfo.tvlUsd ?? 1).toFixed(0)),
+      BigInt(Number(poolInfo.tvlUsd24h ?? 1).toFixed(0)),
     )
   }, [poolInfo])
   const volChange = useMemo(() => {
     if (!poolInfo) return null
     return new Percent(
       BigInt((Number(poolInfo.vol24hUsd ?? 0) - Number(poolInfo.vol48hUsd ?? 0)).toFixed(0)),
-      BigInt(Number(poolInfo.vol24hUsd ?? 1).toFixed(0)) || BigInt(1),
+      BigInt(Number(poolInfo.vol48hUsd ?? 1).toFixed(0)) || BigInt(1),
     )
   }, [poolInfo])
 
