@@ -1,5 +1,19 @@
 import BigNumber from 'bignumber.js'
-import { Button, Column, FeeTier, Flex, Row, Skeleton, SortArrow, Tag, Text, useModalV2 } from '@pancakeswap/uikit'
+import {
+  AddIcon,
+  Button,
+  Column,
+  FeeTier,
+  Flex,
+  IconButton,
+  MinusIcon,
+  Row,
+  Skeleton,
+  SortArrow,
+  Tag,
+  Text,
+  useModalV2,
+} from '@pancakeswap/uikit'
 import { Protocol } from '@pancakeswap/farms'
 import { ERC20Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
@@ -11,13 +25,14 @@ import { TokenPairImage } from 'components/TokenImage'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import NextLink from 'next/link'
 import { memo, useCallback, useMemo, useState } from 'react'
-import { useExtraV3PositionInfo } from 'state/farmsV4/hooks'
+import { getPoolAddressByToken, useExtraV3PositionInfo, usePoolInfo } from 'state/farmsV4/hooks'
 import type { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { type PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
 import { useTheme } from '@pancakeswap/hooks'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
+import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { useCakePrice } from 'hooks/useCakePrice'
@@ -192,11 +207,15 @@ export const PositionStableItem = memo(({ data }: { data: StableLPDetail; pool?:
 })
 interface IPositionV3ItemProps {
   data: PositionDetail
-  pool: PoolInfo | undefined
+  poolInfo?: PoolInfo
 }
-export const PositionV3Item = memo(({ data, pool }: IPositionV3ItemProps) => {
+
+export const PositionV3Item = memo(({ data }: IPositionV3ItemProps) => {
   const { currency0, currency1, removed, outOfRange, priceUpper, priceLower, tickAtLimit, position } =
     useExtraV3PositionInfo(data)
+
+  const poolAddress = getPoolAddressByToken(data.chainId, data.token0, data.token1, data.fee)
+  const pool = usePoolInfo({ poolAddress, chainId: data.chainId })
 
   const totalPriceUSD = useTotalPriceUSD({
     currency0,
@@ -273,7 +292,8 @@ interface IPositionItemDetailProps {
   totalPriceUSD: number
   amount0?: CurrencyAmount<Token>
   amount1?: CurrencyAmount<Token>
-  pool?: PoolInfo
+  pool?: PoolInfo | null
+  detailMode?: boolean
 }
 
 export const PositionItemSkeleton = () => {
@@ -303,14 +323,10 @@ export const PositionItemDetail = ({
   amount0,
   amount1,
   pool,
+  detailMode,
 }: IPositionItemDetailProps) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { onStake, onHarvest, attemptingTxn } = useFarmV3Actions({
-    tokenId: tokenId?.toString() ?? '',
-    onDone: () => { },
-  })
-  const { isOpen, onDismiss, onOpen } = useModalV2()
 
   const cakePrice = useCakePrice()
   const stackedTokenId = useMemo(() => (tokenId ? [tokenId] : []), [tokenId])
@@ -321,36 +337,6 @@ export const PositionItemDetail = ({
   const earningsBusd = useMemo(() => {
     return new BigNumber(earningsAmount).times(cakePrice.toString()).toNumber()
   }, [cakePrice, earningsAmount])
-
-  const handleStakeAndCheckInactive = useCallback(
-    async (e: React.MouseEvent) => {
-      e.preventDefault()
-      logGTMClickStakeFarmEvent()
-      if (outOfRange && !isStaked) {
-        onOpen()
-      } else {
-        await onStake()
-      }
-    },
-    [isStaked, onStake, outOfRange, onOpen],
-  )
-
-  const handleStake = useCallback(
-    async (e: React.MouseEvent) => {
-      e.preventDefault()
-      logGTMClickStakeFarmEvent()
-      await onStake()
-    },
-    [onStake],
-  )
-
-  const handleHarvest = useCallback(
-    async (e: React.MouseEvent) => {
-      e.preventDefault()
-      onHarvest()
-    },
-    [onHarvest],
-  )
 
   if (!(currency0 && currency1)) {
     return <PositionItemSkeleton />
@@ -397,6 +383,7 @@ export const PositionItemDetail = ({
       </DetailInfoDesc>
     </>
   )
+
   const content = (
     <Container>
       <TokenPairImage
@@ -409,21 +396,18 @@ export const PositionItemDetail = ({
       <DetailsContainer>
         <Column gap="8px">{detailInfo}</Column>
         <Column justifyContent="flex-end">
-          {!isStaked && !removed ? (
-            <Button scale="md" width={['100px']} style={{ alignSelf: 'center' }} onClick={handleStakeAndCheckInactive}>
-              {t('Stake')}
-            </Button>
-          ) : null}
-          {isStaked && !removed ? (
-            <Button width={['100px']} scale="md" disabled={attemptingTxn} onClick={handleHarvest}>
-              {attemptingTxn ? t('Harvesting') : t('Harvest')}
-            </Button>
-          ) : null}
+          <ActionPanel
+            currency0={currency0}
+            currency1={currency1}
+            isStaked={isStaked}
+            removed={removed}
+            tokenId={tokenId}
+            outOfRange={outOfRange}
+            modalContent={detailInfo}
+            detailMode={detailMode}
+          />
         </Column>
       </DetailsContainer>
-      <StakeModal isOpen={isOpen} staking={outOfRange && !isStaked} onStake={handleStake} onDismiss={onDismiss}>
-        {detailInfo}
-      </StakeModal>
     </Container>
   )
 
@@ -431,4 +415,137 @@ export const PositionItemDetail = ({
     return content
   }
   return <NextLink href={link}>{content}</NextLink>
+}
+
+const ActionPanelContainer = styled(Flex)`
+  flex-direction: row;
+  gap: 8px;
+  height: 48px;
+`
+
+interface IActionPanelProps {
+  removed: boolean
+  outOfRange: boolean
+  tokenId?: bigint
+  isStaked?: boolean
+  detailMode?: boolean
+  modalContent: React.ReactNode
+  currency0: Currency
+  currency1: Currency
+}
+const ActionPanel = ({
+  currency0,
+  currency1,
+  isStaked,
+  removed,
+  outOfRange,
+  tokenId,
+  modalContent,
+  detailMode,
+}: IActionPanelProps) => {
+  const { t } = useTranslation()
+  const { onStake, onUnstake, onHarvest, attemptingTxn } = useFarmV3Actions({
+    tokenId: tokenId?.toString() ?? '',
+    onDone: () => {},
+  })
+  const stakeModal = useModalV2()
+  const addLiquidityModal = useModalV2()
+
+  const handleStakeAndCheckInactive = useCallback(async () => {
+    logGTMClickStakeFarmEvent()
+    if (outOfRange && !isStaked) {
+      stakeModal.onOpen()
+    } else {
+      await onStake()
+    }
+  }, [isStaked, onStake, outOfRange, stakeModal])
+
+  const handleStake = useCallback(async () => {
+    logGTMClickStakeFarmEvent()
+    await onStake()
+  }, [onStake])
+
+  const preventDefault = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
+  }, [])
+
+  const stakeButton = useMemo(
+    () => (
+      <>
+        <Button scale="md" width={['100px']} style={{ alignSelf: 'center' }} onClick={handleStakeAndCheckInactive}>
+          {t('Stake')}
+        </Button>
+        <StakeModal
+          isOpen={stakeModal.isOpen}
+          staking={outOfRange && !isStaked}
+          onStake={handleStake}
+          onDismiss={stakeModal.onDismiss}
+        >
+          {modalContent}
+        </StakeModal>
+      </>
+    ),
+    [handleStake, handleStakeAndCheckInactive, isStaked, modalContent, t, outOfRange, stakeModal],
+  )
+
+  const unstakeButton = useMemo(
+    () => (
+      <>
+        <Button
+          scale="md"
+          width={['100px']}
+          style={{ alignSelf: 'center' }}
+          variant="secondary"
+          onClick={stakeModal.onOpen}
+        >
+          {t('Unstake')}
+        </Button>
+        <StakeModal
+          isOpen={stakeModal.isOpen}
+          staking={outOfRange && !isStaked}
+          onUnStake={onUnstake}
+          onDismiss={stakeModal.onDismiss}
+        >
+          {modalContent}
+        </StakeModal>
+      </>
+    ),
+    [onUnstake, isStaked, modalContent, t, outOfRange, stakeModal],
+  )
+
+  const addLiquidityButton = useMemo(
+    () => (
+      <>
+        <IconButton variant="secondary" onClick={addLiquidityModal.onOpen}>
+          <AddIcon color="primary" width="14px" />
+        </IconButton>
+        <AddLiquidityV3Modal {...addLiquidityModal} currency0={currency0} currency1={currency1} />
+      </>
+    ),
+    [addLiquidityModal, currency0, currency1],
+  )
+
+  if (detailMode) {
+    return (
+      <ActionPanelContainer onClick={preventDefault}>
+        {!removed && (
+          <IconButton mr="6px" variant="secondary" onClick={() => {}}>
+            <MinusIcon color="primary" width="14px" />
+          </IconButton>
+        )}
+        {addLiquidityButton}
+        {isStaked ? unstakeButton : !removed ? stakeButton : null}
+      </ActionPanelContainer>
+    )
+  }
+  return (
+    <ActionPanelContainer onClick={preventDefault}>
+      {!isStaked && !removed ? stakeButton : null}
+      {isStaked && !removed ? (
+        <Button width={['100px']} scale="md" disabled={attemptingTxn} onClick={onHarvest}>
+          {attemptingTxn ? t('Harvesting') : t('Harvest')}
+        </Button>
+      ) : null}
+    </ActionPanelContainer>
+  )
 }

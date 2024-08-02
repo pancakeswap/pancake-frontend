@@ -24,8 +24,6 @@ import {
   useAccountStableLpDetails,
   useAccountV2LpDetails,
   useAccountV3Positions,
-  usePoolsByStablePositions,
-  usePoolsByV2Positions,
 } from 'state/farmsV4/hooks'
 import { INetworkProps, ITokenProps, toTokenValue, toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
 import { Protocol } from '@pancakeswap/farms'
@@ -78,7 +76,7 @@ const CardHeader = styled(StyledCardHeader)`
   padding-bottom: 0;
 `
 
-const StyledButtonMenu = styled(ButtonMenu) <{ $positionStatus: number }>`
+const StyledButtonMenu = styled(ButtonMenu)<{ $positionStatus: number }>`
   & button[variant='text']:nth-child(${({ $positionStatus }) => $positionStatus + 1}) {
     color: ${({ theme }) => theme.colors.secondary};
   }
@@ -146,9 +144,6 @@ const useV3Positions = ({
     [v3Positions, pools],
   )
 
-  // const { poolsMap: v3Pools } = usePoolsByV3Positions(v3Positions)
-
-  const v3Pools = useMemo(() => ({}), [])
   const filteredV3Positions = useMemo(
     () =>
       v3PositionsWithStatus.filter(
@@ -174,9 +169,9 @@ const useV3Positions = ({
     () =>
       sortedV3Positions.map((pos) => {
         const key = getKeyForPools(pos.chainId, pos.tokenId.toString())
-        return <PositionV3Item key={key} data={pos} pool={v3Pools[key]} />
+        return <PositionV3Item key={key} data={pos} />
       }),
-    [sortedV3Positions, v3Pools],
+    [sortedV3Positions],
   )
 
   return {
@@ -196,7 +191,6 @@ const useV2Positions = ({
 }) => {
   const { address: account } = useAccount()
   const { data: v2Positions, pending: v2Loading } = useAccountV2LpDetails(allChainIds, account)
-  const { poolsMap: v2Pools } = usePoolsByV2Positions(v2Positions)
   const filteredV2Positions = useMemo(
     () =>
       v2Positions.filter(
@@ -218,9 +212,9 @@ const useV2Positions = ({
           liquidityToken: { address },
         } = pos.pair
         const key = getKeyForPools(chainId, address)
-        return <PositionV2Item key={key} data={pos} pool={v2Pools[key]} />
+        return <PositionV2Item key={key} data={pos} />
       }),
-    [filteredV2Positions, v2Pools],
+    [filteredV2Positions],
   )
   return {
     v2Loading,
@@ -239,7 +233,6 @@ const useStablePositions = ({
 }) => {
   const { address: account } = useAccount()
   const { data: stablePositions, pending: stableLoading } = useAccountStableLpDetails(allChainIds, account)
-  const { poolsMap: stablePools } = usePoolsByStablePositions(stablePositions)
 
   const filteredStablePositions = useMemo(
     () =>
@@ -263,9 +256,9 @@ const useStablePositions = ({
           liquidityToken: { chainId, address },
         } = pos.pair
         const key = getKeyForPools(chainId, address)
-        return <PositionStableItem key={key} data={pos} pool={stablePools[key]} />
+        return <PositionStableItem key={key} data={pos} />
       }),
-    [filteredStablePositions, stablePools],
+    [filteredStablePositions],
   )
   return {
     stableLoading,

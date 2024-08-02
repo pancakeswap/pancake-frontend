@@ -5,7 +5,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
 import { useChainIdByQuery, useChainNameByQuery } from 'state/info/hooks'
 import { multiChainNameConverter } from 'utils/chainNameConverter'
-import { usePoolInfo } from '../hooks/usePoolInfo'
+import { usePoolInfoByQuery } from '../hooks/usePoolInfo'
 import { usePoolFee } from '../hooks/useStablePoolFee'
 import { MyPositions } from './MyPositions'
 import { PoolCurrencies } from './PoolCurrencies'
@@ -13,7 +13,7 @@ import { PoolStatus } from './PoolStatus'
 
 export const PoolInfo = () => {
   const { t } = useTranslation()
-  const poolInfo = usePoolInfo()
+  const poolInfo = usePoolInfoByQuery()
   const chainId = useChainIdByQuery()
   const networkName = useChainNameByQuery()
   const [currency0, currency1] = useMemo(() => {
