@@ -8,6 +8,7 @@ import { multiChainNameConverter } from 'utils/chainNameConverter'
 import { usePoolInfo } from '../hooks/usePoolInfo'
 import { usePoolFee } from '../hooks/useStablePoolFee'
 import { MyPositions } from './MyPositions'
+import { PoolCharts } from './PoolCharts'
 import { PoolCurrencies } from './PoolCurrencies'
 import { PoolStatus } from './PoolStatus'
 
@@ -85,8 +86,9 @@ export const PoolInfo = () => {
         <PoolCurrencies poolInfo={poolInfo} />
       </AutoRow>
 
-      <Grid>
+      <Grid gridGap="24px" gridTemplateColumns="1fr 2fr">
         <PoolStatus poolInfo={poolInfo} />
+        <PoolCharts poolInfo={poolInfo} />
       </Grid>
     </Column>
   )
