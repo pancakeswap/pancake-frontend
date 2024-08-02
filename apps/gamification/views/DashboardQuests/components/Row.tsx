@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
-import { Box, EllipsisIcon, Flex, PencilIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, EllipsisIcon, Flex, OpenNewIcon, PencilIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ChainLogo } from 'components/Logo/ChainLogo'
@@ -151,8 +151,17 @@ export const Row: React.FC<RowProps> = ({ quest, statusButtonIndex }) => {
                   redirectUrl(e, `/dashboard/quest/edit/${quest.id}?chain=${CHAIN_QUERY_NAME[chainId]}`)
                 }
               >
-                <PencilIcon color="primary" width="14px" height="14px" />
-                <Text ml="14px">{statusButtonIndex === CompletionStatusIndex.FINISHED ? t('View') : t('Edit')}</Text>
+                {statusButtonIndex === CompletionStatusIndex.DRAFTED ? (
+                  <>
+                    <PencilIcon color="primary" width="14px" height="14px" />
+                    <Text ml="14px">{t('Edit')}</Text>
+                  </>
+                ) : (
+                  <>
+                    <OpenNewIcon color="primary" width="14px" height="14px" />
+                    <Text ml="14px">{t('View')}</Text>
+                  </>
+                )}
               </Flex>
             </StyledDropdown>
           )}

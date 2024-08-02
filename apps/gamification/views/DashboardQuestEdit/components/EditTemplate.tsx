@@ -151,7 +151,6 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
           name="body"
           required
           value={description}
-          disabled={disableInput}
           onTextChange={(value) => updateValue('description', value)}
         />
       </Box>
