@@ -59,12 +59,9 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
   children,
 }) => {
   const { t } = useTranslation()
-  const { title, description, startDate, startTime, endDate, endTime, completionStatus, reward } = state
+  const { title, description, startDate, startTime, endDate, endTime, completionStatus } = state
 
-  const disableInput = useMemo(
-    () => Boolean(completionStatus === CompletionStatus.SCHEDULED && reward),
-    [reward, completionStatus],
-  )
+  const disableInput = useMemo(() => Boolean(completionStatus !== CompletionStatus.DRAFTED), [completionStatus])
 
   return (
     <FlexGap
@@ -87,7 +84,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
             </>
           )}
         </Flex>
-        <Input value={title} onChange={(e) => updateValue('title', e.currentTarget.value)} />
+        <Input value={title} disabled={disableInput} onChange={(e) => updateValue('title', e.currentTarget.value)} />
       </Box>
       {uploadImageComponent}
       <Box position="relative" zIndex={3}>
@@ -154,6 +151,7 @@ export const EditTemplate: React.FC<React.PropsWithChildren<EditTemplateProps>> 
           name="body"
           required
           value={description}
+          disabled={disableInput}
           onTextChange={(value) => updateValue('description', value)}
         />
       </Box>
