@@ -69,6 +69,7 @@ export const zRouterGetParams = z
     maxSplits: z.number().optional(),
     blockNumber: zBigNumber.optional(),
     poolTypes: zPoolTypes.optional(),
+    candidatePools: zPools.optional(),
   })
   .required({
     chainId: true,
