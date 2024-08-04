@@ -1,15 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Toggle, useToast } from '@pancakeswap/uikit'
-import { useSubscription, useUnsubscribe } from '@web3inbox/react'
-import { useCallback, useMemo } from 'react'
+import { useSubscribe, useUnsubscribe } from '@web3inbox/react'
+import { useCallback } from 'react'
 import { useAllowNotifications } from 'state/notifications/hooks'
 import { Events } from 'views/Notifications/constants'
 import { parseErrorMessage } from 'views/Notifications/utils/errorBuilder'
 
-export const useWebNotificationsToggle = () => {
+const useWebNotificationsToggle = () => {
   const { t } = useTranslation()
-  const { data: subscription } = useSubscription()
-  const isSubscribed = useMemo(() => Boolean(subscription), [subscription])
+  const { data: isSubscribed } = useSubscribe()
   const { unsubscribe } = useUnsubscribe()
   const [allowNotifications, setAllowNotifications] = useAllowNotifications()
   const toast = useToast()
@@ -40,11 +39,11 @@ export const useWebNotificationsToggle = () => {
     [allowNotifications, handleDisableNotifications, handleEnableNotifications],
   )
 
-  return { allowNotifications, isSubscribed, toggle }
+  return toggle
 }
 
 function WebNotiToggle({ enabled }) {
-  const { toggle } = useWebNotificationsToggle()
+  const toggle = useWebNotificationsToggle()
   return <Toggle id="toggle-webnoti" checked={enabled} scale="md" onChange={toggle} />
 }
 

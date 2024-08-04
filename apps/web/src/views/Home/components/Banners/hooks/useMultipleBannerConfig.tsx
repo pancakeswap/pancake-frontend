@@ -1,18 +1,6 @@
-import shuffle from 'lodash/shuffle'
 import { useMemo, type ReactElement } from 'react'
 import CompetitionBanner from '../CompetitionBanner'
-import { FeeRefundBanner } from '../FeeRefundBanner'
-import { FourMemeBanner } from '../FourMemeBanner'
-import { OortTradingBanner } from '../OortTradingBanner'
-import { OptionsBanner } from '../OptionsBanner'
-import { AthleticsBanner } from '../PancakeSwapAthleticsBanner'
-import { PaymasterBanner } from '../PaymasterBanner'
-import { PerpetualSeasonalBanner } from '../PerpetualSeasonalBanner'
-import { PredictionBanner } from '../PredictionBanner'
-import UserBanner from '../UserBanner'
-import { V4InfoBanner } from '../V4InfoBanner'
-import { VeCakeBanner } from '../VeCakeBanner'
-import { ZksyncAirDropBanner } from '../ZksyncAirdropBanner'
+import WebNotificationBanner from '../WebNotificationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
 
@@ -40,51 +28,51 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
-      {
-        shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
-        banner: <UserBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <OortTradingBanner />,
-      },
+      // {
+      //   shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
+      //   banner: <UserBanner />,
+      // },
       {
         shouldRender: true,
-        banner: <AthleticsBanner />,
+        banner: <WebNotificationBanner />,
       },
-      {
-        shouldRender: true,
-        banner: <FourMemeBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <ZksyncAirDropBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <PredictionBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <PerpetualSeasonalBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <PaymasterBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <FeeRefundBanner />,
-      },
-      {
-        shouldRender: true,
-        banner: <OptionsBanner />,
-      },
-      { shouldRender: true, banner: <VeCakeBanner /> },
-      {
-        shouldRender: true,
-        banner: <V4InfoBanner />,
-      },
+      // {
+      //   shouldRender: true,
+      //   banner: <AthleticsBanner />,
+      // },
+      // {
+      //   shouldRender: true,
+      //   banner: <FourMemeBanner />,
+      // },
+      // {
+      //   shouldRender: true,
+      //   banner: <ZksyncAirDropBanner />,
+      // },
+      // {
+      //   shouldRender: true,
+      //   banner: <PredictionBanner />,
+      // },
+      // {
+      //   shouldRender: true,
+      //   banner: <PerpetualSeasonalBanner />,
+      // },
+      // {
+      //   shouldRender: true,
+      //   banner: <PaymasterBanner />,
+      // },
+      // {
+      //   shouldRender: true,
+      //   banner: <FeeRefundBanner />,
+      // },
+      // {
+      //   shouldRender: true,
+      //   banner: <OptionsBanner />,
+      // },
+      // { shouldRender: true, banner: <VeCakeBanner /> },
+      // {
+      //   shouldRender: true,
+      //   banner: <V4InfoBanner />,
+      // },
     ]
 
     const SHUFFLE_BANNERS: IBannerConfig[] = [
@@ -95,12 +83,12 @@ export const useMultipleBannerConfig = () => {
     ]
     return [
       ...NO_SHUFFLE_BANNERS,
-      ...shuffle(SHUFFLE_BANNERS),
-      {
-        // be the last one if harvest value is zero
-        shouldRender: isRenderUserBanner.shouldRender && isRenderUserBanner.isEarningsBusdZero,
-        banner: <UserBanner />,
-      },
+      // ...shuffle(SHUFFLE_BANNERS),
+      // {
+      //   // be the last one if harvest value is zero
+      //   shouldRender: isRenderUserBanner.shouldRender && isRenderUserBanner.isEarningsBusdZero,
+      //   banner: <UserBanner />,
+      // },
     ]
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)

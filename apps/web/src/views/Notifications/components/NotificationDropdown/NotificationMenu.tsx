@@ -1,7 +1,6 @@
 import { NotificationBell as BellIcon, Box, Flex, ModalV2, ModalWrapper, useMatchBreakpoints } from '@pancakeswap/uikit'
 // import { useNotifications } from '@web3inbox/react'
 import React, { ReactNode, memo, useCallback, useEffect, useRef, useState } from 'react'
-import { useNotificationMenuToggle } from 'state/notifications/hooks'
 import useSendPushNotification from 'views/Notifications/hooks/sendPushNotification'
 import useNotificationHistory from 'views/Notifications/hooks/useNotificationHistory'
 import { BellIconContainer, Menu } from 'views/Notifications/styles'
@@ -28,8 +27,6 @@ const NotificationMenu: React.FC<{
   children: ReactNode
 }> = ({ children, viewIndex, subscriptionId }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-
-  const { globalToggle, setGlobalToggle } = useNotificationMenuToggle()
   const ref = useRef<HTMLDivElement>(null)
   const { isMobile } = useMatchBreakpoints()
 
@@ -45,13 +42,12 @@ const NotificationMenu: React.FC<{
     const checkIfClickedOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         markAllNotificationsAsRead()
-        setIsMenuOpen(!!globalToggle)
-        setGlobalToggle(false)
+        setIsMenuOpen(false)
       }
     }
     document.addEventListener('click', checkIfClickedOutside)
     return () => document.removeEventListener('click', checkIfClickedOutside)
-  }, [setIsMenuOpen, markAllNotificationsAsRead, globalToggle, setGlobalToggle, isMenuOpen])
+  }, [isMenuOpen, setIsMenuOpen, markAllNotificationsAsRead])
 
   if (isMobile) {
     return (
@@ -69,7 +65,7 @@ const NotificationMenu: React.FC<{
     <Flex alignItems="center" justifyContent="center" height="100%" ref={ref} tabIndex={-1}>
       <NotificationBell unread={hasUnread} toggleMenu={toggleMenu} />
       <Menu
-        $isOpen={isMenuOpen || globalToggle}
+        $isOpen={isMenuOpen}
         style={{ top: '100%', position: 'fixed' }}
         $overrideHeight={viewIndex === PAGE_VIEW.OnboardView}
       >

@@ -1,17 +1,8 @@
-import { useAtom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
 import { useCallback } from 'react'
 import { useSelector } from 'react-redux'
-import { useAppDispatch, type AppState } from 'state'
+import { AppState, useAppDispatch } from 'state'
 import { toggleAllowNotifications } from './actions'
-import type { NotificationState } from './reducer'
-
-const notificationMenuToggleAtom = atomWithStorage<boolean>('pcs:notifications-menu-toggle', false)
-
-export function useNotificationMenuToggle() {
-  const [globalToggle, setGlobalToggle] = useAtom(notificationMenuToggleAtom)
-  return { globalToggle, setGlobalToggle }
-}
+import { NotificationState } from './reducer'
 
 export function useHasUnreadNotifications(subscription: string | undefined): {
   unreadLength: number

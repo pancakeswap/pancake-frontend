@@ -77,7 +77,7 @@ const useSendPushNotification = (): IUseSendNotification => {
 
   const sendPushNotification = async (notificationType: BuilderNames, args: string[], account: string) => {
     const notificationPayload: NotificationPayload = {
-      accounts: [account],
+      accounts: [`eip155:1:${account}`],
       notification: PancakeNotifications[notificationType](t, args),
     }
     try {

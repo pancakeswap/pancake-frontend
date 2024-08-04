@@ -13,6 +13,8 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import useSubscribeToWebPushNotifications from 'hooks/useSubscribeToWebPush'
 import React, { useCallback, useState } from 'react'
 import { useAllowNotifications } from 'state/notifications/hooks'
+import useSendPushNotification from 'views/Notifications/hooks/sendPushNotification'
+import { BuilderNames } from 'views/Notifications/types'
 import { useAccount, useSignMessage } from 'wagmi'
 
 export const parseErrorMessage = (error: any) =>
@@ -48,6 +50,8 @@ function NotificationsOnboardingButton({ ...props }: React.CSSProperties) {
   const { isRegistered } = useWeb3InboxAccount(`eip155:1:${address}`)
   const { subscribe, isLoading: isSubscribing } = useSubscribe()
   const { subscribeToWebPush } = useSubscribeToWebPushNotifications()
+  const { sendPushNotification } = useSendPushNotification()
+
   const { data: subscription } = useSubscription()
   const { prepareRegistration } = usePrepareRegistration()
   const { register } = useRegister()
@@ -68,15 +72,19 @@ function NotificationsOnboardingButton({ ...props }: React.CSSProperties) {
 
   const handleSubscribe = useCallback(async () => {
     try {
-      if (isRegistered) {
+      if (isRegistered && address) {
         await subscribe()
         await subscribeToWebPush()
+
+        setTimeout(async () => {
+          await sendPushNotification(BuilderNames.onBoardingNotification, [], address)
+        }, 1500)
       }
     } catch (error) {
       const errMessage = parseErrorMessage(error)
       toast.toastError(t('Subscription Error'), errMessage)
     }
-  }, [t, toast, subscribe, isRegistered, subscribeToWebPush])
+  }, [t, toast, subscribe, isRegistered, subscribeToWebPush, address, sendPushNotification])
 
   const handleAction = useCallback(
     async (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {

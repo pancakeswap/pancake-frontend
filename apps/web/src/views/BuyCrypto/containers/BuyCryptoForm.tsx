@@ -1,8 +1,20 @@
 import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, AutoRow, Box, Flex, Link, Row, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  AutoRow,
+  Box,
+  CloseIcon,
+  Flex,
+  IconButton,
+  Link,
+  Row,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { FiatOnRampModalButton } from 'components/FiatOnRampModal/FiatOnRampModal'
+import { useInitializeNotifications } from 'hooks/useInitializeNotifications'
 import {
   Suspense,
   lazy,
@@ -20,6 +32,7 @@ import { Field } from 'state/swap/actions'
 import { useTheme } from 'styled-components'
 import { v4 } from 'uuid'
 import { OnRampUnit, type OnRampProviderQuote } from 'views/BuyCrypto/types'
+import OnBoardingView from 'views/Notifications/containers/OnBoardingView'
 import { BuyCryptoSelector } from '../components/OnRampCurrencySelect'
 import { OnRampFlipButton } from '../components/OnRampFlipButton/OnRampFlipButton'
 import { PopOverScreenContainer } from '../components/PopOverScreen/PopOverScreen'
@@ -41,6 +54,11 @@ import { FormHeader } from './FormHeader'
 const EnableNotificationsTooltip = lazy(
   () => import('../components/EnableNotificationTooltip/EnableNotificationsTooltip'),
 )
+interface NotificationsOnboardPopOverProps {
+  setShowNotificationsPopOver: Dispatch<SetStateAction<boolean>>
+  showNotificationsPopOver: boolean
+  isRegistered: boolean
+}
 
 interface OnRampCurrencySelectPopOverProps {
   quotes: OnRampProviderQuote[] | undefined
@@ -56,8 +74,8 @@ type InputEvent = ChangeEvent<HTMLInputElement>
 
 export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabilities: ProviderAvailabilities }) {
   const { typedValue, independentField } = useBuyCryptoState()
-  // const { globalToggle, setGlobalToggle } = useNotificationMenuToggle()
-  // const { allowNotifications, isSubscribed, toggle } = useWebNotificationsToggle()
+  const { isReady, isRegistered } = useInitializeNotifications()
+
   const ref = useRef<HTMLDivElement>(null)
 
   const { t } = useTranslation()
@@ -66,6 +84,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
 
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [showProivdersPopOver, setShowProvidersPopOver] = useState<boolean>(false)
+  const [showNotificationsPopOver, setShowNotificationsPopOver] = useState<boolean>(false)
   const [selectedQuote, setSelectedQuote] = useState<OnRampProviderQuote | undefined>(undefined)
   const [unit, setUnit] = useState<OnRampUnit>(OnRampUnit.Fiat)
 
@@ -128,12 +147,6 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     handleTypeInput(isFiat(unit) ? quoteAmount : fiatAmount)
   }, [onSwitchTokens, unit, selectedQuote, handleTypeInput])
 
-  // const toggleNotificationsMenu = useCallback(() => {
-  //   if (!allowNotifications) toggle()
-  //   setGlobalToggle(true)
-  // }, [setGlobalToggle, allowNotifications, toggle])
-
-  // console.log(globalToggle)
   const resetBuyCryptoState = useCallback(() => {
     if (searchQuery !== '') setSearchQuery('')
     if (unit === OnRampUnit.Crypto) onFlip()
@@ -154,7 +167,6 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     handleTypeInput(defaultAmt)
   }, [defaultAmt, handleTypeInput, unit])
 
-  // console.log(isSubscribed)
   return (
     <AutoColumn position="relative">
       <Flex justifyContent="space-between" alignItems="center" ref={ref}>
@@ -170,6 +182,11 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
         setSelectedQuote={setSelectedQuote}
         setShowProvidersPopOver={setShowProvidersPopOver}
         showProivdersPopOver={showProivdersPopOver}
+      />
+      <NotificationsOnboradPopover
+        setShowNotificationsPopOver={setShowNotificationsPopOver}
+        showNotificationsPopOver={showNotificationsPopOver}
+        isRegistered={isRegistered}
       />
       <FormContainer>
         <StyledVerticalLine />
@@ -220,17 +237,12 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           loading={isLoading}
           quotesError={quotesError}
         />
-
-        {/* <Button variant="secondary">
-        
-          {t('Enabled Notifications')}
-       
-        </Button> */}
-
         <Box>
-          <Suspense fallback={null}>
-            <EnableNotificationsTooltip />
-          </Suspense>
+          {isReady && (
+            <Suspense fallback={null}>
+              <EnableNotificationsTooltip setShowNotificationsPopOver={setShowNotificationsPopOver} />
+            </Suspense>
+          )}
           <FiatOnRampModalButton
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={cryptoCurrency}
@@ -261,6 +273,31 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
         </Box>
       </FormContainer>
     </AutoColumn>
+  )
+}
+
+const NotificationsOnboradPopover = ({
+  setShowNotificationsPopOver,
+  showNotificationsPopOver,
+  isRegistered,
+}: NotificationsOnboardPopOverProps) => {
+  const { t } = useTranslation()
+
+  const showProvidersOnClick = useCallback(() => {
+    setShowNotificationsPopOver((p: boolean) => !p)
+  }, [setShowNotificationsPopOver])
+
+  return (
+    <PopOverScreenContainer showPopover={showNotificationsPopOver} onClick={showProvidersOnClick}>
+      <Box minHeight="515px">
+        <AutoRow borderBottom="1" paddingX="8px" justifyContent="flex-end">
+          <IconButton onClick={showProvidersOnClick} variant="text">
+            <CloseIcon />
+          </IconButton>
+        </AutoRow>
+        <OnBoardingView isRegistered={isRegistered} />
+      </Box>
+    </PopOverScreenContainer>
   )
 }
 

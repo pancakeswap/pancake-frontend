@@ -1,7 +1,7 @@
 import { Box } from '@pancakeswap/uikit'
-import { useSubscription, useWeb3InboxAccount, useWeb3InboxClient } from '@web3inbox/react'
+import { useSubscription } from '@web3inbox/react'
+import { useInitializeNotifications } from 'hooks/useInitializeNotifications'
 import React, { memo, useCallback, useEffect, useState } from 'react'
-import { useAccount } from 'wagmi'
 import NotificationMenu from './components/NotificationDropdown/NotificationMenu'
 import NotificationSettings from './containers/NotificationSettings'
 import NotificationView from './containers/NotificationView'
@@ -15,14 +15,9 @@ interface INotificationWidget {
 }
 
 const Notifications = () => {
-  const { address } = useAccount()
+  const { isReady, isRegistered } = useInitializeNotifications()
 
-  const { data: client } = useWeb3InboxClient()
-  const { data: account, isRegistered } = useWeb3InboxAccount(`eip155:1:${address}`)
-
-  const isReady = Boolean(client)
-
-  if (!isReady || !account) return null
+  if (!isReady) return null
   return <NotificationsWidget isRegistered={isRegistered} />
 }
 
@@ -42,7 +37,6 @@ const NotificationsWidget = memo(({ isRegistered }: INotificationWidget) => {
     },
     [setViewIndex, viewIndex],
   )
-  console.log(subscription, isSubscribed)
 
   useEffect(() => {
     if (!isSubscribed) setViewIndex(PAGE_VIEW.OnboardView)
@@ -53,7 +47,7 @@ const NotificationsWidget = memo(({ isRegistered }: INotificationWidget) => {
     <NotificationMenu viewIndex={viewIndex} subscriptionId={subscription?.topic}>
       <Box tabIndex={-1} onMouseEnter={disableGlobalScroll} onMouseLeave={enableGlobalScroll}>
         <ViewContainer $viewIndex={viewIndex}>
-          <OnBoardingView isReady={isSubscribed} isRegistered={isRegistered} />
+          <OnBoardingView isRegistered={isRegistered} />
 
           <NotificationView toggleSettings={toggleSettings} subscription={subscription} />
 
