@@ -35,7 +35,7 @@ const OnBoardingView = ({ isRegistered }: IOnBoardingProps) => {
           justifyContent: 'center',
         }}
       >
-        <Flex pb="24px" pt="40px" alignItems="center" justifyContent="center" position="relative">
+        <Flex pb="24px" pt="44px" alignItems="center" justifyContent="center" position="relative">
           {!isSubscribed ? (
             <Image src="/images/notifications/welcome-notification-bell.png" alt="#" height={185} width={270} />
           ) : (
