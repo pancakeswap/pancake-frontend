@@ -33,6 +33,10 @@ export function withWebSecurityHeaders(config: NextConfig): NextConfig {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin',
+          },
           // createCSP(),
         ],
       },
