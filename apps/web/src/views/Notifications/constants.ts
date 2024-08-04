@@ -52,11 +52,9 @@ export const NotificationFilterTypes: OptionProps[] = [
 ]
 
 export const WEB_NOTIFICATIONS_PROJECT_ID = 'e542ff314e26ff34de2d4fba98db70bb'
-export const NEXT_PUBLIC_WEB_NOTIFICATION_SECURE_TOKEN =
-  process.env.NEXT_PUBLIC_WEB_NOTIFICATION_SECURE_TOKEN ?? 'nTu3Ls0rJzW7cVpRyZkFgUqHxJ3i1sXo'
-export const WEB_PUSH_ENCRYPTION_KEY =
-  process.env.NEXT_PUBLIC_WEB_PUSH_ENCRYPTION_KEY ?? 'ee68a5c2733a30e4d3f3e679ba646d83d12cf4f6ee631a2825f9763445591398'
-export const WEB_PUSH_IV = process.env.NEXT_PUBLIC_WEB_PUSH_IV ?? '359da65b8f571c847706283d8d578a4f'
+export const NEXT_PUBLIC_WEB_NOTIFICATION_SECURE_TOKEN = process.env.NEXT_PUBLIC_WEB_NOTIFICATION_SECURE_TOKEN ?? ''
+export const WEB_PUSH_ENCRYPTION_KEY = process.env.NEXT_PUBLIC_WEB_PUSH_ENCRYPTION_KEY ?? ''
+export const WEB_PUSH_IV = process.env.NEXT_PUBLIC_WEB_PUSH_IV ?? ''
 
 export const PancakeNotifications: {
   [notificationBuilder in keyof PancakeNotificationBuilders]: <T>(t: ContextApi['t'], args: T[]) => pushNotification
