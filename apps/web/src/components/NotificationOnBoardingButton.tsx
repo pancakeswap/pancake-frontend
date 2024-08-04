@@ -1,13 +1,6 @@
 import { TranslateFunction, useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, CircleLoader, Flex, Text, useToast } from '@pancakeswap/uikit'
-import {
-  usePrepareRegistration,
-  useRegister,
-  useSubscribe,
-  useSubscription,
-  useWeb3InboxAccount,
-  useWeb3InboxClient,
-} from '@web3inbox/react'
+import { usePrepareRegistration, useRegister, useSubscribe, useSubscription } from '@web3inbox/react'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useSubscribeToWebPushNotifications from 'hooks/useSubscribeToWebPush'
@@ -16,6 +9,11 @@ import { useAllowNotifications } from 'state/notifications/hooks'
 import useSendPushNotification from 'views/Notifications/hooks/sendPushNotification'
 import { BuilderNames } from 'views/Notifications/types'
 import { useAccount, useSignMessage } from 'wagmi'
+
+interface IOnBoardingButtonProps {
+  isRegistered: boolean
+  isReady: boolean
+}
 
 export const parseErrorMessage = (error: any) =>
   error instanceof Error && error?.message ? error.message : JSON.stringify(error)
@@ -37,7 +35,11 @@ const getOnBoardingButtonText = (
   return t('Enable Notifications')
 }
 
-function NotificationsOnboardingButton({ ...props }: React.CSSProperties) {
+function NotificationsOnboardingButton({
+  isReady,
+  isRegistered,
+  ...props
+}: IOnBoardingButtonProps & React.CSSProperties) {
   const [isRegistering, setIsRegistering] = useState(false)
 
   const toast = useToast()
@@ -46,8 +48,6 @@ function NotificationsOnboardingButton({ ...props }: React.CSSProperties) {
   const { signMessageAsync } = useSignMessage()
   const [allowNotifications, setAllowNotifications] = useAllowNotifications()
 
-  const { data: client } = useWeb3InboxClient()
-  const { isRegistered } = useWeb3InboxAccount(`eip155:1:${address}`)
   const { subscribe, isLoading: isSubscribing } = useSubscribe()
   const { subscribeToWebPush } = useSubscribeToWebPushNotifications()
   const { sendPushNotification } = useSendPushNotification()
@@ -76,6 +76,8 @@ function NotificationsOnboardingButton({ ...props }: React.CSSProperties) {
         await subscribe()
         await subscribeToWebPush()
 
+        // need to add delay to fix issue where notification
+        // fires too early after user subscribes
         setTimeout(async () => {
           await sendPushNotification(BuilderNames.onBoardingNotification, [], address)
         }, 1500)
@@ -96,7 +98,6 @@ function NotificationsOnboardingButton({ ...props }: React.CSSProperties) {
     [handleSubscribe, handleRegistration, isRegistered, setAllowNotifications, allowNotifications],
   )
 
-  const isReady = Boolean(client)
   const isSubscribed = Boolean(subscription)
   const loading = isSubscribing || isRegistering
   const buttonText = getOnBoardingButtonText(Boolean(allowNotifications), isRegistered, isSubscribed, t)

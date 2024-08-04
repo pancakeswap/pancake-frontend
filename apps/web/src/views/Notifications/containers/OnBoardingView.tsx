@@ -2,19 +2,17 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, FlexGap, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useSubscription } from '@web3inbox/react'
 import NotificationsOnboardingButton from 'components/NotificationOnBoardingButton'
+import { useInitializeNotifications } from 'hooks/useInitializeNotifications'
 import Image from 'next/image'
 import webNotificationBunny from '../../Home/components/Banners/images/web3-notification-bunny.png'
 import webNotificationCheck from '../../Home/components/Banners/images/web3-notification-check.png'
 import { getOnBoardingDescriptionMessage } from '../utils/textHelpers'
 
-interface IOnBoardingProps {
-  isRegistered: boolean
-}
-
-const OnBoardingView = ({ isRegistered }: IOnBoardingProps) => {
-  const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+const OnBoardingView = () => {
+  const { isReady, isRegistered } = useInitializeNotifications()
   const { data: subscription } = useSubscription()
+  const { isMobile } = useMatchBreakpoints()
+  const { t } = useTranslation()
 
   const isSubscribed = Boolean(subscription)
   const onBoardingDescription = getOnBoardingDescriptionMessage(Boolean(isRegistered), isSubscribed, t)
@@ -59,7 +57,7 @@ const OnBoardingView = ({ isRegistered }: IOnBoardingProps) => {
 
       {!isSubscribed && (
         <Box margin="20px" height="10%">
-          <NotificationsOnboardingButton height="50px" />
+          <NotificationsOnboardingButton isReady={isReady} isRegistered={isRegistered} height="50px" />
         </Box>
       )}
     </Flex>

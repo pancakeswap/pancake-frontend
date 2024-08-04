@@ -15,7 +15,7 @@ const getOnRampQuotesQueryKey = createQueryKey<'fetch-onramp-quotes', [ExactPart
 
 type GetOnRampQuotesQueryKey = ReturnType<typeof getOnRampQuotesQueryKey>
 
-type GetOnRampQuoteReturnType = { quotes: OnRampProviderQuote[] }
+type GetOnRampQuoteReturnType = OnRampProviderQuote[]
 
 export type UseOnRampQuotesReturnType<selectData = GetOnRampQuoteReturnType> = UseQueryResult<selectData, Error>
 
@@ -27,7 +27,8 @@ export type UseOnRampQuotesParameters<selectData = GetOnRampQuoteReturnType> = E
 export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
   parameters: UseOnRampQuotesParameters<selectData>,
 ) => {
-  const { fiatAmount, enabled, cryptoCurrency, fiatCurrency, network, onRampUnit, ...query } = parameters
+  const { fiatAmount, enabled, cryptoCurrency, fiatCurrency, network, onRampUnit, providerAvailabilities, ...query } =
+    parameters
   return useQuery({
     ...query,
     queryKey: getOnRampQuotesQueryKey([
@@ -54,12 +55,16 @@ export const useOnRampQuotes = <selectData = GetOnRampQuoteReturnType>(
         onRampUnit,
       })
 
-      return { quotes }
+      if (quotes.length === 0) throw new Error('No quotes available')
+
+      return quotes.filter((q) => providerAvailabilities[q.provider])
     },
   })
 }
 
-async function fetchProviderQuotes(payload: OnRampQuotesPayload): Promise<OnRampProviderQuote[]> {
+async function fetchProviderQuotes(
+  payload: Omit<OnRampQuotesPayload, 'providerAvailabilities'>,
+): Promise<OnRampProviderQuote[]> {
   const response = await fetch(
     // TO UPDATE
     `${ONRAMP_API_BASE_URL}/fetch-provider-quotes`,

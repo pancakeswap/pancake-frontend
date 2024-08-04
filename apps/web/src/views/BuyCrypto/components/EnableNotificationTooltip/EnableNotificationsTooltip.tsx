@@ -1,16 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, InfoFilledIcon, Text } from '@pancakeswap/uikit'
 import { useSubscription } from '@web3inbox/react'
-import { Dispatch, SetStateAction, useCallback, useMemo } from 'react'
+import { useInitializeNotifications } from 'hooks/useInitializeNotifications'
+import { useCallback, useMemo } from 'react'
 import BuyCryptoTooltip from '../Tooltip/Tooltip'
 
 interface EnableNotificationsProps {
-  setShowNotificationsPopOver: Dispatch<SetStateAction<boolean>>
+  setShowNotificationsPopOver: (s: boolean) => void
 }
 const EnableNotificationsTooltip = ({ setShowNotificationsPopOver }: EnableNotificationsProps) => {
   const { t } = useTranslation()
+  const { isReady } = useInitializeNotifications()
   const { data: subscription } = useSubscription()
-  const isSubscribed = useMemo(() => Boolean(subscription), [subscription])
+
+  const isSubscribed = useMemo(() => Boolean(subscription && isReady), [subscription, isReady])
 
   const toggleNotificationsMenu = useCallback(() => {
     setShowNotificationsPopOver(true)
