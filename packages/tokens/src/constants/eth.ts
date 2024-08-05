@@ -521,4 +521,12 @@ export const ethereumTokens = {
     'Elixir deUSD',
     'https://www.elixir.xyz/',
   ),
+  usde: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x4c9EDD5852cd905f086C759E8383e09bff1E68B3',
+    18,
+    'USDe',
+    'Ethena USDe',
+    'https://ethena.fi/',
+  ),
 }

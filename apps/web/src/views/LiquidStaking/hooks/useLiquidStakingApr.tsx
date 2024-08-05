@@ -4,7 +4,7 @@ import { useLiquidStakingList } from 'views/LiquidStaking/hooks/useLiquidStaking
 
 interface UseLiquidStakingAprDetail {
   apr: number
-  contract: string
+  contract: `0x${string}`
   stakingSymbol: string
 }
 
@@ -22,29 +22,33 @@ export const useLiquidStakingApr = (): UseLiquidStakingAprType => {
     queryKey: ['liquidStaking', 'liquid-staking-apr', chainId],
 
     queryFn: async () => {
-      try {
-        const result = await Promise.all(
-          liquidStakingList.map(async (i) => {
-            let apr: number | null = null
-            const { data: responseData } = await fetch(i.aprUrl).then((res) => res.json())
+      const result = await Promise.allSettled(
+        liquidStakingList.map(async (i) => {
+          let apr: number | null = null
+          const { data: responseData } = await fetch(i.aprUrl).then((res) => res.json())
 
-            if (responseData?.annualInterestRate) {
-              apr = responseData.annualInterestRate * 100
-            }
+          if (responseData?.annualInterestRate) {
+            apr = responseData.annualInterestRate * 100
+          } else if (responseData?.apr) {
+            apr = responseData.apr * 100
+          }
 
-            return {
-              apr,
-              contract: i.contract,
-              stakingSymbol: i.stakingSymbol,
-            }
-          }),
-        )
+          if (!apr) {
+            throw new Error('Unknown apr')
+          }
 
-        return result as UseLiquidStakingAprDetail[]
-      } catch (error) {
-        console.error('Cannot get liquid staking apr: ', error)
-        return []
-      }
+          return {
+            apr,
+            contract: i.contract,
+            stakingSymbol: i.stakingSymbol,
+          }
+        }),
+      )
+
+      const results = result
+        .filter((res): res is PromiseFulfilledResult<UseLiquidStakingAprDetail> => res.status === 'fulfilled')
+        .map((res) => res.value)
+      return results
     },
 
     enabled: Boolean(liquidStakingList?.length),

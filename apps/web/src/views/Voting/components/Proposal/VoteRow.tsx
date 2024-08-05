@@ -42,7 +42,7 @@ const VoteRow: React.FC<React.PropsWithChildren<VoteRowProps>> = ({ vote, isVote
       <VotingPowerColumn>
         <Flex alignItems="center" justifyContent="end">
           <Text title={vote.metadata?.votingPower || '0'}>{votingPower}</Text>
-          {hasVotingPower && <LinkExternal href={`${IPFS_GATEWAY}/${vote.id}`} />}
+          {hasVotingPower && <LinkExternal href={`${IPFS_GATEWAY}/${vote.ipfs}`} />}
         </Flex>
       </VotingPowerColumn>
     </Row>
