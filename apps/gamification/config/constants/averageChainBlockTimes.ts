@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 
-export const AVERAGE_CHAIN_BLOCK_TIMES = {
+export const AVERAGE_CHAIN_BLOCK_TIMES: Record<ChainId, number> = {
   [ChainId.BSC]: 3,
   [ChainId.BSC_TESTNET]: 3,
   [ChainId.OPBNB]: 1,
@@ -18,4 +18,7 @@ export const AVERAGE_CHAIN_BLOCK_TIMES = {
   [ChainId.LINEA_TESTNET]: 2,
   [ChainId.BASE]: 3,
   [ChainId.BASE_TESTNET]: 3,
+  [ChainId.ARBITRUM_SEPOLIA]: 0,
+  [ChainId.BASE_SEPOLIA]: 0,
+  [ChainId.SEPOLIA]: 0,
 }

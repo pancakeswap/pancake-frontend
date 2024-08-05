@@ -1,7 +1,11 @@
 import { LanguageProvider } from '@pancakeswap/localization'
-import { ModalProvider, PancakeTheme, ResetCSS, UIKitProvider, dark, light } from '@pancakeswap/uikit'
+import { ModalProvider, PancakeTheme, ResetCSS, ToastListener, UIKitProvider, dark, light } from '@pancakeswap/uikit'
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import BigNumber from 'bignumber.js'
+import { NetworkModal } from 'components/NetworkModal'
+import { useAccountEventListener } from 'hooks/useAccountEventListener'
 import { NextPage } from 'next'
+import { SessionProvider } from 'next-auth/react'
 import { DefaultSeo } from 'next-seo'
 import { SEO } from 'next-seo.config'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
@@ -9,12 +13,26 @@ import { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Script from 'next/script'
-import React, { Fragment, useMemo } from 'react'
+import React, { Fragment, ReactNode, useMemo } from 'react'
+import { Provider } from 'react-redux'
 import { Provider as WrapBalancerProvider } from 'react-wrap-balancer'
+import { useStore } from 'state'
 import { createGlobalStyle } from 'styled-components'
 import { createWagmiConfig } from 'utils/wagmi'
+import { useAutoSiwe } from 'hooks/useSiwe'
 import { WagmiProvider } from 'wagmi'
 import Menu from '../components/Menu/index'
+
+function GlobalHooks() {
+  useAccountEventListener()
+  useAutoSiwe()
+  return null
+}
+
+BigNumber.config({
+  EXPONENTIAL_AT: 1000,
+  DECIMAL_PLACES: 80,
+})
 
 // Create a client
 const queryClient = new QueryClient()
@@ -46,6 +64,7 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     background-color: ${({ theme }) => theme.colors.background};
+    overflow-x: hidden;
 
     img {
       height: auto;
@@ -57,6 +76,9 @@ type NextPageWithLayout = NextPage & {
   Layout?: React.FC<React.PropsWithChildren<unknown>>
   /** render component without all layouts */
   pure?: true
+  chains?: number[]
+
+  CustomComponent?: ReactNode
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -66,6 +88,7 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const Layout = Component.Layout || Fragment
   const wagmiConfig = useMemo(() => createWagmiConfig(), [])
+  const store = useStore(pageProps.initialReduxState)
 
   return (
     <>
@@ -78,27 +101,35 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
       <DefaultSeo {...SEO} />
       <WagmiProvider reconnectOnMount config={wagmiConfig}>
-        <QueryClientProvider client={queryClient}>
-          <HydrationBoundary state={pageProps.dehydratedState}>
-            <NextThemeProvider>
-              <StyledThemeProvider>
-                <LanguageProvider>
-                  <ModalProvider>
-                    <ResetCSS />
-                    <GlobalStyle />
-                    <Menu>
-                      <Layout>
-                        <WrapBalancerProvider>
-                          <Component {...pageProps} />
-                        </WrapBalancerProvider>
-                      </Layout>
-                    </Menu>
-                  </ModalProvider>
-                </LanguageProvider>
-              </StyledThemeProvider>
-            </NextThemeProvider>
-          </HydrationBoundary>
-        </QueryClientProvider>
+        <SessionProvider session={pageProps.session}>
+          <QueryClientProvider client={queryClient}>
+            <HydrationBoundary state={pageProps.dehydratedState}>
+              <Provider store={store}>
+                <NextThemeProvider>
+                  <StyledThemeProvider>
+                    <LanguageProvider>
+                      <ModalProvider>
+                        <ResetCSS />
+                        <GlobalStyle />
+                        <GlobalHooks />
+                        <Menu>
+                          <Layout>
+                            <WrapBalancerProvider>
+                              <Component {...pageProps} />
+                            </WrapBalancerProvider>
+                          </Layout>
+                        </Menu>
+                        <ToastListener />
+                        <NetworkModal pageSupportedChains={Component.chains} />
+                        {Component?.CustomComponent}
+                      </ModalProvider>
+                    </LanguageProvider>
+                  </StyledThemeProvider>
+                </NextThemeProvider>
+              </Provider>
+            </HydrationBoundary>
+          </QueryClientProvider>
+        </SessionProvider>
       </WagmiProvider>
       <Script
         strategy="afterInteractive"

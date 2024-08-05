@@ -6,17 +6,43 @@
     "dev": "next dev -p 3005",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint '**/*.{js,jsx,ts,tsx}'"
+  },
+  "engines": {
+    "node": ">=18.20.0"
+  },
+  "browserslist": {
+    "production": [
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 14"
+    ],
+    "development": [
+      ">0.2%",
+      "not ie <= 99",
+      "not android <= 4.4.4",
+      "not dead",
+      "not op_mini all"
+    ]
   },
   "dependencies": {
     "@binance/w3w-wagmi-connector-v2": "^1.2.3",
     "@cyberlab/cyber-app-sdk": "v3.0.0-beta.5",
+    "@datadog/browser-logs": "^5.8.0",
+    "@datadog/browser-rum": "^5.8.0",
     "@gnosis.pm/safe-apps-wagmi": "^1.2.0",
+    "@pancakeswap/achievements": "workspace:*",
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/hooks": "workspace:*",
+    "@pancakeswap/ifos": "workspace:*",
     "@pancakeswap/localization": "workspace:*",
+    "@pancakeswap/multicall": "workspace:*",
     "@pancakeswap/prediction": "workspace:*",
     "@pancakeswap/sdk": "workspace:*",
+    "@pancakeswap/smart-router": "workspace:*",
+    "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
     "@pancakeswap/ui-wallets": "workspace:*",
     "@pancakeswap/uikit": "workspace:*",
@@ -30,14 +56,27 @@
     "bignumber.js": "^9.1.2",
     "blocto": "link:@pancakeswap/wagmi/connectors/blocto",
     "dayjs": "^1.11.10",
+    "easymde": "2.16.1",
+    "graphql": "^16.8.1",
+    "graphql-request": "5.0.0",
     "jotai": "^2.4.3",
+    "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "next": "14.2.3",
+    "next-auth": "^4.24.7",
     "next-seo": "^5.15.0",
     "next-themes": "^0.2.1",
+    "oauth-1.0a": "^2.2.6",
     "react": "^18.2.0",
+    "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
+    "react-draggable-list": "4.0.4",
+    "react-images-uploading": "^3.1.7",
+    "react-infinite-scroll-hook": "^4.1.1",
+    "react-jazzicon": "^1.0.4",
+    "react-popper": "^2.3.0",
     "react-redux": "^8.0.5",
+    "react-window": "^1.8.7",
     "react-wrap-balancer": "^0.4.0",
     "redux-persist": "^6.0.0",
     "split-grid": "^1.0.11",
@@ -55,9 +94,17 @@
     "@types/node": "18.0.4",
     "@types/qs": "^6.0.0",
     "@types/react": "^18.2.21",
+    "@types/react-datepicker": "^4.4.1",
     "@types/react-dom": "^18.0.6",
+    "@types/react-redux": "^7.1.24",
+    "@types/react-window": "^1.8.8",
     "@types/styled-system": "^5.1.17",
     "eslint": "^8.32.0",
-    "eslint-plugin-lodash": "^7.4.0"
+    "eslint-plugin-lodash": "^7.4.0",
+    "stylelint": "^14.5.3",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-recommended": "^7.0.0",
+    "stylelint-config-standard": "^25.0.0",
+    "stylelint-config-styled-components": "^0.1.1"
   }
 }

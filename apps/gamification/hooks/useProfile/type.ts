@@ -1,4 +1,5 @@
 import { Address } from 'viem'
+import { NftAttribute, NftLocation, TokenMarketData } from 'views/ProfileCreation/Nft/type'
 
 export interface Image {
   original: string
@@ -8,8 +9,42 @@ export interface Image {
   gif?: string
 }
 
+export type Images = {
+  lg: string
+  md: string
+  sm: string
+  ipfs?: string
+}
+
+export type TeamImages = {
+  alt: string
+} & Images
+
+export type Team = {
+  id: number
+  name: string
+  description: string
+  isJoinable?: boolean
+  users: number
+  points: number
+  images: TeamImages
+  background: string
+  textColor: string
+}
+
 export interface NftToken {
+  tokenId: string
+  name: string
+  description: string
+  collectionName: string
+  collectionAddress: Address
   image: Image
+  attributes?: NftAttribute[]
+  createdAt?: string // API createdAt
+  updatedAt?: string // API updatedAt
+  marketData?: TokenMarketData
+  location?: NftLocation
+  meta?: Record<string, string | number>
 }
 
 export interface Profile {
@@ -19,11 +54,15 @@ export interface Profile {
   collectionAddress: Address
   tokenId: number
   isActive: boolean
+  username: string
   nft?: NftToken
+  team?: Team
+  hasRegistered: boolean
 }
 
 export interface GetProfileResponse {
   profile?: Profile
+  hasRegistered: boolean
 }
 
 export interface ContractProfileResponse {
@@ -37,6 +76,7 @@ export interface ContractProfileResponse {
 
 export interface ApiResponseSpecificToken {
   data: {
+    attributes: NftAttribute[] | undefined
     tokenId: string
     name: string
     description: string
