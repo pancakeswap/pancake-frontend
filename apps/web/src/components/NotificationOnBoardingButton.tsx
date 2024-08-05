@@ -13,6 +13,7 @@ import { useAccount, useSignMessage } from 'wagmi'
 interface IOnBoardingButtonProps {
   isRegistered: boolean
   isReady: boolean
+  onExternalDismiss?: () => void
 }
 
 export const parseErrorMessage = (error: any) =>
@@ -27,10 +28,12 @@ const getOnBoardingButtonText = (
   const isStep1 = Boolean(!areNotificationsEnabled)
   const isStep2 = Boolean(areNotificationsEnabled && !isRegistered)
   const isStep3 = Boolean(isRegistered && !isSubscribed)
+  const isStep4 = Boolean(isSubscribed)
 
   if (isStep1) return t('Enable Notifications')
   if (isStep2) return t('Sign In With Wallet')
   if (isStep3) return t('Subscribe To PancakeSwap')
+  if (isStep4) return t('Return')
 
   return t('Enable Notifications')
 }
@@ -38,6 +41,7 @@ const getOnBoardingButtonText = (
 function NotificationsOnboardingButton({
   isReady,
   isRegistered,
+  onExternalDismiss,
   ...props
 }: IOnBoardingButtonProps & React.CSSProperties) {
   const [isRegistering, setIsRegistering] = useState(false)
@@ -76,8 +80,7 @@ function NotificationsOnboardingButton({
         await subscribe()
         await subscribeToWebPush()
 
-        // need to add delay to fix issue where notification
-        // fires too early after user subscribes
+        //delay before firing notification
         setTimeout(async () => {
           await sendPushNotification(BuilderNames.onBoardingNotification, [], address)
         }, 1500)
@@ -93,6 +96,7 @@ function NotificationsOnboardingButton({
       e.stopPropagation()
       if (!allowNotifications) setAllowNotifications(true)
       if (!isRegistered) handleRegistration()
+      if (isSubscribed && onExternalDismiss) onExternalDismiss()
       else handleSubscribe()
     },
     [handleSubscribe, handleRegistration, isRegistered, setAllowNotifications, allowNotifications],

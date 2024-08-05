@@ -7,8 +7,12 @@ import BuyCryptoTooltip from '../Tooltip/Tooltip'
 
 interface EnableNotificationsProps {
   setShowNotificationsPopOver: (s: boolean) => void
+  showNotificationsPopOver: boolean
 }
-const EnableNotificationsTooltip = ({ setShowNotificationsPopOver }: EnableNotificationsProps) => {
+const EnableNotificationsTooltip = ({
+  setShowNotificationsPopOver,
+  showNotificationsPopOver,
+}: EnableNotificationsProps) => {
   const { t } = useTranslation()
   const { isReady } = useInitializeNotifications()
   const { data: subscription } = useSubscription()
@@ -19,8 +23,10 @@ const EnableNotificationsTooltip = ({ setShowNotificationsPopOver }: EnableNotif
     setShowNotificationsPopOver(true)
   }, [setShowNotificationsPopOver])
 
+  if (isSubscribed && !showNotificationsPopOver) return null
+
   return (
-    <Flex alignItems="center" justifyContent="center" mb="2px" opacity={isSubscribed ? 0 : 1}>
+    <Flex alignItems="center" justifyContent="center" mb="2px">
       <Text
         bold
         as="span"

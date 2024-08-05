@@ -186,7 +186,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           disableInput={false}
           unit={unit}
         />
-        <Box width="100%" position="absolute" zIndex="100" left="45%" top="11.7%">
+        <Box width="100%" position="absolute" zIndex="100" left="45%" top="53px">
           <SwapUI.SwitchButton onClick={onFlip} />
         </Box>
         <BuyCryptoSelector
@@ -224,7 +224,10 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
         <Box>
           {Boolean(!inputError && !btcError && !quotesError) && (
             <Suspense fallback={null}>
-              <EnableNotificationsTooltip setShowNotificationsPopOver={setShowNotificationsPopOver} />
+              <EnableNotificationsTooltip
+                showNotificationsPopOver={showNotificationsPopOver}
+                setShowNotificationsPopOver={setShowNotificationsPopOver}
+              />
             </Suspense>
           )}
 
@@ -278,7 +281,7 @@ const NotificationsOnboradPopover = ({
           </IconButton>
         </AutoRow>
 
-        <OnBoardingView />
+        <OnBoardingView onExternalDismiss={showProvidersOnClick} />
       </Box>
     </PopOverScreenContainer>
   )

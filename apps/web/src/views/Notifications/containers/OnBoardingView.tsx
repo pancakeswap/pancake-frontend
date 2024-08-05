@@ -14,7 +14,7 @@ import type { Swiper as SwiperClass } from 'swiper/types'
 import webNotificationBunny from '../../Home/components/Banners/images/web3-notification-bunny.png'
 import webNotificationCheck from '../../Home/components/Banners/images/web3-notification-check.png'
 
-const IntroSteps = [
+const OnBoardingSteps = [
   {
     key: 'step-1',
     title: <Trans>Notifications From PancakeSwap</Trans>,
@@ -27,7 +27,6 @@ const IntroSteps = [
   },
   {
     key: 'step-2',
-
     title: <Trans>Enable PancakeSwap Notifications</Trans>,
     icon: '/images/notifications/welcome-notification-bell.png',
     description: (
@@ -39,7 +38,6 @@ const IntroSteps = [
   },
   {
     key: 'step-3',
-
     title: <Trans>Congrats You Are Now Subscribed</Trans>,
     icon: webNotificationCheck,
     description: (
@@ -51,7 +49,7 @@ const IntroSteps = [
   },
 ]
 
-const OnBoardingView = () => {
+const OnBoardingView = ({ onExternalDismiss }: { onExternalDismiss: () => void }) => {
   const [step, setStep] = useState(0)
 
   const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
@@ -75,9 +73,9 @@ const OnBoardingView = () => {
 
   useEffect(() => {
     if (!isReady || !swiper) return
-    if (!isRegistered && step !== 0) handleStepClick(0)
-    if (isRegistered && !isSubscribed && step !== 1) handleStepClick(1)
-    if (isSubscribed && step !== 2) handleStepClick(2)
+    if (!isRegistered) handleStepClick(0)
+    if (isRegistered && !isSubscribed) handleStepClick(1)
+    if (isSubscribed) handleStepClick(2)
   }, [isRegistered, isSubscribed, handleStepClick, isReady, swiper, step])
 
   return (
@@ -105,7 +103,7 @@ const OnBoardingView = () => {
             justifyContent: 'center',
           }}
         >
-          {IntroSteps.map((introStep, i) => (
+          {OnBoardingSteps.map((introStep, i) => (
             <SwiperSlide key={introStep.key}>
               <Flex height="270px" alignItems="center" justifyContent="center" position="relative">
                 <Image
@@ -129,11 +127,14 @@ const OnBoardingView = () => {
         </div>
       </Swiper>
 
-      {!isSubscribed && (
-        <Box margin="20px" height="10%">
-          <NotificationsOnboardingButton isReady={isReady} isRegistered={isRegistered} height="50px" />
-        </Box>
-      )}
+      <Box margin="20px" height="10%">
+        <NotificationsOnboardingButton
+          isReady={isReady}
+          isRegistered={isRegistered}
+          height="50px"
+          onExternalDismiss={onExternalDismiss}
+        />
+      </Box>
     </Flex>
   )
 }
