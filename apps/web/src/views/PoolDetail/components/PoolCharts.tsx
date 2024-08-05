@@ -1,11 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, CardBody, Column, Container, Tab, TabMenu } from '@pancakeswap/uikit'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
+import { useRouterQuery } from '../hooks/useRouterQuery'
+import { ChartVolume } from './ChartVolume'
 
 enum PoolChart {
-  Volume,
+  Volume = 0,
   Liquidity,
   Fees,
   TVL,
@@ -24,11 +26,13 @@ type PoolChartsProps = {
 }
 export const PoolCharts: React.FC<PoolChartsProps> = ({ poolInfo }) => {
   const { t } = useTranslation()
+  const { id } = useRouterQuery()
   const isV4 = useMemo(() => poolInfo?.protocol === 'v4bin', [poolInfo])
+  const [chart, setChart] = useState<PoolChart>(PoolChart.Volume)
   return (
     <Column>
       <StyledTabMenuContainer>
-        <TabMenu isShowBorderBottom={false} gap="8px">
+        <TabMenu activeIndex={chart} onItemClick={setChart} isShowBorderBottom={false} gap="8px">
           <Tab key={PoolChart.Volume}>
             <Box px="8px">{t('Volume')}</Box>
           </Tab>
@@ -56,7 +60,12 @@ export const PoolCharts: React.FC<PoolChartsProps> = ({ poolInfo }) => {
         </TabMenu>
       </StyledTabMenuContainer>
       <Card>
-        <CardBody>12</CardBody>
+        <CardBody>
+          {chart === PoolChart.Volume ? <ChartVolume address={id} poolInfo={poolInfo} /> : null}
+          {chart === PoolChart.Liquidity ? <div>Liquidity</div> : null}
+          {chart === PoolChart.Fees ? <div>fee</div> : null}
+          {chart === PoolChart.TVL ? <div>TVL</div> : null}
+        </CardBody>
       </Card>
     </Column>
   )
