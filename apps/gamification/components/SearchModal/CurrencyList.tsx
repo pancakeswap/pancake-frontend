@@ -1,6 +1,6 @@
 import { Currency, ERC20Token } from '@pancakeswap/sdk'
 import { Flex, Text } from '@pancakeswap/uikit'
-import { TokenImage } from 'components/TokenImage'
+import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { styled } from 'styled-components'
 
 const StyledCurrencyList = styled(Flex)<{ disable?: boolean }>`
@@ -53,7 +53,7 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
             disable={disable}
             onClick={() => !disable && onCurrencySelect(newToken)}
           >
-            <TokenImage style={{ alignSelf: 'center' }} token={currency} width={24} height={24} />
+            <CurrencyLogo style={{ alignSelf: 'center' }} currency={currency} />
             <Flex ml="8px" flexDirection="column">
               <Text bold>{currency?.symbol}</Text>
               <Text color="textSubtle" small ellipsis maxWidth="200px">
