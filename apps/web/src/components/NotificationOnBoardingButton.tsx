@@ -80,7 +80,7 @@ function NotificationsOnboardingButton({
         await subscribe()
         await subscribeToWebPush()
 
-        //delay before firing notification
+        // delay before firing notification
         setTimeout(async () => {
           await sendPushNotification(BuilderNames.onBoardingNotification, [], address)
         }, 1500)
