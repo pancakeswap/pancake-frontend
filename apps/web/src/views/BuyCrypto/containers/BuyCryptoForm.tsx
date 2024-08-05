@@ -90,11 +90,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
   const { onUserInput, onCurrencySelection, onSwitchTokens } = useBuyCryptoActionHandlers()
 
   const { cryptoCurrency, fiatCurrency, currencyIn, currencyOut } = useOnRampCurrencyOrder(unit)
-  const { data: validAddress, isError: btcQueryError } = useBtcAddressValidator({
-    address: searchQuery,
-    enabled: isBtc,
-  })
-  const { fiatValue: defaultAmt } = useFiatCurrencyAmount({ currencyCode: fiatCurrency?.symbol, value_: 150 })
+  const { fiatValue: defaultAmt } = useFiatCurrencyAmount({ currencyCode: fiatCurrency?.symbol, unit })
 
   const { inputError, amountError } = useLimitsAndInputError({
     typedValue: typedValue ?? '',
@@ -102,6 +98,15 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     fiatCurrency,
     unit,
   })
+
+  const { data: validAddress, isError: btcQueryError } = useBtcAddressValidator({
+    address: searchQuery,
+    enabled: isBtc,
+  })
+
+  const btcError = useMemo(() => {
+    return Boolean(!validAddress?.result && !btcQueryError && isBtc)
+  }, [isBtc, btcQueryError, validAddress?.result])
 
   const {
     data: quotes,
@@ -124,10 +129,6 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
     return formatQuoteDecimals(output, unit)
   }, [unit, selectedQuote, inputError])
 
-  const btcError = useMemo(() => {
-    return Boolean(!validAddress?.result && !btcQueryError && isBtc)
-  }, [isBtc, btcQueryError, validAddress?.result])
-
   const handleTypeInput = useCallback((value: string) => onUserInput(Field.INPUT, value), [onUserInput])
   const handleAddressInput = useCallback((event: InputEvent) => setSearchQuery(event.target.value), [])
 
@@ -143,23 +144,15 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
   }, [onSwitchTokens, unit, selectedQuote, handleTypeInput])
 
   const resetBuyCryptoState = useCallback(() => {
-    if (searchQuery !== '') setSearchQuery('')
     if (unit === OnRampUnit.Crypto) onFlip()
     if (defaultAmt) handleTypeInput(defaultAmt)
-  }, [handleTypeInput, defaultAmt, unit, onFlip, searchQuery])
+  }, [handleTypeInput, defaultAmt, unit, onFlip])
 
   useEffect(() => {
-    if (!quotes || quotesError) return
-    if (bestQuoteRef.current !== quotes[0]) {
-      bestQuoteRef.current = quotes[0]
-      setSelectedQuote(quotes[0])
-    }
-  }, [quotes, quotesError])
-
-  useEffect(() => {
-    if (!defaultAmt || !isFiat(unit)) return
-    handleTypeInput(defaultAmt)
-  }, [defaultAmt, handleTypeInput, unit])
+    if (!quotes || bestQuoteRef.current === quotes[0]) return
+    bestQuoteRef.current = quotes[0]
+    setSelectedQuote(quotes[0])
+  }, [quotes])
 
   return (
     <AutoColumn position="relative">
@@ -231,9 +224,11 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           quotesError={quotesError}
         />
         <Box>
-          <Suspense fallback={null}>
-            <EnableNotificationsTooltip setShowNotificationsPopOver={setShowNotificationsPopOver} />
-          </Suspense>
+          {Boolean(!inputError && btcError && quotesError) && (
+            <Suspense fallback={null}>
+              <EnableNotificationsTooltip setShowNotificationsPopOver={setShowNotificationsPopOver} />
+            </Suspense>
+          )}
 
           <FiatOnRampModalButton
             externalTxIdRef={externalTxIdRef}
