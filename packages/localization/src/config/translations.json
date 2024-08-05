@@ -3514,5 +3514,6 @@
   "fee": "fee",
   "transaction value": "transaction value",
   "account": "account",
-  "time": "time"
+  "time": "time",
+  "CAKE earned": "CAKE earned"
 }
