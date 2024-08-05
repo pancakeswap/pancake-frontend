@@ -33,11 +33,13 @@ const config: (t: ContextApi['t'], chainId?: number) => ConfigMenuItemsType[] = 
       href: '/dashboard',
       items: [],
       icon: AllBlogIcon,
+      showOnMobile: false,
     },
     {
       label: t('Quests'),
       href: '/quests',
       items: [],
+      showItemsOnMobile: false,
       icon: TrophyIcon,
       fillIcon: TrophyFillIcon,
     },
