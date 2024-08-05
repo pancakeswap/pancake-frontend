@@ -50,7 +50,6 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
         request_access: true,
       },
       async (user: TelegramResponse) => {
-        console.log('user', user)
         if (user && account) {
           try {
             const walletAddress = account
@@ -82,26 +81,6 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
               }`,
             )
           }
-        } else {
-          console.log('Cannot get user data')
-          // User cancelled authentication, redirect to /profile
-          // window.location.href = '/profile'
-        }
-      },
-    )
-
-    window.Telegram.Login.init(
-      {
-        bot_id: process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN, // Replace with your bot's ID
-        request_access: true, // Set to true if you want to request write access
-      },
-      async (user) => {
-        // Handle the user data here
-        if (user) {
-          console.log('Telegram User Data:', user)
-          // Proceed with additional logic (e.g., connect to wallet, authenticate user)
-        } else {
-          console.log('Telegram login was cancelled or failed.')
         }
       },
     )
