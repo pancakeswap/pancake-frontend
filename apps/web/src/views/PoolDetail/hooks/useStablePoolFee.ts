@@ -8,7 +8,7 @@ import { useChainIdByQuery } from 'state/info/hooks'
 import { Address } from 'viem'
 
 const STABLE_POOL_FEE_DENOMINATOR = BigInt(1e10)
-const v2Fee = new Percent(10000 - 9975, 10000)
+export const v2Fee = new Percent(10000 - 9975, 10000)
 
 export const usePoolFee = (poolAddress: Address | undefined, poolProtocol?: Protocol) => {
   const chainId = useChainIdByQuery()
