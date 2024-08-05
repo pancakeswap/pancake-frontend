@@ -49,7 +49,7 @@ const OnBoardingSteps = [
   },
 ]
 
-const OnBoardingView = ({ onExternalDismiss }: { onExternalDismiss: () => void }) => {
+const OnBoardingView = ({ onExternalDismiss }: { onExternalDismiss?: () => void }) => {
   const [step, setStep] = useState(0)
 
   const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
