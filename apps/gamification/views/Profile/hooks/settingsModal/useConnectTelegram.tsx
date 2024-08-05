@@ -50,6 +50,7 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
         request_access: true,
       },
       async (user: TelegramResponse) => {
+        console.log('user', user)
         if (user && account) {
           try {
             const walletAddress = account
@@ -82,6 +83,7 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
             )
           }
         } else {
+          console.log('Cannot get user data')
           // User cancelled authentication, redirect to /profile
           // window.location.href = '/profile'
         }
