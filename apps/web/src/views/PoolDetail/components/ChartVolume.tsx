@@ -23,8 +23,10 @@ export const ChartVolume: React.FC<ChartVolumeProps> = ({ address, poolInfo }) =
 
   return (
     <>
-      <Flex flexDirection="column" px="24px" pt="24px">
-        {formatDollarAmount(latestValue ?? data?.[data.length - 1].value)}
+      <Flex flexDirection="column">
+        <Text bold fontSize={24}>
+          {formatDollarAmount(latestValue ?? data?.[data.length - 1].value)}
+        </Text>
         <Text small color="secondary">
           {`${dayjs(valueLabel ?? data?.[data.length - 1].time).format('MMM D, YYYY')} (UTC)`}
         </Text>
