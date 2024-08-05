@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
 import { useRouterQuery } from '../hooks/useRouterQuery'
+import { ChartFee } from './ChartFee'
 import { ChartLiquidity } from './ChartLiquidity'
 import { ChartTVL } from './ChartTVL'
 import { ChartVolume } from './ChartVolume'
@@ -66,7 +67,7 @@ export const PoolCharts: React.FC<PoolChartsProps> = ({ poolInfo }) => {
         <CardBody>
           {chart === PoolChart.Volume ? <ChartVolume address={id} poolInfo={poolInfo} /> : null}
           {chart === PoolChart.Liquidity ? <ChartLiquidity address={id} poolInfo={poolInfo} /> : null}
-          {chart === PoolChart.Fees ? <div>fee</div> : null}
+          {chart === PoolChart.Fees ? <ChartFee address={id} poolInfo={poolInfo} /> : null}
           {chart === PoolChart.TVL ? <ChartTVL address={id} poolInfo={poolInfo} /> : null}
         </CardBody>
       </Card>
