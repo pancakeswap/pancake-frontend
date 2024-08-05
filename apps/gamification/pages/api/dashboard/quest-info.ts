@@ -3,9 +3,10 @@ import { object as zObject, string as zString } from 'zod'
 
 import { withDashboardAllowlistAuth } from 'middlewares/withDashboardAllowlistAuth'
 import { withSiweAuth } from 'middlewares/withSiwe'
+import { zQuestId } from 'config/validations'
 
 const zQuery = zObject({
-  id: zString(),
+  id: zQuestId,
 })
 
 const handler = withSiweAuth(

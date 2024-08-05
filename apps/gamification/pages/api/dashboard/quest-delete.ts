@@ -4,9 +4,10 @@ import { object as zObject, string as zString } from 'zod'
 import { verifySiweMessage, parseSiweMessage } from 'viem/siwe'
 import { getViemClients } from 'utils/viem.server'
 import { DASHBOARD_ALLOW_LIST } from 'config/constants/dashboardAllowList'
+import { zQuestId } from 'config/validations'
 
 const zQuery = zObject({
-  id: zString(),
+  id: zQuestId,
 })
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
