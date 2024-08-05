@@ -9,17 +9,20 @@ import {
   MinusIcon,
   Row,
   Skeleton,
-  SortArrow,
+  SwapHorizIcon,
   Tag,
   Text,
+  useMatchBreakpoints,
   useModalV2,
 } from '@pancakeswap/uikit'
+import { chainNames } from '@pancakeswap/chains'
 import { Protocol } from '@pancakeswap/farms'
 import { ERC20Token } from '@pancakeswap/sdk'
+import currencyId from 'utils/currencyId'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Price, Token } from '@pancakeswap/swap-sdk-core'
 import { unwrappedToken } from '@pancakeswap/tokens'
-import { Bound, FiatNumberDisplay } from '@pancakeswap/widgets-internal'
+import { Bound, DoubleCurrencyLogo, FiatNumberDisplay } from '@pancakeswap/widgets-internal'
 import { RangeTag } from 'components/RangeTag'
 import { TokenPairImage } from 'components/TokenImage'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
@@ -40,9 +43,9 @@ import { v2Fee } from 'views/PoolDetail/hooks/useStablePoolFee'
 import { useStakedPositionsByUser } from 'state/farmsV3/hooks'
 import { PoolApyButton } from './PoolApyButton'
 import { StakeModal } from './StakeModal'
+import { addQueryToPath } from '../utils'
 
 const Container = styled(Flex)`
-  min-width: 576px;
   padding: 16px;
   align-items: flex-start;
   position: relative;
@@ -55,17 +58,22 @@ const Container = styled(Flex)`
 `
 
 const DetailsContainer = styled(Flex)`
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   flex: 1;
+  gap: 8px;
   color: ${({ theme }) => theme.colors.textSubtle};
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+  }
 `
 
 const TagCell = styled(Flex)`
   position: absolute;
   right: 0;
   top: 0;
-  padding: 8px;
+  padding: 16px;
 `
 
 interface IPriceRangeProps {
@@ -142,12 +150,9 @@ const PriceRange = memo(({ currency1, currency0, priceLower, priceUpper, tickAtL
         assetA: priceBaseInvert ? currency1.symbol : currency0.symbol,
         assetB: priceBaseInvert ? currency0.symbol : currency1.symbol,
       })}
-      <SortArrow
-        color="textSubtle"
-        style={{ transform: 'rotate(90deg)', cursor: 'pointer' }}
-        onClick={toggleSwitch}
-        ml="4px"
-      />
+      <IconButton onClick={toggleSwitch} variant="text" scale="xs">
+        <SwapHorizIcon color="textSubtle" ml="2px" />
+      </IconButton>
     </>
   ) : null
 })
@@ -171,6 +176,7 @@ export const PositionV2Item = memo(({ data }: { data: V2LPDetail; pool?: PoolInf
     <PositionItemDetail
       chainId={pair.chainId}
       pool={pool}
+      link={`/v2/pair/${currencyId(unwrappedToken0)}/${currencyId(unwrappedToken1)}`}
       totalPriceUSD={totalPriceUSD}
       currency0={unwrappedToken0}
       currency1={unwrappedToken1}
@@ -199,6 +205,7 @@ export const PositionStableItem = memo(({ data }: { data: StableLPDetail; pool?:
     <PositionItemDetail
       chainId={pair.liquidityToken.chainId}
       pool={pool}
+      link={`/stable/${pair.lpAddress}`}
       totalPriceUSD={totalPriceUSD}
       currency0={pair.token0}
       currency1={pair.token1}
@@ -262,11 +269,12 @@ export const PositionV3Item = memo(({ data }: IPositionV3ItemProps) => {
   )
 })
 
-const DetailInfoTitle = styled.div`
+const DetailInfoTitle = styled.div<{ $isMobile?: boolean }>`
   display: flex;
   gap: 8px;
   font-size: 16px;
   font-weight: 600;
+  flex-direction: ${({ $isMobile }) => ($isMobile ? 'column' : 'row')};
 `
 
 const DetailInfoDesc = styled.div`
@@ -314,93 +322,141 @@ export const PositionItemSkeleton = () => {
   )
 }
 
-export const PositionItemDetail = ({
-  link,
-  currency0,
-  currency1,
-  removed,
-  outOfRange,
-  desc,
-  tokenId,
-  fee,
-  isStaked,
-  protocol,
-  totalPriceUSD,
-  amount0,
-  amount1,
-  pool,
-  detailMode,
-}: IPositionItemDetailProps) => {
-  const { t } = useTranslation()
-  const { theme } = useTheme()
+const PositionDetailInfo = memo(
+  ({
+    currency0,
+    currency1,
+    removed,
+    outOfRange,
+    desc,
+    tokenId,
+    fee,
+    isStaked,
+    protocol,
+    totalPriceUSD,
+    amount0,
+    amount1,
+    pool,
+  }: IPositionItemDetailProps) => {
+    const { t } = useTranslation()
+    const { theme } = useTheme()
+    const { isMobile, isTablet } = useMatchBreakpoints()
 
-  const cakePrice = useCakePrice()
-  const stackedTokenId = useMemo(() => (tokenId ? [tokenId] : []), [tokenId])
-  const {
-    tokenIdResults: [pendingCake],
-  } = useStakedPositionsByUser(stackedTokenId)
-  const earningsAmount = useMemo(() => +formatBigInt(pendingCake || 0n, 4), [pendingCake])
-  const earningsBusd = useMemo(() => {
-    return new BigNumber(earningsAmount).times(cakePrice.toString()).toNumber()
-  }, [cakePrice, earningsAmount])
+    const cakePrice = useCakePrice()
+    const stackedTokenId = useMemo(() => (tokenId ? [tokenId] : []), [tokenId])
+    const {
+      tokenIdResults: [pendingCake],
+    } = useStakedPositionsByUser(stackedTokenId)
+    const earningsAmount = useMemo(() => +formatBigInt(pendingCake || 0n, 4), [pendingCake])
+    const earningsBusd = useMemo(() => {
+      return new BigNumber(earningsAmount).times(cakePrice.toString()).toNumber()
+    }, [cakePrice, earningsAmount])
+
+    const title = useMemo(
+      () =>
+        isTablet || isMobile ? (
+          <DetailInfoTitle $isMobile>
+            <Row>
+              <DoubleCurrencyLogo
+                size={24}
+                currency0={currency0}
+                currency1={currency1}
+                showChainLogo
+                innerMargin="-10px"
+              />
+              <FeeTier type={protocol} fee={fee} />
+            </Row>
+            <Row>
+              <Text bold>{`${currency0?.symbol} / ${currency1?.symbol} LP`}</Text>
+              {tokenId ? <Text color="textSubtle">(#{tokenId.toString()})</Text> : null}
+            </Row>
+            <Row>
+              {isStaked && (
+                <Tag variant="primary60" mr="8px">
+                  {t('Farming')}
+                </Tag>
+              )}
+              {protocol === Protocol.V3 && <RangeTag lowContrast removed={removed} outOfRange={outOfRange} />}
+            </Row>
+          </DetailInfoTitle>
+        ) : (
+          <DetailInfoTitle>
+            <Text bold>{`${currency0?.symbol} / ${currency1?.symbol} LP`}</Text>
+            {tokenId ? <Text color="textSubtle">(#{tokenId.toString()})</Text> : null}
+            <FeeTier type={protocol} fee={fee} />
+            <TagCell>
+              {isStaked && (
+                <Tag variant="primary60" mr="8px">
+                  {t('Farming')}
+                </Tag>
+              )}
+              {protocol === Protocol.V3 && <RangeTag lowContrast removed={removed} outOfRange={outOfRange} />}
+            </TagCell>
+          </DetailInfoTitle>
+        ),
+      [currency0, currency1, fee, isMobile, isTablet, isStaked, outOfRange, protocol, removed, t, tokenId],
+    )
+
+    return (
+      <>
+        {title}
+        <DetailInfoDesc>
+          <Row>{desc}</Row>
+          <Row gap="sm">
+            <FiatNumberDisplay
+              prefix="~"
+              value={totalPriceUSD}
+              style={{ color: theme.colors.textSubtle, fontSize: '12px' }}
+              showFullDigitsTooltip={false}
+            />
+            ({amount0 ? amount0.toFixed(6) : 0} {currency0?.symbol ?? '-'} / {amount1 ? amount1.toFixed(6) : 0}{' '}
+            {currency1?.symbol ?? '-'})
+          </Row>
+          <Row gap="8px">
+            <DetailInfoLabel>APR: </DetailInfoLabel>
+            {pool ? <PoolApyButton pool={pool} /> : <Skeleton width={60} />}
+          </Row>
+          {earningsAmount > 0 && (
+            <Row gap="8px">
+              <DetailInfoLabel>
+                {t('CAKE earned')}: {earningsAmount} (~${earningsBusd})
+              </DetailInfoLabel>
+            </Row>
+          )}
+        </DetailInfoDesc>
+      </>
+    )
+  },
+)
+
+export const PositionItemDetail = (props: IPositionItemDetailProps) => {
+  const { link, currency0, currency1, removed, outOfRange, tokenId, isStaked, detailMode, chainId } = props
+
+  const { isDesktop } = useMatchBreakpoints()
+  const linkWithChain = useMemo(
+    () => (link ? addQueryToPath(link, { chain: chainNames[chainId] }) : link),
+    [link, chainId],
+  )
 
   if (!(currency0 && currency1)) {
     return <PositionItemSkeleton />
   }
 
-  const detailInfo = (
-    <>
-      <DetailInfoTitle>
-        <Text bold>{`${currency0.symbol} / ${currency1.symbol} LP`}</Text>
-        {tokenId ? <Text color="textSubtle">(#{tokenId.toString()})</Text> : null}
-        <FeeTier type={protocol} fee={fee} />
-        <TagCell>
-          {isStaked && (
-            <Tag variant="primary60" mr="8px">
-              {t('Farming')}
-            </Tag>
-          )}
-          {protocol === Protocol.V3 && <RangeTag lowContrast removed={removed} outOfRange={outOfRange} />}
-        </TagCell>
-      </DetailInfoTitle>
-      <DetailInfoDesc>
-        <Row>{desc}</Row>
-        <Row gap="sm">
-          <FiatNumberDisplay
-            prefix="~"
-            value={totalPriceUSD}
-            style={{ color: theme.colors.textSubtle, fontSize: '12px' }}
-            showFullDigitsTooltip={false}
-          />
-          ({amount0 ? amount0.toFixed(6) : 0} {currency0?.symbol ?? '-'} / {amount1 ? amount1.toFixed(6) : 0}{' '}
-          {currency1?.symbol ?? '-'})
-        </Row>
-        <Row gap="8px">
-          <DetailInfoLabel>APR: </DetailInfoLabel>
-          {pool ? <PoolApyButton pool={pool} /> : <Skeleton width={60} />}
-        </Row>
-        {earningsAmount > 0 && (
-          <Row gap="8px">
-            <DetailInfoLabel>
-              {t('CAKE earned')}: {earningsAmount} (~${earningsBusd})
-            </DetailInfoLabel>
-          </Row>
-        )}
-      </DetailInfoDesc>
-    </>
-  )
-
   const content = (
     <Container>
-      <TokenPairImage
-        width={48}
-        height={48}
-        variant="inverted"
-        primaryToken={currency0}
-        secondaryToken={currency1.wrapped}
-      />
+      {isDesktop && (
+        <TokenPairImage
+          width={48}
+          height={48}
+          variant="inverted"
+          primaryToken={currency0}
+          secondaryToken={currency1.wrapped}
+        />
+      )}
       <DetailsContainer>
-        <Column gap="8px">{detailInfo}</Column>
+        <Column gap="8px">
+          <PositionDetailInfo {...props} />
+        </Column>
         <Column justifyContent="flex-end">
           <ActionPanel
             currency0={currency0}
@@ -409,7 +465,7 @@ export const PositionItemDetail = ({
             removed={removed}
             tokenId={tokenId}
             outOfRange={outOfRange}
-            modalContent={detailInfo}
+            modalContent={<PositionDetailInfo {...props} />}
             detailMode={detailMode}
           />
         </Column>
@@ -417,16 +473,20 @@ export const PositionItemDetail = ({
     </Container>
   )
 
-  if (!link) {
+  if (!linkWithChain) {
     return content
   }
-  return <NextLink href={link}>{content}</NextLink>
+  return <NextLink href={linkWithChain}>{content}</NextLink>
 }
 
 const ActionPanelContainer = styled(Flex)`
   flex-direction: row;
   gap: 8px;
   height: 48px;
+
+  & button {
+    flex: 1;
+  }
 `
 
 interface IActionPanelProps {
@@ -452,7 +512,7 @@ const ActionPanel = ({
   const { t } = useTranslation()
   const { onStake, onUnstake, onHarvest, attemptingTxn } = useFarmV3Actions({
     tokenId: tokenId?.toString() ?? '',
-    onDone: () => { },
+    onDone: () => {},
   })
   const stakeModal = useModalV2()
   const addLiquidityModal = useModalV2()
@@ -535,7 +595,7 @@ const ActionPanel = ({
     return (
       <ActionPanelContainer onClick={preventDefault}>
         {!removed && (
-          <IconButton mr="6px" variant="secondary" onClick={() => { }}>
+          <IconButton mr="6px" variant="secondary" onClick={() => {}}>
             <MinusIcon color="primary" width="14px" />
           </IconButton>
         )}
