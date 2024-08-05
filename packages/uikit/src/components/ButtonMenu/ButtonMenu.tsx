@@ -1,5 +1,5 @@
-import React, { cloneElement, Children, ReactElement } from "react";
-import { styled, DefaultTheme } from "styled-components";
+import React, { Children, ReactElement, cloneElement } from "react";
+import { DefaultTheme, styled } from "styled-components";
 import { space } from "styled-system";
 import { scales, variants } from "../Button/types";
 import { ButtonMenuProps } from "./types";
@@ -24,7 +24,7 @@ const StyledButtonMenu = styled.div.withConfig({
   display: ${({ fullWidth }) => (fullWidth ? "flex" : "inline-flex")};
   border: 1px solid ${getBorderColor};
   width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
-
+  align-items: center;
   & > button,
   & > a {
     flex: ${({ fullWidth }) => (fullWidth ? 1 : "auto")};
