@@ -143,9 +143,10 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
   }, [onSwitchTokens, unit, selectedQuote, handleTypeInput])
 
   const resetBuyCryptoState = useCallback(() => {
+    if (searchQuery !== '') setSearchQuery('')
     if (unit === OnRampUnit.Crypto) onFlip()
     if (defaultAmt) handleTypeInput(defaultAmt)
-  }, [handleTypeInput, defaultAmt, unit, onFlip])
+  }, [handleTypeInput, defaultAmt, unit, onFlip, searchQuery])
 
   useEffect(() => {
     if (!quotes || bestQuoteRef.current === quotes[0]) return
