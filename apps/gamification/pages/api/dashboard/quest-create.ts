@@ -1,7 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { verifySiweMessage, parseSiweMessage } from 'viem/siwe'
-import { getViemClients } from 'utils/viem.server'
 import { DASHBOARD_ALLOW_LIST } from 'config/constants/dashboardAllowList'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { getViemClients } from 'utils/viem.server'
+import { parseSiweMessage, verifySiweMessage } from 'viem/siwe'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!process.env.GAMIFICATION_DASHBOARD_API || req.method !== 'POST') {
@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const body = JSON.parse(req.body)
   const message = body.siweMessage
-  const signature = body.signature
+  const { signature } = body
   const { address } = parseSiweMessage(message)
   if (!address || !DASHBOARD_ALLOW_LIST.includes(address)) {
     return res.status(401).json({ message: 'Unauthorized' })

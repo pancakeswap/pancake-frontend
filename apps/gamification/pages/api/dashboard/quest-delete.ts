@@ -1,10 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import qs from 'qs'
-import { object as zObject, string as zString } from 'zod'
-import { verifySiweMessage, parseSiweMessage } from 'viem/siwe'
-import { getViemClients } from 'utils/viem.server'
 import { DASHBOARD_ALLOW_LIST } from 'config/constants/dashboardAllowList'
 import { zQuestId } from 'config/validations'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import qs from 'qs'
+import { getViemClients } from 'utils/viem.server'
+import { parseSiweMessage, verifySiweMessage } from 'viem/siwe'
+import { object as zObject } from 'zod'
 
 const zQuery = zObject({
   id: zQuestId,
@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const body = JSON.parse(req.body)
   const message = body.siweMessage
-  const signature = body.signature
+  const { signature } = body
   const { address } = parseSiweMessage(message)
   if (!address || !DASHBOARD_ALLOW_LIST.includes(address)) {
     return res.status(401).json({ message: 'Unauthorized' })
