@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
 import { useRouterQuery } from '../hooks/useRouterQuery'
+import { ChartLiquidity } from './ChartLiquidity'
 import { ChartVolume } from './ChartVolume'
 
 enum PoolChart {
@@ -62,7 +63,7 @@ export const PoolCharts: React.FC<PoolChartsProps> = ({ poolInfo }) => {
       <Card>
         <CardBody>
           {chart === PoolChart.Volume ? <ChartVolume address={id} poolInfo={poolInfo} /> : null}
-          {chart === PoolChart.Liquidity ? <div>Liquidity</div> : null}
+          {chart === PoolChart.Liquidity ? <ChartLiquidity address={id} poolInfo={poolInfo} /> : null}
           {chart === PoolChart.Fees ? <div>fee</div> : null}
           {chart === PoolChart.TVL ? <div>TVL</div> : null}
         </CardBody>
