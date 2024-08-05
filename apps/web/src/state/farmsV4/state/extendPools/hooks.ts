@@ -1,3 +1,4 @@
+import memoize from 'lodash/memoize'
 import { useQuery } from '@tanstack/react-query'
 import { computePoolAddress, DEPLOYER_ADDRESSES, FeeAmount } from '@pancakeswap/v3-sdk'
 import { useAtom } from 'jotai'
@@ -71,20 +72,24 @@ export function getKeyForPools(chainId: number, poolAddress: Address | string) {
   return `${chainId}:${poolAddress}`
 }
 
-export function getPoolAddressByToken(chainId: number, token0Address: Address, token1Address: Address, fee: FeeAmount) {
-  const deployerAddress = DEPLOYER_ADDRESSES[chainId]
-  const token0 = getTokenByAddress(chainId, token0Address)
-  const token1 = getTokenByAddress(chainId, token1Address)
-  if (!token0 || !token1) {
-    return null
-  }
-  return computePoolAddress({
-    deployerAddress,
-    tokenA: token0,
-    tokenB: token1,
-    fee,
-  })
-}
+export const getPoolAddressByToken = memoize(
+  (chainId: number, token0Address: Address, token1Address: Address, fee: FeeAmount) => {
+    const deployerAddress = DEPLOYER_ADDRESSES[chainId]
+    const token0 = getTokenByAddress(chainId, token0Address)
+    const token1 = getTokenByAddress(chainId, token1Address)
+    if (!token0 || !token1) {
+      return null
+    }
+    return computePoolAddress({
+      deployerAddress,
+      tokenA: token0,
+      tokenB: token1,
+      fee,
+    })
+  },
+  (chainId: number, token0Address: Address, token1Address: Address, fee: FeeAmount) =>
+    `${chainId}#${token0Address}#${token1Address}#${fee}`,
+)
 
 export const usePoolInfo = ({
   poolAddress,

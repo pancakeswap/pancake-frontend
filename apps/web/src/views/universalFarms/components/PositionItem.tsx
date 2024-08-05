@@ -36,6 +36,7 @@ import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { useCakePrice } from 'hooks/useCakePrice'
+import { v2Fee } from 'views/PoolDetail/hooks/useStablePoolFee'
 import { useStakedPositionsByUser } from 'state/farmsV3/hooks'
 import { PoolApyButton } from './PoolApyButton'
 import { StakeModal } from './StakeModal'
@@ -163,17 +164,20 @@ export const PositionV2Item = memo(({ data }: { data: V2LPDetail; pool?: PoolInf
     amount1: deposited1,
   })
 
+  const feeAmount = useMemo(() => Number(v2Fee.multiply(100).toFixed(2)), [])
+  const pool = usePoolInfo({ poolAddress: data.pair.liquidityToken.address, chainId: pair.chainId })
+
   return (
     <PositionItemDetail
-      chainId={data.pair.chainId}
+      chainId={pair.chainId}
+      pool={pool}
       totalPriceUSD={totalPriceUSD}
       currency0={unwrappedToken0}
       currency1={unwrappedToken1}
       removed={false}
       outOfRange={false}
       protocol={data.protocol}
-      // todo:@eric
-      fee={200}
+      fee={feeAmount}
       amount0={deposited0}
       amount1={deposited1}
     />
@@ -189,10 +193,12 @@ export const PositionStableItem = memo(({ data }: { data: StableLPDetail; pool?:
     amount0: deposited0,
     amount1: deposited1,
   })
+  const pool = usePoolInfo({ poolAddress: pair.stableSwapAddress, chainId: pair.liquidityToken.chainId })
 
   return (
     <PositionItemDetail
-      chainId={data.pair.token1.chainId}
+      chainId={pair.liquidityToken.chainId}
+      pool={pool}
       totalPriceUSD={totalPriceUSD}
       currency0={pair.token0}
       currency1={pair.token1}
