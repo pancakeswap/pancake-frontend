@@ -89,6 +89,16 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
         }
       },
     )
+
+    window.Telegram.Login.init(
+      {
+        bot_id: process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN, // Replace with your bot's ID
+        request_access: true,
+      },
+      async (test: any) => {
+        console.log('init test', test)
+      },
+    )
   }
 
   const disconnect = async () => {
