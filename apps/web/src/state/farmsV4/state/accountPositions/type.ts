@@ -32,6 +32,7 @@ export type V2LPDetail = {
   totalSupply: CurrencyAmount<ERC20Token>
   deposited0: CurrencyAmount<ERC20Token>
   deposited1: CurrencyAmount<ERC20Token>
+  isStaked?: boolean
   protocol: Protocol
 }
 
@@ -41,6 +42,7 @@ export type StableLPDetail = {
   // fee: pair.stableLpFee * 1000000
   deposited0: CurrencyAmount<ERC20Token>
   deposited1: CurrencyAmount<ERC20Token>
+  isStaked?: boolean
   protocol: Protocol
 }
 

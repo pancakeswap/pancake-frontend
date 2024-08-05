@@ -333,6 +333,9 @@ export const getTrackedV2LpTokens = (
   return Array.from(pairTokens)
 }
 
+const V2_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.V2)
+const STABLE_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.STABLE)
+
 // @todo @ChefJerry add getAccountV2FarmingStakedBalances result
 export const getAccountV2LpDetails = async (
   chainId: number,
@@ -395,12 +398,14 @@ export const getAccountV2LpDetails = async (
     const totalSupply = CurrencyAmount.fromRawAmount(validLpTokens[index], totalSupplies[index].toString())
     const deposited0 = pair.getLiquidityValue(token0, totalSupply, balance, false)
     const deposited1 = pair.getLiquidityValue(token1, totalSupply, balance, false)
+    const isStaked = !!V2_UNIVERSAL_FARMS.find((farm) => farm.lpAddress === pair.liquidityToken.address)
     return {
       balance,
       pair,
       totalSupply,
       deposited0,
       deposited1,
+      isStaked,
       protocol: Protocol.V2,
     }
   })
@@ -464,11 +469,15 @@ export const getStablePairDetails = async (
 
     const deposited0 = CurrencyAmount.fromRawAmount(token0.wrapped, token0Amount.toString())
     const deposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, token1Amount.toString())
+
+    const isStaked = !!STABLE_UNIVERSAL_FARMS.find((farm) => farm.lpAddress === pair.lpAddress)
+
     return {
       balance,
       pair,
       deposited0,
       deposited1,
+      isStaked,
       protocol: Protocol.STABLE,
     }
   })
