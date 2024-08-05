@@ -4,7 +4,7 @@ import { RowFixed } from 'components/Layout/Row'
 import useTheme from 'hooks/useTheme'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { styled } from 'styled-components'
-import { LiquidityChartEntry } from './type'
+import { V3LiquidityChartData } from './type'
 
 const Wrapper = styled.div`
   border-radius: 8px;
@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 `
 
 interface CurrentPriceLabelProps {
-  data: LiquidityChartEntry[] | undefined
+  data: V3LiquidityChartData[] | undefined
   x?: number
   // y?: number
   index?: number

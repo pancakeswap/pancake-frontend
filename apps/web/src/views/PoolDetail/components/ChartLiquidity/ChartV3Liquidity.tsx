@@ -9,7 +9,7 @@ import { usePoolTickData } from 'views/V3Info/hooks'
 import { ChartToolTip } from './ChartToolTip'
 import { CurrentPriceLabel } from './CurrentPriceLabel'
 import { ActionButton, ControlsWrapper } from './styled'
-import { ChartLiquidityProps, LiquidityChartEntry } from './type'
+import { ChartLiquidityProps, V3LiquidityChartData } from './type'
 
 const ZOOM_INTERVAL = 20
 
@@ -41,7 +41,7 @@ export const ChartV3Liquidity: React.FC<ChartLiquidityProps> = ({ address, poolI
   const [loading, setLoading] = useState(false)
   const [zoomLevel, setZoomLevel] = useState(0)
   const [zoomInDisabled, setZoomInDisabled] = useState(false)
-  const [formattedData, setFormattedData] = useState<LiquidityChartEntry[] | undefined>()
+  const [formattedData, setFormattedData] = useState<V3LiquidityChartData[] | undefined>()
 
   const handleZoomIn = useCallback(() => {
     if (!zoomInDisabled) {

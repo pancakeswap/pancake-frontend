@@ -5,7 +5,7 @@ export type ChartLiquidityProps = {
   poolInfo?: PoolInfo | null
 }
 
-export type LiquidityChartEntry = {
+export type V3LiquidityChartData = {
   index: number
   isCurrent: boolean
   activeLiquidity: number
