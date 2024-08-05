@@ -13,7 +13,6 @@ const ProfilePage = () => {
   const { isInitialized, isLoading, profile } = useProfile()
   const hasProfile = isInitialized && !!profile
 
-  // Extract hash fragment if it exists
   const hashNftFragment = !!asPath.includes('#nft')
 
   useEffect(() => {
