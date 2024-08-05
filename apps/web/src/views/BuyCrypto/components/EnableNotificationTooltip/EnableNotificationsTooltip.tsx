@@ -19,9 +19,8 @@ const EnableNotificationsTooltip = ({ setShowNotificationsPopOver }: EnableNotif
     setShowNotificationsPopOver(true)
   }, [setShowNotificationsPopOver])
 
-  if (isSubscribed) return null
   return (
-    <Flex alignItems="center" justifyContent="center" mb="2px">
+    <Flex alignItems="center" justifyContent="center" mb="2px" opacity={isSubscribed ? 0 : 1}>
       <Text
         bold
         as="span"

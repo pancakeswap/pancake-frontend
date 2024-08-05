@@ -271,7 +271,7 @@ const NotificationsOnboradPopover = ({
 
   return (
     <PopOverScreenContainer showPopover={showNotificationsPopOver} onClick={showProvidersOnClick}>
-      <Box height="562px">
+      <Box minHeight="552px">
         <AutoRow borderBottom="1" paddingX="8px" justifyContent="flex-end">
           <IconButton onClick={showProvidersOnClick} variant="text">
             <CloseIcon color="primary" />

@@ -130,7 +130,7 @@ const OnBoardingView = () => {
       </Swiper>
 
       {!isSubscribed && (
-        <Box margin="20px" height={isSubscribed ? '10%' : '20%'}>
+        <Box margin="20px" height="10%">
           <NotificationsOnboardingButton isReady={isReady} isRegistered={isRegistered} height="50px" />
         </Box>
       )}
