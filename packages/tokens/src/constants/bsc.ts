@@ -3237,4 +3237,12 @@ export const bscTokens = {
     'WeSendit',
     'https://wesendit.io/',
   ),
+  solvbtcbbn: new ERC20Token(
+    ChainId.BSC,
+    '0x1346b618dC92810EC74163e4c27004c921D446a5',
+    18,
+    'SolvBTC.BBN',
+    'SolvBTC Babylon',
+    'https://solv.finance/',
+  ),
 }
