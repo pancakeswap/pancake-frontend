@@ -66,7 +66,7 @@ const OnBoardingView = ({ onExternalDismiss }: { onExternalDismiss?: () => void 
   const handleStepClick = useCallback(
     (stepIndex: number) => {
       setStep(stepIndex)
-      swiper?.slideTo(stepIndex, 500)
+      swiper?.slideTo(stepIndex, 400)
     },
     [swiper],
   )
@@ -92,42 +92,31 @@ const OnBoardingView = ({ onExternalDismiss }: { onExternalDismiss?: () => void 
         onSwiper={setSwiper}
         onRealIndexChange={handleRealIndexChange}
         centeredSlides
-        style={{ width: '310px' }}
+        style={{ width: '320px', paddingTop: '24px' }}
       >
-        <div
-          style={{
-            padding: '24px',
-            height: '90%',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}
-        >
-          {OnBoardingSteps.map((introStep, i) => (
-            <SwiperSlide key={introStep.key}>
-              <Flex height="270px" alignItems="center" justifyContent="center" position="relative">
-                <Image
-                  alt={introStep.title.toString()}
-                  src={introStep.icon}
-                  height={i === 1 ? 185 : 105}
-                  width={i === 1 ? 270 : 160}
-                />
-              </Flex>
+        {OnBoardingSteps.map((introStep, i) => (
+          <SwiperSlide key={introStep.key}>
+            <Flex height="250px" alignItems="center" justifyContent="center" position="relative">
+              <Image
+                alt={introStep.title.toString()}
+                src={introStep.icon}
+                height={i === 1 ? 185 : 105}
+                width={i === 1 ? 270 : 160}
+              />
+            </Flex>
 
-              <FlexGap rowGap="12px" flexDirection="column" justifyContent="center" alignItems="center">
-                <Text fontSize="24px" fontWeight="600" lineHeight="120%" textAlign="center">
-                  {introStep.title}
-                </Text>
-                <Text fontSize="16px" textAlign="center" color="textSubtle">
-                  {introStep.description}
-                </Text>
-              </FlexGap>
-            </SwiperSlide>
-          ))}
-        </div>
+            <FlexGap rowGap="12px" flexDirection="column" justifyContent="center" alignItems="center">
+              <Text fontSize="24px" fontWeight="600" lineHeight="120%" textAlign="center">
+                {introStep.title}
+              </Text>
+              <Text fontSize="16px" textAlign="center" color="textSubtle">
+                {introStep.description}
+              </Text>
+            </FlexGap>
+          </SwiperSlide>
+        ))}
       </Swiper>
-
-      <Box margin="20px" height="10%">
+      <Box margin="20px">
         <NotificationsOnboardingButton
           isReady={isReady}
           isRegistered={isRegistered}
