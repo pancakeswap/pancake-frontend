@@ -193,11 +193,6 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const isConnectedAccount = safeGetAddress(account) === safeGetAddress(accountPath)
   const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0) : '-') : null
   const numPoints = !isProfileLoading ? (profile?.points ? formatNumber(profile.points, 0, 0) : '-') : null
-  const numAchievements = !isAchievementsLoading
-    ? achievements?.length
-      ? formatNumber(achievements.length, 0, 0)
-      : '-'
-    : null
 
   const avatarImage = profile?.nft?.image?.thumbnail ?? (avatarFromDomain || '/images/nfts/no-profile-md.png')
   const profileTeamId = profile?.teamId

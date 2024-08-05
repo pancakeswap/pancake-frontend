@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { NftProfileLayout } from 'views/Profile'
 import { JoinedQuests } from 'views/Profile/components/JoinedQuests'
 import { NftPage } from 'views/Profile/components/NftPage'
-import { ProfileUrlType } from 'views/Profile/components/TabMenu'
 import { useAccount } from 'wagmi'
 
 const ProfilePage = () => {
@@ -14,13 +13,8 @@ const ProfilePage = () => {
   const { isInitialized, isLoading, profile } = useProfile()
   const hasProfile = isInitialized && !!profile
 
-  // Extract the path without query parameters and hash fragment
-  const [pathWithoutQuery] = asPath.split('?')
-  const [pathWithoutHash] = pathWithoutQuery.split('#')
   // Extract hash fragment if it exists
-  const hashFragment = asPath.includes('#') ? asPath.split('#')[1].split('?')[0] : ''
-  // Reconstruct the full path including hash fragment if it exists
-  const fullPath = hashFragment ? `${pathWithoutHash}#${hashFragment}` : pathWithoutHash
+  const hashNftFragment = !!asPath.includes('#nft')
 
   useEffect(() => {
     if (account && !isLoading && !hasProfile) {
@@ -28,16 +22,7 @@ const ProfilePage = () => {
     }
   }, [account, hasProfile, isLoading, router])
 
-  return (
-    <>
-      {hasProfile && (
-        <>
-          {fullPath === ProfileUrlType.HOME_PAGE && <JoinedQuests />}
-          {fullPath === ProfileUrlType.NFT && <NftPage />}
-        </>
-      )}
-    </>
-  )
+  return <>{hasProfile && <>{!hashNftFragment ? <JoinedQuests /> : <NftPage />}</>}</>
 }
 
 ProfilePage.chains = []
