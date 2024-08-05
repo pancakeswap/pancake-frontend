@@ -63,7 +63,6 @@ interface OnRampCurrencySelectPopOverProps {
   selectedQuote: OnRampProviderQuote | undefined
   isFetching: boolean
   isError: boolean
-  inputError: string | undefined
   setSelectedQuote: (quote: OnRampProviderQuote) => void
   setShowProvidersPopOver: Dispatch<SetStateAction<boolean>>
   showProivdersPopOver: boolean
@@ -163,8 +162,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
       <OnRampCurrencySelectPopOver
         quotes={quotes}
         selectedQuote={selectedQuote}
-        isError={quotesError}
-        inputError={inputError}
+        isError={quotesError || Boolean(inputError)}
         isFetching={isLoading}
         setSelectedQuote={setSelectedQuote}
         setShowProvidersPopOver={setShowProvidersPopOver}
@@ -224,7 +222,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           quotesError={quotesError}
         />
         <Box>
-          {Boolean(!inputError && btcError && quotesError) && (
+          {Boolean(!inputError && !btcError && !quotesError) && (
             <Suspense fallback={null}>
               <EnableNotificationsTooltip setShowNotificationsPopOver={setShowNotificationsPopOver} />
             </Suspense>
@@ -243,7 +241,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
           />
           <Flex alignItems="center" justifyContent="center">
             <Text color="textSubtle" fontSize="14px" px="4px" textAlign="center">
-              {t('By continuing you agree to our')}{' '}
+              {t('By continuing you agree to our')}
             </Text>
             <Link
               color={theme.colors.primary}
@@ -267,20 +265,19 @@ const NotificationsOnboradPopover = ({
   setShowNotificationsPopOver,
   showNotificationsPopOver,
 }: NotificationsOnboardPopOverProps) => {
-  const { t } = useTranslation()
-
   const showProvidersOnClick = useCallback(() => {
     setShowNotificationsPopOver((p: boolean) => !p)
   }, [setShowNotificationsPopOver])
 
   return (
     <PopOverScreenContainer showPopover={showNotificationsPopOver} onClick={showProvidersOnClick}>
-      <Box minHeight="515px">
+      <Box height="562px">
         <AutoRow borderBottom="1" paddingX="8px" justifyContent="flex-end">
           <IconButton onClick={showProvidersOnClick} variant="text">
-            <CloseIcon />
+            <CloseIcon color="primary" />
           </IconButton>
         </AutoRow>
+
         <OnBoardingView />
       </Box>
     </PopOverScreenContainer>
@@ -292,7 +289,6 @@ const OnRampCurrencySelectPopOver = ({
   selectedQuote,
   isFetching,
   isError,
-  inputError,
   setSelectedQuote,
   setShowProvidersPopOver,
   showProivdersPopOver,
@@ -305,10 +301,10 @@ const OnRampCurrencySelectPopOver = ({
 
   const onQuoteSelect = useCallback(
     (quote: OnRampProviderQuote) => {
-      setShowProvidersPopOver((p) => !p)
+      showProvidersOnClick()
       setSelectedQuote(quote)
     },
-    [setShowProvidersPopOver, setSelectedQuote],
+    [showProvidersOnClick, setSelectedQuote],
   )
   return (
     <PopOverScreenContainer showPopover={showProivdersPopOver} onClick={showProvidersOnClick}>
@@ -329,7 +325,7 @@ const OnRampCurrencySelectPopOver = ({
                 quotes={quotes}
                 selectedQuote={selectedQuote || quotes[0]}
                 quoteLoading={isFetching || !quotes}
-                error={isError || Boolean(inputError)}
+                error={isError}
                 currentQuote={quote}
               />
             )

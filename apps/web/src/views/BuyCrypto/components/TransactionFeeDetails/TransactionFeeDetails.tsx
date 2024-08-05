@@ -84,7 +84,7 @@ export const TransactionFeeDetails = ({
         <StyledArrowHead />
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
-            {selectedQuote && (
+            {!quotesError && (
               <>
                 <Text fontWeight="600" fontSize="14px" px="2px">
                   {t('Est total fees:')}
@@ -92,9 +92,11 @@ export const TransactionFeeDetails = ({
                 <SkeletonText loading={Boolean(loading || inputError)} initialWidth={40} fontSize="14px">
                   {t('%fees%', {
                     fees: formatLocaleNumber({
-                      number: Number((selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2)),
+                      number: selectedQuote
+                        ? Number((selectedQuote?.providerFee + selectedQuote?.networkFee).toFixed(2))
+                        : 0,
                       locale,
-                      options: { currency: selectedQuote.fiatCurrency, style: 'currency' },
+                      options: { currency: selectedQuote?.fiatCurrency ?? 'USD', style: 'currency' },
                     }),
                   })}
                 </SkeletonText>
@@ -109,6 +111,7 @@ export const TransactionFeeDetails = ({
             )}
 
             <BuyCryptoTooltip
+              tooltipBody={<InfoFilledIcon pl="4px" pt="2px" width={17} opacity={0.7} />}
               tooltipContent={
                 <Text as="p">
                   {quotesError
@@ -118,7 +121,6 @@ export const TransactionFeeDetails = ({
                     : t('Note that Fees are just an estimation and may vary slightly when completing a purchase')}
                 </Text>
               }
-              tooltipBody={<InfoFilledIcon pl="4px" pt="2px" width={17} opacity={0.7} />}
             />
           </Flex>
 

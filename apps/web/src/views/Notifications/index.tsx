@@ -10,18 +10,14 @@ import { ViewContainer } from './styles'
 import { PAGE_VIEW } from './types'
 import { disableGlobalScroll, enableGlobalScroll } from './utils/toggleEnableScroll'
 
-interface INotificationWidget {
-  isRegistered: boolean
-}
-
 const Notifications = () => {
-  const { isReady, isRegistered } = useInitializeNotifications()
+  const { isReady } = useInitializeNotifications()
 
   if (!isReady) return null
-  return <NotificationsWidget isRegistered={isRegistered} />
+  return <NotificationsWidget />
 }
 
-const NotificationsWidget = memo(({ isRegistered }: INotificationWidget) => {
+const NotificationsWidget = memo(() => {
   const [viewIndex, setViewIndex] = useState<PAGE_VIEW>(PAGE_VIEW.OnboardView)
 
   const { data: subscription } = useSubscription()
