@@ -21,7 +21,6 @@ import {
   Svg,
   SvgProps,
   Text,
-  useMatchBreakpoints,
   useToast,
   WarningIcon,
 } from '@pancakeswap/uikit'
@@ -141,10 +140,9 @@ export const CrossChainVeCakeModal: React.FC<{
   isOpen?: boolean
   setIsOpen?: (isOpen: boolean) => void
   targetChainId?: (typeof OtherChainsConfig)[number]['chainId']
-}> = ({ onDismiss, modalTitle, isOpen, targetChainId }) => {
+}> = ({ onDismiss, modalTitle, isOpen, setIsOpen, targetChainId }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { isDesktop } = useMatchBreakpoints()
   const { address: account, chain } = useAccount()
   const { switchNetworkAsync } = useSwitchNetwork()
   const veCakeSenderV2Contract = usePancakeVeSenderV2Contract(ChainId.BSC)
@@ -270,7 +268,7 @@ export const CrossChainVeCakeModal: React.FC<{
       }}
       closeOnOverlayClick
     >
-      <ModalContainer style={{ minWidth: '375px', padding: isDesktop ? '24px' : '24px 24px 0 24px' }}>
+      <ModalContainer style={{ minWidth: '375px', padding: '24px' }}>
         {modalState === 'list' ? (
           <AtomBox justifyContent="space-between" p="24px" maxWidth="420px" height="100%" style={{ margin: '-24px' }}>
             <StyledModalHeader headerBorderColor="transparent">
