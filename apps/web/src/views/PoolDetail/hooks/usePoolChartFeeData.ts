@@ -1,4 +1,3 @@
-import { Protocol } from '@pancakeswap/farms'
 import { useQuery } from '@tanstack/react-query'
 import { QUERY_SETTINGS_IMMUTABLE, QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH } from 'config/constants'
 import dayjs from 'dayjs'
@@ -9,21 +8,15 @@ import { components } from 'state/info/api/schema'
 const fetchChartFeeData = async (
   address: string,
   chainName: components['schemas']['ChainName'],
-  protocol: Protocol,
-  period: components['schemas']['ChartPeriod'] = '1Y',
   signal?: AbortSignal,
 ) => {
   try {
-    const resp = await explorerApiClient.GET('/cached/pools/chart/{protocol}/{chainName}/{address}/fees', {
+    const resp = await explorerApiClient.GET('/cached/pools/chart/v3/{chainName}/{address}/fees', {
       signal,
       params: {
         path: {
           address,
           chainName,
-          protocol,
-        },
-        query: {
-          period,
         },
       },
     })
@@ -45,17 +38,13 @@ const fetchChartFeeData = async (
   }
 }
 
-export const usePoolChartFeeData = (
-  address?: string,
-  protocol?: Protocol,
-  period: components['schemas']['ChartPeriod'] = '1Y',
-) => {
+export const usePoolChartFeeData = (address?: string) => {
   const chainName = useExplorerChainNameByQuery()
 
   return useQuery({
-    queryKey: ['poolChartFeeData', chainName, address, protocol],
-    queryFn: () => fetchChartFeeData(address!, chainName!, protocol!, period),
-    enabled: !!address && !!protocol && !!chainName,
+    queryKey: ['poolChartFeeData', chainName, address],
+    queryFn: () => fetchChartFeeData(address!, chainName!),
+    enabled: !!address && !!chainName,
     ...QUERY_SETTINGS_IMMUTABLE,
     ...QUERY_SETTINGS_WITHOUT_INTERVAL_REFETCH,
   })
