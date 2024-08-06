@@ -22,7 +22,7 @@ export default {
     [ChainId.BSC_TESTNET]: '0x4B683C7E13B6d5D7fd1FeA9530F451954c1A7c8A',
   },
   bunnyFactory: {
-    [ChainId.BSC]: '0xFe5a935a3718DD1FE8Ccc77192F90B71577198F2',
+    [ChainId.BSC]: '0xeC0C84c6c503B77966C27953d218276Fd977Db4b',
     [ChainId.BSC_TESTNET]: '0x707CBF373175fdB601D34eeBF2Cf665d08f01148',
   },
   pancakeBunnies: {

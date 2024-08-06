@@ -4,4 +4,4 @@ export const API_PROFILE = 'https://profile.pancakeswap.com'
 export const GRAPH_API_NFTMARKET = 'https://api.thegraph.com/subgraphs/name/pancakeswap/nft-market'
 export const CELER_API = 'https://api.celerscan.com/scan'
 export const GRAPH_API_PROFILE = 'https://api.thegraph.com/subgraphs/name/pancakeswap/profile'
-export const GAMIFICATION_PUBLIC_API = 'https://participants.gamification.pancakeswap.com/api'
+export const GAMIFICATION_PUBLIC_API = process.env.NEXT_PUBLIC_GAMIFICATION_PUBLIC_API

@@ -148,7 +148,7 @@ export const Quest = () => {
         </StyledHeading>
         <Flex flexDirection={['column', 'column', 'column', 'column', 'column', 'row']} mb="32px" width="100%">
           {quest?.startDateTime > 0 && quest?.endDateTime > 0 && (
-            <Flex width="100%" maxWidth="266px">
+            <Flex width="100%" maxWidth="270px">
               <CalenderIcon width={16} mr="8px" />
               <Text mt="4px" fontSize="14px">{`${convertTimestampToDate(
                 quest.startDateTime,

@@ -20,7 +20,7 @@ import { Dropdown } from 'views/DashboardCampaigns/components/Dropdown'
 
 const StyledDropdown = styled(Dropdown)`
   width: 200px;
-  left: -120px;
+  left: -170px;
   top: 30px;
 `
 

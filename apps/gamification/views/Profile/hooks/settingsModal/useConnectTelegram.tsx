@@ -81,9 +81,6 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
               }`,
             )
           }
-        } else {
-          // User cancelled authentication, redirect to /profile
-          // window.location.href = '/profile'
         }
       },
     )
