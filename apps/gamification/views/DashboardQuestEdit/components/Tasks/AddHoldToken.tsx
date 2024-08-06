@@ -34,7 +34,7 @@ interface AddHoldTokenProps {
   isDrafted: boolean
 }
 
-type SocialKeyType = 'title' | 'description' | 'minAmount'
+type SocialKeyType = 'title' | 'description' | 'minAmount' | 'minHoldDays'
 
 export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) => {
   const { t } = useTranslation()
@@ -88,6 +88,9 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) =
         ).toString()
 
         forkTasks[indexToUpdate].title = `Hold at least ${e?.target?.value ?? 0} ${selectedCurrency?.symbol}`
+      } else if (socialKeyType === 'minHoldDays') {
+        const value = Number(e.target.value)
+        forkTasks[indexToUpdate][socialKeyType] = value > 0 ? value : ''
       } else {
         forkTasks[indexToUpdate][socialKeyType] = e.target.value
       }
@@ -106,7 +109,15 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) =
 
   const disableInput = useMemo(() => !isDrafted, [isDrafted])
 
-  const isError = useMemo(() => !isFirst && validateNumber(task.minAmount), [isFirst, task?.minAmount])
+  const isError = useMemo(
+    () => !isFirst && validateNumber(task.minAmount === 'NaN' ? '0' : task.minAmount),
+    [isFirst, task?.minAmount],
+  )
+
+  const isMinHoldDaysError = useMemo(
+    () => !isFirst && validateNumber(task.minHoldDays.toString()),
+    [isFirst, task?.minHoldDays],
+  )
 
   return (
     <Flex flexDirection={['column']}>
@@ -130,27 +141,45 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) =
       </Flex>
       <Flex flexDirection={['column']} width="100%" mt="12px">
         <Flex flexDirection="column">
-          <Flex flexDirection="column">
-            <Flex>
+          <Flex flexDirection={['column', 'column', 'row']}>
+            <Flex width="100%">
               <Flex position="relative" paddingRight="45px" onClick={onPresentCurrencyModal}>
                 <TokenWithChain width={32} height={32} currency={selectedCurrency} />
                 <StyleSelector variant="light" scale="sm" endIcon={<ChevronDownIcon />} />
               </Flex>
+              <Flex width="100%" flexDirection="column">
+                <StyledInputGroup
+                  endIcon={isError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+                >
+                  <StyledInput
+                    inputMode="numeric"
+                    pattern="^[0-9]*[.,]?[0-9]*$"
+                    isError={isError}
+                    value={minAmount}
+                    disabled={disableInput}
+                    placeholder={t('Minimum no. of token')}
+                    onChange={(e) => handleInputChange(e, 'minAmount')}
+                  />
+                </StyledInputGroup>
+                {isError && <InputErrorText errorText={t('Cannot be 0')} />}
+              </Flex>
+            </Flex>
+            <Flex width={['100%', '100%', '80%']} m={['8px 0 0 0', '8px 0 0 0', '0 0 0 8px']} flexDirection="column">
               <StyledInputGroup
-                endIcon={isError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
+                endIcon={isMinHoldDaysError ? <ErrorFillIcon color="failure" width={16} height={16} /> : undefined}
               >
                 <StyledInput
                   inputMode="numeric"
-                  pattern="^[0-9]*[.,]?[0-9]*$"
-                  isError={isError}
-                  value={minAmount}
+                  pattern="^[0-9]+$"
+                  placeholder={t('Days to hold')}
+                  isError={isMinHoldDaysError}
+                  value={task.minHoldDays}
                   disabled={disableInput}
-                  placeholder={t('Minimum no. of token')}
-                  onChange={(e) => handleInputChange(e, 'minAmount')}
+                  onChange={(e) => handleInputChange(e, 'minHoldDays')}
                 />
               </StyledInputGroup>
+              {isMinHoldDaysError && <InputErrorText errorText={t('Days to hold cannot be 0')} />}
             </Flex>
-            {isError && <InputErrorText errorText={t('Cannot be 0')} />}
           </Flex>
           <FlexGap gap="8px" flexDirection="column" mt="8px">
             <InputGroup>
