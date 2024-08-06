@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { Box, BoxProps, MultiSelect } from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { targetChains } from 'config/supportedChain'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useTheme } from 'styled-components'
 import { chainNameConverter } from 'utils/chainNameConverter'
 
@@ -19,15 +19,22 @@ const options = targetChains.map((chain) => ({
 
 export const defaultValueChains = options.map((i) => Number(i.value) as ChainId)
 
-export const NetworkMultiSelector: React.FC<NetworkMultiSelectorProps> = (props) => {
+export const NetworkMultiSelector: React.FC<NetworkMultiSelectorProps> = ({
+  pickMultiSelect,
+  setPickMultiSelect,
+  ...props
+}) => {
   const theme = useTheme()
 
-  const convertValueToString = useMemo(() => props.pickMultiSelect.map((i) => i.toString()), [props])
+  const convertValueToString = useMemo(() => pickMultiSelect.map((i) => i.toString()), [pickMultiSelect])
 
-  const onChange = (e) => {
-    const chains = e.value.map((chain) => Number(chain) as ChainId)
-    props.setPickMultiSelect(chains)
-  }
+  const onChange = useCallback(
+    (e) => {
+      const chains = e.value.map((chain) => Number(chain) as ChainId)
+      setPickMultiSelect(chains)
+    },
+    [setPickMultiSelect],
+  )
 
   return (
     <Box {...props}>
