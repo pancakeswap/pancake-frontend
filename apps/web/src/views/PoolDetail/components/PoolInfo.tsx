@@ -5,6 +5,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
 import { useChainIdByQuery, useChainNameByQuery } from 'state/info/hooks'
 import { multiChainNameConverter } from 'utils/chainNameConverter'
+import { PoolApyButton } from 'views/universalFarms/components/PoolApyButton'
 import { usePoolInfoByQuery } from '../hooks/usePoolInfo'
 import { usePoolFee } from '../hooks/useStablePoolFee'
 import { MyPositions } from './MyPositions'
@@ -66,7 +67,7 @@ export const PoolInfo = () => {
             <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
               {t('apr')}
             </Text>
-            <Text>TODO</Text>
+            {poolInfo ? <PoolApyButton pool={poolInfo} /> : null}
           </AutoColumn>
           <AutoColumn rowGap="4px">
             <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">

@@ -2,11 +2,36 @@ import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback } from 'react'
+import { extendPoolsAtom } from '../extendPools/atom'
+import { fetchExplorerPoolInfo } from '../extendPools/fetcher'
 import { ChainIdAddressKey, PoolInfo } from '../type'
-import { cakeAprSetterAtom, emptyCakeAprPoolsAtom, merklAprAtom, poolAprAtom } from './atom'
-import { getAllNetworkMerklApr, getCakeApr } from './fetcher'
+import { cakeAprSetterAtom, emptyCakeAprPoolsAtom, merklAprAtom, poolAprAtom, poolsAtom } from './atom'
+import { getAllNetworkMerklApr, getCakeApr, getLpApr } from './fetcher'
 
 export const usePoolApr = (key: ChainIdAddressKey) => {
+  const pool = useAtomValue(poolsAtom)[key]
+  const updatePools = useSetAtom(extendPoolsAtom)
+  const updateCallback = useCallback(async () => {
+    if (!pool) {
+      const [chainId, poolAddress] = key.split(':')
+      const poolInfo = await fetchExplorerPoolInfo(poolAddress, Number(chainId))
+      if (poolInfo) {
+        const lpApr = await getLpApr(poolInfo)
+        poolInfo.lpApr = `${lpApr}`
+        updatePools([poolInfo])
+      }
+    }
+  }, [key, pool, updatePools])
+
+  useQuery({
+    queryKey: ['apr', key],
+    queryFn: updateCallback,
+    enabled: !pool,
+    refetchInterval: 0,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  })
+
   return useAtomValue(poolAprAtom)[key] ?? { lpApr: '0', cakeApr: { value: '0' }, merklApr: '0' }
 }
 
