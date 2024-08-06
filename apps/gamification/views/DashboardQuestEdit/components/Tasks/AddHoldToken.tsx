@@ -178,7 +178,7 @@ export const AddHoldToken: React.FC<AddHoldTokenProps> = ({ task, isDrafted }) =
                   onChange={(e) => handleInputChange(e, 'minHoldDays')}
                 />
               </StyledInputGroup>
-              {isMinHoldDaysError && <InputErrorText errorText={t('Days to hold Cannot be 0')} />}
+              {isMinHoldDaysError && <InputErrorText errorText={t('Days to hold cannot be 0')} />}
             </Flex>
           </Flex>
           <FlexGap gap="8px" flexDirection="column" mt="8px">
