@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BasicDataType, FeeTier, ITableViewProps, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { FiatNumberDisplay, TokenOverview } from '@pancakeswap/widgets-internal'
+import { FeatureStack, FiatNumberDisplay, TokenOverview } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
 import { useMemo } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
@@ -16,7 +16,7 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
         title: t('All Pools'),
         dataIndex: null,
         key: 'name',
-        minWidth: '200px',
+        minWidth: '210px',
         render: (_, item) => (
           <TokenOverview
             isReady
@@ -47,6 +47,7 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
         dataIndex: 'lpApr',
         key: 'apr',
         sorter: true,
+        minWidth: '260px',
         render: (value, info) =>
           value ? <PoolApyButton pool={info as unknown as PoolInfo} /> : <Skeleton width={60} />,
       },
@@ -55,6 +56,7 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
         dataIndex: 'tvlUsd',
         key: 'tvl',
         sorter: true,
+        minWidth: '145px',
         display: mediaQueries.isXl || mediaQueries.isXxl,
         render: (value) => (value ? <FiatNumberDisplay value={value} /> : <Skeleton width={60} />),
       },
@@ -67,6 +69,15 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
         display: mediaQueries.isXl || mediaQueries.isXxl || mediaQueries.isLg,
         render: (value) => (value ? <FiatNumberDisplay value={value} /> : <Skeleton width={60} />),
       },
+      {
+        title: t('pool type'),
+        dataIndex: 'protocol',
+        key: 'protocol',
+        minWidth: '110px',
+        display: mediaQueries.isXxl,
+        render: (value) => <FeatureStack features={[value]} />,
+      },
+
       {
         title: '',
         render: (value) => <PoolListItemAction pool={value} />,

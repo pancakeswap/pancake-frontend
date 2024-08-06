@@ -28,9 +28,21 @@ export interface ITableViewProps<T extends BasicDataType> {
 const Table = styled.table`
   width: 100%;
 
-  th,
-  td {
-    padding: 12px 24px;
+  tr {
+    th,
+    td {
+      padding: 12px;
+      vertical-align: middle;
+    }
+    th:last-child,
+    td:last-child {
+      padding-right: 24px;
+    }
+
+    th:first-child,
+    td:first-child {
+      padding-left: 24px;
+    }
   }
 `;
 
