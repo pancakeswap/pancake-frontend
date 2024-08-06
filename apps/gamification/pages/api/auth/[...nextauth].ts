@@ -1,4 +1,6 @@
+import crypto from 'crypto'
 import NextAuth from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import DiscordProvider from 'next-auth/providers/discord'
 import TwitterProvider from 'next-auth/providers/twitter'
 import { TWITTER_CONSUMER_KEY, TwitterFollowersId } from 'views/Profile/utils/verifyTwitterFollowersIds'
@@ -26,6 +28,40 @@ export default NextAuth({
       clientId: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_3].consumerKey ?? '',
       clientSecret: TWITTER_CONSUMER_KEY[TwitterFollowersId.TWITTER_ID_3].consumerKeySecret ?? '',
     }),
+    CredentialsProvider({
+      id: 'telegram',
+      name: 'Telegram',
+      credentials: {
+        id: { label: 'ID', type: 'text' },
+        first_name: { label: 'First Name', type: 'text' },
+        last_name: { label: 'Last Name', type: 'text' },
+        username: { label: 'Username', type: 'text' },
+        photo_url: { label: 'Photo URL', type: 'text' },
+        auth_date: { label: 'Auth Date', type: 'text' },
+        hash: { label: 'Hash', type: 'text' },
+      },
+      async authorize(credentials) {
+        const { hash, ...authData } = credentials as any
+        const secret = crypto
+          .createHash('sha256')
+          .update(process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN as string, 'utf8')
+          .digest()
+
+        const dataCheckString = Object.keys(authData)
+          .sort()
+          .map((key) => `${key}=${authData[key]}`)
+          .join('\n')
+
+        const checkHash = crypto.createHmac('sha256', secret).update(dataCheckString).digest('hex')
+
+        if (checkHash !== hash) {
+          throw new Error('Telegram authentication failed')
+        }
+
+        // Return user object with minimal properties for session
+        return { id: authData.id, name: authData.first_name, image: authData.photo_url, credentials }
+      },
+    }),
   ],
   session: {
     maxAge: 3, // 3 sec
@@ -40,6 +76,11 @@ export default NextAuth({
       if (account && profile) {
         // eslint-disable-next-line default-case
         switch (account.provider) {
+          case 'telegram':
+            token.telegram = {
+              account,
+            }
+            break
           case 'discord':
             // eslint-disable-next-line no-param-reassign
             token.discord = {
