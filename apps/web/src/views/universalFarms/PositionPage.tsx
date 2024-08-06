@@ -79,7 +79,7 @@ const CardHeader = styled(StyledCardHeader)`
   padding-bottom: 0;
 `
 
-const StyledButtonMenu = styled(ButtonMenu) <{ $positionStatus: number }>`
+const StyledButtonMenu = styled(ButtonMenu)<{ $positionStatus: number }>`
   & button {
     padding: 0 12px;
   }

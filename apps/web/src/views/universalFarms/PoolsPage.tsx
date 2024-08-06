@@ -71,15 +71,15 @@ export const PoolsPage = () => {
     () =>
       fetchFarmListLoaded && farmList.length
         ? farmList.concat(
-            isPoolListExtended
-              ? extendPools
-              : extendPools.filter(
-                  (pool) =>
-                    // non farming list need to do a whitelist filter
-                    pool.token0.wrapped.address in allTokenMap[pool.chainId] &&
-                    pool.token1.wrapped.address in allTokenMap[pool.chainId],
-                ),
-          )
+          isPoolListExtended
+            ? extendPools
+            : extendPools.filter(
+              (pool) =>
+                // non farming list need to do a whitelist filter
+                pool.token0.wrapped.address in allTokenMap[pool.chainId] &&
+                pool.token1.wrapped.address in allTokenMap[pool.chainId],
+            ),
+        )
         : UNIVERSAL_FARMS,
     [fetchFarmListLoaded, farmList, extendPools, allTokenMap, isPoolListExtended],
   )
