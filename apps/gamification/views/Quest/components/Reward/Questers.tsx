@@ -14,19 +14,8 @@ const AssetSetContainer = styled(Box)`
   z-index: 1;
   height: 26px;
   max-width: 100%;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: -6px;
-    width: 50px;
-    height: 100%;
-    z-index: 2;
-    transform: translateX(100%);
-    background: ${({ theme }) =>
-      `linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, ${theme.colors.backgroundAlt} 100%)`};
-  }
 `
+
 export const Questers = ({
   questId,
   size,
