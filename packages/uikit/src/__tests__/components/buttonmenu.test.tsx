@@ -20,6 +20,7 @@ it("renders correctly", () => {
       display: inline-flex;
       border: 1px solid var(--colors-disabled);
       width: auto;
+      align-items: center;
     }
 
     .c0>button,
