@@ -43,8 +43,6 @@ export const usePublicQuests = ({ chainIdList, completionStatus }: UsePublicQues
         if (chainIdList.length === 0) {
           return initialData
         }
-        console.log('GAMIFICATION_PUBLIC_API', GAMIFICATION_PUBLIC_API)
-        console.log('.env', process.env.NEXT_PUBLIC_GAMIFICATION_PUBLIC_API)
 
         const url = `${GAMIFICATION_PUBLIC_API}/questInfo/v1/questInfoList`
         const response = await fetch(url, {
