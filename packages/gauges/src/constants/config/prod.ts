@@ -4895,8 +4895,8 @@ export const CONFIG_PROD: GaugeConfig[] = [
     address: '0xfc18301B94a77D91015bb90D5249827c506846Ae',
     chainId: ChainId.BSC,
     type: GaugeType.V3,
-    feeTier: FeeAmount.LOW,
-    token0Address: bscTokens.stbtc.address,
-    token1Address: bscTokens.btcb.address,
+    feeTier: FeeAmount.LOWEST,
+    token0Address: bscTokens.btcb.address,
+    token1Address: bscTokens.stbtc.address,
   },
 ]

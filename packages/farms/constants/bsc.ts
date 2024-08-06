@@ -78,9 +78,9 @@ export const farmsV3 = defineFarmV3Configs([
   {
     pid: 176,
     lpAddress: '0xfc18301B94a77D91015bb90D5249827c506846Ae',
-    token0: bscTokens.stbtc,
-    token1: bscTokens.btcb,
-    feeAmount: FeeAmount.LOW,
+    token0: bscTokens.btcb,
+    token1: bscTokens.stbtc,
+    feeAmount: FeeAmount.LOWEST,
   },
   {
     pid: 175,
