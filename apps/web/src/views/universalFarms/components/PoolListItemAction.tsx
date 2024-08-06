@@ -46,7 +46,7 @@ export const PoolListItemAction = memo(({ pool }: { pool: PoolInfo }) => {
           borderColor: theme.colors.cardBorder,
         }}
         component={
-          <Button scale="xs" variant="text">
+          <Button scale="xs" variant="text" onClick={handleClick}>
             <MoreIcon />
           </Button>
         }
@@ -69,23 +69,20 @@ export const ActionItems = ({ pool, icon }: { pool: PoolInfo; icon?: React.React
   )
 
   const { infoLink, detailLink, addLiquidityLink } = useMemo(() => {
-    const addLiqLink = `/add/${pool.token0.wrapped.address}/${pool.token1.address}?chain=${
-      CHAIN_QUERY_NAME[pool.chainId]
-    }`
+    const addLiqLink = `/add/${pool.token0.wrapped.address}/${pool.token1.address}?chain=${CHAIN_QUERY_NAME[pool.chainId]
+      }`
 
     if (pool.protocol === Protocol.STABLE) {
       return {
-        infoLink: `/info${multiChainPaths[pool.chainId]}/pairs/${stablePair?.stableSwapAddress}?type=stableSwap&chain=${
-          CHAIN_QUERY_NAME[pool.chainId]
-        }`,
+        infoLink: `/info${multiChainPaths[pool.chainId]}/pairs/${stablePair?.stableSwapAddress}?type=stableSwap&chain=${CHAIN_QUERY_NAME[pool.chainId]
+          }`,
         detailLink: `/pools/${getChainName(pool.chainId)}/${stablePair?.stableSwapAddress}`,
         addLiquidityLink: addLiqLink,
       }
     }
     return {
-      infoLink: `/info/${pool.protocol}${multiChainPaths[pool.chainId]}/pairs/${pool.lpAddress}?chain=${
-        CHAIN_QUERY_NAME[pool.chainId]
-      }`,
+      infoLink: `/info/${pool.protocol}${multiChainPaths[pool.chainId]}/pairs/${pool.lpAddress}?chain=${CHAIN_QUERY_NAME[pool.chainId]
+        }`,
       detailLink: `/pools/${getChainName(pool.chainId)}/${pool.lpAddress}`,
       addLiquidityLink: addLiqLink,
     }

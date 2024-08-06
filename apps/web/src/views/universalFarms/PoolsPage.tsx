@@ -89,11 +89,11 @@ export const PoolsPage = () => {
       isPoolListExtended
         ? extendPools
         : extendPools.filter(
-            (pool) =>
-              // non farming list need to do a whitelist filter
-              pool.token0.wrapped.address in allTokenMap[pool.chainId] &&
-              pool.token1.wrapped.address in allTokenMap[pool.chainId],
-          ),
+          (pool) =>
+            // non farming list need to do a whitelist filter
+            pool.token0.wrapped.address in allTokenMap[pool.chainId] &&
+            pool.token1.wrapped.address in allTokenMap[pool.chainId],
+        ),
     [isPoolListExtended, extendPools, allTokenMap],
   )
 
