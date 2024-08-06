@@ -52,7 +52,7 @@ export const parseFarmPools = (
   })
 }
 
-export default function getTokenByAddress(chainId: ChainId, address: Address) {
+export function getTokenByAddress(chainId: ChainId, address: Address) {
   const tokens = getTokensByChain(chainId)
   return find(tokens, (token) => token.address === address)
 }
