@@ -160,7 +160,7 @@ export const SubmitAction = () => {
         return undefined
       }
 
-      if (new Date().getTime() / 1000 > endDateTime) {
+      if (endDateTime !== 0 && new Date().getTime() / 1000 > endDateTime) {
         setOpenModal(false)
         toastError(t('The end time must be longer than the current time.'))
         return undefined
