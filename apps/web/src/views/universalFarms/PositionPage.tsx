@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import { useCallback, useMemo, useState } from 'react'
 import assign from 'lodash/assign'
 import {
+  AddIcon,
+  Button,
   ButtonMenu,
   ButtonMenuItem,
   Dots,
@@ -19,6 +21,7 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import { useAccount } from 'wagmi'
+import NextLink from 'next/link'
 import {
   getKeyForPools,
   useAccountStableLpDetails,
@@ -29,7 +32,7 @@ import { INetworkProps, ITokenProps, toTokenValue, toTokenValueByCurrency } from
 import { Protocol } from '@pancakeswap/farms'
 
 import { usePoolsWithChainId } from 'hooks/v3/usePools'
-import getTokenByAddress from 'state/farmsV4/state/utils'
+import { getTokenByAddress } from 'state/farmsV4/state/utils'
 import { Currency } from '@pancakeswap/swap-sdk-core'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
@@ -77,8 +80,15 @@ const CardHeader = styled(StyledCardHeader)`
 `
 
 const StyledButtonMenu = styled(ButtonMenu)<{ $positionStatus: number }>`
+  & button {
+    padding: 0 12px;
+  }
   & button[variant='text']:nth-child(${({ $positionStatus }) => $positionStatus + 1}) {
     color: ${({ theme }) => theme.colors.secondary};
+  }
+
+  @media (max-width: 967px) {
+    width: 100%;
   }
 `
 
@@ -92,6 +102,17 @@ const SubPanel = styled(Flex)`
   border-top: 1px solid ${({ theme }) => theme.colors.cardBorder};
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   margin: 24px -24px 0;
+`
+
+const ButtonContainer = styled.div`
+  @media (max-width: 967px) {
+    width: 100%;
+
+    button {
+      width: 50%;
+      height: 50px;
+    }
+  }
 `
 
 enum V3_STATUS {
@@ -372,12 +393,20 @@ export const PositionPage = () => {
             activeIndex={positionStatus}
             onItemClick={setPositionStatus}
             variant="text"
+            scale="sm"
           >
             <ButtonMenuItem>{t('All')}</ButtonMenuItem>
             <ButtonMenuItem>{t('Active')}</ButtonMenuItem>
             <ButtonMenuItem>{t('Inactive')}</ButtonMenuItem>
             <ButtonMenuItem>{t('Closed')}</ButtonMenuItem>
           </StyledButtonMenu>
+          <ButtonContainer>
+            <NextLink href="/liquidity/add" passHref>
+              <Button endIcon={<AddIcon color="invertedContrast" />} scale="sm">
+                {t('Add Liquidity')}
+              </Button>
+            </NextLink>
+          </ButtonContainer>
         </SubPanel>
       </CardHeader>
       <CardBody>{mainSection}</CardBody>

@@ -56,7 +56,7 @@ export const ActionItems = ({ pool, icon }: { pool: PoolInfo; icon?: React.React
   const { address: account } = useAccount()
   const stablePair = useMemo(
     () =>
-      LegacyRouter.stableSwapPairsByChainId[pool.chainId].find((pair) =>
+      LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) =>
         isAddressEqual(pair.lpAddress, pool.lpAddress),
       ),
     [pool.chainId, pool.lpAddress],
