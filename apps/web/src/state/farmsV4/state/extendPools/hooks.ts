@@ -5,7 +5,7 @@ import { useAtom } from 'jotai'
 import { useCallback, useState } from 'react'
 import { Address } from 'viem/accounts'
 import type { PoolInfo } from '../type'
-import getTokenByAddress from '../utils'
+import { getTokenByAddress } from '../utils'
 import { DEFAULT_QUERIES, extendPoolsAtom, ExtendPoolsQuery, extendPoolsQueryAtom } from './atom'
 import { fetchExplorerPoolInfo, fetchExplorerPoolsList } from './fetcher'
 

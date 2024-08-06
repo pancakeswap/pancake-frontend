@@ -178,6 +178,7 @@ export { default as SunIcon } from "./Icons/Sun";
 export { default as SwapIcon } from "./Icons/Swap";
 export { default as SwapFillIcon } from "./Icons/SwapFill";
 export { default as SwapVertIcon } from "./Icons/SwapVert";
+export { default as SwapHorizIcon } from "./Icons/SwapHoriz";
 export { default as SyncAltIcon } from "./Icons/SyncAlt";
 export { default as TeamBattleIcon } from "./Icons/TeamBattle";
 export { default as TeamPlayerIcon } from "./Icons/TeamPlayer";
