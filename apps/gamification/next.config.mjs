@@ -1,8 +1,8 @@
-import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders';
+import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders'
 import smartRouterPkgs from '@pancakeswap/smart-router/package.json' with { type: 'json' };
-import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
-import path from "path";
-import {fileURLToPath} from "url";
+import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 const withVanillaExtract = createVanillaExtractPlugin()
 
@@ -62,6 +62,19 @@ const nextConfig = {
         source: '/',
         destination: '/quests',
         permanent: false,
+      },
+    ]
+  },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin-allow-popups',
+          },
+        ],
       },
     ]
   },
