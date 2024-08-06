@@ -3,8 +3,7 @@ import { useToast } from '@pancakeswap/uikit'
 import { useEffect } from 'react'
 import { encodePacked, keccak256 } from 'viem'
 import { SocialHubType, UserInfo } from 'views/Profile/hooks/settingsModal/useUserSocialHub'
-// import { connectSocial, VerificationTelegramConfig } from 'views/Profile/utils/connectSocial'
-import { signIn } from 'next-auth/react'
+import { connectSocial, VerificationTelegramConfig } from 'views/Profile/utils/connectSocial'
 import { disconnectSocial, DisconnectUserSocialInfoConfig } from 'views/Profile/utils/disconnectSocial'
 import { useAccount, useSignMessage } from 'wagmi'
 
@@ -44,49 +43,47 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
   }, [])
 
   const connect = () => {
-    signIn('telegram')
-
     // Telegram login button click handler
-    // window.Telegram.Login.auth(
-    //   {
-    //     bot_id: process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN, // Replace with your bot's ID
-    //     request_access: true,
-    //   },
-    //   async (user: TelegramResponse) => {
-    //     if (user && account) {
-    //       try {
-    //         const walletAddress = account
-    //         const timestamp = Math.floor(new Date().getTime() / 1000)
-    //         const message = keccak256(encodePacked(['address', 'uint256'], [walletAddress ?? '0x', BigInt(timestamp)]))
-    //         const signature = await signMessageAsync({ message })
+    window.Telegram.Login.auth(
+      {
+        bot_id: process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN, // Replace with your bot's ID
+        request_access: true,
+      },
+      async (user: TelegramResponse) => {
+        if (user && account) {
+          try {
+            const walletAddress = account
+            const timestamp = Math.floor(new Date().getTime() / 1000)
+            const message = keccak256(encodePacked(['address', 'uint256'], [walletAddress ?? '0x', BigInt(timestamp)]))
+            const signature = await signMessageAsync({ message })
 
-    //         await connectSocial({
-    //           userInfo,
-    //           data: {
-    //             socialMedia: SocialHubType.Telegram,
-    //             userId: walletAddress,
-    //             signedData: { walletAddress, timestamp },
-    //             verificationData: {
-    //               ...user,
-    //             } as unknown as VerificationTelegramConfig,
-    //             signature,
-    //           },
-    //           callback: () => {
-    //             toastSuccess(t('%social% Connected', { social: SocialHubType.Telegram }))
-    //             refresh?.()
-    //           },
-    //         })
-    //       } catch (error) {
-    //         console.error(`Connect ${SocialHubType.Telegram} error: `, error)
-    //         toastError(
-    //           `Failed to connect ${SocialHubType.Telegram}: ${
-    //             error instanceof Error && error?.message ? error.message : JSON.stringify(error)
-    //           }`,
-    //         )
-    //       }
-    //     }
-    //   },
-    // )
+            await connectSocial({
+              userInfo,
+              data: {
+                socialMedia: SocialHubType.Telegram,
+                userId: walletAddress,
+                signedData: { walletAddress, timestamp },
+                verificationData: {
+                  ...user,
+                } as unknown as VerificationTelegramConfig,
+                signature,
+              },
+              callback: () => {
+                toastSuccess(t('%social% Connected', { social: SocialHubType.Telegram }))
+                refresh?.()
+              },
+            })
+          } catch (error) {
+            console.error(`Connect ${SocialHubType.Telegram} error: `, error)
+            toastError(
+              `Failed to connect ${SocialHubType.Telegram}: ${
+                error instanceof Error && error?.message ? error.message : JSON.stringify(error)
+              }`,
+            )
+          }
+        }
+      },
+    )
   }
 
   const disconnect = async () => {

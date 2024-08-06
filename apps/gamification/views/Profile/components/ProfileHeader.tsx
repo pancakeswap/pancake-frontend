@@ -56,7 +56,9 @@ interface HeaderProps {
 const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   accountPath,
   profile,
+  achievements,
   nftCollected,
+  isAchievementsLoading,
   isNftLoading,
   isProfileLoading,
   onSuccess,
@@ -70,7 +72,6 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const { query } = useRouter()
   const { signMessageAsync } = useSignMessage()
   const isFetchingRef = useRef(false)
-  console.log('session', session)
 
   useEffect(() => {
     if (query.openSettingModal && query.openSettingModal === 'true') {
