@@ -1,15 +1,18 @@
-import { UNIVERSAL_FARMS } from '@pancakeswap/farms'
-import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
-import { useTranslation } from '@pancakeswap/localization'
-import { Button, Image, InfoIcon, ISortOrder, SORT_ORDER, TableView, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
-import { useAllTokensByChainIds } from 'hooks/Tokens'
+import styled from 'styled-components'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
+import { Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
+import { Button, Image, InfoIcon, ISortOrder, SORT_ORDER, TableView, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useAllTokensByChainIds } from 'hooks/Tokens'
 import { PoolSortBy } from 'state/farmsV4/atom'
 import { useExtendPools, useFarmPools, usePoolsApr } from 'state/farmsV4/hooks'
 import { getCombinedApr } from 'state/farmsV4/state/poolApr/utils'
 import type { PoolInfo } from 'state/farmsV4/state/type'
-import styled from 'styled-components'
+import { getChainName } from '@pancakeswap/chains'
+import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
+import { isAddressEqual } from 'viem'
 
 import {
   Card,
@@ -68,15 +71,15 @@ export const PoolsPage = () => {
     () =>
       fetchFarmListLoaded && farmList.length
         ? farmList.concat(
-            isPoolListExtended
-              ? extendPools
-              : extendPools.filter(
-                  (pool) =>
-                    // non farming list need to do a whitelist filter
-                    pool.token0.wrapped.address in allTokenMap[pool.chainId] &&
-                    pool.token1.wrapped.address in allTokenMap[pool.chainId],
-                ),
-          )
+          isPoolListExtended
+            ? extendPools
+            : extendPools.filter(
+              (pool) =>
+                // non farming list need to do a whitelist filter
+                pool.token0.wrapped.address in allTokenMap[pool.chainId] &&
+                pool.token1.wrapped.address in allTokenMap[pool.chainId],
+            ),
+        )
         : UNIVERSAL_FARMS,
     [fetchFarmListLoaded, farmList, extendPools, allTokenMap, isPoolListExtended],
   )
@@ -129,6 +132,16 @@ export const PoolsPage = () => {
     }
   }, [])
 
+  const getRowLink = useCallback((pool: PoolInfo) => {
+    if (pool.protocol === Protocol.STABLE) {
+      const stablePair = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) =>
+        isAddressEqual(pair.lpAddress, pool.lpAddress),
+      )
+      return `/pools/${getChainName(pool.chainId)}/${stablePair?.stableSwapAddress}`
+    }
+    return `/pools/${getChainName(pool.chainId)}/${pool.lpAddress}`
+  }, [])
+
   const filteredData = useMemo(() => {
     return poolList.filter(
       (farm) =>
@@ -174,6 +187,7 @@ export const PoolsPage = () => {
               onSort={handleSort}
               sortOrder={sortOrder}
               sortField={sortField}
+              getRowLink={getRowLink}
             />
           )}
         </PoolsContent>

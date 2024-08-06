@@ -7,7 +7,7 @@ import { Button, MoreIcon, SubMenu } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
-import { memo, useMemo } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import type { PoolInfo } from 'state/farmsV4/state/type'
 import { multiChainPaths } from 'state/info/constant'
 import styled, { css } from 'styled-components'
@@ -32,6 +32,11 @@ const StyledConnectWalletButton = styled(ConnectWalletButton)`
 
 export const PoolListItemAction = memo(({ pool }: { pool: PoolInfo }) => {
   const { theme } = useTheme()
+
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }, [])
   return (
     <>
       <SubMenu
@@ -40,7 +45,7 @@ export const PoolListItemAction = memo(({ pool }: { pool: PoolInfo }) => {
           borderColor: theme.colors.cardBorder,
         }}
         component={
-          <Button scale="xs" variant="text">
+          <Button scale="xs" variant="text" onClick={handleClick}>
             <MoreIcon />
           </Button>
         }
@@ -89,7 +94,7 @@ export const ActionItems = ({ pool, icon }: { pool: PoolInfo; icon?: React.React
     <>
       <NextLinkFromReactRouter to={detailLink}>
         <StyledButton scale="sm" variant="text">
-          {t('View pool details')}
+          {t('View Pool Details')}
           {icon}
         </StyledButton>
       </NextLinkFromReactRouter>
@@ -105,7 +110,7 @@ export const ActionItems = ({ pool, icon }: { pool: PoolInfo; icon?: React.React
       )}
       <NextLinkFromReactRouter to={infoLink}>
         <StyledButton scale="sm" variant="text">
-          {t('View info page')}
+          {t('View Info Page')}
           {icon}
         </StyledButton>
       </NextLinkFromReactRouter>
