@@ -16,6 +16,17 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
 
   switch (taskType) {
     case TaskType.MAKE_A_SWAP:
+      return {
+        sid: randomId,
+        title: '',
+        description: '',
+        isOptional: false,
+        minAmount: '',
+        taskType,
+        orderNumber: 0,
+        network: DEFAULT_CHAIN,
+        tokenAddress: (CAKE as any)?.[DEFAULT_CHAIN]?.address,
+      }
     case TaskType.HOLD_A_TOKEN:
       return {
         sid: randomId,
@@ -26,6 +37,7 @@ export const generateNewTask = (tasks: TaskConfigType[], taskType: TaskType): Ta
         taskType,
         orderNumber: 0,
         network: DEFAULT_CHAIN,
+        minHoldDays: 0,
         tokenAddress: (CAKE as any)?.[DEFAULT_CHAIN]?.address,
       }
     case TaskType.PARTICIPATE_LOTTERY:

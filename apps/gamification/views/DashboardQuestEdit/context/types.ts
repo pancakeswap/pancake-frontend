@@ -46,6 +46,7 @@ export interface TaskHoldTokenConfig extends TaskBaseConfig {
   minAmount: string
   network: ChainId
   tokenAddress: Address
+  minHoldDays: number
 }
 
 export interface TaskLotteryConfig extends TaskBaseConfig {

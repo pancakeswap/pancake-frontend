@@ -18,8 +18,12 @@ import {
 export const verifyTask = (task: TaskConfigType) => {
   switch (task.taskType as TaskType) {
     case TaskType.MAKE_A_SWAP:
+      return !validateNumber((task as TaskSwapConfig).minAmount)
     case TaskType.HOLD_A_TOKEN:
-      return !validateNumber((task as TaskSwapConfig | TaskHoldTokenConfig).minAmount)
+      return (
+        !validateNumber((task as TaskHoldTokenConfig).minAmount) &&
+        !validateNumber((task as TaskHoldTokenConfig).minHoldDays.toString())
+      )
     case TaskType.PARTICIPATE_LOTTERY:
       return (
         !validateNumber((task as TaskLotteryConfig).toRound.toString()) &&
