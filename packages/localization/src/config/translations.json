@@ -3514,5 +3514,8 @@
   "fee": "fee",
   "Donation": "Donation",
   "Dynamic Fee": "Dynamic Fee",
+  "transaction value": "transaction value",
+  "account": "account",
+  "time": "time",
   "CAKE earned": "CAKE earned"
 }
