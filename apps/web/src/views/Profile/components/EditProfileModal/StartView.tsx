@@ -130,7 +130,7 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
           </DangerOutline>
         </>
       ) : showCakeRequireFlow ? (
-        <Flex mb="8px">
+        <Flex mb="8px" mt="8px">
           <ApproveConfirmButtons
             isApproveDisabled={isProfileCostsLoading || hasMinimumCakeRequired}
             isApproving={pendingEnableTx}
@@ -144,6 +144,7 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
       ) : (
         <Button
           width="100%"
+          mt="8px"
           mb="8px"
           onClick={needsApproval === true ? goToApprove : goToChange}
           disabled={isProfileCostsLoading || !hasMinimumCakeRequired || needsApproval === null}

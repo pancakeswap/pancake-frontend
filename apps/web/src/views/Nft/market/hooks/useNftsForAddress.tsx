@@ -49,8 +49,11 @@ export const useCollectionsNftsForAddress = ({
     return undefined
   }, [profileNftTokenId, profileNftCollectionAddress, hasProfileNft])
 
-  // @ts-ignore
-  const { status, data, refetch } = useQuery({
+  const {
+    data = [],
+    status,
+    refetch,
+  } = useQuery({
     queryKey: [account, 'userNfts'],
     queryFn: async () =>
       getCompleteAccountNftData(safeGetAddress(account)!, collections, profileNftWithCollectionAddress),
@@ -58,5 +61,5 @@ export const useCollectionsNftsForAddress = ({
     placeholderData: keepPreviousData,
   })
 
-  return { nfts: data ?? [], isLoading: status !== 'success', refresh: refetch }
+  return { nfts: data, isLoading: status !== 'success', refresh: refetch }
 }

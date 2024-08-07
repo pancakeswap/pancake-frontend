@@ -30,7 +30,7 @@ const EditProfileModal: React.FC<React.PropsWithChildren<EditProfileModalProps>>
   const { t } = useTranslation()
 
   const isStartView = currentView === Views.START
-  const handleBack = isStartView ? undefined : () => goPrevious()
+  const handleBack = isStartView ? undefined : goPrevious
 
   return (
     <Modal
