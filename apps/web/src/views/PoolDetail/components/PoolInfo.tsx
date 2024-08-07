@@ -1,15 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, AutoRow, Column, Flex, FlexGap, Grid, Row, Text } from '@pancakeswap/uikit'
+import { AutoColumn, AutoRow, Column, Flex, FlexGap, Grid, Row, Spinner, Text } from '@pancakeswap/uikit'
 import { ChainLogo, DoubleCurrencyLogo, FeatureStack, FeeTierTooltip } from '@pancakeswap/widgets-internal'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
 import { useChainIdByQuery, useChainNameByQuery } from 'state/info/hooks'
 import { multiChainNameConverter } from 'utils/chainNameConverter'
+import { PoolApyButton } from 'views/universalFarms/components/PoolApyButton'
 import { usePoolInfoByQuery } from '../hooks/usePoolInfo'
 import { usePoolFee } from '../hooks/useStablePoolFee'
 import { MyPositions } from './MyPositions'
 import { PoolCurrencies } from './PoolCurrencies'
 import { PoolStatus } from './PoolStatus'
+import { Transactions } from './Transactions/Transactions'
 
 export const PoolInfo = () => {
   const { t } = useTranslation()
@@ -23,6 +25,13 @@ export const PoolInfo = () => {
   }, [poolInfo])
   const { fee } = usePoolFee(poolInfo?.lpAddress, poolInfo?.protocol)
   const { account } = useAccountActiveChain()
+
+  if (!poolInfo)
+    return (
+      <Flex mt="80px" justifyContent="center">
+        <Spinner />
+      </Flex>
+    )
 
   return (
     <Column gap="24px">
@@ -66,7 +75,7 @@ export const PoolInfo = () => {
             <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
               {t('apr')}
             </Text>
-            <Text>TODO</Text>
+            {poolInfo ? <PoolApyButton pool={poolInfo} /> : null}
           </AutoColumn>
           <AutoColumn rowGap="4px">
             <Text fontSize={12} bold color="textSubtle" textTransform="uppercase">
@@ -88,6 +97,8 @@ export const PoolInfo = () => {
       <Grid>
         <PoolStatus poolInfo={poolInfo} />
       </Grid>
+
+      <Transactions protocol={poolInfo?.protocol} />
     </Column>
   )
 }
