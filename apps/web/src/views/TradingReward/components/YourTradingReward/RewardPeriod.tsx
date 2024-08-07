@@ -8,6 +8,7 @@ import BigNumber from 'bignumber.js'
 import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { VeCakePreviewTextInfo } from 'views/TradingReward/components/YourTradingReward/VeCake/VeCakePreviewTextInfo'
 import { useTranslation } from '@pancakeswap/localization'
+import dayjs from 'dayjs'
 
 interface RewardPeriodProps {
   campaignIds: Array<string>
@@ -41,11 +42,11 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
     return thresholdLockAmount
   }, [thresholdLockAmount, currentUserCampaignInfo])
 
-  const isCampaignLive = useMemo(() => {
-    const currentDate = Date.now() / 1000
-    const campaignClaimTime = incentives?.campaignClaimTime ?? 0
-    const campaignStart = incentives?.campaignStart ?? 0
-    return currentDate >= campaignStart && currentDate <= campaignClaimTime
+  const isCampaignFinished = useMemo(() => {
+    if (incentives?.campaignClaimTime) {
+      return dayjs().unix() >= incentives.campaignClaimTime
+    }
+    return false
   }, [incentives])
 
   return (
@@ -65,7 +66,7 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
       />
       <Flex justifyContent="space-between" flexDirection="column" style={{ gap: '4px' }}>
         <TotalPeriod
-          width={!isCampaignLive ? '100%' : undefined}
+          width={isCampaignFinished ? '100%' : undefined}
           type={RewardType.CAKE_STAKERS}
           campaignIds={campaignIds}
           rewardInfo={rewardInfo}
@@ -73,7 +74,7 @@ const RewardPeriod: React.FC<React.PropsWithChildren<RewardPeriodProps>> = ({
           totalAvailableClaimData={totalAvailableClaimData}
           campaignIdsIncentive={campaignIdsIncentive}
         />
-        {!isCampaignLive && (
+        {isCampaignFinished && (
           <Box width="100%">
             <Card style={{ width: '100%' }}>
               <Box padding={['16px', '16px', '16px', '24px']}>
