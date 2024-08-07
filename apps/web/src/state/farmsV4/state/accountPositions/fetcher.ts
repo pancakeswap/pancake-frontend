@@ -429,10 +429,23 @@ export const getStablePairDetails = async (
       args: [account] as const,
     } as const
   })
-  const balances = await client.multicall({
-    contracts: balanceCalls,
-    allowFailure: false,
+  const totalSupplyCalls = validStablePairs.map((pair) => {
+    return {
+      abi: erc20Abi,
+      address: pair.liquidityToken.address,
+      functionName: 'totalSupply',
+    } as const
   })
+  const [balances, totalSupplies] = await Promise.all([
+    client.multicall({
+      contracts: balanceCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: totalSupplyCalls,
+      allowFailure: false,
+    }),
+  ])
   const validBalances = balances.reduce((acc, balance, index) => {
     if (balance && balance > 0n) {
       acc.push({
@@ -466,7 +479,7 @@ export const getStablePairDetails = async (
       validIndex++
     }
     const { token0, token1 } = pair
-
+    const totalSupply = CurrencyAmount.fromRawAmount(pair.liquidityToken, totalSupplies[index].toString())
     const deposited0 = CurrencyAmount.fromRawAmount(token0.wrapped, token0Amount.toString())
     const deposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, token1Amount.toString())
 
@@ -475,6 +488,7 @@ export const getStablePairDetails = async (
     return {
       balance,
       pair,
+      totalSupply,
       deposited0,
       deposited1,
       isStaked,
