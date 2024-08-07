@@ -3550,6 +3550,8 @@
   "total tokens locked (TVL)": "total tokens locked (TVL)",
   "volume 24h": "volume 24h",
   "fee": "fee",
+  "Donation": "Donation",
+  "Dynamic Fee": "Dynamic Fee",
   "transaction value": "transaction value",
   "account": "account",
   "time": "time",
