@@ -1,3 +1,4 @@
+import { Protocol } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AddIcon,
@@ -8,16 +9,20 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Flex,
   Grid,
   Row,
   Text,
 } from '@pancakeswap/uikit'
+import { DoubleCurrencyLogo } from '@pancakeswap/widgets-internal'
+import BigNumber from 'bignumber.js'
 import Divider from 'components/Divider'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { usePoolWithChainId } from 'hooks/v3/usePools'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useAccountPositionDetailByPool } from 'state/farmsV4/hooks'
-import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
+import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { useChainIdByQuery } from 'state/info/hooks'
 import styled from 'styled-components'
@@ -27,6 +32,8 @@ import {
   PositionV2Item,
   PositionV3Item,
 } from 'views/universalFarms/components'
+import { formatDollarAmount } from 'views/V3Info/utils/numbers'
+import { useV3Positions } from '../hooks/useV3Positions'
 
 export enum PositionFilter {
   All = 0,
@@ -56,7 +63,23 @@ const PositionCardBody = styled(CardBody)`
 export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
   const { t } = useTranslation()
   const [count, setCount] = useState(0)
+  const [totalLiquidityUSD, setTotalLiquidityUSD] = useState('0')
+  const [totalAPR, setTotalAPR] = useState(0)
+  const [totalEarning, setTotalEarning] = useState(0)
   const [filter, setFilter] = useState(PositionFilter.All)
+  const addLiquidityLink = useMemo(() => {
+    const token0Token1 = `${poolInfo.token0.wrapped.address}/${poolInfo.token1.wrapped.address}`
+    if (poolInfo.protocol === 'v3') {
+      return `/add/${token0Token1}/${poolInfo.feeTier}`
+    }
+    if (poolInfo.protocol === 'v2') {
+      return `/v2/add/${token0Token1}`
+    }
+    if (poolInfo.protocol === 'stable') {
+      return `/stable/add/${token0Token1}`
+    }
+    return ''
+  }, [poolInfo.feeTier, poolInfo.protocol, poolInfo.token0.wrapped.address, poolInfo.token1.wrapped.address])
 
   return (
     <AutoColumn gap="lg">
@@ -72,15 +95,23 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
               </Text>
               <Row justifyContent="space-between">
                 <Text color="textSubtle">{t('My Liquidity Value')}</Text>
-                <Text>$0</Text>
+                <Text>{formatDollarAmount(Number(totalLiquidityUSD))}</Text>
               </Row>
               <Row justifyContent="space-between">
                 <Text color="textSubtle">{t('My Total APR')}</Text>
-                <Text>99.99%</Text>
+                <Text>0%</Text>
               </Row>
               <Row justifyContent="space-between">
                 <Text color="textSubtle">{t('Earning')}</Text>
-                <Text>99.99%</Text>
+                <Flex>
+                  <Text mr="4px">{t('LP Fee')}</Text>
+                  <DoubleCurrencyLogo
+                    currency0={poolInfo.token0.wrapped}
+                    currency1={poolInfo.token1.wrapped}
+                    size={24}
+                    innerMargin="-8px"
+                  />
+                </Flex>
               </Row>
             </AutoColumn>
             <Divider />
@@ -90,12 +121,12 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
                   {t('total earning')}
                 </Text>
                 <Text as="h3" fontWeight={600} fontSize={24}>
-                  $999,999.999
+                  $0
                 </Text>
               </AutoColumn>
               <Button variant="secondary">{t('Harvest')}</Button>
             </Row>
-            <Button>
+            <Button as="a" href={addLiquidityLink}>
               {t('Add Liquidity')}
               <AddIcon ml="8px" color="var(--colors-invertedContrast)" />
             </Button>
@@ -119,10 +150,15 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
           </PositionCardHeader>
           <PositionCardBody>
             {poolInfo.protocol === 'v3' ? (
-              <MyV3Positions poolInfo={poolInfo} filter={filter} setCount={setCount} />
+              <MyV3Positions
+                poolInfo={poolInfo}
+                filter={filter}
+                setCount={setCount}
+                setTotalLiquidityUSD={setTotalLiquidityUSD}
+              />
             ) : null}
             {['v2', 'stable'].includes(poolInfo.protocol) ? (
-              <MyV2OrStablePositions poolInfo={poolInfo} setCount={setCount} />
+              <MyV2OrStablePositions poolInfo={poolInfo} setCount={setCount} setTotalTvlUsd={setTotalLiquidityUSD} />
             ) : null}
           </PositionCardBody>
         </PositionsCard>
@@ -137,12 +173,44 @@ const MyV3Positions: React.FC<{
   poolInfo: PoolInfo
   filter: PositionFilter
   setCount: (count: number) => void
-}> = ({ poolInfo, filter, setCount }) => {
+  setTotalLiquidityUSD: (value: string) => void
+}> = ({ poolInfo, filter, setCount, setTotalLiquidityUSD }) => {
   const { t } = useTranslation()
   const chainId = useChainIdByQuery()
   const { account } = useAccountActiveChain()
-  const { data, isLoading } = useAccountPositionDetailByPool(chainId, account, poolInfo)
+  const { data, isLoading } = useAccountPositionDetailByPool<Protocol.V3>(chainId, account, poolInfo)
   const [, pool] = usePoolWithChainId(poolInfo.token0.wrapped, poolInfo.token1.wrapped, poolInfo.feeTier, chainId)
+  const { data: price0Usd } = useCurrencyUsdPrice(poolInfo.token0.wrapped, {
+    enabled: !!poolInfo.token0.wrapped,
+  })
+  const { data: price1Usd } = useCurrencyUsdPrice(poolInfo.token1.wrapped, {
+    enabled: !!poolInfo.token1.wrapped,
+  })
+  const positionsData = useV3Positions(
+    chainId,
+    poolInfo.token0.wrapped.address,
+    poolInfo.token1.wrapped.address,
+    poolInfo.feeTier,
+    data?.filter((position) => position.liquidity !== 0n),
+  )
+  const totalLiquidityUSD = useMemo(() => {
+    if (!positionsData) {
+      return '0'
+    }
+    const total = positionsData.reduce(
+      (acc, position) =>
+        new BigNumber(acc)
+          .plus(new BigNumber(position.amount0.toExact()).times(price0Usd?.toString() ?? 0))
+          .plus(new BigNumber(position.amount1.toExact()).times(price1Usd?.toString() ?? 0))
+          .toString(),
+      '0',
+    )
+    return total
+  }, [positionsData, price0Usd, price1Usd])
+
+  useEffect(() => {
+    setTotalLiquidityUSD(totalLiquidityUSD.toString())
+  }, [totalLiquidityUSD, setTotalLiquidityUSD])
 
   const positions: V3Positions = useMemo(() => {
     if (!data) {
@@ -234,14 +302,28 @@ const MyV3Positions: React.FC<{
 const MyV2OrStablePositions: React.FC<{
   poolInfo: PoolInfo
   setCount: (count: number) => void
-}> = ({ poolInfo, setCount }) => {
+  setTotalTvlUsd: (value: string) => void
+}> = ({ poolInfo, setCount, setTotalTvlUsd }) => {
   const chainId = useChainIdByQuery()
   const { account } = useAccountActiveChain()
-  const { data, isLoading } = useAccountPositionDetailByPool(chainId, account, poolInfo)
+  const { data, isLoading } = useAccountPositionDetailByPool<Protocol.STABLE | Protocol.V2>(chainId, account, poolInfo)
+  const totalTVLUsd = useMemo(() => {
+    if (!data) {
+      return '0'
+    }
+    return new BigNumber(data.balance.toExact())
+      .div(data.totalSupply.toExact())
+      .times(Number(poolInfo.tvlUsd ?? 0))
+      .toString()
+  }, [data, poolInfo.tvlUsd])
 
   useEffect(() => {
     setCount(data ? 1 : 0)
   }, [data, setCount])
+
+  useEffect(() => {
+    setTotalTvlUsd(totalTVLUsd)
+  }, [totalTVLUsd, setTotalTvlUsd])
 
   if (isLoading) {
     return (
@@ -260,10 +342,10 @@ const MyV2OrStablePositions: React.FC<{
   return (
     <AutoColumn gap="lg">
       {poolInfo.protocol === 'v2' ? (
-        <PositionV2Item key={data.pair.liquidityToken.address} data={data} pool={poolInfo} />
+        <PositionV2Item key={data.pair.liquidityToken.address} data={data as V2LPDetail} pool={poolInfo} />
       ) : null}
       {poolInfo.protocol === 'stable' ? (
-        <PositionStableItem key={data.pair.liquidityToken.address} data={data} pool={poolInfo} />
+        <PositionStableItem key={data.pair.liquidityToken.address} data={data as StableLPDetail} pool={poolInfo} />
       ) : null}
       {/* {data.map((detail: V2LPDetail) => {
         return <PositionV2Item key={detail.pair.liquidityToken.address} data={detail} pool={poolInfo} />

@@ -1,3 +1,4 @@
+import { Protocol } from '@pancakeswap/farms'
 import { ERC20Token } from '@pancakeswap/sdk'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
 import { unwrappedToken } from '@pancakeswap/tokens'
@@ -187,7 +188,17 @@ export const useExtraV3PositionInfo = (positionDetail?: PositionDetail) => {
   }
 }
 
-export const useAccountPositionDetailByPool = (chainId: number, account?: Address | null, poolInfo?: PoolInfo) => {
+type PoolPositionDetail = {
+  [Protocol.STABLE]: StableLPDetail
+  [Protocol.V2]: V2LPDetail
+  [Protocol.V3]: PositionDetail[]
+}
+
+export const useAccountPositionDetailByPool = <TProtocol extends keyof PoolPositionDetail>(
+  chainId: number,
+  account?: Address | null,
+  poolInfo?: PoolInfo,
+): UseQueryResult<PoolPositionDetail[TProtocol]> => {
   const [currency0, currency1] = useMemo(() => {
     if (!poolInfo) return [undefined, undefined]
     const { token0, token1 } = poolInfo

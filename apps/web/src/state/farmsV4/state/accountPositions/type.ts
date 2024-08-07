@@ -38,6 +38,7 @@ export type V2LPDetail = {
 
 export type StableLPDetail = {
   balance: CurrencyAmount<ERC20Token>
+  totalSupply: CurrencyAmount<ERC20Token>
   pair: LegacyStableSwapPair
   // fee: pair.stableLpFee * 1000000
   deposited0: CurrencyAmount<ERC20Token>
