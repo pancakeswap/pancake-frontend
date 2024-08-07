@@ -13,6 +13,8 @@ export const BreadcrumbNav: React.FC = () => {
   const chainName = useChainNameByQuery()
   const { poolSymbol } = usePoolSymbol()
 
+  if (!poolSymbol || poolSymbol === ' / ') return null
+
   return (
     <Flex justifyContent="space-between">
       <Breadcrumbs mb="32px">
