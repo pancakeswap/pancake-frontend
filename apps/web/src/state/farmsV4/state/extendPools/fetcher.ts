@@ -57,7 +57,6 @@ export const fetchExplorerPoolInfo = async (
     },
   })
 
-  console.debug('debug poolInfo resp.data', resp.data)
   if (!resp.data) {
     return null
   }
