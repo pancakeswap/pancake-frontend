@@ -1,18 +1,27 @@
 import { GAMIFICATION_PUBLIC_API } from 'config/constants/endpoints'
 import { zAddress, zQuestId } from 'config/validations'
 import { withSiweAuth } from 'middlewares/withSiwe'
+import qs from 'qs'
+import { object as zObject } from 'zod'
+
+const zQuery = zObject({
+  userId: zAddress,
+  questId: zQuestId,
+})
 
 const handler = withSiweAuth(async (req, res) => {
-  const { userId, questId } = req.query
-  if (
-    !GAMIFICATION_PUBLIC_API ||
-    !zAddress.safeParse(userId).success ||
-    !zQuestId.safeParse(questId).success ||
-    !questId ||
-    req.method !== 'POST'
-  ) {
-    return res.status(400).json({ message: 'Invalid request params / Invalid request method' })
+  if (!GAMIFICATION_PUBLIC_API || req.method !== 'POST') {
+    return res.status(400).json({ message: 'Invalid request method' })
   }
+
+  const { userId, questId } = req.query
+  const queryString = qs.stringify(req.query)
+  const queryParsed = qs.parse(queryString)
+  const parsed = zQuery.safeParse(queryParsed)
+  if (parsed.success === false) {
+    return res.status(400).json({ message: 'Invalid query', reason: parsed.error })
+  }
+
   const response = await fetch(`${GAMIFICATION_PUBLIC_API}/userInfo/v1/linkUserToQuest/${userId}/${questId}`, {
     method: 'POST',
     headers: {
