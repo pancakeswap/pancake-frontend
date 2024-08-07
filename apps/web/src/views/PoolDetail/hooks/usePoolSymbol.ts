@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { useChainIdByQuery } from 'state/info/hooks'
 import { getTokenSymbolAlias } from 'utils/getTokenAlias'
-import { usePoolInfo } from './usePoolInfo'
+import { usePoolInfoByQuery } from './usePoolInfo'
 
 export const usePoolSymbol = () => {
-  const poolInfo = usePoolInfo()
+  const poolInfo = usePoolInfoByQuery()
   const chainId = useChainIdByQuery()
 
   const [poolSymbol, symbol0, symbol1] = useMemo(() => {

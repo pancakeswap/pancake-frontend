@@ -7,8 +7,9 @@ import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
 import { Button, Image, InfoIcon, ISortOrder, SORT_ORDER, TableView, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useAllTokensByChainIds } from 'hooks/Tokens'
 import { PoolSortBy } from 'state/farmsV4/atom'
-import { useExtendPools, useFarmPools, usePoolAprUpdater } from 'state/farmsV4/hooks'
-import { PoolInfo } from 'state/farmsV4/state/type'
+import { useExtendPools, useFarmPools, usePoolAprUpdater, usePoolsApr } from 'state/farmsV4/hooks'
+import type { PoolInfo } from 'state/farmsV4/state/type'
+import { getCombinedApr } from 'state/farmsV4/state/poolApr/utils'
 
 import {
   IPoolsFilterPanelProps,
@@ -61,6 +62,7 @@ export const PoolsPage = () => {
   const { loaded: fetchFarmListLoaded, data: farmList } = useFarmPools()
   const { extendPools, fetchPoolList, resetExtendPools } = useExtendPools()
   const allTokenMap = useAllTokensByChainIds(allChainIds)
+  const poolsApr = usePoolsApr()
   usePoolAprUpdater()
 
   const poolList = useMemo(
@@ -119,8 +121,13 @@ export const PoolsPage = () => {
   }, [isPoolListExtended])
 
   const handleSort = useCallback(({ order, dataIndex }) => {
-    setSortOrder(order)
     setSortField(dataIndex)
+    // we don't need asc sort, so reset it to null
+    if (order === SORT_ORDER.ASC) {
+      setSortOrder(SORT_ORDER.NULL)
+    } else {
+      setSortOrder(order)
+    }
   }, [])
 
   const filteredData = useMemo(() => {
@@ -139,8 +146,15 @@ export const PoolsPage = () => {
     if (sortField === null) {
       return filteredData
     }
-    return [...filteredData].sort((a, b) => sortOrder * a[sortField] + -1 * sortOrder * b[sortField])
-  }, [sortOrder, sortField, filteredData]) as IDataType[]
+    return [...filteredData].sort((a, b) => {
+      if (sortField === 'lpApr') {
+        const aprOfA = getCombinedApr(poolsApr, a.chainId, a.lpAddress)
+        const aprOfB = getCombinedApr(poolsApr, b.chainId, b.lpAddress)
+        return sortOrder * aprOfA + -1 * sortOrder * aprOfB
+      }
+      return sortOrder * a[sortField] + -1 * sortOrder * b[sortField]
+    })
+  }, [sortOrder, sortField, filteredData, poolsApr]) as IDataType[]
 
   const renderData = useMemo(() => sortedData.slice(0, cursorVisible), [cursorVisible, sortedData])
 
