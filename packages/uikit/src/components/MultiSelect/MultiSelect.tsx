@@ -324,6 +324,24 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
     [selectedItems, onChange]
   );
 
+  const handleClearSeachBox = useCallback(
+    (e: React.MouseEvent<HTMLOrSVGElement>) => {
+      if (!selectedItems?.length) {
+        return;
+      }
+      if (onChange) {
+        onChange({
+          value: [],
+          stopPropagation: e.stopPropagation,
+          preventDefault: e.preventDefault,
+        });
+      } else {
+        setSelectedItems([]);
+      }
+    },
+    [selectedItems, onChange]
+  );
+
   const panelHeaderTemplate = useMemo(
     () => (
       <>
@@ -332,7 +350,8 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
             selectedItems={selectedOptions}
             ref={searchInputRef}
             onFilter={handleFilter}
-            handleLabelDelete={handleLabelDelete}
+            onClear={handleClearSeachBox}
+            onLabelDelete={handleLabelDelete}
           />
         )}
         {isShowSelectAll && (
@@ -355,6 +374,7 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
       </>
     ),
     [
+      handleClearSeachBox,
       handleSelectAll,
       indeterminate,
       selectAll,

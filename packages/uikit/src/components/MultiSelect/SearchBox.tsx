@@ -2,7 +2,7 @@ import { forwardRef, useCallback, useEffect, useImperativeHandle, useLayoutEffec
 import { styled } from "styled-components";
 import { useTheme } from "@pancakeswap/hooks";
 import { IOptionType, ISelectItem } from "./types";
-import { Box } from "../Box";
+import { Box, Flex } from "../Box";
 import { CrossIcon } from "../Svg";
 
 export const BORDER_RADIUS = "16px";
@@ -13,9 +13,6 @@ const Container = styled.div`
 
 const StyledBox = styled(Box)<{ isFocus: boolean }>`
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px;
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
   background-color: ${({ theme }) => theme.colors.input};
   border-radius: ${BORDER_RADIUS};
@@ -24,6 +21,18 @@ const StyledBox = styled(Box)<{ isFocus: boolean }>`
   padding: 5px 8px;
   min-height: 42px;
   ${({ isFocus }) => isFocus && `box-shadow: 0px 0px 0px 4px #7645D933, 0px 0px 0px 1px #7645D9;`}
+`;
+
+const LabelsContainer = styled(Flex)`
+  flex: 1;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  height: 100%;
+`;
+const RemoveIconContainer = styled(Flex)`
+  justify-content: center;
+  width: 24px;
 `;
 
 const StyledHiddenInput = styled.input`
@@ -120,11 +129,12 @@ const ItemIcon = styled.img`
 export interface ISearchBoxProps<T extends number | string> {
   selectedItems: IOptionType<T>;
   onFilter?: (text: string) => void;
-  handleLabelDelete: (e: React.MouseEvent<HTMLOrSVGElement> | React.KeyboardEvent, item: ISelectItem<T>) => void;
+  onClear: (e: React.MouseEvent<HTMLOrSVGElement>) => void;
+  onLabelDelete: (e: React.MouseEvent<HTMLOrSVGElement> | React.KeyboardEvent, item: ISelectItem<T>) => void;
 }
 
 const SearchBox = <T extends number | string>(
-  { onFilter, selectedItems, handleLabelDelete }: ISearchBoxProps<T>,
+  { onFilter, selectedItems, onLabelDelete, onClear }: ISearchBoxProps<T>,
   ref: React.Ref<IAdaptiveInputForwardProps>
 ) => {
   const inputRef = useRef<IAdaptiveInputForwardProps>(null);
@@ -144,9 +154,9 @@ const SearchBox = <T extends number | string>(
     (e: React.MouseEvent<HTMLOrSVGElement>, item: ISelectItem<T>) => {
       // prevent bubble to StyledBox
       e.stopPropagation();
-      handleLabelDelete(e, item);
+      onLabelDelete(e, item);
     },
-    [handleLabelDelete]
+    [onLabelDelete]
   );
 
   const handleBackspace = useCallback(
@@ -155,33 +165,38 @@ const SearchBox = <T extends number | string>(
         return;
       }
       e.stopPropagation();
-      handleLabelDelete(e, selectedItems[selectedItems.length - 1]);
+      onLabelDelete(e, selectedItems[selectedItems.length - 1]);
     },
-    [handleLabelDelete, selectedItems]
+    [onLabelDelete, selectedItems]
   );
 
   return (
     <Container onKeyDown={handleBackspace}>
       <StyledBox onClick={() => inputRef.current?.focus()} isFocus={isFocus}>
-        {selectedItems?.map((item) => (
-          <SelectedLabel key={item.value}>
-            {item.icon ? (
-              typeof item.icon === "string" ? (
-                <ItemIcon alt={item.label} src={item.icon} />
-              ) : (
-                item.icon
-              )
-            ) : null}
-            <span>{item.label}</span>
-            <CrossIcon color={theme.card.background} onClick={(e) => handleCrossIconClick(e, item)} />
-          </SelectedLabel>
-        ))}
-        <AdaptiveInput
-          ref={inputRef}
-          onChange={onFilter}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-        />
+        <LabelsContainer>
+          {selectedItems?.map((item) => (
+            <SelectedLabel key={item.value}>
+              {item.icon ? (
+                typeof item.icon === "string" ? (
+                  <ItemIcon alt={item.label} src={item.icon} />
+                ) : (
+                  item.icon
+                )
+              ) : null}
+              <span>{item.label}</span>
+              <CrossIcon color={theme.card.background} onClick={(e) => handleCrossIconClick(e, item)} />
+            </SelectedLabel>
+          ))}
+          <AdaptiveInput
+            ref={inputRef}
+            onChange={onFilter}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
+          />
+        </LabelsContainer>
+        <RemoveIconContainer>
+          <CrossIcon color={theme.colors.textSubtle} onClick={onClear} />
+        </RemoveIconContainer>
       </StyledBox>
     </Container>
   );

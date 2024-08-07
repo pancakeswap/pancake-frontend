@@ -1,4 +1,3 @@
-import isEmpty from "lodash/isEmpty";
 import { MultiSelect, IMultiSelectChangeEvent, IMultiSelectProps } from "@pancakeswap/uikit";
 import { useCallback, useState } from "react";
 import styled from "styled-components";
@@ -6,7 +5,7 @@ import styled from "styled-components";
 export interface INetworkProps {
   data: IMultiSelectProps<number>["options"];
   value: number[];
-  onChange: (value: INetworkProps["value"]) => void;
+  onChange: (value: INetworkProps["value"], e: IMultiSelectChangeEvent<number>) => void;
 }
 
 const Container = styled.div<{ $isShow: boolean }>`
@@ -49,13 +48,9 @@ export const NetworkFilter: React.FC<INetworkProps> = ({ data, value, onChange }
 
   const handleSelectChange = useCallback(
     (e: IMultiSelectChangeEvent<number>) => {
-      if (isEmpty(e.value)) {
-        e.preventDefault();
-        return;
-      }
       // keep the order with network list
       const sortedValue = data ? data.filter((opt) => e.value.includes(opt.value)).map((opt) => opt.value) : e.value;
-      onChange(sortedValue);
+      onChange(sortedValue, e);
     },
     [onChange, data]
   );
