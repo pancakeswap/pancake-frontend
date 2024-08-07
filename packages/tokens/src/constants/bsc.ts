@@ -3245,4 +3245,12 @@ export const bscTokens = {
     'SolvBTC Babylon',
     'https://solv.finance/',
   ),
+  stbtc: new ERC20Token(
+    ChainId.BSC,
+    '0xf6718b2701D4a6498eF77D7c152b2137Ab28b8A3',
+    18,
+    'stBTC',
+    'Lorenzo stBTC',
+    'https://www.lorenzo-protocol.xyz',
+  ),
 }

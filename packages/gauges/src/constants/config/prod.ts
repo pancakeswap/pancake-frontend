@@ -4889,4 +4889,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: bscTokens.solvbtcbbn.address,
     token1Address: bscTokens.solvbtc.address,
   },
+  {
+    gid: 494,
+    pairName: 'stBTC-BTCB',
+    address: '0xfc18301B94a77D91015bb90D5249827c506846Ae',
+    chainId: ChainId.BSC,
+    type: GaugeType.V3,
+    feeTier: FeeAmount.LOWEST,
+    token0Address: bscTokens.btcb.address,
+    token1Address: bscTokens.stbtc.address,
+  },
 ]
