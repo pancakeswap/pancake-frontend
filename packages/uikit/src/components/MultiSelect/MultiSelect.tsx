@@ -163,7 +163,7 @@ const SelectInputContainer = styled(Flex)`
   border-bottom-width: 2px;
   border-radius: ${BORDER_RADIUS};
   box-shadow: 0 0 1px ${({ theme }) => theme.shadows.inset};
-  padding: 7px 8px 6px 16px;
+  padding: 5px 8px 4px 12px;
   user-select: none;
   cursor: pointer;
   gap: 8px;

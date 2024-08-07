@@ -539,7 +539,13 @@ const ActionPanel = ({
   const stakeButton = useMemo(
     () => (
       <>
-        <Button scale="md" width={['100px']} style={{ alignSelf: 'center' }} onClick={handleStakeAndCheckInactive}>
+        <Button
+          scale="md"
+          width={['100px']}
+          style={{ alignSelf: 'center' }}
+          onClick={handleStakeAndCheckInactive}
+          disabled={attemptingTxn}
+        >
           {t('Stake')}
         </Button>
         <StakeModal
@@ -552,7 +558,7 @@ const ActionPanel = ({
         </StakeModal>
       </>
     ),
-    [handleStake, handleStakeAndCheckInactive, isStaked, modalContent, t, outOfRange, stakeModal],
+    [handleStake, handleStakeAndCheckInactive, isStaked, modalContent, t, outOfRange, stakeModal, attemptingTxn],
   )
 
   const unstakeButton = useMemo(
@@ -564,6 +570,7 @@ const ActionPanel = ({
           style={{ alignSelf: 'center' }}
           variant="secondary"
           onClick={stakeModal.onOpen}
+          disabled={attemptingTxn}
         >
           {t('Unstake')}
         </Button>
@@ -577,7 +584,7 @@ const ActionPanel = ({
         </StakeModal>
       </>
     ),
-    [onUnstake, isStaked, modalContent, t, outOfRange, stakeModal],
+    [onUnstake, isStaked, modalContent, t, outOfRange, stakeModal, attemptingTxn],
   )
 
   const addLiquidityButton = useMemo(

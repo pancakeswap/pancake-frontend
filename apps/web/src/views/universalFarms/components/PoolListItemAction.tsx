@@ -3,7 +3,7 @@ import { Protocol } from '@pancakeswap/farms'
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
-import { Button, MoreIcon, SubMenu } from '@pancakeswap/uikit'
+import { Box, Button, MoreIcon, SubMenu } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -37,22 +37,23 @@ export const PoolListItemAction = memo(({ pool }: { pool: PoolInfo }) => {
     e.preventDefault()
     e.stopPropagation()
   }, [])
+
   return (
-    <>
+    <Box onClick={handleClick}>
       <SubMenu
         style={{
           background: theme.card.background,
           borderColor: theme.colors.cardBorder,
         }}
         component={
-          <Button scale="xs" variant="text" onClick={handleClick}>
+          <Button scale="xs" variant="text">
             <MoreIcon />
           </Button>
         }
       >
         <ActionItems pool={pool} />
       </SubMenu>
-    </>
+    </Box>
   )
 })
 
