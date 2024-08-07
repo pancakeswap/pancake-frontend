@@ -21,5 +21,6 @@ export const CROSS_CHIAN_CONFIG: Record<
     dstGas: 850000n,
     name: 'ZKsync',
     layerZeroFee: 2373941681319489n,
+    layerZeroDeeBufferTimes: 10,
   },
 }
