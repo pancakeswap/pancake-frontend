@@ -20,8 +20,8 @@ const AssetSetContainer = styled(Box)`
     content: '';
     position: absolute;
     top: -6px;
-    right: 0;
-    width: 48px;
+    right: -10px;
+    width: 58px;
     height: 100%;
     z-index: 2;
     background: ${({ theme }) =>
