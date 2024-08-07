@@ -46,7 +46,7 @@ export const PoolListItemAction = memo(({ pool }: { pool: PoolInfo }) => {
           borderColor: theme.colors.cardBorder,
         }}
         component={
-          <Button scale="xs" variant="text" onClick={handleClick}>
+          <Button scale="xs" variant="text">
             <MoreIcon />
           </Button>
         }
