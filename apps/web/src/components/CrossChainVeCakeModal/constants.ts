@@ -1,8 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 
-export const CROSS_CHIAN_CONFIG: Record<
+export const CROSS_CHAIN_CONFIG: Record<
   number,
-  { eid: number; dstGas: bigint; name: string; layerZeroFee: bigint; layerZeroDeeBufferTimes?: number }
+  { eid: number; dstGas: bigint; name: string; layerZeroFee: bigint; layerZeroFeeBufferTimes?: number }
 > = {
   [ChainId.ETHEREUM]: {
     eid: 30101,
@@ -21,6 +21,6 @@ export const CROSS_CHIAN_CONFIG: Record<
     dstGas: 850000n,
     name: 'ZKsync',
     layerZeroFee: 2373941681319489n,
-    layerZeroDeeBufferTimes: 20,
+    layerZeroFeeBufferTimes: 10,
   },
 }
