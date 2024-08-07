@@ -1,6 +1,6 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useBlock, useWatchBlocks, useBlockNumber as useWagmiBlockNumber } from 'wagmi'
-import { useEffect } from 'react'
+import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useBlock, useWatchBlocks, useBlockNumber as useWagmiBlockNumber, usePublicClient } from 'wagmi'
+import { useCallback, useEffect } from 'react'
 
 type Params = {
   chainId?: number
@@ -10,6 +10,20 @@ type Params = {
 function createKeyGetter(name: string) {
   return function getKey(chainId?: number) {
     return [name, chainId]
+  }
+}
+
+const updateBlockQueryData = (
+  queryClient: QueryClient,
+  chainId: number | undefined,
+  block: { number: bigint; timestamp: bigint },
+) => {
+  if (chainId) {
+    const blockNumber = Number(block.number)
+    const timestamp = Number(block.timestamp)
+
+    queryClient.setQueryData(getBlockNumberQueryKey(chainId), blockNumber)
+    queryClient.setQueryData(getBlockTimestampQueryKey(chainId), timestamp)
   }
 }
 
@@ -61,10 +75,7 @@ export function useWatchBlock({ chainId, enabled }: Params) {
     blockTag: 'latest',
     enabled: queryEnabled,
     onBlock: (data) => {
-      const blockNumber = Number(data.number)
-      const timestamp = Number(data.timestamp)
-      queryClient.setQueryData(getBlockNumberQueryKey(chainId), blockNumber)
-      queryClient.setQueryData(getBlockTimestampQueryKey(chainId), timestamp)
+      updateBlockQueryData(queryClient, chainId, data)
     },
   })
 }
@@ -118,4 +129,22 @@ export function useInitialBlockTimestamp({ chainId }: Omit<Params, 'enabled'>) {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   })
+}
+
+export const useFetchBlockData = (chainId: number) => {
+  const queryClient = useQueryClient()
+  const provider = usePublicClient({ chainId })
+
+  const refetchBlockData = useCallback(async () => {
+    try {
+      if (provider) {
+        const block = await provider.getBlock()
+        updateBlockQueryData(queryClient, chainId, block)
+      }
+    } catch (error) {
+      console.error('Error fetching block data:', error)
+    }
+  }, [provider, queryClient, chainId])
+
+  return refetchBlockData
 }

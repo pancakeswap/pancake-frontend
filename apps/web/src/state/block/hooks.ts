@@ -60,14 +60,14 @@ export const useChainCurrentBlock = (chainId: number) => {
   const { chainId: activeChainId } = useActiveChainId()
   const activeChainBlockNumber = useCurrentBlock()
   const isTargetDifferent = Boolean(chainId && activeChainId !== chainId)
-  const { data: currentBlock } = useWagmiBlockNumber({
+  const { data: targetChainBlockNumber } = useWagmiBlockNumber({
     chainId,
     watch: true,
     query: {
-      enabled: Boolean(isTargetDifferent),
+      enabled: isTargetDifferent,
+      select: (data) => (data !== undefined ? Number(data) : undefined),
     },
   })
-  const targetChainBlockNumber = currentBlock !== undefined ? Number(currentBlock) : undefined
 
   return isTargetDifferent ? targetChainBlockNumber : activeChainBlockNumber
 }
