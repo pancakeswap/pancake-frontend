@@ -77,7 +77,6 @@ export const Quests = () => {
           <ButtonMenu
             scale="sm"
             variant="subtle"
-            padding="2px"
             m={['16px 0 0 0', '16px 0 0 0', '0']}
             activeIndex={statusButtonIndex}
             onItemClick={onStatusButtonChange}
