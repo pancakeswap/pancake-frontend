@@ -4,7 +4,17 @@ import { useTranslation } from '@pancakeswap/localization'
 import { toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
 import { Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
-import { Button, Image, InfoIcon, ISortOrder, SORT_ORDER, TableView, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  Button,
+  Image,
+  InfoIcon,
+  ISortOrder,
+  SORT_ORDER,
+  TableView,
+  Text,
+  Toggle,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { useAllTokensByChainIds } from 'hooks/Tokens'
 import { PoolSortBy } from 'state/farmsV4/atom'
 import { useExtendPools, useFarmPools, usePoolsApr } from 'state/farmsV4/hooks'
@@ -38,6 +48,11 @@ const StyledImage = styled(Image)`
   margin-right: auto;
   margin-top: 58px;
 `
+const ToggleWrapper = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+`
 
 const NUMBER_OF_FARMS_VISIBLE = 20
 
@@ -61,27 +76,32 @@ export const PoolsPage = () => {
   const [sortOrder, setSortOrder] = useState<ISortOrder>(SORT_ORDER.NULL)
   const [sortField, setSortField] = useState<keyof IDataType | null>(null)
   const [isPoolListExtended, setIsPoolListExtended] = useState(false)
+  const [farmsOnly, setFarmsOnly] = useState(false)
+
   // data source
   const { loaded: fetchFarmListLoaded, data: farmList } = useFarmPools()
   const { extendPools, fetchPoolList, resetExtendPools } = useExtendPools()
   const allTokenMap = useAllTokensByChainIds(allChainIds)
   const poolsApr = usePoolsApr()
 
-  const poolList = useMemo(
+  const extendPoolList = useMemo(
     () =>
-      fetchFarmListLoaded && farmList.length
-        ? farmList.concat(
-            isPoolListExtended
-              ? extendPools
-              : extendPools.filter(
-                  (pool) =>
-                    // non farming list need to do a whitelist filter
-                    pool.token0.wrapped.address in allTokenMap[pool.chainId] &&
-                    pool.token1.wrapped.address in allTokenMap[pool.chainId],
-                ),
-          )
-        : UNIVERSAL_FARMS,
-    [fetchFarmListLoaded, farmList, extendPools, allTokenMap, isPoolListExtended],
+      isPoolListExtended
+        ? extendPools
+        : extendPools.filter(
+            (pool) =>
+              // non farming list need to do a whitelist filter
+              pool.token0.wrapped.address in allTokenMap[pool.chainId] &&
+              pool.token1.wrapped.address in allTokenMap[pool.chainId],
+          ),
+    [isPoolListExtended, extendPools, allTokenMap],
+  )
+
+  const farmListWithExtendPools = useMemo(() => farmList.concat(extendPoolList), [farmList, extendPoolList])
+
+  const poolList = useMemo(
+    () => (fetchFarmListLoaded && farmList.length ? (farmsOnly ? farmList : farmListWithExtendPools) : UNIVERSAL_FARMS),
+    [fetchFarmListLoaded, farmListWithExtendPools, farmList, farmsOnly],
   )
 
   useEffect(() => {
@@ -97,7 +117,7 @@ export const PoolsPage = () => {
 
   useEffect(() => {
     // if consumed, fetch from pool/list
-    if (cursorVisible >= poolList.length) {
+    if (cursorVisible >= poolList.length && !farmsOnly) {
       // todo:@eric add some loading status to prevent multi fetch
       fetchPoolList({
         chains: filters.selectedNetwork,
@@ -105,7 +125,7 @@ export const PoolsPage = () => {
         orderBy: PoolSortBy.VOL,
       })
     }
-  }, [cursorVisible, poolList, fetchPoolList, filters, selectedPoolTypes])
+  }, [cursorVisible, poolList, fetchPoolList, filters, selectedPoolTypes, farmsOnly])
 
   const handleFilterChange: IPoolsFilterPanelProps['onChange'] = useCallback(
     (newFilters) => {
@@ -142,6 +162,10 @@ export const PoolsPage = () => {
     return `/pools/${getChainName(pool.chainId)}/${pool.lpAddress}`
   }, [])
 
+  const toggleFarmsOnly = useCallback(() => {
+    setFarmsOnly(!farmsOnly)
+  }, [farmsOnly])
+
   const filteredData = useMemo(() => {
     return poolList.filter(
       (farm) =>
@@ -173,7 +197,12 @@ export const PoolsPage = () => {
   return (
     <Card>
       <CardHeader>
-        <PoolsFilterPanel onChange={handleFilterChange} value={filters} />
+        <PoolsFilterPanel onChange={handleFilterChange} value={filters}>
+          <ToggleWrapper>
+            <Text>{t('Farms only')}</Text>
+            <Toggle checked={farmsOnly} onChange={toggleFarmsOnly} scale="sm" />
+          </ToggleWrapper>
+        </PoolsFilterPanel>
       </CardHeader>
       <CardBody>
         <PoolsContent>
