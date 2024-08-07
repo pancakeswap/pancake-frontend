@@ -10,6 +10,7 @@ import { usePoolFee } from '../hooks/useStablePoolFee'
 import { MyPositions } from './MyPositions'
 import { PoolCurrencies } from './PoolCurrencies'
 import { PoolStatus } from './PoolStatus'
+import { Transactions } from './Transactions/Transactions'
 
 export const PoolInfo = () => {
   const { t } = useTranslation()
@@ -95,6 +96,8 @@ export const PoolInfo = () => {
       <Grid>
         <PoolStatus poolInfo={poolInfo} />
       </Grid>
+
+      <Transactions protocol={poolInfo?.protocol} />
     </Column>
   )
 }
