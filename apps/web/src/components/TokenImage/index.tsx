@@ -11,6 +11,7 @@ import { ASSET_CDN } from 'config/constants/endpoints'
 interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc' | 'secondarySrc'> {
   primaryToken: Currency
   secondaryToken: Token
+  withChainLogo?: boolean
 }
 
 export const tokenImageChainNameMapping = {
@@ -32,15 +33,21 @@ export const getImageUrlFromToken = (token: Currency) => {
     : `https://tokens.pancakeswap.finance/images/${tokenImageChainNameMapping[token.chainId]}${address}.png`
 }
 
+export const getChainLogoUrlFromChainId = (chainId: number) =>
+  `https://assets.pancakeswap.finance/web/chains/${chainId}.png`
+
 export const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProps>> = ({
   primaryToken,
   secondaryToken,
+  withChainLogo = false,
   ...props
 }) => {
+  const chainLogo = withChainLogo ? getChainLogoUrlFromChainId(primaryToken.chainId) : undefined
   return (
     <UIKitTokenPairImage
       primarySrc={getImageUrlFromToken(primaryToken)}
       secondarySrc={getImageUrlFromToken(secondaryToken)}
+      chainLogoSrc={chainLogo}
       {...props}
     />
   )

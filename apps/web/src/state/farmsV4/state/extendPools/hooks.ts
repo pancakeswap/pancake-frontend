@@ -1,11 +1,11 @@
 import memoize from 'lodash/memoize'
 import { useQuery } from '@tanstack/react-query'
 import { computePoolAddress, DEPLOYER_ADDRESSES, FeeAmount } from '@pancakeswap/v3-sdk'
+import { getTokenByAddress } from '@pancakeswap/tokens'
 import { useAtom } from 'jotai'
 import { useCallback, useState } from 'react'
 import { Address } from 'viem/accounts'
 import type { PoolInfo } from '../type'
-import { getTokenByAddress } from '../utils'
 import { DEFAULT_QUERIES, extendPoolsAtom, ExtendPoolsQuery, extendPoolsQueryAtom } from './atom'
 import { fetchExplorerPoolInfo, fetchExplorerPoolsList } from './fetcher'
 

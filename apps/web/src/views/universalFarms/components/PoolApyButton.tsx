@@ -121,7 +121,7 @@ export const PoolApyButton: React.FC<{ pool: PoolInfo }> = ({ pool }) => {
       combinedBoostedApr={combinedBoostedApr}
     />,
     {
-      trigger: 'click',
+      trigger: 'hover',
     },
   )
 
