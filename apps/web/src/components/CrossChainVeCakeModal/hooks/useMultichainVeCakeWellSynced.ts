@@ -6,7 +6,7 @@ import { getVeCakeAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
-import { CROSS_CHIAN_CONFIG } from '../constants'
+import { CROSS_CHAIN_CONFIG } from '../constants'
 
 export const useMultichainVeCakeWellSynced = (
   targetChainId?: ChainId,
@@ -55,7 +55,7 @@ export const useAllMultichainSyncedCount = (): {
 export const getAllMultichainSyncedCount = async (
   address: Address,
 ): Promise<{ totalCount?: number; syncedCount?: number }> => {
-  const queryChainList = Object.keys(CROSS_CHIAN_CONFIG) as unknown as ChainId[]
+  const queryChainList = Object.keys(CROSS_CHAIN_CONFIG) as unknown as ChainId[]
   const totalCount = queryChainList.length + 1 // add BSC CHAIN to count
 
   const multichainIsWellSync = await Promise.all(
