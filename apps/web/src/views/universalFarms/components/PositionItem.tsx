@@ -451,6 +451,7 @@ export const PositionItemDetail = (props: IPositionItemDetailProps) => {
           variant="inverted"
           primaryToken={currency0}
           secondaryToken={currency1.wrapped}
+          withChainLogo
         />
       )}
       <DetailsContainer>
