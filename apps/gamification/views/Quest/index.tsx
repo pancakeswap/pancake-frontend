@@ -156,11 +156,7 @@ export const Quest = () => {
             </Flex>
           )}
           {!quest?.reward?.currency && (
-            <Box
-              width="100%"
-              mt={['18px', '18px', '18px', '18px', '18px', '4px']}
-              ml={['0', '0', '0', '0', '0', '4px']}
-            >
+            <Box width="100%" m={['18px 0 0 0', '18px 0 0 0', '18px 0 0 0', '18px 0 0 0', '18px 0 0 0', '4px 0 0 8px']}>
               <Questers questId={questId} size={18} fontSize={14} />
             </Box>
           )}

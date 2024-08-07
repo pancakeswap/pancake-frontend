@@ -13,7 +13,20 @@ const AssetSetContainer = styled(Box)`
   position: relative;
   z-index: 1;
   height: 26px;
+  width: 90%;
   max-width: 100%;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 0;
+    width: 48px;
+    height: 100%;
+    z-index: 2;
+    background: ${({ theme }) =>
+      `linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, ${theme.colors.backgroundAlt} 100%)`};
+  }
 `
 
 export const Questers = ({
@@ -43,7 +56,7 @@ export const Questers = ({
 
   return (
     <Container width="100%" flexWrap="nowrap" overflow="hidden">
-      <Text fontSize={fontSize} bold={bold} mr="8px">
+      <Text width="100%" maxWidth="fit-content" fontSize={fontSize} bold={bold} mr="8px">
         {t('%total%+ questers', { total: totalLength })}
       </Text>
 
