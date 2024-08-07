@@ -9,6 +9,7 @@ import { getCakePriceFromOracle } from 'hooks/useCakePrice'
 import assign from 'lodash/assign'
 import groupBy from 'lodash/groupBy'
 import set from 'lodash/set'
+import { chainIdToExplorerInfoChainName, explorerApiClient } from 'state/info/api/client'
 import { safeGetAddress } from 'utils'
 import { getMasterChefV3Contract, getV2SSBCakeWrapperContract } from 'utils/contractHelpers'
 import { publicClient } from 'utils/wagmi'
@@ -30,6 +31,32 @@ export const getCakeApr = (pool: PoolInfo): Promise<CakeApr> => {
         },
       })
   }
+}
+
+// @todo @ChefJerry should directly fetch from poolInfo api, BE need update
+export const getLpApr = async (pool: PoolInfo, signal?: AbortSignal): Promise<number> => {
+  const { protocol } = pool
+  const chainName = chainIdToExplorerInfoChainName[pool.chainId]
+
+  const resp = await explorerApiClient.GET(
+    protocol === 'v4bin'
+      ? `/cached/pools/apr/v4/{chainName}/{id}`
+      : `/cached/pools/apr/${protocol}/{chainName}/{address}`,
+    {
+      signal,
+      params: {
+        path: {
+          address: pool.lpAddress,
+          chainName,
+        },
+      },
+    },
+  )
+  if (!resp.data) {
+    return 0
+  }
+
+  return resp.data.apr7d ? parseFloat(resp.data.apr7d) : 0
 }
 
 const masterChefV3CacheMap = new Map<
