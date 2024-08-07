@@ -158,80 +158,73 @@ const PriceRange = memo(({ currency1, currency0, priceLower, priceUpper, tickAtL
   ) : null
 })
 
-export const PositionV2Item = memo(
-  ({ data, detailMode }: { data: V2LPDetail; pool?: PoolInfo; detailMode?: boolean }) => {
-    const { pair, deposited0, deposited1 } = data
+export const PositionV2Item = memo(({ data }: { data: V2LPDetail; pool?: PoolInfo }) => {
+  const { pair, deposited0, deposited1 } = data
 
-    const unwrappedToken0 = unwrappedToken(pair.token0)
-    const unwrappedToken1 = unwrappedToken(pair.token1)
-    const totalPriceUSD = useTotalPriceUSD({
-      currency0: unwrappedToken0,
-      currency1: unwrappedToken1,
-      amount0: deposited0,
-      amount1: deposited1,
-    })
+  const unwrappedToken0 = unwrappedToken(pair.token0)
+  const unwrappedToken1 = unwrappedToken(pair.token1)
+  const totalPriceUSD = useTotalPriceUSD({
+    currency0: unwrappedToken0,
+    currency1: unwrappedToken1,
+    amount0: deposited0,
+    amount1: deposited1,
+  })
 
-    const feeAmount = useMemo(() => Number(v2Fee.multiply(100).toFixed(2)), [])
-    const pool = usePoolInfo({ poolAddress: data.pair.liquidityToken.address, chainId: pair.chainId })
+  const feeAmount = useMemo(() => Number(v2Fee.multiply(100).toFixed(2)), [])
+  const pool = usePoolInfo({ poolAddress: data.pair.liquidityToken.address, chainId: pair.chainId })
 
-    return (
-      <PositionItemDetail
-        chainId={pair.chainId}
-        pool={pool}
-        link={`/v2/pair/${currencyId(unwrappedToken0)}/${currencyId(unwrappedToken1)}`}
-        totalPriceUSD={totalPriceUSD}
-        currency0={unwrappedToken0}
-        currency1={unwrappedToken1}
-        removed={false}
-        outOfRange={false}
-        protocol={data.protocol}
-        fee={feeAmount}
-        amount0={deposited0}
-        amount1={deposited1}
-        detailMode={detailMode}
-      />
-    )
-  },
-)
+  return (
+    <PositionItemDetail
+      chainId={pair.chainId}
+      pool={pool}
+      link={`/v2/pair/${currencyId(unwrappedToken0)}/${currencyId(unwrappedToken1)}`}
+      totalPriceUSD={totalPriceUSD}
+      currency0={unwrappedToken0}
+      currency1={unwrappedToken1}
+      removed={false}
+      outOfRange={false}
+      protocol={data.protocol}
+      fee={feeAmount}
+      amount0={deposited0}
+      amount1={deposited1}
+    />
+  )
+})
 
-export const PositionStableItem = memo(
-  ({ data, detailMode }: { data: StableLPDetail; pool?: PoolInfo; detailMode?: boolean }) => {
-    const { pair, deposited0, deposited1 } = data
+export const PositionStableItem = memo(({ data }: { data: StableLPDetail; pool?: PoolInfo }) => {
+  const { pair, deposited0, deposited1 } = data
 
-    const totalPriceUSD = useTotalPriceUSD({
-      currency0: pair.token0,
-      currency1: pair.token1,
-      amount0: deposited0,
-      amount1: deposited1,
-    })
-    const pool = usePoolInfo({ poolAddress: pair.stableSwapAddress, chainId: pair.liquidityToken.chainId })
+  const totalPriceUSD = useTotalPriceUSD({
+    currency0: pair.token0,
+    currency1: pair.token1,
+    amount0: deposited0,
+    amount1: deposited1,
+  })
+  const pool = usePoolInfo({ poolAddress: pair.stableSwapAddress, chainId: pair.liquidityToken.chainId })
 
-    return (
-      <PositionItemDetail
-        chainId={pair.liquidityToken.chainId}
-        pool={pool}
-        link={`/stable/${pair.lpAddress}`}
-        totalPriceUSD={totalPriceUSD}
-        currency0={pair.token0}
-        currency1={pair.token1}
-        removed={false}
-        outOfRange={false}
-        protocol={data.protocol}
-        fee={Number(pair.fee.numerator)}
-        amount0={deposited0}
-        amount1={deposited1}
-        detailMode={detailMode}
-      />
-    )
-  },
-)
+  return (
+    <PositionItemDetail
+      chainId={pair.liquidityToken.chainId}
+      pool={pool}
+      link={`/stable/${pair.lpAddress}`}
+      totalPriceUSD={totalPriceUSD}
+      currency0={pair.token0}
+      currency1={pair.token1}
+      removed={false}
+      outOfRange={false}
+      protocol={data.protocol}
+      fee={Number(pair.fee.numerator)}
+      amount0={deposited0}
+      amount1={deposited1}
+    />
+  )
+})
 interface IPositionV3ItemProps {
   data: PositionDetail
   poolInfo?: PoolInfo
-  detailMode?: boolean
 }
 
-export const PositionV3Item = memo(({ data, detailMode }: IPositionV3ItemProps) => {
+export const PositionV3Item = memo(({ data }: IPositionV3ItemProps) => {
   const { currency0, currency1, removed, outOfRange, priceUpper, priceLower, tickAtLimit, position } =
     useExtraV3PositionInfo(data)
 
