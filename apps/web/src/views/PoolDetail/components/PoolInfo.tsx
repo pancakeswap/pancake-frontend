@@ -9,6 +9,7 @@ import { PoolApyButton } from 'views/universalFarms/components/PoolApyButton'
 import { usePoolInfoByQuery } from '../hooks/usePoolInfo'
 import { usePoolFee } from '../hooks/useStablePoolFee'
 import { MyPositions } from './MyPositions'
+import { PoolCharts } from './PoolCharts'
 import { PoolCurrencies } from './PoolCurrencies'
 import { PoolStatus } from './PoolStatus'
 import { Transactions } from './Transactions/Transactions'
@@ -94,8 +95,9 @@ export const PoolInfo = () => {
         <PoolCurrencies poolInfo={poolInfo} />
       </AutoRow>
 
-      <Grid>
+      <Grid gridGap="24px" gridTemplateColumns="1fr 2fr">
         <PoolStatus poolInfo={poolInfo} />
+        <PoolCharts poolInfo={poolInfo} />
       </Grid>
 
       <Transactions protocol={poolInfo?.protocol} />
