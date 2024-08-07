@@ -14,5 +14,5 @@ export function getTokensByChain(chainId?: ChainId): Token[] {
 
 export function getTokenByAddress(chainId: ChainId, address: SerializedToken['address']) {
   const tokens = getTokensByChain(chainId)
-  return tokens.find((token) => token.address === address)
+  return tokens.find((token) => token.address.toLowerCase() === address.toLowerCase())
 }

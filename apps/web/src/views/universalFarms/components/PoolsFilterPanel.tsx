@@ -1,3 +1,4 @@
+import isEmpty from 'lodash/isEmpty'
 import { Flex } from '@pancakeswap/uikit'
 import {
   INetworkProps,
@@ -7,6 +8,7 @@ import {
   PoolTypeMenu,
   TokenFilter,
 } from '@pancakeswap/widgets-internal'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import styled from 'styled-components'
 import { CHAINS } from 'config/chains'
 import { ASSET_CDN } from 'config/constants/endpoints'
@@ -125,6 +127,7 @@ export const PoolsFilterPanel: React.FC<React.PropsWithChildren<IPoolsFilterPane
   children,
   onChange,
 }) => {
+  const { chainId: activeChainId } = useActiveChainId()
   const { selectedTokens, selectedNetwork, selectedTypeIndex: selectedType } = value
 
   const allTokenMap = useAllTokensByChainIds(selectedNetwork)
@@ -142,8 +145,13 @@ export const PoolsFilterPanel: React.FC<React.PropsWithChildren<IPoolsFilterPane
     onChange({ selectedTypeIndex: index })
   }
 
-  const handleNetworkChange: INetworkProps['onChange'] = (network) => {
-    onChange({ selectedNetwork: network })
+  const handleNetworkChange: INetworkProps['onChange'] = (network, e) => {
+    if (isEmpty(e.value)) {
+      e.preventDefault()
+      onChange({ selectedNetwork: [activeChainId] })
+    } else {
+      onChange({ selectedNetwork: network })
+    }
   }
 
   const handleTokensChange: ITokenProps['onChange'] = (e) => {
