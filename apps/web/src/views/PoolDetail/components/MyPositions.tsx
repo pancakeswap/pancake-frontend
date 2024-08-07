@@ -280,7 +280,7 @@ const MyV3Positions: React.FC<{
             {t('inactive')}
           </Text>
           {positions?.[PositionFilter.Inactive].map((position) => {
-            return <PositionV3Item key={position.tokenId} data={position} />
+            return <PositionV3Item detailMode key={position.tokenId} data={position} />
           })}
         </AutoColumn>
       ) : null}
@@ -291,7 +291,7 @@ const MyV3Positions: React.FC<{
             {t('closed')}
           </Text>
           {positions?.[PositionFilter.Closed]?.map((position) => {
-            return <PositionV3Item key={position.tokenId} data={position} />
+            return <PositionV3Item detailMode key={position.tokenId} data={position} />
           })}
         </AutoColumn>
       ) : null}
@@ -342,10 +342,15 @@ const MyV2OrStablePositions: React.FC<{
   return (
     <AutoColumn gap="lg">
       {poolInfo.protocol === 'v2' ? (
-        <PositionV2Item key={data.pair.liquidityToken.address} data={data as V2LPDetail} pool={poolInfo} />
+        <PositionV2Item detailMode key={data.pair.liquidityToken.address} data={data as V2LPDetail} pool={poolInfo} />
       ) : null}
       {poolInfo.protocol === 'stable' ? (
-        <PositionStableItem key={data.pair.liquidityToken.address} data={data as StableLPDetail} pool={poolInfo} />
+        <PositionStableItem
+          detailMode
+          key={data.pair.liquidityToken.address}
+          data={data as StableLPDetail}
+          pool={poolInfo}
+        />
       ) : null}
       {/* {data.map((detail: V2LPDetail) => {
         return <PositionV2Item key={detail.pair.liquidityToken.address} data={detail} pool={poolInfo} />
