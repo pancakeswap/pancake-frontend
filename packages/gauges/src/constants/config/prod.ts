@@ -4899,4 +4899,14 @@ export const CONFIG_PROD: GaugeConfig[] = [
     token0Address: bscTokens.btcb.address,
     token1Address: bscTokens.stbtc.address,
   },
+  {
+    gid: 495,
+    pairName: 'USDe-USDC',
+    address: '0x1CAF100CD74792D4be6C64621C2E21c7830868c4',
+    chainId: ChainId.ARBITRUM_ONE,
+    type: GaugeType.V3,
+    feeTier: FeeAmount.LOWEST,
+    token0Address: arbitrumTokens.usde.address,
+    token1Address: arbitrumTokens.usdc.address,
+  },
 ]
