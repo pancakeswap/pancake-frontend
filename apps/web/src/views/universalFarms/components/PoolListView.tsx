@@ -7,6 +7,7 @@ import { ReactNode, useCallback, memo, useState } from 'react'
 import { useColumnMobileConfig } from './useColumnConfig'
 import { ActionItems } from './PoolListItemAction'
 import { PoolApyButton } from './PoolApyButton'
+import { getChainFullName } from '../utils'
 
 const ListContainer = styled.ul``
 
@@ -43,6 +44,7 @@ export const ListView: React.FC<IPoolListViewProps> = ({ data }) => {
               token={item.token0}
               quoteToken={item.token1}
               width="48px"
+              getChainName={getChainFullName}
               icon={
                 <TokenPairImage
                   width={44}
@@ -150,6 +152,7 @@ const ListItemDetails: React.FC<IListItemDetailsProps> = memo(({ data }) => {
           token={data.token0}
           quoteToken={data.token1}
           width="48px"
+          getChainName={getChainFullName}
           icon={
             <TokenPairImage
               width={44}
