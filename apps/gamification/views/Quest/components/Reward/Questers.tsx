@@ -69,7 +69,6 @@ export const Questers = ({
             }}
           >
             <BunnyNftIcon $width={size} $height={size} />
-            {/* <Jazzicon seed={index} diameter={size} /> */}
           </Box>
         ))}
       </AssetSetContainer>
