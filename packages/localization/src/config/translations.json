@@ -2944,9 +2944,7 @@
   "Enable Notifications": "Enable Notifications",
   "Notifications": "Notifications",
   "Update Preferences": "Update Preferences",
-  "Notifications From PancakeSwap": "Notifications From PancakeSwap",
   "Get started with notifications from PancakeSwap. First authorize notifications by signing in your wallet": "Get started with notifications from PancakeSwap. First authorize notifications by signing in your wallet",
-  "Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to offer.": "Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to offer.",
   "LESS": "LESS",
   "MORE": "MORE",
   "View Farm": "View Farm",
@@ -3515,10 +3513,9 @@
   "By Subscribing to PancakeSwap Notifications you will be able to recieve updates on your buy crypto purchases": "By Subscribing to PancakeSwap Notifications you will be able to recieve updates on your buy crypto purchases",
   "Welcome to PancakeSwap Notifications": "Welcome to PancakeSwap Notifications",
   "You are now susbscribed and will recieve alerts and updates on PCS features. If you dont want to recieve notifications you can unsubscribe at any time.": "You are now susbscribed and will recieve alerts and updates on PCS features. If you dont want to recieve notifications you can unsubscribe at any time.",
-  "Enable PancakeSwap Notifications": "Enable PancakeSwap Notifications",
   "Congratulations! You are now subscribed": "Congratulations! You are now subscribed",
   "To see your notifications, click the bell icon on the top right hand corner": "To see your notifications, click the bell icon on the top right hand corner",
-  "Return": "Return",
-  "Enable notifications from PancakeSwap": "Enable notifications from PancakeSwap",
-  "Authorize notifications from PancakeSwap": "Authorize notifications from PancakeSwap"
+  "Authorize notifications from PancakeSwap": "Authorize notifications from PancakeSwap",
+  "Enable Notifications From PancakeSwap": "Enable Notifications From PancakeSwap",
+  "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.": "Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer."
 }
