@@ -67,7 +67,7 @@ const config: (
         },
         {
           label: t('Liquidity'),
-          href: '/liquidity',
+          href: '/liquidity/positions',
         },
         {
           label: t('Perpetual'),
@@ -121,7 +121,7 @@ const config: (
       items: [
         {
           label: t('Farms'),
-          href: '/farms',
+          href: '/liquidity/pools',
           supportChainIds: SUPPORT_FARMS,
         },
         {
@@ -130,7 +130,7 @@ const config: (
           supportChainIds: SUPPORT_CAKE_STAKING,
         },
         {
-          label: t('Pools'),
+          label: t('Syrup Pools'),
           href: '/pools',
           supportChainIds: POOL_SUPPORTED_CHAINS,
         },
