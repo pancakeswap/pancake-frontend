@@ -53,6 +53,7 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
 
   const walletAddress = chainId === 0 ? btcAddress : address
   const theme = isDark ? WidgetTheme.Dark : WidgetTheme.Light
+  const isEnabled = getIsNetworkEnabled(chainId)
 
   return useQuery({
     ...query,
@@ -66,14 +67,14 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
         theme,
       },
     ]),
-    enabled: Boolean(externalTransactionId && quote && walletAddress && getIsNetworkEnabled(chainId)),
+    enabled: Boolean(externalTransactionId && quote && walletAddress && isEnabled),
     queryFn: async () => {
-      if (!quote || !walletAddress || !externalTransactionId || !chainId || !onRampUnit) {
+      if (!quote || !walletAddress || !externalTransactionId || !isEnabled || !onRampUnit) {
         throw new Error('Invalid parameters')
       }
 
       const { provider, cryptoCurrency, fiatCurrency, amount } = quote
-      const network = combinedNetworkIdMap[ONRAMP_PROVIDERS[provider]][chainId]
+      const network = combinedNetworkIdMap[ONRAMP_PROVIDERS[provider]][chainId!]
       const moonpayCryptoCurrency = `${cryptoCurrency.toLowerCase()}${network}`
 
       const response = await fetch(
