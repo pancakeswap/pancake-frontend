@@ -34,7 +34,7 @@ const bgXsVariant: GraphicDetail = {
 
 export const QuestBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isDesktop } = useMatchBreakpoints()
+  const { isMobile, isDesktop, isTablet } = useMatchBreakpoints()
   const { width } = useViewport()
 
   const Action = ({ href, icon, text, ...props }: IActions) => (
@@ -52,7 +52,7 @@ export const QuestBanner = () => {
         title={<BannerTitle variant="yellow">{t('PancakeSwap Quest-Beta Now Live')}</BannerTitle>}
         desc={
           !isMobile && (
-            <BannerDesc style={{ whiteSpace: 'break-spaces' }}>
+            <BannerDesc style={{ whiteSpace: 'break-spaces' }} marginTop={isTablet ? '-16px' : '0px'}>
               {isDesktop
                 ? t('Your Multichain Defi Quest Platform - Create your Defi profile now')
                 : t('Your Multichain Defi Quest Platform')}
