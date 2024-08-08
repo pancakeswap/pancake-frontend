@@ -17,7 +17,7 @@ import webNotificationCheck from '../../Home/components/Banners/images/web3-noti
 const OnBoardingSteps = [
   {
     key: 'step-1',
-    title: <Trans>Notifications From PancakeSwap</Trans>,
+    title: <Trans>Authorize notifications from PancakeSwap</Trans>,
     icon: webNotificationBunny,
     description: (
       <Trans>
@@ -27,25 +27,17 @@ const OnBoardingSteps = [
   },
   {
     key: 'step-2',
-    title: <Trans>Enable PancakeSwap Notifications</Trans>,
+    title: <Trans>Enable Notifications From PancakeSwap</Trans>,
     icon: '/images/notifications/welcome-notification-bell.png',
     description: (
-      <Trans>
-        Finally, subscribe to notifications to stay informed on the latest news and updates that PancakeSwap has to
-        offer.
-      </Trans>
+      <Trans>Subscribe to stay informed on the latest news and updates that PancakeSwap has to offer.</Trans>
     ),
   },
   {
     key: 'step-3',
-    title: <Trans>Congrats You Are Now Subscribed</Trans>,
+    title: <Trans>Congratulations! You are now subscribed</Trans>,
     icon: webNotificationCheck,
-    description: (
-      <Trans>
-        You are now subscribed. To see your notifications you can view your inbox from the notification bell on the
-        navbar
-      </Trans>
-    ),
+    description: <Trans>To see your notifications, click the bell icon on the top right hand corner</Trans>,
   },
 ]
 

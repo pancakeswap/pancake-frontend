@@ -33,7 +33,7 @@ const getOnBoardingButtonText = (
   if (isStep1) return t('Enable Notifications')
   if (isStep2) return t('Sign In With Wallet')
   if (isStep3) return t('Subscribe To PancakeSwap')
-  if (isStep4) return t('Return')
+  if (isStep4) return t('Continue')
 
   return t('Enable Notifications')
 }
@@ -59,6 +59,10 @@ function NotificationsOnboardingButton({
   const { data: subscription } = useSubscription()
   const { prepareRegistration } = usePrepareRegistration()
   const { register } = useRegister()
+
+  const isSubscribed = Boolean(subscription)
+  const loading = isSubscribing || isRegistering
+  const buttonText = getOnBoardingButtonText(Boolean(allowNotifications), isRegistered, isSubscribed, t)
 
   const handleRegistration = useCallback(async () => {
     setIsRegistering(true)
@@ -96,15 +100,19 @@ function NotificationsOnboardingButton({
       e.stopPropagation()
       if (!allowNotifications) setAllowNotifications(true)
       if (!isRegistered) handleRegistration()
-      if (isSubscribed && onExternalDismiss) onExternalDismiss()
+      if (isSubscribed && onExternalDismiss) onExternalDismiss?.()
       else handleSubscribe()
     },
-    [handleSubscribe, handleRegistration, isRegistered, setAllowNotifications, allowNotifications],
+    [
+      handleSubscribe,
+      handleRegistration,
+      isRegistered,
+      isSubscribed,
+      onExternalDismiss,
+      setAllowNotifications,
+      allowNotifications,
+    ],
   )
-
-  const isSubscribed = Boolean(subscription)
-  const loading = isSubscribing || isRegistering
-  const buttonText = getOnBoardingButtonText(Boolean(allowNotifications), isRegistered, isSubscribed, t)
 
   if (!address)
     return (
