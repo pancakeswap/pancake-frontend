@@ -13,6 +13,7 @@ import {
   type GraphicDetail,
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
+import { useViewport } from 'hooks/useViewport'
 
 type ActionsType = { href: string; text: string; icon?: 'arrowForward' | 'openNew' }
 type IActions = ActionsType & Partial<CSSStyleDeclaration>
@@ -33,7 +34,8 @@ const bgXsVariant: GraphicDetail = {
 
 export const QuestBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isDesktop, isTablet, isXl } = useMatchBreakpoints()
+  const { isMobile, isDesktop } = useMatchBreakpoints()
+  const { width } = useViewport()
 
   const Action = ({ href, icon, text, ...props }: IActions) => (
     <Box display={props.display}>
@@ -47,11 +49,7 @@ export const QuestBanner = () => {
     <BannerContainer background="radial-gradient(110.52% 235.12% at 100% 103.33%, #C4FBFF 0%, #2BD1DE 33.33%, #2BD1DE 66.67%, #99F8FF 100%)">
       <BannerMain
         badges={<PancakeSwapBadge whiteText />}
-        title={
-          <BannerTitle variant="purple" marginTop={isTablet || isXl ? '-12px' : '0px'}>
-            {t('PancakeSwap Quest-Beta Now Live')}
-          </BannerTitle>
-        }
+        title={<BannerTitle variant="yellow">{t('PancakeSwap Quest-Beta Now Live')}</BannerTitle>}
         desc={
           !isMobile && (
             <BannerDesc style={{ whiteSpace: 'break-spaces' }}>
@@ -65,18 +63,17 @@ export const QuestBanner = () => {
           <BannerActionContainer>
             <Action
               href="https://quest.pancakeswap.finance/quests/a2eeefe4f49b4947a1a14bbff344bbb3"
-              display={isMobile ? 'none' : 'flex'}
               icon="arrowForward"
               alignItems="center"
-              text="Create Your Profile"
+              text={t('Create Your Profile')}
               color="#280D5F"
             />
             <Action
               href="https://blog.pancakeswap.finance/articles/introducing-pancake-swap-quest-beta-your-ultimate-de-fi-quest-platform"
+              display={width < 700 ? 'none' : 'flex'}
               icon="openNew"
-              display="flex"
               alignItems="center"
-              text="Learn More"
+              text={t('Learn More')}
               color="#280D5F"
             />
           </BannerActionContainer>
