@@ -29,6 +29,12 @@ const OverlapContainer = styled(Box)`
   }
 `
 
+const StyleButton = styled(Button)`
+  &: hover {
+    opacity: 1 !important;
+  }
+`
+
 interface TasksProps {
   quest: SingleQuestData
   hasIdRegister: boolean
@@ -173,10 +179,10 @@ export const Tasks: React.FC<TasksProps> = ({
                 <>
                   {!hasIdRegister && (
                     <Flex flexDirection="column">
-                      <Text bold fontSize="12px" textAlign="center" color="textSubtle">
+                      <Text bold fontSize="12px" mb="8px" textAlign="center" color="textSubtle">
                         {t('Start the quest to get access to the tasks')}
                       </Text>
-                      <Button onClick={handleStartQuest}>{t('Start the Quest')}</Button>
+                      <StyleButton onClick={handleStartQuest}>{t('Start the Quest')}</StyleButton>
                     </Flex>
                   )}
                 </>
