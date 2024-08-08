@@ -14,16 +14,18 @@ export interface IColumnsType<T extends BasicDataType> {
   sorter?: boolean;
   minWidth?: string;
   display?: boolean;
+  clickable?: boolean;
 }
 
 export interface ITableViewProps<T extends BasicDataType> {
+  getRowKey?: (item: T) => string;
   rowKey?: string;
   columns: IColumnsType<T>[];
   data: T[];
   onSort?: (parms: { dataIndex: IColumnsType<T>["dataIndex"]; order: ISortOrder }) => void;
   sortOrder?: ISortOrder;
   sortField?: IColumnsType<T>["dataIndex"];
-  getRowLink?: (record: T) => string;
+  onRowClick?: (record: T, e: React.MouseEvent) => void;
 }
 
 const Table = styled.table`
@@ -88,6 +90,7 @@ const TableCell = <T extends BasicDataType>({ col, data, idx }: ITableCellProps<
       style={{
         display: col.display === false ? "none" : "table-cell",
       }}
+      data-un-clickable={col.clickable === false ? true : undefined}
     >
       {col.render
         ? col.render(col.dataIndex ? data[col.dataIndex] : data, data, idx)
@@ -102,14 +105,20 @@ export const TableView = <T extends BasicDataType>({
   columns,
   data,
   rowKey,
+  getRowKey: getRowKey_,
   onSort,
   sortOrder,
   sortField,
-  getRowLink,
+  onRowClick,
 }: ITableViewProps<T>) => {
   const getRowKey = useCallback(
-    (rowData: T) => (rowKey ? rowData[rowKey] : rowData.key ?? Object.values(rowData).slice(0, 2).join("-")),
-    [rowKey]
+    (rowData: T) =>
+      getRowKey_
+        ? getRowKey_(rowData)
+        : rowKey
+        ? rowData[rowKey]
+        : rowData.key ?? Object.values(rowData).slice(0, 2).join("-"),
+    [rowKey, getRowKey_]
   );
 
   const handleSort = useCallback(
@@ -119,15 +128,14 @@ export const TableView = <T extends BasicDataType>({
     [onSort]
   );
 
-  const handleRowClick = useCallback(
-    (item: T) => {
-      if (!getRowLink) {
+  const handleClick = useCallback(
+    (item: T, e: React.MouseEvent<HTMLTableRowElement>) => {
+      if (e.target instanceof Element && e.target.closest(`[data-un-clickable]`)) {
         return;
       }
-      const link = getRowLink(item);
-      window.location.href = link;
+      onRowClick?.(item, e);
     },
-    [getRowLink]
+    [onRowClick]
   );
 
   return (
@@ -160,7 +168,7 @@ export const TableView = <T extends BasicDataType>({
       </TableHeader>
       <TableBody>
         {data.map((item) => (
-          <Row $withLink={!!getRowLink} key={getRowKey(item)} onClick={() => handleRowClick(item)}>
+          <Row $withLink={!!onRowClick} key={getRowKey(item)} onClick={(e) => handleClick(item, e)}>
             {columns.map((col, idx) => (
               <TableCell col={col} data={item} idx={idx} key={col.key} />
             ))}
