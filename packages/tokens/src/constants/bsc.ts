@@ -3253,4 +3253,12 @@ export const bscTokens = {
     'Lorenzo stBTC',
     'https://www.lorenzo-protocol.xyz',
   ),
+  bitu: new ERC20Token(
+    ChainId.BSC,
+    '0x654A32542A84bEA7D2c2C1A1Ed1AAAf26888E6bD',
+    18,
+    'BITU',
+    'BitU USD',
+    'https://www.bitu.io',
+  ),
 }
