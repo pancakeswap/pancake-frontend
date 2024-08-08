@@ -401,7 +401,7 @@ export const PositionPage = () => {
             <ButtonMenuItem>{t('Closed')}</ButtonMenuItem>
           </StyledButtonMenu>
           <ButtonContainer>
-            <NextLink href="/liquidity/add" passHref>
+            <NextLink href="/add" passHref>
               <Button endIcon={<AddIcon color="invertedContrast" />} scale="sm">
                 {t('Add Liquidity')}
               </Button>
