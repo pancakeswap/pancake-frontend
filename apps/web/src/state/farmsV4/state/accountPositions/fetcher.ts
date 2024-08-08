@@ -5,7 +5,6 @@ import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_FARMS } from '@pancakeswap/
 import { CurrencyAmount, erc20Abi, ERC20Token, Pair, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { masterChefV3ABI, NFT_POSITION_MANAGER_ADDRESSES, nonfungiblePositionManagerABI } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
 import { infoStableSwapABI } from 'config/abi/infoStableSwap'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
@@ -13,12 +12,11 @@ import { v2BCakeWrapperABI } from 'config/abi/v2BCakeWrapper'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import { AppState } from 'state'
 import { safeGetAddress } from 'utils'
-import { getCrossFarmingVaultAddress, getMasterChefV2Address, getMasterChefV3Address } from 'utils/addressHelpers'
-import { getMasterChefV3Contract } from 'utils/contractHelpers'
+import { getCrossFarmingVaultAddress, getMasterChefV2Address } from 'utils/addressHelpers'
 import { publicClient } from 'utils/viem'
-import { Address, decodeFunctionResult, encodeFunctionData, Hex } from 'viem'
+import { Address } from 'viem'
 import { StablePoolInfo, V2PoolInfo } from '../type'
-import { PositionDetail, StableLPDetail, V2LPDetail } from './type'
+import { StableLPDetail, V2LPDetail } from './type'
 
 /**
  * Given two tokens return the liquidity token that represents its liquidity shares
@@ -33,170 +31,6 @@ export function getV2LiquidityToken([tokenA, tokenB]: [ERC20Token, ERC20Token]):
     `${tokenA.symbol}-${tokenB.symbol} V2 LP`,
     'Pancake LPs',
   )
-}
-
-export const getAccountV3TokenIdsInContract = async (
-  chainId: number,
-  account: Address,
-  contractAddress: Address | undefined | null,
-) => {
-  const client = publicClient({ chainId })
-
-  if (!contractAddress || !account || !client) {
-    return []
-  }
-
-  const balance = await client.readContract({
-    abi: masterChefV3ABI,
-    address: contractAddress,
-    functionName: 'balanceOf',
-    args: [account] as const,
-  })
-
-  const tokenCalls = Array.from({ length: Number(balance) }, (_, i) => {
-    return {
-      abi: masterChefV3ABI,
-      address: contractAddress,
-      functionName: 'tokenOfOwnerByIndex',
-      args: [account, i] as const,
-    } as const
-  })
-
-  const tokenIds = await client.multicall({
-    contracts: tokenCalls,
-    allowFailure: false,
-  })
-
-  return tokenIds
-}
-
-export const getAccountV3TokenIds = async (chainId: number, account: Address) => {
-  const masterChefV3Address = getMasterChefV3Address(chainId)
-  const nftPositionManagerAddress = NFT_POSITION_MANAGER_ADDRESSES[chainId]
-
-  const [farmingTokenIds, nonFarmTokenIds] = await Promise.all([
-    getAccountV3TokenIdsInContract(chainId, account, masterChefV3Address),
-    getAccountV3TokenIdsInContract(chainId, account, nftPositionManagerAddress),
-  ])
-
-  return {
-    farmingTokenIds,
-    nonFarmTokenIds,
-  }
-}
-
-export const getV3PositionsFromTokenId = async (chainId: number, tokenIds: bigint[]): Promise<PositionDetail[]> => {
-  const nftPositionManagerAddress = NFT_POSITION_MANAGER_ADDRESSES[chainId]
-  const client = publicClient({ chainId })
-
-  if (!client || !nftPositionManagerAddress || !tokenIds.length) {
-    return []
-  }
-
-  const positionCalls = tokenIds.map((tokenId) => {
-    return {
-      abi: nonfungiblePositionManagerABI,
-      address: nftPositionManagerAddress,
-      functionName: 'positions',
-      args: [tokenId] as const,
-    } as const
-  })
-
-  const positions = await client.multicall({
-    contracts: positionCalls,
-    allowFailure: false,
-  })
-
-  return positions.map((position, index) => {
-    const [
-      nonce,
-      operator,
-      token0,
-      token1,
-      fee,
-      tickLower,
-      tickUpper,
-      liquidity,
-      feeGrowthInside0LastX128,
-      feeGrowthInside1LastX128,
-      tokensOwed0,
-      tokensOwed1,
-    ] = position
-    return {
-      tokenId: tokenIds[index],
-      nonce,
-      operator,
-      token0,
-      token1,
-      fee,
-      tickLower,
-      tickUpper,
-      liquidity,
-      feeGrowthInside0LastX128,
-      feeGrowthInside1LastX128,
-      tokensOwed0,
-      tokensOwed1,
-      chainId,
-      protocol: Protocol.V3,
-    } satisfies PositionDetail
-  })
-}
-
-export const getAccountV3Positions = async (chainId: number, account: Address): Promise<PositionDetail[]> => {
-  const { farmingTokenIds, nonFarmTokenIds } = await getAccountV3TokenIds(chainId, account)
-
-  const positions = await getV3PositionsFromTokenId(chainId, farmingTokenIds.concat(nonFarmTokenIds))
-
-  const farmingTokenIdsLength = farmingTokenIds.length
-  positions.forEach((_, index) => {
-    positions[index].isStaked = index < farmingTokenIdsLength
-  })
-
-  return positions
-}
-
-export const getAccountV3FarmingPendingCakeReward = async (
-  chainId: number,
-  account: Address,
-  tokenIds: bigint[],
-): Promise<bigint[]> => {
-  const masterChefV3 = getMasterChefV3Contract(undefined, chainId)
-  const isZkSync = [ChainId.ZKSYNC, ChainId.ZKSYNC_TESTNET].includes(chainId)
-
-  if (!masterChefV3 || !tokenIds.length) {
-    return []
-  }
-
-  const harvestCalls: Hex[] = []
-  tokenIds.forEach((tokenId) => {
-    if (isZkSync) {
-      harvestCalls.push(
-        encodeFunctionData({
-          abi: masterChefV3ABI,
-          functionName: 'pendingCake',
-          args: [tokenId],
-        }),
-      )
-    } else {
-      harvestCalls.push(
-        encodeFunctionData({
-          abi: masterChefV3ABI,
-          functionName: 'harvest',
-          args: [tokenId, account],
-        }),
-      )
-    }
-  })
-
-  const { result } = await masterChefV3.simulate.multicall([harvestCalls], { account, value: 0n })
-
-  return result.map((res) => {
-    return decodeFunctionResult({
-      abi: masterChefV3ABI,
-      functionName: isZkSync ? 'pendingCake' : 'harvest',
-      data: res,
-    })
-  })
 }
 
 export const getAccountV2FarmingStakedBalances = async (
