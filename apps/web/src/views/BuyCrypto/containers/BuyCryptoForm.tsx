@@ -70,7 +70,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
   const { data: validAddress, isError: btcError } = useBtcAddressValidator({ address: searchQuery, enabled: isBtc })
   const { fiatValue: defaultAmt } = useFiatCurrencyAmount({ currencyCode: fiatCurrency?.symbol, value_: 150 })
 
-  const isValidBtcAddress = useMemo(
+  const isInValidBtcAddress = useMemo(
     () => Boolean(isBtc && !btcError && !validAddress?.result),
     [validAddress?.result, isBtc, btcError],
   )
@@ -208,7 +208,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={cryptoCurrency}
             selectedQuote={selectedQuote}
-            disabled={Boolean(inputError || isValidBtcAddress || quotesError)}
+            disabled={Boolean(inputError || isInValidBtcAddress || quotesError)}
             loading={isLoading}
             resetBuyCryptoState={resetBuyCryptoState}
             btcAddress={debouncedQuery}
