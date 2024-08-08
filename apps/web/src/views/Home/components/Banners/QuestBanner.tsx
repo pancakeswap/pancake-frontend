@@ -34,7 +34,7 @@ const bgXsVariant: GraphicDetail = {
 
 export const QuestBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isDesktop, isTablet, isMd } = useMatchBreakpoints()
+  const { isMobile, isDesktop, isMd } = useMatchBreakpoints()
   const { width } = useViewport()
 
   const Action = ({ href, icon, text, ...props }: IActions) => (
