@@ -8,7 +8,7 @@ interface LongPressDeleteModalProps extends InjectedModalProps {
   handleDelete: () => void
 }
 
-const DURATION = 3000 // 3s
+const DURATION = 2000 // 3s
 
 export const LongPressDeleteModal: React.FC<LongPressDeleteModalProps> = ({ targetTitle, handleDelete, onDismiss }) => {
   const { t } = useTranslation()

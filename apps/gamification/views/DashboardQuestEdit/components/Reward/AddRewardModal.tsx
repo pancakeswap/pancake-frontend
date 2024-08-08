@@ -50,7 +50,7 @@ interface AddRewardModalProps extends InjectedModalProps {
   handlePickedRewardToken: (value: Currency, totalRewardAmount: string, amountOfWinnersInModal: number) => void
 }
 
-const DURATION = 3000 // 3s
+const DURATION = 2000 // 3s
 
 export const AddRewardModal: React.FC<React.PropsWithChildren<AddRewardModalProps>> = ({
   state,
