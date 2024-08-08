@@ -176,6 +176,7 @@ const config: (
         {
           label: t('Quests'),
           href: 'https://quest.pancakeswap.finance/quests',
+          status: { text: t('New'), color: 'success' },
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {
