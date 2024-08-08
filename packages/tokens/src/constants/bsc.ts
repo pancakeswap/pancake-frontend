@@ -3237,4 +3237,28 @@ export const bscTokens = {
     'WeSendit',
     'https://wesendit.io/',
   ),
+  solvbtcbbn: new ERC20Token(
+    ChainId.BSC,
+    '0x1346b618dC92810EC74163e4c27004c921D446a5',
+    18,
+    'SolvBTC.BBN',
+    'SolvBTC Babylon',
+    'https://solv.finance/',
+  ),
+  stbtc: new ERC20Token(
+    ChainId.BSC,
+    '0xf6718b2701D4a6498eF77D7c152b2137Ab28b8A3',
+    18,
+    'stBTC',
+    'Lorenzo stBTC',
+    'https://www.lorenzo-protocol.xyz',
+  ),
+  bitu: new ERC20Token(
+    ChainId.BSC,
+    '0x654A32542A84bEA7D2c2C1A1Ed1AAAf26888E6bD',
+    18,
+    'BITU',
+    'BitU USD',
+    'https://www.bitu.io',
+  ),
 }

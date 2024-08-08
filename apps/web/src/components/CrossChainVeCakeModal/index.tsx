@@ -40,7 +40,7 @@ import { useProfileProxyWellSynced } from './hooks/useProfileProxyWellSynced'
 
 import { ArbitrumIcon, BinanceIcon, EthereumIcon, ZKsyncIcon } from './ChainLogos'
 import { NetWorkUpdateToDateDisplay } from './components/NetworkUpdateToDate'
-import { CROSS_CHIAN_CONFIG } from './constants'
+import { CROSS_CHAIN_CONFIG } from './constants'
 import { useCrossChianMessage } from './hooks/useCrossChainMessage'
 
 const StyledModalHeader = styled(ModalHeader)`
@@ -158,21 +158,21 @@ export const CrossChainVeCakeModal: React.FC<{
       if (!account || !veCakeSenderV2Contract || !chainId || !isInitialized) return
       setModalState('ready')
       let syncFee = BigInt(
-        new BigNumber(CROSS_CHIAN_CONFIG[chainId].layerZeroFee.toString())
-          .times(CROSS_CHIAN_CONFIG[chainId].layerZeroDeeBufferTimes ?? 1.1)
+        new BigNumber(CROSS_CHAIN_CONFIG[chainId].layerZeroFee.toString())
+          .times(CROSS_CHAIN_CONFIG[chainId].layerZeroFeeBufferTimes ?? 1.1)
           .toNumber()
           .toFixed(0),
       )
 
       try {
         const feeData = await veCakeSenderV2Contract.read.getEstimateGasFees(
-          [CROSS_CHIAN_CONFIG[chainId].eid, CROSS_CHIAN_CONFIG[chainId].dstGas],
+          [CROSS_CHAIN_CONFIG[chainId].eid, CROSS_CHAIN_CONFIG[chainId].dstGas],
           { account },
         )
         if (feeData.nativeFee !== 0n) {
           syncFee = BigInt(
             new BigNumber(feeData.nativeFee.toString())
-              .times(CROSS_CHIAN_CONFIG[chainId].layerZeroDeeBufferTimes ?? 1.1)
+              .times(CROSS_CHAIN_CONFIG[chainId].layerZeroFeeBufferTimes ?? 1.1)
               .toNumber()
               .toFixed(0),
           )
@@ -186,7 +186,7 @@ export const CrossChainVeCakeModal: React.FC<{
       if (bnbBalance <= syncFee) return
       const receipt = await fetchWithCatchTxError(async () => {
         return veCakeSenderV2Contract.write.sendSyncMsg(
-          [CROSS_CHIAN_CONFIG[chainId].eid, account, true, hasProfile, CROSS_CHIAN_CONFIG[chainId].dstGas],
+          [CROSS_CHAIN_CONFIG[chainId].eid, account, true, hasProfile, CROSS_CHAIN_CONFIG[chainId].dstGas],
           {
             account,
             chain,
@@ -198,7 +198,7 @@ export const CrossChainVeCakeModal: React.FC<{
         toastSuccess(
           `${t('Syncing veCAKE')}!`,
           <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your veCAKE is Syncing to')} {CROSS_CHIAN_CONFIG[chainId].name}
+            {t('Your veCAKE is Syncing to')} {CROSS_CHAIN_CONFIG[chainId].name}
           </ToastDescriptionWithTx>,
         )
         setTxByChain((prev) => ({ ...prev, [chainId]: receipt.transactionHash }))
@@ -430,7 +430,7 @@ const ReadyToSyncView: React.FC<{ chainId: ChainId; nativeFee: bigint; bnbBalanc
         {t('veCAKE Sync')}
       </Text>
       <Text fontSize={12} mt="12px">
-        {t('From %chain% to', { chain: 'BSC' })} {CROSS_CHIAN_CONFIG[chainId].name}
+        {t('From %chain% to', { chain: 'BSC' })} {CROSS_CHAIN_CONFIG[chainId].name}
       </Text>
       <Flex justifyContent="flex-end" alignItems="flex-end" style={{ gap: 5 }} mt="12px">
         <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="cross-chain-vecake" />
@@ -463,7 +463,7 @@ const SubmittedView: React.FC<{ chainId: ChainId; hash: string }> = ({ chainId, 
         {t('veCAKE Sync Submitted')}
       </Text>
       <Text fontSize={12} mt="12px">
-        {t('From %chain% to', { chain: 'BSC' })} {CROSS_CHIAN_CONFIG[chainId].name}
+        {t('From %chain% to', { chain: 'BSC' })} {CROSS_CHAIN_CONFIG[chainId].name}
       </Text>
       <Flex justifyContent="flex-end" alignItems="flex-end" style={{ gap: 5 }} mt="12px">
         <img srcSet="/images/cake-staking/token-vecake.png 2x" alt="cross-chain-vecake" />

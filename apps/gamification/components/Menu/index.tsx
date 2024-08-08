@@ -9,6 +9,7 @@ import useTheme from 'hooks/useTheme'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { GlobalSettings } from './GlobalSettings'
+import { Logo } from './Logo'
 import UserMenu from './UserMenu'
 import { useMenuItems } from './hooks/useMenuItems'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
@@ -39,6 +40,7 @@ const Menu = (props: any) => {
   return (
     <>
       <UikitMenu
+        logoComponent={<Logo />}
         linkComponent={LinkComponent}
         rightSide={
           <>

@@ -92,42 +92,6 @@ const walletsConfig = <config extends Config = Config, context = unknown>({
       downloadLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
     },
     {
-      id: 'BinanceW3W',
-      title: 'Binance Web3 Wallet',
-      icon: `${ASSET_CDN}/web/wallets/binance-w3w.png`,
-      connectorId: isBinanceWeb3WalletInstalled() ? ConnectorNames.Injected : ConnectorNames.BinanceW3W,
-      get installed() {
-        if (isBinanceWeb3WalletInstalled()) {
-          return true
-        }
-        // still showing the SDK if not installed
-        return undefined
-      },
-    },
-    // {
-    //   id: 'binance',
-    //   title: 'Binance Wallet',
-    //   icon: `${ASSET_CDN}/web/wallets/binance.png`,
-    //   get installed() {
-    //     return typeof window !== 'undefined' && Boolean(window.BinanceChain)
-    //   },
-    //   connectorId: ConnectorNames.BSC,
-    //   guide: {
-    //     desktop: 'https://www.bnbchain.org/en/binance-wallet',
-    //   },
-    //   downloadLink: {
-    //     desktop: isFirefox
-    //       ? 'https://addons.mozilla.org/en-US/firefox/addon/binance-chain/?src=search'
-    //       : 'https://chrome.google.com/webstore/detail/binance-wallet/fhbohimaelbohpjbbldcngcnapndodjp',
-    //   },
-    // },
-    {
-      id: 'coinbase',
-      title: 'Coinbase Wallet',
-      icon: `${ASSET_CDN}/web/wallets/coinbase.png`,
-      connectorId: ConnectorNames.WalletLink,
-    },
-    {
       id: 'trust',
       title: 'Trust Wallet',
       icon: `${ASSET_CDN}/web/wallets/trust.png`,
@@ -142,6 +106,41 @@ const walletsConfig = <config extends Config = Config, context = unknown>({
         mobile: 'https://trustwallet.com/',
       },
       qrCode,
+    },
+    {
+      id: 'okx',
+      title: 'OKX Wallet',
+      icon: `${ASSET_CDN}/web/wallets/okx-wallet.png`,
+      connectorId: ConnectorNames.Injected,
+      get installed() {
+        return typeof window !== 'undefined' && Boolean(window.okxwallet)
+      },
+      downloadLink: 'https://chromewebstore.google.com/detail/okx-wallet/mcohilncbfahbmgdjkbpemcciiolgcge',
+      deepLink:
+        'https://www.okx.com/download?deeplink=okx%3A%2F%2Fwallet%2Fdapp%2Furl%3FdappUrl%3Dhttps%253A%252F%252Fpancakeswap.finance',
+      guide: {
+        desktop: 'https://www.okx.com/web3',
+        mobile: 'https://www.okx.com/web3',
+      },
+    },
+    {
+      id: 'BinanceW3W',
+      title: 'Binance Web3 Wallet',
+      icon: `${ASSET_CDN}/web/wallets/binance-w3w.png`,
+      connectorId: isBinanceWeb3WalletInstalled() ? ConnectorNames.Injected : ConnectorNames.BinanceW3W,
+      get installed() {
+        if (isBinanceWeb3WalletInstalled()) {
+          return true
+        }
+        // still showing the SDK if not installed
+        return undefined
+      },
+    },
+    {
+      id: 'coinbase',
+      title: 'Coinbase Wallet',
+      icon: `${ASSET_CDN}/web/wallets/coinbase.png`,
+      connectorId: ConnectorNames.WalletLink,
     },
     {
       id: 'walletconnect',

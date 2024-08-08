@@ -407,4 +407,28 @@ export const arbitrumTokens = {
     'ETHPlus',
     'https://app.reserve.org/',
   ),
+  solvbtcbbn: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x346c574C56e1A4aAa8dc88Cda8F7EB12b39947aB',
+    18,
+    'SolvBTC.BBN',
+    'SolvBTC Babylon',
+    'https://solv.finance/',
+  ),
+  solvbtc: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x3647c54c4c2C65bC7a2D63c0Da2809B399DBBDC0',
+    18,
+    'SolvBTC',
+    'Solv BTC',
+    'https://solv.finance/',
+  ),
+  seed: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x86f65121804D2Cdbef79F9f072D4e0c2eEbABC08',
+    18,
+    'SEED',
+    'SEED',
+    'https://garden.finance/',
+  ),
 }

@@ -108,11 +108,6 @@ export default function useCatchTxError(params?: Params) {
       try {
         setTxResponseLoading(true)
 
-        /**
-         * https://github.com/vercel/swr/pull/1450
-         *
-         * wait for useSWRMutation finished, so we could apply SWR in case manually trigger tx call
-         */
         tx = await callTx()
 
         if (!tx) return null

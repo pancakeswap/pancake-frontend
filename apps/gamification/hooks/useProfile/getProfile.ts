@@ -1,9 +1,11 @@
 import { ChainId } from '@pancakeswap/chains'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { API_NFT } from 'config/constants/endpoints'
+import { getTeam } from 'hooks/useProfile/team/helpers'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
 import { Address } from 'viem'
+import { getUsername } from './getUsername'
 import { transformProfileResponse } from './transformProfileResponse'
 import { ApiResponseSpecificToken, GetProfileResponse, NftToken, Profile } from './type'
 
@@ -38,27 +40,45 @@ export const getProfile = async (address: string): Promise<GetProfileResponse | 
         {
           address: getPancakeProfileAddress(),
           abi: pancakeProfileABI,
+          functionName: 'hasRegistered',
+          args: [address as Address],
+        },
+        {
+          address: getPancakeProfileAddress(),
+          abi: pancakeProfileABI,
           functionName: 'getUserProfile',
           args: [address as Address],
         },
       ],
     })
 
-    const [{ result: profileResponse }] = profileCallsResult
+    const [{ result: hasRegistered }, { result: profileResponse }] = profileCallsResult
+    if (!hasRegistered) {
+      return { hasRegistered: Boolean(hasRegistered), profile: undefined }
+    }
 
-    const { tokenId, collectionAddress, isActive } = transformProfileResponse(profileResponse)
-    const [nftRes] = await Promise.all([
+    const { userId, points, teamId, tokenId, collectionAddress, isActive } = transformProfileResponse(profileResponse)
+    const [team, username, nftRes] = await Promise.all([
+      teamId ? getTeam(teamId) : Promise.resolve(null),
+      getUsername(address),
       isActive && collectionAddress && tokenId
         ? getNftApi(collectionAddress, tokenId.toString())
         : Promise.resolve(null),
     ])
-
     let nftToken: NftToken | undefined
 
     // If the profile is not active the tokenId returns 0, which is still a valid token id
     // so only fetch the nft data if active
     if (nftRes && collectionAddress) {
       nftToken = {
+        tokenId: nftRes.tokenId,
+        name: nftRes.name,
+        collectionName: nftRes.collection.name,
+        collectionAddress,
+        description: nftRes.description,
+        attributes: nftRes.attributes,
+        createdAt: nftRes.createdAt,
+        updatedAt: nftRes.updatedAt,
         image: {
           original: nftRes.image?.original,
           thumbnail: nftRes.image?.thumbnail,
@@ -69,10 +89,18 @@ export const getProfile = async (address: string): Promise<GetProfileResponse | 
     }
 
     const profile = {
+      userId,
+      points,
+      teamId,
+      tokenId,
+      username,
+      collectionAddress,
+      isActive,
       nft: nftToken,
+      team,
     } as Profile
 
-    return { profile }
+    return { hasRegistered, profile }
   } catch (e) {
     console.error(e)
     return null

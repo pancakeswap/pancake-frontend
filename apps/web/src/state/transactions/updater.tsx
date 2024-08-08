@@ -18,6 +18,7 @@ import { retry, RetryableError } from 'state/multicall/retry'
 import { useQuery } from '@tanstack/react-query'
 import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
 import { BSC_BLOCK_TIME } from 'config'
+import { useFetchBlockData } from '@pancakeswap/wagmi'
 import {
   FarmTransactionStatus,
   MsgStatus,
@@ -43,6 +44,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
 
   const dispatch = useAppDispatch()
   const transactions = useAllChainTransactions(chainId)
+  const refetchBlockData = useFetchBlockData(chainId)
 
   const { toastError, toastSuccess } = useToast()
 
@@ -75,6 +77,9 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
               }),
             )
             const toast = receipt.status === 'success' ? toastSuccess : toastError
+            if (receipt.status === 'success') {
+              refetchBlockData()
+            }
             toast(
               t('Transaction receipt'),
               <ToastDescriptionWithTx txHash={receipt.transactionHash} txChainId={chainId} />,
@@ -102,7 +107,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
         })
       },
     )
-  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t])
+  }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t, refetchBlockData])
 
   const crossChainFarmPendingTxns = useMemo(
     () =>

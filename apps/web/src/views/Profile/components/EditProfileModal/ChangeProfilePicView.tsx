@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, InjectedModalProps, Skeleton, Text, useToast } from '@pancakeswap/uikit'
+import { Box, Button, InjectedModalProps, Link, Skeleton, StyledLink, Text, useToast } from '@pancakeswap/uikit'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
@@ -8,14 +8,13 @@ import { useProfileContract } from 'hooks/useContract'
 import get from 'lodash/get'
 import { useMemo, useState } from 'react'
 import { useApprovalNfts } from 'state/nftMarket/hooks'
-import { NftLocation } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { Address } from 'viem'
-import { useNftsForAddress } from 'views/Nft/market/hooks/useNftsForAddress'
 import SelectionCard from 'views/ProfileCreation/SelectionCard'
-import { useAccount, useWalletClient } from 'wagmi'
+import { useWalletClient } from 'wagmi'
+import { useUserProfileCreationNfts } from 'views/Nft/market/hooks/useUserProfileCreationNfts'
 
 interface ChangeProfilePicPageProps extends InjectedModalProps {
   onSuccess?: () => void
@@ -32,16 +31,14 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
 }) => {
   const [selectedNft, setSelectedNft] = useState<SelectedNFTType | undefined>()
   const { t } = useTranslation()
-  const { address: account } = useAccount()
   const { data: signer } = useWalletClient()
-  const { isLoading: isProfileFetching, profile, refresh: refreshProfile } = useProfile()
-  const { nfts, isLoading } = useNftsForAddress({ account: account || '', profile, isProfileFetching })
+  const { profile, refresh: refreshProfile } = useProfile()
+  const { userProfileCreationNfts, isLoading: isUserProfileCreationNftsLoading } = useUserProfileCreationNfts()
   const profileContract = useProfileContract()
   const { toastSuccess } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const nftsInWallet = useMemo(() => nfts.filter((nft) => nft.location === NftLocation.WALLET), [nfts])
 
-  const { data } = useApprovalNfts(nftsInWallet)
+  const { data } = useApprovalNfts(userProfileCreationNfts)
 
   const isAlreadyApproved = useMemo(() => {
     return data && selectedNft?.tokenId ? !!get(data, selectedNft.tokenId) : false
@@ -93,11 +90,11 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
       <Text as="p" color="textSubtle" mb="24px">
         {t('Choose a new Collectible to use as your profile pic.')}
       </Text>
-      {isLoading ? (
+      {isUserProfileCreationNftsLoading ? (
         <Skeleton width="100%" height="80px" mb="16px" />
-      ) : nftsInWallet.length > 0 ? (
+      ) : userProfileCreationNfts.length > 0 ? (
         <Box maxHeight="300px" overflowY="scroll">
-          {nftsInWallet.map((walletNft) => {
+          {userProfileCreationNfts.map((walletNft) => {
             const handleChange = () => {
               setSelectedNft({
                 tokenId: walletNft.tokenId,
@@ -126,6 +123,9 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
           </Text>
           <Text as="p" color="textSubtle" mb="24px">
             {t('Make sure you have a Pancake Collectible in your wallet and try again!')}
+            <Link href="/profile/pancake-collectibles">
+              <StyledLink color="primary">{t('See the list >')}</StyledLink>
+            </Link>
           </Text>
         </>
       )}

@@ -35,7 +35,8 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
         {children || <Trans>Connect Wallet</Trans>}
       </Button>
       <style jsx global>{`
-        w3m-modal {
+        w3m-modal,
+        wcm-modal {
           position: relative;
           z-index: 99;
         }

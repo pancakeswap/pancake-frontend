@@ -1,9 +1,9 @@
+import { getChainName } from "@pancakeswap/chains";
 import { useTheme } from "@pancakeswap/hooks";
 import { ERC20Token } from "@pancakeswap/sdk";
 import { Column, IMultiSelectProps, ISelectItem, MultiSelect, MultiSelectChangeEvent } from "@pancakeswap/uikit";
 import { useCallback, useMemo } from "react";
 import styled from "styled-components";
-import { getChainName } from "@pancakeswap/chains";
 import { CurrencyLogo } from "../../../components/CurrencyLogo";
 
 export interface ITokenProps {

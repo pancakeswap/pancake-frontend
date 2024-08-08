@@ -38,11 +38,46 @@ const v3TopFixedLps: FarmConfigV3[] = [
 export const farmsV3 = defineFarmV3Configs([
   ...v3TopFixedLps,
   {
-    pid: 84,
+    pid: 89,
+    lpAddress: '0x87Fe0e807E3E92A7558303FB51F201dcBfb07cC1',
+    token0: arbitrumTokens.weth,
+    token1: arbitrumTokens.seed,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 88,
+    lpAddress: '0x1CAF100CD74792D4be6C64621C2E21c7830868c4',
+    token0: arbitrumTokens.usde,
+    token1: arbitrumTokens.usdc,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 87,
+    lpAddress: '0xfb5076B8649022E9057FB6Eb7cbaC686CAcC2448',
+    token0: arbitrumTokens.solvbtcbbn,
+    token1: arbitrumTokens.solvbtc,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 86,
+    lpAddress: '0xcFBcc53E96908Cc3719f2807457Db0b89870c4de',
+    token0: arbitrumTokens.wbtc,
+    token1: arbitrumTokens.solvbtc,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 85,
     lpAddress: '0x9fd6EBb5be86447616500c9Fc656F1247CBBd170',
     token0: arbitrumTokens.dai,
     token1: arbitrumTokens.usdt,
     feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 84,
+    lpAddress: '0xb9F9C2c31C3d00DD0EB987c818b4078F786d6F6E',
+    token0: arbitrumTokens.wstETH,
+    token1: arbitrumTokens.mstETH,
+    feeAmount: FeeAmount.LOW,
   },
   {
     pid: 83,

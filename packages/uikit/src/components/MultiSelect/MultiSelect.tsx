@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { MultiSelect as PrimereactSelect, MultiSelectChangeEvent } from "primereact/multiselect";
 import { styled } from "styled-components";
 import { useTheme } from "@pancakeswap/hooks";
+import noop from "lodash/noop";
 import { ArrowDropDownIcon, SearchIcon } from "../Svg";
 import { Box, Flex } from "../Box";
 import { Checkbox } from "../Checkbox";
@@ -454,7 +455,7 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
           onChange={handleChange}
           onShow={handleShow}
           onHide={handleHide}
-          onKeyDown={() => {}}
+          onKeyDown={noop}
         />
       </PrimereactSelectContainer>
     </SelectContainer>
