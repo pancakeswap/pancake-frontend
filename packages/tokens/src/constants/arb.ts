@@ -423,4 +423,12 @@ export const arbitrumTokens = {
     'Solv BTC',
     'https://solv.finance/',
   ),
+  seed: new ERC20Token(
+    ChainId.ARBITRUM_ONE,
+    '0x86f65121804D2Cdbef79F9f072D4e0c2eEbABC08',
+    18,
+    'SEED',
+    'SEED',
+    'https://garden.finance/',
+  ),
 }
