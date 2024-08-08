@@ -4,13 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ONRAMP_API_BASE_URL } from 'config/constants/endpoints'
 import qs from 'qs'
 import { useAccount } from 'wagmi'
-import {
-  ONRAMP_PROVIDERS,
-  WidgetTheme,
-  combinedNetworkIdMap,
-  getIsNetworkEnabled,
-  type OnRampChainId,
-} from '../constants'
+import { ONRAMP_PROVIDERS, WidgetTheme, combinedNetworkIdMap, type OnRampChainId } from '../constants'
 import {
   createQueryKey,
   type Evaluate,
@@ -53,7 +47,6 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
 
   const walletAddress = chainId === 0 ? btcAddress : address
   const theme = isDark ? WidgetTheme.Dark : WidgetTheme.Light
-  const isEnabled = getIsNetworkEnabled(chainId)
 
   return useQuery({
     ...query,
@@ -67,14 +60,14 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
         theme,
       },
     ]),
-    enabled: Boolean(externalTransactionId && quote && walletAddress && isEnabled),
+    enabled: Boolean(externalTransactionId && quote && walletAddress && chainId !== undefined),
     queryFn: async () => {
-      if (!quote || !walletAddress || !externalTransactionId || !isEnabled || !onRampUnit) {
-        throw new Error('Invalid parameters')
+      if (!quote || !walletAddress || !externalTransactionId || chainId === undefined || !onRampUnit) {
+        throw new Error('Invalid parameters for buy crypto signature')
       }
 
       const { provider, cryptoCurrency, fiatCurrency, amount } = quote
-      const network = combinedNetworkIdMap[ONRAMP_PROVIDERS[provider]][chainId!]
+      const network = combinedNetworkIdMap[ONRAMP_PROVIDERS[provider]][chainId]
       const moonpayCryptoCurrency = `${cryptoCurrency.toLowerCase()}${network}`
 
       const response = await fetch(
