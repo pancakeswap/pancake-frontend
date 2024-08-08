@@ -48,7 +48,7 @@ export const QuestBanner = () => {
   return (
     <BannerContainer background="radial-gradient(110.52% 235.12% at 100% 103.33%, #C4FBFF 0%, #2BD1DE 33.33%, #2BD1DE 66.67%, #99F8FF 100%)">
       <BannerMain
-        badges={<PancakeSwapBadge whiteText />}
+        badges={<PancakeSwapBadge />}
         title={
           <BannerTitle variant="yellow" marginTop={isMd ? '-10px' : '0px'}>
             {t('PancakeSwap Quest-Beta Now Live')}
