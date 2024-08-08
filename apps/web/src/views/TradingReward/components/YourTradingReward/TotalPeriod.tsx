@@ -12,9 +12,8 @@ import { UserCampaignInfoDetail } from 'views/TradingReward/hooks/useAllUserCamp
 import { useClaimAllReward } from 'views/TradingReward/hooks/useClaimAllReward'
 import useTradingFeeClaimedRecord from 'views/TradingReward/hooks/useTradingFeeClaimedRecord'
 import { minAmountDisplay } from 'views/TradingReward/utils/minAmountDisplay'
-import { WidthProps } from 'styled-system'
 
-interface TotalPeriodProps extends WidthProps {
+interface TotalPeriodProps {
   campaignIds: Array<string>
   rewardInfo: { [key in string]: RewardInfo }
   totalAvailableClaimData: UserCampaignInfoDetail[]
@@ -30,7 +29,6 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
   qualification,
   campaignIdsIncentive,
   type,
-  ...props
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
@@ -166,7 +164,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
   }, [totalAvailableClaimData])
 
   return (
-    <Box width={['100%', '100%', '100%', '48.5%']} {...props}>
+    <Box width={['100%', '100%', '100%', '48.5%']}>
       <Card style={{ width: '100%' }}>
         <Box padding={['16px', '16px', '16px', '24px']}>
           <Text bold textAlign="right" mb="24px">
