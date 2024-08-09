@@ -3523,5 +3523,6 @@
   "You have no position in this wallet.": "You have no position in this wallet.",
   "Legacy Liquidity Page": "Legacy Liquidity Page",
   "Legacy Farm Page": "Legacy Farm Page",
-  "Total Value Locked (TVL) in the pool.": "Total Value Locked (TVL) in the pool."
+  "Total Value Locked (TVL) in the pool.": "Total Value Locked (TVL) in the pool.",
+  "%t% LP": "%t% LP"
 }

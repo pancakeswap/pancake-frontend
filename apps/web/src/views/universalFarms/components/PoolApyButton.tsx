@@ -44,7 +44,7 @@ const AprTooltip: React.FC<{
 }> = ({ hasBoost, pool, combinedBaseApr, combinedBoostedApr }) => {
   const { t } = useTranslation()
   const key = useMemo(() => `${pool.chainId}:${pool.lpAddress}` as const, [pool.chainId, pool.lpAddress])
-  const { lpApr, cakeApr, merklApr } = usePoolApr(key)
+  const { lpApr, cakeApr, merklApr } = usePoolApr(key, pool)
   const merklLink = useMemo(() => {
     return getMerklLink({ chainId: pool.chainId, lpAddress: pool.lpAddress })
   }, [pool.chainId, pool.lpAddress])
@@ -102,7 +102,7 @@ const AprTooltip: React.FC<{
 export const PoolApyButton: React.FC<{ pool: PoolInfo }> = ({ pool }) => {
   const { t } = useTranslation()
   const key = useMemo(() => `${pool.chainId}:${pool.lpAddress}` as const, [pool.chainId, pool.lpAddress])
-  const { lpApr, cakeApr, merklApr } = usePoolApr(key)
+  const { lpApr, cakeApr, merklApr } = usePoolApr(key, pool)
   const roiModal = useModalV2()
   // @todo @ChefJerry display user apr if staking
   const userIsStaking = false
