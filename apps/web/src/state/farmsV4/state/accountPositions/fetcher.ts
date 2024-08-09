@@ -1,3 +1,5 @@
+import memoize from 'lodash/memoize'
+import uniqWith from 'lodash/uniqWith'
 import { ChainId } from '@pancakeswap/chains'
 import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { CurrencyAmount, erc20Abi, ERC20Token, Pair, pancakePairV2ABI } from '@pancakeswap/sdk'
@@ -293,45 +295,48 @@ export const getAccountV2FarmingBCakeWrapperEarning = async (
   })
 }
 
+type ITokenPair = [ERC20Token, ERC20Token]
 // for v2 pools, we cannot fetch all positions from one contract
 // so we simple get the most used pairs for fetch LP position
-export const getTrackedV2LpTokens = (
-  chainId: number,
-  presetTokens: { [address: Address]: ERC20Token },
-  userSavedPairs: AppState['user']['pairs'],
-): [ERC20Token, ERC20Token][] => {
-  const pairTokens = new Set<[ERC20Token, ERC20Token]>()
-  // from farms
-  UNIVERSAL_FARMS.filter((farm) => farm.protocol === 'v2' && farm.pid && farm.chainId === chainId).forEach((farm) => {
-    pairTokens.add(farm.token0.sortsBefore(farm.token1) ? [farm.token0, farm.token1] : [farm.token1, farm.token0])
-  })
-  // from pinned pairs
-  if (PINNED_PAIRS[chainId]) {
-    PINNED_PAIRS[chainId].forEach((tokens: [ERC20Token, ERC20Token]) => {
-      pairTokens.add(tokens)
+export const getTrackedV2LpTokens = memoize(
+  (
+    chainId: number,
+    presetTokens: { [address: Address]: ERC20Token },
+    userSavedPairs: AppState['user']['pairs'],
+  ): [ERC20Token, ERC20Token][] => {
+    const pairTokens: ITokenPair[] = []
+    // from farms
+    UNIVERSAL_FARMS.filter((farm) => farm.protocol === 'v2' && farm.pid && farm.chainId === chainId).forEach((farm) => {
+      pairTokens.push(farm.token0.sortsBefore(farm.token1) ? [farm.token0, farm.token1] : [farm.token1, farm.token0])
     })
-  }
-  // from preset tokens and base tokens
-  const baseTokens = BASES_TO_TRACK_LIQUIDITY_FOR[chainId]
-  Object.entries(presetTokens).forEach(([address, token]) => {
-    baseTokens.forEach((baseToken) => {
-      const baseAddress = safeGetAddress(baseToken.address)
-      if (baseAddress && safeGetAddress(address) !== baseAddress && token.chainId === chainId) {
-        pairTokens.add(baseToken.sortsBefore(token) ? [baseToken, token] : [token, baseToken])
-      }
+    // from pinned pairs
+    if (PINNED_PAIRS[chainId]) {
+      PINNED_PAIRS[chainId].forEach((tokens: ITokenPair) => {
+        pairTokens.push(tokens)
+      })
+    }
+    // from preset tokens and base tokens
+    const baseTokens = BASES_TO_TRACK_LIQUIDITY_FOR[chainId]
+    Object.entries(presetTokens).forEach(([address, token]) => {
+      baseTokens.forEach((baseToken) => {
+        const baseAddress = safeGetAddress(baseToken.address)
+        if (baseAddress && safeGetAddress(address) !== baseAddress && token.chainId === chainId) {
+          pairTokens.push(baseToken.sortsBefore(token) ? [baseToken, token] : [token, baseToken])
+        }
+      })
     })
-  })
-  // from user saved pairs
-  if (userSavedPairs[chainId]) {
-    Object.values(userSavedPairs[chainId]).forEach((pair) => {
-      const token0 = deserializeToken(pair.token0)
-      const token1 = deserializeToken(pair.token1)
-      pairTokens.add(token0.sortsBefore(token1) ? [token0, token1] : [token1, token0])
-    })
-  }
+    // from user saved pairs
+    if (userSavedPairs[chainId]) {
+      Object.values(userSavedPairs[chainId]).forEach((pair) => {
+        const token0 = deserializeToken(pair.token0)
+        const token1 = deserializeToken(pair.token1)
+        pairTokens.push(token0.sortsBefore(token1) ? [token0, token1] : [token1, token0])
+      })
+    }
 
-  return Array.from(pairTokens)
-}
+    return uniqWith(pairTokens, (a: ITokenPair, b: ITokenPair) => a[0].equals(b[0]) && a[1].equals(b[1]))
+  },
+)
 
 const V2_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.V2)
 const STABLE_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.STABLE)
