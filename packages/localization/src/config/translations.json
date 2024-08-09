@@ -3518,5 +3518,7 @@
   "transaction value": "transaction value",
   "account": "account",
   "time": "time",
-  "CAKE earned": "CAKE earned"
+  "CAKE earned": "CAKE earned",
+  "Please Connect Wallet to view positions.": "Please Connect Wallet to view positions.",
+  "You have no position in this wallet.": "You have no position in this wallet."
 }
