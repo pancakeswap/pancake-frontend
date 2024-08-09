@@ -1,8 +1,8 @@
-import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders'
+import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders';
 import smartRouterPkgs from '@pancakeswap/smart-router/package.json' with { type: 'json' };
-import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const withVanillaExtract = createVanillaExtractPlugin()
 
@@ -40,6 +40,7 @@ const nextConfig = {
     '@pancakeswap/tokens',
     '@pancakeswap/wagmi',
     '@pancakeswap/ifos',
+    '@pancakeswap/v3-sdk',
     // https://github.com/TanStack/query/issues/6560#issuecomment-1975771676
     '@tanstack/query-core',
   ],
