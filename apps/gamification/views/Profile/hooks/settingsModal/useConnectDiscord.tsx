@@ -11,7 +11,7 @@ interface UseConnectDiscordProps {
 }
 
 export const useConnectDiscord = ({ refresh }: UseConnectDiscordProps) => {
-  const { address: account } = useAccount()
+  const { address: account, connector } = useAccount()
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { signMessageAsync } = useSignMessage()
@@ -22,7 +22,7 @@ export const useConnectDiscord = ({ refresh }: UseConnectDiscordProps) => {
 
   const disconnect = async () => {
     try {
-      if (account) {
+      if (account && connector && typeof connector.getChainId === 'function') {
         const walletAddress = account
         const timestamp = Math.floor(new Date().getTime() / 1000)
         const message = keccak256(encodePacked(['address', 'uint256'], [walletAddress ?? '0x', BigInt(timestamp)]))

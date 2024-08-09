@@ -56,15 +56,13 @@ interface HeaderProps {
 const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   accountPath,
   profile,
-  achievements,
   nftCollected,
-  isAchievementsLoading,
   isNftLoading,
   isProfileLoading,
   onSuccess,
 }) => {
   const { t } = useTranslation()
-  const { address: account } = useAccount()
+  const { address: account, connector } = useAccount()
   const { userInfo, refresh, isFetched } = useUserSocialHub()
   const { data: session } = useSession()
   const { toastSuccess, toastError } = useToast()
@@ -145,9 +143,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
           }
         } catch (error) {
           const errorMessage = error instanceof Error && error?.message ? error.message : JSON.stringify(error)
-          if (errorMessage !== 'connection.connector.getChainId is not a function') {
-            toastError(`Failed to connect ${social}: ${errorMessage}`)
-          }
+          toastError(`Failed to connect ${social}: ${errorMessage}`)
           console.error(`Connect ${social} error: `, error)
         } finally {
           setTimeout(() => setIsFetchingApi(false), 1000)
@@ -155,7 +151,14 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       }
     }
 
-    if (isFetched && session && new Date(session?.expires).getTime() > new Date().getTime() && !isFetchingRef.current) {
+    if (
+      connector &&
+      typeof connector.getChainId === 'function' &&
+      isFetched &&
+      session &&
+      new Date(session?.expires).getTime() > new Date().getTime() &&
+      !isFetchingRef.current
+    ) {
       isFetchingRef.current = true
       if (!userInfo?.socialHubToSocialUserIdMap?.Discord && (session as any).user?.discord) {
         const { discordId, token } = (session as any).user?.discord
@@ -167,7 +170,19 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
         fetchSocial({ social: SocialHubType.Twitter, id: twitterId, token, tokenSecret })
       }
     }
-  }, [account, isFetched, isFetchingApi, session, t, refresh, toastError, toastSuccess, userInfo, signMessageAsync])
+  }, [
+    account,
+    isFetched,
+    isFetchingApi,
+    session,
+    t,
+    refresh,
+    toastError,
+    toastSuccess,
+    userInfo,
+    signMessageAsync,
+    connector,
+  ])
 
   const { domainName, avatar: avatarFromDomain } = useDomainNameForAddress(accountPath)
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
