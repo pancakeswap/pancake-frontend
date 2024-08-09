@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Box, Button, Column, LinkExternal, PageHeader, Row, Text } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { Box, Button, Column, LinkExternal, PageHeader, Row, Text } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter, VerticalDivider } from '@pancakeswap/widgets-internal'
+import { BCakeBoosterCard } from 'views/Farms/components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 import { FarmFlexWrapper, FarmH1, FarmH2 } from 'views/Farms/styled'
 
-export const PoolsBanner = () => {
+export const PoolsBanner = ({ additionLink }: { additionLink?: React.ReactNode }) => {
   const { t } = useTranslation()
   return (
     <PageHeader>
@@ -16,30 +17,33 @@ export const PoolsBanner = () => {
             <FarmH2 scale="lg" color="text">
               {t('Liquidity Pools & Farms')}
             </FarmH2>
-            <Row flexWrap="wrap">
+            <Row flexWrap="wrap" gap="16px">
               {/* @todo @ChefJerry update to real link */}
-              <LinkExternal href="https://blog.pancakeswap.finance/" showExternalIcon={false} mr="20px">
+              <LinkExternal href="https://blog.pancakeswap.finance/" showExternalIcon={false}>
                 <Button p="0" variant="text">
                   <Text color="primary" bold fontSize="16px" mr="4px">
                     {t('Learn How')}
                   </Text>
-                  <ArrowForwardIcon color="primary" />
                 </Button>
               </LinkExternal>
+              <VerticalDivider />
               <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
                 <Button p="0" variant="text">
                   <Text color="primary" bold fontSize="16px" mr="4px">
                     {t('Community Auctions')}
                   </Text>
-                  <ArrowForwardIcon color="primary" />
                 </Button>
               </NextLinkFromReactRouter>
+              {!!additionLink && (
+                <>
+                  <VerticalDivider />
+                  {additionLink}
+                </>
+              )}
             </Row>
           </Box>
           <Box>
-            {/* @todo @ChefJerry replace image url when ready */}
-            {/* @todo @ChefJerry mobile position */}
-            <img src="/images/cake-staking/new-staking-bunny.png" alt="new-staking-bunny" width="138px" />
+            <BCakeBoosterCard />
           </Box>
         </FarmFlexWrapper>
       </Column>
