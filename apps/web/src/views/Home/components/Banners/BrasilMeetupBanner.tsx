@@ -16,6 +16,7 @@ import {
   PancakeSwapBadge,
 } from '@pancakeswap/widgets-internal'
 import { useViewport } from 'hooks/useViewport'
+import { ASSET_CDN } from 'config/constants/endpoints'
 
 const NumberDisplayContainer = styled(FlexGap)`
   border-radius: 1.5rem;
@@ -135,7 +136,7 @@ export const BrasilMeetupBanner = memo(function BrasilMeetupBanner() {
 
       <BannerGraphics>
         <BackgroundGraphic
-          src="/images/brasil-meetup-bunny.png"
+          src={`${ASSET_CDN}/web/banners/brasil/brasil-meetup-bunny.png`}
           width={isMobile ? 160 : isTablet ? 225 : 320}
           height={isMobile ? 155 : isTablet ? 210 : 227}
         />
@@ -146,7 +147,7 @@ export const BrasilMeetupBanner = memo(function BrasilMeetupBanner() {
           top={isMobile ? '15%' : isTablet ? '10%' : null}
         >
           <FloatingGraphic
-            src="/images/coin.png"
+            src={`${ASSET_CDN}/web/banners/brasil/coin.png`}
             width={isMobile ? 70 : isTablet ? 86 : 104}
             height={isMobile ? 68 : isTablet ? 84 : 101}
           />
