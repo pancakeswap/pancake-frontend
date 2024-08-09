@@ -62,8 +62,8 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
     ]),
     enabled: Boolean(externalTransactionId && quote && walletAddress && chainId?.toString() && onRampUnit),
     queryFn: async () => {
-      if (!quote || !walletAddress || !externalTransactionId || !chainId?.toString() || !onRampUnit) {
-        throw new Error('Invalid onRamp signature parameters')
+      if (!quote || !walletAddress || !externalTransactionId || chainId === undefined || !onRampUnit) {
+        throw new Error('Invalid parameters')
       }
 
       const { provider, cryptoCurrency, fiatCurrency, amount } = quote

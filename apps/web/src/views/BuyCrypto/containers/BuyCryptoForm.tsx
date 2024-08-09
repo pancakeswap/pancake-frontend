@@ -91,6 +91,11 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
   const { cryptoCurrency, fiatCurrency, currencyIn, currencyOut } = useOnRampCurrencyOrder(unit)
   const { fiatValue: defaultAmt } = useFiatCurrencyAmount({ currencyCode: fiatCurrency?.symbol, unit })
 
+  const isInValidBtcAddress = useMemo(
+    () => Boolean(isBtc && !btcError && !validAddress?.result),
+    [validAddress?.result, isBtc, btcError],
+  )
+
   const { inputError, amountError } = useLimitsAndInputError({
     typedValue: typedValue ?? '',
     cryptoCurrency,
@@ -236,7 +241,7 @@ export function BuyCryptoForm({ providerAvailabilities }: { providerAvailabiliti
             externalTxIdRef={externalTxIdRef}
             cryptoCurrency={cryptoCurrency}
             selectedQuote={selectedQuote}
-            disabled={Boolean(inputError || btcError || quotesError)}
+            disabled={Boolean(inputError || isInValidBtcAddress || quotesError)}
             loading={isLoading}
             resetBuyCryptoState={resetBuyCryptoState}
             btcAddress={debouncedQuery}
