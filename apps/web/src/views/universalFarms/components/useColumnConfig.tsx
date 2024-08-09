@@ -85,6 +85,7 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
         render: (value) => <PoolListItemAction pool={value} />,
         dataIndex: null,
         key: 'action',
+        clickable: false,
       },
     ],
     [t, mediaQueries],
