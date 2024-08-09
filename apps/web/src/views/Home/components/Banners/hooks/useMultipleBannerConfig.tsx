@@ -17,6 +17,7 @@ import { VeCakeBanner } from '../VeCakeBanner'
 import { ZksyncAirDropBanner } from '../ZksyncAirdropBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderUserBanner from './useIsRenderUserBanner'
+import { BirthdayBanner } from '../BirthdayBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -45,6 +46,10 @@ export const useMultipleBannerConfig = () => {
       {
         shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
         banner: <UserBanner />,
+      },
+      {
+        shouldRender: true,
+        banner: <BirthdayBanner />,
       },
       {
         shouldRender: true,
