@@ -56,9 +56,7 @@ interface HeaderProps {
 const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   accountPath,
   profile,
-  achievements,
   nftCollected,
-  isAchievementsLoading,
   isNftLoading,
   isProfileLoading,
   onSuccess,
@@ -153,8 +151,14 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       }
     }
 
-    if (connector && typeof connector.getChainId === 'function' && 
-        isFetched && session && new Date(session?.expires).getTime() > new Date().getTime() && !isFetchingRef.current) {
+    if (
+      connector &&
+      typeof connector.getChainId === 'function' &&
+      isFetched &&
+      session &&
+      new Date(session?.expires).getTime() > new Date().getTime() &&
+      !isFetchingRef.current
+    ) {
       isFetchingRef.current = true
       if (!userInfo?.socialHubToSocialUserIdMap?.Discord && (session as any).user?.discord) {
         const { discordId, token } = (session as any).user?.discord
