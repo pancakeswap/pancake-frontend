@@ -102,7 +102,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       token: string
       tokenSecret?: string
     }) => {
-      if (account && connector && typeof connector.getChainId === 'function' && !isFetchingApi) {
+      if (account && !isFetchingApi) {
         setIsFetchingApi(true)
 
         try {
@@ -153,7 +153,8 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       }
     }
 
-    if (isFetched && session && new Date(session?.expires).getTime() > new Date().getTime() && !isFetchingRef.current) {
+    if (connector && typeof connector.getChainId === 'function' && 
+        isFetched && session && new Date(session?.expires).getTime() > new Date().getTime() && !isFetchingRef.current) {
       isFetchingRef.current = true
       if (!userInfo?.socialHubToSocialUserIdMap?.Discord && (session as any).user?.discord) {
         const { discordId, token } = (session as any).user?.discord
