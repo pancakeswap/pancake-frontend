@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 import { useRouter } from 'next/router'
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, Tab, TabMenu } from '@pancakeswap/uikit'
+import { Button, Card, Tab, TabMenu, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { PropsWithChildren, useMemo } from 'react'
 import { PoolsBanner } from './components'
@@ -16,33 +16,61 @@ const StyledTab = styled(Tab)`
   }
 `
 
-const PAGES_INDEX = {
-  POOLS: 0,
-  POSITIONS: 1,
-  HISTORY: 2,
+const PAGES_LINK = {
+  POOLS: '/liquidity/pools',
+  POSITIONS: '/liquidity/positions',
+  HISTORY: '/farms/history',
+}
+
+const usePageInfo = () => {
+  const { t } = useTranslation()
+  const router = useRouter()
+  const PAGES_MAP = useMemo(
+    () => ({
+      [PAGES_LINK.POOLS]: {
+        tabIdx: 0,
+        oldLink: '/farms',
+        oldLinkText: t('Legacy Farm Page'),
+      },
+      [PAGES_LINK.POSITIONS]: {
+        tabIdx: 1,
+        oldLink: '/liquidity',
+        oldLinkText: t('Legacy Liquidity Page'),
+      },
+    }),
+    [t],
+  )
+  return useMemo(() => PAGES_MAP[router.pathname] ?? {}, [PAGES_MAP, router.pathname])
+}
+
+const LegacyPage = () => {
+  const { t } = useTranslation()
+  const { oldLink, oldLinkText } = usePageInfo()
+
+  if (!oldLink || !oldLinkText) {
+    return null
+  }
+  return (
+    <NextLinkFromReactRouter to={oldLink} prefetch={false}>
+      <Button p="0" variant="text">
+        <Text color="primary" bold fontSize="16px" mr="4px">
+          {t(oldLinkText)}
+        </Text>
+      </Button>
+    </NextLinkFromReactRouter>
+  )
 }
 
 export const UniversalFarms: React.FC<PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const router = useRouter()
-
-  const tabIdx = useMemo(() => {
-    switch (router.pathname) {
-      case '/liquidity/pools':
-        return PAGES_INDEX.POOLS
-      case '/liquidity/positions':
-        return PAGES_INDEX.POSITIONS
-      default:
-        return PAGES_INDEX.POOLS
-    }
-  }, [router.pathname])
+  const { tabIdx } = usePageInfo()
 
   const tabsConfig = useMemo(() => {
     return {
       0: {
         menu: () => (
           <StyledTab key="pools">
-            <NextLinkFromReactRouter to="/liquidity/pools">{t('All Pools')}</NextLinkFromReactRouter>
+            <NextLinkFromReactRouter to={PAGES_LINK.POOLS}>{t('All Pools')}</NextLinkFromReactRouter>
           </StyledTab>
         ),
         page: () => <PoolsPage />,
@@ -50,7 +78,7 @@ export const UniversalFarms: React.FC<PropsWithChildren> = () => {
       1: {
         menu: () => (
           <StyledTab key="positions">
-            <NextLinkFromReactRouter to="/liquidity/positions">{t('My Positions')}</NextLinkFromReactRouter>
+            <NextLinkFromReactRouter to={PAGES_LINK.POSITIONS}>{t('My Positions')}</NextLinkFromReactRouter>
           </StyledTab>
         ),
         page: () => <PositionPage />,
@@ -58,7 +86,7 @@ export const UniversalFarms: React.FC<PropsWithChildren> = () => {
       2: {
         menu: () => (
           <StyledTab key="history">
-            <NextLinkFromReactRouter to="/farms/history">{t('History')}</NextLinkFromReactRouter>
+            <NextLinkFromReactRouter to={PAGES_LINK.HISTORY}>{t('History')}</NextLinkFromReactRouter>
           </StyledTab>
         ),
         page: () => <Card>History</Card>,
@@ -68,7 +96,7 @@ export const UniversalFarms: React.FC<PropsWithChildren> = () => {
 
   return (
     <>
-      <PoolsBanner />
+      <PoolsBanner additionLink={<LegacyPage />} />
       <Page>
         <TabMenu gap="8px" activeIndex={tabIdx} isShowBorderBottom={false}>
           {Object.values(tabsConfig).map(({ menu }) => menu())}

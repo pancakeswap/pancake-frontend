@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ASSET_CDN } from 'config/constants/endpoints'
 import { useCallback, useMemo, useState } from 'react'
 import assign from 'lodash/assign'
 import {
@@ -8,6 +9,7 @@ import {
   ButtonMenuItem,
   Dots,
   Flex,
+  FlexGap,
   HistoryIcon,
   IconButton,
   NotificationDot,
@@ -296,10 +298,25 @@ const useStablePositions = ({
   }
 }
 
+const EmptyListPlaceholder = ({ text, imageUrl }: { text: string; imageUrl?: string }) => (
+  <FlexGap alignItems="center" flexDirection="column" gap="16px">
+    <img
+      width={156}
+      height={179}
+      alt="empty placeholder"
+      src={imageUrl ?? `${ASSET_CDN}/web/universalFarms/empty_list_bunny.png`}
+    />
+    <Text fontSize="14px" color="textSubtle" textAlign="center">
+      {text}
+    </Text>
+  </FlexGap>
+)
+
 const allChainIds = MAINNET_CHAINS.map((chain) => chain.id)
 
 export const PositionPage = () => {
   const { t } = useTranslation()
+  const { address: account } = useAccount()
   const [expertMode] = useExpertMode()
 
   const [filters, setFilters] = useState<IPoolsFilterPanelProps['value']>({
@@ -343,6 +360,9 @@ export const PositionPage = () => {
   })
 
   const mainSection = useMemo(() => {
+    if (!account) {
+      return <EmptyListPlaceholder text={t('Please Connect Wallet to view positions.')} />
+    }
     if (v3Loading && v2Loading && stableLoading) {
       return (
         <Text color="textSubtle" textAlign="center">
@@ -352,11 +372,7 @@ export const PositionPage = () => {
     }
 
     if (!v3PositionList.length && !v2PositionList.length && !stablePositionList.length) {
-      return (
-        <Text color="textSubtle" textAlign="center">
-          {t('No liquidity found.')}
-        </Text>
-      )
+      return <EmptyListPlaceholder text={t('You have no position in this wallet.')} />
     }
     // Do protocol filter here.
     // Avoid to recalculate all the positions data
@@ -366,7 +382,17 @@ export const PositionPage = () => {
       [Protocol.STABLE]: stablePositionList,
     }
     return selectedPoolTypes.map((type) => sectionMap[type])
-  }, [t, v2Loading, v3Loading, stableLoading, v3PositionList, stablePositionList, v2PositionList, selectedPoolTypes])
+  }, [
+    account,
+    t,
+    v2Loading,
+    v3Loading,
+    stableLoading,
+    v3PositionList,
+    stablePositionList,
+    v2PositionList,
+    selectedPoolTypes,
+  ])
 
   return (
     <Card>

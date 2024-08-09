@@ -13,6 +13,7 @@ const Container = styled.div`
 
 const StyledBox = styled(Box)<{ isFocus: boolean }>`
   display: flex;
+  align-items: center;
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
   background-color: ${({ theme }) => theme.colors.input};
   border-radius: ${BORDER_RADIUS};
@@ -59,6 +60,7 @@ interface IAdaptiveInputProps {
 export interface IAdaptiveInputForwardProps {
   clear: () => void;
   focus: () => void;
+  value: () => string;
 }
 
 const AdaptiveInput = forwardRef<IAdaptiveInputForwardProps, IAdaptiveInputProps>(
@@ -82,6 +84,9 @@ const AdaptiveInput = forwardRef<IAdaptiveInputForwardProps, IAdaptiveInputProps
       },
       focus() {
         inputRef.current?.focus();
+      },
+      value() {
+        return value;
       },
     }));
 
@@ -133,9 +138,14 @@ export interface ISearchBoxProps<T extends number | string> {
   onLabelDelete: (e: React.MouseEvent<HTMLOrSVGElement> | React.KeyboardEvent, item: ISelectItem<T>) => void;
 }
 
+export interface ISearchBoxForwardProps {
+  clear: () => void;
+  focus: () => void;
+}
+
 const SearchBox = <T extends number | string>(
   { onFilter, selectedItems, onLabelDelete, onClear }: ISearchBoxProps<T>,
-  ref: React.Ref<IAdaptiveInputForwardProps>
+  ref: React.Ref<ISearchBoxForwardProps>
 ) => {
   const inputRef = useRef<IAdaptiveInputForwardProps>(null);
   const { theme } = useTheme();
@@ -161,7 +171,7 @@ const SearchBox = <T extends number | string>(
 
   const handleBackspace = useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.key !== "Backspace" || !selectedItems.length) {
+      if (e.key !== "Backspace" || !selectedItems.length || inputRef.current?.value().length) {
         return;
       }
       e.stopPropagation();
