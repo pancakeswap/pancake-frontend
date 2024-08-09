@@ -21,9 +21,6 @@ export type PositionDetail = {
   tokensOwed1: bigint
 
   // additional detail
-  /**
-   * @deprecated should rename to isFarmPool
-   */
   isStaked?: boolean
   chainId: number
   protocol: Protocol

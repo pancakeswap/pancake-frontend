@@ -3,6 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import {
   AddIcon,
   AutoColumn,
+  AutoRenewIcon,
   Button,
   ButtonMenu,
   ButtonMenuItem,
@@ -20,12 +21,13 @@ import Divider from 'components/Divider'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { usePoolWithChainId } from 'hooks/v3/usePools'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAccountPositionDetailByPool } from 'state/farmsV4/hooks'
 import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import { useChainIdByQuery } from 'state/info/hooks'
 import styled from 'styled-components'
+import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
 import {
   PositionItemSkeleton,
   PositionStableItem,
@@ -80,6 +82,20 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
     }
     return ''
   }, [poolInfo.feeTier, poolInfo.protocol, poolInfo.token0.wrapped.address, poolInfo.token1.wrapped.address])
+  const [_handleHarvestAll, setHandleHarvestAll] = useState(() => () => Promise.resolve())
+  const [loading, setLoading] = useState(false)
+
+  const handleHarvestAll = useCallback(async () => {
+    if (loading) return
+    try {
+      setLoading(true)
+      await _handleHarvestAll()
+      setLoading(false)
+    } catch (error) {
+      console.error(error)
+      setLoading(false)
+    }
+  }, [_handleHarvestAll, loading, setLoading])
 
   return (
     <AutoColumn gap="lg">
@@ -124,7 +140,15 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
                   $0
                 </Text>
               </AutoColumn>
-              <Button variant="secondary">{t('Harvest')}</Button>
+              <Button
+                variant="secondary"
+                onClick={handleHarvestAll}
+                endIcon={loading ? <AutoRenewIcon spin color="currentColor" /> : null}
+                isLoading={loading}
+                disabled={loading}
+              >
+                {loading ? t('Harvesting') : t('Harvest')}
+              </Button>
             </Row>
             <Button as="a" href={addLiquidityLink}>
               {t('Add Liquidity')}
@@ -155,10 +179,16 @@ export const MyPositions: React.FC<{ poolInfo: PoolInfo }> = ({ poolInfo }) => {
                 filter={filter}
                 setCount={setCount}
                 setTotalLiquidityUSD={setTotalLiquidityUSD}
+                setHandleHarvestAll={setHandleHarvestAll}
               />
             ) : null}
             {['v2', 'stable'].includes(poolInfo.protocol) ? (
-              <MyV2OrStablePositions poolInfo={poolInfo} setCount={setCount} setTotalTvlUsd={setTotalLiquidityUSD} />
+              <MyV2OrStablePositions
+                poolInfo={poolInfo}
+                setCount={setCount}
+                setTotalTvlUsd={setTotalLiquidityUSD}
+                setHandleHarvestAll={setHandleHarvestAll}
+              />
             ) : null}
           </PositionCardBody>
         </PositionsCard>
@@ -174,7 +204,8 @@ const MyV3Positions: React.FC<{
   filter: PositionFilter
   setCount: (count: number) => void
   setTotalLiquidityUSD: (value: string) => void
-}> = ({ poolInfo, filter, setCount, setTotalLiquidityUSD }) => {
+  setHandleHarvestAll: (fn: () => () => Promise<void>) => void
+}> = ({ poolInfo, filter, setCount, setTotalLiquidityUSD, setHandleHarvestAll }) => {
   const { t } = useTranslation()
   const chainId = useChainIdByQuery()
   const { account } = useAccountActiveChain()
@@ -207,6 +238,16 @@ const MyV3Positions: React.FC<{
     )
     return total
   }, [positionsData, price0Usd, price1Usd])
+  const { onHarvestAll } = useFarmsV3BatchHarvest()
+  const handleHarvestAll = useCallback(() => {
+    if (!onHarvestAll || !data) return async () => {}
+    const tokenIds = data.filter((p) => p.isStaked).map((p) => p.tokenId.toString())
+    return async () => onHarvestAll(tokenIds)
+  }, [data, onHarvestAll])
+
+  useEffect(() => {
+    setHandleHarvestAll(handleHarvestAll)
+  }, [handleHarvestAll, setHandleHarvestAll])
 
   useEffect(() => {
     setTotalLiquidityUSD(totalLiquidityUSD.toString())
@@ -303,6 +344,7 @@ const MyV2OrStablePositions: React.FC<{
   poolInfo: PoolInfo
   setCount: (count: number) => void
   setTotalTvlUsd: (value: string) => void
+  setHandleHarvestAll: (fn: () => () => Promise<void>) => void
 }> = ({ poolInfo, setCount, setTotalTvlUsd }) => {
   const chainId = useChainIdByQuery()
   const { account } = useAccountActiveChain()
