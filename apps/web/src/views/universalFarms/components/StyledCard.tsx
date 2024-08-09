@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import NextLink from 'next/link'
 import {
   Card as RawCard,
   CardBody as RawCardBody,
@@ -38,5 +39,18 @@ export const CardFooter = styled(RawCardFooter)`
 
   ${({ theme }) => theme.mediaQueries.lg} {
     bottom: 0;
+  }
+`
+
+export const StyledNextLink = styled(NextLink)`
+  &:hover {
+    > div {
+      background: ${({ theme }) => theme.colors.backgroundHover};
+    }
+  }
+  &:active {
+    > div {
+      background: ${({ theme }) => theme.colors.backgroundTapped};
+    }
   }
 `
