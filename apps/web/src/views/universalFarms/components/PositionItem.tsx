@@ -26,7 +26,6 @@ import { Bound, DoubleCurrencyLogo, FiatNumberDisplay } from '@pancakeswap/widge
 import { RangeTag } from 'components/RangeTag'
 import { TokenPairImage } from 'components/TokenImage'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
-import NextLink from 'next/link'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { getPoolAddressByToken, useExtraV3PositionInfo, usePoolInfo } from 'state/farmsV4/hooks'
 import type { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
@@ -45,6 +44,7 @@ import { PoolApyButton } from './PoolApyButton'
 import { StakeModal } from './StakeModal'
 import { addQueryToPath } from '../utils'
 import { useCheckShouldSwitchNetwork } from '../hooks'
+import { StyledNextLink } from './StyledCard'
 
 const Container = styled(Flex)`
   padding: 16px;
@@ -486,7 +486,7 @@ export const PositionItemDetail = (props: IPositionItemDetailProps) => {
   if (!linkWithChain) {
     return content
   }
-  return <NextLink href={linkWithChain}>{content}</NextLink>
+  return <StyledNextLink href={linkWithChain}>{content}</StyledNextLink>
 }
 
 const ActionPanelContainer = styled(Flex)`

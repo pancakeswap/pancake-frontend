@@ -252,7 +252,7 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
 
   const theme = useTheme();
   const list = useMemo(
-    () => options?.filter((op) => op.label.toLowerCase().includes(searchText)),
+    () => options?.filter((op) => op.label.toLowerCase().includes(searchText.toLowerCase())),
     [options, searchText]
   );
 
@@ -327,20 +327,22 @@ export const MultiSelect = <T extends string | number>(props: IMultiSelectProps<
 
   const handleClearSeachBox = useCallback(
     (e: React.MouseEvent<HTMLOrSVGElement>) => {
-      if (!selectedItems?.length) {
-        return;
+      if (selectedItems?.length) {
+        if (onChange) {
+          onChange({
+            value: [],
+            stopPropagation: e.stopPropagation,
+            preventDefault: e.preventDefault,
+          });
+        } else {
+          setSelectedItems([]);
+        }
       }
-      if (onChange) {
-        onChange({
-          value: [],
-          stopPropagation: e.stopPropagation,
-          preventDefault: e.preventDefault,
-        });
-      } else {
-        setSelectedItems([]);
+      if (searchText.length) {
+        searchInputRef.current?.clear();
       }
     },
-    [selectedItems, onChange]
+    [searchText, selectedItems, onChange]
   );
 
   const panelHeaderTemplate = useMemo(
