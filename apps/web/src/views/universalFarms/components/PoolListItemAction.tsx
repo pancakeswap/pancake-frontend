@@ -33,27 +33,20 @@ const StyledConnectWalletButton = styled(ConnectWalletButton)`
 export const PoolListItemAction = memo(({ pool }: { pool: PoolInfo }) => {
   const { theme } = useTheme()
 
-  const handleClick = useCallback((e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-  }, [])
-
   return (
-    <Box onClick={handleClick}>
-      <SubMenu
-        style={{
-          background: theme.card.background,
-          borderColor: theme.colors.cardBorder,
-        }}
-        component={
-          <Button scale="xs" variant="text">
-            <MoreIcon />
-          </Button>
-        }
-      >
-        <ActionItems pool={pool} />
-      </SubMenu>
-    </Box>
+    <SubMenu
+      style={{
+        background: theme.card.background,
+        borderColor: theme.colors.cardBorder,
+      }}
+      component={
+        <Button scale="xs" variant="text">
+          <MoreIcon />
+        </Button>
+      }
+    >
+      <ActionItems pool={pool} />
+    </SubMenu>
   )
 })
 
