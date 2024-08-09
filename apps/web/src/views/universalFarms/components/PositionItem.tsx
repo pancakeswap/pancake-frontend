@@ -39,7 +39,6 @@ import { type PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
 import currencyId from 'utils/currencyId'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
-import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
 import { v2Fee } from 'views/PoolDetail/hooks/useStablePoolFee'
 import { useCheckShouldSwitchNetwork } from '../hooks'
@@ -355,6 +354,7 @@ const PositionDetailInfo = memo(
 
     const cakePrice = useCakePrice()
     const stackedTokenId = useMemo(() => (tokenId ? [tokenId] : []), [tokenId])
+    // @todo @ChefJerry this only support v3
     const {
       tokenIdResults: [pendingCake],
     } = useStakedPositionsByUser(stackedTokenId)
@@ -510,6 +510,8 @@ export const PositionItemDetail = (props: IPositionItemDetailProps) => {
             currency0={currency0}
             currency1={currency1}
             isStaked={isStaked}
+            protocol={props.protocol}
+            fee={props.fee}
             removed={removed}
             tokenId={tokenId}
             outOfRange={outOfRange}
@@ -546,6 +548,8 @@ interface IActionPanelProps {
   modalContent: React.ReactNode
   currency0: Currency
   currency1: Currency
+  protocol: Protocol
+  fee: number
 }
 const ActionPanel = ({
   currency0,
@@ -556,6 +560,8 @@ const ActionPanel = ({
   tokenId,
   modalContent,
   detailMode,
+  protocol,
+  fee,
 }: IActionPanelProps) => {
   const { t } = useTranslation()
   const { onStake, onUnstake, onHarvest, attemptingTxn } = useFarmV3Actions({
@@ -563,7 +569,6 @@ const ActionPanel = ({
     onDone: () => {},
   })
   const stakeModal = useModalV2()
-  const addLiquidityModal = useModalV2()
   const { switchNetworkIfNecessary, isLoading: isSwitchingNetwork } = useCheckShouldSwitchNetwork()
 
   const handleStakeAndCheckInactive = useCallback(async () => {
@@ -595,6 +600,26 @@ const ActionPanel = ({
   const preventDefault = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
   }, [])
+
+  const handleIncreasePosition = useCallback(() => {
+    if (protocol === Protocol.V3) {
+      window.open(
+        `/increase/${currency0.wrapped.address}/${currency1.wrapped.address}/${fee}/${tokenId}`,
+        '_blank',
+        'noopener',
+      )
+    }
+  }, [currency0.wrapped.address, currency1.wrapped.address, fee, protocol, tokenId])
+
+  const handleDecreasePosition = useCallback(() => {
+    if (protocol === Protocol.V3) {
+      window.open(
+        `/decrease/${currency0.wrapped.address}/${currency1.wrapped.address}/${fee}/${tokenId}`,
+        '_blank',
+        'noopener',
+      )
+    }
+  }, [currency0.wrapped.address, currency1.wrapped.address, fee, protocol, tokenId])
 
   const stakeButton = useMemo(
     () => (
@@ -656,29 +681,32 @@ const ActionPanel = ({
     ),
     [isSwitchingNetwork, handleUnStake, isStaked, modalContent, t, outOfRange, stakeModal, attemptingTxn],
   )
-
-  const addLiquidityButton = useMemo(
-    () => (
-      <>
-        <IconButton variant="secondary" onClick={addLiquidityModal.onOpen}>
-          <AddIcon color="primary" width="14px" />
-        </IconButton>
-        <AddLiquidityV3Modal {...addLiquidityModal} currency0={currency0} currency1={currency1} />
-      </>
-    ),
-    [addLiquidityModal, currency0, currency1],
-  )
+  const showLpChangeActions = useMemo(() => {
+    if (protocol === Protocol.V3 && isStaked) return false
+    return true
+  }, [isStaked, protocol])
 
   if (detailMode) {
     return (
       <ActionPanelContainer onClick={preventDefault}>
-        {!removed && (
-          <IconButton mr="6px" variant="secondary" onClick={() => {}}>
-            <MinusIcon color="primary" width="14px" />
-          </IconButton>
-        )}
-        {addLiquidityButton}
+        {showLpChangeActions ? (
+          <>
+            {!removed && (
+              <IconButton mr="6px" variant="secondary" onClick={handleDecreasePosition}>
+                <MinusIcon color="primary" width="14px" />
+              </IconButton>
+            )}
+            <IconButton variant="secondary" onClick={handleIncreasePosition}>
+              <AddIcon color="primary" width="14px" />
+            </IconButton>
+          </>
+        ) : null}
         {isStaked ? unstakeButton : !removed ? stakeButton : null}
+        {isStaked && !removed ? (
+          <Button width={['100px']} scale="md" disabled={attemptingTxn || isSwitchingNetwork} onClick={handleHarvest}>
+            {attemptingTxn ? t('Harvesting') : t('Harvest')}
+          </Button>
+        ) : null}
       </ActionPanelContainer>
     )
   }
