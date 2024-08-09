@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useMemo, useState, useRef } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
 import { Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
@@ -41,6 +42,7 @@ const StyledImage = styled(Image)`
 const NUMBER_OF_FARMS_VISIBLE = 20
 
 export const PoolsPage = () => {
+  const nextRouter = useRouter()
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { isMobile } = useMatchBreakpoints()
@@ -139,14 +141,22 @@ export const PoolsPage = () => {
     }
   }, [])
 
-  const getRowLink = useCallback((pool: PoolInfo) => {
-    if (pool.protocol === Protocol.STABLE) {
-      const stablePair = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) =>
-        isAddressEqual(pair.lpAddress, pool.lpAddress),
-      )
-      return `/pools/${getChainName(pool.chainId)}/${stablePair?.stableSwapAddress}`
-    }
-    return `/pools/${getChainName(pool.chainId)}/${pool.lpAddress}`
+  const handleRowClick = useCallback(
+    (pool: PoolInfo) => {
+      let link = `/pools/${getChainName(pool.chainId)}/${pool.lpAddress}`
+      if (pool.protocol === Protocol.STABLE) {
+        const stablePair = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) =>
+          isAddressEqual(pair.lpAddress, pool.lpAddress),
+        )
+        link = `/pools/${getChainName(pool.chainId)}/${stablePair?.stableSwapAddress}`
+      }
+      nextRouter.push(link)
+    },
+    [nextRouter],
+  )
+
+  const getRowKey = useCallback((item: PoolInfo) => {
+    return [item.chainId, item.protocol, item.pid].join(':')
   }, [])
 
   const filteredData = useMemo(() => {
@@ -185,21 +195,20 @@ export const PoolsPage = () => {
       <CardBody>
         <PoolsContent>
           {isMobile ? (
-            <ListView data={sortedData} />
+            <ListView data={renderData} />
           ) : (
             <TableView
-              rowKey="lpAddress"
+              getRowKey={getRowKey}
               columns={columns}
               data={renderData}
               onSort={handleSort}
               sortOrder={sortOrder}
               sortField={sortField}
-              getRowLink={getRowLink}
+              onRowClick={handleRowClick}
             />
           )}
         </PoolsContent>
         {poolList.length > 0 && <div ref={observerRef} />}
-        <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </CardBody>
       {disabledExtendPools ? null : (
         <CardFooter>
