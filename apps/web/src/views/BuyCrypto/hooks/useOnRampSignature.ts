@@ -68,7 +68,7 @@ export const useOnRampSignature = <selectData = GetOnRampSignatureReturnType>(
     ]),
     enabled: Boolean(externalTransactionId && quote && walletAddress && getIsNetworkEnabled(chainId)),
     queryFn: async () => {
-      if (!quote || !walletAddress || !externalTransactionId || !chainId || !onRampUnit) {
+      if (!quote || !walletAddress || !externalTransactionId || chainId === undefined || !onRampUnit) {
         throw new Error('Invalid parameters')
       }
 
