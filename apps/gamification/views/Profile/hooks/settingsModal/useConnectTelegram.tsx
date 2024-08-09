@@ -25,7 +25,7 @@ interface UseConnectTelegramProps {
 }
 
 export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProps) => {
-  const { address: account } = useAccount()
+  const { address: account, connector } = useAccount()
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { signMessageAsync } = useSignMessage()
@@ -50,7 +50,7 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
         request_access: true,
       },
       async (user: TelegramResponse) => {
-        if (user && account) {
+        if (user && account && connector && typeof connector.getChainId === 'function') {
           try {
             const walletAddress = account
             const timestamp = Math.floor(new Date().getTime() / 1000)
@@ -88,7 +88,7 @@ export const useConnectTelegram = ({ userInfo, refresh }: UseConnectTelegramProp
 
   const disconnect = async () => {
     try {
-      if (account) {
+      if (account && connector && typeof connector.getChainId === 'function') {
         const walletAddress = account
         const timestamp = Math.floor(new Date().getTime() / 1000)
         const message = keccak256(encodePacked(['address', 'uint256'], [walletAddress ?? '0x', BigInt(timestamp)]))

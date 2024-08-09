@@ -64,7 +64,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   onSuccess,
 }) => {
   const { t } = useTranslation()
-  const { address: account } = useAccount()
+  const { address: account, connector } = useAccount()
   const { userInfo, refresh, isFetched } = useUserSocialHub()
   const { data: session } = useSession()
   const { toastSuccess, toastError } = useToast()
@@ -102,7 +102,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       token: string
       tokenSecret?: string
     }) => {
-      if (account && !isFetchingApi) {
+      if (account && connector && typeof connector.getChainId === 'function' && !isFetchingApi) {
         setIsFetchingApi(true)
 
         try {
@@ -145,9 +145,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
           }
         } catch (error) {
           const errorMessage = error instanceof Error && error?.message ? error.message : JSON.stringify(error)
-          if (errorMessage !== 'connection.connector.getChainId is not a function') {
-            toastError(`Failed to connect ${social}: ${errorMessage}`)
-          }
+          toastError(`Failed to connect ${social}: ${errorMessage}`)
           console.error(`Connect ${social} error: `, error)
         } finally {
           setTimeout(() => setIsFetchingApi(false), 1000)
@@ -167,7 +165,19 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
         fetchSocial({ social: SocialHubType.Twitter, id: twitterId, token, tokenSecret })
       }
     }
-  }, [account, isFetched, isFetchingApi, session, t, refresh, toastError, toastSuccess, userInfo, signMessageAsync])
+  }, [
+    account,
+    isFetched,
+    isFetchingApi,
+    session,
+    t,
+    refresh,
+    toastError,
+    toastSuccess,
+    userInfo,
+    signMessageAsync,
+    connector,
+  ])
 
   const { domainName, avatar: avatarFromDomain } = useDomainNameForAddress(accountPath)
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
