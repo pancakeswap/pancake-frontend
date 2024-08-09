@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { getCakeContract } from 'utils/contractHelpers'
 import { useBCakeProxyContractAddress } from 'hooks/useBCakeProxyContractAddress'
-import { useReadContract } from 'wagmi'
+import { useReadContract } from '@pancakeswap/wagmi'
 
 const useProxyCAKEBalance = () => {
   const { account, chainId } = useAccountActiveChain()
