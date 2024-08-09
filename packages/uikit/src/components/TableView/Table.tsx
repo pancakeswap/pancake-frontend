@@ -66,7 +66,17 @@ const TableBody = styled.tbody``;
 
 const Row = styled.tr<{ $withLink?: boolean }>`
   border-top: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  cursor: ${({ $withLink }) => ($withLink ? "pointer" : "auto")};
+  ${({ $withLink, theme }) =>
+    $withLink &&
+    `
+    cursor: pointer;
+    &:hover {
+      background: ${theme.colors.backgroundHover};
+    }
+    &:active {
+      background: ${theme.colors.backgroundTapped};
+    }
+  `}
 
   &:last-child {
     border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
