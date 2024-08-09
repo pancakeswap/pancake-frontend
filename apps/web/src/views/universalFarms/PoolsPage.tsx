@@ -34,11 +34,6 @@ const PoolsContent = styled.div`
   min-height: calc(100vh - 64px - 56px);
 `
 
-const StyledImage = styled(Image)`
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 58px;
-`
 const NUMBER_OF_FARMS_VISIBLE = 20
 
 export const PoolsPage = () => {
