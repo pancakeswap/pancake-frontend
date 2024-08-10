@@ -1,5 +1,4 @@
-import { ChainId } from '@pancakeswap/chains'
-import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
+import { ChainId, AVERAGE_CHAIN_BLOCK_TIMES } from '@pancakeswap/chains'
 import { useCallback, useMemo } from 'react'
 import { RetryableError, retry } from 'state/multicall/retry'
 import { Hash } from 'viem'

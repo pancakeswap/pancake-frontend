@@ -16,7 +16,7 @@ import {
 import { usePublicClient } from 'wagmi'
 import { retry, RetryableError } from 'state/multicall/retry'
 import { useQuery } from '@tanstack/react-query'
-import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
+import { AVERAGE_CHAIN_BLOCK_TIMES } from '@pancakeswap/chains'
 import { BSC_BLOCK_TIME } from 'config'
 import { useFetchBlockData } from '@pancakeswap/wagmi'
 import {

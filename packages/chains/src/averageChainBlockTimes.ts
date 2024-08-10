@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainId } from './chainId'
 
 export const AVERAGE_CHAIN_BLOCK_TIMES: Record<ChainId, number> = {
   [ChainId.BSC]: 3,

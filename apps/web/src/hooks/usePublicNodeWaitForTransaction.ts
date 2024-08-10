@@ -1,7 +1,7 @@
 import { ChainId } from '@gelatonetwork/limit-orders-lib'
 import { BSC_BLOCK_TIME } from 'config'
 import { CHAINS } from 'config/chains'
-import { AVERAGE_CHAIN_BLOCK_TIMES } from 'config/constants/averageChainBlockTimes'
+import { AVERAGE_CHAIN_BLOCK_TIMES } from '@pancakeswap/chains'
 import first from 'lodash/first'
 import { useCallback } from 'react'
 import { RetryableError, retry } from 'state/multicall/retry'
