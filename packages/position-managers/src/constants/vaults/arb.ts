@@ -24,6 +24,7 @@ export const vaults: VaultConfig[] = [
     managerInfoUrl: 'https://www.defiedge.io/',
     strategyInfoUrl: 'https://docs.defiedge.io/category/strategy-manager',
     learnMoreAboutUrl: 'https://docs.defiedge.io/category/strategy-manager',
+    priceFromV3FarmPid: 84,
   },
   {
     id: 20,
