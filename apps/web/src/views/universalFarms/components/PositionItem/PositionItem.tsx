@@ -4,8 +4,7 @@ import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { Column, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { TokenPairImage } from 'components/TokenImage'
 import NextLink from 'next/link'
-import { useMemo } from 'react'
-import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
+import React, { PropsWithChildren, useMemo } from 'react'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
 import { addQueryToPath } from '../../utils'
@@ -14,7 +13,6 @@ import { PositionItemSkeleton } from './PositionItemSkeleton'
 import { Container } from './styled'
 
 type PositionItemProps = {
-  data: PositionDetail | V2LPDetail | StableLPDetail
   chainId: number
   currency0?: Currency
   currency1?: Currency
@@ -32,8 +30,8 @@ type PositionItemProps = {
   pool?: PoolInfo | null
   detailMode?: boolean
 }
-export const PositionItem = (props: PositionItemProps) => {
-  const { link, currency0, currency1, removed, outOfRange, tokenId, isStaked, detailMode, chainId } = props
+export const PositionItem: React.FC<PropsWithChildren<PositionItemProps>> = (props) => {
+  const { link, currency0, currency1, chainId, children } = props
 
   const { isDesktop } = useMatchBreakpoints()
   const linkWithChain = useMemo(
@@ -61,21 +59,7 @@ export const PositionItem = (props: PositionItemProps) => {
         <Column gap="8px">
           <PositionInfo {...props} />
         </Column>
-        <Column justifyContent="flex-end">
-          {/* <ModifyStakeActions /> */}
-          {/* <ActionPanel
-            currency0={currency0}
-            currency1={currency1}
-            isStaked={isStaked}
-            protocol={props.protocol}
-            fee={props.fee}
-            removed={removed}
-            tokenId={tokenId}
-            outOfRange={outOfRange}
-            modalContent={<V3UnstakeModalContent {...props} />}
-            detailMode={detailMode}
-          /> */}
-        </Column>
+        <Column justifyContent="flex-end">{children}</Column>
       </DetailsContainer>
     </Container>
   )
