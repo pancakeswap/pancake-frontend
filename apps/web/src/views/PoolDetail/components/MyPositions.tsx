@@ -353,15 +353,30 @@ const MyV2OrStablePositions: React.FC<{
     if (!data) {
       return '0'
     }
-    return new BigNumber(data.balance.toExact())
-      .div(data.totalSupply.toExact())
+    if (poolInfo.protocol === 'stable') {
+      return new BigNumber((data as StableLPDetail).balance.toExact())
+        .div(data.totalSupply.toExact())
+        .times(Number(poolInfo.tvlUsd ?? 0))
+        .toString()
+    }
+    const v2Data = data as V2LPDetail
+    return new BigNumber(v2Data.nativeBalance.add(v2Data.farmingBalance).toExact())
+      .div(v2Data.totalSupply.toExact())
       .times(Number(poolInfo.tvlUsd ?? 0))
       .toString()
-  }, [data, poolInfo.tvlUsd])
+  }, [data, poolInfo.protocol, poolInfo.tvlUsd])
+  const count = useMemo(() => {
+    if (!data) return 0
+    if (data && data.protocol === 'stable') {
+      return 1
+    }
+    const v2Data = data as V2LPDetail
+    return [v2Data.nativeBalance.greaterThan('0'), v2Data.farmingBalance.greaterThan('0')].filter(Boolean).length
+  }, [data])
 
   useEffect(() => {
-    setCount(data ? 1 : 0)
-  }, [data, setCount])
+    setCount(count)
+  }, [count, setCount])
 
   useEffect(() => {
     setTotalTvlUsd(totalTVLUsd)
@@ -394,9 +409,6 @@ const MyV2OrStablePositions: React.FC<{
           pool={poolInfo}
         />
       ) : null}
-      {/* {data.map((detail: V2LPDetail) => {
-        return <PositionV2Item key={detail.pair.liquidityToken.address} data={detail} pool={poolInfo} />
-      })} */}
     </AutoColumn>
   )
 }

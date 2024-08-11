@@ -61,6 +61,13 @@ export const useAccountPositionDetailByPool = <TProtocol extends keyof PoolPosit
         return d as PositionDetail[]
       }
 
+      if (protocol === 'v2') {
+        // v2
+        return data?.[0] && (data[0].nativeBalance.greaterThan('0') || data[0].farmingBalance.greaterThan('0'))
+          ? data[0]
+          : undefined
+      }
+
       return data?.[0] && data[0].balance.greaterThan('0') ? data[0] : undefined
     },
     [poolInfo, protocol],

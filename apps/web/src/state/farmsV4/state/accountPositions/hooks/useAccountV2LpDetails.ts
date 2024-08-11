@@ -24,12 +24,12 @@ export const useAccountV2LpDetails = (chainIds: number[], account?: Address | nu
   const queries = useMemo(() => {
     return Object.entries(lpTokensByChain).map(([chainId, lpTokens]) => {
       return {
-        queryKey: ['accountV2LpBalance', account, chainId],
+        queryKey: ['accountV2LpDetails', account, chainId],
         // @todo @ChefJerry add signal
         queryFn: () => getAccountV2LpDetails(Number(chainId), account!, lpTokens),
         enabled: !!account && lpTokens && lpTokens.length > 0,
         select(data) {
-          return data.filter((d) => d.balance.greaterThan('0'))
+          return data.filter((d) => d.nativeBalance.greaterThan('0') || d.farmingBalance.greaterThan('0'))
         },
         refetchOnMount: false,
         refetchOnWindowFocus: false,

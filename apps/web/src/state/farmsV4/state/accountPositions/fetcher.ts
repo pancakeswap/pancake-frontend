@@ -1,7 +1,7 @@
 import memoize from 'lodash/memoize'
 import uniqWith from 'lodash/uniqWith'
 import { ChainId } from '@pancakeswap/chains'
-import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { BCakeWrapperFarmConfig, Protocol, UNIVERSAL_BCAKEWRAPPER_FARMS, UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { CurrencyAmount, erc20Abi, ERC20Token, Pair, pancakePairV2ABI } from '@pancakeswap/sdk'
 import { LegacyStableSwapPair } from '@pancakeswap/smart-router/legacy-router'
 import { deserializeToken } from '@pancakeswap/token-lists'
@@ -14,7 +14,7 @@ import { AppState } from 'state'
 import { safeGetAddress } from 'utils'
 import { getCrossFarmingVaultAddress, getMasterChefV2Address } from 'utils/addressHelpers'
 import { publicClient } from 'utils/viem'
-import { Address } from 'viem'
+import { Address, isAddressEqual } from 'viem'
 import { StablePoolInfo, V2PoolInfo } from '../type'
 import { StableLPDetail, V2LPDetail } from './type'
 
@@ -175,6 +175,14 @@ export const getTrackedV2LpTokens = memoize(
 const V2_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.V2)
 const STABLE_UNIVERSAL_FARMS = UNIVERSAL_FARMS.filter((farm) => farm.protocol === Protocol.STABLE)
 
+const getBCakeWrapperAddress = (lpAddress: Address, chainId: number) => {
+  const f = UNIVERSAL_BCAKEWRAPPER_FARMS.find((farm) => {
+    return isAddressEqual(farm.lpAddress, lpAddress) && farm.chainId === chainId
+  })
+
+  return f?.bCakeWrapperAddress ?? '0x'
+}
+
 // @todo @ChefJerry add getAccountV2FarmingStakedBalances result
 export const getAccountV2LpDetails = async (
   chainId: number,
@@ -187,6 +195,10 @@ export const getAccountV2LpDetails = async (
   if (!account || !client || !lpTokens.length) return []
 
   const validLpTokens = lpTokens.filter((token) => token.chainId === chainId)
+  const bCakeWrapperAddresses = validReserveTokens.reduce((acc, tokens) => {
+    const lpAddress = getV2LiquidityToken(tokens).address
+    return [...acc, getBCakeWrapperAddress(lpAddress, chainId)]
+  }, [] as Array<Address>)
 
   const balanceCalls = validLpTokens.map((token) => {
     return {
@@ -196,6 +208,16 @@ export const getAccountV2LpDetails = async (
       args: [account] as const,
     } as const
   })
+  const farmingCalls = bCakeWrapperAddresses
+    .filter((addr) => addr !== '0x')
+    .map((address) => {
+      return {
+        abi: v2BCakeWrapperABI,
+        address,
+        functionName: 'userInfo',
+        args: [account] as const,
+      } as const
+    })
   const reserveCalls = validLpTokens.map((token) => {
     return {
       abi: pancakePairV2ABI,
@@ -210,9 +232,13 @@ export const getAccountV2LpDetails = async (
       functionName: 'totalSupply',
     } as const
   })
-  const [balances, reserves, totalSupplies] = await Promise.all([
+  const [balances, farming, reserves, totalSupplies] = await Promise.all([
     client.multicall({
       contracts: balanceCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: farmingCalls,
       allowFailure: false,
     }),
     client.multicall({
@@ -226,7 +252,16 @@ export const getAccountV2LpDetails = async (
   ])
 
   return balances.map((_balance, index) => {
-    const balance = CurrencyAmount.fromRawAmount(validLpTokens[index], _balance)
+    const nativeBalance = CurrencyAmount.fromRawAmount(validLpTokens[index], _balance)
+    const farmingInfo = farming[index]
+    let farmingBalance = CurrencyAmount.fromRawAmount(validLpTokens[index], '0')
+    let farmingBoosterMultiplier = 0
+    let farmingBoostedAmount = CurrencyAmount.fromRawAmount(validLpTokens[index], '0')
+    if (farmingInfo) {
+      farmingBalance = CurrencyAmount.fromRawAmount(validLpTokens[index], farmingInfo[0].toString())
+      farmingBoosterMultiplier = Number(farmingInfo[1])
+      farmingBoostedAmount = CurrencyAmount.fromRawAmount(validLpTokens[index], farmingInfo[2].toString())
+    }
     const tokens = validReserveTokens[index]
     const [token0, token1] = tokens[0].sortsBefore(tokens[1]) ? tokens : tokens.reverse()
     const [reserve0, reserve1] = reserves[index]
@@ -235,15 +270,22 @@ export const getAccountV2LpDetails = async (
       CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
     )
     const totalSupply = CurrencyAmount.fromRawAmount(validLpTokens[index], totalSupplies[index].toString())
-    const deposited0 = pair.getLiquidityValue(token0, totalSupply, balance, false)
-    const deposited1 = pair.getLiquidityValue(token1, totalSupply, balance, false)
+    const nativeDeposited0 = pair.getLiquidityValue(token0, totalSupply, nativeBalance, false)
+    const nativeDeposited1 = pair.getLiquidityValue(token1, totalSupply, nativeBalance, false)
+    const farmingDeposited0 = pair.getLiquidityValue(token0, totalSupply, farmingBalance, false)
+    const farmingDeposited1 = pair.getLiquidityValue(token1, totalSupply, farmingBalance, false)
     const isStaked = !!V2_UNIVERSAL_FARMS.find((farm) => farm.lpAddress === pair.liquidityToken.address)
     return {
-      balance,
+      nativeBalance,
+      farmingBalance,
       pair,
       totalSupply,
-      deposited0,
-      deposited1,
+      nativeDeposited0,
+      nativeDeposited1,
+      farmingDeposited0,
+      farmingDeposited1,
+      farmingBoosterMultiplier,
+      farmingBoostedAmount,
       isStaked,
       protocol: Protocol.V2,
     }

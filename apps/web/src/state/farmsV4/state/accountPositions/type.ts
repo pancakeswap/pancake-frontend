@@ -27,11 +27,16 @@ export type PositionDetail = {
 }
 
 export type V2LPDetail = {
-  balance: CurrencyAmount<ERC20Token>
+  nativeBalance: CurrencyAmount<ERC20Token>
+  farmingBalance: CurrencyAmount<ERC20Token>
   pair: Pair
   totalSupply: CurrencyAmount<ERC20Token>
-  deposited0: CurrencyAmount<ERC20Token>
-  deposited1: CurrencyAmount<ERC20Token>
+  nativeDeposited0: CurrencyAmount<ERC20Token>
+  nativeDeposited1: CurrencyAmount<ERC20Token>
+  farmingDeposited0: CurrencyAmount<ERC20Token>
+  farmingDeposited1: CurrencyAmount<ERC20Token>
+  farmingBoosterMultiplier: number
+  farmingBoostedAmount: CurrencyAmount<ERC20Token>
   isStaked?: boolean
   protocol: Protocol
 }
