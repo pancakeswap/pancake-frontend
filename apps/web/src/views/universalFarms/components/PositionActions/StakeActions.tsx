@@ -1,11 +1,25 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, AutoRow, Button, IconButton, MinusIcon } from '@pancakeswap/uikit'
-import { useCallback } from 'react'
+import { PropsWithChildren, useCallback } from 'react'
 
 type StakeActionsProps = {
   decreaseDisabled?: boolean
   onIncrease: () => void
   onDecrease?: () => void
+}
+
+const StopPropagation: React.FC<PropsWithChildren> = ({ children }) => {
+  const handleClick = useCallback((e) => {
+    e.stopPropagation()
+    e.preventDefault()
+    return false
+  }, [])
+
+  return (
+    <div onClick={handleClick} aria-hidden>
+      {children}
+    </div>
+  )
 }
 
 export const ModifyStakeActions: React.FC<StakeActionsProps> = ({
@@ -14,27 +28,47 @@ export const ModifyStakeActions: React.FC<StakeActionsProps> = ({
   onDecrease,
 }) => {
   return (
-    <AutoRow gap="sm">
-      <IconButton variant="secondary" disabled={decreaseDisabled} onClick={onDecrease}>
-        <MinusIcon color="primary" width="24px" />
-      </IconButton>
-      <IconButton variant="secondary" onClick={onIncrease}>
-        <AddIcon color="primary" width="24px" />
-      </IconButton>
-    </AutoRow>
+    <StopPropagation>
+      <AutoRow gap="sm">
+        <IconButton variant="secondary" disabled={decreaseDisabled} onClick={onDecrease}>
+          <MinusIcon color="primary" width="24px" />
+        </IconButton>
+        <IconButton variant="secondary" onClick={onIncrease}>
+          <AddIcon color="primary" width="24px" />
+        </IconButton>
+      </AutoRow>
+    </StopPropagation>
   )
 }
 
 type DepositStakeActionsProps = {
-  disabled: boolean
+  disabled?: boolean
   onDeposit: () => void
 }
-export const DepositStakeActions: React.FC<DepositStakeActionsProps> = ({ disabled, onDeposit }) => {
+export const DepositStakeAction: React.FC<DepositStakeActionsProps> = ({ disabled, onDeposit }) => {
   const { t } = useTranslation()
   return (
-    <Button onClick={onDeposit} disabled={disabled}>
-      {t('Stake LP')}
-    </Button>
+    <StopPropagation>
+      <Button onClick={onDeposit} disabled={disabled}>
+        {t('Stake LP')}
+      </Button>
+    </StopPropagation>
+  )
+}
+
+type HarvestActionsProps = {
+  onHarvest: () => void
+  executing?: boolean
+  disabled?: boolean
+}
+export const HarvestAction: React.FC<HarvestActionsProps> = ({ onHarvest, executing, disabled }) => {
+  const { t } = useTranslation()
+  return (
+    <StopPropagation>
+      <Button disabled={disabled} onClick={onHarvest}>
+        {executing ? t('Harvesting') : t('Harvest')}
+      </Button>
+    </StopPropagation>
   )
 }
 
@@ -66,28 +100,3 @@ export const V3ModifyStakeActions: React.FC<V3LiquidityActionsProps> = ({
 
   return <ModifyStakeActions decreaseDisabled={decreaseDisabled} onIncrease={onIncrease} onDecrease={onDecrease} />
 }
-
-// type V2LiquidityActionsProps = {
-//   stakedBalance: BigNumber
-// }
-// export const V2ModifyStakeActions: React.FC<V2LiquidityActionsProps> = ({
-//   stakedBalance,
-//   lpAddress,
-// }) => {
-//   const { } = useStakedActions(lpAddress, pid)
-//   const [onDecrease] = useModal(
-//     <FarmWidget.WithdrawModal
-//       showActiveBooster={false}
-//       max={stakedBalance ?? BIG_ZERO}
-//       onConfirm={handleDecrease}
-//       tokenName={tokenName}
-//       showCrossChainFarmWarning={false}
-//       decimals={18}
-//     />
-//   )
-//   const [onIncrease] = useModal()
-
-//   return (
-//     <ModifyStakeActions onIncrease={onIncrease} onDecrease={onDecrease} />
-//   )
-// }

@@ -66,38 +66,38 @@ export const getAccountV2FarmingStakedBalances = async (
   })
 }
 
-export const getAccountV2FarmingPendingCakeReward = async (
-  chainId: number,
-  account: Address,
-  pools: Array<V2PoolInfo | StablePoolInfo>,
-) => {
-  const masterChefV2Address =
-    chainId === ChainId.BSC ? getMasterChefV2Address(chainId) : getCrossFarmingVaultAddress(chainId)
-  if (!account || !chainId || pools.length === 0 || !masterChefV2Address) return []
+// export const getAccountV2FarmingPendingCakeReward = async (
+//   chainId: number,
+//   account: Address,
+//   pools: Array<V2PoolInfo | StablePoolInfo>,
+// ) => {
+//   const masterChefV2Address =
+//     chainId === ChainId.BSC ? getMasterChefV2Address(chainId) : getCrossFarmingVaultAddress(chainId)
+//   if (!account || !chainId || pools.length === 0 || !masterChefV2Address) return []
 
-  const validPools = pools.filter(
-    (pool) => ['v2', 'stable'].includes(pool.protocol) && pool.pid && pool.chainId === chainId,
-  )
-  const client = publicClient({ chainId })
+//   const validPools = pools.filter(
+//     (pool) => ['v2', 'stable'].includes(pool.protocol) && pool.pid && pool.chainId === chainId,
+//   )
+//   const client = publicClient({ chainId })
 
-  const earningCalls = validPools.map((pool) => {
-    return {
-      abi: masterChefV2ABI,
-      address: masterChefV2Address,
-      functionName: 'pendingCake',
-      args: [BigInt(pool.pid!), account] as const,
-    } as const
-  })
+//   const earningCalls = validPools.map((pool) => {
+//     return {
+//       abi: masterChefV2ABI,
+//       address: masterChefV2Address,
+//       functionName: 'pendingCake',
+//       args: [BigInt(pool.pid!), account] as const,
+//     } as const
+//   })
 
-  const earnings = await client.multicall({
-    contracts: earningCalls,
-    allowFailure: false,
-  })
+//   const earnings = await client.multicall({
+//     contracts: earningCalls,
+//     allowFailure: false,
+//   })
 
-  return earnings.map((earning) => {
-    return new BigNumber(earning.toString()).toString()
-  })
-}
+//   return earnings.map((earning) => {
+//     return new BigNumber(earning.toString()).toString()
+//   })
+// }
 
 export const getAccountV2FarmingBCakeWrapperEarning = async (
   chainId: number,

@@ -147,7 +147,7 @@ const calcV3PoolApr = ({
   }
 }
 
-export const getUniversalBCakeWrapperForPool = (pool: PoolInfo) => {
+export const getUniversalBCakeWrapperForPool = (pool: { lpAddress: Address; chainId: number }) => {
   const config = UNIVERSAL_BCAKEWRAPPER_FARMS.find(
     (farm) => isAddressEqual(farm.lpAddress, pool.lpAddress) && farm.chainId === pool.chainId,
   )

@@ -7,9 +7,12 @@ import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { DoubleCurrencyLogo, FiatNumberDisplay } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { RangeTag } from 'components/RangeTag'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useCakePrice } from 'hooks/useCakePrice'
-import { memo, useMemo } from 'react'
+import React, { memo, useMemo } from 'react'
 import { useStakedPositionsByUser } from 'state/farmsV3/hooks'
+import { useAccountV2PendingCakeReward } from 'state/farmsV4/state/accountPositions/hooks/useAccountV2PendingCakeReward'
+import { getUniversalBCakeWrapperForPool } from 'state/farmsV4/state/poolApr/fetcher'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
 import { PoolApyButton } from '../PoolApyButton'
@@ -33,6 +36,46 @@ export type PositionInfoProps = {
   detailMode?: boolean
 }
 
+const useV2CakeEarning = (pool: PoolInfo | null | undefined) => {
+  const { account } = useAccountActiveChain()
+  const cakePrice = useCakePrice()
+  const { chainId, lpAddress } = pool || {}
+  const bCakeConfig = useMemo(() => {
+    return chainId && lpAddress ? getUniversalBCakeWrapperForPool({ chainId, lpAddress }) : null
+  }, [chainId, lpAddress])
+  const { data: pendingCake } = useAccountV2PendingCakeReward(account, {
+    chainId,
+    lpAddress,
+    bCakeWrapperAddress: bCakeConfig?.bCakeWrapperAddress,
+  })
+  const earningsAmount = useMemo(() => +formatBigInt(BigInt(pendingCake ?? 0), 5), [pendingCake])
+  const earningsBusd = useMemo(() => {
+    return new BigNumber(earningsAmount ?? 0).times(cakePrice.toString()).toNumber()
+  }, [cakePrice, earningsAmount])
+
+  return {
+    earningsAmount,
+    earningsBusd,
+  }
+}
+
+const useV3CakeEarning = (tokenId?: bigint) => {
+  const stackedTokenId = useMemo(() => (tokenId ? [tokenId] : []), [tokenId])
+  const cakePrice = useCakePrice()
+  const {
+    tokenIdResults: [pendingCake],
+  } = useStakedPositionsByUser(stackedTokenId)
+  const earningsAmount = useMemo(() => +formatBigInt(pendingCake || 0n, 4), [pendingCake])
+  const earningsBusd = useMemo(() => {
+    return new BigNumber(earningsAmount).times(cakePrice.toString()).toNumber()
+  }, [cakePrice, earningsAmount])
+
+  return {
+    earningsAmount,
+    earningsBusd,
+  }
+}
+
 export const PositionInfo = memo(
   ({
     currency0,
@@ -52,17 +95,6 @@ export const PositionInfo = memo(
     const { t } = useTranslation()
     const { theme } = useTheme()
     const { isMobile, isTablet } = useMatchBreakpoints()
-
-    const cakePrice = useCakePrice()
-    const stackedTokenId = useMemo(() => (tokenId ? [tokenId] : []), [tokenId])
-    // @todo @ChefJerry this only support v3
-    const {
-      tokenIdResults: [pendingCake],
-    } = useStakedPositionsByUser(stackedTokenId)
-    const earningsAmount = useMemo(() => +formatBigInt(pendingCake || 0n, 4), [pendingCake])
-    const earningsBusd = useMemo(() => {
-      return new BigNumber(earningsAmount).times(cakePrice.toString()).toNumber()
-    }, [cakePrice, earningsAmount])
 
     const title = useMemo(
       () =>
@@ -128,18 +160,38 @@ export const PositionInfo = memo(
             <DetailInfoLabel>APR: </DetailInfoLabel>
             {pool ? <PoolApyButton pool={pool} /> : <Skeleton width={60} />}
           </Row>
-          {earningsAmount > 0 && (
-            <Row gap="8px">
-              <DetailInfoLabel>
-                {t('CAKE earned')}: {earningsAmount} (~${earningsBusd})
-              </DetailInfoLabel>
-            </Row>
-          )}
+          {isStaked ? protocol === Protocol.V3 ? <V3Earnings tokenId={tokenId} /> : <V2Earnings pool={pool} /> : null}
         </DetailInfoDesc>
       </>
     )
   },
 )
+
+const Earnings: React.FC<{ earningsAmount?: number; earningsBusd?: number }> = ({
+  earningsAmount = 0,
+  earningsBusd,
+}) => {
+  const { t } = useTranslation()
+  return (
+    earningsAmount > 0 && (
+      <Row gap="8px">
+        <DetailInfoLabel>
+          {t('CAKE earned')}: {earningsAmount} (~${earningsBusd})
+        </DetailInfoLabel>
+      </Row>
+    )
+  )
+}
+
+const V2Earnings = ({ pool }: { pool: PoolInfo | null | undefined }) => {
+  const { earningsAmount, earningsBusd } = useV2CakeEarning(pool)
+  return <Earnings earningsAmount={earningsAmount} earningsBusd={earningsBusd} />
+}
+
+const V3Earnings = ({ tokenId }: { tokenId?: bigint }) => {
+  const { earningsAmount, earningsBusd } = useV3CakeEarning(tokenId)
+  return <Earnings earningsAmount={earningsAmount} earningsBusd={earningsBusd} />
+}
 
 const DetailInfoTitle = styled.div<{ $isMobile?: boolean }>`
   display: flex;

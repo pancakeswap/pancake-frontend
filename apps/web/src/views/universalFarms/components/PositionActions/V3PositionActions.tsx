@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/swap-sdk-core'
-import { AddIcon, Button, Flex, IconButton, MinusIcon, useModalV2 } from '@pancakeswap/uikit'
+import { Button, Flex, useModalV2 } from '@pancakeswap/uikit'
 import { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
@@ -149,7 +149,7 @@ export const V3PositionActions = ({
   if (detailMode) {
     return (
       <ActionPanelContainer onClick={preventDefault}>
-        {isStaked ? (
+        {/* {isStaked ? (
           <>
             <IconButton mr="6px" variant="secondary" disabled={removed} onClick={handleDecreasePosition}>
               <MinusIcon color="primary" width="14px" />
@@ -158,7 +158,7 @@ export const V3PositionActions = ({
               <AddIcon color="primary" width="14px" />
             </IconButton>
           </>
-        ) : null}
+        ) : null} */}
         {isStaked ? unstakeButton : !removed ? stakeButton : null}
         {isStaked && !removed ? (
           <Button width={['100px']} scale="md" disabled={attemptingTxn || isSwitchingNetwork} onClick={handleHarvest}>
