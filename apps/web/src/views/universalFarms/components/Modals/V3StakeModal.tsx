@@ -30,7 +30,7 @@ interface IStakeModalProps {
   isOpen: boolean
 }
 
-export const StakeModal: React.FC<React.PropsWithChildren<IStakeModalProps>> = ({
+export const V3StakeModal: React.FC<React.PropsWithChildren<IStakeModalProps>> = ({
   staking,
   onStake,
   onUnStake,
@@ -88,7 +88,6 @@ export const StakeModal: React.FC<React.PropsWithChildren<IStakeModalProps>> = (
                 src={`${ASSET_CDN}/web/universalFarms/bulb-bunny.png`}
                 width={135}
                 height={120}
-                style={{ marginBottom: '-20px' }}
                 alt="bulb bunny reminds unstaking"
               />
             </AtomBox>

@@ -1,4 +1,3 @@
-import { Protocol } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/swap-sdk-core'
 import { AddIcon, Button, Flex, IconButton, MinusIcon, useModalV2 } from '@pancakeswap/uikit'
@@ -7,7 +6,7 @@ import styled from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
 import { useCheckShouldSwitchNetwork } from 'views/universalFarms/hooks'
-import { StakeModal } from '../StakeModal'
+import { V3StakeModal } from '../Modals/V3StakeModal'
 
 type ActionPanelProps = {
   removed: boolean
@@ -18,11 +17,10 @@ type ActionPanelProps = {
   modalContent: React.ReactNode
   currency0: Currency
   currency1: Currency
-  protocol: Protocol
   fee: number
 }
 
-export const ActionPanel = ({
+export const V3PositionActions = ({
   currency0,
   currency1,
   isStaked,
@@ -31,7 +29,6 @@ export const ActionPanel = ({
   tokenId,
   modalContent,
   detailMode,
-  protocol,
   fee,
 }: ActionPanelProps) => {
   const { t } = useTranslation()
@@ -73,24 +70,20 @@ export const ActionPanel = ({
   }, [])
 
   const handleIncreasePosition = useCallback(() => {
-    if (protocol === Protocol.V3) {
-      window.open(
-        `/increase/${currency0.wrapped.address}/${currency1.wrapped.address}/${fee}/${tokenId}`,
-        '_blank',
-        'noopener',
-      )
-    }
-  }, [currency0.wrapped.address, currency1.wrapped.address, fee, protocol, tokenId])
+    window.open(
+      `/increase/${currency0.wrapped.address}/${currency1.wrapped.address}/${fee}/${tokenId}`,
+      '_blank',
+      'noopener',
+    )
+  }, [currency0.wrapped.address, currency1.wrapped.address, fee, tokenId])
 
   const handleDecreasePosition = useCallback(() => {
-    if (protocol === Protocol.V3) {
-      window.open(
-        `/decrease/${currency0.wrapped.address}/${currency1.wrapped.address}/${fee}/${tokenId}`,
-        '_blank',
-        'noopener',
-      )
-    }
-  }, [currency0.wrapped.address, currency1.wrapped.address, fee, protocol, tokenId])
+    window.open(
+      `/decrease/${currency0.wrapped.address}/${currency1.wrapped.address}/${fee}/${tokenId}`,
+      '_blank',
+      'noopener',
+    )
+  }, [currency0.wrapped.address, currency1.wrapped.address, fee, tokenId])
 
   const stakeButton = useMemo(
     () => (
@@ -104,14 +97,14 @@ export const ActionPanel = ({
         >
           {t('Stake')}
         </Button>
-        <StakeModal
+        <V3StakeModal
           isOpen={stakeModal.isOpen}
           staking={outOfRange && !isStaked}
           onStake={handleStake}
           onDismiss={stakeModal.onDismiss}
         >
           {modalContent}
-        </StakeModal>
+        </V3StakeModal>
       </>
     ),
     [
@@ -140,33 +133,27 @@ export const ActionPanel = ({
         >
           {t('Unstake')}
         </Button>
-        <StakeModal
+        <V3StakeModal
           isOpen={stakeModal.isOpen}
           staking={outOfRange && !isStaked}
           onUnStake={handleUnStake}
           onDismiss={stakeModal.onDismiss}
         >
           {modalContent}
-        </StakeModal>
+        </V3StakeModal>
       </>
     ),
     [isSwitchingNetwork, handleUnStake, isStaked, modalContent, t, outOfRange, stakeModal, attemptingTxn],
   )
-  const showLpChangeActions = useMemo(() => {
-    if (protocol === Protocol.V3 && isStaked) return false
-    return true
-  }, [isStaked, protocol])
 
   if (detailMode) {
     return (
       <ActionPanelContainer onClick={preventDefault}>
-        {showLpChangeActions ? (
+        {isStaked ? (
           <>
-            {!removed && (
-              <IconButton mr="6px" variant="secondary" onClick={handleDecreasePosition}>
-                <MinusIcon color="primary" width="14px" />
-              </IconButton>
-            )}
+            <IconButton mr="6px" variant="secondary" disabled={removed} onClick={handleDecreasePosition}>
+              <MinusIcon color="primary" width="14px" />
+            </IconButton>
             <IconButton variant="secondary" onClick={handleIncreasePosition}>
               <AddIcon color="primary" width="14px" />
             </IconButton>
