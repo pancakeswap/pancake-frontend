@@ -37,6 +37,7 @@ export const V3PositionItem = memo(({ data, detailMode }: V3PositionItemProps) =
 
   return (
     <PositionItem
+      data={data}
       chainId={data.chainId}
       link={`/liquidity/${data.tokenId}`}
       pool={pool}

@@ -5,16 +5,16 @@ import { Column, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { TokenPairImage } from 'components/TokenImage'
 import NextLink from 'next/link'
 import { useMemo } from 'react'
+import { PositionDetail, StableLPDetail, V2LPDetail } from 'state/farmsV4/state/accountPositions/type'
 import { PoolInfo } from 'state/farmsV4/state/type'
 import styled from 'styled-components'
 import { addQueryToPath } from '../../utils'
-import { ActionPanel } from '../PositionActions/ActionPanel'
-import { V3UnstakeModalContent } from '../PositionActions/V3UnstakeModalContent'
 import { PositionInfo } from './PositionInfo'
 import { PositionItemSkeleton } from './PositionItemSkeleton'
 import { Container } from './styled'
 
 type PositionItemProps = {
+  data: PositionDetail | V2LPDetail | StableLPDetail
   chainId: number
   currency0?: Currency
   currency1?: Currency
@@ -62,7 +62,8 @@ export const PositionItem = (props: PositionItemProps) => {
           <PositionInfo {...props} />
         </Column>
         <Column justifyContent="flex-end">
-          <ActionPanel
+          {/* <ModifyStakeActions /> */}
+          {/* <ActionPanel
             currency0={currency0}
             currency1={currency1}
             isStaked={isStaked}
@@ -73,7 +74,7 @@ export const PositionItem = (props: PositionItemProps) => {
             outOfRange={outOfRange}
             modalContent={<V3UnstakeModalContent {...props} />}
             detailMode={detailMode}
-          />
+          /> */}
         </Column>
       </DetailsContainer>
     </Container>

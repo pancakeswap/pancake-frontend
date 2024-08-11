@@ -26,6 +26,7 @@ export const V2PositionItem = memo(
 
     return (
       <PositionItem
+        data={data}
         chainId={pair.chainId}
         pool={pool}
         link={`/v2/pair/${currencyId(unwrappedToken0)}/${currencyId(unwrappedToken1)}`}

@@ -19,6 +19,7 @@ export const StablePositionItem = memo(
 
     return (
       <PositionItem
+        data={data}
         chainId={pair.liquidityToken.chainId}
         pool={pool}
         link={`/stable/${pair.lpAddress}`}
