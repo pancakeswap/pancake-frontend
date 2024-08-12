@@ -27,8 +27,7 @@ export type BasePoolInfo = {
   feeTier: number
   feeTierBase: number
   totalFeeUSD?: `${number}`
-  // @todo @ChefJerry add whitelist field
-  whitelist?: boolean
+  isFarming: boolean
 }
 
 export type V3PoolInfo = BasePoolInfo & {
