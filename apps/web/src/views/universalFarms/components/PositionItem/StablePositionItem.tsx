@@ -49,11 +49,11 @@ export const StablePositionItem = memo(({ data, detailMode }: { data: StableLPDe
           amount1={nativeDeposited1}
           detailMode={detailMode}
         >
-          {pair.liquidityToken.chainId && pool?.lpAddress && pool.pid ? (
+          {pair.liquidityToken.chainId && pair.liquidityToken.address && pool?.pid ? (
             <V2PositionActions
               isStaked={false}
               data={data}
-              lpAddress={pool.lpAddress}
+              lpAddress={pair.liquidityToken.address}
               chainId={pair.liquidityToken.chainId}
               pid={pool.pid}
             />
@@ -77,11 +77,11 @@ export const StablePositionItem = memo(({ data, detailMode }: { data: StableLPDe
           amount1={farmingDeposited1}
           detailMode={detailMode}
         >
-          {pair.liquidityToken.chainId && pool?.lpAddress && pool.pid ? (
+          {pair.liquidityToken.chainId && pair.liquidityToken.address && pool?.pid ? (
             <V2PositionActions
               isStaked
               data={data}
-              lpAddress={pool.lpAddress}
+              lpAddress={pair.liquidityToken.address}
               chainId={pair.liquidityToken.chainId}
               pid={pool.pid}
             />

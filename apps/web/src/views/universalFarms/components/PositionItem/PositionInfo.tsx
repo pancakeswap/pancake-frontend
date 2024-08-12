@@ -3,7 +3,7 @@ import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import { FeeTier, Flex, Row, Skeleton, Tag, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { DoubleCurrencyLogo, FiatNumberDisplay } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { RangeTag } from 'components/RangeTag'
@@ -41,8 +41,10 @@ const useV2CakeEarning = (pool: PoolInfo | null | undefined) => {
   const cakePrice = useCakePrice()
   const { chainId, lpAddress } = pool || {}
   const bCakeConfig = useMemo(() => {
-    return chainId && lpAddress ? getUniversalBCakeWrapperForPool({ chainId, lpAddress }) : null
-  }, [chainId, lpAddress])
+    return chainId && lpAddress
+      ? getUniversalBCakeWrapperForPool({ chainId, lpAddress, protocol: pool?.protocol })
+      : null
+  }, [chainId, lpAddress, pool?.protocol])
   const { data: pendingCake } = useAccountV2PendingCakeReward(account, {
     chainId,
     lpAddress,
@@ -169,14 +171,14 @@ export const PositionInfo = memo(
 
 const Earnings: React.FC<{ earningsAmount?: number; earningsBusd?: number }> = ({
   earningsAmount = 0,
-  earningsBusd,
+  earningsBusd = 0,
 }) => {
   const { t } = useTranslation()
   return (
     earningsAmount > 0 && (
       <Row gap="8px">
         <DetailInfoLabel>
-          {t('CAKE earned')}: {earningsAmount} (~${earningsBusd})
+          {t('CAKE earned')}: {earningsAmount} (~${formatNumber(earningsBusd)})
         </DetailInfoLabel>
       </Row>
     )

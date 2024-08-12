@@ -208,5 +208,5 @@ const V2HarvestAction: React.FC<V2PositionActionsProps> = ({ data, chainId, lpAd
     return null
   }
 
-  return <HarvestAction onHarvest={handleHarvest} executing={pendingTx} />
+  return <HarvestAction onHarvest={handleHarvest} executing={pendingTx} disabled={pendingTx} />
 }
