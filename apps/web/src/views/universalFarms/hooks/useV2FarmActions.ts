@@ -1,22 +1,18 @@
-import { UNIVERSAL_BCAKEWRAPPER_FARMS } from '@pancakeswap/farms'
+import { Protocol } from '@pancakeswap/farms'
 import { BOOSTED_FARM_V3_GAS_LIMIT } from 'config'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useERC20, useV2SSBCakeWrapperContract } from 'hooks/useContract'
 import { useCallback, useMemo } from 'react'
+import { getUniversalBCakeWrapperForPool } from 'state/farmsV4/state/poolApr/fetcher'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { bCakeHarvestFarm, bCakeStakeFarm, bCakeUnStakeFarm } from 'utils/calls'
-import { Address, isAddressEqual, maxUint256, zeroAddress } from 'viem'
+import { Address, maxUint256, zeroAddress } from 'viem'
 
-const getBCakeWrapperAddress = (lpAddress: Address, chainId: number) => {
-  const f = UNIVERSAL_BCAKEWRAPPER_FARMS.find((farm) => {
-    return isAddressEqual(farm.lpAddress, lpAddress) && farm.chainId === chainId
-  })
-
-  return f?.bCakeWrapperAddress ?? zeroAddress
-}
-
-export const useV2FarmActions = (lpAddress: Address, chainId: number) => {
-  const bCakeWrapperAddress = useMemo(() => getBCakeWrapperAddress(lpAddress, chainId), [lpAddress, chainId])
+export const useV2FarmActions = (lpAddress: Address, chainId: number, protocol?: Protocol) => {
+  const bCakeWrapperAddress = useMemo(() => {
+    const config = getUniversalBCakeWrapperForPool({ lpAddress, chainId, protocol })
+    return config?.bCakeWrapperAddress ?? zeroAddress
+  }, [lpAddress, chainId, protocol])
   const { gasPrice } = useFeeDataWithGasPrice()
   const V2SSBCakeContract = useV2SSBCakeWrapperContract(bCakeWrapperAddress)
 

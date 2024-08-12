@@ -14,11 +14,14 @@ import {
   Grid,
   Row,
   Text,
+  useToast,
 } from '@pancakeswap/uikit'
 import { DoubleCurrencyLogo } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import Divider from 'components/Divider'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useCurrencyUsdPrice } from 'hooks/useCurrencyUsdPrice'
 import { usePoolWithChainId } from 'hooks/v3/usePools'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
@@ -34,6 +37,7 @@ import {
   V2PositionItem,
   V3PositionItem,
 } from 'views/universalFarms/components'
+import { useV2FarmActions } from 'views/universalFarms/hooks/useV2FarmActions'
 import { formatDollarAmount } from 'views/V3Info/utils/numbers'
 import { useV3Positions } from '../hooks/useV3Positions'
 import { V2PoolEarnings, V3PoolEarnings } from './PoolEarnings'
@@ -339,7 +343,8 @@ const MyV2OrStablePositions: React.FC<{
   setCount: (count: number) => void
   setTotalTvlUsd: (value: string) => void
   setHandleHarvestAll: (fn: () => () => Promise<void>) => void
-}> = ({ poolInfo, setCount, setTotalTvlUsd }) => {
+}> = ({ poolInfo, setCount, setTotalTvlUsd, setHandleHarvestAll }) => {
+  const { t } = useTranslation()
   const chainId = useChainIdByQuery()
   const { account } = useAccountActiveChain()
   const { data, isLoading } = useAccountPositionDetailByPool<Protocol.STABLE | Protocol.V2>(chainId, account, poolInfo)
@@ -361,6 +366,26 @@ const MyV2OrStablePositions: React.FC<{
     const v2Data = data as V2LPDetail
     return [v2Data.nativeBalance.greaterThan('0'), v2Data.farmingBalance.greaterThan('0')].filter(Boolean).length
   }, [data])
+  const { onHarvest } = useV2FarmActions(poolInfo.lpAddress, chainId, poolInfo.protocol)
+  const { toastSuccess } = useToast()
+  const { fetchWithCatchTxError } = useCatchTxError()
+  const handleHarvest = useCallback(() => {
+    return async () => {
+      const receipt = await fetchWithCatchTxError(() => onHarvest())
+      if (receipt?.status) {
+        toastSuccess(
+          `${t('Harvested')}!`,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+          </ToastDescriptionWithTx>,
+        )
+      }
+    }
+  }, [fetchWithCatchTxError, onHarvest, t, toastSuccess])
+
+  useEffect(() => {
+    setHandleHarvestAll(handleHarvest)
+  }, [handleHarvest, setHandleHarvestAll])
 
   useEffect(() => {
     setCount(count)
