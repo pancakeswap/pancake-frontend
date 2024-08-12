@@ -332,6 +332,7 @@ export const getStablePairDetails = async (
         args: [account] as const,
       } as const
     })
+
   const [balances, totalSupplies, farming] = await Promise.all([
     client.multicall({
       contracts: balanceCalls,
@@ -346,30 +347,34 @@ export const getStablePairDetails = async (
       allowFailure: false,
     }),
   ])
-  const validBalances = balances.reduce((acc, balance, index) => {
-    if (balance && balance > 0n) {
-      acc.push({
-        balance,
-        index,
-      })
-    }
-    return acc
-  }, [] as { balance: bigint; index: number }[])
-  const calcCoinsAmountCalls = validBalances.map(({ balance, index }) => {
-    const pair = validStablePairs[index]
+  const nativeCalcCoinsAmountCalls = validStablePairs.map((pair, index) => {
     return {
       abi: infoStableSwapABI,
       address: pair.infoStableSwapAddress,
       functionName: 'calc_coins_amount',
-      args: [pair.stableSwapAddress, balance] as const,
+      args: [pair.stableSwapAddress, balances[index]] as const,
+    } as const
+  })
+  const farmingCalcCoinsAmountCalls = validStablePairs.map((pair, index) => {
+    return {
+      abi: infoStableSwapABI,
+      address: pair.infoStableSwapAddress,
+      functionName: 'calc_coins_amount',
+      args: [pair.stableSwapAddress, farming[index][0].toString()] as const,
     } as const
   })
 
-  const reserveResults = await client.multicall({
-    contracts: calcCoinsAmountCalls,
-    allowFailure: false,
-  })
-  let validIndex = 0
+  const [nativeReserveResults, farmingReserveResults] = await Promise.all([
+    client.multicall({
+      contracts: nativeCalcCoinsAmountCalls,
+      allowFailure: false,
+    }),
+    client.multicall({
+      contracts: farmingCalcCoinsAmountCalls,
+      allowFailure: false,
+    }),
+  ])
+
   const result = validStablePairs.map((pair, index) => {
     const nativeBalance = CurrencyAmount.fromRawAmount(pair.liquidityToken, balances[index])
     const farmingInfo = farming[index]
@@ -381,18 +386,16 @@ export const getStablePairDetails = async (
       farmingBoosterMultiplier = Number(farmingInfo[1])
       farmingBoostedAmount = CurrencyAmount.fromRawAmount(pair.liquidityToken, farmingInfo[2].toString())
     }
-    let token0Amount = 0n
-    let token1Amount = 0n
-    if (nativeBalance.greaterThan(0)) {
-      ;[token0Amount, token1Amount] = reserveResults[validIndex]
-      validIndex++
-    }
     const { token0, token1 } = pair
     const totalSupply = CurrencyAmount.fromRawAmount(pair.liquidityToken, totalSupplies[index].toString())
-    const nativeDeposited0 = CurrencyAmount.fromRawAmount(token0.wrapped, token0Amount.toString())
-    const farmingDeposited0 = CurrencyAmount.fromRawAmount(token0.wrapped, token0Amount.toString())
-    const nativeDeposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, token1Amount.toString())
-    const farmingDeposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, token1Amount.toString())
+
+    const [nativeToken0Amount, nativeToken1Amount] = nativeReserveResults[index]
+    const nativeDeposited0 = CurrencyAmount.fromRawAmount(token0.wrapped, nativeToken0Amount.toString())
+    const nativeDeposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, nativeToken1Amount.toString())
+
+    const [farmingToken0Amount, farmingToken1Amount] = farmingReserveResults[index]
+    const farmingDeposited0 = CurrencyAmount.fromRawAmount(token1.wrapped, farmingToken0Amount.toString())
+    const farmingDeposited1 = CurrencyAmount.fromRawAmount(token1.wrapped, farmingToken1Amount.toString())
 
     const isStaked = !!STABLE_UNIVERSAL_FARMS.find((farm) => farm.lpAddress === pair.lpAddress)
 

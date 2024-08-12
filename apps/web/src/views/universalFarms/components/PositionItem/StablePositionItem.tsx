@@ -22,6 +22,12 @@ export const StablePositionItem = memo(({ data, detailMode }: { data: StableLPDe
     amount0: nativeDeposited0,
     amount1: nativeDeposited1,
   })
+  const farmingTotalPriceUSD = useTotalPriceUSD({
+    currency0: pair.token0,
+    currency1: pair.token1,
+    amount0: farmingDeposited0,
+    amount1: farmingDeposited1,
+  })
   const pool = usePoolInfo({ poolAddress: pair.stableSwapAddress, chainId: pair.liquidityToken.chainId })
 
   return (
@@ -59,7 +65,7 @@ export const StablePositionItem = memo(({ data, detailMode }: { data: StableLPDe
           chainId={pair.liquidityToken.chainId}
           pool={pool}
           link={`/stable/${pair.lpAddress}`}
-          totalPriceUSD={nativeTotalPriceUSD}
+          totalPriceUSD={farmingTotalPriceUSD}
           currency0={pair.token0}
           currency1={pair.token1}
           removed={false}
