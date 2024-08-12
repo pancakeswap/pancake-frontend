@@ -1,7 +1,5 @@
-import styled from 'styled-components'
-import { ASSET_CDN } from 'config/constants/endpoints'
-import { useCallback, useMemo, useState } from 'react'
-import assign from 'lodash/assign'
+import { Protocol } from '@pancakeswap/farms'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   AddIcon,
   Button,
@@ -17,38 +15,40 @@ import {
   Toggle,
   useModal,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+import { useExpertMode } from '@pancakeswap/utils/user'
+import { INetworkProps, ITokenProps, toTokenValue, toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
+import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
-import { useExpertMode } from '@pancakeswap/utils/user'
-import TransactionsModal from 'components/App/Transactions/TransactionsModal'
-import { useAccount } from 'wagmi'
+import { ASSET_CDN } from 'config/constants/endpoints'
+import assign from 'lodash/assign'
 import NextLink from 'next/link'
+import { useCallback, useMemo, useState } from 'react'
 import {
   getKeyForPools,
   useAccountStableLpDetails,
   useAccountV2LpDetails,
   useAccountV3Positions,
 } from 'state/farmsV4/hooks'
-import { INetworkProps, ITokenProps, toTokenValue, toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
-import { Protocol } from '@pancakeswap/farms'
+import styled from 'styled-components'
+import { useAccount } from 'wagmi'
 
-import { usePoolsWithChainId } from 'hooks/v3/usePools'
 import { Currency } from '@pancakeswap/swap-sdk-core'
-import { Pool } from '@pancakeswap/v3-sdk'
 import { getTokenByAddress } from '@pancakeswap/tokens'
+import { Pool } from '@pancakeswap/v3-sdk'
+import { usePoolsWithChainId } from 'hooks/v3/usePools'
 import { PositionDetail } from 'state/farmsV4/state/accountPositions/type'
 import {
   Card,
-  CardBody as StyledCardBody,
-  CardHeader as StyledCardHeader,
   IPoolsFilterPanelProps,
   MAINNET_CHAINS,
   PoolsFilterPanel,
+  StablePositionItem,
+  CardBody as StyledCardBody,
+  CardHeader as StyledCardHeader,
   useSelectedPoolTypes,
-  PositionV3Item,
-  PositionV2Item,
-  PositionStableItem,
+  V2PositionItem,
+  V3PositionItem,
 } from './components'
 
 const ToggleWrapper = styled.div`
@@ -195,7 +195,7 @@ const useV3Positions = ({
     () =>
       sortedV3Positions.map((pos) => {
         const key = getKeyForPools(pos.chainId, pos.tokenId.toString())
-        return <PositionV3Item key={key} data={pos} />
+        return <V3PositionItem key={key} data={pos} />
       }),
     [sortedV3Positions],
   )
@@ -241,7 +241,7 @@ const useV2Positions = ({
           liquidityToken: { address },
         } = pos.pair
         const key = getKeyForPools(chainId, address)
-        return <PositionV2Item key={key} data={pos} />
+        return <V2PositionItem key={key} data={pos} />
       }),
     [filteredV2Positions],
   )
@@ -288,7 +288,7 @@ const useStablePositions = ({
           liquidityToken: { chainId, address },
         } = pos.pair
         const key = getKeyForPools(chainId, address)
-        return <PositionStableItem key={key} data={pos} />
+        return <StablePositionItem key={key} data={pos} />
       }),
     [filteredStablePositions],
   )
