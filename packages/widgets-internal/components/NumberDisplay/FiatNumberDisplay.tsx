@@ -12,6 +12,7 @@ export type FiatNumberDisplayProps = {
   value: string | number | BigNumber;
   maximumSignificantDigits?: number;
   showFullDigitsTooltip?: boolean;
+  tooltipText?: React.ReactNode;
   roundingMode?: BigNumber.RoundingMode;
   as?: ElementType;
   style?: CSSProperties;
@@ -24,6 +25,7 @@ export const FiatNumberDisplay = memo(function FiatNumberDisplay({
   maximumSignificantDigits = 8,
   roundingMode = BigNumber.ROUND_DOWN,
   showFullDigitsTooltip = true,
+  tooltipText,
   style,
   fiatSymbol = "$",
   ...props
@@ -48,7 +50,7 @@ export const FiatNumberDisplay = memo(function FiatNumberDisplay({
   );
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t("Exact number: %numberWithFullDigits%", { numberWithFullDigits: valueDisplayInFullDigits }),
+    tooltipText ?? t("Exact number: %numberWithFullDigits%", { numberWithFullDigits: valueDisplayInFullDigits }),
     {
       placement: "top-end",
     }

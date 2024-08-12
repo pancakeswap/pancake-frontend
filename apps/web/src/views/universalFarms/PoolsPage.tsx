@@ -1,19 +1,16 @@
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo, useState, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { toTokenValueByCurrency } from '@pancakeswap/widgets-internal'
-import { Protocol, UNIVERSAL_FARMS } from '@pancakeswap/farms'
+import { UNIVERSAL_FARMS } from '@pancakeswap/farms'
 import { useIntersectionObserver, useTheme } from '@pancakeswap/hooks'
-import { Button, Image, InfoIcon, ISortOrder, SORT_ORDER, TableView, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Button, InfoIcon, ISortOrder, SORT_ORDER, TableView, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useAllTokensByChainIds } from 'hooks/Tokens'
 import { PoolSortBy } from 'state/farmsV4/atom'
 import { useExtendPools, useFarmPools, usePoolsApr } from 'state/farmsV4/hooks'
 import { getCombinedApr } from 'state/farmsV4/state/poolApr/utils'
 import type { PoolInfo } from 'state/farmsV4/state/type'
-import { getChainName } from '@pancakeswap/chains'
-import { LegacyRouter } from '@pancakeswap/smart-router/legacy-router'
-import { isAddressEqual } from 'viem'
 
 import {
   Card,
@@ -24,6 +21,7 @@ import {
   ListView,
   MAINNET_CHAINS,
   PoolsFilterPanel,
+  getPoolDetailPageLink,
   useColumnConfig,
   useSelectedPoolTypes,
 } from './components'
@@ -34,11 +32,6 @@ const PoolsContent = styled.div`
   min-height: calc(100vh - 64px - 56px);
 `
 
-const StyledImage = styled(Image)`
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 58px;
-`
 const NUMBER_OF_FARMS_VISIBLE = 20
 
 export const PoolsPage = () => {
@@ -47,7 +40,7 @@ export const PoolsPage = () => {
   const { theme } = useTheme()
   const { isMobile } = useMatchBreakpoints()
 
-  const columns = useColumnConfig<IDataType>()
+  const columns = useColumnConfig()
   const allChainIds = useMemo(() => MAINNET_CHAINS.map((chain) => chain.id), [])
   const [filters, setFilters] = useState<IPoolsFilterPanelProps['value']>({
     selectedTypeIndex: 0,
@@ -143,14 +136,7 @@ export const PoolsPage = () => {
 
   const handleRowClick = useCallback(
     (pool: PoolInfo) => {
-      let link = `/pools/${getChainName(pool.chainId)}/${pool.lpAddress}`
-      if (pool.protocol === Protocol.STABLE) {
-        const stablePair = LegacyRouter.stableSwapPairsByChainId[pool.chainId]?.find((pair) =>
-          isAddressEqual(pair.lpAddress, pool.lpAddress),
-        )
-        link = `/pools/${getChainName(pool.chainId)}/${stablePair?.stableSwapAddress}`
-      }
-      nextRouter.push(link)
+      nextRouter.push(getPoolDetailPageLink(pool))
     },
     [nextRouter],
   )

@@ -1,3 +1,4 @@
+import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Column, LinkExternal, PageHeader, Row, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter, VerticalDivider } from '@pancakeswap/widgets-internal'
@@ -6,6 +7,7 @@ import { FarmFlexWrapper, FarmH1, FarmH2 } from 'views/Farms/styled'
 
 export const PoolsBanner = ({ additionLink }: { additionLink?: React.ReactNode }) => {
   const { t } = useTranslation()
+  const { theme } = useTheme()
   return (
     <PageHeader>
       <Column>
@@ -26,7 +28,7 @@ export const PoolsBanner = ({ additionLink }: { additionLink?: React.ReactNode }
                   </Text>
                 </Button>
               </LinkExternal>
-              <VerticalDivider />
+              <VerticalDivider bg={theme.colors.inputSecondary} />
               <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
                 <Button p="0" variant="text">
                   <Text color="primary" bold fontSize="16px" mr="4px">
@@ -36,7 +38,7 @@ export const PoolsBanner = ({ additionLink }: { additionLink?: React.ReactNode }
               </NextLinkFromReactRouter>
               {!!additionLink && (
                 <>
-                  <VerticalDivider />
+                  <VerticalDivider bg={theme.colors.inputSecondary} />
                   {additionLink}
                 </>
               )}

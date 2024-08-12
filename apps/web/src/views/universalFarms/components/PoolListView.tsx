@@ -135,7 +135,7 @@ export interface IListItemDetailsProps {
 }
 
 const ListItemDetails: React.FC<IListItemDetailsProps> = memo(({ data }) => {
-  const columns = useColumnMobileConfig<PoolInfo>()
+  const columns = useColumnMobileConfig()
 
   if (!data) {
     return null
