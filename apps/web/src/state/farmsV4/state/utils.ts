@@ -9,6 +9,7 @@ export const parseFarmPools = (
     | paths['/cached/pools/farming']['get']['responses']['200']['content']['application/json']
     | paths['/cached/pools/list']['get']['responses']['200']['content']['application/json']['rows']
     | paths['/cached/pools/{chainName}/{id}']['get']['responses']['200']['content']['application/json'][],
+  options: { isFarming?: boolean } = {},
 ): PoolInfo[] => {
   return data.map((pool) => {
     return {
@@ -42,8 +43,7 @@ export const parseFarmPools = (
       feeTier: Number(pool.feeTier),
       // @todo @ChefJerry get by protocols
       feeTierBase: 1_000_000,
-      // @todo @ChefJerry implement whitelist
-      whitelist: false,
+      isFarming: !!options?.isFarming,
     } satisfies PoolInfo
   })
 }
