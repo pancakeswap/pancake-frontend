@@ -1,14 +1,20 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BasicDataType, FeeTier, ITableViewProps, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { FeatureStack, FiatNumberDisplay, TokenOverview } from '@pancakeswap/widgets-internal'
+import { Percent } from '@pancakeswap/swap-sdk-core'
+import { BasicDataType, ITableViewProps, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { FeatureStack, FeeTierTooltip, FiatNumberDisplay, TokenOverview } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
 import { useMemo } from 'react'
-import { PoolInfo } from 'state/farmsV4/state/type'
+import type { PoolInfo } from 'state/farmsV4/state/type'
 import { PoolApyButton } from './PoolApyButton'
 import { PoolListItemAction } from './PoolListItemAction'
 import { getChainFullName } from '../utils'
 
-export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['columns'] => {
+const FeeTierComponent = <T extends BasicDataType>({ fee, item }: { fee: number; item: T }) => {
+  const percent = useMemo(() => new Percent(fee ?? 0, item.feeTierBase ?? 1), [fee, item.feeTierBase])
+  return <FeeTierTooltip type={item.protocol} percent={percent} />
+}
+
+export const useColumnConfig = (): ITableViewProps<PoolInfo>['columns'] => {
   const { t } = useTranslation()
   const mediaQueries = useMatchBreakpoints()
   return useMemo(
@@ -42,7 +48,7 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
         dataIndex: 'feeTier',
         key: 'feeTier',
         display: mediaQueries.isXl || mediaQueries.isXxl,
-        render: (fee, item) => <FeeTier type={item.protocol} fee={fee ?? 0} denominator={item.feeTierBase} />,
+        render: (fee, item) => <FeeTierComponent fee={fee} item={item} />,
       },
       {
         title: t('APR'),
@@ -50,8 +56,7 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
         key: 'apr',
         sorter: true,
         minWidth: '260px',
-        render: (value, info) =>
-          value ? <PoolApyButton pool={info as unknown as PoolInfo} /> : <Skeleton width={60} />,
+        render: (value, info) => (value ? <PoolApyButton pool={info} /> : <Skeleton width={60} />),
       },
       {
         title: t('TVL'),
@@ -60,7 +65,19 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
         sorter: true,
         minWidth: '145px',
         display: mediaQueries.isXl || mediaQueries.isXxl,
-        render: (value) => (value ? <FiatNumberDisplay value={value} /> : <Skeleton width={60} />),
+        render: (value, item) =>
+          value ? (
+            <FiatNumberDisplay
+              value={value}
+              tooltipText={
+                item.isFarming
+                  ? t('Total active (in-range) liquidity staked in the farm.')
+                  : t('Total Value Locked (TVL) in the pool.')
+              }
+            />
+          ) : (
+            <Skeleton width={60} />
+          ),
       },
       {
         title: t('Volume 24H'),
@@ -69,7 +86,8 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
         sorter: true,
         minWidth: '145px',
         display: mediaQueries.isXl || mediaQueries.isXxl || mediaQueries.isLg,
-        render: (value) => (value ? <FiatNumberDisplay value={value} /> : <Skeleton width={60} />),
+        render: (value) =>
+          value ? <FiatNumberDisplay value={value} showFullDigitsTooltip={false} /> : <Skeleton width={60} />,
       },
       {
         title: t('pool type'),
@@ -92,7 +110,7 @@ export const useColumnConfig = <T extends BasicDataType>(): ITableViewProps<T>['
   )
 }
 
-export const useColumnMobileConfig = <T extends BasicDataType>(): ITableViewProps<T>['columns'] => {
+export const useColumnMobileConfig = (): ITableViewProps<PoolInfo>['columns'] => {
   const { t } = useTranslation()
   const mediaQueries = useMatchBreakpoints()
   return useMemo(
@@ -101,33 +119,41 @@ export const useColumnMobileConfig = <T extends BasicDataType>(): ITableViewProp
         title: t('APR'),
         dataIndex: 'lpApr',
         key: 'apr',
-        sorter: true,
-        render: (value, info) =>
-          value ? <PoolApyButton pool={info as unknown as PoolInfo} /> : <Skeleton width={60} />,
+        render: (value, info) => (value ? <PoolApyButton pool={info} /> : <Skeleton width={60} />),
       },
       {
         title: t('Fee Tier'),
         dataIndex: 'feeTier',
         key: 'feeTier',
         display: mediaQueries.isXl || mediaQueries.isXxl,
-        render: (fee, item) => <FeeTier type={item.protocol} fee={fee ?? 0} denominator={item.feeTierBase} />,
+        render: (fee, item) => <FeeTierComponent fee={fee} item={item} />,
       },
       {
         title: t('TVL'),
         dataIndex: 'tvlUsd',
         key: 'tvl',
-        sorter: true,
         display: mediaQueries.isXl || mediaQueries.isXxl,
-        render: (value) => (value ? <FiatNumberDisplay value={value} /> : <Skeleton width={60} />),
+        render: (value, item) =>
+          value ? (
+            <FiatNumberDisplay
+              value={value}
+              tooltipText={
+                item.isFarming
+                  ? t('Total active (in-range) liquidity staked in the farm.')
+                  : t('Total Value Locked (TVL) in the pool.')
+              }
+            />
+          ) : (
+            <Skeleton width={60} />
+          ),
       },
       {
         title: t('Volume 24H'),
         dataIndex: 'vol24hUsd',
         key: 'vol',
-        sorter: true,
-        minWidth: '145px',
         display: mediaQueries.isXl || mediaQueries.isXxl || mediaQueries.isLg,
-        render: (value) => (value ? <FiatNumberDisplay value={value} /> : <Skeleton width={60} />),
+        render: (value) =>
+          value ? <FiatNumberDisplay value={value} showFullDigitsTooltip={false} /> : <Skeleton width={60} />,
       },
     ],
     [t, mediaQueries],

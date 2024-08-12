@@ -5,11 +5,10 @@ import { useCallback } from 'react'
 import { extendPoolsAtom } from '../extendPools/atom'
 import { fetchExplorerPoolInfo } from '../extendPools/fetcher'
 import { ChainIdAddressKey, PoolInfo } from '../type'
-import { cakeAprSetterAtom, emptyCakeAprPoolsAtom, merklAprAtom, poolAprAtom, poolsAtom } from './atom'
+import { cakeAprSetterAtom, emptyCakeAprPoolsAtom, merklAprAtom, poolAprAtom } from './atom'
 import { getAllNetworkMerklApr, getCakeApr, getLpApr } from './fetcher'
 
-export const usePoolApr = (key: ChainIdAddressKey) => {
-  const pool = useAtomValue(poolsAtom)[key]
+export const usePoolApr = (key: ChainIdAddressKey, pool: PoolInfo) => {
   const updatePools = useSetAtom(extendPoolsAtom)
   const updateCallback = useCallback(async () => {
     if (!pool) {
