@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@pancakeswap/tsconfig": "workspace:*",
+    "@pancakeswap/utils": "workspace:*",
     "@types/debug": "^4.1.7",
     "@types/lodash": "^4.14.168",
     "tsup": "^6.7.0"

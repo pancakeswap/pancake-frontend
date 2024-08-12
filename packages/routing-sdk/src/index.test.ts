@@ -8,6 +8,9 @@ test('exports', () => {
       "getEdgeKey",
       "createGraph",
       "createPriceCalculator",
+      "findBestTrade",
+      "isSameRoute",
+      "mergeRoute",
     ]
   `)
 })
