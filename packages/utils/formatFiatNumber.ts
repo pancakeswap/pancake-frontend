@@ -31,13 +31,13 @@ export function formatFiatNumber(
     const billion = 1e9
     const trillion = 1e12
     if (bnValue.isGreaterThanOrEqualTo(trillion)) {
-      return `>${valueWithSymbol('999b', fiatSymbol)}`
+      return `>${valueWithSymbol('999B', fiatSymbol)}`
     }
     if (bnValue.isGreaterThanOrEqualTo(billion)) {
-      return valueWithSymbol(`${bnValue.dividedBy(billion).toFixed(0, BigNumber.ROUND_DOWN)}b`, fiatSymbol)
+      return valueWithSymbol(`${bnValue.dividedBy(billion).toFixed(0, BigNumber.ROUND_DOWN)}B`, fiatSymbol)
     }
     if (bnValue.isGreaterThanOrEqualTo(million)) {
-      return valueWithSymbol(`${bnValue.dividedBy(million).toFixed(0, BigNumber.ROUND_DOWN)}m`, fiatSymbol)
+      return valueWithSymbol(`${bnValue.dividedBy(million).toFixed(0, BigNumber.ROUND_DOWN)}M`, fiatSymbol)
     }
   }
   // If less than 1, keep as many decimal digits as possible
